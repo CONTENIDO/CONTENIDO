@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiTemplate createNewItem
+ * @method cApiTemplate|bool next
  */
 class cApiTemplateCollection extends ItemCollection {
     /**
@@ -31,8 +33,7 @@ class cApiTemplateCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['tpl'], 'idtpl');
+        parent::__construct(cRegistry::getDbTableName('tpl'), 'idtpl');
         $this->_setItemClass('cApiTemplate');
 
         // set the join partners so that joins can be used via link() method
@@ -102,7 +103,7 @@ class cApiTemplateCollection extends ItemCollection {
      * Returns the default template configuration item
      *
      * @param int $idclient
-     * @return cApiTemplateConfiguration|NULL
+     * @return cApiTemplateConfiguration|bool
      * @throws cDbException
      * @throws cException
      */
@@ -121,7 +122,7 @@ class cApiTemplateCollection extends ItemCollection {
      */
     public function fetchByIdLay($idlay) {
         $this->select('idlay = ' . (int) $idlay);
-        $entries = array();
+        $entries = [];
         while (($entry = $this->next()) !== false) {
             $entries[] = clone $entry;
         }
@@ -147,9 +148,8 @@ class cApiTemplate extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['tpl'], 'idtpl');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('tpl'), 'idtpl');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -166,14 +166,13 @@ class cApiTemplate extends Item
      *         language id
      * @param int $client
      *         client id
-     * 
+     *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
     public function loadByArticleOrCategory($idart, $idcat, $lang, $client) {
-
         // get ID of template configuration that is used for
         // either the article language or the category language
         $idtplcfg = conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client);
@@ -193,12 +192,12 @@ class cApiTemplate extends Item
         // try to load template by determined ID
         $idtpl = $templateConfiguration->get('idtpl');
         $this->loadByPrimaryKey($idtpl);
-        
+
         return true;
     }
 
     /**
-     * Userdefined setter for template fields.
+     * User-defined setter for template fields.
      *
      * @param string $name
      * @param mixed $value
@@ -216,7 +215,7 @@ class cApiTemplate extends Item
                 break;
             case 'idclient':
             case 'idlay':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
             case 'idtplcfg':
                 if (!is_numeric($value)) {

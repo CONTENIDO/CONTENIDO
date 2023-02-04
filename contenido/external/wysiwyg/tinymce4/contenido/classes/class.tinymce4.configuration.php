@@ -62,7 +62,7 @@ class cTinymce4Configuration {
      */
     private function _addLabelWithTextarea($description, $name, $value = '', $width = 75) {
         $label = new cHTMLLabel($description, $name);
-        $label->setClass("sys_config_txt_lbl");
+        $label->setClass('sys_config_txt_lbl');
         $label->setStyle('width:' . $width . 'px; vertical-align: top;');
 
         $textarea = new cHTMLTextarea($name);
@@ -148,6 +148,9 @@ class cTinymce4Configuration {
     private function _listExternalPlugins() {
         /// TODO: use a preference loading function for plugins to list
         $externalPlugins = static::get([], 'raw', 'externalplugins');
+        if (isset($externalPlugins['custom'])) {
+            unset($externalPlugins['custom']);
+        }
 
         // build a table
         $table = new cHTMLTable();
@@ -176,7 +179,7 @@ class cTinymce4Configuration {
 
         // build table body
         $tbody = new cHTMLTableBody();
-        $n = count($externalPlugins) -1;
+        $n = count($externalPlugins);
         for ($i = 0; $i < $n; $i++) {
             // new tr
             $row = new cHTMLTableRow();
@@ -190,6 +193,10 @@ class cTinymce4Configuration {
             $input->setAttribute('type', 'hidden');
             $input->setAttribute('name', 'externalplugins[' . $i . '][name]');
             $input->setAttribute('value', $externalPlugins[$i]['name']);
+            if (false === $this->_perm) {
+                $input->updateAttribute('disabled', 'disabled');
+            }
+
             $td->appendContent($input);
 
             // add td to tr
@@ -204,6 +211,9 @@ class cTinymce4Configuration {
             $input->setAttribute('type', 'hidden');
             $input->setAttribute('name', 'externalplugins[' . $i . '][url]');
             $input->setAttribute('value', $externalPlugins[$i]['url']);
+            if (false === $this->_perm) {
+                $input->updateAttribute('disabled', 'disabled');
+            }
             $td->appendContent($input);
 
             // add td to tr
@@ -214,8 +224,8 @@ class cTinymce4Configuration {
             if (true === $this->_perm) {
                 // Edit/delete links only for sysadmin
                 $oLinkDelete = new cHTMLLink();
-                $oLinkDelete->setCLink(cRegistry::getArea(), cRegistry::getFrame(), "system_wysiwyg_tinymce4_delete_item");
-                $oLinkDelete->setCustom("external_plugin_idx", urlencode($i));
+                $oLinkDelete->setCLink(cRegistry::getArea(), cRegistry::getFrame(), 'system_wysiwyg_tinymce4_delete_item');
+                $oLinkDelete->setCustom('external_plugin_idx', urlencode($i));
                 $img = new cHTMLImage(cRegistry::getBackendUrl() . cRegistry::getConfigValue('path', 'images') . 'delete.gif');
                 $img->setAttribute('alt', i18n("Delete"));
                 $img->setAttribute('title', i18n("Delete"));
@@ -235,12 +245,18 @@ class cTinymce4Configuration {
         // create new td for plugin name
         $td = new cHTMLTableData();
         $input = new cHTMLFormElement('externalplugins[' . $i . '][name]');
+        if (false === $this->_perm) {
+            $input->updateAttribute('disabled', 'disabled');
+        }
         $td->appendContent($input);
         $row->appendContent($td);
 
         // create new td for plugin url
         $td = new cHTMLTableData();
         $input = new cHTMLFormElement('externalplugins[' . $i . '][url]');
+        if (false === $this->_perm) {
+            $input->updateAttribute('disabled', 'disabled');
+        }
         $td->appendContent($input);
         $row->appendContent($td);
 
@@ -362,9 +378,11 @@ class cTinymce4Configuration {
         unset($config['submit_x']);
         unset($config['submit_y']);
 
+        $requestAction = $_GET['action'] ?? '';
+
         // form action (added in showConfigurationForm() inside this
         // class) is not used for saving config
-        if ('system_wysiwyg_tinymce4_delete_item' === $_GET['action']) {
+        if ('system_wysiwyg_tinymce4_delete_item' === $requestAction) {
             return $this->removeExternalPluginLoad($_GET);
         }
         unset($config['action']);
@@ -391,25 +409,25 @@ class cTinymce4Configuration {
 
         // check if all array entries actually exist
         // abort if too many values are encountered
-        $shouldArrayStructure =  array (
+        $shouldArrayStructure =  [
             'tinymce4_full' =>
-            array (
+            [
                     'toolbar1',
                     'toolbar2',
                     'toolbar3',
                     'plugins'
-            ),
+            ],
             'tinymce4_fullscreen' =>
-            array (
+            [
                     'toolbar1',
                     'toolbar2',
                     'toolbar3',
                     'plugins'
-            ),
+            ],
             'contenido_lists',
             'contenido_gzip',
             'custom',
-        );
+        ];
 
         // get name of first key
         reset($config);
@@ -429,12 +447,12 @@ class cTinymce4Configuration {
         }
 
         // do not use cRequestValidator instance because it does not support multi-dimensional arrays
-        if (false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar1'])
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar2'])
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar3'])
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar1'])
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar2'])
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar3'])) {
+        if (false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar1'] ?? '')
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar2'] ?? '')
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar3'] ?? '')
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar1'] ?? '')
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar2'] ?? '')
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar3'] ?? '')) {
             $this->_configErrors[] = i18n('Toolbar(s) of editor contain erroneous data.');
             return false;
         }
@@ -451,14 +469,14 @@ class cTinymce4Configuration {
 
         // custom tinymce 4 settings overwrite other fields
         if (cRegistry::getConfigValue('simulate_magic_quotes') === true) {
-            $config[$key]['custom'] = stripslashes($config[$key]['custom']);
+            $config[$key]['custom'] = stripslashes($config[$key]['custom'] ?? '');
         }
 
         // unescape strings then build config
         $customConfig = null;
         if (!empty($config[$key]['custom'])) {
             $customConfig = (array) json_decode($config[$key]['custom'], true);
-            switch(json_last_error()) {
+            switch (json_last_error()) {
                 case JSON_ERROR_DEPTH:
                     $this->_configErrors[] = i18n('Maximum stack depth exceeded while decoding json');
                     return false;
@@ -507,17 +525,14 @@ class cTinymce4Configuration {
             return false;
         }
 
-        $pluginToRemoveIdx = (int) $form['external_plugin_idx'];
+        $pluginToRemoveIdx = cSecurity::toInteger($form['external_plugin_idx'] ?? '-1');
 
         // load config through usage of get function
         $settings = static::get(false);
 
         // no config or no external plugins or no plugin with that index
         // means nothing to remove
-        if (false === $settings
-            || false === isset($settings['raw'])
-            || false === isset($settings['raw']['externalplugins'])
-            || false === isset($settings['raw']['externalplugins'][$pluginToRemoveIdx])) {
+        if (!isset($settings['raw']['externalplugins'][$pluginToRemoveIdx])) {
             return false;
         }
 
@@ -563,6 +578,9 @@ class cTinymce4Configuration {
         if ($this->successfully === true) $page->displayOk(i18n("Changes saved successfully!"));
 
         $page->displayInfo(sprintf(i18n('Currently active WYSIWYG editor: %s'), cWYSIWYGEditor::getCurrentWysiwygEditorName()));
+        if (false === $this->_perm) {
+            $page->displayWarning(i18n("You are not sysadmin. You can't change these settings."));
+        }
 
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
@@ -660,6 +678,10 @@ class cTinymce4Configuration {
             //add textarea for custom tinymce 4 settings
             $textarea = new cHTMLTextarea($curType . '[custom]');
             $textarea->setAttribute('style', 'width: 99%;');
+            if (false === $this->_perm) {
+                $textarea->updateAttribute('disabled', 'disabled');
+            }
+
             $defaultParams = '';
             if ('CMS_HTMLHEAD' === $curType) {
                 $defaultParams = '{' . PHP_EOL . '"inline": true,' . PHP_EOL . '"menubar": false' . PHP_EOL . '}';
@@ -669,13 +691,16 @@ class cTinymce4Configuration {
 
             // check permission to save system wysiwyg editor settings
             if (false === $this->_perm) {
-                $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's');
+                $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's', false, true);
             }
             $result .= '<p>' . $form->render() . '</p>';
         }
 
         // external plugins (can not be configured per CMS-type)
         $form = new cGuiTableForm('system_wysiwyg_tinymce4_external_plugins');
+        if (false === $this->_perm) {
+            $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's', false, true);
+        }
         $form->setAcceptCharset('UTF-8');
         $form->addHeader(i18n('TinyMCE 4 configuration for external plugins'));
 
@@ -697,6 +722,9 @@ class cTinymce4Configuration {
             $resetForm->setVar('action', 'edit_tinymce4');
             $oResetButton = new cHTMLButton('reset', i18n('Reset configuration back to default'));
             $oResetButton->setAttribute('value', i18n('Reset Configuration'));
+            if (false === $this->_perm) {
+                $oResetButton->updateAttribute('disabled', 'disabled');
+            }
 
             $resetForm = $resetForm->appendContent($oResetButton);
             $result .= $resetForm->render();

@@ -28,7 +28,7 @@ class cRegistry {
      *
      * @var array
      */
-    protected static $_appVars = array();
+    protected static $_appVars = [];
 
     /**
      * Container for ok messages.
@@ -36,7 +36,7 @@ class cRegistry {
      * @author frederic.schneider
      * @var array
      */
-    protected static $_okMessages = array();
+    protected static $_okMessages = [];
 
     /**
      * Container for information messages.
@@ -44,7 +44,7 @@ class cRegistry {
      * @author konstantinos.katikakis
      * @var array
      */
-    protected static $_infoMessages = array();
+    protected static $_infoMessages = [];
 
     /**
      * Container for error messages.
@@ -52,7 +52,7 @@ class cRegistry {
      * @author konstantinos.katikakis
      * @var array
      */
-    protected static $_errMessages = array();
+    protected static $_errMessages = [];
 
     /**
      * Container for warning messages.
@@ -60,19 +60,26 @@ class cRegistry {
      * @author konstantinos.katikakis
      * @var array
      */
-    protected static $_warnMessages = array();
+    protected static $_warnMessages = [];
 
     /**
      * Function which returns path after the last possible place changing via
      * configuration file.
      *
      * @author konstantinos.katikakis
+     * @param  bool  $relativeToRoot
+     *         Flag to return relative path from project root
+     *         Since CONTENIDO 4.10.2
      * @return string
      *         path
      */
-    public static function getBackendPath() {
+    public static function getBackendPath($relativeToRoot = false) {
         $cfg = self::getConfig();
-        return $cfg['path']['contenido'];
+        if (!$relativeToRoot) {
+            return $cfg['path']['contenido'];
+        } else {
+            return str_replace($cfg['path']['frontend'] . '/', '', $cfg['path']['contenido']);
+        }
     }
 
     /**
@@ -146,6 +153,17 @@ class cRegistry {
      */
     public static function isBackendEditMode() {
         return self::_fetchGlobalVariable('edit', false);
+    }
+
+    /**
+     * Checks if the visual edit mode in backend is active (contenido session and
+     * global variable "tpl_visual").
+     *
+     * @since CONTENIDO 4.10.2
+     * @return bool
+     */
+    public static function isBackendVisualEditMode() {
+        return self::getBackendSessionId() && self::getArea() === 'tpl_visual';
     }
 
     /**
@@ -418,7 +436,7 @@ class cRegistry {
      * @return array
      */
     public static function getConfig() {
-        return self::_fetchGlobalVariable('cfg', array());
+        return self::_fetchGlobalVariable('cfg', []);
     }
 
     /**
@@ -437,7 +455,7 @@ class cRegistry {
         $cfg = self::getConfig();
 
         // determine configuration section
-        $section = array();
+        $section = [];
         if (isset($cfg[$sectionName])) {
             $section = $cfg[$sectionName];
         }
@@ -464,13 +482,13 @@ class cRegistry {
      * @return array
      */
     public static function getClientConfig($clientId = 0) {
-        $clientConfig = self::_fetchGlobalVariable('cfgClient', array());
+        $clientConfig = self::_fetchGlobalVariable('cfgClient', []);
 
         if ($clientId == 0) {
             return $clientConfig;
         }
 
-        return (isset($clientConfig[$clientId]) ? $clientConfig[$clientId] : array());
+        return (isset($clientConfig[$clientId]) ? $clientConfig[$clientId] : []);
     }
 
     /**
@@ -605,11 +623,11 @@ class cRegistry {
 
         $sessClass = $authClass = $permClass = NULL;
 
-        $bootstrapFeatures = array(
+        $bootstrapFeatures = [
             'sess',
             'auth',
-            'perm'
-        );
+            'perm',
+        ];
 
         foreach ($bootstrapFeatures as $feature) {
             $varFeatureClass = $feature . 'Class';

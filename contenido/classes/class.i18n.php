@@ -26,12 +26,12 @@ class cI18n {
      *
      * @var array
      */
-    protected static $_i18nData = array(
-        'language' => NULL,
-        'domains' => array(),
-        'files' => array(),
-        'cache' => array()
-    );
+    protected static $_i18nData = [
+        'language' => null,
+        'domains'  => [],
+        'files'    => [],
+        'cache'    => [],
+    ];
 
     /**
      * Initializes the i18n.
@@ -201,10 +201,10 @@ class cI18n {
      * Resets cached translation data (language, domains, files, and cache)
      */
     public static function reset() {
-        self::$_i18nData['language'] = NULL;
-        self::$_i18nData['domains'] = array();
-        self::$_i18nData['files'] = array();
-        self::$_i18nData['cache'] = array();
+        self::$_i18nData['language'] = null;
+        self::$_i18nData['domains']  = [];
+        self::$_i18nData['files']    = [];
+        self::$_i18nData['cache']    = [];
     }
 
     /**
@@ -226,7 +226,7 @@ class cI18n {
         }
 
         if (!isset(self::$_i18nData['cache'][$domain])) {
-            self::$_i18nData['cache'][$domain] = array();
+            self::$_i18nData['cache'][$domain] = [];
         }
         if (isset(self::$_i18nData['cache'][$domain][$string])) {
             return self::$_i18nData['cache'][$domain][$string];
@@ -244,45 +244,29 @@ class cI18n {
             self::$_i18nData['files'][$domain] = self::_loadTranslationFile($translationFile);
         }
 
-        $stringStart = cString::findFirstPos(self::$_i18nData['files'][$domain], '"' . str_replace(array(
-            "\n",
-            "\r",
-            "\t"
-        ), array(
-            '\n',
-            '\r',
-            '\t'
-        ), $string) . '"');
+        $stringStart = cString::findFirstPos(
+            self::$_i18nData['files'][$domain],
+            '"' . str_replace(["\n", "\r", "\t"], ['\n', '\r', '\t'], $string) . '"'
+        );
         if ($stringStart === false) {
             return $string;
         }
 
-        $matches = array();
-        $quotedString = preg_quote(str_replace(array(
-            "\n",
-            "\r",
-            "\t"
-        ), array(
-            '\n',
-            '\r',
-            '\t'
-        ), $string), '/');
-        $result = preg_match("/msgid.*\"(" . $quotedString . ")\"(?:\s*)?\nmsgstr(?:\s*)\"(.*)\"/", self::$_i18nData['files'][$domain], $matches);
+        $matches = [];
+        $quotedString = preg_quote(str_replace(["\n", "\r", "\t"], ['\n', '\r', '\t'], $string), '/');
+        $result = preg_match(
+            "/msgid.*\"(" . $quotedString . ")\"(?:\s*)?\nmsgstr(?:\s*)\"(.*)\"/",
+            self::$_i18nData['files'][$domain],
+            $matches
+        );
         // Old:
         // preg_match("/msgid.*\"".preg_quote($string,"/")."\".*\nmsgstr(\s*)\"(.*)\"/",
         // self::$_i18nData['files'][$domain], $matches);
 
         if ($result && !empty($matches[2])) {
             // Translation found, cache it
-            self::$_i18nData['cache'][$domain][$string] = stripslashes(str_replace(array(
-                '\n',
-                '\r',
-                '\t'
-            ), array(
-                "\n",
-                "\r",
-                "\t"
-            ), $matches[2]));
+            self::$_i18nData['cache'][$domain][$string] =
+                stripslashes(str_replace(['\n', '\r', '\t'], ["\n", "\r", "\t"], $matches[2]));
         } else {
             // Translation not found, cache original string
             self::$_i18nData['cache'][$domain][$string] = $string;

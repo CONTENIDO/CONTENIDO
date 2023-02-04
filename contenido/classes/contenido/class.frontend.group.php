@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiFrontendGroup createNewItem
+ * @method cApiFrontendGroup|bool next
  */
 class cApiFrontendGroupCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiFrontendGroupCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['frontendgroups'], 'idfrontendgroup');
+        parent::__construct(cRegistry::getDbTableName('frontendgroups'), 'idfrontendgroup');
         $this->_setItemClass('cApiFrontendGroup');
 
         // set the join partners so that joins can be used via link() method
@@ -47,11 +48,11 @@ class cApiFrontendGroupCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($groupname) {
-        global $client;
+        $client = cSecurity::toInteger(cRegistry::getClientId());
 
         $group = new cApiFrontendGroup();
 
-        // _arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
+        // _arrInFilters = ['urlencode', 'htmlspecialchars', 'addslashes'];
 
         $mangledGroupName = $group->_inFilter($groupname);
         $this->select("idclient = " . cSecurity::toInteger($client) . " AND groupname = '" . $mangledGroupName . "'");
@@ -76,7 +77,7 @@ class cApiFrontendGroupCollection extends ItemCollection {
      *         specifies the frontend user group
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -111,8 +112,7 @@ class cApiFrontendGroup extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['frontendgroups'], 'idfrontendgroup');
+        parent::__construct(cRegistry::getDbTableName('frontendgroups'), 'idfrontendgroup');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

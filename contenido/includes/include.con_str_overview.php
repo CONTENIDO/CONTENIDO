@@ -42,7 +42,7 @@ function showTree($iIdcat, &$aWholelist) {
     foreach ($navigationTree[$iIdcat] as $sKey => $aValue) {
 
         $cfgdata = '';
-        $aCssClasses = array();
+        $aCssClasses = [];
 
         // Check rights per cat
         if (!$check_global_rights) {
@@ -375,13 +375,13 @@ if (isset($force)) {
     $remakeCatTable = true;
 }
 
-$arrIn = array();
+$arrIn = [];
 while ($db->nextRecord()) {
     $arrIn[] = $db->f('idcat');
 }
 
-$arrArtCache = array();
-$aIsArticles = array();
+$arrArtCache = [];
+$aIsArticles = [];
 
 if (count($arrIn) > 0) {
     $sIn = implode(',', $arrIn);
@@ -401,13 +401,12 @@ if (count($arrIn) > 0) {
 $db->query($sql);
 
 while ($db->nextRecord()) {
-    $entry = array();
+    $entry = [];
 
     $entry['articles'] = false;
 
     if ($db->f("idlang") == $lang) {
-
-        $arts = array();
+        $arts = [];
 
         if (isset($arrArtCache[$db->f("idcat")])) {
             foreach ($arrArtCache[$db->f("idcat")] as $key => $value) {
@@ -465,7 +464,7 @@ if ($syncoptions == -1) {
 }
 $db->query($sql2);
 
-$aStartOnlineArticles = array();
+$aStartOnlineArticles = [];
 while ($db->nextRecord()) {
     if ($db->f('startidartlang') > 0) {
         $aStartOnlineArticles[$db->f('idcat')]['is_start'] = true;
@@ -604,15 +603,15 @@ if ($sExpandList != '') {
 }
 
 if (!is_array($conexpandedList)) {
-    $conexpandedList = array();
+    $conexpandedList = [];
 }
 
 if (!is_array($conexpandedList[$client])) {
-    $conexpandedList[$client] = array();
+    $conexpandedList[$client] = [];
 }
 
-$navigationTree = array();
-$aWholelist = array();
+$navigationTree = [];
+$aWholelist     = [];
 
 while ($db->nextRecord()) {
     if (!isset($navigationTree[$db->f('parentid')][$db->f('idcat')]) && ($db->f('idlang') == $lang || $db->f('idlang') == $syncoptions)) {
@@ -631,30 +630,30 @@ while ($db->nextRecord()) {
         } else {
             $active = false;
         }
-        $navigationTree[$db->f('parentid')][$db->f('idcat')] = array(
-            'idcat' => $db->f('idcat'),
-            'preid' => $db->f('preid'),
-            'postid' => $db->f('postid'),
-            'visible' => $db->f('visible'),
-            'online' => $db->f('visible'),
-            'public' => $db->f('public'),
-            'name' => $db->f('name'),
-            'langPopup' => $db->f('langPopup'),
-            'idlang' => $db->f('idlang'),
-            'idtpl' => $db->f('idtpl'),
-            'collapsed' => $collapsed,
+        $navigationTree[$db->f('parentid')][$db->f('idcat')] = [
+            'idcat'        => $db->f('idcat'),
+            'preid'        => $db->f('preid'),
+            'postid'       => $db->f('postid'),
+            'visible'      => $db->f('visible'),
+            'online'       => $db->f('visible'),
+            'public'       => $db->f('public'),
+            'name'         => $db->f('name'),
+            'langPopup'    => $db->f('langPopup'),
+            'idlang'       => $db->f('idlang'),
+            'idtpl'        => $db->f('idtpl'),
+            'collapsed'    => $collapsed,
             'forcedisplay' => $forcedisplay,
-            'active' => $active,
-            'islast' => false,
-            'articles' => !empty($aIsArticles[$db->f("idcat")]) ? $aIsArticles[$db->f("idcat")] : false,
-            'level' => $db->f('level')
-        );
-        if ($aStartOnlineArticles[$db->f('idcat')]['is_start']) {
+            'active'       => $active,
+            'islast'       => false,
+            'articles'     => !empty($aIsArticles[$db->f("idcat")]) ? $aIsArticles[$db->f("idcat")] : false,
+            'level'        => $db->f('level'),
+        ];
+        if ($aStartOnlineArticles[$db->f('idcat')]['is_start'] ?? false) {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_start'] = false;
         } else {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_start'] = true;
         }
-        if ($aStartOnlineArticles[$db->f('idcat')]['is_online']) {
+        if ($aStartOnlineArticles[$db->f('idcat')]['is_online'] ?? false) {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_online'] = false;
         } else {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_online'] = true;

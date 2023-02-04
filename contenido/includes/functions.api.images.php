@@ -740,6 +740,7 @@ function cApiIsImageMagickAvailable() {
  * Converts the compression rate to PNG compression level. Compression rate is only supported
  * for JPG, JPEG or PNG images.
  *
+ * @since CONTENIDO 4.10.2
  * @param string $imgType The image type, e. g. 'jpg', 'jpeg' or 'png'
  * @param int $quality The quality of the image (0 - 100)
  * @return int Returns 100-1 for JPG and JPEG images, 0-9 for PNG images and null for other images.
@@ -777,6 +778,8 @@ function cApiImgGetCompressionRate($imgType, $quality = 0) {
 
 /**
  * Returns image resource by file name.
+ *
+ * @since CONTENIDO 4.10.2
  * @param string $fileName Path to image
  * @param string|null $fileType File type (extension)
  * @return resource|null Created image resource or null
@@ -812,6 +815,8 @@ function cApiImgCreateImageResourceFromFile($fileName, $fileType = null) {
 
 /**
  * Saves the given image resource.
+ *
+     * @since CONTENIDO 4.10.2
  * @param resource $targetImage The image resource
  * @param string $saveTo The path to save the image to
  * @param int $quality The quality of the image

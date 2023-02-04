@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiLayout createNewItem
+ * @method cApiLayout|bool next
  */
 class cApiLayoutCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiLayoutCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['lay'], 'idlay');
+        parent::__construct(cRegistry::getDbTableName('lay'), 'idlay');
         $this->_setItemClass('cApiLayout');
 
         // set the join partners so that joins can be used via link() method
@@ -54,10 +55,8 @@ class cApiLayoutCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($name, $idclient = NULL, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '') {
-        global $client, $auth;
-
         if (NULL === $idclient) {
-            $idclient = $client;
+            $idclient = cRegistry::getClientId();
         }
 
         if (empty($alias)) {
@@ -65,6 +64,7 @@ class cApiLayoutCollection extends ItemCollection {
         }
 
         if (empty($author)) {
+            $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
@@ -103,7 +103,7 @@ class cApiLayout extends Item {
      *
      * @var array
      */
-    protected $_aUsedTemplates = array();
+    protected $_aUsedTemplates = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -115,9 +115,8 @@ class cApiLayout extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['lay'], 'idlay');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('lay'), 'idlay');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -144,12 +143,12 @@ class cApiLayout extends Item {
         }
 
         if ($setData === true) {
-            $this->_aUsedTemplates = array();
+            $this->_aUsedTemplates = [];
             foreach ($templates as $i => $template) {
-                $this->_aUsedTemplates[$i] = array(
-                    'tpl_id' => $template->get('idtpl'),
-                    'tpl_name' => $template->get('name')
-                );
+                $this->_aUsedTemplates[$i] = [
+                    'tpl_id'   => $template->get('idtpl'),
+                    'tpl_name' => $template->get('name'),
+                ];
             }
         }
 
@@ -167,7 +166,7 @@ class cApiLayout extends Item {
     }
 
     /**
-     * Userdefined setter for layout fields.
+     * User-defined setter for layout fields.
      *
      * @param string $name
      * @param mixed $value
@@ -181,7 +180,7 @@ class cApiLayout extends Item {
                 $value = ($value == 1) ? 1 : 0;
                 break;
             case 'idclient':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

@@ -171,10 +171,10 @@ VALID UNTIL: %s
         }
 
         // config options are passed to the cache as an array
-        $this->_aCacheOptions = array(
-            'cacheDir' => $this->_sDir,
-            'fileNamePrefix' => $this->_sPrefix
-        );
+        $this->_aCacheOptions = [
+            'cacheDir'       => $this->_sDir,
+            'fileNamePrefix' => $this->_sPrefix,
+        ];
     }
 
     /**
@@ -476,10 +476,10 @@ class cOutputCacheHandler extends cOutputCache
      *                           - $a['idoptions'] array
      *                           several variables to create a unique id,
      *                           if the output depends on them. e.g.
-     *                           array(
-     *                           'uri' => $_SERVER['REQUEST_URI'],
-     *                           'post' => $_POST, 'get' => $_GET
-     *                           )
+     *                           [
+     *                               'uri'  => $_SERVER['REQUEST_URI'],
+     *                               'post' => $_POST, 'get' => $_GET
+     *                           ]
      * @param cDb   $db
      *                           CONTENIDO database object
      * @param int   $iCreateCode [optional]

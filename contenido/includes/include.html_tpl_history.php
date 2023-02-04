@@ -141,7 +141,6 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
             $sPath = $oVersionHtmlTemp->getFilePath() . $sRevision;
 
             // Read XML Nodes and get an array
-            $aNodes = array();
             $aNodes = $oVersionHtmlTemp->initXmlReader($sPath);
 
             // Create Textarea and fill it with xml nodes

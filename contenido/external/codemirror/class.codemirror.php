@@ -26,7 +26,7 @@ class CodeMirror {
      *
      * @var array
      */
-    private $_properties = array();
+    private $_properties = [];
 
     /**
      * HTML-ID of textarea which is replaced by CodeMirror
@@ -54,7 +54,7 @@ class CodeMirror {
      *
      * @var array
      */
-    private $_cfg = array();
+    private $_cfg = [];
 
     /**
      * Language of CodeMirror
@@ -88,13 +88,13 @@ class CodeMirror {
      */
     public function __construct($id, $syntax, $lang, $addScript, $cfg, $editable = true) {
         // init class variables
-        $this->_properties = array();
-        $this->_cfg = (array) $cfg;
-        $this->_addScript = (boolean) $addScript;
-        $this->_textareaId = (string) $id;
-        $this->_activated = true;
-        $this->_language = (string) $lang;
-        $this->_syntax = (string) $syntax;
+        $this->_properties = [];
+        $this->_cfg        = (array)$cfg;
+        $this->_addScript  = (boolean)$addScript;
+        $this->_textareaId = (string)$id;
+        $this->_activated  = true;
+        $this->_language   = (string)$lang;
+        $this->_syntax     = (string)$syntax;
 
         // make content not editable if not allowed
         if ($editable == false) {
@@ -159,10 +159,11 @@ class CodeMirror {
         $isNumeric = (boolean) $isNumeric;
 
         // generate a new array for new property
-        $record = array();
-        $record['name'] = $name;
-        $record['value'] = $value;
-        $record['is_numeric'] = $isNumeric;
+        $record = [
+            'name'       => $name,
+            'value'      => $value,
+            'is_numeric' => $isNumeric,
+        ];
 
         // append it to class variable $this->aProperties
         // when key already exists, overwride it
@@ -175,7 +176,7 @@ class CodeMirror {
         $js = '';
         $jsTemplate = '<script type="text/javascript" src="%s/mode/%s/%s.js"></script>';
 
-        $modes = array();
+        $modes = [];
 
         $syntax = $this->_syntax;
         if ($syntax == 'js' || $syntax == 'html' || $syntax == 'php') {

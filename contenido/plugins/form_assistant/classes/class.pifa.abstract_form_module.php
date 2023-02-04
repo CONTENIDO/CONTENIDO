@@ -43,7 +43,7 @@ abstract class PifaAbstractFormModule {
      *
      * @var array
      */
-    protected $_settings = array();
+    protected $_settings = [];
 
     /**
      * The unique ID of the form to be displayed and processed by this module.
@@ -211,7 +211,7 @@ abstract class PifaAbstractFormModule {
      * @param array $values
      * @param array $errors
      */
-    abstract protected function doGet(array $values = array(), array $errors = array());
+    abstract protected function doGet(array $values = [], array $errors = []);
 
     /**
      * Handle POST request.

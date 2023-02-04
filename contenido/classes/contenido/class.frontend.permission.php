@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiFrontendPermission createNewItem
+ * @method cApiFrontendPermission|bool next
  */
 class cApiFrontendPermissionCollection extends ItemCollection {
 
@@ -35,10 +37,9 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
         $this->_frontendPermission = new cApiFrontendPermission();
 
-        parent::__construct($cfg['tab']['frontendpermissions'], 'idfrontendpermission');
+        parent::__construct(cRegistry::getDbTableName('frontendpermissions'), 'idfrontendpermission');
         $this->_setItemClass('cApiFrontendPermission');
 
         // set the join partners so that joins can be used via link() method
@@ -64,10 +65,9 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($group, $plugin, $action, $item) {
-        global $lang;
-
         $perm = false;
         if (!$this->checkPerm($group, $plugin, $action, $item)) {
+            $lang = cSecurity::toInteger(cRegistry::getLanguageId());
             $perm = $this->createNewItem();
             $perm->set('idlang', $lang);
             $perm->set('idfrontendgroup', $group);
@@ -122,24 +122,23 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * @throws cException
      */
     public function checkPerm($group, $plugin, $action, $item, $useLang = false) {
-        global $lang;
-
         // checklang = ($useLang !== false) ? $useLang : $lang;
 
-        $group = (int) $group;
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $group = cSecurity::toInteger($group);
         $plugin = $this->_frontendPermission->_inFilter($plugin);
         $action = $this->_frontendPermission->_inFilter($action);
         $item = $this->_frontendPermission->_inFilter($item);
 
-        // Check for global permisson
+        // Check for global permission
         $this->select("idlang = " . $lang . " AND idfrontendgroup = " . $group . " AND plugin = '" . $plugin . "' AND action = '" . $action . "' AND item = '__GLOBAL__'");
         if ($this->next()) {
             return true;
         }
 
-        // Check for item permisson
+        // Check for item permission
         $this->select("idlang = " . $lang . " AND idfrontendgroup = " . $group . " AND plugin = '" . $plugin . "' AND action = '" . $action . "' AND item = '" . $item . "'");
-        return ($this->next()) ? true : false;
+        return (bool)$this->next();
     }
 
     /**
@@ -162,11 +161,10 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function removePerm($group, $plugin, $action, $item, $useLang = false) {
-        global $lang;
-
         // checklang = ($useLang !== false) ? $useLang : $lang;
 
-        $group = (int) $group;
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $group = cSecurity::toInteger($group);
         $plugin = $this->_frontendPermission->_inFilter($plugin);
         $action = $this->_frontendPermission->_inFilter($action);
         $item = $this->_frontendPermission->_inFilter($item);
@@ -198,8 +196,7 @@ class cApiFrontendPermission extends Item
      * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['frontendpermissions'], 'idfrontendpermission');
+        parent::__construct(cRegistry::getDbTableName('frontendpermissions'), 'idfrontendpermission');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

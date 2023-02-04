@@ -388,8 +388,8 @@ $table = '
     </tr>
     ' . $sPropRows . '
     <tr>
-        <td><input class="text_medium" type="text" size="16" maxlen="32" name="userprop_type"></td>
-        <td><input class="text_medium" type="text" size="16" maxlen="32" name="userprop_name"></td>
+        <td><input class="text_medium" type="text" size="16" maxlength="32" name="userprop_type"></td>
+        <td><input class="text_medium" type="text" size="16" maxlength="32" name="userprop_name"></td>
         <td><input class="text_medium" type="text" size="32" name="userprop_value"></td>
         <td>&nbsp;</td>
         </tr>
@@ -455,10 +455,11 @@ $tpl->next();
 // Show backend user's group memberships
 $oUser2 = new cApiUser();
 $aGroups = $oUser2->getGroupNamesByUserID($request['userid']);
+$sGroups = '';
 if (count($aGroups) > 0) {
     asort($aGroups);
     foreach ($aGroups as $groupname) {
-    	$sGroups .= conHtmlSpecialChars($groupname) . "<br />";
+        $sGroups .= conHtmlSpecialChars($groupname) . "<br />";
     }
 } else {
     $sGroups = i18n("none");

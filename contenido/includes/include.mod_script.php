@@ -14,23 +14,32 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $idmod, $tpl, $notification;
+
+$client = cRegistry::getClientId();
+$perm = cRegistry::getPerm();
+$auth = cRegistry::getAuth();
+$area = cRegistry::getArea();
+$cfg = cRegistry::getConfig();
+$belang = cRegistry::getBackendLanguage();
+$frame = cRegistry::getFrame();
+
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
-$contenidoModulHandler = new cModuleHandler($idmod);
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
-
-if($readOnly) {
+if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
+$moduleHandler = new cModuleHandler($idmod);
 $sFileType = 'js';
 
 $sActionCreate = 'js_create';
 $sActionEdit = 'js_edit';
 
-$file = $contenidoModulHandler->getJsFileName();
-$tmpFile = $contenidoModulHandler->getJsFileName();
+$file = $moduleHandler->getJsFileName();
+$tmpFile = $moduleHandler->getJsFileName();
 $sFilename = '';
 
 if (empty($action)) {
@@ -40,7 +49,7 @@ if (empty($action)) {
 }
 
 $permCreate = false;
-if (!$contenidoModulHandler->existFile('js', $contenidoModulHandler->getJsFileName())) {
+if (!$moduleHandler->existFile('js', $moduleHandler->getJsFileName())) {
     if (!$perm->have_perm_area_action('js', $sActionCreate)) {
         $permCreate = true;
     }
@@ -63,10 +72,10 @@ if ((int) $client < 1) {
     return;
 }
 
-$path = $contenidoModulHandler->getJsPath(); // $cfgClient[$client]['js']['path'];
+$path = $moduleHandler->getJsPath(); // $cfgClient[$client]['js']['path'];
 
 // ERROR MESSAGE
-if (!$contenidoModulHandler->moduleWriteable('js')) {
+if (!$moduleHandler->moduleWriteable('js')) {
     $page->displayCriticalError(i18n('No write permissions in folder js for this module!'));
     $page->render();
     return;
@@ -86,20 +95,23 @@ if (stripslashes($file)) {
 }
 
 if (true === cFileHandler::exists($path . $sFilename)
-&& false === cFileHandler::writeable($path . $sFilename)) {
+    && false === cFileHandler::writeable($path . $sFilename)) {
     $page->displayWarning(i18n("You have no write permissions for this file"));
 }
 
 $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 
+$requestStatus = $_REQUEST['status'] ?? '';
+$requestCode = $_REQUEST['code'] ?? '';
+
 // Create new file
-if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
+$bEdit = false;
+if ((!$readOnly) && $actionRequest == $sActionCreate && $requestStatus == 'send') {
     $sTempFilename = $sFilename;
 
-    $bEdit = false;
     if (true === cFileHandler::validateFilename($sFilename)) {
         cFileHandler::create($path . $sFilename);
-        $contenidoModulHandler->createModuleFile('js', $sFilename, $_REQUEST['code']);
+        $moduleHandler->createModuleFile('js', $sFilename, $requestCode);
         $bEdit = cFileHandler::read($path . $sFilename);
     }
 
@@ -120,10 +132,8 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
 }
 
 // Edit selected file
-if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
-
+if ((!$readOnly) && $actionRequest == $sActionEdit && $requestStatus == 'send') {
     if ($sFilename != $sTempFilename) {
-
         try {
             if (true !== cFileHandler::validateFilename($sFilename)) {
                 throw new cInvalidArgumentException('The file ' . $sFilename . ' could not be validated.');
@@ -145,7 +155,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
 
     $bEdit = false;
     if (true === cFileHandler::validateFilename($sFilename)) {
-        $contenidoModulHandler->createModuleFile('js', $sFilename, $_REQUEST['code']);
+        $moduleHandler->createModuleFile('js', $sFilename, $requestCode);
         $bEdit = cFileHandler::read($path . $sFilename);
     }
 
@@ -164,55 +174,50 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
 }
 
 // Generate edit form
-if (isset($actionRequest)) {
-    $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
-    $sAction = ($bEdit) ? $sActionEdit : $actionRequest;
-    $module = new cApiModule($idmod);
+$fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
+$sAction = ($bEdit) ? $sActionEdit : $actionRequest;
+$module = new cApiModule($idmod);
 
-    if ($actionRequest == $sActionEdit
+if ($actionRequest == $sActionEdit
     && cFileHandler::exists($path . $sFilename)) {
-        $sCode = cFileHandler::read($path . $sFilename);
-        if ($sCode === false) {
-            exit;
-        }
-        $sCode = cString::recodeString($sCode, $fileEncoding, cModuleHandler::getEncoding());
-    } else {
-        // stripslashes is required here in case of creating a new file
-        $sCode = stripslashes($_REQUEST['code']);
+    $sCode = cFileHandler::read($path . $sFilename);
+    if ($sCode === false) {
+        exit;
     }
-
-    $form = new cGuiTableForm('file_editor');
-    $form->setTableID('mod_javascript');
-    $form->addHeader(i18n('Edit file') . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
-    $form->setVar('area', $area);
-    $form->setVar('action', $sAction);
-    $form->setVar('frame', $frame);
-    $form->setVar('status', 'send');
-    $form->setVar('tmp_file', $sTempFilename);
-    $form->setVar('idmod', $idmod);
-    $tb_name = new cHTMLLabel($sFilename, ''); // new cHTMLTextbox('file', $sFilename, 60);
-    $ta_code = new cHTMLTextarea('code', conHtmlSpecialChars($sCode), 100, 35, 'code');
-    //$descr     = new cHTMLTextarea('description', conHtmlSpecialChars($aFileInfo['description']), 100, 5);
-
-    $ta_code->setStyle('font-family:monospace;width:100%;');
-    //$descr->setStyle('font-family:monospace;width:100%;');
-    $ta_code->updateAttributes(array('wrap' => getEffectiveSetting('script_editor', 'wrap', 'off')));
-
-    $form->add(i18n('Name'), $tb_name);
-    $form->add(i18n('Code'), $ta_code);
-
-    $oCodeMirror = new CodeMirror('code', 'js', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg);
-    if($readOnly) {
-        $oCodeMirror->setProperty("readOnly", "true");
-
-        $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
-    }
-
-    $page->setContent(array($form));
-    $page->addScript($oCodeMirror->renderScript());
-
-    //$page->addScript('reload', $sReloadScript);
-    $page->render();
+    $sCode = cString::recodeString($sCode, $fileEncoding, cModuleHandler::getEncoding());
+} else {
+    // stripslashes is required here in case of creating a new file
+    $sCode = stripslashes($requestCode);
 }
 
-?>
+$form = new cGuiTableForm('file_editor');
+$form->setTableID('mod_javascript');
+$form->addHeader(i18n('Edit file') . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
+$form->setVar('area', $area);
+$form->setVar('action', $sAction);
+$form->setVar('frame', $frame);
+$form->setVar('status', 'send');
+$form->setVar('tmp_file', $sTempFilename);
+$form->setVar('idmod', $idmod);
+$tb_name = new cHTMLLabel($sFilename, ''); // new cHTMLTextbox('file', $sFilename, 60);
+$ta_code = new cHTMLTextarea('code', conHtmlSpecialChars($sCode), 100, 35, 'code');
+//$descr     = new cHTMLTextarea('description', conHtmlSpecialChars($aFileInfo['description']), 100, 5);
+
+$ta_code->setStyle('font-family:monospace;width:100%;');
+//$descr->setStyle('font-family:monospace;width:100%;');
+$ta_code->updateAttributes(['wrap' => getEffectiveSetting('script_editor', 'wrap', 'off')]);
+
+$form->add(i18n('Name'), $tb_name);
+$form->add(i18n('Code'), $ta_code);
+
+$oCodeMirror = new CodeMirror('code', 'js', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg);
+if ($readOnly) {
+    $oCodeMirror->setProperty("readOnly", "true");
+    $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
+}
+
+$page->setContent([$form]);
+$page->addScript($oCodeMirror->renderScript());
+
+//$page->addScript('reload', $sReloadScript);
+$page->render();

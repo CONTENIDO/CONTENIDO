@@ -810,6 +810,11 @@ button.ui-button::-moz-focus-inner {
     text-align: right;
 }
 
+/* Indent icon text to right because of parents (a) 'text-align: right;' */
+.ui-widget-header a > .ui-icon {
+    text-indent: 99999px;
+}
+
 /* Overlays */
 .ui-widget-overlay {
     position: absolute;

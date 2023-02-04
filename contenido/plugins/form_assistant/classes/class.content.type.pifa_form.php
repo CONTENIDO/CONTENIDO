@@ -522,7 +522,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         // attributes of form field elements
         $label = Pifa::i18n('Reply-to email');
         $id = 'pifaform_mail_client_reply_to_email_' . $this->_id;
-        $value = $this->_settings['pifaform_mail_client_reply_to_email'];
+        $value = $this->_settings['pifaform_mail_client_reply_to_email'] ?? '';
         $index = 0;
 
         // build select element
@@ -672,7 +672,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         // attributes of form field elements
         $label = Pifa::i18n('Reply-to email');
         $id = 'pifaform_mail_system_reply_to_email_' . $this->_id;
-        $value = $this->_settings['pifaform_mail_system_reply_to_email'];
+        $value = $this->_settings['pifaform_mail_system_reply_to_email'] ?? '';
         $index = 0;
 
         // build select element

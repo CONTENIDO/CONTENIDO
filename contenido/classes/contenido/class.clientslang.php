@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiClientLanguage createNewItem
+ * @method cApiClientLanguage|bool next
  */
 class cApiClientLanguageCollection extends ItemCollection {
     /**
@@ -27,8 +29,8 @@ class cApiClientLanguageCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['clients_lang'], 'idclientslang');
+        $cfg = cRegistry::getConfig();
+        parent::__construct(cRegistry::getDbTableName('clients_lang'), 'idclientslang');
         $this->_setItemClass('cApiClientLanguage');
 
         // set the join partners so that joins can be used via link() method
@@ -42,7 +44,7 @@ class cApiClientLanguageCollection extends ItemCollection {
      * @param int $iClient
      * @param int $iLang
      *
-     * @return cApiClientLanguage
+     * @return cApiClientLanguage|Item
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -80,7 +82,7 @@ class cApiClientLanguageCollection extends ItemCollection {
      * @throws cDbException
      */
     public function getLanguagesByClient($client) {
-        $list = array();
+        $list = [];
         $sql = "SELECT idlang FROM `%s` WHERE idclient=%d";
         $this->db->query($sql, $this->table, $client);
         while ($this->db->nextRecord()) {
@@ -99,15 +101,15 @@ class cApiClientLanguageCollection extends ItemCollection {
      * @throws cDbException
      */
     public function getLanguageNamesByClient($client) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
 
-        $list = array();
+        $list = [];
         $sql = "SELECT l.idlang AS idlang, l.name AS name
                 FROM `%s` AS cl, `%s` AS l
                 WHERE idclient=%d AND cl.idlang = l.idlang
                 ORDER BY idlang ASC";
 
-        $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
+        $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
         while ($this->db->nextRecord()) {
             $list[$this->db->f('idlang')] = $this->db->f('name');
         }
@@ -116,26 +118,26 @@ class cApiClientLanguageCollection extends ItemCollection {
     }
 
     /**
-     * Returns all languages of an client. Merges the values from language and client language
+     * Returns all languages of a client. Merges the values from language and client language
      * table and returns them back.
      *
      * @param int $client
      * @return array
      *         List of languages where the key is the language id and value an
-     *         assoziative array merged by fields from language and client
+     *         associative array merged by fields from language and client
      *         language table
      * @throws cDbException
      */
     public function getAllLanguagesByClient($client) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
 
-        $list = array();
+        $list = [];
         $sql = "SELECT *
                 FROM `%s` AS cl, `%s` AS l
                 WHERE cl.idclient=%d AND cl.idlang = l.idlang
                 ORDER BY l.idlang ASC";
 
-        $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
+        $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
         while ($this->db->nextRecord()) {
             $list[$this->db->f('idlang')] = $this->db->toArray();
         }
@@ -147,17 +149,41 @@ class cApiClientLanguageCollection extends ItemCollection {
      * Returns the id of first language for a specific client.
      *
      * @param int $client
-     * @return int NULL
+     * @return int|NULL
      * @throws cDbException
      */
     public function getFirstLanguageIdByClient($client) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
 
-        $sql = "SELECT l.idlang FROM `%s` AS cl, `%s` AS l " . "WHERE cl.idclient = %d AND cl.idlang = l.idlang LIMIT 0,1";
+        $sql = "SELECT l.idlang FROM `%s` AS cl, `%s` AS l "
+            . "WHERE cl.idclient = %d AND cl.idlang = l.idlang LIMIT 0,1";
 
-        $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
+        $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
 
         return ($this->db->nextRecord()) ? (int) $this->db->f('idlang') : NULL;
+    }
+
+    /**
+     * Returns ids of all languages for a specific client.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param int $client
+     * @return array
+     * @throws cDbException
+     */
+    public function getAllanguageIdsByClient($client) {
+        $cfg = cRegistry::getConfig();
+
+        $list = [];
+        $sql = "SELECT l.idlang FROM `%s` AS cl, `%s` AS l "
+            . "WHERE cl.idclient = %d AND cl.idlang = l.idlang ORDER BY l.idlang ASC";
+
+        $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
+        while ($this->db->nextRecord()) {
+            $list[] = $this->db->f('idlang');
+        }
+
+        return $list;
     }
 }
 
@@ -199,8 +225,7 @@ class cApiClientLanguage extends Item {
      * @throws cException
      */
     public function __construct($iIdClientsLang = false, $iIdClient = false, $iIdLang = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['clients_lang'], 'idclientslang');
+        parent::__construct(cRegistry::getDbTableName('clients_lang'), 'idclientslang');
 
         if ($iIdClientsLang !== false) {
             $this->loadByPrimaryKey($iIdClientsLang);
@@ -227,12 +252,12 @@ class cApiClientLanguage extends Item {
      *
      * @param int $iIdClientsLang
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
     public function loadByPrimaryKey($iIdClientsLang) {
-        if (parent::loadByPrimaryKey($iIdClientsLang) == true) {
+        if (parent::loadByPrimaryKey($iIdClientsLang)) {
             $this->idclient = $this->get('idclient');
             return true;
         }
@@ -247,7 +272,7 @@ class cApiClientLanguage extends Item {
      * @see  Item::setProperty()
      *
      * @param mixed $mType
-     *                      Type of the data to store (arbitary data)
+     *                      Type of the data to store (arbitrary data)
      * @param mixed $mName
      *                      Entry name
      * @param mixed $mValue
@@ -278,7 +303,7 @@ class cApiClientLanguage extends Item {
      *
      * @return mixed
      *                      Value
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -299,7 +324,7 @@ class cApiClientLanguage extends Item {
      *                    Not used, is here to prevent PHP Strict warnings
      * @param int $client [optional]
      *                    Client id (not used, it's declared because of PHP strict warnings)
-     *                    
+     *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -316,7 +341,7 @@ class cApiClientLanguage extends Item {
      *
      * @return array
      *         Assoziative array
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -342,7 +367,7 @@ class cApiClientLanguage extends Item {
         $oPropertyColl->select("itemtype='" . $itemtype . "' AND itemid='" . $itemid . "'", '', 'type, value ASC');
 
         if ($oPropertyColl->count() > 0) {
-            $aArray = array();
+            $aArray = [];
 
             while (($oItem = $oPropertyColl->next()) !== false) {
                 $aArray[$oItem->get('idproperty')]['type'] = $oItem->get('type');
@@ -373,7 +398,7 @@ class cApiClientLanguage extends Item {
     }
 
     /**
-     * Userdefined setter for clients lang fields.
+     * User-defined setter for clients lang fields.
      *
      * @param string $name
      * @param mixed $value
@@ -383,11 +408,9 @@ class cApiClientLanguage extends Item {
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
-            case 'idclient':
-                $value = (int) $value;
-                break;
             case 'idlang':
-                $value = (int) $value;
+            case 'idclient':
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

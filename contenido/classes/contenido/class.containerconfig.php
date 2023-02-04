@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiContainerConfiguration createNewItem
+ * @method cApiContainerConfiguration|bool next
  */
 class cApiContainerConfigurationCollection extends ItemCollection {
     /**
@@ -27,12 +29,11 @@ class cApiContainerConfigurationCollection extends ItemCollection {
      * @param bool $select [optional]
      *                     where clause to use for selection (see ItemCollection::select())
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['container_conf'], 'idcontainerc');
+        $table = cRegistry::getDbTableName('container_conf');
+        parent::__construct($table, 'idcontainerc');
         $this->_setItemClass('cApiContainerConfiguration');
 
         // set the join partners so that joins can be used via link() method
@@ -51,9 +52,7 @@ class cApiContainerConfigurationCollection extends ItemCollection {
      * @param string $container
      *
      * @return cApiContainerConfiguration
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idtplcfg, $number, $container) {
         $item = $this->createNewItem();
@@ -72,19 +71,16 @@ class cApiContainerConfigurationCollection extends ItemCollection {
      * @param int $idtplcfg
      *         Template configuration id
      * @return array
-     *         Assoziative array where the key is the number and value the
+     *         Associative array where the key is the number and value the
      *         container configuration.
-     * @throws cDbException
-     * @throws cException
-*/
+     * @throws cDbException|cException
+     */
     public function getByTemplateConfiguration($idtplcfg) {
-        $configuration = array();
-
-        $this->select('idtplcfg = ' . (int) $idtplcfg, '', 'number ASC');
+        $configuration = [];
+        $this->select('idtplcfg = ' . cSecurity::toInteger($idtplcfg), '', 'number ASC');
         while (($item = $this->next()) !== false) {
-            $configuration[(int) $item->get('number')] = $item->get('container');
+            $configuration[cSecurity::toInteger($item->get('number'))] = $item->get('container');
         }
-
         return $configuration;
     }
 }
@@ -103,27 +99,21 @@ class cApiContainerConfiguration extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['container_conf'], 'idcontainerc');
-        $this->setFilters(array(), array());
+        $table = cRegistry::getDbTableName('container_conf');
+        parent::__construct($table, 'idcontainerc');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Userdefined setter for container config fields.
+     * User-defined setter for container config fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -157,18 +147,9 @@ class cApiContainerConfiguration extends Item
      * @return array
      */
     public static function parseContainerValue($value) {
-        $vars = array();
-
-        $value = preg_replace('/&$/', '', $value);
-        $parts = preg_split('/&/', $value);
-        foreach ($parts as $key1 => $value1) {
-            $param = explode('=', $value1);
-            foreach ($param as $key2 => $value2) {
-                $vars[$param[0]] = urldecode($param[1]);
-            }
-        }
-
-        return $vars;
+        $value = preg_replace('/(&\$)/', '', $value);
+        parse_str($value, $vars);
+        return is_array($vars) ? $vars : [];
     }
 
 }

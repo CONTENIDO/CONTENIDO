@@ -57,7 +57,7 @@
         },
 
         /**
-         * Returns all registered parameters, either as an query string usable for urls or as a object.
+         * Returns all registered parameters, either as a query string usable for urls or as an object.
          * @param {Boolean} [asQueryString=true] - Flag to return them as a string (query string) or as object
          * @returns {String|Object}
          */
@@ -66,7 +66,7 @@
 
             if (asQueryString) {
                 //console.log(NAME + ' get output', $.param(parameters));
-                return $.param(parameters);
+                return '&' + $.param(parameters);
             } else {
                 //console.log(NAME + ' get output', $.extend({}, parameters));
                 return $.extend({}, parameters);

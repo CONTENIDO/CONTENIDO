@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiMetaTagVersion createNewItem
+ * @method cApiMetaTagVersion|bool next
  */
 class cApiMetaTagVersionCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiMetaTagVersionCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['meta_tag_version'], 'idmetatagversion');
+        parent::__construct(cRegistry::getDbTableName('meta_tag_version'), 'idmetatagversion');
         $this->_setItemClass('cApiMetaTagVersion');
 
         // set the join partners so that joins can be used via link() method
@@ -51,7 +52,6 @@ class cApiMetaTagVersionCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($idMetaTag, $idArtLang, $idMetaType, $metaValue, $version) {
-
         // create item
         $item = $this->createNewItem();
 
@@ -109,11 +109,11 @@ class cApiMetaTagVersionCollection extends ItemCollection {
         $metaTagVersionColl = new cApiMetaTagVersionCollection();
         $metaTagVersionColl->select($where);
 
-        while($item = $metaTagVersionColl->next()){
+        $ids = [];
+        while ($item = $metaTagVersionColl->next()) {
             $ids[] = $item->get('idmetatagversion');
         }
         return $ids;
-
     }
 
 }
@@ -136,9 +136,8 @@ class cApiMetaTagVersion extends Item
      * @throws cException
      */
     public function __construct($id = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['meta_tag_version'], 'idmetatagversion');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('meta_tag_version'), 'idmetatagversion');
+        $this->setFilters([], []);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -191,7 +190,7 @@ class cApiMetaTagVersion extends Item
     }
 
     /**
-     * Userdefined setter for meta tag fields.
+     * User-defined setter for meta tag fields.
      *
      * @see Item::setField()
      * @param string $name
@@ -204,11 +203,9 @@ class cApiMetaTagVersion extends Item
      */
     public function setField($name, $value, $safe = true) {
         switch ($name) {
-            case 'idartlang':
-                $value = (int) $value;
-                break;
             case 'idmetatype':
-                $value = (int) $value;
+            case 'idartlang':
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

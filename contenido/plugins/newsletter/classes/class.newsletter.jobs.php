@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Plugin
  * @subpackage Newsletter
  * @method NewsletterJob createNewItem
- * @method NewsletterJob next
+ * @method NewsletterJob|bool next
  */
 class NewsletterJobCollection extends ItemCollection {
     /**
@@ -28,8 +28,7 @@ class NewsletterJobCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg["tab"]["news_jobs"], "idnewsjob");
+        parent::__construct(cRegistry::getDbTableName('news_jobs'), 'idnewsjob');
         $this->_setItemClass("NewsletterJob");
     }
 
@@ -41,13 +40,14 @@ class NewsletterJobCollection extends ItemCollection {
      * @param string $sName
      *
      * @return bool|Item
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($iIDNews, $iIDCatArt, $sName = "") {
+        $cfg = cRegistry::getConfig();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $auth = cRegistry::getAuth();
 
-        global $client, $lang, $cfg, $cfgClient, $auth;
         $oNewsletter = new Newsletter();
         if ($oNewsletter->loadByPrimaryKey($iIDNews)) {
             $iIDNews = cSecurity::toInteger($iIDNews);
@@ -114,15 +114,15 @@ class NewsletterJobCollection extends ItemCollection {
 
                     // Replace plugin tags by simple MAIL_ tags
                     if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
-                        if (is_array($cfg['plugins']['recipients'])) {
+                        if (cHasPlugins('recipients')) {
+                            cIncludePlugins('recipients');
                             foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-                                plugin_include("recipients", $sPlugin . "/" . $sPlugin . ".php");
-                                if (function_exists("recipients_" . $sPlugin . "_wantedVariables")) {
-                                    $aPluginVars = array();
-                                    $aPluginVars = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
-
-                                    foreach ($aPluginVars as $sPluginVar) {
-                                        $oNewsletter->_replaceTag($sMessageHTML, true, $sPluginVar, "MAIL_" . cString::toUpperCase($sPluginVar));
+                                if (function_exists('recipients_' . $sPlugin . '_wantedVariables')) {
+                                    $wantVariables = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
+                                    if (is_array($wantVariables)) {
+                                        foreach ($wantVariables as $sPluginVar) {
+                                            $oNewsletter->_replaceTag($sMessageHTML, true, $sPluginVar, "MAIL_" . cString::toUpperCase($sPluginVar));
+                                        }
                                     }
                                 }
                             }
@@ -151,7 +151,7 @@ class NewsletterJobCollection extends ItemCollection {
             $oItem->set("dispatch_delay", $oNewsletter->get("dispatch_delay"));
 
             // Store "send to" info in serialized array (just info)
-            $aSendInfo = array();
+            $aSendInfo = [];
             $aSendInfo[] = $oNewsletter->get("send_to");
 
             switch ($oNewsletter->get("send_to")) {
@@ -247,8 +247,7 @@ class NewsletterJob extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg["tab"]["news_jobs"], "idnewsjob");
+        parent::__construct(cRegistry::getDbTableName('news_jobs'), 'idnewsjob');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -260,7 +259,9 @@ class NewsletterJob extends Item {
      * @throws cException
      */
     public function runJob() {
-        global $cfg, $recipient;
+        global $recipient;
+
+        $cfg = cRegistry::getConfig();
 
         $iCount = 0;
         if ($this->get("status") == 2) {
@@ -292,7 +293,7 @@ class NewsletterJob extends Item {
             $this->store();
 
             // Initialization
-            $aMessages = array();
+            $aMessages = [];
 
             $oLanguage = new cApiLanguage($this->get("idlang"));
             $sFormatDate = $oLanguage->getProperty("dateformat", "date");
@@ -341,13 +342,13 @@ class NewsletterJob extends Item {
             $bPluginEnabled = false;
             if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
                 $bPluginEnabled = true;
-                $aPlugins = array();
+                $aPlugins = [];
 
-                if (is_array($cfg['plugins']['recipients'])) {
+                if (cHasPlugins('recipients')) {
+                    cIncludePlugins('recipients');
                     foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-                        plugin_include("recipients", $sPlugin . "/" . $sPlugin . ".php");
-                        if (function_exists("recipients_" . $sPlugin . "_wantedVariables")) {
-                            $aPlugins[$sPlugin] = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
+                        if (function_exists('recipients_' . $sPlugin . '_wantedVariables')) {
+                            $aPlugins[$sPlugin] = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
                         }
                     }
                 }
@@ -496,7 +497,7 @@ class NewsletterJob extends Item {
     }
 
     /**
-     * Overriden store() method to set status to finished if rcpcount is 0
+     * Overridden store() method to set status to finished if rcpcount is 0
      */
     public function store() {
         if ($this->get("rcpcount") == 0) {

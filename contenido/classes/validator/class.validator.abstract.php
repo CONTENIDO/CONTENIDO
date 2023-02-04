@@ -27,14 +27,14 @@ abstract class cValidatorAbstract {
      *
      * @var array
      */
-    protected $_options = array();
+    protected $_options = [];
 
     /**
      * List of validations errors
      *
      * @var array
      */
-    protected $_errors = array();
+    protected $_errors = [];
 
     /**
      * Options setter, merges passed options with previous set options.
@@ -81,7 +81,7 @@ abstract class cValidatorAbstract {
      * @param mixed $code
      */
     protected function addError($message, $code) {
-        $this->_errors[] = (object) array('message' => $message, 'code' => $code);
+        $this->_errors[] = (object)['message' => $message, 'code' => $code];
     }
 
     /**

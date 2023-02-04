@@ -96,7 +96,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         $username = $frontendUserColl->escape(stripslashes(trim($_POST['username'])));
         $password = $_POST['password'];
 
-        $groupPerm = array();
+        $groupPerm = [];
 
         if (isset($username)) {
             $this->auth['uname'] = $username;
@@ -150,7 +150,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         }
 
         if ($uid == false || hash("sha256", md5($password) . $salt) != $pass) {
-            sleep(5);
+            sleep(2);
 
             return false;
         }

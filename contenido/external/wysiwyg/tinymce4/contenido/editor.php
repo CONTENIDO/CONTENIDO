@@ -11,8 +11,16 @@
  * @link       http://www.contenido.org
  */
 
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cAuth $auth
+ * @var array $cfgClient
+ * @var array $a_content
+ * @var int $client
+ * @var string $type
+ * @var int $typenr
+ */
 
 // include editor config/combat file
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php');
@@ -32,16 +40,13 @@ $edit = true;
 $contenido = 1;
 
 // if editor is called from any include.CMS_*.html file use available content from $a_content
-if ($a_content[$type][$typenr]) {
-    $editor_content = $a_content[$type][$typenr];
-    // if not set it is possible to use available content from var $editor_content
-}
+$editorContent = $a_content[$type][$typenr] ?? '';
 
-$editor_content = str_replace('src="upload', 'src="'.$cfgClient[$client]['path']['htmlpath'].'upload', $editor_content);
+$editorContent = str_replace('src="upload', 'src="' . $cfgClient[$client]['path']['htmlpath'] . 'upload', $editorContent);
 
-$editor_content = conHtmlSpecialChars($editor_content);
+$editorContent = conHtmlSpecialChars($editorContent);
 
-$cTinyMCEEditor = new cTinyMCE4Editor($editor_name, $editor_content);
+$cTinyMCEEditor = new cTinyMCE4Editor($editor_name, $editorContent);
 
 switch ($type) {
     case 'CMS_HTML':
@@ -64,7 +69,7 @@ if ($currentuser->getField('wysi') == 1) {
     echo $cTinyMCEEditor->getScripts();
     echo $cTinyMCEEditor->getEditor();
 } else {
-    $oTextarea = new cHTMLTextarea($editor_name, $editor_content);
+    $oTextarea = new cHTMLTextarea($editor_name, $editorContent);
 //    $oTextarea->set('id', $editor_name);
     $oTextarea->setId($editor_name);
     $oTextarea->setClass(htmlentities($type));
@@ -76,5 +81,3 @@ if ($currentuser->getField('wysi') == 1) {
 
     echo $oTextarea->render();
 }
-
-?>

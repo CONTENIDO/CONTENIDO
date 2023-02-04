@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiFrontendGroupMember createNewItem
+ * @method cApiFrontendGroupMember|bool next
  */
 class cApiFrontendGroupMemberCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['frontendgroupmembers'], 'idfrontendgroupmember');
+        parent::__construct(cRegistry::getDbTableName('frontendgroupmembers'), 'idfrontendgroupmember');
         $this->_setItemClass('cApiFrontendGroupMember');
 
         // set the join partners so that joins can be used via link() method
@@ -96,14 +97,14 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
      *                        Specifies if the function should return objects
      * @return array
      *                        List of frontend user ids or cApiFrontendUser items
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
     public function getUsersInGroup($idfrontendgroup, $asObjects = true) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup);
 
-        $objects = array();
+        $objects = [];
 
         while (($item = $this->next()) !== false) {
             if ($asObjects) {
@@ -132,13 +133,12 @@ class cApiFrontendGroupMember extends Item
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     *                   
+     *
      * @throws cDbException
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['frontendgroupmembers'], 'idfrontendgroupmember');
+        parent::__construct(cRegistry::getDbTableName('frontendgroupmembers'), 'idfrontendgroupmember');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

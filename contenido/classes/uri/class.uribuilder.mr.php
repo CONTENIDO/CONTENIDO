@@ -128,7 +128,8 @@ class cUriBuilderMR extends cUriBuilder {
      */
     public function buildUrl(array $params, $bUseAbsolutePath = false) {
         ModRewriteDebugger::add($params, 'cUriBuilderMR::buildUrl() $params');
-        $urlDebug = array();
+
+        $urlDebug       = [];
         $urlDebug['in'] = $params;
 
         $url = self::_buildUrl($params);
@@ -179,7 +180,7 @@ class cUriBuilderMR extends cUriBuilder {
         $sQuery = $this->_createUrlQueryPart($aParams);
 
         // some presettings of variables
-        $aParts = array();
+        $aParts = [];
 
         // add client id/name if desired
         $param = $this->_getClientParameter($aParams);
@@ -324,16 +325,15 @@ class cUriBuilderMR extends cUriBuilder {
      *         like '?foo=bar&amp;param=value'
      */
     private function _createUrlQueryPart(array $aArgs) {
-        // set list of parameter which are to ignore while setting additional
-        // parameter
-        $aIgnoredParams = array(
+        // set list of parameter which are to ignore while setting additional parameter
+        $aIgnoredParams = [
             'idcat',
             'idart',
             'lang',
             'client',
             'idcatart',
-            'idartlang'
-        );
+            'idartlang',
+        ];
         if ($this->_aMrCfg['use_language'] == 1) {
             $aIgnoredParams[] = 'changelang';
         }

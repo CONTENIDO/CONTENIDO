@@ -68,53 +68,44 @@ class pApiContentAllocationTreeView extends pApiTree {
     }
 
     /**
-     * Build an render tree
+     * Build and render tree
      *
      * @param array $tree
      * @return array $result html code
+     * @throws cException
      */
     protected function _buildRenderTree($tree) {
-        global $action, $frame, $area;
         $idart = cRegistry::getArticleId();
         $sess = cRegistry::getBackendSessionId();
+        $area = cRegistry::getArea();
+        $action = cRegistry::getAction();
+        $frame = cRegistry::getFrame();
 
-        $result = array();
+        $requestIdPicaAlloc = cSecurity::toInteger($_GET['idpica_alloc'] ?? '0');
+        $requestGetStep = $_GET['step'] ?? '';
+        $requestParentId = cSecurity::toInteger($_GET['parentid'] ?? '0');
+
+        $txtNewCategory = i18n("New category", 'content_allocation');
+        $txtRenameCategory = i18n("Rename category", 'content_allocation');
+        $txtMoveCategoryUp = i18n("Move category up", 'content_allocation');
+        $txtMoveCategoryDown = i18n("Move category down", 'content_allocation');
+        $txtSetCategoryOffline = i18n("Set category offline", 'content_allocation');
+        $txtSetCategoryOnline = i18n("Set category online", 'content_allocation');
+        $txtUnableToDelete = i18n("One or more subcategories exist, unable to delete", 'content_allocation');
+        $txtDeleteCategory = i18n("Delete category", 'content_allocation');
+        $txtConfirmDeletion = i18n("Are you sure to delete the following category", 'content_allocation');
+
+        $result = [];
         foreach ($tree as $item_tmp) {
-            $item = array();
+            $item = [];
             // update item
-            if ($_GET['step'] == 'rename' && $item_tmp['idpica_alloc'] == $_GET['idpica_alloc']) {
-                $item = array();
-                $item['ITEMNAME'] = '
-                    <table cellspacing="0" cellpaddin="0" border="0">
-                    <form name="rename" action="main.php" method="POST" onsubmit="return fieldCheck();">
-                    <input type="hidden" name="action" value="' . $action . '">
-                    <input type="hidden" name="frame" value="' . $frame . '">
-                    <input type="hidden" name="contenido" value="' . $sess . '">
-                    <input type="hidden" name="area" value="' . $area . '">
-                    <input type="hidden" name="step" value="storeRename">
-                    <input type="hidden" name="treeItemPost[idpica_alloc]" value="' . $item_tmp['idpica_alloc'] . '">
-                    <tr>
-                    <td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value="' . conHtmlentities($item_tmp['name']) . '"></td>
-                    <td>&nbsp;
-                    <a href="main.php?action=' . $action . '&frame=' . $frame . '&area=' . $area . '&contenido=' . $sess . '"><img src="images/but_cancel.gif"></a>
-                    <input type="image" src="images/but_ok.gif">
-                    </td></tr>
-                    </form>
-                    </table>
-                    <script type="text/javascript">
-                    var controller = document.getElementById("itemname");
-                    controller.focus();
-                    function fieldCheck() {
-                        if (controller.value == "") {
-                            alert("' . i18n("Please enter a category name", 'content_allocation') . '");
-                            controller.focus();
-                            return false;
-                        }
-                        return true;
-                    }
-                    </script>';
+            if ($requestGetStep == 'rename' && $item_tmp['idpica_alloc'] == $requestIdPicaAlloc) {
+                $item['ITEMNAME'] = piContentAllocationBuildContentAllocationForm(
+                    $requestGetStep, 'storeRename', $action, $frame, $sess, $area,
+                    'treeItemPost[idpica_alloc]', $item_tmp['idpica_alloc'], $item_tmp['name']
+                );
             } else {
-                if ($item_tmp['children'] || $item_tmp['status'] == 'collapsed') {
+                if (count($item_tmp['children']) || $item_tmp['status'] == 'collapsed') {
                     $expandCollapseImg = 'images/close_all.gif';
                     if ($item_tmp['status'] == 'collapsed') {
                         $expandCollapseImg = 'images/open_all.gif';
@@ -132,76 +123,52 @@ class pApiContentAllocationTreeView extends pApiTree {
                 $item['ITEMNAME'] = $expandCollapse . ' ' . $item_tmp['name'];
             }
             $item['ITEMINDENT'] = $item_tmp['level'] * 15 + 3;
-            $item['ACTION_CREATE'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=add&parentid=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_new.gif" alt="" title="' . i18n("New category", 'content_allocation') . '" alt="' . i18n("New category", 'content_allocation') . '"></a>';
+            $item['ACTION_CREATE'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=add&parentid=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_new.gif" alt="" title="' . $txtNewCategory . '" alt="' . $txtNewCategory . '"></a>';
 
-            $item['ACTION_RENAME'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=rename&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/but_todo.gif" width="16" height="16" alt="' . i18n("Rename category", 'content_allocation') . '" title="' . i18n("Rename category", 'content_allocation') . '"></a>';
-            $item['ACTION_MOVE_UP'] = (count($result) >= 1) ? '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=moveup&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_moveup.gif" alt="' . i18n("Move category up", 'content_allocation') . '" title="' . i18n("Move category up", 'content_allocation') . '"></a>' : '<img src="images/spacer.gif" width="16" height="16"></a>';
-            $item['ACTION_MOVE_DOWN'] = (count($result) >= 1) ? '<img src="images/folder_movedown.gif" alt="' . i18n("Move category down", 'content_allocation') . '" title="' . i18n("Move category down", 'content_allocation') . '">' : '<img src="images/spacer.gif" width="16" height="16">';
+            $item['ACTION_RENAME'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=rename&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/but_todo.gif" width="16" height="16" alt="' . $txtRenameCategory . '" title="' . $txtRenameCategory . '"></a>';
+            $item['ACTION_MOVE_UP'] = (count($result) >= 1) ? '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=moveup&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_moveup.gif" alt="' . $txtMoveCategoryUp . '" title="' . $txtMoveCategoryUp . '"></a>' : '<img src="images/spacer.gif" width="16" height="16" alt=""></a>';
+            // Move down action is not used at the moment!
+            // $item['ACTION_MOVE_DOWN'] = (count($result) >= 1) ? '<img src="images/folder_movedown.gif" alt="' . $txtMoveCategoryDown . '" title="' . $txtMoveCategoryDown . '">' : '<img src="images/spacer.gif" width="16" height="16" alt="">';
             $item['ACTION_MOVE_DOWN'] = '';
 
             if ($item_tmp['online'] == 1) { // set offline
-                $item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=offline&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/online.gif" alt="' . i18n("Set category offline", 'content_allocation') . '" title="' . i18n("Set category offline", 'content_allocation') . '"></a>';
+                $item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=offline&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/online.gif" alt="' . $txtSetCategoryOffline . '" title="' . $txtSetCategoryOffline . '"></a>';
             } else {
-                $item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=online&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/offline.gif" alt="' . i18n("Set category online", 'content_allocation') . '" title="' . i18n("Set category online", 'content_allocation') . '"></a>';
+                $item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=online&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/offline.gif" alt="' . $txtSetCategoryOnline . '" title="' . $txtSetCategoryOnline . '"></a>';
             }
 
-            if ($item_tmp['children']) {
-                $item['ACTION_DELETE'] = '<img src="images/delete_inact.gif" alt="' . i18n("One or more subcategories exist, unable to delete", 'content_allocation') . '" title="' . i18n("One or more subcategories exist, unable to delete", 'content_allocation') . '">';
+            if (count($item_tmp['children'])) {
+                $item['ACTION_DELETE'] = '<img src="images/delete_inact.gif" alt="' . $txtUnableToDelete . '" title="' . $txtUnableToDelete . '">';
             } else {
-                $name = str_replace("\"", "&amp;quot;", str_replace("'", "\'", $item_tmp['name']));
-                $item['ACTION_DELETE'] = '<a href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . i18n("Are you sure to delete the following category", 'content_allocation') . '&quot;, function() { deleteCategory(' . $item_tmp['idpica_alloc'] . '); });return false;"><img src="images/delete.gif" alt="' . i18n("Delete category") . '" title="' . i18n("Delete category", 'content_allocation') . '"></a>';
+                $item['ACTION_DELETE'] = '<a href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $txtConfirmDeletion . '&quot;, function() { piContentAllocationDeleteCategory(' . $item_tmp['idpica_alloc'] . '); });return false;"><img src="images/delete.gif" alt="' . $txtDeleteCategory . '" title="' . $txtDeleteCategory . '"></a>';
             }
 
             $result[] = $item;
 
-            if ($item_tmp['children']) {
+            if (count($item_tmp['children'])) {
                 $children = $this->_buildRenderTree($item_tmp['children']);
                 $result = array_merge($result, $children);
             }
 
-            // add new item -> show formular
-            if ($_GET['step'] == 'add' && $item_tmp['idpica_alloc'] == $_GET['parentid']) {
-                $item = array();
+            // add new item -> show form
+            if ($requestGetStep == 'add' && $item_tmp['idpica_alloc'] == $requestParentId) {
+                $item = [];
 
-                $item['ITEMNAME'] = '
-                    <table cellspacing="0" cellpaddin="0" border="0">
-                    <form name="create" action="main.php" method="POST" onsubmit="return fieldCheck();">
-                    <input type="hidden" name="action" value="' . $action . '">
-                    <input type="hidden" name="frame" value="' . $frame . '">
-                    <input type="hidden" name="contenido" value="' . $sess . '">
-                    <input type="hidden" name="area" value="' . $area . '">
-                    <input type="hidden" name="step" value="store">
-                    <input type="hidden" name="treeItemPost[parentid]" value="' . cSecurity::toInteger($_GET['parentid']) . '">
-                    <tr>
-                    <td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value=""></td>
-                    <td>&nbsp;
-                    <a href="main.php?action=' . $action . '&frame=' . $frame . '&area=' . $area . '&contenido=' . $sess . '"><img src="images/but_cancel.gif" alt=""></a>
-                    <input type="image" src="images/but_ok.gif">
-                    </td></tr>
-                    </form>
-                    </table>
-                    <script type="text/javascript">
-                    var controller = document.getElementById("itemname");
-                    controller.focus();
-                    function fieldCheck() {
-                        if (controller.value == "") {
-                            alert("' . i18n("Please enter a category name", 'content_allocation') . '");
-                            controller.focus();
-                            return false;
-                        }
-                        return true;
-                    }
-                    </script>';
+                $item['ITEMNAME'] = piContentAllocationBuildContentAllocationForm(
+                    $requestGetStep, 'store', $action, $frame, $sess, $area,
+                    'treeItemPost[parentid]', $requestParentId, ''
+                );
                 $item['ITEMINDENT'] = ($item_tmp['level'] + 1) * 15;
                 $item['ACTION_CREATE'] = '<img src="images/spacer.gif" alt="" width="15" height="13">';
                 $item['ACTION_RENAME'] = '<img src="images/spacer.gif" alt="" width="23" height="14">';
                 $item['ACTION_MOVE_UP'] = '<img src="images/spacer.gif" alt="" width="15" height="13">';
-                $item['ACTION_MOVE_DOWN'] = '<img src="images/spacer.gif" alt="" width="15" height="13">';
+                // Move down action is not used at the moment!
+                // $item['ACTION_MOVE_DOWN'] = '<img src="images/spacer.gif" alt="" width="15" height="13">';
                 $item['ACTION_MOVE_DOWN'] = '';
                 $item['ACTION_DELETE'] = '<img src="images/spacer.gif" alt="" width="14" height="13">';
                 $item['ACTION_ONOFFLINE'] = '<img src="images/spacer.gif" alt="" width="11" height="12">';
 
-                array_push($result, $item);
+                $result[] = $item;
             }
         }
         return $result;
@@ -212,9 +179,9 @@ class pApiContentAllocationTreeView extends pApiTree {
      *
      * @param bool $return
      *
-     * @return string|bool
+     * @return string|bool|void
      * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cInvalidArgumentException|cException
      */
     public function renderTree($return = true) {
         $this->_tpl->reset();

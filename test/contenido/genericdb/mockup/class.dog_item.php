@@ -3,6 +3,8 @@
 /**
  *
  * @author marcus.gnass
+ * @method DogItem createNewItem
+ * @method DogItem|bool next
  */
 class DogCollection extends ItemCollection
 {

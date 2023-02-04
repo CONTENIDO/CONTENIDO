@@ -11,5 +11,9 @@
  * @link       http://www.contenido.org
  */
 
+/**
+ * @var array $cfg
+ */
+
 $tpl = new cTemplate();
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);

@@ -35,9 +35,8 @@ class ArticleForum extends Item {
      * @throws cException
      */
     public function __construct($id = false) {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg['tab']['user_forum'], 'id_user_forum');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('user_forum'), 'id_user_forum');
+        $this->setFilters([], []);
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }

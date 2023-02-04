@@ -111,30 +111,28 @@ class TODOCollection extends cApiCommunicationCollection {
     }
 
     /**
-     *
      * @return array
      */
     public function getStatusTypes() {
-        return array(
-            'new' => i18n('New'),
+        return [
+            'new'      => i18n('New'),
             'progress' => i18n('In progress'),
-            'done' => i18n('Done'),
-            'waiting' => i18n('Waiting for action'),
-            'deferred' => i18n('Deferred')
-        );
+            'done'     => i18n('Done'),
+            'waiting'  => i18n('Waiting for action'),
+            'deferred' => i18n('Deferred'),
+        ];
     }
 
     /**
-     *
      * @return array
      */
     public function getPriorityTypes() {
-        return array(
-            'low' => i18n('Low'),
-            'medium' => i18n('Medium'),
-            'high' => i18n('High'),
-            'immediately' => i18n('Immediately')
-        );
+        return [
+            'low'         => i18n('Low'),
+            'medium'      => i18n('Medium'),
+            'high'        => i18n('High'),
+            'immediately' => i18n('Immediately'),
+        ];
     }
 }
 

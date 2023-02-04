@@ -35,17 +35,21 @@ include_once($contenido_path . 'includes/startup.php');
 chdir($contenido_path);
 
 if ($_REQUEST["contenido"]) {
-    cRegistry::bootstrap(array(
-        'sess' => 'cSession',
-        'auth' => 'cAuthHandlerBackend',
-        'perm' => 'cPermission'
-    ));
+    cRegistry::bootstrap(
+        [
+            'sess' => 'cSession',
+            'auth' => 'cAuthHandlerBackend',
+            'perm' => 'cPermission',
+        ]
+    );
 } else {
-    cRegistry::bootstrap(array(
-        'sess' => 'cFrontendSession',
-        'auth' => 'cAuthHandlerFrontend',
-        'perm' => 'cPermission'
-    ));
+    cRegistry::bootstrap(
+        [
+            'sess' => 'cFrontendSession',
+            'auth' => 'cAuthHandlerFrontend',
+            'perm' => 'cPermission',
+        ]
+    );
 }
 
 chdir(dirname(__FILE__));

@@ -39,12 +39,12 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
         $join = "LEFT JOIN $destinationTable AS $destinationClass ON " . cSecurity::toString($sourceClass . "." . $primaryKey) . " = " . cSecurity::toString($destinationClass . "." . $primaryKey);
         $where = "";
 
-        return array(
+        return [
             "field" => $field,
             "table" => $tables,
-            "join" => $join,
-            "where" => $where
-        );
+            "join"  => $join,
+            "where" => $where,
+        ];
     }
 
     /**
@@ -97,8 +97,7 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
                 break;
             case "in":
                 if (is_array($sRestriction)) {
-                    $items = array();
-
+                    $items = [];
                     foreach ($sRestriction as $key => $sRestrictionItem) {
                         $items[] = "'" . $this->_oItemClassInstance->_inFilter($sRestrictionItem) . "'";
                     }
@@ -108,21 +107,12 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
                     $sRestriction = "'" . $sRestriction . "'";
                 }
 
-                $sWhereStatement = implode(" ", array(
-                    $sField,
-                    "IN (",
-                    $sRestriction,
-                    ")"
-                ));
+                $sWhereStatement = implode(" ", [$sField, "IN (", $sRestriction, ")"]);
                 break;
             default:
                 $sRestriction = "'" . $this->_oItemClassInstance->_inFilter($sRestriction) . "'";
 
-                $sWhereStatement = implode(" ", array(
-                    $sField,
-                    $sOperator,
-                    $sRestriction
-                ));
+                $sWhereStatement = implode(" ", [$sField, $sOperator, $sRestriction]);
         }
 
         return $sWhereStatement;

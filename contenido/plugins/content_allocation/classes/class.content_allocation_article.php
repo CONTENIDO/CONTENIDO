@@ -37,7 +37,7 @@ class pApiContentAllocationArticle extends pApiTree {
     /**
      * @var array
      */
-    protected $_load = array();
+    protected $_load = [];
 
     /**
      * pApiContentAllocationArticle constructor
@@ -80,9 +80,9 @@ class pApiContentAllocationArticle extends pApiTree {
      */
     protected function _buildRenderTree($tree) {
 
-        $result = array();
+        $result = [];
         foreach ($tree as $item_tmp) {
-            $item = array();
+            $item = [];
 
             $expandCollapseImg = 'images/spacer.gif';
             $expandCollapse = '<img class="borderless vAlignMiddle" src="'.$expandCollapseImg.'" alt="" width="11" height="11">';
@@ -98,9 +98,9 @@ class pApiContentAllocationArticle extends pApiTree {
             }
             $item['CHECKBOX'] = '<input type="checkbox" name="allocation[]" value="'.$item_tmp['idpica_alloc'].'" '.$checked.'>';
 
-            array_push($result, $item);
+            $result[] = $item;
 
-            if ($item_tmp['children']) {
+            if (count($item_tmp['children'])) {
                 $children = $this->_buildRenderTree($item_tmp['children']);
                 $result = array_merge($result, $children);
             }
@@ -123,9 +123,8 @@ class pApiContentAllocationArticle extends pApiTree {
      *
      * @param bool $return
      *
-     * @return bool|object
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @return bool|object|void
+     * @throws cInvalidArgumentException|cException
      */
     function renderTree($return = true) {
         $this->_tpl->reset();
@@ -140,8 +139,8 @@ class pApiContentAllocationArticle extends pApiTree {
         $even = true;
         foreach ($tree as $item) {
             $even = !$even;
-            $bgcolor = ($even) ? '#FFFFFF' : '#F1F1F1';
-            $this->_tpl->set('d', 'BACKGROUND_COLOR', $bgcolor);
+            $bgColor = ($even) ? '#FFFFFF' : '#F1F1F1';
+            $this->_tpl->set('d', 'BACKGROUND_COLOR', $bgColor);
             foreach ($item as $key => $value) {
                 $this->_tpl->set('d', $key, $value);
             }

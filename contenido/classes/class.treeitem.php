@@ -48,12 +48,12 @@ class TreeItem {
     /**
      * Sub Items for this tree item
      *
-     * @var array
+     * @var object[]
      */
     protected $_subitems;
 
     /**
-     * Determinates if this tree item is collapsed
+     * Determinate if this tree item is collapsed
      *
      * @var bool
      */
@@ -118,7 +118,7 @@ class TreeItem {
     /**
      * Constructor to create an instance of this class.
      *
-     * Creates a new, independant tree item.
+     * Creates a new, independent tree item.
      *
      * @param string $name [optional]
      *         The name of that item
@@ -131,7 +131,7 @@ class TreeItem {
         $this->_name = $name;
         $this->_id = $id;
         $this->_collapsed = $collapsed;
-        $this->_subitems = array();
+        $this->_subitems = [];
         $this->setCollapsedIcon('images/but_plus.gif');
         $this->setExpandedIcon('images/but_minus.gif');
         $this->setLastnodeIcon('images/but_lastnode.gif');
@@ -148,7 +148,7 @@ class TreeItem {
     }
 
     /**
-     * Get method for _costum variable
+     * Get method for _custom variable
      *
      * @param string $key
      * @return string mixed
@@ -255,7 +255,7 @@ class TreeItem {
     }
 
     /**
-     * Adds a new subitem to this item.
+     * Adds a new sub-item to this item.
      *
      * @param object $item
      *         the item to add
@@ -266,8 +266,8 @@ class TreeItem {
     }
 
     /**
-     * Adds a new subitem to a specific item with an ID.
-     * Traverses all subitems to find the correct item.
+     * Adds a new sub-item to a specific item with an ID.
+     * Traverses all sub-items to find the correct item.
      *
      * @param object $item
      *         the item to add
@@ -288,11 +288,11 @@ class TreeItem {
     /**
      * Retrieves a specific item by its ID.
      * Note that this
-     * function traverses all subitems to find the correct item.
+     * function traverses all sub-items to find the correct item.
      *
      * @param string $id
      *         the ID to find
-     * @return object
+     * @return object|false
      *         The item, or false if nothing was found
      */
     public function &getItemByID($id) {
@@ -307,7 +307,9 @@ class TreeItem {
             }
         }
 
-        return false;
+        // Return variable as reference
+        $result = false;
+        return $result;
     }
 
     /**
@@ -347,10 +349,10 @@ class TreeItem {
 
     /**
      * Marks an item as expanded.
-     * Traverses all subitems to find the ID. Note that only the item with $id
-     * is expanded, but not its childs.
+     * Traverses all sub-items to find the ID. Note that only the item with $id
+     * is expanded, but not its children.
      *
-     * @param string $id
+     * @param string|string[] $id
      *         the ID to expand, or an array with all id's
      * @return bool
      */
@@ -408,10 +410,10 @@ class TreeItem {
     }
 
     /**
-     * Marks an item as collpased.
-     * Traverses all subitems
+     * Marks an item as collapsed.
+     * Traverses all sub-items
      * to find the ID. Note that only the item with $id is
-     * collapsed, but not its childs.
+     * collapsed, but not its children.
      *
      * @param string $id
      *         the ID to collapse
@@ -430,7 +432,7 @@ class TreeItem {
      * Traverses the tree starting from this item, and returning
      * all objects as $objects.
      *
-     * @param object $objects
+     * @param object[] $objects
      *         all found objects
      * @param int $level [optional]
      *         Level to start on
@@ -454,7 +456,7 @@ class TreeItem {
      */
     public function getFlatTree($item, &$flat_tree) {
         foreach ($item->getSubItems() as $curItem) {
-            $curItem->custom['vertline'] = array();
+            $curItem->custom['vertline'] = [];
             $flat_tree[] = $curItem;
             $this->getFlatTree($curItem, $flat_tree);
         }
@@ -462,13 +464,13 @@ class TreeItem {
 
     /**
      *
-     * @param unknown_type $item_id
+     * @param ini|bool $item_id
      * @return bool
      */
     public function hasCollapsedNode($item_id) {
-        $parentNodeList = array();
+        $parentNodeList = [];
         $this->getTreeParentNodes($parentNodeList, $item_id);
-        $collapsedList = array();
+        $collapsedList = [];
         $this->getRealCollapsedList($collapsedList);
 
         if (sizeof(array_intersect($parentNodeList, $collapsedList)) > 0) {
@@ -481,7 +483,7 @@ class TreeItem {
     /**
      * Returns a list of the id of all parent nodes of the given node
      *
-     * @param unknown_type $parentNodes
+     * @param object[] $parentNodes
      * @param int|bool $id
      */
     public function getTreeParentNodes(&$parentNodes, $id) {
@@ -498,11 +500,11 @@ class TreeItem {
      * Returns a list of the id of all parent nodes of the given node
      * Not using the nodes of hierarchical tree, but flat tree !!
      *
-     * @param unknown_type $parentNodes
-     * @param unknown_type $stop_id
+     * @param object[] $parentNodes
+     * @param int|bool $stop_id
      */
     protected function _getParentNodes(&$parentNodes, $stop_id) {
-        $flat_tree = array();
+        $flat_tree = [];
         $this->getFlatTree($this, $flat_tree);
 
         foreach ($flat_tree as $key => $value) {
@@ -515,19 +517,19 @@ class TreeItem {
     }
 
     /**
-     * getCollapsedList thinks if a node has no subnodes it is collapsed
+     * getCollapsedList thinks if a node has no sub-nodes it is collapsed
      * I don't think so
      *
-     * @param array $list
+     * @param object[] $list
      */
     public function getRealCollapsedList(&$list) {
         $this->getCollapsedList($list);
-        $cleared_list = array();
+        $cleared_list = [];
 
-        // remove all nodes that have no subnodes
+        // remove all nodes that have no sub-nodes
         foreach ($list as $key) {
             $item = $this->getItemByID($key);
-            if (sizeof($item->subitems) > 0) {
+            if (sizeof($item->sub-items) > 0) {
                 $cleared_list[] = $key;
             }
         }
@@ -536,11 +538,11 @@ class TreeItem {
     /**
      * Returns all items (as ID array) which are collapsed.
      *
-     * @param array $list
+     * @param object[] $list
      *         Contains the list with all collapsed items
      */
     public function getCollapsedList(&$list) {
-        if ($this->_collapsed == true) {
+        if ($this->_collapsed) {
             $list[] = $this->_id;
         }
 
@@ -552,11 +554,11 @@ class TreeItem {
     /**
      * Returns all items (as ID array) which are expanded.
      *
-     * @param array $list
+     * @param object[] $list
      *         Contains the list with all expanded items
      */
     public function getExpandedList(&$list) {
-        if ($this->_collapsed == false && !in_array($this->_id, $list)) {
+        if (!$this->_collapsed && !in_array($this->_id, $list)) {
             $list[] = $this->_id;
         }
 

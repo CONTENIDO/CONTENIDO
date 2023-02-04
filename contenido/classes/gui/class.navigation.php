@@ -32,14 +32,14 @@ class cGuiNavigation {
      *
      * @var  array
      */
-    public $data = array();
+    public $data = [];
 
     /**
      * Array storing all errors.
      *
      * @var  array
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -144,7 +144,7 @@ class cGuiNavigation {
             $main = $this->getName($db->f('location'));
 
             // Build data array
-            $this->data[$db->f('idnavm')] = array($main);
+            $this->data[$db->f('idnavm')] = [$main];
 
             $sql = "SELECT
                         a.location AS location, b.name AS area, b.relevant
@@ -175,7 +175,7 @@ class cGuiNavigation {
                         $this->errors[] = i18n('Unable to load ' . $db2->f('location'));
                         continue;
                     }
-                    $this->data[$db->f('idnavm')][] = array($name, $area);
+                    $this->data[$db->f('idnavm')][] = [$name, $area];
                 }
             }
         }
@@ -401,7 +401,7 @@ class cGuiNavigation {
         }
 
         if ($availableLanguages->count() > 0) {
-            while (($myLang = $availableLanguages->nextAccessible()) !== false) {
+            while (($myLang = $availableLanguages->nextAccessible()) !== NULL) {
                 $key = $myLang->get('idlang');
                 $value = $myLang->get('name');
 

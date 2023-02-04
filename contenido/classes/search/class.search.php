@@ -191,14 +191,14 @@ class cSearch extends cSearchBaseAbstract {
      *
      * @var array
      */
-    protected $_searchWords = array();
+    protected $_searchWords = [];
 
     /**
      * words which should be excluded from search
      *
      * @var array
      */
-    protected $_searchWordsExclude = array();
+    protected $_searchWordsExclude = [];
 
     /**
      * type of db search
@@ -222,14 +222,14 @@ class cSearch extends cSearchBaseAbstract {
      *
      * @var array
      */
-    protected $_searchableArts = array();
+    protected $_searchableArts = [];
 
     /**
      * article specifications
      *
      * @var array
      */
-    protected $_articleSpecs = array();
+    protected $_articleSpecs = [];
 
     /**
      * If $protected = true => do not search articles which are offline
@@ -262,7 +262,7 @@ class cSearch extends cSearchBaseAbstract {
      *
      * @var array
      */
-    protected $_searchResult = array();
+    protected $_searchResult = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -313,7 +313,7 @@ class cSearch extends cSearchBaseAbstract {
         $this->_protected = (array_key_exists('protected', $options)) ? $options['protected'] : true;
         $this->_dontshowofflinearticles = (array_key_exists('dontshowofflinearticles', $options)) ? $options['dontshowofflinearticles'] : true;
         $this->_exclude = (array_key_exists('exclude', $options)) ? $options['exclude'] : true;
-        $this->_articleSpecs = (array_key_exists('artspecs', $options) && is_array($options['artspecs'])) ? $options['artspecs'] : array();
+        $this->_articleSpecs = (array_key_exists('artspecs', $options) && is_array($options['artspecs'])) ? $options['artspecs'] : [];
 
         if (array_key_exists('searchable_articles', $options) && is_array($options['searchable_articles'])) {
             $this->_searchableArts = $options['searchable_articles'];
@@ -349,7 +349,7 @@ class cSearch extends cSearchBaseAbstract {
             $this->_searchWordsExclude = $this->stripWords($searchwords_exclude);
         }
 
-        $tmp_searchwords = array();
+        $tmp_searchwords = [];
         foreach ($this->_searchWords as $word) {
             $wordEscaped = cSecurity::escapeDB($word, $this->db);
             if ($this->_searchOption == 'like') {
@@ -396,7 +396,7 @@ class cSearch extends cSearchBaseAbstract {
 
             $this->_debug('index', $this->db->f('auto'));
 
-            $tmp_index = array();
+            $tmp_index = [];
             foreach ($tmp_index_string as $string) {
                 $tmp_string = preg_replace('/[=\(\)]/', ' ', $string);
                 $tmp_index[] = preg_split('/\s/', $tmp_string, -1, PREG_SPLIT_NO_EMPTY);
@@ -426,7 +426,7 @@ class cSearch extends cSearchBaseAbstract {
                     $tmp_cmstype = preg_split('/[,]/', $cms_place, -1, PREG_SPLIT_NO_EMPTY);
                     $this->_debug('tmp_cmstype', $tmp_cmstype);
 
-                    $tmp_cmstype2 = array();
+                    $tmp_cmstype2 = [];
                     foreach ($tmp_cmstype as $type) {
                         $tmp_cmstype2[] = preg_split('/-/', $type, -1, PREG_SPLIT_NO_EMPTY);
                     }
@@ -444,7 +444,7 @@ class cSearch extends cSearchBaseAbstract {
                                 $this->_searchResult[$artid]['search'][] = $searchword;
                                 $this->_searchResult[$artid]['occurence'][] = $string[1];
                                 $this->_searchResult[$artid]['debug_similarity'][] = $percent;
-                                if (isset($this->_searchResult[$artid]['similarity']) && $similarity > $this->_searchResult[$artid]['similarity']) {
+                                if ($similarity > ($this->_searchResult[$artid]['similarity'] ?? 0)) {
                                     $this->_searchResult[$artid]['similarity'] = $similarity;
                                 }
                             }
@@ -509,10 +509,8 @@ class cSearch extends cSearchBaseAbstract {
         // split the phrase by any number of commas or space characters
         $tmp_words = mb_split('[\s,]+', $searchwords);
 
-        $tmp_searchwords = array();
-
+        $tmp_searchwords = [];
         foreach ($tmp_words as $word) {
-
             $word = htmlentities($word, ENT_COMPAT, 'UTF-8');
             $word = (trim(cString::toLowerCase($word)));
             $word = html_entity_decode($word, ENT_COMPAT, 'UTF-8');
@@ -570,9 +568,7 @@ class cSearch extends cSearchBaseAbstract {
         // }
         // }
 
-        $aSubCats = array(
-            $cat_start
-        );
+        $aSubCats = [$cat_start];
         while ($this->db->nextRecord()) {
             // ommit if cat is no child of any recognized descendant
             if (!in_array($this->db->f('parentid'), $aSubCats)) {
@@ -600,7 +596,7 @@ class cSearch extends cSearchBaseAbstract {
     public function getSearchableArticles($search_range) {
         global $auth;
 
-        $aCatRange = array();
+        $aCatRange = [];
         if (array_key_exists('cat_tree', $search_range) && is_array($search_range['cat_tree'])) {
             if (count($search_range['cat_tree']) > 0) {
                 foreach ($search_range['cat_tree'] as $cat) {
@@ -674,7 +670,7 @@ class cSearch extends cSearchBaseAbstract {
         $this->_debug('sql', $sql);
         $this->db->query($sql);
 
-        $aIdArts = array();
+        $aIdArts = [];
         while ($this->db->nextRecord()) {
             if($this->db->f("idcat") != "" && $this->_protected) {
                 if($this->db->f("public") == "0") {
@@ -712,10 +708,12 @@ class cSearch extends cSearchBaseAbstract {
                     online = 1 ";
         $this->_debug('sql', $sql);
         $this->db->query($sql);
-        $aArtspec = array();
+
+        $aArtspec = [];
         while ($this->db->nextRecord()) {
             $aArtspec[] = $this->db->f('idartspec');
         }
+
         return $aArtspec;
     }
 

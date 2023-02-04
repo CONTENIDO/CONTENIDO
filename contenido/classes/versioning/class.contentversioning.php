@@ -322,7 +322,7 @@ class cContentVersioning {
      *
      * @param int $idArtLang
      *
-     * @return int $editableArticleId
+     * @return int
      *
      * @throws cDbException
      * @throws cException
@@ -358,11 +358,11 @@ class cContentVersioning {
      * @param int $versioningState
      * @param int $articleType
      * @param int $version
-     * @return array $idContent
+     * @return int $idContent
      * @throws cDbException
      */
     public function getContentId($idArtLang, $typeId, $type, $versioningState, $articleType, $version) {
-        $idContent = [];
+        $idContent = 0;
         $type = addslashes($type);
 
         if ($versioningState == 'simple' && $articleType != 'version'
@@ -404,7 +404,7 @@ class cContentVersioning {
             }
         }
 
-        return $idContent;
+        return cSecurity::toInteger($idContent);
     }
 
     /**
@@ -843,7 +843,7 @@ class cContentVersioning {
     /**
      * Create new Meta Tag Version.
      *
-     * @param mixed[] $parameters {
+     * @param mixed[] $parameters
      * @return cApiMetaTagVersion
      * @throws cDbException
      * @throws cException

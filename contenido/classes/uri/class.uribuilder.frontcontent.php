@@ -78,7 +78,7 @@ class cUriBuilderFrontcontent extends cUriBuilder {
      * @throws cInvalidArgumentException
      * @throws cException
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
+    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = []) {
         $bIdcatSet = isset($aParams['idcat']);
         $bIdartSet = isset($aParams['idart']);
         $bIdcatArtSet = isset($aParams['idcatart']);

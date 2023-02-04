@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiGroupMember createNewItem
+ * @method cApiGroupMember|bool next
  */
 class cApiGroupMemberCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiGroupMemberCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['groupmembers'], 'idgroupuser');
+        parent::__construct(cRegistry::getDbTableName('groupmembers'), 'idgroupuser');
         $this->_setItemClass('cApiGroupMember');
 
         // set the join partners so that joins can be used via link() method
@@ -70,7 +71,7 @@ class cApiGroupMemberCollection extends ItemCollection {
      */
     public function deleteByUserId($userId) {
         $result = $this->deleteBy('user_id', $userId);
-        return ($result > 0) ? true : false;
+        return $result > 0;
     }
 
     /**
@@ -78,9 +79,9 @@ class cApiGroupMemberCollection extends ItemCollection {
      *
      * @param string $userId
      * @param string $groupId
-     * 
+     *
      * @return cApiGroupMember|NULL
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -113,9 +114,8 @@ class cApiGroupMember extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['groupmembers'], 'idgroupuser');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('groupmembers'), 'idgroupuser');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

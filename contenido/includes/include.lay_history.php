@@ -19,8 +19,19 @@ cInclude('includes', 'functions.lay.php');
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('classes', 'class.layout.synchronizer.php');
 
+global $idlay, $bInUse;
+
+$area = cRegistry::getArea();
+$perm = cRegistry::getPerm();
+$client = cRegistry::getClientId();
+$db = cRegistry::getDb();
+$cfg = cRegistry::getConfig();
+$frame = cRegistry::getFrame();
+$cfgClient = cRegistry::getClientConfig();
+$belang = cRegistry::getBackendLanguage();
+
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
-if($readOnly) {
+if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
@@ -44,8 +55,15 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
     return;
 }
 
+// Initialize $_POST with common used keys to prevent PHP 'Undefined array key' warnings
+foreach (['lay_send', 'layname', 'laycode', 'laydesc', 'action', 'idlayhistory'] as $_key) {
+    if (!isset($_POST[$_key])) {
+        $_POST[$_key] = '';
+    }
+}
+
 // save button
-if ((!$readOnly) && $_POST["lay_send"] == true && $_POST["layname"] != "" && $_POST["laycode"] != "" && (int) $idlay > 0) {
+if ((!$readOnly) && $_POST["lay_send"] == '1' && $_POST["layname"] != "" && $_POST["laycode"] != "" && (int) $idlay > 0) {
     $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
     $sLayoutName = $_POST["layname"];
     $sLayoutCode = $_POST["laycode"];
@@ -57,7 +75,7 @@ if ((!$readOnly) && $_POST["lay_send"] == true && $_POST["layname"] != "" && $_P
     unset($oVersion);
 }
 
-// [action] => history_truncate delete all current modul history
+// [action] => history_truncate delete all current module history
 if ((!$readOnly) && $_POST["action"] == "history_truncate") {
     $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
     $bDeleteFile = $oVersion->deleteFile();
@@ -79,7 +97,7 @@ $oVersion->setVarForm("action", '');
 // class.version.php
 $sSelectBox = $oVersion->buildSelectBox("mod_history", "Layout History", i18n("Show history entry"), "idlayhistory", $readOnly);
 
-// Generate Form
+// Generate form
 $oForm = new cGuiTableForm("lay_display");
 $oForm->addHeader(i18n("Edit Layout"));
 $oForm->setVar("area", "lay_history");
@@ -94,12 +112,16 @@ if ($_POST["idlayhistory"] != "") {
     $sRevision = $oVersion->getLastRevision();
 }
 
+$sName = '';
+$description = '';
+$sCode = '';
+
 if ($sRevision != '' && ($_POST["action"] != "history_truncate" || $readOnly)) {
     // File Path
     $sPath = $oVersion->getFilePath() . $sRevision;
 
     // Read XML Nodes and get an array
-    $aNodes = array();
+    $aNodes = [];
     $aNodes = $oVersion->initXmlReader($sPath);
 
     // Create Textarea and fill it with xml nodes
@@ -111,7 +133,7 @@ if ($sRevision != '' && ($_POST["action"] != "history_truncate" || $readOnly)) {
     }
 }
 
-// Add new Elements of Form
+// Add new elements of form
 $oForm->add(i18n("Name"), $sName);
 $oForm->add(i18n("Description"), $description);
 $oForm->add(i18n("Code"), $sCode);
@@ -119,7 +141,7 @@ $oForm->setActionButton("apply", "images/but_ok" . (($readOnly) ? '_off' : '') .
                                                                                                                  // it
 $oForm->unsetActionButton("submit");
 
-// Render and handle History Area
+// Render and handle history area
 $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
     if($readOnly) {
         $oCodeMirrorOutput->setProperty("readOnly", "true");
@@ -129,10 +151,10 @@ $oPage->addScript($oCodeMirrorOutput->renderScript());
 if ($sSelectBox != "") {
     $div = new cHTMLDiv();
     $div->setContent($sSelectBox . "<br>");
-    $oPage->setContent(array(
+    $oPage->setContent([
             $div,
             $oForm
-    ));
+    ]);
 } else {
     if ($bDeleteFile) {
         $oPage->displayOk(i18n("Version history was cleared"));
@@ -143,5 +165,3 @@ if ($sSelectBox != "") {
     $oPage->abortRendering();
 }
 $oPage->render();
-
-?>

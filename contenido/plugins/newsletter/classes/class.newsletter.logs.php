@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Plugin
  * @subpackage Newsletter
  * @method NewsletterLog createNewItem
- * @method NewsletterLog next
+ * @method NewsletterLog|bool next
  */
 class NewsletterLogCollection extends ItemCollection {
     /**
@@ -28,8 +28,7 @@ class NewsletterLogCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg["tab"]["news_log"], "idnewslog");
+        parent::__construct(cRegistry::getDbTableName('news_log'), 'idnewslog');
         $this->_setItemClass("NewsletterLog");
     }
 
@@ -40,12 +39,9 @@ class NewsletterLogCollection extends ItemCollection {
      * @param $idnewsrcp integer ID of recipient
      *
      * @return bool|Item
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idnewsjob, $idnewsrcp) {
-
         $this->resetQuery();
         $this->setWhere("idnewsjob", $idnewsjob);
         $this->setWhere("idnewsrcp", $idnewsrcp);
@@ -92,13 +88,9 @@ class NewsletterLogCollection extends ItemCollection {
      * @param  int $idnews    ID of newsletter
      *
      * @return  int  Recipient count
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function initializeJob($idnewsjob, $idnews) {
-        global $cfg;
-
         $idnewsjob = cSecurity::toInteger($idnewsjob);
         $idnews = cSecurity::toInteger($idnews);
 
@@ -109,7 +101,7 @@ class NewsletterLogCollection extends ItemCollection {
             $iIDLang = $oNewsletter->get("idlang");
             $nrc = new NewsletterRecipientCollection();
             $nrcClassName = cString::toLowerCase(get_class($nrc));
-            
+
             switch ($sDestination) {
                 case "all":
                     $sDistinct = "";
@@ -118,7 +110,7 @@ class NewsletterLogCollection extends ItemCollection {
                     break;
                 case "default":
                     $sDistinct = "distinct";
-                    $sFrom = $cfg["tab"]["news_groups"] . " AS groups, " . $cfg["tab"]["news_groupmembers"] . " AS groupmembers ";
+                    $sFrom = cRegistry::getDbTableName('news_groups') . " AS groups, " . cRegistry::getDbTableName('news_groupmembers') . " AS groupmembers ";
                     $sSQL = $nrcClassName . ".idclient = '" . $iIDClient . "' AND " . $nrcClassName . ".idlang = '" . $iIDLang . "' AND " . $nrcClassName . ".deactivated = '0' AND " . $nrcClassName . ".confirmed = '1' AND " . $nrcClassName . ".idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup = groups.idnewsgroup AND " . "groups.defaultgroup = '1' AND groups.idclient = '" . $iIDClient . "' AND " . "groups.idlang = '" . $iIDLang . "'";
                     break;
                 case "selection":
@@ -128,7 +120,7 @@ class NewsletterLogCollection extends ItemCollection {
                         $sGroups = "'" . implode("','", $aGroups) . "'";
 
                         $sDistinct = "distinct";
-                        $sFrom = $cfg["tab"]["news_groupmembers"] . " AS groupmembers ";
+                        $sFrom = cRegistry::getDbTableName('news_groupmembers') . " AS groupmembers ";
                         $sSQL = "newsletterrecipientcollection.idclient = '" . $iIDClient . "' AND newsletterrecipientcollection.idlang = '" . $iIDLang . "' AND newsletterrecipientcollection.deactivated = '0' AND newsletterrecipientcollection.confirmed = '1' AND newsletterrecipientcollection.idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup IN (" . $sGroups . ")";
                     } else {
                         $sDestination = "unknown";
@@ -169,7 +161,7 @@ class NewsletterLogCollection extends ItemCollection {
     }
 
     /**
-     * Overriden delete function to update recipient count if removing recipient
+     * Overridden delete function to update recipient count if removing recipient
      * from the list
      *
      * @param int $idnewslog ID
@@ -222,15 +214,14 @@ class NewsletterLog extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg["tab"]["news_log"], "idnewslog");
+        parent::__construct(cRegistry::getDbTableName('news_log'), 'idnewslog');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Userdefined setter for newsletter logs fields.
+     * User-defined setter for newsletter logs fields.
      *
      * @param string $name
      * @param mixed  $value
@@ -240,11 +231,9 @@ class NewsletterLog extends Item {
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
+            case 'idnewsrcp':
             case 'idnewsjob':
-                $value = (int) $value;
-                break;
-			case 'idnewsrcp':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 
@@ -252,5 +241,3 @@ class NewsletterLog extends Item {
     }
 
 }
-
-?>

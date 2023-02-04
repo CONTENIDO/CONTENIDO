@@ -158,7 +158,7 @@ class cHttpRequestCurl extends cHttpRequest {
      * Reads all the custom headers and add them to the header string.
      */
     protected function prepareHeaders() {
-        $curlHeaderArray = array();
+        $curlHeaderArray = [];
         if (!is_array($this->headerArray)) {
             return;
         }

@@ -15,12 +15,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$files = new cGuiFileOverview($cfgClient[$client]['css']['path'], stripslashes($_REQUEST['file']), 'css');
+$client = cRegistry::getClientId();
+$cfgClient = cRegistry::getClientConfig();
+
+$file = (isset($_REQUEST['file'])) ? cSecurity::toString($_REQUEST['file']) : '';
+
+$files = new cGuiFileOverview($cfgClient[$client]['css']['path'], stripslashes($file), 'css');
 
 // Get system properties for extension filter
 $backend_file_extensions = getSystemProperty('backend', 'backend_file_extensions');
 
-if ($backend_file_extensions == "enabled") {
+if ($backend_file_extensions == 'enabled') {
     $files->setFileExtension('css');
 }
 

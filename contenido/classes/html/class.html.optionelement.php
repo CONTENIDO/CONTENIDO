@@ -97,4 +97,20 @@ class cHTMLOptionElement extends cHTMLFormElement {
         return parent::toHtml();
     }
 
+    /**
+     * Generates the indentation used to display a structure tree, e.g. within a select box.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param int $level The category level
+     * @param int $prefixAmount Initial amount of indentation characters to start with
+     * @param int $levelAmount The amount of indentation characters for each level
+     * @param string $character The indentation character itself
+     * @return string Generated indentation string
+     */
+    public static function indent($level, $prefixAmount = 2, $levelAmount = 4, $character = '&nbsp;') {
+        $prefixStr = str_repeat($character, max(0, cSecurity::toInteger($prefixAmount)));
+        $levelStr = str_repeat($character, max(0, cSecurity::toInteger($levelAmount)));
+        return $prefixStr . str_repeat($levelStr, max(0, cSecurity::toInteger($level)));
+    }
+
 }

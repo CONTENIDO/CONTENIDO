@@ -15,10 +15,12 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Isocode 3166 collection
+ * ISO 3166 country codes collection
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiIso3166 createNewItem
+ * @method cApiIso3166|bool next
  */
 class cApiIso3166Collection extends ItemCollection {
     /**
@@ -41,7 +43,7 @@ class cApiIso3166Collection extends ItemCollection {
 }
 
 /**
- * Iso 3166 item
+ * ISO 3166 country code item
  *
  * @package Core
  * @subpackage GenericDB_Model
@@ -58,7 +60,7 @@ class cApiIso3166 extends Item {
      */
     public function __construct($mId = false) {
         parent::__construct(cRegistry::getDbTableName('iso_3166'), 'iso');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

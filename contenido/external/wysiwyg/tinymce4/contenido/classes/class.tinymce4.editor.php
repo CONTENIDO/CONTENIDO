@@ -142,7 +142,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             }
         }
 
-        // CEC for template pre processing
+        // CEC for template pre-processing
         $this->_aSettings = cApiCecHook::executeAndReturn('Contenido.WYSIWYG.LoadConfiguration', $this->_aSettings, $this->_sEditor);
 
         // encode data to json when doing output instead of doing this here
@@ -230,8 +230,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             }
             $this->setToolbar($cmsType, trim(cString::toLowerCase($sMode)));
 
-            $autoFullElements = isset($this->_aSettings[$cmsType]['auto_full_elements']) ?
-                $this->_aSettings[$cmsType]['auto_full_elements'] : false;
+            $autoFullElements = $this->_aSettings[$cmsType]['auto_full_elements'] ?? false;
             if (true === isset($this->_aSettings[$cmsType]['auto_full_elements'])) {
                 unset($this->_aSettings[$cmsType]['auto_full_elements']);
             }
@@ -342,7 +341,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      *
      * @param string $sType
      *        CMS type where XHTML mode setting wil be applies
-     * @param string
+     * @param bool $bEnabled
      *        $bEnabled Whether to turn on XHTML mode
      */
     public function setXHTMLMode($sType, $bEnabled = true) {
@@ -549,8 +548,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param string $cmsType
      */
     public function cleanURLs($cmsType) {
-        $sess = cRegistry::getBackendSessionId();
-
         // Add the path to the following values
         $aParameters = [
             //builtin
@@ -574,7 +571,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         foreach ($aParameters as $sParameter) {
             if (array_key_exists($sParameter, $this->_aSettings[$cmsType]) && preg_match('/\\.php$/i', $this->_aSettings[$cmsType][$sParameter])) {
-                $this->setSetting($cmsType, $sParameter, $this->_aSettings[$cmsType][$sParameter] . '?contenido=' . $sess->id, true);
+                $this->setSetting($cmsType, $sParameter, $this->_aSettings[$cmsType][$sParameter] . '?contenido=' . cRegistry::getBackendSessionId(), true);
             }
         }
     }
@@ -614,9 +611,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      */
     public function getScripts() {
         if ($this->_useGZIP) {
-            $return = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_baseURL . 'tinymce/js/tinymce/tinymce.gzip.js"></script>';
+            $return = "\n<!-- tinyMCE -->\n" . '<script type="text/javascript" src="' . $this->_baseURL . 'tinymce/js/tinymce/tinymce.gzip.js"></script>';
         } else {
-            $return = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_baseURL . 'tinymce/js/tinymce/tinymce.min.js"></script>';
+            $return = "\n<!-- tinyMCE -->\n" . '<script type="text/javascript" src="' . $this->_baseURL . 'tinymce/js/tinymce/tinymce.min.js"></script>';
         }
 
         return $return;
@@ -655,7 +652,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $txtEditor->setId($this->_sEditorName);
         $txtEditor->setClass(htmlentities($this->_sEditorName));
 
-        $txtEditor->setStyle("width: " . $this->_aSettings['width'] . "; height: " . $this->_aSettings['height'] . ";");
+
+        if (!empty($this->_aSettings['width']) && !empty($this->_aSettings['height'])) {
+            $txtEditor->setStyle("width: " . $this->_aSettings['width'] . "; height: " . $this->_aSettings['height'] . ";");
+        }
 
         $return = $template->generate($cfg['path']['all_wysiwyg'] . $this->_sEditor . "contenido/templates/template.tinymce_tpl.html", true);
         $return .= $txtEditor->render();
@@ -803,6 +803,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      *        Array with values that were not accepted
      */
     public static function saveConfig($config) {
-        parent::saveConfig($config['tinymce4']);
+        return parent::saveConfig($config['tinymce4']);
     }
 }

@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiType createNewItem
+ * @method cApiType|bool next
  */
 class cApiTypeCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiTypeCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['type'], 'idtype');
+        parent::__construct(cRegistry::getDbTableName('type'), 'idtype');
         $this->_setItemClass('cApiType');
     }
 
@@ -49,9 +50,8 @@ class cApiTypeCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($type, $description, $code = '', $status = 0, $author = '', $created = '', $lastmodified = '') {
-        global $auth;
-
         if (empty($author)) {
+            $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
@@ -95,9 +95,8 @@ class cApiType extends Item
      * @throws cException
      */
     public function __construct($id = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['type'], 'idtype');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('type'), 'idtype');
+        $this->setFilters([], []);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -110,13 +109,13 @@ class cApiType extends Item
      *         e.g. CMS_HTML, CMS_TEXT, etc.
      *
      * @return bool
-     * 
+     *
      * @throws cException
      */
     public function loadByType($type) {
-        $aProps = array(
-            'type' => $type
-        );
+        $aProps = [
+            'type' => $type,
+        ];
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
             // entry in cache found, load entry from cache
@@ -129,18 +128,18 @@ class cApiType extends Item
     }
 
     /**
-     * Userdefined setter for item fields.
+     * User-defined setter for item fields.
      *
      * @param string $name
      * @param mixed $value
      * @param bool $safe [optional]
      *         Flag to run defined inFilter on passed value
-     *                   
+     *
      * @return bool
      */
     public function setField($name, $value, $safe = true) {
         if ('status' === $name) {
-            $value = (int) $value;
+            $value = cSecurity::toInteger($value);
         }
 
         return parent::setField($name, $value, $safe);

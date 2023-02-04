@@ -17,6 +17,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $page = new cGuiPage("frontend.group_menu");
 $menu = new cGuiMenu();
 
+$requestIdFrontendGroup = $_GET['idfrontendgroup'] ?? '';
+
 $fegroups = new cApiFrontendGroupCollection();
 $fegroups->select("idclient = '$client'", "", "groupname ASC");
 
@@ -35,7 +37,6 @@ while (($fegroup = $fegroups->next()) !== false) {
             <img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
         </a>';
 
-
     $delTooltip = sprintf(i18n('Id of this group: %s'), $idfegroup);
 
     $menu->setId($idfegroup, $idfegroup);
@@ -45,7 +46,7 @@ while (($fegroup = $fegroups->next()) !== false) {
     $menu->setActions($idfegroup, 'delete', $deleteLink);
     $menu->setTooltip($idfegroup, $delTooltip);
 
-    if ($_GET['idfrontendgroup'] == $idfegroup) {
+    if ($requestIdFrontendGroup == $idfegroup) {
         $menu->setMarked($idfegroup);
     }
 }

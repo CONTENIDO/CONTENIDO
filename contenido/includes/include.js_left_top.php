@@ -14,6 +14,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $tpl, $select;
+
+$sess = cRegistry::getSession();
+$client = cRegistry::getClientId();
+$perm = cRegistry::getPerm();
+$cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
+
 $tpl->set('s', 'ID', 'oTplSel');
 $tpl->set('s', 'CLASS', 'text_medium');
 $tpl->set('s', 'OPTIONS', '');

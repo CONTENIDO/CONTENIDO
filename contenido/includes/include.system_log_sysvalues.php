@@ -14,6 +14,9 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+$cfg = cRegistry::getConfig();
+$action = cRegistry::getAction();
+
 cInclude('includes', 'functions.general.php');
 
 $page = new cGuiPage('system_log_sysvalues');
@@ -21,7 +24,7 @@ $page = new cGuiPage('system_log_sysvalues');
 $path = $cfg['path']['frontend'] . '/' . $cfg['path']['logs'];
 $numberOfLines = $cfg['system_log']['number_of_lines'];
 
-$logfile = basename($_REQUEST['logfile']);
+$logfile = isset($_REQUEST['logfile']) ? basename($_REQUEST['logfile']) : '';
 
 // memory limit
 $memoryLimit = machineReadableSize(ini_get('memory_limit'));
@@ -45,7 +48,7 @@ if ($action == 'deletelog' && !empty($logfile)) {
     }
 }
 
-$files = array();
+$files = [];
 foreach (new DirectoryIterator($path) as $fileInfo) {
     if (in_array($fileInfo->getFilename(), $cfg['system_log']['allowed_filenames'])) {
         $files[] = $path . $fileInfo->getFilename();
@@ -87,12 +90,14 @@ if (!empty($files)) {
     $link->setClass('js-action-show-log');
     $image = new cHTMLImage('images/submit.gif');
     $link->appendContent($image);
-    $div = new cHTMLDiv(array(
-        new cHTMLSpan(i18n('Show ')),
-        new cHTMLTextbox('number-of-lines', $numberOfLines, 3),
-        new cHTMLSpan(i18n(' lines')),
-        $link
-    ), 'right');
+    $div = new cHTMLDiv(
+        [
+            new cHTMLSpan(i18n('Show ')),
+            new cHTMLTextbox('number-of-lines', $numberOfLines, 3),
+            new cHTMLSpan(i18n(' lines')),
+            $link,
+        ], 'right'
+    );
     $logHeader->appendContent($div);
 
     $page->appendContent($logHeader);

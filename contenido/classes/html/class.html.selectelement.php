@@ -28,7 +28,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
      *
      * @var cHTMLOptionElement[]
      */
-    protected $_options = array();
+    protected $_options = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -50,7 +50,9 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $width = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = '') {
+    public function __construct(
+        $name, $width = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = ''
+    ) {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'select';
         $this->_contentlessTag = false;
@@ -64,16 +66,16 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * Automatically creates and fills cHTMLOptionElements
      *
      * Array format:
-     * $stuff = array(
-     * array('value', 'title'),
-     * array('value', 'title')
-     * );
+     * $stuff = [
+     *     ['value', 'title'],
+     *     ['value', 'title'],
+     * ];
      *
      * or regular key => value arrays:
-     * $stuff = array(
-     * 'value' => 'title',
-     * 'value' => 'title'
-     * );
+     * $stuff = [
+     *     'value' => 'title',
+     *     'value' => 'title'
+     * ];
      *
      * @param array $stuff
      *         Array with all items
@@ -204,8 +206,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function setSelected(array $elements)
-    {
+    public function setSelected(array $elements) {
         foreach ($this->_options as $key => $option) {
             $selected = in_array($option->getAttribute('value'), $elements);
             $option->setSelected($selected);

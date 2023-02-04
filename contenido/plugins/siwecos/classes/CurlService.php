@@ -27,47 +27,19 @@ class CurlService
     {
         // define base options
         $options = [
-            CURLOPT_POST           => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_URL            => $url,
+            CURLOPT_POST => true,
+            CURLOPT_URL  => $url,
         ];
-
-        // $options[CURLOPT_HEADER] = true;
-        $options[CURLINFO_HEADER_OUT]    = true;
-        $options[CURLOPT_VERBOSE]        = true;
-        $options[CURLOPT_FILETIME]       = true;
-        $options[CURLOPT_FOLLOWLOCATION] = true;
-        $options[CURLOPT_MAXREDIRS]      = 3;
-        $options[CURLOPT_SSL_VERIFYHOST] = false;
-        $options[CURLOPT_SSL_VERIFYPEER] = false;
-
-        if (self::DBG) {
-            $additional = [
-                CURLOPT_HEADER         => true,
-                CURLINFO_HEADER_OUT    => true,
-                CURLOPT_VERBOSE        => true,
-                CURLOPT_FILETIME       => true,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_MAXREDIRS      => 3,
-                CURLOPT_SSL_VERIFYHOST => false,
-                CURLOPT_SSL_VERIFYPEER => false,
-            ];
-            $options    = array_merge($options, $additional);
-        }
 
         // add optional POST data
         if (!empty($data)) {
             $options[CURLOPT_POSTFIELDS] = json_encode($data);
         }
 
-        // add optional headers
-        if (!empty($header)) {
-            $options[CURLOPT_HTTPHEADER] = $header;
-        }
+        $options = $this->_getCurlOptions($options, $header);
 
-        $response = json_decode($this->_call($options));
-
-        return $response;
+        $result = $this->_call($options);
+        return is_bool($result) ? new stdClass() : json_decode($result);
     }
 
     /**
@@ -81,19 +53,29 @@ class CurlService
     {
         // define base options
         $options = [
-            CURLOPT_POST           => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_URL            => $url,
+            CURLOPT_POST => false,
+            CURLOPT_URL  => $url,
         ];
 
-        // $options[CURLOPT_HEADER] = true;
-        $options[CURLINFO_HEADER_OUT]    = true;
-        $options[CURLOPT_VERBOSE]        = true;
-        $options[CURLOPT_FILETIME]       = true;
-        $options[CURLOPT_FOLLOWLOCATION] = true;
-        $options[CURLOPT_MAXREDIRS]      = 3;
-        $options[CURLOPT_SSL_VERIFYHOST] = false;
-        $options[CURLOPT_SSL_VERIFYPEER] = false;
+        $options = $this->_getCurlOptions($options, $header);
+
+        $result = $this->_call($options);
+        return is_bool($result) ? new stdClass() : json_decode($result);
+    }
+
+    private function _getCurlOptions(array $options, array $header = [])
+    {
+        $curlOptions = [
+            //CURLOPT_HEADER         => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLINFO_HEADER_OUT    => true,
+            CURLOPT_VERBOSE        => true,
+            CURLOPT_FILETIME       => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS      => 3,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+        ];
 
         if (self::DBG) {
             $additional = [
@@ -106,23 +88,23 @@ class CurlService
                 CURLOPT_SSL_VERIFYHOST => false,
                 CURLOPT_SSL_VERIFYPEER => false,
             ];
-            $options    = array_merge($options, $additional);
+            $curlOptions = array_merge($curlOptions, $additional);
         }
 
         // add optional headers
         if (!empty($header)) {
-            $options[CURLOPT_HTTPHEADER] = $header;
+            $curlOptions[CURLOPT_HTTPHEADER] = $header;
         }
 
-        $response = $this->_call($options);
-
-        return $response;
+        // Return with custom options
+        return array_merge($curlOptions, $options);
     }
+
 
     /**
      * @param array $options
      *
-     * @return \stdClass
+     * @return string|bool
      * @throws CurlException
      */
     private function _call(array $options)
@@ -134,8 +116,8 @@ class CurlService
         }
 
         // set options
-        $succ = curl_setopt_array($curl, $options);
-        if (false === $succ) {
+        $success = curl_setopt_array($curl, $options);
+        if (false === $success) {
             throw new CurlException('failed to set curl options');
         }
 

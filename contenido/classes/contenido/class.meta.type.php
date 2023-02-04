@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiMetaType createNewItem
+ * @method cApiMetaType|bool next
  */
 class cApiMetaTypeCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiMetaTypeCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['meta_type'], 'idmetatype');
+        parent::__construct(cRegistry::getDbTableName('meta_type'), 'idmetatype');
         $this->_setItemClass('cApiMetaType');
     }
 
@@ -77,16 +78,15 @@ class cApiMetaType extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['meta_type'], 'idmetatype');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('meta_type'), 'idmetatype');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Userdefined setter for article language fields.
+     * User-defined setter for article language fields.
      *
      * @param string $name
      * @param mixed $value
@@ -96,7 +96,7 @@ class cApiMetaType extends Item
      */
     public function setField($name, $value, $bSafe = true) {
         if ('maxlength' == $name) {
-            $value = (int) $value;
+            $value = cSecurity::toInteger($value);
         }
 
         return parent::setField($name, $value, $bSafe);

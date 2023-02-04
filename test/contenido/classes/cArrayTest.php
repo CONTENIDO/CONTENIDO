@@ -325,7 +325,21 @@ class cArrayTest extends cTestingTestCase
             $tr_31_we,
         ];
         $this->assertSame($exp, cArray::csort($src, 'town', SORT_STRING));
-    }
+
+        // empty array
+        $data = [];
+        $this->assertSame($data, cArray::csort($data, 'town', SORT_STRING));
+
+        // non array
+        $data = '';
+        $this->assertSame($data, cArray::csort($data, 'town', SORT_STRING));
+
+        $data = 1;
+        $this->assertSame($data, cArray::csort($data, 'town', SORT_STRING));
+
+        $data = null;
+        $this->assertSame($data, cArray::csort($data, 'town', SORT_STRING));
+   }
 
     /**
      * Tests initializing of array values in empty and nonempty array, with

@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This classs contains methods to handle rights.
+ * This class contains methods to handle rights.
  *
  * @package    Core
  * @subpackage Backend
@@ -44,7 +44,10 @@ class cRights
      */
     public static function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
     {
-        global $perm, $auth, $area_tree;
+        global $area_tree;
+
+        $perm = cRegistry::getPerm();
+        $auth = cRegistry::getAuth();
 
         if (!is_object($perm)) {
             return false;
@@ -54,7 +57,7 @@ class cRights
         }
 
         $oDestRightCol    = new cApiRightCollection();
-        $oSourceRighsColl = new cApiRightCollection();
+        $oSourceRightsColl = new cApiRightCollection();
         $whereUsers       = [];
         $whereAreaActions = [];
 
@@ -87,8 +90,8 @@ class cRights
             $sWhere .= ' AND idlang=' . (int)$idlang;
         }
 
-        $oSourceRighsColl->select($sWhere);
-        while (($oItem = $oSourceRighsColl->next()) !== false) {
+        $oSourceRightsColl->select($sWhere);
+        while (($oItem = $oSourceRightsColl->next()) !== false) {
             $rs = $oItem->toObject();
             $oDestRightCol->create(
                 $rs->user_id,
@@ -127,7 +130,11 @@ class cRights
      */
     public static function createRightsForElement($area, $iditem, $idlang = false)
     {
-        global $perm, $auth, $area_tree, $client;
+        global $area_tree;
+
+        $perm = cRegistry::getPerm();
+        $auth = cRegistry::getAuth();
+        $client = cRegistry::getClientId();
 
         if (!is_object($perm)) {
             return false;
@@ -137,7 +144,7 @@ class cRights
         }
 
         $oDestRightCol    = new cApiRightCollection();
-        $oSourceRighsColl = new cApiRightCollection();
+        $oSourceRightsColl = new cApiRightCollection();
         $whereUsers       = [];
         $rightsCache      = [];
 
@@ -162,8 +169,8 @@ class cRights
             $sWhere .= ' AND idlang=' . (int)$idlang;
         }
 
-        $oSourceRighsColl->select($sWhere);
-        while (($oItem = $oSourceRighsColl->next()) !== false) {
+        $oSourceRightsColl->select($sWhere);
+        while (($oItem = $oSourceRightsColl->next()) !== false) {
             $rs = $oItem->toObject();
 
             // concatenate a key to use it to prevent double entries
@@ -209,15 +216,16 @@ class cRights
      */
     public static function deleteRightsForElement($area, $iditem, $idlang = false)
     {
-        global $perm, $area_tree, $client;
+        global $area_tree;
+
+        $perm = cRegistry::getPerm();
+        $client = cRegistry::getClientId();
 
         // get all idarea values for $area
         $areaContainer = $area_tree[$perm->showareas($area)];
+        $areaContainer = implode(',', $areaContainer);
 
-        $sWhere = "idcat=" . (int)$iditem . " AND idclient=" . (int)$client . " AND idarea IN (" . implode(
-                ',',
-                $areaContainer
-            ) . ")";
+        $sWhere = "idcat=" . (int)$iditem . " AND idclient=" . (int)$client . " AND idarea IN (" . $areaContainer . ")";
         if ($idlang) {
             $sWhere .= " AND idlang=" . (int)$idlang;
         }
@@ -244,8 +252,10 @@ class cRights
      */
     public static function buildUserOrGroupPermsFromRequest($bAddUserToClient = false)
     {
-        global $auth, $client;
         global $msysadmin, $madmin, $mclient, $mlang;
+
+        $auth = cRegistry::getAuth();
+        $client = cRegistry::getClientId();
 
         // check and prevalidation
 
@@ -290,8 +300,7 @@ class cRights
         // Add user to the current client, if the current user isn't sysadmin and no client has been specified.
         // This avoids new accounts which are not accessible by the current user (client admin) anymore.
         if (count($aClient) == 0 && $bAddUserToClient) {
-            $aUserPerm = explode(',', $auth->auth['perm']);
-            if (!in_array('sysadmin', $aUserPerm)) {
+            if (!cPermission::checkSysadminPermission($auth->getPerms())) {
                 $aPerms[] = sprintf('client[%s]', $client);
             }
         }
@@ -319,9 +328,11 @@ class cRights
      */
     public static function saveRights()
     {
-        global $perm, $db, $userid;
+        global $db, $userid;
         global $rights_list, $rights_list_old, $rights_client, $rights_lang;
         global $aArticleRights, $aCategoryRights, $aTemplateRights;
+
+        $perm = cRegistry::getPerm();
 
         // If no checkbox is checked
         if (!is_array($rights_list)) {
@@ -329,65 +340,61 @@ class cRights
         }
 
         // Search all checks which are not in the new rights_list for deleting
-        $arraydel = array_diff(array_keys($rights_list_old), array_keys($rights_list));
+        $arrayDel = array_diff(array_keys($rights_list_old), array_keys($rights_list));
 
         // Search all checks which are not in the rights_list_old for saving
-        $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
+        $arraySave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
         $oAreaColl = new cApiAreaCollection();
 
-        if (is_array($arraydel)) {
-            foreach ($arraydel as $value) {
-                $data = explode('|', $value);
+        foreach ($arrayDel as $value) {
+            $data = explode('|', $value);
 
-                // Do not delete rights that does not display at this moment
-                if (!empty($_REQUEST['filter_rights'])) {
-                    if (($_REQUEST['filter_rights'] != 'article' && in_array($data[1], $aArticleRights))
-                        || ($_REQUEST['filter_rights'] != 'category' && in_array($data[1], $aCategoryRights))
-                        || ($_REQUEST['filter_rights'] != 'template' && in_array($data[1], $aTemplateRights))
-                    ) {
-                        continue;
-                    }
-
-                    if ($_REQUEST['filter_rights'] != 'other'
-                        && !in_array($data[1], array_merge($aArticleRights, $aCategoryRights, $aTemplateRights))
-                    ) {
-                        continue;
-                    }
+            // Do not delete rights that does not display at this moment
+            if (!empty($_REQUEST['filter_rights'])) {
+                if (($_REQUEST['filter_rights'] != 'article' && in_array($data[1], $aArticleRights))
+                    || ($_REQUEST['filter_rights'] != 'category' && in_array($data[1], $aCategoryRights))
+                    || ($_REQUEST['filter_rights'] != 'template' && in_array($data[1], $aTemplateRights))
+                ) {
+                    continue;
                 }
 
-                $data[0] = $oAreaColl->getAreaID($data[0]);
-                $data[1] = $perm->getIDForAction($data[1]);
-
-                $where      =
-                    "user_id = '" . $db->escape($userid) . "' AND idclient = " . (int)$rights_client . " AND idlang = "
-                    . (int)$rights_lang . " AND idarea = " . (int)$data[0] . " AND idcat = " . (int)$data[2]
-                    . " AND idaction = " . (int)$data[1] . " AND type = 0";
-                $oRightColl = new cApiRightCollection();
-                $oRightColl->deleteByWhereClause($where);
+                if ($_REQUEST['filter_rights'] != 'other'
+                    && !in_array($data[1], array_merge($aArticleRights, $aCategoryRights, $aTemplateRights))
+                ) {
+                    continue;
+                }
             }
+
+            $data[0] = $oAreaColl->getAreaId($data[0]);
+            $data[1] = $perm->getIdForAction($data[1]);
+
+            $where      =
+                "user_id = '" . $db->escape($userid) . "' AND idclient = " . (int)$rights_client . " AND idlang = "
+                . (int)$rights_lang . " AND idarea = " . (int)$data[0] . " AND idcat = " . (int)$data[2]
+                . " AND idaction = " . (int)$data[1] . " AND type = 0";
+            $oRightColl = new cApiRightCollection();
+            $oRightColl->deleteByWhereClause($where);
         }
 
         unset($data);
 
         // Search for all mentioned checkboxes
-        if (is_array($arraysave)) {
-            foreach ($arraysave as $value) {
-                // Explodes the key it consits areaid+actionid+itemid
-                $data = explode('|', $value);
+        foreach ($arraySave as $value) {
+            // Explodes the key it consists of areaid+actionid+itemid
+            $data = explode('|', $value);
 
-                // Since areas are stored in a numeric form in the rights table,
-                // we have to convert them from strings into numbers
-                $data[0] = $oAreaColl->getAreaID($data[0]);
-                $data[1] = $perm->getIDForAction($data[1]);
+            // Since areas are stored in a numeric form in the rights table,
+            // we have to convert them from strings into numbers
+            $data[0] = $oAreaColl->getAreaId($data[0]);
+            $data[1] = $perm->getIdForAction($data[1]);
 
-                if (!isset($data[1])) {
-                    $data[1] = 0;
-                }
-
-                // Insert new right
-                $oRightColl = new cApiRightCollection();
-                $oRightColl->create($userid, $data[0], $data[1], $data[2], $rights_client, $rights_lang, 0);
+            if (!isset($data[1])) {
+                $data[1] = 0;
             }
+
+            // Insert new right
+            $oRightColl = new cApiRightCollection();
+            $oRightColl->create($userid, $data[0], $data[1], $data[2], $rights_client, $rights_lang, 0);
         }
 
         $rights_list_old = $rights_list;
@@ -404,9 +411,11 @@ class cRights
      */
     public static function saveGroupRights()
     {
-        global $perm, $db, $groupid;
+        global $db, $groupid;
         global $rights_list, $rights_list_old, $rights_client, $rights_lang;
         global $aArticleRights, $aCategoryRights, $aTemplateRights;
+
+        $perm = cRegistry::getPerm();
 
         // If no checkbox is checked
         if (!is_array($rights_list)) {
@@ -414,66 +423,62 @@ class cRights
         }
 
         // Search all checks which are not in the new rights_list for deleting
-        $arraydel = array_diff(array_keys($rights_list_old), array_keys($rights_list));
+        $arrayDel = array_diff(array_keys($rights_list_old), array_keys($rights_list));
 
         // Search all checks which are not in the rights_list_old for saving
-        $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
+        $arraySave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
 
         $oAreaColl = new cApiAreaCollection();
 
-        if (is_array($arraydel)) {
-            foreach ($arraydel as $value) {
-                $data = explode('|', $value);
+        foreach ($arrayDel as $value) {
+            $data = explode('|', $value);
 
-                // Do not delete grouprights that does not display at this moment
-                if (!empty($_REQUEST['filter_rights'])) {
-                    if (($_REQUEST['filter_rights'] != 'article' && in_array($data[1], $aArticleRights))
-                        || ($_REQUEST['filter_rights'] != 'category' && in_array($data[1], $aCategoryRights))
-                        || ($_REQUEST['filter_rights'] != 'template' && in_array($data[1], $aTemplateRights))
-                    ) {
-                        continue;
-                    }
-
-                    if ($_REQUEST['filter_rights'] != 'other'
-                        && !in_array($data[1], array_merge($aArticleRights, $aCategoryRights, $aTemplateRights))
-                    ) {
-                        continue;
-                    }
+            // Do not delete grouprights that does not display at this moment
+            if (!empty($_REQUEST['filter_rights'])) {
+                if (($_REQUEST['filter_rights'] != 'article' && in_array($data[1], $aArticleRights))
+                    || ($_REQUEST['filter_rights'] != 'category' && in_array($data[1], $aCategoryRights))
+                    || ($_REQUEST['filter_rights'] != 'template' && in_array($data[1], $aTemplateRights))
+                ) {
+                    continue;
                 }
 
-                $data[0] = $oAreaColl->getAreaID($data[0]);
-                $data[1] = $perm->getIDForAction($data[1]);
-
-                $where      =
-                    "user_id = '" . $db->escape($groupid) . "' AND idclient = " . (int)$rights_client . " AND idlang = "
-                    . (int)$rights_lang . " AND idarea = " . (int)$data[0] . " AND idcat = " . (int)$data[2]
-                    . " AND idaction = " . (int)$data[1] . " AND type = 1";
-                $oRightColl = new cApiRightCollection();
-                $oRightColl->deleteByWhereClause($where);
+                if ($_REQUEST['filter_rights'] != 'other'
+                    && !in_array($data[1], array_merge($aArticleRights, $aCategoryRights, $aTemplateRights))
+                ) {
+                    continue;
+                }
             }
+
+            $data[0] = $oAreaColl->getAreaId($data[0]);
+            $data[1] = $perm->getIdForAction($data[1]);
+
+            $where      =
+                "user_id = '" . $db->escape($groupid) . "' AND idclient = " . (int)$rights_client . " AND idlang = "
+                . (int)$rights_lang . " AND idarea = " . (int)$data[0] . " AND idcat = " . (int)$data[2]
+                . " AND idaction = " . (int)$data[1] . " AND type = 1";
+            $oRightColl = new cApiRightCollection();
+            $oRightColl->deleteByWhereClause($where);
         }
 
         unset($data);
 
         // Search for all mentioned checkboxes
-        if (is_array($arraysave)) {
-            foreach ($arraysave as $value) {
-                // Explodes the key it consits areaid+actionid+itemid
-                $data = explode('|', $value);
+        foreach ($arraySave as $value) {
+            // Explodes the key it consists of areaid+actionid+itemid
+            $data = explode('|', $value);
 
-                // Since areas are stored in a numeric form in the rights table,
-                // we have to convert them from strings into numbers
-                $data[0] = $oAreaColl->getAreaID($data[0]);
-                $data[1] = $perm->getIDForAction($data[1]);
+            // Since areas are stored in a numeric form in the rights table,
+            // we have to convert them from strings into numbers
+            $data[0] = $oAreaColl->getAreaId($data[0]);
+            $data[1] = $perm->getIdForAction($data[1]);
 
-                if (!isset($data[1])) {
-                    $data[1] = 0;
-                }
-
-                // Insert new right
-                $oRightColl = new cApiRightCollection();
-                $oRightColl->create($groupid, $data[0], $data[1], $data[2], $rights_client, $rights_lang, 1);
+            if (!isset($data[1])) {
+                $data[1] = 0;
             }
+
+            // Insert new right
+            $oRightColl = new cApiRightCollection();
+            $oRightColl->create($groupid, $data[0], $data[1], $data[2], $rights_client, $rights_lang, 1);
         }
 
         $rights_list_old = $rights_list;

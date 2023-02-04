@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage  PluginManager
  * @author Frederic Schneider
  * @method PimPluginRelations createNewItem
- * @method PimPluginRelations next
+ * @method PimPluginRelations|bool next
  */
 class PimPluginRelationsCollection extends ItemCollection {
     /**
@@ -29,8 +29,7 @@ class PimPluginRelationsCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['plugins_rel'], 'idpluginrelation');
+        parent::__construct(cRegistry::getDbTableName('plugins_rel'), 'idpluginrelation');
         $this->_setItemClass('PimPluginRelations');
     }
 
@@ -81,8 +80,7 @@ class PimPluginRelations extends Item {
      * @throws cException
      */
     public function __construct($id = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['plugins_rel'], 'idpluginrelation');
+        parent::__construct(cRegistry::getDbTableName('plugins_rel'), 'idpluginrelation');
         $this->_sError = '';
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
@@ -90,7 +88,7 @@ class PimPluginRelations extends Item {
     }
 
     /**
-     * Userdefined setter for pim relations fields.
+     * User-defined setter for pim relations fields.
      *
      * @param string $name
      * @param mixed  $value
@@ -100,11 +98,9 @@ class PimPluginRelations extends Item {
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
+            case 'idplugin':
             case 'iditem':
-                $value = (int) $value;
-                break;
-			case 'idplugin':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

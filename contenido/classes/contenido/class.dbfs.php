@@ -17,10 +17,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.file.php');
 
 /**
- * DFFS item collection
+ * DBFS item collection
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiDbfs createNewItem
+ * @method cApiDbfs|bool next
  */
 class cApiDbfsCollection extends ItemCollection {
     /**
@@ -29,8 +31,7 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['dbfs'], 'iddbfs');
+        parent::__construct(cRegistry::getDbTableName('dbfs'), 'iddbfs');
         $this->_setItemClass('cApiDbfs');
 
         // set the join partners so that joins can be used via link() method
@@ -46,10 +47,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cException
      */
     public function outputFile($path) {
-        global $cfg, $client, $auth;
-
         $path = $this->escape($path);
-        $client = (int) $client;
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
         $dir = dirname($path);
         $file = basename($path);
@@ -66,6 +65,7 @@ class cApiDbfsCollection extends ItemCollection {
             $protocol = cApiDbfs::PROTOCOL_DBFS;
 
             if ($properties->getValue('upload', $protocol . $dir . '/' . $file, 'file', 'protected') == '1') {
+                $auth = cRegistry::getAuth();
                 if ($auth->auth['uid'] == 'nobody') {
                     header('HTTP/1.0 403 Forbidden');
                     return;
@@ -81,6 +81,7 @@ class cApiDbfsCollection extends ItemCollection {
             // Check, if output of Content-Disposition header should be skipped
             // for the mimetype
             $contentDispositionHeader = true;
+            $cfg = cRegistry::getConfig();
             foreach ($cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] as $mt) {
                 if (cString::toLowerCase($mt) == cString::toLowerCase($mimetype)) {
                     $contentDispositionHeader = false;
@@ -154,7 +155,6 @@ class cApiDbfsCollection extends ItemCollection {
      * @param string $path
      * @return bool
      * @throws cDbException
-     * @global int   $client
      */
     public function hasFiles($path) {
         $client = cSecurity::toInteger(cRegistry::getClientId());
@@ -167,7 +167,7 @@ class cApiDbfsCollection extends ItemCollection {
             " LIMIT 1"
         );
 
-        return $this->count() > 0 ? true : false;
+        return $this->count() > 0;
     }
 
     /**
@@ -189,11 +189,9 @@ class cApiDbfsCollection extends ItemCollection {
      * @return bool
      * @throws cDbException
      * @throws cException
-     * @global int   $client
      */
     public function fileExists($path) {
-        global $client;
-
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
         $dir = dirname($path);
         $file = basename($path);
@@ -201,8 +199,6 @@ class cApiDbfsCollection extends ItemCollection {
         if ($dir == '.') {
             $dir = '';
         }
-
-        $client = (int) $client;
 
         $this->select("dirname = '" . $dir . "' AND filename = '" . $file . "' AND idclient = " . $client . " LIMIT 1");
         if ($this->next()) {
@@ -219,18 +215,14 @@ class cApiDbfsCollection extends ItemCollection {
      * @return bool
      * @throws cDbException
      * @throws cException
-     * @global int   $client
      */
     public function dirExists($path) {
-        global $client;
-
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
 
         if ($path == '') {
             return true;
         }
-
-        $client = (int) $client;
 
         $this->select("dirname = '" . $path . "' AND filename = '.' AND idclient = " . $client . " LIMIT 1");
         if ($this->next()) {
@@ -246,9 +238,7 @@ class cApiDbfsCollection extends ItemCollection {
      * @return string
      */
     public function parentDir($path) {
-        $path = dirname($path);
-
-        return $path;
+        return dirname($path);
     }
 
     /**
@@ -262,9 +252,7 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($path, $mimetype = '', $content = '') {
-        global $client, $auth;
-
-        $client = (int) $client;
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $item = false;
 
         if (cString::getPartOfString($path, 0, 1) == '/') {
@@ -311,6 +299,7 @@ class cApiDbfsCollection extends ItemCollection {
                 $item->set('mimetype', $mimetype);
             }
 
+            $auth = cRegistry::getAuth();
             $item->set('content', $content);
             $item->set('created', date('Y-m-d H:i:s'), false);
             $item->set('author', $auth->auth['uid']);
@@ -329,9 +318,7 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function setContent($path, $content) {
-        global $client;
-
-        $client = (int) $client;
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
         $dirname = dirname($path);
         $filename = basename($path);
@@ -356,9 +343,7 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cException
      */
     public function getSize($path) {
-        global $client;
-
-        $client = (int) $client;
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
         $dirname = dirname($path);
         $filename = basename($path);
@@ -371,21 +356,20 @@ class cApiDbfsCollection extends ItemCollection {
         if (($item = $this->next()) !== false) {
             return $item->get('size');
         }
-        
+
         return 0;
     }
 
     /**
+     * Get content of path for current client.
      *
      * @param string $path
-     * @return Ambigous <mixed, bool>
+     * @return mixed|bool
      * @throws cDbException
      * @throws cException
      */
     public function getContent($path) {
-        global $client;
-
-        $client = (int) $client;
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $dirname = dirname($path);
         $filename = basename($path);
 
@@ -397,9 +381,12 @@ class cApiDbfsCollection extends ItemCollection {
         if (($item = $this->next()) !== false) {
             return $item->get("content");
         }
+
+        return false;
     }
 
     /**
+     * remove content of path for current client.
      *
      * @param string $path
      * @return bool Success state
@@ -408,9 +395,7 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function remove($path) {
-        global $client;
-
-        $client = (int) $client;
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
         $dirname = dirname($path);
         $filename = basename($path);
@@ -433,39 +418,37 @@ class cApiDbfsCollection extends ItemCollection {
      * @param string                 $sPath
      * @param cApiPropertyCollection $oProperties
      *
-     * @return bool $bAvailable
-     *              
+     * @return bool
+     *
      * @throws cDbException
      * @throws cException
      */
     public function checkTimeManagement($sPath, $oProperties) {
-        global $contenido;
-        if ($contenido) {
+        if (cRegistry::getBackendSessionId()) {
             return true;
         }
+
         $sPath = cSecurity::toString($sPath);
-        $bAvailable = true;
         $iTimeMng = cSecurity::toInteger($oProperties->getValue('upload', $sPath, 'file', 'timemgmt'));
         if ($iTimeMng == 0) {
             return true;
         }
+
         $sStartDate = $oProperties->getValue('upload', $sPath, 'file', 'datestart');
         $sEndDate = $oProperties->getValue('upload', $sPath, 'file', 'dateend');
-
         $iNow = time();
-
         if ($iNow < $this->dateToTimestamp($sStartDate) || ($iNow > $this->dateToTimestamp($sEndDate) && (int) $this->dateToTimestamp($sEndDate) > 0)) {
-
             return false;
         }
-        return $bAvailable;
+
+        return true;
     }
 
     /**
-     * converts date to timestamp:
+     * Converts date to timestamp:
      *
      * @param string $sDate
-     * @return int $iTimestamp
+     * @return int|bool $iTimestamp
      */
     public function dateToTimestamp($sDate) {
         return strtotime($sDate);
@@ -497,8 +480,7 @@ class cApiDbfs extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['dbfs'], 'iddbfs');
+        parent::__construct(cRegistry::getDbTableName('dbfs'), 'iddbfs');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -512,7 +494,7 @@ class cApiDbfs extends Item {
      * @return bool
      */
     public function store() {
-        global $auth;
+        $auth = cRegistry::getAuth();
 
         $this->set('modified', date('Y-m-d H:i:s'), false);
         $this->set('modifiedby', $auth->auth['uid']);

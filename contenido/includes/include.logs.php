@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $notification, $tpl, $idquser, $lngAct, $limit, $classarea;
+global $notification, $tpl, $lngAct, $classarea;
 
 $auth = cRegistry::getAuth();
 $area = cRegistry::getArea();
@@ -30,6 +30,18 @@ if (!$perm->have_perm_area_action($area)) {
     $notification->displayNotification('error', i18n('Permission denied'));
     return;
 }
+
+$display_language = isset($_REQUEST['display_language']) ? cSecurity::toInteger($_REQUEST['display_language']) : 0;
+$fromday = isset($_REQUEST['fromday']) ? cSecurity::toInteger($_REQUEST['fromday']) : 0;
+$today = isset($_REQUEST['today']) ? cSecurity::toInteger($_REQUEST['today']) : 0;
+$frommonth = isset($_REQUEST['frommonth']) ? cSecurity::toInteger($_REQUEST['frommonth']) : 0;
+$tomonth = isset($_REQUEST['tomonth']) ? cSecurity::toInteger($_REQUEST['tomonth']) : 0;
+$fromyear = isset($_REQUEST['fromyear']) ? cSecurity::toInteger($_REQUEST['fromyear']) : 0;
+$toyear = isset($_REQUEST['toyear']) ? cSecurity::toInteger($_REQUEST['toyear']) : 0;
+$limit = isset($_REQUEST['limit']) ? cSecurity::toInteger($_REQUEST['limit']) : 0;
+$idquser = isset($_REQUEST['idquser']) ? cSecurity::toString($_REQUEST['idquser']) : '';
+$idqclient = isset($_REQUEST['idqclient']) ? cSecurity::toInteger($_REQUEST['idqclient']) : $client;
+$idqaction = isset($_REQUEST['idqaction']) ? cSecurity::toInteger($_REQUEST['idqaction']) : '%';
 
 $clientColl = new cApiClientCollection();
 
@@ -49,26 +61,21 @@ $userColl = new cApiUserCollection();
 $actionColl = new cApiActionCollection();
 
 $clients = $clientColl->getAccessibleClients();
+$clientSelect = '';
 $users = $userColl->getAccessibleUsers(explode(',', $auth->auth['perm']));
-$userselect = '<option value="%">' . i18n("All users") . '</option>';
+$userSelect = '<option value="%">' . i18n("All users") . '</option>';
 $actions = $actionColl->getAvailableActions();
-$actionselect = '<option value="%">' . i18n("All actions") . '</option>';
+$actionSelect = '<option value="%">' . i18n("All actions") . '</option>';
 $clientList = $clientColl->getAccessibleClients();
-$idqaction = isset($idqaction) ? $idqaction : "%";
-
-//select current client per default
-if (!isset($idqclient)) {
-    $idqclient = $client;
-}
 
 foreach ($clientList as $key => $value) {
     $selected = (strcmp($idqclient, $key) == 0) ? ' selected="selected"' : '';
-    $clientselect .= '<option value="' . $key . '"' . $selected . '>' . conHtmlSpecialChars($value['name']) . '</option>';
+    $clientSelect .= '<option value="' . $key . '"' . $selected . '>' . conHtmlSpecialChars($value['name']) . '</option>';
 }
 
 foreach ($users as $key => $value) {
     $selected = (strcmp($idquser, $key) == 0) ? ' selected="selected"' : '';
-    $userselect .= '<option value="' . $key . '"' . $selected . '>' . $value['username'] . ' (' . $value['realname'] . ')</option>';
+    $userSelect .= '<option value="' . $key . '"' . $selected . '>' . $value['username'] . ' (' . $value['realname'] . ')</option>';
 }
 
 foreach ($actions as $key => $value) {
@@ -76,13 +83,13 @@ foreach ($actions as $key => $value) {
 
     // $areaname = $classarea->getAreaName($actionColl->getAreaForAction($value["name"]));
     $areaname = $value["areaname"];
-    $actionDescription = $lngAct[$areaname][$value["name"]];
+    $actionDescription = $lngAct[$areaname][$value["name"]] ?? '';
 
     if ($actionDescription == "") {
         $actionDescription = $value["name"];
     }
 
-    $actionselect .= '<option value="' . $key . '"' . $selected . '>' . $value['name'] . ' (' . $actionDescription . ')</option>';
+    $actionSelect .= '<option value="' . $key . '"' . $selected . '>' . $value['name'] . ' (' . $actionDescription . ')</option>';
 }
 
 $days = [];
@@ -96,93 +103,56 @@ for ($i = 1; $i < 13; $i++) {
 }
 
 $years = [];
-for ($i = 2000; $i < (date('Y') + 1); $i++) {
+$endYear = cSecurity::toInteger(date('Y')) + 1;
+for ($i = 2000; $i < $endYear; $i++) {
     $years[$i] = $i;
 }
 
 
 //add language con-561
 
-$sql = "SELECT
-*
-FROM
-".$cfg["tab"]["lang"]." AS A,
-".$cfg["tab"]["clients_lang"]." AS B
-WHERE
-A.idlang=B.idlang AND
-B.idclient='".cSecurity::toInteger($client)."'
-ORDER BY A.idlang";
-
+$sql = "SELECT * FROM " . $cfg["tab"]["lang"] . " AS A, " . $cfg["tab"]["clients_lang"] . " AS B
+    WHERE A.idlang = B.idlang AND B.idclient = " . cSecurity::toInteger($client) . " ORDER BY A.idlang";
 $db->query($sql);
-
 
 $iLangCount = 0;
 $aDisplayLanguage = [
     '%' => i18n('All languages')
 ];
-$selectedLangauge = '%';
+$selectedLanguage = '%';
 
 while ($db->nextRecord()) {
     $aDisplayLanguage[$db->f('idlang')] = $db->f('name');
 }
 
-if (array_key_exists($_REQUEST['display_langauge'], $aDisplayLanguage)) {
-    $selectedLangauge = $_REQUEST['display_langauge'];
+if (array_key_exists($display_language, $aDisplayLanguage)) {
+    $selectedLanguage = $display_language;
 }
 
 
-$fromday = new cHTMLSelectElement('fromday');
-$fromday->autoFill($days);
+$oFromDay = new cHTMLSelectElement('fromday');
+$oFromDay->autoFill($days);
+$oFromDay->setDefault($fromday > 0 ? $fromday : date('j'));
 
-if ($_REQUEST['fromday'] > 0) {
-    $fromday->setDefault($_REQUEST['fromday']);
-} else {
-    $fromday->setDefault(date('j'));
-}
-$today = new cHTMLSelectElement('today');
-$today->autoFill($days);
+$oToDay = new cHTMLSelectElement('today');
+$oToDay->autoFill($days);
+$oToDay->setDefault($today > 0 ? $today : date('j'));
 
-if ($_REQUEST['today'] > 0) {
-    $today->setDefault($_REQUEST['today']);
-} else {
-    $today->setDefault(date('j'));
-}
+$oFromMonth = new cHTMLSelectElement('frommonth');
+$oFromMonth->autoFill($months);
+$oToDay->setDefault($frommonth > 0 ? $frommonth : date('n'));
 
-$frommonth = new cHTMLSelectElement('frommonth');
-$frommonth->autoFill($months);
+$oToMonth = new cHTMLSelectElement('tomonth');
+$oToMonth->autoFill($months);
+$oToMonth->setDefault($tomonth > 0 ? $tomonth : date('n'));
 
-if ($_REQUEST['frommonth'] > 0) {
-    $frommonth->setDefault($_REQUEST['frommonth']);
-} else {
-    $frommonth->setDefault(date('n'));
-}
+$oFromYear = new cHTMLSelectElement('fromyear');
+$oFromYear->autoFill($years);
+$oFromYear->setDefault($fromyear > 0 ? $fromyear : date('Y'));
 
-$tomonth = new cHTMLSelectElement('tomonth');
-$tomonth->autoFill($months);
-
-if ($_REQUEST['tomonth'] > 0) {
-    $tomonth->setDefault($_REQUEST['tomonth']);
-} else {
-    $tomonth->setDefault(date('n'));
-}
-
-$fromyear = new cHTMLSelectElement('fromyear');
-$fromyear->autoFill($years);
-
-if ($_REQUEST['fromyear'] > 0) {
-    $fromyear->setDefault($_REQUEST['fromyear']);
-} else {
-    $fromyear->setDefault(date('Y'));
-}
-
-$toyear = new cHTMLSelectElement('toyear');
-$toyear->autoFill($years);
-
-if ($_REQUEST['toyear'] > 0) {
-    $toyear->setDefault($_REQUEST['toyear']);
-} else {
-    $toyear->setDefault(date('Y'));
-}
+$oToYear = new cHTMLSelectElement('toyear');
+$oToYear->autoFill($years);
+$oToYear->setDefault($toyear > 0 ? $toyear : date('Y'));
 
 $entries = [
     1   => i18n('Unlimited'),
@@ -193,43 +163,43 @@ $entries = [
     100 => '100 '. i18n('Entries'),
 ];
 
-$olimit = new cHTMLSelectElement('limit');
-$olimit->autoFill($entries);
+$oLimitSelect = new cHTMLSelectElement('limit');
+$oLimitSelect->autoFill($entries);
 
 if (isset($_REQUEST['limit'])) {
-    $olimit->setDefault($_REQUEST['limit']);
+    $oLimitSelect->setDefault($_REQUEST['limit']);
 } else {
-    $olimit->setDefault(10);
+    $oLimitSelect->setDefault(10);
 }
 
 $aDisplayLanguageEscaped = $aDisplayLanguage;
 foreach ($aDisplayLanguageEscaped as $id => $displayLanguage) {
     $aDisplayLanguageEscaped[$id] = conHtmlSpecialChars( $displayLanguage);
 }
-$olangauge = new cHTMLSelectElement('display_langauge');
-$olangauge->autoFill($aDisplayLanguageEscaped);
+$oLanguage = new cHTMLSelectElement('display_language');
+$oLanguage->autoFill($aDisplayLanguageEscaped);
 
-if (isset($_REQUEST['display_langauge'])) {
-    $olangauge->setDefault($_REQUEST['display_langauge']);
+if ($display_language > 0) {
+    $oLanguage->setDefault($display_language);
 } else  {
-    $olangauge->setDefault($belang);
+    $oLanguage->setDefault($belang);
 }
 
 
-$tpl->set('s', 'USERS', $userselect);
-$tpl->set('s', 'CLIENTS', $clientselect);
-$tpl->set('s', 'ACTION', $actionselect);
-$tpl->set('s', 'FROMDAY', $fromday->render());
-$tpl->set('s', 'FROMMONTH', $frommonth->render());
-$tpl->set('s', 'FROMYEAR', $fromyear->render());
-$tpl->set('s', 'TODAY', $today->render());
-$tpl->set('s', 'TOMONTH', $tomonth->render());
-$tpl->set('s', 'TOYEAR', $toyear->render());
-$tpl->set('s', 'LIMIT', $olimit->render());
-$tpl->set('s', 'LANGUAGE', $olangauge->render());
+$tpl->set('s', 'USERS', $userSelect);
+$tpl->set('s', 'CLIENTS', $clientSelect);
+$tpl->set('s', 'ACTION', $actionSelect);
+$tpl->set('s', 'FROMDAY', $oFromDay->render());
+$tpl->set('s', 'FROMMONTH', $oFromMonth->render());
+$tpl->set('s', 'FROMYEAR', $oFromYear->render());
+$tpl->set('s', 'TODAY', $oToDay->render());
+$tpl->set('s', 'TOMONTH', $oToMonth->render());
+$tpl->set('s', 'TOYEAR', $oToYear->render());
+$tpl->set('s', 'LIMIT', $oLimitSelect->render());
+$tpl->set('s', 'LANGUAGE', $oLanguage->render());
 
-$fromdate = $fromyear->getDefault() . '-' . $frommonth->getDefault() . '-' . $fromday->getDefault() . ' 00:00:00';
-$todate = $toyear->getDefault() . '-' . $tomonth->getDefault() . '-' . $today->getDefault() . ' 23:59:59';
+$fromdate = $oFromYear->getDefault() . '-' . $oFromMonth->getDefault() . '-' . $oFromDay->getDefault() . ' 00:00:00';
+$todate = $oToYear->getDefault() . '-' . $oToMonth->getDefault() . '-' . $oToDay->getDefault() . ' 23:59:59';
 $limitsql = "";
 if ($limit == 1) {
     $limitsql = "";
@@ -251,7 +221,7 @@ if ($idquser == '%' || $idquser == "") {
     $userquery = "LIKE '" . $idquser . "'";
 }
 
-$where = "user_id " . $userquery . " AND idlang LIKE '".$db->escape($selectedLangauge) ."' AND idaction LIKE '" . $db->escape($idqaction) . "' AND "
+$where = "user_id " . $userquery . " AND idlang LIKE '".$db->escape($selectedLanguage) ."' AND idaction LIKE '" . $db->escape($idqaction) . "' AND "
     . "logtimestamp > '" . $db->escape($fromdate) . "' AND logtimestamp < '" . $db->escape($todate) . "' AND "
     . "idclient LIKE '" . $db->escape($idqclient) . "'";
 
@@ -281,6 +251,7 @@ $tpl->set('s', 'LABEL_ACTION', i18n("Action"));
 $tpl->set('s', 'LABEL_CATEGORY', i18n("Category"));
 $tpl->set('s', 'LABEL_ARTICLE', i18n("Article"));
 
+$oCategoryArticle = null;
 while ($oItem = $actionLogColl->next()) {
     $counter++;
 
@@ -328,11 +299,12 @@ while ($oItem = $actionLogColl->next()) {
     $tpl->set('d', 'RDATETIME', $oItem->get('logtimestamp'));
     $tpl->set('d', 'RUSER' , $users[$oItem->get('user_id')]['username']);
     $tpl->set('d', 'RLANG', $aDisplayLanguage[$oItem->get('idlang')]);
-    $areaname = $classarea->getAreaName($actionColl->getAreaForAction($oItem->get('idaction')));
+    $areaName = $classarea->getAreaName($actionColl->getAreaForAction($oItem->get('idaction')));
+    $actionName = $actionColl->getActionName($oItem->get('idaction'));
     //the conversion of areaname may seem pointless, but it's apparently the only way to get the $langAct[''][*] array entries
-    $actionDescription =  $lngAct[($areaname == "") ? "" : $areaname][$actionColl->getActionName($oItem->get('idaction'))];
+    $actionDescription = isset($lngAct[$areaName][$actionName]) ? $lngAct[$areaName][$actionName] : '';
     if ($actionDescription == '') {
-        $actionDescription = $actionColl->getActionName($oItem->get('idaction'));
+        $actionDescription = $actionName;
     }
     $tpl->set('d', 'RACTION', $actionDescription);
     $tpl->set('d', 'RSTR', $strNames[$key]);

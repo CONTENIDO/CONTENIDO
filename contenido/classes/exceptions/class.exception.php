@@ -58,9 +58,12 @@ class cException extends Exception {
 
         // create a logger class and save it for all logging purposes
         $cfg = cRegistry::getConfig();
-        $writer = cLogWriter::factory("File", array(
-            'destination' => $cfg['path']['contenido_logs'] . 'exception.txt'
-        ));
+        $writer = cLogWriter::factory(
+            "File",
+            [
+                'destination' => $cfg['path']['contenido_logs'] . 'exception.txt',
+            ]
+        );
         $this->_logger = new cLog($writer);
 
         // determine if exception should be logged

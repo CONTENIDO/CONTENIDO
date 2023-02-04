@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiFile createNewItem
+ * @method cApiFile|bool next
  */
 class cApiFileCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiFileCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['files'], 'idfile');
+        parent::__construct(cRegistry::getDbTableName('files'), 'idfile');
         $this->_setItemClass('cApiFile');
 
         // set the join partners so that joins can be used via link() method
@@ -95,13 +96,8 @@ class cApiFile extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['files'], 'idfile');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
+        parent::__construct(cRegistry::getDbTableName('files'), 'idfile');
+        $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

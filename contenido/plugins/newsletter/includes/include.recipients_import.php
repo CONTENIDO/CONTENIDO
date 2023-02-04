@@ -13,19 +13,26 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var array $cfg
+ * @var string $area
+ * @var string $action
+ * @var int $client
+ * @var int $lang
+ * @var int $frame
+ */
+
 $oPage = new cGuiPage("recipients_import", "newsletter");
 $oRecipients = new NewsletterRecipientCollection();
 
-if (is_array($cfg['plugins']['recipients'])) {
-    foreach ($cfg['plugins']['recipients'] as $plugin) {
-        plugin_include("recipients", $plugin . "/" . $plugin . ".php");
-    }
+if (cHasPlugins('recipients')) {
+    cIncludePlugins('recipients');
 }
 
 // Check form data
-if ($_REQUEST["selDelimiter"] == "") {
-    $_REQUEST["selDelimiter"] = "tab";
-}
+$requestSelDelimiter = $_REQUEST['selDelimiter'] ?? 'tab';
+$requestTxtData = $_REQUEST['txtData'] ?? '';
 
 $sFileData = '';
 $aFields = [];
@@ -72,11 +79,12 @@ $aFieldDetails["news_type"]["link"] = false;
 $aFieldDetails["news_type"]["col"] = -1;
 
 // Check out if there are any plugins
-if (is_array($cfg['plugins']['recipients'])) {
+if (cHasPlugins('recipients')) {
     foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-        if (function_exists("recipients_" . $sPlugin . "_wantedVariables") && function_exists("recipients_" . $sPlugin . "_canonicalVariables")) {
-            $aPluginTitles = call_user_func("recipients_" . $sPlugin . "_canonicalVariables");
-            $aPluginFields = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
+        if (function_exists('recipients_' . $sPlugin . '_wantedVariables')
+            && function_exists('recipients_' . $sPlugin . '_canonicalVariables')) {
+            $aPluginTitles = call_user_func('recipients_' . $sPlugin . '_canonicalVariables');
+            $aPluginFields = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
             foreach ($aPluginFields as $sField) {
                 // if ($_REQUEST["ckb".$sField]) {
                 $aFields[$sField] = cString::toLowerCase(str_replace(" ", "", $aPluginTitles[$sField]));
@@ -138,7 +146,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
     }
 
     if ($sFileData) {
-        switch ($_REQUEST["selDelimiter"]) {
+        switch ($requestSelDelimiter) {
             case "semicolon":
                 $sDelimiter = ";";
                 break;
@@ -149,7 +157,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
         // echo "<pre>".nl2br(stripslashes($sFileData))."</pre>";
         $aLines = explode("\n", stripslashes($sFileData));
         $iAdded = 0;
-        $iDublettes = 0;
+        $iDuplicates = 0;
         $iInvalid = 0;
         $iRow = 0;
         $iCol = 0;
@@ -184,7 +192,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
                 if ($bStop) {
                     break;
                 } else {
-                    $_REQUEST["txtData"] = "";
+                    $requestTxtData = "";
                 }
             } else {
                 $sEMail = trim($aParts[$aFieldDetails["email"]["col"]]);
@@ -207,7 +215,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
                 } elseif ($oRecipients->emailExists($sEMail)) {
                     $aMessage[] = sprintf(i18n("Recipient with e-mail address '%s' already exists, item skipped (row: %s)", 'newsletter'), $sEMail, $iRow);
                     $aInvalidLines[] = $sLine;
-                    $iDublettes++;
+                    $iDuplicates++;
                 } else {
                     unset($sLine);
 
@@ -313,12 +321,12 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
             }
         }
         if (count($aInvalidLines) > 1) {
-            $_REQUEST["txtData"] = implode("\n", $aInvalidLines);
+            $requestTxtData = implode("\n", $aInvalidLines);
         }
         if (count($aMessage) > 0) {
             $oPage->displayWarning(implode("<br>", $aMessage)) . "<br>";
         }
-        $oPage->displayOk(sprintf(i18n("%d recipients added, %d recipients skipped (e-mail already exists) and %d invalid recipients/e-mail addresses ignored. Invalid recipients are shown (if any).", 'newsletter'), $iAdded, $iDublettes, $iInvalid));
+        $oPage->displayOk(sprintf(i18n("%d recipients added, %d recipients skipped (e-mail already exists) and %d invalid recipients/e-mail addresses ignored. Invalid recipients are shown (if any).", 'newsletter'), $iAdded, $iDuplicates, $iInvalid));
         if ($iAdded > 0) {
             $oPage->reloadLeftBottomFrame([]);
         }
@@ -347,25 +355,25 @@ $aItems = [
     ]
 ];
 $oSelDelimiter->autoFill($aItems);
-$oSelDelimiter->setDefault($_REQUEST["selDelimiter"]);
+$oSelDelimiter->setDefault($requestSelDelimiter);
 $oForm->add(i18n("Delimiter", 'newsletter'), $oSelDelimiter->render());
 
-$ofileUpload = new cHTMLUpload('receptionis_file');
+$oFileUpload = new cHTMLUpload('receptionis_file');
 
-$oAreaData = new cHTMLTextarea("txtData", $_REQUEST["txtData"], 80, 20);
+$oAreaData = new cHTMLTextarea("txtData", $requestTxtData, 80, 20);
 
 $sInfo = '<a href="javascript:fncShowHide(\'idInfoText\');"><strong>' . i18n("Import information", 'newsletter') . '</strong></a>' . '<div id="idInfoText" style="display: none">' . '<br><br><strong>' . i18n("Specify file:", 'newsletter') . '</strong>' . '<br>' . i18n("The file is of type csv and is saved with UTF-8 encoding.", "newsletter") . '<br><br><strong>' . i18n("Specify colum types:", 'newsletter') . '</strong>' . i18n("<br>The first line must contain the column names; this specifies the column order.<br>&lt;column name&gt;[delimiter]&lt;column name&gt;...", 'newsletter') . '<br><br><strong>' . i18n("Data structure:", 'newsletter') . '</strong><br>' . i18n("The recipients have to be entered using the following format:<br>&lt;data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line.", 'newsletter') . '<br><br><strong>' . i18n("Example:", 'newsletter') . '</strong>' . i18n("<br>name;email;confirmed<br>Smith;jon.smith@example.org;1", 'newsletter') . '<br><br><strong>' . i18n("The following column names will be recognized:", 'newsletter') . '</strong><br>' . implode("<br>\n", $aFields);
 
-$oForm->add(i18n("Recipients", 'newsletter'), $ofileUpload->render() . "<br>" . $sInfo);
+$oForm->add(i18n("Recipients", 'newsletter'), $oFileUpload->render() . "<br>" . $sInfo);
 unset($sInfo);
 
 $sExecScript = '
 <script type="text/javascript">
 // Enabled/Disable group box
 function fncShowHide(strItemID) {
-    objItem = document.getElementById(strItemID);
+    var objItem = document.getElementById(strItemID);
 
-    if (objItem.style.display == "none") {
+    if (objItem.style.display === "none") {
        objItem.style.display = "inline";
     } else {
        objItem.style.display = "none";
@@ -375,5 +383,3 @@ function fncShowHide(strItemID) {
 $oPage->addScript($sExecScript);
 $oPage->setContent($oForm);
 $oPage->render();
-
-?>

@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiInUse createNewItem
+ * @method cApiInUse|bool next
  */
 class cApiInUseCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiInUseCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['inuse'], 'idinuse');
+        parent::__construct(cRegistry::getDbTableName('inuse'), 'idinuse');
         $this->_setItemClass('cApiInUse');
     }
 
@@ -53,24 +54,19 @@ class cApiInUseCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function markInUse($type, $objectid, $session, $user) {
-        $type = $type;
-        $objectid = $objectid;
-        $session = $session;
-        $user = $user;
-
         $this->select("type='" . $this->escape($type) . "' AND objectid='" . $this->escape($objectid) . "'");
 
-        $newitem = NULL;
+        $newItem = NULL;
         if (!$this->next()) {
-            $newitem = $this->createNewItem();
-            $newitem->set('type', $type);
-            $newitem->set('objectid', $objectid);
-            $newitem->set('session', $session);
-            $newitem->set('userid', $user);
-            $newitem->set('timestamp', time());
-            $newitem->store();
+            $newItem = $this->createNewItem();
+            $newItem->set('type', $type);
+            $newItem->set('objectid', $objectid);
+            $newItem->set('session', $session);
+            $newItem->set('userid', $user);
+            $newItem->set('timestamp', time());
+            $newItem->store();
         }
-        return $newitem;
+        return $newItem;
     }
 
     /**
@@ -108,7 +104,7 @@ class cApiInUseCollection extends ItemCollection {
      *         Specifies the type to de-mark.
      * @param string $session
      *         Specifies the session for which the "in use" mark is valid
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -133,7 +129,7 @@ class cApiInUseCollection extends ItemCollection {
      *         Specifies the type to de-mark.
      * @param string $itemid
      *         Specifies the item
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -156,7 +152,7 @@ class cApiInUseCollection extends ItemCollection {
      *
      * @param string $userId
      *         Specifies the user
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -196,7 +192,7 @@ class cApiInUseCollection extends ItemCollection {
      *
      * @param string $session
      *         Specifies the session for which the "in use" marks should be removed
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -219,7 +215,7 @@ class cApiInUseCollection extends ItemCollection {
      *         Specifies the type to de-mark.
      * @param mixed  $objectid
      *         Specifies the object ID
-     * @return cApiInUse bool
+     * @return cApiInUse|bool
      *         false if it's not in use or returns the object if it is.
      * @throws cDbException
      * @throws cException
@@ -257,8 +253,8 @@ class cApiInUseCollection extends ItemCollection {
      *                                True if the user can override the lock
      * @param string $location        [optional]
      *                                Value to append to the override lock button
-     * @return bool array
-     *                                returnWarning is false, returns a bool value wether the object
+     * @return bool|array
+     *                                returnWarning is false, returns a bool value weather the object
      *                                is locked. If returnWarning is true, returns a 2-item array
      *                                (bool inUse, string errormessage).
      * @throws cDbException
@@ -266,29 +262,34 @@ class cApiInUseCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function checkAndMark($type, $objectid, $returnWarning = false, $warningTemplate = '', $allowOverride = false, $location = '') {
-        global $sess, $auth, $notification, $area, $frame, $perm;
+        global $notification;
+
+        $sess = cRegistry::getSession();
+        $auth = cRegistry::getAuth();
+
+        $inUse = false;
+        $notificationMsg = '';
 
         if ((($obj = $this->checkMark($type, $objectid)) === false) || ($auth->auth['uid'] == $obj->get('userid'))) {
             $this->markInUse($type, $objectid, $sess->id, $auth->auth['uid']);
-            $inUse = false;
-            $disabled = '';
-            $noti = '';
         } else {
-            if ($returnWarning == true) {
+            if ($returnWarning) {
                 $vuser = new cApiUser($obj->get('userid'));
                 $inUseUser = $vuser->getField('username');
                 $inUseUserRealName = $vuser->getField('realname');
 
                 $message = sprintf($warningTemplate, $inUseUser, $inUseUserRealName);
 
-                if ($allowOverride == true && ($auth->auth['uid'] == $obj->get('userid') || $perm->have_perm())) {
+                $perm = cRegistry::getPerm();
+                if ($allowOverride && ($auth->auth['uid'] == $obj->get('userid') || $perm->have_perm())) {
                     $alt = i18n("Click here if you want to override the lock");
 
                     $link = $sess->url($location . "&overridetype=" . $type . "&overrideid=" . $objectid);
 
-                    $warnmessage = i18n("Do you really want to override the lock?");
-                    $script = "javascript:if (window.confirm('" . $warnmessage . "') == true) { window.location.href  = '" . $link . "';}";
-                    $override = '<br><br><a alt="' . $alt . '" title="' . $alt . '" href="' . $script . '" class="standard">[' . i18n("Override lock") . ']</a> <a href="javascript://" class="standard" onclick="elem = document.getElementById(\'contenido_notification\'); elem.style.display=\'none\'">[' . i18n("Hide notification") . ']</a>';
+                    $warnMsg = i18n("Do you really want to override the lock?");
+                    $linkScript = "javascript:if (window.confirm('" . $warnMsg . "') == true) { window.location.href  = '" . $link . "';}";
+                    $clickScript = "var elem = document.getElementById(\'contenido_notification\'); elem.style.display=\'none\'";
+                    $override = '<br><br><a alt="' . $alt . '" title="' . $alt . '" href="' . $linkScript . '" class="standard">[' . i18n("Override lock") . ']</a> <a href="javascript://" class="standard" onclick="' . $clickScript . '">[' . i18n("Hide notification") . ']</a>';
                 } else {
                     $override = '';
                 }
@@ -297,13 +298,13 @@ class cApiInUseCollection extends ItemCollection {
                     $notification = new cGuiNotification();
                 }
 
-                $noti = $notification->returnMessageBox('warning', $message . $override, 0);
+                $notificationMsg = $notification->returnMessageBox('warning', $message . $override, 0);
                 $inUse = true;
             }
         }
 
-        if ($returnWarning == true) {
-            return array($inUse, $noti);
+        if ($returnWarning) {
+            return [$inUse, $notificationMsg];
         } else {
             return $inUse;
         }
@@ -324,13 +325,12 @@ class cApiInUse extends Item
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     *                   
+     *
      * @throws cDbException
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['inuse'], 'idinuse');
+        parent::__construct(cRegistry::getDbTableName('inuse'), 'idinuse');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

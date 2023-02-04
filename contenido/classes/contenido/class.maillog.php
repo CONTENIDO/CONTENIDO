@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiMailLog createNewItem
+ * @method cApiMailLog|bool next
  */
 class cApiMailLogCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiMailLogCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['mail_log'], 'idmail');
+        parent::__construct(cRegistry::getDbTableName('mail_log'), 'idmail');
         $this->_setItemClass('cApiMailLog');
     }
 
@@ -94,9 +95,8 @@ class cApiMailLog extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['mail_log'], 'idmail');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('mail_log'), 'idmail');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

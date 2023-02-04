@@ -95,7 +95,7 @@ class PifaExporter {
     private function _addForm(DOMElement $parent, PifaForm $pifaForm) {
 
         // build attributes
-        $attr = array();
+        $attr = [];
         $attr['name'] = $pifaForm->get('name');
         $attr['table'] = $pifaForm->get('data_table');
         $attr['method'] = cString::toLowerCase($pifaForm->get('method'));
@@ -125,7 +125,7 @@ class PifaExporter {
     private function _addField(DOMElement $parent, PifaField $pifaField) {
 
         // build attributes
-        $attr = array();
+        $attr = [];
         $attr['rank'] = $pifaField->get('field_rank');
         $attr['type'] = $this->_getFieldTypeName($pifaField->get('field_type'));
         $attr['column'] = $pifaField->get('column_name');
@@ -164,7 +164,7 @@ class PifaExporter {
         }
 
         // build attributes
-        $attr = array();
+        $attr = [];
         if ($pifaField->get('display_label')) {
             $attr['display'] = 'true';
         } else {
@@ -192,7 +192,7 @@ class PifaExporter {
         }
 
         // add element
-        $this->_writer->addElement('help', $value, $parent, array(), true);
+        $this->_writer->addElement('help', $value, $parent, [], true);
     }
 
     /**
@@ -211,7 +211,7 @@ class PifaExporter {
         }
 
         // add element
-        $this->_writer->addElement('error', $value, $parent, array(), true);
+        $this->_writer->addElement('error', $value, $parent, [], true);
     }
 
     /**
@@ -230,7 +230,7 @@ class PifaExporter {
         }
 
         // add element
-        $this->_writer->addElement('rule', $value, $parent, array(), true);
+        $this->_writer->addElement('rule', $value, $parent, [], true);
     }
 
     /**
@@ -280,13 +280,13 @@ class PifaExporter {
         $optionValues = explode(',', $optionValues);
         $optionValues = array_filter($optionValues);
 
-        $count = min(array(
+        $count = min([
             count($optionLabels),
             count($optionValues),
-        ));
+        ]);
 
         // build attributes
-        $attr = array();
+        $attr = [];
         $attr['source'] = $pifaField->get('option_class');
         $attr = array_filter($attr);
 
@@ -300,7 +300,7 @@ class PifaExporter {
         for ($i = 0; $i < $count; $i++) {
 
             // build attributes
-            $attr = array();
+            $attr = [];
             $attr['value'] = $optionValues[$i];
             $attr = array_filter($attr);
 
@@ -327,7 +327,7 @@ class PifaExporter {
         }
 
         // get all column names as array
-        $columns = array();
+        $columns = [];
         /** @var PifaField $pifaField */
         foreach ($fields as $pifaField) {
             $columns[] = $pifaField->get('column_name');
@@ -347,7 +347,7 @@ class PifaExporter {
         foreach ($data as $row) {
 
             // build attributes
-            $attr = array();
+            $attr = [];
             if (true === (bool) $pifaForm->get('with_timestamp')) {
                 $attr['timestamp'] = $row['pifa_timestamp'];
             }
@@ -360,7 +360,7 @@ class PifaExporter {
             foreach ($columns as $index => $columnName) {
 
                 // build attributes
-                $attr = array();
+                $attr = [];
                 $attr['name'] = $columnName;
                 $attr = array_filter($attr);
 
@@ -379,7 +379,7 @@ class PifaExporter {
      * @return string
      */
     private function _getFieldTypeName($fieldTypeId) {
-        $fieldTypeNames = array(
+        $fieldTypeNames = [
             PifaField::INPUTTEXT => 'INPUTTEXT',
             PifaField::TEXTAREA => 'TEXTAREA',
             PifaField::INPUTPASSWORD => 'INPUTPASSWORD',
@@ -401,9 +401,8 @@ class PifaExporter {
             PifaField::FIELDSET_BEGIN => 'FIELDSET_BEGIN',
             PifaField::FIELDSET_END => 'FIELDSET_END',
             PifaField::BUTTONIMAGE => 'BUTTONIMAGE',
-        );
+        ];
         $fieldTypeName = $fieldTypeNames[$fieldTypeId];
-        $fieldTypeName = cString::toLowerCase($fieldTypeName);
-        return $fieldTypeName;
+        return cString::toLowerCase($fieldTypeName);
     }
 }

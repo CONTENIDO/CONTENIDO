@@ -83,7 +83,7 @@ class cUriBuilderCustomPath extends cUriBuilder {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
+    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = []) {
         if (!isset($aParams['idcat'])) {
             throw new cInvalidArgumentException('$aParams[idcat] must be set!');
         }

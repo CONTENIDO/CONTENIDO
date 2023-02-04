@@ -38,7 +38,6 @@ class cContentTypeImgdescr extends cContentTypeImgeditor {
      * @throws cException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-
         // There are no raw settings here, because CMS_IMGEDITOR is now
         // saved in con_upl_meta. So compute the appropriate raw settings
         // and call the parent constructor with them.

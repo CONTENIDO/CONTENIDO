@@ -46,7 +46,7 @@ class cArray {
 
     /**
      * Search for given value in given array and return key of its first
-     * occurance.
+     * occurrence.
      *
      * If value wasn't found at all false will be returned. If given array
      * contains subarrays, these will be searched too. If value is found in
@@ -55,14 +55,14 @@ class cArray {
      * Usually the values are tested for equality with the given $search. If the
      * flag $partial is not false values are tested to contain $search.
      * Otherwise, if $strict equals true values are tested for identity with
-     * $search. Otherwise (which is the default) values are tested for equality.
+     * $search. Otherwise, (which is the default) values are tested for equality.
      *
      * Be careful when searching by equality in arrays containing values that
      * are no strings! The same is true for searching by equality for values
-     * that are no strings. PHPs behaviour is quite weird concerning comparision
+     * that are no strings. PHPs behaviour is quite weird concerning comparison
      * of different data types. E.g. '0' equals '0.0', 'foo' equals 0, 'foo'
      * equals 0.0, NULL equals '' and false equals '0'! When dealing with
-     * nonstrings consider to use the strict mode!
+     * nonstrings consider using the strict mode!
      *
      * Another caveat is when searching for an empty string when using the
      * partial mode. This would lead to an error and is considered a bug!
@@ -123,12 +123,12 @@ class cArray {
      *         Sorted array
      */
     public static function sortWithLocale(array $arr, $locale) {
-        $oldlocale = setlocale(LC_COLLATE, 0);
+        $oldLocale = setlocale(LC_COLLATE, 0);
         setlocale(LC_COLLATE, $locale);
 
         uasort($arr, 'strcoll');
 
-        setlocale(LC_COLLATE, $oldlocale);
+        setlocale(LC_COLLATE, $oldLocale);
 
         return $arr;
     }
@@ -163,24 +163,33 @@ class cArray {
      */
     public static function csort() {
         $args = func_get_args();
-        $marray = array_shift($args);
-        $msortline = "return(array_multisort(";
+        $mArray = array_shift($args);
+
+        if (!is_array($mArray) || empty($mArray)) {
+            return $mArray;
+        }
+
+        // Build code like
+        // return array_multisort($sortarr[1], $sortarr[2], $mArray);
+        $sortCode = "return array_multisort(";
         $i = 0;
         foreach ($args as $arg) {
             $i++;
             if (is_string($arg)) {
-                foreach ($marray as $row) {
+                foreach ($mArray as $row) {
                     $a = cString::toUpperCase($row[$arg]);
-                    $sortarr[$i][] = $a;
+                    $sortArr[$i][] = $a;
                 }
             } else {
-                $sortarr[$i] = $arg;
+                $sortArr[$i] = $arg;
             }
-            $msortline .= "\$sortarr[" . $i . "],";
+            $sortCode .= "\$sortArr[" . $i . "], ";
         }
-        $msortline .= "\$marray));";
-        @eval($msortline);
-        return $marray;
+        $sortCode .= "\$mArray);";
+
+        @eval($sortCode);
+
+        return $mArray;
     }
 
     /**
@@ -196,7 +205,7 @@ class cArray {
             if (isset($aArray)) {
                 return false;
             }
-            $aArray = array();
+            $aArray = [];
         }
 
         if (!array_key_exists($sKey, $aArray)) {
@@ -204,4 +213,22 @@ class cArray {
         }
         return true;
     }
+
+    /**
+     * Get the first key of the given array without affecting the internal
+     * array pointer.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param array $array An array
+     * @return int|string|null
+     */
+    public static function getFirstKey(array $array) {
+        // We could use array_key_first(), but only from PHP >= 7.3.0
+        // see https://www.php.net/manual/en/function.array-key-first.php
+        foreach ($array as $key => $unused) {
+            return $key;
+        }
+        return NULL;
+    }
+
 }

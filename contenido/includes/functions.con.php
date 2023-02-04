@@ -24,27 +24,27 @@ cInclude('includes', 'functions.con2.php');
  *
  * Create article version, if versioning state is simple or advanced.
  *
- * @param int    $idcat
- * @param int    $idcatnew
- * @param int    $idart
- * @param int    $isstart
- * @param int    $idtpl
- * @param int    $idartlang
- * @param int    $idlang
- * @param string $title
- * @param string $summary
- * @param int    $artspec
- * @param string $created
- * @param string $lastmodified
- * @param string $author
- * @param int    $online
- * @param string $datestart
- * @param string $dateend
- * @param int    $artsort
- * @param int    $keyart
- * @param int    $searchable
- * @param float  $sitemapprio
- * @param string $changefreq
+ * @param int        $idcat
+ * @param int|array  $idcatnew
+ * @param int        $idart
+ * @param int        $isstart
+ * @param int        $idtpl
+ * @param int        $idartlang
+ * @param int        $idlang
+ * @param string     $title
+ * @param string     $summary
+ * @param int        $artspec
+ * @param string     $created
+ * @param string     $lastmodified
+ * @param string     $author
+ * @param int        $online
+ * @param string     $datestart
+ * @param string     $dateend
+ * @param int        $artsort
+ * @param int        $keyart
+ * @param int        $searchable
+ * @param float      $sitemapprio
+ * @param string     $changefreq
  *
  * @return int
  *         Id of the new article
@@ -136,7 +136,8 @@ function conEditFirstTime(
         $lastId = $oArtLang->get('idartlang');
         $availableTags = conGetAvailableMetaTagTypes();
         foreach ($availableTags as $key => $value) {
-            conSetMetaValue($lastId, $key, $_POST['META' . $value['name']]);
+            $tmpValue = isset($value['name']) && isset($_POST['META' . $value['name']]) ? $_POST['META' . $value['name']] : '';
+            conSetMetaValue($lastId, $key, $tmpValue);
         }
     }
 
@@ -264,14 +265,14 @@ function conEditFirstTime(
  * @param string       $title
  * @param string       $summary
  * @param int          $artspec
- * @param unknown_type $created
- * @param unknown_type $lastmodified
- * @param unknown_type $author
- * @param unknown_type $online
- * @param unknown_type $datestart
- * @param unknown_type $dateend
- * @param unknown_type $published
- * @param unknown_type $artsort
+ * @param string       $created
+ * @param string       $lastmodified
+ * @param string       $author
+ * @param int          $online
+ * @param string       $datestart
+ * @param string       $dateend
+ * @param int          $published
+ * @param int          $artsort
  * @param int          $keyart
  * @param int          $searchable
  * @param int          $sitemapprio
@@ -284,25 +285,23 @@ function conEditFirstTime(
  * @throws cInvalidArgumentException
  */
 function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $published, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = -1, $changefreq = 'nothing') {
-    global $client, $lang, $redirect, $redirect_url, $external_redirect, $perm;
+    global $client, $lang, $redirect, $redirect_url, $external_redirect;
     global $urlname, $page_title;
     global $time_move_cat, $time_target_cat;
     // Used to indicate if the moved article should be online
     global $time_online_move;
     global $timemgmt;
-    // CON-2134 check admin permission
-    $auth = cRegistry::getAuth();
-    $aAuthPerms = explode(',', $auth->auth['perm']);
 
-    $admin = false;
-    if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-        $admin = true;
-    }
+    $perm = cRegistry::getPerm();
+
+    // CON-2134 check admin permission
+    $isAdmin = cPermission::checkAdminPermission(cRegistry::getAuth()->getPerms());
+
     $oArtLang = new cApiArticleLanguage($idartlang);
     $locked = (int) $oArtLang->get('locked');
 
-    // abort editing if article is locked and user user no admin
-    if (1 === $locked && false === $admin) {
+    // abort editing if article is locked and user is no admin
+    if (1 === $locked && false === $isAdmin) {
         return $idart;
     }
 
@@ -624,7 +623,8 @@ function conMakeArticleIndex($idartlang, $idart) {
         }
         // get first idcat by idart
         $coll = new cApiCategoryArticleCollection();
-        $idcat = array_shift($coll->getCategoryIdsByArticleId($idart));
+        $categoryIds = $coll->getCategoryIdsByArticleId($idart);
+        $idcat = array_shift($categoryIds);
         // get idcatlang by idcat & idlang
         $categoryLanguage = new cApiCategoryLanguage();
         $categoryLanguage->loadByCategoryIdAndLanguageId($idcat, $idlang);
@@ -1148,7 +1148,7 @@ function conDeeperCategoriesArray($idcat) {
  * @param bool   $final
  * @param bool   $usecache
  *
- * @return string
+ * @return string|void
  *         Location string
  *
  * @throws cDbException
@@ -1315,6 +1315,64 @@ function conSetStartArticle($idcat, $idart, $lang, $isstart)
     }
 
     return $succ;
+}
+
+/**
+ * Handles the start article logic of an new created or edited article.
+ *
+ * @since CONTENIDO 4.10.2
+ * @param int|array $idcatnew
+ * @param int $idcat
+ * @param int $is_start
+ * @param int $idart
+ * @param int $lang
+ * @param int $idartlang
+ * @return void
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
+function conSetStartArticleHandler($idcatnew, $idcat, $is_start, $idart, $lang, $idartlang) {
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
+
+    // if article should be related to categories
+    if (is_array($idcatnew)) {
+        // if article should still be related to current category
+        if (in_array($idcat, $idcatnew)) {
+            // if article should be startarticle
+            if ($is_start == 1) {
+                // set as startarticle of current category
+                conSetStartArticle($idcat, $idart, $lang, $is_start);
+            }
+
+            // if article should not be startarticle
+            if (!isset($is_start)) {
+                // get startidartlang of current category in current language
+                $sql = 'SELECT `startidartlang` FROM `%s` WHERE `idcat` = %d AND `idlang` = %d AND `startidartlang` != 0';
+                $db->query($sql, $cfg['tab']['cat_lang'], $idcat, $lang);
+                if ($db->nextRecord()) {
+                    // category has startarticle
+                    if ($idartlang == $db->f('startidartlang')) {
+                        // current article is currently startarticle
+                        conSetStartArticle($idcat, $idart, $lang, 0);
+                    }
+                } else {
+                    // category has no startarticle
+                    conSetStartArticle($idcat, $idart, $lang, 0);
+                }
+            }
+        }
+
+        // enforce code creation for all categories this article should be related to
+        foreach ($idcatnew as $idcat) {
+            $sql = 'SELECT `idcatart` FROM `%s` WHERE `idcat` = %d AND `idart` = %d';
+            $db->query($sql, $cfg['tab']['cat_art'], $idcat, $idart);
+            $db->nextRecord();
+
+            conSetCodeFlag($db->f('idcatart'));
+        }
+    }
 }
 
 /**

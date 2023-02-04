@@ -125,7 +125,7 @@ class idna_convert
     public function set_parameter($option, $value = false)
     {
         if (!is_array($option)) {
-            $option = array($option => $value);
+            $option = [$option => $value];
         }
         foreach ($option as $k => $v) {
             switch ($k) {
@@ -148,15 +148,15 @@ class idna_convert
                 $this->_strict_mode = ($v) ? true : false;
                 break;
             case 'idn_version':
-                if (in_array($v, array('2003', '2008'))) {
+                if (in_array($v, ['2003', '2008'])) {
                     $this->_idn_version = $v;
                 } else {
-                    $this->_error('Set Parameter: Unknown parameter '.$v.' for option '.$k);
+                    $this->_error('Set Parameter: Unknown parameter ' . $v . ' for option ' . $k);
                 }
                 break;
             case 'encode_german_sz': // Deprecated
                 if (!$v) {
-                    self::$NP['replacemaps'][0xDF] = array(0x73, 0x73);
+                    self::$NP['replacemaps'][0xDF] = [0x73, 0x73];
                 } else {
                     unset(self::$NP['replacemaps'][0xDF]);
                 }
@@ -401,7 +401,7 @@ class idna_convert
      */
     protected function _decode($encoded)
     {
-        $decoded = array();
+        $decoded = [];
         // find the Punycode prefix
         if (!preg_match('!^'.preg_quote($this->_punycode_prefix, '!').'!', $encoded)) {
             $this->_error('This is not a punycode string');
@@ -595,13 +595,13 @@ class idna_convert
      *
      * @param    array    Unicode Characters
      *
-     * @return   array   Unicode Characters, Nameprep'd
+     * @return   array|bool   Unicode Characters, Nameprep'd
      */
     protected function _nameprep($input)
     {
-        $output = array();
+        $output = [];
         $error = false;
-        //
+
         // Mapping
         // Walking through the input array, performing the required steps on each of
         // the input chars and putting the result into the output array
@@ -681,8 +681,10 @@ class idna_convert
     protected function _hangul_decompose($char)
     {
         $sindex = (int) $char - $this->_sbase;
-        if ($sindex < 0 || $sindex >= $this->_scount) return array($char);
-        $result = array();
+        if ($sindex < 0 || $sindex >= $this->_scount) {
+            return [$char];
+        }
+        $result   = [];
         $result[] = (int) $this->_lbase + $sindex / $this->_ncount;
         $result[] = (int) $this->_vbase + ($sindex % $this->_ncount) / $this->_tcount;
         $T = intval($this->_tbase + $sindex % $this->_tcount);
@@ -698,8 +700,10 @@ class idna_convert
     protected function _hangul_compose($input)
     {
         $inp_len = count($input);
-        if (!$inp_len) return array();
-        $result = array();
+        if (!$inp_len) {
+            return [];
+        }
+        $result = [];
         $last = (int) $input[0];
         $result[] = $last; // copy first char from input to output
 
@@ -818,7 +822,7 @@ class idna_convert
      */
     protected function _utf8_to_ucs4($input)
     {
-        $output = array();
+        $output = [];
         $out_len = 0;
         $inp_len = self::byteLength($input);
         $mode = 'next';
@@ -936,11 +940,11 @@ class idna_convert
      * Convert UCS-4 strin into UCS-4 garray
      *
      * @param  string $input
-     * @return array
+     * @return array|bool
      */
     protected function _ucs4_string_to_ucs4($input)
     {
-        $output = array();
+        $output = [];
         $inp_len = self::byteLength($input);
         // Input length must be dividable by 4
         if ($inp_len % 4) {
@@ -981,7 +985,7 @@ class idna_convert
      * @param array $params Set of paramaters
      * @return idna_convert
      */
-    public function getInstance($params = array())
+    public function getInstance($params = [])
     {
         return new idna_convert($params);
     }
@@ -994,11 +998,11 @@ class idna_convert
      * @param array $params Set of paramaters
      * @return object idna_convert
      */
-    public function singleton($params = array())
+    public function singleton($params = [])
     {
         static $instances;
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
         $signature = serialize($params);
         if (!isset($instances[$signature])) {

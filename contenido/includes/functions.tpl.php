@@ -29,14 +29,17 @@ cInclude("includes", "functions.con.php");
  * @param int[]|null $c Array of container id (key) and set module ids (value)
  * @param mixed|int $default 1 if template is defined as standard template
  *
- * @return number|Ambigous <mixed, bool, multitype:>
+ * @return number|mixed <mixed, bool, multitype:>
  *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
  */
 function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c, $default) {
-    global $db, $auth, $client, $cfg;
+    $db = cRegistry::getDb();
+    $auth = cRegistry::getAuth();
+    $cfg = cRegistry::getConfig();
+    $client = cRegistry::getClientId();
 
     $author = (string) $auth->auth['uname'];
 
@@ -45,8 +48,9 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
     }
 
     $template = new cApiTemplate();
-    /*CON-2545: load template by id and not by its name */
-    $template->loadByMany(array('idclient' => $client, 'idtpl' => $idtpl));
+
+    // CON-2545: load template by id and not by its name
+    $template->loadByMany(['idclient' => $client, 'idtpl' => $idtpl]);
 
     if ($template->isLoaded() && $template->get('idtpl') != $idtpl) {
         cRegistry::addErrorMessage(i18n("Template name already exists"));
@@ -98,7 +102,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
                 if ($idmodule != 0 && in_array($idcontainer, $layContainers) ) {
                     $containerColl2->create($idtpl, $idcontainer, $idmodule);
                 }
-            } 
+            }
         }
 
         // Generate code
@@ -171,7 +175,10 @@ function tplDeleteTemplate($idtpl) {
  * @throws cInvalidArgumentException
  */
 function tplBrowseLayoutForContainers($idlay) {
-    global $cfg, $containerinf, $lang;
+    global $containerinf;
+
+    $cfg = cRegistry::getConfig();
+    $lang = cRegistry::getLanguageId();
 
     $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $lang);
     $code = $layoutInFile->getLayoutCode();
@@ -249,6 +256,8 @@ function tplGetContainerName($idlay, $container) {
             return $containerinf[$idlay][$container]["name"];
         }
     }
+
+    return null;
 }
 
 /**
@@ -269,6 +278,8 @@ function tplGetContainerMode($idlay, $container) {
             return $containerinf[$idlay][$container]["mode"];
         }
     }
+
+    return null;
 }
 
 /**
@@ -318,6 +329,8 @@ function tplGetContainerDefault($idlay, $container) {
             return $containerinf[$idlay][$container]["default"];
         }
     }
+
+    return null;
 }
 
 /**
@@ -329,7 +342,10 @@ function tplGetContainerDefault($idlay, $container) {
  * @throws cInvalidArgumentException
  */
 function tplPreparseLayout($idlay) {
-    global $cfg, $containerinf, $lang;
+    global $containerinf;
+
+    $cfg = cRegistry::getConfig();
+    $lang = cRegistry::getLanguageId();
 
     $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $lang);
     $code = $layoutInFile->getLayoutCode();
@@ -340,7 +356,7 @@ function tplPreparseLayout($idlay) {
     if (!is_array($containerinf)) {
         $containerinf = [];
     }
-    if (!is_array($containerinf[$idlay])) {
+    if (!isset($containerinf[$idlay])) {
         $containerinf[$idlay] = [];
     }
 
@@ -381,8 +397,7 @@ function tplPreparseLayout($idlay) {
  * @throws cInvalidArgumentException
  */
 function tplDuplicateTemplate($idtpl) {
-    global $auth;
-
+    $auth = cRegistry::getAuth();
     $idtpl = cSecurity::toInteger($idtpl);
     $template = new cApiTemplate($idtpl);
 
@@ -448,9 +463,9 @@ function tplDuplicateTemplate($idtpl) {
  * @throws cDbException
  */
 function tplIsTemplateInUse($idtpl) {
-    global $cfg, $client;
-
     $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
+    $client = cRegistry::getClientId();
 
     // Check categories
     $sql = "SELECT
@@ -501,9 +516,9 @@ function tplIsTemplateInUse($idtpl) {
  * @throws cDbException
  */
 function tplGetInUsedData($idtpl) {
-    global $cfg, $client;
-
     $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
+    $client = cRegistry::getClientId();
 
     $aUsedData = [];
 
@@ -570,8 +585,7 @@ function tplGetInUsedData($idtpl) {
  * @throws cInvalidArgumentException
  */
 function tplcfgDuplicate($idtplcfg) {
-    global $auth;
-
+    $auth = cRegistry::getAuth();
     $idtplcfg = cSecurity::toInteger($idtplcfg);
     $templateConfig = new cApiTemplateConfiguration($idtplcfg);
     if (!$templateConfig->isLoaded()) {
@@ -616,8 +630,9 @@ function tplcfgDuplicate($idtplcfg) {
  * @throws cInvalidArgumentException
  */
 function tplAutoFillModules($idtpl) {
-    global $cfg, $db_autofill, $containerinf, $_autoFillContainerCache;
+    global $db_autofill, $containerinf, $_autoFillContainerCache;
 
+    $cfg = cRegistry::getConfig();
     $idtpl = cSecurity::toInteger($idtpl);
 
     if (!is_object($db_autofill)) {
@@ -635,7 +650,7 @@ function tplAutoFillModules($idtpl) {
     if (!(is_array($containerinf) && array_key_exists($idlay, $containerinf) && array_key_exists($idlay, $_autoFillContainerCache))) {
         if (!is_array($_autoFillContainerCache)) {
             $_autoFillContainerCache = [];
-    }
+        }
         $_autoFillContainerCache[$idlay] = tplGetContainerNumbersInLayout($idlay);
     }
     $containerNumbers = $_autoFillContainerCache[$idlay];
@@ -693,6 +708,7 @@ function tplAutoFillModules($idtpl) {
                 break;
         }
     }
+    return true;
 }
 
 /**

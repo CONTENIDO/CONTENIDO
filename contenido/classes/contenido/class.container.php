@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiContainer createNewItem
+ * @method cApiContainer|bool next
  */
 class cApiContainerCollection extends ItemCollection {
     /**
@@ -31,8 +33,7 @@ class cApiContainerCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['container'], 'idcontainer');
+        parent::__construct(cRegistry::getDbTableName('container'), 'idcontainer');
         $this->_setItemClass('cApiContainer');
 
         // set the join partners so that joins can be used via link() method
@@ -74,7 +75,7 @@ class cApiContainerCollection extends ItemCollection {
      * @throws cDbException
      */
     public function getNumbersByTemplate($idtpl) {
-        $list = array();
+        $list = [];
         $sql = "SELECT number FROM `%s` WHERE idtpl = %d";
         $this->db->query($sql, $this->table, $idtpl);
         while ($this->db->nextRecord()) {
@@ -133,16 +134,15 @@ class cApiContainer extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['container'], 'idcontainer');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('container'), 'idcontainer');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Userdefined setter for container fields.
+     * User-defined setter for container fields.
      *
      * @param string $name
      * @param mixed $value
@@ -156,7 +156,7 @@ class cApiContainer extends Item
             case 'idtpl':
             case 'number':
             case 'idmod':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

@@ -22,16 +22,16 @@ $sCatlist = cSecurity::toString($_REQUEST['wholelist']);
 if ($sCatlist != '') {
     $aCatlist = explode(',', $sCatlist);
 } else {
-    $aCatlist = array();
+    $aCatlist = [];
 }
 
 $aConexpandedList = unserialize($currentuser->getUserProperty("system", "con_cat_expandstate"));
 if (!is_array($aConexpandedList))  {
-    $aConexpandedList = array();
+    $aConexpandedList = [];
 }
 
 if (!is_array($aConexpandedList[$client])) {
-    $aConexpandedList[$client] = array();
+    $aConexpandedList[$client] = [];
 }
 
 if ($bDebug) {
@@ -57,7 +57,7 @@ if ($action == 'toggle') {
     }
 } elseif ($action == 'collapseall') {
     if (count($aConexpandedList[$client])) {
-        $aConexpandedList[$client] = array();
+        $aConexpandedList[$client] = [];
     }
 } elseif ($action == 'expandall') {
     $aConexpandedList[$client] = $aCatlist;

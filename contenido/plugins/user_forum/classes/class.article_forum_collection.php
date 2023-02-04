@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage UserForum
  * @method ArticleForum createNewItem
- * @method ArticleForum next
+ * @method ArticleForum|bool next
  */
 class ArticleForumCollection extends ItemCollection {
 
@@ -554,8 +554,8 @@ class ArticleForumCollection extends ItemCollection {
             'idclient'             => cRegistry::getClientId(),
             'like'                 => 0,
             'dislike'              => 0,
-            'editedat'             => NULL,
-            'editedby'             => NULL,
+            'editedat'             => '',
+            'editedby'             => '',
             'timestamp'            => date('Y-m-d H:i:s'),
             'online'               => $online
         ];
@@ -818,5 +818,3 @@ class ArticleForumCollection extends ItemCollection {
     }
 
 }
-
-?>

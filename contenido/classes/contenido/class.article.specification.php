@@ -18,6 +18,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiArticleSpecification createNewItem
+ * @method cApiArticleSpecification|bool next
  */
 class cApiArticleSpecificationCollection extends ItemCollection {
     /**
@@ -26,8 +28,7 @@ class cApiArticleSpecificationCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['art_spec'], 'idartspec');
+        parent::__construct(cRegistry::getDbTableName('art_spec'), 'idartspec');
         $this->_setItemClass('cApiArticleSpecification');
     }
 
@@ -45,7 +46,7 @@ class cApiArticleSpecificationCollection extends ItemCollection {
      */
     public function fetchByClientLang($client, $lang, $orderBy = '') {
         $this->select("client=" . (int) $client . " AND lang=" . (int) $lang, '', $this->escape($orderBy));
-        $entries = array();
+        $entries = [];
         while (($entry = $this->next()) !== false) {
             $entries[] = clone $entry;
         }
@@ -72,9 +73,8 @@ class cApiArticleSpecification extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['art_spec'], 'idartspec');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('art_spec'), 'idartspec');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

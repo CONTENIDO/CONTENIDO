@@ -21,12 +21,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $client, $cfg;
-
 ################################################################################
 ##### Initialization
 
-if ((int) $client <= 0) {
+$cfg = cRegistry::getConfig();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$pluginName = $cfg['pi_mod_rewrite']['pluginName'];
+
+if ($client <= 0) {
     // if there is no client selected, display empty page
     $oPage = new cGuiPage("mod_rewrite_contenttest", "mod_rewrite");
     $oPage->displayCriticalError(i18n("No Client selected"));
@@ -46,14 +48,14 @@ $oMrTestController = new ModRewrite_ContentTestController();
 
 // view language variables
 $oView = $oMrTestController->getView();
-$oView->lng_form_info = i18n('Define options to genereate the URLs by using the form below and run the test.', 'mod_rewrite');
-$oView->lng_form_label = i18n('Parameter to use', 'mod_rewrite');
-$oView->lng_maxitems_lbl = i18n('Number of URLs to generate', 'mod_rewrite');
-$oView->lng_run_test = i18n('Run test', 'mod_rewrite');
+$oView->lng_form_info = i18n('Define options to genereate the URLs by using the form below and run the test.', $pluginName);
+$oView->lng_form_label = i18n('Parameter to use', $pluginName);
+$oView->lng_maxitems_lbl = i18n('Number of URLs to generate', $pluginName);
+$oView->lng_run_test = i18n('Run test', $pluginName);
 
-$oView->lng_result_item_tpl = i18n('{pref}<strong>{name}</strong><br>{pref}Builder in:    {url_in}<br>{pref}Builder out:   {url_out}<br>{pref}<span style="color:{color}">Resolved URL:  {url_res}</span><br>{pref}Resolver err:  {err}<br>{pref}Resolved data: {data}', 'mod_rewrite');
+$oView->lng_result_item_tpl = i18n('{pref}<strong>{name}</strong><br>{pref}Builder in:    {url_in}<br>{pref}Builder out:   {url_out}<br>{pref}<span style="color:{color}">Resolved URL:  {url_res}</span><br>{pref}Resolver err:  {err}<br>{pref}Resolved data: {data}', $pluginName);
 
-$oView->lng_result_message_tpl = i18n('Duration of test run: {time} seconds.<br>Number of processed URLs: {num_urls}<br><span class="settingFine">Successful resolved: {num_success}</span><br><span class="settingWrong">Errors during resolving: {num_fail}</span></strong>', 'mod_rewrite');
+$oView->lng_result_message_tpl = i18n('Duration of test run: {time} seconds.<br>Number of processed URLs: {num_urls}<br><span class="settingFine">Successful resolved: {num_success}</span><br><span class="settingWrong">Errors during resolving: {num_fail}</span></strong>', $pluginName);
 
 ################################################################################
 ##### Action processing

@@ -263,7 +263,7 @@ class cPasswordRequest
             $this->_username = $_POST['request_username'];
 
             $message = $this->_handleNewPassword();
-            
+
             // do not show password reset form
             $this->_tpl->set('s', 'JS_CALL', '');
         } else {
@@ -625,7 +625,7 @@ class cPasswordRequest
     protected function _safePwResetRequest($token, DateTime $expiration)
     {
         $oUserPwRequestCol = new cApiUserPasswordRequestCollection();
-        $oUserPwRequest    = $oUserPwRequestCol->createNewItem();
+        $oUserPwRequest    = $oUserPwRequestCol->create();
 
         // set request data
         $requestTime = new DateTime('now', new DateTimeZone('UTC'));

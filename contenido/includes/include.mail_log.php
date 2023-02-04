@@ -85,14 +85,14 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
     $table->setWidth('100%');
 
     // construct the header
-    $headers = array(
+    $headers = [
         'checkbox' => i18n('Mark'),
-        'subject' => i18n('Subject'),
-        'to' => i18n('To'),
-        'created' => i18n('Date'),
-        'client' => i18n('Client'),
-        'action' => i18n('Action')
-    );
+        'subject'  => i18n('Subject'),
+        'to'       => i18n('To'),
+        'created'  => i18n('Date'),
+        'client'   => i18n('Client'),
+        'action'   => i18n('Action'),
+    ];
     $thead = new cHTMLTableHeader();
     $tr = new cHTMLTableRow();
     foreach ($headers as $header) {
@@ -176,16 +176,16 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
         $page->appendContent($form);
 
         // construct the email details table
-        $tableHeaderDetail = array(
-            'from' => i18n('From'),
-            'to' => i18n('To'),
+        $tableHeaderDetail = [
+            'from'     => i18n('From'),
+            'to'       => i18n('To'),
             'reply_to' => i18n('Reply to'),
-            'cc' => i18n('CC'),
-            'bcc' => i18n('BCC'),
-            'subject' => i18n('Subject'),
-            'body' => i18n('Body'),
-            'created' => i18n('Date')
-        );
+            'cc'       => i18n('CC'),
+            'bcc'      => i18n('BCC'),
+            'subject'  => i18n('Subject'),
+            'body'     => i18n('Body'),
+            'created'  => i18n('Date'),
+        ];
         $table = new cHTMLTable();
         $table->setClass('generic');
         $table->appendStyleDefinition('border-top', '1px solid #B3B3B3');

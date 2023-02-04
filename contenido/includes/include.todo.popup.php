@@ -58,8 +58,8 @@ if ($action == 'todo_save_item') {
     $ui->add(i18n('End date'),$reminderdue->render());
     $notiemail = new cHTMLCheckbox('notiemail', '1');
     $notiemail->setLabelText(i18n('E-mail notification'));
-    $langScripts = array();
 
+    $langScripts = [];
     if (($langCodeShort = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != 'en') {
         $langScripts[] = 'jquery/plugins/timepicker-' . $langCodeShort . '.js';
         $langScripts[] = 'jquery/plugins/datepicker-' . $langCodeShort . '.js';

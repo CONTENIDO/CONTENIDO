@@ -2,6 +2,7 @@
 /**
  * This file contains CONTENIDO constants.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Backend
  * @author     Murat Purc <murat@purc.de>
@@ -26,7 +27,7 @@ if (!defined('CON_DB_NOT_SUPPORTED_SQL_MODES')) {
 
 // Flag to strip slashes
 if (function_exists('get_magic_quotes_gpc')) {
-    define('CON_STRIPSLASHES', !get_magic_quotes_gpc());
+    define('CON_STRIPSLASHES', !@get_magic_quotes_gpc());
 } else {
     define('CON_STRIPSLASHES', true);
 }

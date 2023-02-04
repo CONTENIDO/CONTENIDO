@@ -23,11 +23,18 @@ class cLinkcheckerSearchLinks
     private $mode = '';
 
     /**
+     * Link type mode, 1 = intern, 2 = extern, 3 = intern/extern
+     * @var int
+     */
+    private $linkTypeMode = 0;
+
+    /**
      * cLinkcheckerSearchLinks constructor.
      */
-    public function __construct()
+    public function __construct($mode = 'text', $linkTypeMode = 3)
     {
-        $this->setMode("text");
+        $this->setMode($mode);
+        $this->setLinkTypeMode($linkTypeMode);
     }
 
     /**
@@ -39,7 +46,7 @@ class cLinkcheckerSearchLinks
      *
      * @param $mode
      *
-     * @return mixed
+     * @return string
      */
     public function setMode($mode)
     {
@@ -47,7 +54,24 @@ class cLinkcheckerSearchLinks
     }
 
     /**
-     * Searchs extern and intern links.
+     * Setter method Link type mode
+     *
+     * mode:
+     * - 1 = intern
+     * - 2 = extern
+     * - 3 = intern/extern
+     *
+     * @param int $linkTypeMode
+     *
+     * @return int
+     */
+    public function setLinkTypeMode($linkTypeMode)
+    {
+        return $this->linkTypeMode = cSecurity::toInteger($linkTypeMode);
+    }
+
+    /**
+     * Searches extern and intern links.
      *
      * @todo Optimize this function!
      * @todo Do not use global!
@@ -69,7 +93,7 @@ class cLinkcheckerSearchLinks
 
         // Extern URL
         if (preg_match_all('~(?:(?:action|data|href|src)=["\']((?:file|ftp|http|ww)[^\s]*)["\'])~i', $value, $aMatches)
-            && $_GET['mode'] != 1
+            && $this->linkTypeMode != 1
         ) {
             for ($i = 0; $i < count($aMatches[1]); $i++) {
                 if (!in_array($aMatches[1][$i], $aWhitelist)) {
@@ -91,7 +115,7 @@ class cLinkcheckerSearchLinks
         // Redirect
         if ($this->mode == "redirect"
             && (preg_match('!(' . preg_quote($aUrl['cms']) . '[^\s]*)!i', $value, $aMatches)
-                || (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $value, $aMatches) && $_GET['mode'] != 1))
+                || (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $value, $aMatches) && $this->linkTypeMode != 1))
             && (cString::findFirstPosCI($value, 'front_content.php') === false)
             && !in_array($aMatches[0], $aWhitelist)
         ) {
@@ -115,7 +139,7 @@ class cLinkcheckerSearchLinks
                 $value,
                 $aMatches
             )
-            && $_GET['mode'] != 2
+            && $this->linkTypeMode != 2
         ) {
             for ($i = 0; $i < count($aMatches[1]); $i++) {
                 if (cString::findFirstPos($aMatches[1][$i], "front_content.php") === false

@@ -20,45 +20,49 @@ cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.pathresolver.php");
 
 // ugly globals that are used in this script
-global $tpl, $cfg, $db, $perm, $sess, $selectedArticleId;
-global $frame, $area, $action, $contenido, $notification;
-global $client, $lang, $belang;
-global $idcat, $idart, $idcatlang, $idartlang, $idcatart, $idtpl;
-global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $bNoArticle;
+global $tpl, $db, $selectedArticleId, $contenido, $notification, $lngAct, $idcatart, $idtpl;
+global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $bNoArticle, $artLangVersion, $classarea;
+
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+$area = cRegistry::getArea();
+$action = cRegistry::getAction();
+$client = cRegistry::getClientId();
+$cfg = cRegistry::getConfig();
+$frame = cRegistry::getFrame();
+$auth = cRegistry::getAuth();
+$lang = cRegistry::getLanguageId();
+$belang = cRegistry::getBackendLanguage();
+$idart = cRegistry::getArticleId();
+$idcat = cRegistry::getCategoryId();
+$idcatlang = cRegistry::getCategoryLanguageId();
+$idartlang = cRegistry::getArticleLanguageId();
 
 $page = new cGuiPage("con_edit_form", "", "con_editart");
 $tpl = null;
 
 // Admin rights
-$aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
-$admin = false;
-if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-	$admin = true;
-}
+$isAdmin = cPermission::checkAdminPermission(cRegistry::getAuth()->getPerms());
 
 if (isset($idart)) {
     if (!isset($idartlang) || 0 == $idartlang) {
-        $sql = "SELECT
-                    idartlang
-                FROM
-                    " . $cfg["tab"]["art_lang"] . "
-                WHERE
-                    idart = " . cSecurity::toInteger($idart) . "
-                    AND idlang = " . cSecurity::toInteger($lang);
-        $db->query($sql);
-        $db->nextRecord();
-        $idartlang = $db->f("idartlang");
+        $oArtLangColl = new cApiArticleLanguageCollection();
+        $idartlang = $oArtLangColl->getIdByArticleIdAndLanguageId($idart, $lang);
     }
 }
 
 
-if ($_REQUEST['idArtLangVersion'] != NULL) {
+if (isset($_REQUEST['idArtLangVersion']) && $_REQUEST['idArtLangVersion'] != NULL) {
     $selectedArticleId = $_REQUEST['idArtLangVersion'];
+    $idArtLangVersion = $_REQUEST['idArtLangVersion'];
+} else {
+    $idArtLangVersion = null;
 }
+
 $versioning = new cContentVersioning();
 $versioningState = $versioning->getState();
 $articleType = $versioning->getArticleType(
-    $_REQUEST['idArtLangVersion'],
+    $idArtLangVersion,
     $idartlang,
     $action,
     $selectedArticleId
@@ -69,46 +73,46 @@ switch ($versioningState) {
     case 'advanced' :
          // Set as current/editable
         if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+            if (is_numeric($idArtLangVersion) && $articleType == 'current') {
                 // editable->current
                 $artLangVersion = NULL;
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion = new cApiArticleLanguageVersion((int) $idArtLangVersion);
                 if (isset($artLangVersion)) {
                     $artLangVersion->markAsCurrent('complete');
                     $selectedArticleId = 'current';
                 }
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
 
-            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+            } else if (is_numeric($idArtLangVersion) && $articleType == 'editable') {
                 // version->editable
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion = new cApiArticleLanguageVersion((int) $idArtLangVersion);
                 $artLangVersion->markAsEditable('complete');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $articleType = $versioning->getArticleType($idArtLangVersion, (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
 
-            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+            } else if ($idArtLangVersion == 'current') {
                 // current->editable
                 $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
                 $artLang->markAsEditable('complete');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $articleType = $versioning->getArticleType($idArtLangVersion, (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
             }
         }
 
@@ -128,7 +132,7 @@ switch ($versioningState) {
 
         }
 
-        // check if selected version is availible, else select the next lower version
+        // check if selected version is available, else select the next lower version
         $temp_id = $selectedArticleId;
         $temp_ids = array ();
 
@@ -212,8 +216,8 @@ switch ($versioningState) {
     case 'simple' :
 
          if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion'])) {
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+            if (is_numeric($idArtLangVersion)) {
+                $artLangVersion = new cApiArticleLanguageVersion((int) $idArtLangVersion);
                 $artLangVersion->markAsCurrent('complete');
                 $selectedArticleId = 'current';
             }
@@ -311,13 +315,13 @@ switch ($versioningState) {
 // ------------------
 if ($action == "con_newart" && $newart == true) {
     // New article, no action log available
-    $query = array();
+    $query = [];
 } else {
     // receive data
     $conCatColl = new cApiCategoryArticleCollection();
-    $catArt = $conCatColl->getFieldsByWhereClause(array(
+    $catArt = $conCatColl->getFieldsByWhereClause([
         'idcatart'
-    ), 'idart=' . $idart);
+    ], 'idart=' . $idart);
 
     $permClause = '';
     if ($perm->isClientAdmin($client, false) === false && $perm->isSysadmin(false) === false) {
@@ -325,18 +329,18 @@ if ($action == "con_newart" && $newart == true) {
     }
 
     $actionCollection = new cApiActionlogCollection();
-    $query = $actionCollection->getFieldsByWhereClause(array(
+    $query = $actionCollection->getFieldsByWhereClause([
         'idaction',
         'idlang',
         'idclient',
         'logtimestamp',
         'user_id'
-    ), 'idcatart=' . $catArt[0]['idcatart'] . $permClause);
+    ], 'idcatart=' . $catArt[0]['idcatart'] . $permClause . ' AND idaction > 0');
 
     $actionsCollection = new cApiActionCollection();
     $actionsCollection->query();
 
-    $actions = $areas = array();
+    $actions = $areas = [];
     while (($actionItem = $actionsCollection->next()) !== false) {
         $actions[$actionItem->get('idaction')] = $actionItem->get('name');
         $areas[$actionItem->get('idaction')] = $classarea->getAreaName($actionItem->get('idarea'));
@@ -450,13 +454,8 @@ $div->appendContent($table);
 // ------------------
 
 if ($action == "remove_assignments") {
-    $sql = "DELETE
-            FROM
-                " . $cfg["tab"]["cat_art"] . "
-            WHERE
-                idart = " . cSecurity::toInteger($idart) . "
-                AND idcat != " . cSecurity::toInteger($idcat);
-    $db->query($sql);
+    $oCatArtCol = new cApiCategoryArticleCollection();
+    $oCatArtCol->deleteByWhereClause(sprintf('idart = %d AND idcat != %d', $idart, $idcat));
 }
 if ($action == "con_newart" && $newart != true) {
     // nothing to be done here ?!
@@ -475,6 +474,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // apply settings from the synchronization menu
     // take single articles online or offline
 
+    $inUse = false;
+
     if (isset($_POST['onlineOne'])) {
         conMakeOnline(cRegistry::getArticleId(), cSecurity::toInteger($_POST['onlineOne']), 1);
     } else if (isset($_POST['offlineOne'])) {
@@ -483,17 +484,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     // synchronize a single article after checking permissions
     if (isset($_POST['syncOne'])) {
-        $sql = "SELECT
-                    idcatlang
-                FROM
-                    " . $cfg["tab"]["cat_lang"] . "
-                WHERE
-                    idcat = " . cRegistry::getCategoryId() . "
-                    AND idlang = " . cSecurity::toInteger($_POST['syncOne']);
-        $db->query($sql);
-        $db->next_record();
-        $isSyncable = (bool) $db->f("idcatlang");
-
+        $oCatLangColl = new cApiCategoryLanguageCollection();
+        $tmpIdcatlang = $oCatLangColl->getIdCatLangByIdcatAndIdlang(cRegistry::getCategoryId(), $_POST['syncOne']);
+        $isSyncable = cSecurity::toBoolean($tmpIdcatlang);
         if ($isSyncable && (($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", cRegistry::getCategoryId())) && ($perm->have_perm_client('lang[' . cSecurity::toInteger($_POST['syncOne']) . ']') || $perm->have_perm_client('admin[' . cRegistry::getClientId() . ']') || $perm->have_perm_client()))) {
             conSyncArticle(cRegistry::getArticleId(), cRegistry::getLanguageId(), cSecurity::toInteger($_POST['syncOne']));
         }
@@ -506,7 +499,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     } else if (isset($_POST['onlineAll'])) {
         $onlineValue = 1;
     }
-    if (is_array($_POST['syncingLanguage']) && $onlineValue != -1) {
+    if (isset($_POST['syncingLanguage']) && is_array($_POST['syncingLanguage']) && $onlineValue != -1) {
         foreach ($_POST['syncingLanguage'] as $langId) {
             conMakeOnline(cRegistry::getArticleId(), cSecurity::toInteger($langId), $onlineValue);
         }
@@ -515,18 +508,11 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // synchronize multiple articles
     if (isset($_POST['syncAll'])) {
         if (is_array($_POST['syncingLanguage'])) {
-            foreach ($_POST['syncingLanguage'] as $langId) {
-                $sql = "SELECT
-                            idcatlang
-                        FROM
-                            " . $cfg["tab"]["cat_lang"] . "
-                        WHERE
-                            idcat = " . cRegistry::getCategoryId() . "
-                            AND idlang = " . cSecurity::toInteger($langId);
-                $db->query($sql);
-                $db->next_record();
-                $isSyncable = (bool) $db->f("idcatlang");
+            $oCatLangColl = new cApiCategoryLanguageCollection();
 
+            foreach ($_POST['syncingLanguage'] as $langId) {
+                $tmpIdcatlang = $oCatLangColl->getIdCatLangByIdcatAndIdlang(cRegistry::getCategoryId(), $langId);
+                $isSyncable = cSecurity::toBoolean($tmpIdcatlang);
                 if ($isSyncable && (($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", cRegistry::getCategoryId())) && ($perm->have_perm_client('lang[' . cSecurity::toInteger($langId) . ']') || $perm->have_perm_client('admin[' . cRegistry::getClientId() . ']') || $perm->have_perm_client()))) {
                     conSyncArticle(cRegistry::getArticleId(), cRegistry::getLanguageId(), cSecurity::toInteger($langId));
                 }
@@ -534,42 +520,26 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         }
     }
 
+    $oCatArtCol = new cApiCategoryArticleCollection();
+    $tmp_cat_art = $oCatArtCol->getIdByCategoryIdAndArticleId($idcat, $idart);
 
-    $sql = "SELECT
-                *
-            FROM
-                " . $cfg["tab"]["cat_art"] . "
-            WHERE
-                idart = " . cSecurity::toInteger($idart) . "
-                AND idcat = " . cSecurity::toInteger($idcat);
-    $db->query($sql);
-    $db->nextRecord();
-
-    $tmp_cat_art = $db->f("idcatart");
-
+    $sql = '';
     if (($versioningState == 'disabled' || $versioningState == 'simple'
         && ($articleType == 'current' || $articleType == 'editable'))
         || $versioningState == 'advanced' && $articleType == 'current')  {
-        $sql = "SELECT
-                *
-            FROM
-                " . $cfg["tab"]["art_lang"] . "
-            WHERE
-                idart = " . cSecurity::toInteger($idart) . "
-                AND idlang = " . cSecurity::toInteger($lang);
+        $sql = 'SELECT * FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
+        $sql = $db->prepare($sql, $cfg["tab"]["art_lang"], $idart, $lang);
     } else if ($action != 'con_newart' && ($selectedArticleId == 'current' || $selectedArticleId == 'editable')
         || $selectedArticleId == NULL) {
         if (is_numeric($versioning->getEditableArticleId($idartlang))) {
-            $sql = "SELECT *
-                FROM " . $cfg["tab"]["art_lang_version"] . "
-                WHERE idartlangversion = " . $versioning->getEditableArticleId($idartlang);
-        } else $sql = '';
+            $sql = 'SELECT * FROM `%s` WHERE `idartlangversion` = %d';
+            $sql = $db->prepare($sql, $cfg["tab"]["art_lang_version"], $versioning->getEditableArticleId($idartlang));
+        }
     } else {
-        if (is_numeric((int) $selectedArticleId)) {
-            $sql = "SELECT *
-                FROM " . $cfg["tab"]["art_lang_version"] . "
-                WHERE idartlangversion = " . (int) $selectedArticleId;//cSecurity::toInteger($_REQUEST['idArtLangVersion']);
-        } else $sql = '';
+        if (is_numeric($selectedArticleId)) {
+            $sql = 'SELECT * FROM `%s` WHERE `idartlangversion` = %d';
+            $sql = $db->prepare($sql, $cfg["tab"]["art_lang_version"], $selectedArticleId);
+        }
     }
 
     if ($sql != '') {
@@ -587,14 +557,13 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tmp_page_title = cSecurity::unFilter(stripslashes($db->f("pagetitle")));
         $tmp_idlang = $db->f("idlang");
         $tmp_title = cSecurity::unFilter($db->f("title"));
-        // plugin Advanced Mod Rewrite - edit by stese
         $tmp_urlname = cSecurity::unFilter($db->f("urlname"));
         $tmp_artspec = $db->f("artspec");
         $tmp_summary = cSecurity::unFilter($db->f("summary"));
         $tmp_created = $db->f("created");
         $tmp_lastmodified = $db->f("lastmodified");
         $tmp_author = $db->f("author");
-        $tmp_modifiedby = $db->f("modifiedby");
+        $tmp_modifiedby = !empty($db->f("modifiedby")) ? $db->f("modifiedby") : $db->f("author");
         $tmp_online = $db->f("online");
         $tmp_searchable = $db->f("searchable");
         $tmp_published = $db->f("published");
@@ -614,18 +583,14 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tmp_external_redirect_checked = ($db->f("external_redirect") == '1')? 'checked' : '';
         $tmp_redirect_mode = $db->f('redirect_mode');
         $idtplinput = $db->f("idtplinput");
-
-        if ($tmp_modifiedby == '') {
-            $tmp_modifiedby = $tmp_author;
-        }
+        $newArtStyle = 'table-row';
 
         $col = new cApiInUseCollection();
 
         // Remove all own marks
         $col->removeSessionMarks($sess->id);
 
-        if (false === $admin) {
-
+        if (false === $isAdmin) {
 	        if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked != 1) {
 	            $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
 	            $inUse = false;
@@ -653,45 +618,44 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 	        }
         }
 
-        $newArtStyle = 'table-row';
     } else {
 
         // ***************** this art is edited the first time *************
-
-        if (!$idart) {
-            $tmp_firstedit = 1; // **** is needed when input is written to db
-                                    // (update or insert)
-        }
-
-        $tmp_idartlang = 0;
-        $tmp_idlang = $lang;
-        $tmp_page_title = stripslashes($db->f("pagetitle"));
-        $tmp_title = '';
-        $tmp_urlname = ''; // plugin Advanced Mod Rewrite - edit by stese
-        $tmp_artspec = '';
-        $tmp_summary = '';
-        $tmp_created = date("Y-m-d H:i:s");
-        $tmp_lastmodified = date("Y-m-d H:i:s");
-        $tmp_published = date("Y-m-d H:i:s");
-        $tmp_publishedby = '';
-        $tmp_author = '';
-        $tmp_online = "0";
-        $tmp_searchable = "1";
-        $tmp_datestart = "0000-00-00 00:00:00";
-        $tmp_dateend = "0000-00-00 00:00:00";
-        $tmp_keyart = '';
-        $tmp_keyautoart = '';
-        $tmp_sort = '';
-        $tmp_sitemapprio = '0.5';
-        $tmp_changefreq = '';
 
         if (!strHasStartArticle($idcat, $lang)) {
             $tmp_is_start = true;
         }
 
+        $tmp_firstedit = (!$idart) ? 1 : 0; // is needed when input is written to db (update or insert)
+        $tmp_idartlang = 0;
+        $tmp_page_title = '';
+        $tmp_idlang = $lang;
+        $tmp_title = '';
+        $tmp_urlname = '';
+        $tmp_artspec = '';
+        $tmp_summary = '';
+        $tmp_created = date("Y-m-d H:i:s");
+        $tmp_lastmodified = date("Y-m-d H:i:s");
+        $tmp_author = '';
+        $tmp_modifiedby = '';
+        $tmp_online = "0";
+        $tmp_searchable = "1";
+        $tmp_published = date("Y-m-d H:i:s");
+        $tmp_publishedby = '';
+        $tmp_datestart = "0000-00-00 00:00:00";
+        $tmp_dateend = "0000-00-00 00:00:00";
+        $tmp_sort = '';
+        $tmp_sitemapprio = '0.5';
+        $tmp_changefreq = '';
+        $tmp_movetocat = '';
+        $tmp_targetcat = '';
+        $tmp_onlineaftermove = '';
+        $tmp_usetimemgmt = '0';
+        $tmp_locked = '0';
         $tmp_redirect_checked = '';
         $tmp_redirect_url = "http://";
-        $tmp_external_redirect = '';
+        $tmp_external_redirect_checked = '';
+        $tmp_redirect_mode = '';
         $newArtStyle = 'none';
     }
 
@@ -748,7 +712,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         || $versioning->getState() == 'advanced' && $articleType != 'editable') {
             $inputArtSortSelect->setDisabled(true);
     }
-    $tmp_inputArtSort .= $inputArtSortSelect->toHtml();
+    $tmp_inputArtSort = $inputArtSortSelect->toHtml();
 
     if ($iAvariableSpec == 0) {
         $tmp_inputArtSort = i18n("No article specifications found!");
@@ -874,7 +838,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $page->set('s', 'LABEL_REDIRECT_CODE', i18n("Status code"));
 
-    if ($catArt[0]['idcatart'] > 0) {
+    if (isset($catArt[0]['idcatart']) && $catArt[0]['idcatart'] > 0) {
         $page->set('s', 'LOGTABLE_HEADLINE', '<h3 style="margin-top:20px;margin-bottom:10px;">' . i18n('Articlelog') . '</h3>');
         $page->set('s', 'LOGTABLE', $div->render());
     } else {
@@ -952,16 +916,11 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tpl2->set('s', 'CLASS', 'text_medium');
         $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14"' . $disabled);
     } else {
-        $sql = "SELECT
-                    idartlang
-                FROM
-                    " . $cfg["tab"]["art_lang"] . "
-                WHERE
-                    idart = " . cSecurity::toInteger($idart) . "
-                    AND idlang != " . cSecurity::toInteger($lang);
-        $db->query($sql);
 
-        if ($db->numRows() > 0) {
+        // Get article language in other languages than the current one
+        $oArtLangColl = new cApiArticleLanguageCollection();
+        $tmpArtLandIds = $oArtLangColl->getIdsByWhereClause(sprintf('`idart` = %d AND `idlang` != %d', $idart, $lang));
+        if (count($tmpArtLandIds)) {
             $page->set('s', 'NOTIFICATION_SYNCHRON', '<tr><td colspan="4">' . $notification->returnNotification('warning', i18n("The called article is synchronized. If you want to move it please make sure that the target category of this article exists in all languages.")) . '</td></tr>');
         } else {
             $page->set('s', 'NOTIFICATION_SYNCHRON', '');
@@ -993,25 +952,20 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         }
     }
 
+    $tmp_idcat_in_art = [];
     if (isset($tplinputchanged) && $tplinputchanged == 1) {
-        $tmp_idcat_in_art = $idcatnew;
+        $tmp_idcat_in_art[] = $idcatnew;
     } elseif ($idart != 0) {
         // get all idcats that contain art
-        $sql = "SELECT
-                    idcat
-                FROM
-                    " . $cfg["tab"]["cat_art"] . "
-                WHERE
-                    idart = " . cSecurity::toInteger($idart);
-        $db->query($sql);
+        $sql = 'SELECT `idcat` FROM `%s` WHERE `idart` = %d';
+        $db->query($sql, $cfg["tab"]["cat_art"], $idart);
         while ($db->nextRecord()) {
             $tmp_idcat_in_art[] = $db->f("idcat");
         }
 
-        if (!is_array($tmp_idcat_in_art)) {
+        if (!count($tmp_idcat_in_art)) {
             $tmp_idcat_in_art[0] = $idcat;
         }
-
     } else {
         $tmp_idcat_in_art[0] = $idcat;
     }
@@ -1042,8 +996,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $languages = new cApiLanguageCollection();
     $languages->select("idlang IN(" . join(', ', $available_client_ids) . ")");
 
-    $langArray = array();
-    while (($someLang = $languages->nextAccessible()) != false) {
+    $langArray = [];
+    while (($someLang = $languages->nextAccessible()) !== NULL) {
         $langArray[] = $someLang;
     }
 
@@ -1063,30 +1017,17 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             $tpl3->set("s", "LANG_NAME", $someLang->get("name"));
 
             // find this article in other languages
-            $sql = "SELECT
-                        idartlang, online
-                    FROM
-                        " . $cfg["tab"]["art_lang"] . "
-                    WHERE
-                        idart = " . cSecurity::toInteger($idart) . "
-                        AND idlang = " . cSecurity::toInteger($someLang->get("idlang"));
-            $db->query($sql);
-            $db->next_record();
+            $sql = 'SELECT `idartlang`, `online` FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
+            $db->query($sql, $cfg["tab"]["art_lang"], $idart, $someLang->get("idlang"));
+            $db->nextRecord();
             $isOnline = $db->f("online");
             $idOfSyncedArticle = $db->f("idartlang");
             $synced = $db->numRows() > 0;
 
             // find this category in other languages
-            $sql = "SELECT
-                        idcatlang
-                    FROM
-                        " . $cfg["tab"]["cat_lang"] . "
-                    WHERE
-                        idcat = " . cRegistry::getCategoryId() . "
-                        AND idlang = " . cSecurity::toInteger($someLang->get("idlang"));
-            $db->query($sql);
-            $db->next_record();
-            $isSyncable = (bool) $db->f("idcatlang");
+            $oCatLangColl = new cApiCategoryLanguageCollection();
+            $otherLangIdCatLang = $oCatLangColl->getIdCatLangByIdcatAndIdlang(cRegistry::getCategoryId(), $someLang->get("idlang"));
+            $isSyncable = $otherLangIdCatLang > 0;
 
             // assign all texts depending on the situation
             // if the article is not synced but the category exists in the target
@@ -1322,46 +1263,22 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     if (isset($idart)) {
         if (!isset($idartlang) || 0 == $idartlang) {
-            $sql = "SELECT
-                        idartlang
-                    FROM
-                        " . $cfg["tab"]["art_lang"] . "
-                    WHERE
-                        idart = " . cSecurity::toInteger($idart) . "
-                        AND idlang = " . cSecurity::toInteger($lang);
-            $db->query($sql);
-            $db->nextRecord();
-            $idartlang = $db->f("idartlang");
+            $oArtLangColl = new cApiArticleLanguageCollection();
+            $idartlang = $oArtLangColl->getIdByArticleIdAndLanguageId($idart, $lang);
         }
     }
 
     if (isset($midcat)) {
         if (!isset($idcatlang) || 0 == $idcatlang) {
-            $sql = "SELECT
-                        idcatlang
-                    FROM
-                        " . $cfg["tab"]["cat_lang"] . "
-                    WHERE
-                        idcat = " . cSecurity::toInteger($midcat) . "
-                        AND idlang = " . cSecurity::toInteger($lang);
-            $db->query($sql);
-            $db->nextRecord();
-            $idcatlang = $db->f("idcatlang");
+            $oCatLangColl = new cApiCategoryLanguageCollection();
+            $idcatlang = $oCatLangColl->getIdCatLangByIdcatAndIdlang($midcat, $lang);
         }
     }
 
     if (isset($midcat) && isset($idart)) {
         if (!isset($idcatart) || 0 == $idcatart) {
-            $sql = "SELECT
-                        idcatart
-                    FROM
-                        " . $cfg["tab"]["cat_art"] . "
-                    WHERE
-                        idart = " . cSecurity::toInteger($idart) . "
-                        AND idcat = " . cSecurity::toInteger($midcat);
-            $db->query($sql);
-            $db->nextRecord();
-            $idcatart = $db->f("idcatart");
+            $oCatArtCol = new cApiCategoryArticleCollection();
+            $idcatart = $oCatArtCol->getIdByCategoryIdAndArticleId($midcat, $idart);
         }
     }
 
@@ -1424,7 +1341,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $page->set('s', 'SYNCOPTIONS', -1);
     $page->set('s', 'DISPLAY_MENU', 1);
 
-    // Genereate the template
+    // Generate the template
     $page->render();
 } else {
     // User has no permission to see this form

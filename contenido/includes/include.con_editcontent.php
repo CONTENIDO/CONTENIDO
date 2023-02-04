@@ -17,6 +17,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $contenido, $type, $typenr, $encoding;
+
 if (!isset($idcat)) {
     cRegistry::shutdown();
     return;
@@ -30,6 +32,21 @@ $db2 = cRegistry::getDb();
 $scripts = '';
 $cssData = '';
 $jsData = '';
+$action = cRegistry::getAction();
+$idartlang = cRegistry::getArticleLanguageId();
+$idlang = cRegistry::getLanguageId();
+$idart = cRegistry::getArticleId();
+$cfg = cRegistry::getConfig();
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
+$sess = cRegistry::getSession();
+
+// Initialize $_REQUEST with common used keys to prevent PHP 'Undefined array key' warnings
+foreach (['data', 'value', 'filelist_action', 'idArtLangVersion'] as $_key) {
+    if (!isset($_REQUEST[$_key])) {
+        $_REQUEST[$_key] = '';
+    }
+}
 
 $data = cSecurity::toString($_REQUEST['data']);
 
@@ -134,7 +151,7 @@ $oScriptTpl->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 // Add tiny options
 if ('tinymce4' === $wysiwygeditor) {
     // set toolbar options for each CMS type that can be edited using a WYSIWYG editor
-    $aTinyOptions = array();
+    $aTinyOptions = [];
     $oTypeColl = new cApiTypeCollection();
     $oTypeColl->select();
     while (false !== ($typeEntry = $oTypeColl->next())) {
@@ -145,7 +162,7 @@ if ('tinymce4' === $wysiwygeditor) {
         if (false === class_exists($contentTypeClassName)) {
             continue;
         }
-        $cContentType = new $contentTypeClassName(null, 0, array());
+        $cContentType = new $contentTypeClassName(null, 0, []);
         if (false === $cContentType->isWysiwygCompatible()) {
             continue;
         }
@@ -206,18 +223,17 @@ if ($_REQUEST['idArtLangVersion'] != NULL) {
 $versioning = new cContentVersioning();
 $versioningState = $versioning->getState();
 $articleType = $versioning->getArticleType(
-                    $_REQUEST['idArtLangVersion'],
-                    (int) $idartlang,
-                    $action,
-                    $selectedArticleId
-                );
+    $_REQUEST['idArtLangVersion'],
+    (int) $idartlang,
+    $action,
+    $selectedArticleId
+);
 $code = '';
 $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
 $versioningElement = '';
 
-
 switch ($versioningState) {
-    case 'simple' :
+    case 'simple':
         // Set as current
         if ($action == 'copyto') {
             if (is_numeric($_REQUEST['idArtLangVersion']) && $versioningState == 'simple'
@@ -227,10 +243,10 @@ switch ($versioningState) {
                 $selectedArticleId = 'current';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
             }
         }
         $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], $idartlang, $articleType, $selectedArticleId);
@@ -247,14 +263,14 @@ switch ($versioningState) {
 
         // check if selected version is availible, else select the next lower version
         $temp_id = $selectedArticleId;
-        $temp_ids = array ();
+        $temp_ids = [];
 
-        foreach (array_values($optionElementParameters) AS $key => $value) {
+        foreach (array_values($optionElementParameters) as $key => $value) {
             $temp_ids[] = key($value);
         }
         if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
             && $selectedArticleId != 'editable' && $articleType != 'current' && $articleType != 'editable') {
-            foreach ($temp_ids AS $key => $value) {
+            foreach ($temp_ids as $key => $value) {
                 if ($value < $selectedArticleId) {
                     $temp_id = $value;
                     break;
@@ -263,7 +279,7 @@ switch ($versioningState) {
         }
 
         // Create Content Version Option Elements
-        foreach ($optionElementParameters AS $key => $value) {
+        foreach ($optionElementParameters as $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Version ' . $key . ': ' . $lastModified, key($value));
             //if ($_REQUEST['idArtLangVersion'] == key($value) && $articleType != 'current') {
@@ -285,19 +301,18 @@ switch ($versioningState) {
         }
 
         $versioning_info_text = i18n("<strong>Simple-mode:</strong> Older content versions can be restored and reviewed "
-                . "(Configurations under Administration/System configuration).<br/><br/>Changes only refer to contents itself!");
+            . "(Configurations under Administration/System configuration).<br/><br/>Changes only refer to contents itself!");
 
         // add code
-        $versioningElement .=    $versioning->getVersionSelectionField(
-                        'editcontentList',
-                        $selectElement->toHtml(),
-                        $markAsCurrentButton,
-                        $versioning_info_text
-                    );
+        $versioningElement .= $versioning->getVersionSelectionField(
+            'editcontentList',
+            $selectElement->toHtml(),
+            $markAsCurrentButton,
+            $versioning_info_text
+        );
 
         break;
-    case 'advanced' :
-
+    case 'advanced':
         // Set as current/editable
         if ($action == 'copyto') {
             if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
@@ -309,11 +324,10 @@ switch ($versioningState) {
                 $selectedArticleId = 'current';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
-
+                ]);
             } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsEditable('content');
@@ -326,11 +340,10 @@ switch ($versioningState) {
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
-
+                ]);
             } else if ($_REQUEST['idArtLangVersion'] == 'current') {
                 $artLang = new cApiArticleLanguage($idartlang);
                 $artLang->markAsEditable('content');
@@ -345,10 +358,10 @@ switch ($versioningState) {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
             }
         }
 
@@ -378,14 +391,14 @@ switch ($versioningState) {
 
         // check if selected version is availible, else select the next lower version
         $temp_id = $selectedArticleId;
-        $temp_ids = array ();
+        $temp_ids = [];
 
-        foreach (array_values($optionElementParameters) AS $key => $value) {
+        foreach (array_values($optionElementParameters) as $key => $value) {
             $temp_ids[] = key($value);
         }
         if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
             && $selectedArticleId != 'editable') {
-            foreach ($temp_ids AS $key => $value) {
+            foreach ($temp_ids as $key => $value) {
                 if ($value < $selectedArticleId) {
                     $temp_id = $value;
                     break;
@@ -394,7 +407,7 @@ switch ($versioningState) {
         }
 
         // Create Content Version Option Elements
-        foreach ($optionElementParameters AS $key => $value) {
+        foreach ($optionElementParameters as $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
             if ($articleType == 'version') {
@@ -421,22 +434,21 @@ switch ($versioningState) {
 
         // set info text
         $versioning_info_text = i18n(
-                '<strong>Mode advanced:</strong> '
-                . 'Older content versions can be reviewed and restored. Unpublished drafts'
-                . ' can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
-                . 'Changes are only related to Contents!');
+            '<strong>Mode advanced:</strong> '
+            . 'Older content versions can be reviewed and restored. Unpublished drafts'
+            . ' can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+            . 'Changes are only related to Contents!');
 
         // add code
-        $versioningElement .=    $versioning->getVersionSelectionField(
-                        'editcontentList',
-                        $selectElement->toHtml(),
-                        $markAsCurrentButton,
-                        $versioning_info_text
-                    );
+        $versioningElement .= $versioning->getVersionSelectionField(
+            'editcontentList',
+            $selectElement->toHtml(),
+            $markAsCurrentButton,
+            $versioning_info_text
+        );
 
         break;
-    case 'disabled' :
-
+    case 'disabled':
         // set elements/buttons
         $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16', '');
         $selectElement->appendOptionElement($optionElement);
@@ -453,13 +465,14 @@ switch ($versioningState) {
         // load selected article
         $selectedArticle = $versioning->getSelectedArticle((int) $_REQUEST['idArtLangVersion'], $idartlang, $articleType);
 
-    default :
+        break;
+    default:
         break;
 }
 
 // generate article code
 if ($selectedArticle != NULL) {
-
+    $editable = false;
     switch ($versioningState) {
         case 'advanced':
             if ($articleType == 'editable') {
@@ -488,7 +501,6 @@ if ($selectedArticle != NULL) {
             break;
         default:
             throw new cException('unknown');
-            break;
     }
 
     // sets global $edit = false; needed for edit/view output in editor
@@ -498,9 +510,7 @@ if ($selectedArticle != NULL) {
     }
 
     $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, $editable, $version);
-
 }
-
 
 if ($code == "0601") {
     markSubMenuItem("1");
@@ -523,5 +533,3 @@ chdir(cRegistry::getFrontendPath());
 eval("?>\n" . $code . "\n<?php\n");
 
 cRegistry::shutdown();
-
-?>

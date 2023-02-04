@@ -13,6 +13,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var string $area
+ * @var array $cfg
+ * @var cGuiNotification $notification
+ */
+
+
 //Has the user permission for view the cronjobs
 if (!$perm->have_perm_area_action($area, 'cronjob_overview')) {
     $notification->displayNotification('error', i18n('Permission denied', 'cronjobs_overview'));
@@ -24,6 +32,8 @@ include_once(dirname(__FILE__).'/config.plugin.php');
 
 $page = new cGuiPage('cronjobs_overview', 'cronjobs_overview');
 $menu = new cGuiMenu();
+
+$requestFile = $_GET['file'] ?? '';
 
 $counter = 0;
 $cronjobs = new Cronjobs();
@@ -40,7 +50,7 @@ foreach ($cronjobs->getAllCronjobs() as $row) {
     $menu->setLink($counter, $link);
     $menu->setImage($counter, $cfg['path']['images'] . 'article.gif');
 
-    if ($_GET['file'] === $row) {
+    if ($requestFile === $row) {
         $menu->setMarked($counter);
     }
 }

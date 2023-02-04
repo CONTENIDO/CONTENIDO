@@ -14,21 +14,21 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * @param     $singlewordcounter
- * @param     $string
+ * @param array $singleWordCounter
+ * @param string $string
  * @param int $quantifier
  *
  * @return mixed
  */
-function calcDensity($singlewordcounter, $string, $quantifier = 1) {
+function calcDensity($singleWordCounter, $string, $quantifier = 1) {
     $minLen = 3;
 
     //check if the current language is german
     //
     // in later versions it is possible to manage most used words for every language in the dB.
-    if (cRegistry::getLanguageId() == 1)
+    if (cRegistry::getLanguageId() == 1) {
         //most used german words
-        $blacklist = array(
+        $blacklist = [
             'in',
             'der',
             'und',
@@ -241,13 +241,13 @@ function calcDensity($singlewordcounter, $string, $quantifier = 1) {
             'späteren',
             'möglich',
             'sowie'
-        );
-    else {
-        $blacklist = array();
+        ];
+    } else {
+        $blacklist = [];
         $minLen = 5;
     }
 
-    // all blacklistentries to lowercase and trim ' ' at front.
+    // all blacklist-entries to lowercase and trim ' ' at front.
     for ($i = 0; $i < count($blacklist); $i++) {
         $blacklist[$i] = ltrim(cString::toLowerCase($blacklist[$i]), '');
     }
@@ -261,12 +261,8 @@ function calcDensity($singlewordcounter, $string, $quantifier = 1) {
         }
 
         // replace punctuation marks
-        $patterns = array(
-            '/[.,:]/'
-        );
-        $replaces = array(
-            ''
-        );
+        $patterns = ['/[.,:]/'];
+        $replaces = [''];
         $tmp[$i] = preg_replace($patterns, $replaces, $tmp[$i]);
 
         //trim last char if '-' e.g open-source-
@@ -279,20 +275,20 @@ function calcDensity($singlewordcounter, $string, $quantifier = 1) {
             // if hole string in upper cases add additional quantifier else
             // use only the string length
             if (ctype_upper($tmp[$i])) {
-                if (empty($singlewordcounter[cString::toLowerCase($tmp[$i])])) {
-                    $singlewordcounter[cString::toLowerCase($tmp[$i])] = 0;
+                if (empty($singleWordCounter[cString::toLowerCase($tmp[$i])])) {
+                    $singleWordCounter[cString::toLowerCase($tmp[$i])] = 0;
                 }
-                $singlewordcounter[cString::toLowerCase($tmp[$i])] += cString::getStringLength($tmp[$i]) + 10000;
+                $singleWordCounter[cString::toLowerCase($tmp[$i])] += cString::getStringLength($tmp[$i]) + 10000;
             } else {
-                if (empty( $singlewordcounter[$tmp[$i]])) {
-                    $singlewordcounter[$tmp[$i]] = 0;
+                if (empty( $singleWordCounter[$tmp[$i]])) {
+                    $singleWordCounter[$tmp[$i]] = 0;
                 }
-                $singlewordcounter[$tmp[$i]] += cString::getStringLength($tmp[$i]);
+                $singleWordCounter[$tmp[$i]] += cString::getStringLength($tmp[$i]);
             }
         }
     }
 
-    return $singlewordcounter;
+    return $singleWordCounter;
 }
 
 /**
@@ -308,20 +304,20 @@ function __cmp($a, $b) {
 }
 
 /**
- * @param     $singlewordcounter
+ * @param array $singleWordCounter
  * @param int $maxKeywords
  *
  * @return array
  */
-function stripCount($singlewordcounter, $maxKeywords = 15) {
+function stripCount($singleWordCounter, $maxKeywords = 15) {
 
     // strip all with only 1
-    $tmp = array();
+    $tmp = [];
 
-    $result = array();
+    $result = [];
 
     $tmpToRemove = 1;
-    foreach ($singlewordcounter as $key => $value) {
+    foreach ($singleWordCounter as $key => $value) {
         if ($value > $tmpToRemove) {
             $tmp[$key] = $value;
         }
@@ -332,7 +328,7 @@ function stripCount($singlewordcounter, $maxKeywords = 15) {
             $result[] = $key;
         }
     } else {
-        $dist = array();
+        $dist = [];
 
         foreach ($tmp as $key => $value) {
             if (!isset($dist[$value])) {
@@ -343,15 +339,12 @@ function stripCount($singlewordcounter, $maxKeywords = 15) {
         }
 
         uksort($dist, "__cmp");
-        reset($dist);
 
         $count = 0;
 
-        $resultset = array();
-        $useQuantity = array();
+        $useQuantity = [];
 
         foreach ($dist as $key => $value) {
-
             $_count = $count + $value;
             if ($_count <= $maxKeywords) {
                 $count += $value;
@@ -362,7 +355,7 @@ function stripCount($singlewordcounter, $maxKeywords = 15) {
         }
 
         // run all keywords and select by quantities to use
-        foreach ($singlewordcounter as $key => $value) {
+        foreach ($singleWordCounter as $key => $value) {
             if (in_array($value, $useQuantity)) {
                 $result[] = $key;
             }
@@ -378,23 +371,21 @@ function stripCount($singlewordcounter, $maxKeywords = 15) {
  * @return bool|string
  */
 function keywordDensity($headline, $text) {
-    global $lang, $client, $cfgClient;
-
     $headline = strip_tags($headline);
     $text = strip_tags($text);
 
     $text = conHtmlEntityDecode($text);
 
-    // replace all non converted numbered entities (what about numbered entites?)
+    // replace all non-converted numbered entities (what about numbered entities?)
     // replace all double/more spaces
-    $patterns = array(
+    $patterns = [
         '#&[a-z]+\;#i',
         '#\s+#'
-    );
-    $replaces = array(
+    ];
+    $replaces = [
         '',
         ' '
-    );
+    ];
     $text = preg_replace($patterns, $replaces, $text);
 
     // path = cms_getUrlPath($idcat);
@@ -402,25 +393,23 @@ function keywordDensity($headline, $text) {
     // path = cString::getPartOfString($path, 0, cString::getStringLength($path) - 1);
     // path = str_replace('/', ' ', $path);
 
-    $singlewordcounter = array();
+    $singleWordCounter = [];
 
     // calc for text
-    $singlewordcounter = calcDensity($singlewordcounter, $text);
+    $singleWordCounter = calcDensity($singleWordCounter, $text);
 
     // calc for headline
-    $singlewordcounter = calcDensity($singlewordcounter, $headline, 2);
+    $singleWordCounter = calcDensity($singleWordCounter, $headline, 2);
 
     // get urlpath strings
-    // singlewordcounter = calcDensity($singlewordcounter, $path, 4);
+    // singleWordCounter = calcDensity($singleWordCounter, $path, 4);
 
-    arsort($singlewordcounter, SORT_NUMERIC);
-    $singlewordcounter = stripCount($singlewordcounter);
+    arsort($singleWordCounter, SORT_NUMERIC);
+    $singleWordCounter = stripCount($singleWordCounter);
 
-    if (!is_array($singlewordcounter)) {
+    if (!is_array($singleWordCounter)) {
         return false;
     } else {
-        return implode(', ', $singlewordcounter);
+        return implode(', ', $singleWordCounter);
     }
 }
-
-?>

@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiNavMain createNewItem
+ * @method cApiNavMain|bool next
  */
 class cApiNavMainCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiNavMainCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['nav_main'], 'idnavm');
+        parent::__construct(cRegistry::getDbTableName('nav_main'), 'idnavm');
         $this->_setItemClass('cApiNavMain');
     }
 
@@ -76,13 +77,8 @@ class cApiNavMain extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['nav_main'], 'idnavm');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
+        parent::__construct(cRegistry::getDbTableName('nav_main'), 'idnavm');
+        $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

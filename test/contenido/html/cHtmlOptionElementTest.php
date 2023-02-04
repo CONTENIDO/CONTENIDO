@@ -88,4 +88,48 @@ class cHtmlOptionElementTest extends cTestingTestCase
         $option = new cHTMLOptionElement('testTitle', 'testValue', false, false);
         $this->assertSame($option->toHtml(), $option->toHtml());
     }
+
+    public function testIndent()
+    {
+        // level = 0
+        $spaces = cHTMLOptionElement::indent(0);
+        $this->assertSame('&nbsp;&nbsp;', $spaces);
+
+        // level = -1
+        $spaces = cHTMLOptionElement::indent(-1);
+        $this->assertSame('&nbsp;&nbsp;', $spaces);
+
+        // level = 1
+        $spaces = cHTMLOptionElement::indent(1);
+        $this->assertSame('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $spaces);
+
+        // level = 0, prefixAmount = 0
+        $spaces = cHTMLOptionElement::indent(0, 0);
+        $this->assertSame('', $spaces);
+
+        // level = 0, prefixAmount = -1
+        $spaces = cHTMLOptionElement::indent(0, -1);
+        $this->assertSame('', $spaces);
+
+        // level = 0, prefixAmount = 1
+        $spaces = cHTMLOptionElement::indent(0, 1);
+        $this->assertSame('&nbsp;', $spaces);
+
+        // level = 1, prefixAmount = 2, levelAmount = 0
+        $spaces = cHTMLOptionElement::indent(1, 2, 0);
+        $this->assertSame('&nbsp;&nbsp;', $spaces);
+
+        // level = 1, prefixAmount = 2, levelAmount = -1
+        $spaces = cHTMLOptionElement::indent(1, 2, -1);
+        $this->assertSame('&nbsp;&nbsp;', $spaces);
+
+        // level = 1, prefixAmount = 2, levelAmount = 1
+        $spaces = cHTMLOptionElement::indent(1, 2, 1);
+        $this->assertSame('&nbsp;&nbsp;&nbsp;', $spaces);
+
+        // level = 1, prefixAmount = 2, levelAmount = 4. character = '>'
+        $spaces = cHTMLOptionElement::indent(1, 2, 4, '>');
+        $this->assertSame('>>>>>>', $spaces);
+    }
+
 }

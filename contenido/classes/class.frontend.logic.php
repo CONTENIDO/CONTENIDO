@@ -49,7 +49,7 @@ abstract class FrontendLogic {
      *         Array of all actions
      */
     public function listActions() {
-        return array("Inherited class *must* override listActions");
+        return ["Inherited class *must* override listActions"];
     }
 
     /**
@@ -61,7 +61,7 @@ abstract class FrontendLogic {
      *         Array of items
      */
     public function listItems() {
-        return array("Inherited class *must* override listItems");
+        return ["Inherited class *must* override listItems"];
     }
 
 }

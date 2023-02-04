@@ -13,14 +13,20 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $cfg;
+
+$pluginName = basename(dirname(__DIR__, 1));
+
+$cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
+
 // plugin includes
-plugin_include('pim', 'classes/class.pim.plugin.collection.php');
-plugin_include('pim', 'classes/class.pim.plugin.relations.collection.php');
-plugin_include('pim', 'classes/util/zip/class.pimpluginarchiveextractor.php');
-plugin_include('pim', 'classes/setup/class.pimpluginsetup.php');
-plugin_include('pim', 'classes/setup/class.pimpluginsetup.install.php');
-plugin_include('pim', 'classes/setup/class.pimpluginsetup.uninstall.php');
-plugin_include('pim', 'classes/setup/class.pimpluginsetup.update.php');
-plugin_include('pim', 'classes/setup/class.pimpluginsetup.status.php');
-plugin_include('pim', 'classes/view/class.pimpluginview.dependencies.php');
-plugin_include('pim', 'classes/view/class.pimpluginview.navsub.php');
+plugin_include($pluginName, 'classes/class.pim.plugin.collection.php');
+plugin_include($pluginName, 'classes/class.pim.plugin.relations.collection.php');
+plugin_include($pluginName, 'classes/util/zip/class.pimpluginarchiveextractor.php');
+plugin_include($pluginName, 'classes/setup/class.pimpluginsetup.php');
+plugin_include($pluginName, 'classes/setup/class.pimpluginsetup.install.php');
+plugin_include($pluginName, 'classes/setup/class.pimpluginsetup.uninstall.php');
+plugin_include($pluginName, 'classes/setup/class.pimpluginsetup.update.php');
+plugin_include($pluginName, 'classes/setup/class.pimpluginsetup.status.php');
+plugin_include($pluginName, 'classes/view/class.pimpluginview.dependencies.php');
+plugin_include($pluginName, 'classes/view/class.pimpluginview.navsub.php');

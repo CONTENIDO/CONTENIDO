@@ -1,7 +1,7 @@
 <?php
 
 /**
- * description: google map
+ * description: picture gallery
  *
  * @package Module
  * @subpackage ContentPictureGallery
@@ -18,22 +18,22 @@ $art = new cApiArticleLanguage();
 $art->loadByArticleAndLanguageId(cRegistry::getArticleId(), cRegistry::getLanguageId());
 $contentValue = $art->getContent("FILELIST", $filelistIndex);
 
-$filelist = new cContentTypeFilelist($contentValue, $filelistIndex, array());
+$filelist = new cContentTypeFilelist($contentValue, $filelistIndex, []);
 $files = $filelist->getConfiguredFiles();
 
-$pictures = array();
+$pictures = [];
 
 if (count($files) > 0) {
     foreach ($files as $file) {
         $pathThumb = $file['path'] . '/' . $file['filename'];
 
-        $record = array();
+        $record = [];
         $record['thumb'] = cApiImgScale($pathThumb, 319, 199);
         $record['lightbox'] = $cfgClient[$client]['upload'] . $pathThumb;
-        $record['description'] = $file['metadata']['description'];
-        $record['copyright'] = $file['metadata']['copyright'];
+        $record['description'] = $file['metadata']['description'] ?? '';
+        $record['copyright'] = $file['metadata']['copyright'] ?? '';
 
-        array_push($pictures, $record);
+        $pictures[] = $record;
     }
 }
 

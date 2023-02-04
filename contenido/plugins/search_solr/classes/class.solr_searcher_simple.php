@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Simple Solr search implementation.
  *
  * This searcher is restricted on single core searches (due to the fact that
- * SolrQuery does not support multi core requests).
+ * SolrQuery does not support multicore requests).
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
@@ -25,10 +25,9 @@ class SolrSearcherSimple extends SolrSearcherAbstract {
     /**
      *
      * @throws cException if search cannot be performed for empty search term
-     * @return SolrObject
+     * @return SolrObject|null
      */
     public function getSearchResults() {
-
         $searchTerm = $this->_searchTerm;
         $searchTerm = trim($searchTerm);
         $searchTerm = explode(' ', $searchTerm);
@@ -67,6 +66,7 @@ class SolrSearcherSimple extends SolrSearcherAbstract {
             $response = $solrQueryResponse->getResponse();
             $response = $response->response;
         } catch (SolrClientException $e) {
+            $response = null;
             Solr::log($e, $e->getFile(), $e->getLine());
             Solr::log($solrClient->getDebug());
             Solr::log($query->toString());

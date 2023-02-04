@@ -32,6 +32,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * }
  * </pre>
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Validation
  */

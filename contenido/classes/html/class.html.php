@@ -506,6 +506,7 @@ class cHTML {
     }
 
     /**
+     * @since CONTENIDO 4.10.2
      * @return array
      */
     public function getStyleDefinition() {

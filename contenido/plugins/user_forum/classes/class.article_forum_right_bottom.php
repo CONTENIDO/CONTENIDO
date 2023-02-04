@@ -21,7 +21,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage UserForum
  */
 
-global $area;
 
 /**
  * Class ArticleForumRightBottom
@@ -102,7 +101,7 @@ class ArticleForumRightBottom extends cGuiPage {
      * @param $cont
      * @param $cfg
      * @param $mod
-     * 
+     *
      * @return array with buttons
      */
     protected function buildOnlineButtonBackendListMode(&$key, &$cont, &$cfg, $mod = null) {
@@ -157,7 +156,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $idaart = $cont['idart'];
 
         // button with delete action
-        $deleteLink = '<a title="' . $cont['title'] . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $message . '&quot;, function(){ deleteArticlesByIdRight(' . $level . ', ' . $keyy . ', ' . $id . ', ' . $idacat . ', ' . $idaart . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $message . '" alt="' . $message . '"></a>';
+        $deleteLink = '<a title="' . $message . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $message . '&quot;, function(){ deleteArticlesByIdRight(' . $level . ', ' . $keyy . ', ' . $id . ', ' . $idacat . ', ' . $idaart . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $message . '" alt="' . $message . '"></a>';
 
         // insert buttons to array for return
         $buttons['online'] = $online;
@@ -523,11 +522,11 @@ class ArticleForumRightBottom extends cGuiPage {
      * @throws Exception
      */
     protected function switchActions() {
-        $lang = cRegistry::getLanguageId();
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $idart = $_REQUEST['idart'];
         $idcat = $_REQUEST['idcat'];
         $action = $_REQUEST["action"];
-        $online = (isset($_REQUEST['onlineState'])) ? 1 : 0;
+        $online = isset($_REQUEST['onlineState']) ? 1 : 0;
 
         switch ($action) {
 

@@ -21,11 +21,8 @@ if (isset($dont_print_subnav) && $dont_print_subnav == 1) {
     return;
 }
 
-$aExectime = array();
-$aExectime['fullstart'] = getmicrotime();
-
 // Requires all query parameter passed by frame
-$aBasicParams = array('area', 'frame', 'contenido', 'appendparameters');
+$aBasicParams = ['area', 'frame', 'contenido', 'appendparameters'];
 
 // Flag to check is file is loading from Main-Frame
 $bVirgin = false;

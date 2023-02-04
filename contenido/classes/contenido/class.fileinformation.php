@@ -21,6 +21,8 @@ cInclude('includes', 'functions.file.php');
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiFileInformation createNewItem
+ * @method cApiFileInformation|bool next
  */
 class cApiFileInformationCollection extends ItemCollection {
     /**
@@ -29,8 +31,7 @@ class cApiFileInformationCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['file_information'], 'idsfi');
+        parent::__construct(cRegistry::getDbTableName('file_information'), 'idsfi');
         $this->_setItemClass('cApiFileInformation');
     }
 
@@ -48,20 +49,22 @@ class cApiFileInformationCollection extends ItemCollection {
      *
      * @return cApiFileInformation
      *         the new item
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
     public function create($typeContent, $filename, $description = '') {
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $auth = cRegistry::getAuth();
         $item = new cApiFileInformation();
-        $item->loadByMany(array(
-            'idclient' => $client,
-            'type' => $typeContent,
-            'filename' => $filename
-        ));
+        $item->loadByMany(
+            [
+                'idclient' => $client,
+                'type'     => $typeContent,
+                'filename' => $filename,
+            ]
+        );
         if (!$item->isLoaded()) {
             $item = $this->createNewItem();
 
@@ -99,20 +102,22 @@ class cApiFileInformationCollection extends ItemCollection {
      *
      * @return cApiFileInformation
      *                            the updated item
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
     public function updateFile($filename, $typeContent, $description = '', $newFilename = '', $author = '') {
         $auth = cRegistry::getAuth();
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $item = new cApiFileInformation();
-        $item->loadByMany(array(
-            'idclient' => $client,
-            'type' => $typeContent,
-            'filename' => $filename
-        ));
+        $item->loadByMany(
+            [
+                'idclient' => $client,
+                'type'     => $typeContent,
+                'filename' => $filename,
+            ]
+        );
         $id = $item->get('idsfi');
         if ($item->isLoaded()) {
             $item->set('idsfi', $id);
@@ -139,7 +144,7 @@ class cApiFileInformationCollection extends ItemCollection {
      * @param array $values
      *         with parameters
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -158,19 +163,21 @@ class cApiFileInformationCollection extends ItemCollection {
      * @param string $type
      *         type of the entry
      * @return array
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
     public function getFileInformation($filename, $type) {
-        $client = cRegistry::getClientId();
-        $fileInformation = array();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $fileInformation = [];
         $item = new cApiFileInformation();
-        $item->loadByMany(array(
-            'idclient' => $client,
-            'type' => $type,
-            'filename' => $filename
-        ));
+        $item->loadByMany(
+            [
+                'idclient' => $client,
+                'type'     => $type,
+                'filename' => $filename,
+            ]
+        );
         if ($item->isLoaded()) {
             $fileInformation['idsfi'] = $item->get('idsfi');
             $fileInformation['created'] = $item->get('created');
@@ -200,8 +207,7 @@ class cApiFileInformation extends Item
      * @throws cException
      */
     public function __construct($id = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['file_information'], 'idsfi');
+        parent::__construct(cRegistry::getDbTableName('file_information'), 'idsfi');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }

@@ -36,7 +36,6 @@ class cContentTypeText extends cContentTypeAbstract {
      * @throws cDbException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-
         $rawSettings = conHtmlSpecialChars($rawSettings);
 
         // call parent constructor
@@ -49,8 +48,10 @@ class cContentTypeText extends cContentTypeAbstract {
         // if form is submitted, store the current text
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
-            $this->_settings = $_POST[$this->_prefix . '_text_' . $this->_id];
+        $postAction = $_POST[$this->_prefix . '_action'] ?? '';
+        $postId = cSecurity::toInteger($_POST[$this->_prefix . '_id'] ?? '0');
+        if ($postAction === 'store' && $postId == $this->_id) {
+            $this->_settings = $_POST[$this->_prefix . '_text_' . $this->_id] ?? '';
             $this->_rawSettings = $this->_settings;
             $this->_storeSettings();
 
@@ -81,10 +82,12 @@ class cContentTypeText extends cContentTypeAbstract {
 
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithead.gif');
         $editButton->setID($this->_prefix . '_editbutton_' . $this->_id);
-        $editButton->appendStyleDefinitions(array(
-            'margin-left' => '5px',
-            'cursor' => 'pointer'
-        ));
+        $editButton->appendStyleDefinitions(
+            [
+                'margin-left' => '5px',
+                'cursor'      => 'pointer',
+            ]
+        );
 
         return $this->_encodeForOutput($script . $div->render() . $editButton->render());
     }
@@ -97,15 +100,21 @@ class cContentTypeText extends cContentTypeAbstract {
      * @throws cInvalidArgumentException
      */
     protected function _getEditJavaScript() {
-        $textbox = new cHTMLTextarea($this->_prefix . '_text_' . $this->_id, '', '', '', $this->_prefix . '_text_' . $this->_id, false, null, '', 'edit-textfield edit-' . $this->_prefix . '-textfield');
+        $textbox = new cHTMLTextarea(
+            $this->_prefix . '_text_' . $this->_id, '', '', '',
+            $this->_prefix . '_text_' . $this->_id, false, null, '',
+            'edit-textfield edit-' . $this->_prefix . '-textfield'
+        );
         $textbox->setClass("$this->_id");
 
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_ok.gif');
         $saveButton->setID($this->_prefix . '_savebutton_' . $this->_id);
-        $saveButton->appendStyleDefinitions(array(
-            'margin-left' => '5px',
-            'cursor' => 'pointer'
-        ));
+        $saveButton->appendStyleDefinitions(
+            [
+                'margin-left' => '5px',
+                'cursor'      => 'pointer',
+            ]
+        );
 
         $template = new cTemplate();
         $template->set('s', 'PREFIX', $this->_prefix);
@@ -114,7 +123,10 @@ class cContentTypeText extends cContentTypeAbstract {
         $template->set('s', 'SAVEBUTTON', $saveButton->render());
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
 
-        return $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_text_js.html', true);
+        return $template->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_text_js.html',
+            true
+        );
     }
 
     /**

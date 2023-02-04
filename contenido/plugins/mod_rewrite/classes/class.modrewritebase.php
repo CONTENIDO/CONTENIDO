@@ -32,7 +32,7 @@ abstract class ModRewriteBase {
      * @return  bool
      */
     public static function isEnabled() {
-        return (self::getConfig('use', 0) == 1) ? true : false;
+        return self::getConfig('use', 0) == 1;
     }
 
     /**
@@ -45,7 +45,7 @@ abstract class ModRewriteBase {
     }
 
     /**
-     * Returns configuration of mod rewrite, content of gobal $cfg['mod_rewrite']
+     * Returns configuration of mod rewrite, content of global $cfg['mod_rewrite']
      *
      * @param   string  $key  Name of configuration key
      * @param   mixed   $default  Default value to return as a fallback
@@ -53,7 +53,7 @@ abstract class ModRewriteBase {
      *                  or one of the desired subpart
      */
     public static function getConfig($key = NULL, $default = NULL) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         if ($key == NULL) {
             return $cfg['mod_rewrite'];
         } elseif ((string) $key !== '') {
@@ -64,12 +64,13 @@ abstract class ModRewriteBase {
     }
 
     /**
-     * Sets the configuration of mod rewrite, content of gobal $cfg['mod_rewrite']
+     * Sets the configuration of mod rewrite, content of global $cfg['mod_rewrite']
      *
      * @param   string  $key    Name of configuration key
      * @param   mixed   $value  The value to set
      */
     public static function setConfig($key, $value) {
+        // Use global here, we update the variable!
         global $cfg;
         $cfg['mod_rewrite'][$key] = $value;
     }

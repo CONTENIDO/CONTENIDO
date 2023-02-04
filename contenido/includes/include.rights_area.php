@@ -14,24 +14,39 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// notice $oTpl is filled and generated in file include.rights.php this file
-// renders $oTpl to browser
+global $notification, $oTpl, $right_list, $rights_client, $rights_lang, $db, $lngAct, $userid;
+
+$sess = cRegistry::getSession();
+$area = cRegistry::getArea();
+$perm = cRegistry::getPerm();
+$cfg = cRegistry::getConfig();
+$action = cRegistry::getAction();
+
 include_once(cRegistry::getBackendPath() . 'includes/include.rights.php');
+
 $debug = (cDebug::getDefaultDebuggerName() != cDebug::DEBUGGER_DEVNULL);
 
 // set the areas which are in use for selecting these
-
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
-        FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
-        WHERE user_id = '" . $db->escape($userid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
-        AND idlang = " . cSecurity::toInteger($rights_lang) . " AND idcat = 0 AND A.idaction = C.idaction AND A.idarea = B.idarea";
-$db->query($sql);
+        FROM `:tab_rights` AS A, `:tab_area` AS B, `:tab_actions` AS C
+        WHERE user_id = ':user_id' AND idclient = :idclient
+        AND idlang = :idlang AND idcat = 0 AND A.idaction = C.idaction AND A.idarea = B.idarea";
+$db->query($sql, [
+    'tab_rights' => $cfg['tab']['rights'],
+    'tab_area' => $cfg['tab']['area'],
+    'tab_actions' => $cfg['tab']['actions'],
+    'user_id' => $userid,
+    'idclient' => $rights_client,
+    'idlang' => $rights_lang,
+]);
 
-$rights_list_old = array();
+$rights_list_old = [];
 while ($db->nextRecord()) { // set a new rights list for this user
     $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
 }
+$rights_list_old_keys = array_keys($rights_list_old);
 
+$sMessage = '';
 if (($perm->have_perm_area_action("user_overview", $action)) && ($action == "user_edit")) {
     $ret = cRights::saveRights();
     if ($ret === true) {
@@ -49,24 +64,23 @@ $sJsAfter = '';
 $sJsExternal = '';
 $sTable = '';
 
-$sJsBefore .= "var areatree = new Array();\n";
+$sJsBefore .= "var areatree = [];\n";
 
 if (!isset($rights_perms) || $action == "" || !isset($action)) {
     // search for the permissions of this user
-    $sql = "SELECT perms FROM " . $cfg['tab']['user'] . " WHERE user_id='$userid'";
-
-    $db->query($sql);
+    $sql = "SELECT `perms` FROM `%s` WHERE `user_id` = '%s'";
+    $db->query($sql, $cfg['tab']['user'], $userid);
     $db->nextRecord();
     $rights_perms = $db->f("perms");
 }
 
 // Init Table
 $oTable = new cHTMLTable();
-$oTable->updateAttributes(array(
+$oTable->updateAttributes([
     "class" => "generic",
     "cellspacing" => "0",
     "cellpadding" => "2"
-));
+]);
 $objHeaderRow = new cHTMLTableRow();
 $objHeaderItem = new cHTMLTableHead();
 $objFooterRow = new cHTMLTableRow();
@@ -75,46 +89,46 @@ $objRow = new cHTMLTableRow();
 $objItem = new cHTMLTableData();
 
 // table header
-$headeroutput = "";
-$aTh = array(
-    array(
+$headerOutput = "";
+$aTh = [
+    [
         "&nbsp;",
         "&nbsp;",
         i18n("Check all")
-    ),
-    array(
+    ],
+    [
         "&nbsp;",
         "&nbsp;",
         '<input type="checkbox" name="checkall" value="" onclick="setRightsForAllAreas()">'
-    )
-);
+    ]
+];
 
 foreach ($aTh as $i => $tr) {
     $items = "";
     foreach ($tr as $td) {
         if ($i == 1) {
-            $objHeaderItem->updateAttributes(array(
+            $objHeaderItem->updateAttributes([
                 "class" => "center",
                 "align" => "center",
                 "valign" => "",
                 "style" => "border-top-width: 0px;"
-            ));
+            ]);
         } else {
-            $objHeaderItem->updateAttributes(array(
+            $objHeaderItem->updateAttributes([
                 "class" => "center",
                 "align" => "center",
                 "valign" => "top"
-            ));
+            ]);
         }
         $objHeaderItem->setContent($td);
         $items .= $objHeaderItem->render();
         $objHeaderItem->advanceID();
     }
-    $objHeaderRow->updateAttributes(array(
+    $objHeaderRow->updateAttributes([
         "class" => "textw_medium"
-    ));
+    ]);
     $objHeaderRow->setContent($items);
-    $headeroutput .= $objHeaderRow->render();
+    $headerOutput .= $objHeaderRow->render();
     $objHeaderRow->advanceID();
 }
 
@@ -127,7 +141,7 @@ foreach ($right_list as $key => $value) {
         $items = "";
         if ($key == $key2) {
             // does the user have the right
-            if (in_array($value2["perm"] . "|fake_permission_action|0", array_keys($rights_list_old))) {
+            if (in_array($value2["perm"] . "|fake_permission_action|0", $rights_list_old_keys)) {
                 $checked = 'checked="checked"';
             } else {
                 $checked = "";
@@ -142,23 +156,23 @@ foreach ($right_list as $key => $value) {
                 $locationString = $main;
             }
 
-            $objItem->updateAttributes(array(
+            $objItem->updateAttributes([
                 "class" => "td_rights1"
-            ));
+            ]);
             $objItem->setContent($locationString);
             $items .= $objItem->render();
             $objItem->advanceID();
 
-            $objItem->updateAttributes(array(
+            $objItem->updateAttributes([
                 "class" => "td_rights2"
-            ));
+            ]);
             $objItem->setContent("<input type=\"checkbox\" name=\"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\" value=\"x\" $checked>");
             $items .= $objItem->render();
             $objItem->advanceID();
 
-            $objItem->updateAttributes(array(
+            $objItem->updateAttributes([
                 "class" => "td_rights2"
-            ));
+            ]);
             $objItem->setContent("<input type=\"checkbox\" name=\"checkall_$key\" value=\"\" onclick=\"setRightsForArea('$key')\">");
             $items .= $objItem->render();
             $objItem->advanceID();
@@ -167,51 +181,51 @@ foreach ($right_list as $key => $value) {
             $items = "";
             $output .= $objRow->render();
             $objRow->advanceID();
-            // set javscript array for areatree
-            $sJsBefore .= "areatree[\"$key\"] = new Array();
-                           areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\"\n";
+            // set javascript array for areatree
+            $sJsBefore .= "areatree[\"$key\"] = [];\n"
+                         ."areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\"\n";
         }
 
         // if there area some
-        if (is_array($value2["action"])) {
+        if (isset($value2["action"]) && is_array($value2["action"])) {
             foreach ($value2["action"] as $key3 => $value3) {
                 $idaction = $value3;
                 // does the user have the right
-                if (in_array($value2["perm"] . "|$idaction|0", array_keys($rights_list_old))) {
+                if (in_array($value2["perm"] . "|$idaction|0", $rights_list_old_keys)) {
                     $checked = 'checked="checked"';
                 } else {
                     $checked = "";
                 }
 
-                // set the checkbox the name consits of areait+actionid+itemid
+                // set the checkbox the name consists of areaid+actionid+itemid
                 $sCellContent = '';
                 if ($debug) {
                     $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | " . $value3 . "-->" . $lngAct[$value2["perm"]][$value3] . "&nbsp;&nbsp;&nbsp;&nbsp;";
                 } else {
-                    if ($lngAct[$value2["perm"]][$value3] == "") {
+                    if (empty($lngAct[$value2["perm"]][$value3])) {
                         $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . "|" . $value3 . "&nbsp;&nbsp;&nbsp;&nbsp;";
                     } else {
                         $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $lngAct[$value2["perm"]][$value3] . "&nbsp;&nbsp;&nbsp;&nbsp;";
                     }
                 }
 
-                $objItem->updateAttributes(array(
+                $objItem->updateAttributes([
                     "class" => "td_rights1"
-                ));
+                ]);
                 $objItem->setContent($sCellContent);
                 $items .= $objItem->render();
                 $objItem->advanceID();
 
-                $objItem->updateAttributes(array(
+                $objItem->updateAttributes([
                     "class" => "td_rights2"
-                ));
+                ]);
                 $objItem->setContent("<input type=\"checkbox\" id=\"rights_list[" . $value2["perm"] . "|$value3|0]\" name=\"rights_list[" . $value2["perm"] . "|$value3|0]\" value=\"x\" $checked>");
                 $items .= $objItem->render();
                 $objItem->advanceID();
 
-                $objItem->updateAttributes(array(
+                $objItem->updateAttributes([
                     "class" => "td_rights2"
-                ));
+                ]);
                 $objItem->setContent("&nbsp;");
                 $items .= $objItem->render();
                 $objItem->advanceID();
@@ -220,7 +234,7 @@ foreach ($right_list as $key => $value) {
                 $items = "";
                 $output .= $objRow->render();
                 $objRow->advanceID();
-                // set javscript array for areatree
+                // set javascript array for areatree
                 $sJsBefore .= "areatree[\"$key\"][\"" . $value2["perm"] . "$value3\"]=\"rights_list[" . $value2["perm"] . "|$value3|0]\";\n";
             }
         }
@@ -228,24 +242,24 @@ foreach ($right_list as $key => $value) {
 }
 
 // table footer
-$footeroutput = "";
-$objItem->updateAttributes(array(
+$objItem->updateAttributes([
     "class" => "",
     "valign" => "top",
     "align" => "right",
     "colspan" => "3"
-));
+]);
 $objItem->setContent("<a href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a><img src=\"images/spacer.gif\" width=\"20\"><a href=\"javascript:submitrightsform('user_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>");
 $items = $objItem->render();
 $objItem->advanceID();
 $objFooterRow->setContent($items);
 $items = "";
-$footeroutput = $objFooterRow->render();
+$footerOutput = $objFooterRow->render();
 $objFooterRow->advanceID();
 
-$oTable->setContent($headeroutput . $output . $footeroutput);
+$oTable->setContent($headerOutput . $output . $footerOutput);
 $sTable = stripslashes($oTable->render());
 // Table end
+
 $oTpl->set('s', 'NOTIFICATION_SAVE_RIGHTS', $sMessage);
 $oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
 $oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);

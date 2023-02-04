@@ -20,20 +20,21 @@ cInclude('includes', 'functions.str.php');
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiArticle createNewItem
+ * @method cApiArticle|bool next
  */
 class cApiArticleCollection extends ItemCollection {
     /**
      * Constructor to create an instance of this class.
      *
      * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
+     *                     where clause to use for selection {@see ItemCollection::select()}
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['art'], 'idart');
+        $table = cRegistry::getDbTableName('art');
+        parent::__construct($table, 'idart');
         $this->_setItemClass('cApiArticle');
 
         // set the join partners so that joins can be used via link() method
@@ -50,10 +51,8 @@ class cApiArticleCollection extends ItemCollection {
      * @param int $idclient
      *
      * @return cApiArticle
-     * 
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     *
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idclient) {
         $item = $this->createNewItem();
@@ -65,19 +64,19 @@ class cApiArticleCollection extends ItemCollection {
     }
 
     /**
-     * Returns list of ids by given client id.
+     * Returns list of article ids by given client id.
      *
      * @param int $idclient
-     * 
+     *
      * @return array
-     * 
-     * @throws cDbException
+     *
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getIdsByClientId($idclient) {
-        $sql = "SELECT idart FROM `%s` WHERE idclient=%d";
+        $sql = "SELECT `idart` FROM `%s` WHERE `idclient` = %d";
         $this->db->query($sql, $this->table, $idclient);
-        $list = array();
-        while ($this->db->next_record()) {
+        $list = [];
+        while ($this->db->nextRecord()) {
             $list[] = $this->db->f('idart');
         }
         return $list;
@@ -98,13 +97,12 @@ class cApiArticle extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['art'], 'idart');
-        $this->setFilters(array(), array());
+        $table = cRegistry::getDbTableName('art');
+        parent::__construct($table, 'idart');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -118,15 +116,15 @@ class cApiArticle extends Item
      *
      * @return string
      *         link
-     * 
-     * @throws cInvalidArgumentException
+     *
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {
             return '';
         }
 
-        $options = array();
+        $options = [];
         $options['idart'] = $this->get('idart');
         $options['lang'] = ($changeLangId == 0) ? cRegistry::getLanguageId() : $changeLangId;
         if ($changeLangId > 0) {
@@ -137,7 +135,7 @@ class cApiArticle extends Item
     }
 
     /**
-     * Userdefined setter for article fields.
+     * User-defined setter for article fields.
      *
      * @param string $name
      * @param mixed $value
@@ -148,7 +146,7 @@ class cApiArticle extends Item
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'idclient':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

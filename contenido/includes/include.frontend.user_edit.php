@@ -21,11 +21,7 @@ $page = new cGuiPage("frontend.user_edit");
 
 $feUsers = new cApiFrontendUserCollection();
 
-if (is_array($cfg['plugins']['frontendusers'])) {
-    foreach ($cfg['plugins']['frontendusers'] as $plugin) {
-        plugin_include("frontendusers", $plugin."/".$plugin.".php");
-    }
-}
+cIncludePlugins('frontendusers');
 
 // NOTE: Don't rename $feuser, plugin "frontendusers" function "frontendusers_valid_from_display" & "frontendusers_valid_from_store" uses it!
 $feuser = new cApiFrontendUser();
@@ -123,21 +119,21 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
         $feuser->set("active", $active);
 
         // Check out if there are any plugins
-        if (is_array($cfg['plugins']['frontendusers'])) {
+        if (cHasPlugins('frontendusers')) {
             foreach ($cfg['plugins']['frontendusers'] as $plugin) {
-                if (function_exists("frontendusers_".$plugin."_wantedVariables") &&
-                    function_exists("frontendusers_".$plugin."_store"))
+                if (function_exists('frontendusers_' . $plugin . '_wantedVariables') &&
+                    function_exists('frontendusers_' . $plugin . '_store'))
                 {
                     // check if user belongs to a specific group
                     // if true store values defined in frontenduser plugin
-                    if (function_exists("frontendusers_".$plugin."_checkUserGroup")) {
-                        $bCheckUserGroup = call_user_func("frontendusers_".$plugin."_checkUserGroup");
+                    if (function_exists('frontendusers_' . $plugin . '_checkUserGroup')) {
+                        $bCheckUserGroup = call_user_func('frontendusers_' . $plugin . '_checkUserGroup');
                     } else {
                         $bCheckUserGroup = true;
                     }
 
                     if ($bCheckUserGroup) {
-                        $wantVariables = call_user_func("frontendusers_".$plugin."_wantedVariables");
+                        $wantVariables = call_user_func('frontendusers_' . $plugin . '_wantedVariables');
 
                         if (is_array($wantVariables)) {
                             foreach ($wantVariables as $value) {
@@ -150,7 +146,7 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
                                 }
                             }
                         }
-                        $store = call_user_func("frontendusers_".$plugin."_store", $variablesToStore);
+                        $store = call_user_func('frontendusers_' . $plugin . '_store', $variablesToStore);
                     }
                 }
             }
@@ -200,20 +196,20 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
     // Check out if there are any plugins
     if (is_array($pluginOrder)) {
         foreach ($pluginOrder as $plugin) {
-            if (function_exists("frontendusers_".$plugin."_getTitle") &&
-                function_exists("frontendusers_".$plugin."_display"))
+            if (function_exists('frontendusers_' . $plugin . '_getTitle') &&
+                function_exists('frontendusers_' . $plugin . '_display'))
             {
                 // check if user belongs to a specific group
                 // if true display frontenduser plugin
-                if (function_exists("frontendusers_".$plugin."_checkUserGroup")) {
-                    $bCheckUserGroup = call_user_func("frontendusers_".$plugin."_checkUserGroup");
+                if (function_exists('frontendusers_' . $plugin . '_checkUserGroup')) {
+                    $bCheckUserGroup = call_user_func('frontendusers_' . $plugin . '_checkUserGroup');
                 } else {
                     $bCheckUserGroup = true;
                 }
 
                 if ($bCheckUserGroup) {
-                    $plugTitle = call_user_func("frontendusers_".$plugin."_getTitle");
-                    $display = call_user_func("frontendusers_".$plugin."_display", $feuser);
+                    $plugTitle = call_user_func('frontendusers_' . $plugin . '_getTitle');
+                    $display = call_user_func('frontendusers_' . $plugin . '_display', $feuser);
 
                     if (is_array($plugTitle) && is_array($display)) {
                         foreach ($plugTitle as $key => $value) {
@@ -265,5 +261,3 @@ if (!isset($form)) {
 }
 
 $page->render();
-
-?>

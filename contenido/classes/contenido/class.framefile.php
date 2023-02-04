@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiFrameFile createNewItem
+ * @method cApiFrameFile|bool next
  */
 class cApiFrameFileCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiFrameFileCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['framefiles'], 'idframefile');
+        parent::__construct(cRegistry::getDbTableName('framefiles'), 'idframefile');
         $this->_setItemClass('cApiFrameFile');
 
         // set the join partners so that joins can be used via link() method
@@ -44,7 +45,7 @@ class cApiFrameFileCollection extends ItemCollection {
      * @param int    $idfile
      *
      * @return cApiFrameFile
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -91,20 +92,15 @@ class cApiFrameFile extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['framefiles'], 'idframefile');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
+        parent::__construct(cRegistry::getDbTableName('framefiles'), 'idframefile');
+        $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Userdefined setter for framefile fields.
+     * User-defined setter for framefile fields.
      *
      * @param string $name
      * @param mixed $value
@@ -114,14 +110,10 @@ class cApiFrameFile extends Item {
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
-            case 'idarea':
-                $value = (int) $value;
-                break;
             case 'idfile':
-                $value = (int) $value;
-                break;
             case 'idframe':
-                $value = (int) $value;
+            case 'idarea':
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

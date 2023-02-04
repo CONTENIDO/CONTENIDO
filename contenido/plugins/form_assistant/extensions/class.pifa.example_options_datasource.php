@@ -35,11 +35,11 @@ class ExampleOptionsDatasource extends PifaExternalOptionsDatasourceInterface {
      * @return array
      */
     protected function _getData() {
-        $options = array(
+        $options = [
             'n/a' => mi18n("CHOOSE_OPTION"),
             'foo' => mi18n("FOO"),
             'bar' => mi18n("BAR")
-        );
+        ];
 
         return $options;
     }

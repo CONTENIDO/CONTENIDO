@@ -28,9 +28,9 @@
 
 $oMyObj = new stdClass();
 $oMyObj->sTest = 'some property value';
-$oMyObj->aTest = array('item1', 'item2');
+$oMyObj->aTest = ['item1', 'item2'];
 
-$aMyArray = array('somekey' => 'somevalue');
+$aMyArray = ['somekey' => 'somevalue'];
 
 $iMyInt = 5;
 

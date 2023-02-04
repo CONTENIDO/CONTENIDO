@@ -209,8 +209,8 @@ class Cronjobs {
      * Get all Cronjobs in directory cronjobs from contenido
      */
     public function getAllCronjobs() {
-        $retArray = array();
-        
+        $retArray = [];
+
         if (is_dir($this->_cronjobDirectory)) {
             // get only files
             if (false !== ($handle = cDirHandler::read($this->_cronjobDirectory, false, false, true))) {

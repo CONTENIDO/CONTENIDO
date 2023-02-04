@@ -18,7 +18,7 @@ $page = new cGuiPage("mycontenido", "", "0");
 
 $vuser = new cApiUser($auth->auth['uid']);
 
-if ($saveLoginTime == true) {
+if ($saveLoginTime === true) {
     $sess->register('saveLoginTime');
     $saveLoginTime = 0;
 
@@ -34,7 +34,7 @@ if ($lastlogin == '') {
 }
 
 // notification for requested password
-$aNotificationText = array();
+$aNotificationText = [];
 if ($vuser->getField('using_pw_request') == 1) {
     $page->displayWarning(i18n("You're logged in with a temporary password. Please change your password."));
 }
@@ -68,8 +68,8 @@ if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_
 }
 
 //check for data in the old data folders
-$foldersToCheck = array($cfg["path"]["frontend"]."/contenido/logs", $cfg["path"]["frontend"]."/contenido/temp");
-if(is_array($cfgClient)) {
+$foldersToCheck = [$cfg["path"]["frontend"]."/contenido/logs", $cfg["path"]["frontend"]."/contenido/temp"];
+if (is_array($cfgClient)) {
     foreach ($cfgClient as $iclient => $aclient) {
         if (!is_numeric($iclient)) {
             continue;
@@ -78,7 +78,7 @@ if(is_array($cfgClient)) {
         $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."logs";
     }
 }
-$faultyFolders = array();
+$faultyFolders = [];
 foreach ($foldersToCheck as $folder) {
     if (true === @file_exists($folder)) {
         $faultyFolders[] = $folder;
@@ -99,12 +99,12 @@ $clientCollection = new cApiClientCollection();
 $clients = $clientCollection->getAccessibleClients();
 
 $cApiClient = new cApiClient();
-$warnings = array();
+$warnings = [];
 
 if (count($clients) > 1) {
     $select = new cHTMLSelectElement('changeclient');
     $select->setClass("vAlignMiddle");
-    $choices = array();
+    $choices = [];
 
     foreach ($clients as $key => $v_client) {
         if ($perm->hasClientPermission($key)) {
@@ -152,7 +152,7 @@ if (count($clients) > 1) {
 $props = new cApiPropertyCollection();
 $props->select("itemtype = 'idcommunication' AND idclient = " . (int) $client . " AND type = 'todo' AND name = 'status' AND value != 'done'");
 
-$todoitems = array();
+$todoitems = [];
 
 while ($prop = $props->next()) {
     $todoitems[] = $prop->get('itemid');
@@ -167,14 +167,15 @@ $todoitems = new TODOCollection();
 $recipient = $auth->auth['uid'];
 $todoitems->select("recipient = '$recipient' AND idclient = " . (int) $client . " AND $in");
 
+$openTasks = 0;
 while ($todo = $todoitems->next()) {
     if ($todo->getProperty('todo', 'status') != 'done') {
-        $todoitems++;
+        $openTasks++;
     }
 }
 
 $sTaskTranslation = '';
-if ($todoitems->count() == 1) {
+if ($openTasks == 1) {
     $sTaskTranslation = i18n('Reminder list: %d Task open');
 } else {
     $sTaskTranslation = i18n('Reminder list: %d Tasks open');
@@ -216,7 +217,7 @@ foreach ($admins as $pos => $item) {
 $page->set('s', 'ADMIN_EMAIL', $sOutputAdmin);
 
 // For display current online user in CONTENIDO-Backend
-$aMemberList = array();
+$aMemberList = [];
 $oActiveUsers = new cApiOnlineUserCollection();
 $iNumberOfUsers = 0;
 

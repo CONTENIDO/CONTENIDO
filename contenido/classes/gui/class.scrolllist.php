@@ -28,14 +28,14 @@ class cGuiScrollList {
      *
      * @var array
      */
-    public $data = array();
+    public $data = [];
 
     /**
      * Header container.
      *
      * @var array
      */
-    public $header = array();
+    public $header = [];
 
     /**
      * Number of records displayed per page.
@@ -127,9 +127,7 @@ class cGuiScrollList {
         $this->objTable = new cHTMLTable();
         if ($defaultstyle == true) {
             $this->objTable->setClass("generic");
-            $this->objTable->updateAttributes(array(
-                "cellpadding" => "2"
-            ));
+            $this->objTable->updateAttributes(["cellpadding" => "2"]);
         }
 
         $this->objHeaderRow = new cHTMLTableRow();
@@ -435,7 +433,4 @@ class cGuiScrollList {
         }
     }
 
-    protected function setSortKey($sortKey) {
-
-    }
 }

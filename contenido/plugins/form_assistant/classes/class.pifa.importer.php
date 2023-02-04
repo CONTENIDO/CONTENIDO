@@ -114,7 +114,7 @@ class PifaImporter {
         /** @var DOMElement $rowElem */
         foreach ($rowElems as $rowElem) {
             $rowPath = $rowElem->getNodePath();
-            $fields = array();
+            $fields = [];
             if ('true' == $formElem->getAttribute('timestamp')) {
                 $fields['pifa_timestamp'] = $rowElem->getAttribute('timestamp');
             }
@@ -135,14 +135,14 @@ class PifaImporter {
      * @return PifaForm
      */
     private function _createPifaForm(DOMElement $formElem) {
-        return $this->_pifaFormColl->createNewItem(array(
+        return $this->_pifaFormColl->createNewItem([
             'idclient' => cRegistry::getClientId(),
             'idlang' => cRegistry::getLanguageId(),
             'name' => $formElem->getAttribute('name'),
             'data_table' => $this->_tableName,
             'method' => $formElem->getAttribute('method'),
             'with_timestamp' => (int) ('true' === $formElem->getAttribute('timestamp')),
-        ));
+        ]);
     }
 
     /**
@@ -161,13 +161,13 @@ class PifaImporter {
         $fieldPath = $fieldElem->getNodePath();
 
         // create PIFA field
-        $data = array(
+        $data = [
             'idform' => $pifaForm->get('idform'),
             'field_rank' => $fieldElem->getAttribute('rank'),
             'field_type' => $this->_getPifaFieldTypeId($fieldElem->getAttribute('type')),
             'column_name' => $fieldElem->getAttribute('column'),
             'obligatory' => (int) ('true' === $fieldElem->getAttribute('obligatory')),
-        );
+        ];
 
         // import default (optional)
         if ($fieldElem->hasAttribute('default')) {
@@ -207,9 +207,9 @@ class PifaImporter {
 
         // import classes
         $classElems = $this->_reader->getXpathNodeList($fieldPath . '/classes/class');
-        $cssClass = array();
+        $cssClass = [];
         foreach ($classElems as $classElem) {
-            array_push($cssClass, $classElem->nodeValue);
+            $cssClass[] = $classElem->nodeValue;
         }
         $data['css_class'] = implode(',', $cssClass);
 
@@ -221,11 +221,11 @@ class PifaImporter {
                 $data['option_class'] = $optionsElem->getAttribute('source');
             }
             $optionElems = $this->_reader->getXpathNodeList($fieldPath . '/options/option');
-            $optionLabels = $optionValues = array();
+            $optionLabels = $optionValues = [];
             /** @var DOMElement $optionElem */
             foreach ($optionElems as $optionElem) {
-                array_push($optionLabels, $optionElem->nodeValue);
-                array_push($optionValues, $optionElem->getAttribute('value'));
+                $optionLabels[] = $optionElem->nodeValue;
+                $optionValues[] = $optionElem->getAttribute('value');
             }
             $data['option_labels'] = implode(',', $optionLabels);
             $data['option_values'] = implode(',', $optionValues);
@@ -260,7 +260,7 @@ class PifaImporter {
      */
     private function _getPifaFieldTypeId($fieldTypeName) {
         $fieldTypeName = cString::toUpperCase($fieldTypeName);
-        $fieldTypeIds = array(
+        $fieldTypeIds = [
             'INPUTTEXT' => PifaField::INPUTTEXT,
             'TEXTAREA' => PifaField::TEXTAREA,
             'INPUTPASSWORD' => PifaField::INPUTPASSWORD,
@@ -284,7 +284,7 @@ class PifaImporter {
             'FIELDSET_BEGIN' => PifaField::FIELDSET_BEGIN,
             'FIELDSET_END' => PifaField::FIELDSET_END,
             'BUTTONIMAGE' => PifaField::BUTTONIMAGE,
-        );
+        ];
         $fieldTypeId = $fieldTypeIds[$fieldTypeName];
         return $fieldTypeId;
     }

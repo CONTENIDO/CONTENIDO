@@ -28,7 +28,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
     private $PluginFoldername;
 
     // All area entries from database in an array
-    private $PluginInstalledAreas = array();
+    private $PluginInstalledAreas = [];
 
     /**
      * @var PimPluginCollection
@@ -376,7 +376,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $dependenciesCount = count(parent::$XmlDependencies);
         for ($i = 0; $i < $dependenciesCount; $i++) {
 
-            $attributes = array();
+            $attributes = [];
 
             // Build attributes
             foreach (parent::$XmlDependencies->depend[$i]->attributes() as $key => $value) {
@@ -390,12 +390,12 @@ class PimPluginSetupInstall extends PimPluginSetup {
                 return;
             }
 
-            // Add attributes uuid", "min_version" and "max_version" to an array
-            $attributes = array(
+            // Add attributes "uuid", "min_version" and "max_version" to an array
+            $attributes = [
                     'uuid' => cSecurity::escapeString($attributes['uuid']),
                     'minversion' => cSecurity::escapeString($attributes['min_version']),
                     'maxversion' => cSecurity::escapeString($attributes['max_version'])
-            );
+            ];
 
             $this->_PimPluginCollection->setWhere('uuid', $attributes['uuid']);
             $this->_PimPluginCollection->setWhere('active', '1');
@@ -435,7 +435,18 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddPlugin() {
         // Add entry at *_plugins
-        $pimPlugin = $this->_PimPluginCollection->create(parent::$XmlGeneral->plugin_name, parent::$XmlGeneral->description, parent::$XmlGeneral->author, parent::$XmlGeneral->copyright, parent::$XmlGeneral->mail, parent::$XmlGeneral->website, parent::$XmlGeneral->version, parent::$XmlGeneral->plugin_foldername, parent::$XmlGeneral->uuid, parent::$XmlGeneral->attributes()->active);
+        $pimPlugin = $this->_PimPluginCollection->create(
+            cSecurity::toString(parent::$XmlGeneral->plugin_name),
+            cSecurity::toString(parent::$XmlGeneral->description),
+            cSecurity::toString(parent::$XmlGeneral->author),
+            cSecurity::toString(parent::$XmlGeneral->copyright),
+            cSecurity::toString(parent::$XmlGeneral->mail),
+            cSecurity::toString(parent::$XmlGeneral->website),
+            cSecurity::toString(parent::$XmlGeneral->version),
+            cSecurity::toString(parent::$XmlGeneral->plugin_foldername),
+            cSecurity::toString(parent::$XmlGeneral->uuid),
+            cSecurity::toString(parent::$XmlGeneral->attributes()->active)
+        );
 
         // Get Id of new plugin
         $pluginId = $pimPlugin->get('idplugin');
@@ -480,7 +491,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         foreach ($elements as $element) {
 
             // Initializing attributes array
-            $attributes = array();
+            $attributes = [];
 
             // Build attributes
             foreach ($element->attributes() as $key => $value) {
@@ -491,11 +502,11 @@ class PimPluginSetupInstall extends PimPluginSetup {
             $area = cSecurity::escapeString($element);
 
             // Add attributes "parent", "relevant" and "menuless" to an array
-            $attributes = array(
-                'parent' => cSecurity::escapeString($attributes['parent']),
-            	'relevant' => cSecurity::toInteger($attributes['relevant']),
-                'menuless' => cSecurity::toInteger($attributes['menuless'])
-            );
+            $attributes = [
+                'parent' => isset($attributes['parent']) ? cSecurity::escapeString($attributes['parent']) : '',
+            	'relevant' => isset($attributes['relevant']) ? cSecurity::toInteger($attributes['relevant']) : 0,
+                'menuless' => isset($attributes['menuless']) ? cSecurity::toInteger($attributes['menuless']) : 0
+            ];
 
             // Fix for parent and relevant attributes
             if (empty($attributes['parent'])) {
@@ -532,7 +543,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         }
 
         // Initializing attributes array
-        $attributes = array();
+        $attributes = [];
 
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
@@ -550,10 +561,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
             }
 
             // Add attributes "area" and "relevant" to an safe array
-            $attributes = array(
+            $attributes = [
                 'area' => cSecurity::escapeString($attributes['area']),
                 'relevant' => cSecurity::toInteger($attributes['relevant'])
-            );
+            ];
 
             // Security check for action name
             $action = cSecurity::escapeString($element);
@@ -586,7 +597,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         }
 
         // Initializing attributes array
-        $attributes = array();
+        $attributes = [];
 
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
@@ -634,13 +645,13 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $db = cRegistry::getDb();
 
     	// Initializing attributes array
-    	$attributes = array();
+    	$attributes = [];
 
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
         // Get idnavm informations to build an new id
-        $sql = 'SELECT MAX(idnavm) AS id FROM ' . $cfg['tab']['nav_main'];
+        $sql = 'SELECT MAX(idnavm) AS id FROM ' . cRegistry::getDbTableName('nav_main');
         $db->query($sql);
 
         if ($db->nextRecord()) {
@@ -700,7 +711,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         }
 
         // Initializing attributes array
-        $attributes = array();
+        $attributes = [];
 
         // Get Id of plugin
         $pluginId = parent::_getPluginId();

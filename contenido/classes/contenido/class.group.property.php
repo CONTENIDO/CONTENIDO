@@ -23,6 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiGroupProperty createNewItem
+ * @method cApiGroupProperty|bool next
  */
 class cApiGroupPropertyCollection extends ItemCollection {
 
@@ -48,7 +50,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
     protected static $_enableCache;
 
     /**
-     * Number of max groups to cache proerties from.
+     * Number of max groups to cache properties from.
      *
      * @var int
      */
@@ -64,27 +66,21 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct($groupId) {
-        global $cfg;
-        parent::__construct($cfg['tab']['group_prop'], 'idgroupprop');
+        parent::__construct(cRegistry::getDbTableName('group_prop'), 'idgroupprop');
         $this->_setItemClass('cApiGroupProperty');
 
         // set the join partners so that joins can be used via link() method
         $this->_setJoinPartner('cApiGroupCollection');
 
         if (!isset(self::$_enableCache)) {
-            if (isset($cfg['properties']) && isset($cfg['properties']['group_prop']) && isset($cfg['properties']['group_prop']['enable_cache'])) {
-                self::$_enableCache = (bool) $cfg['properties']['group_prop']['enable_cache'];
-
-                if (isset($cfg['properties']['group_prop']['max_groups'])) {
-                    self::$_maxGroups = (int) $cfg['properties']['group_prop']['max_groups'];
-                    // if caching is enabled, there is no need to set max cache
-                    // value to lower than 1
-                    if (self::$_maxGroups < 1) {
-                        self::$_maxGroups = 1;
-                    }
+            $cfg = cRegistry::getConfig();
+            self::$_enableCache = cSecurity::toBoolean($cfg['properties']['group_prop']['enable_cache'] ?? '0');
+            if (self::$_enableCache) {
+                self::$_maxGroups = cSecurity::toInteger($cfg['properties']['group_prop']['max_groups'] ?? '0');
+                // If caching is enabled, there is no need to set max cache value to lower than 1
+                if (self::$_maxGroups < 1) {
+                    self::$_maxGroups = 1;
                 }
-            } else {
-                self::$_enableCache = false;
             }
         }
 
@@ -219,7 +215,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
 
         $sql = $this->db->prepare("group_id = '%s' AND type = '%s'", $this->_groupId, $type);
         $this->select($sql);
-        $props = array();
+        $props = [];
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
         }
@@ -241,7 +237,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
 
         $sql = $this->db->prepare("group_id = '%s'", $this->_groupId);
         $this->select($sql);
-        $props = array();
+        $props = [];
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
         }
@@ -326,7 +322,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
      */
     protected function _loadFromCache() {
         if (!isset(self::$_entries)) {
-            self::$_entries = array();
+            self::$_entries = [];
         }
 
         if (isset(self::$_entries[$this->_groupId])) {
@@ -334,7 +330,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
             return;
         }
 
-        self::$_entries[$this->_groupId] = array();
+        self::$_entries[$this->_groupId] = [];
 
         // remove entry from beginning, if we achieved the number of max
         // cachable groups
@@ -385,8 +381,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @return array
      */
     protected function _fetchByGroupIdTypeFromCache($type) {
-        $props = array();
-        $obj = new cApiGroupProperty();
+        $props = [];
+        $obj   = new cApiGroupProperty();
         foreach (self::$_entries[$this->_groupId] as $entry) {
             if ($entry['type'] == $type) {
                 $obj->loadByRecordSet($entry);
@@ -402,8 +398,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @return array
      */
     protected function _fetchByGroupIdFromCache() {
-        $props = array();
-        $obj = new cApiGroupProperty();
+        $props = [];
+        $obj   = new cApiGroupProperty();
         foreach (self::$_entries[$this->_groupId] as $entry) {
             $obj->loadByRecordSet($entry);
             $props[] = clone $obj;
@@ -457,9 +453,8 @@ class cApiGroupProperty extends Item
      * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['group_prop'], 'idgroupprop');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('group_prop'), 'idgroupprop');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -479,7 +474,7 @@ class cApiGroupProperty extends Item
     }
 
     /**
-     * Userdefined setter for group property fields.
+     * User-defined setter for group property fields.
      *
      * @param string $name
      * @param mixed $value
@@ -490,7 +485,7 @@ class cApiGroupProperty extends Item
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
              case 'idcatlang':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

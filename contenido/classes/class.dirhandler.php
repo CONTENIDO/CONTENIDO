@@ -14,6 +14,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Class for directory handling.
+ *
  * Provides functions for dealing with directories.
  *
  * @package Core
@@ -22,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cDirHandler {
 
     /**
-     * default permissions for new directories
+     * Default permissions for new directories.
      *
      * @see CON-2770
      * @var int
@@ -30,7 +31,7 @@ class cDirHandler {
     const DEFAULT_MODE = 0775;
 
     /**
-     * Creates a new dir.
+     * Creates a new directory.
      *
      * @param string $pathname
      *         the name and path of the new dir
@@ -56,7 +57,7 @@ class cDirHandler {
     }
 
     /**
-     * Removes a dir from the filesystem
+     * Removes a directory from the filesystem.
      *
      * @param string $dirname
      *         The path to the directory
@@ -75,7 +76,7 @@ class cDirHandler {
     }
 
     /**
-     * Moves a dir
+     * Moves a directory to another location.
      *
      * @param string $dirname
      *         The path and name of the directory
@@ -104,7 +105,7 @@ class cDirHandler {
     }
 
     /**
-     * Renames a dir
+     * Renames a directory.
      *
      * @param string $dirname
      *         the name and path of the dir
@@ -118,7 +119,7 @@ class cDirHandler {
     }
 
     /**
-     * Changes the dir permissions
+     * Changes the permissions of a directory.
      *
      * @param string $dirname
      *         the name and path of the dir
@@ -141,7 +142,8 @@ class cDirHandler {
     }
 
     /**
-     * Determines the default permissions for new directories.
+     * Returns the default permissions for new directories.
+     *
      * These can be configured using the setting "default_perms/directory" in "data/config/<ENV>/config.misc.php".
      * If no configuration can be found 0775 is assumed.
      *
@@ -155,7 +157,7 @@ class cDirHandler {
     }
 
     /**
-     * Sets the default permissions for the given directory.
+     * Sets the permissions for the given directory to the default.
      *
      * @param string $dirname
      *         the name of the directory
@@ -171,7 +173,7 @@ class cDirHandler {
     }
 
     /**
-     * Sets the default permissions for the given directory.
+     * Sets the permissions for the given directory to the default.
      *
      * @deprecated use setDefaultPermissions() instead
      * @param string $dirname
@@ -285,7 +287,7 @@ class cDirHandler {
     }
 
     /**
-     * Checks if a directory is empty
+     * Checks if a directory is empty.
      *
      * @param string $dir
      *         Name of the directory
@@ -310,18 +312,18 @@ class cDirHandler {
     }
 
     /**
-     * This functions reads the content from given directory.
-     * Optionally options are to read the directory recursive or to list only
-     * directories.
+     * Reads the content from given directory.
+     *
+     * Optionally options are to read the directory recursive or to list only directories.
      *
      * @param string $dirname
      *         directory
      * @param bool $recursive [optional]
-     *         flag to read recursive
+     *         read directory recursivly
      * @param bool $dirOnly [optional]
-     *         flag to list only directories
+     *         only read directories
      * @param bool $fileOnly [optional]
-     *         flag to list only files if $dirOnly is set to false
+     *         only read files (ignored if $dirOnly is true)
      * @return array|bool
      *         array containing file names as string, false on error
      */
@@ -330,10 +332,10 @@ class cDirHandler {
             return false;
         }
 
-        $dirContent = array();
+        $dirContent = [];
         if ($recursive == false) {
             $dirHandle = opendir($dirname);
-            $dirContent = array();
+            $dirContent = [];
             while (false !== ($file = readdir($dirHandle))) {
                 if (!cFileHandler::fileNameIsDot($file)) {
 
@@ -382,7 +384,7 @@ class cDirHandler {
     }
 
     /**
-     * Checks if a directory exists
+     * Checks if a directory exists.
      *
      * @param string $dirname
      *         the name and path of the directory
@@ -395,9 +397,10 @@ class cDirHandler {
 
     /**
      * Returns the size of a directory.
+     *
      * AKA the combined filesizes of all files within it.
-     * Note that this function uses filesize(). There could be problems with files
-     * that are larger than 2GiB
+     * Note that this function uses filesize().
+     * There could be problems with files that are larger than 2GiB.
      *
      * @param string $dirname
      *                          The directory name
@@ -425,16 +428,16 @@ class cDirHandler {
     }
 
     /**
-     * Checks if you can create in mother directory a new folder
+     * Checks if directory can be created in parent directory.
      *
      * @param $dirname
      * @return bool
      */
     public static function isCreatable($dirname) {
-            if (cFileHandler::writeable($dirname) === true) {
-                return true;
-            } else {
-                return false;
-            }
+        if (cFileHandler::writeable($dirname) === true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

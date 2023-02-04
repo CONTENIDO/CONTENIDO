@@ -102,7 +102,7 @@ class cGuiFoldingRow extends cHTML {
         $this->_headerData->setClass("foldingrow");
 
         $this->_contentRow = new cHTMLTableRow();
-        $this->_contentRow->updateAttributes(array("id" => $uuid));
+        $this->_contentRow->updateAttributes(["id" => $uuid]);
 
         $this->_contentData = new cHTMLTableData();
 
@@ -145,12 +145,12 @@ class cGuiFoldingRow extends cHTML {
     public function setExpanded($expanded = false) {
         if ($expanded == true) {
             $this->_foldingImage->setSrc("images/widgets/foldingrow/expanded.gif");
-            $this->_foldingImage->updateAttributes(array("data-state" => "expanded"));
+            $this->_foldingImage->updateAttributes(["data-state" => "expanded"]);
             $this->_contentRow->setStyle("display: ;");
             $this->_hiddenField->setValue('expanded');
         } else {
             $this->_foldingImage->setSrc("images/widgets/foldingrow/collapsed.gif");
-            $this->_foldingImage->updateAttributes(array("data-state" => "collapsed"));
+            $this->_foldingImage->updateAttributes(["data-state" => "collapsed"]);
             $this->_contentRow->setStyle("display: none;");
             $this->_hiddenField->setValue('collapsed');
         }
@@ -211,7 +211,7 @@ class cGuiFoldingRow extends cHTML {
         $this->_link->setLink("javascript:void(0);");
         $this->_link->setContent($this->_foldingImage->render() . $this->_caption);
 
-        $this->_headerData->setContent(array($this->_hiddenField, $this->_link));
+        $this->_headerData->setContent([$this->_hiddenField, $this->_link]);
         $this->_headerRow->setContent($this->_headerData);
 
         $this->_contentRow->setContent($this->_contentData);

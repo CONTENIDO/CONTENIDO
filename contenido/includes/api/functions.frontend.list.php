@@ -45,7 +45,7 @@ class FrontendList {
      *
      * @var array
      */
-    protected $_data = array();
+    protected $_data = [];
 
     /**
      * Number of records displayed per page.

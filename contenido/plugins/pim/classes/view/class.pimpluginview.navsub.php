@@ -340,7 +340,7 @@ class PimPluginViewNavSub {
      * @return string|bool
      */
     private function _getPluginNavigation($contenidoNav = "") {
-        global $belang;
+        $belang = cRegistry::getBackendLanguage();
         $cfg = cRegistry::getConfig();
 
         // Path to plugin specific navigation xml file with selected backend
@@ -350,7 +350,7 @@ class PimPluginViewNavSub {
         if (cFileHandler::exists($pluginLanguageFileLang) && $contenidoNav != "") {
 
             // Initializing founded array
-            $founded = array();
+            $founded = [];
 
             for ($i = 0; $i < $this->_NavCount; $i++) {
 
@@ -378,6 +378,7 @@ class PimPluginViewNavSub {
 
                     // If we have more then one navigation entry, define
                     // menuname for other entries
+                    $menuName = '';
                     if (self::$XmlNavSub->nav[$i]->attributes()->level == 0 && $this->_NavCount > 1) {
                         $menuName = $entry->nodeValue;
                         continue;
@@ -387,7 +388,7 @@ class PimPluginViewNavSub {
 						$menuName = $this->_SubNav;
                     }
 
-                    $founded[] = i18n('You find this plugin at navigation section', 'pim') . " &quot;{$contenidoNav}&quot; " . i18n('as', 'pim') . (($menuName != "") ? ' &quot;' . $menuName . '&quot; ->' : '') . " &quot;{$entry->nodeValue}&quot;<br />";
+                    $founded[] = i18n('You find this plugin at navigation section', 'pim') . " &quot;{$contenidoNav}&quot; " . i18n('as', 'pim') . (($menuName != '') ? ' &quot;' . $menuName . '&quot; ->' : '') . " &quot;{$entry->nodeValue}&quot;<br />";
                 }
             }
 
@@ -395,12 +396,9 @@ class PimPluginViewNavSub {
             $founded = array_unique($founded);
 
             // Initializing output variable
-            $output = "";
 
-            // Convert founded array to an string
-            foreach ($founded as $entry) {
-                $output .= $entry;
-            }
+            // Convert founded array to a string
+            $output = implode('', $founded);
 
             return $output;
         } else {

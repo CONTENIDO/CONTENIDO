@@ -32,14 +32,22 @@ class cTypeGenerator {
     /**
      *
      * @var cDb
+     * @deprecated Since 4.10.2, is not needed anymore
      */
     private static $db = NULL;
+
+    /**
+     * Article content helper
+     * @since CONTENIDO 4.10.2
+     * @var cArticleContentHelper
+     */
+    private static $articleContentHelper = NULL;
 
     /**
      *
      * @var array
      */
-    private static $a_content = array();
+    private static $a_content = [];
 
     /**
      *
@@ -56,16 +64,13 @@ class cTypeGenerator {
     /**
      * Constructor to create an instance of this class.
      *
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct() {
         $this->_idart = cRegistry::getArticleId(true);
         $this->_idlang = cRegistry::getLanguageId();
         $this->cfg = cRegistry::getConfig();
 
-        if (self::$db === NULL) {
-            self::$db = cRegistry::getDb();
-        }
         if (!isset(self::$a_content[$this->_idart])) {
             $this->fillContent();
         }
@@ -80,8 +85,7 @@ class cTypeGenerator {
      *         The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
      */
     protected function _getContentTypeClassName($type) {
-        $typeClassName = 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
-        return $typeClassName;
+        return 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
     }
 
     /**
@@ -105,36 +109,22 @@ class cTypeGenerator {
      *         for content type CMS_HTMLHEAD
      */
     protected function _getContentTypeCodeFilePathName($type) {
-        global $cfg;
-        $typeCodeFile = cRegistry::getBackendPath() . $cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
-        return $typeCodeFile;
+        return cRegistry::getBackendPath() . $this->cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
     }
 
     /**
      * Fill content from db for current article
      *
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     private function fillContent() {
-        self::$a_content[$this->_idart] = array();
+        self::$a_content[$this->_idart] = [];
 
-        $sql = "SELECT
-                    *
-                FROM
-                    " . $this->cfg["tab"]["content"] . " AS A,
-                    " . $this->cfg["tab"]["art_lang"] . " AS B,
-                    " . $this->cfg["tab"]["type"] . " AS C
-                WHERE
-                    A.idtype    = C.idtype AND
-                    A.idartlang = B.idartlang AND
-                    B.idart     = '" . cSecurity::toInteger($this->_idart) . "' AND
-                    B.idlang    = '" . cSecurity::toInteger($this->_idlang) . "'";
-
-        self::$db->query($sql);
-
-        while (self::$db->next_record()) {
-            self::$a_content[$this->_idart][self::$db->f("type")][self::$db->f("typeid")] = self::$db->f("value");
+        if (!isset(self::$articleContentHelper)) {
+            self::$articleContentHelper = new cArticleContentHelper();
         }
+
+        self::$a_content[$this->_idart] = self::$articleContentHelper->getContentByIdArtAndIdLang($this->_idart, $this->_idlang);
     }
 
     /**
@@ -144,29 +134,28 @@ class cTypeGenerator {
      *
      * @return string
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _processCmsTags($type, $index) {
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
 
-        $typeList = array();
+        $typeList = [];
         while (false !== $oType = $oTypeColl->next()) {
             $typeList[] = $oType->toObject();
         }
 
         // Replace all CMS_TAGS[]
         foreach ($typeList as $typeItem) {
-
             if ($type === $typeItem->type) {
-
                 $items[] = $typeItem->type;
 
                 $typeClassName = $this->_getContentTypeClassName($typeItem->type);
                 $typeCodeFile = $this->_getContentTypeCodeFilePathName($typeItem->type);
 
-                $cTypeObject = new $typeClassName(self::$a_content[$this->_idart][$typeItem->type][$index], $index, $items);
+                $settings = self::$a_content[$this->_idart][$typeItem->type][$index] ?? '';
+                /** @var cContentTypeAbstract $cTypeObject */
+                $cTypeObject = new $typeClassName($settings, $index, $items);
                 if (cRegistry::isBackendEditMode()) {
                     $tmp = $cTypeObject->generateEditCode();
                 } else {
@@ -186,10 +175,10 @@ class cTypeGenerator {
      *
      * @return string
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function getGeneratedCmsTag($type, $index) {
         return $this->_processCmsTags($type, $index);
     }
+
 }

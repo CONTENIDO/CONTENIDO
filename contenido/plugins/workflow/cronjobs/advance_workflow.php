@@ -13,14 +13,15 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var array $cfg
+ */
+
 // CONTENIDO startup process
 include_once('../../../includes/startup.php');
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 cInclude("includes", "functions.con.php");
-
-plugin_include('workflow', 'classes/class.workflow.php');
-plugin_include('workflow', 'includes/functions.workflow.php');
 
 $workflowartallocations = new WorkflowArtAllocations();
 $workflowusersequences = new WorkflowUserSequences();
@@ -82,5 +83,3 @@ while (($obj = $workflowartallocations->next()) !== false) {
         }
     }
 }
-
-?>

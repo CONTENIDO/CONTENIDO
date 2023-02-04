@@ -27,22 +27,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
     protected $_idtplcfg;
 
     /**
-     * Generates the code for a specific article (article for a client in a
-     * language).
-     *
-     * @see cCodeGeneratorAbstract::_generate()
-     *
-     * @param bool     $contype  [optional]
-     *                           Flag to enable/disable replacement of CMS_TAGS[]
-     * @param bool     $editable [optional]
-     * @param int|NULL $version  [optional]
-     *
-     * @return string
-     *         The generated code
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @inheritdoc
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function _generate($contype = true, $editable = true, $version = NULL) {
         $cfg = cRegistry::getConfig();
@@ -68,12 +54,18 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // set idlay and idmod array
         $data = $this->_getTemplateData();
-        $idlay = $data['idlay'];
-        $idtpl = $data['idtpl'];
-        $this->_tplName = cString::cleanURLCharacters($data['name']);
+        if (!empty($data)) {
+            $idlay = $data['idlay'];
+            $idtpl = $data['idtpl'];
+            $this->_tplName = cString::cleanURLCharacters($data['name']);
+        } else {
+            $idlay = 0;
+            $idtpl = 0;
+            $this->_tplName = '';
+        }
 
         // list of used modules
-        $containerModules = conGetUsedModules($idtpl);
+        $containerModules = $idtpl ? conGetUsedModules($idtpl) : [];
 
         // load layout code from file
         $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $this->_lang);
@@ -117,7 +109,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 $this->_moduleCode = '';
 
                 // get contents of input and output from files and not from db
-                if ($moduleHandler->modulePathExists() == true) {
+                if ($moduleHandler->modulePathExists()) {
                     // do not execute faulty modules
                     // caution: if no module is bound to a container then idmod of $oModule is false
                     // caution: and as result error field is also empty
@@ -233,7 +225,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = cString::iReplaceOnce('</head>', $this->_processCodeMetaTags() . '</head>', $this->_layoutCode);
         }
 
-        if ($this->_feDebugOptions['general_information']) {
+        if ($this->_getFeDebugOption('general_information')) {
             $debugPrefix = '';
 
             $debugPrefix .= "<?php\nif (\$frontend_debug['general_information']) {\n";
@@ -366,14 +358,13 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $sMetaTags = '';
 
         foreach ($metaTags as $value) {
-
             // get meta tag keys
             $valueKeys = array_keys($value);
             $nameKey = 'name';
             foreach ($valueKeys as $key) {
-
-                if ($key != 'content')
+                if ($key != 'content') {
                     $nameKey = $key;
+                }
             }
 
             // decode entities and htmlspecialchars, content will be converted
@@ -422,8 +413,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      *                               parameter for setting code manually instead of using the generated layout code
      * @param bool   $flagCreateCode [optional]
      *                               whether the create code flag in cat_art should be set or not (optional)
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true) {
         $cfgClient = cRegistry::getClientConfig();
@@ -445,24 +435,24 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // CON-2113
         // Do not overwrite an existing .htaccess file to prevent misconfiguring permissions
-        if ($this->_layout == false && $this->_save == true && isset($codePath)) {
-            if (false === is_dir($codePath)) {
+        if (!$this->_layout && $this->_save && isset($codePath)) {
+            if (!is_dir($codePath)) {
                 mkdir($codePath);
                 @chmod($codePath, cDirHandler::getDefaultPermissions());
             }
 
-            if (true !== cFileHandler::exists($codePath . '.htaccess')) {
+            if (!cFileHandler::exists($codePath . '.htaccess')) {
                 cFileHandler::write($codePath . '.htaccess', "Order Deny,Allow\nDeny from all\n");
             }
 
-            if (true === is_dir($codePath)) {
+            if (is_dir($codePath)) {
                 $fileCode = ($code == '')? $this->_layoutCode : $code;
 
                 $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $fileCode;
                 cFileHandler::write($codePath . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
 
                 // Update create code flag
-                if ($flagCreateCode == true) {
+                if ($flagCreateCode) {
                     $oCatArtColl = new cApiCategoryArticleCollection();
                     $oCatArtColl->setCreateCodeFlag($idcatart, 0);
                 }
@@ -626,10 +616,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 continue;
             } else if (!array_key_exists($type, $metaTag)) {
                 // add element to reduced array if it's of different type
-                array_push($result[0], $metaTag);
+                $result[0][] = $metaTag;
             } else if ($metaTag[$type] !== $nameOrEquiv) {
                 // add element to reduced array if it has different name
-                array_push($result[0], $metaTag);
+                $result[0][] = $metaTag;
             } else {
                 // set element as extracted element
                 $result[1] = $metaTag;

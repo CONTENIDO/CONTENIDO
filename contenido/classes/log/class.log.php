@@ -18,20 +18,32 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class contains the main functionalities for the logging in CONTENIDO.
  *
  * Examples:
- * $writer = cLogWriter::factory("File", array('destination' => 'contenido.log'));
+ * <pre>
+ * $writer = cLogWriter::factory('File', ['destination' => 'contenido.log']);
  * $log = new cLog($writer);
  *
- * $log->addPriority("CONTENIDO", 10);
- * $log->log("CONTENIDO Log Message.", "CONTENIDO");
- * $log->contenido("Same log entry in short notation.");
- * $log->removePriority("CONTENIDO");
+ * $log->addPriority('CONTENIDO', 10);
+ * $log->log('CONTENIDO Log Message.', 'CONTENIDO');
+ * $log->contenido('Same log entry in short notation.');
+ * $log->removePriority('CONTENIDO');
  *
- * $log->emerg("System down.");
+ * $log->emerg('System down.');
  *
  * $log->log('Notice Log Message', cLog::NOTICE);
  *
  * $log->buffer('Buffered Log Message', cLog::WARN);
  * $log->commit();
+ * </pre>
+ *
+ * // Magic methods of cLog, see class constants
+ * @method void emerg(string $message)
+ * @method void alert(string $message)
+ * @method void crit(string $message)
+ * @method void err(string $message)
+ * @method void warn(string $message)
+ * @method void notice(string $message)
+ * @method void info(string $message)
+ * @method void debug(string $message)
  *
  * @package    Core
  * @subpackage Log
@@ -43,56 +55,56 @@ class cLog {
      *
      * @var int
      */
-    const EMERG   = 0;
+    const EMERG = 0;
 
     /**
      * logging level
      *
      * @var int
      */
-    const ALERT   = 1;
+    const ALERT = 1;
 
     /**
      * logging level
      *
      * @var int
      */
-    const CRIT    = 2;
+    const CRIT = 2;
 
     /**
      * logging level
      *
      * @var int
      */
-    const ERR     = 3;
+    const ERR = 3;
 
     /**
      * logging level
      *
      * @var int
      */
-    const WARN    = 4;
+    const WARN = 4;
 
     /**
      * logging level
      *
      * @var int
      */
-    const NOTICE  = 5;
+    const NOTICE = 5;
 
     /**
      * logging level
      *
      * @var int
      */
-    const INFO    = 6;
+    const INFO = 6;
 
     /**
      * logging level
      *
      * @var int
      */
-    const DEBUG   = 7;
+    const DEBUG = 7;
 
     /**
      * Contains the local log writer instance.
@@ -106,28 +118,28 @@ class cLog {
      *
      * @var array
      */
-    protected $_shortcutHandlers = array();
+    protected $_shortcutHandlers = [];
 
     /**
      * Contains all available priorities.
      *
      * @var array
      */
-    protected $_priorities = array();
+    protected $_priorities = [];
 
     /**
      * Contains all default priorities.
      *
      * @var array
      */
-    protected $_defaultPriorities = array();
+    protected $_defaultPriorities = [];
 
     /**
      * Contains all buffered messages.
      *
      * @var array
      */
-    protected $_buffer = array();
+    protected $_buffer = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -150,26 +162,25 @@ class cLog {
      * @throws cInvalidArgumentException
      */
     public function __construct($writer = false) {
-        global $cfg;
-
+        $cfg = cRegistry::getConfig();
         $createWriter = false;
 
-        if ($writer == false) {
+        if (!$writer) {
             $createWriter = true;
-        } else if (!is_object($writer) || ($writer instanceof cLogWriter) == false) {
-            cWarning(__FILE__, __LINE__, "The passed class is not a subclass of cLogWriter. Creating new one.");
+        } else if (!is_object($writer) || !($writer instanceof cLogWriter)) {
+            cWarning(__FILE__, __LINE__, 'The passed class is not a subclass of cLogWriter. Creating new one.');
             $createWriter = true;
         }
 
-        if ($createWriter == true) {
-            $options = array('destination' => $cfg['path']['contenido_logs'] . 'data/contenido.log');
-            $writer = cLogWriter::factory("File", $options);
+        if ($createWriter) {
+            $options = ['destination' => $cfg['path']['contenido_logs'] . 'data/contenido.log'];
+            $writer = cLogWriter::factory('File', $options);
         }
 
         $this->setWriter($writer);
-        $this->setShortcutHandler("%date", array($this, "shDate"));
-        $this->setShortcutHandler("%level", array($this, "shLevel"));
-        $this->setShortcutHandler("%message", array($this, "shMessage"));
+        $this->setShortcutHandler('%date', [$this, 'shDate']);
+        $this->setShortcutHandler('%level', [$this, 'shLevel']);
+        $this->setShortcutHandler('%message', [$this, 'shMessage']);
 
         $this->getWriter()->setOption('log_format', '[%date] [%level] %message', false);
 
@@ -190,7 +201,7 @@ class cLog {
      * Sets the local writer instance.
      *
      * @param cLogWriter $writer
-     *         Writer instacne
+     *         Writer instance
      */
     public function setWriter(cLogWriter $writer) {
         $this->_writer = $writer;
@@ -204,7 +215,7 @@ class cLog {
      *
      * @param string $shortcut
      *         Shortcut name
-     * @param string $handler
+     * @param string|array $handler
      *         Name of the function to call
      * @throws cInvalidArgumentException
      *         if the given shortcut is empty or already in use or if the
@@ -217,11 +228,11 @@ class cLog {
             throw new cInvalidArgumentException('The shortcut name must not be empty.');
         }
 
-        if (cString::getPartOfString($shortcut, 0, 1) == "%") {
+        if (cString::getPartOfString($shortcut, 0, 1) == '%') {
             $shortcut = cString::getPartOfString($shortcut, 1);
         }
 
-        if (is_callable($handler) == false) {
+        if (!is_callable($handler)) {
             throw new cInvalidArgumentException('The specified shortcut handler does not exist.');
         }
 
@@ -261,7 +272,7 @@ class cLog {
      *         Priority of the log entry (optional)
      */
     public function buffer($message, $priority = NULL) {
-        $this->_buffer[] = array($message, $priority);
+        $this->_buffer[] = [$message, $priority];
     }
 
     /**
@@ -271,10 +282,11 @@ class cLog {
      * @param bool $revoke [optional]
      *         Flag, whether the buffer is cleared or not (optional, default: true)
      * @return bool|void
+     * @throws cInvalidArgumentException
      */
     public function commit($revoke = true) {
         if (count($this->_buffer) == 0) {
-            cWarning(__FILE__, __LINE__, "There are no buffered messages to commit.");
+            cWarning(__FILE__, __LINE__, 'There are no buffered messages to commit.');
             return false;
         }
 
@@ -282,7 +294,7 @@ class cLog {
             $this->log($bufferInfo[0], $bufferInfo[1]);
         }
 
-        if ($revoke == true) {
+        if ($revoke) {
             $this->revoke();
         }
     }
@@ -291,7 +303,7 @@ class cLog {
      * Empties the message buffer.
      */
     public function revoke() {
-        $this->_buffer = array();
+        $this->_buffer = [];
     }
 
     /**
@@ -303,11 +315,11 @@ class cLog {
      *         Priority of the log entry (optional)
      */
     public function log($message, $priority = NULL) {
-        if ($priority && is_int($priority) == false && in_array($priority, $this->_priorities)) {
+        if ($priority && !is_int($priority) && in_array($priority, $this->_priorities)) {
             $priority = array_search($priority, $this->_priorities);
         }
 
-        if ($priority === NULL || array_key_exists($priority, $this->_priorities) == false) {
+        if ($priority === NULL || !array_key_exists($priority, $this->_priorities)) {
             $priority = $this->getWriter()->getOption('default_priority');
         }
 
@@ -315,14 +327,14 @@ class cLog {
         $lineEnding = $this->getWriter()->getOption('line_ending');
 
         foreach ($this->_shortcutHandlers as $shortcut => $handler) {
-            if (cString::getPartOfString($shortcut, 0, 1) != "%") {
-                $shortcut = "%" . $shortcut;
+            if (cString::getPartOfString($shortcut, 0, 1) != '%') {
+                $shortcut = '%' . $shortcut;
             }
 
-            $info = array(
+            $info = [
                 'message' => $message,
                 'priority' => $priority
-            );
+            ];
 
             $value = call_user_func($handler, $info);
 
@@ -372,11 +384,11 @@ class cLog {
             throw new cInvalidArgumentException('Priority name must not be empty.');
         }
 
-        if (in_array($name, $this->_priorities) == false) {
+        if (!in_array($name, $this->_priorities)) {
             throw new cInvalidArgumentException('Priority name does not exist.');
         }
 
-        if (in_array($name, $this->_defaultPriorities) == true) {
+        if (in_array($name, $this->_defaultPriorities)) {
             throw new cInvalidArgumentException('Removing default priorities is not allowed.');
         }
 
@@ -398,7 +410,7 @@ class cLog {
     public function __call($method, $arguments) {
         $priorityName = cString::toUpperCase($method);
 
-        if (in_array($priorityName, $this->_priorities) == false) {
+        if (!in_array($priorityName, $this->_priorities)) {
             throw new cInvalidArgumentException('The given priority ' . $priorityName . ' is not supported.');
         }
 
@@ -415,7 +427,7 @@ class cLog {
      *     The current date
      */
     public function shDate() {
-        return date("Y-m-d H:i:s");
+        return date('Y-m-d H:i:s');
     }
 
     /**
@@ -430,7 +442,7 @@ class cLog {
      */
     public function shLevel($info) {
         $logLevel = $info['priority'];
-        return str_pad($this->_priorities[$logLevel], 10, " ", STR_PAD_BOTH);
+        return str_pad($this->_priorities[$logLevel], 10, ' ', STR_PAD_BOTH);
     }
 
     /**

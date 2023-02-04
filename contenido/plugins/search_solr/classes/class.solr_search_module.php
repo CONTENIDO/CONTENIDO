@@ -84,16 +84,15 @@ class SolrSearchModule {
     }
 
     /**
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cException|cInvalidArgumentException
      */
     public function render() {
         $tpl = cSmartyFrontend::getInstance();
         $tpl->assign('label', $this->_label);
-        $tpl->assign('href', cUri::getInstance()->build(array(
+        $tpl->assign('href', cUri::getInstance()->build([
             'idart' => cRegistry::getArticleId(),
             'lang' => cRegistry::getLanguageId()
-        )));
+        ]));
         $tpl->assign('searchTerm', $this->_searchTerm);
         $tpl->assign('page', $this->_page);
         $tpl->assign('itemsPerPage', $this->_itemsPerPage);
@@ -108,7 +107,7 @@ class SolrSearchModule {
         $tpl->assign('numFound', $this->_response->numFound);
         $tpl->assign('start', $this->_response->start);
         if (false === $this->_response->docs) {
-            $tpl->assign('results', array());
+            $tpl->assign('results', []);
         } else {
             $tpl->assign('results', $this->_response->docs);
         }

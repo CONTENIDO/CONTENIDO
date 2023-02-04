@@ -38,10 +38,10 @@ chdir(realpath(CON_TEST_PATH . '/../cms'));
 // Include the environment definer file
 include_once(__DIR__ . '/environment.php');
 
-global $contenido_host, $contenido_database, $contenido_user, $contenido_password;
+global $cfg, $contenido_host, $contenido_database, $contenido_user, $contenido_password;
 global $contenido, $db, $auth, $sess, $perm, $lngAct, $_cecRegistry, $belang;
 global $cfgClient, $client, $load_client, $lang, $load_lang, $frontend_debug;
-global $idcat, $errsite_idcat, $errsite_idart, $encoding, $idart, $force;
+global $idcat, $errsite_idcat, $errsite_idart, $encoding, $idart, $force, $contenido_path;
 global $PHP_SELF, $QUERY_STRING;
 
 ///////////////////// initial code from front_content.php //////////////////////
@@ -91,19 +91,19 @@ cInclude('includes', 'functions.pathresolver.php');
 // Initialize the Database Abstraction Layer, the Session, Authentication and Permissions Handler of the
 if (cRegistry::getBackendSessionId()) {
     // Backend
-    cRegistry::bootstrap(array(
+    cRegistry::bootstrap([
         'sess' => 'cSession',
         'auth' => 'cAuthHandlerBackend',
         'perm' => 'cPermission'
-    ));
+    ]);
     i18nInit($cfg['path']['contenido_locale'], $belang);
 } else {
     // Frontend
-    cRegistry::bootstrap(array(
+    cRegistry::bootstrap([
         'sess' => 'cFrontendSession',
         'auth' => 'cAuthHandlerFrontend',
         'perm' => 'cPermission'
-    ));
+    ]);
 }
 
 require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php';
@@ -116,7 +116,7 @@ $sess->register('encoding');
 // Initialize encodings
 if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
     // Get encodings of all languages
-    $encoding  = array();
+    $encoding  = [];
     $oLangColl = new cApiLanguageCollection();
     $oLangColl->select('');
     while ($oLang = $oLangColl->next()) {
@@ -134,8 +134,8 @@ if (!isset($lang)) {
         // load_client is set in __FRONTEND_PATH__/data/config/config.php
         $lang = $load_lang;
     } else {
-        $oClientLang = new cApiClientLanguageCollection();
-        $lang = $oClientLang->getFirstLanguageIdByClient($client);
+        $oClientLangColl = new cApiClientLanguageCollection();
+        $lang = (int) $oClientLangColl->getFirstLanguageIdByClient($client);
     }
 }
 
@@ -182,13 +182,13 @@ if (isset($path) && cString::getStringLength($path) > 1) {
 }
 
 // Error page
-$aParams = array(
+$aParams = [
     'client' => $client,
-    'idcat'  => $cfgClient[$client]["errsite"]["idcat"],
-    'idart'  => $cfgClient[$client]["errsite"]["idart"],
+    'idcat'  => $cfgClient[$client]['errsite']['idcat'],
+    'idart'  => $cfgClient[$client]['errsite']['idart'],
     'lang'   => $lang,
     'error'  => '1'
-);
+];
 $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
 
 ///////////////////// initial code from front_content.php //////////////////////

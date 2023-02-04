@@ -53,7 +53,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      * Includes a file which displays the login form.
      *
      * @see cAuthHandlerAbstract::displayLoginForm()
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -92,13 +92,13 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
 
         // add slashes if they are not automatically added
         if (cRegistry::getConfigValue('simulate_magic_quotes') !== true) {
-            // backward compatiblity of passwords
+            // backward compatibility of passwords
             $password = addslashes($password);
             // avoid sql injection in query by username on cApiUserCollection select string
             $username = addslashes($username);
         }
 
-        $groupPerm = array();
+        $groupPerm = [];
 
         if ($password == '') {
             return false;
@@ -143,7 +143,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
 
         if ($uid == false || hash("sha256", md5($password) . $salt) != $pass) {
             // No user found, sleep and exit
-            sleep(5);
+            sleep(2);
 
             return false;
         }
@@ -174,7 +174,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      * "currentlogintime" and "lastlogintime" in mycontenido.
      *
      * @see cAuthHandlerAbstract::logSuccessfulAuth()
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -207,7 +207,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
             return;
         }
 
-        $idaction = $perm->getIDForAction('login');
+        $idaction = $perm->getIdForAction('login');
 
         $authInfo = $this->getAuthInfo();
         $uid = $authInfo['uid'];

@@ -13,101 +13,88 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$cfg["tab"]["workflow"] = $cfg['sql']['sqlprefix'] . "_piwf_workflow";
-$cfg["tab"]["workflow_allocation"] = $cfg['sql']['sqlprefix'] . "_piwf_allocation";
-$cfg["tab"]["workflow_art_allocation"] = $cfg['sql']['sqlprefix'] . "_piwf_art_allocation";
-$cfg["tab"]["workflow_items"] = $cfg['sql']['sqlprefix'] . "_piwf_items";
-$cfg["tab"]["workflow_tasks"] = $cfg['sql']['sqlprefix'] . "_piwf_tasks";
-$cfg["tab"]["workflow_user_sequences"] = $cfg['sql']['sqlprefix'] . "_piwf_user_sequences";
-$cfg["tab"]["workflow_actions"] = $cfg['sql']['sqlprefix'] . "_piwf_actions";
-
-plugin_include('workflow', 'classes/class.workflowactions.php');
-plugin_include('workflow', 'classes/class.workflowallocation.php');
-plugin_include('workflow', 'classes/class.workflowartallocation.php');
-plugin_include('workflow', 'classes/class.workflowitems.php');
-plugin_include('workflow', 'classes/class.workflowusersequence.php');
-
 /**
  * Workflow management class.
  *
  * @package Plugin
  * @subpackage Workflow
  * @method Workflow createNewItem
- * @method Workflow next
+ * @method Workflow|bool next
  */
 class Workflows extends ItemCollection {
+
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg["tab"]["workflow"], "idworkflow");
+        parent::__construct(cRegistry::getDbTableName('workflow'), "idworkflow");
         $this->_setItemClass("Workflow");
     }
 
     /**
      * @return Workflow
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException|cException
      */
     public function create() {
-        global $auth, $client, $lang;
-        $newitem = $this->createNewItem();
-        $newitem->setField("created", date('Y-m-d H:i:s'));
-        $newitem->setField("idauthor", $auth->auth["uid"]);
-        $newitem->setField("idclient", $client);
-        $newitem->setField("idlang", $lang);
-        $newitem->store();
+        $auth = cRegistry::getAuth();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
-        return $newitem;
+        $newItem = $this->createNewItem();
+        $newItem->setField("created", date('Y-m-d H:i:s'));
+        $newItem->setField("idauthor", $auth->auth["uid"]);
+        $newItem->setField("idclient", $client);
+        $newItem->setField("idlang", $lang);
+        $newItem->store();
+
+        return $newItem;
     }
 
     /**
-     * Deletes all corresponding informations to this workflow and delegate call
+     * Deletes all corresponding information to this workflow and delegate call
      * to parent
      *
      * @param int $idWorkflow - id of workflow to delete
      *
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function delete($idWorkflow) {
-        global $cfg;
         $oDb = cRegistry::getDb();
 
-        $aItemIdsDelete = array();
-        $sSql = 'SELECT idworkflowitem FROM ' . $cfg["tab"]["workflow_items"] . ' WHERE idworkflow = ' . cSecurity::toInteger($idWorkflow) . ';';
-        $oDb->query($sSql);
+        $aItemIdsDelete = [];
+        $sSql = 'SELECT `idworkflowitem` FROM `%s` WHERE `idworkflow` = %d';
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_items'), $idWorkflow);
         while ($oDb->nextRecord()) {
-            $aItemIdsDelete[] = (int) $oDb->f('idworkflowitem');
+            $aItemIdsDelete[] = cSecurity::toInteger($oDb->f('idworkflowitem'));
         }
 
         if (!empty($aItemIdsDelete)) {
-            $aUserSequencesDelete = array();
-            $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
-            $oDb->query($sSql);
+            $aUserSequencesDelete = [];
+            $sSql = 'SELECT `idusersequence` FROM `%s` WHERE `idworkflowitem` IN (' . implode(',', $aItemIdsDelete) . ');';
+            $oDb->query($sSql, cRegistry::getDbTableName('workflow_user_sequences'));
             while ($oDb->nextRecord()) {
-                $aUserSequencesDelete[] = (int) $oDb->f('idusersequence');
+                $aUserSequencesDelete[] = cSecurity::toInteger($oDb->f('idusersequence'));
             }
 
-            $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
-            $oDb->query($sSql);
+            $sSql = 'DELETE FROM `%s` WHERE `idworkflowitem` IN (' . implode(',', $aItemIdsDelete) . ');';
+            $oDb->query($sSql, cRegistry::getDbTableName('workflow_user_sequences'));
 
-            $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_actions"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
-            $oDb->query($sSql);
+            $sSql = 'DELETE FROM `%s` WHERE `idworkflowitem` IN (' . implode(',', $aItemIdsDelete) . ');';
+            $oDb->query($sSql, cRegistry::getDbTableName('workflow_actions'));
         }
 
         if (!empty($aUserSequencesDelete)) {
-            $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence in (' . implode(',', $aUserSequencesDelete) . ');';
-            $oDb->query($sSql);
+            $sSql = 'DELETE FROM `%s` WHERE `idusersequence` IN (' . implode(',', $aUserSequencesDelete) . ');';
+            $oDb->query($sSql, cRegistry::getDbTableName('workflow_art_allocation'));
         }
 
-        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_items"] . ' WHERE idworkflow = ' . cSecurity::toInteger($idWorkflow) . ';';
-        $oDb->query($sSql);
+        $sSql = 'DELETE FROM `%s` WHERE `idworkflow` = %d';
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_items'), $idWorkflow);
 
-        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_allocation"] . ' WHERE idworkflow = ' . cSecurity::toInteger($idWorkflow) . ';';
-        $oDb->query($sSql);
+        $sSql = 'DELETE FROM `%s` WHERE `idworkflow` = %d';
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_allocation'), $idWorkflow);
 
         parent::delete($idWorkflow);
     }
@@ -128,49 +115,11 @@ class Workflow extends Item {
 
     /**
      * Constructor Function
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-
-        parent::__construct($cfg["tab"]["workflow"], "idworkflow");
+        parent::__construct(cRegistry::getDbTableName('workflow'), "idworkflow");
     }
 
 }
 
-/**
- * @param $idcat
- *
- * @return int|mixed
- * @throws cDbException
- * @throws cException
- */
-function getWorkflowForCat($idcat) {
-    global $lang;
-
-    $idcatlang = getCatLang($idcat, $lang);
-    if (!$idcatlang) {
-        return 0;
-    }
-    $workflows = new WorkflowAllocations();
-    $workflows->select('idcatlang = ' . (int) $idcatlang);
-    if (($obj = $workflows->next()) !== false) {
-        // Sanity: Check if the workflow still exists
-        $workflow = new Workflow();
-        $res = $workflow->loadByPrimaryKey($obj->get('idworkflow'));
-        return ($res == true) ? $obj->get('idworkflow') : 0;
-    }
-}
-
-/**
- * @param $idcat
- * @param $idlang
- *
- * @return int
- * @throws cDbException
- */
-function getCatLang($idcat, $idlang) {
-    // Get the idcatlang
-    $oCatLangColl = new cApiCategoryLanguageCollection();
-    $aIds = $oCatLangColl->getIdsByWhereClause('idlang = ' . (int) $idlang . ' AND idcat = ' . (int) $idcat);
-    return (count($aIds) > 0) ? $aIds[0] : 0;
-}

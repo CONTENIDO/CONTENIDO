@@ -19,8 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package     Plugin
  * @subpackage  PluginManager
  * @author Frederic Schneider
- * @method PimPlugin createNewItem
- * @method PimPlugin next
+ * @method PimPlugin createNewItem($data)
+ * @method PimPlugin|bool next
  */
 class PimPluginCollection extends ItemCollection {
     /**
@@ -29,34 +29,33 @@ class PimPluginCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['plugins'], 'idplugin');
+        parent::__construct(cRegistry::getDbTableName('plugins'), 'idplugin');
         $this->_setItemClass('PimPlugin');
     }
 
     /**
      * Create a new plugin
      *
-     * @param unknown_type $name
-     * @param unknown_type $description
-     * @param unknown_type $author
-     * @param unknown_type $copyright
-     * @param unknown_type $mail
-     * @param unknown_type $website
-     * @param unknown_type $version
-     * @param unknown_type $foldername
-     * @param unknown_type $uuId
-     * @param unknown_type $active
-     * @param int          $execOrder
+     * @param string $name
+     * @param string $description
+     * @param string $author
+     * @param string $copyright
+     * @param string $mail
+     * @param string $website
+     * @param string $version
+     * @param string $foldername
+     * @param string $uuId
+     * @param string $active
+     * @param int    $execOrder
      *
-     * @return Item
+     * @return PimPlugin
      *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
     public function create($name, $description, $author, $copyright, $mail, $website, $version, $foldername, $uuId, $active, $execOrder = 0) {
-        global $client;
+        $client = cSecurity::toInteger(cRegistry::getClientId());
 
         $nextId = $this->_getNextId();
 
@@ -95,9 +94,7 @@ class PimPluginCollection extends ItemCollection {
      * @throws cDbException
      */
     protected function _getNextId() {
-        $cfg = cRegistry::getConfig();
-
-        $sql = 'SELECT MAX(idplugin) AS id FROM ' . $cfg['tab']['plugins'];
+        $sql = 'SELECT MAX(idplugin) AS id FROM ' . cRegistry::getDbTableName('plugins');
         $this->db->query($sql);
 
         if ($this->db->nextRecord()) {
@@ -140,8 +137,7 @@ class PimPlugin extends Item {
      * @throws cException
      */
     public function __construct($id = false) {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg['tab']['plugins'], 'idplugin');
+        parent::__construct(cRegistry::getDbTableName('plugins'), 'idplugin');
         $this->_error = '';
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
@@ -149,7 +145,7 @@ class PimPlugin extends Item {
     }
 
     /**
-     * Userdefined setter for pim fields.
+     * User-defined setter for pim fields.
      *
      * @param string $name
      * @param mixed  $value
@@ -159,11 +155,9 @@ class PimPlugin extends Item {
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
+            case 'active':
             case 'idclient':
-                $value = (int) $value;
-                break;
-			case 'active':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 
@@ -174,7 +168,7 @@ class PimPlugin extends Item {
      * Check dependencies
      * Adapted from PimPLuginSetup class
      *
-     * @param int $newOrder New executionorder value
+     * @param int $newOrder New execution order value
      *
      * @return bool
      *
@@ -192,7 +186,7 @@ class PimPlugin extends Item {
     	$pimPluginSql = $pimPluginColl->next();
     	$uuidBase = $pimPluginSql->get('uuid');
 
-    	// Reset query so we can use PimPluginCollection later again...
+    	// Reset query, so we can use PimPluginCollection later again...
     	$pimPluginColl->resetQuery();
 
     	// Read all dirs
@@ -292,7 +286,7 @@ class PimPlugin extends Item {
     	$tempXml = simplexml_load_string($tempXmlContent);
 
     	// Initializing dependencies array
-    	$dependenciesBase = array();
+    	$dependenciesBase = [];
 
     	$dependenciesCount = count($tempXml->dependencies);
     	for ($i = 0; $i < $dependenciesCount; $i++) {
@@ -387,10 +381,10 @@ class PimPlugin extends Item {
      * @throws cException
      */
     public function isPluginAvailable($pluginname) {
-        return $this->loadByMany(array(
+        return $this->loadByMany([
             'idclient' => cRegistry::getClientId(),
             'name' => $pluginname,
             'active' => 1
-        ));
+        ]);
     }
 }

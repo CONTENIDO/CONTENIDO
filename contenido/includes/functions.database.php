@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param cDb    $db
  * @param string $table
  *
- * @return array
+ * @return array|bool
  *         Assoziative array where the key and the value is the index name
  *
  * @throws cDbException
@@ -33,8 +33,7 @@ function dbGetIndexes($db, $table) {
     $sql = 'SHOW INDEX FROM ' . $db->escape($table);
     $db->query($sql);
 
-    $indexes = array();
-
+    $indexes = [];
     while ($db->nextRecord()) {
         $indexes[$db->f('Key_name')] = $db->f('Key_name');
     }
@@ -101,7 +100,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
         return false;
     }
 
-    $parameter = array();
+    $parameter = [];
 
     // Parameter checking for $null. If parameter is 'NULL' or 'YES', we
     // know that we want the colum to allow null entries, otherwise forbid null entries.
@@ -255,9 +254,10 @@ function dbTableExists($db, $table) {
     }
 
     if (!is_array($tableCache)) {
-        $tableCache = array();
         $sql = 'SHOW TABLES';
         $db->query($sql);
+
+        $tableCache = [];
         while ($db->nextRecord()) {
             $tableCache[] = $db->f(0);
         }
@@ -292,10 +292,10 @@ function dbGetColumns($db, $table) {
         return $columnCache[$table];
     }
 
-    $structure = array();
-
     $sql = 'SHOW COLUMNS FROM ' . $db->escape($table);
     $db->query($sql);
+
+    $structure = [];
     while ($db->nextRecord()) {
         $structure[$db->f('Field')] = $db->toArray();
     }

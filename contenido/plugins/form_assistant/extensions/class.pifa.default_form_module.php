@@ -28,7 +28,7 @@ class DefaultFormModule extends PifaAbstractFormModule {
      * @throws Exception if form could not be loaded
      * @see PifaAbstractFormModule::doGet()
      */
-    protected function doGet(array $values = array(), array $errors = array()) {
+    protected function doGet(array $values = [], array $errors = []) {
 
         // set template to use
         $this->setTemplateName($this->getSetting('pifaform_template_get'));
@@ -48,20 +48,20 @@ class DefaultFormModule extends PifaAbstractFormModule {
         // set errors
         $pifaForm->setErrors($errors);
 
-        $actionPath = cUri::getInstance()->build(array(
+        $actionPath = cUri::getInstance()->build([
             'idart' => cRegistry::getArticleId(),
             'lang' => cRegistry::getLanguageId()
-        ), true);
+        ], true);
 
         if (Pifa::isHttps()) {
             $actionPath = str_replace('http://', 'https://', $actionPath);
         }
 
         // assign rendered form
-        $this->getTpl()->assign('form', $pifaForm->toHtml(array(
+        $this->getTpl()->assign('form', $pifaForm->toHtml([
             'action' => $actionPath,
             'headline' => $this->getSetting('pifaform_headline')
-        )));
+        ]));
     }
 
     /**
@@ -102,10 +102,10 @@ class DefaultFormModule extends PifaAbstractFormModule {
             $postProcessor->process();
 
             // assign reply to post template
-            $this->getTpl()->assign('reply', array(
+            $this->getTpl()->assign('reply', [
                 'headline' => mi18n("REPLY_HEADLINE"),
                 'text' => mi18n("REPLY_TEXT")
-            ));
+            ]);
         } catch (PifaValidationException $e) {
 
             // display form with valid values again

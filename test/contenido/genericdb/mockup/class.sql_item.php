@@ -115,6 +115,8 @@ class SqlItem
 // /**
 //  *
 //  * @author marcus.gnass
+//  * @method TITCollection createNewItem
+//  * @method TITCollection|bool next
 //  */
 // class ITCollection extends ItemCollection {
 

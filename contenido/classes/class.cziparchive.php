@@ -36,15 +36,15 @@ class cZipArchive {
 
         // check if $dirPath is a dir
         if (!is_dir($dirPath)) {
-            return array();
+            return [];
         }
 
         // try to read $dirPath
         if (false === ($handle = cDirHandler::read($dirPath))) {
-            return array();
+            return [];
         }
 
-        $array = array();
+        $array = [];
         foreach ($handle as $file) {
             if (cFileHandler::fileNameBeginsWithDot($file)) {
                 // exclude file if name starts with a dot

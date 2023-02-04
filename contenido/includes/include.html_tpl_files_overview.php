@@ -14,13 +14,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$files = new cGuiFileOverview($cfgClient[$client]['tpl']['path'], stripslashes($_REQUEST['file']), 'html');
+$client = cRegistry::getClientId();
+$cfgClient = cRegistry::getClientConfig();
+
+$file = (isset($_REQUEST['file'])) ? cSecurity::toString($_REQUEST['file']) : '';
+
+$files = new cGuiFileOverview($cfgClient[$client]['tpl']['path'], stripslashes($file), 'html');
 
 // Get system properties for extension filter
 $backend_file_extensions = getSystemProperty('backend', 'backend_file_extensions');
 
-if ($backend_file_extensions == "enabled") {
-    $files->setFileExtension(array('html', 'tpl'));
+if ($backend_file_extensions == 'enabled') {
+    $files->setFileExtension(['html', 'tpl']);
 }
 
 // Render file overview

@@ -13,6 +13,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cAuth $auth
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $area
+ * @var int $client
+ * @var int $lang
+ * @var int $frame
+ */
+
 // ################################
 // Initialization
 // ################################
@@ -40,35 +51,37 @@ $aFields = [
 // ################################
 // Check external input
 // ################################
+
+$requestElemPerPage = $_REQUEST['elemperpage'] ?? '';
+$requestPage = cSecurity::toInteger($_REQUEST['page'] ?? '0');
+$requestSortOrder = !isset($_REQUEST['sortorder']) || $_REQUEST['sortorder'] !== 'DESC' ? 'ASC' : 'DESC';
+$requestFilter = $_REQUEST['filter'] ?? '';
+$requestSortBy = $_REQUEST['sortby'] ?? '';
+$requestSearchIn = $_REQUEST['searchin'] ?? '';
+$requestIdRecipientGoup = cSecurity::toInteger($_REQUEST['idrecipientgroup'] ?? '0');
+
 // Items per page (value stored per area in user property)
-if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) || $_REQUEST["elemperpage"] < 0) {
-    $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
+if (!is_numeric($requestElemPerPage) || $requestElemPerPage < 0) {
+    $requestElemPerPage = $oUser->getProperty("itemsperpage", $area);
 }
-if (!is_numeric($_REQUEST["elemperpage"])) {
+if (!is_numeric($requestElemPerPage)) {
     // This is the case, if the user property has never been set (first time
     // user)
-    $_REQUEST["elemperpage"] = 25;
+    $requestElemPerPage = 25;
 }
-if ($_REQUEST["elemperpage"] > 0) {
+if ($requestElemPerPage > 0) {
     // -- All -- will not be stored, as it may be impossible to change this back
     // to something more useful
-    $oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
+    $oUser->setProperty("itemsperpage", $area, $requestElemPerPage);
 }
-$_REQUEST["page"] = (int) $_REQUEST["page"];
-if ($_REQUEST["page"] <= 0 || $_REQUEST["elemperpage"] == 0) {
-    $_REQUEST["page"] = 1;
-}
-// Sort order
-if ($_REQUEST["sortorder"] != "DESC") {
-    $_REQUEST["sortorder"] = "ASC";
+
+if ($requestPage <= 0 || $requestElemPerPage == 0) {
+    $requestPage = 1;
 }
 
 // Don't need to check sort by and search in criteria - just set it
-$_REQUEST["sortby"] = "groupname"; // Default sort by field, possible values see
-                                   // above
-$_REQUEST["searchin"] = "--all--";
-
-$requestIdRecipientGoup = (isset($_REQUEST['idrecipientgroup'])) ? cSecurity::toInteger($_REQUEST['idrecipientgroup']) : 0;
+$requestSortBy = "groupname"; // Default sort by field, possible values see above
+$requestSearchIn = "--all--";
 
 // Free memory
 unset($oUser);
@@ -81,35 +94,35 @@ $oRcpGroups = new NewsletterRecipientGroupCollection();
 $oRcpGroups->setWhere("idclient", $client);
 $oRcpGroups->setWhere("idlang", $lang);
 
-if ($_REQUEST["filter"] != "") {
-    if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
+if ($requestFilter != "") {
+    if ($requestSearchIn == "--all--" || $requestSearchIn == "") {
         foreach ($aFields as $sKey => $aData) {
             if (cString::findFirstPos($aData["type"], "search") !== false) {
-                $oRcpGroups->setWhereGroup("filter", $aData["field"], $_REQUEST["filter"], "LIKE");
+                $oRcpGroups->setWhereGroup("filter", $aData["field"], $requestFilter, "LIKE");
             }
         }
         $oRcpGroups->setInnerGroupCondition("filter", "OR");
     } else {
-        $oRcpGroups->setWhere($_REQUEST["searchin"], $_REQUEST["filter"], "LIKE");
+        $oRcpGroups->setWhere($requestSearchIn, $requestFilter, "LIKE");
     }
 }
 
-if ($_REQUEST["elemperpage"] > 0) {
+if ($requestElemPerPage > 0) {
     // Getting item count without limit (for page function) - better idea anyone
     // (performance)?
     $oRcpGroups->query();
     $iItemCount = $oRcpGroups->count();
 
-    if ($_REQUEST["elemperpage"] * ($_REQUEST["page"]) >= $iItemCount + $_REQUEST["elemperpage"] && $_REQUEST["page"] != 1) {
-        $_REQUEST["page"]--;
+    if ($requestElemPerPage * ($requestPage) >= $iItemCount + $requestElemPerPage && $requestPage != 1) {
+        $requestPage--;
     }
 
-    $oRcpGroups->setLimit($_REQUEST["elemperpage"] * ($_REQUEST["page"] - 1), $_REQUEST["elemperpage"]);
+    $oRcpGroups->setLimit($requestElemPerPage * ($requestPage - 1), $requestElemPerPage);
 } else {
     $iItemCount = 0;
 }
 
-$oRcpGroups->setOrder("defaultgroup DESC, " . $_REQUEST["sortby"] . " " . $_REQUEST["sortorder"]);
+$oRcpGroups->setOrder("defaultgroup DESC, " . $requestSortBy . " " . $requestSortOrder);
 $oRcpGroups->query();
 
 // Output data
@@ -168,11 +181,11 @@ $sPagerId = "0ed6d632-6adf-4f09-a0c6-1e38ab60e305";
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
-$oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);
-$oPagerLink->setCustom("filter", $_REQUEST["filter"]);
-$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
-$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
-$oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
+$oPagerLink->setCustom("elemperpage", $requestElemPerPage);
+$oPagerLink->setCustom("filter", $requestFilter);
+$oPagerLink->setCustom("sortby", $requestSortBy);
+$oPagerLink->setCustom("sortorder", $requestSortOrder);
+$oPagerLink->setCustom("searchin", $requestSearchIn);
 $oPagerLink->setCustom("frame", $frame);
 $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
@@ -181,7 +194,7 @@ $oPagerLink->setCustom("contenido", $sess->id);
 // it is not used, as the JS below only uses the INNER html and the "pagerlink"
 // parameter is
 // set by ...left_top.html for the foldingrow itself
-$oPager = new cGuiObjectPager($sPagerId, $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page");
+$oPager = new cGuiObjectPager($sPagerId, $iItemCount, $requestElemPerPage, $requestPage, $oPagerLink, "page");
 
 // Add slashes, to insert in javascript
 $sPagerContent = $oPager->render(1);
@@ -196,7 +209,7 @@ $sRefreshPager = <<<JS
 var sNavigation = '{$sPagerContent}';
 // Activate time to refresh pager folding row in left top
 var oTimer = window.setInterval(function() {
-    fncSetPager('{$sPagerId}', '{$_REQUEST["page"]}');
+    fncSetPager('{$sPagerId}', '{$requestPage}');
 }, 200);
 </script>
 JS;
@@ -206,7 +219,7 @@ $oPage->addScript($sRefreshPager);
 // Generate template
 $oTpl = new cTemplate();
 $oTpl->set('s', 'DELETE_MESSAGE', $aMsg["DelDescr"]);
-$sTemplate = $oTpl->generate(cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.recipients.group_menu.html', true);
+$sTemplate = $oTpl->generate($cfg['templates']['newsletter_recipients_group_menu'], true);
 
 $oPage->setContent([$oMenu, $sTemplate]);
 $oPage->render();

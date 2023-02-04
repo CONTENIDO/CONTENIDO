@@ -99,7 +99,7 @@ class PifaAjaxHandler {
      * @throws cException
      */
     function dispatch($action) {
-        global $area;
+        $area = cRegistry::getArea();
 
         // check for permission
         if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
@@ -111,63 +111,66 @@ class PifaAjaxHandler {
 
             case self::GET_FIELD_FORM:
                 // display a form for editing a PIFA form field
-                $idform = cSecurity::toInteger($_GET['idform']);
-                $idfield = cSecurity::toInteger($_GET['idfield']);
-                $fieldType = cSecurity::toInteger($_GET['field_type']);
+                $idform = cSecurity::toInteger($_GET['idform'] ?? '');
+                $idfield = cSecurity::toInteger($_GET['idfield'] ?? '');
+                $fieldType = cSecurity::toInteger($_GET['field_type'] ?? '');
                 $this->_getFieldForm($idform, $idfield, $fieldType);
                 break;
 
             case self::POST_FIELD_FORM:
                 // process a form for editing a PIFA form field
-                $idform = cSecurity::toInteger($_POST['idform']);
-                $idfield = cSecurity::toInteger($_POST['idfield']);
+                $idform = cSecurity::toInteger($_POST['idform'] ?? '');
+                $idfield = cSecurity::toInteger($_POST['idfield'] ?? '');
                 // $this->_editFieldForm($idform, $idfield);
                 $this->_postFieldForm($idform, $idfield);
                 break;
 
             case self::DELETE_FIELD:
-                $idfield = cSecurity::toInteger($_GET['idfield']);
+                $idfield = cSecurity::toInteger($_GET['idfield'] ?? '');
                 $this->_deleteField($idfield);
                 break;
 
             case self::DELETE_DATA:
-                $idform  = cSecurity::toInteger($_GET['idform']);
-                $iddatas = explode(',', $_POST['iddatas']);
+                $idform  = cSecurity::toInteger($_GET['idform'] ?? '');
+                $iddatas = explode(',', $_POST['iddatas'] ?? '');
                 $iddatas = array_map('cSecurity::toInteger', $iddatas);
                 $iddatas = array_filter($iddatas);
                 $this->_deleteData($idform, $iddatas);
                 break;
 
             case self::REORDER_FIELDS:
-                $idform = cSecurity::toInteger($_POST['idform']);
-                $idfields = implode(',', array_map('cSecurity::toInteger', explode(',', $_POST['idfields'])));
+                $idform = cSecurity::toInteger($_POST['idform']) ?? '';
+                $idfields = implode(',', array_map('cSecurity::toInteger', explode(',', $_POST['idfields'] ?? '')));
                 $this->_reorderFields($idform, $idfields);
                 break;
 
             case self::EXPORT_DATA:
-                $idform = cSecurity::toInteger($_GET['idform']);
+                $idform = cSecurity::toInteger($_GET['idform'] ?? '');
                 $this->_exportData($idform);
                 break;
 
             case self::EXPORT_FORM:
-                $idform = cSecurity::toInteger($_POST['idform']);
-                $withData = 'on' === $_POST['with_data'];
+                $idform = cSecurity::toInteger($_POST['idform'] ?? '');
+                $withData = 'on' === $_POST['with_data'] ?? '';
                 $this->_exportForm($idform, $withData);
                 break;
 
-            case self::IMPORT_FORM:
-                $xml = $_FILES['xml'];
-                $this->_importForm($xml);
-                break;
+            /**
+             * NOTE: There is no _importForm function, form import is done by {@see PifaRightBottomFormImportPage::_importFormGet()}
+             */
+            //case self::IMPORT_FORM:
+            //    $xml = $_FILES['xml'] ?? '';
+            //    $this->_importForm($xml);
+            //    break;
 
             case self::GET_FILE:
-                $name = cSecurity::toString($_GET['name']);
-                $file = cSecurity::toString($_GET['file']);
+                $name = cSecurity::toString($_GET['name'] ?? '');
+                $file = cSecurity::toString($_GET['file'] ?? '');
                 $this->_getFile($name, $file);
                 break;
 
             case self::GET_OPTION_ROW:
-                $index = cSecurity::toInteger($_GET['index']);
+                $index = cSecurity::toInteger($_GET['index'] ?? '');
                 $this->_getOptionRow($index);
                 break;
 
@@ -198,11 +201,13 @@ class PifaAjaxHandler {
             $field = new PifaField();
             $field->loadByPrimaryKey($idfield);
         } elseif (0 < $fieldType) {
-            // create new field by type
+            // creating new field by type. Load dummy recordset by a template,
+            // the real creation will be done by ajax.
             $field = new PifaField();
-            $field->loadByRecordSet(array(
-                'field_type' => $fieldType
-            ));
+            $field->loadByRecordSetTemplate([
+                'idform' => $idform,
+                'field_type' => $fieldType,
+            ]);
         } else {
             // bugger off
             // TODO check error message
@@ -212,16 +217,16 @@ class PifaAjaxHandler {
 
         // get option classes
         $optionClasses = Pifa::getExtensionClasses('PifaExternalOptionsDatasourceInterface');
-        array_unshift($optionClasses, array(
+        array_unshift($optionClasses, [
             'value' => '',
             'label' => Pifa::i18n('none')
-        ));
+        ]);
 
         // create form
         $tpl = cSmartyBackend::getInstance(true);
 
         // translations
-        $tpl->assign('trans', array(
+        $tpl->assign('trans', [
             'idfield' => Pifa::i18n('ID'),
             'fieldRank' => Pifa::i18n('RANK'),
             'fieldType' => Pifa::i18n('FIELD_TYPE'),
@@ -244,7 +249,7 @@ class PifaAjaxHandler {
             'uri' => Pifa::i18n('URI'),
             'externalOptionsDatasource' => Pifa::i18n('EXTERNAL_OPTIONS_DATASOURCE'),
             'deleteAll' => Pifa::i18n('DELETE_CSS_CLASSES')
-        ));
+        ]);
 
         // hidden form values (requires right to store form field)
         if (cRegistry::getPerm()->have_perm_area_action('form_ajax', self::POST_FIELD_FORM)) {
@@ -264,12 +269,12 @@ class PifaAjaxHandler {
 
         // build href to add new option row (requires right to add option)
         if (cRegistry::getPerm()->have_perm_area_action('form_ajax', self::POST_FIELD_FORM) && cRegistry::getPerm()->have_perm_area_action('form_ajax', self::GET_OPTION_ROW)) {
-            $tpl->assign('hrefAddOption', 'main.php?' . implode('&', array(
+            $tpl->assign('hrefAddOption', 'main.php?' . implode('&', [
                 'area=form_ajax',
                 'frame=4',
                 'contenido=' . cRegistry::getBackendSessionId(),
                 'action=' . PifaAjaxHandler::GET_OPTION_ROW
-            )));
+                ]));
         }
 
         // path to partial template for displaying a single option row
@@ -289,7 +294,7 @@ class PifaAjaxHandler {
      * @throws cException
      */
     private function _postFieldForm($idform, $idfield) {
-        global $area;
+        $area = cRegistry::getArea();
 
         $string_cast_deep = function($value) {
             $value = cSecurity::unescapeDB($value);
@@ -313,14 +318,14 @@ class PifaAjaxHandler {
             $isFieldCreated = false;
         } else {
             // get field type for new form field
-            $fieldType = $_POST['field_type'];
+            $fieldType = $_POST['field_type'] ?? '';
             $fieldType = cSecurity::toInteger($fieldType);
             // create field
             $collection = new PifaFieldCollection();
-            $pifaField = $collection->createNewItem(array(
+            $pifaField = $collection->createNewItem([
                 'idform' => $idform,
                 'field_type' => $fieldType
-            ));
+            ]);
             $isFieldCreated = true;
         }
 
@@ -329,7 +334,7 @@ class PifaAjaxHandler {
         $oldColumnName = $pifaField->get('column_name');
 
         // set the new rank of the item
-        $fieldRank = $_POST['field_rank'];
+        $fieldRank = $_POST['field_rank'] ?? '';
         $fieldRank = cSecurity::toInteger($fieldRank);
         if ($fieldRank !== $pifaField->get('field_rank')) {
             $pifaField->set('field_rank', $fieldRank);
@@ -340,14 +345,14 @@ class PifaAjaxHandler {
          * data. Which data is editable depends upon the field type. So certain
          * data will only be stored if its field is shown in the form. Never,
          * really never, call Item->set() if the value doesn't differ from the
-         * previous one. Otherwise the genericDb thinks that the item is
+         * previous one. Otherwise, the genericDb thinks that the item is
          * modified and tries to store it, resulting in a return value of false!
          */
 
         // According to the MySQL documentation table and column names
-        // must not be longer than 64 charcters.
+        // must not be longer than 64 characters.
         if ($pifaField->showField('column_name')) {
-            $columnName = $_POST['column_name'];
+            $columnName = $_POST['column_name'] ?? '';
             $columnName = cSecurity::unescapeDB($columnName);
             $columnName = cSecurity::toString($columnName);
             $columnName = trim($columnName);
@@ -362,7 +367,7 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('label')) {
-            $label = $_POST['label'];
+            $label = $_POST['label'] ?? '';
             $label = cSecurity::unescapeDB($label);
             $label = cSecurity::toString($label);
             $label = strip_tags($label);
@@ -374,7 +379,7 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('display_label')) {
-            $displayLabel = $_POST['display_label'];
+            $displayLabel = $_POST['display_label'] ?? '';
             $displayLabel = cSecurity::unescapeDB($displayLabel);
             $displayLabel = cSecurity::toString($displayLabel);
             $displayLabel = trim($displayLabel);
@@ -385,7 +390,7 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('uri')) {
-            $uri = $_POST['uri'];
+            $uri = $_POST['uri'] ?? '';
             $uri = cSecurity::unescapeDB($uri);
             $uri = cSecurity::toString($uri);
             $uri = trim($uri);
@@ -396,7 +401,7 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('default_value')) {
-            $defaultValue = $_POST['default_value'];
+            $defaultValue = $_POST['default_value'] ?? '';
             $defaultValue = cSecurity::unescapeDB($defaultValue);
             $defaultValue = cSecurity::toString($defaultValue);
             $defaultValue = trim($defaultValue);
@@ -427,7 +432,7 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('help_text')) {
-            $helpText = $_POST['help_text'];
+            $helpText = $_POST['help_text'] ?? '';
             $helpText = cSecurity::unescapeDB($helpText);
             $helpText = cSecurity::toString($helpText);
             $helpText = trim($helpText);
@@ -448,7 +453,7 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('rule')) {
-            $rule = $_POST['rule'];
+            $rule = $_POST['rule'] ?? '';
             $rule = cSecurity::toString($rule, false);
             $rule = trim($rule);
             $rule = cString::getPartOfString($rule, 0, 1023);
@@ -465,7 +470,7 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('error_message')) {
-            $errorMessage = $_POST['error_message'];
+            $errorMessage = $_POST['error_message'] ?? '';
             $errorMessage = cSecurity::unescapeDB($errorMessage);
             $errorMessage = cSecurity::toString($errorMessage);
             $errorMessage = trim($errorMessage);
@@ -478,13 +483,13 @@ class PifaAjaxHandler {
         if ($pifaField->showField('css_class') && array_key_exists('css_class', $_POST) && is_array($_POST['css_class'])) {
             $cssClass = implode(',', array_map($string_cast_deep, $_POST['css_class']));
             $cssClass = cString::getPartOfString($cssClass, 0, 1023);
-        }
-        if ($cssClass !== $pifaField->get('css_class')) {
-            $pifaField->set('css_class', $cssClass);
+            if ($cssClass !== $pifaField->get('css_class')) {
+                $pifaField->set('css_class', $cssClass);
+            }
         }
 
         if ($pifaField->showField('option_class')) {
-            $optionClass = $_POST['option_class'];
+            $optionClass = $_POST['option_class'] ?? '';
             $optionClass = cSecurity::unescapeDB($optionClass);
             $optionClass = cSecurity::toString($optionClass);
             $optionClass = trim($optionClass);
@@ -556,11 +561,11 @@ class PifaAjaxHandler {
         $tpl = cSmartyBackend::getInstance(true);
 
         // translations
-        $tpl->assign('trans', array(
+        $tpl->assign('trans', [
             'edit' => Pifa::i18n('EDIT'),
             'delete' => Pifa::i18n('DELETE'),
             'obligatory' => Pifa::i18n('OBLIGATORY')
-        ));
+        ]);
 
         // the field
         $tpl->assign('field', $pifaField);
@@ -622,9 +627,11 @@ class PifaAjaxHandler {
         $filename = $pifaForm->get('data_table') . date('_Y_m_d_H_i_s') . '.csv';
         $data = $pifaForm->getDataAsCsv();
 
-        // prevent caching
-        session_cache_limiter('private');
-        session_cache_limiter('must-revalidate');
+        // prevent caching, but only if session has not started yet!
+        if (!isset($_SESSION)) {
+            session_cache_limiter('private');
+            session_cache_limiter('must-revalidate');
+        }
 
         // set header
         header('Pragma: cache');
@@ -656,9 +663,11 @@ class PifaAjaxHandler {
         $pifaExporter = new PifaExporter($pifaForm);
         $xml = $pifaExporter->export($withData);
 
-        // prevent caching
-        session_cache_limiter('private');
-        session_cache_limiter('must-revalidate');
+        // prevent caching, but only if session has not started yet!
+        if (!isset($_SESSION)) {
+            session_cache_limiter('private');
+            session_cache_limiter('must-revalidate');
+        }
 
         // set header
         header('Pragma: cache');
@@ -726,18 +735,18 @@ class PifaAjaxHandler {
         $tpl = cSmartyBackend::getInstance(true);
 
         // translations
-        $tpl->assign('trans', array(
+        $tpl->assign('trans', [
             'label' => Pifa::i18n('LABEL'),
             'value' => Pifa::i18n('VALUE')
-        ));
+        ]);
 
         $tpl->assign('i', $index);
 
         // option
-        $tpl->assign('option', array(
+        $tpl->assign('option', [
             'label' => '',
             'value' => ''
-        ));
+        ]);
 
         $tpl->display($cfg['templates']['pifa_ajax_option_row']);
     }

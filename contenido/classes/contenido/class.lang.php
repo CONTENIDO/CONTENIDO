@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiLanguage createNewItem
+ * @method cApiLanguage|bool next
  */
 class cApiLanguageCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiLanguageCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['lang'], 'idlang');
+        parent::__construct(cRegistry::getDbTableName('lang'), 'idlang');
         $this->_setItemClass('cApiLanguage');
     }
 
@@ -44,10 +45,9 @@ class cApiLanguageCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
-     * @global object $auth
      */
     public function create($name, $active, $encoding, $direction) {
-        global $auth;
+        $auth = cRegistry::getAuth();
 
         $item = $this->createNewItem();
 
@@ -64,29 +64,21 @@ class cApiLanguageCollection extends ItemCollection {
     }
 
     /**
-     * Returns next accessible language for current client and current logged in
+     * Returns next accessible language for current client and current logged-in
      * user.
      *
      * @return cApiLanguage|NULL
      * @throws cDbException
      * @throws cException
-     * @global object $perm
-     * @global array  $cfg
-     * @global int    $client
-     * @global int    $lang
-     *
      */
     public function nextAccessible() {
-        global $perm, $client, $lang;
-
         $item = $this->next();
 
-        $lang = (int) $lang;
-        $client = (int) $client;
-
         if ($item === false) {
-            return false;
+            return NULL;
         }
+
+        $client = cSecurity::toInteger(cRegistry::getClientId());
 
         $clientsLanguageColl = new cApiClientLanguageCollection();
         $clientsLanguageColl->select('idlang = ' . $item->get("idlang"));
@@ -97,6 +89,7 @@ class cApiLanguageCollection extends ItemCollection {
         }
 
         if ($item) {
+            $perm = cRegistry::getPerm();
             if ($perm->have_perm_client('lang[' . $item->get('idlang') . ']') || $perm->have_perm_client('admin[' . $client . ']') || $perm->have_perm_client()) {
                 // Do nothing for now
             } else {
@@ -105,7 +98,7 @@ class cApiLanguageCollection extends ItemCollection {
 
             return $item;
         } else {
-            return false;
+            return NULL;
         }
     }
 
@@ -136,16 +129,14 @@ class cApiLanguageCollection extends ItemCollection {
  */
 class cApiLanguage extends Item {
     /**
-     *
      * @var array
      */
-    protected static $_propertiesCache = array();
+    protected static $_propertiesCache = [];
 
     /**
-     *
      * @var array
      */
-    protected static $_propertiesCacheLoaded = array();
+    protected static $_propertiesCacheLoaded = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -157,9 +148,8 @@ class cApiLanguage extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['lang'], 'idlang');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('lang'), 'idlang');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -178,7 +168,7 @@ class cApiLanguage extends Item {
     }
 
     /**
-     * Userdefined setter for lang fields.
+     * User-defined setter for lang fields.
      *
      * @param string $name
      * @param mixed $value
@@ -189,7 +179,7 @@ class cApiLanguage extends Item {
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'active':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 
@@ -207,8 +197,7 @@ class cApiLanguage extends Item {
     protected function _loadProperties($idclient = 0) {
 
         if (!isset(self::$_propertiesCacheLoaded[$idclient])) {
-
-            self::$_propertiesCache[$idclient] = array();
+            self::$_propertiesCache[$idclient] = [];
 
             $itemtype = $this->db->escape($this->getPrimaryKeyName());
             $itemid = $this->db->escape($this->get($this->getPrimaryKeyName()));
@@ -222,7 +211,7 @@ class cApiLanguage extends Item {
 
                     $type = $item->get('type');
                     if (!isset(self::$_propertiesCache[$idclient][$type])) {
-                        self::$_propertiesCache[$idclient][$type] = array();
+                        self::$_propertiesCache[$idclient][$type] = [];
                     }
 
                     $name = $item->get('name');

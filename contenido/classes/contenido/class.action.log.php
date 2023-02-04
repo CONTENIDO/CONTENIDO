@@ -19,8 +19,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiActionlog createNewItem
+ * @method cApiActionlog|bool next
  */
 class cApiActionlogCollection extends ItemCollection {
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -30,8 +33,7 @@ class cApiActionlogCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['actionlog'], 'idlog');
+        parent::__construct(cRegistry::getDbTableName('actionlog'), 'idlog');
         $this->_setItemClass('cApiActionlog');
 
         // set the join partners so that joins can be used via link() method
@@ -98,16 +100,15 @@ class cApiActionlog extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['actionlog'], 'idlog');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('actionlog'), 'idlog');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Userdefined setter for action log fields.
+     * User-defined setter for action log fields.
      *
      * @param string $name
      * @param mixed $value
@@ -117,17 +118,11 @@ class cApiActionlog extends Item
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
-            case 'idclient':
-                $value = (int) $value;
-                break;
             case 'idlang':
-                $value = (int) $value;
-                break;
             case 'idaction':
-                $value = (int) $value;
-                break;
             case 'idcatart':
-                $value = (int) $value;
+            case 'idclient':
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

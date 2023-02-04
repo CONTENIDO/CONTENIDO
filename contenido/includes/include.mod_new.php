@@ -14,9 +14,31 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$oUser = new cApiUser($auth->auth["uid"]);
-if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0) {
-    $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
+global $tpl;
+
+$auth = cRegistry::getAuth();
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+$area = cRegistry::getArea();
+$cfg = cRegistry::getConfig();
+
+$elemPerPage = (isset($_REQUEST['elemperpage'])) ? cSecurity::toInteger($_REQUEST['elemperpage']) : 0;
+$page = (isset($_REQUEST['page'])) ? cSecurity::toInteger($_REQUEST['page']) : 1;
+$sortby = (isset($_REQUEST['sortby'])) ? cSecurity::toString($_REQUEST['sortby']) : '';
+$sortorder = (isset($_REQUEST['sortorder'])) ? cSecurity::toString($_REQUEST['sortorder']) : '';
+$filter = (isset($_REQUEST['filter'])) ? cSecurity::toString($_REQUEST['filter']) : '';
+$filterType = (isset($_REQUEST['filtertype'])) ? cSecurity::toString($_REQUEST['filtertype']) : '';
+$searchIn = (isset($_REQUEST['searchin'])) ? cSecurity::toString($_REQUEST['searchin']) : '';
+
+// no value found in request for items per page -> get form db or set default
+$oUser = new cApiUser($auth->auth['uid']);
+if ($elemPerPage < 0) {
+    $elemPerPage = $oUser->getProperty('itemsperpage', $area);
+}
+unset($oUser);
+
+if ($page <= 0 || $elemPerPage == 0) {
+    $page = 1;
 }
 
 $tpl->reset();
@@ -72,13 +94,13 @@ if ($client > 0) {
     $oListOptionRow = new cGuiFoldingRow("e9ddf415-4b2d-4a75-8060-c3cd88b6ff98", i18n("List options"), $listOpLink);
     $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
     $oSelectItemsPerPage->autoFill([0 => i18n("-- All --"), 5 => 5, 25 => 25, 50 => 50, 75 => 75, 100 => 100]);
-    $oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
+    $oSelectItemsPerPage->setDefault($elemPerPage);
     $oSelectSortBy = new cHTMLSelectElement("sortby");
     $oSelectSortBy->autoFill($aSortByOptions);
-    $oSelectSortBy->setDefault($_REQUEST["sortby"]);
+    $oSelectSortBy->setDefault($sortby);
     $oSelectSortOrder = new cHTMLSelectElement("sortorder");
     $oSelectSortOrder->autoFill($aSortOrderOptions);
-    $oSelectSortOrder->setDefault($_REQUEST["sortorder"]);
+    $oSelectSortOrder->setDefault($sortorder);
 
     $oSelectSearchIn = new cHTMLSelectElement("searchin");
     // CON-1910
@@ -90,7 +112,7 @@ if ($client > 0) {
         'output' => i18n("Output")
     ]);
 
-    $oSelectSearchIn->setDefault($_REQUEST["searchin"]);
+    $oSelectSearchIn->setDefault($searchIn);
 
     // build list with filter types
     $aFilterType = [];
@@ -107,12 +129,12 @@ if ($client > 0) {
 
     $oSelectTypeFilter = new cHTMLSelectElement("filtertype");
     $oSelectTypeFilter->autoFill($aFilterType);
-    $oSelectTypeFilter->setDefault($_REQUEST["filtertype"]);
-    $oTextboxFilter = new cHTMLTextbox("filter", stripslashes($_REQUEST["filter"]), 15);
+    $oSelectTypeFilter->setDefault($filterType);
+    $oTextboxFilter = new cHTMLTextbox("filter", stripslashes($filter), 15);
     $oTextboxFilter->setClass('text_small vAlignMiddle');
 
     $tplModFilter = new cTemplate();
-    $tplModFilter->set("s", "PAGE", $_REQUEST["page"]);
+    $tplModFilter->set("s", "PAGE", $page);
     $tplModFilter->set("s", "ITEMS_PER_PAGE", $oSelectItemsPerPage->render());
     $tplModFilter->set("s", "SORT_BY", $oSelectSortBy->render());
     $tplModFilter->set("s", "SORT_ORDER", $oSelectSortOrder->render());
@@ -132,15 +154,15 @@ if ($client > 0) {
     $pagerl = "pagerlink";
     $oPagerLink->setTargetFrame('left_bottom');
     $oPagerLink->setLink("main.php");
-    $oPagerLink->setCustom("elemperpage", $elemperpage);
-    $oPagerLink->setCustom("filter", stripslashes($_REQUEST["filter"]));
-    $oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
-    $oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
+    $oPagerLink->setCustom("elemperpage", $elemPerPage);
+    $oPagerLink->setCustom("filter", stripslashes($filter));
+    $oPagerLink->setCustom("sortby", $sortby);
+    $oPagerLink->setCustom("sortorder", $sortorder);
     $oPagerLink->setCustom("frame", 2);
     $oPagerLink->setCustom("area", $area);
     $oPagerLink->enableAutomaticParameterAppend();
     $oPagerLink->setCustom("contenido", $sess->id);
-    $oPager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f497", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerl);
+    $oPager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f497", $iItemCount, $elemPerPage, $page, $oPagerLink, "page", $pagerl);
 
     $strActions = $strAddLink . $strSyncLink . '<table class="generic" border="0" cellspacing="0" cellpadding="0" width="100%">' . $oListOptionRow->render() . $oPager->render() . '</table>';
 
@@ -156,5 +178,3 @@ if ($client > 0) {
 
 // generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['mod_left_top']);
-
-?>

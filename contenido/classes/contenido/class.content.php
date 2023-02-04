@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiContent createNewItem
+ * @method cApiContent|bool next
  */
 class cApiContentCollection extends ItemCollection {
     /**
@@ -27,8 +29,7 @@ class cApiContentCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['content'], 'idcontent');
+        parent::__construct(cRegistry::getDbTableName('content'), 'idcontent');
         $this->_setItemClass('cApiContent');
 
         // set the join partners so that joins can be used via link() method
@@ -54,9 +55,8 @@ class cApiContentCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = '') {
-        global $auth;
-
         if (empty($author)) {
+            $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
@@ -102,16 +102,15 @@ class cApiContent extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['content'], 'idcontent');
-        $this->setFilters(array(), array());
+        parent::__construct(cRegistry::getDbTableName('content'), 'idcontent');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Userdefined setter for item fields.
+     * User-defined setter for item fields.
      *
      * @param string $name
      * @param mixed $value
@@ -126,7 +125,7 @@ class cApiContent extends Item
             case 'idtype':
             case 'typeid':
             case 'version':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 
@@ -165,11 +164,11 @@ class cApiContent extends Item
      * @throws cException
      */
     public function loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid) {
-        $aProps = array(
+        $aProps = [
             'idartlang' => $idartlang,
-            'idtype' => $idtype,
-            'typeid' => $typeid
-        );
+            'idtype'    => $idtype,
+            'typeid'    => $typeid,
+        ];
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
             // entry in cache found, load entry from cache

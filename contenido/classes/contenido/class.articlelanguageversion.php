@@ -24,7 +24,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
      * Constructor to create an instance of this class.
      *
      * @see ItemCollection::select()
-     * 
+     *
      * @param bool $select
      *         where clause to use for selection
      *
@@ -32,7 +32,6 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
      * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
-
         $sTable = cRegistry::getDbTableName('art_lang_version');
         $sPrimaryKey = 'idartlangversion';
         ItemCollection::__construct($sTable, $sPrimaryKey);
@@ -52,16 +51,15 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
     /**
      * @param array $parameters
      *
-     * @return Item
+     * @return Item|cApiArticleLanguageVersion
      *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
     public function create(array $parameters) {
-        $auth = cRegistry::getAuth();
-
         if (empty($parameters['author'])) {
+            $auth = cRegistry::getAuth();
             $parameters['author'] = $auth->auth['uname'];
         }
         if (empty($parameters['created'])) {
@@ -107,12 +105,11 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
      * @param int $version
      *
      * @return int
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
     public function getIdByArticleIdAndLanguageId($idArtLang, $version) {
-
         $id = NULL;
 
         $where = 'idartlang = ' . $idArtLang . ' AND version = ' . $version;
@@ -120,13 +117,13 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
         $artLangVersionColl = new cApiArticleLanguageVersionCollection();
         $artLangVersionColl->select($where);
 
-        while($item = $artLangVersionColl->next()){
+        while ($item = $artLangVersionColl->next()) {
             $id = $item->get('idartlangversion');
         }
 
-        return isset($id) ? $id : 0;
-
+        return $id ?? 0;
     }
+
 }
 
 /**
@@ -187,7 +184,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
  * available
  * content of this type. The array has the following schema:
  *
- * array(number => content);
+ * [number => content];
  *
  * $headlines = $obj->getContent("htmlhead");
  *
@@ -250,7 +247,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
         $sPrimaryKey = 'idartlangversion';
         Item::__construct($sTable, $sPrimaryKey);
 
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
             if (true === $fetchContent) {
@@ -269,10 +266,10 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      * @throws cInvalidArgumentException
      */
     public function markAsCurrentVersion($isCurrentVersion){
-        $attributes = array(
-            'idartlang' => $this->get('idartlang'),
-            'iscurrentversion' => $isCurrentVersion
-        );
+        $attributes = [
+            'idartlang'        => $this->get('idartlang'),
+            'iscurrentversion' => $isCurrentVersion,
+        ];
         if ($isCurrentVersion == 1) {
             $artLangVersion = new cApiArticleLanguageVersion();
             if ($artLangVersion->loadByMany($attributes)) {
@@ -353,12 +350,12 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
                 foreach ($this->content AS $typeName => $typeids) {
                     foreach ($typeids AS $typeid => $value) {
                         $ctype->loadByType($typeName);
-                        $contentParameters = array(
+                        $contentParameters = [
                             'idartlang' => $this->get('idartlang'),
-                            'idtype' => $ctype->get('idtype'),
-                            'typeid' => $typeid,
-                            'version' => $this->get('version')
-                        );
+                            'idtype'    => $ctype->get('idtype'),
+                            'typeid'    => $typeid,
+                            'version'   => $this->get('version'),
+                        ];
                         $contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
                         $contentVersion->markAsCurrent();
                     }
@@ -429,7 +426,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
             $this->_getArticleVersionContent();
 
             // get all Content Versions
-            $mergedContent = array();
+            $mergedContent = [];
             foreach ($this->content AS $typeName => $typeids) {
                 foreach ($typeids AS $typeid => $value) {
                     $mergedContent[$typeName][$typeid] = '';
@@ -445,27 +442,28 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
                 foreach ($typeids AS $typeid => $value) {
                     $apiType->loadByType($typeName);
                     if (isset($this->content[$typeName][$typeid])) {
-                        $contentParameters = array(
+                        $contentParameters = [
                             'idartlang' => $this->get('idartlang'),
-                            'idtype' => $apiType->get('idtype'),
-                            'typeid' => $typeid,
-                            'version' => $this->get('version')
-                        );
+                            'idtype'    => $apiType->get('idtype'),
+                            'typeid'    => $typeid,
+                            'version'   => $this->get('version'),
+                        ];
                         $contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
 
                         if (isset($contentVersion)) {
                             $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
                         }
-                    } else { // muss bleiben, um contents zu löschen;
-                    //      vorsicht bei "als entwurf nutzen" wenn artikelversion jünger als contentversion
-                        $contentParameters = array(
+                    } else {
+                        // muss bleiben, um contents zu löschen;
+                        // vorsicht bei "als entwurf nutzen" wenn artikelversion jünger als contentversion
+                        $contentParameters = [
                             'idartlang' => $artLangVersion->get('idartlang'),
-                            'idtype' => $apiType->get('idtype'),
-                            'typeid' => $typeid,
-                            'version' => $artLangVersion->get('version'),
-                            'author' => $this->get('author'),
-                            'deleted' => 1
-                        );
+                            'idtype'    => $apiType->get('idtype'),
+                            'typeid'    => $typeid,
+                            'version'   => $artLangVersion->get('version'),
+                            'author'    => $this->get('author'),
+                            'deleted'   => 1,
+                        ];
                         $contentVersionColl = new cApiContentVersionCollection();
                         $contentVersionColl->create($contentParameters);
                     }
@@ -529,16 +527,17 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
     public function loadByArticleLanguageIdAndVersion($idArtLang, $version, $fetchContent = false) {
         $result = true;
         if (!$this->isLoaded()) {
-            $props = array(
+            $props = [
                 'idartlang' => $idArtLang,
-                'version' => $version
-            );
+                'version'   => $version,
+            ];
             $recordSet = $this->_oCache->getItemByProperties($props);
             if ($recordSet) {
                 // entry in cache found, load entry from cache
                 $this->loadByRecordSet($recordSet);
             } else {
-                $idArtLangVersion = $this->_getIdArtLangVersion($idArtLang, $version);
+                $coll = new cApiArticleLanguageVersionCollection();
+                $idArtLangVersion = $coll->getIdByArticleIdAndLanguageId($idArtLang, $version);
                 $result = $this->loadByPrimaryKey($idArtLangVersion);
             }
         }
@@ -551,41 +550,20 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
     }
 
     /**
-     * Extract 'idartlangversion' for a specified 'idartlang' and 'version'
-     *
-     * @param int $idArtLang
-     *         Article language id
-     * @param int $version
-     *         version number
-     * 
-     * @return int
-     *         Article language version id
-     * 
-     * @throws cDbException
-     * @throws cException
+     * @deprecated Since 4.10.2. Code was redundant with {@see cApiArticleLanguageVersionCollection::getIdByArticleIdAndLanguageId}
+     *     and it is not the job ob the item to do this.
      */
     protected function _getIdArtLangVersion($idArtLang, $version) {
-
-        $id = NULL;
-
-        $where = 'idartlang = ' . $idArtLang . ' AND version = ' . $version;
-
-        $artLangVersionColl = new cApiArticleLanguageVersionCollection();
-        $artLangVersionColl->select($where);
-
-        while($item = $artLangVersionColl->next()){
-            $id = $item->get('idartlangversion');
-        }
-
-        return isset($id) ? $id : 0;
-
+        cDeprecated("The function _getIdArtLangVersion() is deprecated since CONTENIDO 4.10.2, use cApiArticleLanguageVersionCollection::getIdByArticleIdAndLanguageId() instead.");
+        $coll = new cApiArticleLanguageVersionCollection();
+        return $coll->getIdByArticleIdAndLanguageId($idArtLang, $version);
     }
 
     /**
      * Load the articles version content and store it in the 'content' property of the
      * article version object: $article->content[type][number] = value;
      *
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _getArticleVersionContent() {
 
@@ -615,7 +593,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
             $this->get('idartlang')
         );
 
-        $this->content = array();
+        $this->content = [];
         while ($this->db->nextRecord()) {
             $this->content[cString::toLowerCase($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
         }
@@ -625,14 +603,14 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
     /**
      * Get content(s) from an article version.
      *
-     * Returns the specified content element or an array("id"=>"value") if the
+     * Returns the specified content element or an ["id"=>"value"] if the
      * second parameter is omitted.
      *
      * Legal content type string are defined in the CONTENIDO system table
      * 'con_type'.
      * Default content types are:
      *
-     * NOTE: Parameter is case insensitive, you can use html or cms_HTML or
+     * NOTE: Parameter is case-insensitive, you can use html or cms_HTML or
      * CmS_HtMl.
      * You don't need to start with cms, but it won't crash if you do so.
      *
@@ -654,8 +632,8 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      *
      * @return string|array
      *         data
-     * 
-     * @throws cDbException
+     *
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getContent($type = '', $id = NULL) {
         if (NULL === $this->content) {

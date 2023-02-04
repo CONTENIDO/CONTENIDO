@@ -14,14 +14,26 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var array $cfg
+ * @var int $idart
+ * @var int $idcat
+ * @var int $lang
+ * @var cDb $db
+ * @var cGuiNotification $notification
+ * @var cSession $sess
+ * @var string $area
+ * @var int $frame
+ * @var cTemplate|null $tpl
+ * @var int|string $syncoptions
+ * @var string $contenido
+ */
+
 cInclude('includes', 'functions.pathresolver.php');
 
 // fetch idartlang for idart
-$sql = "SELECT idartlang, locked
-        FROM " . $cfg['tab']['art_lang'] . "
-        WHERE idart=" . (int) $idart . "
-            AND idlang=" . (int) $lang;
-$db->query($sql);
+$sql = "SELECT `idartlang`, `locked` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
+$db->query($sql, cRegistry::getDbTableName('art_lang'), $idart, $lang);
 $db->nextRecord();
 $this_idartlang = $db->f('idartlang');
 $this_locked = $db->f('locked');
@@ -36,14 +48,18 @@ $oPage = new cGuiPage("contentallocation_article", "content_allocation", "7");
 $oTree = new pApiContentAllocationComplexList('06bd456d-fe76-40cb-b041-b9ba90dc400a');
 $oAlloc = new pApiContentAllocation();
 
-if ($_POST['action'] == 'storeallocation') {
-    $oAlloc->storeAllocations($this_idartlang, $_POST['allocation']);
+$requestAction = $_POST['action'] ?? '';
+$requestStep = $_GET['step'] ?? '';
+
+if ($requestAction == 'storeallocation') {
+    $oAlloc->storeAllocations($this_idartlang, $_POST['allocation'] ?? []);
 }
-if ($_GET['step'] == 'collapse') {
+if ($requestStep == 'collapse') {
     $oTree->setTreeStatus($_GET['idpica_alloc']);
 }
 
-// uild category path
+// Build category path
+$syncoptions = $syncoptions ?? '';
 $sLocationString = renderBackendBreadcrumb($syncoptions, true, true);
 
 // load allocations
@@ -52,7 +68,7 @@ $loadedAllocations = $oAlloc->loadAllocations($this_idartlang);
 $oTree->setChecked($loadedAllocations);
 $result = $oTree->renderTree(true);
 
-if ($result == false) {
+if (!$result) {
     $result = $notification->returnNotification('warning', i18n('There is no tagging tree.', 'content_allocation'));
 } else {
     if (!is_object($tpl)) {
@@ -73,10 +89,10 @@ if ($result == false) {
     }
 
     $oDiv = new cHTMLDiv();
-    $oDiv->updateAttributes(array(
+    $oDiv->updateAttributes([
         'style' => 'text-align:right;padding:5px;width:730px;border:1px #B3B3B3 solid;background-color:#FFF;'
-    ));
-    $oDiv->setContent('<input type="image" src="images/but_ok.gif">');
+    ]);
+    $oDiv->setContent('<input type="image" alt="" src="images/but_ok.gif">');
     $tpl->set('s', 'DIV', '<br>' . $oDiv->render());
 
     $tpl->set('s', 'TREE', $result);
@@ -122,5 +138,3 @@ $div->setContent($sLocationString . $result);
 
 $oPage->setContent($div);
 $oPage->render();
-
-?>

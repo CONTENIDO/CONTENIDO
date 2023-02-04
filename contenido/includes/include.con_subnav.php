@@ -14,10 +14,20 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $tpl;
+
+$db = cRegistry::getDb();
+$cfg = cRegistry::getConfig();
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
+$action = cRegistry::getAction();
+
 // Get sync options
 if (isset($syncoptions)) {
     $syncfrom = $syncoptions;
     $remakeCatTable = true;
+} else {
+    $syncoptions = -1;
 }
 
 if (!isset($syncfrom)) {
@@ -66,6 +76,7 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
         $sql_count = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $sql_count);
     }
 
+    $iArticleCount = 0;
     $db->query($sql_count);
     while ($db->nextRecord()) {
         $iArticleCount = $db->f('article_count');

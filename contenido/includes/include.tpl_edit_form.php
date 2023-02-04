@@ -14,6 +14,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var cDb $db
+ * @var array $cfg
+ * @var string $area
+ * @var string $action
+ * @var int $client
+ * @var int $frame
+ */
+
+
 $tpl2 = new cTemplate();
 
 $page = new cGuiPage("tpl_edit_form", '', '0');
@@ -32,6 +44,12 @@ if ($action == "tpl_new" && !$perm->have_perm_area_action_anyitem($area, $action
     return;
 }
 
+$idtpl = cSecurity::toInteger($_REQUEST['idtpl'] ?? '0');
+$description = $description ?? '';
+$idlay = cSecurity::toInteger($idlay ?? '0');
+$vdefault = cSecurity::toInteger(!empty($vdefault) ? $vdefault : '0');
+$laydescription = '';
+
 if ($action == "tpl_new") {
     $tplname = i18n("-- New template --");
 }
@@ -39,11 +57,10 @@ if ($action == "tpl_new") {
 $sql = "SELECT
         a.idtpl, a.name AS name, a.description, a.idlay, b.description AS laydescription, a.defaulttemplate
         FROM
-        " . $cfg['tab']['tpl'] . " AS a
+            " . $cfg['tab']['tpl'] . " AS a
         LEFT JOIN
-        " . $cfg['tab']['lay'] . " AS b
-        ON a.idlay=b.idlay
-        WHERE a.idtpl='" . cSecurity::toInteger($idtpl) . "'
+            " . $cfg['tab']['lay'] . " AS b ON a.idlay = b.idlay
+        WHERE a.idtpl = " . $idtpl . "
         ORDER BY name";
 
 $db->query($sql);
@@ -75,10 +92,8 @@ if ($idlay != 0) {
     $tpl2->next();
 }
 
-$sql = "SELECT idlay, name FROM " . $cfg['tab']['lay'] . "
-        WHERE idclient='" . cSecurity::toInteger($client) . "'
-        ORDER BY name";
-$db->query($sql);
+$sql = 'SELECT `idlay`, `name` FROM `%s` WHERE `idclient` = %d ORDER BY `name`';
+$db->query($sql, $cfg['tab']['lay'], $client);
 while ($db->nextRecord()) {
     if ($db->f("idlay") != $idlay) {
         $tpl2->set('d', 'VALUE', $db->f("idlay"));
@@ -157,7 +172,7 @@ if ($idlay) {
             foreach ($modules as $key => $val) {
                 if ($val['name'] == $default) {
                     $option = new cHTMLOptionElement($val['name'], $key);
-                    if ($containerModules[$containerNr] == $key) {
+                    if (isset($containerModules[$containerNr]) && $containerModules[$containerNr] == $key) {
                         $option->setSelected(true);
                     }
                     $modSelect->addOptionElement($key, $option);
@@ -180,12 +195,13 @@ if ($idlay) {
             }
 
             $allowedTypes = tplGetContainerTypes($idlay, $containerNr);
-            $createmode = isset($_REQUEST['createmode']) ? cSecurity::toInteger($_REQUEST['createmode']) : 0;
+            $createmode = cSecurity::toInteger($_REQUEST['createmode'] ?? '0');
 
             foreach ($modules as $key => $val) {
                 $option = new cHTMLOptionElement($val['name'], $key);
 
-                if ($containerModules[$containerNr] == $key || (($containerModules[$containerNr] == 0 && $val['name'] == $default) && $createmode == 1)) {
+                $containerModulePos = $containerModules[$containerNr] ?? 0;
+                if ($containerModulePos === $key || (($containerModulePos === 0 && $val['name'] == $default) && $createmode === 1)) {
                     $option->setSelected(true);
                 }
 
@@ -198,7 +214,9 @@ if ($idlay) {
                 }
             }
 
-            if ($default != '' && $modules[$containerModules[$containerNr]]['name'] != $default && $createmode != 1) {
+            $containerModuleName = isset($containerModules[$containerNr]) && isset($modules[$containerModules[$containerNr]]['name'])
+                ? $modules[$containerModules[$containerNr]]['name'] : '';
+            if ($default != '' && $containerModuleName != $default && $createmode != 1) {
                 $defaultModuleNotice = '&nbsp;(' . i18n('Default') . ': ' . $default . ')';
             }
         }
@@ -217,12 +235,11 @@ if ($action == 'tpl_delete' || $action == 'tpl_new') {
 
 $page->setContent([$form]);
 
-if ($_POST["idtpl"] === "" && $idtpl > 0) {
+$postIdTpl = cSecurity::toInteger($_POST['idtpl'] ?? '0');
+if ($postIdTpl <= 0 && $idtpl > 0) {
     $page->displayOk(i18n("Created new Template successfully!"));
-} elseif ($idtpl > 0 && (isset($_POST["submit_x"]) || ($_POST["idtpl"] == $idtpl && $action != 'tpl_new'))) {
+} elseif ($idtpl > 0 && (isset($_POST['submit_x']) || ($postIdTpl == $idtpl && $action != 'tpl_new'))) {
     $page->displayOk(i18n("Saved changes successfully!"));
 }
 
 $page->render();
-
-?>

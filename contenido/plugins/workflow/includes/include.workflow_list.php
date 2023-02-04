@@ -13,17 +13,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $idworkflow;
+/**
+ * @var array $cfg
+ */
 
-$iIdMarked = cSecurity::toInteger($_GET['idworkflow']);
-
-plugin_include('workflow', 'classes/class.workflow.php');
+$requestIdWorkflow = cSecurity::toInteger($_GET['idworkflow'] ?? '0');
 
 $page = new cGuiPage('workflow_list', 'workflow');
 $page->addStyle('workflow.css');
 $workflows = new Workflows();
-$client = cRegistry::getClientId();
-$lang = cRegistry::getLanguageId();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
 $delTitle = i18n('Delete workflow', 'workflow');
 
 $page->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
@@ -57,7 +57,7 @@ while (($workflow = $workflows->next()) !== false) {
         ->setContent($image->render());
     $ui->setActions($wfid, 'delete', $delete->render());
 
-    if ($wfid == $iIdMarked) {
+    if ($wfid == $requestIdWorkflow) {
         $ui->setMarked($wfid);
     }
 }

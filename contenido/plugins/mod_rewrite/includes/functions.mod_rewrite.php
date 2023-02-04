@@ -29,14 +29,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * Will be called by chain 'Contenido.Action.str_newtree.AfterCall'.
  *
- * @param   array $data Assoziative array with some values
+ * @param   array $data Associative array with some values
  *
  * @return  array  Passed parameter
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
 function mr_strNewTree(array $data) {
-    global $lang;
+    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
     ModRewriteDebugger::log($data, 'mr_strNewTree $data');
 
@@ -55,14 +55,14 @@ function mr_strNewTree(array $data) {
  *
  * Will be called by chain 'Contenido.Action.str_newcat.AfterCall'.
  *
- * @param   array $data Assoziative array with some values
+ * @param   array $data Associative array with some values
  *
  * @return  array  Passed parameter
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
 function mr_strNewCategory(array $data) {
-    global $lang;
+    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
     ModRewriteDebugger::log($data, 'mr_strNewCategory $data');
 
@@ -83,7 +83,7 @@ function mr_strNewCategory(array $data) {
  *
  * Will be called by chain 'Contenido.Action.str_renamecat.AfterCall'.
  *
- * @param   array $data Assoziative array with some values
+ * @param   array $data Associative array with some values
  *
  * @return  array  Passed parameter
  * @throws cDbException
@@ -118,13 +118,13 @@ function mr_strRenameCategory(array $data) {
         $oCatLanColl = new cApiCategoryLanguageCollection($str);
         if ($oCatLan = $oCatLanColl->next()) {
             // hes 20100102
-            $childData = array(
+            $childData = [
                 'idcat' => $oCat->get('idcat'),
                 'lang' => (int) $data['lang'],
                 'newcategoryname' => $oCatLan->get('name'),
                 'newcategoryalias' => $oCatLan->get('urlname'),
                 'recursion' => $recursion + 1
-            );
+            ];
 
             $resData = mr_strRenameCategory($childData);
         }
@@ -143,9 +143,8 @@ function mr_strRenameCategory(array $data) {
  *
  * @param   int $idcat Category id
  *
- * @return  int  Category id
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @return  int|void  Category id
+ * @throws cDbException|cInvalidArgumentException
  */
 function mr_strMoveUpCategory($idcat) {
     ModRewriteDebugger::log($idcat, 'mr_strMoveUpCategory $idcat');
@@ -178,11 +177,10 @@ function mr_strMoveUpCategory($idcat) {
  * @todo  do we really need processing of the category? there is no mr relevant data
  *        changes while moving the category on same level, level and name won't change
  *
- * @param   int $idcat Id of category beeing moved down
+ * @param   int $idcat Id of category being moved down
  *
- * @return  int  Category id
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @return  int|void  Category id
+ * @throws cDbException|cInvalidArgumentException
  */
 function mr_strMovedownCategory($idcat) {
     ModRewriteDebugger::log($idcat, 'mr_strMovedownCategory $idcat');
@@ -211,12 +209,10 @@ function mr_strMovedownCategory($idcat) {
  *
  * Will be called by chain 'Contenido.Action.str_movesubtree.AfterCall'.
  *
- * @param   array $data Assoziative array with some values
+ * @param   array $data Associative array with some values
  *
- * @return  array  Passed parameter
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @return  array|void  Passed parameter
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function mr_strMoveSubtree(array $data) {
     ModRewriteDebugger::log($data, 'mr_strMoveSubtree $data');
@@ -246,7 +242,7 @@ function mr_strMoveSubtree(array $data) {
     // now dive into all existing subcategories and modify their paths too...
     $oCatColl = new cApiCategoryCollection('parentid=' . $data['idcat']);
     while ($oCat = $oCatColl->next()) {
-        mr_strMoveSubtree(array('idcat' => $oCat->get('idcat')));
+        mr_strMoveSubtree(['idcat' => $oCat->get('idcat')]);
     }
 
     return $data;
@@ -257,11 +253,10 @@ function mr_strMoveSubtree(array $data) {
  *
  * Will be called by chain 'Contenido.Category.strCopyCategory'.
  *
- * @param   array $data Assoziative array with some values
+ * @param   array $data Associative array with some values
  *
- * @return  array  Passed parameter
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @return  array|void  Passed parameter
+ * @throws cDbException|cInvalidArgumentException
  */
 function mr_strCopyCategory(array $data) {
     ModRewriteDebugger::log($data, 'mr_strCopyCategory $data');
@@ -289,11 +284,10 @@ function mr_strCopyCategory(array $data) {
  *
  * Will be called by chain 'Contenido.Category.strSyncCategory_Loop'.
  *
- * @param   array $data Assoziative array with some values
+ * @param   array $data Associative array with some values
  *
  * @return  array  Passed parameter
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException
  */
 function mr_strSyncCategory(array $data) {
     ModRewriteDebugger::log($data, 'mr_strSyncCategory $data');
@@ -306,14 +300,15 @@ function mr_strSyncCategory(array $data) {
  *
  * Will be called by chain 'Contenido.Action.con_saveart.AfterCall'.
  *
- * @param   array $data Assoziative array with some article properties
+ * @param   array $data Associative array with some article properties
  *
  * @return  array  Passed parameter
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException
  */
 function mr_conSaveArticle(array $data) {
-    global $tmp_firstedit, $client;
+    global $tmp_firstedit;
+
+    $client = cSecurity::toInteger(cRegistry::getClientId());
 
     ModRewriteDebugger::log($data, 'mr_conSaveArticle $data');
 
@@ -345,15 +340,14 @@ function mr_conSaveArticle(array $data) {
 }
 
 /**
- * Processes mod_rewrite related job for articles beeing moved.
+ * Processes mod_rewrite related job for articles being moved.
  *
  * Will be called by chain 'Contenido.Article.conMoveArticles_Loop'.
  *
- * @param   array $data Assoziative array with record entries
+ * @param   array $data Associative array with record entries
  *
  * @return  array  Loop through of arguments
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException
  */
 function mr_conMoveArticles($data) {
     ModRewriteDebugger::log($data, 'mr_conMoveArticles $data');
@@ -380,11 +374,10 @@ function mr_conMoveArticles($data) {
  *
  * Will be called by chain 'Contenido.Article.conCopyArtLang_AfterInsert'.
  *
- * @param   array $data Assoziative array with record entries
+ * @param   array $data Associative array with record entries
  *
  * @return  array  Loop through of arguments
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException
  */
 function mr_conCopyArtLang($data) {
     ModRewriteDebugger::log($data, 'mr_conCopyArtLang $data');
@@ -410,17 +403,16 @@ function mr_conCopyArtLang($data) {
  *
  * Will be called by chain 'Contenido.Article.conSyncArticle_AfterInsert'.
  *
- * @param   array $data Assoziative array with record entries as follows:
+ * @param   array $data Associative array with record entries as follows:
  *                      <code>
- *                      array(
- *                      'src_art_lang'  => Recordset (assoziative array) of source item from con_art_lang table
- *                      'dest_art_lang' => Recordset (assoziative array) of inserted destination item from con_art_lang table
- *                      );
+ *                      [
+ *                          'src_art_lang'  => Recordset (associative array) of source item from con_art_lang table
+ *                          'dest_art_lang' => Recordset (associative array) of inserted destination item from con_art_lang table
+ *                      ]
  *                      </code>
  *
  * @return  array  Loop through of argument
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException|cException
  */
 function mr_conSyncArticle($data) {
     ModRewriteDebugger::log($data, 'mr_conSyncArticle $data');
@@ -457,18 +449,17 @@ function mr_conSyncArticle($data) {
  *
  * Will also be called by chain 'Contenido.Frontend.CreateURL'.
  *
- * @todo: Still exists bcause of downwards compatibility (some other modules/plugins are using it)
+ * @todo: Still exists because of downwards compatibility (some other modules/plugins are using it)
  *
  * @param   string $url URL to rebuild
  *
  * @return  string        New URL
- * @throws cInvalidArgumentException
+ * @throws cInvalidArgumentException|cException|cDbException
  */
 function mr_buildNewUrl($url) {
-    global $lang;
-
     ModRewriteDebugger::add($url, 'mr_buildNewUrl() in -> $url');
 
+    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
     $oUrl = cUri::getInstance();
     $aUrl = $oUrl->parse($url);
 
@@ -485,29 +476,27 @@ function mr_buildNewUrl($url) {
         $newUrl .= '#' . $aUrl['fragment'];
     }
 
-    $arr = array(
+    $arr = [
         'in' => $url,
         'out' => $newUrl,
-    );
+    ];
     ModRewriteDebugger::add($arr, 'mr_buildNewUrl() in -> out');
 
     return $newUrl;
 }
 
 /**
- * Replaces existing ancors inside passed code, while rebuilding the urls.
+ * Replaces existing anchors inside passed code, while rebuilding the urls.
  *
  * Will be called by chain 'Contenido.Content.conGenerateCode' or
- * 'Contenido.Frontend.HTMLCodeOutput' depening on mod_rewrite settings.
+ * 'Contenido.Frontend.HTMLCodeOutput' depending on mod_rewrite settings.
  *
  * @param   string $code Code to prepare
  *
  * @return  string          New code
- * @throws cInvalidArgumentException
+ * @throws cInvalidArgumentException|cException|cDbException
  */
 function mr_buildGeneratedCode($code) {
-    global $client, $cfgClient;
-
     ModRewriteDebugger::add($code, 'mr_buildGeneratedCode() in');
 
     $sseStartTime = getmicrotime();
@@ -539,15 +528,15 @@ function mr_buildGeneratedCode($code) {
 
         // define some preparations to replace /front_content.php & ./front_content.php
         // against front_content.php, because urls should start with front_content.php
-        $aPattern = array(
+        $aPattern = [
             '/([\"|\'|=])\/front_content\.php(.?|.+?)([\"|\'|>])/i',
             '/([\"|\'|=])\.\/front_content\.php(.?|.+?)([\"|\'|>])/i'
-        );
+        ];
 
-        $aReplace = array(
+        $aReplace = [
             '\1front_content.php\2\3',
             '\1front_content.php\2\3'
-        );
+        ];
 
         // perform the pre replacements
         $code = preg_replace($aPattern, $aReplace, $code);
@@ -598,7 +587,7 @@ function mr_buildGeneratedCode($code) {
  * @throws cDbException
  */
 function mr_setClientLanguageId($client) {
-    global $lang, $load_lang, $cfg;
+    global $lang, $load_lang;
 
     if ((int) $lang > 0) {
         // there is nothing to do
@@ -609,16 +598,11 @@ function mr_setClientLanguageId($client) {
         return;
     }
 
-    // try to get clients language from table
-    $sql = "SELECT B.idlang FROM "
-            . $cfg['tab']['clients_lang'] . " AS A, "
-            . $cfg['tab']['lang'] . " AS B "
-            . "WHERE "
-            . "A.idclient='" . ((int) $client) . "' AND A.idlang=B.idlang"
-            . "LIMIT 0,1";
-
-    if ($aData = mr_queryAndNextRecord($sql)) {
-        $lang = $aData['idlang'];
+    // Search for the first language of this client
+    $oClientLangColl = new cApiClientLanguageCollection();
+    $languageId = (int) $oClientLangColl->getFirstLanguageIdByClient($client);
+    if ($languageId) {
+        $lang = $languageId;
     }
 }
 
@@ -641,8 +625,8 @@ function mr_loadConfiguration($clientId, $forceReload = false) {
 
     $clientId = (int) $clientId;
     if (!isset($aLoaded)) {
-        $aLoaded = array();
-    } elseif (isset($aLoaded[$clientId]) && $forceReload == false) {
+        $aLoaded = [];
+    } elseif (isset($aLoaded[$clientId]) && !$forceReload) {
         return;
     }
 
@@ -661,9 +645,9 @@ function mr_loadConfiguration($clientId, $forceReload = false) {
 }
 
 /**
- * Returns the path of the mod rewrite configuration file of an client.
+ * Returns the path of the mod rewrite configuration file of a client.
  *
- * File is placed within client frontend path in directory "data/config/{CENVIRONMENT}/"
+ * File is placed within client frontend path in directory "data/config/{ENVIRONMENT}/"
  * and has the name "config.mod_rewrite.php"
  *
  * @param   int   $clientId     Id of client
@@ -687,10 +671,8 @@ function mr_getConfigurationFilePath($clientId) {
  * @throws cInvalidArgumentException
  */
 function mr_getConfiguration($clientId) {
-    global $cfg;
-
-    $clientId = (int) $clientId;
-
+    $clientId = cSecurity::toInteger($clientId);
+    $cfg = cRegistry::getConfig();
     $file = mr_getConfigurationFilePath($clientId);
 
     if (!is_file($file) || !is_readable($file)) {
@@ -709,7 +691,7 @@ function mr_getConfiguration($clientId) {
 }
 
 /**
- * Saves the mod rewrite configuration array of an client.
+ * Saves the mod rewrite configuration array of a client.
  *
  * File is placed in /contenido/mod_rewrite/includes/and is named like
  * config.mod_rewrite_{client_id}.php.
@@ -721,24 +703,23 @@ function mr_getConfiguration($clientId) {
  * @throws cInvalidArgumentException
  */
 function mr_setConfiguration($clientId, array $config) {
-    global $cfg;
-
-    $clientId = (int) $clientId;
-
+    $clientId = cSecurity::toInteger($clientId);
+    $cfg = cRegistry::getConfig();
     $file = mr_getConfigurationFilePath($clientId);
     $result = cFileHandler::write($file, serialize($config));
 
+    // Remove old configuration within plugin folder.
     $backendPath = cRegistry::getBackendPath();
     $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
     if (is_file($file) && is_writeable($file)) {
-        cFileHandler::remove($file, serialize($config));
+        cFileHandler::remove($file);
     }
 
-    return ($result) ? true : false;
+    return (bool) $result;
 }
 
 /**
- * Includes the frontend controller script which parses the url and extacts
+ * Includes the frontend controller script which parses the url and extracts
  * needed data like idcat, idart, lang and client from it.
  *
  * Will be called by chain 'Contenido.Frontend.AfterLoadPlugins' at front_content.php.
@@ -751,7 +732,7 @@ function mr_runFrontendController() {
 
     plugin_include('mod_rewrite', 'includes/config.plugin.php');
 
-    if (ModRewrite::isEnabled() == true) {
+    if (ModRewrite::isEnabled()) {
         plugin_include('mod_rewrite', 'includes/front_content_controller.php');
 
         $totalTime = sprintf('%.4f', (getmicrotime() - $iStartTime));
@@ -762,7 +743,7 @@ function mr_runFrontendController() {
 }
 
 /**
- * Cleanups passed string from characters beeing repeated two or more times
+ * Cleanups passed string from characters being repeated two or more times
  *
  * @param   string  $char    Character to remove
  * @param   string  $string  String to clean from character
@@ -780,6 +761,7 @@ function mr_removeMultipleChars($char, $string) {
  *
  * @param   string  $key    The message id as string
  * @return  string  Related message
+ * @deprecated Since 4.10.2, is not used anymore
  */
 function mr_i18n($key) {
     global $lngAMR;
@@ -809,7 +791,7 @@ function mr_i18n($key) {
  *
  * @param   string $query Query to execute
  *
- * @return  mixed   Assoziative array including recordset or NULL
+ * @return  mixed   Associative array including recordset or NULL
  * @throws cDbException
  */
 function mr_queryAndNextRecord($query) {
@@ -824,7 +806,7 @@ function mr_queryAndNextRecord($query) {
 }
 
 /**
- * Returns value of an array key (assoziative or indexed).
+ * Returns value of an array key (associative or indexed).
  *
  * Shortcut function for some ways to access to arrays:
  * <code>
@@ -850,7 +832,7 @@ function mr_queryAndNextRecord($query) {
  * </code>
  *
  * @param   array  $array    The array
- * @param   mixed  $key      Position of an indexed array or key of an assoziative array
+ * @param   mixed  $key      Position of an indexed array or key of an associative array
  * @param   mixed  $default  Default value to return
  * @return  mixed  Either the found value or the default value
  */
@@ -865,23 +847,23 @@ function mr_arrayValue($array, $key, $default = NULL) {
 }
 
 /**
- * Request cleanup function. Request data is allways tainted and must be filtered.
- * Pass the array to cleanup using several options.
+ * Request cleanup function. Request data is always tainted and must be filtered.
+ * Pass the array to clean up using several options.
  * Emulates array_walk_recursive().
  *
  * @param   mixed  $data     Data to cleanup
  * @param   array  $options  Default options array, provides only 'filter' key with several
  *                           filter functions which are to execute as follows:
  * <code>
- * $options['filter'] = array('trim', 'myFilterFunc');
+ * $options['filter'] = ['trim', 'myFilterFunc'];
  * </code>
  *                           If no filter functions are set, 'trim', 'strip_tags' and 'stripslashes'
  *                           will be used by default.
- *                           A userdefined function must accept the value as a parameter and must return
+ *                           A user-defined function must accept the value as a parameter and must return
  *                           the filtered parameter, e. g.
  * <code>
  * function myFilter($data) {
- *    // do what you want with the data, e. g. cleanup of xss content
+ *    // do what you want with the data, e.g. cleanup of xss content
  *    return $data;
  * }
  * </code>
@@ -890,7 +872,7 @@ function mr_arrayValue($array, $key, $default = NULL) {
  */
 function mr_requestCleanup(&$data, $options = NULL) {
     if (!mr_arrayValue($options, 'filter')) {
-        $options['filter'] = array('trim', 'strip_tags', 'stripslashes');
+        $options['filter'] = ['trim', 'strip_tags', 'stripslashes'];
     }
 
     if (is_array($data)) {
@@ -916,7 +898,7 @@ function mr_requestCleanup(&$data, $options = NULL) {
 /**
  * Minimalistic'n simple way to get request variables.
  *
- * Checks occurance in $_GET, then in $_POST. Uses trim() and strip_tags() to preclean data.
+ * Checks occurrence in $_GET, then in $_POST. Uses trim() and strip_tags() to pre clean data.
  *
  * @param   string  $key      Name of var to get
  * @param   mixed   $default  Default value to return
@@ -925,7 +907,7 @@ function mr_requestCleanup(&$data, $options = NULL) {
 function mr_getRequest($key, $default = NULL) {
     static $cache;
     if (!isset($cache)) {
-        $cache = array();
+        $cache = [];
     }
     if (isset($cache[$key])) {
         return $cache[$key];
@@ -965,25 +947,24 @@ function mr_header($header) {
  *
  * @param   bool $print Flag to echo the debug data
  *
- * @return  mixed  Either the debug data, if parameter $print is set to true, or nothing
+ * @return  string|void  Either the debug data, if parameter $print is set to true, or nothing
  * @throws cInvalidArgumentException
  */
 function mr_debugOutput($print = true) {
-    global $DB_Contenido_QueryCache;
-    if (isset($DB_Contenido_QueryCache) && is_array($DB_Contenido_QueryCache) &&
-            count($DB_Contenido_QueryCache) > 0) {
-        ModRewriteDebugger::add($DB_Contenido_QueryCache, 'sql statements');
+    $profileData = cDb::getProfileData();
+    if (count($profileData) > 0) {
+        ModRewriteDebugger::add($profileData, 'sql statements');
 
-        // calculate total time consumption of queries
+        // Calculate total time consumption of queries
         $timeTotal = 0;
-        foreach ($DB_Contenido_QueryCache as $pos => $item) {
+        foreach ($profileData as $pos => $item) {
             $timeTotal += $item['time'];
         }
         ModRewriteDebugger::add($timeTotal, 'sql total time');
     }
 
     $sOutput = ModRewriteDebugger::getAll();
-    if ($print == true) {
+    if ($print) {
         echo $sOutput;
     } else {
         return $sOutput;

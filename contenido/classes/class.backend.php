@@ -26,14 +26,14 @@ class cBackend {
      *
      * @var array
      */
-    protected $_actions = array();
+    protected $_actions = [];
 
     /**
      * Files
      *
      * @var array
      */
-    protected $_files = array();
+    protected $_files = [];
 
     /**
      * Stores the frame number
@@ -47,7 +47,7 @@ class cBackend {
      *
      * @var array
      */
-    protected $_errors = array();
+    protected $_errors = [];
 
     /**
      * Save area
@@ -293,7 +293,7 @@ class cBackend {
         }
 
         $oldaction = $idaction;
-        $idaction = $perm->getIDForAction($idaction);
+        $idaction = $perm->getIdForAction($idaction);
 
         if ($idaction != '') {
             $oActionLogColl = new cApiActionlogCollection();

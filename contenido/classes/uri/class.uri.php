@@ -114,7 +114,7 @@ class cUri {
                 $aConfig = $aResult['aConfig'];
             }
         }
-        
+
         if ($this->_sUriBuilderName == 'custom_path' && !isset($aParams['level'])) {
             // downwards compatibility to cUriBuilderCustomPath
             $aParams['level'] = '1';
@@ -187,7 +187,7 @@ class cUri {
             parse_str($aUrl['query'], $aUrl['params']);
         }
 
-        if (!isset($aUrl['params']) || !is_array($aUrl['params'])) {
+        if (!isset($aUrl['params'])) {
             $aUrl['params'] = [];
         }
 
@@ -308,7 +308,9 @@ class cUri {
     }
 
     /**
-     * Appends additional query parameters to a URI
+     * Appends additional query parameters to a URI.
+     *
+     * @since CONTENIDO 4.10.2
      * @param string $uri - The URI to append parameters to
      * @param array $parameters - Parameter to append
      * @param array|null $reservedParameters - List of reserved parameters to skip from overwriting.

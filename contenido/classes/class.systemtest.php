@@ -126,6 +126,7 @@ class cSystemtest {
      * Possible result of @see cSystemtest::predictCorrectFilePermissions()
      * Unknown filepermissions
      *
+     * @since CONTENIDO 4.10.2
      * @var int
      */
     const CON_PREDICT_UNKNOWN = 9;

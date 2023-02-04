@@ -137,6 +137,13 @@ $frame = cRegistry::getFrame();
 
 $page = new cGuiPage("con_translate");
 
+// display critical error if no valid client is selected
+if ((int) $client < 1) {
+    $page->displayCriticalError(i18n("No Client selected"));
+    $page->render();
+    return;
+}
+
 if (empty($action)) {
     $action = 'con_translate_view';
 }
@@ -176,6 +183,13 @@ $langobj = new cApiLanguage($lang);
 
 $langstring = $langobj->get('name') . ' (' . $lang . ')';
 
+// Initialize $_REQUEST with common used keys to prevent PHP 'Undefined array key' warnings
+foreach (['dellang', 'editlang', 'editstring', 'elemperpage', 'extralang', 'filter', 'modtrans', 'page', 'search', 'sortby', 'sortmode'] as $_key) {
+    if (!isset($_REQUEST[$_key])) {
+        $_REQUEST[$_key] = '';
+    }
+}
+
 $aTmpExtraLanguages = $_REQUEST["extralang"];
 $extraLanguages = [];
 if (is_array($aTmpExtraLanguages)) {
@@ -201,7 +215,7 @@ $filter = $_REQUEST["filter"];
 $cApiModuleCollection = new cApiModuleCollection();
 $modulesInUse = $cApiModuleCollection->getModulesInUse();
 
-$iNextPage = cSecurity::toInteger($_GET['nextpage']);
+$iNextPage = cSecurity::toInteger($_GET['nextpage'] ?? 0);
 if ($iNextPage <= 0) {
     $iNextPage = 1;
 }
@@ -595,7 +609,7 @@ foreach ($allTranslations as $hash => $translationArray) {
         $sTranslationFirstLang = trim(conHtmlentities($translationArray['translations'][$lang])) . $sLinkEdit;
     }
     // building parameter array
-    $countCurrentModuleInUse = is_array($modulesInUse[$translationArray['idmod']]) ? count($modulesInUse[$translationArray['idmod']]) : 0;
+    $countCurrentModuleInUse = isset($modulesInUse[$translationArray['idmod']]) && is_array($modulesInUse[$translationArray['idmod']]) ? count($modulesInUse[$translationArray['idmod']]) : 0;
     if ($countCurrentModuleInUse == 0) {
         $inUseString = '';
         $currentModuleInUse = i18n('No template');

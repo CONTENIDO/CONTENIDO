@@ -36,14 +36,12 @@ class cContentTypeHtmlhead extends cContentTypeHtml {
      *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // set props
         $this->_type = 'CMS_HTMLHEAD';
         $this->_prefix = 'htmlhead';
-
     }
 
 }

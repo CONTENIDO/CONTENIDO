@@ -83,7 +83,7 @@ abstract class cWYSIWYGEditor {
      * @param string $sEditor
      */
     protected function _setEditor($sEditor) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
 
         if (is_dir($cfg['path']['all_wysiwyg'] . $sEditor)) {
             if (cString::getPartOfString($sEditor, cString::getStringLength($sEditor) - 1, 1) != "/") {
@@ -165,17 +165,19 @@ abstract class cWYSIWYGEditor {
      */
     public static function getCurrentWysiwygEditorName() {
         // define fallback WYSIWYG editor
-        define('DEFAULT_WYSIWYG_EDITOR', cRegistry::getConfigValue('wysiwyg', 'editor', 'tinymce3'));
+        if (!defined('DEFAULT_WYSIWYG_EDITOR')) {
+            define('DEFAULT_WYSIWYG_EDITOR', cRegistry::getConfigValue('wysiwyg', 'editor', 'tinymce3'));
+        }
 
         $curWysiwygEditor = getEffectiveSetting('wysiwyg', 'editor', constant('DEFAULT_WYSIWYG_EDITOR'));
 
         // no paths are allowed in WYSIWYG editor
         // fall back to defaults if editor folder does not exist
         if (0 === cString::getStringLength($curWysiwygEditor)
-        || false === cFileHandler::exists(cRegistry::getConfigValue('path', 'all_wysiwyg') . $curWysiwygEditor)
-        || false !== cString::findFirstPos($curWysiwygEditor, '.')
-        || false !== cString::findFirstPos($curWysiwygEditor, '/')
-        || false !== cString::findFirstPos($curWysiwygEditor, '\\')) {
+            || false === cFileHandler::exists(cRegistry::getConfigValue('path', 'all_wysiwyg') . $curWysiwygEditor)
+            || false !== cString::findFirstPos($curWysiwygEditor, '.')
+            || false !== cString::findFirstPos($curWysiwygEditor, '/')
+            || false !== cString::findFirstPos($curWysiwygEditor, '\\')) {
             $curWysiwygEditor = constant('DEFAULT_WYSIWYG_EDITOR');
         }
 

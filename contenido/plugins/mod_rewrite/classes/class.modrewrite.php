@@ -76,20 +76,20 @@ class ModRewrite extends ModRewriteBase {
 
         // get parentid
         $iParentId = 0;
-        $sql = "SELECT parentid FROM " . $cfg['tab']['cat'] . " WHERE idcat = " . $iCatId;
+        $sql = "SELECT parentid FROM " . cRegistry::getDbTableName('cat') . " WHERE idcat = " . $iCatId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             $iParentId = ($aData['parentid'] > 0) ? cSecurity::toInteger($aData['parentid']) : 0;
         }
 
         // check if websafe name is in this category
-        $sql = "SELECT count(cl.idcat) as numcats FROM " . $cfg['tab']['cat_lang'] . " cl "
-                . "LEFT JOIN " . $cfg['tab']['cat'] . " c ON cl.idcat = c.idcat WHERE "
+        $sql = "SELECT count(cl.idcat) as numcats FROM " . cRegistry::getDbTableName('cat_lang') . " cl "
+                . "LEFT JOIN " . cRegistry::getDbTableName('cat') . " c ON cl.idcat = c.idcat WHERE "
                 . "c.parentid = '$iParentId' AND cl.idlang = " . $iLangId . " AND "
                 . "LOWER(cl.urlname) = LOWER('" . self::$_db->escape($sName) . "') AND cl.idcat <> " . $iCatId;
         ModRewriteDebugger::log($sql, 'ModRewrite::isInCategories $sql');
 
         if ($aData = mr_queryAndNextRecord($sql)) {
-            return ($aData['numcats'] > 0) ? true : false;
+            return $aData['numcats'] > 0;
         }
 
         return false;
@@ -120,19 +120,19 @@ class ModRewrite extends ModRewriteBase {
         // handle multipages
         if ($iCatId == 0) {
             // get category id if not set
-            $sql = "SELECT idcat FROM " . $cfg['tab']['cat_art'] . " WHERE idart = " . $iArtId;
+            $sql = "SELECT idcat FROM " . cRegistry::getDbTableName('cat_art') . " WHERE idart = " . $iArtId;
             if ($aData = mr_queryAndNextRecord($sql)) {
                 $iCatId = ($aData['idcat'] > 0) ? cSecurity::toInteger($aData['idcat']) : 0;
             }
         }
 
         // check if websafe name is in this category
-        $sql = "SELECT count(al.idart) as numcats FROM " . $cfg['tab']['art_lang'] . " al "
-                . "LEFT JOIN " . $cfg['tab']['cat_art'] . " ca ON al.idart = ca.idart WHERE "
+        $sql = "SELECT count(al.idart) as numcats FROM " . cRegistry::getDbTableName('art_lang') . " al "
+                . "LEFT JOIN " . cRegistry::getDbTableName('cat_art') . " ca ON al.idart = ca.idart WHERE "
                 . " ca.idcat='$iCatId' AND al.idlang=" . $iLangId . " AND "
                 . "LOWER(al.urlname) = LOWER('" . self::$_db->escape($sName) . "') AND al.idart <> " . $iArtId;
         if ($aData = mr_queryAndNextRecord($sql)) {
-            return ($aData['numcats'] > 0) ? true : false;
+            return $aData['numcats'] > 0;
         }
 
         return false;
@@ -172,7 +172,7 @@ class ModRewrite extends ModRewriteBase {
         // check again - and set name
         if (!self::isInCatArticles($sNewName, $iArtId, $iLangId, $iCatId)) {
             // insert websafe name in article list
-            $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET urlname = '" . self::$_db->escape($sNewName) . "' "
+            $sql = "UPDATE " . cRegistry::getDbTableName('art_lang') . " SET urlname = '" . self::$_db->escape($sNewName) . "' "
                 . "WHERE idart = " . $iArtId . " AND idlang = " . $iLangId;
             return self::$_db->query($sql);
         } else {
@@ -194,7 +194,6 @@ class ModRewrite extends ModRewriteBase {
      * @throws  cDbException
      */
     public static function setCatWebsafeName($sName = '', $iCatId = 0, $iLangId = 0) {
-        $cfg = cRegistry::getConfig();
         $iCatId = cSecurity::toInteger($iCatId);
         $iLangId = cSecurity::toInteger($iLangId);
 
@@ -213,7 +212,7 @@ class ModRewrite extends ModRewriteBase {
         // check again - and set name
         if (!self::isInCategories($sNewName, $iCatId, $iLangId)) {
             // update urlname
-            $sql = "UPDATE " . $cfg['tab']['cat_lang'] . " SET urlname = '" . self::$_db->escape($sNewName) . "' "
+            $sql = "UPDATE " . cRegistry::getDbTableName('cat_lang') . " SET urlname = '" . self::$_db->escape($sNewName) . "' "
                 . "WHERE idcat = " . $iCatId . " AND idlang = " . $iLangId;
 
             ModRewriteDebugger::log([
@@ -240,13 +239,12 @@ class ModRewrite extends ModRewriteBase {
      * @throws cInvalidArgumentException
      */
     public static function setCatUrlPath($iCatId = 0, $iLangId = 0) {
-        $cfg = cRegistry::getConfig();
         $sPath = self::buildRecursivPath($iCatId, $iLangId);
         $iCatId = cSecurity::toInteger($iCatId);
         $iLangId = cSecurity::toInteger($iLangId);
 
         // update urlpath
-        $sql = "UPDATE " . $cfg['tab']['cat_lang'] . " SET urlpath = '" . self::$_db->escape($sPath) . "' "
+        $sql = "UPDATE " . cRegistry::getDbTableName('cat_lang') . " SET urlpath = '" . self::$_db->escape($sPath) . "' "
             . "WHERE idcat = " . $iCatId . " AND idlang = " . $iLangId;
 
         ModRewriteDebugger::log([
@@ -267,9 +265,8 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function getArtIdByArtlangId($iArtlangId = 0) {
-        $cfg = cRegistry::getConfig();
         $iArtlangId = cSecurity::toInteger($iArtlangId);
-        $sql = "SELECT idart, idlang FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = " . $iArtlangId;
+        $sql = "SELECT idart, idlang FROM " . cRegistry::getDbTableName('art_lang') . " WHERE idartlang = " . $iArtlangId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData;
         }
@@ -287,7 +284,6 @@ class ModRewrite extends ModRewriteBase {
      * @throws  cDbException
      */
     public static function getArtIdByWebsafeName($sArtName = '', $iCatId = 0, $iLangId = 0) {
-        $cfg = cRegistry::getConfig();
         $lang = cRegistry::getLanguageId();
         $iCatId = cSecurity::toInteger($iCatId);
         $iLangId = cSecurity::toInteger($iLangId);
@@ -303,7 +299,7 @@ class ModRewrite extends ModRewriteBase {
         if ($iCatId == 0) {
             // get all basic category ids with parentid=0
             $aCatIds = [];
-            $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid = 0";
+            $sql = "SELECT idcat FROM " . cRegistry::getDbTableName('cat') . " WHERE parentid = 0";
             self::$_db->query($sql);
             while (self::$_db->nextRecord()) {
                 $aCatIds[] = "idcat = " . cSecurity::toInteger(self::$_db->f('idcat'));
@@ -315,8 +311,8 @@ class ModRewrite extends ModRewriteBase {
 
         $sql = "
             SELECT al.idart
-            FROM " . $cfg['tab']['art_lang'] . " al
-            LEFT JOIN " . $cfg['tab']['cat_art'] . " ca ON al.idart = ca.idart
+            FROM " . cRegistry::getDbTableName('art_lang') . " al
+            LEFT JOIN " . cRegistry::getDbTableName('cat_art') . " ca ON al.idart = ca.idart
             WHERE LOWER(al.urlname) = LOWER('" . self::$_db->escape($sArtName) . "') $sWhere";
 
         if ($aData = mr_queryAndNextRecord($sql)) {
@@ -336,7 +332,6 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function getCatName($iCatId = 0, $iLangId = 0) {
-        $cfg = cRegistry::getConfig();
         $iCatId = cSecurity::toInteger($iCatId);
         $iLangId = cSecurity::toInteger($iLangId);
         $key = 'catname_by_catid_idlang_' . $iCatId . '_' . $iLangId;
@@ -345,7 +340,7 @@ class ModRewrite extends ModRewriteBase {
             return self::$_lookupTable[$key];
         }
 
-        $sql = "SELECT name FROM " . $cfg['tab']['cat_lang']
+        $sql = "SELECT name FROM " . cRegistry::getDbTableName('cat_lang')
             . " WHERE idcat = " . $iCatId . " AND idlang = " . $iLangId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             $catName = $aData['name'];
@@ -369,9 +364,8 @@ class ModRewrite extends ModRewriteBase {
      * @throws cInvalidArgumentException
      */
     public static function getCatIdByUrlPath($path) {
-        $cfg = cRegistry::getConfig();
-        $lang = cRegistry::getLanguageId();
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
         if (cString::findFirstPos($path, '/') === 0) {
             $path = cString::getPartOfString($path, 1);
@@ -395,8 +389,8 @@ class ModRewrite extends ModRewriteBase {
         }
 
         if (count($aPathsCache) == 0) {
-            $sql = "SELECT cl.idcat, cl.urlpath FROM " . $cfg['tab']['cat_lang']
-                . " AS cl, " . $cfg['tab']['cat'] . " AS c WHERE c.idclient = " . cSecurity::toInteger($client)
+            $sql = "SELECT cl.idcat, cl.urlpath FROM " . cRegistry::getDbTableName('cat_lang')
+                . " AS cl, " . cRegistry::getDbTableName('cat') . " AS c WHERE c.idclient = " . cSecurity::toInteger($client)
                 . " AND c.idcat = cl.idcat AND cl.idlang = " . cSecurity::toInteger($lang);
 
             self::$_db->query($sql);
@@ -426,7 +420,6 @@ class ModRewrite extends ModRewriteBase {
         }
 
         arsort($aResults, SORT_NUMERIC);
-        reset($aResults);
 
         ModRewriteDebugger::add($path, 'ModRewrite::getCatIdByUrlPath() $path');
         ModRewriteDebugger::add($aPathsCache, 'ModRewrite::getCatIdByUrlPath() $aPathsCache');
@@ -453,11 +446,10 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function getArtTitle($iArtId = 0, $iLangId = 0) {
-        $cfg = cRegistry::getConfig();
         $iArtId = cSecurity::toInteger($iArtId);
         $iLangId = cSecurity::toInteger($iLangId);
 
-        $sql = "SELECT title FROM " . $cfg['tab']['art_lang']
+        $sql = "SELECT title FROM " . cRegistry::getDbTableName('art_lang')
             . " WHERE idart = " . $iArtId . " AND idlang = " . $iLangId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData['title'];
@@ -474,7 +466,6 @@ class ModRewrite extends ModRewriteBase {
      * @throws  cDbException
      */
     public static function getCatLanguages($iCatId = 0) {
-        $cfg = cRegistry::getConfig();
         $iCatId = cSecurity::toInteger($iCatId);
         $key = 'cat_idlang_by_catid_' . $iCatId;
 
@@ -484,7 +475,7 @@ class ModRewrite extends ModRewriteBase {
 
         $aLanguages = [];
 
-        $sql = "SELECT idlang FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = " . $iCatId;
+        $sql = "SELECT idlang FROM " . cRegistry::getDbTableName('cat_lang') . " WHERE idcat = " . $iCatId;
         self::$_db->query($sql);
         while (self::$_db->nextRecord()) {
             $aLanguages[] = self::$_db->f('idlang');
@@ -503,9 +494,8 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function getArtIds($iArtlangId = 0) {
-        $cfg = cRegistry::getConfig();
         $iArtlangId = cSecurity::toInteger($iArtlangId);
-        $sql = "SELECT urlname, idlang FROM " . $cfg['tab']['art_lang']
+        $sql = "SELECT urlname, idlang FROM " . cRegistry::getDbTableName('art_lang')
             . " WHERE idartlang = " . $iArtlangId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData;
@@ -525,7 +515,6 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function buildRecursivPath($iCatId = 0, $iLangId = 0, $iLastId = 0) {
-        $cfg = cRegistry::getConfig();
         $aDirectories = [];
         $bFinish = false;
         $iTmpCatId = cSecurity::toInteger($iCatId);
@@ -533,8 +522,8 @@ class ModRewrite extends ModRewriteBase {
         $iLastId = cSecurity::toInteger($iLastId);
 
         while ($bFinish == false) {
-            $sql = "SELECT cl.urlname, c.parentid FROM " . $cfg['tab']['cat_lang'] . " cl "
-                . "LEFT JOIN " . $cfg['tab']['cat'] . " c ON cl.idcat = c.idcat "
+            $sql = "SELECT cl.urlname, c.parentid FROM " . cRegistry::getDbTableName('cat_lang') . " cl "
+                . "LEFT JOIN " . cRegistry::getDbTableName('cat') . " c ON cl.idcat = c.idcat "
                 . "WHERE cl.idcat = " . $iTmpCatId . " AND cl.idlang = " . $iLangId;
             if ($aData = mr_queryAndNextRecord($sql)) {
                 $aDirectories[] = $aData['urlname'];
@@ -549,9 +538,7 @@ class ModRewrite extends ModRewriteBase {
         }
 
         // reverse array entries and create directory string
-        $sPath = join('/', array_reverse($aDirectories));
-
-        return $sPath;
+        return join('/', array_reverse($aDirectories));
     }
 
     /**
@@ -563,8 +550,8 @@ class ModRewrite extends ModRewriteBase {
     public static function rewriteHtmlAnchor(array $aMatches = []) {
         global $artname;
 
-        $lang = cRegistry::getLanguageId();
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $idcat = cRegistry::getCategoryId();
         $idart = cRegistry::getArticleId();
         $sess = cRegistry::getSession();
@@ -595,9 +582,7 @@ class ModRewrite extends ModRewriteBase {
             . '&changelang=' . cSecurity::toInteger($lang) . $sArtParam . $sOtherParams . '#' . $aMatches[2]
         );
 
-        $sNewUrl = '<a' . $aMatches[1] . 'href="' . $url . '"' . $aMatches[3] . '>';
-
-        return $sNewUrl;
+        return '<a' . $aMatches[1] . 'href="' . $url . '"' . $aMatches[3] . '>';
     }
 
     /**
@@ -618,9 +603,7 @@ class ModRewrite extends ModRewriteBase {
         }
 
         $url = $sess->url('front_content.php?' . implode($sAmpersand, $aParams) . '#' . $aMatches[2]);
-        $sNewUrl = '<a' . $aMatches[1] . 'href="' . $url . '"' . $aMatches[3] . '>';
-
-        return $sNewUrl;
+        return '<a' . $aMatches[1] . 'href="' . $url . '"' . $aMatches[3] . '>';
     }
 
     /**
@@ -633,10 +616,9 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function getArtWebsafeName($iArtId = 0, $iLangId = 0) {
-        $cfg = cRegistry::getConfig();
         $iArtId = cSecurity::toInteger($iArtId);
         $iLangId = cSecurity::toInteger($iLangId);
-        $sql = "SELECT urlname FROM " . $cfg['tab']['art_lang']
+        $sql = "SELECT urlname FROM " . cRegistry::getDbTableName('art_lang')
             . " WHERE idart = " . $iArtId . " AND idlang = " . $iLangId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData['urlname'];
@@ -653,9 +635,8 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function getArtLangWebsafeName($iArtLangId = 0) {
-        $cfg = cRegistry::getConfig();
         $iArtLangId = cSecurity::toInteger($iArtLangId);
-        $sql = "SELECT urlname FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = " . $iArtLangId;
+        $sql = "SELECT urlname FROM " . cRegistry::getDbTableName('art_lang') . " WHERE idartlang = " . $iArtLangId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData['urlname'];
         }
@@ -671,7 +652,6 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function getClientName($clientId = 0) {
-        $cfg = cRegistry::getConfig();
         $clientId = cSecurity::toInteger($clientId);
         $key = 'clientname_by_clientid_' . $clientId;
 
@@ -679,7 +659,7 @@ class ModRewrite extends ModRewriteBase {
             return self::$_lookupTable[$key];
         }
 
-        $sql = "SELECT name FROM " . $cfg['tab']['clients'] . " WHERE idclient = " . $clientId;
+        $sql = "SELECT name FROM " . cRegistry::getDbTableName('clients') . " WHERE idclient = " . $clientId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             $clientName = $aData['name'];
         } else {
@@ -699,7 +679,6 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function getClientId($sClientName = '') {
-        $cfg = cRegistry::getConfig();
         $sClientName = cString::toLowerCase($sClientName);
         $key = 'clientid_by_name_' . $sClientName;
 
@@ -707,7 +686,7 @@ class ModRewrite extends ModRewriteBase {
             return self::$_lookupTable[$key];
         }
 
-        $sql = "SELECT idclient FROM " . $cfg['tab']['clients']
+        $sql = "SELECT idclient FROM " . cRegistry::getDbTableName('clients')
             . " WHERE LOWER(name) = '" . self::$_db->escape($sClientName) . "'"
             . " OR LOWER(name) = '" . self::$_db->escape(urldecode($sClientName)) . "'";
         if ($aData = mr_queryAndNextRecord($sql)) {
@@ -729,7 +708,6 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function clientIdExists($clientId) {
-        $cfg = cRegistry::getConfig();
         $clientId = cSecurity::toInteger($clientId);
         $key = 'clientid_exists_' . $clientId;
 
@@ -737,7 +715,7 @@ class ModRewrite extends ModRewriteBase {
             return self::$_lookupTable[$key];
         }
 
-        $sql = "SELECT idclient FROM " . $cfg['tab']['clients'] . " WHERE idclient = " . $clientId;
+        $sql = "SELECT idclient FROM " . cRegistry::getDbTableName('clients') . " WHERE idclient = " . $clientId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             $exists = true;
         } else {
@@ -757,7 +735,6 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function getLanguageName($languageId = 0) {
-        $cfg = cRegistry::getConfig();
         $languageId = cSecurity::toInteger($languageId);
         $key = 'languagename_by_id_' . $languageId;
 
@@ -765,7 +742,7 @@ class ModRewrite extends ModRewriteBase {
             return self::$_lookupTable[$key];
         }
 
-        $sql = "SELECT name FROM " . $cfg['tab']['lang'] . " WHERE idlang = " . $languageId;
+        $sql = "SELECT name FROM " . cRegistry::getDbTableName('lang') . " WHERE idlang = " . $languageId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             $languageName = $aData['name'];
         } else {
@@ -785,7 +762,6 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function languageIdExists($languageId) {
-        $cfg = cRegistry::getConfig();
         $languageId = cSecurity::toInteger($languageId);
         $key = 'languageid_exists_' . $languageId;
 
@@ -793,7 +769,7 @@ class ModRewrite extends ModRewriteBase {
             return self::$_lookupTable[$key];
         }
 
-        $sql = "SELECT idlang FROM " . $cfg['tab']['lang'] . " WHERE idlang = " . $languageId;
+        $sql = "SELECT idlang FROM " . cRegistry::getDbTableName('lang') . " WHERE idlang = " . $languageId;
         if ($aData = mr_queryAndNextRecord($sql)) {
             $exists = true;
         } else {
@@ -815,7 +791,6 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function getLanguageId($sLanguageName = '', $iClientId = 1) {
-        $cfg = cRegistry::getConfig();
         $sLanguageName = cString::toLowerCase($sLanguageName);
         $iClientId = cSecurity::toInteger($iClientId);
         $key = 'langid_by_langname_clientid_' . $sLanguageName . '_' . $iClientId;
@@ -824,8 +799,8 @@ class ModRewrite extends ModRewriteBase {
             return self::$_lookupTable[$key];
         }
 
-        $sql = "SELECT l.idlang FROM " . $cfg['tab']['lang'] . " as l "
-            . "LEFT JOIN " . $cfg['tab']['clients_lang'] . " AS cl ON l.idlang = cl.idlang "
+        $sql = "SELECT l.idlang FROM " . cRegistry::getDbTableName('lang') . " as l "
+            . "LEFT JOIN " . cRegistry::getDbTableName('clients_lang') . " AS cl ON l.idlang = cl.idlang "
             . "WHERE cl.idclient = " . $iClientId . " AND (LOWER(l.name) = '" . self::$_db->escape($sLanguageName) . "' "
             . "OR LOWER(l.name) = '" . self::$_db->escape(urldecode($sLanguageName)) . "')";
         if ($aData = mr_queryAndNextRecord($sql)) {
@@ -891,8 +866,7 @@ class ModRewrite extends ModRewriteBase {
         } elseif (cString::findFirstPos($url, '/front_content.php') === 0) {
             $url = str_replace('/front_content.php', 'front_content.php', $url);
         }
-        $url = str_replace('&amp;', '&', $url);
-        return $url;
+        return str_replace('&amp;', '&', $url);
     }
 
     /**
@@ -904,12 +878,11 @@ class ModRewrite extends ModRewriteBase {
      * @throws cInvalidArgumentException
      */
     public static function recreateCategoriesAliases($bOnlyEmpty = false) {
-        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
         $aCats = [];
 
         // get all or only empty categories
-        $sql = "SELECT name, idcat, idlang FROM " . $cfg['tab']['cat_lang'];
+        $sql = "SELECT name, idcat, idlang FROM " . cRegistry::getDbTableName('cat_lang');
         if ($bOnlyEmpty === true) {
             $sql .= " WHERE urlname IS NULL OR urlname = '' OR urlpath IS NULL OR urlpath = ''";
         }
@@ -935,12 +908,11 @@ class ModRewrite extends ModRewriteBase {
      * @throws cDbException
      */
     public static function getEmptyCategoriesAliases($bOnlyNumber = true) {
-        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
         $return = ($bOnlyNumber) ? 0 : [];
 
         // get all empty categories
-        $sql = "SELECT name, idcat, idlang FROM " . $cfg['tab']['cat_lang']
+        $sql = "SELECT name, idcat, idlang FROM " . cRegistry::getDbTableName('cat_lang')
             . " WHERE urlname IS NULL OR urlname = '' OR urlpath IS NULL OR urlpath = ''";
 
         $db->query($sql);
@@ -965,11 +937,10 @@ class ModRewrite extends ModRewriteBase {
      * @throws cInvalidArgumentException
      */
     public static function recreateArticlesAliases($bOnlyEmpty = false) {
-        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
         // get all or only empty articles
-        $sql = "SELECT title, idart, idlang FROM " . $cfg['tab']['art_lang'];
+        $sql = "SELECT title, idart, idlang FROM " . cRegistry::getDbTableName('art_lang');
         if ($bOnlyEmpty === true) {
             $sql .= " WHERE urlname IS NULL OR urlname = ''";
         }
@@ -989,12 +960,11 @@ class ModRewrite extends ModRewriteBase {
      * @throws  cDbException
      */
     public static function getEmptyArticlesAliases($bOnlyNumber = true) {
-        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
         $return = ($bOnlyNumber) ? 0 : [];
 
         // get all empty articles
-        $sql  = "SELECT title, idart, idlang FROM " . $cfg['tab']['art_lang']
+        $sql  = "SELECT title, idart, idlang FROM " . cRegistry::getDbTableName('art_lang')
             . " WHERE urlname IS NULL OR urlname = ''";
 
         $db->query($sql);
