@@ -258,33 +258,12 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cInvalidArgumentException
      */
     public function createKeywords() {
-        $tmp_keys = [];
-
-        // Only create keycodes, if some are available
+        // Create only keycodes, if some are available
         if (is_array($this->_keycode)) {
             foreach ($this->_keycode as $idtype => $data) {
                 if ($this->checkCmsType($idtype)) {
                     foreach ($data as $typeid => $code) {
-                        $this->_debug('code', $code);
-
-                        // remove backslash
-                        $code = stripslashes($code);
-                        // replace HTML line breaks with newlines
-                        $code = str_ireplace([
-                            '<br>',
-                            '<br />'
-                        ], "\n", $code);
-                        // remove html tags
-                        $code = strip_tags($code);
-                        if (cString::getStringLength($code) > 0) {
-                            $code = conHtmlEntityDecode($code);
-                        }
-                        $this->_debug('code', $code);
-
-                        // split content by any number of commas, space
-                        // characters or hyphens
-                        $tmp_keys = mb_split('[\s,-]+', trim($code));
-                        $this->_debug('tmp_keys', $tmp_keys);
+                        $tmp_keys = $this->_splitCodeToKeywords($code);
 
                         foreach ($tmp_keys as $value) {
                             // index terms are stored with lower case
@@ -304,8 +283,6 @@ class cSearchIndex extends cSearchBaseAbstract {
                         }
                     }
                 }
-
-                unset($tmp_keys);
             }
         }
 
@@ -603,4 +580,56 @@ class cSearchIndex extends cSearchBaseAbstract {
     public function getCmsTypeSuffix() {
         return $this->_cmsTypeSuffix;
     }
+
+    /**
+     * Cleans the code from HTML markup and creates a list of
+     * keywords that can be indexed.
+     *
+     * @param string $code
+     *
+     * @return string[] List of keyword to index
+     * @throws cInvalidArgumentException
+     */
+    protected function _splitCodeToKeywords($code) {
+        $this->_debug('code', $code);
+
+        // Remove backslash
+        $code = stripslashes($code);
+
+        // Replace HTML line breaks (<br>, <br/>, <br />, etc.) with newlines
+        $code = preg_replace('/\<br(\s*)?\/?\>/i', "\n", $code);
+
+        // Remove HTML tags
+        $code = strip_tags($code);
+        if (cString::getStringLength($code) > 0) {
+            $code = conHtmlEntityDecode($code);
+        }
+        $this->_debug('code', $code);
+
+        // Split content by any number of commas, space characters
+        $keywords = mb_split('[\s,]+', trim($code));
+        if (!is_array($keywords)) {
+            return [];
+        }
+
+        // Split the keys also by hyphens, we want to index words with
+        // and without hypens
+        $keywords2 = array_map(function($item) {
+            return mb_split('[-]+', $item);
+        }, $keywords);
+        $keywords2 = array_filter($keywords2, function($item) {
+            return count($item) > 1;
+        });
+
+        // Merge both key lists and make the result unique
+        foreach ($keywords2 as $entries) {
+            $keywords = array_merge($keywords, $entries);
+        }
+        $keywords = array_unique($keywords);
+
+        $this->_debug('keywords', $keywords);
+
+        return $keywords;
+    }
+
 }
