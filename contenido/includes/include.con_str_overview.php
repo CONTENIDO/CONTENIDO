@@ -648,12 +648,12 @@ while ($db->nextRecord()) {
             'articles'     => !empty($aIsArticles[$db->f("idcat")]) ? $aIsArticles[$db->f("idcat")] : false,
             'level'        => $db->f('level'),
         ];
-        if ($aStartOnlineArticles[$db->f('idcat')]['is_start']) {
+        if ($aStartOnlineArticles[$db->f('idcat')]['is_start'] ?? false) {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_start'] = false;
         } else {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_start'] = true;
         }
-        if ($aStartOnlineArticles[$db->f('idcat')]['is_online']) {
+        if ($aStartOnlineArticles[$db->f('idcat')]['is_online'] ?? false) {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_online'] = false;
         } else {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_online'] = true;
