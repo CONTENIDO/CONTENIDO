@@ -908,7 +908,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $tpl->set('s', 'ELEMPERPAGE', $select);
 
         $tpl->set('s', 'IDCAT', $idcat);
-        $tpl->set('s', 'SOURCELANGUAGE', $idlang);
+        $tpl->set('s', 'SOURCELANGUAGE', $lang);
 
         // Extract Category and Catcfg
         $sql = "SELECT
@@ -970,8 +970,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         {
             if (0 != $idcat) {
                 $tpl->set('s', 'CATEGORY', $cat_name);
-                $tpl->set('s', 'CATEGORY_CONF', isset($tmp_img) ? $tmp_img : '');
-                $tpl->set('s', 'CATEGORY_LINK', $tmp_link);
+                $tpl->set('s', 'CATEGORY_CONF', $tmp_img ?? '');
+                $tpl->set('s', 'CATEGORY_LINK', $tmp_link ?? '');
             } else {
                 $tpl->set('s', 'CATEGORY', $cat_name);
                 $tpl->set('s', 'CATEGORY_CONF', '&nbsp;');
