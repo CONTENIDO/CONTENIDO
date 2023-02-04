@@ -74,7 +74,6 @@ if (isset($changelang) && is_numeric($changelang)) {
 if (!is_numeric($client)
     || (!$perm->have_perm_client('client[' . $client . ']')
     && !$perm->have_perm_client('admin[' . $client . ']'))) {
-
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
@@ -82,11 +81,8 @@ if (!is_numeric($client)
         unset($lang);
         $client = $oClient->get('idclient');
     }
-
 } else {
-
     $sess->register('client');
-
 }
 
 if (!is_numeric($lang) || $lang == '') {
@@ -136,7 +132,7 @@ if (isset($action) && $action != '') {
     $backend->log($idcat, $idart, $client, $lang, $action);
 }
 
-
+// Include action file if exists
 if (isset($action)) {
     $actionCodeFile = $backendPath . 'includes/type/action/include.' . $action . '.action.php';
     if (cFileHandler::exists($actionCodeFile)) {
@@ -147,6 +143,7 @@ if (isset($action)) {
     }
 }
 
+// Include the main ajax request handler or for the selected area.
 $sFilename = '';
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
     $oAjax = new cAjaxRequest();
@@ -157,18 +154,9 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
     include_once($backendPath . $sFilename);
 }
 
+// Finalize debug of backend rendering
 if ($cfg['debug']['rendering'] == true) {
-    $cfg['debug']['backend_exectime']['end'] = getmicrotime();
-    $debugInfo = [
-        'Building this page (excluding CONTENIDO includes) took: ' .
-            ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds',
-        'Building the complete page took: ' .
-            ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds',
-            'Include memory usage: ' . humanReadableSize(memory_get_usage() - $oldmemusage),
-        'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
-        "*****" . $sFilename . "*****"
-    ];
-    cDebug::out(implode("\n", $debugInfo));
+    cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldmemusage, $sFilename));
 }
 
 // User Tracking (who is online)
