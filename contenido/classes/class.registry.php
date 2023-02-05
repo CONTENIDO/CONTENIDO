@@ -488,7 +488,7 @@ class cRegistry {
             return $clientConfig;
         }
 
-        return (isset($clientConfig[$clientId]) ? $clientConfig[$clientId] : []);
+        return $clientConfig[$clientId] ?? [];
     }
 
     /**
@@ -553,7 +553,7 @@ class cRegistry {
      * @return mixed
      */
     public static function getAppVar($key, $default = NULL) {
-        return (isset(self::$_appVars[$key])) ? self::$_appVars[$key] : $default;
+        return self::$_appVars[$key] ?? $default;
     }
 
     /**
@@ -578,11 +578,7 @@ class cRegistry {
      * @return mixed
      */
     protected final static function _fetchGlobalVariable($variableName, $defaultValue = NULL) {
-        if (!isset($GLOBALS[$variableName])) {
-            return $defaultValue;
-        }
-
-        return $GLOBALS[$variableName];
+        return $GLOBALS[$variableName] ?? $defaultValue;
     }
 
     /**
@@ -640,20 +636,20 @@ class cRegistry {
 
         if (isset($sessClass)) {
             global $sess;
-            /** @var cSession */
+            /** @var cSession $sess */
             $sess = new $sessClass();
             $sess->start();
             if (isset($authClass)) {
                 global $auth;
                 if (!isset($auth)) {
-                    /** @var cAuthHandlerAbstract */
+                    /** @var cAuth $auth */
                     $auth = new $authClass();
                 }
                 $auth->start();
                 if (isset($permClass)) {
                     global $perm;
                     if (!isset($perm)) {
-                        /** @var cPermission */
+                        /** @var cPermission $perm */
                         $perm = new $permClass();
                     }
                 }
@@ -671,7 +667,7 @@ class cRegistry {
      * @throws cInvalidArgumentException
      */
     public final static function shutdown($debugShowAll = true) {
-        if ($debugShowAll == true) {
+        if ($debugShowAll) {
             cDebug::showAll();
         }
 
@@ -688,7 +684,7 @@ class cRegistry {
      * @param string $message
      */
     public static function addOkMessage($message) {
-        array_push(self::$_okMessages, $message);
+        self::$_okMessages[] = $message;
     }
 
 
@@ -699,7 +695,7 @@ class cRegistry {
      * @param string $message
      */
     public static function addInfoMessage($message) {
-        array_push(self::$_infoMessages, $message);
+        self::$_infoMessages[] = $message;
     }
 
     /**
@@ -709,7 +705,7 @@ class cRegistry {
      * @param string $message
      */
     public static function addErrorMessage($message) {
-        array_push(self::$_errMessages, $message);
+        self::$_errMessages[] = $message;
     }
 
     /**
@@ -719,7 +715,7 @@ class cRegistry {
      * @param string $message
      */
     public static function addWarningMessage($message) {
-        array_push(self::$_warnMessages, $message);
+        self::$_warnMessages[] = $message;
     }
 
     /**
@@ -729,14 +725,12 @@ class cRegistry {
      * @param string $message
      */
     public static function appendLastOkMessage($message) {
-        if(count(self::$_okMessages) == 0) {
+        $key = cArray::getLastKey(self::$_okMessages);
+        if (is_null($key)) {
             self::$_okMessages[] = $message;
-            return;
+        } else {
+            self::$_okMessages[$key] .= "<br>" . $message;
         }
-        end(self::$_okMessages);
-        $lastKey = key(self::$_okMessages);
-        self::$_okMessages[$lastKey] .= "<br>" . $message;
-        reset(self::$_okMessages);
     }
 
     /**
@@ -746,14 +740,12 @@ class cRegistry {
      * @param string $message
      */
     public static function appendLastInfoMessage($message) {
-        if(count(self::$_infoMessages) == 0) {
+        $key = cArray::getLastKey(self::$_infoMessages);
+        if (is_null($key)) {
             self::$_infoMessages[] = $message;
-            return;
+        } else {
+            self::$_infoMessages[$key] .= "<br>" . $message;
         }
-        end(self::$_infoMessages);
-        $lastKey = key(self::$_infoMessages);
-        self::$_infoMessages[$lastKey] .= "<br>" . $message;
-        reset(self::$_infoMessages);
     }
 
     /**
@@ -763,14 +755,12 @@ class cRegistry {
      * @param string $message
      */
     public static function appendLastErrorMessage($message) {
-        if(count(self::$_errMessages) == 0) {
+        $key = cArray::getLastKey(self::$_errMessages);
+        if (is_null($key)) {
             self::$_errMessages[] = $message;
-            return;
+        } else {
+            self::$_errMessages[$key] .= "<br>" . $message;
         }
-        end(self::$_errMessages);
-        $lastKey = key(self::$_errMessages);
-        self::$_errMessages[$lastKey] .= "<br>" . $message;
-        reset(self::$_errMessages);
     }
 
     /**
@@ -780,14 +770,12 @@ class cRegistry {
      * @param string $message
      */
     public static function appendLastWarningMessage($message) {
-        if(count(self::$_warnMessages) == 0) {
+        $key = cArray::getLastKey(self::$_warnMessages);
+        if (is_null($key)) {
             self::$_warnMessages[] = $message;
-            return;
+        } else {
+            self::$_warnMessages[$key] .= "<br>" . $message;
         }
-        end(self::$_warnMessages);
-        $lastKey = key(self::$_warnMessages);
-        self::$_warnMessages[$lastKey] .= "<br>" . $message;
-        reset(self::$_warnMessages);
     }
 
     /**
@@ -838,7 +826,7 @@ class cRegistry {
      *         whether tracking is allowed by the DNT header
      */
     public static function isTrackingAllowed() {
-        return (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] != 1) || !isset($_SERVER['HTTP_DNT']);
+        return cSecurity::toInteger($_SERVER['HTTP_DNT'] ?? '0') === 1;
     }
 
     /**
@@ -848,7 +836,6 @@ class cRegistry {
     *         name of encoding or false if no language found
     */
     public static function getEncoding() {
-
         $apiLanguage = new cApiLanguage(self::getLanguageId());
         if ($apiLanguage->isLoaded()) {
             return trim($apiLanguage->get('encoding'));
@@ -856,4 +843,5 @@ class cRegistry {
 
         return false;
     }
+
 }
