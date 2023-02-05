@@ -231,4 +231,21 @@ class cArray {
         return NULL;
     }
 
+
+    /**
+     * Get the last key of an array.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param array $array An array
+     * @return int|string|null
+     */
+    public static function getLastKey(array $array) {
+        // We could use array_key_last(), but only from PHP >= 7.3.0
+        // see https://www.php.net/manual/en/function.array-key-last.php
+        if (empty($array)) {
+            return NULL;
+        }
+        return array_keys($array)[count($array) - 1];
+    }
+
 }
