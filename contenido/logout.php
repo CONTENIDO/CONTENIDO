@@ -18,11 +18,13 @@ if (!defined('CON_FRAMEWORK')) {
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-cRegistry::bootstrap(array(
-    'sess' => 'cSession',
-    'auth' => 'cAuthHandlerBackend',
-    'perm' => 'cPermission'
-));
+cRegistry::bootstrap(
+    [
+        'sess' => 'cSession',
+        'auth' => 'cAuthHandlerBackend',
+        'perm' => 'cPermission',
+    ]
+);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 

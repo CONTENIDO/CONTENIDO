@@ -26,11 +26,13 @@ include_once('../includes/startup.php');
 
 header('Content-Type: application/javascript');
 
-cRegistry::bootstrap(array(
-    'sess' => 'cSession',
-    'auth' => 'cAuthHandlerBackend',
-    'perm' => 'cPermission'
-));
+cRegistry::bootstrap(
+    [
+        'sess' => 'cSession',
+        'auth' => 'cAuthHandlerBackend',
+        'perm' => 'cPermission',
+    ]
+);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 require(cRegistry::getBackendPath() . 'includes/functions.includePluginConf.php');
@@ -40,7 +42,7 @@ require(cRegistry::getBackendPath() . 'includes/functions.includePluginConf.php'
 // Fetch chains
 $iterator = $_cecRegistry->getIterator('Contenido.Article.RegisterCustomTab');
 
-$aTabs = array();
+$aTabs = [];
 while ($chainEntry = $iterator->next()) {
     $aTmpArray = $chainEntry->execute();
     if (is_array($aTmpArray)) {
@@ -48,34 +50,33 @@ while ($chainEntry = $iterator->next()) {
     }
 }
 
-$aCustomTabs = array();
+$aCustomTabs = [];
 
 foreach ($aTabs as $key => $sTab) {
     $iterator = $_cecRegistry->getIterator('Contenido.Article.GetCustomTabProperties');
     while ($chainEntry = $iterator->next()) {
         $aTmpArray = $chainEntry->execute($sTab);
         if (is_array($aTmpArray)) {
-            $aCustomTabs[$sTab] = array(
-                'area' => $aTmpArray[0],
+            $aCustomTabs[$sTab] = [
+                'area'   => $aTmpArray[0],
                 'action' => $aTmpArray[1],
                 'custom' => $aTmpArray[2],
-            );
+            ];
             break;
         }
     }
 }
 
-$aCustomTabs['foo'] = array(
-    'area' => 'foo_area',
+$aCustomTabs['foo'] = [
+    'area'   => 'foo_area',
     'action' => 'foo_action',
     'custom' => 'foo_custom',
-);
-$aCustomTabs['bar'] = array(
-    'area' => 'bar_area',
+];
+$aCustomTabs['bar'] = [
+    'area'   => 'bar_area',
     'action' => 'bar_action',
     'custom' => 'bar_custom',
-);
-
+];
 
 ?>
 /**
