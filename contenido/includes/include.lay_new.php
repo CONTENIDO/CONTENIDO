@@ -14,14 +14,31 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$tpl->reset();
+/**
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var cTemplate $tpl
+ * @var array $cfg
+ * @var string $area
+ * @var string $action
+ */
 
 $client = cSecurity::toInteger(cRegistry::getClientId());
+
+// Display critical error if no valid client is selected
+if ($client < 1) {
+    $oPage = new cGuiPage('lay_new');
+    $oPage->displayCriticalError(i18n("No Client selected"));
+    $oPage->render();
+    return;
+}
+
+$tpl->reset();
 
 if (!$perm->have_perm_area_action($area, $action)) {
     $tpl->set('s', 'ACTION', "");
     $tpl->set('s', 'ACTION2', '');
-} else if ($client > 0) {
+} else {
     // New layout link
    if ($perm->have_perm_area_action("lay_edit", "lay_new")) {
        $str = sprintf(
@@ -46,11 +63,6 @@ if (!$perm->have_perm_area_action($area, $action)) {
     } else {
         $tpl->set('s', 'ACTION2', '<a class="syncronizefunction_disabled" href="#">' . i18n("No permission to synchronize layouts") . '</a>');
     }
-} else {
-    $tpl->set('s', 'ACTION', i18n('No Client selected'));
-    $tpl->set('s', 'ACTION2', '');
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lay_left_top']);
-
-?>

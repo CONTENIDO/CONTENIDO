@@ -24,10 +24,10 @@ $frame = cRegistry::getFrame();
 $cfg = cRegistry::getConfig();
 
 $page = isset($_REQUEST['page']) ? abs(cSecurity::toInteger($_REQUEST['page'])) : 1;
-$elemPerPage = (isset($_REQUEST['elemperpage'])) ? cSecurity::toInteger($_REQUEST['elemperpage']) : 0;
-$sortby = (isset($_REQUEST['sortby'])) ? cSecurity::toString($_REQUEST['sortby']) : '';
+$elemPerPage = cSecurity::toInteger($_REQUEST['elemperpage'] ?? '0');
+$sortby = cSecurity::toString($_REQUEST['sortby'] ?? '');
 $sortorder = (isset($_REQUEST['sortorder'])) ? cSecurity::toString($_REQUEST['sortorder']) : 'asc';
-$filter = (isset($_REQUEST['filter'])) ? cSecurity::toString($_REQUEST['filter']) : '';
+$filter = cSecurity::toString($_REQUEST['filter'] ?? '');
 $userid = (isset($_GET['userid'])) ? cSecurity::toString($_GET['userid']) : '';
 
 $oPage = new cGuiPage("rights_menu");

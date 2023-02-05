@@ -34,13 +34,13 @@ if (cSecurity::toInteger($client) < 1) {
 }
 
 $requestIdMod = (isset($_REQUEST['idmod'])) ? cSecurity::toInteger($_REQUEST['idmod']) : 0;
-$elemPerPage = (isset($_REQUEST['elemperpage'])) ? cSecurity::toInteger($_REQUEST['elemperpage']) : 0;
-$page = (isset($_REQUEST['page'])) ? cSecurity::toInteger($_REQUEST['page']) : 1;
-$sortby = (isset($_REQUEST['sortby'])) ? cSecurity::toString($_REQUEST['sortby']) : '';
-$sortorder = (isset($_REQUEST['sortorder'])) ? cSecurity::toString($_REQUEST['sortorder']) : '';
-$filter = (isset($_REQUEST['filter'])) ? cSecurity::toString($_REQUEST['filter']) : '';
-$filterType = (isset($_REQUEST['filtertype'])) ? cSecurity::toString($_REQUEST['filtertype']) : '';
-$searchIn = (isset($_REQUEST['searchin'])) ? cSecurity::toString($_REQUEST['searchin']) : '';
+$elemPerPage = cSecurity::toInteger($_REQUEST['elemperpage'] ?? '0');
+$page = cSecurity::toInteger($_REQUEST['page'] ?? '1');
+$sortby = cSecurity::toString($_REQUEST['sortby'] ?? '');
+$sortorder = cSecurity::toString($_REQUEST['sortorder'] ?? '');
+$filter = cSecurity::toString($_REQUEST['filter'] ?? '');
+$filterType = cSecurity::toString($_REQUEST['filtertype'] ?? '');
+$searchIn = cSecurity::toString($_REQUEST['searchin'] ?? '');
 
 // Now build bottom with list
 $cApiModuleCollection = new cApiModuleCollection();

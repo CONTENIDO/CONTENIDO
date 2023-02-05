@@ -14,10 +14,23 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $tpl, $select;
+/**
+ * @var cTemplate $tpl
+ */
+
+global $select;
+
+$client = cSecurity::toInteger(cRegistry::getClientId());
+
+// Display critical error if no valid client is selected
+if ($client < 1) {
+    $oPage = new cGuiPage('js_left_top');
+    $oPage->displayCriticalError(i18n("No Client selected"));
+    $oPage->render();
+    return;
+}
 
 $sess = cRegistry::getSession();
-$client = cRegistry::getClientId();
 $perm = cRegistry::getPerm();
 $cfg = cRegistry::getConfig();
 $area = cRegistry::getArea();
@@ -28,22 +41,17 @@ $tpl->set('s', 'OPTIONS', '');
 $tpl->set('s', 'CAPTION', '');
 $tpl->set('s', 'ACTION', $select);
 
-$tmp_mstr = '<div class="leftTopAction"><a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
-// $area = "style"; What is the purpose of this??
-$mstr = sprintf(
-    $tmp_mstr,
-    'right_top', $sess->url("main.php?area=js&frame=3"),
-    'right_bottom', $sess->url("main.php?area=js&frame=4&action=js_create"),
-    i18n("Create script")
-);
-if ((int) $client > 0) {
-    if ($perm->have_perm_area_action($area, "js_create")) {
-        $tpl->set('s', 'NEWSCRIPT', $mstr);
-    } else {
-        $tpl->set("s", "NEWSCRIPT", '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create new scripts") . '</a></div>');
-    }
+if ($perm->have_perm_area_action($area, "js_create")) {
+    $tmp_mstr = '<div class="leftTopAction"><a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
+    $mstr = sprintf(
+        $tmp_mstr,
+        'right_top', $sess->url("main.php?area=js&frame=3"),
+        'right_bottom', $sess->url("main.php?area=js&frame=4&action=js_create"),
+        i18n("Create script")
+    );
+    $tpl->set('s', 'NEWSCRIPT', $mstr);
 } else {
-    $tpl->set('s', 'NEWSCRIPT', i18n('No Client selected'));
+    $tpl->set("s", "NEWSCRIPT", '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create new scripts") . '</a></div>');
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['js_left_top']);
