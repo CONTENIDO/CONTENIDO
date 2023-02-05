@@ -270,7 +270,7 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
     $tpl->set('s', 'SYNC_HREF', $sSyncLink);
 } else {
     $tpl->set('s', 'SYNCRONIZATION', '');
-    $tpl->set('s', 'SYNCLINK', $sListId);
+    $tpl->set('s', 'SYNCLINK', '');
     $tpl->set('s', 'SYNC_HREF', '');
 }
 

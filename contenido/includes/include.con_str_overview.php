@@ -600,13 +600,15 @@ if ($client == 0) {
 $sExpandList = $currentuser->getUserProperty("system", "con_cat_expandstate");
 if ($sExpandList != '') {
     $conexpandedList = unserialize($currentuser->getUserProperty("system", "con_cat_expandstate"));
+} else {
+    $conexpandedList = [];
 }
 
 if (!is_array($conexpandedList)) {
     $conexpandedList = [];
 }
 
-if (!is_array($conexpandedList[$client])) {
+if (!isset($conexpandedList[$client]) || !is_array($conexpandedList[$client])) {
     $conexpandedList[$client] = [];
 }
 
@@ -663,11 +665,11 @@ while ($db->nextRecord()) {
 
 cDebug::out(print_r($navigationTree, true));
 
-if (count($navigationTree[0])) {
+if (isset($navigationTree[0]) && count($navigationTree[0])) {
     $sCategories = showTree(0, $aWholelist);
 }
 
-$tpl->set('s', 'CATS', $sCategories);
+$tpl->set('s', 'CATS', $sCategories ?? '');
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'DIRECTION', 'dir="' . langGetTextDirection($lang) . '"');
 $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
