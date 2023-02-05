@@ -22,11 +22,13 @@ include_once('../includes/startup.php');
 
 header('Content-Type: text/javascript');
 
-cRegistry::bootstrap(array(
-    'sess' => 'cSession',
-    'auth' => 'cAuthHandlerBackend',
-    'perm' => 'cPermission'
-));
+cRegistry::bootstrap(
+    [
+        'sess' => 'cSession',
+        'auth' => 'cAuthHandlerBackend',
+        'perm' => 'cPermission',
+    ]
+);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 // do not call cRegistry::shutdown(); here because
