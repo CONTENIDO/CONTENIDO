@@ -187,6 +187,7 @@ class cRequestValidator {
      * Returns the instance of this class.
      *
      * @return cRequestValidator
+     * @throws cFileNotFoundException if the configuration can not be loaded
      */
     public static function getInstance() {
         if (self::$_instance === null) {
