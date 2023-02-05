@@ -183,6 +183,8 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
 
         $perm = new cPermission();
 
+        $saveLoginTime = false;
+
         // Find the first accessible client and language for the user
         $clientLangColl = new cApiClientLanguageCollection();
         $clientLangColl->select();

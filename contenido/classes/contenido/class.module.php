@@ -290,9 +290,9 @@ class cApiModule extends Item {
         $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
         if (count($clientConfig)) {
             $this->_packageStructure = [
-                'jsfiles' => $clientConfig['js']['path'],
-                'tplfiles' => $clientConfig['tpl']['path'],
-                'cssfiles' => $clientConfig['css']['path']
+                'jsfiles' => $clientConfig['js']['path'] ?? '',
+                'tplfiles' => $clientConfig['tpl']['path'] ?? '',
+                'cssfiles' => $clientConfig['css']['path'] ?? '',
             ];
         }
     }

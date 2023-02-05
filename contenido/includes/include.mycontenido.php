@@ -14,9 +14,21 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cAuth $auth
+ * @var cSession $sess
+ * @var cPermission $perm
+ * @var array $cfg
+ * @var array $cfgClient
+ * @var int $client
+ * @var string $belang
+ */
+
 $page = new cGuiPage("mycontenido", "", "0");
 
 $vuser = new cApiUser($auth->auth['uid']);
+
+$saveLoginTime = $saveLoginTime ?? false;
 
 if ($saveLoginTime === true) {
     $sess->register('saveLoginTime');
@@ -114,7 +126,7 @@ if (count($clients) > 1) {
     }
 
     $select->autoFill($choices);
-    $select->setDefault($client);
+    $select->setDefault($client ?? 0);
 
     $clientselect = $select->render();
 
