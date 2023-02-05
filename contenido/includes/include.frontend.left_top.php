@@ -16,6 +16,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $auth, $area, $cfg, $client, $perm, $sess;
 
+// Display critical error if no valid client is selected
+if ($client < 1) {
+    $oPage = new cGuiPage('frontend_left_top');
+    $oPage->displayCriticalError(i18n("No Client selected"));
+    $oPage->render();
+    return;
+}
+
 $tpl = new cTemplate();
 
 $oUser = new cApiUser($auth->auth["uid"]);
