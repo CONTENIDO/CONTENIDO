@@ -14,10 +14,19 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$client = cRegistry::getClientId();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+
+// Display critical error if no valid client is selected
+if ($client < 1) {
+    $oPage = new cGuiPage('js_files_overview');
+    $oPage->displayCriticalError(i18n("No Client selected"));
+    $oPage->render();
+    return;
+}
+
 $cfgClient = cRegistry::getClientConfig();
 
-$file = (isset($_REQUEST['file'])) ? cSecurity::toString($_REQUEST['file']) : '';
+$file = cSecurity::toString($_REQUEST['file'] ?? '');
 
 $files = new cGuiFileOverview($cfgClient[$client]['js']['path'], stripslashes($file), 'js');
 

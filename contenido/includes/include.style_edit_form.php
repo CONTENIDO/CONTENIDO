@@ -17,7 +17,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$tmpFile = (isset($_REQUEST['tmp_file'])) ? cSecurity::toString($_REQUEST['tmp_file']) : '';
+$client = cSecurity::toInteger(cRegistry::getClientId());
+
+// Display critical error if no valid client is selected
+if ($client < 1) {
+    $oPage = new cGuiPage('style_edit_form');
+    $oPage->displayCriticalError(i18n("No Client selected"));
+    $oPage->render();
+    return;
+}
+
+$tmpFile = cSecurity::toString($_REQUEST['tmp_file'] ?? '');
 
 // Initializing editor
 $editor = new cGuiSourceEditor($tmpFile);
