@@ -603,7 +603,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 	            $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
 	            $inUse = true;
 	            $disabled = 'disabled="disabled"';
-	            $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+                $page->displayWarning(i18n('This article is currently frozen and can not be edited!'));
 	            $page->set("s", "REASON", i18n('This article is currently frozen and can not be edited!'));
 	        } else {
 	            $vuser = new cApiUser($obj->get("userid"));
