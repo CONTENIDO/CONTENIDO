@@ -318,8 +318,6 @@ if (isset($idart)) {
     $online = ('0' !== $oCatLang->get('visible'));
 }
 
-$idartlang = getArtLang($idart, $lang); // TODO do we need to call getArtLang() here again?
-
 // always allow editing article in backend
 if (!cRegistry::getBackendSessionId() && ($idartlang === false || $online != true)) {
     if ($_GET['display_errorpage']) {
