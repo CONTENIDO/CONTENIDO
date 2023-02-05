@@ -392,9 +392,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
             // Add attributes "uuid", "min_version" and "max_version" to an array
             $attributes = [
-                    'uuid' => cSecurity::escapeString($attributes['uuid']),
-                    'minversion' => cSecurity::escapeString($attributes['min_version']),
-                    'maxversion' => cSecurity::escapeString($attributes['max_version'])
+                'uuid' => cSecurity::escapeString($attributes['uuid']),
+                'minversion' => cSecurity::escapeString($attributes['min_version'] ?? ''),
+                'maxversion' => cSecurity::escapeString($attributes['max_version'] ?? '')
             ];
 
             $this->_PimPluginCollection->setWhere('uuid', $attributes['uuid']);
