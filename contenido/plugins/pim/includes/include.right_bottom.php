@@ -23,6 +23,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // initializing classes
 $page = new cGuiPage('pim_overview', 'pim');
 
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+
+// Display critical error if no valid client/language is selected
+if ($client < 1 || $lang < 1) {
+    $message = $client < 1 ? i18n('No Client selected') : i18n('No language selected');
+    $page->displayCriticalError($message);
+    $page->render();
+    exit();
+}
+
 // access denied
 if (!$perm->isSysadmin($currentuser)) {
     $page->displayCriticalError(i18n("Permission denied"));
@@ -160,7 +171,7 @@ while (($plugin = $oItem->next()) !== false) {
 
     // uninstall link
     $tempUninstallLink = $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&uninstallsql=1&pluginId=' . $idplugin);
-    $pagePlugins->set('s', 'UNINSTALL_LINK', '<a id="removalLink-' . $plugin->get('idplugin') . '" href="javascript:void(0)" onclick="javascript:Con.showConfirmation(\'' . i18n('Are you sure to delete this plugin? Files are not deleted in filesystem.', 'pim') . '\', function() { window.location.href=\'' . $tempUninstallLink . '\';})">' . i18n('Uninstall', 'pim') . '</a>');
+    $pagePlugins->set('s', 'UNINSTALL_LINK', '<a id="removalLink-' . $plugin->get('idplugin') . '" href="javascript:void(0)" onclick="Con.showConfirmation(\'' . i18n('Are you sure to delete this plugin? Files are not deleted in filesystem.', 'pim') . '\', function() { window.location.href=\'' . $tempUninstallLink . '\';})">' . i18n('Uninstall', 'pim') . '</a>');
 
     // put foldername into array installedPluginFoldernames
     $installedPluginFoldernames[] = $plugin->get('folder');
@@ -180,7 +191,7 @@ if (is_dir($cfg['path']['plugins'])) {
             $tempPath = $pluginPath . '/plugin.xml';
 
             if (is_dir($pluginPath) && cFileHandler::exists($tempPath) && !in_array($pluginFoldername, $installedPluginFoldernames)) {
-                // initalization new template class
+                // initialization of a new template class
                 $pagePlugins = new cTemplate();
 
                 // Read plugin.xml
