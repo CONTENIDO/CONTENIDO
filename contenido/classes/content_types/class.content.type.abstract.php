@@ -189,7 +189,7 @@ abstract class cContentTypeAbstract {
         $this->_cfgClient = cRegistry::getClientConfig();
         $this->_session = cRegistry::getSession();
         $this->_useXHTML = cSecurity::toBoolean(getEffectiveSetting('generator', 'xhtml', 'false'));
-        $this->_uploadPath = $this->_cfgClient[$this->_client]['upl']['path'];
+        $this->_uploadPath = $this->_cfgClient[$this->_client]['upl']['path'] ?? '';
 
         $this->_readSettings();
     }
