@@ -37,6 +37,22 @@ abstract class cContentTypeAbstract {
     const SETTINGS_TYPE_XML = 'xml';
 
     /**
+     * Constant defining the PHP comment marker used to wrap content type code.
+     *
+     * @since CONTENIDO 4.10.2
+     * @var string
+     */
+    const COMMENT_MARKER = '" . /*[CONTENT_TYPE]*/%s/*[/CONTENT_TYPE]*/ . "';
+
+    /**
+     * Constant defining the regular expression to detect wrapped content type code.
+     *
+     * @since CONTENIDO 4.10.2
+     * @var string
+     */
+    const COMMENT_MARKER_PATTERN = '#(\s*).(\s*)/\*\[CONTENT_TYPE\]\*/(.*?)/\*\[/CONTENT_TYPE\]\*/(\s*).(\s*)#mis';
+
+    /**
      * Name of the content type, e.g. 'CMS_TEASER'.
      *
      * @var string
@@ -217,6 +233,83 @@ abstract class cContentTypeAbstract {
             // otherwise do not process the raw setting
             $this->_settings = $this->_rawSettings;
         }
+    }
+
+    /**
+     * Wraps generated PHP code by content types with an anonymous function,
+     * which will be executed immediately and will return the output as a
+     * string, so it can be used to replace container placeholder in module
+     * codes. Surrounds the wrapped code also with special PHP comment
+     * marker like:
+     * <pre>
+     * / *[CONTENT_TYPE]* / . ' . $code . ' . / *[/CONTENT_TYPE]* /
+     * </pre>
+     * This has no effect to the
+     *
+     * Container placeholder in module outputs are defined as follows:
+     * <pre>
+     * echo "CMS_VALUE[123]";
+     * // or
+     * $myVariable = "CMS_VALUE[123]";
+     * </pre>
+     * The result of this function will be used to replace container
+     * placeholder of a content type. The result will look like
+     * <pre>
+     * echo "" . (function(){ return $output; })() . "";
+     * // or
+     * $myVariable = "" . (function(){ return $output; })() . "";
+     * </pre>
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $code Content type PHP code.
+     * @return string Content type PHP code wrapped with PHP comment marker
+     *                and an immediately executed anonymous function.
+     * @throws cInvalidArgumentException
+     */
+    protected function _wrapPhpViewCode($code) {
+        $code = trim($code);
+
+        /* Content type PHP code must start with an opening PHP tag `<?php`
+         * and must end with a closing PHP tag `?>` as a convention. */
+        if (
+            cString::getPartOfString($code, 0, 5) !== '<?php'
+            || cString::getPartOfString($code, -2) !== '?>'
+        ) {
+            throw new cInvalidArgumentException('Code should start with `<?php` and end with `?>`!');
+        }
+
+        /**
+         * Wrap content type PHP code properly, so we have a result which
+         * replaces a container placeholder like
+         *     `echo "CMS_VALUE[123]";`
+         * to something like
+         *     `echo "" . (function(){ return $output; })() . "";`
+         */
+
+        // Strip starting and ending PHP tag in the code, and strip whitespace/semicolon
+        // from the beginning and end of the code.
+        $code = cString::getPartOfString($code, 5);
+        $code = cString::getPartOfString($code, 0, -2);
+        $code = trim($code, "\n;");
+
+        // Wrap code with an immediately executed anonymous function. Buffer the
+        // output of the content type code, so we can return it in the anonymous
+        // function. This will enable us to use the result for a string
+        // concatenation, thus as a replacement for content types.
+        $code = "(function(){ ob_start(); $code \$output = ob_get_contents(); ob_end_clean(); return \$output; })()";
+
+        return sprintf(self::COMMENT_MARKER, $code);
+    }
+
+    /**
+     * Checks if the passed code is a wrapped content type PHP code.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param $code
+     * @return false|int|null
+     */
+    public static function isWrappedContentTypeCodePhp($code) {
+        return preg_match_all(self::COMMENT_MARKER_PATTERN, $code);
     }
 
     /**

@@ -212,10 +212,13 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *         escaped HTML code which should be shown if content type is shown in frontend
      */
     public function generateViewCode() {
-        $code = '";?><?php
-                    $fileList = new cContentTypeFilelist(\'%s\', %s, %s);
-                    echo $fileList->generateFileListCode();
-                 ?><?php echo "';
+        $code = '<?php
+            $fileList = new cContentTypeFilelist(\'%s\', %s, %s);
+            echo $fileList->generateFileListCode();
+        ?>';
+
+        $code = $this->_wrapPhpViewCode($code);
+
         // escape ' to avoid accidentally ending the string in $code
         return sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, '[]');
     }
