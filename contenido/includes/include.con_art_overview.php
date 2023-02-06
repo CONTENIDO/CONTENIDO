@@ -163,29 +163,32 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         || $perm->have_perm_area_action_item('con_tplcfg', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat))
     {
 
-        // Simple SQL statement to get the number of articles in selected language
-        $sql_count_in_selected_language = "SELECT
-                    COUNT(*) AS article_count
-                 FROM
-                    " . $cfg["tab"]["art_lang"] . " AS a,
-                    " . $cfg["tab"]["art"] . " AS b,
-                    " . $cfg["tab"]["cat_art"] . " AS c
-                 WHERE
-                    a.idlang   = " . cSecurity::toInteger($lang) . "  AND
-                    a.idart     = b.idart AND
-                    b.idclient  = " . cSecurity::toInteger($client) . " AND
-                    b.idart     = c.idart AND
-                    c.idcat     = " . cSecurity::toInteger($idcat);
+        // SQL template to get number of articles in category for current client and language
+        $articleCountSql = "SELECT
+                        COUNT(*) AS article_count
+                     FROM
+                        " . cRegistry::getDbTableName('art_lang') . " AS a,
+                        " . cRegistry::getDbTableName('art') . " AS b,
+                        " . cRegistry::getDbTableName('cat_art') . " AS c
+                     WHERE
+                        (a.idlang   = " . cSecurity::toInteger($lang) . " {SYNCOPTIONS}) AND
+                        a.idart     = b.idart AND
+                        b.idclient  = " . cSecurity::toInteger($client) . " AND
+                        b.idart     = c.idart AND
+                        c.idcat     = " . cSecurity::toInteger($idcat);
 
-        $db->query($sql_count_in_selected_language);
+        // Get number of articles in category for current client and language
+        // Remove the {SYNCOPTIONS} placeholder, we need this below again!
+        $sql = str_replace('{SYNCOPTIONS}', '', $articleCountSql);
+        $db->query($sql);
         $db->nextRecord();
-        $articles_in_selected_language = $db->f("article_count");
+        $articlesInSelectedLanguage = cSecurity::toInteger($db->f('article_count'));
 
         // Sortby and sortmode
         $sortby = $currentuser->getUserProperty("system", "sortorder-idlang-$lang-idcat-$idcat");
         $sortmode = $currentuser->getUserProperty("system", "sortmode-idlang-$lang-idcat-$idcat");
 
-        // Main SQL statement
+        // Main SQL statement template
         $sql = "SELECT
                     a.idart AS idart,
                     a.idlang AS idlang,
@@ -205,9 +208,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     a.redirect AS redirect,
                     a.locked AS locked
                  FROM
-                    " . $cfg["tab"]["art_lang"] . " AS a,
-                    " . $cfg["tab"]["art"] . " AS b,
-                    " . $cfg["tab"]["cat_art"] . " AS c
+                    " . cRegistry::getDbTableName('art_lang') . " AS a,
+                    " . cRegistry::getDbTableName('art') . " AS b,
+                    " . cRegistry::getDbTableName('cat_art') . " AS c
                  WHERE
                     (a.idlang   = " . $lang . " {SYNCOPTIONS}) AND
                     a.idart     = b.idart AND
@@ -218,30 +221,17 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         // Simple SQL statement to get the number of articles
         // Only with activated synchonization mode
         if ($syncoptions != -1) {
-            $sql_count = "SELECT
-                        COUNT(*) AS article_count
-                     FROM
-                        " . $cfg["tab"]["art_lang"] . " AS a,
-                        " . $cfg["tab"]["art"] . " AS b,
-                        " . $cfg["tab"]["cat_art"] . " AS c
-                     WHERE
-                        (a.idlang   = " . cSecurity::toInteger($lang) . " {SYNCOPTIONS}) AND
-                        a.idart     = b.idart AND
-                        b.idclient  = " . cSecurity::toInteger($client) . " AND
-                        b.idart     = c.idart AND
-                        c.idcat     = " . cSecurity::toInteger($idcat);
-
             $sql = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $sql);
-            $sql_count = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $sql_count);
 
             if ($elemperpage > 1) {
-                $db->query($sql_count);
+                $sqlCount = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $articleCountSql);
+                $db->query($sqlCount);
                 $db->nextRecord();
                 $iArticleCount = $db->f("article_count");
             }
         } else {
             $sql = str_replace("{SYNCOPTIONS}", '', $sql);
-            $iArticleCount = $articles_in_selected_language;
+            $iArticleCount = $articlesInSelectedLanguage;
         }
 
         // Article sort
@@ -266,10 +256,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // Getting article count, if necessary
         if ($elemperpage > 0) {
-
             // If the synchronized mode is on, perhaps we must increase the limit
             if ($elemperpage < $iArticleCount) {
-                $add = $iArticleCount - $articles_in_selected_language;
+                $add = $iArticleCount - $articlesInSelectedLanguage;
                 $elemperpage = $elemperpage + $add;
             }
 
@@ -365,8 +354,6 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $lngReminderForArticleX = i18n("Reminder for article '%s'");
         $lngReminderForArticleXCategoryX = i18n("Reminder for article '%s'\nCategory: %s");
         $lngAreYouSureToDeleteTheFollowingArticleX = i18n("Are you sure to delete the following article:<br><br><b>%s</b>");
-
-// region REWORK_ARTICLE_FOREACH
 
         foreach ($aArticles as $sart) {
             $idart = $sart["idart"];
@@ -509,7 +496,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             $tmp_sync = '';
             if ($idlang != $lang) {
-                $sql = "SELECT idcatlang FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat='" . cSecurity::toInteger($idcat) . "' AND idlang='" . cSecurity::toInteger($lang) . "'";
+                $sql = "SELECT idcatlang FROM " . cRegistry::getDbTableName('cat_lang') . " WHERE idcat='" . cSecurity::toInteger($idcat) . "' AND idlang='" . cSecurity::toInteger($lang) . "'";
                 $db->query($sql);
 
                 if ($db->nextRecord()) {
@@ -713,7 +700,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
                         // add properties button
                         if ($tmp_sync != '') {
-                            $actions[] = '<a id="properties" href="main.php?area=con_editart&action=con_edit&frame=4&idcat=' . $idcat . '&idart=' . $idart . '&contenido=' . $contenido . '">
+                            $actions[] = '<a href="main.php?area=con_editart&action=con_edit&frame=4&idcat=' . $idcat . '&idart=' . $idart . '&contenido=' . $contenido . '">
                                 <img class="vAlignMiddle tableElement" onmouseover="this.style.cursor=\'pointer\'" src="images/but_art_conf2.gif" title="' . $lngDisplayProperties . '" alt="' . $lngDisplayProperties . '" style="cursor: pointer;">
                             </a>';
                         }
@@ -733,8 +720,6 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $artlist[$tmp_rowid]['templateDescription'] = $templateDescription;
             }
         }
-
-// endregion REWORK_ARTICLE_FOREACH
 
         $headers = [];
 
@@ -902,11 +887,11 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     b.name AS name,
                     d.idtpl AS idtpl
                 FROM
-                    (" . $cfg["tab"]["cat"] . " AS a,
-                    " . $cfg["tab"]["cat_lang"] . " AS b,
-                    " . $cfg["tab"]["tpl_conf"] . " AS c)
+                    (" . cRegistry::getDbTableName('cat') . " AS a,
+                    " . cRegistry::getDbTableName('cat_lang') . " AS b,
+                    " . cRegistry::getDbTableName('tpl_conf') . " AS c)
                 LEFT JOIN
-                    " . $cfg["tab"]["tpl"] . " AS d
+                    " . cRegistry::getDbTableName('tpl') . " AS d
                 ON
                     d.idtpl = c.idtpl
                 WHERE
