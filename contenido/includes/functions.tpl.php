@@ -66,7 +66,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         // Insert new entry in the template table
         $templateColl = new cApiTemplateCollection();
         $template = $templateColl->create($client, $idlay, 0, $name, $description, 1, 0, 0);
-        $idtpl = $template->get('idtpl');
+        $idtpl = cSecurity::toInteger($template->get('idtpl'));
 
         // Insert new entry in the template configuration table
         $templateConfColl = new cApiTemplateConfigurationCollection();
@@ -569,6 +569,58 @@ function tplGetInUsedData($idtpl) {
     }
 
     return $aUsedData;
+}
+
+/**
+ * Returns the informatiopn about a template and the referenced layout.
+ *
+ * @since CONTENIDO 4.10.2
+ * @param int $idtpl Template id
+ * @return array Assoziative array as follows or an empty array
+ *               <pre>
+ *               [
+ *                   [idtpl] => (int)
+ *                   [name] => (string)
+ *                   [description] => (string)
+ *                   [defaulttemplate] => (int)
+ *                   [idlay] => (int)
+ *                   [laydescription] => (string)
+ *               ]
+ *               </pre>
+ * @throws cDbException|cInvalidArgumentException
+ */
+function tplGetTplAndLayoutData($idtpl) {
+    $idtpl = cSecurity::toInteger($idtpl);
+
+    $db = cRegistry::getDb();
+
+    $sql = "-- tplGetTplAndLayoutData()
+        SELECT
+            a.idtpl,
+            a.name AS name,
+            a.description,
+            a.defaulttemplate,
+            a.idlay,
+            b.description AS laydescription
+        FROM
+            " . cRegistry::getDbTableName('tpl') . " AS a
+        LEFT JOIN
+            " . cRegistry::getDbTableName('lay') . " AS b 
+        ON a.idlay = b.idlay
+        WHERE a.idtpl = " . $idtpl . "
+        ORDER BY name";
+
+    $db->query($sql);
+    if ($db->nextRecord()) {
+        $data = $db->toArray();
+        foreach (['idtpl', 'idlay', 'defaulttemplate'] as $field) {
+            $data[$field] = cSecurity::toInteger($data[$field]);
+        }
+    } else {
+        $data = [];
+    }
+
+    return $data;
 }
 
 /**
