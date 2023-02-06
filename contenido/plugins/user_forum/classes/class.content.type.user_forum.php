@@ -223,14 +223,20 @@ $code
      *         shown in frontend
      */
     public function generateViewCode() {
-        $code = '";?' . '><' . '?php $form = new %s(\'%s\', %s, %s); echo $form->buildCode(); ?' . '><' . '?php echo "';
+        $code = '<?php
+            $form = new %s(\'%s\', %s, %s);
+            echo $form->buildCode();
+        ?>';
+
+        $code = $this->_wrapPhpViewCode($code);
+
         return sprintf($code, get_class($this), $this->_rawSettings, $this->_id, '[]');
     }
 
     /**
      * Get code of form (either GET or POST request).
      *
-     * @return string escaped HTML code which sould be shown if content type is
+     * @return string escaped HTML code which should be shown if content type is
      *         shown in frontend
      */
     public function buildCode() {

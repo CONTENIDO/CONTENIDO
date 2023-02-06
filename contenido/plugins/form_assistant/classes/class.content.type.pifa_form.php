@@ -720,18 +720,22 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     /**
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
-     * This code is cached. Thatfor ist no more than the initialisation of this
-     * class and the call of its method buildCode(). Otherwise the generated
+     * This code is cached. That for ist no more than the initialisation of this
+     * class and the call of its method buildCode(). Otherwise, the generated
      * HTML would have been cached.
      *
-     * @return string escaped HTML code which sould be shown if content type is
+     * @return string escaped HTML code which should be shown if content type is
      *         shown in frontend
      */
     public function generateViewCode() {
-        $code = '";?' . '><' . '?php $form = new %s(\'%s\', %s, %s); echo $form->buildCode(); ?' . '><' . '?php echo "';
-        $code = sprintf($code, get_class($this), $this->_rawSettings, $this->_id, '[]');
+        $code = '<?php
+            $form = new %s(\'%s\', %s, %s);
+            echo $form->buildCode();
+        ?>';
 
-        return $code;
+        $code = $this->_wrapPhpViewCode($code);
+
+        return sprintf($code, get_class($this), $this->_rawSettings, $this->_id, '[]');
     }
 
     /**

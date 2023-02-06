@@ -233,10 +233,12 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      */
     public function generateViewCode()
     {
-        $code = '";?><?php
-$teaser = new cContentTypeTeaser(\'%s\', %s, %s);
-echo $teaser->generateTeaserCode();
-?><?php echo "';
+        $code = '<?php
+            $teaser = new cContentTypeTeaser(\'%s\', %s, %s);
+            echo $teaser->generateTeaserCode();
+        ?>';
+
+        $code = $this->_wrapPhpViewCode($code);
 
         // escape ' to avoid accidentally ending the string in $code
         return sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, '[]');
