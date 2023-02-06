@@ -205,7 +205,7 @@ class cArticleOverviewHelper {
     /**
      * Checks if the article is in use by another user.
      *
-     * @param $idartlang
+     * @param int $idartlang Article language id
      * @return bool
      * @throws cDbException|cException
      */
@@ -239,7 +239,7 @@ class cArticleOverviewHelper {
     /**
      * Checks if the article is used in multiple categories.
      *
-     * @param $idart
+     * @param int $idart Article id
      * @return bool
      * @throws cDbException|cInvalidArgumentException
      */
@@ -248,7 +248,7 @@ class cArticleOverviewHelper {
 
         if (!isset($this->_articleInMultipleUse)) {
             $this->_articleInMultipleUse = [];
-            $sql ="SELECT `idart`, COUNT(*) AS `count` FROM `%s` GROUP BY `idart` HAVING `count` > 1";
+            $sql = "SELECT `idart`, COUNT(*) AS `count` FROM `%s` GROUP BY `idart` HAVING `count` > 1";
             $this->_db->query($sql, cRegistry::getDbTableName('cat_art'));
             while ($this->_db->nextRecord()) {
                 $_idart = cSecurity::toInteger($this->_db->f('idart'));
@@ -262,7 +262,7 @@ class cArticleOverviewHelper {
     /**
      * Returns the user of an article, which is marked as "in use".
      *
-     * @param int $idartlang
+     * @param int $idartlang Article language id
      * @return cApiUser|null
      * @throws cDbException|cException
      */
@@ -280,7 +280,7 @@ class cArticleOverviewHelper {
     /**
      * Returns the article template info array.
      *
-     * @param int $idartlang
+     * @param int $idartlang Article language id
      * @return array|mixed
      * @throws cDbException|cInvalidArgumentException
      */
