@@ -214,7 +214,7 @@ if ($action == 'tpl_delete' || $action == 'tpl_new') {
 $page->setContent([$form]);
 
 $postIdTpl = cSecurity::toInteger($_POST['idtpl'] ?? '0');
-if ($postIdTpl <= 0 && $idtpl > 0) {
+if ($postIdTpl <= 0 && $idtpl > 0 && $action === 'tpl_edit') {
     $page->displayOk(i18n("Created new Template successfully!"));
 } elseif ($idtpl > 0 && (isset($_POST['submit_x']) || ($postIdTpl == $idtpl && $action != 'tpl_new'))) {
     $page->displayOk(i18n("Saved changes successfully!"));
