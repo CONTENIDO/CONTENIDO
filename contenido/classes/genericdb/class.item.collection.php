@@ -987,7 +987,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *     ]
      *     </pre>
      *     If the array contains keys, the key will be used as alias for the
-     *    class name.
+     *     class name.
      *     <pre>
      *      [
      *          'client' => 'cApiClientCollection'
