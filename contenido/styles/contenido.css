@@ -1965,7 +1965,7 @@ div.errorlist {
 
 .alltranslations td input.vAlignTop {
     float: none;
-    display: block;
+    display: inline-block;
 }
 
 .alltranslations td.actions {
