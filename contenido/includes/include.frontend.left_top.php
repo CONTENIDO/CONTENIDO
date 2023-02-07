@@ -232,15 +232,17 @@ $oSelectSearchIn->autoFill($aFieldsToSearch);
 $oSelectSearchIn->setDefault($requestSearchIn);
 
 $fegroups = new cApiFrontendGroupCollection();
-$fegroups->setWhere("idclient", $client);
+$fegroups->setWhere('idclient', $client);
+$fegroups->addResultField('idfrontendgroup');
+$fegroups->addResultField('groupname');
 $fegroups->query();
 
 $aFEGroups = [
     "--all--" => i18n("-- All Groups --")
 ];
 
-while ($fegroup = $fegroups->next()) {
-    $aFEGroups[$fegroup->get("idfrontendgroup")] = $fegroup->get("groupname");
+foreach ($fegroups->fetchTable(['idfrontendgroup' => 'idfrontendgroup', 'groupname' => 'groupname']) as $entry) {
+    $aFEGroups[$entry['idfrontendgroup']] = $entry['groupname'];
 }
 
 $oSelectRestrictGroup = new cHTMLSelectElement("restrictgroup");
