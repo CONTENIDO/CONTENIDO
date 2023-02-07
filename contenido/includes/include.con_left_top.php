@@ -103,10 +103,10 @@ $bsSearchDateToYear        = max(0, (int)$bsSearchDateToYear);
 $userColl = new cApiUserCollection();
 $userColl->addResultField('username');
 $userColl->addResultField('realname');
-$userColl->select();
+$userColl->query();
 $arrUsers = ['n/a' => '-'];
-while ($userItem = $userColl->next()) {
-    $arrUsers[$userItem->get('username')] = $userItem->get('realname') ?? $userItem->get('username');
+foreach ($userColl->fetchTable(['username' => 'username', 'realname' => 'realname']) as $entry) {
+    $arrUsers[$entry['username']] = $entry['realname'] ?? $entry['username'];
 }
 
 $articleLink = "editarticle";
@@ -228,12 +228,13 @@ $tpl->next();
 
 // Get templates
 $templateColl = new cApiTemplateCollection();
-$templateColl->addResultField('idtpl');
 $templateColl->addResultField('name');
-$templateColl->select('`idclient` = ' . cSecurity::toInteger($client), '', 'name');
-while ($templateItem = $templateColl->next()) {
-    $tpl->set('d', 'VALUE', cSecurity::toInteger($templateItem->get('idtpl')));
-    $tpl->set('d', 'CAPTION', $templateItem->get('name'));
+$templateColl->setWhere('idclient', cSecurity::toInteger($client));
+$templateColl->setOrder('name');
+$templateColl->query();
+foreach ($templateColl->fetchTable(['idtpl' => 'idtpl', 'name' => 'name']) as $entry) {
+    $tpl->set('d', 'VALUE', cSecurity::toInteger($entry['idtpl']));
+    $tpl->set('d', 'CAPTION', $entry['name']);
     $tpl->set('d', 'SELECTED', '');
     $tpl->next();
 }
