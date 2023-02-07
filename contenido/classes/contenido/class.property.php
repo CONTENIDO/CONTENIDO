@@ -378,7 +378,7 @@ class cApiPropertyCollection extends ItemCollection {
             }
         } else {
             $item = $this->create($itemtype, $itemid, $type, $name, $value, true);
-            $result = is_object($result);
+            $result = is_object($item);
         }
 
         return $result;
