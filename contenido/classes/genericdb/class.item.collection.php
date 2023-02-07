@@ -248,7 +248,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Method to set the accompanying item object.
      *
      * @param string $sClassName
-     *         Specifies the classname of item
+     *         Specifies the class name of item which extends from {@see Item}
      * @throws cInvalidArgumentException
      *         if the given class can not be instantiated
      */
@@ -274,7 +274,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *         If true, forces the driver to initialize, even if it already exists.
      */
     protected function _initializeDriver($bForceInit = false) {
-        if (!is_object($this->_driver) || $bForceInit == true) {
+        if (!is_object($this->_driver) || $bForceInit) {
             $this->_driver = new cGenericDbDriverMysql();
         }
     }
@@ -412,12 +412,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *         With all where statements
      */
     protected function _buildGroupWhereStatements() {
-        $aGroupWhere = [];
-
-        $mLastGroup = false;
-        $sGroupWhereStatement = '';
-
         // Find out if there are any defined groups
+        $aGroupWhere = [];
         if (count($this->_where['groups']) > 0) {
             // Step through all groups
             foreach ($this->_where['groups'] as $groupname => $group) {
@@ -440,8 +436,10 @@ abstract class ItemCollection extends cItemBaseAbstract {
         }
 
         // Combine groups
+        $sGroupWhereStatement = '';
+        $mLastGroup = false;
         foreach ($aGroupWhere as $groupname => $group) {
-            if ($mLastGroup != false) {
+            if ($mLastGroup !== false) {
                 $sOperator = 'AND';
                 // Check if there's a group condition
                 if (isset($this->_groupConditions[$groupname])) {
@@ -522,10 +520,22 @@ abstract class ItemCollection extends cItemBaseAbstract {
             if ($matches !== false) {
                 if (isset($matches['desttable'])) {
                     // Driver function: Build query parts
-                    $aParameters[] = $this->_driver->buildJoinQuery($matches['desttable'], cString::toLowerCase($matches['destclass']), $matches['key'], cString::toLowerCase($matches['sourceclass']), $matches['key']);
+                    $aParameters[] = $this->_driver->buildJoinQuery(
+                        $matches['desttable'],
+                        cString::toLowerCase($matches['destclass']),
+                        $matches['key'],
+                        cString::toLowerCase($matches['sourceclass']),
+                        $matches['key']
+                    );
                 } else {
                     foreach ($matches as $match) {
-                        $aParameters[] = $this->_driver->buildJoinQuery($match['desttable'], cString::toLowerCase($match['destclass']), $match['key'], cString::toLowerCase($match['sourceclass']), $match['key']);
+                        $aParameters[] = $this->_driver->buildJoinQuery(
+                            $match['desttable'],
+                            cString::toLowerCase($match['destclass']),
+                            $match['key'],
+                            cString::toLowerCase($match['sourceclass']),
+                            $match['key']
+                        );
                     }
                 }
             } else {
@@ -659,8 +669,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
     /**
      * Sets the result order part of the query
-     * (e.
-     * g. "fieldname", "fieldname DESC", "fieldname DESC, field2name ASC")
+     * (e.g. 'fieldname', 'fieldname DESC', 'fieldname DESC, field2name ASC')
      *
      * @param string $order
      */
@@ -886,7 +895,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      */
     public function exists($mId) {
         $oDb = $this->_getSecondDBInstance();
-        $sql = "SELECT `%s` FROM %s WHERE %s='%s'";
+        $sql = "SELECT `%s` FROM `%s` WHERE `%s` = '%s'";
         $oDb->query($sql, $this->getPrimaryKeyName(), $this->table, $this->getPrimaryKeyName(), $mId);
         return $oDb->nextRecord();
     }
@@ -909,7 +918,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
                 $ret = $this->loadItem($this->db->f($this->getPrimaryKeyName()));
             }
 
-            if ($ret->get($this->getPrimaryKeyName()) == "") {
+            if ($ret->get($this->getPrimaryKeyName()) == '') {
                 continue;
             } else {
                 break;
@@ -937,62 +946,87 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
     /**
-     * Notes:
-     * If the array contains keys, the key will be used as alias for the field.
-     * Example: ['id' => 'idcat'] will put 'idcat' into field 'id'
-     * $aObjects = array with the objects to fetch. Notes: If the array contains
-     * keys, the key will be used as alias for the object. If you specify more
-     * than one object with the same key, the array will be multidimensional.
+     * Fetches the result of a previous run query (e.g. `$obj->query()`) into a
+     * desired result list.
      *
-     * @param array $aFields  [optional]
-     *                        array with the fields to fetch
-     * @param array $aObjects [optional]
+     * @param array $aFields  [optional] Array of fields to fetch from the result.
+     *     If it is an indexed array, the value will be used for the field.
+     *     <pre>
+     *      [
+     *          'idclient',
+     *          'name'
+     *     ]
+     *     </pre>
+     *     If the array contains keys, the key will be used as alias for the field.
+     *     <pre>
+     *      [
+     *          'clientId' => 'idclient',
+     *          'clientName' => 'name'
+     *     ]
+     *     </pre>
+     * @param array $aClassNames [optional] Array of class names, which extends
+     *     the {@see ItemCollection}, to fetch from the result.
+     *     If it is an indexed array, the value will be used for the class name.
+     *     <pre>
+     *      [
+     *          'cApiClientCollection'
+     *     ]
+     *     </pre>
+     *     If the array contains keys, the key will be used as alias for the
+     *    class name.
+     *     <pre>
+     *      [
+     *          'client' => 'cApiClientCollection'
+     *     ]
+     *     </pre>
+     *     If you specify more than one class name with the same key, the array
+     *     will be multidimensional.
+     *
      * @return array
      * @throws cDbException
      * @throws cException
      */
-    public function fetchTable(array $aFields = [], array $aObjects = []) {
-        $row = 1;
-        $aTable = [];
-
+    public function fetchTable(array $aFields = [], array $aClassNames = []) {
         if ($this->count() > 0) {
+            return [];
+        }
 
-            $this->db->seek(0);
+        $this->db->seek(0);
 
-            while ($this->db->nextRecord()) {
-                foreach ($aFields as $alias => $field) {
-                    if ($alias != '') {
-                        $aTable[$row][$alias] = $this->db->f($field);
-                    } else {
-                        $aTable[$row][$field] = $this->db->f($field);
-                    }
+        $aTable = [];
+        $row = 1;
+        while ($this->db->nextRecord()) {
+            foreach ($aFields as $alias => $field) {
+                if ($alias != '') {
+                    $aTable[$row][$alias] = $this->db->f($field);
+                } else {
+                    $aTable[$row][$field] = $this->db->f($field);
                 }
-
-                // Fetch objects
-                foreach ($aObjects as $alias => $object) {
-                    if ($alias != '') {
-                        if (isset($aTable[$row][$alias])) {
-                            // Is set, check for array. If no array, create one
-                            if (is_array($aTable[$row][$alias])) {
-                                $aTable[$row][$alias][] = $this->fetchObject($object);
-                            } else {
-                                // $tmpObj = $aTable[$row][$alias];
-                                $aTable[$row][$alias] = [];
-                                $aTable[$row][$alias][] = $this->fetchObject($object);
-                            }
-                        } else {
-                            $aTable[$row][$alias] = $this->fetchObject($object);
-                        }
-                    } else {
-                        $aTable[$row][$object] = $this->fetchObject($object);
-                    }
-                }
-                $row++;
             }
 
-            $this->db->seek(0);
-
+            // Fetch objects
+            foreach ($aClassNames as $alias => $object) {
+                if ($alias != '') {
+                    if (isset($aTable[$row][$alias])) {
+                        // Is set, check for array. If no array, create one
+                        if (is_array($aTable[$row][$alias])) {
+                            $aTable[$row][$alias][] = $this->fetchObject($object);
+                        } else {
+                            // $tmpObj = $aTable[$row][$alias];
+                            $aTable[$row][$alias] = [];
+                            $aTable[$row][$alias][] = $this->fetchObject($object);
+                        }
+                    } else {
+                        $aTable[$row][$alias] = $this->fetchObject($object);
+                    }
+                } else {
+                    $aTable[$row][$object] = $this->fetchObject($object);
+                }
+            }
+            $row++;
         }
+
+        $this->db->seek(0);
 
         return $aTable;
     }
@@ -1000,19 +1034,19 @@ abstract class ItemCollection extends cItemBaseAbstract {
     /**
      * Returns an array of arrays
      *
-     * @param array $aObjects
-     *         With the correct order of the objects
+     * @param array $aClassNames
+     *         With the correct order of the class names which extend from
+     *         {@see Item}
      * @return array
      *         Result
      * @throws cDbException
      * @throws cException
      */
-    public function queryAndFetchStructured(array $aObjects) {
+    public function queryAndFetchStructured(array $aClassNames) {
         $aOrder = [];
         $aFetchObjects = [];
-        $aResult = [];
 
-        foreach ($aObjects as $object) {
+        foreach ($aClassNames as $object) {
             $x = new $object();
             $object = cString::toLowerCase($object);
             $aOrder[] = $object . '.' . $x->getPrimaryKeyName() . ' ASC';
@@ -1024,6 +1058,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         $this->db->seek(0);
 
+        $aResult = [];
         while ($this->db->nextRecord()) {
             $aResult = $this->_recursiveStructuredFetch($aFetchObjects, $aResult);
         }
@@ -1032,10 +1067,25 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
     /**
+     * Loops through the current result of the last run query, and collects the
+     * result recursively by instantiating the proper Item object for each entry
+     * in `$aObjects` parameter.
      *
-     * @param array $aObjects
-     * @param array $aResult
-     * @return array
+     * @param Item[]|object[] $aObjects List of objects which extend from {@see Item}.
+     * @param array $aResult Array of results where the key is the primary key
+     *    of the object and the value is an assoziative structure, e.g.
+     *    <pre>
+     *    $aResult = [
+     *        '123' => [
+     *            'class' => (string) Class name in lower-case
+     *            'object' => (Item|object) The object instance
+     *            'items' => (Item[]|object[]|null) Recursive structure
+     *        ],
+     *        ...
+     *    ];
+     *    </pre>
+     *
+     * @return array The passed array being updated within the function.
      */
     protected function _recursiveStructuredFetch(array $aObjects, array $aResult) {
         $i = array_shift($aObjects);
@@ -1229,7 +1279,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $aIds = [];
 
         // Get all ids
-        $sql = 'SELECT ' . $this->getPrimaryKeyName() . ' AS pk FROM `' . $this->table . '` WHERE ' . $sWhere;
+        $sql = 'SELECT `' . $this->getPrimaryKeyName() . '` AS `pk` FROM `' . $this->table . '` WHERE ' . $sWhere;
         $oDb->query($sql);
         while ($oDb->nextRecord()) {
             $aIds[] = $oDb->f('pk');
@@ -1294,7 +1344,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $aIds = [];
 
         // Get all ids
-        $sql = 'SELECT ' . $this->getPrimaryKeyName() . ' AS pk FROM `' . $this->table . '`';
+        $sql = 'SELECT `' . $this->getPrimaryKeyName() . '` AS `pk` FROM `' . $this->table . '`';
         $oDb->query($sql);
         while ($oDb->nextRecord()) {
             $aIds[] = $oDb->f('pk');
@@ -1384,7 +1434,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $oDb = $this->_getSecondDBInstance();
 
         // delete db entry
-        $sql = "DELETE FROM `%s` WHERE %s = '%s'";
+        $sql = "DELETE FROM `%s` WHERE `%s` = '%s'";
         $oDb->query($sql, $this->table, $this->getPrimaryKeyName(), $mId);
         $success = $oDb->affectedRows();
 
@@ -1434,7 +1484,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
             'escape'
         ], $aIds);
         $in = "'" . implode("', '", $aEscapedIds) . "'";
-        $sql = "DELETE FROM `%s` WHERE %s IN (" . $in . ")";
+        $sql = "DELETE FROM `%s` WHERE `%s` IN (" . $in . ")";
         $oDb->query($sql, $this->table, $this->getPrimaryKeyName());
         $numAffected = $oDb->affectedRows();
 
@@ -1499,4 +1549,5 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         return $aResult;
     }
+
 }
