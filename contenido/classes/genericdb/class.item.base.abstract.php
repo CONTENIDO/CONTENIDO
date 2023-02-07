@@ -248,7 +248,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
     }
 
     /**
-     * Get the primary key name in database
+     * Get the primary key name of the corresponding table
      * @return string
      *         Name of primary key
      */
@@ -308,10 +308,9 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @return cApiPropertyCollection
      */
     protected function _getPropertiesCollectionInstance($idclient = 0) {
-        $client = cRegistry::getClientId();
-
-        if ((int) $idclient <= 0) {
-            $idclient = $client;
+        $idclient = cSecurity::toInteger($idclient);
+        if ($idclient <= 0) {
+            $idclient = cSecurity::toInteger(cRegistry::getClientId());
         }
 
         // Runtime on-demand allocation of the properties object
@@ -319,7 +318,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
             $this->properties = new cApiPropertyCollection();
         }
 
-        if ((int) $idclient > 0) {
+        if ($idclient > 0) {
             $this->properties->changeClient($idclient);
         }
 
