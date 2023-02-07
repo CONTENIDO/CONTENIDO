@@ -101,11 +101,11 @@ $bsSearchDateToYear        = max(0, (int)$bsSearchDateToYear);
 
 // get users
 $userColl = new cApiUserCollection();
-$userColl->addResultField('username');
-$userColl->addResultField('realname');
+$userColl->addResultFields(['username', 'realname']);
 $userColl->query();
+$fetchFields = ['username' => 'username', 'realname' => 'realname'];
 $arrUsers = ['n/a' => '-'];
-foreach ($userColl->fetchTable(['username' => 'username', 'realname' => 'realname']) as $entry) {
+foreach ($userColl->fetchTable($fetchFields) as $entry) {
     $arrUsers[$entry['username']] = $entry['realname'] ?? $entry['username'];
 }
 

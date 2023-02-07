@@ -422,8 +422,7 @@ class cContentVersioning {
         $artLangVersionMap = [];
 
         $artLangVersionColl = new cApiArticleLanguageVersionCollection();
-        $artLangVersionColl->addResultField('version');
-        $artLangVersionColl->addResultField('lastmodified');
+        $artLangVersionColl->addResultFields(['version', 'lastmodified']);
         $artLangVersionColl->setWhere('idartlang', $idArtLang);
         $artLangVersionColl->setOrder('version desc');
 

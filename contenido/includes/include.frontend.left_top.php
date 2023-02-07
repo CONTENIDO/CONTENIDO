@@ -233,15 +233,15 @@ $oSelectSearchIn->setDefault($requestSearchIn);
 
 $fegroups = new cApiFrontendGroupCollection();
 $fegroups->setWhere('idclient', $client);
-$fegroups->addResultField('idfrontendgroup');
-$fegroups->addResultField('groupname');
+$fegroups->addResultFields(['idfrontendgroup', 'groupname']);
 $fegroups->query();
+$fetchFields = ['idfrontendgroup' => 'idfrontendgroup', 'groupname' => 'groupname'];
 
 $aFEGroups = [
     "--all--" => i18n("-- All Groups --")
 ];
 
-foreach ($fegroups->fetchTable(['idfrontendgroup' => 'idfrontendgroup', 'groupname' => 'groupname']) as $entry) {
+foreach ($fegroups->fetchTable($fetchFields) as $entry) {
     $aFEGroups[$entry['idfrontendgroup']] = $entry['groupname'];
 }
 
