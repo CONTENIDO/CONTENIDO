@@ -27,16 +27,15 @@ cIncludePlugins('frontendusers');
 $feuser = new cApiFrontendUser();
 $feuser->loadByPrimaryKey($idfrontenduser);
 
+// Fetch all groups the user belongs to (no group, one group, more than one group).
+// The array $aFEGroup can be used in frontend user plugins to display self defined user properties group dependent.
 $oFEGroupMemberCollection = new cApiFrontendGroupMemberCollection();
 $oFEGroupMemberCollection->setWhere('idfrontenduser', $idfrontenduser);
 $oFEGroupMemberCollection->addResultField('idfrontendgroup');
 $oFEGroupMemberCollection->query();
-
-// Fetch all groups the user belongs to (no group, one group, more than one group).
-// The array $aFEGroup can be used in frontend user plugins to display self defined user properties group dependent.
 $aFEGroup = [];
-while ($oFEGroup = $oFEGroupMemberCollection->next()) {
-    $aFEGroup[] = $oFEGroup->get("idfrontendgroup");
+foreach ($oFEGroupMemberCollection->fetchTable(['idfrontendgroup' => 'idfrontendgroup']) as $entry) {
+    $aFEGroup[] = $entry['idfrontendgroup'];
 }
 
 if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "frontend_create")) {
