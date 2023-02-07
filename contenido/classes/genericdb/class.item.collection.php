@@ -950,18 +950,32 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * desired result list.
      *
      * @param array $aFields  [optional] Array of fields to fetch from the result.
-     *     If it is an indexed array, the value will be used for the field.
+     *     If it is an indexed array, the value will be used for the field, and
+     *     the result entries will be also an indexed array.
      *     <pre>
-     *      [
+     *     // Parameter `$aFields` as indexed array
+     *     [
      *          'idclient',
      *          'name'
      *     ]
+     *     // Will return a result where the entries are an indexed array like
+     *     [
+     *          1,
+     *          'Example Client'
+     *     ]
      *     </pre>
-     *     If the array contains keys, the key will be used as alias for the field.
+     *     If the array contains keys, the key will be used as alias for the field,
+     *     and the result entries will be also an assoziative array.
+     *     // Parameter `$aFields` as assoziative array
      *     <pre>
      *      [
      *          'clientId' => 'idclient',
      *          'clientName' => 'name'
+     *     ]
+     *     // Will return a result where the entries are an assoziative array like
+     *     [
+     *          'clientId' => 1,
+     *          'clientName' => 'Example Client'
      *     ]
      *     </pre>
      * @param array $aClassNames [optional] Array of class names, which extends
@@ -987,7 +1001,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @throws cException
      */
     public function fetchTable(array $aFields = [], array $aClassNames = []) {
-        if ($this->count() > 0) {
+        if ($this->count() <= 0) {
             return [];
         }
 
