@@ -456,17 +456,113 @@ class ItemCollectionTest extends cTestingTestCase
     }
 
     /**
+     * Test {@see ItemCollection::addResultField()}
      */
     public function testAddResultField()
     {
-        $this->markTestIncomplete('incomplete implementation');
+        // Initial status
+        $dogColl = new DogCollection();
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEmpty($resultFields, 'Result fields are not empty');
+
+        // Add single result field
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name']);
+
+        // Add single result field in upper-case
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('NAME');
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name']);
+
+        // Add several result fields
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $dogColl->addResultField('descr');
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name', 'descr']);
     }
 
     /**
+     * Test {@see ItemCollection::removeResultField()}
      */
     public function testRemoveResultField()
     {
-        $this->markTestIncomplete('incomplete implementation');
+        // Remove a result field
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $dogColl->removeResultField('name');
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, []);
+
+        // Remove an invalid result field
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $dogColl->removeResultField('invalid name');
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name']);
+
+        // Remove multiple result fields
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $dogColl->addResultField('descr');
+        $dogColl->removeResultField('name');
+        $dogColl->removeResultField('descr');
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, []);
+    }
+
+    /**
+     * Test {@see ItemCollection::addResultFields()}
+     */
+    public function testAddResultFields()
+    {
+        // Add single result field
+        $dogColl = new DogCollection();
+        $dogColl->addResultFields(['name']);
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name']);
+
+        // Add single result field in upper-case
+        $dogColl = new DogCollection();
+        $dogColl->addResultFields(['NAME']);
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name']);
+
+        // Add several result fields
+        $dogColl = new DogCollection();
+        $dogColl->addResultFields(['name', 'descr']);
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name', 'descr']);
+    }
+
+    /**
+     * Test {@see ItemCollection::removeResultFields()}
+     */
+    public function testRemoveResultFields()
+    {
+        // Remove a result field
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $dogColl->removeResultFields(['name']);
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, []);
+
+        // Remove an invalid result field
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $dogColl->removeResultFields(['invalid name']);
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name']);
+
+        // Remove multiple result fields
+        $dogColl = new DogCollection();
+        $dogColl->addResultFields(['name', 'descr']);
+        $dogColl->removeResultFields(['name', 'descr']);
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, []);
     }
 
     /**

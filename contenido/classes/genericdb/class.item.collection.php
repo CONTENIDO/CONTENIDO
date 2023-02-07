@@ -690,6 +690,18 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
     /**
+     * Adds multiple result fields
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string[] $aFields
+     */
+    public function addResultFields(array $aFields) {
+        foreach ($aFields as $field) {
+            $this->addResultField($field);
+        }
+    }
+
+    /**
      * Removes existing result field
      *
      * @param string $sField
@@ -699,6 +711,18 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $key = array_search($sField, $this->_resultFields);
         if ($key !== false) {
             unset($this->_resultFields[$key]);
+        }
+    }
+
+    /**
+     * Removes multiple result fields
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string[] $aFields
+     */
+    public function removeResultFields(array $aFields) {
+        foreach ($aFields as $field) {
+            $this->removeResultField($field);
         }
     }
 
