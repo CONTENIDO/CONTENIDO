@@ -128,8 +128,6 @@ function addSortImages($index, $text) {
 
 global $elemperpage;
 
-$GLOBALS['ttt'] = 1;
-
 $auth = cRegistry::getAuth();
 $perm = cRegistry::getPerm();
 $sess = cRegistry::getSession();
@@ -785,5 +783,3 @@ if (!$noResults) {
 $page->setMarkScript(2);
 $page->setEncoding($langobj->get('encoding'));
 $page->render();
-
-unset($GLOBALS['ttt']);
