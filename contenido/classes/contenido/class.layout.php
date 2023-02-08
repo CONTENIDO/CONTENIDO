@@ -88,6 +88,36 @@ class cApiLayoutCollection extends ItemCollection {
         return $item;
     }
 
+    /**
+     * Returns all used layout types.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param int|null $idclient  Id of client to limit the result for a specific client
+     * @param bool $sort Flag to sort the result
+     * @return array List of layout types
+     * @throws cDbException|cException
+     */
+    public function getAllUsedLayoutTypesPropertyValues($idclient = NULL, $sort = true) {
+        $propertyCollection = new cApiPropertyCollection();
+        $propertyCollection->addResultField('value');
+        if (is_numeric($idclient)) {
+            $propertyCollection->setWhere('idclient', $idclient);
+        }
+        $propertyCollection->setWhere('type', 'layout');
+        $propertyCollection->setWhere('name', 'used-types');
+        $propertyCollection->query();
+        $types = [];
+        foreach ($propertyCollection->fetchTable(['value']) as $entry) {
+            $types = array_merge(explode(';', $entry['value']), $types);
+        }
+        $types = array_unique($types);
+        if ($sort) {
+            sort($types);
+        }
+
+        return $types;
+    }
+
 }
 
 /**
@@ -156,7 +186,7 @@ class cApiLayout extends Item {
     }
 
     /**
-     * Get the informations of used templates
+     * Get the information of used templates
      *
      * @return array
      *         template data
