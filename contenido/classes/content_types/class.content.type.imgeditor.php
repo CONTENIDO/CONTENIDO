@@ -321,6 +321,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         }
 
         if (empty($filename)) {
+            $this->_rawSettings = '';
             return;
         }
 
