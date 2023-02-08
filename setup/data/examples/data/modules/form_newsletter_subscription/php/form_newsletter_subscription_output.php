@@ -24,13 +24,13 @@ if (class_exists('NewsletterJobCollection')) {
      * select (user), text or html OptNewWindow: Open handler window in new
      * browser window?
      */
-    $aSettings = array(
-        'JoinSel' => $oClientLang->getProperty('newsletter', 'joinsel'),
-        'JoinMultiple' => $oClientLang->getProperty('newsletter', 'joinmultiple'),
-        'JoinGroups' => $oClientLang->getProperty('newsletter', 'joingroups'),
+    $aSettings = [
+        'JoinSel'         => $oClientLang->getProperty('newsletter', 'joinsel'),
+        'JoinMultiple'    => $oClientLang->getProperty('newsletter', 'joinmultiple'),
+        'JoinGroups'      => $oClientLang->getProperty('newsletter', 'joingroups'),
         'JoinMessageType' => $oClientLang->getProperty('newsletter', 'joinmessagetype'),
-        'OptNewWindow' => "CMS_VALUE[4]"
-    );
+        'OptNewWindow'    => "CMS_VALUE[4]",
+    ];
 
     $sTemplate = 'get.tpl';
     $cmsLinkeditor = "CMS_LINKEDITOR[1]";

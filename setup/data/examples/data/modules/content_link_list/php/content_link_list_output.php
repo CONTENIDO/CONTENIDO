@@ -51,8 +51,8 @@ if (cRegistry::isBackendEditMode()) {
     $createLabel = NULL;
 }
 
-$val = array();
-$valDescription = array();
+$val            = [];
+$valDescription = [];
 // create typegenerator object
 $ocType = new cTypeGenerator();
 for ($i = 0; $i < $linkCount; $i++) {

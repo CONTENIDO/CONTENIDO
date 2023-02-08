@@ -18,28 +18,28 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 if (cRegistry::isBackendEditMode()) {
 
     // get links from content type TEXT with different indexes
-    $items = array(
-        'rss' => array(
+    $items = [
+        'rss'        => [
             'name' => mi18n("NAME_RSS"),
-            'link' => "CMS_TEXT[1]"
-        ),
-        'facebook' => array(
+            'link' => "CMS_TEXT[1]",
+        ],
+        'facebook'   => [
             'name' => mi18n("NAME_FACEBOOK"),
-            'link' => "CMS_TEXT[2]"
-        ),
-        'googleplus' => array(
+            'link' => "CMS_TEXT[2]",
+        ],
+        'googleplus' => [
             'name' => mi18n("NAME_GOOGLEPLUS"),
-            'link' => "CMS_TEXT[3]"
-        ),
-        'twitter' => array(
+            'link' => "CMS_TEXT[3]",
+        ],
+        'twitter'    => [
             'name' => mi18n("NAME_TWITTER"),
-            'link' => "CMS_TEXT[4]"
-        ),
-        'xing' => array(
+            'link' => "CMS_TEXT[4]",
+        ],
+        'xing'       => [
             'name' => mi18n("NAME_XING"),
-            'link' => "CMS_TEXT[5]"
-        )
-    );
+            'link' => "CMS_TEXT[5]",
+        ],
+    ];
 
     // use smarty template to output header text
     $tpl = cSmartyFrontend::getInstance();
