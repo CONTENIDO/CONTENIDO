@@ -1900,6 +1900,12 @@ div#legend table.article {
     cursor: pointer;
 }
 
+/* Module edit styles */
+#mod_edit .inputok,
+#mod_edit .outputok {
+    float: right;
+}
+
 /* Bulk Editing Functions on Article Overview and Mail Logging Page */
 a.flip_mark {
     float: left;
