@@ -107,7 +107,7 @@ class cApiLayoutCollection extends ItemCollection {
         $propertyCollection->setWhere('name', 'used-types');
         $propertyCollection->query();
         $types = [];
-        foreach ($propertyCollection->fetchTable(['value']) as $entry) {
+        foreach ($propertyCollection->fetchTable(['value' => 'value']) as $entry) {
             $types = array_merge(explode(';', $entry['value']), $types);
         }
         $types = array_unique($types);
