@@ -264,6 +264,7 @@ return [
     'cGenericDb' => 'contenido/classes/genericdb/class.genericdb.php',
     'cItemBaseAbstract' => 'contenido/classes/genericdb/class.item.base.abstract.php',
     'cItemCache' => 'contenido/classes/genericdb/class.item.cache.php',
+    'cItemCollectionChunkTrait' => 'contenido/classes/genericdb/trait.item.collection.chunk.php',
     'ItemCollection' => 'contenido/classes/genericdb/class.item.collection.php',
     'Item' => 'contenido/classes/genericdb/class.item.php',
     'cGuiBackendHelpbox' => 'contenido/classes/gui/class.backendhelpbox.php',
