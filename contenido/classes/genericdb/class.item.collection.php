@@ -25,6 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 abstract class ItemCollection extends cItemBaseAbstract {
 
+    use cItemCollectionChunkTrait;
+
     /**
      * Storage of all result items.
      * Contains all result items.
