@@ -28,10 +28,12 @@ if (0 < $searchResultIdart) {
 
     // determine action & method for search form
     if ($isModRewriteEnabled) {
-        $action = cUri::getInstance()->build(array(
-            'idart' => $searchResultIdart,
-            'lang' => cRegistry::getLanguageId()
-        ));
+        $action = cUri::getInstance()->build(
+            [
+                'idart' => $searchResultIdart,
+                'lang'  => cRegistry::getLanguageId(),
+            ]
+        );
     } else {
         $action = 'front_content.php';
     }

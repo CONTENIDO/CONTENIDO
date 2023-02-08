@@ -39,10 +39,12 @@ $resultClientLangs = $clientsLangInstance->fetchArray('idlang', 'idlang');
 
 // get all active languages of a client
 foreach ($resultClientLangs as $clientLang) {
-    $languageInstance->loadByMany(array(
-        'active' => '1',
-        'idlang' => $clientLang
-    ));
+    $languageInstance->loadByMany(
+        [
+            'active' => '1',
+            'idlang' => $clientLang,
+        ]
+    );
     if ($languageInstance->get('idlang')) {
         $allLanguages[] = $languageInstance->get('idlang');
     }

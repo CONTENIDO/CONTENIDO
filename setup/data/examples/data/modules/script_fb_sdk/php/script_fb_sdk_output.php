@@ -70,10 +70,13 @@ $idartChannel = getEffectiveSetting($settingType, 'idart-channel', 0);
 $idartChannel = cSecurity::toInteger($idartChannel);
 $channelUrl = '';
 if (0 < $idartChannel) {
-    $channelUrl = cUri::getInstance()->build(array(
-        'idart' => $idartChannel,
-        'lang' => cRegistry::getLanguageId()
-    ), true);
+    $channelUrl = cUri::getInstance()->build(
+        [
+            'idart' => $idartChannel,
+            'lang'  => cRegistry::getLanguageId(),
+        ],
+        true
+    );
 }
 
 // enable cookies to allow the server to access the session

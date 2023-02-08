@@ -15,14 +15,17 @@
 
 $tpl = cSmartyFrontend::getInstance();
 $tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
-$tpl->assign('trans', array(
-    'header' => mi18n("HEADER"),
-    'address' => mi18n("ADDRESS"),
-    'latitude' => mi18n("LATITUDE"),
-    'longitude' => mi18n("LONGITUDE"),
-    'markerTitle' => mi18n("MARKER_TITLE"),
-    'wayDescription' => mi18n("WAY_DESCRIPTION")
-));
+$tpl->assign(
+    'trans',
+    [
+        'header'         => mi18n("HEADER"),
+        'address'        => mi18n("ADDRESS"),
+        'latitude'       => mi18n("LATITUDE"),
+        'longitude'      => mi18n("LONGITUDE"),
+        'markerTitle'    => mi18n("MARKER_TITLE"),
+        'wayDescription' => mi18n("WAY_DESCRIPTION"),
+    ]
+);
 $tpl->assign('header', "CMS_HTMLHEAD[600]");
 $tpl->assign('address', "CMS_HTML[601]");
 $tpl->assign('lat', "CMS_TEXT[602]");

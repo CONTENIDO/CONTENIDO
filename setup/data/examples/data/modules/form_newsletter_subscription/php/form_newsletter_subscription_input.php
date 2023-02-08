@@ -20,13 +20,13 @@ $oClientLang       = new cApiClientLanguage(false, $client, $lang);
  *  OptNewWindow:    Open handler window in new browser window?
  */
 
-$aSettings = array(
+$aSettings = [
     'JoinSel'         => $oClientLang->getProperty('newsletter', 'joinsel'),
     'JoinMultiple'    => $oClientLang->getProperty('newsletter', 'joinmultiple'),
     'JoinGroups'      => $oClientLang->getProperty('newsletter', 'joingroups'),
     'JoinMessageType' => $oClientLang->getProperty('newsletter', 'joinmessagetype'),
     'OptNewWindow'    => "CMS_VALUE[4]",
-);
+];
 
 // Setting default values
 /*

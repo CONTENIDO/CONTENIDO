@@ -37,19 +37,19 @@ if (!class_exists('NewsletterJobCollection')) {
      * SenderEMail: Sender e-mail address HandlerID: ID of handler article
      * ChangeEMailID: ID of change e-mail handler article ???
      */
-    $aSettings = array(
-        'JoinSel' => $oClientLang->getProperty('newsletter', 'joinsel'),
-        'JoinMultiple' => $oClientLang->getProperty('newsletter', 'joinmultiple'),
-        'JoinGroups' => $oClientLang->getProperty('newsletter', 'joingroups'),
+    $aSettings = [
+        'JoinSel'         => $oClientLang->getProperty('newsletter', 'joinsel'),
+        'JoinMultiple'    => $oClientLang->getProperty('newsletter', 'joinmultiple'),
+        'JoinGroups'      => $oClientLang->getProperty('newsletter', 'joingroups'),
         'JoinMessageType' => $oClientLang->getProperty('newsletter', 'joinmessagetype'),
         // Note: Stored for client, as frontendusers are language independent
-        'FrontendLink' => $oClient->getProperty('newsletter', 'frontendlink'),
+        'FrontendLink'    => $oClient->getProperty('newsletter', 'frontendlink'),
         'FrontendConfirm' => "CMS_VALUE[5]",
-        'FrontendDel' => "CMS_VALUE[6]",
+        'FrontendDel'     => "CMS_VALUE[6]",
         // This one could be recycled by other modules...
-        'SenderEMail' => $oClient->getProperty('global', 'sender-email'),
-        'HandlerID' => $oClientLang->getProperty('newsletter', 'idcatart')
-    );
+        'SenderEMail'     => $oClient->getProperty('global', 'sender-email'),
+        'HandlerID'       => $oClientLang->getProperty('newsletter', 'idcatart'),
+    ];
 
     $sTemplate = 'get.tpl';
 
@@ -149,9 +149,9 @@ if (!class_exists('NewsletterJobCollection')) {
                 $sBody = mi18n("TXTMAILSUBSCRIBE") . "\n" . $frontendURL . "front_content.php?changelang=" . $lang . "&idcatart=" . $aSettings['HandlerID'] . "&confirm=" . $recipient->get("hash") . "\n\n";
 
                 $mailer = new cMailer();
-                $from = array(
-                    $aSettings['SenderEMail'] => $aSettings['SenderEMail']
-                );
+                $from = [
+                    $aSettings['SenderEMail'] => $aSettings['SenderEMail'],
+                ];
                 $recipients = $mailer->sendMail($from, $sEMail, mi18n("NEWSLETTER_CONFIRMATION"), $sBody);
 
                 if ($recipients > 0) {
@@ -205,9 +205,9 @@ if (!class_exists('NewsletterJobCollection')) {
             $sBody = mi18n("TXTMAILDELETE") . "\n" . $frontendURL . "front_content.php?changelang=" . $lang . "&idcatart=" . $aSettings['HandlerID'] . "&unsubscribe=" . $recipient->get("hash") . "\n\n";
 
             $mailer = new cMailer();
-            $from = array(
-                $aSettings['SenderEMail'] => $aSettings['SenderEMail']
-            );
+            $from = [
+                $aSettings['SenderEMail'] => $aSettings['SenderEMail'],
+            ];
             $recipients = $mailer->sendMail($from, $recipient->get('email'), mi18n("NEWSLETTER_CANCEL"), $sBody);
 
             if ($recipients > 0) {
@@ -244,7 +244,7 @@ if (!class_exists('NewsletterJobCollection')) {
             $oNewsletters->query();
 
             if (($oNewsletter = $oNewsletters->next()) !== false) {
-                $aRecipients = array(); // Needed, as used by reference
+                $aRecipients = []; // Needed, as used by reference
                 $oNewsletter->sendDirect($aSettings['HandlerID'], $iID, false, $aRecipients);
                 $sMessage .= mi18n("WELCOME_NEWSLETTER");
             }
@@ -270,9 +270,9 @@ _BR ") . $sPassword;
                     $sBody = mi18n("TXTMAILPASSWORD") . "\n\n" . mi18n("USERNAME_COLON") . $sEMail . "\n" . mi18n("PASSWORD_COLON ") . $sPassword . "\n\n" . mi18n("LOGIN_CLICK") . $frontendURL . "front_content.php?changelang=" . $lang;
 
                     $mailer = new cMailer();
-                    $from = array(
-                        $aSettings['SenderEMail'] => $aSettings['SenderEMail']
-                    );
+                    $from = [
+                        $aSettings['SenderEMail'] => $aSettings['SenderEMail'],
+                    ];
                     $recipients = $mailer->sendMail($from, $sEMail, mi18n("WEBSITE_ACCOUNT"), $sBody);
 
                     if ($recipients > 0) {

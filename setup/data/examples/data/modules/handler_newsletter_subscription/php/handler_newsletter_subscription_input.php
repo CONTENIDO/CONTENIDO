@@ -26,7 +26,7 @@ $oClient           = new cApiClient($client);
  *  ChangeEMailID:   ID of change e-mail handler article
  */
 
-$aSettings = array(
+$aSettings = [
     'JoinSel'         => $oClientLang->getProperty('newsletter', 'joinsel'),
     'JoinMultiple'    => $oClientLang->getProperty('newsletter', 'joinmultiple'),
     'JoinGroups'      => $oClientLang->getProperty('newsletter', 'joingroups'),
@@ -36,8 +36,8 @@ $aSettings = array(
     'FrontendConfirm' => "CMS_VALUE[5]",
     'FrontendDel'     => "CMS_VALUE[6]",
     // This one could be recycled by other modules...
-    'SenderEMail'     => $oClient->getProperty('global', 'sender-email')
-);
+    'SenderEMail'     => $oClient->getProperty('global', 'sender-email'),
+];
 
 // Setting default values
 // If there is no selection option set or if no groups has been selected, activate option Default
