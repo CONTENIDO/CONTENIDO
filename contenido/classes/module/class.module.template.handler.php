@@ -136,7 +136,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     private $_actionDelete = 'htmltpl_delete';
 
     /**
-     * In template we test if we have permission for htmltpl.
+     * In template, we test if we have permission for htmltpl.
      *
      * @var string
      */
@@ -145,20 +145,22 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param int      $idmod
+     * @param cApiModule|array|int $module
+     *         The module instance or the module recordset array from the
+     *         database or the id of the module
      * @param cGuiPage $page
      *
      * @throws cException
      */
-    public function __construct($idmod, $page) {
-        parent::__construct($idmod);
+    public function __construct($module, $page) {
+        parent::__construct($module);
         $this->_page = $page;
         $this->_notification = new cGuiNotification();
     }
 
     /**
      * Set the new delete from Form.
-     * This are set if user had push the delete or new button.
+     * This is set if user had pushed the delete button or the new button.
      *
      * @param string $new
      * @param string $delete

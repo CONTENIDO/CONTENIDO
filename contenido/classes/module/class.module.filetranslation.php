@@ -63,7 +63,9 @@ class cModuleFileTranslation extends cModuleHandler {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param int  $idmodul        [optional]
+     * @param cApiModule|array|int $module [optional]
+     *         The module instance or the module recordset array from the
+     *         database or the id of the module
      * @param bool $static         [optional]
      *                             if true it will load once the translation from file
      * @param int  $overrideIdlang [optional]
@@ -72,12 +74,12 @@ class cModuleFileTranslation extends cModuleHandler {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function __construct($idmodul = NULL, $static = false, $overrideIdlang = NULL) {
-        parent::__construct($idmodul);
+    public function __construct($module = NULL, $static = false, $overrideIdlang = NULL) {
+        parent::__construct($module);
 
         // $this->_debug = true;
 
-        if ($idmodul != NULL) {
+        if ($this->_idmod != NULL) {
             $this->_modulePath = $this->getModulePath();
         }
 
@@ -90,10 +92,10 @@ class cModuleFileTranslation extends cModuleHandler {
 
         // don't open the translations file for each mi18n call
         if ($static) {
-            if (self::$savedIdMod != $idmodul) {
+            if (self::$savedIdMod != $this->_idmod) {
                 self::$fileName = $this->_composeTranslationFileName($this->_client, $this->_idlang);
                 self::$langArray = $this->getTranslationArray();
-                self::$savedIdMod = $idmodul;
+                self::$savedIdMod = $this->_idmod;
             }
         } else {
             self::$savedIdMod = -1;

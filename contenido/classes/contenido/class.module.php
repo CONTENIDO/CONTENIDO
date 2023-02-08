@@ -349,7 +349,7 @@ class cApiModule extends Item {
         }
 
         // Fetch the code, append input to output
-        $contenidoModuleHandler = new cModuleHandler($this->get('idmod'));
+        $contenidoModuleHandler = new cModuleHandler($this);
         $code = $contenidoModuleHandler->readOutput() . ' ';
         $code .= $contenidoModuleHandler->readInput();
 
@@ -390,7 +390,7 @@ class cApiModule extends Item {
         }
 
 		// Parse all templates too
-		$moduleTemplateHandler = new cModuleTemplateHandler($this->get('idmod'), null);
+		$moduleTemplateHandler = new cModuleTemplateHandler($this, null);
 		$filesArray = $moduleTemplateHandler->getAllFilesFromDirectory('template');
 
 		if (is_array($filesArray)) {
