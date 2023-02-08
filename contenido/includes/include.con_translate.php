@@ -254,7 +254,7 @@ if ($action == 'con_translate_edit') {
 
             foreach ($savemodtranslations as $hash => $stringtranslations) {
                 foreach ($stringtranslations as $idlang => $modlangtranslation) {
-                    $contenidoTranslateFromFile = new cModuleFileTranslation($idmod, false, $idlang);
+                    $contenidoTranslateFromFile = new cModuleFileTranslation($module, false, $idlang);
                     $fileTranslations = $contenidoTranslateFromFile->getTranslationArray();
 
                     $hashparts = explode('_', $hash);
@@ -298,9 +298,8 @@ foreach ($moduleObjects as $entry) {
     $strings = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
 
     foreach ($allLanguages as $idlang) {
-
         // Get the strings from translation file
-        $contenidoTranslateFromFile = new cModuleFileTranslation($idmod, false, $idlang);
+        $contenidoTranslateFromFile = new cModuleFileTranslation($module, false, $idlang);
         $fileTranslations = $contenidoTranslateFromFile->getTranslationArray();
 
         $translations = [];
