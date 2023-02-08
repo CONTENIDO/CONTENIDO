@@ -109,7 +109,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             $cApiModule->set('lastmodified', date('Y-m-d H:i:s'));
 
             // False: The new name of modul dont exist im modul dir
-            if ($contenidoModuleHandler->renameModul($oldName, $alias) == false) {
+            if (!$contenidoModuleHandler->renameModule($oldName, $alias)) {
                 cRegistry::addWarningMessage(i18n("Can't rename module, is a module file open?! Saving only database changes!"));
             } else {
                 $cApiModule->set('alias', $alias);
