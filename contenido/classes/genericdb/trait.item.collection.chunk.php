@@ -48,9 +48,9 @@ trait cItemCollectionChunkTrait {
      * function with each results block.
      *
      * @param array    $ids      List of ids (primary keys) to load the data
+     * @param callable $callback The callback function
      *                           First parameter: (array[]) Results
      *                           Second parameter: (int) page
-     * @param callable $callback The callback function
      * @param int      $size     The size for each block
      *
      * @return bool
@@ -66,7 +66,7 @@ trait cItemCollectionChunkTrait {
      * @param callable $callback
      * @param int $size
      * @param bool $createObjects Flag to fill the result list with Item instances
-     *                           (true) or to use the the records (false).
+     *                           (true) or to use the records (false).
      *
      * @return bool
      * @throws cDbException
@@ -77,7 +77,7 @@ trait cItemCollectionChunkTrait {
 
         // Loop through each chunk, build and run the query,
         // fill the results with the created class instances,
-        // and call the callback.
+        // or with the records, and call the callback.
         foreach ($chunks as $page => $chunk) {
             $this->_prepareChunkIds($chunk);
             $in = implode("', '", $chunk);
