@@ -428,7 +428,6 @@ class cApiUserProperty extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        $cfg = cRegistry::getConfig();
         parent::__construct(cRegistry::getDbTableName('user_prop'), 'iduserprop');
         $this->setFilters([], []);
         if ($mId !== false) {
