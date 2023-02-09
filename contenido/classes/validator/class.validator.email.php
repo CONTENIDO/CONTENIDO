@@ -75,7 +75,8 @@ class cValidatorEmail extends cValidatorAbstract
 
         $host = cString::getPartOfString($value, cString::findFirstPos($value, '@') + 1);
         // $tld  = cString::findLastOccurrence($value, '.');
-        $tld = '.' . end(explode('.', $value));
+        $parts = explode('.', $value);
+        $tld = '.' . end($parts);
 
         // check for disallowed TLDs (Top Level Domains)
         if ($this->getOption('disallow_tld') && in_array($tld, $this->getOption('disallow_tld'))) {
