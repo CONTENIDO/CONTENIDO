@@ -498,7 +498,7 @@ class cHTML {
      */
     public function appendStyleDefinition($property, $value) {
         if (!empty($value)) {
-            $value = trim(' ;', $value);
+            $value = trim($value,' ;');
         }
         $this->_styleDefinitions[$property] = $value;
 
