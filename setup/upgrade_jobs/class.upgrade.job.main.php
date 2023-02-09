@@ -54,7 +54,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
         $this->_jobConvertOldStartArticlesToNewOne();
 
         // Update Keys
-        injectSQL($this->_oDb, $cfg['sql']['sqlprefix'], 'data/indexes.sql', array());
+        injectSQL($this->_oDb, $cfg['sql']['sqlprefix'], 'data/indexes.sql', []);
 
         // Update to autoincrement
         addAutoIncrementToTables($this->_oDb, $cfg);
@@ -152,8 +152,8 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
      * @return array
      */
     protected function _getUpgradeJobFiles() {
-        $files = array();
         $dir = CON_SETUP_PATH . '/upgrade_jobs/';
+        $files = [];
         if (is_dir($dir)) {
             if (false !== ($handle = cDirHandler::read($dir))) {
                 foreach ($handle as $file) {

@@ -36,17 +36,17 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
         if ($this->_setupType == 'upgrade') {
 
             // List of source and destination folder or files based on clients frontend dir.
-            $clientCopyList = array(
-                'layouts/' => 'data/layouts/',
-                'logs/' => 'data/logs/',
-                'version/' => 'data/version/',
-                'data/config/config.php' => 'data/config/' . CON_ENVIRONMENT . '/config.php',
+            $clientCopyList = [
+                'layouts/'                     => 'data/layouts/',
+                'logs/'                        => 'data/logs/',
+                'version/'                     => 'data/version/',
+                'data/config/config.php'       => 'data/config/' . CON_ENVIRONMENT . '/config.php',
                 'data/config/config.local.php' => 'data/config/' . CON_ENVIRONMENT . '/config.local.php',
                 'data/config/config.after.php' => 'data/config/' . CON_ENVIRONMENT . '/config.after.php',
-                'config.php' => 'data/config/' . CON_ENVIRONMENT . '/config.php',
-                'config.local.php' => 'data/config/' . CON_ENVIRONMENT . '/config.local.php',
-                'config.after.php' => 'data/config/' . CON_ENVIRONMENT . '/config.after.php'
-            );
+                'config.php'                   => 'data/config/' . CON_ENVIRONMENT . '/config.php',
+                'config.local.php'             => 'data/config/' . CON_ENVIRONMENT . '/config.local.php',
+                'config.after.php'             => 'data/config/' . CON_ENVIRONMENT . '/config.after.php',
+            ];
 
             // Load client configuration
             setupInitializeCfgClient();

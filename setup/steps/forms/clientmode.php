@@ -74,11 +74,16 @@ class cSetupClientMode extends cSetupMask {
         $exampleMessage = i18n("PLEASE NOTE: Some folders (%s) which are used by the example client aren't empty. THESE WILL BE OVERWRITTEN", "setup");
         $moduleMessage = i18n("PLEASE NOTE: The cms/data/modules folder is not empty. IT WILL BE OVERWRITTEN", "setup");
 
-        $aChoices = array(
-            "CLIENTEXAMPLES" => i18n("Client with example modules and example content", "setup") . ((cString::getStringLength($folders) > 0) ? " <span class='additionalInfo'>(" . sprintf($exampleMessage, $folders) . ")</span>" : ""),
-            "CLIENTMODULES" => i18n("Client with example modules, but without example content", "setup") . (($moduleFolderNotEmpty) ? " <span class='additionalInfo'>(" . $moduleMessage . ")</span>" : ""),
-            "NOCLIENT" => i18n("Don't create client", "setup")
-        );
+        $aChoices = [
+            "CLIENTEXAMPLES" => i18n("Client with example modules and example content", "setup")
+                . ((cString::getStringLength($folders) > 0) ? " <span class='additionalInfo'>(" . sprintf(
+                        $exampleMessage,
+                        $folders
+                    ) . ")</span>" : ""),
+            "CLIENTMODULES"  => i18n("Client with example modules, but without example content", "setup")
+                . (($moduleFolderNotEmpty) ? " <span class='additionalInfo'>(" . $moduleMessage . ")</span>" : ""),
+            "NOCLIENT"       => i18n("Don't create client", "setup"),
+        ];
 
         foreach ($aChoices as $sKey => $sChoice) {
             $oRadio = new cHTMLRadiobutton("clientmode", $sKey);
