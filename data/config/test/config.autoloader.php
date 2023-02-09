@@ -22,15 +22,14 @@
  * @version    0.1
  * @author     System
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  * @since      file available since CONTENIDO release >= 4.9.0
  */
 
 
-return array(
-    'cContentVersioning' => 'contenido/classes/versioning/class.contentversioning.php',
+return [
     'cAuthHandlerAbstract' => 'contenido/classes/auth/class.auth.handler.abstract.php',
     'cAuthHandlerBackend' => 'contenido/classes/auth/class.auth.handler.backend.php',
     'cAuthHandlerFrontend' => 'contenido/classes/auth/class.auth.handler.frontend.php',
@@ -41,6 +40,8 @@ return array(
     'cAjaxRequest' => 'contenido/classes/class.ajax.php',
     'cArray' => 'contenido/classes/class.array.php',
     'cArticleCollector' => 'contenido/classes/class.article.collector.php',
+    'cArticleContentHelper' => 'contenido/classes/class.article.content.helper.php',
+    'cArticleOverviewHelper' => 'contenido/classes/class.article.overview.helper.php',
     'cAutoload' => 'contenido/classes/class.autoload.php',
     'cBackend' => 'contenido/classes/class.backend.php',
     'cCategoryHelper' => 'contenido/classes/class.category.helper.php',
@@ -75,6 +76,7 @@ return array(
     'cSystemPurge' => 'contenido/classes/class.purge.php',
     'cRegistry' => 'contenido/classes/class.registry.php',
     'cRequestValidator' => 'contenido/classes/class.requestvalidator.php',
+    'cRights' => 'contenido/classes/class.rights.php',
     'cSecurity' => 'contenido/classes/class.security.php',
     'cSession' => 'contenido/classes/class.session.php',
     'cFrontendSession' => 'contenido/classes/class.session.php',
@@ -105,7 +107,7 @@ return array(
     'cApiArticleLanguageCollection' => 'contenido/classes/contenido/class.articlelanguage.php',
     'cApiArticleLanguage' => 'contenido/classes/contenido/class.articlelanguage.php',
     'cApiArticleLanguageVersionCollection' => 'contenido/classes/contenido/class.articlelanguageversion.php',
-    'cApiArticleLanguageVersion' => 'contenido/classes/contenido/class.articlelanguageversion.php',	
+    'cApiArticleLanguageVersion' => 'contenido/classes/contenido/class.articlelanguageversion.php',
     'cApiCategoryCollection' => 'contenido/classes/contenido/class.category.php',
     'cApiCategory' => 'contenido/classes/contenido/class.category.php',
     'cApiCategoryArticleCollection' => 'contenido/classes/contenido/class.categoryarticle.php',
@@ -167,11 +169,11 @@ return array(
     'cApiMailLogSuccessCollection' => 'contenido/classes/contenido/class.maillogsuccess.php',
     'cApiMailLogSuccess' => 'contenido/classes/contenido/class.maillogsuccess.php',
     'cApiMetaTagCollection' => 'contenido/classes/contenido/class.meta.tag.php',
-    'cApiMetaTagVersionCollection' => 'contenido/classes/contenido/class.metatagversion.php',
     'cApiMetaTag' => 'contenido/classes/contenido/class.meta.tag.php',
-    'cApiMetaTagVersion' => 'contenido/classes/contenido/class.metatagversion.php',
     'cApiMetaTypeCollection' => 'contenido/classes/contenido/class.meta.type.php',
     'cApiMetaType' => 'contenido/classes/contenido/class.meta.type.php',
+    'cApiMetaTagVersionCollection' => 'contenido/classes/contenido/class.metatagversion.php',
+    'cApiMetaTagVersion' => 'contenido/classes/contenido/class.metatagversion.php',
     'cApiModuleCollection' => 'contenido/classes/contenido/class.module.php',
     'cApiModule' => 'contenido/classes/contenido/class.module.php',
     'cApiNavMainCollection' => 'contenido/classes/contenido/class.navmain.php',
@@ -262,6 +264,7 @@ return array(
     'cGenericDb' => 'contenido/classes/genericdb/class.genericdb.php',
     'cItemBaseAbstract' => 'contenido/classes/genericdb/class.item.base.abstract.php',
     'cItemCache' => 'contenido/classes/genericdb/class.item.cache.php',
+    'cItemCollectionChunkTrait' => 'contenido/classes/genericdb/trait.item.collection.chunk.php',
     'ItemCollection' => 'contenido/classes/genericdb/class.item.collection.php',
     'Item' => 'contenido/classes/genericdb/class.item.php',
     'cGuiBackendHelpbox' => 'contenido/classes/gui/class.backendhelpbox.php',
@@ -334,7 +337,6 @@ return array(
     'cModuleSearch' => 'contenido/classes/module/class.module.search.php',
     'cModuleSynchronizer' => 'contenido/classes/module/class.module.synchronizer.php',
     'cModuleTemplateHandler' => 'contenido/classes/module/class.module.template.handler.php',
-    'cRights' => 'contenido/classes/class.rights.php',
     'cSearchBaseAbstract' => 'contenido/classes/search/class.search.base.abstract.php',
     'cSearchIndex' => 'contenido/classes/search/class.search.index.php',
     'cSearch' => 'contenido/classes/search/class.search.php',
@@ -512,6 +514,7 @@ return array(
     'cUriBuilderMR' => 'contenido/classes/uri/class.uribuilder.mr.php',
     'cUriBuilder' => 'contenido/classes/uri/class.uribuilder.php',
     'cValidatorAbstract' => 'contenido/classes/validator/class.validator.abstract.php',
+    'cValidatorDate' => 'contenido/classes/validator/class.validator.date.php',
     'cValidatorEmail' => 'contenido/classes/validator/class.validator.email.php',
     'cValidatorFactory' => 'contenido/classes/validator/class.validator.factory.php',
     'cValidatorRegex' => 'contenido/classes/validator/class.validator.regex.php',
@@ -519,9 +522,10 @@ return array(
     'cVersionLayout' => 'contenido/classes/version/class.version.layout.php',
     'cVersionModule' => 'contenido/classes/version/class.version.module.php',
     'cVersion' => 'contenido/classes/version/class.version.php',
+    'cContentVersioning' => 'contenido/classes/versioning/class.contentversioning.php',
     'cXmlBase' => 'contenido/classes/xml/class.xml.base.php',
     'cXmlReader' => 'contenido/classes/xml/class.xml.reader.php',
     'cXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
     'cTinymce4Configuration' => 'contenido/external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php',
     'cTinyMCE4Editor' => 'contenido/external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php'
-);
+];
