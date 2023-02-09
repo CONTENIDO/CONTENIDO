@@ -132,9 +132,7 @@ class cArticleCollector implements SeekableIterator, Countable {
             'publisheddate' => 'published',
             'creationdate' => 'created',
         ];
-        if (!in_array($options['order'], $orderMap)) {
-            $options['order'] = $orderMap['creationdate'];
-        }
+        $options['order'] = $orderMap[$options['order']] ??  $orderMap['creationdate'];
 
         $options['artspecs'] = $options['artspecs'] ?? [];
 
