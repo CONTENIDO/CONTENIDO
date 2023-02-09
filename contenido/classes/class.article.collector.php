@@ -14,27 +14,12 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * The
- * article collector returns you a list of articles, which destination you can
- * choose.
+ * The article collector returns you a list of articles, which destination you
+ * can choose.
  * You have the ability to limit, sort and filter the article list.
  *
- * You can configure the article collector with an options array, which can include the
- * following configuration.
- *
- * - idcat - (int) Category ID
- * - categories - (array) Array with multiple category IDs
- * - lang - (int) Language ID, active language if omitted
- * - client - (int) Client ID, active client if omitted
- * - artspecs - (array) Array of article specifications, which should be considered
- * - offline - (bool) Include offline article in the collection, defaults to false
- * - offlineonly - (bool) Only list offline articles, defaults to false
- * - start - (bool) Include start article in the collection, defaults to false
- * - startonly - (bool) Only list start articles, defaults to false
- * - order - (string) Articles will be ordered by this property, defaults to created
- * - direction - (string) Order direction, ASC or DESC for ascending/descending, defaults to DESC
- * - limit - (int) Limit numbers of articles in collection, default to 0 (unlimited)
- * - offset - (int) The offset of the first row to return
+ * You can configure the article collector with an options array, which can
+ * include the configuration as described in {@see cArticleCollector::__construct()}.
  *
  * TODO: Use generic DB instead of SQL queries
  *
@@ -53,19 +38,20 @@ class cArticleCollector implements SeekableIterator, Countable {
     /**
      * Loaded articles.
      *
-     * @var array
+     * @var cApiArticleLanguage[]
      */
     protected $_articles = [];
 
     /**
      * Total paging data.
      *
-     * @var array
+     * @var cApiArticleLanguage[]
      */
     protected $_pages = [];
 
     /**
-     * Start articles of the requested categories.
+     * Array of start articles of the requested categories, where the key is the
+     * category id and the value the id of the start article.
      *
      * @var array
      */
@@ -85,11 +71,27 @@ class cArticleCollector implements SeekableIterator, Countable {
      * initiated.
      *
      * @param array $options [optional, default: empty array]
-     *                       array with options for the collector
+     *      Array with options for the collector as follows:
+     *     - idcat - (int) Category ID
+     *     - categories - (array) Array with multiple category IDs
+     *     - lang - (int) Language ID, active language if omitted
+     *     - client - (int) Client ID, active client if omitted
+     *     - artspecs - (array) Array of article specifications, which should be considered
+     *     - offline - (bool) Include offline article in the collection, defaults to false
+     *     - offlineonly - (bool) Only list offline articles, defaults to false
+     *     - start - (bool) Include start article in the collection, defaults to false
+     *     - startonly - (bool) Only list start articles, defaults to false
+     *     - order - (string) Articles will be ordered by this property, defaults to created
+     *         Allowed values are:
+     *         'sortsequence', 'title', 'modificationdate', 'publisheddate',
+     *         and 'creationdate'.
+     *     - direction - (string) Order direction, ASC or DESC for ascending/descending, defaults to DESC
+     *     - limit - (int) Limit numbers of articles in collection, default to 0 (unlimited)
+     *     - offset - (int) The offset of the first row to return
      *
-     * @throws cDbException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function __construct($options = []) {
+    public function __construct(array $options = []) {
         $this->setOptions($options);
         $this->loadArticles();
     }
@@ -101,7 +103,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      * @param array $options
      *         array with option
      */
-    public function setOptions($options) {
+    public function setOptions(array $options) {
         if (isset($options['idcat']) && !isset($options['categories'])) {
             $options['categories'] = [
                 $options['idcat']
@@ -122,28 +124,16 @@ class cArticleCollector implements SeekableIterator, Countable {
 
         $options['offlineonly'] = cSecurity::toBoolean($options['offlineonly'] ?? '0');
 
-        $order = $options['order'] ?? '';
-        switch ($order) {
-            case 'sortsequence':
-                $options['order'] = 'artsort';
-                break;
-
-            case 'title':
-                $options['order'] = 'title';
-                break;
-
-            case 'modificationdate':
-                $options['order'] = 'lastmodified';
-                break;
-
-            case 'publisheddate':
-                $options['order'] = 'published';
-                break;
-
-            case 'creationdate':
-            default:
-                $options['order'] = 'created';
-                break;
+        $options['order'] = $options['order'] ?? '';
+        $orderMap = [
+            'sortsequence' => 'artsort',
+            'title' => 'title',
+            'modificationdate' => 'lastmodified',
+            'publisheddate' => 'published',
+            'creationdate' => 'created',
+        ];
+        if (!in_array($options['order'], $orderMap)) {
+            $options['order'] = $orderMap['creationdate'];
         }
 
         $options['artspecs'] = $options['artspecs'] ?? [];
@@ -162,61 +152,18 @@ class cArticleCollector implements SeekableIterator, Countable {
     /**
      * Executes the article search with the given options.
      *
-     * @throws cDbException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function loadArticles() {
         $this->_articles = [];
 
         // Collect start articles
         $this->_startArticles = $this->_fetchStartArticles();
-        if ($this->_options['startonly'] == true && count($this->_startArticles) == 0) {
+        if ($this->_options['startonly'] && count($this->_startArticles) == 0) {
             return;
         }
 
-        // This sql-line uses cat_art table with alias c. If no categories found, it writes only "WHERE" into sql-query
-        if ((count($this->_options['categories']) > 0)) {
-            $tabCatArt = cRegistry::getDbTableName('cat_art');
-            $sqlCat = ", " . $tabCatArt . " AS c WHERE c.idcat IN ('" . implode("','", $this->_options['categories']) . "') AND b.idart = c.idart AND ";
-        } else {
-            $sqlCat = ' WHERE ';
-        }
-
-        $sqlArtSpecs = (count($this->_options['artspecs']) > 0) ? " a.artspec IN ('" . implode("','", $this->_options['artspecs']) . "') AND " : '';
-
-        $sqlStartArticles = '';
-        if (count($this->_startArticles) > 0) {
-            if ($this->_options['start'] == false) {
-                $sqlStartArticles = "a.idartlang NOT IN ('" . implode("','", $this->_startArticles) . "') AND ";
-            }
-
-            if ($this->_options['startonly'] == true) {
-                $sqlStartArticles = "a.idartlang IN ('" . implode("','", $this->_startArticles) . "') AND ";
-            }
-        }
-
-        $tabArt = cRegistry::getDbTableName('art');
-        $tabArtLang = cRegistry::getDbTableName('art_lang');
-
-        $sql = "SELECT DISTINCT a.idartlang FROM " . $tabArtLang . " AS a, ";
-        $sql .= $tabArt . " AS b";
-        $sql .= $sqlCat . $sqlStartArticles . $sqlArtSpecs . "b.idclient = '" . $this->_options['client'] . "' AND ";
-        $sql .= "a.idlang = '" . $this->_options['lang'] . "' AND " . "a.idart = b.idart";
-
-        if ($this->_options['offlineonly'] == true) {
-            $sql .= " AND a.online = 0";
-        } elseif ($this->_options['offline'] == false) {
-            $sql .= " AND a.online = 1";
-        }
-
-        $sql .= " ORDER BY a." . $this->_options['order'] . " " . $this->_options['direction'];
-
-        if ($this->_options['limit'] > 0) {
-            $sql .= " LIMIT " . $this->_options['limit'];
-        }
-
-        if ($this->_options['limit'] > 0) {
-            $sql .= " OFFSET " . $this->_options['limit'];
-        }
+        $sql = $this->_buildArticlesQuery();
 
         // Run the query and collect all found article language ids
         $db = cRegistry::getDb();
@@ -245,7 +192,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @return cApiArticleLanguage
      *
-     * @throws cBadMethodCallException
+     * @throws cBadMethodCallException|cDbException|cException
      */
     public function startArticle() {
         if (count($this->_startArticles) != 1) {
@@ -337,7 +284,7 @@ class cArticleCollector implements SeekableIterator, Countable {
     /**
      * Method "current" of the implemented iterator.
      *
-     * @return mixed
+     * @return cApiArticleLanguage|null
      */
     public function current() {
         return $this->_articles[$this->_currentPosition] ?? null;
@@ -379,6 +326,8 @@ class cArticleCollector implements SeekableIterator, Countable {
     }
 
     /**
+     * Returns the array of start articles.
+     *
      * @return array
      */
     public function getStartArticles() {
@@ -410,6 +359,67 @@ class cArticleCollector implements SeekableIterator, Countable {
         }
 
         return $startArticles;
+    }
+
+    /**
+     * Builds the articles query to retrieve distinct articles from the
+     * article-language table by using the defined options.
+     *
+     * @return string
+     */
+    protected function _buildArticlesQuery() {
+        $options = $this->_options;
+
+        // This sql-line uses cat_art table with alias c. If no categories found, it writes only "WHERE" into sql-query
+        if ((count($options['categories']) > 0)) {
+            $tabCatArt = cRegistry::getDbTableName('cat_art');
+            $in = implode(",", $options['categories']);
+            $sqlCat = ", " . $tabCatArt . " AS c WHERE c.idcat IN (" . $in . ") AND b.idart = c.idart AND ";
+        } else {
+            $sqlCat = ' WHERE ';
+        }
+
+        $in = implode("','", $options['artspecs']);
+        $sqlArtSpecs = (count($options['artspecs']) > 0) ? " a.artspec IN ('" . $in . "') AND " : '';
+
+        $sqlStartArticles = '';
+        if (count($this->_startArticles) > 0) {
+            if (!$options['start']) {
+                $in = implode(",", $this->_startArticles);
+                $sqlStartArticles = "a.idartlang NOT IN (" . $in . ") AND ";
+            }
+
+            if ($options['startonly']) {
+                $in = implode(",", $this->_startArticles);
+                $sqlStartArticles = "a.idartlang IN (" . $in . ") AND ";
+            }
+        }
+
+        $tabArt = cRegistry::getDbTableName('art');
+        $tabArtLang = cRegistry::getDbTableName('art_lang');
+
+        $sql = "SELECT DISTINCT a.idartlang FROM " . $tabArtLang . " AS a, ";
+        $sql .= $tabArt . " AS b";
+        $sql .= $sqlCat . $sqlStartArticles . $sqlArtSpecs . "b.idclient = " . $options['client'] . " AND ";
+        $sql .= "a.idlang = " . $options['lang'] . " AND " . "a.idart = b.idart";
+
+        if ($options['offlineonly']) {
+            $sql .= " AND a.online = 0";
+        } elseif (!$options['offline']) {
+            $sql .= " AND a.online = 1";
+        }
+
+        $sql .= " ORDER BY a." . $options['order'] . " " . $options['direction'];
+
+        if ($options['limit'] > 0) {
+            $sql .= " LIMIT " . $options['limit'];
+        }
+
+        if ($options['offset'] > 0) {
+            $sql .= " OFFSET " . $options['offset'];
+        }
+
+        return $sql;
     }
 
 }
