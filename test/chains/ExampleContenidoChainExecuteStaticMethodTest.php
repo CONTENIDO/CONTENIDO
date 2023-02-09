@@ -43,8 +43,7 @@ class chain_ExampleContenidoChainExecuteStaticMethod_Test {
 class chain_ExampleContenidoChainExecuteStaticMethod_Test2 {
 
     /**
-     *
-     * @param unknown_type $obj
+     * @param stdClass $obj
      */
     public static function callMe($obj) {
         $obj->counter++;
@@ -60,14 +59,12 @@ class chain_ExampleContenidoChainExecuteStaticMethod_Test2 {
 class ExampleContenidoChainExecuteStaticMethodTest extends TestCase {
 
     /**
-     *
-     * @var unknown_type
+     * @var string
      */
     private $_chain = 'Example.Contenido.Chain.ExecuteStaticMethod';
 
     /**
-     *
-     * @var unknown_type
+     * @var stdClass
      */
     private $_obj;
 

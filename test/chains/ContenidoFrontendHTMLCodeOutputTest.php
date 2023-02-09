@@ -39,9 +39,9 @@ function chain_ContenidoFrontendHTMLCodeOutput_Test2($html)
 class ContenidoFrontendHTMLCodeOutputTest extends TestCase
 {
     private $_chain = 'Contenido.Frontend.HTMLCodeOutput';
-    private $_html  = '<html><head><title>test</title><body>content</body></html>';
-    private $_htmlOneChain  = '<html><head><title>new test</title><body>content</body></html>';
-    private $_htmlTwoChains = '<html><head><title>new test</title><body>new content</body></html>';
+    private $_html  = '<html lang="en"><head><title>test</title><body>content</body></html>';
+    private $_htmlOneChain  = '<html lang="en"><head><title>new test</title><body>content</body></html>';
+    private $_htmlTwoChains = '<html lang="en"><head><title>new test</title><body>new content</body></html>';
 
 
     /**
