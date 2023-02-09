@@ -106,7 +106,7 @@ class cHTML {
      *
      * @var array
      */
-    protected $_notEmptyAttributes = ['id', 'name', 'class', 'border'];
+    protected $_notEmptyAttributes = ['id', 'name', 'class', 'border', 'style'];
 
     /**
      * The content itself
@@ -497,8 +497,8 @@ class cHTML {
      *         $this for chaining
      */
     public function appendStyleDefinition($property, $value) {
-        if (cString::getPartOfString($value, -1) === ';') {
-            $value = cString::getPartOfString($value, 0, cString::getStringLength($value) - 1);
+        if (!empty($value)) {
+            $value = trim(' ;', $value);
         }
         $this->_styleDefinitions[$property] = $value;
 
