@@ -96,7 +96,7 @@ trait cItemCollectionChunkTrait {
                 }
             }
 
-            // Call the callback with the results block, and stop
+            // Call the callback with the result block, and stop
             // further processing, if callback returns false.
             if ($callback($results, $page) === false) {
                 return false;
