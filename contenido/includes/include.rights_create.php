@@ -51,10 +51,10 @@ if ($action == 'user_createuser') {
     if ($username == '') {
         $sNotification = $notification->returnNotification("warning", i18n("Username can't be empty"));
         $bError = true;
-    } else if ($username !== $cleanUsername || $realname !== $cleanRealname) {
+    } elseif ($username !== $cleanUsername || $realname !== $cleanRealname) {
         $sNotification = $notification->returnNotification("warning", i18n("Special characters in username and name are not allowed."));
         $bError = true;
-    } else if ($password == '') {
+    } elseif ($password == '') {
         $sNotification = $notification->returnNotification("warning", i18n("Password can't be empty"));
         $bError = true;
     } else {
@@ -72,7 +72,7 @@ if ($action == 'user_createuser') {
                     // User has no selected language
                     $sNotification = $notification->returnNotification("warning", i18n("Please select a language for your selected client."));
                     $bError = true;
-                } else if ($availablelanguages == false) {
+                } elseif ($availablelanguages == false) {
                     // Client has no assigned language(s)
                     $sNotification = $notification->returnNotification("warning", i18n("You can only assign users to a client with languages."));
                     $bError = true;
@@ -102,11 +102,11 @@ if ($action == 'user_createuser') {
                 // username already exists
                 $sNotification = $notification->returnNotification("warning", i18n("Username already exists"));
                 $bError = true;
-            } else if (($passCheck = cApiUser::checkPasswordMask($password)) !== cApiUser::PASS_OK) {
+            } elseif (($passCheck = cApiUser::checkPasswordMask($password)) !== cApiUser::PASS_OK) {
                 // password is not valid
                 $sNotification = $notification->returnNotification("warning", cApiUser::getErrorString($passCheck));
                 $bError = true;
-            } else if (strcmp($password, $passwordagain) == 0) {
+            } elseif (strcmp($password, $passwordagain) == 0) {
                 // username is okay, password is valid and both passwords given are
                 // equal
                 $oUserCollection = new cApiUserCollection();

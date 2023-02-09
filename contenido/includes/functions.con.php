@@ -1863,7 +1863,7 @@ function conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabe
 
     if ($newtitle != '') {
         $title = sprintf($newtitle, $oSrcArtLang->get('title'));
-    } else if ($useCopyLabel == true) {
+    } elseif ($useCopyLabel == true) {
         $title = sprintf(i18n('%s (Copy)'), $oSrcArtLang->get('title'));
     } else {
         $title = $oSrcArtLang->get('title');

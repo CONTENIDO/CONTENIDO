@@ -44,11 +44,11 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
     $oPage->abortRendering();
     $oPage->render();
     return;
-} else if (!(int) $client > 0) {
+} elseif (!(int) $client > 0) {
     $oPage->abortRendering();
     $oPage->render();
     return;
-} else if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
+} elseif (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
     $oPage->displayWarning(i18n("Versioning is not activated"));
     $oPage->abortRendering();
     $oPage->render();

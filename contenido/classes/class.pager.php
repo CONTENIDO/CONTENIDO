@@ -133,7 +133,7 @@ class cPager {
     public function getMaxPages() {
         if ($this->_items == 0) {
             return 1;
-        } else if ($this->_itemsPerPage == 0) {
+        } elseif ($this->_itemsPerPage == 0) {
             return 1;
         } else {
             return ceil($this->_items / $this->_itemsPerPage);

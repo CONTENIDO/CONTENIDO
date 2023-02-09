@@ -95,13 +95,13 @@ if ($action == "lang_newlanguage") {
         }
         if (true === cString::validateDateFormat(stripslashes($dateformat))) {
             $oLanguage->setProperty("dateformat", "date", stripslashes($dateformat), $targetclient);
-        } else if (false === $invalidData) {
+        } elseif (false === $invalidData) {
             $invalidData = true;
             $page->displayError(i18n("Incorrect date format"));
         }
         if (true === cString::validateDateFormat(stripslashes($timeformat))) {
             $oLanguage->setProperty("dateformat", "time", stripslashes($timeformat), $targetclient);
-        } else if (false === $invalidData) {
+        } elseif (false === $invalidData) {
             $invalidData = true;
             $page->displayError(i18n("Incorrect time format"));
         }

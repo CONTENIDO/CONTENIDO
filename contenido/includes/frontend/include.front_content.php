@@ -244,7 +244,7 @@ if ($idcatart) {
         $idcat = $oCatArt->get('idcat');
         $idart = $oCatArt->get('idart');
     }
-} else if (!$idart) {
+} elseif (!$idart) {
     if (!$idcat) {
         // Try to get caetgory and article id of first item in current
         // clients tree structure
@@ -253,10 +253,10 @@ if ($idcatart) {
         if ($oCatArt) {
             $idart = $oCatArt->get('idart');
             $idcat = $oCatArt->get('idcat');
-        } else if ($contenido) {
+        } elseif ($contenido) {
             cInclude('includes', 'functions.i18n.php');
             die(i18n('No start article for this category'));
-        } else if ($error == 1) {
+        } elseif ($error == 1) {
             $tpl = new cTemplate();
             $tpl->set("s", "ERROR_TITLE", "Fatal error");
             $tpl->set("s", "ERROR_TEXT", "No start article for this category.");
@@ -280,11 +280,11 @@ if ($idcatart) {
 
         if ($idart != -1) {
             // donut
-        } else if ($contenido) {
+        } elseif ($contenido) {
             // Error message in backend
             cInclude('includes', 'functions.i18n.php');
             die(i18n('No start article for this category'));
-        } else if ($error == 1) {
+        } elseif ($error == 1) {
             $tpl = new cTemplate();
             $tpl->set("s", "ERROR_TITLE", "Fatal error");
             $tpl->set("s", "ERROR_TEXT", "No start article for this category.");

@@ -172,7 +172,7 @@ class cDebug {
         self::$_defaultDebuggerName = self::DEBUGGER_DEVNULL;
         if (getSystemProperty('debug', 'debug_to_file') == 'true') {
             self::$_defaultDebuggerName = self::DEBUGGER_FILE;
-        } else if (getSystemProperty('debug', 'debug_to_screen') == 'true') {
+        } elseif (getSystemProperty('debug', 'debug_to_screen') == 'true') {
             self::$_defaultDebuggerName = self::DEBUGGER_VISIBLE_ADV;
         }
         if ((getSystemProperty('debug', 'debug_to_screen') == 'true') && (getSystemProperty('debug', 'debug_to_file') == 'true')) {

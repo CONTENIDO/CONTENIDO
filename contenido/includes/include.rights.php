@@ -215,7 +215,7 @@ if ($oClientLang->isLoaded()) {
     // Account is sysadmin
     if (cString::findFirstPos($userPerms, 'sysadmin') !== false) {
         $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('warning', i18n("The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."), 0));
-    } else if (cString::findFirstPos($userPerms, 'admin[') !== false) {
+    } elseif (cString::findFirstPos($userPerms, 'admin[') !== false) {
         // Account is only assigned to clients with admin rights
         $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('warning', i18n("The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."), 0));
     } else {

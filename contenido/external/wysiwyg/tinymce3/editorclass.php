@@ -266,7 +266,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
 
         if (array_key_exists("theme_advanced_styles", $this->_aSettings)) {
             $styles = $this->_aSettings["theme_advanced_styles"];
-        } else if (array_key_exists("tinymce-styles", $this->_aSettings)) {
+        } elseif (array_key_exists("tinymce-styles", $this->_aSettings)) {
             $styles = $this->_aSettings["tinymce-styles"];
         }
 
@@ -290,7 +290,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         if ($lists == "") {
             if (array_key_exists("contenido_lists", $this->_aSettings)) {
                 $lists = $this->_aSettings["contenido_lists"];
-            } else if (array_key_exists("tinymce-lists", $this->_aSettings)) {
+            } elseif (array_key_exists("tinymce-lists", $this->_aSettings)) {
                 $lists = $this->_aSettings["tinymce-lists"];
             }
         }

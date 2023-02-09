@@ -77,11 +77,11 @@ class cFileHandler {
 
         if ($reverse) {
             return file_get_contents($filename, false, NULL, filesize($filename) - $length - $offset, $length);
-        } else if ($length > 0 && $offset == 0) {
+        } elseif ($length > 0 && $offset == 0) {
             return file_get_contents($filename, false, NULL, 0, $length);
-        } else if ($offset > 0 && $length == 0) {
+        } elseif ($offset > 0 && $length == 0) {
             return file_get_contents($filename, false, NULL, $offset);
-        } else if ($offset > 0 && $length > 0) {
+        } elseif ($offset > 0 && $length > 0) {
             return file_get_contents($filename, false, NULL, $offset, $length);
         } else {
             return file_get_contents($filename);

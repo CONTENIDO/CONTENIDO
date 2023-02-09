@@ -178,7 +178,7 @@ class cEffectiveSetting {
 
         if (false === $value || NULL === $value) {
             $value = $default;
-        } else if ('' === $value && '' !== $default) {
+        } elseif ('' === $value && '' !== $default) {
             // NOTE: A non empty default value overrides an empty value
             $value = $default;
         }

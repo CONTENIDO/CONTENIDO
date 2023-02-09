@@ -246,7 +246,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                     $fileList[] = $filename;
                 }
             }
-        } else if (is_array($this->getSetting('filelist_directories')) && count($this->getSetting('filelist_directories')) > 0) {
+        } elseif (is_array($this->getSetting('filelist_directories')) && count($this->getSetting('filelist_directories')) > 0) {
             $directories = $this->getSetting('filelist_directories');
 
             if ($this->getSetting('filelist_incl_subdirectories') === 'true') {
@@ -1115,7 +1115,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             $b = cString::toLowerCase($b['name']);
             if ($a < $b) {
                 return -1;
-            } else if ($a > $b) {
+            } elseif ($a > $b) {
                 return 1;
             } else {
                 return 0;

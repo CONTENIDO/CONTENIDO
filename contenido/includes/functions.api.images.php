@@ -453,7 +453,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
 
         $img = $cfgClient[$client]['cache']['path'] . $file;
         $deleteAfter = true;
-    } else if (!cFileHandler::exists($img)) {
+    } elseif (!cFileHandler::exists($img)) {
         // Try with upload string
         if (cFileHandler::exists($cfgClient[$client]['upl']['path'] . $img) && !is_dir($cfgClient[$client]['upl']['path'] . $img)) {
             $img = $cfgClient[$client]['upl']['path'] . $img;
@@ -674,7 +674,7 @@ function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
         if ($cacheTime == 0) {
             // Do not check expiration date
             return true;
-        } else if (!function_exists('md5_file')) {
+        } elseif (!function_exists('md5_file')) {
             // TODO: Explain why this is still needed ... or remove it
             if ((filemtime($cacheFile) + (60 * $cacheTime)) < time()) {
                 // Cache time expired, unlink the file
@@ -726,7 +726,7 @@ function cApiIsImageMagickAvailable() {
     // if IM is available, it contains the string "ImageMagick"
     if (!is_array($output) || count($output) == 0) {
         $imagemagickAvailable = false;
-    } else if (false === cString::findFirstPos($output[0], 'ImageMagick')) {
+    } elseif (false === cString::findFirstPos($output[0], 'ImageMagick')) {
         $imagemagickAvailable = false;
     } else {
         $imagemagickAvailable = true;

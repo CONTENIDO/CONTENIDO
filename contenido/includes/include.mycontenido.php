@@ -215,9 +215,9 @@ foreach ($admins as $pos => $item) {
         $li = '<li class="welcome">';
         if ($sAdminName !== '' && $sAdminEmail !== '') {
             $li .= $sAdminName . ', ' . $sAdminEmail . '</li>';
-        } else if ($sAdminName === '' && $sAdminEmail !== '') {
+        } elseif ($sAdminName === '' && $sAdminEmail !== '') {
             $li .= $sAdminEmail . '</li>';
-        } else if ($sAdminName !== '' && $sAdminEmail === '') {
+        } elseif ($sAdminName !== '' && $sAdminEmail === '') {
             $li .= $sAdminName . '</li>';
         } else {
             $li = '';

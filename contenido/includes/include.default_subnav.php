@@ -37,7 +37,7 @@ foreach ($_GET as $sTempKey => $sTempValue) {
     if (in_array($sTempKey, $aBasicParams)) {
         // Basic parameters attached
         $iCountBasicVal++;
-    } else if ((cString::getPartOfString($sTempKey, 0, 2) == 'id' || cString::getPartOfString($sTempKey, -2, 2) == 'id')
+    } elseif ((cString::getPartOfString($sTempKey, 0, 2) == 'id' || cString::getPartOfString($sTempKey, -2, 2) == 'id')
         && ((int) $sTempValue == $sTempValue                      // check integer
         || preg_match('/^[0-9a-f]{32}$/', $sTempValue)) // check md5
         )

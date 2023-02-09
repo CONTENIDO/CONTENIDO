@@ -203,7 +203,7 @@ $todate = $oToYear->getDefault() . '-' . $oToMonth->getDefault() . '-' . $oToDay
 $limitsql = "";
 if ($limit == 1) {
     $limitsql = "";
-} else if ($limit == 0) {
+} elseif ($limit == 0) {
     $limitsql = "10";
 } else {
     $limitsql = $db->escape($limit);

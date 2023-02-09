@@ -66,7 +66,7 @@ $art->loadByArticleAndLanguageId(cSecurity::toInteger($idart), cSecurity::toInte
 if ($_REQUEST['idArtLangVersion'] == NULL && $versioning->getState() == 'advanced') {
     $art = new cApiArticleLanguageVersion($versioning->getEditableArticleId($art->getField('idartlang')));
     //$art = new cApiArticleLanguageVersion($versioning->getEditableArticleId($idArtLang));
-} else if ($versioning->getState() == 'advanced' && $_REQUEST['idArtLangVersion'] != 'current'
+} elseif ($versioning->getState() == 'advanced' && $_REQUEST['idArtLangVersion'] != 'current'
     || $versioning->getState() == 'simple' && ($_REQUEST['idArtLangVersion'] != NULL
     && is_numeric ($_REQUEST['idArtLangVersion']) || is_numeric ($_REQUEST['idArtLangVersion']))) {
     $art = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
@@ -106,7 +106,7 @@ switch ($versioning->getState()) {
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
                 ]);
-            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+            } elseif (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
                 // version->editable
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsEditable('meta');
@@ -118,7 +118,7 @@ switch ($versioning->getState()) {
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
                 ]);
-            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+            } elseif ($_REQUEST['idArtLangVersion'] == 'current') {
                 // current->editable
                 $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
                 $artLang->markAsEditable('meta');
@@ -177,7 +177,7 @@ if ($art->getField('created')) {
         $tpl->set('s', 'DISABLED', ' ' . $disabled);
         $notifications[] = $notification->returnNotification('warning', i18n('This article is currently frozen and can not be edited!'));
         $tpl->set("s", "REASON", i18n('This article is currently frozen and can not be edited!'));
-    } else if ($versioning->getState() == 'advanced' && $articleType == 'editable'
+    } elseif ($versioning->getState() == 'advanced' && $articleType == 'editable'
         || $versioning->getState() == 'simple' && $articleType != 'version'
         || $versioning->getState() == 'disabled'){
         $tpl->set('s', 'DISABLED', '');
@@ -428,7 +428,7 @@ switch ($versioning->getState()) {
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
             $buttonTitle = i18n('Copy to draft');
-        } else if ($articleType == 'editable') {
+        } elseif ($articleType == 'editable') {
             $buttonTitle = i18n('Publish draft');
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');

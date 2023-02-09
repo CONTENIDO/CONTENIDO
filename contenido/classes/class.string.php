@@ -235,13 +235,13 @@ class cString extends cStringMultiByteWrapper {
             if ($char < 0x80) {
                 // ASCII char
                 continue;
-            } else if (($char & 0xE0) === 0xC0 && $char > 0xC1) {
+            } elseif (($char & 0xE0) === 0xC0 && $char > 0xC1) {
                 // 2 byte long char
                 $n = 1;
-            } else if (($char & 0xF0) === 0xE0) {
+            } elseif (($char & 0xF0) === 0xE0) {
                 // 3 byte long char
                 $n = 2;
-            } else if (($char & 0xF8) === 0xF0 && $char < 0xF5) {
+            } elseif (($char & 0xF8) === 0xF0 && $char < 0xF5) {
                 // 4 byte long char
                 $n = 3;
             } else {
@@ -359,7 +359,7 @@ class cString extends cStringMultiByteWrapper {
         if ($maximum_text_length > 0) {
             if (preg_match('/(*UTF8)^.{0,' . $maximum_text_length . '}/', $string, $result_array)) {
                 $cutted_string = $result_array[0];
-            } else if (preg_match('/^.{0,' . $maximum_text_length . '}/u', $string, $result_array)) {
+            } elseif (preg_match('/^.{0,' . $maximum_text_length . '}/u', $string, $result_array)) {
                 $cutted_string = $result_array[0];
             } else {
                 $cutted_string = parent::getPartOfString($string, 0, $maximum_text_length);

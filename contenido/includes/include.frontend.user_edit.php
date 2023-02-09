@@ -92,7 +92,7 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
 
     if ($action == "frontend_save_user" && cString::getStringLength($username) == 0) {
         $page->displayError(i18n("Username can't be empty"));
-    } else if ($action == "frontend_save_user" && cString::getStringLength($username) > 0) {
+    } elseif ($action == "frontend_save_user" && cString::getStringLength($username) > 0) {
         if (!empty($sReloadScript)) {
             $page->addScript($sReloadScript);
         }
