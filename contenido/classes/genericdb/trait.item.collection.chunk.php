@@ -26,7 +26,7 @@ trait cItemCollectionChunkTrait {
     /**
      * Loads chunks of results from the database, fills the results list
      * with the created Item instances, and calls the provided callback
-     * function with each results block.
+     * function with each result block.
      *
      * @param array    $ids      List of ids (primary keys) to load the data
      * @param callable $callback The callback function
@@ -45,7 +45,7 @@ trait cItemCollectionChunkTrait {
     /**
      * Loads chunks of results from the database, fills the results list
      * with the records, and calls the provided callback
-     * function with each results block.
+     * function with each result block.
      *
      * @param array    $ids      List of ids (primary keys) to load the data
      * @param callable $callback The callback function
@@ -109,7 +109,7 @@ trait cItemCollectionChunkTrait {
     }
 
     /**
-     * Ensures that ids of type string are propery escaped.
+     * Ensures that ids of type string are properly escaped.
      *
      * @param array $ids
      *
