@@ -441,7 +441,7 @@ if ($idtpl) {
 if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
     $tpl->set('s', 'HEADER', i18n('Category template configuration'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
-} else if ($area == 'con_tplcfg' && (int) $idart > 0) {
+} elseif ($area == 'con_tplcfg' && (int) $idart > 0) {
     $tpl->set('s', 'HEADER', i18n('Article template configuration'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
 } else {

@@ -165,7 +165,7 @@ if (($action == 'savecontype' || $action == 10)) {
     } else {
         $page->displayError(i18n("Permission denied"));
     }
-} else if ($action == 'deletecontype') {
+} elseif ($action == 'deletecontype') {
     if ($perm->have_perm_area_action($area, "deletecontype") || $perm->have_perm_area_action_item($area, "deletecontype", $idcat)) {
         if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
             $oContentColl = new cApiContentCollection();
@@ -251,7 +251,7 @@ if (($action == 'savecontype' || $action == 10)) {
     } else {
         $page->displayError(i18n("Permission denied"));
     }
-} else if ($action == 'exportrawcontent') {
+} elseif ($action == 'exportrawcontent') {
 
     /**
      * extended class to add CDATA to content
@@ -351,7 +351,7 @@ if (($action == 'savecontype' || $action == 10)) {
     ob_clean();
     echo $articleElement->asXML();
     exit;
-} else if ($action == "importrawcontent") {
+} elseif ($action == "importrawcontent") {
     // import raw data into article
     // init vars
     $error = false;
@@ -441,7 +441,7 @@ if (($action == 'savecontype' || $action == 10)) {
                                             if ($versioningState == 'simple' || $versioningState == 'disabled') {
                                                 $contentEntry = new cApiContent();
                                                 $contentEntry->loadByMany(["idtype" => $typeEntry->get("idtype"), "typeid" => $typeid, "idartlang" => $articleLanguage->get('idartlang')]);
-                                            } else if ($versioningState == 'advanced') {
+                                            } elseif ($versioningState == 'advanced') {
                                                 $contentEntryVersionCollection = new cApiContentVersionCollection();
                                                 $where = 'idtype = ' . $typeEntry->get("idtype") . ' AND typeid = ' . $typeid . ' AND idartlang = ' . $articleLanguage->get('idartlang');
                                                 $ids = $contentEntryVersionCollection->getIdsByWhereClause($where);
@@ -691,7 +691,7 @@ switch ($versioningState) {
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
                 ]);
-            } else if (is_numeric($idArtLangVersion) && $articleType == 'editable') {
+            } elseif (is_numeric($idArtLangVersion) && $articleType == 'editable') {
                 $artLangVersion = new cApiArticleLanguageVersion((int)$idArtLangVersion);
                 $artLangVersion->markAsEditable('content');
                 $articleType = $versioning->getArticleType($idArtLangVersion, (int)$_REQUEST['idartlang'], $action, $selectedArticleId);
@@ -702,7 +702,7 @@ switch ($versioningState) {
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
                 ]);
-            } else if ($idArtLangVersion == 'current') {
+            } elseif ($idArtLangVersion == 'current') {
                 $artLang = new cApiArticleLanguage((int)$_REQUEST['idartlang']);
                 $artLang->markAsEditable('content');
                 $articleType = $versioning->getArticleType($idArtLangVersion, (int)$_REQUEST['idartlang'], $action, $selectedArticleId);
@@ -794,7 +794,7 @@ switch ($versioningState) {
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
             $buttonTitle = i18n('Copy to draft');
-        } else if ($articleType == 'editable') {
+        } elseif ($articleType == 'editable') {
             $buttonTitle = i18n('Publish draft');
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
@@ -973,7 +973,7 @@ if (count($result) <= 0) {
         foreach ($typeIdValue AS $typeId => $value) {
             if (($articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
                 $class = '';
-            } else if ($articleType == 'current' || $articleType == 'version') {
+            } elseif ($articleType == 'current' || $articleType == 'version') {
                 $class = ' noactive';
             }
             $page->set("d", "EXTRA_CLASS", $class);
@@ -1136,7 +1136,7 @@ function _processCmsTags(
                 // double escape the generated code string to avoid violating string syntax
                 // e.g. when title of cContentTypeFilelist contains a ' character
                 $tmp = str_replace('\'', '\\\'', $tmp);
-            } else if (cFileHandler::exists($typeCodeFile)) {
+            } elseif (cFileHandler::exists($typeCodeFile)) {
                 // include CMS type code
                 include($typeCodeFile);
             } elseif (!empty($_typeItem->code)) {

@@ -381,7 +381,7 @@ abstract class cContentTypeAbstract {
                 $keyWithoutPrefix = str_replace($this->_prefix . '_', '', $key);
                 if (isset($_POST[$key])) {
                     $this->setSetting($key, $_POST[$key]);
-                } else if (isset($_POST[$this->_prefix . '_array_' . $keyWithoutPrefix])) {
+                } elseif (isset($_POST[$this->_prefix . '_array_' . $keyWithoutPrefix])) {
                     // key is of type prefix_array_field, so interpret value as an array
                     $value = explode(',', $_POST[$this->_prefix . '_array_' . $keyWithoutPrefix]);
                     $this->setSetting($key, $value);
@@ -457,7 +457,7 @@ abstract class cContentTypeAbstract {
             $b = cString::toLowerCase($b["name"]);
             if ($a < $b) {
                 return -1;
-            } else if ($a > $b) {
+            } elseif ($a > $b) {
                 return 1;
             } else {
                 return 0;
@@ -494,7 +494,7 @@ abstract class cContentTypeAbstract {
             // check if the directory should be shown expanded or collapsed
             if ($this->_shouldDirectoryBeExpanded($dirData)) {
                 $template->set('d', 'SUBDIRLIST', $this->generateDirectoryList($dirData['sub']));
-            } else if (isset($dirData['sub']) && count($dirData['sub']) > 0) {
+            } elseif (isset($dirData['sub']) && count($dirData['sub']) > 0) {
                 $liClasses[] = 'collapsed';
                 $template->set('d', 'SUBDIRLIST', '');
             } else {

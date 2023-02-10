@@ -49,7 +49,7 @@ $tpl->set('s', 'CLIENTSELECT', $select);
 
 if ($perm->have_perm_area_action("lang_edit", "lang_newlanguage") && $iClientcount > 0) {
     $tpl->set('s', 'NEWLANG', '<a class="addfunction" href="javascript:void(0)">' . i18n("Create language for") . '</a>');
-} else if ($iClientcount == 0) {
+} elseif ($iClientcount == 0) {
     $tpl->set('s', 'NEWLANG', i18n('No Client selected'));
 } else {
     $tpl->set('s', 'NEWLANG', '');

@@ -481,7 +481,7 @@ class cMailer extends Swift_Mailer {
                 }
             }
             return $value;
-        } else if (is_string($value)) {
+        } elseif (is_string($value)) {
             return conHtmlentities($value, ENT_COMPAT, $charset);
         } else {
             return $value;
@@ -507,7 +507,7 @@ class cMailer extends Swift_Mailer {
                 }
             }
             return $value;
-        } else if (is_string($value)) {
+        } elseif (is_string($value)) {
             return conHtmlEntityDecode($value, ENT_COMPAT | ENT_HTML401, $charset);
         } else {
             return $value;

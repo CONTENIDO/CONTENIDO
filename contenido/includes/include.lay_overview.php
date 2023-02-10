@@ -65,7 +65,7 @@ while (($layout = $oLayouts->next()) !== false) {
             $delLink  = '<a href="javascript:;" data-action="delete_layout" title="'.$delTitle.'">'
                       . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete.gif" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
         }
-    } else if ($hasDeletePermission && $inUse) {
+    } elseif ($hasDeletePermission && $inUse) {
         $delTitle = i18n("Layout is in use, cannot delete");
         $delLink = '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" title="'.$delTitle.'" alt="'.$delTitle.'">';
     } else {

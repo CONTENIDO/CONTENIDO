@@ -167,7 +167,7 @@ class cLog {
 
         if (!$writer) {
             $createWriter = true;
-        } else if (!is_object($writer) || !($writer instanceof cLogWriter)) {
+        } elseif (!is_object($writer) || !($writer instanceof cLogWriter)) {
             cWarning(__FILE__, __LINE__, 'The passed class is not a subclass of cLogWriter. Creating new one.');
             $createWriter = true;
         }

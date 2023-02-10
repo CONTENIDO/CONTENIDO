@@ -106,7 +106,7 @@ if ($action == "mycontenido_editself") {
 
     if ($user->store() && !$notificationDisplayed) {
         $page->displayOk(i18n("Changes saved"));
-    } else if (!$notificationDisplayed) {
+    } elseif (!$notificationDisplayed) {
         $page->displayError(i18n("An error occured while saving user info."));
     }
 }

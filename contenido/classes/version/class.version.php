@@ -422,7 +422,7 @@ class cVersion {
                     $bDelete = cDirHandler::remove($sDir);
                 }
             }
-        } else if ($sFirstFile != '') {
+        } elseif ($sFirstFile != '') {
             $bDelete = cFileHandler::remove($sDir . $sFirstFile);
         }
         if ($bDelete) {
