@@ -32,7 +32,7 @@ class cUpgradeJob_0007 extends cUpgradeJobAbstract {
             // check if the column "path" still exists
             $db->query('SHOW COLUMNS FROM `%s`;', $cfg['tab']['plugins']);
 
-            $columns = array();
+            $columns = [];
             while ($db->nextRecord()) {
                 $columns[] = $db->f('Field');
             }

@@ -72,29 +72,29 @@ function checkExistingPlugin($db, $sPluginname) {
 function updateSystemProperties($db, $table) {
     $table = $db->escape($table);
 
-    $aStandardvalues = array(
-        array('type' => 'pw_request', 'name' => 'enable', 'value' => 'true'),
-        array('type' => 'system', 'name' => 'mail_transport', 'value' => 'smtp'),
-        array('type' => 'system', 'name' => 'mail_sender_name', 'value' => 'CONTENIDO Backend'),
-        array('type' => 'system', 'name' => 'mail_sender', 'value' => 'info@contenido.org'),
-        array('type' => 'system', 'name' => 'mail_host', 'value' => 'localhost'),
-        array('type' => 'maintenance', 'name' => 'mode', 'value' => 'disabled'),
-        array('type' => 'codemirror', 'name' => 'activated', 'value' => 'true'),
-        array('type' => 'update', 'name' => 'check', 'value' => 'false'),
-        array('type' => 'update', 'name' => 'news_feed', 'value' => 'false'),
-        array('type' => 'update', 'name' => 'check_period', 'value' => '60'),
-        array('type' => 'system', 'name' => 'clickmenu', 'value' => 'false'),
-        array('type' => 'versioning', 'name' => 'activated', 'value' => 'true'),
-        array('type' => 'versioning', 'name' => 'prune_limit', 'value' => ''),
-        array('type' => 'versioning', 'name' => 'path', 'value' => ''),
-        array('type' => 'system', 'name' => 'insite_editing_activated', 'value' => 'true'),
-        array('type' => 'backend', 'name' => 'backend_label', 'value' => ''),
-        array('type' => 'generator', 'name' => 'xhtml', 'value' => 'true'),
-        array('type' => 'generator', 'name' => 'basehref', 'value' => 'true'),
-    	array('type' => 'debug', 'name' => 'module_translation_message', 'value' => 'true'),
-    	array('type' => 'debug', 'name' => 'debug_for_plugins', 'value' => 'true'),
-        array('type' => 'stats', 'name' => 'tracking', 'value' => 'disabled')
-    );
+    $aStandardvalues = [
+        ['type' => 'pw_request', 'name' => 'enable', 'value' => 'true'],
+        ['type' => 'system', 'name' => 'mail_transport', 'value' => 'smtp'],
+        ['type' => 'system', 'name' => 'mail_sender_name', 'value' => 'CONTENIDO Backend'],
+        ['type' => 'system', 'name' => 'mail_sender', 'value' => 'info@contenido.org'],
+        ['type' => 'system', 'name' => 'mail_host', 'value' => 'localhost'],
+        ['type' => 'maintenance', 'name' => 'mode', 'value' => 'disabled'],
+        ['type' => 'codemirror', 'name' => 'activated', 'value' => 'true'],
+        ['type' => 'update', 'name' => 'check', 'value' => 'false'],
+        ['type' => 'update', 'name' => 'news_feed', 'value' => 'false'],
+        ['type' => 'update', 'name' => 'check_period', 'value' => '60'],
+        ['type' => 'system', 'name' => 'clickmenu', 'value' => 'false'],
+        ['type' => 'versioning', 'name' => 'activated', 'value' => 'true'],
+        ['type' => 'versioning', 'name' => 'prune_limit', 'value' => ''],
+        ['type' => 'versioning', 'name' => 'path', 'value' => ''],
+        ['type' => 'system', 'name' => 'insite_editing_activated', 'value' => 'true'],
+        ['type' => 'backend', 'name' => 'backend_label', 'value' => ''],
+        ['type' => 'generator', 'name' => 'xhtml', 'value' => 'true'],
+        ['type' => 'generator', 'name' => 'basehref', 'value' => 'true'],
+        ['type' => 'debug', 'name' => 'module_translation_message', 'value' => 'true'],
+        ['type' => 'debug', 'name' => 'debug_for_plugins', 'value' => 'true'],
+        ['type' => 'stats', 'name' => 'tracking', 'value' => 'disabled'],
+    ];
 
     foreach ($aStandardvalues as $aData) {
         $sql = $db->prepare("SELECT `value` FROM `%s` WHERE `type` = '%s' AND `name` = '%s'", $table, $aData['type'], $aData['name']);
@@ -183,12 +183,16 @@ function listClients($db, $table) {
 
     $db->query("SELECT idclient, name FROM `%s`", $table);
 
-    $clients = array();
-
+    $clients = [];
     while ($db->nextRecord()) {
         $frontendPath = $cfgClient[$db->f('idclient')]['path']['frontend'];
-        $htmlPath = $cfgClient[$db->f('idclient')]['path']['htmlpath'];
-        $clients[$db->f("idclient")] = array("name" => $db->f("name"), "frontendpath" => $frontendPath, "htmlpath" => $htmlPath);
+        $htmlPath     = $cfgClient[$db->f('idclient')]['path']['htmlpath'];
+
+        $clients[$db->f("idclient")] = [
+            "name"         => $db->f("name"),
+            "frontendpath" => $frontendPath,
+            "htmlpath"     => $htmlPath,
+        ];
     }
 
     return $clients;
@@ -255,7 +259,7 @@ function getSystemDirectories($bOriginalPath = false) {
     }
 
     if ($bOriginalPath == true) {
-        return array($root_path, $root_http_path);
+        return [$root_path, $root_http_path];
     }
 
     if (isset($_SESSION['override_root_path'])) {
@@ -269,7 +273,7 @@ function getSystemDirectories($bOriginalPath = false) {
     $root_path = stripLastSlash($root_path);
     $root_http_path = stripLastSlash($root_http_path);
 
-    return array($root_path, $root_http_path);
+    return [$root_path, $root_http_path];
 }
 
 /**

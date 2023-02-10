@@ -122,9 +122,10 @@ abstract class cUpgradeJobAbstract {
      * @return cApiClient[]
      */
     protected function _getAllClients() {
-        $aClients = array();
         $oClientColl = new cApiClientCollection();
         $oClientColl->select();
+
+        $aClients = [];
         while (($oClient = $oClientColl->next()) !== false) {
             $obj = clone $oClient;
             $aClients[$obj->get('idclient')] = $obj;
@@ -137,9 +138,10 @@ abstract class cUpgradeJobAbstract {
      * @return cApiLanguage[]
      */
     protected function _getAllLanguages() {
-        $aLanguages = array();
         $oLanguageColl = new cApiLanguageCollection();
         $oLanguageColl->select();
+
+        $aLanguages = [];
         while (($oLang = $oLanguageColl->next()) !== false) {
             $obj = clone $oLang;
             $aLanguages[$obj->get('idlang')] = $obj;
