@@ -50,6 +50,7 @@ return [
     'cApiCecChainItem' => 'contenido/classes/class.cec.php',
     'cApiCecHook' => 'contenido/classes/class.cec_hook.php',
     'cZipArchive' => 'contenido/classes/class.cziparchive.php',
+    'cDate' => 'contenido/classes/class.date.php',
     'cDirHandler' => 'contenido/classes/class.dirhandler.php',
     'cEffectiveSetting' => 'contenido/classes/class.effective.setting.php',
     'cFileHandler' => 'contenido/classes/class.filehandler.php',
