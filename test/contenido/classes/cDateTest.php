@@ -98,4 +98,31 @@ class cDateTest extends cTestingTestCase
         $this->assertEquals($output, cDate::padDayOrMonth($input));
     }
 
+    /**
+     * Test {@see cDate::getCanonicalMonth()}.
+     * @TODO Implement this test.
+     */
+    public function testGetCanonicalMonth()
+    {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+
+    /**
+     * Test {@see cDate::getCanonicalDay()}.
+     * @TODO Implement this test.
+     */
+    public function testGetCanonicalDay()
+    {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+
+    /**
+     * Test {@see cDate::formatDatetime()}.
+     * @TODO Implement this test.
+     */
+    public function testFormatDatetime()
+    {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+
 }
