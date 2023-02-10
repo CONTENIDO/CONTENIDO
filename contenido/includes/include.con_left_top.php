@@ -79,6 +79,14 @@ $sCurrentYear = cSecurity::toInteger(date('Y'));
 $arrYears     = range($sCurrentYear - 10, $sCurrentYear + 30);
 $arrYears     = ['-----'] + array_combine($arrYears, $arrYears);
 
+// Ensure that days and month have two digits
+foreach ($arrDays as $pos => $value) {
+    $arrDays[$pos] = cDate::padDay($value);
+}
+foreach ($arrMonths as $pos => $value) {
+    $arrMonths[$pos] = cDate::padMonth($value);
+}
+
 // get user input
 $bsSearchText              = $_REQUEST['bs_search_text'] ?? '';
 $bsSearchId                = $_REQUEST['bs_search_id'] ?? '';
