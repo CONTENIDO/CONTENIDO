@@ -73,18 +73,28 @@ if (isset($_GET['save_search']) && $_GET['save_search'] == 'true') {
 }
 
 // ARTICLE SEARCH
-$arrDays      = ['--'] + range(0, 31);
+$arrDays      = [];
 $arrMonths    = ['--'] + range(0, 12);
 $sCurrentYear = cSecurity::toInteger(date('Y'));
 $arrYears     = range($sCurrentYear - 10, $sCurrentYear + 30);
 $arrYears     = ['-----'] + array_combine($arrYears, $arrYears);
 
 // Ensure that days and month have two digits
-foreach ($arrDays as $pos => $value) {
-    $arrDays[$pos] = cDate::padDay($value);
+foreach (['--'] + range(0, cDate::MAX_DAY_VALUE) as $pos => $value) {
+    if ($pos === 0) {
+        $arrDays[$pos] = $value;
+    } else {
+        $value = cDate::padDay($value);
+        $arrDays[$value] = $value;
+    }
 }
-foreach ($arrMonths as $pos => $value) {
-    $arrMonths[$pos] = cDate::padMonth($value);
+foreach (['--'] + range(0, cDate::MAX_MONTH_VALUE) as $pos => $value) {
+    if ($pos === 0) {
+        $arrMonths[$pos] = $value;
+    } else {
+        $value = cDate::padMonth($value);
+        $arrMonths[$value] = $value;
+    }
 }
 
 // get user input
@@ -100,12 +110,12 @@ $bsSearchDateToYear        = cSecurity::toInteger($_REQUEST['bs_search_date_to_y
 $bsSearchAuthor            = $_REQUEST['bs_search_author'] ?? 'n/a';
 
 // validate user input
-$bsSearchDateTypeFromDay   = max(0, $bsSearchDateTypeFromDay);
-$bsSearchDateTypeFromMonth = max(0, $bsSearchDateTypeFromMonth);
-$bsSearchDateTypeFromYear  = max(0, $bsSearchDateTypeFromYear);
-$bsSearchDateToDay         = max(0, $bsSearchDateToDay);
-$bsSearchDateToMonth       = max(0, $bsSearchDateToMonth);
-$bsSearchDateToYear        = max(0, $bsSearchDateToYear);
+$bsSearchDateTypeFromDay   = cDate::padDay(max(0, $bsSearchDateTypeFromDay));
+$bsSearchDateTypeFromMonth = cDate::padMonth(max(0, $bsSearchDateTypeFromMonth));
+$bsSearchDateTypeFromYear  = cSecurity::toString(max(0, $bsSearchDateTypeFromYear));
+$bsSearchDateToDay         = cDate::padDay(max(0, $bsSearchDateToDay));
+$bsSearchDateToMonth       = cDate::padMonth(max(0, $bsSearchDateToMonth));
+$bsSearchDateToYear        = cSecurity::toString(max(0, $bsSearchDateToYear));
 
 // get users
 $userColl = new cApiUserCollection();
