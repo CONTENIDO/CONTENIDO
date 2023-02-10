@@ -53,11 +53,11 @@
             <tr height="30">
                 <td style="border: 1px solid #B3B3B3;">
                     <div style="padding-left: 17px;">
-                        <a target="left_bottom"class="black" id="expander" href="{EXPAND_LINK}">
+                        <a target="left_bottom"class="black" data-action="expand_all_categories" href="{EXPAND_LINK}">
                             <img alt="i18n("open all")" title="i18n("Open all categories")" src="images/open_all.gif">&nbsp;i18n("open all")
                         </a>
                         <span style="margin-left: 25px;">
-                            <a target="left_bottom" class="black" id="collapser" href="{COLLAPSE_LINK}">
+                            <a target="left_bottom" class="black" data-action="collapse_all_categories" href="{COLLAPSE_LINK}">
                                 <img alt="i18n("close all")" title="i18n("Close all categories")" src="images/close_all.gif">&nbsp;i18n("close all")
                             </a>
                         </span>
@@ -76,7 +76,7 @@ var cfg = new Con.Config(),
     linkcheckerURL = '',
     curLanguageSync = {SYNC_LANG};
 
-//This function tries to get recent Informations from other frames, if this frame is reloaded
+//This function tries to get recent Information from other frames, if this frame is reloaded
 function initData() {
     var left_bottom = Con.getFrame('left_bottom'),
         right_bottom = Con.getFrame('right_bottom'),
@@ -102,13 +102,7 @@ function initData() {
     }
 }
 
-//Script updates sync Language and reloads left_bottom frame
-function updateCurLanguageSync() {
-    curLanguageSync = document.syncfrom.syncoptions.value;
-    {UPDATE_SYNC_REFRESH_FRAMES}
-}
-
-// need to insert function in Article Search link
+// Need to insert function in Article Search link
 function resizeFrame(arg) {
     if (arg == '') {
         var articleLink = document.getElementById('{ARTICLELINK}'),
@@ -152,64 +146,61 @@ function resizeFrame(arg) {
     }, 10);
 }
 
+/**
+ * @deprecated Since 4.10.2, is not needed anymore, see actionUpdateCurrentLanguageSync() below
+ */
+function updateCurLanguageSync() {
+    console.warn('The function updateCurLanguageSync() is deprecated since CONTENIDO 4.10.2, there is no need to use it!');
+}
+
+/**
+ * @deprecated Since 4.10.2, is not needed anymore, see actionOnSearchDateTypeChange() below
+ */
 function toggle_tr_visibility(tr_id) {
-    if (document.forms['backend_search'].elements['bs_search_date_type'].options[document.forms['backend_search'].elements['bs_search_date_type'].selectedIndex].value == 'n/a') {
-        document.getElementById(tr_id).style.display = 'none';
-    } else {
-        if (!window.ActiveXObject) {
-            document.getElementById(tr_id).style.display = 'table-row';
-        } else {
-            document.getElementById(tr_id).style.display = 'block';
-        }
-    }
+    console.warn('The function toggle_tr_visibility() is deprecated since CONTENIDO 4.10.2, there is no need to use it!');
 }
 
+/**
+ * @deprecated Since 4.10.2, is not needed anymore, see actionConfigureCategory() below
+ */
 function configureCategory() {
-    if (cfg.catId > 0 && cfg.hasRight['template_cfg'] == 1) {
-        var sHref = '{CAT_HREF}';
-        sHref = sHref+cfg.catId;
-        Con.getFrame('right_bottom').document.location.href = sHref;
-    }
+    console.warn('The function configureCategory() is deprecated since CONTENIDO 4.10.2, there is no need to use it!');
 }
 
+/**
+ * @deprecated Since 4.10.2, is not needed anymore, see actionCopyToCurrentLanguage() below
+ */
 function generateSyncAction(bIsMultiple) {
-    var href = '{SYNC_HREF}';
-    if (curLanguageSync > 0 && cfg.catId > 0) {
-        if (bIsMultiple == 1) {
-            Con.multiLink('left_bottom', href+'&syncfromlang='+curLanguageSync+'&syncidcat='+cfg.catId+'&multiple=1');
-        } else {
-            Con.multiLink('left_bottom', href+'&syncfromlang='+curLanguageSync+'&syncidcat='+cfg.catId+'&multiple=0');
-        }
-    }
+    console.warn('The function generateSyncAction() is deprecated since CONTENIDO 4.10.2, there is no need to use it!');
 }
 
 function resetSearchForm() {
-    var oForm = document.backend_search;
+    var $form = $('#backend_search');
 
-    oForm.bs_search_text.value = "";
-    oForm.bs_search_id.value = "";
-    oForm.bs_search_date_type.value = "";
-    oForm.bs_search_date_type.selectedIndex = 0;
+    for (var i = 0; i < $form[0].elements.length; i++) {
+        var $element = $($form[0].elements[i]);
+        if ($element.attr('name').startsWith('bs_search_')) {
+            $element.val('');
+        }
+    }
+    $form.find('[name=bs_search_date_type]').trigger('change');
+}
 
-    toggle_tr_visibility("tr_date_from");
-    toggle_tr_visibility("tr_date_to");
-
-    oForm.bs_search_date_from_day.value = "";
-    oForm.bs_search_date_from_month.value = "";
-    oForm.bs_search_date_from_year.value = "";
-    oForm.bs_search_date_from_day.selectedIndex = 0;
-    oForm.bs_search_date_from_month.selectedIndex = 0;
-    oForm.bs_search_date_from_year.selectedIndex = 0;
-
-    oForm.bs_search_date_to_day.value = "";
-    oForm.bs_search_date_to_month.value = "";
-    oForm.bs_search_date_to_year.value = "";
-    oForm.bs_search_date_to_day.selectedIndex = 0;
-    oForm.bs_search_date_to_month.selectedIndex = 0;
-    oForm.bs_search_date_to_year.selectedIndex = 0;
-
-    oForm.bs_search_author.value = "";
-    oForm.bs_search_author.selectedIndex = 0;
+/**
+ * Take over search form field values.
+ * Is called from the right_bottom frame (backend_search), for example.
+ *
+ * @param {object} data New values to set, where the key is the form field name
+ *      and the value the form field value to set.
+ */
+function refreshSearchForm(data) {
+    if (!$.isEmptyObject(data)) {
+        var $form = $("#backend_search");
+        $.each(data, function(key, value) {
+            $form.find('[name=' + key + ']').val(value);
+        });
+        $form.find('[name=bs_search_date_type]').trigger('change');
+    }
 }
 
 function frameLeftTopResizeInitCallback() {
@@ -219,7 +210,7 @@ function frameLeftTopResizeInitCallback() {
 cfg.init('oTplSel', 'oOnline', 'oLock', 'oTemplatecfg');
 cfg.reset();
 
-//If this frame is reloaded, recall functions in other frames to reinit values
+// If this frame is reloaded, recall functions in other frames to re-initialize values
 initData();
 
 (function(Con, $) {
@@ -227,76 +218,77 @@ initData();
 
         var left_bottom = Con.getFrame('left_bottom');
 
-        $("a#expander").click(function() {
-            left_bottom.$(".con_str_tree .root ul li.collapsed").removeClass("collapsed");
-            var catlist = left_bottom.scatlist;
-            $.post("{AJAXURL}", { area: "{AREA}", action: "expandall", wholelist: catlist, contenido: Con.sid });
-            return false;
-        });
-
-        $("a#collapser").click(function() {
-            left_bottom.$(".con_str_tree li.root ul li ul").parent().addClass("collapsed");
-            var catlist = left_bottom.scatlist;
-            $.post("{AJAXURL}", { area: "{AREA}", action: "collapseall", wholelist: catlist, contenido: Con.sid });
-            return false;
-        });
-
-        $("a#changetpl").click(function() {
+        /**
+         * Action handler to configure the template for a selected category
+         */
+        function actionConfigureCategory() {
             if (cfg.catId > 0 && cfg.hasRight['template_cfg'] == 1) {
-                var templateselect = document.TemplateSelect.oTplSel.selectedIndex;
-                var templateid = document.TemplateSelect.oTplSel.options[templateselect].value;
-                $.post("{AJAXURL}", { area: "{AREA}", action: "con_changetemplate", idcat: cfg.catId, idtpl: templateid, contenido: Con.sid });
-                initData();
-                var oldid = cfg.catId + '-' + cfg.tplId + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
-                var newid = cfg.catId + '-' + templateid + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
-                cfg.tplId = templateid;
-
-                left_bottom.$(".con_str_tree li.root ul li#"+oldid).attr("id", newid);
-
-                var frame = Con.getFrame('right_bottom');
-          		var href = 'main.php?area={AREA}&frame=4&idcat='+ cfg.catId + '&idtpl=' + templateid + '&contenido=n' + Con.sid + '';
-                frame.location.href = href;
-                
-                return false;
+                var sHref = '{CAT_HREF}';
+                sHref = sHref + cfg.catId;
+                Con.getFrame('right_bottom').document.location.href = sHref;
             }
-        });
+        }
 
-        $("div#oOnline_label a").click(function() {
+        /**
+         * Action handler to toggle the state of date select boxes in article search form
+         * @param [jQuery} $element The changed date-type select box
+         */
+        function actionOnSearchDateTypeChange($element) {
+            if ($element.val() === 'n/a') {
+                $('#tr_date_from').removeClass('display');
+                $('#tr_date_to').removeClass('display');
+            } else {
+                $('#tr_date_from').addClass('display');
+                $('#tr_date_to').addClass('display');
+            }
+        }
+
+        /**
+         * Action handler to toggle the online status of a selected category
+         * @returns {boolean}
+         */
+        function actionChangeCategoryOnlineState() {
             if (cfg.catId > 0 && cfg.hasRight['online'] == 1) {
                 var oldid = cfg.idString;
                 var oldobject = left_bottom.$(".con_str_tree li.root ul li#" + oldid);
                 var oldlink = left_bottom.$(".con_str_tree li.root ul li#" + oldid + " > div > a");
                 var oldclass = oldlink.attr("class");
+                var newonline, newclass;
                 if (cfg.isOnline == 0) {
-                    var newonline = 1;
-                    var newclass = oldclass.replace(/off/, "on");
+                    newonline = 1;
+                    newclass = oldclass.replace(/off/, "on");
                 } else {
-                    var newonline = 0;
-                    var newclass = oldclass.replace(/on/, "off");
+                    newonline = 0;
+                    newclass = oldclass.replace(/on/, "off");
                 }
-                var newid = cfg.catId + '-' + cfg.tplId + '-' + newonline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
+
+                var params = { area: "{AREA}", action: "con_makecatonline", idcat: cfg.catId, online: newonline, contenido: Con.sid };
+                $.post("{AJAXURL}", params);
+
+                var newid = cfg.catId + '-' + cfg.tplId + '-' + newonline + '-' + cfg.isPublic + '-'
+                    + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public']
+                    + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
                 oldlink.removeClass(oldclass);
                 oldlink.addClass(newclass);
-
                 oldobject.attr("id", newid);
-                $.post("{AJAXURL}", { area: "{AREA}", action: "con_makecatonline", idcat: cfg.catId, online: newonline, contenido: Con.sid });
-
                 left_bottom.$(".con_str_tree li.root ul li#"+newid+" > div").click();
+
                 return false;
             }
-        });
+        }
 
-        $("div#oLock_label a").click(function() {
-            newid = false;
+        /**
+         * Action handler to toggle the lock status of a selected category
+         * @returns {boolean}
+         */
+        function actionChangeCategoryLockState() {
+            var newid = false,
+                newpublic;
             if (cfg.catId > 0 && cfg.hasRight['public'] == 1) {
-                if (cfg.isPublic == 0) {
-                    var newpublic = 1;
-                } else {
-                    var newpublic = 0;
-                }
+                newpublic = (cfg.isPublic == 0) ? 1 : 0;
                 var oldid = cfg.idString;
-                var oldobject = left_bottom.$(".con_str_tree li.root ul li#"+oldid);
-                var oldlink = left_bottom.$(".con_str_tree li.root ul li#"+oldid+" div > a");
+                var oldobject = left_bottom.$(".con_str_tree li.root ul li#" + oldid);
+                var oldlink = left_bottom.$(".con_str_tree li.root ul li#" + oldid + " div > a");
                 oldlink.each(function(i) {
                     var oldlinkclass = $(this).attr("class");
                     var oldlinkid = $(this).parent().parent().attr("id");
@@ -314,21 +306,202 @@ initData();
                     $(this).removeClass(oldlinkclass);
                     $(this).addClass(newlinkclass);
                     var newlinkid = aOldlinkids[0] + '-' + aOldlinkids[1] + '-' + aOldlinkids[2] + '-' + newpublic + '-' + aOldlinkids[4] + '-' + aOldlinkids[5] + '-' + aOldlinkids[6] + '-' + aOldlinkids[7]  + '-' + aOldlinkids[8];
-                    $(".con_str_tree li.root ul li#"+oldlinkid).attr("id", newlinkid);
+                    $(".con_str_tree li.root ul li#" + oldlinkid).attr("id", newlinkid);
                     if (newid == false) {
                         newid = newlinkid;
                     }
                 });
 
-                $.post("{AJAXURL}", { area: "{AREA}", action: "con_makepublic", idcat: cfg.catId, public: newpublic, contenido: Con.sid });
+                var params = { area: "{AREA}", action: "con_makepublic", idcat: cfg.catId, public: newpublic, contenido: Con.sid };
+                $.post("{AJAXURL}", params);
 
                 cfg.isPublic = newpublic;
 
-                left_bottom.$(".con_str_tree li.root ul li#"+newid+" > div").click();
+                left_bottom.$(".con_str_tree li.root ul li#" + newid + " > div").click();
                 cfg.updateScreen();
+
                 return false;
             }
+        }
+
+        /**
+         * Action handler to change the template of a selected category
+         * @returns {boolean}
+         */
+        function actionChangeCategoryTemplate() {
+            if (cfg.catId > 0 && cfg.hasRight['template_cfg'] == 1) {
+                var templateselect = document.TemplateSelect.oTplSel.selectedIndex;
+                var templateid = document.TemplateSelect.oTplSel.options[templateselect].value;
+                $.post("{AJAXURL}", { area: "{AREA}", action: "con_changetemplate", idcat: cfg.catId, idtpl: templateid, contenido: Con.sid });
+                initData();
+                var oldid = cfg.catId + '-' + cfg.tplId + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
+                var newid = cfg.catId + '-' + templateid + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
+                cfg.tplId = templateid;
+
+                left_bottom.$(".con_str_tree li.root ul li#" + oldid).attr("id", newid);
+
+                var frame = Con.getFrame('right_bottom');
+                var href = 'main.php?area={AREA}&frame=4&idcat=' + cfg.catId + '&idtpl=' + templateid + '&contenido=' + Con.sid + '';
+                frame.location.href = href;
+
+                return false;
+            }
+        }
+
+        /**
+         * Action handler to collapse all categories
+         * @returns {boolean}
+         */
+        function actionCollapseAllCategories() {
+            left_bottom.$(".con_str_tree li.root ul li ul").parent().addClass("collapsed");
+            var catlist = left_bottom.scatlist;
+            $.post("{AJAXURL}", { area: "{AREA}", action: "collapseall", wholelist: catlist, contenido: Con.sid });
+            return false;
+        }
+
+        /**
+         * Action handler to expand all categories
+         * @returns {boolean}
+         */
+        function actionExpandAllCategories() {
+            left_bottom.$(".con_str_tree .root ul li.collapsed").removeClass("collapsed");
+            var catlist = left_bottom.scatlist;
+            $.post("{AJAXURL}", { area: "{AREA}", action: "expandall", wholelist: catlist, contenido: Con.sid });
+            return false;
+        }
+
+        /**
+         * Action to initialize the synchronization from a language
+         */
+        function actionUpdateCurrentLanguageSync() {
+            var $form = $('#syncfrom');
+            var syncValue = $form.find('[name=syncoptions]').val();
+            Con.multiLink('left_bottom', Con.UtilUrl.build(
+                'main.php', {area: '{AREA}', frame: 2, syncoptions: syncValue, refresh_syncoptions: 'true'}
+            ));
+        }
+
+        /**
+         * Action to copy a selected category from a language
+         *
+         * @param {Number} alsoSubcategories Flag to copy also subcategories (1) or only the selected category (0)
+         */
+        function actionCopyToCurrentLanguage(alsoSubcategories) {
+            var parameter;
+            if (curLanguageSync > 0 && cfg.catId > 0) {
+                parameter = {area: '{AREA}', frame: 2, action: 'con_synccat', syncfromlang: curLanguageSync, syncidcat: cfg.catId};
+                if (alsoSubcategories === 1) {
+                    parameter.multiple = 1;
+                } else {
+                    parameter.multiple = 0;
+                }
+                Con.multiLink('left_bottom', Con.UtilUrl.build('main.php', parameter));
+            }
+        }
+
+        /**
+         * Action to run saved/predefined searches or to remove custom saved searches.
+         *
+         * @param {jQuery} $element
+         * @param {String} searchType
+         */
+        function actionSavedSearch($element, searchType) {
+            var frameName = 'right_bottom',
+                page = 'backend_search.php',
+                parameter = {area: '{AREA}', frame: 4},
+                bResetSearchForm = false,
+                $row;
+
+            switch (searchType) {
+                case 'recent_edited_articles':
+                    parameter.recentedit = 'true';
+                    bResetSearchForm = true;
+                    break;
+                case 'my_articles':
+                    parameter.myarticles = 'true';
+                    bResetSearchForm = true;
+                    break;
+                case 'lost_and_found':
+                    parameter.lostfound = 'true';
+                    bResetSearchForm = true;
+                    break;
+                case 'workflow':
+                    page = 'main.php';
+                    parameter.area = 'con_workflow';
+                    bResetSearchForm = true;
+                    break;
+                case 'my_saved_search':
+                    $row = $element.closest('[data-itemid]');
+                    if (!$row.data('itemid') || !$row.data('itemtype')) {
+                        return;
+                    }
+                    parameter.itemid = $row.data('itemid');
+                    parameter.itemtype = $row.data('itemtype');
+                    break;
+                case 'delete_my_saved_search':
+                    $row = $element.closest('[data-itemid]');
+                    if (!$row.data('itemid') || !$row.data('itemtype')) {
+                        return;
+                    }
+
+                    frameName = 'left_top';
+                    page = 'main.php';
+                    parameter.delsavedsearch = 'true';
+                    parameter.frame = 1;
+                    parameter.itemid = $row.data('itemid');
+                    parameter.itemtype = $row.data('itemtype');
+
+                    // Reload empty page at right bottom
+                    Con.multiLink('right_bottom', Con.UtilUrl.build('main.php', {area: '{AREA}', frame: 4}));
+                    break;
+                default:
+                    return;
+            }
+
+            // console.log({frameName: frameName, page: page, parameter: parameter});
+            Con.multiLink(frameName, Con.UtilUrl.build(page, parameter));
+
+            if (bResetSearchForm) {
+                resetSearchForm();
+            }
+        }
+
+        // Action handling for elements in left_top
+        $('#top_left_container [data-action]').live('click', function() {
+            var $element = $(this),
+                action = $element.data('action');
+
+            if (action === 'configure_category') {
+                actionConfigureCategory();
+            } else if (action === 'change_category_online_state') {
+                return actionChangeCategoryOnlineState();
+            } else if (action === 'change_category_lock_state') {
+                return actionChangeCategoryLockState();
+            } else if (action === 'change_category_template') {
+                return actionChangeCategoryTemplate();
+            } else if (action === 'collapse_all_categories') {
+                return actionCollapseAllCategories();
+            } else if (action === 'expand_all_categories') {
+                return actionExpandAllCategories();
+            } else if (action === 'update_current_language_sync') {
+                actionUpdateCurrentLanguageSync();
+            } else if (action === 'copy_to_current_language') {
+                var option = $element.data('option');
+                actionCopyToCurrentLanguage(option);
+            } else if (action === 'saved_search') {
+                var type = $element.data('type');
+                actionSavedSearch($element, type);
+            }
         });
+
+        // Register change handler for search date type select box and trigger initial change to react on initial set value.
+        var $searchDateTypeSelect = $('#backend_search [name=bs_search_date_type]');
+        $searchDateTypeSelect.on('change', function(event) {
+            var $element = $(event.currentTarget);
+            actionOnSearchDateTypeChange($element);
+        });
+        $searchDateTypeSelect.trigger('change');
+
     });
 })(Con, Con.$);
 </script>

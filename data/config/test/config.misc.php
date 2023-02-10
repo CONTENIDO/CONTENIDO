@@ -348,12 +348,26 @@ $cfg['images']['image_magick']['use'] = true;
 //          e. g. C:/Program Files/ImageMagick/
 //          IMPORTANT: use slashes - not backslashes!
 // NOTE: You should set this on a windows os, otherwise the system could execute
-//       the "convert.exe" from system32 folder. This executable does not belongs
+//       the "convert.exe" from system32 folder. This executable does not belong
 //       to ImageMagick.
 $cfg['images']['image_magick']['path'] = '';
 
 
-// (int) configuration of the compression rate used by the cApiImgScale functions
+// (int) configuration of the compression rate used by the cApiImgScale functions.
+//       For JPEG/JPG compression the value will be used as it is. For PNG compression
+//       the value will be converted to PNG compression level (0 - 9).
+//       | Compression Rate  | PNG compression level |
+//       |-------------------|-----------------------|
+//       | 100 - 95          | 0                     |
+//       | 94 - 84           | 1                     |
+//       | 83 - 73           | 2                     |
+//       | 72 - 62           | 3                     |
+//       | 61 - 51           | 4                     |
+//       | 50 - 39           | 5                     |
+//       | 38 - 28           | 6                     |
+//       | 27 - 17           | 7                     |
+//       | 16 - 6            | 8                     |
+//       | 5 - 0             | 9                     |
 $cfg['images']['image_quality']['compression_rate'] = 75;
 
 
@@ -397,8 +411,8 @@ $cfg['backend_template']['js_files'] = [
     '{basePath}scripts/contenido.js',
     '{basePath}scripts/general.js?v=c027a03b03f184f2d7d7f0d866bd9a55',
     '_CONFIG_',
-    '{basePath}scripts/startup.js',
-    '{basePath}scripts/jquery/plugins/atooltip.jquery.js',
+    '{basePath}scripts/startup.js?v=606f61b17b52c6f86295e3608e6f0ee4',
+    '{basePath}scripts/jquery/plugins/atooltip.jquery.js?v=606f61b17b52c6f86295e3608e6f0ee4'
 ];
 
 

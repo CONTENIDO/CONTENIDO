@@ -880,6 +880,26 @@ a.foldingrow img {
     margin: 0 4px 0 12px;
 }
 
+/* Animated folding rows */
+tr.foldingrow_hidden {
+    border: none;
+}
+tr.foldingrow_hidden > td {
+    box-sizing: border-box;
+    padding: 0;
+}
+tr.foldingrow_hidden > td > div {
+    box-sizing: border-box;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.6s ease, opacity 0.6s;
+}
+tr.foldingrow_hidden.display > td > div {
+    max-height: 1000px;
+    opacity: 1;
+    transition: max-height 0.6s ease, opacity 0.6s;
+}
 
 span.cpager_currentitem {
     color: #000;
@@ -1776,6 +1796,10 @@ p.column_header {
  * @section Other
  */
 
+.tr_nodisplay div {
+/*    display: none;*/
+}
+
 .nodisplay {
     display: none;
 }
@@ -2354,3 +2378,26 @@ a.infoButton,
     /* Good browsers */
     opacity: 0.3 !important;
 }
+
+
+
+button,
+input,
+optgroup,
+select,
+textarea,
+input[type="text"],
+input[type="password"] {
+/*    box-sizing: border-box;*/
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    color: #000;
+    padding: 1px;
+    outline: 3px darkorange solid;
+}
+
+/*
+.con_element {
+    outline: 3px lawngreen solid !important;
+}
+*/

@@ -19,6 +19,7 @@
 
     var NAME = 'registry';
 
+    // Polyfill for Browser, who don't support `Array.prototype.forEach`.
     // define forEach loops on arrays for browsers who do not understand this (e.g. IE 8)
     // use definition from Mozilla
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
@@ -78,6 +79,7 @@
         };
     }
 
+    // Polyfill for Browser, who don't support `Array.prototype.indexOf`.
     // define indexOf on arrays for browsers who do not understand this (e.g. IE 8, IE 9)
     // use definition from Mozilla
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf#Polyfill
@@ -145,6 +147,7 @@
         };
     }
 
+    // Polyfill for Browser, who don't support `Object.keys`.
     // define Object.keys for browser that don't implement it (e.g. IE 8)
     // use definition from Mozilla
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
@@ -187,6 +190,23 @@
                 return result;
             };
         }());
+    }
+
+    // Polyfill for Browser, who don't support `String.prototype.endsWith`, e.g. IE 11
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith
+    if (!String.prototype.endsWith) {
+        String.prototype.endsWith = function(suffix) {
+            return this.indexOf(suffix, this.length - suffix.length) !== -1;
+        };
+    }
+
+    // Polyfill for Browser, who don't support `String.prototype.startsWith`, e.g. IE 11
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
+    if (!String.prototype.startsWith) {
+        String.prototype.startsWith = function(searchString, position) {
+            var pos = position > 0 ? position|0 : 0;
+            return this.substring(pos, pos + searchString.length) === searchString;
+        };
     }
 
     /**
@@ -1306,7 +1326,7 @@
      * @param {Boolean} [asObject=true] - Flag to return the form elements data as an object.
      * @returns {Object|JQuery.NameValuePair[]} - The form data. If return type is object, form data
      *     having multiple values for a multi select or option group (same element name!) will be returned
-     *     as an list of values, e. g. {multiselect: ['value1', 'value2']}
+     *     as a list of values, e. g. {multiselect: ['value1', 'value2']}
      */
     Con.serializeForm = function (form, asObject) {
         var objData,
