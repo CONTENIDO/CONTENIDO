@@ -22,7 +22,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * lazy loading approach, whenever it is possible.
  * Most of the values, returned by the functions, will be loaded/initialized
  * only during the first function call.
-
+ *
+ * NOTE:
+ * This class is for internal usage in CONTENIDO core, therefore it is not meant
+ * for public usage. Its interface and functionality may change in the future.
+ *
+ * TODO Has some similarities with {@see cBackendSearchHelper}, merge them together!
  *
  * @since CONTENIDO 4.10.2
  * @package Core
