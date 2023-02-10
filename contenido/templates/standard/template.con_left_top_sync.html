@@ -1,29 +1,28 @@
+<!--
+data-action handler are defined in template.con_left_top.html.
+-->
 <table class="borderless" style="padding:3px; margin-left:12px; border-right: 1px solid #B3B3B3;" width="100%" border="0" dir="{TEXT_DIRECTION}">
     <tr>
         <td>
-            <form method="post" name="syncfrom" action="main.php">
+            <form method="post" id="syncfrom" name="syncfrom" action="main.php">
                 <input type="hidden" name="area" value="{AREA}">
                 <input type="hidden" name="frame" value="{FRAME}">
                 {SELECTBOX}
-                <img class="vAlignMiddle" onMouseover="this.style.cursor='pointer'" onclick="updateCurLanguageSync();" src="images/submit.gif">
+                <img class="vAlignMiddle" onmouseover="this.style.cursor='pointer'" data-action="update_current_language_sync" src="images/submit.gif">
             </form>
         </td>
     </tr>
     <tr>
         <td>
             <div id="sync_cat_single" style="display:none;">
-                <a href="javascript:generateSyncAction(0);">
-                    <img class="vAlignMiddle" src="images/but_sync_cat.gif" vspace="2" hspace="2" title="i18n("Copy to current language")" alt="i18n("Copy to current language")">
-                </a>
-                <a href="javascript:generateSyncAction(0);">
+                <a href="javascript://" data-action="copy_to_current_language" data-option="0">
+                    <img class="vAlignMiddle" src="images/but_sync_cat.gif" title="i18n("Copy to current language")" alt="i18n("Copy to current language")">
                     i18n("Copy to current language")
                 </a>
             </div>
             <div id="sync_cat_multiple" style="display:none;">
-                <a href="javascript:generateSyncAction(1);">
-                    <img class="vAlignMiddle" src="images/but_sync_cat.gif" vspace="2" hspace="2" title="i18n("Also copy subcategories")" alt="'i18n("Also copy subcategories")">
-                </a>
-                <a href="javascript:generateSyncAction(1);">
+                <a href="javascript://" data-action="copy_to_current_language" data-option="1">
+                    <img class="vAlignMiddle" src="images/but_sync_cat.gif" title="i18n("Also copy subcategories")" alt="'i18n("Also copy subcategories")">
                     i18n("Also copy subcategories")
                 </a>
             </div>

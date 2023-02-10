@@ -92,9 +92,6 @@ var rcount = 0;
 // Update frame right top for sub navigation
 {SUBNAVI}
 
-// Refresh top_left frame to show new saved searches
-{REFRESH}
-
 // Create a reference to the Article Object in frame 'right_top'
 artObj = Con.getFrame('left_top').artObj;
 
@@ -108,7 +105,7 @@ if (artObj) {
     artObj.setHrefOverview(document.location.href);
 }
 
-// Timeout to call the function afer 250ms
+// Timeout to call the function after 250ms
 window.setTimeout(function() {
     createReference();
 }, 250);
