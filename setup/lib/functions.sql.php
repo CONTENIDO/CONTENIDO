@@ -16,15 +16,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Executes a file of SQL queries
  *
- * @param       $db
- * @param       $prefix
- * @param       $file
- * @param array $replacements
+ * @param cDb    $db
+ * @param string $prefix
+ * @param string $file
+ * @param array  $replacements
  *
  * @return bool
  * @throws cInvalidArgumentException
  */
-function injectSQL($db, $prefix, $file, $replacements = array()) {
+function injectSQL($db, $prefix, $file, $replacements = []) {
     $file = trim($file);
 
     if (!is_readable($file)) {
@@ -65,7 +65,7 @@ function injectSQL($db, $prefix, $file, $replacements = array()) {
  */
 function addAutoIncrementToTables($db, $cfg) {
     // All primary keys in tables except these below!
-    $filterTables = array(
+    $filterTables = [
         $cfg['sql']['sqlprefix'] . '_groups',
         $cfg['sql']['sqlprefix'] . '_pica_alloc_con',
         $cfg['sql']['sqlprefix'] . '_pica_lang',
@@ -76,8 +76,8 @@ function addAutoIncrementToTables($db, $cfg) {
         $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5',
         $cfg['sql']['sqlprefix'] . '_user',
         $cfg['sql']['sqlprefix'] . '_iso_639_2',
-        $cfg['sql']['sqlprefix'] . '_iso_3166'
-    );
+        $cfg['sql']['sqlprefix'] . '_iso_3166',
+    ];
 
     $sql = $db->prepare('SHOW TABLES FROM `%s`', $cfg['db']['connection']['database']);
     $db->query($sql);
@@ -87,7 +87,7 @@ function addAutoIncrementToTables($db, $cfg) {
         $_SESSION['install_failedupgradetable'] = true;
     }
 
-    $aRows = array();
+    $aRows = [];
     while ($db->nextRecord()) {
         $aRows[] = $db->getRecord();
     }
@@ -343,12 +343,13 @@ function splitSqlFile($sql, $delimiter) {
     // Split up our string into "possible" SQL statements.
     $tokens = explode($delimiter, $sql);
 
-    // try to save mem.
-    $sql = "";
-    $output = array();
+    // try to save memory
+    $sql = '';
+
+    $output = [];
 
     // we don't actually care about the matches preg gives us.
-    $matches = array();
+    $matches = [];
 
     // this is faster than calling count($oktens) every time thru the loop.
     $token_count = count($tokens);

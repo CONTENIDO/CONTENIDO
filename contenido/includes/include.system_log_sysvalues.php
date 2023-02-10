@@ -38,11 +38,11 @@ if ($action == 'deletelog' && !empty($logfile)) {
         $page->displayOk(sprintf(i18n('Logfile "%s" deleted successfully'), $logfile));
     }
     $logfile = "";
-} else if ($action == 'clearlog' && !empty($logfile)) {
+} elseif ($action == 'clearlog' && !empty($logfile)) {
     $lines = file($path . $logfile);
     $lines = array_slice($lines, cSecurity::toInteger($_REQUEST['keepLines']) * -1);
     cFileHandler::write($path . $logfile, implode('', $lines));
-} else if ($action == 'showLog' && !empty($logfile)) {
+} elseif ($action == 'showLog' && !empty($logfile)) {
     if (!empty($_REQUEST['numberOfLines'])) {
         $numberOfLines = cSecurity::toInteger($_REQUEST['numberOfLines']);
     }

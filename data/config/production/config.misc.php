@@ -72,7 +72,7 @@ $cfg['debug']['log_stacktraces'] = true;
 $cfg['urlpathresolve'] = false;
 
 // (array) The available charsets
-$cfg['AvailableCharsets'] = array(
+$cfg['AvailableCharsets'] = [
     'iso-8859-1',
     'iso-8859-2',
     'iso-8859-3',
@@ -108,8 +108,8 @@ $cfg['AvailableCharsets'] = array(
     'euc-jp',
     'ks_c_5601-1987',
     'tis-620',
-    'SHIFT_JIS'
-);
+    'SHIFT_JIS',
+];
 
 // (bool) Flag to use native i18n.
 //        Note: Enabling this could create unwanted side effects, because of
@@ -208,11 +208,11 @@ $cfg['sql']['select_all_mode'] = true;
  *
  * Example setting for UriBuilder 'front_content' (generates URLs like '/cms/front_content.php?idcat=2&lang=1'):
  * $cfg['url_builder']['name']   = 'front_content';
- * $cfg['url_builder']['config'] = array();
+ * $cfg['url_builder']['config'] = [];
  *
  * Example setting for UriBuilder 'custom_path' (generates URLs like '/cms/Was-ist-Contenido/rocknroll,a,2.4fb'):
  * $cfg['url_builder']['name']   = 'custom_path';
- * $cfg['url_builder']['config'] = array('prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ',');
+ * $cfg['url_builder']['config'] = ['prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ','];
  *
  * See also http://forum.contenido.org/viewtopic.php?f=64&t=23280
  */
@@ -227,7 +227,7 @@ $cfg['url_builder']['name']   = 'front_content';
 // (array)  Default UriBuilder configuration.
 //          An associative configuration array which will be passed to the UriBuilder instance.
 //          Values depend on used UriBuilder.
-$cfg['url_builder']['config'] = array();
+$cfg['url_builder']['config'] = [];
 
 
 /* Password Settings
@@ -261,15 +261,16 @@ $cfg['password']['numbers_mandatory'] = 2;
 
 // (array) Define here all content types which includes special module translations
 //         (dont forget the prefix 'CMS_'!)
-$cfg['translatable_content_types'] = array('CMS_TEASER', 'CMS_FILELIST');
+$cfg['translatable_content_types'] = ['CMS_TEASER', 'CMS_FILELIST'];
 
 // (array) Content type CMS_LINKEDIT settings
-$cfg['content_types']['CMS_LINKEDIT'] = array(
-    'document_filetypes' => array('pdf', 'doc', 'ppt', 'xls', 'rtf', 'dot', 'docx', 'xlsx', 'pptx'),
-    'image_filetypes' => array('png', 'gif', 'tif', 'jpg', 'jpeg', 'psd', 'pdd', 'iff', 'bmp', 'rle', 'eps', 'fpx', 'pcx', 'jpe', 'pct', 'pic', 'pxr', 'tga'),
-    'archive_filetypes' => array('zip', 'arj', 'lha', 'lhx', 'tar', 'tgz', 'rar', 'gz'),
-    'media_filetypes' => array('mp3', 'mp2', 'avi', 'mpg', 'mpeg', 'mid', 'wav', 'mov', 'wmv'),
-);
+$cfg['content_types']['CMS_LINKEDIT'] = [
+    'document_filetypes' => ['pdf', 'doc', 'ppt', 'xls', 'rtf', 'dot', 'docx', 'xlsx', 'pptx'],
+    'image_filetypes'    => ['png', 'gif', 'tif', 'jpg', 'jpeg', 'psd', 'pdd', 'iff', 'bmp',
+                            'rle', 'eps', 'fpx', 'pcx', 'jpe', 'pct', 'pic', 'pxr', 'tga'],
+    'archive_filetypes'  => ['zip', 'arj', 'lha', 'lhx', 'tar', 'tgz', 'rar', 'gz'],
+    'media_filetypes'    => ['mp3', 'mp2', 'avi', 'mpg', 'mpeg', 'mid', 'wav', 'mov', 'wmv'],
+];
 
 
 /* DBFS (Database file system) Settings
@@ -278,7 +279,7 @@ $cfg['content_types']['CMS_LINKEDIT'] = array(
 
 // (array) List of mimetypes where the output of the Content-Disposition header
 //         should be skipped
-$cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] = array('application/x-shockwave-flash');
+$cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] = ['application/x-shockwave-flash'];
 
 
 /* Properties settings
@@ -309,11 +310,11 @@ $cfg['properties']['properties']['enable_cache'] = true;
 //         Itemids are represented with wild-cards and will be replaced as follows:
 //         - %client% against current client id
 //         - %lang% against current language id
-$cfg['properties']['properties']['itemtypes'] = array(
+$cfg['properties']['properties']['itemtypes'] = [
     'clientsetting' => '%client%',
     'idclientslang' => '%lang%',
-    'idlang' => '%lang%',
-);
+    'idlang'        => '%lang%',
+];
 
 
 /* Validators settings
@@ -325,11 +326,11 @@ $cfg['properties']['properties']['itemtypes'] = array(
 // E-Mail validator settings
 // (array) Optional, list of top level domains to disallow
 //         Validation of E-Mail addresses having configured top level domains will fail!
-$cfg['validator']['email']['disallow_tld'] = array('.test', '.example', '.invalid', '.localhost');
+$cfg['validator']['email']['disallow_tld'] = ['.test', '.example', '.invalid', '.localhost'];
 
 // (array) Optional, list of hosts to disallow
 //         Validation of E-Mail addresses having configured hosts will fail!
-$cfg['validator']['email']['disallow_host'] = array('example.com', 'example.org', 'example.net');
+$cfg['validator']['email']['disallow_host'] = ['example.com', 'example.org', 'example.net'];
 
 // (bool) Optional, flag to check DNS records for MX type
 $cfg['validator']['email']['mx_check'] = false;
@@ -395,24 +396,24 @@ $cfg['inuse']['lifetime'] = 3600;
 
 // (array)  List of default link tags for CSS files to render in backend pages
 //          The wildcard {basePath} will be replaced dynamically
-$cfg['backend_template']['css_files'] = array(
+$cfg['backend_template']['css_files'] = [
     '{basePath}styles/jquery/jquery-ui.css',
     '{basePath}styles/contenido.css?v=4ff97ee40f1ac052f634e7e8c2f3e37e',
-    '{basePath}styles/jquery/plugins/atooltip.css'
-);
+    '{basePath}styles/jquery/plugins/atooltip.css',
+];
 
 // (array)  List of default script tags for JS files to render in backend pages
 //          The wildcard {basePath} will be replaced dynamically
 //          The item '_CONFIG_' is a marker to inject the configuration at this place!
-$cfg['backend_template']['js_files'] = array(
+$cfg['backend_template']['js_files'] = [
     '{basePath}scripts/jquery/jquery.js',
     '{basePath}scripts/jquery/jquery-ui.js',
     '{basePath}scripts/contenido.js',
     '{basePath}scripts/general.js?v=c027a03b03f184f2d7d7f0d866bd9a55',
     '_CONFIG_',
     '{basePath}scripts/startup.js?v=606f61b17b52c6f86295e3608e6f0ee4',
-    '{basePath}scripts/jquery/plugins/atooltip.jquery.js?v=606f61b17b52c6f86295e3608e6f0ee4'
-);
+    '{basePath}scripts/jquery/plugins/atooltip.jquery.js?v=606f61b17b52c6f86295e3608e6f0ee4',
+];
 
 
 /* Client template settings
@@ -436,7 +437,7 @@ $cfg['client_template']['default_extension'] = 'html';
 $cfg['system_log']['number_of_lines'] = 100;
 
 // Allowed log file names
-$cfg['system_log']['allowed_filenames'] = array('deprecatedlog.txt', 'errorlog.txt', 'exception.txt', 'security.txt', 'setuplog.txt');
+$cfg['system_log']['allowed_filenames'] = ['deprecatedlog.txt', 'errorlog.txt', 'exception.txt', 'security.txt', 'setuplog.txt'];
 
 // Default memory limit in bytes in case of not determining it via the PHP setting memory_limit
 $cfg['system_log']['default_memory_limit'] = 67108864; // 67108864 = 64 MB
@@ -446,16 +447,16 @@ $cfg['system_log']['default_memory_limit'] = 67108864; // 67108864 = 64 MB
  */
 
 // Excluded content types
-$cfg['search_index']['excluded_content_types'] = array(
-	'linktarget',
-	'link',
-	'img',
-	'date',
-	'teaser',
-	'filelist',
-	'imgeditor',
-	'linkeditor'
-);
+$cfg['search_index']['excluded_content_types'] = [
+    'linktarget',
+    'link',
+    'img',
+    'date',
+    'teaser',
+    'filelist',
+    'imgeditor',
+    'linkeditor',
+];
 
 /* WYSIWYG editor classes
  * -----------------------------------------------------------------------------

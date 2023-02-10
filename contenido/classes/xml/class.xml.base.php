@@ -362,7 +362,7 @@ abstract class cXmlBase {
         // if array only contains empty values, return the array keys
         if (count(array_keys($array, '')) == count($array)) {
             return array_keys($array);
-        } else if (count(array_keys($array, 'array_value')) == count($array)) {
+        } elseif (count(array_keys($array, 'array_value')) == count($array)) {
         }
 
         return $array;

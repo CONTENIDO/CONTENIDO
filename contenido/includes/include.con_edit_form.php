@@ -88,7 +88,7 @@ switch ($versioningState) {
                     'idlang' => cRegistry::getLanguageId()
                 ]);
 
-            } else if (is_numeric($idArtLangVersion) && $articleType == 'editable') {
+            } elseif (is_numeric($idArtLangVersion) && $articleType == 'editable') {
                 // version->editable
                 $artLangVersion = new cApiArticleLanguageVersion((int) $idArtLangVersion);
                 $artLangVersion->markAsEditable('complete');
@@ -101,7 +101,7 @@ switch ($versioningState) {
                     'idlang' => cRegistry::getLanguageId()
                 ]);
 
-            } else if ($idArtLangVersion == 'current') {
+            } elseif ($idArtLangVersion == 'current') {
                 // current->editable
                 $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
                 $artLang->markAsEditable('complete');
@@ -176,7 +176,7 @@ switch ($versioningState) {
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
             $buttonTitle = i18n('Copy to draft');
-        } else if ($articleType == 'editable') {
+        } elseif ($articleType == 'editable') {
             $buttonTitle = i18n('Publish draft');
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
@@ -478,7 +478,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     if (isset($_POST['onlineOne'])) {
         conMakeOnline(cRegistry::getArticleId(), cSecurity::toInteger($_POST['onlineOne']), 1);
-    } else if (isset($_POST['offlineOne'])) {
+    } elseif (isset($_POST['offlineOne'])) {
         conMakeOnline(cRegistry::getArticleId(), cSecurity::toInteger($_POST['offlineOne']), 0);
     }
 
@@ -496,7 +496,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $onlineValue = -1;
     if (isset($_POST['offlineAll'])) {
         $onlineValue = 0;
-    } else if (isset($_POST['onlineAll'])) {
+    } elseif (isset($_POST['onlineAll'])) {
         $onlineValue = 1;
     }
     if (isset($_POST['syncingLanguage']) && is_array($_POST['syncingLanguage']) && $onlineValue != -1) {
@@ -529,7 +529,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         || $versioningState == 'advanced' && $articleType == 'current')  {
         $sql = 'SELECT * FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
         $sql = $db->prepare($sql, $cfg["tab"]["art_lang"], $idart, $lang);
-    } else if ($action != 'con_newart' && ($selectedArticleId == 'current' || $selectedArticleId == 'editable')
+    } elseif ($action != 'con_newart' && ($selectedArticleId == 'current' || $selectedArticleId == 'editable')
         || $selectedArticleId == NULL) {
         if (is_numeric($versioning->getEditableArticleId($idartlang))) {
             $sql = 'SELECT * FROM `%s` WHERE `idartlangversion` = %d';
@@ -599,7 +599,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 	                $disabled = '';
 	            }
 	            $page->set("s", "REASON", i18n('Save article'));
-	        } else if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked == 1) {
+	        } elseif ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked == 1) {
 	            $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
 	            $inUse = true;
 	            $disabled = 'disabled="disabled"';

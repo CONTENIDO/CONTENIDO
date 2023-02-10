@@ -47,10 +47,10 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
         global $cfg;
 
         $db = $this->_oDb;
-        $aUploads = array();
         $sSql = "SELECT * FROM " . $cfg['tab']['upl'] . " WHERE `description` != '' ORDER BY idupl ASC";
         $db->query($sSql);
 
+        $aUploads = [];
         while ($db->nextRecord()) {
             $uploadId = $db->f('idupl');
             $aUploads[$uploadId]['description'] = $db->f('description');
@@ -61,9 +61,9 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
             $aUploads[$uploadId]['idclient'] = $db->f('idclient');
         }
 
-        $aClientLanguages = array();
         $sSql = "SELECT idclient, idlang FROM " . $cfg['tab']['clients_lang'] . " ORDER BY idclient ASC";
         $db->query($sSql);
+        $aClientLanguages = [];
         while ($db->nextRecord()) {
             $clientId = $db->f('idclient');
             $aClientLanguages[$clientId][] = $db->f('idlang');
@@ -83,10 +83,10 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
             }
 
             foreach ($aClientLanguages[$clientId] as $idlang) {
-                $aUplMeta = array();
                 $sSql = "SELECT * FROM " . $cfg['tab']['upl_meta'] . " WHERE idlang = " . $idlang . "  AND idupl = " . $idupl . " ORDER BY id_uplmeta ASC";
                 $db->query($sSql);
                 $i = 0;
+                $aUplMeta = [];
                 while ($db->nextRecord()) {
                     $aUplMeta[$i]['description'] = $db->f('description');
                     $aUplMeta[$i]['id_uplmeta'] = $db->f('id_uplmeta');

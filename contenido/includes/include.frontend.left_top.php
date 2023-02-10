@@ -167,7 +167,7 @@ $oActionRow = new cGuiFoldingRow($sActionUuid, i18n("Actions"), $actionLink);
 if (isset($_GET['actionrow']) && $_GET['actionrow'] == 'collapsed') {
     $oActionRow->setExpanded(false);
     $oUser->setProperty("expandstate", $sActionUuid, 'false');
-} else if (isset($_GET['actionrow']) && $_GET['actionrow'] == 'expanded') {
+} elseif (isset($_GET['actionrow']) && $_GET['actionrow'] == 'expanded') {
     $oActionRow->setExpanded(true);
     $oUser->setProperty("expandstate", $sActionUuid, 'true');
 }
@@ -201,7 +201,7 @@ $oListOptionRow->setExpanded(true);
 if (isset($_GET['filterrow']) && $_GET['filterrow'] == 'collapsed') {
     $oActionRow->setExpanded(false);
     $oUser->setProperty("expandstate", $sListOptionId, 'false');
-} else if (isset($_GET['filterrow']) && $_GET['filterrow'] == 'expanded') {
+} elseif (isset($_GET['filterrow']) && $_GET['filterrow'] == 'expanded') {
     $oActionRow->setExpanded(true);
     $oUser->setProperty("expandstate", $sListOptionId, 'true');
 }

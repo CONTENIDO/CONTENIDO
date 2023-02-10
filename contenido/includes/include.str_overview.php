@@ -116,7 +116,7 @@ function buildCategorySelectRights() {
     foreach ($aCategoriesReversed as $iKeyIdCat => $aValues) {
         if ($aValues['level'] > $iLevel && $aValues['perm']) {
             $iLevel = $aValues['level'];
-        } else if ($aValues['level'] < $iLevel) {
+        } elseif ($aValues['level'] < $iLevel) {
             $iLevel = $aValues['level'];
         } else {
             if (!$aValues['perm']) {

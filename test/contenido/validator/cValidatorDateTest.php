@@ -18,7 +18,7 @@
  * @package    Testing
  * @subpackage Test_Validator
  */
-class cValidatorEmailTest extends cTestingTestCase
+class cValidatorDateTest extends cTestingTestCase
 {
     /**
      *

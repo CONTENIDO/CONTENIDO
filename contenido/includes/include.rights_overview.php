@@ -97,7 +97,7 @@ if ($action == 'user_edit') {
                 // User has no selected language
                 $sNotification = $notification->returnNotification("warning", i18n("Please select a language for your selected client."));
                 $bError = true;
-            } else if ($availableLanguages == false) {
+            } elseif ($availableLanguages == false) {
                 // Client has no assigned language(s)
                 $sNotification = $notification->returnNotification("warning", i18n("You can only assign users to a client with languages."));
                 $bError = true;
@@ -162,7 +162,7 @@ if ($action == 'user_edit') {
             $sNotification = $notification->returnNotification("error", i18n("Passwords don't match"));
             $bError = true;
         }
-    } else if (cString::getStringLength($password) === 0 && cString::getStringLength($passwordagain) === 0) {
+    } elseif (cString::getStringLength($password) === 0 && cString::getStringLength($passwordagain) === 0) {
         // it is okay if the password has not been changed - then the old
         // password is kept.
         $bPassOk = true;

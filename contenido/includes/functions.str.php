@@ -1034,7 +1034,7 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
     if ($newParentId == -1) {
         // stop moving the category without actually moving it
         $movesubtreeidcat = 0;
-    } else if (is_null($newParentId)) {
+    } elseif (is_null($newParentId)) {
         // start moving the category withour moving it yet
         $movesubtreeidcat = $idcat;
     } else {

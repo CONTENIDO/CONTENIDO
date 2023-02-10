@@ -57,7 +57,7 @@ class cHTMLTest extends cTestingTestCase
     {
         return [
             'null'                                       => [
-                null,
+                [],
                 [],
             ],
             'empty'                                      => [
@@ -171,7 +171,7 @@ class cHTMLTest extends cTestingTestCase
     {
         return [
             'null'   => [null, null, null, null],
-            'empty'  => ['', '', null, null],
+            'empty'  => ['', '', '', ''],
             'foobar' => ['foo', 'bar', 'foo', 'bar'],
         ];
     }

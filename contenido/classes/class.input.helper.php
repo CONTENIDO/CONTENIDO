@@ -116,7 +116,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
                                 // Start article -> blue
                                 $oOption->setStyle('color: #0000ff;');
                             }
-                        } else if ($oDB->f('online') == 0) {
+                        } elseif ($oDB->f('online') == 0) {
                             // Offline article -> grey
                             $oOption->setStyle('color: #666666;');
                         }
@@ -202,7 +202,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
                     // If category has to be visible or public and it isn't,
                     // don't add value
                     $sValue = '';
-                } else if ($bWithArt) {
+                } elseif ($bWithArt) {
                     // If article will be added, set negative idcat as value
                     $sValue = '-' . $iID;
                 } else {

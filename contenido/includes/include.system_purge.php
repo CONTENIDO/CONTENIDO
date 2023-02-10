@@ -49,13 +49,13 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
             $aClientToClear[] = $iClientId;
         }
 
-    } else if (isset($_POST['purge_clients']) && is_array($_POST['purge_clients']) && count($_POST['purge_clients']) > 0) {
+    } elseif (isset($_POST['purge_clients']) && is_array($_POST['purge_clients']) && count($_POST['purge_clients']) > 0) {
         // selected multiple clients
         foreach ($_POST['purge_clients'] as $iClientId) {
             $aClientToClear[] = (int)$iClientId;
         }
 
-    } else if (isset($_POST['purge_clients']) && (int)$_POST['purge_clients'] > 0) {
+    } elseif (isset($_POST['purge_clients']) && (int)$_POST['purge_clients'] > 0) {
         // selected single client
         $aClientToClear[] = (int)$_POST['purge_clients'];
     }

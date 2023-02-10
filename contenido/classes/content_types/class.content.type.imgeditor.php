@@ -199,7 +199,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
                     'typeid' => $id
                 ]);
                 return $content->get('value');
-            } else if ($editable) {
+            } elseif ($editable) {
                 $db = cRegistry::getDb();
                 $sql = "SELECT MAX(`version`) AS `max` FROM `%s` WHERE `idartlang` = %d AND `typeid` = %d AND `idtype` = %d";
                 $sql = $db->prepare($sql, cRegistry::getDbTableName('content_version'), $idArtLang, $id, $idtype);
@@ -667,7 +667,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             $b = cString::toLowerCase($b["name"]);
             if ($a < $b) {
                 return -1;
-            } else if ($a > $b) {
+            } elseif ($a > $b) {
                 return 1;
             } else {
                 return 0;

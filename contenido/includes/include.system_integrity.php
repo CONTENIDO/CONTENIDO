@@ -27,11 +27,11 @@ foreach ($results as $result) {
 
     if ($result["result"] == true) {
         $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/but_ok.gif");
-    } else if ($result["severity"] == cSystemtest::C_SEVERITY_WARNING) {
+    } elseif ($result["severity"] == cSystemtest::C_SEVERITY_WARNING) {
         $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/icon_warning.gif");
-    } else if ($result["severity"] == cSystemtest::C_SEVERITY_ERROR) {
+    } elseif ($result["severity"] == cSystemtest::C_SEVERITY_ERROR) {
         $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/icon_fatalerror.gif");
-    } else if ($result["severity"] == cSystemtest::C_SEVERITY_INFO) {
+    } elseif ($result["severity"] == cSystemtest::C_SEVERITY_INFO) {
         $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/info.gif");
     }
     $page->set("d", "HEADLINE", $result["headline"]);

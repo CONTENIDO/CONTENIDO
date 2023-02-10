@@ -100,7 +100,7 @@ class cAuthHandlerBackend extends cAuth {
 
         if (isset($username)) {
             $this->auth['uname'] = $username;
-        } else if ($this->_defaultNobody) {
+        } elseif ($this->_defaultNobody) {
             $uid = $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
 
             return $uid;

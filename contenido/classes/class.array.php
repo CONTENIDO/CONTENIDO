@@ -96,7 +96,7 @@ class cArray {
                     // convert $search explicitly to string
                     // we do not want to use the ordinal value of $search
                     $found = false !== cString::findFirstPos($value, strval($search));
-               } else if ($strict == true) {
+               } elseif ($strict == true) {
                     // search by identity
                     $found = $value === $search;
                 } else {

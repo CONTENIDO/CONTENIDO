@@ -91,10 +91,10 @@ $totalSteps = ceil($fullCount / CON_SETUP_MAX_CHUNKS_PER_STEP) + count($fullChun
 foreach ($fullChunks as $fullChunk) {
     $step++;
     if ($step == $currentStep) {
-        $replacements = array(
+        $replacements = [
             '<!--{contenido_root}-->' => addslashes($rootPath),
-            '<!--{contenido_web}-->' => addslashes($rootHttpPath)
-        );
+            '<!--{contenido_web}-->'  => addslashes($rootHttpPath),
+        ];
 
         injectSQL($db, $cfg['sql']['sqlprefix'], 'data/' . $fullChunk, $replacements);
     }

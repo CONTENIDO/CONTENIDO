@@ -19,9 +19,9 @@ use PHPUnit\Framework\TestCase;
  * 1. chain function
  *
  * @param int $idartlang
- * @param unknown_type $type
- * @param unknown_type $typeid
- * @param unknown_type $value
+ * @param string $type
+ * @param string $typeid
+ * @param string $value
  * @return mixed
  */
 function chain_ContenidoContentSaveContentEntry_Test($idartlang, $type, $typeid, $value) {
@@ -35,9 +35,9 @@ function chain_ContenidoContentSaveContentEntry_Test($idartlang, $type, $typeid,
  * 2. chain function
  *
  * @param int $idartlang
- * @param unknown_type $type
- * @param unknown_type $typeid
- * @param unknown_type $value
+ * @param string $type
+ * @param string $typeid
+ * @param string $value
  * @return mixed
  */
 function chain_ContenidoContentSaveContentEntry_Test2($idartlang, $type, $typeid, $value) {

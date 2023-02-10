@@ -28,7 +28,6 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  */
 
-
 return [
     'cAuthHandlerAbstract' => 'contenido/classes/auth/class.auth.handler.abstract.php',
     'cAuthHandlerBackend' => 'contenido/classes/auth/class.auth.handler.backend.php',

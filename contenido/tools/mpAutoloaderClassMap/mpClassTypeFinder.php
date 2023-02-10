@@ -355,7 +355,7 @@ class mpClassTypeFinder
                 if (preg_match($item, $path)) {
                     return true;
                 }
-            } else if (strpos($path, $item) !== false) {
+            } elseif (strpos($path, $item) !== false) {
                 return true;
             }
         }

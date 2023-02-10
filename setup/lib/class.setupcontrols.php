@@ -195,10 +195,12 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
 
         $this->_oContent->setVerticalAlignment("top");
         $this->_oContent->setClass("entry");
-        $this->_oContent->setContent(array(
-            $this->_oTitle,
-            $this->_oMessage
-        ));
+        $this->_oContent->setContent(
+            [
+                $this->_oTitle,
+                $this->_oMessage,
+            ]
+        );
 
         $this->_oIcon->setClass("icon");
         $this->_oIcon->setVerticalAlignment("top");
@@ -231,11 +233,14 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
     }
 
     public function toHtml() {
-        $this->setContent(array(
-            $this->_oFolding,
-            $this->_oContent,
-            $this->_oIcon
-        ));
+        $this->setContent(
+            [
+                $this->_oFolding,
+                $this->_oContent,
+                $this->_oIcon,
+            ]
+        );
+
         return parent::toHtml();
     }
 
@@ -291,10 +296,13 @@ class cHTMLInfoMessage extends cHTMLTableRow {
     }
 
     public function toHtml() {
-        $this->setContent(array(
-            $this->_oTitle,
-            $this->_oMessage
-        ));
+        $this->setContent(
+            [
+                $this->_oTitle,
+                $this->_oMessage,
+            ]
+        );
+
         return parent::toHtml();
     }
 

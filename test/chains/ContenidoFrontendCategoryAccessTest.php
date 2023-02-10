@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @param int $lang
  * @param int $idcat
- * @param unknown_type $uid
+ * @param string $uid
  * @return boolean
  */
 function chain_ContenidoFrontendCategoryAccess_Test($lang, $idcat, $uid) {
@@ -32,7 +32,7 @@ function chain_ContenidoFrontendCategoryAccess_Test($lang, $idcat, $uid) {
  *
  * @param int $lang
  * @param int $idcat
- * @param unknown_type $uid
+ * @param string $uid
  * @return boolean
  */
 function chain_ContenidoFrontendCategoryAccess_Test2($lang, $idcat, $uid) {
@@ -44,7 +44,7 @@ function chain_ContenidoFrontendCategoryAccess_Test2($lang, $idcat, $uid) {
  *
  * @param int $lang
  * @param int $idcat
- * @param unknown_type $uid
+ * @param string $uid
  * @return boolean
  */
 function chain_ContenidoFrontendCategoryAccess_Test3($lang, $idcat, $uid) {

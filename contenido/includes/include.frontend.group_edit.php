@@ -51,7 +51,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
    $sRefreshRightTopLink = "Con.multiLink('right_top', '".$sRefreshRightTopLink."')";
    $sRefreshRightTopLinkJs = '<script type="text/javascript">' . $sRefreshRightTopLink . '</script>';
    $successMessage = i18n("Created new frontend-group successfully");
-} else if ($action == "frontendgroups_user_delete" && $perm->have_perm_area_action($area, $action)) {
+} elseif ($action == "frontendgroups_user_delete" && $perm->have_perm_area_action($area, $action)) {
     $aDeleteMembers = [];
     if (!is_array($requestUserInGroup)) {
         if ($requestUserInGroup > 0) {
@@ -67,7 +67,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
     $successMessage = i18n("Removed user from group successfully!");
     // also save other variables
     $action = "frontendgroup_save_group";
-} else if ($action == "frontendgroup_user_add" && $perm->have_perm_area_action($area, $action)) {
+} elseif ($action == "frontendgroup_user_add" && $perm->have_perm_area_action($area, $action)) {
     if (count($requestNewMember) > 0) {
         foreach ($requestNewMember as $add) {
             $groupmembers->create($requestIdFrontendGroup, $add);
@@ -76,7 +76,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
     $successMessage = i18n("Added user to group successfully!");
     // also save other variables
     $action = "frontendgroup_save_group";
-} else if ($action == "frontendgroup_delete" && $perm->have_perm_area_action($area, $action)) {
+} elseif ($action == "frontendgroup_delete" && $perm->have_perm_area_action($area, $action)) {
    $fegroups->delete($requestIdFrontendGroup);
    $requestIdFrontendGroup= 0;
    $fegroup = new cApiFrontendGroup();

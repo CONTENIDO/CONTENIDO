@@ -144,7 +144,7 @@ $timezoneCfg = $cfg['php_settings']['date.timezone'];
 if (!empty($timezoneCfg) && ini_get('date.timezone') !== $timezoneCfg) {
     // if the timezone setting from the cfg differs from the php.ini setting, set timezone from CFG
     date_default_timezone_set($timezoneCfg);
-} else if (empty($timezoneCfg) && (ini_get('date.timezone') === '' || ini_get('date.timezone') === false)) {
+} elseif (empty($timezoneCfg) && (ini_get('date.timezone') === '' || ini_get('date.timezone') === false)) {
     // if there are no timezone settings, set UTC timezone
     date_default_timezone_set('UTC');
 }

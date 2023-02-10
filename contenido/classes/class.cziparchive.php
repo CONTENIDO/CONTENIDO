@@ -50,7 +50,7 @@ class cZipArchive {
                 // exclude file if name starts with a dot
                 // hotfix : fileHandler returns filename '.' als valid filename
                 continue;
-            } else if (!cFileHandler::validateFilename($file, false)) {
+            } elseif (!cFileHandler::validateFilename($file, false)) {
                 // exclude file if name is not valid according to CONTENIDO
                 // standards
                 continue;
@@ -72,7 +72,7 @@ class cZipArchive {
     public static function isExtracted($dirPath) {
         if (!file_exists($dirPath)) {
             return false;
-        } else if (!is_dir($dirPath)) {
+        } elseif (!is_dir($dirPath)) {
             return false;
         } else {
             return true;

@@ -209,7 +209,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                     $uriBuilder->buildUrl($uriParams, true);
 
                     return $uriBuilder->getUrl();
-                } else if (cSecurity::isInteger($this->getSetting('linkeditor_idart'))) {
+                } elseif (cSecurity::isInteger($this->getSetting('linkeditor_idart'))) {
                     $oUri = cUri::getInstance();
                     $uriBuilder = $oUri->getUriBuilder();
                     $uriParams = [
@@ -477,7 +477,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
             // check if the category should be shown expanded or collapsed
             if (in_array($category['idcat'], $activeIdcats) && $category['sub'] != '') {
                 $template->set('d', 'SUBDIRLIST', $this->getCategoryList($category['sub']));
-            } else if ($category['sub'] != '' && count($category['sub']) > 0) {
+            } elseif ($category['sub'] != '' && count($category['sub']) > 0) {
                 $liClasses[] = 'collapsed';
                 $template->set('d', 'SUBDIRLIST', '');
             } else {
@@ -528,7 +528,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                                 c.idclient = ' . cSecurity::toInteger($this->_client) . '
                             ORDER BY
                                 a.idtree';
-            } else if (cString::getPartOfString($linkEditorIdArt, 0, 8) == 'category') { // Selection of category (CON-2563)
+            } elseif (cString::getPartOfString($linkEditorIdArt, 0, 8) == 'category') { // Selection of category (CON-2563)
                 $sql = 'SELECT DISTINCT
                                 *
                            FROM
@@ -806,7 +806,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 $b = cString::toLowerCase($b["name"]);
                 if ($a < $b) {
                     return -1;
-                } else if ($a > $b) {
+                } elseif ($a > $b) {
                     return 1;
                 } else {
                     return 0;

@@ -43,7 +43,7 @@ class cSetupClientAdjust extends cSetupMask {
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
 
-        $aPathList = array();
+        $aPathList = [];
 
         list($a_root_path, $a_root_http_path) = getSystemDirectories();
 
@@ -93,7 +93,7 @@ class cSetupClientAdjust extends cSetupMask {
             $oSystemPathBox = new cHTMLTextbox("frontendpath[$idclient]", $_SESSION['frontendpath'][$idclient]);
             $oSystemPathBox->setWidth(100);
             $oSystemPathBox->setClass("small");
-            $oClientSystemPath = new cHTMLInfoMessage(array($sName, $oSystemPathBox), "&nbsp;");
+            $oClientSystemPath = new cHTMLInfoMessage([$sName, $oSystemPathBox], "&nbsp;");
             $oClientSystemPath->_oTitle->setStyle("padding-left:8px;padding-bottom:8px;width:90%;");
 
             $aPathList[] = $oClientSystemPath;
@@ -105,7 +105,7 @@ class cSetupClientAdjust extends cSetupMask {
             $oSystemPathBox = new cHTMLTextbox("htmlpath[$idclient]", $_SESSION['htmlpath'][$idclient]);
             $oSystemPathBox->setWidth(100);
             $oSystemPathBox->setClass("small");
-            $oClientSystemPath = new cHTMLInfoMessage(array($sName, $oSystemPathBox), "&nbsp;");
+            $oClientSystemPath = new cHTMLInfoMessage([$sName, $oSystemPathBox], "&nbsp;");
             $oClientSystemPath->_oTitle->setStyle("padding-left:8px;padding-bottom:8px;width:90%;");
 
             $aPathList[] = $oClientSystemPath;

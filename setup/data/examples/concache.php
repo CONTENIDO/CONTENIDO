@@ -88,12 +88,12 @@ $cfgConCache['cacheprefix'] = 'cache_';
  * auth object, if output differs on authentificated user.
  * @var array  $cfgConCache['idoptions']
  */
-$cfgConCache['idoptions'] = array(
+$cfgConCache['idoptions'] = [
     'uri'  => &$_SERVER['REQUEST_URI'],
     'post' => &$_POST,
     'get'  => &$_GET,
-    'auth' => &$auth->auth['perm']
-);
+    'auth' => &$auth->auth['perm'],
+];
 
 /**
  * array of eventhandler, beeing raised on some events.
@@ -104,20 +104,21 @@ $cfgConCache['idoptions'] = array(
  * be aware to define a correct php-code block including finishing semicolon ';'
  * example:
  * [code]
- *   $cfgConCache['raiseonevent']['beforeoutput'] = array(
- *      'functionCall_One();',
- *      'functionCall_Two();',
- *      'functionCall_Three();'
+ * $cfgConCache['raiseonevent']['beforeoutput'] = [
+ *     'functionCall_One();',
+ *     'functionCall_Two();',
+ *     'functionCall_Three();'
+ * ];
  * [/code]
  * on raising a beforeoutput event the code 'functionCall_One();',
  * 'functionCall_Two();' and 'functionCall_Three();' will be executes
  * one after another.
  *
  * [code]
- * $cfgConCache['raiseonevent'] = array(
- *     'beforeoutput' => array('echo("<pre>beforeoutput</pre>");'),
- *     'afteroutput'  => array('echo("<pre>afteroutput</pre>");')
- * );
+ * $cfgConCache['raiseonevent'] = [
+ *     'beforeoutput' => ['echo("<pre>beforeoutput</pre>");'],
+ *     'afteroutput'  => ['echo("<pre>afteroutput</pre>");'],
+ * ];
  * [/code]
  * another example with output
  */
@@ -137,9 +138,9 @@ $sStatCode = '
     }
 ';
 
-$cfgConCache['raiseonevent'] = array(
-    'beforeoutput' => array('/* some code here */'),
-    'afteroutput'  => array($sStatCode, 'cRegistry::shutdown();')
-);
+$cfgConCache['raiseonevent'] = [
+    'beforeoutput' => ['/* some code here */'],
+    'afteroutput'  => [$sStatCode, 'cRegistry::shutdown();'],
+];
 
 ?>

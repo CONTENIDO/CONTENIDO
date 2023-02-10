@@ -232,7 +232,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
     public function __set($name, $value) {
         if ('primaryKey' === $name) {
             static::_setPrimaryKeyName($value);
-        } else if ('virgin' === $name) {
+        } elseif ('virgin' === $name) {
             static::_setLoaded(!(bool) $value);
         }
     }
