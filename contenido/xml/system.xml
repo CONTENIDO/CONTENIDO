@@ -2,8 +2,8 @@
 <!--
 CONTENIDO XML language file
 
-NOTE: Comments below with i18n() are used for translation purposes and the are
-      required for the parser to detect/extract text to translate.
+NOTE: Comments below with i18n() are used for translation purposes, and
+      they are required for the parser to detect/extract text to translate.
 
 gettext:
 i18n("Versioning")
@@ -65,7 +65,7 @@ i18n("Maximum number of stored versions")
                 </values>
                 <label>Style versioning activated</label>
                 <group>Versioning</group>
-            </activated>            
+            </activated>
             <path>
                 <values/>
                 <label>Serverpath to style version files</label>
@@ -305,7 +305,7 @@ i18n("Maximum number of stored versions")
             	</values>
             	<label>Debug function for plugins</label>
             	<group>Development</group>
-            </debug_for_plugins> 
+            </debug_for_plugins>
             <module_translation_message>
             	<values>
                     <array_value>true</array_value>
