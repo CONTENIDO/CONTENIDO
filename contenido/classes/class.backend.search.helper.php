@@ -35,6 +35,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cBackendSearchHelper {
 
+    const COMMON_CON_AND_ARTICLE_RIGHTS = [
+        ['con', 'con_makestart'],
+        ['con', 'con_makeonline'],
+        ['con', 'con_deleteart'],
+        ['con', 'con_tplcfg_edit'],
+        ['con', 'con_makecatonline'],
+        ['con', 'con_changetemplate'],
+        ['con_editcontent', 'con_editart'],
+        ['con_editart', 'con_edit'],
+        ['con_editart', 'con_newart'],
+        ['con_editart', 'con_saveart'],
+    ];
+
     /**
      * @var cDb
      */
@@ -128,58 +141,49 @@ class cBackendSearchHelper {
     }
 
     /**
-     * Generating refresh JavaScript for form in left_top
-     * @global string $sSaveTitle
-     * @global string $sSaveId
-     * @global string $sSaveDateFromYear
-     * @global string $sSaveDateFromMonth
-     * @global string $sSaveDateFromDay
-     * @global string $sSaveDateToYear
-     * @global string $sSaveDateToMonth
-     * @global string $sSaveDateToDay
-     * @global string $sSaveDateField
-     * @global string $sSaveAuthor
-     * @global string $sSaveName
-     * @param array $aValues
+     * Generates refresh JavaScript for article search form in left_top
+     *
+     * @param array $aValues The form values to pass to the search form
      * @return string
      */
     public function generateJs($aValues) {
         if (is_array($aValues)) {
-            global $sSaveTitle;
-            global $sSaveId;
-            global $sSaveDateFromYear;
-            global $sSaveDateFromMonth;
-            global $sSaveDateFromDay;
-            global $sSaveDateToYear;
-            global $sSaveDateToMonth;
-            global $sSaveDateToDay;
-            global $sSaveDateField;
-            global $sSaveAuthor;
-            global $sSaveName;
 
-            return 'function refreshArticleSearchForm(refresh) {
+            // Array to map search values to search form field names
+            $searchFormMap = [
+                'save_title' => 'bs_search_text',
+                'save_id' => 'bs_search_id',
+                'save_date_field' => 'bs_search_date_type',
+                'save_author' => 'bs_search_author',
+                'save_date_from_year' => 'bs_search_date_from_year',
+                'save_date_from_month' => 'bs_search_date_from_month',
+                'save_date_from_day' => 'bs_search_date_from_day',
+                'save_date_to_year' => 'bs_search_date_to_year',
+                'save_date_to_month' => 'bs_search_date_to_month',
+                'save_date_to_day' => 'bs_search_date_to_day',
+            ];
+
+            $formValues = [];
+            foreach ($searchFormMap as $valKey => $formVal) {
+                $formValues[$formVal] = $aValues[$valKey] ?? '';
+            }
+            $json = json_encode($formValues);
+
+            return '
+                /**
+                 * Refreshes the search form in "left_top" frame.
+                 * This function is also called from "left_top" frame during initialization.
+                 */
+                function refreshArticleSearchForm(refresh) {
+                    var data = ' . $json . ';
                     var oFrame = Con.getFrame("left_top");
                     if (oFrame) {
-                        oForm = oFrame.document.backend_search;
-
-                        oForm.bs_search_text.value = "' . $aValues[$sSaveTitle] . '";
-                        oForm.bs_search_id.value = "' . $aValues[$sSaveId] . '";
-                        oForm.bs_search_date_type.value = "' . $aValues[$sSaveDateField] . '";
-
-                        oFrame.toggle_tr_visibility("tr_date_from");
-                        oFrame.toggle_tr_visibility("tr_date_to");
-
-                        oForm.bs_search_date_from_day.value = "' . $aValues[$sSaveDateFromDay] . '";
-                        oForm.bs_search_date_from_month.value = "' . $aValues[$sSaveDateToMonth] . '";
-                        oForm.bs_search_date_from_year.value = "' . $aValues[$sSaveDateFromYear] . '";
-
-                        oForm.bs_search_date_to_day.value = "' . $aValues[$sSaveDateToDay] . '";
-                        oForm.bs_search_date_to_month.value = "' . $aValues[$sSaveDateToMonth] . '";
-                        oForm.bs_search_date_to_year.value = "' . $aValues[$sSaveDateToYear] . '";
-
-                        oForm.bs_search_author.value = "' . $aValues[$sSaveAuthor] . '";
+                        if (typeof oFrame.refreshSearchForm === "function") {
+                            oFrame.refreshSearchForm(data);
+                        }
                     }
                 }
+                // Initial call to refresh the form in left_top frame
                 refreshArticleSearchForm();
                 ';
         } else {
@@ -189,70 +193,89 @@ class cBackendSearchHelper {
 
     /**
      * Searches in properties
-     * @param mixed  $itemidReq Property item id
+     * @param mixed $itemidReq Property item id
      * @param string $itemtypeReq Property item type
      * @return array
+     * @throws cDbException|cException
      */
     public function getSearchResults($itemidReq, $itemtypeReq) {
-        global $sSaveTitle;
-        global $sSaveId;
-        global $sSaveDateFrom;
-        global $sSaveDateFromYear;
-        global $sSaveDateFromMonth;
-        global $sSaveDateFromDay;
-        global $sSaveDateTo;
-        global $sSaveDateToYear;
-        global $sSaveDateToMonth;
-        global $sSaveDateToDay;
-        global $sSaveDateField;
-        global $sSaveAuthor;
-        global $sSaveName;
-        global $sType;
-
         $retValue = [];
+
         // Request from DB
         $propertyCollection = new cApiPropertyCollection();
-        $results = $propertyCollection->getValuesByType($itemtypeReq, $itemidReq, $sType);
+        $results = $propertyCollection->getValuesByType($itemtypeReq, $itemidReq, 'savedsearch');
 
         // Put results in returning Array
-        $retValue[$sSaveTitle] = $results[$sSaveTitle];
-        $retValue[$sSaveId] = $results[$sSaveId];
-        $retValue[$sSaveDateField] = $results[$sSaveDateField];
-        $retValue[$sSaveAuthor] = $results[$sSaveAuthor];
+        $retValue['save_title'] = $results['save_title'];
+        $retValue['save_id'] = $results['save_id'];
+        $retValue['save_date_field'] = $results['save_date_field'];
+        $retValue['save_author'] = $results['save_author'];
 
-        // Date from
-        $sSearchStrDateFromDayTmp = 0;
-        $sSearchStrDateFromMonthTmp = 0;
-        $sSearchStrDateFromYearTmp = 0;
-        $saveDateFrom = $results[$sSaveDateFrom];
-        if (isset($saveDateFrom) && sizeof($saveDateFrom) > 0) {
-            $saveDateFrom = str_replace(' 00:00:00', '', $saveDateFrom);
+        // Date from is stored in format 'Y-m-d 00:00:00', split it to its parts
+        if (!empty($results['save_date_from'])) {
+            $saveDateFrom = str_replace(' 00:00:00', '', $results['save_date_from']);
             $saveDateFromParts = explode('-', $saveDateFrom);
-            if (sizeof($saveDateFromParts) == 3) {
-                $retValue[$sSaveDateFromYear] = $saveDateFromParts[0];
-                $retValue[$sSaveDateFromMonth] = $saveDateFromParts[1];
-                $retValue[$sSaveDateFromDay] = $saveDateFromParts[2];
+            if (count($saveDateFromParts) == 3) {
+                $retValue['save_date_from_year'] = $saveDateFromParts[0];
+                $retValue['save_date_from_month'] = cDate::padMonth($saveDateFromParts[1]);
+                $retValue['save_date_from_day'] = cDate::padDay($saveDateFromParts[2]);
             }
         }
-        // Date to
-        $sSearchStrDateToDayTmp = 0;
-        $sSearchStrDateToMonthTmp = 0;
-        $sSearchStrDateToYearTmp = 0;
-        $saveDateTo = $results[$sSaveDateTo];
-        if (isset($saveDateTo) && sizeof($saveDateTo) > 0) {
-            $saveDateTo = str_replace(' 23:59:59', '', $saveDateTo);
+
+        // Date to is stored in format 'Y-m-d 23:59:59', split it to its parts
+        if (!empty($results['save_date_to'])) {
+            $saveDateTo = str_replace(' 23:59:59', '', $results['save_date_to']);
             $saveDateToParts = explode('-', $saveDateTo);
-            if (sizeof($saveDateToParts) == 3) {
-                $retValue[$sSaveDateToYear] = $saveDateToParts[0];
-                $retValue[$sSaveDateToMonth] = $saveDateToParts[1];
-                $retValue[$sSaveDateToDay] = $saveDateToParts[2];
+            if (count($saveDateToParts) == 3) {
+                $retValue['save_date_to_year'] = $saveDateToParts[0];
+                $retValue['save_date_to_month'] = cDate::padMonth($saveDateToParts[1]);
+                $retValue['save_date_to_day'] = cDate::padDay($saveDateToParts[2]);
             }
         }
         return $retValue;
     }
 
     /**
-     * Masks string for inserting into SQL statement
+     * Composes a date in format 'Y-m-d 00:00:00'.
+     *
+     * @param array $data Search data with save_date_from_* fields
+     * @return string
+     */
+    public function composeSaveDateFrom(array $data) {
+        $fields = ['save_date_from_day', 'save_date_from_month', 'save_date_from_year'];
+        foreach ($fields as $field) {
+            if (empty($data[$field]) || cSecurity::toInteger($data[$field]) <= 0) {
+                return '';
+            }
+        }
+        $data['save_date_from_month'] = cDate::padMonth($data['save_date_from_month']);
+        $data['save_date_from_day'] = cDate::padDay($data['save_date_from_day']);
+
+        return "{$data['save_date_from_year']}-{$data['save_date_from_month']}-{$data['save_date_from_day']} 00:00:00";
+    }
+
+    /**
+     * Composes a date in format 'Y-m-d 23:59:59'.
+     *
+     * @param array $data Search data with save_date_to_* fields
+     * @return string
+     */
+    public function composeSaveDateTo(array $data) {
+        $fields = ['save_date_to_day', 'save_date_to_month', 'save_date_to_year'];
+        foreach ($fields as $field) {
+            if (empty($data[$field]) || cSecurity::toInteger($data[$field]) <= 0) {
+                return '';
+            }
+        }
+        $data['save_date_to_month'] = cDate::padMonth($data['save_date_to_month']);
+        $data['save_date_to_day'] = cDate::padDay($data['save_date_to_day']);
+
+        return "{$data['save_date_to_year']}-{$data['save_date_to_month']}-{$data['save_date_to_day']} 23:59:59";
+    }
+
+    /**
+     * Masks string for inserting into SQL statement.
+     *
      * @param string $sString
      * @return string
      */
@@ -263,92 +286,15 @@ class cBackendSearchHelper {
         return str_replace('"', '\\"', $sString);
     }
 
-    public function hasCommonContentPermission() {
-        if (!isset($this->_hasCommonContentPermission)) {
-            $rights = [
-                ['con', 'con_makestart'],
-                ['con', 'con_makeonline'],
-                ['con', 'con_deleteart'],
-                ['con', 'con_tplcfg_edit'],
-                ['con', 'con_makecatonline'],
-                ['con', 'con_changetemplate'],
-                ['con_editcontent', 'con_editart'],
-                ['con_editart', 'con_edit'],
-                ['con_editart', 'con_newart'],
-                ['con_editart', 'con_saveart'],
-            ];
-
-            foreach ($rights as $entry) {
-                $bCheckRights = $this->_perm->have_perm_area_action($entry[0], $entry[0]);
-                if ($bCheckRights) {
-                    break;
-                }
-            }
-
-            $this->_hasCommonContentPermission = $bCheckRights;
-        }
-
-        return $this->_hasCommonContentPermission;
-    }
-
-    public function hasArticlePermission($idcat) {
-        if (!isset($this->_articlePermissions)) {
-            // It seems that initializeArticleInfos() was not called before!
-            if (!is_array($this->_articleInfos)) {
-                return false;
-            }
-
-            $this->_articlePermissions = [];
-
-            // Get all groups of the user
-            $groups = $this->_perm->getGroupsForUser($this->_auth->auth['uid']);
-            $groups[] = $this->_auth->auth['uid'];
-
-            // Fetch rights for collected categories
-            $rightsCollection = new cApiRightCollection();
-            $rightsCollection->addResultField('idcat');
-            $rightsCollection->setWhere('idclient', $this->_clientId);
-            $rightsCollection->setWhere('idlang', $this->_languageId);
-            $rightsCollection->setWhere('idcat', $this->getCategoryIds(), 'IN');
-            $rightsCollection->setWhere('user_id', $groups, 'IN');
-            $rightsCollection->query();
-            foreach ($rightsCollection->fetchTable(['idcat' => 'idcat']) as $entry) {
-                $_idcat = cSecurity::toInteger($entry['idcat']);
-                if (!isset($this->_articlePermissions[$_idcat])) {
-                    $this->_articlePermissions[$_idcat] = null;
-                }
-            }
-        }
-
-        // Now check for category rights
-        if (is_null($this->_articlePermissions[$idcat])) {
-            $rights = [
-                ['con', 'con_makestart'],
-                ['con', 'con_makeonline'],
-                ['con', 'con_deleteart'],
-                ['con', 'con_tplcfg_edit'],
-                ['con', 'con_makecatonline'],
-                ['con', 'con_changetemplate'],
-                ['con_editcontent', 'con_editart'],
-                ['con_editart', 'con_edit'],
-                ['con_editart', 'con_newart'],
-                ['con_editart', 'con_saveart'],
-            ];
-
-            foreach ($rights as $entry) {
-                $bCheckRights = $this->_perm->have_perm_area_action_item($entry[0], $entry[0], $idcat);
-                if ($bCheckRights) {
-                    break;
-                }
-            }
-
-            $this->_articlePermissions[$idcat] = $bCheckRights;
-        }
-
-        return $this->_articlePermissions[$idcat];
-    }
-
+    /**
+     * Collects the article information, maps idartlang to idcats.
+     *
+     * @param cDb $db Database instance where the select statement to find
+     *      the articles were already  executed.
+     * @throws cDbException|cInvalidArgumentException
+     */
     public function initializeArticleInfos(cDb $db) {
+        // Move the cursor to the beginning
         $db->seek(0);
 
         $infos = [];
@@ -367,9 +313,17 @@ class cBackendSearchHelper {
 
         $this->_articleInfos = $infos;
 
+        // Move the cursor again to the beginning to let the
+        // caller of this function do its job.
         $db->seek(0);
     }
 
+    /**
+     * Returns all category ids being collected in a previous call of
+     * {@see cBackendSearchHelper::initializeArticleInfos()}.
+     *
+     * @return array|int[]
+     */
     public function getCategoryIds() {
         if (!isset($this->_categoryIds)) {
             $ids = [];
@@ -447,8 +401,83 @@ class cBackendSearchHelper {
     }
 
     /**
+     * Checks if the user has common permissions for content and article.
+     *
+     * @return bool
+     * @throws cDbException|cException
+     */
+    public function hasCommonContentPermission() {
+        $bCheckRights = false;
+        if (!isset($this->_hasCommonContentPermission)) {
+            foreach (self::COMMON_CON_AND_ARTICLE_RIGHTS as $entry) {
+                $bCheckRights = $this->_perm->have_perm_area_action($entry[0], $entry[0]);
+                if ($bCheckRights) {
+                    break;
+                }
+            }
+
+            $this->_hasCommonContentPermission = $bCheckRights;
+        }
+
+        return $this->_hasCommonContentPermission;
+    }
+
+    /**
+     * Checks if the user has common permissions for content and article for a specific category.
+     *
+     * @param int $idcat Id of the category to check the rights for
+     * @return bool|mixed|null
+     * @throws cDbException|cException
+     */
+    public function hasArticlePermission($idcat) {
+        if (!isset($this->_articlePermissions)) {
+            // It seems that initializeArticleInfos() was not called before!
+            if (!is_array($this->_articleInfos)) {
+                return false;
+            }
+
+            $this->_articlePermissions = [];
+
+            // Get all groups of the user
+            $groups = $this->_perm->getGroupsForUser($this->_auth->auth['uid']);
+            $groups[] = $this->_auth->auth['uid'];
+
+            // Fetch rights for collected categories
+            $rightsCollection = new cApiRightCollection();
+            $rightsCollection->addResultField('idcat');
+            $rightsCollection->setWhere('idclient', $this->_clientId);
+            $rightsCollection->setWhere('idlang', $this->_languageId);
+            $rightsCollection->setWhere('idcat', $this->getCategoryIds(), 'IN');
+            $rightsCollection->setWhere('user_id', $groups, 'IN');
+            $rightsCollection->query();
+            foreach ($rightsCollection->fetchTable(['idcat' => 'idcat']) as $entry) {
+                $_idcat = cSecurity::toInteger($entry['idcat']);
+                if (!isset($this->_articlePermissions[$_idcat])) {
+                    $this->_articlePermissions[$_idcat] = null;
+                }
+            }
+        }
+
+        // Now check for category rights
+        if (is_null($this->_articlePermissions[$idcat])) {
+            $bCheckRights = false;
+            foreach (self::COMMON_CON_AND_ARTICLE_RIGHTS as $entry) {
+                $bCheckRights = $this->_perm->have_perm_area_action_item($entry[0], $entry[0], $idcat);
+                if ($bCheckRights) {
+                    break;
+                }
+            }
+
+            $this->_articlePermissions[$idcat] = $bCheckRights;
+        }
+
+        return $this->_articlePermissions[$idcat];
+    }
+
+    /**
      * Checks if the user has permission to make an article a start article.
      *
+     * @param int $idcat Id of the category to check the rights for
      * @return bool
      * @throws cDbException|cException
      */
@@ -469,6 +498,7 @@ class cBackendSearchHelper {
     /**
      * Checks if the user has permission to edit article content.
      *
+     * @param int $idcat Id of the category to check the rights for
      * @return bool
      * @throws cDbException|cException
      */
@@ -488,6 +518,7 @@ class cBackendSearchHelper {
     /**
      * Checks if the user has permission to duplicate article.
      *
+     * @param int $idcat Id of the category to check the rights for
      * @return bool
      * @throws cDbException|cException
      */
@@ -507,6 +538,7 @@ class cBackendSearchHelper {
     /**
      * Checks if the user has permission to delete article.
      *
+     * @param int $idcat Id of the category to check the rights for
      * @return bool
      * @throws cDbException|cException
      */

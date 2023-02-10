@@ -32,7 +32,6 @@ cRegistry::bootstrap([
 $cfg = cRegistry::getConfig();
 $belang = cRegistry::getBackendLanguage();
 $lang = cSecurity::toInteger(cRegistry::getLanguageId());
-$sess = cRegistry::getSession();
 $auth = cRegistry::getAuth();
 $perm = cRegistry::getPerm();
 $client = cSecurity::toInteger(cRegistry::getClientId());
@@ -44,33 +43,23 @@ i18nInit($cfg['path']['contenido_locale'], $belang);
 // Initialize variables
 $db = cRegistry::getDb();
 
-// Session
-$sSession = '';
-$sSessionTmp = '';
-
 // Language ID
 $iSpeachId = $lang;
-$iSpeachIdTmp = NULL;
 
 // Search - ID
 $iSearchId = NULL;
-$iSearchIdTmp = 0;
 
 // Search - Text
 $sSearchStr = NULL;
-$sSearchStrTmp = '';
 
 // Search - Date type
 $sSearchStrDateType = NULL;
-$sSearchStrDateTypeTmp = '';
 
 // Search - Date from
-$sSearchStrDateFrom = NULL;
-$sSearchStrDateFromTmp = '';
+$sSearchStrDateFrom = '';
 
 // Search - Date to
-$sSearchStrDateTo = NULL;
-$sSearchStrDateToTmp = '';
+$sSearchStrDateTo = '';
 
 $bLostAndFound = false;
 
@@ -82,24 +71,15 @@ $sLoadSubnavi = '';
 $iIdCat = 0;
 $iDisplayMenu = 0;
 $iIdTpl = 0;
-$sScript = '';
+$aScripts = [];
 
+$sSession = cRegistry::getBackendSessionId() ?? '';
 
-if (isset($_POST[$sess->name])) {
-    $sSessionTmp = trim(strip_tags($_POST[$sess->name]));
-} elseif (isset($_GET[$sess->name])) {
-    $sSessionTmp = trim(strip_tags($_GET[$sess->name]));
-}
-if (cString::getStringLength($sSessionTmp) > 0) {
-    $sSession = $sSessionTmp;
+$iSpeachIdTmp = $_POST['speach'] ?? '';
+if (is_numeric($iSpeachIdTmp)) {
+    $iSpeachId = $iSpeachIdTmp;
 }
 
-if (isset($_POST['speach'])) {
-    $iSpeachIdTmp = (int) $_POST['speach'];
-    if ((string) $iSpeachIdTmp === $_POST['speach']) {
-        $iSpeachId = $iSpeachIdTmp;
-    }
-}
 if (!empty($sSession)) {
     // Backend
     cRegistry::bootstrap([
@@ -130,34 +110,35 @@ $sSortMode = (isset($_POST['sortmode']) && $_POST['sortmode'] == 'asc') ? 'asc' 
  * 3. User pressed 'save search' -> show 'successfully stored' message & use the stored search id to show the result again
  */
 
-$sSaveTitle = 'save_title';
-$sSaveId = 'save_id';
-$sSaveDateFrom = 'save_date_from';
-$sSaveDateFromYear = 'save_date_from_year';
-$sSaveDateFromMonth = 'save_date_from_month';
-$sSaveDateFromDay = 'save_date_from_day';
-$sSaveDateTo = 'save_date_to';
-$sSaveDateToYear = 'save_date_to_year';
-$sSaveDateToMonth = 'save_date_to_month';
-$sSaveDateToDay = 'save_date_to_day';
-$sSaveDateField = 'save_date_field';
-$sSaveAuthor = 'save_author';
-$sSaveName = 'save_name';
-$sType = 'savedsearch';  // section for saved searches in con_properties
-$sRefreshScript = '';        // refresh top left frame
 $sSaveSuccessful = '';    // Successfully stored message
 
 // Initialize CONTENIDO_Backend.
 // Load all actions from the DB and check if permission is granted.
-$oldmemusage = memory_get_usage();
+$oldMemUsage = memory_get_usage();
 
 $cfg['debug']['backend_exectime']['start'] = getmicrotime();
 
 $backendSearchHelper = new cBackendSearchHelper(cRegistry::getDb(), $auth, $perm, $lang, $client);
 
+// Save values
+$aSearchFields = [
+    'save_title',
+    'save_id',
+    'save_date_from',
+    'save_date_to',
+    'save_date_field',
+    'save_author',
+    'save_name',
+];
 
-// Save current search
+// Initialize empty search array, we may need it later!
+$aSearch = [];
+foreach ($aSearchFields as $field) {
+    $aSearch[$field] = '';
+}
+
 if (sizeof($_GET) == 0 && isset($_POST['save_search'])) {
+    // Save current search
     $itemtype = rand(0, 10000);
     $itemid = time();
     $propertyCollection = new cApiPropertyCollection();
@@ -166,129 +147,86 @@ if (sizeof($_GET) == 0 && isset($_POST['save_search'])) {
     // no checking for consistency done here because these values have already been checked when
     // building form sending this POST
 
-    // Title / Content
-    $propertyCollection->setValue($itemtype, $itemid, $sType, $sSaveTitle, $_POST[$sSaveTitle]);
-    // ID
-    $propertyCollection->setValue($itemtype, $itemid, $sType, $sSaveId, $_POST[$sSaveId]);
-    // Date from
-    $propertyCollection->setValue($itemtype, $itemid, $sType, $sSaveDateFrom, $_POST[$sSaveDateFrom]);
-    // Date to
-    $propertyCollection->setValue($itemtype, $itemid, $sType, $sSaveDateTo, $_POST[$sSaveDateTo]);
-    // Date type
-    $propertyCollection->setValue($itemtype, $itemid, $sType, $sSaveDateField, $_POST[$sSaveDateField]);
-    // Author
-    $propertyCollection->setValue($itemtype, $itemid, $sType, $sSaveAuthor, $_POST[$sSaveAuthor]);
-    // Name of search (displayed to user)
-    $propertyCollection->setValue($itemtype, $itemid, $sType, $sSaveName, $_POST[$sSaveName]);
+    // Save values
+    foreach ($aSearchFields as $field) {
+        $postValue = trim(strip_tags($_POST[$field] ?? ''));
+        $propertyCollection->setValue($itemtype, $itemid, 'savedsearch', $field, $postValue);
+    }
 
     // Call search we just saved to show results
-    $aSearchResults = $backendSearchHelper->getSearchResults($itemid, $itemtype);
-    $sSearchStrTmp = $aSearchResults[$sSaveTitle];
-    $iSearchIdTmp = $aSearchResults[$sSaveId];
-    $sSearchStrDateTypeTmp = $aSearchResults[$sSaveDateField];
-    $sSearchStrDateFromDayTmp = $aSearchResults[$sSaveDateFromDay];
-    $sSearchStrDateFromMonthTmp = $aSearchResults[$sSaveDateFromMonth];
-    $sSearchStrDateFromYearTmp = $aSearchResults[$sSaveDateFromYear];
-    $sSearchStrDateToDayTmp = $aSearchResults[$sSaveDateToDay];
-    $sSearchStrDateToMonthTmp = $aSearchResults[$sSaveDateToMonth];
-    $sSearchStrDateToYearTmp = $aSearchResults[$sSaveDateToYear];
-    $sSearchStrAuthorTmp = $aSearchResults[$sSaveAuthor];
+    $aSearch = $backendSearchHelper->getSearchResults($itemid, $itemtype);
 
-    $sScript = $backendSearchHelper->generateJs($aSearchResults);
+    $aScripts[] = $backendSearchHelper->generateJs($aSearch);
 
     // Reload top left to show new search name
-    $sRefreshScript .= 'Con.getFrame("left_top").location.href = Con.getFrame("left_top").location.href + "&save_search=true";';
+    $aScripts[] = '
+        // Refresh top_left frame to show new saved searches
+        Con.getFrame("left_top").location.href = Con.getFrame("left_top").location.href + "&save_search=true";
+    ';
 
     // Message for successful saving
     $sSaveSuccessful = i18n("Thank you for saving this search from extinction!");
 } elseif (sizeof($_GET) > 0) {
-    // STORED SEARCH HAS BEEN CALLED
+    // Stored search has been called
 
     $itemtypeReq = $_GET['itemtype'];
     $itemidReq = $_GET['itemid'];
     // Do we have the request parameters we need to fetch search values of stored search ?
     if ((isset($itemtypeReq) && cString::getStringLength($itemtypeReq) > 0) && (isset($itemidReq) && cString::getStringLength($itemidReq) > 0)) {
-        $aSearchResults = $backendSearchHelper->getSearchResults($itemidReq, $itemtypeReq);
-        $sSearchStrTmp = $aSearchResults[$sSaveTitle];
-        $iSearchIdTmp = $aSearchResults[$sSaveId];
-        $sSearchStrDateTypeTmp = $aSearchResults[$sSaveDateField];
-        $sSearchStrDateFromDayTmp = $aSearchResults[$sSaveDateFromDay];
-        $sSearchStrDateFromMonthTmp = $aSearchResults[$sSaveDateFromMonth];
-        $sSearchStrDateFromYearTmp = $aSearchResults[$sSaveDateFromYear];
-        $sSearchStrDateToDayTmp = $aSearchResults[$sSaveDateToDay];
-        $sSearchStrDateToMonthTmp = $aSearchResults[$sSaveDateToMonth];
-        $sSearchStrDateToYearTmp = $aSearchResults[$sSaveDateToYear];
-        $sSearchStrAuthorTmp = $aSearchResults[$sSaveAuthor];
-        $sSearchStrDateFromTmp = $aSearchResults[$sSaveDateFrom];
-        $sSearchStrDateToTmp = $aSearchResults[$sSaveDateTo];
+        $aSearch = $backendSearchHelper->getSearchResults($itemidReq, $itemtypeReq);
 
         // Script for refreshing search form with stored search options
-        $sScript = $backendSearchHelper->generateJs($aSearchResults);
+        $aScripts[] = $backendSearchHelper->generateJs($aSearch);
     } elseif (isset($_GET['recentedit'])) {
         // Compute current day minus one week
         $actDate = time();
         $weekInSeconds = 60 * 60 * 24 * 7;  // seconds, minutes, hours, days
         $oneWeekEarlier = $actDate - $weekInSeconds;
 
-        $sSearchStrDateTypeTmp = 'lastmodified';
-        $sSearchStrDateFromDayTmp = date('d', $oneWeekEarlier);
-        $sSearchStrDateFromMonthTmp = date('m', $oneWeekEarlier);
-        $sSearchStrDateFromYearTmp = date('Y', $oneWeekEarlier);
-        $sSearchStrDateToDayTmp = date('d', $actDate);
-        $sSearchStrDateToMonthTmp = date('m', $actDate);
-        $sSearchStrDateToYearTmp = date('Y', $actDate);
+        $aSearch['save_date_field'] = 'lastmodified';
+        $aSearch['save_date_from_day'] = date('d', $oneWeekEarlier);
+        $aSearch['save_date_from_month'] = date('m', $oneWeekEarlier);
+        $aSearch['save_date_from_year'] = date('Y', $oneWeekEarlier);
+        $aSearch['save_date_to_day'] = date('d', $actDate);
+        $aSearch['save_date_to_month'] = date('m', $actDate);
+        $aSearch['save_date_to_year'] = date('Y', $actDate);
     } elseif (isset($_GET['myarticles'])) {
-        $sSearchStrAuthorTmp = $auth->auth['uname'];
+        $aSearch['save_author'] = $auth->auth['uname'];
     } elseif (isset($_GET['lostfound'])) {
         $bLostAndFound = true;
     }
 } elseif (sizeof($_GET) == 0 && isset($_POST)) {
-    // STANDARD SEARCH
-
-    $sSearchStrTmp = trim(strip_tags($_POST['bs_search_text']));
-    $iSearchIdTmp = (int) $_POST['bs_search_id'];
-    $sSearchStrDateTypeTmp = trim(strip_tags($_POST['bs_search_date_type']));
-    $sSearchStrDateFromDayTmp = (int) trim(strip_tags($_POST['bs_search_date_from_day']));
-    $sSearchStrDateFromMonthTmp = (int) trim(strip_tags($_POST['bs_search_date_from_month']));
-    $sSearchStrDateFromYearTmp = (int) trim(strip_tags($_POST['bs_search_date_from_year']));
-    $sSearchStrDateToDayTmp = (int) trim(strip_tags($_POST['bs_search_date_to_day']));
-    $sSearchStrDateToMonthTmp = (int) trim(strip_tags($_POST['bs_search_date_to_month']));
-    $sSearchStrDateToYearTmp = (int) trim(strip_tags($_POST['bs_search_date_to_year']));
-    $sSearchStrAuthorTmp = trim(strip_tags($_POST['bs_search_author']));
+    // Regular search, take over send form data
+    $aSearch['save_title'] = trim(strip_tags($_POST['bs_search_text']));
+    $aSearch['save_id'] = cSecurity::toInteger($_POST['bs_search_id']);
+    $aSearch['save_date_field'] = trim(strip_tags($_POST['bs_search_date_type']));
+    $aSearch['save_date_from_day'] = cSecurity::toInteger($_POST['bs_search_date_from_day']);
+    $aSearch['save_date_from_month'] = cSecurity::toInteger($_POST['bs_search_date_from_month']);
+    $aSearch['save_date_from_year'] = cSecurity::toInteger($_POST['bs_search_date_from_year']);
+    $aSearch['save_date_to_day'] = cSecurity::toInteger($_POST['bs_search_date_to_day']);
+    $aSearch['save_date_to_month'] = cSecurity::toInteger($_POST['bs_search_date_to_month']);
+    $aSearch['save_date_to_year'] = cSecurity::toInteger($_POST['bs_search_date_to_year']);
+    $aSearch['save_author'] = trim(strip_tags($_POST['bs_search_author']));
 }
-// else ERROR
-// No code here, empty results caught later in code
 
 // Title / Content
-if (!empty($sSearchStrTmp)) {
-    $sSearchStr = $sSearchStrTmp;
+if (!empty($aSearch['save_title'])) {
+    $sSearchStr = $aSearch['save_title'];
 }
 // Article ID
-if ($iSearchIdTmp > 0) {
-    $iSearchId = $iSearchIdTmp;
+if (!$aSearch['save_id'] > 0) {
+    $iSearchId = $aSearch['save_id'];
 }
 // Date
-if ($sSearchStrDateTypeTmp != 'n/a') {
-    if (($sSearchStrDateFromDayTmp > 0) && ($sSearchStrDateFromMonthTmp > 0) && ($sSearchStrDateFromYearTmp > 0)) {
-        $sSearchStrDateFrom = $sSearchStrDateFromYearTmp . '-' . $sSearchStrDateFromMonthTmp . '-' . $sSearchStrDateFromDayTmp . ' 00:00:00';
-    } else {
-        $sSearchStrDateFrom = '';
-    }
-
-    if (($sSearchStrDateToDayTmp > 0) && ($sSearchStrDateToMonthTmp > 0) && ($sSearchStrDateToYearTmp > 0)) {
-        $sSearchStrDateTo = $sSearchStrDateToYearTmp . '-' . $sSearchStrDateToMonthTmp . '-' . $sSearchStrDateToDayTmp . ' 23:59:59';
-    } else {
-        $sSearchStrDateTo = '';
-    }
-
-    $sDateFieldName = $sSearchStrDateTypeTmp;
+if (!empty($aSearch['save_date_field']) && $aSearch['save_date_field'] != 'n/a') {
+    $sSearchStrDateFrom = $backendSearchHelper->composeSaveDateFrom($aSearch);
+    $sSearchStrDateTo = $backendSearchHelper->composeSaveDateTo($aSearch);
+    $sDateFieldName = $aSearch['save_date_field'];
 } else {
     $sDateFieldName = '';
 }
 // Author
-if (!empty($sSearchStrAuthorTmp)) {
-    $sSearchStrAuthor = $sSearchStrAuthorTmp;
-}
+$sSearchStrAuthor = !empty($aSearch['save_author']) ? $aSearch['save_author'] :  'n/a';
 
 // Build the query to search for the article
 $sql = "SELECT
@@ -390,7 +328,7 @@ foreach ($sSortByValues as $value) {
 $tpl = new cTemplate();
 
 $tpl->setEncoding('iso-8859-1');
-$tpl->set('s', 'SCRIPT', $sScript);
+$tpl->set('s', 'SCRIPT', implode("\n\n", $aScripts));
 $tpl->set('s', 'TITLE', i18n('Search results'));
 $tpl->set('s', 'TH_START', i18n("Article"));
 $tpl->set('s', 'TH_TITLE', $aTableHeaders['title']);
@@ -401,9 +339,6 @@ $tpl->set('s', 'TH_TEMPLATE', i18n("Template"));
 $tpl->set('s', 'TH_ACTIONS', i18n("Actions"));
 $tpl->set('s', 'CURRENT_SORTBY', $sSortBy);
 $tpl->set('s', 'CURRENT_SORTMODE', $sSortMode);
-
-// Refresh top left frame
-$tpl->set('s', 'REFRESH', $sRefreshScript);
 
 // Successfully stored Message
 $tpl->set('s', 'SEARCHSTOREDMESSAGE', $sSaveSuccessful);
@@ -600,24 +535,25 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
 
 if (sizeof($_GET) == 0 && isset($_POST) && !$bNoCriteria) {
     // Build form with hidden fields that contain all search parameters to be stored using generic db
-    $searchForm = '<form id="save_search" target="right_bottom" method="post" action="backend_search.php">';
-    // Meta for CONTENIDO
-    $searchForm .= '<input type="hidden" name="area" value="' . $area . '">';
-    $searchForm .= '<input type="hidden" name="frame" value="' . $frame . '">';
-    $searchForm .= '<input type="hidden" name="contenido" value="' . $sess->id . '">';
-    $searchForm .= '<input type="hidden" name="speach" value="' . $lang . '">';
-    // Form data for saving current search
-    $searchForm .= '<input type="hidden" name="save_search" id="save_search" value="true">';
-    $searchForm .= '<input type="hidden" name="' . $sSaveTitle . '" id="' . $sSaveTitle . '" value="' . $sSearchStr . '">';
-    $searchForm .= '<input type="hidden" name="' . $sSaveId . '" id="' . $sSaveId . '" value="' . $iSearchId . '">';
-    $searchForm .= '<input type="hidden" name="' . $sSaveDateFrom . '" id="' . $sSaveDateFrom . '" value="' . $sSearchStrDateFrom . '">';
-    $searchForm .= '<input type="hidden" name="' . $sSaveDateTo . '" id="' . $sSaveDateTo . '" value="' . $sSearchStrDateTo . '">';
-    $searchForm .= '<input type="hidden" name="' . $sSaveDateField . '" id="' . $sSaveDateField . '" value="' . $sDateFieldName . '">';
-    $searchForm .= '<input type="hidden" name="' . $sSaveAuthor . '" id="' . $sSaveAuthor . '" value="' . $sSearchStrAuthor . '">';
-    $searchForm .= '<label for="' . $sSaveName . '">' . i18n("Search name") . ': </label>';
-    $searchForm .= '<input type="text" class="text_medium" name="' . $sSaveName . '" id="' . $sSaveName . '" placeholder="' . i18n("The search") . '" class="vAlignMiddle">';
-    $searchForm .= '<input type="image" class="vAlignMiddle tableElement" src="./images/but_ok.gif" alt="' . i18n('Store') . '" title="' . i18n('Store') . '" value="' . i18n('Store') . '" name="submit">';
-    $searchForm .= '</form>';
+    $searchForm = '
+        <form id="save_search" target="right_bottom" method="post" action="backend_search.php">
+            <input type="hidden" name="area" value="' . $area . '">
+            <input type="hidden" name="frame" value="' . $frame . '">
+            <input type="hidden" name="contenido" value="' . $sSession . '">
+            <input type="hidden" name="speach" value="' . $lang . '">
+            <input type="hidden" name="save_search" id="save_search" value="true">
+            <input type="hidden" name="save_title" id="save_title" value="' . $sSearchStr . '">
+            <input type="hidden" name="save_id" id="save_id" value="' . $iSearchId . '">
+            <input type="hidden" name="save_date_from" id="save_date_from" value="' . $sSearchStrDateFrom . '">
+            <input type="hidden" name="save_date_to" id="save_date_to" value="' . $sSearchStrDateTo . '">
+            <input type="hidden" name="save_date_field" id="save_date_field" value="' . $sDateFieldName . '">
+            <input type="hidden" name="save_author" id="save_author" value="' . $sSearchStrAuthor . '">
+            <label for="' . 'save_name' . '">' . i18n("Search name") . ': </label>
+            <input type="text" class="text_medium" name="save_name" id="save_name" placeholder="' . i18n("The search") . '" class="vAlignMiddle">
+            <input type="image" class="vAlignMiddle tableElement" src="./images/but_ok.gif" alt="' . i18n('Store') . '" title="' . i18n('Store') . '" value="' . i18n('Store') . '" name="submit">
+        </form>'
+    ;
+
     $tpl->set('s', 'STORESEARCHFORM', $searchForm);
 
     // Title / Header for 'store the search' form
@@ -631,7 +567,7 @@ $tpl->set('s', 'SUBNAVI', $sLoadSubnavi);
 
 // Finalize debug of backend rendering
 ob_start();
-cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldmemusage, basename(__FILE__)));
+cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldMemUsage, basename(__FILE__)));
 $output = ob_get_contents();
 ob_end_clean();
 $tpl->set('s', 'DEBUGMESSAGE', $output);

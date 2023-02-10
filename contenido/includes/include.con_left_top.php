@@ -298,17 +298,11 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
 
     $oListOptionRow->setContentData($tplSync->generate($cfg["path"]["templates"] . $cfg["templates"]["con_left_top_sync"], true));
 
-    $link = $sess->url("main.php?area=" . $area . "&frame=2") . '&syncoptions=';
-    $sJsLink = "Con.multiLink('left_bottom', '{$link}' + document.getElementsByName('syncoptions')[0].value + '&refresh_syncoptions=true');";
-    $tpl->set('s', 'UPDATE_SYNC_REFRESH_FRAMES', $sJsLink);
     $tpl->set('s', 'SYNCRONIZATION', $oListOptionRow->render());
     $tpl->set('s', 'SYNCLINK', $sListId);
-    $sSyncLink = $sess->url("main.php?area=$area&frame=2&action=con_synccat");
-    $tpl->set('s', 'SYNC_HREF', $sSyncLink);
 } else {
     $tpl->set('s', 'SYNCRONIZATION', '');
     $tpl->set('s', 'SYNCLINK', '');
-    $tpl->set('s', 'SYNC_HREF', '');
 }
 
 // Collapse / Expand / Config Category
