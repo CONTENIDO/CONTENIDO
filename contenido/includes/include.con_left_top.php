@@ -46,13 +46,11 @@ $idcat = cSecurity::toInteger($_GET['idcat'] ?? '-1');
 
 // Get sync options
 if (isset($syncoptions)) {
-    $syncfrom = (int) $syncoptions;
+    $syncfrom = cSecurity::toInteger($syncoptions);
     $remakeCatTable = true;
 }
 
-if (!isset($syncfrom)) {
-    $syncfrom = -1;
-}
+$syncfrom = $syncfrom ?? -1;
 
 $syncoptions = $syncfrom;
 
@@ -61,9 +59,11 @@ $tpl->set('s', 'SYNC_LANG', $syncfrom);
 // Delete a saved search
 $bShowArticleSearch = false;
 if (isset($_GET['delsavedsearch'])) {
-    if (isset($_GET['itemtype']) && count($_GET['itemtype']) > 0 && isset($_GET['itemid']) && count($_GET['itemid']) > 0) {
+    $requestItemType = $_GET['itemtype'] ?? '';
+    $requestItemId = $_GET['itemid'] ?? '';
+    if (!empty($requestItemType) && !empty($requestItemId)) {
         $propertyCollection = new cApiPropertyCollection();
-        $propertyCollection->deleteProperties($_GET['itemtype'], $_GET['itemid']);
+        $propertyCollection->deleteProperties($requestItemType, $requestItemId);
         $bShowArticleSearch = true;
     }
 }
@@ -75,7 +75,7 @@ if (isset($_GET['save_search']) && $_GET['save_search'] == 'true') {
 // ARTICLE SEARCH
 $arrDays      = ['--'] + range(0, 31);
 $arrMonths    = ['--'] + range(0, 12);
-$sCurrentYear = (int)date('Y');
+$sCurrentYear = cSecurity::toInteger(date('Y'));
 $arrYears     = range($sCurrentYear - 10, $sCurrentYear + 30);
 $arrYears     = ['-----'] + array_combine($arrYears, $arrYears);
 
@@ -83,21 +83,21 @@ $arrYears     = ['-----'] + array_combine($arrYears, $arrYears);
 $bsSearchText              = $_REQUEST['bs_search_text'] ?? '';
 $bsSearchId                = $_REQUEST['bs_search_id'] ?? '';
 $bsSearchDateType          = $_REQUEST['bs_search_date_type'] ?? 'n/a';
-$bsSearchDateTypeFromDay   = $_REQUEST['bs_search_date_from_day'] ?? '';
-$bsSearchDateTypeFromMonth = $_REQUEST['bs_search_date_from_month'] ?? '';
-$bsSearchDateTypeFromYear  = $_REQUEST['bs_search_date_from_year'] ?? '';
-$bsSearchDateToDay         = $_REQUEST['bs_search_date_to_day'] ?? '';
-$bsSearchDateToMonth       = $_REQUEST['bs_search_date_to_month'] ?? '';
-$bsSearchDateToYear        = $_REQUEST['bs_search_date_to_year'] ?? '';
+$bsSearchDateTypeFromDay   = cSecurity::toInteger($_REQUEST['bs_search_date_from_day'] ?? '0');
+$bsSearchDateTypeFromMonth = cSecurity::toInteger($_REQUEST['bs_search_date_from_month'] ?? '0');
+$bsSearchDateTypeFromYear  = cSecurity::toInteger($_REQUEST['bs_search_date_from_year'] ?? '0');
+$bsSearchDateToDay         = cSecurity::toInteger($_REQUEST['bs_search_date_to_day'] ?? '0');
+$bsSearchDateToMonth       = cSecurity::toInteger($_REQUEST['bs_search_date_to_month'] ?? '0');
+$bsSearchDateToYear        = cSecurity::toInteger($_REQUEST['bs_search_date_to_year'] ?? '0');
 $bsSearchAuthor            = $_REQUEST['bs_search_author'] ?? 'n/a';
 
 // validate user input
-$bsSearchDateTypeFromDay   = max(0, (int)$bsSearchDateTypeFromDay);
-$bsSearchDateTypeFromMonth = max(0, (int)$bsSearchDateTypeFromMonth);
-$bsSearchDateTypeFromYear  = max(0, (int)$bsSearchDateTypeFromYear);
-$bsSearchDateToDay         = max(0, (int)$bsSearchDateToDay);
-$bsSearchDateToMonth       = max(0, (int)$bsSearchDateToMonth);
-$bsSearchDateToYear        = max(0, (int)$bsSearchDateToYear);
+$bsSearchDateTypeFromDay   = max(0, $bsSearchDateTypeFromDay);
+$bsSearchDateTypeFromMonth = max(0, $bsSearchDateTypeFromMonth);
+$bsSearchDateTypeFromYear  = max(0, $bsSearchDateTypeFromYear);
+$bsSearchDateToDay         = max(0, $bsSearchDateToDay);
+$bsSearchDateToMonth       = max(0, $bsSearchDateToMonth);
+$bsSearchDateToYear        = max(0, $bsSearchDateToYear);
 
 // get users
 $userColl = new cApiUserCollection();
@@ -132,7 +132,6 @@ $oSelectArtDateType->autoFill(
     ]
 );
 $oSelectArtDateType->setStyle('width:135px;');
-$oSelectArtDateType->setEvent("Change", "toggle_tr_visibility('tr_date_from');toggle_tr_visibility('tr_date_to');");
 $oSelectArtDateType->setDefault($bsSearchDateType);
 
 // DateFrom
@@ -189,12 +188,10 @@ $tplSearch->set("s", "SELECT_AUTHOR", $oSelectArtAuthor->render());
 $tplSearch->set("s", "SUBMIT_BUTTON", $oSubmit->render());
 
 // Saved searches
-
-$proppy = new cApiPropertyCollection();
-$savedSearchList = $proppy->getAllValues('type', 'savedsearch', $auth);
-
+$propertyCollection = new cApiPropertyCollection();
+$savedSearchList = $propertyCollection->getAllValues('type', 'savedsearch', $auth);
 foreach ($savedSearchList as $value) {
-    if ($value["name"] == "save_name") {
+    if ($value["name"] === "save_name") {
         $tplSearch->set("d", "SEARCH_NAME", ($value['value'] == "") ? i18n("A saved search") : $value['value']);
         $tplSearch->set("d", "ITEM_ID", $value['itemid']);
         $tplSearch->set("d", "ITEM_TYPE", $value['itemtype']);
@@ -263,23 +260,23 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
         $oListOptionRow->setExpanded(true);
     }
 
-    $selectbox = new cHTMLSelectElement("syncoptions");
+    $selectBox = new cHTMLSelectElement("syncoptions");
 
     $option = new cHTMLOptionElement("--- " . i18n("None") . " ---", -1);
-    $selectbox->addOptionElement(-1, $option);
+    $selectBox->addOptionElement(-1, $option);
     foreach ($languages as $languageid => $languagename) {
         if ($lang != $languageid && $perm->have_perm_client_lang($client, $languageid)) {
             $option = new cHTMLOptionElement($languagename . " (" . $languageid . ")", $languageid);
-            $selectbox->addOptionElement($languageid, $option);
+            $selectBox->addOptionElement($languageid, $option);
         }
     }
-    $selectbox->setDefault($syncoptions);
+    $selectBox->setDefault($syncoptions);
 
     $tplSync = new cTemplate();
     $tplSync->set("s", "TEXT_DIRECTION", langGetTextDirection($lang));
     $tplSync->set("s", "AREA", $area);
     $tplSync->set("s", "FRAME", $frame);
-    $tplSync->set("s", "SELECTBOX", $selectbox->render());
+    $tplSync->set("s", "SELECTBOX", $selectBox->render());
 
     $oListOptionRow->setContentData($tplSync->generate($cfg["path"]["templates"] . $cfg["templates"]["con_left_top_sync"], true));
 
@@ -297,19 +294,18 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
 }
 
 // Collapse / Expand / Config Category
-$selflink = "main.php";
-$expandlink = $sess->url($selflink . "?area=$area&frame=2&expand=all");
-$collapselink = $sess->url($selflink . "?area=$area&frame=2&collapse=all");
-$tpl->set('s', 'COLLAPSE_LINK', $collapselink);
-$tpl->set('s', 'EXPAND_LINK', $expandlink);
+$expandLink = $sess->url("main.php?area=$area&frame=2&expand=all");
+$collapseLink = $sess->url("main.php?area=$area&frame=2&collapse=all");
+$tpl->set('s', 'COLLAPSE_LINK', $collapseLink);
+$tpl->set('s', 'EXPAND_LINK', $expandLink);
 
 // necessary for expanding/collapsing of navigation tree per javascript/AJAX (I. van Peeren)
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'AJAXURL', cRegistry::getBackendUrl() . 'ajaxmain.php');
 
 // LEGEND
-$legendlink = 'legend';
-$editCategory = new cGuiFoldingRow("31f52be2-7499-4d21-8175-3917129e6014", i18n("Legend"), $legendlink);
+$legendLinkId = 'legend';
+$editCategory = new cGuiFoldingRow("31f52be2-7499-4d21-8175-3917129e6014", i18n("Legend"), $legendLinkId);
 
 $divLegend = new cHTMLDiv("", "articleLegend", "legend-content");
 
@@ -332,7 +328,7 @@ foreach ($aData as $key => $item) {
 
 $editCategory->setContentData($divLegend->render());
 $tpl->set('s', 'LEGEND', $editCategory->render());
-$tpl->set('s', 'LEGENDLINK', $legendlink);
+$tpl->set('s', 'LEGENDLINK', $legendLinkId);
 
 // Help
 $tpl->set('s', 'HELPSCRIPT', getJsHelpContext("con"));
