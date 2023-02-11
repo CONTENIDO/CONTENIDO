@@ -1305,6 +1305,40 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
     /**
      * Returns all ids of recordsets in the table matching the rules in the
+     * passed where clause ($field $operator $value).
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $field
+     *         The table field name
+     * @param string|int|null|mxed $value
+     *         The value
+     * @param string $operator
+     *         The operator to use (e.g. '=', '>', '<', 'IN', etc.)
+     * @return array
+     *         List of ids
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     */
+    public function getIdsWhere($field, $value, $operator = '=') {
+        $oDb = $this->_getSecondDBInstance();
+
+        $aIds = [];
+
+        // Build where clause
+        $sWhere = $this->_driver->buildOperator($field, $operator, $value);
+
+        // Get ids
+        $sql = 'SELECT `' . $this->getPrimaryKeyName() . '` AS `pk` FROM `' . $this->table . '` WHERE ' . $sWhere;
+        $oDb->query($sql);
+        while ($oDb->nextRecord()) {
+            $aIds[] = $oDb->f('pk');
+        }
+
+        return $aIds;
+    }
+
+    /**
+     * Returns all ids of recordsets in the table matching the rules in the
      * passed where clause.
      *
      * @param string $sWhere
