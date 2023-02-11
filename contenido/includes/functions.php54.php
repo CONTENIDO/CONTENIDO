@@ -64,6 +64,7 @@ if (function_exists('conHtmlEntityDecode') == false) {
         $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
         $encoding = ($encoding == '') ? 'UTF-8' : $encoding;
 
+if (is_null($value)) mp_dbdl(__FUNCTION__);
         return html_entity_decode($value, $flags, $encoding);
     }
 

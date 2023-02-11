@@ -36,7 +36,7 @@ class cContentTypeText extends cContentTypeAbstract {
      * @throws cDbException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        $rawSettings = conHtmlSpecialChars($rawSettings);
+        $rawSettings = conHtmlSpecialChars($rawSettings ?? '');
 
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
