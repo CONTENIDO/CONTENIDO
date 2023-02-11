@@ -94,7 +94,7 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
 }
 
 if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
-    $username = trim(stripslashes($username));
+    $username = isset($username) ? trim(stripslashes($username)) : '';
     $messages = [];
     $variablesToStore = [];
 
