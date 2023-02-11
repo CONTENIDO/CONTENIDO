@@ -103,6 +103,8 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
             continue;
         }
 
+        $value['value'] = $value['value'] ?? '';
+
         $settingType  = conHtmlentities($type);
         $settingName  = conHtmlentities($name);
         $settingValue = conHtmlentities($value['value']);
