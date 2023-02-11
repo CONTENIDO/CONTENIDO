@@ -289,8 +289,12 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * @inheritdoc
      */
     public function escape($string) {
-        $linkId = $this->_handler->getLinkId();
-        return mysqli_real_escape_string($linkId, $string);
+        if (is_string($string)) {
+            $linkId = $this->_handler->getLinkId();
+            return mysqli_real_escape_string($linkId, $string);
+        } else {
+            return $string;
+        }
     }
 
     /**
