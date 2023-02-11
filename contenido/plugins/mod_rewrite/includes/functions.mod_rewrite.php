@@ -95,7 +95,7 @@ function mr_strRenameCategory(array $data) {
 
     // hes 20100102
     // maximal 50 recursion level
-    $recursion = (is_int($data['recursion'])) ? $data['recursion'] : 1;
+    $recursion = cSecurity::toInteger($data['recursion'] ?? '1');
     if ($recursion > 50) {
         exit("#20100201-1503: sorry - maximum function nesting level of " . $recursion . " reached");
     }
