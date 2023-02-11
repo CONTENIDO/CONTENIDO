@@ -986,7 +986,7 @@ class cApiUser extends Item {
             $sTemp = cString::getPartOfString($sTemp, 4, cString::getStringLength($sTemp) - 4);
 
             if (true === $bAddDescription) {
-                $sDescription = trim($group->get('description'));
+                $sDescription = trim($group->get('description') ?? '');
                 if ($sDescription != '') {
                     $sTemp .= ' (' . $sDescription . ')';
                 }

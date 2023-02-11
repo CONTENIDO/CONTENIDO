@@ -124,7 +124,7 @@ $page->set('d', 'CATFIELD', stripslashes(conHtmlSpecialChars($oGroup->getGroupNa
 $page->next();
 
 $page->set('d', 'CATNAME', i18n("Description"));
-$oTxtDesc = new cHTMLTextbox('description', conHtmlSpecialChars($oGroup->getField('description')), 40, 255);
+$oTxtDesc = new cHTMLTextbox('description', conHtmlSpecialChars($oGroup->getField('description') ?? ''), 40, 255);
 $page->set('d', 'CATFIELD', $oTxtDesc->render());
 $page->next();
 
