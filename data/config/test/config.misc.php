@@ -206,10 +206,11 @@ $cfg['sql']['select_all_mode'] = true;
 //            If you use other functions for filtering strings, add them to this
 //            configuration.
 $cfg['sql']['string_filter_funtions'] = [
-    'htmlencode',
     'addslashes',
+    'htmldecode',
+    'htmlencode',
+    'htmlspecialchars',
     'stripslashes',
-    'htmlspecialchars'
 ];
 
 
