@@ -470,9 +470,9 @@ function htmldecode($string) {
     if (is_string($string)) {
         $trans_tbl = conGetHtmlTranslationTable(HTML_ENTITIES);
         $trans_tbl = array_flip($trans_tbl);
-        $ret = strtr($string, $trans_tbl);
+        return strtr($string, $trans_tbl);
     }
-    return $ret;
+    return $string;
 }
 
 /**
