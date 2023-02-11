@@ -69,7 +69,7 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
   Lizenz:      GNU General Public Licence (GPL)
   Information: http://www.bitfolge.de/?l=en&s=pseudocron
 
-- Smarty 3.1.30
+- Smarty 3.1.47
   Lizenz:      GNU Lesser General Public License 2.1 or later
   Information: http://www.smarty.net/
 
@@ -80,7 +80,7 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
 - TinyMCE 3.5.12
   Lizenz:      GNU Lesser General Public License
   Information: http://www.tinymce.com/
-  
+
 - TinyMCE 4.1.10
   Lizenz:      GNU Lesser General Public License 2.1
   Information: http://www.tinymce.com/
