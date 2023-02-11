@@ -733,6 +733,38 @@ class ItemCollectionTest extends cTestingTestCase
     }
 
     /**
+     * Test {@see ItemCollection::getIdsWhere()}.
+     */
+    public function testGetIdsWhere()
+    {
+        $dogColl = new DogCollection();
+        $ids = $dogColl->getIdsWhere('name', 'Jake');
+        $expected = ['2'];
+        $this->assertEquals($expected, $ids);
+
+        $dogColl = new DogCollection();
+        $ids = $dogColl->getIdsWhere('size', 'medium');
+        $expected = ['1', '2'];
+        $this->assertEquals($expected, $ids);
+
+        $dogColl = new DogCollection();
+        $ids = $dogColl->getIdsWhere('size', 'medium');
+        $expected = ['1', '2'];
+        $this->assertEquals($expected, $ids);
+
+        $dogColl = new DogCollection();
+        $ids = $dogColl->getIdsWhere('descr', 'strong', 'LIKE');
+        $expected = ['3'];
+        $this->assertEquals($expected, $ids);
+
+        $dogColl = new DogCollection();
+        $ids = $dogColl->getIdsWhere('id', 1, '>');
+        $expected = ['2', '3'];
+        $this->assertEquals($expected, $ids);
+    }
+
+
+    /**
      */
     public function testGetIdsByWhereClause()
     {
