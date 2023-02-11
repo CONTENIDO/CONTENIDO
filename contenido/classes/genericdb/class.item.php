@@ -678,18 +678,7 @@ abstract class Item extends cItemBaseAbstract {
      *         Filtered data
      */
     public function _inFilter($mData) {
-        foreach ($this->_arrInFilters as $_function) {
-            if (function_exists($_function)) {
-                if (is_array($mData)) {
-                    foreach ($mData as $key => $value) {
-                        $mData[$key] = $_function($value);
-                    }
-                } else {
-                    $mData = $_function($mData);
-                }
-            }
-        }
-        return $mData;
+        return $this->_filter($mData, $this->_arrInFilters);
     }
 
     /**
@@ -703,14 +692,45 @@ abstract class Item extends cItemBaseAbstract {
      *         Filtered data
      */
     public function outFilter($mData) {
-        foreach ($this->_arrOutFilters as $_function) {
+        return $this->_filter($mData, $this->_arrOutFilters);
+    }
+
+    /**
+     * Filters the passed data using the passed filter functions list.
+     *
+     * @param mixed $mData
+     *         Data to filter
+     * @param array $filterFunctions
+     *         List of functions
+     * @return mixed
+     *         Filtered data
+     */
+    protected function _filter($mData, array $filterFunctions) {
+        foreach ($filterFunctions as $_function) {
             if (function_exists($_function)) {
+                // Check whether it is a string function and therefore
+                // expects a value of type string
+                $isStringFunction = in_array(
+                    $_function, $this->_settings['string_filter_funtions']
+                );
                 if (is_array($mData)) {
                     foreach ($mData as $key => $value) {
-                        $mData[$key] = $_function($value);
+                        if ($isStringFunction) {
+                            if (is_string($value)) {
+                                $mData[$key] = $_function($value);
+                            }
+                        } else {
+                            $mData[$key] = $_function($value);
+                        }
                     }
                 } else {
-                    $mData = $_function($mData);
+                    if ($isStringFunction) {
+                        if (is_string($mData)) {
+                            $mData = $_function($mData);
+                        }
+                    } else {
+                        $mData = $_function($mData);
+                    }
                 }
             }
         }
