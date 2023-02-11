@@ -169,8 +169,8 @@ if (sizeof($_GET) == 0 && isset($_POST['save_search'])) {
 } elseif (sizeof($_GET) > 0) {
     // Stored search has been called
 
-    $itemtypeReq = $_GET['itemtype'];
-    $itemidReq = $_GET['itemid'];
+    $itemtypeReq = $_GET['itemtype'] ?? '';
+    $itemidReq = $_GET['itemid'] ?? '';
     // Do we have the request parameters we need to fetch search values of stored search ?
     if ((isset($itemtypeReq) && cString::getStringLength($itemtypeReq) > 0) && (isset($itemidReq) && cString::getStringLength($itemidReq) > 0)) {
         $aSearch = $backendSearchHelper->getSearchResults($itemidReq, $itemtypeReq);
