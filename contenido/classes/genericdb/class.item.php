@@ -132,7 +132,7 @@ abstract class Item extends cItemBaseAbstract {
         $this->_resetItem();
 
         if ($bSafe) {
-            $mValue = $this->_inFilter($mValue);
+            $mValue = $this->inFilter($mValue);
         }
 
         // check, if cache contains a matching entry
@@ -192,7 +192,7 @@ abstract class Item extends cItemBaseAbstract {
         $this->_resetItem();
 
         if ($bSafe) {
-            $aAttributes = $this->_inFilter($aAttributes);
+            $aAttributes = $this->inFilter($aAttributes);
         }
 
         // check, if cache contains a matching entry
@@ -667,17 +667,25 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
+     * @deprecated Since 4.10.2, use {@see Item::inFilter()} instead
+     */
+    public function _inFilter($mData) {
+        cDeprecated("The function _inFilter() is deprecated since CONTENIDO 4.10.2, use Item::inFilter() instead.");
+        return $this->inFilter($mData);
+    }
+
+    /**
      * Filters the passed data using the functions defines in the _arrInFilters
      * array.
      *
-     * @todo This method is used from public scope, but it should be protected
+     * @since CONTENIDO 4.10.2
      * @see Item::setFilters()
      * @param mixed $mData
      *         Data to filter
      * @return mixed
      *         Filtered data
      */
-    public function _inFilter($mData) {
+    public function inFilter($mData) {
         return $this->_filter($mData, $this->_arrInFilters);
     }
 

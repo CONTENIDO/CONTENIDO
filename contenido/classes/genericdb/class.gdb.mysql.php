@@ -62,35 +62,35 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
         switch ($sOperator) {
             case "matchbool":
                 $sqlStatement = "MATCH (%s) AGAINST ('%s' IN BOOLEAN MODE)";
-                $sWhereStatement = sprintf($sqlStatement, $sField, $this->_oItemClassInstance->_inFilter($sRestriction));
+                $sWhereStatement = sprintf($sqlStatement, $sField, $this->_oItemClassInstance->inFilter($sRestriction));
                 break;
             case "match":
                 $sqlStatement = "MATCH (%s) AGAINST ('%s')";
-                $sWhereStatement = sprintf($sqlStatement, $sField, $this->_oItemClassInstance->_inFilter($sRestriction));
+                $sWhereStatement = sprintf($sqlStatement, $sField, $this->_oItemClassInstance->inFilter($sRestriction));
                 break;
             case "like":
                 $sqlStatement = "%s LIKE '%%%s%%'";
-                $sWhereStatement = sprintf($sqlStatement, cSecurity::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
+                $sWhereStatement = sprintf($sqlStatement, cSecurity::toString($sField), $this->_oItemClassInstance->inFilter($sRestriction));
                 break;
             case "likeleft":
                 $sqlStatement = "%s LIKE '%s%%'";
-                $sWhereStatement = sprintf($sqlStatement, cSecurity::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
+                $sWhereStatement = sprintf($sqlStatement, cSecurity::toString($sField), $this->_oItemClassInstance->inFilter($sRestriction));
                 break;
             case "likeright":
                 $sqlStatement = "%s LIKE '%%%s'";
-                $sWhereStatement = sprintf($sqlStatement, cSecurity::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
+                $sWhereStatement = sprintf($sqlStatement, cSecurity::toString($sField), $this->_oItemClassInstance->inFilter($sRestriction));
                 break;
             case "notlike":
                 $sqlStatement = "%s NOT LIKE '%%%s%%'";
-                $sWhereStatement = sprintf($sqlStatement, cSecurity::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
+                $sWhereStatement = sprintf($sqlStatement, cSecurity::toString($sField), $this->_oItemClassInstance->inFilter($sRestriction));
                 break;
             case "notlikeleft":
                 $sqlStatement = "%s NOT LIKE '%s%%'";
-                $sWhereStatement = sprintf($sqlStatement, cSecurity::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
+                $sWhereStatement = sprintf($sqlStatement, cSecurity::toString($sField), $this->_oItemClassInstance->inFilter($sRestriction));
                 break;
             case "notlikeright":
                 $sqlStatement = "%s NOT LIKE '%%%s'";
-                $sWhereStatement = sprintf($sqlStatement, cSecurity::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
+                $sWhereStatement = sprintf($sqlStatement, cSecurity::toString($sField), $this->_oItemClassInstance->inFilter($sRestriction));
                 break;
             case "fulltext":
 
@@ -99,7 +99,7 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
                 if (is_array($sRestriction)) {
                     $items = [];
                     foreach ($sRestriction as $key => $sRestrictionItem) {
-                        $items[] = "'" . $this->_oItemClassInstance->_inFilter($sRestrictionItem) . "'";
+                        $items[] = "'" . $this->_oItemClassInstance->inFilter($sRestrictionItem) . "'";
                     }
 
                     $sRestriction = implode(", ", $items);
@@ -110,7 +110,7 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
                 $sWhereStatement = implode(" ", [$sField, "IN (", $sRestriction, ")"]);
                 break;
             default:
-                $sRestriction = "'" . $this->_oItemClassInstance->_inFilter($sRestriction) . "'";
+                $sRestriction = "'" . $this->_oItemClassInstance->inFilter($sRestriction) . "'";
 
                 $sWhereStatement = implode(" ", [$sField, $sOperator, $sRestriction]);
         }
