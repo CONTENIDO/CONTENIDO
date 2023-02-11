@@ -365,7 +365,8 @@ abstract class Item extends cItemBaseAbstract {
             return false;
         }
 
-        if (true == $bSafe) {
+        if ($bSafe) {
+            if ($sField === 'active') mp_d($this->values[$sField], '$this->values[$sField]', 'vd');
             return $this->outFilter($this->values[$sField]);
         } else {
             return $this->values[$sField];
@@ -407,17 +408,17 @@ abstract class Item extends cItemBaseAbstract {
             $this->oldPrimaryKey = $this->values[$sField];
         }
 
-        // apply filter on value
-        if (true == $bSafe) {
-            $mValue = $this->_inFilter($mValue);
+        // Apply filter on value
+        if ($bSafe) {
+            $mValue = $this->inFilter($mValue);
         }
 
-        // flag as modified
-        if ($this->values[$sField] != $mValue || cString::getStringLength($this->values[$sField]) != cString::getStringLength($mValue)) {
+        // Flag as modified
+        if (!isset($this->values[$sField])) {
             $this->modifiedValues[$sField] = true;
         }
 
-        // set new value
+        // Set new value
         $this->values[$sField] = $mValue;
 
         return true;
