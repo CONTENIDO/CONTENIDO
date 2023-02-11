@@ -366,7 +366,6 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         if ($bSafe) {
-            if ($sField === 'active') mp_d($this->values[$sField], '$this->values[$sField]', 'vd');
             return $this->outFilter($this->values[$sField]);
         } else {
             return $this->values[$sField];
@@ -416,7 +415,12 @@ abstract class Item extends cItemBaseAbstract {
         // Flag as modified
         if (!isset($this->values[$sField])) {
             $this->modifiedValues[$sField] = true;
+        } elseif ($this->values[$sField] !== $mValue) {
+            $this->modifiedValues[$sField] = true;
         }
+#        if ($this->values[$sField] != $mValue || cString::getStringLength($this->values[$sField]) != cString::getStringLength($mValue)) {
+#            $this->modifiedValues[$sField] = true;
+#        }
 
         // Set new value
         $this->values[$sField] = $mValue;
