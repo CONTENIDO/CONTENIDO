@@ -106,7 +106,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
 
         $connectConfig['port'] = $connectConfig['port'] ?? NULL;
         $connectConfig['socket'] = $connectConfig['socket'] ?? NULL;
-        $connectConfig['flags'] = $connectConfig['flags'] ?? NULL;
+        $connectConfig['flags'] = cSecurity::toInteger($connectConfig['flags'] ?? '0');
         $connectConfig['database'] = $connectConfig['database'] ?? NULL;
 
         $res = mysqli_real_connect(
