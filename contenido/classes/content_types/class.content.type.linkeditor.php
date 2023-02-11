@@ -92,7 +92,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return string
      */
     public function getLinkType() {
-        return $this->getSetting('linkeditor_type', '');
+        return $this->getSetting('linkeditor_type');
     }
 
     /**
@@ -101,7 +101,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return string
      */
     public function getTitle() {
-        return $this->getSetting('linkeditor_title', '');
+        return $this->getSetting('linkeditor_title');
     }
 
     /**
@@ -192,7 +192,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         switch ($this->getSetting('linkeditor_type')) {
             case 'external':
                 // make sure that link starts with http://
-                $link = $this->getSetting('linkeditor_externallink', '');
+                $link = $this->getSetting('linkeditor_externallink');
                 if (cString::findFirstPos($link, 'http://') !== 0 && cString::findFirstPos($link, 'www.') === 0) {
                     $link = 'http://' . $link;
                 }
@@ -200,11 +200,11 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 break;
             case 'internal':
                 // Selection of category (CON-2563)
-                if (cString::getPartOfString($this->getSetting('linkeditor_idart', ''), 0, 8) == 'category') {
+                if (cString::getPartOfString($this->getSetting('linkeditor_idart'), 0, 8) == 'category') {
                     $uriInstance = cUri::getInstance();
                     $uriBuilder = $uriInstance->getUriBuilder();
                     $uriParams = [
-                        'idcat' => cSecurity::toInteger(cString::getPartOfString($this->getSetting('linkeditor_idart', ''), 9))
+                        'idcat' => cSecurity::toInteger(cString::getPartOfString($this->getSetting('linkeditor_idart'), 9))
                     ];
                     $uriBuilder->buildUrl($uriParams, true);
 

@@ -144,7 +144,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      */
     public function getDateTimestamp() {
-        return $this->getSetting('date_timestamp', '');
+        return $this->getSetting('date_timestamp');
     }
 
     /**
@@ -153,7 +153,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      */
     public function getDateFormat() {
-        $format = $this->getSetting('date_format', '');
+        $format = $this->getSetting('date_format');
 
         if (empty($format)) {
             $format = '';
@@ -175,7 +175,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      */
     public function getTimeFormat() {
-        $format = $this->getSetting('date_format', '');
+        $format = $this->getSetting('date_format');
 
         if (empty($format)) {
             $format = '';
@@ -248,6 +248,10 @@ class cContentTypeDate extends cContentTypeAbstract {
         ];
         foreach (str_split($format) as $char) {
             if (in_array($char, $replacements)) {
+                // strftime is deprecated
+                $result .= date($char, $timestamp);
+                continue;
+
                 // replace the format chars with localised values
                 switch ($char) {
                     case 'D':
@@ -294,7 +298,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      *         escaped HTML code which should be shown if content type is shown in frontend
      */
     public function generateViewCode() {
-        $timestamp = $this->getSetting('date_timestamp', '');
+        $timestamp = $this->getSetting('date_timestamp');
         if (empty($timestamp)) {
             return '';
         }
@@ -401,7 +405,7 @@ class cContentTypeDate extends cContentTypeAbstract {
             'margin' => '0px 5px 5px'
         ]);
         $formatSelect->autoFill($this->_dateFormatsPhp);
-        $phpDateFormat = conHtmlSpecialChars($this->getSetting($this->_prefix . '_format', ''));
+        $phpDateFormat = conHtmlSpecialChars($this->getSetting($this->_prefix . '_format'));
         $formatSelect->setDefault($phpDateFormat);
 
         return $formatSelect->render();
