@@ -70,7 +70,7 @@ class cVersionModule extends cVersion {
         $this->setData('Name', $oModule->getField('name'));
         $this->setData('Type', $oModule->getField('type'));
         $this->setData('Error', $oModule->getField('error'));
-        $this->setData('Description', $oModule->getField('description'));
+        $this->setData('Description', $oModule->getField('description') ?? '');
         $this->setData('Deletable', $oModule->getField('deletable'));
         $this->setData('Template', $oModule->getField('template'));
         $this->setData('Static', $oModule->getField('static'));

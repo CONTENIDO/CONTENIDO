@@ -189,7 +189,7 @@ $form->addHeader(i18n("Edit module") . " &quot;". conHtmlSpecialChars($module->g
 $name = new cHTMLTextbox("name", conHtmlSpecialChars(stripslashes($module->get("name"))), 60);
 $descr = new cHTMLTextarea("descr", str_replace([
     '\r\n'
-], "\r\n", conHtmlentities($module->get("description"))), 100, 5);
+], "\r\n", conHtmlentities($module->get('description') ?? '')), 100, 5);
 
 // Get input and output code; if specified, prepare row fields
 $sInputData = "";

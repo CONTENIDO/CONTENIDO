@@ -334,7 +334,7 @@ class cModuleHandler {
         if ($cApiModule->isLoaded()) {
             $this->_idmod = cSecurity::toInteger($cApiModule->get('idmod'));
             $this->_client = $cApiModule->get('idclient');
-            $this->_description = $cApiModule->get('description');
+            $this->_description = $cApiModule->get('description') ?? '';
             $this->_type = $cApiModule->get('type');
             $this->_input = '';
             $this->_output = '';
