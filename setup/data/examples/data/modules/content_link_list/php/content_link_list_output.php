@@ -45,10 +45,10 @@ if (cRegistry::isBackendEditMode()) {
     $button = '<input type="button" id="create_linkfields" value="' . conHtmlSpecialChars($createButton) . '"/>';
 } else {
     $backend = false;
-    $label = NULL;
+    $label = '';
     $input = NULL;
     $button = NULL;
-    $createLabel = NULL;
+    $createLabel = '';
 }
 
 $val            = [];
