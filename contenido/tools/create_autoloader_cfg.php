@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO autoloader class map file generator.
  *
@@ -39,7 +40,7 @@ $context->currentPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')
 $context->contenidoInstallPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../')) . '/';
 
 // Include the environment definer file
-include_once($context->contenidoInstallPath . 'contenido/environment.php');
+include_once $context->contenidoInstallPath . 'contenido/environment.php';
 // The destination file where the class map configuration should be written in
 $context->destinationFile = $context->contenidoInstallPath . '/data/config/' . CON_ENVIRONMENT . '/config.autoloader.php';
 
@@ -67,8 +68,9 @@ $context->classMapList = [];
 // Process
 
 // include required classes
-include_once($context->currentPath . 'mpAutoloaderClassMap/mpClassTypeFinder.php');
-include_once($context->currentPath . 'mpAutoloaderClassMap/mpClassMapFileCreatorContenido.php');
+include_once $context->currentPath . 'mpAutoloaderClassMap/mpClassTypeFinder.php';
+include_once $context->currentPath . 'mpAutoloaderClassMap/mpClassMapFileCreator.php';
+include_once $context->currentPath . 'mpAutoloaderClassMap/mpClassMapFileCreatorContenido.php';
 
 // collect all found class/interface names with their paths
 $context->classTypeFinder = new mpClassTypeFinder($context->options);
@@ -77,6 +79,15 @@ foreach ($context->pathsToParse as $pos => $dir) {
     if ($classMap) {
         $context->classMapList = array_merge($context->classMapList, $classMap);
     }
+}
+
+// Sort the class map list
+$context->classNames = array_keys($context->classMapList);
+natcasesort($context->classNames);
+$context->classMapListTmp = $context->classMapList;
+$context->classMapList = [];
+foreach ($context->classNames as $className) {
+    $context->classMapList[$className] = $context->classMapListTmp[$className];
 }
 
 // Uncomment following line to get some debug messages

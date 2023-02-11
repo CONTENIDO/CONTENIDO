@@ -6,7 +6,7 @@
  * @category   Development
  * @package    mpAutoloaderClassMap
  * @author     Murat Purc <murat@purc.de>
- * @copyright  Copyright (c) 2009-2010 Murat Purc (https://www.purc.de)
+ * @copyright  Murat Purc (https://www.purc.de)
  * @license    https://www.gnu.org/licenses/gpl-2.0.html - GNU General Public License, version 2
  */
 
@@ -25,7 +25,8 @@
  * @package   mpAutoloaderClassMap
  * @author    Murat Purc <murat@purc.de>
  */
-class mpClassMapFileCreator {
+class mpClassMapFileCreator
+{
 
     /**
      * Class map file template
