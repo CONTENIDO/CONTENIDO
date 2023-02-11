@@ -304,7 +304,7 @@ abstract class Item extends cItemBaseAbstract {
     /**
      * Loads an item by ID from the database.
      *
-     * @param string $mValue
+     * @param string|int $mValue
      *         Specifies the primary key value
      *
      * @return bool
@@ -313,9 +313,12 @@ abstract class Item extends cItemBaseAbstract {
      * @throws cException
      */
     public function loadByPrimaryKey($mValue) {
+        if (is_null($mValue) || (is_string($mValue) && empty($mValue))) {
+            return false;
+        }
         $bSuccess = $this->loadBy($this->_primaryKeyName, $mValue);
 
-        if ($bSuccess == true && method_exists($this, '_onLoad')) {
+        if ($bSuccess && method_exists($this, '_onLoad')) {
             $this->_onLoad();
         }
 
