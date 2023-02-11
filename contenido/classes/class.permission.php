@@ -44,7 +44,7 @@ class cPermission {
     public $actioncache = [];
 
     /**
-     * CONTENIDO database object
+     * CONTENIDO database instance
      *
      * @var cDb
      */
@@ -62,15 +62,8 @@ class cPermission {
      * @throws cException
      */
     public function getGroupsForUser($userId) {
-        $groups = [];
-
         $oGroupMemberColl = new cApiGroupMemberCollection();
-        $oGroupMemberColl->select("user_id='" . $oGroupMemberColl->escape($userId) . "'");
-        while (false !== $oItem = $oGroupMemberColl->next()) {
-            $groups[] = $oItem->get('group_id');
-        }
-
-        return $groups;
+        return $oGroupMemberColl->getFieldsWhere(['group_id'], 'user_id', $userId);
     }
 
     /**
@@ -122,13 +115,8 @@ class cPermission {
         }
 
         $oActionColl = new cApiActionCollection();
-        $oActionColl->select("name='" . $oActionColl->escape($action) . "'");
-        if (false !== $oItem = $oActionColl->next()) {
-            $this->actioncache[$action] = $oItem->get('idaction');
-            $action = $oItem->get('idaction');
-        }
-
-        return $action;
+        $ids = $oActionColl->getIdsWhere('name', $action);
+        return !empty($ids) ? cSecurity::toInteger($ids[0]) : 0;
     }
 
     /**
@@ -197,7 +185,7 @@ class cPermission {
         $lang = cRegistry::getLanguageId();
 
         $oRightColl = new cApiRightCollection();
-        $sWhere = "user_id = '%s' AND idcat = 0 AND idclient = %d AND idlang = %d";
+        $sWhere = "`user_id` = '%s' AND `idcat` = 0 AND `idclient` = %d AND `idlang` = %d";
         $sWhere = $oRightColl->prepare($sWhere, $user, $client, $lang);
         $oRightColl->select($sWhere);
 
@@ -412,7 +400,7 @@ class cPermission {
      *
      * @param bool $iClient [optional]
      *                      idclient to check, or false for the current client
-     * @param object|bool $oUser   [optional]
+     * @param cApiUser|bool $oUser   [optional]
      *                      User object to check against, or false for the current user
      *
      * @return bool
@@ -460,7 +448,7 @@ class cPermission {
      *
      * @param int    $iClient
      *         idclient to check
-     * @param object|bool $oUser
+     * @param cApiUser|bool $oUser
      *         User object to check against, or false for the current user
      *
      * @return bool
@@ -477,7 +465,7 @@ class cPermission {
      *
      * @param int $iClient
      *         idclient to check
-     * @param object $oGroup
+     * @param cApiGroup $oGroup
      *         Group object to check against
      * @return bool
      */
@@ -490,7 +478,7 @@ class cPermission {
      *
      * @param int    $iClient
      *         idclient to check
-     * @param object|bool $oUser
+     * @param cApiUser|bool $oUser
      *         User object to check against, or false for the current user
      *
      * @return bool
@@ -506,7 +494,7 @@ class cPermission {
      * Checks if the given user has an admin permission
      *
      * @since CONTENIDO 4.10.2
-     * @param object|bool $oUser
+     * @param cApiUser|bool $oUser
      *         User object to check against, or false for the current user
      * @param bool $strict
      *         Flag to run a strict check.
@@ -524,7 +512,7 @@ class cPermission {
     /**
      * Checks if the given user has sysadmin permission
      *
-     * @param object|bool $oUser
+     * @param cApiUser|bool $oUser
      *         User object to check against, or false for the current user
      *
      * @return bool
@@ -543,10 +531,10 @@ class cPermission {
      * user. If oUser is not an object of the class cApiUser, throw an
      * exception.
      *
-     * @param object|bool $oUser
+     * @param cApiUser|bool $oUser
      *         User object to check against, or false for the current user
      *
-     * @return object
+     * @return cApiGroup
      *
      * @throws cInvalidArgumentException
      *         if the given or constructed user is not a cApiUser object
