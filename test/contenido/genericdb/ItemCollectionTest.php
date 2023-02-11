@@ -789,6 +789,19 @@ class ItemCollectionTest extends cTestingTestCase
     }
 
     /**
+     * Test {@see ItemCollection::getFieldsWhere()}
+     */
+    public function testGetFieldsWhere()
+    {
+        $ar = $this->_collection->getFieldsWhere(['Name'], 'ID', 1);
+        $this->assertEquals('Kabul', $ar[0]['Name']);
+
+        $ar = $this->_collection->getFieldsWhere([], 'ID', 1);
+        $this->assertEquals(0, count($ar));
+    }
+
+
+    /**
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
