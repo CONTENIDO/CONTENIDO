@@ -153,7 +153,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 
     if ($iTestIDNewsGroup == 0) {
         // Send test newsletter to current user email address
-        $sName = $oUser->get("realname");
+        $sName = $oUser->get("realname") ?? '';
         $sEMail = $oUser->get("email");
 
         $bSend = $oNewsletter->sendEMail($oClientLang->getProperty("newsletter", "idcatart"), $sEMail, $sName, true, $sEncoding);

@@ -81,7 +81,7 @@ if ($requestActionHtml == 'save_newsletter_properties' && $perm->have_perm_area_
     $requestSelTestDestination = cSecurity::toInteger($oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang));
 }
 // Default value: Current user mail
-$sSendTestTarget = $oUser->get("realname") . " (" . $oUser->get("email") . ")";
+$sSendTestTarget = ($oUser->get("realname") ?? '') . " (" . $oUser->get("email") . ")";
 
 // ################################
 // Check external input

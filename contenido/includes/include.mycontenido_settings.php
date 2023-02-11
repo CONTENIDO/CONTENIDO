@@ -127,7 +127,7 @@ $form->setVar("frame", $frame);
 
 $form->addHeader($settingsFor);
 
-$realname = new cHTMLTextbox("name", $user->get("realname"));
+$realname = new cHTMLTextbox("name", $user->get("realname") ?? '');
 $form->add(i18n("Name"), $realname);
 
 // @since 2006-07-04 Display password fields if not authenticated via LDAP/AD,

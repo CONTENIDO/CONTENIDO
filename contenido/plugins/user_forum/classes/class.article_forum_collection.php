@@ -745,7 +745,7 @@ class ArticleForumCollection extends ItemCollection {
         $item = $this->loadItem($idUserForum);
 
         return [
-            'name'    => $item->get("realname"),
+            'name'    => $item->get("realname") ?? '',
             'content' => $item->get("forum")
         ];
     }
