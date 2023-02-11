@@ -969,7 +969,7 @@ class cModuleHandler {
      *         if the module exist return true, else false
      */
     public function modulePathExists() {
-        return is_dir($this->_modulePath);
+        return is_string($this->_modulePath) && is_dir($this->_modulePath);
     }
 
     /**
