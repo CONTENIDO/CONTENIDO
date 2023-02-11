@@ -33,7 +33,7 @@ while ($db->nextRecord()) {
     ) {
         $name = (cString::getStringLength(trim($db->f('name'))) > 0) ? $db->f('name') : i18n("-- New template --");
         $name = conHtmlSpecialChars(stripslashes($name));
-        $descr = conHtmlSpecialChars(stripslashes($db->f('description')));
+        $descr = conHtmlSpecialChars(stripslashes($db->f('description') ?? ''));
         $idtpl = $db->f("idtpl");
 
         // Create show_action item

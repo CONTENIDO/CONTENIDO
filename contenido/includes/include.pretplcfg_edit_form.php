@@ -39,7 +39,7 @@ $tpl->set('s', 'TEMPLATECAPTION', i18n("Template"). ": ");
 $tpl->set('s', 'TEMPLATESELECTBOX', $templateItem->get('name'));
 
 $tpl->set('s', 'LABLE_DESCRIPTION', i18n('Description'));
-$tpl->set('s', 'DESCRIPTION', nl2br($templateItem->get('description')));
+$tpl->set('s', 'DESCRIPTION', nl2br($templateItem->get('description') ?? ''));
 
 // List of configured container
 $containerConfigurations = conGetContainerConfiguration($idtplcfg);

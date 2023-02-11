@@ -373,7 +373,7 @@ class cBackendSearchHelper {
                     'idtplcfg' => $idtplcfg,
                     'idtpl' => cSecurity::toInteger($this->_db->f('idtpl')),
                     'name' => $this->_db->f('name'),
-                    'description' => $this->_db->f('description'),
+                    'description' => $this->_db->f('description') ?? '',
                 ];
             }
         }

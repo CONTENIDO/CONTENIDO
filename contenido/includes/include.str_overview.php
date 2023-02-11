@@ -589,7 +589,7 @@ $aTemplates = [];
 while ($db->nextRecord()) {
     $aTemplates[$db->f('idtpl')] = [
         'name' => $db->f('name'),
-        'description' => $db->f('description')
+        'description' => $db->f('description') ?? ''
     ];
 }
 
