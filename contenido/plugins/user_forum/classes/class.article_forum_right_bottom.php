@@ -149,7 +149,7 @@ class ArticleForumRightBottom extends cGuiPage {
         }
 
         $message = UserForum::i18n('ALLDELETEFROMCATHIER');
-        $level = $cont['level'];
+        $level = $cont['level'] ?? 0;
         $keyy = $key;
         $id = $cont['id_user_forum'];
         $idacat = $cont['idcat'];
@@ -210,6 +210,7 @@ class ArticleForumRightBottom extends cGuiPage {
         foreach ($result as $key => $cont) {
             $like = $cont['like'];
             $dislike = $cont['dislike'];
+            $cont['level'] = $cont['level'] ?? 0;
 
             $arrDate = $this->formatTimeString($cont['timestamp']);
             $date =  (empty($arrDate)) ? '' : $arrDate['day'] . '.' . $arrDate['month'] . '.' . $arrDate['year'] . ' ' . UserForum::i18n("AT") . ' ' . $arrDate['hour'] . ':' . $arrDate['minute'] . ' ' . UserForum::i18n("CLOCK");
@@ -311,7 +312,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $hiddenDislike->setValue($cont['dislike']);
             $hiddenName->setValue(str_replace('\\', '', conHtmlSpecialChars($cont['realname'])));
             $hiddenEmail->setValue(str_replace('\\', '', conHtmlSpecialChars($cont['email'])));
-            $hiddenLevel->setValue($cont['level']);
+            $hiddenLevel->setValue($cont['level'] ?? 0);
             $hiddenEditdat->setValue($cont['editedat']);
             $hiddenEditedby->setValue($cont['editedby']);
             $hiddenTimestamp->setValue($date);
