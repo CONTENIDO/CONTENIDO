@@ -342,7 +342,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $code .= $this->_generateJavaScript();
         $code = new cHTMLDiv($code, 'cms_date', 'cms_' . $this->_prefix . '_' . $this->_id . '_settings');
 
-        return $this->_encodeForOutput($code);
+        return $this->_encodeForOutput($code->render());
     }
 
     /**
