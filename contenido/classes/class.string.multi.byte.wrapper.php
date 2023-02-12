@@ -125,7 +125,6 @@ class cStringMultiByteWrapper {
      */
     public static function getStringLength($string, $encoding = null) {
         if (self::_functionExists('mb_strlen')) {
-if (is_null($string)) mp_dbdl(__FUNCTION__);
             $result = mb_strlen($string, self::_getEncoding($encoding));
         } else {
             $result = strlen($string);
