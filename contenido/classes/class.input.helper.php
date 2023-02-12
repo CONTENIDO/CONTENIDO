@@ -557,8 +557,6 @@ try {
 
                     $tplCell->set('s', 'CONTENT', $data);
                     $line .= $tplCell->generate($this->_tplCellCode, true, false);
-
-                    error_log($line);
                 }
 
                 // Row
