@@ -381,7 +381,7 @@ class pApiTree {
                 $treeItem['parentid'] = 'NULL';
             }
 
-            $treeItem['name'] = $this->inFilter($treeItem['name']);
+            $treeItem['name'] = $this->_inFilter($treeItem['name']);
 
             $sql = $this->_db->buildInsert($this->_table['pica_alloc'], [
                 'parentid' => $treeItem['parentid'],
@@ -398,7 +398,7 @@ class pApiTree {
             $this->_db->query($sql);
 
         } else { // update
-            $treeItem['name'] = $this->inFilter($treeItem['name']);
+            $treeItem['name'] = $this->_inFilter($treeItem['name']);
 
             $sql = "SELECT `idpica_alloc` FROM `%s` WHERE `idpica_alloc` = %d AND `idlang` = %d";
             $this->_db->query($sql, $this->_table['pica_lang'], $treeItem['idpica_alloc'], $this->_lang);
