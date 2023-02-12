@@ -306,9 +306,9 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     }
 
     // Add slashes because single quotes will crash the db
-    $page_title = addslashes($page_title);
+    $page_title = addslashes($page_title ?? '');
     $title = stripslashes($title);
-    $redirect_url = stripslashes($redirect_url);
+    $redirect_url = stripslashes($redirect_url ?? '');
 
     $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
     $urlname = conGetUniqueArticleUrlname($idart, $idlang, $urlname, $idcatnew);
