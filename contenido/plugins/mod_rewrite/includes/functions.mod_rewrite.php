@@ -919,7 +919,7 @@ function mr_getRequest($key, $default = NULL) {
     } else {
         $val = $default;
     }
-    $cache[$key] = strip_tags(trim($val));
+    $cache[$key] = is_string($val) ? strip_tags(trim($val)) : '';
     return $cache[$key];
 }
 
