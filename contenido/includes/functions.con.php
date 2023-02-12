@@ -69,9 +69,9 @@ function conEditFirstTime(
                               // online
     global $timemgmt;
 
-    $page_title = addslashes($page_title);
+    $page_title = addslashes($page_title ?? '');
     $title = stripslashes($title);
-    $redirect_url = stripslashes($redirect_url);
+    $redirect_url = stripslashes($redirect_url ?? '');
 
     if ($isstart == 1) {
         $timemgmt = 0;
