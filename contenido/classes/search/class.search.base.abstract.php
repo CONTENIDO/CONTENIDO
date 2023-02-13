@@ -56,6 +56,21 @@ abstract class cSearchBaseAbstract {
     protected $client;
 
     /**
+     * Database instance.
+     *
+     * @var cDb
+     */
+    protected $db;
+
+    /**
+     * Debug flag.
+     *
+     * @var bool
+     * @deprecated Since 4.10.2, debug flag is no longer needed since 05/2015.
+     */
+    protected $bDebug;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * Initialises some properties.
@@ -63,14 +78,12 @@ abstract class cSearchBaseAbstract {
      * @param cDb $oDB [optional]
      *         CONTENIDO database object
      * @param bool $bDebug [optional]
-     *         Optional, flag to enable debugging (no longer needed)
+     *         Optional, flag to enable debugging (no longer needed, deprecated since 4.10.2)
      */
     protected function __construct($oDB = NULL, $bDebug = false) {
-        global $cfg, $lang, $client;
-
-        $this->cfg = $cfg;
-        $this->lang = $lang;
-        $this->client = $client;
+        $this->cfg = cRegistry::getConfig();
+        $this->lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $this->client = cSecurity::toInteger(cRegistry::getClientId());
 
         $this->bDebug = $bDebug;
 
@@ -101,4 +114,5 @@ abstract class cSearchBaseAbstract {
         }
         cDebug::out($dump);
     }
+
 }

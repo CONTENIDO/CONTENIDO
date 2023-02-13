@@ -31,12 +31,14 @@ cInclude('includes', 'functions.encoding.php');
  *
  * Use object with
  *
- * $options = array(
+ * <pre>
+ * $options = [
  *      // use db function regexp
  *      'db' => 'regexp',
- *      // combine searchwords with or
+ *      // combine search-words with or
  *      'combine' => 'or'
- * );
+ * ];
+ * </pre>
  *
  * The range of searchable articles is by default the complete content
  * which is online and not protected.
@@ -48,25 +50,28 @@ cInclude('includes', 'functions.encoding.php');
  * 'categories', 'articles', 'exclude', 'artspecs', 'protected' and
  * 'dontshowofflinearticles' won't have any effect.
  *
- * $options = array(
+ * <pre>
+ * $options = [
  *      // use db function regexp
  *      'db' => 'regexp',
- *      // combine searchwords with or
+ *      // combine search-words with or
  *      'combine' => 'or',
  *      'searchable_articles' => array(5, 6, 9, 13)
- * );
+ * ];
+ * </pre>
  *
  * One can define the range of searchable articles by setting the
  * parameter 'exclude' to false which means the range of categories
  * defined by parameter 'cat_tree' or 'categories' and the range of
  * articles defined by parameter 'articles' is included.
  *
- * $options = array(
+ * <pre>
+ * $options = [
  *      // use db function regexp
  *      'db' => 'regexp',
- *      // combine searchwords with or
+ *      // combine search-words with or
  *      'combine' => 'or',
- *      // searchrange specified in 'cat_tree', 'categories' and
+ *      // search-range specified in 'cat_tree', 'categories' and
  *      // 'articles' is included
  *      'exclude' => false,
  *      // tree with root 12 included
@@ -86,7 +91,8 @@ cInclude('includes', 'functions.encoding.php');
  *      // search offline articles or articles in categories which are
  *      // offline
  *      'dontshowofflinearticles' => false
- * );
+ * ];
+ * </pre>
  *
  * You can build the complement of the range of searchable articles by
  * setting the parameter 'exclude' to true which means the range of
@@ -94,12 +100,13 @@ cInclude('includes', 'functions.encoding.php');
  * range of articles defined by parameter 'articles' is excluded from
  * search.
  *
- * $options = array(
+ * <pre>
+ * $options = [
  *      // use db function regexp
  *      'db' => 'regexp',
- *      // combine searchwords with or
+ *      // combine search-words with or
  *      'combine' => 'or',
- *      // searchrange specified in 'cat_tree', 'categories' and
+ *      // search-range specified in 'cat_tree', 'categories' and
  *      // 'articles' is excluded
  *      'exclude' => true,
  *      // tree with root 12 excluded
@@ -119,12 +126,12 @@ cInclude('includes', 'functions.encoding.php');
  *      // search offline articles or articles in categories which are
  *      // offline
  *      'dontshowofflinearticles' => false
- * );
+ * ];
  *
- * $search = new Search($options);
+ * $search = new cSearch($options);
  *
  * // search only in these cms-types
- * $search->setCmsOptions(array(
+ * $search->setCmsOptions([
  *      "htmlhead",
  *      "html",
  *      "head",
@@ -132,37 +139,41 @@ cInclude('includes', 'functions.encoding.php');
  *      "imgdescr",
  *      "link",
  *      "linkdescr"
- * ));
+ * ]);
  *
  * // start search
- * $search_result = $search->searchIndex($searchword, $searchwordex);
+ * $searchResult = $search->searchIndex($searchWord, $searchWordsExclude);
+ * </pre>
  *
- * The search result structure has following form
- * Array (
- * [20] => Array (
- * [CMS_HTML] => Array (
- * [0] => 1
- * [1] => 1
- * [2] => 1
- * )
- * [keyword] => Array (
- * [0] => content
- * [1] => contenido
- * [2] => wwwcontenidoorg
- * )
- * [search] => Array (
- * [0] => con
- * [1] => con
- * [2] => con
- * )
- * [occurence] => Array (
- * [0] => 1
- * [1] => 5
- * [2] => 1
- * )
- * [similarity] => 60
- * )
- * )
+ * The search result structure has following form:
+ *
+ * <pre>
+ * [
+ *     [20] => [
+ *         [CMS_HTML] => [
+ *             [0] => 1,
+ *             [1] => 1,
+ *             [2] => 1,
+ *         ],
+ *         [keyword] => [
+ *             [0] => 'content',
+ *             [1] => 'contenido',
+ *             [2] => 'wwwcontenidoorg',
+ *         ],
+ *         [search] => [
+ *             [0] => 'con',
+ *             [1] => 'con',
+ *             [2] => 'con',
+ *         ],
+ *         [occurence] => [
+ *             [0] => 1,
+ *             [1] => 5,
+ *             [2] => 1,
+ *         ],
+ *         [similarity] => 60,
+ *     ],
+ * ]
+ * </pre>
  *
  * The keys of the array are the article ID's found by search.
  *
@@ -171,8 +182,10 @@ cInclude('includes', 'functions.encoding.php');
  * The search term occurs 7 times.
  * The maximum similarity between searchterm and matching keyword is 60%.
  *
+ * <pre>
  * // rank and display the results
- * $oSearchResults = new cSearchResult($search_result, 10);
+ * $oSearchResults = new cSearchResult($searchResult, 10);
+ * </pre>
  *
  * @package Core
  * @subpackage Frontend_Search
@@ -211,7 +224,7 @@ class cSearch extends cSearchBaseAbstract {
     protected $_searchOption;
 
     /**
-     * logical combination of searchwords (and, or)
+     * logical combination of search-words (and, or)
      *
      * @var string
      */
@@ -233,7 +246,7 @@ class cSearch extends cSearchBaseAbstract {
 
     /**
      * If $protected = true => do not search articles which are offline
-     * or articles in catgeories which are offline (protected) unless
+     * or articles in categories which are offline (protected) unless
      * the user has access to them.
      *
      * @var bool
@@ -257,80 +270,80 @@ class cSearch extends cSearchBaseAbstract {
     protected $_exclude;
 
     /**
-     * Array of article id's with information about cms-types, occurence
-     * of keyword/searchword, similarity.
+     * Array of article id's with information about cms-types, occurrence
+     * of keyword/search-word, similarity.
      *
      * @var array
      */
     protected $_searchResult = [];
 
     /**
+     * Minimum similarity between search-word and keyword in percent.
+     *
+     * @var int
+     */
+    protected $intMinimumSimilarity;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * @param array $options
-     *                  $options['db']
+     *             <pre>
+     *              $options['db']
      *                  'regexp' => DB search with REGEXP
      *                  'like' => DB search with LIKE
      *                  'exact' => exact match;
-     *                  $options['combine']
+     *              $options['combine']
      *                  'and', 'or' Combination of search words with AND, OR
-     *                  $options['exclude']
-     *                  'true' => searchrange specified in 'cat_tree', 'categories'
+     *              $options['exclude']
+     *                  'true' => search-range specified in 'cat_tree', 'categories'
      *                  and 'articles' is excluded;
-     *                  'false' => searchrange specified in 'cat_tree', 'categories'
+     *                  'false' => search-range specified in 'cat_tree', 'categories'
      *                  and 'articles' is included
-     *                  $options['cat_tree']
+     *              $options['cat_tree']
      *                  e.g. array(8) => The complete tree with root 8 is in/excluded
      *                  from search
-     *                  $options['categories']
+     *              $options['categories']
      *                  e.g. array(10, 12) => Categories 10, 12 in/excluded
-     *                  $options['articles']
+     *              $options['articles']
      *                  e.g. array(23) => Article 33 in/excluded
-     *                  $options['artspecs']
+     *              $options['artspecs']
      *                  e.g. array(2, 3) => search only articles with certain article
      *                  specifications
-     *                  $options['protected']
+     *              $options['protected']
      *                  'true' => do not search articles which are offline (locked)
-     *                  or articles in catgeories which are offline (protected)
-     *                  $options['dontshowofflinearticles']
+     *                  or articles in categories which are offline (protected)
+     *              $options['dontshowofflinearticles']
      *                  'false' => search offline articles or articles in categories
      *                  which are offline
-     *                  $options['searchable_articles']
+     *              $options['searchable_articles']
      *                  array of article ID's which should be searchable
+     *              $options['minimum_similarity']
+     *                  'int' => Minimum similarity between search-word and keyword in percent,
+     *                           range can be between > 0 and <= 100, default is 50.
+     *                           1 = Slightest similarity
+     *                           100 = Exact match
+     *             </pre>
      * @param cDb   $db [optional]
      *                  CONTENIDO database object
      *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct($options, $db = NULL) {
+    public function __construct(array $options, $db = NULL) {
         parent::__construct($db);
 
         $this->_index = new cSearchIndex($db);
 
-        $this->_searchOption = (array_key_exists('db', $options)) ? cString::toLowerCase($options['db']) : 'regexp';
-        $this->_searchCombination = (array_key_exists('combine', $options)) ? cString::toLowerCase($options['combine']) : 'or';
-        $this->_protected = (array_key_exists('protected', $options)) ? $options['protected'] : true;
-        $this->_dontshowofflinearticles = (array_key_exists('dontshowofflinearticles', $options)) ? $options['dontshowofflinearticles'] : true;
-        $this->_exclude = (array_key_exists('exclude', $options)) ? $options['exclude'] : true;
-        $this->_articleSpecs = (array_key_exists('artspecs', $options) && is_array($options['artspecs'])) ? $options['artspecs'] : [];
-
-        if (array_key_exists('searchable_articles', $options) && is_array($options['searchable_articles'])) {
-            $this->_searchableArts = $options['searchable_articles'];
-        } else {
-            $this->_searchableArts = $this->getSearchableArticles($options);
-        }
-
-        // minimum similarity between searchword and keyword in percent
-        $this->intMinimumSimilarity = 50;
+        $this->_setOptions($options);
     }
 
     /**
      * indexed fulltext search
      *
-     * @param string $searchwords
+     * @param string $searchWords
      *                                    The search words
-     * @param string $searchwords_exclude [optional]
+     * @param string $searchWordsExclude [optional]
      *                                    The words, which should be excluded from search
      *
      * @return bool|array
@@ -338,110 +351,115 @@ class cSearch extends cSearchBaseAbstract {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function searchIndex($searchwords, $searchwords_exclude = '') {
-        if (cString::getStringLength(trim($searchwords)) > 0) {
-            $this->_searchWords = $this->stripWords($searchwords);
+    public function searchIndex($searchWords, $searchWordsExclude = '') {
+        if (cString::getStringLength(trim($searchWords)) > 0) {
+            $this->_searchWords = $this->stripWords($searchWords);
         } else {
             return false;
         }
 
-        if (cString::getStringLength(trim($searchwords_exclude)) > 0) {
-            $this->_searchWordsExclude = $this->stripWords($searchwords_exclude);
+        if (cString::getStringLength(trim($searchWordsExclude)) > 0) {
+            $this->_searchWordsExclude = $this->stripWords($searchWordsExclude);
         }
 
-        $tmp_searchwords = [];
+        $tmpSearchWords = [];
         foreach ($this->_searchWords as $word) {
             $wordEscaped = cSecurity::escapeDB($word, $this->db);
-            if ($this->_searchOption == 'like') {
+            if ($this->_searchOption === 'like') {
                 $wordEscaped = "'%" . $wordEscaped . "%'";
-            } elseif ($this->_searchOption == 'exact') {
+            } elseif ($this->_searchOption === 'exact') {
                 $wordEscaped = "'" . $wordEscaped . "'";
             }
-            $tmp_searchwords[] = $wordEscaped;
+            $tmpSearchWords[] = $wordEscaped;
         }
 
         if (count($this->_searchWordsExclude) > 0) {
             foreach ($this->_searchWordsExclude as $word) {
                 $wordEscaped = cSecurity::escapeDB($word, $this->db);
-                if ($this->_searchOption == 'like') {
+                if ($this->_searchOption === 'like') {
                     $wordEscaped = "'%" . $wordEscaped . "%'";
-                } elseif ($this->_searchOption == 'exact') {
+                } elseif ($this->_searchOption === 'exact') {
                     $wordEscaped = "'" . $wordEscaped . "'";
                 }
-                $tmp_searchwords[] = $wordEscaped;
+                $tmpSearchWords[] = $wordEscaped;
                 $this->_searchWords[] = $word;
             }
         }
 
         if ($this->_searchOption == 'regexp') {
             // regexp search
-            $kwSql = "keyword REGEXP '" . implode('|', $tmp_searchwords) . "'";
-        } elseif ($this->_searchOption == 'like') {
+            $kwSql = "keyword REGEXP '" . implode('|', $tmpSearchWords) . "'";
+        } elseif ($this->_searchOption === 'like') {
             // like search
-            $search_like = implode(" OR keyword LIKE ", $tmp_searchwords);
+            $search_like = implode(" OR keyword LIKE ", $tmpSearchWords);
             $kwSql = "keyword LIKE " . $search_like;
-        } elseif ($this->_searchOption == 'exact') {
+        } elseif ($this->_searchOption === 'exact') {
             // exact match
-            $search_exact = implode(" OR keyword = ", $tmp_searchwords);
+            $search_exact = implode(" OR keyword = ", $tmpSearchWords);
             $kwSql = "keyword LIKE " . $search_exact;
         }
 
-        $sql = "SELECT keyword, auto FROM " . $this->cfg['tab']['keywords'] . " WHERE idlang=" . cSecurity::toInteger($this->lang) . " AND " . $kwSql . " ";
+        // Prepare sql without keywords, we don't want any strings in keywords sql
+        // being interpreted as specifiers
+        $sql = "SELECT `keyword`, `auto` FROM `%s` WHERE `idlang` = %d AND {KEYWORDS}";
+        $sql =  $this->db->prepare($sql, cRegistry::getDbTableName('keywords'), $this->lang);
+        $sql = str_replace('{KEYWORDS}', $kwSql, $sql);
         $this->_debug('sql', $sql);
         $this->db->query($sql);
 
         while ($this->db->nextRecord()) {
+            $keyword = $this->db->f('keyword');
+            $auto = $this->db->f('auto');
 
-            $tmp_index_string = preg_split('/&/', $this->db->f('auto'), -1, PREG_SPLIT_NO_EMPTY);
+            $this->_debug('index', $auto);
 
-            $this->_debug('index', $this->db->f('auto'));
-
-            $tmp_index = [];
-            foreach ($tmp_index_string as $string) {
+            $tmpIndexString = preg_split('/&/', $auto, -1, PREG_SPLIT_NO_EMPTY);
+            $tmpIndex = [];
+            foreach ($tmpIndexString as $string) {
                 $tmp_string = preg_replace('/[=\(\)]/', ' ', $string);
-                $tmp_index[] = preg_split('/\s/', $tmp_string, -1, PREG_SPLIT_NO_EMPTY);
+                $tmpIndex[] = preg_split('/\s/', $tmp_string, -1, PREG_SPLIT_NO_EMPTY);
             }
-            $this->_debug('tmp_index', $tmp_index);
+            $this->_debug('tmp_index', $tmpIndex);
 
-            foreach ($tmp_index as $string) {
+            foreach ($tmpIndex as $string) {
                 $artid = $string[0];
 
-                // filter nonsearchable articles
+                // filter non-searchable articles
                 if (in_array($artid, $this->_searchableArts)) {
 
                     $cms_place = $string[2];
-                    $keyword = $this->db->f('keyword');
                     $percent = 0;
                     $similarity = 0;
+                    $searchWord = '';
                     foreach ($this->_searchWords as $word) {
-                        // computes similarity between searchword and keyword in
+                        // computes similarity between search-word and keyword in
                         // percent
                         similar_text($word, $keyword, $percent);
                         if ($percent > $similarity) {
                             $similarity = $percent;
-                            $searchword = $word;
+                            $searchWord = $word;
                         }
                     }
 
-                    $tmp_cmstype = preg_split('/[,]/', $cms_place, -1, PREG_SPLIT_NO_EMPTY);
-                    $this->_debug('tmp_cmstype', $tmp_cmstype);
+                    $tmpCmsType = preg_split('/[,]/', $cms_place, -1, PREG_SPLIT_NO_EMPTY);
+                    $this->_debug('tmpCmsType', $tmpCmsType);
 
-                    $tmp_cmstype2 = [];
-                    foreach ($tmp_cmstype as $type) {
-                        $tmp_cmstype2[] = preg_split('/-/', $type, -1, PREG_SPLIT_NO_EMPTY);
+                    $tmpCmsType2 = [];
+                    foreach ($tmpCmsType as $type) {
+                        $tmpCmsType2[] = preg_split('/-/', $type, -1, PREG_SPLIT_NO_EMPTY);
                     }
-                    $this->_debug('tmp_cmstype2', $tmp_cmstype2);
+                    $this->_debug('tmpCmsType2', $tmpCmsType2);
 
-                    foreach ($tmp_cmstype2 as $type) {
+                    foreach ($tmpCmsType2 as $type) {
                         if (!$this->_index->checkCmsType($type[0])) {
                             // search for specified cms-types
                             if ($similarity >= $this->intMinimumSimilarity) {
-                                // include article into searchresult set only if
-                                // similarity between searchword and keyword is
+                                // include article into search-result set only if
+                                // similarity between search-word and keyword is
                                 // big enough
                                 $this->_searchResult[$artid][$type[0]][] = $type[1];
-                                $this->_searchResult[$artid]['keyword'][] = $this->db->f('keyword');
-                                $this->_searchResult[$artid]['search'][] = $searchword;
+                                $this->_searchResult[$artid]['keyword'][] = $keyword;
+                                $this->_searchResult[$artid]['search'][] = $searchWord;
                                 $this->_searchResult[$artid]['occurence'][] = $string[1];
                                 $this->_searchResult[$artid]['debug_similarity'][] = $percent;
                                 if ($similarity > ($this->_searchResult[$artid]['similarity'] ?? 0)) {
@@ -450,6 +468,11 @@ class cSearch extends cSearchBaseAbstract {
                             }
                         }
                     }
+                } else {
+                    $this->_debug('Article for search-word is not in array of searchable articles', [
+                        'search-word' => $keyword,
+                        'idart' => $artid,
+                    ]);
                 }
             }
         }
@@ -478,7 +501,7 @@ class cSearch extends cSearchBaseAbstract {
         $this->_debug('$this->searchable_arts', $this->_searchableArts);
 
         $searchTracking = new cApiSearchTrackingCollection();
-        $searchTracking->trackSearch($searchwords, count($this->_searchResult));
+        $searchTracking->trackSearch($searchWords, count($this->_searchResult));
 
         return $this->_searchResult;
     }
@@ -497,19 +520,19 @@ class cSearch extends cSearchBaseAbstract {
 
     /**
      *
-     * @param string $searchwords
+     * @param string $searchWords
      *         The search-words
      * @return array
      *         of stripped search-words
      */
-    public function stripWords($searchwords) {
+    public function stripWords($searchWords) {
         // remove backslash and html tags
-        $searchwords = trim(strip_tags(stripslashes($searchwords)));
+        $searchWords = trim(strip_tags(stripslashes($searchWords)));
 
         // split the phrase by any number of commas or space characters
-        $tmp_words = mb_split('[\s,]+', $searchwords);
+        $tmp_words = mb_split('[\s,]+', $searchWords);
 
-        $tmp_searchwords = [];
+        $tmpSearchWords = [];
         foreach ($tmp_words as $word) {
             $word = htmlentities($word, ENT_COMPAT, 'UTF-8');
             $word = (trim(cString::toLowerCase($word)));
@@ -517,11 +540,11 @@ class cSearch extends cSearchBaseAbstract {
 
             // $word =(trim(cString::toLowerCase($word)));
             if (cString::getStringLength($word) > 1) {
-                $tmp_searchwords[] = $word;
+                $tmpSearchWords[] = $word;
             }
         }
 
-        return array_unique($tmp_searchwords);
+        return array_unique($tmpSearchWords);
     }
 
     /**
@@ -539,14 +562,14 @@ class cSearch extends cSearchBaseAbstract {
         $sql = "SELECT
                 B.idcat, B.parentid
             FROM
-                " . $this->cfg['tab']['cat_tree'] . " AS A,
-                " . $this->cfg['tab']['cat'] . " AS B,
-                " . $this->cfg['tab']['cat_lang'] . " AS C
+                " . cRegistry::getDbTableName('cat_tree') . " AS A,
+                " . cRegistry::getDbTableName('cat') . " AS B,
+                " . cRegistry::getDbTableName('cat_lang') . " AS C
             WHERE
                 A.idcat  = B.idcat AND
                 B.idcat  = C.idcat AND
-                C.idlang = '" . cSecurity::toInteger($this->lang) . "' AND
-                B.idclient = '" . cSecurity::toInteger($this->client) . "'
+                C.idlang = " . $this->lang . " AND
+                B.idclient = " . $this->client . "
             ORDER BY
                 idtree";
         $this->_debug('sql', $sql);
@@ -621,22 +644,22 @@ class cSearch extends cSearchBaseAbstract {
             }
         }
 
-        if ($this->_protected == true) {
+        if ($this->_protected) {
             // access will be checked later
             $sProtected = " C.visible = 1 AND B.online = 1 ";
         } else {
-            if ($this->_dontshowofflinearticles == true) {
+            if ($this->_dontshowofflinearticles) {
                 $sProtected = " C.visible = 1 AND B.online = 1 ";
             } else {
                 $sProtected = " 1 ";
             }
         }
 
-        if ($this->_exclude == true) {
-            // exclude searchrange
+        if ($this->_exclude) {
+            // exclude search-range
             $sSearchRange = " A.idcat NOT IN ('" . $sCatRange . "') AND B.idart NOT IN ('" . $sArtRange . "') AND ";
         } else {
-            // include searchrange
+            // include search-range
             if (cString::getStringLength($sArtRange) > 0) {
                 $sSearchRange = " A.idcat IN ('" . $sCatRange . "') AND B.idart IN ('" . $sArtRange . "') AND ";
             } else {
@@ -655,9 +678,9 @@ class cSearch extends cSearchBaseAbstract {
                     A.idcat,
                     C.public
                 FROM
-                    " . $this->cfg["tab"]["cat_art"] . " as A,
-                    " . $this->cfg["tab"]["art_lang"] . " as B,
-                    " . $this->cfg["tab"]["cat_lang"] . " as C
+                    " . cRegistry::getDbTableName('cat_art') . " as A,
+                    " . cRegistry::getDbTableName('art_lang') . " as B,
+                    " . cRegistry::getDbTableName('cat_lang') . " as C
                 WHERE
                     " . $sSearchRange . "
                     B.idlang = '" . cSecurity::toInteger($this->lang) . "' AND
@@ -698,14 +721,8 @@ class cSearch extends cSearchBaseAbstract {
      * @throws cInvalidArgumentException
      */
     public function getArticleSpecifications() {
-        $sql = "SELECT
-                    idartspec
-                FROM
-                    " . $this->cfg['tab']['art_spec'] . "
-                WHERE
-                    client = " . cSecurity::toInteger($this->client) . " AND
-                    lang = " . cSecurity::toInteger($this->lang) . " AND
-                    online = 1 ";
+        $sql = "SELECT `idartspec` FROM `%d` WHERE `client` = %d AND `lang` = %d AND `online` = 1";
+        $sql = $this->db->prepare($sql, cRegistry::getDbTableName('art_spec'), $this->client, $this->lang);
         $this->_debug('sql', $sql);
         $this->db->query($sql);
 
@@ -740,17 +757,54 @@ class cSearch extends cSearchBaseAbstract {
             return false;
         }
 
-        $sql = "SELECT
-                    idartspec
-                FROM
-                    " . $this->cfg['tab']['art_spec'] . "
-                WHERE
-                    client = " . cSecurity::toInteger($this->client) . " AND
-                    artspec = '" . $this->db->escape($sArtSpecName) . "' ";
+        $sql = "SELECT `idartspec` FROM `%d` WHERE `client` = %d AND `artspec` = '%s'";
+        $sql = $this->db->prepare($sql, cRegistry::getDbTableName('art_spec'), $this->client, $sArtSpecName);
         $this->_debug('sql', $sql);
         $this->db->query($sql);
         while ($this->db->nextRecord()) {
             $this->_articleSpecs[] = $this->db->f('idartspec');
         }
+
+        return true;
     }
+
+    /**
+     * Sets and validates the options, passed to the constructor.
+     *
+     * @param array $options
+     * @return void
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     */
+    protected function _setOptions(array $options) {
+        $this->_searchOption = cString::toLowerCase($options['db'] ?? '');
+        if (!in_array($this->_searchOption, ['regexp', 'like', 'exact'])) {
+            $this->_searchOption = 'regexp';
+        }
+
+        $this->_searchCombination = cString::toLowerCase($options['combine'] ?? '');
+        if (!in_array($this->_searchCombination, ['and', 'or'])) {
+            $this->_searchCombination = 'or';
+        }
+
+        $this->_protected = cSecurity::toBoolean($options['combine'] ?? '1');
+        $this->_dontshowofflinearticles = cSecurity::toBoolean($options['dontshowofflinearticles'] ?? '1');
+        $this->_exclude = cSecurity::toBoolean($options['exclude'] ?? '1');
+
+        $this->_articleSpecs = $options['artspecs'] ?? '';
+        if (!is_array($this->_articleSpecs)) {
+            $this->_articleSpecs = [];
+        }
+
+        $this->_searchableArts = $options['searchable_articles'] ?? '';
+        if (!is_array($this->_searchableArts)) {
+            $this->_searchableArts = $this->getSearchableArticles($options);
+        }
+
+        $this->intMinimumSimilarity = cSecurity::toInteger($options['minimum_similarity'] ?? '50');
+        if ($this->intMinimumSimilarity < 1 || $this->intMinimumSimilarity > 100) {
+            $this->intMinimumSimilarity = 50;
+        }
+    }
+
 }
