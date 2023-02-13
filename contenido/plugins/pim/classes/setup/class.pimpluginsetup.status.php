@@ -21,38 +21,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @author frederic.schneider
  */
 class PimPluginSetupStatus extends PimPluginSetup {
-    /**
-     * @var PimPluginCollection
-     */
-    protected $_PimPluginCollection;
-
-    /**
-     * @var PimPluginRelationsCollection
-     */
-    protected $_PimPluginRelationsCollection;
 
     /**
      * @var cApiNavSubCollection
      */
     protected $_ApiNavSubCollection;
-
-    /**
-     * Initializing and set variable for PimPluginCollection class
-     *
-     * @return PimPluginCollection
-     */
-    private function _setPimPluginCollection() {
-        return $this->_PimPluginCollection = new PimPluginCollection();
-    }
-
-    /**
-     * Initializing and set variable for PimPluginRelationsCollection class
-     *
-     * @return PimPluginRelationsCollection
-     */
-    private function _setPimPluginRelationsCollection() {
-        return $this->_PimPluginRelationsCollection = new PimPluginRelationsCollection();
-    }
 
     /**
      * Initializing and set variable for cApiNavSubCollection
@@ -68,11 +41,7 @@ class PimPluginSetupStatus extends PimPluginSetup {
      * Construct function
      */
     public function __construct() {
-
-        // Initializing and set classes
-        // PluginManager classes
-        $this->_setPimPluginCollection();
-        $this->_setPimPluginRelationsCollection();
+        parent::__construct();
 
         // cApiClasses
         $this->_setApiNavSubCollection();
@@ -86,23 +55,22 @@ class PimPluginSetupStatus extends PimPluginSetup {
      * @throws cException
      */
     public function changeActiveStatus($pluginId) {
-
         // Set pluginId
         self::setPluginId($pluginId);
 
         // Build WHERE-Query for *_plugin table with $pluginId as parameter
-        $this->_PimPluginCollection->setWhere('idplugin', cSecurity::toInteger($pluginId));
-        $this->_PimPluginCollection->query();
-        $plugin = $this->_PimPluginCollection->next();
+        $this->_pimPluginCollection->setWhere('idplugin', cSecurity::toInteger($pluginId));
+        $this->_pimPluginCollection->query();
+        $plugin = $this->_pimPluginCollection->next();
 
         // Get name of selected plugin and his active status
         $pluginName = $plugin->get('name');
         $pluginActiveStatus = $plugin->get('active');
 
         // Get relations
-        $this->_PimPluginRelationsCollection->setWhere('idplugin', cSecurity::toInteger($pluginId));
-        $this->_PimPluginRelationsCollection->setWhere('type', 'navs');
-        $this->_PimPluginRelationsCollection->query();
+        $this->_pimPluginRelationsCollection->setWhere('idplugin', cSecurity::toInteger($pluginId));
+        $this->_pimPluginRelationsCollection->setWhere('type', 'navs');
+        $this->_pimPluginRelationsCollection->query();
 
         if ($pluginActiveStatus == 1) {
             // Plugin is online and now we change status to offline
@@ -115,7 +83,7 @@ class PimPluginSetupStatus extends PimPluginSetup {
 
             // If this plugin has some navSub entries, we must also change menu
             // status to offline
-            while (($relation = $this->_PimPluginRelationsCollection->next()) !== false) {
+            while (($relation = $this->_pimPluginRelationsCollection->next()) !== false) {
                 $idnavs = $relation->get('iditem');
                 $this->_changeNavSubStatus($idnavs, 0);
             }
@@ -129,7 +97,7 @@ class PimPluginSetupStatus extends PimPluginSetup {
 
             // If this plugin has some navSub entries, we must also change menu
             // status to online
-            while (($relation = $this->_PimPluginRelationsCollection->next()) !== false) {
+            while (($relation = $this->_pimPluginRelationsCollection->next()) !== false) {
                 $idnavs = $relation->get('iditem');
                 $this->_changeNavSubStatus($idnavs, 1);
             }
@@ -145,8 +113,7 @@ class PimPluginSetupStatus extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _updateCheckDependencies() {
-
-        // Call checkDepenendencies function at PimPlugin class
+        // Call checkDependencies function at PimPlugin class
         // Function returns true or false
         $result = $this->checkDependencies();
 
@@ -173,4 +140,5 @@ class PimPluginSetupStatus extends PimPluginSetup {
         $navSub->set('online', cSecurity::toInteger($online));
         $navSub->store();
     }
+
 }

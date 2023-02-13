@@ -31,16 +31,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     private $PluginInstalledAreas = [];
 
     /**
-     * @var PimPluginCollection
-     */
-    protected $_PimPluginCollection;
-
-    /**
-     * @var PimPluginRelationsCollection
-     */
-    protected $_PimPluginRelationsCollection;
-
-    /**
      * @var cApiAreaCollection
      */
     protected $_ApiAreaCollection;
@@ -84,24 +74,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _setPluginFoldername($foldername) {
         return $this->PluginFoldername = cSecurity::escapeString($foldername);
-    }
-
-    /**
-     * Initializing and set variable for PimPluginCollection class
-     *
-     * @return PimPluginCollection
-     */
-    private function _setPimPluginCollection() {
-        return $this->_PimPluginCollection = new PimPluginCollection();
-    }
-
-    /**
-     * Initializing and set variable for PimPluginRelationsCollection class
-     *
-     * @return PimPluginRelationsCollection
-     */
-    private function _setPimPluginRelationsCollection() {
-        return $this->_PimPluginRelationsCollection = new PimPluginRelationsCollection();
     }
 
     /**
@@ -196,7 +168,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cException
      */
     protected function _getNavMainId($navm = '') {
-
     	if (!$navm) {
     		return false;
     	}
@@ -217,11 +188,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * Construct function
      */
     public function __construct() {
-
-        // Initializing and set classes
-        // PluginManager classes
-        $this->_setPimPluginCollection();
-        $this->_setPimPluginRelationsCollection();
+        parent::__construct();
 
         // cApiClasses
         $this->_setApiAreaCollection();
@@ -239,7 +206,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cException
      */
     public function install() {
-
         // Does this plugin already exist?
         $this->_installCheckUuid();
 
@@ -271,7 +237,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $this->_installAddNavSub();
 
         // Add specific sql queries, run only if we have no update sql file
-        if (PimPluginSetup::_getUpdateSqlFileExist() === false) {
+        if (parent::_getUpdateSqlFileExist() === false) {
             $this->_installAddSpecificSql();
         }
 
@@ -299,9 +265,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cException
      */
     private function _installCheckUuid() {
-        $this->_PimPluginCollection->setWhere('uuid', parent::$XmlGeneral->uuid);
-        $this->_PimPluginCollection->query();
-        if ($this->_PimPluginCollection->count() > 0) {
+        $this->_pimPluginCollection->setWhere('uuid', parent::$XmlGeneral->uuid);
+        $this->_pimPluginCollection->query();
+        if ($this->_pimPluginCollection->count() > 0) {
             parent::error(i18n('You can install this plugin only for one time.', 'pim'));
         }
     }
@@ -312,7 +278,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cException
      */
     private function _installCheckRequirements() {
-
         // Check min CONTENIDO version
         if (version_compare(CON_VERSION, parent::$XmlRequirements->contenido->attributes()->minversion, '<')) {
             parent::error(sprintf(i18n('You have to install CONTENIDO <strong>%s</strong> or higher to install this plugin!', 'pim'), parent::$XmlRequirements->contenido->attributes()->minversion));
@@ -320,7 +285,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         // Check max CONTENIDO version
         if (parent::$XmlRequirements->contenido->attributes()->maxversion) {
-
             if (version_compare(CON_VERSION, parent::$XmlRequirements->contenido->attributes()->maxversion, '>')) {
                 parent::error(sprintf(i18n('Your current CONTENIDO version is to new - max CONTENIDO version: %s', 'pim'), parent::$XmlRequirements->contenido->attributes()->maxversion));
             }
@@ -333,9 +297,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         // Check extensions
         if (count(parent::$XmlRequirements->extension) != 0) {
-
             for ($i = 0; $i < count(parent::$XmlRequirements->extension); $i++) {
-
                 if (!extension_loaded(parent::$XmlRequirements->extension[$i]->attributes()->name)) {
                     parent::error(sprintf(i18n('The plugin could not find the PHP extension <strong>%s</strong>. Because this is required by the plugin, it can not be installed.', 'pim'), parent::$XmlRequirements->extension[$i]->attributes()->name));
                 }
@@ -344,9 +306,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         // Check classes
         if (count(parent::$XmlRequirements->class) != 0) {
-
             for ($i = 0; $i < count(parent::$XmlRequirements->class); $i++) {
-
                 if (!class_exists(parent::$XmlRequirements->class[$i]->attributes()->name)) {
                     parent::error(sprintf(i18n('The plugin could not find the class <strong>%s</strong>. Because this is required by the plugin, it can not be installed.', 'pim'), parent::$XmlRequirements->class[$i]->attributes()->name));
                 }
@@ -355,9 +315,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         // Check functions
         if (count(parent::$XmlRequirements->function) != 0) {
-
             for ($i = 0; $i < count(parent::$XmlRequirements->function); $i++) {
-
                 if (!function_exists(parent::$XmlRequirements->function[$i]->attributes()->name)) {
                     parent::error(sprintf(i18n('The plugin could not find the function <strong>%s</strong>. Because this is required by the plugin, it can not be installed.', 'pim'), parent::$XmlRequirements->function[$i]->attributes()->name));
                 }
@@ -372,10 +330,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _installCheckDependencies() {
-
         $dependenciesCount = count(parent::$XmlDependencies);
-        for ($i = 0; $i < $dependenciesCount; $i++) {
 
+        for ($i = 0; $i < $dependenciesCount; $i++) {
             $attributes = [];
 
             // Build attributes
@@ -397,18 +354,17 @@ class PimPluginSetupInstall extends PimPluginSetup {
                 'maxversion' => cSecurity::escapeString($attributes['max_version'] ?? '')
             ];
 
-            $this->_PimPluginCollection->setWhere('uuid', $attributes['uuid']);
-            $this->_PimPluginCollection->setWhere('active', '1');
-            $this->_PimPluginCollection->query();
-            if ($this->_PimPluginCollection->count() == 0) {
+            $this->_pimPluginCollection->setWhere('uuid', $attributes['uuid']);
+            $this->_pimPluginCollection->setWhere('active', '1');
+            $this->_pimPluginCollection->query();
+            if ($this->_pimPluginCollection->count() == 0) {
                 parent::error(sprintf(i18n('This plugin required the plugin <strong>%s</strong>.', 'pim'), $depend));
             }
 
-            $plugin = $this->_PimPluginCollection->next();
+            $plugin = $this->_pimPluginCollection->next();
 
             // Check min plugin version
             if (parent::$XmlDependencies->depend[$i]->attributes()->minversion) {
-
                 if (version_compare($plugin->get("version"), parent::$XmlDependencies->depend[$i]->attributes()->minversion, '<')) {
                     parent::error(sprintf(i18n('You have to install<strong>%s %</strong> or higher to install this plugin!', 'pim'), $depend, parent::$XmlDependencies->depend[$i]->attributes()->minversion));
                 }
@@ -416,14 +372,11 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
             // Check max plugin version
             if (parent::$XmlDependencies->depend[$i]->attributes()->maxversion) {
-
                 if (version_compare($plugin->get("version"),  parent::$XmlDependencies->depend[$i]->attributes()->maxversion, '>')) {
                     parent::error(sprintf(i18n('You have to install <strong>%s %s</strong> or lower to install this plugin!', 'pim'), $depend, parent::$XmlDependencies->depend[$i]->attributes()->maxversion));
                 }
             }
-
         }
-
     }
 
     /**
@@ -435,7 +388,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddPlugin() {
         // Add entry at *_plugins
-        $pimPlugin = $this->_PimPluginCollection->create(
+        $pimPlugin = $this->_pimPluginCollection->create(
             cSecurity::toString(parent::$XmlGeneral->plugin_name),
             cSecurity::toString(parent::$XmlGeneral->description),
             cSecurity::toString(parent::$XmlGeneral->author),
@@ -459,7 +412,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
     }
 
     /**
-     * Get all area names from database
+     * Fetch and set all area names from database
      *
      * @throws cDbException
      * @throws cException
@@ -479,7 +432,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _installAddAreas() {
-
         $elements = parent::$XmlArea->area;
         if (empty($elements)) {
             return;
@@ -489,7 +441,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $pluginId = parent::_getPluginId();
 
         foreach ($elements as $element) {
-
             // Initializing attributes array
             $attributes = [];
 
@@ -521,7 +472,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             $item = $this->_ApiAreaCollection->create($area, $attributes['parent'], $attributes['relevant'], 1, $attributes['menuless']);
 
             // Set a relation
-            $this->_PimPluginRelationsCollection->create($item->get('idarea'), $pluginId, 'area');
+            $this->_pimPluginRelationsCollection->create($item->get('idarea'), $pluginId, 'area');
 
             // Add new area to all area array
             $this->PluginInstalledAreas[] = $area;
@@ -536,7 +487,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _installAddActions() {
-
         $elements = parent::$XmlActions->action;
         if (empty($elements)) {
             return;
@@ -549,7 +499,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $pluginId = parent::_getPluginId();
 
         foreach ($elements as $element) {
-
             // Build attributes
             foreach ($element->attributes() as $key => $value) {
                 $attributes[$key] = $value;
@@ -578,7 +527,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             $item = $this->_ApiActionCollection->create($attributes['area'], $action, '', '', '', $attributes['relevant']);
 
             // Set a relation
-            $this->_PimPluginRelationsCollection->create($item->get('idaction'), $pluginId, 'action');
+            $this->_pimPluginRelationsCollection->create($item->get('idaction'), $pluginId, 'action');
         }
     }
 
@@ -590,7 +539,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _installAddFrames() {
-
         $elements = parent::$XmlFrames->frame;
         if (empty($elements)) {
             return;
@@ -603,7 +551,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $pluginId = parent::_getPluginId();
 
         foreach ($elements as $element) {
-
             // Build attributes with security checks
             foreach ($element->attributes() as $sKey => $sValue) {
                 $attributes[$sKey] = cSecurity::escapeString($sValue);
@@ -622,7 +569,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
                 $item = $this->_ApiFrameFileCollection->create($attributes['area'], $attributes['frameId'], $file->get('idfile'));
 
 				// Set a relation
-				$this->_PimPluginRelationsCollection->create($item->get('idframefile'), $pluginId, 'framefl');
+				$this->_pimPluginRelationsCollection->create($item->get('idframefile'), $pluginId, 'framefl');
             }
         }
     }
@@ -635,13 +582,11 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _installAddNavMain() {
-
         $elements = parent::$XmlNavMain->nav;
         if (empty($elements)) {
             return;
         }
 
-        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
     	// Initializing attributes array
@@ -650,21 +595,19 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
-        // Get idnavm informations to build an new id
-        $sql = 'SELECT MAX(idnavm) AS id FROM ' . cRegistry::getDbTableName('nav_main');
+        // Get idnavm information to build a new id
+        $idnavm = 0;
+        $sql = 'SELECT MAX(`idnavm`) AS id FROM ' . cRegistry::getDbTableName('nav_main');
         $db->query($sql);
-
         if ($db->nextRecord()) {
             $idnavm = $db->f('id');
-
-            // id must be over 10.000
-            if ($idnavm < 10000) {
-                $idnavm = 10000;
-            }
+        }
+        // id must be over 10.000
+        if ($idnavm < 10000) {
+            $idnavm = 10000;
         }
 
         foreach ($elements as $element) {
-
         	// Security check for location
         	$location = cSecurity::escapeString($element);
 
@@ -692,7 +635,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             $this->_ApiNavMainCollection->create($attributes['name'], $location, $idnavm);
 
             // Set a relation
-            $this->_PimPluginRelationsCollection->create($idnavm, $pluginId, 'navm');
+            $this->_pimPluginRelationsCollection->create($idnavm, $pluginId, 'navm');
         }
     }
 
@@ -704,7 +647,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _installAddNavSub() {
-
         $elements = parent::$XmlNavSub->nav;
         if (empty($elements)) {
             return;
@@ -717,7 +659,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $pluginId = parent::_getPluginId();
 
         foreach ($elements as $element) {
-
             // Build attributes
             foreach ($element->attributes() as $key => $value) {
                 $attributes[$key] = $value;
@@ -731,9 +672,8 @@ class PimPluginSetupInstall extends PimPluginSetup {
                 parent::error(sprintf(i18n('Defined area <strong>%s</strong> are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'), $attributes['area']));
             }
 
-            // If navm attribute is an string get it's id
+            // If navm attribute is a string get its id
             if (!preg_match('/[^a-zA-Z]/u', $attributes['navm'])) {
-
             	$navm = $this->_getNavMainId($attributes['navm']);;
             	if ($navm === false) {
             		parent::error(sprintf(i18n('Can not find <strong>%s</strong> entry at nav_main table on your CONTENIDO installation. Please contact your plugin author.', 'pim'), $attributes['navm']));
@@ -743,10 +683,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
             }
 
             // Create a new entry at *_nav_sub
-            $item = $this->_ApiNavSubCollection->create($attributes['navm'], $attributes['area'], $attributes['level'], $element, 1);
+            $item = $this->_ApiNavSubCollection->create($attributes['navm'], $attributes['area'], $attributes['level'], $element->__toString(), 1);
 
             // Set a relation
-            $this->_PimPluginRelationsCollection->create($item->get('idnavs'), $pluginId, 'navs');
+            $this->_pimPluginRelationsCollection->create($item->get('idnavs'), $pluginId, 'navs');
         }
     }
 
@@ -757,19 +697,21 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _installAddSpecificSql() {
-
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
-        if (parent::getMode() == 1) { // Plugin is already extracted
+        if (parent::getMode() == 1) {
+            // Plugin is already extracted
             $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_install.sql';
         } elseif (parent::getMode() == 2 || parent::getMode() == 4) {
             // Plugin is uploaded or / and update mode
             $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_install.sql', 0);
+        } else {
+            $tempSqlFilename = '';
         }
 
         // skip using plugin_install.sql if it does not exist
-        if (!cFileHandler::exists($tempSqlFilename)) {
+        if (empty($tempSqlFilename) || !cFileHandler::exists($tempSqlFilename)) {
             return;
         }
 
@@ -796,7 +738,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _installAddContentTypes() {
-
         $elements = parent::$XmlContentType->type;
         if (empty($elements)) {
             return;
@@ -808,16 +749,14 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $pattern = '/^CMS_.+/';
 
         foreach ($elements as $element) {
-
             $type = cSecurity::toString($element);
 
             if (preg_match($pattern, $type)) {
-
                 // Create new content type
                 $item = $this->_ApiTypeCollection->create($type, '');
 
                 // Set a relation
-                $this->_PimPluginRelationsCollection->create($item->get('idtype'), $pluginId, 'ctype');
+                $this->_pimPluginRelationsCollection->create($item->get('idtype'), $pluginId, 'ctype');
             }
         }
     }
@@ -832,7 +771,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _installAddModules() {
-
         $cfg = cRegistry::getConfig();
         $module = new cApiModule();
 
@@ -840,13 +778,11 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $modulesPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR;
 
         if (!is_dir($modulesPath)) {
-            return;
+            return false;
         }
 
         foreach (new DirectoryIterator($modulesPath) as $modulesFiles) {
-
             if (cString::getPartOfString($modulesFiles->getBasename(), -4) == ".zip") {
-
                 // Import founded module
                 $module->import($modulesFiles->getBasename(), $modulesFiles->getBasename(), false);
             }
@@ -861,7 +797,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _installAddDir() {
-
         $cfg = cRegistry::getConfig();
 
         // Build the new plugin dir
