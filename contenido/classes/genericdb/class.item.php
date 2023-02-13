@@ -26,7 +26,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 abstract class Item extends cItemBaseAbstract {
 
     /**
-     * Storage of the source table to use for the user informations
+     * Storage of the source table to use for the user information
      *
      * @var array
      */
@@ -34,7 +34,7 @@ abstract class Item extends cItemBaseAbstract {
 
     /**
      * Storage of the fields which were modified, where the keys are the
-     * fieldnames and the values just simple bools.
+     * field names and the values just simple booleans.
      *
      * @var array
      */
@@ -48,7 +48,7 @@ abstract class Item extends cItemBaseAbstract {
     protected $oldPrimaryKey;
 
     /**
-     * List of funcion names of the filters used when data is stored to the db.
+     * List of function names of the filters used when data is stored to the db.
      *
      * @var array
      */
@@ -58,8 +58,8 @@ abstract class Item extends cItemBaseAbstract {
     ];
 
     /**
-     * List of funcion names of the filters used when data is retrieved from the
-     * db
+     * List of function names of the filters used when data is retrieved
+     * from the db.
      *
      * @var array
      */
@@ -218,7 +218,10 @@ abstract class Item extends cItemBaseAbstract {
         $this->_lastSQL = $sql;
 
         if ($bAllowOneResult && $this->db->numRows() > 1) {
-            $msg = 'Tried to load a single line with fields ' . print_r(array_keys($aAttributes), true) . ' and values ' . print_r(array_values($aAttributes), true) . ' from ' . $this->table . ' but found more than one row';
+            $msg = 'Tried to load a single line with fields '
+                . print_r(array_keys($aAttributes), true) . ' and values '
+                . print_r(array_values($aAttributes), true) . ' from '
+                . $this->table . ' but found more than one row';
             throw new cException($msg);
         }
 
@@ -233,7 +236,8 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
-     * Creates a select query by maany fields
+     * Creates a select query by many fields.
+     *
      * @param array $fields Associative fields and values list
      *
      * @return string Build SQL statement
@@ -244,12 +248,16 @@ abstract class Item extends cItemBaseAbstract {
         $fieldsSql = [];
 
         foreach ($fields as $key => $value) {
-            if (is_string($value)) {
-                $fieldsSql[] = "`$key` = ':$key'";
+            if (is_int($value) || is_float($value) || is_bool($value)) {
+                if (is_bool($value)) {
+                    $fields[$key] = $value ? '1' : '0';
+                }
+                $fieldsSql[] = "`$key` = :$key";
             } elseif (is_null($value)) {
                 $fieldsSql[] = "`$key` IS NULL";
             } else {
-                $fieldsSql[] = "`$key` = :$key";
+                // Treat everything else as a string
+                $fieldsSql[] = "`$key` = ':$key'";
             }
         }
         $sql = 'SELECT * FROM `:mytab` WHERE ' . implode(' AND ', $fieldsSql);
@@ -263,9 +271,9 @@ abstract class Item extends cItemBaseAbstract {
 
     /**
      * Loads an item by passed where clause from the database.
-     * This function is expensive, since it executes allways a query to the
+     * This function is expensive, since it executes always a query to the
      * database
-     * to retrieve the primary key, even if the record set is aleady cached.
+     * to retrieve the primary key, even if the record set is already cached.
      * NOTE: Passed value has to be escaped before. This will not be done by
      * this function.
      *
@@ -288,7 +296,8 @@ abstract class Item extends cItemBaseAbstract {
         $this->_lastSQL = $sql;
 
         if ($this->db->numRows() > 1) {
-            $msg = "Tried to load a single line with where clause '" . $sWhere . "' from " . $this->table . " but found more than one row";
+            $msg = "Tried to load a single line with where clause '"
+                . $sWhere . "' from " . $this->table . " but found more than one row";
             throw new cException($msg);
         }
 
@@ -482,7 +491,8 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
-     * Creates a update query by maany fields
+     * Creates an update query by many fields.
+     *
      * @param array $fields Associative fields and values list
      *
      * @return string
@@ -492,12 +502,16 @@ abstract class Item extends cItemBaseAbstract {
 
         foreach ($fields as $key => $mValue) {
             $value = $this->values[$key];
-            if (is_string($value)) {
-                $fieldsSql[] = "`$key` = '" . $this->db->escape($value) . "'";
+            if (is_int($value) || is_float($value) || is_bool($value)) {
+                if (is_bool($value)) {
+                    $value = $value ? '1' : '0';
+                }
+                $fieldsSql[] = "`$key` = " . $value;
             } elseif (is_null($value)) {
                 $fieldsSql[] = "`$key` = NULL";
             } else {
-                $fieldsSql[] = "`$key` = " . $value;
+                // Treat everything else as a string
+                $fieldsSql[] = "`$key` = '" . $this->db->escape($value) . "'";
             }
         }
 
@@ -513,7 +527,7 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
-     * Returns current item data as an assoziative array.
+     * Returns current item data as an associative array.
      *
      * @return array|false
      */
@@ -566,8 +580,9 @@ abstract class Item extends cItemBaseAbstract {
 
         // Set the value
         $oProperties = $this->_getPropertiesCollectionInstance($iClient);
-        $bResult = $oProperties->setValue($this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $sType, $sName, $mValue);
-        return $bResult;
+        return $oProperties->setValue(
+            $this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $sType, $sName, $mValue
+        );
     }
 
     /**
@@ -594,8 +609,9 @@ abstract class Item extends cItemBaseAbstract {
 
         // Return the value
         $oProperties = $this->_getPropertiesCollectionInstance($iClient);
-        $mValue = $oProperties->getValue($this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $sType, $sName);
-        return $mValue;
+        return $oProperties->getValue(
+            $this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $sType, $sName
+        );
     }
 
     /**
@@ -622,8 +638,10 @@ abstract class Item extends cItemBaseAbstract {
 
         // Delete the value
         $oProperties = $this->_getPropertiesCollectionInstance($iClient);
-        $bResult = $oProperties->deleteValue($this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $sType, $sName);
-        return $bResult;
+        $numDeleted = $oProperties->deleteValue(
+            $this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $sType, $sName
+        );
+        return $numDeleted > 0;
     }
 
     /**
@@ -657,8 +675,9 @@ abstract class Item extends cItemBaseAbstract {
      * Examples:
      * <pre>
      * $obj->setFilters(['addslashes'], ['stripslashes']);
-     * $obj->setFilters(['htmlencode', 'addslashes'], ['stripslashes',
-     * 'htmlencode']);
+     * $obj->setFilters(
+     *     ['htmlencode', 'addslashes'], ['stripslashes', 'htmlencode']
+     * );
      * </pre>
      *
      * @param array $aInFilters [optional]
@@ -724,7 +743,7 @@ abstract class Item extends cItemBaseAbstract {
                 // Check whether it is a string function and therefore
                 // expects a value of type string
                 $isStringFunction = in_array(
-                    $_function, $this->_settings['string_filter_funtions']
+                    $_function, $this->_settings['string_filter_functions']
                 );
                 if (is_array($mData)) {
                     foreach ($mData as $key => $value) {
@@ -751,7 +770,7 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
-     * Set meta object class name.
+     * Set a meta object class name.
      *
      * @param string $metaObject
      */
@@ -760,7 +779,7 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
-     * Return meta object instance.
+     * Return a meta object instance.
      * This object might be retrieved from a global cache ($_metaObjectCache).
      *
      * @return object
