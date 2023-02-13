@@ -18,9 +18,9 @@ cInclude('includes', 'functions.api.string.php');
 cInclude('includes', 'functions.api.images.php');
 
 /**
- * Backend navigaton class.
+ * Backend navigation class.
  *
- * Renders the header navigation document containing the navigtion structure.
+ * Renders the header navigation document containing the navigation structure.
  *
  * @package    Core
  * @subpackage GUI
@@ -42,6 +42,16 @@ class cGuiNavigation {
     protected $errors = [];
 
     /**
+     * @var cXmlReader
+     */
+    protected $_xml;
+
+    /**
+     * @var cXmlReader
+     */
+    protected $_plugXml;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * Loads the XML language file using cXmlReader.
@@ -49,14 +59,29 @@ class cGuiNavigation {
      * @throws cException if XML language files could not be loaded
      */
     public function __construct() {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
 
-        $this->xml = new cXmlReader();
-        $this->plugxml = new cXmlReader();
+        $this->_xml = new cXmlReader();
+        $this->_plugXml = new cXmlReader();
 
         // Load language file
-        if ($this->xml->load($cfg['path']['xml'] . "navigation.xml") == false) {
+        if (!$this->_xml->load($cfg['path']['xml'] . "navigation.xml")) {
             throw new cException('Unable to load any XML language file');
+        }
+    }
+
+    /**
+     * Magic getter function for outdated variable names.
+     *
+     * @param string $name
+     *         Name of the variable
+     * @return int|string|void
+     * @throws cInvalidArgumentException
+     */
+    public function __get($name) {
+        if ($name === 'xml' || $name == 'plugxml') {
+            cDeprecated("The property `' . $name . '` is deprecated since CONTENIDO 4.10.2, it isd not meant for public usage.");
+            return $this->{$name};
         }
     }
 
@@ -77,7 +102,8 @@ class cGuiNavigation {
      *         The found caption
      */
     public function getName($location) {
-        global $cfg, $belang;
+        $cfg = cRegistry::getConfig();
+        $belang = cRegistry::getBackendLanguage();
 
         // If a ";" is found entry is from a plugin -> explode location,
         // first is xml file path, second is xpath location in xml file.
@@ -104,17 +130,17 @@ class cGuiNavigation {
 
             $filepath = implode('/', $filepath);
 
-            if ($this->plugxml->load($cfg['path']['plugins'] . $filepath . $cfg['lang'][$belang]) == false) {
+            if (!$this->_plugXml->load($cfg['path']['plugins'] . $filepath . $cfg['lang'][$belang])) {
                 if (!isset($filename)) {
                     $filename = 'lang_en_US.xml';
                 }
-                if ($this->plugxml->load($cfg['path']['plugins'] . $filepath . $filename) == false) {
+                if (!$this->_plugXml->load($cfg['path']['plugins'] . $filepath . $filename)) {
                     throw new cException("Unable to load $filepath XML language file");
                 }
             }
-            $caption = $this->plugxml->getXpathValue('/language/' . $xpath);
+            $caption = $this->_plugXml->getXpathValue('/language/' . $xpath);
         } else {
-            $caption = $this->xml->getXpathValue('/language/' . $location);
+            $caption = $this->_xml->getXpathValue('/language/' . $location);
         }
 
         return i18n($caption);
@@ -127,15 +153,17 @@ class cGuiNavigation {
      * @throws cException
      */
     public function _buildHeaderData() {
-        global $cfg, $perm;
-
+        $cfg = cRegistry::getConfig();
+        $perm = cRegistry::getPerm();
         $db = cRegistry::getDb();
         $db2 = cRegistry::getDb();
 
         // Load main items
-        $sql = "SELECT idnavm, location FROM " . $cfg['tab']['nav_main'] . " ORDER BY idnavm";
+        $sql = "SELECT `idnavm`, `location` FROM `%s` ORDER BY `idnavm`";
+        $db->query($sql, cRegistry::getDbTableName('nav_main'));
 
-        $db->query($sql);
+        $tabNavSub = cRegistry::getDbTableName('nav_sub');
+        $tabArea = cRegistry::getDbTableName('area');
 
         // Loop result and build array
         while ($db->nextRecord()) {
@@ -149,7 +177,7 @@ class cGuiNavigation {
             $sql = "SELECT
                         a.location AS location, b.name AS area, b.relevant
                     FROM
-                        " . $cfg['tab']['nav_sub'] . " AS a, " . $cfg['tab']['area'] . " AS b
+                        " . $tabNavSub . " AS a, " . $tabArea . " AS b
                     WHERE
                         a.idnavm = " . $db->f('idnavm') . " AND
                         a.level  = 0 AND
@@ -195,14 +223,14 @@ class cGuiNavigation {
      * @throws cInvalidArgumentException
      */
     public function buildHeader($lang) {
-        global $cfg, $sess, $client, $auth, $cfgClient;
-
         $this->_buildHeaderData();
 
+        $sess = cRegistry::getSession();
+        $cfg = cRegistry::getConfig();
+        $client = cRegistry::getClientId();
         $main = new cTemplate();
         $sub = new cTemplate();
 
-        $cnt = 0;
         $t_sub = '';
         $numSubMenus = 0;
 
@@ -237,7 +265,7 @@ class cGuiNavigation {
                 }
             }
 
-            if ($genSubMenu == true) {
+            if ($genSubMenu) {
                 $link = new cHTMLLink();
                 $link->setClass('main');
                 $link->setID('main_' . $id);
@@ -255,7 +283,6 @@ class cGuiNavigation {
 
             // generate a sub menu item.
             $t_sub .= $sub->generate($cfg['path']['templates'] . $cfg['templates']['submenu'], true);
-            $cnt++;
         }
 
         if ($numSubMenus == 0) {
@@ -298,6 +325,7 @@ class cGuiNavigation {
             $main->set('s', 'HELP', '');
         }
 
+        $auth = cRegistry::getAuth();
         $oUser = new cApiUser($auth->auth["uid"]);
         $clientCollection = new cApiClientCollection();
 
@@ -383,7 +411,7 @@ class cGuiNavigation {
      * @throws cInvalidArgumentException
      */
     public function _renderLanguageSelect() {
-        global $cfg, $client, $lang;
+        $cfg = cRegistry::getConfig();
 
         $tpl = new cTemplate();
 
@@ -401,6 +429,9 @@ class cGuiNavigation {
         }
 
         if ($availableLanguages->count() > 0) {
+            $client = cRegistry::getClientId();
+            $lang = cRegistry::getLanguageId();
+
             while (($myLang = $availableLanguages->nextAccessible()) !== NULL) {
                 $key = $myLang->get('idlang');
                 $value = $myLang->get('name');
@@ -409,19 +440,7 @@ class cGuiNavigation {
                 $clientsLang->loadBy('idlang', cSecurity::toInteger($key));
                 if ($clientsLang->isLoaded()) {
                     if ($clientsLang->get('idclient') == $client) {
-                        if ($key == $lang) {
-                            $tpl->set('d', 'SELECTED', 'selected');
-                        } else {
-                            $tpl->set('d', 'SELECTED', '');
-                        }
-
-                        if (cString::getStringLength($value) > 20) {
-                            $value = cString::trimHard($value, 20);
-                        }
-
-                        $tpl->set('d', 'VALUE', $key);
-                        $tpl->set('d', 'CAPTION', $value . ' (' . $key . ')');
-                        $tpl->next();
+                        $this->_renderSelectOption($tpl, $key, $value, $lang);
                     }
                 }
             }
@@ -463,19 +482,7 @@ class cGuiNavigation {
         // add all accessible clients to the select
         foreach ($clients as $idclient => $clientInfo) {
             $name = $clientInfo['name'];
-            if ($idclient == $client) {
-                $tpl->set('d', 'SELECTED', 'selected');
-            } else {
-                $tpl->set('d', 'SELECTED', '');
-            }
-
-            if (cString::getStringLength($name) > 20) {
-                $name = cString::trimHard($name, 20);
-            }
-
-            $tpl->set('d', 'VALUE', $idclient);
-            $tpl->set('d', 'CAPTION', $name . ' (' . $idclient . ')');
-            $tpl->next();
+            $this->_renderSelectOption($tpl, $idclient, $name, $client);
         }
 
         $html = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
@@ -485,6 +492,30 @@ class cGuiNavigation {
         $editButton->appendStyleDefinition('cursor', 'pointer');
 
         return $html . $editButton->render();
+    }
+
+    /**
+     * Renders the options for the client and language select.
+     * @param cTemplate $tpl
+     * @param $key
+     * @param $value
+     * @param $selectedKey
+     * @return void
+     */
+    protected function _renderSelectOption(cTemplate $tpl, $key, $value, $selectedKey) {
+        if ($key == $selectedKey) {
+            $tpl->set('d', 'SELECTED', 'selected');
+        } else {
+            $tpl->set('d', 'SELECTED', '');
+        }
+
+        if (cString::getStringLength($value) > 20) {
+            $value = cString::trimHard($value, 20);
+        }
+
+        $tpl->set('d', 'VALUE', $key);
+        $tpl->set('d', 'CAPTION', $value . ' (' . $key . ')');
+        $tpl->next();
     }
 
     /**
@@ -505,4 +536,5 @@ class cGuiNavigation {
     public function getErrors() {
         return $this->errors;
     }
+
 }
