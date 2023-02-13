@@ -103,7 +103,6 @@ class cGuiNavigation {
      */
     public function getName($location) {
         $cfg = cRegistry::getConfig();
-        $belang = cRegistry::getBackendLanguage();
 
         // If a ";" is found entry is from a plugin -> explode location,
         // first is xml file path, second is xpath location in xml file.
@@ -130,6 +129,7 @@ class cGuiNavigation {
 
             $filepath = implode('/', $filepath);
 
+            $belang = cRegistry::getBackendLanguage();
             if (!$this->_plugXml->load($cfg['path']['plugins'] . $filepath . $cfg['lang'][$belang])) {
                 if (!isset($filename)) {
                     $filename = 'lang_en_US.xml';
@@ -167,7 +167,6 @@ class cGuiNavigation {
 
         // Loop result and build array
         while ($db->nextRecord()) {
-
             // Extract names from the XML document.
             $main = $this->getName($db->f('location'));
 
@@ -209,20 +208,21 @@ class cGuiNavigation {
         }
 
         // debugging information
-        cDebug::out(print_r($this->data, true));
+        cDebug::out('cGuiNavigation: ' . print_r($this->data, true));
     }
 
     /**
      * Function to build the CONTENIDO header document for backend.
      *
      * @param int $lang
-     *         The language to use for header doc creation
+     *         The language id
      *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
     public function buildHeader($lang) {
+        $lang = cSecurity::toInteger($lang);
         $this->_buildHeaderData();
 
         $sess = cRegistry::getSession();
@@ -351,24 +351,33 @@ class cGuiNavigation {
             }
             $errorString .= '<br>' . i18n('Some plugin menus can not be shown because of these errors.');
             $helpBox = new cGuiBackendHelpbox($errorString, './images/but_warn.gif');
-            $main->set('s', 'LANG', $helpBox->render(true) . $this->_renderLanguageSelect());
+            $main->set('s', 'LANG', $helpBox->render(true) . $this->_renderLanguageSelect($lang));
         } else {
-            $main->set('s', 'LANG', $this->_renderLanguageSelect());
+            $main->set('s', 'LANG', $this->_renderLanguageSelect($lang));
         }
 
-        $sClientName = $clientCollection->getClientname($client);
-        if (cString::getStringLength($sClientName) > 25) {
-            $sClientName = cString::trimHard($sClientName, 25);
+        if ($client > 0) {
+            $oClient = new cApiClient($client);
+            if ($oClient->isLoaded()) {
+                $sClientName = $oClient->get('name');
+            } else {
+                $client = 0;
+                $sClientName = i18n("No client");
+            }
+        } else {
+            $sClientName = i18n("No client");
         }
 
-        $client = cSecurity::toInteger($client);
-        if ($client == 0) {
+        if ($client === 0) {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> %s';
+            if (cString::getStringLength($sClientName) > 25) {
+                $sClientName = cString::trimHard($sClientName, 25);
+            }
             $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientName));
         } else {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
 
-            $sClientName = $clientCollection->getClientname($client) . ' (' . $client . ')';
+            $sClientName = $sClientName . ' (' . $client . ')';
             $sClientNameWithHtml = '<span id="chosenclient">' .$sClientName . '</span>';
 
             $sClientUrl = cRegistry::getFrontendUrl();
@@ -404,13 +413,15 @@ class cGuiNavigation {
     /**
      * Renders the language select box.
      *
+     * @param int $lang
+     *         Language id
      * @return string
      *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function _renderLanguageSelect() {
+    public function _renderLanguageSelect($lang) {
         $cfg = cRegistry::getConfig();
 
         $tpl = new cTemplate();
@@ -418,7 +429,7 @@ class cGuiNavigation {
         $tpl->set('s', 'NAME', 'changelang');
         $tpl->set('s', 'CLASS', 'vAlignMiddle text_medium');
         $tpl->set('s', 'ID', 'cLanguageSelect');
-        $tpl->set('s', 'OPTIONS', 'onchange="Con.Header.changeContenidoLanguage(this.value)"');
+        $tpl->set('s', 'OPTIONS', '');
 
         $availableLanguages = new cApiLanguageCollection();
 
@@ -430,7 +441,6 @@ class cGuiNavigation {
 
         if ($availableLanguages->count() > 0) {
             $client = cRegistry::getClientId();
-            $lang = cRegistry::getLanguageId();
 
             while (($myLang = $availableLanguages->nextAccessible()) !== NULL) {
                 $key = $myLang->get('idlang');
@@ -444,10 +454,12 @@ class cGuiNavigation {
                     }
                 }
             }
+
+            return $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
         } else {
-            $tpl->set('d', 'VALUE', 0);
-            $tpl->set('d', 'CAPTION', i18n('-- No Language available --'));
-            $tpl->next();
+            $template = '<span class="textg_medium pdr5">%s</span>';
+            $text = trim(trim(i18n('-- No Language available --'), ' -'));
+            return sprintf($template, $text);
         }
 
         return $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
@@ -469,7 +481,7 @@ class cGuiNavigation {
         // get all accessible clients
         $clientCollection = new cApiClientCollection();
         $clients = $clientCollection->getAccessibleClients();
-        if (count($clients) === 1) {
+        if (count($clients) <= 1) {
             return '';
         }
 
