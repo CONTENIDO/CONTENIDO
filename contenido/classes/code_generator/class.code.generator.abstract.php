@@ -108,6 +108,13 @@ abstract class cCodeGeneratorAbstract {
     protected $_idartlang;
 
     /**
+     * Template configuration id.
+     *
+     * @var int
+     */
+    protected $_idtplcfg;
+
+    /**
      * Page title.
      * Usually from article language table.
      *

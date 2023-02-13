@@ -21,10 +21,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage ContentType
  */
 class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
-    /**
-     * @var int
-     */
-    protected $_idtplcfg;
 
     /**
      * @inheritdoc
