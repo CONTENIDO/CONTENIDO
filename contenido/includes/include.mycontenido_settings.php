@@ -22,6 +22,8 @@ $page = new cGuiPage("mycontenido_settings", "", "2");
 
 $user = new cApiUser($auth->auth["uid"]);
 
+$action = $action ?? '';
+
 if ($action == "mycontenido_editself") {
 
     $notificationDisplayed = false;
