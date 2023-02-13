@@ -86,6 +86,7 @@ class cDebugFile implements cDebugInterface {
      */
     public function out($msg) {
         $sDate = date('Y-m-d H:i:s');
+        $msg = $this->_indentLines($msg);
         cFileHandler::write($this->_sPathToFile, $sDate . ": " . $msg . "\n", true);
     }
 
@@ -129,6 +130,25 @@ class cDebugFile implements cDebugInterface {
      * Interface implementation
      */
     public function showAll() {
+    }
+
+    /**
+     * Indents each line of the message by the defined spaces.
+     *
+     * @param mixed $message
+     * @param int $spaces
+     * @return string The indented message
+     */
+    protected function _indentLines($message, $spaces = 4) {
+        if (is_string($message) && !empty($message)) {
+            $prefix = str_pad(' ', $spaces);
+            $lines = explode("\n", $message);
+            $lines = array_map(function ($item) use ($prefix) {
+                return $prefix . $item;
+            }, $lines);
+            $message = implode("\n", $lines);
+        }
+        return trim($message);
     }
 
 }
