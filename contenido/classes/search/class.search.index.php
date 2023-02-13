@@ -31,13 +31,19 @@ cInclude('includes', 'functions.encoding.php');
  * $oIndex->start($idart, $aContent);
  *
  * It looks like:
- * Array (
- *      [CMS_HTMLHEAD] => Array (
- *          [1] => Herzlich Willkommen...
- *          [2] => ...auf Ihrer Website!
- *      )
- *      [CMS_HTML] => Array (
- *          [1] => Die Inhalte auf dieser Website ...
+ * <pre>
+ * [
+ *     [CMS_HTMLHEAD] => [
+ *         [1] => 'Herzlich Willkommen...',
+ *         [2] => '...auf Ihrer Website!',
+ *     ],
+ *     [CMS_HTML] => [
+ *         [1] => 'Die Inhalte auf dieser Website ...',
+ *         ...
+ *     ],
+ *     ...
+ * ]
+ * </pre>
  *
  * The index for keyword 'willkommen' would look like
  * '&12=1(CMS_HTMLHEAD-1)' which means the keyword 'willkommen' occurs
@@ -286,7 +292,7 @@ class cSearchIndex extends cSearchBaseAbstract {
             }
         }
 
-        $this->_debug('keywords', $this->_keywords);
+        $this->_debug('createKeywords() keywords', $this->_keywords);
     }
 
     /**
@@ -297,6 +303,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cDbException
      */
     public function saveKeywords() {
+        $tabKeywords = cRegistry::getDbTableName('keywords');
+
         foreach ($this->_keywords as $keyword => $count) {
             $tmp_count = preg_split('/[\s]/', trim($count));
             $this->_debug('tmp_count', $tmp_count);
@@ -308,12 +316,8 @@ class cSearchIndex extends cSearchBaseAbstract {
 
             if (!array_key_exists($keyword, $this->_keywordsOld)) {
                 // if keyword is new, save index information
-                // $nextid = $this->db->nextid($this->cfg['tab']['keywords']);
-                $iLang = cSecurity::toInteger($this->lang);
-                $sql   = "INSERT INTO {$this->cfg['tab']['keywords']}";
-                $sql  .= "(keyword, {$this->_place}, idlang) ";
-                $sql  .= "VALUES";
-                $sql  .= "('{$this->db->escape($keyword)}', '{$this->db->escape($index_string)}', {$iLang})";
+                $sql   = "INSERT INTO `%s` (`keyword`, `%s`, `idlang`) VALUES ('%s', '%s', %d)";
+                $sql = $this->db->prepare($sql, $tabKeywords, $this->_place, $keyword, $index_string, $this->lang);
             } else {
                 // if keyword already exists, create new index_string
                 if (preg_match("/&$this->idart=/", $this->_keywordsOld[$keyword])) {
@@ -322,9 +326,8 @@ class cSearchIndex extends cSearchBaseAbstract {
                     $index_string = $this->_keywordsOld[$keyword] . $index_string;
                 }
 
-                $sql = "UPDATE " . $this->cfg['tab']['keywords'] . "
-                        SET " . $this->_place . " = '" . $index_string . "'
-                        WHERE idlang='" . cSecurity::toInteger($this->lang) . "' AND keyword='" . $this->db->escape($keyword) . "'";
+                $sql = "UPDATE `%s` SET `%s` = '%s' WHERE `idlang` = %d AND `keyword` = '%s'";
+                $sql = $this->db->prepare($sql, $tabKeywords, $this->_place, $index_string, $this->lang, $keyword);
             }
             $this->_debug('sql', $sql);
             $this->db->query($sql);
@@ -339,17 +342,17 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cDbException
      */
     public function deleteKeywords() {
+        $tabKeywords = cRegistry::getDbTableName('keywords');
         foreach ($this->_keywordsDel as $key_del) {
             $index_string = preg_replace("/&$this->idart=[0-9]+\([\w\-,]+\)/", "", $this->_keywordsOld[$key_del]);
 
             if (cString::getStringLength($index_string) == 0) {
-                // keyword is not referenced by any article
-                $sql = "DELETE FROM " . $this->cfg['tab']['keywords'] . "
-                    WHERE idlang = " . cSecurity::toInteger($this->lang) . " AND keyword = '" . $this->db->escape($key_del) . "'";
+                // Keyword is not referenced by any article
+                $sql = "DELETE FROM `%s` WHERE `idlang` = %d AND `keyword` = '%s'";
+                $sql = $this->db->prepare($sql, $tabKeywords, $this->lang, $key_del);
             } else {
-                $sql = "UPDATE " . $this->cfg['tab']['keywords'] . "
-                    SET " . $this->_place . " = '" . $index_string . "'
-                    WHERE idlang = " . cSecurity::toInteger($this->lang) . " AND keyword = '" . $this->db->escape($key_del) . "'";
+                $sql = "UPDATE `%s` SET `%s` = '%s' WHERE `idlang` = %d AND `keyword` = '%s'";
+                $sql = $this->db->prepare($sql, $tabKeywords, $this->_place, $index_string, $this->lang, $key_del);
             }
             $this->_debug('sql', $sql);
             $this->db->query($sql);
@@ -363,16 +366,26 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cDbException
      */
     public function getKeywords() {
-        $keys = implode("','", array_keys($this->_keywords));
+        $keywords = array_map([
+            $this->db, 'escape'
+        ], array_keys($this->_keywords));
+        $keywords = implode("','", $keywords);
 
-        $sql = "SELECT
-                    keyword, auto, self
+        $sql = "-- cSearchIndex->getKeywords()
+                SELECT
+                    `keyword`, `auto`, `self`
                 FROM
-                    " . $this->cfg['tab']['keywords'] . "
+                    `%s`
                 WHERE
-                    idlang=" . cSecurity::toInteger($this->lang) . "  AND
-                    (keyword IN ('" . $keys . "')  OR " . $this->_place . " REGEXP '&" . cSecurity::toInteger($this->idart) . "=')";
+                    `idlang` = %d AND
+                    (`keyword` IN ('{KEYWORDS}') OR `%s` REGEXP '&%d=')";
 
+        // Prepare sql without keywords, we don't want any strings in keywords
+        // being interpreted as specifiers
+        $sql = $this->db->prepare(
+            $sql, cRegistry::getDbTableName('keywords'), $this->lang, $this->_place, $this->idart
+        );
+        $sql = str_replace('{KEYWORDS}', $keywords, $sql);
         $this->_debug('sql', $sql);
 
         $this->db->query($sql);
@@ -508,12 +521,15 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cDbException
      */
     public function setContentTypes() {
-        $sql = "SELECT `type`, `idtype` FROM `" . $this->cfg['tab']['type'] . "`";
-        $this->_debug('sql', $sql);
-        $this->db->query($sql);
-        while ($this->db->nextRecord()) {
-            $this->_cmsType[$this->db->f('type')] = $this->db->f('idtype');
-            $this->_cmsTypeSuffix[$this->db->f('idtype')] = cString::getPartOfString($this->db->f('type'), 4, cString::getStringLength($this->db->f('type')));
+        $typeColl = new cApiTypeCollection();
+        $typeColl->addResultField('type');
+        $typeColl->query();
+        foreach ($typeColl->fetchTable(['idtype' => 'idtype', 'type' => 'type']) as $entry) {
+            $idType = cSecurity::toInteger($entry['idtype']);
+            $this->_cmsType[$idType] = $entry['idtype'];
+            $this->_cmsTypeSuffix[$idType] = cString::getPartOfString(
+                $entry['type'], 4, cString::getStringLength($entry['type'])
+            );
         }
     }
 
@@ -627,7 +643,7 @@ class cSearchIndex extends cSearchBaseAbstract {
         }
         $keywords = array_unique($keywords);
 
-        $this->_debug('keywords', $keywords);
+        $this->_debug('_splitCodeToKeywords() keywords', $keywords);
 
         return $keywords;
     }
