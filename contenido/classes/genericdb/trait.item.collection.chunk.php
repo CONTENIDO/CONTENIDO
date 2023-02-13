@@ -16,12 +16,26 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Chunk trait for usage in ItemCollection classes.
+ * Chunk trait for usage in classes extending {@see ItemCollection}.
+ *
+ * This trait is meant only for usage in ItemCollection classes, therefore
+ * it requires following methods to be implemented by a ItemCollection class
+ * using this trait:
+ * @method ItemCollection|string getTable
+ * @method ItemCollection|string getPrimaryKeyName
+ * @method ItemCollection|void loadByRecordSet(array)
  *
  * @package Core
  * @subpackage Database
  */
 trait cItemCollectionChunkTrait {
+
+    /**
+     * Database instance.
+     *
+     * @var cDb
+     */
+    private static $_db;
 
     /**
      * Loads chunks of results from the database, fills the results list
@@ -75,6 +89,8 @@ trait cItemCollectionChunkTrait {
     protected function _fetchChunksByIds(array $ids, $callback, $size, $createObjects) {
         $chunks = array_chunk($ids, $size);
 
+        $db = $this->getDbInstance();
+
         // Loop through each chunk, build and run the query,
         // fill the results with the created class instances,
         // or with the records, and call the callback.
@@ -82,10 +98,10 @@ trait cItemCollectionChunkTrait {
             $this->_prepareChunkIds($chunk);
             $in = implode("', '", $chunk);
             $sql = "SELECT * FROM `%s` WHERE `%s` IN ('" . $in . "')";
-            $this->db->query($sql, $this->getTable(), $this->getPrimaryKeyName());
+            $db->query($sql, $this->getTable(), $this->getPrimaryKeyName());
             $results = [];
-            while ($this->db->nextRecord()) {
-                $record = $this->db->getRecord();
+            while ($db->nextRecord()) {
+                $record = $db->getRecord();
                 if ($createObjects) {
                     /* @var $obj Item */
                     $obj = new $this->_itemClass();
@@ -116,13 +132,26 @@ trait cItemCollectionChunkTrait {
      * @return void
      */
     protected function _prepareChunkIds(array &$ids) {
-        $ids = array_map(function($id) {
+        $db = $this->getDbInstance();
+        $ids = array_map(function($id) use ($db) {
             if (!empty($id) && !is_numeric($id) && is_string($id)) {
-                return $this->db->escape($id);
+                return $db->escape($id);
             } else {
                 return $id;
             }
         }, $ids);
+    }
+
+    /**
+     * Returns the database instance, creates it once, if not done before.
+     *
+     * @return cDb
+     */
+    private function getDbInstance() {
+        if (!self::$_db) {
+            self::$_db = cRegistry::getDb();
+        }
+        return self::$_db;
     }
 
 }
