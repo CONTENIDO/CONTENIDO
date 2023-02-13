@@ -45,7 +45,7 @@ class cArticleCollector implements SeekableIterator, Countable {
     /**
      * Total paging data.
      *
-     * @var cApiArticleLanguage[]
+     * @var cApiArticleLanguage[]|array
      */
     protected $_pages = [];
 

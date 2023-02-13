@@ -60,9 +60,9 @@ class cOutputCache {
     /**
      * Start time of caching.
      *
-     * @var int
+     * @var float
      */
-    protected $_iStartTime;
+    protected $_fStartTime;
 
     /**
      * Option array for generating cache identifier
@@ -326,7 +326,7 @@ VALID UNTIL: %s
             return;
         }
 
-        $this->_iStartTime = $this->_getMicroTime();
+        $this->_fStartTime = $this->_getMicroTime();
 
         // set cache object and unique id
         $this->_initFileCache();
@@ -338,7 +338,7 @@ VALID UNTIL: %s
 
             $iEndTime = $this->_getMicroTime();
             if ($this->_bHtmlComment) {
-                $time = sprintf("%2.4f", $iEndTime - $this->_iStartTime);
+                $time = sprintf("%2.4f", $iEndTime - $this->_fStartTime);
                 $exp = ($this->_iLifetime == 0? 'infinite' : date('Y-m-d H:i:s', time() + $this->_iLifetime));
                 $content .= sprintf($this->_sHtmlCommentTpl, 'HIT', $time . ' sec.', $exp);
                 if ($iPageStartTime != NULL && is_numeric($iPageStartTime)) {
@@ -347,7 +347,7 @@ VALID UNTIL: %s
             }
 
             if ($this->_bDebug) {
-                $info = sprintf("HIT: %2.4f sec.", $iEndTime - $this->_iStartTime);
+                $info = sprintf("HIT: %2.4f sec.", $iEndTime - $this->_fStartTime);
                 $info = sprintf($this->_sDebugTpl, $info);
                 $content = str_ireplace('</body>', $info . "\n</body>", $content);
             }
@@ -379,7 +379,7 @@ VALID UNTIL: %s
         echo $content;
 
         if ($this->_bDebug) {
-            $this->_sDebugMsg .= "\n" . sprintf("MISS: %2.4f sec.\n", $this->_getMicroTime() - $this->_iStartTime);
+            $this->_sDebugMsg .= "\n" . sprintf("MISS: %2.4f sec.\n", $this->_getMicroTime() - $this->_fStartTime);
             $this->_sDebugMsg = sprintf($this->_sDebugTpl, $this->_sDebugMsg);
         }
     }

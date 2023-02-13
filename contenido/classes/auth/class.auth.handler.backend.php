@@ -62,7 +62,7 @@ class cAuthHandlerBackend extends cAuth {
         //        One idea could be to set the request/response type in
         //        global $cfg array instead of checking $_REQUEST['ajax']
         //        everywhere...
-        if ($_REQUEST['ajax'] ?? '' != '') {
+        if (!empty($_REQUEST['ajax'] ?? '')) {
             $oAjax = new cAjaxRequest();
             $sReturn = $oAjax->handle('authentication_fail');
             echo $sReturn;

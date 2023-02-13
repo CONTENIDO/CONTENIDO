@@ -31,7 +31,7 @@ class cArticleContentHelper {
     /**
      * Constructor.
      *
-     * @param cDb $db Database instance
+     * @param cDb|null $db Database instance
      */
     public function __construct(cDb $db = null) {
         if ($db instanceof cDb) {

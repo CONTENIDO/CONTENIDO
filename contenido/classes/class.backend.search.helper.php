@@ -89,7 +89,7 @@ class cBackendSearchHelper {
     protected $_categoryTemplateInfos;
 
     /**
-     * @var string
+     * @var array
      */
     protected $_categoryBreadcrumb;
 
@@ -99,27 +99,27 @@ class cBackendSearchHelper {
     protected $_articlePermissions;
 
     /**
-     * @var bool
+     * @var bool[]
      */
     protected $_hasCommonContentPermission;
 
     /**
-     * @var bool
+     * @var bool[]
      */
     protected $_hasArticleEditContentPermission;
 
     /**
-     * @var bool
+     * @var bool[]
      */
     protected $_hasArticleMakeStartPermission;
 
     /**
-     * @var bool
+     * @var bool[]
      */
     protected $_hasArticleDuplicatePermission;
 
     /**
-     * @var bool
+     * @var bool[]
      */
     protected $_hasArticleDeletePermission;
 
@@ -187,7 +187,7 @@ class cBackendSearchHelper {
                 refreshArticleSearchForm();
                 ';
         } else {
-            return false;
+            return '';
         }
     }
 
