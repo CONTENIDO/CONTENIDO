@@ -40,7 +40,7 @@ class cDb extends cDbDriverHandler {
     /**
      * Active record set data.
      *
-     * @var array
+     * @var array|false|NULL
      */
     protected $_record = [];
 
@@ -66,8 +66,7 @@ class cDb extends cDbDriverHandler {
     protected $_errorMessage = '';
 
     /**
-     * Returns the query ID resource.
-     *
+     * @inheritdoc
      * @return NULL|resource|mysqli_result
      */
     public function getQueryId() {
@@ -75,19 +74,15 @@ class cDb extends cDbDriverHandler {
     }
 
     /**
-     * Sets the query ID resource.
-     * Do not set it manually unless you know what you are doing.
-     *
+     * @inheritdoc
      * @param NULL|resource|mysqli_result $queryId
-     *         query ID resource
      */
     public function setQueryId($queryId) {
         $this->_queryId = $queryId;
     }
 
     /**
-     * Returns the link ID resource.
-     *
+     * @inheritdoc
      * @return NULL|resource|mysqli
      */
     public function getLinkId() {
@@ -95,31 +90,22 @@ class cDb extends cDbDriverHandler {
     }
 
     /**
-     * Sets the link ID resource.
-     * Do not set it manually unless you know what you are doing.
-     *
+     * @inheritdoc
      * @param NULL|resource|mysqli $linkId
-     *         link ID resource
      */
     public function setLinkId($linkId) {
         $this->_linkId = $linkId;
     }
 
     /**
-     * Returns the current record data.
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getRecord() {
         return $this->_record;
     }
 
     /**
-     * Sets the current record data set.
-     * Do not set it manually unless you know what you are doing.
-     *
-     * @param array $record
-     *         current record set data
+     * @inheritdoc
      */
     public function setRecord($record) {
         $this->_record = $record;
@@ -154,42 +140,31 @@ class cDb extends cDbDriverHandler {
     }
 
     /**
-     * Returns error message of last occurred error from database.
-     *
-     * @return string
-     *         database error message
+     * @inheritdoc
      */
     public function getErrorMessage() {
         return $this->_errorMessage;
     }
 
     /**
-     * Sets the current error message from database.
-     *
-     * @param string $errorMessage
-     *         current error message
+     * @inheritdoc
      */
     public function setErrorMessage($errorMessage) {
         $this->_errorMessage = $errorMessage;
     }
 
     /**
-     * Returns error code of last occurred error from database.
-     *
-     * @return int
-     *         database error code
+     * @inheritdoc
      */
     public function getErrorNumber() {
         return $this->_errorNumber;
     }
 
     /**
-     * Sets the current error number from database.
-     *
-     * @param int $errorNumber
-     *         current error number
+     * @inheritdoc
      */
     public function setErrorNumber($errorNumber) {
         $this->_errorNumber = (int) $errorNumber;
     }
+
 }
