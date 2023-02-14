@@ -431,8 +431,8 @@ abstract class Item extends cItemBaseAbstract {
         if ($modified) {
             if (!is_array($this->modifiedValues)) {
                 $this->modifiedValues = [];
-                $this->modifiedValues[$sField] = true;
             }
+            $this->modifiedValues[$sField] = true;
         }
 #        if ($this->values[$sField] != $mValue || cString::getStringLength($this->values[$sField]) != cString::getStringLength($mValue)) {
 #            $this->modifiedValues[$sField] = true;
