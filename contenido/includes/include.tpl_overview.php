@@ -27,7 +27,7 @@ $oClient = cRegistry::getClient();
 
 // Display critical error if client does not exist
 if (!$oClient->isLoaded()) {
-    $oPage = new cGuiPage("lay_new");
+    $oPage = new cGuiPage("tpl_overview");
     $oPage->displayCriticalError(i18n('No Client selected'));
     $oPage->render();
     return;
