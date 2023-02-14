@@ -119,7 +119,6 @@ if ($action == "mycontenido_editself") {
     } elseif (!$notificationDisplayed) {
         $page->displayError(i18n("An error occured while saving user info."));
     }
-unset($GLOBALS['ttt']);
 }
 
 $username = $user->get('username');
