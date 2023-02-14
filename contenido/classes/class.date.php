@@ -161,6 +161,7 @@ class cDate {
     /**
      * Checks if passed date string represents an empty date.
      * Following values will be interpreted as empty date:
+     * - NULL
      * - '' (empty string)
      * - '0000-00-00'
      * - '0000-00-00 00:00:00'
@@ -169,7 +170,12 @@ class cDate {
      * @return bool
      */
     public static function isEmptyDate($dateString) {
-        return (empty($dateString) || $dateString === '0000-00-00' || $dateString === '0000-00-00 00:00:00');
+        return (
+            is_null($dateString) ||
+            is_string($dateString) && (
+                empty($dateString) || $dateString === '0000-00-00' || $dateString === '0000-00-00 00:00:00'
+            )
+        );
     }
 
     /**
