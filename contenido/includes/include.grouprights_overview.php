@@ -128,13 +128,13 @@ $oTxtDesc = new cHTMLTextbox('description', conHtmlSpecialChars($oGroup->getFiel
 $page->set('d', 'CATFIELD', $oTxtDesc->render());
 $page->next();
 
-// permissions of current logged in user
-$aAuthPerms = explode(',', $auth->auth['perm']);
+
+$hasSysadminPerm = cPermission::checkSysadminPermission($auth->getPerms());
 
 // sysadmin perm
-if (in_array('sysadmin', $aAuthPerms)) {
+if ($hasSysadminPerm) {
     $page->set('d', 'CATNAME', i18n("System administrator"));
-    $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', in_array('sysadmin', $aPerms));
+    $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', cPermission::checkSysadminPermission($aPerms));
     $page->set('d', 'CATFIELD', $oCheckbox->toHtml(false));
     $page->next();
 }
@@ -144,14 +144,20 @@ $oClientsCollection = new cApiClientCollection();
 $aClients = $oClientsCollection->getAvailableClients();
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    if (in_array("admin[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
-        $oCheckbox = new cHTMLCheckbox("madmin[" . $idclient . "]", $idclient, "madmin[" . $idclient . "]" . $idclient, in_array("admin[" . $idclient . "]", $aPerms));
+    $hasClientAdminPerm = cPermission::checkClientAdminPermission($idclient, $auth->getPerms());
+    if ($hasClientAdminPerm || $hasSysadminPerm) {
+        $oCheckbox = new cHTMLCheckbox(
+            "madmin[" . $idclient . "]",
+            $idclient,
+            "madmin[" . $idclient . "]" . $idclient,
+            cPermission::checkClientAdminPermission($idclient, $aPerms)
+        );
         $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
 
-if ($sClientCheckboxes !== '' && !in_array('sysadmin', $aPerms)) {
+if ($sClientCheckboxes !== '' && !cPermission::checkSysadminPermission($aPerms)) {
     $page->set('d', 'CATNAME', i18n("Administrator"));
     $page->set('d', 'CATFIELD', $sClientCheckboxes);
     $page->next();
@@ -160,14 +166,21 @@ if ($sClientCheckboxes !== '' && !in_array('sysadmin', $aPerms)) {
 // clients perms
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    if ((in_array("client[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[" . $idclient . "]", $aAuthPerms)) && !in_array("admin[" . $idclient . "]", $aPerms)) {
-        $oCheckbox = new cHTMLCheckbox("mclient[" . $idclient . "]", $idclient, "mclient[" . $idclient . "]" . $idclient, in_array("client[" . $idclient . "]", $aPerms));
+    $hasClientPerm = cPermission::checkClientPermission($idclient, $auth->getPerms());
+    $hasClientAdminPerm = cPermission::checkClientAdminPermission($idclient, $auth->getPerms());
+    if (($hasClientPerm || $hasSysadminPerm || $hasClientAdminPerm) && !cPermission::checkClientAdminPermission($idclient, $aPerms)) {
+        $oCheckbox = new cHTMLCheckbox(
+            "mclient[" . $idclient . "]",
+            $idclient,
+            "mclient[" . $idclient . "]" . $idclient,
+            in_array("client[" . $idclient . "]", $aPerms)
+        );
         $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
 
-if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
+if ($sClientCheckboxes != '' && !cPermission::checkSysadminPermission($aPerms)) {
     $page->set('d', 'CATNAME', i18n("Access clients"));
     $page->set('d', 'CATFIELD', $sClientCheckboxes);
     $page->next();
@@ -177,14 +190,21 @@ if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
 $aClientsLanguages = getAllClientsAndLanguages();
 $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
-    if (($perm->have_perm_client("lang[" . $item['idlang'] . "]") || $perm->have_perm_client("admin[" . $item['idclient'] . "]")) && !in_array("admin[" . $item['idclient'] . "]", $aPerms)) {
-        $oCheckbox = new cHTMLCheckbox("mlang[" . $item['idlang'] . "]", $item['idlang'], "mlang[" . $item['idlang'] . "]" . $item['idlang'], in_array("lang[" . $item['idlang'] . "]", $aPerms));
+    $hasLanguagePerm = cPermission::checkLanguagePermission($item['idlang'], $auth->getPerms());
+    $hasClientAdminPerm = cPermission::checkClientAdminPermission($item['idclient'], $auth->getPerms());
+    if (($hasLanguagePerm || $hasClientAdminPerm) && !cPermission::checkClientAdminPermission($item['idclient'], $aPerms)) {
+        $oCheckbox = new cHTMLCheckbox(
+            "mlang[" . $item['idlang'] . "]",
+            $item['idlang'],
+            "mlang[" . $item['idlang'] . "]" . $item['idlang'],
+            in_array("lang[" . $item['idlang'] . "]", $aPerms)
+        );
         $oCheckbox->setLabelText(conHtmlSpecialChars($item['langname']) . " (" . $item['clientname'] . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
 
-if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
+if ($sClientCheckboxes != '' && !cPermission::checkSysadminPermission($aPerms)) {
     $page->set('d', 'CATNAME', i18n("Access languages"));
     $page->set('d', 'CATFIELD', $sClientCheckboxes);
     $page->next();
