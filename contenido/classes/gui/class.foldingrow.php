@@ -245,7 +245,7 @@ class cGuiFoldingRow extends cHTML {
         return <<<HTML
 <!-- cGuiFoldingRow -->
 {$output}
-<script>
+<script type="text/javascript">
 (function(Con, $) {
     $(function() {
         $("#{$this->_linkId}").click(function() {

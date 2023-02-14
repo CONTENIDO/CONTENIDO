@@ -171,7 +171,7 @@ if ($oRcpGroups->count() == 0) {
     // Trick: To save multiple selections in <select>-Element, add some JS which saves the
     // selection, comma separated in a hidden input field on change.
     $sJavaScript .= '
-<script>
+<script type="text/javascript">
 (function(Con, $) {
     $(function() {
         var radJoin = $("input[name=' . $aFormFields['radJoin'] . ']"),

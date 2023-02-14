@@ -65,10 +65,10 @@ document.getElementsByTagName('head')[0].appendChild(baseHref);
 <!-- END:BLOCK -->
 
 
-<script type='text/javascript'>
-/** 
+<script type="text/javascript">
+/**
  * Set version number as post-parameter for rawdata export
- * $_POST['versionnumber] = 'current' if version is current, 
+ * $_POST['versionnumber] = 'current' if version is current,
  * else $_POST['versionnumber] = version number
  */
 function getVersionNumber() {
@@ -115,7 +115,7 @@ function getVersionNumber() {
 <div class="contypeList">
 <form name="exportrawdata" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=exportrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
     <div class="rawtypes">
-    </div>	
+    </div>
     <input type="hidden" id="versionnumber" name="versionnumber" value="">
     <input type="submit" name="export" value="{EXPORT_RAWDATA}" onclick="getVersionNumber()">
 </form>

@@ -65,7 +65,7 @@ if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "fr
 
 if ($idfrontenduser && $action != '') {
     $sReloadScript = <<<JS
-<script>
+<script type="text/javascript">
 (function(Con, $) {
     var frame = Con.getFrame('left_bottom');
     if (frame) {

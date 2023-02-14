@@ -821,7 +821,7 @@ $paging_form = '';
 if ($list2->getNumPages() > 1) {
     $num_pages = $list2->getNumPages();
 
-    $paging_form .= "<script>
+    $paging_form .= "<script type='text/javascript'>
        function jumpToPage(select) {
            var pagenumber = select.selectedIndex + 1;
            url = '" . $sess->url('main.php') . "';

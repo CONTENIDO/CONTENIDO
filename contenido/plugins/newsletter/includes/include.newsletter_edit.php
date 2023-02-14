@@ -510,7 +510,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (" . cDate::formatDatetime($oNewsletter->get("modified")) . ")");
 
     $sExecScript = '
-    <script>
+    <script type="text/javascript">
     (function(Con, $) {
         function actionDispatchChange($element) {
             $("input[name=\'txtDispatchCount\']").prop("disabled", !$element.prop("checked"));

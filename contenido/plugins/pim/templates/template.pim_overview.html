@@ -3,16 +3,11 @@
         i18n("This plugin is already at the bottom!")
         i18n("Error")
         -->
-        
+
 		<script type="text/javascript">
 		var ie = 0;
 		</script>
-		<!--[if lte IE 7]><script>
-		var ie = 7;
-		</script><![endif]-->
-
         <script type="text/javascript">
-
             function toggleTableBody(tableId) {
                 var collapseButton = 'images/close_all.gif';
                 var expandButton = 'images/open_all.gif';
@@ -60,11 +55,11 @@
             $(".sortPluginDown").css("visibility", "visible");
             $(".sortPluginDown").last().css('visibility', 'hidden');
         }
-        
+
         (function(Con, $) {
-            
+
             var ajax = false;
-            
+
             $(function() {
                 updateSortButtons();
 
@@ -73,7 +68,7 @@
                     if (ajax) {
                         ajax.abort();
                     }
-                    
+
                     var pluginId = parseInt($(this).attr("data-plugin-id"));
                     var pluginRow = $("#plugin-row-" + pluginId);
                     var pluginTable = pluginRow.parent().parent();
@@ -84,7 +79,7 @@
                         Con.showNotification("i18n('Error')", "i18n('This plugin is already at the bottom!')");
                         return;
                     }
-                    
+
                     ajax = $.ajax({
                         url: "ajaxmain.php",
                         type: "POST",
@@ -99,7 +94,7 @@
     						} else if (data === 'ok') {
     						    pluginRow.attr("data-plugin-execorder", newOrder);
     		                    pluginTable.next().children().children("tr").first().attr("data-plugin-execorder", oldOrder);
-    						    
+
                                 pluginTable.next().after(pluginTable);
                                 updateSortButtons();
                             }
@@ -108,11 +103,11 @@
                 });
 
              $(".sortPluginUp").click(function() {
-                
+
 	             	if (ajax) {
 	                	ajax.abort();
 	                }
-                 
+
                     var pluginId = $(this).attr("data-plugin-id");
                     var pluginRow = $("#plugin-row-" + pluginId);
                     var pluginTable = pluginRow.parent().parent();
@@ -123,7 +118,7 @@
                         Con.showNotification("i18n('Error')", "i18n('This plugin is already at the top!')");
                         return;
                     }
-                    
+
                     ajax = $.ajax({
                         url: "ajaxmain.php",
                         type: "POST",
@@ -133,12 +128,12 @@
                             idplugin: pluginId
                         },
                         success: function(data, status, jqxhr) {
-                            if (data.length === 0)  {  
+                            if (data.length === 0)  {
                                 return false;
     						} else if (data === 'ok') {
     						    pluginRow.attr("data-plugin-execorder", newOrder);
     		                    pluginTable.prev().children().children("tr").first().attr("data-plugin-execorder", oldOrder);
-    						    
+
                                 pluginTable.prev().before(pluginTable);
                                 updateSortButtons();
                             }
@@ -223,11 +218,11 @@
                 <input type="submit" name="upload_package" id="upload_package" value="{LANG_UPLOAD_BUTTON}">
             </form>
         </div>
-        <div>&#160;</div>		
+        <div>&#160;</div>
 		<div class="clear"></div>
         <div id="executionOrdnerInfo" class="nodisplay">
 			<strong>{LANG_EXECUTIONORDERINFO_TITLE}:</strong><br />
 			{LANG_EXECUTIONORDERINFO_TEXT}
         </div>
-		
+
         {PLUGINS_INSTALLED}

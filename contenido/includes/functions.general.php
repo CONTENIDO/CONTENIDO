@@ -27,7 +27,7 @@ cInclude('includes', 'functions.file.php');
 function consoleLog($value, $method = 'log') {
     $method = in_array($method, ['log', 'warn', 'error']) ? $method : 'log';
     $value  = json_encode($value);
-    echo "<script>console.{$method}('{$value}');</script>";
+    echo "<script type='text/javascript'>console.{$method}('{$value}');</script>";
 }
 
 /**
