@@ -39,7 +39,7 @@ $requestIdTpl = cSecurity::toInteger($_REQUEST['idtpl'] ?? '0');
 
 $hasCommonTplRights = null;
 
-$sql = "SELECT * FROM `%d` WHERE `idclient` = %d ORDER BY `name`";
+$sql = "SELECT * FROM `%s` WHERE `idclient` = %d ORDER BY `name`";
 $db->query($sql, cRegistry::getDbTableName('tpl'), $client);
 $tpl->reset();
 
