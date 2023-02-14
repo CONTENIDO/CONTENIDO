@@ -14,6 +14,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cTemplate $tpl
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $belang
+ * @var int $idcat
+ */
+
 $tpl->reset();
 $contenidoNotification = new cGuiNotification();
 
@@ -47,6 +55,8 @@ $requestShowYear = cSecurity::toInteger($_REQUEST['showYear'] ?? '0');
 $requestYear = cSecurity::toInteger($_REQUEST['year'] ?? '0');
 $requestYearMonth = $_REQUEST['yearmonth'] ?? '';
 $requestDisplayType = $_REQUEST['displaytype'] ?? '';
+
+$action = cRegistry::getAction();
 
 if ($action == "stat_show") {
     if (cString::getStringLength($requestYearMonth) < 4) {
@@ -87,7 +97,7 @@ if ($action == "stat_show") {
         if (strcmp($requestYearMonth, "current") == 0) {
             $tpl->set('s', 'STATTITLE', i18n("Current") . ' ' . $stattype);
         } else {
-            $tpl->set('s', 'STATTITLE', $stattype . " " . getCanonicalMonth(cString::getPartOfString($requestYearMonth, 4, 2)) . ' ' . cString::getPartOfString($requestYearMonth, 0, 4));
+            $tpl->set('s', 'STATTITLE', $stattype . " " . cDate::getCanonicalMonth(cString::getPartOfString($requestYearMonth, 4, 2)) . ' ' . cString::getPartOfString($requestYearMonth, 0, 4));
         }
     }
 
@@ -141,5 +151,3 @@ if ($action == "stat_show") {
     $tpl->set('s', 'CONTENTS', $googleNotification . '<br>' . $piwikNotification);
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['blank']);
 }
-
-?>

@@ -14,6 +14,13 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var array $cfg
+ * @var int $frame
+ * @var string $area
+ */
+
 // Global variables, send by the form
 global $idfrontenduser, $username, $newpd, $newpd2, $active;
 
@@ -58,7 +65,7 @@ if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "fr
 
 if ($idfrontenduser && $action != '') {
     $sReloadScript = <<<JS
-<script type="text/javascript">
+<script>
 (function(Con, $) {
     var frame = Con.getFrame('left_bottom');
     if (frame) {
@@ -79,6 +86,7 @@ JS;
 if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "frontend_delete")) {
     $feUsers->delete($idfrontenduser);
 
+    $_cecRegistry = cApiCecRegistry::getInstance();
     $iterator = $_cecRegistry->getIterator("Contenido.Permissions.FrontendUser.AfterDeletion");
 
     while ($chainEntry = $iterator->next()) {
@@ -253,9 +261,9 @@ if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
         $form->add(i18n("Group membership"), $sTemp);
 
         $oUser = new cApiUser($feuser->get("author"));
-        $form->add(i18n("Author"), $oUser->get('username') . " (". displayDatetime($feuser->get("created")).")");
+        $form->add(i18n("Author"), $oUser->get('username') . " (". cDate::formatDatetime($feuser->get("created")).")");
         $oUser2 = new cApiUser($feuser->get("modifiedby"));
-        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (". displayDatetime($feuser->get("modified")).")");
+        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (". cDate::formatDatetime($feuser->get("modified")).")");
     }
     $page->setContent($form);
     if (!empty($sReloadScript)) {
