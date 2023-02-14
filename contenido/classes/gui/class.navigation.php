@@ -227,7 +227,7 @@ class cGuiNavigation {
 
         $sess = cRegistry::getSession();
         $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $main = new cTemplate();
         $sub = new cTemplate();
 
