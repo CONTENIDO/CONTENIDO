@@ -14,18 +14,29 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var cTemplate $tpl
+ * @var cGuiNotification $notification
+ * @var cAuth $auth
+ * @var array $cfg
+ * @var int $frame
+ * @var string $area
+ */
+
+$action = cRegistry::getAction();
+
 if (!$perm->have_perm_area_action($area, $action)) {
     // access denied
     $notification->displayNotification('error', i18n('Permission denied'));
     return;
 }
 
-if (!isset($groupname)) {
-    $groupname = '';
-}
-if (!isset($description)) {
-    $description = '';
-}
+$groupname = $groupname ?? '';
+$description = $description ?? '';
+
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
 // create group instance
 $bError        = false;
@@ -64,11 +75,11 @@ $tpl->reset();
 $tpl->set('s', 'NOTIFICATION', $sNotification);
 $tpl->set('s', 'GROUPID', $groupId);
 
-$form = '<form name="group_properties" method="post" action="'.$sess->url("main.php?").'">
-             <input type="hidden" name="area" value="'.$area.'">
+$form = '<form name="group_properties" method="post" action="' . $sess->url("main.php?") . '">
+             <input type="hidden" name="area" value="' . $area . '">
              <input type="hidden" name="action" value="group_create">
-             <input type="hidden" name="frame" value="'.$frame.'">
-             <input type="hidden" name="idlang" value="'.$lang.'">';
+             <input type="hidden" name="frame" value="' . $frame . '">
+             <input type="hidden" name="idlang" value="' . $lang . '">';
 
 $tpl->set('s', 'FORM', $form);
 $tpl->set('s', 'SUBMITTEXT', i18n("Save changes"));
@@ -87,7 +98,7 @@ $oTxtDesc = new cHTMLTextbox('description', $description, 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtDesc->render());
 $tpl->next();
 
-// permissions of current logged in user
+// permissions of current logged-in user
 $aAuthPerms = explode(',', $auth->auth['perm']);
 
 // sysadmin perm
@@ -125,6 +136,9 @@ foreach ($aClients as $idclient => $item) {
         $sClientCheckboxes .= $defaultperms->toHtml(true);
     }
 }
+if (empty($sClientCheckboxes)) {
+    $sClientCheckboxes = i18n("No client");
+}
 
 $tpl->set('d', 'CATNAME', i18n("Access clients"));
 $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
@@ -139,6 +153,9 @@ foreach ($aClientsLanguages as $item) {
         $defaultlanguages->setLabelText(conHtmlSpecialChars($item['langname'])." (". $item['clientname'] .")");
         $sClientCheckboxes .= $defaultlanguages->toHtml(true);
     }
+}
+if (empty($sClientCheckboxes)) {
+    $sClientCheckboxes = i18n("No language");
 }
 
 $tpl->set('d', 'CATNAME', i18n("Access languages"));
