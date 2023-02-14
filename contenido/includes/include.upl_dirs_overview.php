@@ -35,7 +35,7 @@ $oClient = cRegistry::getClient();
 $oLanguage = cRegistry::getLanguage();
 
 // Display critical error if client or language does not exist
-if (!$oClient->isLoaded() || $oLanguage->isLoaded()) {
+if (!$oClient->isLoaded() || !$oLanguage->isLoaded()) {
     $message = !$oClient->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
     $oPage = new cGuiPage("upl_dirs_overview");
     $oPage->displayCriticalError($message);
