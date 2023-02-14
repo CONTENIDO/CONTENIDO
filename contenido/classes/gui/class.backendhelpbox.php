@@ -96,7 +96,7 @@ class cGuiBackendHelpbox {
             $style = 'style="background: transparent url(' . $this->imageURL . ') no-repeat;"';
         }
 
-        $html = "<a " . $style . " href='javascript://' id='" . $id . "-link' title='" . i18n("More information") . "' class='i-link infoButton'></a>";
+        $html = "<a " . $style . " href='javascript:void(0)' id='" . $id . "-link' title='" . i18n("More information") . "' class='i-link infoButton'></a>";
         $html .= "<div id='" . $id . "' style='display: none;'>" . $this->helpText . "</div>";
 
         if ($return) {

@@ -33,7 +33,7 @@ while (($fegroup = $fegroups->next()) !== false) {
 
     $delTitle = i18n("Delete frontend group");
     $deleteLink = '
-        <a href="javascript:;" data-action="delete_frontendgroup" title="' . $delTitle . '">
+        <a href="javascript:void(0)" data-action="delete_frontendgroup" title="' . $delTitle . '">
             <img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
         </a>';
 

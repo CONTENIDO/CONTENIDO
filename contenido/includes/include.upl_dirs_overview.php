@@ -64,13 +64,13 @@ function getUplExpandCollapseButton($item) {
         if ($item->isCollapsed() == true) {
             $title = i18n('Open category');
             // Attention: Render nodes without whitespace in between!
-            $link = '<a href="javascript://" class="dir_collapse_link" data-action="expand_upl_dir" data-dir="' . $item->getId() . '" 
+            $link = '<a href="javascript:void(0)" class="dir_collapse_link" data-action="expand_upl_dir" data-dir="' . $item->getId() . '" 
                title="' . $title . '"><img class="dir_collapse_img" 
                 src="' . $item->getCollapsedIcon() . '" alt=""></a>';
         } else {
             $title = i18n('Close category');
             // Attention: Render nodes without whitespace in between!
-            $link = '<a href="javascript://" class="dir_collapse_link" data-action="collapse_upl_dir" data-dir="' . $item->getId() . '" 
+            $link = '<a href="javascript:void(0)" class="dir_collapse_link" data-action="collapse_upl_dir" data-dir="' . $item->getId() . '" 
                 title="' . $title . '"><img class="dir_collapse_img" 
                 src="' . $item->getExpandedIcon() . '" alt=""></a>';
         }
@@ -246,14 +246,14 @@ $pathString = '/';
 
 $deleteTitle = i18n("Delete directory");
 $deleteLinkTpl = '
-    <a href="javascript://" data-action="delete_upl_dir" title="' . $deleteTitle . '">
+    <a href="javascript:void(0)" data-action="delete_upl_dir" title="' . $deleteTitle . '">
         <img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteTitle . '" alt="' . $deleteTitle . '">
     </a>
 ';
 
 // Show link
 $showLink = sprintf(
-    '<a id="root" href="javascript://" class="show_item" data-action="show_upl_dir">%s</a>',
+    '<a id="root" href="javascript:void(0)" class="show_item" data-action="show_upl_dir">%s</a>',
     '<img class="dir_root_img" src="images/ordner_oben.gif" alt="">' . $file
 );
 
@@ -283,7 +283,7 @@ if (is_array($objects)) {
 
         // Show link
         $showLink = sprintf(
-            '<a href="javascript://" class="dir_folder_link show_item" data-action="show_upl_dir">%s</a>',
+            '<a href="javascript:void(0)" class="dir_folder_link show_item" data-action="show_upl_dir">%s</a>',
             '<img class="dir_folder_img" src="images/grid_folder.gif" alt="">' . $file
         );
 
@@ -366,7 +366,7 @@ unset($objects[0]);
 
 // Show link
 $showLink = sprintf(
-    '<a href="javascript://" class="show_item" data-action="show_upl_dir">%s</a>',
+    '<a href="javascript:void(0)" class="show_item" data-action="show_upl_dir">%s</a>',
     '<img class="dir_root_img" src="images/ordner_oben.gif" alt="">' . $file
 );
 
@@ -404,7 +404,7 @@ if (is_array($objects)) {
 
         // Show link
         $showLink = sprintf(
-            '<a href="javascript://" class="dir_folder_link show_item" data-action="show_upl_dir">%s</a>',
+            '<a href="javascript:void(0)" class="dir_folder_link show_item" data-action="show_upl_dir">%s</a>',
             '<img class="dir_folder_img" src="images/grid_folder.gif" alt="">' . $file
         );
 

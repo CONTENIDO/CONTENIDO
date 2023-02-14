@@ -60,7 +60,7 @@ while (($layout = $oLayouts->next()) !== false) {
     $tpl->set('d', 'ID', $marked);
     $tpl->set('d', 'DATA_ID', $idlay);
     $tpl->set('d', 'DESCRIPTION', ($descr == '') ? '' : $descr);
-    $tpl->set('d', 'NAME', '<a href="javascript:;" class="show_item" data-action="show_layout">' . $name . '</a>');
+    $tpl->set('d', 'NAME', '<a href="javascript:void(0)" class="show_item" data-action="show_layout">' . $name . '</a>');
 
     $inUse = $layout->isInUse();
     $hasDeletePermission = $perm->have_perm_area_action_item('lay', 'lay_delete', $idlay);
@@ -68,7 +68,7 @@ while (($layout = $oLayouts->next()) !== false) {
     // In use link
     if ($inUse) {
         $inUseDescr = i18n("Click for more information about usage");
-        $inUseLink = '<a href="javascript:;" title="'.$inUseDescr.'" data-action="inused_layout">'
+        $inUseLink = '<a href="javascript:void(0)" title="'.$inUseDescr.'" data-action="inused_layout">'
                    . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'exclamation.gif" title="'.$inUseDescr.'" alt="'.$inUseDescr.'"></a>';
     } else {
         $inUseLink = '';
@@ -82,7 +82,7 @@ while (($layout = $oLayouts->next()) !== false) {
             $delLink  = '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" title="'.$delTitle.'" alt="'.$delTitle.'">';
         } else {
             $delTitle = i18n("Delete layout");
-            $delLink  = '<a href="javascript:;" data-action="delete_layout" title="'.$delTitle.'">'
+            $delLink  = '<a href="javascript:void(0)" data-action="delete_layout" title="'.$delTitle.'">'
                       . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete.gif" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
         }
     } elseif ($hasDeletePermission && $inUse) {
