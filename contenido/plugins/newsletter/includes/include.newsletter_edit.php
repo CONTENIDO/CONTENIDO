@@ -505,12 +505,12 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     );
 
     $oUser = new cApiUser($oNewsletter->get("author"));
-    $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (" . displayDatetime($oNewsletter->get("created")) . ")");
+    $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (" . cDate::formatDatetime($oNewsletter->get("created")) . ")");
     $oUser = new cApiUser($oNewsletter->get("modifiedby"));
-    $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (" . displayDatetime($oNewsletter->get("modified")) . ")");
+    $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (" . cDate::formatDatetime($oNewsletter->get("modified")) . ")");
 
     $sExecScript = '
-    <script type="text/javascript">
+    <script>
     (function(Con, $) {
         function actionDispatchChange($element) {
             $("input[name=\'txtDispatchCount\']").prop("disabled", !$element.prop("checked"));

@@ -12,9 +12,23 @@
  * @link             http://www.contenido.org
  */
 
+/**
+ * @var string $belang
+ * @var array $cfg
+ * @var array $cfgClient
+ * @var int $lang
+ * @var int $client
+ * @var int $frame
+ */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.upl.php');
+
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+
+$path = $path ?? '';
 
 // Define local filename variable
 $filename = cSecurity::escapeString($_REQUEST['file']);
@@ -68,7 +82,9 @@ if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs
     $bDirectoryIsWritable = false;
 }
 
-$uploads->select("idclient = '" . $client . "' AND dirname = '" . $qpath . "' AND filename='" . $filename . "'");
+$where = "`idclient` = %d AND `dirname` = '%s' AND `filename` = '%s'";
+$where = $uploads->prepare($where, $client, $qpath, $filename);
+$uploads->select($where);
 
 if ($upload = $uploads->next()) {
 
@@ -93,9 +109,8 @@ if ($upload = $uploads->next()) {
         $id = $_GET['user_id'];
         //echo '<input type="button" value="test";
 
-        if (isset($_SESSION['zip']) && $_SESSION['zip'] === 'extract') {
-
-        }
+        //if (isset($_SESSION['zip']) && $_SESSION['zip'] === 'extract') {
+        //}
 
         $link = new cHTMLLink();
         $link->appendContent(i18n('extract'));
@@ -110,6 +125,7 @@ if ($upload = $uploads->next()) {
     }
 
     // Call chains to process the rows
+    $_cecRegistry = cApiCecRegistry::getInstance();
     $_cecIterator = $_cecRegistry->getIterator('Contenido.Upl_edit.Rows');
     if ($_cecIterator->count() > 0) {
         while ($chainEntry = $_cecIterator->next()) {
@@ -259,12 +275,12 @@ if ($upload = $uploads->next()) {
 
             case 'author':
                 $oUser = new cApiUser($upload->get('author'));
-                $sCell = $oUser->get('username') . ' (' . displayDatetime($upload->get('created')) . ')';
+                $sCell = $oUser->get('username') . ' (' . cDate::formatDatetime($upload->get('created')) . ')';
                 break;
 
             case 'modified':
                 $oUser = new cApiUser($upload->get('modifiedby'));
-                $sCell = $oUser->get('username') . ' (' . displayDatetime($upload->get('lastmodified')) . ')';
+                $sCell = $oUser->get('username') . ' (' . cDate::formatDatetime($upload->get('lastmodified')) . ')';
                 break;
 
             default:
@@ -283,7 +299,7 @@ if ($upload = $uploads->next()) {
     }
 
     if ($bDirectoryIsWritable == false) {
-        $pager->displayError(i18n('Directory not writable') . ' (' . $cfgClient[$client]['upl']['path'] . $path . ')');
+        $page->displayError(i18n('Directory not writable') . ' (' . $cfgClient[$client]['upl']['path'] . $path . ')');
     }
 
     $page->set('s', 'FORM', $form->render());

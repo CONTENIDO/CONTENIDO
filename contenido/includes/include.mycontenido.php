@@ -40,7 +40,7 @@ if ($saveLoginTime === true) {
     $vuser->setUserProperty('system', 'lastlogintime', $lastTime);
 }
 
-$lastlogin = displayDatetime($vuser->getUserProperty('system', 'lastlogintime'));
+$lastlogin = cDate::formatDatetime($vuser->getUserProperty('system', 'lastlogintime'));
 if ($lastlogin == '') {
     $lastlogin = i18n('No Login Information available.');
 }

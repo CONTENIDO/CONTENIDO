@@ -73,7 +73,7 @@ if (true !== $workflow->isLoaded()) {
     $header = i18n("Edit workflow", "workflow");
     $description = preg_replace("/\"/","",($workflow->getField("description")));
     $name = preg_replace("/\"/","",($workflow->getField("name")));
-    $created = displayDatetime($workflow->get("created"));
+    $created = cDate::formatDatetime($workflow->get("created"));
     $userObj = new cApiUser($workflow->get("idauthor"));
     $author = $userObj->getEffectiveName();
 }

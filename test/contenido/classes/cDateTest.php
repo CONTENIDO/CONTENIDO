@@ -100,20 +100,28 @@ class cDateTest extends cTestingTestCase
 
     /**
      * Test {@see cDate::getCanonicalMonth()}.
-     * @TODO Implement this test.
      */
     public function testGetCanonicalMonth()
     {
-        $this->markTestIncomplete('This test has not been implemented yet.');
+        foreach ([null, 0, 13] as $month) {
+            $this->assertNull(cDate::getCanonicalMonth($month));
+        }
+        foreach (range(1, 12) as $month) {
+            $this->assertNotNull(cDate::getCanonicalMonth($month));
+        }
     }
 
     /**
      * Test {@see cDate::getCanonicalDay()}.
-     * @TODO Implement this test.
      */
     public function testGetCanonicalDay()
     {
-        $this->markTestIncomplete('This test has not been implemented yet.');
+        foreach ([null, 0, 8] as $weekday) {
+            $this->assertNull(cDate::getCanonicalDay($weekday));
+        }
+        foreach (range(1, 7) as $weekday) {
+            $this->assertNotNull(cDate::getCanonicalDay($weekday));
+        }
     }
 
     /**
