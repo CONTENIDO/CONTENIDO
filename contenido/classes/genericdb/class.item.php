@@ -36,7 +36,7 @@ abstract class Item extends cItemBaseAbstract {
      * Storage of the fields which were modified, where the keys are the
      * field names and the values just simple booleans.
      *
-     * @var array
+     * @var array|null
      */
     protected $modifiedValues;
 
@@ -422,10 +422,17 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         // Flag as modified
+        $modified = false;
         if (!isset($this->values[$sField])) {
-            $this->modifiedValues[$sField] = true;
+            $modified = true;
         } elseif ($this->values[$sField] !== $mValue) {
-            $this->modifiedValues[$sField] = true;
+            $modified = true;
+        }
+        if ($modified) {
+            if (!is_array($this->modifiedValues)) {
+                $this->modifiedValues = [];
+                $this->modifiedValues[$sField] = true;
+            }
         }
 #        if ($this->values[$sField] != $mValue || cString::getStringLength($this->values[$sField]) != cString::getStringLength($mValue)) {
 #            $this->modifiedValues[$sField] = true;
