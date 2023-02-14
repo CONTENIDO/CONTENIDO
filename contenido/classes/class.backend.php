@@ -299,6 +299,7 @@ class cBackend {
         $idcat = cSecurity::toInteger($idcat);
         $idart = cSecurity::toInteger($idart);
         $idaction = $oDb->escape($idaction);
+        $idactionOrg = $idaction;
 
         if ($idcat > 0 && $idart > 0) {
             $oCatArtColl = new cApiCategoryArticleCollection();
@@ -315,7 +316,14 @@ class cBackend {
             $oActionLogColl = new cApiActionlogCollection();
             $oActionLogColl->create($auth->auth['uid'], $client, $lang, $idaction, $idcatart, $timestamp);
         } else {
-            echo $oldAction . ' is not in the actions table!<br><br>';
+            $frame = cRegistry::getFrame();
+            $msg = 'cBackend: ' . $oldAction . ' is not in the actions table! ' . "\n"
+                . 'Parameter: '. print_r([
+                    'idcat' => $idcat, 'idart' => $idart, 'client' => $client, 'lang' => $lang,
+                    'frame' => $frame, 'idactionOriginal' => $idactionOrg, 'idaction' => $idaction
+                ], true
+                );
+            cDebug::out($msg);
         }
     }
 
