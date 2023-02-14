@@ -20,7 +20,7 @@ $cfg = cRegistry::getConfig();
 $perm = cRegistry::getPerm();
 $sess = cRegistry::getSession();
 
-$restrict = (isset($_REQUEST['restrict'])) ? cSecurity::toString($_REQUEST['restrict']) : '';
+$restrict = cSecurity::toString($_REQUEST['restrict'] ?? '');
 
 // The following lines unset all right objects since I don't know (or I was unable
 // to find out) if they are global and/or session variables - so if you are

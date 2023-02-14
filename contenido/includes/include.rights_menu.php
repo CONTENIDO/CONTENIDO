@@ -79,16 +79,23 @@ if (($elemPerPage * $mPage) >= $iSumUsers + $elemPerPage && $mPage != 1) {
     $mPage--;
 }
 
-$currentUserHasSysadminPerm = cPermission::checkSysadminPermission($auth->getPerms());
+/**
+ * @var cApiUser $currentuser
+ */
+$rightsAreasHelper = new cRightsAreasHelper($currentuser, $auth, []);
+
+$isAuthUserSysadmin = $rightsAreasHelper->isAuthSysadmin();
 
 while ($cApiUser = $cApiUserCollection->next()) {
     $userid = $cApiUser->get('user_id');
 
     $aUserPermissions = explode(',', $cApiUser->get('perms') ?? '');
+    $rightsAreasHelper->setContextPermissions($aUserPermissions);
+
 
     $bDisplayUser = false;
 
-    if ($currentUserHasSysadminPerm) {
+    if ($isAuthUserSysadmin) {
         $bDisplayUser = true;
     }
 

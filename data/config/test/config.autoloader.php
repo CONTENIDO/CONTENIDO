@@ -310,6 +310,7 @@ return [
     'cRegistry' => 'contenido/classes/class.registry.php',
     'cRequestValidator' => 'contenido/classes/class.requestvalidator.php',
     'cRights' => 'contenido/classes/class.rights.php',
+    'cRightsAreasHelper' => 'contenido/classes/class.rights.areas.helper.php',
     'cRuntimeException' => 'contenido/classes/exceptions/class.exception.runtime.php',
     'cSearch' => 'contenido/classes/search/class.search.php',
     'cSearchBaseAbstract' => 'contenido/classes/search/class.search.base.abstract.php',

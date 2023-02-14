@@ -86,15 +86,23 @@ $db->query($sql);
 $thisperm = explode(',', $auth->auth['perm']);
 
 $accessibleClients = $classclient->getAccessibleClients();
-$currentUserHasSysadminPerm = cPermission::checkSysadminPermission($auth->getPerms());
+
+/**
+ * @var cApiUser $currentuser
+ */
+$rightsAreasHelper = new cRightsAreasHelper($currentuser, $auth, []);
+
+$isAuthUserSysadmin = $rightsAreasHelper->isAuthSysadmin();
 
 while ($db->nextRecord()) {
     $groupperm = explode(',', $db->f('perms'));
 
+    $rightsAreasHelper->setContextPermissions($groupperm);
+
     $allow = false;
 
     // Sysadmin check
-    if ($currentUserHasSysadminPerm) {
+    if ($isAuthUserSysadmin) {
         $allow = true;
     }
 

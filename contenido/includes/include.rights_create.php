@@ -14,7 +14,11 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $notification, $tpl;
+/**
+ * @var cApiUser $currentuser
+ * @var cGuiNotification $notification
+ * @var cTemplate $tpl
+ */
 
 // Form variables from POST
 global $username, $realname, $mclient, $mlang, $password, $passwordagain, $email, $telephone,
@@ -230,79 +234,53 @@ if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)
     $tpl->set('s', 'CAL_LANG', '');
 }
 
-$hasSysadminPerm = cPermission::checkSysadminPermission($auth->getPerms());
+// Build perm checkboxes and properties table with the helper
+$rightsAreasHelper = new cRightsAreasHelper($currentuser, $auth, $aPerms);
+$isAuthUserSysadmin = $rightsAreasHelper->isAuthSysadmin();
+$isContextSysadmin = $rightsAreasHelper->isContextSysadmin();
 
-// sysadmin perm
-if ($hasSysadminPerm) {
+// Sysadmin perm checkbox
+if ($isAuthUserSysadmin) {
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
-    $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', cPermission::checkSysadminPermission($aPerms));
+    $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', $isContextSysadmin);
     $tpl->set('d', 'CATFIELD', $oCheckbox->toHtml(false));
     $tpl->next();
 }
 
-// clients admin perms
-$oClientsCollection = new cApiClientCollection();
-$aClients = $oClientsCollection->getAvailableClients();
-$sClientCheckboxes = '';
-foreach ($aClients as $idclient => $item) {
-    $hasClientAdminPerm = cPermission::checkClientAdminPermission($idclient, $auth->getPerms());
-    if ($hasClientAdminPerm || $hasSysadminPerm) {
-        $oCheckbox = new cHTMLCheckbox(
-            "madmin[" . $idclient . "]",
-            $idclient,
-            "madmin[" . $idclient . "]" . $idclient,
-            cPermission::checkClientAdminPermission($idclient, $aPerms)
-        );
-        $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
-        $sClientCheckboxes .= $oCheckbox->toHtml();
-    }
-}
-
-if ($sClientCheckboxes !== '') {
+// Clients admin perms checkboxes
+$aClients = $rightsAreasHelper->getAvailableClients();
+$sClientCheckboxes = $rightsAreasHelper->renderClientAdminCheckboxes($aClients);
+if (!empty($sClientCheckboxes)) {
     $tpl->set('d', 'CATNAME', i18n("Administrator"));
     $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
     $tpl->next();
 }
 
-// clients perms
+// Clients perms checkboxes
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    $hasClientPerm = cPermission::checkClientPermission($idclient, $auth->getPerms());
-    $hasClientAdminPerm = cPermission::checkClientAdminPermission($idclient, $auth->getPerms());
-    if ($hasClientPerm || $hasClientAdminPerm || $hasSysadminPerm) {
-        $oCheckbox = new cHTMLCheckbox(
-            "mclient[" . $idclient . "]",
-            $idclient,
-            "mclient[" . $idclient . "]" . $idclient,
-            cPermission::checkClientPermission($idclient, $aPerms)
-        );
-        $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
-        $sClientCheckboxes .= $oCheckbox->toHtml();
+    $hasAuthUserClientPerm = $rightsAreasHelper->hasAuthClientPerm($idclient);
+    $isAuthUserClientAdmin = $rightsAreasHelper->isAuthClientAdmin($idclient);
+    if ($hasAuthUserClientPerm || $isAuthUserClientAdmin || $isAuthUserSysadmin) {
+        $sClientCheckboxes .= $rightsAreasHelper->renderClientPermCheckbox($idclient, $item['name']);
     }
 }
-
 $tpl->set('d', 'CATNAME', i18n("Access clients"));
 $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
 $tpl->next();
 
-// languages perms
+// Languages perms checkboxes
 $aClientsLanguages = getAllClientsAndLanguages();
 $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
-    $hasLanguagePerm = cPermission::checkLanguagePermission($item['idlang'], $auth->getPerms());
-    $hasClientAdminPerm = cPermission::checkClientAdminPermission($item['idclient'], $auth->getPerms());
-    if ($hasLanguagePerm || $hasClientAdminPerm) {
-        $oCheckbox = new cHTMLCheckbox(
-            "mlang[" . $item['idlang'] . "]",
-            $item['idlang'],
-            "mlang[" . $item['idlang'] . "]" . $item['idlang'],
-            cPermission::checkLanguagePermission($item['idlang'], $aPerms)
+    $hasLanguagePerm = $rightsAreasHelper->hasAuthLanguagePerm($item['idlang']);
+    $isAuthUserClientAdmin = $rightsAreasHelper->isAuthClientAdmin($item['idclient']);
+    if ($hasLanguagePerm || $isAuthUserClientAdmin) {
+        $sClientCheckboxes .= $rightsAreasHelper->renderLanguagePermCheckbox(
+            $item['idlang'], $item['langname'], $item['clientname']
         );
-        $oCheckbox->setLabelText(conHtmlSpecialChars($item['langname']) . " (" . $item['clientname'] . ")");
-        $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
-
 $tpl->set('d', 'CATNAME', i18n("Access languages"));
 $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
 $tpl->next();
