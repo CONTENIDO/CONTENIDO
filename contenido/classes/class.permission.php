@@ -534,7 +534,7 @@ class cPermission {
      * @param cApiUser|bool $oUser
      *         User object to check against, or false for the current user
      *
-     * @return cApiGroup
+     * @return cApiUser
      *
      * @throws cInvalidArgumentException
      *         if the given or constructed user is not a cApiUser object
