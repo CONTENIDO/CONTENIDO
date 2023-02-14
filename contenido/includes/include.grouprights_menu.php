@@ -86,6 +86,7 @@ $db->query($sql);
 $thisperm = explode(',', $auth->auth['perm']);
 
 $accessibleClients = $classclient->getAccessibleClients();
+$currentUserHasSysadminPerm = cPermission::checkSysadminPermission($auth->getPerms());
 
 while ($db->nextRecord()) {
     $groupperm = explode(',', $db->f('perms'));
@@ -93,25 +94,29 @@ while ($db->nextRecord()) {
     $allow = false;
 
     // Sysadmin check
-    if (in_array("sysadmin", $thisperm)) {
+    if ($currentUserHasSysadminPerm) {
         $allow = true;
     }
 
-    // Admin check
-    foreach ($accessibleClients as $key => $value) {
-        if (in_array("client[" . $key . "]", $groupperm)) {
-            $allow = true;
+    if (!$allow) {
+        // Admin check
+        foreach ($accessibleClients as $key => $value) {
+            if (cPermission::checkClientPermission($key, $groupperm)) {
+                $allow = true;
+            }
         }
     }
 
-    // Group check
-    foreach ($groupperm as $localperm) {
-        if (in_array($localperm, $thisperm)) {
-            $allow = true;
+    if (!$allow) {
+        // Group check
+        foreach ($groupperm as $localperm) {
+            if (in_array($localperm, $thisperm)) {
+                $allow = true;
+            }
         }
     }
 
-    if ($allow == true) {
+    if ($allow) {
         $groupid = $db->f("group_id");
         $groupname = conHtmlSpecialChars($db->f("groupname"));
         $groupname = cString::getPartOfString($groupname, 4);

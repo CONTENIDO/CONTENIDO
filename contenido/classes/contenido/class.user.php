@@ -43,7 +43,7 @@ class cApiUserCollection extends ItemCollection {
     }
 
     /**
-     * Creates a user by user name.
+     * Creates a user by username.
      *
      * @param string $username
      *
@@ -53,12 +53,12 @@ class cApiUserCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($username) {
-        $primaryKeyValue = md5($username);
-
-        $item = $this->createNewItem($primaryKeyValue);
-        if ($item->usernameExists($username)) {
+        if (cApiUser::usernameExists($username)) {
             return false;
         }
+
+        $primaryKeyValue = md5($username);
+        $item = $this->createNewItem($primaryKeyValue);
 
         $item->set('username', $username);
         $item->set('salt', md5($username . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999)));
@@ -74,7 +74,7 @@ class cApiUserCollection extends ItemCollection {
      *         Specifies the username
      *
      * @return bool
-     *         True if the delete was successful
+     *         True if the deletion was successful
      *
      * @throws cDbException
      * @throws cInvalidArgumentException
@@ -226,7 +226,7 @@ class cApiUserCollection extends ItemCollection {
      * @throws cException
      */
     public function fetchClientAdmins($client) {
-        $client = (int)$client;
+        $client = cSecurity::toInteger($client);
         $users  = [];
         $where  = "perms LIKE '%admin[" . $client . "]%'";
 
@@ -485,7 +485,7 @@ class cApiUser extends Item {
         // any min length in config set?
         $iMinLength = self::MIN_PASS_LENGTH_DEFAULT;
         if (isset($cfgPw['min_length'])) {
-            $iMinLength = (int) $cfgPw['min_length'];
+            $iMinLength = cSecurity::toInteger($cfgPw['min_length']);
         }
 
         // check length...
@@ -646,7 +646,7 @@ class cApiUser extends Item {
     }
 
     /**
-     * Returns user name, currently set
+     * Returns username, currently set
      *
      * @return string
      */
@@ -655,7 +655,7 @@ class cApiUser extends Item {
     }
 
     /**
-     * Sets up new user name.
+     * Sets up new username.
      *
      * @param string $sUserName
      */
@@ -676,7 +676,7 @@ class cApiUser extends Item {
     }
 
     /**
-     * Returns effective user name (if exists realname , otherwise username)
+     * Returns effective username (if exists realname , otherwise username)
      *
      * @return string
      *         Realname or username of user
@@ -883,13 +883,12 @@ class cApiUser extends Item {
     }
 
     /**
-     * Setter method to set valid_to
+     * Setter method to set valid_to.
      *
-     * @todo add type check
      * @param string $sValidateTo
      */
     public function setValidDateTo($sValidateTo) {
-        if ('0000-00-00' == $this->get('valid_to') && 0 == cString::getStringLength(trim($sValidateTo))) {
+        if (is_string($sValidateTo) && cDate::isEmptyDate($this->get('valid_to')) && cDate::isEmptyDate(trim($sValidateTo))) {
             return;
         }
         if ($this->get('valid_to') != $sValidateTo) {
@@ -900,11 +899,10 @@ class cApiUser extends Item {
     /**
      * Setter method to set valid_from
      *
-     * @todo add type checks
      * @param string $sValidateFrom
      */
     public function setValidDateFrom($sValidateFrom) {
-        if ('0000-00-00' == $this->get('valid_from') && 0 == cString::getStringLength(trim($sValidateFrom))) {
+        if (is_string($sValidateFrom) && cDate::isEmptyDate($this->get('valid_from')) && cDate::isEmptyDate(trim($sValidateFrom))) {
             return;
         }
         if ($this->get('valid_from') != $sValidateFrom) {
@@ -1151,7 +1149,7 @@ class cApiUser extends Item {
      */
     public function setUserProperty($type, $name, $value) {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
-        $userProps = $userPropColl->setValueByTypeName($type, $name, $value);
+        $userPropColl->setValueByTypeName($type, $name, $value);
     }
 
     /**

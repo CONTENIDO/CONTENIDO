@@ -14,6 +14,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cApiUser $currentuser
+ * @var cPermission $perm
+ * @var int $frame
+ * @var string $area
+ * @var array $cfg
+ */
+
 $page = new cGuiPage("systemsettings");
 
 $aManagedValues = [
@@ -30,11 +38,11 @@ $requestSysName = trim($_REQUEST['sysname'] ?? '');
 $requestSysValue = trim($_REQUEST['sysvalue'] ?? '');
 $requestCsIdSystemProp = cSecurity::toInteger($_REQUEST['csidsystemprop'] ?? '0');
 
-// @TODO: Check possibility to use $perm->isSysadmin()
-$isSysadmin = (false !== cString::findFirstPos($auth->auth["perm"], "sysadmin"));
+$action = cRegistry::getAction();
+$isSysadmin = $perm->isSysadmin($currentuser);
 
 if ($action == "systemsettings_save_item") {
-    if (false === $isSysadmin) {
+    if (!$isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
         if (!in_array($requestSysType . '_' . $requestSysName, $aManagedValues)) {
@@ -51,7 +59,7 @@ if ($action == "systemsettings_save_item") {
 }
 
 if ($action == "systemsettings_delete_item") {
-    if (false === $isSysadmin) {
+    if (!$isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
         deleteSystemProperty($requestSysType, $requestSysName);
@@ -65,7 +73,7 @@ $list->setCell(1, 1, i18n("Type"));
 $list->setCell(1, 2, i18n("Name"));
 $list->setCell(1, 3, i18n("Value"));
 
-if (true === $isSysadmin) {
+if ($isSysadmin) {
     $list->setCell(1, 4, i18n("Action"));
 }
 
@@ -73,7 +81,9 @@ $backendUrl = cRegistry::getBackendUrl();
 
 $count = 2;
 
-if (true === $isSysadmin) {
+$oLinkEdit = null;
+$oLinkDelete = null;
+if ($isSysadmin) {
     // Edit/delete links only for sysadmin
     $oLinkEdit = new cHTMLLink();
     $oLinkEdit->setCLink($area, $frame, "systemsettings_edit_item");
@@ -199,28 +209,28 @@ $form->add(i18n("Value"), $inputbox->render());
 $spacer = new cHTMLDiv();
 $spacer->setContent("<br>");
 
-$renderobj = [];
+$renderObjects = [];
 
 if ($action == "systemsettings_edit_item") {
-    if (false === $isSysadmin) {
+    if (!$isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
-        $renderobj[] = $list;
+        $renderObjects[] = $list;
     } else {
         $form2 = new cHTMLForm("systemsettings");
         $form2->setVar("area", $area);
         $form2->setVar("frame", $frame);
         $form2->setVar("action", "systemsettings_save_item");
         $form2->appendContent($list->render());
-        $renderobj[] = $form2;
+        $renderObjects[] = $form2;
     }
 } else {
-    $renderobj[] = $list;
+    $renderObjects[] = $list;
 }
 
-if (true === $isSysadmin) {
-    $renderobj[] = $spacer;
-    $renderobj[] = $form;
+if ($isSysadmin) {
+    $renderObjects[] = $spacer;
+    $renderObjects[] = $form;
 }
 
-$page->setContent($renderobj);
+$page->setContent($renderObjects);
 $page->render();

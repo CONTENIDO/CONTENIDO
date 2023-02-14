@@ -14,7 +14,10 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $notification, $tpl, $username, $realname, $mclient, $mlang, $password, $passwordagain, $email, $telephone,
+global $notification, $tpl;
+
+// Form variables from POST
+global $username, $realname, $mclient, $mlang, $password, $passwordagain, $email, $telephone,
        $address_street, $address_city, $address_zip, $address_country, $wysi, $valid_from, $valid_to;
 
 $auth = cRegistry::getAuth();
@@ -32,9 +35,9 @@ if (!$perm->have_perm_area_action($area, $action)) {
     return;
 }
 
-if (!isset($wysi)) {
-    $wysi = 1;
-}
+$wysi = cSecurity::toInteger($wysi ?? '1');
+$username = $username ?? '';
+$realname = $realname ?? '';
 
 $aPerms = [];
 $sNotification = '';
@@ -58,12 +61,9 @@ if ($action == 'user_createuser') {
         $sNotification = $notification->returnNotification("warning", i18n("Password can't be empty"));
         $bError = true;
     } else {
-
         if (is_array($mclient) && count($mclient) > 0) {
-
             // Prevent setting the permissions for a client without a language of that client
             foreach ($mclient as $selectedclient) {
-
                 // Get all available languages for selected client
                 $clientLanguageCollection = new cApiClientLanguageCollection();
                 $availablelanguages = $clientLanguageCollection->getLanguagesByClient($selectedclient);
@@ -77,25 +77,20 @@ if ($action == 'user_createuser') {
                     $sNotification = $notification->returnNotification("warning", i18n("You can only assign users to a client with languages."));
                     $bError = true;
                 } else {
-
                     // Client has one or more assigned language(s)
-                       foreach ($mlang as $selectedlanguage) {
-
-                           if (!$clientLanguageCollection->hasLanguageInClients($selectedlanguage, $mclient)) {
-                               // Selected language are not assigned to selected client
-                               $sNotification = $notification->returnNotification("warning", i18n("You have to select a client with a language of that client."));
-                               $bError = true;
-                           }
-                       }
-
-                   }
-
+                    foreach ($mlang as $selectedlanguage) {
+                        if (!$clientLanguageCollection->hasLanguageInClients($selectedlanguage, $mclient)) {
+                            // Selected language are not assigned to selected client
+                            $sNotification = $notification->returnNotification("warning", i18n("You have to select a client with a language of that client."));
+                            $bError = true;
+                        }
+                    }
+                }
             }
-
         }
 
         // If we have no errors, continue to create a user
-        if ($bError == false) {
+        if (!$bError) {
             $aPerms = cRights::buildUserOrGroupPermsFromRequest(true);
 
             if (cApiUser::usernameExists($username)) {
@@ -111,7 +106,7 @@ if ($action == 'user_createuser') {
                 // equal
                 $oUserCollection = new cApiUserCollection();
                 $oUser = $oUserCollection->create($username);
-                $oUser->setPassword($password);
+                $result = $oUser->setPassword($password);
                 $oUser->setRealName($realname);
                 $oUser->setMail($email);
                 $oUser->setTelNumber($telephone);
@@ -235,13 +230,12 @@ if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)
     $tpl->set('s', 'CAL_LANG', '');
 }
 
-// permissions of current logged in user
-$aAuthPerms = explode(',', $auth->auth['perm']);
+$hasSysadminPerm = cPermission::checkSysadminPermission($auth->getPerms());
 
 // sysadmin perm
-if (in_array('sysadmin', $aAuthPerms)) {
+if ($hasSysadminPerm) {
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
-    $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', in_array('sysadmin', $aPerms));
+    $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', cPermission::checkSysadminPermission($aPerms));
     $tpl->set('d', 'CATFIELD', $oCheckbox->toHtml(false));
     $tpl->next();
 }
@@ -251,8 +245,14 @@ $oClientsCollection = new cApiClientCollection();
 $aClients = $oClientsCollection->getAvailableClients();
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    if (in_array("admin[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
-        $oCheckbox = new cHTMLCheckbox("madmin[" . $idclient . "]", $idclient, "madmin[" . $idclient . "]" . $idclient, in_array("admin[" . $idclient . "]", $aPerms));
+    $hasClientAdminPerm = cPermission::checkClientAdminPermission($idclient, $auth->getPerms());
+    if ($hasClientAdminPerm || $hasSysadminPerm) {
+        $oCheckbox = new cHTMLCheckbox(
+            "madmin[" . $idclient . "]",
+            $idclient,
+            "madmin[" . $idclient . "]" . $idclient,
+            cPermission::checkClientAdminPermission($idclient, $aPerms)
+        );
         $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
@@ -267,8 +267,15 @@ if ($sClientCheckboxes !== '') {
 // clients perms
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    if (in_array("client[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[" . $idclient . "]", $aAuthPerms)) {
-        $oCheckbox = new cHTMLCheckbox("mclient[" . $idclient . "]", $idclient, "mclient[" . $idclient . "]" . $idclient, in_array("client[" . $idclient . "]", $aPerms));
+    $hasClientPerm = cPermission::checkClientPermission($idclient, $auth->getPerms());
+    $hasClientAdminPerm = cPermission::checkClientAdminPermission($idclient, $auth->getPerms());
+    if ($hasClientPerm || $hasClientAdminPerm || $hasSysadminPerm) {
+        $oCheckbox = new cHTMLCheckbox(
+            "mclient[" . $idclient . "]",
+            $idclient,
+            "mclient[" . $idclient . "]" . $idclient,
+            cPermission::checkClientPermission($idclient, $aPerms)
+        );
         $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
@@ -282,8 +289,15 @@ $tpl->next();
 $aClientsLanguages = getAllClientsAndLanguages();
 $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
-    if ($perm->have_perm_client("lang[" . $item['idlang'] . "]") || $perm->have_perm_client("admin[" . $item['idclient'] . "]")) {
-        $oCheckbox = new cHTMLCheckbox("mlang[" . $item['idlang'] . "]", $item['idlang'], "mlang[" . $item['idlang'] . "]" . $item['idlang'], in_array("lang[" . $item['idlang'] . "]", $aPerms));
+    $hasLanguagePerm = cPermission::checkLanguagePermission($item['idlang'], $auth->getPerms());
+    $hasClientAdminPerm = cPermission::checkClientAdminPermission($item['idclient'], $auth->getPerms());
+    if ($hasLanguagePerm || $hasClientAdminPerm) {
+        $oCheckbox = new cHTMLCheckbox(
+            "mlang[" . $item['idlang'] . "]",
+            $item['idlang'],
+            "mlang[" . $item['idlang'] . "]" . $item['idlang'],
+            cPermission::checkLanguagePermission($item['idlang'], $aPerms)
+        );
         $oCheckbox->setLabelText(conHtmlSpecialChars($item['langname']) . " (" . $item['clientname'] . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }

@@ -199,7 +199,7 @@ if (!empty($request['userprop_type']) && !empty($request['userprop_name'])) {
 }
 
 if (count($aPerms) == 0 || $action == '' || !isset($action)) {
-    $aPerms = explode(',', $oUser->getField('perms'));
+    $aPerms = explode(',', $oUser->getField('perms') ?? '');
 }
 
 $tpl->reset();
@@ -248,37 +248,37 @@ if ($msysadmin || $oUser->getField('password') != 'active_directory_auth') {
 
 $tpl->set('d', 'ROW_ID', "email");
 $tpl->set('d', 'CATNAME', i18n("E-Mail"));
-$oTxtEmail = new cHTMLTextbox('email', conHtmlSpecialChars($oUser->getField('email')), 40, 255);
+$oTxtEmail = new cHTMLTextbox('email', conHtmlSpecialChars($oUser->getField('email') ?? ''), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtEmail->render());
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "phone_number");
 $tpl->set('d', 'CATNAME', i18n("Phone number"));
-$oTxtTel = new cHTMLTextbox('telephone', conHtmlSpecialChars($oUser->getField('telephone')), 40, 255);
+$oTxtTel = new cHTMLTextbox('telephone', conHtmlSpecialChars($oUser->getField('telephone') ?? ''), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtTel->render());
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "street");
 $tpl->set('d', 'CATNAME', i18n("Street"));
-$oTxtStreet = new cHTMLTextbox('address_street', conHtmlSpecialChars($oUser->getField('address_street')), 40, 255);
+$oTxtStreet = new cHTMLTextbox('address_street', conHtmlSpecialChars($oUser->getField('address_street') ?? ''), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtStreet->render());
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "zip_code");
 $tpl->set('d', 'CATNAME', i18n("ZIP code"));
-$oTxtZip = new cHTMLTextbox('address_zip', conHtmlSpecialChars($oUser->getField('address_zip')), 10, 10);
+$oTxtZip = new cHTMLTextbox('address_zip', conHtmlSpecialChars($oUser->getField('address_zip') ?? ''), 10, 10);
 $tpl->set('d', 'CATFIELD', $oTxtZip->render());
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "city");
 $tpl->set('d', 'CATNAME', i18n("City"));
-$oTxtCity = new cHTMLTextbox('address_city', conHtmlSpecialChars($oUser->getField('address_city')), 40, 255);
+$oTxtCity = new cHTMLTextbox('address_city', conHtmlSpecialChars($oUser->getField('address_city') ?? ''), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtCity->render());
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "country");
 $tpl->set('d', 'CATNAME', i18n("Country"));
-$oTxtLand = new cHTMLTextbox('address_country', conHtmlSpecialChars($oUser->getField('address_country')), 40, 255);
+$oTxtLand = new cHTMLTextbox('address_country', conHtmlSpecialChars($oUser->getField('address_country') ?? ''), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtLand->render());
 $tpl->next();
 
@@ -292,14 +292,13 @@ if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)
     $tpl->set('s', 'CAL_LANG', '');
 }
 
-// permissions of current logged in user
-$aAuthPerms = explode(',', $auth->auth['perm']);
+$hasSysadminPerm = cPermission::checkSysadminPermission($auth->getPerms());
 
 // sysadmin perm
-if (in_array('sysadmin', $aAuthPerms)) {
+if ($hasSysadminPerm) {
     $tpl->set('d', 'ROW_ID', "rights_sysadmin");
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
-    $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', in_array('sysadmin', $aPerms));
+    $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', cPermission::checkSysadminPermission($aPerms));
     $tpl->set('d', 'CATFIELD', $oCheckbox->toHtml(false));
     $tpl->next();
 }
@@ -309,8 +308,14 @@ $oClientsCollection = new cApiClientCollection();
 $aClients = $oClientsCollection->getAvailableClients();
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    if (in_array("admin[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
-        $oCheckbox = new cHTMLCheckbox("madmin[" . $idclient . "]", $idclient, "madmin[" . $idclient . "]" . $idclient, in_array("admin[" . $idclient . "]", $aPerms));
+    $hasClientAdminPerm = cPermission::checkClientAdminPermission($idclient, $auth->getPerms());
+    if ($hasClientAdminPerm || $hasSysadminPerm) {
+        $oCheckbox = new cHTMLCheckbox(
+            "madmin[" . $idclient . "]",
+            $idclient,
+            "madmin[" . $idclient . "]" . $idclient,
+            cPermission::checkClientAdminPermission($idclient, $aPerms)
+        );
         $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
@@ -326,8 +331,15 @@ if ($sClientCheckboxes !== '') {
 // clients perms
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    if ((in_array("client[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[" . $idclient . "]", $aAuthPerms)) && !in_array("admin[" . $idclient . "]", $aPerms)) {
-        $oCheckbox = new cHTMLCheckbox("mclient[" . $idclient . "]", $idclient, "mclient[" . $idclient . "]" . $idclient, in_array("client[" . $idclient . "]", $aPerms));
+    $hasClientPerm = cPermission::checkClientPermission($idclient, $auth->getPerms());
+    $hasClientAdminPerm = cPermission::checkClientAdminPermission($idclient, $auth->getPerms());
+    if (($hasClientPerm || $hasSysadminPerm || $hasClientAdminPerm) && !cPermission::checkClientAdminPermission($idclient, $aPerms)) {
+        $oCheckbox = new cHTMLCheckbox(
+            "mclient[" . $idclient . "]",
+            $idclient,
+            "mclient[" . $idclient . "]" . $idclient,
+            in_array("client[" . $idclient . "]", $aPerms)
+        );
         $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
@@ -344,8 +356,15 @@ if ($sClientCheckboxes !== '') {
 $aClientsLanguages = getAllClientsAndLanguages();
 $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
-    if (($perm->have_perm_client("lang[" . $item['idlang'] . "]") || $perm->have_perm_client("admin[" . $item['idclient'] . "]")) && !in_array("admin[" . $item['idclient'] . "]", $aPerms)) {
-        $oCheckbox = new cHTMLCheckbox("mlang[" . $item['idlang'] . "]", $item['idlang'], "mlang[" . $item['idlang'] . "]" . $item['idlang'], in_array("lang[" . $item['idlang'] . "]", $aPerms));
+    $hasLanguagePerm = cPermission::checkLanguagePermission($item['idlang'], $auth->getPerms());
+    $hasClientAdminPerm = cPermission::checkClientAdminPermission($item['idclient'], $auth->getPerms());
+    if (($hasLanguagePerm || $hasClientAdminPerm) && !cPermission::checkClientAdminPermission($item['idclient'], $aPerms)) {
+        $oCheckbox = new cHTMLCheckbox(
+            "mlang[" . $item['idlang'] . "]",
+            $item['idlang'],
+            "mlang[" . $item['idlang'] . "]" . $item['idlang'],
+            in_array("lang[" . $item['idlang'] . "]", $aPerms)
+        );
         $oCheckbox->setLabelText(conHtmlSpecialChars($item['langname']) . " (" . $item['clientname'] . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
@@ -408,7 +427,7 @@ $tpl->set('d', 'CATFIELD', $oCheckbox->toHtml(false));
 $tpl->next();
 
 // account active data (from-to)
-$sCurrentValueFrom = str_replace('00:00:00', '', $oUser->getField('valid_from'));
+$sCurrentValueFrom = str_replace('00:00:00', '', $oUser->getField('valid_from') ?? '');
 $sCurrentValueFrom = trim(str_replace('0000-00-00', '', $sCurrentValueFrom));
 
 $sInputValidFrom = '<input type="text" id="valid_from" name="valid_from" value="' . $sCurrentValueFrom . '">';
@@ -418,7 +437,7 @@ $tpl->set('d', 'CATNAME', i18n("Valid from"));
 $tpl->set('d', 'CATFIELD', $sInputValidFrom);
 $tpl->next();
 
-$sCurrentValueTo = str_replace('00:00:00', '', $oUser->getField('valid_to'));
+$sCurrentValueTo = str_replace('00:00:00', '', $oUser->getField('valid_to') ?? '');
 $sCurrentValueTo = trim(str_replace('0000-00-00', '', $sCurrentValueTo));
 
 $sInputValidTo = '<input type="text" id="valid_to" name="valid_to" value="' . $sCurrentValueTo . '">';

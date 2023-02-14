@@ -14,6 +14,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cAuth $auth
+ * @var int $lang
+ * @var int $client
+ * @var int $frame
+ * @var string $area
+ */
+
 // Global variables, send by the form
 global $newpassword, $oldpassword, $newpassword2, $name, $email, $phonenumber, $street, $zip,
        $city, $country, $wysi, $format, $formatdate, $formattime;
@@ -21,6 +29,8 @@ global $newpassword, $oldpassword, $newpassword2, $name, $email, $phonenumber, $
 $page = new cGuiPage("mycontenido_settings", "", "2");
 
 $user = new cApiUser($auth->auth["uid"]);
+
+$action = cRegistry::getAction();
 
 if ($action == "mycontenido_editself") {
 

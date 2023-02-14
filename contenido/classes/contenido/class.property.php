@@ -401,7 +401,7 @@ class cApiPropertyCollection extends ItemCollection {
      *         Type of the data to store (arbitrary data)
      * @param mixed $name
      *         Entry name
-     *
+     * @return int the number of deleted entries (rows)
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -421,10 +421,12 @@ class cApiPropertyCollection extends ItemCollection {
 
         $idProperties = $this->getIdsByWhereClause($where);
 
-        $this->_deleteMultiple($idProperties);
+        $numDeleted = $this->_deleteMultiple($idProperties);
         if ($this->_useCache()) {
             $this->_deleteFromCacheMultiple($idProperties);
         }
+
+        return $numDeleted;
     }
 
     /**
