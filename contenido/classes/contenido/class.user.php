@@ -53,12 +53,12 @@ class cApiUserCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($username) {
-        $primaryKeyValue = md5($username);
-
-        $item = $this->createNewItem($primaryKeyValue);
-        if ($item->usernameExists($username)) {
+        if (cApiUser::usernameExists($username)) {
             return false;
         }
+
+        $primaryKeyValue = md5($username);
+        $item = $this->createNewItem($primaryKeyValue);
 
         $item->set('username', $username);
         $item->set('salt', md5($username . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999)));
