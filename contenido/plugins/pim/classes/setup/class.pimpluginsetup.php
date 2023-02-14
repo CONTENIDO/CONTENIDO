@@ -21,6 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @author frederic.schneider
  */
 class PimPluginSetup {
+
     /**
      * File name of Xml configuration file for plugins
      */
@@ -29,6 +30,20 @@ class PimPluginSetup {
      * Specific sql prefix
      */
     const SQL_PREFIX = "!PREFIX!";
+
+    /**
+     * PimPluginCollection instance
+     *
+     * @var PimPluginCollection
+     */
+    protected $_pimPluginCollection;
+
+    /**
+     * PimPluginRelationsCollection instance
+     *
+     * @var PimPluginRelationsCollection
+     */
+    protected $_pimPluginRelationsCollection;
 
     /**
      * Initializing variables
@@ -60,7 +75,7 @@ class PimPluginSetup {
 
     /**
      * Xml variables
-     * General informations of plugin
+     * General information of plugin
      *
      * @var SimpleXMLElement
      */
@@ -136,6 +151,11 @@ class PimPluginSetup {
      */
     protected static $_pluginName;
 
+    public function __construct() {
+        $this->_setPimPluginCollection();
+        $this->_setPimPluginRelationsCollection();
+    }
+
     // GET and SET methods for installation routine
 
     /**
@@ -183,7 +203,7 @@ class PimPluginSetup {
     }
 
     /**
-     * Initialzing and set variable for PimPluginArchiveExtractor class
+     * Initialize and set variable for PimPluginArchiveExtractor class
      *
      * @param string $tempArchiveNewPath Path to Zip archive
      * @param string $tempArchiveName Name of Zip archive
@@ -199,8 +219,7 @@ class PimPluginSetup {
      * @param SimpleXMLElement $xml
      */
     private function _setXml($xml) {
-
-        // General plugin informations
+        // General plugin information
         self::$XmlGeneral = $xml->general;
 
         // Plugin requirements
@@ -290,12 +309,11 @@ class PimPluginSetup {
 
     /**
      * checkXml
-     * Load plugin datas and run Xml checks
+     * Load plugin data and run Xml checks
      *
      * @throws cException
      */
     public function checkXml() {
-
         $cfg = cRegistry::getConfig();
 
         if (self::getMode() == 1) { // Plugin is already extracted
@@ -310,7 +328,7 @@ class PimPluginSetup {
             if (!cDirHandler::exists($tempArchiveNewPath)) {
 				$success = cDirHandler::create($tempArchiveNewPath);
 
-				// If PIM can not create a temporary directory (if it does not exists), throw an error message
+				// If PIM can not create a temporary directory (if it does not exist), throw an error message
 				if (!$success) {
 					self::error(sprintf(i18n('Plugin Manager can not found a temporary CONTENIDO directory. Also it is not possible to create a temporary directory at <em>%s</em>. You have to create it manualy.', 'pim'), $tempArchiveNewPath));
                     return;
@@ -333,7 +351,7 @@ class PimPluginSetup {
             // Check valid Zip archive
             $this->checkZip();
 
-            // Get plugin.xml informations
+            // Get plugin.xml information
             $XmlData = self::$_PimPluginArchiveExtractor->extractArchiveFileToVariable(self::PLUGIN_XML_FILENAME);
         }
 
@@ -356,24 +374,22 @@ class PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     public function checkDependencies() {
-
-    	// Initializings
+    	// Initializing
     	$cfg = cRegistry::getConfig();
     	$pluginsDir = $cfg['path']['contenido'] . $cfg['path']['plugins'];
 
     	// Get uuid from plugin to uninstall
-    	$this->_PimPluginCollection->setWhere('idplugin', self::_getPluginId());
-    	$this->_PimPluginCollection->query();
-    	$pimPluginSql = $this->_PimPluginCollection->next();
+    	$this->_pimPluginCollection->setWhere('idplugin', self::_getPluginId());
+    	$this->_pimPluginCollection->query();
+    	$pimPluginSql = $this->_pimPluginCollection->next();
     	$uuidUninstall = $pimPluginSql->get('uuid');
 
-    	// Reset query so we can use PimPluginCollection later again...
-    	$this->_PimPluginCollection->resetQuery();
+    	// Reset query, so we can use PimPluginCollection later again...
+    	$this->_pimPluginCollection->resetQuery();
 
     	// Read all dirs
     	$dirs = cDirHandler::read($pluginsDir);
     	foreach ($dirs as $dirname) {
-
     		// Skip plugin if it has no plugin.xml file
     		if (!cFileHandler::exists($pluginsDir . $dirname . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME)) {
     			continue;
@@ -387,33 +403,31 @@ class PimPluginSetup {
 
     		$dependenciesCount = count($tempXml->dependencies);
     		for ($i = 0; $i < $dependenciesCount; $i++) {
-
     			// Security check
     			$depend = cSecurity::escapeString($tempXml->dependencies->depend[$i]);
 
-    			// If is no dependencie name defined please go to next dependencie
+    			// If is no dependencies name defined please go to next dependencies
     			if ($depend == "") {
     				continue;
     			}
 
     			// Build uuid variable from attributes
+                $uuidTemp = "";
     			foreach ($tempXml->dependencies->depend[$i]->attributes() as $key => $value) {
-
     				// We use only uuid attribute and can ignore other attributes
     				if ($key  == "uuid") {
     					$uuidTemp = cSecurity::escapeString($value);
     				}
     			}
 
-    			// Return false if uuid from plugin to uninstall and depended plugin is the same
-    			// AND depended plugin is active
+    			// Return false if uuid from plugin to uninstall and depended on plugin is the same
+    			// AND depended on plugin is active
     			if ($uuidTemp === $uuidUninstall) {
+    				$this->_pimPluginCollection->setWhere('uuid', $tempXml->general->uuid);
+    				$this->_pimPluginCollection->setWhere('active', '1');
+    				$this->_pimPluginCollection->query();
 
-    				$this->_PimPluginCollection->setWhere('uuid', $tempXml->general->uuid);
-    				$this->_PimPluginCollection->setWhere('active', '1');
-    				$this->_PimPluginCollection->query();
-
-    				if ($this->_PimPluginCollection->count() != 0) {
+    				if ($this->_pimPluginCollection->count() != 0) {
     					self::setPluginName($tempXml->general->plugin_name);
     					return false;
     				}
@@ -441,7 +455,6 @@ class PimPluginSetup {
      * @return bool
      */
     private function validXml($xml) {
-
         // Initializing PHP DomDocument class
         $dom = new DomDocument();
         $dom->loadXML($xml);
@@ -455,6 +468,20 @@ class PimPluginSetup {
     }
 
     /**
+     * Initialize and set variable for PimPluginCollection class
+     */
+    private function _setPimPluginCollection() {
+        $this->_pimPluginCollection = new PimPluginCollection();
+    }
+
+    /**
+     * Initialize and set variable for PimPluginRelationsCollection class
+     */
+    private function _setPimPluginRelationsCollection() {
+        $this->_pimPluginRelationsCollection = new PimPluginRelationsCollection();
+    }
+
+    /**
      * Error function with pim_error-Template
      *
      * @param string $message
@@ -463,7 +490,6 @@ class PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     protected static function error($message = '') {
-
         // Get session variable
         $session = cRegistry::getSession();
 

@@ -753,6 +753,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $select->appendOptionElement($option[4]);
 
     $append = cApiCecHook::executeAndReturn('Contenido.Backend.AfterArticleLink');
+    $append = $append ?? '';
     if(cString::getStringLength($append) === 0) {
         $page->set('s', 'HOOK_AFTERARTICLELINK', '');
     } else {

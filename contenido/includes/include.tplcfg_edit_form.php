@@ -140,7 +140,7 @@ if ($idart) {
             // template configuration found
             $idtplcfg = $db->f('idtplcfg');
             $idtpl = $db->f('idtpl');
-            $description = $db->f('description');
+            $description = $db->f('description') ?? '';
 
             if ($db->f('locked') == 1) {
                 $inUse = true;
@@ -191,7 +191,7 @@ if ($idart) {
         // template configuration found
         $idtplcfg = $db->f('idtplcfg');
         $idtpl = $db->f('idtpl');
-        $description = $db->f('description');
+        $description = $db->f('description') ?? '';
     } else {
         if ($idtpl) {
             // create new configuration entry
@@ -224,7 +224,7 @@ if (!$db->nextRecord()) {
 
     $db->query($sql);
     $db->nextRecord();
-    $description = $db->f('description');
+    $description = $db->f('description') ?? '';
     if (0 != $db->f('idtplcfg')) {
         // Template has a pre-configuration, copy pre-configuration data to
         // category configuration with the $idtplcfg from the category

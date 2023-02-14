@@ -14,6 +14,23 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cTemplate $tpl
+ * @var cApiClientCollection $classclient
+ * @var cPermission $perm
+ * @var array $cfg
+ */
+
+$oClient = cRegistry::getClient();
+
+// Display critical error if client does not exist
+if (!$oClient->isLoaded()) {
+    $oPage = new cGuiPage("lang_left_top");
+    $oPage->displayCriticalError(i18n('No Client selected'));
+    $oPage->render();
+    return;
+}
+
 $tpl->set('s', 'CLASS', 'text_medium');
 $tpl->set('s', 'OPTIONS', '');
 $tpl->set('s', 'CAPTION', '');
@@ -27,9 +44,9 @@ $tpl2->set('s', 'NAME', 'editclient');
 $tpl2->set('s', 'CLASS', 'text_medium');
 $tpl2->set('s', 'OPTIONS', '');
 
-$iClientcount = count($clients);
+$iClientCount = count($clients);
 
-$selectedClient = isset($_GET['targetclient']) ? $_GET['targetclient'] : cRegistry::getClientId();
+$selectedClient = $_GET['targetclient'] ?? cRegistry::getClientId();
 foreach ($clients as $key => $value) {
     $selected = ($selectedClient == $key) ? 'selected' : '';
 
@@ -47,9 +64,9 @@ $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic
 
 $tpl->set('s', 'CLIENTSELECT', $select);
 
-if ($perm->have_perm_area_action("lang_edit", "lang_newlanguage") && $iClientcount > 0) {
-    $tpl->set('s', 'NEWLANG', '<a class="addfunction" href="javascript:void(0)">' . i18n("Create language for") . '</a>');
-} elseif ($iClientcount == 0) {
+if ($perm->have_perm_area_action("lang_edit", "lang_newlanguage") && $iClientCount > 0) {
+    $tpl->set('s', 'NEWLANG', '<a class="addfunction" href="javascript://">' . i18n("Create language for") . '</a>');
+} elseif ($iClientCount == 0) {
     $tpl->set('s', 'NEWLANG', i18n('No Client selected'));
 } else {
     $tpl->set('s', 'NEWLANG', '');

@@ -27,7 +27,7 @@ $elemPerPage = cSecurity::toInteger($_REQUEST['elemperpage'] ?? '0');
 $sortby = cSecurity::toString($_REQUEST['sortby'] ?? '');
 $sortorder = cSecurity::toString($_REQUEST['sortorder'] ?? '');
 $filter = cSecurity::toString($_REQUEST['filter'] ?? '');
-$restrict = (isset($_REQUEST['restrict'])) ? cSecurity::toString($_REQUEST['restrict']) : '';
+$restrict = cSecurity::toString($_REQUEST['restrict'] ?? '');
 
 $oUser = new cApiUser($auth->auth["uid"]);
 if ($elemPerPage < 0) {

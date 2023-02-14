@@ -22,23 +22,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class PimPluginSetupUpdate extends PimPluginSetup {
 
-    // Classes
-    /**
-     * Variable for PIM class PimPluginCollection
-     *
-     * @var PimPluginCollection
-     */
-    protected $_PimPluginCollection;
-
-    /**
-     * Initializing and set variable for PimPluginCollection class
-     *
-     * @return PimPluginCollection
-     */
-    private function _setPimPluginCollection() {
-        return $this->_PimPluginCollection = new PimPluginCollection();
-    }
-
     // Begin of update routine
 
     /**
@@ -49,10 +32,7 @@ class PimPluginSetupUpdate extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-
-        // Initializing and set classes
-        // PluginManager classes
-        $this->_setPimPluginCollection();
+        parent::__construct();
 
         // Check same plugin (uuid)
         $this->_checkSamePlugin();
@@ -78,10 +58,9 @@ class PimPluginSetupUpdate extends PimPluginSetup {
      * @throws cException
      */
     private function _checkSamePlugin() {
-        $this->_PimPluginCollection->setWhere('idplugin', parent::_getPluginId());
-        $this->_PimPluginCollection->query();
-        while ($result = $this->_PimPluginCollection->next()) {
-
+        $this->_pimPluginCollection->setWhere('idplugin', parent::_getPluginId());
+        $this->_pimPluginCollection->query();
+        while ($result = $this->_pimPluginCollection->next()) {
             if (parent::$XmlGeneral->uuid != $result->get('uuid')) {
                 parent::error(i18n('You have to update the same plugin', 'pim'));
             }
@@ -99,19 +78,17 @@ class PimPluginSetupUpdate extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _updateSql() {
-
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
         // Build sql filename with installed plugin version and new plugin
-        // version, i. e.: "plugin_update_100_to_101.sql" (without dots)
+        // version, i.e.: "plugin_update_100_to_101.sql" (without dots)
         $tempSqlFilename = "plugin_update_" . str_replace('.', '', $this->_getInstalledPluginVersion()) . "_to_" . str_replace('.', '', parent::$XmlGeneral->version) . ".sql";
 
         // Filename to update sql file
         $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable($tempSqlFilename, 0);
 
         if (cFileHandler::exists($tempSqlFilename)) {
-
             // Execute update sql file
             $tempSqlContent = cFileHandler::read($tempSqlFilename);
             $tempSqlContent = str_replace("\r\n", "\n", $tempSqlContent);
@@ -128,22 +105,25 @@ class PimPluginSetupUpdate extends PimPluginSetup {
             }
 
             // Do not run uninstall and install sql files
-            PimPluginSetup::_setUpdateSqlFileExist(true);
+            parent::_setUpdateSqlFileExist(true);
         } else {
             return false;
         }
     }
 
     /**
-     * Get installed plugin version
+     * Get installed plugin version.
      *
+     * @return string The plugin version or empty string.
      * @throws cException
      */
     private function _getInstalledPluginVersion() {
-        $this->_PimPluginCollection->setWhere('idplugin', parent::_getPluginId());
-        $this->_PimPluginCollection->query();
-        while ($result = $this->_PimPluginCollection->next()) {
+        $this->_pimPluginCollection->setWhere('idplugin', parent::_getPluginId());
+        $this->_pimPluginCollection->query();
+        if ($result = $this->_pimPluginCollection->next()) {
             return $result->get('version');
+        } else {
+            return '';
         }
     }
 

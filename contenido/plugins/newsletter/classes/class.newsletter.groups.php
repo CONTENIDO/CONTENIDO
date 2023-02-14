@@ -49,7 +49,7 @@ class NewsletterRecipientGroupCollection extends ItemCollection {
 
         // _arrInFilters = ['urlencode', 'htmlspecialchars', 'addslashes'];
 
-        $mangledGroupName = $group->_inFilter($groupname);
+        $mangledGroupName = $group->inFilter($groupname);
         $this->setWhere("idclient", $client);
         $this->setWhere("idlang", $lang);
         $this->setWhere("groupname", $mangledGroupName);

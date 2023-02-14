@@ -185,8 +185,8 @@ class cDbDriverMysql extends cDbDriverAbstract {
      * the movement
      *
      * @see cDbDriverAbstract::nextRecord()
-     * @return int
-     *         Flag about move status 1 on success or 0
+     * @return bool
+     *         Flag about move status true on success or false
      */
     public function nextRecord() {
         $queryId = $this->_handler->getQueryId();

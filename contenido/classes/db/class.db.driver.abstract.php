@@ -127,8 +127,8 @@ abstract class cDbDriverAbstract {
      * Moves the result to the next record, if exists and returns the status of
      * the movement
      *
-     * @return int
-     *         Flag about move status 1 on success or 0
+     * @return bool
+     *         Flag about move status true on success or false
      */
     abstract public function nextRecord();
 

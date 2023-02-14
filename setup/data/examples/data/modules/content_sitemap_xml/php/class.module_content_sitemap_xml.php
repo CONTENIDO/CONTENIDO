@@ -9,6 +9,40 @@
  */
 
 class ModuleContentSitemapXml {
+    /**
+     * @var array
+     */
+    private $cfg;
+
+    /**
+     * @var string
+     */
+    private $cronLogPath;
+
+    /**
+     * @var cDb
+     */
+    private $db;
+
+    /**
+     * @var string 'true' or 'false'
+     */
+    private $catUrlForStartArt;
+
+    /**
+     * @var cUri
+     */
+    private $uriBuilder;
+
+    /**
+     * @var string
+     */
+    private $msgXmlWriteSuccess;
+
+    /**
+     * @var string
+     */
+    private $msgXmlWriteFail;
 
     /**
      * ModuleContentSitemapXml constructor.
@@ -50,12 +84,15 @@ class ModuleContentSitemapXml {
     }
 
     /**
-     * Add all online and searchable articles of theses categories to the sitemap.
+     * Add all online and searchable articles of these categories to the sitemap.
      *
      * @param SimpleXMLElement $sitemap
      * @param array $categoryIds
      * @param int $lang
      * @return int
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function addArticlesToSitemap(SimpleXMLElement $sitemap, array $categoryIds, $lang) {
         $itemCount = 0;

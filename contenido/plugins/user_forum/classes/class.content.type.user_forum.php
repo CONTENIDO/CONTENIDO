@@ -46,7 +46,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         ];
 
         // encoding conversions to avoid problems with umlauts
-        $rawSettings = conHtmlEntityDecode($rawSettings);
+        $rawSettings = conHtmlEntityDecode($rawSettings ?? '');
         $rawSettings = utf8_encode($rawSettings);
 
         parent::__construct($rawSettings, $id, $contentTypes);

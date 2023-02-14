@@ -87,31 +87,44 @@ $thisperm = explode(',', $auth->auth['perm']);
 
 $accessibleClients = $classclient->getAccessibleClients();
 
+/**
+ * @var cApiUser $currentuser
+ */
+$rightsAreasHelper = new cRightsAreasHelper($currentuser, $auth, []);
+
+$isAuthUserSysadmin = $rightsAreasHelper->isAuthSysadmin();
+
 while ($db->nextRecord()) {
     $groupperm = explode(',', $db->f('perms'));
+
+    $rightsAreasHelper->setContextPermissions($groupperm);
 
     $allow = false;
 
     // Sysadmin check
-    if (in_array("sysadmin", $thisperm)) {
+    if ($isAuthUserSysadmin) {
         $allow = true;
     }
 
-    // Admin check
-    foreach ($accessibleClients as $key => $value) {
-        if (in_array("client[" . $key . "]", $groupperm)) {
-            $allow = true;
+    if (!$allow) {
+        // Admin check
+        foreach ($accessibleClients as $key => $value) {
+            if (cPermission::checkClientPermission($key, $groupperm)) {
+                $allow = true;
+            }
         }
     }
 
-    // Group check
-    foreach ($groupperm as $localperm) {
-        if (in_array($localperm, $thisperm)) {
-            $allow = true;
+    if (!$allow) {
+        // Group check
+        foreach ($groupperm as $localperm) {
+            if (in_array($localperm, $thisperm)) {
+                $allow = true;
+            }
         }
     }
 
-    if ($allow == true) {
+    if ($allow) {
         $groupid = $db->f("group_id");
         $groupname = conHtmlSpecialChars($db->f("groupname"));
         $groupname = cString::getPartOfString($groupname, 4);

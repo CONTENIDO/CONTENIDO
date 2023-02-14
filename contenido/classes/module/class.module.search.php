@@ -377,7 +377,7 @@ class cModuleSearch extends cModuleHandler {
     protected function _getModuleResultRow($db) {
         return [
             'name' => $db->f('name'),
-            'description' => $db->f('description'),
+            'description' => $db->f('description') ?? '',
             'error' => $db->f('error'),
             'input' => $this->readInput(),
             'output' => $this->readOutput()

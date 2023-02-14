@@ -53,7 +53,7 @@ if (isset($area)) {
     $area = (isset($sess_area)) ? $sess_area : 'login';
 }
 
-if (is_numeric($changelang)) {
+if (isset($changelang) && is_numeric($changelang)) {
     unset($area_rights);
     unset($item_rights);
 

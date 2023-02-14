@@ -45,22 +45,22 @@ class cEffectiveSetting {
     protected static $_settings = [];
 
     /**
-     * @var cApiUser
+     * @var cApiUser|NULL
      */
     protected static $_user;
 
     /**
-     * @var cApiClient
+     * @var cApiClient|NULL
      */
     protected static $_client;
 
     /**
-     * @var cApiClientLanguage
+     * @var cApiClientLanguage|NULL
      */
     protected static $_clientLanguage;
 
     /**
-     * @var bool
+     * @var bool[]
      */
     protected static $_loaded = [];
 
@@ -81,7 +81,7 @@ class cEffectiveSetting {
         if (!isset(self::$_loaded[self::_getKeyPrefix()])) {
             $typeGroup = [];
 
-            //get all client settings
+            // get all client settings
             $client = self::_getClientInstance();
             $settings = $client->getProperties();
 
@@ -168,17 +168,15 @@ class cEffectiveSetting {
         $key = self::_makeKey($type, $name);
 
         $value = self::_get($key);
-        if (false !== $value) {
+        if ($value !== false) {
             return $value;
         }
 
-        if (false === $value) {
-            $value = getSystemProperty($type, $name);
-        }
+        $value = getSystemProperty($type, $name);
 
-        if (false === $value || NULL === $value) {
+        if ($value === false || $value === NULL) {
             $value = $default;
-        } elseif ('' === $value && '' !== $default) {
+        } elseif ($value === '' && $default !== '') {
             // NOTE: A non empty default value overrides an empty value
             $value = $default;
         }

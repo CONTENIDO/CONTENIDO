@@ -140,6 +140,7 @@ class NoteView extends cHTMLIFrame {
  * @subpackage GUI
  */
 class NoteList extends cHTMLDiv {
+
     /**
      * @var bool
      */
@@ -242,6 +243,41 @@ class NoteList extends cHTMLDiv {
  * @subpackage GUI
  */
 class NoteListItem extends cHTMLDiv {
+
+    /**
+     * @var int
+     */
+    private $_iDeleteItem;
+
+    /**
+     * @var string
+     */
+    private $_sItemType;
+
+    /**
+     * @var string
+     */
+    private $_sItemId;
+
+    /**
+     * @var bool
+     */
+    private $_bDeleteable;
+
+    /**
+     * @var bool|string
+     */
+    private $_sAuthor;
+
+    /**
+     * @var false|string
+     */
+    private $_sDate;
+
+    /**
+     * @var string
+     */
+    private $_sMessage;
 
     /**
      * Constructor to create an instance of this class.

@@ -201,6 +201,18 @@ $cfg['sql']['cache']['enable'] = true;
 // (bool) Enable mode to select all fields in GenericDB item collections.
 $cfg['sql']['select_all_mode'] = true;
 
+// (string[]) List of filter functions expecting values of type string. This
+//            will be used by `Item` to call them only for values of type string.
+//            If you use other functions for filtering strings, add them to this
+//            configuration.
+$cfg['sql']['string_filter_functions'] = [
+    'addslashes',
+    'htmldecode',
+    'htmlencode',
+    'htmlspecialchars',
+    'stripslashes',
+];
+
 
 /* UriBuilder settings
  * -----------------------------------------------------------------------------

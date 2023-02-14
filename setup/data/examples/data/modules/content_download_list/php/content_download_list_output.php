@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 if (cRegistry::isBackendEditMode()) {
     $label = mi18n("LABEL_HEADER_DOWNLOADLIST");
 } else {
-    $label = NULL;
+    $label = '';
 }
 
 ob_start();

@@ -14,6 +14,39 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cAuth $auth
+ * @var cApiUser $currentuser
+ * @var array $cfg
+ * @var int $client
+ * @var int $frame
+ * @var string $action
+ * @var string $area
+ *
+ * @var int $idcommunication
+ * @var int $progress
+ * @var string $subject
+ * @var string $message
+ * @var string $userassignment
+ * @var string $notiemail
+ * @var string $status
+ * @var string $priority
+ * @var string $enddate
+ */
+
+$oPage = new cGuiPage("mycontenido.tasks", "", "1");
+
+$oClient = cRegistry::getClient();
+$oLanguage = cRegistry::getLanguage();
+
+// Display critical error if client or language does not exist
+if (!$oClient->isLoaded() || $oLanguage->isLoaded()) {
+    $message = !$oClient->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+    $oPage->displayCriticalError($message);
+    $oPage->render();
+    return;
+}
+
 if (!isset($sortmode)) {
     $sortmode = $currentuser->getUserProperty("system", "tasks_sortmode");
     $sortby = $currentuser->getUserProperty("system", "tasks_sortby");
@@ -97,7 +130,7 @@ class TODOBackendList extends cGuiScrollList {
 
     /**
      * Field converting facility.
-     * Needs to be overridden in the child class to work properbly.
+     * Needs to be overridden in the child class to work properly.
      *
      * @see cGuiScrollList::convert()
      *
@@ -112,8 +145,9 @@ class TODOBackendList extends cGuiScrollList {
      * @throws cException
      */
     public function convert($key, $value, $hidden) {
-        global $link, $dateformat, $cfg;
+        global $link, $dateformat;
 
+        $cfg = cRegistry::getConfig();
         $backendUrl = cRegistry::getBackendUrl();
 
         if ($key == 2) {
@@ -156,7 +190,7 @@ class TODOBackendList extends cGuiScrollList {
             $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/" . $img);
             $image->setAlt($this->_statustypes[$value]);
 
-            //Do not display statuicon, only show statustext
+            //Do not display statusicon, only show statustext
             //return $image->render();
             return $this->_statustypes[$value];
         }
@@ -227,7 +261,7 @@ class TODOBackendList extends cGuiScrollList {
                     if ($value < 0) {
                         return number_format(0 - $value, 2, ',', '') . " " . i18n("Day(s)");
                     } else {
-                        return '<font color="red">' . number_format(0 - $value, 2, ',', '') . " " . i18n("Day(s)") . '</font>';
+                        return '<span style="color:red">' . number_format(0 - $value, 2, ',', '') . " " . i18n("Day(s)") . '</span>';
                     }
                 }
             } else {
@@ -279,8 +313,6 @@ if ($action == "todo_save_item") {
     $todoitem->store();
 }
 
-$cpage = new cGuiPage("mycontenido.tasks", "", "1");
-
 $todoitems = new TODOCollection();
 
 if ($action == "mycontenido_tasks_delete") {
@@ -289,7 +321,7 @@ if ($action == "mycontenido_tasks_delete") {
 
 $recipient = $auth->auth["uid"];
 
-$todoitems->select("recipient = '" . $todoitems->escape($recipient) . "' AND idclient=" . (int) $client);
+$todoitems->select("recipient = '" . $todoitems->escape($recipient) . "' AND idclient = " . (int) $client);
 
 $list = new TODOBackendList();
 
@@ -381,6 +413,7 @@ while ($todo = $todoitems->next()) {
                 $p = 3;
                 break;
             default:
+                $p = 0;
                 break;
         }
 
@@ -416,16 +449,11 @@ $submit->setImageSource("images/submit.gif");
 $form->add(i18n("Options"), $restrict->render());
 
 if ($lcount == 0) {
-    $cpage->displayInfo(i18n("No tasks found"));
-    $cpage->setContent([$form]);
+    $oPage->displayInfo(i18n("No tasks found"));
+    $oPage->setContent([$form]);
 } else {
-    if (!isset($sortby)) {
-        $sortby = 1;
-    }
-
-    if (!isset($sortmode)) {
-        $sortmode = "ASC";
-    }
+    $sortby = $sortby ?? 1;
+    $sortmode = $sortmode ?? 'ASC';
 
     $list->setSortable(1, true);
     $list->setSortable(2, true);
@@ -436,11 +464,9 @@ if ($lcount == 0) {
     $list->setSortable(7, true);
     $list->sort(cSecurity::toInteger($sortby), $sortmode);
 
-    $cpage->setContent([$form, $list]);
+    $oPage->setContent([$form, $list]);
 }
-$cpage->render();
+$oPage->render();
 
 $currentuser->setUserProperty("system", "tasks_sortby", $sortby);
 $currentuser->setUserProperty("system", "tasks_sortmode", $sortmode);
-
-?>

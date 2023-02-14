@@ -1796,10 +1796,6 @@ p.column_header {
  * @section Other
  */
 
-.tr_nodisplay div {
-/*    display: none;*/
-}
-
 .nodisplay {
     display: none;
 }
@@ -2378,26 +2374,3 @@ a.infoButton,
     /* Good browsers */
     opacity: 0.3 !important;
 }
-
-
-
-button,
-input,
-optgroup,
-select,
-textarea,
-input[type="text"],
-input[type="password"] {
-/*    box-sizing: border-box;*/
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    color: #000;
-    padding: 1px;
-    outline: 3px darkorange solid;
-}
-
-/*
-.con_element {
-    outline: 3px lawngreen solid !important;
-}
-*/

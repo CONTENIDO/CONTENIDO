@@ -269,7 +269,10 @@ $page->set('s', 'NUMBER', $iNumberOfUsers);
 $oUpdateNotifier = new cUpdateNotifier($cfg, $vuser, $perm, $sess, $belang);
 $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
 try {
-    $page->set('s', 'UPDATENOTIFICATION', mb_convert_encoding($sUpdateNotifierOutput, cRegistry::getLanguage()->get('encoding')));
+    // Get encoding or use UTF-8 as default, the language may not yet exist
+    $encoding = cRegistry::getEncoding();
+    $encoding = $encoding ?: 'utf-8';
+    $page->set('s', 'UPDATENOTIFICATION', mb_convert_encoding($sUpdateNotifierOutput, $encoding));
 } catch (cInvalidArgumentException $e) {
     $page->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 }

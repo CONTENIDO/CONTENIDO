@@ -26,9 +26,9 @@ $cfg = cRegistry::getConfig();
 $page = isset($_REQUEST['page']) ? abs(cSecurity::toInteger($_REQUEST['page'])) : 1;
 $elemPerPage = cSecurity::toInteger($_REQUEST['elemperpage'] ?? '0');
 $sortby = cSecurity::toString($_REQUEST['sortby'] ?? '');
-$sortorder = (isset($_REQUEST['sortorder'])) ? cSecurity::toString($_REQUEST['sortorder']) : 'asc';
+$sortorder = cSecurity::toString($_REQUEST['sortorder'] ?? 'asc');
 $filter = cSecurity::toString($_REQUEST['filter'] ?? '');
-$userid = (isset($_GET['userid'])) ? cSecurity::toString($_GET['userid']) : '';
+$userid = cSecurity::toString($_GET['userid'] ?? '');
 
 $oPage = new cGuiPage("rights_menu");
 
@@ -79,36 +79,49 @@ if (($elemPerPage * $mPage) >= $iSumUsers + $elemPerPage && $mPage != 1) {
     $mPage--;
 }
 
-while ($cApiUser = $cApiUserCollection->next()) {
-    $userid = $cApiUser->get("user_id");
+/**
+ * @var cApiUser $currentuser
+ */
+$rightsAreasHelper = new cRightsAreasHelper($currentuser, $auth, []);
 
-    $aUserPermissions = explode(',', $cApiUser->get('perms'));
+$isAuthUserSysadmin = $rightsAreasHelper->isAuthSysadmin();
+
+while ($cApiUser = $cApiUserCollection->next()) {
+    $userid = $cApiUser->get('user_id');
+
+    $aUserPermissions = explode(',', $cApiUser->get('perms') ?? '');
+    $rightsAreasHelper->setContextPermissions($aUserPermissions);
+
 
     $bDisplayUser = false;
 
-    if (in_array("sysadmin", $aCurrentUserPermissions)) {
+    if ($isAuthUserSysadmin) {
         $bDisplayUser = true;
     }
 
-    foreach ($aCurrentUserAccessibleClients as $key => $value) {
-        if (in_array("client[$key]", $aUserPermissions)) {
-            $bDisplayUser = true;
+    if (!$bDisplayUser) {
+        foreach ($aCurrentUserAccessibleClients as $key => $value) {
+            if (cPermission::checkClientPermission($key, $aUserPermissions)) {
+                $bDisplayUser = true;
+            }
         }
     }
 
-    foreach ($aUserPermissions as $sLocalPermission) {
-        if (in_array($sLocalPermission, $aCurrentUserPermissions)) {
-            $bDisplayUser = true;
+    if (!$bDisplayUser) {
+        foreach ($aUserPermissions as $sLocalPermission) {
+            if (in_array($sLocalPermission, $aCurrentUserPermissions)) {
+                $bDisplayUser = true;
+            }
         }
     }
 
-    $link = new cHTMLLink();
-    $link->setClass('show_item')
-        ->setLink('javascript:;')
-        ->setAttribute('data-action', 'show_user');
-
-    if ($bDisplayUser == true) {
+    if ($bDisplayUser) {
         $iItemCount++;
+
+        $link = new cHTMLLink();
+        $link->setClass('show_item')
+            ->setLink('javascript://')
+            ->setAttribute('data-action', 'show_user');
 
         if ($iItemCount > ($elemPerPage * ($mPage - 1)) && $iItemCount < (($elemPerPage * $mPage) + 1)) {
             $iMenu++;
@@ -117,7 +130,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
             if ($perm->have_perm_area_action('user', "user_delete")) {
                 $delTitle = i18n("Delete user");
                 $deleteLink = '
-                    <a href="javascript:;" data-action="delete_user" title="' . $delTitle . '" >
+                    <a href="javascript://" data-action="delete_user" title="' . $delTitle . '" >
                         <img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
                     </a>
                 ';
@@ -125,12 +138,13 @@ while ($cApiUser = $cApiUserCollection->next()) {
                 $deleteLink = '';
             }
 
-            if (($sToday < $cApiUser->get("valid_from") && ($cApiUser->get("valid_from") != '0000-00-00 00:00:00' && $cApiUser->get("valid_from") != '')) || ($sToday > $cApiUser->get("valid_to") && ($cApiUser->get("valid_to") != '0000-00-00 00:00:00') && $cApiUser->get("valid_from") != '')) {
-                $mlist->setTitle($iMenu, '<span class="inactiveUser"><span class="name">' . conHtmlSpecialChars($cApiUser->get("username")) . "</span><br>" . conHtmlSpecialChars($cApiUser->get("realname")) . '</span>');
-            } else {
-                $mlist->setTitle($iMenu, '<span class="name">' . conHtmlSpecialChars($cApiUser->get("username")) . "</span><br>" . conHtmlSpecialChars($cApiUser->get("realname")));
+            $userInfo = '<span class="name">' . conHtmlSpecialChars($cApiUser->get("username")) . "</span><br>" . conHtmlSpecialChars($cApiUser->get("realname") ?? '');
+            $isValidFromEmpty = cDate::isEmptyDate($cApiUser->get("valid_from"));
+            $isValidToEmpty = cDate::isEmptyDate($cApiUser->get("valid_to"));
+            if (($sToday < $cApiUser->get("valid_from") && !$isValidFromEmpty) || ($sToday > $cApiUser->get("valid_to") && !$isValidToEmpty && !$isValidFromEmpty)) {
+                $userInfo = '<span class="inactiveUser">' . $userInfo . '</span>';
             }
-
+            $mlist->setTitle($iMenu, $userInfo);
             $mlist->setId($iMenu, $userid);
             $mlist->setLink($iMenu, $link);
             $mlist->setActions($iMenu, "delete", $deleteLink);

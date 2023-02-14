@@ -42,6 +42,11 @@ abstract class cUpgradeJobAbstract {
     protected $_version;
 
     /**
+     * @var array
+     */
+    protected $_aCfgClient;
+
+    /**
      * @var cApiClient[]
      */
     protected static $_clients;
@@ -69,13 +74,13 @@ abstract class cUpgradeJobAbstract {
      * Setting this to '4.8.18' would mean that any version lower than 4.8.18 will get the upgrade job.
      * @var string
      */
-     public $maxVersion = "0";
+    public $maxVersion = "0";
 
     /**
      * Constructor, sets some properties
      * @param  cDb $db
-     * @param  array  $cfg  Main configuration array
-     * @param  array  $cfgClient  Clients configuration array
+     * @param  array|mixed  $cfg  Main configuration array
+     * @param  array|mixed  $cfgClient  Clients configuration array
      * @param  string $version The CONTENIDO version which is upgraded
      */
     public function __construct(cDb $db, $cfg, $cfgClient, $version) {

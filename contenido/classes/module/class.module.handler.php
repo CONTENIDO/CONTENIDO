@@ -334,7 +334,7 @@ class cModuleHandler {
         if ($cApiModule->isLoaded()) {
             $this->_idmod = cSecurity::toInteger($cApiModule->get('idmod'));
             $this->_client = $cApiModule->get('idclient');
-            $this->_description = $cApiModule->get('description');
+            $this->_description = $cApiModule->get('description') ?? '';
             $this->_type = $cApiModule->get('type');
             $this->_input = '';
             $this->_output = '';
@@ -969,7 +969,7 @@ class cModuleHandler {
      *         if the module exist return true, else false
      */
     public function modulePathExists() {
-        return is_dir($this->_modulePath);
+        return is_string($this->_modulePath) && is_dir($this->_modulePath);
     }
 
     /**

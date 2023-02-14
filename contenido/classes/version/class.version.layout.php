@@ -111,7 +111,7 @@ class cVersionLayout extends cVersion {
         if ($oLayout->isLoaded()) {
             $this->iClient = $oLayout->get('idclient');
             $this->sName = $oLayout->get('name');
-            $this->sDescription = $oLayout->get('description');
+            $this->sDescription = $oLayout->get('description') ?? '';
             $this->iDeletable = cSecurity::toInteger($oLayout->get('deletable'));
             $this->sAuthor = $oLayout->get('author');
             $this->dCreated = $oLayout->get('created');

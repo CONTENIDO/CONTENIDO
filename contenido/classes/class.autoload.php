@@ -226,6 +226,9 @@ class cAutoload {
         }
 
         $file = self::_getContenidoClassFile($className);
+        if (is_null($file)) {
+            return;
+        }
 
         if ($file) {
             // load class file from class map
@@ -284,7 +287,7 @@ class cAutoload {
     private static function _getContenidoClassFile($className) {
         $classNameLower = cString::toLowerCase($className);
         $file = isset(self::$_includeFiles[$classNameLower])
-            ? self::$_conRootPath . self::$_includeFiles[$classNameLower] : NULL;
+            ? self::$_conRootPath . self::$_includeFiles[$classNameLower] : '';
         return self::_validateClassAndFile($className, $file);
     }
 
@@ -304,7 +307,7 @@ class cAutoload {
                 'error' => self::ERROR_CLASS_EXISTS
             ];
             return NULL;
-        } elseif (!is_file($filename)) {
+        } elseif (!empty($filename) && !is_file($filename)) {
             self::$_errors[] = [
                 'class' => $classname,
                 'file' => str_replace(self::$_conRootPath, '', $filename),

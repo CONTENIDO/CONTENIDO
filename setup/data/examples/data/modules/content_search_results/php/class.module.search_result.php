@@ -12,6 +12,7 @@
 /**
  *
  * @property array $_cfg
+ * @property array $_artSpecs
  * @property cDb $_db
  * @property int $_client
  * @property int $_lang

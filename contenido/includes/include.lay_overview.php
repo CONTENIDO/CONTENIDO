@@ -14,14 +14,34 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var cTemplate $tpl
+ * @var array $cfg
+ * @var string $area
+ */
+
 global $lay;
 
+$oClient = cRegistry::getClient();
+
+// Display critical error if client does not exist
+if (!$oClient->isLoaded()) {
+    $oPage = new cGuiPage("lay_new");
+    $oPage->displayCriticalError(i18n('No Client selected'));
+    $oPage->render();
+    return;
+}
+
+$client = cSecurity::toInteger(cRegistry::getClientId());
+
 $oLayouts = new cApiLayoutCollection();
-$oLayouts->select("idclient = " . (int) $client, '', 'name ASC');
+$oLayouts->select("idclient = " . $client, '', 'name ASC');
 
 $tpl->reset();
 
-$requestIdLay = (isset($_REQUEST['idlay'])) ? cSecurity::toInteger($_REQUEST['idlay']) : 0;
+$requestIdLay = cSecurity::toInteger($_REQUEST['idlay'] ?? '0');
 
 while (($layout = $oLayouts->next()) !== false) {
     if (!$perm->have_perm_area_action_item('lay_edit', 'lay_edit', $layout->get('idlay'))) {
@@ -29,7 +49,7 @@ while (($layout = $oLayouts->next()) !== false) {
     }
 
     $name  = conHtmlSpecialChars(cString::stripSlashes($layout->get('name')));
-    $descr = conHtmlSpecialChars(nl2br($layout->get('description')));
+    $descr = conHtmlSpecialChars(nl2br($layout->get('description') ?? ''));
     $idlay = $layout->get('idlay');
 
     if (cString::getStringLength($descr) > 64) {

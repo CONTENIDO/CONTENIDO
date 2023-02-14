@@ -438,10 +438,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         );
 
         // Write setting dirname (without backslash at the end)
-        if (cString::endsWith($this->_dirname, '/')) {
+        if (is_string($this->_dirname) && cString::endsWith($this->_dirname, '/')) {
             $this->setSetting('dirname', cString::getPartOfString($this->_dirname, 0, -1));
         } else {
-            $this->setSetting('dirname', $this->_dirname);
+            $this->setSetting('dirname', $this->_dirname ?? '');
         }
 
         // construct the bottom code of the template

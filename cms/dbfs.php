@@ -16,7 +16,13 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
-global $contenido_path, $contenido, $client, $load_client, $file;
+global $contenido_path, $client, $load_client, $file;
+
+$file = $file ?? '';
+if (empty($file)) {
+    // No need for further processing, if file is missing!
+    exit();
+}
 
 // Set path to current frontend
 $frontend_path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/';
@@ -35,18 +41,22 @@ include_once($contenido_path . 'includes/startup.php');
 
 chdir($contenido_path);
 
-if ($_REQUEST["contenido"]) {
-    cRegistry::bootstrap(array(
-        'sess' => 'cSession',
-        'auth' => 'cAuthHandlerBackend',
-        'perm' => 'cPermission'
-    ));
+if (cRegistry::getBackendSessionId()) {
+    cRegistry::bootstrap(
+        [
+            'sess' => 'cSession',
+            'auth' => 'cAuthHandlerBackend',
+            'perm' => 'cPermission',
+        ]
+    );
 } else {
-    cRegistry::bootstrap(array(
-        'sess' => 'cFrontendSession',
-        'auth' => 'cAuthHandlerFrontend',
-        'perm' => 'cPermission'
-    ));
+    cRegistry::bootstrap(
+        [
+            'sess' => 'cFrontendSession',
+            'auth' => 'cAuthHandlerFrontend',
+            'perm' => 'cPermission',
+        ]
+    );
 }
 
 chdir(dirname(__FILE__));
@@ -58,5 +68,3 @@ $dbfs = new cApiDbfsCollection();
 $dbfs->outputFile($file);
 
 cRegistry::shutdown();
-
-?>

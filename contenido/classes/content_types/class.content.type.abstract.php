@@ -336,9 +336,9 @@ abstract class cContentTypeAbstract {
      * @since CONTENIDO 4.10.2
      * @param string $key Configuration item key
      * @param mixed $default Default value to return
-     * @return string|mixed|null
+     * @return string|mixed
      */
-    public function getSetting($key, $default = null) {
+    public function getSetting($key, $default = '') {
         return $this->_settings[$key] ?? $default;
     }
 
@@ -411,9 +411,12 @@ abstract class cContentTypeAbstract {
      *         encoded code
      */
     protected function _encodeForOutput($code) {
-        $code = addslashes($code);
-        $code = str_replace("\\'", "'", $code);
-        return str_replace('$', '\\$', $code);
+        if (is_string($code)) {
+            $code = addslashes($code);
+            $code = str_replace("\\'", "'", $code);
+            $code = str_replace('$', '\\$', $code);
+        }
+        return $code;
     }
 
     /**

@@ -20,7 +20,7 @@ if (cRegistry::isBackendEditMode()) {
     $label = mi18n("LABEL_POST_URL");
     $content = "CMS_LINKEDITOR[200]";
 } else {
-    $label = NULL;
+    $label = '';
     // get URL from content type
     $url = "CMS_LINK[200]";
     // $url = 'https://www.facebook.com/jollife/posts/492440004166424';

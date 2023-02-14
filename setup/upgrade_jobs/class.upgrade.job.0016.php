@@ -37,7 +37,7 @@ class cUpgradeJob_0016 extends cUpgradeJobAbstract {
             while ($group = $groupColl->next()) {
 
 				$groupname = stripcslashes(preg_replace("/\"/", "", ($group->get('groupname'))));
-				$description = stripcslashes(preg_replace("/\"/", "", ($group->get('description'))));
+				$description = stripcslashes(preg_replace("/\"/", "", ($group->get('description') ?? '')));
 
 				$group->set('groupname', $groupname);
 				$group->set('description', $description);

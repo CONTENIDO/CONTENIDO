@@ -126,9 +126,9 @@ class cApiFrontendPermissionCollection extends ItemCollection {
 
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $group = cSecurity::toInteger($group);
-        $plugin = $this->_frontendPermission->_inFilter($plugin);
-        $action = $this->_frontendPermission->_inFilter($action);
-        $item = $this->_frontendPermission->_inFilter($item);
+        $plugin = $this->_frontendPermission->inFilter($plugin);
+        $action = $this->_frontendPermission->inFilter($action);
+        $item = $this->_frontendPermission->inFilter($item);
 
         // Check for global permission
         $this->select("idlang = " . $lang . " AND idfrontendgroup = " . $group . " AND plugin = '" . $plugin . "' AND action = '" . $action . "' AND item = '__GLOBAL__'");
@@ -165,9 +165,9 @@ class cApiFrontendPermissionCollection extends ItemCollection {
 
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $group = cSecurity::toInteger($group);
-        $plugin = $this->_frontendPermission->_inFilter($plugin);
-        $action = $this->_frontendPermission->_inFilter($action);
-        $item = $this->_frontendPermission->_inFilter($item);
+        $plugin = $this->_frontendPermission->inFilter($plugin);
+        $action = $this->_frontendPermission->inFilter($action);
+        $item = $this->_frontendPermission->inFilter($item);
 
         $this->select("idlang = " . $lang . " AND idfrontendgroup = " . $group . " AND plugin = '" . $plugin . "' AND action = '" . $action . "' AND item = '" . $item . "'");
         if (($myitem = $this->next()) !== false) {

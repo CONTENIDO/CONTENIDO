@@ -22,13 +22,15 @@ $db = cRegistry::getDb();
 $perm = cRegistry::getPerm();
 $sess = cRegistry::getSession();
 
-$groupid = (isset($_REQUEST['groupid'])) ? cSecurity::toString($_REQUEST['groupid']) : '';
-$actionarea = (isset($_REQUEST['actionarea'])) ? cSecurity::toString($_REQUEST['actionarea']) : 'area';
-$right_list = (isset($_POST['right_list']) && is_array($_POST['right_list'])) ? $_POST['right_list'] : null;
-$rights_perms = (isset($_POST['rights_perms'])) ? cSecurity::toString($_POST['rights_perms']) : '';
-$rights_clientslang = (isset($_POST['rights_clientslang']) && is_numeric($_POST['rights_clientslang']))
-    ? cSecurity::toInteger($_POST['rights_clientslang']) : 0;
-$filter_rights = (isset($_POST['filter_rights'])) ? cSecurity::toString($_POST['filter_rights']) : '';
+$groupid = cSecurity::toString($_REQUEST['groupid'] ?? '');
+$actionarea = cSecurity::toString($_REQUEST['actionarea'] ?? 'area');
+$right_list = $_POST['right_list'] ?? null;
+if (!is_array($right_list)) {
+    $right_list = null;
+}
+$rights_perms = cSecurity::toString($_POST['rights_perms'] ?? '');
+$rights_clientslang = cSecurity::toInteger($_POST['rights_clientslang'] ?? '0');
+$filter_rights = cSecurity::toString($_POST['filter_rights'] ?? '');
 
 $dataSync = [];
 
