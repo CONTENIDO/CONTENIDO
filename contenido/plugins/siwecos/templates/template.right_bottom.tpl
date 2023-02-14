@@ -1,5 +1,5 @@
 <form id="siwecos-form" action="{$formAction}" method="post">
-    <table style="width: auto;" id="" class="generic" cellspacing="0" cellpadding="2">
+    <table style="width: auto;" class="generic" cellspacing="0" cellpadding="2">
         <tbody>
         <tr id="m7">
             <th id="m8" colspan="2" valign="top">{i18n("LBL_CONFIGURATION", 'siwecos')}</th>
