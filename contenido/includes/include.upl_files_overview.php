@@ -14,6 +14,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cApiUser $currentuser
+ * @var cAuth $auth
+ * @var cGuiNotification $notification
+ * @var cPermission $perm
+ * @var string $area
+ */
+
 global $upl_last_path;
 
 $backendPath = cRegistry::getBackendPath();
@@ -27,19 +35,32 @@ cInclude('includes', 'functions.file.php');
 
 $page = new cGuiPage('upl_files_overview', '', 0);
 
-// display critical error if no valid client is selected
-if ((int) $client < 1) {
-    $page->displayCriticalError(i18n("No Client selected"));
-    $page->render();
+$oClient = cRegistry::getClient();
+$oLanguage = cRegistry::getLanguage();
+
+// Display critical error if client or language does not exist
+if (!$oClient->isLoaded() || $oLanguage->isLoaded()) {
+    $message = !$oClient->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+    $oPage = new cGuiPage("upl_files_upload");
+    $oPage->displayCriticalError($message);
+    $oPage->render();
     return;
 }
 
-$appendparameters = isset($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
-$file             = isset($_REQUEST['file']) ? basename(cSecurity::escapeString($_REQUEST['file'])) : '';
-$startpage        = isset($_REQUEST['startpage']) ? cSecurity::toInteger($_REQUEST['startpage']) : 1;
-$sortby           = isset($_REQUEST['sortby']) ? cSecurity::escapeString($_REQUEST['sortby']) : '';
-$sortmode         = isset($_REQUEST['sortmode']) ? cSecurity::escapeString($_REQUEST['sortmode']) : '';
-$thumbnailmode    = isset($_REQUEST['thumbnailmode']) ? cSecurity::escapeString($_REQUEST['thumbnailmode']) : '';
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$cfgClient = cRegistry::getClientConfig();
+
+$appendparameters = $_REQUEST['appendparameters'] ?? '';
+$file             = cSecurity::escapeString($_REQUEST['file'] ?? '');
+$startpage        = cSecurity::toInteger($_REQUEST['startpage'] ?? '1');
+$sortby           = cSecurity::escapeString($_REQUEST['sortby'] ?? '');
+$sortmode         = cSecurity::escapeString($_REQUEST['sortmode'] ?? '');
+$thumbnailmode    = cSecurity::escapeString($_REQUEST['thumbnailmode'] ?? '');
+
+if (!empty($file)) {
+    $file = basename($file);
+}
 
 if ((empty($browserparameters) || !is_array($browserparameters)) && ($appendparameters != 'imagebrowser' || $appendparameters != 'filebrowser')) {
     $browserparameters = [];
@@ -53,17 +74,17 @@ if (!$sess->isRegistered('upl_last_path')) {
     $path = $upl_last_path;
 }
 
-// if path doesn't exist use root path
-// this might happen when the last path is that of another client or deleted outside CONTENIDO
+// if path doesn't exist use root path this might happen when the last path
+// is that of another client or deleted outside CONTENIDO
 if (empty($path) || (!cApiDbfs::isDbfs($path) && !cFileHandler::exists($cfgClient[$client]['upl']['path'] . $path))) {
     $path = '';
 }
 // remember current path as last path
 $upl_last_path = $path;
 
-$uploads = new cApiUploadCollection();
+$uploadCollection = new cApiUploadCollection();
 
-$dbfs = new cApiDbfsCollection();
+$dbfsCollection = new cApiDbfsCollection();
 
 if (cApiDbfs::isDbfs($path)) {
     $qpath = $path . '/';
@@ -82,24 +103,27 @@ if ($action === 'upl_modify_file' && !empty($file)) {
     $extractFolder = NULL;
     $uplPath = $cfgClient[$client]['upl']['path'];
 
-    if (isset($_REQUEST['path']) && $_REQUEST['path'] != NULL) {
-        $uplPath .= cSecurity::escapeString($_REQUEST['path']);
+    $requestPath = cSecurity::escapeString($_REQUEST['path'] ?? '');
+    if (!empty($requestPath)) {
+        $uplPath .= $requestPath;
     }
 
-    if (isset($_REQUEST['efolder']) && $_REQUEST['efolder'] != NULL) {
-        $extractFolder = cSecurity::escapeString($_REQUEST['efolder']);
-    }
+    $extractFolder = cSecurity::escapeString($_REQUEST['efolder'] ?? '');
 
-    if (isset($_REQUEST['extractZip']) && !isset($_REQUEST['overwrite'])) {
+    $extractZip = cSecurity::toBoolean($_REQUEST['extractZip'] ?? '0');
+    $overwrite = cSecurity::toBoolean($_REQUEST['overwrite'] ?? '0');
+
+    if ($extractZip && !$overwrite) {
         $zipFile = $uplPath . cSecurity::escapeString($_REQUEST['file']);
         cZipArchive::extract($zipFile, $uplPath, $extractFolder);
     }
-    if (isset($_REQUEST['extractZip']) && isset($_REQUEST['overwrite'])) {
-        $zipFile = $uplPath . cSecurity::escapeString($_REQUEST['file']);
+    if ($extractZip && $overwrite) {
+        $zipFile = $uplPath . cSecurity::escapeString($_REQUEST['file'] ?? '');
         cZipArchive::extractOverRide($zipFile, $uplPath, $extractFolder);
     }
+
     // Did the user upload a new file?
-    if ($bDirectoryIsWritable == true && count($_FILES) == 1 && ($_FILES['file']['size'] > 0) && ($_FILES['file']['name'] != '')) {
+    if ($bDirectoryIsWritable && count($_FILES) == 1 && ($_FILES['file']['size'] > 0) && ($_FILES['file']['name'] != '')) {
         if ($_FILES['file']['tmp_name'] != '') {
             $tmp_name = $_FILES['file']['tmp_name'];
             $_cecIterator = $_cecRegistry->getIterator('Contenido.Upload.UploadPreprocess');
@@ -127,7 +151,7 @@ if ($action === 'upl_modify_file' && !empty($file)) {
             }
 
             if (cApiDbfs::isDbfs($path)) {
-                $dbfs->writeFromFile($tmp_name, $qpath . $file);
+                $dbfsCollection->writeFromFile($tmp_name, $qpath . $file);
                 unlink($_FILES['file']['tmp_name']);
             } else {
                 unlink($cfgClient[$client]['upl']['path'] . $path . $file);
@@ -141,8 +165,8 @@ if ($action === 'upl_modify_file' && !empty($file)) {
         }
     }
 
-    $uploads->select("idclient = '$client' AND dirname='" . $uploads->escape($qpath) . "' AND filename='" . $uploads->escape($file) . "'");
-    $upload = $uploads->next();
+    $uploadCollection->select("idclient = '$client' AND dirname='" . $uploadCollection->escape($qpath) . "' AND filename='" . $uploadCollection->escape($file) . "'");
+    $upload = $uploadCollection->next();
     if ($upload) {
         // $upload->set('description', stripslashes($description));
         $upload->store();
@@ -155,14 +179,24 @@ if ($action === 'upl_modify_file' && !empty($file)) {
     $timeMgmt = !empty($_REQUEST['timemgmt']) && $_REQUEST['timemgmt'] === '1' ? '1' : '';
     $properties->setValue('upload', $qpath . $file, 'file', 'timemgmt', $timeMgmt);
     if ($timeMgmt) {
-        $dateStart = !empty($_REQUEST['datestart']) ? cSecurity::escapeString($_REQUEST['datestart']) : '';
-        $dateEnd = !empty($_REQUEST['dateend']) ? cSecurity::escapeString($_REQUEST['dateend']) : '';
+        $dateStart = cSecurity::escapeString($_REQUEST['datestart'] ?? '');
+        $dateEnd = cSecurity::escapeString($_REQUEST['dateend'] ?? '');
         $properties->setValue('upload', $qpath . $file, 'file', 'datestart', $dateStart);
         $properties->setValue('upload', $qpath . $file, 'file', 'dateend', $dateEnd);
     }
 
     $author = $auth->auth['uid'];
     $created = date('Y-m-d H:i:s');
+
+    /**
+     * Form variables
+     * @var string $medianame
+     * @var string $description
+     * @var string $medianame
+     * @var string $keywords
+     * @var string $medianotes
+     * @var string $copyright
+     */
 
     $iIdupl = is_object($upload) ? $upload->get('idupl') : 0;
     if (!empty($iIdupl) && $iIdupl > 0) {
@@ -186,16 +220,16 @@ if ($action === 'upl_modify_file' && !empty($file)) {
     }
 }
 
-// Delete upload folder, bu only id it is empty!
-if ($action === 'upl_delete' && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable === true) {
+// Delete upload folder, but only id it is empty!
+if ($action === 'upl_delete' && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable) {
     $res = null;
     // The application logic prevents deleting upload folder having a subfolder or a file,
     // therefore we simply delete empty upload folder.
-    // There is also no need to need to call chains for deleting empty upload folders.
+    // There is also no need to call chains for deleting empty upload folders.
 
     if (cApiDbfs::isDbfs($path)) {
-        if (!$dbfs->hasFiles($path)) {
-            $res = $dbfs->remove($path . '/.');
+        if (!$dbfsCollection->hasFiles($path)) {
+            $res = $dbfsCollection->remove($path . '/.');
         }
     } else {
         // Check for files
@@ -209,7 +243,8 @@ if ($action === 'upl_delete' && $perm->have_perm_area_action($area, $action) && 
 }
 
 // Delete single file or multiple files
-if ($action === 'upl_multidelete' && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable === true) {
+if ($action === 'upl_multidelete' && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable) {
+    $fdelete = $_REQUEST['fdelete'] ?? '';
     if (is_array($fdelete)) {
         // array of cApiUpload objects to be passed to chain function
         $uploadObjects = [];
@@ -217,10 +252,10 @@ if ($action === 'upl_multidelete' && $perm->have_perm_area_action($area, $action
         // Check if it is in the upload table
         foreach ($fdelete as $fileNameToDelete) {
             $fileNameToDelete = basename(cSecurity::escapeString($fileNameToDelete));
-            $uploads->select("idclient = '$client' AND dirname='" . $uploads->escape($qpath) . "' AND filename='" . $uploads->escape($fileNameToDelete) . "'");
-            if (false !== $item = $uploads->next()) {
+            $uploadCollection->select("idclient = '$client' AND dirname='" . $uploadCollection->escape($qpath) . "' AND filename='" . $uploadCollection->escape($fileNameToDelete) . "'");
+            if (false !== $item = $uploadCollection->next()) {
                 if (cApiDbfs::isDbfs($qpath)) {
-                    $dbfs->remove($qpath . $fileNameToDelete);
+                    $dbfsCollection->remove($qpath . $fileNameToDelete);
 
                     // call chain once for each deleted file
                     $_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Upl_edit.Delete');
@@ -230,11 +265,11 @@ if ($action === 'upl_multidelete' && $perm->have_perm_area_action($area, $action
                         }
                     }
                 } else {
-                    $uploads->delete($item->get('idupl'));
+                    $uploadCollection->delete($item->get('idupl'));
                 }
 
                 // add current upload object to array in order to be processed
-                array_push($uploadObjects, $item);
+                $uploadObjects[] = $item;
             }
         }
 
@@ -248,7 +283,7 @@ if ($action === 'upl_multidelete' && $perm->have_perm_area_action($area, $action
     }
 }
 
-if ($action === 'upl_upload' && $bDirectoryIsWritable === true) {
+if ($action === 'upl_upload' && $bDirectoryIsWritable) {
     if ($perm->have_perm_area_action($area, 'upl_upload')) {
         if (count($_FILES) == 1) {
             foreach ($_FILES['file']['name'] as $key => $value) {
@@ -278,7 +313,7 @@ if ($action === 'upl_upload' && $bDirectoryIsWritable === true) {
                     }
 
                     if (cApiDbfs::isDbfs($qpath)) {
-                        $dbfs->writeFromFile($tmp_name, $qpath . uplCreateFriendlyName($_FILES['file']['name'][$key]));
+                        $dbfsCollection->writeFromFile($tmp_name, $qpath . uplCreateFriendlyName($_FILES['file']['name'][$key]));
                         unlink($tmp_name);
                     } else {
                         if (is_uploaded_file($tmp_name)) {
@@ -304,7 +339,7 @@ if ($action === 'upl_upload' && $bDirectoryIsWritable === true) {
     }
 }
 
-if ($action === 'upl_renamefile' && $bDirectoryIsWritable === true) {
+if ($action === 'upl_renamefile' && $bDirectoryIsWritable) {
     $oldname = basename(cSecurity::escapeString($oldname));
     $newname = basename(cSecurity::escapeString($newname));
     rename($cfgClient[$client]['upl']['path'] . $path . $oldname, $cfgClient[$client]['upl']['path'] . $path . $newname);
@@ -419,7 +454,6 @@ class UploadList extends FrontendList {
                            <img class="hover" alt="" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
                            <img class="preview" alt="" src="' . $sCacheThumbnail . '">
                        </a>';
-                    break;
                 default:
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
                     return '<img class="hover_none" alt="" src="' . $sCacheThumbnail . '">';
@@ -558,7 +592,7 @@ if ($sortby == 5 && $sortmode == 'DESC') {
 }
 
 // Multiple deletes at top of table
-if ($perm->have_perm_area_action('upl', 'upl_multidelete') && $bDirectoryIsWritable == true) {
+if ($perm->have_perm_area_action('upl', 'upl_multidelete') && $bDirectoryIsWritable) {
     $sConfirmation = "Con.showConfirmation('" . i18n('Are you sure you want to delete the selected files?') . "', function() { document.del.action.value = \'upl_multidelete\'; document.del.submit(); });return false;";
     $sDelete = '<a class="tableElement vAlignMiddle" href="javascript:void(0)" onclick="' . $sConfirmation . '"><img class="tableElement vAlignMiddle" src="images/delete.gif" title="' . i18n("Delete selected files") . '" alt="' . i18n("Delete selected files") . '" onmouseover="this.style.cursor=\'pointer\'"><span class="tableElement">' . i18n("Delete selected files") . '</span></a>';
 } else {
@@ -582,8 +616,8 @@ $sToolsRow = '<tr>
                    </div>
                </th>
            </tr>';
-$sSpacedRow = '<tr height="10">
-                   <td colspan="6" class="emptyCell"></td>
+$sSpacedRow = '<tr>
+                   <td colspan="6" class="emptyCell" style="min-height:10px;"></td>
               </tr>';
 
 // List wraps
@@ -610,8 +644,8 @@ $startwrap = '<table class="hoverbox generic" cellspacing="0" cellpadding="2" bo
                    <th>' . i18n("Actions") . '</th>
                </tr>';
 $itemwrap = '<tr>
-                   <td align="center">%s</td>
-                   <td align="center">%s</td>
+                   <td class="tgcenter">%s</td>
+                   <td class="tgcenter">%s</td>
                    <td class="vAlignTop nowrap">%s</td>
                    <td class="vAlignTop nowrap">%s</td>
                    <td class="vAlignTop nowrap">%s</td>
@@ -622,7 +656,7 @@ $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 // Object initializing
 $list2 = new UploadList($startwrap, $endwrap, $itemwrap);
 
-$uploads = new cApiUploadCollection();
+$uploadCollection = new cApiUploadCollection();
 
 // Fetch data
 if (cString::getPartOfString($path, cString::getStringLength($path) - 1, 1) != "/") {
@@ -636,12 +670,10 @@ if (cString::getPartOfString($path, cString::getStringLength($path) - 1, 1) != "
     $qpath = $path;
 }
 
-$uploads->select("idclient = '$client' AND dirname = '$qpath'");
-
-$user = new cApiUser($auth->auth['uid']);
+$uploadCollection->select("idclient = '$client' AND dirname = '$qpath'");
 
 if ($thumbnailmode == '') {
-    $current_mode = $user->getUserProperty('upload_folder_thumbnailmode', md5($path));
+    $current_mode = $currentuser->getUserProperty('upload_folder_thumbnailmode', md5($path));
     if ($current_mode != '') {
         $thumbnailmode = $current_mode;
     } else {
@@ -671,12 +703,12 @@ switch ($thumbnailmode) {
         break;
 }
 
-$user->setUserProperty('upload_folder_thumbnailmode', md5($path), $thumbnailmode);
+$currentuser->setUserProperty('upload_folder_thumbnailmode', md5($path), $thumbnailmode);
 
 $list2->setResultsPerPage($numpics);
 $list2->setSize($thumbnailmode);
 
-$totalUploadsCount = $uploads->count();
+$totalUploadsCount = $uploadCollection->count();
 $list2->setDataCount($totalUploadsCount);
 
 if ($startpage > $list2->getNumPages()) {
@@ -687,14 +719,14 @@ if ($startpage < 1) {
     $startpage = 1;
 }
 
-$uploads->resetQuery();
-$uploads->select("idclient = '$client' AND dirname = '$qpath'", '', '', $numpics * ($startpage - 1) . ", " .  $numpics);
+$uploadCollection->resetQuery();
+$uploadCollection->select("idclient = '$client' AND dirname = '$qpath'", '', '', $numpics * ($startpage - 1) . ", " .  $numpics);
 
 $rownum = 0;
 
 $properties = new cApiPropertyCollection();
 
-while ($item = $uploads->next()) {
+while ($item = $uploadCollection->next()) {
 
     // Get name of directory, filename and size of file
     $dirname = $item->get('dirname');
@@ -751,7 +783,7 @@ while ($item = $uploads->next()) {
 
     $mark = $check->toHtml(false);
 
-    if ($bAddFile == true) {
+    if ($bAddFile) {
         // 'bgcolor' is just a placeholder...
         $list2->setData($rownum, $mark, $dirname . $filename, $showfilename, $filesize, cString::toLowerCase(cFileHandler::getExtension($filename)), $todo->render() . $actions);
         $rownum++;
@@ -789,7 +821,7 @@ $paging_form = '';
 if ($list2->getNumPages() > 1) {
     $num_pages = $list2->getNumPages();
 
-    $paging_form .= "<script type=\"text/javascript\">
+    $paging_form .= "<script>
        function jumpToPage(select) {
            var pagenumber = select.selectedIndex + 1;
            url = '" . $sess->url('main.php') . "';
@@ -833,7 +865,7 @@ $select->autoFill($values);
 $select->setDefault($thumbnailmode);
 $select->setEvent('change', "if (document.del.thumbnailmode[0] != 'undefined') document.del.thumbnailmode[0].value = this.value; if (document.del.thumbnailmode[1] != 'undefined') document.del.thumbnailmode[1].value = this.value; if (document.del.thumbnailmode[2] != 'undefined') document.del.thumbnailmode[2].value = this.value;");
 
-$topbar = $select->render() . '<input class="vAlignMiddle tableElement" type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif">';
+$topbar = $select->render() . '<input class="vAlignMiddle tableElement" type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif" alt="">';
 
 $output = str_replace('-C-FILESPERPAGE-', $topbar, $output);
 
@@ -852,7 +884,7 @@ $delform->appendContent($output);
 
 $page->addScript($sess->url('iZoom.js.php'));
 
-if ($bDirectoryIsWritable == false) {
+if (!$bDirectoryIsWritable) {
     $page->displayError(i18n("Directory not writable") . ' (' . $cfgClient[$client]['upl']['path'] . $path . ')');
 }
 

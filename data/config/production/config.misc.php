@@ -205,7 +205,7 @@ $cfg['sql']['select_all_mode'] = true;
 //            will be used by `Item` to call them only for values of type string.
 //            If you use other functions for filtering strings, add them to this
 //            configuration.
-$cfg['sql']['string_filter_funtions'] = [
+$cfg['sql']['string_filter_functions'] = [
     'addslashes',
     'htmldecode',
     'htmlencode',
