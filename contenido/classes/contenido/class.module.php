@@ -874,8 +874,13 @@ class cApiModule extends Item {
      * @return string
      *         Concatenated PHP code containing CMS_VALUE variables and the module input code
      */
-    public static function processContainerInputCode($containerNr, $containerCfg, $moduleInputCode) {
-        $CiCMS_Values = self::_processContainerCode($containerNr, $containerCfg, $moduleInputCode, true);
+    public static function processContainerInputCode(
+        int $containerNr, string $containerCfg, string &$moduleInputCode
+    ): string
+    {
+        $CiCMS_Values = self::_processContainerCode(
+            $containerNr, $containerCfg, $moduleInputCode, true
+        );
         return $CiCMS_Values . "\n" . $moduleInputCode;
     }
 
@@ -893,8 +898,13 @@ class cApiModule extends Item {
      * @return string
      *         Concatenated PHP code containing CMS_VALUE variables
      */
-    public static function processContainerOutputCode($containerNr, $containerCfg, &$moduleIOutputCode) {
-        return self::_processContainerCode($containerNr, $containerCfg, $moduleIOutputCode, false);
+    public static function processContainerOutputCode(
+        int $containerNr, string $containerCfg, string &$moduleIOutputCode
+    ): string
+    {
+        return self::_processContainerCode(
+            $containerNr, $containerCfg, $moduleIOutputCode, false
+        );
     }
 
     /**
@@ -903,11 +913,15 @@ class cApiModule extends Item {
      * @since CONTENIDO 4.10.2
      * @param int $containerNr
      * @param string $containerCfg
-     * @param string $moduleICode
+     * @param string $moduleCode
      * @param bool $isModuleInput
      * @return string
      */
-    protected static function _processContainerCode($containerNr, $containerCfg, &$moduleICode, $isModuleInput = true) {
+    protected static function _processContainerCode(
+        int $containerNr, string $containerCfg, string &$moduleCode,
+        bool $isModuleInput = true
+    ): string
+    {
         $containerConfigurations = [];
         if (!empty($containerCfg)) {
             $containerConfigurations = cApiContainerConfiguration::parseContainerValue($containerCfg);
@@ -922,19 +936,19 @@ class cApiModule extends Item {
             $tmp = str_replace('\\', '\\\\', $tmp);
 
             $CiCMS_Values[] = $CiCMS_Var . '[' . $key3 . '] = "' . $tmp . '";';
-            $moduleICode = str_replace("\$CMS_VALUE[$key3]", $tmp, $moduleICode);
-            $moduleICode = str_replace("CMS_VALUE[$key3]", $tmp, $moduleICode);
+            $moduleCode = str_replace("\$CMS_VALUE[$key3]", $tmp, $moduleCode);
+            $moduleCode = str_replace("CMS_VALUE[$key3]", $tmp, $moduleCode);
         }
 
-        $moduleICode = str_replace('CMS_VALUE', $CiCMS_Var, $moduleICode);
-        $moduleICode = str_replace("\$" . $CiCMS_Var, $CiCMS_Var, $moduleICode);
+        $moduleCode = str_replace('CMS_VALUE', $CiCMS_Var, $moduleCode);
+        $moduleCode = str_replace("\$" . $CiCMS_Var, $CiCMS_Var, $moduleCode);
         if ($isModuleInput) {
             // Additional replacement in module input code
-            $moduleICode = str_replace('CMS_VAR', 'C' . $containerNr . 'CMS_VAR', $moduleICode);
+            $moduleCode = str_replace('CMS_VAR', 'C' . $containerNr . 'CMS_VAR', $moduleCode);
         }
         // Remove any leftover container variables and placeholder, e.g. $C123CMS_VALUE[123] or CMS_VALUE[123]
-        $moduleICode = preg_replace('/\$C([0-9]*)CMS_VALUE\[([0-9]*)\]/i', '', $moduleICode);
-        $moduleICode = preg_replace("/(CMS_VALUE\[)([0-9]*)(\])/i", '', $moduleICode);
+        $moduleCode = preg_replace('/\$C([0-9]*)CMS_VALUE\[([0-9]*)\]/i', '', $moduleCode);
+        $moduleCode = preg_replace("/(CMS_VALUE\[)([0-9]*)(\])/i", '', $moduleCode);
 
         return implode("\n", $CiCMS_Values);
     }

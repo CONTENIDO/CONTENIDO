@@ -74,7 +74,7 @@ if (isset($_GET['save_search']) && $_GET['save_search'] == 'true') {
 
 // ARTICLE SEARCH
 $arrDays      = [];
-$arrMonths    = ['--'] + range(0, 12);
+$arrMonths    = [];
 $sCurrentYear = cSecurity::toInteger(date('Y'));
 $arrYears     = range($sCurrentYear - 10, $sCurrentYear + 30);
 $arrYears     = ['-----'] + array_combine($arrYears, $arrYears);
@@ -84,7 +84,7 @@ foreach (['--'] + range(0, cDate::MAX_DAY_VALUE) as $pos => $value) {
     if ($pos === 0) {
         $arrDays[$pos] = $value;
     } else {
-        $value = cDate::padDay($value);
+        $value = cDate::padDay(cSecurity::toString($value));
         $arrDays[$value] = $value;
     }
 }
@@ -92,7 +92,7 @@ foreach (['--'] + range(0, cDate::MAX_MONTH_VALUE) as $pos => $value) {
     if ($pos === 0) {
         $arrMonths[$pos] = $value;
     } else {
-        $value = cDate::padMonth($value);
+        $value = cDate::padMonth(cSecurity::toString($value));
         $arrMonths[$value] = $value;
     }
 }
@@ -110,11 +110,11 @@ $bsSearchDateToYear        = cSecurity::toInteger($_REQUEST['bs_search_date_to_y
 $bsSearchAuthor            = $_REQUEST['bs_search_author'] ?? 'n/a';
 
 // validate user input
-$bsSearchDateTypeFromDay   = cDate::padDay(max(0, $bsSearchDateTypeFromDay));
-$bsSearchDateTypeFromMonth = cDate::padMonth(max(0, $bsSearchDateTypeFromMonth));
+$bsSearchDateTypeFromDay   = cDate::padDay(cSecurity::toString(max(0, $bsSearchDateTypeFromDay)));
+$bsSearchDateTypeFromMonth = cDate::padMonth(cSecurity::toString(max(0, $bsSearchDateTypeFromMonth)));
 $bsSearchDateTypeFromYear  = cSecurity::toString(max(0, $bsSearchDateTypeFromYear));
-$bsSearchDateToDay         = cDate::padDay(max(0, $bsSearchDateToDay));
-$bsSearchDateToMonth       = cDate::padMonth(max(0, $bsSearchDateToMonth));
+$bsSearchDateToDay         = cDate::padDay(cSecurity::toString(max(0, $bsSearchDateToDay)));
+$bsSearchDateToMonth       = cDate::padMonth(cSecurity::toString(max(0, $bsSearchDateToMonth)));
 $bsSearchDateToYear        = cSecurity::toString(max(0, $bsSearchDateToYear));
 
 // get users

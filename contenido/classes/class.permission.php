@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the the permission class.
+ * This file contains the permission class.
  *
  * @package Core
  * @subpackage Backend
@@ -128,7 +128,7 @@ class cPermission {
      *
      * @return string
      *         Returns different values, depending on state:
-     *         '1' (string) if permissions couldn't loaded
+     *         '1' (string) if permissions couldn't be loaded
      *         '3' (string) if permissions were loaded successfully
      *
      * @throws cDbException
@@ -271,8 +271,8 @@ class cPermission {
 
         // Check rights for the action in this area at this item
         if (isset($item_rights[$area][$action][$itemid])) {
-            // If have action for area + action +item check right for client and
-            // lang
+            // If we have action for area + action +item check right
+            // for client and lang
             return true;
         }
 
@@ -300,8 +300,8 @@ class cPermission {
 
             // Check
             if (isset($item_rights[$area][$action][$itemid])) {
-                // If have action for area + action +item check right for client
-                // and lang
+                // If we have action for area + action +item check right
+                // for client and lang
                 return true;
             }
         }
@@ -382,6 +382,8 @@ class cPermission {
         // return $this->have_perm("client[$client],lang[$lang]");
 
         $auth = cRegistry::getAuth();
+        $client = cSecurity::toInteger($client);
+        $lang = cSecurity::toInteger($lang);
 
         if (self::checkSysadminPermission($auth->getPerms())) {
             // User is sysadmin
@@ -486,6 +488,7 @@ class cPermission {
      * @throws cInvalidArgumentException
      */
     public function isClientAdmin($iClient, $oUser = false) {
+        $iClient = cSecurity::toInteger($iClient);
         $oUser = $this->_checkUserObject($oUser);
         return self::checkClientAdminPermission($iClient, $oUser->getEffectiveUserPerms());
     }
@@ -504,7 +507,8 @@ class cPermission {
      *
      * @throws cInvalidArgumentException
      */
-    public function isAdmin($oUser = false, $strict = false) {
+    public function isAdmin($oUser = false, bool $strict = false): bool
+    {
         $oUser = $this->_checkUserObject($oUser);
         return self::checkAdminPermission($oUser->getEffectiveUserPerms(), $strict);
     }
@@ -591,7 +595,7 @@ class cPermission {
      */
     public function have_perm($perm = 'x') {
         $auth = cRegistry::getAuth();
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
 
         // If user is sysadmin or admin of current client return true
         if (self::checkSysadminPermission($auth->getPerms())) {
@@ -703,10 +707,12 @@ class cPermission {
             $sess->register('area_tree');
 
             // parent_id uses the name not the idarea
-            $name = $oAreaColl->getNameByAreaId($mainArea);
+            $name = $oAreaColl->getNameByAreaId(cSecurity::toInteger($mainArea));
 
             // Check which subareas are there and write them in the array
-            $area_tree[$mainArea] = $oAreaColl->getAreaIdsByParentIdOrAreaId($name, $mainArea);
+            $area_tree[$mainArea] = $oAreaColl->getAreaIdsByParentIdOrAreaId(
+                $name, cSecurity::toInteger($mainArea)
+            );
         }
         return $mainArea;
     }
@@ -719,7 +725,8 @@ class cPermission {
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return string[]
      */
-    public static function permissionToArray($permission) {
+    public static function permissionToArray($permission): array
+    {
         return is_array($permission) ? $permission
             : (is_string($permission) && !empty($permission) ? explode(',', $permission) : []);
     }
@@ -746,7 +753,8 @@ class cPermission {
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
      */
-    public static function checkClientPermission($clientId, $permission) {
+    public static function checkClientPermission($clientId, $permission): bool
+    {
         $clientId = cSecurity::toInteger($clientId);
         $permissions = self::permissionToArray($permission);
         return in_array("client[$clientId]", $permissions);
@@ -761,7 +769,8 @@ class cPermission {
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
      */
-    public static function checkClientAndLanguagePermission($clientId, $languageId, $permission) {
+    public static function checkClientAndLanguagePermission(int $clientId, int $languageId, $permission): bool
+    {
         return self::checkClientPermission($clientId, $permission)
             && self::checkLanguagePermission($languageId, $permission);
     }
@@ -774,8 +783,8 @@ class cPermission {
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
      */
-    public static function checkClientAdminPermission($clientId, $permission) {
-        $clientId = cSecurity::toInteger($clientId);
+    public static function checkClientAdminPermission(int $clientId, $permission): bool
+    {
         $permissions = self::permissionToArray($permission);
         return in_array("admin[$clientId]", $permissions);
     }
@@ -791,7 +800,8 @@ class cPermission {
      *
      * @return bool
      */
-    public static function checkAdminPermission($permission, $strict = false) {
+    public static function checkAdminPermission($permission, bool $strict = false): bool
+    {
         $permissions = self::permissionToArray($permission);
         $pattern = $strict ? '/^admin.*/' : '/admin.*/';
         return (count(preg_grep($pattern, $permissions)) > 0);
@@ -804,7 +814,8 @@ class cPermission {
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
      */
-    public static function checkSysadminPermission($permission) {
+    public static function checkSysadminPermission($permission): bool
+    {
         $permissions = self::permissionToArray($permission);
         return (in_array('sysadmin', $permissions));
     }
@@ -819,7 +830,8 @@ class cPermission {
      *      Comma separated permission string or list of permissions.
      * @return bool
      */
-    public static function checkPermission($haystackPerm, $needlePerm) {
+    public static function checkPermission($haystackPerm, $needlePerm): bool
+    {
         $haystackPerms = self::permissionToArray($haystackPerm);
         $needlePerms = self::permissionToArray($needlePerm);
 

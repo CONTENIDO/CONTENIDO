@@ -222,7 +222,8 @@ class cArray {
      * @param array $array An array
      * @return int|string|null
      */
-    public static function getFirstKey(array $array) {
+    public static function getFirstKey(array $array)
+    {
         // We could use array_key_first(), but only from PHP >= 7.3.0
         // see https://www.php.net/manual/en/function.array-key-first.php
         foreach ($array as $key => $unused) {
@@ -239,7 +240,8 @@ class cArray {
      * @param array $array An array
      * @return int|string|null
      */
-    public static function getLastKey(array $array) {
+    public static function getLastKey(array $array)
+    {
         // We could use array_key_last(), but only from PHP >= 7.3.0
         // see https://www.php.net/manual/en/function.array-key-last.php
         if (empty($array)) {

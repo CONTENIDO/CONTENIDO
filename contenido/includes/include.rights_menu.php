@@ -101,7 +101,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
 
     if (!$bDisplayUser) {
         foreach ($aCurrentUserAccessibleClients as $key => $value) {
-            if (cPermission::checkClientPermission($key, $aUserPermissions)) {
+            if (cPermission::checkClientPermission(cSecurity::toInteger($key), $aUserPermissions)) {
                 $bDisplayUser = true;
             }
         }

@@ -20,10 +20,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Validation
  */
-abstract class cValidatorAbstract {
+abstract class cValidatorAbstract
+{
 
     /**
-     * List of options, depends by used validator
+     * List of options, depends on used validator
      *
      * @var array
      */
@@ -41,7 +42,8 @@ abstract class cValidatorAbstract {
      *
      * @param array $options
      */
-    public function setOptions(array $options) {
+    public function setOptions(array $options)
+    {
         $this->_options = array_merge($this->_options, $options);
     }
 
@@ -51,7 +53,8 @@ abstract class cValidatorAbstract {
      * @param string $name
      * @param mixed $value
      */
-    public function setOption($name, $value) {
+    public function setOption(string $name, $value)
+    {
         $this->_options[$name] = $value;
     }
 
@@ -61,8 +64,9 @@ abstract class cValidatorAbstract {
      * @param string $name
      * @return mixed|NULL
      */
-    public function getOption($name) {
-        return isset($this->_options[$name]) ? $this->_options[$name] : NULL;
+    public function getOption(string $name)
+    {
+        return $this->_options[$name] ?? NULL;
     }
 
     /**
@@ -70,7 +74,8 @@ abstract class cValidatorAbstract {
      *
      * @return array
      */
-    public function getErrors() {
+    public function getErrors(): array
+    {
         return $this->_errors;
     }
 
@@ -80,7 +85,8 @@ abstract class cValidatorAbstract {
      * @param string $message
      * @param mixed $code
      */
-    protected function addError($message, $code) {
+    protected function addError(string $message, $code)
+    {
         $this->_errors[] = (object)['message' => $message, 'code' => $code];
     }
 
@@ -90,7 +96,8 @@ abstract class cValidatorAbstract {
      * @param mixed $value
      * @return bool
      */
-    public function isValid($value) {
+    public function isValid($value): bool
+    {
         return $this->_isValid($value);
     }
 
@@ -100,5 +107,6 @@ abstract class cValidatorAbstract {
      * @param mixed $value
      * @return bool
      */
-    abstract protected function _isValid($value);
+    abstract protected function _isValid($value): bool;
+
 }

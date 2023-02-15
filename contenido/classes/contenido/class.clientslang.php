@@ -161,17 +161,22 @@ class cApiClientLanguageCollection extends ItemCollection {
      *
      * @since CONTENIDO 4.10.2
      * @param int $client
-     * @return array
-     * @throws cDbException
+     *
+     * @return int[]
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function getAllanguageIdsByClient($client) {
+    public function getAllLanguageIdsByClient(int $client): array
+    {
+        if ($client <= 0) {
+            return [];
+        }
         $list = [];
         $sql = "SELECT l.idlang FROM `%s` AS cl, `%s` AS l "
             . "WHERE cl.idclient = %d AND cl.idlang = l.idlang ORDER BY l.idlang ASC";
 
         $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
         while ($this->db->nextRecord()) {
-            $list[] = $this->db->f('idlang');
+            $list[] = cSecurity::toInteger($this->db->f('idlang'));
         }
 
         return $list;

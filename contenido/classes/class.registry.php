@@ -66,14 +66,15 @@ class cRegistry {
      * Function which returns path after the last possible place changing via
      * configuration file.
      *
-     * @author konstantinos.katikakis
      * @param  bool  $relativeToRoot
      *         Flag to return relative path from project root
      *         Since CONTENIDO 4.10.2
      * @return string
      *         path
+     *@author konstantinos.katikakis
      */
-    public static function getBackendPath($relativeToRoot = false) {
+    public static function getBackendPath(bool $relativeToRoot = false): string
+    {
         $cfg = self::getConfig();
         if (!$relativeToRoot) {
             return $cfg['path']['contenido'];
@@ -162,7 +163,8 @@ class cRegistry {
      * @since CONTENIDO 4.10.2
      * @return bool
      */
-    public static function isBackendVisualEditMode() {
+    public static function isBackendVisualEditMode(): bool
+    {
         return self::getBackendSessionId() && self::getArea() === 'tpl_visual';
     }
 

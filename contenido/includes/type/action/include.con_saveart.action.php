@@ -39,27 +39,28 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var string $urlname
  */
 
+$idcat = cSecurity::toInteger($idcat);
 $idtpl = $idtpl ?? false;
 $artspec = $artspec ?? '';
 $online = isset($online) || isset($timemgmt) ? $online : false;
 $searchable = $searchable ?? false;
 $publishing_date = $publishing_date ?? false;
-$locked = $locked ?? 0;
-$is_start = $is_start ?? 0;
+$locked = cSecurity::toInteger($locked ?? '0');
+$is_start = cSecurity::toInteger($is_start ?? '0');
 $sitemapprio = $sitemapprio ?? '0.5';
 $changefreq = $changefreq ?? '0';
 
 // remember old values to be passed to listeners of Contenido.Action.con_saveart.AfterCall
 $oldData = [];
 
-if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat))  && ((int) $locked === 0 || $admin )) {
+if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat))  && ($locked === 0 || $admin)) {
 
 	// get idartlang
 	if (!isset($idartlang) || $idartlang == 0) {
         $sql = 'SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
 		$db->query($sql, $cfg["tab"]["art_lang"], $idart, $lang);
 		$db->nextRecord();
-		$idartlang = $db->f("idartlang");
+		$idartlang = cSecurity::toInteger($db->f("idartlang"));
 	}
 
     if (1 == $tmp_firstedit) {
@@ -68,6 +69,8 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
             $idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec,
             $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, 0, $searchable
         );
+        $idart = cSecurity::toInteger($idart);
+        $idartlang = cSecurity::toInteger($idartlang);
 
         // Set startarticle status
         conSetStartArticleHandler($idcatnew, $idcat, $is_start, $idart, $lang, $idartlang);
@@ -136,6 +139,9 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
             $created, $lastmodified, $author, $online, $datestart, $dateend, $publishing_date, $artsort, 0, $searchable
         );
 
+        $idart = cSecurity::toInteger($idart);
+        $idartlang = cSecurity::toInteger($idartlang);
+
         // Set startarticle status
         conSetStartArticleHandler($idcatnew, $idcat, $is_start, $idart, $lang, $idartlang);
 
@@ -145,7 +151,7 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
 }
 
 // CON-1493
-if (isset($_POST['redirect_mode']) && ($_POST['redirect_mode'] === 'permanently' || $_POST['redirect_mode'] === 'temporary')) {
+if (in_array($_POST['redirect_mode'] ?? '', ['permanently', 'temporary'])) {
     $article = new cApiArticleLanguage($idartlang);
     $article->set('redirect_mode', ($_POST['redirect_mode']));
     $article->store();

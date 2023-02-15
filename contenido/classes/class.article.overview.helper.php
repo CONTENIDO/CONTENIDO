@@ -33,7 +33,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage Backend
  */
-class cArticleOverviewHelper {
+class cArticleOverviewHelper
+{
 
     /**
      * @var cDb
@@ -156,14 +157,17 @@ class cArticleOverviewHelper {
      * @param int $lang Language id
      * @param int $client Client id
      */
-    public function __construct(cDb $db, cAuth $auth, cPermission $perm, array $articles, $idcat, $lang, $client) {
+    public function __construct(
+        cDb $db, cAuth $auth, cPermission $perm, array $articles, int $idcat, int $lang, int $client
+    )
+    {
         $this->_db = $db;
         $this->_auth = $auth;
         $this->_perm = $perm;
         $this->_articles = $articles;
-        $this->_categoryId = cSecurity::toInteger($idcat);
-        $this->_languageId = cSecurity::toInteger($lang);
-        $this->_clientId = cSecurity::toInteger($client);
+        $this->_categoryId = $idcat;
+        $this->_languageId = $lang;
+        $this->_clientId = $client;
     }
 
     /**
@@ -172,7 +176,8 @@ class cArticleOverviewHelper {
      * @param array $articles
      * @return void
      */
-    public function setArticles(array $articles) {
+    public function setArticles(array $articles)
+    {
         $this->_articles = $articles;
     }
 
@@ -182,7 +187,8 @@ class cArticleOverviewHelper {
      * @return string
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getDatabaseTime() {
+    public function getDatabaseTime(): string
+    {
         if (!isset($this->_databaseTime)) {
             $this->_db->query('SELECT NOW() AS TIME');
             $this->_db->nextRecord();
@@ -198,7 +204,8 @@ class cArticleOverviewHelper {
      * @return string
      * @throws cDbException|cException
      */
-    public function getTextDirection() {
+    public function getTextDirection(): string
+    {
         if (!isset($this->_textDirection)) {
             cInclude('includes', 'functions.lang.php');
             $this->_textDirection = langGetTextDirection($this->_languageId);
@@ -214,9 +221,8 @@ class cArticleOverviewHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function isArticleInUse($idartlang) {
-        $idartlang = cSecurity::toInteger($idartlang);
-
+    public function isArticleInUse(int $idartlang): bool
+    {
         if (!isset($this->_articleMarks)) {
             $this->_articleMarks = [];
 
@@ -248,9 +254,8 @@ class cArticleOverviewHelper {
      * @return bool
      * @throws cDbException|cInvalidArgumentException
      */
-    public function isArticleInMultipleUse($idart) {
-        $idart = cSecurity::toInteger($idart);
-
+    public function isArticleInMultipleUse(int $idart): bool
+    {
         if (!isset($this->_articleInMultipleUse)) {
             $this->_articleInMultipleUse = [];
             $sql = "SELECT `idart`, COUNT(*) AS `count` FROM `%s` GROUP BY `idart` HAVING `count` > 1";
@@ -271,9 +276,8 @@ class cArticleOverviewHelper {
      * @return cApiUser|null
      * @throws cDbException|cException
      */
-    public function getArticleInUseUser($idartlang) {
-        $idartlang = cSecurity::toInteger($idartlang);
-
+    public function getArticleInUseUser(int $idartlang)
+    {
         if ($this->isArticleInUse($idartlang)) {
             $userid = $this->_articleMarks[$idartlang];
             return new cApiUser($userid);
@@ -289,7 +293,8 @@ class cArticleOverviewHelper {
      * @return array|mixed
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getArticleTemplateInfo($idartlang) {
+    public function getArticleTemplateInfo(int $idartlang)
+    {
         $idartlang = cSecurity::toInteger($idartlang);
 
         if (!isset($this->_articleTemplateInfos)) {
@@ -344,7 +349,8 @@ class cArticleOverviewHelper {
      * @return array
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getCategoryTemplateInfos() {
+    public function getCategoryTemplateInfos(): array
+    {
         if (!isset($this->_categoryTemplateInfos)) {
             $this->_categoryTemplateInfos = [];
 
@@ -385,7 +391,8 @@ class cArticleOverviewHelper {
      * @return string
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getCategoryBreadcrumb() {
+    public function getCategoryBreadcrumb(): string
+    {
         if (!isset($this->_categoryBreadcrumb)) {
             $this->_categoryBreadcrumb = '';
             conCreateLocationString($this->_categoryId, '&nbsp;/&nbsp;', $this->_categoryBreadcrumb);
@@ -400,7 +407,8 @@ class cArticleOverviewHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticleContentSyncPermission() {
+    public function hasArticleContentSyncPermission(): bool
+    {
         if (!isset($this->_hasArticleContentSyncPermission)) {
             $this->_hasArticleContentSyncPermission = $this->_checkPermission(
                 'con', 'con_syncarticle', $this->_categoryId
@@ -416,7 +424,8 @@ class cArticleOverviewHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticleEditContentPermission() {
+    public function hasArticleEditContentPermission(): bool
+    {
         if (!isset($this->_hasArticleEditContentPermission)) {
             $this->_hasArticleEditContentPermission = $this->_checkPermission(
                 'con_editcontent', 'con_editart', $this->_categoryId
@@ -432,7 +441,8 @@ class cArticleOverviewHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticleEditPermission() {
+    public function hasArticleEditPermission(): bool
+    {
         if (!isset($this->_hasArticleEditPermission)) {
             $this->_hasArticleEditPermission = $this->_checkPermission(
                 'con_editart', 'con_edit', $this->_categoryId
@@ -448,7 +458,8 @@ class cArticleOverviewHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticleLockPermission() {
+    public function hasArticleLockPermission(): bool
+    {
         if (!isset($this->_hasArticleLockPermission)) {
             $this->_hasArticleLockPermission = $this->_checkPermission(
                 'con', 'con_lock', $this->_categoryId
@@ -464,7 +475,8 @@ class cArticleOverviewHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticleMakeStartPermission() {
+    public function hasArticleMakeStartPermission(): bool
+    {
         if (!isset($this->_hasArticleMakeStartPermission)) {
             $this->_hasArticleMakeStartPermission = $this->_checkPermission(
                 'con', 'con_makestart', $this->_categoryId
@@ -480,7 +492,8 @@ class cArticleOverviewHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticleDuplicatePermission() {
+    public function hasArticleDuplicatePermission(): bool
+    {
         if (!isset($this->_hasArticleDuplicatePermission)) {
             $this->_hasArticleDuplicatePermission = $this->_checkPermission(
                 'con', 'con_duplicate', $this->_categoryId
@@ -496,7 +509,8 @@ class cArticleOverviewHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticleMakeOnlinePermission() {
+    public function hasArticleMakeOnlinePermission(): bool
+    {
         if (!isset($this->_hasArticleMakeOnlinePermission)) {
             $this->_hasArticleMakeOnlinePermission = $this->_checkPermission(
                 'con', 'con_makeonline', $this->_categoryId
@@ -512,7 +526,8 @@ class cArticleOverviewHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticleDeletePermission() {
+    public function hasArticleDeletePermission(): bool
+    {
         if (!isset($this->_hasArticleDeletePermission)) {
             $this->_hasArticleDeletePermission = $this->_checkPermission(
                 'con', 'con_deleteart', $this->_categoryId
@@ -531,7 +546,8 @@ class cArticleOverviewHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    protected function _checkPermission($area, $action, $item) {
+    protected function _checkPermission($area, $action, $item): bool
+    {
         return $this->_perm->have_perm_area_action($area, $action)
             || $this->_perm->have_perm_area_action_item($area, $action, $item);
     }

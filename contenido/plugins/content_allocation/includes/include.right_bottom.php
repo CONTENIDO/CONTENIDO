@@ -18,7 +18,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var cSession $sess
  * @var string $area
  * @var int $frame
- * @var string $action
  */
 
 if (isset($_REQUEST['treeItem'])) {
@@ -29,6 +28,7 @@ $requestTreeItem = isset($_REQUEST['treeItemPost']) && is_array($_REQUEST['treeI
 $requestIdPicaAlloc = cSecurity::toInteger($_GET['idpica_alloc'] ?? '0');
 $requestPostStep = $_POST['step'] ?? '';
 $requestGetStep = $_GET['step'] ?? '';
+$action = $action ?? '';
 
 $aPostTreeItem = [];
 if (!is_object($db)) {

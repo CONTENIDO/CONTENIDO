@@ -338,7 +338,7 @@ if (!empty($sCheckboxes)) {
 }
 
 // Languages perms checkboxes
-$aClientsLanguages = getAllClientsAndLanguages();
+$aClientsLanguages = $rightsAreasHelper->getAllClientsAndLanguages();
 $sCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
     $hasLanguagePerm = $rightsAreasHelper->hasAuthLanguagePerm($item['idlang']);

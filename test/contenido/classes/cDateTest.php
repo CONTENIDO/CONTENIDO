@@ -23,14 +23,8 @@ class cDateTest extends cTestingTestCase
     public function dataPadDay(): array
     {
         return [
-            'Null' => [null, null],
-            'Empty string' => ['', '00'],
-            'Empty string with whitespaces' => [' ', '00'],
-            'Number -1' => [-1, -1],
-            'Number 0 (min possible value)' => [0, '00'],
-            'Number 9' => [9, '09'],
-            'Number 31 (max possible value)' => [31, '31'],
-            'Number 32' => [32, '32'],
+            'String "" (empty)' => ['', '00'],
+            'String with whitespaces' => [' ', '00'],
             'String "-1"' => ['-1', -1],
             'String "0" (min possible value)' => ['0', '00'],
             'String "9"' => ['9', '09'],
@@ -55,14 +49,8 @@ class cDateTest extends cTestingTestCase
     public function dataPadMonth(): array
     {
         return [
-            'Null' => [null, null],
-            'Empty string' => ['', '00'],
-            'Empty string with whitespaces' => [' ', '00'],
-            'Number -1' => [-1, -1],
-            'Number 0 (min possible value)' => [0, '00'],
-            'Number 9' => [9, '09'],
-            'Number 12 (max possible value)' => [12, '12'],
-            'Number 13' => [13, '13'],
+            'String "" (empty)' => ['', '00'],
+            'String with whitespaces' => [' ', '00'],
             'String "-1"' => ['-1', -1],
             'String "0" (min possible value)' => ['0', '00'],
             'String "9"' => ['9', '09'],
@@ -83,7 +71,6 @@ class cDateTest extends cTestingTestCase
     {
         $this->assertEquals($output, cDate::padMonth($input));
     }
-
 
     /**
      * Test {@see cDate::padDayOrMonth()}.

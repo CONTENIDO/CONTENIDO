@@ -20,7 +20,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var array $cfg
  * @var int $client
  * @var int $frame
- * @var string $action
  * @var string $area
  *
  * @var int $idcommunication
@@ -46,6 +45,8 @@ if (!$oClient->isLoaded() || !$oLanguage->isLoaded()) {
     $oPage->render();
     return;
 }
+
+$action = $action ?? '';
 
 if (!isset($sortmode)) {
     $sortmode = $currentuser->getUserProperty("system", "tasks_sortmode");

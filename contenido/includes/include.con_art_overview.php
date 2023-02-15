@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $action, $perm, $duplicate, $idart, $lang, $sourcelanguage, $_cecRegistry, $cfg, $currentuser, $client, $db;
+global $action, $perm, $duplicate, $idart, $sourcelanguage, $_cecRegistry, $cfg, $currentuser, $db;
 global $tpl, $sess, $auth, $contenido, $frame, $idtpl, $notification;
 
 cInclude('includes', 'functions.tpl.php');
@@ -22,8 +22,10 @@ cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.pathresolver.php');
 
 $db2 = cRegistry::getDb();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
-$idcat = (isset($_REQUEST['idcat']) && is_numeric($_REQUEST['idcat'])) ? $_REQUEST['idcat'] : -1;
+$idcat = cSecurity::toInteger($_REQUEST['idcat'] ?? '-1');
 $next = (isset($_REQUEST['next']) && is_numeric($_REQUEST['next']) && $_REQUEST['next'] > 0) ? $_REQUEST['next'] : 0;
 
 $dateformat = getEffectiveSetting('dateformat', 'date', 'Y-m-d');
@@ -363,7 +365,6 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $idartlang = $sart["idartlang"];
             $lidcat = $sart["idcat"];
             $idcatlang = 0;
-            $idart = $sart["idart"];
             $published = $sart["published"];
             $online = $sart["online"];
 

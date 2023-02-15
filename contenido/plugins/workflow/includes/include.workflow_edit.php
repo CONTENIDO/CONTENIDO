@@ -16,7 +16,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $idworkflow, $wfname, $wfdescription;
 
 /**
- * @var string $action
  * @var int $frame
  * @var string $area
  */
@@ -27,6 +26,8 @@ $page = new cGuiPage("workflow_edit", "workflow");
 $page->addStyle('workflow.css');
 
 $workflows = new Workflows();
+
+$action = $action ?? '';
 
 if ($action == "workflow_delete" && $requestIdWorkflow) {
     $workflows->delete($requestIdWorkflow);

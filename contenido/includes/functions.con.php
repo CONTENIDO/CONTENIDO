@@ -1332,7 +1332,10 @@ function conSetStartArticle($idcat, $idart, $lang, $isstart)
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function conSetStartArticleHandler($idcatnew, $idcat, $is_start, $idart, $lang, $idartlang) {
+function conSetStartArticleHandler(
+    $idcatnew, int $idcat, int $is_start, int $idart, int $lang, int $idartlang
+)
+{
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
 

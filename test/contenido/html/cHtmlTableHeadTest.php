@@ -21,6 +21,11 @@ class cHtmlTableHeadTest extends cTestingTestCase
     {
         $this->assertSame('th', $this->_readAttribute($this->_tableHead, '_tag'));
     }
+
+    public function testConstructorWithContent()
+    {
+        $tableHead = new cHTMLTableHead('Dog');
+        $this->assertSame('Dog', $this->_readAttribute($tableHead, '_content'));
+    }
+
 }
-
-

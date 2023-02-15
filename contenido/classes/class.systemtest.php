@@ -420,7 +420,7 @@ class cSystemtest {
      *         The file info array or false if the file can't be accessed
      */
     protected function getFileInfo($sFilename) {
-        return cFileHandler::typeOwnerInfo($sFilename);
+        return cFileHandler::typeOwnerInfo(cSecurity::toString($sFilename));
     }
 
     /**

@@ -23,7 +23,7 @@ $perm = cRegistry::getPerm();
 $area = cRegistry::getArea();
 $frame = cRegistry::getFrame();
 $cfg = cRegistry::getConfig();
-$client = cRegistry::getClientId();
+$client = cSecurity::toInteger(cRegistry::getClientId());
 $cfgClient = cRegistry::getClientConfig();
 $belang = cRegistry::getBackendLanguage();
 

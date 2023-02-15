@@ -67,8 +67,8 @@ class cTypeGenerator {
      * @throws cDbException|cInvalidArgumentException
      */
     public function __construct() {
-        $this->_idart = cRegistry::getArticleId(true);
-        $this->_idlang = cRegistry::getLanguageId();
+        $this->_idart = cSecurity::toInteger(cRegistry::getArticleId(true));
+        $this->_idlang = cSecurity::toInteger(cRegistry::getLanguageId());
         $this->cfg = cRegistry::getConfig();
 
         if (!isset(self::$a_content[$this->_idart])) {
@@ -124,7 +124,9 @@ class cTypeGenerator {
             self::$articleContentHelper = new cArticleContentHelper();
         }
 
-        self::$a_content[$this->_idart] = self::$articleContentHelper->getContentByIdArtAndIdLang($this->_idart, $this->_idlang);
+        self::$a_content[$this->_idart] = self::$articleContentHelper->getContentByIdArtAndIdLang(
+            $this->_idart, $this->_idlang
+        );
     }
 
     /**
@@ -165,6 +167,8 @@ class cTypeGenerator {
                 return $tmp;
             }
         }
+
+        return '';
     }
 
     /**

@@ -16,7 +16,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * @var cPermission $perm
  * @var array $cfg
- * @var string $action
  */
 
 $page = new cGuiPage('url_shortener', 'url_shortener');
@@ -28,6 +27,8 @@ $userPerm = explode(',', $auth->auth['perm']);
 if (!$perm->have_perm_area_action('url_shortener')) {
     $page->displayError(i18n('Short URLs can only be managed by authorized user!', 'url_shortener'));
 }
+
+$action = $action ?? '';
 
 // process the actions
 if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm->have_perm_area_action('url_shortener', 'url_shortener_delete')) {

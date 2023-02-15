@@ -509,7 +509,8 @@ class cHTML {
      * @since CONTENIDO 4.10.2
      * @return array
      */
-    public function getStyleDefinition() {
+    public function getStyleDefinition(): array
+    {
         return $this->_styleDefinitions;
     }
 
@@ -701,6 +702,20 @@ class cHTML {
             $style = trim($style);
             if (cString::getPartOfString($style, -1) !== ';') {
                 $style .= ';';
+            }
+        }
+
+        if (cRegistry::getBackendSessionId()) {
+            if (!in_array($this->_tag, ['meta', 'title', 'link', 'script']) && ($this->_tag === 'input' && $this->getAttribute('type') !== 'hidden')) {
+                $class = $this->getAttribute('class');
+                if (!empty($class)) {
+                    $classes = preg_split('/\s+/', $class);
+                    $classes = array_diff($classes, ['con_element']);
+                    array_unshift($classes, 'con_element');
+                    $this->setAttribute('class', implode(' ', $classes));
+                } else {
+                    $this->setAttribute('class', 'con_element');
+                }
             }
         }
 

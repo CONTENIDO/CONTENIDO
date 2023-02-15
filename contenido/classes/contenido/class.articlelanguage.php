@@ -319,7 +319,9 @@ class cApiArticleLanguage extends Item {
             $metaTag = new cApiMetaTag();
 
             $oMetaTagCollection = new cApiMetaTagCollection();
-            $metaTagIds = $oMetaTagCollection->getIdMetatagsByIdArtLang($this->get('idartlang'));
+            $metaTagIds = $oMetaTagCollection->getIdMetatagsByIdArtLang(
+                cSecurity::toInteger($this->get('idartlang'))
+            );
             foreach ($metaTagIds as $id) {
                 $metaTag->loadBy('idmetatag', $id);
                 $metaTag->markAsEditable($artLangVersion->get('version'));

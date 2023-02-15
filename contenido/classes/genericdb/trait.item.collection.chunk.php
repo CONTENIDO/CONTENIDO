@@ -28,7 +28,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage Database
  */
-trait cItemCollectionChunkTrait {
+trait cItemCollectionChunkTrait
+{
 
     /**
      * Database instance.
@@ -46,13 +47,14 @@ trait cItemCollectionChunkTrait {
      * @param callable $callback The callback function
      *                           First parameter: (Item[]) Results
      *                           Second parameter: (int) page
-     * @param int      $size     The size for each block
+     * @param int $size     The size for each block
      *
      * @return bool
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function fetchChunkObjectsByIds(array $ids, $callback, $size = 100) {
+    public function fetchChunkObjectsByIds(array $ids, callable $callback, int $size = 100): bool
+    {
         return $this->_fetchChunksByIds($ids, $callback, $size, true);
     }
 
@@ -65,13 +67,14 @@ trait cItemCollectionChunkTrait {
      * @param callable $callback The callback function
      *                           First parameter: (array[]) Results
      *                           Second parameter: (int) page
-     * @param int      $size     The size for each block
+     * @param int $size     The size for each block
      *
      * @return bool
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function fetchChunkResultsByIds(array $ids, $callback, $size = 100) {
+    public function fetchChunkResultsByIds(array $ids, callable $callback, int $size = 100): bool
+    {
         return $this->_fetchChunksByIds($ids, $callback, $size, false);
     }
 
@@ -86,7 +89,10 @@ trait cItemCollectionChunkTrait {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    protected function _fetchChunksByIds(array $ids, $callback, $size, $createObjects) {
+    protected function _fetchChunksByIds(
+        array $ids, callable $callback, int $size, bool $createObjects
+    ): bool
+    {
         $chunks = array_chunk($ids, $size);
 
         $db = $this->getDbInstance();
@@ -131,7 +137,8 @@ trait cItemCollectionChunkTrait {
      *
      * @return void
      */
-    protected function _prepareChunkIds(array &$ids) {
+    protected function _prepareChunkIds(array &$ids)
+    {
         $db = $this->getDbInstance();
         $ids = array_map(function($id) use ($db) {
             if (!empty($id) && !is_numeric($id) && is_string($id)) {
@@ -147,7 +154,8 @@ trait cItemCollectionChunkTrait {
      *
      * @return cDb
      */
-    private function getDbInstance() {
+    private function getDbInstance(): cDb
+    {
         if (!self::$_db) {
             self::$_db = cRegistry::getDb();
         }

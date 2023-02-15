@@ -94,10 +94,11 @@ class cApiLayoutCollection extends ItemCollection {
      * @since CONTENIDO 4.10.2
      * @param int|null $idclient  Id of client to limit the result for a specific client
      * @param bool $sort Flag to sort the result
-     * @return array List of layout types
+     * @return string[] List of layout types
      * @throws cDbException|cException
      */
-    public function getAllUsedLayoutTypesPropertyValues($idclient = NULL, $sort = true) {
+    public function getAllUsedLayoutTypesPropertyValues(int $idclient = NULL, bool $sort = true): array
+    {
         $propertyCollection = new cApiPropertyCollection();
         $propertyCollection->addResultField('value');
         if (is_numeric($idclient)) {

@@ -26,6 +26,7 @@ $requestIdWorkflowItem = cSecurity::toInteger($_REQUEST['idworkflowitem'] ?? '0'
 $requestIdWorkflow = cSecurity::toInteger($_GET['idworkflow'] ?? '0');
 $requestPosition = cSecurity::toInteger($_GET['position'] ?? '0');
 $requestIdUserSequence = cSecurity::toInteger($_GET['idusersequence'] ?? '0');
+$action = $action ?? '';
 
 $workflowActions = new WorkflowActions();
 

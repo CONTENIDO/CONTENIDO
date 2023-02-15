@@ -99,7 +99,9 @@ if (!is_numeric($lang) || $lang == '') {
     $sess->register('lang');
 
     $oClientLangColl = new cApiClientLanguageCollection();
-    $aClientLanguages = $oClientLangColl->getAllanguageIdsByClient($client);
+    $aClientLanguages = $oClientLangColl->getAllLanguageIdsByClient(
+        cSecurity::toInteger($client)
+    );
     do {
         $lang = array_shift($aClientLanguages);
         if (!$perm->have_perm_client_lang($client, $lang)) {
@@ -116,7 +118,7 @@ $perm->load_permissions();
 if (isset($area)) {
     $sess_area = $area;
 } else {
-    $area = (isset($sess_area)) ? $sess_area : 'login';
+    $area = $sess_area ?? 'login';
 }
 
 $backendUrl = cRegistry::getBackendUrl();

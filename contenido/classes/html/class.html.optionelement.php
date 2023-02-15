@@ -107,10 +107,14 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @param string $character The indentation character itself
      * @return string Generated indentation string
      */
-    public static function indent($level, $prefixAmount = 2, $levelAmount = 4, $character = '&nbsp;') {
-        $prefixStr = str_repeat($character, max(0, cSecurity::toInteger($prefixAmount)));
-        $levelStr = str_repeat($character, max(0, cSecurity::toInteger($levelAmount)));
-        return $prefixStr . str_repeat($levelStr, max(0, cSecurity::toInteger($level)));
+    public static function indent(
+        int $level, int $prefixAmount = 2, int $levelAmount = 4,
+        string $character = '&nbsp;'
+    ): string
+    {
+        $prefixStr = str_repeat($character, max(0, $prefixAmount));
+        $levelStr = str_repeat($character, max(0, $levelAmount));
+        return $prefixStr . str_repeat($levelStr, max(0, $level));
     }
 
 }

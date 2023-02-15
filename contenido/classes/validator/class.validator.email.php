@@ -63,8 +63,13 @@ class cValidatorEmail extends cValidatorAbstract
      *
      * @return bool
      */
-    protected function _isValid($value)
+    protected function _isValid($value): bool
     {
+        if (!is_string($value) || empty($value)) {
+            $this->addError('Parameter must be string and not empty', 6);
+            return false;
+        }
+
         $filteredValue = filter_var($value, FILTER_VALIDATE_EMAIL);
 
         if (false === $filteredValue) {
@@ -101,4 +106,5 @@ class cValidatorEmail extends cValidatorAbstract
 
         return true;
     }
+
 }
