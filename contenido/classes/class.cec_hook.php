@@ -74,21 +74,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiCecHook {
 
     /**
-     * Temporally stored break condition.
+     * Temporary  stored break condition.
      *
      * @var int|NULL
      */
     private static $_breakCondition = NULL;
 
     /**
-     * Temporally stored default return value of CEC functions
+     * Temporary  stored default return value of CEC functions
      *
      * @var mixed
      */
     private static $_defaultReturnValue = NULL;
 
     /**
-     * Temporally stored position of argument to return.
+     * Temporary  stored position of argument to return.
      * It's used by cApiCecHook::executeAndReturn()
      * to store/extract the return value into/from arguments list.
      *
@@ -97,7 +97,7 @@ class cApiCecHook {
     private static $_returnArgumentPos = 1;
 
     /**
-     * Temporally setting of break condition and optional the default return
+     * Temporary  setting of break condition and optional the default return
      * value.
      *
      * @param mixed $condition
@@ -109,7 +109,7 @@ class cApiCecHook {
     }
 
     /**
-     * Temporally setting of default return value.
+     * Temporary  setting of default return value.
      *
      * @param mixed $defaultReturnValue
      */
@@ -118,7 +118,7 @@ class cApiCecHook {
     }
 
     /**
-     * Temporally setting of position in argument to return.
+     * Temporary  setting of position in argument to return.
      *
      * @param int $pos
      *         Position, feasible value greater 0

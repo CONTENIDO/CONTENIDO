@@ -336,18 +336,18 @@ VALID UNTIL: %s
             // raise beforeoutput event
             $this->_raiseEvent('beforeoutput');
 
-            $iEndTime = $this->_getMicroTime();
+            $fEndTime = $this->_getMicroTime();
             if ($this->_bHtmlComment) {
-                $time = sprintf("%2.4f", $iEndTime - $this->_fStartTime);
+                $time = sprintf("%2.4f", $fEndTime - $this->_fStartTime);
                 $exp = ($this->_iLifetime == 0? 'infinite' : date('Y-m-d H:i:s', time() + $this->_iLifetime));
                 $content .= sprintf($this->_sHtmlCommentTpl, 'HIT', $time . ' sec.', $exp);
                 if ($iPageStartTime != NULL && is_numeric($iPageStartTime)) {
-                    $content .= '<!-- [' . sprintf("%2.4f", $iEndTime - $iPageStartTime) . '] -->';
+                    $content .= '<!-- [' . sprintf("%2.4f", $fEndTime - $iPageStartTime) . '] -->';
                 }
             }
 
             if ($this->_bDebug) {
-                $info = sprintf("HIT: %2.4f sec.", $iEndTime - $this->_fStartTime);
+                $info = sprintf("HIT: %2.4f sec.", $fEndTime - $this->_fStartTime);
                 $info = sprintf($this->_sDebugTpl, $info);
                 $content = str_ireplace('</body>', $info . "\n</body>", $content);
             }
@@ -440,7 +440,7 @@ VALID UNTIL: %s
      */
     protected function _getMicroTime() {
         $mtime = explode(' ', microtime());
-        return $mtime[1] + $mtime[0];
+        return (float)$mtime[1] + (float)$mtime[0];
     }
 }
 
