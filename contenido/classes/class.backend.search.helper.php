@@ -33,7 +33,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage Backend
  */
-class cBackendSearchHelper {
+class cBackendSearchHelper
+{
 
     const COMMON_CON_AND_ARTICLE_RIGHTS = [
         ['con', 'con_makestart'],
@@ -132,12 +133,13 @@ class cBackendSearchHelper {
      * @param int $lang Language id
      * @param int $client Client id
      */
-    public function __construct(cDb $db, cAuth $auth, cPermission $perm, $lang, $client) {
+    public function __construct(cDb $db, cAuth $auth, cPermission $perm, int $lang, int $client)
+    {
         $this->_db = $db;
         $this->_auth = $auth;
         $this->_perm = $perm;
-        $this->_languageId = cSecurity::toInteger($lang);
-        $this->_clientId = cSecurity::toInteger($client);
+        $this->_languageId = $lang;
+        $this->_clientId = $client;
     }
 
     /**
@@ -146,9 +148,9 @@ class cBackendSearchHelper {
      * @param array $aValues The form values to pass to the search form
      * @return string
      */
-    public function generateJs($aValues) {
-        if (is_array($aValues)) {
-
+    public function generateJs(array $aValues): string
+    {
+        if (!empty($aValues)) {
             // Array to map search values to search form field names
             $searchFormMap = [
                 'save_title' => 'bs_search_text',
@@ -193,12 +195,13 @@ class cBackendSearchHelper {
 
     /**
      * Searches in properties
-     * @param mixed $itemidReq Property item id
-     * @param string $itemtypeReq Property item type
+     * @param int $itemidReq Property item id
+     * @param int $itemtypeReq Property item type
      * @return array
      * @throws cDbException|cException
      */
-    public function getSearchResults($itemidReq, $itemtypeReq) {
+    public function getSearchResults(int $itemidReq, int $itemtypeReq): array
+    {
         $retValue = [];
 
         // Request from DB
@@ -241,7 +244,8 @@ class cBackendSearchHelper {
      * @param array $data Search data with save_date_from_* fields
      * @return string
      */
-    public function composeSaveDateFrom(array $data) {
+    public function composeSaveDateFrom(array $data): string
+    {
         $fields = ['save_date_from_day', 'save_date_from_month', 'save_date_from_year'];
         foreach ($fields as $field) {
             if (empty($data[$field]) || cSecurity::toInteger($data[$field]) <= 0) {
@@ -260,7 +264,8 @@ class cBackendSearchHelper {
      * @param array $data Search data with save_date_to_* fields
      * @return string
      */
-    public function composeSaveDateTo(array $data) {
+    public function composeSaveDateTo(array $data): string
+    {
         $fields = ['save_date_to_day', 'save_date_to_month', 'save_date_to_year'];
         foreach ($fields as $field) {
             if (empty($data[$field]) || cSecurity::toInteger($data[$field]) <= 0) {
@@ -279,7 +284,8 @@ class cBackendSearchHelper {
      * @param string $sString
      * @return string
      */
-    public function mask($sString) {
+    public function mask(string $sString): string
+    {
         $sString = $this->_db->escape($sString);
         $sString = str_replace('\\', '\\\\', $sString);
         $sString = str_replace('\'', '\\\'', $sString);
@@ -293,7 +299,8 @@ class cBackendSearchHelper {
      *      the articles were already  executed.
      * @throws cDbException|cInvalidArgumentException
      */
-    public function initializeArticleInfos(cDb $db) {
+    public function initializeArticleInfos(cDb $db)
+    {
         // Move the cursor to the beginning
         $db->seek(0);
 
@@ -324,7 +331,8 @@ class cBackendSearchHelper {
      *
      * @return array|int[]
      */
-    public function getCategoryIds() {
+    public function getCategoryIds(): array
+    {
         if (!isset($this->_categoryIds)) {
             $ids = [];
             foreach ($this->_articleInfos as $item) {
@@ -339,10 +347,12 @@ class cBackendSearchHelper {
      * Returns the article template info array.
      * Will be used, if the article has not its own template configuration.
      *
+     * @param int $idcat
      * @return array
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getCategoryTemplateInfos($idcat) {
+    public function getCategoryTemplateInfos(int $idcat): array
+    {
         if (!isset($this->_categoryTemplateInfos)) {
             $this->_categoryTemplateInfos = [];
 
@@ -384,10 +394,12 @@ class cBackendSearchHelper {
     /**
      * Returns the category breadcrumb (category path).
      *
+     * @param int $idcat
      * @return string
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getCategoryBreadcrumb($idcat) {
+    public function getCategoryBreadcrumb(int $idcat): string
+    {
         if (!isset($this->_categoryBreadcrumb)) {
             $this->_categoryBreadcrumb = [];
         }
@@ -406,7 +418,8 @@ class cBackendSearchHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasCommonContentPermission() {
+    public function hasCommonContentPermission(): bool
+    {
         $bCheckRights = false;
         if (!isset($this->_hasCommonContentPermission)) {
             foreach (self::COMMON_CON_AND_ARTICLE_RIGHTS as $entry) {
@@ -426,10 +439,11 @@ class cBackendSearchHelper {
      * Checks if the user has common permissions for content and article for a specific category.
      *
      * @param int $idcat Id of the category to check the rights for
-     * @return bool|mixed|null
+     * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticlePermission($idcat) {
+    public function hasArticlePermission(int $idcat): bool
+    {
         if (!isset($this->_articlePermissions)) {
             // It seems that initializeArticleInfos() was not called before!
             if (!is_array($this->_articleInfos)) {
@@ -453,6 +467,7 @@ class cBackendSearchHelper {
             foreach ($rightsCollection->fetchTable(['idcat' => 'idcat']) as $entry) {
                 $_idcat = cSecurity::toInteger($entry['idcat']);
                 if (!isset($this->_articlePermissions[$_idcat])) {
+                    // First initialize with null, we'll change this later to boolean status
                     $this->_articlePermissions[$_idcat] = null;
                 }
             }
@@ -471,7 +486,7 @@ class cBackendSearchHelper {
             $this->_articlePermissions[$idcat] = $bCheckRights;
         }
 
-        return $this->_articlePermissions[$idcat];
+        return is_bool($this->_articlePermissions[$idcat]) && $this->_articlePermissions[$idcat];
     }
 
     /**
@@ -481,7 +496,8 @@ class cBackendSearchHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticleMakeStartPermission($idcat) {
+    public function hasArticleMakeStartPermission(int $idcat): bool
+    {
         if (!isset($this->_hasArticleMakeStartPermission)) {
             $this->_hasArticleMakeStartPermission = [];
         }
@@ -492,7 +508,7 @@ class cBackendSearchHelper {
             );
         }
 
-        return $this->_hasArticleMakeStartPermission;
+        return $this->_hasArticleMakeStartPermission[$idcat];
     }
 
     /**
@@ -502,7 +518,8 @@ class cBackendSearchHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticleEditContentPermission($idcat) {
+    public function hasArticleEditContentPermission(int $idcat): bool
+    {
         if (!isset($this->_hasArticleEditContentPermission)) {
             $this->_hasArticleEditContentPermission = [];
         }
@@ -512,7 +529,7 @@ class cBackendSearchHelper {
             );
         }
 
-        return $this->_hasArticleEditContentPermission;
+        return $this->_hasArticleEditContentPermission[$idcat];
     }
 
     /**
@@ -522,7 +539,8 @@ class cBackendSearchHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticleDuplicatePermission($idcat) {
+    public function hasArticleDuplicatePermission(int $idcat): bool
+    {
         if (!isset($this->_hasArticleDuplicatePermission)) {
             $this->_hasArticleDuplicatePermission = [];
         }
@@ -532,7 +550,7 @@ class cBackendSearchHelper {
             );
         }
 
-        return $this->_hasArticleDuplicatePermission;
+        return $this->_hasArticleDuplicatePermission[$idcat];
     }
 
     /**
@@ -542,7 +560,8 @@ class cBackendSearchHelper {
      * @return bool
      * @throws cDbException|cException
      */
-    public function hasArticleDeletePermission($idcat) {
+    public function hasArticleDeletePermission(int $idcat): bool
+    {
         if (!isset($this->_hasArticleDeletePermission)) {
             $this->_hasArticleDeletePermission = [];
         }
@@ -552,7 +571,7 @@ class cBackendSearchHelper {
             );
         }
 
-        return $this->_hasArticleDeletePermission;
+        return $this->_hasArticleDeletePermission[$idcat];
     }
 
 }
