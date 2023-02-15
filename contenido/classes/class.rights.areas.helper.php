@@ -25,7 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage Backend
  */
-class cRightsAreasHelper {
+class cRightsAreasHelper
+{
 
     /**
      * @var cApiUser
@@ -57,8 +58,10 @@ class cRightsAreasHelper {
      *
      * @param cApiUser $currentUser
      * @param cAuth $auth
+     * @param array $contextPerms
      */
-    public function __construct(cApiUser $currentUser, cAuth $auth, array $contextPerms) {
+    public function __construct(cApiUser $currentUser, cAuth $auth, array $contextPerms)
+    {
         $this->_currentUser = $currentUser;
         $this->_auth = $auth;
         $this->_contextPerms = $contextPerms;
@@ -72,7 +75,8 @@ class cRightsAreasHelper {
      * @param array $perms
      * @return void
      */
-    public function setContextPermissions(array $perms) {
+    public function setContextPermissions(array $perms)
+    {
         $this->_contextPerms = $perms;
     }
 
@@ -81,17 +85,18 @@ class cRightsAreasHelper {
      *
      * @return bool
      */
-    public function isAuthSysadmin() {
+    public function isAuthSysadmin(): bool
+    {
         return $this->_isAuthSysadmin;
     }
 
     /**
      * Checks if context (user or group) is sysadmin
      *
-     * @param int $idClient
      * @return bool
      */
-    public function isContextSysadmin() {
+    public function isContextSysadmin(): bool
+    {
         return $this->_isContextSysadmin;
     }
 
@@ -101,16 +106,19 @@ class cRightsAreasHelper {
      * @param int $idClient
      * @return bool
      */
-    public function isAuthClientAdmin($idClient) {
+    public function isAuthClientAdmin(int $idClient): bool
+    {
         return cPermission::checkClientAdminPermission($idClient, $this->_auth->getPerms());
     }
 
     /**
      * Checks if context (user or group) is a client admin
      *
+     * @param int $idClient
      * @return bool
      */
-    public function isContextClientAdmin($idClient) {
+    public function isContextClientAdmin(int $idClient): bool
+    {
         return cPermission::checkClientAdminPermission($idClient, $this->_contextPerms);
     }
 
@@ -120,7 +128,8 @@ class cRightsAreasHelper {
      * @param int $idClient
      * @return bool
      */
-    public function hasAuthClientPerm($idClient) {
+    public function hasAuthClientPerm(int $idClient): bool
+    {
         return $this->_isAuthSysadmin
             || cPermission::checkClientPermission($idClient, $this->_auth->getPerms());
     }
@@ -131,7 +140,8 @@ class cRightsAreasHelper {
      * @param int $idClient
      * @return bool
      */
-    public function hasContextClientPerm($idClient) {
+    public function hasContextClientPerm(int $idClient): bool
+    {
         return $this->_isContextSysadmin
             || cPermission::checkClientPermission($idClient, $this->_contextPerms);
     }
@@ -142,7 +152,8 @@ class cRightsAreasHelper {
      * @param int $idLang
      * @return bool
      */
-    public function hasAuthLanguagePerm($idLang) {
+    public function hasAuthLanguagePerm(int $idLang): bool
+    {
         return $this->_isAuthSysadmin
             || cPermission::checkLanguagePermission($idLang, $this->_auth->getPerms());
     }
@@ -153,7 +164,8 @@ class cRightsAreasHelper {
      * @param int $idLang
      * @return bool
      */
-    public function hasContextLanguagePerm($idLang) {
+    public function hasContextLanguagePerm(int $idLang): bool
+    {
         return $this->_isContextSysadmin
             || cPermission::checkLanguagePermission($idLang, $this->_contextPerms);
     }
@@ -165,9 +177,35 @@ class cRightsAreasHelper {
      * @throws cDbException
      * @throws cException
      */
-    public function getAvailableClients() {
+    public function getAvailableClients(): array
+    {
         $oClientsCollection = new cApiClientCollection();
-        return $oClientsCollection->getAvailableClients();
+        $result = $oClientsCollection->getAvailableClients();
+        $clients = [];
+        foreach ($result as $clientId => $entry) {
+            $clients[cSecurity::toInteger($clientId)] = $entry;
+        }
+        return $clients;
+    }
+
+    /**
+     * Returns a list with all clients and languages, alias for
+     * {@see getAllClientsAndLanguages()}
+     *
+     * @return array
+     * @throws cDbException
+     */
+    public function getAllClientsAndLanguages(): array
+    {
+        $result = getAllClientsAndLanguages();
+        // Cast the values to their proper types
+        foreach ($result as $pos => $entry) {
+            $result[$pos]['idlang'] = cSecurity::toInteger($entry['idlang']);
+            $result[$pos]['langname'] = cSecurity::toString($entry['langname']);
+            $result[$pos]['idclient'] = cSecurity::toInteger($entry['idclient']);
+            $result[$pos]['clientname'] = cSecurity::toString($entry['clientname']);
+        }
+        return $result;
     }
 
     /**
@@ -176,11 +214,12 @@ class cRightsAreasHelper {
      * @param int[] $clients
      * @return string
      */
-    public function renderClientAdminCheckboxes(array $clients) {
+    public function renderClientAdminCheckboxes(array $clients): string
+    {
         $sCheckboxes = '';
         foreach ($clients as $idclient => $item) {
             $isAuthUserClientAdmin = $this->isAuthClientAdmin($idclient);
-            if ($isAuthUserClientAdmin || $this->_authHasSysadminPerm) {
+            if ($isAuthUserClientAdmin || $this->_isAuthSysadmin) {
                 $oCheckbox = new cHTMLCheckbox(
                     "madmin[" . $idclient . "]",
                     $idclient,
@@ -201,7 +240,8 @@ class cRightsAreasHelper {
      * @param string $clientName
      * @return string
      */
-    public function renderClientPermCheckbox($idClient, $clientName) {
+    public function renderClientPermCheckbox(int $idClient, string $clientName): string
+    {
         $oCheckbox = new cHTMLCheckbox(
             "mclient[" . $idClient . "]",
             $idClient,
@@ -220,7 +260,10 @@ class cRightsAreasHelper {
      * @param string $clientName
      * @return string
      */
-    public function renderLanguagePermCheckbox($idLanguage, $languageName, $clientName) {
+    public function renderLanguagePermCheckbox(
+        int $idLanguage, string $languageName, string $clientName
+    ): string
+    {
         $oCheckbox = new cHTMLCheckbox(
             "mlang[" . $idLanguage . "]",
             $idLanguage,
@@ -241,40 +284,53 @@ class cRightsAreasHelper {
      * @return string
      * @throws cException
      */
-    public function renderPropertiesTable(array $data, $typeFieldName, $nameFieldName, $valueFieldName) {
-        $table = '
-            <table class="generic" width="100%" cellspacing="0" cellpadding="2">
-                <tr>
-                    <th>' . i18n("Area/Type") . '</th>
-                    <th>' . i18n("Property") . '</th>
-                    <th>' . i18n("Value") . '</th>
-                    <th>' . i18n("Delete") . '</th>
-                </tr>
-        ';
+    public function renderPropertiesTable(
+        array $data, string $typeFieldName, string $nameFieldName, string $valueFieldName
+    ): string
+    {
+        $table = new cHTMLTable();
+        $table->setClass('generic');
 
+        $contents = [];
+
+        // Table head (tr > th)
+        $tableRow = new cHTMLTableRow(); // tr
+        $contents[] = $tableRow->setClass('text_medium')
+            ->setContent([
+                new cHTMLTableHead(i18n("Area/Type")),
+                new cHTMLTableHead(i18n("Property")),
+                new cHTMLTableHead(i18n("Value")),
+                new cHTMLTableHead(i18n("Delete")),
+            ])
+            ->render();
+
+        // Table rows (tr > td) for data
         foreach ($data as $entry) {
-            $table .= '
-                <tr class="text_medium">
-                    <td>' . $entry['type'] . '</td>
-                    <td>' . $entry['name'] . '</td>
-                    <td>' . $entry['value'] . '</td>
-                    <td>
-                        <a href="' . $entry['href'] . '"><img src="images/delete.gif" alt="' . i18n('Delete') . '" title="' . i18n('Delete') . '"></a>
-                    </td>
-                </tr>'
-            ;
+            $anchor = '<a href="' . $entry['href'] . '"><img src="images/delete.gif" alt="' . i18n('Delete') . '" title="' . i18n('Delete') . '"></a>';
+            $tableRow = new cHTMLTableRow(); // tr
+            $contents[] = $tableRow->setClass('text_medium')
+                ->setContent([
+                    new cHTMLTableData($entry['type']),
+                    new cHTMLTableData($entry['name']),
+                    new cHTMLTableData($entry['value']),
+                    new cHTMLTableData($anchor),
+                ])
+                ->render();
         }
 
-        $table .='
-                <tr>
-                    <td><input class="text_medium" type="text" size="16" maxlength="32" name="' . $typeFieldName . '"></td>
-                    <td><input class="text_medium" type="text" size="16" maxlength="32" name="' . $nameFieldName . '"></td>
-                    <td><input class="text_medium" type="text" size="32" name="'. $valueFieldName . '"></td>
-                    <td>&nbsp;</td>
-                </tr>
-            </table>';
+        // Table row (tr > td) for fom fields
+        $tableRow = new cHTMLTableRow(); // tr
+        $contents[] = $tableRow->setClass('text_medium')
+            ->setContent([
+                new cHTMLTableData('<input class="text_medium" type="text" size="16" maxlength="32" name="' . $typeFieldName . '">'),
+                new cHTMLTableData('<input class="text_medium" type="text" size="16" maxlength="32" name="' . $nameFieldName . '">'),
+                new cHTMLTableData('<input class="text_medium" type="text" size="32" name="'. $valueFieldName . '">'),
+                new cHTMLTableData('&nbsp;'),
+            ])
+            ->render();
 
-        return $table;
+        return $table->setContent($contents)
+            ->render();
     }
 
 }

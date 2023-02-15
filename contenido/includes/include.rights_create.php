@@ -249,40 +249,40 @@ if ($isAuthUserSysadmin) {
 
 // Clients admin perms checkboxes
 $aClients = $rightsAreasHelper->getAvailableClients();
-$sClientCheckboxes = $rightsAreasHelper->renderClientAdminCheckboxes($aClients);
-if (!empty($sClientCheckboxes)) {
+$sCheckboxes = $rightsAreasHelper->renderClientAdminCheckboxes($aClients);
+if (!empty($sCheckboxes)) {
     $tpl->set('d', 'CATNAME', i18n("Administrator"));
-    $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
+    $tpl->set('d', 'CATFIELD', $sCheckboxes);
     $tpl->next();
 }
 
 // Clients perms checkboxes
-$sClientCheckboxes = '';
+$sCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     $hasAuthUserClientPerm = $rightsAreasHelper->hasAuthClientPerm($idclient);
     $isAuthUserClientAdmin = $rightsAreasHelper->isAuthClientAdmin($idclient);
     if ($hasAuthUserClientPerm || $isAuthUserClientAdmin || $isAuthUserSysadmin) {
-        $sClientCheckboxes .= $rightsAreasHelper->renderClientPermCheckbox($idclient, $item['name']);
+        $sCheckboxes .= $rightsAreasHelper->renderClientPermCheckbox($idclient, $item['name']);
     }
 }
 $tpl->set('d', 'CATNAME', i18n("Access clients"));
-$tpl->set('d', 'CATFIELD', $sClientCheckboxes);
+$tpl->set('d', 'CATFIELD', $sCheckboxes);
 $tpl->next();
 
 // Languages perms checkboxes
-$aClientsLanguages = getAllClientsAndLanguages();
-$sClientCheckboxes = '';
+$aClientsLanguages = $rightsAreasHelper->getAllClientsAndLanguages();
+$sCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
     $hasLanguagePerm = $rightsAreasHelper->hasAuthLanguagePerm($item['idlang']);
     $isAuthUserClientAdmin = $rightsAreasHelper->isAuthClientAdmin($item['idclient']);
     if ($hasLanguagePerm || $isAuthUserClientAdmin) {
-        $sClientCheckboxes .= $rightsAreasHelper->renderLanguagePermCheckbox(
+        $sCheckboxes .= $rightsAreasHelper->renderLanguagePermCheckbox(
             $item['idlang'], $item['langname'], $item['clientname']
         );
     }
 }
 $tpl->set('d', 'CATNAME', i18n("Access languages"));
-$tpl->set('d', 'CATFIELD', $sClientCheckboxes);
+$tpl->set('d', 'CATFIELD', $sCheckboxes);
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Use WYSIWYG-Editor"));

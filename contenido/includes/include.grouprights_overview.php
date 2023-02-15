@@ -148,45 +148,45 @@ if ($isAuthUserSysadmin) {
 
 // Clients admin perms checkboxes
 $aClients = $rightsAreasHelper->getAvailableClients();
-$sClientCheckboxes = $rightsAreasHelper->renderClientAdminCheckboxes($aClients);
-if (!empty($sClientCheckboxes) && !$isContextSysadmin) {
+$sCheckboxes = $rightsAreasHelper->renderClientAdminCheckboxes($aClients);
+if (!empty($sCheckboxes) && !$isContextSysadmin) {
     $page->set('d', 'CATNAME', i18n("Administrator"));
-    $page->set('d', 'CATFIELD', $sClientCheckboxes);
+    $page->set('d', 'CATFIELD', $sCheckboxes);
     $page->next();
 }
 
 // Clients perms checkboxes
-$sClientCheckboxes = '';
+$sCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     $hasAuthUserClientPerm = $rightsAreasHelper->hasAuthClientPerm($idclient);
     $isAuthUserClientAdmin = $rightsAreasHelper->isAuthClientAdmin($idclient);
     $isContextClientAdmin = $rightsAreasHelper->isContextClientAdmin($idclient);
     if (($hasAuthUserClientPerm || $isAuthUserSysadmin || $isAuthUserClientAdmin) && !$isContextClientAdmin) {
-        $sClientCheckboxes .= $rightsAreasHelper->renderClientPermCheckbox($idclient, $item['name']);
+        $sCheckboxes .= $rightsAreasHelper->renderClientPermCheckbox($idclient, $item['name']);
     }
 }
-if (!empty($sClientCheckboxes) && !$isContextSysadmin) {
+if (!empty($sCheckboxes) && !$isContextSysadmin) {
     $page->set('d', 'CATNAME', i18n("Access clients"));
-    $page->set('d', 'CATFIELD', $sClientCheckboxes);
+    $page->set('d', 'CATFIELD', $sCheckboxes);
     $page->next();
 }
 
 // Languages perms checkboxes
-$aClientsLanguages = getAllClientsAndLanguages();
-$sClientCheckboxes = '';
+$aClientsLanguages = $rightsAreasHelper->getAllClientsAndLanguages();
+$sCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
     $hasLanguagePerm = $rightsAreasHelper->hasAuthLanguagePerm($item['idlang']);
     $isAuthUserClientAdmin = $rightsAreasHelper->isAuthClientAdmin($item['idclient']);
     $isContextClientAdmin = $rightsAreasHelper->isContextClientAdmin($item['idclient']);
     if (($hasLanguagePerm || $isAuthUserClientAdmin) && !$isContextClientAdmin) {
-        $sClientCheckboxes .= $rightsAreasHelper->renderLanguagePermCheckbox(
+        $sCheckboxes .= $rightsAreasHelper->renderLanguagePermCheckbox(
             $item['idlang'], $item['langname'], $item['clientname']
         );
     }
 }
-if (!empty($sClientCheckboxes) && !$isContextSysadmin) {
+if (!empty($sCheckboxes) && !$isContextSysadmin) {
     $page->set('d', 'CATNAME', i18n("Access languages"));
-    $page->set('d', 'CATFIELD', $sClientCheckboxes);
+    $page->set('d', 'CATFIELD', $sCheckboxes);
     $page->next();
 }
 
