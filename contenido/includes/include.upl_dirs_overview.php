@@ -95,6 +95,7 @@ function getUplIdAttrPath($pathStr) {
 if (!isset($path) && $sess->isRegistered('upl_last_path')) {
     $path = $upl_last_path;
 }
+$path = $path ?? '';
 
 if (!isset($action)) {
     $action = '';

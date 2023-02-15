@@ -73,9 +73,10 @@ $tpl->set('s', 'DISPLAY_SEARCH', 'block');
 
 if ($perm->have_perm_area_action('upl', 'upl_mkdir') && $client > 0) {
     $sCurrentPathInfo = '';
-    if ($sess->isRegistered('upl_last_path') && !isset($path)) {
+    if (!isset($path) && $sess->isRegistered('upl_last_path')) {
         $path = $upl_last_path;
     }
+    $path = $path ?? '';
 
     if ($path == '' || cApiDbfs::isDbfs($path)) {
         $sCurrentPathInfo = $path;

@@ -71,7 +71,7 @@ if (!$sess->isRegistered('upl_last_path')) {
     $sess->register('upl_last_path');
 } elseif (!isset($path)) {
     // if no path is given the last path is used
-    $path = $upl_last_path;
+    $path = $upl_last_path ?? '';
 }
 
 // if path doesn't exist use root path this might happen when the last path
