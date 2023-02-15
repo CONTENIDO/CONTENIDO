@@ -99,7 +99,7 @@ class cBackendSearchHelper {
     protected $_articlePermissions;
 
     /**
-     * @var bool[]
+     * @var bool
      */
     protected $_hasCommonContentPermission;
 
