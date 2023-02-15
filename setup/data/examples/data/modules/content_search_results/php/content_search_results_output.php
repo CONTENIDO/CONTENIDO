@@ -13,7 +13,9 @@
  */
 
 // frontend
-cInclude('module', 'class.module.search_result.php');
+if (!class_exists('SearchResultModule')) {
+    cInclude('module', 'class.module.search_result.php');
+}
 
 // get search term
 $searchTerm = '';

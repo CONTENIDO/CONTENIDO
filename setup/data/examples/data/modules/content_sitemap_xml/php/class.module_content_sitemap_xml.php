@@ -8,7 +8,9 @@
  * @link http://www.4fb.de
  */
 
-class ModuleContentSitemapXml {
+class ModuleContentSitemapXml
+{
+
     /**
      * @var array
      */
@@ -48,7 +50,8 @@ class ModuleContentSitemapXml {
      * ModuleContentSitemapXml constructor.
      * @param array $options
      */
-    public function __construct(array $options) {
+    public function __construct(array $options)
+    {
         $this->cfg = $options['cfg'];
         $this->cronLogPath = $options['cronLogPath'];
         $this->db = $options['db'];
@@ -66,7 +69,8 @@ class ModuleContentSitemapXml {
      * @param string $jobName
      * @throws cException if job was already executed within last 23h
      */
-    public function checkJobRerun($jobName) {
+    public function checkJobRerun(string $jobName)
+    {
         // get filename of cron job file
         $filename = $this->cronLogPath . $jobName . '.job';
         if (cFileHandler::exists($filename)) {
@@ -94,7 +98,8 @@ class ModuleContentSitemapXml {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function addArticlesToSitemap(SimpleXMLElement $sitemap, array $categoryIds, $lang) {
+    public function addArticlesToSitemap(SimpleXMLElement $sitemap, array $categoryIds, int $lang): int
+    {
         $itemCount = 0;
 
         // check if there are categories
@@ -159,7 +164,7 @@ class ModuleContentSitemapXml {
                     // construct the link
                     'loc' => $loc,
                     // construct the last modified date in ISO 8601
-                    'lastmod' => (int) $this->db->f('lastmod'),
+                    'lastmod' => cSecurity::toInteger($this->db->f('lastmod')),
                     // get the sitemap change frequency
                     'changefreq' => $this->db->f('changefreq'),
                     // get the sitemap priority
@@ -176,13 +181,14 @@ class ModuleContentSitemapXml {
      * Saves the sitemap to the file with the given filename.
      * If no filename is given, it outputs the sitemap.
      *
-     * @todo How can I save this properly formatted?
-     * @see http://stackoverflow.com/questions/1191167/format-output-of-simplexml-asxml
      * @param SimpleXMLElement $sitemap the XML structure of the sitemap
      * @param string $filename [optional] the filename to which the sitemap should
      *        be written
+     * @todo How can I save this properly formatted?
+     *       @see http://stackoverflow.com/questions/1191167/format-output-of-simplexml-asxml
      */
-    public function saveSitemap(SimpleXMLElement $sitemap, $filename = '') {
+    public function saveSitemap(SimpleXMLElement $sitemap, string $filename = '')
+    {
         if (empty($filename)) {
             header('Content-type: text/xml');
             echo $sitemap->asXML();
@@ -198,7 +204,8 @@ class ModuleContentSitemapXml {
      * @param SimpleXMLElement $sitemap
      * @param array $data
      */
-    protected function addUrl(SimpleXMLElement $sitemap, array $data) {
+    protected function addUrl(SimpleXMLElement $sitemap, array $data)
+    {
         $url = $sitemap->addChild('url');
 
         $url->addChild('loc', $data['loc']);
@@ -227,7 +234,8 @@ class ModuleContentSitemapXml {
      * @param int $time a UNIX timestamp
      * @return string the formatted date string
      */
-    protected function iso8601Date($time) {
+    protected function iso8601Date(int $time): string
+    {
         $tzd = date('O', $time);
         $tzd = chunk_split($tzd, 3, ':');
         $tzd = cString::getPartOfString($tzd, 0, 6);
