@@ -19,7 +19,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var cSession $sess
  * @var array $cfg
  * @var string $area
- * @var string $action
  * @var int $client
  * @var int $lang
  * @var int $frame
@@ -31,6 +30,8 @@ $oPage = new cGuiPage("recipients.group_edit", "newsletter");
 $oRGroups = new NewsletterRecipientGroupCollection();
 $oRGroupMembers = new NewsletterRecipientGroupMemberCollection();
 $oRGroup = new NewsletterRecipientGroup();
+
+$action = $action ?? '';
 
 $aFields = [
     "name" => [

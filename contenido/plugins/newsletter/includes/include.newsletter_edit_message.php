@@ -18,7 +18,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var cPermission $perm
  * @var cSession $sess
  * @var array $cfg
- * @var string $action
  * @var string $area
  * @var int $client
  * @var int $lang
@@ -38,6 +37,8 @@ $requestIdNewsletter = cSecurity::toInteger($_REQUEST['idnewsletter'] ?? '0');
 if (cHasPlugins('newsletters')) {
     cIncludePlugins('newsletters');
 }
+
+$action = $action ?? '';
 
 // Exec actions
 $oNewsletter = new Newsletter();

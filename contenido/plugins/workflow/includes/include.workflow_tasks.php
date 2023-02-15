@@ -23,7 +23,6 @@ plugin_include('workflow', 'includes/functions.workflow.php');
  * @var cDb $db
  * @var string $area
  * @var string $sFlagTitle
- * @var string $action
  * @var int $frame
  * @var int $lang
  * @var int $client
@@ -37,6 +36,8 @@ $wfa = new WorkflowArtAllocations();
 $wfu = new WorkflowUserSequences();
 $user = new cApiUser();
 $db2 = cRegistry::getDb();
+
+$action = $action ?? '';
 
 $usershow = $usershow ?? '';
 $modidartlang = cSecurity::toInteger($modidartlang ?? '0');

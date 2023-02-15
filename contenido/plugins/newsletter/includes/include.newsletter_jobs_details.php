@@ -17,7 +17,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var cAuth $auth
  * @var cPermission $perm
  * @var cSession $sess
- * @var string $action
  * @var string $area
  * @var int $frame
  */
@@ -29,6 +28,8 @@ $oPage = new cGuiPage("newsletter_job_details", "newsletter");
 
 $requestIdNewsJob = cSecurity::toInteger($_REQUEST['idnewsjob'] ?? '0');
 $requestIdNewsLog = cSecurity::toInteger($_REQUEST['idnewslog'] ?? '0');
+
+$action = $action ?? '';
 
 if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) && $requestIdNewsJob > 0) {
     // Run job

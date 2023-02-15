@@ -19,7 +19,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var cSession $sess
  * @var array $cfg
  * @var string $area
- * @var string $action
  * @var int $client
  * @var int $lang
  * @var int $frame
@@ -38,6 +37,7 @@ $requestDeactivated = (isset($_REQUEST['deactivated'])) ? cSecurity::toInteger($
 $requestNewstype = (isset($_REQUEST['newstype'])) ? cSecurity::toInteger($_REQUEST['newstype']) : 0;
 $requestName = (isset($_REQUEST['name'])) ? cSecurity::toString($_REQUEST['name']) : '';
 $requestEmail = (isset($_REQUEST['email'])) ? cSecurity::toString($_REQUEST['email']) : '';
+$action = $action ?? '';
 
 // Note, that the object name has to be $recipient for plugins
 if ($action == "recipients_create" && $perm->have_perm_area_action($area, $action)) {

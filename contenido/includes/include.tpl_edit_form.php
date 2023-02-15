@@ -20,7 +20,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var cDb $db
  * @var array $cfg
  * @var string $area
- * @var string $action
  * @var int $client
  * @var int $frame
  * @var int $idtpl
@@ -30,6 +29,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $tpl2 = new cTemplate();
 
 $page = new cGuiPage("tpl_edit_form", '', '0');
+
+$action = $action ?? '';
 
 if ($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $action)) {
     $page->displayOk(i18n("Deleted Template succcessfully!"));

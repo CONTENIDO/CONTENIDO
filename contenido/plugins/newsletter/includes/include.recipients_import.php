@@ -17,7 +17,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var cPermission $perm
  * @var array $cfg
  * @var string $area
- * @var string $action
  * @var int $client
  * @var int $lang
  * @var int $frame
@@ -33,6 +32,8 @@ if (cHasPlugins('recipients')) {
 // Check form data
 $requestSelDelimiter = $_REQUEST['selDelimiter'] ?? 'tab';
 $requestTxtData = $_REQUEST['txtData'] ?? '';
+
+$action = $action ?? '';
 
 $sFileData = '';
 $aFields = [];
