@@ -15,7 +15,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * @var cAuth $auth
  * @var cPermission $perm
- * @var string $action
  * @var string $area
  * @var int $client
  * @var int $lang
@@ -39,6 +38,8 @@ if (isset($idnewsletter)) {
 if (cHasPlugins('newsletters')) {
     cIncludePlugins('newsletters');
 }
+
+$action = $action ?? '';
 
 if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create")) {
     // Create new newsletter
