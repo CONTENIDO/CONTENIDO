@@ -252,8 +252,8 @@ class cBackendSearchHelper
                 return '';
             }
         }
-        $data['save_date_from_month'] = cDate::padMonth($data['save_date_from_month']);
-        $data['save_date_from_day'] = cDate::padDay($data['save_date_from_day']);
+        $data['save_date_from_month'] = cDate::padMonth(cSecurity::toString($data['save_date_from_month']));
+        $data['save_date_from_day'] = cDate::padDay(cSecurity::toString($data['save_date_from_day']));
 
         return "{$data['save_date_from_year']}-{$data['save_date_from_month']}-{$data['save_date_from_day']} 00:00:00";
     }

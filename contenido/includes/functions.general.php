@@ -131,7 +131,11 @@ function getCanonicalDay($weekday) {
  * @deprecated Since 4.10.2, use {@see cDate::formatDatetime()} instead
  */
 function displayDatetime($timestamp = "", $date = false, $time = false) {
-    return cDate::formatDatetime($timestamp, $date, $time);
+    return cDate::formatDatetime(
+        cSecurity::toString($timestamp),
+        cSecurity::toBoolean($date),
+        cSecurity::toBoolean($time)
+    );
 }
 
 /**

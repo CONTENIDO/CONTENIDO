@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage Util
  */
-class cDate {
+class cDate
+{
 
     /**
      * @var int Maximum value for a day.
@@ -38,13 +39,12 @@ class cDate {
      *
      * - Empty value will return '00'
      * - Values up to '9' will be preceded by a '0', e.g. '09'
-     * - Values between 0 - 31 will be returned as string
-     * - Other values will be returned as they are
      *
-     * @param string|int|mixed $value
-     * @return string|int|mixed
+     * @param string $value
+     * @return string
      */
-    public static function padDay($value) {
+    public static function padDay(string $value): string
+    {
         return self::_padDayOrMonth($value, self::MAX_DAY_VALUE);
     }
 
@@ -54,13 +54,12 @@ class cDate {
      *
      * - Empty value will return '00'
      * - Values up to '9' will be preceded by a '0', e.g. '09'
-     * - Values between 0 - 12 will be returned as string
-     * - Other values will be returned as they are
      *
-     * @param string|int|mixed $value
-     * @return string|int|mixed
+     * @param string $value
+     * @return string
      */
-    public static function padMonth($value) {
+    public static function padMonth(string $value): string
+    {
         return self::_padDayOrMonth($value, self::MAX_MONTH_VALUE);
     }
 
@@ -70,17 +69,18 @@ class cDate {
      *
      * Same behaviour as {@see cDate::padDay()}
      *
-     * @param string|int|mixed $value
-     * @return string|int|mixed
+     * @param string $value
+     * @return string
      */
-    public static function padDayOrMonth($value) {
+    public static function padDayOrMonth(string $value): string
+    {
         return self::_padDayOrMonth($value, self::MAX_DAY_VALUE);
     }
 
     /**
      * Returns the translated month name for to the given numeric month value.
      *
-     * @param int $month
+     * @param int|null|mixed $month
      *         Numeric month value
      *
      * @return string|null
@@ -88,7 +88,8 @@ class cDate {
      *
      * @throws cException
      */
-    public static function getCanonicalMonth($month) {
+    public static function getCanonicalMonth($month)
+    {
         $map = [
             i18n("January"), i18n("February"), i18n("March"), i18n("April"),
             i18n("May"), i18n("June"), i18n("July"), i18n("August"),
@@ -106,7 +107,7 @@ class cDate {
      *
      * This function assumes that monday is the first day of the week!
      *
-     * @param int $day
+     * @param int|null|mixed $weekday
      *         Numeric weekday value
      *
      * @return string|null
@@ -114,7 +115,8 @@ class cDate {
      *
      * @throws cException
      */
-    public static function getCanonicalDay($weekday) {
+    public static function getCanonicalDay($weekday)
+    {
         $map = [
             i18n("Monday"), i18n("Tuesday"), i18n("Wednesday"), i18n("Thursday"),
             i18n("Friday"), i18n("Saturday"), i18n("Sunday"),
@@ -129,11 +131,11 @@ class cDate {
     /**
      * Returns a formatted date and/or time-string according to the current settings
      *
-     * @param mixed $timestamp
+     * @param string|null|mixed $timestamp
      *         A timestamp. If no value is given the current time will be used.
-     * @param bool  $date
+     * @param bool $date
      *         If true the date will be included in the string
-     * @param bool  $time
+     * @param bool $time
      *         If true the time will be included in the string
      *
      * @return string
@@ -141,11 +143,12 @@ class cDate {
      *
      * @throws cDbException|cException
      */
-    public static function formatDatetime($timestamp = '', $date = false, $time = false) {
-        if ($timestamp == '') {
+    public static function formatDatetime($timestamp = '', bool $date = false, bool $time = false): string
+    {
+        if (empty($timestamp)) {
             $timestamp = time();
         } else {
-            $timestamp = strtotime($timestamp);
+            $timestamp = strtotime(cSecurity::toString($timestamp));
         }
 
         if ($date && !$time) {
@@ -166,10 +169,11 @@ class cDate {
      * - '0000-00-00'
      * - '0000-00-00 00:00:00'
      *
-     * @param string $dateString
+     * @param string|null|mixed $dateString
      * @return bool
      */
-    public static function isEmptyDate($dateString) {
+    public static function isEmptyDate($dateString): bool
+    {
         return (
             is_null($dateString) ||
             is_string($dateString) && (
@@ -179,14 +183,12 @@ class cDate {
     }
 
     /**
-     * @param string|int|mixed $value
+     * @param string $value
      * @param int $maxValue
-     * @return float|int|mixed|string
+     * @return string
      */
-    protected static function _padDayOrMonth($value, $maxValue) {
-        if (!is_string($value) && !is_numeric($value)) {
-            return $value;
-        }
+    protected static function _padDayOrMonth(string $value, int $maxValue): string
+    {
         $tmpValue = cSecurity::toInteger($value);
         if ($tmpValue < 0 || $tmpValue > $maxValue) {
             return $value;
