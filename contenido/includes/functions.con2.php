@@ -373,7 +373,9 @@ function conGetContentFromArticle($iIdArtLang) {
     }
 
     $oContentHelper = new cArticleContentHelper($oDB);
-    return $oContentHelper->getContentByIdArtLang($iIdArtLang);
+    return $oContentHelper->getContentByIdArtLang(
+        cSecurity::toInteger($iIdArtLang)
+    );
 }
 
 /**

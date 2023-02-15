@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage Backend
  */
-class cArticleContentHelper {
+class cArticleContentHelper
+{
 
     /**
      * @var cDb
@@ -33,7 +34,8 @@ class cArticleContentHelper {
      *
      * @param cDb|null $db Database instance
      */
-    public function __construct(cDb $db = null) {
+    public function __construct(cDb $db = null)
+    {
         if ($db instanceof cDb) {
             $this->_db = $db;
         }
@@ -51,7 +53,8 @@ class cArticleContentHelper {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    function getContentByIdArtLang($iIdArtLang) {
+    public function getContentByIdArtLang(int $iIdArtLang): array
+    {
         if (!$this->_db instanceof cDb) {
             $this->_db = cRegistry::getDb();
         }
@@ -98,7 +101,8 @@ class cArticleContentHelper {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getContentByIdArtAndIdLang($idArt, $idLang) {
+    public function getContentByIdArtAndIdLang(int $idArt, int $idLang): array
+    {
         if (!$this->_db instanceof cDb) {
             $this->_db = cRegistry::getDb();
         }
