@@ -25,7 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Validation
  */
-class cValidatorRegex extends cValidatorAbstract {
+class cValidatorRegex extends cValidatorAbstract
+{
 
     /**
      *
@@ -33,7 +34,8 @@ class cValidatorRegex extends cValidatorAbstract {
      * @param mixed $value
      * @return bool
      */
-    protected function _isValid($value) {
+    protected function _isValid($value): bool
+    {
         if (!is_string($value)) {
             $this->addError('Invalid value', 1);
             return false;
