@@ -109,7 +109,7 @@ while ($db->nextRecord()) {
     if (!$allow) {
         // Admin check
         foreach ($accessibleClients as $key => $value) {
-            if (cPermission::checkClientPermission($key, $groupperm)) {
+            if (cPermission::checkClientPermission(cSecurity::toInteger($key), $groupperm)) {
                 $allow = true;
             }
         }

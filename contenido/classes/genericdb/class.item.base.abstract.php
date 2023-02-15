@@ -38,7 +38,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
 
     /**
      * Second DB instance, is required for some additional queries without
-     * losing an current existing query result.
+     * losing a current existing query result.
      *
      * @var cDb
      */
@@ -137,6 +137,9 @@ abstract class cItemBaseAbstract extends cGenericDb {
      */
     protected function __construct($sTable, $sPrimaryKey, $sClassName) {
         $cfg = cRegistry::getConfig();
+        $sTable = cSecurity::toString($sTable);
+        $sPrimaryKey = cSecurity::toString($sPrimaryKey);
+        $sClassName = cSecurity::toString($sClassName);
 
         $this->db = cRegistry::getDb();
 
@@ -243,8 +246,9 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @since CONTENIDO 4.10.2
      * @return string Name of table
      */
-    public function getTable() {
-        return (string) $this->table;
+    public function getTable(): string
+    {
+        return $this->table;
     }
 
     /**
@@ -253,7 +257,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      *         Name of primary key
      */
     public function getPrimaryKeyName() {
-        return (string) $this->_primaryKeyName;
+        return $this->_primaryKeyName;
     }
 
     /**
@@ -267,7 +271,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @return string
      * @throws cDbException
      */
-    public function prepare() {
+    public function prepare(): string
+    {
         $arguments = func_get_args();
         $statement = count($arguments) ? array_shift($arguments) : '';
 
@@ -281,7 +286,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @param string $keyName
      */
     protected function _setPrimaryKeyName($keyName) {
-        $this->_primaryKeyName = (string) $keyName;
+        $this->_primaryKeyName = cSecurity::toString($keyName);
     }
 
     /**

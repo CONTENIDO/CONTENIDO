@@ -472,7 +472,8 @@ class cFileHandler {
      * @param string $filename The path to the file
      * @return array|bool The file info array or false if the file can't be accessed
      */
-    public static function typeOwnerInfo($filename) {
+    public static function typeOwnerInfo(string $filename)
+    {
         if (!cFileHandler::exists($filename)) {
             return false;
         }
@@ -554,7 +555,8 @@ class cFileHandler {
      * @param string $basename
      * @return string
      */
-    public static function getFilename($basename) {
+    public static function getFilename(string $basename): string
+    {
         return pathinfo($basename, PATHINFO_FILENAME);
     }
 

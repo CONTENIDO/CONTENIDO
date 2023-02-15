@@ -705,6 +705,20 @@ class cHTML {
             }
         }
 
+        if (cRegistry::getBackendSessionId()) {
+            if (!in_array($this->_tag, ['meta', 'title', 'link', 'script']) && ($this->_tag === 'input' && $this->getAttribute('type') !== 'hidden')) {
+                $class = $this->getAttribute('class');
+                if (!empty($class)) {
+                    $classes = preg_split('/\s+/', $class);
+                    $classes = array_diff($classes, ['con_element']);
+                    array_unshift($classes, 'con_element');
+                    $this->setAttribute('class', implode(' ', $classes));
+                } else {
+                    $this->setAttribute('class', 'con_element');
+                }
+            }
+        }
+
         // append the defined styles
         foreach ($this->_styleDefinitions as $property => $value) {
             $style .= "$property: $value;";

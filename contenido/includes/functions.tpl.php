@@ -572,11 +572,11 @@ function tplGetInUsedData($idtpl) {
 }
 
 /**
- * Returns the informatiopn about a template and the referenced layout.
+ * Returns the information about a template and the referenced layout.
  *
  * @since CONTENIDO 4.10.2
  * @param int $idtpl Template id
- * @return array Assoziative array as follows or an empty array
+ * @return array Associative array as follows or an empty array
  *               <pre>
  *               [
  *                   [idtpl] => (int)
@@ -589,9 +589,8 @@ function tplGetInUsedData($idtpl) {
  *               </pre>
  * @throws cDbException|cInvalidArgumentException
  */
-function tplGetTplAndLayoutData($idtpl) {
-    $idtpl = cSecurity::toInteger($idtpl);
-
+function tplGetTplAndLayoutData(int $idtpl): array
+{
     $db = cRegistry::getDb();
 
     $sql = "-- tplGetTplAndLayoutData()

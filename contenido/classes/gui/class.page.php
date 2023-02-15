@@ -519,7 +519,8 @@ class cGuiPage {
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
      */
-    public function reloadLeftTopFrame($updatedParameters = null) {
+    public function reloadLeftTopFrame($updatedParameters = null)
+    {
         if (is_array($updatedParameters) && !isset($updatedParameters['frame'])) {
             $updatedParameters['frame'] = 1;
         }
@@ -535,7 +536,8 @@ class cGuiPage {
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
      */
-    public function reloadLeftBottomFrame($updatedParameters = null) {
+    public function reloadLeftBottomFrame($updatedParameters = null)
+    {
         if (is_array($updatedParameters) && !isset($updatedParameters['frame'])) {
             $updatedParameters['frame'] = 2;
         }
@@ -551,7 +553,8 @@ class cGuiPage {
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
      */
-    public function reloadRightTopFrame($updatedParameters = null) {
+    public function reloadRightTopFrame($updatedParameters = null)
+    {
         if (is_array($updatedParameters) && !isset($updatedParameters['frame'])) {
             $updatedParameters['frame'] = 3;
         }
@@ -567,7 +570,8 @@ class cGuiPage {
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
      */
-    public function reloadRightBottomFrame($updatedParameters = null) {
+    public function reloadRightBottomFrame($updatedParameters = null)
+    {
         if (is_array($updatedParameters) && !isset($updatedParameters['frame'])) {
             $updatedParameters['frame'] = 4;
         }

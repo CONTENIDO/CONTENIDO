@@ -320,7 +320,11 @@ class cUri {
      *     Note, enabled flag won't invalidate the $reservedParameters value!
      * @return string - The modified URI
      */
-    public function appendParameters($uri, array $parameters, $reservedParameters = null, $overwrite = false) {
+    public function appendParameters(
+        string $uri, array $parameters, array $reservedParameters = null,
+        bool $overwrite = false
+    ): string
+    {
         if (!is_array($reservedParameters)) {
             $reservedParameters = [
                 'client', 'idart', 'idcat', 'idartlang', 'lang', 'error'
@@ -359,9 +363,7 @@ class cUri {
 
         // Merge url parameters with filtered parameters
         $urlParts['query'] = http_build_query(array_merge($urlParameters, $filteredParameters2), '', '&');
-        $uri = $this->composeByComponents($urlParts);
-
-        return $uri;
+        return $this->composeByComponents($urlParts);
     }
 
     /**

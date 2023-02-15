@@ -697,7 +697,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @since CONTENIDO 4.10.2
      * @param string[] $aFields
      */
-    public function addResultFields(array $aFields) {
+    public function addResultFields(array $aFields)
+    {
         foreach ($aFields as $field) {
             $this->addResultField($field);
         }
@@ -708,7 +709,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param string $sField
      */
-    public function removeResultField($sField) {
+    public function removeResultField(string $sField)
+    {
         $sField = cString::toLowerCase($sField);
         $key = array_search($sField, $this->_resultFields);
         if ($key !== false) {
@@ -722,7 +724,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @since CONTENIDO 4.10.2
      * @param string[] $aFields
      */
-    public function removeResultFields(array $aFields) {
+    public function removeResultFields(array $aFields)
+    {
         foreach ($aFields as $field) {
             $this->removeResultField($field);
         }
@@ -1305,40 +1308,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
     /**
      * Returns all ids of recordsets in the table matching the rules in the
-     * passed where clause ($field $operator $value).
-     *
-     * @since CONTENIDO 4.10.2
-     * @param string $field
-     *         The table field name
-     * @param string|int|null|mxed $value
-     *         The value
-     * @param string $operator
-     *         The operator to use (e.g. '=', '>', '<', 'IN', etc.)
-     * @return array
-     *         List of ids
-     * @throws cDbException
-     * @throws cInvalidArgumentException
-     */
-    public function getIdsWhere($field, $value, $operator = '=') {
-        $oDb = $this->_getSecondDBInstance();
-
-        $aIds = [];
-
-        // Build where clause
-        $sWhere = $this->_driver->buildOperator($field, $operator, $value);
-
-        // Get ids
-        $sql = 'SELECT `' . $this->getPrimaryKeyName() . '` AS `pk` FROM `' . $this->table . '` WHERE ' . $sWhere;
-        $oDb->query($sql);
-        while ($oDb->nextRecord()) {
-            $aIds[] = $oDb->f('pk');
-        }
-
-        return $aIds;
-    }
-
-    /**
-     * Returns all ids of recordsets in the table matching the rules in the
      * passed where clause.
      *
      * @param string $sWhere
@@ -1363,6 +1332,31 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
     /**
+     * Returns all ids of recordsets in the table matching the rules in the
+     * passed where clause ($field $operator $value).
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $field
+     *         The table field name
+     * @param string|int|null|mixed $value
+     *         The value
+     * @param string $operator
+     *         The operator to use (e.g. '=', '>', '<', 'IN', etc.)
+     * @return int[]|string[]
+     *         List of ids
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     */
+    public function getIdsWhere(string $field, $value, string $operator = '='): array
+    {
+        // Build where clause
+        $sWhere = $this->_driver->buildOperator($field, $operator, $value);
+
+        // Return the data
+        return $this->getIdsByWhereClause($sWhere);
+    }
+
+    /**
      * Returns all specified fields of recordsets in the table matching the
      * rules in the passed where clause.
      *
@@ -1383,13 +1377,12 @@ abstract class ItemCollection extends cItemBaseAbstract {
             return $aEntries;
         }
 
-        // Delete multiple db entries at once
+        // Escape fields
         $aEscapedFields = array_map([
             $oDb,
             'escape'
         ], $aFields);
-
-        $fields = implode(', ', $aEscapedFields);
+        $fields = '`' . implode('`, `', $aEscapedFields) . '`';
 
         // Get all fields
         $sql = 'SELECT ' . $fields . ' FROM `' . $this->table . '` WHERE ' . $sWhere;
@@ -1414,49 +1407,26 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *         List of fields to get
      * @param string $field
      *         The table field name to query
-     * @param string|int|null|mxed $value
+     * @param string|int|null|mixed $value
      *         The value to query
      * @param string $operator
      *         The operator to use (e.g. '=', '>', '<', 'IN', etc.)
      *
-     * @return array
+     * @return init[]|string[]
      *         List of ids
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function getFieldsWhere(array $aFields, $field, $value, $operator = '=') {
-        $oDb = $this->_getSecondDBInstance();
-
-        $aEntries = [];
-
-        if (count($aFields) == 0) {
-            return $aEntries;
-        }
-
-        // Escape fields
-        $aEscapedFields = array_map([
-            $oDb,
-            'escape'
-        ], $aFields);
-        $fields = '`' . implode('`, `', $aEscapedFields) . '`';
-
+    public function getFieldsWhere(
+        array $aFields, string $field, $value, string $operator = '='
+    ): array
+    {
         // Build where clause
         $sWhere = $this->_driver->buildOperator($field, $operator, $value);
 
-        // Get all fields
-        $sql = 'SELECT ' . $fields . ' FROM `' . $this->table . '` WHERE ' . $sWhere;
-        $oDb->query($sql);
-        while ($oDb->nextRecord()) {
-            $data = [];
-            foreach ($aFields as $field) {
-                $data[$field] = $oDb->f($field);
-            }
-            $aEntries[] = $data;
-        }
-
-        return $aEntries;
+        // Return the data
+        return $this->getFieldsByWhereClause($aFields, $sWhere);
     }
-
 
     /**
      * Returns all ids of recordsets in the table.

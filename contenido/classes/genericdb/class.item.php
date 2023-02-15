@@ -716,7 +716,8 @@ abstract class Item extends cItemBaseAbstract {
      * @return mixed
      *         Filtered data
      */
-    public function inFilter($mData) {
+    public function inFilter($mData)
+    {
         return $this->_filter($mData, $this->_arrInFilters);
     }
 

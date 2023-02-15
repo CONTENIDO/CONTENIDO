@@ -146,7 +146,7 @@ $sSQL .= "ORDER BY tblCatTree.idtree";
 $oDB->query($sSQL);
 
 while ($oDB->nextRecord()) {
-    $sSpaces = cHTMLOptionElement::indent($oDB->f("level"), 0);
+    $sSpaces = cHTMLOptionElement::indent(cSecurity::toInteger($oDB->f("level")), 0);
     $oOptionTemplate = new cHTMLOptionElement($sSpaces . $oDB->f("name"), $oDB->f("idcat"));
     $oOptionNewsletter = new cHTMLOptionElement($sSpaces . $oDB->f("name"), $oDB->f("idcat"));
     if ($oDB->f("visible") == 0 || $oDB->f("public") == 0) {

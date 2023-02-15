@@ -81,7 +81,11 @@ class cApiMetaTagCollection extends ItemCollection {
      * @return int[] List of meta tag ids
      * @throws cDbException|cException
      */
-    public function getIdMetatagsByIdArtLang($idArtLang) {
+    public function getIdMetatagsByIdArtLang(int $idArtLang): array
+    {
+        if ($idArtLang <= 0) {
+            return [];
+        }
         $sql = 'SELECT `idmetatag` FROM `%s` WHERE `idartlang` = %d';
         $this->db->query($sql, $this->table, $idArtLang);
         $metaTagIds = [];

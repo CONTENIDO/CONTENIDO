@@ -266,7 +266,8 @@ abstract class cContentTypeAbstract {
      *                and an immediately executed anonymous function.
      * @throws cInvalidArgumentException
      */
-    protected function _wrapPhpViewCode($code) {
+    protected function _wrapPhpViewCode(string $code): string
+    {
         $code = trim($code);
 
         /* Content type PHP code must start with an opening PHP tag `<?php`
@@ -305,11 +306,14 @@ abstract class cContentTypeAbstract {
      * Checks if the passed code is a wrapped content type PHP code.
      *
      * @since CONTENIDO 4.10.2
-     * @param $code
-     * @return false|int|null
+     * @param string $code
+     * @return bool
      */
-    public static function isWrappedContentTypeCodePhp($code) {
-        return preg_match_all(self::COMMENT_MARKER_PATTERN, $code);
+    public static function isWrappedContentTypeCodePhp(string $code): bool
+    {
+        return cSecurity::toBoolean(
+            preg_match_all(self::COMMENT_MARKER_PATTERN, $code)
+        );
     }
 
     /**
@@ -338,7 +342,8 @@ abstract class cContentTypeAbstract {
      * @param mixed $default Default value to return
      * @return string|mixed
      */
-    public function getSetting($key, $default = '') {
+    public function getSetting(string $key, $default = '')
+    {
         return $this->_settings[$key] ?? $default;
     }
 
@@ -347,9 +352,10 @@ abstract class cContentTypeAbstract {
      *
      * @since CONTENIDO 4.10.2
      * @param string $key Configuration item key
-     * @return string|mixed|null
+     * @return bool
      */
-    public function hasSetting($key) {
+    public function hasSetting($key): bool
+    {
         return isset($this->_settings[$key]);
     }
 
@@ -360,7 +366,8 @@ abstract class cContentTypeAbstract {
      * @param string $key Configuration item key
      * @param mixed $value Value to set
      */
-    public function setSetting($key, $value) {
+    public function setSetting(string $key, $value)
+    {
         $this->_settings[$key] = $value;
     }
 

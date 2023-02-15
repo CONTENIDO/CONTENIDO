@@ -1133,7 +1133,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ''));
 
     foreach ($data as $tmpidcat => $props) {
-        $spaces = cHTMLOptionElement::indent($props['level']);
+        $spaces = cHTMLOptionElement::indent(cSecurity::toInteger($props['level']));
         $selected = ($sValue == $tmpidcat);
         $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . '>' . $props['name'], $tmpidcat, $selected));
     }
@@ -1239,8 +1239,7 @@ function scanPlugins($entity) {
  * plugin2/plugin2.php
  *
  * The plugin's directory and file name have to be the same, otherwise the
- * function
- * won't find them!
+ * function won't find them!
  *
  * @since CONTENIDO 4.10.2
  * @param string $entity
@@ -1250,31 +1249,36 @@ function scanPlugins($entity) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function cScanPlugins($entity) {
+function cScanPlugins(string $entity)
+{
     // Use the global variable $cfg here, the function modifies it!
     global $cfg;
 
-    $basedir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $entity . '/';
-
-    if (is_dir($basedir) === false) {
+    if (empty($entity)) {
         return;
     }
 
-    $pluginorder = getSystemProperty('plugin', $entity . '-pluginorder');
-    $lastscantime = (int) getSystemProperty('plugin', $entity . '-lastscantime');
+    $basedir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $entity . '/';
+
+    if (!is_dir($basedir)) {
+        return;
+    }
+
+    $pluginOrder = getSystemProperty('plugin', $entity . '-pluginorder');
+    $lastScanTime = (int) getSystemProperty('plugin', $entity . '-lastscantime');
 
     $plugins = [];
 
     // Fetch and trim the plugin order
-    if ($pluginorder != '') {
-        $plugins = explode(',', $pluginorder);
+    if ($pluginOrder != '') {
+        $plugins = explode(',', $pluginOrder);
         foreach ($plugins as $key => $plugin) {
             $plugins[$key] = trim($plugin);
         }
     }
 
     // Don't scan all the time, but each 5 minutes
-    if ($lastscantime + 300 < time()) {
+    if ($lastScanTime + 300 < time()) {
         setSystemProperty('plugin', $entity . '-lastscantime', time());
         if (is_dir($basedir)) {
             if (false !== ($handle = cDirHandler::read($basedir))) {
@@ -1304,8 +1308,8 @@ function cScanPlugins($entity) {
         $diff = array_diff($oldPlugins, $plugins);
 
         if (!empty($diff)) {
-        	$pluginorder = implode(',', $plugins);
-        	setSystemProperty('plugin', $entity . '-pluginorder', $pluginorder);
+        	$pluginOrder = implode(',', $plugins);
+        	setSystemProperty('plugin', $entity . '-pluginorder', $pluginOrder);
         }
     }
 
@@ -1337,7 +1341,12 @@ function includePlugins($entity) {
  * @param string $entity
  *         string Name of the directory to scan
  */
-function cIncludePlugins($entity) {
+function cIncludePlugins(string $entity)
+{
+    if (empty($entity)) {
+        return;
+    }
+
     $cfg = cRegistry::getConfig();
 
     if (cHasPlugins($entity)) {
@@ -1355,7 +1364,12 @@ function cIncludePlugins($entity) {
  *         Name of the directory to scan
  * @return bool
  */
-function cHasPlugins($entity) {
+function cHasPlugins(string $entity): bool
+{
+    if (empty($entity)) {
+        return false;
+    }
+
     $cfg = cRegistry::getConfig();
 
     return isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity] && count($cfg['plugins'][$entity]));
@@ -1378,7 +1392,11 @@ function callPluginStore($entity) {
  * @param string $entity
  *         Name of the directory to scan
  */
-function cCallPluginStore($entity) {
+function cCallPluginStore(string $entity) {
+    if (empty($entity)) {
+        return;
+    }
+
     $cfg = cRegistry::getConfig();
 
     // Check out if there are any plugins
