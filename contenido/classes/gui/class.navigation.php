@@ -227,7 +227,7 @@ class cGuiNavigation {
 
         $sess = cRegistry::getSession();
         $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $main = new cTemplate();
         $sub = new cTemplate();
 
@@ -440,7 +440,7 @@ class cGuiNavigation {
         }
 
         if ($availableLanguages->count() > 0) {
-            $client = cRegistry::getClientId();
+            $client = cSecurity::toInteger(cRegistry::getClientId());
 
             while (($myLang = $availableLanguages->nextAccessible()) !== NULL) {
                 $key = $myLang->get('idlang');
@@ -461,8 +461,6 @@ class cGuiNavigation {
             $text = trim(trim(i18n('-- No Language available --'), ' -'));
             return sprintf($template, $text);
         }
-
-        return $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
     }
 
     /**
@@ -477,8 +475,9 @@ class cGuiNavigation {
      */
     protected function _renderClientSelect() {
         $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
-        // get all accessible clients
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+
+        // Get all accessible clients
         $clientCollection = new cApiClientCollection();
         $clients = $clientCollection->getAccessibleClients();
         if (count($clients) <= 1) {

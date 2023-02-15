@@ -33,7 +33,7 @@
  *       <td><img src="einbild.gif"></td>
  *   </tr>
  *   </table>
- *   <script>
+ *   <script type="text/javascript">
  *   (function(Con, $) {
  *      $(function() {
  *         Con.RowMark.initialize('#myTable .row_mark', 'myRow');

@@ -195,7 +195,7 @@ if ($oRcpGroups->count() == 0) {
     // Trick: To save multiple selections in <select>-Element, add some JS which saves the
     // selection, comma separated in a hidden input field on change.
     $sJavaScript .= '
-<script>
+<script type="text/javascript">
 (function(Con, $) {
     $(function() {
         var radJoin = $("input[name=' . $aFormFields['radJoin'] . ']"),
@@ -271,7 +271,7 @@ $oCkbLink = new cHTMLCheckbox($aFormFields['ckbFrontendLink'], 'enabled', '', $a
 $oCkbLink->setLabelText(mi18n("ACTIVATE_LINK"));
 
 $sJavaScript .= '
-<script>
+<script type="text/javascript">
 (function(Con, $) {
     $(function() {
         var ckbFrontendLink = $("input[name=' . $aFormFields['ckbFrontendLink'] . ']");

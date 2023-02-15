@@ -306,7 +306,7 @@ class cGuiMenu {
         $class = __CLASS__;
         $js = <<<JS
 <!-- $class -->
-<script>
+<script type="text/javascript">
     (function(Con, $) {
         $(function() {
             Con.RowMark.initialize('#{$this->menuId} .row_mark', 'row', '#marked');

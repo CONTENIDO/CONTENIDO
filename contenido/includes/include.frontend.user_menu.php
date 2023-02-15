@@ -204,7 +204,7 @@ foreach ($aUserTable as $mkey => $params) {
 
     $delTitle = i18n("Delete user");
     $deleteLink = '
-        <a href="javascript:;" data-action="delete_frontenduser" title="' . $delTitle . '">
+        <a href="javascript:void(0)" data-action="delete_frontenduser" title="' . $delTitle . '">
             <img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
         </a>';
 

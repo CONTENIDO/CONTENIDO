@@ -121,7 +121,7 @@ if (isset($changelang) && is_numeric($changelang)) {
 
 		if ($artLangColl->count() == 0) {
 			$frame = $sess->url('index.php?area=mycontenido&frame=4');
-			echo "<script>parent.frames.top.location.href='" . $frame . "';</script>";
+			echo "<script type='text/javascript'>parent.frames.top.location.href='" . $frame . "';</script>";
 		}
     }
 }

@@ -130,7 +130,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
             if ($perm->have_perm_area_action('user', "user_delete")) {
                 $delTitle = i18n("Delete user");
                 $deleteLink = '
-                    <a href="javascript://" data-action="delete_user" title="' . $delTitle . '" >
+                    <a href="javascript:void(0)" data-action="delete_user" title="' . $delTitle . '" >
                         <img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
                     </a>
                 ';

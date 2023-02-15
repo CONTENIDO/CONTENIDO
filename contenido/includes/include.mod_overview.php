@@ -148,7 +148,7 @@ foreach ($allModules as $idmod => $module) {
 
         if ($inUse) {
             $inUseString = i18n("For more information about usage click on this button");
-            $inUseLink = '<a href="javascript:;" data-action="inused_module">'
+            $inUseLink = '<a href="javascript:void(0)" data-action="inused_module">'
                        . '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'exclamation.gif" title="' . $inUseString . '" alt="' . $inUseString . '"></a>';
             $delDescription = i18n("Module can not be deleted, because it is already in use!");
         } else {
@@ -159,7 +159,7 @@ foreach ($allModules as $idmod => $module) {
                     $deleteLink = '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete_inact.gif" title="' . $delTitle . '" alt="' . $delTitle . '">';
                 } else {
                     $delTitle = i18n("Delete module");
-                    $deleteLink = '<a href="javascript:;" data-action="delete_module" title="' . $delTitle . '">'
+                    $deleteLink = '<a href="javascript:void(0)" data-action="delete_module" title="' . $delTitle . '">'
                                 . '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
                 }
             } else {

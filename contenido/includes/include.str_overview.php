@@ -768,7 +768,7 @@ foreach ($treeItemObjects as $key => $value) {
         $hasChildren = strNextDeeper($value->getId());
         $hasArticles = strHasArticles($value->getId());
         if (($hasChildren == 0) && ($hasArticles == false) && ($perm->have_perm_area_action($tmp_area, 'str_deletecat') || $perm->have_perm_area_action_item($tmp_area, 'str_deletecat', $value->getId()))) {
-            $delete = '<a href="javascript://" onclick="confDel(' . $value->getId() . ',' . $value->getCustom('parentid') . ', \'' . addslashes(conHtmlSpecialChars($value->getName())) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "delete.gif\" alt=\"" . i18n("Delete category") . "\" title=\"" . i18n("Delete category") . "\"></a>";
+            $delete = '<a href="javascript:void(0)" onclick="confDel(' . $value->getId() . ',' . $value->getCustom('parentid') . ', \'' . addslashes(conHtmlSpecialChars($value->getName())) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "delete.gif\" alt=\"" . i18n("Delete category") . "\" title=\"" . i18n("Delete category") . "\"></a>";
             $tpl->set('d', 'DELETEBUTTON', $delete);
         } else {
             $message = i18n("No permission");
@@ -844,7 +844,7 @@ foreach ($treeItemObjects as $key => $value) {
         }
 
         if ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $value->getId())) {
-            $duplicate = '<a href="javascript://" onclick="confDupl(' . $value->getId() . ',' . $value->getCustom('parentid') . ', \'' . addslashes(conHtmlSpecialChars($value->getName())) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "folder_duplicate.gif\" alt=\"" . i18n("Duplicate category") . "\" title=\"" . i18n("Duplicate category") . "\"></a>";
+            $duplicate = '<a href="javascript:void(0)" onclick="confDupl(' . $value->getId() . ',' . $value->getCustom('parentid') . ', \'' . addslashes(conHtmlSpecialChars($value->getName())) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "folder_duplicate.gif\" alt=\"" . i18n("Duplicate category") . "\" title=\"" . i18n("Duplicate category") . "\"></a>";
             $tpl->set('d', 'DUPLICATEBUTTON', $duplicate);
         } else {
             $tpl->set('d', 'DUPLICATEBUTTON', '&nbsp;');

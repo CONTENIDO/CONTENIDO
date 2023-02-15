@@ -229,7 +229,7 @@ class cGuiFileOverview extends cGuiPage {
             if (getEffectiveSetting('client', 'readonly', 'false') == 'true' || (!$perm->have_perm_area_action($area, $area . '_delete'))) {
                 $delete = '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete_inact.gif" title="" alt="">';
             } else {
-                $delete = '<a href="javascript:;" data-action="delete_file" title="' . $deleteTitle . '"><img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteTitle . '" alt="' . $deleteTitle . '"></a>';
+                $delete = '<a href="javascript:void(0)" data-action="delete_file" title="' . $deleteTitle . '"><img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteTitle . '" alt="' . $deleteTitle . '"></a>';
             }
             $this->set('d', 'DELETE', $delete);
 

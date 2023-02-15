@@ -53,7 +53,7 @@ while ($db->nextRecord()) {
     $idlang = $db->f("idlang");
 
     // Show link
-    $showLink = '<a href="javascript:;" class="show_item" data-action="show_lang"><span>' . conHtmlSpecialChars($db->f("name")) . '</span>&nbsp;(' . $idlang . ')</a>';
+    $showLink = '<a href="javascript:void(0)" class="show_item" data-action="show_lang"><span>' . conHtmlSpecialChars($db->f("name")) . '</span>&nbsp;(' . $idlang . ')</a>';
     $tpl->set('d', 'LANGUAGE', $showLink);
 
     // Activate link
@@ -79,7 +79,7 @@ while ($db->nextRecord()) {
     $deleteMsg = sprintf(i18n("Do you really want to delete the language %s?"), conHtmlSpecialChars($db->f("name")));
     $deleteAct = i18n("Delete language");
     if ($perm->have_perm_area_action("lang_edit", "lang_deletelanguage")) {
-        $deleteLink = '<a href="javascript:;" data-action="delete_lang" title="' . $deleteAct . '"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteAct . '" alt="' . $deleteAct . '"></a>';
+        $deleteLink = '<a href="javascript:void(0)" data-action="delete_lang" title="' . $deleteAct . '"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteAct . '" alt="' . $deleteAct . '"></a>';
     } else {
         $deleteLink = '';
     }
