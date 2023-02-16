@@ -465,7 +465,7 @@ class cOutputCacheHandler extends cOutputCache
      *                           - $a['enable'] bool
      *                           activate caching of frontend output
      *                           - $a['debug'] bool
-     *                           compose debuginfo (hit/miss and execution time of caching)
+     *                           compose debugging information (hit/miss and execution time of caching)
      *                           - $a['infotemplate'] string
      *                           debug information template
      *                           - $a['htmlcomment'] bool
@@ -475,7 +475,7 @@ class cOutputCacheHandler extends cOutputCache
      *                           - $a['cachedir'] string
      *                           directory where cached content is to store.
      *                           - $a['cachegroup'] string
-     *                           cache group, will be a subdirectory inside cachedir
+     *                           cache group, will be a subdirectory inside the cache directory
      *                           - $a['cacheprefix'] string
      *                           add prefix to stored filenames
      *                           - $a['idoptions'] array
@@ -496,15 +496,14 @@ class cOutputCacheHandler extends cOutputCache
     public function __construct($aConf, $db, $iCreateCode = NULL) {
         // Check if caching is allowed in backend
         if ($aConf['excludecontenido']) {
-            if (isset($GLOBALS['contenido'])) {
-                // CONTENIDO variable exists, set state and get out here
+            if (cRegistry::getBackendSessionId()) {
+                // CONTENIDO session exists, set state and get out here
                 $this->_bEnableCaching = false;
-
                 return;
             }
         }
 
-        // set enable state of caching
+        // Set enable state of caching
         if (is_bool($aConf['enable'])) {
             $this->_bEnableCaching = $aConf['enable'];
         }
@@ -512,21 +511,20 @@ class cOutputCacheHandler extends cOutputCache
             return;
         }
 
-        // check if current article shouldn't be cached (by stese)
+        // Check if current article shouldn't be cached (by stese)
         $sExcludeIdarts = getEffectiveSetting('cache', 'excludeidarts', false);
         if ($sExcludeIdarts && cString::getStringLength($sExcludeIdarts) > 0) {
             $sExcludeIdarts = preg_replace("/[^0-9,]/", '', $sExcludeIdarts);
             $aExcludeIdart = explode(',', $sExcludeIdarts);
-            if (in_array($GLOBALS['idart'], $aExcludeIdart)) {
+            if (in_array(cRegistry::getArticleId(), $aExcludeIdart)) {
                 $this->_bEnableCaching = false;
-
                 return;
             }
         }
 
         $this->_oDB = $db;
 
-        // set caching configuration
+        // Set caching configuration
         parent::__construct($aConf['cachedir'], $aConf['cachegroup']);
         $this->debug($aConf['debug']);
         $this->htmlComment($aConf['htmlcomment']);
@@ -540,7 +538,7 @@ class cOutputCacheHandler extends cOutputCache
             $this->_aEventCode = $aConf['raiseonevent'];
         }
 
-        // check, if code is to create
+        // Check, if code is to create
         $this->_bEnableCaching = !$this->_isCode2Create($iCreateCode);
         if (!$this->_bEnableCaching) {
             $this->removeFromCache();
@@ -567,7 +565,7 @@ class cOutputCacheHandler extends cOutputCache
             return false;
         }
 
-        // check content of global variable $force, get out if is's set to '1'
+        // check content of global variable $force, get out if it's set to '1'
         if (isset($GLOBALS['force']) && is_numeric($GLOBALS['force']) && $GLOBALS['force'] == 1) {
             return true;
         }
