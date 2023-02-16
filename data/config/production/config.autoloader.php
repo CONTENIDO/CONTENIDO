@@ -344,6 +344,7 @@ return [
     'cValidatorEmail' => 'contenido/classes/validator/class.validator.email.php',
     'cValidatorFactory' => 'contenido/classes/validator/class.validator.factory.php',
     'cValidatorRegex' => 'contenido/classes/validator/class.validator.regex.php',
+    'cValidatorIpv4' => 'contenido/classes/validator/class.validator.ipv4.php',
     'cVersion' => 'contenido/classes/version/class.version.php',
     'cVersionFile' => 'contenido/classes/version/class.version.file.php',
     'cVersionLayout' => 'contenido/classes/version/class.version.layout.php',
