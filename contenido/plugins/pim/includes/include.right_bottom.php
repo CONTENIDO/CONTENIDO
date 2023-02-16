@@ -227,7 +227,7 @@ if (is_dir($cfg['path']['plugins'])) {
                     $pagePlugins->set('s', 'REMOVE_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall-extracted&pluginFoldername=' . $pluginFoldername));
                     $pagePlugins->set('s', 'WRITEABLE', i18n('Everything looks fine', 'pim'));
                 } else {
-                    $pagePlugins->set('s', 'REMOVE_LINK', 'avascript:void(0);');
+                    $pagePlugins->set('s', 'REMOVE_LINK', 'javascript:void(0)');
                     $pagePlugins->set('s', 'WRITEABLE', '(<span class="settingWrong">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>)');
                 }
 

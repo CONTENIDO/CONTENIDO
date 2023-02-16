@@ -530,7 +530,7 @@ foreach ($extraLanguages as $idExtraLang) {
     $delImage = new cHTMLImage('images/but_cancel.gif');
     $delImage = $delImage->setAlt(i18n("Delete"))->render();
 
-    $delLangLink = new cHTMLLink('avascript:void(0);');
+    $delLangLink = new cHTMLLink('javascript:void(0)');
     $delLangLink = $delLangLink->setClass('vAlignMiddle')
         ->setAttribute('data-action', 'dellang')
         ->setAttribute('data-id', $idExtraLang)

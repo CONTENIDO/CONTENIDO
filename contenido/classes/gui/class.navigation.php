@@ -269,7 +269,7 @@ class cGuiNavigation {
                 $link = new cHTMLLink();
                 $link->setClass('main');
                 $link->setID('main_' . $id);
-                $link->setLink('avascript:void(0);');
+                $link->setLink('javascript:void(0)');
                 $link->setAttribute('ident', 'sub_' . $id);
                 $link->setContent(i18n($item[0]));
 
@@ -317,7 +317,7 @@ class cGuiNavigation {
             $link = new cHTMLLink();
             $link->setID('help');
             $link->setClass('main');
-            $link->setLink('avascript:void(0);');
+            $link->setLink('javascript:void(0)');
             $link->setEvent('click', 'Con.Help.show($(\'#help\').attr(\'data\'));');
             $link->setContent('<img class="borderless vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'but_help.gif" alt="Hilfe" title="Hilfe">');
             $main->set('s', 'HELP', $link->render());

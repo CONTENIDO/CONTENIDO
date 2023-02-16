@@ -120,7 +120,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
 
         $link = new cHTMLLink();
         $link->setClass('show_item')
-            ->setLink('avascript:void(0);')
+            ->setLink('javascript:void(0)')
             ->setAttribute('data-action', 'show_user');
 
         if ($iItemCount > ($elemPerPage * ($mPage - 1)) && $iItemCount < (($elemPerPage * $mPage) + 1)) {

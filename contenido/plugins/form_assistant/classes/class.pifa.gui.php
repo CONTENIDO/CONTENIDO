@@ -157,7 +157,7 @@ class PifaLeftBottomPage extends cGuiPage {
                     // create a link for the action
                     $inUseDescr = i18n("Click for more information about usage");
                     $link = new cHTMLLink();
-                    $link->setLink('avascript:void(0);')
+                    $link->setLink('javascript:void(0)')
                         ->setAttribute("data-dialog-text", $dialogText)
                         ->setAttribute('data-action', 'inused_form')
                         ->setContent('<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'exclamation.gif" title="' . $inUseDescr . '" alt="' . $inUseDescr . '">');
@@ -967,7 +967,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         }
 
         // Mass deletion of form data
-        $lnkDel = new cHTMLLink('avascript:void(0);');
+        $lnkDel = new cHTMLLink('javascript:void(0)');
         $lnkDel->setClass('flip_mark');
         $lnkDel->setContent(Pifa::i18n('Check all'));
         $tpl->assign('lnkDel', $lnkDel->render());
