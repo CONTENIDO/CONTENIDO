@@ -55,7 +55,7 @@ class cPermission {
      *
      * @param string $userId
      *
-     * @return array
+     * @return string[]
      *         List of group ids
      *
      * @throws cDbException
@@ -63,7 +63,10 @@ class cPermission {
      */
     public function getGroupsForUser($userId) {
         $oGroupMemberColl = new cApiGroupMemberCollection();
-        return $oGroupMemberColl->getFieldsWhere(['group_id'], 'user_id', $userId);
+        $result = $oGroupMemberColl->getFieldsWhere(['group_id'], 'user_id', $userId);
+        return array_map(function($item) {
+            return $item['group_id'];
+        }, $result);
     }
 
     /**
