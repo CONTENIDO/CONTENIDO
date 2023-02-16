@@ -28,7 +28,8 @@ global $cfgConCache;
 $cfgConCache = [];
 
 // (bool) Don't cache output, if we have a CONTENIDO variable, e.g. on calling
-//        frontend preview from backend.$cfgConCache['excludecontenido'] = true;
+//        frontend preview from backend.
+$cfgConCache['excludecontenido'] = true;
 
 // (bool) Enable caching of frontend output
 $cfgConCache['enable'] = true;

@@ -494,7 +494,7 @@ class cOutputCacheHandler extends cOutputCache
      * @throws cException
      */
     public function __construct($aConf, $db, $iCreateCode = NULL) {
-        // check if caching is allowed on CONTENIDO variable
+        // Check if caching is allowed in backend
         if ($aConf['excludecontenido']) {
             if (isset($GLOBALS['contenido'])) {
                 // CONTENIDO variable exists, set state and get out here
