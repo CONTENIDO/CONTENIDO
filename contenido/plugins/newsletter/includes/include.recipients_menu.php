@@ -219,7 +219,7 @@ while ($oRecipient = $oRecipients->next()) {
     // Show recipient
     $oLnk = new cHTMLLink();
     $oLnk->setClass('show_item')
-        ->setLink('javascript:;')
+        ->setLink('javascript:void(0)')
         ->setAttribute('data-action', 'recipients_show');
     if ($oRecipient->get("deactivated") == 1 || $oRecipient->get("confirmed") == 0) {
         $oLnk->updateAttributes([
@@ -240,7 +240,7 @@ while ($oRecipient = $oRecipients->next()) {
         $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
         $oImage->setAlt($aMsg["DelTitle"]);
         $oDelete = new cHTMLLink();
-        $oDelete->setLink('javascript:;')
+        $oDelete->setLink('javascript:void(0)')
             ->setAlt($aMsg["DelTitle"])
             ->setAttribute('data-action', 'recipients_delete')
             ->setContent($oImage->render());

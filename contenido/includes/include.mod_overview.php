@@ -114,7 +114,7 @@ foreach ($allModules as $idmod => $module) {
 
         $link = new cHTMLLink();
         $link->setClass('show_item')
-            ->setLink('javascript:;')
+            ->setLink('javascript:void(0)')
             ->setAttribute('data-action', 'show_module');
 
         $moduleName = (cString::getStringLength(trim($module['name'])) > 0) ? $module['name'] : i18n("- Unnamed module -");

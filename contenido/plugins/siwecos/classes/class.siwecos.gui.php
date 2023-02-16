@@ -87,7 +87,7 @@ class SIWECOSLeftBottomPage extends cGuiPage
             // create link to show/edit the form
             $link = new cHTMLLink();
             $link->setClass('show_item')
-                ->setLink('javascript:;')
+                ->setLink('javascript:void(0)')
                 ->setAlt($idsiwecos)
                 ->setAttribute('data-action', 'siwecos_show');
             $menu->setLink($counter, $link);
@@ -101,7 +101,7 @@ class SIWECOSLeftBottomPage extends cGuiPage
                 $image = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
                 $image->setAlt($deleteForm);
                 $delete = new cHTMLLink();
-                $delete->setLink('javascript:;')
+                $delete->setLink('javascript:void(0)')
                     ->setAlt($deleteForm)
                     ->setAttribute('data-action', 'siwecos_delete')
                     ->setContent($image->render());

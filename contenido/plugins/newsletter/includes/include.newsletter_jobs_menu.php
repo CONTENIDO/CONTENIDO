@@ -184,7 +184,7 @@ while ($oJob = $oJobs->next()) {
     // Create the link to show the newsletter job
     $oLnk = new cHTMLLink();
     $oLnk->setClass('show_item')
-        ->setLink('javascript:;')
+        ->setLink('javascript:void(0)')
         ->setAttribute('data-action', 'news_job_show');
     $oMenu->setLink($iMenu, $oLnk);
 
@@ -200,7 +200,7 @@ while ($oJob = $oJobs->next()) {
                     $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_16.gif', 'vAlignMiddle');
                     $oImage->setAlt($aMsg["SendTitle"]);
                     $oSend = new cHTMLLink();
-                    $oSend->setLink('javascript:;')
+                    $oSend->setLink('javascript:void(0)')
                         ->setAlt($aMsg["SendTitle"])
                         ->setAttribute('data-action', 'news_job_run')
                         ->setContent($oImage->render());
@@ -218,7 +218,7 @@ while ($oJob = $oJobs->next()) {
                 $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
                 $oImage->setAlt($aMsg["DelTitle"]);
                 $oDelete = new cHTMLLink();
-                $oDelete->setLink('javascript:;')
+                $oDelete->setLink('javascript:void(0)')
                     ->setAlt($aMsg["DelTitle"])
                     ->setAttribute('data-action', 'news_job_delete')
                     ->setContent($oImage->render());
@@ -233,7 +233,7 @@ while ($oJob = $oJobs->next()) {
                 $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_16.gif', 'vAlignMiddle');
                 $oImage->setAlt($aMsg["SendTitle"]);
                 $oSend = new cHTMLLink();
-                $oSend->setLink('javascript:;')
+                $oSend->setLink('javascript:void(0)')
                     ->setAlt($aMsg["SendTitle"])
                     ->setAttribute('data-action', 'news_job_run')
                     ->setContent($oImage->render());

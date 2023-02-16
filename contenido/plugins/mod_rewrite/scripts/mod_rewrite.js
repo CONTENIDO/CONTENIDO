@@ -143,7 +143,7 @@
         _initializeTooltips: function() {
             var that = this;
             $(".mrPlugin a.i-link").each(function() {
-                $(this).attr("href", "javascript:void(0);").attr("title", that._lng.more_informations);
+                $(this).attr("href", "javascript:void(0)").attr("title", that._lng.more_informations);
             });
         }
 

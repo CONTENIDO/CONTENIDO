@@ -137,7 +137,7 @@ class PifaLeftBottomPage extends cGuiPage {
             // create link to show/edit the form
             $link = new cHTMLLink();
             $link->setClass('show_item')
-                ->setLink('javascript:;')
+                ->setLink('javascript:void(0)')
                 ->setAttribute('data-action', 'show_form');
             $menu->setLink($idform, $link);
             $menu->setId($idform, $idform);
@@ -157,7 +157,7 @@ class PifaLeftBottomPage extends cGuiPage {
                     // create a link for the action
                     $inUseDescr = i18n("Click for more information about usage");
                     $link = new cHTMLLink();
-                    $link->setLink('javascript://')
+                    $link->setLink('avascript:void(0);')
                         ->setAttribute("data-dialog-text", $dialogText)
                         ->setAttribute('data-action', 'inused_form')
                         ->setContent('<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'exclamation.gif" title="' . $inUseDescr . '" alt="' . $inUseDescr . '">');
@@ -169,7 +169,7 @@ class PifaLeftBottomPage extends cGuiPage {
             if (!$formIsInUse && cRegistry::getPerm()->have_perm_area_action('form', PifaRightBottomFormPage::DELETE_FORM)) {
                 $deleteForm = Pifa::i18n('DELETE_FORM');
                 $link = new cHTMLLink();
-                $link->setLink('javascript:;')
+                $link->setLink('javascript:void(0)')
                     ->setAttribute('data-action', 'delete_form')
                     ->setContent('<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
                 $menu->setActions($idform, 'delete', $link);
@@ -967,7 +967,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         }
 
         // Mass deletion of form data
-        $lnkDel = new cHTMLLink('javascript://');
+        $lnkDel = new cHTMLLink('avascript:void(0);');
         $lnkDel->setClass('flip_mark');
         $lnkDel->setContent(Pifa::i18n('Check all'));
         $tpl->assign('lnkDel', $lnkDel->render());

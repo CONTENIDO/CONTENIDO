@@ -61,7 +61,7 @@ while ($db->nextRecord()) {
         // activate
         $message = i18n("Activate language");
         if ($perm->have_perm_area_action($area, "lang_activatelanguage")) {
-            $activeLink = "<a data-action=\"activate_lang\" title=\"$message\" href=\"javascript:;\"><img src=\"" . $cfg["path"]["images"] . "offline.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+            $activeLink = "<a data-action=\"activate_lang\" title=\"$message\" href=\"javascript:void(0)\"><img src=\"" . $cfg["path"]["images"] . "offline.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
         } else {
             $activeLink = "<img src='" . $cfg["path"]["images"] . "offline.gif' title='" . i18n("Language offline") . "'>";
         }
@@ -69,7 +69,7 @@ while ($db->nextRecord()) {
         // deactivate
         $message = i18n("Deactivate language");
         if ($perm->have_perm_area_action($area, "lang_deactivatelanguage")) {
-            $activeLink = "<a data-action=\"deactivate_lang\" title=\"$message\" class=\"action\" href=\"javascript:;\"><img src=\"" . $cfg["path"]["images"] . "online.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+            $activeLink = "<a data-action=\"deactivate_lang\" title=\"$message\" class=\"action\" href=\"javascript:void(0)\"><img src=\"" . $cfg["path"]["images"] . "online.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
         } else {
             $activeLink = "<img src='" . $cfg["path"]["images"] . "online.gif' title='" . i18n("Language online") . "'>";
         }

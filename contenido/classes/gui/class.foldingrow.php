@@ -231,7 +231,7 @@ class cGuiFoldingRow extends cHTML {
         $hiddenId = $this->_hiddenField->getID();
         $uuid = $this->_uuid;
 
-        $this->_link->setLink("javascript:void(0);");
+        $this->_link->setLink("javascript:void(0)");
         $this->_link->setContent($this->_foldingImage->render() . $this->_caption);
 
         $this->_headerData->setContent([$this->_hiddenField, $this->_link]);
