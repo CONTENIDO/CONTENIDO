@@ -17,8 +17,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 global $contenido_path, $client, $load_client, $file;
 
-$file = $file ?? '';
-if (empty($file)) {
+// Use $_GET['file'] here, $file is not available yet!
+if (empty($_GET['file'])) {
     // No need for further processing, if file is missing!
     exit();
 }
@@ -29,8 +29,13 @@ $frontend_path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/'
 // Include the environment definer file
 include_once($frontend_path . '../../environment.php');
 
-// Include the config file of the frontend to init the Client and Language Id
+// Include the config file of the frontend to initialize client and language id
 include_once($frontend_path . 'data/config/' . CON_ENVIRONMENT . '/config.php');
+
+// Clients local configuration
+if (file_exists($frontend_path . 'data/config/' . CON_ENVIRONMENT . '/config.local.php')) {
+    @include($frontend_path . 'data/config/' . CON_ENVIRONMENT . '/config.local.php');
+}
 
 // CONTENIDO startup process
 if (!is_file($contenido_path . 'includes/startup.php')) {
@@ -38,32 +43,8 @@ if (!is_file($contenido_path . 'includes/startup.php')) {
 }
 include_once($contenido_path . 'includes/startup.php');
 
-chdir($contenido_path);
+$main_dbfs_file_path = dirname(__FILE__);
 
-if (cRegistry::getBackendSessionId()) {
-    cRegistry::bootstrap(
-        [
-            'sess' => 'cSession',
-            'auth' => 'cAuthHandlerBackend',
-            'perm' => 'cPermission',
-        ]
-    );
-} else {
-    cRegistry::bootstrap(
-        [
-            'sess' => 'cFrontendSession',
-            'auth' => 'cAuthHandlerFrontend',
-            'perm' => 'cPermission',
-        ]
-    );
-}
-
-chdir(dirname(__FILE__));
-
-// Shorten load time
-$client = $load_client;
-
-$dbfs = new cApiDbfsCollection();
-$dbfs->outputFile($file);
-
-cRegistry::shutdown();
+// Include article view handler
+$cfg = cRegistry::getConfig();
+include(cRegistry::getBackendPath() . $cfg['path']['includes'] . '/frontend/include.dbfs.php');
