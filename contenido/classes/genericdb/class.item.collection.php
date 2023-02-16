@@ -994,14 +994,14 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *     ]
      *     </pre>
      *     If the array contains keys, the key will be used as alias for the field,
-     *     and the result entries will be also an assoziative array.
-     *     // Parameter `$aFields` as assoziative array
+     *     and the result entries will be also an associative array.
+     *     // Parameter `$aFields` as associative array
      *     <pre>
      *      [
      *          'clientId' => 'idclient',
      *          'clientName' => 'name'
      *     ]
-     *     // Will return a result where the entries are an assoziative array like
+     *     // Will return a result where the entries are an associative array like
      *     [
      *          'clientId' => 1,
      *          'clientName' => 'Example Client'
@@ -1116,7 +1116,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param Item[]|object[] $aObjects List of objects which extend from {@see Item}.
      * @param array $aResult Array of results where the key is the primary key
-     *    of the object and the value is an assoziative structure, e.g.
+     *    of the object and the value is an associative structure, e.g.
      *    <pre>
      *    $aResult = [
      *        '123' => [
@@ -1158,7 +1158,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
     /**
-     * Loads a single entry by it's id.
+     * Loads a single entry by its id.
      *
      * @param string|int $id
      *         The primary key of the item to load.
@@ -1490,8 +1490,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
     /**
-     * Deletes all found items in the table matching the passed field and it's
-     * value.
+     * Deletes all found items in the table matching the passed field,
+     * and its value.
      * Deletes also cached e entries and any existing properties.
      *
      * @param string $sField

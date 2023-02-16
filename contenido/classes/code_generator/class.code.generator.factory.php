@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cCodeGeneratorFactory {
 
     /**
-     * Returns code generator instance by it's name.
+     * Returns code generator instance by its name.
      *
      * @param string $name [optional]
      *         The generator name, e.g. 'Standard' to retrieve instance of

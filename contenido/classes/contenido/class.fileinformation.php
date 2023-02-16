@@ -137,12 +137,13 @@ class cApiFileInformationCollection extends ItemCollection {
     }
 
     /**
-     * Deletes all found items in the table matching the passed field and it's
-     * value.
+     * Deletes all found items in the table matching the passed field,
+     * and its value.
      * Deletes also cached e entries and any existing properties.
      *
      * @param array $values
      *         with parameters
+     *
      * @return bool
      *
      * @throws cDbException

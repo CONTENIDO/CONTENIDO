@@ -276,7 +276,7 @@ abstract class cCodeGeneratorAbstract {
      * Returns array containing used layout, template and template name.
      *
      * @return array
-     *         Assoziative array like
+     *         Associative array like
      *         [
      *             'idlay' => (int),
      *             'idtpl' => (int),

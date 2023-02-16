@@ -269,10 +269,10 @@ class cSession {
     }
 
     /**
-     * Removes existing session parameter (e. g., contenido=1) from the URL and returns the rebuild URL back
+     * Removes existing session parameter (e.g., contenido=1) from the URL and returns the rebuild URL back
      *
      * @param  string  $url  The URL to process
-     * @param  bool  $addSession  Flag to add the current session parameter (e. g., contenido=1) to it, e. g. used by the backend
+     * @param  bool  $addSession  Flag to add the current session parameter (e.g., contenido=1) to it, e.g. used by the backend
      * @return  string
      */
     protected function _url($url, $addSession) {

@@ -256,7 +256,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         // save the generated code even if there are faulty modules
-        // if one does not do so, a non existing cache file
+        // if one does not do so, a not existing cache file
         // will be tried to be loaded in frontend
         $this->_saveGeneratedCode($idcatart);
 

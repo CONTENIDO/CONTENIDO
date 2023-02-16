@@ -634,7 +634,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     }
 
     /**
-     * Display the form and evaluate the action and excute the action.
+     * Display the form and evaluate the action and execute the action.
      *
      * @param cPermission      $perm
      * @param cGuiNotification $notification

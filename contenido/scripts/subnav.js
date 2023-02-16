@@ -136,7 +136,7 @@
         },
 
         /**
-         * Returns anchor element by it's id
+         * Returns anchor element by its id
          * @method _getAnchorById
          * @param {String}  id
          * @param {Object}  [frame] Optional, reference to frame handling the sub

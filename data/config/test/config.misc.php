@@ -308,8 +308,8 @@ $cfg['properties']['user_prop']['enable_cache'] = true;
 // (bool) Enable caching of group properties
 $cfg['properties']['group_prop']['enable_cache'] = true;
 
-// (int) Max groups to cache. Is helpfull if a user is in several groups. It's
-//       recommended to have a lower number, e. g. 3
+// (int) Max groups to cache. It is helpful when a user is in several groups. It's
+//       recommended to have a lower number, e.g. 3
 $cfg['properties']['group_prop']['max_groups'] = 3;
 
 // (bool) Enable caching of system properties
@@ -357,9 +357,9 @@ $cfg['validator']['email']['mx_check'] = false;
 $cfg['images']['image_magick']['use'] = true;
 
 // (string) Optional, path to ImageMagick binary directory, with ending slash
-//          e. g. C:/Program Files/ImageMagick/
+//          e.g. C:/Program Files/ImageMagick/
 //          IMPORTANT: use slashes - not backslashes!
-// NOTE: You should set this on a windows os, otherwise the system could execute
+// NOTE: You should set this on a Windows os, otherwise the system could execute
 //       the "convert.exe" from system32 folder. This executable does not belong
 //       to ImageMagick.
 $cfg['images']['image_magick']['path'] = '';

@@ -92,7 +92,7 @@ function conEditFirstTime(
 
     $status = 0;
 
-    // Create an category article entry
+    // Create a category article entry
     $oCatArtColl = new cApiCategoryArticleCollection();
     $oCatArt = $oCatArtColl->create($idcat, $idart, $status);
     $idcatart = $oCatArt->get('idcatart');
@@ -114,7 +114,7 @@ function conEditFirstTime(
             $publishedby_value = '';
         }
 
-        // Create an stat entry
+        // Create a stat entry
         $oStatColl = new cApiStatCollection();
         $oStat = $oStatColl->create($idcatart, $curLang, $client, 0);
 
@@ -776,7 +776,7 @@ function conLockBulkEditing($idarts, $idlang, $lock) {
 }
 
 /**
- * Checks if a article is locked or not
+ * Checks if an article is locked or not
  *
  * @param int $idart
  *         Article Id
@@ -944,7 +944,7 @@ function conDeleteart($idart) {
                     try {
                         cFileHandler::remove($cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
                     } catch (cInvalidArgumentException $e) {
-                        // skip non existing file
+                        // skip not existing file
                     }
                 }
             }
@@ -1128,12 +1128,12 @@ function conDeeperCategoriesArray($idcat) {
 }
 
 /**
- * Recursive function to create an location string
+ * Recursive function to create a location string
  *
  * @param int    $idcat
  *         ID of the starting category
  * @param string $seperator
- *         Seperation string
+ *         Separation string
  * @param string $catStr
  *         Category location string (by reference)
  * @param bool   $makeLink
@@ -1276,7 +1276,7 @@ function conMakeStart($idcatart, $isstart)
  * @param int $isstart
  *         Start article flag
  *
- * @return bool if action was successfull
+ * @return bool if action was successful
  *
  * @throws cDbException
  * @throws cException
@@ -1302,7 +1302,7 @@ function conSetStartArticle($idcat, $idart, $lang, $isstart)
         $categoryLanguage->set('startidartlang', $startidartlang);
         $succ = $categoryLanguage->store();
 
-        // PARANOIA: in case of failure roleback timemgmt change
+        // PARANOIA: in case of failure rollback timemgmt change
         if (!$succ && isset($timemgmt)) {
             $articleLanguage->set('timemgmt', $timemgmt);
             $succ = $articleLanguage->store();
@@ -1318,7 +1318,7 @@ function conSetStartArticle($idcat, $idart, $lang, $isstart)
 }
 
 /**
- * Handles the start article logic of an new created or edited article.
+ * Handles the start article logic of a new created or edited article.
  *
  * @since CONTENIDO 4.10.2
  * @param int|array $idcatnew

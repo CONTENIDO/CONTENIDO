@@ -336,7 +336,7 @@ class cApiClientLanguage extends Item {
      *         Type of the data to get
      *
      * @return array
-     *         Assoziative array
+     *         Associative array
      *
      * @throws cDbException
      * @throws cException

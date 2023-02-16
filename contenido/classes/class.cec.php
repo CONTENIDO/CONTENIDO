@@ -324,9 +324,8 @@ class cApiCecChainItem {
 
     /**
      * Callback name.
-     * Contains either the function name to invoke, or a indexed array
-     * (class/object and method)
-     * and it's method to execute.
+     * Contains either the function name to invoke, or an indexed array
+     * (class/object and method) and it's method to execute.
      *
      * @var array string
      */

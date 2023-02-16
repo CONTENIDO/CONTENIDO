@@ -18,8 +18,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Clears CONTENIDO standard errorlog.txt
  *
  * @return string
- *         Message if clearing was successfull or not
- * 
+ *         Message if clearing was successful or not
+ *
  * @throws cException
  * @throws cInvalidArgumentException
  */
@@ -50,10 +50,10 @@ function emptyLogFile() {
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
- *             
+ *
  * @return string
  *         HTML output of phpinfo()
- * 
+ *
  * @throws cInvalidArgumentException
  */
 function phpInfoToHtml() {
@@ -125,7 +125,7 @@ function isIPv4($strHostAdress) {
  *
  * @return string
  *         Status of path comparement
- * 
+ *
  * @throws cInvalidArgumentException
  */
 function checkPathInformation($strConUrl, $strBrowserUrl) {
@@ -191,7 +191,7 @@ function checkPathInformation($strConUrl, $strBrowserUrl) {
  * @param bool  $isIP
  *
  * @return bool
- * 
+ *
  * @throws cInvalidArgumentException
  */
 function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false) {

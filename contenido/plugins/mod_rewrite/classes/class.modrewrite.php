@@ -821,7 +821,7 @@ class ModRewrite extends ModRewriteBase {
      * return = ['htmlpath' => 'http://host', 'url' => 'front_content.php?idcat=123']
      *
      * @param  string  $url  URL to split
-     * @return array   Assoziative array including the two parts:
+     * @return array   Associative array including the two parts:
      *                 - ['htmlpath' => $path, 'url' => $url]
      */
     public static function getClientFullUrlParts($url) {
@@ -836,7 +836,7 @@ class ModRewrite extends ModRewriteBase {
             // check if path matches to defined rootdir from mod_rewrite conf
             if (isset($aComp['path']) && $aComp['path'] !== parent::getConfig('rootdir')) {
                 // replace not matching path agaings configured one
-                // this will replace e. g. "http://host/cms/" against "http://host/"
+                // this will replace e.g. "http://host/cms/" against "http://host/"
                 $htmlPath = str_replace($aComp['path'], parent::getConfig('rootdir'), $htmlPath);
                 if (cString::getPartOfString($htmlPath, cString::getStringLength($htmlPath) - 1) == '/') {
                     // remove last slash
@@ -1007,7 +1007,7 @@ class ModRewrite extends ModRewriteBase {
     }
 
     /**
-     * Returns .htaccess related assoziative info array
+     * Returns .htaccess related associative info array
      *
      * @return  array
      */

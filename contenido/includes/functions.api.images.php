@@ -743,7 +743,7 @@ function cApiIsImageMagickAvailable() {
  * for JPG, JPEG or PNG images.
  *
  * @since CONTENIDO 4.10.2
- * @param string $imgType The image type, e. g. 'jpg', 'jpeg' or 'png'
+ * @param string $imgType The image type, e.g. 'jpg', 'jpeg' or 'png'
  * @param int $quality The quality of the image (0 - 100)
  * @return int Returns 100-1 for JPG and JPEG images, 0-9 for PNG images and null for other images.
  */

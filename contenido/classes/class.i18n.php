@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cI18n {
 
     /**
-     * i18n related assoziative data cache.
+     * i18n related associative data cache.
      *
      * @var array
      */

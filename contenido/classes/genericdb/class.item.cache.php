@@ -35,7 +35,7 @@ class cItemCache {
     protected static $_oInstances = [];
 
     /**
-     * Assoziative cache array
+     * Associative cache array
      *
      * @var array
      */
@@ -117,7 +117,7 @@ class cItemCache {
     }
 
     /**
-     * Returns existing entry from cache by it's id.
+     * Returns existing entry from cache by its id.
      *
      * @param mixed $mId
      * @return array|NULL
@@ -146,7 +146,7 @@ class cItemCache {
             return NULL;
         }
 
-        // loop thru all cached entries and try to find a entry by it's property
+        // loop thru all cached entries and try to find an entry by its property
         foreach ($this->_aItemsCache as $id => $aEntry) {
             if (isset($aEntry[$mProperty]) && $aEntry[$mProperty] == $mValue) {
                 return $aEntry;
@@ -160,7 +160,7 @@ class cItemCache {
      * values.
      *
      * @param array $aProperties
-     *         Assoziative key value pairs
+     *         Associative key value pairs
      * @return array|NULL
      */
     public function getItemByProperties(array $aProperties) {
@@ -168,7 +168,7 @@ class cItemCache {
             return NULL;
         }
 
-        // loop thru all cached entries and try to find a entry by it's property
+        // loop through all cached entries and try to find an entry by its property
         foreach ($this->_aItemsCache as $id => $aEntry) {
             $mFound = NULL;
             foreach ($aProperties as $key => $value) {
@@ -215,7 +215,7 @@ class cItemCache {
     }
 
     /**
-     * Removes existing cache entry by it's key
+     * Removes existing cache entry by its key
      *
      * @todo check if null should be returned
      * @param mixed $mId

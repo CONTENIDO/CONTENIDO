@@ -1074,7 +1074,7 @@ class cApiUser extends Item {
      *                      properties will be merged with user properties where the user
      *                      properties will overwrite group properties
      * @return array
-     *                      Assoziative properties array as follows:
+     *                      Associative properties array as follows:
      *                      - $arr[name] = value
      * @throws cDbException
      * @throws cException

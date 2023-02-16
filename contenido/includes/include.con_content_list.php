@@ -1107,7 +1107,7 @@ function _processCmsTags(
         $key = cString::toLowerCase($_typeItem->type);
         $type = $_typeItem->type;
 
-        // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
+        // Try to find all CMS_{type}[{number}] values, e.g. CMS_HTML[1]
         // At $match[2] you found your typeid
         $tmp = preg_match_all('/(' . $type . '\[+(\d+)\])/i', $layoutCode, $match);
 

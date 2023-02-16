@@ -756,7 +756,7 @@ class cHTML {
     }
 
     /**
-     * Direct call of object as string will return it's generated markup.
+     * Direct call of object as string will return its generated markup.
      *
      * @return string
      *         Generated markup

@@ -792,7 +792,7 @@ class cApiModule extends Item {
                 }
 
                 foreach ($handle as $file) {
-                    // If it's a folder, run the function again!
+                    // If its a folder, run the function again!
                     if (!cFileHandler::exists($dir . $file)) {
                         // Skip parent and root directories
                         if (false === cFileHandler::fileNameIsDot($file)) {

@@ -143,7 +143,7 @@ class cAutoload {
      * load class-files being located outside the CONTENIDO installation folder.
      *
      * @param array $config
-     *         Assoziative class map array as follows:
+     *         Associative class map array as follows:
      *         <pre>
      *         // Structure is:
      *         // "Classname" => "Path to class file from CONTENIDO installation folder"

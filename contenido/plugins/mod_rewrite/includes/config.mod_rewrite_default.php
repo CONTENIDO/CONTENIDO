@@ -4,7 +4,7 @@
  * mod rewrite settings of an client couldn't loaded.
  *
  * Containing settings are taken over from CONTENIDO-4.6.15mr setup installer
- * template beeing made originally by stese.
+ * template being made originally by stese.
  *
  * NOTE:
  * Changes in these Advanced Mod Rewrite settings will affect all clients, as long

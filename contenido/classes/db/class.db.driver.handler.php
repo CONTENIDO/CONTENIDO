@@ -141,7 +141,7 @@ abstract class cDbDriverHandler {
      * @param array $options [optional]
      *         Associative options as follows:
      *         - $options['haltBehavior'] (string) Optional, halt behavior on
-     *             occured errors
+     *             occurred errors
      *         - $options['haltMsgPrefix'] (string) Optional, Text to prepend to
      *             the halt message
      *         - $options['enableProfiling'] (bool) Optional, flag to enable

@@ -387,8 +387,8 @@ class idna_convert
     }
 
     /**
-     * Use this method to get the last error ocurred
-     * @return   string   The last error, that occured
+     * Use this method to get the last error occurred
+     * @return   string   The last error, that occurred
      */
     public function get_last_error()
     {

@@ -252,7 +252,7 @@ class Newsletter extends Item
                 $aMatch     = [];
 
                 if (preg_match_all($sRegExp, $sParameter, $aMatch) > 0) {
-                    // Store parameter data as assoziative array
+                    // Store parameter data as associative array
                     $aParameter = array_combine($aMatch[1], $aMatch[2]);
                     unset($aMatch); // $aMatch not needed anymore
 

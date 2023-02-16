@@ -84,7 +84,7 @@ class cGuiBackendHelpbox {
      *
      * @param bool $return [optional]
      *         If true the rendered markup will be returned.
-     *         Otherwise it will be echoed.
+     *         Otherwise, it will be echoed.
      * @return string|NULL
      *         rendered markup or NULL if it's been printed
      */

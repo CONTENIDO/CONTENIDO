@@ -4,7 +4,7 @@
  * This file contains the configuration for the HTTP parameter check feature implemented in cRequestValidator.
  *
  * Do not edit or add anything in check array here, use config.http_check.local.php for custom entries.
- * Otherwise your changes could be damaged on next update!
+ * Otherwise, your changes could be damaged on next update!
  *
  * The syntax is very simple. The array $aCheck contains as first key the parameter type - i.e. GET or POST.
  * The second key is the parameter's name (e.g. idart). The value is one of the following constants:

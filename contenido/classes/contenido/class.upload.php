@@ -117,7 +117,7 @@ class cApiUploadCollection extends ItemCollection {
     }
 
     /**
-     * Deletes upload file and it's properties
+     * Deletes upload file and its properties
      *
      * @todo Code is similar/redundant to include.upl_files_overview.php 216-230
      * @param int              $id

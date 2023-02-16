@@ -630,9 +630,9 @@
     Con.FrameLeftTop = {
         /**
          * Resize top left frame. Retrieves the container element
-         * top_left_container and it's data attributes to handle the resize.
+         * top_left_container and its data attributes to handle the resize.
          * Following attributes are supported: - data-resizegap: (Number) The
-         * amount of extar pixels to add to the detected content height of top
+         * amount of extra pixels to add to the detected content height of top
          * left frame - data-resizeinitcb: (String) Optional a callback to call
          * which does the initial frame resizing Example:
          *
@@ -894,7 +894,7 @@
          * @method replaceParams
          * @param {String} url  The url to change the query parameters
          * @param {Object} params  Key value pairs of params to update or remove. NB:
-         *            A null value will remove the parameter! e. g. {action:
+         *            A null value will remove the parameter! e.g. {action:
          *            null} will remove existing action parameter.
          * @return {String}
          * @static
@@ -1160,14 +1160,14 @@
 
             contentWindow = Con.getContentWindow();
             if (!contentWindow.$ || !contentWindow.$.ui) {
-                // This may happen, e. g. in layout preview
+                // This may happen, e.g. in layout preview
                 Con.log('Could not find $ or $.ui in content window', 'Con.showConfirmation', 'warn');
                 return;
             }
 
             // Define the options and extend them with the given ones.
             // NOTE: Code in dialog callbacks should be executed in the context of the
-            //       content window (e. g. contentWindow.$), not in this window (e. g. $).
+            //       content window (e.g. contentWindow.$), not in this window (e.g. $).
             buttons = {};
             buttons[translations.OK] = function() {
                 if (typeof callback === 'function') {
@@ -1225,14 +1225,14 @@
 
             contentWindow = Con.getContentWindow();
             if (!contentWindow.$ || !contentWindow.$.ui) {
-                // This may happen, e. g. in layout preview
+                // This may happen, e.g. in layout preview
                 Con.log('Could not find $ or $.ui in content window', 'Con.showNotification', 'warn');
                 return;
             }
 
             // Define the options and extend them with the given ones.
             // NOTE: Code in dialog callbacks should be executed in the context of the
-            //       content window (e. g. contentWindow.$), not in this window (e. g. $).
+            //       content window (e.g. contentWindow.$), not in this window (e.g. $).
             buttons = {};
             if (!hideButtons) {
                 buttons[translations.OK] = function() {
@@ -1259,7 +1259,7 @@
 
     /**
     * Check Ajax response and located user to login page
-    * if authentication failed (e. g. user timeout)
+    * if authentication failed (e.g. user timeout)
     *
     * @method checkAjaxResponse
     * @param {String|Object} response
@@ -1282,14 +1282,14 @@
 
     /**
      * Marks submenu item in header, handles also context of different frames.
-     * It supports to mark a submenu (aka subnav) item by it's position and also
-     * by it's data-name attribute value. Examples:
+     * It supports to mark a submenu (aka subnav) item by its position and also
+     * by its data-name attribute value. Examples:
      *
      * <pre>
      * // Mark second submenu item (index starts at 0)
      * Con.markSubmenuItem('c_1');
      *
-     * // Mark submenu item by it's data-name attribute, e. g. data-name=&quot;con_editart&quot;
+     * // Mark submenu item by its data-name attribute, e.g. data-name=&quot;con_editart&quot;
      * Con.markSubmenuItem('con_editart');
      * </pre>
      *
@@ -1326,7 +1326,7 @@
      * @param {Boolean} [asObject=true] - Flag to return the form elements data as an object.
      * @returns {Object|JQuery.NameValuePair[]} - The form data. If return type is object, form data
      *     having multiple values for a multi select or option group (same element name!) will be returned
-     *     as a list of values, e. g. {multiselect: ['value1', 'value2']}
+     *     as a list of values, e.g. {multiselect: ['value1', 'value2']}
      */
     Con.serializeForm = function (form, asObject) {
         var objData,

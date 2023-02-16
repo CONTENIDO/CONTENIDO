@@ -223,7 +223,7 @@ class cApiCecHook {
      * $_defaultReturnValue will be returned.
      *
      * @return mixed
-     *         The break condition or it's default value
+     *         The break condition or its default value
      */
     public static function executeWhileBreakCondition() {
         // get arguments

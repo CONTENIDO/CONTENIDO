@@ -703,7 +703,7 @@ class cHTMLTest extends cTestingTestCase
 
     /*
      * Test of private and protected methods.
-     * These are commented cause it's considered bad practice to test such methods.
+     * These are commented because it's considered bad practice to test such methods.
      */
 
     // public function testGetAttrString()

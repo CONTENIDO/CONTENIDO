@@ -335,7 +335,7 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
-     * Loads an item by it's recordset.
+     * Loads an item by its recordset.
      *
      * @param array $aRecordSet
      *         The recordset of the item
