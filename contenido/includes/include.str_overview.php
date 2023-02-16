@@ -913,19 +913,19 @@ $tpl->set('s', 'INPUT_PUBLIC', $oPublic->render());
 $tpl->set('s', 'INPUT_TEMPLATE', $oTemplate->render());
 
 $oCatName = new cHTMLTextbox('categoryname', '', '', '', 'cat_categoryname');
-$oCatName->setStyle('width:150px; vertical-align:middle;');
+$oCatName->setStyle('width:150px;');
 $tpl->set('s', 'INPUT_CATNAME_NEW', $oCatName->render());
 
 $oAlias = new cHTMLTextbox('categoryalias', '', '', '', 'cat_categoryalias');
-$oAlias->setStyle('width:150px; vertical-align:middle;');
+$oAlias->setStyle('width:150px;');
 $tpl->set('s', 'INPUT_ALIAS_NEW', $oAlias->render());
 
 $oNewCatName = new cHTMLTextbox('newcategoryname');
-$oNewCatName->setStyle('width:150px; vertical-align:middle;');
+$oNewCatName->setStyle('width:150px;');
 $tpl->set('s', 'INPUT_CATNAME_EDIT', $oNewCatName->render());
 
 $oNewAlias = new cHTMLTextbox('newcategoryalias');
-$oNewAlias->setStyle('width:150px; vertical-align:middle;');
+$oNewAlias->setStyle('width:150px;');
 $tpl->set('s', 'INPUT_ALIAS_EDIT', $oNewAlias->render());
 
 // Show layer-button for adding new categories and set options
