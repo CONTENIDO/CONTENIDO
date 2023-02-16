@@ -168,7 +168,7 @@ $oClientColl->select();
 $sClients = '';
 
 while ($oItem = $oClientColl->next()) {
-    $iIdClient = $oItem->get('idclient');
+    $iIdClient = cSecurity::toInteger($oItem->get('idclient'));
 
     if (systemHavePerm($iIdClient)) {
         $htmlpath = $cfgClient[$iIdClient]['path']['htmlpath'];
