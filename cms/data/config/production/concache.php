@@ -27,13 +27,8 @@ global $cfgConCache;
 
 $cfgConCache = [];
 
-/**
- * Don't cache output, if we have a CONTENIDO variable, e.g. on calling
- * frontend preview from backend
-
- * @var bool  $cfgConCache['excludecontenido']
- */
-$cfgConCache['excludecontenido'] = true;
+// (bool) Don't cache output, if we have a CONTENIDO variable, e.g. on calling
+//        frontend preview from backend.$cfgConCache['excludecontenido'] = true;
 
 // (bool) Enable caching of frontend output
 $cfgConCache['enable'] = true;
@@ -65,12 +60,12 @@ $cfgConCache['cacheprefix'] = 'cache_';
  *     $_POST and $_GET. It's also possible to add the auth object, if
  *     output differs on authenticated user.
  */
-$cfgConCache['idoptions'] = array(
+$cfgConCache['idoptions'] = [
     'uri'  => &$_SERVER['REQUEST_URI'],
     'post' => &$_POST,
     'get'  => &$_GET,
     'auth' => &$auth->auth['perm']
-);
+];
 
 /**
  * (array) Array of event-handler, being raised on some events.
@@ -102,22 +97,23 @@ $cfgConCache['idoptions'] = array(
  *     ];
  *     </pre>
  */
-
-// Define code to update CONTENIDO statistics.
-// This will be executed on 'afteroutput' event of cache object.
-
-// set Security fix
-$sStatCode = '
-    global $client, $idcatart, $lang;
-    // Don\'t track page hit if tracking off
-    if (getSystemProperty(\'stats\', \'tracking\') != \'disabled\' && cRegistry::isTrackingAllowed()) {
-        // Statistic, track page hit
-        $oStatColl = new cApiStatCollection();
-        $oStatColl->trackVisit($idcatart, $lang, $client);
-    }
-';
-
 $cfgConCache['raiseonevent'] = [
     'beforeoutput' => ['/* some code here */'],
-    'afteroutput'  => [$sStatCode, 'cRegistry::shutdown();']
+    'afteroutput'  => [
+        // Define code to update CONTENIDO statistics.
+        // This will be executed on 'afteroutput' event of cache object.
+        '
+        // Don\'t track page hit if tracking off
+        if (getSystemProperty(\'stats\', \'tracking\') != \'disabled\' && cRegistry::isTrackingAllowed()) {
+            // Track page hit for statistics
+            global $idcatart;
+            $client = cSecurity::toInteger(cRegistry::getClientId());
+            $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+            $idcatart = cSecurity::toInteger($idcatart);
+            $oStatColl = new cApiStatCollection();
+            $oStatColl->trackVisit($idcatart, $lang, $client);
+        }
+        ',
+        'cRegistry::shutdown();',
+    ],
 ];

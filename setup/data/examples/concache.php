@@ -98,22 +98,23 @@ $cfgConCache['idoptions'] = [
  *     ];
  *     </pre>
  */
-
-// Define code to update CONTENIDO statistics.
-// This will be executed on 'afteroutput' event of cache object.
-
-// set Security fix
-$sStatCode = '
-    global $client, $idcatart, $lang;
-    // Don\'t track page hit if tracking off
-    if (getSystemProperty(\'stats\', \'tracking\') != \'disabled\' && cRegistry::isTrackingAllowed()) {
-        // Statistic, track page hit
-        $oStatColl = new cApiStatCollection();
-        $oStatColl->trackVisit($idcatart, $lang, $client);
-    }
-';
-
 $cfgConCache['raiseonevent'] = [
     'beforeoutput' => ['/* some code here */'],
-    'afteroutput'  => [$sStatCode, 'cRegistry::shutdown();'],
+    'afteroutput'  => [
+        // Define code to update CONTENIDO statistics.
+        // This will be executed on 'afteroutput' event of cache object.
+        '
+        // Don\'t track page hit if tracking off
+        if (getSystemProperty(\'stats\', \'tracking\') != \'disabled\' && cRegistry::isTrackingAllowed()) {
+            // Track page hit for statistics
+            global $idcatart;
+            $client = cSecurity::toInteger(cRegistry::getClientId());
+            $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+            $idcatart = cSecurity::toInteger($idcatart);
+            $oStatColl = new cApiStatCollection();
+            $oStatColl->trackVisit($idcatart, $lang, $client);
+        }
+        ',
+        'cRegistry::shutdown();',
+    ],
 ];
