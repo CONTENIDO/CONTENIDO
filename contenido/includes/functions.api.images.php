@@ -514,10 +514,6 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
         case 'im':
             $return = cApiImgScaleImageMagick($img, $maxX, $maxY, $crop, $expand, $cacheTime, $quality, $keepType);
             break;
-        case 'untouched':
-            $frontendURL = cRegistry::getFrontendUrl();
-            $return = str_replace(cRegistry::getFrontendPath(), $frontendURL, $img);
-            break;
         case 'failure':
         default:
             $frontendURL = cRegistry::getFrontendUrl();
@@ -525,7 +521,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
             break;
     }
 
-    if ($deleteAfter == true) {
+    if ($deleteAfter) {
         unlink($img);
     }
 
@@ -535,7 +531,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
 /**
  * Check possible image editing functionality.
  *
- * @return mixed
+ * @return string
  *         Information about installed image editing extensions/tools
  *         <pre>
  *         - 'im' ImageMagick is available and usage is enabled
@@ -613,7 +609,7 @@ function cApiImageGetTargetDimensions($x, $y, $maxX, $maxY, $expand) {
         }
     }
 
-    if ($expand == false && (($targetX > $x) || ($targetY > $y))) {
+    if (!$expand && (($targetX > $x) || ($targetY > $y))) {
         $targetX = $x;
         $targetY = $y;
     }
@@ -668,7 +664,7 @@ function cApiImageGetCacheFileName($md5, $fileType, $keepType) {
  * @param string $cacheFile
  * @param int $cacheTime
  * @return bool
- *         Returns true, if cache file exists and7or is still valid or false
+ *         Returns true, if cache file exists and/or is still valid or false
  */
 function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
     // Check if the file exists. If it does, check if the file is valid.
