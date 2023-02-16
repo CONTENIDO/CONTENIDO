@@ -518,7 +518,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             // Uses Category Template
             if (0 == $idtplcfg) {
                 $categoryTemplateInfo = $articleOverviewHelper->getCategoryTemplateInfos();
-                $a_tplname = $categoryTemplateInfo['name'] ? '<i>' . $categoryTemplateInfo['name'] . '</i>' : "--- " . $lngNone . " ---";
+                $a_tplname = ($categoryTemplateInfo['name'] ?? '') ? '<i>' . $categoryTemplateInfo['name'] . '</i>' : "--- " . $lngNone . " ---";
             }
 
             // Make Startarticle button
