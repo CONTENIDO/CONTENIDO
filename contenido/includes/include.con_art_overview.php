@@ -702,7 +702,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         // add properties button
                         if ($tmp_sync != '') {
                             $actions[] = '<a href="main.php?area=con_editart&action=con_edit&frame=4&idcat=' . $idcat . '&idart=' . $idart . '&contenido=' . $contenido . '">
-                                <img class="vAlignMiddle tableElement" onmouseover="this.style.cursor=\'pointer\'" src="images/but_art_conf2.gif" title="' . $lngDisplayProperties . '" alt="' . $lngDisplayProperties . '" style="cursor: pointer;">
+                                <img class="vAlignMiddle tableElement" src="images/but_art_conf2.gif" title="' . $lngDisplayProperties . '" alt="' . $lngDisplayProperties . '">
                             </a>';
                         }
 
