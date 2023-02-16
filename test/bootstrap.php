@@ -50,7 +50,7 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
-// Include the config file of the frontend to init the Client and Language Id
+// Include the config file of the frontend to initialize client and language id
 include_once('data/config/' . CON_ENVIRONMENT . '/config.php');
 
 // Contenido startup process
