@@ -477,8 +477,9 @@ if ($db->numRows() == 0) { // If we have no categories, display warning message
     buildTree($rootStrItem, $arrayObj->getIterator());
 
     $expandedList = unserialize($currentuser->getUserProperty('system', 'cat_expandstate'));
+    $expandedList = is_array($expandedList) ? $expandedList : [];
 
-    if (is_array($expandedList[$client])) {
+    if (isset($expandedList[$client]) && is_array($expandedList[$client])) {
         $rootStrItem->markExpanded($expandedList[$client]);
     }
 
