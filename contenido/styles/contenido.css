@@ -1916,7 +1916,8 @@ div#legend table.article {
     width: 99% !important;
 }
 
-#imgFormSubmit {
+#imgFormSubmit,
+.img_form_submit {
     cursor: pointer;
 }
 
@@ -2156,7 +2157,8 @@ input[type=image].vAlignMiddle {
     color: #b3b3b8;
 }
 
-.emptyCell {
+.emptyCell,
+.empty_cell {
     border-bottom: 0 !important;
 }
 
@@ -2373,4 +2375,18 @@ a.infoButton,
 
     /* Good browsers */
     opacity: 0.3 !important;
+}
+
+/* Disabled links */
+.is_disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+a[aria-disabled="true"],
+input[aria-disabled="true"],
+button[aria-disabled="true"] {
+    /* NOTE: Disabling pointer events works on modern clients, we still
+       need a JS fallback to block clicks on elements like a, button, etc. */
+    pointer-events: none;
+    text-decoration: none;
 }

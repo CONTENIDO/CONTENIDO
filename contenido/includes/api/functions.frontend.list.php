@@ -90,9 +90,9 @@ class FrontendList {
      * @param $itemwrap
      *
      * @return FrontendList
-     * 
+     *
      * @throws cInvalidArgumentException
-     * 
+     *
      * @deprecated [2016-04-06] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
      */
     public function FrontendList($startwrap, $endwrap, $itemwrap) {
@@ -220,13 +220,15 @@ class FrontendList {
         }
 
         for ($i = $itemstart; $i < $itemend + 1; $i++) {
-            if (is_array($this->_data[$i - 1])) {
+            $currentPos = $i - 1;
+            if (is_array($this->_data[$currentPos])) {
                 $items = "";
-                foreach ($this->_data[$i - 1] as $key => $value) {
+                foreach ($this->_data[$currentPos] as $key => $value) {
                     $items .= ", '" . addslashes($this->convert($key, $value)) . "'";
                 }
 
-                $execute = '$output .= sprintf($this->_itemwrap ' . $items . ');';
+                $itemWrap = str_replace('{LIST_ITEM_POS}', $currentPos, $this->_itemwrap);
+                $execute = '$output .= sprintf($itemWrap ' . $items . ');';
                 eval($execute);
             }
         }
@@ -235,7 +237,7 @@ class FrontendList {
 
         $output = stripslashes($output);
 
-        if ($return == true) {
+        if ($return) {
             return $output;
         } else {
             echo $output;

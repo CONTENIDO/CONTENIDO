@@ -64,6 +64,7 @@ class UploadSearchResultList extends FrontendList {
      * @param int $field
      *         Field index
      * @param mixed $data
+     *         Field value
      *
      * @return mixed
      *
@@ -113,12 +114,12 @@ class UploadSearchResultList extends FrontendList {
             } elseif ('' !== $this->_fileType) {
                 $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
 
-                $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
+                $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
                 $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$file"), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"), $data);
             } else {
                 $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
 
-                $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
+                $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
                 // concatenate path with folder name (file) for path parameter to access folder
                 $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl&frame=4&path=$path$file/&file="), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"), $data);
             }
@@ -131,22 +132,23 @@ class UploadSearchResultList extends FrontendList {
             // If this file is an image, try to open
             $this->_fileType = cString::toLowerCase(cFileHandler::getExtension($data));
             switch ($this->_fileType) {
-                case "png":
-                case "psd":
-                case "gif":
-                case "tiff":
-                case "bmp":
-                case "jpeg":
-                case "jpg":
-                case "iff":
-                case "xbm":
-                case "wbmp":
+                case 'bmp':
+                case 'gif':
+                case 'iff':
+                case 'jpeg':
+                case 'jpg':
+                case 'png':
+                case 'tif':
+                case 'tiff':
+                case 'wbmp':
+                case 'webp':
+                case 'xbm':
                     $frontendURL = cRegistry::getFrontendUrl();
 
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    $sCacheName = cString::getPartOfString($sCacheThumbnail, cString::findLastPos($sCacheThumbnail, "/") + 1, cString::getStringLength($sCacheThumbnail) - (cString::findLastOccurrence($sCacheThumbnail, '/') + 1));
+                    $sCacheName = basename($sCacheThumbnail);
                     $sFullPath = $cfgClient[$client]['cache']['path'] . $sCacheName;
-                    if (cFileHandler::exists($sFullPath)) {
+                    if (cFileHandler::isFile($sFullPath)) {
                         $aDimensions = getimagesize($sFullPath);
                         $iWidth = $aDimensions[0];
                         $iHeight = $aDimensions[1];
@@ -156,17 +158,14 @@ class UploadSearchResultList extends FrontendList {
                     }
 
                     if (cApiDbfs::isDbfs($data)) {
-                        return '<a href="javascript:iZoom(\'' . $sess->url($frontendURL . "dbfs.php?file=" . $data) . '\');">
-                                    <img class="hover" alt="" src="' . $sCacheThumbnail . '">
-                                    <img class="preview" alt="" src="' . $sCacheThumbnail . '">
-                                </a>';
+                        $href = $frontendURL . 'dbfs.php?file=' . $data;
                     } else {
-                        return '<a href="javascript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');">
-                                    <img class="hover" alt=""  onmouseover="correctPosition(this, ' . $iWidth . ', ' . $iHeight . ');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="' . $sCacheThumbnail . '">
-                                    <img class="preview" alt="" src="' . $sCacheThumbnail . '">
-                                </a>
-                                <a href="javascript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');"><img class="preview" alt="" src="' . $sCacheThumbnail . '"></a>';
+                        $href = $frontendURL . $cfgClient[$client]['upload'] . $data;
                     }
+                    return '<a href="' . $href . '" data-action="zoom" data-action-mouseover="zoom">
+                               <img class="hover" alt="" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
+                               <img class="preview" alt="" src="' . $sCacheThumbnail . '">
+                           </a>';
                 case '':
                     // folder has empty filetype column value
                     return '<img class="hover_none" alt="" src="' . cRegistry::getBackendUrl() . 'images/grid_folder.gif' . '">';
@@ -265,7 +264,7 @@ $sToolsRow = '<tr class="textg_medium">
 // List wraps
 
 $sSpacedRow = '<tr height="10">
-                    <td colspan="6" class="emptyCell"></td>
+                    <td colspan="6" class="empty_cell"></td>
                </tr>';
 
 $pagerwrap = '<tr>
@@ -279,7 +278,7 @@ $pagerwrap = '<tr>
                 </th>
             </tr>';
 
-$startwrap = '<table class="hoverbox generic" cellspacing="0" cellpadding="2" border="0">
+$startwrap = '<table class="hoverbox generic">
                 ' . $pagerwrap . $sSpacedRow . $sToolsRow . $sSpacedRow . '
                <tr>
                     <th>' . i18n("Preview") . '</th>
@@ -289,7 +288,7 @@ $startwrap = '<table class="hoverbox generic" cellspacing="0" cellpadding="2" bo
                     <th>' . $typesort . '</th>
                     <th>' . $srelevance . '</th>
                 </tr>';
-$itemwrap = '<tr>
+$itemwrap = '<tr data-list-item="{LIST_ITEM_POS}">
                     <td align="center">%s</td>
                     <td class="vAlignTop nowrap">%s</td>
                     <td class="vAlignTop nowrap">%s</td>
@@ -443,7 +442,8 @@ $output = str_replace("-C-SCROLLRIGHT-", $nextpage, $output);
 $output = str_replace("-C-PAGE-", i18n("Page") . " " . $curpage, $output);
 $output = str_replace("-C-THUMBNAILMODE-", $thumbnailmode, $output);
 
-$form = new cHTMLForm("options");
+$form = new cHTMLForm("upl_file_list");
+$form->setClass('upl_files_overview');
 $form->setVar("contenido", $sess->id);
 $form->setVar("area", $area);
 $form->setVar("frame", $frame);
@@ -461,18 +461,36 @@ $values = [
     100 => "100",
     200 => "200"
 ];
-
 $select->autoFill($values);
-
 $select->setDefault($thumbnailmode);
-$select->setEvent('change', "if (document.options.thumbnailmode[0] != 'undefined') document.options.thumbnailmode[0].value = this.value; if (document.options.thumbnailmode[1] != 'undefined') document.options.thumbnailmode[1].value = this.value;");
 
-$topbar = $select->render() . '<input type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif" class="vAlignMiddle tableElement">';
+$topbar = $select->render() . '<input type="image" src="images/submit.gif" class="img_form_submit vAlignMiddle tableElement">';
 
 $output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
 
-$page->addScript($sess->url("iZoom.js.php"));
+$page->addStyle($sess->url("includes/upl_files_overview.css"));
+$page->addScript($sess->url("includes/upl_files_overview.js"));
 
 $form->appendContent($output);
+
+$jsCode = '
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        // Instantiate upload files overview component
+        new Con.UplFilesOverview({
+            rootSelector: ".upl_files_overview",
+            filesPerPageSelector: "select[name=thumbnailmode]",
+            filesCheckBoxSelector: "input[name=\'fdelete[]\']",
+            text_close: "' . i18n("Click to close") . '",
+            text_delete_question: "' . i18n('Are you sure you want to delete the selected files?') . '",
+        });
+    });
+})(Con, Con.$);
+</script>
+';
+$form->appendContent($jsCode);
+
+
 $page->set("s", "FORM", $form->render());
 $page->render();

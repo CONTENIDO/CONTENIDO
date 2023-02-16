@@ -408,7 +408,7 @@ class UploadList extends FrontendList {
                     $mstr = '<a href="javascript:void(0)" onclick="parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]['upl']['frontendpath'] . $path . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]['upl']['frontendpath'] . $path . $data . '\'; window.close();"><img alt="" src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
                 }
             } else {
-                $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+                $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
                 $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$data&appendparameters=$appendparameters&startpage=" . $startpage . "&sortby=" . $sortby . "&sortmode=" . $sortmode . "&thumbnailmode=" . $thumbnailmode), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$data"), $data);
             }
             return $mstr;
@@ -422,15 +422,17 @@ class UploadList extends FrontendList {
             // If this file is an image, try to open
             $fileType = cString::toLowerCase(cFileHandler::getExtension($data));
             switch ($fileType) {
-                case 'png':
-                case 'gif':
-                case 'tiff':
                 case 'bmp':
+                case 'gif':
+                case 'iff':
                 case 'jpeg':
                 case 'jpg':
-                case 'iff':
-                case 'xbm':
+                case 'png':
+                case 'tif':
+                case 'tiff':
                 case 'wbmp':
+                case 'webp':
+                case 'xbm':
                     $frontendURL = cRegistry::getFrontendUrl();
 
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
@@ -450,7 +452,7 @@ class UploadList extends FrontendList {
                     } else {
                         $href = $frontendURL . $cfgClient[$client]['upload'] . $data;
                     }
-                    return '<a class="jsZoom" href="' . $href . '">
+                    return '<a href="' . $href . '" data-action="zoom" data-action-mouseover="zoom">
                            <img class="hover" alt="" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
                            <img class="preview" alt="" src="' . $sCacheThumbnail . '">
                        </a>';
@@ -523,13 +525,15 @@ class UploadList extends FrontendList {
         $count = count($this->_data);
 
         for ($i = 1; $i <= $count; $i++) {
-            if (is_array($this->_data[$i - 1])) {
+            $currentPos = $i - 1;
+            if (is_array($this->_data[$currentPos])) {
                 $items = "";
-                foreach ($this->_data[$i - 1] as $key => $value) {
+                foreach ($this->_data[$currentPos] as $key => $value) {
                     $items .= ", '" . addslashes($this->convert($key, $value)) . "'";
                 }
 
-                $execute = '$output .= sprintf($this->_itemwrap ' . $items . ');';
+                $itemWrap = str_replace('{LIST_ITEM_POS}', $currentPos, $this->_itemwrap);
+                $execute = '$output .= sprintf($itemWrap ' . $items . ');';
                 eval($execute);
             }
         }
@@ -593,23 +597,19 @@ if ($sortby == 5 && $sortmode == 'DESC') {
 
 // Multiple deletes at top of table
 if ($perm->have_perm_area_action('upl', 'upl_multidelete') && $bDirectoryIsWritable) {
-    $sConfirmation = "Con.showConfirmation('" . i18n('Are you sure you want to delete the selected files?') . "', function() { document.del.action.value = \'upl_multidelete\'; document.del.submit(); });return false;";
-    $sDelete = '<a class="tableElement vAlignMiddle" href="javascript:void(0)" onclick="' . $sConfirmation . '"><img class="tableElement vAlignMiddle" src="images/delete.gif" title="' . i18n("Delete selected files") . '" alt="' . i18n("Delete selected files") . '" onmouseover="this.style.cursor=\'pointer\'"><span class="tableElement">' . i18n("Delete selected files") . '</span></a>';
+    $sDelete = '<a class="tableElement vAlignMiddle jsDeleteSelected" href="javascript:void(0)" data-action="delete_selected"><img class="tableElement vAlignMiddle" src="images/delete.gif" title="' . i18n("Delete selected files") . '" alt="' . i18n("Delete selected files") . '"><span class="tableElement">' . i18n("Delete selected files") . '</span></a>';
 } else {
     $sDelete = '';
 }
 
-if (cApiDbfs::isDbfs($path)) {
-    $mpath = $path . '/';
-} else {
-    $mpath = 'upload/' . $path;
-}
+$mpath = cApiDbfs::isDbfs($path) ? $path : 'upload/' . $path;
+$mpath = trim($mpath, '/') . '/';
 
 $sDisplayPath = generateDisplayFilePath($mpath, 85);
 
 $sToolsRow = '<tr>
                <th colspan="6" id="cat_navbar">
-                   <a class="tableElement vAlignMiddle" href="javascript:invertSelection();"><img class="tableElement vAlignMiddle" src="images/but_invert_selection.gif" title="' . i18n("Flip Selection") . '" alt="' . i18n("Flip Selection") . '" onmouseover="this.style.cursor=\'pointer\'"> ' . i18n("Flip Selection") . '</a>
+                   <a class="tableElement vAlignMiddle" href="javascript:void(0);" data-action="invert_selection"><img class="tableElement vAlignMiddle" src="images/but_invert_selection.gif" title="' . i18n("Flip Selection") . '" alt="' . i18n("Flip Selection") . '"> ' . i18n("Flip Selection") . '</a>
                        ' . $sDelete . '
                    <div class="toolsRight">
                    ' . i18n("Path:") . " " . $sDisplayPath . '
@@ -617,7 +617,7 @@ $sToolsRow = '<tr>
                </th>
            </tr>';
 $sSpacedRow = '<tr>
-                   <td colspan="6" class="emptyCell" style="min-height:10px;"></td>
+                   <td colspan="6" class="empty_cell"></td>
               </tr>';
 
 // List wraps
@@ -633,7 +633,7 @@ $pagerwrap = '<tr>
                </th>
            </tr>';
 
-$startwrap = '<table class="hoverbox generic" cellspacing="0" cellpadding="2" border="0">
+$startwrap = '<table class="hoverbox generic">
                ' . $pagerwrap . $sSpacedRow . $sToolsRow . $sSpacedRow . '
               <tr>
                    <th>' . i18n("Mark") . '</th>
@@ -643,7 +643,7 @@ $startwrap = '<table class="hoverbox generic" cellspacing="0" cellpadding="2" bo
                    <th>' . $typesort . '</th>
                    <th>' . i18n("Actions") . '</th>
                </tr>';
-$itemwrap = '<tr>
+$itemwrap = '<tr data-list-item="{LIST_ITEM_POS}">
                    <td class="tgcenter">%s</td>
                    <td class="tgcenter">%s</td>
                    <td class="vAlignTop nowrap">%s</td>
@@ -772,7 +772,7 @@ while ($item = $uploadCollection->next()) {
         $mstr = '';
     } else {
         $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-        $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$filename&startpage=$startpage&sortby=$sortby&sortmode=$sortmode&thumbnailmode=$thumbnailmode"), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$filename"), '<img class="vAlignMiddle tableElement" alt="' . $proptitle . '" title="' . $proptitle . '" src="images/but_art_conf2.gif" onmouseover="this.style.cursor=\'pointer\'">');
+        $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$filename&startpage=$startpage&sortby=$sortby&sortmode=$sortmode&thumbnailmode=$thumbnailmode"), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$filename"), '<img class="vAlignMiddle tableElement" alt="' . $proptitle . '" title="' . $proptitle . '" src="images/but_art_conf2.gif">');
     }
 
     $actions = $mstr . $actions;
@@ -851,7 +851,6 @@ $output = str_replace('-C-SCROLLRIGHT-', $nextpage, $output);
 $output = str_replace('-C-PAGE-', i18n("Page") . ' ' . $curpage, $output);
 
 $select = new cHTMLSelectElement('thumbnailmode');
-
 $values = [
     10 => '10',
     25 => '25',
@@ -859,37 +858,52 @@ $values = [
     100 => '100',
     200 => '200'
 ];
-
 $select->autoFill($values);
-
 $select->setDefault($thumbnailmode);
-$select->setEvent('change', "if (document.del.thumbnailmode[0] != 'undefined') document.del.thumbnailmode[0].value = this.value; if (document.del.thumbnailmode[1] != 'undefined') document.del.thumbnailmode[1].value = this.value; if (document.del.thumbnailmode[2] != 'undefined') document.del.thumbnailmode[2].value = this.value;");
 
-$topbar = $select->render() . '<input class="vAlignMiddle tableElement" type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif" alt="">';
+$topbar = $select->render() . '<input class="img_form_submit vAlignMiddle tableElement" type="image" src="images/submit.gif" alt="">';
 
 $output = str_replace('-C-FILESPERPAGE-', $topbar, $output);
 
-$delform = new cHTMLForm('del');
-$delform->setVar('area', $area);
-$delform->setVar('action', '');
-$delform->setVar('startpage', $startpage);
-$delform->setVar('thumbnailmode', $thumbnailmode);
-$delform->setVar('sortmode', $sortmode);
-$delform->setVar('sortby', $sortby);
-$delform->setVar('appendparameters', $appendparameters);
-$delform->setVar('path', $path);
-$delform->setVar('frame', 4);
+$form = new cHTMLForm('upl_file_list');
+$form->setClass('upl_files_overview');
+$form->setVar('area', $area);
+$form->setVar('action', '');
+$form->setVar('startpage', $startpage);
+$form->setVar('thumbnailmode', $thumbnailmode);
+$form->setVar('sortmode', $sortmode);
+$form->setVar('sortby', $sortby);
+$form->setVar('appendparameters', $appendparameters);
+$form->setVar('path', $path);
+$form->setVar('frame', 4);
 // Table with (preview) images
-$delform->appendContent($output);
-
-$page->addScript($sess->url('iZoom.js.php'));
+$form->appendContent($output);
 
 if (!$bDirectoryIsWritable) {
     $page->displayError(i18n("Directory not writable") . ' (' . $cfgClient[$client]['upl']['path'] . $path . ')');
 }
 
+$jsCode = '
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        // Instantiate upload files overview component
+        new Con.UplFilesOverview({
+            rootSelector: ".upl_files_overview",
+            filesPerPageSelector: "select[name=thumbnailmode]",
+            filesCheckBoxSelector: "input[name=\'fdelete[]\']",
+            deleteSelectedSelector: ".jsDeleteSelected",
+            text_close: "' . i18n("Click to close") . '",
+            text_delete_question: "' . i18n('Are you sure you want to delete the selected files?') . '",
+        });
+    });
+})(Con, Con.$);
+</script>
+';
+
 $page->setContent([
-    $delform
+    $form,
+    $jsCode
 ]);
 
 $page->render();

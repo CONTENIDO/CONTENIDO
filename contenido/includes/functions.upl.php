@@ -566,16 +566,17 @@ function uplGetThumbnail($sFile, $iMaxSize) {
     $sFileType = cString::toLowerCase(cFileHandler::getExtension($sFile));
 
     switch ($sFileType) {
-        case "png":
-        case "gif":
-        case "tiff":
-        case "tif":
-        case "bmp":
-        case "jpeg":
-        case "jpg":
-        case "iff":
-        case "xbm":
-        case "wbmp":
+        case 'bmp':
+        case 'gif':
+        case 'iff':
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+        case 'tif':
+        case 'tiff':
+        case 'wbmp':
+        case 'webp':
+        case 'xbm':
             $img = cApiImgScale($cfgClient['upl']['path'] . $sFile, $iMaxSize, $iMaxSize, false, false, 50);
             if ($img !== false) {
                 return $img;
