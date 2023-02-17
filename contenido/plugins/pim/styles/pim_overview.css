@@ -1,0 +1,129 @@
+/* Upload/update plugin layer */
+#pim_overview #upload_plugin > div {
+    border-top: 0;
+    padding: 8px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+}
+
+#pim_overview .plugin_update > div {
+    border: 1px solid #b5b5b5;
+    background-color: #e2e2e2;
+    padding: 8px;
+    margin-bottom: 15px;
+}
+
+#pim_overview #upload_plugin > div > .title,
+#pim_overview .plugin_update > div > .title {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#pim_overview #upload_plugin.display > div,
+#pim_overview .plugin_update > div {
+    border: 1px solid #b5b5b5;
+    border-top: 0;
+    height: auto;
+    width: 450px;
+}
+
+/* Plugin overview table */
+#pim_overview .plugin_overview {
+    border: 1px solid #b5b5b5;
+    margin-bottom: 3px;
+}
+
+#pim_overview .plugin_overview td.sort {
+    text-align: right;
+    padding-right: 0;
+}
+
+#pim_overview .plugin_overview a.toggle {
+    padding: 4px 8px;
+    margin-left: -2px;
+}
+
+#pim_overview .plugin_overview a.sort_plugin_up,
+#pim_overview .plugin_overview a.sort_plugin_down {
+    padding: 4px 8px;
+}
+
+/* Plugin info table */
+#pim_overview .plugin_info {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* Overview table */
+#pim_overview .plugin_info tr:last-of-type td {
+    padding-bottom: 10px;
+}
+
+#pim_overview .plugin_info .uninstall_sql {
+    vertical-align: middle;
+}
+
+#pim_overview table {
+    width: 800px;
+    border: 0;
+    border-spacing: 0;
+}
+#pim_overview table td {
+    padding: 4px;
+}
+
+#pim_overview table tr.upload {
+    background-color: #e2e2e2;
+    height: 20px;
+    line-height: 20px;
+}
+#pim_overview table tr.upload td.action {
+    width: 95%;
+    border-top: 1px solid #B5B5B5;
+    border-bottom: 1px solid #B5B5B5;
+    border-left: 1px solid #B5B5B5;
+}
+#pim_overview table tr.upload td.action a {
+    margin-left: 5px;
+}
+#pim_overview table tr.upload td.info {
+    width: 5%;
+    text-align: right;
+    border-top: 1px solid #B5B5B5;
+    border-bottom: 1px solid #B5B5B5;
+    border-right: 1px solid #B5B5B5;
+}
+
+#pim_overview .installed_info {
+    color: #FF0000;
+}
+
+#pim_overview h2,
+#pim_overview .title_action_bar {
+    display: inline-block;
+}
+
+#pim_overview .title_action_bar {
+    padding-left: 15px;
+    line-height: 1.5em;
+}
+#pim_overview .title_action_bar a {
+    margin-right: 5px;
+}
+#pim_overview .title_action_bar a.active {
+    text-decoration: underline;
+}
+#pim_overview .title_action_bar a:last-of-type {
+    margin-right: 0;
+}
+
+/* Don't display sort icons when installed plugins are filtered  */
+#pim_overview .installed.filtered .sort_plugin_up,
+#pim_overview .installed.filtered .sort_plugin_up img ,
+#pim_overview .installed.filtered .sort_plugin_down,
+#pim_overview .installed.filtered .sort_plugin_down img {
+    visibility: hidden;
+}
