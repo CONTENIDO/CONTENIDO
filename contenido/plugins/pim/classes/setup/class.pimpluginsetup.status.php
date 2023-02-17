@@ -88,7 +88,7 @@ class PimPluginSetupStatus extends PimPluginSetup {
                 $this->_changeNavSubStatus($idnavs, 0);
             }
 
-            parent::info(sprintf(i18n('The plugin <strong>%s</strong> has been sucessfully disabled. To apply the changes please login into backend again.', 'pim'), $pluginName));
+            parent::info(sprintf(i18n('The plugin <strong>%s</strong> has been successfully disabled. To apply the changes please login into backend again.', 'pim'), $pluginName));
         } else {
             // Plugin is offline and now we change status to online
 
@@ -102,7 +102,7 @@ class PimPluginSetupStatus extends PimPluginSetup {
                 $this->_changeNavSubStatus($idnavs, 1);
             }
 
-            parent::info(sprintf(i18n('The plugin <strong>%s</strong> has been sucessfully enabled. To apply the changes please login into backend again.', 'pim'), $pluginName));
+            parent::info(sprintf(i18n('The plugin <strong>%s</strong> has been successfully enabled. To apply the changes please login into backend again.', 'pim'), $pluginName));
         }
     }
 

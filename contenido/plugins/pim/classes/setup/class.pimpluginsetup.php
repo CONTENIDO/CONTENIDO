@@ -330,7 +330,7 @@ class PimPluginSetup {
 
 				// If PIM can not create a temporary directory (if it does not exist), throw an error message
 				if (!$success) {
-					self::error(sprintf(i18n('Plugin Manager can not found a temporary CONTENIDO directory. Also it is not possible to create a temporary directory at <em>%s</em>. You have to create it manualy.', 'pim'), $tempArchiveNewPath));
+					self::error(sprintf(i18n('Plugin Manager could not find a temporary CONTENIDO directory. Also, it is not possible to create a temporary directory at <em>%s</em>. You have to create it manually.', 'pim'), $tempArchiveNewPath));
                     return;
 				}
             }

@@ -164,14 +164,16 @@ while (($plugin = $oItem->next()) !== false) {
     $activeStatus = $plugin->get('active');
     $tempActiveStatusLink = $sess->url('main.php?area=pim&frame=4&pim_view=activestatus&pluginId=' . $idplugin);
     if ($activeStatus == 1) {
-        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/online.gif" alt="" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Disable', 'pim') . '</a>');
+        $pagePlugins->set('s', 'DATA_ACTIVESTATUS', '1');
+        $pagePlugins->set('s', 'ACTIVATE_INACTIVATE_LINK', '<a href="' . $tempActiveStatusLink . '"><img src="images/online.gif" alt="" class="vAlignMiddle" /> ' . i18n('Disable', 'pim') . '</a>');
     } else {
-        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/offline.gif" alt="" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Enable', 'pim') . '</a>');
+        $pagePlugins->set('s', 'DATA_ACTIVESTATUS', '0');
+        $pagePlugins->set('s', 'ACTIVATE_INACTIVATE_LINK', '<a href="' . $tempActiveStatusLink . '"><img src="images/offline.gif" alt="" class="vAlignMiddle" /> ' . i18n('Enable', 'pim') . '</a>');
     }
 
     // uninstall link
     $tempUninstallLink = $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&uninstallsql=1&pluginId=' . $idplugin);
-    $pagePlugins->set('s', 'UNINSTALL_LINK', '<a id="removalLink-' . $plugin->get('idplugin') . '" href="javascript:void(0)" onclick="Con.showConfirmation(\'' . i18n('Are you sure to delete this plugin? Files are not deleted in filesystem.', 'pim') . '\', function() { window.location.href=\'' . $tempUninstallLink . '\';})">' . i18n('Uninstall', 'pim') . '</a>');
+    $pagePlugins->set('s', 'UNINSTALL_LINK', '<a href="javascript:void(0)" data-action="uninstall_plugin" data-href="' . $tempUninstallLink . '"><img src="images/but_cancel.gif" alt="" class="vAlignMiddle"> ' . i18n('Uninstall', 'pim') . '</a>');
 
     // put foldername into array installedPluginFoldernames
     $installedPluginFoldernames[] = $plugin->get('folder');
@@ -243,7 +245,10 @@ if (empty($pluginsExtracted)) {
     $pluginsExtracted = i18n('No entries', 'pim');
 }
 
-// added language vars
+// Set page name
+$page->set('s', 'PAGE_NAME', 'pim_overview');
+
+// Set language vars
 $page->set('s', 'LANG_UPLOAD', i18n('Upload a new plugin', 'pim'));
 $page->set('s', 'LANG_UPLOAD_CHOOSE', i18n('Please choose a plugin package', 'pim'));
 $page->set('s', 'LANG_UPLOAD_BUTTON', i18n('Upload plugin package', 'pim'));
@@ -251,8 +256,19 @@ $page->set('s', 'LANG_INSTALLED', i18n('Installed Plugins', 'pim'));
 $page->set('s', 'LANG_EXTRACTED', i18n('Not installed Plugins', 'pim'));
 $page->set('s', 'LANG_EXECUTIONORDERINFO_TITLE', i18n('Execution order', 'pim'));
 $page->set('s', 'LANG_EXECUTIONORDERINFO_TEXT', i18n('If you click on following arrows you can manage the execution order of plugins. The first plugin (at first position) will be executed first from CONTENIDO, the last plugin (at last position) will be executed at the end. This can be important if CONTENIDO backend has to load a plugin to activate other functions/plugins. Normally the execution order has no impact.', 'pim'));
+$page->set('s', 'LANG_EXPAND_COLLAPSE_ALL', i18n('Expand/collapse all', 'pim'));
+$page->set('s', 'LANG_FILTER', i18n('Filter', 'pim'));
+$page->set('s', 'LANG_ALL', i18n('all', 'pim'));
+$page->set('s', 'LANG_ACTIVE', i18n('active', 'pim'));
+$page->set('s', 'LANG_INACTIVE', i18n('inactive', 'pim'));
+$page->set('s', 'LANG_ERROR', i18n('Error', 'pim'));
+$page->set('s', 'LANG_PLUGIN_ALREADY_AT_BOTTOM', i18n('This plugin is already at the bottom!', 'pim'));
+$page->set('s', 'LANG_PLUGIN_ALREADY_AT_TOP', i18n('This plugin is already at the top!', 'pim'));
+$page->set('s', 'LANG_UNINSTALL_PLUGIN_CONFIRMATION', i18n('Are you sure to uninstall this plugin? Files are not deleted in filesystem.', 'pim'));
+$page->set('s', 'LANG_REMOVE_PLUGIN_CONFIRMATION', i18n('Are you sure you want to remove this plugin? All plugin files will be irretrievably removed from the file system.', 'pim'));
+$page->set('s', 'LANG_SELECTION_UNINSTALL_SQL_INFO', i18n('With the selection `execute plugin_uninstall.sql` any database tables/entries of the plugin will be removed from the database.', 'pim'));
 
-// added installed plugins to pim_overview
+// Set information about installed plugins
 $page->set('s', 'INSTALLED_PLUGINS', $oItem->count());
 $page->set('s', 'PLUGINS_INSTALLED', $pluginsInstalled);
 $page->set('s', 'PLUGINS_EXTRACTED', $pluginsExtracted);

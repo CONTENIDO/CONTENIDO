@@ -322,9 +322,9 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         if (parent::$_GuiPage instanceof cGuiPage) {
             // success message
             if (!cFileHandler::exists($folderPath)) {
-                parent::info(sprintf(i18n('The pluginfolder <strong>%s</strong> has been successfully uninstalled.', 'pim'), $this->_getPluginFoldername()));
+                parent::info(sprintf(i18n('The plugin folder <strong>%s</strong> has been successfully uninstalled.', 'pim'), $this->_getPluginFoldername()));
             } elseif (cFileHandler::exists($folderPath)) {
-                parent::error(sprintf(i18n('The pluginfolder <strong>%s</strong> could not be uninstalled.', 'pim'), $this->_getPluginFoldername()));
+                parent::error(sprintf(i18n('The plugin folder <strong>%s</strong> could not be uninstalled.', 'pim'), $this->_getPluginFoldername()));
             }
         }
     }

@@ -886,7 +886,7 @@ tr.foldingrow_hidden {
 }
 tr.foldingrow_hidden > td {
     box-sizing: border-box;
-    padding: 0;
+    padding: 0 !important;
 }
 tr.foldingrow_hidden > td > div {
     box-sizing: border-box;
@@ -898,6 +898,29 @@ tr.foldingrow_hidden > td > div {
 tr.foldingrow_hidden.display > td > div {
     max-height: 1000px;
     opacity: 1;
+    transition: max-height 0.6s ease, opacity 0.6s;
+}
+
+/* Animated folding elements */
+.folding_element_hidden {
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+}
+.folding_element_hidden.display {
+    max-height: none;
+}
+.folding_element_hidden > div {
+    box-sizing: border-box;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.6s ease, opacity 0.6s;
+}
+.folding_element_hidden.display > div {
+    max-height: 1000px;
+    opacity: 1;
+    overflow: auto;
     transition: max-height 0.6s ease, opacity 0.6s;
 }
 
