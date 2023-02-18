@@ -200,7 +200,6 @@ class cDate
         }
     }
 
-
     /**
      * Checks if passed date string represents an empty date.
      * Following values will be interpreted as empty date:
