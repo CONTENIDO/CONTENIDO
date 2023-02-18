@@ -42,16 +42,21 @@ cInclude('includes', 'functions.con.php');
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function modEditModule($idmod, $name, $description, $input, $output, $template, $type = '') {
-    global $db, $client, $cfgClient, $auth, $cfg, $sess, $area, $area_tree, $perm, $frame;
+function modEditModule(
+    $idmod, $name, $description, $input, $output, $template, $type = ''
+)
+{
     $description = stripslashes($description);
-
-    $date = date('Y-m-d H:i:s');
-    $author = $auth->auth['uname'];
-    $contenidoModuleHandler = '';
     $messageIfError = '';
 
-    // Alias for modul name for the file system
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
+    $cfgClient = cRegistry::getClientConfig();
+    $client = cSecurity::toInteger(cRegistry::getClientId());
+    $area = cRegistry::getArea();
+    $frame = cRegistry::getFrame();
+
+    // Alias for module name for the file system
     $alias = cString::toLowerCase(cModuleHandler::getCleanName($name));
 
     // Track version
@@ -75,23 +80,30 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     $retInput = $contenidoModuleHandler->saveInput(stripslashes($input));
     $retOutput = $contenidoModuleHandler->saveOutput(stripslashes($output));
 
-    // clear the client cache if the module code was written successfully
+    // Clear the client cache if the module code was written successfully
     if ($retInput || $retOutput) {
         $purge = new cSystemPurge();
         $purge->clearClientCache($client);
     }
 
-    if ($cApiModule->get('name') != stripslashes($name) || $cApiModule->get('alias') != stripslashes($alias) || $cApiModule->get('template') != stripslashes($template) || $cApiModule->get('description') != stripslashes($description) || $cApiModule->get('type') != stripslashes($type)) {
-
+    if (
+        $cApiModule->get('name') != stripslashes($name)
+        || $cApiModule->get('alias') != stripslashes($alias)
+        || $cApiModule->get('template') != stripslashes($template)
+        || $cApiModule->get('description') != stripslashes($description)
+        || $cApiModule->get('type') != stripslashes($type)
+    ) {
         // Rename the module if the name changed
         $change = false;
         $oldName = $cApiModule->get('alias');
 
         if ($cApiModule->get('alias') != $alias) {
             $change = true;
-            // if modul exist show message
+            // If module exist show message
             if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
-                cRegistry::addErrorMessage(i18n('Module name exist in module directory, please choose another name.'));
+                cRegistry::addErrorMessage(
+                    i18n('Module name exist in module directory, please choose another name.')
+                );
                 $page = new cGuiPage('generic_page');
                 $page->abortRendering();
                 $page->render();
@@ -100,7 +112,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
         }
 
         // Name of module changed
-        if ($change == true) {
+        if ($change) {
             cRegistry::addOkMessage(i18n('Renamed module successfully!'));
             $cApiModule->set('name', $name);
             $cApiModule->set('template', $template);
@@ -110,7 +122,9 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 
             // False: The new name of modul dont exist im modul dir
             if (!$contenidoModuleHandler->renameModule($oldName, $alias)) {
-                cRegistry::addWarningMessage(i18n("Can't rename module, is a module file open?! Saving only database changes!"));
+                cRegistry::addWarningMessage(
+                    i18n("Can't rename module, is a module file open?! Saving only database changes!")
+                );
             } else {
                 $cApiModule->set('alias', $alias);
             }
@@ -120,15 +134,15 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             // Set the new module name
             $contenidoModuleHandler->changeModuleName($alias);
             // Save input and output in file
-            if ($contenidoModuleHandler->saveInput(stripslashes($input)) == false) {
+            if (!$contenidoModuleHandler->saveInput(stripslashes($input))) {
                 $messageIfError .= '<br>' . i18n("Can't save input !");
             }
 
-            if ($contenidoModuleHandler->saveOutput(stripslashes($output)) == false) {
+            if (!$contenidoModuleHandler->saveOutput(stripslashes($output))) {
                 $messageIfError .= '<br>' . i18n("Can't save output !");
             }
 
-            if ($contenidoModuleHandler->saveInfoXML($name, $description, $type, $alias) == false) {
+            if (!$contenidoModuleHandler->saveInfoXML($name, $description, $type, $alias)) {
                 $messageIfError .= '<br>' . i18n("Can't save xml module info file!");
             }
 
@@ -148,7 +162,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             $cApiModule->set('alias', $alias);
             $cApiModule->store();
 
-            if ($contenidoModuleHandler->saveInfoXML($name, $description, $type, $alias) == false) {
+            if (!$contenidoModuleHandler->saveInfoXML($name, $description, $type, $alias)) {
                 cRegistry::addErrorMessage(i18n("Can't save xml module info file!"));
             }
 
@@ -162,7 +176,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
         }
     } else {
         // No changes for save
-        if ($retInput == true && $retOutput == true) {
+        if ($retInput && $retOutput) {
             // regenerate code cache because module input and output got saved
             $cApiModule->store();
             cRegistry::addOkMessage(i18n('Saved module successfully!'));
@@ -178,21 +192,19 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 
 /**
  * Deletes the module of the given ID for the current client.
- * Furthermore the rights for this module are deleted.
+ * Furthermore, the rights for this module are deleted.
  *
- * @todo some global vars seem to be overfluous
+ * @param int $idmod Id of the module to delete
  *
- * @param int $idmod
- *
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function modDeleteModule($idmod) {
-    global $db, $client, $cfg;
-    global $sess, $area_tree, $perm;
-
-    $sql = 'DELETE FROM ' . $cfg['tab']['mod'] . ' WHERE idmod = ' . (int) $idmod . ' AND idclient = ' . (int) $client;
-    $db->query($sql);
+function modDeleteModule($idmod)
+{
+    $client = cRegistry::getClientId();
+    $moduleCollection = new cApiModuleCollection();
+    $moduleCollection->deleteByWhereClause(
+        $moduleCollection->prepare('`idmod` = %d AND `idclient` = %d', $idmod, $client)
+    );
 
     // Delete rights for element
     cRights::deleteRightsForElement('mod', $idmod);
