@@ -248,23 +248,19 @@ class cContentTypeDate extends cContentTypeAbstract {
         ];
         foreach (str_split($format) as $char) {
             if (in_array($char, $replacements)) {
-                // strftime is deprecated
-                $result .= date($char, $timestamp);
-                continue;
-
-                // replace the format chars with localised values
+                // Replace the format chars with localised values
                 switch ($char) {
                     case 'D':
-                        $result .= strftime('%a', $timestamp);
+                        $result .= cDate::formatToDate('%a', $timestamp);
                         break;
                     case 'l':
-                        $result .= strftime('%A', $timestamp);
+                        $result .= cDate::formatToDate('%A', $timestamp);
                         break;
                     case 'F':
-                        $result .= strftime('%B', $timestamp);
+                        $result .= cDate::formatToDate('%B', $timestamp);
                         break;
                     case 'M':
-                        $result .= strftime('%b', $timestamp);
+                        $result .= cDate::formatToDate('%b', $timestamp);
                         break;
                     default:
                         // use the default date() format if no localisation is

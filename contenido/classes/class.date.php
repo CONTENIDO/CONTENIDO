@@ -162,6 +162,46 @@ class cDate
     }
 
     /**
+     * Formats timestamp to date string according to format definitions.
+     * Supports both `strftime()` and `strftime()` formats.
+     *
+     * Passed `strftime()` format will be formatted using `strftime()`,
+     * when the PHP version is lower than 8.1.0, otherwise it uses
+     * `date()` as a fallback.
+     *
+     * @TODO We should use `IntlDateFormatter::format()` to support localized dates for PHP >= 8.1.0, but this requires the `ext-intl` extension.
+     *
+     * @param string $format Either `strftime()` format or `date()` format.
+     * @param int|null $timestamp  Unix timestamp, current time will be used if omitted.
+     * @return false|string The formatted date string or false on error
+     */
+    public static function formatToDate(string $format, int $timestamp = null)
+    {
+        if (empty($format)) {
+            return false;
+        }
+
+        // All strftime formats start with a '%', check for this!
+        if ($format[0] === '%') {
+            // strftime() is deprecated as of PHP 8.1, check the version
+            if (version_compare(PHP_VERSION, '0.1.0') >= 0) {
+                cDeprecated('The function `strftime()` is deprecated as of PHP 8.1.0, '
+                    . 'and the passed format string was detected as a `strftime()`. '
+                    . 'The `date()` function will be used as a fallback, but '
+                    . 'without localization support.');
+                // Use date() as fallback
+                return date(self::strftimeToDate($format), $timestamp);
+            } else {
+                // Use strftime for PHP < 8.1.0
+                return strftime($format, $timestamp);
+            }
+        } else {
+            return date($format, $timestamp);
+        }
+    }
+
+
+    /**
      * Checks if passed date string represents an empty date.
      * Following values will be interpreted as empty date:
      * - NULL
@@ -189,7 +229,7 @@ class cDate
      *
      * @return bool|string Converted date format or false
      */
-    public static function formatStrfToDate(string $format)
+    public static function strftimeToDate(string $format)
     {
         return self::_formatTo($format, 'date');
     }

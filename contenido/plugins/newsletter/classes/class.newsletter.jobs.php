@@ -327,14 +327,14 @@ class NewsletterJob extends Item {
 
             // Single replacements
             // Replace message tags (text message)
-            $sMessageText = str_replace("MAIL_DATE", strftime($sFormatDate, $dNewsDate), $sMessageText);
-            $sMessageText = str_replace("MAIL_TIME", strftime($sFormatTime, $dNewsDate), $sMessageText);
+            $sMessageText = str_replace("MAIL_DATE", cDate::formatToDate($sFormatDate, $dNewsDate), $sMessageText);
+            $sMessageText = str_replace("MAIL_TIME", cDate::formatToDate($sFormatTime, $dNewsDate), $sMessageText);
             $sMessageText = str_replace("MAIL_NUMBER", $this->get("rcpcount"), $sMessageText);
 
             // Replace message tags (html message)
             if ($bIsHTML) {
-                $sMessageHTML = str_replace("MAIL_DATE", strftime($sFormatDate, $dNewsDate), $sMessageHTML);
-                $sMessageHTML = str_replace("MAIL_TIME", strftime($sFormatTime, $dNewsDate), $sMessageHTML);
+                $sMessageHTML = str_replace("MAIL_DATE", cDate::formatToDate($sFormatDate, $dNewsDate), $sMessageHTML);
+                $sMessageHTML = str_replace("MAIL_TIME", cDate::formatToDate($sFormatTime, $dNewsDate), $sMessageHTML);
                 $sMessageHTML = str_replace("MAIL_NUMBER", $this->get("rcpcount"), $sMessageHTML);
             }
 

@@ -120,7 +120,7 @@ class cDateTest extends cTestingTestCase
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
-    public function dataFormatStrfToDate(): array
+    public function dataStrftimeToDate(): array
     {
         return [
             'Year four digit' => ['%Y', 'Y'],
@@ -167,13 +167,13 @@ class cDateTest extends cTestingTestCase
     }
 
     /**
-     * Test {@see cDate::formatStrfToDate()}.
+     * Test {@see cDate::strftimeToDate()}.
      *
-     * @dataProvider dataFormatStrfToDate()
+     * @dataProvider dataStrftimeToDate()
      */
-    public function testformatStrfToDate(string $input, string $output)
+    public function testStrftimeToDate(string $input, string $output)
     {
-        $this->assertEquals($output, cDate::formatStrfToDate($input));
+        $this->assertEquals($output, cDate::strftimeToDate($input));
     }
 
 }
