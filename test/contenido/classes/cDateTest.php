@@ -120,4 +120,60 @@ class cDateTest extends cTestingTestCase
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
+    public function dataStrftimeToDate(): array
+    {
+        return [
+            'Year four digit' => ['%Y', 'Y'],
+            'Year two digit' => ['%y', 'y'],
+            'Year (ISO 8601 week-numbering year)' => ['%G', 'o'],
+
+            'Month (January through December)' => ['%B', 'F'],
+            'Month (01 to 12))' => ['%m', 'm'],
+            'Month (Jan through Dec)' => ['%b', 'M'],
+            'Month (Jan through Dec) 2' => ['%h', 'M'],
+            'Month (1 through 12)' => ['%-m', 'n'],
+
+            'Week (SO 8601 week number)' => ['%V', 'W'],
+
+            'Day (Sun to Sat)' => ['%a', 'D'],
+            'Day (Sunday to Saturday)' => ['%A', 'l'],
+            'Day (01 to 31)' => ['%d', 'd'],
+            'Day (1 to 31)' => ['%e', 'j'],
+            'Day (1 to 366)' => ['%j', 'z'],
+            'Day (day of week)' => ['%u', 'N'],
+            'Day (numeric day of week)' => ['%w', 'w'],
+
+            'Lower-case `am` or `pm`' => ['%P', 'a'],
+            'Upper-case `AM` or `PM`' => ['%p', 'A'],
+            'Hour (1 to 12)' => ['%l', 'g'],
+            'Hour (01 to 12)' => ['%I', 'h'],
+            'Hour (00 to 23)' => ['%H', 'H'],
+            'Hour (0 to 23)' => ['%k', 'G'],
+            'Minute (00 through 59)' => ['%M', 'i'],
+            'Second (00 through 59)' => ['%S', 's'],
+
+            'Day.Month.Year' => ['%d.%m.%Y', 'd.m.Y'],
+            'Hour:Minute:Second' => ['%H:%M:%S', 'H:i:s'],
+            'Month/Day/Year, Hour:Minute:Second' => ['%m/%d/%Y, %H:%M:%S', 'm/d/Y, H:i:s'],
+            'Year-Month-Day, Hour:Minute:Second' => ['%Y-%m-%d, %H:%M:%S', 'Y-m-d, H:i:s'],
+
+            // Time zone
+            'Difference to Greenwich time (GMT) without colon between hours and minutes' => ['%z', 'O'],
+            'Timezone abbreviation, if known; otherwise the GMT offset.' => ['%Z', 'T'],
+
+            // Full date
+            'Unix Epoch Time timestamp' => ['%s', 'U'],
+        ];
+    }
+
+    /**
+     * Test {@see cDate::strftimeToDate()}.
+     *
+     * @dataProvider dataStrftimeToDate()
+     */
+    public function testStrftimeToDate(string $input, string $output)
+    {
+        $this->assertEquals($output, cDate::strftimeToDate($input));
+    }
+
 }
