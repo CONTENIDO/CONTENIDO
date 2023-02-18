@@ -21,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Abstract class for database based item collections.
  *
  * @package Core
- * @subpackage GenericDB
+ * @subpackage GenericDB@
  */
 abstract class ItemCollection extends cItemBaseAbstract
 {
@@ -971,7 +971,7 @@ abstract class ItemCollection extends cItemBaseAbstract
     public function exists($mId)
     {
         $oDb = $this->_getSecondDBInstance();
-        $sql = /** @lang text */ "SELECT `%s` FROM `%s` WHERE `%s` = '%s'";
+        $sql = "SELECT `%s` FROM `%s` WHERE `%s` = '%s'";
         $oDb->query($sql, $this->getPrimaryKeyName(), $this->table, $this->getPrimaryKeyName(), $mId);
         return $oDb->nextRecord();
     }
@@ -1583,7 +1583,7 @@ abstract class ItemCollection extends cItemBaseAbstract
         $oDb = $this->_getSecondDBInstance();
 
         // Delete the database record
-        $sql = /** @lang text */ "DELETE FROM `%s` WHERE `%s` = '%s'";
+        $sql = "DELETE FROM `%s` WHERE `%s` = '%s'";
         $oDb->query($sql, $this->table, $this->getPrimaryKeyName(), $mId);
         $success = $oDb->affectedRows();
 
@@ -1634,7 +1634,7 @@ abstract class ItemCollection extends cItemBaseAbstract
             'escape'
         ], $aIds);
         $in = "'" . implode("', '", $aEscapedIds) . "'";
-        $sql = /** @lang text */ "DELETE FROM `%s` WHERE `%s` IN (" . $in . ")";
+        $sql = "DELETE FROM `%s` WHERE `%s` IN (" . $in . ")";
         $oDb->query($sql, $this->table, $this->getPrimaryKeyName());
         $numAffected = $oDb->affectedRows();
 
