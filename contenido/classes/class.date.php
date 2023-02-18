@@ -184,7 +184,7 @@ class cDate
         // All strftime formats start with a '%', check for this!
         if ($format[0] === '%') {
             // strftime() is deprecated as of PHP 8.1, check the version
-            if (version_compare(PHP_VERSION, '0.1.0') >= 0) {
+            if (version_compare(PHP_VERSION, '8.1.0') >= 0) {
                 cDeprecated('The function `strftime()` is deprecated as of PHP 8.1.0, '
                     . 'and the passed format string was detected as a `strftime()` format. '
                     . 'The `date()` function will be used as a fallback, but without '
