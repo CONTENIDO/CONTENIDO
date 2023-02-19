@@ -676,8 +676,14 @@ foreach ($treeItemObjects as $key => $value) {
             $tpl->set('d', 'ALIAS', '&nbsp;');
         }
 
-        $template = $aTemplates[$aTplconfigs[$value->getCustom('idtplcfg')]]['name'];
-        $templateDescription = $aTemplates[$aTplconfigs[$value->getCustom('idtplcfg')]]['description'];
+        $_idTplCfg = $value->getCustom('idtplcfg');
+        if (!empty($_idTplCfg) && isset($aTplconfigs[$_idTplCfg]) && isset($aTemplates[$aTplconfigs[$_idTplCfg]])) {
+            $template = $aTemplates[$aTplconfigs[$_idTplCfg]]['name'] ?? '';
+            $templateDescription = $aTemplates[$aTplconfigs[$_idTplCfg]]['description'] ?? '';
+        } else {
+            $template = '';
+            $templateDescription = '';
+        }
 
         $descString = '';
 
@@ -689,13 +695,15 @@ foreach ($treeItemObjects as $key => $value) {
         $descString = '<b>' . $template . '</b>';
 
         if (cString::getStringLength($templateDescription) > 0) {
-            $descString .= '<br>' . $templateDescription;
+            $descString .= ': <br>' . $templateDescription;
         }
 
         $sTemplatename = $template;
         if (cString::getStringLength($template) > 20) {
             $sTemplatename = cString::trimHard($sTemplatename, 20);
         }
+
+        $descStringEncoded = conHtmlentities(strip_tags($descString), ENT_QUOTES, cRegistry::getEncoding());
 
         $tpl->set('d', 'TPLNAME', $sTemplatename);
         $tpl->set('d', 'TPLDESC', $descString);
@@ -725,7 +733,7 @@ foreach ($treeItemObjects as $key => $value) {
         $aRecord['pTplcfg'] = $bPermTplcfg;
         $aInlineEditData[$value->getId()] = $aRecord;
 
-         if ($perm->have_perm_area_action($area, "str_renamecat") || $perm->have_perm_area_action_item($area, "str_renamecat", $value->getId())) {
+        if ($perm->have_perm_area_action($area, "str_renamecat") || $perm->have_perm_area_action_item($area, "str_renamecat", $value->getId())) {
             $tpl->set('d', 'RENAMEBUTTON', "<a class=\"action\" href=\"javascript:handleInlineEdit(" . $value->getId() . ");\"><img src=\"" . $cfg["path"]["images"] . "but_todo.gif\" id=\"cat_" . $value->getId() . "_image\" alt=\"" . i18n("Edit category") . "\" title=\"" . i18n("Edit category") . "\"></a>");
         } else {
             $tpl->set('d', 'RENAMEBUTTON', "");
@@ -736,8 +744,8 @@ foreach ($treeItemObjects as $key => $value) {
         $tpl->set('d', 'PREID', $value->getCustom('preid'));
         $tpl->set('d', 'LEVEL', $value->getCustom('level'));
 
-        if (cString::getStringLength($template) > 20) {
-            $tpl->set('d', 'SHOW_MOUSEOVER', 'title="' . $descString . '"');
+        if (cString::getStringLength($descStringEncoded) > 20) {
+            $tpl->set('d', 'SHOW_MOUSEOVER', 'title="' . $descStringEncoded . '"');
         } else {
             $tpl->set('d', 'SHOW_MOUSEOVER', '');
         }
