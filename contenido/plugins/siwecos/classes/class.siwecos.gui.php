@@ -320,8 +320,10 @@ class SIWECOSRightBottomPage extends cGuiPage
         if (empty($idsiwecos)) {
             $idsiwecos   = null;
             $domain      = $_POST['domain'] ?? '';
-            $domain      = parse_url($domain);
-            $domain      = $domain['scheme'] . '://' . $domain['host'];
+            if (!empty($domain)) {
+                $domain      = parse_url($domain);
+                $domain      = $domain['scheme'] . '://' . $domain['host'];
+            }
             $email       = $_POST['email'] ?? '';
             $password    = $_POST['password'] ?? '';
             $userToken   = '';
