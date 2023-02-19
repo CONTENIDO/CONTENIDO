@@ -394,7 +394,7 @@
         }
         var path = Con.UtilUrl.getUrlWithPath(file),
             params = Con.UtilUrl.getParams(file);
-        console.log({file: file, path: path, params: params});
+        //console.log({file: file, path: path, params: params});
 
         if ($.type(params['v']) !== 'undefined') {
             // File url already contains the v parameter

@@ -41,7 +41,7 @@ class cHTMLLinkTagTest extends cTestingTestCase
      */
     public function testStylesheet()
     {
-        // Empty src
+        // Empty href
         $result = cHTMLLinkTag::stylesheet('');
         $this->assertSame('<link rel="stylesheet" type="text/css" href="">', $result);
 
@@ -49,7 +49,7 @@ class cHTMLLinkTagTest extends cTestingTestCase
         $result = cHTMLLinkTag::stylesheet('styles/contenido.css');
         $this->assertSame('<link rel="stylesheet" type="text/css" href="styles/contenido.css">', $result);
 
-        // Stylesheet href with media
+        // Stylesheet href with media attribute
         $result = cHTMLLinkTag::stylesheet('/styles/x-small.css', [
             'media' => 'screen and (max-width: 576px)'
         ]);
