@@ -204,7 +204,7 @@ class cGuiFileOverview extends cGuiPage {
             sort($files);
         }
 
-        $this->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+        $this->addScript('parameterCollector.js');
 
         // assign variables for the JavaScript
         $this->set('s', 'AREA', $area);

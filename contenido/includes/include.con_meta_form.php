@@ -204,10 +204,8 @@ if ($art->getField('created')) {
 $lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2);
 $langscripts = '';
 if ($lang_short != 'en') {
-    $langscripts = '
-<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
-<script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $lang_short . '.js"></script>
-    ';
+    $langscripts = cHTMLScript::external(cAsset::backend('scripts/jquery/plugins/timepicker-' . $lang_short . '.js')) . "\n"
+        . cHTMLScript::external(cAsset::backend('scripts/jquery/plugins/datepicker-' . $lang_short . '.js'));
 }
 $tpl->set('s', 'CAL_LANG', $langscripts);
 $tpl->set('s', 'DISPLAY_MENU', 1);

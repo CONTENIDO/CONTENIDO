@@ -5,7 +5,7 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/jquery/plugins/timepicker.js)_}"></script>
     <!-- get javascript files for language != en -->
     {CAL_LANG}
     <style type="text/css">
@@ -79,20 +79,20 @@
 <body style="margin:10px">
 
     {CATEGORY}
-    
+
     <form method="post" name="selectVersion" action="{ACTION2}">
         <input type="hidden" name="idart" value="{IDART}">
         <input type="hidden" name="idcat" value="{IDCAT}">
         <input type="hidden" name="idartlang" value="{IDARTLANG}">
         <input type="hidden" name="idArtLangVersion" value="">
     </form>
-    
+
     <form method="post" name="copyto" action="{ACTION3}">
         <input type="hidden" name="idart" value="{IDART}">
         <input type="hidden" name="idcat" value="{IDCAT}">
         <input type="hidden" name="idartlang" value="{IDARTLANG}">
         <input type="hidden" name="idArtLangVersion" value="">
-    </form>  
+    </form>
 
     <form method="post" name="art_props" action="{ACTION}">
 
@@ -101,9 +101,9 @@
         <input type="hidden" name="tmp_firstedit" value="{TMP_FIRSTEDIT}">
         <input type="hidden" name="idart" value="{IDART}">
         <input type="hidden" name="idcat" value="{IDCAT}">
-        <input type="hidden" name="idartlang" value="{IDARTLANG}">        
+        <input type="hidden" name="idartlang" value="{IDARTLANG}">
         {NOTIFICATION}
-        
+
         <table cellspacing="0" cellpadding="2" class="generic conEditForm">
 
             {ARTICLE_VERSIONING_BOX}
@@ -327,13 +327,13 @@ function disableFunctionsOnTimeControl() {
 
 (function(Con, $) {
     $(function() {
-        
+
         $('#copytobutton').on('click', function(e){
             e.preventDefault();
             e.stopPropagation();
             copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit();
         });
-        
+
         $('#publishing_date').datetimepicker({
             buttonImage: '{PATH_TO_CALENDER_PIC}',
             buttonImageOnly: true,

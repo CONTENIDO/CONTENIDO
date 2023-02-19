@@ -452,7 +452,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $templateBottom->set('s', 'IDARTLANG', $this->_idArtLang);
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $templateBottom->set('s', 'SETTINGS', json_encode($this->getSettings()));
-        $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsImgeditor.js');
+        $templateBottom->set(
+            's', 'JS_CLASS_SCRIPT',
+            $this->_cfg['path']['contenido_fullhtml'] . cAsset::backend('scripts/content_types/cmsImgeditor.js')
+        );
         $templateBottom->set('s', 'JS_CLASS_NAME', 'Con.cContentTypeImgeditor');
         $codeBottom = $templateBottom->generate(
             $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html',

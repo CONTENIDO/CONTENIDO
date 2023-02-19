@@ -19,8 +19,8 @@
     }
     </style>
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/cfoldingrow.js"></script>
-    <script type="text/javascript" src="scripts/parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/cfoldingrow.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/parameterCollector.js)_}"></script>
 </head>
 
 <body class="page_frontend_left_top">
@@ -98,7 +98,7 @@ function toggleContainer(activeButton) {
             document.getElementById(buttonArray[i].containerId).style.display = 'none';
         }
     }
-    hoverEffect(activeButton, 'in');    
+    hoverEffect(activeButton, 'in');
     resizeFrame(activeButton);
 }
 

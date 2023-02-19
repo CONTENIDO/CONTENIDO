@@ -53,7 +53,7 @@ if (($perm->have_perm_area_action("user_overview", $action)) && ($action == "use
 // declare new template variables
 $sJsBefore = '';
 $sJsAfter = '';
-$sJsExternal = '<script type="text/javascript" src="scripts/expandCollapse.js"></script>';
+$sJsExternal = cHTMLScript::external(cAsset::backend('scripts/expandCollapse.js'));
 $sTable = '';
 
 $sJsBefore .= "var itemids = [];\n"

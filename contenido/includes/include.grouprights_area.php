@@ -104,6 +104,7 @@ $aTh = [
         '<input type="checkbox" name="checkall" value="" onclick="setRightsForAllAreas()">'
     ]
 ];
+
 foreach ($aTh as $i => $tr) {
     $items = "";
     foreach ($tr as $td) {
@@ -143,7 +144,7 @@ foreach ($right_list as $key => $value) {
         if ($key == $key2) {
             // does the user have the right
             if (in_array($value2["perm"] . "|fake_permission_action|0", $rights_list_old_keys)) {
-                $checked = "checked=\"checked\"";
+                $checked = 'checked="checked"';
             } else {
                 $checked = "";
             }
@@ -174,7 +175,7 @@ foreach ($right_list as $key => $value) {
             $objItem->updateAttributes([
                 "class" => "td_rights2"
             ]);
-            $objItem->setContent("<input type=\"checkbox\" name=\"checkall_$key\" value=\"\" onClick=\"setRightsForArea('$key')\">");
+            $objItem->setContent("<input type=\"checkbox\" name=\"checkall_$key\" value=\"\" onclick=\"setRightsForArea('$key')\">");
             $items .= $objItem->render();
             $objItem->advanceID();
 
@@ -182,18 +183,18 @@ foreach ($right_list as $key => $value) {
             $items = "";
             $output .= $objRow->render();
             $objRow->advanceID();
-            // set javscript array for areatree
+            // set javascript array for areatree
             $sJsBefore .= "areatree[\"$key\"] = [];\n"
                         . "areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\";\n";
         }
 
-        // if there area some
+        // if there are some
         if (isset($value2["action"]) && is_array($value2["action"])) {
             foreach ($value2["action"] as $key3 => $value3) {
                 $idaction = $value3;
                 // does the user have the right
                 if (in_array($value2["perm"] . "|$idaction|0", $rights_list_old_keys)) {
-                    $checked = "checked=\"checked\"";
+                    $checked = 'checked="checked"';
                 } else {
                     $checked = "";
                 }
@@ -201,7 +202,8 @@ foreach ($right_list as $key => $value) {
                 // set the checkbox the name consists of areaid+actionid+itemid
                 $sCellContent = '';
                 if ($debug) {
-                    $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | " . $value3 . "-->" . $lngAct[$value2["perm"]][$value3] . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                    $label = $lngAct[$value2["perm"]][$value3] ?? i18n('not available');
+                    $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | " . $value3 . "-->" . $label . "&nbsp;&nbsp;&nbsp;&nbsp;";
                 } else {
                     if (empty($lngAct[$value2["perm"]][$value3])) {
                         $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . "|" . $value3 . "&nbsp;&nbsp;&nbsp;&nbsp;";

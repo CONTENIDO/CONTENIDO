@@ -174,7 +174,7 @@ while ($oRcpGroup = $oRcpGroups->next()) {
 
 // $oPage->addScript('cfoldingrow.js', '<script type="text/javascript"
 // src="scripts/cfoldingrow.js"></script>');
-$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+$oPage->addScript('parameterCollector.js');
 
 // Generate current content for Object Pager
 $sPagerId = "0ed6d632-6adf-4f09-a0c6-1e38ab60e305";

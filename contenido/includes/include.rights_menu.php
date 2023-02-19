@@ -160,8 +160,8 @@ $deleteMsg = i18n("Do you really want to delete the user %s?");
 $oPage->set("s", "DELETE_MESSAGE", $deleteMsg);
 $oPage->set("s", "MPAGE", $mPage);
 
-// <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
-$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+// <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
+$oPage->addScript('parameterCollector.js');
 $oPage->set("s", "FORM", $mlist->render(false));
 
 // generate current content for Object Pager

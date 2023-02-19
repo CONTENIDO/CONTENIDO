@@ -163,7 +163,7 @@ $code = preg_replace("/<\/form(.*)>/i", '', $code);
 $backendUrl = cRegistry::getBackendUrl();
 
 $headCode = '
-    <link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/jquery/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="' . $backendUrl . cAsset::backend('styles/jquery/jquery-ui.css') . '">
 ';
 
 $form = '

@@ -14,6 +14,11 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var int $client
+ * @var array $cfg
+ */
+
 $page = new cGuiPage("frontend.group_menu");
 $menu = new cGuiMenu();
 
@@ -51,7 +56,7 @@ while (($fegroup = $fegroups->next()) !== false) {
     }
 }
 
-$page->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+$page->addScript('parameterCollector.js');
 
 $message = i18n("Do you really want to delete the following frontend group:<br><b>%s</b>");
 $page->set("s", "DELETE_MESSAGE", $message);

@@ -20,6 +20,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage SmartyWrapper
  */
 class cSmartyWrapper extends Smarty {
+
+    public function __construct()
+    {
+        parent::__construct();
+        $path = realpath(__DIR__ . '/../includes/smarty_plugins');
+        $this->addPluginsDir($path);
+    }
+
     /**
      * @see Smarty_Internal_TemplateBase::fetch()
      *

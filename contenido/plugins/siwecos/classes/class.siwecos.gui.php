@@ -73,7 +73,7 @@ class SIWECOSLeftBottomPage extends cGuiPage
 
         // create menu
         $oPage = new cGuiPage("siwecos_menu", "siwecos");
-        $oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+        $oPage->addScript('parameterCollector.js');
         $counter = 0;
         $menu = new cGuiMenu();
         foreach ($forms as $form) {

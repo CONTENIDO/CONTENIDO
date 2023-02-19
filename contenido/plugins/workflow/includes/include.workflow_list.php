@@ -26,7 +26,7 @@ $client = cSecurity::toInteger(cRegistry::getClientId());
 $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 $delTitle = i18n('Delete workflow', 'workflow');
 
-$page->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+$page->addScript('parameterCollector.js');
 
 $ui = new cGuiMenu();
 $workflows->select("idclient = '$client' AND idlang = '$lang'");

@@ -11,6 +11,8 @@
  * @link             http://www.contenido.org
  */
 
+// TODO Is this file still in use somewhere?
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 ?>
 
