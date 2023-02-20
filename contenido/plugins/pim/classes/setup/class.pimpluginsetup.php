@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage PluginManager
  * @author frederic.schneider
  */
-class PimPluginSetup {
+class PimPluginSetup
+{
 
     /**
      * File name of Xml configuration file for plugins
@@ -151,7 +152,8 @@ class PimPluginSetup {
      */
     protected static $_pluginName;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->_setPimPluginCollection();
         $this->_setPimPluginRelationsCollection();
     }
@@ -165,7 +167,8 @@ class PimPluginSetup {
      *
      * @param string $mode
      */
-    public static function setMode($mode) {
+    public static function setMode($mode)
+    {
         switch ($mode) {
             case 'extracted':
                 self::$mode = 1;
@@ -189,7 +192,8 @@ class PimPluginSetup {
      *
      * @return cGuiPage
      */
-    public function setPageClass($page) {
+    public function setPageClass($page)
+    {
         return self::$_GuiPage = $page;
     }
 
@@ -198,7 +202,8 @@ class PimPluginSetup {
      *
      * @param bool $value
      */
-    protected function _setUpdateSqlFileExist($value) {
+    protected function _setUpdateSqlFileExist($value)
+    {
         self::$_updateSqlFileExist = cSecurity::toBoolean($value);
     }
 
@@ -208,8 +213,10 @@ class PimPluginSetup {
      * @param string $tempArchiveNewPath Path to Zip archive
      * @param string $tempArchiveName Name of Zip archive
      * @return PimPluginArchiveExtractor
+     * @throws cException
      */
-    protected static function _setPimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName) {
+    protected static function _setPimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName)
+    {
         return self::$_PimPluginArchiveExtractor = new PimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName);
     }
 
@@ -218,7 +225,8 @@ class PimPluginSetup {
      *
      * @param SimpleXMLElement $xml
      */
-    private function _setXml($xml) {
+    private function _setXml($xml)
+    {
         // General plugin information
         self::$XmlGeneral = $xml->general;
 
@@ -254,7 +262,8 @@ class PimPluginSetup {
      *
      * @return int
      */
-    public function setPluginId($pluginId = 0) {
+    public function setPluginId($pluginId = 0)
+    {
         return self::$_pluginId = $pluginId;
     }
 
@@ -265,7 +274,8 @@ class PimPluginSetup {
      *
      * @return string
      */
-    public function setPluginName($pluginName = '') {
+    public function setPluginName($pluginName = '')
+    {
     	return self::$_pluginName = $pluginName;
     }
 
@@ -274,7 +284,8 @@ class PimPluginSetup {
      *
      * @return int
      */
-    public static function getMode() {
+    public static function getMode()
+    {
         return self::$mode;
     }
 
@@ -283,7 +294,8 @@ class PimPluginSetup {
      *
      * @return int
      */
-    protected static function _getPluginId() {
+    protected static function _getPluginId()
+    {
         return self::$_pluginId;
     }
 
@@ -292,7 +304,8 @@ class PimPluginSetup {
      *
      * @return string
      */
-    protected static function _getPluginName() {
+    protected static function _getPluginName()
+    {
     	return self::$_pluginName;
     }
 
@@ -301,7 +314,8 @@ class PimPluginSetup {
      *
      * @return bool
      */
-    protected function _getUpdateSqlFileExist() {
+    protected function _getUpdateSqlFileExist()
+    {
         return self::$_updateSqlFileExist;
     }
 
@@ -313,7 +327,8 @@ class PimPluginSetup {
      *
      * @throws cException
      */
-    public function checkXml() {
+    public function checkXml()
+    {
         $cfg = cRegistry::getConfig();
 
         if (self::getMode() == 1) { // Plugin is already extracted
@@ -331,8 +346,13 @@ class PimPluginSetup {
 				// If PIM can not create a temporary directory (if it does not exist), throw an error message
 				if (!$success) {
 					self::error(sprintf(i18n('Plugin Manager could not find a temporary CONTENIDO directory. Also, it is not possible to create a temporary directory at <em>%s</em>. You have to create it manually.', 'pim'), $tempArchiveNewPath));
-                    return;
+                    return false;
 				}
+            }
+
+            // Check valid Zip archive
+            if (!$this->checkZip()) {
+                return false;
             }
 
             // Name of uploaded Zip archive
@@ -345,11 +365,13 @@ class PimPluginSetup {
             try {
                 self::_setPimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName);
             } catch (cException $e) {
-                self::$_PimPluginArchiveExtractor->destroyTempFiles();
+                if (self::$_PimPluginArchiveExtractor instanceof PimPluginArchiveExtractor) {
+                    self::$_PimPluginArchiveExtractor->destroyTempFiles();
+                }
+                cLogError($e->getMessage());
+                self::error(sprintf(i18n('Plugin Manager could not open the archive file <em>%s</em>. See logs fore more details.', 'pim'), $tempArchiveName));
+                return false;
             }
-
-            // Check valid Zip archive
-            $this->checkZip();
 
             // Get plugin.xml information
             $XmlData = self::$_PimPluginArchiveExtractor->extractArchiveFileToVariable(self::PLUGIN_XML_FILENAME);
@@ -360,8 +382,10 @@ class PimPluginSetup {
             $this->_setXml(simplexml_load_string($XmlData));
         } else {
             self::error(i18n('Invalid Xml document. Please contact the plugin author.', 'pim'));
-            return;
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -371,9 +395,12 @@ class PimPluginSetup {
      *
      * @return bool
      *
+     * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function checkDependencies() {
+    public function checkDependencies()
+    {
     	// Initializing
     	$cfg = cRegistry::getConfig();
     	$pluginsDir = $cfg['path']['contenido'] . $cfg['path']['plugins'];
@@ -441,12 +468,16 @@ class PimPluginSetup {
     /**
      * Check file type, Plugin Manager accepts only Zip archives
      *
+     * @return bool
      * @throws cException
      */
-    private function checkZip() {
+    private function checkZip()
+    {
         if (cString::getPartOfString($_FILES['package']['name'], -4) != ".zip") {
             self::error(i18n('Plugin Manager accepts only Zip archives', 'pim'));
+            return false;
         }
+        return true;
     }
 
     /**
@@ -454,7 +485,8 @@ class PimPluginSetup {
      * @param string $xml
      * @return bool
      */
-    private function validXml($xml) {
+    private function validXml($xml)
+    {
         // Initializing PHP DomDocument class
         $dom = new DomDocument();
         $dom->loadXML($xml);
@@ -470,14 +502,16 @@ class PimPluginSetup {
     /**
      * Initialize and set variable for PimPluginCollection class
      */
-    private function _setPimPluginCollection() {
+    private function _setPimPluginCollection()
+    {
         $this->_pimPluginCollection = new PimPluginCollection();
     }
 
     /**
      * Initialize and set variable for PimPluginRelationsCollection class
      */
-    private function _setPimPluginRelationsCollection() {
+    private function _setPimPluginRelationsCollection()
+    {
         $this->_pimPluginRelationsCollection = new PimPluginRelationsCollection();
     }
 
@@ -489,13 +523,16 @@ class PimPluginSetup {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected static function error($message = '') {
+    protected static function error($message = '')
+    {
         // Get session variable
         $session = cRegistry::getSession();
 
         // Destroy temporary files if plugin is uploaded
         if (self::getMode() == 2) {
-            self::$_PimPluginArchiveExtractor->destroyTempFiles();
+            if (self::$_PimPluginArchiveExtractor instanceof PimPluginArchiveExtractor) {
+                self::$_PimPluginArchiveExtractor->destroyTempFiles();
+            }
         }
 
         // Error template
@@ -512,7 +549,8 @@ class PimPluginSetup {
      *
      * @param string $message
      */
-    protected static function info($message = '') {
+    protected static function info($message = '')
+    {
         self::$_GuiPage->displayOk($message);
     }
 

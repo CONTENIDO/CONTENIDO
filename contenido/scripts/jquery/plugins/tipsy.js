@@ -155,6 +155,9 @@
                 title = o.title.call($e[0]);
             }
             title = ('' + escapeHtml(title)).replace(/(^\s*|\s*$)/, "");
+            if (this.options.nl2br) {
+                title = title.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br>$2')
+            }
             return title || o.fallback;
         },
 
@@ -242,6 +245,7 @@
         fallback: '',
         gravity: 'n',
         html: false,
+        nl2br: true,
         live: false,
         offset: 0,
         opacity: 0.8,

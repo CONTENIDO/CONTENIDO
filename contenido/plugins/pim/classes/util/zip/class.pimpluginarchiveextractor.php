@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage  PluginManager
  * @author Frederic Schneider
  */
-class PimPluginArchiveExtractor {
+class PimPluginArchiveExtractor
+{
 
     /**
      * The extractor initializer
@@ -63,12 +64,14 @@ class PimPluginArchiveExtractor {
      * @param string $source path to the temp directory
      * @param string $filename name of zip archive
      *
-     * @throws cException if the source file does not exists
+     * @throws cException if the source file does not exist or zip archive
+     *      could not be opened
      */
-    public function __construct($source, $filename) {
+    public function __construct($source, $filename)
+    {
         $cfg = cRegistry::getConfig();
 
-        // initialzing ziparchive
+        // initializing ziparchive
         $this->_extractor = new ZipArchive();
 
         // path to temp directory
@@ -82,13 +85,23 @@ class PimPluginArchiveExtractor {
             $this->_absPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'pim' . DIRECTORY_SEPARATOR;
 
             // open the zip archive
-            $this->_extractor->open($this->_source);
+            $result = $this->_extractor->open($this->_source);
+            if ($result !== true) {
+                $message = ['Could not open zip archive `' . $filename . '`.'];
+                $resultMsg = $this->_openErrorToMessage($result);
+                if (!empty($resultMsg)) {
+                    $message[] = 'Reason: ' .$resultMsg;
+                }
+                throw new cException(implode(' ', $message));
+            }
+            $this->_validateArchive($filename);
         } else {
             throw new cException('Source file does not exists');
         }
     }
 
-    public function closeArchive() {
+    public function closeArchive()
+    {
         $this->_extractor->close();
     }
 
@@ -100,11 +113,12 @@ class PimPluginArchiveExtractor {
      * @throws cException if the destination path can not set (directory is not writable)
      * @throws cException if the defined destination already exists
      */
-    public function setDestinationPath($destination) {
+    public function setDestinationPath($destination)
+    {
         if (!is_dir($destination)) {
             $makeDirectory = mkdir($destination, cDirHandler::getDefaultPermissions());
-            if ($makeDirectory != true) {
-                throw new cException('Can not set destination path: directoy is not writable');
+            if (!$makeDirectory) {
+                throw new cException('Can not set destination path: directory is not writable');
             }
             $this->_destination = (string) $destination;
         } else {
@@ -117,11 +131,12 @@ class PimPluginArchiveExtractor {
      *
      * @throws cException if the extraction failed
      */
-    public function extractArchive() {
+    public function extractArchive()
+    {
         if ($this->_destination != '') {
             $this->_extractor->extractTo($this->_destination);
         } else {
-            throw new cException('Extraction failed: no destination path setted');
+            throw new cException('Extraction failed: no destination path set');
         }
     }
 
@@ -134,7 +149,8 @@ class PimPluginArchiveExtractor {
      *            dir and filename of the extracted file
      * @return string content of extracted file or dir and filename of extracted File
      */
-    public function extractArchiveFileToVariable($filename, $content = true) {
+    public function extractArchiveFileToVariable($filename, $content = true)
+    {
         $filename = (string) $filename;
         $this->_extractor->extractTo($this->tempDir, $filename);
 
@@ -146,13 +162,13 @@ class PimPluginArchiveExtractor {
     }
 
     /**
-     * Destory temporary plugin files (plugin.xml, plugin_install.sql and files
+     * Destroy temporary plugin files (plugin.xml, plugin_install.sql and files
      * at CONTENIDO temp dir)
      *
      * @throws cInvalidArgumentException
      */
-    public function destroyTempFiles() {
-
+    public function destroyTempFiles()
+    {
         // remove plugin.xml if exists
         if (cFileHandler::exists($this->tempDir . 'plugin.xml')) {
             cFileHandler::remove($this->tempDir . 'plugin.xml');
@@ -166,6 +182,71 @@ class PimPluginArchiveExtractor {
         // remove temporary plugin dir if exists
         if (cFileHandler::exists($this->_source)) {
             cFileHandler::remove($this->_source);
+        }
+    }
+
+    /**
+     * Validates the archive, following cases will lead to an error.
+     * - Archive is empty
+     * - Archive does not contain the plugin.xml
+     * - Archive contains the plugin folder, e.g. plugin_name.zip contains `plugin_name`
+     *
+     * @param $filename
+     * @return void
+     * @throws cException
+     */
+    private function _validateArchive($filename)
+    {
+        $filenameWithoutExt = pathinfo($filename, PATHINFO_FILENAME);
+
+        if ($this->_extractor->numFiles === 0) {
+            throw new cException(
+                sprintf('Archive validation failed: Empty archive `%s`.', $filename)
+            );
+        } elseif ($this->_extractor->locateName('plugin.xml') === false) {
+            throw new cException(
+                sprintf('Archive validation failed: No plugin.xml found in archive `%s`.', $filename)
+            );
+        } elseif ($this->_extractor->getNameIndex(0) === $filenameWithoutExt) {
+            throw new cException(
+                sprintf(
+                    'Archive validation failed: Archive `%s` contains plugin folder `%s`.',
+                    $filename, $filenameWithoutExt
+                )
+            );
+        }
+    }
+
+    /**
+     * Returns the error message for a ZipArchive::open() result.
+     *
+     * @param int|bool $result The result from a ZipArchive::open() call
+     * @return string The error message or empty string.
+     */
+    private function _openErrorToMessage($result)
+    {
+        // We may not need all the error codes, they are here for the sake of completeness.
+        switch ($result) {
+            case ZipArchive::ER_EXISTS:
+                return 'File already exists.';
+            case ZipArchive::ER_INCONS:
+                return 'Zip archive inconsistent.';
+            case ZipArchive::ER_INVAL:
+                return 'Invalid argument.';
+            case ZipArchive::ER_MEMORY:
+                return 'Malloc failure.';
+            case ZipArchive::ER_NOENT:
+                return 'No such file.';
+            case ZipArchive::ER_NOZIP:
+                return 'Not a zip archive.';
+            case ZipArchive::ER_OPEN:
+                return 'Can\'t open file.';
+            case ZipArchive::ER_READ:
+                return 'Read error.';
+            case ZipArchive::ER_SEEK:
+                return 'Seek error.';
+            default:
+                return '';
         }
     }
 

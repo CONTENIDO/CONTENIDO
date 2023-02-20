@@ -69,9 +69,10 @@ switch ($viewAction) {
         $setup->setPluginId($_POST['pluginId']);
 
         // Check Xml
-        $setup->checkXml();
+        if ($setup->checkXml()) {
+            $update = new PimPluginSetupUpdate();
+        }
 
-        $update = new PimPluginSetupUpdate();
         break;
     case 'uninstall':
         $setup->setMode('uninstall');
@@ -91,15 +92,18 @@ switch ($viewAction) {
         break;
     case 'install':
         $setup->setMode('uploaded');
-        $setup->checkXml();
-        $new = new PimPluginSetupInstall();
-        $new->install();
+
+        if ($setup->checkXml()) {
+            $new = new PimPluginSetupInstall();
+            $new->install();
+        }
         break;
     case 'install-extracted':
         $setup->setMode('extracted');
-        $setup->checkXml();
-        $new = new PimPluginSetupInstall();
-        $new->install();
+        if ($setup->checkXml()) {
+            $new = new PimPluginSetupInstall();
+            $new->install();
+        }
         break;
 }
 

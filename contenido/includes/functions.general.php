@@ -1578,9 +1578,9 @@ function cWarning() {
  * Examples:
  * <pre>
  * // New version
- * cWarning('Some error message');
+ * cError('Some error message');
  * // Old version
- * cWarning(__FILE__, __LINE__, 'Some error message');
+ * cError(__FILE__, __LINE__, 'Some error message');
  * </pre>
  *
  * @param string $message
@@ -1622,6 +1622,36 @@ function cError($message) {
     cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
 
     trigger_error($message, E_USER_ERROR);
+}
+
+/**
+ * This function does the same as {@see cError()}, except it does not trigger
+ * an error. This comes in handy, if you handle happened errors but still want
+ * their reasons to be logged.
+ *
+ * @param string $message The error message to log
+ * @return void
+ * @throws cInvalidArgumentException
+ */
+function cLogError($message)
+{
+    $cfg = cRegistry::getConfig();
+
+    $msg = "[" . date("Y-m-d H:i:s") . "] ";
+    $msg .= "Error: \"" . $message . "\" at ";
+
+    $e = new Exception();
+    $stack = $e->getTrace();
+    $function_name = $stack[0]['function'];
+
+    $msg .= $function_name . "() called in " . basename($stack[0]['file']) . "(" . $stack[0]['line'] . ")\n";
+
+    if ($cfg['debug']['log_stacktraces'] == true) {
+        $msg .= buildStackString();
+        $msg .= "\n";
+    }
+
+    cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
 }
 
 /**
