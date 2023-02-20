@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage Backend
  */
-class cPermission {
+class cPermission
+{
 
     /**
      * Permission class name
@@ -61,7 +62,8 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function getGroupsForUser($userId) {
+    public function getGroupsForUser($userId)
+    {
         $oGroupMemberColl = new cApiGroupMemberCollection();
         $result = $oGroupMemberColl->getFieldsWhere(['group_id'], 'user_id', $userId);
         return array_map(function($item) {
@@ -82,7 +84,8 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function getIdForArea($area) {
+    public function getIdForArea($area)
+    {
         if (is_numeric($area)) {
             return $area;
         } elseif (isset($this->areacache[$area])) {
@@ -110,7 +113,8 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function getIdForAction($action) {
+    public function getIdForAction($action)
+    {
         if (is_numeric($action)) {
             return $action;
         } elseif (isset($this->actioncache[$action])) {
@@ -137,7 +141,8 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function load_permissions($force = false) {
+    public function load_permissions($force = false)
+    {
         global $area_rights, $item_rights, $changelang, $changeclient;
 
         $auth = cRegistry::getAuth();
@@ -181,7 +186,8 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function load_permissions_for_user($user) {
+    public function load_permissions_for_user($user)
+    {
         global $area_rights, $item_rights;
 
         $client = cRegistry::getClientId();
@@ -229,7 +235,8 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function have_perm_area_action_anyitem($area, $action = 0) {
+    public function have_perm_area_action_anyitem($area, $action = 0)
+    {
         global $item_rights;
 
         if ($this->have_perm_area_action($area, $action)) {
@@ -255,7 +262,8 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function have_perm_area_action_item($area, $action, $itemid) {
+    public function have_perm_area_action_item($area, $action, $itemid)
+    {
         global $item_rights;
 
         if ($this->have_perm()) {
@@ -283,6 +291,7 @@ class cPermission {
         $client = cRegistry::getClientId();
         $lang = cRegistry::getLanguageId();
 
+        $item_rights[$area] = $item_rights[$area] ?? '';
         if ($item_rights[$area] != 'noright') {
             $groupsForUser = $this->getGroupsForUser($auth->auth['uid']);
             $groupsForUser[] = $auth->auth['uid'];
@@ -324,7 +333,8 @@ class cPermission {
      *
      * @throws cDbException
      */
-    public function getParentAreaId($area) {
+    public function getParentAreaId($area)
+    {
         $oAreaColl = new cApiAreaCollection();
         return $oAreaColl->getParentAreaId($area);
     }
@@ -339,7 +349,8 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function have_perm_area_action($area, $action = 0) {
+    public function have_perm_area_action($area, $action = 0)
+    {
         global $area_rights;
 
         $client = cRegistry::getClientId();
@@ -356,13 +367,13 @@ class cPermission {
         $area = $oAreaColl->getAreaId($area);
 
         if (!$this->have_perm()) {
-            if ($action == 0 && $area_rights[$area]) {
+            if ($action == 0 && isset($area_rights[$area])) {
                 // If we have action for area + action check right for client and lang
                 return $this->have_perm_client_lang($client, $lang);
             }
 
             // check rights for the action in this area
-            if ($area_rights[$area][$action]) {
+            if (isset($area_rights[$area][$action])) {
                 // If we have action for area + action check right for client and lang
                 return $this->have_perm_client_lang($client, $lang);
             }
@@ -379,7 +390,8 @@ class cPermission {
      * @param int $lang
      * @return bool
      */
-    public function have_perm_client_lang($client, $lang) {
+    public function have_perm_client_lang($client, $lang)
+    {
         // Changed back to a full-featured function, as have_perm needs
         // $client as global variable - not provided by this function
         // return $this->have_perm("client[$client],lang[$lang]");
@@ -412,7 +424,8 @@ class cPermission {
      *
      * @throws cInvalidArgumentException
      */
-    public function hasClientPermission($iClient = false, $oUser = false) {
+    public function hasClientPermission($iClient = false, $oUser = false)
+    {
         if ($iClient === false) {
             $iClient = cRegistry::getClientId();
         }
@@ -460,7 +473,8 @@ class cPermission {
      *
      * @throws cInvalidArgumentException
      */
-    public function isClientUser($iClient, $oUser = false) {
+    public function isClientUser($iClient, $oUser = false)
+    {
         $oUser = $this->_checkUserObject($oUser);
         return self::checkClientPermission($iClient, $oUser->getEffectiveUserPerms());
     }
@@ -474,7 +488,8 @@ class cPermission {
      *         Group object to check against
      * @return bool
      */
-    public function isClientGroup($iClient, $oGroup) {
+    public function isClientGroup($iClient, $oGroup)
+    {
         return self::checkClientPermission($iClient, $oGroup->getField('perms'));
     }
 
@@ -490,7 +505,8 @@ class cPermission {
      *
      * @throws cInvalidArgumentException
      */
-    public function isClientAdmin($iClient, $oUser = false) {
+    public function isClientAdmin($iClient, $oUser = false)
+    {
         $iClient = cSecurity::toInteger($iClient);
         $oUser = $this->_checkUserObject($oUser);
         return self::checkClientAdminPermission($iClient, $oUser->getEffectiveUserPerms());
@@ -526,7 +542,8 @@ class cPermission {
      *
      * @throws cInvalidArgumentException
      */
-    public function isSysadmin($oUser = false) {
+    public function isSysadmin($oUser = false)
+    {
         $oUser = $this->_checkUserObject($oUser);
         return self::checkSysadminPermission($oUser->getEffectiveUserPerms());
     }
@@ -543,10 +560,12 @@ class cPermission {
      *
      * @return cApiUser
      *
-     * @throws cInvalidArgumentException
-     *         if the given or constructed user is not a cApiUser object
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException if the given or constructed user is not a cApiUser object
      */
-    private function _checkUserObject($oUser) {
+    private function _checkUserObject($oUser)
+    {
         if ($oUser === false) {
             global $currentuser;
             $oUser = $currentuser;
@@ -575,7 +594,8 @@ class cPermission {
      *
      * @return bool
      */
-    public function have_perm_client($perm = 'x') {
+    public function have_perm_client($perm = 'x')
+    {
         $auth = cRegistry::getAuth();
 
         // If User is sysadmin or admin at this client return true
@@ -596,7 +616,8 @@ class cPermission {
      *         Permissions (comma separated list of perms) to check
      * @return bool
      */
-    public function have_perm($perm = 'x') {
+    public function have_perm($perm = 'x')
+    {
         $auth = cRegistry::getAuth();
         $client = cSecurity::toInteger(cRegistry::getClientId());
 
@@ -622,7 +643,8 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function have_perm_item($mainArea, $itemid) {
+    public function have_perm_item($mainArea, $itemid)
+    {
         global $item_rights, $area_tree;
 
         $oAreaColl = new cApiAreaCollection();
@@ -650,6 +672,7 @@ class cPermission {
         $flg = false;
         // Check if there are any rights for this areas
         foreach ($area_tree[$mainArea] as $value) {
+            $item_rights[$value] = $item_rights[$value] ?? '';
             // If the flag noright is set there are no rights in this area
             if ($item_rights[$value] == 'noright') {
                 continue;
@@ -697,7 +720,8 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function showareas($mainArea) {
+    public function showareas($mainArea)
+    {
         global $area_tree;
 
         $sess = cRegistry::getSession();
@@ -742,7 +766,8 @@ class cPermission {
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
      */
-    public static function checkLanguagePermission($languageId, $permission) {
+    public static function checkLanguagePermission($languageId, $permission): bool
+    {
         $languageId = cSecurity::toInteger($languageId);
         $permissions = self::permissionToArray($permission);
         return in_array("lang[$languageId]", $permissions);
