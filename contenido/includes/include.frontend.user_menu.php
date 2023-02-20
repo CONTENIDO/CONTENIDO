@@ -219,7 +219,7 @@ foreach ($aUserTable as $mkey => $params) {
     }
 }
 
-$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+$oPage->addScript('parameterCollector.js');
 
 $message = i18n("Do you really want to delete the user %s?");
 $oPage->set("s", "DELETE_MESSAGE", $message);

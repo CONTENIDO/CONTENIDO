@@ -55,7 +55,7 @@ foreach ($cronjobs->getAllCronjobs() as $row) {
     }
 }
 
-$page->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+$page->addScript('parameterCollector.js');
 
 $page->set('s', 'FORM', $menu->render(false));
 $page->render();

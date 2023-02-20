@@ -264,7 +264,8 @@ class cModuleHandler {
         if ($fileOperation === false) {
             return false;
         }
-        $url = $this->_cfgClient[$this->_client]['path']['htmlpath'] . $saveDirectory . '/' . $templateName . '.' . $fileType;
+        $path = cAsset::frontend($saveDirectory . '/' . $templateName . '.' . $fileType, $this->_client);
+        $url = $this->_cfgClient[$this->_client]['path']['htmlpath'] . $path;
 
         // Remove protocol so CSS & JS can be displayed for HTTPS too!
         $url = str_replace('http://', '//', $url);

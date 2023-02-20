@@ -171,20 +171,14 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $cssFile = '';
         if (cString::getStringLength($this->_cssData) > 0) {
             if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData)) !== false) {
-                $oHTML = new cHTML([
-                    'rel' => 'stylesheet',
-                    'type' => 'text/css',
-                    'href' => $myFileCss
-                ]);
-                $oHTML->setTag('link');
-                $cssFile = $oHTML->render();
+                $cssFile = cHTMLLinkTag::stylesheet($myFileCss);
             }
         }
 
         $jsFile = '';
         if (cString::getStringLength($this->_jsData) > 0) {
             if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, 'js', $this->_jsData)) !== false) {
-                $jsFile = '<script src="' . $myFileJs . '" type="text/javascript"></script>';
+                $jsFile = cHTMLScript::external($myFileJs);
             }
         }
 

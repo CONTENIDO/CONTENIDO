@@ -35,4 +35,26 @@ class cHTMLScript extends cHTMLContentElement {
         $this->_tag = 'script';
     }
 
+    /**
+     * Renders a script tag to reference an external script.
+     *
+     * @param string $src The src (path) value for the script
+     * @param array $attributes Attributes to set, `type="text/javascript"`
+     *      will be set by default.
+     * @return string
+     */
+    public static function external(string $src, array $attributes = []): string
+    {
+        $script = new self();
+
+        if (!isset($attributes['type'])) {
+            $attributes['type'] = 'text/javascript';
+        }
+        $attributes = array_merge($attributes, [
+            'src' => $src,
+        ]);
+
+        return $script->setAttributes($attributes)->toHtml();
+    }
+
 }

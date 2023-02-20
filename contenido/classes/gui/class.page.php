@@ -824,9 +824,9 @@ class cGuiPage {
         $scripts .= implode("\n", $this->_uniqueScripts);
         foreach ($this->_scripts as $script) {
             if (cString::findFirstPos($script, 'http') === 0 || cString::findFirstPos($script, '//') === 0) {
-                $scripts .= '<script type="text/javascript" src="' . $script . '"></script>' . "\n";
+                $scripts .= cHTMLScript::external($script) . "\n";
             } elseif (cString::findFirstPos($script, '<script') === false) {
-                $scripts .= '<script type="text/javascript" src="scripts/' . $script . '"></script>' . "\n";
+                $scripts .= cHTMLScript::external(cAsset::backend('scripts/' . $scripts)) . "\n";
             } else {
                 $scripts .= $script;
             }
@@ -841,9 +841,9 @@ class cGuiPage {
         $styles = '';
         foreach ($this->_styles as $style) {
             if (cString::findFirstPos($style, 'http') === 0 || cString::findFirstPos($style, '//') === 0) {
-                $styles .= '<link href="' . $style . '" type="text/css" rel="stylesheet">' . "\n";
+                $styles .= cHTMLLinkTag::stylesheet($style) . "\n";
             } else {
-                $styles .= '<link href="styles/' . $style . '" type="text/css" rel="stylesheet">' . "\n";
+                $styles .= cHTMLLinkTag::stylesheet(cAsset::backend('scripts/' . $style)) . "\n";
             }
         }
         $this->_pageTemplate->set('s', 'STYLES', $styles);

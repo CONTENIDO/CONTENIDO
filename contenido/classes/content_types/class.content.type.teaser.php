@@ -716,7 +716,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         $templateBottom->set(
             's',
             'JS_CLASS_SCRIPT',
-            $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsTeaser.js'
+            $this->_cfg['path']['contenido_fullhtml'] . cAsset::backend('scripts/content_types/cmsTeaser.js')
         );
         $templateBottom->set('s', 'JS_CLASS_NAME', 'Con.cContentTypeTeaser');
         $codeBottom = $templateBottom->generate(

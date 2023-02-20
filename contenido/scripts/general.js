@@ -380,6 +380,37 @@
     }
 
     /**
+     * Processes the file url, adds version parameter to the file url,
+     * to ensure to load a fresh version once a day.
+     *
+     * @method _processFileUrl
+     * @param {String} file
+     * @private
+     */
+    function _processFileUrl(file) {
+        if ((Con.UtilUrl.validate(file) || file.substring(0, 2) === '//') && file.search(Con.cfg.urlBackend) === -1) {
+            // We don't add version parameter to fully qualified or schemeless urls, except to CONTENIDO backend
+            return file;
+        }
+        var path = Con.UtilUrl.getUrlWithPath(file),
+            params = Con.UtilUrl.getParams(file);
+        //console.log({file: file, path: path, params: params});
+
+        if ($.type(params['v']) !== 'undefined') {
+            // File url already contains the v parameter
+            return file;
+        }
+
+        // Create a daily 'v' parameter for the url
+        var date = new Date(),
+            month = date.getMonth() + 1;
+        month = month < 9 ? '0' + month : month;
+        params['v'] = date.getFullYear() + '-' + month + '-' + date.getDate();
+
+        return Con.UtilUrl.build(path, params);
+    }
+
+    /**
      * Loads CSS file by appending a link node to the head
      *
      * @method _loadCss
@@ -389,7 +420,7 @@
      */
     function _loadCss(file, callback) {
         var link = document.createElement('link');
-        link.href = file;
+        link.href = _processFileUrl(file);
         link.rel = 'stylesheet';
         link.type = 'text/css';
         _head.appendChild(link);
@@ -431,7 +462,7 @@
     }
 
     /**
-     * Loads JavaScript file by using $.getScript
+     * Loads JavaScript file by using $.ajax
      *
      * @method _loadJs
      * @param {String} file
@@ -443,12 +474,12 @@
         $.ajax({
             dataType: 'script',
             cache: true,
-            url: file
+            url: _processFileUrl(file)
         }).done(function () {
             callback();
         }).fail(function (jqXHR, settings, exception) {
             if (jqXHR.status === "200" && jqXHR.responseText !== "") {
-                // Give other files a little bit of time to load in case there are dependencies
+                // Give other files a bit of time to load in case there are dependencies
                 // Try to evaluate the file after 250ms
                 setTimeout(function () {
                     _lateEval(jqXHR.responseText, callback, 1, file, jqXHR, settings);
@@ -836,7 +867,11 @@
          */
         getUrlWithPath: function(url) {
             url = url || scope.location.href;
-            return decodeURI(url.substring(0, (url.lastIndexOf('/', url.indexOf('?')) + 1)));
+            if (url.indexOf('?') !== -1) {
+                return url.substring(0, (url.lastIndexOf('/', url.indexOf('?')) + 1));
+            } else {
+                return url;
+            }
         },
 
         /**

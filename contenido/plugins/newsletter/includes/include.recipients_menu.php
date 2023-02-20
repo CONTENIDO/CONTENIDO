@@ -248,7 +248,7 @@ while ($oRecipient = $oRecipients->next()) {
     }
 }
 
-$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+$oPage->addScript('parameterCollector.js');
 // $oPage->addScript('refreshTop', $sRefreshTop);
 
 // generate current content for Object Pager�

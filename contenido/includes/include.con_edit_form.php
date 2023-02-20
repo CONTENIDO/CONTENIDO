@@ -1333,8 +1333,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     }
 
     if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != "en") {
-        $langscripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
-                 <script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $lang_short . '.js"></script>';
+        $langscripts = cHTMLScript::external(cAsset::backend('scripts/jquery/plugins/timepicker-' . $lang_short . '.js')) . "\n"
+            . cHTMLScript::external(cAsset::backend('scripts/jquery/plugins/datepicker-' . $lang_short . '.js'));
         $page->set('s', 'CAL_LANG', $langscripts);
     } else {
         $page->set('s', 'CAL_LANG', '');

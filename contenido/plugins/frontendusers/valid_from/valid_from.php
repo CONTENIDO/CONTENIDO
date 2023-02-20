@@ -33,8 +33,8 @@ function frontendusers_valid_from_display() {
     $langScripts = '';
 
     if (($langShort = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != 'en') {
-        $langScripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $langShort . '.js"></script>
-        <script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $langShort . '.js"></script>';
+        $langScripts = cHTMLScript::external(cAsset::backend('scripts/jquery/plugins/timepicker-' . $langShort . '.js')) . "\n"
+            . cHTMLScript::external(cAsset::backend('scripts/jquery/plugins/datepicker-' . $langShort . '.js'));
     }
 
     $calenderPicPath = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
@@ -48,9 +48,9 @@ function frontendusers_valid_from_display() {
     $currentValue = str_replace('00:00:00', '', $currentValue);
 
     $sValidFrom = '
-        <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
+        <link rel="stylesheet" type="text/css" href="' . cAsset::backend('styles/jquery/plugins/timepicker.css') . '">
 {_JS_HEAD_CONTENIDO_}
-        <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>';
+        ' . cHTMLScript::external(cAsset::backend('scripts/jquery/plugins/timepicker.js'));
     $sValidFrom .= $langScripts;
 
     $sValidFrom .= '<input type="text" id="valid_from" name="valid_from" value="' . $currentValue . '">';

@@ -184,7 +184,7 @@ foreach ($allModules as $idmod => $module) {
 }
 
 $oPage->addScript("cfoldingrow.js");
-$oPage->addScript("parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e");
+$oPage->addScript("parameterCollector.js");
 $oPage->set("s", "FORM", $cGuiMenu->render(false));
 $oPage->set("s", "DELETE_MESSAGE", i18n("Do you really want to delete the following module:<br /><br />%s<br />"));
 

@@ -280,7 +280,7 @@ if ($requestSelTestDestination > 0 && $perm->have_perm_area_action($area, "news_
 
 $aMsg["SendTestDescr"] = sprintf(i18n("Do you really want to send the newsletter to:<br><strong>%s</strong>", 'newsletter'), $sSendTestTarget);
 
-$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+$oPage->addScript('parameterCollector.js');
 
 // Generate current content for Object Pager
 $sPagerId = "0ed6d632-6adf-4f09-a0c6-1e38ab60e302";

@@ -648,7 +648,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $oPage->addScript($sDelMarkScript);
     $oPage->addScript('cfoldingrow.js');
-    $oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+    $oPage->addScript('parameterCollector.js');
 
     $oPage->setContent($oForm);
 }

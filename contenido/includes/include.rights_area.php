@@ -183,10 +183,10 @@ foreach ($right_list as $key => $value) {
             $objRow->advanceID();
             // set javascript array for areatree
             $sJsBefore .= "areatree[\"$key\"] = [];\n"
-                         ."areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\"\n";
+                        . "areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\";\n";
         }
 
-        // if there area some
+        // if there are some
         if (isset($value2["action"]) && is_array($value2["action"])) {
             foreach ($value2["action"] as $key3 => $value3) {
                 $idaction = $value3;
@@ -200,7 +200,8 @@ foreach ($right_list as $key => $value) {
                 // set the checkbox the name consists of areaid+actionid+itemid
                 $sCellContent = '';
                 if ($debug) {
-                    $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | " . $value3 . "-->" . $lngAct[$value2["perm"]][$value3] . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                    $label = $lngAct[$value2["perm"]][$value3] ?? i18n('not available');
+                    $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | " . $value3 . "-->" . $label . "&nbsp;&nbsp;&nbsp;&nbsp;";
                 } else {
                     if (empty($lngAct[$value2["perm"]][$value3])) {
                         $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . "|" . $value3 . "&nbsp;&nbsp;&nbsp;&nbsp;";

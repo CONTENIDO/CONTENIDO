@@ -87,10 +87,22 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     })(Con, Con.$);
     </script>';
 
+    // Anonymous function to deal with the '{basePath}' prefix
+    $assetBackendFn = function($file) {
+        if (strpos($file, '{basePath}') === 0) {
+            $file = str_replace('{basePath}', '', $file);
+            $file = cAsset::backend($file);
+            return '{basePath}' . $file;
+        } else {
+            return cAsset::backend($file);
+        }
+    };
+
     // Default CSS styles
     $cssHeadCon = '';
     $files = $cfg['backend_template']['css_files'];
     foreach ($files as $file) {
+        $file = $assetBackendFn($file);
         $cssHeadCon .= $prefix . '<link rel="stylesheet" type="text/css" href="' . $file . '">';
     }
     $cssHeadCon = $prefix . "<!-- CSS -->" . $cssHeadCon . $prefix . "<!-- /CSS -->";
@@ -103,6 +115,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
             $jsHeadCon .= $jsConfiguration;
             $jsConfigurationAdded = true;
         } else {
+            $file = $assetBackendFn($file);
             $jsHeadCon .= $prefix . '<script type="text/javascript" src="' . $file . '"></script>';
         }
     }
@@ -132,6 +145,11 @@ function cecParseTemplate($template, cTemplate $templateObj) {
             $template = str_replace($placeholder, $value, $template);
         }
     }
+
+    // Replace all asset marker like {_ASSET(scripts/rowMark.js)_}
+    $template = preg_replace_callback('#{_ASSET\((.*)\)_}#', function($matches) {
+        return cAsset::backend($matches[1]);
+    }, $template);
 
     return $template;
 

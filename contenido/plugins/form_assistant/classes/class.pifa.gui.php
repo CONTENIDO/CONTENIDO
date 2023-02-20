@@ -59,7 +59,7 @@ class PifaLeftBottomPage extends cGuiPage {
         $type = $typeCollection->next();
         $this->typeId = $type->get('idtype');
 
-        $this->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+        $this->addScript('parameterCollector.js');
         $this->addScript('form_assistant.js');
         $this->addScript('left_bottom.js');
 
