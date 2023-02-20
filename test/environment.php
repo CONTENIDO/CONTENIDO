@@ -9,8 +9,8 @@ if (file_exists($configEnv)) {
 /**
  * Do not edit this value!
  *
- * If you want to set a different environment value please define it in your .htaccess file
- * or in the server configuration.
+ * If you want to set a different environment value please define it in
+ * your .htaccess file or in the server configuration.
  *
  * SetEnv CON_ENVIRONMENT development
  */

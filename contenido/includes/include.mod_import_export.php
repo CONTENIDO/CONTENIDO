@@ -16,7 +16,6 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * @var string $action
  * @var string $area
  * @var int $frame
  */
@@ -25,6 +24,7 @@ $page = new cGuiPage("mod_import_export");
 
 $requestIdMod = cSecurity::toInteger($_REQUEST['idmod'] ?? '0');
 $requestMode = $_REQUEST['mode'] ?? '';
+$action = $action ?? '';
 
 $module = new cApiModule();
 if ($requestIdMod > 0) {

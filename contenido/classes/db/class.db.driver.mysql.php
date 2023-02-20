@@ -128,9 +128,9 @@ class cDbDriverMysql extends cDbDriverAbstract {
      * @param string $tableName
      *         The table name
      * @param array $fields
-     *         Assoziative array of fields to update
+     *         Associative array of fields to update
      * @param array $whereClauses
-     *         Assoziative array of field in where clause.
+     *         Associative array of field in where clause.
      *         Multiple entries will be concatenated with AND.
      * @return string
      *         The UPDATE query
@@ -185,8 +185,8 @@ class cDbDriverMysql extends cDbDriverAbstract {
      * the movement
      *
      * @see cDbDriverAbstract::nextRecord()
-     * @return int
-     *         Flag about move status 1 on success or 0
+     * @return bool
+     *         Flag about move status true on success or false
      */
     public function nextRecord() {
         $queryId = $this->_handler->getQueryId();
@@ -422,7 +422,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * Returns error code of last occured error by using databases interface.
+     * Returns error code of last occurred error by using databases interface.
      *
      * @see cDbDriverAbstract::getErrorNumber()
      * @return int
@@ -438,7 +438,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * Returns error message of last occured error by using databases interface.
+     * Returns error message of last occurred error by using databases interface.
      *
      * @see cDbDriverAbstract::getErrorMessage()
      * @return string

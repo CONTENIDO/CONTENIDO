@@ -84,22 +84,22 @@ if (!empty($artspec)) {
         foreach ($artspec as $id => $tmp_artspec) {
             $link->setCustom("idartspec", $id);
             $link->updateAttributes([
-                'style' => 'padding:3'
+                'style' => 'padding:3px'
             ]);
 
             $dlink->setCustom("idartspec", $id);
             $dlink->updateAttributes([
-                'style' => 'padding:3'
+                'style' => 'padding:3px'
             ]);
 
             $olink->setCustom("idartspec", $id);
             $olink->updateAttributes([
-                'style' => 'padding:3'
+                'style' => 'padding:3px'
             ]);
 
             $defLink->setCustom("idartspec", $id);
             $defLink->updateAttributes([
-                'style' => 'padding:3'
+                'style' => 'padding:3px'
             ]);
 
             if (($action == "client_artspec_edit") && ($idartspec == $id)) {

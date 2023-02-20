@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Validation
  */
-class cValidatorFactory {
+class cValidatorFactory
+{
 
     /**
      * Instantiates and returns the validator. Sets also validators default options.
@@ -48,12 +49,13 @@ class cValidatorFactory {
      *         tries to get cValidatorFactory instance.
      * @return cValidatorAbstract
      */
-    public static function getInstance($validator, array $options = []) {
+    public static function getInstance(string $validator, array $options = []): cValidatorAbstract
+    {
         $name = cString::toLowerCase($validator);
         $className = 'cValidator' . ucfirst($name);
 
         if ('factory' === $name) {
-            throw new cInvalidArgumentException("Can't use validator factory '{$validator}' as validator!");
+            throw new cInvalidArgumentException("Can't use validator factory '$validator' as validator!");
         }
 
         if (!class_exists($className)) {
@@ -61,13 +63,13 @@ class cValidatorFactory {
             $path = str_replace('\\', '/', dirname(__FILE__)) . '/';
             $fileName = sprintf('class.validator.%s.php', $name);
             if (!cFileHandler::exists($path . $fileName)) {
-                throw new cInvalidArgumentException("The file '{$fileName}' for validator '{$validator}' couldn't included by cValidatorFactory!");
+                throw new cInvalidArgumentException("The file '$fileName' for validator '$validator' couldn't included by cValidatorFactory!");
             }
 
             // Try to instantiate the class
             require_once($path . $fileName);
             if (!class_exists($className)) {
-                throw new cInvalidArgumentException("Missing validator class '{$className}' for validator '{$validator}' !");
+                throw new cInvalidArgumentException("Missing validator class '$className' for validator '$validator' !");
             }
         }
 

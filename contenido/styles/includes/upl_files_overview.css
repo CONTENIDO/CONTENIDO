@@ -1,0 +1,36 @@
+/* @since CONTENIDO 4.10.2 */
+
+.upl_files_overview {
+}
+
+.upl_files_overview select {
+    vertical-align: middle;
+}
+
+.upl_files_overview a.invert_hover:active,
+.upl_files_overview a.invert_hover:link,
+.upl_files_overview a.invert_hover:visited {
+    color: #0060B1;
+}
+.upl_files_overview a.invert_hover:hover {
+    color: #000;
+}
+
+.upl_files_overview .empty_cell {
+    min-height: 10px;
+}
+
+/* Centering the dialog content */
+.ui-dialog .upl_files_zoom_dialog {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ui-dialog .upl_files_zoom_dialog > div > a > img {
+    border: 1px solid black;
+    max-height: 480px;
+    max-width: 640px;
+}
+

@@ -24,11 +24,15 @@ class cHTMLTableHead extends cHTMLContentElement {
 
     /**
      * Constructor to create an instance of this class.
-     *
      * Creates an HTML th element.
+     *
+     * @param mixed $content [optional]
+     *         String or object with the contents
+     *         Since CONTENIDO 4.10.2
      */
-    public function __construct() {
-        parent::__construct();
+    public function __construct($content = NULL) {
+        parent::__construct($content);
         $this->_tag = 'th';
     }
+
 }

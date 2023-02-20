@@ -29,7 +29,7 @@ function canWriteDir($dirname) {
 }
 
 function getFileInfo($sFilename) {
-    return cFileHandler::typeOwnerInfo($sFilename);
+    return cFileHandler::typeOwnerInfo(cSecurity::toString($sFilename));
 }
 
 function checkOpenBasedirCompatibility() {

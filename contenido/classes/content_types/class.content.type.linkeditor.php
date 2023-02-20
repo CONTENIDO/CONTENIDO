@@ -59,7 +59,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         ];
 
         // encoding conversions to avoid problems with umlauts
-        $rawSettings = conHtmlEntityDecode($rawSettings);
+        $rawSettings = conHtmlEntityDecode($rawSettings ?? '');
         $rawSettings = utf8_encode($rawSettings);
 
         // call parent constructor
@@ -92,7 +92,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return string
      */
     public function getLinkType() {
-        return $this->getSetting('linkeditor_type', '');
+        return $this->getSetting('linkeditor_type');
     }
 
     /**
@@ -101,7 +101,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return string
      */
     public function getTitle() {
-        return $this->getSetting('linkeditor_title', '');
+        return $this->getSetting('linkeditor_title');
     }
 
     /**
@@ -192,7 +192,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         switch ($this->getSetting('linkeditor_type')) {
             case 'external':
                 // make sure that link starts with http://
-                $link = $this->getSetting('linkeditor_externallink', '');
+                $link = $this->getSetting('linkeditor_externallink');
                 if (cString::findFirstPos($link, 'http://') !== 0 && cString::findFirstPos($link, 'www.') === 0) {
                     $link = 'http://' . $link;
                 }
@@ -200,16 +200,16 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 break;
             case 'internal':
                 // Selection of category (CON-2563)
-                if (cString::getPartOfString($this->getSetting('linkeditor_idart', ''), 0, 8) == 'category') {
+                if (cString::getPartOfString($this->getSetting('linkeditor_idart'), 0, 8) == 'category') {
                     $uriInstance = cUri::getInstance();
                     $uriBuilder = $uriInstance->getUriBuilder();
                     $uriParams = [
-                        'idcat' => cSecurity::toInteger(cString::getPartOfString($this->getSetting('linkeditor_idart', ''), 9))
+                        'idcat' => cSecurity::toInteger(cString::getPartOfString($this->getSetting('linkeditor_idart'), 9))
                     ];
                     $uriBuilder->buildUrl($uriParams, true);
 
                     return $uriBuilder->getUrl();
-                } else if (cSecurity::isInteger($this->getSetting('linkeditor_idart'))) {
+                } elseif (cSecurity::isInteger($this->getSetting('linkeditor_idart'))) {
                     $oUri = cUri::getInstance();
                     $uriBuilder = $oUri->getUriBuilder();
                     $uriParams = [
@@ -477,7 +477,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
             // check if the category should be shown expanded or collapsed
             if (in_array($category['idcat'], $activeIdcats) && $category['sub'] != '') {
                 $template->set('d', 'SUBDIRLIST', $this->getCategoryList($category['sub']));
-            } else if ($category['sub'] != '' && count($category['sub']) > 0) {
+            } elseif ($category['sub'] != '' && count($category['sub']) > 0) {
                 $liClasses[] = 'collapsed';
                 $template->set('d', 'SUBDIRLIST', '');
             } else {
@@ -528,7 +528,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                                 c.idclient = ' . cSecurity::toInteger($this->_client) . '
                             ORDER BY
                                 a.idtree';
-            } else if (cString::getPartOfString($linkEditorIdArt, 0, 8) == 'category') { // Selection of category (CON-2563)
+            } elseif (cString::getPartOfString($linkEditorIdArt, 0, 8) == 'category') { // Selection of category (CON-2563)
                 $sql = 'SELECT DISTINCT
                                 *
                            FROM
@@ -806,7 +806,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 $b = cString::toLowerCase($b["name"]);
                 if ($a < $b) {
                     return -1;
-                } else if ($a > $b) {
+                } elseif ($a > $b) {
                     return 1;
                 } else {
                     return 0;

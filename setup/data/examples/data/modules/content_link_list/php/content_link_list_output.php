@@ -45,14 +45,14 @@ if (cRegistry::isBackendEditMode()) {
     $button = '<input type="button" id="create_linkfields" value="' . conHtmlSpecialChars($createButton) . '"/>';
 } else {
     $backend = false;
-    $label = NULL;
+    $label = '';
     $input = NULL;
     $button = NULL;
-    $createLabel = NULL;
+    $createLabel = '';
 }
 
-$val = array();
-$valDescription = array();
+$val            = [];
+$valDescription = [];
 // create typegenerator object
 $ocType = new cTypeGenerator();
 for ($i = 0; $i < $linkCount; $i++) {

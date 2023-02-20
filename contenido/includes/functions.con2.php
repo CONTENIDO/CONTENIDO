@@ -89,7 +89,7 @@ function getArtLang($idart, $idlang) {
  * Returns all available meta tag types
  *
  * @return array
- *         Assoziative meta tags list
+ *         Associative meta tags list
  *
  * @throws cDbException
  * @throws cException
@@ -373,7 +373,9 @@ function conGetContentFromArticle($iIdArtLang) {
     }
 
     $oContentHelper = new cArticleContentHelper($oDB);
-    return $oContentHelper->getContentByIdArtLang($iIdArtLang);
+    return $oContentHelper->getContentByIdArtLang(
+        cSecurity::toInteger($iIdArtLang)
+    );
 }
 
 /**
@@ -383,7 +385,7 @@ function conGetContentFromArticle($iIdArtLang) {
  *         Template id
  *
  * @return array
- *         Assoziative array where the key is the number and value the module id
+ *         Associative array where the key is the number and value the module id
  *
  * @throws cDbException
  * @throws cException
@@ -407,7 +409,7 @@ function conGetUsedModules($idtpl) {
  *         Template configuration id
  *
  * @return array
- *         Assoziative array where the key is the number
+ *         Associative array where the key is the number
  *         and value the container configuration.
  *
  * @throws cDbException

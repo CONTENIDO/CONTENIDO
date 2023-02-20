@@ -39,7 +39,7 @@ $tpl->set('s', 'TEMPLATECAPTION', i18n("Template"). ": ");
 $tpl->set('s', 'TEMPLATESELECTBOX', $templateItem->get('name'));
 
 $tpl->set('s', 'LABLE_DESCRIPTION', i18n('Description'));
-$tpl->set('s', 'DESCRIPTION', nl2br($templateItem->get('description')));
+$tpl->set('s', 'DESCRIPTION', nl2br($templateItem->get('description') ?? ''));
 
 // List of configured container
 $containerConfigurations = conGetContainerConfiguration($idtplcfg);
@@ -70,8 +70,10 @@ foreach ($containerModules as $containerNumber => $containerModuleId) {
         $input = $contenidoModuleHandler->readInput() . "\n";
     }
 
-    $containerConfig = isset($containerConfigurations[$containerNumber]) ? $containerConfigurations[$containerNumber] : '';
-    $modulecode = cApiModule::processContainerInputCode($containerNumber, $containerConfig, $input);
+    $containerConfig = $containerConfigurations[$containerNumber] ?? '';
+    $modulecode = cApiModule::processContainerInputCode(
+        cSecurity::toInteger($containerNumber), $containerConfig, $input
+    );
 
     ob_start();
     eval($modulecode);

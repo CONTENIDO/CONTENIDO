@@ -329,13 +329,13 @@ class cGuiPage {
             if (!in_array($script, $this->_scripts)) {
                 $this->_scripts[] = $script;
             }
-        } else if (!empty($this->_pluginName) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $filePathName)) {
+        } elseif (!empty($this->_pluginName) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $filePathName)) {
             // the given script path is relative to the plugin scripts folder
             $fullPath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $script;
             if (!in_array($fullPath, $this->_scripts)) {
                 $this->_scripts[] = $fullPath;
             }
-        } else if (cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)) {
+        } elseif (cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)) {
             // the given script path is relative to the CONTENIDO scripts folder
             $fullPath = $backendUrl . $cfg['path']['scripts'] . $script;
 
@@ -379,14 +379,14 @@ class cGuiPage {
             if (!in_array($stylesheet, $this->_styles)) {
                 $this->_styles[] = $stylesheet;
             }
-        } else if (!empty($this->_pluginName) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $filePathName)) {
+        } elseif (!empty($this->_pluginName) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $filePathName)) {
             // the given stylesheet path is relative to the plugin stylesheets
             // folder
             $fullPath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet;
             if (!in_array($fullPath, $this->_styles)) {
                 $this->_styles[] = $fullPath;
             }
-        } else if (cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName)) {
+        } elseif (cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName)) {
             // the given stylesheet path is relative to the CONTENIDO
             // stylesheets folder
             $fullPath = $backendUrl . $cfg['path']['styles'] . $stylesheet;
@@ -519,7 +519,8 @@ class cGuiPage {
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
      */
-    public function reloadLeftTopFrame($updatedParameters = null) {
+    public function reloadLeftTopFrame($updatedParameters = null)
+    {
         if (is_array($updatedParameters) && !isset($updatedParameters['frame'])) {
             $updatedParameters['frame'] = 1;
         }
@@ -535,7 +536,8 @@ class cGuiPage {
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
      */
-    public function reloadLeftBottomFrame($updatedParameters = null) {
+    public function reloadLeftBottomFrame($updatedParameters = null)
+    {
         if (is_array($updatedParameters) && !isset($updatedParameters['frame'])) {
             $updatedParameters['frame'] = 2;
         }
@@ -551,7 +553,8 @@ class cGuiPage {
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
      */
-    public function reloadRightTopFrame($updatedParameters = null) {
+    public function reloadRightTopFrame($updatedParameters = null)
+    {
         if (is_array($updatedParameters) && !isset($updatedParameters['frame'])) {
             $updatedParameters['frame'] = 3;
         }
@@ -567,7 +570,8 @@ class cGuiPage {
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
      */
-    public function reloadRightBottomFrame($updatedParameters = null) {
+    public function reloadRightBottomFrame($updatedParameters = null)
+    {
         if (is_array($updatedParameters) && !isset($updatedParameters['frame'])) {
             $updatedParameters['frame'] = 4;
         }
@@ -821,7 +825,7 @@ class cGuiPage {
         foreach ($this->_scripts as $script) {
             if (cString::findFirstPos($script, 'http') === 0 || cString::findFirstPos($script, '//') === 0) {
                 $scripts .= '<script type="text/javascript" src="' . $script . '"></script>' . "\n";
-            } else if (cString::findFirstPos($script, '<script') === false) {
+            } elseif (cString::findFirstPos($script, '<script') === false) {
                 $scripts .= '<script type="text/javascript" src="scripts/' . $script . '"></script>' . "\n";
             } else {
                 $scripts .= $script;

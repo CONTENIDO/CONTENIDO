@@ -17,6 +17,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $notification, $parentid, $StrTableClient, $StrTableLang, $currentuser, $tpl;
 
+$oClient = cRegistry::getClient();
+$oLanguage = cRegistry::getLanguage();
+
+// Display critical error if client or language does not exist
+if (!$oClient->isLoaded() || !$oLanguage->isLoaded()) {
+    $message = !$oClient->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+    $oPage = new cGuiPage("str_overview");
+    $oPage->displayCriticalError($message);
+    $oPage->render();
+    return;
+}
+
 $backendUrl = cRegistry::getBackendUrl();
 
 // before we do anything, let's check if everything works
@@ -36,22 +48,14 @@ $tmp_area = 'str';
 $db = cRegistry::getDb();
 $perm = cRegistry::getPerm();
 $action = cRegistry::getAction();
-$idcat = cRegistry::getCategoryId();
+$idcat = cSecurity::toInteger(cRegistry::getCategoryId());
 $area = cRegistry::getArea();
 $cfg = cRegistry::getConfig();
 $sess = cRegistry::getSession();
-$client = cRegistry::getClientId();
-$lang = cRegistry::getLanguageId();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
 $frame = cRegistry::getFrame();
 $_cecRegistry = cApiCecRegistry::getInstance();
-
-// display critical error if no valid client is selected
-if ((int) $client < 1) {
-    $page = new cGuiPage("str_overview");
-    $page->displayCriticalError(i18n("No Client selected"));
-    $page->render();
-    return;
-}
 
 strRemakeTreeTable();
 
@@ -75,9 +79,8 @@ function buildCategorySelectRights() {
     global $tmp_area;
 
     $db = cRegistry::getDb();
-    $cfg = cRegistry::getConfig();
-    $client = cRegistry::getClientId();
-    $lang = cRegistry::getLanguageId();
+    $client = cSecurity::toInteger(cRegistry::getClientId());
+    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
     $perm = cRegistry::getPerm();
 
     $oHtmlSelect = new cHTMLSelectElement('idcat', '', 'new_idcat');
@@ -86,11 +89,11 @@ function buildCategorySelectRights() {
     $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
     $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level
-            FROM " . $cfg["tab"]["cat"] . " AS a
-            , " . $cfg["tab"]["cat_lang"] . " AS b
-            , " . $cfg["tab"]["cat_tree"] . " AS c
-            WHERE a.idclient = '" . cSecurity::toInteger($client) . "'
-            AND b.idlang = '" . cSecurity::toInteger($lang) . "'
+            FROM " . cRegistry::getDbTableName('cat') . " AS a
+            , " . cRegistry::getDbTableName('cat_lang') . " AS b
+            , " . cRegistry::getDbTableName('cat_tree') . " AS c
+            WHERE a.idclient = " . $client . "
+            AND b.idlang = " . $lang . "
             AND b.idcat = a.idcat
             AND c.idcat = a.idcat
             ORDER BY c.idtree";
@@ -116,7 +119,7 @@ function buildCategorySelectRights() {
     foreach ($aCategoriesReversed as $iKeyIdCat => $aValues) {
         if ($aValues['level'] > $iLevel && $aValues['perm']) {
             $iLevel = $aValues['level'];
-        } else if ($aValues['level'] < $iLevel) {
+        } elseif ($aValues['level'] < $iLevel) {
             $iLevel = $aValues['level'];
         } else {
             if (!$aValues['perm']) {
@@ -126,7 +129,7 @@ function buildCategorySelectRights() {
     }
 
     foreach ($categories as $tmpidcat => $props) {
-        $spaces = cHTMLOptionElement::indent($props['level']);
+        $spaces = cHTMLOptionElement::indent(cSecurity::toInteger($props['level']));
         $sCategoryname = $props['name'];
         $sCategoryname = cString::trimHard($sCategoryname, 30);
         $oHtmlSelectOption = new cHTMLOptionElement($spaces . ">" . conHtmlSpecialChars($sCategoryname), $tmpidcat, false, !$props['perm']);
@@ -196,8 +199,7 @@ function getStrExpandCollapseButton($item, $catName) {
  */
 function getTemplateSelect() {
     $db = cRegistry::getDb();
-    $cfg = cRegistry::getConfig();
-    $client = cRegistry::getClientId();
+    $client = cSecurity::toInteger(cRegistry::getClientId());
 
     $oHtmlSelect = new cHTMLSelectElement('cat_template_select', '', 'cat_template_select');
 
@@ -205,8 +207,8 @@ function getTemplateSelect() {
     $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
     $sql = "SELECT idtpl, name, defaulttemplate
-            FROM " . $cfg['tab']['tpl'] . "
-            WHERE idclient = '" . $client . "'
+            FROM " . cRegistry::getDbTableName('tpl') . "
+            WHERE idclient = " . $client . "
             ORDER BY name";
 
     if ($db->query($sql)) {
@@ -296,13 +298,6 @@ if ($StrTableLang != $lang) {
 
 $StrTableClient = $client;
 $StrTableLang = $lang;
-
-if (!isset($idcat)) {
-    $idcat = 0;
-}
-if (!isset($action)) {
-    $action = 0;
-}
 
 /**
  *
@@ -407,18 +402,23 @@ if (!$perm->have_perm_area_action($area)) {
 $sql = "SELECT
             idtree, A.idcat, level, name, parentid, preid, postid, visible, public, idtplcfg, C.urlname as alias
         FROM
-            " . $cfg["tab"]["cat_tree"] . " AS A,
-            " . $cfg["tab"]["cat"] . " AS B,
-            " . $cfg["tab"]["cat_lang"] . " AS C
+            " . cRegistry::getDbTableName('cat_tree') . " AS A,
+            " . cRegistry::getDbTableName('cat') . " AS B,
+            " . cRegistry::getDbTableName('cat_lang') . " AS C
         WHERE
             A.idcat     = B.idcat AND
             B.idcat     = C.idcat AND
-            C.idlang    = '" . cSecurity::toInteger($lang) . "' AND
-            B.idclient  = '" . cSecurity::toInteger($client) . "'
+            C.idlang    = " . $lang . " AND
+            B.idclient  = " . $client . "
         ORDER BY
             idtree";
 
 $db->query($sql);
+
+/** @var $treeItemObjects[] $treeItemObjects */
+$treeItemObjects = [];
+
+$listColumns = [];
 
 if ($db->numRows() == 0) { // If we have no categories, display warning message
     $additionalHeader = $notification->returnNotification("warning", i18n("You have no categories for this client. Please create a new root category with your categories. Without categories, you can't create some articles.")) . "<br />";
@@ -477,8 +477,9 @@ if ($db->numRows() == 0) { // If we have no categories, display warning message
     buildTree($rootStrItem, $arrayObj->getIterator());
 
     $expandedList = unserialize($currentuser->getUserProperty('system', 'cat_expandstate'));
+    $expandedList = is_array($expandedList) ? $expandedList : [];
 
-    if (is_array($expandedList[$client])) {
+    if (isset($expandedList[$client]) && is_array($expandedList[$client])) {
         $rootStrItem->markExpanded($expandedList[$client]);
     }
 
@@ -503,9 +504,8 @@ if ($db->numRows() == 0) { // If we have no categories, display warning message
     }
 
     $expandedList[$client] = [];
-    $objects = [];
 
-    $rootStrItem->traverse($objects);
+    $rootStrItem->traverse($treeItemObjects);
 
     $rootStrItem->getExpandedList($expandedList[$client]);
     $currentuser->setUserProperty('system', 'cat_expandstate', serialize($expandedList));
@@ -517,7 +517,6 @@ if ($db->numRows() == 0) { // If we have no categories, display warning message
 
     $_cecIterator = $_cecRegistry->getIterator('Contenido.CategoryList.Columns');
 
-    $listColumns = [];
     if ($_cecIterator->count() > 0) {
         while ($chainEntry = $_cecIterator->next()) {
             $tmplistColumns = $chainEntry->execute([]);
@@ -541,7 +540,9 @@ if ($db->numRows() == 0) { // If we have no categories, display warning message
 $tpl->set('s', 'ADDITIONALHEADERS', $additionalHeader);
 
 // We don't want to show our root
-unset($objects[0]);
+if (count($treeItemObjects)) {
+    unset($treeItemObjects[0]);
+}
 
 if (empty($syncoptions)) {
     $syncoptions = '';
@@ -576,25 +577,25 @@ $bAreaAddNewCategory = false;
 
 $aInlineEditData = [];
 
-$sql = "SELECT idtplcfg, idtpl FROM " . $cfg["tab"]["tpl_conf"];
+$sql = "SELECT idtplcfg, idtpl FROM " . cRegistry::getDbTableName('tpl_conf');
 $db->query($sql);
 $aTplconfigs = [];
 while ($db->nextRecord()) {
     $aTplconfigs[$db->f('idtplcfg')] = $db->f('idtpl');
 }
 
-$sql = "SELECT name, description, idtpl FROM " . $cfg["tab"]["tpl"];
+$sql = "SELECT name, description, idtpl FROM " . cRegistry::getDbTableName('tpl');
 $db->query($sql);
 $aTemplates = [];
 while ($db->nextRecord()) {
     $aTemplates[$db->f('idtpl')] = [
         'name' => $db->f('name'),
-        'description' => $db->f('description')
+        'description' => $db->f('description') ?? ''
     ];
 }
 
-foreach ($objects as $key => $value) {
-    // check if there area any permission for this $idcat in the mainarea 6
+foreach ($treeItemObjects as $key => $value) {
+    // check if there is any permission for this $idcat in the mainarea 6
     // (=str) and there subareas
     $bCheck = false;
     if (!$bCheck) {
@@ -675,8 +676,14 @@ foreach ($objects as $key => $value) {
             $tpl->set('d', 'ALIAS', '&nbsp;');
         }
 
-        $template = $aTemplates[$aTplconfigs[$value->getCustom('idtplcfg')]]['name'];
-        $templateDescription = $aTemplates[$aTplconfigs[$value->getCustom('idtplcfg')]]['description'];
+        $_idTplCfg = $value->getCustom('idtplcfg');
+        if (!empty($_idTplCfg) && isset($aTplconfigs[$_idTplCfg]) && isset($aTemplates[$aTplconfigs[$_idTplCfg]])) {
+            $template = $aTemplates[$aTplconfigs[$_idTplCfg]]['name'] ?? '';
+            $templateDescription = $aTemplates[$aTplconfigs[$_idTplCfg]]['description'] ?? '';
+        } else {
+            $template = '';
+            $templateDescription = '';
+        }
 
         $descString = '';
 
@@ -688,13 +695,15 @@ foreach ($objects as $key => $value) {
         $descString = '<b>' . $template . '</b>';
 
         if (cString::getStringLength($templateDescription) > 0) {
-            $descString .= '<br>' . $templateDescription;
+            $descString .= ': <br>' . $templateDescription;
         }
 
         $sTemplatename = $template;
         if (cString::getStringLength($template) > 20) {
             $sTemplatename = cString::trimHard($sTemplatename, 20);
         }
+
+        $descStringEncoded = conHtmlentities(strip_tags($descString), ENT_QUOTES, cRegistry::getEncoding());
 
         $tpl->set('d', 'TPLNAME', $sTemplatename);
         $tpl->set('d', 'TPLDESC', $descString);
@@ -724,7 +733,7 @@ foreach ($objects as $key => $value) {
         $aRecord['pTplcfg'] = $bPermTplcfg;
         $aInlineEditData[$value->getId()] = $aRecord;
 
-         if ($perm->have_perm_area_action($area, "str_renamecat") || $perm->have_perm_area_action_item($area, "str_renamecat", $value->getId())) {
+        if ($perm->have_perm_area_action($area, "str_renamecat") || $perm->have_perm_area_action_item($area, "str_renamecat", $value->getId())) {
             $tpl->set('d', 'RENAMEBUTTON', "<a class=\"action\" href=\"javascript:handleInlineEdit(" . $value->getId() . ");\"><img src=\"" . $cfg["path"]["images"] . "but_todo.gif\" id=\"cat_" . $value->getId() . "_image\" alt=\"" . i18n("Edit category") . "\" title=\"" . i18n("Edit category") . "\"></a>");
         } else {
             $tpl->set('d', 'RENAMEBUTTON', "");
@@ -735,8 +744,8 @@ foreach ($objects as $key => $value) {
         $tpl->set('d', 'PREID', $value->getCustom('preid'));
         $tpl->set('d', 'LEVEL', $value->getCustom('level'));
 
-        if (cString::getStringLength($template) > 20) {
-            $tpl->set('d', 'SHOW_MOUSEOVER', 'title="' . $descString . '"');
+        if (cString::getStringLength($descStringEncoded) > 20) {
+            $tpl->set('d', 'SHOW_MOUSEOVER', 'title="' . $descStringEncoded . '"');
         } else {
             $tpl->set('d', 'SHOW_MOUSEOVER', '');
         }
@@ -768,7 +777,7 @@ foreach ($objects as $key => $value) {
         $hasChildren = strNextDeeper($value->getId());
         $hasArticles = strHasArticles($value->getId());
         if (($hasChildren == 0) && ($hasArticles == false) && ($perm->have_perm_area_action($tmp_area, 'str_deletecat') || $perm->have_perm_area_action_item($tmp_area, 'str_deletecat', $value->getId()))) {
-            $delete = '<a href="javascript://" onclick="confDel(' . $value->getId() . ',' . $value->getCustom('parentid') . ', \'' . addslashes(conHtmlSpecialChars($value->getName())) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "delete.gif\" alt=\"" . i18n("Delete category") . "\" title=\"" . i18n("Delete category") . "\"></a>";
+            $delete = '<a href="javascript:void(0)" onclick="confDel(' . $value->getId() . ',' . $value->getCustom('parentid') . ', \'' . addslashes(conHtmlSpecialChars($value->getName())) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "delete.gif\" alt=\"" . i18n("Delete category") . "\" title=\"" . i18n("Delete category") . "\"></a>";
             $tpl->set('d', 'DELETEBUTTON', $delete);
         } else {
             $message = i18n("No permission");
@@ -844,7 +853,7 @@ foreach ($objects as $key => $value) {
         }
 
         if ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $value->getId())) {
-            $duplicate = '<a href="javascript://" onclick="confDupl(' . $value->getId() . ',' . $value->getCustom('parentid') . ', \'' . addslashes(conHtmlSpecialChars($value->getName())) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "folder_duplicate.gif\" alt=\"" . i18n("Duplicate category") . "\" title=\"" . i18n("Duplicate category") . "\"></a>";
+            $duplicate = '<a href="javascript:void(0)" onclick="confDupl(' . $value->getId() . ',' . $value->getCustom('parentid') . ', \'' . addslashes(conHtmlSpecialChars($value->getName())) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "folder_duplicate.gif\" alt=\"" . i18n("Duplicate category") . "\" title=\"" . i18n("Duplicate category") . "\"></a>";
             $tpl->set('d', 'DUPLICATEBUTTON', $duplicate);
         } else {
             $tpl->set('d', 'DUPLICATEBUTTON', '&nbsp;');
@@ -912,24 +921,24 @@ $tpl->set('s', 'INPUT_PUBLIC', $oPublic->render());
 $tpl->set('s', 'INPUT_TEMPLATE', $oTemplate->render());
 
 $oCatName = new cHTMLTextbox('categoryname', '', '', '', 'cat_categoryname');
-$oCatName->setStyle('width:150px; vertical-align:middle;');
+$oCatName->setStyle('width:150px;');
 $tpl->set('s', 'INPUT_CATNAME_NEW', $oCatName->render());
 
 $oAlias = new cHTMLTextbox('categoryalias', '', '', '', 'cat_categoryalias');
-$oAlias->setStyle('width:150px; vertical-align:middle;');
+$oAlias->setStyle('width:150px;');
 $tpl->set('s', 'INPUT_ALIAS_NEW', $oAlias->render());
 
 $oNewCatName = new cHTMLTextbox('newcategoryname');
-$oNewCatName->setStyle('width:150px; vertical-align:middle;');
+$oNewCatName->setStyle('width:150px;');
 $tpl->set('s', 'INPUT_CATNAME_EDIT', $oNewCatName->render());
 
 $oNewAlias = new cHTMLTextbox('newcategoryalias');
-$oNewAlias->setStyle('width:150px; vertical-align:middle;');
+$oNewAlias->setStyle('width:150px;');
 $tpl->set('s', 'INPUT_ALIAS_EDIT', $oNewAlias->render());
 
-// Show Layerbutton for adding new Cateogries and set options according to
-// Permisssions
-if (($perm->have_perm_area_action($tmp_area, 'str_newtree') || $perm->have_perm_area_action($tmp_area, 'str_newcat') || $bAreaAddNewCategory) && (int) $client > 0 && (int) $lang > 0) {
+// Show layer-button for adding new categories and set options
+// according to permissions
+if (($perm->have_perm_area_action($tmp_area, 'str_newtree') || $perm->have_perm_area_action($tmp_area, 'str_newcat') || $bAreaAddNewCategory) && $client > 0 && $lang > 0) {
     $tpl->set('s', 'NEWCAT', '<a class="black" id="new_tree_button" href="javascript:showNewForm();"><img src="images/folder_new.gif" alt="">&nbsp;' . i18n('Create new category') . '</a>');
     if ($perm->have_perm_area_action($tmp_area, 'str_newtree')) {
         if ($perm->have_perm_area_action($tmp_area, 'str_newcat') || $bAreaAddNewCategory) {

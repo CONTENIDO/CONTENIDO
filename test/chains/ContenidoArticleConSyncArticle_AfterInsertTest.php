@@ -46,20 +46,18 @@ function chain_ContenidoArticleConSyncArticle_AfterInsert_Test2(array $data) {
 class ContenidoArticleConSyncArticle_AfterInsertTest extends TestCase {
 
     /**
-     *
-     * @var unknown_type
+     * @var int
      */
     public static $invokeCounter = 0;
 
     /**
-     *
-     * @var unknown_type
+     * @var string
      */
     private $_chain = 'Contenido.Article.conSyncArticle_AfterInsert';
 
     /**
      *
-     * @var unknown_type
+     * @var array
      */
     private $_data = array(
         'src_art_lang' => array(),

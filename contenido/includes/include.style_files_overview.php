@@ -15,10 +15,21 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$client = cRegistry::getClientId();
+$oClient = cRegistry::getClient();
+
+// Display critical error if client does not exist
+if (!$oClient->isLoaded()) {
+    $oPage = new cGuiPage("style_files_overview");
+    $oPage->displayCriticalError(i18n('No Client selected'));
+    $oPage->render();
+    return;
+}
+
+$client = cSecurity::toInteger(cRegistry::getClientId());
+
 $cfgClient = cRegistry::getClientConfig();
 
-$file = (isset($_REQUEST['file'])) ? cSecurity::toString($_REQUEST['file']) : '';
+$file = cSecurity::toString($_REQUEST['file'] ?? '');
 
 $files = new cGuiFileOverview($cfgClient[$client]['css']['path'], stripslashes($file), 'css');
 

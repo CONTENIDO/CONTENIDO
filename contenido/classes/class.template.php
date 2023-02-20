@@ -77,6 +77,13 @@ class cTemplate {
     protected $_sDomain = 'contenido';
 
     /**
+     * Encoding for the template's head block.
+     *
+     * @var string
+     */
+    protected $_encoding;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * @param array|bool $tags [optional]
@@ -165,7 +172,7 @@ class cTemplate {
      *
      * @return string|void
      *         Complete template string or nothing
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function generate($template, $return = false, $note = false) {

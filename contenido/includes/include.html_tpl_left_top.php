@@ -14,12 +14,28 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $tpl, $select;
+/**
+ * @var cTemplate $tpl
+ */
+
+global $select;
+
+$oClient = cRegistry::getClient();
+
+// Display critical error if client does not exist
+if (!$oClient->isLoaded()) {
+    $oPage = new cGuiPage("html_tpl_left_top");
+    $oPage->displayCriticalError(i18n('No Client selected'));
+    $oPage->render();
+    return;
+}
+
+$client = cSecurity::toInteger(cRegistry::getClientId());
 
 $sess = cRegistry::getSession();
-$client = cRegistry::getClientId();
 $perm = cRegistry::getPerm();
 $cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
 
 $tpl->set('s', 'ID', 'oTplSel');
 $tpl->set('s', 'CLASS', 'text_medium');
@@ -27,22 +43,17 @@ $tpl->set('s', 'OPTIONS', '');
 $tpl->set('s', 'CAPTION', '');
 $tpl->set('s', 'ACTION', $select);
 
-$tmp_mstr = '<div class="leftTopAction"><a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
-$area = 'htmltpl';
-$mstr = sprintf(
-    $tmp_mstr,
-    'right_top', $sess->url("main.php?area=htmltpl&frame=3"),
-    'right_bottom', $sess->url("main.php?area=htmltpl&frame=4&action=htmltpl_create"),
-    i18n("Create module template")
-);
-if ((int) $client > 0) {
-    if ($perm->have_perm_area_action($area, "htmltpl_create")) {
-        $tpl->set('s', 'NEWSTYLE', $mstr);
-    } else {
-        $tpl->set("s", "NEWSTYLE", '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create new files") . '</a></div>');
-    }
+if ($perm->have_perm_area_action($area, "htmltpl_create")) {
+    $tmp_mstr = '<div class="leftTopAction"><a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
+    $mstr = sprintf(
+        $tmp_mstr,
+        'right_top', $sess->url("main.php?area=htmltpl&frame=3"),
+        'right_bottom', $sess->url("main.php?area=htmltpl&frame=4&action=htmltpl_create"),
+        i18n("Create HTML template")
+    );
+    $tpl->set('s', 'NEWSTYLE', $mstr);
 } else {
-    $tpl->set('s', 'NEWSTYLE', i18n('No Client selected'));
+    $tpl->set("s", "NEWSTYLE", '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create new files") . '</a></div>');
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['html_tpl_left_top']);

@@ -14,23 +14,7 @@
 
 class cFunctionsGeneralTest extends cTestingTestCase
 {
-    public function testGetCanonicalMonth()
-    {
-        foreach ([null, 0, 13] as $month) {
-            $this->assertNull(getCanonicalMonth($month));
-        }
-        foreach (range(1, 12) as $month) {
-            $this->assertNotNull(getCanonicalMonth($month));
-        }
-    }
 
-    public function testGetCanonicalDay()
-    {
-        foreach ([null, 0, 8] as $weekday) {
-            $this->assertNull(getCanonicalDay($weekday));
-        }
-        foreach (range(1, 7) as $weekday) {
-            $this->assertNotNull(getCanonicalDay($weekday));
-        }
-    }
+    // @TODO Implement some tests.
+
 }

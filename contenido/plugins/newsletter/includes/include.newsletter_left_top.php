@@ -49,7 +49,7 @@ $oTpl->set('s', 'INEWSLETTER', $sId);
 $sButtonRow = '';
 // News
 if ($perm->have_perm_area_action('news')) {
-    $sButtonRow .= '<a href="javascript://" onclick="toggleContainer(\'' . $sId . '\');reloadLeftBottomAndTransportFormVars(document.newsletter_listoptionsform);">';
+    $sButtonRow .= '<a href="javascript:void(0)" onclick="toggleContainer(\'' . $sId . '\');reloadLeftBottomAndTransportFormVars(document.newsletter_listoptionsform);">';
     $sButtonRow .= '<img onmouseover="hoverEffect(\'' . $sId . '\', \'in\')" onmouseout="hoverEffect(\'' . $sId . '\', \'out\')" alt="' . i18n("Newsletter", 'newsletter') . '" title="' . i18n("Newsletter", 'newsletter') . '" name="' . $sId . '" id="' . $sId . '" src="' . $cfg["path"]["images"] . 'newsletter_on.gif">';
     $sButtonRow .= '</a>';
 }
@@ -58,7 +58,7 @@ if ($perm->have_perm_area_action('news')) {
 $sId = 'img_dispatch';
 $oTpl->set('s', 'IDISPATCH', $sId);
 if ($perm->have_perm_area_action('news_jobs')) {
-    $sButtonRow .= '<a href="javascript://" onclick="toggleContainer(\'' . $sId . '\');reloadLeftBottomAndTransportFormVars(document.dispatch_listoptionsform);">';
+    $sButtonRow .= '<a href="javascript:void(0)" onclick="toggleContainer(\'' . $sId . '\');reloadLeftBottomAndTransportFormVars(document.dispatch_listoptionsform);">';
     $sButtonRow .= '<img onmouseover="hoverEffect(\'' . $sId . '\', \'in\')" onmouseout="hoverEffect(\'' . $sId . '\', \'out\')" alt="' . i18n("Dispatch", 'newsletter') . '" title="' . i18n("Dispatch", 'newsletter') . '" name="' . $sId . '" id="' . $sId . '" src="' . $cfg["path"]["images"] . 'newsletter_dispatch_on.gif">';
     $sButtonRow .= '</a>';
 }
@@ -67,7 +67,7 @@ if ($perm->have_perm_area_action('news_jobs')) {
 $sId = 'img_recipient';
 $oTpl->set('s', 'IRECIPIENTS', $sId);
 if ($perm->have_perm_area_action('recipients')) {
-    $sButtonRow .= '<a href="javascript://" onclick="toggleContainer(\'' . $sId . '\');reloadLeftBottomAndTransportFormVars(document.recipients_listoptionsform);">';
+    $sButtonRow .= '<a href="javascript:void(0)" onclick="toggleContainer(\'' . $sId . '\');reloadLeftBottomAndTransportFormVars(document.recipients_listoptionsform);">';
     $sButtonRow .= '<img onmouseover="hoverEffect(\'' . $sId . '\', \'in\')" onmouseout="hoverEffect(\'' . $sId . '\', \'out\')" alt="' . i18n("Recipients", 'newsletter') . '" title="' . i18n("Recipients", 'newsletter') . '" id="' . $sId . '" src="' . $cfg["path"]["images"] . 'newsletter_recipients_on.gif">';
     $sButtonRow .= '</a>';
 }
@@ -76,7 +76,7 @@ if ($perm->have_perm_area_action('recipients')) {
 $sId = 'img_recipientgroup';
 $oTpl->set('s', 'IRECIPIENTGROUP', $sId);
 if ($perm->have_perm_area_action('recipientgroups')) {
-    $sButtonRow .= '<a href="javascript://" onclick="toggleContainer(\'' . $sId . '\');reloadLeftBottomAndTransportFormVars(groups_listoptionsform);">';
+    $sButtonRow .= '<a href="javascript:void(0)" onclick="toggleContainer(\'' . $sId . '\');reloadLeftBottomAndTransportFormVars(groups_listoptionsform);">';
     $sButtonRow .= '<img onmouseover="hoverEffect(\'' . $sId . '\', \'in\')" onmouseout="hoverEffect(\'' . $sId . '\', \'out\')" alt="' . i18n("Recipient groups", 'newsletter') . '" title="' . i18n("Recipient groups", 'newsletter') . '" id="' . $sId . '" src="' . $cfg["path"]["images"] . 'newsletter_recipientgroups_on.gif">';
     $sButtonRow .= '</a>';
 }
@@ -146,7 +146,7 @@ $sSQL .= "ORDER BY tblCatTree.idtree";
 $oDB->query($sSQL);
 
 while ($oDB->nextRecord()) {
-    $sSpaces = cHTMLOptionElement::indent($oDB->f("level"), 0);
+    $sSpaces = cHTMLOptionElement::indent(cSecurity::toInteger($oDB->f("level")), 0);
     $oOptionTemplate = new cHTMLOptionElement($sSpaces . $oDB->f("name"), $oDB->f("idcat"));
     $oOptionNewsletter = new cHTMLOptionElement($sSpaces . $oDB->f("name"), $oDB->f("idcat"));
     if ($oDB->f("visible") == 0 || $oDB->f("public") == 0) {

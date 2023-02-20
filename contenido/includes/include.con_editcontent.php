@@ -328,7 +328,7 @@ switch ($versioningState) {
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
                 ]);
-            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+            } elseif (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsEditable('content');
                 $articleType = $versioning->getArticleType(
@@ -344,7 +344,7 @@ switch ($versioningState) {
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
                 ]);
-            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+            } elseif ($_REQUEST['idArtLangVersion'] == 'current') {
                 $artLang = new cApiArticleLanguage($idartlang);
                 $artLang->markAsEditable('content');
                 $articleType = $versioning->getArticleType(
@@ -426,7 +426,7 @@ switch ($versioningState) {
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
             $buttonTitle = i18n('Copy to draft');
-        } else if ($articleType == 'editable') {
+        } elseif ($articleType == 'editable') {
             $buttonTitle = i18n('Publish draft');
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
@@ -478,10 +478,10 @@ if ($selectedArticle != NULL) {
             if ($articleType == 'editable') {
                 $editable = true;
                 $version = $selectedArticle->get('version');
-            } else if ($articleType == 'current') {
+            } elseif ($articleType == 'current') {
                 $editable = false;
                 $version = NULL;
-            } else if ($articleType == 'version') {
+            } elseif ($articleType == 'version') {
                 $editable = false;
                 $version = $selectedArticle->get('version');
             }
@@ -490,7 +490,7 @@ if ($selectedArticle != NULL) {
              if ($articleType == 'editable' || $articleType == 'current') {
                 $editable = true;
                 $version = NULL;
-            } else if ($articleType == 'version') {
+            } elseif ($articleType == 'version') {
                 $editable = false;
                 $version = $selectedArticle->get('version');
             }

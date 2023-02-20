@@ -15,7 +15,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// Since CONTENIDO has it's own autoloader, swift_init.php is enough.
+// Since CONTENIDO has its own autoloader, swift_init.php is enough.
 // We do not need and should not use swift_required.php!
 require_once 'swiftmailer/lib/swift_init.php';
 
@@ -481,7 +481,7 @@ class cMailer extends Swift_Mailer {
                 }
             }
             return $value;
-        } else if (is_string($value)) {
+        } elseif (is_string($value)) {
             return conHtmlentities($value, ENT_COMPAT, $charset);
         } else {
             return $value;
@@ -507,7 +507,7 @@ class cMailer extends Swift_Mailer {
                 }
             }
             return $value;
-        } else if (is_string($value)) {
+        } elseif (is_string($value)) {
             return conHtmlEntityDecode($value, ENT_COMPAT | ENT_HTML401, $charset);
         } else {
             return $value;

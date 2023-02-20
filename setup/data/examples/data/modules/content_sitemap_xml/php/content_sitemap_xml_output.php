@@ -30,7 +30,9 @@
  * @see http://www.sitemaps.org/
  */
 if (cRegistry::getBackendSessionId() === NULL) {
-    cInclude('module', 'class.module_content_sitemap_xml.php');
+    if (!class_exists('ModuleContentSitemapXml')) {
+        cInclude('module', 'class.module_content_sitemap_xml.php');
+    }
 
     $cfg = cRegistry::getConfig();
 
@@ -103,7 +105,9 @@ EOD;
                 }
             }
 
-            $itemCount[] = $moduleContentSitemapXml->addArticlesToSitemap($sitemap, $currentCategoryIds, $currentIdlang);
+            $itemCount[] = $moduleContentSitemapXml->addArticlesToSitemap(
+                $sitemap, $currentCategoryIds, cSecurity::toInteger($currentIdlang)
+            );
         }
 
         // if there are items

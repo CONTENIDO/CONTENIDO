@@ -157,10 +157,10 @@ class cApiCecRegistry {
      *         - "FunctionName" to invoke a function.
      *         NOTE: Necessary files must be manually included before or by
      *         defined autoloader.
-     * 
+     *
      * @return bool
      *         True on success, otherwise false
-     * 
+     *
      * @throws cInvalidArgumentException
      *         if the given chain is not registered or the given callback is not callable
      */
@@ -324,9 +324,8 @@ class cApiCecChainItem {
 
     /**
      * Callback name.
-     * Contains either the function name to invoke, or a indexed array
-     * (class/object and method)
-     * and it's method to execute.
+     * Contains either the function name to invoke, or an indexed array
+     * (class/object and method) and it's method to execute.
      *
      * @var array string
      */
@@ -342,7 +341,7 @@ class cApiCecChainItem {
     /**
      * Temporary arguments holder
      *
-     * @var array NULL
+     * @var array|NULL
      */
     protected $_mTemporaryArguments;
 
@@ -426,7 +425,7 @@ class cApiCecChainItem {
      * Sets the callback
      *
      * @param string|array $callback
-     * 
+     *
      * @throws cInvalidArgumentException if the given callback is not a string
      *         or an array
      */

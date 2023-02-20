@@ -178,7 +178,7 @@ class cApiGroupCollection extends ItemCollection {
         foreach ($oGroups as $oItem) {
             $groups[$oItem->get('group_id')] = [
                 'groupname'   => $oItem->getGroupName(true),
-                'description' => $oItem->get('description'),
+                'description' => $oItem->get('description') ?? '',
             ];
         }
         return $groups;

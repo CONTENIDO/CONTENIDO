@@ -80,6 +80,8 @@
     <div class="clear"></div>
 
     <script type="text/javascript">
+    var $cLanguageSelect = $("#cLanguageSelect");
+
     function selectText() {
         if (document.selection) {
             var range = document.body.createTextRange();
@@ -94,20 +96,20 @@
 
     function languageSelectAdd(name, idlang) {
         var text = name + ' (' + idlang + ')';
-        $("#cLanguageSelect").append(new Option(text, idlang, false, false));
+        $cLanguageSelect.append(new Option(text, idlang, false, false));
     }
 
     function languageSelectRemove(idlang) {
-        var oldLang = $("#cLanguageSelect").val();
-        $("#cLanguageSelect").find("option[value='" + idlang + "']").remove();
-        if (oldLang == idlang && $("#cLanguageSelect").val() != null) {
-            Con.Header.changeContenidoLanguage($("#cLanguageSelect").val());
+        var oldLang = $cLanguageSelect.val();
+        $cLanguageSelect.find("option[value='" + idlang + "']").remove();
+        if (oldLang == idlang && $cLanguageSelect.val() != null) {
+            Con.Header.changeContenidoLanguage($cLanguageSelect.val());
         }
     }
 
     function languageSelectUpdate(name, idlang) {
         var text = name + ' (' + idlang + ')';
-        $("#cLanguageSelect").find("option[value='" + idlang + "']").text(text);
+        $cLanguageSelect.find("option[value='" + idlang + "']").text(text);
     }
 
     (function(Con, $) {
@@ -126,6 +128,10 @@
                     {HEADER_MENU_OBJ}.markActive(jQuery("#" + Con.UtilUrl.getParams().active_submenuitem).get(0));
                 });
             }
+
+            $cLanguageSelect.on("change", function() {
+                Con.Header.changeContenidoLanguage($cLanguageSelect.val());
+            });
         });
 
         {FOOTER_JS}

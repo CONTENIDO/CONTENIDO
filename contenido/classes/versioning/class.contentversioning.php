@@ -134,7 +134,7 @@ class cContentVersioning {
 
             if (false === $versioningState || NULL === $versioningState) {
                 $versioningState = 'disabled';
-            } else if ('' === $versioningState) {
+            } elseif ('' === $versioningState) {
                 // NOTE: An non empty default value overrides an empty value
                 $versioningState = 'disabled';
             }
@@ -171,10 +171,10 @@ class cContentVersioning {
             || ($articleType == 'version' && $versioningState == 'simple')) {
             if (is_numeric($idArtLangVersion) && $articleType == 'version') {
                 $this->selectedArticle = new cApiArticleLanguageVersion($idArtLangVersion);
-            } else if (isset($this->editableArticleId)) {
+            } elseif (isset($this->editableArticleId)) {
                 $this->selectedArticle = new cApiArticleLanguageVersion($this->editableArticleId);
             }
-        } else if ($articleType == 'current' || $articleType == 'editable') {
+        } elseif ($articleType == 'current' || $articleType == 'editable') {
             $this->selectedArticle = new cApiArticleLanguage($idArtLang);
         }
 
@@ -202,7 +202,7 @@ class cContentVersioning {
         if (($articleType == 'version' || $articleType == 'editable') && $this->getState() == 'advanced'
             || $articleType == 'version' && $this->getState() == 'simple') {
             $this->db->query($sql, cRegistry::getDbTableName('content_version'), cRegistry::getDbTableName('type'), $idArtLang);
-        } else if ($articleType == 'current' || $articleType == 'editable' && $this->getState() != 'advanced') {
+        } elseif ($articleType == 'current' || $articleType == 'editable' && $this->getState() != 'advanced') {
             $this->db->query($sql, cRegistry::getDbTableName('content'), cRegistry::getDbTableName('type'), $idArtLang);
         }
 
@@ -257,7 +257,7 @@ class cContentVersioning {
             || $this->editableArticleId == NULL
             && $action != 'con_meta_saveart' && $action != 'con_newart') { // advanced
             $this->articleType = 'current';
-        } else if ($this->getState() == 'advanced' && ($selectedArticleId == 'editable'
+        } elseif ($this->getState() == 'advanced' && ($selectedArticleId == 'editable'
             || $selectedArticleId == NULL || $this->editableArticleId === $selectedArticleId)
             && ($action == 'con_content' || $action == 'con_meta_deletetype'
                 || $action == 'con_meta_edit' || $action == 'con_edit' || $action == 'con_editart')
@@ -343,7 +343,7 @@ class cContentVersioning {
             $this->editableArticleId = $this->db->f('max');
 
             return $this->editableArticleId;
-        } else if ($this->getState() == 'simple' || $this->getState() == 'disabled') {
+        } elseif ($this->getState() == 'simple' || $this->getState() == 'disabled') {
             return $idArtLang;
         }
     }
@@ -422,8 +422,7 @@ class cContentVersioning {
         $artLangVersionMap = [];
 
         $artLangVersionColl = new cApiArticleLanguageVersionCollection();
-        $artLangVersionColl->addResultField('version');
-        $artLangVersionColl->addResultField('lastmodified');
+        $artLangVersionColl->addResultFields(['version', 'lastmodified']);
         $artLangVersionColl->setWhere('idartlang', $idArtLang);
         $artLangVersionColl->setOrder('version desc');
 
@@ -453,7 +452,7 @@ class cContentVersioning {
                 $contentVersionMap = array_unique($contentVersionMap);
                 $artLangVersionColl->setWhere('version', $contentVersionMap, 'IN');
 
-            } else if ($selectElementType == 'seo') {
+            } elseif ($selectElementType == 'seo') {
 
                 // select only versions with different seo versions
                 $metaVersionColl = new cApiMetaTagVersionCollection();
@@ -477,7 +476,7 @@ class cContentVersioning {
                 $metaVersionMap = array_unique($metaVersionMap);
                 $artLangVersionColl->setWhere('version', $metaVersionMap, 'IN');
 
-            } else if ($selectElementType == 'config') {
+            } elseif ($selectElementType == 'config') {
 
                 // select all versions
 

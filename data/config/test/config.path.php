@@ -67,13 +67,15 @@ $cfg['path']['contenido_locale']     = $cfg['path']['frontend'] . '/' . $cfg['pa
 
 $cfg['path']['contenido_temp']       = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
 
-$cfg['path']['tinymce3_scripts']     = array($cfg['path']['contenido_fullhtml'] . 'scripts/con_tiny.js');
+$cfg['path']['tinymce3_scripts']     = [$cfg['path']['contenido_fullhtml'] . 'scripts/con_tiny.js'];
 
 $cfg['path']['tinymce3_editor']      = $cfg['path']['all_wysiwyg'] . 'tinymce3/editor.php';
 $cfg['path']['tinymce3_editorclass'] = $cfg['path']['all_wysiwyg'] . 'tinymce3/editorclass.php';
 
 $cfg['path']['tinymce4_editor']      = $cfg['path']['all_wysiwyg'] . 'tinymce4/contenido/editor.php';
-$cfg['path']['tinymce4_scripts']     = array($cfg['path']['all_wysiwyg_html'] . 'tinymce4/contenido/js/con_tiny.js',
-                                       $cfg['path']['all_wysiwyg_html'] . 'tinymce4/tinymce/js/tinymce/tinymce.min.js');
+$cfg['path']['tinymce4_scripts'] = [
+    $cfg['path']['all_wysiwyg_html'] . 'tinymce4/contenido/js/con_tiny.js',
+    $cfg['path']['all_wysiwyg_html'] . 'tinymce4/tinymce/js/tinymce/tinymce.min.js',
+];
 
 ?>

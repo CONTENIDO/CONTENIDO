@@ -25,7 +25,8 @@ class cSecurity {
      *
      * @return bool
      *         True on success otherwise nothing.
-     * 
+     *
+     * @throws cFileNotFoundException
      * @throws cInvalidArgumentException
      */
     public static function checkRequests() {

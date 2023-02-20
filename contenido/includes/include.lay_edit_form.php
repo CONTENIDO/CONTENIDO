@@ -115,7 +115,7 @@ if (true === $layout->isLoaded()) {
     $code = $layoutInFile->getLayoutCode();
     // code = $layout->get("code");
     $name = cString::stripSlashes(conHtmlSpecialChars($layout->get("name")));
-    $description = $layout->get("description");
+    $description = $layout->get('description') ?? '';
 
     if (!$layoutInFile->isWritable($name, $layoutInFile->_getLayoutPath())) {
         $page->displayWarning(i18n("You have no write permissions for this file"));

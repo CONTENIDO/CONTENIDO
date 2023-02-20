@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Authentication
  */
-class cAuthHandlerFrontend extends cAuthHandlerAbstract {
+class cAuthHandlerFrontend extends cAuth {
 
     /**
      *
@@ -43,19 +43,11 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
     }
 
     /**
-     * Handle the pre authorization.
-     * Returns a valid user ID to be set before the login form is handled,
-     * otherwise false.
-     *
-     * @see cAuthHandlerAbstract::preAuthorize()
-     *
-     * @return string|false
-     *
-     * @throws cDbException
-     * @throws cException
+     * @inheritdoc
+     * @throws cDbException|cException
      */
-    public function preAuthorize() {
-        $password = isset($_POST['password']) ? $_POST['password'] : '';
+    public function preAuthenticate() {
+        $password = $_POST['password'] ?? '';
 
         if ($password == '') {
             // Stay as nobody when an empty password is passed
@@ -68,46 +60,43 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
     }
 
     /**
-     * Display the login form.
-     * Includes a file which displays the login form.
-     *
-     * @see cAuthHandlerAbstract::displayLoginForm()
+     * @deprecated Since 4.10.2, use {@see cAuthHandlerFrontend::preAuthenticate} instead
+     */
+    public function preAuthorize() {
+        return $this->preAuthenticate();
+    }
+
+    /**
+     * Includes a file which displays the frontend login form.
+     * @inheritdoc
      */
     public function displayLoginForm() {
         include(cRegistry::getFrontendPath() . 'front_crcloginform.inc.php');
     }
 
     /**
-     * Validate the credentials.
-     *
-     * Validate the users input against source and return a valid user
-     * ID or false.
-     *
-     * @see cAuthHandlerAbstract::validateCredentials()
-     *
-     * @return string|false
-     *
-     * @throws cDbException
-     * @throws cException
+     * @inheritdoc
+     * @throws cDbException|cException
      */
     public function validateCredentials() {
-		$frontendUserColl = new cApiFrontendUserCollection();
-		
-        $username = $frontendUserColl->escape(stripslashes(trim($_POST['username'])));
-        $password = $_POST['password'];
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        $frontendUserColl = new cApiFrontendUserCollection();
+        $username = $frontendUserColl->escape(stripslashes(trim($username)));
 
         $groupPerm = [];
 
+        if ($password == '') {
+            return false;
+        }
+
         if (isset($username)) {
             $this->auth['uname'] = $username;
-        } elseif ($this->_defaultNobody == true) {
+        } elseif ($this->_defaultNobody) {
             $uid = $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
 
             return $uid;
-        }
-
-        if ($password == '') {
-            return false;
         }
 
         $uid = false;
@@ -115,9 +104,9 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         $pass = false;
         $salt = false;
 
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
 
-        $where = "username = '" . $username . "' AND idclient='" . $client . "' AND active=1";
+        $where = "username = '" . $username . "' AND idclient = '" . $client . "' AND active = 1";
         $frontendUserColl->select($where);
 
         while (($item = $frontendUserColl->next()) !== false) {
@@ -127,7 +116,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
             $salt = $item->get('salt');
         }
 
-        if ($uid == false) {
+        if (!$uid) {
             $userColl = new cApiUserCollection();
             $where = "username = '" . $username . "'";
             $where .= " AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00' OR valid_from is NULL)";
@@ -149,7 +138,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
             }
         }
 
-        if ($uid == false || hash("sha256", md5($password) . $salt) != $pass) {
+        if (!$uid || hash("sha256", md5($password) . $salt) != $pass) {
             sleep(2);
 
             return false;
@@ -173,32 +162,27 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
     }
 
     /**
-     * Log the successful authentication.
-     *
      * Frontend logins won't be logged.
      *
-     * @see cAuthHandlerAbstract::logSuccessfulAuth()
+     * @inheritdoc
      */
     public function logSuccessfulAuth() {
         return;
     }
 
     /**
-     * Returns true if a user is logged in.
-     *
-     * @see cAuthHandlerAbstract::isLoggedIn()
-     * @return bool
+     * @inheritdoc
      */
     public function isLoggedIn() {
-        $authInfo = $this->getAuthInfo();
-
-        if(isset($authInfo['uid'])) {
-            $user = new cApiUser($authInfo['uid']);
-            $frontendUser = new cApiFrontendUser($authInfo['uid']);
+        $userId = $this->getUserId();
+        if (!empty($userId)) {
+            $user = new cApiUser($userId);
+            $frontendUser = new cApiFrontendUser($userId);
 
             return $user->get('user_id') != '' || $frontendUser->get('idfrontenduser') != '';
         } else {
             return false;
         }
     }
+
 }

@@ -51,7 +51,7 @@ $types_to_register = [
     'SERVER'
 ];
 foreach ($types_to_register as $global_type) {
-    $arr = @ ${'_' . $global_type};
+    $arr = ${'_' . $global_type} ?? [];
     if (is_array($arr) && count($arr) > 0) {
         // Second loop to prevent overwriting of globals by other globals'
         // values

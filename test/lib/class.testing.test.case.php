@@ -180,7 +180,7 @@ abstract class cTestingTestCase extends TestCase {
             $cfg['tab'][$table] = $table;
         }
 
-        // Ensure to remove any left over tables from previous tests, e. g. failed tests!
+        // Ensure to remove any leftover tables from previous tests, e.g. failed tests!
         $sql = SqlItemCollection::getDeleteStatement($this->_tables);
         cRegistry::getDb()->query($sql);
     }

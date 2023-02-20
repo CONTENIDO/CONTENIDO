@@ -38,7 +38,8 @@ class cLinkcheckerHelper
      *
      * @return array Sorted link checker errors
      */
-    public static function sortErrors(array $errors, string $sortBy) {
+    public static function sortErrors(array $errors, string $sortBy): array
+    {
         if ($sortBy === 'nameart') {
             $aNameArt = [];
             foreach ($errors as $key => $aRow) {
@@ -75,7 +76,8 @@ class cLinkcheckerHelper
      * @param string $url The url to check
      * @return bool
      */
-    public static function urlIsImage(string $url) {
+    public static function urlIsImage(string $url): bool
+    {
         return (bool) preg_match(self::IMAGE_TYPES_REGEX, $url);
     }
 
@@ -86,7 +88,8 @@ class cLinkcheckerHelper
      * @param string $url The url to check
      * @return bool
      */
-    public static function urlIsUri(string $url) {
+    public static function urlIsUri(string $url): bool
+    {
         return (bool) preg_match(self::URI_TYPES_REGEX, $url);
     }
 

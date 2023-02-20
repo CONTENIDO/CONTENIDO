@@ -23,14 +23,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiPathresolveCacheHelper {
 
     /**
-     * Flag to state state about created heap table.
+     * Flag to state about created heap table.
      *
      * @var bool
      */
     protected static $_tableCreated = false;
 
     /**
-     * Checks configuration of heap table creation, it's existance and creates
+     * Checks configuration of heap table creation, its existence and creates
      * it if needed.
      *
      * @param array $cfg

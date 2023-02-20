@@ -37,6 +37,22 @@ abstract class cContentTypeAbstract {
     const SETTINGS_TYPE_XML = 'xml';
 
     /**
+     * Constant defining the PHP comment marker used to wrap content type code.
+     *
+     * @since CONTENIDO 4.10.2
+     * @var string
+     */
+    const COMMENT_MARKER = '" . /*[CONTENT_TYPE]*/%s/*[/CONTENT_TYPE]*/ . "';
+
+    /**
+     * Constant defining the regular expression to detect wrapped content type code.
+     *
+     * @since CONTENIDO 4.10.2
+     * @var string
+     */
+    const COMMENT_MARKER_PATTERN = '#(\s*).(\s*)/\*\[CONTENT_TYPE\]\*/(.*?)/\*\[/CONTENT_TYPE\]\*/(\s*).(\s*)#mis';
+
+    /**
      * Name of the content type, e.g. 'CMS_TEASER'.
      *
      * @var string
@@ -189,7 +205,7 @@ abstract class cContentTypeAbstract {
         $this->_cfgClient = cRegistry::getClientConfig();
         $this->_session = cRegistry::getSession();
         $this->_useXHTML = cSecurity::toBoolean(getEffectiveSetting('generator', 'xhtml', 'false'));
-        $this->_uploadPath = $this->_cfgClient[$this->_client]['upl']['path'];
+        $this->_uploadPath = $this->_cfgClient[$this->_client]['upl']['path'] ?? '';
 
         $this->_readSettings();
     }
@@ -220,6 +236,87 @@ abstract class cContentTypeAbstract {
     }
 
     /**
+     * Wraps generated PHP code by content types with an anonymous function,
+     * which will be executed immediately and will return the output as a
+     * string, so it can be used to replace container placeholder in module
+     * codes. Surrounds the wrapped code also with special PHP comment
+     * marker like:
+     * <pre>
+     * / *[CONTENT_TYPE]* / . ' . $code . ' . / *[/CONTENT_TYPE]* /
+     * </pre>
+     * This has no effect to the
+     *
+     * Container placeholder in module outputs are defined as follows:
+     * <pre>
+     * echo "CMS_VALUE[123]";
+     * // or
+     * $myVariable = "CMS_VALUE[123]";
+     * </pre>
+     * The result of this function will be used to replace container
+     * placeholder of a content type. The result will look like
+     * <pre>
+     * echo "" . (function(){ return $output; })() . "";
+     * // or
+     * $myVariable = "" . (function(){ return $output; })() . "";
+     * </pre>
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $code Content type PHP code.
+     * @return string Content type PHP code wrapped with PHP comment marker
+     *                and an immediately executed anonymous function.
+     * @throws cInvalidArgumentException
+     */
+    protected function _wrapPhpViewCode(string $code): string
+    {
+        $code = trim($code);
+
+        /* Content type PHP code must start with an opening PHP tag `<?php`
+         * and must end with a closing PHP tag `?>` as a convention. */
+        if (
+            cString::getPartOfString($code, 0, 5) !== '<?php'
+            || cString::getPartOfString($code, -2) !== '?>'
+        ) {
+            throw new cInvalidArgumentException('Code should start with `<?php` and end with `?>`!');
+        }
+
+        /**
+         * Wrap content type PHP code properly, so we have a result which
+         * replaces a container placeholder like
+         *     `echo "CMS_VALUE[123]";`
+         * to something like
+         *     `echo "" . (function(){ return $output; })() . "";`
+         */
+
+        // Strip starting and ending PHP tag in the code, and strip whitespace/semicolon
+        // from the beginning and end of the code.
+        $code = cString::getPartOfString($code, 5);
+        $code = cString::getPartOfString($code, 0, -2);
+        $code = trim($code, "\n;");
+
+        // Wrap code with an immediately executed anonymous function. Buffer the
+        // output of the content type code, so we can return it in the anonymous
+        // function. This will enable us to use the result for a string
+        // concatenation, thus as a replacement for content types.
+        $code = "(function(){ ob_start(); $code \$output = ob_get_contents(); ob_end_clean(); return \$output; })()";
+
+        return sprintf(self::COMMENT_MARKER, $code);
+    }
+
+    /**
+     * Checks if the passed code is a wrapped content type PHP code.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $code
+     * @return bool
+     */
+    public static function isWrappedContentTypeCodePhp(string $code): bool
+    {
+        return cSecurity::toBoolean(
+            preg_match_all(self::COMMENT_MARKER_PATTERN, $code)
+        );
+    }
+
+    /**
      * @return array|string
      * @deprecated Since 4.10.2, use cContentTypeAbstract->getSettings() instead
      */
@@ -243,9 +340,10 @@ abstract class cContentTypeAbstract {
      * @since CONTENIDO 4.10.2
      * @param string $key Configuration item key
      * @param mixed $default Default value to return
-     * @return string|mixed|null
+     * @return string|mixed
      */
-    public function getSetting($key, $default = null) {
+    public function getSetting(string $key, $default = '')
+    {
         return $this->_settings[$key] ?? $default;
     }
 
@@ -254,9 +352,10 @@ abstract class cContentTypeAbstract {
      *
      * @since CONTENIDO 4.10.2
      * @param string $key Configuration item key
-     * @return string|mixed|null
+     * @return bool
      */
-    public function hasSetting($key) {
+    public function hasSetting($key): bool
+    {
         return isset($this->_settings[$key]);
     }
 
@@ -267,7 +366,8 @@ abstract class cContentTypeAbstract {
      * @param string $key Configuration item key
      * @param mixed $value Value to set
      */
-    public function setSetting($key, $value) {
+    public function setSetting(string $key, $value)
+    {
         $this->_settings[$key] = $value;
     }
 
@@ -288,7 +388,7 @@ abstract class cContentTypeAbstract {
                 $keyWithoutPrefix = str_replace($this->_prefix . '_', '', $key);
                 if (isset($_POST[$key])) {
                     $this->setSetting($key, $_POST[$key]);
-                } else if (isset($_POST[$this->_prefix . '_array_' . $keyWithoutPrefix])) {
+                } elseif (isset($_POST[$this->_prefix . '_array_' . $keyWithoutPrefix])) {
                     // key is of type prefix_array_field, so interpret value as an array
                     $value = explode(',', $_POST[$this->_prefix . '_array_' . $keyWithoutPrefix]);
                     $this->setSetting($key, $value);
@@ -318,9 +418,12 @@ abstract class cContentTypeAbstract {
      *         encoded code
      */
     protected function _encodeForOutput($code) {
-        $code = addslashes($code);
-        $code = str_replace("\\'", "'", $code);
-        return str_replace('$', '\\$', $code);
+        if (is_string($code)) {
+            $code = addslashes($code);
+            $code = str_replace("\\'", "'", $code);
+            $code = str_replace('$', '\\$', $code);
+        }
+        return $code;
     }
 
     /**
@@ -364,7 +467,7 @@ abstract class cContentTypeAbstract {
             $b = cString::toLowerCase($b["name"]);
             if ($a < $b) {
                 return -1;
-            } else if ($a > $b) {
+            } elseif ($a > $b) {
                 return 1;
             } else {
                 return 0;
@@ -401,7 +504,7 @@ abstract class cContentTypeAbstract {
             // check if the directory should be shown expanded or collapsed
             if ($this->_shouldDirectoryBeExpanded($dirData)) {
                 $template->set('d', 'SUBDIRLIST', $this->generateDirectoryList($dirData['sub']));
-            } else if (isset($dirData['sub']) && count($dirData['sub']) > 0) {
+            } elseif (isset($dirData['sub']) && count($dirData['sub']) > 0) {
                 $liClasses[] = 'collapsed';
                 $template->set('d', 'SUBDIRLIST', '');
             } else {

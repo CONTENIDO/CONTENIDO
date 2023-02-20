@@ -45,7 +45,7 @@ if ($action == 'mail_log_delete') {
             $mailLogSuccessCollection->deleteBy('idmail', $idmail);
         }
     }
-} else if ($action == 'mail_log_resend') {
+} elseif ($action == 'mail_log_resend') {
     $mailer = new cMailer();
     $mailer->resendMail($_REQUEST['idmailsuccess']);
 }
@@ -153,7 +153,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
 
     // add the bottom bulk editing functions
     $page->appendContent(mailLogBulkEditingFunctions());
-} else if ($area === 'mail_log_detail') {
+} elseif ($area === 'mail_log_detail') {
     if (isset($_REQUEST['idmail']) && is_numeric($_REQUEST['idmail'])) {
         // construct the back button
         $link = new cHTMLLink(cRegistry::getBackendUrl() . 'main.php?area=mail_log&frame=4&contenido=' . cRegistry::getSession()->id);

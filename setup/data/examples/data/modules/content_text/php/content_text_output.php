@@ -23,7 +23,7 @@ $text = "CMS_HTML[1]";
 if (cRegistry::isBackendEditMode()) {
     $label = mi18n("LABEL_TEXT");
 } else {
-    $label = NULL;
+    $label = '';
 }
 
 // use smarty template to output header text

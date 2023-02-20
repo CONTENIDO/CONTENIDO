@@ -61,7 +61,7 @@ abstract class cDbDriverHandler {
     /**
      * Loader database driver.
      *
-     * @var cDbDriverAbstract
+     * @var cDbDriverAbstract|NULL
      */
     protected $_driver = NULL;
 
@@ -141,7 +141,7 @@ abstract class cDbDriverHandler {
      * @param array $options [optional]
      *         Associative options as follows:
      *         - $options['haltBehavior'] (string) Optional, halt behavior on
-     *             occured errors
+     *             occurred errors
      *         - $options['haltMsgPrefix'] (string) Optional, Text to prepend to
      *             the halt message
      *         - $options['enableProfiling'] (bool) Optional, flag to enable
@@ -190,6 +190,90 @@ abstract class cDbDriverHandler {
             throw new cDbException($e->getMessage());
         }
     }
+
+    #region ABSTRACT
+
+    /**
+     * Returns error code of last occurred error from database.
+     *
+     * @return int
+     *         database error code
+     */
+    abstract public function getErrorNumber();
+
+    /**
+     * Sets the current error number from database.
+     *
+     * @param int $errorNumber
+     *         current error number
+     */
+    abstract public function setErrorNumber($errorNumber);
+
+    /**
+     * Returns error message of last occurred error from database.
+     *
+     * @return string
+     *         database error message
+     */
+    abstract public function getErrorMessage();
+
+    /**
+     * Sets the current error message from database.
+     *
+     * @param string $errorMessage
+     *         current error message
+     */
+    abstract public function setErrorMessage($errorMessage);
+
+    /**
+     * Returns the query ID resource.
+     *
+     * @return NULL|resource
+     */
+    abstract public function getQueryId();
+
+    /**
+     * Sets the query ID resource.
+     * Do not set it manually unless you know what you are doing.
+     *
+     * @param NULL|resource $queryId
+     *         query ID resource
+     */
+    abstract public function setQueryId($queryId);
+
+    /**
+     * Returns the link ID resource.
+     *
+     * @return NULL|resource
+     */
+    abstract public function getLinkId();
+
+    /**
+     * Sets the link ID resource.
+     * Do not set it manually unless you know what you are doing.
+     *
+     * @param NULL|resource $linkId
+     *         link ID resource
+     */
+    abstract public function setLinkId($linkId);
+
+    /**
+     * Returns the current record data.
+     *
+     * @return array|false|NULL
+     */
+    abstract public function getRecord();
+
+    /**
+     * Sets the current record data set.
+     * Do not set it manually unless you know what you are doing.
+     *
+     * @param array|false|NULL $record
+     *         current record set data
+     */
+    abstract public function setRecord($record);
+
+    #endregion ABSTRACT
 
     /**
      * Checks if profiling was enabled via configuration.
@@ -462,8 +546,8 @@ abstract class cDbDriverHandler {
             foreach ($arguments as $key => $value) {
                 $param = ':' . $key;
                 if (cSecurity::isInteger($value)) {
-                    $statement = preg_replace('/' . $param . '/', cSecurity::toInteger($value), $statement);
-                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toInteger($value) . '\'', $statement);
+                    $statement = preg_replace('/' . $param . '/', cSecurity::toString($value), $statement);
+                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toString($value) . '\'', $statement);
                 } else {
                     $param = cSecurity::toString($param);
                     $statement = preg_replace('/' . $param . '/', cSecurity::escapeString($value), $statement);
@@ -922,7 +1006,7 @@ abstract class cDbDriverHandler {
     public function f($name, $default = NULL) {
         $record = $this->getRecord();
 
-        return (isset($record[$name])) ? $record[$name] : $default;
+        return $record[$name] ?? $default;
     }
 
     /**

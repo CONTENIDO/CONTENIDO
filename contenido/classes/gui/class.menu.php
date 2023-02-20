@@ -55,25 +55,25 @@ class cGuiMenu {
 
     /**
      * Menu item left image source
-     * @var array
+     * @var string[]
      */
     public $image = [];
 
     /**
      * Menu item left image width
-     * @var array
+     * @var int[]
      */
     public $imagewidth = [];
 
     /**
      * Menu item left image alternate text
-     * @var array
+     * @var string[]
      */
     public $imageAlt = [];
 
     /**
-     *
-     * @var unknown_type
+     * @todo what is this property supposed to be?
+     * @var mixed
      */
     public $alt;
 
@@ -86,21 +86,20 @@ class cGuiMenu {
     /**
      *
      * @todo what is this property supposed to be?
-     * @var unknown_type
+     * @var mixed
      */
     public $caption;
 
     /**
      *
      * @todo what is this property supposed to be?
-     * @var unknown_type
+     * @var mixed
      */
     public $type;
 
     /**
-     *
      * @todo what is this property supposed to be?
-     * @var unknown_type
+     * @var string[]
      */
     public $show;
 
@@ -110,6 +109,11 @@ class cGuiMenu {
      * @var mixed
      */
     protected $_marked = false;
+
+    /**
+     * @var bool
+     */
+    public $rowmark;
 
     /**
      * Constructor to create an instance of this class.
@@ -299,7 +303,9 @@ class cGuiMenu {
      * @return string
      */
     protected function _getRowMouseEventHandlerJs() {
+        $class = __CLASS__;
         $js = <<<JS
+<!-- $class -->
 <script type="text/javascript">
     (function(Con, $) {
         $(function() {
@@ -307,6 +313,7 @@ class cGuiMenu {
         });
     })(Con, Con.$);
 </script>
+<!-- /$class -->
 JS;
         return $js;
     }

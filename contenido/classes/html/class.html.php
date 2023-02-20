@@ -106,7 +106,7 @@ class cHTML {
      *
      * @var array
      */
-    protected $_notEmptyAttributes = ['id', 'name', 'class', 'border'];
+    protected $_notEmptyAttributes = ['id', 'name', 'class', 'border', 'style'];
 
     /**
      * The content itself
@@ -497,8 +497,8 @@ class cHTML {
      *         $this for chaining
      */
     public function appendStyleDefinition($property, $value) {
-        if (cString::getPartOfString($value, -1) === ';') {
-            $value = cString::getPartOfString($value, 0, cString::getStringLength($value) - 1);
+        if (!empty($value)) {
+            $value = trim($value, ' ;');
         }
         $this->_styleDefinitions[$property] = $value;
 
@@ -509,7 +509,8 @@ class cHTML {
      * @since CONTENIDO 4.10.2
      * @return array
      */
-    public function getStyleDefinition() {
+    public function getStyleDefinition(): array
+    {
         return $this->_styleDefinitions;
     }
 
@@ -704,6 +705,20 @@ class cHTML {
             }
         }
 
+        if (cRegistry::getBackendSessionId()) {
+            if (!in_array($this->_tag, ['meta', 'title', 'link', 'script']) && ($this->_tag === 'input' && $this->getAttribute('type') !== 'hidden')) {
+                $class = $this->getAttribute('class');
+                if (!empty($class)) {
+                    $classes = preg_split('/\s+/', $class);
+                    $classes = array_diff($classes, ['con_element']);
+                    array_unshift($classes, 'con_element');
+                    $this->setAttribute('class', implode(' ', $classes));
+                } else {
+                    $this->setAttribute('class', 'con_element');
+                }
+            }
+        }
+
         // append the defined styles
         foreach ($this->_styleDefinitions as $property => $value) {
             $style .= "$property: $value;";
@@ -741,7 +756,7 @@ class cHTML {
     }
 
     /**
-     * Direct call of object as string will return it's generated markup.
+     * Direct call of object as string will return its generated markup.
      *
      * @return string
      *         Generated markup

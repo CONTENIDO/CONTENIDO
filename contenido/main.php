@@ -34,7 +34,6 @@ if (!defined('CON_FRAMEWORK')) {
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-//includes the backendpath
 $backendPath = cRegistry::getBackendPath();
 
 $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
@@ -90,7 +89,7 @@ if (isset($overrideid) && isset($overridetype)) {
 }
 
 // Create CONTENIDO classes
-// FIXME: Correct variable names, instances of classes at objects, not classes!
+// FIXME: Correct variable names, instances of classes are objects, not classes!
 $db = cRegistry::getDb();
 $notification = new cGuiNotification();
 $classarea = new cApiAreaCollection();
@@ -114,7 +113,6 @@ if (isset($changelang) && is_numeric($changelang)) {
     // If user switch language and the previously selected article is not existing in the new language
     // redirect to MyCONTENIDO area
     if ($area == 'con_editart' || $area == 'con_meta' || $area == 'con_tplcfg' || $area == 'con_content_list') {
-
     	$artLangColl = new cApiArticleLanguageCollection;
     	$artLangColl->setWhere('idart', $idart);
     	$artLangColl->setWhere('idlang', $lang);
@@ -122,13 +120,14 @@ if (isset($changelang) && is_numeric($changelang)) {
 
 		if ($artLangColl->count() == 0) {
 			$frame = $sess->url('index.php?area=mycontenido&frame=4');
-			echo "<script>parent.frames.top.location.href='" . $frame . "';</script>";
+			echo "<script type='text/javascript'>parent.frames.top.location.href='" . $frame . "';</script>";
 		}
     }
-
 }
 
-if (!is_numeric($client) || (!$perm->have_perm_client('client[' . $client . ']') && !$perm->have_perm_client('admin[' . $client . ']'))) {
+if (!is_numeric($client)
+    || (!$perm->have_perm_client('client[' . $client . ']')
+        && !$perm->have_perm_client('admin[' . $client . ']'))) {
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
@@ -184,8 +183,8 @@ foreach ($backend->getFile('inc') as $filename) {
     include_once($backendPath . $filename);
 }
 
-// If $action is set -> User klicked some button/link
-// get the appopriate code for this action and evaluate it.
+// If $action is set -> User clicked some button/link
+// get the appropriate code for this action and evaluate it.
 if (isset($action) && $action != '') {
     if (!isset($idart)) {
         $idart = 0;
@@ -193,7 +192,7 @@ if (isset($action) && $action != '') {
     $backend->log($idcat, $idart, $client, $lang, $action);
 }
 
-// include action file if it exists
+// Include action file if exists
 if (isset($action)) {
     $actionCodeFile = $backendPath . 'includes/type/action/include.' . $action . '.action.php';
     if (cFileHandler::exists($actionCodeFile)) {
@@ -220,18 +219,10 @@ if (count($backend->getFile('main')) > 0) {
     $sFilename = 'include.blank.php';
 }
 
-$cfg['debug']['backend_exectime']['end'] = getmicrotime();
+// Finalize debug of backend rendering
+cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldmemusage, $sFilename));
 
-$debugInfo = [
-    'Building this page (excluding CONTENIDO includes) took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds',
-    'Building the complete page took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds',
-    'Include memory usage: ' . humanReadableSize(memory_get_usage() - $oldmemusage),
-    'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
-    '*****' . $sFilename . '*****'
-];
-cDebug::out(implode("\n", $debugInfo));
-
-// Do user tracking (who is online)
+// User Tracking (who is online)
 $oActiveUser = new cApiOnlineUserCollection();
 $oActiveUser->startUsersTracking();
 

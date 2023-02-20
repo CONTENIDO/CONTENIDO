@@ -14,14 +14,34 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var cTemplate $tpl
+ * @var array $cfg
+ * @var string $area
+ */
+
 global $lay;
 
+$oClient = cRegistry::getClient();
+
+// Display critical error if client does not exist
+if (!$oClient->isLoaded()) {
+    $oPage = new cGuiPage("lay_new");
+    $oPage->displayCriticalError(i18n('No Client selected'));
+    $oPage->render();
+    return;
+}
+
+$client = cSecurity::toInteger(cRegistry::getClientId());
+
 $oLayouts = new cApiLayoutCollection();
-$oLayouts->select("idclient = " . (int) $client, '', 'name ASC');
+$oLayouts->select("idclient = " . $client, '', 'name ASC');
 
 $tpl->reset();
 
-$requestIdLay = (isset($_REQUEST['idlay'])) ? cSecurity::toInteger($_REQUEST['idlay']) : 0;
+$requestIdLay = cSecurity::toInteger($_REQUEST['idlay'] ?? '0');
 
 while (($layout = $oLayouts->next()) !== false) {
     if (!$perm->have_perm_area_action_item('lay_edit', 'lay_edit', $layout->get('idlay'))) {
@@ -29,7 +49,7 @@ while (($layout = $oLayouts->next()) !== false) {
     }
 
     $name  = conHtmlSpecialChars(cString::stripSlashes($layout->get('name')));
-    $descr = conHtmlSpecialChars(nl2br($layout->get('description')));
+    $descr = conHtmlSpecialChars(nl2br($layout->get('description') ?? ''));
     $idlay = $layout->get('idlay');
 
     if (cString::getStringLength($descr) > 64) {
@@ -40,7 +60,7 @@ while (($layout = $oLayouts->next()) !== false) {
     $tpl->set('d', 'ID', $marked);
     $tpl->set('d', 'DATA_ID', $idlay);
     $tpl->set('d', 'DESCRIPTION', ($descr == '') ? '' : $descr);
-    $tpl->set('d', 'NAME', '<a href="javascript:;" class="show_item" data-action="show_layout">' . $name . '</a>');
+    $tpl->set('d', 'NAME', '<a href="javascript:void(0)" class="show_item" data-action="show_layout">' . $name . '</a>');
 
     $inUse = $layout->isInUse();
     $hasDeletePermission = $perm->have_perm_area_action_item('lay', 'lay_delete', $idlay);
@@ -48,7 +68,7 @@ while (($layout = $oLayouts->next()) !== false) {
     // In use link
     if ($inUse) {
         $inUseDescr = i18n("Click for more information about usage");
-        $inUseLink = '<a href="javascript:;" title="'.$inUseDescr.'" data-action="inused_layout">'
+        $inUseLink = '<a href="javascript:void(0)" title="'.$inUseDescr.'" data-action="inused_layout">'
                    . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'exclamation.gif" title="'.$inUseDescr.'" alt="'.$inUseDescr.'"></a>';
     } else {
         $inUseLink = '';
@@ -62,10 +82,10 @@ while (($layout = $oLayouts->next()) !== false) {
             $delLink  = '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" title="'.$delTitle.'" alt="'.$delTitle.'">';
         } else {
             $delTitle = i18n("Delete layout");
-            $delLink  = '<a href="javascript:;" data-action="delete_layout" title="'.$delTitle.'">'
+            $delLink  = '<a href="javascript:void(0)" data-action="delete_layout" title="'.$delTitle.'">'
                       . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete.gif" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
         }
-    } else if ($hasDeletePermission && $inUse) {
+    } elseif ($hasDeletePermission && $inUse) {
         $delTitle = i18n("Layout is in use, cannot delete");
         $delLink = '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" title="'.$delTitle.'" alt="'.$delTitle.'">';
     } else {

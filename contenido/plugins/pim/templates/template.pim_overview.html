@@ -1,233 +1,76 @@
-        <!--
-        i18n("This plugin is already at the top!")
-        i18n("This plugin is already at the bottom!")
-        i18n("Error")
-        -->
-        
-		<script type="text/javascript">
-		var ie = 0;
-		</script>
-		<!--[if lte IE 7]><script>
-		var ie = 7;
-		</script><![endif]-->
 
-        <script type="text/javascript">
-
-            function toggleTableBody(tableId) {
-                var collapseButton = 'images/close_all.gif';
-                var expandButton = 'images/open_all.gif';
-                var curTable = document.getElementById(tableId);
-                var curButton = document.getElementById(tableId + '_img');
-
-                if (curTable.style.display == "table-row" || curTable.style.display == "" || curTable.style.display == "block"  ) {
-                    curTable.style.display = "none";
-                    curButton.src = expandButton;
-                } else if (curTable.style.display == "none") {
-                    if (ie == 7) {
-                        $('#' + tableId).css('display','block');
-                    } else {
-                        curTable.style.display = "table-row";
-                    }
-
-                    curButton.src = collapseButton;
-                }
-            }
-
-
-        function toggleTableBodyWithoutButton(tableId) {
-            var curTable = document.getElementById(tableId);
-
-            if (curTable.style.display == "table-row" || curTable.style.display == "") {
-                curTable.style.display = "none";
-            } else if (curTable.style.display == "none") {
-                curTable.style.display = "table-row";
-            }
-        }
-
-        function toggleDiv(divId) {
-            var curDiv = document.getElementById(divId);
-
-            if (curDiv.style.display == "block" || curDiv.style.display == "") {
-                curDiv.style.display = "none";
-            } else if (curDiv.style.display == "none") {
-                curDiv.style.display = "block";
-            }
-        }
-
-        function updateSortButtons() {
-            $(".sortPluginUp").css("visibility", "visible");
-            $(".sortPluginUp").first().css('visibility', 'hidden');
-            $(".sortPluginDown").css("visibility", "visible");
-            $(".sortPluginDown").last().css('visibility', 'hidden');
-        }
-        
-        (function(Con, $) {
-            
-            var ajax = false;
-            
-            $(function() {
-                updateSortButtons();
-
-                $(".sortPluginDown").click(function() {
-
-                    if (ajax) {
-                        ajax.abort();
-                    }
-                    
-                    var pluginId = parseInt($(this).attr("data-plugin-id"));
-                    var pluginRow = $("#plugin-row-" + pluginId);
-                    var pluginTable = pluginRow.parent().parent();
-
-                    var oldOrder = parseInt(pluginRow.attr("data-plugin-execorder"));
-                    var newOrder = oldOrder + 1;
-                    if (newOrder > {INSTALLED_PLUGINS}) {
-                        Con.showNotification("i18n('Error')", "i18n('This plugin is already at the bottom!')");
-                        return;
-                    }
-                    
-                    ajax = $.ajax({
-                        url: "ajaxmain.php",
-                        type: "POST",
-                        data: {
-                            ajax: "updatepluginorder",
-                            neworder: newOrder,
-                            idplugin: pluginId
-                        },
-                        success: function(data, status, jqxhr) {
-                            if (data.length === 0)  {
-                                return false;
-    						} else if (data === 'ok') {
-    						    pluginRow.attr("data-plugin-execorder", newOrder);
-    		                    pluginTable.next().children().children("tr").first().attr("data-plugin-execorder", oldOrder);
-    						    
-                                pluginTable.next().after(pluginTable);
-                                updateSortButtons();
-                            }
-                        }
-                    });
-                });
-
-             $(".sortPluginUp").click(function() {
-                
-	             	if (ajax) {
-	                	ajax.abort();
-	                }
-                 
-                    var pluginId = $(this).attr("data-plugin-id");
-                    var pluginRow = $("#plugin-row-" + pluginId);
-                    var pluginTable = pluginRow.parent().parent();
-
-                    var oldOrder = parseInt(pluginRow.attr("data-plugin-execorder"));
-                    var newOrder = oldOrder - 1;
-                    if (newOrder == 0) {
-                        Con.showNotification("i18n('Error')", "i18n('This plugin is already at the top!')");
-                        return;
-                    }
-                    
-                    ajax = $.ajax({
-                        url: "ajaxmain.php",
-                        type: "POST",
-                        data: {
-                            ajax: "updatepluginorder",
-                            neworder: newOrder,
-                            idplugin: pluginId
-                        },
-                        success: function(data, status, jqxhr) {
-                            if (data.length === 0)  {  
-                                return false;
-    						} else if (data === 'ok') {
-    						    pluginRow.attr("data-plugin-execorder", newOrder);
-    		                    pluginTable.prev().children().children("tr").first().attr("data-plugin-execorder", oldOrder);
-    						    
-                                pluginTable.prev().before(pluginTable);
-                                updateSortButtons();
-                            }
-                        }
-                    });
-                });
-
-                $(".uninstallSQL").change(function() {
-                    var link = $("#removalLink-" + $(this).attr("data-idplugin"));
-                    if (this.checked) {
-                        var newLink = link.attr("onclick").replace("uninstallsql=0", "uninstallsql=1");
-                        link.attr("onclick", newLink);
-                    } else {
-                        var newLink = link.attr("onclick").replace("uninstallsql=1", "uninstallsql=0");
-                        link.attr("onclick", newLink);
-                    }
-                });
-            });
-        })(Con, Con.$);
-        </script>
-
-        <style type="text/css">
-        #uploadplugin {
-            border: 1px solid #b5b5b5;
-            border-top: 0;
-            height: 40px;
-            padding: 8px;
-            margin-left: 10px;
-            margin-bottom: 15px;
-            width: 450px;
-        }
-
-        .updateplugin {
-            border: 1px solid #b5b5b5;
-            background-color: #e2e2e2;
-            padding: 15px;
-            width: 150px;
-        }
-
-        .pluginoverview {
-            border: 1px solid #b5b5b5;
-        }
-
-        .plugininfo {
-            border: 0;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-        }
-        </style>
-
-        <table width="800px" cellspacing="0" cellpadding="3" style="border: 0;">
+        <table>
             <tr>
-                <td><h2>{LANG_EXTRACTED}:</h2></td>
+                <td>
+                    <h2>{LANG_EXTRACTED}</h2>
+                    <div class="title_action_bar"><a href="javascript:void(0)" data-action="toggle_not_installed" data-status="0">{LANG_EXPAND_COLLAPSE_ALL}</a></div>
+                </td>
             </tr>
             <tr>
-                <td>{PLUGINS_EXTRACTED}</td>
+                <td class="not_installed">{PLUGINS_EXTRACTED}</td>
             </tr>
         </table>
         <div>&#160;</div>
-        <table width="800px" cellspacing="0" cellpadding="3" style="border: 0;">
+        <table>
             <tr>
-                <td><h2>{LANG_INSTALLED} (<span style="color: #FF0000;">{INSTALLED_PLUGINS}</span>)</h2></td>
-            </tr>
-            <tr class="text_medium" style="background-color: #e2e2e2; height: 20px; line-height: 20px;">
-                <td width="97%" style="border-top: 1px solid #B5B5B5; border-bottom: 1px solid #B5B5B5; border-left: 1px solid #B5B5B5;">
-                    <a href="#" onclick="javascript:toggleDiv('uploadplugin')" style="margin-left:10px;"><img alt="{LANG_UPLOAD}" title="{LANG_UPLOAD}" style="vertical-align:middle; margin-left:5px;" src="images/but_art_new.gif"> {LANG_UPLOAD}</a>
+                <td>
+                    <h2>{LANG_INSTALLED} (<span class="installed_info">{INSTALLED_PLUGINS}</span>)</h2>
+                    <div class="title_action_bar">
+                        <a href="javascript:void(0)" data-action="toggle_installed" data-status="0">{LANG_EXPAND_COLLAPSE_ALL}</a> -
+                        {LANG_FILTER}: (
+                            <a href="javascript:void(0)" data-action="display_all">{LANG_ALL}</a> /
+                            <a href="javascript:void(0)" data-action="display_active">{LANG_ACTIVE}</a> /
+                            <a href="javascript:void(0)" data-action="display_inactive">{LANG_INACTIVE}</a>
+                        )
+                    </div>
                 </td>
-				<td width="3%" style="border-top: 1px solid #B5B5B5; border-bottom: 1px solid #B5B5B5; border-right: 1px solid #B5B5B5;">
-					<a href="#" id="executionOrdnerInfo-link" title="" class="main i-link infoButton"></a>
+            </tr>
+            <tr class="text_medium upload">
+                <td class="action">
+                    <a href="javascript:void(0)" data-action="toggle_element" data-element-id="upload_plugin"><img alt="{LANG_UPLOAD}" title="{LANG_UPLOAD}" class="vAlignMiddle" src="images/but_art_new.gif"> {LANG_UPLOAD}</a>
+                </td>
+				<td class="info">
+					<a href="#" data-tooltip-id="execution_ordner_info" title="" class="main i-link infoButton"></a>
 				</td>
             </tr>
         </table>
-        <div id="uploadplugin" style="display: none">
-            {LANG_UPLOAD_CHOOSE}<br>
-            <form action="main.php" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="area" value="pim">
-                <input type="hidden" name="frame" value="4">
-                <input type="hidden" name="contenido" value="{_SID_}">
-                <input type="hidden" name="pim_view" value="install">
-                <input type="file" name="package" id="package">
-                <input type="submit" name="upload_package" id="upload_package" value="{LANG_UPLOAD_BUTTON}">
-            </form>
+        <div id="upload_plugin" class="folding_element_hidden">
+            <div>
+                <span class="title">{LANG_UPLOAD_CHOOSE}</span>
+                <form action="main.php" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="area" value="pim">
+                    <input type="hidden" name="frame" value="4">
+                    <input type="hidden" name="contenido" value="{_SID_}">
+                    <input type="hidden" name="pim_view" value="install">
+                    <input type="file" name="package" id="package">
+                    <input type="submit" name="upload_package" id="upload_package" value="{LANG_UPLOAD_BUTTON}">
+                </form>
+            </div>
         </div>
-        <div>&#160;</div>		
+        <div>&#160;</div>
 		<div class="clear"></div>
-        <div id="executionOrdnerInfo" class="nodisplay">
+        <div id="execution_ordner_info" class="nodisplay">
 			<strong>{LANG_EXECUTIONORDERINFO_TITLE}:</strong><br />
 			{LANG_EXECUTIONORDERINFO_TEXT}
         </div>
-		
-        {PLUGINS_INSTALLED}
+
+        <div class="installed">
+            {PLUGINS_INSTALLED}
+        </div>
+
+        <script type="text/javascript">
+            (function(Con, $) {
+                $(function() {
+                    // Instantiate PIM plugin component
+                    new Con.Plugin.Pim('{PAGE_NAME}', {
+                        installedPlugins: {INSTALLED_PLUGINS},
+                        textError: "{LANG_ERROR}",
+                        textPluginAlreadyAtBottom: "{LANG_PLUGIN_ALREADY_AT_BOTTOM}",
+                        textPluginAlreadyAtTop: "{LANG_PLUGIN_ALREADY_AT_TOP}",
+                        textUninstallPluginConfirmation: "{LANG_UNINSTALL_PLUGIN_CONFIRMATION}",
+                        textRemovePluginConfirmation: "{LANG_REMOVE_PLUGIN_CONFIRMATION}",
+                        textUninstallSqlSelectedInfo: "{LANG_SELECTION_UNINSTALL_SQL_INFO}"
+                    });
+                });
+            })(Con, Con.$);
+        </script>

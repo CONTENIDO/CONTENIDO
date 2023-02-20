@@ -880,6 +880,49 @@ a.foldingrow img {
     margin: 0 4px 0 12px;
 }
 
+/* Animated folding rows */
+tr.foldingrow_hidden {
+    border: none;
+}
+tr.foldingrow_hidden > td {
+    box-sizing: border-box;
+    padding: 0 !important;
+}
+tr.foldingrow_hidden > td > div {
+    box-sizing: border-box;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.6s ease, opacity 0.6s;
+}
+tr.foldingrow_hidden.display > td > div {
+    max-height: 1000px;
+    opacity: 1;
+    transition: max-height 0.6s ease, opacity 0.6s;
+}
+
+/* Animated folding elements */
+.folding_element_hidden {
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+}
+.folding_element_hidden.display {
+    max-height: none;
+}
+.folding_element_hidden > div {
+    box-sizing: border-box;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.6s ease, opacity 0.6s;
+}
+.folding_element_hidden.display > div {
+    max-height: 1000px;
+    opacity: 1;
+    overflow: auto;
+    transition: max-height 0.6s ease, opacity 0.6s;
+}
 
 span.cpager_currentitem {
     color: #000;
@@ -1896,8 +1939,15 @@ div#legend table.article {
     width: 99% !important;
 }
 
-#imgFormSubmit {
+#imgFormSubmit,
+.img_form_submit {
     cursor: pointer;
+}
+
+/* Module edit styles */
+#mod_edit .inputok,
+#mod_edit .outputok {
+    float: right;
 }
 
 /* Bulk Editing Functions on Article Overview and Mail Logging Page */
@@ -1965,7 +2015,7 @@ div.errorlist {
 
 .alltranslations td input.vAlignTop {
     float: none;
-    display: block;
+    display: inline-block;
 }
 
 .alltranslations td.actions {
@@ -2001,6 +2051,20 @@ div.errorlist {
 .atpager button,
 .atpager a {
     vertical-align: middle;
+}
+
+.atpager > img,
+.atpager > span,
+.atpager > a {
+    display: inline-block;
+    line-height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+    text-align: center;
+    vertical-align: top;
+}
+.atpager > a > img {
+    margin-top: 4px;
 }
 
 /**
@@ -2116,7 +2180,8 @@ input[type=image].vAlignMiddle {
     color: #b3b3b8;
 }
 
-.emptyCell {
+.emptyCell,
+.empty_cell {
     border-bottom: 0 !important;
 }
 
@@ -2219,7 +2284,7 @@ input[type=image].vAlignMiddle {
 }
 
 #con_translate div.atpager img {
-    margin-top: 1px;
+    margin-top: 4px;
 }
 
 .ui-widget-header {
@@ -2333,4 +2398,18 @@ a.infoButton,
 
     /* Good browsers */
     opacity: 0.3 !important;
+}
+
+/* Disabled links */
+.is_disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+a[aria-disabled="true"],
+input[aria-disabled="true"],
+button[aria-disabled="true"] {
+    /* NOTE: Disabling pointer events works on modern clients, we still
+       need a JS fallback to block clicks on elements like a, button, etc. */
+    pointer-events: none;
+    text-decoration: none;
 }

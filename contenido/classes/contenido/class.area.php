@@ -123,10 +123,11 @@ class cApiAreaCollection extends ItemCollection {
      * @return string
      * @throws cDbException
      */
-    public function getNameByAreaId($areaId) {
+    public function getNameByAreaId(int $areaId): string
+    {
         $sql = "SELECT `name` FROM `%s` WHERE `idarea` = %d";
         $this->db->query($sql, $this->table, $areaId);
-        return ($this->db->nextRecord()) ? $this->db->f('name') : '';
+        return $this->db->nextRecord() ? $this->db->f('name') : '';
     }
 
     /**
@@ -138,13 +139,14 @@ class cApiAreaCollection extends ItemCollection {
      * @return array
      * @throws cDbException
      */
-    public function getAreaIdsByParentIdOrAreaId($parentId, $areaId) {
+    public function getAreaIdsByParentIdOrAreaId($parentId, int $areaId): array
+    {
         $sql = "SELECT `idarea` FROM `%s` WHERE `parent_id` = '%s' OR `idarea` = %d";
         $this->db->query($sql, $this->table, $parentId, $areaId);
 
         $areaIds = [];
         while ($this->db->nextRecord()) {
-            $areaIds[] = $this->db->f('idarea');
+            $areaIds[] = cSecurity::toInteger($this->db->f('idarea'));
         }
 
         return $areaIds;

@@ -88,7 +88,7 @@ switch ($versioningState) {
                     'idlang' => cRegistry::getLanguageId()
                 ]);
 
-            } else if (is_numeric($idArtLangVersion) && $articleType == 'editable') {
+            } elseif (is_numeric($idArtLangVersion) && $articleType == 'editable') {
                 // version->editable
                 $artLangVersion = new cApiArticleLanguageVersion((int) $idArtLangVersion);
                 $artLangVersion->markAsEditable('complete');
@@ -101,7 +101,7 @@ switch ($versioningState) {
                     'idlang' => cRegistry::getLanguageId()
                 ]);
 
-            } else if ($idArtLangVersion == 'current') {
+            } elseif ($idArtLangVersion == 'current') {
                 // current->editable
                 $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
                 $artLang->markAsEditable('complete');
@@ -176,7 +176,7 @@ switch ($versioningState) {
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
             $buttonTitle = i18n('Copy to draft');
-        } else if ($articleType == 'editable') {
+        } elseif ($articleType == 'editable') {
             $buttonTitle = i18n('Publish draft');
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
@@ -478,16 +478,18 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     if (isset($_POST['onlineOne'])) {
         conMakeOnline(cRegistry::getArticleId(), cSecurity::toInteger($_POST['onlineOne']), 1);
-    } else if (isset($_POST['offlineOne'])) {
+    } elseif (isset($_POST['offlineOne'])) {
         conMakeOnline(cRegistry::getArticleId(), cSecurity::toInteger($_POST['offlineOne']), 0);
     }
 
     // synchronize a single article after checking permissions
-    if (isset($_POST['syncOne'])) {
+    $postSyncOne = cSecurity::toInteger($_POST['syncOne'] ?? '0');
+    if ($postSyncOne > 0) {
+        $tmpIdcat = cSecurity::toInteger(cRegistry::getCategoryId());
         $oCatLangColl = new cApiCategoryLanguageCollection();
-        $tmpIdcatlang = $oCatLangColl->getIdCatLangByIdcatAndIdlang(cRegistry::getCategoryId(), $_POST['syncOne']);
+        $tmpIdcatlang = $oCatLangColl->getIdCatLangByIdcatAndIdlang($tmpIdcat, $postSyncOne);
         $isSyncable = cSecurity::toBoolean($tmpIdcatlang);
-        if ($isSyncable && (($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", cRegistry::getCategoryId())) && ($perm->have_perm_client('lang[' . cSecurity::toInteger($_POST['syncOne']) . ']') || $perm->have_perm_client('admin[' . cRegistry::getClientId() . ']') || $perm->have_perm_client()))) {
+        if ($isSyncable && (($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", $tmpIdcat)) && ($perm->have_perm_client('lang[' . $postSyncOne . ']') || $perm->have_perm_client('admin[' . cRegistry::getClientId() . ']') || $perm->have_perm_client()))) {
             conSyncArticle(cRegistry::getArticleId(), cRegistry::getLanguageId(), cSecurity::toInteger($_POST['syncOne']));
         }
     }
@@ -496,7 +498,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $onlineValue = -1;
     if (isset($_POST['offlineAll'])) {
         $onlineValue = 0;
-    } else if (isset($_POST['onlineAll'])) {
+    } elseif (isset($_POST['onlineAll'])) {
         $onlineValue = 1;
     }
     if (isset($_POST['syncingLanguage']) && is_array($_POST['syncingLanguage']) && $onlineValue != -1) {
@@ -508,13 +510,15 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // synchronize multiple articles
     if (isset($_POST['syncAll'])) {
         if (is_array($_POST['syncingLanguage'])) {
+            $tmpIdcat = cSecurity::toInteger(cRegistry::getCategoryId());
             $oCatLangColl = new cApiCategoryLanguageCollection();
 
             foreach ($_POST['syncingLanguage'] as $langId) {
-                $tmpIdcatlang = $oCatLangColl->getIdCatLangByIdcatAndIdlang(cRegistry::getCategoryId(), $langId);
+                $langId = cSecurity::toInteger($langId);
+                $tmpIdcatlang = $oCatLangColl->getIdCatLangByIdcatAndIdlang($tmpIdcat, $langId);
                 $isSyncable = cSecurity::toBoolean($tmpIdcatlang);
-                if ($isSyncable && (($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", cRegistry::getCategoryId())) && ($perm->have_perm_client('lang[' . cSecurity::toInteger($langId) . ']') || $perm->have_perm_client('admin[' . cRegistry::getClientId() . ']') || $perm->have_perm_client()))) {
-                    conSyncArticle(cRegistry::getArticleId(), cRegistry::getLanguageId(), cSecurity::toInteger($langId));
+                if ($isSyncable && (($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", $tmpIdcat)) && ($perm->have_perm_client('lang[' . $langId . ']') || $perm->have_perm_client('admin[' . cRegistry::getClientId() . ']') || $perm->have_perm_client()))) {
+                    conSyncArticle(cRegistry::getArticleId(), cRegistry::getLanguageId(), $langId);
                 }
             }
         }
@@ -529,7 +533,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         || $versioningState == 'advanced' && $articleType == 'current')  {
         $sql = 'SELECT * FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
         $sql = $db->prepare($sql, $cfg["tab"]["art_lang"], $idart, $lang);
-    } else if ($action != 'con_newart' && ($selectedArticleId == 'current' || $selectedArticleId == 'editable')
+    } elseif ($action != 'con_newart' && ($selectedArticleId == 'current' || $selectedArticleId == 'editable')
         || $selectedArticleId == NULL) {
         if (is_numeric($versioning->getEditableArticleId($idartlang))) {
             $sql = 'SELECT * FROM `%s` WHERE `idartlangversion` = %d';
@@ -599,11 +603,11 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 	                $disabled = '';
 	            }
 	            $page->set("s", "REASON", i18n('Save article'));
-	        } else if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked == 1) {
+	        } elseif ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked == 1) {
 	            $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
 	            $inUse = true;
 	            $disabled = 'disabled="disabled"';
-	            $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+                $page->displayWarning(i18n('This article is currently frozen and can not be edited!'));
 	            $page->set("s", "REASON", i18n('This article is currently frozen and can not be edited!'));
 	        } else {
 	            $vuser = new cApiUser($obj->get("userid"));
@@ -753,6 +757,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $select->appendOptionElement($option[4]);
 
     $append = cApiCecHook::executeAndReturn('Contenido.Backend.AfterArticleLink');
+    $append = $append ?? '';
     if(cString::getStringLength($append) === 0) {
         $page->set('s', 'HOOK_AFTERARTICLELINK', '');
     } else {
@@ -1026,7 +1031,10 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
             // find this category in other languages
             $oCatLangColl = new cApiCategoryLanguageCollection();
-            $otherLangIdCatLang = $oCatLangColl->getIdCatLangByIdcatAndIdlang(cRegistry::getCategoryId(), $someLang->get("idlang"));
+            $otherLangIdCatLang = $oCatLangColl->getIdCatLangByIdcatAndIdlang(
+                cSecurity::toInteger(cRegistry::getCategoryId()),
+                cSecurity::toInteger($someLang->get("idlang"))
+            );
             $isSyncable = $otherLangIdCatLang > 0;
 
             // assign all texts depending on the situation
@@ -1264,21 +1272,30 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     if (isset($idart)) {
         if (!isset($idartlang) || 0 == $idartlang) {
             $oArtLangColl = new cApiArticleLanguageCollection();
-            $idartlang = $oArtLangColl->getIdByArticleIdAndLanguageId($idart, $lang);
+            $idartlang = $oArtLangColl->getIdByArticleIdAndLanguageId(
+                cSecurity::toInteger($idart),
+                cSecurity::toInteger($lang)
+            );
         }
     }
 
     if (isset($midcat)) {
         if (!isset($idcatlang) || 0 == $idcatlang) {
             $oCatLangColl = new cApiCategoryLanguageCollection();
-            $idcatlang = $oCatLangColl->getIdCatLangByIdcatAndIdlang($midcat, $lang);
+            $idcatlang = $oCatLangColl->getIdCatLangByIdcatAndIdlang(
+                cSecurity::toInteger($midcat),
+                cSecurity::toInteger($lang)
+            );
         }
     }
 
     if (isset($midcat) && isset($idart)) {
         if (!isset($idcatart) || 0 == $idcatart) {
             $oCatArtCol = new cApiCategoryArticleCollection();
-            $idcatart = $oCatArtCol->getIdByCategoryIdAndArticleId($midcat, $idart);
+            $idcatart = $oCatArtCol->getIdByCategoryIdAndArticleId(
+                cSecurity::toInteger($midcat),
+                cSecurity::toInteger($idart)
+            );
         }
     }
 

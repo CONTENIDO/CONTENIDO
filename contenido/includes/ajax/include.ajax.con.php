@@ -14,11 +14,20 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cApiUser $currentuser
+ * @var int $idcat
+ * @var int $client
+ */
+
+$bDebug = $bDebug ?? false;
+$action = $action ?? '';
+
 if (!$idcat) {
-    $idcat = cSecurity::toInteger($_REQUEST['idcat']);
+    $idcat = cSecurity::toInteger($_REQUEST['idcat'] ?? '0');
 }
 
-$sCatlist = cSecurity::toString($_REQUEST['wholelist']);
+$sCatlist = cSecurity::toString($_REQUEST['wholelist'] ?? '');
 if ($sCatlist != '') {
     $aCatlist = explode(',', $sCatlist);
 } else {

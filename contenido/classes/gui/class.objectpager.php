@@ -24,6 +24,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cGuiObjectPager extends cGuiFoldingRow {
 
     /**
+     * @var string Spacer as replacement for first-/prev-/next-/last-page
+     */
+    const PAGER_SPACER = '<img src="images/spacer.gif" alt="" width="18">';
+
+    /**
      *
      * @var cHTMLLink
      */
@@ -70,7 +75,7 @@ class cGuiObjectPager extends cGuiFoldingRow {
         if (!is_object($link)) {
             throw new cException('Parameter link is not an object');
         }
-        
+
         $this->_cPager = new cPager($items, $itemsperpage, $currentpage);
         $this->_pagerLink = $link;
         $this->_parameterToAdd = $parameterToAdd;
@@ -78,13 +83,13 @@ class cGuiObjectPager extends cGuiFoldingRow {
 
     /**
      *
-     * @see cGuiFoldingRow::render()
+     * @inheritdoc
      * @param bool $bContentOnly [optional]
      * @return string
      *         Generated markup
      */
     public function render($bContentOnly = false) {
-        // Do not display Page navigation if there is only one Page
+        // Do not display page navigation if there is only one page,
         // and we are not in newsletter section.
         if ($this->_cPager->getMaxPages() == 1) {
             $this->_headerRow->setStyle("display:none");
@@ -110,21 +115,23 @@ class cGuiObjectPager extends cGuiFoldingRow {
             $link->setContent($img);
 
             $link->setCustom($this->_parameterToAdd, $this->_cPager->getCurrentPage() - 1);
+            $link->setAttribute('data-page', $this->_cPager->getCurrentPage() - 1);
+
 
             $output .= $link->render();
             $output .= " ";
         } else {
-            $output .= '<img src="images/spacer.gif" alt="" width="8"> ';
-            $output .= '<img src="images/spacer.gif" alt="" width="8">';
+            $output .= self::PAGER_SPACER . ' ' . self::PAGER_SPACER;
         }
 
         foreach ($items as $key => $item) {
             $link->setContent($key);
             $link->setAlt(sprintf(i18n("Page %s"), $key));
             $link->setCustom($this->_parameterToAdd, $key);
+            $link->setAttribute('data-page', $key);
 
             switch ($item) {
-                case "|": $output .= "...";
+                case "|": $output .= '<span class="cpager_more">...</span>';
                     break;
                 case "current": $output .= '<span class="cpager_currentitem">' . $key . "</span>";
                     break;
@@ -152,14 +159,13 @@ class cGuiObjectPager extends cGuiFoldingRow {
             $output .= $link->render();
             $output .= " ";
         } else {
-            $output .= '<img src="images/spacer.gif" alt="" width="8"> ';
-            $output .= '<img src="images/spacer.gif" alt="" width="8">';
+            $output .= self::PAGER_SPACER . ' ' . self::PAGER_SPACER;
         }
 
         $this->_contentData->setAlignment("center");
         $this->_contentData->setClass("foldingrow_content");
 
-        // Do not display Page navigation if there is only one Page
+        // Do not display page navigation if there is only one page,
         // and we are not in newsletter section.
         if ($this->_cPager->getMaxPages() == 1) {
             $output = '';

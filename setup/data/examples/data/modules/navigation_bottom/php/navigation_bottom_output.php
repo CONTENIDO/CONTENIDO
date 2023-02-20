@@ -17,21 +17,26 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // read articles from defined cat, including its start article and ordering it
 // by its custom order
-$collector = new cArticleCollector(array(
-    'idcat' => getEffectiveSetting('navigation_bottom', 'idcat', 1),
-    'start' => true,
-    'order' => 'sortsequence'
-));
+$collector = new cArticleCollector(
+    [
+        'idcat' => getEffectiveSetting('navigation_bottom', 'idcat', 1),
+        'start' => true,
+        'order' => 'sortsequence',
+    ]
+);
 
-$articles = array();
+$articles = [];
 foreach ($collector as $article) {
-    $articles[] = array(
+    $articles[] = [
         'title' => $article->get('title'),
-        'url' => cUri::getInstance()->build(array(
-            'idart' => $article->get('idart'),
-            'lang' => cRegistry::getLanguageId()
-        ), true)
-    );
+        'url'   => cUri::getInstance()->build(
+            [
+                'idart' => $article->get('idart'),
+                'lang'  => cRegistry::getLanguageId(),
+            ],
+            true
+        ),
+    ];
 }
 
 // use smarty template to output header text

@@ -108,6 +108,13 @@ abstract class cCodeGeneratorAbstract {
     protected $_idartlang;
 
     /**
+     * Template configuration id.
+     *
+     * @var int
+     */
+    protected $_idtplcfg;
+
+    /**
      * Page title.
      * Usually from article language table.
      *
@@ -269,7 +276,7 @@ abstract class cCodeGeneratorAbstract {
      * Returns array containing used layout, template and template name.
      *
      * @return array
-     *         Assoziative array like
+     *         Associative array like
      *         [
      *             'idlay' => (int),
      *             'idtpl' => (int),
@@ -389,13 +396,13 @@ abstract class cCodeGeneratorAbstract {
                     if (cRegistry::isBackendEditMode()) {
                         //if ($editable) {
                             $tmp = $cTypeObject->generateEditCode();
-                        //} else if ($typeClassName !== 'cContentTypeImgeditor') {
+                        //} elseif ($typeClassName !== 'cContentTypeImgeditor') {
                         //    $tmp = $cTypeObject->generateViewCode();
                         //}
                     } else {
                         $tmp = $cTypeObject->generateViewCode();
                     }
-                } else if (cFileHandler::exists($typeCodeFile)) {
+                } elseif (cFileHandler::exists($typeCodeFile)) {
                     // include CMS type code file
                     include($typeCodeFile);
                 }
@@ -539,7 +546,7 @@ abstract class cCodeGeneratorAbstract {
                     $this->_idart,
                     $this->_lang
             );
-        } else if (is_numeric($version)) {
+        } elseif (is_numeric($version)) {
             $sql = 'SELECT b.type as type, a.typeid as typeid, a.value as value
                     FROM `%s` AS a
                     INNER JOIN `%s` as b

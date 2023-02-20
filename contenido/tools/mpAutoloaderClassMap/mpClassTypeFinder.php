@@ -1,14 +1,14 @@
 <?php
+
 /**
  * Contains class type token finder.
  *
  * @category   Development
  * @package    mpAutoloaderClassMap
  * @author     Murat Purc <murat@purc.de>
- * @copyright  Copyright (c) 2009-2010 Murat Purc (https://www.purc.de)
+ * @copyright  Murat Purc (https://www.purc.de)
  * @license    https://www.gnu.org/licenses/gpl-2.0.html - GNU General Public License, version 2
  */
-
 
 /**
  * Class to find class type tokens
@@ -19,6 +19,7 @@
  */
 class mpClassTypeFinder
 {
+
     /**
      * List of directories to ignore (note: is case-insensitive)
      * @var  array
@@ -218,6 +219,9 @@ class mpClassTypeFinder
             } elseif ($token[0] == T_CLASS) {
                 $this->_debug('findInFile: T_CLASS token found (token pos ' . $p . ')');
                 $prevTokenFound = true;
+            } elseif ($token[0] == T_TRAIT) {
+                $this->_debug('findInFile: T_TRAIT token found (token pos ' . $p . ')');
+                $prevTokenFound = true;
             }
             if ($prevTokenFound && $token[0] !== T_STRING) {
                 continue;
@@ -352,7 +356,7 @@ class mpClassTypeFinder
                 if (preg_match($item, $path)) {
                     return true;
                 }
-            } else if (strpos($path, $item) !== false) {
+            } elseif (strpos($path, $item) !== false) {
                 return true;
             }
         }

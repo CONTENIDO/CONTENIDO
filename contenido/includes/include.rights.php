@@ -26,12 +26,14 @@ $client = cRegistry::getClientId();
 $lang = cRegistry::getLanguageId();
 
 $userid = (isset($_REQUEST['userid'])) ? cSecurity::toString($_REQUEST['userid']) : '';
-$actionarea = (isset($_REQUEST['actionarea'])) ? cSecurity::toString($_REQUEST['actionarea']) : 'area';
-$right_list = (isset($_POST['right_list']) && is_array($_POST['right_list'])) ? $_POST['right_list'] : null;
-$rights_perms = (isset($_POST['rights_perms'])) ? cSecurity::toString($_POST['rights_perms']) : '';
-$rights_clientslang = (isset($_POST['rights_clientslang']) && is_numeric($_POST['rights_clientslang']))
-    ? cSecurity::toInteger($_POST['rights_clientslang']) : 0;
-$filter_rights = (isset($_POST['filter_rights'])) ? cSecurity::toString($_POST['filter_rights']) : '';
+$actionarea = cSecurity::toString($_REQUEST['actionarea'] ?? 'area');
+$right_list = $_POST['right_list'] ?? null;
+if (!is_array($right_list)) {
+    $right_list = null;
+}
+$rights_perms = cSecurity::toString($_POST['rights_perms'] ?? '');
+$rights_clientslang = cSecurity::toInteger($_POST['rights_clientslang'] ?? '0');
+$filter_rights = cSecurity::toString($_POST['filter_rights'] ?? '');
 
 if (!isset($rights_client)) {
     $rights_client = $client;
@@ -215,7 +217,7 @@ if ($oClientLang->isLoaded()) {
     // Account is sysadmin
     if (cString::findFirstPos($userPerms, 'sysadmin') !== false) {
         $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('warning', i18n("The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."), 0));
-    } else if (cString::findFirstPos($userPerms, 'admin[') !== false) {
+    } elseif (cString::findFirstPos($userPerms, 'admin[') !== false) {
         // Account is only assigned to clients with admin rights
         $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('warning', i18n("The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."), 0));
     } else {

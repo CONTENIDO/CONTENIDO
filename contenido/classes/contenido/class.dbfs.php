@@ -39,7 +39,7 @@ class cApiDbfsCollection extends ItemCollection {
     }
 
     /**
-     * Outputs dbfs file related by it's path property
+     * Outputs dbfs file related by its path property
      *
      * @param string $path
      *

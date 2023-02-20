@@ -169,7 +169,7 @@ class TinyMCE_Compressor {
 
 			if ($this->settings["source"] && file_exists($file . ".js")) {
 				$file .= ".js";
-			} else if (file_exists($file . ".min.js"))  {
+			} elseif (file_exists($file . ".min.js"))  {
 				$file .= ".min.js";
 			} else {
 				$file = "";

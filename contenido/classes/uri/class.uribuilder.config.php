@@ -68,7 +68,7 @@ class cUriBuilderConfig {
      * Set cUriBuilder configuration.
      *
      * @param array $cfg
-     *         Assoziative configuration array as follows:
+     *         Associative configuration array as follows:
      *         - $cfg['name'] = Name of UriBuilder class to use
      *         - $cfg['config'] = UriBuilder configuration
      * @throws cInvalidArgumentException

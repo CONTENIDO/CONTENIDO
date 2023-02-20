@@ -23,7 +23,7 @@ $date = "CMS_DATE[1]";
 if (cRegistry::isBackendEditMode()) {
     $label = mi18n("LABEL_DATE");
 } else {
-    $label = NULL;
+    $label = '';
 }
 
 // use smarty template to output header text

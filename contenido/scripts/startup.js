@@ -16,6 +16,31 @@
 
     /**
      * Module to startup CONTENIDO application.
+     *
+     * Usage of tooltips in CONTENIDO backend:
+     * ---------------------------------------
+     * 1. Create a link with the class 'i-link' and the 'data-tooltip-id'
+     *    attribute containing the id of the element to show as tooltip.
+     * 2. Create an element with the class 'nodisplay' or an inline-style
+     *    'display:none;', and the 'id' attribute, which is referenced by
+     *    the corresponding link. The element has to be hidden, and it is
+     *    just a container for the tooltip content.
+     *
+     * NOTES:
+     * The link and the corresponding tooltip content element can be separately
+     * rendered, their dom is not bound together.
+     * The old way to use the id attribute in the link with the ending "-link"
+     * is still supported, but deprecated.
+     *
+     * Example:
+     * --------
+     * <a href="javascript:void(0)" data-tooltip-id="my_unique_id" title="" class="i-link">Show tooltip</a>
+     *
+     * <div id="my_unique_id">
+     *     <strong>Title</strong><br>
+     *     <p>Some text to display</p>
+     * </div>
+     *
      * @module startup
      */
 
@@ -32,7 +57,11 @@
     $(function() {
         // Assigns the tooltip to backend info boxes
         $('a.i-link').each(function() {
-            var id = $(this).attr('id').substring(0, $(this).attr('id').indexOf('-link'));
+            var id = $(this).data('tooltip-id');
+            if (!id) {
+                // Check the old way, which is deprecated, but still supported
+                id = $(this).attr('id').substring(0, $(this).attr('id').indexOf('-link'));
+            }
             $(this).aToolTip({
                 clickIt:    true,
                 xOffset:    -20,
@@ -43,15 +72,6 @@
             });
         });
     });
-
-    // If browser is IE, disable BackgroundImageCache
-    // NOTE: This is used to disable background image caching in IE 6
-    try {
-        document.execCommand('BackgroundImageCache', false, true);
-    } catch (err) {
-
-    }
-
 
     // ########################################################################
     // Frame 1 (left_top) related initialization

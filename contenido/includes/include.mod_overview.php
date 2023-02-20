@@ -16,6 +16,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $db;
 
+$oClient = cRegistry::getClient();
+$oLanguage = cRegistry::getLanguage();
+
+// Display critical error if client or language does not exist
+if (!$oClient->isLoaded() || !$oLanguage->isLoaded()) {
+    $message = !$oClient->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+    $oPage = new cGuiPage("mod_overview");
+    $oPage->displayCriticalError($message);
+    $oPage->render();
+    return;
+}
+
 $auth = cRegistry::getAuth();
 $perm = cRegistry::getPerm();
 $sess = cRegistry::getSession();
@@ -26,21 +38,14 @@ $cfg = cRegistry::getConfig();
 
 $oPage = new cGuiPage('mod_overview');
 
-// display critical error if no valid client is selected
-if (cSecurity::toInteger($client) < 1) {
-    $oPage->displayCriticalError(i18n("No Client selected"));
-    $oPage->render();
-    return;
-}
-
 $requestIdMod = (isset($_REQUEST['idmod'])) ? cSecurity::toInteger($_REQUEST['idmod']) : 0;
-$elemPerPage = (isset($_REQUEST['elemperpage'])) ? cSecurity::toInteger($_REQUEST['elemperpage']) : 0;
-$page = (isset($_REQUEST['page'])) ? cSecurity::toInteger($_REQUEST['page']) : 1;
-$sortby = (isset($_REQUEST['sortby'])) ? cSecurity::toString($_REQUEST['sortby']) : '';
-$sortorder = (isset($_REQUEST['sortorder'])) ? cSecurity::toString($_REQUEST['sortorder']) : '';
-$filter = (isset($_REQUEST['filter'])) ? cSecurity::toString($_REQUEST['filter']) : '';
-$filterType = (isset($_REQUEST['filtertype'])) ? cSecurity::toString($_REQUEST['filtertype']) : '';
-$searchIn = (isset($_REQUEST['searchin'])) ? cSecurity::toString($_REQUEST['searchin']) : '';
+$elemPerPage = cSecurity::toInteger($_REQUEST['elemperpage'] ?? '0');
+$page = cSecurity::toInteger($_REQUEST['page'] ?? '1');
+$sortby = cSecurity::toString($_REQUEST['sortby'] ?? '');
+$sortorder = cSecurity::toString($_REQUEST['sortorder'] ?? '');
+$filter = cSecurity::toString($_REQUEST['filter'] ?? '');
+$filterType = cSecurity::toString($_REQUEST['filtertype'] ?? '');
+$searchIn = cSecurity::toString($_REQUEST['searchin'] ?? '');
 
 // Now build bottom with list
 $cApiModuleCollection = new cApiModuleCollection();
@@ -109,7 +114,7 @@ foreach ($allModules as $idmod => $module) {
 
         $link = new cHTMLLink();
         $link->setClass('show_item')
-            ->setLink('javascript:;')
+            ->setLink('javascript:void(0)')
             ->setAttribute('data-action', 'show_module');
 
         $moduleName = (cString::getStringLength(trim($module['name'])) > 0) ? $module['name'] : i18n("- Unnamed module -");
@@ -121,7 +126,7 @@ foreach ($allModules as $idmod => $module) {
 
         if ($sModuleError == "none") {
             $colName = $sName;
-        } else if ($sModuleError == "input" || $sModuleError == "output") {
+        } elseif ($sModuleError == "input" || $sModuleError == "output") {
             $colName = '<span class="moduleError">' . $sName . '</span>';
         } else {
             $colName = '<span class="moduleCriticalError">' . $sName . '</span>';
@@ -143,7 +148,7 @@ foreach ($allModules as $idmod => $module) {
 
         if ($inUse) {
             $inUseString = i18n("For more information about usage click on this button");
-            $inUseLink = '<a href="javascript:;" data-action="inused_module">'
+            $inUseLink = '<a href="javascript:void(0)" data-action="inused_module">'
                        . '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'exclamation.gif" title="' . $inUseString . '" alt="' . $inUseString . '"></a>';
             $delDescription = i18n("Module can not be deleted, because it is already in use!");
         } else {
@@ -154,7 +159,7 @@ foreach ($allModules as $idmod => $module) {
                     $deleteLink = '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete_inact.gif" title="' . $delTitle . '" alt="' . $delTitle . '">';
                 } else {
                     $delTitle = i18n("Delete module");
-                    $deleteLink = '<a href="javascript:;" data-action="delete_module" title="' . $delTitle . '">'
+                    $deleteLink = '<a href="javascript:void(0)" data-action="delete_module" title="' . $delTitle . '">'
                                 . '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
                 }
             } else {

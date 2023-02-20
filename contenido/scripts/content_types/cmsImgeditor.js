@@ -137,6 +137,7 @@
             // if the upload tab is shown, show the directories tab, too
             if ($(this).hasClass('upload')) {
                 $(self.frameId + ' .tabs #directories').show();
+                self.showFolderPath();
             }
         });
     };

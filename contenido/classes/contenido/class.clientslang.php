@@ -29,7 +29,6 @@ class cApiClientLanguageCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
         parent::__construct(cRegistry::getDbTableName('clients_lang'), 'idclientslang');
         $this->_setItemClass('cApiClientLanguage');
 
@@ -68,9 +67,9 @@ class cApiClientLanguageCollection extends ItemCollection {
      * @throws cDbException
      */
     public function hasLanguageInClients($iLang, array $aClientIds) {
-        $iLang = (int) $iLang;
+        $iLang = cSecurity::toInteger($iLang);
         $aClientIds = array_map('intval', $aClientIds);
-        $sWhere = 'idlang=' . $iLang . ' AND idclient IN (' . implode(',', $aClientIds) . ')';
+        $sWhere = ' `idlang` = ' . $iLang . ' AND `idclient` IN (' . implode(',', $aClientIds) . ')';
         return $this->flexSelect('', '', $sWhere);
     }
 
@@ -83,7 +82,7 @@ class cApiClientLanguageCollection extends ItemCollection {
      */
     public function getLanguagesByClient($client) {
         $list = [];
-        $sql = "SELECT idlang FROM `%s` WHERE idclient=%d";
+        $sql = "SELECT `idlang` FROM `%s` WHERE `idclient` = %d";
         $this->db->query($sql, $this->table, $client);
         while ($this->db->nextRecord()) {
             $list[] = $this->db->f("idlang");
@@ -101,12 +100,10 @@ class cApiClientLanguageCollection extends ItemCollection {
      * @throws cDbException
      */
     public function getLanguageNamesByClient($client) {
-        $cfg = cRegistry::getConfig();
-
         $list = [];
         $sql = "SELECT l.idlang AS idlang, l.name AS name
                 FROM `%s` AS cl, `%s` AS l
-                WHERE idclient=%d AND cl.idlang = l.idlang
+                WHERE idclient = %d AND cl.idlang = l.idlang
                 ORDER BY idlang ASC";
 
         $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
@@ -129,12 +126,10 @@ class cApiClientLanguageCollection extends ItemCollection {
      * @throws cDbException
      */
     public function getAllLanguagesByClient($client) {
-        $cfg = cRegistry::getConfig();
-
         $list = [];
         $sql = "SELECT *
                 FROM `%s` AS cl, `%s` AS l
-                WHERE cl.idclient=%d AND cl.idlang = l.idlang
+                WHERE cl.idclient = %d AND cl.idlang = l.idlang
                 ORDER BY l.idlang ASC";
 
         $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
@@ -153,14 +148,12 @@ class cApiClientLanguageCollection extends ItemCollection {
      * @throws cDbException
      */
     public function getFirstLanguageIdByClient($client) {
-        $cfg = cRegistry::getConfig();
-
         $sql = "SELECT l.idlang FROM `%s` AS cl, `%s` AS l "
             . "WHERE cl.idclient = %d AND cl.idlang = l.idlang LIMIT 0,1";
 
         $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
 
-        return ($this->db->nextRecord()) ? (int) $this->db->f('idlang') : NULL;
+        return ($this->db->nextRecord()) ? cSecurity::toInteger($this->db->f('idlang')) : NULL;
     }
 
     /**
@@ -168,19 +161,22 @@ class cApiClientLanguageCollection extends ItemCollection {
      *
      * @since CONTENIDO 4.10.2
      * @param int $client
-     * @return array
-     * @throws cDbException
+     *
+     * @return int[]
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function getAllanguageIdsByClient($client) {
-        $cfg = cRegistry::getConfig();
-
+    public function getAllLanguageIdsByClient(int $client): array
+    {
+        if ($client <= 0) {
+            return [];
+        }
         $list = [];
         $sql = "SELECT l.idlang FROM `%s` AS cl, `%s` AS l "
             . "WHERE cl.idclient = %d AND cl.idlang = l.idlang ORDER BY l.idlang ASC";
 
         $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
         while ($this->db->nextRecord()) {
-            $list[] = $this->db->f('idlang');
+            $list[] = cSecurity::toInteger($this->db->f('idlang'));
         }
 
         return $list;
@@ -340,7 +336,7 @@ class cApiClientLanguage extends Item {
      *         Type of the data to get
      *
      * @return array
-     *         Assoziative array
+     *         Associative array
      *
      * @throws cDbException
      * @throws cException

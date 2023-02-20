@@ -81,7 +81,7 @@ if ($requestActionHtml == 'save_newsletter_properties' && $perm->have_perm_area_
     $requestSelTestDestination = cSecurity::toInteger($oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang));
 }
 // Default value: Current user mail
-$sSendTestTarget = $oUser->get("realname") . " (" . $oUser->get("email") . ")";
+$sSendTestTarget = ($oUser->get("realname") ?? '') . " (" . $oUser->get("email") . ")";
 
 // ################################
 // Check external input
@@ -192,7 +192,7 @@ while ($oNewsletter = $oNewsletters->next()) {
     // Create the link to show/edit the newsletter
     $oLnk = new cHTMLLink();
     $oLnk->setClass('show_item')
-        ->setLink('javascript:;')
+        ->setLink('javascript:void(0)')
         ->setAttribute('data-action', 'news_show');
     $oMenu->setLink($iMenu, $oLnk);
 
@@ -213,7 +213,7 @@ while ($oNewsletter = $oNewsletters->next()) {
             $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_sendtest_16.gif', 'vAlignMiddle');
             $oImage->setAlt($aMsg["SendTestTitle"]);
             $oSendTest = new cHTMLLink();
-            $oSendTest->setLink('javascript:;')
+            $oSendTest->setLink('javascript:void(0)')
                 ->setAlt($aMsg["SendTestTitle"])
                 ->setAttribute('data-action', 'news_send_test')
                 ->setContent($oImage->render());
@@ -229,7 +229,7 @@ while ($oNewsletter = $oNewsletters->next()) {
             $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_dispatch_16.gif', 'vAlignMiddle');
             $oImage->setAlt($aMsg["AddJobTitle"]);
             $oAddJob = new cHTMLLink();
-            $oAddJob->setLink('javascript:;')
+            $oAddJob->setLink('javascript:void(0)')
                 ->setAlt($aMsg["AddJobTitle"])
                 ->setAttribute('data-action', 'news_add_job')
                 ->setContent($oImage->render());
@@ -244,7 +244,7 @@ while ($oNewsletter = $oNewsletters->next()) {
         $oImage = new cHTMLImage($cfg['path']['images'] . 'but_copy.gif', 'vAlignMiddle');
         $oImage->setAlt($aMsg["CopyTitle"]);
         $oCopy = new cHTMLLink();
-        $oCopy->setLink('javascript:;')
+        $oCopy->setLink('javascript:void(0)')
             ->setAlt($aMsg["CopyTitle"])
             ->setAttribute('data-action', 'news_duplicate')
             ->setContent($oImage->render());
@@ -256,7 +256,7 @@ while ($oNewsletter = $oNewsletters->next()) {
         $oImage->setAlt($aMsg["DelTitle"]);
 
         $oDelete = new cHTMLLink();
-        $oDelete->setLink('javascript:;')
+        $oDelete->setLink('javascript:void(0)')
             ->setAlt($aMsg["DelTitle"])
             ->setAttribute('data-action', 'news_delete')
             ->setContent($oImage->render());

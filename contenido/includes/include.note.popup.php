@@ -32,7 +32,7 @@ if ($action == 'note_save_item') {
     $item = $notes->createItem($itemtype, $itemid, $lang, $note, $categoryname);
     $item->store();
 
-    $cpage->addScript('<script>window.close();</script>');
+    $cpage->addScript('<script type="text/javascript">window.close();</script>');
 } else {
     $list = new NoteView($itemtype, $itemid);
     $list->setWidth('100%');

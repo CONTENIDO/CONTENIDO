@@ -95,7 +95,7 @@ function mr_strRenameCategory(array $data) {
 
     // hes 20100102
     // maximal 50 recursion level
-    $recursion = (is_int($data['recursion'])) ? $data['recursion'] : 1;
+    $recursion = cSecurity::toInteger($data['recursion'] ?? '1');
     if ($recursion > 50) {
         exit("#20100201-1503: sorry - maximum function nesting level of " . $recursion . " reached");
     }
@@ -614,7 +614,7 @@ function mr_setClientLanguageId($client) {
  * config.mod_rewrite_{client_id}.php.
  *
  * @param  int  $clientId      Id of client
- * @param  bool $forceReload   Flag to force to reload configuration, e. g. after
+ * @param  bool $forceReload   Flag to force to reload configuration, e.g. after
  *                             done changes on it
  *
  * @throws cInvalidArgumentException
@@ -860,7 +860,7 @@ function mr_arrayValue($array, $key, $default = NULL) {
  *                           If no filter functions are set, 'trim', 'strip_tags' and 'stripslashes'
  *                           will be used by default.
  *                           A user-defined function must accept the value as a parameter and must return
- *                           the filtered parameter, e. g.
+ *                           the filtered parameter, e.g.
  * <code>
  * function myFilter($data) {
  *    // do what you want with the data, e.g. cleanup of xss content
@@ -919,7 +919,7 @@ function mr_getRequest($key, $default = NULL) {
     } else {
         $val = $default;
     }
-    $cache[$key] = strip_tags(trim($val));
+    $cache[$key] = is_string($val) ? strip_tags(trim($val)) : '';
     return $cache[$key];
 }
 

@@ -52,7 +52,7 @@ class cLinkcheckerTester
             self::_checkCategoryArticles($aSearchIDInfosCatArt, $aErrors, $db, $cfg);
         }
 
-        // Checks other links (e. g. http, www, dfbs)
+        // Checks other links (e.g. http, www, dfbs)
         if (count($aSearchIDInfosNonID) != 0) {
             self::_checkOtherLinks($aSearchIDInfosNonID, $aErrors, $db, $cfg, $auth, $cronjob);
         }
@@ -280,7 +280,7 @@ class cLinkcheckerTester
     }
 
     /**
-     * Checks for other links (e. g. http, https, www, dfbs) found in articles.
+     * Checks for other links (e.g. http, https, www, dfbs) found in articles.
      *
      * @param array $aSearchIDInfosNonID
      * @param array $aErrors

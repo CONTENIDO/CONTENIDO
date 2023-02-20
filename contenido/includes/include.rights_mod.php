@@ -154,8 +154,8 @@ $sql = "SELECT * FROM " . $cfg["tab"]["mod"] . " WHERE idclient='" . cSecurity::
 $db->query($sql);
 
 while ($db->nextRecord()) {
-    $tplname = conHtmlentities($db->f("name"));
-    $description = conHtmlentities($db->f("description"));
+    $tplname = conHtmlentities($db->f('name'));
+    $description = conHtmlentities($db->f('description') ?? '');
 
     $objItem->updateAttributes([
         "class" => "td_rights0"

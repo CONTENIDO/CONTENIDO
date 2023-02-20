@@ -87,31 +87,44 @@ $thisperm = explode(',', $auth->auth['perm']);
 
 $accessibleClients = $classclient->getAccessibleClients();
 
+/**
+ * @var cApiUser $currentuser
+ */
+$rightsAreasHelper = new cRightsAreasHelper($currentuser, $auth, []);
+
+$isAuthUserSysadmin = $rightsAreasHelper->isAuthSysadmin();
+
 while ($db->nextRecord()) {
     $groupperm = explode(',', $db->f('perms'));
+
+    $rightsAreasHelper->setContextPermissions($groupperm);
 
     $allow = false;
 
     // Sysadmin check
-    if (in_array("sysadmin", $thisperm)) {
+    if ($isAuthUserSysadmin) {
         $allow = true;
     }
 
-    // Admin check
-    foreach ($accessibleClients as $key => $value) {
-        if (in_array("client[" . $key . "]", $groupperm)) {
-            $allow = true;
+    if (!$allow) {
+        // Admin check
+        foreach ($accessibleClients as $key => $value) {
+            if (cPermission::checkClientPermission(cSecurity::toInteger($key), $groupperm)) {
+                $allow = true;
+            }
         }
     }
 
-    // Group check
-    foreach ($groupperm as $localperm) {
-        if (in_array($localperm, $thisperm)) {
-            $allow = true;
+    if (!$allow) {
+        // Group check
+        foreach ($groupperm as $localperm) {
+            if (in_array($localperm, $thisperm)) {
+                $allow = true;
+            }
         }
     }
 
-    if ($allow == true) {
+    if ($allow) {
         $groupid = $db->f("group_id");
         $groupname = conHtmlSpecialChars($db->f("groupname"));
         $groupname = cString::getPartOfString($groupname, 4);
@@ -126,12 +139,12 @@ while ($db->nextRecord()) {
 
         $tpl->set('d', 'ICON', '');
 
-        $showLink = '<a href="javascript:;" class="show_item" data-action="show_group">' . $groupname . '</a>';
+        $showLink = '<a href="javascript:void(0)" class="show_item" data-action="show_group">' . $groupname . '</a>';
         $tpl->set('d', 'TEXT', $showLink);
 
         if ($perm->have_perm_area_action('groups', "groups_delete")) {
             $delTitle = i18n("Delete group");
-            $deleteLink = '<a href="javascript:;" data-action="delete_group" title="' . $delTitle . '"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+            $deleteLink = '<a href="javascript:void(0)" data-action="delete_group" title="' . $delTitle . '"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
         } else {
             $deleteLink = '&nbsp;';
         }

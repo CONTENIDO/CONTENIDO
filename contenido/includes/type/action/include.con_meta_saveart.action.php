@@ -120,7 +120,7 @@ if ($perm->have_perm_area_action($area, 'con_meta_edit') || $perm->have_perm_are
     if (!empty($METAmetatype) && preg_match('/^([a-zA-Z])([a-zA-Z0-9\.\:\-\_]*$)/', $METAmetatype)) {
         $metaTypeColl = new cApiMetaTypeCollection();
         $metaTypeColl->create($METAmetatype, $METAfieldtype, $METAmaxlength, $METAfieldname);
-    } else if (!empty($METAmetatype)) {
+    } elseif (!empty($METAmetatype)) {
         $validMeta = false;
     }
 

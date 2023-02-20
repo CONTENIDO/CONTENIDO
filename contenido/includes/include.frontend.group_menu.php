@@ -28,12 +28,12 @@ while (($fegroup = $fegroups->next()) !== false) {
 
     $link = new cHTMLLink();
     $link->setClass('show_item')
-        ->setLink('javascript:;')
+        ->setLink('javascript:void(0)')
         ->setAttribute('data-action', 'show_frontendgroup');
 
     $delTitle = i18n("Delete frontend group");
     $deleteLink = '
-        <a href="javascript:;" data-action="delete_frontendgroup" title="' . $delTitle . '">
+        <a href="javascript:void(0)" data-action="delete_frontendgroup" title="' . $delTitle . '">
             <img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
         </a>';
 

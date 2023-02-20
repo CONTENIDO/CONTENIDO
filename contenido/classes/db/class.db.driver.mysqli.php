@@ -106,7 +106,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
 
         $connectConfig['port'] = $connectConfig['port'] ?? NULL;
         $connectConfig['socket'] = $connectConfig['socket'] ?? NULL;
-        $connectConfig['flags'] = $connectConfig['flags'] ?? NULL;
+        $connectConfig['flags'] = cSecurity::toInteger($connectConfig['flags'] ?? '0');
         $connectConfig['database'] = $connectConfig['database'] ?? NULL;
 
         $res = mysqli_real_connect(
@@ -289,8 +289,12 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * @inheritdoc
      */
     public function escape($string) {
-        $linkId = $this->_handler->getLinkId();
-        return mysqli_real_escape_string($linkId, $string);
+        if (is_string($string)) {
+            $linkId = $this->_handler->getLinkId();
+            return mysqli_real_escape_string($linkId, $string);
+        } else {
+            return $string;
+        }
     }
 
     /**

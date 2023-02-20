@@ -27,7 +27,7 @@ cInclude('includes', 'functions.file.php');
 function consoleLog($value, $method = 'log') {
     $method = in_array($method, ['log', 'warn', 'error']) ? $method : 'log';
     $value  = json_encode($value);
-    echo "<script>console.{$method}('{$value}');</script>";
+    echo "<script type='text/javascript'>console.{$method}('{$value}');</script>";
 }
 
 /**
@@ -111,85 +111,31 @@ function isUtf8($input) {
 }
 
 /**
- * Returns the translated month name for to the given numeric month value.
- *
- * @param int $month
- *         numeric month value
- *
- * @return string|null
- *         translated month name
- *
- * @throws cException
+ * See {@see cDate::getCanonicalMonth()} for documentation.
+ * @deprecated Since 4.10.2, use {@see cDate::getCanonicalMonth()} instead
  */
 function getCanonicalMonth($month) {
-    $map = [
-        i18n("January"), i18n("February"), i18n("March"), i18n("April"),
-        i18n("May"), i18n("June"), i18n("July"), i18n("August"),
-        i18n("September"), i18n("October"), i18n("November"), i18n("December"),
-    ];
-
-    // $map is 0-based, so 1 has to be subtracted from the given $month
-    $index = is_numeric($month) ? (int) $month - 1 : null;
-
-    return array_key_exists($index, $map) ? $map[$index] : null;
+    return cDate::getCanonicalMonth($month);
 }
 
 /**
- * Returns the translated weekday name for to the given numeric weekday value.
- *
- * This function assumes that monday is the first day of the week!
- *
- * @param int $day
- *         numeric weekday value
- *
- * @return string|null
- *         translated weekday name
- *
- * @throws cException
+ * See {@see cDate::getCanonicalDay()} for documentation.
+ * @deprecated Since 4.10.2, use {@see cDate::getCanonicalDay()} instead
  */
 function getCanonicalDay($weekday) {
-    $map = [
-        i18n("Monday"), i18n("Tuesday"), i18n("Wednesday"), i18n("Thursday"),
-        i18n("Friday"), i18n("Saturday"), i18n("Sunday"),
-    ];
-
-    // $map is 0-based, so 1 has to be subtracted from the given $weekday
-    $index = is_numeric($weekday) ? (int) $weekday - 1 : null;
-
-    return array_key_exists($index, $map) ? $map[$index] : null;
+    return cDate::getCanonicalDay($weekday);
 }
 
 /**
- * Returns a formatted date and/or time-string according to the current settings
- *
- * @param mixed $timestamp
- *         a timestamp. If no value is given the current time will be used.
- * @param bool  $date
- *         if true the date will be included in the string
- * @param bool  $time
- *         if true the time will be included in the string
- *
- * @return string
- *         the formatted time string.
- *
- * @throws cDbException
- * @throws cException
+ * See {@see cDate::formatDatetime()} for documentation.
+ * @deprecated Since 4.10.2, use {@see cDate::formatDatetime()} instead
  */
 function displayDatetime($timestamp = "", $date = false, $time = false) {
-    if ($timestamp == "") {
-        $timestamp = time();
-    } else {
-        $timestamp = strtotime($timestamp);
-    }
-
-    if ($date && !$time) {
-        $ret = date(getEffectiveSetting("dateformat", "date", "Y-m-d"), $timestamp);
-    } else if ($time && !$date) {
-        $ret = date(getEffectiveSetting("dateformat", "time", "H:i:s"), $timestamp);
-    } else {
-        $ret = date(getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s"), $timestamp);
-    }
-    return $ret;
+    return cDate::formatDatetime(
+        cSecurity::toString($timestamp),
+        cSecurity::toBoolean($date),
+        cSecurity::toBoolean($time)
+    );
 }
 
 /**
@@ -525,10 +471,12 @@ function isValidDate($date) {
  * @return string
  */
 function htmldecode($string) {
-    $trans_tbl = conGetHtmlTranslationTable(HTML_ENTITIES);
-    $trans_tbl = array_flip($trans_tbl);
-    $ret = strtr($string, $trans_tbl);
-    return $ret;
+    if (is_string($string)) {
+        $trans_tbl = conGetHtmlTranslationTable(HTML_ENTITIES);
+        $trans_tbl = array_flip($trans_tbl);
+        return strtr($string, $trans_tbl);
+    }
+    return $string;
 }
 
 /**
@@ -1185,7 +1133,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ''));
 
     foreach ($data as $tmpidcat => $props) {
-        $spaces = cHTMLOptionElement::indent($props['level']);
+        $spaces = cHTMLOptionElement::indent(cSecurity::toInteger($props['level']));
         $selected = ($sValue == $tmpidcat);
         $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . '>' . $props['name'], $tmpidcat, $selected));
     }
@@ -1291,8 +1239,7 @@ function scanPlugins($entity) {
  * plugin2/plugin2.php
  *
  * The plugin's directory and file name have to be the same, otherwise the
- * function
- * won't find them!
+ * function won't find them!
  *
  * @since CONTENIDO 4.10.2
  * @param string $entity
@@ -1302,31 +1249,36 @@ function scanPlugins($entity) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function cScanPlugins($entity) {
+function cScanPlugins(string $entity)
+{
     // Use the global variable $cfg here, the function modifies it!
     global $cfg;
 
-    $basedir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $entity . '/';
-
-    if (is_dir($basedir) === false) {
+    if (empty($entity)) {
         return;
     }
 
-    $pluginorder = getSystemProperty('plugin', $entity . '-pluginorder');
-    $lastscantime = (int) getSystemProperty('plugin', $entity . '-lastscantime');
+    $basedir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $entity . '/';
+
+    if (!is_dir($basedir)) {
+        return;
+    }
+
+    $pluginOrder = getSystemProperty('plugin', $entity . '-pluginorder');
+    $lastScanTime = (int) getSystemProperty('plugin', $entity . '-lastscantime');
 
     $plugins = [];
 
     // Fetch and trim the plugin order
-    if ($pluginorder != '') {
-        $plugins = explode(',', $pluginorder);
+    if ($pluginOrder != '') {
+        $plugins = explode(',', $pluginOrder);
         foreach ($plugins as $key => $plugin) {
             $plugins[$key] = trim($plugin);
         }
     }
 
     // Don't scan all the time, but each 5 minutes
-    if ($lastscantime + 300 < time()) {
+    if ($lastScanTime + 300 < time()) {
         setSystemProperty('plugin', $entity . '-lastscantime', time());
         if (is_dir($basedir)) {
             if (false !== ($handle = cDirHandler::read($basedir))) {
@@ -1356,8 +1308,8 @@ function cScanPlugins($entity) {
         $diff = array_diff($oldPlugins, $plugins);
 
         if (!empty($diff)) {
-        	$pluginorder = implode(',', $plugins);
-        	setSystemProperty('plugin', $entity . '-pluginorder', $pluginorder);
+        	$pluginOrder = implode(',', $plugins);
+        	setSystemProperty('plugin', $entity . '-pluginorder', $pluginOrder);
         }
     }
 
@@ -1389,7 +1341,12 @@ function includePlugins($entity) {
  * @param string $entity
  *         string Name of the directory to scan
  */
-function cIncludePlugins($entity) {
+function cIncludePlugins(string $entity)
+{
+    if (empty($entity)) {
+        return;
+    }
+
     $cfg = cRegistry::getConfig();
 
     if (cHasPlugins($entity)) {
@@ -1407,7 +1364,12 @@ function cIncludePlugins($entity) {
  *         Name of the directory to scan
  * @return bool
  */
-function cHasPlugins($entity) {
+function cHasPlugins(string $entity): bool
+{
+    if (empty($entity)) {
+        return false;
+    }
+
     $cfg = cRegistry::getConfig();
 
     return isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity] && count($cfg['plugins'][$entity]));
@@ -1430,7 +1392,11 @@ function callPluginStore($entity) {
  * @param string $entity
  *         Name of the directory to scan
  */
-function cCallPluginStore($entity) {
+function cCallPluginStore(string $entity) {
+    if (empty($entity)) {
+        return;
+    }
+
     $cfg = cRegistry::getConfig();
 
     // Check out if there are any plugins
@@ -1988,4 +1954,28 @@ function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = fa
     }
 
     return $tplBread->generate($cfg['path']['templates'] . $cfg['templates']['breadcrumb'], $return);
+}
+
+/**
+ * Build debug information about the rendering status of backend pages.
+ * This function id used by main.php and ajaxmain.php at the moment.
+ *
+ * @since CONTENIDO 4.10.2
+ * @param array $cfg The global configuration array
+ * @param int $oldMemoryUsage  The memory usage after the backend initialization
+ * @param string $includedFile The main included file in the backend
+ * @return string Compiled information about the rendering status
+ */
+function cBuildBackendRenderDebugInfo(array &$cfg, $oldMemoryUsage, $includedFile) {
+    $cfg['debug']['backend_exectime']['end'] = getmicrotime();
+    $debugInfo = [
+        'Building this page (excluding CONTENIDO includes) took: '
+            . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds',
+        'Building the complete page took: '
+            . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds',
+        'Include memory usage: ' . humanReadableSize(memory_get_usage() - $oldMemoryUsage),
+        'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
+        '*****' . $includedFile . '*****'
+    ];
+    return implode("\n", $debugInfo);
 }

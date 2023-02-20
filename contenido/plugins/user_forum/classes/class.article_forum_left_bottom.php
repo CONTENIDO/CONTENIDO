@@ -73,7 +73,7 @@ class ArticleForumLeftBottom extends cGuiPage {
             // add 'show form' link
             $link = new cHTMLLink();
             $link->setClass('show_item')
-                ->setLink('javascript:;')
+                ->setLink('javascript:void(0)')
                 ->setAttribute('data-action', 'show_forum')
                 ->setAttribute('data-idart', $result[$i]['idart'])
                 ->setAttribute('data-idcat', $result[$i]['idcat']);
@@ -81,7 +81,7 @@ class ArticleForumLeftBottom extends cGuiPage {
 
             $link = new cHTMLLink();
             $deleteForm = UserForum::i18n('ALLDELETEFROMCAT');
-            $link->setLink('javascript:;')
+            $link->setLink('javascript:void(0)')
                 ->setAttribute('data-action', 'delete_forum')
                 ->setAttribute('data-idart', $result[$i]['idart'])
                 ->setContent('<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');

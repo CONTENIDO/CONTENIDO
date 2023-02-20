@@ -20,15 +20,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var cDb $db
  * @var array $cfg
  * @var string $area
- * @var string $action
  * @var int $client
  * @var int $frame
+ * @var int $idtpl
  */
 
 
 $tpl2 = new cTemplate();
 
 $page = new cGuiPage("tpl_edit_form", '', '0');
+
+$action = $action ?? '';
 
 if ($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $action)) {
     $page->displayOk(i18n("Deleted Template succcessfully!"));
@@ -44,71 +46,48 @@ if ($action == "tpl_new" && !$perm->have_perm_area_action_anyitem($area, $action
     return;
 }
 
-$idtpl = cSecurity::toInteger($_REQUEST['idtpl'] ?? '0');
+// $idtpl might be set in contenido/includes/type/action/include.tpl_edit.action.php!
+if (!isset($idtpl)) {
+    $idtpl = cSecurity::toInteger($_REQUEST['idtpl'] ?? '0');
+}
 $description = $description ?? '';
 $idlay = cSecurity::toInteger($idlay ?? '0');
-$vdefault = cSecurity::toInteger(!empty($vdefault) ? $vdefault : '0');
+$defaulttemplate = cSecurity::toInteger(!empty($defaulttemplate) ? $defaulttemplate : '0');
 $laydescription = '';
 
 if ($action == "tpl_new") {
     $tplname = i18n("-- New template --");
 }
 
-$sql = "SELECT
-        a.idtpl, a.name AS name, a.description, a.idlay, b.description AS laydescription, a.defaulttemplate
-        FROM
-            " . $cfg['tab']['tpl'] . " AS a
-        LEFT JOIN
-            " . $cfg['tab']['lay'] . " AS b ON a.idlay = b.idlay
-        WHERE a.idtpl = " . $idtpl . "
-        ORDER BY name";
-
-$db->query($sql);
-
-if ($db->nextRecord()) {
-    $idtpl = $db->f("idtpl");
-    $tplname = $db->f("name");
-    $description = $db->f("description");
-    $idlay = $db->f("idlay");
-    $laydescription = nl2br($db->f("laydescription"));
-    $vdefault = $db->f("defaulttemplate");
+$tplLayoutData = tplGetTplAndLayoutData($idtpl);
+if (!empty($tplLayoutData)) {
+    $idtpl = $tplLayoutData['idtpl'] ?? 0;
+    $tplname = $tplLayoutData['name'] ?? '';
+    $description = $tplLayoutData['description'] ?? '';
+    $idlay = $tplLayoutData['idlay'] ?? 0;
+    $laydescription = nl2br($tplLayoutData['laydescription'] ?? '');
+    $defaulttemplate = $tplLayoutData['defaulttemplate' ?? 0];
 }
 
 // *************** List layouts ****************
-$tpl2->set('s', 'ID', 'cLayoutSelect');
-$tpl2->set('s', 'NAME', 'idlay');
-$tpl2->set('s', 'CLASS', 'text_medium');
-$tpl2->set('s', 'OPTIONS', 'onchange="tplform.changelayout.value=1;tplform.submit();"');
-
-if ($idlay != 0) {
-    $tpl2->set('d', 'VALUE', 0);
-    $tpl2->set('d', 'CAPTION', '--- ' . i18n("none") . ' ---');
-    $tpl2->set('d', 'SELECTED', '');
-    $tpl2->next();
-} else {
-    $tpl2->set('d', 'VALUE', 0);
-    $tpl2->set('d', 'CAPTION', '--- ' . i18n("none") . ' ---');
-    $tpl2->set('d', 'SELECTED', 'selected');
-    $tpl2->next();
+$layoutColl = new cApiLayoutCollection();
+$layoutColl->addResultField('name');
+$layoutColl->setWhere('idclient', cSecurity::toInteger($client));
+$layoutColl->setOrder('name');
+$layoutColl->query();
+$layoutOptions = [
+    0 => '--- ' . i18n("none") . ' ---'
+];
+foreach ($layoutColl->fetchTable(['idlay' => 'idlay', 'name' => 'name']) as $entry) {
+    $layoutOptions[cSecurity::toInteger($entry['idlay'])] = $entry['name'];
 }
 
-$sql = 'SELECT `idlay`, `name` FROM `%s` WHERE `idclient` = %d ORDER BY `name`';
-$db->query($sql, $cfg['tab']['lay'], $client);
-while ($db->nextRecord()) {
-    if ($db->f("idlay") != $idlay) {
-        $tpl2->set('d', 'VALUE', $db->f("idlay"));
-        $tpl2->set('d', 'CAPTION', $db->f("name"));
-        $tpl2->set('d', 'SELECTED', '');
-        $tpl2->next();
-    } else {
-        $tpl2->set('d', 'VALUE', $db->f("idlay"));
-        $tpl2->set('d', 'CAPTION', $db->f("name"));
-        $tpl2->set('d', 'SELECTED', 'selected');
-        $tpl2->next();
-    }
-}
-
-$select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
+$select = new cHTMLSelectElement('idlay', '', 'cLayoutSelect');
+$select->setClass('text_medium')
+    ->setAttribute('onchange', 'tplform.changelayout.value=1;tplform.submit();');
+$select->autoFill($layoutOptions);
+$select->setSelected([$idlay]);
+$select = $select->toHtml();
 
 
 // Get all modules by clients
@@ -134,7 +113,7 @@ $form->add(i18n("Name"), $name->render());
 $descr = new cHTMLTextarea("description", $description);
 $form->add(i18n("Description"), $descr->render());
 
-$standardcb = new cHTMLCheckbox("vdefault", 1, "", $vdefault);
+$standardcb = new cHTMLCheckbox("defaulttemplate", 1, "", $defaulttemplate);
 $form->add(i18n("Default"), $standardcb->toHtml(false));
 
 $form->add(i18n("Layout"), $select);
@@ -236,7 +215,7 @@ if ($action == 'tpl_delete' || $action == 'tpl_new') {
 $page->setContent([$form]);
 
 $postIdTpl = cSecurity::toInteger($_POST['idtpl'] ?? '0');
-if ($postIdTpl <= 0 && $idtpl > 0) {
+if ($postIdTpl <= 0 && $idtpl > 0 && $action === 'tpl_edit') {
     $page->displayOk(i18n("Created new Template successfully!"));
 } elseif ($idtpl > 0 && (isset($_POST['submit_x']) || ($postIdTpl == $idtpl && $action != 'tpl_new'))) {
     $page->displayOk(i18n("Saved changes successfully!"));

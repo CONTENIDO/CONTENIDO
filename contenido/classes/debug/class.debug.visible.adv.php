@@ -214,6 +214,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count() {
         return sizeof($this->_aItems);
     }

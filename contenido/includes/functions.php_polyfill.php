@@ -25,8 +25,9 @@ if (!function_exists('is_iterable')) {
      * @param mixed $var The value to check
      * @return bool Returns TRUE if var is iterable, FALSE otherwise
      */
-    function is_iterable($var) {
-        return is_array($var) || (is_object($var) && ($var instanceof \Traversable));
+    function is_iterable($var): bool
+    {
+        return is_array($var) || ($var instanceof \Traversable);
     }
 
 }
@@ -42,12 +43,9 @@ if (!function_exists('is_countable')) {
      * @param mixed $var The value to check
      * @return bool Returns TRUE if var is countable, FALSE otherwise
      */
-    function is_countable($var) {
-        return (is_array($var)
-            || $var instanceof \Countable
-            || $var instanceof \SimpleXMLElement
-            || $var instanceof \ResourceBundle
-        );
+    function is_countable($var): bool
+    {
+        return (is_array($var) || $var instanceof \Countable);
     }
 
 }

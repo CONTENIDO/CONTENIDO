@@ -14,6 +14,21 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var cGuiNotification $notification
+ * @var string $area
+ *
+ * Form variables:
+ * @var int $idmod
+ * @var string $customtype
+ * @var string $name
+ * @var string $descr
+ * @var string $input
+ * @var string $output
+ * @var string $template
+ */
+
 cInclude('includes', 'functions.mod.php');
 
 if ($perm->have_perm_area_action($area, "mod_edit")) {
@@ -29,7 +44,7 @@ if ($perm->have_perm_area_action($area, "mod_edit")) {
         $cApiModule = new cApiModule($idmod);
         $moduleNameChanged = $cApiModule->get('name') != stripslashes($name);
 
-        $idmod = modEditModule($idmod, $name, $descr, $input, $output, $template, $type);
+        $idmod = modEditModule($idmod, $name, $descr, $input, $output, $template ?? '', $type);
     }
 
 } else {

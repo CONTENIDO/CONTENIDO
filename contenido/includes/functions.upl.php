@@ -194,8 +194,8 @@ function uplHasSubdirs($sDir) {
 
 /**
  * Sync database contents with directory and vice versa.
- * - Removes all db entries pointing to non existing directories
- * - Removes all db entries pointing to non existing upload files
+ * - Removes all db entries pointing to not existing directories
+ * - Removes all db entries pointing to not existing upload files
  * - Syncs found files in passed path with the database
  *
  * @param string $sPath
@@ -219,8 +219,8 @@ function uplSyncDirectory($sPath) {
 
     $oUploadsColl = new cApiUploadCollection();
 
-    // get current upload directory, it's subdirectories and remove all database
-    // entries pointing to a non existing upload directory on the file system
+    // get current upload directory, its subdirectories and remove all database
+    // entries pointing to a not existing upload directory on the file system
     $db->query(
         "SELECT DISTINCT(dirname) AS dirname FROM %s WHERE idclient=%d AND dirname LIKE '%s%%'", // NOTE: We escape % with %%
         $cfg['tab']['upl'], cSecurity::toInteger($client), $sPath
@@ -566,16 +566,17 @@ function uplGetThumbnail($sFile, $iMaxSize) {
     $sFileType = cString::toLowerCase(cFileHandler::getExtension($sFile));
 
     switch ($sFileType) {
-        case "png":
-        case "gif":
-        case "tiff":
-        case "tif":
-        case "bmp":
-        case "jpeg":
-        case "jpg":
-        case "iff":
-        case "xbm":
-        case "wbmp":
+        case 'bmp':
+        case 'gif':
+        case 'iff':
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+        case 'tif':
+        case 'tiff':
+        case 'wbmp':
+        case 'webp':
+        case 'xbm':
             $img = cApiImgScale($cfgClient['upl']['path'] . $sFile, $iMaxSize, $iMaxSize, false, false, 50);
             if ($img !== false) {
                 return $img;

@@ -16,8 +16,6 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
-global $cfg;
-
 // CONTENIDO path
 $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
 
@@ -25,11 +23,14 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 include_once($contenidoPath . 'includes/startup.php');
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
+    $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();
 
     foreach ($cfg['tab'] as $key => $value) {
-        $sql = 'OPTIMIZE TABLE ' . $value;
-        $db->query($sql);
+        if (is_string($value) && !empty($value)) {
+            $sql = 'OPTIMIZE TABLE `%s`';
+            $db->query($sql, $value);
+        }
     }
 
     if ($cfg['statistics_heap_table']) {

@@ -27,7 +27,7 @@ $header = "CMS_HTMLHEAD[1]";
 if (cRegistry::isBackendEditMode()) {
     $label = mi18n("LABEL_HEADER_FIRST");
 } else {
-    $label = NULL;
+    $label = '';
     $header = str_replace('&nbsp;', ' ', $header);
     $header = strip_tags($header);
     $header = trim($header);

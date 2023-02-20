@@ -84,6 +84,7 @@ class idna_convert
     protected $_allow_overlong = false;  // Overlong UTF-8 encodings are forbidden
     protected $_strict_mode = false;     // Behave strict or not
     protected $_idn_version = 2003;      // Can be either 2003 (old, default) or 2008
+    public $last = 0;
 
     /**
      * the constructor
@@ -93,7 +94,7 @@ class idna_convert
      */
     public function __construct($options = false)
     {
-        $this->slast = $this->_sbase + $this->_lcount * $this->_vcount * $this->_tcount;
+        $this->last = $this->_sbase + $this->_lcount * $this->_vcount * $this->_tcount;
         // If parameters are given, pass these to the respective method
         if (is_array($options)) {
             $this->set_parameter($options);
@@ -386,8 +387,8 @@ class idna_convert
     }
 
     /**
-     * Use this method to get the last error ocurred
-     * @return   string   The last error, that occured
+     * Use this method to get the last error occurred
+     * @return   string   The last error, that occurred
      */
     public function get_last_error()
     {

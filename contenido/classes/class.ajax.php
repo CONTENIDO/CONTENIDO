@@ -196,7 +196,7 @@ class cAjaxRequest {
 
             case 'inused_template':
 
-                cInclude('backend', 'includes/functions.tpl.php');
+                cInclude('includes', 'functions.tpl.php');
 
                 $cfg = cRegistry::getConfig();
                 $id = cSecurity::toInteger($_REQUEST['id'] ?? '0');

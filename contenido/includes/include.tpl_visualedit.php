@@ -21,25 +21,13 @@ cInclude('includes', 'functions.tpl.php');
 $idtpl = cSecurity::toInteger($idtpl);
 $client = cSecurity::toInteger($client);
 
-$sql = "SELECT
-        a.idtpl, a.name as name, a.description, a.idlay, b.description as laydescription, defaulttemplate
-        FROM
-        " . $cfg['tab']['tpl'] . " AS a
-        LEFT JOIN
-        " . $cfg['tab']['lay'] . " AS b
-        ON a.idlay=b.idlay
-        WHERE a.idtpl='" . $idtpl . "'
-        ORDER BY name";
-
-$db->query($sql);
-$db->nextRecord();
-
-$idtpl = (int) $db->f('idtpl');
-$tplname = $db->f('name');
-$description = $db->f('description');
-$idlay = (int) $db->f('idlay');
-$laydescription = nl2br($db->f('laydescription'));
-$bIsDefault = $db->f('defaulttemplate');
+$tplLayoutData = tplGetTplAndLayoutData($idtpl);
+$idtpl = $tplLayoutData['idtpl'] ?? 0;
+$tplname = $tplLayoutData['name'] ?? '';
+$description = $tplLayoutData['description'] ?? '';
+$idlay = $tplLayoutData['idlay'] ?? 0;
+$laydescription = nl2br($tplLayoutData['laydescription'] ?? '');
+$defaulttemplate = $tplLayoutData['defaulttemplate' ?? 0];
 
 // Get all modules by clients
 $moduleColl = new cApiModuleCollection();
@@ -96,7 +84,7 @@ foreach ($containerNumbers as $containerNr) {
                     $option->setAttribute('title', "Container $containerNr ({$name})");
                 }
 
-                if ($containerModules[$containerNr] == $key) {
+                if (isset($containerModules[$containerNr]) && $containerModules[$containerNr] == $key) {
                     $option->setSelected(true);
                 }
 
@@ -110,7 +98,7 @@ foreach ($containerNumbers as $containerNr) {
         if ($mode == 'optional' || $mode == '') {
             $option = new cHTMLOptionElement('-- ' . i18n("none") . ' --', 0);
 
-            if (isset($containerModules[$containerNr]) && $containerModules[$containerNr] != '0') {
+            if (isset($containerModules[$containerNr]) && $containerModules[$containerNr] != 0) {
                 $option->setSelected(false);
             } else {
                 $option->setSelected(true);
@@ -187,7 +175,7 @@ $form = '
     <input type="hidden" name="description" value="' . $description . '"' . $sElemClosing . '>
     <input type="hidden" name="tplname" value="' . $tplname . '"' . $sElemClosing . '>
     <input type="hidden" name="idlay" value="' . $idlay . '"' . $sElemClosing . '>
-    <input type="hidden" name="tplisdefault" value="' . $bIsDefault . '"' . $sElemClosing . '>
+    <input type="hidden" name="defaulttemplate" value="' . $defaulttemplate . '"' . $sElemClosing . '>
     <input type="hidden" name="action" value="tpl_visedit"' . $sElemClosing . '>';
 $form .= $sContainerInHead;
 

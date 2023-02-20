@@ -30,6 +30,17 @@ class cVersionModule extends cVersion {
     public $sModType;
 
     /**
+     * Module template, see table `con_mod.template`.
+     * Seems not to be used anymore, but still exists in the database
+     * and some places in the source code are accessing this property,
+     * see calls of {@see modEditModule()} function.
+     * The table field is also still in use in {@see cApiModule}.
+     *
+     * @var string
+     */
+    public $sTemplate;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * Initializes class variables.
@@ -54,6 +65,8 @@ class cVersionModule extends cVersion {
         $this->sType = 'module';
         $this->iIdentity = $iIdMod;
 
+        $this->sTemplate = '';
+
         $this->prune();
         $this->initRevisions();
         $this->_storeModuleInformation();
@@ -70,7 +83,7 @@ class cVersionModule extends cVersion {
         $this->setData('Name', $oModule->getField('name'));
         $this->setData('Type', $oModule->getField('type'));
         $this->setData('Error', $oModule->getField('error'));
-        $this->setData('Description', $oModule->getField('description'));
+        $this->setData('Description', $oModule->getField('description') ?? '');
         $this->setData('Deletable', $oModule->getField('deletable'));
         $this->setData('Template', $oModule->getField('template'));
         $this->setData('Static', $oModule->getField('static'));

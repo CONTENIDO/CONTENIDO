@@ -19,7 +19,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var cSession $sess
  * @var array $cfg
  * @var string $area
- * @var string $action
  * @var int $client
  * @var int $lang
  * @var int $frame
@@ -31,6 +30,8 @@ $oPage = new cGuiPage("recipients.group_edit", "newsletter");
 $oRGroups = new NewsletterRecipientGroupCollection();
 $oRGroupMembers = new NewsletterRecipientGroupMemberCollection();
 $oRGroup = new NewsletterRecipientGroup();
+
+$action = $action ?? '';
 
 $aFields = [
     "name" => [
@@ -294,7 +295,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     $oAddedRecipientList->setCell(0, 1, "<strong>" . i18n("Name", 'newsletter') . "</strong>");
     $oImgDel = new cHTMLImage("images/but_invert_selection.gif");
     $sLnkDelIcon = '<a title="' . i18n("Check all", 'newsletter')
-        . '" href="javascript://" onclick="fncCheckDel(\'deluser[]\');">' . $oImgDel->render() . '</a>';
+        . '" href="javascript:void(0)" onclick="fncCheckDel(\'deluser[]\');">' . $oImgDel->render() . '</a>';
     $oAddedRecipientList->setCell(0, 2, $sLnkDelIcon);
 
     $groupMembers = new NewsletterRecipientGroupMemberCollection();

@@ -420,7 +420,7 @@ class cSystemtest {
      *         The file info array or false if the file can't be accessed
      */
     protected function getFileInfo($sFilename) {
-        return cFileHandler::typeOwnerInfo($sFilename);
+        return cFileHandler::typeOwnerInfo(cSecurity::toString($sFilename));
     }
 
     /**
@@ -1132,9 +1132,9 @@ class cSystemtest {
 
             if (array_key_exists('frontend', $file) && $frontend != false) {
                 $ret = $this->testSingleFile($name, $severity, $frontend);
-            } else if (array_key_exists('config', $file) && $config != false) {
+            } elseif (array_key_exists('config', $file) && $config != false) {
                 $ret = $this->testSingleFile($name, $severity);
-            } else if (!array_key_exists('frontend', $file) && !array_key_exists('config', $file)) {
+            } elseif (!array_key_exists('frontend', $file) && !array_key_exists('config', $file)) {
                 $ret = $this->testSingleFile($name, $severity, $config);
             }
             if ($ret == false) {

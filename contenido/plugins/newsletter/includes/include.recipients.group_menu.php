@@ -148,7 +148,7 @@ while ($oRcpGroup = $oRcpGroups->next()) {
     // Show recipient group
     $oLnk = new cHTMLLink();
     $oLnk->setClass('show_item')
-        ->setLink('javascript:;')
+        ->setLink('javascript:void(0)')
         ->setAttribute('data-action', 'recipientgroup_show');
     $oMenu->setLink($iMenu, $oLnk);
 
@@ -164,7 +164,7 @@ while ($oRcpGroup = $oRcpGroups->next()) {
         $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
         $oImage->setAlt($aMsg["DelTitle"]);
         $oDelete = new cHTMLLink();
-        $oDelete->setLink('javascript:;')
+        $oDelete->setLink('javascript:void(0)')
             ->setAlt($aMsg["DelTitle"])
             ->setAttribute('data-action', 'recipientgroup_delete')
             ->setContent($oImage->render());

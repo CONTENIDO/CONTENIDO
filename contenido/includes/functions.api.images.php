@@ -109,6 +109,7 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     $maxX = cSecurity::toInteger($maxX);
     $maxY = cSecurity::toInteger($maxY);
     $cacheTime = cSecurity::toInteger($cacheTime);
+    $keepType = cSecurity::toBoolean($keepType);
 
     $frontendURL = cRegistry::getFrontendUrl();
     $fileType = cFileHandler::getExtension($fileName);
@@ -196,6 +197,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     $maxX = cSecurity::toInteger($maxX);
     $maxY = cSecurity::toInteger($maxY);
     $cacheTime = cSecurity::toInteger($cacheTime);
+    $keepType = cSecurity::toBoolean($keepType);
 
     $frontendURL = cRegistry::getFrontendUrl();
     $fileType = cFileHandler::getExtension($fileName);
@@ -453,7 +455,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
 
         $img = $cfgClient[$client]['cache']['path'] . $file;
         $deleteAfter = true;
-    } else if (!cFileHandler::exists($img)) {
+    } elseif (!cFileHandler::exists($img)) {
         // Try with upload string
         if (cFileHandler::exists($cfgClient[$client]['upl']['path'] . $img) && !is_dir($cfgClient[$client]['upl']['path'] . $img)) {
             $img = $cfgClient[$client]['upl']['path'] . $img;
@@ -470,7 +472,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
     $mxdAvImgEditingPossibility = cApiImageCheckImageEditingPossibility();
 
 	if ( $fileType == "svg") $mxdAvImgEditingPossibility = "untouched" ;
-	
+
     switch ($mxdAvImgEditingPossibility) {
         case '1': // gd1
             $method = 'gd1';
@@ -479,7 +481,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
             }
             if (!function_exists('imagecreatefromwebp') && $fileType == 'webp') {
                 $method = 'failure';
-            }				
+            }
             break;
         case '2': // gd2
             $method = 'gd2';
@@ -488,7 +490,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
             }
             if (!function_exists('imagecreatefromwebp') && $fileType == 'webp') {
                 $method = 'failure';
-            }			
+            }
             break;
         case 'im': // ImageMagick
             $method = 'im';
@@ -512,10 +514,6 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
         case 'im':
             $return = cApiImgScaleImageMagick($img, $maxX, $maxY, $crop, $expand, $cacheTime, $quality, $keepType);
             break;
-        case 'untouched':
-            $frontendURL = cRegistry::getFrontendUrl();
-            $return = str_replace(cRegistry::getFrontendPath(), $frontendURL, $img);
-            break;
         case 'failure':
         default:
             $frontendURL = cRegistry::getFrontendUrl();
@@ -523,7 +521,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
             break;
     }
 
-    if ($deleteAfter == true) {
+    if ($deleteAfter) {
         unlink($img);
     }
 
@@ -533,7 +531,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
 /**
  * Check possible image editing functionality.
  *
- * @return mixed
+ * @return string
  *         Information about installed image editing extensions/tools
  *         <pre>
  *         - 'im' ImageMagick is available and usage is enabled
@@ -611,7 +609,7 @@ function cApiImageGetTargetDimensions($x, $y, $maxX, $maxY, $expand) {
         }
     }
 
-    if ($expand == false && (($targetX > $x) || ($targetY > $y))) {
+    if (!$expand && (($targetX > $x) || ($targetY > $y))) {
         $targetX = $x;
         $targetY = $y;
     }
@@ -647,8 +645,8 @@ function cApiImageGetCacheFileName($md5, $fileType, $keepType) {
                 $fileName = $md5 . '.gif';
                 break;
             case 'webp':
-                $fileName = $md5 . '.webp';	
-                break;			
+                $fileName = $md5 . '.webp';
+                break;
             default:
                 $fileName = $md5 . '.jpg';
         }
@@ -666,7 +664,7 @@ function cApiImageGetCacheFileName($md5, $fileType, $keepType) {
  * @param string $cacheFile
  * @param int $cacheTime
  * @return bool
- *         Returns true, if cache file exists and7or is still valid or false
+ *         Returns true, if cache file exists and/or is still valid or false
  */
 function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
     // Check if the file exists. If it does, check if the file is valid.
@@ -674,7 +672,7 @@ function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
         if ($cacheTime == 0) {
             // Do not check expiration date
             return true;
-        } else if (!function_exists('md5_file')) {
+        } elseif (!function_exists('md5_file')) {
             // TODO: Explain why this is still needed ... or remove it
             if ((filemtime($cacheFile) + (60 * $cacheTime)) < time()) {
                 // Cache time expired, unlink the file
@@ -726,7 +724,7 @@ function cApiIsImageMagickAvailable() {
     // if IM is available, it contains the string "ImageMagick"
     if (!is_array($output) || count($output) == 0) {
         $imagemagickAvailable = false;
-    } else if (false === cString::findFirstPos($output[0], 'ImageMagick')) {
+    } elseif (false === cString::findFirstPos($output[0], 'ImageMagick')) {
         $imagemagickAvailable = false;
     } else {
         $imagemagickAvailable = true;
@@ -741,13 +739,12 @@ function cApiIsImageMagickAvailable() {
  * for JPG, JPEG or PNG images.
  *
  * @since CONTENIDO 4.10.2
- * @param string $imgType The image type, e. g. 'jpg', 'jpeg' or 'png'
+ * @param string $imgType The image type, e.g. 'jpg', 'jpeg' or 'png'
  * @param int $quality The quality of the image (0 - 100)
  * @return int Returns 100-1 for JPG and JPEG images, 0-9 for PNG images and null for other images.
  */
-function cApiImgGetCompressionRate($imgType, $quality = 0) {
-    $quality = cSecurity::toInteger($quality);
-
+function cApiImgGetCompressionRate(string $imgType, int $quality = 0): int
+{
     $cfg = cRegistry::getConfig();
     if ($quality <= 0 && isset($cfg['images']['image_quality']['compression_rate'])) {
         $quality = cSecurity::toInteger($cfg['images']['image_quality']['compression_rate']);
@@ -784,7 +781,8 @@ function cApiImgGetCompressionRate($imgType, $quality = 0) {
  * @param string|null $fileType File type (extension)
  * @return resource|null Created image resource or null
  */
-function cApiImgCreateImageResourceFromFile($fileName, $fileType = null) {
+function cApiImgCreateImageResourceFromFile(string $fileName, string $fileType = null)
+{
     if (!$fileType) {
         $fileType = cFileHandler::getExtension($fileName);
     }
@@ -797,10 +795,8 @@ function cApiImgCreateImageResourceFromFile($fileName, $fileType = null) {
         case 'png':
             $function = 'imagecreatefrompng';
             break;
-        case 'jpg':
-            $function = 'imagecreatefromjpeg';
-            break;
         case 'jpeg':
+        case 'jpg':
             $function = 'imagecreatefromjpeg';
             break;
         case 'webp':
@@ -810,21 +806,24 @@ function cApiImgCreateImageResourceFromFile($fileName, $fileType = null) {
             return null;
     }
 
-    return (function_exists($function)) ? @$function($fileName) : null;
+    return function_exists($function) ? @$function($fileName) : null;
 }
 
 /**
  * Saves the given image resource.
  *
-     * @since CONTENIDO 4.10.2
- * @param resource $targetImage The image resource
+ * @since CONTENIDO 4.10.2
+ * @param false|GdImage|resource $targetImage The image resource
  * @param string $saveTo The path to save the image to
  * @param int $quality The quality of the image
  * @param string $fileType The file type (extension)
  * @param bool $keepType Flag to keep the type. If false, the image resource will be saved as JPEG.
  * @return bool
  */
-function cApiImgSaveImageResourceToFile($targetImage, $saveTo, $quality, $fileType, $keepType) {
+function cApiImgSaveImageResourceToFile(
+    $targetImage, string $saveTo, int $quality, string $fileType, bool $keepType
+): bool
+{
     // save the file
     if ($keepType) {
         switch (cString::toLowerCase($fileType)) {

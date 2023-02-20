@@ -14,8 +14,19 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var array $cfg
+ * @var int $frame
+ * @var string $area
+ */
+
 // Global variables, send by the form
 global $idfrontenduser, $username, $newpd, $newpd2, $active;
+
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$idfrontenduser = cSecurity::toInteger($idfrontenduser ?? '0');
+$action = $action ?? '';
 
 $page = new cGuiPage("frontend.user_edit");
 
@@ -25,27 +36,30 @@ cIncludePlugins('frontendusers');
 
 // NOTE: Don't rename $feuser, plugin "frontendusers" function "frontendusers_valid_from_display" & "frontendusers_valid_from_store" uses it!
 $feuser = new cApiFrontendUser();
-$feuser->loadByPrimaryKey($idfrontenduser);
 
-$oFEGroupMemberCollection = new cApiFrontendGroupMemberCollection();
-$oFEGroupMemberCollection->setWhere('idfrontenduser', $idfrontenduser);
-$oFEGroupMemberCollection->addResultField('idfrontendgroup');
-$oFEGroupMemberCollection->query();
-
-// Fetch all groups the user belongs to (no group, one group, more than one group).
 // The array $aFEGroup can be used in frontend user plugins to display self defined user properties group dependent.
 $aFEGroup = [];
-while ($oFEGroup = $oFEGroupMemberCollection->next()) {
-    $aFEGroup[] = $oFEGroup->get("idfrontendgroup");
+
+if ($idfrontenduser) {
+    $feuser->loadByPrimaryKey($idfrontenduser);
+
+    // Fetch all groups the user belongs to (no group, one group, more than one group).
+    $oFEGroupMemberCollection = new cApiFrontendGroupMemberCollection();
+    $oFEGroupMemberCollection->setWhere('idfrontenduser', $idfrontenduser);
+    $oFEGroupMemberCollection->addResultField('idfrontendgroup');
+    $oFEGroupMemberCollection->query();
+    foreach ($oFEGroupMemberCollection->fetchTable(['idfrontendgroup' => 'idfrontendgroup']) as $entry) {
+        $aFEGroup[] = $entry['idfrontendgroup'];
+    }
 }
 
 if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "frontend_create")) {
     $feuser = $feUsers->create(" ".i18n("-- new user --"));
     $idfrontenduser = $feuser->get("idfrontenduser");
-    // put idfrontenduser of newly created user into superglobals for plugins
+    // Put idfrontenduser of newly created user into superglobals for plugins
     $_GET['idfrontenduser'] = $idfrontenduser;
     $_REQUEST['idfrontenduser'] = $_GET['idfrontenduser'];
-    //show success message
+    // Show success message
     $page->displayOk(i18n("Created new user successfully!"));
 }
 
@@ -72,6 +86,7 @@ JS;
 if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "frontend_delete")) {
     $feUsers->delete($idfrontenduser);
 
+    $_cecRegistry = cApiCecRegistry::getInstance();
     $iterator = $_cecRegistry->getIterator("Contenido.Permissions.FrontendUser.AfterDeletion");
 
     while ($chainEntry = $iterator->next()) {
@@ -86,14 +101,14 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
     $page->displayOk(i18n("Deleted user successfully!"));
 }
 
-if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
-    $username = stripslashes(trim($username));
+if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
+    $username = isset($username) ? trim(stripslashes($username)) : '';
     $messages = [];
     $variablesToStore = [];
 
     if ($action == "frontend_save_user" && cString::getStringLength($username) == 0) {
         $page->displayError(i18n("Username can't be empty"));
-    } else if ($action == "frontend_save_user" && cString::getStringLength($username) > 0) {
+    } elseif ($action == "frontend_save_user" && cString::getStringLength($username) > 0) {
         if (!empty($sReloadScript)) {
             $page->addScript($sReloadScript);
         }
@@ -246,9 +261,9 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
         $form->add(i18n("Group membership"), $sTemp);
 
         $oUser = new cApiUser($feuser->get("author"));
-        $form->add(i18n("Author"), $oUser->get('username') . " (". displayDatetime($feuser->get("created")).")");
+        $form->add(i18n("Author"), $oUser->get('username') . " (". cDate::formatDatetime($feuser->get("created")).")");
         $oUser2 = new cApiUser($feuser->get("modifiedby"));
-        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (". displayDatetime($feuser->get("modified")).")");
+        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (". cDate::formatDatetime($feuser->get("modified")).")");
     }
     $page->setContent($form);
     if (!empty($sReloadScript)) {

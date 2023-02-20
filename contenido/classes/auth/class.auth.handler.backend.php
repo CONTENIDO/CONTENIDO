@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Authentication
  */
-class cAuthHandlerBackend extends cAuthHandlerAbstract {
+class cAuthHandlerBackend extends cAuth {
 
     /**
      * Constructor to create an instance of this class.
@@ -30,40 +30,39 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      */
     public function __construct() {
         $cfg = cRegistry::getConfig();
-        $this->_lifetime = (int) $cfg['backend']['timeout'];
+        $this->_lifetime = cSecurity::toInteger($cfg['backend']['timeout']);
         if ($this->_lifetime == 0) {
             $this->_lifetime = 15;
         }
     }
 
     /**
-     * Handle the pre authentication.
+     * There is no pre authentication in backend.
      *
-     * There is no pre authentication in backend so false is returned.
-     *
-     * @see cAuthHandlerAbstract::preAuthorize()
-     * @return false
+     * @inheritdoc
      */
-    public function preAuthorize() {
+    public function preAuthenticate() {
         return false;
     }
 
     /**
-     * Display the login form.
-     * Includes a file which displays the login form.
-     *
-     * @see cAuthHandlerAbstract::displayLoginForm()
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @deprecated Since 4.10.2, use {@see cAuthHandlerBackend::preAuthenticate} instead
+     */
+    public function preAuthorize() {
+        return $this->preAuthenticate();
+    }
+
+    /**
+     * Includes a file which displays the backend login form.
+     * @inheritdoc
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function displayLoginForm() {
         // @TODO  We need a better solution for this.
         //        One idea could be to set the request/response type in
         //        global $cfg array instead of checking $_REQUEST['ajax']
         //        everywhere...
-        if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
+        if (!empty($_REQUEST['ajax'] ?? '')) {
             $oAjax = new cAjaxRequest();
             $sReturn = $oAjax->handle('authentication_fail');
             echo $sReturn;
@@ -73,22 +72,13 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
     }
 
     /**
-     * Validate the credentials.
-     *
-     * Validate the users input against source and return a valid user
-     * ID or false.
-     *
-     * @see cAuthHandlerAbstract::validateCredentials()
-     *
-     * @return string|false
-     *
-     * @throws cDbException
-     * @throws cException
+     * @inheritdoc
+     * @throws cDbException|cException
      */
     public function validateCredentials() {
-        $username = isset($_POST['username']) ? $_POST['username'] : '';
-        $password = isset($_POST['password']) ? $_POST['password'] : '';
-        $formtimestamp = isset($_POST['formtimestamp']) ? $_POST['formtimestamp'] : '';
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $formtimestamp = $_POST['formtimestamp'] ?? '';
 
         // add slashes if they are not automatically added
         if (cRegistry::getConfigValue('simulate_magic_quotes') !== true) {
@@ -110,7 +100,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
 
         if (isset($username)) {
             $this->auth['uname'] = $username;
-        } else if ($this->_defaultNobody == true) {
+        } elseif ($this->_defaultNobody) {
             $uid = $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
 
             return $uid;
@@ -141,7 +131,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
             $salt = $item->get("salt");
         }
 
-        if ($uid == false || hash("sha256", md5($password) . $salt) != $pass) {
+        if (!$uid || hash("sha256", md5($password) . $salt) != $pass) {
             // No user found, sleep and exit
             sleep(2);
 
@@ -173,15 +163,16 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      * Eventually the global $saveLoginTime is set to true which will trigger the update of the user properties
      * "currentlogintime" and "lastlogintime" in mycontenido.
      *
-     * @see cAuthHandlerAbstract::logSuccessfulAuth()
+     * @inheritdoc
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function logSuccessfulAuth() {
         global $client, $lang, $saveLoginTime;
 
         $perm = new cPermission();
+
+        $saveLoginTime = false;
 
         // Find the first accessible client and language for the user
         $clientLangColl = new cApiClientLanguageCollection();
@@ -208,9 +199,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         }
 
         $idaction = $perm->getIdForAction('login');
-
-        $authInfo = $this->getAuthInfo();
-        $uid = $authInfo['uid'];
+        $uid = $this->getUserId();
 
         // create a actionlog entry
         $actionLogCol = new cApiActionlogCollection();
@@ -222,16 +211,13 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
     }
 
     /**
-     * Returns true if a user is logged in.
-     *
-     * @see cAuthHandlerAbstract::isLoggedIn()
+     * @inheritdoc
      * @return bool
      */
     public function isLoggedIn() {
-        $authInfo = $this->getAuthInfo();
-
-        if(isset($authInfo['uid'])) {
-            $user = new cApiUser($authInfo['uid']);
+        $userId = $this->getUserId();
+        if (!empty($userId)) {
+            $user = new cApiUser($userId);
 
             return $user->get('user_id') != '';
         } else {

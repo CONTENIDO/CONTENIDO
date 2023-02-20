@@ -140,7 +140,7 @@ if ($idart) {
             // template configuration found
             $idtplcfg = $db->f('idtplcfg');
             $idtpl = $db->f('idtpl');
-            $description = $db->f('description');
+            $description = $db->f('description') ?? '';
 
             if ($db->f('locked') == 1) {
                 $inUse = true;
@@ -191,7 +191,7 @@ if ($idart) {
         // template configuration found
         $idtplcfg = $db->f('idtplcfg');
         $idtpl = $db->f('idtpl');
-        $description = $db->f('description');
+        $description = $db->f('description') ?? '';
     } else {
         if ($idtpl) {
             // create new configuration entry
@@ -224,7 +224,7 @@ if (!$db->nextRecord()) {
 
     $db->query($sql);
     $db->nextRecord();
-    $description = $db->f('description');
+    $description = $db->f('description') ?? '';
     if (0 != $db->f('idtplcfg')) {
         // Template has a pre-configuration, copy pre-configuration data to
         // category configuration with the $idtplcfg from the category
@@ -340,8 +340,10 @@ foreach ($containerModules as $containerNumber => $containerModuleId) {
         $input = $contenidoModuleHandler->readInput() . "\n";
     }
 
-    $containerConfig = isset($containerConfigurations[$containerNumber]) ? $containerConfigurations[$containerNumber] : '';
-    $modulecode = cApiModule::processContainerInputCode($containerNumber, $containerConfig, $input);
+    $containerConfig = $containerConfigurations[$containerNumber] ?? '';
+    $modulecode = cApiModule::processContainerInputCode(
+        cSecurity::toInteger($containerNumber), $containerConfig, $input
+    );
 
     ob_start();
     eval($modulecode);
@@ -441,7 +443,7 @@ if ($idtpl) {
 if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
     $tpl->set('s', 'HEADER', i18n('Category template configuration'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
-} else if ($area == 'con_tplcfg' && (int) $idart > 0) {
+} elseif ($area == 'con_tplcfg' && (int) $idart > 0) {
     $tpl->set('s', 'HEADER', i18n('Article template configuration'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
 } else {

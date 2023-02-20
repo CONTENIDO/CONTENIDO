@@ -2148,7 +2148,6 @@ contenido/templates/standard/template.tplcfg_edit_form.html -text
 contenido/templates/standard/template.upl_artlist.html -text svneol=unset#text/plain
 contenido/templates/standard/template.upl_dirs_overview.html -text
 contenido/templates/standard/template.upl_edit.html -text
-contenido/templates/standard/template.upl_files_overview.html -text
 contenido/templates/standard/template.upl_files_upload.html -text
 contenido/templates/standard/template.upl_left_top.html -text
 contenido/templates/standard/template.upl_search_results.html -text

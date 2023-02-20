@@ -42,7 +42,7 @@ while (($workflow = $workflows->next()) !== false) {
     // Create the link to show/edit the workflow
     $link = new cHTMLLink();
     $link->setClass('show_item')
-        ->setLink('javascript:;')
+        ->setLink('javascript:void(0)')
         ->setAlt($wfdescription)
         ->setAttribute('data-action', 'workflow_show');
     $ui->setLink($wfid, $link);
@@ -51,7 +51,7 @@ while (($workflow = $workflows->next()) !== false) {
     $image = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
     $image->setAlt($delTitle);
     $delete = new cHTMLLink();
-    $delete->setLink('javascript:;')
+    $delete->setLink('javascript:void(0)')
         ->setAlt($delTitle)
         ->setAttribute('data-action', 'workflow_delete')
         ->setContent($image->render());

@@ -197,14 +197,14 @@ foreach ($aUserTable as $mkey => $params) {
     $idfrontenduser = $params["idfrontenduser"];
     $link = new cHTMLLink();
     $link->setClass('show_item')
-        ->setLink('javascript:;')
+        ->setLink('javascript:void(0)')
         ->setAttribute('data-action', 'show_frontenduser');
 
     $iMenu++;
 
     $delTitle = i18n("Delete user");
     $deleteLink = '
-        <a href="javascript:;" data-action="delete_frontenduser" title="' . $delTitle . '">
+        <a href="javascript:void(0)" data-action="delete_frontenduser" title="' . $delTitle . '">
             <img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
         </a>';
 

@@ -21,10 +21,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage ContentType
  */
 class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
-    /**
-     * @var int
-     */
-    protected $_idtplcfg;
 
     /**
      * @inheritdoc
@@ -196,7 +192,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // or after opening head tag
         if (cString::findFirstPos($this->_layoutCode, '{CSS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{CSS}', $cssFile, $this->_layoutCode);
-        } else if (!empty($cssFile)) {
+        } elseif (!empty($cssFile)) {
             if (cString::findFirstPos($this->_layoutCode, '</title>') !== false) {
                 $matches = [];
                 if (preg_match_all("#(<head>.*?</title>)(.*?</head>)#si", $this->_layoutCode, $matches)) {
@@ -215,7 +211,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // or before closing body tag if there is no {JS}
         if (cString::findFirstPos($this->_layoutCode, '{JS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{JS}', $jsFile, $this->_layoutCode);
-        } else if (!empty($jsFile)) {
+        } elseif (!empty($jsFile)) {
             $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
         }
 
@@ -260,7 +256,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         // save the generated code even if there are faulty modules
-        // if one does not do so, a non existing cache file
+        // if one does not do so, a not existing cache file
         // will be tried to be loaded in frontend
         $this->_saveGeneratedCode($idcatart);
 
@@ -549,7 +545,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 $index = (bool) (in_array('all', $content) || in_array('index', $content));
                 if (in_array('index', $content) || in_array('all', $content)) {
                     $index = true;
-                } else if (in_array('noindex', $content)) {
+                } elseif (in_array('noindex', $content)) {
                     $index = true;
                 } else {
                     $index = NULL;
@@ -559,7 +555,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             if (is_null($follow)) {
                 if (in_array('follow', $content) || in_array('all', $content)) {
                     $follow = true;
-                } else if (in_array('nofollow', $content)) {
+                } elseif (in_array('nofollow', $content)) {
                     $follow = true;
                 } else {
                     $follow = NULL;
@@ -614,10 +610,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             if (!is_array($metaTag)) {
                 // skip $metaTag if it's no array
                 continue;
-            } else if (!array_key_exists($type, $metaTag)) {
+            } elseif (!array_key_exists($type, $metaTag)) {
                 // add element to reduced array if it's of different type
                 $result[0][] = $metaTag;
-            } else if ($metaTag[$type] !== $nameOrEquiv) {
+            } elseif ($metaTag[$type] !== $nameOrEquiv) {
                 // add element to reduced array if it has different name
                 $result[0][] = $metaTag;
             } else {

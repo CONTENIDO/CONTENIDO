@@ -48,7 +48,7 @@ if (0 < cString::getStringLength($imageSource)) {
 if (cRegistry::isBackendEditMode()) {
     $label = mi18n("LABEL_IMAGE");
 } else {
-    $label = NULL;
+    $label = '';
 }
 
 // use smarty template to output header text

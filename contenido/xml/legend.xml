@@ -2,8 +2,8 @@
 <!--
 CONTENIDO XML language file
 
-NOTE: Comments below with i18n() are used for translation purposes and the are
-      required for the parser to detect/extract text to translate.
+NOTE: Comments below with i18n() are used for translation purposes, and
+      they are required for the parser to detect/extract text to translate.
 
 gettext:
 i18n("start article")

@@ -358,7 +358,7 @@ function strRemakeTreeTable() {
 }
 
 /**
- * Sorts passed assoziative categories array.
+ * Sorts passed associative categories array.
  *
  * @todo Check logic, move sorting to db layer, if possible!
  * @param array $arr
@@ -399,11 +399,11 @@ function strSortPrePost($arr) {
  * Builds values part of the SQL used to recreate the category tree table
  *
  * @param array $aCats
- *         Assoziative categories array or something else, but what?
+ *         Associative categories array or something else, but what?
  * @param string $sInsertQuery
  *         The insert statement
  * @param array $aAllCats
- *         Assoziative categories array holding the complete category structure
+ *         Associative categories array holding the complete category structure
  * @param int $iLevel
  *         Category level
  * @return string
@@ -1034,7 +1034,7 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
     if ($newParentId == -1) {
         // stop moving the category without actually moving it
         $movesubtreeidcat = 0;
-    } else if (is_null($newParentId)) {
+    } elseif (is_null($newParentId)) {
         // start moving the category withour moving it yet
         $movesubtreeidcat = $idcat;
     } else {
@@ -1221,7 +1221,7 @@ function strHasStartArticle($idcat, $idlang) {
 }
 
 /**
- * Copies the category and it's existing articles into another category.
+ * Copies the category, and its existing articles into another category.
  *
  * @param int  $idcat
  *         Id of category to copy

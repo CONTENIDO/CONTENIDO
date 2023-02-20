@@ -38,7 +38,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
 
     /**
      * Second DB instance, is required for some additional queries without
-     * losing an current existing query result.
+     * losing a current existing query result.
      *
      * @var cDb
      */
@@ -137,6 +137,9 @@ abstract class cItemBaseAbstract extends cGenericDb {
      */
     protected function __construct($sTable, $sPrimaryKey, $sClassName) {
         $cfg = cRegistry::getConfig();
+        $sTable = cSecurity::toString($sTable);
+        $sPrimaryKey = cSecurity::toString($sPrimaryKey);
+        $sClassName = cSecurity::toString($sClassName);
 
         $this->db = cRegistry::getDb();
 
@@ -232,7 +235,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
     public function __set($name, $value) {
         if ('primaryKey' === $name) {
             static::_setPrimaryKeyName($value);
-        } else if ('virgin' === $name) {
+        } elseif ('virgin' === $name) {
             static::_setLoaded(!(bool) $value);
         }
     }
@@ -243,17 +246,18 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @since CONTENIDO 4.10.2
      * @return string Name of table
      */
-    public function getTable() {
-        return (string) $this->table;
+    public function getTable(): string
+    {
+        return $this->table;
     }
 
     /**
-     * Get the primary key name in database
+     * Get the primary key name of the corresponding table
      * @return string
      *         Name of primary key
      */
     public function getPrimaryKeyName() {
-        return (string) $this->_primaryKeyName;
+        return $this->_primaryKeyName;
     }
 
     /**
@@ -267,7 +271,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @return string
      * @throws cDbException
      */
-    public function prepare() {
+    public function prepare(): string
+    {
         $arguments = func_get_args();
         $statement = count($arguments) ? array_shift($arguments) : '';
 
@@ -281,7 +286,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @param string $keyName
      */
     protected function _setPrimaryKeyName($keyName) {
-        $this->_primaryKeyName = (string) $keyName;
+        $this->_primaryKeyName = cSecurity::toString($keyName);
     }
 
     /**
@@ -308,10 +313,9 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @return cApiPropertyCollection
      */
     protected function _getPropertiesCollectionInstance($idclient = 0) {
-        $client = cRegistry::getClientId();
-
-        if ((int) $idclient <= 0) {
-            $idclient = $client;
+        $idclient = cSecurity::toInteger($idclient);
+        if ($idclient <= 0) {
+            $idclient = cSecurity::toInteger(cRegistry::getClientId());
         }
 
         // Runtime on-demand allocation of the properties object
@@ -319,7 +323,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
             $this->properties = new cApiPropertyCollection();
         }
 
-        if ((int) $idclient > 0) {
+        if ($idclient > 0) {
             $this->properties->changeClient($idclient);
         }
 

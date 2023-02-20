@@ -17,7 +17,7 @@
 /**
  * Initialization of CONTENIDO module
  * @param {Object} jQuery  jQuery object
- * @param {Object} scope  The scope, e. g. window
+ * @param {Object} scope  The scope, e.g. window
  * @returns {undefined}
  */
 (function(jQuery, scope) {
@@ -27,7 +27,7 @@
     var NAME = 'contenido';
 
     /**
-     * CONTENIDO class, is available as property Con in global scope, e. g. window.Con!
+     * CONTENIDO class, is available as property Con in global scope, e.g. window.Con!
      * @class  Contenido
      * @static
      */

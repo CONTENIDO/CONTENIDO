@@ -31,21 +31,21 @@
     {CATEGORY}
     {NOTIFICATION}
     {NOTIFICATIONS}
-    
+
     <form method="post" name="selectVersion" action="{ACTION2}">
         <input type="hidden" name="idart" value="{IDART}">
         <input type="hidden" name="idcat" value="{IDCAT}">
         <input type="hidden" name="idartlang" value="{IDARTLANG}">
         <input type="hidden" name="idArtLangVersion" value="">
     </form>
-    
+
     <form method="post" name="copyto" action="{ACTION3}">
         <input type="hidden" name="idart" value="{IDART}">
         <input type="hidden" name="idcat" value="{IDCAT}">
         <input type="hidden" name="idartlang" value="{IDARTLANG}">
         <input type="hidden" name="idArtLangVersion" value="">
-    </form>    
-       
+    </form>
+
     <form method="post" name="art_props" action="{ACTION}">
         <input type="hidden" name="action" value="con_meta_saveart">
         <input type="hidden" name="send" value="1">
@@ -53,20 +53,20 @@
         <input type="hidden" name="idart" value="{IDART}">
         <input type="hidden" name="idcat" value="{IDCAT}">
         <input type="hidden" name="idartlang" value="{IDARTLANG}">
-        
+
         <table class="generic" cellspacing="0" cellpadding="2" border="0">
 
             <!-- BEGIN -->
             {ARTICLE_VERSIONING_BOX}
             <!-- END -->
-            
+
             <tr>
                 <th colspan="2">{TITEL}</th>
             </tr>
-            
+
            <!--{NOTIFICATION}
            {NOTIFICATIONS}-->
-           
+
             <tr>
                 <td class="leftData">i18n("Link")</td>
                 <td>
@@ -196,13 +196,13 @@
                 <td>{METATITLE}</td>
                 <td class="text_medium">
                     {METAFIELDTYPE}
-                    <a href="javascript://" onclick="{DELETE_META}return false;" style="cursor:{CURSOR};" title="Delete Meta tag">
+                    <a href="javascript:void(0)" onclick="{DELETE_META}return false;" style="cursor:{CURSOR};" title="Delete Meta tag">
                         <img class="vAlignMiddle" style="float: right" src="images/delete.gif">
                     </a>
                 </td>
             </tr>
             <!-- END:BLOCK -->
-            
+
             {ADDNEWMETA}
 
             <tr>
@@ -214,7 +214,7 @@
 
             <tr>
                 <td colspan="2">
-                    <a href="javascript://" onclick="$('#metaPreview').toggle();">
+                    <a href="javascript:void(0)" onclick="$('#metaPreview').toggle();">
                         <img src="images/but_preview.gif" alt="" class="vAlignMiddle">&nbsp;i18n("HTML-View")
                     </a>
                     <div style="display: none;" id="metaPreview">
@@ -280,7 +280,7 @@ function deleteMetaTag(idMetaType, articleId, catId, idartlang) {
             e.stopPropagation();
             copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit();
         });
-        
+
         $('img#addMeta').hover(function() {
             $(this).css('cursor', 'pointer');
         }).click(function() {

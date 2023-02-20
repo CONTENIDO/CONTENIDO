@@ -73,7 +73,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
     }
 
     /**
-     * Updatess a existing system property entry by it's id.
+     * Updatess an existing system property entry by its id.
      *
      * @param string $type
      * @param string $name

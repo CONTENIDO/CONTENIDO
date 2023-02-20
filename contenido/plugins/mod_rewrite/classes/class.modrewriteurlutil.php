@@ -80,7 +80,7 @@ class ModRewriteUrlUtil extends ModRewriteBase {
     private $_mrArtWordSep;
 
     /**
-     * AMR extension used for article-names (e. g. .html)
+     * AMR extension used for article-names (e.g. .html)
      * @var  string
      */
     private $_mrExt;

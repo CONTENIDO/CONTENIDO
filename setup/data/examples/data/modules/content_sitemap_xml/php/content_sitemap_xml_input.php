@@ -29,11 +29,11 @@ if ($selected == '') {
 $categories = buildCategoryArray();
 // construct the HTML
 $table = new cHTMLTable();
-$trs = array();
+$trs = [];
 
 // construct the category select HTML
 $tr = new cHTMLTableRow();
-$tds = array();
+$tds = [];
 $td = new cHTMLTableData();
 $td->setContent(conHtmlSpecialChars(mi18n("Choose tree:")));
 $tds[] = $td;
@@ -55,7 +55,7 @@ $trs[] = $tr;
 
 // construct the filename input HTML
 $tr = new cHTMLTableRow();
-$tds = array();
+$tds = [];
 $td = new cHTMLTableData();
 $td->setContent(conHtmlSpecialChars(mi18n("Enter filename (optional):")));
 $tds[] = $td;
@@ -87,9 +87,9 @@ function buildCategoryArray() {
     $query = 'SELECT * FROM ' . $cfg['tab']['cat_lang'] . ' AS a, ' . $cfg['tab']['cat_tree'] . ' as b WHERE (a.idcat = b.idcat) AND (a.visible = 1) AND (a.public = 1) AND (a.idlang = ' . $lang . ') ORDER BY b.idtree';
     $db->query($query);
 
-    $categories = array();
+    $categories = [];
     while ($db->nextRecord()) {
-        $category = array();
+        $category = [];
         $category['idcat'] = $db->f('idcat');
         $category['level'] = $db->f('level');
 

@@ -6,11 +6,9 @@
  * @category   Development
  * @package    mpAutoloaderClassMap
  * @author     Murat Purc <murat@purc.de>
- * @copyright  Copyright (c) 2010 Murat Purc (https://www.purc.de)
+ * @copyright  Murat Purc (https://www.purc.de)
  * @license    https://www.gnu.org/licenses/gpl-2.0.html - GNU General Public License, version 2
  */
-
-include_once('mpClassMapFileCreator.php');
 
 /**
  * Class to create a PHP file which contains an associative PHP array.
@@ -27,7 +25,8 @@ include_once('mpClassMapFileCreator.php');
  * @package   mpAutoloaderClassMap
  * @author    Murat Purc <murat@purc.de>
  */
-class mpClassMapFileCreatorContenido extends mpClassMapFileCreator {
+class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
+{
 
     /**
      *

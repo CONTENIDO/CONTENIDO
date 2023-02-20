@@ -18,7 +18,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var cPermission $perm
  * @var cSession $sess
  * @var array $cfg
- * @var string $action
  * @var string $area
  * @var int $client
  * @var int $lang
@@ -38,6 +37,8 @@ $requestIdNewsletter = cSecurity::toInteger($_REQUEST['idnewsletter'] ?? '0');
 if (cHasPlugins('newsletters')) {
     cIncludePlugins('newsletters');
 }
+
+$action = $action ?? '';
 
 // Exec actions
 $oNewsletter = new Newsletter();
@@ -130,11 +131,11 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oForm->addHeader(sprintf(i18n("Edit newsletter message (%s)", 'newsletter'), $oNewsletter->get("name")));
     $oForm->add(i18n("Subject", 'newsletter'), $oNewsletter->get("subject"));
 
-    $sTagInfoText = '<a href="javascript://" data-action="toggle_tag_info" data-toggle-id="idTagInfoText"><strong>' . i18n("Tag information", 'newsletter') . '</strong></a>' . '<div id="idTagInfoText" style="display: none"><br><b>' . i18n("Special message tags (will be replaced when sending)", 'newsletter') . ':</b><br>' . 'MAIL_NAME: ' . i18n("Name of the recipient", 'newsletter') . '<br>' . 'MAIL_DATE: ' . i18n("Date, when the mail has been sent", 'newsletter') . '<br>' . 'MAIL_TIME: ' . i18n("Time, when the mail has been sent", 'newsletter') . '<br>' . 'MAIL_NUMBER: ' . i18n("Number of recipients", 'newsletter') . '<br>'.
+    $sTagInfoText = '<a href="javascript:void(0)" data-action="toggle_tag_info" data-toggle-id="idTagInfoText"><strong>' . i18n("Tag information", 'newsletter') . '</strong></a>' . '<div id="idTagInfoText" style="display: none"><br><b>' . i18n("Special message tags (will be replaced when sending)", 'newsletter') . ':</b><br>' . 'MAIL_NAME: ' . i18n("Name of the recipient", 'newsletter') . '<br>' . 'MAIL_DATE: ' . i18n("Date, when the mail has been sent", 'newsletter') . '<br>' . 'MAIL_TIME: ' . i18n("Time, when the mail has been sent", 'newsletter') . '<br>' . 'MAIL_NUMBER: ' . i18n("Number of recipients", 'newsletter') . '<br>'.
             'MAIL_UNSUBSCRIBE: ' .
              i18n("Link to unsubscribe", 'newsletter') . '<br />' . 'MAIL_STOP: ' . i18n("Link to pause the subscription", 'newsletter') . '<br />' . 'MAIL_GOON: ' . i18n("Link to resume the subscription", 'newsletter');
 
-    $sTagInfoHTML = '<a href="javascript:/" data-action="toggle_tag_info" data-toggle-id="idTagInfoHTML"><strong>' . i18n("Tag information", 'newsletter') . '</strong></a>' . '<div id="idTagInfoHTML" style="display: none"><br><b>' . i18n("Special message tags (will be replaced when sending, {..} = optional)", 'newsletter') . ":</b><br>" . '[mail name="name" type="text"]{text}MAIL_NAME{text}[/mail]: ' . i18n("Name of the recipient", 'newsletter') . "<br>" . '[mail name="date" type="text"]{text}MAIL_DATE{text}[/mail]: ' . i18n("Date, when the mail has been sent", 'newsletter') . "<br>" . '[mail name="time" type="text"]{text}MAIL_TIME{text}[/mail]: ' . i18n("Time, when the mail has been sent", 'newsletter') . "<br>" . '[mail name="number" type="text"]{text}MAIL_NUMBER{text}[/mail]: ' . i18n("Number of recipients", 'newsletter') . "<br>".
+    $sTagInfoHTML = '<a href="javascript:void(0)" data-action="toggle_tag_info" data-toggle-id="idTagInfoHTML"><strong>' . i18n("Tag information", 'newsletter') . '</strong></a>' . '<div id="idTagInfoHTML" style="display: none"><br><b>' . i18n("Special message tags (will be replaced when sending, {..} = optional)", 'newsletter') . ":</b><br>" . '[mail name="name" type="text"]{text}MAIL_NAME{text}[/mail]: ' . i18n("Name of the recipient", 'newsletter') . "<br>" . '[mail name="date" type="text"]{text}MAIL_DATE{text}[/mail]: ' . i18n("Date, when the mail has been sent", 'newsletter') . "<br>" . '[mail name="time" type="text"]{text}MAIL_TIME{text}[/mail]: ' . i18n("Time, when the mail has been sent", 'newsletter') . "<br>" . '[mail name="number" type="text"]{text}MAIL_NUMBER{text}[/mail]: ' . i18n("Number of recipients", 'newsletter') . "<br>".
             '[mail name="unsubscribe" type="link" {text="' .
             i18n("Link text", 'newsletter') . '" }]{text}MAIL_UNSUBSCRIBE{text}[/mail]: ' . i18n("Link to unsubscribe", 'newsletter') . "<br>" . '[mail name="stop" type="link" {text="' . i18n("Link text", 'newsletter') . '" }]{text}MAIL_STOP{text}[/mail]: ' . i18n("Link to pause the subscription", 'newsletter') . "<br>" . '[mail name="goon" type="link" {text="' . i18n("Link text", 'newsletter') . '" }]{text}MAIL_GOON{text}[/mail]: ' . i18n("Link to resume the subscription", 'newsletter');
 

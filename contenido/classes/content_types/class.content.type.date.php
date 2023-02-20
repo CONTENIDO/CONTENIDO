@@ -144,7 +144,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      */
     public function getDateTimestamp() {
-        return $this->getSetting('date_timestamp', '');
+        return $this->getSetting('date_timestamp');
     }
 
     /**
@@ -153,7 +153,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      */
     public function getDateFormat() {
-        $format = $this->getSetting('date_format', '');
+        $format = $this->getSetting('date_format');
 
         if (empty($format)) {
             $format = '';
@@ -175,7 +175,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      */
     public function getTimeFormat() {
-        $format = $this->getSetting('date_format', '');
+        $format = $this->getSetting('date_format');
 
         if (empty($format)) {
             $format = '';
@@ -248,19 +248,19 @@ class cContentTypeDate extends cContentTypeAbstract {
         ];
         foreach (str_split($format) as $char) {
             if (in_array($char, $replacements)) {
-                // replace the format chars with localised values
+                // Replace the format chars with localised values
                 switch ($char) {
                     case 'D':
-                        $result .= strftime('%a', $timestamp);
+                        $result .= cDate::formatToDate('%a', $timestamp);
                         break;
                     case 'l':
-                        $result .= strftime('%A', $timestamp);
+                        $result .= cDate::formatToDate('%A', $timestamp);
                         break;
                     case 'F':
-                        $result .= strftime('%B', $timestamp);
+                        $result .= cDate::formatToDate('%B', $timestamp);
                         break;
                     case 'M':
-                        $result .= strftime('%b', $timestamp);
+                        $result .= cDate::formatToDate('%b', $timestamp);
                         break;
                     default:
                         // use the default date() format if no localisation is
@@ -278,7 +278,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         // strftime returns a string in an encoding that is specified by the locale
         // use iconv extension to get the content encoding of string
         // use mbstring extension to convert encoding to contenido's target encoding
-        if (extension_loaded('iconv') && extension_loaded('mbstring')) {
+        if (extension_loaded('iconv') && extension_loaded('mbstring') && cRegistry::getEncoding()) {
             $result = mb_convert_encoding($result, cRegistry::getEncoding(), iconv_get_encoding('output_encoding'));
             $result = conHtmlentities($result);
         }
@@ -294,7 +294,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      *         escaped HTML code which should be shown if content type is shown in frontend
      */
     public function generateViewCode() {
-        $timestamp = $this->getSetting('date_timestamp', '');
+        $timestamp = $this->getSetting('date_timestamp');
         if (empty($timestamp)) {
             return '';
         }
@@ -338,7 +338,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $code .= $this->_generateJavaScript();
         $code = new cHTMLDiv($code, 'cms_date', 'cms_' . $this->_prefix . '_' . $this->_id . '_settings');
 
-        return $this->_encodeForOutput($code);
+        return $this->_encodeForOutput($code->render());
     }
 
     /**
@@ -401,7 +401,7 @@ class cContentTypeDate extends cContentTypeAbstract {
             'margin' => '0px 5px 5px'
         ]);
         $formatSelect->autoFill($this->_dateFormatsPhp);
-        $phpDateFormat = conHtmlSpecialChars($this->getSetting($this->_prefix . '_format', ''));
+        $phpDateFormat = conHtmlSpecialChars($this->getSetting($this->_prefix . '_format'));
         $formatSelect->setDefault($phpDateFormat);
 
         return $formatSelect->render();

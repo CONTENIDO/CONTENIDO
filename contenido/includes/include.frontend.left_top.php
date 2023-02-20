@@ -16,6 +16,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $auth, $area, $cfg, $client, $perm, $sess;
 
+// Display critical error if no valid client is selected
+if ($client < 1) {
+    $oPage = new cGuiPage('frontend_left_top');
+    $oPage->displayCriticalError(i18n("No Client selected"));
+    $oPage->render();
+    return;
+}
+
 $tpl = new cTemplate();
 
 $oUser = new cApiUser($auth->auth["uid"]);
@@ -128,7 +136,7 @@ $aSortOrderOptions = [
 $imgUserId = 'img_user';
 $tpl->set('s', 'IUSER', $imgUserId);
 $buttonRow .= '
-<a href="javascript:;" class="selectuserfunction" data-action="switch_frontenduser">
+<a href="javascript:void(0)" class="selectuserfunction" data-action="switch_frontenduser">
     <img onmouseover="hoverEffect(\'' . $imgUserId . '\', \'in\')" onmouseout="hoverEffect(\'' . $imgUserId . '\', \'out\')" alt="' . i18n("Frontend users") . '" title="' . i18n("Frontend users") . '" id="' . $imgUserId . '" src="' . $cfg["path"]["images"] . 'users.gif">
 </a>';
 
@@ -136,7 +144,7 @@ $buttonRow .= '
 $imgGroupId = 'img_group';
 $tpl->set('s', 'IGROUP', $imgGroupId);
 $buttonRow .= '
-<a href="javascript:;" class="selectgroupfunction" data-action="switch_frontendgroup">
+<a href="javascript:void(0)" class="selectgroupfunction" data-action="switch_frontendgroup">
     <img onmouseover="hoverEffect(\'' . $imgGroupId . '\', \'in\')" onmouseout="hoverEffect(\'' . $imgGroupId . '\', \'out\')" alt="' . i18n("Frontend groups") . '" title="' . i18n("Frontend groups") . '" id="' . $imgGroupId . '" src="' . $cfg["path"]["images"] . 'groups.gif">
 </a>
 ';
@@ -159,7 +167,7 @@ $oActionRow = new cGuiFoldingRow($sActionUuid, i18n("Actions"), $actionLink);
 if (isset($_GET['actionrow']) && $_GET['actionrow'] == 'collapsed') {
     $oActionRow->setExpanded(false);
     $oUser->setProperty("expandstate", $sActionUuid, 'false');
-} else if (isset($_GET['actionrow']) && $_GET['actionrow'] == 'expanded') {
+} elseif (isset($_GET['actionrow']) && $_GET['actionrow'] == 'expanded') {
     $oActionRow->setExpanded(true);
     $oUser->setProperty("expandstate", $sActionUuid, 'true');
 }
@@ -193,7 +201,7 @@ $oListOptionRow->setExpanded(true);
 if (isset($_GET['filterrow']) && $_GET['filterrow'] == 'collapsed') {
     $oActionRow->setExpanded(false);
     $oUser->setProperty("expandstate", $sListOptionId, 'false');
-} else if (isset($_GET['filterrow']) && $_GET['filterrow'] == 'expanded') {
+} elseif (isset($_GET['filterrow']) && $_GET['filterrow'] == 'expanded') {
     $oActionRow->setExpanded(true);
     $oUser->setProperty("expandstate", $sListOptionId, 'true');
 }
@@ -224,15 +232,17 @@ $oSelectSearchIn->autoFill($aFieldsToSearch);
 $oSelectSearchIn->setDefault($requestSearchIn);
 
 $fegroups = new cApiFrontendGroupCollection();
-$fegroups->setWhere("idclient", $client);
+$fegroups->setWhere('idclient', $client);
+$fegroups->addResultFields(['idfrontendgroup', 'groupname']);
 $fegroups->query();
+$fetchFields = ['idfrontendgroup' => 'idfrontendgroup', 'groupname' => 'groupname'];
 
 $aFEGroups = [
     "--all--" => i18n("-- All Groups --")
 ];
 
-while ($fegroup = $fegroups->next()) {
-    $aFEGroups[$fegroup->get("idfrontendgroup")] = $fegroup->get("groupname");
+foreach ($fegroups->fetchTable($fetchFields) as $entry) {
+    $aFEGroups[$entry['idfrontendgroup']] = $entry['groupname'];
 }
 
 $oSelectRestrictGroup = new cHTMLSelectElement("restrictgroup");

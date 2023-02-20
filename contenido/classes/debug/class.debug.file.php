@@ -69,7 +69,7 @@ class cDebugFile implements cDebugInterface {
      * Opens filehandle for debug logfile.
      */
     private function __construct() {
-        global $cfg; // omfg, I know... TODO
+        $cfg = cRegistry::getConfig();
         $this->_sPathToLogs = $cfg['path']['contenido_logs'];
         $this->_sFileName = 'debug.log';
         $this->_sPathToFile = $this->_sPathToLogs . $this->_sFileName;
@@ -85,10 +85,9 @@ class cDebugFile implements cDebugInterface {
      * @throws cInvalidArgumentException
      */
     public function out($msg) {
-        if (cFileHandler::writeable($this->_sPathToFile)) {
-            $sDate = date('Y-m-d H:i:s');
-            cFileHandler::write($this->_sPathToFile, $sDate . ": " . $msg . "\n", true);
-        }
+        $sDate = date('Y-m-d H:i:s');
+        $msg = $this->_indentLines($msg);
+        cFileHandler::write($this->_sPathToFile, $sDate . ": " . $msg . "\n", true);
     }
 
     /**
@@ -101,7 +100,7 @@ class cDebugFile implements cDebugInterface {
      * @param bool   $bExit                [optional]
      *                                     If set to true, your app will die() after output of current var
      * @throws cInvalidArgumentException
-*/
+    */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         if (cFileHandler::writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');
@@ -132,4 +131,24 @@ class cDebugFile implements cDebugInterface {
      */
     public function showAll() {
     }
+
+    /**
+     * Indents each line of the message by the defined spaces.
+     *
+     * @param mixed $message
+     * @param int $spaces
+     * @return string The indented message
+     */
+    protected function _indentLines($message, $spaces = 4) {
+        if (is_string($message) && !empty($message)) {
+            $prefix = str_pad(' ', $spaces);
+            $lines = explode("\n", $message);
+            $lines = array_map(function ($item) use ($prefix) {
+                return $prefix . $item;
+            }, $lines);
+            $message = implode("\n", $lines);
+        }
+        return trim($message);
+    }
+
 }

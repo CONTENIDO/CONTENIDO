@@ -57,7 +57,7 @@ class cHTMLTest extends cTestingTestCase
     {
         return [
             'null'                                       => [
-                null,
+                [],
                 [],
             ],
             'empty'                                      => [
@@ -171,7 +171,7 @@ class cHTMLTest extends cTestingTestCase
     {
         return [
             'null'   => [null, null, null, null],
-            'empty'  => ['', '', null, null],
+            'empty'  => ['', '', '', ''],
             'foobar' => ['foo', 'bar', 'foo', 'bar'],
         ];
     }
@@ -703,7 +703,7 @@ class cHTMLTest extends cTestingTestCase
 
     /*
      * Test of private and protected methods.
-     * These are commented cause it's considered bad practice to test such methods.
+     * These are commented because it's considered bad practice to test such methods.
      */
 
     // public function testGetAttrString()

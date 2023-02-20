@@ -15,7 +15,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * @var cAuth $auth
  * @var cPermission $perm
- * @var string $action
  * @var string $area
  * @var int $client
  * @var int $lang
@@ -39,6 +38,8 @@ if (isset($idnewsletter)) {
 if (cHasPlugins('newsletters')) {
     cIncludePlugins('newsletters');
 }
+
+$action = $action ?? '';
 
 if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create")) {
     // Create new newsletter
@@ -153,7 +154,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 
     if ($iTestIDNewsGroup == 0) {
         // Send test newsletter to current user email address
-        $sName = $oUser->get("realname");
+        $sName = $oUser->get("realname") ?? '';
         $sEMail = $oUser->get("email");
 
         $bSend = $oNewsletter->sendEMail($oClientLang->getProperty("newsletter", "idcatart"), $sEMail, $sName, true, $sEncoding);
@@ -505,9 +506,9 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     );
 
     $oUser = new cApiUser($oNewsletter->get("author"));
-    $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (" . displayDatetime($oNewsletter->get("created")) . ")");
+    $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (" . cDate::formatDatetime($oNewsletter->get("created")) . ")");
     $oUser = new cApiUser($oNewsletter->get("modifiedby"));
-    $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (" . displayDatetime($oNewsletter->get("modified")) . ")");
+    $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (" . cDate::formatDatetime($oNewsletter->get("modified")) . ")");
 
     $sExecScript = '
     <script type="text/javascript">

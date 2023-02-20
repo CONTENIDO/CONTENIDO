@@ -18,7 +18,7 @@ $categoryHelper->setAuth(cRegistry::getAuth());
 $categories = $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1);
 
 // get breadcrumb (w/o first level)
-$breadcrumb = array();
+$breadcrumb = [];
 foreach ($categories as $categoryLang) {
     $breadcrumb[] = $categoryLang;
 }

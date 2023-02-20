@@ -33,11 +33,10 @@ class cUpgradeJob_0005 extends cUpgradeJobAbstract {
             // map all content types to their IDs
             $types = [];
             $typeCollection = new cApiTypeCollection();
-            $typeCollection->addResultField('idtype');
-            $typeCollection->addResultField('type');
+            $typeCollection->addResultFields(['idtype', 'type']);
             $typeCollection->query();
-            while (($typeItem = $typeCollection->next()) !== false) {
-                $types[$typeItem->get('type')] = $typeItem->get('idtype');
+            foreach ($typeCollection->fetchTable(['idtype' => 'idtype', 'type' => 'type']) as $entry) {
+                $types[$entry['type']] = $entry['idtype'];
             }
 
             /* Convert the value of each CMS_DATE entry.

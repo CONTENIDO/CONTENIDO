@@ -14,9 +14,21 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cAuth $auth
+ * @var cSession $sess
+ * @var cPermission $perm
+ * @var array $cfg
+ * @var array $cfgClient
+ * @var int $client
+ * @var string $belang
+ */
+
 $page = new cGuiPage("mycontenido", "", "0");
 
 $vuser = new cApiUser($auth->auth['uid']);
+
+$saveLoginTime = $saveLoginTime ?? false;
 
 if ($saveLoginTime === true) {
     $sess->register('saveLoginTime');
@@ -28,7 +40,7 @@ if ($saveLoginTime === true) {
     $vuser->setUserProperty('system', 'lastlogintime', $lastTime);
 }
 
-$lastlogin = displayDatetime($vuser->getUserProperty('system', 'lastlogintime'));
+$lastlogin = cDate::formatDatetime($vuser->getUserProperty('system', 'lastlogintime'));
 if ($lastlogin == '') {
     $lastlogin = i18n('No Login Information available.');
 }
@@ -114,7 +126,7 @@ if (count($clients) > 1) {
     }
 
     $select->autoFill($choices);
-    $select->setDefault($client);
+    $select->setDefault($client ?? 0);
 
     $clientselect = $select->render();
 
@@ -203,9 +215,9 @@ foreach ($admins as $pos => $item) {
         $li = '<li class="welcome">';
         if ($sAdminName !== '' && $sAdminEmail !== '') {
             $li .= $sAdminName . ', ' . $sAdminEmail . '</li>';
-        } else if ($sAdminName === '' && $sAdminEmail !== '') {
+        } elseif ($sAdminName === '' && $sAdminEmail !== '') {
             $li .= $sAdminEmail . '</li>';
-        } else if ($sAdminName !== '' && $sAdminEmail === '') {
+        } elseif ($sAdminName !== '' && $sAdminEmail === '') {
             $li .= $sAdminName . '</li>';
         } else {
             $li = '';
@@ -257,7 +269,10 @@ $page->set('s', 'NUMBER', $iNumberOfUsers);
 $oUpdateNotifier = new cUpdateNotifier($cfg, $vuser, $perm, $sess, $belang);
 $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
 try {
-    $page->set('s', 'UPDATENOTIFICATION', mb_convert_encoding($sUpdateNotifierOutput, cRegistry::getLanguage()->get('encoding')));
+    // Get encoding or use UTF-8 as default, the language may not yet exist
+    $encoding = cRegistry::getEncoding();
+    $encoding = $encoding ?: 'utf-8';
+    $page->set('s', 'UPDATENOTIFICATION', mb_convert_encoding($sUpdateNotifierOutput, $encoding));
 } catch (cInvalidArgumentException $e) {
     $page->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 }

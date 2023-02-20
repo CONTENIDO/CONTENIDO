@@ -14,9 +14,28 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var cAuth $auth
+ * @var array $cfg
+ * @var int $frame
+ * @var string $area
+ * @var string $belang
+ *
+ * @var string $subject
+ * @var string $message
+ * @var string $itemtype
+ * @var string $reminderdate
+ * @var string $enddate
+ * @var int|string $itemid
+ */
+
 $oPage = new cGuiPage("todo.popup");
 
-if ($action == 'todo_save_item') {
+$action = $action ?? '';
+
+if ($action === 'todo_save_item') {
     $todo = new TODOCollection();
 
     $subject = stripslashes($subject);
@@ -33,7 +52,7 @@ if ($action == 'todo_save_item') {
         }
     }
 
-    $oPage->addScript('<script>window.close();</script>');
+    $oPage->addScript('<script type="text/javascript">window.close();</script>');
 } else {
     $ui = new cGuiTableForm('reminder');
     $ui->addHeader(i18n('Add TODO item'));

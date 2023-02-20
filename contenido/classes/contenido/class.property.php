@@ -345,6 +345,7 @@ class cApiPropertyCollection extends ItemCollection {
      * @param int   $idProp [optional]
      *                      Id of database record (if set, update on this basis
      *                      (possibility to update name value and type))
+     * @return bool
      *
      * @throws cDbException
      * @throws cException
@@ -354,24 +355,33 @@ class cApiPropertyCollection extends ItemCollection {
         $idProp = cSecurity::toInteger($idProp);
 
         if ($idProp == 0) {
-            $sql = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s' AND type = '%s' AND name = '%s'", $this->client, $itemtype, $itemid, $type, $name);
+            $where = $this->db->prepare(
+                "`idclient` = %d AND `itemtype` = '%s' AND `itemid` = '%s' AND `type` = '%s' AND `name` = '%s'",
+                $this->client, $itemtype, $itemid, $type, $name
+            );
         } else {
-            $sql = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s' AND idproperty = %d", $this->client, $itemtype, $itemid, $idProp);
+            $where = $this->db->prepare(
+                "`idclient` = %d AND `itemtype` = '%s' AND `itemid` = '%s' AND `idproperty` = %d",
+                $this->client, $itemtype, $itemid, $idProp
+            );
         }
-        $this->select($sql);
+        $this->select($where);
 
         if (($item = $this->next()) !== false) {
             $item->set('value', $value);
             $item->set('name', $name);
             $item->set('type', $type);
-            $item->store();
+            $result = $item->store();
 
             if ($this->_useCache($itemtype, $itemid)) {
                 $this->_addToCache($item);
             }
         } else {
-            $this->create($itemtype, $itemid, $type, $name, $value, true);
+            $item = $this->create($itemtype, $itemid, $type, $name, $value, true);
+            $result = is_object($item);
         }
+
+        return $result;
     }
 
     /**
@@ -391,24 +401,32 @@ class cApiPropertyCollection extends ItemCollection {
      *         Type of the data to store (arbitrary data)
      * @param mixed $name
      *         Entry name
-     *
+     * @return int the number of deleted entries (rows)
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
     public function deleteValue($itemtype, $itemid, $type, $name) {
         if (isset($this->client)) {
-            $where = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s' AND type = '%s' AND name = '%s'", $this->client, $itemtype, $itemid, $type, $name);
+            $where = $this->db->prepare(
+                "`idclient` = %d AND `itemtype` = '%s' AND `itemid` = '%s' AND `type` = '%s' AND `name` = '%s'",
+                $this->client, $itemtype, $itemid, $type, $name
+            );
         } else {
             // @fixme We never get here, since this class will always have a set client property!
-            $where = $this->db->prepare("itemtype = '%s' AND itemid = '%s' AND type = '%s' AND name = '%s'", $itemtype, $itemid, $type, $name);
+            $where = $this->db->prepare(
+                "`itemtype` = '%s' AND `itemid` = '%s' AND `type` = '%s' AND `name` = '%s'",
+                $itemtype, $itemid, $type, $name
+            );
         }
 
         $idProperties = $this->getIdsByWhereClause($where);
 
-        $this->_deleteMultiple($idProperties);
+        $numDeleted = $this->_deleteMultiple($idProperties);
         if ($this->_useCache()) {
             $this->_deleteFromCacheMultiple($idProperties);
         }
+
+        return $numDeleted;
     }
 
     /**
@@ -431,10 +449,16 @@ class cApiPropertyCollection extends ItemCollection {
         }
 
         if (isset($this->client)) {
-            $sql = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s'", $this->client, $itemtype, $itemid);
+            $sql = $this->db->prepare(
+                "`idclient` = %d AND `itemtype` = '%s' AND `itemid` = '%s'",
+                $this->client, $itemtype, $itemid
+            );
         } else {
             // @fixme We never get here, since this class will always have a set client property!
-            $sql = $this->db->prepare("itemtype = '%s' AND itemid = '%s'", $itemtype, $itemid);
+            $sql = $this->db->prepare(
+                "`itemtype` = '%s' AND `itemid` = '%s'",
+                $itemtype, $itemid
+            );
         }
         $this->select($sql);
 
@@ -471,17 +495,17 @@ class cApiPropertyCollection extends ItemCollection {
     public function getAllValues($field, $fieldValue, $auth = NULL) {
         $authString = '';
         if (!is_null($auth) && is_object($auth) && sizeof($auth->auth) > 0) {
-            $authString .= " AND author = '" . $this->db->escape($auth->auth["uid"]) . "'";
+            $authString .= " AND `author` = '" . $this->db->escape($auth->auth["uid"]) . "'";
         }
 
         $field = $this->db->escape($field);
         $fieldValue = $this->db->escape($fieldValue);
 
         if (isset($this->client)) {
-            $this->select("idclient = " . $this->client . " AND " . $field . " = '" . $fieldValue . "'" . $authString, '', 'itemid');
+            $this->select("`idclient` = " . $this->client . " AND `" . $field . "` = '" . $fieldValue . "'" . $authString, '', 'itemid');
         } else {
             // @fixme We never get here, since this class will always have a set client property!
-            $this->select($field . " = '" . $fieldValue . "'" . $authString);
+            $this->select("`" . $field . "` = '" . $fieldValue . "'" . $authString);
         }
 
         $retValue = [];
@@ -517,10 +541,16 @@ class cApiPropertyCollection extends ItemCollection {
      */
     public function deleteProperties($itemtype, $itemid) {
         if (isset($this->client)) {
-            $where = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s'", $this->client, $itemtype, $itemid);
+            $where = $this->db->prepare(
+                "`idclient` = %d AND `itemtype` = '%s' AND `itemid` = '%s'",
+                $this->client, $itemtype, $itemid
+            );
         } else {
             // @fixme We never get here, since this class will always have a set client property!
-            $where = $this->db->prepare("itemtype = '%s' AND itemid = '%s'", $itemtype, $itemid);
+            $where = $this->db->prepare(
+                "`itemtype` = '%s' AND `itemid` = '%s'",
+                $itemtype, $itemid
+            );
         }
 
         $idProperties = $this->getIdsByWhereClause($where);
@@ -545,10 +575,10 @@ class cApiPropertyCollection extends ItemCollection {
         $in = "'" . implode("', '", $itemids) . "'";
 
         if (isset($this->client)) {
-            $where = "idclient = " . $this->client . " AND itemtype = '" . $itemtype . "' AND itemid IN (" . $in . ")";
+            $where = "`idclient` = " . $this->client . " AND `itemtype` = '" . $itemtype . "' AND `itemid` IN (" . $in . ")";
         } else {
             // @fixme We never get here, since this class will always have a set client property!
-            $where = "itemtype = '" . $itemtype . "' AND itemid IN (" . $in . ")";
+            $where = "`itemtype` = '" . $itemtype . "' AND `itemid` IN (" . $in . ")";
         }
 
         $idProperties = $this->getIdsByWhereClause($where);
@@ -581,9 +611,9 @@ class cApiPropertyCollection extends ItemCollection {
         $where = [];
         foreach (self::$_cacheItemtypes as $itemtype => $itemid) {
             if (is_numeric($itemid)) {
-                $where[] = "(itemtype = '" . $itemtype . "' AND itemid = " . $itemid . ")";
+                $where[] = "(`itemtype` = '" . $itemtype . "' AND `itemid` = " . $itemid . ")";
             } else {
-                $where[] = "(itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "')";
+                $where[] = "(`itemtype` = '" . $itemtype . "' AND `itemid` = '" . $itemid . "')";
             }
         }
 
@@ -591,7 +621,7 @@ class cApiPropertyCollection extends ItemCollection {
             return;
         }
 
-        $where = "idclient = " . $this->client . ' AND ' . implode(' OR ', $where);
+        $where = "`idclient` = " . $this->client . ' AND ' . implode(' OR ', $where);
         $this->select($where);
         /** @var cApiUserProperty $property */
         while (($property = $this->next()) !== false) {

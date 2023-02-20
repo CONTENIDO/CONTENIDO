@@ -21,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param string $table
  *
  * @return array|bool
- *         Assoziative array where the key and the value is the index name
+ *         Associative array where the key and the value is the index name
  *
  * @throws cDbException
  */
@@ -42,7 +42,7 @@ function dbGetIndexes($db, $table) {
 }
 
 /**
- * Updates a specific table. Used e. g. by CONTENIDO setup to create or update
+ * Updates a specific table. Used e.g. by CONTENIDO setup to create or update
  * tables.
  * Function logic:
  * 1 .) Check, if the table exists
@@ -70,7 +70,7 @@ function dbGetIndexes($db, $table) {
  *         Name of field to create/update
  * @param string $type
  *         Data type of field. Feasible values are all possible data types
- *         e. g. int(10), varchar(32), datetime, varchar(255), text, tinyint(1)
+ *         e.g. int(10), varchar(32), datetime, varchar(255), text, tinyint(1)
  * @param string $null
  *         Parameter to forbid NULL values, feasible values '', 'NULL' or 'YES'
  *         where 'NULL' or 'YES' allows NULL values and '' doesn't
@@ -81,7 +81,7 @@ function dbGetIndexes($db, $table) {
  *         The default value for the field. Feasible is each possible
  *         value depending on passed $type
  * @param string $extra
- *         Additional info for the field, e. g. 'auto_increment', if the
+ *         Additional info for the field, e.g. 'auto_increment', if the
  *         field should have the AUTO_INCREMENT attribute and empty otherwise.
  * @param string $upgradeStatement
  *         NOT USED AT THE MOMENT
@@ -277,7 +277,7 @@ function dbTableExists($db, $table) {
  * @param string $table
  *
  * @return array|bool
- *         Either assoziative column array or false
+ *         Either associative column array or false
  *
  * @throws cDbException
  */

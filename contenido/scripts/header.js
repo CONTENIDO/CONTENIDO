@@ -376,8 +376,12 @@
             // Now find out the related menu item on level 1 and store it
             // We need to do this for restoring highlighting of the current
             // active menu on mouseout of hover menu
-            this.setActiveMenu(this.getMenuIdBySubMenuId(curElement));
-            this.setActiveSubMenu(curElement);
+            if (typeof curElement !== "undefined") {
+                // Do the rest only if we have an element, which may not be
+                // the case during a language switch.
+                this.setActiveMenu(this.getMenuIdBySubMenuId(curElement));
+                this.setActiveSubMenu(curElement);
+            }
         }
     };
 

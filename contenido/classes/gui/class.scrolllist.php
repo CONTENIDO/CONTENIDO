@@ -52,9 +52,9 @@ class cGuiScrollList {
     public $listStart;
 
     /**
-     * sortable flag
+     * Sortable flags for rows.
      *
-     * @var string
+     * @var array
      */
     public $sortable;
 
@@ -118,14 +118,12 @@ class cGuiScrollList {
      * @param string $action [optional]
      */
     public function __construct($defaultstyle = true, $action = "") {
-        global $area, $frame;
-
         $this->resultsPerPage = 0;
         $this->listStart = 1;
-        $this->sortable = false;
+        $this->sortable = [];
 
         $this->objTable = new cHTMLTable();
-        if ($defaultstyle == true) {
+        if ($defaultstyle) {
             $this->objTable->setClass("generic");
             $this->objTable->updateAttributes(["cellpadding" => "2"]);
         }
@@ -140,7 +138,7 @@ class cGuiScrollList {
 
         $this->sortlink = new cHTMLLink();
         $this->sortlink->setStyle("color: #666666;");
-        $this->sortlink->setCLink($area, $frame, $action);
+        $this->sortlink->setCLink(cRegistry::getArea(), cRegistry::getFrame(), $action);
     }
 
     /**
@@ -200,10 +198,10 @@ class cGuiScrollList {
      * Make sure that the amount of parameters stays the same for all
      * setData calls in a single object.
      *
-     * @SuppressWarnings docBlocks
-     * @param mixed ... Additional parameters (data)
+     * @param mixed ...$values
+     *         Additional parameters (data)
      */
-    public function setHeader() {
+    public function setHeader(...$values) {
         $numargs = func_num_args();
 
         for ($i = 0; $i < $numargs; $i++) {
@@ -225,10 +223,10 @@ class cGuiScrollList {
      *
      * @param int $index
      *         Numeric index
-     * @SuppressWarnings docBlocks
-     * @param mixed ... - Additional parameters (data)
+     * @param mixed ...$values
+     *         Additional parameters (data)
      */
-    public function setData($index) {
+    public function setData($index, ...$values) {
         $numargs = func_num_args();
 
         for ($i = 1; $i < $numargs; $i++) {
@@ -250,10 +248,10 @@ class cGuiScrollList {
      *
      * @param int $index
      *         Numeric index
-     * @SuppressWarnings docBlocks
-     * @param mixed ... - Additional parameters (data)
+     * @param mixed ...$values
+     *         Additional parameters (data)
      */
-    public function setHiddenData($index) {
+    public function setHiddenData($index, ...$values) {
         $numargs = func_num_args();
 
         for ($i = 1; $i < $numargs; $i++) {
@@ -355,7 +353,7 @@ class cGuiScrollList {
         // Render header
         foreach ($this->header as $key => $value) {
             if (is_array($this->sortable)) {
-                if (array_key_exists($key, $this->sortable) && $this->sortable[$key] == true) {
+                if (array_key_exists($key, $this->sortable) && $this->sortable[$key]) {
                     $this->sortlink->setContent($value);
                     $this->sortlink->setCustom("sortby", $key);
 
@@ -426,7 +424,7 @@ class cGuiScrollList {
 
         $output = $this->objTable->render();
 
-        if ($return == true) {
+        if ($return) {
             return $output;
         } else {
             echo $output;

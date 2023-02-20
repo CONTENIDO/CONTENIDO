@@ -11,7 +11,7 @@
  * @link http://www.contenido.org
  */
 
-$breadcrumb = array();
+$breadcrumb = [];
 
 // get category path
 $helper = cCategoryHelper::getInstance();

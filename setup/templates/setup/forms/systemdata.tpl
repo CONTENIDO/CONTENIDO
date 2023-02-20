@@ -29,7 +29,7 @@
                     <td class="last">{INPUT_DBPREFIX}</td>
                 </tr>
                 <tr>
-                	<td><a href="javascript://" onclick="toggleSettings()">
+                	<td><a href="javascript:void(0)" onclick="toggleSettings()">
                 		<img class="advancedSettingsImage" alt="" style="margin-bottom: -.25em;" src="images/controls/arrow_closed.png">
                 		{LABEL_DBADVANCED}
                 	</td>

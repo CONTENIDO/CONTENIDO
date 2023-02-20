@@ -35,10 +35,9 @@ class cSetupLanguageChooser extends cSetupMask
         $this->_stepTemplateClass->set("s", "DE_HINT_LANG", "W&auml;hlen Sie bitte die gew&uuml;nschte Sprache f&uuml;r das Setup aus.");
         $this->_stepTemplateClass->set("s", "EN_HINT_LANG", "Please choose your language to continue.");
 
-        $langs = array("de_DE" => "Deutsch", "C" => "English");
+        $langs = ["de_DE" => "Deutsch", "C" => "English"];
 
         $m = "";
-
         foreach ($langs as $entity => $lang) {
             $test = new cHTMLLanguageLink($entity, $lang, "setuptype");
             $m .= $test->render();

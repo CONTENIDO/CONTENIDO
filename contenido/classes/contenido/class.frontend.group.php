@@ -54,7 +54,7 @@ class cApiFrontendGroupCollection extends ItemCollection {
 
         // _arrInFilters = ['urlencode', 'htmlspecialchars', 'addslashes'];
 
-        $mangledGroupName = $group->_inFilter($groupname);
+        $mangledGroupName = $group->inFilter($groupname);
         $this->select("idclient = " . cSecurity::toInteger($client) . " AND groupname = '" . $mangledGroupName . "'");
 
         if (($obj = $this->next()) !== false) {

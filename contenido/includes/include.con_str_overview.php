@@ -14,11 +14,19 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $syncidcat, $syncfromlang, $multiple, $markscript, $tpl, $action, $lang, $sess, $client, $cfg, $db, $area, $frame, $idcat, $currentuser, $_cecRegistry, $perm;
+
+// Display critical error if no valid client is selected
+if ($client < 1) {
+    $oPage = new cGuiPage('con_left_top');
+    $oPage->displayCriticalError(i18n("No Client selected"));
+    $oPage->render();
+    return;
+}
+
 cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.tpl.php");
 cInclude('includes', 'functions.lang.php');
-
-global $syncidcat, $syncfromlang, $multiple, $markscript, $tpl, $action, $lang, $sess, $client, $cfg, $db, $area, $frame, $idcat, $currentuser, $_cecRegistry, $perm;
 
 /**
  *
@@ -600,13 +608,15 @@ if ($client == 0) {
 $sExpandList = $currentuser->getUserProperty("system", "con_cat_expandstate");
 if ($sExpandList != '') {
     $conexpandedList = unserialize($currentuser->getUserProperty("system", "con_cat_expandstate"));
+} else {
+    $conexpandedList = [];
 }
 
 if (!is_array($conexpandedList)) {
     $conexpandedList = [];
 }
 
-if (!is_array($conexpandedList[$client])) {
+if (!isset($conexpandedList[$client]) || !is_array($conexpandedList[$client])) {
     $conexpandedList[$client] = [];
 }
 
@@ -648,12 +658,12 @@ while ($db->nextRecord()) {
             'articles'     => !empty($aIsArticles[$db->f("idcat")]) ? $aIsArticles[$db->f("idcat")] : false,
             'level'        => $db->f('level'),
         ];
-        if ($aStartOnlineArticles[$db->f('idcat')]['is_start']) {
+        if ($aStartOnlineArticles[$db->f('idcat')]['is_start'] ?? false) {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_start'] = false;
         } else {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_start'] = true;
         }
-        if ($aStartOnlineArticles[$db->f('idcat')]['is_online']) {
+        if ($aStartOnlineArticles[$db->f('idcat')]['is_online'] ?? false) {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_online'] = false;
         } else {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_online'] = true;
@@ -663,11 +673,11 @@ while ($db->nextRecord()) {
 
 cDebug::out(print_r($navigationTree, true));
 
-if (count($navigationTree[0])) {
+if (isset($navigationTree[0]) && count($navigationTree[0])) {
     $sCategories = showTree(0, $aWholelist);
 }
 
-$tpl->set('s', 'CATS', $sCategories);
+$tpl->set('s', 'CATS', $sCategories ?? '');
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'DIRECTION', 'dir="' . langGetTextDirection($lang) . '"');
 $tpl->set('s', 'SYNCOPTIONS', $syncoptions);

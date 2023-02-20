@@ -42,7 +42,7 @@ foreach ($cronjobs->getAllCronjobs() as $row) {
 
     $link = new cHTMLLink();
     $link->setClass('show_item')
-        ->setLink('javascript:;')
+        ->setLink('javascript:void(0)')
         ->setAttribute('data-action', 'show_cronjob');
 
     $menu->setId($counter, $row);

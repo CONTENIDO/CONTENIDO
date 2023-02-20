@@ -28,7 +28,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @return int
  *         Closest matching category ID (idcat)
- * 
+ *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
@@ -250,7 +250,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
  * @param int    $idcat
  *         ID of the starting category
  * @param string $seperator
- *         Seperation string
+ *         Separation string
  * @param string $cat_str
  *         Category location string (by reference)
  * @param bool   $makeLink
@@ -265,7 +265,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
  *
  * @return string
  *         location string
- * 
+ *
  * @throws cDbException
  * @throws cException
  */
@@ -368,9 +368,9 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
  * @param int    $lang
  *
  * @return bool
- * 
+ *
  * @throws cInvalidArgumentException
- * 
+ *
  * @global array $cfgClient
  */
 function prWriteCacheFileContent($data, $client, $lang) {
@@ -394,9 +394,9 @@ function prWriteCacheFileContent($data, $client, $lang) {
  * @param int    $lang
  *
  * @return array $data
- *               
+ *
  * @throws cInvalidArgumentException
- * 
+ *
  * @global array $cfgClient
  */
 function prGetCacheFileContent($client, $lang) {

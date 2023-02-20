@@ -40,6 +40,11 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
     /**
      * @var cHTMLAlignmentTable
      */
+    private $_tableFloatAsString;
+
+    /**
+     * @var cHTMLAlignmentTable
+     */
     private $_tableEmptyString;
 
     /**
@@ -78,15 +83,16 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
         $this->_element = new cHTML();
         $this->_element->setTag('foobar');
 
-        $this->_tableEmpty       = new cHTMLAlignmentTable();
-        $this->_tableInt         = new cHTMLAlignmentTable(0);
-        $this->_tableFloat       = new cHTMLAlignmentTable(1.0);
-        $this->_tableEmptyString = new cHTMLAlignmentTable('');
-        $this->_tableString      = new cHTMLAlignmentTable(' foo ');
-        $this->_tableBool        = new cHTMLAlignmentTable(true);
-        $this->_tableNull        = new cHTMLAlignmentTable(null);
-        $this->_tableObject      = new cHTMLAlignmentTable($this->_element);
-        $this->_tableData        = new cHTMLAlignmentTable(0, 1.0, '', ' foo ', true, null, $this->_element);
+        $this->_tableEmpty         = new cHTMLAlignmentTable();
+        $this->_tableInt           = new cHTMLAlignmentTable(0);
+        $this->_tableFloat         = new cHTMLAlignmentTable(1.0);
+        $this->_tableFloatAsString = new cHTMLAlignmentTable('1.23');
+        $this->_tableEmptyString   = new cHTMLAlignmentTable('');
+        $this->_tableString        = new cHTMLAlignmentTable(' foo ');
+        $this->_tableBool          = new cHTMLAlignmentTable(true);
+        $this->_tableNull          = new cHTMLAlignmentTable(null);
+        $this->_tableObject        = new cHTMLAlignmentTable($this->_element);
+        $this->_tableData          = new cHTMLAlignmentTable(0, 1.0, '1.0', '', ' foo ', true, null, $this->_element);
     }
 
     /**
@@ -126,6 +132,10 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
         $act = $this->_readAttribute($this->_tableFloat, '_data');
         $this->assertSame(true, is_array($act));
         $this->assertEmpty(array_diff([1.0], $act));
+
+        $act = $this->_readAttribute($this->_tableFloatAsString, '_data');
+        $this->assertSame(true, is_array($act));
+        $this->assertEmpty(array_diff(['1.23'], $act));
 
         $act = $this->_readAttribute($this->_tableEmptyString, '_data');
         $this->assertSame(true, is_array($act));
@@ -189,6 +199,16 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
     }
 
     /**
+     * Tests rendering of table w/ float in string representation value.
+     */
+    public function testRenderFloatAsString()
+    {
+        $act = $this->_tableFloatAsString->render();
+        $exp = '<table cellpadding="0" cellspacing="0"><tr><td>1.23</td></tr></table>';
+        $this->assertSame($exp, $act);
+    }
+
+    /**
      * Tests rendering of table w/ empty string.
      */
     public function testRenderEmptyString()
@@ -244,7 +264,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
     public function testRenderData()
     {
         $act = $this->_tableData->render();
-        $exp = '<table cellpadding="0" cellspacing="0"><tr><td>0</td><td>1.0</td><td></td><td> foo </td><td>1</td><td></td><td><foobar /></td></tr></table>';
+        $exp = '<table cellpadding="0" cellspacing="0"><tr><td>0</td><td>1.0</td><td>1.23</td><td></td><td> foo </td><td>1</td><td></td><td><foobar /></td></tr></table>';
         $this->assertSame($exp, $act);
     }
 }

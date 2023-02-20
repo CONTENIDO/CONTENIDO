@@ -615,8 +615,16 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         }
     }
 
-    $cApiClient = new cApiClient($client); // TODO do we need $cApiClient here?
-    // Dont track page hit if tracking off
+    /**
+     * @deprecated Since 4.10.2, `$cApiClient` was used for tracking in earlier
+     *     times and is not needed anymore. Frontend modules/plugins should
+     *     rather create their own instance if needed, instead of relying on
+     *     the global instance.
+     */
+    $cApiClient = new cApiClient($client);
+
+
+    // Don't track page hit if tracking off
     if (getSystemProperty('stats', 'tracking') != 'disabled' && cRegistry::isTrackingAllowed()) {
         // Statistic, track page hit
         $oStatColl = new cApiStatCollection();

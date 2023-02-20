@@ -26,7 +26,7 @@ class cRights
      * Duplicate rights for any element.
      *
      * @param string $area
-     *         Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
+     *         Main area name (e.g. 'lay', 'mod', 'str', 'tpl', etc.)
      * @param int    $iditem
      *         ID of element to copy
      * @param int    $newiditem
@@ -114,7 +114,7 @@ class cRights
      * Create rights for any element
      *
      * @param string $area
-     *         Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
+     *         Main area name (e.g. 'lay', 'mod', 'str', 'tpl', etc.)
      * @param int    $iditem
      *         ID of new element
      * @param bool   $idlang

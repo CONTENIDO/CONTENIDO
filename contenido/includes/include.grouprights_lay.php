@@ -159,7 +159,7 @@ $db->query($sql);
 
 while ($db->nextRecord()) {
     $tplname = conHtmlentities($db->f('name'));
-    $description = conHtmlentities($db->f('description'));
+    $description = conHtmlentities($db->f('description') ?? '');
 
     $objItem->updateAttributes([
         'class' => 'td_rights0'

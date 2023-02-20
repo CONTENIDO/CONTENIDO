@@ -12,25 +12,53 @@
 <script type="text/javascript">
 (function(Con, $) {
     $(function() {
-        $(".inused_module").live("click", function() {
-            var iId = $(this).attr("rel"),
-                modName = $(this).parents("td").prev().text();
-            if (iId) {
-                $.post("ajaxmain.php", { area: "mod", ajax: "inused_module", id: iId, contenido: Con.sid },
+        // Translation edit form
+        var $form = $('form[name="{FORM_NAME}"]');
+
+        function actionCancel() {
+            // Reset action and cancel
+            $form.find('input[name="action"]').val('');
+            $form[0].reset();
+        }
+
+        function actionInUsedModule($element) {
+            var id = $element.data('id'),
+                moduleName = $element.closest('[data-name]');
+
+            if (id) {
+                $.post("ajaxmain.php", { area: "mod", ajax: "inused_module", id: id, contenido: Con.sid },
                     function(data) {
                         var inUseTitle = "{MODULEINUSETEXT}";
-                        inUseTitle = inUseTitle.replace("%s", modName);
+                        inUseTitle = inUseTitle.replace("%s", moduleName);
                         Con.showNotification(inUseTitle, data, null, true);
                     }
                 );
             }
-        });
-        $("th .del").parent().before(function() {
-            var iId = $(this).find('.del').attr('rel');
-            if (iId) {
-                return '<a href="{DELLANGHREF}' + iId + '"><img src="{DELLANGIMG}" title="{DELLANGALT}" alt="{DELLANGALT}"></a>';
+        }
+
+        function actionDelLang($element) {
+            var id = $element.data('id');
+
+            if (id) {
+                var $input = $('<input type="hidden" name="dellang" value="' + id + '" />');
+                $form.find('input[name="action"]').val('');
+                $form.append($input);
+                $form.submit();
+            }
+        }
+
+        $('#con_translate [data-action]').live('click', function() {
+            var action = $(this).data('action');
+
+            if (action === 'cancel') {
+                actionCancel();
+            } else if (action === 'inused_module') {
+                actionInUsedModule($(this));
+            } else if (action === 'dellang') {
+                actionDelLang($(this));
             }
         });
+
     });
 })(Con, Con.$);
 </script>

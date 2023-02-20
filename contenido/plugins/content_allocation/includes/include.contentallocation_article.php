@@ -31,19 +31,23 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.pathresolver.php');
 
+$oPage = new cGuiPage("contentallocation_article", "content_allocation", "7");
+
+$this_idartlang = 0;
+$this_locked = 0;
+
 // fetch idartlang for idart
-$sql = "SELECT `idartlang`, `locked` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
-$db->query($sql, cRegistry::getDbTableName('art_lang'), $idart, $lang);
-$db->nextRecord();
-$this_idartlang = $db->f('idartlang');
-$this_locked = $db->f('locked');
+$articleLanguage = new cApiArticleLanguage();
+$articleLanguage->loadByArticleAndLanguageId($idart, $lang);
+if ($articleLanguage->isLoaded()) {
+    $this_idartlang = cSecurity::toInteger($articleLanguage->get('idartlang'));
+    $this_locked = cSecurity::toInteger($articleLanguage->get('locked'));
+}
 
 if ($this_locked == 1) {
     $disabled = 'disabled="disabled"';
-    $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+    $oPage->displayWarning(i18n('This article is currently frozen and can not be edited!'));
 }
-
-$oPage = new cGuiPage("contentallocation_article", "content_allocation", "7");
 
 $oTree = new pApiContentAllocationComplexList('06bd456d-fe76-40cb-b041-b9ba90dc400a');
 $oAlloc = new pApiContentAllocation();

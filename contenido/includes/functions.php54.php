@@ -2,8 +2,8 @@
 
 /**
  * Originally, this file contained fixed functions for PHP 5.4 support (encoding related).
- * Update 2021-08-25: check for PHP-Version has been omitted. 
- * It is presumed that at least PHP7.x is running. 
+ * Update 2021-08-25: check for PHP-Version has been omitted.
+ * It is presumed that at least PHP7.x is running.
  * Code alternatives for PHP below 5.4 have been deleted.
  *
  * @package Core

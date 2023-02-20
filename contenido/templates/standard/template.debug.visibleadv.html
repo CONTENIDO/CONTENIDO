@@ -27,11 +27,11 @@ function con_dbg_hide(myItem) {
 </style>
 
 <div id="conDbgBox">
-    <a href="javascript:void(0);" title="Toggle Debug Output" onclick="con_dbg_toggle('dbg_item_block');">con dbg</a>
-    <a id="conDbgClose" href="javascript:void(0);" title="Hide Debug Output" onclick="con_dbg_hide('conDbgBox');">(x)</a>
+    <a href="javascript:void(0)" title="Toggle Debug Output" onclick="con_dbg_toggle('dbg_item_block');">con dbg</a>
+    <a id="conDbgClose" href="javascript:void(0)" title="Hide Debug Output" onclick="con_dbg_hide('conDbgBox');">(x)</a>
     <div id="dbg_item_block" style="display:none;">
         <!-- BEGIN:BLOCK -->
-        <a href="javascript:void(0);" title="Toggle Item" onclick="con_dbg_toggle('dbg_item_{DBG_ITEM_COUNT}');">{DBG_ITEM_NAME}</a>
+        <a href="javascript:void(0)" title="Toggle Item" onclick="con_dbg_toggle('dbg_item_{DBG_ITEM_COUNT}');">{DBG_ITEM_NAME}</a>
         <div id="dbg_item_{DBG_ITEM_COUNT}" style="display:none;margin-left:20px;">{DBG_ITEM_VALUE}</div>
         <!-- END:BLOCK -->
     </div>

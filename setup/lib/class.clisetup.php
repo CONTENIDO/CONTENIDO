@@ -120,7 +120,7 @@ class cCLISetup {
                 exit(1);
             }
         } else {
-            // default mode - look for the file. if it's there, use it. Otherwise start the interactive setup
+            // default mode - look for the file. if it's there, use it. Otherwise, start the interactive setup
             echo(i18n('Looking for ', 'setup') . $this->_settingsFile . '...');
             if (file_exists($this->_settingsFile)) {
                 // read the file

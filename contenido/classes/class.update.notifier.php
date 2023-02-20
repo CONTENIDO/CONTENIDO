@@ -331,11 +331,11 @@ class cUpdateNotifier {
     protected function updateSystemProperty($sAction) {
         if ($sAction == "activate") {
             setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "true");
-        } else if ($sAction == "deactivate") {
+        } elseif ($sAction == "deactivate") {
             setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "false");
-        } else if ($sAction == "activate_rss") {
+        } elseif ($sAction == "activate_rss") {
             setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "true");
-        } else if ($sAction == "deactivate_rss") {
+        } elseif ($sAction == "deactivate_rss") {
             setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "false");
         }
     }
@@ -728,7 +728,7 @@ class cUpdateNotifier {
                 $oTpl->set("s", "NEWS_NOCONTENT", "");
                 $oTpl->set("s", "DISPLAY_DISABLED", 'none');
             }
-        } else if ($this->bNoWritePermissions == true) {
+        } elseif ($this->bNoWritePermissions == true) {
             $oTpl->set("s", "NEWS_NOCONTENT", i18n('Your webserver does not have write permissions for the directory /contenido/data/cache/!'));
         } else {
             $oTpl->set("s", "NEWS_NOCONTENT", i18n("No RSS content available"));
@@ -775,25 +775,25 @@ class cUpdateNotifier {
     public function displayOutput() {
         if (!$this->bEnableView) {
             $sOutput = "";
-        } else if ($this->bNoWritePermissions == true) {
+        } elseif ($this->bNoWritePermissions == true) {
             $sMessage = i18n('Your webserver does not have write permissions for the directory /contenido/data/cache/!');
             $sOutput = $this->renderOutput($sMessage);
-        } else if (!$this->bEnableCheck) {
+        } elseif (!$this->bEnableCheck) {
             $sMessage = i18n('Update notification is disabled! For actual update information, please activate.');
             $sOutput = $this->renderOutput($sMessage);
-        } else if ($this->sErrorOutput != "") {
+        } elseif ($this->sErrorOutput != "") {
             $sOutput = $this->sErrorOutput;
-        } else if ($this->sVendorVersion == '') {
+        } elseif ($this->sVendorVersion == '') {
             $sMessage = i18n('You have an unknown or unsupported version of CONTENIDO!');
             $sOutput = $this->renderOutput($sMessage);
-        } else if ($this->sVendorVersion == "deprecated") {
+        } elseif ($this->sVendorVersion == "deprecated") {
             $sMessage = sprintf(i18n("Your version of CONTENIDO is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href='%s' class='blue' target='_blank'>Download now!</a>"), 'http://www.contenido.org');
             $sOutput = $this->renderOutput($sMessage);
-        } else if ($this->checkPatchLevel() == "-1") {
+        } elseif ($this->checkPatchLevel() == "-1") {
             $sVendorDownloadURL = $this->getDownloadURL();
             $sMessage = sprintf(i18n("A new version of CONTENIDO is available! <br /> <a href='%s' class='blue' target='_blank'>Download %s now!</a>"), $sVendorDownloadURL, $this->sVendorVersion);
             $sOutput = $this->renderOutput($sMessage);
-        } else if ($this->checkPatchLevel() == "1") {
+        } elseif ($this->checkPatchLevel() == "1") {
             $sMessage = sprintf(i18n('It seems to be that your version string was manipulated. CONTENIDO %s does not exist!'), CON_VERSION);
             $sOutput = $this->renderOutput($sMessage);
         } else {

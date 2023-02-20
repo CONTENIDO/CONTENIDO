@@ -73,8 +73,8 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      * @param boolean $autofill - The autofill flag
      * @return cHTMLPasswordbox|cHTML
      */
-    public function setAutofill($autofill) {
-        $this->_autofill = cSecurity::toBoolean($autofill);
+    public function setAutofill(bool $autofill) {
+        $this->_autofill = $autofill;
         return $this;
     }
 
@@ -128,7 +128,7 @@ class cHTMLPasswordbox extends cHTMLFormElement {
 
     /**
      * Generates the HTML markup for the input field of type password.
-     * Additionally, it deals with the enabled status of th property $_autofill.
+     * Additionally, it deals with the enabled status of the property $_autofill.
      * Setting the autocomplete to "off" will prevent from autocompletion but
      * some browser or password manager may autofill the field with the
      * previous stored value, which is not always wanted.
@@ -143,7 +143,8 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      *
      * @return string
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         $sReadonly = $this->getAttribute('readonly') !== null;
 
         if ($this->_autofill === true || $sReadonly) {

@@ -50,7 +50,7 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
-// Include the config file of the frontend to init the Client and Language Id
+// Include the config file of the frontend to initialize client and language id
 include_once('data/config/' . CON_ENVIRONMENT . '/config.php');
 
 // Contenido startup process
@@ -64,6 +64,7 @@ cAutoload::addClassmapConfig([
     'cTestingException' => CON_TEST_BASENAME . '/lib/class.testing.exception.php',
     'cTestingTestCase' => CON_TEST_BASENAME . '/lib/class.testing.test.case.php',
     'cTestingTestHelper' => CON_TEST_BASENAME . '/lib/class.testing.test.helper.php',
+    'cUnitTestSession' => CON_TEST_BASENAME . '/lib/class.unit.testsession.php',
     'DogCollection' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.dog_item.php',
     'DogItem' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.dog_item.php',
     'DogRfidCollection' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.dog_rfid_item.php',
@@ -88,11 +89,13 @@ cInclude('includes', 'functions.con2.php');
 cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.pathresolver.php');
 
+$backendPath = cRegistry::getBackendPath();
+
 // Initialize the Database Abstraction Layer, the Session, Authentication and Permissions Handler of the
 if (cRegistry::getBackendSessionId()) {
     // Backend
     cRegistry::bootstrap([
-        'sess' => 'cSession',
+        'sess' => 'cUnitTestSession',  // cSession
         'auth' => 'cAuthHandlerBackend',
         'perm' => 'cPermission'
     ]);
@@ -100,13 +103,14 @@ if (cRegistry::getBackendSessionId()) {
 } else {
     // Frontend
     cRegistry::bootstrap([
-        'sess' => 'cFrontendSession',
+        'sess' => 'cUnitTestSession', // cFrontendSession
         'auth' => 'cAuthHandlerFrontend',
         'perm' => 'cPermission'
     ]);
 }
 
-require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php';
+// Include plugins & call hook after plugins are loaded
+require_once $backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php';
 cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = cRegistry::getDb();
@@ -124,12 +128,14 @@ if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
     }
 }
 
-// update urlbuilder set http base path
+// Update UriBuilder, set http base path
 cUri::getInstance()->getUriBuilder()->setHttpBasePath(cRegistry::getFrontendUrl());
 
 // Initialize language
 if (!isset($lang)) {
-    // If there is an entry load_lang in __FRONTEND_PATH__/data/config/config.php use it, else use the first language of this client
+    // If there is an entry load_lang in
+    // __FRONTEND_PATH__/data/config/config.php use it, else use the first
+    // language of this client
     if (isset($load_lang)) {
         // load_client is set in __FRONTEND_PATH__/data/config/config.php
         $lang = $load_lang;

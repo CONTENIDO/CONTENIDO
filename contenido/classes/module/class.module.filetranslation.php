@@ -46,6 +46,13 @@ class cModuleFileTranslation extends cModuleHandler {
     static $langArray = [];
 
     /**
+     * Language info array.
+     *
+     * @var array
+     */
+    private static $langInfo = [];
+
+    /**
      * The id of the module.
      *
      * @var int
@@ -56,7 +63,9 @@ class cModuleFileTranslation extends cModuleHandler {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param int  $idmodul        [optional]
+     * @param cApiModule|array|int $module [optional]
+     *         The module instance or the module recordset array from the
+     *         database or the id of the module
      * @param bool $static         [optional]
      *                             if true it will load once the translation from file
      * @param int  $overrideIdlang [optional]
@@ -65,12 +74,12 @@ class cModuleFileTranslation extends cModuleHandler {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function __construct($idmodul = NULL, $static = false, $overrideIdlang = NULL) {
-        parent::__construct($idmodul);
+    public function __construct($module = NULL, $static = false, $overrideIdlang = NULL) {
+        parent::__construct($module);
 
         // $this->_debug = true;
 
-        if ($idmodul != NULL) {
+        if ($this->_idmod != NULL) {
             $this->_modulePath = $this->getModulePath();
         }
 
@@ -82,37 +91,20 @@ class cModuleFileTranslation extends cModuleHandler {
         $this->_encoding = self::getEncoding($this->_idlang);
 
         // don't open the translations file for each mi18n call
-        if ($static == true) {
-            if (self::$savedIdMod != $idmodul) {
-                // set filename lang_[language]_[Country].txt
-                $language = $this->_getValueFromProperties('language', 'code');
-                $country = $this->_getValueFromProperties('country', 'code');
-                self::$fileName = 'lang_' . $language . '_' . cString::toUpperCase($country) . '.txt';
-
+        if ($static) {
+            if (self::$savedIdMod != $this->_idmod) {
+                self::$fileName = $this->_composeTranslationFileName($this->_client, $this->_idlang);
                 self::$langArray = $this->getTranslationArray();
-                self::$savedIdMod = $idmodul;
+                self::$savedIdMod = $this->_idmod;
             }
         } else {
             self::$savedIdMod = -1;
-
-            // set filename lang_[language]_[Country].txt
-            $language = $this->_getValueFromProperties('language', 'code');
-            $country = $this->_getValueFromProperties('country', 'code');
-            self::$fileName = 'lang_' . $language . '_' . cString::toUpperCase($country) . '.txt';
+            self::$fileName = $this->_composeTranslationFileName($this->_client, $this->_idlang);
         }
     }
 
     /**
-     * Get the value of an item from properties db.
-     *
-     * @param string $type
-     * @param string $name
-     *
-     * @return string
-     *         value
-     *
-     * @throws cDbException
-     * @throws cException
+     * @deprecated Since 4.10.2, Function replaced by {@see cModuleFileTranslation::_getLanguageInfo}
      */
     private function _getValueFromProperties($type, $name) {
         cApiPropertyCollection::reset();
@@ -134,6 +126,7 @@ class cModuleFileTranslation extends cModuleHandler {
      * Save the hole translations for an idmod and lang.
      * For the upgrade/setup.
      *
+     * @todo Remove this to setup routine (see cUpgradeJob_0002), it has nothing to do here!
      * @throws cDbException
      * @throws cException
      */
@@ -147,11 +140,7 @@ class cModuleFileTranslation extends cModuleHandler {
             $sql = $db->prepare($sql, $this->_cfg['tab']['mod_translations'], $idlang, $this->_idmod);
             $db->query($sql);
 
-            $this->_idlang = $idlang;
-            // set filename lang_[language]_[Country].txt
-            $language = $this->_getValueFromProperties('language', 'code');
-            $country = $this->_getValueFromProperties('country', 'code');
-            self::$fileName = 'lang_' . $language . '_' . cString::toUpperCase($country) . '.txt';
+            self::$fileName = $this->_composeTranslationFileName($this->_client, $idlang);
 
             $translations = [];
             while ($db->nextRecord()) {
@@ -175,7 +164,7 @@ class cModuleFileTranslation extends cModuleHandler {
             }
 
             if (count($translations) != 0) {
-                if ($this->saveTranslationArray($translations) == false) {
+                if (!$this->saveTranslationArray($translations)) {
                     cWarning(__FILE__, __LINE__, 'Could not save translate idmod=' . $this->_idmod . ' !');
                 }
             }
@@ -240,6 +229,54 @@ class cModuleFileTranslation extends cModuleHandler {
         }
 
         return $retArray;
+    }
+
+    /**
+     * Composes the file name for the module translation file.
+     *
+     * @param int $idclient Client id to use
+     * @param int $idlang  Language id to use
+     *
+     * @return string The file name like `lang_[language]_[COUNTRY].txt`,
+     *                e.g. `lang_en_US.txt`
+     */
+    private function _composeTranslationFileName($idclient, $idlang) {
+        // Compose the translation file name lang_[language]_[COUNTRY].txt
+        $info = $this->_getLanguageInfo($idclient, $idlang);
+        $language = $info['language'] ?? '';
+        $country = cString::toUpperCase($info['country'] ?? '');
+        return 'lang_' . $language . '_' . $country . '.txt';
+    }
+
+    /**
+     * Returns the language information array for a client and language.
+     * The required data will be lazy loaded at first call for each
+     * combination of client and language.
+     *
+     * @param int $idclient Client id to use
+     * @param int $idlang  Language id to use
+     *
+     * @return array  Language info array like
+     *                <pre>
+     *                ['language' => 'en', 'country' => 'US']
+     *                </pre>
+     *                Note: Array can also be empty, in case of an error!
+     * @throws cDbException|cException
+     */
+    private function _getLanguageInfo($idclient, $idlang) {
+        if (!isset(self::$langInfo[$idclient][$idlang])) {
+            cApiPropertyCollection::reset();
+            $propColl = new cApiPropertyCollection();
+            $propColl->changeClient($idclient);
+            $language = $propColl->getValue('idlang', $idlang, 'language', 'code', '');
+            $country = $propColl->getValue('idlang', $idlang, 'country', 'code', '');
+            self::$langInfo[$idclient][$idlang] = [
+                'language' => $language,
+                'country' => $country,
+            ];
+        }
+
+        return self::$langInfo[$idclient][$idlang] ?? [];
     }
 
     /**
