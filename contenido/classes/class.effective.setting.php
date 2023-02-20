@@ -37,7 +37,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage Backend
  */
-class cEffectiveSetting {
+class cEffectiveSetting
+{
 
     /**
      * @var array
@@ -77,58 +78,35 @@ class cEffectiveSetting {
      * @throws cDbException
      * @throws cException
      */
-    private static function _loadSettings() {
+    private static function _loadSettings()
+    {
         if (!isset(self::$_loaded[self::_getKeyPrefix()])) {
             $typeGroup = [];
 
-            // get all client settings
+            // Get all client settings
             $client = self::_getClientInstance();
             $settings = $client->getProperties();
-
             if (is_array($settings)) {
-                foreach ($settings as $setting) {
-                    $key = self::_makeKey($setting['type'], $setting['name']);
-                    self::_set($key, $setting['value']);
-                    if (!isset($typeGroup[$setting['type']])) {
-                        $typeGroup[$setting['type']] = [];
-                    }
-                    $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
-                }
+                self::_takeoverTypeGroupSettings($settings, $typeGroup);
             }
 
-            //get all clientLang setting
+            // Get all clientLang setting
             $clientLang = self::_getClientLanguageInstance();
             $settings = $clientLang->getProperties();
-
             if (is_array($settings)) {
-                foreach ($settings as $setting) {
-                    $key = self::_makeKey($setting['type'], $setting['name']);
-                    self::_set($key, $setting['value']);
-                    if (!isset($typeGroup[$setting['type']])) {
-                        $typeGroup[$setting['type']] = [];
-                    }
-                    $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
-                }
+                self::_takeoverTypeGroupSettings($settings, $typeGroup);
             }
 
-            //get user settings
+            // Get user settings
             if (self::_isAuthenticated() && !empty(cRegistry::getBackendSessionId())) {
                 $user = self::_getUserInstance();
                 $settings = $user->getUserProperties();
-
                 if (is_array($settings)) {
-                    foreach ($settings as $setting) {
-                        $key = self::_makeKey($setting['type'], $setting['name']);
-                        self::_set($key, $setting['value']);
-                        if (!isset($typeGroup[$setting['type']])) {
-                            $typeGroup[$setting['type']] = [];
-                        }
-                        $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
-                    }
+                    self::_takeoverTypeGroupSettings($settings, $typeGroup);
                 }
             }
 
-            //write cache by type settings
+            // Write cache by type settings
             foreach ($typeGroup as $key => $group) {
                 $key = self::_makeKey($key, ' ');
                 self::_set($key, $group);
@@ -162,7 +140,8 @@ class cEffectiveSetting {
      * @throws cDbException
      * @throws cException
      */
-    public static function get($type, $name, $default = '') {
+    public static function get($type, $name, $default = '')
+    {
         self::_loadSettings();
 
         $key = self::_makeKey($type, $name);
@@ -202,7 +181,8 @@ class cEffectiveSetting {
      * @throws cDbException
      * @throws cException
      */
-    public static function getByType($type) {
+    public static function getByType($type)
+    {
         self::_loadSettings();
 
         $settings = getSystemPropertiesByType($type);
@@ -231,7 +211,8 @@ class cEffectiveSetting {
      * @param string $value
      *         The value of the setting
      */
-    public static function set($type, $name, $value) {
+    public static function set($type, $name, $value)
+    {
         $key = self::_makeKey($type, $name);
         self::_set($key, $value);
     }
@@ -246,7 +227,8 @@ class cEffectiveSetting {
      * @param string $name
      *         The name of the item
      */
-    public static function delete($type, $name) {
+    public static function delete($type, $name)
+    {
         $keySuffix = '_' . $type . '_' . $name;
         foreach (self::$_settings as $key => $value) {
             if (cString::findFirstPos($key, $keySuffix) !== false) {
@@ -260,7 +242,8 @@ class cEffectiveSetting {
      *
      * Usable to start getting settings from scratch.
      */
-    public static function reset() {
+    public static function reset()
+    {
         self::$_settings = [];
         self::$_user = self::$_client = self::$_clientLanguage = NULL;
     }
@@ -272,7 +255,8 @@ class cEffectiveSetting {
      * @throws cDbException
      * @throws cException
      */
-    protected static function _getUserInstance() {
+    protected static function _getUserInstance()
+    {
         if (!isset(self::$_user)) {
             $auth = cRegistry::getAuth();
             self::$_user = new cApiUser($auth->auth['uid']);
@@ -287,7 +271,8 @@ class cEffectiveSetting {
      * @throws cDbException
      * @throws cException
      */
-    protected static function _getClientLanguageInstance() {
+    protected static function _getClientLanguageInstance()
+    {
         if (!isset(self::$_clientLanguage)) {
             $client = cRegistry::getClientId();
             $lang = cRegistry::getLanguageId();
@@ -303,7 +288,8 @@ class cEffectiveSetting {
      * @throws cDbException
      * @throws cException
      */
-    protected static function _getLanguageInstance() {
+    protected static function _getLanguageInstance()
+    {
         if (!isset(self::$_language)) {
             $lang = cRegistry::getLanguageId();
             self::$_language = new cApiLanguage($lang);
@@ -318,7 +304,8 @@ class cEffectiveSetting {
      * @throws cDbException
      * @throws cException
      */
-    protected static function _getClientInstance() {
+    protected static function _getClientInstance()
+    {
         if (!isset(self::$_client)) {
             $client = cRegistry::getClientId();
             self::$_client = new cApiClient($client);
@@ -334,8 +321,9 @@ class cEffectiveSetting {
      * @return string|string[]
      *         bool setting value or false
      */
-    protected static function _get($key) {
-        return (isset(self::$_settings[$key])) ? self::$_settings[$key] : false;
+    protected static function _get($key)
+    {
+        return self::$_settings[$key] ?? false;
     }
 
     /**
@@ -346,7 +334,8 @@ class cEffectiveSetting {
      * @param string $value|string[]
      *         Value to store
      */
-    protected static function _set($key, $value) {
+    protected static function _set($key, $value)
+    {
         self::$_settings[$key] = $value;
     }
 
@@ -360,7 +349,8 @@ class cEffectiveSetting {
      * @return string
      *         The setting key
      */
-    protected static function _makeKey($type, $name) {
+    protected static function _makeKey($type, $name)
+    {
         return self::_getKeyPrefix() . '_' . $type . '_' . $name;
     }
 
@@ -369,7 +359,8 @@ class cEffectiveSetting {
      *
      * @return string
      */
-    protected static function _getKeyPrefix() {
+    protected static function _getKeyPrefix()
+    {
         $auth = cRegistry::getAuth();
         $prefix = '';
 
@@ -393,8 +384,30 @@ class cEffectiveSetting {
      *
      * @return bool
      */
-    protected static function _isAuthenticated() {
+    protected static function _isAuthenticated()
+    {
         $auth = cRegistry::getAuth();
         return $auth instanceof cAuth && $auth->isAuthenticated() && !$auth->isLoginForm();
     }
+
+    /**
+     * Saves the passed settings array structure in the type group array.
+     *
+     * @param array $settings
+     * @param array $typeGroup
+     *
+     * @return void
+     */
+    protected static function _takeoverTypeGroupSettings(array $settings, array &$typeGroup)
+    {
+        foreach ($settings as $setting) {
+            $key = self::_makeKey($setting['type'], $setting['name']);
+            self::_set($key, $setting['value']);
+            if (!isset($typeGroup[$setting['type']])) {
+                $typeGroup[$setting['type']] = [];
+            }
+            $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
+        }
+    }
+
 }
