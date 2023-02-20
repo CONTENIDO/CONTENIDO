@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 16:22+0100\n"
-"PO-Revision-Date: 2023-02-17 16:58+0100\n"
+"POT-Creation-Date: 2023-02-20 20:06+0100\n"
+"PO-Revision-Date: 2023-02-20 20:09+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language: de_DE\n"
@@ -119,7 +119,7 @@ msgstr ""
 "Ihrer CONTENIDO-Installation gefunden werden.  Bitte kontaktieren Sie den "
 "Plugin-Entwickler."
 
-#: classes/setup/class.pimpluginsetup.php:333
+#: classes/setup/class.pimpluginsetup.php:334
 #, php-format
 msgid ""
 "Plugin Manager could not find a temporary CONTENIDO directory. Also, it is "
@@ -130,16 +130,25 @@ msgstr ""
 "war es leider nicht m&ouml;glich einen tempor&auml;ren Ordner unter <em>%s</"
 "em> zu erstellen. Bitte erstellen Sie den Ordner manuell."
 
-#: classes/setup/class.pimpluginsetup.php:362
+#: classes/setup/class.pimpluginsetup.php:358
+#, php-format
+msgid ""
+"Plugin Manager could not open the archive file <em>%s</em>. See logs fore "
+"more details."
+msgstr ""
+"Plugin Manager konnte nicht die Archiv-Datei <em>%s</em> &ouml;ffnen. Sehen "
+"Sie die Protokolle für weitere Details."
+
+#: classes/setup/class.pimpluginsetup.php:370
 msgid "Invalid Xml document. Please contact the plugin author."
 msgstr ""
 "Ung&uuml;ltiges Xml-Dokument. Bitte kontaktieren Sie den Plugin-Entwickler."
 
-#: classes/setup/class.pimpluginsetup.php:448
+#: classes/setup/class.pimpluginsetup.php:459
 msgid "Plugin Manager accepts only Zip archives"
 msgstr "Der Plugin Manager akzeptiert lediglich Zip-Archive"
 
-#: classes/setup/class.pimpluginsetup.php:504
+#: classes/setup/class.pimpluginsetup.php:519
 msgid "Back to Plugin Manager"
 msgstr "Zur&uuml;ck zum Plugin Manager"
 
@@ -250,123 +259,123 @@ msgstr "Zugriff verweigert"
 msgid "Currently the plugin system is disabled via configuration"
 msgstr "Momentan ist das Plugin-System via der Konfiguration deaktiviert"
 
-#: includes/include.right_bottom.php:135
+#: includes/include.right_bottom.php:142
 msgid "Y-m-d"
 msgstr "d.m.Y"
 
-#: includes/include.right_bottom.php:149
+#: includes/include.right_bottom.php:156
 msgid "Set execution order down"
 msgstr "Ausf&uuml;hrungsreihenfolge nach unten setzen"
 
-#: includes/include.right_bottom.php:150
+#: includes/include.right_bottom.php:157
 msgid "Set execution order up"
 msgstr "Ausf&uuml;hrungsreihenfolge nach oben setzen"
 
-#: includes/include.right_bottom.php:152
+#: includes/include.right_bottom.php:159
 msgid "Installed since"
 msgstr "Installiert seit"
 
-#: includes/include.right_bottom.php:153 includes/include.right_bottom.php:206
+#: includes/include.right_bottom.php:160 includes/include.right_bottom.php:213
 msgid "Author"
 msgstr "Autor"
 
-#: includes/include.right_bottom.php:154 includes/include.right_bottom.php:207
+#: includes/include.right_bottom.php:161 includes/include.right_bottom.php:214
 msgid "Contact"
 msgstr "Kontakt"
 
-#: includes/include.right_bottom.php:156 includes/include.right_bottom.php:158
+#: includes/include.right_bottom.php:163 includes/include.right_bottom.php:165
 msgid "Update"
 msgstr "Aktualisieren"
 
-#: includes/include.right_bottom.php:157
+#: includes/include.right_bottom.php:164
 msgid "Please choose your new file"
 msgstr "Plugin-Paket auswählen"
 
-#: includes/include.right_bottom.php:159
+#: includes/include.right_bottom.php:166
 msgid "Execute plugin_uninstall.sql"
 msgstr "plugin_uninstall.sql ausführen"
 
-#: includes/include.right_bottom.php:161 includes/include.right_bottom.php:212
+#: includes/include.right_bottom.php:168 includes/include.right_bottom.php:219
 msgid "Dependencies"
 msgstr "Abh&auml;ngigkeiten"
 
-#: includes/include.right_bottom.php:168
+#: includes/include.right_bottom.php:175
 msgid "Disable"
 msgstr "Deaktivieren"
 
-#: includes/include.right_bottom.php:171
+#: includes/include.right_bottom.php:178
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: includes/include.right_bottom.php:176
+#: includes/include.right_bottom.php:183
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
-#: includes/include.right_bottom.php:205
+#: includes/include.right_bottom.php:212
 msgid "Foldername"
 msgstr "Ordnername"
 
-#: includes/include.right_bottom.php:208
+#: includes/include.right_bottom.php:215
 msgid "Install extracted plugin"
 msgstr "Installiere das extrahierte Plugin"
 
-#: includes/include.right_bottom.php:209
+#: includes/include.right_bottom.php:216
 msgid "Install"
 msgstr "Installieren"
 
-#: includes/include.right_bottom.php:210
+#: includes/include.right_bottom.php:217
 msgid "Uninstall extracted plugin (deleted plugin files from filesystem)"
 msgstr ""
 "Entferne das extrahierte Plugin (das entfernte Plugin wird aus dem "
 "Dateisystem gel&ouml;scht)"
 
-#: includes/include.right_bottom.php:211
+#: includes/include.right_bottom.php:218
 msgid "Remove from filesystem"
 msgstr "Vom Dateisystem entfernen"
 
-#: includes/include.right_bottom.php:213
+#: includes/include.right_bottom.php:220
 msgid "Writeable"
 msgstr "Schreibbar"
 
-#: includes/include.right_bottom.php:230
+#: includes/include.right_bottom.php:237
 msgid "Everything looks fine"
 msgstr "Keine Fehler"
 
-#: includes/include.right_bottom.php:233
+#: includes/include.right_bottom.php:240
 msgid "This plugin is not writeable, please set the rights manually"
 msgstr ""
 "Dieses Plugin ist nicht beschreibbar, bitte setzen Sie die Dateirechte "
 "manuell"
 
-#: includes/include.right_bottom.php:245
+#: includes/include.right_bottom.php:252
 msgid "No entries"
 msgstr "Keine Eintr&auml;ge"
 
-#: includes/include.right_bottom.php:252
+#: includes/include.right_bottom.php:259
 msgid "Upload a new plugin"
 msgstr "Neues Plugin hochladen"
 
-#: includes/include.right_bottom.php:253
+#: includes/include.right_bottom.php:260
 msgid "Please choose a plugin package"
 msgstr "Plugin-Paket auswählen"
 
-#: includes/include.right_bottom.php:254
+#: includes/include.right_bottom.php:261
 msgid "Upload plugin package"
 msgstr "Plugin-Paket hochladen"
 
-#: includes/include.right_bottom.php:255
+#: includes/include.right_bottom.php:262
 msgid "Installed Plugins"
 msgstr "Installierte Plugins"
 
-#: includes/include.right_bottom.php:256
+#: includes/include.right_bottom.php:263
 msgid "Not installed Plugins"
 msgstr "Noch nicht installierte Plugins"
 
-#: includes/include.right_bottom.php:257
+#: includes/include.right_bottom.php:264
 msgid "Execution order"
 msgstr "Ausf&uuml;hrungsreihenfolge"
 
-#: includes/include.right_bottom.php:258
+#: includes/include.right_bottom.php:265
 msgid ""
 "If you click on following arrows you can manage the execution order of "
 "plugins. The first plugin (at first position) will be executed first from "
@@ -382,46 +391,46 @@ msgstr ""
 "funktionieren k&ouml;nnen. Im Normalfall hat die Ausf&uuml;hrungsreihenfolge "
 "jedoch keine praktischen Auswirkungen."
 
-#: includes/include.right_bottom.php:259
+#: includes/include.right_bottom.php:266
 msgid "Expand/collapse all"
 msgstr "Alle auf-/zuklappen"
 
-#: includes/include.right_bottom.php:260
+#: includes/include.right_bottom.php:267
 msgid "Filter"
 msgstr "Filtern"
 
-#: includes/include.right_bottom.php:261
+#: includes/include.right_bottom.php:268
 msgid "all"
 msgstr "alle"
 
-#: includes/include.right_bottom.php:262
+#: includes/include.right_bottom.php:269
 msgid "active"
 msgstr "aktive"
 
-#: includes/include.right_bottom.php:263
+#: includes/include.right_bottom.php:270
 msgid "inactive"
 msgstr "inaktive"
 
-#: includes/include.right_bottom.php:264
+#: includes/include.right_bottom.php:271
 msgid "Error"
 msgstr "Fehler"
 
-#: includes/include.right_bottom.php:265
+#: includes/include.right_bottom.php:272
 msgid "This plugin is already at the bottom!"
 msgstr "Dieses Plugin ist schon unten!"
 
-#: includes/include.right_bottom.php:266
+#: includes/include.right_bottom.php:273
 msgid "This plugin is already at the top!"
 msgstr "Dieses Plugin ist schon oben!"
 
-#: includes/include.right_bottom.php:267
+#: includes/include.right_bottom.php:274
 msgid ""
 "Are you sure to uninstall this plugin? Files are not deleted in filesystem."
 msgstr ""
 "Sind Sie sicher, dass Sie dieses Plugin deinstallieren m&ouml;chten? Die "
 "Dateien werden nicht aus dem Dateisystem entfernt."
 
-#: includes/include.right_bottom.php:268
+#: includes/include.right_bottom.php:275
 msgid ""
 "Are you sure you want to remove this plugin? All plugin files will be "
 "irretrievably removed from the file system."
@@ -429,7 +438,7 @@ msgstr ""
 "Sind Sie sicher, dass Sie dieses Plugin entfernen m&ouml;chten? S&auml;"
 "mtliche Plugin-Dateien werden unwiderruflich aus dem Dateisystem entfernt."
 
-#: includes/include.right_bottom.php:269
+#: includes/include.right_bottom.php:276
 msgid ""
 "With the selection `execute plugin_uninstall.sql` any database tables/"
 "entries of the plugin will be removed from the database."
