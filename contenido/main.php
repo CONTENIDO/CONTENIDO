@@ -54,16 +54,15 @@ require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
 $sess->register('belang');
 
+// Include cronjob-Emulator (for frame 1 only)
 if ($cfg['use_pseudocron'] == true) {
-    // Include cronjob-Emulator, but only for frame 1
     if ($frame == 1) {
         $sess->freeze();
 
-        $oldpwd = getcwd();
-
+        $currentWorkingDirectory = getcwd();
         chdir($backendPath . $cfg['path']['cronjobs']);
         cInclude('includes', 'pseudo-cron.inc.php');
-        chdir($oldpwd);
+        chdir($currentWorkingDirectory);
 
         if ($bJobRunned == true) {
             // Some cronjobs might overwrite important system variables.

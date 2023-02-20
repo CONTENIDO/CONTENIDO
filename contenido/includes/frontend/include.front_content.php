@@ -49,10 +49,10 @@ if (!isset($contenido)) {
 global $cfg, $belang, $force, $load_client;
 
 // Initialize common variables
-$idcat    = isset($idcat) ? $idcat : 0;
-$idart    = isset($idart) ? $idart : 0;
-$idcatart = isset($idcatart) ? $idcatart : 0;
-$error    = isset($error) ? $error : 0;
+$idcat    = $idcat ?? 0;
+$idart    = $idart ?? 0;
+$idcatart = $idcatart ?? 0;
+$error    = $error ?? 0;
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.con2.php');
@@ -62,12 +62,12 @@ cInclude('includes', 'functions.pathresolver.php');
 $backendPath = cRegistry::getBackendPath();
 $backendUrl  = cRegistry::getBackendUrl();
 
+// Include cronjob-Emulator
 if ($cfg['use_pseudocron'] == true) {
-    // Include cronjob-Emulator
-    $oldpwd = getcwd();
+    $currentWorkingDirectory = getcwd();
     chdir($backendPath . $cfg['path']['cronjobs']);
     cInclude('includes', 'pseudo-cron.inc.php');
-    chdir($oldpwd);
+    chdir($currentWorkingDirectory);
 }
 
 // Initialize the database abstraction layer, the session, authentication and
@@ -94,32 +94,29 @@ if (cRegistry::getBackendSessionId()) {
 require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
-$db = cRegistry::getDb();
+$db   = cRegistry::getDb();
 $sess = cRegistry::getSession();
 $lang = cRegistry::getLanguageId();
 $auth = cRegistry::getAuth();
 $perm = cRegistry::getPerm();
-
 
 // $sess->register('cfgClient');
 // $sess->register('errsite_idcat');
 // $sess->register('errsite_idart');
 $sess->register('encoding');
 
-// Initialize encodings
+// get encodings of all languages
 if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
-    // Get encodings of all languages
-    $encoding  = [];
     $oLangColl = new cApiLanguageCollection();
     $oLangColl->select('');
+    $encoding = [];
     while ($oLang = $oLangColl->next()) {
         $encoding[$oLang->get('idlang')] = $oLang->get('encoding');
     }
 }
 
 // Check frontend globals
-// @TODO: Should be outsourced into startup process but requires a better
-// detection (frontend or backend)
+// TODO Should be outsourced into startup process but requires a better detection (frontend or backend)
 if (isset($tmpchangelang) && $tmpchangelang > 0) {
     // savelang is needed to set language before closing the page, see
     // {frontend_clientdir}/front_content.php before cRegistry::shutdown()
@@ -227,12 +224,12 @@ if ($error == 1) {
 // Try to initialize variables $idcat, $idart, $idcatart, $idartlang
 // Note: These variables can be set via http globals e.g.
 // front_content.php?idcat=41&idart=34&idcatart=35&idartlang=42
-// If not the values will be computed.
+// If not, the values will be computed.
 if ($idart && !$idcat && !$idcatart) {
     // Try to fetch the idcat by idart
     $catArtColl = new cApiCategoryArticleCollection();
     $categories = $catArtColl->getCategoryIdsByArticleId($idart);
-    $idcat = $categories[0];
+    $idcat      = $categories[0];
 }
 
 unset($code, $markscript);
@@ -314,14 +311,12 @@ $idartlang = getArtLang($idart, $lang);
 
 // CON-2148
 // check if category is online, allow access if article is specified for loading
-if (false === isset($idart)) {
-    $online = ('0' !== $oCatLang->get('visible'));
-} else {
+if (isset($idart)) {
     $oArtLang = new cApiArticleLanguage($idartlang);
     $online   = $oArtLang->get('online');
+} else {
+    $online = ('0' !== $oCatLang->get('visible'));
 }
-
-$idartlang = getArtLang($idart, $lang);
 
 // always allow editing article in backend
 if (!cRegistry::getBackendSessionId() && ($idartlang === false || $online != true)) {
@@ -346,18 +341,14 @@ if ($cfg['cache']['disable'] != '1') {
     cInclude('frontend', 'data/config/' . CON_ENVIRONMENT . '/concache.php');
     $oCacheHandler = new cOutputCacheHandler($GLOBALS['cfgConCache'], $db);
     // $iStartTime ist optional und ist die Startzeit des Scriptes,
-    // z.B. am Anfang von fron_content.php
+    // z.B. am Anfang von front_content.php
     $oCacheHandler->start($iStartTime ?? null);
 }
 
 // Backend / Frontend editing
 
-/**
- * First we have to figure out if the user is allowed to edit the article.
- * We'll check if it's inuse, if they want to edit it and if all plugins allow
- * it.
- */
-
+// First we have to figure out if the user is allowed to edit the article.
+// We'll check if it's inuse, if they want to edit it and if all plugins allow it.
 $inUse = false;
 $allow = false;
 $view  = false;
@@ -372,10 +363,10 @@ if ($contenido) {
 
     $col = new cApiInUseCollection();
 
-    $overrideid = isset($overrideid) ? $overrideid : '';
-    $overridetype = isset($overridetype) ? $overridetype : '';
-    $type = isset($type) ? $type : '';
-    $typenr = isset($typenr) ? $typenr : '';
+    $overrideid   = $overrideid ?? '';
+    $overridetype = $overridetype ?? '';
+    $type         = $type ?? '';
+    $typenr       = $typenr ?? '';
 
     if ($overrideid != '' && $overridetype != '') {
         $col->removeItemMarks($overridetype, $overrideid);
@@ -403,8 +394,8 @@ if ($contenido) {
         // admin can edit article despite its locked status
         $isAdmin = cPermission::checkAdminPermission($auth->getPerms());
         if (false === $isAdmin) {
-            $notification    = new cGuiNotification();
-            $modErrorMessage = i18n('This article is currently frozen and can not be edited!');
+            $notification      = new cGuiNotification();
+            $modErrorMessage   = i18n('This article is currently frozen and can not be edited!');
             $inUse             = true;
             $sHtmlInUseCss     = '<link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/inuse.css">';
             $sHtmlInUseMessage = $notification->returnMessageBox('warning', $modErrorMessage, 0);
@@ -450,14 +441,15 @@ if ($contenido) {
     $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']);
 }
 
-// check if isset parent category template. do not show show error message if user call n article explicit via idart variable at url
+// check if isset parent category template
+// do not show error message if user calls an article explicitly via idart URL parameter
 if ($contenido) {
     $sql        = "
         SELECT
             a.idtplcfg
         FROM
-            `" . $cfg['tab']['cat_lang'] . "` AS a
-            , `" . $cfg['tab']['cat_art'] . "` AS b
+            `" . $cfg['tab']['cat_lang'] . "` AS a,
+            `" . $cfg['tab']['cat_art'] . "` AS b
         WHERE
             a.idcat = b.idcat
             AND b.idart = $idart
@@ -469,16 +461,16 @@ if ($contenido) {
     $article    = new cApiArticleLanguage($idartlang);
     $idart      = $article->getField('idart');
     $sql        = "
-            SELECT
-                a.idtplcfg
-            FROM
-                `" . $cfg['tab']['cat_lang'] . "` AS a
-                , `" . $cfg['tab']['cat_art'] . "` AS b
-            WHERE
-                a.idcat=b.idcat
-                AND b.idart=$idart
-                AND a.idlang=$lang
-            ;";
+        SELECT
+            a.idtplcfg
+        FROM
+            `" . $cfg['tab']['cat_lang'] . "` AS a,
+            `" . $cfg['tab']['cat_art'] . "` AS b
+        WHERE
+            a.idcat = b.idcat
+            AND b.idart = $idart
+            AND a.idlang = $lang
+        ;";
     $errorText  = 'Editing/Showing is not possible because there is no template assigned to this category.';
     $errorTitle = 'FATAL ERROR!';
 }
@@ -517,8 +509,8 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 } else {
 
     // Frontend view
-    // Mark submenuitem 'Preview' in the CONTENIDO Backend (Area: Contenido -->
-    // Articles --> Preview)
+    // Mark submenuitem 'Preview' in the CONTENIDO Backend
+    // (Area: Contenido --> Articles --> Preview)
     if ($contenido) {
         $markscript = markSubMenuItem(6, true);
     }
@@ -623,7 +615,15 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         }
     }
 
+    /**
+     * @deprecated Since 4.10.2, `$cApiClient` was used for tracking in earlier
+     *     times and is not needed anymore. Frontend modules/plugins should
+     *     rather create their own instance if needed, instead of relying on
+     *     the global instance.
+     */
     $cApiClient = new cApiClient($client);
+
+
     // Don't track page hit if tracking off
     if (getSystemProperty('stats', 'tracking') != 'disabled' && cRegistry::isTrackingAllowed()) {
         // Statistic, track page hit
@@ -694,7 +694,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                 $redirect_url = $oUrl->buildRedirect($aUrl['params']);
             }
 
-            // Encode to punycode/IDNA
+            // Encode to punycode/IDNA (Internationalized Domain Name)
             $IDN = new idna_convert();
 
             $redirect_url  = $IDN->encode($redirect_url);
@@ -702,10 +702,18 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
             // default redirection is temporary
             // with status code 302 or 307 (since HTTP/1.1)
-            $protocol      = $_SERVER['SERVER_PROTOCOL'];
-            $redirect_code = ($protocol === 'HTTP/1.1') ? 307 : 302;
             if ($redirect_mode === 'permanently') {
-                $redirect_code = 301;
+                if ($_SERVER['SERVER_PROTOCOL'] === 'HTTP/1.1') {
+                    $redirect_code = 308; // Permanent Redirect
+                } else {
+                    $redirect_code = 301; // Moved Permanently
+                }
+            } else {
+                if ($_SERVER['SERVER_PROTOCOL'] === 'HTTP/1.1') {
+                    $redirect_code = 307; // Temporary Redirect
+                } else {
+                    $redirect_code = 302; // Found (Moved Temporarily)
+                }
             }
 
             header('Location: ' . $redirect_url, true, $redirect_code);
