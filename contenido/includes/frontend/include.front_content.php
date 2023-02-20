@@ -696,9 +696,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             // with status code 302 or 307 (since HTTP/1.1)
             if ($redirect_mode === 'permanently') {
                 if ($_SERVER['SERVER_PROTOCOL'] === 'HTTP/1.1') {
-                    $redirect_code = 301; // Moved Permanently
-                    // TODO shouldn't it be 308?
-                    // $redirect_code = 308; // Permanent Redirect
+                    $redirect_code = 308; // Permanent Redirect
                 } else {
                     $redirect_code = 301; // Moved Permanently
                 }
