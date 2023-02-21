@@ -382,7 +382,7 @@ if ($contenido) {
 
     if ($inUse == true) {
         $disabled          = 'disabled="disabled"';
-        $sHtmlInUseCss     = '<link rel="stylesheet" type="text/css" href="' . $backendUrl . cAsset::backend('styles/inuse.css') . '">';
+        $sHtmlInUseCss     = cHTMLLinkTag::stylesheet($backendUrl . cAsset::backend('styles/inuse.css'));
         $sHtmlInUseMessage = $message;
     }
 
@@ -397,7 +397,7 @@ if ($contenido) {
             $notification      = new cGuiNotification();
             $modErrorMessage   = i18n('This article is currently frozen and can not be edited!');
             $inUse             = true;
-            $sHtmlInUseCss     = '<link rel="stylesheet" type="text/css" href="' . $backendUrl . cAsset::backend('styles/inuse.css') . '">';
+            $sHtmlInUseCss     = cHTMLLinkTag::stylesheet($backendUrl . cAsset::backend('styles/inuse.css'));
             $sHtmlInUseMessage = $notification->returnMessageBox('warning', $modErrorMessage, 0);
         }
     }
@@ -430,7 +430,7 @@ if ($contenido) {
                 $modErrorMessage .= "- " . $erroneousModule . "<br />\n";
             }
             $inUse             = true;
-            $sHtmlInUseCss     = '<link rel="stylesheet" type="text/css" href="' . $backendUrl . cAsset::backend('styles/inuse.css') . '">';
+            $sHtmlInUseCss     = cHTMLLinkTag::stylesheet($backendUrl . cAsset::backend('styles/inuse.css'));
             $sHtmlInUseMessage = $notification->returnMessageBox('error', $modErrorMessage, 0);
         }
     }

@@ -162,9 +162,7 @@ $code = preg_replace("/<\/form(.*)>/i", '', $code);
 
 $backendUrl = cRegistry::getBackendUrl();
 
-$headCode = '
-    <link rel="stylesheet" type="text/css" href="' . $backendUrl . cAsset::backend('styles/jquery/jquery-ui.css') . '">
-';
+$headCode = cHTMLLinkTag::stylesheet($backendUrl . cAsset::backend('styles/jquery/jquery-ui.css')) . PHP_EOL;
 
 $form = '
     <form id="tpl_visedit" name="tpl_visedit" action="' . $backendUrl . 'main.php">

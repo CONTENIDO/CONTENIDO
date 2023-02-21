@@ -103,7 +103,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     $files = $cfg['backend_template']['css_files'];
     foreach ($files as $file) {
         $file = $assetBackendFn($file);
-        $cssHeadCon .= $prefix . '<link rel="stylesheet" type="text/css" href="' . $file . '">';
+        $cssHeadCon .= $prefix . cHTMLLinkTag::stylesheet($file);
     }
     $cssHeadCon = $prefix . "<!-- CSS -->" . $cssHeadCon . $prefix . "<!-- /CSS -->";
 
@@ -116,7 +116,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
             $jsConfigurationAdded = true;
         } else {
             $file = $assetBackendFn($file);
-            $jsHeadCon .= $prefix . '<script type="text/javascript" src="' . $file . '"></script>';
+            $jsHeadCon .= $prefix . cHTMLScript::external($file);
         }
     }
 

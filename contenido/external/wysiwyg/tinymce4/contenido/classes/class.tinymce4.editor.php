@@ -611,9 +611,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      */
     public function getScripts() {
         if ($this->_useGZIP) {
-            $return = "\n<!-- tinyMCE -->\n" . '<script type="text/javascript" src="' . $this->_baseURL . 'tinymce/js/tinymce/tinymce.gzip.js"></script>';
+            $return = "\n<!-- tinyMCE -->\n" . cHTMLScript::external($this->_baseURL . 'tinymce/js/tinymce/tinymce.gzip.js');
         } else {
-            $return = "\n<!-- tinyMCE -->\n" . '<script type="text/javascript" src="' . $this->_baseURL . 'tinymce/js/tinymce/tinymce.min.js"></script>';
+            $return = "\n<!-- tinyMCE -->\n" . cHTMLScript::external($this->_baseURL . 'tinymce/js/tinymce/tinymce.min.js');
         }
 
         return $return;

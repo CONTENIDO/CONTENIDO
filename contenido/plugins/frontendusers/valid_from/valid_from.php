@@ -47,8 +47,8 @@ function frontendusers_valid_from_display() {
     }
     $currentValue = str_replace('00:00:00', '', $currentValue);
 
-    $sValidFrom = '
-        <link rel="stylesheet" type="text/css" href="' . cAsset::backend('styles/jquery/plugins/timepicker.css') . '">
+    $sValidFrom = cHTMLLinkTag::stylesheet(cAsset::backend('styles/jquery/plugins/timepicker.css')) . PHP_EOL
+        . '
 {_JS_HEAD_CONTENIDO_}
         ' . cHTMLScript::external(cAsset::backend('scripts/jquery/plugins/timepicker.js'));
     $sValidFrom .= $langScripts;
