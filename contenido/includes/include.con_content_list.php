@@ -120,7 +120,7 @@ tinyMCE_GZ.init({
 JS;
 }
 foreach ($cfg['path'][$wysiwygeditor . '_scripts'] as $onejs) {
-    $jslibs .= '<script src="' . $onejs . '" type="text/javascript"></script>';
+    $jslibs .= cHTMLScript::external($onejs);
 }
 unset($onejs);
 
