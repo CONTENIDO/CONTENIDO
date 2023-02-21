@@ -263,6 +263,7 @@ class NewsletterJob extends Item {
 
         $cfg = cRegistry::getConfig();
 
+        $oLogs = null;
         $iCount = 0;
         if ($this->get("status") == 2) {
             // Job is currently running, check start time and restart if
@@ -291,9 +292,6 @@ class NewsletterJob extends Item {
             $this->set("status", 2);
             $this->set("started", date("Y-m-d H:i:s"), false);
             $this->store();
-
-            // Initialization
-            $aMessages = [];
 
             $oLanguage = new cApiLanguage($this->get("idlang"));
             $sFormatDate = $oLanguage->getProperty("dateformat", "date");
@@ -497,7 +495,9 @@ class NewsletterJob extends Item {
     }
 
     /**
-     * Overridden store() method to set status to finished if rcpcount is 0
+     * Overridden store() method to set status to finished if rcpcount is 0.
+     *
+     * @return bool
      */
     public function store() {
         if ($this->get("rcpcount") == 0) {
