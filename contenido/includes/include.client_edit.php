@@ -14,6 +14,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var cGuiNotification $notification
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $area
+ * @var int $frame
+ * @var int $errsite_cat
+ * @var int $errsite_art
+ */
+
 if (!$perm->have_perm_area_action($area)) {
     $notification->displayNotification('error', i18n('Permission denied'));
     return;
@@ -31,17 +42,21 @@ if (defined('CON_STRIPSLASHES')) {
     $request = $_REQUEST;
 }
 
-$idclient = isset($request['idclient']) ? cSecurity::toInteger($request['idclient']) : 0;
-$clientname = isset($request['clientname']) ? $request['clientname'] : '';
-$htmlpath = isset($request['htmlpath']) ? $request['htmlpath'] : '';
-$frontendpath = isset($request['frontendpath']) ? $request['frontendpath'] : '';
-$clientlogo = isset($request['clientlogo']) ? $request['clientlogo'] : '';
-$serverpath = isset($request['serverpath']) ? $request['serverpath'] : '';
+$idclient = cSecurity::toInteger($request['idclient'] ?? '0');
+$clientname = $request['clientname'] ?? '';
+$htmlpath = $request['htmlpath'] ?? '';
+$frontendpath = $request['frontendpath'] ?? '';
+$clientlogo = $request['clientlogo'] ?? '';
+$serverpath = $request['serverpath'] ?? '';
+$oldpath = $request['oldpath'] ?? '';
 $active = isset($request['active']) && $request['active'] == 1 ? $request['active'] : '0';
+$copytemplate = cSecurity::toInteger($request['copytemplate'] ?? '0');
+$action = $action ?? '';
+
 if ($action == 'client_new') {
     $new = true;
 } else {
-    $new = isset($request['new']) && $request['new'] == '1' ? true : false;
+    $new = isset($request['new']) && $request['new'] == '1';
 }
 
 if ($idclient) {

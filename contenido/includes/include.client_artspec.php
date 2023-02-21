@@ -14,11 +14,22 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var cGuiNotification $notification
+ * @var array $cfg
+ * @var string $area
+ * @var int $frame
+ * @var int $idartspec
+ */
+
 $page = new cGuiPage("client_artspec");
 
 if (!isset($online)) {
     $online = 0;
 }
+
+$action = $action ?? '';
 
 if ($action == "client_artspec_save") {
     if (!$perm->have_perm_area_action($area, $action)) {
