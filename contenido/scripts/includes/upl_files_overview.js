@@ -22,7 +22,7 @@
         deleteSelectedSelector: '',
         text_close: 'Click to close',
         text_delete_question: 'Are you sure you want to delete the selected files?',
-    }
+    };
 
     /**
      * Upload files overview class
