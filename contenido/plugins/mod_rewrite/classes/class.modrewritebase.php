@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Abstract base mod rewrite class.
  *
  * Provides some common features such as common debugging, globals/configuration
- * access for childs.
+ * access for children.
  *
  * @author      Murat Purc <murat@purc.de>
  * @package     Plugin

@@ -54,7 +54,7 @@ class ModRewriteTest {
     protected $_bRoutingFound = false;
 
     /**
-     * Constuctor
+     * Constructor
      * @param  int  $maxItems  Max items (urls to articles/categories) to process
      */
     public function __construct($maxItems) {

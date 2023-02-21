@@ -353,9 +353,9 @@ class ModRewrite extends ModRewriteBase {
     }
 
     /**
-     * Funcion to return cat id by path.
+     * Function to return cat id by path.
      *
-     * Caches the paths at first call to provode faster processing at further calls.
+     * Caches the paths at first call to provide faster processing at further calls.
      *
      * @param   string $path Category path
      *
@@ -382,11 +382,7 @@ class ModRewrite extends ModRewriteBase {
 
         $key = 'cat_ids_and_urlpath_' . $client . '_' . $lang;
 
-        if (isset(self::$_lookupTable[$key])) {
-            $aPathsCache = self::$_lookupTable[$key];
-        } else {
-            $aPathsCache = [];
-        }
+        $aPathsCache = self::$_lookupTable[$key] ?? [];
 
         if (count($aPathsCache) == 0) {
             $sql = "SELECT cl.idcat, cl.urlpath FROM " . cRegistry::getDbTableName('cat_lang')
@@ -406,7 +402,7 @@ class ModRewrite extends ModRewriteBase {
                 }
 
                 // store path
-                $aPathsCache[self::$_db->f('idcat')] = $urlPath;
+                $aPathsCache[cSecurity::toInteger(self::$_db->f('idcat'))] = $urlPath;
             }
         }
         self::$_lookupTable[$key] = $aPathsCache;
@@ -804,7 +800,7 @@ class ModRewrite extends ModRewriteBase {
             . "WHERE cl.idclient = " . $iClientId . " AND (LOWER(l.name) = '" . self::$_db->escape($sLanguageName) . "' "
             . "OR LOWER(l.name) = '" . self::$_db->escape(urldecode($sLanguageName)) . "')";
         if ($aData = mr_queryAndNextRecord($sql)) {
-            $languageId = $aData['idlang'];
+            $languageId = cSecurity::toInteger($aData['idlang']);
         } else {
             $languageId = 0;
         }
@@ -817,8 +813,8 @@ class ModRewrite extends ModRewriteBase {
      * Splits passed argument into scheme://host and path/query.
      *
      * Example:
-     * input  = http://host/front_content.php?idcat=123
-     * return = ['htmlpath' => 'http://host', 'url' => 'front_content.php?idcat=123']
+     * input  = https://host/front_content.php?idcat=123
+     * return = ['htmlpath' => 'https://host', 'url' => 'front_content.php?idcat=123']
      *
      * @param  string  $url  URL to split
      * @return array   Associative array including the two parts:
@@ -835,7 +831,7 @@ class ModRewrite extends ModRewriteBase {
 
             // check if path matches to defined rootdir from mod_rewrite conf
             if (isset($aComp['path']) && $aComp['path'] !== parent::getConfig('rootdir')) {
-                // replace not matching path agaings configured one
+                // replace not matching path against configured one
                 // this will replace e.g. "http://host/cms/" against "http://host/"
                 $htmlPath = str_replace($aComp['path'], parent::getConfig('rootdir'), $htmlPath);
                 if (cString::getPartOfString($htmlPath, cString::getStringLength($htmlPath) - 1) == '/') {
@@ -850,17 +846,17 @@ class ModRewrite extends ModRewriteBase {
     }
 
     /**
-     * Function to preclean a url.
+     * Function to preclean an url.
      *
      * Removes absolute path declaration '/front_content.php' or relative path
      * definition to actual dir './front_content.php', ampersand entities '&amp;'
-     * and returns a url like 'front_content.php?idart=12&idlang=1'
+     * and returns an url like 'front_content.php?idart=12&idlang=1'
      *
      * @param   string  $url  Url to clean
      * @return  string  Cleaned Url
      */
     public static function urlPreClean($url) {
-        // some preparation of different front_content.php occurence
+        // some preparation of different front_content.php occurrence
         if (cString::findFirstPos($url, './front_content.php') === 0) {
             $url = str_replace('./front_content.php', 'front_content.php', $url);
         } elseif (cString::findFirstPos($url, '/front_content.php') === 0) {

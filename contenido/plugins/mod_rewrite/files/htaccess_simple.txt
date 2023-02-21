@@ -56,7 +56,7 @@
 
 # Some rules to compress files.
 # NOTE: Following settings are not mod rewrite specific, but enabling mod_deflate
-#       for some file types can help to reduce bandwith.
+#       for some file types can help to reduce bandwidth.
 <IfModule mod_deflate.c>
     <FilesMatch "\.(js|css|html|htm|php|xml)$">
         SetOutputFilter DEFLATE

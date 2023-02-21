@@ -288,7 +288,7 @@ SQL;
         while ($this->_oDb->nextRecord()) {
             $aRS = $this->_oDb->getRecord();
 
-            // loop thru fields array
+            // loop through fields array
             foreach ($aFields as $field) {
                 if (isset($aRS[$field])) {
                     // reduce existing field

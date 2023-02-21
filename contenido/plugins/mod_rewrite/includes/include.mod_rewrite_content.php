@@ -179,7 +179,7 @@ $oView->lng_pluginthread_in_contenido_forum = i18n('Plugin thread in CONTENIDO f
 $oView->lng_plugin_settings = i18n('Plugin settings', $pluginName);
 $oView->lng_note = i18n('Note', $pluginName);
 
-$sMsg = i18n('The .htaccess file could not found either in CONTENIDO installation directory nor in client directory.<br>It should set up in %sFunctions%s area, if needed.', $pluginName);
+$sMsg = i18n('The .htaccess file could not be found either in CONTENIDO installation directory nor in client directory.<br>It should set up in %sFunctions%s area, if needed.', $pluginName);
 $oView->lng_msg_no_htaccess_found = sprintf($sMsg, '<a href="main.php?area=mod_rewrite_expert&frame=4&contenido=' . $oView->sessid . '&idclient=' . $client . '" onclick="Con.markSubmenuItem(\'mod_rewrite_expert\');">', '</a>');
 
 $sMsg = i18n('Found some category and/or article aliases. It is recommended to run the reset function in %sFunctions%s area, if needed.', $pluginName);
@@ -187,21 +187,21 @@ $oView->lng_msg_no_emptyaliases_found = sprintf($sMsg, '<a href="main.php?area=m
 
 $oView->lng_enable_amr = i18n('Enable Advanced Mod Rewrite', $pluginName);
 
-$oView->lng_msg_enable_amr_info = i18n('Disabling of plugin does not result in disabling mod rewrite module of the web server - This means,<br> all defined rules in the .htaccess are still active and could create unwanted side effects.<br><br>Apache mod rewrite could be enabled/disabled by setting the RewriteEngine directive.<br>Any defined rewrite rules could remain in the .htaccess and they will not processed,<br>if the mod rewrite module is disabled', $pluginName);
+$oView->lng_msg_enable_amr_info = i18n('Disabling of plugin does not result in disabling mod rewrite module of the web server - This means,<br> all defined rules in the .htaccess are still active and could create unwanted side effects.<br><br>Apache mod rewrite could be enabled/disabled by setting the RewriteEngine directive.<br>Any defined rewrite rules could remain in the .htaccess and they will not be processed,<br>if the mod rewrite module is disabled', $pluginName);
 
 $oView->lng_example = i18n('Example', $pluginName);
 
 $oView->lng_msg_enable_amr_info_example = i18n("# enable apache mod rewrite module\nRewriteEngine on\n\n# disable apache mod rewrite module\nRewriteEngine off", $pluginName);
 
 $oView->lng_rootdir = i18n('Path to .htaccess from DocumentRoot', $pluginName);
-$oView->lng_rootdir_info = i18n("Type '/' if the .htaccess file lies inside the wwwroot (DocumentRoot) folder.<br>Type the path to the subfolder fromm wwwroot, if CONTENIDO is installed in a subfolder within the wwwroot<br>(e. g. http://domain/mycontenido -&gt; path = '/mycontenido/')", $pluginName);
+$oView->lng_rootdir_info = i18n("Type '/' if the .htaccess file lies inside the wwwroot (DocumentRoot) folder.<br>Type the path to the subfolder fromm wwwroot, if CONTENIDO is installed in a subfolder within the wwwroot<br>(e. g. https://domain/mycontenido -&gt; path = '/mycontenido/')", $pluginName);
 
 $oView->lng_checkrootdir = i18n('Check path to .htaccess', $pluginName);
 $oView->lng_checkrootdir_info = i18n('The path will be checked, if this option is enabled.<br>But this could result in an error in some cases, even if the specified path is valid and<br>clients DocumentRoot differs from CONTENIDO backend DocumentRoot.', $pluginName);
 
 $oView->lng_startfromroot = i18n('Should the name of root category be displayed in the URL?', $pluginName);
 $oView->lng_startfromroot_lbl = i18n('Start from root category', $pluginName);
-$oView->lng_startfromroot_info = i18n('If enabled, the name of the root category (e. g. "Mainnavigation" in a CONTENIDO default installation), will be preceded to the URL.', $pluginName);
+$oView->lng_startfromroot_info = i18n('If enabled, the name of the root category (e. g. "Main Navigation" in a CONTENIDO default installation), will be preceded to the URL.', $pluginName);
 
 $oView->lng_use_client = i18n('Are several clients maintained in one directory?', $pluginName);
 $oView->lng_use_client_lbl = i18n('Prepend client to the URL', $pluginName);
@@ -220,12 +220,12 @@ $oView->lng_userdefined_separators_example_b_example = i18n("# Example: Category
 $oView->lng_userdefined_separators_example_c = i18n('Category-article separator has to be different from article-word separator', $pluginName);
 $oView->lng_userdefined_separators_example_c_example = i18n("# Example: Category-article separator (/) and article-word separator (-)\ncategory_one/category_two/article-description.html", $pluginName);
 
-$oView->lng_category_separator = i18n('Category separator (delemiter between single categories)', $pluginName);
+$oView->lng_category_separator = i18n('Category separator (delimiter between single categories)', $pluginName);
 $oView->lng_catart_separator_info = sprintf(i18n('(possible values: %s)', $pluginName), $aSeparator['info']);
 $oView->lng_word_separator_info = sprintf(i18n('(possible values: %s)', $pluginName), $aWordSeparator['info']);
-$oView->lng_category_word_separator = i18n('Category-word separator (delemiter between category words)', $pluginName);
-$oView->lng_article_separator = i18n('Category-article separator (delemiter between category-block and article)', $pluginName);
-$oView->lng_article_word_separator = i18n('Article-word separator (delemiter between article words)', $pluginName);
+$oView->lng_category_word_separator = i18n('Category-word separator (delimiter between category words)', $pluginName);
+$oView->lng_article_separator = i18n('Category-article separator (delimiter between category-block and article)', $pluginName);
+$oView->lng_article_word_separator = i18n('Article-word separator (delimiter between article words)', $pluginName);
 
 $oView->lng_add_startart_name_to_url = i18n('Append article name to URLs', $pluginName);
 $oView->lng_add_startart_name_to_url_lbl = i18n('Append article name always to URLs (even at URLs to categories)', $pluginName);
@@ -233,8 +233,8 @@ $oView->lng_default_startart_name = i18n('Default article name without extension
 $oView->lng_default_startart_name_info = i18n('e. g. "index" for index.ext<br>In case of selected "Append article name always to URLs" option and a empty field,<br>the name of the start article will be used', $pluginName);
 
 $oView->lng_file_extension = i18n('File extension at the end of the URL', $pluginName);
-$oView->lng_file_extension_info = i18n('Specification of file extension with a preceded dot<br>e.g. ".html" for http://host/foo/bar.html', $pluginName);
-$oView->lng_file_extension_info2 = i18n('It\'s strongly recommended to specify a extension here,<br>if the option "Append article name always to URLs" was not selected.<br><br>Otherwise URLs to categories and articles would have the same format<br>which may result in unresolvable categories/articles in some cases.', $pluginName);
+$oView->lng_file_extension_info = i18n('Specification of file extension with a preceded dot<br>e.g. ".html" for https://host/foo/bar.html', $pluginName);
+$oView->lng_file_extension_info2 = i18n('It\'s strongly recommended to specify an extension here,<br>if the option "Append article name always to URLs" was not selected.<br><br>Otherwise, URLs to categories and articles would have the same format<br>which may result in unresolvable categories/articles in some cases.', $pluginName);
 $oView->lng_file_extension_info3 = i18n('It\'s necessary to specify a file extension at the moment, due do existing issues, which are not solved until yet. An not defined extension may result in invalid article detection in some cases.', $pluginName);
 
 $oView->lng_use_lowercase_uri = i18n('Should the URLs be written in lower case?', $pluginName);
@@ -243,16 +243,16 @@ $oView->lng_use_lowercase_uri_lbl = i18n('URLs in lower case', $pluginName);
 $oView->lng_prevent_duplicated_content = i18n('Duplicated content', $pluginName);
 $oView->lng_prevent_duplicated_content_lbl = i18n('Prevent duplicated content', $pluginName);
 
-$oView->lng_prevent_duplicated_content_info = i18n('Depending on configuration, pages could be found thru different URLs.<br>Enabling of this option prevents this. Examples for duplicated content', $pluginName);
+$oView->lng_prevent_duplicated_content_info = i18n('Depending on configuration, pages could be found through different URLs.<br>Enabling of this option prevents this. Examples for duplicated content', $pluginName);
 $oView->lng_prevent_duplicated_content_info2 = i18n("Name of the root category in the URL: Feasible is /maincategory/subcategory/ and /subcategory/\nLanguage in the URL: Feasible is /german/category/ and /1/category/\nClient in the URL: Feasible is /client/category/ und /1/category/", $pluginName);
 $oView->lng_prevent_duplicated_content_info2 = '<li>' . str_replace("\n", '</li><li>', $oView->lng_prevent_duplicated_content_info2) . '</li>';
 
 $oView->lng_category_resolve_min_percentage = i18n('Percentage for similar category paths in URLs', $pluginName);
-$oView->lng_category_resolve_min_percentage_info = i18n('This setting refers only to the category path of a URL. If AMR is configured<br>to prepend e. g. the root category, language and/or client to the URL,<br>the specified percentage will not applied to those parts of the URL.<br>A incoming URL will be cleaned from those values and the remaining path (urlpath of the category)<br>will be checked against similarities.', $pluginName);
+$oView->lng_category_resolve_min_percentage_info = i18n('This setting refers only to the category path of a URL. If AMR is configured<br>to prepend e. g. the root category, language and/or client to the URL,<br>the specified percentage will not apply to those parts of the URL.<br>A incoming URL will be cleaned from those values and the remaining path (urlpath of the category)<br>will be checked against similarities.', $pluginName);
 $oView->lng_category_resolve_min_percentage_example = i18n("100 = exact match with no tolerance\n85  = paths with little errors will match to similar ones\n0   = matching will work even for total wrong paths", $pluginName);
 
 $oView->lng_redirect_invalid_article_to_errorsite = i18n('Redirect in case of invalid articles', $pluginName);
-$oView->lng_redirect_invalid_article_to_errorsite_lbl = i18n('Redirect to error page in case of invaid articles', $pluginName);
+$oView->lng_redirect_invalid_article_to_errorsite_lbl = i18n('Redirect to error page in case of invalid articles', $pluginName);
 $oView->lng_redirect_invalid_article_to_errorsite_info = i18n('The start page will be displayed if this option is not enabled', $pluginName);
 
 $oView->lng_rewrite_urls_at = i18n('Moment of URL generation', $pluginName);
@@ -273,7 +273,7 @@ $oView->lng_rewrite_routing = i18n('Routing', $pluginName);
 $oView->lng_rewrite_routing_info = i18n('Routing definitions for incoming URLs', $pluginName);
 $oView->lng_rewrite_routing_info2 = i18n('Type one routing definition per line as follows:', $pluginName);
 $oView->lng_rewrite_routing_example = i18n("# {incoming_url}>>>{new_url}\n/incoming_url/name.html>>>new_url/new_name.html\n\n# route a specific incoming url to a new page\n/campaign/20_percent_on_everything_except_animal_food.html>>>front_content.php?idcat=23\n\n# route request to wwwroot to a specific page\n/>>>front_content.php?idart=16", $pluginName);
-$oView->lng_rewrite_routing_info3 = i18n("The routing does not sends a HTTP header redirection to the destination URL, the redirection will happen internally by<br>replacing the detected incoming URL against the new destination URL (overwriting of article- categoryid)\nIncoming URLs can point to non existing resources (category/article), but the desttination URLs should point<br>to valid CONTENIDO articles/categories\nDestination URLs should point to real URLs to categories/articles,<br>e. g.front_content.php?idcat=23 or front_content.php?idart=34\nThe language id should attached to the URL in multi language sites<br>e. g. front_content.php?idcat=23&amp;lang=1\nThe client id should attached to the URL in multi client sites sharing the same folder<br>e. g. front_content.php?idcat=23&amp;client=2\nThe destination URL should not start with '/' or './' (wrong: /front_content.php, correct: front_content.php)", $pluginName);
+$oView->lng_rewrite_routing_info3 = i18n("The routing does not send a HTTP header redirection to the destination URL, the redirection will happen internally by<br>replacing the detected incoming URL against the new destination URL (overwriting of article- categoryid)\nIncoming URLs can point to non-existing resources (category/article), but the destination URLs should point<br>to valid CONTENIDO articles/categories\nDestination URLs should point to real URLs to categories/articles,<br>e. g.front_content.php?idcat=23 or front_content.php?idart=34\nThe language id should be attached to the URL on multi-language sites<br>e. g. front_content.php?idcat=23&amp;lang=1\nThe client id should be attached to the URL in multi client sites sharing the same folder<br>e. g. front_content.php?idcat=23&amp;client=2\nThe destination URL should not start with '/' or './' (wrong: /front_content.php, correct: front_content.php)", $pluginName);
 $oView->lng_rewrite_routing_info3 = '<li>' . str_replace("\n", '</li><li>', $oView->lng_rewrite_routing_info3) . '</li>';
 
 $oView->lng_discard_changes = i18n('Discard changes', $pluginName);

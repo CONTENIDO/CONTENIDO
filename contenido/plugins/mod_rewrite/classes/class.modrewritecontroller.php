@@ -283,7 +283,7 @@ class ModRewriteController extends ModRewriteBase {
         }
 
         // check for defined rootdir
-        // allows for root dir being alternativly defined as path of setting client/%frontend_path%
+        // allows for root dir being alternatively defined as path of setting client/%frontend_path%
         $rootdir = cUriBuilderMR::getMultiClientRootDir(parent::getConfig('rootdir'));
         if ('/' !==  $rootdir && 0 === cString::findFirstPos($requestUri, $this->_sIncomingUrl)) {
             $this->_sIncomingUrl = str_replace($rootdir, '/', $this->_sIncomingUrl);
@@ -470,7 +470,7 @@ class ModRewriteController extends ModRewriteBase {
         if (parent::getConfig('use_language_name') == 1) {
             // thanks to Nicolas Dickinson for multi Client/Language BugFix
             $languageName = array_shift($this->_aParts);
-            $detectedLanguageId = (int) ModRewrite::getLanguageId($languageName, $this->_iClientMR);
+            $detectedLanguageId = ModRewrite::getLanguageId($languageName, $this->_iClientMR);
         } else {
             $detectedLanguageId = (int) array_shift($this->_aParts);
             if ($detectedLanguageId > 0 && !ModRewrite::clientIdExists($detectedLanguageId)) {
@@ -518,7 +518,7 @@ class ModRewriteController extends ModRewriteBase {
             }
         }
 
-        $idcat = (int) ModRewrite::getCatIdByUrlPath($this->_sPath);
+        $idcat = ModRewrite::getCatIdByUrlPath($this->_sPath);
 
         if ($idcat == 0) {
             // category couldn't resolve

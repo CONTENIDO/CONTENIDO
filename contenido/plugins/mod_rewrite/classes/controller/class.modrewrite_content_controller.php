@@ -59,7 +59,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
         // root dir
         if (mr_arrayValue($request, 'rootdir', '') !== '') {
             if (!preg_match('/^[a-zA-Z0-9\-_\/\.]*$/', $request['rootdir'])) {
-                $sMsg = i18n('The root directory has a invalid format, alowed are the chars [a-zA-Z0-9\-_\/\.]', $this->_pluginName);
+                $sMsg = i18n('The root directory has a invalid format, allowed are the chars [a-zA-Z0-9\-_\/\.]', $this->_pluginName);
                 $this->_oView->rootdir_error = $this->_notifyBox('error', $sMsg);
                 $bError = true;
             } elseif (!is_dir($_SERVER['DOCUMENT_ROOT'] . $request['rootdir'])) {

@@ -48,7 +48,7 @@ $oMrTestController = new ModRewrite_ContentTestController();
 
 // view language variables
 $oView = $oMrTestController->getView();
-$oView->lng_form_info = i18n('Define options to genereate the URLs by using the form below and run the test.', $pluginName);
+$oView->lng_form_info = i18n('Define options to generate the URLs by using the form below and run the test.', $pluginName);
 $oView->lng_form_label = i18n('Parameter to use', $pluginName);
 $oView->lng_maxitems_lbl = i18n('Number of URLs to generate', $pluginName);
 $oView->lng_run_test = i18n('Run test', $pluginName);

@@ -107,7 +107,7 @@ abstract class ModRewrite_ControllerAbstract {
         $this->_oView->frame = $this->_frame;
         $this->_oView->contenido = $this->_contenido;
         $this->_oView->sessid = $sess->id;
-        $this->_oView->lng_more_informations = i18n('More informations', $this->_pluginName);
+        $this->_oView->lng_more_information = i18n('More information', $this->_pluginName);
 
         $this->init();
     }

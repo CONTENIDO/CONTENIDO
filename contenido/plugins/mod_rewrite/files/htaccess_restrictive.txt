@@ -4,7 +4,7 @@
 # Contains strict rules, each rewrite exclusion must be set manually.
 # - Exclude requests to directories usage/, contenido/, setup/, cms/upload/
 # - Exclude requests to cms/front_content.php
-# - Pass thru requests to common ressources (pictures, movies, js, css, pdf)
+# - Pass through requests to common resources (pictures, movies, js, css, pdf)
 #
 # @version    0.0.1
 # @author     Murat Purc <murat@purc.de>
@@ -58,7 +58,7 @@
 
 # Some rules to compress files.
 # NOTE: Following settings are not mod rewrite specific, but enabling mod_deflate
-#       for some file types can help to reduce bandwith.
+#       for some file types can help to reduce bandwidth.
 <IfModule mod_deflate.c>
     <FilesMatch "\.(js|css|html|htm|php|xml)$">
         SetOutputFilter DEFLATE
