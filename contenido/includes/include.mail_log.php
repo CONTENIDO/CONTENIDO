@@ -83,6 +83,8 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
     $table = new cHTMLTable();
     $table->setClass('generic');
     $table->setWidth('100%');
+    $table->setPadding(null);
+    $table->setSpacing(null);
 
     // construct the header
     $headers = [
@@ -108,11 +110,14 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
     // iterate over all logged mails
     while (($item = $mailLogCollection->next()) !== false) {
         $tr = new cHTMLTableRow();
+        $tr->setAttribute('data-action', 'invert_selection_row')
+            ->setAttribute('data-idmail', $item->get('idmail'));
         foreach ($headers as $key => $value) {
             $td = new cHTMLTableData();
             switch ($key) {
                 case 'checkbox':
                     $checkbox = new cHTMLCheckbox('', $item->get('idmail'), '', false, '', '', '', 'mark_emails');
+                    $td->setClass('tgcenter');
                     $td->setContent($checkbox->toHtml(false));
                     break;
                 case 'client':
@@ -129,16 +134,18 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
                 case 'action':
                     // construct the info link
                     $img = new cHTMLImage('images/info.gif');
-                    $link = new cHTMLLink('javascript:void(0)');
-                    $link->setEvent('click', 'showInfo(' . $item->get('idmail') . ');');
-                    $link->setContent($img);
-                    $link->appendStyleDefinition('margin-right', '5px');
+                    $link = new cHTMLLink('javascript:void(0)', $img, 'overview_dist_right');
+                    $link->disableAutomaticParameterAppend()
+                        ->setAlt(i18n('More information'))
+                        ->setAttribute('data-action', 'show_info');
                     $td->appendContent($link);
                     // construct the delete link
                     $img = new cHTMLImage('images/delete.gif');
                     $link = new cHTMLLink('javascript:void(0)');
-                    $link->setEvent('click', 'Con.showConfirmation("' . i18n('Do you really want to delete this email?') . '", function() { deleteEmails(' . $item->get('idmail') . '); });return false;');
-                    $link->setContent($img);
+                    $link->disableAutomaticParameterAppend()
+                        ->setAlt(i18n('Delete'))
+                        ->setAttribute('data-action', 'delete_email')
+                        ->setContent($img);
                     $td->appendContent($link);
                     break;
                 default:
@@ -226,7 +233,10 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
         $td = new cHTMLTableData();
         $link = new cHTMLLink('javascript:void(0)');
         $link->setClass('con_deletemails');
-        $link->setEvent('click', 'Con.showConfirmation("' . i18n('Do you really want to delete this email?') . '", function() { deleteEmails(' . $idmail . '); });return false;');
+        $link->disableAutomaticParameterAppend()
+            ->setAlt(i18n('Delete'))
+            ->setAttribute('data-action', 'delete_email')
+            ->setAttribute('data-idmail', $idmail);
         $image = new cHTMLImage('images/delete.gif');
         $image->setAlt(i18n('Delete emails'));
         $link->setContent($image);
@@ -269,8 +279,10 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
             } else {
                 // mail could not be sent yet, show resend button
                 $link = new cHTMLLink('javascript:void(0)');
-                $link->setEvent('click', 'resendEmail(' . $mailSuccessItem->get('idmailsuccess') . ')');
-                $link->setAlt(i18n('Resend email'));
+                $link->disableAutomaticParameterAppend()
+                    ->setAlt(i18n('Resend email'))
+                    ->setAttribute('data-action', 'resend_email')
+                    ->setAttribute('data-idmailsuccess', $mailSuccessItem->get('idmailsuccess'));
                 $image = new cHTMLImage('images/but_refresh.gif');
                 $image->appendStyleDefinition('display', 'block');
                 $image->appendStyleDefinition('margin', '0 auto');
@@ -288,6 +300,25 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
         $contenidoNotification->displayNotification('error', i18n('No item selected!'));
     }
 }
+
+$jsCode = '
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        // Instantiate mail files overview component
+        new Con.MailLogOverview({
+            rootSelector: "#mail_log_overview",
+            markMailsSelector: "input.mark_emails",
+            markMailsCssClass: "mark_emails",
+            bulkEditingFunctionsSelector: ".bulk_editing_functions",
+            text_deleteConfirmation: "' . i18n('Do you really want to delete this email?') . '",
+            text_deleteMultipleConfirmation: "' . i18n('Do you really want to delete the selected emails?') . '",
+        });
+    });
+})(Con, Con.$);
+</script>
+';
+$page->appendContent($jsCode);
 
 $page->render();
 
@@ -321,11 +352,10 @@ function mailLogDecodeAddresses($addresses) {
 /**
  *
  * @return cHTMLTable
- * 
+ *
  * @throws cException
  */
 function mailLogBulkEditingFunctions() {
-
     $table = new cHTMLTable();
     $table->setClass('generic');
     $table->setWidth('100%');
@@ -337,8 +367,10 @@ function mailLogBulkEditingFunctions() {
     $th->appendStyleDefinition('border-bottom', '1px solid #B3B3B3');
 
     // construct the invert selection function
-    $link = new cHTMLLink();
-    $link->setClass('flip_mark');
+    $link = new cHTMLLink('javascript:void(0)');
+    $link->setClass('invert_selection')
+        ->setAttribute('data-action', 'invert_selection')
+        ->disableAutomaticParameterAppend();
     $image = new cHTMLImage('images/but_invert_selection.gif');
     $image->setAlt(i18n('Flip Selection'));
     $link->appendContent($image);
@@ -347,12 +379,14 @@ function mailLogBulkEditingFunctions() {
 
     // construct the bulk editing functions
     $link = new cHTMLLink('javascript:void(0)');
-    $link->setClass('con_deletemails');
-    $link->setEvent('click', 'Con.showConfirmation("' . i18n('Do you really want to delete the selected emails?') . '", deleteEmails);return false;');
+    $link->disableAutomaticParameterAppend()
+        ->setClass('con_deletemails')
+        ->setAttribute('title', i18n('Delete emails'))
+        ->setAttribute('data-action', 'delete_selected_emails');
     $image = new cHTMLImage('images/delete.gif');
     $image->setAlt(i18n('Delete emails'));
     $link->setContent($image);
-    $div = new cHTMLDiv(i18n('Apply to all selected emails:'), 'bulk_editing_functions');
+    $div = new cHTMLDiv(i18n('Apply to all selected emails:'), 'bulk_editing_functions nodisplay');
     $div->appendContent($link);
     $th->appendContent($div);
 
@@ -360,5 +394,4 @@ function mailLogBulkEditingFunctions() {
     $table->setContent($tr);
 
     return $table;
-
 }

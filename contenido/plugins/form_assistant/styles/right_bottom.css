@@ -39,7 +39,7 @@ legend {
     margin-left: 10px;
 }
 
-.flip_mark {
+.invert_selection {
     background: url("../../../images/but_invert_selection.gif") no-repeat scroll 0 2px transparent;
     display: block;
     height: 20px;

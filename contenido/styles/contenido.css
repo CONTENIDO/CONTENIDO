@@ -1820,7 +1820,7 @@ p.column_header {
  */
 
 .nodisplay {
-    display: none;
+    display: none !important;
 }
 .block {
     display: block;
@@ -1951,18 +1951,16 @@ div#legend table.article {
 }
 
 /* Bulk Editing Functions on Article Overview and Mail Logging Page */
-a.flip_mark {
-    float: left;
+a.invert_selection {
     margin-right: 25px;
 }
 
-a.flip_mark img {
+a.invert_selection img {
     vertical-align: middle;
 }
 
 div.bulk_editing_functions {
-    display: none;
-    float: left;
+    display: inline-block;
 }
 
 div.bulk_editing_functions a img {

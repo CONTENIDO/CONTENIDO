@@ -907,6 +907,8 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
         $tpl = cSmartyBackend::getInstance(true);
 
+        $withTimestamp = (bool) $this->_pifaForm->get('with_timestamp');
+
         // translations
         $tpl->assign('trans', [
             'legend' => Pifa::i18n('data'),
@@ -930,7 +932,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
             $tpl->assign('fields', Pifa::notifyException($e));
         }
 
-        $tpl->assign('withTimestamp', (bool) $this->_pifaForm->get('with_timestamp'));
+        $tpl->assign('withTimestamp', $withTimestamp);
 
 
         try {
@@ -941,8 +943,27 @@ class PifaRightBottomFormDataPage extends cGuiPage {
             $hasPermDeleteData = false;
         }
 
-        // export data
+        // Display data
         $data = $this->_pifaForm->getData();
+
+        // @TODO The field 'pifa_timestamp' should be available in the data entries, but it is not always the case. Add it here for now, but find a better solution.
+        if (!empty($data) && $withTimestamp) {
+            foreach ($data as $pos => $entry) {
+                if (!isset($entry['pifa_timestamp'])) {
+                    $newEntry = [];
+                    foreach ($entry as $key => $value) {
+                        if ($key === 'id') {
+                            $newEntry[$key] = $value;
+                            $newEntry['pifa_timestamp'] = '';
+                        } else {
+                            $newEntry[$key] = $value;
+                        }
+                    }
+                    $data[$pos] = $newEntry;
+                }
+            }
+        }
+
         $tpl->assign('data', $data);
 
         if (!empty($data) && $hasPermExportData) {
@@ -968,8 +989,8 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
         // Mass deletion of form data
         $lnkDel = new cHTMLLink('javascript:void(0)');
-        $lnkDel->setClass('flip_mark');
-        $lnkDel->setContent(Pifa::i18n('Check all'));
+        $lnkDel->setClass('invert_selection');
+        $lnkDel->setContent(i18n('Flip Selection'));
         $tpl->assign('lnkDel', $lnkDel->render());
 
         return $tpl->fetch($cfg['templates']['pifa_right_bottom_data']);

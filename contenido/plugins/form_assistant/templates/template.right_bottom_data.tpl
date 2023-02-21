@@ -4,10 +4,10 @@
     <legend>{$trans.legend}</legend>
 {if true neq $form->isLoaded()}
     <p>{$trans.pleaseSaveFirst}</p>
-{else if not $fields|is_array}
+{elseif not $fields|is_array}
     {* an error is a string instead of an array *}
     {$fields}
-{else if not $data|is_array}
+{elseif not $data|is_array}
     {* an error is a string instead of an array *}
     {$data}
 {else}
@@ -22,6 +22,7 @@
     <!-- table cellpadding="0" class="generic" -->
     <table class="generic" width="97%" cellspacing="0" cellpadding="2" border="0">
         <tr>
+            <th nowrap="nowrap">mark</th>
             <th nowrap="nowrap">id</th>
     {if $withTimestamp}
             <th nowrap="nowrap">timestamp</th>
@@ -44,9 +45,10 @@
         </tr>
     {else}
         {foreach from=$data item=row}
-        <tr>
+        <tr data-form-data-id="{$row.id}">
+            <td><input type="checkbox" name="mark" class="mark_data" value="{$row.id}" /></td>
             <td nowrap="nowrap" class="bordercell">{$row.id}</td>
-        {if $withTimestamp && isset($row.pifa_timestam)}
+        {if $withTimestamp && isset($row.pifa_timestamp)}
             <td nowrap="nowrap" class="bordercell">{$row.pifa_timestamp}</td>
         {/if}
         {foreach from=$fields item=field}
@@ -56,14 +58,16 @@
             {assign var=columnData value=$row.$columnName}
             {if 0 eq $columnData|strlen}
             <td nowrap="nowrap" class="bordercell">&nbsp;</td>
-            {else if '9' eq $field->get('field_type')}
+            {elseif '9' eq $field->get('field_type')}
             {* display INPUTFILE values as link *}
             <td nowrap="nowrap" class="bordercell"><a href="{$getFileUrl}&name={$columnData|htmlentities}&file={$form->get('data_table')}_{$row.id}_{$columnName}">{$columnData|escape:htmlall}</a></td>
             {else}
             <td nowrap="nowrap" class="bordercell">{$columnData|escape:htmlall}</td>
             {/if}
         {/foreach}
-            <td><input type="checkbox" name="mark" class="mark_data" value="{$row.id}" /></td>
+            <td nowrap="nowrap" class="bordercell">
+                <img class="delete" src="images/delete.gif" data-action="delete_form_data" />
+            </td>
         </tr>
         {/foreach}
     {/if}

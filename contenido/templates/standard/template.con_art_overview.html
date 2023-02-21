@@ -68,10 +68,12 @@
     <table width="100%" cellspacing="0" cellpadding="2" border="0" style="{NOARTICLE_CSS}">
         <tr valign="middle">
             <td style="height:20px; line-height:20px; text-align:right; border: 1px solid #B3B3B3;background-color: #E2E2E2;" colspan="7">
-                <a class="flip_mark" href="javascript:void(0)"><img alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif"> i18n("Flip selection")</a>
-                <div class="bulk_editing_functions">
-                    i18n("Apply to all selected articles"):
-                    {BULK_EDITING_FUNCTIONS}
+                <div style="float:left">
+                    <a class="invert_selection" href="javascript:void(0)"><img alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif"> i18n("Flip selection")</a>
+                    <div class="bulk_editing_functions">
+                        i18n("Apply to all selected articles"):
+                        {BULK_EDITING_FUNCTIONS}
+                    </div>
                 </div>
                 {BROWSE}
             </td>
@@ -104,10 +106,12 @@
         </tr>
         <tr valign="middle">
             <td style="height:20px; line-height:20px; text-align:right; border: 1px solid #B3B3B3;background-color: #E2E2E2;" colspan="7">
-                <a class="flip_mark" href="javascript:void(0)"><img alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif"> i18n("Flip selection")</a>
-                <div class="bulk_editing_functions">
-                    i18n("Apply to all selected articles"):
-                    {BULK_EDITING_FUNCTIONS}
+                <div style="float:left">
+                    <a class="invert_selection" href="javascript:void(0)"><img alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif"> i18n("Flip selection")</a>
+                    <div class="bulk_editing_functions">
+                        i18n("Apply to all selected articles"):
+                        {BULK_EDITING_FUNCTIONS}
+                    </div>
                 </div>
             </td>
         </tr>
@@ -408,6 +412,14 @@ function doInlineEditArt() {
         artRow.click(firstRow);
     }
 
+    function syncBulkEditingFunctionsStatus() {
+        if ($('input.mark_articles:checked').length) {
+            $('div.bulk_editing_functions').show();
+        } else {
+            $('div.bulk_editing_functions').hide();
+        }
+    }
+
     $(function() {
 
         // On properties action click
@@ -417,25 +429,15 @@ function doInlineEditArt() {
 
         // show mark function or hide
         $('input.mark_articles').click(function() {
-            $('div.bulk_editing_functions').hide();
-            if ($(this).prop('checked')) {
-                $('div.bulk_editing_functions').show();
-            } else if ($('input.mark_articles:checked').length > 0) {
-                $('div.bulk_editing_functions').show();
-            }
+            syncBulkEditingFunctionsStatus();
         });
 
         // On flip mark click
-        $('a.flip_mark').click(function() {
-            $('div.bulk_editing_functions').hide();
+        $('a.invert_selection').click(function() {
             $('input.mark_articles').each(function() {
-                if ($(this).prop('checked')) {
-                    $(this).prop('checked', false);
-                } else {
-                    $('div.bulk_editing_functions').show();
-                    $(this).prop('checked', true);
-                }
+                $(this).prop('checked', !$(this).prop('checked'));
             });
+            syncBulkEditingFunctionsStatus();
         });
 
         // On bulk editing functions click

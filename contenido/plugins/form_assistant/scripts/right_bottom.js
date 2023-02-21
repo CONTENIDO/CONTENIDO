@@ -413,13 +413,9 @@
         });
 
         // On flip mark click
-        $('a.flip_mark').click(function() {
+        $('a.invert_selection').click(function() {
             $('input.mark_data').each(function() {
-                if ($(this).prop('checked')) {
-                    $(this).prop('checked', false);
-                } else {
-                    $(this).prop('checked', true);
-                }
+                $(this).prop('checked', !$(this).prop('checked'));
             });
         });
 
@@ -429,14 +425,24 @@
         $('#right_bottom img.delete').on('click', function(event) {
             event.preventDefault();
             var iddatas = [];
-            $('input.mark_data').each(function() {
-                if ($(this).prop('checked')) {
-                    iddatas.push($(this).val());
+            if ($(event.target).data('action') === 'delete_form_data') {
+                // Delete single form data
+                var iddata = $(event.target).closest('tr').data('form-data-id');
+                if (iddata) {
+                    iddatas.push(iddata);
                 }
-            });
+            } else {
+                // Delete selected (one or multiple)
+                $('input.mark_data').each(function() {
+                    if ($(this).prop('checked')) {
+                        iddatas.push($(this).val());
+                    }
+                });
+            }
             if (!iddatas.length){
                 return;
             }
+
             var deleteUrl = $('input.deleteUrl').val();
             $.ajax({
                 type: 'POST',
