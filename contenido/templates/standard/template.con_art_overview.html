@@ -70,7 +70,7 @@
             <td style="height:20px; line-height:20px; text-align:right; border: 1px solid #B3B3B3;background-color: #E2E2E2;" colspan="7">
                 <div style="float:left">
                     <a class="invert_selection" href="javascript:void(0)"><img alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif"> i18n("Flip selection")</a>
-                    <div class="bulk_editing_functions">
+                    <div class="bulk_editing_functions" style="display: none;">
                         i18n("Apply to all selected articles"):
                         {BULK_EDITING_FUNCTIONS}
                     </div>
@@ -108,7 +108,7 @@
             <td style="height:20px; line-height:20px; text-align:right; border: 1px solid #B3B3B3;background-color: #E2E2E2;" colspan="7">
                 <div style="float:left">
                     <a class="invert_selection" href="javascript:void(0)"><img alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif"> i18n("Flip selection")</a>
-                    <div class="bulk_editing_functions">
+                    <div class="bulk_editing_functions" style="display: none;">
                         i18n("Apply to all selected articles"):
                         {BULK_EDITING_FUNCTIONS}
                     </div>
@@ -491,6 +491,8 @@ function doInlineEditArt() {
         }
 
         Con.RowMark.initialize('.generic_art_overview .row_mark', 'artRow');
+
+        syncBulkEditingFunctionsStatus();
 
     });
 

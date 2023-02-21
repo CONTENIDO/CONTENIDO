@@ -829,6 +829,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         } else {
                             $cells[] = '<td nowrap="nowrap" class="bordercell">' . $artitem[$key] . '</td>';
                         }
+                    } elseif ($key == 'mark' || $key == 'start') {
+                        $cells[] = '<td nowrap="nowrap" class="bordercell tgcenter">' . $artitem[$key] . '</td>';
                     } else {
                         $cells[] = '<td nowrap="nowrap" class="bordercell">' . $artitem[$key] . '</td>';
                     }
