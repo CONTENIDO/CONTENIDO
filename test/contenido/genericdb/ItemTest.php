@@ -64,6 +64,7 @@ class ItemTest extends cTestingTestCase
         $this->_testItemNonVirgin = new TestItem();
         $this->_testItemNonVirgin->setLoaded(true);
         $this->_testItemNonVirgin->values = [
+            'ID' => 123,
             'foo'  => 'bar',
             'spam' => 'eggs',
         ];
@@ -207,6 +208,24 @@ class ItemTest extends cTestingTestCase
     }
 
     /**
+     * Test getting id of virgin item.
+     */
+    public function testGetIdVirgin()
+    {
+        $act = $this->_testItemVirgin->getId();
+        $this->assertSame($act, false);
+    }
+
+    /**
+     * Test getting id of non-virgin item.
+     */
+    public function testGetIdNonVirgin()
+    {
+        $act = $this->_testItemNonVirgin->getId();
+        $this->assertSame($act, 123);
+    }
+
+    /**
      * Test getting field of virgin item.
      */
     public function testGetFieldVirgin()
@@ -217,7 +236,7 @@ class ItemTest extends cTestingTestCase
     }
 
     /**
-     * Test getting field of non virgin item.
+     * Test getting field of non-virgin item.
      */
     public function testGetFieldNonVirgin()
     {
@@ -227,7 +246,7 @@ class ItemTest extends cTestingTestCase
     }
 
     /**
-     * Test getting none existing field of non virgin item.
+     * Test getting none existing field of non-virgin item.
      */
     public function testGetFieldNonVirginMissing()
     {

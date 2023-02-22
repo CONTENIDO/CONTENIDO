@@ -369,6 +369,20 @@ abstract class Item extends cItemBaseAbstract
     }
 
     /**
+     * Returns the primary key value (id) of the item.
+     *
+     * @return int|string|bool|mixed
+     *      Primary keys are usually numeric values, therefore the return type
+     *      will be mostly an integer, but it can also be a string, or false,
+     *      if the item wasn't or couldn't be loaded before.
+     * @since CONTENIDO 4.10.2
+     */
+    public function getId()
+    {
+        return $this->getField($this->getPrimaryKeyName(), false);
+    }
+
+    /**
      * Gets the value of a specific field.
      *
      * @param string $sField
