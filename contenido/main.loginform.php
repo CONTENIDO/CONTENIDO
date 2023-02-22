@@ -13,7 +13,9 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $cfg, $username;
+$db = cRegistry::getDb();
+$cfg = cRegistry::getConfig();
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
 $aAcceptLanguages = i18nStripAcceptLanguages($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 $mEncoding = false;
@@ -38,19 +40,18 @@ if (getSystemProperty('maintenance', 'mode') == 'enabled') {
     $sNotification = $notification->returnMessageBox('warning', i18n("CONTENIDO is in maintenance mode. Only sysadmins are allowed to login. Please try again later.") . '<br>');
 }
 
-// CON-2714
-// Please check at CONTENIDO backend login whether the database tables are filled or not
-$db = new cDb();
-$sql = $db->prepare('SELECT `user_id` FROM `%s`', $cfg['tab']['user']);
-$db->query($sql);
-if ($db->numRows() == 0) {
+// Check at CONTENIDO backend login whether the database tables are filled or not
+$cApiUserColl = new cApiUserCollection();
+$cApiUserColl->setLimit(0, 1);
+$cApiUserColl->query();
+if (empty($cApiUserColl->fetchTable(['user_id']))) {
     $notification = new cGuiNotification();
     $notification->displayNotification('error', i18n('Your database is obviously empty. Please ensure that you have installed CONTENIDO completely and/or that your database configuration is correct.'));
 }
 
 // Get backend label
-$backend_label = getSystemProperty('backend', 'backend_label');
-if (!is_string($backend_label) && !empty(trim($backend_label))) {
+$backend_label = cSecurity::toString(getSystemProperty('backend', 'backend_label'));
+if (!empty(trim($backend_label))) {
     $sTitle = ':: :: ' . $backend_label . ' :: :: CONTENIDO Login';
 } else {
     $sTitle = ':: :: CONTENIDO Login';
@@ -71,26 +72,20 @@ foreach ($aAvailableLanguages as $sCode => $aEntry) {
     if ($addLanguageOption) {
         list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
         if ($sSelectedLang) {
-            if ($sSelectedLang == $sCode) {
-                $sSelected = ' selected="selected"';
-            } else {
-                $sSelected = '';
-            }
-        } elseif ($sCode == $mEncoding) {
-            $sSelected = ' selected="selected"';
+            $bSelected = ($sSelectedLang == $sCode);
         } else {
-            $sSelected = '';
+            $bSelected = ($sCode == $mEncoding);
         }
-        $sLanguageOptions.= '<option value="' . $sCode . '"' . $sSelected . '>' . $sLanguage . ' (' . $sCountry . ')</option>';
+        $sLanguageOptions .= (new cHTMLOptionElement($sLanguage . ' (' . $sCountry . ')', $sCode, $bSelected))->toHtml();
     }
 }
 
-//class implements password recovery, all functionality is implemented there
+// Class implements password recovery, all functionality is implemented there
 $oRequestPassword = new cPasswordRequest($db, $cfg);
 $sRequestPasswordForm = $oRequestPassword->renderForm(1);
 
-// send right encoding http header
-sendEncodingHeader($db, $cfg, !empty($lang) ? $lang : 0);
+// Send right encoding http header
+sendEncodingHeader($db, $cfg, $lang);
 
 // Fill and render the template
 $tpl = new cTemplate();
@@ -104,7 +99,7 @@ $tpl->set('s', 'LANGUAGE', i18n('Language'));
 $tpl->set('s', 'BACKEND', i18n('CONTENIDO Backend'));
 $tpl->set('s', 'LOGIN', i18n('Login'));
 $tpl->set('s', 'USERNAME', isset($this->auth['uname']) ? conHtmlentities(strip_tags($this->auth["uname"])) : '');
-$tpl->set('s', 'ERROR', !empty($username) ? i18n('Invalid login or password!') : '');
+$tpl->set('s', 'ERROR', !empty($_POST['username']) ? i18n('Invalid login or password!') : '');
 $tpl->set('s', 'PASSWORD', i18n('Password'));
 $tpl->set('s', 'TIME', time());
 $tpl->set('s', 'FORM', $sRequestPasswordForm);

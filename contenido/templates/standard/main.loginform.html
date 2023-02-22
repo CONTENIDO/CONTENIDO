@@ -10,14 +10,13 @@
         opacity: 0;
         border-top: 1px solid #0060b1;
         height: 110px;
-        /*overflow:hidden;*/
         -webkit-transition: opacity 1.5s ease-in;
         -moz-transition: opacity 1.5s ease-in;
         -ms-transition: opacity 1.5s ease-in;
         -o-transition: opacity 1.5s ease-in;
         transition: opacity 1.5s ease-in;
     }
-    #page.load {
+    #page.loaded {
         opacity: 1;
     }
     #noscript {
@@ -66,7 +65,7 @@
 <body>
 <div id="page">
     <div id="head">
-        <a id="head_logo" href="http://www.contenido.org"><img title="CONTENIDO Website." alt="CONTENIDO Website." src="images/conlogo.gif"></a>
+        <a id="head_logo" href="https://www.contenido.org"><img title="CONTENIDO Website." alt="CONTENIDO Website." src="images/conlogo.gif"></a>
         <div id="head_content" class="left_menu_dist">
             <div id="head_info" class="left_dist">
                 &nbsp;
@@ -103,7 +102,7 @@
     <noscript>
         <div class="noscript-content">
             <div class="column-1">
-                <a href="http://www.contenido.org"><img title="CONTENIDO Website." alt="CONTENIDO Website." src="images/conlogo.gif"></a>
+                <a href="https://www.contenido.org"><img title="CONTENIDO Website." alt="CONTENIDO Website." src="images/conlogo.gif"></a>
             </div>
             <div>
                 <h2>JavaScript erforderlich</h2>
@@ -122,7 +121,7 @@
     $('html').removeClass('no-js');
 
     $(function() {
-        $('#page').addClass('load');
+        $('#page').addClass('loaded');
         $('#lang').change(function() {
             if ('' !== $('#username').val() && '' !== $('#passwd').val()) {
             	$('#login').submit();
