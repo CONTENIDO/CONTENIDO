@@ -350,9 +350,10 @@ abstract class ItemCollection extends cItemBaseAbstract
     /**
      * Restricts a query with a WHERE clause
      *
-     * @param string $sField
-     * @param mixed $mRestriction
-     * @param string $sOperator [optional]
+     * @param string $sField Name of field
+     * @param mixed $mRestriction The value to use for the condition, values
+     *      of type string will be escaped automatically.
+     * @param string $sOperator The operator for the condition, e.g. '=', '>', '<', etc.
      */
     public function setWhere($sField, $mRestriction, $sOperator = '=')
     {
@@ -382,10 +383,11 @@ abstract class ItemCollection extends cItemBaseAbstract
     /**
      * Restricts a query with a groupable WHERE clause.
      *
-     * @param string $sGroup
-     * @param string $sField
-     * @param mixed $mRestriction
-     * @param string $sOperator [optional]
+     * @param string $sGroup The WHERE group name
+     * @param string $sField Name of field
+     * @param mixed $mRestriction The value to use for the condition, values
+     *      of type string will be escaped automatically.
+     * @param string $sOperator The operator for the condition, e.g. '=', '>', '<', etc.
      */
     public function setWhereGroup($sGroup, $sField, $mRestriction, $sOperator = '=')
     {
