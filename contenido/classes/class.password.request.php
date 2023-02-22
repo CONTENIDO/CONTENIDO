@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains the the password request class.
+ * This file contains the password request class.
  *
  * @package    Core
  * @subpackage Backend
@@ -16,9 +16,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Class for handling passwort recovery of backend users.
- * If a user has set his e-mail address, this class generates a new password for user and submits to his e-mail address.
- * Submitting a new Password is only possible every 30 minutes. Mailsender, Mailsendername and Mailserver are set into
- * system properties. There it is also possible to deactivate this feature.
+ * If a user has set his e-mail address, this class generates a new password
+ * for user and submits to his e-mail address. Submitting a new password is
+ * only possible once within each defined repeat time (see $this->_reloadTime).
+ * The mail settings configured in the system are used for sending the emails.
+ *
+ * The password request feature can be enabled/disabled via the setting:
+ * pw_request > enable = 'true' or 'false'
  *
  * @package    Core
  * @subpackage Backend
@@ -132,16 +136,13 @@ class cPasswordRequest
         // get system-property, which defines if password request is enabled
         // (true) or disabled (false) : default to enabled
         $sEnable = getSystemProperty('pw_request', 'enable');
-        if ($sEnable == 'false') {
-            $this->_isEnabled = false;
-        } else {
-            $this->_isEnabled = true;
-        }
+        $this->_isEnabled = !(($sEnable == 'false'));
 
         // get system-property for senders mail and validate mail address, if not
         // set use standard sender
         $sendermail = getSystemProperty('system', 'mail_sender');
-        if (preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $sendermail)) {
+        $validator = cValidatorFactory::getInstance('email');
+        if ($validator->isValid($sendermail)) {
             $this->_sendermail = $sendermail;
         } else {
             $this->_sendermail = 'info@contenido.org';
@@ -171,7 +172,7 @@ class cPasswordRequest
                         // show form to set new password
                         $this->_renderNewPwForm();
                     } else {
-                        // do validation checks then set new password for user in database
+                        // do validation check then set new password for user in database
                         $this->_handleResetPw();
                     }
                 }
@@ -249,6 +250,69 @@ class cPasswordRequest
             . $this->_cfg['templates']['request_password'],
             $return
         );
+    }
+
+    /**
+     * Returns the effective setting for the password request expiration time,
+     * the setting value has to be a supported relative date format, see
+     * {@link https://www.php.net/manual/en/datetime.formats.relative.php}.
+     *
+     * @return string  The found expiration setting, default value is '+4 hour'
+     * @throws cDbException
+     * @throws cException
+     */
+    public static function getExpirationSetting(): string
+    {
+        $expiration = trim(cSecurity::toString(
+            cEffectiveSetting::get('pw_request', 'user_password_reset_expiration')
+        ));
+        if (empty($expiration)) {
+            $expiration = '+4 hour';
+        }
+
+        return $expiration;
+    }
+
+    /**
+     * Returns the effective setting 'outdated_threshold' for the password requests,
+     * the setting value has to be a supported relative date format, see
+     * {@link https://www.php.net/manual/en/datetime.formats.relative.php}.
+     *
+     * @return string  The found outdated threshold setting, default value is '-1 day'
+     * @throws cDbException
+     * @throws cException
+     */
+    public static function getOutdatedThresholdSetting(): string
+    {
+        $outdated = trim(cSecurity::toString(
+            cEffectiveSetting::get('pw_request', 'outdated_threshold')
+        ));
+        if (empty($outdated)) {
+            $outdated = '-1 day';
+        }
+
+        return $outdated;
+    }
+
+
+    /**
+     * Returns the effective setting 'reset_threshold' for the max amount of password
+     * requests a user can do.
+     *
+     * @return int  The found reset threshold setting, default value is 4
+     * @throws cDbException
+     * @throws cException
+     */
+    public static function getResetThresholdSetting(): int
+    {
+        $resetThreshold =  cSecurity::toInteger(
+            cEffectiveSetting::get('pw_request', 'reset_threshold', '0')
+        );
+        if ($resetThreshold <= 0) {
+            $resetThreshold = 4;
+        }
+
+        return $resetThreshold;
     }
 
     /**
@@ -340,158 +404,158 @@ class cPasswordRequest
      */
     protected function _handleNewPassword()
     {
-        // notification message, which is returned to caller
+        // Notification message, which is returned to caller
         $message = '';
 
-        // check if requested username exists, also get email and timestamp when
+        // Check if requested username exists, also get email and timestamp when
         // user last requests a new password (last_pw_request)
-        $sql = "SELECT
-                    `username`, `email`
-                FROM
-                    `" . $this->_cfg['tab']['user'] . "`
-                WHERE
-                    `username` = '" . $this->_db->escape($this->_username) . "'
-                    AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00' OR valid_from IS NULL)
-                    AND (valid_to >= NOW() OR valid_to = '0000-00-00 00:00:00' OR valid_to IS NULL)";
-        $this->_db->query($sql);
+        $oApiUserColl = new cApiUserCollection();
+        $oApiUser = $oApiUserColl->fetchUserByName($this->_username, true);
+        if (!is_object($oApiUser) || md5($this->_username) !== md5($oApiUser->get('username'))) {
+            // Sleep a while, then return error message
+            sleep(5);
+            // return i18n('This user does not exist.');
+            // return i18n('No matching data found. Please contact your system administrator.');
+            return i18n('New password was submitted to your e-mail address.');
+        }
 
-        if ($this->_db->nextRecord() && md5($this->_username) == md5($this->_db->f('username'))) {
-            // by default user is allowed to request new password
-            $isAllowed = true;
+        // Store some user information
+        $this->_email = $oApiUser->getMail();
+        $this->_username = stripslashes($this->_username);
 
-            // we need the latest password request for time-limit comparison
-            $lastPwRequest = '0000-00-00 00:00:00';
+        $lastPwRequest = '';
 
-            // check if user has already used max amount of reset requests
-            $oApiUser = new cApiUser();
-            // try to load user by name
-            // this should always work because username in database already confirmed
-            if (false === $oApiUser->loadBy('username', $this->_username)) {
-                $isAllowed = false;
-                $message   = i18n('New password was submitted to your e-mail address.');
-            } else {
-                $oApiPasswordRequestCol = new cApiUserPasswordRequestCollection();
-                $requests               = $oApiPasswordRequestCol->fetchAvailableRequests();
+        // Check if there are more than allowed number of password requests for the user
+        $isAllowed = $this->_checkPasswordRequest($oApiUser, $lastPwRequest);
+        if (!$isAllowed) {
+            $message = i18n(
+                'Too many password reset requests. You may wait before requesting a new password.'
+            );
+        }
 
-                // do maintenance for all user password requests
-                foreach ($requests as $oApiUserPasswordRequest) {
-                    // get time of password reset request
-                    $reqTime = $oApiUserPasswordRequest->get('request');
-
-                    // if $reqTime is newer than $lastPwRequest then use this as new last password request time
-                    if (strtotime($lastPwRequest) < strtotime($reqTime)
-                        && $this->_db->f($oApiUser->getPrimaryKeyName()) === $oApiUser->get(
-                            $oApiUser->getPrimaryKeyName()
-                        )
-                    ) {
-                        $lastPwRequest = $reqTime;
-                    }
-
-                    // check if password request is too old and considered outdated
-                    // by default 1 day old requests are outdated
-                    if (false === ($outdatedStr = getEffectiveSetting('pw_request', 'outdated_threshold', false))
-                        || '' === $outdatedStr
-                    ) {
-                        $outdatedStr = '-1 day';
-                    }
-                    // convert times to DateTime objects for comparison
-                    // force all data to be compared using UTC timezone
-                    $outdated = new DateTime('now', new DateTimeZone('UTC'));
-                    $outdated->modify($outdatedStr);
-                    $expiration = new DateTime($oApiUserPasswordRequest->get('expiration'), new DateTimeZone('UTC'));
-                    if (false === $oApiUserPasswordRequest->get('expiration')
-                        || '' === $oApiUserPasswordRequest->get('expiration')
-                        || $expiration < $outdated
-                    ) {
-                        // delete password request as it is considered outdated
-                        $oApiPasswordRequestCol->delete(
-                            $oApiUserPasswordRequest->get($oApiUserPasswordRequest->getPrimaryKeyName())
-                        );
-                    }
-                }
-
-                // get all password reset requests related to entered username in form
-                $uid      = $oApiUser->get($oApiUser->getPrimaryKeyName());
-                $requests = $oApiPasswordRequestCol->fetchAvailableRequests($uid);
-
-                // get amount of max password reset requests
-                if (false === ($resetThreshold = getEffectiveSetting('pw_request', 'reset_threshold', false))
-                    || '' === $resetThreshold
-                ) {
-                    // use 4 as default value
-                    $resetThreshold = 4;
-                }
-
-                // check if there are more than allowed number of password requests for user
-                if (count($requests) > $resetThreshold) {
-                    $isAllowed = false;
-                    $message   =
-                        i18n('Too many password reset requests. You may wait before requesting a new password.');
-                }
-                unset($requests);
+        // Check if there is a correct last request date
+        if ($isAllowed) {
+            $isAllowed = $this->_checkLastPasswordRequest($lastPwRequest);
+            if (!$isAllowed) {
+                $message = sprintf(
+                    i18n('Password requests are allowed every %s minutes.'), $this->_reloadTime
+                );
             }
+        }
 
-            // store users mail address to class variable
-            $this->_email = $this->_db->f('email');
-
-            // check if there is a correct last request date
-            if (preg_match('/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/', $lastPwRequest, $aMatches)) {
-                $lastRequest =
-                    mktime($aMatches[4], $aMatches[5], $aMatches[6], $aMatches[2], $aMatches[3], $aMatches[1]);
-
-                // check if this last request is longer ago than time-limit.
-                if ((time() - $lastRequest) < (60 * $this->_reloadTime)) {
-                    // user is not allowed to request new password, he has to wait
-                    $isAllowed = false;
-                    $message   = sprintf(i18n('Password requests are allowed every %s minutes.'), $this->_reloadTime);
-                }
-            }
-
-            $this->_username = stripslashes($this->_username);
-
-            // check if syntax of users mail address is correct and there is no
-            // standard mail address like admin_kunde@IhreSite.de or
-            // sysadmin@IhreSite.de
-            if ((!preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $this->_email)
-                    || $this->_email == 'sysadmin@IhreSite.de'
-                    || $this->_email == 'admin_kunde@IhreSite.de')
-                && $isAllowed
-            ) {
-                $isAllowed = false;
-                // $sMessage = i18n('The requested user has no valid e-mail
+        // Check users mail address
+        if ($isAllowed) {
+            $isAllowed = $this->_checkUsersEmailAddress($oApiUser);
+            if (!$isAllowed) {
+                // $message = i18n('The requested user has no valid e-mail
                 // address. Submitting new password is not possible. Please
                 // contact your system- administrator for further support.');
                 $message = i18n('No matching data found. Please contact your system administrator.');
             }
+        }
 
-            // if there are no errors, call function _generateToken(), else wait
-            // a while, then return error message
-            if ($isAllowed) {
-                // generate a new token
-                $token = $this->_generateToken();
+        // If there are no errors, call function _generateToken(), else wait
+        // a while, then return error message
+        if ($isAllowed) {
+            // generate a new token
+            $token = $this->_generateToken();
 
-                // how long should the password reset request be valid?
-                // use 4 hours as expiration time
-                $expiration = new DateTime('+4 hour', new DateTimeZone('UTC'));
+            // how long should the password reset request be valid?
+            // use 4 hours as expiration time
+            $expiration = self::getExpirationSetting();
+            $expirationDate = new DateTime($expiration, new DateTimeZone('UTC'));
 
-                if (!$token || !$this->_safePwResetRequest($token, $expiration)
-                    || !$this->_submitMail($token)
-                ) {
-                    $message = i18n('An unknown problem occurred. Please contact your system administrator.');
-                } else {
-                    $message = i18n('New password was submitted to your e-mail address.');
-                }
+            if (!$token || !$this->_safePwResetRequest($token, $expirationDate)
+                || !$this->_submitMail($token)
+            ) {
+                $message = i18n('An unknown problem occurred. Please contact your system administrator.');
             } else {
-                sleep(5);
+                $message = i18n('New password was submitted to your e-mail address.');
             }
         } else {
-            // sleep a while, then return error message
-            // $sMessage = i18n('This user does not exist.');
-            $message = i18n('No matching data found. Please contact your system administrator.');
             sleep(5);
         }
 
         return $message;
+    }
+
+    /**
+     * Checks if the user has exceeded the amount of allowed password requests
+     * within a defined time frame.
+     *
+     * @param cApiUser $oApiUser
+     * @param string $lastPwRequestTime
+     * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
+    protected function _checkPasswordRequest(cApiUser $oApiUser, string &$lastPwRequestTime): bool
+    {
+        $oApiPasswordRequestCol = new cApiUserPasswordRequestCollection();
+
+        // Do maintenance for all user password requests
+        // @TODO Do we need to do the maintenance here? There is already a cronjob for this.
+        $oApiPasswordRequestCol->deleteExpired();
+
+        // Get users last (newest) password request and number of previous requests
+        $lastPwRequestTime = $oApiPasswordRequestCol->getLastPasswordRequestTimeByUserIId($oApiUser->getUserId());
+        $requestsCount = $oApiPasswordRequestCol->getPasswordRequestsCountByUserIId($oApiUser->getUserId());
+
+        // Get amount of max allowed password reset requests
+        $resetThreshold = self::getResetThresholdSetting();
+
+        // Are there more than allowed number of password requests for the user?
+        return !($requestsCount > $resetThreshold);
+    }
+
+    /**
+     * Checks if the users any existing last password request time is older
+     * than the defined repeat time. Only one password request within the
+     * repeat time is allowed.
+     *
+     * @param string $lastPwRequest
+     * @return bool
+     */
+    protected function _checkLastPasswordRequest(string $lastPwRequest): bool
+    {
+        // Check if there is a correct last request date
+        $datePattern = '/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/';
+        if (!empty($lastPwRequest) && preg_match($datePattern, $lastPwRequest, $aMatches)) {
+            $lastRequest = mktime(
+                $aMatches[4], $aMatches[5], $aMatches[6], $aMatches[2], $aMatches[3], $aMatches[1]
+            );
+
+            // Is the last request older than the time-limit?
+            return !((time() - $lastRequest) < (60 * $this->_reloadTime));
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks the email address of the user, we need this, otherwise we can't
+     * send the passwort reset email to the user.
+     *
+     * @param cApiUser $oApiUser
+     * @return bool
+     * @throws cInvalidArgumentException
+     */
+    protected function _checkUsersEmailAddress(cApiUser $oApiUser): bool
+    {
+        // Check if syntax of users mail address is correct and there is no
+        // standard mail address like admin_kunde@IhreSite.de or
+        // sysadmin@IhreSite.de
+        $email = $oApiUser->getMail();
+        $validator = cValidatorFactory::getInstance('email');
+        if (!$validator->isValid($email)
+            || $email == 'sysadmin@IhreSite.de'
+            || $email == 'admin_kunde@IhreSite.de'
+        ) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -688,7 +752,6 @@ class cPasswordRequest
         try {
             $mailer = new cMailer();
             $mailer->sendMail($from, $this->_email, $subject, $body);
-
             return true;
         } catch (cDbException $e) {
             return false;
@@ -712,9 +775,11 @@ class cPasswordRequest
 
         $password = "";
 
+        $length = cString::getStringLength($chars);
+
         // for each character of token choose one from $sChars randomly
         for ($i = 0; $i < $this->_tokenLength; $i++) {
-            $password .= $chars[rand(0, cString::getStringLength($chars))];
+            $password .= $chars[rand(0, $length - 1)];
         }
 
         return $password;

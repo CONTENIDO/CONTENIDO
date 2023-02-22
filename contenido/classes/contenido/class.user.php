@@ -217,6 +217,32 @@ class cApiUserCollection extends ItemCollection {
     }
 
     /**
+     * Returns first found user in the system by username.
+     *
+     * @param string $userName
+     * @param bool $forceActive [optional]
+     *                          Flag to search only for active user
+     * @return cApiUser|NULL
+     *                          The found user or NULL
+     * @throws cDbException
+     * @throws cException
+     */
+    public function fetchUserByName(string $userName, bool $forceActive = false)
+    {
+        $where = "`username` = '" . $this->escape($userName) . "'";
+        if ($forceActive) {
+            $where .= " AND (`valid_from` <= NOW() OR `valid_from` = '0000-00-00 00:00:00' OR `valid_from` IS NULL) "
+                . "AND (`valid_to` >= NOW() OR `valid_to` = '0000-00-00 00:00:00' OR `valid_to` IS NULL)";
+        }
+
+        if ($this->select($where, '', '', 1) && ($item = $this->next()) !== false) {
+            return $item;
+        }
+
+        return NULL;
+    }
+
+    /**
      * Returns all system admins available in the system
      *
      * @param int $client
@@ -573,6 +599,8 @@ class cApiUser extends Item {
 
     /**
      * Returns user id, currently set.
+     *
+     * Alias for {@see Item::getId()}.
      *
      * @return string
      */
