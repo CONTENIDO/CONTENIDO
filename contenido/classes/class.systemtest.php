@@ -655,7 +655,8 @@ class cSystemtest {
             ];
         }
 
-        if ($db->connect() == 0) {
+        $result = $db->connect();
+        if (is_null($result) || is_bool($result) && !$result) {
             return [
                 $db,
                 false
