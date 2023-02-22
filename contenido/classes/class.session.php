@@ -207,7 +207,7 @@ class cSession
         $k = null; // class instance
 
         // Determine the type of $$var
-        eval("\$t = \${$var} !== null ? gettype(\${$var}) : NULL;");
+        eval("\$t = isset(\${$var}) ? gettype(\${$var}) : NULL;");
         switch ($t) {
             case 'array':
                 // $$var is an array. Enumerate the elements and serialize them.
@@ -230,7 +230,7 @@ class cSession
                 break;
             default:
                 // $$var is an atom. Extract it to $l, then generate code
-                eval("\$l = \${$var} !== null ? \${$var} : '';");
+                eval("\$l = isset(\${$var}) ? \${$var} : '';");
                 $str .= "\${$var} = '" . preg_replace("/([\\'])/", "\\\\1", $l) . "';\n";
                 break;
         }
