@@ -141,7 +141,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     } else {
         if (cString::getStringLength($successMessage) > 0) {
             cRegistry::addOkMessage($successMessage);
-        } elseif (!empty($action) > 0) {
+        } elseif (!empty($action)) {
             cRegistry::addOkMessage(i18n("Saved changes successfully!"));
         }
     }
