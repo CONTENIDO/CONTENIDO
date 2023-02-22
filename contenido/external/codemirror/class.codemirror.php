@@ -26,7 +26,7 @@ class CodeMirror {
      *
      * @var array
      */
-    private $_properties;
+    private $_properties = [];
 
     /**
      * HTML-ID of textarea which is replaced by CodeMirror
@@ -40,7 +40,7 @@ class CodeMirror {
      *
      * @var boolean
      */
-    private $_activated;
+    private $_activated = true;
 
     /**
      * defines if js-script for CodeMirror is included on rendering process
@@ -88,11 +88,9 @@ class CodeMirror {
      */
     public function __construct($id, $syntax, $lang, $addScript, $cfg, $editable = true) {
         // init class variables
-        $this->_properties = [];
         $this->_cfg        = (array)$cfg;
         $this->_addScript  = (boolean)$addScript;
         $this->_textareaId = (string)$id;
-        $this->_activated  = true;
         $this->_language   = (string)$lang;
         $this->_syntax     = (string)$syntax;
 
