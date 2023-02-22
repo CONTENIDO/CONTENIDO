@@ -16,43 +16,17 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
-global $cfg;
-
 // CONTENIDO path
 $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
+$area = $area ?? '';
+
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
-    $db = cRegistry::getDb();
-
+    // Do the maintenance for all user password requests,
+    // clear the password requests table of old entries.
     $oApiPasswordRequestCol = new cApiUserPasswordRequestCollection();
-    $requests = $oApiPasswordRequestCol->fetchAvailableRequests();
-
-    // do maintainance for all user password requests
-    foreach ($requests as $oApiUserPasswordRequest) {
-        // get time of password reset request
-        $reqTime = $oApiUserPasswordRequest->get('request');
-
-        // check if password request is too old and considered outdated
-        // by default 1 day old requests are outdated
-        if (false === $outdatedStr = getEffectiveSetting('pw_request', 'outdated_threshold', false)
-        || '' === $outdatedStr) {
-            $outdatedStr = '-1 day';
-        }
-        // convert times to DateTime objects for comparison
-        // force all data to be compared using UTC timezone
-        $outdated = new DateTime('now', new DateTimeZone('UTC'));
-        $outdated->modify($outdatedStr);
-        $expiration = new DateTime($oApiUserPasswordRequest->get('expiration'), new DateTimeZone('UTC'));
-        if (false === $oApiUserPasswordRequest->get('expiration')
-        || '' === $oApiUserPasswordRequest->get('expiration')
-        || $expiration < $outdated) {echo $oApiUserPasswordRequest->get($oApiUserPasswordRequest->getPrimaryKeyName());
-            // delete password request as it is considered outdated
-            $oApiPasswordRequestCol->delete($oApiUserPasswordRequest->get($oApiUserPasswordRequest->getPrimaryKeyName()));
-        }
-    }
+    $numDeleted = $oApiPasswordRequestCol->deleteExpired();
 }
-
-?>
