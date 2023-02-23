@@ -14,7 +14,16 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var array $cfg
+ * @var int $lang
+ * @var int $client
+ * @var int $idmod
+ */
+
 global $t_orig, $t_trans;
+
+$action = $action ?? '';
 
 $langObj = new cApiLanguage($lang);
 
@@ -84,11 +93,15 @@ if (count(array_diff_assoc($myTrans, $translationArray)) > 0 || count(array_diff
     $moduleTranslation->saveTranslationArray($myTrans);
 }
 
+$lastString = '';
+$lastTranslation = '';
+$current = 0;
+
 if (!isset($row)) {
     $row = 0; // first string
     $current = 0;
     $lastString = reset($strings);
-    $lastTranslation = isset($myTrans[$lastString]) ? $myTrans[$lastString] : '';
+    $lastTranslation = $myTrans[$lastString] ?? '';
 } else {
     // Get the string
     $index = 0;
