@@ -518,11 +518,23 @@ abstract class Item extends cItemBaseAbstract
         if ($this->db->affectedRows() > 0) {
             $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
             $this->_executeCallbacks(self::STORE_SUCCESS, $class, [$this]);
+            $this->modifiedValues = null;
             return true;
         }
 
         $this->_executeCallbacks(self::STORE_FAILURE, $class, [$this]);
         return false;
+    }
+
+    /**
+     * Checks whether the item has been modified or not.
+     *
+     * @since CONTENIDO 4.10.2
+     * @return bool
+     */
+    public function isModified(): bool
+    {
+        return is_array($this->modifiedValues) && count($this->modifiedValues);
     }
 
     /**
