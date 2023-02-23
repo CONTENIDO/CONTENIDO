@@ -42,18 +42,23 @@ Bevor man ein Ticket bearbeitet, sollte man lokal auf seinem Rechner von der dev
 
 Der Branchname sollte mit der Ticketid beginnen, gefolgt vom Titel, der in Kleinbuchstaben geschrieben ist, ohne Umlaute und Sonderzeichen und Leerzeichen mit Bindestrichen ersetzt.
 
-Dem Branchnamen sollte der Branchtyp (feature oder bug) vorangestellt werden.
+Dem Branchnamen sollte der Branchtyp (`task`, `feature` oder `bug`) vorangestellt werden.
 
 Beispiele:
-- Der Titel des Tickets lautet "Mein GitHub Ticket für CONTENIDO"
+- Der Titel des Tickets lautet "Sourcecode Dokumentation"
 - Die Ticketid lautet "#123"
+- Es handelt sich um eine Aufgabe (`task`)
+- Die zu erstellende Branch sollte "task/123-mein-github-ticket-fuer-contenido" lauten
+
+- Der Titel des Tickets lautet "Mein GitHub Ticket für CONTENIDO"
+- Die Ticketid lautet "#234"
 - Es handelt sich um ein Feature
-- Die zu erstellende Branch sollte "feature/#123-mein-github-ticket-fuer-contenido" lauten
+- Die zu erstellende Branch sollte "feature/234-mein-github-ticket-fuer-contenido" lauten
 
 - Der Titel des Tickets lautet "Foobar Fehler in der Qwertz".
-- Die Ticketid lautet "#321"
-- Es handelt sich um ein Bug.
-- Die zu erstellende Branch sollte "bug/#321-foobar-fehler-in-der-qwertz" lauten
+- Die Ticketid lautet "#345"
+- Es handelt sich um einen Fehleer (`bug`).
+- Die zu erstellende Branch sollte "bug/345-foobar-fehler-in-der-qwertz" lauten
 
 
 ## Code Änderungen durchführen
@@ -72,7 +77,7 @@ Ausgenommen von den Codierungskonventionen ist der verwendete Code von Drittanbi
 
 ## Testen der Änderungen
 
-Jede Änderung oder Erweiterung sollte idealerweise getestet werden, am Besten mit entsprechenden Unit-Tests.
+Jede Änderung oder Erweiterung sollte idealerweise getestet werden, am besten mit entsprechenden Unit-Tests.
 
 
 ## Committen der Änderungen
@@ -143,12 +148,12 @@ git checkout -b \＜neue-branch\＞ \＜vorhandene-branch\＞
 **Beispiel:**
 
 ```
-git checkout -b feature/#123-mein-github-ticket-fuer-contenido develop
+git checkout -b feature/123-mein-github-ticket-fuer-contenido develop
 ```
 
 
 ### Änderungen dem Commit hinzufügen
-Vor dem Commit, muss man die Änderungen zuerst hinzufügen.
+Vor dem Commit muss man die Änderungen zuerst hinzufügen.
 Nehmen wir an, die Datei "cms/front_content.php" wurde geändert.
 
 **Befehl:**
@@ -178,7 +183,7 @@ git commit -m"#123 Formate in front_content.php angepasst."
 
 **Befehl:**
 
-git push origin feature/#123-mein-github-ticket-fuer-contenido
+git push origin feature/123-mein-github-ticket-fuer-contenido
 
 **Beispiel:**
 
