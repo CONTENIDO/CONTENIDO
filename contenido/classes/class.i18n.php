@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the I18N class.
  *
- * @package Core
+ * @package    Core
  * @subpackage I18N
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Internationalization (i18n) class.
  *
- * @package Core
+ * @package    Core
  * @subpackage I18N
  */
 class cI18n {

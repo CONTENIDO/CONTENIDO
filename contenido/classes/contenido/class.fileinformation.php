@@ -3,13 +3,13 @@
 /**
  * This file contains the file information collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Konstantinos Katikakis
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Konstantinos Katikakis
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -19,7 +19,7 @@ cInclude('includes', 'functions.file.php');
 /**
  * File information collection.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  * @method cApiFileInformation createNewItem
  * @method cApiFileInformation|bool next
@@ -194,7 +194,7 @@ class cApiFileInformationCollection extends ItemCollection {
 /**
  * File information item.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiFileInformation extends Item

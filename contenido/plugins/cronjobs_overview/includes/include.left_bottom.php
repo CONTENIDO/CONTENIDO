@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the left bottom frame backend page for the plugin cronjob overview.
  *

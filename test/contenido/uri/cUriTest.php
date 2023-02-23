@@ -3,20 +3,20 @@
 /**
  * This file contains tests for the cUri class.
  *
- * @package          Testing
- * @subpackage       Test_Url
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Testing
+ * @subpackage Test_Url
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
  * Class to test cUri.
  *
- * @package          Testing
- * @subpackage       Test_Url
+ * @package    Testing
+ * @subpackage Test_Url
  */
 class cUriTest extends cTestingTestCase
 {

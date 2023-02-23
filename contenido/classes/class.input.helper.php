@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Select box with additional functionality for category and article selection
  *
- * @package Core
+ * @package    Core
  * @subpackage Util
  */
 class cHTMLInputSelectElement extends cHTMLSelectElement {
@@ -303,7 +303,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
 /**
  * Config table class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Util
  */
 class UI_Config_Table

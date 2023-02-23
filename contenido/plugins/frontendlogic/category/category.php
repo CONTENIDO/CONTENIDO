@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the category frontend logic class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FrontendLogic
- * @author Andreas Lindner
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Andreas Lindner
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * of frontendlogic_category was Andreas Lindner. The author of FrontendLogic is
  * not known.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FrontendLogic
  */
 class frontendlogic_category extends FrontendLogic {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the admin password setup mask.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Admin password setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
  */
 class cSetupAdminPassword extends cSetupMask {
@@ -116,5 +117,3 @@ class cSetupAdminPassword extends cSetupMask {
         $this->_stepTemplateClass->set("s", "BACK", $backlink->render());
     }
 }
-
-?>

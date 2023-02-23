@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains various helper functions to read specific values needed for setup checks.
  *
@@ -85,5 +86,3 @@ function getGroupnameByGID($iGid)
         return false;
     }
 }
-
-?>

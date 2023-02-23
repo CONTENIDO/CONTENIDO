@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains abstract class for installation new plugins
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage PluginManager
- * @author Frederic Schneider
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,9 +17,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Uninstall class for existing plugins, extends PimPluginSetup
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage PluginManager
- * @author frederic.schneider
+ * @author     frederic.schneider
  */
 class PimPluginSetupUninstall extends PimPluginSetup {
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the collection class for user_forum plugin.
  *
@@ -10,6 +11,7 @@
  * @link       https://www.4fb.de
  * @link       https://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**

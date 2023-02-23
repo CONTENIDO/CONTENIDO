@@ -6,13 +6,13 @@
  * @todo replace code generation by Contenido_CodeGenerator (see
  *       contenido/classes/CodeGenerator)
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Jan Lengowski
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

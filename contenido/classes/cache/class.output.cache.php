@@ -3,13 +3,13 @@
 /**
  * This file contains the output cache classes.
  *
- * @package Core
+ * @package    Core
  * @subpackage Cache
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains functions for the CONTENIDO output cache.
  *
- * @package Core
+ * @package    Core
  * @subpackage Cache
  */
 class cOutputCache {
@@ -447,7 +447,7 @@ VALID UNTIL: %s
 /**
  * This class contains functions for the output cache handler in CONTENIDO.
  *
- * @package Core
+ * @package    Core
  * @subpackage Cache
  */
 class cOutputCacheHandler extends cOutputCache

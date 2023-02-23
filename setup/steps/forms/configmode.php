@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the config mode setup mask.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Config mode setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
  */
 class cSetupConfigMode extends cSetupMask {
@@ -97,5 +98,3 @@ class cSetupConfigMode extends cSetupMask {
     }
 
 }
-
-?>

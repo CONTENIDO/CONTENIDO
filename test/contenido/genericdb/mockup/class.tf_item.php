@@ -1,7 +1,6 @@
 <?php
 
 /**
- *
  * @author marcus.gnass
  * @method TFItem createNewItem
  * @method TFItem|bool next
@@ -25,7 +24,6 @@ class TFCollection extends ItemCollection
 }
 
 /**
- *
  * @author marcus.gnass
  */
 class TFItem extends Item

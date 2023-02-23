@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the upgrade job 9.
  *
@@ -10,6 +11,7 @@
  * @link       https://www.4fb.de
  * @link       https://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -131,5 +133,3 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
         }
     }
 }
-
-?>

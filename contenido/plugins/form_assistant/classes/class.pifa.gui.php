@@ -3,11 +3,11 @@
 /**
  * This file contains several page classes.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link https://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework

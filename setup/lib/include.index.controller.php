@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Setup and upgrade script main controller.
  *
@@ -72,5 +73,3 @@ switch ($currentStep) {
         checkAndInclude(CON_SETUP_PATH . '/steps/languagechooser.php');
         break;
 }
-
-?>

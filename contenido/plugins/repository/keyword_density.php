@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file includes the "keyword density" sub plugin from the old plugin repository.
  *

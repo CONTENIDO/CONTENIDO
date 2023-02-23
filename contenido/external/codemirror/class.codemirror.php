@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file defines the CodeMirror editor integration class.
  *

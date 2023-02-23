@@ -3,14 +3,14 @@
 /**
  * This file is the main entrance point of the backend.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Olaf Niemann
- * @author Jan Lengowski
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Olaf Niemann
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {

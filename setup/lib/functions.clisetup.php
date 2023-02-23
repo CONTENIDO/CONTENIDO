@@ -1,15 +1,17 @@
 <?php
+
 /**
  * Several functions to help the cli setup of CONTENIDO
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Setup
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -250,4 +252,3 @@ function printHelpText() {
     prntln('CONTENIDO version ' . CON_SETUP_VERSION);
 }
 
-?>

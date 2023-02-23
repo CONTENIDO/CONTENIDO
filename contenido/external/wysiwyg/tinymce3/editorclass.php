@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the WYSIWYG editor class for TinyMCE.
  *

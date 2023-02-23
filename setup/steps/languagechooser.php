@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the setup language chooser class.
  *
@@ -18,7 +19,7 @@ session_unset();
 /**
  * Setup language chooser class
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Setup
  */
 class cSetupLanguageChooser extends cSetupMask

@@ -3,13 +3,13 @@
 /**
  * description: top navigation
  *
- * @package Module
+ * @package    Module
  * @subpackage NavigationTop
- * @author marcus.gnass@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     marcus.gnass@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert framework initialization
@@ -27,7 +27,6 @@ $tree = $categoryHelper->getSubCategories($rootIdcat, $depth);
 // get path (breadcrumb) of current category
 if (!function_exists("navigation_top_filter")) {
     /**
-     *
      * @param cApiCategoryLanguage $categoryLanguage
      * @return int
      */

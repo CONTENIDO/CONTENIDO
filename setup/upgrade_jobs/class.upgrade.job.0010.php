@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the upgrade job 10.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Upgrade job 10.
  * Add the execution order column to the plugin table
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0010 extends cUpgradeJobAbstract {

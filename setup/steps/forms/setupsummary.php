@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the setup summary setup mask.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Setup summary setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
  */
 class cSetupSetupSummary extends cSetupMask
@@ -99,5 +100,3 @@ class cSetupSetupSummary extends cSetupMask
         $this->__construct($step, $previous, $next);
     }
 }
-
-?>

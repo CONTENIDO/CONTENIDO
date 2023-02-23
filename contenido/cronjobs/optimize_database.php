@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cronjob to optimize all database tables.
  *
  * @package    Core
  * @subpackage Cronjob
- *
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt

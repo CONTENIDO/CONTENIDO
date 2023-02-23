@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the upgrade job 5.
  *
@@ -17,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Upgrade job 5.
  * Runs the upgrade job to convert old content types.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0005 extends cUpgradeJobAbstract {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains various classes for displaying the setup.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Alpha image class, based on cHTMLImage.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage GUI
  * @todo  Remove the usage of this class. We dont need special alpha filter for IE anymore.
  *        The last place where it is still in use are the error lists with content toggle (+ - icons) feature!
@@ -80,7 +81,7 @@ class cHTMLAlphaImage extends cHTMLImage {
 /**
  * Setup error message list based on cHTMLDiv.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage GUI
  */
 class cHTMLErrorMessageList extends cHTMLDiv {
@@ -122,7 +123,7 @@ class cHTMLErrorMessageList extends cHTMLDiv {
 /**
  * Foldable setup error message based on cHTMLTableRow.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage GUI
  */
 class cHTMLFoldableErrorMessage extends cHTMLTableRow {
@@ -249,7 +250,7 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
 /**
  * Setup info message based on cHTMLTableRow.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage GUI
  */
 class cHTMLInfoMessage extends cHTMLTableRow {
@@ -312,7 +313,7 @@ class cHTMLInfoMessage extends cHTMLTableRow {
  * Setup language link based on cHTMLDiv, like
  * "English    ->"
  *
- * @package Setup
+ * @package    Setup
  * @subpackage GUI
  */
 class cHTMLLanguageLink extends cHTMLDiv {
@@ -356,7 +357,7 @@ class cHTMLLanguageLink extends cHTMLDiv {
  * Setup button link based on cHTMLDiv, like
  * "Backend - CMS    ->"
  *
- * @package Setup
+ * @package    Setup
  * @subpackage GUI
  */
 class cHTMLButtonLink extends cHTMLDiv {

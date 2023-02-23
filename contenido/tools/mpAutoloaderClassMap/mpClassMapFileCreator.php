@@ -21,9 +21,9 @@
  * ];
  * </code>
  *
- * @category  Development
- * @package   mpAutoloaderClassMap
- * @author    Murat Purc <murat@purc.de>
+ * @category   Development
+ * @package    mpAutoloaderClassMap
+ * @author     Murat Purc <murat@purc.de>
  */
 class mpClassMapFileCreator
 {
@@ -49,6 +49,7 @@ class mpClassMapFileCreator
     {
         $this->_template = trim('
 <?php
+
 /**
  {DESCRIPTION}
  *

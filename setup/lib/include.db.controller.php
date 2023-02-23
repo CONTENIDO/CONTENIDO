@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Creates/Updates the database tables and fills them with entries (depending on
  * selected options during setup process)
@@ -144,5 +145,3 @@ if ($currentStep < $totalSteps) {
         echo '<a href="javascript:nextStep();">Last step</a>';
     }
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains various helper functions to deal with the setup process.
  *
@@ -218,5 +219,3 @@ function takeoverRequestToSession(array $request) {
         }
     }
 }
-
-?>

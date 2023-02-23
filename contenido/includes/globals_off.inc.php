@@ -8,13 +8,13 @@
  * variables. This is highly insecure, so variables need to be checked
  * carefully.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Martin Horwarth
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Martin Horwarth
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // Simulate get_magic_quotes_gpc on if turned off

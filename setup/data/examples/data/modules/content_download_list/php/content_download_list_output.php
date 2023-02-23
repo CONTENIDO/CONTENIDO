@@ -3,13 +3,13 @@
 /**
  * description: standard download list
  *
- * @package Module
- * @subpackage ContentTeaser
- * @author timo.trautmann@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @package    Module
+ * @subpackage ContentDownloadList
+ * @author     Timo.trautmann@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert framework initialization

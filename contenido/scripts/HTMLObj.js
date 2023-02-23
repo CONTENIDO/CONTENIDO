@@ -4,7 +4,7 @@
  * Object of an HTML Element.
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
+ * @copyright  four for business AG <www.4fb.de>
  */
 function HTMLObj(objId) {
     this.objId = objId;
@@ -153,7 +153,7 @@ HTMLObj.prototype.setMethods = function(type) {
  * the cfg properties
  *
  * @author Jan Lengowski <jan.lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
+ * @copyright  four for business AG <www.4fb.de>
  */
 function doAction() {
     var str = this.src;

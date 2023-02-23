@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cronjob for time management and moving articles.
  *
  * @package    Core
  * @subpackage Cronjob
- *
  * @author     Holger Librenz
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt

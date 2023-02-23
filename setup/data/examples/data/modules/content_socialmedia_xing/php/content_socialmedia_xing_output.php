@@ -1,11 +1,16 @@
 <?php
+
 /**
  * Description: XING social plugin
  *
+ * @package    Module
+ * @subpackage ContentSocialMediaXing
  * @version    1.0.0
  * @author     alexander.scheider@4fb.de
  * @copyright  four for business AG <www.4fb.de>
- *
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 $tpl = cSmartyFrontend::getInstance();
@@ -44,9 +49,9 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign('save', $save);
     $tpl->assign('label_overview', $label_overview);
 
-	$tpl->assign('label_optionIcon', $label_optionIcon);
-	$tpl->assign('label_optionButton', $label_optionButton);
-	
+    $tpl->assign('label_optionIcon', $label_optionIcon);
+    $tpl->assign('label_optionButton', $label_optionButton);
+
     $tpl->assign('profile', $profile);
     $tpl->assign('look', $look);
     $tpl->assign('name', $name);

@@ -1,12 +1,14 @@
 <?php
+
 /**
  * Facebook socialmedia module
- * @package Module
- * @subpackage facebook
- *
- * @author alexander.scheider@4fb.de
- * @copyright four for business AG
- * @link https://www.4fb.de
+ * @package    Module
+ * @subpackage ContentSocialMediaFacebook
+ * @author     alexander.scheider@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 //get smarty instance
@@ -123,7 +125,7 @@ if (cRegistry::isBackendEditMode()) {
     }
 
     if ($postsvalue != 'true') {
-    	$postsvalue = 'false';
+        $postsvalue = 'false';
     }
 
     $tpl->assign('SHOW_FACES', $facesvalue);

@@ -3,14 +3,13 @@
 /**
  * This file contains the generic db item cache class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB
- *
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Contains a list of self instances, where each instance contains cached Items
  * fore one specific table.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB
  */
 class cItemCache {

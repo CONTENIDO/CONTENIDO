@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the valid_from extension of the frontend user plugin.
  *

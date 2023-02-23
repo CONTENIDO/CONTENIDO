@@ -2,11 +2,11 @@
 
 /**
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage SIWECOS
- * @author Fulai.zhang <fulai.zhang@4fb.de>
- * @copyright four for business AG
- * @link https://www.4fb.de
+ * @author     Fulai.zhang <fulai.zhang@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework

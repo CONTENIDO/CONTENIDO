@@ -5,13 +5,13 @@ use PHPUnit\Framework\TestCase;
 /**
  * This file contains tests for Contenido chain Contenido.Frontend.AllowEdit
  *
- * @package          Testing
- * @subpackage       Test_Chains
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Testing
+ * @subpackage Test_Chains
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
@@ -41,8 +41,8 @@ function chain_ContenidoFrontendAllowEdit_Test3($lang, $idcat, $idart, $uid)
 
 /**
  * Class to test Contenido chain Contenido.Frontend.AllowEdit.
- * @package          Testing
- * @subpackage       Test_Chains
+ * @package    Testing
+ * @subpackage Test_Chains
  */
 class ContenidoFrontendAllowEditTest extends TestCase
 {

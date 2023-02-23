@@ -5,11 +5,13 @@
  * Which articles are searchable can be defined by a client setting
  * searchable/idcats
  *
- * @package Module
+ * @package    Module
  * @subpackage ContentSearchResult
- * @author marcus.gnass@4fb.de
- * @copyright four for business AG
- * @link https://www.4fb.de
+ * @author     marcus.gnass@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // frontend

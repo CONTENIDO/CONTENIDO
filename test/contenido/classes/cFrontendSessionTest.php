@@ -3,13 +3,13 @@
 /**
  * This file contains tests for the cFrontendSession class.
  *
- * @package          Testing
- * @subpackage       Test_Session
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Testing
+ * @subpackage Test_Session
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
@@ -17,8 +17,8 @@
  *
  * @todo             Implement more tests
  *
- * @package          Testing
- * @subpackage       Test_Session
+ * @package    Testing
+ * @subpackage Test_Session
  */
 class cFrontendSessionTest extends cTestingTestCase
 {

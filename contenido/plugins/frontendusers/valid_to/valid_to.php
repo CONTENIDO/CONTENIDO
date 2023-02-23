@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the valid_to extension of the frontend user plugin.
  *

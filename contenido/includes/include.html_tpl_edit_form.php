@@ -5,13 +5,13 @@
  * @fixme: Rework logic for creation of cApiFileInformation entries
  * It may happpen, that we have already a file but not a entry or vice versa!
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Willi Man
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Willi Man
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

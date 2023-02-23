@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains Plugin Manager Relations recipient class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage PluginManager
- * @author Frederic Schneider
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,9 +17,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Plugin Manager Relations recipient class.
  *
- * @package     Plugin
- * @subpackage  PluginManager
- * @author Frederic Schneider
+ * @package    Plugin
+ * @subpackage PluginManager
+ * @author     Frederic Schneider
  * @method PimPluginRelations createNewItem
  * @method PimPluginRelations|bool next
  */

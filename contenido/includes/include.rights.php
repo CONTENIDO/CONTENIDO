@@ -4,13 +4,13 @@
  * Project: CONTENIDO Content Management System Description: CONTENIDO User
  * Rights
  *
- * @package CONTENIDO Backend Includes
+ * @package    Backend Includes
  * @version 1.0.2
- * @author unknown
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  * @since file available since CONTENIDO release <= 4.6
  */
 

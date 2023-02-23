@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the tree item storage class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -40,7 +41,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * to, there's no need to have a specific item handy,
  * but rather you can use the "addItemToID" function.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
  */
 class TreeItem {

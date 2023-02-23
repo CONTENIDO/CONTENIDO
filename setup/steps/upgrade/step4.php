@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO upgrade step 4 - system test.
  *
@@ -17,4 +18,3 @@ checkAndInclude("steps/forms/systemtest.php");
 
 $cSetupSystemtest = new cSetupSystemtest(4, "upgrade3", "upgrade5", true);
 $cSetupSystemtest->render();
-?>

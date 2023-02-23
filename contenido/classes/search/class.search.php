@@ -3,13 +3,13 @@
 /**
  * This file contains the class for content search.
  *
- * @package Core
+ * @package    Core
  * @subpackage Frontend_Search
- * @author Willi Man
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Willi Man
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -187,7 +187,7 @@ cInclude('includes', 'functions.encoding.php');
  * $oSearchResults = new cSearchResult($searchResult, 10);
  * </pre>
  *
- * @package Core
+ * @package    Core
  * @subpackage Frontend_Search
  */
 class cSearch extends cSearchBaseAbstract {

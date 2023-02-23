@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO setup step 8 - setup results.
  *
@@ -17,4 +18,3 @@ checkAndInclude("steps/forms/setupresults.php");
 
 $cSetupResults = new cSetupResults(8);
 $cSetupResults->render();
-?>

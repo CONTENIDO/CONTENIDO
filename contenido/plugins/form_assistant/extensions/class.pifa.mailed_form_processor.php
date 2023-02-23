@@ -2,11 +2,11 @@
 
 /**
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link https://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -15,7 +15,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 plugin_include(Pifa::getName(), 'extensions/class.pifa.default_form_processor.php');
 
 /**
- * The given data should be send via email to the systems mail address and a
+ * The given data should be sent via email to the systems mail address and a
  * confirmation mail to the user itself.
  * This feature can be accomplished by extending the class
  * PifaFormAbstractProcessor and implementing its method _processStoredData().
@@ -186,5 +186,3 @@ class MailedFormProcessor extends DefaultFormProcessor {
         return [];
     }
 }
-
-?>

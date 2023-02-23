@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the upgrade job 6.
  *
@@ -17,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Upgrade job 6.
  * Runs the upgrade job to move files/from old client folders to new client's data folders
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0006 extends cUpgradeJobAbstract {

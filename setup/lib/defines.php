@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the setup constants
  *
@@ -43,5 +44,3 @@ define('CON_SETUP_DB_CHARSET', 'utf8');
 define('CON_SETUP_DB_OPTION_MYSQLI_INIT_COMMAND', "SET SESSION sql_mode='';");
 
 define('CON_SETUP_VERSION', '4.10.1');
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains various helper functions to read specific values needed for setup checks.
  *
@@ -47,4 +48,3 @@ function getDisabledFunctions ()
 {
     return getPHPIniSetting("disable_functions");
 }
-?>

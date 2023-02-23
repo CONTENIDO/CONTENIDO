@@ -3,13 +3,13 @@
 /**
  * This file contains the content version collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @author           Jann Dieckmann
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage GenericDB_Model
+ * @author     Jann Dieckmann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Content Version collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  * @method cApiContentVersion createNewItem
  * @method cApiContentVersion|bool next
@@ -93,7 +93,7 @@ class cApiContentVersionCollection extends ItemCollection {
 /**
  * Content Version item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiContentVersion extends Item

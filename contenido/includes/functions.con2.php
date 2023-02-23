@@ -7,14 +7,14 @@
  * AND the backend. This file should NOT contain any backend editing
  * functions to improve frontend performance:
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Willi Man
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Willi Man
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the backend and frontend session class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Session
- * @author Frederic Schneider
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Backend session class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Session
  */
 class cSession
@@ -337,7 +338,7 @@ class cSession
  * It uses a different prefix and session url will be created without the contenido=1 parameter.
  * The rest is the same.
  *
- * @package Core
+ * @package    Core
  * @subpackage Session
  */
 class cFrontendSession extends cSession

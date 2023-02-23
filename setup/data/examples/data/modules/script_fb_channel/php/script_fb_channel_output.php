@@ -33,13 +33,13 @@
  * script src as well. The sample code above uses protocol-relative URLs which
  * should handle most https cases properly.
  *
- * @package Module
+ * @package    Module
  * @subpackage ScriptFbChannel
- * @author marcus.gnass
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     marcus.gnass
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 $cache_expire = 60 * 60 * 24 * 365; // one year

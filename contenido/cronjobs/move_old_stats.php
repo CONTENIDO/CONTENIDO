@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cronjob for moving old statistics into the stat_archive table
  *
  * @package    Core
  * @subpackage Cronjob
- *
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt

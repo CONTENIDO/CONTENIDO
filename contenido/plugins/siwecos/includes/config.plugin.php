@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains configuration for plugin.
  *

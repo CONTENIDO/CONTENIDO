@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * SIWECOS form item collection class.
  * It's a kind of model.
  *
- * @author Fulai Zhang <fulai.zhang@4fb.de>
+ * @author     Fulai Zhang <fulai.zhang@4fb.de>
  * @method SIWECOS createNewItem
  * @method SIWECOS|bool next
  */

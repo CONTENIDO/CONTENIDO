@@ -1,12 +1,17 @@
 <?php
+
 /**
  * Description: Twitter module
  *
+ * @package    Module
+ * @subpackage ContentSocialMediaTwitter
  * @version    1.0.1
  * @author     konstantinos.katikak
  * @author     alexander.scheider@4fb.de
  * @copyright  four for business AG <www.4fb.de>
- *
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 //get smarty instance
@@ -83,7 +88,7 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign('urlToShareLabel', $urlToShareLabel);
     $tpl->assign('showCountLabel', $showCountLabel);
     $tpl->assign('save', $save);
-	
+
 	$tpl->assign("showRepliesHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SHOWREPLIES_HELP"))));
 	$tpl->assign("relatedExplanationHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("RELATEDEXPLANATION_HELP"))));
 

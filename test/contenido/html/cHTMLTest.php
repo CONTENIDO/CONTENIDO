@@ -23,7 +23,6 @@
  * ]
  *
  * @link   https://phpunit.readthedocs.io/en/8.4/annotations.html#dataprovider
- *
  * @author marcus.gnass
  */
 class cHTMLTest extends cTestingTestCase

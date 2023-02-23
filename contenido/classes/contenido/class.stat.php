@@ -3,13 +3,13 @@
 /**
  * This file contains the stat collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Statistic collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  * @method cApiStat createNewItem
  * @method cApiStat|bool next
@@ -118,7 +118,7 @@ class cApiStatCollection extends ItemCollection {
 /**
  * Statistic item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiStat extends Item

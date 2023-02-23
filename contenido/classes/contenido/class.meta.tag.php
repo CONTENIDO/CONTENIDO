@@ -3,13 +3,13 @@
 /**
  * This file contains the meta tag collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage GenericDB_Model
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Metatag collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  * @method cApiMetaTag createNewItem
  * @method cApiMetaTag|bool next
@@ -100,7 +100,7 @@ class cApiMetaTagCollection extends ItemCollection {
 /**
  * Metatag item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiMetaTag extends Item

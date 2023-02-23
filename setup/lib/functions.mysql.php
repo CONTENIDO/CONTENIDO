@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains various helper functions to read specific values needed for setup checks.
  *
@@ -310,5 +311,3 @@ function fetchMySQLCollations($db = null, $charset = "") {
 
 	return $charsets;
 }
-
-?>

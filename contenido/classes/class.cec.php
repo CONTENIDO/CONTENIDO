@@ -1,15 +1,16 @@
 <?php
+
 /**
  * This file contains the CEC registry class.
  *
- * @package Core
+ * @package    Core
  * @subpackage CEC
- * @author Timo A. Hummel
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Timo A. Hummel
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -29,7 +30,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *      untill a defined break condition achieves,
  * @see cApiCecHook::executeWhileBreakCondition()
  *
- * @package Core
+ * @package    Core
  * @subpackage CEC
  */
 class cApiCecRegistry {
@@ -303,7 +304,7 @@ class cApiCecRegistry {
 /**
  * CEC chain item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage CEC
  */
 class cApiCecChainItem {

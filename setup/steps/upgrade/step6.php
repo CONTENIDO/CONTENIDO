@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO upgrade step 6 - setup results.
  *
@@ -17,4 +18,3 @@ checkAndInclude("steps/forms/setupresults.php");
 
 $cSetupResults = new cSetupResults(6);
 $cSetupResults->render();
-?>

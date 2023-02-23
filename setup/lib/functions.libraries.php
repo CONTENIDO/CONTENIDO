@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains various helper functions to read specific values needed for setup checks.
  *
@@ -38,5 +39,3 @@ function checkImageResizer() {
         return CON_IMAGERESIZE_NOTHINGAVAILABLE;
     }
 }
-
-?>

@@ -4,13 +4,13 @@
  * CONTENIDO Chain.
  * Generate index of article content entries.
  *
- * @package Core
+ * @package    Core
  * @subpackage Chain
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert CONTENIDO framework
@@ -42,5 +42,3 @@ function cecIndexArticle(array $articleIds) {
     $index = new cSearchIndex($db);
     $index->start($articleIds['idart'], $aContent, 'auto', $aOptions);
 }
-
-?>

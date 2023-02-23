@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLFieldset class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call');
@@ -18,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call');
 /**
  * cHTMLFieldset class represents a fieldset element.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
 class cHTMLFieldset extends cHTMLContentElement {

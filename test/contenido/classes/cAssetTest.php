@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains tests for the asset util.
  *

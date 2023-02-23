@@ -3,14 +3,14 @@
 /**
  * This file contains the cMailer class for all mail sending purposes.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Rusmir Jusufovic
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Rusmir Jusufovic
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -77,7 +77,7 @@ require_once 'swiftmailer/lib/swift_init.php';
  * <strong>User defined character set</strong>
  * @todo explain setCharset()
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
  */
 class cMailer extends Swift_Mailer {

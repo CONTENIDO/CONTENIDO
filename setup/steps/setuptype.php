@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the setup type chooser class.
  *
@@ -18,7 +19,7 @@ unset($_SESSION['setuptype']);
 /**
  * Setup type chooser class
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Setup
  */
 class cSetupTypeChooser extends cSetupMask
@@ -69,4 +70,3 @@ class cSetupTypeChooser extends cSetupMask
 
 $cSetupStep1 = new cSetupTypeChooser;
 $cSetupStep1->render();
-?>

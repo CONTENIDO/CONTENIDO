@@ -3,13 +3,13 @@
 /**
  * This file contains the article overview helper class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Murat Purç <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Murat Purç <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -30,7 +30,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * TODO Has some similarities with {@see cBackendSearchHelper}, merge them together!
  *
  * @since CONTENIDO 4.10.2
- * @package Core
+ * @package    Core
  * @subpackage Backend
  */
 class cArticleOverviewHelper

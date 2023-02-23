@@ -3,13 +3,13 @@
 /**
  * This file contains the client collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Bjoern Behrens
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Client collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  * @method cApiClient createNewItem
  * @method cApiClient|bool next
@@ -175,9 +175,9 @@ class cApiClientCollection extends ItemCollection {
 /**
  * Class cApiClient, client item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Marco Jahn
+ * @author     Marco Jahn
  */
 class cApiClient extends Item {
 

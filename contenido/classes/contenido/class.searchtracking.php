@@ -3,20 +3,21 @@
 /**
  * This file contains the collections and items for search tracking
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Tracking collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  * @method cApiSearchTracking createNewItem
  * @method cApiSearchTracking|bool next
@@ -154,7 +155,7 @@ class cApiSearchTrackingCollection extends ItemCollection {
 /**
  * SearchTracking item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiSearchTracking extends Item

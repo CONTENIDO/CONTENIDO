@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the registry class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains functions for global interaction in CONTENIDO.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
  */
 class cRegistry {
@@ -71,7 +72,7 @@ class cRegistry {
      *         Since CONTENIDO 4.10.2
      * @return string
      *         path
-     *@author konstantinos.katikakis
+     * @author konstantinos.katikakis
      */
     public static function getBackendPath(bool $relativeToRoot = false): string
     {

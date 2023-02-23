@@ -3,14 +3,13 @@
 /**
  * This file contains the main configuration of the client.
  *
- * @package Core
+ * @package    Core
  * @subpackage Frontend_ConfigFile
- *
- * @author Automatically generated via System
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Automatically generated via System
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -32,5 +31,3 @@ $frontend_debug['template_display'] = false;
 
 // Set to 1 to brute-force module regeneration
 $force = 0;
-
-?>

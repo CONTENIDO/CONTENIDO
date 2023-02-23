@@ -1,7 +1,6 @@
 <?php
 
 /**
- *
  * @author marcus.gnass
  */
 class SqlItem

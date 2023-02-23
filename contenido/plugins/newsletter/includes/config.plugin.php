@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the Config file for Newsletter plugin.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Newsletter
- * @author unknown
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

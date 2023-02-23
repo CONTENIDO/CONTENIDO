@@ -3,13 +3,13 @@
 /**
  * This file contains tests for Contenido cApiCecRegistry.
  *
- * @package          Testing
- * @subpackage       Test_Chains
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Testing
+ * @subpackage Test_Chains
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
@@ -23,8 +23,8 @@ function chain_cApiCecRegistry_Test()
 /**
  * Chain callback class
  *
- * @package          Testing
- * @subpackage       Test_Chains
+ * @package    Testing
+ * @subpackage Test_Chains
  */
 class chain_cApiCecRegistryClass_Test
 {
@@ -37,8 +37,8 @@ class chain_cApiCecRegistryClass_Test
 /**
  * Chain callback class with static method
  *
- * @package          Testing
- * @subpackage       Test_Chains
+ * @package    Testing
+ * @subpackage Test_Chains
  */
 class chain_cApiCecRegistryClassStatic_Test
 {
@@ -51,8 +51,8 @@ class chain_cApiCecRegistryClassStatic_Test
 /**
  * Class to test cApiCecRegistry.
  *
- * @package          Testing
- * @subpackage       Test_Chains
+ * @package    Testing
+ * @subpackage Test_Chains
  */
 class cApiCecRegistryTest extends cTestingTestCase
 {

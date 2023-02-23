@@ -1,16 +1,15 @@
 <?php
+
 /**
  * This file contains the global configuration variable $lngAct for translated action names.
  *
- * @package          Core
- * @subpackage       Backend_ConfigFile
- * @version          SVN Revision $Rev:$
- *
- * @author           Olaf Niemann
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage Backend_ConfigFile
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

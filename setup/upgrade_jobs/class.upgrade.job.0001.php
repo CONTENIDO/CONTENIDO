@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the upgrade job 1.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Upgrade job 1.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0001 extends cUpgradeJobAbstract {

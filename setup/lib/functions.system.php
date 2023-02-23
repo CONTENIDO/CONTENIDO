@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains various functions for the setup process.
  *
@@ -292,5 +293,3 @@ function findSimilarText($string1, $string2) {
 
     return $i - 1;
 }
-
-?>

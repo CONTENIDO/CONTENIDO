@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the groupselect extension of the frontend user plugin.
  *

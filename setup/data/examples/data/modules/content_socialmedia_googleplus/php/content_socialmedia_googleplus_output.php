@@ -1,15 +1,16 @@
 <?php
+
 /**
  * Description: Google Plus
  *
- * @version   1.0.0
- * @author    unknown
- * @copyright four for business AG <www.4fb.de>
- *
- * {@internal
- *   created unknown
- *   $Id: googleplus_output.php 2755 2012-07-25 20:10:28Z xmurrix $
- * }}
+ * @package    Module
+ * @subpackage ContentSocialMediaGooglePlus
+ * @version    1.0.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 $tpl = cSmartyFrontend::getInstance();

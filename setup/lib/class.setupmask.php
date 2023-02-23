@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the setup mask class.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Setup mask class.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage GUI
  */
 class cSetupMask
@@ -178,5 +179,3 @@ class cSetupMask
         $this->_tpl->generate("templates/systemcheck/setup.tpl", false, false);
     }
 }
-
-?>

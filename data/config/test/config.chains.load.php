@@ -3,15 +3,13 @@
 /**
  * This file contains all chains to load in the registry.
  *
- * @package          Core
- * @subpackage       Backend_ConfigFile
- * @version          SVN Revision $Rev:$
- *
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage Backend_ConfigFile
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert CONTENIDO framework

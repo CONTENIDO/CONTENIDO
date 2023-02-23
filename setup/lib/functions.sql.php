@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains various helper functions to prepare and handle SQL data.
  *

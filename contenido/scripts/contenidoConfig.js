@@ -219,7 +219,7 @@
      * Change template for a marked category
      * @FIXME: Where does the variable cfg comes from???
      * @author Jan Lengowski <jan.lengowski@4fb.de>
-     * @copyright four for business AG <www.4fb.de>
+     * @copyright  four for business AG <www.4fb.de>
      */
     Config.prototype.changeTemplate = function() {
         if (this.catId && this.hasRight.template == 1) {

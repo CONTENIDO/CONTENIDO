@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO upgrade step 2 - path information.
  *
@@ -17,4 +18,3 @@ checkAndInclude("steps/forms/pathinfo.php");
 
 $cSetupConfigMode = new cSetupPath(2, "upgrade1", "upgrade3");
 $cSetupConfigMode->render();
-?>

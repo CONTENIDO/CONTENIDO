@@ -6,20 +6,20 @@ use PHPUnit\Framework\TestCase;
  * This file contains tests for Contenido chain
  * Example.Contenido.Chain.ExecuteStaticMethod
  *
- * @package Testing
+ * @package    Testing
  * @subpackage Test_Chains
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
  * 1.
  * chain object
  *
- * @package Testing
+ * @package    Testing
  * @subpackage Test_Chains
  */
 class chain_ExampleContenidoChainExecuteStaticMethod_Test {
@@ -37,7 +37,7 @@ class chain_ExampleContenidoChainExecuteStaticMethod_Test {
  * 2.
  * chain object
  *
- * @package Testing
+ * @package    Testing
  * @subpackage Test_Chains
  */
 class chain_ExampleContenidoChainExecuteStaticMethod_Test2 {
@@ -53,7 +53,7 @@ class chain_ExampleContenidoChainExecuteStaticMethod_Test2 {
 /**
  * Class to test Contenido chain Example.Contenido.Chain.ExecuteStaticMethod.
  *
- * @package Testing
+ * @package    Testing
  * @subpackage Test_Chains
  */
 class ExampleContenidoChainExecuteStaticMethodTest extends TestCase {

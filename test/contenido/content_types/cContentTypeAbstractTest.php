@@ -3,20 +3,20 @@
 /**
  * This file contains tests for Contenido cContentTypeAbstractTest.
  *
- * @package          Testing
- * @subpackage       Test_Content_Types
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Testing
+ * @subpackage Test_Content_Types
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
  * Content type helper class to test some features.
  *
- * @package          Testing
- * @subpackage       Test_Chains
+ * @package    Testing
+ * @subpackage Test_Chains
  */
 class cContentTypeA_Test extends cContentTypeAbstract
 {
@@ -57,8 +57,8 @@ class cContentTypeA_Test extends cContentTypeAbstract
 /**
  * Class to test cContentTypeAbstractTest.
  *
- * @package          Testing
- * @subpackage       Test_Content_Types
+ * @package    Testing
+ * @subpackage Test_Content_Types
  */
 class cContentTypeAbstractTest extends cTestingTestCase
 {

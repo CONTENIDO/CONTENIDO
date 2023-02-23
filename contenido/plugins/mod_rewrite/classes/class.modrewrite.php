@@ -1,17 +1,17 @@
 <?php
+
 /**
  * AMR Mod Rewrite helper class
  *
- * @package     Plugin
- * @subpackage  ModRewrite
- * @id          $Id$:
- * @author      Stefan Seifarth / stese
- * @author      Murat Purc <murat@purc.de>
+ * @package    Plugin
+ * @subpackage ModRewrite
+ * @author     Stefan Seifarth / stese
+ * @author     Murat Purc <murat@purc.de>
  * @copyright   www.polycoder.de
- * @copyright   four for business AG <www.4fb.de>
- * @license     https://www.contenido.org/license/LIZENZ.txt
- * @link        https://www.4fb.de
- * @link        https://www.contenido.org
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -19,10 +19,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Class to create websafe names, it also provides several helper functions
  *
- * @author      Stefan Seifarth / stese
- * @author      Murat Purc <murat@purc.de>
- * @package     Plugin
- * @subpackage  ModRewrite
+ * @author     Stefan Seifarth / stese
+ * @author     Murat Purc <murat@purc.de>
+ * @package    Plugin
+ * @subpackage ModRewrite
  */
 class ModRewrite extends ModRewriteBase {
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the abstract upgrade job class.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Abstract upgrade job class.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
 abstract class cUpgradeJobAbstract {

@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for showing last edited articles.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -242,4 +242,3 @@ $tpl->set('s', 'HELP', "");
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['mycontenido_lastarticles']);
 
-?>

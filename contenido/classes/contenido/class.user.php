@@ -3,14 +3,14 @@
 /**
  * This file contains the system property collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Bjoern Behrens
- * @author Holger Librenz
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Bjoern Behrens
+ * @author     Holger Librenz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * User collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  * @method cApiUser createNewItem($data)
  * @method cApiUser|bool next
@@ -312,7 +312,7 @@ class cApiUserCollection extends ItemCollection {
  * Keep in mind that these type of check only works if crack module is
  * available.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiUser extends Item {
@@ -953,7 +953,7 @@ class cApiUser extends Item {
      * Function returns effective perms for user including group rights as perm
      * string.
      *
-     * @author Timo Trautmann
+     * @author     Timo Trautmann
      * @return string
      *         Current users permissions
      */

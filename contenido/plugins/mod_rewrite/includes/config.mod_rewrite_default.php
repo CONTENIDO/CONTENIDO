@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Advanced Mod Rewrite default settings. This file will be included if
  * mod rewrite settings of an client couldn't loaded.
@@ -12,14 +13,13 @@
  * PHP needs write permissions to the folder, where this file resides. Mod Rewrite
  * configuration files will be created in this folder.
  *
- * @package     Plugin
- * @subpackage  ModRewrite
- * @id          $Id$:
- * @author      Murat Purc <murat@purc.de>
- * @copyright   four for business AG <www.4fb.de>
- * @license     https://www.contenido.org/license/LIZENZ.txt
- * @link        https://www.4fb.de
- * @link        https://www.contenido.org
+ * @package    Plugin
+ * @subpackage ModRewrite
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the system data setup mask.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * System data setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
  */
 class cSetupSystemData extends cSetupMask {
@@ -219,5 +220,3 @@ class cSetupSystemData extends cSetupMask {
         }
     }
 }
-
-?>

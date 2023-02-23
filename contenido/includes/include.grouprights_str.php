@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for structure group rights management.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -328,4 +328,3 @@ $page->set('s', 'NOTIFICATION_SAVE_RIGHTS', '');
 
 $page->render();
 
-?>

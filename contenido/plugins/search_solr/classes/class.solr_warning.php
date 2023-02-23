@@ -2,9 +2,9 @@
 
 /**
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage SearchSolr
- * @author marcus.gnass
+ * @author     marcus.gnass
  */
 class SolrWarning extends cException {
 }

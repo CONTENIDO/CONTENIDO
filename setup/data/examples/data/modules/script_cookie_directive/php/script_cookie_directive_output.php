@@ -3,14 +3,14 @@
 /**
  * Description: Cookie Directive
  *
- * @package Module
+ * @package    Module
  * @subpackage ScriptCookieDirective
- * @author ilia.schwarz
- * @author claus.schunk@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     ilia.schwarz
+ * @author     claus.schunk@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!cRegistry::getBackendSessionId()) {
@@ -35,7 +35,6 @@ if (!cRegistry::getBackendSessionId()) {
 
     // Show notify
     if (!isset($allowCookie)) {
-
         $tpl = cSmartyFrontend::getInstance();
         $url = cUri::getInstance();
 
@@ -65,7 +64,6 @@ if (!cRegistry::getBackendSessionId()) {
         $tpl->assign('pageUrlDeny', $denyUrl);
 
         $tpl->display('get.tpl');
-
     }
 }
 
