@@ -217,10 +217,10 @@ abstract class cWYSIWYGEditor {
             $erroneousSettings = [];
 
             // just pass back that the file could not be written
-            $erroneusSettings['saving'] = ['config_file' => 'wysiwyg config file could not be written'];
+            $erroneousSettings['saving'] = ['config_file' => 'wysiwyg config file could not be written'];
             // write more detailed information with sensitive information such as full path into error log
             error_log('Error writing ' . $configPath . $configFile);
-            return $erroneusSettings;
+            return $erroneousSettings;
         }
 
         // apply changes to current config

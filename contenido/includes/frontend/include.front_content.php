@@ -31,9 +31,9 @@
  * @author     et al.
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -72,7 +72,7 @@ if ($cfg['use_pseudocron'] == true) {
 
 // Initialize the database abstraction layer, the session, authentication and
 // permissions handler of the PHPLIB application development toolkit
-// @see http://sourceforge.net/projects/phplib
+// @see https://sourceforge.net/projects/phplib
 if (cRegistry::getBackendSessionId()) {
     // Backend
     cRegistry::bootstrap([
@@ -425,7 +425,7 @@ if ($contenido) {
 
         if (isset($view) && $view === 'edit' && count($erroneousModules) > 0) {
             $notification    = new cGuiNotification();
-            $modErrorMessage = i18n("The following modules are erroneus and are therefore not executed:<br>\n");
+            $modErrorMessage = i18n("The following modules are erroneous and are therefore not executed:<br>\n");
             foreach ($erroneousModules as $erroneousModule) {
                 $modErrorMessage .= "- " . $erroneousModule . "<br />\n";
             }

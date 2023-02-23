@@ -1,5 +1,5 @@
 /**
- * http://github.com/Valums-File-Uploader/file-uploader
+ * https://github.com/Valums-File-Uploader/file-uploader
  *
  * Multiple file upload component with progress-bar, drag-and-drop.
  *
@@ -204,11 +204,11 @@ qq.getByClass = function(element, className){
  *
  * how to use:
  *
- *    `qq.obj2url({a:'b',c:'d'},'http://any.url/upload?otherParam=value');`
+ *    `qq.obj2url({a:'b',c:'d'},'https://any.url/upload?otherParam=value');`
  *
  * will result in:
  *
- *    `http://any.url/upload?otherParam=value&a=b&c=d`
+ *    `https://any.url/upload?otherParam=value&a=b&c=d`
  *
  * @param  Object JSON-Object
  * @param  String current querystring-part

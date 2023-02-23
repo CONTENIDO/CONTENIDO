@@ -183,7 +183,7 @@ if ($action == 'user_edit') {
             $sNotification = $notification->returnNotification("ok", i18n("Changes saved"));
             $bError = true;
         } else {
-            $sNotification = $notification->returnNotification("error", i18n("An error occured while saving user info."));
+            $sNotification = $notification->returnNotification("error", i18n("An error occurred while saving user info."));
             $bError = true;
         }
     }

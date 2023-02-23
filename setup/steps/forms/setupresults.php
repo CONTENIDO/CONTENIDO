@@ -6,9 +6,9 @@
  * @subpackage Form
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -53,19 +53,19 @@ class cSetupResults extends cSetupMask
                 $this->_stepTemplateClass->set("s", "FRONTEND", "");
             }
 
-            $cHTMLButtonLink = new cHTMLButtonLink("http://www.contenido.org/", "CONTENIDO Website");
+            $cHTMLButtonLink = new cHTMLButtonLink("https://www.contenido.org/", "CONTENIDO Website");
             $this->_stepTemplateClass->set("s", "WEBSITE", $cHTMLButtonLink->render());
 
-            $cHTMLButtonLink = new cHTMLButtonLink("http://forum.contenido.org/", "CONTENIDO Forum");
+            $cHTMLButtonLink = new cHTMLButtonLink("https://forum.contenido.org/", "CONTENIDO Forum");
             $this->_stepTemplateClass->set("s", "FORUM", $cHTMLButtonLink->render());
 
-            $cHTMLButtonLink = new cHTMLButtonLink("http://faq.contenido.org/", "CONTENIDO FAQ");
+            $cHTMLButtonLink = new cHTMLButtonLink("https://faq.contenido.org/", "CONTENIDO FAQ");
             $this->_stepTemplateClass->set("s", "FAQ", $cHTMLButtonLink->render());
         } else {
             cSetupMask::__construct("templates/setup/forms/setupresultsfail.tpl", $step);
             $this->_stepTemplateClass->set("s", "TITLE", i18n("Setup Results", "setup"));
 
-            $this->_stepTemplateClass->set("s", "DESCRIPTION", sprintf(i18n("An error occured during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information.", "setup"), 'setuplog.txt'));
+            $this->_stepTemplateClass->set("s", "DESCRIPTION", sprintf(i18n("An error occurred during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information.", "setup"), 'setuplog.txt'));
 
             switch ($_SESSION['setuptype']) {
                 case 'setup':

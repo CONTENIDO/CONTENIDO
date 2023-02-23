@@ -120,7 +120,7 @@ if (!$readOnly && $action == "mod_new") {
         $page->render();
         die();
     } else {
-        cRegistry::addOkMessage(i18n("New module created successfuly!"));
+        cRegistry::addOkMessage(i18n("New module created successfully!"));
     }
 } else {
     $module = new cApiModule($idmod);

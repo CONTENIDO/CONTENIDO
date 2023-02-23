@@ -7,7 +7,7 @@
  * @subpackage FormAssistant
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
- * @link http://www.4fb.de
+ * @link https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -283,7 +283,7 @@ class Pifa {
      * (e.g.
      * firstName -&gt; first_name)
      *
-     * @see http://www.paulferrett.com/2009/php-camel-case-functions/
+     * @see https://www.paulferrett.com/2009/php-camel-case-functions/
      * @param string $str String in camel case format
      * @return string $str Translated into underscore format
      */
@@ -298,7 +298,7 @@ class Pifa {
      * Translates a string with underscores into camel case (e.g.
      * first_name -&gt; firstName)
      *
-     * @see http://www.paulferrett.com/2009/php-camel-case-functions/
+     * @see https://www.paulferrett.com/2009/php-camel-case-functions/
      * @param string $str String in underscore format
      * @param bool $capitalise_first_char If true, capitalise the first
      *        char in $str
@@ -317,7 +317,7 @@ class Pifa {
      * Translates a string with underscores into camel case (e.g.
      * first_name -&gt; firstName)
      *
-     * @see http://www.paulferrett.com/2009/php-camel-case-functions/
+     * @see https://www.paulferrett.com/2009/php-camel-case-functions/
      *
      * @param bool $force
      *

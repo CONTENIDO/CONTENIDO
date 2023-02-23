@@ -8,9 +8,9 @@
  * @author Fulai Zhang
  * @author ilja.schwarz@4fb.de
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -567,7 +567,7 @@ $tpl->set("s", "INFO_BUTTON_REVISIT", $infoButton->render());
 $infoButton->setHelpText(i18n('The robot-tag sets certain rules for search engines. You can tell it to not index certain articles or to keep pictures in this article out of its index. It has a high relevance for SEO. Only relevant and most visited articles should be indexed.'));
 $tpl->set("s", "INFO_BUTTON_ROBOTS", $infoButton->render());
 
-$infoButton->setHelpText(i18n('The avarage value for the sitemap priority is 0.5. Only important articles should have a value no more than 0.8.'));
+$infoButton->setHelpText(i18n('The average value for the sitemap priority is 0.5. Only important articles should have a value no more than 0.8.'));
 $tpl->set("s", "INFO_BUTTON_SITEMAP_PRIORITY", $infoButton->render());
 
 $infoButton->setHelpText(i18n('The refresh rate is focused on the content.'));

@@ -540,4 +540,4 @@ msgstr ""
 #~ msgstr "E-Mail"
 
 #~ msgid "Remove marked Plugins"
-#~ msgstr "Markierte Plugins l&ouml;schen"
+#~ msgstr "Markierte Plugins löschen"

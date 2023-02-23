@@ -37,9 +37,9 @@
  * @subpackage ScriptFbChannel
  * @author marcus.gnass
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 $cache_expire = 60 * 60 * 24 * 365; // one year

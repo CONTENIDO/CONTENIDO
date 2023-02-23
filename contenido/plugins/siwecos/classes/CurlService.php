@@ -5,7 +5,7 @@ declare(strict_types=1);
  * Class CurlHelper.
  *
  *
- * @link http://php.net/manual/de/function.curl-setopt.php
+ * @link https://php.net/manual/de/function.curl-setopt.php
  * @link https://support.ladesk.com/061754-How-to-make-REST-calls-in-PHP
  * @link https://stackoverflow.com/questions/9802788/call-a-rest-api-in-php
  */

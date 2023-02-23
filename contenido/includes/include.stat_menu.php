@@ -9,7 +9,7 @@
  * @copyright        four for business AG <www.4fb.de>
  * @license          https://www.contenido.org/license/LIZENZ.txt
  * @link             https://www.4fb.de
- * @link             http://www.contenido.org
+ * @link             https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

@@ -8,7 +8,7 @@
         <author>Timo Hummel</author>
         <copyright>four for business AG</copyright>
         <mail>info@4fb.de</mail>
-        <website>http://www.4fb.de</website>
+        <website>https://www.4fb.de</website>
         <version>1.0.0</version>
     </general>
     <requirements php="5.2.3">

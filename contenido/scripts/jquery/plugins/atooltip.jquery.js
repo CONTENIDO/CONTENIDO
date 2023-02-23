@@ -1,7 +1,7 @@
 /*
-    jQuery Version:                jQuery 1.3.2
+    jQuery Version:             jQuery 1.3.2
     Plugin Name:                aToolTip V 1.0
-    Plugin by:                     Ara Abcarians: http://ara-abcarians.com
+    Plugin by:                  Ara Abcarians: http://ara-abcarians.com
     License:                    aToolTip is licensed under a Creative Commons Attribution 3.0 Unported License
                                 Read more about this license at --> http://creativecommons.org/licenses/by/3.0/
     Modified:                   Murat Purc <murat@purc>, 2010-01-28: Position clickable tooltip on right side,

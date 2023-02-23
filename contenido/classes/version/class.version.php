@@ -7,9 +7,9 @@
  * @subpackage Versioning
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -230,7 +230,7 @@ class cVersion {
             // frontendpath
             if ($this->sAlternativePath != '' and self::$iDisplayNotification < 2) {
                 $oNotification = new cGuiNotification();
-                $sNotification = i18n('Alternative path %s does not exist. Version was saved in frondendpath.');
+                $sNotification = i18n('Alternative path %s does not exist. Version was saved in frontendpath.');
                 $oNotification->displayNotification('warning', sprintf($sNotification, $this->sAlternativePath));
             }
 

@@ -7,9 +7,9 @@
  * @subpackage Cache
  * @author Dominik Ziegler
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -130,7 +130,7 @@ class cFileCache {
      *
      * @return string
      *         full filename
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function getDestination($id, $group = '') {
@@ -151,10 +151,10 @@ class cFileCache {
      *                      cache ID
      * @param string $group [optional]
      *                      cache group
-     *                      
+     *
      * @return bool|string
      *                      content or false
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function get($id, $group = '') {
@@ -191,7 +191,7 @@ class cFileCache {
      *
      * @return bool
      *         success state
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function save($data, $id, $group = '') {
@@ -205,10 +205,10 @@ class cFileCache {
      *                      cache ID
      * @param string $group [optional]
      *                      cache group
-     *                      
+     *
      * @return bool
      *                      success state
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function remove($id, $group = '') {

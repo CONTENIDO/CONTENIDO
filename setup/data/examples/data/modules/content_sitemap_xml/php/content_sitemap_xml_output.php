@@ -26,8 +26,8 @@
  * @author simon.sprankel@4fb.de
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG
- * @link http://www.4fb.de
- * @see http://www.sitemaps.org/
+ * @link https://www.4fb.de
+ * @see https://www.sitemaps.org/
  */
 if (cRegistry::getBackendSessionId() === NULL) {
     if (!class_exists('ModuleContentSitemapXml')) {

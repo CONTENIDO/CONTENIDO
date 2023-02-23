@@ -7,9 +7,9 @@
  * @subpackage Database
  * @author Dominik Ziegler
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -29,7 +29,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * - port (int) Optional, port
  * - flags (int) Optional, flags
  * - charset (string) Optional, connection charset
- * see http://www.php.net/manual/en/mysqli.real-connect.php
+ * see https://www.php.net/manual/en/mysqli.real-connect.php
  * </pre>
  *
  * @package Core

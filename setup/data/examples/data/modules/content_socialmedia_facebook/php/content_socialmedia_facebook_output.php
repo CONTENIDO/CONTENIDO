@@ -6,7 +6,7 @@
  *
  * @author alexander.scheider@4fb.de
  * @copyright four for business AG
- * @link http://www.4fb.de
+ * @link https://www.4fb.de
  */
 
 //get smarty instance
@@ -102,9 +102,9 @@ if (cRegistry::isBackendEditMode()) {
 } else {
     //if no url set, set default contenido url
     if ($url == '') {
-        $url = 'http://facebook.com/cms.contenido';
+        $url = 'https://facebook.com/cms.contenido';
     }
-    //if no type is set set default type
+    //if no type is set default type
     if ($pluginvalue == '') {
         $pluginvalue = 'like_box';
     }

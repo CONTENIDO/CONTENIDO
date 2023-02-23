@@ -33,7 +33,7 @@ $page = new cGuiPage("tpl_edit_form", '', '0');
 $action = $action ?? '';
 
 if ($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $action)) {
-    $page->displayOk(i18n("Deleted Template succcessfully!"));
+    $page->displayOk(i18n("Deleted Template successfully!"));
     $page->abortRendering();
     $page->reloadLeftBottomFrame(['idtpl' => null]);
     $page->render();

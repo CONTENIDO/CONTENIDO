@@ -333,7 +333,7 @@ class cSystemtest {
         $result = $this->checkImageResizer();
         switch ($result) {
             case self::CON_IMAGERESIZE_CANTCHECK:
-                $this->storeResult(false, self::C_SEVERITY_WARNING, i18n("Unable to check for a suitable image resizer"), i18n("Setup has tried to check for a suitable image resizer (which is, for exampl, required for thumbnail creation), but was not able to clearly identify one. If thumbnails won't work, make sure you've got either the GD-extension or ImageMagick available."));
+                $this->storeResult(false, self::C_SEVERITY_WARNING, i18n("Unable to check for a suitable image resizer"), i18n("Setup has tried to check for a suitable image resizer (which is, for example required for thumbnail creation), but was not able to clearly identify one. If thumbnails won't work, make sure you've got either the GD-extension or ImageMagick available."));
                 break;
             case self::CON_IMAGERESIZE_NOTHINGAVAILABLE:
                 $this->storeResult(false, self::C_SEVERITY_ERROR, i18n("No suitable image resizer available"), i18n("Setup checked your image resizing support, however, it was unable to find a suitable image resizer. Thumbnails won't work correctly or won't be looking good. Install the GD-Extension or ImageMagick"));
@@ -1226,7 +1226,7 @@ class cSystemtest {
                     case self::CON_PREDICT_CHANGEPERM_OTHERS:
                         $mfileperms = cString::getPartOfString(sprintf("%o", fileperms($filename)), -3);
                         $mfileperms[2] = intval($mfileperms[2]) | 0x6;
-                        $predictMessage = sprintf(i18n("Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."), $shortFilename, $mfileperms);
+                        $predictMessage = sprintf(i18n("Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write access to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."), $shortFilename, $mfileperms);
                         break;
                 }
             } else {
@@ -1254,7 +1254,7 @@ class cSystemtest {
                     case self::CON_PREDICT_CHANGEPERM_OTHERS:
                         $mfileperms = cString::getPartOfString(sprintf("%o", @fileperms($target)), -3);
                         $mfileperms[2] = intval($mfileperms[2]) | 0x6;
-                        $predictMessage = sprintf(i18n("Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."), dirname($shortFilename), $mfileperms);
+                        $predictMessage = sprintf(i18n("Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write access to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."), dirname($shortFilename), $mfileperms);
                         break;
                 }
             }

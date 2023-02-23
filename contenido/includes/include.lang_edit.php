@@ -231,7 +231,7 @@ if ($action == "lang_newlanguage") {
             $form->add(i18n("Date format"), $dateformat->render() . ' ' . $infoButton->render());
             $infoButton->setHelpText(i18n("FORMATE_TIME"));
             $form->add(i18n("Time format"), $timeformat->render() . ' ' . $infoButton->render());
-            $infoButton->setHelpText(i18n("LANUAGE_DATE_TIME"));
+            $infoButton->setHelpText(i18n("LANGUAGE_DATE_TIME"));
             $form->add(i18n("Date/Time locale"), $dateLocale->render() . ' ' . $infoButton->render());
 
             // update language dropdown in header, but only for current client

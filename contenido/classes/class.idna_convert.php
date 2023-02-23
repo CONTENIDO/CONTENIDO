@@ -414,7 +414,7 @@ class idna_convert
             $this->_error('The given encoded string was empty');
             return false;
         }
-        // Find last occurence of the delimiter
+        // Find last occurrence of the delimiter
         $delim_pos = cString::findLastPos($encoded, '-');
         if ($delim_pos > self::byteLength($this->_punycode_prefix)) {
             for ($k = self::byteLength($this->_punycode_prefix); $k < $delim_pos; ++$k) {

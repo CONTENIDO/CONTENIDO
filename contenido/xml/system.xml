@@ -24,7 +24,7 @@ i18n("Port")
 i18n("Sender mail")
 i18n("Sender name")
 i18n("Type for mails")
-i18n("Use passwordrequest in Backend")
+i18n("Use password-request in Backend")
 i18n("Activate maintenance mode")
 i18n("Use CodeMirror for code highlighting")
 i18n("Default client (ID)")
@@ -194,7 +194,7 @@ i18n("Maximum number of stored versions")
                     <array_value>true</array_value>
                     <array_value>false</array_value>
                 </values>
-                <label>Use passwordrequest in Backend</label>
+                <label>Use password-request in Backend</label>
                 <group>Backend</group>
             </enable>
             <reset_threshold>

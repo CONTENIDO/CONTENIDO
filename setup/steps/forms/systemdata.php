@@ -6,9 +6,9 @@
  * @subpackage Form
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -136,7 +136,7 @@ class cSetupSystemData extends cSetupMask {
         $this->_stepTemplateClass->set('s', 'LABEL_DBHOST', i18n("Database Server (IP or name)", "setup"));
 
         if ($_SESSION['setuptype'] == 'setup') {
-            $this->_stepTemplateClass->set('s', 'LABEL_DBNAME', i18n("Database Name", "setup") . '<br>' . i18n("(use empty or non-existant database)", "setup"));
+            $this->_stepTemplateClass->set('s', 'LABEL_DBNAME', i18n("Database Name", "setup") . '<br>' . i18n("(use empty or non-existent database)", "setup"));
         } else {
             $this->_stepTemplateClass->set('s', 'LABEL_DBNAME', i18n("Database Name", "setup"));
             $dbcharset->setDisabled(true);
