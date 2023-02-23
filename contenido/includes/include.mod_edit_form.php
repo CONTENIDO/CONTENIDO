@@ -37,7 +37,7 @@ if (!empty($action)) {
         $page = new cGuiPage('generic_page');
         $page->abortRendering();
         $page->render();
-        die();
+        exit();
     }
 }
 
@@ -50,7 +50,7 @@ if ($readOnly && $action != "mod_edit" && $action != "mod_sync") {
 
 $contenidoModuleHandler = new cModuleHandler($idmod);
 
-if (!$readOnly && $action == 'mod_delete') {
+if (!$readOnly && $action === 'mod_delete') {
     $modules = new cApiModuleCollection();
     $modules->delete($idmod);
 
@@ -66,34 +66,29 @@ if (!$readOnly && $action == 'mod_delete') {
 
     $contenidoModuleHandler->eraseModule();
 
-    // remove the navigation when module has been deleted
-    $script = new cHTMLScript();
-    $script->setContent('$(function() { $("#navlist", Con.getFrame("right_top").document).remove(); })');
-    $page->setContent(['']);
     // Reload, so that the modules overview on the left is refreshed
+    $script = new cHTMLScript();
+    $page->abortRendering();
     $page->reloadLeftBottomFrame(['idmod' => null]);
     $page->render();
     exit();
 }
 
-if ($action == "mod_sync") {
+if ($action === 'mod_sync') {
     $cModuleSynchronizer = new cModuleSynchronizer();
-    $idmod = $cModuleSynchronizer->synchronize();
+    $cModuleSynchronizer->synchronize();
+    $cModuleSynchronizer->compareFileAndModuleTimestamp();
 
-    $idmodUpdate = $cModuleSynchronizer->compareFileAndModuleTimestamp();
+    // Reload, so that the modules overview on the left is refreshed
+    $page = new cGuiPage('generic_page');
+    $page->abortRendering();
+    $page->reloadLeftBottomFrame(['idmod' => null]);
+    $page->render();
+    exit();
 
-    // if a module is deleted in filesystem but not in db make an update
-    // idmodUpdate = $cModuleSynchronizer->updateDirFromModuls();
-    // e need the idmod for refresh all frames
-    if ($idmod == 0 && $idmodUpdate != 0) {
-        $idmod = $idmodUpdate;
-    }
-
-    // the actual module is the last module from synchronize
-    $contenidoModuleHandler = new cModuleHandler($idmod);
 }
 
-if (!$readOnly && $action == "mod_new") {
+if (!$readOnly && $action === 'mod_new') {
     $modules = new cApiModuleCollection();
 
     $alias = cString::cleanURLCharacters(i18n("- Unnamed module -"));
@@ -103,7 +98,7 @@ if (!$readOnly && $action == "mod_new") {
         $page = new cGuiPage('generic_page');
         $page->abortRendering();
         $page->render();
-        die();
+        exit();
     }
 
     $module = $modules->create(i18n("- Unnamed module -"));
@@ -118,7 +113,7 @@ if (!$readOnly && $action == "mod_new") {
         $page = new cGuiPage('generic_page');
         $page->abortRendering();
         $page->render();
-        die();
+        exit();
     } else {
         cRegistry::addOkMessage(i18n("New module created successfully!"));
     }
@@ -126,7 +121,7 @@ if (!$readOnly && $action == "mod_new") {
     $module = new cApiModule($idmod);
 }
 
-if (!$readOnly && $action == "mod_importexport_module") {
+if (!$readOnly && $action === 'mod_importexport_module') {
     if ($mode == "export") {
         $module->export();
     }
@@ -151,7 +146,7 @@ if (!$idmod) {
     $page->reloadLeftBottomFrame(['idmod' => null]);
     $page->abortRendering();
     $page->render();
-    die();
+    exit();
 }
 
 if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
@@ -383,24 +378,7 @@ if (!empty($codeMirrorScripts)) {
     $page->addScript($codeMirrorScripts);
 }
 
-// Don't print menu
-if ($action == "mod_sync") {
-    $page->set("s", "FORM", "");
-    //$page->setSubnav("idmod=" . $idmod . "&dont_print_subnav=1");
-} else {
-    //$page->setSubnav("idmod=" . $idmod, "mod");
-}
-// Don't show form if we delete or synchronize a module
-if ($action == "mod_sync" || $action == "mod_delete") {
-    $page->abortRendering();
-} else {
-    $page->set("s", "FORM", $message . $form->render() . "<br>");
-}
-
-if ($action == "mod_sync") {
-    $page->reloadLeftBottomFrame(['idmod' => null]);
-} else {
-    $page->reloadLeftBottomFrame(['idmod' => $idmod]);
-}
+$page->set("s", "FORM", $message . $form->render() . "<br>");
+$page->reloadLeftBottomFrame(['idmod' => $idmod]);
 
 $page->render();

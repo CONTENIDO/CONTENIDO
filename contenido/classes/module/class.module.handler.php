@@ -111,7 +111,7 @@ class cModuleHandler {
      *
      * @var int
      */
-    protected $_client = '0';
+    protected $_client = 0;
 
     /**
      * The code of the module input.
@@ -334,7 +334,7 @@ class cModuleHandler {
 
         if ($cApiModule->isLoaded()) {
             $this->_idmod = cSecurity::toInteger($cApiModule->get('idmod'));
-            $this->_client = $cApiModule->get('idclient');
+            $this->_client = cSecurity::toInteger($cApiModule->get('idclient'));
             $this->_description = $cApiModule->get('description') ?? '';
             $this->_type = $cApiModule->get('type');
             $this->_input = '';
