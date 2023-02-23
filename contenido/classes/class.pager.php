@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the the pager class.
+ * This file contains the pager class.
  *
  * @package Core
  * @subpackage GUI

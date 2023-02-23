@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the the registry class.
+ * This file contains the registry class.
  *
  * @package Core
  * @subpackage Backend

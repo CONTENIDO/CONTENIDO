@@ -91,7 +91,7 @@ class cModuleSynchronizer extends cModuleHandler {
      * Rename the Modul files and Modul dir
      *
      * @param string $dir
-     *         path the the moduls
+     *         path to the moduls
      * @param string $dirNameOld
      *         old dir name
      * @param string $dirNameNew

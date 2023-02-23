@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the the static directory handler class.
+ * This file contains the static directory handler class.
  *
  * @package Core
  * @subpackage Util

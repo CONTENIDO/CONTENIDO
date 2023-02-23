@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the the I18N class.
+ * This file contains the I18N class.
  *
  * @package Core
  * @subpackage I18N

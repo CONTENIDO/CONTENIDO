@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the the system test class.
+ * This file contains the system test class.
  *
  * @package Core
  * @subpackage Backend
@@ -1444,7 +1444,7 @@ class cSystemtest {
                         return;
                     }
 
-                    // Check for database permisions
+                    // Check for database permissions
                     $status = checkMySQLTableCreation($db, $databaseName, sprintf("%s_test", $databasePrefix));
                     if (!$status) {
                         $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Unable to create tables in the selected MySQL database", "setup"), sprintf(i18n("Setup tried to create a test table in the database %s and failed. Please assign table creation permissions to the database user you entered, or ask an administrator to do so.", "setup"), $databaseName));

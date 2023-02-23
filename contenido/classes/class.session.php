@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the the backend and frontend session class.
+ * This file contains the backend and frontend session class.
  *
  * @package Core
  * @subpackage Session

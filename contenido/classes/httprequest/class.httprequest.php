@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains the the general HttpRequest class
+ * This file contains the general HttpRequest class
  * Extends this class and implement the functions to use
  * other methods of doing HTTP requests
  *

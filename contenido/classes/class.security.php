@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the the security class.
+ * This file contains the security class.
  *
  * @package    Core
  * @subpackage Security

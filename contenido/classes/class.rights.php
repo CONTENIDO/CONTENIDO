@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains the the rights class.
+ * This file contains the rights class.
  *
  * @package    Core
  * @subpackage Backend

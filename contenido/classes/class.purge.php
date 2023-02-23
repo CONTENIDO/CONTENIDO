@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the the system purge class.
+ * This file contains the system purge class.
  *
  * @package Core
  * @subpackage Backend
@@ -14,7 +14,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * CONTENIDO cSystemPurge class to reset some datas and files
+ * CONTENIDO cSystemPurge class to reset some data and files
  *
  * @package Core
  * @subpackage Backend

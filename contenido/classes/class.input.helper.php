@@ -1,12 +1,12 @@
 <?php
 
 /**
- * This file contains the the input helper classes.
+ * This file contains the input helper classes.
  * Various derived HTML class elements especially useful
- * in the input area of modules
+ * in the input area of modules.
  * Simple table generation class especially useful to generate
  * backend configuration table. May be used also in Frontend,
- * but note the globally used variables ($cfg)
+ * but note the globally used variables ($cfg).
  *
  * @package    Core
  * @subpackage Util

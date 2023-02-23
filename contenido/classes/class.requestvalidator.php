@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the the request validator class.
+ * This file contains the request validator class.
  *
  * @package    Core
  * @subpackage Security
