@@ -1,16 +1,16 @@
 <?php
 
 /**
- * This file contains the multi byte wrapper class for strings.
+ * This file contains the multibyte wrapper class for strings.
  *
  * @package    Core
  * @subpackage Util
  * @author     Frederic Schneider <frederic.schneider@4fb.de>
  * @author     Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -81,7 +81,7 @@ class cStringMultiByteWrapper {
      *         encoding parameter, standard: cRegistry::getEncoding()
      * @return string
      *         with all alphabetic characters converted to lowercases
-     * @link http://php.net/manual/de/function.mb-strtolower.php
+     * @link https://php.net/manual/de/function.mb-strtolower.php
      */
     public static function toLowerCase($string, $encoding = null) {
         if (self::_functionExists('mb_strtolower')) {
@@ -101,7 +101,7 @@ class cStringMultiByteWrapper {
      *         encoding parameter, standard: cRegistry::getEncoding()
      * @return string
      *         with all alphabetic characters converted to uppercases
-     * @link http://php.net/manual/de/function.mb-strtoupper.php
+     * @link https://php.net/manual/de/function.mb-strtoupper.php
      */
     public static function toUpperCase($string, $encoding = null) {
         if (self::_functionExists('mb_strtoupper')) {
@@ -121,7 +121,7 @@ class cStringMultiByteWrapper {
      *         encoding parameter, standard: cRegistry::getEncoding()
      * @return int
      *         Returns the number of characters
-     * @link http://php.net/manual/de/function.mb-strlen.php
+     * @link https://php.net/manual/de/function.mb-strlen.php
      */
     public static function getStringLength($string, $encoding = null) {
         if (self::_functionExists('mb_strlen')) {
@@ -144,7 +144,7 @@ class cStringMultiByteWrapper {
      *         encoding parameter, standard: cRegistry::getEncoding()
      * @return string
      *         Returns the number of characters
-     * @link http://php.net/manual/de/function.mb-substr.php
+     * @link https://php.net/manual/de/function.mb-substr.php
      */
     public static function getPartOfString($string, $start, $length = null, $encoding = null) {
         if (self::_functionExists('mb_substr')) {
@@ -166,7 +166,7 @@ class cStringMultiByteWrapper {
      *         encoding parameter, standard: cRegistry::getEncoding()
      * @return int
      *         The number of times the needle substring occurs in the haystack string.
-     * @link http://php.net/manual/de/function.mb-substr-count.php
+     * @link https://php.net/manual/de/function.mb-substr-count.php
      */
     public static function countSubstring($haystack, $needle, $encoding = null) {
         if (self::_functionExists('mb_substr_count')) {
@@ -190,7 +190,7 @@ class cStringMultiByteWrapper {
      * @param string $additional_parameter [Optional]
      * @return boolean
      *         true or false
-     * @link http://php.net/manual/de/function.mb-send-mail.php
+     * @link https://php.net/manual/de/function.mb-send-mail.php
      */
     public static function mail($to, $subject, $message, $additional_headers = null, $additional_parameter = null) {
         if (self::_functionExists('mb_send_mail')) {
@@ -211,7 +211,7 @@ class cStringMultiByteWrapper {
      *         encoding parameter, standard: cRegistry::getEncoding()
      * @return int|false
      *         Returns the numeric position of the first occurrence of needle in the haystack string
-     * @link http://php.net/manual/de/function.mb-strpos.php
+     * @link https://php.net/manual/de/function.mb-strpos.php
      */
     public static function findFirstPos($haystack, $needle, $offset = 0, $encoding = null) {
         if (self::_functionExists('mb_strpos')) {
@@ -232,7 +232,7 @@ class cStringMultiByteWrapper {
      *         encoding parameter, standard: cRegistry::getEncoding()
      * @return int|false
      *         Returns the numeric position of the last occurrence of needle in the haystack string
-     * @link http://php.net/manual/de/function.mb-strrpos.php
+     * @link https://php.net/manual/de/function.mb-strrpos.php
      */
     public static function findLastPos($haystack, $needle, $offset = 0, $encoding = null) {
         if (self::_functionExists('mb_strrpos')) {
@@ -253,7 +253,7 @@ class cStringMultiByteWrapper {
      *         encoding parameter, standard: cRegistry::getEncoding()
      * @return int|false
      *         Returns the numeric position of the first occurrence of needle in the haystack string
-     * @link http://php.net/manual/de/function.mb-stripos.php
+     * @link https://php.net/manual/de/function.mb-stripos.php
      */
     public static function findFirstPosCI($haystack, $needle, $offset = 0, $encoding = null) {
         if (self::_functionExists('mb_stripos')) {
@@ -274,7 +274,7 @@ class cStringMultiByteWrapper {
      *         encoding parameter, standard: cRegistry::getEncoding()
      * @return int|false
      *         Returns the numeric position of the last occurrence of needle in the haystack string
-     * @link http://php.net/manual/de/function.mb-strripos.php
+     * @link https://php.net/manual/de/function.mb-strripos.php
      */
     public static function findLastPosCI($haystack, $needle, $offset = 0, $encoding = null) {
         if (self::_functionExists('mb_strripos')) {
@@ -295,7 +295,7 @@ class cStringMultiByteWrapper {
      *         encoding parameter, standard: cRegistry::getEncoding()
      * @return string|false
      *         Returns the portion of haystack, or FALSE if needle is not found.
-     * @link http://php.net/manual/de/function.mb-stristr.php
+     * @link https://php.net/manual/de/function.mb-stristr.php
      */
     public static function findFirstOccurrenceCI($haystack, $needle, $before_needle = false, $encoding = null) {
         if (self::_functionExists('mb_stristr')) {
@@ -316,7 +316,7 @@ class cStringMultiByteWrapper {
      *         encoding parameter, standard: cRegistry::getEncoding()
      * @return string|false|null
      *         Returns the portion of haystack, or FALSE if needle is not found.
-     * @link http://php.net/manual/de/function.mb-strrchr.php
+     * @link https://php.net/manual/de/function.mb-strrchr.php
      */
     public static function findLastOccurrence($haystack, $needle, $part = false, $encoding = null) {
         if (self::_functionExists('mb_strrchr')) {
@@ -337,7 +337,7 @@ class cStringMultiByteWrapper {
      * @param string $string
      * @param array $regs [Optional]
      * @return bool
-     * @link http://php.net/manual/de/function.mb-ereg.php
+     * @link https://php.net/manual/de/function.mb-ereg.php
      */
     public static function ereg($pattern, $string, array &$regs = []) {
         // TODO provide fallback multibyte extension is missing
@@ -351,7 +351,7 @@ class cStringMultiByteWrapper {
      * @param string $string
      * @param array $regs [Optional]
      * @return int Returns the byte length of the matched string if a match for pattern was found in string
-     * @link http://php.net/manual/de/function.mb-eregi.php
+     * @link https://php.net/manual/de/function.mb-eregi.php
      */
     public static function eregi($pattern, $string, array &$regs = []) {
         // TODO provide fallback multibyte extension is missing
@@ -366,7 +366,7 @@ class cStringMultiByteWrapper {
      * @param string $string
      * @param string $option [Optional]
      * @return false|string Returns the byte length of the matched string if a match for pattern was found in string
-     * @link http://php.net/manual/de/function.mb-ereg-replace.php
+     * @link https://php.net/manual/de/function.mb-ereg-replace.php
      */
     public static function ereg_replace($pattern, $replacement, $string, $option = 'msr') {
         // TODO provide fallback multibyte extension is missing
@@ -381,7 +381,7 @@ class cStringMultiByteWrapper {
      * @param string $string
      * @param string $option [Optional]
      * @return false|string Returns the byte length of the matched string if a match for pattern was found in string
-     * @link http://php.net/manual/de/function.mb-eregi-replace.php
+     * @link https://php.net/manual/de/function.mb-eregi-replace.php
      */
     public static function eregi_replace($pattern, $replacement, $string, $option = 'msr') {
         // TODO provide fallback multibyte extension is missing
@@ -395,7 +395,7 @@ class cStringMultiByteWrapper {
      * @param string $string
      * @param integer $limit [Optional]
      * @return string[] The result as an array
-     * @link http://php.net/manual/de/function.mb-split.php
+     * @link https://php.net/manual/de/function.mb-split.php
      */
     public static function split($pattern, $string, $limit = -1) {
         // TODO provide fallback multibyte extension is missing

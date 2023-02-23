@@ -6,9 +6,9 @@
  * @subpackage Util
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -177,8 +177,8 @@ class cString extends cStringMultiByteWrapper {
      * @param bool $beforeNeedle [optional]
      *         If true, return everything BEFORE needle
      * @return string
-     * @link http://php.net/manual/de/function.mb-strstr.php
-     * @link http://php.net/manual/de/function.strstr.php
+     * @link https://php.net/manual/de/function.mb-strstr.php
+     * @link https://php.net/manual/de/function.strstr.php
      */
     public static function strstr($haystack, $needle, $beforeNeedle = false) {
 
@@ -477,7 +477,7 @@ class cString extends cStringMultiByteWrapper {
      * equivalents (e.g. ä => ae).
      *
      * For more information about diacritics, refer to
-     * http://en.wikipedia.org/wiki/Diacritic
+     * https://en.wikipedia.org/wiki/Diacritic
      *
      * For other languages, the diacritic marks are removed, if possible.
      *
@@ -597,10 +597,10 @@ class cString extends cStringMultiByteWrapper {
      * returns immediately.
      *
      * For more information about encodings, refer to
-     * http://en.wikipedia.org/wiki/Character_encoding
+     * https://en.wikipedia.org/wiki/Character_encoding
      *
      * For more information about the supported encodings in recode, refer to
-     * http://www.delorie.com/gnu/docs/recode/recode_toc.html
+     * https://www.delorie.com/gnu/docs/recode/recode_toc.html
      *
      * Note: depending on whether recode or iconv is used, the supported
      * charsets differ. The following ones are commonly used and are most likely

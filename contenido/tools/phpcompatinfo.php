@@ -2,11 +2,11 @@
 /**
  * Detection of PHP dependency in CONTENIDO.
  *
- * Uses PEAR package PHP_CompatInfo, see http://pear.php.net/package/PHP_CompatInfo
+ * Uses PEAR package PHP_CompatInfo, see https://pear.php.net/package/PHP_CompatInfo
  * Requires the PEAR package PHP_CompatInfo!
  *
  * PHP_CompatInfo parses the complete CONTENIDO project folder recursively and
- * collects all dependency informations.
+ * collects all dependency information.
  *
  * Usage:
  * ------
@@ -14,19 +14,19 @@
  *     $ php phpcompat.php
  *
  * NOTE:
- * Pass the output into a file using following commnad:
+ * Pass the output into a file using following command:
  *     $ php phpcompat.php > phpcompat_info.txt
  *
  * @package          Core
  * @subpackage       Tool
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @license          https://www.contenido.org/license/LIZENZ.txt
+ * @link             https://www.4fb.de
+ * @link             https://www.contenido.org
  */
 
-// allow execution only thru cli mode
+// allow execution only through cli mode
 if (cString::getPartOfString(PHP_SAPI, 0, 3) != 'cli') {
     die('Illegal call');
 }

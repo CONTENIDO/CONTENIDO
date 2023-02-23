@@ -246,7 +246,7 @@
          *
          * After the dialog is opened its #label is focused.
          *
-         * @see http://docs.jquery.com/UI/API/1.8/Dialog
+         * @see https://docs.jquery.com/UI/API/1.8/Dialog
          * @var $dialog to be displayed as dialog
          * @var $draggedItem to be removed
          */

@@ -7,9 +7,9 @@
  * @subpackage Frontend_URI
  * @author     Murat Purc
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -251,8 +251,8 @@ class cUri {
      * - The path component of an client HTML base path: e.g. "/cms/", "/cms/?idart=123", "/cms/?idcat=123"
      * - Also possible: "/cms/front_content.php", "/cms/front_content.php?idart=123", "/cms/front_content.php?idcat=123"
      *
-     * All of them prefixed with protocol and client host (e.g. http://host/) will also be identified
-     * as a internal Url.
+     * All of them prefixed with protocol and client host (e.g. https://host/) will also be identified
+     * as an internal Url.
      *
      * Other Urls, even internal Urls like /unknown/path/to/some/page.html
      * will not be identified as internal url event if they are real

@@ -22,9 +22,9 @@
  *
  * @author           Holger Librenz
  * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @license          https://www.contenido.org/license/LIZENZ.txt
+ * @link             https://www.4fb.de
+ * @link             https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -38,7 +38,7 @@ $bLog = true;
 // Enabling "stop" mode will force CONTENIDO to stop on any violation.
 $sMode = 'stop';
 
-// Paramater blacklist: If one of these parameters is set (either get or post) the script will halt.
+// Parameter blacklist: If one of these parameters is set (either get or post) the script will halt.
 $aBlacklist = [
     'cfg',
     'cfgClient',

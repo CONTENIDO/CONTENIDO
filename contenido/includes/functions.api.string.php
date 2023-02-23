@@ -12,9 +12,9 @@
  * @subpackage Backend
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -44,7 +44,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @return string
  *         The resulting string
- * 
+ *
  * @throws cInvalidArgumentException
  */
 function cApiStrTrimAfterWord($string, $maxlen) {
@@ -75,7 +75,7 @@ function cApiStrTrimAfterWord($string, $maxlen) {
  *
  * @return string
  *         The resulting string
- * 
+ *
  * @throws cInvalidArgumentException
  */
 function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
@@ -136,7 +136,7 @@ function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
  *
  * @return string
  *         The resulting string
- * 
+ *
  * @throws cInvalidArgumentException
  */
 function cApiStrTrimSentence($string, $approxlen, $hard = false) {
@@ -151,7 +151,7 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  * equivalents (e.g. ä => ae).
  *
  * For more information about diacritics, refer to
- * http://en.wikipedia.org/wiki/Diacritic
+ * https://en.wikipedia.org/wiki/Diacritic
  *
  * For other languages, the diacritic marks are removed, if possible.
  *
@@ -167,7 +167,7 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  *
  * @return string
  *         The resulting string
- * 
+ *
  * @throws cInvalidArgumentException
  */
 function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8') {
@@ -184,10 +184,10 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEn
  * immediately.
  *
  * For more information about encodings, refer to
- * http://en.wikipedia.org/wiki/Character_encoding
+ * https://en.wikipedia.org/wiki/Character_encoding
  *
  * For more information about the supported encodings in recode, refer to
- * http://www.delorie.com/gnu/docs/recode/recode_toc.html
+ * https://www.delorie.com/gnu/docs/recode/recode_toc.html
  *
  * Note: depending on whether recode or iconv is used, the supported charsets
  * differ. The following ones are commonly used and are most likely supported by
@@ -211,7 +211,7 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEn
  *
  * @return string
  *         The resulting string
- * 
+ *
  * @throws cInvalidArgumentException
  */
 function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding) {
@@ -238,7 +238,7 @@ function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding) {
  *
  * @return string
  *         The resulting string
- * 
+ *
  * @throws cInvalidArgumentException
  */
 function cApiStrCleanURLCharacters($sString, $bReplace = false) {
@@ -257,7 +257,7 @@ function cApiStrCleanURLCharacters($sString, $bReplace = false) {
  *         Feasible values are "\n", "\r" or "\r\n"
  *
  * @return string
- * 
+ *
  * @throws cInvalidArgumentException
  */
 function cApiStrNormalizeLineEndings($sString, $sLineEnding = "\n") {

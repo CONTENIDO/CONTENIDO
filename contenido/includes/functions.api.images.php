@@ -12,9 +12,9 @@
  * @subpackage Backend
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -95,7 +95,7 @@ function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
  * @param bool $keepType [optional]
  *         If true and a png file is source, output file is also png
  * @return string
- *         url to the resulting image (http://...
+ *         url to the resulting image (https://...
  */
 function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 0, $keepType = false) {
     if (!cFileHandler::exists($img)) {
@@ -183,7 +183,7 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
  * @param bool $keepType [optional]
  *         If true and a png file is source, output file is also png
  * @return string
- *         Url to the resulting image (http://...)
+ *         Url to the resulting image (https://...)
  */
 function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 0, $keepType = true) {
     if (!cFileHandler::exists($img)) {
@@ -290,7 +290,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
  * @param bool $keepType [optional]
  *         If true and a png file is source, output file is also png
  * @return string
- *         Url to the resulting image (http://...)
+ *         Url to the resulting image (https://...)
  */
 function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 0, $keepType = false) {
     if (!cFileHandler::exists($img)) {

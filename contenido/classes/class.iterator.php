@@ -6,9 +6,9 @@
  * @subpackage Util
  * @author Unknown
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,15 +16,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * A class which represents the C/C++/JAVA Iterator support.
  *
- * Iterating items is a mechanism to "step" trough a list of defined items.
+ * Iterating items is a mechanism to "step" through a list of defined items.
  * Basically, the iterator is similar to an array, but provides easy functions
- * to step trough the list.
+ * to step through the list.
  *
  * An instance of an iterator is usually created by a class returning multiple
  * items and automatically filled using the $aItems parameter of the
  * constructor, and then returned to the caller.
  *
- * The caller receives the iterator object and can step trough all items using
+ * The caller receives the iterator object and can step through all items using
  * the "next" method.
  *
  * @package Core

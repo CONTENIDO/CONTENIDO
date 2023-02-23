@@ -783,7 +783,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * tried to be loaded.
      *
      * @return string
-     *        themes the themes
+     *        Returns the themes
      */
     function getThemes() {
         return cSecurity::toString($this->_aSettings['theme']);

@@ -675,7 +675,7 @@ class idna_convert
 
     /**
      * Decomposes a Hangul syllable
-     * (see http://www.unicode.org/unicode/reports/tr15/#Hangul
+     * (see https://www.unicode.org/unicode/reports/tr15/#Hangul
      * @param    integer  32bit UCS4 code point
      * @return   array    Either Hangul Syllable decomposed or original 32bit value as one value array
      */
@@ -694,7 +694,7 @@ class idna_convert
     }
     /**
      * Ccomposes a Hangul syllable
-     * (see http://www.unicode.org/unicode/reports/tr15/#Hangul
+     * (see https://www.unicode.org/unicode/reports/tr15/#Hangul
      * @param    array    Decomposed UCS4 sequence
      * @return   array    UCS4 sequence with syllables composed
      */

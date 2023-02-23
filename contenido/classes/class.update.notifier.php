@@ -6,9 +6,9 @@
  * @subpackage Security
  * @author Dominik Ziegler
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -103,7 +103,7 @@ class cUpdateNotifier {
      *
      * @var string
      */
-    protected $sVendorURL = "http://www.contenido.org/de/redir";
+    protected $sVendorURL = "https://www.contenido.org/de/redir";
 
     /**
      * Current backend language
@@ -528,7 +528,7 @@ class cUpdateNotifier {
      * Connects with vendor host and gets the xml files
      *
      * @return array
-     * 
+     *
      * @throws cException
      */
     protected function getVendorHostFiles() {
@@ -575,7 +575,7 @@ class cUpdateNotifier {
      * Gets the xml file hash from the property table
      *
      * @return string
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -627,9 +627,9 @@ class cUpdateNotifier {
      * Generates the output for the backend
      *
      * @param string $sMessage
-     * 
+     *
      * @return string
-     * 
+     *
      * @throws cException
      */
     protected function renderOutput($sMessage) {
@@ -671,10 +671,10 @@ class cUpdateNotifier {
      * Generates the output for the rss informations
      *
      * @param cTemplate $oTpl
-     * 
+     *
      * @return cTemplate
      *         CONTENIDO template object
-     * 
+     *
      * @throws cException
      */
     protected function renderRss($oTpl) {
@@ -742,9 +742,9 @@ class cUpdateNotifier {
      *
      * @todo add a retry counter and a deathpoint with warning in errorlog
      * @param string $sUrl
-     * 
+     *
      * @return string|bool
-     * 
+     *
      * @throws cException
      */
     private function fetchUrl($sUrl) {
@@ -769,7 +769,7 @@ class cUpdateNotifier {
      * Displays the rendered output
      *
      * @return string
-     * 
+     *
      * @throws cException
      */
     public function displayOutput() {
@@ -787,7 +787,7 @@ class cUpdateNotifier {
             $sMessage = i18n('You have an unknown or unsupported version of CONTENIDO!');
             $sOutput = $this->renderOutput($sMessage);
         } elseif ($this->sVendorVersion == "deprecated") {
-            $sMessage = sprintf(i18n("Your version of CONTENIDO is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href='%s' class='blue' target='_blank'>Download now!</a>"), 'http://www.contenido.org');
+            $sMessage = sprintf(i18n("Your version of CONTENIDO is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href='%s' class='blue' target='_blank'>Download now!</a>"), 'https://www.contenido.org');
             $sOutput = $this->renderOutput($sMessage);
         } elseif ($this->checkPatchLevel() == "-1") {
             $sVendorDownloadURL = $this->getDownloadURL();
