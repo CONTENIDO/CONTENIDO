@@ -58,10 +58,6 @@ if ((!$readOnly) && $action == 'mod_translation_save') {
     }
 }
 
-if (!isset($idmodtranslation)) {
-    $idmodtranslation = 0;
-}
-
 // Get the mi18n strings from module input/output
 $strings = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
 if (!is_array($strings)) {
@@ -99,7 +95,6 @@ $current = 0;
 
 if (!isset($row)) {
     $row = 0; // first string
-    $current = 0;
     $lastString = reset($strings);
     $lastTranslation = $myTrans[$lastString] ?? '';
 } else {
