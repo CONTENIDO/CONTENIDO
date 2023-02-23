@@ -7,9 +7,9 @@
  * @subpackage GUI
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -371,7 +371,7 @@ class cGuiSourceEditor extends cGuiPage {
         if ($this->_readOnly) {
             // if the read only mode is activated, display a greyed out icon
             $this->set('s', 'SAVE_BUTTON_IMAGE', $cfg['path']['images'] . 'but_ok_off.gif');
-            $this->set('s', 'SAVE_BUTTON_DESC', i18n('The administratos has disabled edits'));
+            $this->set('s', 'SAVE_BUTTON_DESC', i18n('The administrator has disabled edits'));
         } else {
             $this->set('s', 'SAVE_BUTTON_IMAGE', $cfg['path']['images'] . 'but_ok.gif');
             $this->set('s', 'SAVE_BUTTON_DESC', i18n('Save changes'));

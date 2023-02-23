@@ -10,9 +10,9 @@
  * @requires jQuery, Con
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 (function(Con, $) {
@@ -40,7 +40,7 @@
             var len = O.length >>> 0;
 
             // 4. If IsCallable(callback) is false, throw a TypeError exception.
-            // See: http://es5.github.com/#x9.11
+            // See: https://es5.github.com/#x9.11
             if (typeof callback !== "function") {
                 throw new TypeError(callback + ' is not a function');
             }
@@ -854,15 +854,15 @@
          * from a given url. Example:
          *
          * <pre>
-         * var url = 'http://hostname/some/path/page.html?foobar=1&amp;user=JaneDoe';
-         * // result: 'http://hostname/some/path/'
+         * var url = 'https://hostname/some/path/page.html?foobar=1&amp;user=JaneDoe';
+         * // result: 'https://hostname/some/path/'
          * var newUrl = Con.UtilUrl.getUrlWithPath(url);
          * </pre>
          *
          * @method getUrlWithPath
          * @param {String} [url] Url to determine params from, uses
          *            window.location.href by default
-         * @return {String} The folder starting like 'http://hostname/some/path/'
+         * @return {String} The folder starting like 'https://hostname/some/path/'
          * @static
          */
         getUrlWithPath: function(url) {
@@ -965,7 +965,7 @@
          * Returns true if the parameter seems to be a valid URL. Example:
          *
          * <pre>
-         * var url = 'http://hostname/some/path/page.html?foobar=1&amp;user=JaneDoe';
+         * var url = 'https://hostname/some/path/page.html?foobar=1&amp;user=JaneDoe';
          * if (Con.UtilUrl.validate(url)) {
          *     // do something here...
          * }
@@ -1244,7 +1244,7 @@
      * @param {String} description  The text which is displayed in the box
      * @param {Object} additionalOptions  Options which can be used to customise the
      *            behaviour of the dialog box, see
-     *            http://api.jqueryui.com/dialog/
+     *            https://api.jqueryui.com/dialog/
      * @param {Boolean} hideButtons
      */
     Con.showNotification = function(title, description, additionalOptions,

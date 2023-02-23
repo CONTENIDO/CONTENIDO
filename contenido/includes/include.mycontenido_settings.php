@@ -7,9 +7,9 @@
  * @subpackage Backend
  * @author Unknown
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -117,7 +117,7 @@ if ($action == "mycontenido_editself") {
     if ($user->store() && !$notificationDisplayed) {
         $page->displayOk(i18n("Changes saved"));
     } elseif (!$notificationDisplayed) {
-        $page->displayError(i18n("An error occured while saving user info."));
+        $page->displayError(i18n("An error occurred while saving user info."));
     }
 }
 
@@ -198,7 +198,7 @@ $formathint .= "d.m.Y H:i:s => 01.01.2004 00:00:00";
 // $form->add(i18n("Time format"), $timeformat->render().'
 // '.generateInfoIcon(i18n("FORMATE_TIME")));
 // $form->add(i18n("Date/Time locale"), $dateLocale->render().'
-// '.generateInfoIcon(i18n("LANUAGE_DATE_TIME")));
+// '.generateInfoIcon(i18n("LANGUAGE_DATE_TIME")));
 
 $format = new cHTMLTextbox("format", $user->getUserProperty("dateformat", "full"));
 $format2 = new cHTMLTextbox("formatdate", $user->getUserProperty("dateformat", "date"));

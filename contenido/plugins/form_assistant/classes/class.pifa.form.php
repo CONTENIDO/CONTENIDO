@@ -7,7 +7,7 @@
  * @subpackage FormAssistant
  * @author     Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright  four for business AG
- * @link       http://www.4fb.de
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -889,7 +889,7 @@ class PifaForm extends Item {
      * @return bool
      * @throws PifaException if existence of table could not be determined
      * @throws cDbException
-     * @see http://www.electrictoolbox.com/check-if-mysql-table-exists/
+     * @see https://www.electrictoolbox.com/check-if-mysql-table-exists/
      */
     public function existsTable($tableName, $bySchema = false) {
         $cfg = cRegistry::getConfig();

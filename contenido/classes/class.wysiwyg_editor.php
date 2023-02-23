@@ -6,9 +6,9 @@
  * @subpackage Backend
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -217,10 +217,10 @@ abstract class cWYSIWYGEditor {
             $erroneousSettings = [];
 
             // just pass back that the file could not be written
-            $erroneusSettings['saving'] = ['config_file' => 'wysiwyg config file could not be written'];
+            $erroneousSettings['saving'] = ['config_file' => 'wysiwyg config file could not be written'];
             // write more detailed information with sensitive information such as full path into error log
             error_log('Error writing ' . $configPath . $configFile);
-            return $erroneusSettings;
+            return $erroneousSettings;
         }
 
         // apply changes to current config

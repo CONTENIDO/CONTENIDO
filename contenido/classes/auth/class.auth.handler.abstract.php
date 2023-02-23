@@ -7,9 +7,9 @@
  * @subpackage Authentication
  * @author Dominik Ziegler
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -19,8 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * which may be extended differently for frontend and backend authentication.
  *
  * NOTE:
- * Moved all abtract method declarations to `cAuth` class since `cAuth` calls
- * some of them. There is no need to split abtract method definitions between
+ * Moved all abstract method declarations to `cAuth` class since `cAuth` calls
+ * some of them. There is no need to split abstract method definitions between
  * `cAuthHandlerAbstract` and `cAuth`.
  * Please update your class definition, in case you've implemented your own
  * authentication handler as follows:

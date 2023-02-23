@@ -7,9 +7,9 @@
  * @subpackage       Backend
  * @author           Olaf Niemann
  * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @license          https://www.contenido.org/license/LIZENZ.txt
+ * @link             https://www.4fb.de
+ * @link             https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -39,7 +39,7 @@ $piwikNotification = "";
 
 // Display google account message
 if (($googleAccount = getEffectiveSetting('stats', 'ga_account', '')) != "") {
-    $linkToGoogle = sprintf('<a target="_blank" href="http://www.google.com/intl/' . $belang . '/analytics/">%s</a>', i18n("here"));
+    $linkToGoogle = sprintf('<a target="_blank" href="https://www.google.com/intl/' . $belang . '/analytics/">%s</a>', i18n("here"));
     $googleNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has been configured with Google Analytics account %s. Click %s to visit Google Analytics"), $googleAccount, $linkToGoogle));
 }
 

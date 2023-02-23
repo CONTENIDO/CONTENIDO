@@ -7,9 +7,9 @@
  * @subpackage Backend
  * @author Jan Lengowski
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -488,7 +488,7 @@ function htmldecode($string) {
  * @param int    $idClient
  *         client id which will be updated
  * @param string $htmlPath
- *         new HTML path. Starting with "http://"
+ *         new HTML path. Starting with "https://"
  * @param string $frontendPath
  *         path the to the frontend
  *

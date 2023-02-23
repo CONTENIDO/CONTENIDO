@@ -8,9 +8,9 @@
  * @author Timo Hummel
  * @author Jan Lengowski
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -231,7 +231,7 @@ if ($action == "lang_newlanguage") {
             $form->add(i18n("Date format"), $dateformat->render() . ' ' . $infoButton->render());
             $infoButton->setHelpText(i18n("FORMATE_TIME"));
             $form->add(i18n("Time format"), $timeformat->render() . ' ' . $infoButton->render());
-            $infoButton->setHelpText(i18n("LANUAGE_DATE_TIME"));
+            $infoButton->setHelpText(i18n("LANGUAGE_DATE_TIME"));
             $form->add(i18n("Date/Time locale"), $dateLocale->render() . ' ' . $infoButton->render());
 
             // update language dropdown in header, but only for current client

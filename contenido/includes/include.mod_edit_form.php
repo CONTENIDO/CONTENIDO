@@ -7,9 +7,9 @@
  * @subpackage Backend
  * @author Olaf Niemann
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -120,7 +120,7 @@ if (!$readOnly && $action == "mod_new") {
         $page->render();
         die();
     } else {
-        cRegistry::addOkMessage(i18n("New module created successfuly!"));
+        cRegistry::addOkMessage(i18n("New module created successfully!"));
     }
 } else {
     $module = new cApiModule($idmod);

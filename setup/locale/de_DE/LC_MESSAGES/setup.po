@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Setup\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-04 22:08+0200\n"
-"PO-Revision-Date: 2020-10-04 22:12+0200\n"
-"Last-Translator: Murat Purç <murat@purc.de>\n"
+"POT-Creation-Date: 2023-02-23 09:15+0100\n"
+"PO-Revision-Date: 2023-02-23 09:15+0100\n"
+"Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: CONTENIDO Development\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-Keywords: i18n,trans\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: autoinstall.php:60
 msgid "Please enter the missing settings below:"
@@ -53,7 +53,7 @@ msgstr "gefunden"
 
 #: lib/class.clisetup.php:110 lib/class.clisetup.php:128
 msgid "CONTENIDO will use the specified settings from "
-msgstr "CONTENIDO uebernimmt die Einstellungen aus "
+msgstr "CONTENIDO übernimmt die Einstellungen aus "
 
 #: lib/class.clisetup.php:117 lib/class.clisetup.php:135
 msgid "not found"
@@ -121,7 +121,7 @@ msgstr "Bitte geben Sie den Pfad ein, in dem der contenido/ Ordner ist."
 
 #: lib/class.clisetup.php:229
 msgid "e.g. http://localhost/"
-msgstr "z.b. http://localhost/"
+msgstr "z. B. https://localhost/"
 
 #: lib/class.clisetup.php:230
 msgid "Backend web path"
@@ -145,10 +145,10 @@ msgstr "Möchten Sie den Beispielmandanten installieren?"
 
 #: lib/class.clisetup.php:246
 msgid ""
-"Please choose \"yes\" (to install the modules AND the content), \"modules"
-"\" (to install only the modules) or \"no\""
+"Please choose \"yes\" (to install the modules AND the content), "
+"\"modules\" (to install only the modules) or \"no\""
 msgstr ""
-"Bitte waehlen Sie \"ja\" (kompletter Beispielmandant), \"module\" (nur die "
+"Bitte wählen Sie \"ja\" (kompletter Beispielmandant), \"module\" (nur die "
 "Module) oder \"nein\""
 
 #: lib/class.clisetup.php:247
@@ -161,7 +161,7 @@ msgstr "Administrator Informationen:"
 
 #: lib/class.clisetup.php:267
 msgid "You have to enter the password twice and they have to match"
-msgstr "Sie muessen das Passwort 2 mal eingeben!"
+msgstr "Sie müssen das Passwort 2 mal eingeben!"
 
 #: lib/class.clisetup.php:268
 msgid "Admin password"
@@ -186,19 +186,18 @@ msgid ""
 "installing.\n"
 "DO YOU REALLY WANT TO CONTINUE WITH DELETING THIS DATABASE? (Y/N) [N]: "
 msgstr ""
-"Sie haben in der Konfigurationsdatei die Option ausgew&auml;lt, die "
-"Datenbank '%s' zu l&ouml;schen, bevor die Installation fortgesetzt wird.\n"
-"M&Ouml;CHTEN SIE WIRKLICH MIT DER DATENBANKL&Ouml;SCHUNG FORTFAHREN? (Y / N) "
-"[N]:"
+"Sie haben in der Konfigurationsdatei die Option ausgewählt, die Datenbank "
+"'%s' zu löschen, bevor die Installation fortgesetzt wird.\n"
+"MÖCHTEN SIE WIRKLICH MIT DER DATENBANKLÖSCHUNG FORTFAHREN? (Y / N) [N]:"
 
 #: lib/class.clisetup.php:359
 #, php-format
 msgid "THE DATABASE %s HAS BEEN DELETED!!!"
-msgstr "DIE DATENBANK %s WURDE GEL&Ouml;SCHT!!!"
+msgstr "DIE DATENBANK %s WURDE GELÖSCHT!!!"
 
 #: lib/class.clisetup.php:363
 msgid "Testing your system..."
-msgstr "Ueberpruefe System..."
+msgstr "Überprüfe System..."
 
 #: lib/class.clisetup.php:389
 msgid "error"
@@ -206,7 +205,7 @@ msgstr "fehler"
 
 #: lib/class.clisetup.php:401
 msgid "There have been errors during the system check."
-msgstr "Es sind Fehler bei der Systemueberpruefung aufgetreten."
+msgstr "Es sind Fehler bei der Systemüberprüfung aufgetreten."
 
 #: lib/class.clisetup.php:402
 msgid ""
@@ -226,7 +225,7 @@ msgstr "n"
 
 #: lib/class.clisetup.php:410
 msgid "Do you want to continue despite the errors? (y/n) [n]: "
-msgstr "Moechten Sie trotz der Fehler fortfahren? (j/n) [n]: "
+msgstr "Möchten Sie trotz der Fehler fortfahren? (j/n) [n]: "
 
 #: lib/class.clisetup.php:420
 msgid "Your system seems to be okay."
@@ -250,7 +249,7 @@ msgstr "Sie müssen das Datenbankpasswort eingeben."
 
 #: lib/functions.clisetup.php:146
 msgid "You did not specify a database charset!"
-msgstr "Sie müssen das Datenbankcharset eingeben."
+msgstr "Sie müssen den Datenbank-Zeichensatz eingeben."
 
 #: lib/functions.clisetup.php:150
 msgid "You did not specify a database collation!"
@@ -262,7 +261,7 @@ msgstr "Sie müssen den Datenbanknamen eingeben."
 
 #: lib/functions.clisetup.php:158
 msgid "You did not specify a database prefix!"
-msgstr "Sie müssen das Tabellenpraefix eingeben."
+msgstr "Sie müssen das Tabellenpräfix eingeben."
 
 #: lib/functions.clisetup.php:167
 msgid "You did not specify an http root path!"
@@ -302,8 +301,8 @@ msgid ""
 "If the script is executed without any parameters it will look for the\n"
 "autoinstall.ini file (or any other file specified with \"--file\")."
 msgstr ""
-"Wird dieses Skript ohne Parameter ausgefuehrt, wird\n"
-"zunaechst nach der autoinstall.ini (oder einer anderen Datei, spezifiziert "
+"Wird dieses Skript ohne Parameter ausgeführt, wird\n"
+"zunächst nach der autoinstall.ini (oder einer anderen Datei, spezifiziert "
 "mit \"--file\") gesucht."
 
 #: lib/functions.clisetup.php:234
@@ -314,20 +313,18 @@ msgid ""
 "If you want to prevent the script from ever waiting for user input use\n"
 "\"--non-interactive\"."
 msgstr ""
-"Gibt es diese Datei, wird der nicht-interaktive Modus gew&auml;hlt. Das "
-"Skript\n"
+"Gibt es diese Datei, wird der nicht-interaktive Modus gewählt. Das Skript\n"
 "wird Sie im Falle von Fehlern nach einer\n"
-"Benutzereingabe fragen. Wenn Sie eine Benutzereingabe vermeiden m&ouml;"
-"chten,\n"
-"w&auml;hlen Sie bitte \"--nicht-interaktiv\"."
+"Benutzereingabe fragen. Wenn Sie eine Benutzereingabe vermeiden möchten,\n"
+"wählen Sie bitte \"--nicht-interaktiv\"."
 
 #: lib/functions.clisetup.php:235
 msgid ""
 "In case the ini file can not be found, the script will wait for user input\n"
 "on all relevant information."
 msgstr ""
-"Falls die ini-Datei nicht gefunden werden kann, warter das Skript\n"
-"auf Benutzereingaben fuer die relevanten Informationen."
+"Falls die ini-Datei nicht gefunden werden kann, wartet das Skript\n"
+"auf Benutzereingaben für die relevanten Informationen."
 
 #: lib/functions.clisetup.php:238
 msgid ""
@@ -367,9 +364,9 @@ msgid ""
 "Furthermore, you can use parameters to overwrite setup settings.\n"
 "Use \"--[ini-group].[ini-name]=\"value\" (e.g. --db.host=\"localhost\")"
 msgstr ""
-"Des Weiteren koennen einzelne ini Einstellungen ueberschrieben\n"
-"werden mit \"--[ini-Gruppe].[ini-Name]=\"Wert\" (z.B. --db.host=\"localhost"
-"\")"
+"Des Weiteren können einzelne ini Einstellungen überschrieben\n"
+"werden mit \"--[ini-Gruppe].[ini-Name]=\"Wert\" (z.B. --db."
+"host=\"localhost\")"
 
 #: steps/forms/adminpassword.php:38 steps/forms/adminpassword.php:39
 #: steps/forms/adminpassword.php:68 steps/forms/adminpassword.php:69
@@ -471,11 +468,11 @@ msgstr ""
 msgid "Client with example modules and example content"
 msgstr "Mandant mit Beispielmodulen und -inhalten"
 
-#: steps/forms/clientmode.php:79
+#: steps/forms/clientmode.php:83
 msgid "Client with example modules, but without example content"
 msgstr "Mandant mit Beispielmodulen, aber ohne Beispielinhalte"
 
-#: steps/forms/clientmode.php:80
+#: steps/forms/clientmode.php:85
 msgid "Don't create client"
 msgstr "Mandant nicht anlegen"
 
@@ -549,7 +546,7 @@ msgstr ""
 #: steps/forms/installer.php:45
 msgid "Setup completed upgrading. Click on next to continue."
 msgstr ""
-"Die Installationsroutine hat den Upgradeprozess abgeschlossen. Klicken Sie "
+"Die Installationsroutine hat den Upgrade-Prozess abgeschlossen. Klicken Sie "
 "auf Weiter, um fortzufahren."
 
 #: steps/forms/installer.php:46
@@ -568,11 +565,11 @@ msgstr ""
 "Bitte prüfen Sie die Verzeichnisse. Wenn Sie einen Pfad ändern müssen, "
 "klicken Sie auf den Namen und geben Sie den neuen Pfad in die Eingabebox ein."
 
-#: steps/forms/pathinfo.php:50
+#: steps/forms/pathinfo.php:48
 msgid "CONTENIDO Root Path"
 msgstr "CONTENIDO Serverpfad"
 
-#: steps/forms/pathinfo.php:52
+#: steps/forms/pathinfo.php:50
 msgid "CONTENIDO Web Path"
 msgstr "CONTENIDO Webpfad"
 
@@ -610,7 +607,7 @@ msgstr "Installationsergebnisse"
 #: steps/forms/setupresults.php:68
 #, php-format
 msgid ""
-"An error occured during installation. Please take a look at the file %s "
+"An error occurred during installation. Please take a look at the file %s "
 "(located in &quot;data/logs/&quot;) for more information."
 msgstr ""
 "Setup Fehler während der Installation. Bitte schauen Sie in die Datei %s "
@@ -655,7 +652,7 @@ msgstr "Datenbank Benutzername"
 
 #: steps/forms/setupsummary.php:57
 msgid "Table prefix"
-msgstr "Tabellenprefix"
+msgstr "Tabellenpräfix"
 
 #: steps/forms/setupsummary.php:58 steps/forms/systemdata.php:149
 msgid "Database character set"
@@ -725,7 +722,7 @@ msgid "Database Name"
 msgstr "Datenbankname"
 
 #: steps/forms/systemdata.php:139
-msgid "(use empty or non-existant database)"
+msgid "(use empty or non-existent database)"
 msgstr "(leere oder nicht existierende Datenbank)"
 
 #: steps/forms/systemdata.php:145
@@ -1054,8 +1051,8 @@ msgstr "Empfohlen für existierende Projekte."
 #~ "directory."
 #~ msgstr ""
 #~ "Die Webservergruppe sowie die Gruppe des Verzeichnisses sind identisch. "
-#~ "Sie müssen den Schreibzugriff für die Gruppe aktivieren, z. B. mit chmod g"
-#~ "+rw %s oder durch Setzen der Rechtemaske auf %s."
+#~ "Sie müssen den Schreibzugriff für die Gruppe aktivieren, z. B. mit chmod "
+#~ "g+rw %s oder durch Setzen der Rechtemaske auf %s."
 
 #~ msgid ""
 #~ "Your web server is not equal to the directory owner, and is not in the "

@@ -7,7 +7,7 @@
  * @author marcus.gnass@4fb.de
  * @author alexander.scheider@4fb.de
  * @copyright four for business AG
- * @link http://www.4fb.de
+ * @link https://www.4fb.de
  */
 
 // get globals

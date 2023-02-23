@@ -8,9 +8,9 @@
  * @author Olaf Niemann
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -1460,11 +1460,11 @@ function strCheckTreeForErrors($addCats = [], $ignoreCats = []) {
             $postId = $cat->get('postid');
             if (in_array($preId, $preIds)) {
                 $fine = false;
-                $errorMessages[] = sprintf(i18n('There are multiple categories in %s that share the same pre-id (%s - second occurence at %s). Sorting will fail and not all categories will be shown.'), $parentId, $preId, $idcat);
+                $errorMessages[] = sprintf(i18n('There are multiple categories in %s that share the same pre-id (%s - second occurrence at %s). Sorting will fail and not all categories will be shown.'), $parentId, $preId, $idcat);
             }
             if (in_array($postId, $postIds)) {
                 $fine = false;
-                $errorMessages[] = sprintf(i18n('There are multiple categories in %s that share the same post-id (%s - second occurence at %s). Sorting will fail and not all categories will be shown.'), $parentId, $postId, $idcat);
+                $errorMessages[] = sprintf(i18n('There are multiple categories in %s that share the same post-id (%s - second occurrence at %s). Sorting will fail and not all categories will be shown.'), $parentId, $postId, $idcat);
             }
             $preIds[] = $preId;
             $postIds[] = $postId;

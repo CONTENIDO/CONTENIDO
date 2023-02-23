@@ -6,9 +6,9 @@
  * @subpackage LayoutHandler
  * @author Rusmir Jusufovic
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -192,7 +192,7 @@ class cLayoutHandler {
      *
      * @param cDb $dbObject
      *         CONTENIDO database object
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function initWithDbObject($dbObject) {
@@ -214,7 +214,7 @@ class cLayoutHandler {
      *
      * @return bool
      *         true if successfully
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     private function _makeDirectories() {
@@ -234,7 +234,7 @@ class cLayoutHandler {
      *
      * @return bool
      *         true if succssesfully
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     private function _makeDirectory($directory) {
@@ -306,9 +306,9 @@ class cLayoutHandler {
      * Save Layout
      *
      * @param string $layoutCode [optional]
-     *                           
+     *
      * @return bool
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function saveLayout($layoutCode = '') {
@@ -326,9 +326,9 @@ class cLayoutHandler {
      * Use it for upgrade!
      *
      * @param string $layoutCode [optional]
-     *                           
+     *
      * @return bool
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function saveLayoutByUpgrade($layoutCode = '') {
@@ -343,9 +343,9 @@ class cLayoutHandler {
     /**
      *
      * @param string $layoutCode [optional]
-     *                           
+     *
      * @return bool
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     private function _save($layoutCode = '') {
@@ -373,7 +373,7 @@ class cLayoutHandler {
      *
      * @return bool
      *         true on success or false on failure
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function eraseLayout() {
@@ -430,7 +430,7 @@ class cLayoutHandler {
      *
      * @return string|bool
      *         content or false
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function getLayoutCode() {
@@ -458,7 +458,7 @@ class cLayoutHandler {
      * @param array $cfg
      *         CONTENIDO config array
      * @param int $clientId
-     * 
+     *
      * @throws cException if the layout could not be saved
      */
     public static function upgrade($adb, $cfg, $clientId) {

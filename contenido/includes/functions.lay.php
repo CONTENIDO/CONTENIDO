@@ -8,9 +8,9 @@
  * @author           Jan Lengowski
  * @author           Olaf Niemann
  * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @license          https://www.contenido.org/license/LIZENZ.txt
+ * @link             https://www.4fb.de
+ * @link             https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -106,7 +106,7 @@ function layEditLayout($idlay, $name, $description, $code) {
                 if ($layoutInFile->saveLayout($code) == false) {
                     cRegistry::addWarningMessage(sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
                 } else {
-                    cRegistry::addOkMessage(i18n("Renamed layout succsessfully!"));
+                    cRegistry::addOkMessage(i18n("Renamed layout successfully!"));
                 }
                 $layout = new cApiLayout(cSecurity::toInteger($idlay));
                 $layout->set('name', $name);

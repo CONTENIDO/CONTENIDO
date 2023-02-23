@@ -3,9 +3,9 @@
  *
  * @author     ???
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 
@@ -29,7 +29,7 @@
         this.showLogLink = this.root.find('.js-action-show-log');
         this.clearLogLink = this.root.find('.js-action-clear-log');
         this.deleteLogLink = this.root.find('.js-action-delete-log');
-        
+
         registerEvents(this);
         syncSelectedFileState(this);
     }

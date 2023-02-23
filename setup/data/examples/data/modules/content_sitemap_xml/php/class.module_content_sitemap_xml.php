@@ -5,7 +5,7 @@
  * @subpackage ContentSitemapXml
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG
- * @link http://www.4fb.de
+ * @link https://www.4fb.de
  */
 
 class ModuleContentSitemapXml
@@ -185,7 +185,7 @@ class ModuleContentSitemapXml
      * @param string $filename [optional] the filename to which the sitemap should
      *        be written
      * @todo How can I save this properly formatted?
-     *       @see http://stackoverflow.com/questions/1191167/format-output-of-simplexml-asxml
+     *       @see https://stackoverflow.com/questions/1191167/format-output-of-simplexml-asxml
      */
     public function saveSitemap(SimpleXMLElement $sitemap, string $filename = '')
     {

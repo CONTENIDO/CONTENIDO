@@ -6,9 +6,9 @@
  * @subpackage       Backend
  * @author           Thomas Stauer
  * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @license          https://www.contenido.org/license/LIZENZ.txt
+ * @link             https://www.4fb.de
+ * @link             https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -182,7 +182,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             unset($aLangs);
 
             // Set document base URL for all relative URLs
-            // http://www.tinymce.com/wiki.php/Configuration:document_base_url
+            // https://www.tinymce.com/wiki.php/Configuration:document_base_url
             $this->setSetting($cmsType, 'document_base_url', cRegistry::getFrontendUrl(), true);
 
             // The following "base URL" is the URL used to reference JS script files
@@ -244,7 +244,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             }
 
             // default valid elements that tinymce is allowed to write
-            // http://www.tinymce.com/wiki.php/Configuration:valid_elements
+            // https://www.tinymce.com/wiki.php/Configuration:valid_elements
             $validElements = "a[name|href|target|title],strong/b[class],em/i[class],strike[class],u[class],p[dir|class|style],ol,ul,li[style],br,img[class|src|border=0|alt|title|hspace|vspace|width|height|style],sub,sup,blockquote[dir|style],table[border=0|cellspacing|cellpadding|width|height|class|style],tr[class|rowspan|width|height|valign|style],td[dir|class|colspan|rowspan|width|height|valign|style],div[dir|class|style],span[class|style],pre[class|style],address[class|style],h1[dir|class|style],h2[dir|class|style],h3[dir|class|style],h4[dir|class|style],h5[dir|class|style],h6[dir|class|style],hr";
 
             // media plugin
@@ -295,7 +295,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $sStyles = "";
 
         // convert tinymce's style formats from string to required JSON value
-        // http://www.tinymce.com/wiki.php/Configuration:style_formats
+        // https://www.tinymce.com/wiki.php/Configuration:style_formats
         if(true === isset($this->_aSettings[$sType])
         && true === isset($this->_aSettings[$sType][$sType])) {
             if (array_key_exists('style_formats', $this->_aSettings[$sType][$sType])) {
@@ -386,16 +386,16 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $client = cRegistry::getClientId();
 
         // hide visualaid button because it has no icon
-        // http://www.tinymce.com/develop/bugtracker_view.php?id=6003
+        // https://www.tinymce.com/develop/bugtracker_view.php?id=6003
 
         // Overview of available controls and their required plugins:
-        // http://www.tinymce.com/wiki.php/Controls
+        // https://www.tinymce.com/wiki.php/Controls
 
         // TODO:
         // Consider using
-        // http://www.tinymce.com/wiki.php/Configuration:toolbar
+        // https://www.tinymce.com/wiki.php/Configuration:toolbar
         // instead of
-        // http://www.tinymce.com/wiki.php/Configuration:toolbar%3CN%3E
+        // https://www.tinymce.com/wiki.php/Configuration:toolbar%3CN%3E
         //
         // This would allow users to specify more than just 3 toolbars in total
 
@@ -783,7 +783,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * tried to be loaded.
      *
      * @return string
-     *        themes the themes
+     *        Returns the themes
      */
     function getThemes() {
         return cSecurity::toString($this->_aSettings['theme']);

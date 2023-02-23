@@ -8,9 +8,9 @@
  *
  * @author           Holger Librenz
  * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @license          https://www.contenido.org/license/LIZENZ.txt
+ * @link             https://www.4fb.de
+ * @link             https://www.contenido.org
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
@@ -122,7 +122,7 @@ $cfg['help'] = false;
 // (string) Configure page if CONTENIDO is unable to run (e.g. no database connection)
 //          It is wise to create a maintenance HTML page for redirection, so you won't
 //          confuse your customers.
-//          Note: The URL should be absolute with http:// in front of it.
+//          Note: The URL should be absolute with https:// in front of it.
 $cfg['contenido']['errorpage'] = '';
 
 // (string) Configure an email address to alert when CONTENIDO is unable to run
@@ -161,7 +161,7 @@ $cfg['php_settings']['log_errors'] = true;
 // (string) Path to log file
 $cfg['php_settings']['error_log'] = $cfg['path']['contenido_logs'] . 'errorlog.txt';
 
-// (string) valid PHP timezone http://php.net/manual/en/timezones.php
+// (string) valid PHP timezone https://php.net/manual/en/timezones.php
 $cfg['php_settings']['date.timezone'] = '';
 
 // (string) valid PHP default charset
@@ -226,7 +226,7 @@ $cfg['sql']['string_filter_functions'] = [
  * $cfg['url_builder']['name']   = 'custom_path';
  * $cfg['url_builder']['config'] = ['prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ','];
  *
- * See also http://forum.contenido.org/viewtopic.php?f=64&t=23280
+ * See also https://forum.contenido.org/viewtopic.php?f=64&t=23280
  */
 
 // (string)  Name of UriBuilder to use.

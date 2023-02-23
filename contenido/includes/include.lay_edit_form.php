@@ -7,9 +7,9 @@
  * @subpackage       Backend
  * @author           Olaf Niemann
  * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @license          https://www.contenido.org/license/LIZENZ.txt
+ * @link             https://www.4fb.de
+ * @link             https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -60,7 +60,7 @@ if (!$readOnly && $action == "lay_new") {
             if ($layoutInFile->saveLayout('') == false) {
                 $page->displayError(i18n("Cant save layout in filesystem!"));
             } else {
-                $page->displayOk(i18n("Created layout succsessfully!"));
+                $page->displayOk(i18n("Created layout successfully!"));
                 $page->reloadRightTopFrame(['area' => 'lay', 'action' => null, 'idlay' => $layout->get('idlay')]);
             }
         }

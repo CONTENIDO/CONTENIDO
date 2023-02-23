@@ -10,9 +10,9 @@
  * @package    CONTENIDO Backend Scripts
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.7
  * @deprecated [2015-05-21] This file is no longer supported
  */
@@ -89,9 +89,9 @@ $aCustomTabs['bar'] = [
  * @author     Timo Trautmann <timo.trautmann@4fb.de>
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  * @deprecated [2015-05-21] This file is no longer supported
  */
 
@@ -187,7 +187,7 @@ echo $cutomTabsJs;
     };
 
     Con.ArticleObject.prototype = {
-    
+
         /**
          * Define required global variables
          * @method setGlobalVars

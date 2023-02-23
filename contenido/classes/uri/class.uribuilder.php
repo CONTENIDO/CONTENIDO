@@ -7,9 +7,9 @@
  * @subpackage Frontend_URI
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -31,7 +31,7 @@ abstract class cUriBuilder {
 
     /**
      * Holds URL that is used as base for an absolute path
-     * E.g. http://contenido.org/
+     * E.g. https://contenido.org/
      *
      * @var string
      */
@@ -53,7 +53,7 @@ abstract class cUriBuilder {
 
     /**
      * Set http base path.
-     * E.g. http://contenido.org/
+     * E.g. https://contenido.org/
      *
      * @param string $sBasePath
      */
@@ -63,7 +63,7 @@ abstract class cUriBuilder {
 
     /**
      * Return http base path.
-     * E.g. http://contenido.org/
+     * E.g. https://contenido.org/
      *
      * @return string
      */

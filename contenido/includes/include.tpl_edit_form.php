@@ -7,9 +7,9 @@
  * @subpackage       Backend
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @license          https://www.contenido.org/license/LIZENZ.txt
+ * @link             https://www.4fb.de
+ * @link             https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -33,7 +33,7 @@ $page = new cGuiPage("tpl_edit_form", '', '0');
 $action = $action ?? '';
 
 if ($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $action)) {
-    $page->displayOk(i18n("Deleted Template succcessfully!"));
+    $page->displayOk(i18n("Deleted Template successfully!"));
     $page->abortRendering();
     $page->reloadLeftBottomFrame(['idtpl' => null]);
     $page->render();

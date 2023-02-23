@@ -8,9 +8,9 @@
  * @author           Timo Trautmann
  * @author           Simon Sprankel
  * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @license          https://www.contenido.org/license/LIZENZ.txt
+ * @link             https://www.4fb.de
+ * @link             https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -97,7 +97,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
                           . '<li><strong>simple: </strong>Older article versions can be reviewed and restored.</li>'
                           . '<li><strong>advanced: </strong>Additional to the simple-mode, unpublished drafts can be created.</li>'
                       . '</ul>'
-                  . '<p><strong>Further informations</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>'
+                  . '<p><strong>Further information</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>'
                   . '</div>');
         } else {
             $html->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');

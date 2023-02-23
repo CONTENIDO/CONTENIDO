@@ -9,12 +9,17 @@
 ./classes/class.ajax.php
 ./classes/class.array.php
 ./classes/class.article.collector.php
+./classes/class.article.content.helper.php
+./classes/class.article.overview.helper.php
+./classes/class.asset.php
 ./classes/class.autoload.php
 ./classes/class.backend.php
+./classes/class.backend.search.helper.php
 ./classes/class.category.helper.php
 ./classes/class.cec.php
 ./classes/class.cec_hook.php
 ./classes/class.cziparchive.php
+./classes/class.date.php
 ./classes/class.dirhandler.php
 ./classes/class.effective.setting.php
 ./classes/class.filehandler.php
@@ -36,6 +41,7 @@
 ./classes/class.purge.php
 ./classes/class.registry.php
 ./classes/class.requestvalidator.php
+./classes/class.rights.areas.helper.php
 ./classes/class.rights.php
 ./classes/class.search.php
 ./classes/class.security.php
@@ -165,6 +171,7 @@
 ./classes/genericdb/class.item.cache.php
 ./classes/genericdb/class.item.collection.php
 ./classes/genericdb/class.item.php
+./classes/genericdb/trait.item.collection.chunk.php
 ./classes/gui/class.backendhelpbox.php
 ./classes/gui/class.fileoverview.php
 ./classes/gui/class.foldingrow.php
@@ -199,6 +206,7 @@
 ./classes/html/class.html.label.php
 ./classes/html/class.html.legend.php
 ./classes/html/class.html.link.php
+./classes/html/class.html.linktag.php
 ./classes/html/class.html.list.php
 ./classes/html/class.html.listitem.php
 ./classes/html/class.html.nav.php
@@ -423,8 +431,10 @@
 ./classes/uri/class.uribuilder.php
 ./classes/uri/Sample.php
 ./classes/validator/class.validator.abstract.php
+./classes/validator/class.validator.date.php
 ./classes/validator/class.validator.email.php
 ./classes/validator/class.validator.factory.php
+./classes/validator/class.validator.ipv4.php
 ./classes/validator/class.validator.regex.php
 ./classes/version/class.version.file.php
 ./classes/version/class.version.layout.php
@@ -492,6 +502,8 @@
 ./includes/chains/include.chain.frontend.cat_backendaccess.php
 ./includes/chains/include.chain.frontend.createbasehref.php
 ./includes/chains/include.chain.template.parsetemplate.php
+./includes/defines.php
+./includes/frontend/include.dbfs.php
 ./includes/frontend/include.front_content.php
 ./includes/frontend/include.front_crcloginform.inc.php
 ./includes/functions.api.category.php
@@ -847,7 +859,6 @@
 ./templates/standard/template.upl_artlist.html
 ./templates/standard/template.upl_dirs_overview.html
 ./templates/standard/template.upl_edit.html
-./templates/standard/template.upl_files_overview.html
 ./templates/standard/template.upl_files_upload.html
 ./templates/standard/template.upl_left_top.html
 ./templates/standard/template.upl_search_results.html
@@ -871,6 +882,7 @@
 ../data/config/production/config.chains.php
 ../data/config/production/config.clients.php
 ../data/config/production/config.http_check.php
+../data/config/production/config.local.php
 ../data/config/production/config.misc.php
 ../data/config/production/config.path.php
 ../data/config/production/config.php

@@ -55,6 +55,7 @@
 ./data/examples/data/modules/content_sitemap_html/php/content_sitemap_html_input.php
 ./data/examples/data/modules/content_sitemap_html/php/content_sitemap_html_output.php
 ./data/examples/data/modules/content_sitemap_xml/info.xml
+./data/examples/data/modules/content_sitemap_xml/php/class.module_content_sitemap_xml.php
 ./data/examples/data/modules/content_sitemap_xml/php/content_sitemap_xml_input.php
 ./data/examples/data/modules/content_sitemap_xml/php/content_sitemap_xml_output.php
 ./data/examples/data/modules/content_socialmedia_facebook/info.xml
@@ -155,7 +156,6 @@
 ./data/examples/templates/cms_teaser_text.html
 ./data/examples/templates/index.php
 ./index.php
-./index_test.php
 ./lib/class.clisetup.php
 ./lib/class.setupcontrols.php
 ./lib/class.setupmask.php

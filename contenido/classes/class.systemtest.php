@@ -6,9 +6,9 @@
  * @subpackage Backend
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @license https://www.contenido.org/license/LIZENZ.txt
+ * @link https://www.4fb.de
+ * @link https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -290,7 +290,7 @@ class cSystemtest {
      */
     public function runTests($testFileSystem = true) {
         $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), self::CON_SETUP_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), self::CON_SETUP_MIN_PHP_VERSION), i18n("The PHP version is higher than ") . self::CON_SETUP_MIN_PHP_VERSION);
-        $this->storeResult($this->testFileUploadSetting(), self::C_SEVERITY_WARNING, i18n("File uploads disabled"), sprintf(i18n("Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"), '<a target="_blank" href="http://www.php.net/manual/en/ini.core.php#ini.file-uploads">http://www.php.net/manual/en/ini.core.php#ini.file-uploads</a>'), i18n("PHP file upload is enabled"));
+        $this->storeResult($this->testFileUploadSetting(), self::C_SEVERITY_WARNING, i18n("File uploads disabled"), sprintf(i18n("Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"), '<a target="_blank" href="https://www.php.net/manual/en/ini.core.php#ini.file-uploads">https://www.php.net/manual/en/ini.core.php#ini.file-uploads</a>'), i18n("PHP file upload is enabled"));
         $this->storeResult($this->testMagicQuotesRuntimeSetting(), self::C_SEVERITY_ERROR, i18n("PHP setting 'magic_quotes_runtime' is turned on"), i18n("The PHP setting 'magic_quotes_runtime' is turned on. CONTENIDO has been developed to comply with magic_quotes_runtime=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."), i18n("'magic_quotes_runtime' is turned off"));
         $this->storeResult($this->testMagicQuotesSybaseSetting(), self::C_SEVERITY_ERROR, i18n("PHP Setting 'magic_quotes_sybase' is turned on"), i18n("The PHP Setting 'magic_quotes_sybase' is turned on. CONTENIDO has been developed to comply with magic_quotes_sybase=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."), i18n("'magic_quotes_sybase' is turned off"));
         $this->storeResult($this->testMaxExecutionTime(), self::C_SEVERITY_WARNING, i18n("PHP maximum execution time is less than 30 seconds"), i18n("PHP is configured for a maximum execution time of less than 30 seconds. This could cause problems with slow web servers and/or long operations in the backend. Our recommended execution time is 120 seconds on slow web servers, 60 seconds for medium ones and 30 seconds for fast web servers."), i18n("PHP allows execution times longer than 30 seconds"));
@@ -333,7 +333,7 @@ class cSystemtest {
         $result = $this->checkImageResizer();
         switch ($result) {
             case self::CON_IMAGERESIZE_CANTCHECK:
-                $this->storeResult(false, self::C_SEVERITY_WARNING, i18n("Unable to check for a suitable image resizer"), i18n("Setup has tried to check for a suitable image resizer (which is, for exampl, required for thumbnail creation), but was not able to clearly identify one. If thumbnails won't work, make sure you've got either the GD-extension or ImageMagick available."));
+                $this->storeResult(false, self::C_SEVERITY_WARNING, i18n("Unable to check for a suitable image resizer"), i18n("Setup has tried to check for a suitable image resizer (which is, for example required for thumbnail creation), but was not able to clearly identify one. If thumbnails won't work, make sure you've got either the GD-extension or ImageMagick available."));
                 break;
             case self::CON_IMAGERESIZE_NOTHINGAVAILABLE:
                 $this->storeResult(false, self::C_SEVERITY_ERROR, i18n("No suitable image resizer available"), i18n("Setup checked your image resizing support, however, it was unable to find a suitable image resizer. Thumbnails won't work correctly or won't be looking good. Install the GD-Extension or ImageMagick"));
@@ -1226,7 +1226,7 @@ class cSystemtest {
                     case self::CON_PREDICT_CHANGEPERM_OTHERS:
                         $mfileperms = cString::getPartOfString(sprintf("%o", fileperms($filename)), -3);
                         $mfileperms[2] = intval($mfileperms[2]) | 0x6;
-                        $predictMessage = sprintf(i18n("Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."), $shortFilename, $mfileperms);
+                        $predictMessage = sprintf(i18n("Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write access to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."), $shortFilename, $mfileperms);
                         break;
                 }
             } else {
@@ -1254,7 +1254,7 @@ class cSystemtest {
                     case self::CON_PREDICT_CHANGEPERM_OTHERS:
                         $mfileperms = cString::getPartOfString(sprintf("%o", @fileperms($target)), -3);
                         $mfileperms[2] = intval($mfileperms[2]) | 0x6;
-                        $predictMessage = sprintf(i18n("Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."), dirname($shortFilename), $mfileperms);
+                        $predictMessage = sprintf(i18n("Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write access to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."), dirname($shortFilename), $mfileperms);
                         break;
                 }
             }

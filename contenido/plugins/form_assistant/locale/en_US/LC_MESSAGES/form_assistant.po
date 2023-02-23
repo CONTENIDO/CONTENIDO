@@ -659,7 +659,7 @@ msgstr "missing processor class '%s'"
 
 #: includes/config.plugin.php:140
 msgid "INTERNAL_SERVER_ERROR"
-msgstr "An ERROR occured:"
+msgstr "An ERROR occurred:"
 
 #: includes/config.plugin.php:204
 msgid "EXTENSION_REGEX_ERROR"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-04 22:08+0200\n"
+"POT-Creation-Date: 2023-02-23 09:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -415,11 +415,11 @@ msgstr ""
 msgid "Client with example modules and example content"
 msgstr ""
 
-#: steps/forms/clientmode.php:79
+#: steps/forms/clientmode.php:83
 msgid "Client with example modules, but without example content"
 msgstr ""
 
-#: steps/forms/clientmode.php:80
+#: steps/forms/clientmode.php:85
 msgid "Don't create client"
 msgstr ""
 
@@ -483,11 +483,11 @@ msgstr ""
 msgid "Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box."
 msgstr ""
 
-#: steps/forms/pathinfo.php:50
+#: steps/forms/pathinfo.php:48
 msgid "CONTENIDO Root Path"
 msgstr ""
 
-#: steps/forms/pathinfo.php:52
+#: steps/forms/pathinfo.php:50
 msgid "CONTENIDO Web Path"
 msgstr ""
 
@@ -517,7 +517,7 @@ msgstr ""
 
 #: steps/forms/setupresults.php:68
 #, php-format
-msgid "An error occured during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information."
+msgid "An error occurred during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information."
 msgstr ""
 
 #: steps/forms/setupsummary.php:33 steps/forms/setupsummary.php:34
@@ -605,7 +605,7 @@ msgid "Database Name"
 msgstr ""
 
 #: steps/forms/systemdata.php:139
-msgid "(use empty or non-existant database)"
+msgid "(use empty or non-existent database)"
 msgstr ""
 
 #: steps/forms/systemdata.php:145

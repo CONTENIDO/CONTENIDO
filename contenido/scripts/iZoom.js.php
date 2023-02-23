@@ -6,9 +6,9 @@
  * @package    CONTENIDO Backend scripts
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
  * @deprecated Since 4.10.2, The upload area uses jQuery UI dialog, there is no need for iZoom, see upl_files_overview.js.
  */
@@ -43,9 +43,9 @@ i18nInit($cfg['path']['contenido_locale'], $belang);
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 console.warn('The usage of iZoom is deprecated since CONTENIDO 4.10.2, it has been replaced by jQuery UI dialog, see upl_files_overview.js!');
