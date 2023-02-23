@@ -9,13 +9,13 @@
  * Name:    frontend_pathX (X any number/character)
  * Value:   base href URL (e.g. http://www.example.org/example/)
  *
- * @package          Core
- * @subpackage       Chain
- * @author           Andreas Lindner
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage Chain
+ * @author     Andreas Lindner
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -80,5 +80,3 @@ function cecCreateBaseHref($currentBaseHref) {
     return $currentBaseHref;
 
 }
-
-?>

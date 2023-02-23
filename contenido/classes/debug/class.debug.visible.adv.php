@@ -3,14 +3,13 @@
 /**
  * This file contains the visible adv debug class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
- *
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -26,7 +25,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * When using method Debug_VisibleAdv::showAll() you'll produce invalid HTML
  * when having an XHTML doctype.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
  */
 class cDebugVisibleAdv implements cDebugInterface, Countable {
@@ -244,7 +243,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 /**
  * An object representing one Debug item of a Debug_VisibleBlock.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
  */
 class cDebugVisibleAdvItem {

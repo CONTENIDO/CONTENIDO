@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the right bottom frame backend page for the content allocation plugin in content area.
  *

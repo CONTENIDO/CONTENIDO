@@ -5,13 +5,13 @@
  *
  * @todo refactor documentation
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Rusmir Jusufovic
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Rusmir Jusufovic
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,7 +22,7 @@ cInclude('includes', 'functions.file.php');
 /**
  * Class handels the view, creation, edit, delete of modul templates.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
  */
 class cModuleTemplateHandler extends cModuleHandler {

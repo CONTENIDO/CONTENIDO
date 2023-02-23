@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the former template class.
  *
@@ -18,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * class Template
  * Light template mechanism
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
 class cTemplate {

@@ -3,13 +3,13 @@
 /**
  * This file contains the generic source editor class. It is used for editing HTML templates, JS files and CSS files
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Source editor class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
 class cGuiSourceEditor extends cGuiPage {

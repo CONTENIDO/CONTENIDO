@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the installer setup mask.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Installer setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
  */
 class cSetupInstaller extends cSetupMask
@@ -60,5 +61,3 @@ class cSetupInstaller extends cSetupMask
         $this->__construct($step);
     }
 }
-
-?>

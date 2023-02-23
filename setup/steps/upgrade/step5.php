@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO upgrade step 5 - setup summary.
  *
@@ -17,4 +18,3 @@ checkAndInclude("steps/forms/setupsummary.php");
 
 $cSetupSetupSummary = new cSetupSetupSummary(5, "upgrade4", "doupgrade");
 $cSetupSetupSummary->render();
-?>

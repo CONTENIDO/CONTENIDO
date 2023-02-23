@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file includes the "frontend navigation" sub plugin from the old plugin repository.
  *
@@ -875,4 +876,3 @@ class FrontendNavigation {
     }
 
 }
-?>

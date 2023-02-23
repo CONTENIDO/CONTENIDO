@@ -782,4 +782,3 @@ if (isset($savedlang)) {
 
 cRegistry::shutdown();
 
-?>

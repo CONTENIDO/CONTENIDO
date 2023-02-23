@@ -3,13 +3,13 @@
 /**
  * This file contains the cContentTypeRaw class.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
- * @author Frederic Schneider
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Content type CMS_RAW which contains hidding texts
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
  */
 class cContentTypeRaw extends cContentTypeAbstract {

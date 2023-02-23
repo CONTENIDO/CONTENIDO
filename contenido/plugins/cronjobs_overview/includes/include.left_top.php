@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the left top frame backend page for the plugin cronjob overview.
  *
@@ -31,5 +32,3 @@ $tpl = new cTemplate();
 $tpl->set('s', 'LABLE_CRONJOB_EDIT', i18n('Edit cronjob', 'cronjobs_overview'));
 $tpl->set('s', 'ROW', 'javascript:Con.multiLink(\'right_bottom\', \''.$sess->url("main.php?area=cronjob&frame=4&action=crontab_edit&file=$file").'\', \'left_bottom\',\''.$sess->url("main.php?area=cronjob&frame=2").'\');');
 $tpl->generate(cRegistry::getBackendPath() .  $cfg['path']['plugins'] . "cronjobs_overview/templates/left_top.html");
-
-?>

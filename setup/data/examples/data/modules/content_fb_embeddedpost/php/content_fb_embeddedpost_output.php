@@ -7,13 +7,13 @@
  * https://www.facebook.com/cms.contenido/posts/567068046687531
  * https://www.facebook.com/photo.php?fbid=567068046687531&amp;set=a.567067956687540.1073741828.153315271396146&amp;type=1
  *
- * @package Module
- * @subpackage ContentFbEmbedded Post
- * @author marcus.gnass
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @package    Module
+ * @subpackage ContentFbEmbeddedPost
+ * @author     marcus.gnass
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (cRegistry::isBackendEditMode()) {

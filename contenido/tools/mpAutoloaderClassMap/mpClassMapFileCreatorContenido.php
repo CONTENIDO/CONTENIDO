@@ -21,9 +21,9 @@
  * ];
  * </code>
  *
- * @category  Development
- * @package   mpAutoloaderClassMap
- * @author    Murat Purc <murat@purc.de>
+ * @category   Development
+ * @package    mpAutoloaderClassMap
+ * @author     Murat Purc <murat@purc.de>
  */
 class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
 {
@@ -46,6 +46,7 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
 
         $this->_template = trim('
 <?php
+
 /**
  * Project:
  * CONTENIDO Content Management System

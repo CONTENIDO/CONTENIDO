@@ -1,15 +1,16 @@
 <?php
+
 /**
  * This file performs various searches on articles from backend.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Holger Librenz
- * @author           Andreas Lindner
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Holger Librenz
+ * @author     Andreas Lindner
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {

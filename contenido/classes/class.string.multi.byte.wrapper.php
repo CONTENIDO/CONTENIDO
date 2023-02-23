@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * to the regular string function if the mbstring function does not exist
  * or the mbstring extension itself is not available.
  *
- * @package Core
+ * @package    Core
  * @subpackage Util
  * @todo add mb_chr(), mb_ord()
  */

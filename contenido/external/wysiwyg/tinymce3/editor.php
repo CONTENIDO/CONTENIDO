@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Main editor file for CONTENIDO
  *

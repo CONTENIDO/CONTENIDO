@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cronjob of the linkchecker plugin.
  *
  * @package    Plugin
  * @subpackage Linkchecker
- *
  * @author     Frederic Schneider
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt

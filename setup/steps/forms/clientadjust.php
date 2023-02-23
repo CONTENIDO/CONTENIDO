@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the client adjust setup mask.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Client adjust setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
  */
 class cSetupClientAdjust extends cSetupMask {
@@ -131,5 +132,3 @@ class cSetupClientAdjust extends cSetupMask {
     }
 
 }
-
-?>

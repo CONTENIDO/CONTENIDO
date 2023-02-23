@@ -2,11 +2,11 @@
 
 /**
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link https://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -97,5 +97,3 @@ $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
 
 // Generate the third navigation layer
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav']);
-
-?>

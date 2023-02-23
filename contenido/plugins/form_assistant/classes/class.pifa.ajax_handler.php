@@ -751,5 +751,3 @@ class PifaAjaxHandler {
         $tpl->display($cfg['templates']['pifa_ajax_option_row']);
     }
 }
-
-?>

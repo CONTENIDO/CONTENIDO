@@ -1,22 +1,24 @@
 <?php
+
 /**
  * This file contains the upgrade job 16.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
- * @author Frederic Schneider
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Upgrade job 16.
  * Updates some tables which uses old slashes-handling
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0016 extends cUpgradeJobAbstract {

@@ -15,7 +15,7 @@
 /**
  * This class tests the static class methods of the cDate util class.
  *
- * @author     Murat Purç <murat@purc.de>
+ * @author Murat Purç <murat@purc.de>
  */
 class cDateTest extends cTestingTestCase
 {

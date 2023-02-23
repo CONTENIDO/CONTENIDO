@@ -3,13 +3,13 @@
 /**
  * This file contains the inuse collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage GenericDB_Model
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Class InUse Class for In-Use management
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  * @method cApiInUse createNewItem
  * @method cApiInUse|bool next
@@ -315,7 +315,7 @@ class cApiInUseCollection extends ItemCollection {
 /**
  * Class cApiInUse Class for a single in-use item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiInUse extends Item

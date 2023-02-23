@@ -3,13 +3,13 @@
 /**
  * This file contains tests for Contenido cPermission.
  *
- * @package          Testing
- * @subpackage       Test_Registry
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Testing
+ * @subpackage Test_Registry
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 
@@ -18,8 +18,8 @@
  *
  * TODO Implement other unit tests for cPermission.
  *
- * @package          Testing
- * @subpackage       Test_Permission
+ * @package    Testing
+ * @subpackage Test_Permission
  */
 class cPermissionTest extends cTestingTestCase
 {

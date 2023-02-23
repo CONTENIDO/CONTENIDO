@@ -3,13 +3,13 @@
 /**
  * This file contains the uri builder mod rewrite class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage ModRewrite
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -31,7 +31,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @todo add handling of absolute paths
  * @todo standardize handling of fragments
- * @package Plugin
+ * @package    Plugin
  * @subpackage ModRewrite
  */
 class cUriBuilderMR extends cUriBuilder {

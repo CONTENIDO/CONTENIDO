@@ -3,13 +3,13 @@
 /**
  * Description: Article Include Output
  *
- * @package Module
+ * @package    Module
  * @subpackage ContentArticleInclude
- * @author Willi Man
- * @author alexander.scheider
- * @author frederic.schneider
- * @copyright four for business AG
- * @link https://www.4fb.de
+ * @author     Willi Man
+ * @author     alexander.scheider
+ * @author     frederic.schneider
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 
@@ -126,7 +126,7 @@ if ($cms_idcat != "0" && cString::getStringLength($cms_idcat) > 0) {
             `%s` AS a, `%s` AS b
         WHERE
             b.idcat = %d AND a.idart = b.idart AND a.idlang = %d
-	";
+    ";
 
     $db->query($sql, $cfg["tab"]["art_lang"], $cfg["tab"]["cat_art"], $cms_idcat, $languageId);
     $i = 1;

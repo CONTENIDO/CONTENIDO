@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the setup not installable class.
  *
@@ -18,7 +19,7 @@ session_unset();
 /**
  * Setup not installable class
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Setup
  */
 class cSetupNotInstallable extends cSetupMask
@@ -58,5 +59,3 @@ $cNotInstallable = new cSetupNotInstallable($sNotInstallableReason);
 $cNotInstallable->render();
 
 die();
-
-?>

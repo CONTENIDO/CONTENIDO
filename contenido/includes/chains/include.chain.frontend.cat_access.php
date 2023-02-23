@@ -4,13 +4,13 @@
  * CONTENIDO Chain.
  * Category access feature.
  *
- * @package          Core
- * @subpackage       Chain
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage Chain
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param int $idfrontenduser
  *
  * @return bool
- * 
+ *
  * @throws cDbException
  * @throws cException
  */
@@ -64,5 +64,3 @@ function cecFrontendCategoryAccess($idlang, $idcat, $idfrontenduser) {
 
     return false;
 }
-
-?>

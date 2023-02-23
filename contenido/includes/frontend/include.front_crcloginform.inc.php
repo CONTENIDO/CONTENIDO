@@ -6,13 +6,13 @@
  * NOTE:
  * This file has to run in clients frontend directory!
  *
- * @package          Core
- * @subpackage       Frontend
- * @author           Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage Frontend
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -53,7 +53,7 @@ if ($bRedirect) {
     $aUrl = $oUrl->parse($sess->url($sErrorUrl));
     $aUrl['params']['wrongpass'] = 1;
     $sErrorUrl = $oUrl->buildRedirect($aUrl['params']);
-	
+
 	$sErrorUrl = str_replace($sClientHtmlPath, $basePath, $sErrorUrl);
 
     header('Location: ' . $sErrorUrl);
@@ -76,9 +76,9 @@ if (isset($_GET['return']) || isset($_POST['return'])) {
     $sErrorUrl = $sUrl . '?' . implode('&', $aLocator);
     $aUrl = $oUrl->parse($sess->url($sErrorUrl));
     $sErrorUrl = $oUrl->buildRedirect($aUrl['params']);
-	
+
 	$sErrorUrl = str_replace($sClientHtmlPath, $basePath, $sErrorUrl);
-	
+
     header('Location: ' . $sErrorUrl);
     exit();
 }
@@ -107,5 +107,3 @@ $tpl->set("s", "USERNAME", (isset($this->auth['uname'])) ? $this->auth['uname'] 
 $tpl->set("s", "LOGINBUTTON", $sLoginButton);
 
 $tpl->generate($cfg['path']['contenido'] . $cfg["path"]["templates"] . $cfg["templates"]["front_loginform"]);
-
-?>

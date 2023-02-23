@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cronjob to activate/deactivate frontend users by time.
  *
  * @package    Core
  * @subpackage Cronjob
- *
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt

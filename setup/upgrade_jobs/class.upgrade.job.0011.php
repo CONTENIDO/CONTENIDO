@@ -3,13 +3,13 @@
 /**
  * This file contains the upgrade job 11.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
- * @author marcus.gnass
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     marcus.gnass
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert CONTENIDO framework
@@ -21,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Add column 'uri' in table con_pifa_form so that buttons of type image can
  * store an URI to their image.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0011 extends cUpgradeJobAbstract {

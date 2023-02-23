@@ -51,13 +51,13 @@
  * initialization options.
  * https://developers.facebook.com/docs/reference/javascript/FB.init
  *
- * @package Module
+ * @package    Module
  * @subpackage ScriptFbSdk
- * @author marcus.gnass
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     marcus.gnass
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 $settingType = 'fb-sdk';

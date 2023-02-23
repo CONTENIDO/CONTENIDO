@@ -1,15 +1,16 @@
 <?php
+
 /**
  * This file contains the permission class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Boris Erdmann
- * @author Kristian Koehntopp
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Boris Erdmann
+ * @author     Kristian Koehntopp
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class handles the permission management
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
  */
 class cPermission

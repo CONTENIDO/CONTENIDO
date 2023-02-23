@@ -1,14 +1,15 @@
 <?php
+
 /**
  * description:
  *
- * @package Module
+ * @package    Module
  * @subpackage ContentUserForum
- * @author claus.schunk@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     claus.schunk@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') or die('Illegal call');
@@ -19,7 +20,6 @@ if (cRegistry::isBackendEditMode()) {
 }
 
 /**
- *
  * @author claus.schunk
  */
 class UserForumArticle {
@@ -596,4 +596,5 @@ class UserForumArticle {
 // generate object
 $userForumArticle = new UserForumArticle();
 $userForumArticle->receiveData();
+
 ?>

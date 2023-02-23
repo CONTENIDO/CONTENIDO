@@ -18,7 +18,6 @@
  *
  * @package    Core
  * @subpackage Debug
- *
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt

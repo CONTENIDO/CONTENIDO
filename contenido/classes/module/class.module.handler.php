@@ -5,13 +5,13 @@
  *
  * @todo refactor documentation
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Rusmir Jusufovic
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Rusmir Jusufovic
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * and the module-output in file "[module_alias]_output.php".
  * All modules of a client are located in [frontend]/modules/.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
  */
 class cModuleHandler {

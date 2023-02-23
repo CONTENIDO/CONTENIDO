@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Defines all general variables of CONTENIDO.
  *
@@ -103,4 +104,3 @@ $cfg['db'] = [
  * @since	CONTENIDO version 4.9.5
  */
 {CON_UTF8}
-?>

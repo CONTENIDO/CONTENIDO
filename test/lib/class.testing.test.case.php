@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the test case class.
  *
- * @package          Testing
- * @subpackage       Helper
- * @author           Dominik Ziegler
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Testing
+ * @subpackage Helper
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 use PHPUnit\Framework\TestCase;
@@ -18,8 +19,8 @@ use PHPUnit\Framework\Assert;
 
 /**
  * CONTENIDO test case class
- * @package          Testing
- * @subpackage       Helper
+ * @package    Testing
+ * @subpackage Helper
  */
 abstract class cTestingTestCase extends TestCase {
     /**

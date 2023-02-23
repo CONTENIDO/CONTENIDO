@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the array utility class.
  *
@@ -23,7 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * TODO: Use generic DB instead of SQL queries
  *
- * @package Core
+ * @package    Core
  * @subpackage Util
  */
 class cArticleCollector implements SeekableIterator, Countable {

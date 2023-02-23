@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Generates the configuration file and saves it into CONTENIDO folder or
  * outputs the for download (depending on selected option during setup)
@@ -68,5 +69,3 @@ if ($_SESSION['configmode'] == 'save') {
     header('Content-Disposition: attachment;filename=config.php');
     $tpl->generate('templates/config.php.tpl', false, false);
 }
-
-?>

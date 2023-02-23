@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the class for workflow item management.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Class for workflow item management.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
  * @method WorkflowItem createNewItem
  * @method WorkflowItem|false next
@@ -197,11 +198,11 @@ class WorkflowItems extends ItemCollection {
  * Class WorkflowItem
  * Class for a single workflow item
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
+ * @author     Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
- * @copyright four for business 2003
+ * @copyright  four for business 2003
  */
 class WorkflowItem extends Item {
 

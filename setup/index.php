@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO setup script. Main entry point for the setup requests.
  *
@@ -44,5 +45,3 @@ if (is_file($filePathName)) {
 } else {
     die('Illegal setup call 2');
 }
-
-?>

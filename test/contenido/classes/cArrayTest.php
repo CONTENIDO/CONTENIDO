@@ -15,7 +15,7 @@
 /**
  * This class tests the static class methods of the cArray util class.
  *
- * @author marcus.gnass
+ * @author     marcus.gnass
  */
 class cArrayTest extends cTestingTestCase
 {

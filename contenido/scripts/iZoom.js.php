@@ -41,7 +41,7 @@ i18nInit($cfg['path']['contenido_locale'], $belang);
 /**
  * CONTENIDO iZoom JavaScript module.
  *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
+ * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt
  * @link       https://www.4fb.de

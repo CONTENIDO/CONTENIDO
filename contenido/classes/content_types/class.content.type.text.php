@@ -3,13 +3,13 @@
 /**
  * This file contains the cContentTypeText class.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Content type CMS_TEXT which lets the editor enter a single-line text.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
  */
 class cContentTypeText extends cContentTypeAbstract {

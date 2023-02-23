@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the path information setup mask.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Path information setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
  */
 class cSetupPath extends cSetupMask
@@ -70,4 +71,3 @@ class cSetupPath extends cSetupMask
         $this->__construct($step, $previous, $next);
     }
 }
-?>

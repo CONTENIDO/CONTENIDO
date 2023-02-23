@@ -13,13 +13,13 @@
  * - {_JS_HEAD_CONTENIDO_}:  Default script tags to load core JS files
  * - {_JS_HEAD_CONTENIDO_FULLHTML_}:  Default script tags with full URL to contenido backend
  *
- * @package          Core
- * @subpackage       Chain
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage Chain
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the setup results setup mask.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Setup results setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
  */
 class cSetupResults extends cSetupMask
@@ -88,5 +89,3 @@ class cSetupResults extends cSetupMask
         $this->__construct($step);
     }
 }
-
-?>

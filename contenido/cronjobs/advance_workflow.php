@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file contains the cronjob to advance workflow.
  * Advances to the next step if the time limit is 'over'
  *
  * @package    Plugin
  * @subpackage Workflow
- *
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the date utility class.
  *
@@ -17,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Date helper class.
  *
  * @since CONTENIDO 4.10.2
- * @package Core
+ * @package    Core
  * @subpackage Util
  */
 class cDate

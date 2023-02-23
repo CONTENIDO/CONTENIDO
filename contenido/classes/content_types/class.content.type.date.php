@@ -3,15 +3,15 @@
 /**
  * This file contains the cContentTypeDate class.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
- * @author Bilal Arslan
- * @author Timo Trautmann
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Bilal Arslan
+ * @author     Timo Trautmann
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * The selected date is then shown in the selected
  * format.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
  */
 class cContentTypeDate extends cContentTypeAbstract {

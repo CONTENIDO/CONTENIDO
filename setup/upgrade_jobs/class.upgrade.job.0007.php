@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the upgrade job 7.
  *
@@ -18,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Copies the content of the con_plugins."path" column to the "folder" column
  * and deletes the "path" column afterwards.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0007 extends cUpgradeJobAbstract {

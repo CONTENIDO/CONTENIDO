@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the client mode setup mask.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Client mode setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
  */
 class cSetupClientMode extends cSetupMask {
@@ -113,5 +114,3 @@ class cSetupClientMode extends cSetupMask {
     }
 
 }
-
-?>

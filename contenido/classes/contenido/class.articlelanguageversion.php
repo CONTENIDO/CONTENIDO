@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the article language version collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Jann Dieckmann
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Jann Dieckmann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Article language version collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection {
@@ -211,7 +212,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
  * linkdescr - Linkdescription
  * swf - Upload id of the element
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiArticleLanguageVersion extends cApiArticleLanguage {

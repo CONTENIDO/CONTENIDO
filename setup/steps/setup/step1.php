@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO setup step 1 - system data.
  *
@@ -17,4 +18,3 @@ checkAndInclude("steps/forms/systemdata.php");
 
 $cSetupSystemData = new cSetupSystemData(1, "setuptype", "setup2");
 $cSetupSystemData->render();
-?>

@@ -1,19 +1,18 @@
 <?php
+
 /**
  * This file contains the cache configuration of the client.
  *
- * @package          Core
- * @subpackage       Frontend_ConfigFile
- * @author           System
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage Frontend_ConfigFile
+ * @author     System
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // Uncomment following line 4 debugging any occurred errors and warnings
 #error_reporting(E_ALL);

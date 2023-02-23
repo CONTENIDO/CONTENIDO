@@ -3,16 +3,16 @@
 /**
  * description: standard article doorway configuration
  *
- * Allows to select an imagewhich will be used as teaser image by the module
+ * Allows to select an image which will be used as teaser image by the module
  * content_teaser_image.
  *
- * @package Module
+ * @package    Module
  * @subpackage ContentTeaser
- * @author timo.trautmann@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Timo.trautmann@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert framework initialization

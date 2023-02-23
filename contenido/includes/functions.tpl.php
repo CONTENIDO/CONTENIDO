@@ -3,15 +3,15 @@
 /**
  * This file contains the CONTENIDO template functions.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Olaf Niemann
- * @author           Jan Lengowski
- * @author           Munkh-Ulzii Balidar
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Olaf Niemann
+ * @author     Jan Lengowski
+ * @author     Munkh-Ulzii Balidar
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

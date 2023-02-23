@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the upgrade job 3.
  *
@@ -17,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Upgrade job 3.
  * Runs the upgrade job for convert date time and urldecode.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0003 extends cUpgradeJobAbstract {

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @package Module
+ * @package    Module
  * @subpackage ContentSitemapXml
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG
- * @link https://www.4fb.de
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 class ModuleContentSitemapXml

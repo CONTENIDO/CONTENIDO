@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO setup step 7 - setup summary.
  *
@@ -19,4 +20,3 @@ checkAndInclude("steps/forms/setupsummary.php");
 
 $cSetupSetupSummary = new cSetupSetupSummary(7, "setup6", "doinstall");
 $cSetupSetupSummary->render();
-?>

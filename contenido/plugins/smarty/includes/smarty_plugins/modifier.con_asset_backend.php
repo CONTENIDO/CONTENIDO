@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -11,7 +12,7 @@
  * Name:     con_asset_backend
  * Purpose:  Adds version hash to js/css assets
  *
- * @author Murat Purc <murat@purc.de>
+ * @author     Murat Purc <murat@purc.de>
  *
  * @param string  $path      Relative path to asset file
  * @return string  Modified path with version hash

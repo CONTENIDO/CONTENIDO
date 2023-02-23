@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the upgrade job 4.
  *
@@ -17,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Upgrade job 4.
  * Runs the upgrade job to takeover some properties from upload to upload_meta
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0004 extends cUpgradeJobAbstract {

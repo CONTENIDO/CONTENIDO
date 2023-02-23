@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLHiddenField class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  *
  */
 
@@ -19,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLHiddenField class represents a hidden form field.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
 class cHTMLHiddenField extends cHTMLFormElement {

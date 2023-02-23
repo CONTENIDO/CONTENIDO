@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains various note classes.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class uses the communication collection to serve a special collection
  * for notes.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class NoteCollection extends cApiCommunicationCollection {
@@ -106,7 +107,7 @@ class NoteCollection extends cApiCommunicationCollection {
 /**
  * This class uses the communication item to serve a special item for notes.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class NoteItem extends cApiCommunication {
@@ -115,7 +116,7 @@ class NoteItem extends cApiCommunication {
 /**
  * This class uses the iframe GUI class to serve a special iframe for notes.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
 class NoteView extends cHTMLIFrame {
@@ -136,7 +137,7 @@ class NoteView extends cHTMLIFrame {
 /**
  * This class uses the div GUI class to serve a special div for note lists.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
 class NoteList extends cHTMLDiv {
@@ -239,7 +240,7 @@ class NoteList extends cHTMLDiv {
 /**
  * This class uses the div GUI class to serve a special div for note list items.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
 class NoteListItem extends cHTMLDiv {
@@ -390,7 +391,7 @@ class NoteListItem extends cHTMLDiv {
 /**
  * This class uses the link GUI class to serve a special link for notes.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
 class NoteLink extends cHTMLLink {

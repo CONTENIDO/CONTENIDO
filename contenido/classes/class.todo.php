@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains various to-do classes.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license https://www.contenido.org/license/LIZENZ.txt
- * @link https://www.4fb.de
- * @link https://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class uses the communication collection to serve a special collection
  * for to-do entries.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class TODOCollection extends cApiCommunicationCollection
@@ -150,7 +151,7 @@ class TODOCollection extends cApiCommunicationCollection
  * This class uses the communication collection to serve a special collection
  * for to-do entries.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class TODOItem extends cApiCommunication
@@ -195,7 +196,7 @@ class TODOItem extends cApiCommunication
 /**
  * This class uses the link GUI class to serve a special link for to-do entries.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
 class TODOLink extends cHTMLLink

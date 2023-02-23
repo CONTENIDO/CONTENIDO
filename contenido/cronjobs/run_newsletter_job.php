@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cronjob for newsletter plugin.
  *
  * @package    Plugin
  * @subpackage Newsletter
- *
  * @author     Bjoern Behrens
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt

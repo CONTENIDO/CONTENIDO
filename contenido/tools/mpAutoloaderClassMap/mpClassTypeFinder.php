@@ -13,9 +13,9 @@
 /**
  * Class to find class type tokens
  *
- * @category  Development
- * @package   mpAutoloaderClassMap
- * @author    Murat Purc <murat@purc.de>
+ * @category   Development
+ * @package    mpAutoloaderClassMap
+ * @author     Murat Purc <murat@purc.de>
  */
 class mpClassTypeFinder
 {

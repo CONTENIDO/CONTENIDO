@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the string utility class.
  *
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * String helper class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Util
  */
 class cString extends cStringMultiByteWrapper {

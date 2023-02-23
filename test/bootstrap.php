@@ -1,17 +1,18 @@
 <?php
+
 /**
  * Bootstrap file for UnitTest.
  *
  * This file should include at least once. It initializes the UnitTest Framework
  * and also CONTENIDO frontend.
  *
- * @package          Testing
- * @subpackage       Bootstrap
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          https://www.contenido.org/license/LIZENZ.txt
- * @link             https://www.4fb.de
- * @link             https://www.contenido.org
+ * @package    Testing
+ * @subpackage Bootstrap
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 ################################################################################

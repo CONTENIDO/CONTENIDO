@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO setup step 6 - admin password.
  *
@@ -17,4 +18,3 @@ checkAndInclude("steps/forms/adminpassword.php");
 
 $cSetupSetupSummary = new cSetupAdminPassword(6, "setup5", "setup7");
 $cSetupSetupSummary->render();
-?>
