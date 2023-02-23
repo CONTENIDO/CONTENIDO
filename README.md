@@ -1,4 +1,6 @@
-﻿# CONTENIDO CMS
+﻿![CONTENIDO Logo](./contenido/images/conlogo.gif)
+
+# CONTENIDO CMS
 
 [DE] CONTENIDO ist ein freies und Open-Source Web-Content-Management-System aus Deutschland.
 
@@ -89,9 +91,9 @@ No Warranty - take a look at the GPL at the end of this file.
 
 ## [DE] Installation und Aktualisierung / [EN] Installation and Upgrade
 
-[DE] Anleitungen zur Installation oder Aktualisierung finden sie im Verzeichnis [docs/](./docs/) oder unter der [Online Dokumentation](https://contenido.atlassian.net/wiki/spaces/COND).
+[DE] Anleitungen zur Installation oder Aktualisierung finden sie im Verzeichnis [docs/](./docs) oder unter der [Online Dokumentation](https://contenido.atlassian.net/wiki/spaces/COND).
 
-[EN] Installation or upgrade guides can be found in the [docs/](./docs/) folder or at the [online documentation](https://contenido.atlassian.net/wiki/spaces/CONE).
+[EN] Installation or upgrade guides can be found in the [docs/](./docs) folder or at the [online documentation](https://contenido.atlassian.net/wiki/spaces/CONE).
 
 ----
 
