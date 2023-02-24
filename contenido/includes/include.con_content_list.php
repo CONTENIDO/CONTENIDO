@@ -658,7 +658,7 @@ switch ($versioningState) {
         $versioningBoxInfo = new cHTMLDiv();
         $versioningBoxInfo->setContent($versioning_info_text);
         $versioningBoxInfo->setID('pluginInfoDetails');
-        $versioningBoxInfo->setClass('nodisplay');
+        $versioningBoxInfo->setClass('no_display');
         $versioningBoxContent->appendContent($versioningBoxInfo);
 
         $versioningBoxContent->appendContent($versioningBoxContentChooser);
@@ -840,7 +840,7 @@ switch ($versioningState) {
         $versioningBoxInfo = new cHTMLDiv();
         $versioningBoxInfo->setContent($versioning_info_text);
         $versioningBoxInfo->setID('pluginInfoDetails');
-        $versioningBoxInfo->setClass('nodisplay');
+        $versioningBoxInfo->setClass('no_display');
         $versioningBoxContent->appendContent($versioningBoxInfo);
 
         $versioningBoxContent->appendContent($versioningBoxContentChooser);

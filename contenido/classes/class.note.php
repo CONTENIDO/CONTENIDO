@@ -364,7 +364,7 @@ class NoteListItem extends cHTMLDiv {
 
         $table = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td><b>';
         $table .= $this->_sAuthor;
-        $table .= '</b></td><td align="right">';
+        $table .= '</b></td><td class="text_right">';
         $table .= $this->_sDate;
 
         if ($this->_bDeleteable == true) {

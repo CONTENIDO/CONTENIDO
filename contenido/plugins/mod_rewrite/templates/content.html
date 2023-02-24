@@ -14,7 +14,7 @@
     <div class="pluginInfo">
         <div><span class="blockLeft">Plugin Advanced Mod Rewrite</span>
             <a href="#" id="pluginInfoDetails-link" class="main i-link infoButton" title=""></a><div class="clear"></div></div>
-        <div id="pluginInfoDetails" class="nodisplay">
+        <div id="pluginInfoDetails" class="no_display">
             <ul class="list">
                 <li class="first"><strong>{LNG_AUTHOR}:</strong> Murat Pur&ccedil;, <a href="mailto:murat@purc.de" title="{LNG_MAIL_TO_AUTHOR}">murat@purc.de</a></li>
                 <li><strong>{LNG_PLUGINPAGE}:</strong> <a href="https://www.purc.de/playground-coding-contenido_plugin_-_advanced_mod_rewrite-a.109.html" onclick="window.open(this.href); return false;" title="{LNG_VISIT_PLUGINPAGE} ({LNG_OPENS_IN_NEW_WINDOW})">{LNG_VISIT_PLUGINPAGE}</a></li>
@@ -40,7 +40,7 @@
     <col width="70%">
 </colgroup>
 <tr class="bgcE2">
-    <th colspan="2" class="text_medium col-I borderrB3">{LNG_PLUGIN_SETTINGS}</th>
+    <th colspan="2" class="text_medium col-I border_r_b3">{LNG_PLUGIN_SETTINGS}</th>
 </tr>
 
 <!-- htaccess info / empty aliases -->
@@ -64,7 +64,7 @@
             <label for="mr_use">{LNG_ENABLE_AMR}</label>
         </div>
         <a href="#" id="enableInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
-        <div id="enableInfo1" class="nodisplay">
+        <div id="enableInfo1" class="no_display">
             <strong>{LNG_NOTE}</strong><br>
             {LNG_MSG_ENABLE_AMR_INFO}<br>
             <br>
@@ -77,25 +77,25 @@
 <!-- root dir -->
 <tr>
     <td class="text_medium col-I">{LNG_ROOTDIR}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         {ROOTDIR_ERROR}
         <input class="text_medium blockLeft" type="text" name="rootdir" size="50" maxlength="64" value="{ROOTDIR}">
         <a href="#" id="rootdirInfo1-link" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="rootdirInfo1" class="nodisplay">{LNG_ROOTDIR_INFO}</div>
+        <div id="rootdirInfo1" class="no_display">{LNG_ROOTDIR_INFO}</div>
         <br>
         <div class="blockLeft">
             <input type="checkbox" id="mr_checkrootdir" name="checkrootdir" value="1"{CHECKROOTDIR_CHK}>
             <label for="mr_checkrootdir">{LNG_CHECKROOTDIR}</label>
         </div>
         <a href="#" id="rootdirInfo2-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
-        <div id="rootdirInfo2" class="nodisplay">{LNG_CHECKROOTDIR_INFO}</div>
+        <div id="rootdirInfo2" class="no_display">{LNG_CHECKROOTDIR_INFO}</div>
     </td>
 </tr>
 
 <!-- use client/use client name -->
 <tr>
     <td class="text_medium col-I">{LNG_USE_CLIENT}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         <input type="checkbox" id="mr_use_client" name="use_client" value="1"{USE_CLIENT_CHK}>
         <label for="mr_use_client">{LNG_USE_CLIENT_LBL}</label><br>
         <br>
@@ -107,7 +107,7 @@
 <!-- use language/use language name -->
 <tr>
     <td class="text_medium col-I">{LNG_USE_LANGUAGE}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         <input type="checkbox" id="mr_use_language" name="use_language" value="1"{USE_LANGUAGE_CHK}>
         <label for="mr_use_language">{LNG_USE_LANGUAGE_LBL}</label><br>
         <br>
@@ -119,13 +119,13 @@
 <!-- start from root -->
 <tr>
     <td class="text_medium col-I">{LNG_STARTFROMROOT}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         <div class="blockLeft">
             <input type="checkbox" id="mr_startfromroot" name="startfromroot" value="1"{STARTFROMROOT_CHK}>
             <label for="mr_startfromroot">{LNG_STARTFROMROOT_LBL}</label>
         </div>
         <a href="#" id="startFromRootInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
-        <div id="startFromRootInfo1" class="nodisplay">{LNG_STARTFROMROOT_INFO}</div>
+        <div id="startFromRootInfo1" class="no_display">{LNG_STARTFROMROOT_INFO}</div>
     </td>
 </tr>
 
@@ -134,7 +134,7 @@
     <td colspan="2" class="text_medium col-I altBg">
         <strong class="blockLeft">{LNG_USERDEFINED_SEPARATORS_HEADER}</strong>
         <a href="#" id="userdefSeparatorInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="userdefSeparatorInfo1" class="nodisplay">
+        <div id="userdefSeparatorInfo1" class="no_display">
             <strong>{LNG_EXAMPLE}:</strong>
             <pre class="example">{LNG_USERDEFINED_SEPARATORS_EXAMPLE}</pre>
 
@@ -156,7 +156,7 @@
 
 <tr>
     <td class="text_medium col-I altBg">{LNG_CATEGORY_SEPARATOR}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         {CATEGORY_SEPARATOR_ERROR}
         <input class="text_medium" type="text" id="mr_category_seperator" name="category_seperator" size="5" maxlength="1" value="{CATEGORY_SEPARATOR}"{CATEGORY_SEPARATOR_ATTRIB}>
         <small>{LNG_CATART_SEPARATOR_INFO}</small>
@@ -165,7 +165,7 @@
 
 <tr>
     <td class="text_medium col-I altBg">{LNG_CATEGORY_WORD_SEPARATOR}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         {CATEGORY_WORD_SEPARATOR_ERROR}
         <input class="text_medium" type="text" id="mr_category_word_seperator" name="category_word_seperator" size="5" maxlength="1" value="{CATEGORY_WORD_SEPARATOR}"{CATEGORY_WORD_SEPARATOR_ATTRIB}>
         <small>{LNG_WORD_SEPARATOR_INFO}</small>
@@ -174,7 +174,7 @@
 
 <tr>
     <td class="text_medium col-I altBg">{LNG_ARTICLE_SEPARATOR}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         {ARTICLE_SEPARATOR_ERROR}
         <input class="text_medium" type="text" id="mr_article_seperator" name="article_seperator" size="5" maxlength="1" value="{ARTICLE_SEPARATOR}"{ARTICLE_SEPARATOR_ATTRIB}>
         <small>{LNG_CATART_SEPARATOR_INFO}</small>
@@ -182,7 +182,7 @@
 </tr>
 <tr>
     <td class="text_medium col-I altBg">{LNG_ARTICLE_WORD_SEPARATOR}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         {ARTICLE_WORD_SEPARATOR_ERROR}
         <input class="text_medium" type="text" id="mr_article_word_seperator" name="article_word_seperator" size="5" maxlength="1" value="{ARTICLE_WORD_SEPARATOR}"{ARTICLE_WORD_SEPARATOR_ATTRIB}>
         <small>{LNG_WORD_SEPARATOR_INFO}</small>
@@ -192,7 +192,7 @@
 <!-- add start article name to url -->
 <tr>
     <td class="text_medium col-I">{LNG_ADD_STARTART_NAME_TO_URL}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         {ADD_STARTART_NAME_TO_URL_ERROR}
         <input type="checkbox" id="mr_add_startart_name_to_url" name="add_startart_name_to_url" value="1"{ADD_STARTART_NAME_TO_URL_CHK}>
         <label for="mr_add_startart_name_to_url">{LNG_ADD_STARTART_NAME_TO_URL_LBL}</label><br>
@@ -202,20 +202,20 @@
             <input class="text_medium" type="text" id="mr_default_startart_name" name="default_startart_name" size="50" maxlength="64" value="{DEFAULT_STARTART_NAME}">
         </div>
         <a href="#" id="defaultStartArtNameInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
-        <div id="defaultStartArtNameInfo1" class="nodisplay">{LNG_DEFAULT_STARTART_NAME_INFO}</div>
+        <div id="defaultStartArtNameInfo1" class="no_display">{LNG_DEFAULT_STARTART_NAME_INFO}</div>
     </td>
 </tr>
 
 <!-- file extension -->
 <tr>
     <td class="text_medium col-I">{LNG_FILE_EXTENSION}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         {FILE_EXTENSION_ERROR}
         <div class="blockLeft">
             <input class="text_medium" type="text" name="file_extension" size="10" maxlength="10" value="{FILE_EXTENSION}"><br>
         </div>
         <a href="#" id="fileExtensionInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
-        <div id="fileExtensionInfo1" class="nodisplay">
+        <div id="fileExtensionInfo1" class="no_display">
             {LNG_FILE_EXTENSION_INFO}<br><br>
             <strong>{LNG_NOTE}:</strong><br>
             {LNG_FILE_EXTENSION_INFO2}
@@ -227,7 +227,7 @@
 <!-- use lowercase url -->
 <tr>
     <td class="text_medium col-I">{LNG_USE_LOWERCASE_URI}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         <input type="checkbox" id="mr_use_lowercase_uri" name="use_lowercase_uri" value="1"{USE_LOWERCASE_URI_CHK}>
         <label for="mr_use_lowercase_uri">{LNG_USE_LOWERCASE_URI_LBL}</label>
     </td>
@@ -236,12 +236,12 @@
 <!-- prevent duplicated content -->
 <tr>
     <td class="text_medium col-I">{LNG_PREVENT_DUPLICATED_CONTENT}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         <div class="blockLeft">
             <input type="checkbox" id="mr_prevent_duplicated_content" name="prevent_duplicated_content" value="1"{PREVENT_DUPLICATED_CONTENT_CHK}> <label for="mr_prevent_duplicated_content">{LNG_PREVENT_DUPLICATED_CONTENT_LBL}</label><br>
         </div>
         <a href="#" id="preventDuplicatedContentInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
-        <div id="preventDuplicatedContentInfo1" class="nodisplay">
+        <div id="preventDuplicatedContentInfo1" class="no_display">
             {LNG_PREVENT_DUPLICATED_CONTENT_INFO}:<br>
             <ul>
             {LNG_PREVENT_DUPLICATED_CONTENT_INFO2}
@@ -253,13 +253,13 @@
 <!-- category resolve min percentage -->
 <tr>
     <td class="text_medium col-I">{LNG_CATEGORY_RESOLVE_MIN_PERCENTAGE}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         {CATEGORY_RESOLVE_MIN_PERCENTAGE_ERROR}
         <div class="blockLeft">
             <input class="text_medium" type="text" name="category_resolve_min_percentage" size="5" maxlength="3" value="{CATEGORY_RESOLVE_MIN_PERCENTAGE}"> (0 - 100)
         </div>
         <a href="#" id="categoryResolveMinPercentageInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
-        <div id="categoryResolveMinPercentageInfo1" class="nodisplay">
+        <div id="categoryResolveMinPercentageInfo1" class="no_display">
             <p>{LNG_CATEGORY_RESOLVE_MIN_PERCENTAGE_INFO}</p>
             <strong>{LNG_EXAMPLE}:</strong>
             <pre class="example">{LNG_CATEGORY_RESOLVE_MIN_PERCENTAGE_EXAMPLE}</pre>
@@ -270,13 +270,13 @@
 <!-- redirect invalid article to errorsite -->
 <tr>
     <td class="text_medium col-I">{LNG_REDIRECT_INVALID_ARTICLE_TO_ERRORSITE}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         <div class="blockLeft">
             <input type="checkbox" id="mr_redirect_invalid_article_to_errorsite" name="redirect_invalid_article_to_errorsite" value="1"{REDIRECT_INVALID_ARTICLE_TO_ERRORSITE_CHK}>
             <label for="mr_redirect_invalid_article_to_errorsite">{LNG_REDIRECT_INVALID_ARTICLE_TO_ERRORSITE_LBL}</label><br>
         </div>
         <a href="#" id="redirectInvalidArticleToErrorsiteInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
-        <div id="redirectInvalidArticleToErrorsiteInfo1" class="nodisplay">
+        <div id="redirectInvalidArticleToErrorsiteInfo1" class="no_display">
             {LNG_REDIRECT_INVALID_ARTICLE_TO_ERRORSITE_INFO}
         </div>
     </td>
@@ -285,13 +285,13 @@
 <!-- rewrite urls at -->
 <tr>
     <td class="text_medium col-I">{LNG_REWRITE_URLS_AT}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         <div class="blockLeft">
             <input type="radio" id="rewrite_urls_at_front_content_output" name="rewrite_urls_at" value="front_content_output"{REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_CHK}>
             <label for="rewrite_urls_at_front_content_output">{LNG_REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_LBL}</label>
         </div>
         <a href="#" id="rewriteUrlsAtInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
-        <div id="rewriteUrlsAtInfo1" class="nodisplay">
+        <div id="rewriteUrlsAtInfo1" class="no_display">
             {LNG_REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_INFO}<br>
             <br>
             <strong>{LNG_REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_INFO2}:</strong>
@@ -306,7 +306,7 @@
             <label for="rewrite_urls_at_congeneratecode">{LNG_REWRITE_URLS_AT_CONGENERATECODE_LBL}</label><br>
         </div>
         <a href="#" id="rewriteUrlsAtInfo2-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
-        <div id="rewriteUrlsAtInfo2" class="nodisplay">
+        <div id="rewriteUrlsAtInfo2" class="no_display">
         {LNG_REWRITE_URLS_AT_CONGENERATECODE_INFO}<br>
 <pre class="example">{LNG_REWRITE_URLS_AT_CONGENERATECODE_EXAMPLE}</pre>
 
@@ -321,10 +321,10 @@
 <!-- routing -->
 <tr>
     <td class="text_medium col-I">{LNG_REWRITE_ROUTING}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium text_left col-II">
         <div class="blockLeft">{LNG_REWRITE_ROUTING_INFO}</div>
         <a href="#" id="routingInfo1-link" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="routingInfo1" class="nodisplay">
+        <div id="routingInfo1" class="no_display">
 {LNG_REWRITE_ROUTING_INFO2}
 <pre class="example">{LNG_REWRITE_ROUTING_EXAMPLE}</pre>
 <br>
@@ -337,7 +337,7 @@
 </tr>
 
 <tr>
-    <td colspan="2" class="text_medium col-I tgright noborderb">
+    <td colspan="2" class="text_medium col-I text_right no_border_b">
         <a accesskey="c" href="main.php?area={AREA}&amp;frame=4&amp;idclient={IDCLIENT}&amp;contenido={_SID_}">
             <img src="images/but_cancel.gif" alt="" title="{LNG_DISCARD_CHANGES}"></a>
         <input class="mgl20" accesskey="s" type="image" src="images/but_ok.gif" alt="" title="{LNG_SAVE_CHANGES}">

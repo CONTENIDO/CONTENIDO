@@ -421,15 +421,15 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             // Convert to start article/regular article
             if ($backendSearchHelper->hasArticleMakeStartPermission($idcat) && 0 == 1) {
                 if ($startidartlang == $idartlang) {
-                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><a href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&contenido=$sSession\" title=\"{$lngFlagAsNormalArticle}\"><img src=\"images/isstart1.gif\" title=\"{$lngFlagAsNormalArticle}\" alt=\"{$lngFlagAsNormalArticle}\"></a></td>";
+                    $makeStartarticle = "<td class=\"no_wrap bordercell\"><a href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&contenido=$sSession\" title=\"{$lngFlagAsNormalArticle}\"><img src=\"images/isstart1.gif\" title=\"{$lngFlagAsNormalArticle}\" alt=\"{$lngFlagAsNormalArticle}\"></a></td>";
                 } else {
-                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><a href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&contenido=$sSession\" title=\"{$lngFlagAsStartArticle}\"><img src=\"images/isstart0.gif\" title=\"{$lngFlagAsStartArticle}\" alt=\"{$lngFlagAsStartArticle}\"></a></td>";
+                    $makeStartarticle = "<td class=\"no_wrap bordercell\"><a href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&contenido=$sSession\" title=\"{$lngFlagAsStartArticle}\"><img src=\"images/isstart0.gif\" title=\"{$lngFlagAsStartArticle}\" alt=\"{$lngFlagAsStartArticle}\"></a></td>";
                 }
             } else {
                 if ($startidartlang == $idartlang) {
-                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><img src=\"images/isstart1.gif\" title=\"{$lngFlagAsNormalArticle}\" alt=\"{$lngFlagAsNormalArticle}\"></td>";
+                    $makeStartarticle = "<td class=\"no_wrap bordercell\"><img src=\"images/isstart1.gif\" title=\"{$lngFlagAsNormalArticle}\" alt=\"{$lngFlagAsNormalArticle}\"></td>";
                 } else {
-                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><img src=\"images/isstart0.gif\" title=\"{$lngFlagAsStartArticle}\" alt=\"{$lngFlagAsStartArticle}\"></td>";
+                    $makeStartarticle = "<td class=\"no_wrap bordercell\"><img src=\"images/isstart0.gif\" title=\"{$lngFlagAsStartArticle}\" alt=\"{$lngFlagAsStartArticle}\"></td>";
                 }
             }
 
@@ -497,12 +497,12 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
 
             $sRow = '<tr id="' . $sRowId . '" class="text_medium row_mark" data-idcat="' . $idcat . '" data-idart="' . $idart . '">' . "\n";
             $sRow .= $makeStartarticle . "\n";
-            $sRow .= "<td nowrap=\"nowrap\" class=\"bordercell\">$editart</td>
-                      <td nowrap=\"nowrap\" class=\"bordercell\">$lastmodified</td>
-                      <td nowrap=\"nowrap\" class=\"bordercell\">$published</td>
-                      <td nowrap=\"nowrap\" class=\"bordercell\">" . $db->f('artsort') . "</td>
-                      <td nowrap=\"nowrap\" class=\"bordercell\">$sTemplateName</td>
-                      <td nowrap=\"nowrap\" class=\"bordercell\">
+            $sRow .= "<td class=\"no_wrap bordercell\">$editart</td>
+                      <td class=\"no_wrap bordercell\">$lastmodified</td>
+                      <td class=\"no_wrap bordercell\">$published</td>
+                      <td class=\"no_wrap bordercell\">" . $db->f('artsort') . "</td>
+                      <td class=\"no_wrap bordercell\">$sTemplateName</td>
+                      <td class=\"no_wrap bordercell\">
                           <a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$lngReminder&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=625');\" title=\"$lngSetReminder\" href=\"#\"><img id=\"m2\" alt=\"$lngSetReminder\" src=\"images/but_setreminder.gif\"></a>
                           $properties
                           $tplconfig

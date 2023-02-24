@@ -643,12 +643,12 @@ $startwrap = '<table class="hoverbox generic">
                    <th>' . i18n("Actions") . '</th>
                </tr>';
 $itemwrap = '<tr data-list-item="{LIST_ITEM_POS}">
-                   <td class="tgcenter">%s</td>
-                   <td class="tgcenter">%s</td>
-                   <td class="vAlignTop nowrap">%s</td>
-                   <td class="vAlignTop nowrap">%s</td>
-                   <td class="vAlignTop nowrap">%s</td>
-                   <td class="vAlignTop nowrap">%s</td>
+                   <td class="text_center">%s</td>
+                   <td class="text_center">%s</td>
+                   <td class="vAlignTop no_wrap">%s</td>
+                   <td class="vAlignTop no_wrap">%s</td>
+                   <td class="vAlignTop no_wrap">%s</td>
+                   <td class="vAlignTop no_wrap">%s</td>
                </tr>';
 $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 

@@ -83,7 +83,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
                     </span>
                     ' . $html->render() . '
                   </div>
-                  <div id="pluginInfoDetails" class="nodisplay">'
+                  <div id="pluginInfoDetails" class="no_display">'
                   . i18n('<p><strong>Article versioning:</strong></p>'
                       . '<ul style="list-style:none;">'
                         . '<li>'

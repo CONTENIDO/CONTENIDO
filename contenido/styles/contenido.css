@@ -1728,48 +1728,82 @@ p.column_header {
  * @section Border
  */
 
-.noborder {
-    border: 0;
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `noborder`, use `no_border` instead */
+.noborder {border: 0;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `borderB5`, use `border_b5` instead */
+.borderB5 {border: 1px solid #b5b5b5;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `bordertB5`, use `border_t_b5` instead */
+.bordertB5 {border-top: 1px solid #b5b5b5;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `borderlB5`, use `border_l_b5` instead */
+.borderlB5 {border-left: 1px solid #b5b5b5;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `borderrB5`, use `border_r_b5` instead */
+.borderrB5 {border-right: 1px solid #b5b5b5;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `borderB3`, use `border_b3` instead */
+.borderB3 {border: 1px solid #b3b3b3;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `borderrB3`, use `border_r_b3` instead */
+.borderrB3 {border-right: 1px solid #b3b3b3;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `border74`, use `border_74` instead */
+.border74 {border: 1px solid #747488;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `bordert06`, use `border_t_06` instead */
+.bordert06 {border-top: 1px solid #0060b1;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `border169`, use `border_169` instead */
+.border169 {border: 0 solid rgb(169, 174, 194); border-top-width: 1px;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `nobordert`, use `no_border_t` instead */
+.nobordert {border-top: 0;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `noborderr`, use `no_border_r` instead */
+.noborderr {border-right: 0;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `noborderb`, use `no_border_b` instead */
+.noborderb {border-bottom: 0;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `noborderl`, use `no_border_l` instead */
+.noborderl {border-left: 0;}
+
+.no_border {
+    border: 0 !important;
 }
-.borderB5 {
-    border: 1px solid #b5b5b5;
+.no_border_t {
+    border-top: 0 !important;
 }
-.bordertB5 {
-    border-top: 1px solid #b5b5b5;
+.no_border_r {
+    border-right: 0 !important;
 }
-.borderlB5 {
-    border-left: 1px solid #b5b5b5;
+.no_border_b {
+    border-bottom: 0 !important;
 }
-.borderrB5 {
-    border-right: 1px solid #b5b5b5;
+.no_border_l {
+    border-left: 0 !important;
 }
-.borderB3 {
-    border: 1px solid #b3b3b3;
+
+.border_b5 {
+    border: 1px solid #b5b5b5 !important;
 }
-.borderrB3 {
-    border-right: 1px solid #b3b3b3;
+.border_t_b5 {
+    border-top: 1px solid #b5b5b5 !important;
 }
-.border74 {
-    border: 1px solid #747488;
+.border_l_b5 {
+    border-left: 1px solid #b5b5b5 !important;
 }
-.bordert06 {
-    border-top: 1px solid #0060b1;
+.border_r_b5 {
+    border-right: 1px solid #b5b5b5 !important;
 }
-.border169 {
-    border: 0 solid rgb(169, 174, 194);
-    border-top-width: 1px;
+
+.border_b3 {
+    border: 1px solid #b3b3b3 !important;
 }
-.nobordert {
-    border-top: 0;
+.border_r_b3 {
+    border-right: 1px solid #b3b3b3 !important;
 }
-.noborderr {
-    border-right: 0;
+
+.border_74 {
+    border: 1px solid #747488 !important;
 }
-.noborderb {
-    border-bottom: 0;
+
+.border_t_06 {
+    border-top: 1px solid #0060b1 !important;
 }
-.noborderl {
-    border-left: 0;
+
+.border_169 {
+    border: 0 solid rgb(169, 174, 194) !important;
+    border-top-width: 1px !important;
 }
 
 /**
@@ -1793,25 +1827,41 @@ p.column_header {
     clear: right;
 }
 
+
 /**
  * #############################################################################
  * @section Text_align
  */
 
-.vgmiddle {
-    vertical-align: middle;
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `vgmiddle`, use `align_middle` instead */
+.vgmiddle {vertical-align: middle;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `vgtop`, use `align_top` instead */
+.vgtop {vertical-align: top;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `text_center`, use `text_left` instead */
+.tgcenter {text-align: center;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `tgleft`, use `text_left` instead */
+.tgleft {text-align: left;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `tgright`, use `text_right` instead */
+.tgright {text-align: right;}
+
+.align_top {
+    vertical-align: top !important;
 }
-.vgtop {
-    vertical-align: top;
+.align_middle {
+    vertical-align: middle !important;
 }
-.tgcenter {
-    text-align: center;
+.align_bottom {
+    vertical-align: top !important;
 }
-.tgleft {
-    text-align: left;
+
+.text_left {
+    text-align: left !important;
 }
-.tgright {
-    text-align: right;
+.text_center {
+    text-align: center !important;
+}
+.text_right {
+    text-align: right !important;
 }
 
 /**
@@ -1819,14 +1869,18 @@ p.column_header {
  * @section Other
  */
 
-.nodisplay {
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `nodisplay`, use `no_display` instead */
+.nodisplay {display: none !important;}
+.no_display {
     display: none !important;
 }
 .block {
-    display: block;
+    display: block !important;
 }
-.nowrap {
-    white-space: nowrap;
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `nowrap`, use `no_wrap` instead */
+.nowrap {white-space: nowrap;}
+.no_wrap {
+    white-space: nowrap !important;
 }
 .noresize {
     resize: none;

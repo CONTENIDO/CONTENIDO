@@ -108,63 +108,63 @@
 
             {ARTICLE_VERSIONING_BOX}
 
-            <tr valign="top">
+            <tr class="align_top">
                 <td class="text_medium">{TITEL}</td>
                 <td colspan="3" class="text_medium">{TITEL-FIELD}</td>
             </tr>
 
             <!-- plugin Advanced Mod Rewrite - edit by stese //-->
-            <tr valign="top">
+            <tr class="align_top">
                 <td class="text_medium">{URLNAME}</td>
                 <td colspan="3" class="text_medium">{URLNAME-FIELD}</td>
             </tr>
             <!-- end plugin Advanced Mod Rewrite //-->
 
-            <tr valign="top">
+            <tr class="align_top">
                 <td width="25%" class="text_medium">{DIRECTLINKTEXT}</td>
                 <td width="75%" colspan="3" class="text_medium">{DIRECTLINK}</td>
             </tr>
 
             {HOOK_AFTERARTICLELINK}
 
-            <tr valign="top" style="display:{NEWARTSTYLE};">
+            <tr class="align_top" style="display:{NEWARTSTYLE};">
                 <td width="25%" class="text_medium">{ARTIKELART}</td>
                 <td width="75%" colspan="3" class="text_medium">{ARTIKELARTSELECT}</td>
             </tr>
 
-            <tr valign="top" style="display:{NEWARTSTYLE};">
+            <tr class="align_top" style="display:{NEWARTSTYLE};">
                 <td class="text_medium">{ARTIKELID}</td>
                 <td class="text_medium">{ARTID}</td>
                 <td class="text_medium">{ZUORDNUNGSID}</td>
                 <td class="text_medium">{ALLOCID}</td>
             </tr>
 
-            <tr valign="top" style="display:{NEWARTSTYLE};">
+            <tr class="align_top" style="display:{NEWARTSTYLE};">
                 <td class="text_medium">{ERSTELLT}</td>
                 <td class="text_medium">{ERSTELLUNGS-DATUM}</td>
                 <td class="text_medium">{AUTHOR_CREATOR}</td>
                 <td class="text_medium">{AUTOR-ERSTELLUNGS-NAME}</td>
             </tr>
 
-            <tr valign="top" style="display:{NEWARTSTYLE};">
+            <tr class="align_top" style="display:{NEWARTSTYLE};">
                 <td class="text_medium">{LETZTE-AENDERUNG}</td>
                 <td class="text_medium">{AENDERUNGS-DATUM}</td>
                 <td class="text_medium">{AUTHOR_MODIFIER}</td>
                 <td class="text_medium">{AUTOR-AENDERUNG-NAME}</td>
             </tr>
 
-            <tr valign="top" style="display:{NEWARTSTYLE};">
+            <tr class="align_top" style="display:{NEWARTSTYLE};">
                 <td class="text_medium">{PUBLISHING_DATE_LABEL}</td>
                 <td class="text_medium">
                     {PUBLISHING_DATE}
-		</td>
+		        </td>
                 <td class="text_medium">{PUBLISHER}</td>
                 <td class="text_medium">{PUBLISHER_NAME}</td>
             </tr>
 
-            <tr valign="top">
+            <tr class="align_top">
                 <td class="text_medium"><label for="checkbox_forwarding">{WEITERLEITUNG}</label></td>
-                <td valign="bottom" colspan="3" class="text_medium">
+                <td colspan="3" class="text_medium align_bottom">
                     {CHECKBOX}{URL}
                     <label class="ui-helper-hidden-accessible" for="redirect_mode">{LABEL_REDIRECT_CODE}</label>
                     <select id="redirect_mode" name="redirect_mode">{REDIRECT_OPTIONS}</select>
@@ -172,11 +172,11 @@
                 </td>
             </tr>
             <tr>
-                <td class="text_medium" valign="top">i18n("Time control")</td>
+                <td class="text_medium align_top">i18n("Time control")</td>
                 <td colspan="3" class="text_medium">
                     <table class="genericEscape" border="0" cellspacing="0" cellpadding="0" style="max-width: 100%; width: 100%; min-width: 100%">
                         <tr>
-                            <td valign="top" style="width: 1%; border:none;">
+                            <td class="align_top" style="width: 1%; border:none;">
                                 <input type="checkbox" onclick="javascript:disableFunctionsOnTimeControl();" name="timemgmt" id="timemgmt" value="1" {TIMEMGMTCHECKED}>
                             </td>
                             <td style="width: 40%; border:none;" class="text_medium">
@@ -185,21 +185,21 @@
                             <td style="width: 59%;">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td valign="top" style="width: 1%;">&nbsp;</td>
+                            <td class="align_top" style="width: 1%;">&nbsp;</td>
                             <td class="text_medium" style="width: 40%;">i18n("Start date"):</td>
                             <td style="width: 59%;">
                                 <input class="short" type="text" name="datestart" id="datestart" onkeyup="disableFunctionsOnTimeControl();" onchange="disableFunctionsOnTimeControl();" value="{STARTDATE}" {SDOPTS} size="20" maxlength="40" class="text_medium">
                             </td>
                         </tr>
                         <tr>
-                            <td valign="top" style="width: 1%;">&nbsp;</td>
+                            <td class="align_top" style="width: 1%;">&nbsp;</td>
                             <td class="text_medium" style="width: 40%; border:none;">i18n("End date"):</td>
                             <td style="width: 59%;">
                                 <input class="short" type="text" name="dateend" id="dateend" value="{ENDDATE}" {EDOPTS} size="20" maxlength="40" class="text_medium">
                             </td>
                         </tr>
                         <tr>
-                            <td valign="top" style="width: 1%;">
+                            <td class="align_top" style="width: 1%;">
                                 <input type="checkbox" id="time_move_cat" name="time_move_cat" value="1" {MOVETOCATCHECKED}>
                             </td>
                             <td class="text_medium" style="width: 40%;">
@@ -208,7 +208,7 @@
                             <td style="width: 59%;">{MOVETOCATEGORYSELECT}</td>
                         </tr>
                         <tr>
-                            <td valign="top" style="width: 1%;">
+                            <td class="align_top" style="width: 1%;">
                                 <input type="checkbox" id="time_online_move" name="time_online_move" value="1" {ONLINEAFTERMOVECHECKED}>
                             </td>
                             <td class="text_medium" colspan="2">
@@ -219,26 +219,26 @@
                 </td>
             </tr>
 
-            <tr valign="top">
+            <tr class="align_top">
                 <td class="text_medium"><label for="online">{ONLINE}</label></td>
                 <td class="text_medium">{ONLINE-CHECKBOX}</td>
                 <td class="text_medium"><label for="is_start">{STARTARTIKEL}</label></td>
                 <td class="text_medium">{STARTARTIKEL-CHECKBOX}</td>
             </tr>
 
-            <tr valign="top">
+            <tr class="align_top">
                 <td class="text_medium"><label for="searchable">{SEARCHABLE}</label></td>
                 <td colspan="3" class="text_medium">{SEARCHABLE-CHECKBOX}</td>
             </tr>
 
-            <tr valign="top">
+            <tr class="align_top">
                 <td class="text_medium">{SORTIERUNG}</td>
                 <td colspan="3" class="text_medium">{SORTIERUNG-FIELD}</td>
             </tr>
 
             {NOTIFICATION_SYNCHRON}
 
-            <tr valign="top">
+            <tr class="align_top">
                 <td class="text_medium">{STRUKTUR}</td>
                 <td class="text_medium" style="padding: 0;" colspan="{STRUCTURE_COLSPAN}">
                     {STRUKTUR-FIELD}
@@ -246,7 +246,7 @@
                 {SYNC}
             </tr>
 
-            <tr valign="top">
+            <tr class="align_top">
                 <td class="text_medium">{SUMMARY}</td>
                 <td colspan="3" class="text_medium">{SUMMARY-INPUT}</td>
             </tr>
@@ -254,7 +254,7 @@
             {ADDITIONAL_ROWS}
 
             <tr>
-                <td colspan="4" class="text_medium" align="right">
+                <td colspan="4" class="text_medium text_right">
                     <input id="saveart" accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}" title="{REASON}">
                 </td>
             </tr>

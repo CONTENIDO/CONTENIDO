@@ -140,9 +140,9 @@
          */
         function actionOnMarkMailsCheckboxChange() {
             if ($_root.find(_options.markMailsSelector + ':checked').length > 0) {
-                $_bulkEditingFunctions.removeClass('nodisplay');
+                $_bulkEditingFunctions.removeClass('no_display');
             } else {
-                $_bulkEditingFunctions.addClass('nodisplay');
+                $_bulkEditingFunctions.addClass('no_display');
             }
         }
 

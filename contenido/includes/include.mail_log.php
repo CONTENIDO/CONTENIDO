@@ -117,7 +117,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
             switch ($key) {
                 case 'checkbox':
                     $checkbox = new cHTMLCheckbox('', $item->get('idmail'), '', false, '', '', '', 'mark_emails');
-                    $td->setClass('tgcenter');
+                    $td->setClass('text_center');
                     $td->setContent($checkbox->toHtml(false));
                     break;
                 case 'client':
@@ -386,7 +386,7 @@ function mailLogBulkEditingFunctions() {
     $image = new cHTMLImage('images/delete.gif');
     $image->setAlt(i18n('Delete emails'));
     $link->setContent($image);
-    $div = new cHTMLDiv(i18n('Apply to all selected emails:'), 'bulk_editing_functions nodisplay');
+    $div = new cHTMLDiv(i18n('Apply to all selected emails:'), 'bulk_editing_functions no_display');
     $div->appendContent($link);
     $th->appendContent($div);
 

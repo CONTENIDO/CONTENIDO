@@ -231,7 +231,7 @@ $result = $actionLogColl->select($where, '', 'logtimestamp DESC', $limitsql);
 
 if (!$result) {
     $noresults = '<tr >'.
-                 '<td valign="top" colspan="7">'.i18n("No results").'</td></tr>';
+                 '<td class="align_top" colspan="7">'.i18n("No results").'</td></tr>';
 } else {
     $noresults = "";
 }

@@ -486,7 +486,7 @@ class cGuiNavigation {
 
         $tpl = new cTemplate();
         $tpl->set('s', 'NAME', 'changeclient');
-        $tpl->set('s', 'CLASS', 'vAlignMiddle text_medium nodisplay');
+        $tpl->set('s', 'CLASS', 'vAlignMiddle text_medium no_display');
         $tpl->set('s', 'ID', 'cClientSelect');
         $tpl->set('s', 'OPTIONS', 'onchange="Con.Header.changeContenidoClient(this.value)"');
 

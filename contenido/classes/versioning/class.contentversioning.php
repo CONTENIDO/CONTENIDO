@@ -301,7 +301,7 @@ class cContentVersioning {
                         </a>
                     </span>
                 </div>
-                <div id="pluginInfoDetails" style="display:none;" class="nodisplay">
+                <div id="pluginInfoDetails" style="display:none;" class="no_display">
                        %s
                 </div>
             </div>';

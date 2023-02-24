@@ -178,7 +178,7 @@ $form = '
 $form .= $sContainerInHead;
 
 $sInput = '<input type="image" src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif' . '"' . $sElemClosing . '>';
-$button = '<table border="0" width="100%"><tr><td align="right">' . $sInput . '</td></tr></table>';
+$button = '<table border="0" width="100%"><tr><td class="text_right">' . $sInput . '</td></tr></table>';
 $code = preg_replace("/<\/head(.*)>/i", $headCode . '</head\\1>', $code);
 $code = preg_replace("/<body(.*)>/i", "<body\\1>" . $form . $button, $code);
 $code = preg_replace("/<\/body(.*)>/i", '</form></body\\1>', $code);

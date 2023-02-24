@@ -268,7 +268,7 @@ function insertEmptyStrRow($listColumns) {
     // content rows
     $additionalColumns = [];
     foreach ($listColumns as $content) {
-        $additionalColumns[] = '<td class="emptyCell2" nowrap="nowrap">&nbsp;</td>';
+        $additionalColumns[] = '<td class="no_wrap emptyCell2">&nbsp;</td>';
     }
     $tpl->set('d', 'ADDITIONALCOLUMNS', implode('', $additionalColumns));
 
@@ -528,7 +528,7 @@ if ($db->numRows() == 0) { // If we have no categories, display warning message
         $additionalHeaders = [];
         foreach ($listColumns as $content) {
             // Header for additional columns
-            $additionalHeaders[] = '<th class="header nowrap" nowrap="nowrap">' . $content . '</th>';
+            $additionalHeaders[] = '<th class="header no_wrap">' . $content . '</th>';
         }
 
         $additionalHeader = implode('', $additionalHeaders);

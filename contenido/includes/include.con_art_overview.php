@@ -754,7 +754,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             } else {
                 $col = $listColumn;
             }
-            $headers[] = '<th width="' . $width . '" nowrap="nowrap">' . $col . '</th>';
+            $headers[] = '<th width="' . $width . '" class="no_wrap">' . $col . '</th>';
         }
 
         $tpl->set('s', 'HEADERS', implode("\n", $headers));
@@ -825,14 +825,14 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
                         $sTemplatename = cString::trimHard($artitem[$key], 20);
                         if (cString::getStringLength($artitem[$key]) > 20) {
-                            $cells[] = '<td nowrap="nowrap" class="bordercell tooltip" title="' . $descString . '">' . $sTemplatename . '</td>';
+                            $cells[] = '<td class="no_wrap bordercell tooltip" title="' . $descString . '">' . $sTemplatename . '</td>';
                         } else {
-                            $cells[] = '<td nowrap="nowrap" class="bordercell">' . $artitem[$key] . '</td>';
+                            $cells[] = '<td class="no_wrap bordercell">' . $artitem[$key] . '</td>';
                         }
                     } elseif ($key == 'mark' || $key == 'start') {
-                        $cells[] = '<td nowrap="nowrap" class="bordercell tgcenter">' . $artitem[$key] . '</td>';
+                        $cells[] = '<td class="no_wrap bordercell text_center">' . $artitem[$key] . '</td>';
                     } else {
-                        $cells[] = '<td nowrap="nowrap" class="bordercell">' . $artitem[$key] . '</td>';
+                        $cells[] = '<td class="no_wrap bordercell">' . $artitem[$key] . '</td>';
                     }
                 }
                 $tpl->set('d', 'CELLS', implode("\n", $cells));
@@ -847,7 +847,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $tpl->next();
             }
         } else {
-            $emptyCell = '<td nowrap="nowrap" class="bordercell" colspan="' . count($listColumns) . '">' . i18n("No articles found") . '</td>';
+            $emptyCell = '<td class="no_wrap bordercell" colspan="' . count($listColumns) . '">' . i18n("No articles found") . '</td>';
             $tpl->set('d', 'CELLS', $emptyCell);
             $tpl->set('d', 'CSS_CLASS', '');
             $tpl->set('d', 'ROWID', '');
