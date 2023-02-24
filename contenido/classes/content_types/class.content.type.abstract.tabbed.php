@@ -20,7 +20,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
+abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract
+{
+
     /**
      * Generates the encoded code for the tab menu.
      *
@@ -31,7 +33,8 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      *         the encoded code for the tab menu
      * @throws cInvalidArgumentException
      */
-    protected function _generateTabMenuCode(array $tabs) {
+    protected function _generateTabMenuCode(array $tabs)
+    {
         $template = new cTemplate();
 
         // iterate over all tabs and set dynamic template placeholder for each
@@ -52,34 +55,28 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      * Return the raw settings of a content type
      *
      * @param string $contentTypeName
-     *         Content type name
+     *         Content type name (e.g. `CONTENT_TYPE`)
      * @param int    $id
-     *         ID of the content type
+     *         Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
      * @param array  $contentTypes
      *         Content type array
      *
-     * @return mixed
+     * @return string
      * @throws cDbException
      * @throws cException
      */
-    protected function _getRawSettings($contentTypeName, $id, array $contentTypes) {
+    protected function _getRawSettings($contentTypeName, $id, array $contentTypes)
+    {
+        $id = cSecurity::toInteger($id);
         if (!isset($contentTypes[$contentTypeName][$id])) {
-            $idArtLang = cRegistry::getArticleLanguageId();
-            // get the idtype of the content type
+            $idArtLang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
+            // Get the idtype of the content type and then the settings
             $typeItem = new cApiType();
             $typeItem->loadByType($contentTypeName);
-            $idtype = $typeItem->get('idtype');
-            // first load the appropriate content entry in order to get the
-            // settings
-            $content = new cApiContent();
-            $content->loadByMany([
-                'idartlang' => $idArtLang,
-                'idtype' => $idtype,
-                'typeid' => $id
-            ]);
-            return $content->get('value');
+            $idtype = cSecurity::toInteger($typeItem->get('idtype'));
+            return $this->_getRawSettingsFromContent($idArtLang, $idtype, $id);
         } else {
-            return $contentTypes[$contentTypeName][$id];
+            return cSecurity::toString($contentTypes[$contentTypeName][$id]);
         }
     }
 
@@ -90,7 +87,8 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      *         the encoded code for the action buttons
      * @throws cInvalidArgumentException
      */
-    protected function _generateActionCode() {
+    protected function _generateActionCode()
+    {
         $template = new cTemplate();
 
         $code = $template->generate(
@@ -99,6 +97,31 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
         );
 
         return $this->_encodeForOutput($code);
+    }
+
+    /**
+     * Returns the raw settings from content by article language id,
+     * content type id, and content id.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param int $idArtLang Article language id
+     * @param int $idType Content type id (e.g. id of `CONTENT_TYPE`)
+     * @param int $typeId Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
+     * @return string
+     * @throws cDbException|cException
+     */
+    protected function _getRawSettingsFromContent(
+        int $idArtLang, int $idType, int $typeId
+    ): string
+    {
+        // Load the appropriate content entry in order to get the settings
+        $content = new cApiContent();
+        $content->loadByArticleLanguageIdTypeAndTypeId($idArtLang, $idType, $typeId);
+        if ($content->isLoaded()) {
+            return cSecurity::toString($content->get('value'));
+        } else {
+            return '';
+        }
     }
 
 }

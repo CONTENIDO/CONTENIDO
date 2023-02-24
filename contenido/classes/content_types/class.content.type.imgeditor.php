@@ -24,7 +24,8 @@ cInclude('includes', 'functions.upl.php');
  * @package    Core
  * @subpackage ContentType
  */
-class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
+class cContentTypeImgeditor extends cContentTypeAbstractTabbed
+{
 
     /**
      * The name of the directory where the image is stored.
@@ -111,7 +112,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
         // set props
         $this->_type = 'CMS_IMGEDITOR';
         $this->_prefix = 'imgeditor';
@@ -178,43 +180,26 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @param array  $contentTypes
      *                         Content type array
      * @param bool   $editable [optional]
-     * @return mixed|void
+     * @return string The raw setting or an empty string
      * @throws cDbException
      * @throws cException
      */
-    protected function _getRawSettings($contentTypeName, $id, array $contentTypes, $editable = false) {
+    protected function _getRawSettings($contentTypeName, $id, array $contentTypes, $editable = false)
+    {
+        $id = cSecurity::toInteger($id);
         if (!isset($contentTypes[$contentTypeName][$id])) {
-            $idArtLang = cRegistry::getArticleLanguageId();
-            // get the idtype of the content type
+            $idArtLang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
+            // Get the idtype of the content type and then the settings
             $typeItem = new cApiType();
             $typeItem->loadByType($contentTypeName);
-            $idtype = $typeItem->get('idtype');
-            // first load the appropriate content entry in order to get the
-            // settings
+            $idtype = cSecurity::toInteger($typeItem->get('idtype'));
             if (!$editable) {
-                $content = new cApiContent();
-                $content->loadByMany([
-                    'idartlang' => $idArtLang,
-                    'idtype' => $idtype,
-                    'typeid' => $id
-                ]);
-                return $content->get('value');
-            } elseif ($editable) {
-                $db = cRegistry::getDb();
-                $sql = "SELECT MAX(`version`) AS `max` FROM `%s` WHERE `idartlang` = %d AND `typeid` = %d AND `idtype` = %d";
-                $sql = $db->prepare($sql, cRegistry::getDbTableName('content_version'), $idArtLang, $id, $idtype);
-                $db->query($sql);
-                while ($db->nextRecord()) {
-                    $idContentVersion = $db->f('max');
-                }
-
-                $contentVersion = new cApiContentVersion($idContentVersion);
-                if ($contentVersion->get('deleted') != 1) {
-                    return $contentVersion->get('value');
-                }
+                return $this->_getRawSettingsFromContent($idArtLang, $idtype, cSecurity::toInteger($id));
+            } else {
+                return $this->_getRawSettingsFromContentVersion($idArtLang, $idtype, cSecurity::toInteger($id));
             }
         } else {
-            return $contentTypes[$contentTypeName][$id];
+            return cSecurity::toString($contentTypes[$contentTypeName][$id]);
         }
     }
 
@@ -223,7 +208,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      */
-    public function getAbsolutePath() {
+    public function getAbsolutePath()
+    {
         return $this->_cfgClient[$this->_client]['upl']['path'] . $this->_dirname . $this->_filename;
     }
 
@@ -232,7 +218,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      */
-    public function getRelativePath() {
+    public function getRelativePath()
+    {
         return $this->_dirname . $this->_filename;
     }
 
@@ -241,7 +228,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      */
-    public function getAbsoluteURL() {
+    public function getAbsoluteURL()
+    {
         return $this->_generateImagePath();
     }
 
@@ -250,7 +238,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      */
-    public function getRelativeURL() {
+    public function getRelativeURL()
+    {
         if (!empty($this->_filename)) {
             if (cApiDbfs::isDbfs($this->_dirname)) {
                 return 'dbfs.php?file=' . urlencode($this->_dirname . $this->_filename);
@@ -274,7 +263,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *
      * @return array
      */
-    public function getMetaData() {
+    public function getMetaData()
+    {
         return [
             'medianame' => $this->_medianame,
             'description' => $this->_description,
@@ -290,7 +280,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @return string
      *         the link to the image
      */
-    private function _generateImagePath() {
+    private function _generateImagePath()
+    {
         if (!empty($this->_filename)) {
             if (cApiDbfs::isDbfs($this->_dirname)) {
                 return $this->_cfgClient[$this->_client]['path']['htmlpath']
@@ -310,7 +301,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *
      * @throws cDbException|cException
      */
-    protected function _storeSettings() {
+    protected function _storeSettings()
+    {
         // prepare the filename and dirname
         $filename = basename($_POST['image_filename'] ?? '');
         $dirname = dirname($_POST['image_filename'] ?? '');
@@ -356,7 +348,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             'idlang' => $this->_lang
         ]);
         // if meta data object already exists, update the values
-        if ($uploadMeta->get('id_uplmeta') != false) {
+        if ($uploadMeta->get('id_uplmeta')) {
             $uploadMeta->set('idupl', $this->_rawSettings);
             $uploadMeta->set('idlang', $this->_lang);
             $uploadMeta->set('medianame', $medianame);
@@ -379,7 +371,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @return string
      *         escaped HTML code which should be shown if content type is shown in frontend
      */
-    public function generateViewCode() {
+    public function generateViewCode()
+    {
         $image = new cHTMLImage($this->_imagePath);
         $image->setAlt($this->_description);
 
@@ -393,7 +386,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         escaped HTML code which should be shown if content type is edited
      * @throws cInvalidArgumentException|cException
      */
-    public function generateEditCode() {
+    public function generateEditCode()
+    {
         // construct the top code of the template
         $templateTop = new cTemplate();
         $templateTop->set('s', 'ICON', 'images/but_editimage.gif');
@@ -462,6 +456,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             true
         );
 
+        // construct the whole template code
         $code = $this->_encodeForOutput($codeTop);
         $code .= $this->_generateTabMenuCode($tabMenu);
         $code .= $this->_encodeForOutput($codeTabs);
@@ -478,7 +473,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @return string
      *         the code for the directories tab
      */
-    private function _generateTabDirectories() {
+    private function _generateTabDirectories()
+    {
         // define a wrapper which contains the whole content of the directories tab
         $wrapper = new cHTMLDiv();
         $wrapperContent = [];
@@ -514,7 +510,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         the code for the meta tab
      * @throws cException
      */
-    private function _generateTabMeta() {
+    private function _generateTabMeta()
+    {
         // define a wrapper which contains the whole content of the meta tab
         $wrapper = new cHTMLDiv();
         $wrapperContent = [];
@@ -548,7 +545,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         the code for the upload tab
      * @throws cException
      */
-    private function _generateTabUpload() {
+    private function _generateTabUpload()
+    {
         // define a wrapper which contains the whole content of the upload tab
         $wrapper = new cHTMLDiv();
         $wrapperContent = [];
@@ -568,7 +566,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $action = new cHTMLHiddenField('action', 'upl_mkdir');
         $frame = new cHTMLHiddenField('frame', '2');
         $appendparameters = new cHTMLHiddenField('appendparameters');
-        $contenido = new cHTMLHiddenField('contenido', $_REQUEST['contenido']);
+        $contenido = new cHTMLHiddenField('contenido', cRegistry::getBackendSessionId());
         $path = new cHTMLHiddenField('path');
         $foldername = new cHTMLTextbox('foldername');
         $button = new cHTMLButton('', '', '', false, null, '', 'image');
@@ -602,7 +600,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $file = new cHTMLHiddenField('file');
         $action = new cHTMLHiddenField('action', 'upl_upload');
         $appendparameters = new cHTMLHiddenField('appendparameters');
-        $contenido = new cHTMLHiddenField('contenido', $_REQUEST['contenido']);
+        $contenido = new cHTMLHiddenField('contenido', cRegistry::getBackendSessionId());
         $caption2Span = new cHTMLSpan();
         $caption2Span->setID('caption2');
         $propertiesHead = new cHTMLDiv([
@@ -640,7 +638,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         rendered cHTMLSelectElement
      * @throws cException
      */
-    public function generateFileSelect($directoryPath = '') {
+    public function generateFileSelect($directoryPath = '')
+    {
         // make sure the path ends with a slash
         if (cString::getPartOfString($directoryPath, -1) != '/') {
             $directoryPath .= '/';
@@ -713,7 +712,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @return bool
      *         whether the directory is the currently active directory
      */
-    protected function _isActiveDirectory(array $dirData) {
+    protected function _isActiveDirectory(array $dirData)
+    {
         return $dirData['path'] . $dirData['name'] . '/' === $this->_dirname;
     }
 
@@ -727,7 +727,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @return bool
      *         whether the directory should be shown expanded
      */
-    protected function _shouldDirectoryBeExpanded(array $dirData) {
+    protected function _shouldDirectoryBeExpanded(array $dirData)
+    {
         return $this->_isSubdirectory($dirData['path'] . $dirData['name'], $this->_dirname);
     }
 
@@ -743,7 +744,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @throws cDbException
      * @throws cException
      */
-    public function getImageMeta($filename, $dirname) {
+    public function getImageMeta($filename, $dirname)
+    {
         $upload = new cApiUpload();
         $upload->loadByMany([
             'filename' => $filename,
@@ -782,7 +784,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function uplmkdir($path, $name) {
+    public function uplmkdir($path, $name)
+    {
         return uplmkdir($path, $name);
     }
 
@@ -795,7 +798,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         the filename of the uploaded file
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function uplupload($path) {
+    public function uplupload($path)
+    {
         $uplFilename = '';
         if (count($_FILES) === 1) {
             foreach ($_FILES['file']['name'] as $key => $value) {
@@ -811,7 +815,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
                         'dirname' => $path,
                         'filename' => $_FILES['file']['name'][$key]
                     ], false);
-                    if ($upload->get('idupl') != false) {
+                    if ($upload->get('idupl')) {
                         $uplFilename = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $upload->get('dirname') . $upload->get('filename');
                     } else {
                         $uplFilename = 'error';
@@ -821,6 +825,31 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         }
 
         return $uplFilename;
+    }
+
+    /**
+     * Returns the raw settings from content version by article language id,
+     * content type id, and content id.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param int $idArtLang Article language id
+     * @param int $idType Content type id (e.g. id of `CONTENT_TYPE`)
+     * @param int $typeId Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
+     * @return string
+     * @throws cDbException|cException
+     */
+    protected function _getRawSettingsFromContentVersion(
+        int $idArtLang, int $idType, int $typeId
+    ): string
+    {
+        $contentVersionColl = new cApiContentVersionCollection();
+        $idContentVersion = $contentVersionColl->getMaximumVersionByArticleLanguageId($idArtLang, $idType, $typeId);
+        $contentVersion = new cApiContentVersion($idContentVersion);
+        if ($contentVersion->get('deleted') != 1) {
+            return cSecurity::toString($contentVersion->get('value'));
+        } else {
+            return '';
+        }
     }
 
 }

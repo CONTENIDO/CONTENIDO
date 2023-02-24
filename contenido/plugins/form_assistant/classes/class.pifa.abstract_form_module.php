@@ -74,7 +74,7 @@ abstract class PifaAbstractFormModule {
      */
     public function __construct(array $settings = NULL) {
         $this->_settings = $settings;
-        $this->_idform = cSecurity::toInteger($this->_settings['pifaform_idform']);
+        $this->_idform = cSecurity::toInteger($this->getSetting('pifaform_idform'));
         $this->_tpl = cSmartyFrontend::getInstance(true);
     }
 
@@ -89,9 +89,10 @@ abstract class PifaAbstractFormModule {
      * @param string $key
      * @return mixed
      */
-    public function getSetting($key) {
-        return $this->_settings[$key];
+    public function getSetting($key, $default = '') {
+        return $this->_settings[$key] ?? $default;
     }
+
 
     /**
      * @param array $_settings

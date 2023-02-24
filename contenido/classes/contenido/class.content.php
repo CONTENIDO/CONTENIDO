@@ -22,13 +22,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiContent createNewItem
  * @method cApiContent|bool next
  */
-class cApiContentCollection extends ItemCollection {
+class cApiContentCollection extends ItemCollection
+{
+
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('content'), 'idcontent');
         $this->_setItemClass('cApiContent');
 
@@ -54,7 +57,9 @@ class cApiContentCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = '') {
+    public function create(
+        $idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = ''
+    ) {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
@@ -92,6 +97,7 @@ class cApiContentCollection extends ItemCollection {
  */
 class cApiContent extends Item
 {
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -101,7 +107,8 @@ class cApiContent extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('content'), 'idcontent');
         $this->setFilters([], []);
         if ($mId !== false) {
@@ -119,7 +126,8 @@ class cApiContent extends Item
      *
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idartlang':
             case 'idtype':
@@ -141,29 +149,31 @@ class cApiContent extends Item
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function markAsEditable($version, $deleted) {
-            $parameters = $this->values;
-            $parameters['version'] = $version;
-            $contentVersionColl = new cApiContentVersionCollection();
-            $contentVersion = $contentVersionColl->create($parameters);
-            if ($deleted == 1) {
-                    $contentVersion->set('deleted', $deleted);
-            }
-            $contentVersion->store();
+    public function markAsEditable($version, $deleted)
+    {
+        $parameters = $this->values;
+        $parameters['version'] = $version;
+        $contentVersionColl = new cApiContentVersionCollection();
+        $contentVersion = $contentVersionColl->create($parameters);
+        if ($deleted == 1) {
+            $contentVersion->set('deleted', $deleted);
+        }
+        $contentVersion->store();
     }
 
     /**
-     * Loads an content entry by its article language id, idtype and type id.
+     * Loads a content entry by its article language id, idtype and type id.
      *
-     * @param int $idartlang
-     * @param int $idtype
-     * @param int $typeid
+     * @param int $idartlang Article language id
+     * @param int $idtype Content type id (e.g. id of `CONTENT_TYPE`)
+     * @param int $typeid Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
      *
      * @return bool
      *
      * @throws cException
      */
-    public function loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid) {
+    public function loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid)
+    {
         $aProps = [
             'idartlang' => $idartlang,
             'idtype'    => $idtype,
@@ -175,7 +185,8 @@ class cApiContent extends Item
             $this->loadByRecordSet($aRecordSet);
             return true;
         } else {
-            $where = $this->db->prepare("idartlang = %d AND idtype = %d AND typeid = %d", $idartlang, $idtype, $typeid);
+            $where = "`idartlang` = %d AND `idtype` = %d AND `typeid` = %d";
+            $where = $this->db->prepare($where, $idartlang, $idtype, $typeid);
             return $this->_loadByWhereClause($where);
         }
     }
