@@ -180,44 +180,26 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      * @param array  $contentTypes
      *                         Content type array
      * @param bool   $editable [optional]
-     * @return mixed|void
+     * @return string The raw setting or an empty string
      * @throws cDbException
      * @throws cException
      */
     protected function _getRawSettings($contentTypeName, $id, array $contentTypes, $editable = false)
     {
+        $id = cSecurity::toInteger($id);
         if (!isset($contentTypes[$contentTypeName][$id])) {
-            $idArtLang = cRegistry::getArticleLanguageId();
-            // get the idtype of the content type
+            $idArtLang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
+            // Get the idtype of the content type and then the settings
             $typeItem = new cApiType();
             $typeItem->loadByType($contentTypeName);
-            $idtype = $typeItem->get('idtype');
-            // first load the appropriate content entry in order to get the
-            // settings
+            $idtype = cSecurity::toInteger($typeItem->get('idtype'));
             if (!$editable) {
-                $content = new cApiContent();
-                $content->loadByMany([
-                    'idartlang' => $idArtLang,
-                    'idtype' => $idtype,
-                    'typeid' => $id
-                ]);
-                return $content->get('value');
-            } elseif ($editable) {
-                $db = cRegistry::getDb();
-                $sql = "SELECT MAX(`version`) AS `max` FROM `%s` WHERE `idartlang` = %d AND `typeid` = %d AND `idtype` = %d";
-                $sql = $db->prepare($sql, cRegistry::getDbTableName('content_version'), $idArtLang, $id, $idtype);
-                $db->query($sql);
-                while ($db->nextRecord()) {
-                    $idContentVersion = $db->f('max');
-                }
-
-                $contentVersion = new cApiContentVersion($idContentVersion);
-                if ($contentVersion->get('deleted') != 1) {
-                    return $contentVersion->get('value');
-                }
+                return $this->_getRawSettingsFromContent($idArtLang, $idtype, cSecurity::toInteger($id));
+            } else {
+                return $this->_getRawSettingsFromContentVersion($idArtLang, $idtype, cSecurity::toInteger($id));
             }
         } else {
-            return $contentTypes[$contentTypeName][$id];
+            return cSecurity::toString($contentTypes[$contentTypeName][$id]);
         }
     }
 
@@ -273,11 +255,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      * Returns an associative array containing the meta information of the image
      *
      * The array contains the following keys:
-     * - 'medianame'
-     * - 'description'
-     * - 'keywords'
-     * - 'internalnotice'
-     * - 'copyright'
+     * 'medianame'
+     * 'description'
+     * 'keywords'
+     * 'internalnotice'
+     * 'copyright'
      *
      * @return array
      */
@@ -366,7 +348,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
             'idlang' => $this->_lang
         ]);
         // if meta data object already exists, update the values
-        if ($uploadMeta->get('id_uplmeta') != false) {
+        if ($uploadMeta->get('id_uplmeta')) {
             $uploadMeta->set('idupl', $this->_rawSettings);
             $uploadMeta->set('idlang', $this->_lang);
             $uploadMeta->set('medianame', $medianame);
@@ -474,6 +456,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
             true
         );
 
+        // construct the whole template code
         $code = $this->_encodeForOutput($codeTop);
         $code .= $this->_generateTabMenuCode($tabMenu);
         $code .= $this->_encodeForOutput($codeTabs);
@@ -832,7 +815,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
                         'dirname' => $path,
                         'filename' => $_FILES['file']['name'][$key]
                     ], false);
-                    if ($upload->get('idupl') != false) {
+                    if ($upload->get('idupl')) {
                         $uplFilename = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $upload->get('dirname') . $upload->get('filename');
                     } else {
                         $uplFilename = 'error';
@@ -842,6 +825,31 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         }
 
         return $uplFilename;
+    }
+
+    /**
+     * Returns the raw settings from content version by article language id,
+     * content type id, and content id.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param int $idArtLang Article language id
+     * @param int $idType Content type id (e.g. id of `CONTENT_TYPE`)
+     * @param int $typeId Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
+     * @return string
+     * @throws cDbException|cException
+     */
+    protected function _getRawSettingsFromContentVersion(
+        int $idArtLang, int $idType, int $typeId
+    ): string
+    {
+        $contentVersionColl = new cApiContentVersionCollection();
+        $idContentVersion = $contentVersionColl->getMaximumVersionByArticleLanguageId($idArtLang, $idType, $typeId);
+        $contentVersion = new cApiContentVersion($idContentVersion);
+        if ($contentVersion->get('deleted') != 1) {
+            return cSecurity::toString($contentVersion->get('value'));
+        } else {
+            return '';
+        }
     }
 
 }
