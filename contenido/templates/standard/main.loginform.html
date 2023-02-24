@@ -3,6 +3,12 @@
 <head>
     <base href="{BASEPATH}">
     <title>{TITEL}</title>
+    <script type="text/javascript">
+        if (top !== self) {
+            // Redirect login page to topmost window
+            top.location = "index.php";
+        }
+    </script>
     <link rel="stylesheet" type="text/css" href="{_ASSET(styles/contenido.css)_}">
     <link rel="shortcut icon" href="{BASEPATH}favicon.ico">
     <style type="text/css">
@@ -56,11 +62,6 @@
     }
     </style>
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript">
-    if (top != self) {
-        top.location = "index.php";
-    }
-    </script>
 </head>
 <body>
 <div id="page">
@@ -121,18 +122,26 @@
     $('html').removeClass('no-js');
 
     $(function() {
-        $('#page').addClass('loaded');
-        $('#lang').change(function() {
-            if ('' !== $('#username').val() && '' !== $('#passwd').val()) {
-            	$('#login').submit();
-        	}
-        });
-
-        if ('' === $('#username').val()) {
-            $('#username').focus();
-        } else {
-            $('#passwd').focus();
+        if (top !== self) {
+            // The redirect action is done before, nothing to do here
+            return;
         }
+
+        var $userName = $('#username'),
+            $password = $('#passwd');
+        $('#page').addClass('loaded');
+
+        if (!$userName.val()) {
+            $userName.focus();
+        } else {
+            $password.focus();
+        }
+
+        $('#lang').change(function() {
+            if ($userName.val() && $password.val()) {
+                $('#login').submit();
+            }
+        });
     });
 })(Con, Con.$);
 </script>
