@@ -147,10 +147,12 @@ class cContentVersioning {
      *
      * @todo $idArtlangVersion <-> $selectedArticleId
      *
-     * @param int    $idArtLangVersion
+     * @param int|string|NULL  $idArtLangVersion
+     *      The id of version, 'current' for actual version or NULL
      * @param int    $idArtLang
      * @param string $articleType
-     * @param int    $selectedArticleId [optional]
+     * @param int|string|NULL  $selectedArticleId
+     *      The id of version, 'current', 'editable', or NULL
      *
      * @return cApiArticleLanguage|cApiArticleLanguageVersion $this->selectedArticle
      *
@@ -229,10 +231,12 @@ class cContentVersioning {
     /**
      * Returns type of article (current, version or editable).
      *
-     * @param int    $idArtLangVersion
+     * @param int|string|NULL  $idArtLangVersion
+     *      The id of version, 'current' for actual version or NULL
      * @param int    $idArtLang
      * @param string $action
-     * @param mixed  $selectedArticleId
+     * @param int|string|NULL  $selectedArticleId
+     *      The id of version, 'current', 'editable', or NULL
      *
      * @return string $this->articleType
      *
@@ -244,10 +248,10 @@ class cContentVersioning {
 
         if ($this->getState() == 'disabled' // disabled
             || ($this->getState() == 'simple' && ($selectedArticleId == 'current'
-                || $selectedArticleId == NULL)
+                    || $selectedArticleId == NULL)
                 && ($action == 'con_meta_deletetype' || $action == 'copyto'
-                 || $action == 'con_content' || $idArtLangVersion == NULL
-                 || $action == 'con_saveart' || $action == 'con_edit' || $action == 'con_meta_edit' || $action == 'con_editart'))
+                    || $action == 'con_content' || $idArtLangVersion == NULL
+                    || $action == 'con_saveart' || $action == 'con_edit' || $action == 'con_meta_edit' || $action == 'con_editart'))
             || $idArtLangVersion == 'current' && $action != 'copyto'
             || $action == 'copyto' && $idArtLangVersion == $this->editableArticleId
             || $action == 'con_meta_change_version' && $idArtLang == 'current'
@@ -256,7 +260,7 @@ class cContentVersioning {
             && $action != 'con_meta_saveart' && $action != 'con_newart') { // advanced
             $this->articleType = 'current';
         } elseif ($this->getState() == 'advanced' && ($selectedArticleId == 'editable'
-            || $selectedArticleId == NULL || $this->editableArticleId === $selectedArticleId)
+                || $selectedArticleId == NULL || $this->editableArticleId === $selectedArticleId)
             && ($action == 'con_content' || $action == 'con_meta_deletetype'
                 || $action == 'con_meta_edit' || $action == 'con_edit' || $action == 'con_editart')
             || $action == 'copyto' || $idArtLangVersion == 'current'
@@ -301,7 +305,7 @@ class cContentVersioning {
                         </a>
                     </span>
                 </div>
-                <div id="pluginInfoDetails" style="display:none;" class="no_display">
+                <div id="pluginInfoDetails" style="display:none;" class="nodisplay">
                        %s
                 </div>
             </div>';
@@ -739,12 +743,8 @@ class cContentVersioning {
 
         $urlname = (trim($urlname) == '')? trim($parameters['title']) : trim($urlname);
 
-        if ($parameters['isstart'] == 1) {
+        if ($parameters['isstart'] ?? 0 == 1) {
             $timemgmt = 0;
-        }
-
-        if (!is_array($parameters['idcatnew'])) {
-            $parameters['idcatnew'][0] = 0;
         }
 
         // Set parameters for article language version
@@ -758,12 +758,12 @@ class cContentVersioning {
             'summary' => $parameters['summary'],
             'artspec' => $parameters['artspec'],
             'created' => $parameters['created'],
-            'iscurrentversion' => $parameters['iscurrentversion'],
+            'iscurrentversion' => $parameters['iscurrentversion'] ?? '0',
             'author' => $parameters['author'],
             'lastmodified' => date('Y-m-d H:i:s'),
             'modifiedby' => $auth->auth['uname'],
             'published' => $parameters['published'],
-            'publishedby' => $parameters['publishedby'],
+            'publishedby' => $parameters['publishedby'] ?? '',
             'online' => $parameters['online'],
             'redirect' => $redirect,
             'redirect_url' => $redirect_url,
@@ -845,7 +845,7 @@ class cContentVersioning {
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
-    */
+     */
     public function createMetaTagVersion(array $parameters) {
         $coll = new cApiMetaTagVersionCollection();
         $item = $coll->create(
