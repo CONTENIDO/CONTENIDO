@@ -165,7 +165,7 @@ class cApiContent extends Item
      * Loads a content entry by its article language id, idtype and type id.
      *
      * @param int $idartlang Article language id
-     * @param int $idtype Content type id (e.g. `CONTENT_TYPE`)
+     * @param int $idtype Content type id (e.g. id of `CONTENT_TYPE`)
      * @param int $typeid Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
      *
      * @return bool

@@ -98,7 +98,7 @@ class cApiContentVersionCollection extends ItemCollection
      *
      * @since CONTENIDO 4.10.2
      * @param int $idArtLang  Article language id
-     * @param int $idType Content type id (e.g. `CONTENT_TYPE`)
+     * @param int $idType Content type id (e.g. id of `CONTENT_TYPE`)
      * @param int $typeId Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
      * @return int Found maximum version or 0
      * @throws cDbException
@@ -233,7 +233,7 @@ class cApiContentVersion extends Item
      *      <pre>
      *      $contentParameters = [
      *          'idartlang' => (int) Article language id
-     *          'idtype' => (int) Content type id (e.g. `CONTENT_TYPE`)
+     *          'idtype' => (int) Content type id (e.g. id of `CONTENT_TYPE`)
      *          'typeid' => (int) Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
      *          'version' => (int) Content version
      *      ];
