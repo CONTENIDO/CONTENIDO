@@ -15,6 +15,7 @@
  */
 
 @import "notifications.css"; /* @see CON-1992 */
+@import "content_elements.css";
 
 /* some reset */
 form, h1, h2, h3, h4 {
@@ -1432,7 +1433,7 @@ p.column_header {
     padding: 2px;
 }
 .pd5 {
-    padding: 5px;
+    padding: 5px !important;
 }
 .pdt3 {
     padding-top: 3px;
@@ -1459,7 +1460,7 @@ p.column_header {
     padding-left: 10px;
 }
 .pdl15 {
-    padding-left: 15px;
+    padding-left: 15px !important;
 }
 .pdl17 {
     padding-left: 17px;
@@ -1792,6 +1793,9 @@ p.column_header {
 .border_r_b3 {
     border-right: 1px solid #b3b3b3 !important;
 }
+.border_t_b3 {
+    border-top: 1px solid #b3b3b3 !important;
+}
 
 .border_74 {
     border: 1px solid #747488 !important;
@@ -1874,6 +1878,17 @@ p.column_header {
 .no_display {
     display: none !important;
 }
+
+/* Only for screen reader */
+.sr_only {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
 .block {
     display: block !important;
 }
@@ -2425,8 +2440,11 @@ table.inuse_tpl {
     margin: 10px 0 5px 0;
 }
 
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `infoButton`, use `con_info_button` instead */
 a.infoButton,
-.infoButton:hover {
+.infoButton:hover,
+a.con_info_button,
+.con_info_button:hover {
     display: inline-block;
     width: 16px;
     height: 16px;
