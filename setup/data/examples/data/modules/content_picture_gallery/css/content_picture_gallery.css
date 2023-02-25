@@ -11,11 +11,22 @@
     display: none;
 }
 
-.gallery .slider,.gallery .pagination {
+.gallery .slider,
+.gallery .pagination {
     display: inline;
 }
 
-.gallery .slider li,.gallery .pagination li {
+.gallery .pagination::before,
+.gallery .pagination::after {
+    content: " ";
+    display: table;
+}
+.gallery .pagination::after {
+    clear: both;
+}
+
+.gallery .slider li,
+.gallery .pagination li {
     list-style: none;
     float: left;
 }

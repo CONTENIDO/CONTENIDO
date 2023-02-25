@@ -154,6 +154,7 @@ $tpl->assign("ajaxUrl", cRegistry::getBackendUrl() ."ajaxmain.php");
 $tpl->assign("articleIncludeSettingsLabel", mi18n("ARTICLE_INCLUDE_SETTINGS_LABEL"));
 $tpl->assign("articleIncludeChooseCategoryLabel", mi18n("ARTICLE_INCLUDE_CHOOSE_CATEGORY_LABEL"));
 $tpl->assign("articleIncludeChooseArticleLabel", mi18n("ARTICLE_INCLUDE_CHOOSE_ARTICLE_LABEL"));
+$tpl->assign('label', mi18n("ARTICLE_INCLUDE_LABEL"));
 
 // Display config only in backend mode
 if (cRegistry::isBackendEditMode()) {

@@ -13,7 +13,7 @@
     <table class="list_table">
     {foreach from=$POSTS item=POST}
         <tr>
-            <td class="align_top" style="padding-left:{$POST.PADDING|escape}px">
+            <td style="padding-left:{$POST.PADDING|escape}px">
                 <div class="block">
                     <p>
                         <span class="number">
@@ -41,7 +41,7 @@
                     {/if}
                 </div>
             </td>
-            <td class="align_top">
+            <td>
                 <div class="block">
                     <p class="right">
                         {$POST.OPINION|escape}

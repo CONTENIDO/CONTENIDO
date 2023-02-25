@@ -379,10 +379,12 @@ class cAjaxRequest {
 
                 if ($idCat === 0) {
                     $activeIdcats = $linkEditor->getActiveIdcats();
-                    $idCat        = $activeIdcats[0];
+                    $idCat        = $activeIdcats[0] ?? 0;
                 }
 
-                $string = $linkEditor->generateArticleSelect($idCat);
+                if ($idCat > 0) {
+                    $string = $linkEditor->generateArticleSelect($idCat);
+                }
                 break;
 
             case 'linkeditordirlist':
