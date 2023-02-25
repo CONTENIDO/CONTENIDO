@@ -101,7 +101,7 @@ class cGuiBackendHelpbox
             $style = 'style="background: transparent url(' . $this->imageURL . ') no-repeat;"';
         }
 
-        $html = "<a " . $style . " href='javascript:void(0)' data-tooltip-id='" . $id . "' title='" . i18n("More information") . "' class='i-link infoButton'></a>";
+        $html = "<a " . $style . " href='javascript:void(0)' data-tooltip-id='" . $id . "' title='" . i18n("More information") . "' class='i-link con_img_button con_info_button'><span class='sr_only'>" . i18n("More information") . "</span></a>";
         $html .= "<div id='" . $id . "' style='display: none;'>" . $this->helpText . "</div>";
 
         if ($return) {
