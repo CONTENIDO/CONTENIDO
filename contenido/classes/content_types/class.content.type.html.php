@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-class cContentTypeHtml extends cContentTypeAbstract {
+class cContentTypeHtml extends cContentTypeAbstract
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -35,7 +36,8 @@ class cContentTypeHtml extends cContentTypeAbstract {
      * @param array $contentTypes
      *         array containing the values of all content types
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
@@ -49,9 +51,10 @@ class cContentTypeHtml extends cContentTypeAbstract {
      * the frontend.
      *
      * @return string
-     *         escaped HTML code which sould be shown if content type is shown in frontend
+     *         escaped HTML code which should be shown if content type is shown in frontend
      */
-    public function generateViewCode() {
+    public function generateViewCode()
+    {
         return $this->_encodeForOutput($this->_rawSettings);
     }
 
@@ -61,8 +64,11 @@ class cContentTypeHtml extends cContentTypeAbstract {
      * @return string
      *         escaped HTML code which should be shown if content type is edited
      * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
-    public function generateEditCode() {
+    public function generateEditCode()
+    {
         $wysiwygDiv = new cHTMLDiv();
 
         // generate the div ID - format: TYPEWITHOUTCMS_TYPEID_ID
@@ -100,18 +106,29 @@ class cContentTypeHtml extends cContentTypeAbstract {
         );
         $editAnchor = new cHTMLLink('#');
         $editAnchor->setAttribute('onclick', "javascript:Con.Tiny.setContent('" . $this->_idArtLang . "','" . $editLink . "'); return false;");
+        $editAnchor->setClass('con_img_button con_img_button_content_type');
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithtml.gif');
         $editButton->appendStyleDefinition('margin-right', '2px');
-        $editButton->setClass('content_type_zindex');
+        $editButton->setClass('con_img');
         $editAnchor->setContent($editButton);
 
         // construct save button
         $saveAnchor = new cHTMLLink('#');
         $saveAnchor->setAttribute('onclick', "javascript:Con.Tiny.setContent('" . $this->_idArtLang . "', '0'); return false;");
+        $saveAnchor->setClass('con_img_button con_img_button_content_type');
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif');
+        $saveButton->setClass('con_img');
         $saveAnchor->setContent($saveButton);
 
-        return $this->_encodeForOutput($wysiwygDiv->render() . $editAnchor->render() . $saveAnchor->render());
+        $editAnchorWrap = new cHTMLSpan();
+        $editAnchorWrap->setClass('con_content_type_controls');
+        $editAnchorWrap->appendContent($editAnchor);
+
+        $saveAnchorWrap = new cHTMLSpan();
+        $saveAnchorWrap->setClass('con_content_type_controls');
+        $saveAnchorWrap->appendContent($saveAnchor);
+
+        return $this->_encodeForOutput($wysiwygDiv->render() . $editAnchorWrap->render() . $saveAnchorWrap->render());
     }
 
     /**
@@ -119,7 +136,8 @@ class cContentTypeHtml extends cContentTypeAbstract {
      *
      * @return bool
      */
-    public function isWysiwygCompatible() {
+    public function isWysiwygCompatible()
+    {
         return true;
     }
 
