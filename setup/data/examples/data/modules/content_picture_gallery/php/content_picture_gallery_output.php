@@ -47,6 +47,7 @@ $tpl->assign('forward', mi18n("Forward"));
 $tpl->display('picture_gallery.tpl');
 
 if (cRegistry::isBackendEditMode()) {
+    echo '<div><label class="content_type_label">' . mi18n('Label') . '</label></div>';
     echo "CMS_FILELIST[1]";
 }
 
