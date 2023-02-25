@@ -4,7 +4,7 @@
 {/if}
 
 <div class="link_list">
-    <h2>{$usable_links|escape}</h2>
+    <h2>{$usableLinks|escape}</h2>
 
     <ul class="link_list">
         <!-- BEGIN:BLOCK -->
@@ -24,8 +24,12 @@
             {/foreach}
         </li>
         {$createLabel|escape}<br />
-        {$inputfield}
-        {$button}
+        {if $inputField && button}
+            <div>
+                {$inputField}
+                {$button}
+            </div>
+        {/if}
         <!-- END:BLOCK -->
 
     </ul>

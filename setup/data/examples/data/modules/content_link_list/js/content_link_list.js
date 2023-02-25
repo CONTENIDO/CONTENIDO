@@ -1,12 +1,15 @@
 
-//This function add's new hidden element to the form and submit it.
+//This function adds new hidden element to the form and submits the form.
 $(function() {
 
-    $('#create_linkfields').click(function() {
-        var input = parseInt($('#text_field').val());
-        if (input) {
-            $('form[name="editcontent"]').append('<input type="hidden" value="'+input+'" name="linkCount">');
-            $('form[name="editcontent"]').submit();
+    $('[data-content-link-list-action]').live('click', function() {
+        var $element = $(this),
+            action = $element.data('content-link-list-action');
+        if (action === 'create_link_fields') {
+            var linkCount = parseInt($element.parent().find('input[name=link_count]').val(), 10),
+                $form = $('form[name="editcontent"]');
+            $form.append('<input type="hidden" value="' + linkCount + '" name="linkCount">');
+            $form.submit();
         }
     });
 
