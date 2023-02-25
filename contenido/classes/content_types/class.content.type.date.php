@@ -25,7 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-class cContentTypeDate extends cContentTypeAbstract {
+class cContentTypeDate extends cContentTypeAbstract
+{
 
     /**
      * The possible PHP date formats in which the selected date can be
@@ -50,7 +51,8 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
         // set props
         $this->_type = 'CMS_DATE';
         $this->_prefix = 'date';
@@ -143,7 +145,8 @@ class cContentTypeDate extends cContentTypeAbstract {
      *
      * @return string
      */
-    public function getDateTimestamp() {
+    public function getDateTimestamp()
+    {
         return $this->getSetting('date_timestamp');
     }
 
@@ -152,7 +155,8 @@ class cContentTypeDate extends cContentTypeAbstract {
      *
      * @return string
      */
-    public function getDateFormat() {
+    public function getDateFormat()
+    {
         $format = $this->getSetting('date_format');
 
         if (empty($format)) {
@@ -174,7 +178,8 @@ class cContentTypeDate extends cContentTypeAbstract {
      *
      * @return string
      */
-    public function getTimeFormat() {
+    public function getTimeFormat()
+    {
         $format = $this->getSetting('date_format');
 
         if (empty($format)) {
@@ -202,7 +207,8 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      *         the formatted, localised date
      */
-    private function _formatDate($format, $timestamp = NULL) {
+    private function _formatDate($format, $timestamp = NULL)
+    {
         $result = '';
         if ($timestamp === NULL) {
             $timestamp = time();
@@ -293,7 +299,8 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      *         escaped HTML code which should be shown if content type is shown in frontend
      */
-    public function generateViewCode() {
+    public function generateViewCode()
+    {
         $timestamp = $this->getSetting('date_timestamp');
         if (empty($timestamp)) {
             return '';
@@ -321,7 +328,8 @@ class cContentTypeDate extends cContentTypeAbstract {
      *         escaped HTML code which should be shown if content type is edited
      * @throws cInvalidArgumentException
      */
-    public function generateEditCode() {
+    public function generateEditCode()
+    {
         $belang = cRegistry::getBackendLanguage();
         $format = 'Y-m-d h:i:sA';
         if ($belang == 'de_DE') {
@@ -333,10 +341,11 @@ class cContentTypeDate extends cContentTypeAbstract {
             'date_timestamp_' . $this->_id, $value, '', '',
             'date_timestamp_' . $this->_id, true, '', '', 'date_timestamp'
         );
+
         $code .= $this->_generateFormatSelect();
         $code .= $this->_generateStoreButton();
         $code .= $this->_generateJavaScript();
-        $code = new cHTMLDiv($code, 'cms_date', 'cms_' . $this->_prefix . '_' . $this->_id . '_settings');
+        $code = new cHTMLDiv($code, 'con_content_type_controls cms_date', 'cms_' . $this->_prefix . '_' . $this->_id . '_settings');
 
         return $this->_encodeForOutput($code->render());
     }
@@ -348,7 +357,8 @@ class cContentTypeDate extends cContentTypeAbstract {
      *         HTML code which includes the needed JavaScript
      * @throws cInvalidArgumentException
      */
-    private function _generateJavaScript() {
+    private function _generateJavaScript()
+    {
         $template = new cTemplate();
         $pathBackend = $this->_cfg['path']['contenido_fullhtml'];
 
@@ -376,10 +386,11 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      *         HTML code for the save button
      */
-    private function _generateStoreButton() {
+    private function _generateStoreButton()
+    {
         $saveButton = new cHTMLImage(
             $this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif',
-            'save_settings'
+            'con_img_button save_settings'
         );
 
         return $saveButton->render();
@@ -391,15 +402,13 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      *         the HTML code of the format select box
      */
-    private function _generateFormatSelect() {
+    private function _generateFormatSelect()
+    {
         $formatSelect = new cHTMLSelectElement(
             $this->_prefix . '_format_select_' . $this->_id, '',
             $this->_prefix . '_format_select_' . $this->_id)
         ;
-        $formatSelect->appendStyleDefinitions([
-            'border' => '1px solid #ccc',
-            'margin' => '0px 5px 5px'
-        ]);
+        $formatSelect->setClass('con_select');
         $formatSelect->autoFill($this->_dateFormatsPhp);
         $phpDateFormat = conHtmlSpecialChars($this->getSetting($this->_prefix . '_format'));
         $formatSelect->setDefault($phpDateFormat);
