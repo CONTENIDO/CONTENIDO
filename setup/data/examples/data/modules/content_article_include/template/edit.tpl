@@ -13,13 +13,13 @@
                 <label>{$articleIncludeChooseArticleLabel|escape}</label>{$articleSelect}
             </div>
             <div class="toolbar">
-                <img src="{$backendUrl|escape}images/but_ok.gif" class="save_settings" alt="" id="article_include_save_settings_{$id|escape}" style="cursor: pointer;">
-                <img src="{$backendUrl|escape}images/but_cancel.gif" class="cancel_settings" alt="" id="article_include_cancel_{$id|escape}" style="cursor: pointer;">
+                <img src="{$backendUrl|escape}images/but_ok.gif" class="con_img_button save_settings" alt="" id="article_include_save_settings_{$id|escape}" style="cursor: pointer;">
+                <img src="{$backendUrl|escape}images/but_cancel.gif" class="con_img_button cancel_settings" alt="" id="article_include_cancel_{$id|escape}" style="cursor: pointer;">
             </div>
         </form>
     </div>
     <div class="popup_opener">
-        <img src="{$backendUrl|escape}images/article_include.png" alt="" class="cms_abstract_img cms_teaser_img" id="article_include_{$id|escape}" style="cursor: pointer;" />
+        <img src="{$backendUrl|escape}images/article_include.png" alt="" class="con_img_button cms_abstract_img cms_teaser_img" id="article_include_{$id|escape}" style="cursor: pointer;" />
     </div>
 </div>
 <script type="text/javascript">
