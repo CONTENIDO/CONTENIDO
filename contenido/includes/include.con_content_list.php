@@ -1095,7 +1095,7 @@ function _processCmsTags(
         var pathTemplate = "' . $pathTemplate . '",
             confirmDeletionText = "' . i18n("Are you sure you want to delete this content type from this article?") . '";
         $(function() {
-            $("#con_content_list [con-action]").live("click", function() {
+            $("#con_content_list [data-con-action]").live("click", function() {
                 var $element = $(this),
                     action = $element.data("con-action");
                 if (action === "delete_content_type") {
