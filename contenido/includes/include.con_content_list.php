@@ -875,7 +875,7 @@ if (count($result) <= 0) {
             if (($articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
                 $class = '';
             } elseif ($articleType == 'current' || $articleType == 'version') {
-                $class = ' noactive';
+                $class = ' no_active';
             }
             $page->set("d", "EXTRA_CLASS", $class);
             $page->set("d", "NAME", $type);

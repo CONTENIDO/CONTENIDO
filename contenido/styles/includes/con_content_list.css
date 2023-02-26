@@ -3,7 +3,7 @@
 @import "../version_selection.css";
 @import "../content_elements.css";
 
-.noactive {
+.no_active {
     border: 1px solid red;
 }
 

@@ -4,7 +4,7 @@
 @import "../content_elements.css";
 @import "../jquery/plugins/atooltip.css";
 
-.noactive {
+.no_active {
     border: 1px solid red;
 }
 

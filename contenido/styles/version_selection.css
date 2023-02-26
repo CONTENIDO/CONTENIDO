@@ -11,11 +11,25 @@
     margin: 10px 0;
 }
 
+.con_version_selection .con_version_selection_content,
+.con_version_selection .con_version_selection_controls select,
+.con_version_selection .con_version_selection_controls input,
+.con_version_selection .con_version_selection_controls a {
+    line-height: 16px !important;
+}
+
 .con_version_selection .con_version_selection_content {
     width: 280px;
     display: inline;
     padding: 0 0 0 2px;
-    line-height: 16px !important;
+}
+
+.con_version_selection .con_version_selection_label,
+.con_version_selection .con_version_selection_controls select,
+.con_version_selection .con_version_selection_controls input {
+    font-family: verdana, arial, helvetica, sans-serif !important;
+    font-size: 11px !important;
+    color: #000 !important;
 }
 
 .con_version_selection .con_version_selection_label {
@@ -27,16 +41,6 @@
     margin: 0;
 }
 
-.con_version_selection .con_version_selection_controls select,
-.con_version_selection .con_version_selection_controls input {
-    font-size: 10px !important;
-    line-height: 16px !important;
-}
-
-.con_version_selection .con_version_selection_controls select {
-    line-height: 16px !important;
-}
-
 .con_version_selection .con_version_selection_controls input {
     margin: 0 !important;
     padding: 0 4px !important;
@@ -46,10 +50,9 @@
 
 .con_version_selection .con_version_selection_controls a {
     vertical-align: text-top !important;
-    line-height: 16px !important;
 }
 
-.con_version_selection .noactive {
+.con_version_selection .no_active {
     border: 1px solid red;
 }
 .con_version_selection div {
