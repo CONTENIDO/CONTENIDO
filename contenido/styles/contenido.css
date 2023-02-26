@@ -1714,28 +1714,47 @@ p.column_header {
  * @section Background_Color
  */
 
-.bgcA9 {
-    background-color: #a9aec2;
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcA9`, use `bg_c_a9` instead */
+.bgcA9 {background-color: #a9aec2}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcF4`, use `bg_c_f4` instead */
+.bgcF4 {background-color: #f4f4f7;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcE2`, use `bg_c_f1` instead */
+.bgcE2 {background-color: #e2e2e2;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcF1`, use `bg_c_e2` instead */
+.bgcF1 {background-color: #f1f1f1;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcCC`, use `bg_c_cc` instead */
+.bgcCC {background-color: #ccc;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcwhite`, use `bg_c_ff` instead */
+.bgcwhite {background-color: #fff;}
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgct`, use `bg_c_t` instead */
+.bgct {background-color: transparent;}
+
+
+.bg_c_a9 {
+    background-color: #a9aec2
 }
-.bgcF4 {
+
+.bg_c_f4 {
     background-color: #f4f4f7;
 }
 
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcE2`, use `bg_c_e2` instead */
-.bgcE2,
 .bg_c_e2 {
     background-color: #e2e2e2;
 }
-.bgcF1 {
+
+.bg_c_f1 {
     background-color: #f1f1f1;
 }
-.bgcCC {
+
+.bg_c_cc {
     background-color: #ccc;
 }
-.bgcwhite {
+
+.bg_c_ff {
     background-color: #fff;
 }
-.bgct {
+
+.bg_c_t {
     background-color: transparent;
 }
 
