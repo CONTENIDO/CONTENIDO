@@ -9,70 +9,6 @@
     <!-- get javascript files for language != en -->
     {CAL_LANG}
     <style type="text/css">
-    .main-head {
-        display: block;
-        width: 680px;
-    }
-
-    .main-head .first-row {
-        width: 100px;
-    }
-
-    .main-head .second-row {
-        width: 100px;
-    }
-
-    .main-head .third-row {
-        width: 150px;
-    }
-
-    .main-head .fourth-row {
-        width: 280px;
-    }
-
-    .first-row {
-        width: 100px;
-    }
-
-    .second-row {
-        width: 100px;
-    }
-
-    .third-row {
-        width: 150px;
-    }
-
-    .fourth-row {
-        width: 280px;
-    }
-
-    #main-table > tbody {
-        display: block;
-        max-height: 200px;
-        overflow-y: auto;
-        width: 680px;
-    }
-
-	div.syncList {
-		height: 210px;
-		width: 200px;
-		overflow: auto;
-	}
-
-	div.syncList div.syncLanguage {
-		padding: 5px;
-	}
-
-	div.syncList input.button {
-		height: 16px;
-		width: 16px;
-		border: 0px;
-	    /*background-color: none;*/
-	    cursor: pointer;
-	    outline: 0;
-		font-size: 0;
-		margin: 2px;
-	}
     </style>
 
 </head>
@@ -91,7 +27,7 @@
         <input type="hidden" name="idArtLangVersion" value="">
         {NOTIFICATION}
 
-        <table cellspacing="0" cellpadding="2" class="generic conEditForm">
+        <table cellspacing="0" cellpadding="2" class="generic con_edit_form">
 
             {ARTICLE_VERSIONING_BOX}
 
@@ -244,8 +180,11 @@
         <br>
 
     </form>
-    {LOGTABLE_HEADLINE}
-    {LOGTABLE}
+
+    <div class="con_article_log">
+        {LOGTABLE_HEADLINE}
+        {LOGTABLE}
+    </div>
 
 <script type="text/javascript">
 var bNoArticle = {bNoArticle};

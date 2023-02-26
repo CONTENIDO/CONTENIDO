@@ -1,0 +1,83 @@
+/**
+ * con_edit_form styles
+ */
+
+.con_edit_form {
+    max-width: 720px;
+}
+
+.con_edit_form tr:first-child td {
+    border-top: 1px solid #B3B3B3;
+}
+
+.con_edit_form input.text_medium,
+.con_edit_form textarea {
+    width: 400px;
+}
+
+.con_edit_form input.redirect_url,
+.con_edit_form input.shorter {
+    width: 380px;
+}
+
+.con_edit_form select.categories {
+    width: 200px;
+}
+
+/**
+ * @section Sync language
+ */
+.con_edit_form .con_sync_list {
+    width: 200px;
+    overflow: auto;
+}
+
+.con_edit_form .con_sync_list .con_sync_list_sync_language {
+    padding: 5px;
+    clear: both;
+}
+
+.con_edit_form .con_sync_list .con_sync_list_sync_language .con_sync_list_sync_language_buttons {
+    float: right;
+}
+
+.con_edit_form .con_sync_list .con_sync_list_sync_language .con_img_button {
+}
+
+.con_edit_form .con_sync_list input.con_img_button {
+    margin: 2px;
+}
+
+/**
+ * @section Article log table
+ */
+.con_article_log {
+    display: block;
+    width: 720px;
+    max-width: 720px;
+}
+
+.con_article_log .con_article_log_header {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.con_article_log > div {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.con_article_log table .row_1 {
+    min-width: 100px;
+}
+
+.con_article_log table .row_2 {
+    min-width: 100px;
+}
+
+.con_article_log table .row_3 {
+    min-width: 150px;
+}
+
+.con_edit_form table .row_4 {
+}

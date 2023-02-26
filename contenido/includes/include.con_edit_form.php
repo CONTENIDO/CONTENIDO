@@ -368,37 +368,32 @@ if ($action == "con_newart" && $newart == true) {
     }
 }
 
-// <div style="height:200px;overflow-y:scroll;width:700px;">
-
+// Article log table
 $div = new cHTMLDiv();
-$div->setStyle("height:200px;width:700px;");
 
 // generate table
 $table = new cHTMLTable();
-$table->setWidth('680px');
+$table->setWidth('100%');
 $table->setClass('generic');
-$table->setID('main-table');
-
-$thead = new cHTMLTableHeader();
-$thead->setClass('main-head');
-// $tr = new cHTMLTableRow();
 
 // build table header
+$thead = new cHTMLTableHeader();
+
 $th = new cHTMLTableHead();
-$th->setClass('first-row');
+$th->setClass('row_1');
 $th->setContent(i18n('Language'));
 
 $th2 = new cHTMLTableHead();
 $th2->setContent(i18n('User'));
-$th2->setClass('second-row');
+$th2->setClass('row_2');
 
 $th3 = new cHTMLTableHead();
 $th3->setContent(i18n('Date'));
-$th3->setClass('third-row');
+$th3->setClass('row_3');
 
 $th4 = new cHTMLTableHead();
 $th4->setContent(i18n('Action'));
-$th4->setClass('fourth-row');
+$th4->setClass('row_4');
 
 $thead->appendContent($th);
 $thead->appendContent($th2);
@@ -406,29 +401,26 @@ $thead->appendContent($th3);
 $thead->appendContent($th4);
 $table->appendContent($thead);
 
-// $table->appendContent($tr);
-
 // assign values to table
 foreach ($query as $key => $val) {
-
     $tr = new cHTMLTableRow();
     $data = new cHTMLTableData();
-    $data->setClass('first-row');
+    $data->setClass('row_1');
     $data->setContent($val['language']);
     $tr->appendContent($data);
 
     $data = new cHTMLTableData();
-    $data->setClass('second-row');
+    $data->setClass('row_2');
     $data->setContent($val['user']);
     $tr->appendContent($data);
 
     $data = new cHTMLTableData();
-    $data->setClass('third-row');
+    $data->setClass('row_3');
     $data->setContent($val['logtimestamp']);
     $tr->appendContent($data);
 
     $data = new cHTMLTableData();
-    $data->setClass('fourth-row');
+    $data->setClass('row_4');
     $data->setContent($val['action']);
     $tr->appendContent($data);
 
@@ -822,12 +814,12 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     } else {
         $forceDisable = "disabled";
     }
-    $page->set('s', 'URL', '<input type="text" ' . $disabled . ' ' . $forceDisable . ' class="text_medium redirectURL" name="redirect_url" id="redirect_url" value="' . conHtmlSpecialChars($tmp_redirect_url) . '">');
+    $page->set('s', 'URL', '<input type="text" ' . $disabled . ' ' . $forceDisable . ' class="text_medium redirect_url" name="redirect_url" id="redirect_url" value="' . conHtmlSpecialChars($tmp_redirect_url) . '">');
 
     $page->set('s', 'LABEL_REDIRECT_CODE', i18n("Status code"));
 
     if (isset($catArt[0]['idcatart']) && $catArt[0]['idcatart'] > 0) {
-        $page->set('s', 'LOGTABLE_HEADLINE', '<h3 style="margin-top:20px;margin-bottom:10px;">' . i18n('Articlelog') . '</h3>');
+        $page->set('s', 'LOGTABLE_HEADLINE', '<h3 class="con_article_log_header">' . i18n('Articlelog') . '</h3>');
         $page->set('s', 'LOGTABLE', $div->render());
     } else {
         $page->set('s', 'LOGTABLE_HEADLINE', '');

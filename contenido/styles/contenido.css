@@ -17,6 +17,12 @@
 @import "notifications.css"; /* @see CON-1992 */
 @import "content_elements.css";
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 /* some reset */
 form, h1, h2, h3, h4 {
     margin: 0;
@@ -1403,7 +1409,7 @@ p.column_header {
     margin-left: 25px;
 }
 .mgr0 {
-    margin-right: 0;
+    margin-right: 0 !important;
 }
 .mgr3 {
     margin-right: 3px;
@@ -1427,13 +1433,16 @@ p.column_header {
     margin-bottom: 20px;
 }
 .pd0 {
-    padding: 0;
+    padding: 0 !important;
 }
 .pd2 {
     padding: 2px;
 }
 .pd5 {
     padding: 5px !important;
+}
+.pdt0 {
+    padding-top: 0 !important;
 }
 .pdt3 {
     padding-top: 3px;
@@ -1482,6 +1491,9 @@ p.column_header {
 }
 .pdr20 {
     padding-right: 20px;
+}
+.pdb0 {
+    padding-bottom: 0 !important;
 }
 .pdb5 {
     padding-bottom: 5px;
@@ -2168,40 +2180,6 @@ input[type=image].vAlignMiddle {
  */
 .tableElement {
     margin-left: 3px;
-}
-
-.conEditForm {
-    width: 700px;
-    min-width: 700px;
-    max-width: 700px;
-}
-
-.conEditForm tr:first-child td {
-    border-top: 1px solid #B3B3B3;
-}
-
-.conEditForm input.text_medium {
-    width: 400px;
-}
-
-.conEditForm input.sitemapPriority {
-    width: 140px;
-}
-
-.conEditForm input.redirectURL {
-    width: 380px;
-}
-
-.conEditForm input.shorter {
-    width: 380px;
-}
-
-.conEditForm select.categories {
-    width: 200px;
-}
-
-.conEditForm textarea {
-    width: 400px;
 }
 
 #cont_groups {

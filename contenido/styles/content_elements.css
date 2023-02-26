@@ -6,6 +6,8 @@
  */
 
 .con_img_button {
+    border: 0;
+    cursor: pointer;
     display: inline-block;
     width: 16px;
     height: 16px;
