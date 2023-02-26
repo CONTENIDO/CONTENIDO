@@ -545,28 +545,38 @@ table td.con_extra_buttons .con_img_button:last-of-type {
 h2.content_box {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size: 11px;
+    line-height: 16px;
     color: #000;
     font-weight: bold;
     margin-bottom: 5px;
 }
 #mandanten {
-    background: url(../images/avail_clients.gif) no-repeat 0 2px;
+    background: url(../images/avail_clients.gif) no-repeat 0 0;
 }
 #my_contenido {
-    background: url(../images/my_contenido.gif) no-repeat 0 2px;
+    background: url(../images/my_contenido.gif) no-repeat 0 0;
 }
 #contact_admin {
-    background: url(../images/contact.gif) no-repeat 0 2px;
+    background: url(../images/contact.gif) no-repeat 0 0;
 }
 #user_online {
-    background: url(../images/user_online.gif) no-repeat 0 2px;
+    background: url(../images/user_online.gif) no-repeat 0 0;
 }
 #update_notifier {
-    background: url(../images/but_news.gif) no-repeat 0 2px;
+    background: url(../images/but_news.gif) no-repeat 0 0;
 }
 #rss_notifier {
-    background: url(../images/but_rss.gif) no-repeat 0 2px;
+    background: url(../images/but_rss.gif) no-repeat 0 0;
     margin-top: 25px;
+}
+
+.content_box_welcome .co_img_button {
+    float: right;
+    position: relative;
+    top: -2px;
+}
+.content_box_welcome .content_box_welcome_message {
+    padding-right: 20px;
 }
 
 #messageboard {
