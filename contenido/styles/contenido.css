@@ -1720,7 +1720,10 @@ p.column_header {
 .bgcF4 {
     background-color: #f4f4f7;
 }
-.bgcE2 {
+
+/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcE2`, use `bg_c_e2` instead */
+.bgcE2,
+.bg_c_e2 {
     background-color: #e2e2e2;
 }
 .bgcF1 {
