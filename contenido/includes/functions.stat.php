@@ -143,7 +143,7 @@ function statsOverviewAll($yearmonth) {
         }
     }
 
-    if (str_contains($_SERVER['HTTP_USER_AGENT'] ?? '', 'MSIE')) {
+    if (stripos($_SERVER['HTTP_USER_AGENT'] ?? '', 'MSIE') !== false) {
         $sDisplay = 'block';
     }
 
@@ -484,7 +484,7 @@ function statsOverviewYear($year) {
 
     $sDisplay = 'table-row';
 
-    if (str_contains($_SERVER['HTTP_USER_AGENT'] ?? '', 'MSIE')) {
+    if (stripos($_SERVER['HTTP_USER_AGENT'] ?? '', 'MSIE') !== false) {
         $sDisplay = 'block';
     }
 
