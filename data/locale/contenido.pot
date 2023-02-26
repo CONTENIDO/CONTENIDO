@@ -5284,7 +5284,7 @@ msgid "Article versioning"
 msgstr ""
 
 #: includes/include.system_configuration.php:87
-msgid "<p><strong>Article versioning:</strong></p><ul style=\"list-style:none;\"><li>Review and restore older versions (simple) and create drafts (advanced). Versions are generated automatically by changing an article.</li></ul><p><strong>Modes:</strong></p><ul class=\"list\"><li class=\"first\"><strong>disabled: </strong> The article versioning is disabled.</li><li><strong>simple: </strong>Older article versions can be reviewed and restored.</li><li><strong>advanced: </strong>Additional to the simple-mode, unpublished drafts can be created.</li></ul><p><strong>Further information</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p></div>"
+msgid "<p><strong>Article versioning:</strong></p><ul style=\"list-style:none;\"><li>Review and restore older versions (simple) and create drafts (advanced). Versions are generated automatically by changing an article.</li></ul><p><strong>Modes:</strong></p><ul class=\"list\"><li class=\"first\"><strong>disabled: </strong> The article versioning is disabled.</li><li><strong>simple: </strong>Older article versions can be reviewed and restored.</li><li><strong>advanced: </strong>Additional to the simple-mode, unpublished drafts can be created.</li></ul><p><strong>Further information</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>"
 msgstr ""
 
 #: includes/include.system_configuration.php:223

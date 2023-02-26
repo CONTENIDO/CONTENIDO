@@ -17,13 +17,6 @@
  * @link       https://www.4fb.de
  * @link       https://www.contenido.org
  * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-04-11
- *
- *   $Id$:
- * }}
- *
  */
 
 
@@ -33,10 +26,6 @@
  */
 
 body.mrPlugin {margin:10px;}
-
-.mrPlugin a {color:#0060b1;}
-.mrPlugin strong {font-weight:bold;}
-.mrPlugin img {border:none;}
 
 .mrPlugin pre.example {padding:3px 5px; border:1px #000 dashed; width:60%; min-width:650px;}
 
@@ -58,36 +47,13 @@ body.mrPlugin {margin:10px;}
 
 
 /* Content table */
-.mrPlugin table#contenttable {
-    border: 1px solid #b3b3b3;
-    border-right-width: 0;
-}
-.mrPlugin table#contenttable th {font-weight:bold; text-align:left;}
-.mrPlugin table#contenttable tr {background-color:#fff;}
 .mrPlugin th, .mrPlugin td {vertical-align:top;}
-.mrPlugin td.col-I  {
-    border: 0 solid #b3b3b3;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-}
-.mrPlugin td.col-II {
-    border: 0 solid #b3b3b3;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-}
-.mrPlugin td.col-I.no_border_b {border-bottom:0;}
 
 .mrPlugin tr.marked td {background-color:#f2b7a1;}
 
 
-/* Info button */
-.mrPlugin a.infoButton,
-.mrPlugin a.infoButton:hover {display:block; float:left; width:16px; height:16px; background:transparent url(../../../images/info.gif) no-repeat; margin:0 0 0 5px;}
-.mrPlugin a.infoButton.v2,
-.mrPlugin a.infoButton:hover.v2 {margin-top:2px;}
-
 /* Action link */
-.mrPlugin a.actionLink {height:16px; cursor:pointer; display:block; float:left; padding-left:15px; margin-right:5px; background:transparent url(../../../images/collapsed.gif) no-repeat center left;}
+.mrPlugin a.actionLink {height:16px; color:#0060b1; cursor:pointer; padding-left:15px; margin-right:5px; background:transparent url(../../../images/collapsed.gif) no-repeat center left;}
 
 
 /* Plugininfo layer */
@@ -107,8 +73,8 @@ body.mrPlugin {margin:10px;}
 /** @extends body.mrPlugin */
 body.mrPluginTest {}
 
-.mrPluginTest .headerBox form {float:left; width:35%; background:#e2e2e2; margin:0; padding-top:10px;}
+.mrPluginTest .headerBox form {background:#e2e2e2; margin:0; padding-top:10px;}
 .mrPluginTest .headerBox fieldset {margin-bottom:10px;}
 .mrPluginTest .headerBox fieldset p {margin:0;}
-.mrPluginTest .headerBox form .chk {width:24%; float:left;}
+.mrPluginTest .headerBox form .chk {width:24%; display:inline-block;}
 .mrPluginTest a {font-family:monospace;}

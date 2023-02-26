@@ -1049,10 +1049,8 @@ function _processCmsTags(
             $idcontent = $versioning->getContentId($idartlang, cSecurity::toInteger($val), cSecurity::toString($type), $versioningState, $articleType, $version);
 
             $backendUrl = cRegistry::getBackendUrl();
-            $num = (int)$val;
+            $num = cSecurity::toInteger($val);
             $search[$num] = sprintf('%s[%s]', $type, $val);
-
-            $path = $backendUrl . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=' . $idcontent;
 
             if ($_typeItem->idtype == 20 || $_typeItem->idtype == 21) {
                 $tmp = str_replace('";?>', '', $tmp);

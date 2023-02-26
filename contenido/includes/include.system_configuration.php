@@ -70,35 +70,29 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
         //if (in_array($value, ['disabled', 'simple', 'advanced'])) {
         if ($name == 'versioning{_}enabled') {
             $html->setStyle('float:left;width:' . $width . 'px;');
+            $infoBox = new cGuiBackendHelpbox(i18n('<p><strong>Article versioning:</strong></p>'
+                . '<ul style="list-style:none;">'
+                    . '<li>'
+                        . 'Review and restore older versions (simple) and create drafts (advanced).'
+                        . ' Versions are generated automatically by changing an article.'
+                    . '</li>'
+                . '</ul>'
+                . '<p><strong>Modes:</strong></p>'
+                . '<ul class="list">'
+                    . '<li class="first"><strong>disabled: </strong> The article versioning is disabled.</li>'
+                    . '<li><strong>simple: </strong>Older article versions can be reviewed and restored.</li>'
+                    . '<li><strong>advanced: </strong>Additional to the simple-mode, unpublished drafts can be created.</li>'
+                . '</ul>'
+                . '<p><strong>Further information</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>')
+            );
             $return['label'] =
                 ' <div>
                     <span style="width: 280px; display: inline-block; padding: 0 0 0 2px; float:left;">
                         <span style="margin: 0 10px 0 0;">' . i18n("Article versioning") . ':' . '</span>
-                        <a
-                            href="#"
-                            id="pluginInfoDetails-link"
-                            class="main i-link infoButton"
-                            title="">
-                        </a>
+                        ' . $infoBox->render() . '
                     </span>
                     ' . $html->render() . '
-                  </div>
-                  <div id="pluginInfoDetails" class="no_display">'
-                  . i18n('<p><strong>Article versioning:</strong></p>'
-                      . '<ul style="list-style:none;">'
-                        . '<li>'
-                            . 'Review and restore older versions (simple) and create drafts (advanced).'
-                            . ' Versions are generated automatically by changing an article.'
-                        . '</li>'
-                    . '</ul>'
-                  . '<p><strong>Modes:</strong></p>'
-                      . '<ul class="list">'
-                          . '<li class="first"><strong>disabled: </strong> The article versioning is disabled.</li>'
-                          . '<li><strong>simple: </strong>Older article versions can be reviewed and restored.</li>'
-                          . '<li><strong>advanced: </strong>Additional to the simple-mode, unpublished drafts can be created.</li>'
-                      . '</ul>'
-                  . '<p><strong>Further information</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>'
-                  . '</div>');
+                  </div>';
         } else {
             $html->setStyle('display:block;float:left;width:' . $width . 'px;');
             $return['label'] = renderLabel($label, $name, 280, ':', 'left');
