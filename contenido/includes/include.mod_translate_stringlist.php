@@ -21,6 +21,7 @@ $translationArray = $moduleTranslation->getTranslationArray();
 ksort($translationArray);
 
 $page = new cGuiPage("mod_translate_stringlist");
+$page->addBodyClassName('mg0');
 
 $link = new cHTMLLink();
 $link->setCLink("mod_translate", 4, "");

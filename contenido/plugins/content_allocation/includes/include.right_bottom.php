@@ -85,14 +85,16 @@ if ($requestGetStep == 'expanded') {
 	$oTree->setTreeStatus($requestIdPicaAlloc);
 }
 
-$oDiv = new cHTMLDiv;
+$oDiv = new cHTMLDiv();
+$oDiv->setClass('mgb10');
 $sTemp = '';
 
 if ($requestGetStep == 'createRoot') { // create new root item
     $form = piContentAllocationBuildContentAllocationForm(
         $requestGetStep, 'store', $action, $frame, $sess->id, $area, 'treeItemPost[parentid]', 'root', ''
     );
-    $oDiv->updateAttributes(['style' => 'padding: 5px; width: 400px; border: 1px #B3B3B3 solid; background-color: #FFFFFF;']);
+    $oDiv->setClass('mgb10 pd5 border_b3');
+    $oDiv->updateAttributes(['style' => 'width: 400px;']);
     $oDiv->setContent($form);
 } else {
     $oDiv->setContent('<a href="main.php?action=' . $action . '&step=createRoot&frame=' . $frame . '&area=' . $area . '&contenido=' . $sess->id . '"><img src="images/folder_new.gif" class="vAlignMiddle" alt=""><span class="tableElement">' . i18n("Create new tree", 'content_allocation') . '</span></a>');

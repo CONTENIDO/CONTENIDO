@@ -144,6 +144,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     }
 
     $oFrmOptions = new cGuiTableForm("frmOptions");
+    $oFrmOptions->setTableClass('generic mgb10');
     $oFrmOptions->setVar("contenido", $sess->id);
     $oFrmOptions->setVar("area", $area);
     $oFrmOptions->setVar("action", $action);

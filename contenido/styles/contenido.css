@@ -17,17 +17,157 @@
 @import "notifications.css"; /* @see CON-1992 */
 @import "content_elements.css";
 
+/**
+ * @section Reset
+ */
 *,
 *::before,
 *::after {
     box-sizing: border-box;
 }
 
-/* some reset */
-form, h1, h2, h3, h4 {
+html {
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit !important;
+    margin: 0;
+}
+
+button,
+input {
+    overflow: visible;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+    -webkit-appearance: button;
+}
+
+form,
+h1,
+h2,
+h3,
+h4 {
     margin: 0;
     padding: 0;
 }
+
+pre,
+code {
+    font-family: monospace, monospace;
+    font-size: 1em;
+}
+
+img {
+    border-style: none;
+}
+
+[type="checkbox"],
+[type="radio"] {
+    box-sizing: border-box;
+    padding: 0;
+}
+
+/** Set box sizing back to default value for jQuery UI Dialog */
+.ui-dialog,
+.ui-dialog *,
+.ui-dialog *::before,
+.ui-dialog *::after {
+    box-sizing: content-box;
+}
+
+.ui-widget button,
+.ui-widget input,
+.ui-widget optgroup,
+.ui-widget select,
+.ui-widget textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit !important;
+    margin: 0;
+}
+
+
+/**
+ * @Section Tags
+ */
+
+body {
+    background-color: #fff;
+    margin: 0;
+    scrollbar-face-color: #fff;
+    scrollbar-highlight-color: #fff;
+    scrollbar-3dlight-color: #e2e2e2;
+    scrollbar-darkshadow-color: #000;
+    scrollbar-shadow-color: #334f77;
+    scrollbar-arrow-color: #334f77;
+    scrollbar-track-color: #c7c7d6;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    color: #000;
+}
+
+frameset,
+frame {
+    background-color: #fff;
+    border-color: #fff;
+}
+
+p,
+table,
+tr,
+td,
+th {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    color: #000;
+}
+
+button,
+[type="text"],
+[type="button"],
+[type="reset"],
+[type="submit"],
+[type="password"],
+input,
+select,
+textarea {
+    padding: 1px 3px;
+    border: 1px solid #666;
+    border-radius: 3px;
+}
+select {
+    padding: 0 5px;
+}
+
+button[disabled],
+input[disabled],
+select[disabled],
+textarea[disabled] {
+    border: 1px solid #999;
+}
+
+[type="checkbox"],
+[type="radio"] {
+    margin-right: 5px;
+    vertical-align: text-top;
+}
+
+table {
+    border-spacing: 0;
+}
+
 
 #head {
     background-color: #f1f1f1;
@@ -151,6 +291,56 @@ input.image_button {
     margin-left: 5px;
 }
 
+/**
+ * #############################################################################
+ * @section Columns
+ */
+
+.col_xs {
+    width: 400px;
+}
+
+.col_sm {
+    width: 540px;
+}
+
+.col_md {
+    width: 720px;
+}
+
+.col_lg {
+    width: 960px;
+}
+
+.col_lx {
+    width: 1140px;
+}
+
+.col_50 {
+    width: 50%;
+}
+
+.col_100 {
+    width: 100%;
+}
+
+/*
+.col_100_row_100 {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+*/
+
+/**
+ * #############################################################################
+ * @section Tables
+ */
+
 table.generic {
     border-left: 1px solid #b3b3b3;
 }
@@ -162,13 +352,13 @@ table.fullborder {
 table.topborder {
     border-top: 1px solid #b3b3b3;
 }
-table.generic td {
+table.generic td:not(:empty) {
     border-bottom: 1px solid #b3b3b3;
     border-right: 1px solid #b3b3b3;
     padding: 4px;
 }
 
-table.generic th {
+table.generic th:not(:empty) {
     border-top: 1px solid #b3b3b3;
     border-right: 1px solid #b3b3b3;
     background-color: #e2e2e2;
@@ -178,7 +368,7 @@ table.generic th {
     color: #666;
 }
 
-table.strong_headline th {
+table.strong_headline th:not(:empty) {
     border-top: 1px solid #b3b3b3;
     border-right: 1px solid #b3b3b3;
     background-color: #e2e2e2;
@@ -224,6 +414,11 @@ table.borderless tr {
     /*background-color: #fff;*/
 }
 
+table.borderless tr th:not(:empty),
+table.borderless tr td:not(:empty) {
+    padding: 4px;
+}
+
 table.borderless tr td {
     border: 0;
 }
@@ -250,6 +445,13 @@ table.foldingrow th {
     padding: 4px;
     font-weight: normal;
     color: #666;
+}
+
+table td.con_extra_buttons .con_img_button {
+    margin-right: 5px;
+}
+table td.con_extra_buttons .con_img_button:last-of-type {
+    margin-right: 0;
 }
 
 /**
@@ -499,34 +701,6 @@ a.nav:link {
 
 a img, label img, img.borderless, input[type=image] {
     border: 0;
-}
-
-/* <body> properties */
-body {
-    background-color: #fff;
-    margin: 0;
-    scrollbar-face-color: #fff;
-    scrollbar-highlight-color: #fff;
-    scrollbar-3dlight-color: #e2e2e2;
-    scrollbar-darkshadow-color: #000;
-    scrollbar-shadow-color: #334f77;
-    scrollbar-arrow-color: #334f77;
-    scrollbar-track-color: #c7c7d6;
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    color: #000;
-}
-
-frameset,
-frame {
-    background-color: #fff;
-    border-color: #fff;
-}
-
-p, table, tr, td, th {
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    color: #000;
 }
 
 /* link style for adding anything */
@@ -1074,10 +1248,10 @@ div.navcontainer ul#navlist li a:visited {
     border-style: solid;
     border-width: 1px;
     color: inherit;
-    padding: 7px;
+    padding: 2px;
     vertical-align: top;
-    width: 16px;
-    height: 16px;
+    width: 26px;
+    height: 26px;
 }
 
 .hoverbox li {
@@ -1508,7 +1682,7 @@ p.column_header {
  */
 
 .bold {
-    font-weight: bold;
+    font-weight: bold !important;
 }
 .color6 {
     color: #666;
@@ -2034,6 +2208,7 @@ div#legend table.article {
     line-height: 1.2em;
 }
 
+/*
 #mod_edit,
 #mod_translate,
 #mod_template,
@@ -2041,6 +2216,7 @@ div#legend table.article {
 #mod_javascript {
     width: 99% !important;
 }
+*/
 
 #imgFormSubmit,
 .img_form_submit {

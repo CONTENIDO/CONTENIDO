@@ -12,6 +12,7 @@
     width: 16px;
     height: 16px;
     line-height: 16px;
+    padding: 0;
 }
 .con_img_button.con_img_button_content_type {
     margin-right: 5px;

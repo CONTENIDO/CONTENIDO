@@ -124,6 +124,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     }
 
     $oForm = new cGuiTableForm("frmNewsletterMsg");
+    $oForm->setTableClass('generic col_md');
     $oForm->setVar("frame", $frame);
     $oForm->setVar("area", $area);
     $oForm->setVar("action", "news_save");

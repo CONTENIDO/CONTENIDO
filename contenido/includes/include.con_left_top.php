@@ -337,6 +337,7 @@ foreach ($aData as $key => $item) {
         $image = new cHTMLImage((string) $data['imgsrc'], "vAlignMiddle");
         $description = new cHTMLSpan(i18n((string) $data['description']), "tableElement");
         $divItem = new cHTMLDiv($image->render() . $description->render());
+        $divItem->setClass('mb');
         $divKey->appendContent($divItem->render());
     }
     $divLegend->appendContent($divKey->render());

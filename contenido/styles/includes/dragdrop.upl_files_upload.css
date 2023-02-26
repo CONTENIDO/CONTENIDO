@@ -4,8 +4,11 @@
  * @section File_Upload
  */
 
+#upl_file_upload input.file_upload {
+    margin-bottom: 4px;
+}
+
 #dropbox {
-    width: 498px;
     height: 100px;
     line-height: 99px;
     background-color: #fff;

@@ -12,14 +12,14 @@
 {GOOGLE_NOTIFICATION}
 {PIWIK_NOTIFICATION}
 
-<table width="100%" cellspacing="0" cellpadding="2" border="0">
+<table class="borderless col_100 mgb5">
     <tr class="text_medium" style="background-color: {BGCOLOR};">
     <td class="align_top">{STATTITLE}</td>
     <td class="align_top text_right">{DROPDOWN}{YEARMONTH}</td>
     </tr>
 </table>
 
-<table id="stat_top_list" class="generic" width="100%" cellspacing="0" cellpadding="2">
+<table id="stat_top_list" class="generic col_100">
     <tr>
         <th style="padding-left:{TITLEPADDING_LEFT}px">{TITLETEXT}</th>
         <th class="text_right">{TITLETOTAL}</th>
@@ -27,7 +27,7 @@
     <!-- BEGIN:BLOCK -->
     <tr class="row_mark">
         <td style="padding-left:{PADDING_LEFT}px">
-        <a style="text-decoration: none;" href="{ULR_TO_PAGE}" title="{PATH}" target="_blank">{TEXT}</a></td>
+        <a href="{ULR_TO_PAGE}" title="{PATH}" target="_blank">{TEXT}</a></td>
         <td class="text_right">{TOTAL}</td>
     </tr>
     <!-- END:BLOCK -->

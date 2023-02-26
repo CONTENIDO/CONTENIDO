@@ -529,6 +529,7 @@ class cModuleTemplateHandler extends cModuleHandler {
 
         $form = new cGuiTableForm('file_editor');
         $form->setTableID('mod_template');
+        $form->addTableClass('col_50');
         $form->addHeader(i18n('Edit file'));
         $form->setVar('area', $this->_area);
         $form->setVar('action', $this->_action);

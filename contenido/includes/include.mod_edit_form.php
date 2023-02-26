@@ -170,6 +170,7 @@ if ($bInUse) {
 
 $page = new cGuiPage("mod_edit_form", "", "0");
 $form = new cGuiTableForm("frm_mod_edit");
+$form->addTableClass('col_100');
 $form->setTableID('mod_edit');
 $form->setVar("area", "mod_edit");
 $form->setVar("frame", $frame);

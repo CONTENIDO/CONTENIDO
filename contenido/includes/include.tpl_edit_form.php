@@ -95,6 +95,7 @@ $moduleColl = new cApiModuleCollection();
 $modules = $moduleColl->getAllByIdclient($client);
 
 $form = new cGuiTableForm("tplform");
+$form->addTableClass('col_sm');
 $form->setVar("area", $area);
 $form->setVar("changelayout", 0);
 $form->setVar("frame", $frame);

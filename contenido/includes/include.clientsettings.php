@@ -21,15 +21,17 @@ $frame = cRegistry::getFrame();
 
 $oPage = new cGuiPage("clientsettings");
 $oList = new cGuiScrollList();
+$oList->objTable->setClass('generic col_md');
 
 // @TODO Find a general solution for this!
 $request = $_REQUEST;
 
-$idclientslang = isset($request["idclientslang"]) ? cSecurity::toInteger($request["idclientslang"]) : 0;
-$action = isset($request["action"]) ? $request["action"] : '';
-$idclient = isset($request["idclient"]) ? cSecurity::toInteger($request["idclient"]) : 0;
+$idclientslang = cSecurity::toInteger($request["idclientslang"] ?? '0');
+$action = $request["action"] ?? '';
+$idclient = cSecurity::toInteger($request["idclient"] ?? '0');
 
 $oFrmRange = new cGuiTableForm('range');
+$oFrmRange->setTableClass('generic col_sm');
 $oFrmRange->setVar('area', $area);
 $oFrmRange->setVar('frame', $frame);
 $oFrmRange->setVar('idclient', $idclient);
@@ -161,6 +163,7 @@ if ($aItems !== false) {
 }
 
 $oForm = new cGuiTableForm('clientsettings');
+$oForm->setTableClass('generic col_sm');
 $oForm->setVar('area', $area);
 $oForm->setVar('frame', $frame);
 $oForm->setVar('action', 'clientsettings_save_item');

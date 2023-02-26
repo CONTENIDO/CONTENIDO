@@ -40,7 +40,7 @@ global $cfg, $auth, $perm, $area, $frame;
  *
  * @throws cException
  */
-function renderSelectProperty($name, $possibleValues, $value, $label, $width = 328) {
+function renderSelectProperty($name, $possibleValues, $value, $label, $width = 322) {
     $auth = cRegistry::getAuth();
     $return = [
         'label' => '',
@@ -69,10 +69,10 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
 
         //if (in_array($value, ['disabled', 'simple', 'advanced'])) {
         if ($name == 'versioning{_}enabled') {
-            $html->setStyle('float:left;padding:3px;width:' . $width . 'px;');
+            $html->setStyle('float:left;width:' . $width . 'px;');
             $return['label'] =
                 ' <div>
-                    <span style="width: 284px; display: inline-block; padding: 0 0 0 2px; float:left;">
+                    <span style="width: 280px; display: inline-block; padding: 0 0 0 2px; float:left;">
                         <span style="margin: 0 10px 0 0;">' . i18n("Article versioning") . ':' . '</span>
                         <a
                             href="#"
@@ -100,7 +100,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
                   . '<p><strong>Further information</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>'
                   . '</div>');
         } else {
-            $html->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');
+            $html->setStyle('display:block;float:left;width:' . $width . 'px;');
             $return['label'] = renderLabel($label, $name, 280, ':', 'left');
         }
 
@@ -245,6 +245,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
 
 // generate the table for changing the system properties
 $form = new cGuiTableForm('system_configuration');
+$form->setTableClass('generic col_lg');
 $form->addHeader(i18n('System configuration'));
 $form->setVar('area', $area);
 $form->setVar('frame', $frame);

@@ -1,17 +1,17 @@
-<form {JSEXTRA} enctype="multipart/form-data" style="margin:0px" name="{FORMNAME}" method="{METHOD}" action="{ACTION}">
+<form {JSEXTRA} enctype="multipart/form-data" class="mg0" name="{FORMNAME}" method="{METHOD}" action="{ACTION}">
 {HIDDEN_VALUES}
-<table style="width: auto;" id="{ID}" class="generic" cellspacing="0" cellpadding="2">
+<table id="{ID}" class="{CLASS}">
     {HEADER}
     <!-- BEGIN:BLOCK -->
     {SUBHEADER}
     <tr class="{ROWNAME}">
-        <td class="no_wrap align_top" width="1"><nobr>{CATNAME}</nobr></td>
+        <td class="no_wrap align_top">{CATNAME}</td>
         <td class="no_wrap align_top text_left">{CATFIELD}</td>
     </tr>
     <!-- END:BLOCK -->
     <tr class="{ROWNAME}">
         <td class="no_wrap align_top">&nbsp;</td>
-        <td class="no_wrap align_top text_right">{CANCELLINK}{EXTRABUTTONS}</td>
+        <td class="no_wrap align_top text_right con_extra_buttons">{CANCELLINK}{EXTRABUTTONS}</td>
     </tr>
 </table>
 </form>

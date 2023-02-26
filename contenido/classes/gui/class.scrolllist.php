@@ -124,7 +124,6 @@ class cGuiScrollList {
         $this->objTable = new cHTMLTable();
         if ($defaultstyle) {
             $this->objTable->setClass("generic");
-            $this->objTable->updateAttributes(["cellpadding" => "2"]);
         }
 
         $this->objHeaderRow = new cHTMLTableRow();

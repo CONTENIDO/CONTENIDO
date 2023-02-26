@@ -6,7 +6,7 @@
     <input name="action" type="hidden" value="mod_translation_save">
     <input name="contenido" type="hidden" value="1">
 
-    <table style="max-width: 1%;" id="mod_translate" class="generic" cellspacing="0" cellpadding="2">
+    <table id="mod_translate" class="generic col_md">
         <tr>
             <th colspan="2" class="align_top">
                 {HEADER}
@@ -14,37 +14,31 @@
         </tr>
 
         <tr>
-            <td class="no_wrap align_top" style="padding-left: 0;" width="1">
-                <nobr>i18n("String list")</nobr>
+            <td class="no_wrap align_top">
+                i18n("String list")
             </td>
             <td class="no_wrap align_top text_left">
-                <table border="0" width="600">
+                <table class="borderless">
                     <tr>
-                        <td width="50%">
+                        <td class="col_50 pdt0">
                             i18n("Original module string")
                         </td>
-                        <td width="50%">
+                        <td class="col_50 pdt0">
                             {TRANSLATION_FOR}
-                        </td>
-                        <td width="20">
-                            &nbsp;
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <iframe frameborder="0" style="border:1px solid black;" width="620"
+                            <iframe style="border:1px solid black;" width="690"
                                     src="main.php?area=mod_translate&frame=5&action=&idmod={IDMOD}&current={CURRENT}&row={ROW}&contenido=1#{ROW}"></iframe>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <textarea {DISABLED} id="m3" name="t_orig" cols="50" rows="5" style="width:300px;">{LAST_STRING}</textarea>
+                            <textarea {DISABLED} id="m3" name="t_orig" cols="50" rows="5" style="width:340px;">{LAST_STRING}</textarea>
                         </td>
                         <td>
-                            <textarea {DISABLED} id="m4" name="t_trans" cols="50" rows="5" style="width:300px;">{LAST_TRANSLATION}</textarea>
-                        </td>
-                        <td width="20">
-                            &nbsp;
+                            <textarea {DISABLED} id="m4" name="t_trans" cols="50" rows="5" style="width:340px;">{LAST_TRANSLATION}</textarea>
                         </td>
                     </tr>
                 </table>

@@ -90,6 +90,12 @@ class cGuiTableForm {
     public $tableid = '';
 
     /**
+     * Table class attribute value
+     * @var string
+     */
+    public $tableClass = 'generic';
+
+    /**
      *
      * @var string
      */
@@ -289,6 +295,27 @@ class cGuiTableForm {
 
     /**
      *
+     * @param string $tableClass
+     */
+    public function setTableClass($tableClass) {
+        $this->tableClass = $tableClass;
+    }
+
+    /**
+     *
+     * @param string $tableClass
+     */
+    public function addTableClass($tableClass) {
+        $tableClasses = explode(' ', trim($this->tableClass));
+        $tableClass = trim($tableClass);
+        if (!in_array($tableClass, $tableClasses)) {
+            $tableClasses[] = $tableClass;
+        }
+        $this->tableClass = implode(' ', $tableClasses);
+    }
+
+    /**
+     *
      * @param string $id
      */
     public function unsetActionButton($id) {
@@ -321,6 +348,7 @@ class cGuiTableForm {
         $tpl->set('s', 'HIDDEN_VALUES', $this->renderHiddenValues());
 
         $tpl->set('s', 'ID', $this->tableid);
+        $tpl->set('s', 'CLASS', $this->tableClass);
 
         $tablehead = $this->renderHeader();
         $tpl->set('s', 'HEADER', $this->renderHeader());
@@ -468,7 +496,7 @@ class cGuiTableForm {
                 }
             }
 
-            $button = new cHTMLFormElement('submit', '', '', '', '', 'image_button');
+            $button = new cHTMLFormElement('submit', '', '', '', '', 'con_img_button');
             $button->setAttribute('type', 'image');
             $button->setAttribute('src', $value['image']);
             $button->setAlt($value['description']);

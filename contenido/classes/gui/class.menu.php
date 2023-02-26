@@ -223,7 +223,7 @@ class cGuiMenu {
 
         if (is_array($this->link)) {
             foreach ($this->link as $key => $value) {
-                $img = '&nbsp;';
+                $img = '';
 
                 if ($value != NULL) {
                     if (isset($this->image[$key])) {

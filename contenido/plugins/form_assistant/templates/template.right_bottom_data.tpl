@@ -19,8 +19,7 @@
         {$lnkDel}
     {/if}
 
-    <!-- table cellpadding="0" class="generic" -->
-    <table class="generic" width="97%" cellspacing="0" cellpadding="2" border="0">
+    <table class="generic">
         <tr>
             <th class="no_wrap">mark</th>
             <th class="no_wrap">id</th>

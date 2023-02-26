@@ -3,7 +3,6 @@
  */
 
 .con_edit_form {
-    max-width: 720px;
 }
 
 .con_edit_form tr:first-child td {
@@ -53,8 +52,6 @@
  */
 .con_article_log {
     display: block;
-    width: 720px;
-    max-width: 720px;
 }
 
 .con_article_log .con_article_log_header {
@@ -68,15 +65,15 @@
 }
 
 .con_article_log table .row_1 {
-    min-width: 100px;
+    min-width: 15%;
 }
 
 .con_article_log table .row_2 {
-    min-width: 100px;
+    min-width: 15%;
 }
 
 .con_article_log table .row_3 {
-    min-width: 150px;
+    min-width: 15%;
 }
 
 .con_edit_form table .row_4 {

@@ -13,9 +13,6 @@
     body {
         margin: 10px;
     }
-    table.generic {
-        width: 720px;
-    }
     /** @deprecated Since CONTENIDO 4.10.2, Don't use `leftData`, use `text_medium no_wrap` instead */
     table.generic td.leftData {
         width: 1px;
@@ -42,7 +39,7 @@
         <input type="hidden" name="idartlang" value="{IDARTLANG}">
         <input type="hidden" name="idArtLangVersion" value="">
 
-        <table class="generic" cellspacing="0" cellpadding="2" border="0">
+        <table class="generic col_md">
 
             <!-- BEGIN -->
             {ARTICLE_VERSIONING_BOX}
@@ -196,7 +193,9 @@
             <tr>
                 <td class="text_medium">{ADDMETABTN}</td>
                 <td class="text_medium text_right">
+<!--
                     <input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}" title="{REASON}">
+-->
                 </td>
             </tr>
 
@@ -208,6 +207,13 @@
                     <div style="display: none;" id="metaPreview">
                         {META_TAGS}
                     </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text_medium">&nbsp;</td>
+                <td class="text_medium text_right">
+                    <input class="con_img_button" accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}" title="{REASON}">
                 </td>
             </tr>
 
