@@ -16,6 +16,7 @@
     table.generic {
         width: 720px;
     }
+    /** @deprecated Since CONTENIDO 4.10.2, Don't use `leftData`, use `text_medium no_wrap` instead */
     table.generic td.leftData {
         width: 1px;
         white-space: nowrap;
@@ -32,27 +33,14 @@
     {NOTIFICATION}
     {NOTIFICATIONS}
 
-    <form method="post" name="selectVersion" action="{ACTION2}">
-        <input type="hidden" name="idart" value="{IDART}">
-        <input type="hidden" name="idcat" value="{IDCAT}">
-        <input type="hidden" name="idartlang" value="{IDARTLANG}">
-        <input type="hidden" name="idArtLangVersion" value="">
-    </form>
-
-    <form method="post" name="copyto" action="{ACTION3}">
-        <input type="hidden" name="idart" value="{IDART}">
-        <input type="hidden" name="idcat" value="{IDCAT}">
-        <input type="hidden" name="idartlang" value="{IDARTLANG}">
-        <input type="hidden" name="idArtLangVersion" value="">
-    </form>
-
-    <form method="post" name="art_props" action="{ACTION}">
+    <form method="post" name="con_meta_edit_form" action="{ACTION}">
         <input type="hidden" name="action" value="con_meta_saveart">
         <input type="hidden" name="send" value="1">
         <input type="hidden" name="tmp_firstedit" value="{TMP_FIRSTEDIT}">
         <input type="hidden" name="idart" value="{IDART}">
         <input type="hidden" name="idcat" value="{IDCAT}">
         <input type="hidden" name="idartlang" value="{IDARTLANG}">
+        <input type="hidden" name="idArtLangVersion" value="">
 
         <table class="generic" cellspacing="0" cellpadding="2" border="0">
 
@@ -68,8 +56,8 @@
            {NOTIFICATIONS}-->
 
             <tr>
-                <td class="leftData">i18n("Link")</td>
-                <td>
+                <td class="text_medium no_wrap">i18n("Link")</td>
+                <td class="text_medium">
                     <input class="textField" type="text" value="{LINK}" disabled size="24">
                     <a href="{FULL_LINK}" target="_blank">
                         <img class="vAlignMiddle" src="images/submit.gif" alt="">
@@ -78,7 +66,7 @@
             </tr>
 
             <tr>
-                <td class="leftData">i18n("Page title")</td>
+                <td class="text_medium no_wrap">i18n("Page title")</td>
                 <td class="text_medium">
                     <input class="textField" type="text" name="page_title" value="{PAGE_TITLE}" {DISABLED}>
                     {INFO_BUTTON_PAGE_TITLE}
@@ -86,62 +74,62 @@
             </tr>
 
             <tr>
-                <td class="leftData">i18n("Alias")</td>
+                <td class="text_medium no_wrap">i18n("Alias")</td>
                 <td class="text_medium">
                     <input class="textField" type="text" name="alias" value="{ALIAS}" size="24" {DISABLED}>
                 </td>
             </tr>
 
             <tr>
-                <td class="leftData">i18n("Description")</td>
-                <td>
+                <td class="text_medium no_wrap">i18n("Description")</td>
+                <td class="text_medium">
                     <textarea class="textField metaTag" name="METAdescription" id="METAdescription" rows="3" {DISABLED}>{DESCRIPTION}</textarea>
                     {INFO_BUTTON_DESCRIPTION}
                 </td>
             </tr>
 
             <tr>
-                <td class="leftData">i18n("Keywords")</td>
-                <td>
+                <td class="text_medium no_wrap">i18n("Keywords")</td>
+                <td class="text_medium">
                     <textarea class="textField metaTag" name="METAkeywords" id="METAkeywords" rows="3" {DISABLED}>{KEYWORDS}</textarea>
                     {INFO_BUTTON_KEYWORDS}
                 </td>
             </tr>
 
             <tr>
-                <td class="leftData" style="border-top: 1px solid #b3b3b3">i18n("Copyright")</td>
-                <td style="border-top: 1px solid #b3b3b3">
+                <td class="text_medium no_wrap" style="border-top: 1px solid #b3b3b3">i18n("Copyright")</td>
+                <td class="text_medium" style="border-top: 1px solid #b3b3b3">
                     <input type="text" class="textField metaTag" name="METAcopyright" id="METAcopyright" value="{COPYRIGHT}" size="24" {DISABLED}>
                 </td>
             </tr>
 
             <tr>
-                <td class="leftData">i18n("Author")</td>
-                <td>
+                <td class="text_medium no_wrap">i18n("Author")</td>
+                <td class="text_medium">
                     <input class="textField metaTag" type="text" name="METAauthor" id="METAauthor" value="{AUTHOR}" size="24" {DISABLED}>
                 </td>
             </tr>
 
             <tr>
-                <td class="leftData">i18n("Expires")</td>
-                <td>
+                <td class="text_medium no_wrap">i18n("Expires")</td>
+                <td class="text_medium">
                     <input class="datepickerTextbox textField metaTag" type="text" name="METAexpires" id="METAexpires" value="{EXPIRES}" {DISABLED}>
                  </td>
             </tr>
 
             <tr>
-                <td class="leftData">i18n("Revisit after")</td>
-                <td>
+                <td class="text_medium no_wrap">i18n("Revisit after")</td>
+                <td class="text_medium">
                     <input class="textField metaTag" type="text" name="METArevisit-after" id="METArevisit-after" value="{REVISIT-AFTER}" size="24" {DISABLED}>
                     {INFO_BUTTON_REVISIT}
                 </td>
             </tr>
 
             <tr>
-                <td class="leftData align_top" style="border-top: 1px solid #b3b3b3">
+                <td class="text_medium no_wrap align_top" style="border-top: 1px solid #b3b3b3">
                     i18n("Robots")
                 </td>
-                <td style="border-top: 1px solid #b3b3b3">
+                <td class="text_medium" style="border-top: 1px solid #b3b3b3">
                     <input id="metaNoIndex" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="noindex" {NOINDEX} {DISABLED}>
                     <label for="metaNoIndex">noindex</label><br>
                     <input id="metaNoFollow" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="nofollow" {NOFOLLOW} {DISABLED}>
@@ -159,18 +147,18 @@
             </tr>
 
             <tr>
-                <td class="leftData" style="border-top: 1px solid #b3b3b3">i18n("Sitemap Priority")</td>
-                <td class="leftData" style="border-top: 1px solid #b3b3b3">
+                <td class="text_medium no_wrap" style="border-top: 1px solid #b3b3b3">i18n("Sitemap Priority")</td>
+                <td class="text_medium no_wrap text_medium" style="border-top: 1px solid #b3b3b3">
                     <input class="textField" type="text" name="sitemap_prio" value="{SITEMAP_PRIO}" size="24" {DISABLED}>
                     {INFO_BUTTON_SITEMAP_PRIORITY}
                 </td>
             </tr>
 
             <tr>
-                <td class="leftData" style="border-bottom: 2px solid #b3b3b3">
+                <td class="text_medium no_wrap" style="border-bottom: 2px solid #b3b3b3">
                     i18n("Sitemap change frequency")
                 </td>
-                <td style="border-bottom: 2px solid #b3b3b3">
+                <td class="text_medium" style="border-bottom: 2px solid #b3b3b3">
                     <select size="1" name="sitemap_change_freq" {DISABLED}>
                         <option {SELECTED_}></option>
                         <option {SELECTED_always}>always</option>
@@ -207,7 +195,7 @@
 
             <tr>
                 <td class="text_medium">{ADDMETABTN}</td>
-                <td class="text_right">
+                <td class="text_medium text_right">
                     <input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}" title="{REASON}">
                 </td>
             </tr>
@@ -274,12 +262,6 @@ function deleteMetaTag(idMetaType, articleId, catId, idartlang) {
 
 (function(Con, $) {
     $(function() {
-
-        $('#copytobutton').on('click', function(e){
-            e.preventDefault();
-            e.stopPropagation();
-            copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit();
-        });
 
         $('img#addMeta').hover(function() {
             $(this).css('cursor', 'pointer');

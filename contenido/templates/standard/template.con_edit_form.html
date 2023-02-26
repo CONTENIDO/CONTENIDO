@@ -80,28 +80,15 @@
 
     {CATEGORY}
 
-    <form method="post" name="selectVersion" action="{ACTION2}">
-        <input type="hidden" name="idart" value="{IDART}">
-        <input type="hidden" name="idcat" value="{IDCAT}">
-        <input type="hidden" name="idartlang" value="{IDARTLANG}">
-        <input type="hidden" name="idArtLangVersion" value="">
-    </form>
-
-    <form method="post" name="copyto" action="{ACTION3}">
-        <input type="hidden" name="idart" value="{IDART}">
-        <input type="hidden" name="idcat" value="{IDCAT}">
-        <input type="hidden" name="idartlang" value="{IDARTLANG}">
-        <input type="hidden" name="idArtLangVersion" value="">
-    </form>
-
-    <form method="post" name="art_props" action="{ACTION}">
+    <form method="post" name="con_edit_form" action="{ACTION}">
 
         <input type="hidden" name="action" value="con_saveart">
-        {HIDDENFIELDS}
         <input type="hidden" name="tmp_firstedit" value="{TMP_FIRSTEDIT}">
         <input type="hidden" name="idart" value="{IDART}">
         <input type="hidden" name="idcat" value="{IDCAT}">
+        <input type="hidden" name="send" value="1">
         <input type="hidden" name="idartlang" value="{IDARTLANG}">
+        <input type="hidden" name="idArtLangVersion" value="">
         {NOTIFICATION}
 
         <table cellspacing="0" cellpadding="2" class="generic conEditForm">
@@ -174,48 +161,41 @@
             <tr>
                 <td class="text_medium align_top">i18n("Time control")</td>
                 <td colspan="3" class="text_medium">
-                    <table class="genericEscape" border="0" cellspacing="0" cellpadding="0" style="max-width: 100%; width: 100%; min-width: 100%">
-                        <tr>
-                            <td class="align_top" style="width: 1%; border:none;">
-                                <input type="checkbox" onclick="javascript:disableFunctionsOnTimeControl();" name="timemgmt" id="timemgmt" value="1" {TIMEMGMTCHECKED}>
-                            </td>
-                            <td style="width: 40%; border:none;" class="text_medium">
-                                <label for="timemgmt">i18n("Use time control")</label>
-                            </td>
-                            <td style="width: 59%;">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td class="align_top" style="width: 1%;">&nbsp;</td>
-                            <td class="text_medium" style="width: 40%;">i18n("Start date"):</td>
-                            <td style="width: 59%;">
-                                <input class="short" type="text" name="datestart" id="datestart" onkeyup="disableFunctionsOnTimeControl();" onchange="disableFunctionsOnTimeControl();" value="{STARTDATE}" {SDOPTS} size="20" maxlength="40" class="text_medium">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="align_top" style="width: 1%;">&nbsp;</td>
-                            <td class="text_medium" style="width: 40%; border:none;">i18n("End date"):</td>
-                            <td style="width: 59%;">
-                                <input class="short" type="text" name="dateend" id="dateend" value="{ENDDATE}" {EDOPTS} size="20" maxlength="40" class="text_medium">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="align_top" style="width: 1%;">
-                                <input type="checkbox" id="time_move_cat" name="time_move_cat" value="1" {MOVETOCATCHECKED}>
-                            </td>
-                            <td class="text_medium" style="width: 40%;">
-                                <label for="time_move_cat">i18n("When expired, move to category"):</label>
-                            </td>
-                            <td style="width: 59%;">{MOVETOCATEGORYSELECT}</td>
-                        </tr>
-                        <tr>
-                            <td class="align_top" style="width: 1%;">
-                                <input type="checkbox" id="time_online_move" name="time_online_move" value="1" {ONLINEAFTERMOVECHECKED}>
-                            </td>
-                            <td class="text_medium" colspan="2">
-                                <label for="time_online_move">i18n("Make online after move")</label>
-                            </td>
-                        </tr>
-                    </table>
+                    <div>
+                        <input type="checkbox" onclick="javascript:disableFunctionsOnTimeControl();" name="timemgmt" id="timemgmt" value="1" {TIMEMGMTCHECKED}>
+                        <label for="timemgmt">i18n("Use time control")</label>
+                    </div>
+                    <div id="time_control_box" class="folding_element_hidden">
+                        <div>
+                            <table class="genericEscape" border="0" cellspacing="0" cellpadding="0" style="max-width: 100%; width: 100%; min-width: 100%">
+                                <tr>
+                                    <td class="text_medium pd5 pdl15" style="width: 40%;">i18n("Start date"):</td>
+                                    <td class="text_medium pd5" style="width: 60%;">
+                                        <input class="short" type="text" name="datestart" id="datestart" onkeyup="disableFunctionsOnTimeControl();" onchange="disableFunctionsOnTimeControl();" value="{STARTDATE}" {SDOPTS} size="20" maxlength="40" class="text_medium">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text_medium pd5 pdl15" style="width: 40%; border:none;">i18n("End date"):</td>
+                                    <td class="text_medium pd5" style="width: 60%;">
+                                        <input class="short" type="text" name="dateend" id="dateend" value="{ENDDATE}" {EDOPTS} size="20" maxlength="40" class="text_medium">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text_medium pd5 pdl15" style="width: 40%;">
+                                        <input type="checkbox" id="time_move_cat" name="time_move_cat" value="1" {MOVETOCATCHECKED}>
+                                        <label for="time_move_cat">i18n("When expired, move to category"):</label>
+                                    </td>
+                                    <td class="text_medium pd5" style="width: 60%;">{MOVETOCATEGORYSELECT}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text_medium pd5 pdl15" colspan="2">
+                                        <input type="checkbox" id="time_online_move" name="time_online_move" value="1" {ONLINEAFTERMOVECHECKED}>
+                                        <label for="time_online_move">i18n("Make online after move")</label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </td>
             </tr>
 
@@ -297,42 +277,41 @@ function removeAssignments(idart, idcat) {
 }
 
 function disableFunctionsOnTimeControl() {
+    var $timemgmt = $('#timemgmt'),
+        $online = $('#online'),
+        $isStart = $('#is_start'),
+        $dateStart = $('#datestart'),
+        $timeControlBox = $('#time_control_box');
+
     // CON-2134
     // do not enable online and start article elements on frozen article
-    if (true === document.getElementById("timemgmt").disabled
-    && true === document.getElementById("online").disabled) {
+    if ($timemgmt.prop('disabled') && $online.prop('disabled')) {
         return;
     }
 
-    // Timecontrol enabled => disable Online and Startarticle
-    if (document.getElementById("timemgmt").checked == true) {
-        document.getElementById("is_start").checked = false;
-        document.getElementById("is_start").disabled = true;
-        if (document.getElementById("datestart").value != '') {
-            document.getElementById("online").checked = false;
-            document.getElementById("online").disabled = true;
+    // Time control enabled => disable Online and Startarticle
+    if ($timemgmt.prop('checked')) {
+        $isStart.prop('checked', false);
+        $isStart.prop('disabled', true);
+        if ($dateStart.val()) {
+            $online.prop('checked', false);
+            $online.prop('disabled', true);
         }
-        $("#timemgmt").parent("td").parent("tr").nextAll("tr").css('display', '');
+        $timeControlBox.addClass('display');
     } else {
-        // Timecontrol disable => enable Online and Startarticle
-        document.getElementById("is_start").disabled = false;
-        document.getElementById("online").disabled = false;
-        $("#timemgmt").parent("td").parent("tr").nextAll("tr").css('display', 'none');
+        // Timec ontrol disable => enable Online and Startarticle
+        $isStart.prop('disabled', false);
+        $online.prop('disabled', false);
+        $timeControlBox.removeClass('display');
     }
 
-    if (document.getElementById("datestart").value == '') {
-        document.getElementById("online").disabled = false;
+    if (!$dateStart.val()) {
+        $online.prop('disabled', false);
     }
 }
 
 (function(Con, $) {
     $(function() {
-
-        $('#copytobutton').on('click', function(e){
-            e.preventDefault();
-            e.stopPropagation();
-            copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit();
-        });
 
         $('#publishing_date').datetimepicker({
             buttonImage: '{PATH_TO_CALENDER_PIC}',

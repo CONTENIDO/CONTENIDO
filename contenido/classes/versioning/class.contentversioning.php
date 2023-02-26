@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Versioning
  */
-class cContentVersioning {
+class cContentVersioning
+{
 
     /**
      * CONTENIDO database object
@@ -53,7 +54,8 @@ class cContentVersioning {
     /**
      * Constructor to create an instance of this class.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = cRegistry::getDb();
     }
 
@@ -64,7 +66,8 @@ class cContentVersioning {
      * @param array $result[cms type][typeId] = value
      * @return array $result[cms type][typeId] = value
      */
-    public function sortResults(array $result) {
+    public function sortResults(array $result)
+    {
         uksort($result, function($a, $b) {
             // cms type sort sequence
             $cmsType = [
@@ -98,12 +101,14 @@ class cContentVersioning {
      *
      * @param string $lastModified
      * @return string
+     * @throws cException
      */
-    public function getTimeDiff($lastModified) {
+    public function getTimeDiff($lastModified)
+    {
         $currentTime = new DateTime(date('Y-m-d H:i:s'));
         $modifiedTime = new DateTime($lastModified);
         $diff = $currentTime->diff($modifiedTime);
-        $diff2 = (int) $diff->format('%Y%M%D%H');
+        $diff2 = cSecurity::toInteger($diff->format('%Y%M%D%H'));
 
         if ($diff2 === 0) {
             return sprintf(i18n("%d minutes ago"), $diff->format('%i'));
@@ -120,11 +125,11 @@ class cContentVersioning {
      * @throws cDbException
      * @throws cException
      */
-    public static function getState() {
+    public static function getState()
+    {
         static $versioningState;
 
         if (!isset($versioningState)) {
-
             // versioning enabled is a tri-state => disabled (default), simple, advanced
             $systemPropColl = new cApiSystemPropertyCollection();
             $prop = $systemPropColl->fetchByTypeName('versioning', 'enabled');
@@ -136,7 +141,6 @@ class cContentVersioning {
                 // NOTE: An non empty default value overrides an empty value
                 $versioningState = 'disabled';
             }
-
         }
 
         return $versioningState;
@@ -159,7 +163,8 @@ class cContentVersioning {
      * @throws cDbException
      * @throws cException
      */
-    public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType, $selectedArticleId = NULL) {
+    public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType, $selectedArticleId = NULL)
+    {
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
         $versioningState = $this->getState();
         $this->selectedArticle = NULL;
@@ -193,7 +198,8 @@ class cContentVersioning {
      * @throws cDbException
      * @throws cException
      */
-    public function getList($idArtLang, $articleType) {
+    public function getList($idArtLang, $articleType)
+    {
         $sql = 'SELECT DISTINCT b.idtype as idtype, b.type as name
                 FROM %s AS a, %s AS b
                 WHERE a.idartlang = %d AND a.idtype = b.idtype
@@ -218,14 +224,15 @@ class cContentVersioning {
      * Return max idcontent.
      *
      * @return int
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function getMaxIdContent() {
-        $sql = 'SELECT max(idcontent) AS max FROM %s';
+    public function getMaxIdContent()
+    {
+        $sql = 'SELECT MAX(`idcontent`) AS `max` FROM `%s`';
         $this->db->query($sql, cRegistry::getDbTableName('content'));
         $this->db->nextRecord();
 
-        return $this->db->f('max');
+        return cSecurity::toInteger($this->db->f('max'));
     }
 
     /**
@@ -243,7 +250,8 @@ class cContentVersioning {
      * @throws cDbException
      * @throws cException
      */
-    public function getArticleType($idArtLangVersion, $idArtLang, $action, $selectedArticleId) {
+    public function getArticleType($idArtLangVersion, $idArtLang, $action, $selectedArticleId)
+    {
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
 
         if ($this->getState() == 'disabled' // disabled
@@ -254,7 +262,6 @@ class cContentVersioning {
                     || $action == 'con_saveart' || $action == 'con_edit' || $action == 'con_meta_edit' || $action == 'con_editart'))
             || $idArtLangVersion == 'current' && $action != 'copyto'
             || $action == 'copyto' && $idArtLangVersion == $this->editableArticleId
-            || $action == 'con_meta_change_version' && $idArtLang == 'current'
             || $selectedArticleId == 'current' && $action != 'copyto'
             || $this->editableArticleId == NULL
             && $action != 'con_meta_saveart' && $action != 'con_newart') { // advanced
@@ -270,7 +277,7 @@ class cContentVersioning {
             || $action == 'con_edit' && $this->getState() == 'advanced' && $selectedArticleId == NULL
             || $action == '20' && $idArtLangVersion == NULL
             || $action == 'con_meta_saveart' || $action == 'con_saveart'
-            || $action == 'con_newart' || $action == 'con_meta_change_version'
+            || $action == 'con_newart'
             && $idArtLangVersion == $this->editableArticleId) {
             $this->articleType = 'editable';
         } else {
@@ -285,39 +292,71 @@ class cContentVersioning {
      * @param string $class
      * @param string $selectElement
      * @param string $copyToButton
-     * @param string $infoText
+     * @param cGuiBackendHelpbox $infoTextBox
+     * @param string $label
      * @return string
+     * @throws cException
      */
-    public function getVersionSelectionField($class, $selectElement, $copyToButton, $infoText) {
-        // TODO avoid inline CSS!!!
-        $versionselection = '
-            <div class="%s">
-                <div>
-                    <span style="width: 280px; display: inline; padding: 0px 0px 0px 2px;">
-                        <span style="font-weight:bold;color:black;">' . i18n('Select Article Version') . '</span>
-                        <span style="margin: 0;"> %s %s
-                        </span>
-                        <a
-                            href="#"
-                            id="pluginInfoDetails-link"
-                            class="main i-link infoButton"
-                            title="">
-                        </a>
+    public function getVersionSelectionField($class, $selectElement, $copyToButton, $infoTextBox, $label = '')
+    {
+        $versionSelection = '
+            <div class="con_version_selection %s">
+                <span class="con_version_selection_content">
+                    <span class="con_version_selection_label">%s</span>
+                    <span class="con_version_selection_controls">
+                        %s %s %s
                     </span>
-                </div>
-                <div id="pluginInfoDetails" style="display:none;" class="nodisplay">
-                       %s
-                </div>
+                </span>
             </div>';
 
         return sprintf(
-            $versionselection,
+            $versionSelection,
             $class,
+            $label,
             $selectElement,
             $copyToButton,
-            $infoText
+            $infoTextBox
         );
     }
+
+    /**
+     * Returns the JavaScript code which registers the change/click handler
+     * on version select and copy button.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $formName
+     * @return string JavaScript code to add to the page output
+     */
+    public function getVersionSelectionFieldJavaScript(string $formName): string
+    {
+        return '
+<script type="text/javascript">
+    (function(Con, $) {
+        $(function() {
+            var $selectVersionElement = $("#selectVersionElement"),
+                $form = $("form[name=' . $formName . ']"),
+                $inputAction = $form.find("input[name=action]"),
+                $inputIdArtLangVersion = $form.find("input[name=idArtLangVersion]");
+
+            // On articleVersionSelect change
+            $selectVersionElement.on("change", function() {
+                $inputAction.val("versionselected");
+                $inputIdArtLangVersion.val($selectVersionElement.val());
+                $form.submit();
+            });
+
+            // On copy button click
+            $("#markAsCurrentButton").on("click", function() {
+                $inputAction.val("copyto");
+                $inputIdArtLangVersion.val($selectVersionElement.val());
+                $form.submit();
+            });
+        });
+    })(Con, Con.$);
+</script>
+';
+    }
+
 
     /**
      * Returns idartlangversion of editable article.
@@ -522,7 +561,7 @@ class cContentVersioning {
      */
     public function prepareContentForSaving($idartlang, cApiContent $content, $value) {
         // Through a CONTENIDO bug filelists save each of their changes multiple
-        // times. Therefore its necessary to check if the same change already
+        // times. Therefore, its necessary to check if the same change already
         // has been saved and prevent multiple savings.
         static $savedTypes = [];
 

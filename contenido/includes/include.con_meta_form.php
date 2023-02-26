@@ -28,14 +28,15 @@ $auth = cRegistry::getAuth();
 $belang = cRegistry::getBackendLanguage();
 $frame = cRegistry::getFrame();
 $action = cRegistry::getAction();
-$idart = cRegistry::getArticleId();
+$idart = cSecurity::toInteger(cRegistry::getArticleId());
 $cfg = cRegistry::getConfig();
 $client = cRegistry::getClientId();
-$lang = cRegistry::getLanguageId();
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
 $sess = cRegistry::getSession();
 $area = cRegistry::getArea();
 $idcat = cRegistry::getCategoryId();
 $idcatlang = cRegistry::getCategoryLanguageId();
+$idartlang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
 
 // Reset template
 $tpl->reset();
@@ -52,94 +53,86 @@ if (!$perm->have_perm_area_action($area, 'con_meta_edit') && !$perm->have_perm_a
 
 $versioning = new cContentVersioning();
 
-// Initialize $_REQUEST with common used keys to prevent PHP 'Undefined array key' warnings
-foreach (['idArtLangVersion'] as $_key) {
-    if (!isset($_REQUEST[$_key])) {
-        $_REQUEST[$_key] = '';
-    }
-}
+$idArtLangVersion = $_REQUEST['idArtLangVersion'] ?? '';
 
 // Get article (version) data
 $art = new cApiArticleLanguage();
-$art->loadByArticleAndLanguageId(cSecurity::toInteger($idart), cSecurity::toInteger($lang));
+$art->loadByArticleAndLanguageId($idart, $lang);
 
-if ($_REQUEST['idArtLangVersion'] == NULL && $versioning->getState() == 'advanced') {
+if (empty($idArtLangVersion) && $versioning->getState() == 'advanced') {
     $art = new cApiArticleLanguageVersion($versioning->getEditableArticleId($art->getField('idartlang')));
     //$art = new cApiArticleLanguageVersion($versioning->getEditableArticleId($idArtLang));
-} elseif ($versioning->getState() == 'advanced' && $_REQUEST['idArtLangVersion'] != 'current'
-    || $versioning->getState() == 'simple' && ($_REQUEST['idArtLangVersion'] != NULL
-    && is_numeric ($_REQUEST['idArtLangVersion']) || is_numeric ($_REQUEST['idArtLangVersion']))) {
-    $art = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+} elseif ($versioning->getState() == 'advanced' && $idArtLangVersion != 'current'
+    || $versioning->getState() == 'simple' && is_numeric($idArtLangVersion)) {
+    $art = new cApiArticleLanguageVersion(cSecurity::toInteger($idArtLangVersion));
 }
 
 // if there is no (editable) version yet, output the published version
 if (!$art->isLoaded()) {
     $art = new cApiArticleLanguage();
-    $art->loadByArticleAndLanguageId(cSecurity::toInteger($idart), cSecurity::toInteger($lang));
+    $art->loadByArticleAndLanguageId($idart, $lang);
 }
+
 global $selectedArticleId;
-if ($_REQUEST['idArtLangVersion'] != NULL) {
-    $selectedArticleId = $_REQUEST['idArtLangVersion'];
-}
+$selectedArticleId = !empty($idArtLangVersion) ? $idArtLangVersion : NULL;
+
 $articleType = $versioning->getArticleType(
-    $_REQUEST['idArtLangVersion'],
-    $art->getField('idartlang'),
-    $action,
-    $selectedArticleId
+    $idArtLangVersion, cSecurity::toInteger($art->getField('idartlang')), $action, $selectedArticleId
 );
 
 // Set as current/editable
 switch ($versioning->getState()) {
-    case 'advanced':
+    case 'simple':
         if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
-                // editable->current
-                $artLangVersion = NULL;
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
-                if (isset($artLangVersion)) {
-                    $artLangVersion->markAsCurrent('meta');
-                    $selectedArticleId = 'current';
-                }
-
-                // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
-                    'idart' => $artLangVersion->get("idart"),
-                    'idlang' => cRegistry::getLanguageId()
-                ]);
-            } elseif (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
-                // version->editable
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
-                $artLangVersion->markAsEditable('meta');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
-                $selectedArticleId = 'editable';
-
-                // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
-                    'idart' => $artLangVersion->get("idart"),
-                    'idlang' => cRegistry::getLanguageId()
-                ]);
-            } elseif ($_REQUEST['idArtLangVersion'] == 'current') {
-                // current->editable
-                $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
-                $artLang->markAsEditable('meta');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
-                $selectedArticleId = 'editable';
-
-                // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
-                    'idart' => $artLang->get("idart"),
-                    'idlang' => cRegistry::getLanguageId()
-                ]);
+            if (is_numeric($idArtLangVersion)) {
+                $artLangVersion = new cApiArticleLanguageVersion(cSecurity::toInteger($idArtLangVersion));
+                $artLangVersion->markAsCurrent('meta');
+                $selectedArticleId = 'current';
             }
         }
 
         break;
-    case 'simple':
+    case 'advanced':
         if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion'])) {
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+            if (is_numeric($idArtLangVersion) && $articleType == 'current') {
+                // editable->current
+                $artLangVersion = new cApiArticleLanguageVersion(cSecurity::toInteger($idArtLangVersion));
                 $artLangVersion->markAsCurrent('meta');
                 $selectedArticleId = 'current';
+
+                // Execute cec hook
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
+                    'idart' => cSecurity::toInteger($artLangVersion->get('idart')),
+                    'idlang' => cRegistry::getLanguageId()
+                ]);
+            } elseif (is_numeric($idArtLangVersion) && $articleType == 'editable') {
+                // version->editable
+                $artLangVersion = new cApiArticleLanguageVersion(cSecurity::toInteger($idArtLangVersion));
+                $artLangVersion->markAsEditable('meta');
+                $articleType = $versioning->getArticleType(
+                    $idArtLangVersion, $idartlang, $action, $selectedArticleId
+                );
+                $selectedArticleId = 'editable';
+
+                // Execute cec hook
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
+                    'idart' => cSecurity::toInteger($artLangVersion->get('idart')),
+                    'idlang' => cRegistry::getLanguageId()
+                ]);
+            } elseif ($idArtLangVersion == 'current') {
+                // current->editable
+                $artLang = new cApiArticleLanguage($idartlang);
+                $artLang->markAsEditable('meta');
+                $articleType = $versioning->getArticleType(
+                    $idArtLangVersion, $idartlang, $action, $selectedArticleId
+                );
+                $selectedArticleId = 'editable';
+
+                // Execute cec hook
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
+                    'idart' => cSecurity::toInteger($artLang->get('idart')),
+                    'idlang' => cRegistry::getLanguageId()
+                ]);
             }
         }
 
@@ -367,7 +360,88 @@ foreach ($availableTags as $key => $value) {
 
 $tpl->set('s', 'SITEMAP_PRIO', $art->getField('sitemapprio'));
 
+$versioningElement = '';
+
 switch ($versioning->getState()) {
+    case 'simple':
+        $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
+
+        // Create Metatag Version Option Elements
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
+        if ($articleType == 'current') {
+            $optionElement->setSelected(true);
+        }
+        $selectElement->appendOptionElement($optionElement);
+
+        // Check if selected version is available, else select the next lower version
+        $temp_id = $selectedArticleId;
+        $temp_ids = [];
+
+        foreach (array_values($optionElementParameters) AS $key => $value) {
+            $temp_ids[] = key($value);
+        }
+        if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
+            && $selectedArticleId != 'editable') {
+            foreach ($temp_ids AS $key => $value) {
+                if ($value < $selectedArticleId) {
+                    $temp_id = $value;
+                    break;
+                }
+            }
+        }
+
+        foreach ($optionElementParameters AS $key => $value) {
+            $lastModified = $versioning->getTimeDiff($value[key($value)]);
+            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
+            //if ($articleType == 'version') {
+            if ($temp_id == key($value)) {
+                $optionElement->setSelected(true);
+            }
+            //}
+            $selectElement->appendOptionElement($optionElement);
+        }
+
+        // Create markAsCurrent Button
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'), 'markAsCurrentButton');
+        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
+            $markAsCurrentButton->setAttribute('DISABLED');
+        }
+
+        $infoButton = new cGuiBackendHelpbox(i18n(
+            '<strong>Simple-mode:</strong> '
+            . 'Older SEO versions can be reviewed and restored (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+            . 'Changes are only related to SEO!'
+        ));
+
+        // box to select article version
+        $versioningBox = new cHTMLTableRow();
+
+        $versioningHeadRow = new cHTMLTableRow();
+        $versioningHeadText = new cHTMLTableHead();
+        $versioningHeadText->setContent(i18n('Select Article Version'));
+        $versioningHeadText->setAttribute('colspan', 2);
+        $versioningHeadRow->appendContent($versioningHeadText);
+        $versioningBox->appendContent($versioningHeadRow);
+
+        $versionBoxDescription = new cHTMLTableData(i18n("Select Article Version"));
+        $versionBoxDescription->setClass('text_medium no_wrap border_t_b3');
+        $versioningBox->appendContent($versionBoxDescription);
+
+        $versionBoxData = new cHTMLTableData();
+        $versionBoxData->setClass('border_t_b3');
+        $versionBoxData->setAttribute('colspan', 3);
+        $versionBoxData->appendContent($selectElement);
+        $versionBoxData->appendContent(' ');
+        $versionBoxData->appendContent($markAsCurrentButton);
+        $versionBoxData->appendContent(' ');
+        $versionBoxData->appendContent($infoButton);
+        $versioningBox->appendContent($versionBoxData);
+
+        $versioningElement .= $versioningBox->toHtml();
+        $versioningElement .= $versioning->getVersionSelectionFieldJavaScript('con_meta_edit_form');
+
+        break;
     case 'advanced':
         $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
 
@@ -384,7 +458,7 @@ switch ($versioning->getState()) {
             }
         }
 
-        // check if selected version is availible, else select the next lower version
+        // Check if selected version is available, else select the next lower version
         $temp_id = $selectedArticleId;
         $temp_ids = [];
 
@@ -418,10 +492,6 @@ switch ($versioning->getState()) {
             //}
             $selectElement->appendOptionElement($optionElement);
         }
-        $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
-
-        $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
-        $tpl->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
 
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
@@ -429,92 +499,13 @@ switch ($versioning->getState()) {
         } elseif ($articleType == 'editable') {
             $buttonTitle = i18n('Publish draft');
         }
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'markAsCurrentButton');
 
-        $infoButton = new cGuiBackendHelpbox(i18n('<strong>Advanced-mode:</strong> '
-                . 'Older SEO versions can be reviewed and restored. Unpublished drafts can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
-                . 'Changes are only related to SEO!'));
-
-        // box to select article version
-        $versioningBox = new cHTMLTableRow();
-
-        $versioningHeadRow = new cHTMLTableRow();
-        $versioningHeadText = new cHTMLTableHead();
-        $versioningHeadText->setContent(i18n('Select Article Version'));
-        $versioningHeadText->setAttribute('colspan', 2);
-        $versioningHeadRow->appendContent($versioningHeadText);
-        $versioningBox->appendContent($versioningHeadRow);
-
-        $versionBoxDescription = new cHTMLTableData(i18n("Select Article Version"));
-        $versionBoxDescription->setClass('leftData');
-        $versionBoxDescription->setStyle('border-top:1px solid #B3B3B3;');
-        $versioningBox->appendContent($versionBoxDescription);
-
-        $versionBoxData = new cHTMLTableData();
-        $versionBoxData->setStyle('border-top:1px solid #B3B3B3;');
-        $versionBoxData->setAttribute('colspan', 3);
-        $versionBoxData->appendContent($selectElement);
-        $versionBoxData->appendContent(' ');
-        $versionBoxData->appendContent($markAsCurrentButton);
-        $versionBoxData->appendContent(' ');
-        $versionBoxData->appendContent($infoButton);
-        $versioningBox->appendContent($versionBoxData);
-
-        $tpl->set('s', 'ARTICLE_VERSIONING_BOX', $versioningBox);
-
-        break;
-    case 'simple':
-        $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
-
-        // Create Metatag Version Option Elements
-        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
-        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
-        if ($articleType == 'current') {
-            $optionElement->setSelected(true);
-        }
-        $selectElement->appendOptionElement($optionElement);
-
-        // check if selected version is availible, else select the next lower version
-        $temp_id = $selectedArticleId;
-        $temp_ids = [];
-
-        foreach (array_values($optionElementParameters) AS $key => $value) {
-            $temp_ids[] = key($value);
-        }
-        if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
-            && $selectedArticleId != 'editable') {
-            foreach ($temp_ids AS $key => $value) {
-                if ($value < $selectedArticleId) {
-                    $temp_id = $value;
-                    break;
-                }
-            }
-        }
-
-        foreach ($optionElementParameters AS $key => $value) {
-            $lastModified = $versioning->getTimeDiff($value[key($value)]);
-            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
-            //if ($articleType == 'version') {
-                if ($temp_id == key($value)) {
-                    $optionElement->setSelected(true);
-                }
-            //}
-            $selectElement->appendOptionElement($optionElement);
-        }
-        $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
-
-        $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
-        $tpl->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
-
-        // Create markAsCurrent Button
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'), 'copytobutton');
-        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
-            $markAsCurrentButton->setAttribute('DISABLED');
-        }
-
-        $infoButton = new cGuiBackendHelpbox(i18n('<strong>Simple-mode:</strong> '
-                . 'Older SEO versions can be reviewed and restored (For further configurations please go to Administration/System/System configuration).<br/><br/>'
-                . 'Changes are only related to SEO!'));
+        $infoButton = new cGuiBackendHelpbox(i18n(
+            '<strong>Advanced-mode:</strong> '
+            . 'Older SEO versions can be reviewed and restored. Unpublished drafts can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+            . 'Changes are only related to SEO!'
+        ));
 
         // box to select article version
         $versioningBox = new cHTMLTableRow();
@@ -527,12 +518,11 @@ switch ($versioning->getState()) {
         $versioningBox->appendContent($versioningHeadRow);
 
         $versionBoxDescription = new cHTMLTableData(i18n("Select Article Version"));
-        $versionBoxDescription->setClass('leftData');
-        $versionBoxDescription->setStyle('border-top:1px solid #B3B3B3;');
+        $versionBoxDescription->setClass('text_medium border_t_b3 no_wrap');
         $versioningBox->appendContent($versionBoxDescription);
 
         $versionBoxData = new cHTMLTableData();
-        $versionBoxData->setStyle('border-top:1px solid #B3B3B3;');
+        $versionBoxData->setClass('border_t_b3');
         $versionBoxData->setAttribute('colspan', 3);
         $versionBoxData->appendContent($selectElement);
         $versionBoxData->appendContent(' ');
@@ -541,16 +531,18 @@ switch ($versioning->getState()) {
         $versionBoxData->appendContent($infoButton);
         $versioningBox->appendContent($versionBoxData);
 
-        $tpl->set('s', 'ARTICLE_VERSIONING_BOX', $versioningBox);
+        $versioningElement .= $versioningBox->toHtml();
+        $versioningElement .= $versioning->getVersionSelectionFieldJavaScript('con_meta_edit_form');
 
         break;
     case 'disabled':
-         // do not show box to select article version when article versioning is disabled
-        $tpl->set('s', 'ARTICLE_VERSIONING_BOX', '');
+        // Versioning is disabled, don't show version select/copy controls
         break;
     default:
         break;
 }
+
+$tpl->set('s', 'ARTICLE_VERSIONING_BOX', $versioningElement);
 
 $infoButton = new cGuiBackendHelpbox(i18n('The title-tag is one of the most important on-page factors for SEO and is not longer than 60 characters. It includes top keywords and the branding.'));
 $tpl->set("s", "INFO_BUTTON_PAGE_TITLE", $infoButton->render());
@@ -611,9 +603,8 @@ $result = [
 $tpl2 = new cTemplate();
 $infoButton->setHelpText(i18n('Attribute content has to begin with a letter and can be followed by letters, digits or the following chars: . : _ - '));
 $tpl2->set('s', 'METATITLE', i18n('New meta tag') . ' ' . $infoButton->render());
-$sql = "SHOW FIELDS
-        FROM `" . $cfg['tab']['meta_type'] . "`";
-$db->query($sql);
+
+$db->query("SHOW FIELDS FROM `%s`", cRegistry::getDbTableName('meta_type'));
 
 while ($db->nextRecord()) {
     if ($db->f('Field') == 'idmetatype') {
@@ -712,5 +703,5 @@ if (0 != $idart && 0 != $idcat) {
 $tpl->set('s', 'DATAPUSH', $script);
 $tpl->set('s', 'PATH_TO_CALENDER_PIC', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
 
-// Genereate the Template
+// Generate the template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_meta_edit_form']);
