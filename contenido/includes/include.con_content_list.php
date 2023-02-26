@@ -981,6 +981,7 @@ function _processCmsTags(
 
     $match = [];
     $keycode = [];
+    $code = '';
 
     // $a_content is used by included/evaluated content type codes below
     $a_content = $contentList;
@@ -1086,8 +1087,9 @@ function _processCmsTags(
     // execute CEC hook
     $layoutCode = cApiCecHook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
 
-    $pathTemplate = cRegistry::getBackendUrl() . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=%';
-    $jsCode = '
+    if (!empty($layoutCode)) {
+        $pathTemplate = cRegistry::getBackendUrl() . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=%';
+        $jsCode = '
 <script type="text/javascript">
     (function(Con, $) {
         var pathTemplate = "' . $pathTemplate . '",
@@ -1110,9 +1112,12 @@ function _processCmsTags(
 </script>
         ';
 
-    $layoutCode = str_ireplace('</body>', $jsCode . "\n</body>", $layoutCode);
+        $layoutCode = str_ireplace('</body>', $jsCode . "\n</body>", $layoutCode);
 
-    $layoutCode = str_ireplace("<<", "[", $layoutCode);
+        $layoutCode = str_ireplace("<<", "[", $layoutCode);
 
-    return str_ireplace(">>", "]", $layoutCode);
+        $layoutCode = str_ireplace(">>", "]", $layoutCode);
+    }
+
+    return $layoutCode;
 }
