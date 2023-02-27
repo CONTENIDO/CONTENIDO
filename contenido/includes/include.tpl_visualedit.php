@@ -137,7 +137,7 @@ foreach ($containerNumbers as $containerNr) {
 
     // visual edit item container
     $sLabelAndSelect = '<label for="' . $modselect->getAttribute('id') . '">' . $containerNr . ':</label>' . $modselect->render();
-    $sVisualEditItem = '<div class="visedit_item" onmouseover="this.style.zIndex = \'20\'" onmouseout="this.style.zIndex = \'10\'">' . $sLabelAndSelect . '</div>';
+    $sVisualEditItem = '<div class="con_visedit_item" onmouseover="this.style.zIndex = \'20\'" onmouseout="this.style.zIndex = \'10\'">' . $sLabelAndSelect . '</div>';
 
     // collect containers in head for displaying them at the start of body
     if (is_array($containerinf) && isset($containerinf[$idlay]) && isset($containerinf[$idlay][$containerNr]) &&
@@ -165,7 +165,7 @@ $backendUrl = cRegistry::getBackendUrl();
 $headCode = cHTMLLinkTag::stylesheet($backendUrl . cAsset::backend('styles/jquery/jquery-ui.css')) . PHP_EOL;
 
 $form = '
-    <form id="tpl_visedit" name="tpl_visedit" action="' . $backendUrl . 'main.php">
+    <form id="con_tpl_visedit" name="tpl_visedit" action="' . $backendUrl . 'main.php">
     <input type="hidden" name="' . $sess->name . '" value="' . $sess->id . '"' . $sElemClosing . '>
     <input type="hidden" name="idtpl" value="' . $idtpl . '"' . $sElemClosing . '>
     <input type="hidden" name="frame" value="' . $frame . '"' . $sElemClosing . '>
@@ -178,7 +178,7 @@ $form = '
 $form .= $sContainerInHead;
 
 $sInput = '<input type="image" src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif' . '"' . $sElemClosing . '>';
-$button = '<table border="0" width="100%"><tr><td class="text_right">' . $sInput . '</td></tr></table>';
+$button = '<div class="con_visedit_action_control">' . $sInput . '</div>';
 $code = preg_replace("/<\/head(.*)>/i", $headCode . '</head\\1>', $code);
 $code = preg_replace("/<body(.*)>/i", "<body\\1>" . $form . $button, $code);
 $code = preg_replace("/<\/body(.*)>/i", '</form></body\\1>', $code);

@@ -1,4 +1,4 @@
-<label class="content_type_label">{$label_overview|escape}</label>
+<label class="con_content_type_label">{$label_overview|escape}</label>
 <form action="" method="POST">
 	<table style="width: 100%;">
     <tr>
@@ -28,5 +28,4 @@
 		</td>
 	</tr>
 </table>
-	
-	
+
