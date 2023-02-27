@@ -304,7 +304,7 @@ if ($action == "todo_save_item") {
 
     $todoItem->setProperty("todo", "status", $status);
 
-    // Progress can be between 0 - 5
+    // Progress can be between 0 - 100
     $progress = min(max(0, $progress), 100);
 
     $todoItem->setProperty("todo", "priority", $priority);
