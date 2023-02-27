@@ -40,7 +40,7 @@ if ($readOnly) {
 
 $sFileName = $_REQUEST['file'] ?? '';
 if ($sFileName == '') {
-    $sFileName = $_REQUEST['idstyle'] ?? ''; // Content Type is css
+    $sFileName = $_REQUEST['idstyle'] ?? '';
 }
 
 $sType = 'css';
@@ -65,6 +65,7 @@ if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
     return;
 }
 
+// Content Type is css
 $sTypeContent = 'css';
 $bDeleteFile = false;
 
@@ -140,6 +141,7 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction != 'histo
 
     // Generate Form
     $oForm = new cGuiTableForm('style_display');
+    $oForm->addTableClass('col_50');
     $oForm->addHeader(i18n('Edit style'));
     $oForm->setVar('area', 'style_history');
     $oForm->setVar('frame', $frame);
