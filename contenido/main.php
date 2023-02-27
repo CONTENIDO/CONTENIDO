@@ -126,7 +126,7 @@ if (isset($changelang) && is_numeric($changelang)) {
     }
 }
 
-if (!is_numeric($client)
+if (empty($client) || !is_numeric($client)
     || (!$perm->have_perm_client('client[' . $client . ']')
         && !$perm->have_perm_client('admin[' . $client . ']'))) {
     // use first client which is accessible
@@ -140,7 +140,7 @@ if (!is_numeric($client)
     $sess->register('client');
 }
 
-if (!is_numeric($lang) || $lang == '') {
+if (empty($lang) || !is_numeric($lang)) {
     $sess->register('lang');
     // Search for the first language of this client
     $oClientLangColl = new cApiClientLanguageCollection();
