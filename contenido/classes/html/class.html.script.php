@@ -22,14 +22,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLScript extends cHTMLContentElement {
+class cHTMLScript extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
      *
      * Creates an HTML script element.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->_tag = 'script';
     }
@@ -37,6 +39,7 @@ class cHTMLScript extends cHTMLContentElement {
     /**
      * Renders a script tag to reference an external script.
      *
+     * @since CONTENIDO 4.10.2
      * @param string $src The src (path) value for the script
      * @param array $attributes Attributes to set, `type="text/javascript"`
      *      will be set by default.

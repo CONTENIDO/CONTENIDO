@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLImage extends cHTML {
+class cHTMLImage extends cHTML
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -32,7 +33,8 @@ class cHTMLImage extends cHTML {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($src = NULL, $class = '') {
+    public function __construct($src = NULL, $class = '')
+    {
         parent::__construct();
 
         $this->_tag = 'img';
@@ -50,7 +52,8 @@ class cHTMLImage extends cHTML {
      * @return cHTMLImage
      *         $this for chaining
      */
-    public function setSrc($src) {
+    public function setSrc($src)
+    {
         if ($src === NULL) {
             $src = 'images/spacer.gif';
         }
@@ -66,7 +69,8 @@ class cHTMLImage extends cHTML {
      * @return cHTMLImage
      *         $this for chaining
      */
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         return $this->updateAttribute('width', $width);
     }
 
@@ -78,7 +82,8 @@ class cHTMLImage extends cHTML {
      * @return cHTMLImage
      *         $this for chaining
      */
-    public function setHeight($height) {
+    public function setHeight($height)
+    {
         return $this->updateAttribute('height', $height);
     }
 
@@ -90,14 +95,16 @@ class cHTMLImage extends cHTML {
      * @return cHTMLImage
      *         $this for chaining
      */
-    public function setBorder($border) {
+    public function setBorder($border)
+    {
         return $this->updateAttribute('border', $border);
     }
 
     /**
      * Apply dimensions from the source image
      */
-    public function applyDimensions() {
+    public function applyDimensions()
+    {
         // Try to open the image
         list($width, $height) = @getimagesize(cRegistry::getBackendPath() . $this->getAttribute('src'));
 
@@ -105,6 +112,25 @@ class cHTMLImage extends cHTML {
             $this->setWidth($width);
             $this->setHeight($height);
         }
+    }
+
+    /**
+     * Renders an img tag to reference an external stylesheet ressource.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $src The source (path) to the image
+     * @param string $alt Alternate text
+     * @param array $attributes Attributes to set
+     * @return string
+     */
+    public static function img(string $src, string $alt = '', array $attributes = []): string
+    {
+        $img = new self($src);
+
+        $img->setAlt($alt);
+        $img->setAttributes(array_merge($img->getAttributes(), $attributes));
+
+        return $img->toHtml();
     }
 
 }
