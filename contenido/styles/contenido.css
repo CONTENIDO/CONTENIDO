@@ -127,6 +127,7 @@ textarea {
     padding: 1px 3px;
     border: 1px solid #666;
     border-radius: 3px;
+    min-height: 16px;
 }
 select {
     padding: 0 5px;
@@ -1558,7 +1559,6 @@ p.column_header {
 }
 .ui-datepicker-trigger {
     vertical-align: top;
-    margin-top: 2px;
     margin-left: 5px;
 }
 
