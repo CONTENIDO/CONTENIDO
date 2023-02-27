@@ -100,6 +100,10 @@ border-width: 1px 1px 0 0;
     vertical-align:middle;
 }
 
+#cat_inline_layer input[type=text] {
+    line-height: 1.15 !important;;
+}
+
 .cat_label, .cat_input, .cat_icon, .cat_icon_text {
     height: 20px;
     line-height:17px;

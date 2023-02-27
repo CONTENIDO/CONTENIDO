@@ -77,7 +77,7 @@ function getVersionNumber() {
 
 (function(Con, $) {
     $(function() {
-        $('div#categorypath +> a').click(function() {
+        $('div#categorypath > a').click(function() {
             var url = $(this).attr('href');
             var params = Con.UtilUrl.getParams(url);
             var path = url.split('?');

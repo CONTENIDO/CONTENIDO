@@ -5,19 +5,26 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
     <style type="text/css">
-    table.content td.col-1 {background-color:#e2e2e2;
+    table.content td.col-1 {
+        background-color: #e2e2e2;
         border: 1px solid #b3b3b3;
         border-right-width: 0;
     }
-    table.content td.col-2 {background-color:#f1f1f1;padding-left:5px;
+    table.content td.col-2 {
+        background-color: #f1f1f1;
+        padding-left: 5px;
         border: 1px solid #b3b3b3;
         border-left-width: 0;
     }
     table.content td.module_config {
         border: 1px solid #b3b3b3;
         border-top-width: 0;
-        background-color:#fff;}
-    table.content td.module_config table td {padding:5px;vertical-align:top;}
+        background-color:#fff;
+    }
+    table.content td.module_config table td {
+        padding: 5px;
+        vertical-align: top;
+    }
     </style>
 {_JS_HEAD_CONTENIDO_}
 </head>
@@ -83,6 +90,8 @@
 <script type="text/javascript">
 (function(Con, $) {
     $(function() {
+        var $form = $('#tpl_form');
+
         $("div#categorypath > a").click(function() {
             var url = $(this).attr('href'),
                 params = Con.UtilUrl.getParams(url);
@@ -93,6 +102,15 @@
             );
             return false;
         });
+
+        $form.find('[data-action]').live('click', function() {
+            var $element = $(this),
+                action = $element.data('save_tplcfg');
+            if (action === 'save') {
+                $form.attr('action', $form.attr('action') + '&back=true');
+            }
+        });
+
     });
 })(Con, Con.$);
 </script>
