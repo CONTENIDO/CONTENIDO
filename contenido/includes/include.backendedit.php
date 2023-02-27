@@ -79,7 +79,7 @@ if (isset($changelang) && is_numeric($changelang)) {
     $lang = $changelang;
 }
 
-if (!is_numeric($client) || $client == '') {
+if (!isset($client) || !is_numeric($client)) {
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
     $oClientColl->select('', '', 'idclient ASC', '1');
@@ -90,7 +90,7 @@ if (!is_numeric($client) || $client == '') {
     $sess->register('client');
 }
 
-if (!is_numeric($lang) || $lang == '') {
+if (!isset($lang) || !is_numeric($lang)) {
     $sess->register('lang');
     // Search for the first language of this client
     $oClientLangColl = new cApiClientLanguageCollection();

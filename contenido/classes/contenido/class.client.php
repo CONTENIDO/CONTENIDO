@@ -170,6 +170,25 @@ class cApiClientCollection extends ItemCollection {
 
         return $client->hasLanguages();
     }
+
+    /**
+     * Checks if the current authenticated user can access the client.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param int $clientId Id of client to check permissions for.
+     * @return bool
+     */
+    public static function isClientAccessible(int $clientId): bool
+    {
+        $perm = cRegistry::getPerm();
+        if ($perm->have_perm_client('client[' . $clientId . ']')
+            || $perm->have_perm_client('admin[' . $clientId . ']')) {
+            return true;
+        }
+
+        return false;
+    }
+
 }
 
 /**

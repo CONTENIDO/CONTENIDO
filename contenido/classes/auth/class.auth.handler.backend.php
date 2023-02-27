@@ -194,7 +194,7 @@ class cAuthHandlerBackend extends cAuth {
             }
         }
 
-        if (!is_numeric($client) || !is_numeric($lang)) {
+        if (!isset($client) || !is_numeric($client) || !isset($lang) || !is_numeric($lang)) {
             return;
         }
 
