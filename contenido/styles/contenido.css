@@ -237,32 +237,36 @@ table {
 #request_layer {
     background-color: #f1f1f1;
     float: right;
-    /*height:26px;*/
-    line-height:28px;
+    line-height: 26px;
     margin: 0 30px 0 0;
-    padding:0 5px;
-    width:250px;
+    padding: 0 5px;
+    width: 250px;
     position: absolute;
     right: 0;
 }
-#request_layer #request_form .message {
+#request_layer form,
+#request_layer .message {
     line-height: 16px;
+}
+#request_layer input {
+    width: 212px;
+}
+#request_layer .message {
     margin: 0 0 5px 0;
     padding: 0;
 }
-#request_layer .password_request_input {
-    vertical-align: top;
-    margin-top: 2px;
-    float: right;
-    margin-right: 6px;
+#request_layer label {
+    display: inline-block;
+    padding-top: 7px;
+}
+#request_layer .con_img_button {
+    position: relative;
+    top: 3px;
+    margin-left: 7px;
+    width: 16px;
 }
 #request_layer .last_row {
     padding-bottom: 7px;
-}
-#request_layer .last_row .send_btn {
-    position: relative;
-    top: 3px;
-    padding-left: 5px;
 }
 
 hr.sep {

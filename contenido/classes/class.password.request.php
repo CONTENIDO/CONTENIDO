@@ -222,6 +222,7 @@ class cPasswordRequest
 
         // generate new form
         $form = new cHTMLForm('request_pw', 'index.php', 'post');
+        $form->setClass('request_pw');
 
         // CON-2772 generate username safe to display
         $safeUsername = stripslashes($this->_username);
@@ -229,17 +230,14 @@ class cPasswordRequest
 
         // generate input for username
         $inputUsername = new cHTMLTextbox('request_username', $safeUsername, '', '', 'request_username');
-        $inputUsername->setStyle('width:215px;');
 
         // set request action and current language
         $form->setVar('action', 'request_pw');
         $form->setVar('belang', cRegistry::getBackendLanguage());
 
         // generate submitbutton and fill the form
-        $form->setContent(
-            '<input class="password_request_input" type="image" src="images/submit.gif" alt="' . i18n('Submit')
-            . '" title="' . i18n('Submit') . '">' . $inputUsername->render()
-        );
+        $submitBtn = $this->_createSubmitButton();
+        $form->setContent([$inputUsername, $submitBtn]);
         $this->_tpl->set('s', 'FORM', $form->render());
         $this->_tpl->set('s', 'MESSAGE', $message);
         $this->_tpl->set('s', 'LABEL', i18n('Please enter your login') . ':');
@@ -324,10 +322,11 @@ class cPasswordRequest
      */
     protected function _renderNewPwForm()
     {
+        $messages = [];
         if (isset($_POST['action']) && $_POST['action'] == 'reset_pw') {
             $this->_username = $_POST['request_username'];
 
-            $message = $this->_handleNewPassword();
+            $messages[] = $this->_handleNewPassword();
 
             // do not show password reset form
             $this->_tpl->set('s', 'JS_CALL', '');
@@ -336,15 +335,14 @@ class cPasswordRequest
             $this->_tpl->set('s', 'JS_CALL', 'showResetLayer();');
         }
 
-        $msg = i18n('You may now set a new password');
-        $this->_tpl->set('s', 'RESET_LABEL', $msg);
+        $messages[] = i18n('You may now set a new password');
 
         // insert form with username, password and password repeat fields
         $form = new cHTMLForm(
             'reset_form', htmlentities(cRegistry::getBackendUrl()) . '?pw_reset=' . $_GET['pw_reset']
         );
 
-        $userNameLbl = new cHTMLDiv(new cHTMLLabel(i18n('User name') . ': ', 'user_name'));
+        $userNameLbl = new cHTMLLabel(i18n('User name') . ': ', 'user_name');
         $userNameBox = new cHTMLTextbox('user_name');
         $userNameBox->removeAttribute('size');
         $userNameBox = new cHTMLDiv($userNameBox);
@@ -360,21 +358,33 @@ class cPasswordRequest
         $userPwRepeatBox->setAttribute('type', 'password');
         $userPwRepeatBox->removeAttribute('size');
 
-        $sendBtn = new cHTMLButton('submit');
-        $sendBtn->setAttribute('type', 'image');
-        $sendBtn->setAttribute('src', 'images/submit.gif');
-        $sendBtn->setAttribute('alt', i18n('Submit'));
-        $sendBtn->setAttribute('title', i18n('Submit'));
-        $sendBtn->setAttribute('class', 'send_btn');
-        $lastFormRow = new cHTMLDiv($userPwRepeatLbl . $userPwRepeatBox . $sendBtn);
+        $submitBtn = $this->_createSubmitButton();
+
+        $lastFormRow = new cHTMLDiv($userPwRepeatLbl . $userPwRepeatBox . $submitBtn);
         $lastFormRow->setAttribute('class', 'last_row');
 
-        $sendBtn->removeAttribute('value');
         $form->setContent([$userNameLbl, $userNameBox, $userPwLbl, $userPwBox, $lastFormRow]);
 
-        $this->_tpl->set('s', 'RESET_MESSAGE', '');
+        $this->_tpl->set('s', 'RESET_MESSAGE', implode('<br><br>', $messages));
 
         $this->_tpl->set('s', 'RESET_FORM', $form->render());
+    }
+
+    /**
+     * Creates the submit button for password request/reset forms.
+     *
+     * @return cHTMLButton
+     * @throws cException
+     */
+    protected function _createSubmitButton()
+    {
+        $submitBtn = new cHTMLButton('submit');
+        $submitBtn->setAttribute('type', 'image');
+        $submitBtn->setAttribute('src', 'images/submit.gif');
+        $submitBtn->setAttribute('alt', i18n('Submit'));
+        $submitBtn->setAttribute('title', i18n('Submit'));
+        $submitBtn->setAttribute('class', 'con_img_button');
+        return $submitBtn;
     }
 
     /**
@@ -501,6 +511,10 @@ class cPasswordRequest
         // Get users last (newest) password request and number of previous requests
         $lastPwRequestTime = $oApiPasswordRequestCol->getLastPasswordRequestTimeByUserIId($oApiUser->getUserId());
         $requestsCount = $oApiPasswordRequestCol->getPasswordRequestsCountByUserIId($oApiUser->getUserId());
+
+        if (empty($lastPwRequestTime)) {
+            return true;
+        }
 
         // Get amount of max allowed password reset requests
         $resetThreshold = self::getResetThresholdSetting();
