@@ -74,7 +74,18 @@ if (isset($_REQUEST["listsubmit"])) {
 /**
  *
  */
-class TODOBackendList extends cGuiScrollList {
+class TODOBackendList extends cGuiScrollList
+{
+
+    /**
+     * Default date format as fallback
+     */
+    const DEFAULT_DATE_FORMAT = 'Y-m-d H:i:s';
+
+    /**
+     * @var cHTMLLink
+     */
+    protected $_editLink;
 
     /**
      * @var array
@@ -87,25 +98,21 @@ class TODOBackendList extends cGuiScrollList {
     protected $_prioritytypes;
 
     /**
-     * TODOBackendList constructor.
+     * @var string
      */
-    public function __construct() {
-        global $todoitems;
-
-        parent::__construct();
-
-        $this->_statustypes = $todoitems->getStatusTypes();
-        $this->_prioritytypes = $todoitems->getPriorityTypes();
-    }
+    protected $_dateFormat;
 
     /**
-     * Old constructor
-     *
-     * @throws cInvalidArgumentException
+     * TODOBackendList constructor.
      */
-    public function TODOBackendList() {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        $this->__construct();
+    public function __construct(TODOCollection $todoItems, cHTMLLink $editLink, string $dateFormat)
+    {
+        parent::__construct();
+
+        $this->_editLink = $editLink;
+        $this->_statustypes = $todoItems->getStatusTypes();
+        $this->_prioritytypes = $todoItems->getPriorityTypes();
+        $this->_dateFormat = !empty($dateFormat) ? $dateFormat : self::DEFAULT_DATE_FORMAT;
     }
 
     /**
@@ -115,7 +122,8 @@ class TODOBackendList extends cGuiScrollList {
      * @param int $column
      *         The current column which is being rendered
      */
-    public function onRenderColumn($column) {
+    public function onRenderColumn($column)
+    {
         if ($column == 6 || $column == 5) {
             $this->objItem->updateAttributes(["align" => "center"]);
         } else {
@@ -145,22 +153,27 @@ class TODOBackendList extends cGuiScrollList {
      *
      * @throws cException
      */
-    public function convert($key, $value, $hidden) {
-        global $link, $dateformat;
-
+    public function convert($key, $value, $hidden)
+    {
         $cfg = cRegistry::getConfig();
         $backendUrl = cRegistry::getBackendUrl();
 
-        if ($key == 2) {
-            $link->setCustom("idcommunication", $hidden[1]);
-            $link->setContent($value);
-            return $link->render();
+        // Image (1) or subject (2)
+        if ($key == 1 || $key == 2) {
+            $this->_editLink->setCustom('idcommunication', $hidden[1]);
+            $this->_editLink->setClass($key == 1 ? 'con_img_button' : '');
+
+            $this->_editLink->setContent($value);
+            return $this->_editLink->render();
         }
 
+        // Date
         if ($key == 3) {
-            return date($dateformat, strtotime($value));
+            $value = date($this->_dateFormat, strtotime($value));
+            return !empty($value) ? $value : '&nbsp;';
         }
 
+        // Status
         if ($key == 5) {
             switch ($value) {
                 case "new":
@@ -186,16 +199,13 @@ class TODOBackendList extends cGuiScrollList {
                 return i18n("No status type set");
             }
 
-            $backendUrl = cRegistry::getBackendUrl();
+            // Do not display statusicon, only show statustext
+            #return cHTMLImage::img("images/reminder/" . $img, $this->_statustypes[$value]);
 
-            $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/" . $img);
-            $image->setAlt($this->_statustypes[$value]);
-
-            //Do not display statusicon, only show statustext
-            //return $image->render();
             return $this->_statustypes[$value];
         }
 
+        // Progress
         if ($key == 7) {
             $amount = $value / 20;
 
@@ -224,6 +234,7 @@ class TODOBackendList extends cGuiScrollList {
             }
         }
 
+        // Priority
         if ($key == 6) {
             $p = $img = '';
 
@@ -253,8 +264,8 @@ class TODOBackendList extends cGuiScrollList {
             return $image->render();
         }
 
+        // Due date
         if ($key == 8) {
-
             if ($value !== "") {
                 if (round($value, 2) == 0) {
                     return i18n("Today");
@@ -314,33 +325,36 @@ if ($action == "todo_save_item") {
     $todoitem->store();
 }
 
-$todoitems = new TODOCollection();
-
+$todoItems = new TODOCollection();
 if ($action == "mycontenido_tasks_delete") {
-    $todoitems->delete($idcommunication);
+    $todoItems->delete($idcommunication);
 }
-
 $recipient = $auth->auth["uid"];
+$todoItems->select("recipient = '" . $todoItems->escape($recipient) . "' AND idclient = " . (int) $client);
 
-$todoitems->select("recipient = '" . $todoitems->escape($recipient) . "' AND idclient = " . (int) $client);
+$editLink = new cHTMLLink();
+$editLink->setCLink("mycontenido_tasks_edit", 4, "");
+$editLink->setCustom("sortmode", $sortmode);
+$editLink->setCustom("sortby", $sortby);
 
-$list = new TODOBackendList();
+$deleteLink = new cHTMLLink();
+$deleteLink->setCLink("mycontenido_tasks", 4, "mycontenido_tasks_delete");
+$deleteLink->setCustom("sortby", $sortby);
+$deleteLink->setCustom("sortmode", $sortmode);
+
+$list = new TODOBackendList($todoItems, $editLink, $dateformat);
 
 $list->setHeader(
     '&nbsp;', i18n("Subject"), i18n("Created"), i18n("End Date"), i18n("Status"),
     i18n("Priority"), sprintf(i18n("%% complete")), i18n("Due in"), i18n("Actions")
 );
 
-$lcount = 0;
+$listCount = 0;
 
-$link = new cHTMLLink();
-$link->setCLink("mycontenido_tasks_edit", 4, "");
-$link->setCustom("sortmode", $sortmode);
-$link->setCustom("sortby", $sortby);
+while ($todo = $todoItems->next()) {
+    if ((($todo->getProperty("todo", "status") != "done") && $c_restrict) || (empty($c_restrict))) {
 
-while ($todo = $todoitems->next()) {
-    if ((($todo->getProperty("todo", "status") != "done") && ($c_restrict == true)) || ($c_restrict == '')) {
-
+        $idcommunication = cSecurity::toInteger($todo->get("idcommunication"));
         $subject = $todo->get("subject");
         $created = $todo->get("created");
 
@@ -363,36 +377,19 @@ while ($todo = $todoitems->next()) {
             $status = i18n("No status set");
         }
 
-        $link->setCustom("idcommunication", $todo->get("idcommunication"));
-        $link->setContent('<img id="myContenidoTodoButton" src="images/but_todo.gif" alt="">');
+        $image = cHTMLImage::img("images/but_todo.gif", i18n("Edit item"));
 
-        $mimg = $link->render();
+        $img = cHTMLImage::img("images/delete.gif", i18n("Delete item"));
+        $deleteLink->setClass('con_img_button');
+        $deleteLink->setCustom("idcommunication", $idcommunication);
+        $deleteLink->setContent($img);
 
-        $link->setContent($subject);
+        $img = cHTMLImage::img("images/but_art_conf2.gif", i18n("Edit item"));
+        $editLink->setClass('con_img_button mgr5');
+        $editLink->setCustom('idcommunication', $idcommunication);
+        $editLink->setContent($img);
 
-        $msubject = $link->render();
-
-        $idcommunication = $todo->get("idcommunication");
-
-        $delete = new cHTMLLink();
-        $delete->setCLink("mycontenido_tasks", 4, "mycontenido_tasks_delete");
-        $delete->setCustom("idcommunication", $idcommunication);
-        $delete->setCustom("sortby", $sortby);
-        $delete->setCustom("sortmode", $sortmode);
-
-        $img = new cHTMLImage("images/delete.gif");
-        $img->setAlt(i18n("Delete item"));
-
-        $delete->setContent($img->render());
-
-        $properties = $link;
-
-        $img = new cHTMLImage("images/but_art_conf2.gif");
-        $img->setAlt(i18n("Edit item"));
-        $img->setStyle("padding-right: 4px;");
-        $properties->setContent($img);
-
-        $actions = $properties->render() . $delete->render();
+        $actions = $editLink->render() . $deleteLink->render();
 
         if ($todo->getProperty("todo", "enddate") != "") {
             $duein = round((time() - strtotime($todo->getProperty("todo", "enddate"))) / 86400, 2);
@@ -401,9 +398,6 @@ while ($todo = $todoitems->next()) {
         }
 
         switch ($priority) {
-            case "low":
-                $p = 0;
-                break;
             case "medium":
                 $p = 1;
                 break;
@@ -418,10 +412,10 @@ while ($todo = $todoitems->next()) {
                 break;
         }
 
-        $list->setData($lcount, $mimg, $subject, $created, $reminder, $status, $p, $complete, $duein, $actions);
-        $list->setHiddenData($lcount, $idcommunication, $idcommunication);
+        $list->setData($listCount, $image, $subject, $created, $reminder, $status, $p, $complete, $duein, $actions);
+        $list->setHiddenData($listCount, $idcommunication, $idcommunication);
 
-        $lcount++;
+        $listCount++;
     }
 }
 
@@ -439,7 +433,7 @@ $form->setVar("frame", $frame);
 $restrict = new cHTMLCheckbox("c_restrict", "true");
 $restrict->setLabelText(i18n("Hide done tasks"));
 
-if ($c_restrict == true) {
+if ($c_restrict) {
     $restrict->setChecked(true);
 }
 
@@ -449,7 +443,7 @@ $submit->setImageSource("images/submit.gif");
 
 $form->add(i18n("Options"), $restrict->render());
 
-if ($lcount == 0) {
+if ($listCount == 0) {
     $oPage->displayInfo(i18n("No tasks found"));
     $oPage->setContent([$form]);
 } else {
