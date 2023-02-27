@@ -79,25 +79,6 @@ img {
     padding: 0;
 }
 
-/** Set box sizing back to default value for jQuery UI Dialog */
-.ui-dialog,
-.ui-dialog *,
-.ui-dialog *::before,
-.ui-dialog *::after {
-    box-sizing: content-box;
-}
-
-.ui-widget button,
-.ui-widget input,
-.ui-widget optgroup,
-.ui-widget select,
-.ui-widget textarea {
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit !important;
-    margin: 0;
-}
-
 
 /**
  * @Section Tags
@@ -201,20 +182,21 @@ table {
 .contenido_background_gray {
     background-color: #f1f1f1;
 }
-#head_content {
-    padding-left: 10px;
-}
 #head_info {
     height: 30px;
     line-height: 30px;
     background-color: #f1f1f1;
 }
-
+#head_info .con_img_button {
+    position: relative;
+    top: -2px;
+}
 #head_info + form#login {
     margin: 0;
     overflow: auto;
 }
-.head_nav {
+.head_nav,
+.head_nav_login {
     line-height: 25px;
     width: 700px;
     margin-left: 250px;
@@ -222,13 +204,8 @@ table {
     white-space: nowrap;
 }
 .head_nav_login {
-    background-color: #fff;
-    float: right;
-    height: 25px;
-    line-height: 25px;
-    margin: 0 30px 0 0;
     overflow: hidden;
-    width: 700px;
+    margin-left: 0;
 }
 .head_nav_login input,
 .head_nav_login select  {
@@ -238,11 +215,10 @@ table {
     background-color: #f1f1f1;
     float: right;
     line-height: 26px;
-    margin: 0 30px 0 0;
     padding: 0 5px;
     width: 250px;
     position: absolute;
-    right: 0;
+    right: 50px;
 }
 #request_layer form,
 #request_layer .message {
@@ -1534,8 +1510,48 @@ p.column_header {
 
 /**
  * #############################################################################
- * @section Datetime_Picker
+ * @section jQuery_UI
  */
+
+/** Set box sizing back to default value for jQuery UI Dialog */
+.ui-dialog,
+.ui-dialog *,
+.ui-dialog *::before,
+.ui-dialog *::after {
+    box-sizing: content-box;
+}
+
+#ui-dialog-title-single_dialog {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.ui-dialog {
+    position: relative;
+    z-index: 2000;
+    border-radius: 0;
+}
+
+.ui-widget {
+    font-size: 11px !important;
+}
+
+.ui-widget button,
+.ui-widget input,
+.ui-widget optgroup,
+.ui-widget select,
+.ui-widget textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit !important;
+    margin: 0;
+}
 
 .ui-datepicker {
     width: 24em !important;
@@ -1545,6 +1561,36 @@ p.column_header {
     margin-top: 2px;
     margin-left: 5px;
 }
+
+.ui-widget-header {
+    border: none;
+    background: none;
+    margin-top: 10px;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.ui-widget-header .ui-state-hover {
+    border: none;
+    background: none;
+}
+
+.ui-widget-header .ui-state-hover span {
+    background-position: -97px -127px;
+}
+
+.ui-widget-header .ui-datepicker-prev.ui-state-hover span {
+    background-position: -80px -192px;
+}
+
+.ui-widget-header .ui-datepicker-next.ui-state-hover span {
+    background-position: -48px -192px;
+}
+
+.ui-widget-overlay {
+    background: #333 none;
+}
+
 
 /**
  * #############################################################################
@@ -1601,6 +1647,9 @@ p.column_header {
 }
 .mgr3 {
     margin-right: 3px;
+}
+.mgr5 {
+    margin-right: 5px !important;
 }
 .mgr15 {
     margin-right: 15px;
@@ -2431,11 +2480,6 @@ input[type=image].vAlignMiddle {
     color: red;
 }
 
-#myContenidoTodoButton {
-    padding-top: 2px;
-    padding-bottom: 2px;
-}
-
 .inactiveUser {
     color: #b3b3b8;
 }
@@ -2547,54 +2591,6 @@ input[type=image].vAlignMiddle {
     margin-top: 4px;
 }
 
-.ui-widget-header {
-    border: none;
-    background: none;
-    margin-top: 10px;
-    font-size: 11px;
-    font-weight: normal;
-}
-
-#ui-dialog-title-single_dialog {
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.ui-dialog .ui-dialog-titlebar-close {
-   position: absolute;
-   right: 0;
-   top: 0;
-}
-
-.ui-dialog {
-    position: relative;
-    z-index: 2000;
-}
-
-.ui-widget-header .ui-state-hover {
-    border: none;
-    background: none;
-}
-
-.ui-widget-header .ui-state-hover span {
-    background-position: -97px -127px;
-}
-
-.ui-widget-header .ui-datepicker-prev.ui-state-hover span {
-    background-position: -80px -192px;
-}
-
-.ui-widget-header .ui-datepicker-next.ui-state-hover span {
-    background-position: -48px -192px;
-}
-
-.ui-widget-overlay {
-    background: #333 none;
-}
-
-.ui-dialog {
-    border-radius: 0;
-}
 
 table.inuse_lay_mod td,
 table.inuse_lay_mod th {
