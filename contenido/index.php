@@ -81,7 +81,7 @@ if (!$sess->isRegistered('client')) {
     unset($iTmpLang);
 }
 
-if (!is_numeric($client) || $client == '') {
+if (empty($client) || !is_numeric($client)) {
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
     $oClientColl->select('', '', 'idclient ASC', '1');
@@ -95,7 +95,7 @@ if (!is_numeric($client) || $client == '') {
     $sess->register('client');
 }
 
-if (!is_numeric($lang) || $lang == '') {
+if (empty($lang) || !is_numeric($lang)) {
     $sess->register('lang');
 
     $oClientLangColl = new cApiClientLanguageCollection();

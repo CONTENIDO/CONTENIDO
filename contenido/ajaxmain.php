@@ -71,9 +71,9 @@ if (isset($changelang) && is_numeric($changelang)) {
     $lang = $changelang;
 }
 
-if (!is_numeric($client)
+if (empty($client) || !is_numeric($client)
     || (!$perm->have_perm_client('client[' . $client . ']')
-    && !$perm->have_perm_client('admin[' . $client . ']'))) {
+        && !$perm->have_perm_client('admin[' . $client . ']'))) {
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
