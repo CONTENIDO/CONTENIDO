@@ -207,17 +207,10 @@ class TODOBackendList extends cGuiScrollList
 
         // Progress
         if ($key == 7) {
-            $amount = $value / 20;
+            $amount = round($value / 20);
 
-            if ($amount < 0) {
-                $amount = 0;
-            }
-
-            if ($amount > 5) {
-                $amount = 5;
-            }
-
-            $amount = round($amount);
+            // Amount can be between 0 - 5
+            $amount = min(max(0, $amount), 5);
 
             if ($amount != 0) {
                 $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/progress.gif");
@@ -290,39 +283,36 @@ if ($action == "todo_save_item") {
     $subject = stripslashes($subject);
     $message = stripslashes($message);
 
-    $todoitem = new TODOItem();
-    $todoitem->loadByPrimaryKey($idcommunication);
+    $todoItem = new TODOItem();
+    $todoItem->loadByPrimaryKey($idcommunication);
 
-    $todoitem->set("subject", $subject);
-    $todoitem->set("message", $message);
-    $todoitem->set("recipient", $userassignment);
+    $todoItem->set("subject", $subject);
+    $todoItem->set("message", $message);
+    $todoItem->set("recipient", $userassignment);
 
     if (isset($reminderdate)) {
-        $todoitem->setProperty("todo", "reminderdate", strtotime($reminderdate));
+        $todoItem->setProperty("todo", "reminderdate", strtotime($reminderdate));
     }
 
     if (isset($notibackend)) {
-        $todoitem->setProperty("todo", "backendnoti", $notibackend);
+        $todoItem->setProperty("todo", "backendnoti", $notibackend);
     }
 
-    $todoitem->setProperty("todo", "emailnoti", $notiemail);
-
-    $todoitem->setProperty("todo", "status", $status);
-
-    if ($progress < 0) {
-        $progress = 0;
+    if (isset($notiemail)) {
+        $todoItem->setProperty("todo", "emailnoti", $notiemail);
     }
 
-    if ($progress > 100) {
-        $progress = 100;
-    }
+    $todoItem->setProperty("todo", "status", $status);
 
-    $todoitem->setProperty("todo", "priority", $priority);
-    $todoitem->setProperty("todo", "progress", $progress);
+    // Progress can be between 0 - 5
+    $progress = min(max(0, $progress), 100);
 
-    $todoitem->setProperty("todo", "enddate", $enddate);
+    $todoItem->setProperty("todo", "priority", $priority);
+    $todoItem->setProperty("todo", "progress", $progress);
 
-    $todoitem->store();
+    $todoItem->setProperty("todo", "enddate", $enddate);
+
+    $todoItem->store();
 }
 
 $todoItems = new TODOCollection();
