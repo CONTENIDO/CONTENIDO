@@ -35,10 +35,15 @@ class cHtmlImageTest extends cTestingTestCase
      */
     private $_imageSrc;
 
+    private $_xhtmlSetting;
+
     /**
      */
     protected function setUp(): void
     {
+        $this->_xhtmlSetting = cEffectiveSetting::get('generator', 'xhtml', 'false');
+        cEffectiveSetting::set('generator', 'xhtml', 'false');
+
         // image w/o data
         $this->_imageEmpty = new cHTMLImage();
 
@@ -48,6 +53,11 @@ class cHtmlImageTest extends cTestingTestCase
         // image w/ src
         $this->_imageSrc = new cHTMLImage();
         $this->_imageSrc->setSrc('http://google.jpg');
+    }
+
+    public function tearDown(): void
+    {
+        cEffectiveSetting::set('generator', 'xhtml', $this->_xhtmlSetting);
     }
 
     /**
@@ -166,5 +176,29 @@ class cHtmlImageTest extends cTestingTestCase
     {
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
+
+    /**
+     * Tests {@see cHTMLImage::img()}
+     */
+    public function testImg()
+    {
+        // With src
+        $result = cHTMLImage::img('images/conlogo.gif');
+        $this->assertSame('<img src="images/conlogo.gif" alt="" title="">', $result);
+
+        // With src + alt
+        $result = cHTMLImage::img('images/conlogo.gif', 'CONTENIDO Logo');
+        $this->assertSame('<img src="images/conlogo.gif" alt="CONTENIDO Logo" title="CONTENIDO Logo">', $result);
+
+        // With src + alt + class
+        $result = cHTMLImage::img('images/conlogo.gif', 'CONTENIDO Logo', ['class' => 'con_img_button']);
+        $this->assertSame('<img src="images/conlogo.gif" alt="CONTENIDO Logo" title="CONTENIDO Logo" class="con_img_button">', $result);
+
+        // With src + alt + multiple attributes
+        $result = cHTMLImage::img('images/conlogo.gif', 'CONTENIDO Logo', ['class' => 'con_img_button', 'referrerpolicy' => 'no-referrer']);
+        $this->assertSame('<img src="images/conlogo.gif" alt="CONTENIDO Logo" title="CONTENIDO Logo" class="con_img_button" referrerpolicy="no-referrer">', $result);
+    }
+
+
 }
 

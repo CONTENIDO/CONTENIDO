@@ -37,6 +37,7 @@ class cHTMLLinkTag extends cHTMLContentElement
     /**
      * Renders a link tag to reference an external stylesheet ressource.
      *
+     * @since CONTENIDO 4.10.2
      * @param string $href The reference (path) to the stylesheet file
      * @param array $attributes Attributes to set, `rel="stylesheet"` and
      *      `type="text/css"` will be set by default.
