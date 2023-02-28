@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $idmod, $tpl, $notification;
 
-$client = cRegistry::getClientId();
+$client = cSecurity::toInteger(cRegistry::getClientId());
 $perm = cRegistry::getPerm();
 $area = cRegistry::getArea();
 $belang = cRegistry::getBackendLanguage();
@@ -28,7 +28,7 @@ cInclude("includes", "functions.file.php");
 $sFileType = "html";
 $module = new cApiModule($idmod);
 
-$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -53,7 +53,7 @@ if (!$perm->have_perm_area_action($area, $sActionEdit)) {
 }
 
 // display critical error if no valid client is selected
-if ((int) $client < 1) {
+if ($client < 1) {
     $page->displayCriticalError(i18n("No Client selected"));
     $page->render();
     return;

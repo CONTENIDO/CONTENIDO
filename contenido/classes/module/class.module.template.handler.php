@@ -530,7 +530,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $form = new cGuiTableForm('file_editor');
         $form->setTableID('mod_template');
         $form->setHeader(i18n('Edit file'));
-        $form->addTableClass('col_50');
+        $form->addTableClass('col_flx_m_50p col_first_100');
         $form->setVar('area', $this->_area);
         $form->setVar('action', $this->_action);
         $form->setVar('frame', $this->_frame);
@@ -597,9 +597,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $oName = new cHTMLTextbox('file', cString::replaceDiacritics(conHtmlSpecialChars($this->_file)), 60);
 
         $oCode = new cHTMLTextarea('code', conHtmlSpecialChars($this->_code), 100, 35, 'code');
-
-        $oCode->setStyle('font-family: monospace;width: 100%;');
-
+        $oCode->setClass('con_code');
         $oCode->updateAttributes(['wrap' => getEffectiveSetting('html_editor', 'wrap', 'off'),]);
 
         $fileForm->add(i18n('Action'), $aAdd->toHtml());

@@ -134,7 +134,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
                 case 'action':
                     // construct the info link
                     $img = new cHTMLImage('images/info.gif');
-                    $link = new cHTMLLink('javascript:void(0)', $img, 'overview_dist_right');
+                    $link = new cHTMLLink('javascript:void(0)', $img, 'mgr5');
                     $link->disableAutomaticParameterAppend()
                         ->setAlt(i18n('More information'))
                         ->setAttribute('data-action', 'show_info');

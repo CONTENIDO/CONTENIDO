@@ -29,8 +29,7 @@ $langObj = new cApiLanguage($lang);
 
 $langString = $langObj->get('name') . ' (' . $lang . ')';
 
-$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
-
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }

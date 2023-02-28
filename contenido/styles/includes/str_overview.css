@@ -179,11 +179,6 @@ border-width: 1px 1px 0 0;
     height:10px;
 }
 
-.overview_dist_right{
-    margin-right: 5px;
-    white-space:nowrap;
-}
-
 .cat_new_layer input, .cat_set_template input  {
     vertical-align:middle;
     height:17px;

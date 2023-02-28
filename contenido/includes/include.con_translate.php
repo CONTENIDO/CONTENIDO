@@ -24,7 +24,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
      */
     function __construct() {
         parent::__construct(false);
-        $this->objTable->setClass("generic alltranslations");
+        $this->objTable->setClass("generic all_translations");
         $this->objTable->updateAttributes([
             "cellpadding" => "2"
         ]);
@@ -111,8 +111,8 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
  */
 function addSortImages($index, $text) {
     $cfg = cRegistry::getConfig();
-    $sortUp = '<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'sort_up.gif" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
-    $sortDown = '<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'sort_down.gif" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
+    $sortUp = '<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'sort_up.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
+    $sortDown = '<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'sort_down.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
 
     if ($_REQUEST["sortby"] == $index) {
         if ($_REQUEST["sortmode"] == 'ASC') {
@@ -408,9 +408,8 @@ if (is_array($allLanguages)) {
         $formExtraLangs->setVar('extralang[]', $idExtraLang);
     }
 
-    $labelExtraLangs = new cHTMLSpan(i18n("New language for editing") . ': ', "vALignMiddle");
+    $labelExtraLangs = new cHTMLSpan(i18n("New language for editing") . ': ', 'align_middle');
     $selectExtraLangs = new cHTMLSelectElement('extralang[]', "100px", 'newlang');
-    $selectExtraLangs->setClass("vAlignTop");
 
     $sql = "SELECT
               A.name AS name, A.idlang AS idlang, B.idclientslang AS idclientslang
@@ -436,7 +435,7 @@ if (is_array($allLanguages)) {
             $countExtraLangOptions++;
         }
     }
-    $submitExtraLangs = new cHTMLButton('newlangsubmit', i18n("Add"), 'newlangsubmit', false, NULL, '', 'image', "vAlignTop tableElement");
+    $submitExtraLangs = new cHTMLButton('newlangsubmit', i18n("Add"), 'new_lang_submit', false, NULL, '', 'image', "con_img_button");
     $submitExtraLangs->setImageSource('images/but_art_new.gif')
         ->setAlt(i18n("Add"));
 
@@ -468,8 +467,8 @@ foreach ($elemPerPage as $value => $option) {
     }
     $selectElementsPerPage->addOptionElement($value, $option);
 }
-$selectElementsPerPage->setAttribute('class', 'elemperpage');
-$submitElementsPerPage = new cHTMLButton('elemperpagesubmit', i18n("Submit"), 'elemperpagesubmit', false, NULL, '', 'image');
+$selectElementsPerPage->setAttribute('class', 'elem_per_page');
+$submitElementsPerPage = new cHTMLButton('elemperpagesubmit', i18n("Submit"), 'elem_per_page_submit', false, NULL, '', 'image', 'con_img_button');
 $submitElementsPerPage->setImageSource($cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_ok.gif');
 
 $formElementsPerPage->setContent($labelElementsPerPage->render() . $selectElementsPerPage->render() . $submitElementsPerPage->render());
@@ -512,7 +511,7 @@ if (is_array($aAllTemplates) && count($aAllTemplates) > 0) {
 }
 $searchInput = new cHTMLTextbox('search', $search, 20);
 
-$searchSubmit = ' <input type="image" name="searchsubmit" class="vAlignTop" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_preview.gif">';
+$searchSubmit = ' <input type="image" name="searchsubmit" class="con_img_button" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_preview.gif">';
 
 $formSearch->setContent($filterSelect . $searchInput->render() . $searchSubmit);
 
@@ -531,7 +530,7 @@ foreach ($extraLanguages as $idExtraLang) {
     $delImage = $delImage->setAlt(i18n("Delete"))->render();
 
     $delLangLink = new cHTMLLink('javascript:void(0)');
-    $delLangLink = $delLangLink->setClass('vAlignMiddle')
+    $delLangLink = $delLangLink->setClass('con_img_button')
         ->setAttribute('data-action', 'dellang')
         ->setAttribute('data-id', $idExtraLang)
         ->setAlt(i18n("Delete"))

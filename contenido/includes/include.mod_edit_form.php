@@ -41,7 +41,7 @@ if (!empty($action)) {
     }
 }
 
-$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
 $optionDebugRows = getEffectiveSetting("modules", "show-debug-rows", "never");
 
 if ($readOnly && $action != "mod_edit" && $action != "mod_sync") {
@@ -170,7 +170,7 @@ if ($bInUse) {
 
 $page = new cGuiPage("mod_edit_form", "", "0");
 $form = new cGuiTableForm("frm_mod_edit");
-$form->addTableClass('col_100');
+$form->addTableClass('col_flx_m_50p col_first_100');
 $form->setTableID('mod_edit');
 $form->setVar("area", "mod_edit");
 $form->setVar("frame", $frame);

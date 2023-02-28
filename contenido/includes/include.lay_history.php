@@ -15,70 +15,69 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $idlay, $bInUse;
+
+$perm = cRegistry::getPerm();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$area = cRegistry::getArea();
+
+$oPage = new cGuiPage('lay_history');
+
+if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
+    $oPage->displayError(i18n('Permission denied'));
+    $oPage->abortRendering();
+    $oPage->render();
+    return;
+} elseif (!$client > 0) {
+    $oPage->abortRendering();
+    $oPage->render();
+    return;
+} elseif (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
+    $oPage->displayWarning(i18n('Versioning is not activated'));
+    $oPage->abortRendering();
+    $oPage->render();
+    return;
+}
+
 cInclude('includes', 'functions.lay.php');
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('classes', 'class.layout.synchronizer.php');
 
-global $idlay, $bInUse;
-
-$area = cRegistry::getArea();
-$perm = cRegistry::getPerm();
-$client = cRegistry::getClientId();
 $db = cRegistry::getDb();
 $cfg = cRegistry::getConfig();
 $frame = cRegistry::getFrame();
 $cfgClient = cRegistry::getClientConfig();
 $belang = cRegistry::getBackendLanguage();
 
-$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
-$oPage = new cGuiPage("lay_history");
-
-if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
-    $oPage->displayError(i18n("Permission denied"));
-    $oPage->abortRendering();
-    $oPage->render();
-    return;
-} elseif (!(int) $client > 0) {
-    $oPage->abortRendering();
-    $oPage->render();
-    return;
-} elseif (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
-    $oPage->displayWarning(i18n("Versioning is not activated"));
-    $oPage->abortRendering();
-    $oPage->render();
-    return;
-}
-
-// Initialize $_POST with common used keys to prevent PHP 'Undefined array key' warnings
-foreach (['lay_send', 'layname', 'laycode', 'laydesc', 'action', 'idlayhistory'] as $_key) {
-    if (!isset($_POST[$_key])) {
-        $_POST[$_key] = '';
-    }
-}
-
 $bDeleteFile = false;
 
-// save button
-if ((!$readOnly) && $_POST["lay_send"] == '1' && $_POST["layname"] != "" && $_POST["laycode"] != "" && (int) $idlay > 0) {
-    $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
-    $sLayoutName = $_POST["layname"];
-    $sLayoutCode = $_POST["laycode"];
-    $sLayoutDescription = $_POST["laydesc"];
+$requestAction = $_POST['action'] ?? '';
+$requestLaySend = cSecurity::toInteger($_POST['lay_send'] ?? '0');
+$requestLayCode = $_POST['laycode'] ?? '';
+$requestLayName = $_POST['layname'] ?? '';
 
-    // save and mak new revision
-    $oPage->reloadLeftBottomFrame(['idlay' => $idlay]);
-    layEditLayout($idlay, $sLayoutName, $sLayoutDescription, $sLayoutCode);
+// Truncate history action
+if ((!$readOnly) && $requestAction === 'history_truncate') {
+    $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
+    $bDeleteFile = $oVersion->deleteFile();
     unset($oVersion);
 }
 
-// [action] => history_truncate delete all current module history
-if ((!$readOnly) && $_POST["action"] == "history_truncate") {
+// Save action
+if ((!$readOnly) && $requestLaySend && $requestLayName != '' && $requestLayCode != '' && (int) $idlay > 0) {
     $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
-    $bDeleteFile = $oVersion->deleteFile();
+    $sLayoutName = $requestLayName;
+    $sLayoutCode = $requestLayCode;
+    $sLayoutDescription = $_POST['laydesc'] ?? '';
+
+    // Save and make a new revision
+    $oPage->reloadLeftBottomFrame(['idlay' => $idlay]);
+    layEditLayout($idlay, $sLayoutName, $sLayoutDescription, $sLayoutCode);
     unset($oVersion);
 }
 
@@ -86,28 +85,29 @@ if ((!$readOnly) && $_POST["action"] == "history_truncate") {
 $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
 
 // Init form variables of select box
-$sSelectBox = "";
-$oVersion->setVarForm("area", $area);
-$oVersion->setVarForm("frame", $frame);
-$oVersion->setVarForm("idlay", $idlay);
-// needed - otherwise history can not be deleted!
-$oVersion->setVarForm("action", '');
+$oVersion->setVarForm('action', '');
+$oVersion->setVarForm('area', $area);
+$oVersion->setVarForm('frame', $frame);
+$oVersion->setVarForm('idlay', $idlay);
 
-// Create and output the select box, for params please look
-// class.version.php
-$sSelectBox = $oVersion->buildSelectBox("mod_history", "Layout History", i18n("Show history entry"), "idlayhistory", $readOnly);
+// Create and output the select box
+$sSelectBox = $oVersion->buildSelectBox(
+    'lay_history', 'Layout History',
+    i18n('Show history entry'), 'idlayhistory', $readOnly
+);
 
 // Generate form
-$oForm = new cGuiTableForm("lay_display");
-$oForm->setHeader(i18n("Edit Layout"));
-$oForm->setVar("area", "lay_history");
-$oForm->setVar("frame", $frame);
-$oForm->setVar("idlay", $idlay);
-$oForm->setVar("lay_send", 1);
+$oForm = new cGuiTableForm('lay_display');
+$oForm->addTableClass('col_flx_m_50 col_first_100');
+$oForm->setHeader(i18n('Edit Layout'));
+$oForm->setVar('area', 'lay_history');
+$oForm->setVar('frame', $frame);
+$oForm->setVar('idlay', $idlay);
+$oForm->setVar('lay_send', 1);
 
 // if send form refresh
-if ($_POST["idlayhistory"] != "") {
-    $sRevision = $_POST["idlayhistory"];
+if (!empty($_POST['idlayhistory'])) {
+    $sRevision = $_POST['idlayhistory'];
 } else {
     $sRevision = $oVersion->getLastRevision();
 }
@@ -116,7 +116,7 @@ $sName = '';
 $description = '';
 $sCode = '';
 
-if ($sRevision != '' && ($_POST["action"] != "history_truncate" || $readOnly)) {
+if ($sRevision != '' && ($requestAction != 'history_truncate' || $readOnly)) {
     // File Path
     $sPath = $oVersion->getFilePath() . $sRevision;
 
@@ -127,39 +127,38 @@ if ($sRevision != '' && ($_POST["action"] != "history_truncate" || $readOnly)) {
     // Create textarea and fill it with xml nodes
     if (count($aNodes) > 1) {
         // if choose xml file read value an set it
-        $sName = $oVersion->getTextBox("layname", cString::stripSlashes(conHtmlentities(conHtmlSpecialChars($aNodes["name"]))), 60, $readOnly);
-        $description = $oVersion->getTextarea("laydesc", cString::stripSlashes(conHtmlSpecialChars($aNodes["desc"])), 100, 10, '', $readOnly);
-        $sCode = $oVersion->getTextarea("laycode", conHtmlSpecialChars($aNodes["code"]), 100, 30, "IdLaycode");
+        $sName = $oVersion->getTextBox('layname', cString::stripSlashes(conHtmlentities(conHtmlSpecialChars($aNodes['name']))), 60, $readOnly);
+        $description = $oVersion->getTextarea('laydesc', cString::stripSlashes(conHtmlSpecialChars($aNodes['desc'])), 100, 10, '', $readOnly);
+        $sCode = $oVersion->getTextarea('laycode', conHtmlSpecialChars($aNodes['code']), 100, 30, 'IdLaycode');
     }
 }
 
 // Add new elements of form
-$oForm->add(i18n("Name"), $sName);
-$oForm->add(i18n("Description"), $description);
-$oForm->add(i18n("Code"), $sCode);
-$oForm->setActionButton("apply", "images/but_ok" . (($readOnly) ? '_off' : '') . ".gif", i18n("Copy to current"), "c"/*, "mod_history_takeover"*/); // modified
-                                                                                                                 // it
-$oForm->unsetActionButton("submit");
+$oForm->add(i18n('Name'), $sName);
+$oForm->add(i18n('Description'), $description);
+$oForm->add(i18n('Code'), $sCode);
+$oForm->setActionButton('apply', 'images/but_ok' . ($readOnly ? '_off' : '') . '.gif', i18n('Copy to current'), 'c'/*, 'mod_history_takeover'*/);
+$oForm->unsetActionButton('submit');
 
 // Render and handle history area
 $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
     if($readOnly) {
-        $oCodeMirrorOutput->setProperty("readOnly", "true");
+        $oCodeMirrorOutput->setProperty('readOnly', 'true');
     }
 $oPage->addScript($oCodeMirrorOutput->renderScript());
 
-if ($sSelectBox != "") {
+if ($sSelectBox != '') {
     $div = new cHTMLDiv();
-    $div->setContent($sSelectBox . "<br>");
+    $div->setContent($sSelectBox . '<br>');
     $oPage->setContent([
             $div,
             $oForm
     ]);
 } else {
     if ($bDeleteFile) {
-        $oPage->displayOk(i18n("Version history was cleared"));
+        $oPage->displayOk(i18n('Version history was cleared'));
     } else {
-        $oPage->displayInfo(i18n("No layout history available"));
+        $oPage->displayInfo(i18n('No layout history available'));
     }
 
     $oPage->abortRendering();

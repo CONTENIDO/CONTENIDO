@@ -33,8 +33,7 @@ if ($requestIdMod > 0) {
 $notification = new cGuiNotification();
 $reloadLeftBottom = false;
 
-$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
-
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }

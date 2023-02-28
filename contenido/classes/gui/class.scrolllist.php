@@ -135,7 +135,7 @@ class cGuiScrollList {
         $this->objItem = new cHTMLTableData();
 
         $this->sortlink = new cHTMLLink();
-        $this->sortlink->setStyle("color: #666666;");
+        $this->sortlink->setClass('scroll_list_sort_link');
         $this->sortlink->setCLink(cRegistry::getArea(), cRegistry::getFrame(), $action);
     }
 

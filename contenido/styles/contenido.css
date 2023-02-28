@@ -297,25 +297,18 @@ input.image_button {
     width: 1140px;
 }
 
-.col_50 {
+.col_50p {
     width: 50%;
 }
 
-.col_100 {
-    width: 100%;
+.col_flx_m_50p {
+    min-width: 50%;
+    max-width: 100%;
 }
 
-/*
-.col_100_row_100 {
-    height: 100%;
+.col_100p {
     width: 100%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
 }
-*/
 
 /**
  * #############################################################################
@@ -392,7 +385,6 @@ table.borderless tr.active {
 }
 
 table.borderless tr {
-    /*background-color: #fff;*/
 }
 
 table.borderless tr th:not(:empty),
@@ -433,6 +425,14 @@ table td.con_extra_buttons .con_img_button {
 }
 table td.con_extra_buttons .con_img_button:last-of-type {
     margin-right: 0;
+}
+
+table.col_first_100 > tbody > tr > td:first-of-type {
+    width: 100px;
+}
+
+table.col_first_20p > tbody > tr > td:first-of-type {
+    width: 20%;
 }
 
 /**
@@ -629,12 +629,10 @@ table.calendar tbody td.marked {
     text-align: center;
 }
 
-.overview_dist_left {
-    margin-left: 5px;
-}
-.overview_dist_right {
-    margin-right: 5px;
-}
+/** @deprecated [2023-02-27] Since CONTENIDO 4.10.2, Don't use `overview_dist_left`, use `mgl5` instead */
+.overview_dist_left {margin-left: 5px;}
+/** @deprecated [2023-02-27] Since CONTENIDO 4.10.2, Don't use `overview_dist_right`, use `mgr5` instead */
+.overview_dist_right {margin-right: 5px;}
 
 #mhighlight {
     position: absolute;
@@ -646,7 +644,7 @@ table.calendar tbody td.marked {
     visibility: hidden;
 }
 
-#htext {
+#mhighlight #htext {
     font-family: verdana, arial, helvetica, sans-serif;
     color: #fff;
     font-size: 11px;
@@ -681,68 +679,8 @@ td.sub {
     vertical-align: middle;
 }
 
-a:link {
-    text-decoration: none;
-}
-a.nav:link {
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    color: #fff;
-}
-
 a img, label img, img.borderless, input[type=image] {
     border: 0;
-}
-
-/* link style for adding anything */
-.addfunction {
-    background: transparent url(../images/folder_new.gif) no-repeat scroll 0 2px;
-    display: block;
-    height: 2em;
-    line-height: 2em;
-    padding-left: 20px;
-}
-
-/* link style for adding anything */
-.addfunction_disabled {
-    background: transparent url(../images/but_cancel.gif) no-repeat scroll 0 8px;
-    display: block;
-    height: 3em;
-    line-height: 3em;
-    padding-left: 20px;
-}
-
-/* link style for synchronization anything */
-.syncronizefunction {
-    background: transparent url(../images/but_refresh.gif) no-repeat scroll 0 2px;
-    display: block;
-    height: 2em;
-    line-height: 2em;
-    padding-left: 20px;
-}
-
-.syncronizefunction_disabled {
-    background: transparent url(../images/but_cancel.gif) no-repeat scroll 0 10px;
-    display: block;
-    height: 3em;
-    line-height: 1.5em;
-    padding-left: 20px;
-}
-
-.deletefunction {
-    display: block;
-    background: transparent url(../images/delete.gif) no-repeat scroll 0 2px;
-    height: 2em;
-    line-height: 2em;
-    padding-left: 20px;
-}
-
-.editfunction {
-    background: transparent url(../images/but_edittext.gif) no-repeat scroll 0 2px;
-    display: block;
-    height: 2em;
-    line-height: 2em;
-    padding-left: 20px;
 }
 
 /**
@@ -863,11 +801,72 @@ a.activemenu:hover {
     text-decoration: none;
 }
 
+a.nav:link {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    color: #fff;
+}
+
+/* link style for adding anything */
+.addfunction {
+    background: transparent url(../images/folder_new.gif) no-repeat scroll 0 2px;
+    display: block;
+    height: 2em;
+    line-height: 2em;
+    padding-left: 20px;
+}
+
+/* link style for adding anything */
+.addfunction_disabled {
+    background: transparent url(../images/but_cancel.gif) no-repeat scroll 0 8px;
+    display: block;
+    height: 3em;
+    line-height: 3em;
+    padding-left: 20px;
+}
+
+/* link style for synchronization anything */
+.syncronizefunction {
+    background: transparent url(../images/but_refresh.gif) no-repeat scroll 0 2px;
+    display: block;
+    height: 2em;
+    line-height: 2em;
+    padding-left: 20px;
+}
+
+.syncronizefunction_disabled {
+    background: transparent url(../images/but_cancel.gif) no-repeat scroll 0 10px;
+    display: block;
+    height: 3em;
+    line-height: 1.5em;
+    padding-left: 20px;
+}
+
+.deletefunction {
+    display: block;
+    background: transparent url(../images/delete.gif) no-repeat scroll 0 2px;
+    height: 2em;
+    line-height: 2em;
+    padding-left: 20px;
+}
+
+.editfunction {
+    background: transparent url(../images/but_edittext.gif) no-repeat scroll 0 2px;
+    display: block;
+    height: 2em;
+    line-height: 2em;
+    padding-left: 20px;
+}
+
 /* Links in overview lists (frame left_bottom) */
 .menu_overview_list a.show_item {
     display: block;
     width: 100%;
     height: 100%;
+}
+
+a.scroll_list_sort_link {
+    color: #666666;
 }
 
 /**
@@ -881,8 +880,7 @@ a.activemenu:hover {
     font-size: 10px;
     color: #000
 }
-.text_medium,
-select {
+.text_medium {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size: 11px;
     color: #000
@@ -1023,6 +1021,11 @@ input.textbox_readonly {
     background-color: #d6d5d9;
     border: 1px solid #a7a6aa;
     padding: 1px 1px 3px 1px;
+}
+
+textarea.con_code {
+    font-family: monospace;
+    width: 100%;
 }
 
 /**
@@ -2337,79 +2340,6 @@ div.errorlist {
     margin: 3px;
 }
 
-/* all translations */
-.alltranslations {
-    margin: 20px 0;
-    width: 100%;
-}
-
-.alltranslations th {
-    width: auto;
-}
-
-.alltranslations th img {
-    padding: 4px 1px;
-}
-
-.alltranslations td img,
-.alltranslations td input {
-    float: right;
-}
-
-.alltranslations td input.vAlignTop {
-    float: none;
-    display: inline-block;
-}
-
-.alltranslations td.actions {
-    text-align: right;
-}
-
-.alltranslations td.actions input {
-    display: inline;
-}
-
-.alltranslations td.inuse {
-    width: 120px;
-}
-
-.alltranslations td.actions {
-    width: 50px;
-}
-
-.atfilter,
-.atpager {
-    padding: 0 5px;
-    border: 1px solid #b3b3b3;
-    background-color: #e2e2e2;
-    overflow: hidden;
-}
-
-.atfilter form,
-.atfilter input,
-.atfilter button,
-.atfilter a,
-.atpager form,
-.atpager input,
-.atpager button,
-.atpager a {
-    vertical-align: middle;
-}
-
-.atpager > img,
-.atpager > span,
-.atpager > a {
-    display: inline-block;
-    line-height: 18px;
-    min-width: 18px;
-    min-height: 18px;
-    text-align: center;
-    vertical-align: top;
-}
-.atpager > a > img {
-    margin-top: 4px;
-}
-
 /**
  * Leaves a little margin after the file chooser in the mod html section
  */
@@ -2519,6 +2449,7 @@ input[type=image].vAlignMiddle {
 .toolsRight {
     display: inline-block;
     float: right;
+    line-height: 16px;
 }
 
 .toolsRight .vAlignMiddle {
@@ -2534,61 +2465,6 @@ input[type=image].vAlignMiddle {
 #cont_users select,
 #cont_users input[type="text"] {
     width: 110px;
-}
-
-#con_translate span.vALignMiddle {
-    line-height: 20px;
-}
-
-#con_translate #newlangsubmit {
-    vertical-align: top;
-    margin-top: 3px;
-}
-
-#con_translate #newlang {
-    margin-top: 1px;
-    height: 20px;
-
-}
-
-#con_translate div.atfilter div.right select,
-#con_translate div.atfilter div.right input {
-    vertical-align: top;
-    margin-top: 1px;
-    height: 20px;
-    margin-right: 3px;
-}
-
-#con_translate div.atfilter div.right input  {
-    height: 15px;
-    padding: 0;
-    margin: 1px 0 0;
-}
-
-#con_translate div.atfilter div.right input.vAlignTop {
-    margin-top: 4px;
-}
-
-#con_translate select.elemperpage {
-    margin-right: 3px;
-    margin-left: 3px;
-}
-
-#con_translate #elemperpagesubmit {
-    margin-top: 1px;
-    vertical-align: top;
-}
-
-#con_translate div.atpager {
-    height: 18px;
-}
-
-#con_translate span.cpager_currentitem {
-    vertical-align: middle;
-}
-
-#con_translate div.atpager img {
-    margin-top: 4px;
 }
 
 

@@ -28,7 +28,7 @@ $frame = cRegistry::getFrame();
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
 
-$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -199,7 +199,7 @@ $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, 'css');
 
 $form = new cGuiTableForm('file_editor');
 $form->setTableID('mod_style');
-$form->addTableClass('col_50');
+$form->addTableClass('col_flx_m_50p col_first_100');
 $form->setHeader(i18n('Edit file') . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
 $form->setVar('area', $area);
 $form->setVar('action', $sAction);
@@ -207,10 +207,10 @@ $form->setVar('frame', $frame);
 $form->setVar('status', 'send');
 $form->setVar('tmp_file', $sTempFilename);
 $form->setVar('idmod', $idmod);
-$label = new cHTMLLabel($sFilename, '');
+$label = new cHTMLDiv($sFilename, '');
 
 $code = new cHTMLTextarea('code', conHtmlSpecialChars($sCode), 100, 35, 'code');
-$code->setStyle('font-family: monospace;width: 100%;');
+$code->setClass('con_code');
 $code->updateAttributes([
     'wrap' => getEffectiveSetting('style_editor', 'wrap', 'off')
 ]);

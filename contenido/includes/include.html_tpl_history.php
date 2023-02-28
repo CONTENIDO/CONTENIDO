@@ -16,33 +16,19 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * @var cPermission $perm
  * @var cSession $sess
  * @var cDb $db
  * @var cGuiNotification $notification
  * @var array $cfg
  * @var array $cfgClient
- * @var string $area
  * @var string $belang
- * @var int $client
  * @var int $frame
  * @var bool $bInUse
  */
 
-cInclude('includes', 'functions.file.php');
-cInclude('external', 'codemirror/class.codemirror.php');
-
-$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
-if ($readOnly) {
-    cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
-}
-
-$sFileName = $_REQUEST['file'] ?? '';
-if ($sFileName == '') {
-    $sFileName = $_REQUEST['idhtml_tpl'] ?? '';
-}
-
-$sType = 'templates';
+$perm = cRegistry::getPerm();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$area = cRegistry::getArea();
 
 $oPage = new cGuiPage('html_tpl_history');
 
@@ -51,7 +37,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
     $oPage->abortRendering();
     $oPage->render();
     return;
-} elseif (!(int) $client > 0) {
+} elseif (!$client > 0) {
     $oPage->abortRendering();
     $oPage->render();
     return;
@@ -62,8 +48,21 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
     return;
 }
 
+cInclude('includes', 'functions.file.php');
+cInclude('external', 'codemirror/class.codemirror.php');
+
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
+if ($readOnly) {
+    cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
+}
+
+$sFileName = $_REQUEST['file'] ?? '';
+if ($sFileName == '') {
+    $sFileName = $_REQUEST['idhtml_tpl'] ?? '';
+}
+
+$sType = 'templates';
 $sTypeContent = 'templates';
-$bDeleteFile = false;
 
 $fileInfoCollection = new cApiFileInformationCollection();
 $aFileInfo = $fileInfoCollection->getFileInformation($sFileName, $sTypeContent);
@@ -72,26 +71,34 @@ $requestAction = $_POST['action'] ?? '';
 $requestHtmlTplSend = cSecurity::toInteger($_POST['html_tpl_send'] ?? '0');
 $requestHtmlTplCode = $_POST['html_tpl_code'] ?? '';
 
-// [action] => history_truncate delete all current history
-if ((!$readOnly) && $requestAction == 'history_truncate') {
-    $oVersionHtmlTemp = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
-    $bDeleteFile = $oVersionHtmlTemp->deleteFile();
+// Truncate history action
+if ((!$readOnly) && $requestAction === 'history_truncate') {
+    $oVersionHtmlTemp = new cVersionFile(
+        $aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent,
+        $cfg, $cfgClient, $db, $client, $area, $frame
+    );
+    if ($oVersionHtmlTemp->deleteFile()) {
+        $oPage->displayOk(i18n('Version history was cleared'));
+    }
     unset($oVersionHtmlTemp);
 }
 
-// Save button
+// Save action
 if ((!$readOnly) && $requestHtmlTplSend && $requestHtmlTplCode != '' && $sFileName != '' && !empty($aFileInfo['idsfi'])) {
-    $oVersionHtmlTemp = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+    $oVersionHtmlTemp = new cVersionFile(
+        $aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent,
+        $cfg, $cfgClient, $db, $client, $area, $frame
+    );
 
-    $sHTMLCode = stripslashes($requestHtmlTplCode);
-    $sHTMLName = stripslashes($_POST['html_tpl_name']);
-    $sHTMLDesc = stripslashes($_POST['html_tpl_desc']);
+    $sHTMLCode = cString::stripSlashes(trim($requestHtmlTplCode));
+    $sHTMLName = cString::stripSlashes($_POST['html_tpl_name']);
+    $sHTMLDesc = cString::stripSlashes($_POST['html_tpl_desc']);
 
     $sPath = $oVersionHtmlTemp->getPathFile();
 
     // Do we need to rename the file?
     if ($sFileName != $sHTMLName) {
-        if (cFileHandler::getExtension($sHTMLName) != 'html' && cString::getStringLength(stripslashes(trim($sHTMLName))) > 0) {
+        if (cFileHandler::getExtension($sHTMLName) != 'html' && cString::getStringLength($sHTMLName) > 0) {
             $sHTMLName = stripslashes($sHTMLName) . '.html';
         }
 
@@ -119,24 +126,28 @@ if ((!$readOnly) && $requestHtmlTplSend && $requestHtmlTplCode != '' && $sFileNa
     unset($oVersionHtmlTemp);
 }
 
-if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction != 'history_truncate' || $readOnly)) {
-    $oVersionHtmlTemp = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction !== 'history_truncate' || $readOnly)) {
+    $oVersionHtmlTemp = new cVersionFile(
+        $aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent,
+        $cfg, $cfgClient, $db, $client, $area, $frame
+    );
 
     // Init form variables of select box
-    $sSelectBox = '';
     $oVersionHtmlTemp->setVarForm('area', $area);
     $oVersionHtmlTemp->setVarForm('action', '');
     $oVersionHtmlTemp->setVarForm('frame', $frame);
     $oVersionHtmlTemp->setVarForm('idhtml_tpl', $sFileName);
     $oVersionHtmlTemp->setVarForm('file', $sFileName);
 
-    // Create and output the select box, for params please look
-    // class.version.php
-    $sSelectBox = $oVersionHtmlTemp->buildSelectBox('html_tpl_history', 'HTML Template History', i18n('Show history entry'), 'idhtml_tpl_history', $readOnly);
+    // Create and output the select box
+    $sSelectBox = $oVersionHtmlTemp->buildSelectBox(
+        'html_tpl_history', 'HTML Template History',
+        i18n('Show history entry'), 'idhtml_tpl_history', $readOnly
+    );
 
-    // Generate Form
+    // Generate form
     $oForm = new cGuiTableForm('jscript_display');
-    $oForm->addTableClass('col_50');
+    $oForm->addTableClass('col_flx_m_50p col_first_100');
     $oForm->setHeader(i18n('Edit template'));
     $oForm->setVar('area', $area);
     $oForm->setVar('frame', $frame);
@@ -172,14 +183,14 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction != 'histo
     $oForm->add(i18n('Name'), $sName);
     $oForm->add(i18n('Description'), $description);
     $oForm->add(i18n('Code'), $sCode);
-    $oForm->setActionButton('apply', 'images/but_ok' . (($readOnly) ? '_off' : '' ) . '.gif', i18n('Copy to current'), 'c' /*, 'mod_history_takeover'*/);
+    $oForm->setActionButton('apply', 'images/but_ok' . (($readOnly) ? '_off' : '' ) . '.gif', i18n('Copy to current'), 'c'/*, 'mod_history_takeover'*/);
     $oForm->unsetActionButton('submit');
 
     // Render and handle history area
     $bInUse = $bInUse ?? false;
     $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
     if ($readOnly) {
-        $oCodeMirrorOutput->setProperty("readOnly", "true");
+        $oCodeMirrorOutput->setProperty('readOnly', 'true');
     }
     $oPage->addScript($oCodeMirrorOutput->renderScript());
 
@@ -190,11 +201,7 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction != 'histo
         $oPage->abortRendering();
     }
 } else {
-    if ($bDeleteFile) {
-        $oPage->displayOk(i18n('Version history was cleared'));
-    } else {
-        $oPage->displayWarning(i18n('No template history available'));
-    }
+    $oPage->displayWarning(i18n('No template history available'));
     $oPage->abortRendering();
 }
 
