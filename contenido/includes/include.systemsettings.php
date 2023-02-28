@@ -193,7 +193,7 @@ $form = new cGuiTableForm("systemsettings");
 $form->setVar("area", $area);
 $form->setVar("frame", $frame);
 $form->setVar("action", "systemsettings_save_item");
-$form->addHeader(i18n("Add new variable"));
+$form->setHeader(i18n("Add new variable"));
 $inputbox = new cHTMLTextbox("systype");
 $inputbox->setWidth(30);
 $form->add(i18n("Type"), $inputbox->render());

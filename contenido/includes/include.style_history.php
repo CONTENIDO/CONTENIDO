@@ -140,7 +140,7 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction != 'histo
 
     // Generate Form
     $oForm = new cGuiTableForm('style_display');
-    $oForm->addHeader(i18n('Edit style'));
+    $oForm->setHeader(i18n('Edit style'));
     $oForm->setVar('area', 'style_history');
     $oForm->setVar('frame', $frame);
     $oForm->setVar('idstyle', $sFileName);

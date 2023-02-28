@@ -411,7 +411,7 @@ while ($todo = $todoItems->next()) {
 
 $form = new cGuiTableForm("restrict");
 $form->setTableID("todoList");
-$form->addHeader(i18n("Restrict display"));
+$form->setHeader(i18n("Restrict display"));
 $form->setVar("listsubmit", "true");
 
 $form->unsetActionButton("submit");

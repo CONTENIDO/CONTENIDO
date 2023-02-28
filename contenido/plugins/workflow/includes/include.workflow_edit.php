@@ -80,7 +80,7 @@ if (true !== $workflow->isLoaded()) {
     $author = $userObj->getEffectiveName();
 }
 
-$form->addHeader($header);
+$form->setHeader($header);
 $oTxtWFName = new cHTMLTextbox("wfname", $name, 40, 255);
 $form->add(i18n("Workflow name", "workflow"), $oTxtWFName->render());
 $oTxtWFDesc = new cHTMLTextarea("wfdescription", $description, 50, 10);

@@ -128,7 +128,7 @@ if ($readOnly) {
 $form2 = new cGuiTableForm("export");
 $form2->setVar("action", "mod_importexport_module");
 $form2->setVar("use_encoding", "false");
-$form2->addHeader("Import/Export" . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
+$form2->setHeader("Import/Export" . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
 $form2->add(i18n("Mode"), [
     $export,
     "<br>",

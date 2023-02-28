@@ -307,7 +307,7 @@ function editWorkflowStep($idWorkflow, $idWorkflowItem) {
     $form->setVar("idworkflowitem", $idWorkflowItem);
     $form->setVar("frame", $frame);
 
-    $form->addHeader(i18n("Edit workflow step", "workflow"));
+    $form->setHeader(i18n("Edit workflow step", "workflow"));
     $oTxtStep = new cHTMLTextbox("wfstepname", $stepname, 40, 255);
     $form->add(i18n("Step name", "workflow"), $oTxtStep->render());
     $oTxtStepDesc = new cHTMLTextarea("wfstepdescription", $stepdescription, 60, 10);

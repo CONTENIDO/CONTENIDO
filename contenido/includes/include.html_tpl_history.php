@@ -124,7 +124,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
 
         // Generate Form
         $oForm = new cGuiTableForm('jscript_display');
-        $oForm->addHeader(i18n('Edit JScript'));
+        $oForm->setHeader(i18n('Edit JScript'));
         $oForm->setVar('area', $area);
         $oForm->setVar('frame', $frame);
         $oForm->setVar('idhtml_tpl', $sFileName);

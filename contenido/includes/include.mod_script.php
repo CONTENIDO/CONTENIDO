@@ -192,7 +192,7 @@ if ($actionRequest == $sActionEdit
 
 $form = new cGuiTableForm('file_editor');
 $form->setTableID('mod_javascript');
-$form->addHeader(i18n('Edit file') . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
+$form->setHeader(i18n('Edit file') . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
 $form->setVar('area', $area);
 $form->setVar('action', $sAction);
 $form->setVar('frame', $frame);

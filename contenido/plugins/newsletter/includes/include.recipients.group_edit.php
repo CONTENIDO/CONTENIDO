@@ -201,7 +201,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     $oForm->setVar("idrecipientgroup", $requestIdRecipientGroup);
     $oForm->setSubmitJS("append_registered_parameters(this);");
 
-    $oForm->addHeader(i18n("Edit group", 'newsletter'));
+    $oForm->setHeader(i18n("Edit group", 'newsletter'));
 
     $oTxtGroupName = new cHTMLTextbox("groupname", conHtmlentities(stripslashes($oRGroup->get("groupname"))), 40);
     $oForm->add(i18n("Group name", 'newsletter'), $oTxtGroupName->render());

@@ -129,7 +129,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oForm->setVar("action", "news_save");
     $oForm->setVar("idnewsletter", $requestIdNewsletter);
 
-    $oForm->addHeader(sprintf(i18n("Edit newsletter message (%s)", 'newsletter'), $oNewsletter->get("name")));
+    $oForm->setHeader(sprintf(i18n("Edit newsletter message (%s)", 'newsletter'), $oNewsletter->get("name")));
     $oForm->add(i18n("Subject", 'newsletter'), $oNewsletter->get("subject"));
 
     $sTagInfoText = '<a href="javascript:void(0)" data-action="toggle_tag_info" data-toggle-id="idTagInfoText"><strong>' . i18n("Tag information", 'newsletter') . '</strong></a>' . '<div id="idTagInfoText" style="display: none"><br><b>' . i18n("Special message tags (will be replaced when sending)", 'newsletter') . ':</b><br>' . 'MAIL_NAME: ' . i18n("Name of the recipient", 'newsletter') . '<br>' . 'MAIL_DATE: ' . i18n("Date, when the mail has been sent", 'newsletter') . '<br>' . 'MAIL_TIME: ' . i18n("Time, when the mail has been sent", 'newsletter') . '<br>' . 'MAIL_NUMBER: ' . i18n("Number of recipients", 'newsletter') . '<br>'.

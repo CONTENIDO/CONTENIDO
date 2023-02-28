@@ -209,7 +209,7 @@ if ($action == "lang_newlanguage") {
 
             $dateLocale = new cHTMLTextbox("datetimelocale", $oLanguage->getProperty("dateformat", "locale", $targetclient), 40);
 
-            $form->addHeader(i18n("Edit language"));
+            $form->setHeader(i18n("Edit language"));
             $oTxtLang = new cHTMLTextBox("langname", conHtmlSpecialChars($db->f("name")), 40, 255);
             $form->add(i18n("Language name"), $oTxtLang->render());
             $oCheckbox = new cHTMLCheckbox("active", "1", "active1", $db->f("active"));

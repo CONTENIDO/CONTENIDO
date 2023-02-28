@@ -189,7 +189,7 @@ if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
     $form->setVar("action", "frontend_save_user");
     $form->setVar("idfrontenduser", $idfrontenduser);
 
-    $form->addHeader(i18n("Edit user"));
+    $form->setHeader(i18n("Edit user"));
 
     $username = new cHTMLTextbox("username", $feuser->get("username"), 40);
     $newpw = new cHTMLPasswordBox("newpd", "", 40);

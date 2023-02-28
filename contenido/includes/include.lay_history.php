@@ -99,7 +99,7 @@ $sSelectBox = $oVersion->buildSelectBox("mod_history", "Layout History", i18n("S
 
 // Generate form
 $oForm = new cGuiTableForm("lay_display");
-$oForm->addHeader(i18n("Edit Layout"));
+$oForm->setHeader(i18n("Edit Layout"));
 $oForm->setVar("area", "lay_history");
 $oForm->setVar("frame", $frame);
 $oForm->setVar("idlay", $idlay);

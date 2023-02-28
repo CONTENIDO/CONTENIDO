@@ -105,7 +105,7 @@ $form->setVar("oldname", $tplname);
 if (!$idlay) {
     $form->setVar("createmode", 1);
 }
-$form->addHeader(i18n("Edit template"));
+$form->setHeader(i18n("Edit template"));
 
 $name = new cHTMLTextbox("tplname", conHtmlSpecialChars(stripslashes($tplname)), 35);
 $form->add(i18n("Name"), $name->render());

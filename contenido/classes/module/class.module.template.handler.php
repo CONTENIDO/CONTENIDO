@@ -517,7 +517,7 @@ class cModuleTemplateHandler extends cModuleHandler {
      */
     private function _makeFormular($belang, $readOnly) {
         $fileForm = new cGuiTableForm("file__chooser");
-        $fileForm->addHeader(i18n('Choose file'));
+        $fileForm->setHeader(i18n('Choose file'));
         $fileForm->setTableID('choose_mod_template_file');
         $fileForm->setVar('area', $this->_area);
         $fileForm->setVar('action', $this->_action);
@@ -529,7 +529,7 @@ class cModuleTemplateHandler extends cModuleHandler {
 
         $form = new cGuiTableForm('file_editor');
         $form->setTableID('mod_template');
-        $form->addHeader(i18n('Edit file'));
+        $form->setHeader(i18n('Edit file'));
         $form->setVar('area', $this->_area);
         $form->setVar('action', $this->_action);
         $form->setVar('frame', $this->_frame);

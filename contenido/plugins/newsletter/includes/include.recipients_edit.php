@@ -140,7 +140,7 @@ if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client &&
     $oForm->setVar("action", "recipients_save");
     $oForm->setVar("idrecipient", $recipient->get("idnewsrcp"));
 
-    $oForm->addHeader(i18n("Edit recipient", 'newsletter'));
+    $oForm->setHeader(i18n("Edit recipient", 'newsletter'));
 
     $oTxtName = new cHTMLTextbox("name",     $recipient->get("name"), 40);
     $oTxtEMail = new cHTMLTextbox("email", $recipient->get("email"), 40);

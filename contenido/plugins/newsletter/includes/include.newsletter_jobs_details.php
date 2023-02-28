@@ -56,7 +56,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         if ($oJob->get("dispatch_delay") == 0) {
             // Send manually
             $oForm = new cGuiTableForm("properties", $sPathNext);
-            $oForm->addHeader(i18n("Report:", 'newsletter'));
+            $oForm->setHeader(i18n("Report:", 'newsletter'));
             $oForm->add("", "");
 
             $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)", 'newsletter'), $iChunk, $iChunks, $oJob->get("rcpcount"), $oJob->get("sendcount")));
@@ -66,7 +66,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         } else {
             // Send automatically
             $oForm = new cGuiTableForm("properties");
-            $oForm->addHeader(i18n("Report:", 'newsletter'));
+            $oForm->setHeader(i18n("Report:", 'newsletter'));
             $oForm->add("", "");
 
             $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)", 'newsletter'), $iChunk, $iChunks, $oJob->get("rcpcount"), $oJob->get("sendcount")));
@@ -81,7 +81,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     } else {
         // All newsletters should have been sent
         $oForm = new cGuiTableForm("properties");
-        $oForm->addHeader(i18n("Report:", 'newsletter'));
+        $oForm->setHeader(i18n("Report:", 'newsletter'));
         $oForm->add("", "");
 
         $oForm->add("", sprintf(i18n("The newsletter has been sent to %s recipients", 'newsletter'), $oJob->get("sendcount")));
@@ -153,7 +153,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oFrmOptions->setVar("idnewsjob", $requestIdNewsJob);
     // $oFrmOptions->setVar("startpage", $startpage);
     // $oFrmOptions->setVar("appendparameters", $appendparameters);
-    $oFrmOptions->addHeader(i18n("List options", 'newsletter'));
+    $oFrmOptions->setHeader(i18n("List options", 'newsletter'));
 
     $oSelElements = new cHTMLSelectElement("elemperpage");
     $oSelElements->setClass('text_medium');
@@ -299,7 +299,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oForm->setVar("action", "");
     $oForm->setVar("idnewsjob", $requestIdNewsJob);
 
-    $oForm->addHeader(i18n("Newsletter dispatch job", 'newsletter'));
+    $oForm->setHeader(i18n("Newsletter dispatch job", 'newsletter'));
 
     $oForm->add(i18n("Name", 'newsletter'), $oJob->get("name"));
 

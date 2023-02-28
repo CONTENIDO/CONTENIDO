@@ -38,7 +38,7 @@ if ($action == 'note_save_item') {
     $list->setWidth('100%');
     $list->appendStyleDefinition('margin-bottom', '10px');
     $ui = new cGuiTableForm('note');
-    $ui->addHeader(i18n('Add note'));
+    $ui->setHeader(i18n('Add note'));
 
     $ui->setVar('area', $area);
     $ui->setVar('frame', $frame);

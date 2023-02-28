@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cGuiTableForm {
+class cGuiTableForm
+{
 
     /**
      * accept charset of form tag
@@ -124,8 +125,10 @@ class cGuiTableForm {
      *         of form defaults to 'main.php'
      * @param string $method [optional]
      *         of form defaults to 'post'
+     * @throws cException
      */
-    public function __construct($name, $action = 'main.php', $method = 'post') {
+    public function __construct($name, $action = 'main.php', $method = 'post')
+    {
         // action defaults to 'main.php'
         if ($action == '') {
             $action = 'main.php';
@@ -136,7 +139,9 @@ class cGuiTableForm {
         $this->formaction = $action;
         $this->formmethod = $method;
 
-        $this->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok.gif', i18n('Save changes'), 's');
+        $this->setActionButton(
+            'submit', cRegistry::getBackendUrl() . 'images/but_ok.gif', i18n('Save changes'), 's'
+        );
     }
 
     /**
@@ -144,7 +149,8 @@ class cGuiTableForm {
      * @param string $name
      * @param string $value
      */
-    public function setVar($name, $value) {
+    public function setVar($name, $value)
+    {
         $this->formvars[$name] = $value;
     }
 
@@ -153,9 +159,10 @@ class cGuiTableForm {
      *
      * @param string $caption
      * @param array|object|string $item
-     * @param string $rowname [optional]
+     * @param string $rowName [optional]
      */
-    public function add($caption, $item, $rowname = '') {
+    public function add($caption, $item, $rowName = '')
+    {
         // handle item as array of items
         if (is_array($item)) {
             $temp = '';
@@ -184,31 +191,50 @@ class cGuiTableForm {
         if ($item == '') {
             $item = '&nbsp;';
         }
-        if ($rowname == '') {
-            $rowname = $this->id;
+        if ($rowName == '') {
+            $rowName = $this->id;
         }
 
         $this->captions[$this->id] = $caption;
         $this->items[$this->id] = $item;
-        $this->rownames[$this->id] = $rowname;
+        $this->rownames[$this->id] = $rowName;
     }
 
     /**
-     * Sets an URL as HREF of a cancel icon.
-     *
-     * @param string $link
+     * @deprecated [2023-02-28] Since 4.10.2, use {@see cGuiTableForm::setCancelLink} instead
      */
-    public function addCancel($link) {
-        $this->cancelLink = $link;
+    public function addCancel($link)
+    {
+        cDeprecated("The function cGuiTableForm::addCancel() is deprecated since CONTENIDO 4.10.2, use cGuiTableForm::setCancelLink() instead.");
+        $this->setCancelLink($link);
+    }
+
+    /**
+     * Sets a URL as HREF of a cancel icon.
+     *
+     * @param string $cancelLink
+     */
+    public function setCancelLink($cancelLink)
+    {
+        $this->cancelLink = $cancelLink;
+    }
+
+    /**
+     * @deprecated [2023-02-28] Since 4.10.2, use {@see cGuiTableForm::setHeader} instead
+     */
+    public function addHeader($header)
+    {
+        cDeprecated("The function cGuiTableForm::addHeader() is deprecated since CONTENIDO 4.10.2, use cGuiTableForm::setHeader() instead.");
+        $this->setHeader($header);
     }
 
     /**
      * Sets the header. The header is *set* not *added*!
      *
      * @param string $header
-     * @todo rename addHeader() to setHeader()
      */
-    public function addHeader($header) {
+    public function setHeader($header)
+    {
         $this->header = $header;
     }
 
@@ -216,7 +242,8 @@ class cGuiTableForm {
      *
      * @param string $header
      */
-    public function addSubHeader($header) {
+    public function addSubHeader($header)
+    {
         $this->id++;
         $this->items[$this->id] = '';
         $this->captions[$this->id] = $header;
@@ -227,7 +254,8 @@ class cGuiTableForm {
      *
      * @param string $js
      */
-    public function setSubmitJS($js) {
+    public function setSubmitJS($js)
+    {
         $this->submitjs = $js;
     }
 
@@ -236,7 +264,8 @@ class cGuiTableForm {
      *
      * @param string $charset
      */
-    public function setAcceptCharset($charset) {
+    public function setAcceptCharset($charset)
+    {
         $this->_acceptCharset = $charset;
     }
 
@@ -245,7 +274,8 @@ class cGuiTableForm {
      * @param string $id
      * @param string $event
      */
-    public function setActionEvent($id, $event) {
+    public function setActionEvent($id, $event)
+    {
         $this->custom[$id]['event'] = $event;
     }
 
@@ -258,7 +288,10 @@ class cGuiTableForm {
      * @param bool $action [optional]
      * @param bool $disabled [optional]
      */
-    public function setActionButton($id, $image, $description = '', $accesskey = false, $action = false, $disabled = false) {
+    public function setActionButton(
+        $id, $image, $description = '', $accesskey = false, $action = false, $disabled = false
+    )
+    {
         $this->custom[$id]['image'] = $image;
         $this->custom[$id]['type'] = 'actionsetter';
         $this->custom[$id]['action'] = $action;
@@ -274,7 +307,8 @@ class cGuiTableForm {
      * @param string $title
      * @param string $description
      */
-    public function setConfirm($id, $title, $description) {
+    public function setConfirm($id, $title, $description)
+    {
         $this->custom[$id]['confirmtitle'] = $title;
         $this->custom[$id]['confirmdescription'] = $description;
     }
@@ -283,7 +317,8 @@ class cGuiTableForm {
      *
      * @param string $tableid
      */
-    public function setTableID($tableid) {
+    public function setTableID($tableid)
+    {
         $this->tableid = $tableid;
     }
 
@@ -291,12 +326,13 @@ class cGuiTableForm {
      *
      * @param string $id
      */
-    public function unsetActionButton($id) {
+    public function unsetActionButton($id)
+    {
         unset($this->custom[$id]);
     }
 
     /**
-     * Renders this cGuiTableForm and either returs ist markup or echoes
+     * Renders this cGuiTableForm and either returns ist markup or echoes
      * it immediately.
      *
      * @param bool $return [optional]
@@ -305,7 +341,8 @@ class cGuiTableForm {
      * @return string|void
      * @throws cInvalidArgumentException
      */
-    public function render($return = true) {
+    public function render($return = true)
+    {
         $sess = cRegistry::getSession();
         $cfg = cRegistry::getConfig();
         $tpl = new cTemplate();
@@ -322,19 +359,19 @@ class cGuiTableForm {
 
         $tpl->set('s', 'ID', $this->tableid);
 
-        $tablehead = $this->renderHeader();
+        $tableHead = $this->renderHeader();
         $tpl->set('s', 'HEADER', $this->renderHeader());
 
         foreach ($this->items as $key => $value) {
             if (!empty($this->itemType[$key]) && $this->itemType[$key] == 'subheader') {
-                $tablerow = new cHTMLTableRow();
-                $tabledata = new cHTMLTableData();
-                $tabledata->setAttribute('colspan', '2');
-                $tabledata->setAttribute('valign', 'top');
-                $tabledata->setContent($this->captions[$key]);
-                $tablerow->setContent($tablehead);
+                $tableRow = new cHTMLTableRow();
+                $tableData = new cHTMLTableData();
+                $tableData->setAttribute('colspan', '2');
+                $tableData->setAttribute('valign', 'top');
+                $tableData->setContent($this->captions[$key]);
+                $tableRow->setContent($tableHead);
 
-                $tpl->set('d', 'SUBHEADER', $tablerow->render());
+                $tpl->set('d', 'SUBHEADER', $tableRow->render());
             } else {
                 $tpl->set('d', 'SUBHEADER', '');
                 $tpl->set('d', 'CATNAME', $this->captions[$key]);
@@ -351,9 +388,11 @@ class cGuiTableForm {
 
         $tpl->set('s', 'ROWNAME', $this->id);
 
-        $rendered = $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['generic_table_form'], true);
+        $rendered = $tpl->generate(
+            cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['generic_table_form'], true
+        );
 
-        if ($return == true) {
+        if ($return) {
             return $rendered;
         } else {
             echo $rendered;
@@ -363,7 +402,8 @@ class cGuiTableForm {
     /**
      * @return string
      */
-    protected function renderJsExtraAttribute() {
+    protected function renderJsExtraAttribute()
+    {
         $jsAttribute = '';
 
         if ($this->submitjs != '') {
@@ -385,7 +425,8 @@ class cGuiTableForm {
     /**
      * @return string
      */
-    protected function renderHiddenValues() {
+    protected function renderHiddenValues()
+    {
         $hidden = '';
 
         if (is_array($this->formvars)) {
@@ -406,17 +447,18 @@ class cGuiTableForm {
     /**
      * @return string
      */
-    protected function renderHeader() {
+    protected function renderHeader()
+    {
         $header = '';
 
         if ($this->header != '') {
-            $tablerow = new cHTMLTableRow();
-            $tablehead = new cHTMLTableHead();
-            $tablehead->setAttribute('colspan', '2');
-            $tablehead->setAttribute('valign', 'top');
-            $tablehead->setContent($this->header);
-            $tablerow->setContent($tablehead);
-            $header = $tablerow->render();
+            $tableRow = new cHTMLTableRow();
+            $tableHead = new cHTMLTableHead();
+            $tableHead->setAttribute('colspan', '2');
+            $tableHead->setAttribute('valign', 'top');
+            $tableHead->setContent($this->header);
+            $tableRow->setContent($tableHead);
+            $header = $tableRow->render();
         }
 
         return $header;
@@ -425,7 +467,8 @@ class cGuiTableForm {
     /**
      * @return string
      */
-    protected function renderCancelLink() {
+    protected function renderCancelLink()
+    {
         $cancelLink = '';
 
         if ($this->cancelLink != '') {
@@ -441,20 +484,17 @@ class cGuiTableForm {
     /**
      * @return string
      */
-    protected function renderCustomButtons() {
-        $custombuttons = '';
+    protected function renderCustomButtons()
+    {
+        $customButtons = '';
 
         foreach ($this->custom as $key => $value) {
-            if ($value['accesskey'] != '') {
-                $accesskey = $value['accesskey'];
-            } else {
-                $accesskey = '';
-            }
+            $accesskey = $value['accesskey'] !== false ? $value['accesskey'] : '';
 
             $onclick = '';
             if ($value['disabled'] === false) {
                 if ($value['action'] !== false) {
-                    if ($value['confirmtitle'] != '') {
+                    if (!empty($value['confirmtitle'])) {
                         $action = 'document.forms["' . $this->formname . '"].elements["action"].value = "' . $value['action'] . '";'
                             . 'document.forms["' . $this->formname . '"].submit()';
                         $onclick = 'Con.showConfirmation("' . $value['confirmdescription'] . '", function() { ' . $action . ' });return false;';
@@ -472,15 +512,17 @@ class cGuiTableForm {
             $button->setAttribute('type', 'image');
             $button->setAttribute('src', $value['image']);
             $button->setAlt($value['description']);
-            $button->setAttribute('accesskey', $accesskey);
+            if (!$accesskey !== '') {
+                $button->setAttribute('accesskey', $accesskey);
+            }
             $button->setEvent('onclick', $onclick);
             if ($value['disabled']) {
                 $button->updateAttribute('disabled', 'disabled');
             }
-            $custombuttons .= $button->render();
+            $customButtons .= $button->render();
         }
 
-        return $custombuttons;
+        return $customButtons;
     }
 
 }

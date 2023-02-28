@@ -343,7 +343,7 @@ $oForm->setVar("frame", $frame);
 $oForm->setVar("area", $area);
 $oForm->setVar("action", "recipients_import_exec");
 
-$oForm->addHeader(i18n("Import recipients", 'newsletter'));
+$oForm->setHeader(i18n("Import recipients", 'newsletter'));
 
 $oSelDelimiter = new cHTMLSelectElement("selDelimiter");
 $aItems = [
