@@ -560,7 +560,7 @@ class cVersion {
                 $oForm->setConfirm('clearhistory', $aMessage['alt'], $aMessage['popup']);
             }
             $oForm->setActionButton('submit', 'images/but_refresh.gif', i18n('Refresh'), 's');
-            $oForm->setTableID('version_selector');
+            $oForm->setTableClass('mgb10');
 
             return $oForm->render();
         } else {

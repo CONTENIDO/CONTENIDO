@@ -517,8 +517,8 @@ class cModuleTemplateHandler extends cModuleHandler {
      */
     private function _makeFormular($belang, $readOnly) {
         $fileForm = new cGuiTableForm("file__chooser");
+        $fileForm->addTableClass('mgb10');
         $fileForm->setHeader(i18n('Choose file'));
-        $fileForm->setTableID('choose_mod_template_file');
         $fileForm->setVar('area', $this->_area);
         $fileForm->setVar('action', $this->_action);
         $fileForm->setVar('frame', $this->_frame);

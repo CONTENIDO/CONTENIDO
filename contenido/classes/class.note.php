@@ -369,7 +369,7 @@ class NoteListItem extends cHTMLDiv {
 
         if ($this->_bDeleteable == true) {
             $oDeleteable = new cHTMLLink();
-            $oDeleteable->setClass("vAlignMiddle tableElement");
+            $oDeleteable->setClass("vAlignMiddle mgl3");
             $oDeletePic = new cHTMLImage(cRegistry::getBackendUrl() . '/images/delete.gif');
             $oDeleteable->setContent($oDeletePic);
             $oDeleteable->setLink($sess->url("main.php?frame=2&area=note&itemtype=$itemtype&itemid=$itemid&action=note_delete&deleteitem=$deleteitem"));

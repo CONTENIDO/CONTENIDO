@@ -423,7 +423,7 @@ table.foldingrow th {
 table td.con_extra_buttons .con_img_button {
     margin-right: 5px;
 }
-table td.con_extra_buttons .con_img_button:last-of-type {
+table td.con_extra_buttons .con_img_button.last {
     margin-right: 0;
 }
 
@@ -2256,10 +2256,6 @@ div#top_left_container.style_left_top {
     margin: 0.3em 0;
 }
 
-#defaultStartArtNameInfo1-link {
-    margin-top: 1.2em;
-}
-
 div#legend {
     margin: 0;
     padding-left: 10px;
@@ -2275,21 +2271,6 @@ div#legend table.article {
 /* CodeMirror Styles */
 .CodeMirror-wrap pre {
     line-height: 1.2em;
-}
-
-/*
-#mod_edit,
-#mod_translate,
-#mod_template,
-#mod_style,
-#mod_javascript {
-    width: 99% !important;
-}
-*/
-
-#imgFormSubmit,
-.img_form_submit {
-    cursor: pointer;
 }
 
 /* Module edit styles */
@@ -2341,13 +2322,6 @@ div.errorlist {
 }
 
 /**
- * Leaves a little margin after the file chooser in the mod html section
- */
-#choose_mod_template_file {
-    margin-bottom: 10px;
-}
-
-/**
  * aligns something vertically with a line of text
  */
 .vAlignMiddle {
@@ -2363,10 +2337,6 @@ input[type=image].vAlignMiddle {
 .vAlignTop {
     vertical-align: top;
     margin-top: 0.25em;
-}
-
-#version_selector {
-    margin-bottom: 10px;
 }
 
 /**

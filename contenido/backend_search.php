@@ -551,7 +551,7 @@ if (sizeof($_GET) == 0 && isset($_POST) && !$bNoCriteria) {
             <input type="hidden" name="save_author" id="save_author" value="' . $sSearchStrAuthor . '">
             <label for="' . 'save_name' . '">' . i18n("Search name") . ': </label>
             <input type="text" class="text_medium" name="save_name" id="save_name" placeholder="' . i18n("The search") . '" class="vAlignMiddle">
-            <input type="image" class="vAlignMiddle tableElement" src="./images/but_ok.gif" alt="' . i18n('Store') . '" title="' . i18n('Store') . '" value="' . i18n('Store') . '" name="submit">
+            <input type="image" class="con_img_button align_middle" src="./images/but_ok.gif" alt="' . i18n('Store') . '" title="' . i18n('Store') . '" value="' . i18n('Store') . '" name="submit">
         </form>'
     ;
 

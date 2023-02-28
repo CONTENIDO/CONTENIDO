@@ -771,7 +771,7 @@ while ($item = $uploadCollection->next()) {
         $mstr = '';
     } else {
         $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-        $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$filename&startpage=$startpage&sortby=$sortby&sortmode=$sortmode&thumbnailmode=$thumbnailmode"), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$filename"), '<img class="vAlignMiddle tableElement" alt="' . $proptitle . '" title="' . $proptitle . '" src="images/but_art_conf2.gif">');
+        $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$filename&startpage=$startpage&sortby=$sortby&sortmode=$sortmode&thumbnailmode=$thumbnailmode"), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$filename"), '<img class="vAlignMiddle mgl3" alt="' . $proptitle . '" title="' . $proptitle . '" src="images/but_art_conf2.gif">');
     }
 
     $actions = $mstr . $actions;
@@ -860,7 +860,7 @@ $values = [
 $select->autoFill($values);
 $select->setDefault($thumbnailmode);
 
-$topbar = $select->render() . '<input class="img_form_submit vAlignMiddle tableElement" type="image" src="images/submit.gif" alt="">';
+$topbar = $select->render() . '<input class="img_form_submit vAlignMiddle mgl3" type="image" src="images/submit.gif" alt="">';
 
 $output = str_replace('-C-FILESPERPAGE-', $topbar, $output);
 

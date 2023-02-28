@@ -454,7 +454,7 @@ $form->setVar("startpage", $startpage);
 $form->setVar("appendparameters", $appendparameters);
 
 $select = new cHTMLSelectElement("thumbnailmode");
-$select->setClass("vAlignMiddle tableElement");
+$select->setClass("vAlignMiddle mgl3");
 $values = [
     25 => "25",
     50 => "50",
@@ -464,7 +464,7 @@ $values = [
 $select->autoFill($values);
 $select->setDefault($thumbnailmode);
 
-$topbar = $select->render() . '<input type="image" src="images/submit.gif" class="img_form_submit vAlignMiddle tableElement">';
+$topbar = $select->render() . '<input type="image" src="images/submit.gif" class="img_form_submit vAlignMiddle mgl3">';
 
 $output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
 

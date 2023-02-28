@@ -502,6 +502,8 @@ class cGuiTableForm
         if ($this->cancelLink != '') {
             $image = new cHTMLImage(cRegistry::getBackendUrl() . 'images/but_cancel.gif');
             $link = new cHTMLLink($this->cancelLink);
+            $class = count($this->custom) ? 'con_img_button' : 'con_img_button last';
+            $link->setClass($class);
             $link->setContent($image);
             $cancelLink = $link->render();
         }
@@ -516,6 +518,8 @@ class cGuiTableForm
     {
         $customButtons = '';
 
+        $countCustom = count($this->custom);
+        $count = 0;
         foreach ($this->custom as $key => $value) {
             $accesskey = $value['accesskey'] !== false ? $value['accesskey'] : '';
 
@@ -536,7 +540,8 @@ class cGuiTableForm
                 }
             }
 
-            $button = new cHTMLFormElement('submit', '', '', '', '', 'con_img_button');
+            $class = (++$count === $countCustom) ? 'con_img_button last' : 'con_img_button';
+            $button = new cHTMLFormElement('submit', '', '', '', '', $class);
             $button->setAttribute('type', 'image');
             $button->setAttribute('src', $value['image']);
             $button->setAlt($value['description']);
