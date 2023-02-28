@@ -41,7 +41,6 @@ if ($idmod == '') {
 
 $module = new cApiModule($idmod);
 
-$bDeleteFile = false;
 $oPage = new cGuiPage('mod_history');
 
 if (!$perm->have_perm_area_action($area, 'mod_history_manage')) {
@@ -59,6 +58,8 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage')) {
     $oPage->render();
     return;
 }
+
+$bDeleteFile = false;
 
 $requestModSend = isset($_POST["mod_send"]);
 $requestCodeOut = $_POST["CodeOut"] ?? '';
@@ -88,7 +89,7 @@ if ((!$readOnly) && $requestAction == "history_truncate") {
 
 $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
 
-// Init Form variables of SelectBox
+// Init form variables of select box
 $sSelectBox = "";
 $oVersion->setVarForm("area", $area);
 $oVersion->setVarForm("frame", $frame);
@@ -96,7 +97,7 @@ $oVersion->setVarForm("idmod", $idmod);
 // needed - otherwise history can not be deleted!
 $oVersion->setVarForm("action", '');
 
-// create and output the select box, for params please look class.version.php
+// Create and output the select box, for params please look class.version.php
 $sSelectBox = $oVersion->buildSelectBox("mod_history", i18n("Module History"), i18n("Show history entry"), "idmodhistory", $readOnly);
 
 // Generate Form
@@ -120,7 +121,7 @@ if ($sRevision != '' && ($requestAction != "history_truncate" || $readOnly)) {
     // File Path
     $sPath = $oVersion->getFilePath() . $sRevision;
 
-    // Read XML Nodes and get an array
+    // Read XML nodes and get an array
     $aNodes = [];
     $aNodes = $oVersion->initXmlReader($sPath);
 
@@ -134,7 +135,7 @@ if ($sRevision != '' && ($requestAction != "history_truncate" || $readOnly)) {
 }
 
 if ($sSelectBox != "") {
-    // Add new Elements of Form
+    // Add new elements of form
     $oForm->add(i18n("Name"), $sName);
     $oForm->add(i18n("Description"), $description);
     $oForm->add(i18n("Code input"), $sCodeInput);
@@ -142,7 +143,7 @@ if ($sSelectBox != "") {
     $oForm->setActionButton("apply", "images/but_ok" .(($readOnly) ? '_off' : '') . ".gif", i18n("Copy to current"), "c"/* , "mod_history_takeover" */); //modified it
     $oForm->unsetActionButton("submit");
 
-    // Render and handle History Area
+    // Render and handle history area
     $oCodeMirrorIn = new CodeMirror('IdCodeIn', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
     $oCodeMirrorOutput = new CodeMirror('IdCodeOut', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), false, $cfg, !$bInUse);
     if ($readOnly) {

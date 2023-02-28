@@ -48,17 +48,15 @@ $sType = 'css';
 $oPage = new cGuiPage('style_history');
 
 if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
-    $oPage->displayCriticalError(i18n('Permission denied'));
+    $oPage->displayError(i18n('Permission denied'));
     $oPage->abortRendering();
     $oPage->render();
     return;
-}
-if (!(int) $client > 0) {
+} elseif (!(int) $client > 0) {
     $oPage->abortRendering();
     $oPage->render();
     return;
-}
-if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
+} elseif (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
     $oPage->displayWarning(i18n('Versioning is not activated'));
     $oPage->abortRendering();
     $oPage->render();
@@ -83,7 +81,7 @@ if ((!$readOnly) && $requestAction == 'history_truncate') {
     unset($oVersionStyle);
 }
 
-// save button Get Post variables
+// Save button
 if ((!$readOnly) && $requestStyleSend && $requestStyleCode != '' && $sFileName != '' && !empty($aFileInfo['idsfi'])) {
     $oVersionStyle = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
@@ -93,7 +91,7 @@ if ((!$readOnly) && $requestStyleSend && $requestStyleCode != '' && $sFileName !
 
     $sPath = $oVersionStyle->getPathFile();
 
-    // Edit File, there is a need for renaming file
+    // Do we need to rename the file?
     if ($sFileName != $sStyleName) {
         if (cFileHandler::getExtension($sStyleName) != 'css' && cString::getStringLength(stripslashes(trim($sStyleName))) > 0) {
             $sStyleName = stripslashes($sStyleName) . '.css';
@@ -110,10 +108,10 @@ if ((!$readOnly) && $requestStyleSend && $requestStyleCode != '' && $sFileName !
     cFileHandler::validateFilename($sStyleName);
     cFileHandler::write($sPath . $sStyleName, $sStyleCode);
     if (cFileHandler::read($sPath . $sStyleName)) {
-        // make new revision File
+        // Make new revision file
         $oVersionStyle->createNewVersion();
 
-        // Update File Information
+        // Update file information
         $fileInfoCollection = new cApiFileInformationCollection();
         $fileInfoCollection->updateFile($sFileName, $sType, $sStyleDesc, $sStyleName, $aFileInfo['author']);
 
@@ -126,20 +124,19 @@ if ((!$readOnly) && $requestStyleSend && $requestStyleCode != '' && $sFileName !
 if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction != 'history_truncate' || $readOnly)) {
     $oVersionStyle = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
-    // Init Form variables of SelectBox
+    // Init form variables of select box
     $sSelectBox = '';
     $oVersionStyle->setVarForm('area', $area);
+    $oVersionStyle->setVarForm('action', '');
     $oVersionStyle->setVarForm('frame', $frame);
     $oVersionStyle->setVarForm('idstyle', $sFileName);
     $oVersionStyle->setVarForm('file', $sFileName);
-    // needed - otherwise history can not be deleted!
-    $oVersionStyle->setVarForm('action', '');
 
-    // create and output the select box, for params please look
+    // Create and output the select box, for params please look
     // class.version.php
     $sSelectBox = $oVersionStyle->buildSelectBox('style_history', 'Style History', i18n('Show history entry'), 'idstylehistory', $readOnly);
 
-    // Generate Form
+    // Generate form
     $oForm = new cGuiTableForm('style_display');
     $oForm->addTableClass('col_50');
     $oForm->addHeader(i18n('Edit style'));
@@ -148,7 +145,7 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction != 'histo
     $oForm->setVar('idstyle', $sFileName);
     $oForm->setVar('style_send', 1);
 
-    // if send form refresh button
+    // Is form refresh button send
     if (!empty($_POST['idstylehistory'])) {
         $sRevision = $_POST['idstylehistory'];
     } else {
@@ -162,28 +159,25 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction != 'histo
     if ($sRevision != '') {
         $sPath = $oVersionStyle->getFilePath() . $sRevision;
 
-        // Read XML Nodes and get an array
+        // Read XML nodes and get an array
         $aNodes = $oVersionStyle->initXmlReader($sPath);
 
-        // Create Textarea and fill it with xml nodes
+        // Create textarea and fill it with xml nodes
         if (count($aNodes) > 1) {
-            // If choose xml file read value a set it
             $sName = $oVersionStyle->getTextBox('stylename', $aNodes['name'], 60, $readOnly);
-            $description = $oVersionStyle->getTextarea('styledesc', (string) $aNodes['desc'], 100, 10, '', $readOnly);
-            $sCode = $oVersionStyle->getTextarea('stylecode', (string) $aNodes['code'], 100, 30, 'IdLaycode');
+            $description = $oVersionStyle->getTextarea('styledesc', cSecurity::toString($aNodes['desc']), 100, 10, '', $readOnly);
+            $sCode = $oVersionStyle->getTextarea('stylecode', cSecurity::toString($aNodes['code']), 100, 30, 'IdLaycode');
         }
     }
 
-    // Add new Elements of Form
+    // Add new elements of form
     $oForm->add(i18n('Name'), $sName);
     $oForm->add(i18n('Description'), $description);
     $oForm->add(i18n('Code'), $sCode);
     $oForm->setActionButton('apply', 'images/but_ok' . (($readOnly) ? '_off' : '') . '.gif', i18n('Copy to current'), 'c' /* , 'mod_history_takeover' */);
     $oForm->unsetActionButton('submit');
 
-    // Render and handle History Area
-    $oPage->setEncoding('utf-8');
-
+    // Render and handle history area
     $bInUse = $bInUse ?? false;
     $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'css', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
     if ($readOnly) {
@@ -206,4 +200,6 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction != 'histo
 
     $oPage->abortRendering();
 }
+
+$oPage->setEncoding('utf-8');
 $oPage->render();

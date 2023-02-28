@@ -37,8 +37,6 @@ if ($readOnly) {
 
 $oPage = new cGuiPage("lay_history");
 
-$bDeleteFile = false;
-
 if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
     $oPage->displayError(i18n("Permission denied"));
     $oPage->abortRendering();
@@ -61,6 +59,8 @@ foreach (['lay_send', 'layname', 'laycode', 'laydesc', 'action', 'idlayhistory']
         $_POST[$_key] = '';
     }
 }
+
+$bDeleteFile = false;
 
 // save button
 if ((!$readOnly) && $_POST["lay_send"] == '1' && $_POST["layname"] != "" && $_POST["laycode"] != "" && (int) $idlay > 0) {
@@ -85,7 +85,7 @@ if ((!$readOnly) && $_POST["action"] == "history_truncate") {
 // Init construct with CONTENIDO variables, in class.VersionLayout
 $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
 
-// Init Form variables of SelectBox
+// Init form variables of select box
 $sSelectBox = "";
 $oVersion->setVarForm("area", $area);
 $oVersion->setVarForm("frame", $frame);
@@ -93,7 +93,7 @@ $oVersion->setVarForm("idlay", $idlay);
 // needed - otherwise history can not be deleted!
 $oVersion->setVarForm("action", '');
 
-// create and output the select box, for params please look
+// Create and output the select box, for params please look
 // class.version.php
 $sSelectBox = $oVersion->buildSelectBox("mod_history", "Layout History", i18n("Show history entry"), "idlayhistory", $readOnly);
 
@@ -120,11 +120,11 @@ if ($sRevision != '' && ($_POST["action"] != "history_truncate" || $readOnly)) {
     // File Path
     $sPath = $oVersion->getFilePath() . $sRevision;
 
-    // Read XML Nodes and get an array
+    // Read XML nodes and get an array
     $aNodes = [];
     $aNodes = $oVersion->initXmlReader($sPath);
 
-    // Create Textarea and fill it with xml nodes
+    // Create textarea and fill it with xml nodes
     if (count($aNodes) > 1) {
         // if choose xml file read value an set it
         $sName = $oVersion->getTextBox("layname", cString::stripSlashes(conHtmlentities(conHtmlSpecialChars($aNodes["name"]))), 60, $readOnly);
