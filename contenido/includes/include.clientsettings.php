@@ -35,7 +35,7 @@ $oFrmRange->setTableClass('generic col_sm');
 $oFrmRange->setVar('area', $area);
 $oFrmRange->setVar('frame', $frame);
 $oFrmRange->setVar('idclient', $idclient);
-$oFrmRange->addHeader(i18n('Select range'));
+$oFrmRange->setHeader(i18n('Select range'));
 
 $oSelRange = new cHTMLSelectElement('idclientslang');
 $oOption = new cHTMLOptionElement(i18n("Language independent"), 0);
@@ -169,7 +169,7 @@ $oForm->setVar('frame', $frame);
 $oForm->setVar('action', 'clientsettings_save_item');
 $oForm->setVar('idclient', $idclient);
 $oForm->setVar('idclientslang', $idclientslang);
-$oForm->addHeader(i18n('Add new variable'));
+$oForm->setHeader(i18n('Add new variable'));
 
 $oInputbox = new cHTMLTextbox('cstype');
 $oInputbox->setWidth(15);

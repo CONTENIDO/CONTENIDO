@@ -137,7 +137,7 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction != 'histo
     // Generate form
     $oForm = new cGuiTableForm('jscript_display');
     $oForm->addTableClass('col_50');
-    $oForm->addHeader(i18n('Edit JScript'));
+    $oForm->setHeader(i18n('Edit JScript'));
     $oForm->setVar('area', $area);
     $oForm->setVar('frame', $frame);
     $oForm->setVar('idjscript', $sFileName);

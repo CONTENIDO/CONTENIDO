@@ -162,7 +162,7 @@ $form->setTableClass('generic col_sm');
 $form->setVar("area", $area);
 $form->setVar("frame", $frame);
 $form->setVar("action", "client_artspec_save");
-$form->addHeader(i18n("Create new article specification"));
+$form->setHeader(i18n("Create new article specification"));
 $inputbox = new cHTMLTextbox("artspectext");
 $form->add(i18n("Specification name"), $inputbox->render());
 

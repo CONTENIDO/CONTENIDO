@@ -180,7 +180,7 @@ if (!$bInUse) {
     $form->setVar("action", "mod_edit");
 }
 
-$form->addHeader(i18n("Edit module") . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
+$form->setHeader(i18n("Edit module") . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
 
 $name = new cHTMLTextbox("name", conHtmlSpecialChars(stripslashes($module->get("name"))), 60);
 $descr = new cHTMLTextarea("descr", str_replace([

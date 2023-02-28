@@ -135,7 +135,7 @@ $form->setVar("area", $area);
 $form->setVar("action", "mycontenido_editself");
 $form->setVar("frame", $frame);
 
-$form->addHeader($settingsFor);
+$form->setHeader($settingsFor);
 
 $realname = new cHTMLTextbox("name", $user->get("realname") ?? '');
 $form->add(i18n("Name"), $realname);

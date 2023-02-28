@@ -553,7 +553,7 @@ class cVersion {
                 $oForm->setVar($sKey, $sValue);
             }
             $aMessage = $this->getMessages();
-            $oForm->addHeader(i18n($sAddHeader));
+            $oForm->setHeader(i18n($sAddHeader));
             $oForm->add(i18n($sLabelOfSelectBox), $this->getSelectBox($this->getFormatTimestamp(), $sIdOfSelectBox));
             $oForm->setActionButton('clearhistory', 'images/delete' . (($disabled) ? '_inact' : '') . '.gif', $aMessage['alt'], 'c', 'history_truncate');
             if (!$disabled) {

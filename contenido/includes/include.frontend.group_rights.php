@@ -66,7 +66,7 @@ if ($action == 'fegroups_save_perm') {
     cRegistry::addOkMessage(i18n("Saved changes successfully!"));
 }
 
-$rights->addHeader(sprintf(i18n("Permissions for plugin '%s'"), $class->getFriendlyName()));
+$rights->setHeader(sprintf(i18n("Permissions for plugin '%s'"), $class->getFriendlyName()));
 
 foreach ($actions as $key => $action) {
     $check[$key] = new cHTMLCheckbox('action_' . $key, 1);

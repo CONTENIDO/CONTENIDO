@@ -360,7 +360,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oForm->setVar("action", "news_save");
     $oForm->setVar("idnewsletter", $oNewsletter->get("idnews"));
 
-    $oForm->addHeader(i18n("Edit newsletter", 'newsletter'));
+    $oForm->setHeader(i18n("Edit newsletter", 'newsletter'));
 
     $oTxtName = new cHTMLTextbox("txtName", $oNewsletter->get("name"), 40);
     $oForm->add(i18n("Name", 'newsletter'), $oTxtName->render());

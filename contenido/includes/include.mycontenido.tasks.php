@@ -304,7 +304,7 @@ if ($action == "todo_save_item") {
 
     $todoItem->setProperty("todo", "status", $status);
 
-    // Progress can be between 0 - 5
+    // Progress can be between 0 - 100
     $progress = min(max(0, $progress), 100);
 
     $todoItem->setProperty("todo", "priority", $priority);
@@ -411,7 +411,7 @@ while ($todo = $todoItems->next()) {
 
 $form = new cGuiTableForm("restrict");
 $form->setTableID("todoList");
-$form->addHeader(i18n("Restrict display"));
+$form->setHeader(i18n("Restrict display"));
 $form->setVar("listsubmit", "true");
 
 $form->unsetActionButton("submit");

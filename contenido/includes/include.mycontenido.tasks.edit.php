@@ -20,9 +20,9 @@ $todoitem = new TODOItem();
 $todoitem->loadByPrimaryKey($idcommunication);
 
 $ui = new cGuiTableForm("reminder");
-$ui->addHeader(i18n("Edit reminder item"));
+$ui->setHeader(i18n("Edit reminder item"));
 
-$ui->addCancel($sess->url("main.php?area=mycontenido_tasks&frame=$frame"));
+$ui->setCancelLink($sess->url("main.php?area=mycontenido_tasks&frame=$frame"));
 
 $ui->setVar("area", "mycontenido_tasks");
 $ui->setVar("frame", $frame);

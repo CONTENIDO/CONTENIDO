@@ -390,7 +390,7 @@ class ArticleForumRightBottom extends cGuiPage {
 
         // build form element
         $form1 = new cGuiTableForm("comment", "main.php?area=user_forum&frame=4", "post");
-        $form1->addHeader($tr);
+        $form1->setHeader($tr);
         $form1->setTableID("table");
 
         $user = new cApiUser();
@@ -432,9 +432,9 @@ class ArticleForumRightBottom extends cGuiPage {
         // handle moderation mode actions
         if (isset($post['mod'])) {
             $form1->setVar('mod', 'mod');
-            $form1->addCancel("main.php?area=user_forum&frame=4&action=back&mod=mod");
+            $form1->setCancelLink("main.php?area=user_forum&frame=4&action=back&mod=mod");
         } else {
-            $form1->addCancel("main.php?area=user_forum&frame=4&action=back&idart=$idart&idcat=$idcat");
+            $form1->setCancelLink("main.php?area=user_forum&frame=4&action=back&idart=$idart&idcat=$idcat");
         }
 
         $onlineBox = new cHTMLCheckbox("onlineState", "");

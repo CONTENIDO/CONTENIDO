@@ -199,7 +199,7 @@ if (true === $layout->isLoaded()) {
 
     $form = new cGuiTableForm("module");
     $form->addTableClass('col_50');
-    $form->addHeader(i18n("Edit Layout"));
+    $form->setHeader(i18n("Edit Layout"));
     $form->setVar("area", $area);
     $form->setVar("action", 'lay_edit');
     $form->setVar("frame", $frame);

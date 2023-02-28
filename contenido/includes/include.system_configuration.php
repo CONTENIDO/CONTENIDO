@@ -240,7 +240,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
 // generate the table for changing the system properties
 $form = new cGuiTableForm('system_configuration');
 $form->setTableClass('generic col_lg');
-$form->addHeader(i18n('System configuration'));
+$form->setHeader(i18n('System configuration'));
 $form->setVar('area', $area);
 $form->setVar('frame', $frame);
 $form->setVar('action', 'edit_sysconf');

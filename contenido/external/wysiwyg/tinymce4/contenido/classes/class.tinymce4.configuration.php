@@ -602,7 +602,7 @@ class cTinymce4Configuration {
             $form = new cGuiTableForm('system_wysiwyg_tinymce4_' . cString::toLowerCase($curType));
             $form->setAcceptCharset('UTF-8');
 
-            $form->addHeader(i18n('TinyMCE 4 configuration for ') . $curType);
+            $form->setHeader(i18n('TinyMCE 4 configuration for ') . $curType);
 
             $form->setVar('area', $area);
             $form->setVar('frame', $frame);
@@ -703,7 +703,7 @@ class cTinymce4Configuration {
             $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's', false, true);
         }
         $form->setAcceptCharset('UTF-8');
-        $form->addHeader(i18n('TinyMCE 4 configuration for external plugins'));
+        $form->setHeader(i18n('TinyMCE 4 configuration for external plugins'));
 
         $form->setVar('area', $area);
         $form->setVar('frame', $frame);
