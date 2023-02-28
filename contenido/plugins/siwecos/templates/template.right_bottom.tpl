@@ -1,5 +1,5 @@
 <form id="siwecos-form" action="{$formAction}" method="post">
-    <table class="generic">
+    <table class="generic col_sm">
         <tbody>
         <tr id="m7">
             <th class="align_top" id="m8" colspan="2">{i18n("LBL_CONFIGURATION", 'siwecos')}</th>
@@ -53,13 +53,13 @@
             <td class="no_wrap align_top">
                 {i18n("LBL_USER_TOKEN", 'siwecos')}
             </td>
-            <td class="no_wrap align_top text_left">{$userToken}</td>
+            <td class="no_wrap align_top text_left">{($userToken) ? $userToken : '&nbsp;'}</td>
         </tr>
         <tr>
             <td class="no_wrap align_top">
                 {i18n("LBL_DOMAIN_TOKEN", 'siwecos')}
             </td>
-            <td class="no_wrap align_top text_left">{$domainToken}</td>
+            <td class="no_wrap align_top text_left">{($domainToken) ? $domainToken : '&nbsp;'}</td>
         </tr>
         <tr>
             <td class="no_wrap align_top">
