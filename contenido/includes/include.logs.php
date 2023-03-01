@@ -140,7 +140,7 @@ $oToDay->setDefault($today > 0 ? $today : date('j'));
 
 $oFromMonth = new cHTMLSelectElement('frommonth');
 $oFromMonth->autoFill($months);
-$oToDay->setDefault($frommonth > 0 ? $frommonth : date('n'));
+$oFromMonth->setDefault($frommonth > 0 ? $frommonth : date('n'));
 
 $oToMonth = new cHTMLSelectElement('tomonth');
 $oToMonth->autoFill($months);
