@@ -105,4 +105,29 @@ class cHTMLButton extends cHTMLFormElement {
         return $this;
     }
 
+    /**
+     * Renders a html input tag of type image.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $src The source (path) to the image
+     * @param string $alt Alternate text
+     * @param array $attributes Attributes to set
+     * @return string
+     */
+    public static function image($src, $alt = '', array $attributes = [])
+    {
+        $button = new self('');
+
+        $attributes = array_merge([
+            'type' => 'image',
+            'src' => $src,
+            'alt' => $alt,
+            'title' => $alt,
+        ], $attributes);
+
+        $button->setAttributes(array_merge($button->getAttributes(), $attributes));
+
+        return $button->toHtml();
+    }
+
 }
