@@ -115,7 +115,7 @@ class cHTMLImage extends cHTML
     }
 
     /**
-     * Renders an img tag to reference an external stylesheet ressource.
+     * Renders an img tag.
      *
      * @since CONTENIDO 4.10.2
      * @param string $src The source (path) to the image
