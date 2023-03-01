@@ -38,7 +38,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * <strong>Extension</strong>
  * If set via setFileExtension(array) only files of the given extensions
- * are displayed. By default all extensions are considered.
+ * are displayed. By default, all extensions are considered.
  *
  * <strong>Order of files</strong>
  * The files to be displayed are sorted alphabetically.
@@ -105,7 +105,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cGuiFileOverview extends cGuiPage {
+class cGuiFileOverview extends cGuiPage
+{
 
     /**
      * Path to the directory where files to display are located.
@@ -149,11 +150,14 @@ class cGuiFileOverview extends cGuiPage {
      * @param string $fileInfoType [optional]
      *        type of additional file information that should be
      *        displayed as description
+     * @throws cDbException
+     * @throws cException
      */
-    public function __construct($dir, $markedFile = '', $fileInfoType = '') {
+    public function __construct($dir, $markedFile = '', $fileInfoType = '')
+    {
         parent::__construct('generic_file_overview');
 
-        // assign properties
+        // Assign properties
         $this->_directory = $dir;
         $this->_markedFile = $markedFile;
         $this->_fileInfoType = $fileInfoType;
@@ -165,7 +169,8 @@ class cGuiFileOverview extends cGuiPage {
      * @param array|string $extension
      *         Name of extensions
      */
-    public function setFileExtension($extension) {
+    public function setFileExtension($extension)
+    {
         if (cSecurity::isString($extension)) {
             $extension = [$extension];
         }
@@ -182,12 +187,13 @@ class cGuiFileOverview extends cGuiPage {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function render($template = NULL, $return = false) {
+    public function render($template = NULL, $return = false)
+    {
         $cfg = cRegistry::getConfig();
         $area = cRegistry::getArea();
         $perm = cRegistry::getPerm();
 
-        // create an array of all files in the directory
+        // Create an array of all files in the directory
         $files = [];
         if (!empty($this->_directory)) {
             foreach (new DirectoryIterator($this->_directory) as $file) {
@@ -200,45 +206,70 @@ class cGuiFileOverview extends cGuiPage {
                 $files[] = $file->getBasename();
             }
 
-            // sort the files
+            // Sort the files
             sort($files);
         }
 
         $this->addScript('parameterCollector.js');
 
-        // assign variables for the JavaScript
+        // Assign variables for the JavaScript
         $this->set('s', 'AREA', $area);
         $this->set('s', 'ACTION_DELETE', $area . '_delete');
         $this->set('s', 'ACTION_EDIT', $area . '_edit');
 
         $deleteTitle = i18n('Delete file');
 
-        // assign variables for every file
+        $canNotDeleteFiles = getEffectiveSetting('client', 'readonly', 'false') == 'true'
+            || (!$perm->have_perm_area_action($area, $area . '_delete'));
+
+        $menu = new cGuiMenu('file_overview_list');
+
+        $showLink = new cHTMLLink();
+        $showLink->setClass('show_item')
+            ->setLink('javascript:void(0)')
+            ->setAttribute('data-action', 'show_file');
+
+        $deleteInactive = cHTMLImage::img($cfg['path']['images'] . 'delete_inact.gif', '', ['class' => 'con_img_button_off']);
+
+        $deleteLink = new cHTMLLink();
+        $deleteLink->setClass('con_img_button')
+            ->setLink('javascript:void(0)')
+            ->setAttribute('data-action', 'delete_file');
+
+        // Assign variables for every file
         $fileInfos = new cApiFileInformationCollection();
         foreach ($files as $file) {
-            if ($this->_fileInfoType != '' && !empty($fileInfo['description'])) {
+            $menu->setId($file, $file);
+
+            $menu->setLink($file, $showLink);
+            $menu->setTitle($file, $file);
+
+            if ($this->_fileInfoType != '') {
+                $title = $file;
                 $fileInfo = $fileInfos->getFileInformation($file, $this->_fileInfoType);
-                $this->set('d', 'DESCRIPTION', conHtmlSpecialChars(cSecurity::escapeString($fileInfo['description'])));
-            } else {
-                $this->set('d', 'DESCRIPTION', '');
+                if (!empty($fileInfo['description'])) {
+                    $title .= ': ' . conHtmlSpecialChars(cSecurity::escapeString($fileInfo['description']));
+                }
+                $menu->setTooltip($file, $title);
             }
-            $this->set('d', 'DATA_ID', $file);
-            $this->set('d', 'FILENAME', $file);
-            $this->set('d', 'ID', ($file == $this->_markedFile) ? 'marked' : 'file' . $file);
 
-            if (getEffectiveSetting('client', 'readonly', 'false') == 'true' || (!$perm->have_perm_area_action($area, $area . '_delete'))) {
-                $delete = cHTMLImage::img($cfg['path']['images'] . 'delete_inact.gif', '', ['class' => 'con_img_button_off']);
+            if ($canNotDeleteFiles) {
+                $delete = $deleteInactive;
             } else {
-                $delete = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_file" title="' . $deleteTitle . '">'
-                        . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $deleteTitle)
-                        . '</a>';
+                $delete = $deleteLink->setAlt($deleteTitle)
+                    ->setContent(cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $deleteTitle))
+                    ->render();
             }
-            $this->set('d', 'DELETE', $delete);
+            $menu->setActions($file, 'delete', $delete);
 
-            $this->next();
+            if ($file === $this->_markedFile) {
+                $menu->setMarked($file);
+            }
         }
 
-        // call the render method of cGuiPage to display the webpage
+        $this->set('s', 'GENERIC_MENU', $menu->render(false));
+
+        // Call the render method of cGuiPage to display the webpage
         parent::render();
     }
 
