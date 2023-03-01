@@ -240,7 +240,6 @@ class cGuiFileOverview extends cGuiPage
         $fileInfos = new cApiFileInformationCollection();
         foreach ($files as $file) {
             $menu->setId($file, $file);
-
             $menu->setLink($file, $showLink);
             $menu->setTitle($file, $file);
 
