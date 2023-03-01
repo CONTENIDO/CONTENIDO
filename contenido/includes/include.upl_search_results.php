@@ -256,7 +256,7 @@ if ($sortby == 6 && $sortmode == "DESC") {
 }
 
 $sToolsRow = '<tr class="textg_medium">
-                  <th colspan="6" id="cat_navbar">
+                  <th colspan="6" id="con_navbar">
                       <div class="toolsRight">' . i18n("Searched for:") . " " . $searchfor . '</div>
                   </th>
               </tr>';
@@ -268,13 +268,13 @@ $sSpacedRow = '<tr height="10">
                </tr>';
 
 $pagerwrap = '<tr>
-                <th colspan="6" id="cat_navbar" class="vAlignMiddle">
+                <th colspan="6" id="con_navbar" class="vAlignMiddle">
                     <div class="toolsRight">
                         <div class="vAlignMiddle">-C-SCROLLLEFT-</div>
                         <div class="vAlignMiddle">-C-PAGE-</div>
                         <div class="vAlignMiddle">-C-SCROLLRIGHT-</div>
                     </div>
-                    ' . i18n("Files per Page") . ' -C-FILESPERPAGE-
+                   <span class="vAlignMiddle">' . i18n("Files per Page") . ' -C-FILESPERPAGE-</span>
                 </th>
             </tr>';
 
@@ -464,7 +464,7 @@ $values = [
 $select->autoFill($values);
 $select->setDefault($thumbnailmode);
 
-$topbar = $select->render() . '<input type="image" src="images/submit.gif" class="img_form_submit vAlignMiddle mgl3">';
+$topbar = $select->render() . cHTMLImage::img('images/submit.gif', i18n('Search'), ['class' => 'con_img_button align_middle mgl3']);
 
 $output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
 

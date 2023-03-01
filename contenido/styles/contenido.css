@@ -2154,7 +2154,7 @@ p.column_header {
     vertical-align: middle !important;
 }
 .align_bottom {
-    vertical-align: top !important;
+    vertical-align: bottom !important;
 }
 
 .text_left {
@@ -2438,8 +2438,26 @@ input[type=image].vAlignMiddle {
     margin-left: 20px;
 }
 
-#cat_navbar {
+/**
+ * #############################################################################
+ * @section Navbar
+ */
+/** @deprecated [2023-03-01] Since CONTENIDO 4.10.2, Don't use `con_navbar`, use `con_navbar` instead */
+#cat_navbar,
+#con_navbar {
     border-bottom: 1px solid #b3b3b3;
+}
+
+#con_navbar > table {
+    border: 0;
+}
+#con_navbar > table td {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+#con_navbar > table td > span {
+    display: inline-block;
 }
 
 .toolsRight {

@@ -125,14 +125,14 @@ function handleInlineEdit(iCatId) {
  * Function shows Layer for generating a new Category
  */
 function showNewForm() {
-    // get Layer objects and get position of cat_navbar.
+    // get Layer objects and get position of con_navbar.
     // On this basis, the layer is displayed.
     // We need a hidelayer to inactivate input elements.
     // this is important, when template Layer is displayed.
     var oHideEditLayer = document.getElementById('cat_new_layer_disable'),
         oHideEditLayerImage = document.getElementById('cat_new_layer_disable_image'),
         oEditLayer = document.getElementById('cat_edit'),
-        pos = $("#cat_navbar").position(),
+        pos = $("#con_navbar").position(),
         select = document.getElementById('new_idcat');
 
     document.getElementById('new_tree_button').style.color = '#0060B1';
