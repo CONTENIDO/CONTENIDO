@@ -89,7 +89,7 @@ class ArticleForumLeftBottom extends cGuiPage
                 cGuiNotification::LEVEL_INFO, UserForum::i18n('NOENTRY')
             );
             $this->_guiMenu->setId('-1', '-1');
-            $this->_guiMenu->setLink('-1', '');
+            $this->_guiMenu->setLink('-1', new cHTMLSpan());
             $this->_guiMenu->setTitle('-1', new cHTMLSpan($notification));
             return;
         }
