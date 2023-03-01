@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLButton extends cHTMLFormElement {
+class cHTMLButton extends cHTMLFormElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -47,7 +48,11 @@ class cHTMLButton extends cHTMLFormElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $title = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $mode = 'submit', $class = '') {
+    public function __construct(
+        $name, $title = '', $id = '', $disabled = false, $tabindex = null,
+        $accesskey = '', $mode = 'submit', $class = ''
+    )
+    {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'input';
         $this->_contentlessTag = true;
@@ -63,7 +68,8 @@ class cHTMLButton extends cHTMLFormElement {
      * @return cHTMLButton
      *         $this for chaining
      */
-    public function setTitle($title) {
+    public function setTitle($title)
+    {
         $this->updateAttribute('value', $title);
 
         return $this;
@@ -77,7 +83,8 @@ class cHTMLButton extends cHTMLFormElement {
      * @return cHTMLButton
      *         $this for chaining
      */
-    public function setMode($mode) {
+    public function setMode($mode)
+    {
         $modes = [
             'submit',
             'reset',
@@ -99,7 +106,8 @@ class cHTMLButton extends cHTMLFormElement {
      * @return cHTMLButton
      *         $this for chaining
      */
-    public function setImageSource($src) {
+    public function setImageSource($src)
+    {
         $this->setMode('image');
         $this->updateAttribute('src', $src);
         return $this;
