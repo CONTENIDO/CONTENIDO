@@ -2,16 +2,16 @@
 <html>
 <head>
     <title>template.log_main.html</title>
-{_META_HEAD_CONTENIDO_}
-{_CSS_HEAD_CONTENIDO_}
-{_JS_HEAD_CONTENIDO_}
+    {_META_HEAD_CONTENIDO_}
+    {_CSS_HEAD_CONTENIDO_}
+    {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
     <script type="text/javascript" src="{_ASSET(scripts/infoBox.js)_}"></script>
 </head>
 
 <body class="page_generic">
 
-{FORM}
+{FORMSTART}
 <table class="generic col_md" id="optionselect">
     <tr>
         <th class="align_top">i18n("Filter")</th>
@@ -19,20 +19,20 @@
     </tr>
     <tr>
         <td class="align_top">i18n("Client"):</td>
-        <td class="align_top"><select name="idqclient">{CLIENTS}</select></td>
+        <td class="align_top">{CLIENTS}</td>
     </tr>
 
-     <tr>
+    <tr>
         <td class="align_top">i18n("Language"):</td>
         <td class="align_top">{LANGUAGE}</td>
     </tr>
     <tr>
         <td class="align_top">i18n("User"):</td>
-        <td class="align_top"><select name="idquser">{USERS}</select></td>
+        <td class="align_top">{USERS}</td>
     </tr>
     <tr>
         <td class="align_top">i18n("Action"):</td>
-        <td class="align_top"><select name="idqaction">{ACTION}</select></td>
+        <td class="align_top">{ACTION}</td>
     </tr>
     <tr>
         <td class="align_top">i18n("Start date"):</td>
@@ -41,16 +41,16 @@
             {FROMMONTH}
             {FROMYEAR}
         </td>
-     </tr>
-      <tr>
+    </tr>
+    <tr>
         <td class="align_top">i18n("End date"):</td>
         <td class="align_top">
             {TODAY}
             {TOMONTH}
             {TOYEAR}
         </td>
-     </tr>
-     <tr>
+    </tr>
+    <tr>
         <td class="align_top">i18n("Limit"):</td>
         <td class="align_top">{LIMIT}</td>
     </tr>
@@ -61,7 +61,7 @@
     </tr>
 </table>
 <br>
-<table class="generic" id="results">
+<table class="generic col_flx_m_50p" id="results">
     <tr>
         <th class="align_top">{LABEL_CLIENT}</th>
         <th class="align_top">{LABEL_LANG}</th>
@@ -84,7 +84,7 @@
     <!-- END:BLOCK -->
     {NORESULTS}
 </table>
-</form>
+{FORMEND}
 </body>
 </html>
 <!--

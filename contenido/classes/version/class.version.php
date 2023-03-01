@@ -381,7 +381,7 @@ class cVersion {
                         $aData = explode('.', $file);
                         $aValues = explode('_', $aData[0]);
                         if ($aValues[0] > $this->iRevisionNumber) {
-                            $this->iRevisionNumber = $aValues[0];
+                            $this->iRevisionNumber = cSecurity::toInteger($aValues[0]);
                         }
 
                         $this->dTimestamp[$aValues[0]] = $aValues[1];

@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiActionlog createNewItem
  * @method cApiActionlog|bool next
  */
-class cApiActionlogCollection extends ItemCollection {
+class cApiActionlogCollection extends ItemCollection
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -32,7 +33,8 @@ class cApiActionlogCollection extends ItemCollection {
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('actionlog'), 'idlog');
         $this->_setItemClass('cApiActionlog');
 
@@ -61,7 +63,8 @@ class cApiActionlogCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '') {
+    public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '')
+    {
         $item = $this->createNewItem();
 
         if (empty($logtimestamp)) {
@@ -80,6 +83,30 @@ class cApiActionlogCollection extends ItemCollection {
         return $item;
     }
 
+    /**
+     * Returns the minimum and maximum action log timestamps.
+     *
+     * @since CONTENIDO 4.10.2
+     * @return array|null Array like ['min' => (string), 'max' => (string))]
+     *      or null, if no entries where found.
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     */
+    public function getMinMaxLogTimestamp()
+    {
+        $sql = 'SELECT MIN(`logtimestamp`) AS `min`, MAX(`logtimestamp`) AS `max` FROM `%s`';
+        $this->db->query($sql, $this->getTable());
+        if ($this->db->nextRecord()) {
+            return [
+                'min' => $this->db->f('min'),
+                'max' => $this->db->f('max'),
+            ];
+        } else {
+            return null;
+        }
+    }
+
 }
 
 /**
@@ -90,6 +117,7 @@ class cApiActionlogCollection extends ItemCollection {
  */
 class cApiActionlog extends Item
 {
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -99,7 +127,8 @@ class cApiActionlog extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('actionlog'), 'idlog');
         $this->setFilters([], []);
         if ($mId !== false) {
@@ -116,7 +145,8 @@ class cApiActionlog extends Item
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idlang':
             case 'idaction':
