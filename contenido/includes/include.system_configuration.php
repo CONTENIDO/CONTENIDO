@@ -88,7 +88,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
             $return['label'] =
                 ' <div>
                     <span style="width: 280px; display: inline-block; padding: 0 0 0 2px; float:left;">
-                        <span style="margin: 0 10px 0 0;">' . i18n("Article versioning") . ':' . '</span>
+                        <span class="mgr5">' . i18n("Article versioning") . ':' . '</span>
                         ' . $infoBox->render() . '
                     </span>
                     ' . $html->render() . '

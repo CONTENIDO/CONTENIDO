@@ -60,7 +60,7 @@ while (($layout = $oLayouts->next()) !== false) {
     $tpl->set('d', 'ID', $marked);
     $tpl->set('d', 'DATA_ID', $idlay);
     $tpl->set('d', 'DESCRIPTION', ($descr == '') ? '' : $descr);
-    $tpl->set('d', 'NAME', '<a href="javascript:void(0)" class="show_item" data-action="show_layout">' . $name . '</a>');
+    $tpl->set('d', 'NAME', '<a class="show_item" href="javascript:void(0)" data-action="show_layout">' . $name . '</a>');
 
     $inUse = $layout->isInUse();
     $hasDeletePermission = $perm->have_perm_area_action_item('lay', 'lay_delete', $idlay);
@@ -68,8 +68,9 @@ while (($layout = $oLayouts->next()) !== false) {
     // In use link
     if ($inUse) {
         $inUseDescr = i18n("Click for more information about usage");
-        $inUseLink = '<a href="javascript:void(0)" title="'.$inUseDescr.'" data-action="inused_layout">'
-                   . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'exclamation.gif" title="'.$inUseDescr.'" alt="'.$inUseDescr.'"></a>';
+        $inUseLink = '<a class="con_img_button" href="javascript:void(0)" title="'.$inUseDescr.'" data-action="inused_layout">'
+                    . cHTMLImage::img($cfg['path']['images'].'exclamation.gif', $inUseDescr)
+                    . '</a>';
     } else {
         $inUseLink = '';
     }
@@ -79,18 +80,19 @@ while (($layout = $oLayouts->next()) !== false) {
     if ($hasDeletePermission && !$inUse) {
         if (getEffectiveSetting('client', 'readonly', 'false') == 'true') {
             $delTitle = i18n("This area is read only! The administrator disabled edits!");
-            $delLink  = '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" title="'.$delTitle.'" alt="'.$delTitle.'">';
+            $delLink = cHTMLImage::img($cfg['path']['images'].'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
         } else {
             $delTitle = i18n("Delete layout");
-            $delLink  = '<a href="javascript:void(0)" data-action="delete_layout" title="'.$delTitle.'">'
-                      . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete.gif" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
+            $delLink  = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_layout" title="'.$delTitle.'">'
+                      . cHTMLImage::img($cfg['path']['images'].'delete.gif', $delTitle)
+                      . '</a>';
         }
     } elseif ($hasDeletePermission && $inUse) {
         $delTitle = i18n("Layout is in use, cannot delete");
-        $delLink = '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" title="'.$delTitle.'" alt="'.$delTitle.'">';
+        $delLink = cHTMLImage::img($cfg['path']['images'].'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
     } else {
         $delTitle = i18n("No permission");
-        $delLink = '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" title="'.$delTitle.'" alt="'.$delTitle.'">';
+        $delLink = cHTMLImage::img($cfg['path']['images'].'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
     }
     $tpl->set('d', 'DELETE', $delLink);
 

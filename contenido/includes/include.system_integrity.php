@@ -14,6 +14,10 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var array $cfg
+ */
+
 $page = new cGuiPage("system_integrity");
 
 $test = new cSystemtest($cfg);

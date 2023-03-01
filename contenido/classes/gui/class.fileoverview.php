@@ -227,9 +227,11 @@ class cGuiFileOverview extends cGuiPage {
             $this->set('d', 'ID', ($file == $this->_markedFile) ? 'marked' : 'file' . $file);
 
             if (getEffectiveSetting('client', 'readonly', 'false') == 'true' || (!$perm->have_perm_area_action($area, $area . '_delete'))) {
-                $delete = '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete_inact.gif" title="" alt="">';
+                $delete = cHTMLImage::img($cfg['path']['images'] . 'delete_inact.gif', '', ['class' => 'con_img_button_off']);
             } else {
-                $delete = '<a href="javascript:void(0)" data-action="delete_file" title="' . $deleteTitle . '"><img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteTitle . '" alt="' . $deleteTitle . '"></a>';
+                $delete = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_file" title="' . $deleteTitle . '">'
+                        . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $deleteTitle)
+                        . '</a>';
             }
             $this->set('d', 'DELETE', $delete);
 

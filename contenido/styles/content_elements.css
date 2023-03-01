@@ -5,7 +5,8 @@
  * within a frontend layout.
  */
 
-.con_img_button {
+.con_img_button,
+.con_img_button_off {
     border: 0;
     cursor: pointer;
     display: inline-block;
@@ -13,6 +14,9 @@
     height: 16px;
     line-height: 16px;
     padding: 0;
+}
+.con_img_button_off {
+    cursor: default;
 }
 .con_img_button.con_img_button_content_type {
     margin-right: 5px;

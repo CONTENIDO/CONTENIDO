@@ -129,11 +129,9 @@ while ($cApiUser = $cApiUserCollection->next()) {
             // Delete button
             if ($perm->have_perm_area_action('user', "user_delete")) {
                 $delTitle = i18n("Delete user");
-                $deleteLink = '
-                    <a href="javascript:void(0)" data-action="delete_user" title="' . $delTitle . '" >
-                        <img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
-                    </a>
-                ';
+                $deleteLink = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_user" title="' . $delTitle . '">'
+                            . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
+                            . '</a>';
             } else {
                 $deleteLink = '';
             }
@@ -142,7 +140,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
             $isValidFromEmpty = cDate::isEmptyDate($cApiUser->get("valid_from"));
             $isValidToEmpty = cDate::isEmptyDate($cApiUser->get("valid_to"));
             if (($sToday < $cApiUser->get("valid_from") && !$isValidFromEmpty) || ($sToday > $cApiUser->get("valid_to") && !$isValidToEmpty && !$isValidFromEmpty)) {
-                $userInfo = '<span class="inactiveUser">' . $userInfo . '</span>';
+                $userInfo = '<span class="is_inactive">' . $userInfo . '</span>';
             }
             $mlist->setTitle($iMenu, $userInfo);
             $mlist->setId($iMenu, $userid);

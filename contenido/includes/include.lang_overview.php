@@ -53,7 +53,7 @@ while ($db->nextRecord()) {
     $idlang = $db->f("idlang");
 
     // Show link
-    $showLink = '<a href="javascript:void(0)" class="show_item" data-action="show_lang"><span>' . conHtmlSpecialChars($db->f("name")) . '</span>&nbsp;(' . $idlang . ')</a>';
+    $showLink = '<a class="show_item" href="javascript:void(0)" data-action="show_lang"><span>' . conHtmlSpecialChars($db->f("name")) . '</span>&nbsp;(' . $idlang . ')</a>';
     $tpl->set('d', 'LANGUAGE', $showLink);
 
     // Activate link
@@ -61,17 +61,21 @@ while ($db->nextRecord()) {
         // activate
         $message = i18n("Activate language");
         if ($perm->have_perm_area_action($area, "lang_activatelanguage")) {
-            $activeLink = "<a data-action=\"activate_lang\" title=\"$message\" href=\"javascript:void(0)\"><img src=\"" . $cfg["path"]["images"] . "offline.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+            $activeLink = '<a class="con_img_button" href="javascript:void(0)" data-action="activate_lang" title="' . $message . '">'
+                        . cHTMLImage::img($cfg['path']['images'] . 'offline.gif', $message)
+                        . '</a>';
         } else {
-            $activeLink = "<img src='" . $cfg["path"]["images"] . "offline.gif' title='" . i18n("Language offline") . "'>";
+            $activeLink = cHTMLImage::img($cfg['path']['images'] . 'offline.gif', i18n("Language offline"), ['class' => 'con_img_button_off']);
         }
     } else {
         // deactivate
         $message = i18n("Deactivate language");
         if ($perm->have_perm_area_action($area, "lang_deactivatelanguage")) {
-            $activeLink = "<a data-action=\"deactivate_lang\" title=\"$message\" class=\"action\" href=\"javascript:void(0)\"><img src=\"" . $cfg["path"]["images"] . "online.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+            $activeLink = '<a class="con_img_button" href="javascript:void(0)" data-action="deactivate_lang" title="' . $message . '">'
+                . cHTMLImage::img($cfg['path']['images'] . 'online.gif', $message)
+                . '</a>';
         } else {
-            $activeLink = "<img src='" . $cfg["path"]["images"] . "online.gif' title='" . i18n("Language online") . "'>";
+            $activeLink = cHTMLImage::img($cfg['path']['images'] . 'online.gif', i18n("Language online"), ['class' => 'con_img_button_off']);
         }
     }
 
@@ -79,7 +83,9 @@ while ($db->nextRecord()) {
     $deleteMsg = sprintf(i18n("Do you really want to delete the language %s?"), conHtmlSpecialChars($db->f("name")));
     $deleteAct = i18n("Delete language");
     if ($perm->have_perm_area_action("lang_edit", "lang_deletelanguage")) {
-        $deleteLink = '<a href="javascript:void(0)" data-action="delete_lang" title="' . $deleteAct . '"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteAct . '" alt="' . $deleteAct . '"></a>';
+        $deleteLink = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_lang" title="' . $deleteAct . '">'
+                    . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $deleteAct)
+                    . '</a>';
     } else {
         $deleteLink = '';
     }

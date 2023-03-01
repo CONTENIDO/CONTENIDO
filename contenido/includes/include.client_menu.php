@@ -54,15 +54,14 @@ while ($oClient = $clientColl->next()) {
 
         $tpl->set('d', 'ICON', '');
 
-        $showLink = '<a href="javascript:void(0)" class="show_item" data-action="show_client">' . conHtmlSpecialChars($name) . '</a>';
+        $showLink = '<a class="show_item" href="javascript:void(0)" data-action="show_client">' . conHtmlSpecialChars($name) . '</a>';
         $tpl->set('d', 'TEXT', $showLink);
 
         if (!$oClient->hasLanguages() && $perm->have_perm_area_action('client', 'client_delete')) {
             $delTitle = i18n("Delete client");
-            $deleteLink = '
-                <a href="javascript:void(0)" data-action="delete_client" title="' . $delTitle . '">
-                    <img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
-                </a>';
+            $deleteLink = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_client" title="' . $delTitle . '">'
+                        . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
+                        . '</a>';
         } else {
             $deleteLink = '&nbsp;';
         }

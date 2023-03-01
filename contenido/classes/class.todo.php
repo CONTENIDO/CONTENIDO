@@ -223,11 +223,11 @@ class TODOLink extends cHTMLLink
         $this->setEvent('click', 'javascript:window.open(' . "'" . $url . "', 'todo', 'scrollbars=yes,resizable=yes,height=350,width=625');");
 
         $img = new cHTMLImage('images/but_setreminder.gif');
-        $img->setClass("vAlignMiddle mgl3");
-
         $img->setAlt(i18n('Set reminder / add to todo list'));
+
         // Don't set 'javascript:void(0)' here, it will remove the click handler from above!
         $this->setLink('#');
+        $this->setClass('con_img_button mgl3');
         $this->setContent($img->render());
         $this->setAlt(i18n('Set reminder / add to todo list'));
     }

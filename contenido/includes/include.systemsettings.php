@@ -87,16 +87,16 @@ if ($isSysadmin) {
     // Edit/delete links only for sysadmin
     $oLinkEdit = new cHTMLLink();
     $oLinkEdit->setCLink($area, $frame, "systemsettings_edit_item");
+    $oLinkEdit->setClass('con_img_button mgl5');
+    $oLinkEdit->setContent(cHTMLImage::img($cfg['path']['images'] . 'editieren.gif', i18n("Edit")));
     $oLinkDelete = new cHTMLLink();
+    $oLinkDelete->setClass('con_img_button mgl5');
     $oLinkDelete->setCLink($area, $frame, "systemsettings_delete_item");
-    $oLinkEdit->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
-    $oLinkDelete->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
+    $oLinkDelete->setContent(cHTMLImage::img($cfg['path']['images'] . 'delete.gif', i18n("Delete")));
 }
 
-$spacer = new cHTMLImage();
-$spacer->setWidth(5);
-
 $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
+$sSubmit = '<input type="image" class="con_img_button align_middle mgl3" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
 
 try {
     $allSystemProperties = getSystemProperties(true);
@@ -131,7 +131,6 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
             $oInputboxValue->setWidth(30);
 
             $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
-            $sSubmit = '<input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
 
             $list->setCell($count, 1, $oInputboxType->render());
             $list->setCell($count, 2, $oInputboxName->render());
@@ -172,9 +171,7 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
             $list->setCell(
                 $count,
                 4,
-                $spacer->render() . $oLinkEdit->render()
-                . $spacer->render() . $oLinkDelete->render()
-                . $spacer->render()
+                $oLinkEdit->render() . ' ' . $oLinkDelete->render()
             );
         }
         $count++;

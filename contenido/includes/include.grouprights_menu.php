@@ -139,12 +139,14 @@ while ($db->nextRecord()) {
 
         $tpl->set('d', 'ICON', '');
 
-        $showLink = '<a href="javascript:void(0)" class="show_item" data-action="show_group">' . $groupname . '</a>';
+        $showLink = '<a class="show_item" href="javascript:void(0)" data-action="show_group">' . $groupname . '</a>';
         $tpl->set('d', 'TEXT', $showLink);
 
         if ($perm->have_perm_area_action('groups', "groups_delete")) {
             $delTitle = i18n("Delete group");
-            $deleteLink = '<a href="javascript:void(0)" data-action="delete_group" title="' . $delTitle . '"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+            $deleteLink = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_group" title="' . $delTitle . '" >'
+                        . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
+                        . '</a>';
         } else {
             $deleteLink = '&nbsp;';
         }

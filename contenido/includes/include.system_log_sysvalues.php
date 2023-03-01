@@ -87,7 +87,7 @@ if (!empty($files)) {
 
     // create the line number selection
     $link = new cHTMLLink('#');
-    $link->setClass('js-action-show-log');
+    $link->setClass('con_img_button js-action-show-log');
     $image = new cHTMLImage('images/submit.gif');
     $link->appendContent($image);
     $div = new cHTMLDiv(
@@ -134,7 +134,7 @@ if (!empty($files)) {
     $logFooter->appendContent($input);
     $logFooter->appendContent(new cHTMLSpan(i18n(' lines')));
     $link = new cHTMLLink('#');
-    $link->setClass('js-action-clear-log');
+    $link->setClass('con_img_button js-action-clear-log');
     $image = new cHTMLImage('images/but_ok.gif');
     $link->appendContent($image);
     $logFooter->appendContent($link);
@@ -142,7 +142,7 @@ if (!empty($files)) {
     $link = new cHTMLLink('#');
     $link->setClass('right js-action-delete-log');
     $link->appendContent(i18n('Delete log file'));
-    $image = new cHTMLImage('images/delete.gif');
+    $image = new cHTMLImage('images/delete.gif', 'align_middle con_img_button_off mgl5');
     $link->appendContent($image);
     $logFooter->appendContent($link);
 

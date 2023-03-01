@@ -678,7 +678,7 @@ class cTinymce4Configuration {
 
             //add textarea for custom tinymce 4 settings
             $textarea = new cHTMLTextarea($curType . '[custom]');
-            $textarea->setAttribute('style', 'width: 99%;');
+            $textarea->setClass('con_code');
             if (false === $this->_perm) {
                 $textarea->updateAttribute('disabled', 'disabled');
             }

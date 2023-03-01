@@ -2308,17 +2308,19 @@ div.errorlist {
     border: 1px solid #b5b5b5;
     height: 25px;
     width: 99%;
+    padding: 3px;
 }
 
-.log-header img,
-.log-footer img {
-    margin: 3px;
+.log-header .con_img_button,
+.log-footer .con_img_button {
+    margin-left: 5px;
     vertical-align: middle;
 }
 
 .log-header select,
+.log-header input,
 .log-footer input {
-    margin: 3px;
+    margin-left: 5px;
 }
 
 /**
@@ -2380,7 +2382,9 @@ input[type=image].vAlignMiddle {
     color: red;
 }
 
-.inactiveUser {
+/** @deprecated [2023-02-28] Since CONTENIDO 4.10.2, Don't use `inactiveUser`, use `is_inactive` instead */
+.inactiveUser,
+.is_inactive {
     color: #b3b3b8;
 }
 

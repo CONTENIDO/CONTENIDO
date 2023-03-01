@@ -144,23 +144,26 @@ foreach ($allModules as $idmod => $module) {
 
         $inUse = $cApiModule->moduleInUse($idmod);
 
-        $deleteLink = "";
+        $deleteLink = '';
+        $delDescription = '';
 
         if ($inUse) {
             $inUseString = i18n("For more information about usage click on this button");
-            $inUseLink = '<a href="javascript:void(0)" data-action="inused_module">'
-                       . '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'exclamation.gif" title="' . $inUseString . '" alt="' . $inUseString . '"></a>';
+            $inUseLink = '<a class="con_img_button" href="javascript:void(0)" data-action="inused_module">'
+                       . cHTMLImage::img($cfg['path']['images'] . 'exclamation.gif', $inUseString)
+                       . '</a>';
             $delDescription = i18n("Module can not be deleted, because it is already in use!");
         } else {
             $inUseLink = '<img class="vAlignMiddle" src="./images/spacer.gif" alt="" width="16">';
             if ($perm->have_perm_area_action_item('mod', 'mod_delete', $idmod)) {
                 if (getEffectiveSetting('client', 'readonly', 'false') == 'true') {
                     $delTitle = i18n('This area is read only! The administrator disabled edits!');
-                    $deleteLink = '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete_inact.gif" title="' . $delTitle . '" alt="' . $delTitle . '">';
+                    $deleteLink = cHTMLImage::img($cfg['path']['images'] . 'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
                 } else {
                     $delTitle = i18n("Delete module");
-                    $deleteLink = '<a href="javascript:void(0)" data-action="delete_module" title="' . $delTitle . '">'
-                                . '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+                    $deleteLink = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_module" title="' . $delTitle . '">'
+                                . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
+                                . '</a>';
                 }
             } else {
                 $delDescription = i18n("No permissions");
@@ -168,7 +171,7 @@ foreach ($allModules as $idmod => $module) {
         }
 
         if ($deleteLink == "") {
-            $deleteLink = '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete_inact.gif" title="' . $delDescription . '" alt="' . $delDescription . '">';
+            $deleteLink = cHTMLImage::img($cfg['path']['images'] . 'delete_inact.gif', $delDescription, ['class' => 'con_img_button_off']);
         }
 
         $todo = new TODOLink("idmod", $idmod, "Module: $sName", "");

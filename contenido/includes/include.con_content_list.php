@@ -1063,10 +1063,10 @@ function _processCmsTags(
             // article is not frozen or admin accesses page (admin can do everything, even when article is frozen)
             // article can be edited or (article is published version and versioning is turned off or set to simple mode)
             if ((!$isLocked || $isAdmin) && ($articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')))) { // No freeze
-                $replacements[$num]   = $tmp . '<span class="con_content_type_controls"><a href="javascript:void(0)" class="con_img_button con_img_button_content_type" data-con-action="delete_content_type" data-con-idcontent="' . $idcontent . '">
+                $replacements[$num]   = $tmp . '<span class="con_content_type_controls"><a class="con_img_button con_img_button_content_type" href="javascript:void(0)" data-con-action="delete_content_type" data-con-idcontent="' . $idcontent . '">
             <img src="' . $backendUrl . 'images/delete.gif" alt="">
             </a></span>';
-                $keycode[$type][$num] = $tmp . '<span class="con_content_type_controls"></span><a href="javascript:void(0)" class="con_img_button con_img_button_content_type" data-con-action="delete_content_type" data-con-idcontent="' . $idcontent . '">
+                $keycode[$type][$num] = $tmp . '<span class="con_content_type_controls"></span><a class="con_img_button con_img_button_content_type" href="javascript:void(0)" data-con-action="delete_content_type" data-con-idcontent="' . $idcontent . '">
             <img src="' . $backendUrl . 'images/delete.gif" alt="">
             </a></span>';
             } else { // Freeze status
