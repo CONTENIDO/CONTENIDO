@@ -420,6 +420,28 @@ table.foldingrow th {
     color: #666;
 }
 
+table.menu_overview_list a,
+table.menu_overview_list a:hover {
+    line-height: 16px;
+}
+table.menu_overview_list tr th:not(:empty),
+table.menu_overview_list tr td:not(:empty) {
+    padding: 2px;
+}
+
+table.menu_overview_list .menu_overview_list_icon {
+    text-align: left;
+}
+table.menu_overview_list .menu_overview_list_item {
+    text-align: left;
+    white-space: nowrap;
+    width: 100%;
+}
+table.menu_overview_list .menu_overview_list_actions {
+    text-align: right;
+    white-space: nowrap;
+}
+
 table td.con_extra_buttons .con_img_button {
     margin-right: 5px;
 }
