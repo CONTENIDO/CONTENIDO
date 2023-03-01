@@ -208,6 +208,16 @@ class cGuiMenu {
     }
 
     /**
+     * Checks whether the menu has any items.
+     *
+     * @return bool
+     */
+    public function hasItems(): bool
+    {
+        return is_array($this->link) && count($this->link) > 0;
+    }
+
+    /**
      *
      * @param bool $print [optional]
      *
@@ -221,9 +231,9 @@ class cGuiMenu {
         $tpl->reset();
         $tpl->set('s', 'MENU_ID', $this->menuId);
 
-        if (is_array($this->link)) {
+        if ($this->hasItems()) {
             foreach ($this->link as $key => $value) {
-                $img = '&nbsp;';
+                $img = '';
 
                 if ($value != NULL) {
                     if (isset($this->image[$key])) {
