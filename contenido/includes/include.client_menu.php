@@ -42,34 +42,37 @@ if ($action == 'client_delete') {
 
 $clientColl->select();
 
+$menu = new cGuiMenu();
+
 while ($oClient = $clientColl->next()) {
-    $idclient = $oClient->get('idclient');
+    $idclient = cSecurity::toInteger($oClient->get('idclient'));
     $name = $oClient->get('name');
     if ((cString::findFirstPos($auth->auth['perm'], "client[$idclient]") !== false) || (cString::findFirstPos($auth->auth['perm'], 'sysadmin') !== false)) {
-        if ($requestIdClient == $idclient) {
-            $tpl->set('d', 'ID', 'id="marked" data-id="' . $idclient . '"');
-        } else {
-            $tpl->set('d', 'ID', 'data-id="' . $idclient . '"');
-        }
+        $menu->setId($idclient, $idclient);
 
-        $tpl->set('d', 'ICON', '');
-
-        $showLink = '<a class="show_item" href="javascript:void(0)" data-action="show_client">' . conHtmlSpecialChars($name) . '</a>';
-        $tpl->set('d', 'TEXT', $showLink);
+        $link = new cHTMLLink();
+        $link->setClass('show_item')
+            ->setLink('javascript:void(0)')
+            ->setAttribute('data-action', 'show_client');
+        $menu->setLink($idclient, $link);
+        $menu->setTitle($idclient, conHtmlSpecialChars($name));
 
         if (!$oClient->hasLanguages() && $perm->have_perm_area_action('client', 'client_delete')) {
             $delTitle = i18n("Delete client");
             $deleteLink = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_client" title="' . $delTitle . '">'
-                        . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
-                        . '</a>';
-        } else {
-            $deleteLink = '&nbsp;';
+                . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
+                . '</a>';
+            $menu->setActions($idclient, 'delete', $deleteLink);
         }
-        $tpl->set('d', 'DELETE', $deleteLink);
 
-        $tpl->next();
+        if ($requestIdClient === $idclient) {
+            $menu->setMarked($idclient);
+        }
     }
 }
+
+$tpl->set('s', 'GENERIC_MENU', $menu->render(false));
+
 
 $tpl->set('s', 'DELETE_MESSAGE', i18n("Do you really want to delete the following client:<br><br>%s<br>"));
 
