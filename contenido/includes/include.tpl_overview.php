@@ -40,7 +40,7 @@ $requestIdTpl = cSecurity::toInteger($_REQUEST['idtpl'] ?? '0');
 $hasCommonTplRights = null;
 
 $templateColl = new cApiTemplateCollection();
-$allTemplates = $templateColl->getAllTemplatesByClient($client);
+$templateColl->select("`idclient` = " . $client, '', '`name` ASC');
 
 $tpl->reset();
 
@@ -69,7 +69,7 @@ $copyLink = $copyLink->setClass('con_img_button')
     ->setAttribute('data-action', 'duplicate_template')
     ->setContent(cHTMLImage::img($cfg['path']['images'] . 'but_copy.gif', i18n('Duplicate template')));
 
-foreach ($allTemplates as $idtpl => $template) {
+while (($template = $templateColl->next()) !== false) {
     if (is_null($hasCommonTplRights)) {
         $hasCommonTplRights = (
             $perm->have_perm_area_action('tpl', 'tpl_delete') ||
@@ -80,10 +80,13 @@ foreach ($allTemplates as $idtpl => $template) {
         );
     }
 
+    $idtpl = cSecurity::toInteger($template->getId());
+
     if ($perm->have_perm_item($area, $idtpl) || $hasCommonTplRights) {
-        $name = (cString::getStringLength(trim($template['name'])) > 0) ? $template['name'] : i18n('-- New template --');
+        $name = $template->get('name');
+        $name = (cString::getStringLength(trim($name)) > 0) ? $name : i18n('-- New template --');
         $name = conHtmlSpecialChars(stripslashes($name));
-        $description = conHtmlSpecialChars(stripslashes($template['description'] ?? ''));
+        $description = conHtmlSpecialChars(stripslashes($template->get('description') ?? ''));
 
         $menu->setId($idtpl, $idtpl);
         $menu->setTooltip($idtpl, $description);
@@ -94,7 +97,7 @@ foreach ($allTemplates as $idtpl => $template) {
             $menu->setLink($idtpl, new cHTMLSpan());
         }
 
-        if ($template['defaulttemplate'] == 1) {
+        if ($template->get('defaulttemplate') == 1) {
             $menu->setTitle($idtpl, '<b>' . $name . '</b>');
         } else {
             $menu->setTitle($idtpl, $name);

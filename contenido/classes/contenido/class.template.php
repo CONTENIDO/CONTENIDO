@@ -119,35 +119,6 @@ class cApiTemplateCollection extends ItemCollection
     }
 
     /**
-     * Returns all templates of a client.
-     *
-     * @since CONTENIDO 4.10.2
-     * @param int $client Client id
-     * @param string $orderBy Order by field
-     * @param string $orderDir Order direction `ASC` or `DESC`
-     * @return array
-     *         List of templates where the key is the template id and value an
-     *         associative array of fields from the template table.
-     * @throws cDbException|cInvalidArgumentException
-     */
-    public function getAllTemplatesByClient(
-        int $client, string $orderBy = 'name', string $orderDir = 'ASC'
-    ): array
-    {
-        $list = [];
-        $sql = "SELECT * FROM `%s` WHERE `idclient` = %d ORDER BY `%s` %s";
-        $orderDir = $orderDir === 'ASC' ? 'ASC' : 'DESC';
-
-        $this->db->query($sql, $this->table, $client, $orderBy, $orderDir);
-        while ($this->db->nextRecord()) {
-            $id = cSecurity::toInteger($this->db->f('idtpl'));
-            $list[$id] = $this->db->toArray();
-        }
-
-        return $list;
-    }
-
-    /**
      * Returns all templates having passed layout id.
      *
      * @param int $idlay
