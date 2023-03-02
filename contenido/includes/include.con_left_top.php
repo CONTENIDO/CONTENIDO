@@ -334,10 +334,10 @@ $aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml", $aData, $aInformatio
 foreach ($aData as $key => $item) {
     $divKey = new cHTMLDiv("", $key);
     foreach ($item as $data) {
-        $image = new cHTMLImage((string) $data['imgsrc'], "vAlignMiddle");
-        $description = new cHTMLSpan(i18n((string) $data['description']), "tableElement");
+        $image = new cHTMLImage((string) $data['imgsrc'], 'align_middle');
+        $description = new cHTMLSpan(i18n((string) $data['description']), 'mgl3');
         $divItem = new cHTMLDiv($image->render() . $description->render());
-        $divItem->setClass('mb');
+        $divItem->setClass('mgb5');
         $divKey->appendContent($divItem->render());
     }
     $divLegend->appendContent($divKey->render());

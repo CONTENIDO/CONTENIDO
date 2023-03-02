@@ -454,7 +454,7 @@ $form->setVar("startpage", $startpage);
 $form->setVar("appendparameters", $appendparameters);
 
 $select = new cHTMLSelectElement("thumbnailmode");
-$select->setClass("vAlignMiddle mgl3");
+$select->setClass("align_middle mgl3");
 $values = [
     25 => "25",
     50 => "50",

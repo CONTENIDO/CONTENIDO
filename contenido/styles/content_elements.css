@@ -6,7 +6,8 @@
  */
 
 .con_img_button,
-.con_img_button_off {
+.con_img_button_off,
+.con_func_button {
     border: 0;
     cursor: pointer;
     display: inline-block;
@@ -14,12 +15,22 @@
     height: 16px;
     line-height: 16px;
     padding: 0;
+/*    position: relative;
+    top: -2px;*/
+    vertical-align: middle;
+}
+.con_func_button {
+    width: auto;
+}
+.con_img_button img,
+.con_func_button img {
+    vertical-align: middle;
 }
 .con_img_button_off {
     cursor: default;
 }
 .con_img_button.con_img_button_content_type {
-    margin-right: 5px;
+    margin-right: 10px;
 }
 .con_content_type_controls {
     display: inline-block;

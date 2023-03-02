@@ -32,7 +32,10 @@
     float: right;
 }
 
-.all_translations td input.vAlignTop {
+.all_translations td .con_form_action_control {
+    margin-top: 5px;
+}
+.all_translations td .con_form_action_control input {
     float: none;
     display: inline-block;
 }

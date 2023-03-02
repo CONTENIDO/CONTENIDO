@@ -39,6 +39,7 @@ $idcatlang = cRegistry::getCategoryLanguageId();
 $idartlang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
 
 $page = new cGuiPage("con_edit_form", "", "con_editart");
+$page->addStyle('version_selection.css');
 $tpl = null;
 
 // Admin rights
@@ -128,7 +129,6 @@ switch ($versioningState) {
 
         // box to select article version
         $versioningBox = new cHTMLTableRow();
-        $versioningBox = $versioningBox->setAttribute('valign', 'top');
 
         $versionBoxDescription = new cHTMLTableData(i18n("Select Article Version"));
         $versionBoxDescription->setClass('text_medium border_t_b3');
@@ -139,7 +139,7 @@ switch ($versioningState) {
         $versionBoxData->setAttribute('colspan', 3);
 
         $versionBoxData->appendContent($versioning->getVersionSelectionField(
-            '',
+            'con_version_selection_inline',
             $selectElement,
             $markAsCurrentButton,
             $versioningInfoTextBox
@@ -272,7 +272,6 @@ switch ($versioningState) {
 
         // box to select article version
         $versioningBox = new cHTMLTableRow();
-        $versioningBox = $versioningBox->setAttribute('valign', 'top');
 
         $versionBoxDescription = new cHTMLTableData(i18n("Select Article Version"));
         $versionBoxDescription->setClass('text_medium border_t_b3');
@@ -283,7 +282,7 @@ switch ($versioningState) {
         $versionBoxData->setAttribute('colspan', 3);
 
         $versionBoxData->appendContent($versioning->getVersionSelectionField(
-            '',
+            'con_version_selection_inline',
             $selectElement,
             $markAsCurrentButton,
             $versioningInfoTextBox

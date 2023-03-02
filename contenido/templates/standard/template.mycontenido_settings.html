@@ -7,19 +7,19 @@
 {_JS_HEAD_CONTENIDO_}
     <style type="text/css">
     table#settings {border: 0; border-left:1px; border-bottom: 1px; border-color: {BORDERCOLOR}; border-style: solid;}
-    table#settings td.col-first {
+    table#settings td.col_1 {
         border: 1px solid;
         border-bottom-width: 0;
         border-left-width: 0;
     }
-    table#settings td.col-last {
+    table#settings td.col_2 {
         border: 1px solid;
         border-bottom-width: 0;
         border-left-width: 0;
     }
     table#settings tr.row-last {background-color: #fff;}
-    table#settings tr.row-last td.col-first {border: 0; border-top: 1px; border-right: 0; border-color: {BORDERCOLOR}; border-style: solid; padding-left:{PADDING_LEFT}px;}
-    table#settings tr.row-last td.col-last {border: 0; border-top: 1px; border-right: 1px; border-color: {BORDERCOLOR}; border-style: solid;}
+    table#settings tr.row-last td.col_1 {border: 0; border-top: 1px; border-right: 0; border-color: {BORDERCOLOR}; border-style: solid; padding-left:{PADDING_LEFT}px;}
+    table#settings tr.row-last td.col_2 {border: 0; border-top: 1px; border-right: 1px; border-color: {BORDERCOLOR}; border-style: solid;}
     </style>
     <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
     <script type="text/javascript" src="{_ASSET(scripts/infoBox.js)_}"></script>
@@ -36,14 +36,18 @@
 <table id="settings" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
     <tr class="{ROWNAME} text_medium row-first" style="background-color: {BGCOLOR};">
-        <td class="align_top col-first" style="border-color: {BORDERCOLOR}; padding-left:{PADDING_LEFT}px">{CATNAME}</td>
-        <td class="align_top text_left col-last" style="border-color: {BORDERCOLOR};">{CATFIELD}</td>
+        <td class="align_top col_1" style="border-color: {BORDERCOLOR}; padding-left:{PADDING_LEFT}px">{CATNAME}</td>
+        <td class="align_top text_left col_2" style="border-color: {BORDERCOLOR};">{CATFIELD}</td>
     </tr>
     <!-- END:BLOCK -->
     <tr class="{ROWNAME} text_medium row-last">
-        <td class="align_top col-first">&nbsp;</td>
-        <td class="align_top col-last text_right">
-            <a accesskey="c" href="{CANCELLINK}"><img src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}"></a><img src="images/spacer.gif" width="20"><input accesskey="s" type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}">
+        <td colspan="2" class="align_top col_2 text_right">
+            <div class="con_form_action_control">
+                <input class="con_img_button" accesskey="s" type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}">
+                <a class="con_img_button" accesskey="c" href="{CANCELLINK}">
+                    <img src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}">
+                </a>
+            </div>
         </td>
     </tr>
 </table>

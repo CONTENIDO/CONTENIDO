@@ -408,7 +408,7 @@ switch ($versioning->getState()) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
 
-        $infoButton = new cGuiBackendHelpbox(i18n(
+        $versioningInfoTextBox = new cGuiBackendHelpbox(i18n(
             '<strong>Simple-mode:</strong> '
             . 'Older SEO versions can be reviewed and restored (For further configurations please go to Administration/System/System configuration).<br/><br/>'
             . 'Changes are only related to SEO!'
@@ -431,11 +431,12 @@ switch ($versioning->getState()) {
         $versionBoxData = new cHTMLTableData();
         $versionBoxData->setClass('border_t_b3');
         $versionBoxData->setAttribute('colspan', 3);
-        $versionBoxData->appendContent($selectElement);
-        $versionBoxData->appendContent(' ');
-        $versionBoxData->appendContent($markAsCurrentButton);
-        $versionBoxData->appendContent(' ');
-        $versionBoxData->appendContent($infoButton);
+        $versionBoxData->appendContent($versioning->getVersionSelectionField(
+            'con_version_selection_inline',
+            $selectElement,
+            $markAsCurrentButton,
+            $versioningInfoTextBox
+        ));
         $versioningBox->appendContent($versionBoxData);
 
         $versioningElement .= $versioningBox->toHtml();
@@ -501,7 +502,7 @@ switch ($versioning->getState()) {
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'markAsCurrentButton');
 
-        $infoButton = new cGuiBackendHelpbox(i18n(
+        $versioningInfoTextBox = new cGuiBackendHelpbox(i18n(
             '<strong>Advanced-mode:</strong> '
             . 'Older SEO versions can be reviewed and restored. Unpublished drafts can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
             . 'Changes are only related to SEO!'
@@ -524,11 +525,13 @@ switch ($versioning->getState()) {
         $versionBoxData = new cHTMLTableData();
         $versionBoxData->setClass('border_t_b3');
         $versionBoxData->setAttribute('colspan', 3);
-        $versionBoxData->appendContent($selectElement);
-        $versionBoxData->appendContent(' ');
-        $versionBoxData->appendContent($markAsCurrentButton);
-        $versionBoxData->appendContent(' ');
-        $versionBoxData->appendContent($infoButton);
+        $versionBoxData->appendContent($versioning->getVersionSelectionField(
+            'con_version_selection_inline',
+            $selectElement,
+            $markAsCurrentButton,
+            $versioningInfoTextBox
+        ));
+
         $versioningBox->appendContent($versionBoxData);
 
         $versioningElement .= $versioningBox->toHtml();

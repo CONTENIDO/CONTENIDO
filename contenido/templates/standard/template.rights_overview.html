@@ -46,10 +46,12 @@
                 <td class="align_top text_left">{CATFIELD}</td>
             </tr>
             <!-- END:BLOCK -->
-            <tr class="text_medium" style="background-color:#FFFFFF;">
-                <td class="align_top" style="border-right:0; border-color:{BORDERCOLOR};">&nbsp;</td>
-                <td class="align_top text_right" style="border-color:{BORDERCOLOR};">
-                    <a href="{CANCELLINK}"><img src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}"></a><img src="images/spacer.gif" width="20"><input type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}" accesskey="s">
+            <tr class="text_medium">
+                <td colspan="2" class="align_top text_right">
+                    <div class="con_form_action_control">
+                        <input class="con_img_button" type="image" accesskey="s" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}" accesskey="s">
+                        <a class="con_img_button" accesskey="c" href="{CANCELLINK}"><img src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}"></a>
+                    </div>
                 </td>
             </tr>
         </table>

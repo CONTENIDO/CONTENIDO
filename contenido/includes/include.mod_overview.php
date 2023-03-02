@@ -154,7 +154,7 @@ foreach ($allModules as $idmod => $module) {
                        . '</a>';
             $delDescription = i18n("Module can not be deleted, because it is already in use!");
         } else {
-            $inUseLink = '<img class="vAlignMiddle" src="./images/spacer.gif" alt="" width="16">';
+            $inUseLink = cHTMLImage::img($cfg['path']['images'] . 'spacer.gif', '', ['class' => 'con_img_button_off']);
             if ($perm->have_perm_area_action_item('mod', 'mod_delete', $idmod)) {
                 if (getEffectiveSetting('client', 'readonly', 'false') == 'true') {
                     $delTitle = i18n('This area is read only! The administrator disabled edits!');

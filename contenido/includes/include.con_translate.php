@@ -567,10 +567,11 @@ $list->objRow->updateAttributes([
     'valign' => 'top'
 ]);
 
+$controls = new cHTMLDiv('', 'con_form_action_control text_left');
 $submitButton = new cHTMLButton('submit', 'submit');
 $submitButton = $submitButton->setMode('image')
     ->setAlt(i18n("Save"))
-    ->setClass('vAlignTop')
+    ->setClass('con_img_button')
     ->setImageSource('images/but_ok.gif')
     ->render();
 
@@ -578,9 +579,11 @@ $cancelButton = new cHTMLButton('reset', 'reset');
 $cancelButton = $cancelButton->setMode('image')
     ->setAlt(i18n("Cancel"))
     ->setAttribute('data-action', 'cancel')
-    ->setClass('vAlignTop')
+    ->setClass('con_img_button')
     ->setImageSource('images/but_cancel.gif')
     ->render();
+
+$controls->appendContent([$submitButton, $cancelButton]);
 
 $editImage = new cHTMLImage('images/editieren.gif');
 $editImage = $editImage->setAlt(i18n("Edit"))->render();
@@ -594,7 +597,7 @@ foreach ($allTranslations as $hash => $translationArray) {
         $oTranslation->setWidth(30);
         $sTranslationFirstLang = $oTranslation->render();
         if ($editstring == $hash && $editlang == $lang) {
-            $sTranslationFirstLang = $sTranslationFirstLang . '<br>' . $submitButton . '&nbsp;&nbsp;' . $cancelButton;
+            $sTranslationFirstLang = $sTranslationFirstLang . '<br>' . $controls->render();
         }
     } else {
         if (!$inUse && $perm->have_perm_area_action($area, 'con_translate_edit') && $editstring != 'all') {
@@ -645,7 +648,7 @@ foreach ($allTranslations as $hash => $translationArray) {
             $oExtraTranslation->setWidth(30);
 
             if ($editstring == $hash && $editlang == $idExtraLang) {
-                $submitTranslation = $submitButton . '&nbsp;&nbsp;' . $cancelButton;
+                $submitTranslation = $controls->render();
             } else {
                 $submitTranslation = '';
             }
@@ -680,7 +683,7 @@ foreach ($allTranslations as $hash => $translationArray) {
 
     // Edit all languages
     if ($action == 'con_translate_edit' && $editstring == $hash && $editlang == 'all') {
-        $fields[] = $submitButton . '&nbsp;&nbsp;' . $cancelButton;
+        $fields[] = $controls->render();
     } else {
         if (!$inUse && $perm->have_perm_area_action($area, 'con_translate_edit')) {
             $linkEditRow = new cHTMLLink();

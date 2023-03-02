@@ -212,7 +212,7 @@ class cPasswordRequest
             $message = $this->_handleNewPassword();
 
             // if form is submitted, show corresponding password request layer
-            $this->_tpl->set('s', 'JS_CALL', 'showRequestLayer();');
+            $this->_tpl->set('s', 'JS_CALL', 'showRequestFormLayer();');
         } else {
             $message = '';
 
@@ -332,7 +332,7 @@ class cPasswordRequest
             $this->_tpl->set('s', 'JS_CALL', '');
         } else {
             // show password reset form using JavaScript
-            $this->_tpl->set('s', 'JS_CALL', 'showResetLayer();');
+            $this->_tpl->set('s', 'JS_CALL', 'showResetFormLayer();');
         }
 
         $messages[] = i18n('You may now set a new password');
@@ -581,7 +581,7 @@ class cPasswordRequest
      */
     protected function _handleResetPw()
     {
-        $this->_tpl->set('s', 'JS_CALL', 'showResetLayer();');
+        $this->_tpl->set('s', 'JS_CALL', 'showResetFormLayer();');
         $username = cSecurity::toString($_POST['user_name']);
         $pw       = cSecurity::toString($_POST['user_pw']);
         $pwRepeat = cSecurity::toString($_POST['user_pw_repeat']);

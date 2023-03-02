@@ -25,7 +25,7 @@ legend {
     background-color: #f1f1f1;
     width: 720px;
     line-height: 10px;
-    margin: 0 -1px 10px -1px;
+    margin: 0 0 10px 0;
     border: 1px solid grey;
     padding: 10px;
 }
@@ -155,6 +155,12 @@ legend {
     padding: 3px;
     border-collapse: collapse;
 }
+#pifa-form-field-list li>div.descr-icon {
+    padding: 0;
+    width: 46px;
+    height: 46px;
+    margin: 0 0 0 3px;
+}
 
 #pifa-form-field-list .idfield {
     width: 5%;
@@ -162,8 +168,7 @@ legend {
 
 #pifa-form-field-list .edit {
     width: 70px;
-    padding-left: 2px;
-    padding-top: 17px;
+    padding: 15px 3px 0 3px;
     text-align: right;
 }
 

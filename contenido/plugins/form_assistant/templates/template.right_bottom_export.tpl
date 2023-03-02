@@ -13,7 +13,9 @@
             <label for="with_data">{$trans.withData|escape}</label>
         </div>
 
-        <input type="image" src="images/but_ok.gif" alt="{$trans.export|escape}" title="{$trans.export|escape}" />
+        <span class="con_form_action_control">
+            <input type="image" src="images/but_ok.gif" alt="{$trans.export|escape}" title="{$trans.export|escape}" />
+        </span>
 
     </fieldset>
 

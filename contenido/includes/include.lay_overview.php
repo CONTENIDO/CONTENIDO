@@ -74,10 +74,6 @@ while (($layout = $oLayouts->next()) !== false) {
     $name  = conHtmlSpecialChars(cString::stripSlashes($layout->get('name')));
     $description = conHtmlSpecialChars(nl2br($layout->get('description') ?? ''));
 
-    if (cString::getStringLength($description) > 64) {
-        $description = cString::getPartOfString($description, 0, 64) . ' ..';
-    }
-
     $menu->setId($idlay, $idlay);
     $menu->setLink($idlay, $showLink);
     $menu->setTitle($idlay, $name);

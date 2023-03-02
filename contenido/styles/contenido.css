@@ -17,43 +17,17 @@
 @import "notifications.css"; /* @see CON-1992 */
 @import "content_elements.css";
 
-/**
- * @section Reset
- */
 *,
 *::before,
 *::after {
     box-sizing: border-box;
 }
 
-html {
-    line-height: 1.15;
-    -webkit-text-size-adjust: 100%;
-}
-
-button,
-input,
-optgroup,
-select,
-textarea {
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit !important;
-    margin: 0;
-}
-
-button,
-input {
-    overflow: visible;
-}
-
-button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
-    -webkit-appearance: button;
-}
-
+/**
+ * #############################################################################
+ * @section Reset
+ */
+/*
 form,
 h1,
 h2,
@@ -62,26 +36,11 @@ h4 {
     margin: 0;
     padding: 0;
 }
-
-pre,
-code {
-    font-family: monospace, monospace;
-    font-size: 1em;
-}
-
-img {
-    border-style: none;
-}
-
-[type="checkbox"],
-[type="radio"] {
-    box-sizing: border-box;
-    padding: 0;
-}
-
+*/
 
 /**
- * @Section Tags
+ * #############################################################################
+ * @section Tags
  */
 
 body {
@@ -116,21 +75,35 @@ th {
 }
 
 button,
-[type="text"],
 [type="button"],
+[type="file"],
+[type="password"],
 [type="reset"],
 [type="submit"],
-[type="password"],
+[type="text"],
 input,
 select,
 textarea {
-    padding: 1px 3px;
+    padding: 0 3px;
     border: 1px solid #666;
     border-radius: 3px;
-    min-height: 16px;
+    height: 17px;
+    line-height: 17px;
+    vertical-align: middle;
+    vertical-align: middle;
+}
+[type="file"] {
+    margin: 0;
+    padding: 0 3px 0 0;
+    line-height: 11px;
+}
+textarea {
+    height: auto;
 }
 select {
     padding: 0 5px;
+/*    position: relative;
+    top: -2px;*/
 }
 
 button[disabled],
@@ -140,14 +113,34 @@ textarea[disabled] {
     border: 1px solid #999;
 }
 
+
 [type="checkbox"],
 [type="radio"] {
+    position: relative;
     margin-right: 5px;
-    vertical-align: text-top;
+    vertical-align: middle;
+    bottom: 1px;
+}
+
+[type="checkbox"] + label,
+[type="radio"] + label {
+    line-height: 16px;
+    position: relative;
+    left: -3px;
+}
+
+
+.checkbox_wrapper [type="checkbox"],
+.checkbox_wrapper [type="radio"] {
+
 }
 
 table {
     border-spacing: 0;
+}
+table th,
+table td {
+    vertical-align: top;
 }
 
 
@@ -189,8 +182,8 @@ table {
     background-color: #f1f1f1;
 }
 #head_info .con_img_button {
-    position: relative;
-    top: -2px;
+/*    position: relative;
+    bottom: 1px;*/
 }
 #head_info + form#login {
     margin: 0;
@@ -221,6 +214,13 @@ table {
     position: absolute;
     right: 50px;
 }
+#request_layer p {
+    margin: 0;
+    padding: 0;
+}
+#request_layer > div > div {
+    margin-bottom: 5px;
+}
 #request_layer form,
 #request_layer .message {
     line-height: 16px;
@@ -232,6 +232,10 @@ table {
     margin: 0 0 5px 0;
     padding: 0;
 }
+#request_layer .message:empty {
+    margin: 0;
+}
+
 #request_layer label {
     display: inline-block;
     padding-top: 7px;
@@ -441,12 +445,9 @@ table.menu_overview_list .menu_overview_list_actions {
     text-align: right;
     white-space: nowrap;
 }
-
-table td.con_extra_buttons .con_img_button {
-    margin-right: 5px;
-}
-table td.con_extra_buttons .con_img_button.last {
-    margin-right: 0;
+table.menu_overview_list .menu_overview_list_actions .con_img_button,
+table.menu_overview_list .menu_overview_list_actions .con_img_button_off {
+    margin-left: 3px;
 }
 
 table.col_first_100 > tbody > tr > td:first-of-type {
@@ -1050,6 +1051,18 @@ textarea.con_code {
     width: 100%;
 }
 
+.con_form_action_control .con_img_button,
+.con_form_action_control .con_img_button_off,
+.con_form_action_control.text_right .con_img_button,
+.con_form_action_control.text_right .con_img_button_off {
+    margin-left: 10px;
+}
+.con_form_action_control.text_left .con_img_button,
+.con_form_action_control.text_left .con_img_button_off {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
 /**
  * #############################################################################
  * @section Foldingrow
@@ -1584,7 +1597,7 @@ p.column_header {
 }
 .ui-datepicker-trigger {
     vertical-align: top;
-    margin-left: 5px;
+    margin-left: 3px;
 }
 
 .ui-widget-header {
@@ -2521,14 +2534,30 @@ table.inuse_tpl {
 
 /** @deprecated Since CONTENIDO 4.10.2, Don't use `infoButton`, use `con_info_button` instead */
 a.infoButton,
-.infoButton:hover,
+.infoButton:hover {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: transparent url(../images/info.gif) no-repeat;
+    margin-bottom: -3px;
+}
 a.con_info_button,
 .con_info_button:hover {
     display: inline-block;
     width: 16px;
     height: 16px;
     background: transparent url(../images/info.gif) no-repeat;
-    margin-bottom: -3px;
+    vertical-align: inherit;
+/*    position: relative;
+    top: 0;*/
+}
+
+.align_top > a.con_info_button {
+    vertical-align: top;
+}
+
+.align_bottom > a.con_info_button {
+    vertical-align: bottom;
 }
 
  /* toggle for category list*/

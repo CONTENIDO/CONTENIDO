@@ -225,7 +225,12 @@ $objItem->updateAttributes([
     "align" => "right",
     "colspan" => "10"
 ]);
-$objItem->setContent("<a href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=\"javascript:submitrightsform('group_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>");
+$objItem->setContent(
+    '<div class="con_form_action_control">'
+    . "<a class=\"con_img_button\" href=\"javascript:submitrightsform('group_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>"
+    . "<a class=\"con_img_button\" href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a>"
+    . '</div>'
+);
 $items = $objItem->render();
 $objItem->advanceID();
 $objFooterRow->setContent($items);

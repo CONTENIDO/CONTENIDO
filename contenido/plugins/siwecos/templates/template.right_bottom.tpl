@@ -75,11 +75,11 @@
         </tr>
 
         <tr>
-            <td class="no_wrap align_top">&nbsp;</td>
-            <td class="no_wrap align_top text_right">
-                <input type="image" id="siwecos-new-form"
-                       src="images/but_ok.gif" alt="{i18n("BTN_SAVE", 'siwecos')}"
-                       title="{i18n("BTN_SAVE", 'siwecos')}">
+            <td colspan="2" class="no_wrap align_top text_right">
+                <div class="con_form_action_control">
+                    <input class="con_img_button" type="image" id="siwecos-new-form" src="images/but_ok.gif"
+                           alt="{i18n("BTN_SAVE", 'siwecos')}" title="{i18n("BTN_SAVE", 'siwecos')}">
+                </div>
             </td>
         </tr>
         </tbody>

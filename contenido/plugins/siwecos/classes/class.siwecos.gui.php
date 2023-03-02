@@ -351,7 +351,7 @@ class SIWECOSRightBottomPage extends cGuiPage
         $page->assign('userToken', $userToken);
         $page->assign('domainToken', $domainToken);
         $page->assign('author', $author);
-        $page->assign('created', $created);
+        $page->assign('created', $created == '' ? '&nbsp;' : $created);
 
         $cGuiNotification = new cGuiNotification();
 

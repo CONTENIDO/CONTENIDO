@@ -323,7 +323,8 @@ $typeSelect->setEvent("change", "if (document.forms['frm_mod_edit'].elements['ty
 $typeSelect->setDisabled($disabled);
 
 $custom = new cHTMLTextbox("customtype", "");
-$custom->setDisabled($disabled);
+$custom->setClass('mgl3')
+    ->setDisabled($disabled);
 
 if ($module->get("type") == "" || $module->get("type") == "0") {
     $typeSelect->setDefault("0");

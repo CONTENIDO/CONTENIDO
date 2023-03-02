@@ -212,6 +212,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     }
 
     $oTxtMessage = new cHTMLTextarea("txtMessage", $oNewsletter->get("message"), 80, 20);
+    $oTxtMessage->setClass('col_100p');
     $oForm->add(i18n("Text Message", 'newsletter'), $oTxtMessage->render() . "<br>" . $sTagInfoText);
 
     $sExecScript = '
