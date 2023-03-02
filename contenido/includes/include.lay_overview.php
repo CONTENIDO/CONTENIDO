@@ -97,17 +97,17 @@ while (($layout = $oLayouts->next()) !== false) {
     if ($hasDeletePermission && !$inUse) {
         if ($readOnly) {
             $delTitle = i18n("This area is read only! The administrator disabled edits!");
-            $deleteLinkStr = cHTMLImage::img($cfg['path']['images'].'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
+            $deleteLinkStr = cHTMLImage::img($cfg['path']['images'] . 'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
         } else {
             $delTitle = i18n("Delete layout");
             $deleteLinkStr = $deleteLink->render();
         }
     } elseif ($hasDeletePermission && $inUse) {
         $delTitle = i18n("Layout is in use, cannot delete");
-        $deleteLinkStr = cHTMLImage::img($cfg['path']['images'].'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
+        $deleteLinkStr = cHTMLImage::img($cfg['path']['images'] . 'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
     } else {
         $delTitle = i18n("No permission");
-        $deleteLinkStr = cHTMLImage::img($cfg['path']['images'].'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
+        $deleteLinkStr = cHTMLImage::img($cfg['path']['images'] . 'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
     }
     $menu->setActions($idlay, 'delete', $deleteLinkStr);
 
