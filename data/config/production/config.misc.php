@@ -409,6 +409,7 @@ $cfg['inuse']['lifetime'] = 3600;
 // (array)  List of default link tags for CSS files to render in backend pages
 //          The wildcard {basePath} will be replaced dynamically
 $cfg['backend_template']['css_files'] = [
+    '{basePath}styles/normalize.css',
     '{basePath}styles/jquery/jquery-ui.css',
     '{basePath}styles/contenido.css',
     '{basePath}styles/jquery/plugins/atooltip.css',
