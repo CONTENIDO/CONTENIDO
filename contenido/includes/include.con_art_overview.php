@@ -587,7 +587,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 if ($articleOverviewHelper->hasArticleMakeOnlinePermission() && ($idcat != 0) && ($locked === 0 || $isAdmin)) {
                     $tmp_online = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next") . '" title="' . $lngMakeOffline . '"><img src="images/online.gif" title="' . $lngMakeOffline . '" alt="' . $lngMakeOffline . '"></a>';
                 } else {
-                    $tmp_online = '<img class="borderless vAlignMiddle mgl3" src="images/online.gif" title="' . $lngArticleIsOnline . '" alt="' . $lngArticleIsOnline . '">';
+                    $tmp_online = '<img class="con_img_button mgl3" src="images/online.gif" title="' . $lngArticleIsOnline . '" alt="' . $lngArticleIsOnline . '">';
                 }
             } else {
                 if ($articleOverviewHelper->hasArticleMakeOnlinePermission() && ($idcat != 0) && ($locked === 0 || $isAdmin)) {
