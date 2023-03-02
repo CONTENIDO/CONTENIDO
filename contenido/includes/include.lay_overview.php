@@ -34,74 +34,89 @@ if (!$oClient->isLoaded()) {
     return;
 }
 
+$requestIdLay = cSecurity::toInteger($_REQUEST['idlay'] ?? '0');
+
 $client = cSecurity::toInteger(cRegistry::getClientId());
 
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
+
 $oLayouts = new cApiLayoutCollection();
-$oLayouts->select("idclient = " . $client, '', 'name ASC');
+$oLayouts->select("`idclient` = " . $client, '', '`name` ASC');
 
 $tpl->reset();
 
-$requestIdLay = cSecurity::toInteger($_REQUEST['idlay'] ?? '0');
+$menu = new cGuiMenu('lay_overview_list');
+
+$showLink = new cHTMLLink();
+$showLink->setClass('show_item')
+    ->setLink('javascript:void(0)')
+    ->setAttribute('data-action', 'show_layout');
+
+$deleteLink = new cHTMLLink();
+$deleteLink = $deleteLink->setClass('con_img_button')
+    ->setLink('javascript:void(0)')
+    ->setAttribute('data-action', 'delete_layout')
+    ->setContent(cHTMLImage::img($cfg['path']['images'] . 'delete.gif', i18n('Delete layout')));
+
+$inUseLink = new cHTMLLink();
+$inUseLink = $inUseLink->setClass('con_img_button')
+    ->setLink('javascript:void(0)')
+    ->setAttribute('data-action', 'inused_layout')
+    ->setContent(cHTMLImage::img($cfg['path']['images'] . 'exclamation.gif', i18n('Click for more information about usage')));
 
 while (($layout = $oLayouts->next()) !== false) {
-    if (!$perm->have_perm_area_action_item('lay_edit', 'lay_edit', $layout->get('idlay'))) {
+    $idlay = cSecurity::toInteger($layout->getId());
+
+    if (!$perm->have_perm_area_action_item('lay_edit', 'lay_edit', $idlay)) {
         continue;
     }
 
     $name  = conHtmlSpecialChars(cString::stripSlashes($layout->get('name')));
-    $descr = conHtmlSpecialChars(nl2br($layout->get('description') ?? ''));
-    $idlay = $layout->get('idlay');
+    $description = conHtmlSpecialChars(nl2br($layout->get('description') ?? ''));
 
-    if (cString::getStringLength($descr) > 64) {
-        $descr = cString::getPartOfString($descr, 0, 64) . ' ..';
+    if (cString::getStringLength($description) > 64) {
+        $description = cString::getPartOfString($description, 0, 64) . ' ..';
     }
 
-    $marked = ($requestIdLay == $idlay) ? 'marked' : 'lay' . $tpl->dyn_cnt;
-    $tpl->set('d', 'ID', $marked);
-    $tpl->set('d', 'DATA_ID', $idlay);
-    $tpl->set('d', 'DESCRIPTION', ($descr == '') ? '' : $descr);
-    $tpl->set('d', 'NAME', '<a class="show_item" href="javascript:void(0)" data-action="show_layout">' . $name . '</a>');
+    $menu->setId($idlay, $idlay);
+    $menu->setLink($idlay, $showLink);
+    $menu->setTitle($idlay, $name);
+    $menu->setTooltip($idlay, $description);
 
     $inUse = $layout->isInUse();
-    $hasDeletePermission = $perm->have_perm_area_action_item('lay', 'lay_delete', $idlay);
-
-    // In use link
     if ($inUse) {
-        $inUseDescr = i18n("Click for more information about usage");
-        $inUseLink = '<a class="con_img_button" href="javascript:void(0)" title="'.$inUseDescr.'" data-action="inused_layout">'
-                    . cHTMLImage::img($cfg['path']['images'].'exclamation.gif', $inUseDescr)
-                    . '</a>';
-    } else {
-        $inUseLink = '';
+        $menu->setActions($idlay, 'inuse', $inUseLink->render());
     }
-    $tpl->set('d', 'INUSE', $inUseLink);
-
-    // Delete link
-    if ($hasDeletePermission && !$inUse) {
-        if (getEffectiveSetting('client', 'readonly', 'false') == 'true') {
-            $delTitle = i18n("This area is read only! The administrator disabled edits!");
-            $delLink = cHTMLImage::img($cfg['path']['images'].'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
-        } else {
-            $delTitle = i18n("Delete layout");
-            $delLink  = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_layout" title="'.$delTitle.'">'
-                      . cHTMLImage::img($cfg['path']['images'].'delete.gif', $delTitle)
-                      . '</a>';
-        }
-    } elseif ($hasDeletePermission && $inUse) {
-        $delTitle = i18n("Layout is in use, cannot delete");
-        $delLink = cHTMLImage::img($cfg['path']['images'].'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
-    } else {
-        $delTitle = i18n("No permission");
-        $delLink = cHTMLImage::img($cfg['path']['images'].'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
-    }
-    $tpl->set('d', 'DELETE', $delLink);
 
     // To do link
     $todo = new TODOLink('idlay', $idlay, i18n("Layout") . ': ' . $name, '');
-    $tpl->set('d', 'TODO', $todo->render());
+    $menu->setActions($idlay, 'todo', $todo->render());
 
-    $tpl->next();
+    // Delete link
+    $hasDeletePermission = $perm->have_perm_area_action_item('lay', 'lay_delete', $idlay);
+    if ($hasDeletePermission && !$inUse) {
+        if ($readOnly) {
+            $delTitle = i18n("This area is read only! The administrator disabled edits!");
+            $deleteLinkStr = cHTMLImage::img($cfg['path']['images'].'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
+        } else {
+            $delTitle = i18n("Delete layout");
+            $deleteLinkStr = $deleteLink->render();
+        }
+    } elseif ($hasDeletePermission && $inUse) {
+        $delTitle = i18n("Layout is in use, cannot delete");
+        $deleteLinkStr = cHTMLImage::img($cfg['path']['images'].'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
+    } else {
+        $delTitle = i18n("No permission");
+        $deleteLinkStr = cHTMLImage::img($cfg['path']['images'].'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
+    }
+    $menu->setActions($idlay, 'delete', $deleteLinkStr);
+
+    if ($requestIdLay === $idlay) {
+        $menu->setMarked($idlay);
+    }
 }
+
+$tpl->set('s', 'GENERIC_MENU', $menu->render(false));
 
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'AJAX_URL',  cRegistry::getBackendUrl() . 'ajaxmain.php');
