@@ -18,14 +18,25 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $notification, $oTpl, $db, $db2, $aViewRights, $bExclusive;
 
+// Display critical error if client or language does not exist
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
+    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+    $oPage = new cGuiPage("mod_overview");
+    $oPage->displayCriticalError($message);
+    $oPage->render();
+    // We exit the process here, this file is included by others
+    cRegistry::shutdown();
+    exit();
+}
+
 $sess = cRegistry::getSession();
 $area = cRegistry::getArea();
 $perm = cRegistry::getPerm();
 $cfg = cRegistry::getConfig();
-$client = cRegistry::getClientId();
-$lang = cRegistry::getLanguageId();
 
-$userid = (isset($_REQUEST['userid'])) ? cSecurity::toString($_REQUEST['userid']) : '';
+$userid = cSecurity::toString($_REQUEST['userid'] ?? '');
 $actionarea = cSecurity::toString($_REQUEST['actionarea'] ?? 'area');
 $right_list = $_POST['right_list'] ?? null;
 if (!is_array($right_list)) {
