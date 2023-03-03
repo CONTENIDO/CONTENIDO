@@ -11,6 +11,7 @@
     <script type="text/javascript" src="{_ASSET(scripts/jquery/plugins/tipsy.js)_}"></script>
     <script type="text/javascript" src="{_ASSET(scripts/registerTipsy.js)_}"></script>
 </head>
+
 <body class="page_generic">
     <form action ="main.php" name="bulk_editing" class="bulk_editing_form" method="post">
         <input type="hidden" name="area" value="con">
@@ -24,69 +25,37 @@
         <input type="hidden" name="sourcelanguage" value="{SOURCELANGUAGE}">
         <input type="hidden" name="syncoptions" value="{SYNCOPTIONS}">
     </form>
-    <div class="text_large">
+
+    <div class="con_block text_large">
         {CATEGORY}
     </div>
-    {CATTEMPLATE}
+
+    <div class="con_block">{CATTEMPLATE}</div>
 
     <!-- header -->
-    <table width="100%" cellspacing="0" cellpadding="2" border="0">
-        <tr>
-            <td colspan="12">
-                <img src="images/spacer.gif" width="1" height="10" alt="">
-            </td>
-        </tr>
-        <tr class="align_middle">
-            <td colspan="4" class="text_medium" style="padding-right: 5px;border: 1px solid #B3B3B3;border-right-style: none;background-color: #E2E2E2">
-                <table cellspacing="0" cellpadding="0" border="0">
-                    <tr>
-                        <td>
-                            {NEWARTICLE_IMG}
-                        </td>
-                        <td>
-                            &nbsp;
-                        </td>
-                        <td>
-                            {NEWARTICLE_TEXT}
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td class="text_medium text_right border_b3 bg_c_e2" colspan="10" style="border-left-width: 0;">
-                {ELEMPERPAGECAPTION} {ELEMPERPAGE}
-            </td>
-        </tr>
-        <tr>
-            <td colspan="12">
-                <img src="images/spacer.gif" width="1" height="10" alt="">
-            </td>
-        </tr>{NOTIFICATION}
-    </table>
+    <div class="con_navbar con_block clearfix">
+        <div class="left">{NEWARTICLE_LINK}</div>
+        <div class="right">
+            {ELEMPERPAGECAPTION} {ELEMPERPAGE}
+        </div>
+    </div>
     <!-- /header -->
 
     <!-- flip section -->
-    <table width="100%" cellspacing="0" cellpadding="2" border="0" style="{NOARTICLE_CSS}">
-        <tr class="align_middle">
-            <td style="height:20px; line-height:20px; text-align:right; border: 1px solid #B3B3B3;background-color: #E2E2E2;" colspan="7">
-                <div style="float:left">
-                    <a class="invert_selection" href="javascript:void(0)"><img alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif"> i18n("Flip selection")</a>
-                    <div class="bulk_editing_functions" style="display: none;">
-                        i18n("Apply to all selected articles"):
-                        {BULK_EDITING_FUNCTIONS}
-                    </div>
-                </div>
-                {BROWSE}
-            </td>
-        </tr>
-        <tr height="10">
-            <td colspan="7">
-            </td>
-        </tr>
-    </table>
+    <div class="con_navbar con_block clearfix">
+        <div class="left">
+            <a class="invert_selection" href="javascript:void(0)"><img alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif"> i18n("Flip selection")</a>
+            <div class="bulk_editing_functions" style="display: none;">
+                i18n("Apply to all selected articles"):
+                {BULK_EDITING_FUNCTIONS}
+            </div>
+            {BROWSE}
+        </div>
+    </div>
     <!-- /flip section -->
 
     <!-- article list -->
-    <table class="generic generic_art_overview" width="100%" border="0" cellspacing="0" cellpadding="2">
+    <table class="generic art_overview con_block">
         <tr>
             {HEADERS}
         </tr>
@@ -99,45 +68,28 @@
     <!-- /article list -->
 
     <!-- flip section -->
-    <table width="100%" cellspacing="0" cellpadding="2" border="0" style="{NOARTICLE_CSS}">
-        <tr height="10">
-            <td colspan="7">
-            </td>
-        </tr>
-        <tr class="align_middle">
-            <td style="height:20px; line-height:20px; text-align:right; border: 1px solid #B3B3B3;background-color: #E2E2E2;" colspan="7">
-                <div style="float:left">
-                    <a class="invert_selection" href="javascript:void(0)"><img alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif"> i18n("Flip selection")</a>
-                    <div class="bulk_editing_functions" style="display: none;">
-                        i18n("Apply to all selected articles"):
-                        {BULK_EDITING_FUNCTIONS}
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr height="10">
-            <td colspan="7">
-            </td>
-        </tr>
-    </table>
+    <div class="con_navbar con_block clearfix">
+        <div class="left">
+            <a class="invert_selection" href="javascript:void(0)"><img alt="i18n('Flip selection')" title="i18n('Flip Selection')" src="images/but_invert_selection.gif"> i18n("Flip selection")</a>
+            <div class="bulk_editing_functions" style="display: none;">
+                i18n("Apply to all selected articles"):
+                {BULK_EDITING_FUNCTIONS}
+            </div>
+            {BROWSE}
+        </div>
+    </div>
+
     <!-- /flip section -->
 
     <!-- footer -->
-    <table width="100%" cellspacing="0" cellpadding="2" border="0">
-        <tr>
-            <td>
-                <img src="images/spacer.gif" width="1" height="10" alt="">
-            </td>
-        </tr>
-        <tr class="text_medium" style="background-color: #ffffff;">
-            <td style="border: 1px solid #B3B3B3;border-right-width: 0;background-color: #E2E2E2; color:#666666">
-               {CLICK_ROW_NOTIFICATION}
-            </td>
-            <td style="border: 1px solid #B3B3B3;border-left-width: 0;background-color: #E2E2E2; text-align:right;">
-                 {BROWSE}
-            </td>
-        </tr>
-    </table>
+    <div class="con_navbar con_block clearfix">
+        <div class="left">
+            {CLICK_ROW_NOTIFICATION}
+        </div>
+        <div class="right">
+            {BROWSE}
+        </div>
+    </div>
     <!-- /footer -->
 
 <script type="text/javascript">
@@ -394,7 +346,7 @@ function doInlineEditArt() {
 
      });
 
-    $('.generic.generic_art_overview').off('keypress').on('keypress', function (event) {
+    $('.generic.art_overview').off('keypress').on('keypress', function (event) {
         if (event.which === 13) {
             saveInlineEditArt();
         }
@@ -405,7 +357,7 @@ function doInlineEditArt() {
 (function(Con, $) {
 
     // mark first row in article list
-    var firstRow = $("table.generic_art_overview tr[id]")[0];
+    var firstRow = $("table.art_overview tr[id]")[0];
     if (firstRow) {
         artRow.reset();
         artRow.over(firstRow);
@@ -490,7 +442,7 @@ function doInlineEditArt() {
 
         }
 
-        Con.RowMark.initialize('.generic_art_overview .row_mark', 'artRow');
+        Con.RowMark.initialize('.art_overview .row_mark', 'artRow');
 
         syncBulkEditingFunctionsStatus();
 

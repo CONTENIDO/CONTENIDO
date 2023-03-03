@@ -256,7 +256,7 @@ if ($sortby == 6 && $sortmode == "DESC") {
 }
 
 $sToolsRow = '<tr class="textg_medium">
-                  <th colspan="6" id="con_navbar">
+                  <th colspan="6" class="con_navbar">
                       <div class="toolsRight">' . i18n("Searched for:") . " " . $searchfor . '</div>
                   </th>
               </tr>';
@@ -268,14 +268,14 @@ $sSpacedRow = '<tr height="10">
                </tr>';
 
 $pagerwrap = '<tr>
-                <th colspan="6" id="con_navbar" class="vAlignMiddle">
+                <td colspan="6" class="con_navbar" class="vAlignMiddle">
                     <div class="toolsRight">
                         <div class="vAlignMiddle">-C-SCROLLLEFT-</div>
                         <div class="vAlignMiddle">-C-PAGE-</div>
                         <div class="vAlignMiddle">-C-SCROLLRIGHT-</div>
                     </div>
                    <span class="vAlignMiddle">' . i18n("Files per Page") . ' -C-FILESPERPAGE-</span>
-                </th>
+                </td>
             </tr>';
 
 $startwrap = '<table class="hoverbox generic">

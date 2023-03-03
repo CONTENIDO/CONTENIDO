@@ -15,8 +15,8 @@
     height: 16px;
     line-height: 16px;
     padding: 0;
-/*    position: relative;
-    top: -2px;*/
+    position: relative;
+    top: -1px;
     vertical-align: middle;
 }
 .con_func_button {
@@ -24,6 +24,8 @@
 }
 .con_img_button img,
 .con_func_button img {
+ /*   position: relative;
+    top: -1px;*/
     vertical-align: middle;
 }
 .con_img_button_off {

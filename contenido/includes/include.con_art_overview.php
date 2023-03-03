@@ -754,7 +754,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             } else {
                 $col = $listColumn;
             }
-            $headers[] = '<th width="' . $width . '" class="no_wrap">' . $col . '</th>';
+            $headers[] = '<th width="' . $width . '">' . $col . '</th>';
         }
 
         $tpl->set('s', 'HEADERS', implode("\n", $headers));
@@ -825,14 +825,14 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
                         $sTemplatename = cString::trimHard($artitem[$key], 20);
                         if (cString::getStringLength($artitem[$key]) > 20) {
-                            $cells[] = '<td class="no_wrap bordercell tooltip" title="' . $descString . '">' . $sTemplatename . '</td>';
+                            $cells[] = '<td class="tooltip" title="' . $descString . '">' . $sTemplatename . '</td>';
                         } else {
-                            $cells[] = '<td class="no_wrap bordercell">' . $artitem[$key] . '</td>';
+                            $cells[] = '<td>' . $artitem[$key] . '</td>';
                         }
-                    } elseif ($key == 'mark' || $key == 'start') {
-                        $cells[] = '<td class="no_wrap bordercell text_center">' . $artitem[$key] . '</td>';
+                    } elseif ($key == 'mark' || $key == 'start' || $key == 'sortorder') {
+                        $cells[] = '<td class="text_center">' . $artitem[$key] . '</td>';
                     } else {
-                        $cells[] = '<td class="no_wrap bordercell">' . $artitem[$key] . '</td>';
+                        $cells[] = '<td>' . $artitem[$key] . '</td>';
                     }
                 }
                 $tpl->set('d', 'CELLS', implode("\n", $cells));
@@ -847,7 +847,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $tpl->next();
             }
         } else {
-            $emptyCell = '<td class="no_wrap bordercell" colspan="' . count($listColumns) . '">' . i18n("No articles found") . '</td>';
+            $emptyCell = '<td colspan="' . count($listColumns) . '">' . i18n("No articles found") . '</td>';
             $tpl->set('d', 'CELLS', $emptyCell);
             $tpl->set('d', 'CSS_CLASS', '');
             $tpl->set('d', 'ROWID', '');
@@ -973,8 +973,14 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         {
             // check if category has an assigned template
             if ($idcat != 0 && $cat_idtpl != 0) {
-                $tpl->set('s', 'NEWARTICLE_TEXT', '<a id="newArtTxt" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '">' . i18n("Create new article") . '</a>');
-                $tpl->set('s', 'NEWARTICLE_IMG', '<a id="newArtImg" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '" title="' . i18n("Create new article") . '"><img src="images/but_art_new.gif" alt="' . i18n("Create new article") . '"></a>');
+                $link = new cHTMLLink(
+                    $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat"),
+                    cHTMLImage::img('images/but_art_new.gif', i18n("Create new article")) . ' ' . i18n("Create new article"),
+                    'con_func_button',
+                    'newArtTxt'
+                );
+                $link->setAlt(i18n("Create new article"));
+                $tpl->set('s', 'NEWARTICLE_LINK', $link);
                 $tpl->set('s', 'CATTEMPLATE', $warningBox);
             } else {
                 // category is either not in sync or does not exist
@@ -987,18 +993,13 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has a assigned template."));
                 }
                 $tpl->set('s', 'CATTEMPLATE', $notification_text);
-                $tpl->set('s', 'NEWARTICLE_TEXT', '&nbsp;');
-                $tpl->set('s', 'NEWARTICLE_IMG', '&nbsp;');
+                $tpl->set('s', 'NEWARTICLE_LINK', '&nbsp;');
             }
         } else {
-            $tpl->set('s', 'NEWARTICLE_TEXT', '&nbsp;');
-            $tpl->set('s', 'NEWARTICLE_IMG', '&nbsp;');
+            $tpl->set('s', 'NEWARTICLE_LINK', '&nbsp;');
             $tpl->set('s', 'CATTEMPLATE', $warningBox);
         }
 
-        $str = '';
-
-        $tpl->set('s', 'NOTIFICATION', $str);
         // modified by fulai.zhang 17.07.2012
         // display if there are articles
         if ($no_article) {

@@ -55,6 +55,7 @@ body {
     scrollbar-track-color: #c7c7d6;
     font-family: verdana, arial, helvetica, sans-serif;
     font-size: 11px;
+    line-height: 17px;
     color: #000;
 }
 
@@ -91,6 +92,8 @@ textarea {
     line-height: 17px;
     vertical-align: middle;
     vertical-align: middle;
+    position: relative;
+    top: -1px;
 }
 [type="file"] {
     margin: 0;
@@ -459,6 +462,36 @@ table.col_first_100 > tbody > tr > td:first-of-type {
 
 table.col_first_20p > tbody > tr > td:first-of-type {
     width: 20%;
+}
+
+/** @deprecated [2023-03-03] Since CONTENIDO 4.10.2, Don't use `table.bordered`, use `fullborder` instead */
+table.bordered {
+    border: 1px solid #b3b3b3;
+    border-right: none;
+    border-bottom: none;
+}
+
+/** @deprecated [2023-03-03] Since CONTENIDO 4.10.2, Don't use `td.headerbordercell`, use `th` instead */
+td.headerbordercell {
+    border-right: 1px solid #b3b3b3;
+    background: #e2e2e2;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    color: #666;
+}
+td.bordercell {
+    height: 23px;
+    border-right: 1px solid #b3b3b3;
+    border-bottom: 1px solid #b3b3b3;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    color: black;
+}
+
+table.art_overview th,
+table.art_overview td {
+    white-space: nowrap;
+    vertical-align: middle;
 }
 
 /**
@@ -1058,6 +1091,9 @@ textarea.con_code {
     width: 100%;
 }
 
+.con_form_action_control {
+    line-height: 17px;
+}
 .con_form_action_control .con_img_button,
 .con_form_action_control .con_img_button_off,
 .con_form_action_control.text_right .con_img_button,
@@ -1098,14 +1134,14 @@ a.foldingrow img {
 }
 
 /* Animated folding rows */
-tr.foldingrow_hidden {
+tr.foldingrow_hidden:not(.display) {
     border: none;
 }
-tr.foldingrow_hidden > td {
+tr.foldingrow_hidden:not(.display) > td {
     box-sizing: border-box;
     padding: 0 !important;
 }
-tr.foldingrow_hidden > td > div {
+tr.foldingrow_hidden:not(.display) > td > div {
     box-sizing: border-box;
     overflow: hidden;
     max-height: 0;
@@ -1146,31 +1182,6 @@ span.cpager_currentitem {
     font-weight: bold;
 }
 
-table.bordered {
-    border: 1px solid #b3b3b3;
-    border-right: none;
-    border-bottom: none;
-}
-td.headerbordercell {
-    border-right: 1px solid #b3b3b3;
-    background: #e2e2e2;
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    color: #666;
-}
-td.bordercell {
-    height: 23px;
-    border-right: 1px solid #b3b3b3;
-    border-bottom: 1px solid #b3b3b3;
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    color: black;
-}
-
-td#m197 {
-    border-right: 1px solid #b3b3b3;
-}
-
 /**
  * #############################################################################
  * @section Subnavigation
@@ -1184,7 +1195,7 @@ div.navcontainer {
 
 div.navcontainer ul#navlist {
     background-color: #e2e2e2;
-    padding: 12px 0 3px 0;
+    padding: 8px 0 3px 0;
     margin-left: 0;
     margin-top: 0;
     margin-bottom: 0;
@@ -1199,7 +1210,7 @@ div.navcontainer ul#navlist li {
 }
 
 div.navcontainer ul#navlist li a {
-    padding: 2px .6em 3px .5em;
+    padding: 3px .6em 4px .5em;
     margin-left: 3px;
     text-decoration: none;
     border-left: 1px solid #e2e2e2;
@@ -1218,7 +1229,7 @@ div.navcontainer ul#navlist li a:link.current,
 div.navcontainer ul#navlist li a:visited.current {
     background-color: white;
     border: 1px solid #b3b3b3;
-    border-bottom-color: white;
+    border-bottom-color: transparent;
     color: #0060b1;
     outline: none;
     cursor: pointer;
@@ -1697,7 +1708,7 @@ p.column_header {
     margin-right: 5px !important;
 }
 .mgr15 {
-    margin-right: 15px;
+    margin-right: 15px !important;
 }
 .mgr30 {
     margin-right: 30px;
@@ -1999,19 +2010,19 @@ p.column_header {
  * @section Background_Color
  */
 
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcA9`, use `bg_c_a9` instead */
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgcA9`, use `bg_c_a9` instead */
 .bgcA9 {background-color: #a9aec2}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcF4`, use `bg_c_f4` instead */
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgcF4`, use `bg_c_f4` instead */
 .bgcF4 {background-color: #f4f4f7;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcE2`, use `bg_c_f1` instead */
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgcE2`, use `bg_c_f1` instead */
 .bgcE2 {background-color: #e2e2e2;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcF1`, use `bg_c_e2` instead */
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgcF1`, use `bg_c_e2` instead */
 .bgcF1 {background-color: #f1f1f1;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcCC`, use `bg_c_cc` instead */
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgcCC`, use `bg_c_cc` instead */
 .bgcCC {background-color: #ccc;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgcwhite`, use `bg_c_ff` instead */
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgcwhite`, use `bg_c_ff` instead */
 .bgcwhite {background-color: #fff;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `bgct`, use `bg_c_t` instead */
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgct`, use `bg_c_t` instead */
 .bgct {background-color: transparent;}
 
 
@@ -2048,33 +2059,33 @@ p.column_header {
  * @section Border
  */
 
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `noborder`, use `no_border` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `noborder`, use `no_border` instead */
 .noborder {border: 0;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `borderB5`, use `border_b5` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `borderB5`, use `border_b5` instead */
 .borderB5 {border: 1px solid #b5b5b5;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `bordertB5`, use `border_t_b5` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `bordertB5`, use `border_t_b5` instead */
 .bordertB5 {border-top: 1px solid #b5b5b5;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `borderlB5`, use `border_l_b5` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `borderlB5`, use `border_l_b5` instead */
 .borderlB5 {border-left: 1px solid #b5b5b5;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `borderrB5`, use `border_r_b5` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `borderrB5`, use `border_r_b5` instead */
 .borderrB5 {border-right: 1px solid #b5b5b5;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `borderB3`, use `border_b3` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `borderB3`, use `border_b3` instead */
 .borderB3 {border: 1px solid #b3b3b3;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `borderrB3`, use `border_r_b3` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `borderrB3`, use `border_r_b3` instead */
 .borderrB3 {border-right: 1px solid #b3b3b3;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `border74`, use `border_74` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `border74`, use `border_74` instead */
 .border74 {border: 1px solid #747488;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `bordert06`, use `border_t_06` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `bordert06`, use `border_t_06` instead */
 .bordert06 {border-top: 1px solid #0060b1;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `border169`, use `border_169` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `border169`, use `border_169` instead */
 .border169 {border: 0 solid rgb(169, 174, 194); border-top-width: 1px;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `nobordert`, use `no_border_t` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `nobordert`, use `no_border_t` instead */
 .nobordert {border-top: 0;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `noborderr`, use `no_border_r` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `noborderr`, use `no_border_r` instead */
 .noborderr {border-right: 0;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `noborderb`, use `no_border_b` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `noborderb`, use `no_border_b` instead */
 .noborderb {border-bottom: 0;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `noborderl`, use `no_border_l` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `noborderl`, use `no_border_l` instead */
 .noborderl {border-left: 0;}
 
 .no_border {
@@ -2150,21 +2161,32 @@ p.column_header {
     clear: right;
 }
 
+.clearfix:before,
+.clearfix:after {
+    content: "";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
+.clearfix {
+    zoom: 1;
+}
 
 /**
  * #############################################################################
  * @section Text_align
  */
 
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `vgmiddle`, use `align_middle` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `vgmiddle`, use `align_middle` instead */
 .vgmiddle {vertical-align: middle;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `vgtop`, use `align_top` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `vgtop`, use `align_top` instead */
 .vgtop {vertical-align: top;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `text_center`, use `text_left` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `text_center`, use `text_left` instead */
 .tgcenter {text-align: center;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `tgleft`, use `text_left` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `tgleft`, use `text_left` instead */
 .tgleft {text-align: left;}
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `tgright`, use `text_right` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `tgright`, use `text_right` instead */
 .tgright {text-align: right;}
 
 .align_top {
@@ -2192,7 +2214,7 @@ p.column_header {
  * @section Other
  */
 
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `nodisplay`, use `no_display` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `nodisplay`, use `no_display` instead */
 .nodisplay {display: none !important;}
 .no_display {
     display: none !important;
@@ -2211,7 +2233,7 @@ p.column_header {
 .block {
     display: block !important;
 }
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `nowrap`, use `no_wrap` instead */
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `nowrap`, use `no_wrap` instead */
 .nowrap {white-space: nowrap;}
 .no_wrap {
     white-space: nowrap !important;
@@ -2234,6 +2256,11 @@ a.h1e {
 .ofauto {
     overflow: auto;
 }
+
+.con_block:not(:empty) {
+    margin-bottom: 10px !important;
+}
+
 /**
  * #############################################################################
  * @section ID
@@ -2344,27 +2371,6 @@ div.errorlist {
     background-color: #fff;
 }
 
-.log-header,
-.log-footer {
-    background: #e2e2e2;
-    border: 1px solid #b5b5b5;
-    height: 25px;
-    width: 99%;
-    padding: 3px;
-}
-
-.log-header .con_img_button,
-.log-footer .con_img_button {
-    margin-left: 5px;
-    vertical-align: middle;
-}
-
-.log-header select,
-.log-header input,
-.log-footer input {
-    margin-left: 5px;
-}
-
 /**
  * aligns something vertically with a line of text
  */
@@ -2462,23 +2468,31 @@ input[type=image].vAlignMiddle {
  * #############################################################################
  * @section Navbar
  */
-/** @deprecated [2023-03-01] Since CONTENIDO 4.10.2, Don't use `con_navbar`, use `con_navbar` instead */
+/** @deprecated [2023-03-01] Since CONTENIDO 4.10.2, Don't use `cat_navbar`, use `con_navbar` instead */
 #cat_navbar,
-#con_navbar {
-    border-bottom: 1px solid #b3b3b3;
+td.con_navbar,
+.con_navbar {
+    height: 25px;
+    line-height: 16px;
+    vertical-align: middle;
+    border: 1px solid #B3B3B3 !important;
+    background-color: #E2E2E2 !important;
+    padding: 4px 5px 3px 5px !important;
 }
 
-#con_navbar > table {
+.con_navbar > table {
     border: 0;
 }
-#con_navbar > table td {
-    padding: 0;
-    margin: 0;
-    border: 0;
+.con_navbar > table td {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
 }
-#con_navbar > table td > span {
+.con_navbar > table td > span {
     display: inline-block;
 }
+
+
 
 .toolsRight {
     display: inline-block;
@@ -2539,7 +2553,7 @@ table.inuse_tpl {
     margin: 10px 0 5px 0;
 }
 
-/** @deprecated Since CONTENIDO 4.10.2, Don't use `infoButton`, use `con_info_button` instead */
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `infoButton`, use `con_info_button` instead */
 a.infoButton,
 .infoButton:hover {
     display: inline-block;

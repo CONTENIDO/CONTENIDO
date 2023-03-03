@@ -607,13 +607,15 @@ $mpath = trim($mpath, '/') . '/';
 $sDisplayPath = generateDisplayFilePath($mpath, 85);
 
 $sToolsRow = '<tr>
-               <th colspan="6" id="con_navbar">
-                   <a class="tableElement vAlignMiddle" href="javascript:void(0);" data-action="invert_selection"><img class="tableElement vAlignMiddle" src="images/but_invert_selection.gif" title="' . i18n("Flip Selection") . '" alt="' . i18n("Flip Selection") . '"> ' . i18n("Flip Selection") . '</a>
+               <td colspan="6" class="con_navbar">
+                   <a class="tableElement vAlignMiddle" href="javascript:void(0);" data-action="invert_selection">
+                   <img class="tableElement vAlignMiddle" src="images/but_invert_selection.gif" title="' . i18n("Flip Selection") . '" alt="' . i18n("Flip Selection") . '"> ' . i18n("Flip Selection") . '
+                   </a>
                        ' . $sDelete . '
                    <div class="toolsRight">
                    ' . i18n("Path:") . " " . $sDisplayPath . '
                    </div>
-               </th>
+               </td>
            </tr>';
 $sSpacedRow = '<tr>
                    <td colspan="6" class="empty_cell"></td>
@@ -622,7 +624,7 @@ $sSpacedRow = '<tr>
 // List wraps
 
 $pagerwrap = '<tr>
-               <th colspan="6" id="con_navbar">
+               <th colspan="6" class="con_navbar">
                     <table>
                         <tr>
                             <td class="align_middle no_wrap">

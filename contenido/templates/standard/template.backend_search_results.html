@@ -7,21 +7,23 @@
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
     <script type="text/javascript" src="scripts/articleObject.js.php?contenido={_SID_}"></script>
-
 </head>
-<body class="page_generic">
-    <!--vertical-ailgn:middle;-->
-    <div style="border:1px solid #B3B3B3; background:#E2E2E2; margin:0 0 10px 0; padding:2px;line-height:20px;">{TITLE}</div>
 
-    <table id="backend_search_list" width="100%" border="0" cellspacing="0" cellpadding="2" class="bordered">
+<body class="page_generic" id="backend_search_results">
+
+    <div class="con_navbar con_block">
+        {TITLE}
+    </div>
+
+    <table class="generic art_overview con_block">
     <tr>
-        <td width="1%" class="no_wrap headerbordercell">{TH_START}</td>
-        <td width="100%" class="no_wrap headerbordercell sortable" id="col-title">{TH_TITLE}</td>
-        <td width="1%" class="no_wrap headerbordercell sortable" id="col-lastmodified">{TH_CHANGED}</td>
-        <td width="1%" class="no_wrap headerbordercell sortable" id="col-published">{TH_PUBLISHED}</td>
-        <td width="1%" class="no_wrap headerbordercell sortable" id="col-artsort">{TH_SORTORDER}</td>
-        <td width="1%" class="no_wrap headerbordercell">{TH_TEMPLATE}</td>
-        <td width="1%" class="no_wrap headerbordercell">{TH_ACTIONS}</td>
+        <th width="1%">{TH_START}</th>
+        <th width="100%" class="sortable" id="col-title">{TH_TITLE}</th>
+        <th width="1%" class="sortable" id="col-lastmodified">{TH_CHANGED}</th>
+        <th width="1%" class="sortable" id="col-published">{TH_PUBLISHED}</th>
+        <th width="1%" class=" sortable" id="col-artsort">{TH_SORTORDER}</th>
+        <th width="1%">{TH_TEMPLATE}</th>
+        <th width="1%">{TH_ACTIONS}</th>
     </tr>
 
     <!-- BEGIN:BLOCK -->
@@ -30,12 +32,12 @@
 
     </table>
 
-    <div id="store_search" style="margin-top: 20px;">
-        <b>{STORESEARCHINFO}</b><br><br>
+    <div class="con_block">
+        <b>{STORESEARCHINFO}</b><br>
         {STORESEARCHFORM}
     </div>
 
-    <div style="margin-top: 20px">{SEARCHSTOREDMESSAGE}</div>
+    <div class="con_block">{SEARCHSTOREDMESSAGE}</div>
 
     <div>{DEBUGMESSAGE}</div>
 
@@ -173,7 +175,7 @@ initTheOne();
 
 (function(Con, $) {
     $(function() {
-        Con.RowMark.initialize('#backend_search_list .row_mark', 'artRow');
+        Con.RowMark.initialize('.art_overview .row_mark', 'artRow');
     });
 })(Con, Con.$);
 

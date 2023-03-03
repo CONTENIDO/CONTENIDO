@@ -64,21 +64,21 @@ function getUplExpandCollapseButton($item) {
         if ($item->isCollapsed() == true) {
             $title = i18n('Open category');
             // Attention: Render nodes without whitespace in between!
-            $link = '<a class="dir_collapse_link" href="javascript:void(0)" data-action="expand_upl_dir" data-dir="' . $item->getId() . '" 
+            $link = '<a class="con_func_button dir_collapse_link" href="javascript:void(0)" data-action="expand_upl_dir" data-dir="' . $item->getId() . '" 
                title="' . $title . '"><img class="dir_collapse_img" 
                 src="' . $item->getCollapsedIcon() . '" alt=""></a>';
         } else {
             $title = i18n('Close category');
             // Attention: Render nodes without whitespace in between!
-            $link = '<a class="dir_collapse_link" href="javascript:void(0)" data-action="collapse_upl_dir" data-dir="' . $item->getId() . '" 
+            $link = '<a class="con_func_button dir_collapse_link" href="javascript:void(0)" data-action="collapse_upl_dir" data-dir="' . $item->getId() . '" 
                 title="' . $title . '"><img class="dir_collapse_img" 
                 src="' . $item->getExpandedIcon() . '" alt=""></a>';
         }
     } else {
         if ($item->getCustom('lastitem')) {
-            $link = '<img class="dir_collapse_img" src="images/but_lastnode.gif" alt="">';
+            $link = '<img class="con_img_button_off dir_collapse_img" src="images/but_lastnode.gif" alt="">';
         } else {
-            $link = '<img class="dir_collapse_img" src="images/grid_collapse.gif" alt="">';
+            $link = '<img class="con_img_button_off dir_collapse_img" src="images/grid_collapse.gif" alt="">';
         }
     }
 
