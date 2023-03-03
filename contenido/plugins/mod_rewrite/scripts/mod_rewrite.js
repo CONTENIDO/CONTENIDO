@@ -115,7 +115,7 @@
          * @private
          */
         _initializePageExpert: function() {
-            $('.mrPlugin a.actionLink').click(function() {
+            $('.mrPlugin a.mr_action_link').click(function() {
                 var action = $(this).data('action'),
                     params = $(this).data('params'),
                     $form = $('#mr_expert');
