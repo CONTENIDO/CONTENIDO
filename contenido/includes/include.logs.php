@@ -16,6 +16,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $notification, $tpl, $lngAct, $classarea;
 
+// Display critical error if client or language does not exist
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
+    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+    $oPage = new cGuiPage("mod_overview");
+    $oPage->displayCriticalError($message);
+    $oPage->render();
+    return;
+}
+
 $auth = cRegistry::getAuth();
 $area = cRegistry::getArea();
 $cfg = cRegistry::getConfig();
@@ -23,7 +34,6 @@ $db = cRegistry::getDb();
 $frame = cRegistry::getFrame();
 $sess = cRegistry::getSession();
 $perm = cRegistry::getPerm();
-$client = cSecurity::toInteger(cRegistry::getClientId());
 $belang = cRegistry::getBackendLanguage();
 
 if (!$perm->have_perm_area_action($area)) {

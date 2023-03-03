@@ -1371,7 +1371,7 @@ function cHasPlugins(string $entity): bool
 
     $cfg = cRegistry::getConfig();
 
-    return isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity] && count($cfg['plugins'][$entity]));
+    return isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity]) && count($cfg['plugins'][$entity]);
 }
 
 /**

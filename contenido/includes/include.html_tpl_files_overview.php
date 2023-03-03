@@ -14,17 +14,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$oClient = cRegistry::getClient();
-
 // Display critical error if client does not exist
-if (!$oClient->isLoaded()) {
+$client = cSecurity::toInteger(cRegistry::getClientId());
+if ($client < 1 || !cRegistry::getClient()->isLoaded()) {
     $oPage = new cGuiPage("html_tpl_files_overview");
     $oPage->displayCriticalError(i18n('No Client selected'));
     $oPage->render();
     return;
 }
-
-$client = cSecurity::toInteger(cRegistry::getClientId());
 
 $cfgClient = cRegistry::getClientConfig();
 

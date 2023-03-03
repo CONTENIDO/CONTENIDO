@@ -24,10 +24,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $lay;
 
-$oClient = cRegistry::getClient();
-
 // Display critical error if client does not exist
-if (!$oClient->isLoaded()) {
+$client = cSecurity::toInteger(cRegistry::getClientId());
+if ($client < 1 || !cRegistry::getClient()->isLoaded()) {
     $oPage = new cGuiPage("lay_new");
     $oPage->displayCriticalError(i18n('No Client selected'));
     $oPage->render();
@@ -35,8 +34,6 @@ if (!$oClient->isLoaded()) {
 }
 
 $requestIdLay = cSecurity::toInteger($_REQUEST['idlay'] ?? '0');
-
-$client = cSecurity::toInteger(cRegistry::getClientId());
 
 $readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
 
