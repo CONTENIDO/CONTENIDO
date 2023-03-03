@@ -14,16 +14,22 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$requestUsePlugin = $_REQUEST['useplugin'] ?? '';
+/**
+ * @var array $cfg
+ * @var string $area
+ * @var int $frame
+ */
 
-// @TODO: check the code beneath is necessary
-if ($requestUsePlugin != 'category') {
-    die('Illegal call!');
-}
+$requestUsePlugin = $_REQUEST['useplugin'] ?? '';
+$requestIdFrontendGroup = cSecurity::toInteger($_REQUEST['idfrontendgroup'] ?? '0');
 
 $page = new cGuiPage("frontend.group_rights");
 
-if (!cHasPlugins('frontendlogic') || !in_array($requestUsePlugin, $cfg['plugins']['frontendlogic'])) {
+if ($requestUsePlugin != 'category' || $requestIdFrontendGroup <= 0) {
+    $page->displayCriticalError('Illegal call!');
+    $page->render();
+    return;
+} elseif (!cHasPlugins('frontendlogic') || !in_array($requestUsePlugin, $cfg['plugins']['frontendlogic'])) {
     $page->displayCriticalError(i18n("Invalid plugin"));
     $page->render();
     return;
@@ -34,12 +40,13 @@ cInclude('plugins', 'frontendlogic/' . $requestUsePlugin . '/' . $requestUsePlug
 $className = 'frontendlogic_' . $requestUsePlugin;
 $class = new $className;
 $perms = new cApiFrontendPermissionCollection();
+$action = cRegistry::getAction();
 
 $rights = new cGuiTableForm('rights');
 $rights->setVar('area', $area);
 $rights->setVar('frame', $frame);
 $rights->setVar('useplugin', $requestUsePlugin);
-$rights->setVar('idfrontendgroup', $idfrontendgroup);
+$rights->setVar('idfrontendgroup', $requestIdFrontendGroup);
 $rights->setVar('action', 'fegroups_save_perm');
 
 $actions = $class->listActions();
@@ -56,10 +63,10 @@ if ($action == 'fegroups_save_perm') {
             } else {
                 $varname = 'item_' . $item . '_' . $action;
             }
-            if ($_POST[$varname] == 1) {
-                $perms->setPerm($idfrontendgroup, $requestUsePlugin, $action, $item);
+            if (isset($_POST[$varname]) && $_POST[$varname] == 1) {
+                $perms->setPerm($requestIdFrontendGroup, $requestUsePlugin, $action, $item);
             } else {
-                $perms->removePerm($idfrontendgroup, $requestUsePlugin, $action, $item);
+                $perms->removePerm($requestIdFrontendGroup, $requestUsePlugin, $action, $item);
             }
         }
     }
@@ -72,7 +79,7 @@ foreach ($actions as $key => $action) {
     $check[$key] = new cHTMLCheckbox('action_' . $key, 1);
     $check[$key]->setLabelText($action." ".i18n("(All)"));
 
-    if ($perms->checkPerm($idfrontendgroup, $requestUsePlugin, $key, '__GLOBAL__')) {
+    if ($perms->checkPerm($requestIdFrontendGroup, $requestUsePlugin, $key, '__GLOBAL__')) {
         $check[$key]->setChecked(true);
     }
 }
@@ -80,13 +87,13 @@ foreach ($actions as $key => $action) {
 $rights->add(i18n("Global rights"), $check);
 
 foreach ($actions as $key => $action) {
-    unset($check);
+    $check = [];
 
     if (count($items) > 0) {
         foreach ($items as $item => $value) {
             $check[$item] = new cHTMLCheckbox('item_'.$item.'_'.$key, 1);
             $check[$item]->setLabelText($value);
-            if ($perms->checkPerm($idfrontendgroup, $requestUsePlugin, $key, $item)) {
+            if ($perms->checkPerm($requestIdFrontendGroup, $requestUsePlugin, $key, $item)) {
                 $check[$item]->setChecked(true);
             }
         }
