@@ -78,6 +78,7 @@ $_cecRegistry->addChainFunction('Contenido.ArticleList.RenderColumn', 'piworkflo
 $_cecRegistry->addChainFunction('Contenido.ArticleList.RenderAction', 'piworkflowRenderAction');
 $_cecRegistry->addChainFunction('Contenido.CategoryList.Columns', 'piworkflowCategoryColumns');
 $_cecRegistry->addChainFunction('Contenido.CategoryList.RenderColumn', 'piworkflowCategoryRenderColumn');
+$_cecRegistry->addChainFunction('Contenido.CategoryList.PageEnd', 'piworkflowCategoryPageEnd');
 $_cecRegistry->addChainFunction('Contenido.Frontend.AllowEdit', 'piworkflowAllowArticleEdit');
 
 unset($pluginName, $pluginClassesPath);

@@ -291,10 +291,10 @@ function checkForm() {
 }
 
 /**
- * On creating a new category this function enables a sencod layer, which allows
- * to select a templat for this new category. In this step it is not possible to
- * configure template. It is only allowed to selet a template. This function
- * also disables serveral inputs in the new category layer and switches
+ * On creating a new category this function enables a second layer, which allows
+ * to select a template for this new category. In this step it is not possible to
+ * configure template. It is only allowed to select a template. This function
+ * also disables several inputs in the new category layer and switches
  * submitbuttons to grey.
  */
 function showTemplateSelect() {
