@@ -23,6 +23,6 @@ $create->setMultiLink('workflow', '', 'workflow_common', 'workflow_create');
 // $create->setCLink('workflow_common',4,'workflow_create');
 $create->setContent(i18n('Create workflow', 'workflow'));
 $create->setCustom('idworkflow', '-1');
-$create->updateAttributes(['class' => 'addfunction']);
+$create->updateAttributes(['class' => 'con_func_button addfunction']);
 $page->set('s', 'LINK', $create->render());
 $page->render();

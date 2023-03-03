@@ -49,10 +49,11 @@ while (($workflow = $workflows->next()) !== false) {
     $ui->setLink($wfid, $link);
 
     // Delete recipient
-    $image = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+    $image = new cHTMLImage($cfg['path']['images'] . 'delete.gif');
     $image->setAlt($delTitle);
     $delete = new cHTMLLink();
     $delete->setLink('javascript:void(0)')
+        ->setClass('con_img_button')
         ->setAlt($delTitle)
         ->setAttribute('data-action', 'workflow_delete')
         ->setContent($image->render());
