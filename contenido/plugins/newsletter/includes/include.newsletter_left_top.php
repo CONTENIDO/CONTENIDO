@@ -106,8 +106,9 @@ if ($perm->have_perm_area_action("news", "news_create")) {
     $sContent = '<div class="news_section news_section_create">' . "\n";
 
     $oLink = new cHTMLLink();
-    $oLink->setMultiLink("news", "", "news", "news_create");
-    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif" alt="">' . i18n("Create newsletter", 'newsletter'));
+    $oLink->setClass('con_func_button')
+        ->setMultiLink("news", "", "news", "news_create")
+        ->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif" alt=""> ' . i18n("Create newsletter", 'newsletter'));
 
     $sContent .= $oLink->render() . '</div>' . "\n";
     $oActionsRow->setContentData($sContent);
@@ -314,6 +315,7 @@ $oSelSortOrder->setDefault("ASC");
 
 // Search For
 $oTextboxFilter = new cHTMLTextbox("filter", "", 16);
+$oTextboxFilter->setClass('text');
 
 // Search In
 $oSelSearchIn = new cHTMLSelectElement("searchin");
@@ -657,16 +659,18 @@ $sContent = '';
 // Create a link to add a recipient
 if ($perm->have_perm_area_action("recipients", "recipients_create")) {
     $oLink = new cHTMLLink();
+    $oLink->setClass('con_func_button');
     $oLink->setMultiLink("recipients", "", "recipients", "recipients_create");
-    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif" alt="">' . i18n("Create recipient", 'newsletter') . '</a>');
+    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif" alt=""> ' . i18n("Create recipient", 'newsletter') . '</a>');
     $sContent .= $oLink->render() . '<br>' . "\n";
 }
 
 // Create a link to import recipients
 if ($perm->have_perm_area_action("recipients", "recipients_create")) {
     $oLink = new cHTMLLink();
+    $oLink->setClass('con_func_button');
     $oLink->setMultiLink("recipients", "", "recipients_import", "recipients_import");
-    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'importieren.gif" alt="">' . i18n("Import recipients", 'newsletter') . '</a>');
+    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'importieren.gif" alt=""> ' . i18n("Import recipients", 'newsletter') . '</a>');
     $sContent .= $oLink->render() . '<br>' . "\n";
 }
 
@@ -678,8 +682,9 @@ if ($iTimeframe <= 0) {
 // Create a link to purge subscribed but not confirmed recipients
 if ($perm->have_perm_area_action("recipients", "recipients_delete")) {
     $oLink = new cHTMLLink();
+    $oLink->setClass('con_func_button');
     $oLink->setLink("javascript:showPurgeMsg('" . i18n('Purge recipients', 'newsletter') . "', '" . sprintf(i18n('Do you really want to remove recipients, that have not been confirmed since %s days and over?', 'newsletter'), $iTimeframe) . "')");
-    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'delete.gif" alt="">' . i18n("Purge recipients", 'newsletter') . '</a>');
+    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'delete.gif" alt=""> ' . i18n("Purge recipients", 'newsletter') . '</a>');
     $sContent .= $oLink->render();
 }
 
@@ -921,10 +926,11 @@ $sContent = '';
 
 // Create a link to add a group
 if ($perm->have_perm_area_action("recipientgroups", "recipientgroup_create")) {
-    $oLnk = new cHTMLLink();
-    $oLnk->setMultiLink("recipientgroups", "", "recipientgroups", "recipientgroup_create");
-    $oLnk->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif" alt="" align="middle">' . i18n("Create group", 'newsletter') . '</a>');
-    $sContent .= $oLnk->render() . '<br>' . "\n";
+    $oLink = new cHTMLLink();
+    $oLink->setClass('con_func_button');
+    $oLink->setMultiLink("recipientgroups", "", "recipientgroups", "recipientgroup_create");
+    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif" alt=""> ' . i18n("Create group", 'newsletter') . '</a>');
+    $sContent .= $oLink->render() . '<br>' . "\n";
 }
 
 $sContent = '

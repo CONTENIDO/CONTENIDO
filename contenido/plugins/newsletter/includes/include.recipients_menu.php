@@ -238,10 +238,11 @@ while ($oRecipient = $oRecipients->next()) {
 
     if ($perm->have_perm_area_action("recipients", "recipients_delete")) {
         // Delete recipient
-        $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+        $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif');
         $oImage->setAlt($aMsg["DelTitle"]);
         $oDelete = new cHTMLLink();
         $oDelete->setLink('javascript:void(0)')
+            ->setClass('con_img_button')
             ->setAlt($aMsg["DelTitle"])
             ->setAttribute('data-action', 'recipients_delete')
             ->setContent($oImage->render());
