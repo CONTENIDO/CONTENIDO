@@ -21,12 +21,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude("includes", "functions.upl.php");
 
-$oClient = cRegistry::getClient();
-$oLanguage = cRegistry::getLanguage();
-
 // Display critical error if client or language does not exist
-if (!$oClient->isLoaded() || !$oLanguage->isLoaded()) {
-    $message = !$oClient->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
+    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
     $oPage = new cGuiPage("upl_files_upload");
     $oPage->displayCriticalError($message);
     $oPage->render();
@@ -41,8 +40,6 @@ if (!$perm->have_perm_area_action("upl", "upl_upload")) {
     die();
 }
 
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
 $cfgClient = cRegistry::getClientConfig();
 
 $maxUploadSize = 0;

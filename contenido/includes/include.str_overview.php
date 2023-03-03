@@ -17,12 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $notification, $parentid, $StrTableClient, $StrTableLang, $currentuser, $tpl;
 
-$oClient = cRegistry::getClient();
-$oLanguage = cRegistry::getLanguage();
-
 // Display critical error if client or language does not exist
-if (!$oClient->isLoaded() || !$oLanguage->isLoaded()) {
-    $message = !$oClient->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
+    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
     $oPage = new cGuiPage("str_overview");
     $oPage->displayCriticalError($message);
     $oPage->render();
@@ -52,8 +51,6 @@ $idcat = cSecurity::toInteger(cRegistry::getCategoryId());
 $area = cRegistry::getArea();
 $cfg = cRegistry::getConfig();
 $sess = cRegistry::getSession();
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
 $frame = cRegistry::getFrame();
 $_cecRegistry = cApiCecRegistry::getInstance();
 
