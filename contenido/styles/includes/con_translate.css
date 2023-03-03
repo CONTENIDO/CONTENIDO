@@ -9,7 +9,6 @@
 
 /* all translations */
 .all_translations {
-    margin: 20px 0;
     width: 100%;
 }
 
@@ -58,12 +57,7 @@
 
 .all_translations_filter,
 .all_translations_pager {
-    padding: 2px 5px;
-    height: 24px;
-    border: 1px solid #b3b3b3;
-    background-color: #e2e2e2;
     overflow: hidden;
-    vertical-align: middle;
 }
 
 .all_translations_filter form,
