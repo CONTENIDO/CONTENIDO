@@ -2,28 +2,17 @@
  * system_log_sysvalues styles
  */
 
-#system_log_sysvalues .log_header,
-#system_log_sysvalues .log_footer {
-    background: #e2e2e2;
-    border: 1px solid #b5b5b5;
-    height: 25px;
-    line-height: 17px;
-    width: 100%;
-    padding: 3px 5px;
-}
-
-#system_log_sysvalues .log_header .con_img_button,
-#system_log_sysvalues .log_footer .con_img_button {
+#system_log_sysvalues .con_navbar .con_img_button,
+#system_log_sysvalues .con_navbar .con_img_button {
     margin-left: 5px;
-    vertical-align: middle;
 }
 
 #system_log_sysvalues textarea {
     width: 100%;
 }
 
-#system_log_sysvalues .log_header select,
-#system_log_sysvalues .log_header input,
-#system_log_sysvalues .log_footer input {
+#system_log_sysvalues .con_navbar select,
+#system_log_sysvalues .con_navbar input,
+#system_log_sysvalues .con_navbar input {
     margin-left: 5px;
 }

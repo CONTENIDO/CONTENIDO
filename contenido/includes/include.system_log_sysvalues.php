@@ -56,7 +56,7 @@ foreach (new DirectoryIterator($path) as $fileInfo) {
 }
 
 if (!empty($files)) {
-    $logHeader = new cHTMLDiv('', 'log_header');
+    $logHeader = new cHTMLDiv('', 'con_navbar');
 
     $logDirectory = new cHTMLSpan($path);
     $logHeader->appendContent($logDirectory);
@@ -129,7 +129,7 @@ if (!empty($files)) {
     $page->appendContent($textarea);
 
     // create the action buttons
-    $logFooter = new cHTMLDiv('', 'log_footer');
+    $logFooter = new cHTMLDiv('', 'con_navbar');
     $logFooter->appendContent(new cHTMLSpan(i18n('Clear log file, keep last ')));
     $input = new cHTMLTextbox('keep_last_lines', '20');
     $input->setWidth(2);
