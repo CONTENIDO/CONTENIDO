@@ -939,7 +939,7 @@ $tpl->set('s', 'INPUT_ALIAS_EDIT', $oNewAlias->render());
 // Show layer-button for adding new categories and set options
 // according to permissions
 if (($perm->have_perm_area_action($tmp_area, 'str_newtree') || $perm->have_perm_area_action($tmp_area, 'str_newcat') || $bAreaAddNewCategory) && $client > 0 && $lang > 0) {
-    $tpl->set('s', 'NEWCAT', '<a class="black" id="new_tree_button" href="javascript:showNewForm();"><img src="images/folder_new.gif" alt="">&nbsp;' . i18n('Create new category') . '</a>');
+    $tpl->set('s', 'NEWCAT', '<a class="con_func_button" id="new_tree_button" href="javascript:showNewForm();"><img src="images/folder_new.gif" alt="">&nbsp;' . i18n('Create new category') . '</a>');
     if ($perm->have_perm_area_action($tmp_area, 'str_newtree')) {
         if ($perm->have_perm_area_action($tmp_area, 'str_newcat') || $bAreaAddNewCategory) {
             $tpl->set('s', 'PERMISSION_NEWTREE', '');
