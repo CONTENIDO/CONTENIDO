@@ -69,7 +69,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
 
         //if (in_array($value, ['disabled', 'simple', 'advanced'])) {
         if ($name == 'versioning{_}enabled') {
-            $html->setStyle('float:left;width:' . $width . 'px;');
+            $html->setStyle('float: left; width: ' . $width . 'px;');
             $infoBox = new cGuiBackendHelpbox(i18n('<p><strong>Article versioning:</strong></p>'
                 . '<ul style="list-style:none;">'
                     . '<li>'
@@ -87,14 +87,14 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
             );
             $return['label'] =
                 ' <div>
-                    <span style="width: 280px; display: inline-block; padding: 0 0 0 2px; float:left;">
+                    <span class="left align_middle pdl2" style="width: 280px; display: inline-block;">
                         <span class="mgr5">' . i18n("Article versioning") . ':' . '</span>
                         ' . $infoBox->render() . '
                     </span>
                     ' . $html->render() . '
                   </div>';
         } else {
-            $html->setStyle('display:block;float:left;width:' . $width . 'px;');
+            $html->setStyle('display: block; float: left; width: ' . $width . 'px;');
             $return['label'] = renderLabel($label, $name, 280, ':', 'left');
         }
 
@@ -132,9 +132,9 @@ function renderLabel($text, $name, $width = 280, $separator = ':', $float = '') 
     $label = new cHTMLLabel($text . $separator, $name);
     $label->setClass("sys_config_txt_lbl");
     if ($float != '') {
-        $label->setStyle('width:' . $width . 'px;' . 'float:' . $float . ';');
+        $label->setStyle('width: ' . $width . 'px; ' . 'float: ' . $float . ';');
     } else {
-        $label->setStyle('width:' . $width . 'px;');
+        $label->setStyle('width: ' . $width . 'px;');
     }
 
     return $label->render();
@@ -166,7 +166,7 @@ function renderTextProperty($name, $value, $label, $password = false) {
     } else {
         $textBox = new cHTMLTextbox($name, conHtmlSpecialChars($value), 50, 96);
     }
-    $textBox->updateAttribute('style', 'width:322px');
+    $textBox->updateAttribute('style', 'width: 322px');
 
     // disable the text box if user is not a sysadmin
     if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
