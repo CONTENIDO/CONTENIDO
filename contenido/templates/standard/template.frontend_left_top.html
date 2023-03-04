@@ -6,8 +6,8 @@
 {_CSS_HEAD_CONTENIDO_}
     <style type="text/css">
     /* @TODO: style like addfunction (see contenido.css) */
-    .leftTopAction .selectuserfunction,
-    .leftTopAction .selectgroupfunction {
+    .top_left_action .selectuserfunction,
+    .top_left_action .selectgroupfunction {
         display: inline-block;
         height: 16px;
         line-height: 16px;
@@ -26,7 +26,7 @@
 <body class="page_frontend_left_top">
 
 <div id="top_left_container" data-resizegap="1" data-resizeinitcb="frameLeftTopResizeInitCallback">
-    <div class="leftTopAction">
+    <div class="top_left_action">
         {BUTTONROW}
     </div>
     {CUSERS}
@@ -207,7 +207,7 @@ function frameLeftTopResizeInitCallback() {
         toggleContainer('img_group');
     }
 
-    $('.leftTopAction [data-action]').live('click', function() {
+    $('.top_left_action [data-action]').live('click', function() {
         var action = $(this).data('action');
 
         if (action === 'switch_frontenduser') {

@@ -67,9 +67,9 @@ if ($perm->have_perm_area_action("mod_edit", "mod_new")) {
         'right_bottom', $sess->url("main.php?area=mod_edit&action=mod_new&frame=4"),
         i18n("New module")
     );
-    $strAddLink = '<div class="leftTopAction">' . $str . '</div>';
+    $strAddLink = '<div class="top_left_action">' . $str . '</div>';
 } else {
-    $strAddLink = '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create modules") . '</a> </div>';
+    $strAddLink = '<div class="top_left_action"><a class="addfunction_disabled" href="#">' . i18n("No permission to create modules") . '</a> </div>';
 }
 if ($perm->have_perm_area_action("mod_edit", "mod_sync")) {
     $str = sprintf(
@@ -78,9 +78,9 @@ if ($perm->have_perm_area_action("mod_edit", "mod_sync")) {
         'right_bottom', $sess->url("main.php?area=mod_edit&action=mod_sync&frame=4"),
         i18n("Synchronize modules")
     );
-    $strSyncLink = '<div class="leftTopAction leftTopActionNext">' . $str . '</div>';
+    $strSyncLink = '<div class="top_left_action top_left_action_next">' . $str . '</div>';
 } else {
-    $strSyncLink = '<div class="leftTopAction leftTopActionNext"><a class="syncronizefunction_disabled" href="#">' . i18n("No permission to synchronize modules") . '</a> </div>';
+    $strSyncLink = '<div class="top_left_action top_left_action_next"><a class="syncronizefunction_disabled" href="#">' . i18n("No permission to synchronize modules") . '</a> </div>';
 }
 
 // List Options

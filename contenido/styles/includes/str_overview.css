@@ -190,3 +190,21 @@ img.spaced {
     height: 17px;
     line-height: 17px;
 }
+
+/* toggle for category list*/
+.str_overview_toggle {
+    opacity: 0.3 !important;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+
+    /* IE 5-7 */
+    filter: alpha(opacity=30) !important;
+
+    /* Netscape */
+    -moz-opacity: 0.3 !important;
+
+    /* Safari 1.x */
+    -khtml-opacity: 0.3 !important;
+
+    /* Good browsers */
+    opacity: 0.3 !important;
+}

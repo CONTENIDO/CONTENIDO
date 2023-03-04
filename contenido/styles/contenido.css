@@ -17,16 +17,17 @@
 @import "notifications.css"; /* @see CON-1992 */
 @import "content_elements.css";
 
+/*region RESET*/
+/**
+ * #############################################################################
+ * @section Reset
+ */
 *,
 *::before,
 *::after {
     box-sizing: border-box;
 }
 
-/**
- * #############################################################################
- * @section Reset
- */
 /*
 form,
 h1,
@@ -37,7 +38,9 @@ h4 {
     padding: 0;
 }
 */
+/*endregion RESET*/
 
+/*region TAGS*/
 /**
  * #############################################################################
  * @section Tags
@@ -135,10 +138,8 @@ textarea[disabled] {
     left: -3px;
 }
 
-
 .checkbox_wrapper [type="checkbox"],
 .checkbox_wrapper [type="radio"] {
-
 }
 
 table {
@@ -148,6 +149,7 @@ table th,
 table td {
     vertical-align: top;
 }
+/*endregion TAGS*/
 
 
 #head {
@@ -282,6 +284,7 @@ input.image_button {
     margin-left: 5px;
 }
 
+/*region COLUMNS*/
 /**
  * #############################################################################
  * @section Columns
@@ -319,7 +322,9 @@ input.image_button {
 .col_100p {
     width: 100%;
 }
+/*endregion COLUMNS*/
 
+/*region TABLES*/
 /**
  * #############################################################################
  * @section Tables
@@ -493,7 +498,9 @@ table.art_overview td {
     white-space: nowrap;
     vertical-align: middle;
 }
+/*endregion TABLES*/
 
+/*region PAGE_GENERIC*/
 /**
  * #############################################################################
  * @section Page_Generic
@@ -501,7 +508,9 @@ table.art_overview td {
 .page_generic {
     margin: 10px;
 }
+/*endregion PAGE_GENERIC*/
 
+/*region PAGE_LEFT_TOP*/
 /**
  * #############################################################################
  * @section page_left_top
@@ -510,7 +519,9 @@ table.art_overview td {
 .page_left_top {
     margin: 0;
 }
+/*endregion PAGE_LEFT_TOP*/
 
+/*region PAGE_LOGIN_FORM-PAGE_HEADER*/
 /**
  * #############################################################################
  * @section Page_Login_Form, Page_Header
@@ -565,7 +576,9 @@ table.art_overview td {
 #infobox {
     float: left;
 }
+/*endregion PAGE_LOGIN_FORM-PAGE_HEADER*/
 
+/*region PAGE_WELCOME*/
 /**
  * #############################################################################
  * @section Page_Welcome
@@ -640,7 +653,85 @@ li#kontakt.welcome {
     margin-left: 10px;
     padding-top: 4px;
 }
+/*endregion PAGE_WELCOME*/
 
+/*region FRAME_LEFT_DECO*/
+/**
+ * #############################################################################
+ * @section Frame_Left_Deco
+ */
+.page_deco {
+    background-color: #e2e2e2;
+}
+.page_deco .frame_handle {
+    height: 28px;
+    border-bottom: 1px solid #b3b3b3;
+}
+.page_deco .frame_handle img {
+    border: none;
+    float: right;
+}
+.page_deco .frame_handle img#toggleimage {
+    cursor: pointer;
+    float: none;
+    margin:7px 0 0 17px;
+}
+/*endregion FRAME_LEFT_DECO*/
+
+/*region FRAME_SUB_NAVIGATION*/
+/**
+ * #############################################################################
+ * @section Sub_Navigation_Frame
+ */
+.page_subnav .frame_handle {
+    float: left;
+}
+.page_subnav .frame_handle img {
+    border: none;
+    float: left;
+}
+.page_subnav .frame_handle img#toggleimage {
+    cursor: pointer;
+    float: none;
+    margin: 7px 0 0 6px;
+}
+.page_subnav div.menuless {
+    padding-left: 250px;
+}
+.page_subnav div.menuless .frame_handle {
+    display: none;
+}
+/*endregion FRAME_SUB_NAVIGATION*/
+
+/*region FRAME_TOP_LEFT*/
+/**
+ * #############################################################################
+ * @section Top_Left_Frame
+ */
+/** @deprecated [2023-03-04] Since CONTENIDO 4.10.2, Don't use `leftTopAction`, use `top_left_action` instead */
+.leftTopAction,
+.top_left_action {
+    min-height: 2em;
+    border: 1px solid #b3b3b3;
+    padding: 5px 0 5px 16px;
+    margin-top: 1px;
+}
+/** @deprecated [2023-03-04] Since CONTENIDO 4.10.2, Don't use `leftTopAction`, use `top_left_action` instead */
+.leftTopActionNext,
+.top_left_action_next {
+    border-top: none;
+    padding: 5px 0 5px 16px;
+    margin-top: 0;
+}
+
+/** @deprecated [2023-03-04] Since CONTENIDO 4.10.2, Don't use `leftTopAction`, use `top_left_action` instead */
+.leftTopAction input[type=text],
+.top_left_action input[type=text] {
+    width: 170px;
+}
+/*endregion FRAME_TOP_LEFT*/
+
+/*region SYSTEM_CONFIGURATION*/
 /**
  * #############################################################################
  * @section system_configuration
@@ -652,10 +743,12 @@ label.sys_config_txt_lbl {
     white-space:normal;
     vertical-align:middle;
 }
+/*endregion SYSTEM_CONFIGURATION*/
 
+/*region CALENDAR_TABLE*/
 /**
  * #############################################################################
- * @section Calendar
+ * @section Calendar_Table
  */
 table.calendar {
     border: 1px solid #e2e2e2;
@@ -687,6 +780,7 @@ table.calendar tbody td.marked {
     border: 1px solid black !important;
     text-align: center;
 }
+/*endregion CALENDAR_TABLE*/
 
 /** @deprecated [2023-02-27] Since CONTENIDO 4.10.2, Don't use `overview_dist_left`, use `mgl5` instead */
 .overview_dist_left {margin-left: 5px;}
@@ -738,10 +832,7 @@ td.sub {
     vertical-align: middle;
 }
 
-a img, label img, img.borderless, input[type=image] {
-    border: 0;
-}
-
+/*region LINK*/
 /**
  * #############################################################################
  * @section Links
@@ -932,6 +1023,28 @@ a > img {
     vertical-align: middle;
 }
 
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `infoButton`, use `con_info_button` instead */
+a.infoButton,
+.infoButton:hover {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: transparent url(../images/info.gif) no-repeat;
+    margin-bottom: -3px;
+}
+a.con_info_button,
+.con_info_button:hover {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: transparent url(../images/info.gif) no-repeat;
+    vertical-align: inherit;
+    /*    position: relative;
+        top: 0;*/
+}
+/*endregion LINK*/
+
+/*region TEXT*/
 /**
  * #############################################################################
  * @section Text
@@ -1010,6 +1123,7 @@ a > img {
     font-size: 11px;
     color: #f00
 }
+/*endregion TEXT*/
 
 /* Code areas */
 .code {
@@ -1106,6 +1220,7 @@ textarea.con_code {
     margin-right: 10px;
 }
 
+/*region FOLDING_ROW*/
 /**
  * #############################################################################
  * @section Foldingrow
@@ -1176,12 +1291,14 @@ tr.foldingrow_hidden.display > td > div {
     overflow: auto;
     transition: max-height 0.6s ease, opacity 0.6s;
 }
+/*endregion FOLDING_ROW*/
 
 span.cpager_currentitem {
     color: #000;
     font-weight: bold;
 }
 
+/*region SUB_NAVIGATION*/
 /**
  * #############################################################################
  * @section Subnavigation
@@ -1248,7 +1365,9 @@ div.navcontainer ul#navlist li a:link,
 div.navcontainer ul#navlist li a:visited {
     color: black;
 }
+/*endregion SUB_NAVIGATION*/
 
+/* Category breadcrumb */
 .categorypath {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size: 10px;
@@ -1256,6 +1375,7 @@ div.navcontainer ul#navlist li a:visited {
     color: #999;
 }
 
+/*region HOVER_BOX*/
 /**
  * #############################################################################
  * @section Hoverbox
@@ -1318,7 +1438,9 @@ div.navcontainer ul#navlist li a:visited {
     border: 1px solid black;
     background-color: white;
 }
+/*endregion HOVER_BOX*/
 
+/*region RIGHTS_TABLE`*/
 .td_rights0 {
     vertical-align: top;
     border: 0 solid #b3b3b3;
@@ -1353,7 +1475,9 @@ div.navcontainer ul#navlist li a:visited {
     text-align: center;
     white-space: nowrap;
 }
+/*endregion RIGHTS_TABLE`*/
 
+/*region STATS_TABLE`*/
 .td_stats1 {
     border: 0 solid #b3b3b3;
     border-right-width: 1px;
@@ -1375,7 +1499,9 @@ div.navcontainer ul#navlist li a:visited {
     border-bottom-width: 1px;
     text-align: right;
 }
+/*endregion STATS_TABLE`*/
 
+/*region WORKFLOW_PLUGIN*/
 /**
  * #############################################################################
  * @section WORKFLOW PLUGIN
@@ -1405,6 +1531,17 @@ div.left_list {
     max-width: 500px;
 }
 
+.mg10 .workflow_tasks {
+    border: 1px solid #b3b3b3;
+    background: #e2e2e2;
+    margin: 0 0 10px 0;
+    padding: 2px;
+    vertical-align: middle;
+    line-height: 20px;
+}
+
+/*endregion WORKFLOW_PLUGIN*/
+
 .message_box_head {
     font-family: verdana, arial, helvetica, sans-serif;
     font-weight: bold;
@@ -1418,9 +1555,10 @@ div.left_list {
     color: #000
 }
 
+/*region ARTICLE_SEARCH*/
 /**
  * #############################################################################
- * @section ARTIKELSUCHE
+ * @section Article_Search
  */
 div.artikel_search {
     padding-top: 10px;
@@ -1434,7 +1572,9 @@ ul.artikel_search {
     margin: 0;
     list-style: none;
 }
+/*endregion ARTICLE_SEARCH*/
 
+/* Where is this used? */
 #scroll * *,
 #scroll *,
 #scroll {
@@ -1488,6 +1628,7 @@ p.column_header {
     font-weight: bold;
 }
 
+/*region IM_USE*/
 /**
  * #############################################################################
  * @section Inuse
@@ -1521,50 +1662,26 @@ p.column_header {
     width: 245px;
 }
 
-/**
- * #############################################################################
- * @section Frame_Left_Deco
- */
-.page_deco {
-    background-color: #e2e2e2;
-}
-.page_deco .frame_handle {
-    height: 28px;
-    border-bottom: 1px solid #b3b3b3;
-}
-.page_deco .frame_handle img {
+table.inuse_lay_mod td,
+table.inuse_lay_mod th {
     border: none;
-    float: right;
-}
-.page_deco .frame_handle img#toggleimage {
-    cursor: pointer;
-    float: none;
-    margin:7px 0 0 17px;
 }
 
-/**
- * #############################################################################
- * @section Frame_Sub_Navigation
- */
-.page_subnav .frame_handle {
-    float: left;
-}
-.page_subnav .frame_handle img {
-    border: none;
-    float: left;
-}
-.page_subnav .frame_handle img#toggleimage {
-    cursor: pointer;
-    float: none;
-    margin: 7px 0 0 6px;
-}
-.page_subnav div.menuless {
-    padding-left: 250px;
-}
-.page_subnav div.menuless .frame_handle {
-    display: none;
+table.inuse_lay_mod {
+    border: 1px solid #ccc;
 }
 
+table.inuse_lay_mod td.grey {
+    background-color: #eee;
+}
+
+table.inuse_tpl {
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+/*endregion IM_USE*/
+
+/*region JQUERY_UI*/
 /**
  * #############################################################################
  * @section jQuery_UI
@@ -1646,8 +1763,9 @@ p.column_header {
 .ui-widget-overlay {
     background: #333 none;
 }
+/*endregion JQUERY_UI*/
 
-
+/*region MARGIN_PADDING*/
 /**
  * #############################################################################
  * @section Margin_Padding
@@ -1797,7 +1915,9 @@ p.column_header {
 .pdb15 {
     padding-bottom: 15px;
 }
+/*endregion MARGIN_PADDING*/
 
+/*region FONT*/
 /**
  * #############################################################################
  * @section Font
@@ -1815,7 +1935,9 @@ p.column_header {
 .red {
     color: red;
 }
+/*endregion FONT*/
 
+/*region WIDTH_HEIGHT*/
 /**
  * #############################################################################
  * @section Width_Height
@@ -2004,7 +2126,9 @@ p.column_header {
 .lheightpx25 {
     line-height: 25px;
 }
+/*endregion WIDTH_HEIGHT*/
 
+/*region BACKGROUND_COLOR*/
 /**
  * #############################################################################
  * @section Background_Color
@@ -2024,7 +2148,6 @@ p.column_header {
 .bgcwhite {background-color: #fff;}
 /** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgct`, use `bg_c_t` instead */
 .bgct {background-color: transparent;}
-
 
 .bg_c_a9 {
     background-color: #a9aec2
@@ -2053,7 +2176,9 @@ p.column_header {
 .bg_c_t {
     background-color: transparent;
 }
+/*endregion BACKGROUND_COLOR*/
 
+/*region BORDER*/
 /**
  * #############################################################################
  * @section Border
@@ -2139,7 +2264,9 @@ p.column_header {
     border: 0 solid rgb(169, 174, 194) !important;
     border-top-width: 1px !important;
 }
+/*endregion BORDER*/
 
+/*region DIRECTION*/
 /**
  * #############################################################################
  * @section Direction
@@ -2160,19 +2287,9 @@ p.column_header {
 .clearr {
     clear: right;
 }
+/*endregion DIRECTION*/
 
-.clearfix:before,
-.clearfix:after {
-    content: "";
-    display: table;
-}
-.clearfix:after {
-    clear: both;
-}
-.clearfix {
-    zoom: 1;
-}
-
+/*region TEXT_ALIGN*/
 /**
  * #############################################################################
  * @section Text_align
@@ -2208,10 +2325,12 @@ p.column_header {
 .text_right {
     text-align: right !important;
 }
+/*endregion TEXT_ALIGN*/
 
+/*region MISC*/
 /**
  * #############################################################################
- * @section Other
+ * @section Misc
  */
 
 /** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `nodisplay`, use `no_display` instead */
@@ -2228,6 +2347,18 @@ p.column_header {
     width: 1px;
     height: 1px;
     overflow: hidden;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: "";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
+.clearfix {
+    zoom: 1;
 }
 
 .block {
@@ -2260,7 +2391,9 @@ a.h1e {
 .con_block:not(:empty) {
     margin-bottom: 10px !important;
 }
+/*endregion MISC*/
 
+/*region ID*/
 /**
  * #############################################################################
  * @section ID
@@ -2313,18 +2446,6 @@ div#top_left_container.style_left_top {
     margin-top: 1px
 }
 
-.mg10 .workflow_tasks {
-    border: 1px solid #b3b3b3;
-    background: #e2e2e2;
-    margin: 0 0 10px 0;
-    padding: 2px;
-    vertical-align: middle;
-    line-height: 20px;
-}
-.contenttest {
-    margin: 0.3em 0;
-}
-
 div#legend {
     margin: 0;
     padding-left: 10px;
@@ -2337,15 +2458,28 @@ div#legend table.article {
     padding-bottom: 10px;
 }
 
-/* CodeMirror Styles */
-.CodeMirror-wrap pre {
-    line-height: 1.2em;
-}
-
 /* Module edit styles */
 #mod_edit .inputok,
 #mod_edit .outputok {
     float: right;
+}
+
+
+#setupBody,
+div.errorlist {
+    background-color: #fff;
+}
+
+/*region ID*/
+
+
+.contenttest {
+    margin: 0.3em 0;
+}
+
+/* CodeMirror Styles */
+.CodeMirror-wrap pre {
+    line-height: 1.2em;
 }
 
 /* Bulk Editing Functions on Article Overview and Mail Logging Page */
@@ -2364,11 +2498,6 @@ div.bulk_editing_functions {
 div.bulk_editing_functions a img {
     margin-left: 7px;
     vertical-align: middle;
-}
-
-#setupBody,
-div.errorlist {
-    background-color: #fff;
 }
 
 /**
@@ -2406,21 +2535,6 @@ input[type=image].vAlignMiddle {
     margin-left: 15px;
 }
 
-.leftTopAction {
-    min-height: 2em;
-    border: 1px solid #b3b3b3;
-    padding: 5px 0 5px 16px;
-    margin-top: 1px;
-}
-.leftTopActionNext {
-    border-top: none;
-    padding: 5px 0 5px 16px;
-    margin-top: 0;
-}
-
-.leftTopAction input[type=text] {
-    width: 170px;
-}
 
 .moduleError {
     color: #B1AC58;
@@ -2464,6 +2578,7 @@ input[type=image].vAlignMiddle {
     margin-left: 20px;
 }
 
+/*region NAV_BAR*/
 /**
  * #############################################################################
  * @section Navbar
@@ -2478,6 +2593,7 @@ td.con_navbar,
     border: 1px solid #B3B3B3 !important;
     background-color: #E2E2E2 !important;
     padding: 4px 5px 3px 5px !important;
+    outline: 2px solid #7F0055;
 }
 
 .con_navbar > table {
@@ -2491,8 +2607,7 @@ td.con_navbar,
 .con_navbar > table td > span {
     display: inline-block;
 }
-
-
+/*endregion NAV_BAR*/
 
 .toolsRight {
     display: inline-block;
@@ -2515,25 +2630,6 @@ td.con_navbar,
     width: 110px;
 }
 
-
-table.inuse_lay_mod td,
-table.inuse_lay_mod th {
-    border: none;
-}
-
-table.inuse_lay_mod {
-    border: 1px solid #ccc;
-}
-
-table.inuse_lay_mod td.grey {
-    background-color: #eee;
-}
-
-table.inuse_tpl {
-    margin-bottom: 10px;
-    margin-top: 5px;
-}
-
 #con_content_list .rawdata {
     display: block;
     margin: 15px 0 15px 0;
@@ -2553,50 +2649,12 @@ table.inuse_tpl {
     margin: 10px 0 5px 0;
 }
 
-/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `infoButton`, use `con_info_button` instead */
-a.infoButton,
-.infoButton:hover {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    background: transparent url(../images/info.gif) no-repeat;
-    margin-bottom: -3px;
-}
-a.con_info_button,
-.con_info_button:hover {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    background: transparent url(../images/info.gif) no-repeat;
-    vertical-align: inherit;
-/*    position: relative;
-    top: 0;*/
-}
-
 .align_top > a.con_info_button {
     vertical-align: top;
 }
 
 .align_bottom > a.con_info_button {
     vertical-align: bottom;
-}
-
- /* toggle for category list*/
-.str_overview_toggle {
-    opacity: 0.3 !important;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-
-    /* IE 5-7 */
-    filter: alpha(opacity=30) !important;
-
-    /* Netscape */
-    -moz-opacity: 0.3 !important;
-
-    /* Safari 1.x */
-    -khtml-opacity: 0.3 !important;
-
-    /* Good browsers */
-    opacity: 0.3 !important;
 }
 
 /* Disabled links */
