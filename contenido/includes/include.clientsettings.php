@@ -26,9 +26,10 @@ $oList->objTable->setClass('generic col_md');
 // @TODO Find a general solution for this!
 $request = $_REQUEST;
 
-$idclientslang = cSecurity::toInteger($request["idclientslang"] ?? '0');
-$action = $request["action"] ?? '';
-$idclient = cSecurity::toInteger($request["idclient"] ?? '0');
+$idclientslang = cSecurity::toInteger($request['idclientslang'] ?? '0');
+$action = $request['action'] ?? '';
+$idclient = cSecurity::toInteger($request['idclient'] ?? '0');
+$csidproperty = cSecurity::toInteger($request['csidproperty'] ?? '0');
 
 $oFrmRange = new cGuiTableForm('range');
 $oFrmRange->setTableClass('generic col_sm');
@@ -66,7 +67,7 @@ if (!$idclientslang) {
 }
 
 if ($action == 'clientsettings_save_item') {
-    $oClient->setProperty(trim($request['cstype']), trim($request['csname']), trim($request['csvalue']), $request['csidproperty']);
+    $oClient->setProperty(trim($request['cstype']), trim($request['csname']), trim($request['csvalue']), $csidproperty);
     $oPage->displayOk(i18n("Save changes successfully!"));
 }
 
@@ -75,7 +76,7 @@ if ($action == 'clientsettings_delete_item') {
     $oPage->displayOk(i18n("Deleted item successfully!"));
 }
 
-$oList->setHeader(i18n('Type'), i18n('Name'), i18n('Value'), '&nbsp;');
+$oList->setHeader(i18n('Type'), i18n('Name'), i18n('Value'), i18n('Actions'));
 $oList->objHeaderItem->updateAttributes([
     'width' => 52
 ]);
@@ -83,22 +84,30 @@ $oList->objRow->updateAttributes([
     'valign' => 'top'
 ]);
 
+$imagesPath = $backendUrl . $cfg['path']['images'];
+
 $aItems = $oClient->getProperties();
 
 if ($aItems !== false) {
+
+    // Wrapper for the buttons
+    $controls = new cHTMLDiv('', 'con_form_action_control');
+
     $oLnkDelete = new cHTMLLink();
-    $oLnkDelete->setCLink($area, $frame, "clientsettings_delete_item");
-    $oLnkDelete->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
-    $oLnkDelete->setCustom("idclient", $idclient);
-    $oLnkDelete->setCustom("idclientslang", $idclientslang);
+    $oLnkDelete->setClass('con_img_button')
+        ->setCLink($area, $frame, "clientsettings_delete_item")
+        ->setContent(cHTMLImage::img($imagesPath . 'delete.gif', i18n("Delete")))
+        ->setCustom("idclient", $idclient)
+        ->setCustom("idclientslang", $idclientslang);
 
     $oLnkEdit = new cHTMLLink();
-    $oLnkEdit->setCLink($area, $frame, "clientsettings_edit_item");
-    $oLnkEdit->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
-    $oLnkEdit->setCustom("idclient", $idclient);
-    $oLnkEdit->setCustom("idclientslang", $idclientslang);
+    $oLnkEdit->setClass('con_img_button')
+        ->setCLink($area, $frame, "clientsettings_edit_item")
+        ->setContent(cHTMLImage::img($imagesPath . 'editieren.gif', i18n("Edit")))
+        ->setCustom("idclient", $idclient)
+        ->setCustom("idclientslang", $idclientslang);
 
-    $sSubmit = ' <input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
+    $sSubmit = cHTMLButton::image($imagesPath . 'submit.gif', i18n("Save"), ['class' => 'con_img_button']);
     $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
     $iCounter = 0;
@@ -110,6 +119,10 @@ if ($aItems !== false) {
         $oLnkDelete->setCustom("idprop", $iKey);
         $oLnkEdit->setCustom("idprop", $iKey);
 
+        $controls->setContent([
+            $oLnkEdit->render(), $oLnkDelete->render()
+        ]);
+
         if (($action == "clientsettings_edit_item") && ($request['idprop'] == $iKey)) {
 
             $oInputboxType = new cHTMLTextbox("cstype", $settingType);
@@ -117,7 +130,8 @@ if ($aItems !== false) {
             $oInputboxName = new cHTMLTextbox("csname", $settingName);
             $oInputboxName->setWidth(15);
             $oInputboxValue = new cHTMLTextbox("csvalue", $settingValue);
-            $oInputboxValue->setWidth(30);
+            $oInputboxValue->setClass('mgr5')
+                ->setWidth(30);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
 
@@ -126,7 +140,7 @@ if ($aItems !== false) {
                 $oInputboxType->render(),
                 $oInputboxName->render(),
                 $oInputboxValue->render() . $sSubmit . $hidden,
-                $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render() . '&nbsp;&nbsp;&nbsp;'
+                $controls->render()
             );
         } else {
 
@@ -150,7 +164,7 @@ if ($aItems !== false) {
                 $settingType,
                 $settingName,
                 $settingValue,
-                $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render()
+                $controls->render()
             );
         }
         $iCounter++;
