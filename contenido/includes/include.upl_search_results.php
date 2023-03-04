@@ -402,7 +402,7 @@ if ($list2->getCurrentPage() > 1) {
 if ($list2->getCurrentPage() < $list2->getNumPages()) {
     $nextpage = '<a href="' . $scrollthisfile . '&startpage=' . ($list2->getCurrentPage() + 1) . '" class="invert_hover">' . i18n("Next Page") . '</a>';
 } else {
-    $nextpage = '&nbsp;';
+    $prevpage = '&nbsp;';
 }
 
 $paging_form = '';
