@@ -60,13 +60,13 @@ $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic
 
 $tpl->set('s', 'CAPTION', '');
 
-$tmp_mstr = '<div class="leftTopAction"><a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
+$tmp_mstr = '<div class="top_left_action"><a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
 // $area = "group"; What is the purpose of this???
 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=groups_create&frame=3"), 'right_bottom', $sess->url("main.php?area=groups_create&frame=4"), i18n("Create group"));
 if ($perm->have_perm_area_action("groups_create", "group_create")) {
     $tpl->set('s', 'NEWGROUP', $mstr);
 } else {
-    $tpl->set('s', 'NEWGROUP', '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create groups") . '</a></div>');
+    $tpl->set('s', 'NEWGROUP', '<div class="top_left_action"><a class="addfunction_disabled" href="#">' . i18n("No permission to create groups") . '</a></div>');
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_left_top']);

@@ -77,7 +77,7 @@ $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic
 
 $tpl->set('s', 'ACTION', '');
 
-$tmp_mstr = '<div class="leftTopAction">
+$tmp_mstr = '<div class="top_left_action">
               <a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\')">%s</a></div>';
 $area = "user";
 $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=user_create&frame=4"), i18n("Create user"));
