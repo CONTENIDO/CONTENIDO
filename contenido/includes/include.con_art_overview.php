@@ -717,6 +717,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         }
                         $value = implode('', $contents);
                 }
+                if (!is_numeric($value) && empty($value)) {
+                    $value = '&nbsp;';
+                }
                 $artlist[$tmp_rowid][$listColumn] = $value;
                 $artlist[$tmp_rowid]['templateDescription'] = $templateDescription;
             }

@@ -402,6 +402,7 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             $idcatlang = $db->f('idcatlang');
             $title = $db->f('title');
             $idartlang = $db->f('idartlang');
+            $artsort = $db->f('artsort');
             $created = date($sDateFormat, strtotime($db->f('created')));
             $lastmodified = date($sDateFormat, strtotime($db->f('lastmodified')));
             $published = date($sDateFormat, strtotime($db->f('published')));
@@ -495,12 +496,22 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
                 $delete = "";
             }
 
+            if (!is_numeric($artsort) && empty($artsort)) {
+                $artsort = '&nbsp;';
+            }
+            if (empty($lastmodified)) {
+                $lastmodified = '&nbsp;';
+            }
+            if (empty($published)) {
+                $published = '&nbsp;';
+            }
+
             $sRow = '<tr id="' . $sRowId . '" class="row_mark" data-idcat="' . $idcat . '" data-idart="' . $idart . '">' . "\n";
             $sRow .= $makeStartarticle . "\n";
             $sRow .= "<td>$editart</td>
                       <td>$lastmodified</td>
                       <td>$published</td>
-                      <td class=\"text_center\">" . $db->f('artsort') . "</td>
+                      <td class=\"text_center\">" . $artsort . "</td>
                       <td>$sTemplateName</td>
                       <td>
                           <a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$lngReminder&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=625');\" title=\"$lngSetReminder\" href=\"#\"><img id=\"m2\" alt=\"$lngSetReminder\" src=\"images/but_setreminder.gif\"></a>
