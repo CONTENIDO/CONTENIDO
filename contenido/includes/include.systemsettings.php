@@ -74,29 +74,36 @@ $list->setCell(1, 2, i18n("Name"));
 $list->setCell(1, 3, i18n("Value"));
 
 if ($isSysadmin) {
-    $list->setCell(1, 4, i18n("Action"));
+    $list->setCell(1, 4, i18n("Actions"));
 }
 
 $backendUrl = cRegistry::getBackendUrl();
 
+$imagesPath = $backendUrl . $cfg['path']['images'];
+
 $count = 2;
 
+$controls = null;
 $oLinkEdit = null;
 $oLinkDelete = null;
 if ($isSysadmin) {
+    // Wrapper for the buttons
+    $controls = new cHTMLDiv('', 'con_form_action_control');
+
     // Edit/delete links only for sysadmin
     $oLinkEdit = new cHTMLLink();
     $oLinkEdit->setCLink($area, $frame, "systemsettings_edit_item");
-    $oLinkEdit->setClass('con_img_button mgl5');
-    $oLinkEdit->setContent(cHTMLImage::img($cfg['path']['images'] . 'editieren.gif', i18n("Edit")));
+    $oLinkEdit->setClass('con_img_button');
+    $oLinkEdit->setContent(cHTMLImage::img($imagesPath . 'editieren.gif', i18n("Edit")));
     $oLinkDelete = new cHTMLLink();
-    $oLinkDelete->setClass('con_img_button mgl5');
+    $oLinkDelete->setClass('con_img_button');
     $oLinkDelete->setCLink($area, $frame, "systemsettings_delete_item");
-    $oLinkDelete->setContent(cHTMLImage::img($cfg['path']['images'] . 'delete.gif', i18n("Delete")));
+    $oLinkDelete->setContent(cHTMLImage::img($imagesPath . 'delete.gif', i18n("Delete")));
 }
 
+$sSubmit = cHTMLButton::image($imagesPath . 'submit.gif', i18n("Save"), ['class' => 'con_img_button']);
 $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
-$sSubmit = '<input type="image" class="con_img_button align_middle mgl3" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
+#$sSubmit = '<input type="image" class="con_img_button align_middle mgl3" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
 
 try {
     $allSystemProperties = getSystemProperties(true);
@@ -168,11 +175,11 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
             $oLinkDelete->setCustom("systype", urlencode($type));
             $oLinkDelete->setCustom("sysname", urlencode($name));
 
-            $list->setCell(
-                $count,
-                4,
-                $oLinkEdit->render() . ' ' . $oLinkDelete->render()
-            );
+            $controls->setContent([
+                $oLinkEdit->render(), $oLinkDelete->render()
+            ]);
+
+            $list->setCell($count, 4, $controls->render());
         }
         $count++;
     }
