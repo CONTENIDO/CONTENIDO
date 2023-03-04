@@ -133,14 +133,17 @@ $tpl->set('s', 'ARTICLELINK', $articleLink);
 
 // Textfeld
 $oTextboxArtTitle = new cHTMLTextbox("bs_search_text", $bsSearchText, 10);
+$oTextboxArtTitle->setClass('text_medium');
 $oTextboxArtTitle->setStyle('width:135px;');
 
 // Artikel_ID-Feld
 $oTextboxArtID = new cHTMLTextbox("bs_search_id", $bsSearchId, 10);
+$oTextboxArtID->setClass('text_medium');
 $oTextboxArtID->setStyle('width:135px;');
 
 // Date type
 $oSelectArtDateType = new cHTMLSelectElement("bs_search_date_type");
+$oSelectArtDateType->setClass('text_medium');
 $oSelectArtDateType->autoFill(
     [
         'n/a'          => i18n('Ignore'),
@@ -186,6 +189,7 @@ $oSelectArtDateToYear->setDefault($bsSearchDateToYear);
 
 // Author
 $oSelectArtAuthor = new cHTMLSelectElement('bs_search_author');
+$oSelectArtAuthor->setClass('text_medium');
 $oSelectArtAuthor->setStyle('width:135px;');
 $oSelectArtAuthor->autoFill($arrUsers);
 $oSelectArtAuthor->setDefault($bsSearchAuthor);
@@ -330,9 +334,10 @@ $aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml", $aData, $aInformatio
 foreach ($aData as $key => $item) {
     $divKey = new cHTMLDiv("", $key);
     foreach ($item as $data) {
-        $image = new cHTMLImage((string) $data['imgsrc'], "vAlignMiddle");
-        $description = new cHTMLSpan(i18n((string) $data['description']), "tableElement");
+        $image = new cHTMLImage((string) $data['imgsrc'], 'align_middle');
+        $description = new cHTMLSpan(i18n((string) $data['description']), 'mgl3');
         $divItem = new cHTMLDiv($image->render() . $description->render());
+        $divItem->setClass('mgb5');
         $divKey->appendContent($divItem->render());
     }
     $divLegend->appendContent($divKey->render());

@@ -316,7 +316,10 @@ class cGuiSourceEditor extends cGuiPage {
         // if the versioning should be updated and the code changed, create a versioning instance and update it
         if ($this->_versioning && $oldCode != $requestCode) {
             $fileInfoArray = $fileInfos->getFileInformation($this->_versionfilename, $dbFileType);
-            $oVersion = new cVersionFile($fileInfo->get('idsfi'), $fileInfoArray, $requestFile, $dbFileType, $cfg, $cfgClient, $db, $client, $area, $frame, $this->_versionfilename);
+            $oVersion = new cVersionFile(
+                $fileInfo->get('idsfi'), $fileInfoArray, $requestFile, $dbFileType,
+                $cfg, $cfgClient, $db, $client, $area, $frame, $this->_versionfilename
+            );
             // Create new Layout Version in cms/version/css/ folder
             $oVersion->createNewVersion();
         }

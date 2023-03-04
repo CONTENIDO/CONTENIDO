@@ -119,6 +119,7 @@ No Warranty - take a look at the GPL at the end of this file.
 |jQuery 1.8.2|MIT License|https://www.jquery.com|
 |jQuery timepicker addon 1.0.2|MIT or GPL licenses|https://trentrichardson.com/examples/timepicker/|
 |jQuery UI 1.8.23|MIT License|https://www.jqueryui.com|
+|normalize.css v8.0.1|MIT License| https://github.com/necolas/normalize.css|
 |Pseudo-Cron (Cron-Emulator) 1.2.1|GNU General Public Licence (GPL)|http://www.bitfolge.de/?l=en&s=pseudocron|
 |Smarty 3.1.47|GNU Lesser General Public License 2.1 or later|https://www.smarty.net/|
 |SwiftMailer 5.4.6|GNU Lesser General Public License v3|https://swiftmailer.org/|

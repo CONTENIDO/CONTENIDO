@@ -158,6 +158,7 @@ if (!empty($artspec)) {
 unset($form);
 
 $form = new cGuiTableForm("artspec");
+$form->setTableClass('generic col_sm');
 $form->setVar("area", $area);
 $form->setVar("frame", $frame);
 $form->setVar("action", "client_artspec_save");

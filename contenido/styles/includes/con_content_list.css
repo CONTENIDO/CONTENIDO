@@ -1,17 +1,17 @@
 @CHARSET "ISO-8859-1";
 
-.contypeList {
-    border: 1px solid #B3B3B3;
-    padding: 10px;
-    margin: 10px 0;
-}
-.noactive {
+@import "../version_selection.css";
+@import "../content_elements.css";
+
+.no_active {
     border: 1px solid red;
 }
-.contypeList div {
-    min-height: 13px;
+
+.con_content_type_block {
+    margin-bottom: 1.0em;
 }
-.contypeList span.mceEditor div {
+
+.con_content_type_block span.mceEditor div {
     min-height: 0;
 }
 

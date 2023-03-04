@@ -5575,7 +5575,7 @@ msgid ""
 "reviewed and restored.</li><li><strong>advanced: </strong>Additional to the "
 "simple-mode, unpublished drafts can be created.</li></ul><p><strong>Further "
 "information</strong> can be found in related tabs (Content/Articles/"
-"Properties|SEO|Raw data|Editor).</p></div>"
+"Properties|SEO|Raw data|Editor).</p>"
 msgstr ""
 
 #: includes/include.system_configuration.php:223

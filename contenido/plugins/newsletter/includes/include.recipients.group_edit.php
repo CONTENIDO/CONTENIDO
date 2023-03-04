@@ -261,7 +261,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     $oSubmit = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
 
     $sContent = '<div>' . PHP_EOL;
-    $sContent .= '   <table>' . PHP_EOL;
+    $sContent .= '   <table class="borderless">' . PHP_EOL;
     $sContent .= '      <tr>' . PHP_EOL;
     $sContent .= '         <td>' . i18n("Items / page", 'newsletter') . '</td>' . PHP_EOL;
     $sContent .= '         <td>' . $oSelItemsPerPage->render() . '</td>' . PHP_EOL;

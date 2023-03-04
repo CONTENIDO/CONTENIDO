@@ -416,24 +416,41 @@ if ($idart) {
     $tpl->set('s', 'MARKSUBMENU', "");
 }
 
-$cancelbutton = '';
-$acceptbutton = '';
 if ($idart || $area == 'con_tplcfg') {
-    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=con&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
-    $acceptbutton = '<input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
+    $linkArea = 'con';
 } else {
-    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=str&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
-    $acceptbutton = '<input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
+    $linkArea = 'str';
 }
+
+$controls = new cHTMLDiv('', 'con_form_action_control');
+$cancelElement = new cHTMLLink(
+    $sess->url("main.php?area=$linkArea&frame=4&idcat=$idcat"),
+    cHTMLImage::img('images/but_cancel.gif', i18n('Cancel')),
+    'con_img_button'
+);
+$cancelElement->setAttribute('accesskey', 'c');
+
+$acceptElement = new cHTMLButton('save_tplcfg');
+$acceptElement->setAttributes([
+    'class' => 'con_img_button',
+    'accesskey' => 's',
+    'type' => 'image',
+    'src' => 'images/but_ok.gif',
+    'title' => i18n('Save'),
+    'data-action' => 'save_tplcfg',
+]);
+
+$controls->appendContent([$cancelElement, $acceptElement]);
+
 if ($idtpl != 0 && $inUse == false) {
-    $tpl->set('s', 'BUTTONS', $cancelbutton.$acceptbutton);
+    $tpl->set('s', 'BUTTONS', $controls->render());
 } else {
-    $tpl->set('s', 'BUTTONS', $cancelbutton);
+    $tpl->set('s', 'BUTTONS', '');
 }
 
 // Display template description
 if ($idtpl) {
-    $tpl->set('s', 'DESCRIPTION', nl2br($description));
+    $tpl->set('s', 'DESCRIPTION', nl2br(conHtmlentities($description)));
     $tpl->set('s', 'LABLE_DESCRIPTION', i18n("Description"));
 } else {
     $tpl->set('s', 'DESCRIPTION', '');

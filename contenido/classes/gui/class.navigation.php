@@ -25,7 +25,8 @@ cInclude('includes', 'functions.api.images.php');
  * @package    Core
  * @subpackage GUI
  */
-class cGuiNavigation {
+class cGuiNavigation
+{
 
     /**
      * Array storing all data.
@@ -52,17 +53,30 @@ class cGuiNavigation {
     protected $_plugXml;
 
     /**
+     * @var string
+     */
+    protected $_imagesPath;
+
+    /**
+     * @var int
+     */
+    protected $_clientId;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * Loads the XML language file using cXmlReader.
      *
      * @throws cException if XML language files could not be loaded
      */
-    public function __construct() {
+    public function __construct()
+    {
         $cfg = cRegistry::getConfig();
 
         $this->_xml = new cXmlReader();
         $this->_plugXml = new cXmlReader();
+        $this->_imagesPath = $cfg['path']['images'];
+        $this->_clientId = cSecurity::toInteger(cRegistry::getClientId());
 
         // Load language file
         if (!$this->_xml->load($cfg['path']['xml'] . "navigation.xml")) {
@@ -78,8 +92,9 @@ class cGuiNavigation {
      * @return int|string|void
      * @throws cInvalidArgumentException
      */
-    public function __get($name) {
-        if ($name === 'xml' || $name == 'plugxml') {
+    public function __get($name)
+    {
+        if (in_array($name, ['xml', 'plugxml', 'data'])) {
             cDeprecated("The property `' . $name . '` is deprecated since CONTENIDO 4.10.2, it isd not meant for public usage.");
             return $this->{$name};
         }
@@ -101,7 +116,8 @@ class cGuiNavigation {
      * @return string
      *         The found caption
      */
-    public function getName($location) {
+    public function getName($location)
+    {
         $cfg = cRegistry::getConfig();
 
         // If a ";" is found entry is from a plugin -> explode location,
@@ -147,63 +163,69 @@ class cGuiNavigation {
     }
 
     /**
+     * @deprecated Since 4.10.2, Function `_buildHeaderData` is not meant for public usage!
+     */
+    public function _buildHeaderData()
+    {
+        cDeprecated("The function _buildHeaderData() is deprecated since CONTENIDO 4.10.2, is not meant for public usage and there is no replacement!.");
+        $this->buildHeaderData();
+    }
+
+    /**
      * Reads and fills the navigation structure data
      *
      * @throws cDbException
      * @throws cException
      */
-    public function _buildHeaderData() {
+    protected function buildHeaderData()
+    {
         $cfg = cRegistry::getConfig();
         $perm = cRegistry::getPerm();
         $db = cRegistry::getDb();
-        $db2 = cRegistry::getDb();
 
-        // Load main items
+        // First, load main items
         $sql = "SELECT `idnavm`, `location` FROM `%s` ORDER BY `idnavm`";
         $db->query($sql, cRegistry::getDbTableName('nav_main'));
-
-        $tabNavSub = cRegistry::getDbTableName('nav_sub');
-        $tabArea = cRegistry::getDbTableName('area');
-
-        // Loop result and build array
         while ($db->nextRecord()) {
-            // Extract names from the XML document.
-            $main = $this->getName($db->f('location'));
+            $idNavM = cSecurity::toInteger($db->f('idnavm'));
+            $this->data[$idNavM] = [$this->getName($db->f('location'))];
+        }
 
-            // Build data array
-            $this->data[$db->f('idnavm')] = [$main];
+        // Then load them all with second query
+        $inSql = implode(', ', array_keys($this->data));
+        $sql = "SELECT
+                    a.idnavm AS idnavm, a.location AS location, b.name AS area, b.relevant
+                FROM
+                    `" .  cRegistry::getDbTableName('nav_sub') . "` AS a, 
+                    `" . cRegistry::getDbTableName('area') . "` AS b
+                WHERE
+                    a.idnavm IN (" . $inSql . ") AND
+                    a.level  = 0 AND
+                    b.idarea = a.idarea AND
+                    a.online = 1 AND
+                    b.online = 1
+                ORDER BY
+                    a.idnavs";
 
-            $sql = "SELECT
-                        a.location AS location, b.name AS area, b.relevant
-                    FROM
-                        " . $tabNavSub . " AS a, " . $tabArea . " AS b
-                    WHERE
-                        a.idnavm = " . $db->f('idnavm') . " AND
-                        a.level  = 0 AND
-                        b.idarea = a.idarea AND
-                        a.online = 1 AND
-                        b.online = 1
-                    ORDER BY
-                        a.idnavs";
+        $db->query($sql);
 
-            $db2->query($sql);
-
-            while ($db2->nextRecord()) {
-                $area = $db2->f('area');
-                if ($perm->have_perm_area_action($area) || $db2->f('relevant') == 0) {
-                    // if this menu entry is a plugin and plugins are disabled, ignore it
-                    if (cString::findFirstPos($db2->f('location'), ';') !== false && $cfg['debug']['disable_plugins']) {
-                        continue;
-                    }
-                    // Extract names from the XML document.
-                    try {
-                        $name = $this->getName($db2->f('location'));
-                    } catch(cException $e) {
-                        $this->errors[] = i18n('Unable to load ' . $db2->f('location'));
-                        continue;
-                    }
-                    $this->data[$db->f('idnavm')][] = [$name, $area];
+        while ($db->nextRecord()) {
+            $idNavM = cSecurity::toInteger($db->f('idnavm'));
+            $area = $db->f('area');
+            $location = $db->f('location');
+            if ($perm->have_perm_area_action($area) || $db->f('relevant') == 0) {
+                // if this menu entry is a plugin and plugins are disabled, ignore it
+                if (cString::findFirstPos($location, ';') !== false && $cfg['debug']['disable_plugins']) {
+                    continue;
                 }
+                // Extract names from the XML document.
+                try {
+                    $name = $this->getName($location);
+                } catch(cException $e) {
+                    $this->errors[] = i18n('Unable to load ' . $location);
+                    continue;
+                }
+                $this->data[$idNavM][] = [$name, $area];
             }
         }
 
@@ -221,13 +243,13 @@ class cGuiNavigation {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function buildHeader($lang) {
+    public function buildHeader($lang)
+    {
         $lang = cSecurity::toInteger($lang);
-        $this->_buildHeaderData();
+        $this->buildHeaderData();
 
         $sess = cRegistry::getSession();
         $cfg = cRegistry::getConfig();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
         $main = new cTemplate();
         $sub = new cTemplate();
 
@@ -235,7 +257,7 @@ class cGuiNavigation {
         $numSubMenus = 0;
 
         $properties = new cApiPropertyCollection();
-        $clientImage = $properties->getValue('idclient', $client, 'backend', 'clientimage', false);
+        $clientImage = $properties->getValue('idclient', $this->_clientId , 'backend', 'clientimage', false);
 
         $sJsEvents = '';
         foreach ($this->data as $id => $item) {
@@ -255,6 +277,7 @@ class cGuiNavigation {
                     $link->setTargetFrame('content');
                     $link->setContent(i18n($value[0]));
 
+                    // NOTE: Help system is currently not used!
                     if ($cfg['help'] == true) {
                         $sJsEvents .= "\n\t" . '$("#sub_' . $value[1] . '").click(function() { $("#help").attr("data", "' . $value[0] . '"); })';
                     }
@@ -270,6 +293,7 @@ class cGuiNavigation {
                 $link->setClass('main');
                 $link->setID('main_' . $id);
                 $link->setLink('javascript:void(0)');
+                $link->disableAutomaticParameterAppend();
                 $link->setAttribute('ident', 'sub_' . $id);
                 $link->setContent(i18n($item[0]));
 
@@ -292,34 +316,42 @@ class cGuiNavigation {
 
         $main->set('s', 'SUBMENUS', $t_sub);
 
-        $backendUrl = cRegistry::getBackendUrl();
-
         // my CONTENIDO link
         $link = new cHTMLLink();
-        $link->setClass('main');
+        $link->setClass('con_img_button');
         $link->setTargetFrame('content');
         $link->setLink($sess->url("frameset.php?area=mycontenido&frame=4"));
-        $link->setContent('<img class="borderless vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'my_contenido.gif" alt="My CONTENIDO" id="imgMyContenido" title="' . i18n("My CONTENIDO") . '">');
+        $link->disableAutomaticParameterAppend();
+        $link->setContent(
+            cHTMLImage::img($this->_imagesPath . 'my_contenido.gif', i18n('My CONTENIDO'), ['class' => 'align_middle'])
+        );
         $main->set('s', 'MYCONTENIDO', $link->render());
 
         // info link
         $link = new cHTMLLink();
-        $link->setClass('main');
+        $link->setClass('con_img_button');
         $link->setTargetFrame('content');
         $link->setLink($sess->url('frameset.php?area=info&frame=4'));
-        $link->setContent('<img alt="" class="borderless vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'info.gif" alt="Info" title="Info" id="imgInfo">');
+        $link->disableAutomaticParameterAppend();
+        $link->setContent(
+            cHTMLImage::img($this->_imagesPath . 'info.gif', i18n('Info'), ['class' => 'align_middle'])
+        );
         $main->set('s', 'INFO', $link->render());
 
         $main->set('s', 'LOGOUT', $sess->url('logout.php'));
 
+        // NOTE: Help system is currently not used!
         if ($cfg['help'] == true) {
             // help link
             $link = new cHTMLLink();
             $link->setID('help');
-            $link->setClass('main');
+            $link->setClass('con_img_button');
             $link->setLink('javascript:void(0)');
-            $link->setEvent('click', 'Con.Help.show($(\'#help\').attr(\'data\'));');
-            $link->setContent('<img class="borderless vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'but_help.gif" alt="Hilfe" title="Hilfe">');
+            $link->disableAutomaticParameterAppend();
+            $link->setAttribute('data-action', 'show_help');
+            $link->setContent(
+                cHTMLImage::img($this->_imagesPath . 'but_help.gif', i18n('Help'), ['class' => 'align_middle'])
+            );
             $main->set('s', 'HELP', $link->render());
         } else {
             $main->set('s', 'HELP', '');
@@ -327,7 +359,6 @@ class cGuiNavigation {
 
         $auth = cRegistry::getAuth();
         $oUser = new cApiUser($auth->auth["uid"]);
-        $clientCollection = new cApiClientCollection();
 
         if (getEffectiveSetting('system', 'clickmenu') == 'true') {
             // set click menu
@@ -350,25 +381,25 @@ class cGuiNavigation {
                 $errorString .= $error.'<br>';
             }
             $errorString .= '<br>' . i18n('Some plugin menus can not be shown because of these errors.');
-            $helpBox = new cGuiBackendHelpbox($errorString, './images/but_warn.gif');
+            $helpBox = new cGuiBackendHelpbox($errorString, $this->_imagesPath . 'but_warn.gif');
             $main->set('s', 'LANG', $helpBox->render(true) . $this->_renderLanguageSelect($lang));
         } else {
             $main->set('s', 'LANG', $this->_renderLanguageSelect($lang));
         }
 
-        if ($client > 0) {
-            $oClient = new cApiClient($client);
+        if ($this->_clientId > 0) {
+            $oClient = new cApiClient($this->_clientId );
             if ($oClient->isLoaded()) {
                 $sClientName = $oClient->get('name');
             } else {
-                $client = 0;
+                $this->_clientId = 0;
                 $sClientName = i18n("No client");
             }
         } else {
             $sClientName = i18n("No client");
         }
 
-        if ($client === 0) {
+        if ($this->_clientId === 0) {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> %s';
             if (cString::getStringLength($sClientName) > 25) {
                 $sClientName = cString::trimHard($sClientName, 25);
@@ -377,8 +408,8 @@ class cGuiNavigation {
         } else {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
 
-            $sClientName = $sClientName . ' (' . $client . ')';
-            $sClientNameWithHtml = '<span id="chosenclient">' .$sClientName . '</span>';
+            $sClientName = $sClientName . ' (' . $this->_clientId . ')';
+            $sClientNameWithHtml = '<span id="chosen_client">' .$sClientName . '</span>';
 
             $sClientUrl = cRegistry::getFrontendUrl();
             $frontendPath = cRegistry::getFrontendPath();
@@ -421,16 +452,8 @@ class cGuiNavigation {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function _renderLanguageSelect($lang) {
-        $cfg = cRegistry::getConfig();
-
-        $tpl = new cTemplate();
-
-        $tpl->set('s', 'NAME', 'changelang');
-        $tpl->set('s', 'CLASS', 'vAlignMiddle text_medium');
-        $tpl->set('s', 'ID', 'cLanguageSelect');
-        $tpl->set('s', 'OPTIONS', '');
-
+    public function _renderLanguageSelect($lang)
+    {
         $availableLanguages = new cApiLanguageCollection();
 
         if (getEffectiveSetting('system', 'languageorder', 'name') == 'name') {
@@ -439,23 +462,28 @@ class cGuiNavigation {
             $availableLanguages->select('', '', 'idlang ASC');
         }
 
-        if ($availableLanguages->count() > 0) {
-            $client = cSecurity::toInteger(cRegistry::getClientId());
+        $select = new cHTMLSelectElement('changelang', '', 'language_select');
+        $select->setAttribute('data-action-change', 'select_language');
+        $select->setDefault($lang);
+        $counter = 0;
 
+        if ($availableLanguages->count() > 0) {
             while (($myLang = $availableLanguages->nextAccessible()) !== NULL) {
-                $key = $myLang->get('idlang');
-                $value = $myLang->get('name');
+                $languageId = cSecurity::toInteger($myLang->get('idlang'));
+                $languageName = $this->_truncateSelectOption($myLang->get('name'));
 
                 $clientsLang = new cApiClientLanguage();
-                $clientsLang->loadBy('idlang', cSecurity::toInteger($key));
+                $clientsLang->loadBy('idlang', $languageId);
                 if ($clientsLang->isLoaded()) {
-                    if ($clientsLang->get('idclient') == $client) {
-                        $this->_renderSelectOption($tpl, $key, $value, $lang);
+                    if (cSecurity::toInteger($clientsLang->get('idclient')) === $this->_clientId) {
+                        $selected = $languageId == $lang;
+                        $option = new cHTMLOptionElement($languageName, $languageId, $selected);
+                        $select->addOptionElement(++$counter, $option);
                     }
                 }
             }
 
-            return $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
+            return $select->toHtml();
         } else {
             $template = '<span class="textg_medium pdr5">%s</span>';
             $text = trim(trim(i18n('-- No Language available --'), ' -'));
@@ -473,10 +501,8 @@ class cGuiNavigation {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function _renderClientSelect() {
-        $cfg = cRegistry::getConfig();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-
+    protected function _renderClientSelect()
+    {
         // Get all accessible clients
         $clientCollection = new cApiClientCollection();
         $clients = $clientCollection->getAccessibleClients();
@@ -484,49 +510,40 @@ class cGuiNavigation {
             return '';
         }
 
-        $tpl = new cTemplate();
-        $tpl->set('s', 'NAME', 'changeclient');
-        $tpl->set('s', 'CLASS', 'vAlignMiddle text_medium nodisplay');
-        $tpl->set('s', 'ID', 'cClientSelect');
-        $tpl->set('s', 'OPTIONS', 'onchange="Con.Header.changeContenidoClient(this.value)"');
-
-        // add all accessible clients to the select
+        $select = new cHTMLSelectElement('select_client', '', 'select_client');
+        $select->setStyle('display: none;');
+        $select->setAttribute('data-action-change', 'select_client');
+        $select->setDefault($this->_clientId);
+        $counter = 0;
         foreach ($clients as $idclient => $clientInfo) {
-            $name = $clientInfo['name'];
-            $this->_renderSelectOption($tpl, $idclient, $name, $client);
+            $name = $this->_truncateSelectOption($clientInfo['name']);
+            $selected = $idclient == $this->_clientId;
+            $option = new cHTMLOptionElement($name, $idclient, $selected);
+            $select->addOptionElement(++$counter, $option);
         }
+        $html = $select->toHtml();
 
-        $html = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
-        $editButton = new cHTMLImage(cRegistry::getBackendUrl() . $cfg['path']['images'] . 'but_edithead.gif');
-        $editButton->setID('changeclient');
-        $editButton->setClass("vAlignMiddle");
+        $editButton = new cHTMLImage($this->_imagesPath . 'but_edithead.gif');
+        $editButton->setAttribute('data-action', 'change_client');
+        $editButton->setClass("con_img_button align_middle mgl3");
         $editButton->appendStyleDefinition('cursor', 'pointer');
 
         return $html . $editButton->render();
     }
 
     /**
-     * Renders the options for the client and language select.
-     * @param cTemplate $tpl
-     * @param $key
-     * @param $value
-     * @param $selectedKey
-     * @return void
+     * Truncates the option text for client and language select.
+     * Any text longer than 20 characters will be truncated with ellipsis (...).
+     *
+     * @param string $value
+     * @return string
      */
-    protected function _renderSelectOption(cTemplate $tpl, $key, $value, $selectedKey) {
-        if ($key == $selectedKey) {
-            $tpl->set('d', 'SELECTED', 'selected');
-        } else {
-            $tpl->set('d', 'SELECTED', '');
-        }
-
+    protected function _truncateSelectOption(string $value): string
+    {
         if (cString::getStringLength($value) > 20) {
             $value = cString::trimHard($value, 20);
         }
-
-        $tpl->set('d', 'VALUE', $key);
-        $tpl->set('d', 'CAPTION', $value . ' (' . $key . ')');
-        $tpl->next();
+        return $value;
     }
 
     /**
@@ -535,7 +552,8 @@ class cGuiNavigation {
      *
      * @return bool
      */
-    public function hasErrors() {
+    public function hasErrors()
+    {
         return count($this->errors) > 0;
     }
 
@@ -544,7 +562,8 @@ class cGuiNavigation {
      *
      * @return array
      */
-    public function getErrors() {
+    public function getErrors()
+    {
         return $this->errors;
     }
 

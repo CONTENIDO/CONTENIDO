@@ -42,35 +42,47 @@ if ($action == 'client_delete') {
 
 $clientColl->select();
 
+$menu = new cGuiMenu();
+
+$showLink = new cHTMLLink();
+$showLink->setClass('show_item')
+    ->setLink('javascript:void(0)')
+    ->setAttribute('data-action', 'show_client');
+
+$deleteLink = new cHTMLLink();
+$deleteLink->setClass('con_img_button')
+    ->setLink('javascript:void(0)')
+    ->setAlt(i18n("Delete client"))
+    ->setAttribute('data-action', 'client_delete')
+    ->setContent(cHTMLImage::img($cfg['path']['images'] . 'delete.gif', i18n("Delete client")));
+
 while ($oClient = $clientColl->next()) {
-    $idclient = $oClient->get('idclient');
+    $idclient = cSecurity::toInteger($oClient->get('idclient'));
     $name = $oClient->get('name');
     if ((cString::findFirstPos($auth->auth['perm'], "client[$idclient]") !== false) || (cString::findFirstPos($auth->auth['perm'], 'sysadmin') !== false)) {
-        if ($requestIdClient == $idclient) {
-            $tpl->set('d', 'ID', 'id="marked" data-id="' . $idclient . '"');
+        $menu->setId($idclient, $idclient);
+        $menu->setLink($idclient, $showLink);
+        $menu->setTitle($idclient, conHtmlSpecialChars($name));
+
+        if ($oClient->hasLanguages()) {
+            $delTitle = i18n("Client has a language, cannot delete");
+            $deleteLinkStr = cHTMLImage::img($cfg['path']['images'] . 'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
+        } else if (!$perm->have_perm_area_action('client', 'client_delete')) {
+            $delTitle = i18n("No permissions");
+            $deleteLinkStr = cHTMLImage::img($cfg['path']['images'] . 'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
         } else {
-            $tpl->set('d', 'ID', 'data-id="' . $idclient . '"');
+            $deleteLinkStr = $deleteLink->render();
         }
+        $menu->setActions($idclient, 'delete', $deleteLinkStr);
 
-        $tpl->set('d', 'ICON', '');
-
-        $showLink = '<a href="javascript:void(0)" class="show_item" data-action="show_client">' . conHtmlSpecialChars($name) . '</a>';
-        $tpl->set('d', 'TEXT', $showLink);
-
-        if (!$oClient->hasLanguages() && $perm->have_perm_area_action('client', 'client_delete')) {
-            $delTitle = i18n("Delete client");
-            $deleteLink = '
-                <a href="javascript:void(0)" data-action="delete_client" title="' . $delTitle . '">
-                    <img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
-                </a>';
-        } else {
-            $deleteLink = '&nbsp;';
+        if ($requestIdClient === $idclient) {
+            $menu->setMarked($idclient);
         }
-        $tpl->set('d', 'DELETE', $deleteLink);
-
-        $tpl->next();
     }
 }
+
+$tpl->set('s', 'GENERIC_MENU', $menu->render(false));
+
 
 $tpl->set('s', 'DELETE_MESSAGE', i18n("Do you really want to delete the following client:<br><br>%s<br>"));
 

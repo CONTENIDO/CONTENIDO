@@ -33,20 +33,14 @@
 
 </head>
 
-<body>
-
-    <div style="border-top: 1px solid #0060b1;"></div>
+<body class="border_t_06">
 
     <div id="head">
 
         <a id="head_logo" target="content" href="{MAINLOGINLINK}"><img title="CONTENIDO Website" alt="CONTENIDO Website" src="images/conlogo.gif"></a>
 
         <div id="mhighlight">
-            <table cellspacing="0" cellpadding="0" border="0">
-                <tr><td>
-                    <span id="htext">&nbsp;</span>
-                </td></tr>
-            </table>
+            <span id="htext">&nbsp;</span>
         </div>
 
         <div id="head_info" class="head_nav left_dist">
@@ -58,8 +52,8 @@
                 {MYCONTENIDO}
                 {INFO}
                 {HELP}
-                <a class="main" href="{LOGOUT}" target="_top">
-                    <img class="vAlignMiddle" src="images/but_logout.gif" alt="Logout" title="Logout">
+                <a class="con_img_button" href="{LOGOUT}" target="_top">
+                    <img class="align_middle" src="images/but_logout.gif" alt="Logout" title="Logout">
                 </a>
             </div>
         </div>
@@ -80,7 +74,7 @@
     <div class="clear"></div>
 
     <script type="text/javascript">
-    var $cLanguageSelect = $("#cLanguageSelect");
+    var $languageSelect = $("#language_select");
 
     function selectText() {
         if (document.selection) {
@@ -96,20 +90,20 @@
 
     function languageSelectAdd(name, idlang) {
         var text = name + ' (' + idlang + ')';
-        $cLanguageSelect.append(new Option(text, idlang, false, false));
+        $languageSelect.append(new Option(text, idlang, false, false));
     }
 
     function languageSelectRemove(idlang) {
-        var oldLang = $cLanguageSelect.val();
-        $cLanguageSelect.find("option[value='" + idlang + "']").remove();
-        if (oldLang == idlang && $cLanguageSelect.val() != null) {
-            Con.Header.changeContenidoLanguage($cLanguageSelect.val());
+        var oldLang = $languageSelect.val();
+        $languageSelect.find("option[value='" + idlang + "']").remove();
+        if (oldLang == idlang && $languageSelect.val() != null) {
+            Con.Header.changeContenidoLanguage($languageSelect.val());
         }
     }
 
     function languageSelectUpdate(name, idlang) {
         var text = name + ' (' + idlang + ')';
-        $cLanguageSelect.find("option[value='" + idlang + "']").text(text);
+        $languageSelect.find("option[value='" + idlang + "']").text(text);
     }
 
     (function(Con, $) {
@@ -118,20 +112,12 @@
             {HEADER_MENU_OBJ}.initialize({HEADER_MENU_OPTIONS});
             Con.Registry.set("headerMenu", {HEADER_MENU_OBJ});
 
-            $('#head_logo, #imgMyContenido, #imgInfo').click(function() {
-                Con.Header.resetHeaderMenu();
-            });
-
             if ('undefined' !== typeof(Con.UtilUrl.getParams().active_submenu)) {
-                jQuery(window).on("load", function() {
-                    {HEADER_MENU_OBJ}.activate(jQuery("#" + Con.UtilUrl.getParams().active_submenu).get(0));
-                    {HEADER_MENU_OBJ}.markActive(jQuery("#" + Con.UtilUrl.getParams().active_submenuitem).get(0));
-                });
+                {HEADER_MENU_OBJ}.activate($("#" + Con.UtilUrl.getParams().active_submenu).get(0));
+                {HEADER_MENU_OBJ}.markActive($("#" + Con.UtilUrl.getParams().active_submenuitem).get(0));
             }
 
-            $cLanguageSelect.on("change", function() {
-                Con.Header.changeContenidoLanguage($cLanguageSelect.val());
-            });
+            Con.Header.registerEventHandler();
         });
 
         {FOOTER_JS}

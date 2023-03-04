@@ -158,9 +158,10 @@ class PifaLeftBottomPage extends cGuiPage {
                     $inUseDescr = i18n("Click for more information about usage");
                     $link = new cHTMLLink();
                     $link->setLink('javascript:void(0)')
+                        ->setClass('con_img_button')
                         ->setAttribute("data-dialog-text", $dialogText)
                         ->setAttribute('data-action', 'inused_form')
-                        ->setContent('<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'exclamation.gif" title="' . $inUseDescr . '" alt="' . $inUseDescr . '">');
+                        ->setContent('<img src="' . $cfg['path']['images'] . 'exclamation.gif" title="' . $inUseDescr . '" alt="' . $inUseDescr . '">');
                     $menu->setActions($idform, 'inuse', $link);
                 }
             }
@@ -170,11 +171,12 @@ class PifaLeftBottomPage extends cGuiPage {
                 $deleteForm = Pifa::i18n('DELETE_FORM');
                 $link = new cHTMLLink();
                 $link->setLink('javascript:void(0)')
+                    ->setClass('con_img_button')
                     ->setAttribute('data-action', 'delete_form')
-                    ->setContent('<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
+                    ->setContent('<img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
                 $menu->setActions($idform, 'delete', $link);
             } else {
-                $menu->setActions($idform, 'delete', '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete_inact.gif" title="" alt="">');
+                $menu->setActions($idform, 'delete', '<img class="con_img_button_off" src="' . $cfg['path']['images'] . 'delete_inact.gif" title="" alt="">');
             }
         }
 

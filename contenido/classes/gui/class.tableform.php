@@ -91,6 +91,12 @@ class cGuiTableForm
     public $tableid = '';
 
     /**
+     * Table class attribute value
+     * @var string
+     */
+    public $tableClass = 'generic';
+
+    /**
      *
      * @var string
      */
@@ -324,6 +330,27 @@ class cGuiTableForm
 
     /**
      *
+     * @param string $tableClass
+     */
+    public function setTableClass($tableClass) {
+        $this->tableClass = $tableClass;
+    }
+
+    /**
+     *
+     * @param string $tableClass
+     */
+    public function addTableClass($tableClass) {
+        $tableClasses = explode(' ', trim($this->tableClass));
+        $tableClass = trim($tableClass);
+        if (!in_array($tableClass, $tableClasses)) {
+            $tableClasses[] = $tableClass;
+        }
+        $this->tableClass = implode(' ', $tableClasses);
+    }
+
+    /**
+     *
      * @param string $id
      */
     public function unsetActionButton($id)
@@ -358,6 +385,7 @@ class cGuiTableForm
         $tpl->set('s', 'HIDDEN_VALUES', $this->renderHiddenValues());
 
         $tpl->set('s', 'ID', $this->tableid);
+        $tpl->set('s', 'CLASS', $this->tableClass);
 
         $tableHead = $this->renderHeader();
         $tpl->set('s', 'HEADER', $this->renderHeader());
@@ -474,6 +502,8 @@ class cGuiTableForm
         if ($this->cancelLink != '') {
             $image = new cHTMLImage(cRegistry::getBackendUrl() . 'images/but_cancel.gif');
             $link = new cHTMLLink($this->cancelLink);
+            $class = count($this->custom) ? 'con_img_button' : 'con_img_button last';
+            $link->setClass($class);
             $link->setContent($image);
             $cancelLink = $link->render();
         }
@@ -488,6 +518,8 @@ class cGuiTableForm
     {
         $customButtons = '';
 
+        $countCustom = count($this->custom);
+        $count = 0;
         foreach ($this->custom as $key => $value) {
             $accesskey = $value['accesskey'] !== false ? $value['accesskey'] : '';
 
@@ -508,7 +540,8 @@ class cGuiTableForm
                 }
             }
 
-            $button = new cHTMLFormElement('submit', '', '', '', '', 'image_button');
+            $class = (++$count === $countCustom) ? 'con_img_button last' : 'con_img_button';
+            $button = new cHTMLFormElement('submit', '', '', '', '', $class);
             $button->setAttribute('type', 'image');
             $button->setAttribute('src', $value['image']);
             $button->setAlt($value['description']);

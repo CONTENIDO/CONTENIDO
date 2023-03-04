@@ -204,7 +204,41 @@
 
             var self = this;
             Header.show.apply(self, [menu.getActiveSubMenu(), menu.getActiveMenu()]);
+        },
+
+        /**
+         * Registers event handler (click/change) on some header elements
+         */
+        registerEventHandler: function() {
+            $('#head_logo, #imgMyContenido, #imgInfo').click(function() {
+                Con.Header.resetHeaderMenu();
+            });
+
+            $('#head [data-action]').live('click', function() {
+                var $element = $(this),
+                    action = $element.data('action');
+
+                if (action === 'change_client') {
+                    $('#chosen_client').hide();
+                    $('#select_client').show();
+                    $element.hide();
+                } else if (action === 'show_help') {
+                    Con.Help.show($element.attr('data'));
+                }
+            });
+
+            $('#head [data-action-change]').on('change', function() {
+                var $element = $(this),
+                    action = $element.data('action-change');
+
+                if (action === 'select_client') {
+                    Con.Header.changeContenidoClient($element.val());
+                } else if (action === 'select_language') {
+                    Con.Header.changeContenidoLanguage($element.val());
+                }
+            });
         }
+
     };
 
     Con.Header = Header;
@@ -534,17 +568,6 @@
     });
 
     Con.HeaderDelayMenu = HeaderDelayMenu;
-
-    // Bootstrap header on document load
-    // @TODO  Move this to a separate file...
-    $(function() {
-        $('#changeclient').click(function() {
-            $('#chosenclient').hide();
-            $('#cClientSelect').show();
-            $(this).hide();
-        });
-    });
-
 
 })(Con, Con.$);
 

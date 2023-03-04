@@ -51,15 +51,17 @@ $tpl->set('s', 'FORMACTION', '');
 
 $sDisplayPath = generateDisplayFilePath($sDisplayPath, 35);
 $tpl->set('s', 'CAPTION2', $sDisplayPath);
+$tpl->set('s', 'CREATEALT', i18n('Create'));
 $tpl->set('s', 'NOTIFICATION', '');
 
 // Form for 'Search'
 $search = new cHTMLTextbox('searchfor', $searchfor, 26);
-$search->setClass('text_small vAlignMiddle');
+$search->setClass('align_middle mgr5');
 $sSearch = $search->render();
 
+$submitImg = cHTMLImage::img('images/submit.gif', i18n('Search'), ['class' => 'con_img_button align_middle']);
 $form = new cHTMLForm('search');
-$form->appendContent($sSearch . ' <input class="vAlignMiddle tableElement" type="image" src="images/submit.gif" alt="">');
+$form->appendContent($sSearch . ' ' . $submitImg);
 $form->setVar('area', $area);
 $form->setVar('frame', $frame);
 $form->setVar('contenido', $sess->id);
@@ -91,6 +93,7 @@ if ($perm->have_perm_area_action('upl', 'upl_mkdir') && $client > 0) {
     // No permission with current rights
     $tpl->set('s', 'CAPTION', '');
     $tpl->set('s', 'CAPTION2', '');
+    $tpl->set('s', 'CREATEALT', i18n('Create'));
     $tpl->set('s', 'TARGET', '');
     $tpl->set('s', 'SUBMIT', '');
     $tpl->set('s', 'ACTION', '');

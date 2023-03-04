@@ -29,24 +29,28 @@
     })(Con, Con.$);
     </script>
 </head>
-<body style="margin:10px">
+<body class="page_generic">
 {NOTIFICATION}
 {FORM}
-<table class="generic" cellspacing="0" cellpadding="2" border="0">
+<table class="generic col_md">
     <tr class="text_medium">
-        <th valign="top">{PROPERTY}</th>
-        <th valign="top" align="left">{VALUE}</th>
+        <th class="align_top">{PROPERTY}</th>
+        <th class="align_top text_left">{VALUE}</th>
     </tr>
     <!-- BEGIN:BLOCK -->
     <tr class="text_medium">
-        <td valign="top">{CATNAME}</td>
-        <td valign="top" align="left">{CATFIELD}</td>
+        <td class="align_top">{CATNAME}</td>
+        <td class="align_top text_left">{CATFIELD}</td>
     </tr>
     <!-- END:BLOCK -->
     <tr class="text_medium">
-        <td valign="top" style="border-right-width: 0;">&nbsp;</td>
-        <td valign="top" align="right">
-            <a href="{CANCELLINK}"><img src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}"></a><img src="images/spacer.gif" width="20"><input type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}">
+        <td colspan="2" class="align_top text_right">
+            <div class="con_form_action_control">
+                <input class="con_img_button" type="image" accesskey="s" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}">
+                <a class="con_img_button" accesskey="c" href="{CANCELLINK}">
+                    <img src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}">
+                </a>
+            </div>
         </td>
     </tr>
 </table>

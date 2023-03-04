@@ -1,0 +1,18 @@
+/**
+ * system_log_sysvalues styles
+ */
+
+#system_log_sysvalues .con_navbar .con_img_button,
+#system_log_sysvalues .con_navbar .con_img_button {
+    margin-left: 5px;
+}
+
+#system_log_sysvalues textarea {
+    width: 100%;
+}
+
+#system_log_sysvalues .con_navbar select,
+#system_log_sysvalues .con_navbar input,
+#system_log_sysvalues .con_navbar input {
+    margin-left: 5px;
+}

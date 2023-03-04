@@ -38,14 +38,14 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled) {
     $tr = new cHTMLTableRow();
 
     $td = new cHTMLTableData();
-    $td->setClass('text_medium');
+    $td->setClass('text_medium no_wrap');
     $td->setContent(i18n('Short URL', 'url_shortener'));
     $tr->appendContent($td);
 
 	$infoButton = new cGuiBackendHelpbox(i18n('INFO', 'url_shortener'));
 
     $td = new cHTMLTableData();
-    $td->setClass('leftData');
+    $td->setClass('text_medium');
     $textbox = new cHTMLTextbox('url_shortener_shorturl', $shortUrl->get('shorturl'), 24, '', '', $disabled, NULL, '', 'textField');
     $td->setContent($textbox . ' ' . $infoButton->render());
     $tr->appendContent($td);

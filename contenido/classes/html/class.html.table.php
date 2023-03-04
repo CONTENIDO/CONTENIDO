@@ -31,9 +31,6 @@ class cHTMLTable extends cHTMLContentElement {
         parent::__construct();
 
         $this->_tag = 'table';
-        $this->setPadding(0);
-        $this->setSpacing(0);
-        $this->setBorder(NULL);
     }
 
     /**

@@ -17,7 +17,8 @@
 }
 
 .upl_files_overview .empty_cell {
-    min-height: 10px;
+    height: 10px;
+    padding: 0;
 }
 
 /* Centering the dialog content */

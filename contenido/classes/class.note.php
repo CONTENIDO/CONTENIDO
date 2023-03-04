@@ -364,15 +364,15 @@ class NoteListItem extends cHTMLDiv {
 
         $table = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td><b>';
         $table .= $this->_sAuthor;
-        $table .= '</b></td><td align="right">';
+        $table .= '</b></td><td class="text_right">';
         $table .= $this->_sDate;
 
         if ($this->_bDeleteable == true) {
             $oDeleteable = new cHTMLLink();
-            $oDeleteable->setClass("vAlignMiddle tableElement");
+            $oDeleteable->setClass("con_img_button mgl3");
             $oDeletePic = new cHTMLImage(cRegistry::getBackendUrl() . '/images/delete.gif');
             $oDeleteable->setContent($oDeletePic);
-            $oDeleteable->setLink($sess->url("main.php?frame=2&area=note&itemtype=$itemtype&itemid=$itemid&action=note_delete&deleteitem=$deleteitem"));
+            $oDeleteable->setLink($sess->url("main.php?frame=2&area=note&itemtype=$itemtype&itemid=$itemid&action=con&deleteitem=$deleteitem"));
 
             $table .= '</td><td width="1">' . $oDeleteable->render();
         }

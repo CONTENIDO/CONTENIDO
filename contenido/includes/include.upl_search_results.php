@@ -256,7 +256,7 @@ if ($sortby == 6 && $sortmode == "DESC") {
 }
 
 $sToolsRow = '<tr class="textg_medium">
-                  <th colspan="6" id="cat_navbar">
+                  <th colspan="6" class="con_navbar">
                       <div class="toolsRight">' . i18n("Searched for:") . " " . $searchfor . '</div>
                   </th>
               </tr>';
@@ -268,14 +268,14 @@ $sSpacedRow = '<tr height="10">
                </tr>';
 
 $pagerwrap = '<tr>
-                <th colspan="6" id="cat_navbar" class="vAlignMiddle">
+                <td colspan="6" class="con_navbar" class="vAlignMiddle">
                     <div class="toolsRight">
                         <div class="vAlignMiddle">-C-SCROLLLEFT-</div>
                         <div class="vAlignMiddle">-C-PAGE-</div>
                         <div class="vAlignMiddle">-C-SCROLLRIGHT-</div>
                     </div>
-                    ' . i18n("Files per Page") . ' -C-FILESPERPAGE-
-                </th>
+                   <span class="vAlignMiddle">' . i18n("Files per Page") . ' -C-FILESPERPAGE-</span>
+                </td>
             </tr>';
 
 $startwrap = '<table class="hoverbox generic">
@@ -290,11 +290,11 @@ $startwrap = '<table class="hoverbox generic">
                 </tr>';
 $itemwrap = '<tr data-list-item="{LIST_ITEM_POS}">
                     <td align="center">%s</td>
-                    <td class="vAlignTop nowrap">%s</td>
-                    <td class="vAlignTop nowrap">%s</td>
-                    <td class="vAlignTop nowrap">%s</td>
-                    <td class="vAlignTop nowrap">%s</td>
-                    <td class="vAlignTop nowrap">%s</td>
+                    <td class="vAlignTop no_wrap">%s</td>
+                    <td class="vAlignTop no_wrap">%s</td>
+                    <td class="vAlignTop no_wrap">%s</td>
+                    <td class="vAlignTop no_wrap">%s</td>
+                    <td class="vAlignTop no_wrap">%s</td>
                 </tr>';
 $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 
@@ -454,7 +454,7 @@ $form->setVar("startpage", $startpage);
 $form->setVar("appendparameters", $appendparameters);
 
 $select = new cHTMLSelectElement("thumbnailmode");
-$select->setClass("vAlignMiddle tableElement");
+$select->setClass("align_middle mgl3");
 $values = [
     25 => "25",
     50 => "50",
@@ -464,7 +464,7 @@ $values = [
 $select->autoFill($values);
 $select->setDefault($thumbnailmode);
 
-$topbar = $select->render() . '<input type="image" src="images/submit.gif" class="img_form_submit vAlignMiddle tableElement">';
+$topbar = $select->render() . cHTMLImage::img('images/submit.gif', i18n('Search'), ['class' => 'con_img_button align_middle mgl3']);
 
 $output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
 

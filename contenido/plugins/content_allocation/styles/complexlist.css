@@ -3,7 +3,7 @@
     position: relative;
     /*min-height: 250px;*/
     height: 360px;
-    width: 730px;
+    width: 720px;
     overflow: auto;
     margin-bottom: 10px;
 }
@@ -91,12 +91,13 @@
 
 .domenabled ul#finder input {
     float: left;
+    margin: 3px 3px 0 3px;
 }
 
 #choosenList {
     border: 1px #B3B3B3 solid;
     background-color: #E2E2E2;
-    width: 730px;
+    width: 720px;
     padding: 5px;
 }
 
@@ -106,4 +107,12 @@
 
 #choosenList li {
     list-style-type: square;
+}
+
+#contentallocation_article .con_form_action_control {
+    text-align: right;
+    padding: 5px;
+    width: 720px;
+    border: 1px #B3B3B3 solid;
+    background-color: #FFF;
 }

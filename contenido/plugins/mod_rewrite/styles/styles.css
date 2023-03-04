@@ -17,13 +17,6 @@
  * @link       https://www.4fb.de
  * @link       https://www.contenido.org
  * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2011-04-11
- *
- *   $Id$:
- * }}
- *
  */
 
 
@@ -32,72 +25,64 @@
  * @section mrPlugin
  */
 
-body.mrPlugin {margin:10px;}
+body.mrPlugin {
+    margin: 10px;
+}
 
-.mrPlugin a {color:#0060b1;}
-.mrPlugin strong {font-weight:bold;}
-.mrPlugin img {border:none;}
+.mrPlugin pre.example {
+    padding: 3px 5px;
+    border: 1px #000 dashed;
+    width: 60%;
+    min-width: 650px;
+}
 
-.mrPlugin pre.example {padding:3px 5px; border:1px #000 dashed; width:60%; min-width:650px;}
+.mrPlugin li {
+    padding-bottom: 0.4em;
+}
 
-.mrPlugin li {padding-bottom:0.4em;}
+.mrPlugin span.note {
+    color: red;
+}
 
-.mrPlugin span.note {color:red;}
-.mrPlugin input.disabled {background-color:#dadada;}
+.mrPlugin input.disabled {
+    background-color: #dadada;
+}
 
-.mrPlugin .altBg {background-color:#f1f1f1;}
-.mrPlugin .aToolTip ul {padding-left:1em;}
-.mrPlugin .clear {clear:both; font-size:0 !important; height:0 !important; line-height:0pt !important;}
-.mrPlugin .blockLeft {display:block; float:left;}
-.mrPlugin .blockRight {display:block; float:right;}
+.mrPlugin .aToolTip ul {
+    padding-left: 1em;
+}
 
 /* Header box */
-.mrPlugin .headerBox {background-color:#e2e2e2; border:1px solid #b5b5b5; padding:6px; margin-bottom:10px;}
-.mrPlugin .headerBox p {margin:0; padding:0;}
-.mrPlugin .headerBox ul {margin-bottom:0;}
+.mrPlugin .mr_header_box {
+    vertical-align: middle
+}
 
+.mrPlugin .mr_header_box p {
+    margin: 0;
+    padding: 0;
+}
+
+.mrPlugin .mr_header_box ul {
+    margin-bottom: 0;
+}
 
 /* Content table */
-.mrPlugin table#contenttable {
-    border: 1px solid #b3b3b3;
-    border-right-width: 0;
+.mrPlugin th,
+.mrPlugin td {
+    vertical-align: top;
 }
-.mrPlugin table#contenttable th {font-weight:bold; text-align:left;}
-.mrPlugin table#contenttable tr {background-color:#fff;}
-.mrPlugin th, .mrPlugin td {vertical-align:top;}
-.mrPlugin td.col-I  {
-    border: 0 solid #b3b3b3;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
+
+.mrPlugin tr.marked td {
+    background-color: #f2b7a1;
 }
-.mrPlugin td.col-II {
-    border: 0 solid #b3b3b3;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-}
-.mrPlugin td.col-I.noborderb {border-bottom:0;}
-
-.mrPlugin tr.marked td {background-color:#f2b7a1;}
-
-
-/* Info button */
-.mrPlugin a.infoButton,
-.mrPlugin a.infoButton:hover {display:block; float:left; width:16px; height:16px; background:transparent url(../../../images/info.gif) no-repeat; margin:0 0 0 5px;}
-.mrPlugin a.infoButton.v2,
-.mrPlugin a.infoButton:hover.v2 {margin-top:2px;}
 
 /* Action link */
-.mrPlugin a.actionLink {height:16px; cursor:pointer; display:block; float:left; padding-left:15px; margin-right:5px; background:transparent url(../../../images/collapsed.gif) no-repeat center left;}
-
-
-/* Plugininfo layer */
-.mrPlugin .pluginInfo {}
-.mrPlugin .pluginInfo p {font-weight:bold; margin:0; padding:0;}
-.mrPlugin .pluginInfo ul {margin:0; padding:0; list-style-type:none;}
-.mrPlugin .pluginInfo li {margin:0; padding:0;}
-.mrPlugin .pluginInfo li.first {margin-top:0.6em;}
-
-
+.mrPlugin a.mr_action_link {
+    color: #0060b1;
+    padding-left: 15px;
+    margin-right: 5px;
+    background: transparent url(../../../images/collapsed.gif) no-repeat center left;
+}
 
 /**
  * mrPlugin test page
@@ -105,10 +90,33 @@ body.mrPlugin {margin:10px;}
  */
 
 /** @extends body.mrPlugin */
-body.mrPluginTest {}
+body.mrPluginTest {
+}
 
-.mrPluginTest .headerBox form {float:left; width:35%; background:#e2e2e2; margin:0; padding-top:10px;}
-.mrPluginTest .headerBox fieldset {margin-bottom:10px;}
-.mrPluginTest .headerBox fieldset p {margin:0;}
-.mrPluginTest .headerBox form .chk {width:24%; float:left;}
-.mrPluginTest a {font-family:monospace;}
+.mrPluginTest .con_navbar {
+    height: auto;
+    vertical-align: auto;
+}
+
+.mrPluginTest .mr_header_box form {
+    background: #e2e2e2;
+    margin: 0;
+    padding-top: 10px;
+}
+
+.mrPluginTest .mr_header_box fieldset {
+    margin-bottom: 10px;
+}
+
+.mrPluginTest .mr_header_box fieldset p {
+    margin: 0;
+}
+
+.mrPluginTest .mr_header_box form .chk {
+    width: 24%;
+    display: inline-block;
+}
+
+.mrPluginTest a {
+    font-family: monospace;
+}

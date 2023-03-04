@@ -5,24 +5,50 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
     <style type="text/css">
-    table.content td.col-1 {background-color:#e2e2e2;
+    table.con_tplcfg_content tr.con_tplcfg_description td.con_tplcfg_col_1 {
         border: 1px solid #b3b3b3;
         border-right-width: 0;
     }
-    table.content td.col-2 {background-color:#f1f1f1;padding-left:5px;
+    table.con_tplcfg_content tr.con_tplcfg_description td.con_tplcfg_col_2 {
         border: 1px solid #b3b3b3;
         border-left-width: 0;
     }
-    table.content td.module_config {
+    table.con_tplcfg_content td.con_tplcfg_col_1 {
+        background-color: #e2e2e2;
+        border: 1px solid #b3b3b3;
+        border-right-width: 0;
+        padding: 4px;
+        white-space: nowrap;
+    }
+    table.con_tplcfg_content td.con_tplcfg_col_2 {
+        background-color: #f1f1f1;
+        border: 1px solid #b3b3b3;
+        border-left-width: 0;
+        padding: 4px;
+        width: 100%;
+    }
+    table.con_tplcfg_content td.con_tplcfg_module_config {
         border: 1px solid #b3b3b3;
         border-top-width: 0;
-        background-color:#fff;}
-    table.content td.module_config table td {padding:5px;vertical-align:top;}
+        background-color:#fff;
+    }
+    table.con_tplcfg_content td.con_tplcfg_module_config:empty {
+        display: none;
+    }
+    table.con_tplcfg_content td.con_tplcfg_module_config table td {
+        padding: 4px;
+        vertical-align: top;
+    }
+    table.con_tplcfg_content td.con_tplcfg_spacer {
+        padding: 0;
+        height: 10px;
+        line-height: 10px;
+    }
     </style>
 {_JS_HEAD_CONTENIDO_}
 </head>
 
-<body style="margin:10px">
+<body class="page_generic">
 
 {NOTIFICATION}
 {CATEGORY}
@@ -32,41 +58,32 @@
 <form name="tplcfgform" action="{FORMACTION}" id="tpl_form" method="post" enctype="multipart/form-data">
 
     {HIDDEN}
-    <table class="content" cellspacing="0" cellpadding="2" border="0">
+    <table class="con_tplcfg_content col_md">
         <tr>
-            <td class="text_medium col-1">{TEMPLATECAPTION}</td>
-            <td class="text_medium col-2">{TEMPLATESELECTBOX}</td>
+            <td class="text_medium con_tplcfg_col_1">{TEMPLATECAPTION}</td>
+            <td class="text_medium con_tplcfg_col_2">{TEMPLATESELECTBOX}</td>
         </tr>
-        <tr>
-            <td colspan="2"><img src="images/spacer.gif" alt="" width="1" height="10"></td>
+        <tr><td colspan="2" class="con_tplcfg_spacer">&nbsp;</td></tr>
+        <tr class="con_tplcfg_description mgb10">
+            <td class="text_medium">{LABLE_DESCRIPTION}</td>
+            <td class="text_medium">{DESCRIPTION}</td>
         </tr>
-        <tr>
-            <td class="text_medium ">{LABLE_DESCRIPTION}</td>
-            <td class="text_medium  ">{DESCRIPTION}</td>
-        </tr>    <tr>
-            <td colspan="2"><img src="images/spacer.gif" alt="" width="1" height="10"></td>
-        </tr>
+        <tr><td colspan="2" class="con_tplcfg_spacer">&nbsp;</td></tr>
 
         <!-- BEGIN:BLOCK -->
+        <tr><td colspan="2" class="con_tplcfg_spacer">&nbsp;</td></tr>
         <tr>
-            <td colspan="2"><img src="images/spacer.gif" alt="" width="1" height="10"></td>
+            <td class="text_medium con_tplcfg_col_1">{MODULECAPTION}</td>
+            <td class="text_medium con_tplcfg_col_2">{MODULENAME}</td>
         </tr>
         <tr>
-            <td class="text_medium col-1">{MODULECAPTION}</td>
-            <td class="text_medium col-2">{MODULENAME}</td>
-        </tr>
-        <tr>
-            <td class="text_medium module_config" colspan="2">
-                {MODULECODE}
-            </td>
+            <td class="text_medium con_tplcfg_module_config" colspan="2">{MODULECODE}</td>
         </tr>
         <!-- END:BLOCK -->
 
+        <tr><td colspan="2" class="con_tplcfg_spacer">&nbsp;</td></tr>
         <tr>
-            <td colspan="2"><img src="images/spacer.gif" alt="" width="1" height="10"></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right">
+            <td colspan="2" class="text_right">
                 {BUTTONS}
             </td>
         </tr>
@@ -83,6 +100,8 @@
 <script type="text/javascript">
 (function(Con, $) {
     $(function() {
+        var $form = $('#tpl_form');
+
         $("div#categorypath > a").click(function() {
             var url = $(this).attr('href'),
                 params = Con.UtilUrl.getParams(url);
@@ -93,6 +112,15 @@
             );
             return false;
         });
+
+        $form.find('[data-action]').live('click', function() {
+            var $element = $(this),
+                action = $element.data('action');
+            if (action === 'save_tplcfg') {
+                $form.attr('action', $form.attr('action') + '&back=true');
+            }
+        });
+
     });
 })(Con, Con.$);
 </script>

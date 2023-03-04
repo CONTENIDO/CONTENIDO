@@ -21,7 +21,9 @@
         </div>
         {/if}
 
-        <input type="image" src="images/but_ok.gif" alt="{$trans.import|escape}" title="{$trans.import|escape}" />
+        <span class="con_form_action_control">
+            <input type="image" src="images/but_ok.gif" alt="{$trans.import|escape}" title="{$trans.import|escape}" />
+        </span>
 
     </fieldset>
 

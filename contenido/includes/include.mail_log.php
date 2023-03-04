@@ -81,8 +81,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
 
     // construct the overview table
     $table = new cHTMLTable();
-    $table->setClass('generic');
-    $table->setWidth('100%');
+    $table->setClass('generic con_block');
     $table->setPadding(null);
     $table->setSpacing(null);
 
@@ -114,12 +113,15 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
             ->setAttribute('data-idmail', $item->get('idmail'));
         foreach ($headers as $key => $value) {
             $td = new cHTMLTableData();
+            $classes = ['no_wrap'];
             switch ($key) {
                 case 'checkbox':
                     $checkbox = new cHTMLCheckbox('', $item->get('idmail'), '', false, '', '', '', 'mark_emails');
-                    $td->setClass('tgcenter');
+                    $classes[] = 'text_center';
                     $td->setContent($checkbox->toHtml(false));
                     break;
+                case 'subject':
+                    $classes[] = 'col_100p';
                 case 'client':
                     $idclient = $item->get('idclient');
                     $clientItem = new cApiClient($idclient);
@@ -132,9 +134,10 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
                     $td->setContent($addresses . '&nbsp;');
                     break;
                 case 'action':
+                    $classes[] = 'text_center';
                     // construct the info link
                     $img = new cHTMLImage('images/info.gif');
-                    $link = new cHTMLLink('javascript:void(0)', $img, 'overview_dist_right');
+                    $link = new cHTMLLink('javascript:void(0)', $img, 'mgr5');
                     $link->disableAutomaticParameterAppend()
                         ->setAlt(i18n('More information'))
                         ->setAttribute('data-action', 'show_info');
@@ -151,6 +154,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
                 default:
                     $td->setContent($item->get($key) . '&nbsp;');
             }
+            $td->setClass(implode(' ', $classes));
             $tr->appendContent($td);
         }
         $tbody->appendContent($tr);
@@ -355,16 +359,10 @@ function mailLogDecodeAddresses($addresses) {
  *
  * @throws cException
  */
-function mailLogBulkEditingFunctions() {
-    $table = new cHTMLTable();
-    $table->setClass('generic');
-    $table->setWidth('100%');
-    $table->appendStyleDefinition('margin', '10px 0');
-
-    $tr = new cHTMLTableRow();
-
-    $th = new cHTMLTableHead();
-    $th->appendStyleDefinition('border-bottom', '1px solid #B3B3B3');
+function mailLogBulkEditingFunctions()
+{
+    // Navbar box
+    $navBar = new cHTMLDiv('', 'con_navbar con_block');
 
     // construct the invert selection function
     $link = new cHTMLLink('javascript:void(0)');
@@ -375,7 +373,7 @@ function mailLogBulkEditingFunctions() {
     $image->setAlt(i18n('Flip Selection'));
     $link->appendContent($image);
     $link->appendContent(' ' . i18n('Flip Selection'));
-    $th->appendContent($link);
+    $navBar->appendContent($link);
 
     // construct the bulk editing functions
     $link = new cHTMLLink('javascript:void(0)');
@@ -386,12 +384,10 @@ function mailLogBulkEditingFunctions() {
     $image = new cHTMLImage('images/delete.gif');
     $image->setAlt(i18n('Delete emails'));
     $link->setContent($image);
-    $div = new cHTMLDiv(i18n('Apply to all selected emails:'), 'bulk_editing_functions nodisplay');
+    $div = new cHTMLDiv(i18n('Apply to all selected emails:'), 'bulk_editing_functions no_display');
     $div->appendContent($link);
-    $th->appendContent($div);
 
-    $tr->setContent($th);
-    $table->setContent($tr);
+    $navBar->appendContent($div);
 
-    return $table;
+    return $navBar;
 }

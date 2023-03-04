@@ -144,6 +144,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     }
 
     $oFrmOptions = new cGuiTableForm("frmOptions");
+    $oFrmOptions->setTableClass('generic mgb10');
     $oFrmOptions->setVar("contenido", $sess->id);
     $oFrmOptions->setVar("area", $area);
     $oFrmOptions->setVar("action", $action);
@@ -256,7 +257,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
             $sSent = date($sDateFormat, strtotime($oLog->get("sent")));
         }
 
-        $sLnkRemove = "";
+        $sLnkRemove = '&nbsp;';
         if ($oLog->get("status") == "pending" && $perm->have_perm_area_action($area, "news_job_detail_delete")) {
             $oLnkRemove = new cHTMLLink();
             $oLnkRemove->setCLink("news_jobs", 4, "news_job_detail_delete");

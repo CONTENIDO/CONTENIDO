@@ -89,7 +89,7 @@ class ArticleForumLeftBottom extends cGuiPage
                 cGuiNotification::LEVEL_INFO, UserForum::i18n('NOENTRY')
             );
             $this->_guiMenu->setId('-1', '-1');
-            $this->_guiMenu->setLink('-1', '');
+            $this->_guiMenu->setLink('-1', new cHTMLSpan());
             $this->_guiMenu->setTitle('-1', new cHTMLSpan($notification));
             return;
         }
@@ -122,6 +122,7 @@ class ArticleForumLeftBottom extends cGuiPage
             $link = new cHTMLLink();
             $deleteForm = UserForum::i18n('ALLDELETEFROMCAT');
             $link->setLink('javascript:void(0)')
+                ->setClass('con_img_button')
                 ->setAttribute('data-action', 'delete_forum')
                 ->setAttribute('data-idart', $forms[$i]['idart'])
                 ->setContent(cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $deleteForm));

@@ -195,12 +195,13 @@ class cApiUserPasswordRequestCollection extends ItemCollection
     /**
      * Returns the last (newest) password request time of a specific user.
      *
+     * @since CONTENIDO 4.10.2
      * @param string|int $userid
-     * @return string|null The time in string format or NULL if no entry could found.
+     * @return string The time in string format, empty string if no entry could found.
      * @throws cDbException
      * @throws cException
      */
-    public function getLastPasswordRequestTimeByUserIId($userid)
+    public function getLastPasswordRequestTimeByUserIId($userid): string
     {
         // Get the last (newest) password request of the user
         $oUserPwRequestCol = new self();
@@ -210,12 +211,13 @@ class cApiUserPasswordRequestCollection extends ItemCollection
         $oUserPwRequestCol->setLimit(0,1);
         $oUserPwRequestCol->query();
         $data = $oUserPwRequestCol->fetchTable(['request']);
-        return !empty($data) ? cSecurity::toString($data[1]['request']) : null;
+        return !empty($data) ? cSecurity::toString($data[1]['request']) : '';
     }
 
     /**
      * Returns the number of made password request for a specific user.
      *
+     * @since CONTENIDO 4.10.2
      * @param string|int $userid
      * @return int The number of password requests
      * @throws cDbException

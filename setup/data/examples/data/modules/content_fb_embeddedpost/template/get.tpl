@@ -9,7 +9,7 @@ $(document).ready(function() {
 </script>
 
 {if 0 lt $label|strlen}
-    <label class="content_type_label">{$label|escape}</label>
+    <label class="con_content_type_label">{$label|escape}</label>
 {/if}
 
 {$content}

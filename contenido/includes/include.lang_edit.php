@@ -149,6 +149,7 @@ if ($action == "lang_newlanguage") {
             $db->nextRecord();
 
             $form = new cGuiTableForm("lang_properties");
+            $form->setTableClass('generic col_sm');
             $form->setVar("idlang", $idlang);
             $form->setVar("targetclient", $db->f("idclient"));
             $form->setVar("action", "lang_edit");

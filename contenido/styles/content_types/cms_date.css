@@ -1,13 +1,28 @@
+.cms_date {
+    margin-bottom: 5px;
+}
+
 .cms_date .date_timestamp {
     border: 1px dashed #CCC;
     display: block;
     width: 200px;
+    margin-bottom: 3px;
 }
 
 .cms_date .ui-datepicker-trigger {
     cursor: pointer;
-    margin: 2px 2px 0;
-    z-index: 10000;	
+    z-index: 10000;
+    vertical-align: middle;;
+}
+
+.cms_date .ui-datepicker-trigger {
+    margin-right: 5px;
+}
+
+.cms_date .con_select,
+.cms_date .con_img_button {
+    margin-right: 5px;
+    vertical-align: middle;;
 }
 
 .cms_date .ui-datepicker {

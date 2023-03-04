@@ -37,7 +37,7 @@ $modules = $moduleColl->getAllByIdclient($client);
 $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
 $code = $layoutInFile->getLayoutCode();
 
-// get document version (html or xhtml)
+// Get document version (html or xhtml)
 $is_XHTML = getEffectiveSetting('generator', 'xhtml', 'false');
 $sElemClosing = ($is_XHTML == 'true') ? ' /' : '';
 
@@ -62,8 +62,8 @@ foreach ($containerNumbers as $containerNr) {
     //*************** Loop through containers ****************
     $name = tplGetContainerName($idlay, $containerNr);
 
-    $modselect = new cHTMLSelectElement("c[{$containerNr}]");
-    $modselect->setAttribute('title', "Container {$containerNr} ($name)");
+    $moduleSelect = new cHTMLSelectElement("c[{$containerNr}]");
+    $moduleSelect->setAttribute('title', "Container {$containerNr} ($name)");
 
     $mode = tplGetContainerMode($idlay, $containerNr);
 
@@ -71,7 +71,7 @@ foreach ($containerNumbers as $containerNr) {
         $default = tplGetContainerDefault($idlay, $containerNr);
 
         $option = new cHTMLOptionElement('-- ' . i18n("none") . ' --', 0);
-        $modselect->addOptionElement(0, $option);
+        $moduleSelect->addOptionElement(0, $option);
 
         foreach ($modules as $key => $val) {
             if ($val['name'] == $default) {
@@ -88,7 +88,7 @@ foreach ($containerNumbers as $containerNr) {
                     $option->setSelected(true);
                 }
 
-                $modselect->addOptionElement($key, $option);
+                $moduleSelect->addOptionElement($key, $option);
             }
         }
     } else {
@@ -104,10 +104,10 @@ foreach ($containerNumbers as $containerNr) {
                 $option->setSelected(true);
             }
 
-            $modselect->addOptionElement(0, $option);
+            $moduleSelect->addOptionElement(0, $option);
         }
 
-        $allowedtypes = tplGetContainerTypes($idlay, $containerNr);
+        $allowedTypes = tplGetContainerTypes($idlay, $containerNr);
 
         foreach ($modules as $key => $val) {
             $short_name = $val['name'];
@@ -125,33 +125,36 @@ foreach ($containerNumbers as $containerNr) {
                 $option->setSelected(true);
             }
 
-            if (count($allowedtypes) > 0) {
-                if (in_array($val['type'], $allowedtypes) || $val['type'] == '') {
-                    $modselect->addOptionElement($key, $option);
+            if (count($allowedTypes) > 0) {
+                if (in_array($val['type'], $allowedTypes) || $val['type'] == '') {
+                    $moduleSelect->addOptionElement($key, $option);
                 }
             } else {
-                $modselect->addOptionElement($key, $option);
+                $moduleSelect->addOptionElement($key, $option);
             }
         }
     }
 
-    // visual edit item container
-    $sLabelAndSelect = '<label for="' . $modselect->getAttribute('id') . '">' . $containerNr . ':</label>' . $modselect->render();
-    $sVisualEditItem = '<div class="visedit_item" onmouseover="this.style.zIndex = \'20\'" onmouseout="this.style.zIndex = \'10\'">' . $sLabelAndSelect . '</div>';
+    // Visual edit item container
+    $label = new cHTMLLabel($containerNr . ':', $moduleSelect->getAttribute('id'));
+    $sLabelAndSelect = $label->render() . $moduleSelect->render();
+    $visualEditItem = new cHTMLDiv($label->render() . $moduleSelect->render(), 'con_visedit_item');
+    $visualEditItem->setAttribute('onmouseover', "this.style.zIndex = '20'");
+    $visualEditItem->setAttribute('onmouseout', "this.style.zIndex = '10'");
 
-    // collect containers in head for displaying them at the start of body
+    // Collect containers in head for displaying them at the start of body
     if (is_array($containerinf) && isset($containerinf[$idlay]) && isset($containerinf[$idlay][$containerNr]) &&
             isset($containerinf[$idlay][$containerNr]['is_body']) && $containerinf[$idlay][$containerNr]['is_body'] == false) {
         // replace container inside head with empty values and collect the container
         $code = preg_replace("/<container( +)id=\"$containerNr\"(.*)>(.*)<\/container>/Uis", "CMS_CONTAINER[$containerNr]", $code);
         $code = preg_replace("/<container( +)id=\"$containerNr\"(.*)\/>/i", "CMS_CONTAINER[$containerNr]", $code);
         $code = str_ireplace("CMS_CONTAINER[$containerNr]", '', $code);
-        $sContainerInHead .= $sVisualEditItem . "\n";
+        $sContainerInHead .= $visualEditItem->render() . "\n";
     } else {
-        // replace other container
+        // Replace other container
         $code = preg_replace("/<container( +)id=\"$containerNr\"(.*)>(.*)<\/container>/Uis", "CMS_CONTAINER[$containerNr]", $code);
         $code = preg_replace("/<container( +)id=\"$containerNr\"(.*)\/>/i", "CMS_CONTAINER[$containerNr]", $code);
-        $code = str_ireplace("CMS_CONTAINER[$containerNr]", $sVisualEditItem, $code);
+        $code = str_ireplace("CMS_CONTAINER[$containerNr]", $visualEditItem->render(), $code);
     }
 
 }
@@ -165,7 +168,7 @@ $backendUrl = cRegistry::getBackendUrl();
 $headCode = cHTMLLinkTag::stylesheet($backendUrl . cAsset::backend('styles/jquery/jquery-ui.css')) . PHP_EOL;
 
 $form = '
-    <form id="tpl_visedit" name="tpl_visedit" action="' . $backendUrl . 'main.php">
+    <form id="con_tpl_visedit" name="tpl_visedit" action="' . $backendUrl . 'main.php">
     <input type="hidden" name="' . $sess->name . '" value="' . $sess->id . '"' . $sElemClosing . '>
     <input type="hidden" name="idtpl" value="' . $idtpl . '"' . $sElemClosing . '>
     <input type="hidden" name="frame" value="' . $frame . '"' . $sElemClosing . '>
@@ -175,12 +178,14 @@ $form = '
     <input type="hidden" name="idlay" value="' . $idlay . '"' . $sElemClosing . '>
     <input type="hidden" name="defaulttemplate" value="' . $defaulttemplate . '"' . $sElemClosing . '>
     <input type="hidden" name="action" value="tpl_visedit"' . $sElemClosing . '>';
+
 $form .= $sContainerInHead;
 
-$sInput = '<input type="image" src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif' . '"' . $sElemClosing . '>';
-$button = '<table border="0" width="100%"><tr><td align="right">' . $sInput . '</td></tr></table>';
+$saveButton = cHTMLImage::img($backendUrl . $cfg['path']['images'] . 'but_ok.gif', i18n('Save'));
+$actionControl = new cHTMLDiv($saveButton, 'con_visedit_action_control');
+
 $code = preg_replace("/<\/head(.*)>/i", $headCode . '</head\\1>', $code);
-$code = preg_replace("/<body(.*)>/i", "<body\\1>" . $form . $button, $code);
+$code = preg_replace("/<body(.*)>/i", "<body\\1>" . $form . $actionControl, $code);
 $code = preg_replace("/<\/body(.*)>/i", '</form></body\\1>', $code);
 
 eval("?>\n" . $code . "\n<?php\n");

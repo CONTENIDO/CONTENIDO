@@ -8,27 +8,29 @@
     <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
     <script type="text/javascript" src="{_ASSET(scripts/infoBox.js)_}"></script>
 </head>
-<body class="mg10">
+<body class="page_generic">
     <form enctype="multipart/form-data" class="mg0" name="properties" method="post" action="main.php">
         <input type="hidden" name="frame" value="4">
         <input type="hidden" name="area" value="cronjob">
         <input type="hidden" name="action" value="crontab_edit">
         <input type="hidden" name="contenido" value="{CONTENIDO}">
         <input type="hidden" name="frame" value="4">
-        <table class="borderB3 nobordert noborderr" cellspacing="0" cellpadding="2" border="0">
-            <tr class="text_medium bgcE2">
-                <td colspan="2" valign="top" class="textg_medium borderB3 noborderb noborderl">
+        <table class="generic">
+            <tr>
+                <th colspan="2" class="align_top">
                     {HEADER}
-                </td>
+                </th>
             </tr>
-            <tr id="1" class="textg_medium bgcwhite">
-                <td nowrap="nowrap" valign="top" class="borderB3 nobordert noborderl" align="left">
+            <tr>
+                <td nclass="align_top">
                     <textarea name="crontab_contents" cols="75" rows="25" class="text_medium">{CONTENTS}</textarea>
                 </td>
             </tr>
-            <tr id="9" class="textg_medium" style="background-color: {BGCOLOR};">
-                <td nowrap="nowrap" valign="top" class="borderB3 nobordert noborderb noborderl" align="right">
-                    <input class="mgl5" title="{ALT_TITLE}" alt="{ALT_TITLE}" type="image" src="images/but_ok.gif" name="submit" onclick="" accesskey="s">
+            <tr>
+                <td colspan="2" class="text_right">
+                    <div class="con_form_action_control">
+                        <input class="con_img_button" title="{ALT_TITLE}" alt="{ALT_TITLE}" type="image" src="images/but_ok.gif" name="submit" onclick="" accesskey="s">
+                    </div>
                 </td>
             </tr>
         </table>

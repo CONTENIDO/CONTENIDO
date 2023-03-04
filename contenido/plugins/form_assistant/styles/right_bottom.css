@@ -9,7 +9,7 @@ form+form {
 
 fieldset {
     border: 1px solid grey;
-    width: 695px;
+    width: 720px;
     padding: 0 0 10px 0;
 }
 
@@ -23,9 +23,9 @@ fieldset table {
 
 legend {
     background-color: #f1f1f1;
-    width: 675px;
+    width: 720px;
     line-height: 10px;
-    margin: 0 -1px 10px -1px;
+    margin: 0 0 10px 0;
     border: 1px solid grey;
     padding: 10px;
 }
@@ -59,10 +59,11 @@ legend {
     clear: left;
     margin-top: 4px;
     margin-bottom: 12px;
+    padding: 0 10px;
 }
 
 #pifa-form label,
-#pifa-form-export label,
+/*#pifa-form-export label,*/
 #pifa-form-import label {
     float: left;
     width: 20%;
@@ -70,9 +71,9 @@ legend {
 }
 
 #pifa-form div input,
-#pifa-form div select,
+#pifa-form div select/*,
 #pifa-form-export div input,
-#pifa-form-export div select,
+#pifa-form-export div select,*/
 #pifa-form-import div input,
 #pifa-form-import div select {
     width: 65%;
@@ -154,6 +155,12 @@ legend {
     padding: 3px;
     border-collapse: collapse;
 }
+#pifa-form-field-list li>div.descr-icon {
+    padding: 0;
+    width: 46px;
+    height: 46px;
+    margin: 0 0 0 3px;
+}
 
 #pifa-form-field-list .idfield {
     width: 5%;
@@ -161,13 +168,11 @@ legend {
 
 #pifa-form-field-list .edit {
     width: 70px;
-    padding-left: 2px;
-    padding-top: 17px;
+    padding: 15px 3px 0 3px;
     text-align: right;
 }
 
 #pifa-form-field-list .edit img {
-    padding-right: 4px;
 }
 
 #pifa-form-field-list .column_name,
@@ -274,7 +279,7 @@ input[type="image"],
 
 .textMiddle {
     height: 46px;
-    width: 540px;
+    width: 585px;
     padding-top: 3px;
     padding-right: 30px;
     padding-left: 40px;
@@ -352,9 +357,11 @@ input[type="image"],
     vertical-align: middle;
 }
 
-.pseudo-fieldset input[type=checkbox] {
+.pseudo-fieldset input[type=checkbox],
+.pseudo-fieldset input[type=radio] {
     padding-left: 0;
     margin-left: 0;
+    width: auto;
 }
 
 .pseudo-fieldset>div {
@@ -432,7 +439,7 @@ input[type="image"],
 
 #field-buttons ul li {
     float: left;
-    margin: 10px 0 0 10px;
+    margin: 10px 0 0 8px;
 }
 
 #field-buttons ul li a {

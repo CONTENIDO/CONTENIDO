@@ -533,7 +533,7 @@ function workflowInherit($idcat) {
     $sess = cRegistry::getSession();
 
     $sUrl = $sess->url("main.php?area=$area&frame=$frame&modidcat=$idcat&action=workflow_inherit_down");
-    return '<a href="' . $sUrl . '"><img src="' . $cfg["path"]["images"] . 'pfeil_runter.gif" alt="" class="spaced" title="' . i18n("Inherit workflow to sub-categories", "workflow") . '"></a>';
+    return '<a class="con_img_button mgr5" href="' . $sUrl . '"><img src="' . $cfg["path"]["images"] . 'pfeil_runter.gif" alt="" title="' . i18n("Inherit workflow to sub-categories", "workflow") . '"></a>';
 }
 
 
@@ -581,6 +581,9 @@ function getCatLang($idcat, $idlang) {
 
 
 /**
+ * Returns the template (workflow select and button) to add to the category overview table.
+ *
+ * @return string
  * @throws cDbException|cException|cInvalidArgumentException
  */
 function prepareWorkflowItems() {
@@ -692,7 +695,7 @@ function prepareWorkflowItems() {
     $workflowSelectBox->setClass("text_medium");
     $workflowworkflows->select("idclient = $client AND idlang = " . cSecurity::toInteger($lang));
 
-    $workflowOption = new cHTMLOptionElement("--- " . i18n("None", "workflow") . " ---", 0);
+    $workflowOption = new cHTMLOptionElement("--- " . i18n("None", "workflow") . " ---", '0');
     $workflowSelectBox->addOptionElement(0, $workflowOption);
 
     while (($workflow = $workflowworkflows->next()) !== false) {
@@ -713,8 +716,8 @@ function prepareWorkflowItems() {
         "name" => "wfselect{IDCAT}"
     ]);
 
-    $tpl->set('s', 'PLUGIN_WORKFLOW', $workflowSelectBox->render() . '<a href="javascript:setWorkflow({IDCAT}, \\\'wfselect{IDCAT}\\\')"><img src="' . $cfg["path"]["images"] . 'submit.gif" alt="" class="spaced"></a>');
-    $tpl->set('s', 'PLUGIN_WORKFLOW_TRANSLATION', i18n("Inherit workflow down", "workflow"));
+    return $workflowSelectBox->render()
+        . '<a class="con_img_button mgl5" href="javascript:void(0)" data-action-workflow="set_workflow"><img src="' . $cfg["path"]["images"] . 'submit.gif" alt=""></a>';
 }
 
 /**
@@ -731,19 +734,77 @@ function piworkflowCategoryRenderColumn($idcat, $type) {
         case "workflow":
             $wfForCat = getWorkflowForCat($idcat);
             $value = workflowInherit($idcat);
-            $value .= <<<JS
-            <script type="text/javascript" id="wf{$idcat}">
-            (function(Con, $) {
-                $(function() {
-                    printWorkflowSelect({$idcat}, {$wfForCat});
-                });
-            })(Con, Con.$);
-            </script>
-JS;
+            $value .= '<span data-action-workflow-init="render_select" data-idcat="' . $idcat . '" data-workflow="' . $wfForCat . '"></span>';
             break;
     }
 
     return $value;
+}
+
+/**
+ * Returns the code to add to the page end at the category overview page.
+ *
+ * @return string
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
+function piworkflowCategoryPageEnd()
+{
+    // Get select/span template
+    $template = prepareWorkflowItems();
+
+    return '
+<script type="text/javascript">
+(function(Con, $) {
+    var $root = $("#str_overview");
+
+    /* Action function for setting Workflow */
+    function actionSetWorkflow($element) {
+        var $select = $element.parent().find("select");
+        var idcat = $element.closest("tr").data("idcat");
+        var params = {
+            area: Con.cfg.area,
+            action: "workflow_cat_assign",
+            frame: Con.cfg.frame,
+            modidcat: idcat
+        };
+        params[$select.attr("id")] = $select.val();
+        console.log(params);
+        
+        window.location.href = Con.UtilUrl.build("main.php", params);
+    }
+
+    $(function() {
+        // Initialize Workflows, render the Workflow controls into the categories overview table
+        $root.find("[data-action-workflow-init]").each(function(pos, element) {
+            var $element = $(element),
+                action = $element.data("action-workflow-init");
+
+            if (action === "render_select") {
+                var idcat = $element.data("idcat"),
+                    workflow = $element.data("workflow"),
+                    template = \'' . $template . '\',
+                    $span = $("<span>");
+
+                $span.html(template.replace(/{IDCAT}/g, idcat));
+                $element.replaceWith($span);
+                $span.parent().find("select").val(workflow);
+            }
+        });
+
+        $root.find("[data-action-workflow]").live("click", function() {
+            var $element = $(this),
+                action = $element.data("action-workflow");
+
+            if (action === "set_workflow") {
+                actionSetWorkflow($element);
+            }
+        });
+    });
+})(Con, Con.$);
+</script>
+';
 }
 
 /**
@@ -753,7 +814,6 @@ JS;
  * @throws cDbException|cException|cInvalidArgumentException
  */
 function piworkflowCategoryColumns($array) {
-    prepareWorkflowItems();
     return [
         "workflow" => i18n("Workflow", "workflow")
     ];

@@ -21,7 +21,7 @@
      * ---------------------------------------
      * 1. Create a link with the class 'i-link' and the 'data-tooltip-id'
      *    attribute containing the id of the element to show as tooltip.
-     * 2. Create an element with the class 'nodisplay' or an inline-style
+     * 2. Create an element with the class 'no_display' or an inline-style
      *    'display:none;', and the 'id' attribute, which is referenced by
      *    the corresponding link. The element has to be hidden, and it is
      *    just a container for the tooltip content.

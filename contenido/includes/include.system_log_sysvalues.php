@@ -56,23 +56,24 @@ foreach (new DirectoryIterator($path) as $fileInfo) {
 }
 
 if (!empty($files)) {
-    $logHeader = new cHTMLDiv('', 'log-header');
+    $logHeader = new cHTMLDiv('', 'con_navbar');
 
     $logDirectory = new cHTMLSpan($path);
     $logHeader->appendContent($logDirectory);
 
     // create the config file select
     $select = new cHTMLSelectElement('logfile');
+    $select->setAttribute('data-action-change', 'show_log_file');
     foreach ($files as $file) {
         $fileInfo = cFileHandler::info($file);
         $title = basename($file) . ' (';
         $title .= humanReadableSize($fileInfo['size']);
         $title .= ')';
-        $disabled = (!cFileHandler::exists($file) || $fileInfo['size'] > $memoryLimit) ? true : false;
+        $disabled = !cFileHandler::exists($file) || $fileInfo['size'] > $memoryLimit;
         $element = new cHTMLOptionElement($title, basename($file));
         if ($disabled) {
             $element->setClass('color6');
-            $element->updateAttribute('data-notreadable', '1');
+            $element->updateAttribute('data-non-readable', '1');
         }
         if ($logfile == basename($file)) {
             $element->setSelected(true);
@@ -82,18 +83,20 @@ if (!empty($files)) {
     $logHeader->appendContent($select);
 
     $logHeader->appendContent(
-        new cHTMLSpan('', 'text_error pdr5 pdl5 js-message')
+        new cHTMLSpan('', 'text_error pdr5 pdl5 system_log_message')
     );
 
     // create the line number selection
     $link = new cHTMLLink('#');
-    $link->setClass('js-action-show-log');
+    $link->setClass('con_img_button')
+        ->setAttribute('data-action', 'show_log_file_lines')
+        ->disableAutomaticParameterAppend();
     $image = new cHTMLImage('images/submit.gif');
     $link->appendContent($image);
     $div = new cHTMLDiv(
         [
             new cHTMLSpan(i18n('Show ')),
-            new cHTMLTextbox('number-of-lines', $numberOfLines, 3),
+            new cHTMLTextbox('number_of_lines', $numberOfLines, 3),
             new cHTMLSpan(i18n(' lines')),
             $link,
         ], 'right'
@@ -118,31 +121,35 @@ if (!empty($files)) {
     }
 
     // create the textarea
-    $textarea = new cHTMLTextarea('logfile-content', implode('', $lines));
+    $textarea = new cHTMLTextarea('log_file_content', implode('', $lines));
     $textarea->setAttribute('readonly', 'readonly');
-    $textarea->appendStyleDefinition('width', '99%');
     $textarea->appendStyleDefinition('height', '200px');
     $textarea->setAttribute('cols', '100');
 
     $page->appendContent($textarea);
 
     // create the action buttons
-    $logFooter = new cHTMLDiv('', 'log-footer');
+    $logFooter = new cHTMLDiv('', 'con_navbar');
     $logFooter->appendContent(new cHTMLSpan(i18n('Clear log file, keep last ')));
-    $input = new cHTMLTextbox('keep-last-lines', '20');
+    $input = new cHTMLTextbox('keep_last_lines', '20');
     $input->setWidth(2);
     $logFooter->appendContent($input);
     $logFooter->appendContent(new cHTMLSpan(i18n(' lines')));
-    $link = new cHTMLLink('#');
-    $link->setClass('js-action-clear-log');
+    $link = new cHTMLLink('javascript:void(0)');
+    $link->setClass('con_img_button js-action-clear-log')
+        ->disableAutomaticParameterAppend()
+        ->setAttribute('data-action', 'empty_log_file');
+
     $image = new cHTMLImage('images/but_ok.gif');
     $link->appendContent($image);
     $logFooter->appendContent($link);
 
-    $link = new cHTMLLink('#');
-    $link->setClass('right js-action-delete-log');
-    $link->appendContent(i18n('Delete log file'));
-    $image = new cHTMLImage('images/delete.gif');
+    $link = new cHTMLLink('javascript:void(0)');
+    $link->setClass('con_func_button right')
+        ->setAttribute('data-action', 'delete_log_file')
+        ->disableAutomaticParameterAppend()
+        ->appendContent(i18n('Delete log file'));
+    $image = new cHTMLImage('images/delete.gif', 'mgl5');
     $link->appendContent($image);
     $logFooter->appendContent($link);
 

@@ -61,21 +61,21 @@ function getUplExpandCollapseButton($item) {
         if ($item->isCollapsed() == true) {
             $title = i18n('Open category');
             // Attention: Render nodes without whitespace in between!
-            $link = '<a href="javascript:void(0)" class="dir_collapse_link" data-action="expand_upl_dir" data-dir="' . $item->getId() . '" 
+            $link = '<a class="con_func_button dir_collapse_link" href="javascript:void(0)" data-action="expand_upl_dir" data-dir="' . $item->getId() . '" 
                title="' . $title . '"><img class="dir_collapse_img" 
                 src="' . $item->getCollapsedIcon() . '" alt=""></a>';
         } else {
             $title = i18n('Close category');
             // Attention: Render nodes without whitespace in between!
-            $link = '<a href="javascript:void(0)" class="dir_collapse_link" data-action="collapse_upl_dir" data-dir="' . $item->getId() . '" 
+            $link = '<a class="con_func_button dir_collapse_link" href="javascript:void(0)" data-action="collapse_upl_dir" data-dir="' . $item->getId() . '" 
                 title="' . $title . '"><img class="dir_collapse_img" 
                 src="' . $item->getExpandedIcon() . '" alt=""></a>';
         }
     } else {
         if ($item->getCustom('lastitem')) {
-            $link = '<img class="dir_collapse_img" src="images/but_lastnode.gif" alt="">';
+            $link = '<img class="con_img_button_off dir_collapse_img" src="images/but_lastnode.gif" alt="">';
         } else {
-            $link = '<img class="dir_collapse_img" src="images/grid_collapse.gif" alt="">';
+            $link = '<img class="con_img_button_off dir_collapse_img" src="images/grid_collapse.gif" alt="">';
         }
     }
 
@@ -281,7 +281,7 @@ if (is_array($objects)) {
 
         // Show link
         $showLink = sprintf(
-            '<a href="javascript:void(0)" class="dir_folder_link show_item" data-action="show_upl_dir">%s</a>',
+            '<a class="dir_folder_link show_item" href="javascript:void(0)" data-action="show_upl_dir">%s</a>',
             '<img class="dir_folder_img" src="images/grid_folder.gif" alt="">' . $file
         );
 
@@ -364,7 +364,7 @@ unset($objects[0]);
 
 // Show link
 $showLink = sprintf(
-    '<a href="javascript:void(0)" class="show_item" data-action="show_upl_dir">%s</a>',
+    '<a class="show_item" href="javascript:void(0)" data-action="show_upl_dir">%s</a>',
     '<img class="dir_root_img" src="images/ordner_oben.gif" alt="">' . $file
 );
 
@@ -402,7 +402,7 @@ if (is_array($objects)) {
 
         // Show link
         $showLink = sprintf(
-            '<a href="javascript:void(0)" class="dir_folder_link show_item" data-action="show_upl_dir">%s</a>',
+            '<a class="dir_folder_link show_item" href="javascript:void(0)" data-action="show_upl_dir">%s</a>',
             '<img class="dir_folder_img" src="images/grid_folder.gif" alt="">' . $file
         );
 

@@ -115,7 +115,6 @@ $warnings = [];
 
 if (count($clients) > 1) {
     $select = new cHTMLSelectElement('changeclient');
-    $select->setClass("vAlignMiddle");
     $choices = [];
 
     foreach ($clients as $key => $v_client) {
@@ -135,7 +134,7 @@ if (count($clients) > 1) {
     if ($perm->have_perm() && count($warnings) > 0) {
         $page->displayWarning(implode('<br>', $warnings));
     }
-    $page->set('s', 'OKBUTTON', '<input class="vAlignMiddle" type="image" src="images/but_ok.gif" alt="' . i18n('Change client') . '" title="' . i18n('Change client') . '">');
+    $page->set('s', 'OKBUTTON', cHTMLButton::image('images/but_ok.gif', i18n('Change client'), ['class' => 'con_img_button mgl3']));
 } else {
     $page->set('s', 'OKBUTTON', '');
     $name = '';

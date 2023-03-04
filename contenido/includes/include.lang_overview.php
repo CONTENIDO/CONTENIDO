@@ -14,112 +14,110 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $notification, $tmp_notification, $targetclient, $idlang, $tpl;
+global $notification, $tmp_notification, $tpl;
 
 $cfg = cRegistry::getConfig();
-$client = cRegistry::getClientId();
-$db = cRegistry::getDb();
+$client = cSecurity::toInteger(cRegistry::getClientId());
 $perm = cRegistry::getPerm();
 $frame = cRegistry::getFrame();
-$sess = cRegistry::getSession();
+$area = cRegistry::getArea();
+$action = cRegistry::getAction();
+$action = $action ?? '';
 
+$requestTargetClient = cSecurity::toInteger($_REQUEST['targetclient'] ?? '0');
+$requestIdLang = cSecurity::toInteger($_REQUEST['idlang'] ?? '0');
 
-$area = 'lang';
-
-if (!isset($action)) {
-    $action = '';
+if ($requestTargetClient <= 0) {
+    $requestTargetClient = $client;
 }
 
-if (!is_numeric($targetclient)) {
-    $targetclient = $client;
+$tpl->set('s', 'TARGETCLIENT', $requestTargetClient);
+
+$menu = new cGuiMenu('lang_overview_list');
+
+$showLink = new cHTMLLink();
+$showLink->setClass('show_item')
+    ->setLink('javascript:void(0)')
+    ->setAttribute('data-action', 'show_lang');
+
+$deleteLink = new cHTMLLink();
+$deleteLink = $deleteLink->setClass('con_img_button')
+    ->setLink('javascript:void(0)')
+    ->setAttribute('data-action', 'delete_lang')
+    ->setContent(cHTMLImage::img($cfg['path']['images'] . 'delete.gif', i18n("Delete language")));
+
+$activateLink = new cHTMLLink();
+$activateLink->setClass('con_img_button')
+    ->setLink('javascript:void(0)')
+    ->setAttribute('data-action', 'activate_lang')
+    ->setContent(cHTMLImage::img($cfg['path']['images'] . 'offline.gif', i18n("Activate language")));
+
+$deactivateLink = new cHTMLLink();
+$deactivateLink->setClass('con_img_button')
+    ->setLink('javascript:void(0)')
+    ->setAttribute('data-action', 'deactivate_lang')
+    ->setContent(cHTMLImage::img($cfg['path']['images'] . 'online.gif', i18n("Deactivate language")));
+
+// Notification
+if ($tmp_notification) {
+    $menu->setId('-1', '-1');
+    $menu->setLink('-1', new cHTMLSpan());
+    $menu->setTitle('-1', new cHTMLSpan($tmp_notification));
 }
 
-$iGetIdlang = $idlang;
-$clientId = cRegistry::getClientId();
+$clientLanguageColl = new cApiClientLanguageCollection();
+$allClientLanguages = $clientLanguageColl->getAllLanguagesByClient($client);
 
-$sql = "SELECT *
-        FROM " . $cfg["tab"]["lang"] . " AS A, " . $cfg["tab"]["clients_lang"] . " AS B
-        WHERE A.idlang = B.idlang AND B.idclient = " . cSecurity::toInteger($targetclient) . "
-        ORDER BY A.idlang";
+$iLangCount = count($allClientLanguages);
+foreach ($allClientLanguages as $clientLanguage) {
+    $idlang = cSecurity::toInteger($clientLanguage["idlang"]);
+    $LangName = '<span>' . conHtmlSpecialChars($clientLanguage["name"]) . '</span>&nbsp;(' . $idlang . ')';
 
-$db->query($sql);
-
-$tpl->set('s', 'TARGETCLIENT', $targetclient);
-
-$iLangCount = 0;
-while ($db->nextRecord()) {
-    $iLangCount++;
-
-    $idlang = $db->f("idlang");
-
-    // Show link
-    $showLink = '<a href="javascript:void(0)" class="show_item" data-action="show_lang"><span>' . conHtmlSpecialChars($db->f("name")) . '</span>&nbsp;(' . $idlang . ')</a>';
-    $tpl->set('d', 'LANGUAGE', $showLink);
+    $menu->setId($idlang, $idlang);
+    $menu->setLink($idlang, $showLink);
+    $menu->setTitle($idlang, $LangName);
 
     // Activate link
-    if ($db->f("active") == 0) {
-        // activate
-        $message = i18n("Activate language");
+    if ($clientLanguage["active"] == 0) {
+        // Activate
         if ($perm->have_perm_area_action($area, "lang_activatelanguage")) {
-            $activeLink = "<a data-action=\"activate_lang\" title=\"$message\" href=\"javascript:void(0)\"><img src=\"" . $cfg["path"]["images"] . "offline.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+            $link = $activateLink->render();
         } else {
-            $activeLink = "<img src='" . $cfg["path"]["images"] . "offline.gif' title='" . i18n("Language offline") . "'>";
+            $link = cHTMLImage::img(
+                $cfg['path']['images'] . 'offline.gif', i18n("Language offline"),
+                ['class' => 'con_img_button_off']
+            );
         }
+        $menu->setActions($idlang, 'activate', $link);
     } else {
-        // deactivate
+        // Deactivate
         $message = i18n("Deactivate language");
         if ($perm->have_perm_area_action($area, "lang_deactivatelanguage")) {
-            $activeLink = "<a data-action=\"deactivate_lang\" title=\"$message\" class=\"action\" href=\"javascript:void(0)\"><img src=\"" . $cfg["path"]["images"] . "online.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+            $link = $deactivateLink->render();
         } else {
-            $activeLink = "<img src='" . $cfg["path"]["images"] . "online.gif' title='" . i18n("Language online") . "'>";
+            $link = cHTMLImage::img(
+                $cfg['path']['images'] . 'online.gif', i18n("Language online"),
+                ['class' => 'con_img_button_off']
+            );
         }
+        $menu->setActions($idlang, 'deactivate', $link);
     }
 
     // Delete link
-    $deleteMsg = sprintf(i18n("Do you really want to delete the language %s?"), conHtmlSpecialChars($db->f("name")));
     $deleteAct = i18n("Delete language");
     if ($perm->have_perm_area_action("lang_edit", "lang_deletelanguage")) {
-        $deleteLink = '<a href="javascript:void(0)" data-action="delete_lang" title="' . $deleteAct . '"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteAct . '" alt="' . $deleteAct . '"></a>';
-    } else {
-        $deleteLink = '';
-    }
-    $tpl->set("d", "ACTIONS", $activeLink . ' ' . $deleteLink);
-
-    if ($iGetIdlang == $idlang) {
-        $tpl->set('d', 'MARKED', ' id="marked" data-id="' . $idlang . '"');
-    } else {
-        $tpl->set('d', 'MARKED', ' data-id="' . $idlang . '"');
+        $menu->setActions($idlang, 'delete', $deleteLink->render());
     }
 
-    $tpl->next();
+    if ($requestIdLang === $idlang) {
+        $menu->setMarked($idlang);
+    }
 }
+
+$tpl->set('s', 'GENERIC_MENU', $menu->render(false));
 
 $deleteMsg = i18n("Do you really want to delete the language %s?");
 $tpl->set('s', 'DELETE_MESSAGE', $deleteMsg);
-
-$newlanguageform = '
-    <form name="newlanguage" method="post" action="' . $sess->url("main.php?area=$area&frame=$frame") . '">
-        <input type="hidden" name="action" value="lang_newlanguage">
-        <table cellpadding="0" cellspacing="0" border="0">
-            <tr><td class="text_medium">' . i18n("New language") . ':
-                <input type="text" name="name">&nbsp;&nbsp;&nbsp;
-                <input type="image" src="' . $cfg['path']['images'] . 'but_ok.gif">
-            </td></tr>
-        </table>
-    </from>
-';
-
-$tpl->set('s', 'NEWLANGUAGEFORM', $newlanguageform);
-
-if ($tmp_notification) {
-    $noti_html = '<tr><td colspan="3">' . $tmp_notification . '</td></tr>';
-    $tpl->set('s', 'NOTIFICATION', $noti_html);
-} else {
-    $tmp_notification = $notification->returnNotification("ok", i18n("Language deleted"));
-    $noti_html = '<tr><td colspan="3">' . $tmp_notification . '</td></tr>';
-    $tpl->set('s', 'NOTIFICATION', '');
-}
-
 $tpl->set('s', 'LANG_COUNT', $iLangCount);
 
 if ($action == 'lang_deactivatelanguage' || $action == 'lang_activatelanguage') {
@@ -127,7 +125,7 @@ if ($action == 'lang_deactivatelanguage' || $action == 'lang_activatelanguage') 
 <script type="text/javascript">
 (function(Con, $) {
     Con.multiLink(
-        'right_bottom', Con.UtilUrl.build('main.php', {area: 'lang_edit', frame: 4, targetclient: $clientId, idlang: $iGetIdlang})
+        'right_bottom', Con.UtilUrl.build('main.php', {area: 'lang_edit', frame: 4, targetclient: $client, idlang: $requestIdLang})
     );
 })(Con, Con.$);
 </script>

@@ -211,15 +211,16 @@ while ($oNewsletter = $oNewsletters->next()) {
         // Usability: If no e-mail has been specified, you can't send a test
         // newsletter
         if (isValidMail($oNewsletter->get("newsfrom")) && $lIDCatArt > 0) {
-            $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_sendtest_16.gif', 'vAlignMiddle');
+            $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_sendtest_16.gif');
             $oImage->setAlt($aMsg["SendTestTitle"]);
             $oSendTest = new cHTMLLink();
             $oSendTest->setLink('javascript:void(0)')
+                ->setClass('con_img_button')
                 ->setAlt($aMsg["SendTestTitle"])
                 ->setAttribute('data-action', 'news_send_test')
                 ->setContent($oImage->render());
         } else {
-            $oSendTest = new cHTMLImage($cfg['path']['images'] . 'newsletter_sendtest_16_off.gif', 'vAlignMiddle');
+            $oSendTest = new cHTMLImage($cfg['path']['images'] . 'newsletter_sendtest_16_off.gif', 'con_img_button_off');
             $oSendTest->setAlt($aMsg["SendTestTitleOff"]);
         }
         $oMenu->setActions($iMenu, 'test', $oSendTest->render());
@@ -227,25 +228,27 @@ while ($oNewsletter = $oNewsletters->next()) {
 
     if ($perm->have_perm_area_action($area, "news_add_job")) {
         if (isValidMail($oNewsletter->get("newsfrom")) && $lIDCatArt > 0) {
-            $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_dispatch_16.gif', 'vAlignMiddle');
+            $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_dispatch_16.gif');
             $oImage->setAlt($aMsg["AddJobTitle"]);
             $oAddJob = new cHTMLLink();
             $oAddJob->setLink('javascript:void(0)')
+                ->setClass('con_img_button')
                 ->setAlt($aMsg["AddJobTitle"])
                 ->setAttribute('data-action', 'news_add_job')
                 ->setContent($oImage->render());
         } else {
-            $oAddJob = new cHTMLImage($cfg['path']['images'] . 'newsletter_dispatch_16_off.gif', 'vAlignMiddle');
+            $oAddJob = new cHTMLImage($cfg['path']['images'] . 'newsletter_dispatch_16_off.gif', 'con_img_button_off');
             $oAddJob->setAlt($aMsg["AddJobTitleOff"]);
         }
         $oMenu->setActions($iMenu, 'dispatch', $oAddJob->render());
     }
 
     if ($perm->have_perm_area_action($area, "news_create")) {
-        $oImage = new cHTMLImage($cfg['path']['images'] . 'but_copy.gif', 'vAlignMiddle');
+        $oImage = new cHTMLImage($cfg['path']['images'] . 'but_copy.gif');
         $oImage->setAlt($aMsg["CopyTitle"]);
         $oCopy = new cHTMLLink();
         $oCopy->setLink('javascript:void(0)')
+            ->setClass('con_img_button')
             ->setAlt($aMsg["CopyTitle"])
             ->setAttribute('data-action', 'news_duplicate')
             ->setContent($oImage->render());
@@ -253,11 +256,12 @@ while ($oNewsletter = $oNewsletters->next()) {
     }
 
     if ($perm->have_perm_area_action($area, "news_delete")) {
-        $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+        $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif');
         $oImage->setAlt($aMsg["DelTitle"]);
 
         $oDelete = new cHTMLLink();
         $oDelete->setLink('javascript:void(0)')
+            ->setClass('con_img_button')
             ->setAlt($aMsg["DelTitle"])
             ->setAttribute('data-action', 'news_delete')
             ->setContent($oImage->render());

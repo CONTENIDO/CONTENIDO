@@ -22,7 +22,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiTemplate createNewItem
  * @method cApiTemplate|bool next
  */
-class cApiTemplateCollection extends ItemCollection {
+class cApiTemplateCollection extends ItemCollection
+{
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -32,7 +34,8 @@ class cApiTemplateCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct($select = false) {
+    public function __construct($select = false)
+    {
         parent::__construct(cRegistry::getDbTableName('tpl'), 'idtpl');
         $this->_setItemClass('cApiTemplate');
 
@@ -52,7 +55,7 @@ class cApiTemplateCollection extends ItemCollection {
      * @param int    $idclient
      * @param int    $idlay
      * @param int    $idtplcfg
-     *                                Either a valid template configuration id or an empty string
+     *      Either a valid template configuration id or an empty string
      * @param string $name
      * @param string $description
      * @param int    $deletable       [optional]
@@ -69,7 +72,9 @@ class cApiTemplateCollection extends ItemCollection {
      */
     public function create($idclient, $idlay, $idtplcfg, $name, $description,
             $deletable = 1, $status = 0, $defaulttemplate = 0, $author = '',
-            $created = '', $lastmodified = '') {
+            $created = '', $lastmodified = ''
+    )
+    {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
@@ -103,12 +108,13 @@ class cApiTemplateCollection extends ItemCollection {
      * Returns the default template configuration item
      *
      * @param int $idclient
-     * @return cApiTemplateConfiguration|bool
+     * @return bool
      * @throws cDbException
      * @throws cException
      */
-    public function selectDefaultTemplate($idclient) {
-        $this->select('defaulttemplate = 1 AND idclient = ' . (int) $idclient);
+    public function selectDefaultTemplate($idclient)
+    {
+        $this->select('`defaulttemplate` = 1 AND `idclient` = %d', $idclient);
         return $this->next();
     }
 
@@ -120,14 +126,16 @@ class cApiTemplateCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByIdLay($idlay) {
-        $this->select('idlay = ' . (int) $idlay);
+    public function fetchByIdLay($idlay)
+    {
+        $this->select('idlay = ' . cSecurity::toInteger($idlay));
         $entries = [];
         while (($entry = $this->next()) !== false) {
             $entries[] = clone $entry;
         }
         return $entries;
     }
+
 }
 
 /**
@@ -138,6 +146,7 @@ class cApiTemplateCollection extends ItemCollection {
  */
 class cApiTemplate extends Item
 {
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -147,7 +156,8 @@ class cApiTemplate extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('tpl'), 'idtpl');
         $this->setFilters([], []);
         if ($mId !== false) {
@@ -172,7 +182,8 @@ class cApiTemplate extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function loadByArticleOrCategory($idart, $idcat, $lang, $client) {
+    public function loadByArticleOrCategory($idart, $idcat, $lang, $client)
+    {
         // get ID of template configuration that is used for
         // either the article language or the category language
         $idtplcfg = conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client);
@@ -206,7 +217,8 @@ class cApiTemplate extends Item
      *
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'deletable':
             case 'status':

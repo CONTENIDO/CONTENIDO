@@ -7,9 +7,6 @@
     <link rel="stylesheet" type="text/css" href="{_ASSET(styles/jquery/plugins/tipsy.css)_}">
     <link rel="stylesheet" type="text/css" href="{_ASSET(styles/includes/str_overview.css)_}">
     <style type="text/css">
-    #cat_navbar span {padding-left:15px;}
-    #cat_navbar span.last {padding-left:5px;}
-    #category_list td.action {text-align:center;}
     </style>
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="{_ASSET(scripts/jquery/plugins/tipsy.js)_}"></script>
@@ -17,9 +14,6 @@
     <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
     <script type="text/javascript" src="{_ASSET(scripts/str_overview.js)_}"></script>
     <script type="text/javascript">
-    var area = "{AREA}";
-    var frame = "{FRAME}";
-
     // Set imagepath and Translations in str_overview.js
     initStrOverview('{CON_IMAGES}', 'i18n("Make online")',
         'i18n("Make offline")', 'i18n("Protect category")',
@@ -33,48 +27,45 @@
     </script>
 </head>
 
-<body style="margin:10px">
+<body class="page_generic" id="str_overview">
+
     <!-- catnewlayer -->
     <div id="cat_edit" class="cat_new_layer">
         <form style="margin:0" name="newtree" method="post" action="{HREF_ACTION}" onsubmit="return checkForm();">
             <div class="cat_spacer"></div>
             {INPUT_ACTION_NEW}
             {INPUT_SESSION}
+            {INPUT_VISIBLE}
+            {INPUT_PUBLIC}
+            {INPUT_TEMPLATE}
 
             <label for="cat_categoryname" class="cat_label">i18n("Category")</label>
             <div class="cat_input">{INPUT_CATNAME_NEW}</div>
-            <div class="cat_icon">
+            <div class="cat_new_action">
                 {MAKEVISIBLE_BUTTON_NEW}
-                {INPUT_VISIBLE}
             </div>
-            <div class="cat_icon_text" id="visible_label">i18n('Make online')</div>
             <div class="cat_end_row"></div>
 
             <label for="cat_categoryalias" class="cat_label">i18n("Alias")</label>
             <div class="cat_input">{INPUT_ALIAS_NEW}</div>
-            <div class="cat_icon">
+            <div class="cat_new_action">
                 {MAKEPUBLIC_BUTTON_NEW}
-                {INPUT_PUBLIC}
             </div>
-            <div class="cat_icon_text public_label">i18n("Protect category")</div>
-            <div class="cat_end_row"></div>
 
             <div class="cat_label">&nbsp;</div>
             <div class="cat_input">&nbsp;</div>
-            <div class="cat_icon">
+            <div class="cat_new_action">
                 {TEMPLATE_BUTTON_NEW}
-                {INPUT_TEMPLATE}
             </div>
-            <div class="cat_icon_text">i18n("Configure category")</div>
             <div class="cat_end_row"></div>
 
             <div style="display:{PERMISSION_NEWTREE_DISPLAY}">
                 <div class="cat_label">&nbsp;</div>
                 <div class="cat_input">&nbsp;</div>
-                <div class="cat_icon">
+                <div class="cat_new_action">
                     <input type="checkbox" name="is_tree" value="0" id="is_tree" onclick="refreshStatus();" {PERMISSION_NEWTREE}>
+                    <label for="is_tree" class="public_label">i18n("Category is a tree")</label>
                 </div>
-                <label for="is_tree" class="cat_icon_text public_label">i18n("Category is a tree")</label>
                 <div class="cat_end_row"></div>
             </div>
 
@@ -89,10 +80,11 @@
 
             <div class="cat_spacer"></div>
 
-            <div style="text-align:right; padding-right:15px;">
-                <a href="javascript:hideNewForm()"><img src="{CON_IMAGES}but_cancel.gif" id="cat_new_cancel" alt="" style="vertical-align:middle"></a>
-                &nbsp;
-                <input type="image" id="cat_new_submit" src="{CON_IMAGES}but_ok.gif">
+            <div class="text_right pdr15">
+                <div class="con_form_action_control">
+                    <input class="con_img_button" type="image" id="cat_new_submit" src="{CON_IMAGES}but_ok.gif">
+                    <a class="con_img_button" href="javascript:hideNewForm()"><img src="{CON_IMAGES}but_cancel.gif" id="cat_new_cancel" alt=""></a>
+                </div>
             </div>
 
             <div class="cat_spacer"></div>
@@ -113,9 +105,11 @@
 
         <div class="cat_spacer"></div>
 
-        <div style="text-align:right; padding-right:15px;">
-            <a href="javascript:hideTemplateSelect()"><img src="{CON_IMAGES}but_cancel.gif" alt="" class="vAlignMiddle"></a>
-            <img class="vAlignMiddle img_form_submit" src="{CON_IMAGES}but_ok.gif" alt="" onclick="hideTemplateSelect(1);">
+        <div class="text_right pdr15">
+            <div class="con_form_action_control">
+                <img class="con_img_button" src="{CON_IMAGES}but_ok.gif" alt="" onclick="hideTemplateSelect(1);">
+                <a class="con_img_button" href="javascript:hideTemplateSelect()"><img src="{CON_IMAGES}but_cancel.gif" alt=""></a>
+            </div>
         </div>
 
         <div class="cat_spacer"></div>
@@ -125,15 +119,11 @@
     <table id="category_list" class="generic" cellspacing="0">
         <tbody>
             <tr class="fixed">
-                <th colspan="{SUM_COLUMNS}" id="cat_navbar">
+                <th colspan="{SUM_COLUMNS}" id="con_navbar" class="con_navbar">
                     {NEWCAT}
-                    <span>&nbsp;</span>
                     {COLLAPSE_ALL}
-                    <span>&nbsp;</span>
                     {EXPAND_ALL}
-                    <span>&nbsp;</span>
                     {CANCEL_MOVE_TREE}
-                    <span class="last">&nbsp;</span>
                 </th>
             </tr>
             <tr class="fixed">
@@ -141,7 +131,7 @@
             </tr>
             <tr class="fixed">
                 <th colspan="2" style="border-left:1px solid #B3B3B3">
-                    <span class="overview_dist_left">i18n("Category")</span>
+                    <span class="mgl5 no_wrap">i18n("Category")</span>
                 </th>
                 <th class="header">
                     i18n("Alias")
@@ -153,39 +143,45 @@
                     i18n("Actions")
                 </th>
                 {ADDITIONALHEADERS}
-                <th width="1" class="str-style-f" valign="middle">&nbsp;</th>
+                <th width="1" class="str_style_f align_middle">&nbsp;</th>
             </tr>
             <!-- layer for inline editing of existing categories -->
             <tr id="cat_inline_layer" class="fixed">
 
-
-                <td class="str-style-a" valign="middle">&nbsp;</td>
-                <td colspan="{SUM_COLUMNS_EDIT}" class="str-style-c vAlignMiddle" style="padding-left:15px;">
+                <td class="str_style_a align_middle"></td>
+                <td colspan="{SUM_COLUMNS_EDIT}" class="str_style_c align_middle" style="padding-left:15px;">
                     <form name="renamecategory" id="renamecategory" method="post" action="{ACTION_EDIT_URL}">
                         {INPUT_ACTION_EDIT}
                         {INPUT_IDCAT}
                         {INPUT_SESSION}
-                        <span id="cat_name">i18n('Category name') &nbsp; {INPUT_CATNAME_EDIT}<span style="padding-left:15px;">&nbsp;</span></span>
+                        <span id="cat_name" class="mgr15">
+                            i18n('Category name')
+                            {INPUT_CATNAME_EDIT}
+                        </span>
 
-                        {LABEL_ALIAS_NAME}
-                        {INPUT_ALIAS_EDIT}
-                        <span style="padding-left:15px;">&nbsp;</span>
+                        <span class="mgr15">
+                            {LABEL_ALIAS_NAME}
+                            {INPUT_ALIAS_EDIT}
+                        </span>
 
-                        <span id="tpl_cfg"><a href="{TEMPLATE_URL}" id="tplcfg_href"><img src="images/template_properties.gif" title="i18n('Configure category')" alt="i18n('Configure category')" style="vertical-align:middle"> &nbsp; i18n('Configure category')</a><span style="padding-left:15px;">&nbsp;</span></span>
+                        <span id="tpl_cfg" class="mgr15">
+                            <a class="con_func_button" href="{TEMPLATE_URL}" id="tplcfg_href"><img src="images/template_properties.gif" title="i18n('Configure category')" alt="i18n('Configure category')">&nbsp;i18n('Configure category')</a>
+                        </span>
 
-                        <a href="{HREF_CANCEL}"><img src="{SRC_CANCEL}" alt="" style="vertical-align:middle"></a>
-                        &nbsp;
-                        <input style="vertical-align:middle" type="image" src="{SRC_OK}">
+                        <span class="con_form_action_control">
+                            <input class="con_img_button" type="image" src="{SRC_OK}" title="i18n('Save')" alt="i18n('Save')">
+                            {CANCEL_LINK}
+                        </span>
                     </form>
                 </td>
 
             </tr>
             <!-- BEGIN:BLOCK -->
             <tr id="cat_{CATID}_row" class="text_medium draggable" style="background-color:{BGCOLOR};{HEIGHT}" data-idcat="{CATID}" data-parentid="{PARENTID}" data-level="{LEVEL}" data-preid="{PREID}" data-postid="{POSTID}">
-                <td width="3" class="str-style-a" valign="middle">&nbsp;</td>
-                <td {DIRECTION} class="{BORDER_CLASS}" style="padding-left:{INDENT};" valign="middle" {SHOW_MOUSEOVER_CATEGORY}>{COLLAPSE_CATEGORY_NAME}</td>
-                <td class="{BORDER_CLASS}" valign="middle" {SHOW_MOUSEOVER_ALIAS}>{ALIAS}</td>
-                <td width="30" class="{BORDER_CLASS}" {SHOW_MOUSEOVER}><span class="overview_dist_right">{TPLNAME}</span></td>
+                <td width="3" class="str_style_a"></td>
+                <td {DIRECTION} class="align_middle {BORDER_CLASS}" style="padding-left:{INDENT};" {SHOW_MOUSEOVER_CATEGORY}>{COLLAPSE_CATEGORY_NAME}</td>
+                <td class="align_middle {BORDER_CLASS}" {SHOW_MOUSEOVER_ALIAS}>{ALIAS}</td>
+                <td width="30" class="{BORDER_CLASS}" {SHOW_MOUSEOVER}><span class="mgr5">{TPLNAME}</span></td>
                 <td width="25" class="action">{RENAMEBUTTON}</td>
                 <td width="25" class="action">{VISIBLEBUTTON}</td>
                 <td width="25" class="action">{PUBLICBUTTON}</td>
@@ -195,7 +191,7 @@
                 <td width="25" class="action">{DUPLICATEBUTTON}</td>
                 <td width="25" class="action">{DELETEBUTTON}</td>
                 {ADDITIONALCOLUMNS}
-                <td width="1" class="str-style-c" valign="middle">&nbsp;</td>
+                <td width="1" class="str_style_c align_middle">&nbsp;</td>
             </tr>
             <!-- END:BLOCK -->
         </tbody>
@@ -203,26 +199,14 @@
 
 <script type="text/javascript">
 
-/* Function for setting Workflow */
-function setWorkflow(idcat, idSelect) {
-    var params = {
-        area: area,
-        action: 'workflow_cat_assign',
-        frame: frame,
-        modidcat: idcat
-    };
-    params[idSelect] = document.getElementById(idSelect).value;
-
-    window.location.href = Con.UtilUrl.build("main.php", params);
-}
 
 /* Function for cancel moving a tree */
 function cancelMoveTree(idcat) {
     if (idcat > 0) {
         var url = Con.UtilUrl.build("main.php", {
-            area: area,
+            area: Con.cfg.area,
             action: 'str_movesubtree',
-            frame: frame,
+            frame: Con.cfg.frame,
             idcat: idcat,
             parentid_new: 1
         });
@@ -231,27 +215,12 @@ function cancelMoveTree(idcat) {
     }
 }
 
-/* Inserts Worflow Select Box into Category row */
-function printWorkflowSelect(idcat, selected) {
-    var script = document.getElementById('wf' + idcat);
-    var parent = script.parentNode;
-
-    var sTemplate = '{PLUGIN_WORKFLOW}';
-    sTemplate = sTemplate.replace(/{IDCAT}/g, idcat);
-    var block = document.createElement('span');
-    block.innerHTML = sTemplate;
-    block.firstChild.value = selected;
-
-    parent.removeChild(script);
-    parent.appendChild(block);
-}
-
 /* Function for deleting categories */
 function deleteStr(idcat, idparent) {
     var url = Con.UtilUrl.build("main.php", {
-        area: 'str',
+        area: Con.cfg.area,
         action: 'str_deletecat',
-        frame: '4',
+        frame: Con.cfg.frame,
         idcat: idcat,
         parentid: idparent
     });
@@ -261,9 +230,9 @@ function deleteStr(idcat, idparent) {
 /* Function for duplicating categories */
 function duplicateCategory(idcat, idparent) {
     var url = Con.UtilUrl.build("main.php", {
-        area: 'str',
+        area: Con.cfg.area,
         action: 'str_duplicate',
-        frame: '4',
+        frame: Con.cfg.frame,
         idcat: idcat,
         parentid: idparent
     });
@@ -517,9 +486,9 @@ function confDel(idcat, idparent, sName) {
 
                         // construct the URL and point the browser to it
                         var url = Con.UtilUrl.build("main.php", {
-                            area: area,
+                            area: Con.cfg.area,
                             action: 'str_movesubtree',
-                            frame: frame,
+                            frame: Con.cfg.frame,
                             idcat: idcat,
                             parentid_new: newParentId,
                             preid_new: newPreId,
@@ -635,6 +604,36 @@ function confDel(idcat, idparent, sName) {
         });
         Con.RowMark.initialize($filteredRows, 'str');
 
+        var $root = $('#str_overview');
+
+        // Note: Called functions are in str_overview.js
+        $root.find('[data-action]').live('click', function (event) {
+            var $element = $(this),
+                action = $element.data('action');
+            if (action === 'show_new_form') {
+                showNewForm();
+            } else if (action === 'cancel_inline_edit') {
+                handleInlineEdit(0);
+            } else if (action === 'display_inline_edit') {
+                var id = parseInt($element.data('id'));
+                handleInlineEdit(id);
+            } else if (action === 'str_deletecat') {
+                var name = $element.data('name'),
+                    $row = $element.closest('tr'),
+                    idcat = parseInt($row.data('idcat'), 10),
+                    parentId = parseInt($row.data('parentid'), 10);
+                confDel(idcat, parentId, name);
+            } else if (action === 'str_duplicate') {
+                var name = $element.data('name'),
+                    $row = $element.closest('tr'),
+                    idcat = parseInt($row.data('idcat'), 10),
+                    parentId = parseInt($row.data('parentid'), 10);
+                confDupl(idcat, parentId, name);
+            }
+        });
+
+        // @TODO This logic should be moved to workflow plugin and should be handled via
+
     });
 })(Con, Con.$);
 
@@ -644,6 +643,9 @@ var strDataObj = {},
 {JS_DATA}
 </script>
 {JS_MARK_SUBMENU_ITEM}
+
+{ADDITIONAL_PAGE_END}
+
 </body>
 </html>
 <!--

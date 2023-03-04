@@ -13,17 +13,7 @@
 </head>
 <body class="page_generic">
 
-<table id="lay_overview_list" class="borderless menu_overview_list" width="100%" cellspacing="0" cellpadding="2" border="0">
-
-    <!-- BEGIN:BLOCK -->
-    <tr id="{ID}" data-id="{DATA_ID}" class="row_mark tooltip-north" original-title="{DESCRIPTION}">
-        <td data-type="icon"></td>
-        <td data-type="item">{NAME}</td>
-        <td data-type="actions" align="right" class="nowrap">{INUSE}&nbsp;{TODO}&nbsp;{DELETE}&nbsp;</td>
-    </tr>
-    <!-- END:BLOCK -->
-
-</table>
+{GENERIC_MENU}
 
 <script type="text/javascript">
 
@@ -78,9 +68,8 @@
                 }
             }
         });
-
-        Con.RowMark.initialize('#lay_overview_list .row_mark', 'row', '#marked');
     });
+
 })(Con, Con.$);
 
 </script>

@@ -455,9 +455,9 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     }
 
     // Recipients
-    $html = $oSendToAll->toHtml() . "<br>" . PHP_EOL;
-    $html .= $oSendToDefault->toHtml() . "<br>" . PHP_EOL;
-    $html .= $oSendToGroups->toHtml() . "<br>" . PHP_EOL;
+    $html = new cHTMLDiv($oSendToAll->toHtml(), 'mgb5') . PHP_EOL;
+    $html .= new cHTMLDiv($oSendToDefault->toHtml(), 'mgb5') . PHP_EOL;
+    $html .= new cHTMLDiv($oSendToGroups->toHtml(), 'mgb5') . PHP_EOL;
     $html .= $oSelGroup->render();
 
     $oForm->add(i18n("Recipients", 'newsletter'), $html);
@@ -483,7 +483,8 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         $ckbCronJob->setDisabled(false);
     } else {
         // Give the user a hint
-        $ckbCronJob->setAlt(i18n("Option has to be enabled as client setting - see techref for details", 'newsletter'));
+        $helpBox = new cGuiBackendHelpbox(i18n("Option has to be enabled as client setting - see techref for details", 'newsletter'));
+        $ckbCronJob->appendMarkup('&nbsp;&nbsp;' . $helpBox->render());
     }
 
     $oCkbDispatch = new cHTMLCheckbox("ckbDispatch", "enabled");
@@ -499,11 +500,11 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oCkbSaveAsDefault->setLabelText("&nbsp;" . i18n("Save option settings as default", 'newsletter'));
 
     $oForm->add(i18n("Options", 'newsletter'),
-        $ckbWelcome->toHtml()
-        . $ckbCronJob->toHtml()
-        . $oCkbDispatch->toHtml() . "&nbsp;&nbsp;&nbsp;&nbsp;" . i18n("Recipients per block:", 'newsletter')
+        new cHTMLDiv($ckbWelcome->toHtml(), 'mgb5')
+        . new cHTMLDiv($ckbCronJob->toHtml(), 'mgb5')
+        . new cHTMLDiv($oCkbDispatch->toHtml() . "&nbsp;&nbsp;&nbsp;&nbsp;" . i18n("Recipients per block:", 'newsletter')
             . "&nbsp;" . $oTxtDispatchCount->render() . "&nbsp;" . i18n("Delay between blocks:", 'newsletter')
-            . "&nbsp;" . $oTxtDispatchDelay->render() . "&nbsp;" . i18n("sec.", 'newsletter') . "<br>"
+            . "&nbsp;" . $oTxtDispatchDelay->render() . "&nbsp;" . i18n("sec.", 'newsletter') . "<br>", 'mgb5')
         . $oCkbSaveAsDefault->toHtml()
     );
 

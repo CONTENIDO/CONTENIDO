@@ -124,6 +124,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     }
 
     $oForm = new cGuiTableForm("frmNewsletterMsg");
+    $oForm->setTableClass('generic col_md');
     $oForm->setVar("frame", $frame);
     $oForm->setVar("area", $area);
     $oForm->setVar("action", "news_save");
@@ -211,6 +212,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     }
 
     $oTxtMessage = new cHTMLTextarea("txtMessage", $oNewsletter->get("message"), 80, 20);
+    $oTxtMessage->setClass('col_100p');
     $oForm->add(i18n("Text Message", 'newsletter'), $oTxtMessage->render() . "<br>" . $sTagInfoText);
 
     $sExecScript = '

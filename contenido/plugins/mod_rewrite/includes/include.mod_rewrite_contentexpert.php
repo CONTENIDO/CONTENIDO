@@ -88,6 +88,8 @@ $oView->lng_resetaliases_note = i18n('This process could require some time depen
 $oView->lng_discard_changes = i18n('Discard changes', $pluginName);
 $oView->lng_save_changes = i18n('Save changes', $pluginName);
 
+$oView->lng_more_informations = i18n('More information', $pluginName);
+
 ################################################################################
 ##### Action processing
 

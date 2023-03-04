@@ -142,8 +142,7 @@ $form->setVar('newshorturl', '');
 $page->appendContent($form);
 
 $table = new cHTMLTable();
-$table->setClass('generic');
-$table->setWidth('100%');
+$table->setClass('generic col_100p');
 
 // construct the table header
 $theader = new cHTMLTableHeader();

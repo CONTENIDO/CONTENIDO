@@ -16,65 +16,61 @@
     <script type="text/javascript" src="{_ASSET(scripts/jquery/plugins/tipsy.js)_}"></script>
     <script type="text/javascript" src="{_ASSET(scripts/registerTipsy.js)_}"></script>
 </head>
-<body class="mg10">
+<body class="page_generic">
     <a href="javascript:location.reload()" accesskey="s"></a>
-    <table width="100%" class="borderB5" cellspacing="0" cellpadding="3" border="0">
-        <tr class="text_medium heightpx25 lheightpx25">
-            <td class="bgcE2" colspan="3">
-                <a href="{INTERNS_HREF}" class="mgl10">{INTERNS_LABEL}<img alt="{INTERNS_LABEL}" title="{INTERNS_LABEL}" class="vgmiddle mgl5" src="images/submit.gif"></a>
-                <a href="{EXTERNS_HREF}" class="mgl15">{EXTERNS_LABEL}<img alt="{EXTERNS_LABEL}" title="{EXTERNS_LABEL}" class="vgmiddle mgl5" src="images/submit.gif"></a>
-                <a href="{INTERNS_EXTERNS_HREF}" class="mgl15">{INTERNS_EXTERNS_LABEL}<img alt="{INTERNS_EXTERNS_LABEL}" title="{INTERNS_EXTERNS_LABEL}" class="vgmiddle mgl5" src="images/submit.gif"></a>
-            </td>
-        </tr>
-    </table>
-    <div class="pdt10">
+
+    <div class="con_navbar con_block">
+        <a href="{INTERNS_HREF}" class="con_func_button mgl10">{INTERNS_LABEL}<img alt="{INTERNS_LABEL}" title="{INTERNS_LABEL}" class="mgl5" src="images/submit.gif"></a>
+        <a href="{EXTERNS_HREF}" class="con_func_button mgl15">{EXTERNS_LABEL}<img alt="{EXTERNS_LABEL}" title="{EXTERNS_LABEL}" class="mgl5" src="images/submit.gif"></a>
+        <a href="{INTERNS_EXTERNS_HREF}" class="con_func_button mgl15">{INTERNS_EXTERNS_LABEL}<img alt="{INTERNS_EXTERNS_LABEL}" title="{INTERNS_EXTERNS_LABEL}" class="mgl5" src="images/submit.gif"></a>
     </div>
+
     <table cellspacing="0" cellpadding="2" border="0">
-        <tr valign="middle">
+        <tr class="align_middle">
             <td>
                 <h2>{TITLE}</h2>
             </td>
         </tr>
         <tr>
-            <td class="pdt5 pdb15 vgmiddle">
-                <a href="{UPDATE_HREF}"><img src="images/but_refresh.gif" class="mgr3 vgmiddle" title="i18n('Refresh')" alt="('Refresh')"></a><a href="{UPDATE_HREF}">i18n('Refresh')</a>
+            <td class="pdt5 pdb15 align_middle">
+                <a class="con_func_button" href="{UPDATE_HREF}"><img src="images/but_refresh.gif" class="mgr3" title="i18n('Refresh')" alt="('Refresh')">i18n('Refresh')</a>
             </td>
         </tr>
     </table>
-    <table width="100%" class="borderlB5" cellspacing="0" cellpadding="3" border="0">
+    <table width="100%" class="border_l_b5" cellspacing="0" cellpadding="3" border="0">
         <tr class="text_medium">
-            <td class="bgcCC borderB5 noborderl width20">
+            <td class="bg_c_cc border_b5 no_border_l width20">
                 {ERRORS_HEADLINE}:
             </td>
-            <td class="bgcE2 borderB5 noborderl width20">
+            <td class="bg_c_e2 border_b5 no_border_l width20">
             {ERRORS_COUNT_CHECKED}
-            <td class="bgcE2 borderB5 noborderl width60">
+            <td class="bg_c_e2 border_b5 no_border_l width60">
                 {ERRORS_HELP_ERRORS}: <span class="colorF0">{ERRORS_COUNT_ERRORS} ({ERRORS_COUNT_ERRORS_PERCENT} %)</span>
             </td>
         </tr>
     </table>
     <div class="mgt20">
     </div>
-    <table width="100%" class="borderlB5" cellspacing="0" cellpadding="3" border="0">
-        <tr class="text_medium bgcE2">
-            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
+    <table width="100%" class="border_l_b5" cellspacing="0" cellpadding="3" border="0">
+        <tr class="text_medium bg_c_e2">
+            <td class="align_top color6 border_b5 no_border_l no_wrap width20">
                 <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=nameart">{ERRORS_HEADLINE_ARTICLE}</a>
                 (ID)
             </td>
-            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
+            <td class="align_top color6 border_b5 no_border_l no_wrap width20">
                 <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=namecat">{ERRORS_HEADLINE_CATNAME}</a>
                 (ID)
             </td>
-            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width25">
+            <td class="align_top color6 border_b5 no_border_l no_wrap width25">
                 <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=wronglink">{ERRORS_HEADLINE_LINK}</a>
             </td>
-            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width15">
+            <td class="align_top color6 border_b5 no_border_l no_wrap width15">
                 <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=error_type">{ERRORS_HEADLINE_DESCRIPTION}</a>
             </td>
-            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap tgcenter width10">
+            <td class="align_top color6 border_b5 no_border_l no_wrap text_center width10">
                 {ERRORS_HEADLINE_REPAIRED}
             </td>
-            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap tgcenter width10">
+            <td class="align_top color6 border_b5 no_border_l no_wrap text_center width10">
                 {ERRORS_HEADLINE_WHITELIST}
             </td>
         </tr>
@@ -84,7 +80,7 @@
     <!-- ######################### --><!-- ### Links to Articles ### --><!-- ######################### -->
     <div class="mgb10">
         <!-- Table Head -->
-        <table width="100%" class="borderB5 bgcF1">
+        <table width="100%" class="border_b5 bg_c_f1">
             <tr>
                 <td>
                     <strong>{ERRORS_HEADLINE_LINKS_ARTICLES}</strong>
@@ -96,7 +92,7 @@
             </tr>
         </table><!-- Table Body -->
         <div id="id_links_articles">
-            <table class="error_list" width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+            <table class="error_list" width="100%" class="border_b5 no_border_t" cellspacing="0" cellpadding="3" border="0">
                 {ERRORS_SHOW_ART}
             </table>
         </div>
@@ -104,7 +100,7 @@
     <!-- ##################################### --><!-- ### Links to Documents and Images ### --><!-- ##################################### -->
     <div class="mgb10">
         <!-- Table Head -->
-        <table width="100%" class="borderB5 bgcF1">
+        <table width="100%" class="border_b5 bg_c_f1">
             <tr>
                 <td>
                     <strong>{ERRORS_HEADLINE_LINKS_DOCIMAGES}</strong>
@@ -116,7 +112,7 @@
             </tr>
         </table><!-- Table Body -->
         <div id="id_links_docsimgs">
-            <table class="error_list" width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+            <table class="error_list" width="100%" class="border_b5 no_border_t" cellspacing="0" cellpadding="3" border="0">
                 {ERRORS_SHOW_DOCIMAGES}
             </table>
         </div>
@@ -124,7 +120,7 @@
     <!-- ############################### --><!-- ### Links to external sites ### --><!-- ############################### -->
     <div class="mgb20">
         <!-- Table Head -->
-        <table width="100%" class="borderB5 bgcF1">
+        <table width="100%" class="border_b5 bg_c_f1">
             <tr>
                 <td>
                     <strong>{ERRORS_HEADLINE_OTHERS}</strong>
@@ -135,29 +131,29 @@
                 </td>
             </tr>
         </table><!-- Table Body -->
-        <div id="id_links_external">
-            <table class="error_list" width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+        <div id="id_links_external" class="border_b5">
+            <table class="error_list" width="100%" class="border_b5 no_border_t" cellspacing="0" cellpadding="3" border="0">
                 {ERRORS_SHOW_OTHERS}
             </table>
         </div>
     </div>
-    <table width="100%" class="borderlB5" cellspacing="0" cellpadding="3" border="0">
-        <tr class="text_medium bgcE2">
-            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
+    <table width="100%" class="border_l_b5" cellspacing="0" cellpadding="3" border="0">
+        <tr class="text_medium bg_c_e2">
+            <td class="align_top color6 border_b5 no_border_l no_wrap width20">
                 <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=namecat">{ERRORS_HEADLINE_CATNAME}</a>
                 (ID)
             </td>
-            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
+            <td class="align_top color6 border_b5 no_border_l no_wrap width20">
                 <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=nameart">{ERRORS_HEADLINE_ARTICLE}</a>
                 (ID)
             </td>
-            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width25">
+            <td class="align_top color6 border_b5 no_border_l no_wrap width25">
                 <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=wronglink">{ERRORS_HEADLINE_LINK}</a>
             </td>
-            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width25">
+            <td class="align_top color6 border_b5 no_border_l no_wrap width25">
                 <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=error_type">{ERRORS_HEADLINE_DESCRIPTION}</a>
             </td>
-            <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap tgcenter width10">
+            <td class="align_top color6 border_b5 no_border_l no_wrap text_center width10">
                 {ERRORS_HEADLINE_WHITELIST}
             </td>
         </tr>
@@ -165,7 +161,7 @@
     <!-- ########################### --><!-- ### Links to Categories ### --><!-- ########################### -->
     <div class="mgt10 mgb10">
         <!-- Table Head -->
-        <table width="100%" class="borderB5 bgcF1">
+        <table width="100%" class="border_b5 bg_c_f1">
             <tr>
                 <td>
                     <strong>{ERRORS_HEADLINE_LINKS_CATEGORYS}</strong>
@@ -177,12 +173,16 @@
             </tr>
         </table><!-- Table Body -->
         <div id="id_links_categories">
-            <table class="error_list" width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+            <table class="error_list" width="100%" class="border_b5 no_border_t" cellspacing="0" cellpadding="3" border="0">
                 {ERRORS_SHOW_CAT}
             </table>
         </div>
     </div>
-    <!-- Print Button --><a class="mgl3" href="javascript:print()"><img src="{_PATH_CONTENIDO_FULLHTML_}images/print.gif" alt=""></a>
+
+    <!-- Print Button -->
+    <div class="con_form_action_control text_left">
+        <a class="con_img_button mgl3" href="javascript:print()"><img src="{_PATH_CONTENIDO_FULLHTML_}images/print.gif" alt=""></a>
+    </div>
 
 <script type="text/javascript">
 (function(Con, $) {

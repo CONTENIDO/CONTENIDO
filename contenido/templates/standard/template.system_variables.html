@@ -5,24 +5,24 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
 </head>
-<body style="margin:10px">
+<body class="page_generic">
 
 {TEMPNOTIFICATION}
 <!--br>
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
     <tr class="textg_medium" style="background-color: #E2E2E2">
-        <td class="textg_medium" style="padding:5px;border:1px; border-color:#B3B3B3; border-style:solid;border-bottom: none" nowrap="nowrap">
+        <td class="textg_medium no_wrap" style="padding:5px;border:1px; border-color:#B3B3B3; border-style:solid;border-bottom: none">
             i18n("CONTENIDO error log")
         </td>
     </tr>
 
     <tr class="text_medium">
-        <td class="text_medium" style="border:1px; border-top:0px; border-color: #B3B3B3; border-style: solid" nowrap="nowrap" align="left" valign="top">
+        <td class="text_medium align_top text_left no_wrap" style="border:1px; border-top:0px; border-color: #B3B3B3; border-style: solid">
             <textarea class="txt" readonly="readonly" style="resize:none;width:99.5%;height:{TXTERRORLOGSIZE}px;" rows="100" cols="100">{ERRORLOG}</textarea>
         </td>
     </tr>
     <tr class="text_medium">
-        <td class="text_medium" style="padding:5px;border:1px; border-top:0px; border-color: #B3B3B3; border-style: solid" nowrap="nowrap" align="left" valign="top">
+        <td class="text_medium align_top text_left no_wrap" style="padding:5px;border:1px; border-top:0px; border-color: #B3B3B3; border-style: solid">
             <a href="{LOGEMPTYURL}">
                 <img src="./images/but_delete.gif" alt="i18n("Clear error log")" title="i18n("clear error log")" class="vAlignMiddle">
             </a> <a href="{LOGEMPTYURL}">i18n("clear error log")</a>
@@ -31,13 +31,13 @@
 </table><br-->
 <table cellspacing="0" cellpadding="1" border="0" width="100%">
     <tr>
-        <td width="50%" valign="top">
+        <td width="50%" class="align_top">
             {SERVER_CONFIGURATION}<br />
 			{DATABASE_CONFIGURATION}<br />
             {SYSTEM_STATISTICS}
         </td>
         <td width="1%"></td>
-        <td width="49%" valign="top">
+        <td width="49%" class="align_top">
 			{INSTALLED_VERSIONS}<br />
             {PHP_CONFIGURATION}
         </td>

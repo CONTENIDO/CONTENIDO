@@ -9,11 +9,13 @@
         <legend>{$trans.legend|escape}</legend>
 
         <div class="field-type">
-            <label for="with_data">{$trans.withData|escape}</label>
             <input type="checkbox" id="with_data" name="with_data" checked="checked" />
+            <label for="with_data">{$trans.withData|escape}</label>
         </div>
 
-        <input type="image" src="images/but_ok.gif" alt="{$trans.export|escape}" title="{$trans.export|escape}" />
+        <span class="con_form_action_control">
+            <input type="image" src="images/but_ok.gif" alt="{$trans.export|escape}" title="{$trans.export|escape}" />
+        </span>
 
     </fieldset>
 

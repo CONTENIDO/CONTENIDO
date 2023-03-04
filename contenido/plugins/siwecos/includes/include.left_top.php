@@ -24,7 +24,7 @@ if (cRegistry::getPerm()->have_perm_area_action('siwecos', SIWECOSRightBottomPag
     $link->setContent(i18n('BTN_CREATE', 'siwecos'));
     // class addfunction lets display add icon beneath link
     $link->updateAttributes([
-        'class' => 'addfunction'
+        'class' => 'con_func_button addfunction'
     ]);
     $actions[] = $link->render();
 } else {

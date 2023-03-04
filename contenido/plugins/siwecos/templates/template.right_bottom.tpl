@@ -1,33 +1,33 @@
 <form id="siwecos-form" action="{$formAction}" method="post">
-    <table style="width: auto;" class="generic" cellspacing="0" cellpadding="2">
+    <table class="generic col_sm">
         <tbody>
         <tr id="m7">
-            <th id="m8" colspan="2" valign="top">{i18n("LBL_CONFIGURATION", 'siwecos')}</th>
+            <th class="align_top" id="m8" colspan="2">{i18n("LBL_CONFIGURATION", 'siwecos')}</th>
         </tr>
-        <tr class="2">
-            <td nowrap="nowrap" valign="top" style="white-space: nowrap;" width="1">
+        <tr>
+            <td class="no_wrap align_top">
                 <nobr>{i18n("LBL_DOMAIN", 'siwecos')}</nobr>
                 *
             </td>
-            <td nowrap="nowrap" valign="top" align="left">
+            <td class="no_wrap align_top text_left">
                 <input type="text" id="domain" name="domain" value="{$domain}">
             </td>
         </tr>
-        <tr class="2">
-            <td nowrap="nowrap" valign="top" style="white-space: nowrap;" width="1">
-                <nobr>{i18n("LBL_EMAIL_ADDRESS", 'siwecos')}</nobr>
+        <tr>
+            <td class="no_wrap align_top">
+                {i18n("LBL_EMAIL_ADDRESS", 'siwecos')}
                 *
             </td>
-            <td nowrap="nowrap" valign="top" align="left">
+            <td class="no_wrap align_top text_left">
                 <input type="email" id="email" name="email" value="{$email}">
             </td>
         </tr>
-        <tr class="2">
-            <td nowrap="nowrap" valign="top" style="white-space: nowrap;" width="1">
-                <nobr>{i18n("LBL_PASSWORD", 'siwecos')}</nobr>
+        <tr>
+            <td class="no_wrap align_top">
+                {i18n("LBL_PASSWORD", 'siwecos')}
                 *
             </td>
-            <td nowrap="nowrap" valign="top" align="left">
+            <td class="no_wrap align_top text_left">
                 <input type="password" id="password" name="password" value="{$password}" autocomplete="off" readonly="readonly">
                 <script type="text/javascript">
                     (function(Con, $) {
@@ -41,45 +41,45 @@
                 </script>
             </td>
         </tr>
-        <tr class="2">
-            <td nowrap="nowrap" valign="top" style="white-space: nowrap;" width="1">
-                <nobr>{i18n("LBL_DANGER_LEVEL", 'siwecos')}</nobr>
+        <tr>
+            <td class="no_wrap align_top">
+                {i18n("LBL_DANGER_LEVEL", 'siwecos')}
             </td>
-            <td nowrap="nowrap" valign="top" align="left">
+            <td class="no_wrap align_top text_left">
                 <input type="dangerLevel" id="dangerLevel" name="dangerLevel" value="{$dangerLevel}">
             </td>
         </tr>
-        <tr class="2">
-            <td nowrap="nowrap" valign="top" style="white-space: nowrap;" width="1">
-                <nobr>{i18n("LBL_USER_TOKEN", 'siwecos')}</nobr>
+        <tr>
+            <td class="no_wrap align_top">
+                {i18n("LBL_USER_TOKEN", 'siwecos')}
             </td>
-            <td nowrap="nowrap" valign="top" align="left">{$userToken}</td>
+            <td class="no_wrap align_top text_left">{($userToken) ? $userToken : '&nbsp;'}</td>
         </tr>
-        <tr class="2">
-            <td nowrap="nowrap" valign="top" style="white-space: nowrap;" width="1">
-                <nobr>{i18n("LBL_DOMAIN_TOKEN", 'siwecos')}</nobr>
+        <tr>
+            <td class="no_wrap align_top">
+                {i18n("LBL_DOMAIN_TOKEN", 'siwecos')}
             </td>
-            <td nowrap="nowrap" valign="top" align="left">{$domainToken}</td>
+            <td class="no_wrap align_top text_left">{($domainToken) ? $domainToken : '&nbsp;'}</td>
         </tr>
-        <tr class="2">
-            <td nowrap="nowrap" valign="top" style="white-space: nowrap;" width="1">
-                <nobr>{i18n("LBL_AUTHOR", 'siwecos')}</nobr>
+        <tr>
+            <td class="no_wrap align_top">
+                {i18n("LBL_AUTHOR", 'siwecos')}
             </td>
-            <td nowrap="nowrap" valign="top" align="left">{$author}</td>
+            <td class="no_wrap align_top text_left">{$author}</td>
         </tr>
-        <tr class="2">
-            <td nowrap="nowrap" valign="top" style="white-space: nowrap;" width="1">
-                <nobr>{i18n("LBL_CREATION_DATE", 'siwecos')}</nobr>
+        <tr>
+            <td class="no_wrap align_top">
+                {i18n("LBL_CREATION_DATE", 'siwecos')}
             </td>
-            <td nowrap="nowrap" valign="top" align="left">{$created}</td>
+            <td class="no_wrap align_top text_left">{$created}</td>
         </tr>
 
-        <tr class="2">
-            <td nowrap="nowrap" valign="top">&nbsp;</td>
-            <td nowrap="nowrap" valign="top" style="white-space: nowrap;" align="right">
-                <input type="image" id="siwecos-new-form"
-                       src="images/but_ok.gif" alt="{i18n("BTN_SAVE", 'siwecos')}"
-                       title="{i18n("BTN_SAVE", 'siwecos')}">
+        <tr>
+            <td colspan="2" class="no_wrap align_top text_right">
+                <div class="con_form_action_control">
+                    <input class="con_img_button" type="image" id="siwecos-new-form" src="images/but_ok.gif"
+                           alt="{i18n("BTN_SAVE", 'siwecos')}" title="{i18n("BTN_SAVE", 'siwecos')}">
+                </div>
             </td>
         </tr>
         </tbody>

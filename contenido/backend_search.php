@@ -356,7 +356,7 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
         $sErrOut = $sNothingFound;
     }
 
-    $sRow = '<tr><td colspan="7" class="bordercell">' . $sErrOut . '</td></tr>';
+    $sRow = '<tr><td colspan="7">' . $sErrOut . '</td></tr>';
     $tpl->set('d', 'ROWS', $sRow);
     $sLoadSubnavi = 'Con.getFrame(\'right_top\').location.href = \'main.php?area=con&frame=3&idcat=0&idtpl=' . $iIdTpl . '&contenido=' . $sSession . "';";
     $tpl->next();
@@ -421,15 +421,15 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             // Convert to start article/regular article
             if ($backendSearchHelper->hasArticleMakeStartPermission($idcat) && 0 == 1) {
                 if ($startidartlang == $idartlang) {
-                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><a href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&contenido=$sSession\" title=\"{$lngFlagAsNormalArticle}\"><img src=\"images/isstart1.gif\" title=\"{$lngFlagAsNormalArticle}\" alt=\"{$lngFlagAsNormalArticle}\"></a></td>";
+                    $makeStartarticle = "<td class=\"text_center\"><a class=\"con_img_button\" href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&contenido=$sSession\" title=\"{$lngFlagAsNormalArticle}\"><img src=\"images/isstart1.gif\" title=\"{$lngFlagAsNormalArticle}\" alt=\"{$lngFlagAsNormalArticle}\"></a></td>";
                 } else {
-                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><a href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&contenido=$sSession\" title=\"{$lngFlagAsStartArticle}\"><img src=\"images/isstart0.gif\" title=\"{$lngFlagAsStartArticle}\" alt=\"{$lngFlagAsStartArticle}\"></a></td>";
+                    $makeStartarticle = "<td class=\"text_center\"><a class=\"con_img_button\" href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&contenido=$sSession\" title=\"{$lngFlagAsStartArticle}\"><img src=\"images/isstart0.gif\" title=\"{$lngFlagAsStartArticle}\" alt=\"{$lngFlagAsStartArticle}\"></a></td>";
                 }
             } else {
                 if ($startidartlang == $idartlang) {
-                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><img src=\"images/isstart1.gif\" title=\"{$lngFlagAsNormalArticle}\" alt=\"{$lngFlagAsNormalArticle}\"></td>";
+                    $makeStartarticle = "<td class=\"text_center\"><img class=\"con_img_button_off\" src=\"images/isstart1.gif\" title=\"{$lngFlagAsNormalArticle}\" alt=\"{$lngFlagAsNormalArticle}\"></td>";
                 } else {
-                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><img src=\"images/isstart0.gif\" title=\"{$lngFlagAsStartArticle}\" alt=\"{$lngFlagAsStartArticle}\"></td>";
+                    $makeStartarticle = "<td class=\"text_center\"><img class=\"con_img_button_off\" src=\"images/isstart0.gif\" title=\"{$lngFlagAsStartArticle}\" alt=\"{$lngFlagAsStartArticle}\"></td>";
                 }
             }
 
@@ -495,14 +495,14 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
                 $delete = "";
             }
 
-            $sRow = '<tr id="' . $sRowId . '" class="text_medium row_mark" data-idcat="' . $idcat . '" data-idart="' . $idart . '">' . "\n";
+            $sRow = '<tr id="' . $sRowId . '" class="row_mark" data-idcat="' . $idcat . '" data-idart="' . $idart . '">' . "\n";
             $sRow .= $makeStartarticle . "\n";
-            $sRow .= "<td nowrap=\"nowrap\" class=\"bordercell\">$editart</td>
-                      <td nowrap=\"nowrap\" class=\"bordercell\">$lastmodified</td>
-                      <td nowrap=\"nowrap\" class=\"bordercell\">$published</td>
-                      <td nowrap=\"nowrap\" class=\"bordercell\">" . $db->f('artsort') . "</td>
-                      <td nowrap=\"nowrap\" class=\"bordercell\">$sTemplateName</td>
-                      <td nowrap=\"nowrap\" class=\"bordercell\">
+            $sRow .= "<td>$editart</td>
+                      <td>$lastmodified</td>
+                      <td>$published</td>
+                      <td class=\"text_center\">" . $db->f('artsort') . "</td>
+                      <td>$sTemplateName</td>
+                      <td>
                           <a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$lngReminder&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=625');\" title=\"$lngSetReminder\" href=\"#\"><img id=\"m2\" alt=\"$lngSetReminder\" src=\"images/but_setreminder.gif\"></a>
                           $properties
                           $tplconfig
@@ -518,7 +518,7 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
 
     if (!$bHit) {
         $sNothingFound = i18n("No article found.");
-        $sRow = '<tr><td colspan="7" class="bordercell">' . $sNothingFound . '</td></tr>';
+        $sRow = '<tr><td colspan="7">' . $sNothingFound . '</td></tr>';
         $tpl->set('d', 'ROWS', $sRow);
         $tpl->next();
     }
@@ -551,7 +551,7 @@ if (sizeof($_GET) == 0 && isset($_POST) && !$bNoCriteria) {
             <input type="hidden" name="save_author" id="save_author" value="' . $sSearchStrAuthor . '">
             <label for="' . 'save_name' . '">' . i18n("Search name") . ': </label>
             <input type="text" class="text_medium" name="save_name" id="save_name" placeholder="' . i18n("The search") . '" class="vAlignMiddle">
-            <input type="image" class="vAlignMiddle tableElement" src="./images/but_ok.gif" alt="' . i18n('Store') . '" title="' . i18n('Store') . '" value="' . i18n('Store') . '" name="submit">
+            <input type="image" class="con_img_button align_middle" src="./images/but_ok.gif" alt="' . i18n('Store') . '" title="' . i18n('Store') . '" value="' . i18n('Store') . '" name="submit">
         </form>'
     ;
 

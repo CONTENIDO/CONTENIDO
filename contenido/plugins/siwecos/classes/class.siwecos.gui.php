@@ -98,16 +98,17 @@ class SIWECOSLeftBottomPage extends cGuiPage
 
             // create link to delete the item
             if (cRegistry::getPerm()->have_perm_area_action('form', SIWECOSRightBottomPage::DELETE_FORM)) {
-                $image = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+                $image = new cHTMLImage($cfg['path']['images'] . 'delete.gif');
                 $image->setAlt($deleteForm);
                 $delete = new cHTMLLink();
                 $delete->setLink('javascript:void(0)')
+                    ->setClass('con_img_button')
                     ->setAlt($deleteForm)
                     ->setAttribute('data-action', 'siwecos_delete')
                     ->setContent($image->render());
                 $menu->setActions($counter, 'delete', $delete->render());
             } else {
-                $delete = new cHTMLImage($cfg['path']['images'] . 'delete_inact.gif', 'vAlignMiddle');
+                $delete = new cHTMLImage($cfg['path']['images'] . 'delete_inact.gif', 'con_img_button_off');
             }
 
             $menu->setActions($counter, 'delete', $delete->render());
@@ -351,7 +352,7 @@ class SIWECOSRightBottomPage extends cGuiPage
         $page->assign('userToken', $userToken);
         $page->assign('domainToken', $domainToken);
         $page->assign('author', $author);
-        $page->assign('created', $created);
+        $page->assign('created', $created == '' ? '&nbsp;' : $created);
 
         $cGuiNotification = new cGuiNotification();
 

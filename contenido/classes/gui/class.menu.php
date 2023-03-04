@@ -115,12 +115,20 @@ class cGuiMenu {
     public $rowmark;
 
     /**
+     * Max length of tooltips (descriptions).
+     *
+     * @var int
+     */
+    protected $_toolTipMaxLength;
+
+    /**
      * Constructor to create an instance of this class.
      * @param string $menuId
      */
     public function __construct($menuId = 'generic_menu_list') {
         $this->setRowmark(true);
         $this->setMenuId($menuId);
+        $this->setToolTipMaxLength(64);
     }
 
     /**
@@ -148,6 +156,20 @@ class cGuiMenu {
      */
     public function setTooltip($item, $tooltip) {
         $this->tooltips[$item] = $tooltip;
+    }
+
+    /**
+     * Sets the max length for tooltips (description), longer descriptions
+     * will be truncated with ellipsis. A value of 0 removes the maximum
+     * length constraint.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param int $maxlength
+     * @return void
+     */
+    public function setToolTipMaxLength(int $maxlength = 0)
+    {
+        $this->_toolTipMaxLength = $maxlength;
     }
 
     /**
@@ -273,7 +295,13 @@ class cGuiMenu {
                     $extra[] = 'id="marked"';
                 }
                 if (!empty($this->tooltips[$key])) {
-                    $extra[] = 'class="tooltip-north row_mark" original-title="' . $this->tooltips[$key] . '"';
+                    $tooltip = $this->tooltips[$key];
+                    if ($this->_toolTipMaxLength > 0) {
+                        if (cString::getStringLength($tooltip) > $this->_toolTipMaxLength) {
+                            $tooltip = cString::getPartOfString($tooltip, 0, $this->_toolTipMaxLength) . '...';
+                        }
+                    }
+                    $extra[] = 'class="tooltip-north row_mark" original-title="' . $tooltip . '"';
                 } else {
                     $extra[] = 'class="row_mark"';
                 }
@@ -282,11 +310,13 @@ class cGuiMenu {
                 $actions = '';
                 if (isset($this->actions[$key]) && is_array($this->actions[$key])) {
                     foreach ($this->actions[$key] as $key => $singleAction) {
-                        $actions .= '&nbsp;' . $singleAction . '&nbsp;';
+                        #$actions .= '&nbsp;' . $singleAction . '&nbsp;';
+                        $actions .= $singleAction;
                     }
                 }
                 if ($actions) {
-                    $actions = str_replace('&nbsp;&nbsp;', '&nbsp;', $actions);
+                    #$actions = str_replace('&nbsp;&nbsp;', '&nbsp;', $actions);
+                    $actions = str_replace('&nbsp;', '', $actions);
                 }
 
                 $tpl->set('d', 'ACTIONS', $actions);

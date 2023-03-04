@@ -25,7 +25,7 @@ $refreshTemplates = isset($_REQUEST['refreshtemplates']) ? $_REQUEST['refreshtem
 $belang = cRegistry::getBackendLanguage();
 
 // check the read only setting and display a warning if it's active
-$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -198,6 +198,7 @@ if (true === $layout->isLoaded()) {
     }
 
     $form = new cGuiTableForm("module");
+    $form->addTableClass('col_flx_m_50p col_first_100');
     $form->setHeader(i18n("Edit Layout"));
     $form->setVar("area", $area);
     $form->setVar("action", 'lay_edit');
@@ -207,13 +208,13 @@ if (true === $layout->isLoaded()) {
 
     $tb_name = new cHTMLTextbox("layname", $name, 60);
     $ta_description = new cHTMLTextarea("description", $description, 100, 10);
-    $ta_description->setStyle("font-family: monospace;width: 100%;");
+    $ta_description->setClass('con_code');
     $ta_description->updateAttributes([
         "wrap" => "off"
     ]);
 
     $ta_code = new cHTMLTextarea("code", conHtmlSpecialChars($code), 100, 20, 'code');
-    $ta_code->setStyle("font-family: monospace;width: 100%;");
+    $ta_code->setClass('con_code');
     $ta_code->updateAttributes([
         "wrap" => "off"
     ]);

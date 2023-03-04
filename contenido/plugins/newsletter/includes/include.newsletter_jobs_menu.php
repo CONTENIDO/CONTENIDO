@@ -185,6 +185,7 @@ while ($oJob = $oJobs->next()) {
     // Create the link to show the newsletter job
     $oLnk = new cHTMLLink();
     $oLnk->setClass('show_item')
+        ->setClass('con_img_button')
         ->setLink('javascript:void(0)')
         ->setAttribute('data-action', 'news_job_show');
     $oMenu->setLink($iMenu, $oLnk);
@@ -198,10 +199,11 @@ while ($oJob = $oJobs->next()) {
             if ($oJob->get("use_cronjob") == 0) {
                 // Standard job can be run if user has the right to do so
                 if ($perm->have_perm_area_action($area, "news_job_run")) {
-                    $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_16.gif', 'vAlignMiddle');
+                    $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_16.gif');
                     $oImage->setAlt($aMsg["SendTitle"]);
                     $oSend = new cHTMLLink();
                     $oSend->setLink('javascript:void(0)')
+                        ->setClass('con_img_button')
                         ->setAlt($aMsg["SendTitle"])
                         ->setAttribute('data-action', 'news_job_run')
                         ->setContent($oImage->render());
@@ -216,10 +218,11 @@ while ($oJob = $oJobs->next()) {
 
             if ($perm->have_perm_area_action($area, "news_job_delete")) {
                 // Job may be deleted, if user has the right to do so
-                $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+                $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif');
                 $oImage->setAlt($aMsg["DelTitle"]);
                 $oDelete = new cHTMLLink();
                 $oDelete->setLink('javascript:void(0)')
+                    ->setClass('con_img_button')
                     ->setAlt($aMsg["DelTitle"])
                     ->setAttribute('data-action', 'news_job_delete')
                     ->setContent($oImage->render());
@@ -231,10 +234,11 @@ while ($oJob = $oJobs->next()) {
             if ($perm->have_perm_area_action($area, "news_job_run")) {
                 // User may try to start sending, again - if he has the right to
                 // do so
-                $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_16.gif', 'vAlignMiddle');
+                $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_16.gif');
                 $oImage->setAlt($aMsg["SendTitle"]);
                 $oSend = new cHTMLLink();
                 $oSend->setLink('javascript:void(0)')
+                    ->setClass('con_img_button')
                     ->setAlt($aMsg["SendTitle"])
                     ->setAttribute('data-action', 'news_job_run')
                     ->setContent($oImage->render());
@@ -246,7 +250,7 @@ while ($oJob = $oJobs->next()) {
             ]);
 
             // Delete disabled
-            $oImage = new cHTMLImage($cfg['path']['images'] . 'delete_inact.gif', 'vAlignMiddle');
+            $oImage = new cHTMLImage($cfg['path']['images'] . 'delete_inact.gif', 'con_img_button_off');
             $oImage->setAlt(i18n("Can't delete the job while it's running", "newsletter"));
             $oMenu->setActions($iMenu, 'delete', $oImage->render());
             break;
@@ -259,7 +263,7 @@ while ($oJob = $oJobs->next()) {
             if ($perm->have_perm_area_action($area, "news_job_delete")) {
                 // You have the right, but you can't delete the job after
                 // sending
-                $oImage = new cHTMLImage($cfg['path']['images'] . 'delete_inact.gif', 'vAlignMiddle');
+                $oImage = new cHTMLImage($cfg['path']['images'] . 'delete_inact.gif', 'con_img_button_off');
                 $oImage->setAlt(i18n("Can't delete the job after it's been sent", "newsletter"));
                 $oMenu->setActions($iMenu, 'delete', $oImage->render());
             }

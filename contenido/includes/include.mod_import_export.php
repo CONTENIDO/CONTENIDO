@@ -33,8 +33,7 @@ if ($requestIdMod > 0) {
 $notification = new cGuiNotification();
 $reloadLeftBottom = false;
 
-$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
-
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -94,16 +93,16 @@ if ($action == "mod_importexport_module") {
 }
 
 $import = new cHTMLRadiobutton("mode", "import");
-$importXML = new cHTMLRadiobutton('mode', 'import_xml');
-$export = new cHTMLRadiobutton("mode", "export");
-
 $import->setLabelText(i18n("Import from ZIP file"));
-$importXML->setLabelText(i18n("Import from XML file"));
-$export->setLabelText(i18n("Export to ZIP file"));
+$import->setEvent("onclick", "$('#vupload').css('visibility','visible')");
 
-$export->setEvent("onclick", "$('#vupload').hide()");
-$importXML->setEvent("onclick", "$('#vupload').show()");
-$import->setEvent("onclick", "$('#vupload').show()");
+$importXML = new cHTMLRadiobutton('mode', 'import_xml');
+$importXML->setLabelText(i18n("Import from XML file"));
+$importXML->setEvent("onclick", "$('#vupload').css('visibility','visible')");
+
+$export = new cHTMLRadiobutton("mode", "export");
+$export->setLabelText(i18n("Export to ZIP file"));
+$export->setEvent("onclick", "$('#vupload').css('visibility','hidden')");
 
 $upload = new cHTMLUpload("upload");
 $upload->setID('vupload');
@@ -126,19 +125,18 @@ if ($readOnly) {
 }
 
 $form2 = new cGuiTableForm("export");
+$form2->addTableClass('col_xs');
 $form2->setVar("action", "mod_importexport_module");
 $form2->setVar("use_encoding", "false");
 $form2->setHeader("Import/Export" . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
 $form2->add(i18n("Mode"), [
-    $export,
-    "<br>",
-    $import,
-    '<br>',
-    $importXML
+    new cHTMLDiv($export, 'mgb5'),
+    new cHTMLDiv($import, 'mgb5'),
+    new cHTMLDiv($importXML)
 ]);
 
 if ($inputChecked != "" && $outputChecked != "") {
-    $form2->add(i18n("File"), $upload, "vupload", "display: none;");
+    $form2->add(i18n("File"), $upload, "vupload", "visibility: hidden;");
 } else {
     $form2->add(i18n("File"), $upload, "vupload");
 }

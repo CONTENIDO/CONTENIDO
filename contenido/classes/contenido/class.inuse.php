@@ -289,7 +289,7 @@ class cApiInUseCollection extends ItemCollection {
                     $warnMsg = i18n("Do you really want to override the lock?");
                     $linkScript = "javascript:if (window.confirm('" . $warnMsg . "') == true) { window.location.href  = '" . $link . "';}";
                     $clickScript = "var elem = document.getElementById(\'contenido_notification\'); elem.style.display=\'none\'";
-                    $override = '<br><br><a alt="' . $alt . '" title="' . $alt . '" href="' . $linkScript . '" class="standard">[' . i18n("Override lock") . ']</a> <a href="javascript:void(0)" class="standard" onclick="' . $clickScript . '">[' . i18n("Hide notification") . ']</a>';
+                    $override = '<br><br><a class="standard" href="' . $linkScript . '" alt="' . $alt . '" title="' . $alt . '">[' . i18n("Override lock") . ']</a> <a class="standard" href="javascript:void(0)" onclick="' . $clickScript . '">[' . i18n("Hide notification") . ']</a>';
                 } else {
                     $override = '';
                 }

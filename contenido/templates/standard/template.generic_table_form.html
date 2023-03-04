@@ -1,17 +1,20 @@
-<form {JSEXTRA} enctype="multipart/form-data" style="margin:0px" name="{FORMNAME}" method="{METHOD}" action="{ACTION}">
+<form {JSEXTRA} enctype="multipart/form-data" class="mg0" name="{FORMNAME}" method="{METHOD}" action="{ACTION}">
 {HIDDEN_VALUES}
-<table style="width: auto;" id="{ID}" class="generic" cellspacing="0" cellpadding="2">
+<table id="{ID}" class="{CLASS}">
     {HEADER}
     <!-- BEGIN:BLOCK -->
     {SUBHEADER}
     <tr class="{ROWNAME}">
-        <td nowrap="nowrap" valign="top" style="white-space: nowrap;" width="1"><nobr>{CATNAME}</nobr></td>
-        <td nowrap="nowrap" valign="top" align="left">{CATFIELD}</td>
+        <td class="no_wrap align_top">{CATNAME}</td>
+        <td class="no_wrap align_top text_left">{CATFIELD}</td>
     </tr>
     <!-- END:BLOCK -->
     <tr class="{ROWNAME}">
-        <td nowrap="nowrap" valign="top">&nbsp;</td>
-        <td nowrap="nowrap" valign="top" style="white-space: nowrap;" align="right">{CANCELLINK}{EXTRABUTTONS}</td>
+        <td colspan="2" class="no_wrap align_top text_right">
+            <div class="con_form_action_control">
+                {EXTRABUTTONS}{CANCELLINK}
+            </div>
+        </td>
     </tr>
 </table>
 </form>

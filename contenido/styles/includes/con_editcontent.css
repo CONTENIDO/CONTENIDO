@@ -1,16 +1,22 @@
 @CHARSET "ISO-8859-1";
 
-.editcontentList {
-    border: 1px solid #B3B3B3;
-    padding: 10px;
-    margin: 10px 0;
-}
-.noactive {
+@import "../version_selection.css";
+@import "../content_elements.css";
+@import "../jquery/plugins/atooltip.css";
+
+.no_active {
     border: 1px solid red;
 }
-.editcontentList div {
-    min-height: 13px;
-}
-.editcontentList span.mceEditor div {
+
+.con_editcontent_list span.mceEditor div {
     min-height: 0;
+}
+
+.sr_only {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }

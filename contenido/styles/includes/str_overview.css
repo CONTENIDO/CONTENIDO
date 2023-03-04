@@ -1,7 +1,5 @@
 /*****************************************
 *
-* $Id$
-*
 * File      : $RCSfile: str_overview.css,v $
 * Project   : CONTENIDO
 * Descr     : File contains specific css information's for Content->Category forms and layers
@@ -9,55 +7,67 @@
 * Author    : $Author: timo.trautmann$
 * Modified  : $Date: 2008/02/25 13:41:52 $
 *
-* � four for business AG, www.4fb.de
+* © four for business AG, www.4fb.de
 ******************************************/
 
 /* general initialization */
-input {
-    margin: 0;
-    padding: 0;
-    vertical-align: middle;
-}
-
-img {
-    vertical-align: middle;
-}
 
 img.spaced {
     vertical-align: middle;
-    margin-left:5px;
+    margin-left: 5px;
     margin-right: 10px;
 }
 
+#str_overview .con_navbar span {
+    padding-left: 15px;
+}
+#str_overview .con_navbar span.last {
+    padding-left: 5px;
+}
+
+#category_list td.action {
+    text-align: center;
+}
+#category_list td.action .con_func_button,
+#category_list td.action .con_img_button,
+#category_list td.action .con_img_button_off,
+#category_list td.action .con_func_button img,
+#category_list td.action .con_img_button img {
+    top: auto;
+}
+
 /* Formatting for category table cells */
-#category_list .str-style-a {
+#category_list .str_style_a {
     border: 0 solid #B3B3B3;
     border-bottom-width: 1px;
     border-left-width: 1px;
-    white-space:nowrap;
-    padding: 0 2px;
+    white-space: nowrap;
+    padding: 4px;
 }
 
-#category_list .str-style-b, #category_list  tr td {
+#category_list .str_style_b,
+#category_list tr td {
     border: 0 solid #B3B3B3;
     border-bottom-width: 1px;
-    white-space:nowrap;
-    padding: 0 2px;
+    white-space: nowrap;
+    padding: 4px;
 }
 
-#category_list .str-style-c, #category_list .str-style-d , #category_list .str-style-f {
+#category_list .str_style_c,
+#category_list .str_style_d,
+#category_list .str_style_f {
     border: 0 solid #B3B3B3;
     border-right-width: 1px;
     border-bottom-width: 1px;
-    white-space:nowrap;
-    padding: 0 2px;
+    white-space: nowrap;
+    padding: 4px;
 }
 
-#category_list .str-style-f  {
-border-width: 1px 1px 0 0;
+#category_list .str_style_f {
+    border-width: 1px 1px 0 0;
 }
 
-#category_list .str-style-d {
+#category_list .str_style_d {
     border-width: 0 0 1px 1px;
 }
 
@@ -73,19 +83,16 @@ border-width: 1px 1px 0 0;
     border-left: 0;
     font-size: 11px;
     color: #666666;
-    font-weight:normal;
+    font-weight: normal;
     background-color: #E2E2E2;
     margin-left: 5px;
     height: 20px;
 }
 
-#category_list #cat_navbar {
-    height:25px;
-    line-height:25px;
-    vertical-align:middle;
-    border: 1px solid #B3B3B3;
-    background-color: #E2E2E2;
-    padding-left:5px;
+#category_list .con_navbar {
+}
+#category_list .con_navbar .con_func_button {
+    margin-right: 15px;
 }
 
 #category_list tr.text_medium {
@@ -95,93 +102,91 @@ border-width: 1px 1px 0 0;
 /* Classes for category new layer*/
 #cat_inline_layer {
     display: none;
-    height:40px;
-    line-height:40px;
-    vertical-align:middle;
+    height: 40px;
+    line-height: 40px;
+    vertical-align: middle;
 }
 
-.cat_label, .cat_input, .cat_icon, .cat_icon_text {
+#cat_inline_layer input[type=text] {
+    line-height: 1.15 !important;;
+}
+
+.cat_label, .cat_input, .cat_new_action {
     height: 20px;
-    line-height:17px;
-    vertical-align:middle;
+    line-height: 17px;
+    vertical-align: middle;
 }
 
 .cat_label {
-    float:left;
-    width:75px;
-    padding-left:10px;
+    float: left;
+    width: 75px;
+    padding-left: 10px;
 }
 
 .cat_input {
-    float:left;
-    width:176px;
-    text-align:left;
-    padding-left:10px;
+    float: left;
+    width: 176px;
+    text-align: left;
+    padding-left: 10px;
 }
 
-.cat_icon {
-    float:left;
-    width:21px;
+.cat_new_action {
+    float: left;
+    text-align: left;
+    width: 200px;
+    padding: 0 10px;
 }
 
-.cat_icon_text {
-    float:left;
-    width:155px;
-    text-align:left;
-    padding-left:10px;
-    padding-right:10px;
+.cat_new_action > a > span {
+    margin-left: 5px;
 }
 
 .cat_large {
-    float:left;
-    width:360px;
-    text-align:left;
-    padding-right:10px;
+    float: left;
+    width: 360px;
+    text-align: left;
+    padding-right: 10px;
 }
 
 .cat_new_layer {
-    position:absolute;
-    width:475px;
-    display:none;
+    position: absolute;
+    width: 475px;
+    display: none;
     border: 1px solid #B3B3B3;
-    background-color:#F1F1F1;
-    text-align:right;
+    background-color: #F1F1F1;
+    text-align: right;
     z-index: 10;
 }
 
 .cat_set_template {
-    position:absolute;
-    width:250px;
-    display:none;
+    position: absolute;
+    width: 250px;
+    display: none;
     border: 1px solid #B3B3B3;
-    background-color:#F1F1F1;
-    text-align:right;
+    background-color: #F1F1F1;
+    text-align: right;
     z-index: 1000;
 }
 
 .cat_new_layer_disable {
-    position:absolute;
-    width:475px;
-    display:none;
-    border:1px;
+    position: absolute;
+    width: 475px;
+    display: none;
+    border: 1px;
     z-index: 900;
 }
 
 .cat_end_row {
-    clear:both;
+    clear: both;
 }
 
 .cat_spacer {
-    height:10px;
+    height: 10px;
 }
 
-.overview_dist_right{
-    margin-right: 5px;
-    white-space:nowrap;
-}
-
-.cat_new_layer input, .cat_set_template input  {
-    vertical-align:middle;
-    height:17px;
-    line-height:17px;
+.cat_new_layer input[type="text"],
+.cat_set_template input[type="text"] {
+    vertical-align: middle;
+    height: 17px;
+    line-height: 17px;
 }

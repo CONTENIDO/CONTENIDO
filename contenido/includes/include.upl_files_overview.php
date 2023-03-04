@@ -604,13 +604,15 @@ $mpath = trim($mpath, '/') . '/';
 $sDisplayPath = generateDisplayFilePath($mpath, 85);
 
 $sToolsRow = '<tr>
-               <th colspan="6" id="cat_navbar">
-                   <a class="tableElement vAlignMiddle" href="javascript:void(0);" data-action="invert_selection"><img class="tableElement vAlignMiddle" src="images/but_invert_selection.gif" title="' . i18n("Flip Selection") . '" alt="' . i18n("Flip Selection") . '"> ' . i18n("Flip Selection") . '</a>
+               <td colspan="6" class="con_navbar">
+                   <a class="tableElement vAlignMiddle" href="javascript:void(0);" data-action="invert_selection">
+                   <img class="tableElement vAlignMiddle" src="images/but_invert_selection.gif" title="' . i18n("Flip Selection") . '" alt="' . i18n("Flip Selection") . '"> ' . i18n("Flip Selection") . '
+                   </a>
                        ' . $sDelete . '
                    <div class="toolsRight">
                    ' . i18n("Path:") . " " . $sDisplayPath . '
                    </div>
-               </th>
+               </td>
            </tr>';
 $sSpacedRow = '<tr>
                    <td colspan="6" class="empty_cell"></td>
@@ -619,13 +621,19 @@ $sSpacedRow = '<tr>
 // List wraps
 
 $pagerwrap = '<tr>
-               <th colspan="6" id="cat_navbar">
-                   <div class="toolsRight">
-                       <div class="vAlignMiddle">-C-SCROLLLEFT-</div>
-                       <div class="vAlignMiddle">-C-PAGE-</div>
-                       <div class="vAlignMiddle">-C-SCROLLRIGHT-</div>
-                   </div>
-                   <span class="vAlignMiddle">' . i18n("Files per Page") . ' -C-FILESPERPAGE-</span>
+               <th colspan="6" class="con_navbar">
+                    <table>
+                        <tr>
+                            <td class="align_middle no_wrap">
+                               <span>' . i18n("Files per Page") . ' -C-FILESPERPAGE-</span>
+                            </td>
+                            <td class="text_right align_middle no_wrap col_100p">
+                               <span>-C-SCROLLLEFT-</span>
+                               <span>-C-PAGE-</span>
+                               <span>-C-SCROLLRIGHT-</span>
+                            </td>
+                        </tr>
+                    </table>
                </th>
            </tr>';
 
@@ -640,12 +648,12 @@ $startwrap = '<table class="hoverbox generic">
                    <th>' . i18n("Actions") . '</th>
                </tr>';
 $itemwrap = '<tr data-list-item="{LIST_ITEM_POS}">
-                   <td class="tgcenter">%s</td>
-                   <td class="tgcenter">%s</td>
-                   <td class="vAlignTop nowrap">%s</td>
-                   <td class="vAlignTop nowrap">%s</td>
-                   <td class="vAlignTop nowrap">%s</td>
-                   <td class="vAlignTop nowrap">%s</td>
+                   <td class="text_center">%s</td>
+                   <td class="text_center">%s</td>
+                   <td class="vAlignTop no_wrap">%s</td>
+                   <td class="vAlignTop no_wrap">%s</td>
+                   <td class="vAlignTop no_wrap">%s</td>
+                   <td class="vAlignTop no_wrap">%s</td>
                </tr>';
 $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 
@@ -767,8 +775,15 @@ while ($item = $uploadCollection->next()) {
     if ($appendparameters == 'imagebrowser' || $appendparameters == 'filebrowser') {
         $mstr = '';
     } else {
-        $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-        $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$filename&startpage=$startpage&sortby=$sortby&sortmode=$sortmode&thumbnailmode=$thumbnailmode"), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$filename"), '<img class="vAlignMiddle tableElement" alt="' . $proptitle . '" title="' . $proptitle . '" src="images/but_art_conf2.gif">');
+        $tmp_mstr = '<a class="con_img_button mgl3" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+        $mstr = sprintf(
+            $tmp_mstr,
+            'right_bottom',
+            $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$filename&startpage=$startpage&sortby=$sortby&sortmode=$sortmode&thumbnailmode=$thumbnailmode"),
+            'right_top',
+            $sess->url("main.php?area=upl&frame=3&path=$path&file=$filename"),
+            cHTMLImage::img('images/but_art_conf2.gif', $proptitle)
+        );
     }
 
     $actions = $mstr . $actions;
@@ -848,6 +863,7 @@ $output = str_replace('-C-PAGE-', i18n("Page") . ' ' . $curpage, $output);
 
 $select = new cHTMLSelectElement('thumbnailmode');
 $values = [
+#    2 => '2',
     10 => '10',
     25 => '25',
     50 => '50',
@@ -857,7 +873,8 @@ $values = [
 $select->autoFill($values);
 $select->setDefault($thumbnailmode);
 
-$topbar = $select->render() . '<input class="img_form_submit vAlignMiddle tableElement" type="image" src="images/submit.gif" alt="">';
+$button = cHTMLButton::image('images/submit.gif', i18n('Search'), ['class' => 'con_img_button align_middle mgl3']);
+$topbar = $select->render() . $button;
 
 $output = str_replace('-C-FILESPERPAGE-', $topbar, $output);
 

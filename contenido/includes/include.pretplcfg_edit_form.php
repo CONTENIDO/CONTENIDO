@@ -96,8 +96,8 @@ $tpl->set('s', 'NOTIFICATION', '');
 $tpl->set('s', 'HEADER', i18n('Template preconfiguration'));
 $tpl->set('s', 'DISPLAY_HEADER', 'block');
 
-$buttons = '<a href="javascript:history.back()"><img src="images/but_cancel.gif" alt=""></a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="image" alt="" src="images/but_ok.gif">';
+$buttons = '<a class="con_img_button mgr5" href="javascript:history.back()" title="' . i18n('Back') . '"><img src="images/but_cancel.gif" alt=""></a>
+            <input class="con_img_button" type="image" title="' . i18n('Save') . '" alt="" src="images/but_ok.gif">';
 
 $tpl->set('s', 'BUTTONS', $buttons);
 
