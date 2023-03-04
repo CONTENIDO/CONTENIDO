@@ -91,7 +91,7 @@ abstract class cAuth {
     abstract public function preAuthenticate();
 
     /**
-     * @deprecated Since 4.10.2, use {@see cAuthHandlerAbstract::preAuthenticate} instead
+     * @deprecated [2023-02-05] Since 4.10.2, use {@see cAuthHandlerAbstract::preAuthenticate} instead
      */
     abstract public function preAuthorize();
 

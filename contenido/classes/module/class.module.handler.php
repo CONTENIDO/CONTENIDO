@@ -911,7 +911,7 @@ class cModuleHandler {
     }
 
     /**
-     * @deprecated Since 4.10.2, use {@see cModuleHandler::renameModule} instead
+     * @deprecated Since [2023-02-08] 4.10.2, use {@see cModuleHandler::renameModule} instead
      */
     public function renameModul($old, $new) {
         return $this->renameModule($old, $new);

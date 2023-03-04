@@ -110,24 +110,21 @@ function isUtf8($input) {
 }
 
 /**
- * See {@see cDate::getCanonicalMonth()} for documentation.
- * @deprecated Since 4.10.2, use {@see cDate::getCanonicalMonth()} instead
+ * @deprecated [2023-02-10] Since 4.10.2, use {@see cDate::getCanonicalMonth()} instead
  */
 function getCanonicalMonth($month) {
     return cDate::getCanonicalMonth($month);
 }
 
 /**
- * See {@see cDate::getCanonicalDay()} for documentation.
- * @deprecated Since 4.10.2, use {@see cDate::getCanonicalDay()} instead
+ * @deprecated [2023-02-10] Since 4.10.2, use {@see cDate::getCanonicalDay()} instead
  */
 function getCanonicalDay($weekday) {
     return cDate::getCanonicalDay($weekday);
 }
 
 /**
- * See {@see cDate::formatDatetime()} for documentation.
- * @deprecated Since 4.10.2, use {@see cDate::formatDatetime()} instead
+ * @deprecated [2023-02-10] Since 4.10.2, use {@see cDate::formatDatetime()} instead
  */
 function displayDatetime($timestamp = "", $date = false, $time = false) {
     return cDate::formatDatetime(
@@ -1215,9 +1212,7 @@ function isRunningFromWeb() {
 }
 
 /**
- * @param $entity
- * @return void
- * @deprecated Since 4.10.2, use cScanPlugins() instead
+ * @deprecated [2023-01-16] Since 4.10.2, use cScanPlugins() instead
  */
 function scanPlugins($entity) {
     cDeprecated("The function scanPlugins() is deprecated since CONTENIDO 4.10.2, use cScanPlugins() instead.");
@@ -1324,9 +1319,7 @@ function cScanPlugins(string $entity)
 }
 
 /**
- * @param $entity
- * @return void
- * @deprecated Since 4.10.2, use cCallPluginStore() instead
+ * @deprecated [2023-01-16] Since 4.10.2, use cCallPluginStore() instead
  */
 function includePlugins($entity) {
     cDeprecated("The function includePlugins() is deprecated since CONTENIDO 4.10.2, use cIncludePlugins() instead.");
@@ -1375,9 +1368,7 @@ function cHasPlugins(string $entity): bool
 }
 
 /**
- * @param $entity
- * @return void
- * @deprecated Since 4.10.2, use cCallPluginStore() instead
+ * @deprecated [2023-01-16] Since 4.10.2, use cCallPluginStore() instead
  */
 function callPluginStore($entity) {
     cDeprecated("The function callPluginStore() is deprecated since CONTENIDO 4.10.2, use cCallPluginStore() instead.");

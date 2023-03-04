@@ -105,7 +105,7 @@ class cModuleFileTranslation extends cModuleHandler {
     }
 
     /**
-     * @deprecated Since 4.10.2, Function replaced by {@see cModuleFileTranslation::_getLanguageInfo}
+     * @deprecated [2023-02-08] Since 4.10.2, Function replaced by {@see cModuleFileTranslation::_getLanguageInfo}
      */
     private function _getValueFromProperties($type, $name) {
         cApiPropertyCollection::reset();

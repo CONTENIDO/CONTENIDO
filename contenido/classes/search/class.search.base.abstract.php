@@ -62,10 +62,7 @@ abstract class cSearchBaseAbstract {
     protected $db;
 
     /**
-     * Debug flag.
-     *
-     * @var bool
-     * @deprecated Since 4.10.2, debug flag is no longer needed since 05/2015.
+     * @deprecated [2023-02-13] Since 4.10.2, debug flag is no longer needed since 05/2015.
      */
     protected $bDebug;
 

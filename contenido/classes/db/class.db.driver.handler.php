@@ -1102,7 +1102,7 @@ abstract class cDbDriverHandler {
     }
 
     /**
-     * @deprecated Since 4.10.2, use {@see cDbDriverHandler::numRows} instead
+     * @deprecated [2023-01-25] Since 4.10.2, use {@see cDbDriverHandler::numRows} instead
      */
     public function num_rows() {
         cDeprecated("The function cDbDriverHandler::num_rows() is deprecated since CONTENIDO 4.10.2, use cDbDriverHandler::numRows() instead.");
@@ -1110,7 +1110,7 @@ abstract class cDbDriverHandler {
     }
 
     /**
-     * @deprecated Since 4.10.2, use {@see cDbDriverHandler::affectedRows} instead
+     * @deprecated [2023-01-25] Since 4.10.2, use {@see cDbDriverHandler::affectedRows} instead
      */
     public function affected_rows() {
         cDeprecated("The function cDbDriverHandler::affected_rows() is deprecated since CONTENIDO 4.10.2, use cDbDriverHandler::affectedRows() instead.");
@@ -1118,7 +1118,7 @@ abstract class cDbDriverHandler {
     }
 
     /**
-     * @deprecated Since 4.10.2, use {@see cDbDriverHandler::numFields} instead
+     * @deprecated [2023-01-25] Since 4.10.2, use {@see cDbDriverHandler::numFields} instead
      */
     public function num_fields() {
         cDeprecated("The function cDbDriverHandler::num_fields() is deprecated since CONTENIDO 4.10.2, use cDbDriverHandler::numFields() instead.");
@@ -1126,7 +1126,7 @@ abstract class cDbDriverHandler {
     }
 
     /**
-     * @deprecated Since 4.10.2, use {@see cDbDriverHandler::nextRecord} instead
+     * @deprecated [2023-01-25]  Since 4.10.2, use {@see cDbDriverHandler::nextRecord} instead
      */
     public function next_record() {
         cDeprecated("The function cDbDriverHandler::next_record() is deprecated since CONTENIDO 4.10.2, use cDbDriverHandler::nextRecord() instead.");

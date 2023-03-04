@@ -36,26 +36,19 @@ abstract class cTestingTestCase extends TestCase {
     protected static $_testDirectories = array();
 
     /**
-     * Original database prefix
-     * @var
-     * @deprecated Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
+     * @deprecated [2019-11-25] Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
      */
     protected static $_originalSqlPrefix;
 
     /**
-     * Sets the original database prefix
-     * @param $sqlPrefix
-     * @deprecated Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
+     * @deprecated [2019-11-25] Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
      */
     public static function setOriginalSqlPrefix($sqlPrefix) {
         self::$_originalSqlPrefix = $sqlPrefix;
     }
 
     /**
-     * Creates a test suite.
-     * @return TestSuite
-     * @throws cTestingException
-     * @deprecated Since 4.10.2, test suites are defined in the phpunit.xml
+     * @deprecated [2019-11-25] Since 4.10.2, test suites are defined in the phpunit.xml
      */
     protected static function _createSuite() {
         if (self::$_testCaseName == '') {
@@ -66,11 +59,7 @@ abstract class cTestingTestCase extends TestCase {
     }
 
     /**
-     * Adds test files to the given test suite and returns it.
-     * @param TestSuite $suite
-     *
-     * @return TestSuite
-     * @deprecated Since 4.10.2, test files for test suites are defined in the phpunit.xml
+     * @deprecated [2019-11-25] Since 4.10.2, test files for test suites are defined in the phpunit.xml
      */
     protected static function _addTestFiles(TestSuite $suite) {
         if (count(self::$_testDirectories) == 0) {

@@ -163,7 +163,7 @@ class cGuiNavigation
     }
 
     /**
-     * @deprecated Since 4.10.2, Function `_buildHeaderData` is not meant for public usage!
+     * @deprecated [2023-02-27] Since 4.10.2, Function `_buildHeaderData` is not meant for public usage!
      */
     public function _buildHeaderData()
     {

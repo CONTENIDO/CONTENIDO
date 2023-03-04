@@ -616,7 +616,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     }
 
     /**
-     * @deprecated Since 4.10.2, `$cApiClient` was used for tracking in earlier
+     * @deprecated [2023-02-28] Since 4.10.2, `$cApiClient` was used for tracking in earlier
      *     times and is not needed anymore. Frontend modules/plugins should
      *     rather create their own instance if needed, instead of relying on
      *     the global instance.

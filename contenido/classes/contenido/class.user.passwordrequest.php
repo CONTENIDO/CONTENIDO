@@ -43,7 +43,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection
     }
 
     /**
-     * @deprecated Since 4.10.2, use {@see cApiUserPasswordRequestCollection::create} instead
+     * @deprecated [2023-02-02] Since 4.10.2, use {@see cApiUserPasswordRequestCollection::create} instead
      */
     public function createNewItem($data = NULL)
     {

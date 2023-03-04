@@ -86,7 +86,7 @@ $oCache = new cFileCache([
  */
 
 /**
- * @deprecated Since 4.10.2, use cLinkcheckerHelper::sortErrors() instead
+ * @deprecated [2023-01-25] Since 4.10.2, use cLinkcheckerHelper::sortErrors() instead
  */
 function linksort($sErrors, $requestSort) {
     cDeprecated("The function linksort() is deprecated since CONTENIDO 4.10.2, use cLinkcheckerHelper::sortErrors() instead.");
@@ -94,7 +94,7 @@ function linksort($sErrors, $requestSort) {
 }
 
 /**
- * @deprecated Since 4.10.2, use cLinkcheckerHelper::urlIsImage() instead
+ * @deprecated [2023-01-25] Since 4.10.2, use cLinkcheckerHelper::urlIsImage() instead
  */
 function url_is_image($sUrl) {
     cDeprecated("The function url_is_image() is deprecated since CONTENIDO 4.10.2, use cLinkcheckerHelper::urlIsImage() instead.");
@@ -102,7 +102,7 @@ function url_is_image($sUrl) {
 }
 
 /**
- * @deprecated Since 4.10.2, use cLinkcheckerHelper::urlIsUri() instead
+ * @deprecated [2023-01-25] Since 4.10.2, use cLinkcheckerHelper::urlIsUri() instead
  */
 function url_is_uri($sUrl) {
     cDeprecated("The function url_is_uri() is deprecated since CONTENIDO 4.10.2, use cLinkcheckerHelper::urlIsUri() instead.");

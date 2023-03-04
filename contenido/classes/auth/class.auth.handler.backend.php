@@ -46,7 +46,7 @@ class cAuthHandlerBackend extends cAuth {
     }
 
     /**
-     * @deprecated Since 4.10.2, use {@see cAuthHandlerBackend::preAuthenticate} instead
+     * @deprecated [2023-02-05] Since 4.10.2, use {@see cAuthHandlerBackend::preAuthenticate} instead
      */
     public function preAuthorize() {
         return $this->preAuthenticate();

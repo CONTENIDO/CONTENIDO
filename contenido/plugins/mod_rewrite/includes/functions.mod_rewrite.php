@@ -757,11 +757,7 @@ function mr_removeMultipleChars($char, $string) {
 }
 
 /**
- * Returns amr related translation text
- *
- * @param   string  $key    The message id as string
- * @return  string  Related message
- * @deprecated Since 4.10.2, is not used anymore
+ * @deprecated [2023-01-20] Since 4.10.2, is not used anymore
  */
 function mr_i18n($key) {
     global $lngAMR;
