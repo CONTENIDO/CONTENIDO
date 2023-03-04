@@ -122,6 +122,7 @@ class ArticleForumLeftBottom extends cGuiPage
             $link = new cHTMLLink();
             $deleteForm = UserForum::i18n('ALLDELETEFROMCAT');
             $link->setLink('javascript:void(0)')
+                ->setClass('con_img_button')
                 ->setAttribute('data-action', 'delete_forum')
                 ->setAttribute('data-idart', $forms[$i]['idart'])
                 ->setContent(cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $deleteForm));
