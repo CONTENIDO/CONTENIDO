@@ -38,8 +38,8 @@ while (($fegroup = $fegroups->next()) !== false) {
 
     $delTitle = i18n("Delete frontend group");
     $deleteLink = '
-        <a href="javascript:void(0)" data-action="delete_frontendgroup" title="' . $delTitle . '">
-            <img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
+        <a class="con_img_button" href="javascript:void(0)" data-action="delete_frontendgroup" title="' . $delTitle . '">
+            <img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
         </a>';
 
     $delTooltip = sprintf(i18n('Id of this group: %s'), $idfegroup);
