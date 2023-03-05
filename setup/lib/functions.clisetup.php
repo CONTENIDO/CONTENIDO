@@ -229,7 +229,7 @@ function getArgs() {
  */
 function printHelpText() {
     prntln("\r" . i18n('CONTENIDO setup script', 'setup'));
-    prntln(i18n('This script will install CONTENIDO to your computer', 'setup'));
+    prntln(i18n('This script will install CONTENIDO to your computer.', 'setup'));
     prntln();
     prntln(i18n("CONTENIDO can be installed using the interactive mode or a non-interactive mode.", 'setup'));
     prntln(i18n("If the script is executed without any parameters it will look for the\nautoinstall.ini file (or any other file specified with \"--file\").", 'setup'));
@@ -239,7 +239,7 @@ function printHelpText() {
     prntln('--interactive, -i');
     prntln(i18n("Forces the script to be interactive and wait for user input even if the\n\tautoinstall.ini file is present.", 'setup'), 1);
     prntln('--non-interactive');
-    prntln(i18n("Will prevent all waiting for user input. The script will abort\n\tin case of any errors", 'setup'), 1);
+    prntln(i18n("Will prevent all waiting for user input. The script will abort\n\tin case of any errors.", 'setup'), 1);
     prntln('--file [' . i18n('file', 'setup') . ']');
     prntln(i18n('Use [file] instead of the default autoinstall.ini.', 'setup'), 1);
     prntln('--locale [' . i18n('language code', 'setup') . ']');

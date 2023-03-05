@@ -33,7 +33,7 @@ class cSetupSetupSummary extends cSetupMask
         cSetupMask::__construct("templates/setup/forms/setupsummary.tpl", $step);
         $this->setHeader(i18n("Summary", "setup"));
         $this->_stepTemplateClass->set("s", "TITLE", i18n("Summary", "setup"));
-        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please check your settings and click on the next button to start the installation", "setup"));
+        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please check your settings and click on the next button to start the installation.", "setup"));
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
 

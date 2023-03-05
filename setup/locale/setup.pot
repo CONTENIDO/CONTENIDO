@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-23 09:15+0100\n"
+"POT-Creation-Date: 2023-03-05 16:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,754 +17,919 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: autoinstall.php:60
+#: autoinstall.php:61
 msgid "Please enter the missing settings below:"
 msgstr ""
 
-#: autoinstall.php:73
+#: autoinstall.php:74
 msgid "Starting setup"
 msgstr ""
 
-#: autoinstall.php:74
+#: autoinstall.php:75
 msgid "Writing data..."
 msgstr ""
 
-#: autoinstall.php:102 autoinstall.php:121
+#: autoinstall.php:103 autoinstall.php:122
 msgid "done"
 msgstr ""
 
-#: autoinstall.php:105
+#: autoinstall.php:106
 msgid "Finishing setup..."
 msgstr ""
 
-#: autoinstall.php:123
+#: autoinstall.php:124
 msgid "Installation successful!"
 msgstr ""
 
-#: lib/class.clisetup.php:92
+#: lib/class.clisetup.php:94
 msgid "This program will install CONTENIDO on this computer."
 msgstr ""
 
-#: lib/class.clisetup.php:106 lib/class.clisetup.php:124
+#: lib/class.clisetup.php:108 lib/class.clisetup.php:126
 msgid "Looking for "
 msgstr ""
 
-#: lib/class.clisetup.php:109 lib/class.clisetup.php:127
+#: lib/class.clisetup.php:111 lib/class.clisetup.php:129
 msgid "found"
 msgstr ""
 
-#: lib/class.clisetup.php:110 lib/class.clisetup.php:128
+#: lib/class.clisetup.php:112 lib/class.clisetup.php:130
 msgid "CONTENIDO will use the specified settings from "
 msgstr ""
 
-#: lib/class.clisetup.php:117 lib/class.clisetup.php:135
+#: lib/class.clisetup.php:119 lib/class.clisetup.php:137
 msgid "not found"
 msgstr ""
 
-#: lib/class.clisetup.php:118
+#: lib/class.clisetup.php:120
 #, php-format
-msgid "CONTENIDO was unable to locate the configuration file %s, but you asked to use it."
+msgid ""
+"CONTENIDO was unable to locate the configuration file %s, but you asked to "
+"use it."
 msgstr ""
 
-#: lib/class.clisetup.php:119
+#: lib/class.clisetup.php:121
 msgid "Setup can not continue."
 msgstr ""
 
-#: lib/class.clisetup.php:149
+#: lib/class.clisetup.php:151
 msgid "CONTENIDO will be installed with the following settings: "
 msgstr ""
 
-#: lib/class.clisetup.php:183
+#: lib/class.clisetup.php:185
 msgid "Welcome to CONTENIDO"
 msgstr ""
 
-#: lib/class.clisetup.php:185
+#: lib/class.clisetup.php:187
 msgid "Database settings:"
 msgstr ""
 
-#: lib/class.clisetup.php:188
+#: lib/class.clisetup.php:190
 msgid "Host"
 msgstr ""
 
-#: lib/class.clisetup.php:193
+#: lib/class.clisetup.php:195
 msgid "User"
 msgstr ""
 
-#: lib/class.clisetup.php:198
+#: lib/class.clisetup.php:200
 msgid "Password"
 msgstr ""
 
-#: lib/class.clisetup.php:202 steps/forms/setupsummary.php:55
+#: lib/class.clisetup.php:204 steps/forms/setupsummary.php:56
 msgid "Database name"
 msgstr ""
 
-#: lib/class.clisetup.php:207
+#: lib/class.clisetup.php:209
 msgid "Charset"
 msgstr ""
 
-#: lib/class.clisetup.php:212
+#: lib/class.clisetup.php:214
 msgid "Collation"
 msgstr ""
 
-#: lib/class.clisetup.php:217
+#: lib/class.clisetup.php:219
 msgid "Prefix"
 msgstr ""
 
-#: lib/class.clisetup.php:222 steps/forms/setupsummary.php:62
-#: steps/forms/systemdata.php:151
+#: lib/class.clisetup.php:224 steps/forms/setupsummary.php:63
+#: steps/forms/systemdata.php:152
 msgid "Database option MYSQLI_INIT_COMMAND"
 msgstr ""
 
-#: lib/class.clisetup.php:228
-msgid "Please enter the http path to where the contenido/ folder resides"
+#: lib/class.clisetup.php:230
+msgid "Please enter the http path to where the contenido/ folder resides."
 msgstr ""
 
-#: lib/class.clisetup.php:229
+#: lib/class.clisetup.php:231
 msgid "e.g. http://localhost/"
 msgstr ""
 
-#: lib/class.clisetup.php:230
+#: lib/class.clisetup.php:232
 msgid "Backend web path"
 msgstr ""
 
-#: lib/class.clisetup.php:236 lib/class.clisetup.php:252
+#: lib/class.clisetup.php:238 lib/class.clisetup.php:254
 msgid "yes"
 msgstr ""
 
-#: lib/class.clisetup.php:238 lib/class.clisetup.php:254
+#: lib/class.clisetup.php:240 lib/class.clisetup.php:256
 msgid "modules"
 msgstr ""
 
-#: lib/class.clisetup.php:240 lib/class.clisetup.php:256
+#: lib/class.clisetup.php:242 lib/class.clisetup.php:258
 msgid "no"
 msgstr ""
 
-#: lib/class.clisetup.php:245
+#: lib/class.clisetup.php:247
 msgid "Do you want to install the example client?"
 msgstr ""
 
-#: lib/class.clisetup.php:246
-msgid "Please choose \"yes\" (to install the modules AND the content), \"modules\" (to install only the modules) or \"no\""
+#: lib/class.clisetup.php:248
+msgid ""
+"Please choose \"yes\" (to install the modules AND the content), \"modules"
+"\" (to install only the modules) or \"no\""
 msgstr ""
 
-#: lib/class.clisetup.php:247
+#: lib/class.clisetup.php:249
 msgid "Examples? (yes/modules/no)"
 msgstr ""
 
-#: lib/class.clisetup.php:265
+#: lib/class.clisetup.php:267
 msgid "Admin information:"
 msgstr ""
 
-#: lib/class.clisetup.php:267
-msgid "You have to enter the password twice and they have to match"
-msgstr ""
-
-#: lib/class.clisetup.php:268
-msgid "Admin password"
+#: lib/class.clisetup.php:269
+msgid "You have to enter the password twice and they have to match!"
 msgstr ""
 
 #: lib/class.clisetup.php:270
+msgid "Admin password"
+msgstr ""
+
+#: lib/class.clisetup.php:272
 msgid "Repeat admin password"
 msgstr ""
 
-#: lib/class.clisetup.php:275
+#: lib/class.clisetup.php:277
 msgid "Admin email"
 msgstr ""
 
-#: lib/class.clisetup.php:280
+#: lib/class.clisetup.php:282
 msgid "Thank you."
 msgstr ""
 
-#: lib/class.clisetup.php:345
+#: lib/class.clisetup.php:347
 #, php-format
 msgid ""
-"You chose in the configuration file to delete the database '%s' before installing.\n"
-"DO YOU REALLY WANT TO CONTINUE WITH DELETING THIS DATABASE? (Y/N) [N]: "
+"You chose in the configuration file to delete the database '%s' before "
+"installing.\n"
+"DO YOU REALLY WANT TO CONTINUE WITH DELETING THIS DATABASE? (Y/N) [N]:"
 msgstr ""
 
-#: lib/class.clisetup.php:359
+#: lib/class.clisetup.php:361
 #, php-format
 msgid "THE DATABASE %s HAS BEEN DELETED!!!"
 msgstr ""
 
-#: lib/class.clisetup.php:363
+#: lib/class.clisetup.php:365
 msgid "Testing your system..."
 msgstr ""
 
-#: lib/class.clisetup.php:389
+#: lib/class.clisetup.php:391
 msgid "error"
 msgstr ""
 
-#: lib/class.clisetup.php:401
+#: lib/class.clisetup.php:403
 msgid "There have been errors during the system check."
 msgstr ""
 
-#: lib/class.clisetup.php:402
-msgid "However this might be caused by differing configurations between the CLI php and the CGI php."
+#: lib/class.clisetup.php:404
+msgid ""
+"However this might be caused by differing configurations between the CLI php "
+"and the CGI php."
 msgstr ""
 
-#: lib/class.clisetup.php:409
+#: lib/class.clisetup.php:411
 msgid "y"
 msgstr ""
 
-#: lib/class.clisetup.php:409 lib/class.clisetup.php:416
+#: lib/class.clisetup.php:411 lib/class.clisetup.php:418
 msgid "n"
 msgstr ""
 
-#: lib/class.clisetup.php:410
+#: lib/class.clisetup.php:412
 msgid "Do you want to continue despite the errors? (y/n) [n]: "
 msgstr ""
 
-#: lib/class.clisetup.php:420
+#: lib/class.clisetup.php:422
 msgid "Your system seems to be okay."
 msgstr ""
 
-#: lib/functions.clisetup.php:58
+#: lib/functions.clisetup.php:60
 msgid "Be careful! The password will be readable in the console window!"
 msgstr ""
 
-#: lib/functions.clisetup.php:134
+#: lib/functions.clisetup.php:136
 msgid "You did not specify a database host!"
 msgstr ""
 
-#: lib/functions.clisetup.php:138
+#: lib/functions.clisetup.php:140
 msgid "You did not specify a database user!"
 msgstr ""
 
-#: lib/functions.clisetup.php:142
+#: lib/functions.clisetup.php:144
 msgid "You did not specify a database password!"
 msgstr ""
 
-#: lib/functions.clisetup.php:146
+#: lib/functions.clisetup.php:148
 msgid "You did not specify a database charset!"
 msgstr ""
 
-#: lib/functions.clisetup.php:150
+#: lib/functions.clisetup.php:152
 msgid "You did not specify a database collation!"
 msgstr ""
 
-#: lib/functions.clisetup.php:154
+#: lib/functions.clisetup.php:156
 msgid "You did not specify a database name!"
 msgstr ""
 
-#: lib/functions.clisetup.php:158
+#: lib/functions.clisetup.php:160
 msgid "You did not specify a database prefix!"
 msgstr ""
 
-#: lib/functions.clisetup.php:167
+#: lib/functions.clisetup.php:169
 msgid "You did not specify an http root path!"
 msgstr ""
 
-#: lib/functions.clisetup.php:171 lib/functions.clisetup.php:175
+#: lib/functions.clisetup.php:173 lib/functions.clisetup.php:177
 msgid "You did not specify if you want to install the example client or not!"
 msgstr ""
 
-#: lib/functions.clisetup.php:179
+#: lib/functions.clisetup.php:181
 msgid "You did not specify an admin password!"
 msgstr ""
 
-#: lib/functions.clisetup.php:183
+#: lib/functions.clisetup.php:185
 msgid "You did not specify an admin email!"
 msgstr ""
 
-#: lib/functions.clisetup.php:229
+#: lib/functions.clisetup.php:231
 msgid "CONTENIDO setup script"
 msgstr ""
 
-#: lib/functions.clisetup.php:230
-msgid "This script will install CONTENIDO to your computer"
-msgstr ""
-
 #: lib/functions.clisetup.php:232
-msgid "CONTENIDO can be installed using the interactive mode or a non-interactive mode."
+msgid "This script will install CONTENIDO to your computer."
 msgstr ""
 
-#: lib/functions.clisetup.php:233
+#: lib/functions.clisetup.php:234
+msgid ""
+"CONTENIDO can be installed using the interactive mode or a non-interactive "
+"mode."
+msgstr ""
+
+#: lib/functions.clisetup.php:235
 msgid ""
 "If the script is executed without any parameters it will look for the\n"
 "autoinstall.ini file (or any other file specified with \"--file\")."
 msgstr ""
 
-#: lib/functions.clisetup.php:234
+#: lib/functions.clisetup.php:236
 msgid ""
-"If that file is present, the non-interactive mode will be used. The script will\n"
+"If that file is present, the non-interactive mode will be used. The script "
+"will\n"
 "ask for user input in the case of errors though.\n"
 "If you want to prevent the script from ever waiting for user input use\n"
 "\"--non-interactive\"."
 msgstr ""
 
-#: lib/functions.clisetup.php:235
+#: lib/functions.clisetup.php:237
 msgid ""
 "In case the ini file can not be found, the script will wait for user input\n"
 "on all relevant information."
 msgstr ""
 
-#: lib/functions.clisetup.php:238
+#: lib/functions.clisetup.php:240
 msgid ""
 "Forces the script to be interactive and wait for user input even if the\n"
 "\tautoinstall.ini file is present."
 msgstr ""
 
-#: lib/functions.clisetup.php:240
+#: lib/functions.clisetup.php:242
 msgid ""
 "Will prevent all waiting for user input. The script will abort\n"
-"\tin case of any errors"
-msgstr ""
-
-#: lib/functions.clisetup.php:241
-msgid "file"
-msgstr ""
-
-#: lib/functions.clisetup.php:242
-msgid "Use [file] instead of the default autoinstall.ini."
+"\tin case of any errors."
 msgstr ""
 
 #: lib/functions.clisetup.php:243
-msgid "language code"
+msgid "file"
 msgstr ""
 
 #: lib/functions.clisetup.php:244
-msgid "Provide a country and language code to use. Defaults to \"en_US\""
+msgid "Use [file] instead of the default autoinstall.ini."
+msgstr ""
+
+#: lib/functions.clisetup.php:245
+msgid "language code"
 msgstr ""
 
 #: lib/functions.clisetup.php:246
-msgid "Prints this help text"
+msgid "Provide a country and language code to use. Defaults to \"en_US\""
 msgstr ""
 
 #: lib/functions.clisetup.php:248
+msgid "Prints this help text"
+msgstr ""
+
+#: lib/functions.clisetup.php:250
 msgid ""
 "Furthermore, you can use parameters to overwrite setup settings.\n"
 "Use \"--[ini-group].[ini-name]=\"value\" (e.g. --db.host=\"localhost\")"
 msgstr ""
 
-#: steps/forms/adminpassword.php:38 steps/forms/adminpassword.php:39
-#: steps/forms/adminpassword.php:68 steps/forms/adminpassword.php:69
+#: steps/forms/adminpassword.php:39 steps/forms/adminpassword.php:40
+#: steps/forms/adminpassword.php:69 steps/forms/adminpassword.php:70
 msgid "Administrator password"
 msgstr ""
 
-#: steps/forms/adminpassword.php:41
-msgid "Please enter the password for the default administrator account sysadmin and specify it's mail address in case you forgot your entered password."
-msgstr ""
-
-#: steps/forms/adminpassword.php:69
-msgid "(repeat)"
+#: steps/forms/adminpassword.php:42
+msgid ""
+"Please enter the password for the default administrator account sysadmin and "
+"specify it's mail address in case you forgot your entered password."
 msgstr ""
 
 #: steps/forms/adminpassword.php:70
+msgid "(repeat)"
+msgstr ""
+
+#: steps/forms/adminpassword.php:71
 msgid "Administrator mail address"
 msgstr ""
 
-#: steps/forms/adminpassword.php:97
+#: steps/forms/adminpassword.php:98
 msgid "You need to enter a password."
 msgstr ""
 
-#: steps/forms/adminpassword.php:98
+#: steps/forms/adminpassword.php:99
 msgid "The entered passwords are not matching."
 msgstr ""
 
-#: steps/forms/adminpassword.php:99
+#: steps/forms/adminpassword.php:100
 msgid "You need to enter a mail address."
 msgstr ""
 
-#: steps/forms/clientadjust.php:36 steps/forms/clientadjust.php:37
+#: steps/forms/clientadjust.php:37 steps/forms/clientadjust.php:38
 msgid "Client Settings"
 msgstr ""
 
-#: steps/forms/clientadjust.php:38
-msgid "Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box."
+#: steps/forms/clientadjust.php:39
+msgid ""
+"Please check the directories identified by the system. If you need to change "
+"a client path, click on the name and enter your new path in the available "
+"input box."
 msgstr ""
 
-#: steps/forms/clientadjust.php:89
+#: steps/forms/clientadjust.php:90
 #, php-format
 msgid "Old server path for %s (%s)"
 msgstr ""
 
-#: steps/forms/clientadjust.php:91
+#: steps/forms/clientadjust.php:92
 #, php-format
 msgid "New server path for %s (%s)"
 msgstr ""
 
-#: steps/forms/clientadjust.php:101
+#: steps/forms/clientadjust.php:102
 #, php-format
 msgid "Old web path for %s (%s)"
 msgstr ""
 
-#: steps/forms/clientadjust.php:103
+#: steps/forms/clientadjust.php:104
 #, php-format
 msgid "New web path for %s (%s)"
 msgstr ""
 
-#: steps/forms/clientmode.php:33 steps/forms/clientmode.php:34
+#: steps/forms/clientmode.php:34 steps/forms/clientmode.php:35
 msgid "Example Client"
 msgstr ""
 
-#: steps/forms/clientmode.php:35
-msgid "If you are new to CONTENIDO, you should create an example client to start working with."
-msgstr ""
-
-#: steps/forms/clientmode.php:74
-#, php-format
-msgid "PLEASE NOTE: Some folders (%s) which are used by the example client aren't empty. THESE WILL BE OVERWRITTEN"
+#: steps/forms/clientmode.php:36
+msgid ""
+"If you are new to CONTENIDO, you should create an example client to start "
+"working with."
 msgstr ""
 
 #: steps/forms/clientmode.php:75
-msgid "PLEASE NOTE: The cms/data/modules folder is not empty. IT WILL BE OVERWRITTEN"
+#, php-format
+msgid ""
+"PLEASE NOTE: Some folders (%s) which are used by the example client aren't "
+"empty. THESE WILL BE OVERWRITTEN"
 msgstr ""
 
-#: steps/forms/clientmode.php:78 steps/forms/setupsummary.php:70
+#: steps/forms/clientmode.php:76
+msgid ""
+"PLEASE NOTE: The cms/data/modules folder is not empty. IT WILL BE OVERWRITTEN"
+msgstr ""
+
+#: steps/forms/clientmode.php:79 steps/forms/setupsummary.php:71
 msgid "Client with example modules and example content"
 msgstr ""
 
-#: steps/forms/clientmode.php:83
+#: steps/forms/clientmode.php:84
 msgid "Client with example modules, but without example content"
 msgstr ""
 
-#: steps/forms/clientmode.php:85
+#: steps/forms/clientmode.php:86
 msgid "Don't create client"
 msgstr ""
 
-#: steps/forms/configmode.php:38 steps/forms/configmode.php:39
+#: steps/forms/configmode.php:39 steps/forms/configmode.php:40
 msgid "config.php mode"
 msgstr ""
 
-#: steps/forms/configmode.php:40
+#: steps/forms/configmode.php:41
 msgid "Please choose 'save' or 'download'"
 msgstr ""
 
-#: steps/forms/configmode.php:41
-msgid "CONTENIDO requires a configuration file called 'config.php'. This file will be generated by the setup automatically if the filesystem permissions are correct. If 'save' is activated by default, setup can save the file config.php. If not, 'download' is activated by default, and you have to place the file in the directory &quot;data/config/{environment}/&quot; manually when a download prompt appears. The download prompt appears at the end of the setup process."
+#: steps/forms/configmode.php:42
+msgid ""
+"CONTENIDO requires a configuration file called 'config.php'. This file will "
+"be generated by the setup automatically if the filesystem permissions are "
+"correct. If 'save' is activated by default, setup can save the file config."
+"php. If not, 'download' is activated by default, and you have to place the "
+"file in the directory &quot;data/config/{environment}/&quot; manually when a "
+"download prompt appears. The download prompt appears at the end of the setup "
+"process."
 msgstr ""
 
-#: steps/forms/configmode.php:44
+#: steps/forms/configmode.php:45
 msgid "Save"
 msgstr ""
 
-#: steps/forms/configmode.php:48
+#: steps/forms/configmode.php:49
 msgid "Download"
 msgstr ""
 
-#: steps/forms/installer.php:33 steps/forms/installer.php:34
+#: steps/forms/installer.php:34 steps/forms/installer.php:35
 msgid "System Installation"
 msgstr ""
 
-#: steps/forms/installer.php:35
-msgid "CONTENIDO will be installed, please wait. This process may take several moments!"
-msgstr ""
-
 #: steps/forms/installer.php:36
-msgid "Setup completed installing. Click on next to continue."
+msgid ""
+"CONTENIDO will be installed, please wait. This process may take several "
+"moments!"
 msgstr ""
 
 #: steps/forms/installer.php:37
+msgid "Setup completed installing. Click on next to continue."
+msgstr ""
+
+#: steps/forms/installer.php:38
 msgid "Setup is installing, please wait..."
 msgstr ""
 
-#: steps/forms/installer.php:42 steps/forms/installer.php:43
+#: steps/forms/installer.php:43 steps/forms/installer.php:44
 msgid "System Upgrade"
 msgstr ""
 
-#: steps/forms/installer.php:44
-msgid "CONTENIDO will be upgraded, please wait. This process may take several moments!"
-msgstr ""
-
 #: steps/forms/installer.php:45
-msgid "Setup completed upgrading. Click on next to continue."
+msgid ""
+"CONTENIDO will be upgraded, please wait. This process may take several "
+"moments!"
 msgstr ""
 
 #: steps/forms/installer.php:46
+msgid "Setup completed upgrading. Click on next to continue."
+msgstr ""
+
+#: steps/forms/installer.php:47
 msgid "Setup is upgrading, please wait..."
 msgstr ""
 
-#: steps/forms/pathinfo.php:33 steps/forms/pathinfo.php:34
+#: steps/forms/pathinfo.php:34 steps/forms/pathinfo.php:35
 msgid "System Directories"
 msgstr ""
 
-#: steps/forms/pathinfo.php:35
-msgid "Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box."
+#: steps/forms/pathinfo.php:36
+msgid ""
+"Please check the directories identified by the system. If you need to change "
+"a path, click on the name and enter the new path in the available input box."
 msgstr ""
 
-#: steps/forms/pathinfo.php:48
+#: steps/forms/pathinfo.php:49
 msgid "CONTENIDO Root Path"
 msgstr ""
 
-#: steps/forms/pathinfo.php:50
+#: steps/forms/pathinfo.php:51
 msgid "CONTENIDO Web Path"
 msgstr ""
 
-#: steps/forms/setupresults.php:30 steps/forms/setupresults.php:34
+#: steps/forms/setupresults.php:31 steps/forms/setupresults.php:35
 msgid "Results"
 msgstr ""
 
-#: steps/forms/setupresults.php:35
+#: steps/forms/setupresults.php:36
 msgid "CONTENIDO was installed and configured successfully on your server."
 msgstr ""
 
-#: steps/forms/setupresults.php:37
-msgid "Please use username <b>sysadmin</b> and the configured password to login into CONTENIDO Backend."
-msgstr ""
-
-#: steps/forms/setupresults.php:41
-msgid "Please choose an item to start working:"
+#: steps/forms/setupresults.php:38
+msgid ""
+"Please use username <b>sysadmin</b> and the configured password to login "
+"into CONTENIDO Backend."
 msgstr ""
 
 #: steps/forms/setupresults.php:42
-msgid "You can now start using CONTENIDO. Please delete the folder named 'setup'!"
+msgid "Please choose an item to start working:"
 msgstr ""
 
-#: steps/forms/setupresults.php:66
+#: steps/forms/setupresults.php:43
+msgid ""
+"You can now start using CONTENIDO. Please delete the folder named 'setup'!"
+msgstr ""
+
+#: steps/forms/setupresults.php:67
 msgid "Setup Results"
 msgstr ""
 
-#: steps/forms/setupresults.php:68
+#: steps/forms/setupresults.php:69
 #, php-format
-msgid "An error occurred during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information."
+msgid ""
+"An error occurred during installation. Please take a look at the file %s "
+"(located in &quot;data/logs/&quot;) for more information."
 msgstr ""
 
-#: steps/forms/setupsummary.php:33 steps/forms/setupsummary.php:34
+#: steps/forms/setupsummary.php:34 steps/forms/setupsummary.php:35
 msgid "Summary"
 msgstr ""
 
-#: steps/forms/setupsummary.php:35
-msgid "Please check your settings and click on the next button to start the installation"
+#: steps/forms/setupsummary.php:36
+msgid ""
+"Please check your settings and click on the next button to start the "
+"installation."
 msgstr ""
 
-#: steps/forms/setupsummary.php:41
+#: steps/forms/setupsummary.php:42
 msgid "Setup"
 msgstr ""
 
-#: steps/forms/setupsummary.php:44
+#: steps/forms/setupsummary.php:45
 msgid "Upgrade"
 msgstr ""
 
-#: steps/forms/setupsummary.php:49
+#: steps/forms/setupsummary.php:50
 msgid "Installation type"
 msgstr ""
 
-#: steps/forms/setupsummary.php:54 steps/forms/setupsummary.php:65
+#: steps/forms/setupsummary.php:55 steps/forms/setupsummary.php:66
 msgid "Database parameters"
 msgstr ""
 
-#: steps/forms/setupsummary.php:54
+#: steps/forms/setupsummary.php:55
 msgid "Database host"
 msgstr ""
 
-#: steps/forms/setupsummary.php:56
+#: steps/forms/setupsummary.php:57
 msgid "Database username"
 msgstr ""
 
-#: steps/forms/setupsummary.php:57
+#: steps/forms/setupsummary.php:58
 msgid "Table prefix"
 msgstr ""
 
-#: steps/forms/setupsummary.php:58 steps/forms/systemdata.php:149
+#: steps/forms/setupsummary.php:59 steps/forms/systemdata.php:150
 msgid "Database character set"
 msgstr ""
 
-#: steps/forms/setupsummary.php:71
+#: steps/forms/setupsummary.php:72
 msgid "Client with example modules but without example content"
 msgstr ""
 
-#: steps/forms/setupsummary.php:72
+#: steps/forms/setupsummary.php:73
 msgid "Don't create a client"
 msgstr ""
 
-#: steps/forms/setupsummary.php:74
+#: steps/forms/setupsummary.php:75
 msgid "Client installation"
 msgstr ""
 
-#: steps/forms/systemdata.php:46 steps/forms/systemdata.php:47
+#: steps/forms/systemdata.php:47 steps/forms/systemdata.php:48
 msgid "Database Parameters"
 msgstr ""
 
-#: steps/forms/systemdata.php:51
-msgid "Please enter the required database information. If you are unsure about the data, ask your provider or administrator."
+#: steps/forms/systemdata.php:52
+msgid ""
+"Please enter the required database information. If you are unsure about the "
+"data, ask your provider or administrator."
 msgstr ""
 
-#: steps/forms/systemdata.php:51
-msgid "If the database does not exist and your database user has the sufficient permissions, setup will create the database automatically."
+#: steps/forms/systemdata.php:52
+msgid ""
+"If the database does not exist and your database user has the sufficient "
+"permissions, setup will create the database automatically."
 msgstr ""
 
-#: steps/forms/systemdata.php:54
-msgid "Please enter the required database information. If the database data of your previous installation could have been read, the data will be inserted automatically. If you are unsure about the data, please ask your provider or administrator."
+#: steps/forms/systemdata.php:55
+msgid ""
+"Please enter the required database information. If the database data of your "
+"previous installation could have been read, the data will be inserted "
+"automatically. If you are unsure about the data, please ask your provider or "
+"administrator."
 msgstr ""
 
-#: steps/forms/systemdata.php:105
+#: steps/forms/systemdata.php:106
 msgid "No character set"
 msgstr ""
 
-#: steps/forms/systemdata.php:118
+#: steps/forms/systemdata.php:119
 msgid "Other"
 msgstr ""
 
-#: steps/forms/systemdata.php:136
+#: steps/forms/systemdata.php:137
 msgid "Database Server (IP or name)"
 msgstr ""
 
-#: steps/forms/systemdata.php:139 steps/forms/systemdata.php:141
+#: steps/forms/systemdata.php:140 steps/forms/systemdata.php:142
 msgid "Database Name"
 msgstr ""
 
-#: steps/forms/systemdata.php:139
+#: steps/forms/systemdata.php:140
 msgid "(use empty or non-existent database)"
 msgstr ""
 
-#: steps/forms/systemdata.php:145
+#: steps/forms/systemdata.php:146
 msgid "Database Username"
 msgstr ""
 
-#: steps/forms/systemdata.php:146
+#: steps/forms/systemdata.php:147
 msgid "Database Password"
 msgstr ""
 
-#: steps/forms/systemdata.php:147
+#: steps/forms/systemdata.php:148
 msgid "Table Prefix"
 msgstr ""
 
-#: steps/forms/systemdata.php:148
+#: steps/forms/systemdata.php:149
 msgid "Advanced Settings"
 msgstr ""
 
-#: steps/forms/systemdata.php:150
+#: steps/forms/systemdata.php:151
 msgid "Database collation"
 msgstr ""
 
-#: steps/forms/systemdata.php:170
+#: steps/forms/systemdata.php:171
 msgid "You need to enter a database host."
 msgstr ""
 
-#: steps/forms/systemdata.php:170
+#: steps/forms/systemdata.php:171
 msgid "You need to enter a database name."
 msgstr ""
 
-#: steps/forms/systemdata.php:170
+#: steps/forms/systemdata.php:171
 msgid "You need to enter a database user."
 msgstr ""
 
-#: steps/forms/systemtest.php:38 steps/forms/systemtest.php:39
+#: steps/forms/systemtest.php:40 steps/forms/systemtest.php:41
 msgid "System Test"
 msgstr ""
 
-#: steps/forms/systemtest.php:40
+#: steps/forms/systemtest.php:42
 msgid "Your system has been tested for compatibility with CONTENIDO:"
 msgstr ""
 
-#: steps/forms/systemtest.php:59 steps/forms/systemtest.php:222
-msgid "Please check that your config and client directories (including cache, module and upload directories, template-, css- and js-files) has chmod rights 755. Please make sure that the owner for these directories and all files are the same as the owner of your webserver."
+#: steps/forms/systemtest.php:61 steps/forms/systemtest.php:224
+msgid ""
+"Please check that your config and client directories (including cache, "
+"module and upload directories, template-, css- and js-files) has chmod "
+"rights 755. Please make sure that the owner for these directories and all "
+"files are the same as the owner of your webserver."
 msgstr ""
 
-#: steps/forms/systemtest.php:61 steps/forms/systemtest.php:224
+#: steps/forms/systemtest.php:63 steps/forms/systemtest.php:226
 msgid "Attention: Please give your directories rights on your webserver"
 msgstr ""
 
-#: steps/forms/systemtest.php:67
+#: steps/forms/systemtest.php:69
 msgid "PHP MySQL Extension missing"
 msgstr ""
 
-#: steps/forms/systemtest.php:67
-msgid "CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi."
+#: steps/forms/systemtest.php:69
+msgid ""
+"CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. "
+"Please configure PHP to use either MySQL or MySQLi."
 msgstr ""
 
-#: steps/forms/systemtest.php:90
-msgid "Unable to set max_execution_time"
+#: steps/forms/systemtest.php:92
+msgid "Unable to set max_execution_time."
 msgstr ""
 
-#: steps/forms/systemtest.php:90
-msgid "Your PHP configuration for max_execution_time can not be changed via this script. We recommend setting the value for the installation or upgrade process to 60 seconds. You can try to execute the process with your current configuration. If the process is stopped, the system is not usable (any longer)"
+#: steps/forms/systemtest.php:92
+msgid ""
+"Your PHP configuration for max_execution_time can not be changed via this "
+"script. We recommend setting the value for the installation or upgrade "
+"process to 60 seconds. You can try to execute the process with your current "
+"configuration. If the process is stopped, the system is not usable (any "
+"longer)"
 msgstr ""
 
-#: steps/forms/systemtest.php:103
+#: steps/forms/systemtest.php:105
 msgid "Information"
 msgstr ""
 
-#: steps/forms/systemtest.php:107
+#: steps/forms/systemtest.php:109
 msgid "Warning"
 msgstr ""
 
-#: steps/forms/systemtest.php:111
+#: steps/forms/systemtest.php:113
 msgid "Fatal error"
 msgstr ""
 
-#: steps/forms/systemtest.php:119
+#: steps/forms/systemtest.php:121
 msgid "No problems detected"
 msgstr ""
 
-#: steps/forms/systemtest.php:119
-msgid "Setup could not detect any problems with your system environment"
+#: steps/forms/systemtest.php:121
+msgid "Setup could not detect any problems with your system environment."
 msgstr ""
 
-#: steps/forms/systemtest.php:196
+#: steps/forms/systemtest.php:198
 #, php-format
 msgid "An old Version of Plugin %s is installed on your system."
 msgstr ""
 
-#: steps/forms/systemtest.php:201
-msgid "Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of CONTENIDO. Also delete the old plugin tables after data transfer."
+#: steps/forms/systemtest.php:203
+msgid ""
+"Please remove all old plugins before you continue. To transfer old plugin "
+"data, please copy the old plugin data tables into the new plugin data tables "
+"after the installation. The new plugintable names are the same, but contains "
+"the table prefix of CONTENIDO. Also delete the old plugin tables after data "
+"transfer."
 msgstr ""
 
-#: steps/forms/systemtest.php:203
+#: steps/forms/systemtest.php:205
 msgid "Old Plugins are still installed"
 msgstr ""
 
-#: steps/forms/systemtest.php:217
+#: steps/forms/systemtest.php:219
 #, php-format
 msgid ""
-"You are updating a previous version of CONTENIDO to %s. Some directories/files have been moved to other sections in %s.\n"
+"You are updating a previous version of CONTENIDO to %s. Some directories/"
+"files have been moved to other sections in %s.\n"
 "\n"
-"Please ensure to copy contenido/includes/config.php to data/config/production/config.php and also other configuration files within contenido/includes/ to data/config/production/."
+"Please ensure to copy contenido/includes/config.php to data/config/"
+"production/config.php and also other configuration files within contenido/"
+"includes/ to data/config/production/."
 msgstr ""
 
-#: steps/forms/systemtest.php:220
+#: steps/forms/systemtest.php:222
 msgid "Attention: Some directories/files have been moved"
 msgstr ""
 
-#: steps/forms/systemtest.php:260
+#: steps/forms/systemtest.php:262
 #, php-format
-msgid "Language \"%s\" (%s) of the client \"%s\" (%s) is configured without ISO language code."
+msgid ""
+"Language \"%s\" (%s) of the client \"%s\" (%s) is configured without ISO "
+"language code."
 msgstr ""
 
-#: steps/forms/systemtest.php:265
+#: steps/forms/systemtest.php:267
 msgid "The ISO codes are necessary to convert module translations."
 msgstr ""
 
-#: steps/setuptype.php:32
+#: steps/setuptype.php:33
 msgid "Please choose your setup type"
 msgstr ""
 
-#: steps/setuptype.php:33
+#: steps/setuptype.php:34
 msgid "Install new CONTENIDO version"
 msgstr ""
 
-#: steps/setuptype.php:34
+#: steps/setuptype.php:35
 #, php-format
 msgid "Version %s"
 msgstr ""
 
-#: steps/setuptype.php:35
+#: steps/setuptype.php:36
 #, php-format
 msgid "This setup type will install CONTENIDO %s."
 msgstr ""
 
-#: steps/setuptype.php:35
-msgid "Please choose this type if you want to start with an empty or an example installation."
+#: steps/setuptype.php:36
+msgid ""
+"Please choose this type if you want to start with an empty or an example "
+"installation."
 msgstr ""
 
-#: steps/setuptype.php:35
+#: steps/setuptype.php:36
 msgid "Recommended for new projects."
 msgstr ""
 
-#: steps/setuptype.php:37
+#: steps/setuptype.php:38
 msgid "Upgrade existing installation"
 msgstr ""
 
-#: steps/setuptype.php:38
+#: steps/setuptype.php:39
 #, php-format
 msgid "Upgrade to %s"
 msgstr ""
 
-#: steps/setuptype.php:39
-msgid "This setup type will upgrade your existing installation (CONTENIDO 4.6.x or later required)."
+#: steps/setuptype.php:40
+msgid ""
+"This setup type will upgrade your existing installation (CONTENIDO 4.6.x or "
+"later required)."
 msgstr ""
 
-#: steps/setuptype.php:39
+#: steps/setuptype.php:40
 msgid "Recommended for existing projects."
+msgstr ""
+
+#: templates/setup.tpl:37
+#, c-format
+msgid "Can't write %s"
+msgstr ""
+
+#: templates/setup.tpl:38
+#, c-format
+msgid ""
+"Setup or CONTENIDO can't write to the file %s. Please change the file "
+"permissions to correct this problem."
+msgstr ""
+
+#: templates/setup.tpl:39
+msgid ""
+"Your Server runs Windows. Due to that, Setup can't recommend any file "
+"permissions."
+msgstr ""
+
+#: templates/setup.tpl:40
+#, c-format
+msgid ""
+"Due to a very restrictive environment, an advise is not possible. Ask your "
+"system administrator to enable write access to the file %s, especially in "
+"environments where ACL (Access Control Lists) are used."
+msgstr ""
+
+#: templates/setup.tpl:41
+#, c-format
+msgid ""
+"Your web server and the owner of your files are identical. You need to "
+"enable write access for the owner, e.g. using chmod u+rw %s, setting the "
+"file mask to %s or set the owner to allow writing the file."
+msgstr ""
+
+#: templates/setup.tpl:42
+#, c-format
+msgid ""
+"Your web server's group and the group of your files are identical. You need "
+"to enable write access for the group, e.g. using chmod g+rw %s, setting the "
+"file mask to %s or set the group to allow writing the file."
+msgstr ""
+
+#: templates/setup.tpl:43
+#, c-format
+msgid ""
+"Your web server is not equal to the file owner, and is not in the "
+"webserver's group. It would be highly insecure to allow world write access "
+"to the files. If you want to install anyways, enable write access for all "
+"others, e.g. using chmod o+rw %s, setting the file mask to %s or set the "
+"others to allow writing the file."
+msgstr ""
+
+#: templates/setup.tpl:44
+msgid ""
+"Your Server runs Windows. Due to that, Setup can't recommend any directory "
+"permissions."
+msgstr ""
+
+#: templates/setup.tpl:45
+#, c-format
+msgid ""
+"Due to a very restrictive environment, an advise is not possible. Ask your "
+"system administrator to enable write access to the file or directory %s, "
+"especially in environments where ACL (Access Control Lists) are used."
+msgstr ""
+
+#: templates/setup.tpl:46
+#, c-format
+msgid ""
+"Your web server and the owner of your directory are identical. You need to "
+"enable write access for the owner, e.g. using chmod u+rw %s, setting the "
+"directory mask to %s or set the owner to allow writing the directory."
+msgstr ""
+
+#: templates/setup.tpl:47
+#, c-format
+msgid ""
+"Your web server's group and the group of your directory are identical. You "
+"need to enable write access for the group, e.g. using chmod g+rw %s, setting "
+"the directory mask to %s or set the group to allow writing the directory."
+msgstr ""
+
+#: templates/setup.tpl:48
+#, c-format
+msgid ""
+"Your web server is not equal to the directory owner, and is not in the "
+"webserver's group. It would be highly insecure to allow world write access "
+"to the directory. If you want to install anyways, enable write access for "
+"all others, e.g. using chmod o+rw %s, setting the directory mask to %s or "
+"set the others to allow writing the directory."
 msgstr ""
