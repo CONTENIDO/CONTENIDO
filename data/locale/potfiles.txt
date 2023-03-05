@@ -877,6 +877,7 @@
 ../data/config/config.environment.php
 ../data/config/production/cfg_actions.inc.php
 ../data/config/production/cfg_sql.inc.php
+../data/config/production/config.autoloader.local.php
 ../data/config/production/config.autoloader.php
 ../data/config/production/config.chains.load.php
 ../data/config/production/config.chains.php
