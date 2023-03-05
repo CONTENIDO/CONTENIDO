@@ -94,6 +94,21 @@ class cSecurity {
     }
 
     /**
+     * Check: Is the variable a numeric string or an integer and is positive?
+     * Everything above zero is interpreted as a positive integer.
+     *
+     * @param mixed $var
+     *         The variable to check
+     * @return bool
+     *         Check state
+     */
+    public static function isPositiveInteger($var): bool
+    {
+        return is_numeric($var) && self::toInteger($var) == $var
+            && self::toInteger($var) > 0;
+    }
+
+    /**
      * Check: Is the variable an string?
      *
      * @param string $sVar
