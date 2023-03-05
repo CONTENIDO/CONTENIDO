@@ -51,9 +51,9 @@ If no $formAction is given user lacks the rights to store form.
 
         <span class="con_form_action_control">
             {if 0 lt $formAction|trim|strlen}
-                <input type="image" id="image-new-form" src="images/but_ok.gif" alt="{$trans.saveForm|escape}" title="{$trans.saveForm|escape}" />
+                <input type="image" class="con_img_button" src="images/but_ok.gif" alt="{$trans.saveForm|escape}" title="{$trans.saveForm|escape}" />
             {else}
-                <img id="image-new-form" src="images/but_ok_off.gif" alt="{$trans.saveForm|escape}" title="{$trans.saveForm|escape}" />
+                <img class="con_img_button" src="images/but_ok_off.gif" alt="{$trans.saveForm|escape}" title="{$trans.saveForm|escape}" />
             {/if}
         </span>
 

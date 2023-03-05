@@ -22,7 +22,7 @@
         {/if}
 
         <span class="con_form_action_control">
-            <input type="image" src="images/but_ok.gif" alt="{$trans.import|escape}" title="{$trans.import|escape}" />
+            <input type="image" class="con_img_button" src="images/but_ok.gif" alt="{$trans.import|escape}" title="{$trans.import|escape}" />
         </span>
 
     </fieldset>
