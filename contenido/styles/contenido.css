@@ -578,82 +578,11 @@ table.art_overview td {
 }
 /*endregion PAGE_LOGIN_FORM-PAGE_HEADER*/
 
-/*region PAGE_WELCOME*/
-/**
- * #############################################################################
- * @section Page_Welcome
- */
-#welcome_left {
-    float: left;
-    margin-top: 25px;
-}
-#welcome_right {
-    margin-left: 350px;
-    margin-top: 25px;
-}
-.content_box_welcome {
-    padding: 0 0 0 25px;
-    margin: 0 0 30px 0;
-}
-h2.content_box {
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    line-height: 16px;
-    color: #000;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-#mandanten {
-    background: url(../images/avail_clients.gif) no-repeat 0 0;
-}
-#my_contenido {
-    background: url(../images/my_contenido.gif) no-repeat 0 0;
-}
-#contact_admin {
-    background: url(../images/contact.gif) no-repeat 0 0;
-}
-#user_online {
-    background: url(../images/user_online.gif) no-repeat 0 0;
-}
-#update_notifier {
-    background: url(../images/but_news.gif) no-repeat 0 0;
-}
-#rss_notifier {
-    background: url(../images/but_rss.gif) no-repeat 0 0;
-    margin-top: 25px;
-}
-
-.content_box_welcome .co_img_button {
-    float: right;
-    position: relative;
-    top: -2px;
-}
-.content_box_welcome .content_box_welcome_message {
-    padding-right: 20px;
-}
-
-#messageboard {
-}
-ul.welcome {
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-    list-style-type: none;
-    width: 320px;
-}
-li.welcome {
-    padding: 0 0 6px 0;
-}
-
-li#kontakt.welcome {
-    line-height: 17px;
-}
-
 .form_image {
     vertical-align: middle;
     margin-left: 10px;
     padding-top: 4px;
 }
-/*endregion PAGE_WELCOME*/
 
 /*region FRAME_LEFT_DECO*/
 /**
