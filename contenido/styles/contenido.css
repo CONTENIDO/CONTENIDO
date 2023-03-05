@@ -1645,6 +1645,7 @@ table.inuse_tpl {
     font-family: inherit;
     font-size: inherit;
     line-height: inherit !important;
+    height: inherit;
     margin: 0;
 }
 
