@@ -80,6 +80,28 @@ class cSecurityTest extends cTestingTestCase
     }
 
     /**
+     * Test {@see cSecurity::isPositiveInteger()}
+     */
+    public function testIsPositiveInteger()
+    {
+        $this->assertEquals(false, cSecurity::isPositiveInteger(null));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(true));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(false));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(''));
+        $this->assertEquals(false, cSecurity::isPositiveInteger('asdf'));
+        $this->assertEquals(false, cSecurity::isPositiveInteger('-1'));
+        $this->assertEquals(false, cSecurity::isPositiveInteger('0'));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(-1));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(0));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(-1.23));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(0.00));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(1.23));
+
+        $this->assertEquals(true, cSecurity::isPositiveInteger('1'));
+        $this->assertEquals(true, cSecurity::isPositiveInteger(1));
+    }
+
+    /**
      * @TODO Implement this test.
      */
     public function testIsString()
