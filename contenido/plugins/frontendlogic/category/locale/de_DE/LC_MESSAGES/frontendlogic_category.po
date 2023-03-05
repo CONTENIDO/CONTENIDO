@@ -1,25 +1,26 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-09-22 10:35+0100\n"
-"Last-Translator: Bjï¿½rn Behrens <herrb@communido.net>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-05 17:15+0100\n"
+"PO-Revision-Date: 2023-03-05 17:16+0100\n"
+"Last-Translator: Murat Purç <murat@purc.de>\n"
 "Language-Team: \n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
-"X-Poedit-Basepath: Z:\\development\\contenido_sources\\contenido\\plugins\\frontendlogic\n"
+"X-Poedit-Basepath: Z:/development/contenido_sources/contenido/plugins/"
+"frontendlogic\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
 "X-Poedit-KeywordsList: i18n;trans\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Poedit-SearchPath-0: category\n"
 
-#: category/category.php:11
+#: category.php:35
 msgid "Category"
 msgstr "Frontend-Berechtigungen"
 
-#: category/category.php:17
+#: category.php:43
 msgid "Access category"
 msgstr "Kategorie-Zugriff"
-

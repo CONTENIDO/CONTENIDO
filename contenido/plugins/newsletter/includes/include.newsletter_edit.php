@@ -246,7 +246,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
             $oNewsletters->query();
 
             if ($oNewsletters->next()) {
-                $aMessages[] = i18n("Could not set new newsletter name: name already exists", 'newsletter');
+                $aMessages[] = i18n("Could not set new newsletter name: name already exists.", 'newsletter');
             } else {
                 $oNewsletter->set("name", $sName);
                 if ($oNewsletter->get("idart") > 0) {

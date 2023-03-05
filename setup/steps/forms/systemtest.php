@@ -89,7 +89,7 @@ class cSetupSystemtest extends cSetupMask {
 
         $maxExecutionTime = (int) ini_get('max_execution_time');
         if ($maxExecutionTime < 60 && $maxExecutionTime !== 0) {
-            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to set max_execution_time", "setup"), i18n("Your PHP configuration for max_execution_time can not be changed via this script. We recommend setting the value for the installation or upgrade process to 60 seconds. You can try to execute the process with your current configuration. If the process is stopped, the system is not usable (any longer)", "setup"));
+            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to set max_execution_time.", "setup"), i18n("Your PHP configuration for max_execution_time can not be changed via this script. We recommend setting the value for the installation or upgrade process to 60 seconds. You can try to execute the process with your current configuration. If the process is stopped, the system is not usable (any longer)", "setup"));
         }
 
         $results = $this->_systemtest->getResults();
@@ -118,7 +118,7 @@ class cSetupSystemtest extends cSetupMask {
         }
 
         if (count($cHTMLFoldableErrorMessages) == 0) {
-            $cHTMLFoldableErrorMessages[] = new cHTMLFoldableErrorMessage(i18n("No problems detected", "setup"), i18n("Setup could not detect any problems with your system environment", "setup"), "images/icons/info.png");
+            $cHTMLFoldableErrorMessages[] = new cHTMLFoldableErrorMessage(i18n("No problems detected", "setup"), i18n("Setup could not detect any problems with your system environment.", "setup"), "images/icons/info.png");
         }
 
         $cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);

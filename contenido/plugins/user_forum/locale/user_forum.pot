@@ -1,0 +1,145 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-05 17:54+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: classes/class.article_forum_collection.php:381
+msgid "QUOTE"
+msgstr ""
+
+#: classes/class.article_forum_left_bottom.php:89
+msgid "NOENTRY"
+msgstr ""
+
+#: classes/class.article_forum_left_bottom.php:123
+#: includes/include.left_bottom.php:27
+msgid "ALLDELETEFROMCAT"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:119
+msgid "SETOFFLINE"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:123
+msgid "SETONLINE"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:144
+msgid "EDIT"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:152
+msgid "ALLDELETEFROMCATHIER"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:195
+msgid "FORUM_POST"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:200
+msgid "ACTIONS"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:217
+#: classes/class.article_forum_right_bottom.php:238
+#: classes/class.article_forum_right_bottom.php:411
+#: classes/class.article_forum_right_bottom.php:414
+msgid "AT"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:217
+#: classes/class.article_forum_right_bottom.php:238
+#: classes/class.article_forum_right_bottom.php:411
+#: classes/class.article_forum_right_bottom.php:414
+msgid "CLOCK"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:244
+msgid "EDITED"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:244
+msgid "FROM"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:382
+msgid "PARAMETER"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:385
+msgid "CONTENT"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:424
+msgid "USER"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:425
+msgid "EMAIL"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:426
+msgid "LIKE"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:427
+msgid "DISLIKE"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:428
+msgid "TIME"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:429
+msgid "EDITDAT"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:430
+msgid "EDITEDBY"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:442
+msgid "ONLINE"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:444
+msgid "COMMENT"
+msgstr ""
+
+#: classes/class.article_forum_right_bottom.php:514
+msgid "MODMODE"
+msgstr ""
+
+#: classes/class.content.type.user_forum.php:79
+msgid "ADMINISTRATION"
+msgstr ""
+
+#: classes/class.content.type.user_forum.php:144
+msgid "ACTIVATEMOD"
+msgstr ""
+
+#: classes/class.content.type.user_forum.php:170
+msgid "EDITABLE"
+msgstr ""
+
+#: classes/class.content.type.user_forum.php:198
+msgid "MODSETTINGS"
+msgstr ""
+
+#: classes/class.content.type.user_forum.php:199
+msgid "MODEMAIL"
+msgstr ""
