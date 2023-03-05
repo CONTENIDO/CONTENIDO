@@ -526,7 +526,6 @@ table.art_overview td {
  * #############################################################################
  * @section Page_Login_Form, Page_Header
  */
-
 #lblusername,
 #lblpasswd {
     margin-left: 54px;
@@ -539,12 +538,12 @@ table.art_overview td {
     height: 17px;
     line-height: 17px;
     margin-left: 13px;
-    margin-top: 3px;
+    margin-top: 5px;
     padding: 0 2px;
     width: 150px;
 }
 #lang {
-    margin-top: 3px;
+    margin-top: 5px;
     margin-right: 10px;
     float: right;
     width: 150px;
@@ -556,13 +555,9 @@ table.art_overview td {
     height: 20px;
 }
 #okbutton {
-    margin-top: 3px;
+    margin-top: 5px;
     margin-right: 10px;
     float: right;
-}
-.navcontainer {
-    border-top: 1px solid #666;
-    clear: left;
 }
 .text_login_error {
     float: right;
@@ -578,11 +573,8 @@ table.art_overview td {
 }
 /*endregion PAGE_LOGIN_FORM-PAGE_HEADER*/
 
-.form_image {
-    vertical-align: middle;
-    margin-left: 10px;
-    padding-top: 4px;
-}
+/** @deprecated [2023-03-05] Since CONTENIDO 4.10.2, Is no longer used! */
+.form_image {vertical-align: middle; margin-left: 10px; padding-top: 4px;}
 
 /*region FRAME_LEFT_DECO*/
 /**
@@ -1236,6 +1228,8 @@ div.navcontainer {
     height: 28px;
     background-color: #e2e2e2;
     border-bottom: 1px solid #b3b3b3;
+    border-top: 1px solid #666;
+    clear: left;
     text-align: left;
 }
 
