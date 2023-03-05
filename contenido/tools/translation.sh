@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Creates or updates the translation files (*.pot) files for following areas
+# Creates or updates the translation files (*.pot) for following areas
 # - setup process
 # - contenido core
 # - plugins
@@ -11,7 +11,7 @@
 #
 # @package    Core
 # @subpackage Tool
-# @author     Murat Purc <murat@purc.de>
+# @author     Murat Purç <murat@purc.de>
 # @copyright  four for business AG <www.4fb.de>
 # @license    https://www.contenido.org/license/LIZENZ.txt
 # @link       https://www.4fb.de
