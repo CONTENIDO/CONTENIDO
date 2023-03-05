@@ -1,95 +1,125 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Solr\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-06-21 14:32+0100\n"
-"Last-Translator: Marcus Gnaß <marcus.gnass@4fb.de>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-05 17:26+0100\n"
+"PO-Revision-Date: 2023-03-05 17:32+0100\n"
+"Last-Translator: Murat Purç <murat@purc.de>\n"
 "Language-Team: Marcus Gnaß <marcus.gnass@4fb.de>\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: English\n"
-"X-Poedit-Country: United States\n"
-"X-Poedit-Basepath: \n"
 "X-Poedit-KeywordsList: i18n\n"
-"X-Poedit-SearchPath-0: \n"
+"X-Generator: Poedit 3.2.2\n"
 
-; class.solr_indexer.php
-
-msgid "WARNING_INVALID_CLIENT_OPTIONS"
-msgstr "Article could not be indexed cause Solr is not configured."
-
-; class.solr.gui.php
-
+#: classes/class.solr.gui.php:60
 msgid "CLIENT_OPTIONS"
 msgstr "client options"
 
+#: classes/class.solr.gui.php:61
 msgid "OPTION"
 msgstr "option"
 
+#: classes/class.solr.gui.php:62
 msgid "VALUE"
 msgstr "value"
 
+#: classes/class.solr.gui.php:63
 msgid "DESCRIPTION"
 msgstr "description"
 
+#: classes/class.solr.gui.php:64
 msgid "DESCR_HOSTNAME"
 msgstr "The hostname for the Solr server. <b>w/o protocol!</b>"
 
+#: classes/class.solr.gui.php:65
 msgid "DESCR_PORT"
 msgstr "The port number."
 
+#: classes/class.solr.gui.php:66
 msgid "DESCR_PATH"
 msgstr "The path to the Solr core."
 
+#: classes/class.solr.gui.php:67
 msgid "DESCR_LOGIN"
 msgstr "The username used for HTTP Authentication, if any."
 
+#: classes/class.solr.gui.php:68
 msgid "DESCR_PASSWORD"
 msgstr "The HTTP Authentication password."
 
+#: classes/class.solr.gui.php:69
 msgid "DESCR_SECURE"
 msgstr "Boolean value indicating whether or not to connect in secure mode."
 
+#: classes/class.solr.gui.php:70
 msgid "DESCR_TIMEOUT"
-msgstr "This is maximum time in seconds allowed for the http data transfer operation. Default is 30 seconds."
+msgstr ""
+"This is maximum time in seconds allowed for the http data transfer "
+"operation. Default is 30 seconds."
 
+#: classes/class.solr.gui.php:71
 msgid "DESCR_WT"
 msgstr "The name of the response writer e.g. xml, phpnative."
 
+#: classes/class.solr.gui.php:72
 msgid "DESCR_PROXY_HOST"
 msgstr "The hostname for the proxy server, if any."
 
+#: classes/class.solr.gui.php:73
 msgid "DESCR_PROXY_PORT"
 msgstr "The proxy port."
 
+#: classes/class.solr.gui.php:74
 msgid "DESCR_PROXY_LOGIN"
 msgstr "The proxy username."
 
+#: classes/class.solr.gui.php:75
 msgid "DESCR_PROXY_PASSWORD"
 msgstr "The proxy password."
 
+#: classes/class.solr.gui.php:76
 msgid "DESCR_SSL_CERT"
-msgstr "File name to a PEM-formatted file containing the private key + private certificate (concatenated in that order). Please note the if the ssl_cert file only contains the private certificate, you have to specify a separate ssl_key file."
+msgstr ""
+"File name to a PEM-formatted file containing the private key + private "
+"certificate (concatenated in that order). Please note the if the ssl_cert "
+"file only contains the private certificate, you have to specify a separate "
+"ssl_key file."
 
+#: classes/class.solr.gui.php:77
 msgid "DESCR_SSL_KEY"
 msgstr "File name to a PEM-formatted private key file only."
 
+#: classes/class.solr.gui.php:78
 msgid "DESCR_SSL_KEYPASSWORD"
-msgstr "Password for private key. The ssl_keypassword option is required if the ssl_cert or ssl_key options are set."
+msgstr ""
+"Password for private key. The ssl_keypassword option is required if the "
+"ssl_cert or ssl_key options are set."
 
+#: classes/class.solr.gui.php:79
 msgid "DESCR_SSL_CAINFO"
 msgstr "Name of file holding one or more CA certificates to verify peer with."
 
+#: classes/class.solr.gui.php:80
 msgid "DESCR_SSL_CAPATH"
-msgstr "Name of directory holding multiple CA certificates to verify peer with."
+msgstr ""
+"Name of directory holding multiple CA certificates to verify peer with."
 
+#: classes/class.solr.gui.php:81
 msgid "DESCR_RELOAD"
 msgstr "Reload the core according to its configuration file schema.xml."
 
+#: classes/class.solr.gui.php:82
 msgid "DESCR_REINDEX"
-msgstr "Reindex articles of current client. Articles that are offline, not searchable or hidden by protected categories will be skipped."
+msgstr ""
+"Reindex articles of current client. Articles that are offline, not "
+"searchable or hidden by protected categories will be skipped."
 
+#: classes/class.solr.gui.php:83
 msgid "DESCR_DELETE"
 msgstr "Delete articles of current client."
 
+#: classes/class.solr.php:219
+msgid "WARNING_INVALID_CLIENT_OPTIONS"
+msgstr "Article could not be indexed cause Solr is not configured."
