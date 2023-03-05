@@ -53,6 +53,7 @@ help() {
     echo "$ ./translation.sh setup"
     echo "$ ./translation.sh contenido"
     echo "$ ./translation.sh plugin content_allocation"
+    echo "$ ./translation.sh plugin frontendlogic/category"
 }
 
 # Function to initialize and validate
@@ -132,9 +133,10 @@ translate() {
               --files-from=../data/locale/potfiles.txt
             ;;
         "plugin")
+            PLUGIN_FILE_NAME="${PLUGIN_NAME////_}"
             find . -iname "*.php" -o -iname "*.html" -o -iname "*.xml" -o -iname "*.tpl" \
               > ./locale/potfiles.txt
-            xgettext --from-code=utf-8 --keyword=i18n --output=./locale/${PLUGIN_NAME}.pot \
+            xgettext --from-code=utf-8 --keyword=i18n --output=./locale/${PLUGIN_FILE_NAME}.pot \
               --files-from=./locale/potfiles.txt
             ;;
     esac
