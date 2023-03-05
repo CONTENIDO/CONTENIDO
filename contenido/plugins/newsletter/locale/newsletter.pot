@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-16 11:08+0200\n"
+"POT-Creation-Date: 2023-03-05 17:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,351 +17,351 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: classes/class.newsletter.php:94 includes/include.newsletter_edit.php:241
-#: includes/include.newsletter_edit_message.php:81
+#: classes/class.newsletter.php:104 includes/include.newsletter_edit.php:261
+#: includes/include.newsletter_edit_message.php:82
 #, php-format
 msgid "Newsletter: %s"
 msgstr ""
 
-#: classes/class.newsletter.php:495
+#: classes/class.newsletter.php:549
 #, php-format
 msgid ""
 "There was a problem getting the newsletter article using http. Error: %s (%s)"
 msgstr ""
 
-#: classes/class.newsletter.php:602
+#: classes/class.newsletter.php:663
 #, php-format
 msgid "Newsletter to %s could not be sent: No html message available"
 msgstr ""
 
-#: classes/class.newsletter.php:673
+#: classes/class.newsletter.php:735
 #, php-format
 msgid "Newsletter to %s could not be sent: No valid e-mail address"
 msgstr ""
 
-#: classes/class.newsletter.php:699 classes/class.newsletter.php:907
+#: classes/class.newsletter.php:768 classes/class.newsletter.php:988
 #, php-format
 msgid "Newsletter to %s could not be sent"
 msgstr ""
 
-#: classes/class.newsletter.php:760
+#: classes/class.newsletter.php:838
 msgid "Newsletter could not be sent: No html message available"
 msgstr ""
 
-#: classes/class.newsletter.php:872
+#: classes/class.newsletter.php:953
 #, php-format
 msgid ""
 "Newsletter to %s could not be sent: Recipient has an incompatible or empty "
 "key"
 msgstr ""
 
-#: classes/class.newsletter.php:879
+#: classes/class.newsletter.php:960
 #, php-format
 msgid "Newsletter to %s could not be sent: No valid e-mail address specified"
 msgstr ""
 
-#: classes/class.newsletter.php:917
+#: classes/class.newsletter.php:998
 #, php-format
 msgid "No recipient with specified recipient/group id %s/%s found"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:38
-#: includes/include.newsletter_menu.php:171
+#: includes/include.newsletter_edit.php:48
+#: includes/include.newsletter_menu.php:188
 msgid "-- New newsletter --"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:80
+#: includes/include.newsletter_edit.php:90
 msgid "Created newsletter successfully!"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:89
+#: includes/include.newsletter_edit.php:99
 msgid "Dupplicate newsletter successfully!"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:109
+#: includes/include.newsletter_edit.php:118
 msgid "Deleted newsletter successfully!"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:117
+#: includes/include.newsletter_edit.php:126
 msgid "Newsletter dispatch job has been added for this newsletter"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:119
+#: includes/include.newsletter_edit.php:128
 msgid ""
 "Newsletter dispatch job has been not been added! Please check newsletter "
 "details"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:155
+#: includes/include.newsletter_edit.php:166
 msgid "None"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:163
+#: includes/include.newsletter_edit.php:174
 msgid "Test newsletter has been sent to:"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:165
+#: includes/include.newsletter_edit.php:176
 msgid "Test newsletter has not been sent (partly or completely):"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:165
+#: includes/include.newsletter_edit.php:176
 msgid "Successful:"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:165
+#: includes/include.newsletter_edit.php:176
 msgid "Error messages:"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:229
-msgid "Could not set new newsletter name: name already exists"
+#: includes/include.newsletter_edit.php:249
+msgid "Could not set new newsletter name: name already exists."
 msgstr ""
 
-#: includes/include.newsletter_edit.php:279
+#: includes/include.newsletter_edit.php:288
 msgid ""
 "'Send to recipients in selected groups' has been selected, but no group has "
 "been specified. Selection has been set to 'Send to all recipients'"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:329
-#: includes/include.newsletter_edit_message.php:91
+#: includes/include.newsletter_edit.php:338
+#: includes/include.newsletter_edit_message.php:92
 msgid "Saved changes successfully!"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:354
+#: includes/include.newsletter_edit.php:363
 msgid "Edit newsletter"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:357
-#: includes/include.newsletter_jobs_details.php:288
-#: includes/include.newsletter_jobs_menu.php:38
-#: includes/include.newsletter_left_top.php:284
-#: includes/include.newsletter_left_top.php:419
-#: includes/include.newsletter_left_top.php:619
-#: includes/include.newsletter_left_top.php:900
-#: includes/include.newsletter_menu.php:40
-#: includes/include.recipients.group_edit.php:27
-#: includes/include.recipients.group_edit.php:266
-#: includes/include.recipients.group_menu.php:37
-#: includes/include.recipients_edit.php:155
-#: includes/include.recipients_import.php:37
-#: includes/include.recipients_menu.php:39
+#: includes/include.newsletter_edit.php:366
+#: includes/include.newsletter_jobs_details.php:305
+#: includes/include.newsletter_jobs_menu.php:48
+#: includes/include.newsletter_left_top.php:304
+#: includes/include.newsletter_left_top.php:439
+#: includes/include.newsletter_left_top.php:635
+#: includes/include.newsletter_left_top.php:918
+#: includes/include.newsletter_menu.php:50
+#: includes/include.recipients.group_edit.php:40
+#: includes/include.recipients.group_edit.php:296
+#: includes/include.recipients.group_menu.php:47
+#: includes/include.recipients_edit.php:159
+#: includes/include.recipients_import.php:44
+#: includes/include.recipients_menu.php:49
 msgid "Name"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:363
-#: includes/include.newsletter_jobs_details.php:216
-#: includes/include.newsletter_jobs_details.php:315
-#: includes/include.recipients_edit.php:149
+#: includes/include.newsletter_edit.php:373
+#: includes/include.newsletter_jobs_details.php:232
+#: includes/include.newsletter_jobs_details.php:332
+#: includes/include.recipients_edit.php:153
 msgid "Text only"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:368
-#: includes/include.newsletter_jobs_details.php:308
-#: includes/include.recipients_edit.php:151
+#: includes/include.newsletter_edit.php:378
+#: includes/include.newsletter_jobs_details.php:325
+#: includes/include.recipients_edit.php:155
 msgid "HTML and text"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:379
-#: includes/include.newsletter_jobs_details.php:165
-#: includes/include.newsletter_jobs_details.php:308
-#: includes/include.newsletter_jobs_details.php:315
+#: includes/include.newsletter_edit.php:388
+#: includes/include.newsletter_jobs_details.php:184
+#: includes/include.newsletter_jobs_details.php:325
+#: includes/include.newsletter_jobs_details.php:332
 msgid "Type"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:385
+#: includes/include.newsletter_edit.php:394
 msgid "From (E-Mail)"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:386
+#: includes/include.newsletter_edit.php:395
 msgid "From (Name)"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:386
+#: includes/include.newsletter_edit.php:395
 msgid "optional"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:387
-#: includes/include.newsletter_edit_message.php:132
-#: includes/include.newsletter_jobs_details.php:305
+#: includes/include.newsletter_edit.php:396
+#: includes/include.newsletter_edit_message.php:134
+#: includes/include.newsletter_jobs_details.php:322
 msgid "Subject"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:418
-msgid "Note: Hold <Ctrl> to select multiple items."
-msgstr ""
-
-#: includes/include.newsletter_edit.php:445
-#: includes/include.newsletter_jobs_details.php:346
-#: includes/include.newsletter_left_top.php:62
-#: includes/include.recipients_import.php:360
-msgid "Recipients"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:445
-#: includes/include.newsletter_jobs_details.php:325
+#: includes/include.newsletter_edit.php:400
+#: includes/include.newsletter_jobs_details.php:342
 msgid "Send newsletter to all recipients"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:445
-#: includes/include.newsletter_jobs_details.php:328
+#: includes/include.newsletter_edit.php:403
+#: includes/include.newsletter_jobs_details.php:345
 msgid "Send newsletter to the members of the default group"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:445
-#: includes/include.newsletter_jobs_details.php:331
+#: includes/include.newsletter_edit.php:406
+#: includes/include.newsletter_jobs_details.php:348
 msgid "Send newsletter to the members of the selected group(s):"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:466
-msgid "Option has to be enabled as client setting - see techref for details"
+#: includes/include.newsletter_edit.php:431
+msgid "Note: Hold <Ctrl> to select multiple items."
 msgstr ""
 
-#: includes/include.newsletter_edit.php:473
-msgid "Note: Set to 0 to send chunks manually."
+#: includes/include.newsletter_edit.php:463
+#: includes/include.newsletter_jobs_details.php:363
+#: includes/include.newsletter_left_top.php:72
+#: includes/include.recipients_import.php:369
+msgid "Recipients"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:476
-#: includes/include.newsletter_jobs_details.php:360
-msgid "Options"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:476
+#: includes/include.newsletter_edit.php:467
 msgid "Welcome-Newsletter"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:476
-#: includes/include.newsletter_left_top.php:434
+#: includes/include.newsletter_edit.php:479
+#: includes/include.newsletter_left_top.php:454
 msgid "Use cronjob"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:476
+#: includes/include.newsletter_edit.php:486
+msgid "Option has to be enabled as client setting - see techref for details"
+msgstr ""
+
+#: includes/include.newsletter_edit.php:491
 msgid "Send in blocks:"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:476
-msgid "Recipients per block:"
+#: includes/include.newsletter_edit.php:498
+msgid "Note: Set to 0 to send chunks manually."
 msgstr ""
 
-#: includes/include.newsletter_edit.php:476
-msgid "Delay between blocks:"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:476
-msgid "sec."
-msgstr ""
-
-#: includes/include.newsletter_edit.php:476
+#: includes/include.newsletter_edit.php:500
 msgid "Save option settings as default"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:479
-#: includes/include.newsletter_jobs_details.php:361
-#: includes/include.newsletter_left_top.php:536
-#: includes/include.recipients_edit.php:215
+#: includes/include.newsletter_edit.php:502
+#: includes/include.newsletter_jobs_details.php:377
+msgid "Options"
+msgstr ""
+
+#: includes/include.newsletter_edit.php:505
+msgid "Recipients per block:"
+msgstr ""
+
+#: includes/include.newsletter_edit.php:506
+msgid "Delay between blocks:"
+msgstr ""
+
+#: includes/include.newsletter_edit.php:507
+msgid "sec."
+msgstr ""
+
+#: includes/include.newsletter_edit.php:512
+#: includes/include.newsletter_jobs_details.php:378
+#: includes/include.newsletter_left_top.php:552
+#: includes/include.recipients_edit.php:219
 msgid "Author"
 msgstr ""
 
-#: includes/include.newsletter_edit.php:481
-#: includes/include.recipients_edit.php:217
+#: includes/include.newsletter_edit.php:514
+#: includes/include.recipients_edit.php:221
 msgid "Last modified by"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:102
+#: includes/include.newsletter_edit_message.php:103
 #, php-format
 msgid ""
 "The html newsletter article has been deleted (idart: %s), the html message "
 "is lost"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:116
+#: includes/include.newsletter_edit_message.php:117
 msgid ""
 "The html newsletter template article has been deleted, it has been restored "
 "using the html message article of this newsletter"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:118
+#: includes/include.newsletter_edit_message.php:119
 #, php-format
 msgid "%s (Template restored)"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:131
+#: includes/include.newsletter_edit_message.php:133
 #, php-format
 msgid "Edit newsletter message (%s)"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:134
-#: includes/include.newsletter_edit_message.php:138
+#: includes/include.newsletter_edit_message.php:136
+#: includes/include.newsletter_edit_message.php:140
 msgid "Tag information"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:134
+#: includes/include.newsletter_edit_message.php:136
 msgid "Special message tags (will be replaced when sending)"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:134
-#: includes/include.newsletter_edit_message.php:138
+#: includes/include.newsletter_edit_message.php:136
+#: includes/include.newsletter_edit_message.php:140
 msgid "Name of the recipient"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:134
-#: includes/include.newsletter_edit_message.php:138
+#: includes/include.newsletter_edit_message.php:136
+#: includes/include.newsletter_edit_message.php:140
 msgid "Date, when the mail has been sent"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:134
-#: includes/include.newsletter_edit_message.php:138
+#: includes/include.newsletter_edit_message.php:136
+#: includes/include.newsletter_edit_message.php:140
 msgid "Time, when the mail has been sent"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:134
-#: includes/include.newsletter_edit_message.php:138
+#: includes/include.newsletter_edit_message.php:136
+#: includes/include.newsletter_edit_message.php:140
 msgid "Number of recipients"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:136
-#: includes/include.newsletter_edit_message.php:140
+#: includes/include.newsletter_edit_message.php:138
+#: includes/include.newsletter_edit_message.php:142
 msgid "Link to unsubscribe"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:136
-#: includes/include.newsletter_edit_message.php:140
+#: includes/include.newsletter_edit_message.php:138
+#: includes/include.newsletter_edit_message.php:142
 msgid "Link to pause the subscription"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:136
-#: includes/include.newsletter_edit_message.php:140
+#: includes/include.newsletter_edit_message.php:138
+#: includes/include.newsletter_edit_message.php:142
 msgid "Link to resume the subscription"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:138
+#: includes/include.newsletter_edit_message.php:140
 msgid "Special message tags (will be replaced when sending, {..} = optional)"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:140
+#: includes/include.newsletter_edit_message.php:142
 msgid "Link text"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:144
-#: includes/include.newsletter_edit_message.php:145
+#: includes/include.newsletter_edit_message.php:146
+#: includes/include.newsletter_edit_message.php:147
 msgid "Additional message tags from recipients plugins:"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:188
+#: includes/include.newsletter_edit_message.php:186
 msgid "-- none --"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:201
+#: includes/include.newsletter_edit_message.php:199
 msgid "HTML Template"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:201
+#: includes/include.newsletter_edit_message.php:199
 msgid ""
 "Note, that changing the template discards the current html message content"
 msgstr ""
 
 #: includes/include.newsletter_edit_message.php:205
 #: includes/include.newsletter_edit_message.php:210
-#: includes/include.newsletter_jobs_details.php:313
+#: includes/include.newsletter_jobs_details.php:330
 msgid "HTML Message"
 msgstr ""
 
@@ -375,655 +375,655 @@ msgstr ""
 msgid "Please choose a template first"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:215
-#: includes/include.newsletter_jobs_details.php:320
+#: includes/include.newsletter_edit_message.php:216
+#: includes/include.newsletter_jobs_details.php:337
 msgid "Text Message"
 msgstr ""
 
-#: includes/include.newsletter_edit_message.php:242
+#: includes/include.newsletter_edit_message.php:233
 msgid ""
 "HTML template has been changed. Do you like to save now to apply changes?"
 "<br><br><b>Note, that existing HTML newsletter content will get lost!</b>"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:47
-#: includes/include.newsletter_jobs_details.php:57
-#: includes/include.newsletter_jobs_details.php:72
+#: includes/include.newsletter_jobs_details.php:59
+#: includes/include.newsletter_jobs_details.php:69
+#: includes/include.newsletter_jobs_details.php:84
 msgid "Report:"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:50
-#: includes/include.newsletter_jobs_details.php:60
+#: includes/include.newsletter_jobs_details.php:62
+#: includes/include.newsletter_jobs_details.php:72
 #, php-format
 msgid "Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:52
-#: includes/include.newsletter_jobs_details.php:67
+#: includes/include.newsletter_jobs_details.php:64
+#: includes/include.newsletter_jobs_details.php:79
 msgid "Stop sending"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:53
+#: includes/include.newsletter_jobs_details.php:65
 msgid "Send next chunk"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:75
+#: includes/include.newsletter_jobs_details.php:87
 #, php-format
 msgid "The newsletter has been sent to %s recipients"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:133
-#: includes/include.newsletter_left_top.php:350
-#: includes/include.newsletter_left_top.php:570
-#: includes/include.newsletter_left_top.php:843
-#: includes/include.newsletter_left_top.php:1017
+#: includes/include.newsletter_jobs_details.php:157
+#: includes/include.newsletter_left_top.php:370
+#: includes/include.newsletter_left_top.php:586
+#: includes/include.newsletter_left_top.php:861
+#: includes/include.newsletter_left_top.php:1036
 msgid "List options"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:139
+#: includes/include.newsletter_jobs_details.php:164
 msgid "-All-"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:150
+#: includes/include.newsletter_jobs_details.php:175
 msgid "Items per page:"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:165
+#: includes/include.newsletter_jobs_details.php:184
 msgid "Recipient"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:165
-#: includes/include.newsletter_left_top.php:624
-#: includes/include.recipients.group_edit.php:32
-#: includes/include.recipients_edit.php:156
-#: includes/include.recipients_menu.php:44
+#: includes/include.newsletter_jobs_details.php:184
+#: includes/include.newsletter_left_top.php:640
+#: includes/include.recipients.group_edit.php:45
+#: includes/include.recipients_edit.php:160
+#: includes/include.recipients_menu.php:54
 msgid "E-Mail"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:165
-#: includes/include.newsletter_jobs_details.php:293
-#: includes/include.newsletter_jobs_details.php:296
-#: includes/include.newsletter_jobs_details.php:299
-#: includes/include.newsletter_jobs_menu.php:48
-#: includes/include.newsletter_left_top.php:429
+#: includes/include.newsletter_jobs_details.php:184
+#: includes/include.newsletter_jobs_details.php:310
+#: includes/include.newsletter_jobs_details.php:313
+#: includes/include.newsletter_jobs_details.php:316
+#: includes/include.newsletter_jobs_menu.php:58
+#: includes/include.newsletter_left_top.php:449
 msgid "Status"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:165
+#: includes/include.newsletter_jobs_details.php:184
 msgid "Sent"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:165
-#: includes/include.newsletter_left_top.php:91
-#: includes/include.newsletter_left_top.php:683
-#: includes/include.newsletter_left_top.php:924
+#: includes/include.newsletter_jobs_details.php:184
+#: includes/include.newsletter_left_top.php:101
+#: includes/include.newsletter_left_top.php:701
+#: includes/include.newsletter_left_top.php:943
 msgid "Actions"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:210
+#: includes/include.newsletter_jobs_details.php:226
 msgid "Delete item"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:217
+#: includes/include.newsletter_jobs_details.php:233
 msgid "HTML/Text"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:225
+#: includes/include.newsletter_jobs_details.php:242
 msgid "Waiting for sending"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:228
+#: includes/include.newsletter_jobs_details.php:245
 msgid "Sending"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:231
+#: includes/include.newsletter_jobs_details.php:248
 msgid "Successful"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:234
+#: includes/include.newsletter_jobs_details.php:251
 #, php-format
 msgid "Error: %s"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:271
+#: includes/include.newsletter_jobs_details.php:288
 #, php-format
 msgid "Go to page: %s"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:286
+#: includes/include.newsletter_jobs_details.php:303
 msgid "Newsletter dispatch job"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:293
+#: includes/include.newsletter_jobs_details.php:310
 msgid "Pending"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:296
+#: includes/include.newsletter_jobs_details.php:313
 #, php-format
 msgid "Sending (started: %s)"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:299
+#: includes/include.newsletter_jobs_details.php:316
 #, php-format
 msgid "Finished (started: %s, finished: %s)"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:303
+#: includes/include.newsletter_jobs_details.php:320
 msgid "Statistics"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:303
+#: includes/include.newsletter_jobs_details.php:320
 #, php-format
 msgid "Planned: %s, Send: %s"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:304
+#: includes/include.newsletter_jobs_details.php:321
 msgid "From"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:339
+#: includes/include.newsletter_jobs_details.php:356
 msgid "Send newsletter to single recipient:"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:349
+#: includes/include.newsletter_jobs_details.php:366
 msgid "Use cronjob: Enabled"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:351
+#: includes/include.newsletter_jobs_details.php:368
 msgid "Use cronjob: Not enabled"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:355
+#: includes/include.newsletter_jobs_details.php:372
 #, php-format
 msgid "Dispatch: Enabled (block size: %s, delay: %s sec.)"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:357
+#: includes/include.newsletter_jobs_details.php:374
 msgid "Dispatch: Disabled"
 msgstr ""
 
-#: includes/include.newsletter_jobs_details.php:362
-#: includes/include.newsletter_jobs_menu.php:43
-#: includes/include.newsletter_left_top.php:424
+#: includes/include.newsletter_jobs_details.php:379
+#: includes/include.newsletter_jobs_menu.php:53
+#: includes/include.newsletter_left_top.php:444
 msgid "Created"
 msgstr ""
 
-#: includes/include.newsletter_jobs_menu.php:159
+#: includes/include.newsletter_jobs_menu.php:173
 msgid "Delete dispatch job"
 msgstr ""
 
-#: includes/include.newsletter_jobs_menu.php:160
+#: includes/include.newsletter_jobs_menu.php:174
 msgid "Do you really want to delete the following newsletter dispatch job:<br>"
 msgstr ""
 
-#: includes/include.newsletter_jobs_menu.php:162
+#: includes/include.newsletter_jobs_menu.php:175
 msgid "Run job"
 msgstr ""
 
-#: includes/include.newsletter_jobs_menu.php:163
+#: includes/include.newsletter_jobs_menu.php:176
 msgid "Do you really want to run the following job:<br>"
 msgstr ""
 
-#: includes/include.newsletter_jobs_menu.php:220
-msgid "Can't delete the job while it's running"
+#: includes/include.newsletter_jobs_menu.php:254
+msgid "Can't delete the job while it's running!"
 msgstr ""
 
-#: includes/include.newsletter_jobs_menu.php:231
-msgid "Can't delete the job after it's been sent"
+#: includes/include.newsletter_jobs_menu.php:267
+msgid "Can't delete the job after it's been sent!"
 msgstr ""
 
-#: includes/include.newsletter_jobs_subnav.php:32
+#: includes/include.newsletter_jobs_subnav.php:38
 msgid "View"
 msgstr ""
 
-#: includes/include.newsletter_jobs_subnav.php:40
+#: includes/include.newsletter_jobs_subnav.php:46
 msgid "Details"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:44
+#: includes/include.newsletter_left_top.php:54
 msgid "Newsletter"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:53
+#: includes/include.newsletter_left_top.php:63
 msgid "Dispatch"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:71
+#: includes/include.newsletter_left_top.php:81
 msgid "Recipient groups"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:100
+#: includes/include.newsletter_left_top.php:111
 msgid "Create newsletter"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:112
-#: includes/include.newsletter_left_top.php:721
+#: includes/include.newsletter_left_top.php:123
+#: includes/include.newsletter_left_top.php:739
 msgid "Settings"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:124
-#: includes/include.newsletter_left_top.php:126
+#: includes/include.newsletter_left_top.php:135
+#: includes/include.newsletter_left_top.php:137
 msgid "Please select"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:186
+#: includes/include.newsletter_left_top.php:196
 msgid "My E-Mail address"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:223
-#: includes/include.newsletter_left_top.php:691
+#: includes/include.newsletter_left_top.php:233
+#: includes/include.newsletter_left_top.php:709
 msgid "Save"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:240
+#: includes/include.newsletter_left_top.php:260
 msgid "Enable HTML newsletter"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:243
+#: includes/include.newsletter_left_top.php:263
 msgid "HTML template category:"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:246
+#: includes/include.newsletter_left_top.php:266
 msgid "HTML newsletter category:"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:249
+#: includes/include.newsletter_left_top.php:269
 msgid "Send test destination:"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:273
-#: includes/include.newsletter_left_top.php:483
-#: includes/include.newsletter_left_top.php:735
-#: includes/include.newsletter_left_top.php:938
-#: includes/include.recipients.group_edit.php:190
-#: includes/include.recipients.group_edit.php:400
+#: includes/include.newsletter_left_top.php:293
+#: includes/include.newsletter_left_top.php:499
+#: includes/include.newsletter_left_top.php:753
+#: includes/include.newsletter_left_top.php:957
+#: includes/include.recipients.group_edit.php:220
+#: includes/include.recipients.group_edit.php:443
 msgid "-- All --"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:291
-#: includes/include.newsletter_left_top.php:504
-#: includes/include.newsletter_left_top.php:754
-#: includes/include.newsletter_left_top.php:957
-#: includes/include.recipients.group_edit.php:212
-#: includes/include.recipients.group_edit.php:422
+#: includes/include.newsletter_left_top.php:311
+#: includes/include.newsletter_left_top.php:520
+#: includes/include.newsletter_left_top.php:772
+#: includes/include.newsletter_left_top.php:976
+#: includes/include.recipients.group_edit.php:242
+#: includes/include.recipients.group_edit.php:465
 msgid "Ascending"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:292
-#: includes/include.newsletter_left_top.php:505
-#: includes/include.newsletter_left_top.php:755
-#: includes/include.newsletter_left_top.php:958
-#: includes/include.recipients.group_edit.php:213
-#: includes/include.recipients.group_edit.php:423
+#: includes/include.newsletter_left_top.php:312
+#: includes/include.newsletter_left_top.php:521
+#: includes/include.newsletter_left_top.php:773
+#: includes/include.newsletter_left_top.php:977
+#: includes/include.recipients.group_edit.php:243
+#: includes/include.recipients.group_edit.php:466
 msgid "Descending"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:303
-#: includes/include.newsletter_left_top.php:515
-#: includes/include.newsletter_left_top.php:788
-#: includes/include.newsletter_left_top.php:966
-#: includes/include.recipients.group_edit.php:220
-#: includes/include.recipients.group_edit.php:430
+#: includes/include.newsletter_left_top.php:323
+#: includes/include.newsletter_left_top.php:531
+#: includes/include.newsletter_left_top.php:806
+#: includes/include.newsletter_left_top.php:985
+#: includes/include.recipients.group_edit.php:250
+#: includes/include.recipients.group_edit.php:473
 msgid "-- All fields --"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:310
-#: includes/include.newsletter_left_top.php:526
-#: includes/include.newsletter_left_top.php:799
-#: includes/include.newsletter_left_top.php:977
-#: includes/include.recipients.group_edit.php:231
-#: includes/include.recipients.group_edit.php:441
+#: includes/include.newsletter_left_top.php:330
+#: includes/include.newsletter_left_top.php:542
+#: includes/include.newsletter_left_top.php:817
+#: includes/include.newsletter_left_top.php:996
+#: includes/include.recipients.group_edit.php:261
+#: includes/include.recipients.group_edit.php:484
 msgid "Apply"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:320
-#: includes/include.newsletter_left_top.php:540
-#: includes/include.newsletter_left_top.php:809
-#: includes/include.newsletter_left_top.php:987
-#: includes/include.recipients.group_edit.php:236
-#: includes/include.recipients.group_edit.php:446
+#: includes/include.newsletter_left_top.php:340
+#: includes/include.newsletter_left_top.php:556
+#: includes/include.newsletter_left_top.php:827
+#: includes/include.newsletter_left_top.php:1006
+#: includes/include.recipients.group_edit.php:266
+#: includes/include.recipients.group_edit.php:489
 msgid "Items / page"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:324
-#: includes/include.newsletter_left_top.php:544
-#: includes/include.newsletter_left_top.php:813
-#: includes/include.newsletter_left_top.php:991
-#: includes/include.recipients.group_edit.php:240
-#: includes/include.recipients.group_edit.php:450
+#: includes/include.newsletter_left_top.php:344
+#: includes/include.newsletter_left_top.php:560
+#: includes/include.newsletter_left_top.php:831
+#: includes/include.newsletter_left_top.php:1010
+#: includes/include.recipients.group_edit.php:270
+#: includes/include.recipients.group_edit.php:493
 msgid "Sort by"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:328
-#: includes/include.newsletter_left_top.php:548
-#: includes/include.newsletter_left_top.php:817
-#: includes/include.newsletter_left_top.php:995
-#: includes/include.recipients.group_edit.php:244
-#: includes/include.recipients.group_edit.php:454
+#: includes/include.newsletter_left_top.php:348
+#: includes/include.newsletter_left_top.php:564
+#: includes/include.newsletter_left_top.php:835
+#: includes/include.newsletter_left_top.php:1014
+#: includes/include.recipients.group_edit.php:274
+#: includes/include.recipients.group_edit.php:497
 msgid "Sort order"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:332
-#: includes/include.newsletter_left_top.php:552
-#: includes/include.newsletter_left_top.php:825
-#: includes/include.newsletter_left_top.php:999
-#: includes/include.recipients.group_edit.php:248
-#: includes/include.recipients.group_edit.php:458
+#: includes/include.newsletter_left_top.php:352
+#: includes/include.newsletter_left_top.php:568
+#: includes/include.newsletter_left_top.php:843
+#: includes/include.newsletter_left_top.php:1018
+#: includes/include.recipients.group_edit.php:278
+#: includes/include.recipients.group_edit.php:501
 msgid "Search for"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:336
-#: includes/include.newsletter_left_top.php:556
-#: includes/include.newsletter_left_top.php:829
-#: includes/include.newsletter_left_top.php:1003
-#: includes/include.recipients.group_edit.php:252
-#: includes/include.recipients.group_edit.php:462
+#: includes/include.newsletter_left_top.php:356
+#: includes/include.newsletter_left_top.php:572
+#: includes/include.newsletter_left_top.php:847
+#: includes/include.newsletter_left_top.php:1022
+#: includes/include.recipients.group_edit.php:282
+#: includes/include.recipients.group_edit.php:505
 msgid "Search in"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:629
-#: includes/include.recipients.group_edit.php:37
-#: includes/include.recipients_edit.php:157
-#: includes/include.recipients_import.php:57
-#: includes/include.recipients_menu.php:49
+#: includes/include.newsletter_left_top.php:645
+#: includes/include.recipients.group_edit.php:50
+#: includes/include.recipients_edit.php:161
+#: includes/include.recipients_import.php:64
+#: includes/include.recipients_menu.php:59
 msgid "Confirmed"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:634
-#: includes/include.recipients.group_edit.php:42
-#: includes/include.recipients_edit.php:158
-#: includes/include.recipients_import.php:51
-#: includes/include.recipients_menu.php:54
+#: includes/include.newsletter_left_top.php:650
+#: includes/include.recipients.group_edit.php:55
+#: includes/include.recipients_edit.php:162
+#: includes/include.recipients_import.php:58
+#: includes/include.recipients_menu.php:64
 msgid "Deactivated"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:647
+#: includes/include.newsletter_left_top.php:664
 msgid "Create recipient"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:655
-#: includes/include.recipients_import.php:338
+#: includes/include.newsletter_left_top.php:673
+#: includes/include.recipients_import.php:346
 msgid "Import recipients"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:667
-#: includes/include.newsletter_left_top.php:668
+#: includes/include.newsletter_left_top.php:686
+#: includes/include.newsletter_left_top.php:687
 msgid "Purge recipients"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:667
+#: includes/include.newsletter_left_top.php:686
 #, php-format
 msgid ""
 "Do you really want to remove recipients, that have not been confirmed since "
 "%s days and over?"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:707
+#: includes/include.newsletter_left_top.php:725
 msgid "Purge timeframe"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:708
+#: includes/include.newsletter_left_top.php:726
 msgid "days"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:760
+#: includes/include.newsletter_left_top.php:778
 msgid "-- All groups --"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:821
+#: includes/include.newsletter_left_top.php:839
 msgid "Show group"
 msgstr ""
 
-#: includes/include.newsletter_left_top.php:913
+#: includes/include.newsletter_left_top.php:932
 msgid "Create group"
 msgstr ""
 
-#: includes/include.newsletter_menu.php:159
+#: includes/include.newsletter_menu.php:175
 msgid "Delete newsletter"
 msgstr ""
 
-#: includes/include.newsletter_menu.php:160
+#: includes/include.newsletter_menu.php:176
 msgid "Do you really want to delete the following newsletter:<br>"
 msgstr ""
 
-#: includes/include.newsletter_menu.php:161
+#: includes/include.newsletter_menu.php:177
 msgid "Send test newsletter"
 msgstr ""
 
-#: includes/include.newsletter_menu.php:162
+#: includes/include.newsletter_menu.php:178
 msgid ""
 "Send test newsletter (disabled, check newsletter sender e-mail address and "
 "handler article selection)"
 msgstr ""
 
-#: includes/include.newsletter_menu.php:163
+#: includes/include.newsletter_menu.php:179
 msgid "Add newsletter dispatch job"
 msgstr ""
 
-#: includes/include.newsletter_menu.php:164
+#: includes/include.newsletter_menu.php:180
 msgid ""
 "Add newsletter dispatch job (disabled, check newsletter sender e-mail "
 "address and handler article selection)"
 msgstr ""
 
-#: includes/include.newsletter_menu.php:165
+#: includes/include.newsletter_menu.php:181
 msgid "Duplicate newsletter"
 msgstr ""
 
-#: includes/include.newsletter_menu.php:239
+#: includes/include.newsletter_menu.php:281
 #, php-format
 msgid "Recipient group: %s"
 msgstr ""
 
-#: includes/include.newsletter_menu.php:244
+#: includes/include.newsletter_menu.php:286
 #, php-format
 msgid "Do you really want to send the newsletter to:<br><strong>%s</strong>"
 msgstr ""
 
-#: includes/include.newsletter_subnav.php:32
+#: includes/include.newsletter_subnav.php:38
 msgid "Edit"
 msgstr ""
 
-#: includes/include.newsletter_subnav.php:40
+#: includes/include.newsletter_subnav.php:46
 msgid "Edit Message"
 msgstr ""
 
-#: includes/include.recipients.group.subnav.php:25
+#: includes/include.recipients.group.subnav.php:33
 msgid "Overview"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:47
-#: templates/standard/template.newsletter_left_top.html:416
+#: includes/include.recipients.group_edit.php:63
+#: templates/standard/template.newsletter_left_top.html:417
 msgid "-- New group --"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:80
+#: includes/include.recipients.group_edit.php:97
 msgid "Could not set new group name: Group already exists"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:176
+#: includes/include.recipients.group_edit.php:204
 msgid "Edit group"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:179
+#: includes/include.recipients.group_edit.php:207
 msgid "Group name"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:183
+#: includes/include.recipients.group_edit.php:211
 msgid "Default group"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:186
+#: includes/include.recipients.group_edit.php:215
 msgid "Member list options"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:268
+#: includes/include.recipients.group_edit.php:298
 msgid "Check all"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:341
+#: includes/include.recipients.group_edit.php:372
 msgid "No recipients are added to this group yet"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:344
+#: includes/include.recipients.group_edit.php:375
 msgid "No recipients found"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:386
+#: includes/include.recipients.group_edit.php:420
 msgid "Member navigation"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:388
+#: includes/include.recipients.group_edit.php:423
 msgid "Recipients in group"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:388
+#: includes/include.recipients.group_edit.php:427
 msgid ""
 "Note: To delete recipients from this list, please mark<br>the checkboxes and "
 "click at save button."
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:396
+#: includes/include.recipients.group_edit.php:438
 msgid "Outsider list options"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:574
+#: includes/include.recipients.group_edit.php:618
 msgid "Outsider navigation"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:576
+#: includes/include.recipients.group_edit.php:621
 msgid "Add recipients"
 msgstr ""
 
-#: includes/include.recipients.group_edit.php:576
+#: includes/include.recipients.group_edit.php:625
 msgid "Note: Hold &lt;Ctrl&gt; to<br>select multiple items."
 msgstr ""
 
-#: includes/include.recipients.group_menu.php:121
+#: includes/include.recipients.group_menu.php:136
 msgid "Delete recipient group"
 msgstr ""
 
-#: includes/include.recipients.group_menu.php:122
+#: includes/include.recipients.group_menu.php:137
 msgid ""
 "Do you really want to delete the following newsletter recipient group:<br>"
 msgstr ""
 
-#: includes/include.recipients_edit.php:29
+#: includes/include.recipients_edit.php:45
 msgid "-- New recipient --"
 msgstr ""
 
-#: includes/include.recipients_edit.php:44
+#: includes/include.recipients_edit.php:61
 #, php-format
 msgid ""
 "%1backslashdollard recipients, which hasn't been confirmed since more than "
 "%2backslashdollard days has been removed."
 msgstr ""
 
-#: includes/include.recipients_edit.php:46
+#: includes/include.recipients_edit.php:63
 #, php-format
 msgid ""
 "There are no recipients, which hasn't been confirmed since more than "
 "%2backslashdollard days has been removed."
 msgstr ""
 
-#: includes/include.recipients_edit.php:69
+#: includes/include.recipients_edit.php:86
 msgid "Please specify a valid e-mail address"
 msgstr ""
 
-#: includes/include.recipients_edit.php:81
+#: includes/include.recipients_edit.php:98
 msgid ""
 "Could not set new e-mail address: Other recipient with same e-mail address "
 "already exists"
 msgstr ""
 
-#: includes/include.recipients_edit.php:139
+#: includes/include.recipients_edit.php:143
 msgid "Edit recipient"
 msgstr ""
 
-#: includes/include.recipients_edit.php:159
-#: includes/include.recipients_import.php:69
+#: includes/include.recipients_edit.php:163
+#: includes/include.recipients_import.php:76
 msgid "Message type"
 msgstr ""
 
-#: includes/include.recipients_edit.php:177
+#: includes/include.recipients_edit.php:181
 msgid "WARNING"
 msgstr ""
 
-#: includes/include.recipients_edit.php:177
+#: includes/include.recipients_edit.php:181
 #, php-format
 msgid ""
 "The plugin %s delivered an array for the displayed titles, but did not "
 "return an array for the contents."
 msgstr ""
 
-#: includes/include.recipients_edit.php:195
+#: includes/include.recipients_edit.php:199
 msgid "Recipient is not member of any group"
 msgstr ""
 
-#: includes/include.recipients_edit.php:198
+#: includes/include.recipients_edit.php:202
 msgid "Groupname"
 msgstr ""
 
-#: includes/include.recipients_edit.php:212
+#: includes/include.recipients_edit.php:216
 msgid "Associated groups"
 msgstr ""
 
-#: includes/include.recipients_import.php:45
-msgid "E-mail"
+#: includes/include.recipients_import.php:52
+msgid "Email"
 msgstr ""
 
-#: includes/include.recipients_import.php:63
+#: includes/include.recipients_import.php:70
 msgid "Confirmed date"
 msgstr ""
 
-#: includes/include.recipients_import.php:118
+#: includes/include.recipients_import.php:126
 msgid "Group"
 msgstr ""
 
-#: includes/include.recipients_import.php:133
+#: includes/include.recipients_import.php:141
 msgid "The file is empty!"
 msgstr ""
 
-#: includes/include.recipients_import.php:136
+#: includes/include.recipients_import.php:144
 msgid "Wrong mime-type of file!"
 msgstr ""
 
-#: includes/include.recipients_import.php:139
+#: includes/include.recipients_import.php:147
 msgid "Could not open the file!"
-msgstr ""
-
-#: includes/include.recipients_import.php:174
-#, php-format
-msgid "Given column header '%s' unknown, column ignored"
 msgstr ""
 
 #: includes/include.recipients_import.php:182
 #, php-format
+msgid "Given column header '%s' unknown, column ignored"
+msgstr ""
+
+#: includes/include.recipients_import.php:190
+#, php-format
 msgid "Mandatory column '%s' wasn't found, import stopped"
 msgstr ""
 
-#: includes/include.recipients_import.php:202
+#: includes/include.recipients_import.php:210
 #, php-format
 msgid "Item with empty e-mail address found, item ignored (name: %s, row: %s)"
 msgstr ""
 
-#: includes/include.recipients_import.php:206
+#: includes/include.recipients_import.php:214
 #, php-format
 msgid "E-mail address '%s' is invalid, item ignored (row: %s)"
 msgstr ""
 
-#: includes/include.recipients_import.php:210
+#: includes/include.recipients_import.php:218
 #, php-format
 msgid ""
 "Recipient with e-mail address '%s' already exists, item skipped (row: %s)"
 msgstr ""
 
-#: includes/include.recipients_import.php:236
-#: includes/include.recipients_import.php:291
+#: includes/include.recipients_import.php:244
+#: includes/include.recipients_import.php:299
 msgid "yes"
 msgstr ""
 
-#: includes/include.recipients_import.php:323
+#: includes/include.recipients_import.php:331
 #, php-format
 msgid ""
 "%d recipients added, %d recipients skipped (e-mail already exists) and %d "
@@ -1031,73 +1031,73 @@ msgid ""
 "(if any)."
 msgstr ""
 
-#: includes/include.recipients_import.php:344
+#: includes/include.recipients_import.php:352
 msgid "Tab"
 msgstr ""
 
-#: includes/include.recipients_import.php:348
+#: includes/include.recipients_import.php:356
 msgid "Semicolon"
 msgstr ""
 
-#: includes/include.recipients_import.php:352
+#: includes/include.recipients_import.php:361
 msgid "Delimiter"
 msgstr ""
 
-#: includes/include.recipients_import.php:358
+#: includes/include.recipients_import.php:367
 msgid "Import information"
 msgstr ""
 
-#: includes/include.recipients_import.php:358
+#: includes/include.recipients_import.php:367
 msgid "Specify file:"
 msgstr ""
 
-#: includes/include.recipients_import.php:358
+#: includes/include.recipients_import.php:367
 msgid "The file is of type csv and is saved with UTF-8 encoding."
 msgstr ""
 
-#: includes/include.recipients_import.php:358
+#: includes/include.recipients_import.php:367
 msgid "Specify colum types:"
 msgstr ""
 
-#: includes/include.recipients_import.php:358
+#: includes/include.recipients_import.php:367
 msgid ""
 "<br>The first line must contain the column names; this specifies the column "
 "order.<br>&lt;column name&gt;[delimiter]&lt;column name&gt;..."
 msgstr ""
 
-#: includes/include.recipients_import.php:358
+#: includes/include.recipients_import.php:367
 msgid "Data structure:"
 msgstr ""
 
-#: includes/include.recipients_import.php:358
+#: includes/include.recipients_import.php:367
 msgid ""
 "The recipients have to be entered using the following format:<br>&lt;data&gt;"
 "[Delimiter]&lt;data&gt;... - each recipient in a new line."
 msgstr ""
 
-#: includes/include.recipients_import.php:358
+#: includes/include.recipients_import.php:367
 msgid "Example:"
 msgstr ""
 
-#: includes/include.recipients_import.php:358
-msgid "<br>name;mail;confirmed<br>Smith;jon.smith@example.org;1"
+#: includes/include.recipients_import.php:367
+msgid "<br>name;email;confirmed<br>Smith;jon.smith@example.org;1"
 msgstr ""
 
-#: includes/include.recipients_import.php:358
+#: includes/include.recipients_import.php:367
 msgid "The following column names will be recognized:"
 msgstr ""
 
-#: includes/include.recipients_menu.php:134
+#: includes/include.recipients_menu.php:153
 #, php-format
 msgid ""
 "%d recipients, with no or incompatible key has been updated. Deactivate "
 "update function."
 msgstr ""
 
-#: includes/include.recipients_menu.php:188
+#: includes/include.recipients_menu.php:207
 msgid "Delete recipient"
 msgstr ""
 
-#: includes/include.recipients_menu.php:189
+#: includes/include.recipients_menu.php:208
 msgid "Do you really want to delete the following recipient:<br>"
 msgstr ""

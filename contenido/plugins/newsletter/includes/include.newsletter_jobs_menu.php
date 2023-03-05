@@ -251,7 +251,7 @@ while ($oJob = $oJobs->next()) {
 
             // Delete disabled
             $oImage = new cHTMLImage($cfg['path']['images'] . 'delete_inact.gif', 'con_img_button_off');
-            $oImage->setAlt(i18n("Can't delete the job while it's running", "newsletter"));
+            $oImage->setAlt(i18n("Can't delete the job while it's running!", "newsletter"));
             $oMenu->setActions($iMenu, 'delete', $oImage->render());
             break;
         case 9:
@@ -264,7 +264,7 @@ while ($oJob = $oJobs->next()) {
                 // You have the right, but you can't delete the job after
                 // sending
                 $oImage = new cHTMLImage($cfg['path']['images'] . 'delete_inact.gif', 'con_img_button_off');
-                $oImage->setAlt(i18n("Can't delete the job after it's been sent", "newsletter"));
+                $oImage->setAlt(i18n("Can't delete the job after it's been sent!", "newsletter"));
                 $oMenu->setActions($iMenu, 'delete', $oImage->render());
             }
             break;
