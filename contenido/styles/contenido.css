@@ -2435,6 +2435,7 @@ input[type=image].vAlignMiddle {
     margin-bottom: 0.1em;
 }
 
+/** @deprecated [2023-03-06] Since CONTENIDO 4.10.2, Don't use `vAlignTop`, use `align_top` instead */
 .vAlignTop {
     vertical-align: top;
     margin-top: 0.25em;

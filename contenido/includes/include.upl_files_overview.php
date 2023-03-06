@@ -650,10 +650,10 @@ $startwrap = '<table class="hoverbox generic">
 $itemwrap = '<tr data-list-item="{LIST_ITEM_POS}">
                    <td class="text_center">%s</td>
                    <td class="text_center">%s</td>
-                   <td class="vAlignTop no_wrap">%s</td>
-                   <td class="vAlignTop no_wrap">%s</td>
-                   <td class="vAlignTop no_wrap">%s</td>
-                   <td class="vAlignTop no_wrap">%s</td>
+                   <td class="align_top no_wrap">%s</td>
+                   <td class="align_top no_wrap">%s</td>
+                   <td class="align_top no_wrap">%s</td>
+                   <td class="align_top no_wrap">%s</td>
                </tr>';
 $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 
