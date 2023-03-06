@@ -259,7 +259,7 @@ class cGuiMenu {
 
                 if ($value != NULL) {
                     if (isset($this->image[$key])) {
-                        $image = new cHTMLImage($this->image[$key], 'vAlignMiddle');
+                        $image = new cHTMLImage($this->image[$key], 'align_middle');
                         $image->setAlt($this->imageAlt[$key]);
                         if ($this->imagewidth[$key] != 0) {
                             $image->setWidth($this->imagewidth[$key]);
@@ -274,7 +274,7 @@ class cGuiMenu {
                     $link = $this->title[$key] ?? '';
 
                     if (isset($this->image[$key])) {
-                        $image = new cHTMLImage($this->image[$key], 'vAlignMiddle');
+                        $image = new cHTMLImage($this->image[$key], 'align_middle');
                         $image->setAlt($this->imageAlt[$key]);
                         if ($this->imagewidth[$key] != 0) {
                             $image->setWidth($this->imagewidth[$key]);

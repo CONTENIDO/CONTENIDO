@@ -2595,3 +2595,18 @@ button[aria-disabled="true"] {
     pointer-events: none;
     text-decoration: none;
 }
+
+/* User and group rights selection box */
+.con_rights_selection_box {
+    border: 1px solid #b3b3b3;
+    display: inline-block;
+    padding: 4px 5px;
+    margin-bottom: 10px;
+    vertical-align: middle;
+}
+.con_rights_selection_box > span {
+    margin-right: 5px;
+}
+.con_rights_selection_box > span:last-of-type {
+    margin-right: 0;
+}
