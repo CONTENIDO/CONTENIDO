@@ -111,14 +111,14 @@ class pApiContentAllocationTreeView extends pApiTree {
                         $expandCollapseImg = 'images/open_all.gif';
                     }
 
-                    $expandCollapse = '<a href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area .  '&oldstate=' . 'huhu' . '&step=collapse&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" class="vAlignMiddle" alt="" width="7" height="7"></a>';
+                    $expandCollapse = '<a class="con_img_button text_center" href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area .  '&oldstate=' . 'huhu' . '&step=collapse&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img class="mgt3" src="' . $expandCollapseImg . '" alt=""></a>';
                 } else {
                     $expandCollapseImg = 'images/spacer.gif';
-                    $expandCollapse = '<img src="' . $expandCollapseImg . '" alt="" class="vAlignMiddle" width="11" height="11">';
+                    $expandCollapse = '<img class="con_img_button_off" src="' . $expandCollapseImg . '" alt="">';
                 }
 
                 if ($item_tmp['status'] == 'collapsed') {
-                    $expandCollapse = '<a href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=expanded&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" alt="" class="vAlignMiddle" width="7" height="7"></a>';
+                    $expandCollapse = '<a class="con_img_button text_center" href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=expanded&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img class="mgt3" src="' . $expandCollapseImg . '" alt=""></a>';
                 }
                 $item['ITEMNAME'] = $expandCollapse . ' ' . $item_tmp['name'];
             }
