@@ -1,6 +1,6 @@
         <table class="plugin_overview" data-plugin-id="{IDPLUGIN}" data-plugin-active-status="{DATA_ACTIVESTATUS}">
             <tr id="plugin_installed_row_{IDPLUGIN}" data-plugin-execorder="{EXECUTIONORDER}">
-                <td style="width: 3%;"><a class="toggle" href="javascript:void(0)" data-action="toggle_table_element"><img src="images/open_all.gif" id="plugin_{IDPLUGIN}_img"></a></td>
+                <td style="width: 3%;"><a class="toggle" href="javascript:void(0)" data-action="toggle_table_element"><img src="images/open_all.gif" id="plugin_info_{IDPLUGIN}_img"></a></td>
                 <td style="width: 90%;"><strong>{NAME}</strong> <em>{VERSION}</em></td>
                 <td class="sort" style="width: 7%;"><a class="sort_plugin_up" href="javascript:void(0)" data-action="sort_plugin_up"><img src="images/sort_up.gif" title="{LANG_SORT_UP}"></a><a href="javascript:void(0)" class="sort_plugin_down" data-action="sort_plugin_down"><img src="images/sort_down.gif" title="{LANG_SORT_DOWN}"></a></td>
             </tr>
@@ -36,11 +36,11 @@
                             </tr>
                             <tr><td colspan="2">&#160;</td></tr>
                             <tr>
-                                <td colspan="2">
+                                <td colspan="2" class="align_middle">
                                     {ACTIVATE_INACTIVATE_LINK}
                                     &nbsp;&nbsp;&nbsp;
-                                    <a href="javascript:void(0)" data-action="toggle_table_element" data-element-id="plugin_update_{IDPLUGIN}">
-                                        <img src="images/but_refresh.gif" alt="" class="vAlignMiddle"> {LANG_UPDATE}
+                                    <a class="con_func_button" href="javascript:void(0)" data-action="toggle_table_element" data-element-id="plugin_update_{IDPLUGIN}">
+                                        <img src="images/but_refresh.gif" alt=""> {LANG_UPDATE}
                                     </a>&nbsp;&nbsp;
                                     {UNINSTALL_LINK} (<input id="uninstall_sql_checkbox_{IDPLUGIN}" class="uninstall_sql" type="checkbox" checked><label for="uninstall_sql_checkbox_{IDPLUGIN}">{LANG_REMOVE_SQL}</label>)</td>
                             </tr>
