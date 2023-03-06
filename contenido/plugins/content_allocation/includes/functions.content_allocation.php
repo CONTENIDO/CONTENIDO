@@ -54,10 +54,10 @@ function piContentAllocationBuildContentAllocationForm(
         <input type="hidden" name="$fieldName" value="$fieldValue">
         $newRow
         <tr>
-            <td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value="$name"></td>
-            <td>&nbsp;
-                <a href="main.php?action=$action&frame=$frame&area=$area&contenido=$sessId"><img src="images/but_cancel.gif" alt=""></a>
-                <input type="image" src="images/but_ok.gif" alt="">
+            <td class="no_border pdt0 pdb0 pdl10"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value="$name"></td>
+            <td class="no_border pdt0 pdb0">
+                <a class="con_img_button" href="main.php?action=$action&frame=$frame&area=$area&contenido=$sessId"><img src="images/but_cancel.gif" alt=""></a>
+                <input class="con_img_button" type="image" src="images/but_ok.gif" alt="">
             </td>
         </tr>
         </form>

@@ -1802,7 +1802,7 @@ table.inuse_tpl {
     padding-left: 5px;
 }
 .pdl10 {
-    padding-left: 10px;
+    padding-left: 10px !important;
 }
 .pdl15 {
     padding-left: 15px !important;
