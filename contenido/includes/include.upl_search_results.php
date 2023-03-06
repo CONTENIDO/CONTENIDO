@@ -361,7 +361,6 @@ foreach ($files as $idupl => $rating) {
         $upl->set('size', $filesize);
         $upl->store();
     }
-    $description = $upl->get('description');
 
     $fileType = cString::toLowerCase(cFileHandler::getExtension($filename));
     $list2->setData($rownum, $dirname . $filename, $filename, $dirname, $filesize, $fileType, $rating / 10, $dirname . $filename);
