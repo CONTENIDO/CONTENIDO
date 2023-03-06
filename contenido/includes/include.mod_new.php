@@ -62,25 +62,25 @@ $strSyncLink = '';
 // New module link
 if ($perm->have_perm_area_action("mod_edit", "mod_new")) {
     $str = sprintf(
-        '<a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
+        '<a class="con_func_button addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
         'right_top', $sess->url("main.php?area=mod_edit&frame=3"),
         'right_bottom', $sess->url("main.php?area=mod_edit&action=mod_new&frame=4"),
         i18n("New module")
     );
     $strAddLink = '<div class="top_left_action">' . $str . '</div>';
 } else {
-    $strAddLink = '<div class="top_left_action"><a class="addfunction_disabled" href="#">' . i18n("No permission to create modules") . '</a> </div>';
+    $strAddLink = '<div class="top_left_action"><a class="con_func_button addfunction_disabled" href="#">' . i18n("No permission to create modules") . '</a> </div>';
 }
 if ($perm->have_perm_area_action("mod_edit", "mod_sync")) {
     $str = sprintf(
-        '<a class="syncronizefunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
+        '<a class="con_func_button syncronizefunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
         'right_top', $sess->url("main.php?area=mod_edit&frame=3"),
         'right_bottom', $sess->url("main.php?area=mod_edit&action=mod_sync&frame=4"),
         i18n("Synchronize modules")
     );
     $strSyncLink = '<div class="top_left_action top_left_action_next">' . $str . '</div>';
 } else {
-    $strSyncLink = '<div class="top_left_action top_left_action_next"><a class="syncronizefunction_disabled" href="#">' . i18n("No permission to synchronize modules") . '</a> </div>';
+    $strSyncLink = '<div class="top_left_action top_left_action_next"><a class="con_func_button syncronizefunction_disabled" href="#">' . i18n("No permission to synchronize modules") . '</a> </div>';
 }
 
 // List Options

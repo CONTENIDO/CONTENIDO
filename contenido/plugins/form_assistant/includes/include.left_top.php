@@ -24,7 +24,7 @@ if (cRegistry::getPerm()->have_perm_area_action('form', PifaRightBottomFormPage:
     $link->setContent(Pifa::i18n('CREATE_FORM'));
     // class addfunction lets display add icon beneath link
     $link->updateAttributes([
-        'class' => 'addfunction'
+        'class' => 'con_func_button addfunction'
     ]);
     $actions[] = $link->render();
 } else {
