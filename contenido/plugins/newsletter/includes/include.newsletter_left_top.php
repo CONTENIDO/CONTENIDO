@@ -106,9 +106,9 @@ if ($perm->have_perm_area_action("news", "news_create")) {
     $sContent = '<div class="news_section news_section_create">' . "\n";
 
     $oLink = new cHTMLLink();
-    $oLink->setClass('con_func_button')
+    $oLink->setClass('con_func_button addfunction')
         ->setMultiLink("news", "", "news", "news_create")
-        ->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif" alt=""> ' . i18n("Create newsletter", 'newsletter'));
+        ->setContent(i18n("Create newsletter", 'newsletter'));
 
     $sContent .= $oLink->render() . '</div>' . "\n";
     $oActionsRow->setContentData($sContent);
@@ -927,10 +927,10 @@ $sContent = '';
 // Create a link to add a group
 if ($perm->have_perm_area_action("recipientgroups", "recipientgroup_create")) {
     $oLink = new cHTMLLink();
-    $oLink->setClass('con_func_button');
+    $oLink->setClass('con_func_button addfunction');
     $oLink->setMultiLink("recipientgroups", "", "recipientgroups", "recipientgroup_create");
-    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif" alt=""> ' . i18n("Create group", 'newsletter') . '</a>');
-    $sContent .= $oLink->render() . '<br>' . "\n";
+    $oLink->setContent(i18n("Create group", 'newsletter'));
+    $sContent .= $oLink->render() . "\n";
 }
 
 $sContent = '

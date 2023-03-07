@@ -9,6 +9,7 @@
             top.location = "index.php";
         }
     </script>
+    <link rel="stylesheet" type="text/css" href="{_ASSET(styles/normalize.css)_}">
     <link rel="stylesheet" type="text/css" href="{_ASSET(styles/contenido.css)_}">
     <link rel="shortcut icon" href="{BASEPATH}favicon.ico">
     <style type="text/css">
@@ -39,26 +40,35 @@
         padding: 4em 0;
         background-color: white;
     }
-    #noscript .noscript-content {
-        clear: both;
-        width: 520px;
+    #noscript .noscript_content {
+        width: 522px;
         margin: 0 auto;
         border: 1px solid #0060b1;
         border-radius: 4px;
         background-color: #F1F1F1;
     }
-    #noscript .noscript-content > div {
+    #noscript .noscript_content > div {
         text-align: left;
-        padding: 26px 0 5px 0;
+        padding: 15px 0 10px 0;
         float: left;
         width: 270px;
     }
-    #noscript .noscript-content > div.column-1 {
+    #noscript .noscript_content > div.col_1 {
         padding: 0;
         width: 250px;
     }
-    #noscript .noscript-content > div h2 {
+    #noscript .noscript_content > div.col_1 img {
+        border-radius: 4px;
+    }
+    #noscript .noscript_content > div h2 {
         font-size: 20px;
+    }
+    #head_bg {
+        background-color: #F1F1F1;
+        height: 80px;
+    }
+    #head_nav {
+        clear: none;
     }
     </style>
 {_JS_HEAD_CONTENIDO_}
@@ -73,21 +83,20 @@
             </div>
             <form id="login" name="login" method="post" action="{ACTION}">
                 <div id="head_nav1" class="left_dist head_nav_login">
-                    <select id="lang" name="belang" tabindex="3" class="text_medium">
+                    <select id="lang" name="belang" tabindex="3">
                         {OPTIONS}
                     </select>
                     <label id="lbllang" for="lang">{LANGUAGE}</label>
-                    <div class="text_medium_bold login_title">{BACKEND}</div>
+                    <div class="bold login_title">{BACKEND}</div>
                     <label id="lblusername" for="username">{LOGIN}:</label>
-                    <input id="username" tabindex="1" type="text" class="text_medium" name="username" size="25" maxlength="32" value="{USERNAME}">
+                    <input id="username" tabindex="1" type="text" name="username" size="25" maxlength="32" value="{USERNAME}">
                 </div>
                 <div id="head_nav2" class="head_nav_login left_dist">
                     <input class="con_img_button" id="okbutton" tabindex="4" type="image" title="Login" alt="Login" src="images/but_ok.gif">
                     <div class="text_error text_login_error">{ERROR}</div>
-                    <div style="clear:both;display:none;"></div>
-                    <div class="text_medium_bold login_title">&nbsp;</div>
+                    <div class="bold login_title">&nbsp;</div>
                     <label id="lblpasswd" for="passwd">{PASSWORD}:</label>
-                    <input id="passwd" tabindex="2" type="password" class="text_medium" name="password" size="25">
+                    <input id="passwd" tabindex="2" type="password" name="password" size="25">
                     <input type="hidden" name="vaction" value="login">
                     <input type="hidden" name="formtimestamp" value="{TIME}">
                 </div>
@@ -95,14 +104,14 @@
         </div>
         <div class="navcontainer">{FORM}</div>
     </div>
-    <div style="background-color: #F1F1F1;height:80px;"></div>
-    <div class="navcontainer" style="clear:none;border-top:1px solid #666;"></div>
+    <div id="head_bg"></div>
+    <div id="head_nav" class="navcontainer"></div>
 </div>
 <div id="alertbox">{NOTI}</div>
 <div id="noscript">
     <noscript>
-        <div class="noscript-content">
-            <div class="column-1">
+        <div class="noscript_content clearfix">
+            <div class="col_1">
                 <a href="https://www.contenido.org"><img title="CONTENIDO Website." alt="CONTENIDO Website." src="images/conlogo.gif"></a>
             </div>
             <div>
@@ -112,7 +121,6 @@
                     Bitte verwenden Sie einen Browser mit aktiviertem JavaScript.
                 </p>
             </div>
-            <br style="clear:both;" />
         </div>
     </noscript>
 </div>

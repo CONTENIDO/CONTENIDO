@@ -173,9 +173,9 @@ if ($area != 'groups_content') {
     }
 
     $dataSync['INPUT_SELECT_RIGHTS'] = $oHtmlSelect->render();
-    $dataSync['DISPLAY_RIGHTS'] = 'block';
+    $dataSync['DISPLAY_RIGHTS'] = 'inline-block';
     // $oTpl->set('s', 'INPUT_SELECT_RIGHTS', $oHtmlSelect->render());
-    // $oTpl->set('s', 'DISPLAY_RIGHTS', 'block');
+    // $oTpl->set('s', 'DISPLAY_RIGHTS', 'inline-block');
 }
 
 $oClientLang = new cApiClientLanguage((int) $rights_clientslang);

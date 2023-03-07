@@ -111,36 +111,36 @@ class pApiContentAllocationTreeView extends pApiTree {
                         $expandCollapseImg = 'images/open_all.gif';
                     }
 
-                    $expandCollapse = '<a href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area .  '&oldstate=' . 'huhu' . '&step=collapse&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" class="vAlignMiddle" alt="" width="7" height="7"></a>';
+                    $expandCollapse = '<a class="con_img_button text_center" href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area .  '&oldstate=' . 'huhu' . '&step=collapse&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img class="mgt3" src="' . $expandCollapseImg . '" alt=""></a>';
                 } else {
                     $expandCollapseImg = 'images/spacer.gif';
-                    $expandCollapse = '<img src="' . $expandCollapseImg . '" alt="" class="vAlignMiddle" width="11" height="11">';
+                    $expandCollapse = '<img class="con_img_button_off" src="' . $expandCollapseImg . '" alt="">';
                 }
 
                 if ($item_tmp['status'] == 'collapsed') {
-                    $expandCollapse = '<a href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=expanded&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" alt="" class="vAlignMiddle" width="7" height="7"></a>';
+                    $expandCollapse = '<a class="con_img_button text_center" href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=expanded&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img class="mgt3" src="' . $expandCollapseImg . '" alt=""></a>';
                 }
                 $item['ITEMNAME'] = $expandCollapse . ' ' . $item_tmp['name'];
             }
             $item['ITEMINDENT'] = $item_tmp['level'] * 15 + 3;
-            $item['ACTION_CREATE'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=add&parentid=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_new.gif" alt="" title="' . $txtNewCategory . '" alt="' . $txtNewCategory . '"></a>';
+            $item['ACTION_CREATE'] = '<a class="con_img_button" href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=add&parentid=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_new.gif" alt="" title="' . $txtNewCategory . '" alt="' . $txtNewCategory . '"></a>';
 
-            $item['ACTION_RENAME'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=rename&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/but_todo.gif" width="16" height="16" alt="' . $txtRenameCategory . '" title="' . $txtRenameCategory . '"></a>';
-            $item['ACTION_MOVE_UP'] = (count($result) >= 1) ? '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=moveup&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_moveup.gif" alt="' . $txtMoveCategoryUp . '" title="' . $txtMoveCategoryUp . '"></a>' : '<img src="images/spacer.gif" width="16" height="16" alt=""></a>';
+            $item['ACTION_RENAME'] = '<a class="con_img_button" href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=rename&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/but_todo.gif" alt="' . $txtRenameCategory . '" title="' . $txtRenameCategory . '"></a>';
+            $item['ACTION_MOVE_UP'] = (count($result) >= 1) ? '<a class="con_img_button" href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=moveup&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_moveup.gif" alt="' . $txtMoveCategoryUp . '" title="' . $txtMoveCategoryUp . '"></a>' : '<img class="con_img_button" src="images/spacer.gif" alt=""></a>';
             // Move down action is not used at the moment!
-            // $item['ACTION_MOVE_DOWN'] = (count($result) >= 1) ? '<img src="images/folder_movedown.gif" alt="' . $txtMoveCategoryDown . '" title="' . $txtMoveCategoryDown . '">' : '<img src="images/spacer.gif" width="16" height="16" alt="">';
+            // $item['ACTION_MOVE_DOWN'] = (count($result) >= 1) ? '<img class="con_img_button" src="images/folder_movedown.gif" alt="' . $txtMoveCategoryDown . '" title="' . $txtMoveCategoryDown . '">' : '<img class="con_img_button" src="images/spacer.gif" alt="">';
             $item['ACTION_MOVE_DOWN'] = '';
 
             if ($item_tmp['online'] == 1) { // set offline
-                $item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=offline&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/online.gif" alt="' . $txtSetCategoryOffline . '" title="' . $txtSetCategoryOffline . '"></a>';
+                $item['ACTION_ONOFFLINE'] = '<a class="con_img_button" href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=offline&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/online.gif" alt="' . $txtSetCategoryOffline . '" title="' . $txtSetCategoryOffline . '"></a>';
             } else {
-                $item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=online&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/offline.gif" alt="' . $txtSetCategoryOnline . '" title="' . $txtSetCategoryOnline . '"></a>';
+                $item['ACTION_ONOFFLINE'] = '<a class="con_img_button" href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=online&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/offline.gif" alt="' . $txtSetCategoryOnline . '" title="' . $txtSetCategoryOnline . '"></a>';
             }
 
             if (count($item_tmp['children'])) {
-                $item['ACTION_DELETE'] = '<img src="images/delete_inact.gif" alt="' . $txtUnableToDelete . '" title="' . $txtUnableToDelete . '">';
+                $item['ACTION_DELETE'] = '<img class="con_img_button" src="images/delete_inact.gif" alt="' . $txtUnableToDelete . '" title="' . $txtUnableToDelete . '">';
             } else {
-                $item['ACTION_DELETE'] = '<a href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $txtConfirmDeletion . '&quot;, function() { piContentAllocationDeleteCategory(' . $item_tmp['idpica_alloc'] . '); });return false;"><img src="images/delete.gif" alt="' . $txtDeleteCategory . '" title="' . $txtDeleteCategory . '"></a>';
+                $item['ACTION_DELETE'] = '<a class="con_img_button" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $txtConfirmDeletion . '&quot;, function() { piContentAllocationDeleteCategory(' . $item_tmp['idpica_alloc'] . '); });return false;"><img src="images/delete.gif" alt="' . $txtDeleteCategory . '" title="' . $txtDeleteCategory . '"></a>';
             }
 
             $result[] = $item;
@@ -159,14 +159,14 @@ class pApiContentAllocationTreeView extends pApiTree {
                     'treeItemPost[parentid]', $requestParentId, ''
                 );
                 $item['ITEMINDENT'] = ($item_tmp['level'] + 1) * 15;
-                $item['ACTION_CREATE'] = '<img src="images/spacer.gif" alt="" width="15" height="13">';
-                $item['ACTION_RENAME'] = '<img src="images/spacer.gif" alt="" width="23" height="14">';
-                $item['ACTION_MOVE_UP'] = '<img src="images/spacer.gif" alt="" width="15" height="13">';
+                $item['ACTION_CREATE'] = '<img class="con_img_button" src="images/spacer.gif" alt="">';
+                $item['ACTION_RENAME'] = '<img class="con_img_button" src="images/spacer.gif" alt="">';
+                $item['ACTION_MOVE_UP'] = '<img class="con_img_button" src="images/spacer.gif" alt=">';
                 // Move down action is not used at the moment!
                 // $item['ACTION_MOVE_DOWN'] = '<img src="images/spacer.gif" alt="" width="15" height="13">';
                 $item['ACTION_MOVE_DOWN'] = '';
-                $item['ACTION_DELETE'] = '<img src="images/spacer.gif" alt="" width="14" height="13">';
-                $item['ACTION_ONOFFLINE'] = '<img src="images/spacer.gif" alt="" width="11" height="12">';
+                $item['ACTION_DELETE'] = '<img class="con_img_button" src="images/spacer.gif" alt="">';
+                $item['ACTION_ONOFFLINE'] = '<img class="con_img_button" src="images/spacer.gif" alt="">';
 
                 $result[] = $item;
             }

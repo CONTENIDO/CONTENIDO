@@ -1,95 +1,134 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Solr\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-06-21 14:32+0100\n"
-"Last-Translator: Marcus Gnaß <marcus.gnass@4fb.de>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-05 17:40+0100\n"
+"PO-Revision-Date: 2023-03-05 17:41+0100\n"
+"Last-Translator: Murat Purç <murat@purc.de>\n"
 "Language-Team: Marcus Gnaß <marcus.gnass@4fb.de>\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
-"X-Poedit-Basepath: \n"
 "X-Poedit-KeywordsList: i18n\n"
-"X-Poedit-SearchPath-0: \n"
+"X-Generator: Poedit 3.2.2\n"
 
-; class.solr_indexer.php
-
-msgid "WARNING_INVALID_CLIENT_OPTIONS"
-msgstr "Artikel konnte nicht indizier werden, da Solr nicht korrekt konfiguriert ist."
-
-; class.solr.gui.php
-
+#: classes/class.solr.gui.php:60
 msgid "CLIENT_OPTIONS"
 msgstr "Client Optionen"
 
+#: classes/class.solr.gui.php:61
 msgid "OPTION"
 msgstr "Option"
 
+#: classes/class.solr.gui.php:62
 msgid "VALUE"
 msgstr "Wert"
 
+#: classes/class.solr.gui.php:63
 msgid "DESCRIPTION"
 msgstr "Beschreibung"
 
+#: classes/class.solr.gui.php:64
 msgid "DESCR_HOSTNAME"
 msgstr "Der Name des Solr-Servers. <b>Ohne Protokoll!</b>"
 
+#: classes/class.solr.gui.php:65
 msgid "DESCR_PORT"
 msgstr "Die Port-Nummer."
 
+#: classes/class.solr.gui.php:66
 msgid "DESCR_PATH"
 msgstr "Der Pfad zum Solr-Core."
 
+#: classes/class.solr.gui.php:67
 msgid "DESCR_LOGIN"
-msgstr "Der Benutzername für die HTTP-Autentifizierung, falls vorhanden."
+msgstr "Der Benutzername für die HTTP-Authentifizierung, falls vorhanden."
 
+#: classes/class.solr.gui.php:68
 msgid "DESCR_PASSWORD"
-msgstr "Das Paßwort für die HTTP-Autentifizierung."
+msgstr "Das Passwort für die HTTP-Authentifizierung."
 
+#: classes/class.solr.gui.php:69
 msgid "DESCR_SECURE"
-msgstr "Boolscher Wert der angibt ob im sicheren Modus verbunden werden soll oder nicht."
+msgstr ""
+"Boolscher Wert der angibt ob im sicheren Modus verbunden werden soll oder "
+"nicht."
 
+#: classes/class.solr.gui.php:70
 msgid "DESCR_TIMEOUT"
-msgstr "Dies ist die maximale Zeit in Sekunden die für die HTTP Datenübertragungsoperation erlaubt ist. Standardwert ist 30 Sekunden."
+msgstr ""
+"Dies ist die maximale Zeit in Sekunden die für die HTTP "
+"Datenübertragungsoperation erlaubt ist. Standardwert ist 30 Sekunden."
 
+#: classes/class.solr.gui.php:71
 msgid "DESCR_WT"
 msgstr "Der Name des 'response writers', z.B. xml, phpnative."
 
+#: classes/class.solr.gui.php:72
 msgid "DESCR_PROXY_HOST"
 msgstr "Der Name des Proxy-Servers, falls vorhanden."
 
+#: classes/class.solr.gui.php:73
 msgid "DESCR_PROXY_PORT"
 msgstr "Der Proxy-Port."
 
+#: classes/class.solr.gui.php:74
 msgid "DESCR_PROXY_LOGIN"
 msgstr "Der Proxy-Benutzername."
 
+#: classes/class.solr.gui.php:75
 msgid "DESCR_PROXY_PASSWORD"
-msgstr "Das Proxy-Paßwort."
+msgstr "Das Proxy-Passwort."
 
+#: classes/class.solr.gui.php:76
 msgid "DESCR_SSL_CERT"
-msgstr "Dateiname zu einer PEM-formatierten Datei die den privaten Schlüssel und das private Zertifikat (in dieser Reihenfolge aneinandergehängt) enthält. Bitte beachten Sie, daß wenn die ssl_cert-Datei ausschließlich das private Zertifikat enthält, eine gesonderte ssl_key-Datei angegeben werden muß."
+msgstr ""
+"Dateiname zu einer PEM-formatierten Datei die den privaten Schlüssel und das "
+"private Zertifikat (in dieser Reihenfolge aneinandergehängt) enthält. Bitte "
+"beachten Sie, dass wenn die ssl_cert-Datei ausschließlich das private "
+"Zertifikat enthält, eine gesonderte ssl_key-Datei angegeben werden muss."
 
+#: classes/class.solr.gui.php:77
 msgid "DESCR_SSL_KEY"
-msgstr "Dateiname zu einer PEM-formatierten Datei die ausschließlich den privaten Schlüssel enthält."
+msgstr ""
+"Dateiname zu einer PEM-formatierten Datei die ausschließlich den privaten "
+"Schlüssel enthält."
 
+#: classes/class.solr.gui.php:78
 msgid "DESCR_SSL_KEYPASSWORD"
-msgstr "Paßword für den privaten Schlüssel. Die ssl_keypassword-Option ist eine Pflichtangabe wenn die ssl_cert- oder ssl_key-Option gesetzt ist."
+msgstr ""
+"Password für den privaten Schlüssel. Die ssl_keypassword-Option ist eine "
+"Pflichtangabe wenn die ssl_cert- oder ssl_key-Option gesetzt ist."
 
+#: classes/class.solr.gui.php:79
 msgid "DESCR_SSL_CAINFO"
-msgstr "Name der Datei, das ein oder mehrere CA Zertifikate enthält um den Peer zu verifizieren."
+msgstr ""
+"Name der Datei, das ein oder mehrere CA Zertifikate enthält um den Peer zu "
+"verifizieren."
 
+#: classes/class.solr.gui.php:80
 msgid "DESCR_SSL_CAPATH"
-msgstr "Name des Verzeichnisses, das ein oder mehrere CA Zertifikate enthält um den Peer zu verifizieren."
+msgstr ""
+"Name des Verzeichnisses, das ein oder mehrere CA Zertifikate enthält um den "
+"Peer zu verifizieren."
 
+#: classes/class.solr.gui.php:81
 msgid "DESCR_RELOAD"
-msgstr "Index nachladen entsprechend seiner Konfiguration in der Datei schema.xml."
+msgstr ""
+"Index nachladen entsprechend seiner Konfiguration in der Datei schema.xml."
 
+#: classes/class.solr.gui.php:82
 msgid "DESCR_REINDEX"
-msgstr "Artikel des aktuellen Mandanten reindizieren. Artikel die offline oder nicht suchbar sind werden dabei übersprungen."
+msgstr ""
+"Artikel des aktuellen Mandanten reindizieren. Artikel die offline oder nicht "
+"suchbar sind werden dabei übersprungen."
 
+#: classes/class.solr.gui.php:83
 msgid "DESCR_DELETE"
 msgstr "Artikel des aktuellen Mandanten löschen."
 
+#: classes/class.solr.php:219
+msgid "WARNING_INVALID_CLIENT_OPTIONS"
+msgstr ""
+"Artikel konnte nicht indizier werden, da Solr nicht korrekt konfiguriert ist."

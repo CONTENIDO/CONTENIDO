@@ -53,7 +53,7 @@ $deleteLink = new cHTMLLink();
 $deleteLink->setClass('con_img_button')
     ->setLink('javascript:void(0)')
     ->setAlt(i18n("Delete client"))
-    ->setAttribute('data-action', 'client_delete')
+    ->setAttribute('data-action', 'delete_client')
     ->setContent(cHTMLImage::img($cfg['path']['images'] . 'delete.gif', i18n("Delete client")));
 
 while ($oClient = $clientColl->next()) {

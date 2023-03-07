@@ -170,15 +170,15 @@ while (($plugin = $oItem->next()) !== false) {
     $tempActiveStatusLink = $sess->url('main.php?area=pim&frame=4&pim_view=activestatus&pluginId=' . $idplugin);
     if ($activeStatus == 1) {
         $pagePlugins->set('s', 'DATA_ACTIVESTATUS', '1');
-        $pagePlugins->set('s', 'ACTIVATE_INACTIVATE_LINK', '<a href="' . $tempActiveStatusLink . '"><img src="images/online.gif" alt="" class="vAlignMiddle" /> ' . i18n('Disable', 'pim') . '</a>');
+        $pagePlugins->set('s', 'ACTIVATE_INACTIVATE_LINK', '<a class="con_func_button" href="' . $tempActiveStatusLink . '"><img src="images/online.gif" alt="" /> ' . i18n('Disable', 'pim') . '</a>');
     } else {
         $pagePlugins->set('s', 'DATA_ACTIVESTATUS', '0');
-        $pagePlugins->set('s', 'ACTIVATE_INACTIVATE_LINK', '<a href="' . $tempActiveStatusLink . '"><img src="images/offline.gif" alt="" class="vAlignMiddle" /> ' . i18n('Enable', 'pim') . '</a>');
+        $pagePlugins->set('s', 'ACTIVATE_INACTIVATE_LINK', '<a class="con_func_button" href="' . $tempActiveStatusLink . '"><img src="images/offline.gif" alt=""/> ' . i18n('Enable', 'pim') . '</a>');
     }
 
     // uninstall link
     $tempUninstallLink = $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&uninstallsql=1&pluginId=' . $idplugin);
-    $pagePlugins->set('s', 'UNINSTALL_LINK', '<a href="javascript:void(0)" data-action="uninstall_plugin" data-href="' . $tempUninstallLink . '"><img src="images/but_cancel.gif" alt="" class="vAlignMiddle"> ' . i18n('Uninstall', 'pim') . '</a>');
+    $pagePlugins->set('s', 'UNINSTALL_LINK', '<a class="con_func_button" href="javascript:void(0)" data-action="uninstall_plugin" data-href="' . $tempUninstallLink . '"><img src="images/but_cancel.gif" alt=""> ' . i18n('Uninstall', 'pim') . '</a>');
 
     // put foldername into array installedPluginFoldernames
     $installedPluginFoldernames[] = $plugin->get('folder');

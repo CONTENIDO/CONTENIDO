@@ -22,7 +22,7 @@ $tpl->set('s', 'OPTIONS', '');
 $tpl->set('s', 'CAPTION', '');
 $tpl->set('s', 'ACTION', isset($select) ? $select : '');
 
-$tmp_mstr = '<a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+$tmp_mstr = '<a class="con_func_button addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 $area = 'client';
 $mstr = sprintf(
     $tmp_mstr,
@@ -33,7 +33,7 @@ $mstr = sprintf(
 if (cString::findFirstPos($auth->auth["perm"],"sysadmin") !== false) {
     $tpl->set('s', 'NEWCLIENT', $mstr);
 } else {
-    $tpl->set('s', 'NEWCLIENT', '<a class="addfunction_disabled" href="#">' . i18n("Only sysadmins can create clients") . '</a>');
+    $tpl->set('s', 'NEWCLIENT', '<a class="con_func_button addfunction_disabled" href="#">' . i18n("Only sysadmins can create clients") . '</a>');
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['client_left_top']);

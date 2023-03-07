@@ -59,7 +59,7 @@ $search = new cHTMLTextbox('searchfor', $searchfor, 26);
 $search->setClass('align_middle mgr5');
 $sSearch = $search->render();
 
-$submitImg = cHTMLImage::img('images/submit.gif', i18n('Search'), ['class' => 'con_img_button align_middle']);
+$submitImg = cHTMLButton::image('images/submit.gif', i18n('Search'), ['class' => 'con_img_button align_middle']);
 $form = new cHTMLForm('search');
 $form->appendContent($sSearch . ' ' . $submitImg);
 $form->setVar('area', $area);
@@ -115,18 +115,7 @@ if ($searchfor != '') {
     $tpl->set('s', 'RESULT', '');
 }
 
-// Create javascript multilink
-$tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\',\'%s\', \'%s\')">%s</a>';
-$mstr = sprintf(
-    $tmp_mstr,
-    'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"),
-    'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"),
-    '<img class="borderless vAlignMiddle" src="images/ordner_oben.gif" alt=""><img class="borderless vALignMiddle" src="images/spacer.gif" width="5" alt="">' . $file
-);
-
 $tpl->set('d', 'PATH', $pathstring);
-$tpl->set('d', 'DIRNAME', $mstr);
-$tpl->set('d', 'COLLAPSE', '');
 $tpl->next();
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['upl_left_top']);

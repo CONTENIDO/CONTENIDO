@@ -253,10 +253,8 @@ legend {
     border: 1px dashed grey;
 }
 
-input[type="image"],
-#image-new-form {
-    margin-left: 110px;
-    padding-right: 10px;
+.con_form_action_control .con_img_button {
+    margin-right: 10px;
 }
 
 /******************************************************************************/

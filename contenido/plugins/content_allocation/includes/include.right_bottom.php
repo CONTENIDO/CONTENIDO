@@ -97,7 +97,7 @@ if ($requestGetStep == 'createRoot') { // create new root item
     $oDiv->updateAttributes(['style' => 'width: 400px;']);
     $oDiv->setContent($form);
 } else {
-    $oDiv->setContent('<a href="main.php?action=' . $action . '&step=createRoot&frame=' . $frame . '&area=' . $area . '&contenido=' . $sess->id . '"><img src="images/folder_new.gif" class="vAlignMiddle" alt=""><span class="tableElement">' . i18n("Create new tree", 'content_allocation') . '</span></a>');
+    $oDiv->setContent('<a class="con_func_button addfunction" href="main.php?action=' . $action . '&step=createRoot&frame=' . $frame . '&area=' . $area . '&contenido=' . $sess->id . '">' . i18n("Create new tree", 'content_allocation') . '</a>');
 }
 
 $treeDiv = new cHTMLDiv();

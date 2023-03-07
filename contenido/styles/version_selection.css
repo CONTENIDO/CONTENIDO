@@ -61,7 +61,7 @@
 }
 
 .con_version_selection .con_version_selection_controls a {
-    vertical-align: text-top !important;
+    vertical-align: middle;
 }
 
 .con_version_selection .no_active {

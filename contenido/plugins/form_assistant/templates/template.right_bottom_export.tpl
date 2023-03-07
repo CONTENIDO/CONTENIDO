@@ -14,7 +14,7 @@
         </div>
 
         <span class="con_form_action_control">
-            <input type="image" src="images/but_ok.gif" alt="{$trans.export|escape}" title="{$trans.export|escape}" />
+            <input type="image" class="con_img_button" src="images/but_ok.gif" alt="{$trans.export|escape}" title="{$trans.export|escape}" />
         </span>
 
     </fieldset>

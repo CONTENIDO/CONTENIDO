@@ -23,26 +23,25 @@
         <input type="hidden" name="frame" value="4">
 
         <div id="filter" style="display:{DISPLAY_FILTER}">
-            <table class="generic topborder" cellspacing="0" cellpadding="2">
-                <tr>
-                    <td class="align_middle text_left" style="border-right-width: 0;">i18n("Client / Language"):</td>
-                    <td class="align_top text_right">
-                        <input type="hidden" name="rights_perms" value="{RIGHTS_PERMS}">
-                        {INPUT_SELECT_CLIENT}
-                    </td>
-                    <td style="padding-left:5px; padding-right:10px; display:{DISPLAY_RIGHTS}">
-                        i18n("Rights type"): {INPUT_SELECT_RIGHTS}
-                    </td>
-                    <td style="padding-left:5px; padding-right:10px;">
-                        <input type="image" src="images/submit.gif">
-                    </td>
-                </tr>
-            </table>
+            <div class="con_rights_selection_box">
+                <span>i18n("Client / Language"):</span>
+                <span>
+                    <input type="hidden" name="rights_perms" value="{RIGHTS_PERMS}">
+                    {INPUT_SELECT_CLIENT}
+                </span>
+                <span style="display:{DISPLAY_RIGHTS}">
+                    i18n("Rights type"): {INPUT_SELECT_RIGHTS}
+                </span>
+                <span>
+                    <input class="con_img_button" type="image" src="images/submit.gif">
+                </span>
+            </div>
         </div>
+
         <div style="width:300px;">
           {NOTIFICATION}
         </div>
-        <br>
+
         {OB_CONTENT}
         {RIGHTS_CONTENT}
     </form>

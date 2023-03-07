@@ -186,7 +186,7 @@ if ((int) $client > 0) {
     $oLink->setLink('');
     $oLink->setContent(i18n("No Client selected"));
 }
-$oLink->setClass("addfunction");
+$oLink->setClass("con_func_button addfunction");
 $oLink->setStyle('margin-left: 17px;margin-top:5px');
 $oActionRow->setContentData($oLink->render());
 

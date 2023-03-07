@@ -593,7 +593,7 @@ if ($sortby == 5 && $sortmode == 'DESC') {
 
 // Multiple deletes at top of table
 if ($perm->have_perm_area_action('upl', 'upl_multidelete') && $bDirectoryIsWritable) {
-    $sDelete = '<a class="tableElement vAlignMiddle jsDeleteSelected" href="javascript:void(0)" data-action="delete_selected"><img class="tableElement vAlignMiddle" src="images/delete.gif" title="' . i18n("Delete selected files") . '" alt="' . i18n("Delete selected files") . '"><span class="tableElement">' . i18n("Delete selected files") . '</span></a>';
+    $sDelete = '<a class="con_func_button jsDeleteSelected" href="javascript:void(0)" data-action="delete_selected"><img class="mgr5" src="images/delete.gif" title="' . i18n("Delete selected files") . '" alt="' . i18n("Delete selected files") . '">' . i18n("Delete selected files") . '</a>';
 } else {
     $sDelete = '';
 }
@@ -605,8 +605,8 @@ $sDisplayPath = generateDisplayFilePath($mpath, 85);
 
 $sToolsRow = '<tr>
                <td colspan="6" class="con_navbar">
-                   <a class="tableElement vAlignMiddle" href="javascript:void(0);" data-action="invert_selection">
-                   <img class="tableElement vAlignMiddle" src="images/but_invert_selection.gif" title="' . i18n("Flip Selection") . '" alt="' . i18n("Flip Selection") . '"> ' . i18n("Flip Selection") . '
+                   <a class="con_func_button mgr15" href="javascript:void(0);" data-action="invert_selection">
+                   <img src="images/but_invert_selection.gif" title="' . i18n("Flip Selection") . '" alt="' . i18n("Flip Selection") . '"> ' . i18n("Flip Selection") . '
                    </a>
                        ' . $sDelete . '
                    <div class="toolsRight">
@@ -650,10 +650,10 @@ $startwrap = '<table class="hoverbox generic">
 $itemwrap = '<tr data-list-item="{LIST_ITEM_POS}">
                    <td class="text_center">%s</td>
                    <td class="text_center">%s</td>
-                   <td class="vAlignTop no_wrap">%s</td>
-                   <td class="vAlignTop no_wrap">%s</td>
-                   <td class="vAlignTop no_wrap">%s</td>
-                   <td class="vAlignTop no_wrap">%s</td>
+                   <td class="align_top no_wrap">%s</td>
+                   <td class="align_top no_wrap">%s</td>
+                   <td class="align_top no_wrap">%s</td>
+                   <td class="align_top no_wrap">%s</td>
                </tr>';
 $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 

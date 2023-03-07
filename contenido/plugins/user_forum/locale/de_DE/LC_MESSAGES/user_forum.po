@@ -2,21 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO UserForum\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-03-13 10:49+0100\n"
-"Last-Translator: Claus Schunk <claus.schunk@4fb.de>\n"
+"PO-Revision-Date: 2023-03-05 17:58+0100\n"
+"Last-Translator: Murat Purç <murat@purc.de>\n"
 "Language-Team: Claus Schunk <claus.schunk@4fb.de>\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
-"X-Poedit-Basepath: \n"
 "X-Poedit-KeywordsList: i18n\n"
-"X-Poedit-SearchPath-0: \n"
-
+"X-Generator: Poedit 3.2.2\n"
 
 # class.article_forum_right_bottom.php
-
 msgid "STATUS"
 msgstr "Status"
 
@@ -33,7 +29,11 @@ msgid "USER"
 msgstr "Name"
 
 msgid "EMAIL"
-msgstr "E-Mail-Adresse"
+msgstr ""
+"#-#-#-#-#  catalog.po (CONTENIDO UserForum)  #-#-#-#-#\n"
+"E-Mail-Adresse\n"
+"#-#-#-#-#  catalog.po (CONTENIDO UserForum)  #-#-#-#-#\n"
+"E-Mail"
 
 msgid "LIKE"
 msgstr "gefällt"
@@ -84,12 +84,13 @@ msgid "CONTENT"
 msgstr "Inhalt"
 
 msgid "MODMODE"
-msgstr "Mit aktiviertem Moderatormodus können hier die neusten Beiträge moderiert werden."
+msgstr ""
+"Mit aktiviertem Moderatormodus können hier die neusten Beiträge moderiert "
+"werden."
 
 # class.article_forum_left_bottom.php
-
 msgid "NOENTRY"
-msgstr "Noch keine Einträge vorhanden" 
+msgstr "Noch keine Einträge vorhanden"
 
 msgid "ALLDELETEFROMCAT"
 msgstr "Alle Kommentare zu diesem Artikel löschen? "
@@ -116,7 +117,6 @@ msgid "ACTIONS"
 msgstr "Aktionen"
 
 # class.content.type.user_forum.php
-
 msgid "MODSETTINGS"
 msgstr "Einstellungen: "
 
@@ -133,18 +133,8 @@ msgid "EDITABLE"
 msgstr "Antworten möglich"
 
 # class.article_forum_collection.php
-
 msgid "NEWENTRY"
-msgstr "Neuer Kommentar hinzugefuegt: "
+msgstr "Neuer Kommentar hinzugefügt: "
 
 msgid "NEWENTRYTEXT"
 msgstr "Neuer Kommentar mit folgendem Inhalt: "
-
-msgid "COMMENT"
-msgstr "Kommentar"
-
-msgid "USER"
-msgstr "Name"
-
-msgid "EMAIL"
-msgstr "E-Mail"

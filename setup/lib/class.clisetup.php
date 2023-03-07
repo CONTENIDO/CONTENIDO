@@ -227,7 +227,7 @@ class cCLISetup {
 
         // http root path
         prntln();
-        prntln(i18n('Please enter the http path to where the contenido/ folder resides', 'setup'));
+        prntln(i18n('Please enter the http path to where the contenido/ folder resides.', 'setup'));
         prntln(i18n('e.g. http://localhost/', 'setup'));
         prnt(i18n('Backend web path', 'setup') .' [' . $this->_settings['paths']['http_root_path'] . ']: ', 1);
         $line = trim(fgets(STDIN));
@@ -266,7 +266,7 @@ class cCLISetup {
         prntln();
         prntln(i18n('Admin information:'));
         while ($password1 != $password2) {
-            prntln(i18n('You have to enter the password twice and they have to match', 'setup'), 1);
+            prntln(i18n('You have to enter the password twice and they have to match!', 'setup'), 1);
             $password1 = passwordPrompt(i18n('Admin password', 'setup'), 1);
 
             $password2 = passwordPrompt(i18n('Repeat admin password', 'setup'), 1);
@@ -344,7 +344,7 @@ class cCLISetup {
         if ($this->_settings['advanced']['delete_database'] == '1' || $this->_settings['advanced']['delete_database'] == 'YES') {
             $answer = '';
             while ($answer != 'Y' && $answer != 'N') {
-                prnt(sprintf(i18n("You chose in the configuration file to delete the database '%s' before installing.\nDO YOU REALLY WANT TO CONTINUE WITH DELETING THIS DATABASE? (Y/N) [N]: ", 'setup'), $this->_settings['db']['database']));
+                prnt(sprintf(i18n("You chose in the configuration file to delete the database '%s' before installing.\nDO YOU REALLY WANT TO CONTINUE WITH DELETING THIS DATABASE? (Y/N) [N]:", 'setup'), $this->_settings['db']['database']));
                 $answer = trim(fgets(STDIN));
                 if ($answer == "") {
                     $answer = "N";

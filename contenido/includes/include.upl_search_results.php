@@ -290,11 +290,11 @@ $startwrap = '<table class="hoverbox generic">
                 </tr>';
 $itemwrap = '<tr data-list-item="{LIST_ITEM_POS}">
                     <td align="center">%s</td>
-                    <td class="vAlignTop no_wrap">%s</td>
-                    <td class="vAlignTop no_wrap">%s</td>
-                    <td class="vAlignTop no_wrap">%s</td>
-                    <td class="vAlignTop no_wrap">%s</td>
-                    <td class="vAlignTop no_wrap">%s</td>
+                    <td class="align_top no_wrap">%s</td>
+                    <td class="align_top no_wrap">%s</td>
+                    <td class="align_top no_wrap">%s</td>
+                    <td class="align_top no_wrap">%s</td>
+                    <td class="align_top no_wrap">%s</td>
                 </tr>';
 $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 
@@ -361,7 +361,6 @@ foreach ($files as $idupl => $rating) {
         $upl->set('size', $filesize);
         $upl->store();
     }
-    $description = $upl->get('description');
 
     $fileType = cString::toLowerCase(cFileHandler::getExtension($filename));
     $list2->setData($rownum, $dirname . $filename, $filename, $dirname, $filesize, $fileType, $rating / 10, $dirname . $filename);
@@ -402,7 +401,7 @@ if ($list2->getCurrentPage() > 1) {
 if ($list2->getCurrentPage() < $list2->getNumPages()) {
     $nextpage = '<a href="' . $scrollthisfile . '&startpage=' . ($list2->getCurrentPage() + 1) . '" class="invert_hover">' . i18n("Next Page") . '</a>';
 } else {
-    $nextpage = '&nbsp;';
+    $prevpage = '&nbsp;';
 }
 
 $paging_form = '';

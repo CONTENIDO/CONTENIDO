@@ -2,21 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO UserForum\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-03-13 10:49+0100\n"
-"Last-Translator: Claus Schunk <claus.schunk@4fb.de>\n"
+"PO-Revision-Date: 2023-03-05 17:59+0100\n"
+"Last-Translator: Murat Purç <murat@purc.de>\n"
 "Language-Team: Claus Schunk <claus.schunk@4fb.de>\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
-"X-Poedit-Basepath: \n"
 "X-Poedit-KeywordsList: i18n\n"
-"X-Poedit-SearchPath-0: \n"
-
+"X-Generator: Poedit 3.2.2\n"
 
 # class.article_forum_right_bottom.php
-
 msgid "STATUS"
 msgstr "State"
 
@@ -93,24 +89,22 @@ msgid "MODMODE"
 msgstr "With active moderator mode you can moderate the newest comments here"
 
 # class.article_forum_left_bottom.php
-
 msgid "NOENTRY"
-msgstr "no entries available" 
+msgstr "no entries available"
 
 msgid "DELETE_COMMENTS"
 msgstr "delete comments"
 
 msgid "ALLDELETEFROMCAT"
-msgstr "delete all comments from this article ?"
+msgstr "delete all comments from this article?"
 
 msgid "ARTICLES"
 msgstr "articles"
 
 msgid "ALLDELETEFROMCATHIER"
-msgstr "delete comments inclusive subcomments ?"
+msgstr "delete comments inclusive subcomments?"
 
 # class.content.type.user_forum.php
-
 msgid "ADMINISTRATION"
 msgstr "administration userform"
 
@@ -124,18 +118,8 @@ msgid "EDITABLE"
 msgstr "subcomments allowed"
 
 # class.article_forum_collection.php
-
 msgid "MODSETTINGS"
 msgstr "settings"
-
-msgid "COMMENT"
-msgstr "comment"
-
-msgid "USER"
-msgstr "name"
-
-msgid "EMAIL"
-msgstr "email"
 
 msgid "NEWENTRYTEXT"
 msgstr "new comment with following content"

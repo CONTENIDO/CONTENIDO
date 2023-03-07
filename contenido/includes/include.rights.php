@@ -79,7 +79,7 @@ ob_start();
 $oTpl->set('s', 'RIGHTS_PERMS', $rights_perms);
 
 // Selectbox for clients
-$oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang', false, NULL, '', 'vAlignMiddle');
+$oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang', false, NULL, '');
 
 $oClientColl = new cApiClientCollection();
 $clientList = $oClientColl->getAccessibleClients();
@@ -210,7 +210,7 @@ if ($area != 'user_content') {
         }
     }
     $oTpl->set('s', 'INPUT_SELECT_RIGHTS', $oHtmlSelect->render());
-    $oTpl->set('s', 'DISPLAY_RIGHTS', 'block');
+    $oTpl->set('s', 'DISPLAY_RIGHTS', 'inline-block');
 }
 
 $bEndScript = false;

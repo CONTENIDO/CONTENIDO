@@ -41,7 +41,7 @@ $tpl->set('s', 'CAPTION', '');
 $tpl->set('s', 'ACTION', $select);
 
 if ($perm->have_perm_area_action($area, "style_create")) {
-    $tmp_mstr = '<div class="leftTopAction"><a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
+    $tmp_mstr = '<div class="top_left_action"><a class="con_func_button addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
     $mstr = sprintf(
         $tmp_mstr,
         'right_top', $sess->url("main.php?area=style&frame=3"),
@@ -50,7 +50,7 @@ if ($perm->have_perm_area_action($area, "style_create")) {
     );
     $tpl->set('s', 'NEWSTYLE', $mstr);
 } else {
-    $tpl->set("s", "NEWSTYLE", '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create new styles") . '</a></div>');
+    $tpl->set("s", "NEWSTYLE", '<div class="top_left_action"><a class="con_func_button addfunction_disabled" href="#">' . i18n("No permission to create new styles") . '</a></div>');
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['style_left_top']);
