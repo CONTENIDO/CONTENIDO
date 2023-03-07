@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-05 16:58+0100\n"
+"POT-Creation-Date: 2023-03-07 22:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -549,27 +549,27 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: classes/class.systemtest.php:293
+#: classes/class.systemtest.php:301
 #, php-format
 msgid "PHP Version lower than %s"
 msgstr ""
 
-#: classes/class.systemtest.php:293
+#: classes/class.systemtest.php:301
 #, php-format
 msgid ""
 "CONTENIDO requires PHP %s or higher as it uses functionality first "
 "introduced with this version. Please update your PHP version."
 msgstr ""
 
-#: classes/class.systemtest.php:293
+#: classes/class.systemtest.php:301
 msgid "The PHP version is higher than "
 msgstr ""
 
-#: classes/class.systemtest.php:294
+#: classes/class.systemtest.php:302
 msgid "File uploads disabled"
 msgstr ""
 
-#: classes/class.systemtest.php:294
+#: classes/class.systemtest.php:302
 #, php-format
 msgid ""
 "Your PHP version is not configured for file uploads. You can't upload files "
@@ -577,45 +577,45 @@ msgid ""
 "See %s for more information"
 msgstr ""
 
-#: classes/class.systemtest.php:294
+#: classes/class.systemtest.php:302
 msgid "PHP file upload is enabled"
 msgstr ""
 
-#: classes/class.systemtest.php:295
+#: classes/class.systemtest.php:303
 msgid "PHP setting 'magic_quotes_runtime' is turned on"
 msgstr ""
 
-#: classes/class.systemtest.php:295
+#: classes/class.systemtest.php:303
 msgid ""
 "The PHP setting 'magic_quotes_runtime' is turned on. CONTENIDO has been "
 "developed to comply with magic_quotes_runtime=Off as this is the PHP default "
 "setting. You have to change this directive to make CONTENIDO work."
 msgstr ""
 
-#: classes/class.systemtest.php:295
+#: classes/class.systemtest.php:303
 msgid "'magic_quotes_runtime' is turned off"
 msgstr ""
 
-#: classes/class.systemtest.php:296
+#: classes/class.systemtest.php:304
 msgid "PHP Setting 'magic_quotes_sybase' is turned on"
 msgstr ""
 
-#: classes/class.systemtest.php:296
+#: classes/class.systemtest.php:304
 msgid ""
 "The PHP Setting 'magic_quotes_sybase' is turned on. CONTENIDO has been "
 "developed to comply with magic_quotes_sybase=Off as this is the PHP default "
 "setting. You have to change this directive to make CONTENIDO work."
 msgstr ""
 
-#: classes/class.systemtest.php:296
+#: classes/class.systemtest.php:304
 msgid "'magic_quotes_sybase' is turned off"
 msgstr ""
 
-#: classes/class.systemtest.php:297
+#: classes/class.systemtest.php:305
 msgid "PHP maximum execution time is less than 30 seconds"
 msgstr ""
 
-#: classes/class.systemtest.php:297
+#: classes/class.systemtest.php:305
 msgid ""
 "PHP is configured for a maximum execution time of less than 30 seconds. This "
 "could cause problems with slow web servers and/or long operations in the "
@@ -623,33 +623,33 @@ msgid ""
 "60 seconds for medium ones and 30 seconds for fast web servers."
 msgstr ""
 
-#: classes/class.systemtest.php:297
+#: classes/class.systemtest.php:305
 msgid "PHP allows execution times longer than 30 seconds"
 msgstr ""
 
-#: classes/class.systemtest.php:298
+#: classes/class.systemtest.php:306
 msgid "The class ZipArchive could not be found"
 msgstr ""
 
-#: classes/class.systemtest.php:298
+#: classes/class.systemtest.php:306
 msgid ""
 "This could cause some problems, but CONTENIDO is able to run without it. You "
 "should check your PHP installation."
 msgstr ""
 
-#: classes/class.systemtest.php:298
+#: classes/class.systemtest.php:306
 msgid "The ZipArchive class is enabled"
 msgstr ""
 
-#: classes/class.systemtest.php:303
+#: classes/class.systemtest.php:311
 msgid "open_basedir directive doesn't enforce any restrictions"
 msgstr ""
 
-#: classes/class.systemtest.php:306
+#: classes/class.systemtest.php:314
 msgid "open_basedir directive set to '.'"
 msgstr ""
 
-#: classes/class.systemtest.php:306
+#: classes/class.systemtest.php:314
 msgid ""
 "The directive open_basedir is set to '.' (e.g. current directory). This "
 "means that CONTENIDO is unable to access files in a logical upper level in "
@@ -658,11 +658,11 @@ msgid ""
 "directive, or turn it off completely."
 msgstr ""
 
-#: classes/class.systemtest.php:309
+#: classes/class.systemtest.php:317
 msgid "open_basedir setting might be insufficient"
 msgstr ""
 
-#: classes/class.systemtest.php:309
+#: classes/class.systemtest.php:317
 msgid ""
 "Setup believes that the PHP directive open_basedir is configured sufficient, "
 "however, if you encounter errors like 'open_basedir restriction in effect. "
@@ -670,235 +670,235 @@ msgid ""
 "adjust the open_basedir directive"
 msgstr ""
 
-#: classes/class.systemtest.php:312
+#: classes/class.systemtest.php:320
 msgid "open_basedir directive incompatible"
 msgstr ""
 
-#: classes/class.systemtest.php:312
+#: classes/class.systemtest.php:320
 msgid ""
 "Setup has checked your PHP open_basedir directive and reckons that it is not "
 "sufficient. Please change the directive to include the CONTENIDO "
 "installation or turn it off completely."
 msgstr ""
 
-#: classes/class.systemtest.php:316
+#: classes/class.systemtest.php:324
 msgid "PHP memory_limit directive too small"
 msgstr ""
 
-#: classes/class.systemtest.php:316
+#: classes/class.systemtest.php:324
 msgid ""
 "The memory_limit directive is set to 32 MB or lower. This might be not "
 "enough for CONTENIDO to operate correctly. We recommend to disable this "
 "setting completely, as this can cause problems with large CONTENIDO projects."
 msgstr ""
 
-#: classes/class.systemtest.php:316
+#: classes/class.systemtest.php:324
 msgid "Memory limit is either high enough or deactivated"
 msgstr ""
 
-#: classes/class.systemtest.php:317
+#: classes/class.systemtest.php:325
 msgid "PHP sql.safe_mode turned on"
 msgstr ""
 
-#: classes/class.systemtest.php:317
+#: classes/class.systemtest.php:325
 msgid ""
 "The PHP directive sql.safe_mode is turned on. This causes problems with the "
 "SQL queries issued by CONTENIDO. Please turn that directive off."
 msgstr ""
 
-#: classes/class.systemtest.php:317
+#: classes/class.systemtest.php:325
 msgid "sql.safe_mode is deactivated"
 msgstr ""
 
-#: classes/class.systemtest.php:318
+#: classes/class.systemtest.php:326
 msgid "PHP GD-Extension is not loaded"
 msgstr ""
 
-#: classes/class.systemtest.php:318
+#: classes/class.systemtest.php:326
 msgid ""
 "The PHP GD-Extension is not loaded. Some third-party modules rely on the GD "
 "functionality. If you don't enable the GD extension, you will encounter "
 "problems with modules like galleries."
 msgstr ""
 
-#: classes/class.systemtest.php:318
+#: classes/class.systemtest.php:326
 msgid "GD extension loaded"
 msgstr ""
 
-#: classes/class.systemtest.php:320
+#: classes/class.systemtest.php:328
 msgid "GD-Library GIF read support missing"
 msgstr ""
 
-#: classes/class.systemtest.php:320
+#: classes/class.systemtest.php:328
 msgid ""
 "Your GD version doesn't support reading GIF files. This might cause problems "
 "with some modules."
 msgstr ""
 
-#: classes/class.systemtest.php:320
+#: classes/class.systemtest.php:328
 msgid "GD is able to read GIFs"
 msgstr ""
 
-#: classes/class.systemtest.php:321
+#: classes/class.systemtest.php:329
 msgid "GD-Library GIF write support missing"
 msgstr ""
 
-#: classes/class.systemtest.php:321
+#: classes/class.systemtest.php:329
 msgid ""
 "Your GD version doesn't support writing GIF files. This might cause problems "
 "with some modules."
 msgstr ""
 
-#: classes/class.systemtest.php:321
+#: classes/class.systemtest.php:329
 msgid "GD is able to write GIFs"
 msgstr ""
 
-#: classes/class.systemtest.php:322
+#: classes/class.systemtest.php:330
 msgid "GD-Library JPEG read support missing"
 msgstr ""
 
-#: classes/class.systemtest.php:322
+#: classes/class.systemtest.php:330
 msgid ""
 "Your GD version doesn't support reading JPEG files. This might cause "
 "problems with some modules."
 msgstr ""
 
-#: classes/class.systemtest.php:322
+#: classes/class.systemtest.php:330
 msgid "GD is able to read JPEGs"
 msgstr ""
 
-#: classes/class.systemtest.php:323
+#: classes/class.systemtest.php:331
 msgid "GD-Library JPEG write support missing"
 msgstr ""
 
-#: classes/class.systemtest.php:323
+#: classes/class.systemtest.php:331
 msgid ""
 "Your GD version doesn't support writing JPEG files. This might cause "
 "problems with some modules."
 msgstr ""
 
-#: classes/class.systemtest.php:323
+#: classes/class.systemtest.php:331
 msgid "GD is able to write JPEGs"
 msgstr ""
 
-#: classes/class.systemtest.php:324
+#: classes/class.systemtest.php:332
 msgid "GD-Library PNG read support missing"
 msgstr ""
 
-#: classes/class.systemtest.php:324
+#: classes/class.systemtest.php:332
 msgid ""
 "Your GD version doesn't support reading PNG files. This might cause problems "
 "with some modules."
 msgstr ""
 
-#: classes/class.systemtest.php:324
+#: classes/class.systemtest.php:332
 msgid "GD is able to read PNGs"
 msgstr ""
 
-#: classes/class.systemtest.php:325
+#: classes/class.systemtest.php:333
 msgid "GD-Library PNG write support missing"
 msgstr ""
 
-#: classes/class.systemtest.php:325
+#: classes/class.systemtest.php:333
 msgid ""
 "Your GD version doesn't support writing PNG files. This might cause problems "
 "with some modules."
 msgstr ""
 
-#: classes/class.systemtest.php:325
+#: classes/class.systemtest.php:333
 msgid "GD is able to write PNGs"
 msgstr ""
 
-#: classes/class.systemtest.php:327
+#: classes/class.systemtest.php:335
 msgid "PHP PCRE Extension is not loaded"
 msgstr ""
 
-#: classes/class.systemtest.php:327
+#: classes/class.systemtest.php:335
 msgid ""
 "The PHP PCRE Extension is not loaded. CONTENIDO uses PCRE-functions like "
 "preg_repace and preg_match and won't work without the PCRE Extension."
 msgstr ""
 
-#: classes/class.systemtest.php:327
+#: classes/class.systemtest.php:335
 msgid "PCRE extension loaded"
 msgstr ""
 
-#: classes/class.systemtest.php:328
+#: classes/class.systemtest.php:336
 msgid "PHP XML Extension is not loaded"
 msgstr ""
 
-#: classes/class.systemtest.php:328
+#: classes/class.systemtest.php:336
 msgid ""
 "The PHP XML Extension is not loaded. CONTENIDO won't work without the XML "
 "Extension."
 msgstr ""
 
-#: classes/class.systemtest.php:328
+#: classes/class.systemtest.php:336
 msgid "XML extension loaded"
 msgstr ""
 
-#: classes/class.systemtest.php:329
+#: classes/class.systemtest.php:337
 msgid "Class 'DOMDocument' is not available"
 msgstr ""
 
-#: classes/class.systemtest.php:329
+#: classes/class.systemtest.php:337
 msgid ""
 "The class DOMDocument could not be found. Please check your PHP installation "
 "and enable the XML extension if necessary. CONTENIDO won't work without it."
 msgstr ""
 
-#: classes/class.systemtest.php:329
+#: classes/class.systemtest.php:337
 msgid "DOMDocument is available"
 msgstr ""
 
-#: classes/class.systemtest.php:330
+#: classes/class.systemtest.php:338
 msgid "Function 'xml_parser_create' is not available"
 msgstr ""
 
-#: classes/class.systemtest.php:330
+#: classes/class.systemtest.php:338
 msgid ""
 "The function xml_parser_create could not be found. Please check your PHP "
 "installation and enable the XML extension if necessary. CONTENIDO won't work "
 "without it."
 msgstr ""
 
-#: classes/class.systemtest.php:330
+#: classes/class.systemtest.php:338
 msgid "xml_parser_create is available"
 msgstr ""
 
-#: classes/class.systemtest.php:331
+#: classes/class.systemtest.php:339
 msgid "The class SimpleXML is missing"
 msgstr ""
 
-#: classes/class.systemtest.php:331
+#: classes/class.systemtest.php:339
 msgid ""
 "The SimpleXML class is missing. Make sure that the extension is installed "
 "and activated"
 msgstr ""
 
-#: classes/class.systemtest.php:331
+#: classes/class.systemtest.php:339
 msgid "SimpleXML is available"
 msgstr ""
 
-#: classes/class.systemtest.php:332
+#: classes/class.systemtest.php:340
 msgid "PHP mbstring extension is not loaded"
 msgstr ""
 
-#: classes/class.systemtest.php:332
+#: classes/class.systemtest.php:340
 msgid ""
 "Since version 4.9.4 CONTENIDO requires the mbstring extension to be loaded "
 "and activated! Without it CONTENIDO won't work!"
 msgstr ""
 
-#: classes/class.systemtest.php:332
+#: classes/class.systemtest.php:340
 msgid "mbstring extension is loaded"
 msgstr ""
 
-#: classes/class.systemtest.php:337
+#: classes/class.systemtest.php:345
 msgid "Unable to check for a suitable image resizer"
 msgstr ""
 
-#: classes/class.systemtest.php:337
+#: classes/class.systemtest.php:345
 msgid ""
 "Setup has tried to check for a suitable image resizer (which is, for example "
 "required for thumbnail creation), but was not able to clearly identify one. "
@@ -906,58 +906,58 @@ msgid ""
 "ImageMagick available."
 msgstr ""
 
-#: classes/class.systemtest.php:340
+#: classes/class.systemtest.php:348
 msgid "No suitable image resizer available"
 msgstr ""
 
-#: classes/class.systemtest.php:340
+#: classes/class.systemtest.php:348
 msgid ""
 "Setup checked your image resizing support, however, it was unable to find a "
 "suitable image resizer. Thumbnails won't work correctly or won't be looking "
 "good. Install the GD-Extension or ImageMagick"
 msgstr ""
 
-#: classes/class.systemtest.php:343
+#: classes/class.systemtest.php:351
 msgid "GD extension is available and usable to handle images"
 msgstr ""
 
-#: classes/class.systemtest.php:346
+#: classes/class.systemtest.php:354
 msgid "ImageMagick extension is available and usable to handle images"
 msgstr ""
 
-#: classes/class.systemtest.php:350
+#: classes/class.systemtest.php:358
 msgid "PHP iconv functions are not available."
 msgstr ""
 
-#: classes/class.systemtest.php:350
+#: classes/class.systemtest.php:358
 msgid ""
 "PHP has been compiled with the --without-iconv directive. CONTENIDO won't "
 "work without the iconv functions."
 msgstr ""
 
-#: classes/class.systemtest.php:350
+#: classes/class.systemtest.php:358
 msgid "iconv is available"
 msgstr ""
 
-#: classes/class.systemtest.php:356
+#: classes/class.systemtest.php:364
 msgid "Database connection works"
 msgstr ""
 
-#: classes/class.systemtest.php:359
+#: classes/class.systemtest.php:367
 msgid "MySQL is running in strict mode"
 msgstr ""
 
-#: classes/class.systemtest.php:359
+#: classes/class.systemtest.php:367
 msgid ""
 "MySQL is running in strict mode, CONTENIDO will not work with this mode. "
 "Please change your sql_mode!"
 msgstr ""
 
-#: classes/class.systemtest.php:362
+#: classes/class.systemtest.php:370
 msgid "MySQL database connect failed"
 msgstr ""
 
-#: classes/class.systemtest.php:362
+#: classes/class.systemtest.php:370
 #, php-format
 msgid ""
 "Setup was unable to connect to the MySQL Server (Server %s, Username %s). "
@@ -965,43 +965,78 @@ msgid ""
 "was: %s"
 msgstr ""
 
-#: classes/class.systemtest.php:366
+#: classes/class.systemtest.php:376
+msgid "Database check was ok"
+msgstr ""
+
+#: classes/class.systemtest.php:383
+#, php-format
+msgid "Number of invalid primary key values (NULL, '', or 0) in field %s: %d"
+msgstr ""
+
+#: classes/class.systemtest.php:386
+#, php-format
+msgid "Redundant primary key entries found in field %s."
+msgstr ""
+
+#: classes/class.systemtest.php:389
+#, php-format
+msgid "Errors found in table %s:"
+msgstr ""
+
+#: classes/class.systemtest.php:394
+msgid ""
+"Please resolve these conflicts, they can negatively affect the system "
+"stability."
+msgstr ""
+
+#: classes/class.systemtest.php:396
+msgid ""
+"Please resolve these conflicts before proceeding with the setup. The setup "
+"cannot solve this for you."
+msgstr ""
+
+#: classes/class.systemtest.php:399
+msgid "The database check found some issues."
+msgstr ""
+
+#: classes/class.systemtest.php:404
 msgid "Permission error"
 msgstr ""
 
-#: classes/class.systemtest.php:366
+#: classes/class.systemtest.php:404
 msgid ""
 "CONTENIDO doesn't have the necessary permissions to write all the files it "
 "needs. Please check your filesystem permissions."
 msgstr ""
 
-#: classes/class.systemtest.php:366
+#: classes/class.systemtest.php:404
 msgid "Filesystem checks"
 msgstr ""
 
-#: classes/class.systemtest.php:366
+#: classes/class.systemtest.php:404
 msgid "CONTENIDO has all the necessary permissions to read and write files"
 msgstr ""
 
-#: classes/class.systemtest.php:1203
+#: classes/class.systemtest.php:1342
 #, php-format
 msgid "Can't write %s"
 msgstr ""
 
-#: classes/class.systemtest.php:1204
+#: classes/class.systemtest.php:1343
 #, php-format
 msgid ""
 "Setup or CONTENIDO can't write to the file %s. Please change the file "
 "permissions to correct this problem."
 msgstr ""
 
-#: classes/class.systemtest.php:1212
+#: classes/class.systemtest.php:1351
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any file "
 "permissions."
 msgstr ""
 
-#: classes/class.systemtest.php:1215
+#: classes/class.systemtest.php:1354
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -1009,7 +1044,7 @@ msgid ""
 "environments where ACL (Access Control Lists) are used."
 msgstr ""
 
-#: classes/class.systemtest.php:1220
+#: classes/class.systemtest.php:1359
 #, php-format
 msgid ""
 "Your web server and the owner of your files are identical. You need to "
@@ -1017,7 +1052,7 @@ msgid ""
 "file mask to %s or set the owner to allow writing the file."
 msgstr ""
 
-#: classes/class.systemtest.php:1225
+#: classes/class.systemtest.php:1364
 #, php-format
 msgid ""
 "Your web server's group and the group of your files are identical. You need "
@@ -1025,7 +1060,7 @@ msgid ""
 "file mask to %s or set the group to allow writing the file."
 msgstr ""
 
-#: classes/class.systemtest.php:1230
+#: classes/class.systemtest.php:1369
 #, php-format
 msgid ""
 "Your web server is not equal to the file owner, and is not in the "
@@ -1035,13 +1070,13 @@ msgid ""
 "others to allow writing the file."
 msgstr ""
 
-#: classes/class.systemtest.php:1240
+#: classes/class.systemtest.php:1379
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any directory "
 "permissions."
 msgstr ""
 
-#: classes/class.systemtest.php:1243
+#: classes/class.systemtest.php:1382
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -1049,7 +1084,7 @@ msgid ""
 "especially in environments where ACL (Access Control Lists) are used."
 msgstr ""
 
-#: classes/class.systemtest.php:1248
+#: classes/class.systemtest.php:1387
 #, php-format
 msgid ""
 "Your web server and the owner of your directory are identical. You need to "
@@ -1057,7 +1092,7 @@ msgid ""
 "directory mask to %s or set the owner to allow writing the directory."
 msgstr ""
 
-#: classes/class.systemtest.php:1253
+#: classes/class.systemtest.php:1392
 #, php-format
 msgid ""
 "Your web server's group and the group of your directory are identical. You "
@@ -1065,7 +1100,7 @@ msgid ""
 "the directory mask to %s or set the group to allow writing the directory."
 msgstr ""
 
-#: classes/class.systemtest.php:1258
+#: classes/class.systemtest.php:1397
 #, php-format
 msgid ""
 "Your web server is not equal to the directory owner, and is not in the "
@@ -1075,27 +1110,27 @@ msgid ""
 "set the others to allow writing the directory."
 msgstr ""
 
-#: classes/class.systemtest.php:1305 classes/class.systemtest.php:1308
+#: classes/class.systemtest.php:1444 classes/class.systemtest.php:1447
 #, php-format
 msgid "Could not find or create directory %s"
 msgstr ""
 
-#: classes/class.systemtest.php:1305 classes/class.systemtest.php:1308
+#: classes/class.systemtest.php:1444 classes/class.systemtest.php:1447
 msgid ""
 "The frontend expects certain directories to exist and it needs to be able to "
 "write to these directories. You have to set chmod rights 755 to these "
 "directories."
 msgstr ""
 
-#: classes/class.systemtest.php:1400
+#: classes/class.systemtest.php:1539
 msgid "Could not connect to MySQL database"
 msgstr ""
 
-#: classes/class.systemtest.php:1416
+#: classes/class.systemtest.php:1555
 msgid "MySQL database already exists and seems to be filled"
 msgstr ""
 
-#: classes/class.systemtest.php:1416
+#: classes/class.systemtest.php:1555
 #, php-format
 msgid ""
 "Setup checked the database %s and found the table %s. It seems that you "
@@ -1104,22 +1139,22 @@ msgid ""
 "previous version, choose 'upgrade' as setup type."
 msgstr ""
 
-#: classes/class.systemtest.php:1423
+#: classes/class.systemtest.php:1562
 msgid "MySQL test table already exists in the database"
 msgstr ""
 
-#: classes/class.systemtest.php:1423
+#: classes/class.systemtest.php:1562
 #, php-format
 msgid ""
 "Setup checked the database %s and found the test table %s. Please remove it "
 "before continuing."
 msgstr ""
 
-#: classes/class.systemtest.php:1430 classes/class.systemtest.php:1451
+#: classes/class.systemtest.php:1569 classes/class.systemtest.php:1590
 msgid "Unable to create tables in the selected MySQL database"
 msgstr ""
 
-#: classes/class.systemtest.php:1430 classes/class.systemtest.php:1451
+#: classes/class.systemtest.php:1569 classes/class.systemtest.php:1590
 #, php-format
 msgid ""
 "Setup tried to create a test table in the database %s and failed. Please "
@@ -1127,40 +1162,40 @@ msgid ""
 "an administrator to do so."
 msgstr ""
 
-#: classes/class.systemtest.php:1437 classes/class.systemtest.php:1458
+#: classes/class.systemtest.php:1576 classes/class.systemtest.php:1597
 msgid "Unable to remove the test table"
 msgstr ""
 
-#: classes/class.systemtest.php:1437 classes/class.systemtest.php:1458
+#: classes/class.systemtest.php:1576 classes/class.systemtest.php:1597
 #, php-format
 msgid ""
 "Setup tried to remove the test table %s in the database %s and failed due to "
 "insufficient permissions. Please remove the table %s manually."
 msgstr ""
 
-#: classes/class.systemtest.php:1444
+#: classes/class.systemtest.php:1583
 msgid "Unable to create the database in the MySQL server"
 msgstr ""
 
-#: classes/class.systemtest.php:1444
+#: classes/class.systemtest.php:1583
 msgid ""
 "Setup tried to create a test database and failed. Please assign database "
 "creation permissions to the database user you entered, ask an administrator "
 "to do so, or create the database manually."
 msgstr ""
 
-#: classes/class.systemtest.php:1468 classes/class.systemtest.php:1478
+#: classes/class.systemtest.php:1607 classes/class.systemtest.php:1617
 msgid "No data found for the upgrade"
 msgstr ""
 
-#: classes/class.systemtest.php:1468
+#: classes/class.systemtest.php:1607
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
 "doesn't exist. You need to copy your database first before running setup."
 msgstr ""
 
-#: classes/class.systemtest.php:1478
+#: classes/class.systemtest.php:1617
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -1564,7 +1599,7 @@ msgstr ""
 #: classes/content_types/class.content.type.filelist.php:1137
 #: classes/content_types/class.content.type.imgeditor.php:687
 #: classes/content_types/class.content.type.imgeditor.php:688
-#: includes/include.upl_search_results.php:373
+#: includes/include.upl_search_results.php:372
 msgid "No files found"
 msgstr ""
 
@@ -3457,7 +3492,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: includes/include.con_content_list.php:1101
+#: includes/include.con_content_list.php:1094
 msgid "Are you sure you want to delete this content type from this article?"
 msgstr ""
 
@@ -3716,7 +3751,7 @@ msgstr ""
 #: includes/include.con_left_top.php:197
 #: includes/include.upl_files_overview.php:876
 #: includes/include.upl_left_top.php:62
-#: includes/include.upl_search_results.php:467
+#: includes/include.upl_search_results.php:466
 msgid "Search"
 msgstr ""
 
@@ -6195,28 +6230,28 @@ msgid "Files per Page"
 msgstr ""
 
 #: includes/include.upl_files_overview.php:818
-#: includes/include.upl_search_results.php:397
+#: includes/include.upl_search_results.php:396
 msgid "Previous Page"
 msgstr ""
 
 #: includes/include.upl_files_overview.php:824
-#: includes/include.upl_search_results.php:403
+#: includes/include.upl_search_results.php:402
 msgid "Next Page"
 msgstr ""
 
 #: includes/include.upl_files_overview.php:862
-#: includes/include.upl_search_results.php:442
+#: includes/include.upl_search_results.php:441
 msgid "Page"
 msgstr ""
 
 #: includes/include.upl_files_overview.php:909
-#: includes/include.upl_search_results.php:485 scripts/iZoom.js.php:70
+#: includes/include.upl_search_results.php:484 scripts/iZoom.js.php:70
 #: scripts/iZoom.js.php:73 scripts/langref.php:23
 msgid "Click to close"
 msgstr ""
 
 #: includes/include.upl_files_overview.php:910
-#: includes/include.upl_search_results.php:486
+#: includes/include.upl_search_results.php:485
 msgid "Are you sure you want to delete the selected files?"
 msgstr ""
 
@@ -6687,13 +6722,13 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-#: templates/standard/template.rights.html:28
-#: templates/standard/template.rights.html:58
+#: templates/standard/template.rights.html:27
+#: templates/standard/template.rights.html:57
 msgid "Client / Language"
 msgstr ""
 
-#: templates/standard/template.rights.html:34
-#: templates/standard/template.rights.html:59
+#: templates/standard/template.rights.html:33
+#: templates/standard/template.rights.html:58
 msgid "Rights type"
 msgstr ""
 

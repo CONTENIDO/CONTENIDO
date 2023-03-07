@@ -234,6 +234,14 @@ abstract class cDbDriverAbstract {
     abstract public function getTableNames();
 
     /**
+     * Returns the data-type of a specific table field.
+     *
+     * @since CONTENIDO 4.10.2
+     * @return string|null
+     */
+    abstract public function getTableFieldDataType(string $table, string $field);
+
+    /**
      * Fetches server information.
      *
      * @return array|NULL
