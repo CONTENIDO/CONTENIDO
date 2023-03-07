@@ -402,6 +402,12 @@ class cDbDriverMysql extends cDbDriverAbstract {
         return $return;
     }
 
+    public function getTableFieldDataType(string $table, string $field)
+    {
+        // Function not implemented, since mysql was removed in PHP 7.0
+        return null;
+    }
+
     /**
      * Fetches server information.
      *

@@ -182,7 +182,7 @@ class cSystemtest {
 
     /**
      * Possible result of cSystemtest::isPHPExtensionLoaded()
-     * It was unable to check wether the extension is loaded or not
+     * It was unable to check whether the extension is loaded or not
      *
      * @var int
      */
@@ -248,7 +248,7 @@ class cSystemtest {
 
     /**
      * The test results which are stored for display.
-     * Every array element is an assoicative array like this:
+     * Every array element is an associative array like this:
      * $_messages[$i] = [
      *     "result" => $result, //true or false, success or no success
      *     "severity" => $severity, //one of the C_SEVERITY constants
@@ -268,6 +268,13 @@ class cSystemtest {
     protected $_config;
 
     /**
+     * Setup type, in case the system test runs during a setup.
+     *
+     * @var string
+     */
+    protected $_setupType;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * Caches the given config array for later use.
@@ -275,12 +282,13 @@ class cSystemtest {
      * @param array $config
      *         A config array which should be similar to CONTENIDO's $cfg
      */
-    public function __construct($config) {
+    public function __construct($config, $setupType = '') {
         $this->_config = $config;
+        $this->_setupType = $setupType;
     }
 
     /**
-     * Runs all available tests and stores the resuls in the messages array
+     * Runs all available tests and stores the results in the messages array
      *
      * @param bool $testFileSystem [optional]
      *                             If this is true the file system checks will be performed too
@@ -350,8 +358,8 @@ class cSystemtest {
         $this->storeResult($this->testIconv(), self::C_SEVERITY_ERROR, i18n("PHP iconv functions are not available."), i18n("PHP has been compiled with the --without-iconv directive. CONTENIDO won't work without the iconv functions."), i18n("iconv is available"));
 
         $cfgDbCon = $this->_config['db']['connection'];
-        $result = $this->testMySQL($cfgDbCon['host'], $cfgDbCon['user'], $cfgDbCon['password'], !empty($cfgDbCon['options']) ? $cfgDbCon['options'] : []);
-        switch ($result) {
+        $dbConResult = $this->testMySQL($cfgDbCon['host'], $cfgDbCon['user'], $cfgDbCon['password'], !empty($cfgDbCon['options']) ? $cfgDbCon['options'] : []);
+        switch ($dbConResult) {
             case self::CON_MYSQL_OK:
                 $this->storeResult(true, self::C_SEVERITY_ERROR, "", "", i18n("Database connection works"));
                 break;
@@ -359,7 +367,37 @@ class cSystemtest {
                 $this->storeResult(false, self::C_SEVERITY_ERROR, i18n('MySQL is running in strict mode'), i18n('MySQL is running in strict mode, CONTENIDO will not work with this mode. Please change your sql_mode!'));
                 break;
             default:
-                $this->storeResult(false, self::C_SEVERITY_ERROR, i18n("MySQL database connect failed"), sprintf(i18n("Setup was unable to connect to the MySQL Server (Server %s, Username %s). Please correct the MySQL data and try again.<br><br>The error message given was: %s"), $this->_config['db']['connection']['host'], $this->_config['db']['connection']['user'], $result));
+                $this->storeResult(false, self::C_SEVERITY_ERROR, i18n("MySQL database connect failed"), sprintf(i18n("Setup was unable to connect to the MySQL Server (Server %s, Username %s). Please correct the MySQL data and try again.<br><br>The error message given was: %s"), $this->_config['db']['connection']['host'], $this->_config['db']['connection']['user']));
+        }
+
+        if ($dbConResult == self::CON_MYSQL_OK) {
+            list($result, $data) = $this->testDatabaseTables();
+            if ($result) {
+                $this->storeResult(true, self::C_SEVERITY_ERROR, "", "", i18n("Database check was ok"));
+            } else {
+                $errorMessage = '';
+                foreach ($data as $table => $entry) {
+                    $primary = $entry['primary'];
+                    $entryMsg = [];
+                    if ($entry['results']['invalidPrimary']) {
+                        $entryMsg[] = sprintf(i18n("Number of invalid primary key values (NULL, '', or 0) in field %s: %d"), '<code>' . $primary . '</code>', '<code>' . $entry['results']['invalidPrimary'] . '</code>');
+                    }
+                    if (count($entry['results']['redundantPrimary'])) {
+                        $entryMsg[] = sprintf(i18n("Redundant primary key entries found in field %s."), '<code>' . implode(',', array_keys($entry['results']['redundantPrimary'])) . '</code>');
+                    }
+                    if (count($entryMsg)) {
+                        $errorMessage .= sprintf(i18n("Errors found in table %s:"), '<code>' . $table . '</code>') . '<br><ul><li>' . implode('</li><li>', $entryMsg). '</li></ul>';
+                    }
+                }
+
+                if (empty($this->_setupType)) {
+                    $errorMessage .= i18n('Please resolve these conflicts, they can negatively affect the system stability.');
+                } else {
+                    $errorMessage .= i18n('Please resolve these conflicts before proceeding with the setup. The setup cannot solve this for you.');
+                }
+
+                $this->storeResult(false, self::C_SEVERITY_ERROR, i18n("The database check found some issues."), $errorMessage);
+            }
         }
 
         if ($testFileSystem) {
@@ -373,7 +411,7 @@ class cSystemtest {
      * @param bool $result
      *         true for success, false otherwise
      * @param int $severity
-     *         One one of the C_SEVERITY constants
+     *         One of the C_SEVERITY constants
      * @param string $errorHeadline [optional]
      *         The headline which will be stored in the case that $result is false
      * @param string $errorMessage [optional]
@@ -1025,6 +1063,107 @@ class cSystemtest {
     }
 
     /**
+     * Checks all tables for empty (NULL, '', or 0) or duplicate primary key values.
+     * The check will be skipped, if the system test runs for a setup and the
+     * setup-type is 'setup'.
+     *
+     * @since CONTENIDO 4.10.2
+     * @return array Result array like:
+     *      [
+     *          // True on success, false in case of found errors
+     *          bool $success,
+     *          // Assoziative table name, primary ked check results array
+     *          [
+     *              string $tableName => [
+     *                  'primary' => string $primaryKey,
+     *                  'results' => [
+     *                      // Number of invalid primary keys
+     *                      'invalidPrimary' => int $numInvalid
+     *                      'redundantPrimary' => [
+     *                           // Amount of redundant primary key value
+     *                           int $primaryValue => int $numRedundant
+     *                       ]
+     *                  ],
+     *              ]
+     *          ],
+     *      ]
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     */
+    public function testDatabaseTables(): array
+    {
+        // There is nothing to do if the setup is a new installation
+        if ($this->_setupType === 'setup') {
+            return [true, []];
+        }
+
+        // Get all tables from the database
+        if (empty($this->_setupType)) {
+            $db = new cDb();
+        } else {
+            $db = getSetupMySQLDBConnection(true);
+        }
+        $tableNameData = $db->getTableNames();
+        if (empty($tableNameData)) {
+            return [true, []];
+        }
+
+        $results = [];
+        $tables = [];
+
+        // First collect all tables and the primary keys
+        foreach ($tableNameData as $tableNameItem) {
+            $tableName = $tableNameItem['table_name'];
+            $result = $db->query("SHOW KEYS FROM `%s` WHERE Key_name = 'PRIMARY'", $tableName);
+            if ($result && $db->nextRecord()) {
+                $record = $db->getRecord();
+                $tables[$tableName] = $record['Column_name'];
+            }
+        }
+        $tables['con_aa_test'] = 'idtest';
+        $tables['con_aa_test2'] = 'idtest2';
+
+        // Loop through all tables and do the checks
+        foreach ($tables as $name => $primary) {
+            $dataType = $db->getTableFieldDataType($name, $primary);
+
+            // Check for invalid primary key values
+            $sql = 'SELECT `:pk` FROM `:table` WHERE `:pk` = "" OR `:pk` IS NULL';
+            if ($dataType === 'int') {
+                $sql .= ' OR `:pk` < 1';
+            }
+            $result = $db->query($sql, ['table' => $name, 'pk' => $primary]);
+            while ($result && $db->nextRecord()) {
+                if (!isset($results[$name])) {
+                    $results[$name]['primary'] = $primary;
+                    $results[$name]['results'] = ['invalidPrimary' => 0, 'redundantPrimary' => []];
+                }
+                $results[$name]['results']['invalidPrimary']++;
+            }
+
+            // Check for duplicate primary key values.
+            // This should not happen, because the database doesn't allow
+            // duplicate entries on tables having the key `PRIMARY`.
+            $sql = 'SELECT `:pk` AS `primary`, COUNT(`:pk`) AS `count` FROM `:table` GROUP BY `:pk` HAVING COUNT(`:pk`) > 1';
+            $result = $db->query($sql, ['table' => $name, 'pk' => $primary]);
+            while ($result && $db->nextRecord()) {
+                $record = $db->getRecord();
+                if (!isset($results[$name])) {
+                    $results[$name]['primary'] = $primary;
+                    $results[$name]['results'] = ['invalidPrimary' => 0, 'redundantPrimary' => []];
+                }
+                $results[$name]['results']['redundantPrimary'][$primary] = $record['count'];
+            }
+        }
+
+        if (!empty($results)) {
+            return [false, $results];
+        } else {
+            return [true, []];
+        }
+    }
+
+    /**
      *
      * @param bool $testConfig   [optional]
      * @param bool $testFrontend [optional]
@@ -1145,7 +1284,7 @@ class cSystemtest {
         }
 
         if ($testFrontend) {
-            $isUpgrade = isset($_SESSION['setuptype']) && $_SESSION['setuptype'] == 'upgrade';
+            $isUpgrade = $this->_setupType === 'upgrade';
             foreach ($cfgClient as $oneClient) {
                 if (!is_array($oneClient)) {
                     continue;
@@ -1172,7 +1311,7 @@ class cSystemtest {
     }
 
     /**
-     * Checks a single file or directory wether it is writeable or not
+     * Checks a single file or directory weather it is writeable or not
      *
      * @param string $filename
      *                    The file

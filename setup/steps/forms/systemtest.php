@@ -49,7 +49,7 @@ class cSetupSystemtest extends cSetupMask {
             setupInitializeCfgClient(true);
         }
 
-        $this->_systemtest = new cSystemtest($cfg);
+        $this->_systemtest = new cSystemtest($cfg, $_SESSION['configmode']);
         $this->_systemtest->runTests(false);
         $this->_systemtest->testFilesystem($_SESSION['configmode'] == 'save', $_SESSION['setuptype'] == 'upgrade');
         if ($_SESSION['setuptype'] == 'setup') {

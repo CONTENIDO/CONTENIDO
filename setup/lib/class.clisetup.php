@@ -370,7 +370,7 @@ class cCLISetup {
         i18nInit('../data/locale/', $belang);
 
         // run the tests
-        $test = new cSystemtest($cfg);
+        $test = new cSystemtest($cfg, $_SESSION['setuptype']);
         $test->runTests(false); // general php tests
         $test->testFilesystem(true, false); // file system permission tests
         $test->testFrontendFolderCreation(); // more file system permission tests

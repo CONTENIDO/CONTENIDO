@@ -965,6 +965,22 @@ abstract class cDbDriverHandler {
     }
 
     /**
+     * Returns the data-type of a specific table field.
+     *
+     * @since CONTENIDO 4.10.2
+     * @return string|null
+     */
+    public function getTableFieldDataType(string $table, string $field)
+    {
+        if (!$this->connect()) {
+            return NULL;
+        }
+
+        return $this->getDriver()->getTableFieldDataType($table, $field);
+    }
+
+
+    /**
      * Returns information about DB server.
      * The return value depends always on used DBMS.
      *

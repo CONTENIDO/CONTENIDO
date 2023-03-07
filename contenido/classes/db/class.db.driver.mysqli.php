@@ -373,6 +373,45 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     }
 
     /**
+     * @since CONTENIDO 4.10.2
+     * @inheritdoc
+     */
+    public function getTableFieldDataType(string $table, string $field)
+    {
+        $return = null;
+
+        $sql = "-- cDbDriverMysqli->getTableFieldDataType()
+            SELECT
+                `DATA_TYPE`
+            FROM
+                INFORMATION_SCHEMA.COLUMNS
+            WHERE
+                `TABLE_SCHEMA` = '%s'
+            AND 
+                `TABLE_NAME` = '%s'
+            AND 
+                `COLUMN_NAME` = '%s'
+        ";
+        $sql = sprintf(
+            $sql,
+            $this->_dbCfg['connection']['database'],
+            $this->_handler->escape($table),
+            $this->_handler->escape($field)
+        );
+
+        $linkId = $this->_handler->getLinkId();
+
+        if ($result = mysqli_query($linkId, $sql)) {
+            if ($record = mysqli_fetch_row($result)) {
+                $return = $record[0];
+            }
+            mysqli_free_result($result);
+        }
+
+        return $return;
+    }
+
+    /**
      * @inheritdoc
      */
     public function getServerInfo() {
