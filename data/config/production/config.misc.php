@@ -364,6 +364,13 @@ $cfg['images']['image_magick']['use'] = true;
 //       to ImageMagick.
 $cfg['images']['image_magick']['path'] = '';
 
+// (string) Optional, the command to convert images.
+// NOTE: Up to ImageMagick 6 the command 'convert' was used to convert images,
+//       this has been replaced with the command 'magick' as of ImageMagick 7,
+//       which is the new primary command for all jobs.
+//       - Use 'magick' for ImageMagick >= 7
+//       - Use 'convert' for ImageMagick <= 6
+$cfg['images']['image_magick']['command'] = 'convert';
 
 // (int) configuration of the compression rate used by the cApiImgScale functions.
 //       For JPEG/JPG compression the value will be used as it is. For PNG compression
