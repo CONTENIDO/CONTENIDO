@@ -778,7 +778,7 @@ class cContentVersioning
 
         $redirect = (empty($parameters['redirect'])) ? cSecurity::toInteger($redirect) : $parameters['redirect'];
         $redirect_url = (empty($parameters['page_title'])) ? stripslashes($redirect_url) : stripslashes($parameters['redirect_url']);
-        $external_redirect = (empty($parameters['external_redirect'])) ? stripslashes($external_redirect) : stripslashes($parameters['external_redirect']);
+        $external_redirect = (empty($parameters['external_redirect'])) ? stripslashes($external_redirect ?? '') : stripslashes($parameters['external_redirect']);
 
         $urlname = (trim($urlname) == '')? trim($parameters['title']) : trim($urlname);
 
