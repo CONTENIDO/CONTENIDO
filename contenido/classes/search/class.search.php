@@ -190,7 +190,8 @@ cInclude('includes', 'functions.encoding.php');
  * @package    Core
  * @subpackage Frontend_Search
  */
-class cSearch extends cSearchBaseAbstract {
+class cSearch extends cSearchBaseAbstract
+{
 
     /**
      * Instance of class Index
@@ -198,6 +199,13 @@ class cSearch extends cSearchBaseAbstract {
      * @var object
      */
     protected $_index;
+
+    /**
+     * Authentication instance
+     *
+     * @var cAuth
+     */
+    protected $_auth;
 
     /**
      * search words
@@ -326,16 +334,21 @@ class cSearch extends cSearchBaseAbstract {
      *             </pre>
      * @param cDb   $db [optional]
      *                  CONTENIDO database object
+     * @param cAuth  $auth [optional]
+     *                  Authentication object
      *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct(array $options, $db = NULL) {
+    public function __construct(array $options, $db = NULL, $auth = NULL)
+    {
         parent::__construct($db);
 
         $this->_index = new cSearchIndex($db);
 
         $this->_setOptions($options);
+
+        $this->_auth = $auth instanceof cAuth ? $auth : cRegistry::getAuth();
     }
 
     /**
@@ -351,7 +364,8 @@ class cSearch extends cSearchBaseAbstract {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function searchIndex($searchWords, $searchWordsExclude = '') {
+    public function searchIndex($searchWords, $searchWordsExclude = '')
+    {
         if (cString::getStringLength(trim($searchWords)) > 0) {
             $this->_searchWords = $this->stripWords($searchWords);
         } else {
@@ -362,41 +376,31 @@ class cSearch extends cSearchBaseAbstract {
             $this->_searchWordsExclude = $this->stripWords($searchWordsExclude);
         }
 
-        $tmpSearchWords = [];
-        foreach ($this->_searchWords as $word) {
-            $wordEscaped = cSecurity::escapeDB($word, $this->db);
-            if ($this->_searchOption === 'like') {
-                $wordEscaped = "'%" . $wordEscaped . "%'";
-            } elseif ($this->_searchOption === 'exact') {
-                $wordEscaped = "'" . $wordEscaped . "'";
-            }
-            $tmpSearchWords[] = $wordEscaped;
-        }
-
+        $tmpSearchWords = $this->_prepareSearchWordsForQuery($this->_searchWords);
         if (count($this->_searchWordsExclude) > 0) {
-            foreach ($this->_searchWordsExclude as $word) {
-                $wordEscaped = cSecurity::escapeDB($word, $this->db);
-                if ($this->_searchOption === 'like') {
-                    $wordEscaped = "'%" . $wordEscaped . "%'";
-                } elseif ($this->_searchOption === 'exact') {
-                    $wordEscaped = "'" . $wordEscaped . "'";
-                }
-                $tmpSearchWords[] = $wordEscaped;
-                $this->_searchWords[] = $word;
-            }
+            $tmpSearchWords = array_merge(
+                $tmpSearchWords,
+                $this->_prepareSearchWordsForQuery($this->_searchWordsExclude)
+            );
         }
 
-        if ($this->_searchOption == 'regexp') {
-            // regexp search
-            $kwSql = "keyword REGEXP '" . implode('|', $tmpSearchWords) . "'";
-        } elseif ($this->_searchOption === 'like') {
-            // like search
-            $search_like = implode(" OR keyword LIKE ", $tmpSearchWords);
-            $kwSql = "keyword LIKE " . $search_like;
-        } elseif ($this->_searchOption === 'exact') {
-            // exact match
-            $search_exact = implode(" OR keyword = ", $tmpSearchWords);
-            $kwSql = "keyword LIKE " . $search_exact;
+        // Build the '<field> <operator> <value>' condition for the query
+        switch ($this->_searchOption) {
+            case 'regexp':
+                // regexp search
+                $kwSql = "`keyword` REGEXP '" . implode('|', $tmpSearchWords) . "'";
+                break;
+            case 'like':
+                // like search
+                $search_like = implode(" OR keyword LIKE ", $tmpSearchWords);
+                $kwSql = "`keyword` LIKE " . $search_like;
+                break;
+            case 'exact':
+            default:
+                // exact match
+                $search_exact = implode(" OR keyword = ", $tmpSearchWords);
+                $kwSql = "`keyword` LIKE " . $search_exact;
+            break;
         }
 
         // Prepare sql without keywords, we don't want any strings in keywords sql
@@ -512,7 +516,8 @@ class cSearch extends cSearchBaseAbstract {
      *         The cms-types (htmlhead, html, ...) which should explicitly be
      *         searched.
      */
-    public function setCmsOptions($cms_options) {
+    public function setCmsOptions($cms_options)
+    {
         if (is_array($cms_options) && count($cms_options) > 0) {
             $this->_index->setCmsOptions($cms_options);
         }
@@ -525,7 +530,8 @@ class cSearch extends cSearchBaseAbstract {
      * @return array
      *         of stripped search-words
      */
-    public function stripWords($searchWords) {
+    public function stripWords($searchWords)
+    {
         // remove backslash and html tags
         $searchWords = trim(strip_tags(stripslashes($searchWords)));
 
@@ -558,7 +564,8 @@ class cSearch extends cSearchBaseAbstract {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function getSubTree($cat_start) {
+    public function getSubTree($cat_start)
+    {
         $sql = "SELECT
                 B.idcat, B.parentid
             FROM
@@ -575,7 +582,7 @@ class cSearch extends cSearchBaseAbstract {
         $this->_debug('sql', $sql);
         $this->db->query($sql);
 
-        // $aSubCats = array();
+        // $aSubCats = [];
         // $i = false;
         // while ($this->db->nextRecord()) {
         // if ($this->db->f('parentid') < $cat_start) {
@@ -593,11 +600,11 @@ class cSearch extends cSearchBaseAbstract {
 
         $aSubCats = [$cat_start];
         while ($this->db->nextRecord()) {
-            // ommit if cat is no child of any recognized descendant
+            // omit if cat is no child of any recognized descendant
             if (!in_array($this->db->f('parentid'), $aSubCats)) {
                 continue;
             }
-            // ommit if cat is already recognized (happens with $cat_start)
+            // omit if cat is already recognized (happens with $cat_start)
             if (in_array($this->db->f('idcat'), $aSubCats)) {
                 continue;
             }
@@ -616,7 +623,8 @@ class cSearch extends cSearchBaseAbstract {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function getSearchableArticles($search_range) {
+    public function getSearchableArticles($search_range)
+    {
         global $auth;
 
         $aCatRange = [];
@@ -695,12 +703,15 @@ class cSearch extends cSearchBaseAbstract {
 
         $aIdArts = [];
         while ($this->db->nextRecord()) {
-            if($this->db->f("idcat") != "" && $this->_protected) {
-                if($this->db->f("public") == "0") {
+            $idcat = cSecurity::toInteger($this->db->f('idcat'));
+            if ($idcat > 0 && $this->_protected) {
+                if ($this->db->f('public') == '0') {
                     // CEC to check category access
                     // break at 'true', default value 'false'
                     cApiCecHook::setBreakCondition(true, false);
-                    $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.CategoryAccess', $this->lang, $this->db->f("idcat"), $auth->auth['uid']);
+                    $allow = cApiCecHook::executeWhileBreakCondition(
+                        'Contenido.Frontend.CategoryAccess', $this->lang, $idcat, $this->_auth->auth['uid']
+                    );
                     if (!$allow) {
                         continue;
                     }
@@ -720,7 +731,8 @@ class cSearch extends cSearchBaseAbstract {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function getArticleSpecifications() {
+    public function getArticleSpecifications()
+    {
         $sql = "SELECT `idartspec` FROM `%d` WHERE `client` = %d AND `lang` = %d AND `online` = 1";
         $sql = $this->db->prepare($sql, cRegistry::getDbTableName('art_spec'), $this->client, $this->lang);
         $this->_debug('sql', $sql);
@@ -739,7 +751,8 @@ class cSearch extends cSearchBaseAbstract {
      *
      * @param int $iArtspecID
      */
-    public function setArticleSpecification($iArtspecID) {
+    public function setArticleSpecification($iArtspecID)
+    {
         $this->_articleSpecs[] = $iArtspecID;
     }
 
@@ -752,7 +765,8 @@ class cSearch extends cSearchBaseAbstract {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function addArticleSpecificationsByName($sArtSpecName) {
+    public function addArticleSpecificationsByName($sArtSpecName)
+    {
         if (!isset($sArtSpecName) || cString::getStringLength($sArtSpecName) == 0) {
             return false;
         }
@@ -776,7 +790,8 @@ class cSearch extends cSearchBaseAbstract {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    protected function _setOptions(array $options) {
+    protected function _setOptions(array $options)
+    {
         $this->_searchOption = cString::toLowerCase($options['db'] ?? '');
         if (!in_array($this->_searchOption, ['regexp', 'like', 'exact'])) {
             $this->_searchOption = 'regexp';
@@ -805,6 +820,36 @@ class cSearch extends cSearchBaseAbstract {
         if ($this->intMinimumSimilarity < 1 || $this->intMinimumSimilarity > 100) {
             $this->intMinimumSimilarity = 50;
         }
+    }
+
+    /**
+     * Prepares the passed list of search-terms for the usage in SQL operators.
+     *
+     * @param array $searchWords
+     * @return array
+     */
+    protected function _prepareSearchWordsForQuery(array $searchWords): array
+    {
+        $tmpSearchWords = [];
+        foreach ($searchWords as $word) {
+            $wordEscaped = cSecurity::escapeDB($word, $this->db);
+            if ($this->_searchOption === 'like') {
+                // Escape the percent sign for the LIKE operator value
+                $wordEscaped = str_replace('%', '\\%', $wordEscaped);
+                $wordEscaped = "'%" . $wordEscaped . "%'";
+            } elseif ($this->_searchOption === 'regexp') {
+                // Escape special regex characters for the REGEXP operator value, the '&' sign too.
+                $wordEscaped = preg_quote($wordEscaped, '&');
+                // Escape all single backslashes against double ones
+                $wordEscaped = preg_replace('/\\\\/', '\\\\\\\\', $wordEscaped);
+            } elseif ($this->_searchOption === 'exact') {
+                // Exact search also works with LIKE, escape the percent sign for the LIKE operator value
+                $wordEscaped = str_replace('%', '\\%', $wordEscaped);
+                $wordEscaped = "'" . $wordEscaped . "'";
+            }
+            $tmpSearchWords[] = $wordEscaped;
+        }
+        return $tmpSearchWords;
     }
 
 }
