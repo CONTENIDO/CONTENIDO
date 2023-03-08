@@ -337,7 +337,8 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
     // Try to execute convert
     $output = [];
     $retVal = 0;
-    $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'convert');
+    $convertCommand = $cfg['images']['image_magick']['command'];
+    $program = escapeshellarg($cfg['images']['image_magick']['path'] . $convertCommand);
     $source = escapeshellarg($fileName);
     $destination = escapeshellarg($cacheFile);
     $quality = cApiImgGetCompressionRate($fileType, $quality);
@@ -383,6 +384,8 @@ function cApiImageIsAnimGif($sFile) {
     $cfg = cRegistry::getConfig();
     $output = [];
     $retVal = 0;
+    // NOTE: Since ImageMagic 7 the command `magick` is used for all image processing
+    //       jobs, but `identify` still works as an symbolic link to `magick`.
     $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'identify');
     $source = escapeshellarg($sFile);
 
@@ -714,7 +717,8 @@ function cApiIsImageMagickAvailable() {
     $cfg = cRegistry::getConfig();
 
     // otherwise execute the IM check
-    $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'convert');
+    $convertCommand = $cfg['images']['image_magick']['command'];
+    $program = escapeshellarg($cfg['images']['image_magick']['path'] . $convertCommand);
     $output = [];
     $retVal = 0;
     @exec("'{$program}' -version", $output, $retVal);
