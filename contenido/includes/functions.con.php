@@ -432,10 +432,11 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
             $artLang->store();
         case 'advanced':
         	$oldOnline = $artLang->get('online');
+            $publishedby = null;
             // Create new Article Language Version Entry
             if ((int) $online == 1 && $oldOnline == 0) {
-                    $published = date('Y-m-d H:i:s');
-                    $publishedby = $author;
+                $published = date('Y-m-d H:i:s');
+                $publishedby = $author;
             }
             $parameters = [
                 'idcat' => $idcat,
@@ -452,7 +453,6 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
                 'iscurrentversion' => 1,
                 'lastmodified' => $lastmodified,
                 'published' => $published,
-                'publishedby' => $publishedby,
                 'author' => $author,
                 'artsort' => $artsort,
                 'datestart' => $datestart,
@@ -462,6 +462,10 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
                 'sitemapprio' => $sitemapprio,
                 'changefreq' => $changefreq
             ];
+
+            if ($publishedby) {
+                $parameters['publishedby'] = $publishedby;
+            }
 
             if (isset($online)) {
             	$parameters['online'] = $online;
