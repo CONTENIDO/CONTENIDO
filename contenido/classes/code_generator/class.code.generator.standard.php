@@ -20,13 +20,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
+class cCodeGeneratorStandard extends cCodeGeneratorAbstract
+{
 
     /**
      * @inheritdoc
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function _generate($contype = true, $editable = true, $version = NULL) {
+    public function _generate($contype = true, $editable = true, $version = NULL)
+    {
         $cfg = cRegistry::getConfig();
 
         $this->_cssData = '';
@@ -261,7 +263,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * Will be invoked, if code generation wasn't able to find a
      * configured article or category.
      *
-     * Creates a error message and writes this into the code cache.
+     * Creates an error message and writes this into the code cache.
      *
      * @param int $idcatart
      *         category article id
@@ -269,7 +271,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    protected function _processNoConfigurationError($idcatart) {
+    protected function _processNoConfigurationError($idcatart)
+    {
         cDebug::out('Neither CAT or ART are configured!<br><br>');
 
         $code = '<html><body>No code was created for this article in this category.</body><html>';
@@ -333,7 +336,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      *
      * @return string
      */
-    protected function _processCodeMetaTags() {
+    protected function _processCodeMetaTags()
+    {
         // get basic meta tags (from article & system)
         $metaTags = $this->_getBasicMetaTags();
 
@@ -402,10 +406,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * @param string $code           [optional]
      *                               parameter for setting code manually instead of using the generated layout code
      * @param bool   $flagCreateCode [optional]
-     *                               whether the create code flag in cat_art should be set or not (optional)
+     *                               whether the "create code" flag in cat_art should be set or not (optional)
      * @throws cDbException|cInvalidArgumentException
      */
-    protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true) {
+    protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true)
+    {
         $cfgClient = cRegistry::getClientConfig();
         $codePath = $cfgClient[$this->_client]['code']['path'];
 
@@ -453,14 +458,14 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
     /**
      * Collects and return basic meta tags/elements.
      *
-     * @global array $encoding
      * @return array
-     *         List of assozative meta tag values
+     *         List of associative meta tag values
+     * @throws cDbException
+     * @throws cException
      */
-    protected function _getBasicMetaTags() {
-        global $encoding;
-
-        // collect all available meta tag entries with non empty values
+    protected function _getBasicMetaTags()
+    {
+        // collect all available meta tag entries with non-empty values
         $metaTags = [];
         foreach (conGetAvailableMetaTagTypes() as $key => $value) {
             $metaValue = conGetMetaValue($this->_idartlang, $key);
@@ -483,20 +488,25 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             'content' => $generator
         ];
 
+        $encoding = cRegistry::getEncoding();
+        if (!$encoding) {
+            $encoding = 'utf-8';
+        }
+
         // add charset or content type meta tag
         if (getEffectiveSetting('generator', 'html5', 'false') === 'true') {
             $metaTags[] = [
-                'charset' => $encoding[$this->_lang]
+                'charset' => $encoding
             ];
         } elseif (getEffectiveSetting('generator', 'xhtml', 'false') === 'true') {
             $metaTags[] = [
                 'http-equiv' => 'Content-Type',
-                'content' => 'application/xhtml+xml; charset=' . $encoding[$this->_lang]
+                'content' => 'application/xhtml+xml; charset=' . $encoding
             ];
         } else {
             $metaTags[] = [
                 'http-equiv' => 'Content-Type',
-                'content' => 'text/html; charset=' . $encoding[$this->_lang]
+                'content' => 'text/html; charset=' . $encoding
             ];
         }
 
