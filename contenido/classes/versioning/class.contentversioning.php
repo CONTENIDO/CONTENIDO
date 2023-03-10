@@ -772,15 +772,15 @@ class cContentVersioning
 
         global $timemgmt;
 
-        $page_title = (empty($parameters['pagetitle'])) ? addslashes($page_title) : $parameters['pagetitle'];
+        $page_title = empty($parameters['pagetitle']) ? addslashes($page_title ?? '') : $parameters['pagetitle'];
 
         $parameters['title'] = stripslashes($parameters['title']);
 
-        $redirect = (empty($parameters['redirect'])) ? cSecurity::toInteger($redirect) : $parameters['redirect'];
-        $redirect_url = (empty($parameters['page_title'])) ? stripslashes($redirect_url) : stripslashes($parameters['redirect_url']);
-        $external_redirect = (empty($parameters['external_redirect'])) ? stripslashes($external_redirect ?? '') : stripslashes($parameters['external_redirect']);
+        $redirect = empty($parameters['redirect']) ? cSecurity::toInteger($redirect ?? '0') : $parameters['redirect'];
+        $redirect_url = empty($parameters['page_title']) ? stripslashes($redirect_url ?? '') : stripslashes($parameters['redirect_url']);
+        $external_redirect = empty($parameters['external_redirect']) ? stripslashes($external_redirect ?? '') : stripslashes($parameters['external_redirect']);
 
-        $urlname = (trim($urlname) == '')? trim($parameters['title']) : trim($urlname);
+        $urlname = (trim($urlname ?? '') == '') ? trim($parameters['title']) : trim($urlname ?? '');
 
         if ($parameters['isstart'] ?? 0 == 1) {
             $timemgmt = 0;
