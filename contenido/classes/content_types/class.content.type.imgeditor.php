@@ -143,6 +143,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $this->_keywords = '';
         $this->_internalNotice = '';
         $this->_copyright = '';
+        $this->_dirname = '';
         if ($this->_rawSettings) {
             // get image information from con_upl from the database
             $upload = new cApiUpload($this->_rawSettings);
@@ -432,10 +433,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         );
 
         // Write setting dirname (without backslash at the end)
-        if (is_string($this->_dirname) && cString::endsWith($this->_dirname, '/')) {
+        if (!empty($this->_dirname) && cString::endsWith($this->_dirname, '/')) {
             $this->setSetting('dirname', cString::getPartOfString($this->_dirname, 0, -1));
         } else {
-            $this->setSetting('dirname', $this->_dirname ?? '');
+            $this->setSetting('dirname', $this->_dirname);
         }
 
         // construct the bottom code of the template
@@ -692,8 +693,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         }
 
         // set default value
-        if (isset($this->_dirname)) {
-            $default = $this->_dirname . (empty($this->_dirname) ? '/' : '') . $this->_filename;
+        if (!empty($this->_dirname)) {
+            $default = $this->_dirname . $this->_filename;
             $htmlSelect->setDefault($default);
         } else {
             $htmlSelect->setDefault('');
