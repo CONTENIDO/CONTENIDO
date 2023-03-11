@@ -1295,14 +1295,17 @@ function conSetStartArticle($idcat, $idart, $lang, $isstart)
     // deactivate time management of article language if article should be start article
     if ($succ && $isstart == 1) {
         $timemgmt = $articleLanguage->get('timemgmt');
-        $articleLanguage->set('timemgmt', 0);
-        $succ = $articleLanguage->store();
+        if ($timemgmt == 1) {
+            $articleLanguage->set('timemgmt', 0);
+            $succ = $articleLanguage->store();
+        }
     }
 
     // set startidartlang of category language
     $categoryLanguage = new cApiCategoryLanguage();
     if ($succ && $categoryLanguage->loadByCategoryIdAndLanguageId($idcat, $lang)) {
         $startidartlang = $isstart == 1 ? $articleLanguage->get('idartlang') : 0;
+
         $categoryLanguage->set('startidartlang', $startidartlang);
         $succ = $categoryLanguage->store();
 
