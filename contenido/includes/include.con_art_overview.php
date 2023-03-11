@@ -66,7 +66,7 @@ if ($action == 'con_duplicate' && $articleOverviewHelper->hasArticleDuplicatePer
 }
 
 if ($action == 'con_syncarticle' && $articleOverviewHelper->hasArticleContentSyncPermission()) {
-    if ($_POST['idarts']) {
+    if (!empty($_POST['idarts'])) {
         $idarts = json_decode($_POST['idarts'], true);
     } else {
         $idarts = [
