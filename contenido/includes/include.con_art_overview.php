@@ -881,12 +881,13 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         $select = (!$no_article) ? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '&nbsp;';
         $caption = (!$no_article) ? i18n("Items per page:") : '&nbsp;';
+        $sourcelanguage = $sourcelanguage ?? $syncoptions;
 
         $tpl->set('s', 'ELEMPERPAGECAPTION', $caption);
         $tpl->set('s', 'ELEMPERPAGE', $select);
 
         $tpl->set('s', 'IDCAT', $idcat);
-        $tpl->set('s', 'SOURCELANGUAGE', $lang);
+        $tpl->set('s', 'SOURCELANGUAGE', $sourcelanguage);
 
         // Extract Category and Catcfg
         $sql = "SELECT
