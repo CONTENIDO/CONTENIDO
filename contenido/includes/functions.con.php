@@ -2114,6 +2114,10 @@ function conSyncArticle($idart, $srclang, $dstlang) {
     $param = [];
     $param['src_art_lang'] = $srcArtLang->toArray();
     $param['dest_art_lang'] = $dstArtLang->toArray();
+    if (!is_array($param['dest_art_lang'])) {
+        // This case can happen when synchronizing from another language.
+        $param['dest_art_lang'] = [];
+    }
     $param['dest_art_lang']['idartlang'] = cSecurity::toInteger($newidartlang);
     $param['dest_art_lang']['idlang'] = cSecurity::toInteger($dstlang);
     $param['dest_art_lang']['idtplcfg'] = cSecurity::toInteger($newidtplcfg);
