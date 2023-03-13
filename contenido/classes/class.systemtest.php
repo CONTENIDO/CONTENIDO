@@ -1120,8 +1120,6 @@ class cSystemtest {
                 $tables[$tableName] = $record['Column_name'];
             }
         }
-        $tables['con_aa_test'] = 'idtest';
-        $tables['con_aa_test2'] = 'idtest2';
 
         // Loop through all tables and do the checks
         foreach ($tables as $name => $primary) {
