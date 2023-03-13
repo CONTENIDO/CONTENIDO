@@ -98,7 +98,7 @@ class cContentTypeHtml extends cContentTypeAbstract
 
         // construct edit button
         $editLink = $this->_session->url(
-            $this->_cfg['path']['contenido_fullhtml'] . 'external/backendedit/'
+            cRegistry::getBackendUrl() . 'external/backendedit/'
             . 'front_content.php?action=10&idcat=' . $this->_idCat
             . '&idart=' . $this->_idArt . '&idartlang=' . $this->_idArtLang
             . '&type=' . $this->_type . '&typenr=' . $this->_id .
@@ -107,7 +107,7 @@ class cContentTypeHtml extends cContentTypeAbstract
         $editAnchor = new cHTMLLink('#');
         $editAnchor->setAttribute('onclick', "javascript:Con.Tiny.setContent('" . $this->_idArtLang . "','" . $editLink . "'); return false;");
         $editAnchor->setClass('con_img_button con_img_button_content_type');
-        $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithtml.gif');
+        $editButton = new cHTMLImage(cRegistry::getBackendUrl() . $this->_cfg['path']['images'] . 'but_edithtml.gif');
         $editButton->appendStyleDefinition('margin-right', '2px');
         $editButton->setClass('con_img');
         $editAnchor->setContent($editButton);
@@ -116,7 +116,7 @@ class cContentTypeHtml extends cContentTypeAbstract
         $saveAnchor = new cHTMLLink('#');
         $saveAnchor->setAttribute('onclick', "javascript:Con.Tiny.setContent('" . $this->_idArtLang . "', '0'); return false;");
         $saveAnchor->setClass('con_img_button con_img_button_content_type');
-        $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif');
+        $saveButton = new cHTMLImage(cRegistry::getBackendUrl() . $this->_cfg['path']['images'] . 'but_ok.gif');
         $saveButton->setClass('con_img');
         $saveAnchor->setContent($saveButton);
 

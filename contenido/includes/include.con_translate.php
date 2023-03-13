@@ -111,8 +111,8 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
  */
 function addSortImages($index, $text) {
     $cfg = cRegistry::getConfig();
-    $sortUp = '<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'sort_up.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
-    $sortDown = '<img src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'sort_down.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
+    $sortUp = '<img src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'sort_up.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
+    $sortDown = '<img src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'sort_down.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
 
     if ($_REQUEST["sortby"] == $index) {
         if ($_REQUEST["sortmode"] == 'ASC') {
@@ -469,7 +469,7 @@ foreach ($elemPerPage as $value => $option) {
 }
 $selectElementsPerPage->setAttribute('class', 'elem_per_page');
 $submitElementsPerPage = new cHTMLButton('elemperpagesubmit', i18n("Submit"), 'elem_per_page_submit', false, NULL, '', 'image', 'con_img_button');
-$submitElementsPerPage->setImageSource($cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_ok.gif');
+$submitElementsPerPage->setImageSource(cRegistry::getBackendUrl() . $cfg['path']['images'] . 'but_ok.gif');
 
 $formElementsPerPage->setContent($labelElementsPerPage->render() . $selectElementsPerPage->render() . $submitElementsPerPage->render());
 
@@ -511,7 +511,7 @@ if (is_array($aAllTemplates) && count($aAllTemplates) > 0) {
 }
 $searchInput = new cHTMLTextbox('search', $search, 20);
 
-$searchSubmit = ' <input type="image" name="searchsubmit" class="con_img_button" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_preview.gif">';
+$searchSubmit = ' <input type="image" name="searchsubmit" class="con_img_button" value="submit" src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'but_preview.gif">';
 
 $formSearch->setContent($filterSelect . $searchInput->render() . $searchSubmit);
 

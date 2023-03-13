@@ -80,7 +80,7 @@ class cContentTypeText extends cContentTypeAbstract {
         $div->setID($this->_prefix . '_text_' . $this->_id);
         $div->appendStyleDefinition('display', 'inline');
 
-        $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithead.gif');
+        $editButton = new cHTMLImage(cRegistry::getBackendUrl() . $this->_cfg['path']['images'] . 'but_edithead.gif');
         $editButton->setID($this->_prefix . '_editbutton_' . $this->_id);
         $editButton->appendStyleDefinitions(
             [
@@ -107,7 +107,7 @@ class cContentTypeText extends cContentTypeAbstract {
         );
         $textbox->setClass("$this->_id");
 
-        $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_ok.gif');
+        $saveButton = new cHTMLImage(cRegistry::getBackendUrl() . 'images/but_ok.gif');
         $saveButton->setID($this->_prefix . '_savebutton_' . $this->_id);
         $saveButton->appendStyleDefinitions(
             [

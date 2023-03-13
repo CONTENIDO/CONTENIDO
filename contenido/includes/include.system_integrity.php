@@ -30,13 +30,13 @@ foreach ($results as $result) {
     }
 
     if ($result["result"] == true) {
-        $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/but_ok.gif");
+        $page->set("d", "IMAGESOURCE", cRegistry::getBackendUrl() . "images/but_ok.gif");
     } elseif ($result["severity"] == cSystemtest::C_SEVERITY_WARNING) {
-        $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/icon_warning.gif");
+        $page->set("d", "IMAGESOURCE", cRegistry::getBackendUrl() . "images/icon_warning.gif");
     } elseif ($result["severity"] == cSystemtest::C_SEVERITY_ERROR) {
-        $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/icon_fatalerror.gif");
+        $page->set("d", "IMAGESOURCE", cRegistry::getBackendUrl() . "images/icon_fatalerror.gif");
     } elseif ($result["severity"] == cSystemtest::C_SEVERITY_INFO) {
-        $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/info.gif");
+        $page->set("d", "IMAGESOURCE", cRegistry::getBackendUrl() . "images/info.gif");
     }
     $page->set("d", "HEADLINE", $result["headline"]);
     $page->set("d", "MESSAGE", $result["message"]);

@@ -715,7 +715,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         $templateBottom->set('s', 'SETTINGS', json_encode($this->getSettings()));
         $templateBottom->set(
             's', 'JS_CLASS_SCRIPT',
-            $this->_cfg['path']['contenido_fullhtml'] . cAsset::backend('scripts/content_types/cmsTeaser.js')
+            cRegistry::getBackendUrl() . cAsset::backend('scripts/content_types/cmsTeaser.js')
         );
         $templateBottom->set('s', 'JS_CLASS_NAME', 'Con.cContentTypeTeaser');
         $codeBottom = $templateBottom->generate(
@@ -931,7 +931,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         $wrapperContent[] = buildArticleSelect('teaser_art_' . $this->_id, 0, 0);
 
         $wrapperContent[] = new cHTMLLabel(i18n('Add'), 'add_art_' . $this->_id);
-        $image            = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_art_new.gif');
+        $image            = new cHTMLImage(cRegistry::getBackendUrl() . 'images/but_art_new.gif');
         $image->setAttribute('id', 'add_art_' . $this->_id);
         $image->appendStyleDefinition('cursor', 'pointer');
         $wrapperContent[] = $image;
@@ -959,7 +959,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         $wrapperContent[] = $selectElement;
 
         $wrapperContent[] = new cHTMLLabel(i18n("Delete"), 'del_art_' . $this->_id);
-        $image            = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/delete.gif');
+        $image            = new cHTMLImage(cRegistry::getBackendUrl() . 'images/delete.gif');
         $image->setAttribute('id', 'del_art_' . $this->_id);
         $image->appendStyleDefinition('cursor', 'pointer');
         $wrapperContent[] = $image;

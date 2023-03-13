@@ -360,13 +360,12 @@ class cContentTypeDate extends cContentTypeAbstract
     private function _generateJavaScript()
     {
         $template = new cTemplate();
-        $pathBackend = $this->_cfg['path']['contenido_fullhtml'];
 
         $template->set('s', 'PREFIX', $this->_prefix);
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
         $template->set('s', 'LANG', cString::getPartOfString(cRegistry::getBackendLanguage(), 0, 2));
-        $template->set('s', 'PATH_TO_CALENDAR_PIC', $pathBackend . $this->_cfg['path']['images'] . 'calendar.gif');
+        $template->set('s', 'PATH_TO_CALENDAR_PIC', cRegistry::getBackendUrl() . $this->_cfg['path']['images'] . 'calendar.gif');
         $setting = $this->getSettings();
         if (array_key_exists('date_format', $setting)) {
             $setting['date_format'] = json_decode($setting['date_format'], true);
@@ -375,7 +374,7 @@ class cContentTypeDate extends cContentTypeAbstract
         $template->set('s', 'BELANG', cRegistry::getBackendLanguage());
 
         return $template->generate(
-            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_date.html',
+            cRegistry::getBackendPath() . 'templates/standard/template.cms_date.html',
             true
         );
     }
@@ -389,7 +388,7 @@ class cContentTypeDate extends cContentTypeAbstract
     private function _generateStoreButton()
     {
         $saveButton = new cHTMLImage(
-            $this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif',
+            cRegistry::getBackendUrl() . $this->_cfg['path']['images'] . 'but_ok.gif',
             'con_img_button save_settings'
         );
 

@@ -449,7 +449,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $templateBottom->set('s', 'SETTINGS', json_encode($this->getSettings()));
         $templateBottom->set(
             's', 'JS_CLASS_SCRIPT',
-            $this->_cfg['path']['contenido_fullhtml'] . cAsset::backend('scripts/content_types/cmsImgeditor.js')
+            cRegistry::getBackendUrl() . cAsset::backend('scripts/content_types/cmsImgeditor.js')
         );
         $templateBottom->set('s', 'JS_CLASS_NAME', 'Con.cContentTypeImgeditor');
         $codeBottom = $templateBottom->generate(
@@ -556,7 +556,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $newDirForm = new cHTMLForm();
         $newDirForm->setAttribute('name', 'newdir');
         $newDirForm->setAttribute('method', 'post');
-        $newDirForm->setAttribute('action', $this->_cfg['path']['contenido_fullhtml'] . 'main.php');
+        $newDirForm->setAttribute('action', cRegistry::getBackendUrl() . 'main.php');
         $caption1Span = new cHTMLSpan();
         $caption1Span->setID('caption1');
         $newDirHead = new cHTMLDiv([
@@ -571,7 +571,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $path = new cHTMLHiddenField('path');
         $foldername = new cHTMLTextbox('foldername');
         $button = new cHTMLButton('', '', '', false, null, '', 'image');
-        $button->setAttribute('src', $this->_cfg['path']['contenido_fullhtml'] . 'images/submit.gif');
+        $button->setAttribute('src', cRegistry::getBackendUrl() . 'images/submit.gif');
         $newDirContent = new cHTMLDiv([
             $area,
             $action,
@@ -593,7 +593,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $propertiesForm->setID('properties' . $this->_id);
         $propertiesForm->setAttribute('name', 'properties');
         $propertiesForm->setAttribute('method', 'post');
-        $propertiesForm->setAttribute('action', $this->_cfg['path']['contenido_fullhtml'] . 'main.php');
+        $propertiesForm->setAttribute('action', cRegistry::getBackendUrl() . 'main.php');
         $propertiesForm->setAttribute('enctype', 'multipart/form-data');
         $frame = new cHTMLHiddenField('frame', '4');
         $area = new cHTMLHiddenField('area', 'upl');
@@ -623,7 +623,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         ]);
         $wrapperContent[] = $propertiesForm;
 
-        $wrapperContent[] = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/ajax-loader.gif', 'loading');
+        $wrapperContent[] = new cHTMLImage(cRegistry::getBackendUrl() . 'images/ajax-loader.gif', 'loading');
 
         $wrapper->setContent($wrapperContent);
         return $wrapper->render();

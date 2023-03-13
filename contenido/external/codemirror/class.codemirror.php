@@ -193,7 +193,7 @@ class CodeMirror {
         }
 
         $js = '';
-        $conPath = $this->_cfg['path']['contenido_fullhtml'];
+        $conPath = cRegistry::getBackendUrl();
         $pathTemplate = 'external/codemirror/mode/%s/%s.js';
         foreach ($modes as $mode) {
             $path = sprintf($pathTemplate, $mode, $mode);
@@ -235,7 +235,7 @@ class CodeMirror {
         // if external js file for editor should be included, do this here
         $js = '';
         if ($this->_addScript) {
-            $conPath = $this->_cfg['path']['contenido_fullhtml'];
+            $conPath = cRegistry::getBackendUrl();
             $path = $conPath . 'external/codemirror/';
 
             $language = $this->_language;

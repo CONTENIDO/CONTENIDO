@@ -90,7 +90,7 @@ class cContentTypeHead extends cContentTypeText {
         );
         $textbox->setClass("$this->_id");
 
-        $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_ok.gif');
+        $saveButton = new cHTMLImage(cRegistry::getBackendUrl() . 'images/but_ok.gif');
         $saveButton->setID($this->_prefix . '_savebutton_' . $this->_id);
         $saveButton->appendStyleDefinitions([
             'margin-left' => '5px',

@@ -96,7 +96,7 @@ switch ($wysiwygeditor) {
         $oEditor = new cTinyMCE4Editor('', '');
         break;
     default:
-        $page->set('s', '_PATH_CONTENIDO_TINYMCE_CSS_', $cfg['path']['contenido_fullhtml'] . 'styles/');
+        $page->set('s', '_PATH_CONTENIDO_TINYMCE_CSS_', cRegistry::getBackendUrl() . 'styles/');
         $oEditor = new cTinyMCEEditor('', '');
         $oEditor->setToolbar('inline_edit');
 

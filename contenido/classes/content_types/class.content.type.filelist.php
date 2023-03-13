@@ -661,7 +661,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $templateBottom->set('s', 'SETTINGS', json_encode($this->getSettings()));
         $templateBottom->set(
             's', 'JS_CLASS_SCRIPT',
-            $this->_cfg['path']['contenido_fullhtml'] . cAsset::backend('scripts/content_types/cmsFilelist.js')
+            cRegistry::getBackendUrl() . cAsset::backend('scripts/content_types/cmsFilelist.js')
         );
         $templateBottom->set('s', 'JS_CLASS_NAME', 'Con.cContentTypeFilelist');
         $codeBottom = $templateBottom->generate(
@@ -1016,7 +1016,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         $divContent[] = new cHTMLLabel(i18n('File'), 'filelist_filename_' . $this->_id, 'filelist_filename');
         $divContent[] = $this->generateFileSelect();
-        $image = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_art_new.gif');
+        $image = new cHTMLImage(cRegistry::getBackendUrl() . 'images/but_art_new.gif');
         $image->setAttribute('id', 'add_file');
         $image->appendStyleDefinition('cursor', 'pointer');
         $divContent[] = $image;
