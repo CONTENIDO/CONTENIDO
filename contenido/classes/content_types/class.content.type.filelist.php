@@ -365,7 +365,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
             // generate template
             $code = $template->generate(
-                $this->_cfgClient[$this->_client]['path']['frontend'] . 'templates/' . $this->getSetting('filelist_style'),
+                cRegistry::getFrontendPath() . 'templates/' . $this->getSetting('filelist_style'),
                 true
             );
         }

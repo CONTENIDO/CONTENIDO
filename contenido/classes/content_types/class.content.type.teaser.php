@@ -356,7 +356,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         if ($returnAsArray) {
             $out = $articles;
         } else {
-            $templateName = $this->_cfgClient[$this->_client]['path']['frontend']
+            $templateName = cRegistry::getFrontendPath()
                 . 'templates/' . $this->getSetting('teaser_style');
             if (file_exists($templateName) && count($template->Dyn_replacements) > 0) {
                 $out = $template->generate($templateName, true);
@@ -571,7 +571,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         if (!is_bool($pos)) {
             // if it is generate full internal path to image and scale it for
             // display using class internal function getImage()
-            $file  = $this->_cfgClient[$this->_client]['path']['frontend'] . $img[4];
+            $file  = cRegistry::getFrontendPath() . $img[4];
             $image = $this->_getImage(
                 $file,
                 $this->getSetting('teaser_image_width'),
@@ -610,7 +610,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
             $dirname  = $upload->get('dirname');
             $filename = $upload->get('filename');
             if ($filename) {
-                $teaserImage = $this->_cfgClient[$this->_client]['path']['frontend'] . 'upload/' . $dirname . $filename;
+                $teaserImage = cRegistry::getFrontendPath() . 'upload/' . $dirname . $filename;
             } else {
                 $teaserImage = '';
             }
