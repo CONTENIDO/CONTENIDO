@@ -14,6 +14,16 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cAuth $auth
+ * @var cSession $sess
+ * @var int $idcommunication
+ * @var int $frame
+ * @var array $cfg
+ * @var string $belang
+ */
+
+
 $cpage = new cGuiPage("mycontenido.tasks.edit");
 
 $todoitem = new TODOItem();
@@ -61,8 +71,8 @@ $ui->add(i18n("Reminder options"), $notiemail->toHtml());
 
 $remindertimestamp = $todoitem->getProperty("todo", "reminderdate");
 
-if ($remindertimestamp != 0) {
-    $mydate = date("Y-m-d H:i:s", $remindertimestamp);
+if (!empty($remindertimestamp) && is_numeric($remindertimestamp)) {
+    $mydate = date("Y-m-d H:i:s", cSecurity::toInteger($remindertimestamp));
 } else {
     $mydate = "";
 }
