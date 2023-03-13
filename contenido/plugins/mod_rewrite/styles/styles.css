@@ -72,6 +72,11 @@ body.mrPlugin {
     vertical-align: top;
 }
 
+.mrPlugin th .con_info_button,
+.mrPlugin td .con_info_button {
+    vertical-align: middle;
+}
+
 .mrPlugin tr.marked td {
     background-color: #f2b7a1;
 }
