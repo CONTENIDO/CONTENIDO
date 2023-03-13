@@ -122,7 +122,7 @@ if ($perm->have_perm_area_action($area, "workflow_task_user_select")) {
     $form->setVar("frame", $frame);
     $form->setVar("action", "workflow_task_user_select");
     $form->appendContent(i18n("Show users") . ": " . getUsers("show", $usershow));
-    $form->appendContent('<input class="vAlignMiddle" type="image" src="' . $cfg["path"]["htmlpath"] . $cfg["path"]["images"] . "submit.gif" . '">');
+    $form->appendContent('<input class="align_middle" type="image" src="' . cRegistry::getBackendUrl() . $cfg["path"]["images"] . "submit.gif" . '">');
 
     $tpl->set('s', 'USERSELECT', $form->render());
 } else {

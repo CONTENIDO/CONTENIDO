@@ -1068,7 +1068,7 @@ function piworkflowRenderColumn($idcat, $idart, $idartlang, $column) {
             $form->setVar("modidartlang", $idartlang);
             $form->setVar("idtpl", $idtpl);
             $form->appendContent('<table cellspacing="0" border="0"><tr><td>' . $sActionSelect . '</td><td>');
-            $form->appendContent('<input type="image" src="' . $cfg["path"]["htmlpath"] . $cfg["path"]["images"] . "submit.gif" . '" alt=""></tr></table>');
+            $form->appendContent('<input type="image" src="' . cRegistry::getBackendUrl() . $cfg["path"]["images"] . "submit.gif" . '" alt=""></tr></table>');
 
             if ($mayEdit == true) {
                 return ($form->render());
