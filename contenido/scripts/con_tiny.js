@@ -315,10 +315,19 @@
          */
         storeCurrentTinyContent: function() {
             // Store last tiny changes if tiny is still open
-            var editor = tinymce.getInstanceById(Con.Tiny.activeId);
+            var editor = tinymce.getInstanceById(Con.Tiny.activeId),
+                content;
 
             if (editor) {
-                var content = editor.getContent();
+                // Wrap the access to editor.getContent in a try-catch block, we might get an
+                // "Cannot read properties of null (reading 'body')" error.
+                try {
+                    content = editor.getContent();
+                } catch (e) {
+                    console.log('Con.Tiny.storeCurrentTinyContent() error: ' + e.message);
+                    return;
+                }
+
                 content = content.replace(Con.Tiny.frontendPath, '');
                 Con.Tiny.editData[Con.Tiny.activeId] = content;
             }
@@ -520,7 +529,7 @@
 
         /**
          * Function checks if content has changed if user leaves page.
-         * Then he has the possiblity to save this content. So there is no
+         * Then he has the possibility to save this content. So there is no
          * guess, that changes get lost.
          * @method leaveCheck
          * @static
