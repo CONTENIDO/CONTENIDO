@@ -359,6 +359,8 @@
             // Set the action, but check for invalid values
             if (action !== 0 && action !== '' && action !== '0') {
                 $_form.attr('action', action);
+                // Remove existing form action field, this would overwrite the action in GET variables
+                $_form.find('[name="action"]').remove();
             }
 
             // Submit the form
