@@ -102,9 +102,9 @@ ob_start();
 
 <?php endif; ?>
 
-            <div class="cms_edit_row">
-                <a href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" alt=""></a>
-                <input type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif" alt="">
+            <div class="con_form_action_control cms_edit_row">
+                <input class="con_img_button mg0" type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif" alt="<?php echo i18n('Save changes') ?>" title="<?php echo i18n('Save changes') ?>">
+                <a class="con_img_button" href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" alt="<?php echo i18n("Cancel") ?>" title="<?php echo i18n("Cancel") ?>"></a>
             </div>
         </form>
     </div>

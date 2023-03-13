@@ -105,24 +105,26 @@ ob_start();
             <div class="cms_edit_row">
 
 <?php
+
 // Include wysiwyg editor class
 $wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
 
 // tinymce 3 not autoloaded, tinymce 4 and all custom editor classes must be
-if ('tinymce3' === $wysiwygeditor) {
+if ($wysiwygeditor === 'tinymce3') {
     include($cfg['path'][$wysiwygeditor . '_editorclass']);
 }
 
 // load editor
 include($cfg['path'][$wysiwygeditor . '_editor']);
+
 ?>
 
             </div>
 
-            <div class="cms_edit_row">
-                <a data-tiny-role="cancel" href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" alt="<?php echo i18n("Cancel")?>" title="<?php echo i18n("Cancel") ?>"></a>
-                <input type="image" name="save" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_refresh.gif" onclick="document.forms[0].doedit.value='2';document.forms[0].submit();" alt="<?php echo i18n("Save without leaving the editor") ?>" title="<?php echo i18n("Save without leaving the editor") ?>">
-                <input type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif" alt="<?php echo i18n("Save and close editor") ?>" title="<?php echo i18n("Save and close editor")?>">
+            <div class="con_form_action_control cms_edit_row">
+                <input class="con_img_button mg0" type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif" alt="<?php echo i18n("Save and close editor") ?>" title="<?php echo i18n("Save and close editor") ?>">
+                <input class="con_img_button" type="image" name="save" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_refresh.gif" onclick="document.forms[0].doedit.value='2';document.forms[0].submit();" alt="<?php echo i18n("Save without leaving the editor") ?>" title="<?php echo i18n("Save without leaving the editor") ?>">
+                <a class="con_img_button" data-tiny-role="cancel" href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" alt="<?php echo i18n("Cancel") ?>" title="<?php echo i18n("Cancel") ?>"></a>
             </div>
 
         </form>

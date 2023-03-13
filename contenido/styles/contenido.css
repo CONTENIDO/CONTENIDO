@@ -1694,7 +1694,7 @@ table.inuse_tpl {
  */
 
 .mg0 {
-    margin: 0;
+    margin: 0 !important;
 }
 .mg10 {
     margin: 10px;

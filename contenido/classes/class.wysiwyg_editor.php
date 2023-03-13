@@ -20,7 +20,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Backend
  */
-abstract class cWYSIWYGEditor {
+abstract class cWYSIWYGEditor
+{
+
     /**
      * Access key under which the wysiwyg editor settings will be stored
      * @var string
@@ -28,10 +30,39 @@ abstract class cWYSIWYGEditor {
     protected static $_configPrefix = '[\'wysiwyg\']';
 
     /**
+     * Stores base url of page
+     *
+     * @var string
+     */
+    protected $_baseURL;
+
+    /**
+     * Path to wysiwyg folder in CONTENIDO backend.
      *
      * @var string
      */
     protected $_sPath;
+
+    /**
+     * URL to wysiwyg folder in CONTENIDO backend.
+     *
+     * @var string
+     */
+    protected $_sUrl;
+
+    /**
+     * URL to CONTENIDO backend.
+     *
+     * @var string
+     */
+    protected $_sBackendUrl;
+
+    /**
+     * URL to clients frontend.
+     *
+     * @var string
+     */
+    protected $_sFrontendUrl;
 
     /**
      *
@@ -58,15 +89,59 @@ abstract class cWYSIWYGEditor {
     protected $_aSettings;
 
     /**
+     * Stores, if GZIP compression will be used
+     *
+     * @var bool
+     */
+    protected $_useGZIP = false;
+
+    /**
+     * Article id.
+     *
+     * @var int
+     */
+    protected $_idart;
+
+    /**
+     * Current language id.
+     *
+     * @var int
+     */
+    protected $_lang;
+
+    /**
+     * Current backend language.
+     *
+     * @var string
+     */
+    protected $_belang;
+
+    /**
+     * Current client id.
+     *
+     * @var int
+     */
+    protected $_client;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * @param string $editorName
      * @param string $editorContent
      */
-    public function __construct($editorName, $editorContent) {
+    public function __construct($editorName, $editorContent)
+    {
         $cfg = cRegistry::getConfig();
 
-        $this->_sPath = $cfg['path']['all_wysiwyg_html'];
+        $this->_sPath = $cfg['path']['all_wysiwyg'];
+        $this->_sUrl = $cfg['path']['all_wysiwyg_html'];
+        $this->_sBackendUrl = cRegistry::getBackendUrl();
+        $this->_sFrontendUrl = cRegistry::getFrontendUrl();
+        $this->_lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $this->_client = cSecurity::toInteger(cRegistry::getClientId());
+        $this->_belang = cRegistry::getBackendLanguage();
+        $this->_idart = cSecurity::toInteger(cRegistry::getArticleId());
+
         $this->_setEditorName($editorName);
         $this->_setEditorContent($editorContent);
     }
@@ -75,7 +150,8 @@ abstract class cWYSIWYGEditor {
      *
      * @param string $sEditorContent
      */
-    protected function _setEditorContent($sEditorContent) {
+    protected function _setEditorContent($sEditorContent)
+    {
         $this->_sEditorContent = $sEditorContent;
     }
 
@@ -83,12 +159,11 @@ abstract class cWYSIWYGEditor {
      *
      * @param string $sEditor
      */
-    protected function _setEditor($sEditor) {
-        $cfg = cRegistry::getConfig();
-
-        if (is_dir($cfg['path']['all_wysiwyg'] . $sEditor)) {
-            if (cString::getPartOfString($sEditor, cString::getStringLength($sEditor) - 1, 1) != "/") {
-                $sEditor = $sEditor . "/";
+    protected function _setEditor($sEditor)
+    {
+        if (is_dir($this->_sPath . $sEditor)) {
+            if (cString::getPartOfString($sEditor, cString::getStringLength($sEditor) - 1, 1) != '/') {
+                $sEditor = $sEditor . '/';
             }
 
             $this->_sEditor = $sEditor;
@@ -107,9 +182,10 @@ abstract class cWYSIWYGEditor {
      *         to overwrite defined setting
      * @param bool $type Normally unused (counterpart of cTinyMCE4Editor::setSetting)
      */
-    public function setSetting($type = null, $key = null, $value = '', $forceSetting = false) {
+    public function setSetting($type = null, $key = null, $value = '', $forceSetting = false)
+    {
         if ($key === null) {
-            cWarning(__FILE__, __LINE__, "Key can not be null");
+            cWarning(__FILE__, __LINE__, 'Key can not be null');
             return;
         }
         if ($forceSetting || !array_key_exists($key, $this->_aSettings)) {
@@ -121,23 +197,37 @@ abstract class cWYSIWYGEditor {
      *
      * @param string $key
      */
-    protected function _unsetSetting($key) {
+    protected function _unsetSetting($key)
+    {
         unset($this->_aSettings[$key]);
     }
 
     /**
+     * Returns the path to the editor.
      *
      * @return string
      */
-    protected function _getEditorPath() {
+    protected function _getEditorPath()
+    {
         return $this->_sPath . $this->_sEditor;
+    }
+
+    /**
+     * Returns the URL to the editor.
+     *
+     * @return string
+     */
+    protected function _getEditorUrl()
+    {
+        return $this->_sUrl . $this->_sEditor;
     }
 
     /**
      *
      * @param string $sEditorName
      */
-    protected function _setEditorName($sEditorName) {
+    protected function _setEditorName($sEditorName)
+    {
         $this->_sEditorName = $sEditorName;
     }
 
@@ -146,7 +236,8 @@ abstract class cWYSIWYGEditor {
      * @throws cBadMethodCallException if this method is not overridden in the
      *         subclass
      */
-    protected function getScripts() {
+    protected function getScripts()
+    {
         throw new cBadMethodCallException('You need to override the method _getScripts');
     }
 
@@ -155,8 +246,116 @@ abstract class cWYSIWYGEditor {
      * @throws cBadMethodCallException if this method is not overridden in the
      *         subclass
      */
-    protected function getEditor() {
+    protected function getEditor()
+    {
         throw new cBadMethodCallException('You need to override the method _getEditor');
+    }
+
+    /**
+     * Convert formats
+     *
+     * @param string $input
+     * @return string
+     */
+    public function convertFormat($input)
+    {
+        $aFormatCodes = [
+            'y' => '%y',
+            'Y' => '%Y',
+            'd' => '%d',
+            'm' => '%m',
+            'H' => '%H',
+            'h' => '%I',
+            'i' => '%M',
+            's' => '%S',
+            'a' => '%P',
+            'A' => '%P',
+        ];
+
+        foreach ($aFormatCodes as $sFormatCode => $sReplacement) {
+            $input = str_replace($sFormatCode, $sReplacement, $input);
+        }
+
+        return $input;
+    }
+
+    /**
+     * Set if editor should be loaded using tinymces gzip compression
+     *
+     * @param string $bEnabled
+     */
+    protected function setGZIPMode($bEnabled)
+    {
+        if ($bEnabled) {
+            $this->_useGZIP = true;
+        } else {
+            $this->_useGZIP = false;
+        }
+    }
+
+    /**
+     * Returns the gzip mode.
+     *
+     * @return boolean
+     *         if editor is loaded using gzip compression
+     */
+    public function getGZIPMode()
+    {
+        return $this->_useGZIP;
+    }
+
+    /**
+     * Sets the base url.
+     *
+     * @param string $baseUrl
+     */
+    public function setBaseURL($baseUrl)
+    {
+        $this->_baseURL = $baseUrl;
+    }
+
+    /**
+     * Function to obtain a comma separated list of plugins that are
+     * tried to be loaded.
+     *
+     * @return string
+     *        plugins the plugins
+     */
+    public function getPlugins()
+    {
+        return cSecurity::toString($this->_aSettings['plugins'] ?? '');
+    }
+
+    /**
+     * Function to obtain a comma separated list of themes that are
+     * tried to be loaded.
+     *
+     * @return string
+     *        Returns the themes
+     */
+    public function getThemes()
+    {
+        return cSecurity::toString($this->_aSettings['theme'] ?? '');
+    }
+
+    /**
+     * Add path before filename
+     *
+     * @param string $file
+     * @return string
+     */
+    public function addPath($file)
+    {
+        // Quick and dirty hack
+        if (!preg_match('/^(http|https):\/\/((?:[a-zA-Z0-9_-]+\.?)+):?(\d*)/', $file)) {
+            if (preg_match('/^\//', $file)) {
+                $file = 'http://' . $_SERVER['HTTP_HOST'] . $file;
+            } else {
+                $file = $this->_sFrontendUrl . $file;
+            }
+        }
+
+        return $file;
     }
 
     /**
@@ -164,7 +363,8 @@ abstract class cWYSIWYGEditor {
      * @return string
      *         The name of current WYSIWYG editor
      */
-    public static function getCurrentWysiwygEditorName() {
+    public static function getCurrentWysiwygEditorName()
+    {
         // define fallback WYSIWYG editor
         if (!defined('DEFAULT_WYSIWYG_EDITOR')) {
             define('DEFAULT_WYSIWYG_EDITOR', cRegistry::getConfigValue('wysiwyg', 'editor', 'tinymce3'));
@@ -198,7 +398,11 @@ abstract class cWYSIWYGEditor {
      *
      * @throws cInvalidArgumentException
      */
-    public static function saveConfig($config) {
+    public static function saveConfig($config)
+    {
+        // Use the global variable $cfg here, the function modifies it!
+        global $cfg;
+
         // specify filename scheme
         // for tinymce 4 this will be config.wysiwyg_tinymce4.php
         $configFile = 'config.wysiwyg_' . static::getCurrentWysiwygEditorName() . '.php';
@@ -225,9 +429,9 @@ abstract class cWYSIWYGEditor {
         }
 
         // apply changes to current config
-        global $cfg;
         $cfg['wysiwyg'][static::getCurrentWysiwygEditorName()] = $config;
 
         return [];
     }
+
 }
