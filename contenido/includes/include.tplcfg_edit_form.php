@@ -423,12 +423,6 @@ if ($idart || $area == 'con_tplcfg') {
 }
 
 $controls = new cHTMLDiv('', 'con_form_action_control');
-$cancelElement = new cHTMLLink(
-    $sess->url("main.php?area=$linkArea&frame=4&idcat=$idcat"),
-    cHTMLImage::img('images/but_cancel.gif', i18n('Cancel')),
-    'con_img_button'
-);
-$cancelElement->setAttribute('accesskey', 'c');
 
 $acceptElement = new cHTMLButton('save_tplcfg');
 $acceptElement->setAttributes([
@@ -440,7 +434,14 @@ $acceptElement->setAttributes([
     'data-action' => 'save_tplcfg',
 ]);
 
-$controls->appendContent([$cancelElement, $acceptElement]);
+$cancelElement = new cHTMLLink(
+    $sess->url("main.php?area=$linkArea&frame=4&idcat=$idcat"),
+    cHTMLImage::img('images/but_cancel.gif', i18n('Cancel')),
+    'con_img_button'
+);
+$cancelElement->setAttribute('accesskey', 'c');
+
+$controls->appendContent([$acceptElement, $cancelElement]);
 
 if ($idtpl != 0 && $inUse == false) {
     $tpl->set('s', 'BUTTONS', $controls->render());
