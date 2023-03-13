@@ -113,6 +113,7 @@ class ArticleForumRightBottom extends cGuiPage {
 
         // shows onlineState
         $online = new cHTMLLink();
+        $online->setClass('con_img_button');
         if ($cont['online'] == 1) {
             $online->setImage($cfg['path']['images'] . 'online.gif');
             $online->setCustom('action', 'online_toggle');
@@ -137,6 +138,7 @@ class ArticleForumRightBottom extends cGuiPage {
 
         // link to edit mode
         $edit = new cHTMLButton("edit");
+        $edit->setClass('con_img_button');
         $edit->setImageSource($cfg['path']['images'] . 'but_todo.gif');
         $edit->setEvent('click', "$('form[name=$id]').submit()");
         $edit->setStyle('margin-right:10px; ');
@@ -157,7 +159,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $idaart = $cont['idart'];
 
         // button with delete action
-        $deleteLink = '<a title="' . $message . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $message . '&quot;, function(){ deleteArticlesByIdRight(' . $level . ', ' . $keyy . ', ' . $id . ', ' . $idacat . ', ' . $idaart . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $message . '" alt="' . $message . '"></a>';
+        $deleteLink = '<a class="con_img_button" title="' . $message . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $message . '&quot;, function(){ deleteArticlesByIdRight(' . $level . ', ' . $keyy . ', ' . $id . ', ' . $idacat . ', ' . $idaart . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $message . '" alt="' . $message . '"></a>';
 
         // insert buttons to array for return
         $buttons['online'] = $online;
