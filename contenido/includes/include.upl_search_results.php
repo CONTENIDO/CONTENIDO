@@ -104,6 +104,7 @@ class UploadSearchResultList extends FrontendList {
             $slashpos = cString::findLastPos($vpath, "/");
             if ($slashpos === false) {
                 $file = $vpath;
+                $path = '';
             } else {
                 $path = cString::getPartOfString($vpath, 0, $slashpos + 1);
                 $file = cString::getPartOfString($vpath, $slashpos + 1);
