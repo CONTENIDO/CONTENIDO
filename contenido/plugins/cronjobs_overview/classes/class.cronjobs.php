@@ -78,7 +78,7 @@ class Cronjobs {
         }
 
         $cfg = cRegistry::getConfig();
-        $this->_cronjobDirectory = $cfg['path']['contenido'] . $cfg['path']['cronjobs'];
+        $this->_cronjobDirectory = cRegistry::getBackendPath() . $cfg['path']['cronjobs'];
         $this->_cronlogDirectory = $cfg['path']['contenido_cronlog'];
     }
 

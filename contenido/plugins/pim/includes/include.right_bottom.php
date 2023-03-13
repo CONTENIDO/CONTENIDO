@@ -109,7 +109,7 @@ switch ($viewAction) {
 }
 
 // path to pim template files
-$tempTplPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'pim/templates';
+$tempTplPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'pim/templates';
 
 // initializing array for installed plugins
 $installedPluginFoldernames = [];
@@ -194,7 +194,7 @@ if (is_dir($cfg['path']['plugins'])) {
 
         $i = 0;
         foreach ($handle as $pluginFoldername) {
-            $pluginPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername;
+            $pluginPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $pluginFoldername;
             $tempPath = $pluginPath . '/plugin.xml';
 
             if (is_dir($pluginPath) && cFileHandler::exists($tempPath) && !in_array($pluginFoldername, $installedPluginFoldernames)) {
@@ -230,7 +230,7 @@ if (is_dir($cfg['path']['plugins'])) {
                 $pagePlugins->set('s', 'DEPENDENCIES', $pluginDependenciesView->getPluginDependenciesExtracted($tempXml));
 
                 // uninstall link
-                if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername)) {
+                if (is_writable(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $pluginFoldername)) {
                     $pagePlugins->set('s', 'REMOVE_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall-extracted&pluginFoldername=' . $pluginFoldername));
                     $pagePlugins->set('s', 'WRITEABLE', i18n('Everything looks fine', 'pim'));
                 } else {

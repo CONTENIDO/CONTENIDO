@@ -703,7 +703,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         if (parent::getMode() == 1) {
             // Plugin is already extracted
-            $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_install.sql';
+            $tempSqlFilename = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_install.sql';
         } elseif (parent::getMode() == 2 || parent::getMode() == 4) {
             // Plugin is uploaded or / and update mode
             $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_install.sql', 0);
@@ -776,7 +776,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $module = new cApiModule();
 
         // Set path to modules path
-        $modulesPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR;
+        $modulesPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR;
 
         if (!is_dir($modulesPath)) {
             return false;
@@ -801,7 +801,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $cfg = cRegistry::getConfig();
 
         // Build the new plugin dir
-        $tempPluginDir = $cfg['path']['contenido'] . $cfg['path']['plugins'] . parent::$XmlGeneral->plugin_foldername . DIRECTORY_SEPARATOR;
+        $tempPluginDir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . parent::$XmlGeneral->plugin_foldername . DIRECTORY_SEPARATOR;
 
         // Set destination path
         try {

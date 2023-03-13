@@ -243,4 +243,4 @@ $tpl->set('s', 'SUBNAVI', $sLoadSubnavi);
 $frame = ob_get_contents();
 ob_end_clean();
 
-$tpl->generate($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/templates/template.workflow_tasks.html");
+$tpl->generate(cRegistry::getBackendPath() . $cfg["path"]["plugins"] . "workflow/templates/template.workflow_tasks.html");

@@ -286,7 +286,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
-        $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_uninstall.sql';
+        $tempSqlFilename = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_uninstall.sql';
 
         if (!cFileHandler::exists($tempSqlFilename)) {
             return;
@@ -317,7 +317,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $cfg = cRegistry::getConfig();
 
         // delete folders
-        $folderPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername();
+        $folderPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->_getPluginFoldername();
         cDirHandler::recursiveRmdir($folderPath);
 
         if (parent::$_GuiPage instanceof cGuiPage) {

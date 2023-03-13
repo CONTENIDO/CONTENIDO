@@ -178,7 +178,7 @@ class PimPluginViewNavSub {
         $cfg = cRegistry::getConfig();
 
         // Get contents of plugin.xml file
-        $dataPluginXml = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->PluginFoldername . DIRECTORY_SEPARATOR . self::PLUGIN_CONFIG_FILENAME);
+        $dataPluginXml = file_get_contents(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->PluginFoldername . DIRECTORY_SEPARATOR . self::PLUGIN_CONFIG_FILENAME);
 
         // Load xml strings
         $xmlPluginXml = simplexml_load_string($dataPluginXml);
@@ -222,7 +222,7 @@ class PimPluginViewNavSub {
         $cfg = cRegistry::getConfig();
 
         // Path to CONTENIDO navigation xml file
-        $this->_setNavigationXmlPath($cfg['path']['contenido'] . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME);
+        $this->_setNavigationXmlPath(cRegistry::getBackendPath() . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME);
 
         if (cFileHandler::exists($this->_getNavigationXmlPath())) {
 
@@ -290,7 +290,7 @@ class PimPluginViewNavSub {
         $cfg = cRegistry::getConfig();
 
         // Path to CONTENIDO navigation xml file
-        $contenidoLanguageFileLang = $cfg['path']['contenido'] . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME;
+        $contenidoLanguageFileLang = cRegistry::getBackendPath() . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME;
 
         if (cFileHandler::exists($contenidoLanguageFileLang)) {
 
@@ -346,7 +346,7 @@ class PimPluginViewNavSub {
 
         // Path to plugin specific navigation xml file with selected backend
         // language
-        $pluginLanguageFileLang = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->PluginFoldername . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR . $cfg['lang'][$belang];
+        $pluginLanguageFileLang = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->PluginFoldername . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR . $cfg['lang'][$belang];
 
         if (cFileHandler::exists($pluginLanguageFileLang) && $contenidoNav != "") {
 

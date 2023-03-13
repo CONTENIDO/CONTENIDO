@@ -106,4 +106,4 @@ $tpl->set('s', 'IDCAT', $idcat);
 $tpl->set("s", "USERNAME", (isset($this->auth['uname'])) ? $this->auth['uname'] : '');
 $tpl->set("s", "LOGINBUTTON", $sLoginButton);
 
-$tpl->generate($cfg['path']['contenido'] . $cfg["path"]["templates"] . $cfg["templates"]["front_loginform"]);
+$tpl->generate(cRegistry::getBackendPath() . $cfg["path"]["templates"] . $cfg["templates"]["front_loginform"]);

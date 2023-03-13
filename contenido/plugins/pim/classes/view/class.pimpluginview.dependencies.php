@@ -51,7 +51,7 @@ class PimPluginViewDependencies {
 	 */
 	private function _setPluginFoldername() {
 		$cfg = cRegistry::getConfig();
-		return self::$pluginFoldername = $cfg['path']['contenido'] . $cfg['path']['plugins'];
+		return self::$pluginFoldername = cRegistry::getBackendPath() . $cfg['path']['plugins'];
 	}
 
 	/**

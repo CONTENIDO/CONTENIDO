@@ -333,7 +333,7 @@ class PimPluginSetup
         $cfg = cRegistry::getConfig();
 
         if (self::getMode() == 1) { // Plugin is already extracted
-            $XmlData = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($_GET['pluginFoldername']) . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME);
+            $XmlData = file_get_contents(cRegistry::getBackendPath() . $cfg['path']['plugins'] . cSecurity::escapeString($_GET['pluginFoldername']) . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME);
         } elseif (self::getMode() == 2 || self::getMode() == 4) {
             // Plugin is uploaded / Update mode
 
@@ -404,7 +404,7 @@ class PimPluginSetup
     {
     	// Initializing
     	$cfg = cRegistry::getConfig();
-    	$pluginsDir = $cfg['path']['contenido'] . $cfg['path']['plugins'];
+    	$pluginsDir = cRegistry::getBackendPath() . $cfg['path']['plugins'];
 
     	// Get uuid from plugin to uninstall
     	$this->_pimPluginCollection->setWhere('idplugin', self::_getPluginId());

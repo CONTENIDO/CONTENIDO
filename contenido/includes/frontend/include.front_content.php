@@ -214,7 +214,7 @@ $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
 
 $errtpl = $cfgClient[$client]['tpl']['path'] . "frontend_error.html";
 if (cFileHandler::exists($errtpl) === false) {
-    $errtpl = $cfg['path']['contenido'] . "templates/frontend_error.html";
+    $errtpl = cRegistry::getBackendPath() . "templates/frontend_error.html";
 }
 
 if ($error == 1) {

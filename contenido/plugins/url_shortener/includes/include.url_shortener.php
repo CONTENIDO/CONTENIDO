@@ -93,7 +93,7 @@ if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm-
         'restrictive'
     ];
     if (in_array($_GET['htaccess_type'], $validTypes)) {
-        $source = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'url_shortener/files/htaccess_' . $_GET['htaccess_type'] . '.txt';
+        $source = cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'url_shortener/files/htaccess_' . $_GET['htaccess_type'] . '.txt';
         $dest = cRegistry::getFrontendPath() . '.htaccess';
         if (cFileHandler::exists($dest)) {
             $page->displayError(i18n('The .htaccess file already exists, so that it has not been copied!', 'url_shortener'));

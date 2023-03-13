@@ -178,7 +178,7 @@ class PimPlugin extends Item {
      */
     public function checkDependedFromOtherPlugins($newOrder) {
     	$cfg = cRegistry::getConfig();
-    	$pluginsDir = $cfg['path']['contenido'] . $cfg['path']['plugins'];
+    	$pluginsDir = cRegistry::getBackendPath() . $cfg['path']['plugins'];
 
     	// Get uuid from selected plugin
     	$pimPluginColl = new PimPluginCollection();
@@ -262,7 +262,7 @@ class PimPlugin extends Item {
      */
     public function checkDependenciesToOtherPlugins($newOrder) {
     	$cfg = cRegistry::getConfig();
-    	$pluginsDir = $cfg['path']['contenido'] . $cfg['path']['plugins'];
+    	$pluginsDir = cRegistry::getBackendPath() . $cfg['path']['plugins'];
 
     	// Get uuid from selected plugin
     	$pimPluginColl = new PimPluginCollection();

@@ -125,9 +125,9 @@ class cI18n {
                     $country = $oApiLang->getProperty('country', 'code');
 
                     $locale = $language . '_' . cString::toUpperCase($country);
-                    self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $locale, $domain);
+                    self::init(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $domain . '/locale/', $locale, $domain);
                 } else {
-                    self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $belang, $domain);
+                    self::init(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $domain . '/locale/', $belang, $domain);
                 }
             }
         }

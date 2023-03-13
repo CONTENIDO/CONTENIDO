@@ -83,7 +83,7 @@ class PimPluginArchiveExtractor
 
         if (file_exists($source)) {
             // generate absolute path to the plugin manager directory
-            $this->_absPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'pim' . DIRECTORY_SEPARATOR;
+            $this->_absPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'pim' . DIRECTORY_SEPARATOR;
 
             // open the zip archive
             $result = $this->_extractor->open($this->_source);
