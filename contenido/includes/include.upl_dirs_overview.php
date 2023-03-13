@@ -322,6 +322,10 @@ if (is_array($objects)) {
     }
 }
 
+// Spacer row
+$tpl->set('d', 'ID_PATH', '');
+$tpl->set('d', 'DATA_PATH', '');
+$tpl->set('d', 'INDENT', 0);
 $tpl->set('d', 'DELETEBUTTON', '&nbsp;');
 $tpl->set('d', 'DIRNAME', '');
 $tpl->set('d', 'EDITBUTTON', '');
