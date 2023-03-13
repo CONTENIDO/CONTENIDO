@@ -118,7 +118,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // build bottom code
         $tplBottom = new cTemplate();
-        $tplBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
+        $tplBottom->set('s', 'PATH_FRONTEND', cRegistry::getFrontendUrl());
         $tplBottom->set('s', 'ID', $this->_id);
         $tplBottom->set('s', 'PREFIX', $this->_prefix);
         $tplBottom->set('s', 'IDARTLANG', $this->_idArtLang);

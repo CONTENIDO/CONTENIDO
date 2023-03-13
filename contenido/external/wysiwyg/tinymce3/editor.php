@@ -41,7 +41,7 @@ $contenido = 1;
 // if editor is called from any include.CMS_*.html file use available content from $a_content
 $editorContent = $a_content[$type][$typenr] ?? '';
 
-$editorContent = str_replace('src="upload', 'src="' . $cfgClient[$client]['path']['htmlpath'] . 'upload', $editorContent);
+$editorContent = str_replace('src="upload', 'src="' . cRegistry::getFrontendUrl() . 'upload', $editorContent);
 
 $editorContent = conHtmlSpecialChars($editorContent);
 

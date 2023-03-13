@@ -73,7 +73,7 @@ if (cRegistry::getBackendSessionId() === NULL) {
 
     if ((int) $imgId > 0) {
         $upload = new cApiUpload($imgId);
-        $rssLogo = $cfgClient[$client]['path']['htmlpath'] . 'upload/' . $upload->get('dirname') . $upload->get('filename');
+        $rssLogo = cRegistry::getFrontendUrl() . 'upload/' . $upload->get('dirname') . $upload->get('filename');
 
         $rssImage = $rssChannel->addChild('image');
         $rssImage->url = $rssLogo;

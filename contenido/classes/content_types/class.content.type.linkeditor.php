@@ -300,7 +300,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
 
         // construct the bottom code of the template
         $templateBottom = new cTemplate();
-        $templateBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
+        $templateBottom->set('s', 'PATH_FRONTEND', cRegistry::getFrontendUrl());
         $templateBottom->set('s', 'ID', $this->_id);
         $templateBottom->set('s', 'PREFIX', $this->_prefix);
         $templateBottom->set('s', 'IDARTLANG', $this->_idArtLang);

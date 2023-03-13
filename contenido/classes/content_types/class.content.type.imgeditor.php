@@ -285,10 +285,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     {
         if (!empty($this->_filename)) {
             if (cApiDbfs::isDbfs($this->_dirname)) {
-                return $this->_cfgClient[$this->_client]['path']['htmlpath']
+                return cRegistry::getFrontendUrl()
                     . 'dbfs.php?file=' . urlencode($this->_dirname . $this->_filename);
             } else {
-                return $this->_cfgClient[$this->_client]['path']['htmlpath']
+                return cRegistry::getFrontendUrl()
                     . $this->_cfgClient[$this->_client]['upload'] . $this->_dirname . $this->_filename;
             }
         }
@@ -441,7 +441,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
 
         // construct the bottom code of the template
         $templateBottom = new cTemplate();
-        $templateBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
+        $templateBottom->set('s', 'PATH_FRONTEND', cRegistry::getFrontendUrl());
         $templateBottom->set('s', 'ID', $this->_id);
         $templateBottom->set('s', 'PREFIX', $this->_prefix);
         $templateBottom->set('s', 'IDARTLANG', $this->_idArtLang);

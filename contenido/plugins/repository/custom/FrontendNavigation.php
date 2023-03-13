@@ -585,9 +585,9 @@ class FrontendNavigation {
         if ($absolute === true) {
             # add absolute web path to urlpath
             if (is_int((int) $idart) && $idart > 0) {
-                $url = $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'front_content.php?idcat=' . $idcat . '&idart=' . $idart;
+                $url = cRegistry::getFrontendUrl() . 'front_content.php?idcat=' . $idcat . '&idart=' . $idart;
             } else {
-                $url = $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'front_content.php?idcat=' . $idcat;
+                $url = cRegistry::getFrontendUrl() . 'front_content.php?idcat=' . $idcat;
             }
         } else {
             if (is_int((int) $idart) && $idart > 0) {
@@ -628,9 +628,9 @@ class FrontendNavigation {
         if ($absolute === true) {
             # add absolute web path to urlpath
             if (is_int((int) $idart) && $idart > 0) {
-                return $this->_cfgClient[$this->_client]['path']['htmlpath'] . $cat_str . '/index-d-' . $idart . '.html';
+                return cRegistry::getFrontendUrl() . $cat_str . '/index-d-' . $idart . '.html';
             } else {
-                return $this->_cfgClient[$this->_client]['path']['htmlpath'] . $cat_str . '/' . $urlSuffix;
+                return cRegistry::getFrontendUrl() . $cat_str . '/' . $urlSuffix;
             }
         } else {
             if (is_int((int) $idart) && $idart > 0) {
@@ -667,7 +667,7 @@ class FrontendNavigation {
         if ($absolute === true) {
             // add absolute web path to urlpath
             if (is_int((int) $selectedNumber)) {
-                return $this->_cfgClient[$this->_client]['path']['htmlpath'] . $cat_str . '/index-g-' . $selectedNumber . '.html';
+                return cRegistry::getFrontendUrl() . $cat_str . '/index-g-' . $selectedNumber . '.html';
             }
         } else {
             if (is_int((int) $selectedNumber)) {

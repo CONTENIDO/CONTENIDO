@@ -12,11 +12,9 @@
  * @link       https://www.contenido.org
  */
 
-$clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
-
 // use template to display navigation
 $tpl = cSmartyFrontend::getInstance();
-$tpl->assign('href', $clientConfig['path']['htmlpath']);
+$tpl->assign('href', cRegistry::getFrontendUrl());
 $tpl->display('get.tpl');
 
 ?>
