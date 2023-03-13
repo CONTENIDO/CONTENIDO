@@ -190,12 +190,13 @@ function getWorkflowList($idWorkflow, $idWorkflowItem) {
         $id = cSecurity::toInteger($workflowItem->get("idworkflowitem"));
 
         $edititem = new cHTMLLink();
-        $edititem->setClass("show_item");
+        $edititem->setClass("con_img_button show_item");
         $edititem->setCLink("workflow_steps", 4, "workflow_step_edit");
         $edititem->setCustom("idworkflowitem", $id);
         $edititem->setCustom("idworkflow", $idWorkflow);
 
         $moveup = new cHTMLLink();
+        $moveup->setClass("con_img_button");
         $moveup->setCLink("workflow_steps", 4, "workflow_step_up");
         $moveup->setCustom("idworkflowitem", $id);
         $moveup->setCustom("idworkflow", $idWorkflow);
@@ -204,6 +205,7 @@ function getWorkflowList($idWorkflow, $idWorkflowItem) {
         $moveup->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/no_verschieben.gif" . '">');
 
         $movedown = new cHTMLLink();
+        $movedown->setClass("con_img_button");
         $movedown->setCLink("workflow_steps", 4, "workflow_step_down");
         $movedown->setCustom("idworkflowitem", $id);
         $movedown->setCustom("idworkflow", $idWorkflow);
@@ -212,6 +214,7 @@ function getWorkflowList($idWorkflow, $idWorkflowItem) {
         $movedown->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
 
         $deletestep = new cHTMLLink();
+        $deletestep->setClass("con_img_button");
         $deletestep->setCLink("workflow_steps", 4, "workflow_step_delete");
         $deletestep->setCustom("idworkflowitem", $id);
         $deletestep->setCustom("idworkflow", $idWorkflow);
@@ -225,13 +228,13 @@ function getWorkflowList($idWorkflow, $idWorkflowItem) {
         if ($pos > 1) {
             $ui->setActions($id, "moveup", $moveup->render());
         } else {
-            $ui->setActions($id, "moveup", '<img src="images/spacer.gif" width="15" height="1">');
+            $ui->setActions($id, "moveup", '<span class="con_img_button_off"></span>');
         }
 
         if ($pos < $workflowItems->count()) {
             $ui->setActions($id, "movedown", $movedown->render());
         } else {
-            $ui->setActions($id, "movedown", '<img src="images/spacer.gif" width="15" height="1">');
+            $ui->setActions($id, "movedown", '<span class="con_img_button_off"></span>');
         }
 
         $ui->setActions($id, "delete", $deletestep->render());
