@@ -127,7 +127,7 @@ $oSelectTypeFilter = new cHTMLSelectElement("filtertype");
 $oSelectTypeFilter->autoFill($aFilterType);
 $oSelectTypeFilter->setDefault($filterType);
 $oTextboxFilter = new cHTMLTextbox("filter", stripslashes($filter), 15);
-$oTextboxFilter->setClass('text_small vAlignMiddle');
+$oTextboxFilter->setClass('text_small');
 
 $tplModFilter = new cTemplate();
 $tplModFilter->set("s", "PAGE", $page);

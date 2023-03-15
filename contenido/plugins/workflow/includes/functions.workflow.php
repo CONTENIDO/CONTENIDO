@@ -1097,7 +1097,7 @@ function piworkflowCreateTasksFolder() {
     $item = [];
 
     // Create workflow tasks folder
-    $tmp_mstr = '<a href="javascript:void(0)" onclick="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+    $tmp_mstr = '<a href="javascript:void(0)" onclick="Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 
     $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=con_workflow&frame=4"), 'right_top', $sess->url("main.php?area=con_workflow&frame=3"), 'Workflow / Todo');
 
