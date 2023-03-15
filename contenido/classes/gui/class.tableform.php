@@ -109,6 +109,12 @@ class cGuiTableForm
     public $cancelLink;
 
     /**
+     * Alternate text for the cancel image.
+     * @var string
+     */
+    public $cancelAlt;
+
+    /**
      *
      * @var string
      */
@@ -216,13 +222,15 @@ class cGuiTableForm
     }
 
     /**
-     * Sets a URL as HREF of a cancel icon.
+     * Sets a URL as HREF and the alternate text of a cancel icon.
      *
      * @param string $cancelLink
+     * @param string $cancelAlt
      */
-    public function setCancelLink($cancelLink)
+    public function setCancelLink($cancelLink, $cancelAlt = '')
     {
         $this->cancelLink = $cancelLink;
+        $this->cancelAlt = $cancelAlt;
     }
 
     /**
@@ -505,6 +513,9 @@ class cGuiTableForm
             $class = count($this->custom) ? 'con_img_button' : 'con_img_button last';
             $link->setClass($class);
             $link->setContent($image);
+            if (!empty($this->cancelAlt)) {
+                $link->setAlt($this->cancelAlt);
+            }
             $cancelLink = $link->render();
         }
 
