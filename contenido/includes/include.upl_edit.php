@@ -60,10 +60,10 @@ $form->setVar('area', 'upl');
 $form->setVar('path', $pathname);
 $form->setVar('file', $filename);
 $form->setVar('action', 'upl_modify_file');
-$form->setVar('startpage', cSecurity::toInteger($_REQUEST['startpage']));
-$form->setVar('sortby', cSecurity::escapeString($_REQUEST['sortby']));
-$form->setVar('sortmode', cSecurity::escapeString($_REQUEST['sortmode']));
-$form->setVar('thumbnailmode', cSecurity::escapeString($_REQUEST['thumbnailmode']));
+$form->setVar('startpage', cSecurity::toInteger($_REQUEST['startpage'] ?? '1'));
+$form->setVar('sortby', cSecurity::escapeString($_REQUEST['sortby'] ?? ''));
+$form->setVar('sortmode', cSecurity::escapeString($_REQUEST['sortmode'] ?? ''));
+$form->setVar('thumbnailmode', cSecurity::escapeString($_REQUEST['thumbnailmode'] ?? ''));
 // $form->setVar('zip', (isArchive( $filename)) ? '1' : '0');
 $form->setHeader(i18n('Edit'));
 
