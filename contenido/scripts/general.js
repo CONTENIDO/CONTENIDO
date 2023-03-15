@@ -714,9 +714,12 @@
             if (callback && 'function' === $.type(scope[callback])) {
                 scope[callback]();
             } else {
-                Con.getFrame('content')
-                    .frameResize
-                    .resizeTopLeftFrame($container.height() + gap);
+                // We may not have access to the content frame, i.e. in the imagebrowser/filebrowser
+                if (Con.frameHasProperty('content', 'frameResize')) {
+                    Con.getFrame('content')
+                        .frameResize
+                        .resizeTopLeftFrame($container.height() + gap);
+                }
             }
         },
 

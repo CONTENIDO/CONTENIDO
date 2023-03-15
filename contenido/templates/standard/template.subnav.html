@@ -26,11 +26,15 @@
 (function(Con, $) {
     $(function() {
         if (parent.parent.frames[0].name != 'header') {
-            Con.getFrame('content').frameResize.init();
+            if (Con.frameHasProperty('content', 'frameResize')) {
+                Con.getFrame('content').frameResize.init();
+            }
             Con.Subnav.init();
         }
         $('#toggleimage').click(function() {
-            Con.getFrame('content').frameResize.toggle();
+            if (Con.frameHasProperty('content', 'frameResize')) {
+                Con.getFrame('content').frameResize.toggle();
+            }
         });
     });
 })(Con, Con.$);

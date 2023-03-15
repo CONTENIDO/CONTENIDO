@@ -183,6 +183,20 @@
     };
 
     /**
+     * Checks if the desired property (variable, function, object, etc.) exists within a specific frame.
+     *
+     * @since CONTENIDO 4.10.2
+     * @method getFrameProperty
+     * @param {String}  frameName The name of frame to get the property
+     * @param {String } propertyName The name of the property in the frame
+     * @returns {Boolean}
+     */
+    Con.frameHasProperty = function(frameName, propertyName) {
+        var frame = Con.getFrame(frameName);
+        return ($.type(frame) !== 'undefined' && $.type(frame[propertyName]) !== 'undefined');
+    };
+
+    /**
      * Wrapper for console object.
      * @method log
      * @param {*}  mixedVar  Any type of variable to print to the console
