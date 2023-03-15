@@ -921,8 +921,17 @@ function uplCreateFriendlyName($filename) {
 }
 
 /**
+ * Searches for upload files matching the search criteria.
  *
- * @param string $searchfor
+ * The search will be applied on following fields:
+ * - description
+ * - medianame
+ * - filename
+ * - keywords
+ * - copyright
+ * - internal_notice
+ *
+ * @param string $searchTerm
  *
  * @return array
  *
@@ -930,7 +939,13 @@ function uplCreateFriendlyName($filename) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function uplSearch($searchfor) {
+function uplSearch($searchTerm) {
+    $items = [];
+
+    if (!is_string($searchTerm) || strlen($searchTerm) === 0) {
+        return $items;
+    }
+
     $client = cRegistry::getClientId();
     $client = cSecurity::toInteger($client);
     $lang = cRegistry::getLanguageId();
@@ -939,20 +954,18 @@ function uplSearch($searchfor) {
     $uploadsColl = new cApiUploadCollection();
     $uplMetaColl = new cApiUploadMetaCollection();
 
-    $searchfordb = $uplMetaColl->escape($searchfor);
-
-    $items = [];
+    $searchTermEscaped = $uplMetaColl->escape($searchTerm);
 
     // Search for description, ranking *5
     $uplMetaColl->link('cApiUploadCollection');
     $uplMetaColl->setWhereGroup('description', 'capiuploadcollection.idclient', $client);
     $uplMetaColl->setWhereGroup('description', 'capiuploadmetacollection.idlang', $lang);
-    $uplMetaColl->setWhereGroup('description', 'capiuploadmetacollection.description', '%' . $searchfordb . '%', 'LIKE');
+    $uplMetaColl->setWhereGroup('description', 'capiuploadmetacollection.description', '%' . $searchTermEscaped . '%', 'LIKE');
     $uplMetaColl->query();
     while (($item = $uplMetaColl->next()) !== false) {
         $idupl = cSecurity::toInteger($item->get('idupl'));
         $items[$idupl] = $items[$idupl] ?? 0;
-        $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('description')), cString::toLowerCase($searchfor)) * 5);
+        $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('description')), cString::toLowerCase($searchTerm)) * 5);
     }
 
     // Search for medianame, ranking *4
@@ -960,16 +973,16 @@ function uplSearch($searchfor) {
     $uplMetaColl->link('cApiUploadCollection');
     $uplMetaColl->setWhereGroup('medianame', 'capiuploadcollection.idclient', $client);
     $uplMetaColl->setWhereGroup('medianame', 'capiuploadmetacollection.idlang', $lang);
-    $uplMetaColl->setWhereGroup('medianame', 'capiuploadmetacollection.medianame', '%' . $searchfordb . '%', 'LIKE');
+    $uplMetaColl->setWhereGroup('medianame', 'capiuploadmetacollection.medianame', '%' . $searchTermEscaped . '%', 'LIKE');
     $uplMetaColl->query();
     while (($item = $uplMetaColl->next()) !== false) {
         $idupl = cSecurity::toInteger($item->get('idupl'));
         $items[$idupl] = $items[$idupl] ?? 0;
-        $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('medianame')), cString::toLowerCase($searchfor)) * 4);
+        $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('medianame')), cString::toLowerCase($searchTerm)) * 4);
     }
 
     // Search for file name, ranking +4
-    $uploadsColl->select("idclient='" . $client . "' AND filename LIKE '%" . $searchfordb . "%'");
+    $uploadsColl->select("idclient='" . $client . "' AND filename LIKE '%" . $searchTermEscaped . "%'");
     while (($item = $uploadsColl->next()) !== false) {
         $idupl = cSecurity::toInteger($item->get('idupl'));
         $items[$idupl] = $items[$idupl] ?? 0;
@@ -981,12 +994,12 @@ function uplSearch($searchfor) {
     $uplMetaColl->link('cApiUploadCollection');
     $uplMetaColl->setWhereGroup('keywords', 'capiuploadcollection.idclient', $client);
     $uplMetaColl->setWhereGroup('keywords', 'capiuploadmetacollection.idlang', $lang);
-    $uplMetaColl->setWhereGroup('keywords', 'capiuploadmetacollection.keywords', '%' . $searchfordb . '%', 'LIKE');
+    $uplMetaColl->setWhereGroup('keywords', 'capiuploadmetacollection.keywords', '%' . $searchTermEscaped . '%', 'LIKE');
     $uplMetaColl->query();
     while (($item = $uplMetaColl->next()) !== false) {
         $idupl = cSecurity::toInteger($item->get('idupl'));
         $items[$idupl] = $items[$idupl] ?? 0;
-        $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('keywords')), cString::toLowerCase($searchfor)) * 3);
+        $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('keywords')), cString::toLowerCase($searchTerm)) * 3);
     }
 
     // Search for copyright, ranking *2
@@ -994,12 +1007,12 @@ function uplSearch($searchfor) {
     $uplMetaColl->link('cApiUploadCollection');
     $uplMetaColl->setWhereGroup('copyright', 'capiuploadcollection.idclient', $client);
     $uplMetaColl->setWhereGroup('copyright', 'capiuploadmetacollection.idlang', $lang);
-    $uplMetaColl->setWhereGroup('copyright', 'capiuploadmetacollection.copyright', '%' . $searchfordb . '%', 'LIKE');
+    $uplMetaColl->setWhereGroup('copyright', 'capiuploadmetacollection.copyright', '%' . $searchTermEscaped . '%', 'LIKE');
     $uplMetaColl->query();
     while (($item = $uplMetaColl->next()) !== false) {
         $idupl = cSecurity::toInteger($item->get('idupl'));
         $items[$idupl] = $items[$idupl] ?? 0;
-        $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('copyright')), cString::toLowerCase($searchfor)) * 2);
+        $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('copyright')), cString::toLowerCase($searchTerm)) * 2);
     }
 
     // Search for internal_notice, ranking *1
@@ -1007,12 +1020,12 @@ function uplSearch($searchfor) {
     $uplMetaColl->link('cApiUploadCollection');
     $uplMetaColl->setWhereGroup('internal_notice', 'capiuploadcollection.idclient', $client);
     $uplMetaColl->setWhereGroup('internal_notice', 'capiuploadmetacollection.idlang', $lang);
-    $uplMetaColl->setWhereGroup('internal_notice', 'capiuploadmetacollection.internal_notice', '%' . $searchfordb . '%', 'LIKE');
+    $uplMetaColl->setWhereGroup('internal_notice', 'capiuploadmetacollection.internal_notice', '%' . $searchTermEscaped . '%', 'LIKE');
     $uplMetaColl->query();
     while (($item = $uplMetaColl->next()) !== false) {
         $idupl = cSecurity::toInteger($item->get('idupl'));
         $items[$idupl] = $items[$idupl] ?? 0;
-        $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('internal_notice')), cString::toLowerCase($searchfor)));
+        $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('internal_notice')), cString::toLowerCase($searchTerm)));
     }
 
     return $items;
