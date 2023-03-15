@@ -992,7 +992,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 // TODO cApiArticleLanguage($idcat) cannot be correct!
                 $oArtLang = new cApiArticleLanguage($idcat);
                 if (0 < $syncoptions && false === $oArtLang->isLoaded()) {
-                    $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has is synchronized."));
+                    $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category is synchronized."));
                 } else {
                     $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has a assigned template."));
                 }
