@@ -65,6 +65,7 @@ $form->setVar('sortby', cSecurity::escapeString($_REQUEST['sortby'] ?? ''));
 $form->setVar('sortmode', cSecurity::escapeString($_REQUEST['sortmode'] ?? ''));
 $form->setVar('thumbnailmode', cSecurity::escapeString($_REQUEST['thumbnailmode'] ?? ''));
 // $form->setVar('zip', (isArchive( $filename)) ? '1' : '0');
+$form->setCancelLink('javascript:history.back();', i18n('Back'));
 $form->setHeader(i18n('Edit'));
 
 $properties = new cApiPropertyCollection();

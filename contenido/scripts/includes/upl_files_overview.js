@@ -30,7 +30,7 @@
      * @constructor
      * @param {Object}  options  Configuration properties as follows
      * <pre>
-     *    rootSelector  (String)  Selector for the root element of this component
+     *    rootSelector  (String)  Selector for the root element of this component. The root is also the form.
      *    filesPerPageSelector  (String)  Selector for files per page select-box
      *    filesCheckBoxSelector  (String)  Selector for the checkboxes
      *    deleteSelectedSelector  (String)  Selector for the delete element
@@ -47,7 +47,7 @@
          */
         var _options = $.extend(DEFAULT_OPTIONS, options),
             /**
-             * @property  {jQuery}  $_root  Root node of this component
+             * @property  {jQuery}  $_root  Root node (form) of this component
              * @private
              */
             $_root = $(_options.rootSelector),
@@ -112,6 +112,10 @@
                     return actionDeleteSelected($element);
                 } else if (action === 'zoom') {
                     return actionZoom($element);
+                } else if (action === 'go_to_page') {
+                    return actionGoToPage($element);
+                } else if (action === 'add_file_from_browser') {
+                    actionAddFileFromBrowser($element);
                 }
             });
 
@@ -122,6 +126,16 @@
 
                 if (action === 'zoom') {
                     actionMouseoverZoom($element);
+                }
+            });
+
+            // Mouseover for icons in the list
+            $_root.find('[data-action-change]').live('change', function() {
+                var $element = $(this),
+                    action = $element.data('action-change');
+
+                if (action === 'change_start_page') {
+                    actionChangeStartPage($element);
                 }
             });
 
@@ -179,6 +193,20 @@
             });
         }
 
+        function goToPage(page) {
+            var formData = Con.serializeForm($_root);
+
+            // Form elements 'start_page' and 'thumbnailmode' are redundant, they will end as
+            // a list in formData, handle this.
+            formData.startpage = page;
+            if ($.type(formData.thumbnailmode) === 'array') {
+                // Use the first values, they are all the same.
+                formData.thumbnailmode = formData.thumbnailmode[0];
+            }
+
+            document.location.href = Con.UtilUrl.build('main.php', formData);
+        }
+
         // Thumbnail preview
         function actionMouseoverZoom($element) {
             correctPosition($element, $element.attr("data-width"), $element.attr("data-height"));
@@ -224,6 +252,25 @@
             } else {
                 $_deleteSelectedLink.addClass('is_disabled').attr('aria-disabled', 'true');
             }
+        }
+
+        // On pages selectbox change
+        function actionChangeStartPage($element) {
+            goToPage($element.val());
+        }
+
+        // On pages (next/prev) link click
+        function actionGoToPage($element) {
+            goToPage($element.data('page'));
+        }
+
+        // On selecting an image or a file from imagebrowser or filebrowser
+        // This action happens in a popup window, opened from the wysiwyg editor.
+        function actionAddFileFromBrowser($element) {
+            var fileToAdd = $element.data('file');
+            $('#selectedfile', Con.getFrame('left_top').document).val(fileToAdd);
+            window.returnValue = fileToAdd;
+            window.close();
         }
 
         // #####################################################################

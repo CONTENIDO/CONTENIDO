@@ -2534,18 +2534,6 @@ td.con_navbar,
 }
 /*endregion NAV_BAR*/
 
-.toolsRight {
-    display: inline-block;
-    float: right;
-    line-height: 16px;
-}
-
-.toolsRight .vAlignMiddle {
-    display: inline-block;
-    width: 100px;
-    padding: 0 5px;
-}
-
 #todoList {
     margin-bottom: 10px;
 }

@@ -3,6 +3,15 @@
 .upl_files_overview {
 }
 
+.upl_files_overview .con_navbar .right {
+    display: inline-block;
+    line-height: 16px;
+}
+
+.upl_files_overview .con_navbar .right > div {
+    display: inline-block;
+}
+
 .upl_files_overview select {
     vertical-align: middle;
 }
