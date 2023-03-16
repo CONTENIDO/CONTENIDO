@@ -3,6 +3,25 @@
 @import "../version_selection.css";
 @import "../content_elements.css";
 
+#con_content_list .rawdata {
+    display: block;
+    margin: 15px 0 15px 0;
+    font-weight: bold;
+}
+#con_content_list div.rawtypes {
+    display: none;
+}
+
+#con_content_list #importrawdata input[type=file] {
+    display: block;
+    margin: 0;
+}
+
+#con_content_list #importrawdata input[type=submit] {
+    display: block;
+    margin: 10px 0 5px 0;
+}
+
 .no_active {
     border: 1px solid red;
 }

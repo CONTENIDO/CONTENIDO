@@ -27,17 +27,6 @@
 *::after {
     box-sizing: border-box;
 }
-
-/*
-form,
-h1,
-h2,
-h3,
-h4 {
-    margin: 0;
-    padding: 0;
-}
-*/
 /*endregion RESET*/
 
 /*region TAGS*/
@@ -111,8 +100,6 @@ textarea {
 }
 select {
     padding: 0 5px;
-/*    position: relative;
-    top: -2px;*/
 }
 
 button[disabled],
@@ -126,7 +113,7 @@ textarea[disabled] {
 [type="checkbox"],
 [type="radio"] {
     position: relative;
-    margin-right: 5px;
+    margin-right: 7px;
     vertical-align: middle;
     bottom: 1px;
 }
@@ -190,8 +177,6 @@ table td {
     background-color: #f1f1f1;
 }
 #head_info .con_img_button {
-/*    position: relative;
-    bottom: 1px;*/
 }
 #head_info + form#login {
     margin: 0;
@@ -958,9 +943,16 @@ a.con_info_button,
     height: 16px;
     background: transparent url(../images/info.gif) no-repeat;
     vertical-align: inherit;
-    /*    position: relative;
-        top: 0;*/
 }
+
+.align_top > a.con_info_button {
+    vertical-align: top;
+}
+
+.align_bottom > a.con_info_button {
+    vertical-align: bottom;
+}
+
 /*endregion LINK*/
 
 /*region TEXT*/
@@ -2395,9 +2387,6 @@ div.errorlist {
     background-color: #fff;
 }
 
-/*region ID*/
-
-
 .contenttest {
     margin: 0.3em 0;
 }
@@ -2544,33 +2533,6 @@ td.con_navbar,
 #cont_users select,
 #cont_users input[type="text"] {
     width: 110px;
-}
-
-#con_content_list .rawdata {
-    display: block;
-    margin: 15px 0 15px 0;
-    font-weight: bold;
-}
-#con_content_list div.rawtypes {
-    display: none;
-}
-
-#con_content_list #importrawdata input[type=file] {
-    display: block;
-    margin: 0;
-}
-
-#con_content_list #importrawdata input[type=submit] {
-    display: block;
-    margin: 10px 0 5px 0;
-}
-
-.align_top > a.con_info_button {
-    vertical-align: top;
-}
-
-.align_bottom > a.con_info_button {
-    vertical-align: bottom;
 }
 
 /* Disabled links */
