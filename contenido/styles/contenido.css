@@ -2460,7 +2460,6 @@ input[type=image].vAlignMiddle {
     margin-left: 15px;
 }
 
-
 /** @deprecated [2023-03-16] Since CONTENIDO 4.10.2, Don't use `moduleError`, use `con_module_error` instead */
 .moduleError,
 .con_module_error {
@@ -2479,8 +2478,9 @@ input[type=image].vAlignMiddle {
     color: #b3b3b8;
 }
 
+/** @deprecated [2023-03-16] Since CONTENIDO 4.10.2, Don't use `emptyCell`, use `con_empty_cell` instead */
 .emptyCell,
-.empty_cell {
+.con_empty_cell {
     border-bottom: 0 !important;
 }
 

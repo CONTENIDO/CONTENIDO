@@ -325,7 +325,7 @@ $sToolsRowTpl = '
 
 $sSpacedRowTpl = '
     <tr>
-        <td colspan="6" class="empty_cell"></td>
+        <td colspan="6" class="con_empty_cell"></td>
     </tr>
 ';
 

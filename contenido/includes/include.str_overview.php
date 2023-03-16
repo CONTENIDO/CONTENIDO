@@ -267,7 +267,7 @@ function insertEmptyStrRow($listColumns) {
     // content rows
     $additionalColumns = [];
     foreach ($listColumns as $content) {
-        $additionalColumns[] = '<td class="no_wrap emptyCell2">&nbsp;</td>';
+        $additionalColumns[] = '<td class="no_wrap">&nbsp;</td>';
     }
     $tpl->set('d', 'ADDITIONALCOLUMNS', implode('', $additionalColumns));
 
