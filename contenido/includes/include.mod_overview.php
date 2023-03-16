@@ -125,9 +125,9 @@ foreach ($allModules as $idmod => $module) {
         if ($sModuleError == "none") {
             $colName = $sName;
         } elseif ($sModuleError == "input" || $sModuleError == "output") {
-            $colName = '<span class="moduleError">' . $sName . '</span>';
+            $colName = '<span class="con_module_error">' . $sName . '</span>';
         } else {
-            $colName = '<span class="moduleCriticalError">' . $sName . '</span>';
+            $colName = '<span class="con_module_critical_error">' . $sName . '</span>';
         }
 
         $iMenu++;

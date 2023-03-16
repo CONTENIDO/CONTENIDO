@@ -2461,11 +2461,15 @@ input[type=image].vAlignMiddle {
 }
 
 
-.moduleError {
+/** @deprecated [2023-03-16] Since CONTENIDO 4.10.2, Don't use `moduleError`, use `con_module_error` instead */
+.moduleError,
+.con_module_error {
     color: #B1AC58;
 }
 
-.moduleCriticalError {
+/** @deprecated [2023-03-16] Since CONTENIDO 4.10.2, Don't use `moduleCriticalError`, use `con_module_critical_error` instead */
+.moduleCriticalError,
+.con_module_critical_error {
     color: red;
 }
 
