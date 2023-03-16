@@ -210,7 +210,7 @@ class cHttpRequestSocket extends cHttpRequest {
 
         $urlInfo = @parse_url($this->url);
         $scheme = '';
-        if ($urlInfo['port'] == '') {
+        if (empty($urlInfo['port'])) {
             if ($urlInfo['scheme'] == 'https') {
                 $urlInfo['port'] = 443;
                 $scheme = 'ssl://';
@@ -219,9 +219,9 @@ class cHttpRequestSocket extends cHttpRequest {
             }
         }
 
-        $this->headerArray['Host'] = ($this->headerArray['Host'] != '') ? $this->headerArray['Host'] : $urlInfo['host'];
-        $this->headerArray['Connection'] = ($this->headerArray['Connection'] != '') ? $this->headerArray['Host'] : 'close';
-        $this->headerArray['Accept'] = ($this->headerArray['Accept'] != '') ? $this->headerArray['Host'] : '*/*';
+        $this->headerArray['Host'] = !empty($this->headerArray['Host']) ? $this->headerArray['Host'] : $urlInfo['host'];
+        $this->headerArray['Connection'] = !empty($this->headerArray['Connection']) ? $this->headerArray['Host'] : 'close';
+        $this->headerArray['Accept'] = !empty($this->headerArray['Accept']) ? $this->headerArray['Host'] : '*/*';
 
         $this->prepareHeaders();
 
