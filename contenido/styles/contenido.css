@@ -2425,15 +2425,14 @@ div.bulk_editing_functions a img {
     vertical-align: middle;
 }
 
-/**
- * aligns something vertically with a line of text
- */
+/** @deprecated [2023-03-16] Since CONTENIDO 4.10.2, Don't use `vAlignMiddle`, use `align_middle` instead */
 .vAlignMiddle {
     vertical-align: middle;
     margin-bottom: 0.25em;
 }
 
 /* I have no idea why this is needed but it looks better for image inputs */
+/** @deprecated [2023-03-16] Since CONTENIDO 4.10.2, Don't use `vAlignMiddle`, there is no replacement */
 input[type=image].vAlignMiddle {
     margin-bottom: 0.1em;
 }

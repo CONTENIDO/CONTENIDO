@@ -265,7 +265,7 @@ function statsOverviewAll($yearMonth)
         $db2->nextRecord();
         $inThisLanguage = $db2->f(0);
 
-        $icon = '<img alt="" src="' . $cfg['path']['images'] . 'folder.gif" class="vAlignMiddle">';
+        $icon = '<img alt="" src="' . $cfg['path']['images'] . 'folder.gif" class="align_middle">';
 
         // art
         $sql = "SELECT * FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('art') . " AS B, " . cRegistry::getDbTableName('art_lang') . " AS C WHERE A.idcat=" . $idcat . "
@@ -304,7 +304,7 @@ function statsOverviewAll($yearMonth)
                                                alt="' . i18n("Open category") . '"
                                                title="' . i18n("Open category") . '"
                                                id="' . implode('_', $aRowNames) . '_img"
-                                               class="vAlignMiddle">
+                                               class="align_middle">
                                       </a>');
         } else {
             $tpl->set('d', 'EXPAND', '<img alt="" src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
@@ -384,7 +384,7 @@ function statsOverviewAll($yearMonth)
                 $offOnline = '<img src="' . $cfg['path']['images'] . 'online_off.gif" alt="' . i18n("Article is online") . '" title="' . i18n("Article is online") . '">';
             }
 
-            $icon = '<img alt="" src="' . $cfg['path']['images'] . 'article.gif"  class="vAlignMiddle">';
+            $icon = '<img alt="" src="' . $cfg['path']['images'] . 'article.gif"  class="align_middle">';
             $tpl->set('d', 'PADDING_LEFT', $paddingLeft);
             $tpl->set('d', 'TEXT', conHtmlSpecialChars($text) . ' (idart: ' . cSecurity::toInteger($db3->f('idart')) . ')');
             $tpl->set('d', 'ICON', $icon);
@@ -573,7 +573,7 @@ function statsOverviewYear($year)
 
         $inThisLanguage = $db2->f(0);
 
-        $icon = '<img alt="" src="' . $cfg['path']['images'] . 'folder.gif" class="vAlignMiddle">';
+        $icon = '<img alt="" src="' . $cfg['path']['images'] . 'folder.gif" class="align_middle">';
 
         // art
         $sql = "SELECT * FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('art') . " AS B, " . cRegistry::getDbTableName('art_lang') . " AS C WHERE A.idcat=" . $idcat . " AND A.idart=B.idart AND B.idart=C.idart
@@ -613,7 +613,7 @@ function statsOverviewYear($year)
                                                alt="' . i18n("Open category") . '"
                                                title="' . i18n("Open category") . '"
                                                id="' . implode('_', $aRowNames) . '_img"
-                                               class="vAlignMiddle">
+                                               class="align_middle">
                                       </a>');
         } else {
             $tpl->set('d', 'EXPAND', '<img alt="" src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
@@ -672,7 +672,7 @@ function statsOverviewYear($year)
                 $offOnline = '<img src="' . $cfg['path']['images'] . 'online_off.gif" alt="' . i18n("Category is online") . '" title="' . i18n("Category is online") . '">';
             }
 
-            $icon = '<img alt="" src="' . $cfg['path']['images'] . 'article.gif" class="vAlignMiddle">';
+            $icon = '<img alt="" src="' . $cfg['path']['images'] . 'article.gif" class="align_middle">';
             $tpl->set('d', 'PADDING_LEFT', $paddingLeft);
             $tpl->set('d', 'TEXT', conHtmlSpecialChars($text) . ' (idart: ' . $idart . ')');
             $tpl->set('d', 'ICON', $icon);
