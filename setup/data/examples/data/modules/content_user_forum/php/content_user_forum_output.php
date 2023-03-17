@@ -542,7 +542,7 @@ class UserForumArticle {
             }
 
             if ($this->_modMode) {
-                $this->_tpl->assign('MODEMODETEXT', mi18n('MODEMODETEXT'));
+                $this->_tpl->assign('MODEMODETEXT', mi18n("MODEMODETEXT"));
             }
 
             $this->_tpl->assign('INPUT_EMAIL', "<input type=\"text\" name=\"email\" value=\"\" tabindex=\"2\" />");
