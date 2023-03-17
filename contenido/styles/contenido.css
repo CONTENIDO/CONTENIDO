@@ -493,10 +493,10 @@ table.art_overview td {
 }
 /*endregion PAGE_GENERIC*/
 
-/*region PAGE_LEFT_TOP*/
+/*region FRAME_TOP_LEFT*/
 /**
  * #############################################################################
- * @section page_left_top
+ * @section frame_top_left
  * @extends Page_Generic
  */
 /** @deprecated [2023-03-17] Since CONTENIDO 4.10.2, Don't use `page_left_top`, use `page_top_left` instead */
@@ -504,7 +504,77 @@ table.art_overview td {
 .page_top_left {
     margin: 0;
 }
-/*endregion PAGE_LEFT_TOP*/
+
+/** @deprecated [2023-03-04] Since CONTENIDO 4.10.2, Don't use `leftTopAction`, use `top_left_action` instead */
+.leftTopAction,
+.top_left_action {
+    min-height: 2em;
+    border: 1px solid #b3b3b3;
+    padding: 5px 0 5px 16px;
+    margin-top: 1px;
+}
+/** @deprecated [2023-03-04] Since CONTENIDO 4.10.2, Don't use `leftTopAction`, use `top_left_action` instead */
+.leftTopActionNext,
+.top_left_action_next {
+    border-top: none;
+    padding: 5px 0 5px 16px;
+    margin-top: 0;
+}
+
+/** @deprecated [2023-03-04] Since CONTENIDO 4.10.2, Don't use `leftTopAction`, use `top_left_action` instead */
+.leftTopAction input[type=text],
+.top_left_action input[type=text] {
+    width: 170px;
+}
+/*endregion FRAME_TOP_LEFT*/
+
+/*region FRAME_LEFT_DECO*/
+/**
+ * #############################################################################
+ * @section Frame_Left_Deco
+ */
+.page_deco {
+    background-color: #e2e2e2;
+}
+.page_deco .frame_handle {
+    height: 28px;
+    border-bottom: 1px solid #b3b3b3;
+}
+.page_deco .frame_handle img {
+    border: none;
+    float: right;
+}
+.page_deco .frame_handle img#toggleimage {
+    cursor: pointer;
+    float: none;
+    margin:7px 0 0 17px;
+}
+/*endregion FRAME_LEFT_DECO*/
+
+/*region FRAME_SUB_NAVIGATION*/
+/**
+ * #############################################################################
+ * @section Sub_Navigation_Frame
+ */
+.page_subnav .frame_handle {
+    float: left;
+}
+.page_subnav .frame_handle img {
+    border: none;
+    float: left;
+}
+.page_subnav .frame_handle img#toggleimage {
+    cursor: pointer;
+    float: none;
+    margin: 7px 0 0 6px;
+}
+.page_subnav div.menuless {
+    padding-left: 250px;
+}
+.page_subnav div.menuless .frame_handle {
+    display: none;
+}
+/*endregion FRAME_SUB_NAVIGATION*/
 
 /*region PAGE_LOGIN_FORM-PAGE_HEADER*/
 /**
@@ -561,81 +631,6 @@ table.art_overview td {
 /** @deprecated [2023-03-05] Since CONTENIDO 4.10.2, Is no longer used! */
 .form_image {vertical-align: middle; margin-left: 10px; padding-top: 4px;}
 
-/*region FRAME_LEFT_DECO*/
-/**
- * #############################################################################
- * @section Frame_Left_Deco
- */
-.page_deco {
-    background-color: #e2e2e2;
-}
-.page_deco .frame_handle {
-    height: 28px;
-    border-bottom: 1px solid #b3b3b3;
-}
-.page_deco .frame_handle img {
-    border: none;
-    float: right;
-}
-.page_deco .frame_handle img#toggleimage {
-    cursor: pointer;
-    float: none;
-    margin:7px 0 0 17px;
-}
-/*endregion FRAME_LEFT_DECO*/
-
-/*region FRAME_SUB_NAVIGATION*/
-/**
- * #############################################################################
- * @section Sub_Navigation_Frame
- */
-.page_subnav .frame_handle {
-    float: left;
-}
-.page_subnav .frame_handle img {
-    border: none;
-    float: left;
-}
-.page_subnav .frame_handle img#toggleimage {
-    cursor: pointer;
-    float: none;
-    margin: 7px 0 0 6px;
-}
-.page_subnav div.menuless {
-    padding-left: 250px;
-}
-.page_subnav div.menuless .frame_handle {
-    display: none;
-}
-/*endregion FRAME_SUB_NAVIGATION*/
-
-/*region FRAME_TOP_LEFT*/
-/**
- * #############################################################################
- * @section Top_Left_Frame
- */
-/** @deprecated [2023-03-04] Since CONTENIDO 4.10.2, Don't use `leftTopAction`, use `top_left_action` instead */
-.leftTopAction,
-.top_left_action {
-    min-height: 2em;
-    border: 1px solid #b3b3b3;
-    padding: 5px 0 5px 16px;
-    margin-top: 1px;
-}
-/** @deprecated [2023-03-04] Since CONTENIDO 4.10.2, Don't use `leftTopAction`, use `top_left_action` instead */
-.leftTopActionNext,
-.top_left_action_next {
-    border-top: none;
-    padding: 5px 0 5px 16px;
-    margin-top: 0;
-}
-
-/** @deprecated [2023-03-04] Since CONTENIDO 4.10.2, Don't use `leftTopAction`, use `top_left_action` instead */
-.leftTopAction input[type=text],
-.top_left_action input[type=text] {
-    width: 170px;
-}
-/*endregion FRAME_TOP_LEFT*/
 
 /*region SYSTEM_CONFIGURATION*/
 /**
