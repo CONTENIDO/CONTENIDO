@@ -67,7 +67,9 @@
                 xOffset:    -20,
                 yOffset:    4,
                 outSpeed:   250,
+                maxWidth:   '50%',
                 removeOnOutsideClick: true,
+                removeOnEscapeKey: true,
                 tipContent: $('#' + id).html()
             });
         });

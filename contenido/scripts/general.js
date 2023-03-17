@@ -1389,7 +1389,29 @@
         });
 
         return objData;
-    }
+    };
+
+    /**
+     * Checks if the passed event, it should be passed by a 'keydown' handler,
+     * is a pressed escape key on the keyboard.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param {Event} event
+     * @returns {boolean}
+     */
+    Con.isEscapeKeyEvent = function(event) {
+        if (typeof event === 'object' && event !== null && event.hasOwnProperty('type')) {
+            if ('key' in event) {
+                // Modern browser
+                return (event.key === 'Escape' || event.key === 'Esc');
+            } else {
+                // All browser
+                return event.keyCode === 27;
+            }
+        }
+        return false;
+    };
+
 })(Con, Con.$);
 
-console.log(window.name + ':general query parameter', window.location.search.replace('?', ''));
+//console.log(window.name + ':general query parameter', window.location.search.replace('?', ''));
