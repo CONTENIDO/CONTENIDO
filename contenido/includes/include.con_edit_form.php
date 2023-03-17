@@ -63,7 +63,7 @@ $articleType = $versioning->getArticleType(
 $versioningElement = '';
 
 switch ($versioningState) {
-    case 'simple' :
+    case $versioning::STATE_SIMPLE:
         if ($action == 'copyto') {
             if (is_numeric($idArtLangVersion)) {
                 $artLangVersion = new cApiArticleLanguageVersion(cSecurity::toInteger($idArtLangVersion));
@@ -123,7 +123,7 @@ switch ($versioningState) {
 
         // Create markAsCurrent Button
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'), 'markAsCurrentButton');
-        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
+        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == $versioning::STATE_SIMPLE) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
 
@@ -150,7 +150,7 @@ switch ($versioningState) {
         $versioningElement .= $versioning->getVersionSelectionFieldJavaScript('con_edit_form');
 
         break;
-    case 'advanced' :
+    case $versioning::STATE_ADVANCED:
          // Set as current/editable
         if ($action == 'copyto') {
             if (is_numeric($idArtLangVersion) && $articleType == 'current') {
@@ -292,7 +292,7 @@ switch ($versioningState) {
         $versioningElement .= $versioningBox->toHtml();
 
         break;
-    case 'disabled':
+    case $versioning::STATE_DISABLED:
         // Versioning is disabled, don't show version select/copy controls
         break;
     default:
@@ -444,8 +444,8 @@ if ($action == "con_newart" && $newart != true) {
     return;
 }
 
-if ($versioningState == 'simple' && $articleType == 'version'
-    || $versioningState == 'advanced' && $articleType != 'editable') {
+if ($versioningState == $versioning::STATE_SIMPLE && $articleType == 'version'
+    || $versioningState == $versioning::STATE_ADVANCED && $articleType != 'editable') {
     $disabled = 'disabled="disabled"';
 } else {
     $disabled = '';
@@ -510,9 +510,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tmp_cat_art = $oCatArtCol->getIdByCategoryIdAndArticleId($idcat, $idart);
 
     $sql = '';
-    if (($versioningState == 'disabled' || $versioningState == 'simple'
+    if (($versioningState == $versioning::STATE_DISABLED || $versioningState == $versioning::STATE_SIMPLE
         && ($articleType == 'current' || $articleType == 'editable'))
-        || $versioningState == 'advanced' && $articleType == 'current')  {
+        || $versioningState == $versioning::STATE_ADVANCED && $articleType == 'current')  {
         $sql = 'SELECT * FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
         $sql = $db->prepare($sql, $cfg["tab"]["art_lang"], $idart, $lang);
     } elseif ($action != 'con_newart' && ($selectedArticleId == 'current' || $selectedArticleId == 'editable')
@@ -580,8 +580,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 	        if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked != 1) {
 	            $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
 	            $inUse = false;
-	            if ($versioningState == 'simple' && ($articleType == 'current' || $articleType == 'editable')
-	            || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled') {
+	            if ($versioningState == $versioning::STATE_SIMPLE && ($articleType == 'current' || $articleType == 'editable')
+	            || $versioningState == $versioning::STATE_ADVANCED && $articleType == 'editable' || $versioningState == $versioning::STATE_DISABLED) {
 	                $disabled = '';
 	            }
 	            $page->set("s", "REASON", i18n('Save article'));
@@ -686,8 +686,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         }
     }
     // disable select element if a non-editable version is selected
-    if ($versioning->getState() == 'simple' && $articleType != 'current'
-        || $versioning->getState() == 'advanced' && $articleType != 'editable') {
+    if ($versioningState == $versioning::STATE_SIMPLE && $articleType != 'current'
+        || $versioningState == $versioning::STATE_ADVANCED && $articleType != 'editable') {
             $inputArtSortSelect->setDisabled(true);
     }
     $tmp_inputArtSort = $inputArtSortSelect->toHtml();
@@ -779,8 +779,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     if ($tmp_online) {
         $publishingDateTextbox = new cHTMLTextbox('publishing_date', $tmp2_published, 20, 40, 'publishing_date', false, null, '', 'text_medium');
         $publishingDateTextbox->setStyle('width: 130px;');
-        if (!($versioningState == 'simple' && ($articleType == 'current' || $articleType == 'editable')
-        || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled')) {
+        if (!($versioningState == $versioning::STATE_SIMPLE && ($articleType == 'current' || $articleType == 'editable')
+        || $versioningState == $versioning::STATE_ADVANCED && $articleType == 'editable' || $versioningState == $versioning::STATE_DISABLED)) {
             $publishingDateTextbox->setAttribute('disabled', 'disabled');
         }
 
@@ -845,8 +845,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // Online
     $tmp_ochecked = $tmp_online == 1? 'checked="checked"' : '';
     if (($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat))
-        && ($versioningState == 'simple' && $articleType == ($articleType == 'current' || $articleType == 'editable')
-         || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled') ) {
+        && ($versioningState == $versioning::STATE_SIMPLE && $articleType == ($articleType == 'current' || $articleType == 'editable')
+         || $versioningState == $versioning::STATE_ADVANCED && $articleType == 'editable' || $versioningState == $versioning::STATE_DISABLED) ) {
         $tmp_ocheck = '<input type="checkbox" ' . $disabled . ' id="online" name="online" value="1" ' . $tmp_ochecked . '>';
     } else {
         $tmp_ocheck = '<input disabled="disabled" type="checkbox" name="" value="1" ' . $tmp_ochecked . '>';
@@ -857,8 +857,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // Startarticle
     $tmp_start_checked = $tmp_is_start? 'checked="checked"' : '';
     if (($perm->have_perm_area_action("con", "con_makestart") || $perm->have_perm_area_action_item("con", "con_makestart", $idcat))
-        && ($versioningState == 'simple' && ($articleType == 'current' || $articleType == 'editable')
-        || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled')) {
+        && ($versioningState == $versioning::STATE_SIMPLE && ($articleType == 'current' || $articleType == 'editable')
+        || $versioningState == $versioning::STATE_ADVANCED && $articleType == 'editable' || $versioningState == $versioning::STATE_DISABLED)) {
         $tmp_start = '<input ' . $disabled . ' type="checkbox" name="is_start" id="is_start" value="1" ' . $tmp_start_checked . '>';
     } else {
         $tmp_start = '<input disabled="disabled" type="checkbox" name="" value="1" ' . $tmp_start_checked . '>';
@@ -1136,8 +1136,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     if ((($perm->have_perm_area_action("con", "con_makeonline") ||
         $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) && $inUse == false)
-        && ($versioningState == 'simple' && ($articleType == 'current' || $articleType == 'editable')
-        || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled')) {
+        && ($versioningState == $versioning::STATE_SIMPLE && ($articleType == 'current' || $articleType == 'editable')
+        || $versioningState == $versioning::STATE_ADVANCED && $articleType == 'editable' || $versioningState == $versioning::STATE_DISABLED)) {
         $allow_usetimemgmt = '';
         $page->set('s', 'IS_DATETIMEPICKER_DISABLED', 0);
     } else {
@@ -1299,8 +1299,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $page->set('s', 'BUTTONDISABLE', $disabled);
 
     // disable/grey out button if article is in use or a non-editable version is selected
-    if ($inUse == true || ($versioning->getState() == 'simple' && $articleType != 'current'
-            || $versioning->getState() == 'advanced' && $articleType != 'editable')) {
+    if ($inUse == true || ($versioningState == $versioning::STATE_SIMPLE && $articleType != 'current'
+            || $versioningState == $versioning::STATE_ADVANCED && $articleType != 'editable')) {
         $page->set('s', 'BUTTONIMAGE', 'but_ok_off.gif');
     } else {
         $page->set('s', 'BUTTONIMAGE', 'but_ok.gif');

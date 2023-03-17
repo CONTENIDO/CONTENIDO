@@ -20,7 +20,7 @@ cInclude('includes', 'functions.pathresolver.php');
 
 // ugly globals that are used in this script
 global $tpl, $contenido, $notification, $idcatart, $idtpl;
-global $syncoptions, $tmp_notification, $versioningState;
+global $syncoptions, $tmp_notification;
 
 $db = cRegistry::getDb();
 $perm = cRegistry::getPerm();
@@ -59,11 +59,11 @@ $idArtLangVersion = $_REQUEST['idArtLangVersion'] ?? '';
 $art = new cApiArticleLanguage();
 $art->loadByArticleAndLanguageId($idart, $lang);
 
-if (empty($idArtLangVersion) && $versioning->getState() == 'advanced') {
+if (empty($idArtLangVersion) && $versioning->getState() == $versioning::STATE_ADVANCED) {
     $art = new cApiArticleLanguageVersion($versioning->getEditableArticleId($art->getField('idartlang')));
     //$art = new cApiArticleLanguageVersion($versioning->getEditableArticleId($idArtLang));
-} elseif ($versioning->getState() == 'advanced' && $idArtLangVersion != 'current'
-    || $versioning->getState() == 'simple' && is_numeric($idArtLangVersion)) {
+} elseif ($versioning->getState() == $versioning::STATE_ADVANCED && $idArtLangVersion != 'current'
+    || $versioning->getState() == $versioning::STATE_SIMPLE && is_numeric($idArtLangVersion)) {
     $art = new cApiArticleLanguageVersion(cSecurity::toInteger($idArtLangVersion));
 }
 
@@ -82,7 +82,7 @@ $articleType = $versioning->getArticleType(
 
 // Set as current/editable
 switch ($versioning->getState()) {
-    case 'simple':
+    case $versioning::STATE_SIMPLE:
         if ($action == 'copyto') {
             if (is_numeric($idArtLangVersion)) {
                 $artLangVersion = new cApiArticleLanguageVersion(cSecurity::toInteger($idArtLangVersion));
@@ -92,7 +92,7 @@ switch ($versioning->getState()) {
         }
 
         break;
-    case 'advanced':
+    case $versioning::STATE_ADVANCED:
         if ($action == 'copyto') {
             if (is_numeric($idArtLangVersion) && $articleType == 'current') {
                 // editable->current
@@ -170,9 +170,10 @@ if ($art->getField('created')) {
         $tpl->set('s', 'DISABLED', ' ' . $disabled);
         $notifications[] = $notification->returnNotification('warning', i18n('This article is currently frozen and can not be edited!'));
         $tpl->set("s", "REASON", i18n('This article is currently frozen and can not be edited!'));
-    } elseif ($versioning->getState() == 'advanced' && $articleType == 'editable'
-        || $versioning->getState() == 'simple' && $articleType != 'version'
-        || $versioning->getState() == 'disabled'){
+    } elseif ($versioning->getState() == $versioning::STATE_ADVANCED && $articleType == 'editable'
+        || $versioning->getState() == $versioning::STATE_SIMPLE && $articleType != 'version'
+        || $versioning->getState() == $versioning::STATE_DISABLED)
+    {
         $tpl->set('s', 'DISABLED', '');
         $tpl->set("s", "REASON", "");
     } else {
@@ -338,9 +339,11 @@ foreach ($availableTags as $key => $value) {
     $tpl->set('d', 'METAFIELDTYPE', $element);
     $tpl->set('d', 'METATITLE', $value['metatype'] . ':');
 
-    if ($versioning->getState() == 'simple' && $articleType == 'current'
-            || $versioning->getState() == 'advanced' && $articleType == 'editable'
-            || $versioning->getState() == 'disabled' && ($art->getField('locked') != 1 || cPermission::checkSysadminPermission($auth->getPerms()))) {
+    if ($versioning->getState() == $versioning::STATE_SIMPLE && $articleType == 'current'
+        || $versioning->getState() == $versioning::STATE_ADVANCED && $articleType == 'editable'
+        || $versioning->getState() == $versioning::STATE_DISABLED &&
+        ($art->getField('locked') != 1 || cPermission::checkSysadminPermission($auth->getPerms()))
+    ) {
         $tpl->set('d', 'CURSOR', 'pointer');
         $tpl->set('d', 'DELETE_META',
             "Con.showConfirmation('" .
@@ -363,7 +366,7 @@ $tpl->set('s', 'SITEMAP_PRIO', $art->getField('sitemapprio'));
 $versioningElement = '';
 
 switch ($versioning->getState()) {
-    case 'simple':
+    case $versioning::STATE_SIMPLE:
         $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
 
         // Create Metatag Version Option Elements
@@ -404,7 +407,7 @@ switch ($versioning->getState()) {
 
         // Create markAsCurrent Button
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'), 'markAsCurrentButton');
-        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
+        if ($articleType == 'current' || $articleType == 'editable' && $versioning->getState() == $versioning::STATE_SIMPLE) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
 
@@ -443,7 +446,7 @@ switch ($versioning->getState()) {
         $versioningElement .= $versioning->getVersionSelectionFieldJavaScript('con_meta_edit_form');
 
         break;
-    case 'advanced':
+    case $versioning::STATE_ADVANCED:
         $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
 
         // set editable element
@@ -538,7 +541,7 @@ switch ($versioning->getState()) {
         $versioningElement .= $versioning->getVersionSelectionFieldJavaScript('con_meta_edit_form');
 
         break;
-    case 'disabled':
+    case $versioning::STATE_DISABLED:
         // Versioning is disabled, don't show version select/copy controls
         break;
     default:
@@ -659,8 +662,8 @@ while ($db->nextRecord()) {
 // accessible by the current user (sysadmin client admin) anymore.
 if (cPermission::checkSysadminPermission($auth->getPerms())) {
     // disable/grey out button if a non-editable version is selected
-    if ($versioning->getState() == 'simple' && $articleType != 'current'
-            || $versioning->getState() == 'advanced' && $articleType != 'editable') {
+    if ($versioning->getState() == $versioning::STATE_SIMPLE && $articleType != 'current'
+            || $versioning->getState() == $versioning::STATE_ADVANCED && $articleType != 'editable') {
         $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new_off.png" id="addMetaDisabled" alt="">');
     } else {
         $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta" alt="">');

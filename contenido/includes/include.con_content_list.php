@@ -154,7 +154,7 @@ if (($action == 'savecontype' || $action == 10)) {
             }
 
             $versioning = new cContentVersioning();
-            if ($versioning->getState() != 'advanced') {
+            if ($versioning->getState() != $versioning::STATE_ADVANCED) {
                 conMakeArticleIndex($idartlang, $idart);
             }
 
@@ -181,7 +181,7 @@ if (($action == 'savecontype' || $action == 10)) {
             ];
 
             switch ($versioningState) {
-                case 'simple':
+                case $versioning::STATE_SIMPLE:
                     $oContentColl = new cApiContentCollection();
                     $content = new cApiContent();
                     $contentVersionColl = new cApiContentVersionCollection();
@@ -205,7 +205,7 @@ if (($action == 'savecontype' || $action == 10)) {
                     $oContentColl->delete((int)$_REQUEST['idcontent']);
 
                     break;
-                case 'advanced':
+                case $versioning::STATE_ADVANCED:
                     $oContentVersionColl = new cApiContentVersionCollection();
                     $contentVersionItem = new cApiContentVersion((int)$_REQUEST['idcontent']);
                     /*if (isset($linkedTypes[$contentVersionItem->get("idtype")])) {
@@ -223,7 +223,7 @@ if (($action == 'savecontype' || $action == 10)) {
                     $versioning->createContentVersion($contentParameters);
 
                     break;
-                case 'disabled':
+                case $versioning::STATE_DISABLED:
                     $oContentColl = new cApiContentCollection();
                     $contentItem = new cApiContent((int)$_REQUEST['idcontent']);
                     if (isset($linkedTypes[$contentItem->get("idtype")])) {
@@ -385,7 +385,7 @@ if (($action == 'savecontype' || $action == 10)) {
 
                     $versioning = new cContentVersioning();
                     $version = NULL;
-                    if ($versioning->getState() != 'disabled') {
+                    if ($versioning->getState() != $versioning::STATE_DISABLED) {
                         // create article version
                         $artLangVersion = $versioning->createArticleLanguageVersion($articleLanguage->toArray());
                         $artLangVersion->markAsCurrentVersion(1);
@@ -442,10 +442,10 @@ if (($action == 'savecontype' || $action == 10)) {
                                         if (isset($_POST['overwritecontent']) && $_POST['overwritecontent'] == 1) {
                                             conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
                                         } else {
-                                            if ($versioningState == 'simple' || $versioningState == 'disabled') {
+                                            if ($versioningState == $versioning::STATE_SIMPLE || $versioningState == $versioning::STATE_DISABLED) {
                                                 $contentEntry = new cApiContent();
                                                 $contentEntry->loadByMany(["idtype" => $typeEntry->get("idtype"), "typeid" => $typeid, "idartlang" => $articleLanguage->get('idartlang')]);
-                                            } elseif ($versioningState == 'advanced') {
+                                            } elseif ($versioningState == $versioning::STATE_ADVANCED) {
                                                 $contentEntryVersionCollection = new cApiContentVersionCollection();
                                                 $where = 'idtype = ' . $typeEntry->get("idtype") . ' AND typeid = ' . $typeid . ' AND idartlang = ' . $articleLanguage->get('idartlang');
                                                 $ids = $contentEntryVersionCollection->getIdsByWhereClause($where);
@@ -509,7 +509,7 @@ $isLocked = cSecurity::toBoolean($cApiArticleLanguage->getField('locked'));
 $versioningElement = '';
 
 switch ($versioningState) {
-    case 'simple':
+    case $versioning::STATE_SIMPLE:
         // get selected article
         $selectedArticle = $versioning->getSelectedArticle($idArtLangVersion, $idartlang, $articleType, $selectedArticleId);
 
@@ -591,7 +591,7 @@ switch ($versioningState) {
         // Create markAsCurrent Button/Label
         $page->set('s', 'COPY_LABEL', i18n('Copy Version'));
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'), 'markAsCurrentButton');
-        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple' || ($isLocked && !$isAdmin)) {
+        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == $versioning::STATE_SIMPLE || ($isLocked && !$isAdmin)) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
 
@@ -611,7 +611,7 @@ switch ($versioningState) {
         $versioningElement .= $versioning->getVersionSelectionFieldJavaScript('editcontent');
 
         break;
-    case 'advanced':
+    case $versioning::STATE_ADVANCED:
 
         // update selected article id after import or change
         if (isset($_POST['changeview']) || isset($_POST['import'])) {
@@ -758,7 +758,7 @@ switch ($versioningState) {
         $versioningElement .= $versioning->getVersionSelectionFieldJavaScript('editcontent');
 
         break;
-    case 'disabled':
+    case $versioning::STATE_DISABLED:
         // Versioning is disabled, don't show version select/copy controls
 
         // Set info text (Note: Text is not used at the moment!)
@@ -872,7 +872,7 @@ if (count($result) <= 0) {
 } else {
     foreach ($result AS $type => $typeIdValue) {
         foreach ($typeIdValue AS $typeId => $value) {
-            if (($articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
+            if (($articleType == 'editable' || $articleType == 'current' && ($versioningState == $versioning::STATE_DISABLED || $versioningState == $versioning::STATE_SIMPLE))) {
                 $class = '';
             } elseif ($articleType == 'current' || $articleType == 'version') {
                 $class = ' no_active';
@@ -1028,7 +1028,7 @@ function _processCmsTags(
             if (cFileHandler::exists($cTypeClassFile)) {
                 $tmp = $a_content[$_typeItem->type][$val];
                 $cTypeObject = new $className($tmp, $val, $a_content);
-                if (cRegistry::isBackendEditMode() && (!$isLocked || $isAdmin) && $articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
+                if (cRegistry::isBackendEditMode() && (!$isLocked || $isAdmin) && $articleType == 'editable' || ($articleType == 'current' && ($versioningState == cContentVersioning::STATE_DISABLED || $versioningState == cContentVersioning::STATE_SIMPLE))) {
                     $tmp = $cTypeObject->generateEditCode();
                 } else {
                     $tmp = $cTypeObject->generateViewCode();
@@ -1062,7 +1062,7 @@ function _processCmsTags(
             // can delete article content if all conditions are fulfilled:
             // article is not frozen or admin accesses page (admin can do everything, even when article is frozen)
             // article can be edited or (article is published version and versioning is turned off or set to simple mode)
-            if ((!$isLocked || $isAdmin) && ($articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')))) { // No freeze
+            if ((!$isLocked || $isAdmin) && ($articleType == 'editable' || ($articleType == 'current' && ($versioningState == cContentVersioning::STATE_DISABLED || $versioningState == cContentVersioning::STATE_SIMPLE)))) { // No freeze
                 $replacements[$num]   = $tmp . '<span class="con_content_type_controls"><a class="con_img_button con_img_button_content_type" href="javascript:void(0)" data-con-action="delete_content_type" data-con-idcontent="' . $idcontent . '">
             <img src="' . $backendUrl . 'images/delete.gif" alt="">
             </a></span>';

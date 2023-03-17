@@ -197,8 +197,8 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
     //$ids = $metaTagVersionColl->getIdsByWhereClause($where);
 
     switch ($versioning->getState()) {
-        case 'simple':
-            // if its only a robot-update, only update and don't create a version
+        case $versioning::STATE_SIMPLE:
+            // if it's only a robot-update, only update and don't create a version
             if ($version == NULL) {
                 if (is_object($metaTag)) {
                     $return = $metaTag->updateMetaValue($value);
@@ -262,8 +262,7 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
             ];
             $versioning->createMetaTagVersion($metaTagVersionParameters);
             //echo "version2:";var_export($version);echo "<hr>";
-            break;
-        case 'disabled':
+        case $versioning::STATE_DISABLED:
             // update article
             $artLang = new cApiArticleLanguage($idartlang);
             $artLang->set('lastmodified', date('Y-m-d H:i:s'));
@@ -280,7 +279,7 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
             }
 
             break;
-        case 'advanced':
+        case $versioning::STATE_ADVANCED:
             if ($version == NULL) {
                 if (is_object($metaTag)) {
                     $return = $metaTag->updateMetaValue($value);

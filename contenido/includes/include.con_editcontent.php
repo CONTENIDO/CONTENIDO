@@ -66,7 +66,7 @@ if (($action == 20 || $action == 10) && $_REQUEST['filelist_action'] != 'store')
         }
 
         $versioning = new cContentVersioning();
-        if ($versioning->getState() != 'advanced') {
+        if ($versioning->getState() != $versioning::STATE_ADVANCED) {
             conMakeArticleIndex($idartlang, $idart);
         }
 
@@ -218,7 +218,6 @@ global $selectedArticleId;
 $selectedArticleId = !empty($idArtLangVersion) ? $idArtLangVersion : NULL;
 
 $versioning = new cContentVersioning();
-$versioningState = $versioning->getState();
 $articleType = $versioning->getArticleType(
     $idArtLangVersion, $idartlang, $action, $selectedArticleId
 );
@@ -227,11 +226,11 @@ $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersi
 
 $versioningElement = '';
 
-switch ($versioningState) {
-    case 'simple':
+switch ($versioning->getState()) {
+    case $versioning::STATE_SIMPLE:
         // Set as current
         if ($action == 'copyto') {
-            if (is_numeric($idArtLangVersion) && $versioningState == 'simple'
+            if (is_numeric($idArtLangVersion) && $versioning->getState() == $versioning::STATE_SIMPLE
                 && ($articleType == 'current' || $articleType == 'editable')) {
                 $artLangVersion = new cApiArticleLanguageVersion(cSecurity::toInteger($idArtLangVersion));
                 $artLangVersion->markAsCurrent('content');
@@ -291,7 +290,7 @@ switch ($versioningState) {
         $markAsCurrentButton = new cHTMLButton(
             'markAsCurrentButton', i18n('Copy to published version'), 'markAsCurrentButton'
         );
-        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
+        if ($articleType == 'current' || $articleType == 'editable' && $versioning->getState() == $versioning::STATE_SIMPLE) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
 
@@ -311,7 +310,7 @@ switch ($versioningState) {
         $versioningElement .= $versioning->getVersionSelectionFieldJavaScript('editcontent');
 
         break;
-    case 'advanced':
+    case $versioning::STATE_ADVANCED:
         // Set as current/editable
         if ($action == 'copyto') {
             if (is_numeric($idArtLangVersion) && $articleType == 'current') {
@@ -437,7 +436,7 @@ switch ($versioningState) {
         $versioningElement .= $versioning->getVersionSelectionFieldJavaScript('editcontent');
 
         break;
-    case 'disabled':
+    case $versioning::STATE_DISABLED:
         // Versioning is disabled, don't show version select/copy controls
 
         // Set info text (Note: Text is not used at the moment!)
@@ -454,8 +453,8 @@ switch ($versioningState) {
 // generate article code
 if ($selectedArticle != NULL) {
     $editable = false;
-    switch ($versioningState) {
-        case 'advanced':
+    switch ($versioning->getState()) {
+        case $versioning::STATE_ADVANCED:
             if ($articleType == 'editable') {
                 $editable = true;
                 $version = $selectedArticle->get('version');
@@ -467,7 +466,7 @@ if ($selectedArticle != NULL) {
                 $version = $selectedArticle->get('version');
             }
             break;
-        case 'simple':
+        case $versioning::STATE_SIMPLE:
             if ($articleType == 'editable' || $articleType == 'current') {
                 $editable = true;
                 $version = NULL;
@@ -476,7 +475,7 @@ if ($selectedArticle != NULL) {
                 $version = $selectedArticle->get('version');
             }
             break;
-        case 'disabled':
+        case $versioning::STATE_DISABLED:
             $editable = true;
             $version = NULL;
             break;

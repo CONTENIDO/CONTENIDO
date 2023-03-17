@@ -209,11 +209,9 @@ function conEditFirstTime(
         $oArtLang->store();
     }
 
-    $versioningState = $versioning->getState();
-
-    switch ($versioningState) {
-        case 'simple':
-        case 'advanced':
+    switch ($versioning->getState()) {
+        case $versioning::STATE_SIMPLE:
+        case $versioning::STATE_ADVANCED:
             // Create new Article Language Version Entry
             $parameters = [
                 'published' => $published_value,
@@ -243,7 +241,7 @@ function conEditFirstTime(
 
             $versioning->createArticleLanguageVersion($parameters);
             break;
-        case 'disabled':
+        case $versioning::STATE_DISABLED:
         default:
             break;
     }
@@ -377,10 +375,9 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     }
 
     $versioning = new cContentVersioning();
-    $versioningState = $versioning->getState();
 
-    switch ($versioningState) {
-        case 'simple':
+    switch ($versioning->getState()) {
+        case $versioning::STATE_SIMPLE:
             // update current article
             $artLang->set('title', $title);
             $artLang->set('urlname', $urlname);
@@ -430,7 +427,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
             }
 
             $artLang->store();
-        case 'advanced':
+        case $versioning::STATE_ADVANCED:
         	$oldOnline = $artLang->get('online');
             $publishedby = null;
             // Create new Article Language Version Entry
@@ -476,7 +473,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
             $versioning->createArticleLanguageVersion($parameters);
 
             break;
-        case 'disabled':
+        case $versioning::STATE_DISABLED:
             $artLang->set('title', $title);
             $artLang->set('urlname', $urlname);
             $artLang->set('summary', $summary);
@@ -1925,7 +1922,7 @@ function conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabe
 
     // Update keyword list for new article
     $versioning = new cContentVersioning();
-    if ($versioning->getState() != 'advanced') {
+    if ($versioning->getState() != $versioning::STATE_ADVANCED) {
         conMakeArticleIndex($oNewArtLang->get('idartlang'), $idart);
     }
 }
