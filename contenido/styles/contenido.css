@@ -499,7 +499,9 @@ table.art_overview td {
  * @section page_left_top
  * @extends Page_Generic
  */
-.page_left_top {
+/** @deprecated [2023-03-17] Since CONTENIDO 4.10.2, Don't use `page_left_top`, use `page_top_left` instead */
+.page_left_top,
+.page_top_left {
     margin: 0;
 }
 /*endregion PAGE_LEFT_TOP*/

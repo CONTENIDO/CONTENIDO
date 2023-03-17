@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $page = new cGuiPage('workflow_left_top', 'workflow');
 $page->addStyle('workflow.css');
-$page->addBodyClassName('page_left_top');
+$page->addBodyClassName('page_top_left');
 
 $create = new cHTMLLink();
 $create->setMultiLink('workflow', '', 'workflow_common', 'workflow_create');
