@@ -243,6 +243,27 @@ class cHTMLTest extends cTestingTestCase
         $this->assertInstanceOf('cHTML', $html->setClass(''));
     }
 
+    public function testAppendClass()
+    {
+        $html = new cHTML();
+        $html->setClass('foo');
+        $html->appendClass('bar');
+        $this->assertSame('foo bar', $html->getAttribute('class'));
+
+        $html = new cHTML();
+        $html->setClass('foo');
+        $html->appendClass('bar');
+        $html->appendClass('bar');
+        $this->assertSame('foo bar', $html->getAttribute('class'));
+
+        $html = new cHTML();
+        $html->setClass('foo');
+        $html->appendClass('bar');
+        $html->appendClass('bar');
+        $html->appendClass('baz');
+        $this->assertSame('foo bar baz', $html->getAttribute('class'));
+    }
+
     public function dataSetStyle()
     {
         return [

@@ -246,6 +246,24 @@ class cHTML {
     }
 
     /**
+     * Appends the CSS class, if it doesn't exist.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $class
+     *         Text to append to the "class" attribute
+     * @return cHTML
+     *         $this for chaining
+     */
+    public function appendClass($class) {
+        $classes = explode(' ', $this->getAttribute('class'));
+        if (!in_array($class, $classes)) {
+            $classes[] = $class;
+            $this->setAttribute('class', implode(' ', $classes));
+        }
+        return $this;
+    }
+
+    /**
      * Sets the CSS style
      *
      * @param string $style
