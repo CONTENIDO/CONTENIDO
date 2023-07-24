@@ -263,9 +263,22 @@
      */
     cContentTypeImgeditor.prototype.addSelectAction = function() {
         var self = this;
+
+        function _resetMeta() {
+            $('#image_medianame_' + self.id).val('');
+            $('#image_description_' + self.id).val('');
+            $('#image_keywords_' + self.id).val('');
+            $('#image_internal_notice_' + self.id).val('');
+            $('#image_copyright_' + self.id).val('');
+        }
+
         if ($('#image_filename_' + self.id).length > 0) {
             $(self.frameId + ' select[name="image_filename"]').change(function() {
                 var filename = $('select#image_filename_' + self.id + ' option:selected').val();
+                if (!filename) {
+                    filename = '';
+                }
+
                 // update the image preview element with the new selected image
                 if (filename === '') {
                     $('#directoryShow_' + self.id).html('');
@@ -274,11 +287,7 @@
                 }
                 // update image meta data
                 if (filename === '') {
-                    $('#image_medianame_' + self.id).val('');
-                    $('#image_description_' + self.id).val('');
-                    $('#image_keywords_' + self.id).val('');
-                    $('#image_internal_notice_' + self.id).val('');
-                    $('#image_copyright_' + self.id).val('');
+                    _resetMeta();
                 } else {
                     $.ajax({
                         type: 'POST',
@@ -300,6 +309,8 @@
                     });
                 }
             });
+        } else {
+            _resetMeta();
         }
     };
 
@@ -501,6 +512,9 @@
         if (dirname === 'upload') {
             dirname = '/';
         }
+
+        $(self.frameId + ' select#image_filename_' + self.id + ' option:selected').prop('selected', false);
+
         // update the file list each time a new directory is selected
         $.ajax({
             type: 'POST',
@@ -514,6 +528,7 @@
                 $(self.frameId + ' #directoryFile_' + self.id).html(msg);
                 // the items of the file select element have been changed, so add the event handlers again
                 self.addSelectAction();
+                $(self.frameId + ' select#image_filename_' + self.id).trigger('change');
                 self.showActiveImg();
             }
         });

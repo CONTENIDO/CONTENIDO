@@ -98,6 +98,12 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     private $_copyright;
 
     /**
+     * Upload file item instance
+     * @var cApiUpload
+     */
+    private $_upload;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * Initialises class attributes and handles store events.
@@ -148,7 +154,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
             // get image information from con_upl from the database
             $upload = new cApiUpload($this->_rawSettings);
             $this->_filename = $upload->get('filename');
-            $this->_dirname = $upload->get('dirname');
+            $this->_dirname = empty($upload->get('dirname')) ? '/' : $upload->get('dirname');
             $this->_imagePath = $this->_generateImagePath();
             $this->_fileType = $upload->get('filetype');
             $this->_fileSize = $upload->get('size');
@@ -315,18 +321,17 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
 
         if (empty($filename)) {
             $this->_rawSettings = '';
-            return;
+        } else {
+            // get the upload ID
+            $this->_upload = new cApiUpload();
+            $this->_upload->loadByMany([
+                'filename' => $filename,
+                'dirname' => $dirname,
+                'idclient' => $this->_client
+            ], false);
+
+            $this->_rawSettings = $this->_upload->get('idupl');
         }
-
-        // get the upload ID
-        $upload = new cApiUpload();
-        $upload->loadByMany([
-            'filename' => $filename,
-            'dirname' => $dirname,
-            'idclient' => $this->_client
-        ], false);
-
-        $this->_rawSettings = $upload->get('idupl');
 
         // save the content types
         conSaveContentEntry($this->_idArtLang, 'CMS_IMGEDITOR', $this->_id, $this->_rawSettings);
@@ -335,6 +340,25 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
             conMakeArticleIndex($this->_idArtLang, $this->_idArt);
         }
         conGenerateCodeForArtInAllCategories($this->_idArt);
+
+        $this->_updateUploadMeta();
+    }
+
+    /**
+     * Updates the meta data of a selected image file.
+     *
+     * @return void
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
+    protected function _updateUploadMeta()
+    {
+        if (!$this->_upload instanceof cApiUpload || $this->_upload->isLoaded()) {
+            return;
+        }
+
+        $idupl = cSecurity::toInteger($this->_upload->get('idupl'));
 
         // insert / update meta data
         $medianame = $_POST['image_medianame'] ?? '';
@@ -345,12 +369,13 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
 
         $uploadMeta = new cApiUploadMeta();
         $uploadMeta->loadByMany([
-            'idupl' => $this->_rawSettings,
+            'idupl' => $idupl,
             'idlang' => $this->_lang
         ]);
+
         // if meta data object already exists, update the values
         if ($uploadMeta->get('id_uplmeta')) {
-            $uploadMeta->set('idupl', $this->_rawSettings);
+            $uploadMeta->set('idupl', $idupl);
             $uploadMeta->set('idlang', $this->_lang);
             $uploadMeta->set('medianame', $medianame);
             $uploadMeta->set('description', $description);
@@ -361,7 +386,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         } else {
             // if metadata object does not exist yet, create a new one
             $uploadMetaCollection = new cApiUploadMetaCollection();
-            $uploadMetaCollection->create($this->_rawSettings, $this->_lang, $medianame, $description, $keywords, $internal_notice, $copyright);
+            $uploadMetaCollection->create($idupl, $this->_lang, $medianame, $description, $keywords, $internal_notice, $copyright);
         }
     }
 
