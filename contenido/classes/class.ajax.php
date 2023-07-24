@@ -314,8 +314,10 @@ class cAjaxRequest {
                 $image = new cContentTypeImgeditor($artReturn, $imageId, []);
 
                 $filename = basename(cSecurity::toString($_REQUEST['filename'] ?? ''));
+                $filename = trim($filename, '/');
                 $dirname = dirname(cSecurity::toString($_REQUEST['filename'] ?? ''));
-                if ($dirname != '.') {
+                $dirname = trim(str_replace('\\', '/', $dirname), '/');
+                if (!empty($dirname) && $dirname != '.') {
                     $dirname .= '/';
                 } else {
                     $dirname = '';
