@@ -345,10 +345,9 @@ class cSearch extends cSearchBaseAbstract
         parent::__construct($db);
 
         $this->_index = new cSearchIndex($db);
+        $this->_auth = $auth instanceof cAuth ? $auth : cRegistry::getAuth();
 
         $this->_setOptions($options);
-
-        $this->_auth = $auth instanceof cAuth ? $auth : cRegistry::getAuth();
     }
 
     /**
