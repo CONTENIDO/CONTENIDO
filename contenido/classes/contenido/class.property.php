@@ -462,9 +462,14 @@ class cApiPropertyCollection extends ItemCollection {
         }
         $this->select($sql);
 
+        // @TODO The initial value of $result[$itemid] should be an empty array, but this breaks the compatibility
         $result[$itemid] = false;
 
         while (($item = $this->next()) !== false) {
+            // Fix automatic conversion of false to array warning, see initial value above!
+            if ($result[$itemid] === false) {
+                $result[$itemid] = [];
+            }
             // enable accessing property values per number and field name
             $result[$item->get('itemid')][$item->get('idproperty')] = [
                 0 => $item->get('type'),
