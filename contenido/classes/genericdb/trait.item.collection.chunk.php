@@ -103,8 +103,9 @@ trait cItemCollectionChunkTrait
         foreach ($chunks as $page => $chunk) {
             $this->_prepareChunkIds($chunk);
             $in = implode("', '", $chunk);
-            $sql = "SELECT * FROM `%s` WHERE `%s` IN ('" . $in . "')";
-            $db->query($sql, $this->getTable(), $this->getPrimaryKeyName());
+            // Keep the order of values in the MySQL IN() function
+            $sql = "SELECT * FROM `%s` WHERE `%s` IN ('" . $in . "') ORDER BY FIELD(`%s`, '" . $in . "')";
+            $db->query($sql, $this->getTable(), $this->getPrimaryKeyName(), $this->getPrimaryKeyName());
             $results = [];
             while ($db->nextRecord()) {
                 $record = $db->getRecord();
