@@ -56,7 +56,7 @@
     # One RewriteRule to rule them all.
     # Exclude common extensions from rewriting and pass remaining requests to
     # front_content.php.
-    RewriteRule !\.(avi|bmp|css|doc|flv|gif|gz|gzip|ico|jpeg|jpg|js|mov|mp3|pdf|png|ppt|rar|svg|swf|tiff|txt|wbmp|webp|wav|wmv|xml|zip)$ front_content.php [NC,QSA,L]
+    RewriteRule !\.(avi|bmp|css|doc|flv|gif|gz|gzip|ico|jpeg|jpg|js|json|mov|mp3|mp4|pdf|png|ppt|rar|svg|swf|tiff|txt|wbmp|webp|wav|wmv|xml|zip)$ front_content.php [NC,QSA,L]
 
 </IfModule>
 
