@@ -304,6 +304,9 @@ class PifaField extends Item {
      * @return mixed|string
      */
     function getField($field, $bSafe = true) {
+        if (is_null($this->values[$field])) {
+            return '';
+        }
         $value = parent::getField($field, $bSafe);
         if ('rule' === $field) {
             $value = stripslashes($value);
