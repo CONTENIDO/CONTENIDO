@@ -566,6 +566,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         if ($auth->auth['uid'] == 'nobody') {
             $userPropColl   = new cApiUserPropertyCollection($auth->auth['uid']);
             $userProperties = $userPropColl->fetchByTypeName('frontend', 'allowed_ip');
+            $validated = 0;
             foreach ($userProperties as $userProperty) {
                 $user_id = $userProperty->get('user_id');
                 $range   = $userProperty->f('value');
