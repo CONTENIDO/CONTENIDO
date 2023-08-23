@@ -137,7 +137,7 @@ class SearchResultModule {
         $this->_msgRange = '';
 
         // get global variables (the ugly way)
-        $this->_artSpecs = $sArtSpecs;
+        $this->_artSpecs = $sArtSpecs ?? '';
 
         // perform first preparation of searchterm
         $searchTerm = $this->_searchTerm;
