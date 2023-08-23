@@ -143,12 +143,15 @@
             }
         });
 
-        $('#imgFormSubmit').click(function() {
+        $('#imgFormSubmit').click(function(event) {
             var iSelClient = $('input[name="selectClient"]:checked', '#frmSystemPurge').val();
             var bSelClient = false;
             var iActionSel = $('input[type="checkbox"]:checked').length;
             var sErrMsg = '';
             var bErr = false;
+
+            event.stopPropagation();
+            event.preventDefault();
 
             if ($.trim($('#system_clear_info_box').html()) != '') {
                 $('#system_clear_info_box').html('');
