@@ -320,7 +320,7 @@ if (isset($idart)) {
 
 // always allow editing article in backend
 if (!cRegistry::getBackendSessionId() && ($idartlang === false || $online != true)) {
-    if ($_GET['display_errorpage']) {
+    if (isset($_GET['display_errorpage']) && $_GET['display_errorpage']) {
         // show only if $idart > 0
         if ($idart > 0) {
             $tpl = new cTemplate();
