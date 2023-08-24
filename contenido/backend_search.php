@@ -215,7 +215,7 @@ if (!empty($aSearch['save_title'])) {
     $sSearchStr = $aSearch['save_title'];
 }
 // Article ID
-if (!$aSearch['save_id'] > 0) {
+if ($aSearch['save_id'] > 0) {
     $iSearchId = $aSearch['save_id'];
 }
 // Date
