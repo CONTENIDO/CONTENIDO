@@ -283,7 +283,7 @@ function scanDirectory($sDirectory, $bRecursive = false) {
  *             destination file, default value is false
  *             </pre>
  *
- * @return bool ::recursiceCopy method (bool)
+ * @return bool
  *
  * @throws cInvalidArgumentException
  */
