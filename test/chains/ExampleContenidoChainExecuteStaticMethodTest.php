@@ -26,7 +26,7 @@ class chain_ExampleContenidoChainExecuteStaticMethod_Test {
 
     /**
      *
-     * @param unknown_type $obj
+     * @param object $obj
      */
     public static function callMe($obj) {
         $obj->counter++;

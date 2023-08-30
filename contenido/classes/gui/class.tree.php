@@ -167,7 +167,7 @@ class cGuiTree extends cTree {
 
     /**
      *
-     * @param unknown_type $mode
+     * @param string|mixed $mode
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
      */
@@ -178,7 +178,7 @@ class cGuiTree extends cTree {
 
     /**
      *
-     * @param unknown_type $mode
+     * @param string|mixed $mode
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
      */
@@ -189,7 +189,7 @@ class cGuiTree extends cTree {
 
     /**
      *
-     * @param unknown_type $colors
+     * @param string|mixed $colors
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
      */
