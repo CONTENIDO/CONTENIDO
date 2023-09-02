@@ -229,7 +229,7 @@ if ($idart && !$idcat && !$idcatart) {
     // Try to fetch the idcat by idart
     $catArtColl = new cApiCategoryArticleCollection();
     $categories = $catArtColl->getCategoryIdsByArticleId($idart);
-    $idcat      = $categories[0];
+    $idcat      = $categories[0] ?? 0;
 }
 
 unset($code, $markscript);
