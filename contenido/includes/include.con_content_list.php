@@ -1080,6 +1080,7 @@ function _processCmsTags(
             $replacements[$replacementIdx] = stripslashes($curReplacement);
         }
         $code = str_ireplace($search, $replacements, $layoutCode);
+        $layoutCode = $code;
     }
 
     // execute CEC hook
