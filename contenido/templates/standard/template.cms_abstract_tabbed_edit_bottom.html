@@ -16,7 +16,9 @@
             Con.sid,
             {SETTINGS}
         );
-        contentTypeInstance.initialise();
+        setTimeout(function () {
+            contentTypeInstance.initialise();
+        }, 0);
     };
 
     if (typeof {JS_CLASS_NAME} === 'undefined' || typeof Con.cContentTypeAbstractTabbed === 'undefined') {
