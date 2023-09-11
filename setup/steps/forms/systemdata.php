@@ -94,18 +94,18 @@ class cSetupSystemData extends cSetupMask {
         // Compose charset and collation select box, only if CON_UTF8 flag is not set
         if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php') || (defined('CON_UTF8') && CON_UTF8 === true)) {
             // database charset
-            $hiddenFieldDbCharset = new cHTMLHiddenField('dbcharset', 'utf8');
-            $dbcharsetTextbox = $hiddenFieldDbCharset . 'utf8';
+            $hiddenFieldDbCharset = new cHTMLHiddenField('dbcharset', CON_SETUP_DB_CHARSET);
+            $dbcharsetTextbox = $hiddenFieldDbCharset . CON_SETUP_DB_CHARSET;
 
             // database collation
-            $hiddenFieldDbCollation = new cHTMLHiddenField('dbcollation', 'utf8_general_ci');
-            $dbCollationTextbox = $hiddenFieldDbCollation . 'utf8_general_ci';
+            $hiddenFieldDbCollation = new cHTMLHiddenField('dbcollation', CON_SETUP_DB_COLLATION);
+            $dbCollationTextbox = $hiddenFieldDbCollation . CON_SETUP_DB_COLLATION;
         } else {
             // database charset
             $pos = 0;
             $option = new cHTMLOptionElement('-- ' . i18n("No character set", "setup") . ' --', '');
             $dbcharset->addOptionElement(++$pos, $option);
-            $selectedCharset = (!empty($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : '';
+            $selectedCharset = !empty($_SESSION['dbcharset']) ? $_SESSION['dbcharset'] : '';
             $aCharsets = fetchMySQLCharsets();
             foreach ($aCharsets as $p => $charset) {
                 $selected = ($selectedCharset == $charset);
@@ -118,7 +118,7 @@ class cSetupSystemData extends cSetupMask {
             $pos = 0;
             $noOp = new cHTMLOptionElement('-- ' . i18n("Other", "setup") . ' --', '');
             $dbcollation->addOptionElement(++$pos, $noOp);
-            $selectedCollation = (!empty($_SESSION['dbcollation'])) ? $_SESSION['dbcollation'] : 'utf8_general_ci';
+            $selectedCollation = !empty($_SESSION['dbcollation']) ? $_SESSION['dbcollation'] : CON_SETUP_DB_COLLATION;
             $collations = fetchMySQLCollations();
             foreach ($collations as $p => $collation) {
                 $selected = ($selectedCollation == $collation);

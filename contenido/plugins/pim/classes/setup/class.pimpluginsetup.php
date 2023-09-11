@@ -28,10 +28,16 @@ class PimPluginSetup
      * File name of Xml configuration file for plugins
      */
     const PLUGIN_XML_FILENAME = "plugin.xml";
+
     /**
      * Specific sql prefix
      */
-    const SQL_PREFIX = "!PREFIX!";
+    const SQL_PREFIX = '!PREFIX!';
+
+    /**
+     * Charset placeholder
+     */
+    const SQL_CHARSET = '!CHARSET!';
 
     /**
      * PimPluginCollection instance

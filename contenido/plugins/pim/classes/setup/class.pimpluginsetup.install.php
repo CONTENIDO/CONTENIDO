@@ -726,6 +726,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         for ($i = 0; $i < $tempSqlLines; $i++) {
             if (preg_match($pattern, $tempSqlContent[$i])) {
                 $tempSqlContent[$i] = str_replace(parent::SQL_PREFIX, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+                $tempSqlContent[$i] = str_replace(parent::SQL_CHARSET, $cfg['db']['connection']['charset'], $tempSqlContent[$i]);
                 $db->query($tempSqlContent[$i]);
             }
         }

@@ -49,8 +49,8 @@ class cCLISetup {
         $this->_settings['db']['host'] = 'localhost';
         $this->_settings['db']['user'] = 'root';
         $this->_settings['db']['password'] = '';
-        $this->_settings['db']['charset'] = 'utf8';
-        $this->_settings['db']['collation'] = 'utf8_general_ci';
+        $this->_settings['db']['charset'] = CON_SETUP_DB_CHARSET;
+        $this->_settings['db']['collation'] = CON_SETUP_DB_COLLATION;
         $this->_settings['db']['database'] = 'contenido';
         $this->_settings['db']['prefix'] = 'con';
         $this->_settings['db']['option_mysqli_init_command'] = CON_SETUP_DB_OPTION_MYSQLI_INIT_COMMAND;
