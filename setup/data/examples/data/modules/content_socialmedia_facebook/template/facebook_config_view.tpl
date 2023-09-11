@@ -1,4 +1,4 @@
-<label class="con_content_type_label">{$label_overview|escape}</label>
+<label class="content_type_label">{$label_overview|escape}</label>
 <form action="" method="POST">
     <table class="moduleTable" style="width: 100%;">
         <tr>
@@ -30,7 +30,7 @@
             </td>
             <td>
                 <input style="margin-left: 4px;" type="radio" name="layout"
-                       value="standard" {if $layoutvalue == "standard" || $value !="button_count" && $value !="box_count" } checked="checked" {/if}>
+                       value="standard" {if $layoutvalue == "standard" || ($layoutvalue !="button_count" && $layoutvalue !="box_count")} checked="checked" {/if}>
                 {$standardLabel|escape}&nbsp;&nbsp;{$standardHelp->render()}
                 <br />
                 <input style="margin-left: 4px;" type="radio" name="layout"
