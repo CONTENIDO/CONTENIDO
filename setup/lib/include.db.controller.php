@@ -95,6 +95,7 @@ foreach ($fullChunks as $fullChunk) {
         $replacements = [
             '<!--{contenido_root}-->' => addslashes($rootPath),
             '<!--{contenido_web}-->'  => addslashes($rootHttpPath),
+            '!CHARSET!' => $cfg['db']['connection']['charset'],
         ];
 
         injectSQL($db, $cfg['sql']['sqlprefix'], 'data/' . $fullChunk, $replacements);

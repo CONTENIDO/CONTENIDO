@@ -122,7 +122,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
     // Parameter check for $default. If set, create a default value
     if ($default != '') {
-        if (((cString::findFirstPos($type, 'timestamp') !== FALSE) && ($default != '')) || ($default == 'NULL') || ($default == 'CURRENT_TIMESTAMP')) {
+        if (cString::findFirstPos($type, 'timestamp') !== FALSE || in_array($default, ['NULL', 'CURRENT_TIMESTAMP'])) {
             $parameter['DEFAULT'] = "DEFAULT " . $db->escape($default);
         } else {
             $parameter['DEFAULT'] = "DEFAULT '" . $db->escape($default) . "'";
@@ -131,8 +131,12 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
         $parameter['DEFAULT'] = '';
     }
 
+    // Set default charset
+    $cfg = cRegistry::getConfig();
+    $parameter['CHARSET'] = 'DEFAULT CHARSET=' . $cfg['db']['connection']['charset'];
+
     if (!dbTableExists($db, $table)) {
-        $sql = "CREATE TABLE `" . $db->escape($table) . "` (`" . $db->escape($field) . "` $type " . $parameter['NULL'] . " " . $parameter['DEFAULT'] . " " . $parameter['KEY'] . ")";
+        $sql = "CREATE TABLE `" . $db->escape($table) . "` (`" . $db->escape($field) . "` $type " . $parameter['NULL'] . " " . $parameter['DEFAULT'] . " " . $parameter['KEY'] . ") " . $parameter['CHARSET'] . ';';
         $db->query($sql);
         $tableCache[] = $table;
         return true;
@@ -181,6 +185,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
     if (!array_key_exists($field, $structure)) {
         // HerrB: Search field using $previousName
         $blnFound = false;
+        $strPrevious = '';
         if ($previousName != '') {
             $arrPreviousName = explode(',', $previousName);
             foreach ($arrPreviousName as $strPrevious) {
@@ -334,4 +339,30 @@ function dbGetPrimaryKeyName($db, $table) {
     }
 
     return $sReturn;
+}
+
+/**
+ * Checks if passed database version supports the SQL-mode 'MYSQL40'.
+ * MySQL up to 5.7 and MariaDB supports SQL-Mode 'MYSQL40', but not MySQL.
+ *
+ * @param string $version The SQL server version string, e.g. '5.7.37-nmm1-log', '8.0.1-dmr-log', or '10.4.11-MariaDB'
+ * @param cDb $db The database instance
+ * @return bool
+ */
+function dbSupportsSqlModeMYSQL40($version = '', $db = null) {
+    if (empty($version) && !is_object($db)) {
+        return false;
+    }
+
+    if (empty($version)) {
+        // Get the SQL server version
+        $db->query('SELECT VERSION() AS version');
+        $version = $db->nextRecord() ? $db->f('version') : '';
+    }
+
+    if (stripos($version, 'MariaDB') !== false) {
+        return true;
+    }
+
+    return (version_compare($version, '8.0') < 0);
 }

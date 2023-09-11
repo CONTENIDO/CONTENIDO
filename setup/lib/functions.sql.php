@@ -36,7 +36,7 @@ function injectSQL($db, $prefix, $file, $replacements = []) {
 
     $sqlFile = removeComments($sqlFile);
     $sqlFile = removeRemarks($sqlFile);
-    $sqlFile = str_replace("!PREFIX!", $prefix, $sqlFile);
+    $sqlFile = str_replace('!PREFIX!', $prefix, $sqlFile);
     $sqlFile = trim($sqlFile);
 
     $sqlChunks = splitSqlFile(trim($sqlFile), ";");

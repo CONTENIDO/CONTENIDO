@@ -39,7 +39,9 @@ define('CON_SETUP_MAX_CHUNKS_PER_STEP', 50);
 
 define('CON_SETUP_MIN_PHP_VERSION', '7.0.0');
 
-define('CON_SETUP_DB_CHARSET', 'utf8');
+define('CON_SETUP_DB_CHARSET', 'utf8mb4');
+
+define('CON_SETUP_DB_COLLATION', 'utf8mb4_unicode_ci');
 
 define('CON_SETUP_DB_OPTION_MYSQLI_INIT_COMMAND', "SET SESSION sql_mode='';");
 
