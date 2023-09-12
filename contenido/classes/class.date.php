@@ -186,10 +186,7 @@ class cDate
         if ($format[0] === '%') {
             // strftime() is deprecated as of PHP 8.1, check the version
             if (version_compare(PHP_VERSION, '8.1.0') >= 0) {
-                cDeprecated('The function `strftime()` is deprecated as of PHP 8.1.0, '
-                    . 'and the passed format string was detected as a `strftime()` format. '
-                    . 'The `date()` function will be used as a fallback, but without '
-                    . 'localization support.');
+                self::_logStrftimeDeprecation();
                 // Use date() as fallback
                 return date(self::strftimeToDate($format), $timestamp);
             } else {
@@ -331,6 +328,27 @@ class cDate
             return $value;
         }
         return str_pad(trim(cSecurity::toString($value)), 2, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Logs deprecated usage of strftime formats and ensures to log it once
+     * per request lifecycle.
+     *
+     * @return void
+     * @throws cInvalidArgumentException
+     */
+    private static function _logStrftimeDeprecation()
+    {
+        static $deprecationLogged = false;
+
+        // Log deprecation once to not flood the log file
+        if (!$deprecationLogged) {
+            cDeprecated('The function `strftime()` is deprecated as of PHP 8.1.0, '
+                . 'and the passed format string was detected as a `strftime()` format. '
+                . 'The `date()` function will be used as a fallback, but without '
+                . 'localization support.');
+            $deprecationLogged = true;
+        }
     }
 
 }
