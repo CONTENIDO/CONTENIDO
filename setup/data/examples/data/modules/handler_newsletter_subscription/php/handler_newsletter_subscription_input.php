@@ -353,4 +353,3 @@ echo $sCssStyle . "\n";
 $oCfgTable->render(true);
 echo $sJavaScript . "\n";
 
-?><?php
