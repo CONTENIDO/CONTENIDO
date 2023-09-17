@@ -132,6 +132,12 @@ if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
 // Update UriBuilder, set http base path
 cUri::getInstance()->getUriBuilder()->setHttpBasePath(cRegistry::getFrontendUrl());
 
+// Initialize client
+if (!isset($client)) {
+    // load_client defined in __FRONTEND_PATH__/data/config/config.php
+    $client = $load_client;
+}
+
 // Initialize language
 if (!isset($lang)) {
     // If there is an entry load_lang in

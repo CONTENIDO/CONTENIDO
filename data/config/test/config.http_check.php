@@ -37,7 +37,7 @@ $bLog = true;
 // Enabling "stop" mode will force CONTENIDO to stop on any violation.
 $sMode = 'stop';
 
-// Paramater blacklist: If one of these parameters is set (either get or post) the script will halt.
+// Parameter blacklist: If one of these parameters is set (either get or post) the script will halt.
 $aBlacklist = [
     'cfg',
     'cfgClient',

@@ -308,7 +308,7 @@ $cfg['properties']['user_prop']['enable_cache'] = true;
 // (bool) Enable caching of group properties
 $cfg['properties']['group_prop']['enable_cache'] = true;
 
-// (int) Max groups to cache. It is helpful when a user is in several groups. It's
+// (int) Max groups to cache. Is helpful if a user is in several groups. It's
 //       recommended to have a lower number, e.g. 3
 $cfg['properties']['group_prop']['max_groups'] = 3;
 
@@ -416,6 +416,7 @@ $cfg['inuse']['lifetime'] = 3600;
 // (array)  List of default link tags for CSS files to render in backend pages
 //          The wildcard {basePath} will be replaced dynamically
 $cfg['backend_template']['css_files'] = [
+    '{basePath}styles/normalize.css',
     '{basePath}styles/jquery/jquery-ui.css',
     '{basePath}styles/contenido.css',
     '{basePath}styles/jquery/plugins/atooltip.css',
@@ -431,7 +432,7 @@ $cfg['backend_template']['js_files'] = [
     '{basePath}scripts/general.js',
     '_CONFIG_',
     '{basePath}scripts/startup.js',
-    '{basePath}scripts/jquery/plugins/atooltip.jquery.js'
+    '{basePath}scripts/jquery/plugins/atooltip.jquery.js',
 ];
 
 
