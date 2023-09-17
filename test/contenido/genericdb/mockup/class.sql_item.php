@@ -13,7 +13,6 @@ class SqlItem
     public static function getDeleteStatement(array $tables)
     {
         $tableClause = implode('``, `', $tables);
-
         return "DROP TABLE IF EXISTS `$tableClause`;";
     }
 
@@ -23,15 +22,16 @@ class SqlItem
      */
     public static function getCreateConTestStatement()
     {
-        return "
+        return (new cSqlTemplate())->parse("
             CREATE TABLE `con_test` (
                 `ID` INT(11) NOT NULL AUTO_INCREMENT,
                 `Name` CHAR(35) NOT NULL DEFAULT '',
                 `CountryCode` CHAR(3) NOT NULL DEFAULT '',
                 `District` CHAR(20) NOT NULL DEFAULT '',
                 `Population` INT(11) NOT NULL DEFAULT '0',
-                PRIMARY KEY  (`ID`)
-            ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;";
+                PRIMARY KEY (`ID`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;"
+        );
     }
 
     /**
@@ -54,15 +54,16 @@ class SqlItem
      */
     public static function getCreateDogStatement()
     {
-        return "
+        return (new cSqlTemplate())->parse("
             CREATE TABLE `con_test_dog` (
                 `id` INT(11) NOT NULL AUTO_INCREMENT,
                 `name` VARCHAR(255) DEFAULT NULL,
                 `descr` TEXT,
                 `size` ENUM('small', 'medium', 'large') DEFAULT NULL,
                 `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                PRIMARY KEY  (`id`)
-            ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;";
+                PRIMARY KEY (`id`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;"
+        );
     }
 
     /**
@@ -85,15 +86,16 @@ class SqlItem
      */
     public static function getCreateDogRfidStatement()
     {
-        return "
+        return (new cSqlTemplate())->parse("
             CREATE TABLE `con_test_rfid_dog` (
                 `dog_id` INT(11) NOT NULL,
                 `bar_code` VARCHAR(128) NOT NULL,
                 `notes` TEXT,
                 `iso_compliant` ENUM('y', 'n') DEFAULT 'n',
                 `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                PRIMARY KEY  (`dog_id`)
-            ) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
+                PRIMARY KEY (`dog_id`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET!;"
+        );
     }
 
     /**

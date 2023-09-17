@@ -979,8 +979,12 @@ class PifaForm extends Item {
                 `$tableName`
             ($createDefinitions)
             ENGINE=MyISAM
-            DEFAULT CHARSET=utf8
+            DEFAULT CHARSET=!CHARSET!
             ;";
+
+        // parse template
+        $sqlTemplate = new cSqlTemplate();
+        $sql = $sqlTemplate->parse($sql);
 
         // create table
         $db = cRegistry::getDb();

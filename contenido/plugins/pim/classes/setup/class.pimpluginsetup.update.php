@@ -79,9 +79,6 @@ class PimPluginSetupUpdate extends PimPluginSetup {
      * @throws cInvalidArgumentException
      */
     private function _updateSql() {
-        $cfg = cRegistry::getConfig();
-        $db = cRegistry::getDb();
-
         // Build sql filename with installed plugin version and new plugin
         // version, i.e.: "plugin_update_100_to_101.sql" (without dots)
         $tempSqlFilename = "plugin_update_" . str_replace('.', '', $this->_getInstalledPluginVersion()) . "_to_" . str_replace('.', '', parent::$XmlGeneral->version) . ".sql";
@@ -89,28 +86,8 @@ class PimPluginSetupUpdate extends PimPluginSetup {
         // Filename to update sql file
         $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable($tempSqlFilename, 0);
 
-        if (cFileHandler::exists($tempSqlFilename)) {
-            // Execute update sql file
-            $tempSqlContent = cFileHandler::read($tempSqlFilename);
-            $tempSqlContent = str_replace("\r\n", "\n", $tempSqlContent);
-            $tempSqlContent = explode("\n", $tempSqlContent);
-            $tempSqlLines = count($tempSqlContent);
-
-            $pattern = '/^(CREATE TABLE IF NOT EXISTS|INSERT INTO|UPDATE|ALTER TABLE) `?' . parent::SQL_PREFIX . '`?\b/';
-
-            for ($i = 0; $i < $tempSqlLines; $i++) {
-                if (preg_match($pattern, $tempSqlContent[$i])) {
-                    $tempSqlContent[$i] = str_replace(parent::SQL_PREFIX, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
-                    $tempSqlContent[$i] = str_replace(parent::SQL_CHARSET, $cfg['db']['connection']['charset'], $tempSqlContent[$i]);
-                    $db->query($tempSqlContent[$i]);
-                }
-            }
-
-            // Do not run uninstall and install sql files
-            parent::_setUpdateSqlFileExist(true);
-        } else {
-            return false;
-        }
+        $pattern = '/^(CREATE TABLE IF NOT EXISTS|INSERT INTO|UPDATE|ALTER TABLE) `?' . parent::PLUGIN_SQL_PREFIX . '([a-zA-Z0-9\-_]+)`?\b/';
+        return $this->_processSetupSql($tempSqlFilename, $pattern);
     }
 
     /**

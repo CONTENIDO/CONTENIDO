@@ -699,7 +699,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddSpecificSql() {
         $cfg = cRegistry::getConfig();
-        $db = cRegistry::getDb();
 
         if (parent::getMode() == 1) {
             // Plugin is already extracted
@@ -711,25 +710,8 @@ class PimPluginSetupInstall extends PimPluginSetup {
             $tempSqlFilename = '';
         }
 
-        // skip using plugin_install.sql if it does not exist
-        if (empty($tempSqlFilename) || !cFileHandler::exists($tempSqlFilename)) {
-            return;
-        }
-
-        $tempSqlContent = cFileHandler::read($tempSqlFilename);
-        $tempSqlContent = str_replace("\r\n", "\n", $tempSqlContent);
-        $tempSqlContent = explode("\n", $tempSqlContent);
-        $tempSqlLines = count($tempSqlContent);
-
-        $pattern = '/^(CREATE TABLE IF NOT EXISTS|INSERT INTO|UPDATE|ALTER TABLE) `?' . parent::SQL_PREFIX . '`?\b/';
-
-        for ($i = 0; $i < $tempSqlLines; $i++) {
-            if (preg_match($pattern, $tempSqlContent[$i])) {
-                $tempSqlContent[$i] = str_replace(parent::SQL_PREFIX, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
-                $tempSqlContent[$i] = str_replace(parent::SQL_CHARSET, $cfg['db']['connection']['charset'], $tempSqlContent[$i]);
-                $db->query($tempSqlContent[$i]);
-            }
-        }
+        $pattern = '/^(CREATE TABLE IF NOT EXISTS|INSERT INTO|UPDATE|ALTER TABLE) `?' . parent::PLUGIN_SQL_PREFIX . '([a-zA-Z0-9\-_]+)`?\b/';
+        return $this->_processSetupSql($tempSqlFilename, $pattern);
     }
 
     /**

@@ -284,27 +284,11 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      */
     protected function _uninstallDeleteSpecificSql() {
         $cfg = cRegistry::getConfig();
-        $db = cRegistry::getDb();
 
         $tempSqlFilename = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_uninstall.sql';
 
-        if (!cFileHandler::exists($tempSqlFilename)) {
-            return;
-        }
-
-        $tempSqlContent = cFileHandler::read($tempSqlFilename);
-        $tempSqlContent = str_replace("\r\n", "\n", $tempSqlContent);
-        $tempSqlContent = explode("\n", $tempSqlContent);
-        $tempSqlLines = count($tempSqlContent);
-
-        $pattern = '/^(DELETE FROM|DROP TABLE) `?' . parent::SQL_PREFIX . '`?\b/';
-
-        for ($i = 0; $i < $tempSqlLines; $i++) {
-            if (preg_match($pattern, $tempSqlContent[$i])) {
-                $tempSqlContent[$i] = str_replace(parent::SQL_PREFIX, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
-                $db->query($tempSqlContent[$i]);
-            }
-        }
+        $pattern = '/^(DELETE FROM|DROP TABLE) `?' . parent::PLUGIN_SQL_PREFIX . '([a-zA-Z0-9\-_]+)`?\b/';
+        return $this->_processSetupSql($tempSqlFilename, $pattern);
     }
 
     /**

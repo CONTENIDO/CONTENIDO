@@ -3,9 +3,9 @@ DROP TABLE IF EXISTS `!PREFIX!_art`;
 CREATE TABLE `!PREFIX!_art` (
   `idart` int(11) NOT NULL auto_increment,
   `idclient` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`idart`),
+  PRIMARY KEY (`idart`),
   KEY `idclient` (`idclient`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
+) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0 ;
 
 INSERT INTO `!PREFIX!_art` (`idart`, `idclient`) VALUES
 (1, 1),
