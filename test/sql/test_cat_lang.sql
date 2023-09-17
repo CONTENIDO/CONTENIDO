@@ -15,13 +15,13 @@ CREATE TABLE `!PREFIX!_cat_lang` (
   `startidartlang` int(11) NOT NULL default '0',
   `urlname` varchar(64) NOT NULL,
   `urlpath` varchar(255) NOT NULL,
-  PRIMARY KEY  (`idcatlang`),
+  PRIMARY KEY (`idcatlang`),
   KEY `idcat` (`idcat`),
   KEY `idlang` (`idlang`),
   KEY `idtplcfg` (`idtplcfg`),
   KEY `idlang_2` (`idlang`,`visible`),
   KEY `idlang_3` (`idlang`,`idcat`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;
 
 INSERT INTO `!PREFIX!_cat_lang` (`idcatlang`, `idcat`, `idlang`, `idtplcfg`, `name`, `visible`, `public`, `status`, `author`, `created`, `lastmodified`, `startidartlang`, `urlname`, `urlpath`) VALUES
 (1, 1, 1, 2, 'Hauptnavigation', 1, 1, 0, 'sysadmin', '2012-11-10 18:10:44', '2013-02-20 12:19:17', 117, 'Hauptnavigation', ''),

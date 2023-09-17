@@ -10,12 +10,12 @@ CREATE TABLE `!PREFIX!_cat` (
   `author` varchar(32) NOT NULL,
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
   `lastmodified` datetime NOT NULL default '0000-00-00 00:00:00',
-  PRIMARY KEY  (`idcat`),
+  PRIMARY KEY (`idcat`),
   KEY `idclient` (`idclient`),
   KEY `idclient_2` (`idclient`,`parentid`),
   KEY `parentid` (`parentid`,`preid`),
   KEY `preid` (`preid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;
 
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES
 (1, 1, 0, 0, 39, 0, 'sysadmin', NOW(), NOW()),

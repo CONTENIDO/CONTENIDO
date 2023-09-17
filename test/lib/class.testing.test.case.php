@@ -129,12 +129,12 @@ abstract class cTestingTestCase extends TestCase {
             throw new cTestingException('Current used database SQL prefix does not match the required test prefix - can not proceed.');
         }
 
-        $sqlStatements = array();
+        $sqlTemplate = new cSqlTemplate();
+        $sqlStatements = [];
         $content = file($fileName);
         $lineBuffer = '';
         foreach ($content as $fileLine) {
-            $lineBuffer .= str_replace('!PREFIX!', $cfg['sql']['sqlprefix'], $fileLine);
-
+            $lineBuffer .= $sqlTemplate->parse($fileLine);
             if (cString::getPartOfString(trim($fileLine), -1) == ';') {
                 $sqlStatements[] = $lineBuffer;
                 $lineBuffer = '';

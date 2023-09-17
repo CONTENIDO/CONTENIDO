@@ -35,10 +35,10 @@ CREATE TABLE `!PREFIX!_art_lang` (
   `searchable` tinyint(1) NOT NULL default '1',
   `sitemapprio` float NOT NULL default '0.5',
   `changefreq` varchar(12) NOT NULL,
-  PRIMARY KEY  (`idartlang`),
+  PRIMARY KEY (`idartlang`),
   KEY `idtplcfg` (`idtplcfg`,`idart`),
   KEY `idart_2` (`idart`,`idlang`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;
 
 INSERT INTO `!PREFIX!_art_lang` (`idartlang`, `idart`, `idlang`, `idtplcfg`, `title`, `urlname`, `pagetitle`, `summary`, `artspec`, `created`, `lastmodified`, `author`, `modifiedby`, `published`, `publishedby`, `online`, `redirect`, `redirect_url`, `artsort`, `timemgmt`, `datestart`, `dateend`, `status`, `free_use_01`, `free_use_02`, `free_use_03`, `time_move_cat`, `time_target_cat`, `time_online_move`, `external_redirect`, `locked`, `searchable`, `sitemapprio`, `changefreq`) VALUES
 (1, 1, 1, 10, 'Startseite', 'index', '', NULL, 0, NOW(), NOW(), 'sysadmin', 'sysadmin', NOW(), 'sysadmin', 1, 0, '0', 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 1, NULL, '', 0, 1, 0.5, ''),

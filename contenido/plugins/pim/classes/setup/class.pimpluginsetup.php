@@ -30,14 +30,9 @@ class PimPluginSetup
     const PLUGIN_XML_FILENAME = "plugin.xml";
 
     /**
-     * Specific sql prefix
+     * Specific sql prefix for plugins
      */
-    const SQL_PREFIX = '!PREFIX!';
-
-    /**
-     * Charset placeholder
-     */
-    const SQL_CHARSET = '!CHARSET!';
+    const PLUGIN_SQL_PREFIX = '!PLUGIN_PREFIX!';
 
     /**
      * PimPluginCollection instance
@@ -520,6 +515,48 @@ class PimPluginSetup
     private function _setPimPluginRelationsCollection()
     {
         $this->_pimPluginRelationsCollection = new PimPluginRelationsCollection();
+    }
+
+    /**
+     * Parses the plugin setup SQL file, performs replacements of placeholders, and executes
+     * each matching SQL.
+     *
+     * @param string $file The plugin setup SQL file (full path).
+     * @param string $pattern The pattern to match for found SQL to execute.
+     * @return bool True on success otherwise false.
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     */
+    protected function _processSetupSql(string $file, string $pattern): bool
+    {
+        // Skip using plugin sql if it does not exist
+        if (empty($file) || !cFileHandler::exists($file)) {
+            return false;
+        }
+
+        // Create sql template instance & set prefix placeholder value fort plugins, e.g. 'con_pi'
+        $sqlTemplate = new cSqlTemplate();
+        $prefix = $sqlTemplate->getPlaceholderValue(cSqlTemplate::PREFIX_PLACEHOLDER) . '_pi';
+        $sqlTemplate->addReplacements([cSqlTemplate::PREFIX_PLACEHOLDER => $prefix]);
+
+        // Parse sql file content to perform the replacements
+        $tempSqlContent = $sqlTemplate->parse(cFileHandler::read($file));
+        $tempSqlContent = str_replace("\r\n", "\n", $tempSqlContent);
+        $tempSqlContent = explode("\n", $tempSqlContent);
+        $tempSqlLines = count($tempSqlContent);
+
+        // Replace the plugin sql prefix placeholder in pattern
+        $pattern = str_replace(self::PLUGIN_SQL_PREFIX, $prefix, $pattern);
+
+        // Execute each matching SQL
+        $db = cRegistry::getDb();
+        for ($i = 0; $i < $tempSqlLines; $i++) {
+            if (preg_match($pattern, $tempSqlContent[$i])) {
+                $db->query($tempSqlContent[$i]);
+            }
+        }
+
+        return true;
     }
 
     /**

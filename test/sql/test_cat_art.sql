@@ -10,11 +10,11 @@ CREATE TABLE `!PREFIX!_cat_art` (
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
   `lastmodified` datetime NOT NULL default '0000-00-00 00:00:00',
   `createcode` tinyint(1) NOT NULL default '1',
-  PRIMARY KEY  (`idcatart`),
+  PRIMARY KEY (`idcatart`),
   KEY `is_start_2` (`is_start`,`idcat`),
   KEY `idart` (`idart`),
   KEY `idcat` (`idcat`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;
 
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES
 (84, 1, 77, 0, 0, 'sysadmin', NOW(), NOW(), 1),
