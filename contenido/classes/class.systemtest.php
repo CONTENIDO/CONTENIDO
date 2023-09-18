@@ -681,23 +681,14 @@ class cSystemtest {
         try {
             $db = new cDb($aOptions);
         } catch (cDbException $e) {
-            return [
-                $db,
-                false
-            ];
+            return [$db, false];
         }
 
         $result = $db->connect();
         if (is_null($result) || is_bool($result) && !$result) {
-            return [
-                $db,
-                false
-            ];
+            return [$db, false];
         } else {
-            return [
-                $db,
-                true
-            ];
+            return [$db, true];
         }
     }
 

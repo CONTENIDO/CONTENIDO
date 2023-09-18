@@ -38,6 +38,7 @@ class cSetupSystemData extends cSetupMask {
         cArray::initializeKey($_SESSION, 'dbuser', '');
         cArray::initializeKey($_SESSION, 'dbname', '');
         cArray::initializeKey($_SESSION, 'dbpass', '');
+        cArray::initializeKey($_SESSION, 'dbengine', '');
         cArray::initializeKey($_SESSION, 'dbcharset', '');
         cArray::initializeKey($_SESSION, 'dbcollation', '');
         cArray::initializeKey($_SESSION, 'dboptions', []);
