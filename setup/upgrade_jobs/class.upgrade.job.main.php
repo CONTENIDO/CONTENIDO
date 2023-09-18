@@ -44,7 +44,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
     protected function _executeInitialJobs() {
         global $cfg;
 
-        updateContenidoVersion($this->_oDb, $cfg['tab']['system_prop'], CON_SETUP_VERSION);
+        updateContenidoVersion($this->_oDb, $cfg['tab']['system_prop'], CON_VERSION);
         if ($this->_setupType == 'setup') {
             updateSysadminPassword($this->_oDb, $cfg['sql']['sqlprefix'] . '_user', $_SESSION['adminpass'], $_SESSION['adminmail']);
         }

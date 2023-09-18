@@ -30,7 +30,7 @@ class cSetupLanguageChooser extends cSetupMask
      */
     public function __construct() {
         cSetupMask::__construct("templates/languagechooser.tpl");
-        $this->setHeader('Version ' . CON_SETUP_VERSION);
+        $this->setHeader('Version ' . CON_VERSION);
         $this->_stepTemplateClass->set("s", "DE_HINT", "Diese Anwendung hilft Ihnen bei der Installation von CONTENIDO.");
         $this->_stepTemplateClass->set("s", "EN_HINT", "This application will guide you trough the setup process.");
         $this->_stepTemplateClass->set("s", "DE_HINT_LANG", "W&auml;hlen Sie bitte die gew&uuml;nschte Sprache f&uuml;r das Setup aus.");

@@ -57,11 +57,19 @@ class cSetupSystemData extends cSetupMask {
         }
 
         if ($_SESSION['dbprefix'] == '') {
-            $_SESSION['dbprefix'] = 'con';
+            $_SESSION['dbprefix'] = CON_DB_PREFIX;
+        }
+
+        if ($_SESSION['dbengine'] == '' && $_SESSION['setuptype'] == 'setup') {
+            $_SESSION['dbengine'] = CON_DB_ENGINE;
         }
 
         if ($_SESSION['dbcharset'] == '' && $_SESSION['setuptype'] == 'setup') {
-            $_SESSION['dbcharset'] = CON_SETUP_DB_CHARSET;
+            $_SESSION['dbcharset'] = CON_DB_CHARSET;
+        }
+
+        if ($_SESSION['dbcollation'] == '' && $_SESSION['setuptype'] == 'setup') {
+            $_SESSION['dbcollation'] = CON_DB_COLLATION;
         }
 
         unset($_SESSION['install_failedchunks']);
@@ -88,18 +96,23 @@ class cSetupSystemData extends cSetupMask {
 
         $dbprefix = new cHTMLTextbox('dbprefix', $_SESSION['dbprefix'], 10, 30);
         $dbcharset = new cHTMLSelectElement('dbcharset');
+        $dbEngine = new cHTMLSelectElement('dbengine');
         $dbcollation = new cHTMLSelectElement('collationSelect', '1', 'collationSelect');
         $dbcollation->setAttribute("onchange", "comboBox('collationSelect', 'collationText')");
 
         // Compose charset and collation select box, only if CON_UTF8 flag is not set
         if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php') || (defined('CON_UTF8') && CON_UTF8 === true)) {
             // database charset
-            $hiddenFieldDbCharset = new cHTMLHiddenField('dbcharset', CON_SETUP_DB_CHARSET);
-            $dbcharsetTextbox = $hiddenFieldDbCharset . CON_SETUP_DB_CHARSET;
+            $hiddenFieldDbCharset = new cHTMLHiddenField('dbcharset', CON_DB_CHARSET);
+            $dbcharsetTextbox = $hiddenFieldDbCharset . CON_DB_CHARSET;
+
+            // database storage engine
+            $hiddenFieldDbEngine = new cHTMLHiddenField('dbengine', CON_DB_ENGINE);
+            $dbEngineTextbox = $hiddenFieldDbEngine . CON_DB_CHARSET;
 
             // database collation
-            $hiddenFieldDbCollation = new cHTMLHiddenField('dbcollation', CON_SETUP_DB_COLLATION);
-            $dbCollationTextbox = $hiddenFieldDbCollation . CON_SETUP_DB_COLLATION;
+            $hiddenFieldDbCollation = new cHTMLHiddenField('dbcollation', CON_DB_COLLATION);
+            $dbCollationTextbox = $hiddenFieldDbCollation . CON_DB_COLLATION;
         } else {
             // database charset
             $pos = 0;
@@ -114,11 +127,15 @@ class cSetupSystemData extends cSetupMask {
             }
             $dbcharsetTextbox = $dbcharset->render();
 
+            // database storage engine
+            $hiddenFieldDbEngine = new cHTMLHiddenField('dbengine', CON_DB_ENGINE);
+            $dbEngineTextbox = $hiddenFieldDbEngine . CON_DB_CHARSET;
+
             // database collation
             $pos = 0;
             $noOp = new cHTMLOptionElement('-- ' . i18n("Other", "setup") . ' --', '');
             $dbcollation->addOptionElement(++$pos, $noOp);
-            $selectedCollation = !empty($_SESSION['dbcollation']) ? $_SESSION['dbcollation'] : CON_SETUP_DB_COLLATION;
+            $selectedCollation = !empty($_SESSION['dbcollation']) ? $_SESSION['dbcollation'] : CON_DB_COLLATION;
             $collations = fetchMySQLCollations();
             foreach ($collations as $p => $collation) {
                 $selected = ($selectedCollation == $collation);
@@ -148,6 +165,7 @@ class cSetupSystemData extends cSetupMask {
         $this->_stepTemplateClass->set('s', 'LABEL_DBPREFIX', i18n("Table Prefix", "setup"));
         $this->_stepTemplateClass->set('s', 'LABEL_DBADVANCED', i18n("Advanced Settings", "setup"));
         $this->_stepTemplateClass->set('s', 'LABEL_DBCHARSET', i18n("Database character set", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_DBENGINE', i18n("Database storage engine", "setup"));
         $this->_stepTemplateClass->set('s', 'LABEL_DBCOLLATION', i18n("Database collation", "setup"));
         $this->_stepTemplateClass->set('s', 'LABEL_DBOPTION_INIT_COMMAND', i18n("Database option MYSQLI_INIT_COMMAND", "setup"));
 
@@ -157,6 +175,7 @@ class cSetupSystemData extends cSetupMask {
         $this->_stepTemplateClass->set('s', 'INPUT_DBPASSWORD', $dbpass->render() . $dbpass_hidden->render());
         $this->_stepTemplateClass->set('s', 'INPUT_DBPREFIX', $dbprefix->render());
         $this->_stepTemplateClass->set('s', 'INPUT_DBCHARSET', $dbcharsetTextbox);
+        $this->_stepTemplateClass->set('s', 'INPUT_DBENGINE', $dbEngineTextbox);
         $this->_stepTemplateClass->set('s', 'INPUT_DBCOLLATION', $dbCollationTextbox);
         $this->_stepTemplateClass->set('s', 'INPUT_DBOPTION_INIT_COMMAND', $dbOptionInitCommand);
 
@@ -205,6 +224,7 @@ class cSetupSystemData extends cSetupMask {
                 'dbname' => $cfg['db']['connection']['database'],
                 'dbpass' => $cfg['db']['connection']['password'],
                 'dbprefix' => $cfg['sql']['sqlprefix'],
+                'dbengine' => $cfg['db']['engine'],
                 'dbcharset' => $cfg['db']['connection']['charset'],
                 'dboptions' => !empty($cfg['db']['connection']['options']) ? $cfg['db']['connection']['options'] : []
             ];

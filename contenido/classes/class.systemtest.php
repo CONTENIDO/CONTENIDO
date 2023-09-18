@@ -23,13 +23,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cSystemtest {
 
     /**
-     * The minimal PHP version
-     *
-     * @var string
-     */
-    const CON_SETUP_MIN_PHP_VERSION = '7.0.0';
-
-    /**
      * Messages have no influence on the result of the system integrity
      *
      * @var int
@@ -298,7 +291,7 @@ class cSystemtest {
      * @throws cInvalidArgumentException
      */
     public function runTests($testFileSystem = true) {
-        $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), self::CON_SETUP_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), self::CON_SETUP_MIN_PHP_VERSION), i18n("The PHP version is higher than ") . self::CON_SETUP_MIN_PHP_VERSION);
+        $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), CON_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), CON_MIN_PHP_VERSION), i18n("The PHP version is higher than ") . CON_MIN_PHP_VERSION);
         $this->storeResult($this->testFileUploadSetting(), self::C_SEVERITY_WARNING, i18n("File uploads disabled"), sprintf(i18n("Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"), '<a target="_blank" href="https://www.php.net/manual/en/ini.core.php#ini.file-uploads">https://www.php.net/manual/en/ini.core.php#ini.file-uploads</a>'), i18n("PHP file upload is enabled"));
         $this->storeResult($this->testMagicQuotesRuntimeSetting(), self::C_SEVERITY_ERROR, i18n("PHP setting 'magic_quotes_runtime' is turned on"), i18n("The PHP setting 'magic_quotes_runtime' is turned on. CONTENIDO has been developed to comply with magic_quotes_runtime=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."), i18n("'magic_quotes_runtime' is turned off"));
         $this->storeResult($this->testMagicQuotesSybaseSetting(), self::C_SEVERITY_ERROR, i18n("PHP Setting 'magic_quotes_sybase' is turned on"), i18n("The PHP Setting 'magic_quotes_sybase' is turned on. CONTENIDO has been developed to comply with magic_quotes_sybase=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."), i18n("'magic_quotes_sybase' is turned off"));
@@ -750,7 +743,7 @@ class cSystemtest {
      *         true if the test passed and false if not
      */
     public function testPHPVersion() {
-        if (version_compare(phpversion(), self::CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
+        if (version_compare(phpversion(), CON_MIN_PHP_VERSION, '>=') == true) {
             return true;
         } else {
             return false;
@@ -1524,10 +1517,11 @@ class cSystemtest {
      * @param string $databasePrefix
      * @param string $charset   [optional]
      * @param string $collation [optional]
+     * @param string $engine [optional]
      *
      * @throws cDbException
      */
-    public function checkSetupMysql($setupType, $databaseName, $databasePrefix, $charset = '', $collation = '') {
+    public function checkSetupMysql($setupType, $databaseName, $databasePrefix, $charset = '', $collation = '', $engine = '') {
         switch ($setupType) {
             case "setup":
 

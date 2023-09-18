@@ -32,12 +32,6 @@ class cSqlTemplate {
     const ENGINE_PLACEHOLDER = '!ENGINE!';
     const COLLATION_PLACEHOLDER = '!COLLATION!';
 
-    // Default values
-    const DEFAULT_PREFIX = 'con';
-    const DEFAULT_CHARSET = 'utf8mb4';
-    const DEFAULT_COLLATION = 'utf8mb4_general_ci';
-    const DEFAULT_ENGINE = 'InnoDB';
-
     /**
      * @var cDb database instance
      */
@@ -70,10 +64,10 @@ class cSqlTemplate {
         $cfg = cRegistry::getConfig();
         // Define predefined replacements
         $this->setReplacements([
-            self::CHARSET_PLACEHOLDER => $cfg['db']['connection']['charset'] ?? self::DEFAULT_CHARSET,
-            self::PREFIX_PLACEHOLDER => $cfg['sql']['sqlprefix'] ?? self::DEFAULT_PREFIX,
-            self::ENGINE_PLACEHOLDER => $cfg['sql']['sqlengine'] ?? self::DEFAULT_ENGINE,
-            self::COLLATION_PLACEHOLDER => $cfg['sql']['sqlcollation'] ?? self::DEFAULT_COLLATION,
+            self::CHARSET_PLACEHOLDER => $cfg['db']['connection']['charset'] ?? CON_DB_CHARSET,
+            self::PREFIX_PLACEHOLDER => $cfg['sql']['sqlprefix'] ?? CON_DB_PREFIX,
+            self::ENGINE_PLACEHOLDER => $cfg['db']['engine'] ?? CON_DB_ENGINE,
+            self::COLLATION_PLACEHOLDER => $cfg['db']['collation'] ?? CON_DB_COLLATION,
         ]);
     }
 

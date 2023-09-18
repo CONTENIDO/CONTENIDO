@@ -21,7 +21,7 @@ CREATE TABLE `!PREFIX!_cat_lang` (
   KEY `idtplcfg` (`idtplcfg`),
   KEY `idlang_2` (`idlang`,`visible`),
   KEY `idlang_3` (`idlang`,`idcat`)
-) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;
+) ENGINE=!ENGINE! DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;
 
 INSERT INTO `!PREFIX!_cat_lang` (`idcatlang`, `idcat`, `idlang`, `idtplcfg`, `name`, `visible`, `public`, `status`, `author`, `created`, `lastmodified`, `startidartlang`, `urlname`, `urlpath`) VALUES
 (1, 1, 1, 2, 'Hauptnavigation', 1, 1, 0, 'sysadmin', '2012-11-10 18:10:44', '2013-02-20 12:19:17', 117, 'Hauptnavigation', ''),

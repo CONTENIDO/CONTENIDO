@@ -15,7 +15,7 @@ CREATE TABLE `!PREFIX!_cat` (
   KEY `idclient_2` (`idclient`,`parentid`),
   KEY `parentid` (`parentid`,`preid`),
   KEY `preid` (`preid`)
-) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;
+) ENGINE=!ENGINE! DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;
 
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES
 (1, 1, 0, 0, 39, 0, 'sysadmin', NOW(), NOW()),

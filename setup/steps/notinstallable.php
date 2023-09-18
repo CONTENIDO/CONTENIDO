@@ -26,7 +26,7 @@ class cSetupNotInstallable extends cSetupMask
 {
     public function __construct($reason) {
         cSetupMask::__construct("templates/notinstallable.tpl");
-        $this->setHeader("CONTENIDO Version " . CON_SETUP_VERSION);
+        $this->setHeader("CONTENIDO Version " . CON_VERSION);
         $this->_stepTemplateClass->set("s", "TITLE", "Willkommen zu dem Setup von CONTENIDO / Welcome to the CONTENIDO Setup");
         $this->_stepTemplateClass->set("s", "ERRORTEXT", "Setup nicht ausf&uuml;hrbar / Setup not runnable");
         if ($reason === 'session_use_cookies') {
@@ -34,7 +34,7 @@ class cSetupNotInstallable extends cSetupMask
         } elseif ($reason === 'database_extension') {
             $this->_stepTemplateClass->set("s", "REASONTEXT", "Couldn't detect neither MySQLi extension nor MySQL extension. You need to enable one of them in the PHP configuration (see dynamic extensions section in your php.ini). CONTENIDO won't work without that.");
         } elseif ($reason === 'php_version') {
-            $this->_stepTemplateClass->set("s", "REASONTEXT", "Leider erf&uuml;llt Ihr Webserver nicht die Mindestvoraussetzung von PHP " . CON_SETUP_MIN_PHP_VERSION . " oder h&ouml;her. Bitte installieren Sie PHP " . CON_SETUP_MIN_PHP_VERSION . " oder h&ouml;her, um mit dem Setup fortzufahren.<br><br>Unfortunately your webserver doesn't match the minimum requirement of PHP " . CON_SETUP_MIN_PHP_VERSION . " or higher. Please install PHP " . CON_SETUP_MIN_PHP_VERSION . " or higher and then run the setup again.");
+            $this->_stepTemplateClass->set("s", "REASONTEXT", "Leider erf&uuml;llt Ihr Webserver nicht die Mindestvoraussetzung von PHP " . CON_MIN_PHP_VERSION . " oder h&ouml;her. Bitte installieren Sie PHP " . CON_MIN_PHP_VERSION . " oder h&ouml;her, um mit dem Setup fortzufahren.<br><br>Unfortunately your webserver doesn't match the minimum requirement of PHP " . CON_MIN_PHP_VERSION . " or higher. Please install PHP " . CON_MIN_PHP_VERSION . " or higher and then run the setup again.");
         } else {
             // this should not happen
             $this->_stepTemplateClass->set("s", "REASONTEXT", "Reason unknown");

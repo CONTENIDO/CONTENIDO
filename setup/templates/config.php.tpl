@@ -91,8 +91,10 @@ $cfg['db'] = [
 {MYSQL_OPTIONS}
         ],
     ],
+    'engine'          => '{MYSQL_ENGINE}', // (string) The storage engine for tables
+    'collation'       => '{MYSQL_COLLATION}', // (string) The collation for tables & text fields
     'haltBehavior'    => 'report', // (string) Feasible values are 'yes', 'no' or 'report'
-    'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
+    'haltMsgPrefix'   => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
     'enableProfiling' => false,    // (bool) Flag to enable profiling
 ];
 

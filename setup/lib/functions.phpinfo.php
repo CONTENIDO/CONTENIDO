@@ -140,7 +140,7 @@ function isRegisterLongArraysActive() {
  * @return bool
  */
 function isPHPCompatible() {
-    if (version_compare(PHP_VERSION, CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
+    if (version_compare(PHP_VERSION, CON_MIN_PHP_VERSION, '>=') == true) {
         return true;
     } else {
         return false;

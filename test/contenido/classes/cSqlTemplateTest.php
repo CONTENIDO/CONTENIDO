@@ -32,10 +32,10 @@ class cSqlTemplateTest extends cTestingTestCase
 
         // Backup global configuration
         $this->cfg = $cfg;
-        $cfg['db']['connection']['charset'] = cSqlTemplate::DEFAULT_CHARSET;
-        $cfg['sql']['sqlprefix'] = cSqlTemplate::DEFAULT_PREFIX;
-        $cfg['sql']['sqlengine'] = cSqlTemplate::DEFAULT_ENGINE;
-        $cfg['sql']['sqlcollation'] = cSqlTemplate::DEFAULT_COLLATION;
+        $cfg['db']['connection']['charset'] = CON_DB_CHARSET;
+        $cfg['db']['engine'] = CON_DB_ENGINE;
+        $cfg['sql']['sqlprefix'] = CON_DB_PREFIX;
+        $cfg['db']['collation'] = CON_DB_COLLATION;
     }
 
     protected function tearDown(): void
@@ -131,10 +131,10 @@ class cSqlTemplateTest extends cTestingTestCase
      */
     public function testParse()
     {
-        $prefix = cSqlTemplate::DEFAULT_PREFIX;
-        $charset = cSqlTemplate::DEFAULT_CHARSET;
-        $engine = cSqlTemplate::DEFAULT_ENGINE;
-        $collation = cSqlTemplate::DEFAULT_COLLATION;
+        $prefix = CON_DB_PREFIX;
+        $charset = CON_DB_CHARSET;
+        $engine = CON_DB_ENGINE;
+        $collation = CON_DB_COLLATION;
 
         // Create database
         $template = 'CREATE DATABASE `my_database` CHARACTER SET !CHARSET! COLLATE !COLLATION!';
@@ -210,10 +210,10 @@ SQL;
         $this->assertTrue(isset($replacements['!ENGINE!']));
         $this->assertTrue(isset($replacements['!COLLATION!']));
 
-        $this->assertEquals(cSqlTemplate::DEFAULT_CHARSET, $replacements['!CHARSET!']);
-        $this->assertEquals(cSqlTemplate::DEFAULT_PREFIX, $replacements['!PREFIX!']);
-        $this->assertEquals(cSqlTemplate::DEFAULT_ENGINE, $replacements['!ENGINE!']);
-        $this->assertEquals(cSqlTemplate::DEFAULT_COLLATION, $replacements['!COLLATION!']);
+        $this->assertEquals(CON_DB_CHARSET, $replacements['!CHARSET!']);
+        $this->assertEquals(CON_DB_PREFIX, $replacements['!PREFIX!']);
+        $this->assertEquals(CON_DB_ENGINE, $replacements['!ENGINE!']);
+        $this->assertEquals(CON_DB_COLLATION, $replacements['!COLLATION!']);
     }
 
 }

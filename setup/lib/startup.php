@@ -26,7 +26,7 @@ header('Content-Type: text/html; charset=ISO-8859-1');
  *
  * @param  string  $filename
  */
-function checkAndInclude($filename) {
+function checkAndInclude(string $filename) {
     if (file_exists($filename) && is_readable($filename)) {
         include_once($filename);
     } else {
@@ -41,16 +41,16 @@ function checkAndInclude($filename) {
 
 include_once(__DIR__ . '/defines.php');
 
-// Check minimum required PHP version in the 'first' line
-if (version_compare(PHP_VERSION, CON_SETUP_MIN_PHP_VERSION, '<')) {
-    die(sprintf("You need PHP >= %s for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: %s\n", CON_SETUP_MIN_PHP_VERSION, PHP_VERSION));
-}
-
 // Include the environment definer file
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/environment.php');
 
 // Include CONTENIDO defines
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/includes/defines.php');
+
+// Check minimum required PHP version in the 'first' line
+if (version_compare(PHP_VERSION, CON_MIN_PHP_VERSION, '<')) {
+    die(sprintf("You need PHP >= %s for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: %s\n", CON_MIN_PHP_VERSION, PHP_VERSION));
+}
 
 // Include cStringMultiByteWrapper and cString
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.string.multi.byte.wrapper.php');

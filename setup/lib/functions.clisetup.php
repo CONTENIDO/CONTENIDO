@@ -108,7 +108,7 @@ function initializeVariables() {
             'options'  => [],
         ],
         'haltBehavior'    => 'report',
-        'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
+        'haltMsgPrefix'   => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
         'enableProfiling' => false
     ];
     $_SESSION['setuptype'] = 'setup';
@@ -119,6 +119,7 @@ function initializeVariables() {
     $_SESSION['adminpass'] = '';
     $_SESSION['adminmail'] = '';
     $_SESSION['dbprefix'] = '';
+    $_SESSION['dbengine'] = '';
     $_SESSION['dboptions'] = [];
 }
 
@@ -158,6 +159,10 @@ function checkInstallationSettings() {
     }
     if ($_SESSION['dbprefix'] == '') {
         prntln(i18n('You did not specify a database prefix!', 'setup'));
+        $fine = false;
+    }
+    if ($_SESSION['dbengine'] == '') {
+        prntln(i18n('You did not specify a database engine!', 'setup'));
         $fine = false;
     }
 
@@ -249,6 +254,6 @@ function printHelpText() {
     prntln();
     prntln(i18n("Furthermore, you can use parameters to overwrite setup settings.\nUse \"--[ini-group].[ini-name]=\"value\" (e.g. --db.host=\"localhost\")", 'setup'));
     prntln();
-    prntln('CONTENIDO version ' . CON_SETUP_VERSION);
+    prntln('CONTENIDO version ' . CON_VERSION);
 }
 

@@ -5,7 +5,7 @@ CREATE TABLE `!PREFIX!_art` (
   `idclient` int(11) NOT NULL default '0',
   PRIMARY KEY (`idart`),
   KEY `idclient` (`idclient`)
-) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0 ;
+) ENGINE=!ENGINE! DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0 ;
 
 INSERT INTO `!PREFIX!_art` (`idart`, `idclient`) VALUES
 (1, 1),

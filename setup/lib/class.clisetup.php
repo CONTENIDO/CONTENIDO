@@ -41,7 +41,7 @@ class cCLISetup {
     protected $_settingsFile;
 
     /**
-     * Initiliazes the class and sets standard values for some settings
+     * Initializes the class and sets standard values for some settings
      *
      * @param array $args the parsed command line
      */
@@ -49,10 +49,11 @@ class cCLISetup {
         $this->_settings['db']['host'] = 'localhost';
         $this->_settings['db']['user'] = 'root';
         $this->_settings['db']['password'] = '';
-        $this->_settings['db']['charset'] = CON_SETUP_DB_CHARSET;
-        $this->_settings['db']['collation'] = CON_SETUP_DB_COLLATION;
+        $this->_settings['db']['charset'] = CON_DB_CHARSET;
+        $this->_settings['db']['collation'] = CON_DB_COLLATION;
         $this->_settings['db']['database'] = 'contenido';
         $this->_settings['db']['prefix'] = 'con';
+        $this->_settings['db']['engine'] = CON_DB_ENGINE;
         $this->_settings['db']['option_mysqli_init_command'] = CON_SETUP_DB_OPTION_MYSQLI_INIT_COMMAND;
 
         $this->_settings['paths']['http_root_path'] = '';
@@ -166,6 +167,7 @@ class cCLISetup {
         $this->_settings['db']['collation'] = ($this->_args['dbcollation'] == '') ? $this->_settings['db']['collation'] : $this->_args['dbcollation'];
         $this->_settings['db']['database'] = ($this->_args['dbdatabase'] == '') ? $this->_settings['db']['database'] : $this->_args['dbdatabase'];
         $this->_settings['db']['prefix'] = ($this->_args['dbprefix'] == '') ? $this->_settings['db']['prefix'] : $this->_args['dbprefix'];
+        $this->_settings['db']['engine'] = ($this->_args['dbengine'] == '') ? $this->_settings['db']['engine'] : $this->_args['dbengine'];
         $this->_settings['db']['option_mysqli_init_command'] = ($this->_args['dboptionmysqliinitcommand'] == '') ? $this->_settings['db']['option_mysqli_init_command'] : $this->_args['dboptionmysqliinitcommand'];
 
         $this->_settings['paths']['http_root_path'] = ($this->_args['pathshttprootpath'] == '') ? $this->_settings['paths']['http_root_path'] : $this->_args['pathshttprootpath'];
@@ -219,6 +221,11 @@ class cCLISetup {
         prnt(i18n('Prefix', 'setup') . ' [' . $this->_settings['db']['prefix'] . ']: ', 1);
         $line = trim(fgets(STDIN));
         $this->_settings['db']['prefix'] = ($line == "") ? $this->_settings['db']['prefix'] : $line;
+
+        // database engine
+        prnt(i18n('Engine', 'setup') . ' [' . $this->_settings['db']['engine'] . ']: ', 1);
+        $line = trim(fgets(STDIN));
+        $this->_settings['db']['engine'] = ($line == "") ? $this->_settings['db']['engine'] : $line;
 
         // Database option MYSQLI_INIT_COMMAND
         prnt(i18n('Database option MYSQLI_INIT_COMMAND', 'setup') . ' [' . $this->_settings['db']['option_mysqli_init_command'] . ']: ', 1);
@@ -313,6 +320,7 @@ class cCLISetup {
                 $this->_settings['db']['database'] = trim($xml->db->database);
                 $this->_settings['db']['prefix'] = trim($xml->db->prefix);
                 $this->_settings['db']['collation'] = trim($xml->db->collation);
+                $this->_settings['db']['engine'] = trim($xml->db->engine);
                 $this->_settings['db']['option_mysqli_init_command'] = trim($xml->db->option_mysqli_init_command);
 
                 $this->_settings['paths']['http_root_path'] = trim($xml->path->http_root_path);
@@ -374,7 +382,10 @@ class cCLISetup {
         $test->runTests(false); // general php tests
         $test->testFilesystem(true, false); // file system permission tests
         $test->testFrontendFolderCreation(); // more file system permission tests
-        $test->checkSetupMysql('setup', $cfg['db']['connection']['database'], $_SESSION['dbprefix'], $_SESSION['dbcharset'], $_SESSION['dbcollation']); // test the SQL connection and database creation
+        $test->checkSetupMysql(
+            'setup', $cfg['db']['connection']['database'], $_SESSION['dbprefix'], $_SESSION['dbcharset'],
+            $_SESSION['dbcollation'], $_SESSION['dbengine']
+        ); // test the SQL connection and database creation
 
         $testResults = $test->getResults();
 
@@ -440,8 +451,9 @@ class cCLISetup {
                 'database' => $this->_settings['db']['database'],
                 'options'  => [],
             ],
+            'engine'          => $this->_settings['db']['engine'],
             'haltBehavior'    => 'report',
-            'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
+            'haltMsgPrefix'   => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
             'enableProfiling' => false
         ];
         if (!empty($this->_settings['db']['option_mysqli_init_command'])) {
@@ -456,6 +468,7 @@ class cCLISetup {
         $_SESSION['adminpass'] = $this->_settings['admin_user']['password'];
         $_SESSION['adminmail'] = $this->_settings['admin_user']['email'];
         $_SESSION['dbprefix'] = $this->_settings['db']['prefix'];
+        $_SESSION['dbengine'] = $this->_settings['db']['engine'];
         $_SESSION['dbcollation'] = $this->_settings['db']['collation'];
         $_SESSION['dbcharset'] = $this->_settings['db']['charset'];
         $_SESSION['dboptions'] = [];
