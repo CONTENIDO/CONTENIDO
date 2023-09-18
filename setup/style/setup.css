@@ -181,7 +181,7 @@ p {
 
 table.setupBodyOuterTable {
     width: 730px;
-    height: 360px;
+    height: 380px;
 }
 
 
@@ -442,7 +442,7 @@ table.setupBodyOuterTable .progressOutput {
     color: black;
     text-align: left;
     border: 1px solid #b3b3b8;
-	height: 520px;
+	height: 540px;
 }
 
 #setupHead {
@@ -475,7 +475,7 @@ table.setupBodyOuterTable .progressOutput {
 #setupBody {
     background-color: #f1f1f1;
     padding: 20px 10px 10px 10px;
-    height: 360px;
+    height: 380px;
 }
 
 #setupFootnote {
