@@ -108,7 +108,7 @@ class cSetupSystemData extends cSetupMask {
 
             // database storage engine
             $hiddenFieldDbEngine = new cHTMLHiddenField('dbengine', CON_DB_ENGINE);
-            $dbEngineTextbox = $hiddenFieldDbEngine . CON_DB_CHARSET;
+            $dbEngineTextbox = $hiddenFieldDbEngine . CON_DB_ENGINE;
 
             // database collation
             $hiddenFieldDbCollation = new cHTMLHiddenField('dbcollation', CON_DB_COLLATION);
