@@ -36,16 +36,15 @@ function injectSQL($db, $prefix, $file, $replacements = []) {
 
     $sqlFile = removeComments($sqlFile);
     $sqlFile = removeRemarks($sqlFile);
-    $sqlFile = str_replace('!PREFIX!', $prefix, $sqlFile);
     $sqlFile = trim($sqlFile);
+
+    $sqlTemplate = new cSqlTemplate();
+    $sqlTemplate->addReplacements($replacements);
+    $sqlFile = $sqlTemplate->parse($sqlFile);
 
     $sqlChunks = splitSqlFile(trim($sqlFile), ";");
 
     foreach ($sqlChunks as $sqlChunk) {
-        foreach ($replacements as $find => $replace) {
-            $sqlChunk = str_replace($find, $replace, $sqlChunk);
-        }
-
         $db->query($sqlChunk);
 
         if ($db->getErrorNumber() != 0) {

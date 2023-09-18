@@ -18,6 +18,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // CONTENIDO version
 defined('CON_VERSION') || define('CON_VERSION', '4.10.1');
 
+// Minimum supported PHP version
+define('CON_MIN_PHP_VERSION', '7.0.0');
+
 // Not supported MySQL SQL modes
 if (!defined('CON_DB_NOT_SUPPORTED_SQL_MODES')) {
     define(
@@ -25,6 +28,12 @@ if (!defined('CON_DB_NOT_SUPPORTED_SQL_MODES')) {
         'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE'
     );
 }
+
+// Database defaults
+define('CON_DB_PREFIX', 'con');
+define('CON_DB_CHARSET', 'utf8mb4');
+define('CON_DB_COLLATION', 'utf8mb4_general_ci');
+define('CON_DB_ENGINE', 'InnoDB');
 
 // Flag to strip slashes
 if (function_exists('get_magic_quotes_gpc')) {

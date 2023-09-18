@@ -12,9 +12,7 @@
  * @link       https://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // Uncomment following line 4 debugging any occurred errors and warnings
 #error_reporting(E_ALL);

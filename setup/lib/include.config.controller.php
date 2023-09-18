@@ -27,6 +27,8 @@ $tpl->set('s', 'MYSQL_DB', $cfg['db']['connection']['database']);
 $tpl->set('s', 'MYSQL_USER', $cfg['db']['connection']['user']);
 $tpl->set('s', 'MYSQL_PASS', $cfg['db']['connection']['password']);
 $tpl->set('s', 'MYSQL_PREFIX', $cfg['sql']['sqlprefix']);
+$tpl->set('s', 'MYSQL_ENGINE', $cfg['db']['engine']);
+$tpl->set('s', 'MYSQL_COLLATION', $cfg['db']['collation']);
 $tpl->set('s', 'MYSQL_CHARSET', $cfg['db']['connection']['charset']);
 
 $dbOptions = [];
@@ -44,7 +46,7 @@ $tpl->set('s', 'MYSQL_OPTIONS', $dbOptions);
 
 $tpl->set('s', 'DB_EXTENSION', (string) getMySQLDatabaseExtension());
 
-$tpl->set('s', 'NOLOCK', isset($_SESSION['nolock']) ? $_SESSION['nolock'] : '');
+$tpl->set('s', 'NOLOCK', $_SESSION['nolock'] ?? '');
 
 // Set CON_UTF8 constant only for new installations
 if ($_SESSION['setuptype'] == 'setup') {

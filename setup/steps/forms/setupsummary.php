@@ -56,6 +56,7 @@ class cSetupSetupSummary extends cSetupMask
             i18n("Database name", "setup") . ": " . $_SESSION['dbname'],
             i18n("Database username", "setup") . ": " . $_SESSION['dbuser'],
             i18n("Table prefix", "setup") . ": " . $_SESSION['dbprefix'],
+            i18n("Storage engine", "setup") . ": " . $_SESSION['dbengine'],
             i18n("Database character set", "setup") . ": " . $_SESSION['dbcharset'],
         ];
         if (is_array($_SESSION['dboptions'])) {

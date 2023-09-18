@@ -19,6 +19,7 @@ The configurable settings are mostly the same -->
         <charset>
             DATABASE_CHARSET
         </charset>
+        <engine>DATABASE_COLLATION</engine>
         <collation>DATABASE_COLLATION</collation>
         <prefix>
             DATABASE_PREFIX

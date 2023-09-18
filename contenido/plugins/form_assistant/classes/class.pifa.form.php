@@ -978,7 +978,7 @@ class PifaForm extends Item {
                 -- IF NOT EXISTS
                 `$tableName`
             ($createDefinitions)
-            ENGINE=MyISAM
+            ENGINE=!ENGINE!
             DEFAULT CHARSET=!CHARSET!
             ;";
 

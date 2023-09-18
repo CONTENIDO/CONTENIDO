@@ -146,18 +146,20 @@ function setupInitializeConfig() {
     $cfg['path']['wysiwyg_html'] = $cfg['path']['all_wysiwyg_html'] . $cfg['wysiwyg']['editor'] . '/';
 
     // DB related settings
-    $cfg['sql']['sqlprefix'] = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';
+    $cfg['sql']['sqlprefix'] = $_SESSION['dbprefix'] ?? CON_DB_PREFIX;
     $cfg['db'] = [
         'connection' => [
-            'host' => (isset($_SESSION['dbhost'])) ? $_SESSION['dbhost'] : '',
-            'database' => (isset($_SESSION['dbname'])) ? $_SESSION['dbname'] : '',
-            'user' => (isset($_SESSION['dbuser'])) ? $_SESSION['dbuser'] : '',
-            'password' => (isset($_SESSION['dbpass'])) ? $_SESSION['dbpass'] : '',
-            'charset' => (isset($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : '',
+            'host' => $_SESSION['dbhost'] ?? '',
+            'database' => $_SESSION['dbname'] ?? '',
+            'user' => $_SESSION['dbuser'] ?? '',
+            'password' => $_SESSION['dbpass'] ?? '',
+            'charset' => $_SESSION['dbcharset'] ?? '',
             'options' => !empty($_SESSION['dboptions']) ? $_SESSION['dboptions'] : [],
         ],
+        'engine' => $_SESSION['dbengine'] ?? CON_DB_ENGINE,
+        'collation' => $_SESSION['dbcollation'] ?? CON_DB_COLLATION,
         'haltBehavior' => 'report',
-        'haltMsgPrefix' => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
+        'haltMsgPrefix' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
         'enableProfiling' => false,
     ];
 }

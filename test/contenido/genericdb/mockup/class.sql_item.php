@@ -30,7 +30,7 @@ class SqlItem
                 `District` CHAR(20) NOT NULL DEFAULT '',
                 `Population` INT(11) NOT NULL DEFAULT '0',
                 PRIMARY KEY (`ID`)
-            ) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;"
+            ) ENGINE=!ENGINE! DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;"
         );
     }
 
@@ -62,7 +62,7 @@ class SqlItem
                 `size` ENUM('small', 'medium', 'large') DEFAULT NULL,
                 `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 PRIMARY KEY (`id`)
-            ) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;"
+            ) ENGINE=!ENGINE! DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;"
         );
     }
 
@@ -94,7 +94,7 @@ class SqlItem
                 `iso_compliant` ENUM('y', 'n') DEFAULT 'n',
                 `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 PRIMARY KEY (`dog_id`)
-            ) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET!;"
+            ) ENGINE=!ENGINE! DEFAULT CHARSET=!CHARSET!;"
         );
     }
 

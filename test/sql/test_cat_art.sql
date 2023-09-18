@@ -14,7 +14,7 @@ CREATE TABLE `!PREFIX!_cat_art` (
   KEY `is_start_2` (`is_start`,`idcat`),
   KEY `idart` (`idart`),
   KEY `idcat` (`idcat`)
-) ENGINE=MyISAM DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;
+) ENGINE=!ENGINE! DEFAULT CHARSET=!CHARSET! AUTO_INCREMENT=0;
 
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES
 (84, 1, 77, 0, 0, 'sysadmin', NOW(), NOW(), 1),

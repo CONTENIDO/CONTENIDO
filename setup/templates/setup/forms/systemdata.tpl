@@ -40,6 +40,10 @@
                     <td class="last">{INPUT_DBCHARSET}</td>
                 </tr>
                 <tr class="advancedSetting" style="visibility: hidden;">
+                    <td class="first"><div class="description">{LABEL_DBENGINE}</div></td>
+                    <td class="last">{INPUT_DBENGINE}</td>
+                </tr>
+                <tr class="advancedSetting" style="visibility: hidden;">
                     <td class="first"><div class="description">{LABEL_DBCOLLATION}</div></td>
                     <td class="last">{INPUT_DBCOLLATION}</td>
                 </tr>
