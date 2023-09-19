@@ -147,6 +147,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
     if (isset($structure[$field]) && $structure[$field]['Extra'] == 'auto_increment') {
         $structure[$field]['NULL'] = $structure[$field]['NULL'] ?? 'NOT NULL';
         $structure[$field]['DEFAULT'] = $structure[$field]['DEFAULT'] ?? '';
+        $structure[$field]['KEY'] = $structure[$field]['KEY'] ?? '';
         $sql = "ALTER TABLE `" . $db->escape($table) . "` CHANGE COLUMN `" . $db->escape($field) . "` `" . $db->escape($field) . "` " . $db->escape($type) . " " . $structure[$field]['NULL'] . " " . $structure[$field]['DEFAULT'] . " " . $structure[$field]['KEY'];
         $db->query($sql);
     }
