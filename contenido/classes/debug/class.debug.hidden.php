@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Debug
  */
-class cDebugHidden implements cDebugInterface {
+class cDebugHidden implements cDebugInterface
+{
 
     /**
      * Singleton instance
@@ -34,9 +35,10 @@ class cDebugHidden implements cDebugInterface {
      *
      * @return cDebugHidden
      */
-    static public function getInstance() {
+    static public function getInstance(): cDebugInterface
+    {
         if (self::$_instance == NULL) {
-            self::$_instance = new cDebugHidden();
+            self::$_instance = new self();
         }
         return self::$_instance;
     }
@@ -44,18 +46,20 @@ class cDebugHidden implements cDebugInterface {
     /**
      * Constructor to create an instance of this class.
      */
-    private function __construct() {
+    private function __construct()
+    {
     }
 
     /**
      * Writes a line.
      *
+     * @param string $sText
      * @see cDebugInterface::out()
-     * @param string $msg
      */
-    public function out($msg) {
+    public function out($sText)
+    {
         echo ("\n <!-- dbg\n");
-        echo ($msg);
+        echo ($sText);
         echo ("\n-->");
     }
 
@@ -69,7 +73,8 @@ class cDebugHidden implements cDebugInterface {
      * @param bool $bExit [optional]
      *         If set to true, your app will die() after output of current var
      */
-    public function show($mVariable, $sVariableDescription = '', $bExit = false) {
+    public function show($mVariable, $sVariableDescription = '', $bExit = false)
+    {
         echo "\n <!-- dbg";
         if ($sVariableDescription != '') {
             echo ' ' . strval($sVariableDescription);
@@ -95,18 +100,22 @@ class cDebugHidden implements cDebugInterface {
      * @param mixed $mVariable
      * @param string $sVariableDescription [optional]
      */
-    public function add($mVariable, $sVariableDescription = '') {
+    public function add($mVariable, $sVariableDescription = '')
+    {
     }
 
     /**
      * Interface implementation
      */
-    public function reset() {
+    public function reset()
+    {
     }
 
     /**
      * Interface implementation
      */
-    public function showAll() {
+    public function showAll()
+    {
     }
+
 }

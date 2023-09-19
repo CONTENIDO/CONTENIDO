@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Debug object to show info on screen in a box / HTML Block at the top of page.
  * Instead of doing the output immediately using method show, values can be
  * collected and printed to screen in one go.
- * Therefore there's a box positioned at the left top of the page that can be
+ * Therefore, there's a box positioned at the left top of the page that can be
  * toggled and hidden.
  *
  * Please note:
@@ -28,7 +28,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Debug
  */
-class cDebugVisibleAdv implements cDebugInterface, Countable {
+class cDebugVisibleAdv implements cDebugInterface, Countable
+{
 
     /**
      * Singleton instance
@@ -41,22 +42,23 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      *
      * @var array
      */
-    private $_aItems;
+    protected $_aItems;
 
     /**
      *
      * @var string
      */
-    private $_buffer;
+    protected $_buffer;
 
     /**
      * Return singleton instance.
      *
      * @return cDebugVisibleAdv
      */
-    public static function getInstance() {
+    public static function getInstance(): cDebugInterface
+    {
         if (self::$_instance == NULL) {
-            self::$_instance = new cDebugVisibleAdv();
+            self::$_instance = new self();
         }
 
         return self::$_instance;
@@ -65,7 +67,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     /**
      * Constructor to create an instance of this class.
      */
-    private function __construct() {
+    private function __construct()
+    {
         $this->_aItems = [];
         $this->_buffer = '';
     }
@@ -76,7 +79,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      * @param mixed $mVariable
      * @param string $sVariableDescription [optional]
      */
-    public function add($mVariable, $sVariableDescription = '') {
+    public function add($mVariable, $sVariableDescription = '')
+    {
         $oItem = new cDebugVisibleAdvItem();
         $oItem->setValue($mVariable);
         $oItem->setDescription($sVariableDescription);
@@ -86,7 +90,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     /**
      * Reset internal collection with Debug items.
      */
-    public function reset() {
+    public function reset()
+    {
         $this->_aItems = [];
     }
 
@@ -96,7 +101,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      * @see cDebugInterface::out()
      * @param string $sText
      */
-    public function out($sText) {
+    public function out($sText)
+    {
         $this->_buffer .= $sText . "\n";
     }
 
@@ -106,10 +112,11 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      *
      * @throws cInvalidArgumentException
      */
-    public function showAll() {
-        global $cfg;
+    public function showAll()
+    {
+        $cfg = cRegistry::getConfig();
 
-        $sHtml = "";
+        $sHtml = '';
         if ($this->count() > 0) {
             $tpl = new cTemplate();
 
@@ -118,14 +125,14 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
                 $sItemName = cString::getStringLength($oItem->getDescription()) > 0 ? $oItem->getDescription() : ('debug item #' . $i);
                 $sItemValue = $this->_prepareValue($oItem->getValue());
 
-                $tpl->set("d", "DBG_ITEM_COUNT", $i);
-                $tpl->set("d", "DBG_ITEM_NAME", $sItemName);
-                $tpl->set("d", "DBG_ITEM_VALUE", $sItemValue);
+                $tpl->set('d', 'DBG_ITEM_COUNT', $i);
+                $tpl->set('d', 'DBG_ITEM_NAME', $sItemName);
+                $tpl->set('d', 'DBG_ITEM_VALUE', $sItemValue);
                 $tpl->next();
 
                 ++$i;
             }
-            $sHtml .= $tpl->generate(cRegistry::getBackendPath() . $cfg["path"]["templates"] . $cfg['templates']['debug_visibleadv'], true);
+            $sHtml .= $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['debug_visibleadv'], true);
         }
 
         $buffer = str_replace("\'", "\\'", $this->_buffer);
@@ -138,8 +145,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
         chdir(cRegistry::getBackendPath());
 
         $tpl = new cTemplate();
-        $tpl->set("s", "DBG_MESSAGE_CONTENT", $buffer);
-        $sHtml .= $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["debug_header"], true);
+        $tpl->set('s', 'DBG_MESSAGE_CONTENT', $buffer);
+        $sHtml .= $tpl->generate($cfg['path']['templates'] . $cfg['templates']['debug_header'], true);
 
         // switching back to the old directory if needed
         chdir($dir);
@@ -154,7 +161,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      *
      * @return string
      */
-    private function _prepareValue($mValue) {
+    private function _prepareValue($mValue): string
+    {
         $bTextarea = false;
         $bPlainText = false;
         $sReturn = '';
@@ -210,13 +218,13 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     }
 
     /**
-     * Implemenation of Countable interface
+     * Implementation of Countable interface
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function count() {
-        return sizeof($this->_aItems);
+    public function count(): int
+    {
+        return (int) sizeof($this->_aItems);
     }
 
     /**
@@ -229,14 +237,15 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      * @param bool $bExit [optional]
      *         If set to true, your app will die() after output of current var.
      */
-    public function show($mVariable, $sVariableDescription = '', $bExit = false) {
+    public function show($mVariable, $sVariableDescription = '', $bExit = false)
+    {
         try {
             $oDbgVisible = cDebug::getDebugger(cDebug::DEBUGGER_VISIBLE);
+            $oDbgVisible->show($mVariable, $sVariableDescription, $bExit);
         } catch (Exception $e) {
             // throw $e;
             echo $e->getMessage();
         }
-        $oDbgVisible->show($mVariable, $sVariableDescription, $bExit);
     }
 
 }
@@ -247,7 +256,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
  * @package    Core
  * @subpackage Debug
  */
-class cDebugVisibleAdvItem {
+class cDebugVisibleAdvItem
+{
 
     /**
      *
@@ -266,7 +276,8 @@ class cDebugVisibleAdvItem {
      *
      * @return mixed
      */
-    public function getValue() {
+    public function getValue()
+    {
         return $this->_mValue;
     }
 
@@ -275,7 +286,8 @@ class cDebugVisibleAdvItem {
      *
      * @param mixed $mValue
      */
-    public function setValue($mValue) {
+    public function setValue($mValue)
+    {
         $this->_mValue = $mValue;
     }
 
@@ -284,7 +296,8 @@ class cDebugVisibleAdvItem {
      *
      * @return string
      */
-    public function getDescription() {
+    public function getDescription(): string
+    {
         return $this->_sDescription;
     }
 
@@ -293,7 +306,8 @@ class cDebugVisibleAdvItem {
      *
      * @param string $sDescription
      */
-    public function setDescription($sDescription) {
+    public function setDescription(string $sDescription)
+    {
         $this->_sDescription = $sDescription;
     }
 

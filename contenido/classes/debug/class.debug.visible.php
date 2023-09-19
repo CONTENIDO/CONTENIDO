@@ -23,7 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Debug
  */
-class cDebugVisible implements cDebugInterface {
+class cDebugVisible implements cDebugInterface
+{
 
     /**
      * Singleton instance
@@ -37,9 +38,10 @@ class cDebugVisible implements cDebugInterface {
      *
      * @return cDebugVisible
      */
-    static public function getInstance() {
+    static public function getInstance(): cDebugInterface
+    {
         if (self::$_instance == NULL) {
-            self::$_instance = new cDebugVisible();
+            self::$_instance = new self();
         }
         return self::$_instance;
     }
@@ -47,7 +49,8 @@ class cDebugVisible implements cDebugInterface {
     /**
      * Constructor to create an instance of this class.
      */
-    private function __construct() {
+    private function __construct()
+    {
     }
 
     /**
@@ -55,9 +58,10 @@ class cDebugVisible implements cDebugInterface {
      * This method does nothing!
      *
      * @see cDebugInterface::out()
-     * @param string $msg
+     * @param string $sText
      */
-    public function out($msg) {
+    public function out($sText)
+    {
     }
 
     /**
@@ -72,7 +76,8 @@ class cDebugVisible implements cDebugInterface {
      *
      * @throws cInvalidArgumentException
      */
-    public function show($mVariable, $sVariableDescription = '', $bExit = false) {
+    public function show($mVariable, $sVariableDescription = '', $bExit = false)
+    {
         $bTextarea = false;
         $bPlainText = false;
         if (is_array($mVariable)) {
@@ -112,7 +117,10 @@ class cDebugVisible implements cDebugInterface {
         if (is_array($mVariable)) {
             $varText .= print_r($mVariable, true);
         } else {
-            $varText .= var_dump($mVariable, true);
+            ob_start();
+            var_dump($mVariable);
+            $varText .= ob_get_contents();
+            ob_end_clean();
         }
 
         if ($bTextarea === true) {
@@ -124,8 +132,7 @@ class cDebugVisible implements cDebugInterface {
         }
         $tpl->set("s", "VAR_TEXT", $varText);
 
-        global $cfg;
-
+        $cfg = cRegistry::getConfig();
         $tpl->generate($cfg["templates"]["debug_visible"]);
         if ($bExit === true) {
             die('<p class="debug_footer"><b>debugg\'ed</b></p>');
@@ -138,18 +145,22 @@ class cDebugVisible implements cDebugInterface {
      * @param mixed $mVariable
      * @param string $sVariableDescription [optional]
      */
-    public function add($mVariable, $sVariableDescription = '') {
+    public function add($mVariable, $sVariableDescription = '')
+    {
     }
 
     /**
      * Interface implementation
      */
-    public function reset() {
+    public function reset()
+    {
     }
 
     /**
      * Interface implementation
      */
-    public function showAll() {
+    public function showAll()
+    {
     }
+
 }

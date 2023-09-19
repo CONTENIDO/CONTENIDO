@@ -23,7 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Debug
  */
-class cDebugFile implements cDebugInterface {
+class cDebugFile implements cDebugInterface
+{
 
     /**
      * Singleton instance
@@ -55,9 +56,10 @@ class cDebugFile implements cDebugInterface {
      *
      * @return cDebugFile
      */
-    public static function getInstance() {
+    public static function getInstance(): cDebugInterface
+    {
         if (self::$_instance == NULL) {
-            self::$_instance = new cDebugFile();
+            self::$_instance = new self();
         }
         return self::$_instance;
     }
@@ -65,9 +67,10 @@ class cDebugFile implements cDebugInterface {
     /**
      * Constructor to create an instance of this class.
      *
-     * Opens filehandle for debug logfile.
+     * Opens file handle for debug logfile.
      */
-    private function __construct() {
+    private function __construct()
+    {
         $cfg = cRegistry::getConfig();
         $this->_sPathToLogs = $cfg['path']['contenido_logs'];
         $this->_sFileName = 'debug.log';
@@ -77,16 +80,16 @@ class cDebugFile implements cDebugInterface {
     /**
      * Writes a line.
      *
-     * @see cDebugInterface::out()
-     *
-     * @param string $msg
+     * @param string $sText
      *
      * @throws cInvalidArgumentException
+     * @see cDebugInterface::out()
      */
-    public function out($msg) {
+    public function out($sText)
+    {
         $sDate = date('Y-m-d H:i:s');
-        $msg = $this->_indentLines($msg);
-        cFileHandler::write($this->_sPathToFile, $sDate . ": " . $msg . "\n", true);
+        $sText = $this->_indentLines($sText);
+        cFileHandler::write($this->_sPathToFile, $sDate . ": " . $sText . "\n", true);
     }
 
     /**
@@ -100,13 +103,15 @@ class cDebugFile implements cDebugInterface {
      *                                     If set to true, your app will die() after output of current var
      * @throws cInvalidArgumentException
     */
-    public function show($mVariable, $sVariableDescription = '', $bExit = false) {
+    public function show($mVariable, $sVariableDescription = '', $bExit = false)
+    {
         if (cFileHandler::writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');
-            cFileHandler::write($this->_sPathToFile, '#################### ' . $sDate . ' ####################' . "\n", true);
-            cFileHandler::write($this->_sPathToFile, $sVariableDescription . "\n", true);
-            cFileHandler::write($this->_sPathToFile, print_r($mVariable, true) . "\n", true);
-            cFileHandler::write($this->_sPathToFile, '#################### /' . $sDate . ' ###################' . "\n\n", true);
+            $content = '#################### ' . $sDate . ' ####################' . "\n"
+                . $sVariableDescription . "\n"
+                . print_r($mVariable, true) . "\n"
+                . '#################### /' . $sDate . ' ###################' . "\n\n";
+            cFileHandler::write($this->_sPathToFile, $content, true);
         }
     }
 
@@ -116,19 +121,22 @@ class cDebugFile implements cDebugInterface {
      * @param mixed $mVariable
      * @param string $sVariableDescription [optional]
      */
-    public function add($mVariable, $sVariableDescription = '') {
+    public function add($mVariable, $sVariableDescription = '')
+    {
     }
 
     /**
      * Interface implementation
      */
-    public function reset() {
+    public function reset()
+    {
     }
 
     /**
      * Interface implementation
      */
-    public function showAll() {
+    public function showAll()
+    {
     }
 
     /**
@@ -138,7 +146,8 @@ class cDebugFile implements cDebugInterface {
      * @param int $spaces
      * @return string The indented message
      */
-    protected function _indentLines($message, $spaces = 4) {
+    protected function _indentLines($message, int $spaces = 4): string
+    {
         if (is_string($message) && !empty($message)) {
             $prefix = str_pad(' ', $spaces);
             $lines = explode("\n", $message);
