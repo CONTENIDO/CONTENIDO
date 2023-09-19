@@ -82,7 +82,7 @@ No Warranty - take a look at the GPL at the end of this file.
 
 | Version | [DE] Empfohlener SQL-Modus / [EN] Recommendet SQL mode |
 |---------|--------------------------------------------------------|
-|MySQL <= 5.7 | `SET GLOBAL sql_mode = 'MYSQL40';` oder / or `SET SESSION sql_mode = 'MYSQL40';` |
+|MySQL 5.7 | `SET GLOBAL sql_mode = 'MYSQL40';` oder / or `SET SESSION sql_mode = 'MYSQL40';` |
 |MySQL >= 8.0 | `SET GLOBAL sql_mode = '';` oder / or `SET SESSION sql_mode = '';` |
 |MariaDB 5.5 | `SET GLOBAL sql_mode = 'MYSQL40';` oder / or `SET SESSION sql_mode = 'MYSQL40';` |
 |MariaDB 10.x | `SET GLOBAL sql_mode = '';` oder / or `SET SESSION sql_mode = '';` |
