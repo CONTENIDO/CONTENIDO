@@ -145,9 +145,8 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
     // Remove auto_increment
     $structure = dbGetColumns($db, $table);
     if (isset($structure[$field]) && $structure[$field]['Extra'] == 'auto_increment') {
-        if ($structure[$field]['NULL'] == '') {
-            $structure[$field]['NULL'] = 'NOT NULL';
-        }
+        $structure[$field]['NULL'] = $structure[$field]['NULL'] ?? 'NOT NULL';
+        $structure[$field]['DEFAULT'] = $structure[$field]['DEFAULT'] ?? '';
         $sql = "ALTER TABLE `" . $db->escape($table) . "` CHANGE COLUMN `" . $db->escape($field) . "` `" . $db->escape($field) . "` " . $db->escape($type) . " " . $structure[$field]['NULL'] . " " . $structure[$field]['DEFAULT'] . " " . $structure[$field]['KEY'];
         $db->query($sql);
     }
