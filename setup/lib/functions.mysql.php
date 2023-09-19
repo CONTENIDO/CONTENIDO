@@ -221,55 +221,55 @@ function fetchMySQLCharsets(cDb $db = null): array
     if (!is_object($db)) {
         // No DB object, return static list
         return [
-            'big5',
-            'dec8',
-            'cp850',
-            'hp8',
-            'koi8r',
-            'latin1',
-            'latin2',
-            'swe7',
-            'ascii',
-            'ujis',
-            'sjis',
-            'hebrew',
-            'tis620',
-            'euckr',
-            'koi8u',
-            'gb2312',
-            'greek',
-            'cp1250',
-            'gbk',
-            'latin5',
             'armscii8',
-            'utf8',
-            'ucs2',
-            'cp866',
-            'keybcs2',
-            'macce',
-            'macroman',
-            'cp852',
-            'latin7',
-            'utf8mb4',
+            'ascii',
+            'big5',
+            'binary',
+            'cp1250',
             'cp1251',
-            'utf16',
             'cp1256',
             'cp1257',
-            'utf32',
-            'binary',
-            'geostd8',
+            'cp850',
+            'cp852',
+            'cp866',
             'cp932',
-            'eucjpms'
+            'dec8',
+            'eucjpms',
+            'euckr',
+            'gb2312',
+            'gbk',
+            'geostd8',
+            'greek',
+            'hebrew',
+            'hp8',
+            'keybcs2',
+            'koi8r',
+            'koi8u',
+            'latin1',
+            'latin2',
+            'latin5',
+            'latin7',
+            'macce',
+            'macroman',
+            'sjis',
+            'swe7',
+            'tis620',
+            'ucs2',
+            'ujis',
+            'utf16',
+            'utf32',
+            'utf8',
+            'utf8mb4',
         ];
     }
 
     $db->query('SHOW CHARACTER SET');
 
     $charsets = [];
-
     while ($db->nextRecord()) {
         $charsets[] = $db->f('Charset');
     }
+    sort($charsets);
 
     return $charsets;
 }
@@ -288,56 +288,56 @@ function fetchMySQLCollations(cDb $db = null, string $charset = ""): array
     if (!is_object($db)) {
         // No DB object, return static list
         return [
-            'big5_chinese_ci',
-            'dec8_swedish_ci',
-            'cp850_general_ci',
-            'hp8_english_ci',
-            'koi8r_general_ci',
-            'latin1_swedish_ci',
-            'latin2_general_ci',
-            'swe7_swedish_ci',
-            'ascii_general_ci',
-            'ujis_japanese_ci',
-            'sjis_japanese_ci',
-            'hebrew_general_ci',
-            'tis620_thai_ci',
-            'euckr_korean_ci',
-            'koi8u_general_ci',
-            'gb2312_chinese_ci',
-            'greek_general_ci',
-            'cp1250_general_ci',
-            'gbk_chinese_ci',
-            'latin5_turkish_ci',
             'armscii8_general_ci',
-            'utf8_general_ci',
-            'utf8_unicode_ci',
-            'ucs2_general_ci',
-            'cp866_general_ci',
-            'keybcs2_general_ci',
-            'macce_general_ci',
-            'macroman_general_ci',
-            'cp852_general_ci',
-            'latin7_general_ci',
-            'utf8mb4_general_ci',
+            'ascii_general_ci',
+            'big5_chinese_ci',
+            'binary',
+            'cp1250_general_ci',
             'cp1251_general_ci',
-            'utf16_general_ci',
             'cp1256_general_ci',
             'cp1257_general_ci',
-            'utf32_general_ci',
-            'binary',
-            'geostd8_general_ci',
+            'cp850_general_ci',
+            'cp852_general_ci',
+            'cp866_general_ci',
             'cp932_japanese_ci',
-            'eucjpms_japanese_ci'
+            'dec8_swedish_ci',
+            'eucjpms_japanese_ci',
+            'euckr_korean_ci',
+            'gb2312_chinese_ci',
+            'gbk_chinese_ci',
+            'geostd8_general_ci',
+            'greek_general_ci',
+            'hebrew_general_ci',
+            'hp8_english_ci',
+            'keybcs2_general_ci',
+            'koi8r_general_ci',
+            'koi8u_general_ci',
+            'latin1_swedish_ci',
+            'latin2_general_ci',
+            'latin5_turkish_ci',
+            'latin7_general_ci',
+            'macce_general_ci',
+            'macroman_general_ci',
+            'sjis_japanese_ci',
+            'swe7_swedish_ci',
+            'tis620_thai_ci',
+            'ucs2_general_ci',
+            'ujis_japanese_ci',
+            'utf16_general_ci',
+            'utf32_general_ci',
+            'utf8_general_ci',
+            'utf8_unicode_ci',
+            'utf8mb4_general_ci',
         ];
     }
 
     $db->query('SHOW COLLATION');
 
-    $charsets = [];
-
+    $collations = [];
     while ($db->nextRecord()) {
-        $charsets[] = $db->f('Collation');
+        $collations[] = $db->f('Collation');
     }
+    sort($collations);
 
-    return $charsets;
+    return $collations;
 }

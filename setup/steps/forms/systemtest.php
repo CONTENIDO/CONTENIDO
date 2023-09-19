@@ -151,7 +151,7 @@ class cSetupSystemtest extends cSetupMask {
     }
 
     public function doExistingOldPluginTests() {
-        $db = getSetupMySQLDBConnection(false);
+        $db = getSetupMySQLDBConnection(true);
         $message = '';
 
         // get all tables in database and list it into array
