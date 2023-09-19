@@ -67,7 +67,7 @@ No Warranty - take a look at the GPL at the end of this file.
 
 | Version | [DE] Beschreibung / [EN] Description |
 |---------|--------------------------------------|
-|MySQL 5.5 - 5.7|[DE] nicht im strict-Modus / [EN] not in strict mode|
+|MySQL 5.7|[DE] nicht im strict-Modus / [EN] not in strict mode|
 |MySQL 8.0|[DE] nicht im strict-Modus / [EN] not in strict mode|
 |MariaDB 5.5|[DE] nicht im strict-Modus / [EN] not in strict mode|
 |MariaDB 10|[DE] nicht im strict-Modus / [EN] not in strict mode|
