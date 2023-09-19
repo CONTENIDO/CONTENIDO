@@ -958,6 +958,10 @@ class cApiUser extends Item {
      *         Current users permissions
      */
     public function getEffectiveUserPerms() {
+        if (!$this->isLoaded()) {
+            return '';
+        }
+
         // first get users own permissions and filter them into result array
         // $aUserPerms
         $aUserPerms     = [];
