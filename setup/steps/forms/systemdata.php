@@ -130,7 +130,7 @@ class cSetupSystemData extends cSetupMask {
 
             // database storage engine
             $hiddenFieldDbEngine = new cHTMLHiddenField('dbengine', CON_DB_ENGINE);
-            $dbEngineTextbox = $hiddenFieldDbEngine . CON_DB_CHARSET;
+            $dbEngineTextbox = $hiddenFieldDbEngine . CON_DB_ENGINE;
 
             // database collation
             $pos = 0;
@@ -225,8 +225,9 @@ class cSetupSystemData extends cSetupMask {
                 'dbname' => $cfg['db']['connection']['database'],
                 'dbpass' => $cfg['db']['connection']['password'],
                 'dbprefix' => $cfg['sql']['sqlprefix'],
-                'dbengine' => $cfg['db']['engine'],
                 'dbcharset' => $cfg['db']['connection']['charset'],
+                'dbengine' => $cfg['db']['engine'] ?? CON_DB_ENGINE,
+                'dbcollation' => $cfg['db']['collation'] ?? CON_DB_COLLATION,
                 'dboptions' => !empty($cfg['db']['connection']['options']) ? $cfg['db']['connection']['options'] : []
             ];
 
