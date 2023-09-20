@@ -514,7 +514,7 @@ class cHTML {
      *         $this for chaining
      */
     public function appendStyleDefinition($property, $value) {
-        if (!empty($value)) {
+        if (!empty($value) && is_string($value)) {
             $value = trim($value, ' ;');
         }
         $this->_styleDefinitions[$property] = $value;
