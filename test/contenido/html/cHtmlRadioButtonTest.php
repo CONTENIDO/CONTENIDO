@@ -87,7 +87,8 @@ class cHtmlRadioButtonTest extends cTestingTestCase
         // Render with label
         $radioButton = new cHTMLRadiobutton('testName', 'testValue');
         $this->assertNull($radioButton->getAttribute('id'));
-        // Note: Calling render() renders with label, see cHTMLRadiobutton->totoHtml()
+        // Note: Calling render() renders with label, if label ist set, see cHTMLRadiobutton->totoHtml()
+        $radioButton->setLabelText('myLabel');
         $radioButton->render();
         $this->assertNotNull($radioButton->getAttribute('id'));
     }

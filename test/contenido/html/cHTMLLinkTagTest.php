@@ -14,17 +14,9 @@
 class cHTMLLinkTagTest extends cTestingTestCase
 {
 
-    private $xhtmlSetting;
-
     public function setUp(): void
     {
-        $this->xhtmlSetting = cEffectiveSetting::get('generator', 'xhtml', 'false');
-        cEffectiveSetting::set('generator', 'xhtml', 'false');
-    }
-
-    public function tearDown(): void
-    {
-        cEffectiveSetting::set('generator', 'xhtml', $this->xhtmlSetting);
+        cHTML::setGenerateXHTML(false);
     }
 
     /**

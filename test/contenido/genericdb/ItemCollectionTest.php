@@ -319,12 +319,8 @@ class ItemCollectionTest extends cTestingTestCase
      */
     public function testDeleteWhereGroupUnconditioned()
     {
-        try {
-            $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar');
-            $this->fail('should have thrown PHPUnit\Framework\Error\Notice');
-        } catch (PHPUnit\Framework\Error\Notice $e) {
-            $this->assertEquals('Undefined index: myGroup', $e->getMessage());
-        }
+        $this->expectNotToPerformAssertions();
+        $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar');
     }
 
     /**

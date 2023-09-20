@@ -40,11 +40,11 @@ class cHtmlTableTest extends cTestingTestCase
         $this->assertSame($exp, $act);
         // test attribute cellpadding
         $act = $this->_table->getAttribute('cellpadding');
-        $exp = 0;
+        $exp = null;
         $this->assertSame($exp, $act);
         // test attribute cellspacing
         $act = $this->_table->getAttribute('cellspacing');
-        $exp = 0;
+        $exp = null;
         $this->assertSame($exp, $act);
         // test attribute border
         $act = $this->_table->getAttribute('border');

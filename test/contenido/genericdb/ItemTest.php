@@ -248,9 +248,7 @@ class ItemTest extends cTestingTestCase
      */
     public function testGetFieldNonVirginMissing()
     {
-        // TODO This should work but it doesn't
-        //$this->expectNoticeMessage('Undefined index: bar');
-        $this->expectNotice();
+        $this->expectWarning();
         $this->_testItemNonVirgin->getField('bar');
     }
 

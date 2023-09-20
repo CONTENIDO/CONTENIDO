@@ -18,13 +18,14 @@ class cHtmlHiddenFieldTest extends cTestingTestCase
 
     protected function setUp(): void
     {
+        cHTML::setGenerateXHTML(false);
         $this->_cHiddenField = new cHTMLHiddenField('testName', 'testValue', 'testId');
     }
 
     public function testConstruct()
     {
         $this->assertSame(
-            '<input name="testName" id="testId" type="hidden" value="testValue" />',
+            '<input name="testName" id="testId" type="hidden" value="testValue">',
             $this->_cHiddenField->toHtml()
         );
     }
@@ -33,12 +34,12 @@ class cHtmlHiddenFieldTest extends cTestingTestCase
     {
         $this->_cHiddenField->setValue('testValue2');
         $this->assertSame(
-            '<input name="testName" id="testId" type="hidden" value="testValue2" />',
+            '<input name="testName" id="testId" type="hidden" value="testValue2">',
             $this->_cHiddenField->toHtml()
         );
         $this->_cHiddenField->setValue('');
         $this->assertSame(
-            '<input name="testName" id="testId" type="hidden" value="" />',
+            '<input name="testName" id="testId" type="hidden" value="">',
             $this->_cHiddenField->toHtml()
         );
     }

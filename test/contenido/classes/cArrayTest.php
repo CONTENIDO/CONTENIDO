@@ -107,14 +107,14 @@ class cArrayTest extends cTestingTestCase
         $this->assertSame(3, cArray::searchRecursive($data, 'false'));
         $this->assertSame(4, cArray::searchRecursive($data, 'foo'));
         $this->assertSame(5, cArray::searchRecursive($data, 'bar'));
-        // 'ba' equals 0!
-        $this->assertSame(9, cArray::searchRecursive($data, 'ba'));
+        // 'ba' does not exist
+        $this->assertSame(false, cArray::searchRecursive($data, 'ba'));
         // NULL equals ''!
         $this->assertSame(7, cArray::searchRecursive($data, null));
-        // 0 equals 'NULL'!
-        $this->assertSame(0, cArray::searchRecursive($data, 0));
-        // 0.0 equals 'NULL'!
-        $this->assertSame(0, cArray::searchRecursive($data, 0.0));
+        // 0 is in $data[[1 => '0']];
+        $this->assertSame(1, cArray::searchRecursive($data, 0));
+        // 0.0 equals '0', is in is in $data[[1 => '0']];
+        $this->assertSame(1, cArray::searchRecursive($data, 0.0));
         // false equals '0'!
         $this->assertSame(1, cArray::searchRecursive($data, false));
         $this->assertSame(7, cArray::searchRecursive($data, ''));

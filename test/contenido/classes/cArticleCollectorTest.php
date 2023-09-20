@@ -388,7 +388,13 @@ class cArticleCollectorTest extends cTestingTestCase
             ]
         );
         $this->_aColl->setOptions($act);
-        $diff = array_diff($exp, $this->_readAttribute($this->_aColl, '_options'));
+
+        // Sort $exp & $act, and serialize them for comparison, `array_diff` can't handle multidimensional arrays!
+        ksort($exp);
+        $act = $this->_readAttribute($this->_aColl, '_options');
+        ksort($act);
+        $diff = strcmp(json_encode($exp), json_encode($act));
+
         $this->assertEmpty($diff);
     }
 
