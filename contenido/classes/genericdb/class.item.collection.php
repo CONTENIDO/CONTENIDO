@@ -407,7 +407,7 @@ abstract class ItemCollection extends cItemBaseAbstract
     public function deleteWhereGroup($sGroup, $sField, $mRestriction, $sOperator = '=')
     {
         $sField = cString::toLowerCase($sField);
-        if (is_array($this->_where['groups'][$sGroup]) && isset($this->_where['groups'][$sGroup][$sField]) && is_array($this->_where['groups'][$sGroup][$sField])) {
+        if (isset($this->_where['groups'][$sGroup][$sField]) && is_array($this->_where['groups'][$sGroup][$sField])) {
             if ($this->_where['groups'][$sGroup][$sField]['operator'] == $sOperator && $this->_where['groups'][$sGroup][$sField]['restriction'] == $mRestriction) {
                 unset($this->_where['groups'][$sGroup][$sField]);
             }
