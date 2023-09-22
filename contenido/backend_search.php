@@ -26,7 +26,7 @@ $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
 
 cRegistry::bootstrap([
     'sess' => 'cSession',
-    'auth' => 'Contenido_Challenge_Crypt_Auth',
+    'auth' => 'cAuthHandlerBackend',
     'perm' => 'cPermission'
 ]);
 
