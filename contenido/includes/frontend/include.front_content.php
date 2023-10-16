@@ -38,12 +38,12 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+$contenido = cRegistry::getBackendSessionId();
+
 // if we are in the frontend and no clients are configured, display an error
-if (!isset($contenido)) {
-    if (!isset($cfgClient["set"])) {
-        echo("CONTENIDO is not configured properly. More details can be found in the error log");
-        cError("Could not include config.clients.php. Make sure it exists and has a valid configuration!");
-    }
+if (!$contenido && !isset($cfgClient["set"])) {
+    echo("CONTENIDO is not configured properly. More details can be found in the error log");
+    cError("Could not include config.clients.php. Make sure it exists and has a valid configuration!");
 }
 
 global $cfg, $belang, $force, $load_client;
@@ -70,9 +70,7 @@ if ($cfg['use_pseudocron'] == true) {
     chdir($currentWorkingDirectory);
 }
 
-// Initialize the database abstraction layer, the session, authentication and
-// permissions handler of the PHPLIB application development toolkit
-// @see https://sourceforge.net/projects/phplib
+// Initialize the database abstraction layer, the session, authentication and permissions handler
 if (cRegistry::getBackendSessionId()) {
     // Backend
     cRegistry::bootstrap([
