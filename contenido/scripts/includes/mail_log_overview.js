@@ -174,7 +174,7 @@
             var idmails = [];
             $_root.find(_options.markMailsSelector + ':checked').each(function(pos, element) {
                 var idmail = $(element).closest('tr').data('idmail');
-                idmails.push('[' + idmail + ']');
+                idmails.push(idmail);
             });
             idmails = idmails.join(',');
             if (!idmails.length) {
@@ -182,8 +182,8 @@
             }
 
             Con.showConfirmation(_options.text_deleteMultipleConfirmation, function() {
-                console.log('actionDeleteSelectedEmails idmails', idmails);
-                submitDeleteEmailForm(idmails);
+                //console.log('actionDeleteSelectedEmails idmails', idmails);
+                submitDeleteEmailForm('[' + idmails + ']');
             });
         }
 
