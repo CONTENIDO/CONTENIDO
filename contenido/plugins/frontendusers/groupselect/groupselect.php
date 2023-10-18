@@ -100,7 +100,7 @@ function frontendusers_groupselect_store($variables) {
         $idFrontendGroup = $feGroup->get('idfrontendgroup');
         $groupmembers->remove($idFrontendGroup, $iIdFrontendUser);
         if (in_array($idFrontendGroup, $groups)) {
-            $groupmembers->create($$idFrontendGroup, $iIdFrontendUser);
+            $groupmembers->create($idFrontendGroup, $iIdFrontendUser);
         }
     }
 
