@@ -1852,6 +1852,7 @@ function conCopyMetaTags($srcidartlang, $dstidartlang) {
 function conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabel = true) {
     $auth = cRegistry::getAuth();
     $lang = cRegistry::getLanguageId();
+    $newidtplcfg = null;
 
     $oSrcArtLang = new cApiArticleLanguage();
     if (!$oSrcArtLang->loadByArticleAndLanguageId($srcidart, $lang)) {
