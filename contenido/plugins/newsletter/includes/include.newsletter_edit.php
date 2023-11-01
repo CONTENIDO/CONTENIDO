@@ -487,7 +487,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         $ckbCronJob->appendMarkup('&nbsp;&nbsp;' . $helpBox->render());
     }
 
-    $oCkbDispatch = new cHTMLCheckbox("ckbDispatch", "enabled");
+    $oCkbDispatch = new cHTMLCheckbox("ckbDispatch", "1");
     $oCkbDispatch->setLabelText("&nbsp;" . i18n("Send in blocks:", 'newsletter'))
         ->setChecked($oNewsletter->get("dispatch"))
         ->setAttribute("data-action-init", "dispatch_change")
