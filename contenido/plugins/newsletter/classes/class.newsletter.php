@@ -672,7 +672,7 @@ class Newsletter extends Item
         }
 
         // Preventing double lines in mail, you may wish to disable this function on windows servers
-        if (!getSystemProperty("newsletter", "disable-rn-replacement")) {
+        if (!empty($sMessageText) && !getSystemProperty("newsletter", "disable-rn-replacement")) {
             $sMessageText = str_replace("\r\n", "\n", $sMessageText);
         }
 
