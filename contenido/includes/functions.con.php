@@ -636,12 +636,12 @@ function conMakeArticleIndex($idartlang, $idart) {
 
     // build data structure expected by handlers of Contenido.Content.AfterStore
     $articleIds = [
-        'idclient' => $idclient,
-        'idlang' => $idlang,
-        'idcat' => $idcat,
-        'idcatlang' => $idcatlang,
-        'idart' => $idart,
-        'idartlang' => $idartlang
+        'idclient' => ($idclient ?? null),
+        'idlang' => ($idlang ?? null),
+        'idcat' => ($idcat ?? null),
+        'idcatlang' => ($idcatlang ?? null),
+        'idart' => ($idart ?? null),
+        'idartlang' => ($idartlang ?? null)
     ];
 
     // iterate chain Contenido.Content.AfterStore
