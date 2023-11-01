@@ -382,9 +382,9 @@ class Newsletter extends Item
                 $sParameter = cString::toLowerCase(str_replace(' ', '', cString::getPartOfString($aParts[$i], 0, $iPos)));
                 $sValue     = trim(cString::getPartOfString($aParts[$i], ($iPos + 1)));
             } else {
-                $sField      = 'status';
+                $sParameter  = 'status';
                 $aParameters = explode(' ', $aParts[$i]);
-                $sParameter  = $aParameters[1];
+                $sValue      = $aParameters[1];
             }
 
             if ($sParameter == 'set-cookie') {
