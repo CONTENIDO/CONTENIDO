@@ -893,15 +893,15 @@ class cRegistry {
     }
 
     /**
-     * Returns true if the DNT header is set and equal to 1.
-     * Returns false if the DNT header is unset or not equal to 1.
+     * Returns true if the DNT header is not set or not equal to 1.
+     * Returns false if the DNT header is equal to 1.
      *
      * @return bool
      *         whether tracking is allowed by the DNT header
      */
-    public static function isTrackingAllowed()
+    public static function isTrackingAllowed(): bool
     {
-        return cSecurity::toInteger($_SERVER['HTTP_DNT'] ?? '0') === 1;
+        return cSecurity::toInteger($_SERVER['HTTP_DNT'] ?? '0') != 1;
     }
 
     /**
