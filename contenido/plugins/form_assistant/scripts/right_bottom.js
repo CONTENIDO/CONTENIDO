@@ -379,7 +379,6 @@
                 url: 'main.php',
                 data: $(this).serialize(),
                 success: function(data, textStatus, jqXHR) {
-debugger;
                     if (Con.checkAjaxResponse(data) === false)  {
                         return false;
                     }
