@@ -313,7 +313,7 @@
             var $element = $('#column_name', $pifaFormFieldForm),
                 error = false;
 
-            if (!$element.val().trim()) {
+            if ($element.length && !$element.val().trim()) {
                 $element.addClass('pifa-form-field-error');
                 error = true;
             }
@@ -379,6 +379,7 @@
                 url: 'main.php',
                 data: $(this).serialize(),
                 success: function(data, textStatus, jqXHR) {
+debugger;
                     if (Con.checkAjaxResponse(data) === false)  {
                         return false;
                     }
