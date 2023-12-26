@@ -516,7 +516,7 @@ class PifaAjaxHandler {
         }
 
         // store item
-        if (false === $pifaField->store()) {
+        if (false === $pifaField->store() && !empty($pifaField->getLastError())) {
             $msg = Pifa::i18n('FIELD_STORE_ERROR');
             $msg = sprintf($msg, $pifaField->getLastError());
             throw new PifaException($msg);

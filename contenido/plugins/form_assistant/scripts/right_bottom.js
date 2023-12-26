@@ -208,6 +208,10 @@
                 if (0 === href.length) {
                     return;
                 }
+
+                // Determine the position of the dropped placeholder element
+                var droppedPosition = pifaGetDroppedElementPosition($pifaFormFieldList);
+
                 $.ajax({
                     type: 'GET',
                     url: 'main.php',
@@ -215,7 +219,7 @@
                     success: function(data, textStatus, jqXHR) {
                         formRequestIsRunning = false;
                         $pifaFormFieldForm.html(data);
-                        $('#field_rank', $pifaFormFieldForm).val(ui.draggable.index() + 1);
+                        $('#field_rank', $pifaFormFieldForm).val(droppedPosition);
                         pifaShowFormFieldDialog($pifaFormFieldForm, ui.draggable);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
@@ -234,6 +238,25 @@
                 });
             }
         });
+
+        /**
+         * Returns the position of the dropped placeholder element.
+         *
+         * @param {jQuery} $pifaFormFieldList
+         * @returns {number}
+         */
+        function pifaGetDroppedElementPosition($pifaFormFieldList) {
+            var position = 0;
+
+            $pifaFormFieldList.children().each(function (pos, element) {
+                if ($(element).hasClass('ui-state-highlight')) {
+                    position = pos + 1;
+                    return false;
+                }
+            });
+
+            return position > 0 ? position : $pifaFormFieldList.children().length + 1;
+        }
 
         /**
          * Displays the PIFA form field dialog.
@@ -313,7 +336,7 @@
             var $element = $('#column_name', $pifaFormFieldForm),
                 error = false;
 
-            if (!$element.val().trim()) {
+            if ($element.length && !$element.val().trim()) {
                 $element.addClass('pifa-form-field-error');
                 error = true;
             }
@@ -386,14 +409,20 @@
                     var idfield = parseInt($('#idfield').val(), 10);
                     var fieldRank = parseInt($('#field_rank').val(), 10);
                     var $items = $pifaFormFieldList.find('li');
-                    // either replace item when editing existing field
-                    // or append new item to predecessor when creating new field and list is not empty
-                    // or append new item to list when creating new field and list is empty
+
                     if (!isNaN(idfield) && idfield !== 0) {
+                        // Replace item when editing an existing field
                         $items.eq(fieldRank - 1).replaceWith(data);
                     } else if (0 < $items.length) {
-                        $items.eq(fieldRank - 2).after(data);
+                        if (fieldRank === 1) {
+                            // Add to the first position
+                            $pifaFormFieldList.prepend(data);
+                        } else {
+                            // Add by using the fieldRank (position)
+                            $items.eq(fieldRank - 2).after(data);
+                        }
                     } else {
+                        // List is empty append new element
                         $pifaFormFieldList.append(data);
                     }
                 },
