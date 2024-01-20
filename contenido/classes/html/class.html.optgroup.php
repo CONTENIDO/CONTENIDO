@@ -34,7 +34,7 @@ class cHTMLOptgroup extends cHTMLContentElement {
      */
     public function __construct($content = '', $class = '', $id = '') {
         parent::__construct($content, $class, $id);
-        $this->_tag = 'optgroups';
+        $this->_tag = 'optgroup';
     }
 
 }
