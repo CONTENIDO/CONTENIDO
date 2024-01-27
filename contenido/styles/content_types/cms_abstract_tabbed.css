@@ -2,6 +2,11 @@
     z-index: 2147483647 !important;
 }
 
+/* Hide image when WYSIWYG editor is in fullscreen mode */
+.mce-fullscreen .cms_abstract_img {
+    display: none;
+}
+
 .cms_abstract {
     background-color: #F1F1F1;
     border: 1px solid #B3B3B3;

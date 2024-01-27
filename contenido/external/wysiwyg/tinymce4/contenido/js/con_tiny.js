@@ -185,7 +185,7 @@
          */
         customSetupContentCallback: function(editorId) {
             var cleanContent = tinymce.get(editorId).getContent();
-            tinymce.get(editorId).setContent(cleanContent);
+            tinymce.get(editorId).setContent(cleanContent, {no_events: true});
         },
 
         /**
@@ -877,6 +877,7 @@
                             elem.id = d.getSeconds() + "_" + d.getMilliseconds();
                         }
                         Con.Tiny.tinySettings[elem.id] = settings;
+                        //console.log(elem, settings);
                     });
                 });
             });

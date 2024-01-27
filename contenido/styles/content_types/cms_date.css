@@ -29,6 +29,11 @@
     z-index: 2147483647 !important;
 }
 
+/* Hide date picker when WYSIWYG editor is in fullscreen mode */
+.mce-fullscreen .cms_date .ui-datepicker {
+    display: none;
+}
+
 .ui-datepicker .ui-datepicker-prev span,
 .ui-datepicker .ui-datepicker-next span {
     text-indent: 37px;

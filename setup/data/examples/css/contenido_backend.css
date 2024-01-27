@@ -1,4 +1,4 @@
-/* labels for content types in backend edit mode */
+/* labels and values for content types in backend edit mode */
 
 /** @deprecated [2023-02-27] Since CONTENIDO 4.10.2, Don't use `content_type_label`, use `con_content_type_label` instead */
 .content_type_label,
@@ -22,6 +22,9 @@
     margin: 5px 0 2px 0;
     padding: 2px;
     font-weight: normal;
+}
+
+.con_content_type_value {
 }
 
 /** @deprecated [2023-02-27] Since CONTENIDO 4.10.2, Don't use `tpl_visedit`, use `con_tpl_visedit` instead */
