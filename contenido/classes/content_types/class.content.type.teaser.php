@@ -226,12 +226,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Generates the code which should be shown if this content type is shown in
-     * the frontend.
-     *
-     * @return string Escaped HTML code which should be shown if content type is shown in frontend
+     * @inheritDoc
      */
-    public function generateViewCode()
+    public function generateViewCode(): string
     {
         $code = '<?php
             $teaser = new cContentTypeTeaser(\'%s\', %s, %s);
@@ -267,7 +264,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function generateTeaserCode($returnAsArray = false)
+    public function generateTeaserCode(bool $returnAsArray = false)
     {
         $articles = [];
         $template = new cTemplate();
@@ -378,7 +375,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @throws cDbException
      * @throws cException
      */
-    private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate $template)
+    private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate $template): bool
     {
         // get necessary information for teaser from articles use properties in
         // settings for retrieval
@@ -524,7 +521,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @return string Largest result of content
      * @throws cDbException
      */
-    private function _getArtContent(cApiArticleLanguage $article, $contentTypeName, $ids)
+    private function _getArtContent(cApiArticleLanguage $article, $contentTypeName, $ids): string
     {
         $this->_initCmsTypes();
 
@@ -551,7 +548,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    private function _extractImage($content)
+    private function _extractImage($content): array
     {
         $image = [];
 
@@ -602,7 +599,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    private function _getImage($image, $maxX, $maxY, $cropped, $isFile = false)
+    private function _getImage($image, $maxX, $maxY, $cropped, $isFile = false): array
     {
         // check if there is a need to get image path
         if ($isFile == false) {
@@ -644,14 +641,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Generates the code which should be shown if this content type is edited.
-     *
-     * @return string Escaped HTML code which should be shown if content type is edited
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
-    public function generateEditCode()
+    public function generateEditCode(): string
     {
         $this->_initCmsTypes();
 
@@ -768,7 +760,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @throws cDbException
      * @throws cException
      */
-    private function _generateTabGeneral()
+    private function _generateTabGeneral(): string
     {
         // define a wrapper which contains the whole content of the general tab
         $wrapper        = new cHTMLDiv();
@@ -824,7 +816,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @throws cDbException
      * @throws cException
      */
-    private function _generateStyleSelect()
+    private function _generateStyleSelect(): string
     {
         $htmlSelect = new cHTMLSelectElement('teaser_style_' . $this->_id, '', 'teaser_style_' . $this->_id);
 
@@ -874,7 +866,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @return string Html string of select box
      * @throws cException
      */
-    private function _generateTypeSelect($selectName, $selected, $value)
+    private function _generateTypeSelect($selectName, $selected, $value): string
     {
         // make sure that the ID is at the end of the form field name
         $inputName = str_replace('_' . $this->_id, '_count_' . $this->_id, $selectName);
@@ -909,7 +901,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @throws cDbException
      * @throws cException
      */
-    private function _generateTabAdvanced()
+    private function _generateTabAdvanced(): string
     {
         // define a wrapper which contains the whole content of the advanced tab
         $wrapper        = new cHTMLDiv();
@@ -975,7 +967,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @return string Html string of select box
      * @throws cException
      */
-    private function _generateSortSelect()
+    private function _generateSortSelect(): string
     {
         $htmlSelect = new cHTMLSelectElement('teaser_sort_' . $this->_id, '', 'teaser_sort_' . $this->_id);
 
@@ -1011,7 +1003,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @return string Html string of select box
      * @throws cException
      */
-    private function _generateSortOrderSelect()
+    private function _generateSortOrderSelect(): string
     {
         $htmlSelect = new cHTMLSelectElement('teaser_sort_order_' . $this->_id, '', 'teaser_sort_order_' . $this->_id);
 
@@ -1038,7 +1030,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @return string Html string of select box
      * @throws cException
      */
-    private function _generateCropSelect()
+    private function _generateCropSelect(): string
     {
         $htmlSelect = new cHTMLSelectElement('teaser_image_crop_' . $this->_id, '', 'teaser_image_crop_' . $this->_id);
 
@@ -1067,7 +1059,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @throws cDbException
      * @throws cException
      */
-    private function _generateTabManual()
+    private function _generateTabManual(): string
     {
         // define a wrapper which contains the whole content of the manual tab
         $wrapper        = new cHTMLDiv();
@@ -1156,7 +1148,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @throws cDbException
      * @throws cException
      */
-    private function _getArtName($idArt)
+    private function _getArtName($idArt): string
     {
         $article = new cApiArticleLanguage();
         $article->loadByArticleAndLanguageId(cSecurity::toInteger($idArt), $this->_lang);

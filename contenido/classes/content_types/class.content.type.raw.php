@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-class cContentTypeRaw extends cContentTypeAbstract {
+class cContentTypeRaw extends cContentTypeAbstract
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -34,7 +35,8 @@ class cContentTypeRaw extends cContentTypeAbstract {
      * @param array $contentTypes
      *         array containing the values of all content types
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
@@ -44,20 +46,18 @@ class cContentTypeRaw extends cContentTypeAbstract {
     }
 
     /**
-     * @see cContentTypeAbstract::generateViewCode()
-     * @return string
-     *         encoded raw settings
+     * @inheritDoc
      */
-    public function generateViewCode() {
+    public function generateViewCode(): string
+    {
         return $this->_encodeForOutput($this->_rawSettings);
     }
 
     /**
-     * @see cContentTypeAbstract::generateEditCode()
-     * @return string
-     *         encoded raw settings
+     * @inheritDoc
      */
-    public function generateEditCode() {
+    public function generateEditCode(): string
+    {
         return $this->_encodeForOutput($this->_rawSettings);
     }
 

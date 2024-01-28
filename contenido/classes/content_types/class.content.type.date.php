@@ -145,7 +145,7 @@ class cContentTypeDate extends cContentTypeAbstract
      *
      * @return string
      */
-    public function getDateTimestamp()
+    public function getDateTimestamp(): string
     {
         return $this->getSetting('date_timestamp');
     }
@@ -155,7 +155,7 @@ class cContentTypeDate extends cContentTypeAbstract
      *
      * @return string
      */
-    public function getDateFormat()
+    public function getDateFormat(): string
     {
         $format = $this->getSetting('date_format');
 
@@ -178,7 +178,7 @@ class cContentTypeDate extends cContentTypeAbstract
      *
      * @return string
      */
-    public function getTimeFormat()
+    public function getTimeFormat(): string
     {
         $format = $this->getSetting('date_format');
 
@@ -293,13 +293,9 @@ class cContentTypeDate extends cContentTypeAbstract
     }
 
     /**
-     * Generates the code which should be shown if this content type is shown in
-     * the frontend.
-     *
-     * @return string
-     *         escaped HTML code which should be shown if content type is shown in frontend
+     * @inheritDoc
      */
-    public function generateViewCode()
+    public function generateViewCode(): string
     {
         $timestamp = $this->getSetting('date_timestamp');
         if (empty($timestamp)) {
@@ -322,13 +318,9 @@ class cContentTypeDate extends cContentTypeAbstract
     }
 
     /**
-     * Generates the code which should be shown if this content type is edited.
-     *
-     * @return string
-     *         escaped HTML code which should be shown if content type is edited
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
-    public function generateEditCode()
+    public function generateEditCode(): string
     {
         $belang = cRegistry::getBackendLanguage();
         $format = 'Y-m-d h:i:sA';

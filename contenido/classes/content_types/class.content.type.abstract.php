@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-abstract class cContentTypeAbstract {
+abstract class cContentTypeAbstract
+{
 
     /**
      * Constant defining that the settings should be interpreted as plaintext.
@@ -190,7 +191,8 @@ abstract class cContentTypeAbstract {
      * @param array $contentTypes
      *         array containing the values of all content types
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
         // set props
         $this->_rawSettings = $rawSettings;
         $this->_id = $id;
@@ -215,7 +217,8 @@ abstract class cContentTypeAbstract {
      * and stores them in the $_settings attribute (associative array or
      * plaintext).
      */
-    protected function _readSettings() {
+    protected function _readSettings()
+    {
         // if no settings have been given, do nothing
         if (empty($this->_rawSettings)) {
             return;
@@ -329,7 +332,8 @@ abstract class cContentTypeAbstract {
      *
      * @return array|string
      */
-    public function getSettings() {
+    public function getSettings()
+    {
         return $this->_settings;
     }
 
@@ -347,7 +351,7 @@ abstract class cContentTypeAbstract {
     }
 
     /**
-     * Checks wether the content type configuration exists
+     * Checks whether the content type configuration exists
      *
      * @since CONTENIDO 4.10.2
      * @param string $key Configuration item key
@@ -375,9 +379,11 @@ abstract class cContentTypeAbstract {
      * (associative array) and saves them in the database (XML).
      *
      * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
-    protected function _storeSettings() {
-        $settingsToStore = '';
+    protected function _storeSettings()
+    {
         if ($this->_settingsType === self::SETTINGS_TYPE_XML) {
             // if the settings should be stored as XML, process them accordingly
             $settings = [];
@@ -409,20 +415,21 @@ abstract class cContentTypeAbstract {
     }
 
     /**
-     * Since the content type code is evaled by php, the code has to be encoded.
+     * Since the content type code is evaluated by php, the code has to be encoded.
      *
-     * @param string $code
+     * @param string|mixed $code
      *         code to encode
      * @return string
      *         encoded code
      */
-    protected function _encodeForOutput($code) {
+    protected function _encodeForOutput($code): string
+    {
         if (is_string($code)) {
             $code = addslashes($code);
             $code = str_replace("\\'", "'", $code);
-            $code = str_replace('$', '\\$', $code);
+            return str_replace('$', '\\$', $code);
         }
-        return $code;
+        return (string) $code;
     }
 
     /**
@@ -435,7 +442,8 @@ abstract class cContentTypeAbstract {
      * @return array
      *         with directory information (keys: name, path, sub)
      */
-    public function buildDirectoryList($uploadPath = '') {
+    public function buildDirectoryList(string $uploadPath = ''): array
+    {
         // make sure the upload path is set and ends with a slash
         if ($uploadPath === '') {
             $uploadPath = $this->_uploadPath;
@@ -461,9 +469,77 @@ abstract class cContentTypeAbstract {
             }
         }
 
-        usort($directories, function($a, $b) {
-            $a = cString::toLowerCase($a["name"]);
-            $b = cString::toLowerCase($b["name"]);
+        $this->_sortDirectoriesOrFilesList($directories);
+
+        return $directories;
+    }
+
+    /**
+     * Builds an array with directory information from the given upload path.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $directoryPath 
+     *         directory within upload directory
+     *         (default: root upload path of client)
+     * @return array{
+     *      array{
+     *          name: string,
+     *          path: string,
+     *          sub?: array,
+     *      },
+     *      ...
+     *  } with file information (keys: name, path, sub)
+     */
+    public function buildFileList(string $directoryPath = ''): array
+    {
+        $directoryPath = str_replace('\\', '/', $directoryPath);
+
+        // make sure the path ends with a slash but does not start with a slash
+        if ($directoryPath === '/') {
+            $directoryPath = '';
+        } elseif (!empty($directoryPath) && cString::getPartOfString($directoryPath, -1) != '/') {
+            $directoryPath .= '/';
+        }
+
+        $files = [];
+        if (cDirHandler::exists($this->_uploadPath . $directoryPath)) {
+            if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
+                foreach ($handle as $entry) {
+                    if (false === cFileHandler::fileNameBeginsWithDot($entry)) {
+                        $file = [];
+                        $file['name'] = $entry;
+                        $file['path'] = $directoryPath . $entry;
+                        $files[] = $file;
+                    }
+                }
+            }
+        }
+
+        $this->_sortDirectoriesOrFilesList($files);
+
+        return $files;
+    }
+
+    /**
+     * Sorts given directories or files list by their names.
+     * Only a directories list has entries with the key `sub`. 
+     *
+     * @since CONTENIDO 4.10.2
+     * @param array{
+     *     array{
+     *         name: string,
+     *         path: string,
+     *         sub?: array,
+     *     },
+     *     ...
+     * } $list
+     * @return void
+     */
+    protected function _sortDirectoriesOrFilesList(array &$list)
+    {
+        usort($list, function($a, $b) {
+            $a = cString::toLowerCase($a['name']);
+            $b = cString::toLowerCase($b['name']);
             if ($a < $b) {
                 return -1;
             } elseif ($a > $b) {
@@ -472,8 +548,6 @@ abstract class cContentTypeAbstract {
                 return 0;
             }
         });
-
-        return $directories;
     }
 
     /**
@@ -487,7 +561,8 @@ abstract class cContentTypeAbstract {
      *         HTML code showing a directory list
      * @throws cInvalidArgumentException
      */
-    public function generateDirectoryList(array $dirs) {
+    public function generateDirectoryList(array $dirs): string
+    {
         $template = new cTemplate();
         $i = 1;
 
@@ -534,7 +609,8 @@ abstract class cContentTypeAbstract {
      * @return bool
      *         whether the directory is the currently active directory
      */
-    protected function _isActiveDirectory(array $dirData) {
+    protected function _isActiveDirectory(array $dirData): bool
+    {
         return false;
     }
 
@@ -548,7 +624,8 @@ abstract class cContentTypeAbstract {
      * @return bool
      *         whether the directory should be shown expanded
      */
-    protected function _shouldDirectoryBeExpanded(array $dirData) {
+    protected function _shouldDirectoryBeExpanded(array $dirData): bool
+    {
         return false;
     }
 
@@ -562,7 +639,8 @@ abstract class cContentTypeAbstract {
      * @return bool
      *         whether the given $subDir is a subdirectory of $dir
      */
-    protected function _isSubdirectory($subDir, $dir) {
+    protected function _isSubdirectory($subDir, $dir): bool
+    {
         $dirArray = explode('/', $dir);
         $expand = false;
         $checkDir = '';
@@ -585,7 +663,8 @@ abstract class cContentTypeAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->generateViewCode();
     }
 
@@ -594,9 +673,9 @@ abstract class cContentTypeAbstract {
      * the frontend.
      *
      * @return string
-     *         escaped HTML code which sould be shown if content type is shown in frontend
+     *         escaped HTML code which should be shown if content type is shown in frontend
      */
-    public abstract function generateViewCode();
+    public abstract function generateViewCode(): string;
 
     /**
      * Generates the code which should be shown if this content type is edited.
@@ -604,14 +683,15 @@ abstract class cContentTypeAbstract {
      * @return string
      *         escaped HTML code which should be shown if content type is edited
      */
-    public abstract function generateEditCode();
+    public abstract function generateEditCode(): string;
 
     /**
      * Checks if this content type can be edited by a WYSIWYG editor
      *
      * @return bool
      */
-    public function isWysiwygCompatible() {
+    public function isWysiwygCompatible(): bool
+    {
         return false;
     }
 

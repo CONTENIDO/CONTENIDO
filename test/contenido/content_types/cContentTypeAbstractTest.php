@@ -30,7 +30,7 @@ class cContentTypeA_Test extends cContentTypeAbstract
         parent::__construct($rawSettings, $id, $contentTypes);
     }
 
-    public function generateViewCode()
+    public function generateViewCode(): string
     {
         $code = '<?php
             $obj = new %s(\'%s\', %s, %s);
@@ -42,12 +42,12 @@ class cContentTypeA_Test extends cContentTypeAbstract
         return sprintf($code, get_class($this), $this->_rawSettings, $this->_id, '[]');
     }
 
-    public function generateEditCode()
+    public function generateEditCode(): string
     {
         // Implement generateEditCode() method.
     }
 
-    public function buildCode()
+    public function buildCode(): string
     {
         return self::OUTPUT;
     }

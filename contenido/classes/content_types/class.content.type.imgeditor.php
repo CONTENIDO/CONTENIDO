@@ -187,12 +187,14 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *                         ID of the content type
      * @param array  $contentTypes
      *                         Content type array
-     * @param bool   $editable [optional]
+     * @param bool $editable [optional]
      * @return string The raw setting or an empty string
      * @throws cDbException
      * @throws cException
      */
-    protected function _getRawSettings($contentTypeName, $id, array $contentTypes, $editable = false): string
+    protected function _getRawSettings(
+        $contentTypeName, $id, array $contentTypes, bool $editable = false
+    ): string
     {
         $id = cSecurity::toInteger($id);
         if (!isset($contentTypes[$contentTypeName][$id])) {
@@ -399,7 +401,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     /**
      * @inheritDoc
      */
-    public function generateViewCode()
+    public function generateViewCode(): string
     {
         $image = new cHTMLImage($this->_imagePath);
         $image->setAlt($this->_description);
@@ -410,7 +412,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     /**
      * @inheritDoc
      */
-    public function generateEditCode()
+    public function generateEditCode(): string
     {
         // construct the top code of the template
         $templateTop = new cTemplate();
@@ -664,56 +666,22 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      */
     public function generateFileSelect(string $directoryPath = ''): string
     {
-        // make sure the path ends with a slash but does not start with a slash
-        if ($directoryPath === '/') {
-            $directoryPath = '';
-        } elseif (!empty($directoryPath) && cString::getPartOfString($directoryPath, -1) != '/') {
-            $directoryPath .= '/';
-        }
-
         $htmlSelect = new cHTMLSelectElement('image_filename', '', 'image_filename_' . $this->_id);
         $htmlSelect->setSize(16);
         $htmlSelectOption = new cHTMLOptionElement('Kein', '', false);
         $htmlSelect->addOptionElement(0, $htmlSelectOption);
 
-        $files = [];
-        if (cDirHandler::exists($this->_uploadPath . $directoryPath)) {
-            if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
-                foreach ($handle as $entry) {
-                    if (false === cFileHandler::fileNameBeginsWithDot($entry)) {
-                        $file = [];
-                        $file["name"] = $entry;
-                        $file["path"] = $directoryPath . $entry;
-                        $files[] = $file;
-                    }
-                }
-            }
+        $files = $this->buildFileList($directoryPath);
+        foreach ($files as $pos => $file) {
+            $htmlSelectOption = new cHTMLOptionElement($file['name'], $file['path']);
+            $htmlSelect->addOptionElement($pos + 1, $htmlSelectOption);
         }
 
-        usort($files, function($a, $b) {
-            $a = cString::toLowerCase($a["name"]);
-            $b = cString::toLowerCase($b["name"]);
-            if ($a < $b) {
-                return -1;
-            } elseif ($a > $b) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
-
-        $i = 1;
-        foreach ($files as $file) {
-            $htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
-            $htmlSelect->addOptionElement($i, $htmlSelectOption);
-            $i++;
-        }
-
-        if ($i === 0) {
+        if (!count($files)) {
             $htmlSelectOption = new cHTMLOptionElement(i18n('No files found'), '', false);
             $htmlSelectOption->setAlt(i18n('No files found'));
             $htmlSelectOption->setDisabled(true);
-            $htmlSelect->addOptionElement($i, $htmlSelectOption);
+            $htmlSelect->addOptionElement(0, $htmlSelectOption);
             $htmlSelect->setDisabled(true);
         }
 

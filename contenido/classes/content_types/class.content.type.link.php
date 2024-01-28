@@ -20,7 +20,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-class cContentTypeLink extends cContentTypeLinkeditor {
+class cContentTypeLink extends cContentTypeLinkeditor
+{
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -36,9 +38,10 @@ class cContentTypeLink extends cContentTypeLinkeditor {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
         // There are no raw settings here, because CMS_LINK is not saved
-        // separately any more. So compute the appropriate raw settings
+        // separately anymore. So compute the appropriate raw settings
         // and call the parent constructor with them.
         if (!cXmlBase::isValidXML($rawSettings)) {
             $rawSettings = $this->_getRawSettings("CMS_LINKEDITOR", $id, $contentTypes);
@@ -49,25 +52,18 @@ class cContentTypeLink extends cContentTypeLinkeditor {
     }
 
     /**
-     * Generates the code which should be shown if this content type is shown in
-     * the frontend.
-     *
-     * @return string
-     *         escaped HTML code which sould be shown if content type is shown in frontend
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
-    public function generateViewCode() {
+    public function generateViewCode(): string
+    {
         return $this->_encodeForOutput($this->_generateHref());
     }
 
     /**
-     * Generates the code which should be shown if this content type is edited.
-     *
-     * @return string
-     *         escaped HTML code which should be shown if content type is edited
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
-    public function generateEditCode() {
+    public function generateEditCode(): string
+    {
         return $this->generateViewCode();
     }
 
