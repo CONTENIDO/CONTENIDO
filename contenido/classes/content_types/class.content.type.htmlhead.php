@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-class cContentTypeHtmlhead extends cContentTypeHtml {
+class cContentTypeHtmlhead extends cContentTypeHtml
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -35,7 +36,8 @@ class cContentTypeHtmlhead extends cContentTypeHtml {
      * @param array $contentTypes
      *         array containing the values of all content types
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 

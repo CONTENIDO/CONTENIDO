@@ -21,7 +21,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage UserForum
  */
-class cContentTypeUserForum extends cContentTypeAbstractTabbed {
+class cContentTypeUserForum extends cContentTypeAbstractTabbed
+{
+
     /**
      * Initialize class attributes and handles store events.
      *
@@ -34,8 +36,8 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
      *
      * @throws cDbException
      */
-    function __construct($rawSettings, $id, array $contentTypes) {
-
+    function __construct($rawSettings, $id, array $contentTypes)
+    {
         // set attributes of the parent class and call the parent constructor
         $this->_type = 'CMS_USERFORUM';
         $this->_prefix = 'userforum';
@@ -63,12 +65,10 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Generate the escaped HTML code for editor.
-     *
-     * @return string escaped HTML code for editor
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
-    public function generateEditCode() {
+    public function generateEditCode(): string
+    {
         $cfg = cRegistry::getConfig();
 
         // build top code
@@ -123,7 +123,8 @@ $code
      *
      * @return string  The code for the base panel
      */
-    private function _getPanel() {
+    private function _getPanel(): string
+    {
         $wrapper = new cHTMLDiv([
             $this->_getModEmail(),
             $this->_getModMode(),
@@ -137,7 +138,8 @@ $code
     /**
      * @return cHTMLDiv
      */
-    private function _getModMode() {
+    private function _getModMode(): cHTMLDiv
+    {
         $id = 'userforum_modactive_' . $this->_id;
 
         // build html elements
@@ -163,7 +165,8 @@ $code
     /**
      * @return cHTMLDiv
      */
-    private function _getEditMode() {
+    private function _getEditMode(): cHTMLDiv
+    {
         $id = 'userforum_subcomments_' . $this->_id;
 
         // build html elements
@@ -191,7 +194,8 @@ $code
      *
      * @return cHTMLDiv
      */
-    private function _getModEmail() {
+    private function _getModEmail(): cHTMLDiv
+    {
         $id = 'userforum_email_' . $this->_id;
 
         // build html elements
@@ -214,16 +218,10 @@ $code
     }
 
     /**
-     * Generates the code which should be shown if this content type is shown in
-     * the frontend.
-     * This code is cached. That for ist no more than the initialisation of this
-     * class and the call of its method buildCode(). Otherwise, the generated
-     * HTML would have been cached.
-     *
-     * @return string escaped HTML code which should be shown if content type is
-     *         shown in frontend
+     * @inheritDoc
      */
-    public function generateViewCode() {
+    public function generateViewCode(): string
+    {
         $code = '<?php
             $form = new %s(\'%s\', %s, %s);
             echo $form->buildCode();
@@ -240,7 +238,8 @@ $code
      * @return string escaped HTML code which should be shown if content type is
      *         shown in frontend
      */
-    public function buildCode() {
+    public function buildCode(): string
+    {
         return '';
     }
 

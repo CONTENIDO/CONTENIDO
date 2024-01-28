@@ -150,11 +150,12 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $this->_internalNotice = '';
         $this->_copyright = '';
         $this->_dirname = '';
+        $this->_filename = '';
         if ($this->_rawSettings) {
             // get image information from con_upl from the database
             $upload = new cApiUpload($this->_rawSettings);
             $this->_filename = $upload->get('filename');
-            $this->_dirname = empty($upload->get('dirname')) ? '/' : $upload->get('dirname');
+            $this->_dirname = empty($upload->get('dirname')) ? '' : $upload->get('dirname');
             $this->_imagePath = $this->_generateImagePath();
             $this->_fileType = $upload->get('filetype');
             $this->_fileSize = $upload->get('size');
@@ -186,12 +187,14 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *                         ID of the content type
      * @param array  $contentTypes
      *                         Content type array
-     * @param bool   $editable [optional]
+     * @param bool $editable [optional]
      * @return string The raw setting or an empty string
      * @throws cDbException
      * @throws cException
      */
-    protected function _getRawSettings($contentTypeName, $id, array $contentTypes, $editable = false)
+    protected function _getRawSettings(
+        $contentTypeName, $id, array $contentTypes, bool $editable = false
+    ): string
     {
         $id = cSecurity::toInteger($id);
         if (!isset($contentTypes[$contentTypeName][$id])) {
@@ -215,9 +218,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *
      * @return string
      */
-    public function getAbsolutePath()
+    public function getAbsolutePath(): string
     {
-        return $this->_cfgClient[$this->_client]['upl']['path'] . $this->_dirname . $this->_filename;
+        return $this->_cfgClient[$this->_client]['upl']['path'] . $this->getRelativePath();
     }
 
     /**
@@ -225,7 +228,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *
      * @return string
      */
-    public function getRelativePath()
+    public function getRelativePath(): string
     {
         return $this->_dirname . $this->_filename;
     }
@@ -235,7 +238,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *
      * @return string
      */
-    public function getAbsoluteURL()
+    public function getAbsoluteURL(): string
     {
         return $this->_generateImagePath();
     }
@@ -245,13 +248,13 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *
      * @return string
      */
-    public function getRelativeURL()
+    public function getRelativeURL(): string
     {
         if (!empty($this->_filename)) {
             if (cApiDbfs::isDbfs($this->_dirname)) {
-                return 'dbfs.php?file=' . urlencode($this->_dirname . $this->_filename);
+                return 'dbfs.php?file=' . urlencode($this->getRelativePath());
             } else {
-                return $this->_cfgClient[$this->_client]['upload'] . $this->_dirname . $this->_filename;
+                return $this->_cfgClient[$this->_client]['upload'] . $this->getRelativePath();
             }
         }
 
@@ -270,7 +273,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *
      * @return array
      */
-    public function getMetaData()
+    public function getMetaData(): array
     {
         return [
             'medianame' => $this->_medianame,
@@ -287,15 +290,15 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      * @return string
      *         the link to the image
      */
-    private function _generateImagePath()
+    private function _generateImagePath(): string
     {
         if (!empty($this->_filename)) {
             if (cApiDbfs::isDbfs($this->_dirname)) {
                 return cRegistry::getFrontendUrl()
-                    . 'dbfs.php?file=' . urlencode($this->_dirname . $this->_filename);
+                    . 'dbfs.php?file=' . urlencode($this->getRelativePath());
             } else {
                 return cRegistry::getFrontendUrl()
-                    . $this->_cfgClient[$this->_client]['upload'] . $this->_dirname . $this->_filename;
+                    . $this->_cfgClient[$this->_client]['upload'] . $this->getRelativePath();
             }
         }
 
@@ -310,12 +313,14 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      */
     protected function _storeSettings()
     {
+        $postFilename = $_POST['image_filename'] ?? '';
+
         // prepare the filename and dirname
-        $filename = basename($_POST['image_filename'] ?? '');
-        $dirname = dirname($_POST['image_filename'] ?? '');
-        if ($dirname === '\\' || $dirname === '/') {
+        $filename = basename($postFilename);
+        $dirname = ltrim(dirname($postFilename), '.');
+        if (in_array($dirname, ['\\', '/'])) {
             $dirname = '';
-        } else {
+        } elseif (!empty($dirname)) {
             $dirname .= '/';
         }
 
@@ -359,6 +364,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         }
 
         $idupl = cSecurity::toInteger($this->_upload->get('idupl'));
+        if ($idupl < 1) {
+            return;
+        }
 
         // insert / update meta data
         $medianame = $_POST['image_medianame'] ?? '';
@@ -391,13 +399,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Generates the code which should be shown if this content type is shown in
-     * the frontend.
-     *
-     * @return string
-     *         escaped HTML code which should be shown if content type is shown in frontend
+     * @inheritDoc
      */
-    public function generateViewCode()
+    public function generateViewCode(): string
     {
         $image = new cHTMLImage($this->_imagePath);
         $image->setAlt($this->_description);
@@ -406,13 +410,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Generates the code which should be shown if this content type is edited.
-     *
-     * @return string
-     *         escaped HTML code which should be shown if content type is edited
-     * @throws cInvalidArgumentException|cException
+     * @inheritDoc
      */
-    public function generateEditCode()
+    public function generateEditCode(): string
     {
         // construct the top code of the template
         $templateTop = new cTemplate();
@@ -499,7 +499,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      * @return string
      *         the code for the directories tab
      */
-    private function _generateTabDirectories()
+    private function _generateTabDirectories(): string
     {
         // define a wrapper which contains the whole content of the directories tab
         $wrapper = new cHTMLDiv();
@@ -536,7 +536,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *         the code for the meta tab
      * @throws cException
      */
-    private function _generateTabMeta()
+    private function _generateTabMeta(): string
     {
         // define a wrapper which contains the whole content of the meta tab
         $wrapper = new cHTMLDiv();
@@ -571,7 +571,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *         the code for the upload tab
      * @throws cException
      */
-    private function _generateTabUpload()
+    private function _generateTabUpload(): string
     {
         // define a wrapper which contains the whole content of the upload tab
         $wrapper = new cHTMLDiv();
@@ -664,66 +664,29 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *         rendered cHTMLSelectElement
      * @throws cException
      */
-    public function generateFileSelect($directoryPath = '')
+    public function generateFileSelect(string $directoryPath = ''): string
     {
-        // make sure the path ends with a slash
-        if (cString::getPartOfString($directoryPath, -1) != '/') {
-            $directoryPath .= '/';
-        }
-
         $htmlSelect = new cHTMLSelectElement('image_filename', '', 'image_filename_' . $this->_id);
         $htmlSelect->setSize(16);
         $htmlSelectOption = new cHTMLOptionElement('Kein', '', false);
         $htmlSelect->addOptionElement(0, $htmlSelectOption);
 
-        $files = [];
-        if (cDirHandler::exists($this->_uploadPath . $directoryPath)) {
-            if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
-                foreach ($handle as $entry) {
-                    if (false === cFileHandler::fileNameBeginsWithDot($entry)) {
-                        $file = [];
-                        $file["name"] = $entry;
-                        $file["path"] = $directoryPath . $entry;
-                        $files[] = $file;
-                    }
-                }
-            }
+        $files = $this->buildFileList($directoryPath);
+        foreach ($files as $pos => $file) {
+            $htmlSelectOption = new cHTMLOptionElement($file['name'], $file['path']);
+            $htmlSelect->addOptionElement($pos + 1, $htmlSelectOption);
         }
 
-        usort($files, function($a, $b) {
-            $a = cString::toLowerCase($a["name"]);
-            $b = cString::toLowerCase($b["name"]);
-            if ($a < $b) {
-                return -1;
-            } elseif ($a > $b) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
-
-        $i = 1;
-        foreach ($files as $file) {
-            $htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
-            $htmlSelect->addOptionElement($i, $htmlSelectOption);
-            $i++;
-        }
-
-        if ($i === 0) {
+        if (!count($files)) {
             $htmlSelectOption = new cHTMLOptionElement(i18n('No files found'), '', false);
             $htmlSelectOption->setAlt(i18n('No files found'));
             $htmlSelectOption->setDisabled(true);
-            $htmlSelect->addOptionElement($i, $htmlSelectOption);
+            $htmlSelect->addOptionElement(0, $htmlSelectOption);
             $htmlSelect->setDisabled(true);
         }
 
         // set default value
-        if (!empty($this->_dirname)) {
-            $default = $this->_dirname . $this->_filename;
-            $htmlSelect->setDefault($default);
-        } else {
-            $htmlSelect->setDefault('');
-        }
+        $htmlSelect->setDefault($this->getRelativePath());
 
         return $htmlSelect->render();
     }
@@ -738,7 +701,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      * @return bool
      *         whether the directory is the currently active directory
      */
-    protected function _isActiveDirectory(array $dirData)
+    protected function _isActiveDirectory(array $dirData): bool
     {
         return $dirData['path'] . $dirData['name'] . '/' === $this->_dirname;
     }
@@ -753,7 +716,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      * @return bool
      *         whether the directory should be shown expanded
      */
-    protected function _shouldDirectoryBeExpanded(array $dirData)
+    protected function _shouldDirectoryBeExpanded(array $dirData): bool
     {
         return $this->_isSubdirectory($dirData['path'] . $dirData['name'], $this->_dirname);
     }
@@ -765,7 +728,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *         the filename of the image
      * @param string $dirname
      *         the dirname of the image
-     * @return string
+     * @return string|false
      *         JSON-encoded array with metadata
      * @throws cDbException
      * @throws cException
@@ -810,7 +773,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function uplmkdir($path, $name)
+    public function uplmkdir(string $path, string $name)
     {
         return uplmkdir($path, $name);
     }
@@ -824,7 +787,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *         the filename of the uploaded file
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function uplupload($path)
+    public function uplupload(string $path): string
     {
         $uplFilename = '';
         if (count($_FILES) === 1) {

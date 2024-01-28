@@ -20,7 +20,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-class cContentTypeHead extends cContentTypeText {
+class cContentTypeHead extends cContentTypeText
+{
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -35,15 +37,16 @@ class cContentTypeHead extends cContentTypeText {
      *
      * @throws cDbException
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
-        // try to call constructor of parent of parent to avoid overwriting of $this->_settings
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
+        // try to call constructor of parent to avoid overwriting of $this->_settings
         // this can happen in case of POST-data
         if (false === get_parent_class($this) || false === get_parent_class(get_parent_class($this))) {
             // can not get parent of parent class, call parent constructor as fallback
             parent::__construct($rawSettings, $id, $contentTypes);
         }
 
-        // call constructor of parent of parent class
+        // call constructor of parent class
         $nameParentParentClass = get_parent_class(get_parent_class($this));
         $nameParentParentClass::__construct($rawSettings, $id, $contentTypes);
 
@@ -76,7 +79,8 @@ class cContentTypeHead extends cContentTypeText {
      *         the JS code for the content type
      * @throws cInvalidArgumentException
      */
-    protected function _getEditJavaScript() {
+    protected function _getEditJavaScript(): string
+    {
         $textbox = new cHTMLTextbox(
             $this->_prefix . '_text_' . $this->_id,
             '',

@@ -33,7 +33,7 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract
      *         the encoded code for the tab menu
      * @throws cInvalidArgumentException
      */
-    protected function _generateTabMenuCode(array $tabs)
+    protected function _generateTabMenuCode(array $tabs): string
     {
         $template = new cTemplate();
 
@@ -65,7 +65,7 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract
      * @throws cDbException
      * @throws cException
      */
-    protected function _getRawSettings($contentTypeName, $id, array $contentTypes)
+    protected function _getRawSettings($contentTypeName, $id, array $contentTypes): string
     {
         $id = cSecurity::toInteger($id);
         if (!isset($contentTypes[$contentTypeName][$id])) {
@@ -87,7 +87,7 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract
      *         the encoded code for the action buttons
      * @throws cInvalidArgumentException
      */
-    protected function _generateActionCode()
+    protected function _generateActionCode(): string
     {
         $template = new cTemplate();
 

@@ -20,7 +20,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-class cContentTypeLinktarget extends cContentTypeLinkeditor {
+class cContentTypeLinktarget extends cContentTypeLinkeditor
+{
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -36,7 +38,8 @@ class cContentTypeLinktarget extends cContentTypeLinkeditor {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
         // There are no raw settings here, because CMS_LINKEDITOR is now
         // saved in con_upl_meta. So compute the appropriate raw settings
         // and call the parent constructor with them.
@@ -49,24 +52,19 @@ class cContentTypeLinktarget extends cContentTypeLinkeditor {
     }
 
     /**
-     * Generates the code which should be shown if this content type is shown in
-     * the frontend.
-     *
-     * @return string
-     *         escaped HTML code which sould be shown if content type is shown in frontend
+     * @inheritDoc
      */
-    public function generateViewCode() {
+    public function generateViewCode(): string
+    {
         $target = ($this->getSetting('linkeditor_newwindow') == 'true') ? '_blank' : '';
         return $this->_encodeForOutput($target);
     }
 
     /**
-     * Generates the code which should be shown if this content type is edited.
-     *
-     * @return string
-     *         escaped HTML code which should be shown if content type is edited
+     * @inheritDoc
      */
-    public function generateEditCode() {
+    public function generateEditCode(): string
+    {
         return $this->generateViewCode();
     }
 

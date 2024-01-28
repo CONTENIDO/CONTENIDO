@@ -24,7 +24,9 @@ cInclude('includes', 'functions.upl.php');
  * @package    Core
  * @subpackage ContentType
  */
-class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
+class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
+{
+
     /**
      * @var string
      */
@@ -44,7 +46,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @throws cDbException
      */
-    function __construct($rawSettings, $id, array $contentTypes) {
+    function __construct($rawSettings, $id, array $contentTypes)
+    {
         // set props
         $this->_type = 'CMS_LINKEDITOR';
         $this->_prefix = 'linkeditor';
@@ -91,7 +94,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      */
-    public function getLinkType() {
+    public function getLinkType(): string
+    {
         return $this->getSetting('linkeditor_type');
     }
 
@@ -100,7 +104,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      */
-    public function getTitle() {
+    public function getTitle(): string
+    {
         return $this->getSetting('linkeditor_title');
     }
 
@@ -109,7 +114,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      */
-    public function getTarget() {
+    public function getTarget(): string
+    {
         return ($this->getSetting('linkeditor_newwindow') === 'true') ? '_blank' : '';
     }
 
@@ -119,27 +125,30 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return string
      * @throws cInvalidArgumentException
      */
-    public function getLink() {
+    public function getLink(): string
+    {
         return $this->_generateHref();
     }
 
     /**
      * @return string
      */
-    public function getFilename() {
+    public function getFilename(): string
+    {
         return $this->getSetting('linkeditor_filename');
     }
 
     /**
      * Returns array with configured data (keys: type, externallink, title,
      * newwindow, idart, filename).
-     * Additionally the key href contains the actual hyperreference.
+     * Additionally, the key href contains the actual hyperreference.
      *
      * @return array
      * @throws cInvalidArgumentException
      */
-    public function getConfiguredData() {
-        $data = [
+    public function getConfiguredData(): array
+    {
+        return [
             'type'          => $this->getSetting('linkeditor_type'),
             'externallink'  => $this->getSetting('linkeditor_externallink'),
             'title'         => $this->getSetting('linkeditor_title'),
@@ -148,19 +157,13 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
             'filename'      => $this->getFilename(),
             'href'          => $this->_generateHref()
         ];
-
-        return $data;
     }
 
     /**
-     * Generates the code which should be shown if this content type is shown in
-     * the frontend.
-     *
-     * @return string
-     *         escaped HTML code which sould be shown if content type is shown in frontend
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
-    public function generateViewCode() {
+    public function generateViewCode(): string
+    {
         // generate the needed attributes
         $href = $this->_generateHref();
         if (empty($href)) {
@@ -188,7 +191,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *         the generated link
      * @throws cInvalidArgumentException
      */
-    protected function _generateHref() {
+    protected function _generateHref(): string
+    {
+        $link = '';
+
         switch ($this->getSetting('linkeditor_type')) {
             case 'external':
                 // make sure that link starts with http://
@@ -196,7 +202,6 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 if (cString::findFirstPos($link, 'http://') !== 0 && cString::findFirstPos($link, 'www.') === 0) {
                     $link = 'http://' . $link;
                 }
-                return $link;
                 break;
             case 'internal':
                 // Selection of category (CON-2563)
@@ -208,7 +213,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                     ];
                     $uriBuilder->buildUrl($uriParams, true);
 
-                    return $uriBuilder->getUrl();
+                    $link = $uriBuilder->getUrl();
                 } elseif (cSecurity::isInteger($this->getSetting('linkeditor_idart'))) {
                     $oUri = cUri::getInstance();
                     $uriBuilder = $oUri->getUriBuilder();
@@ -217,31 +222,26 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                     ];
                     $uriBuilder->buildUrl($uriParams, true);
 
-                    return $uriBuilder->getUrl();
+                    $link = $uriBuilder->getUrl();
                 }
                 break;
             case 'file':
                 if (!empty($this->getFilename())) {
-                    return $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $this->getFilename();
-                } else {
-                    return '';
+                    $link = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $this->getFilename();
                 }
                 break;
             default:
                 // invalid link type, output nothing
-                return '';
         }
+
+        return $link;
     }
 
     /**
-     * Generates the code which should be shown if this content type is edited.
-     *
-     * @return string
-     *         escaped HTML code which should be shown if content type is edited
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
-    public function generateEditCode() {
+    public function generateEditCode(): string
+    {
         $template = new cTemplate();
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
@@ -334,7 +334,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return string
      *         the code for the external link tab
      */
-    private function _generateTabExternal() {
+    private function _generateTabExternal(): string
+    {
         // define a wrapper which contains the whole content of the general tab
         $wrapper = new cHTMLDiv();
         $wrapperContent = [];
@@ -356,7 +357,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return string
      *         the code for the basic settings tab
      */
-    private function _generateBasicSettings() {
+    private function _generateBasicSettings(): string
+    {
         // define a wrapper which contains the whole content of the basic
         // settings section
         $wrapper = new cHTMLDiv();
@@ -381,7 +383,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *         the code for the internal link tab
      * @throws cDbException
      */
-    private function _generateTabInternal() {
+    private function _generateTabInternal(): string
+    {
         // define a wrapper which contains the whole content of the general tab
         $wrapper = new cHTMLDiv();
         $wrapperContent = [];
@@ -422,7 +425,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *         with directory information
      * @throws cDbException
      */
-    public function buildCategoryArray($level = 0, $parentid = 0) {
+    public function buildCategoryArray($level = 0, $parentid = 0): array
+    {
         $db = cRegistry::getDb();
         $directories = [];
         $sql = 'SELECT distinct
@@ -463,7 +467,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function getCategoryList(array $categories) {
+    public function getCategoryList(array $categories): string
+    {
         $template = new cTemplate();
         $i = 1;
 
@@ -510,7 +515,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *         containing all active idcats
      * @throws cDbException
      */
-    public function getActiveIdcats() {
+    public function getActiveIdcats(): array
+    {
         $activeIdcats = [];
         if ($this->getSetting('linkeditor_type') === 'internal') {
             $linkEditorIdArt = $this->getSetting('linkeditor_idart');
@@ -569,7 +575,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return array
      *         the given idcats array with the given idcat and all parent idcats
      */
-    private function _getParentIdcats($idcat, array $idcats = []) {
+    private function _getParentIdcats($idcat, array $idcats = []): array
+    {
         // add the current idcat to the result idcats
         $idcats[] = $idcat;
 
@@ -592,7 +599,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *                   rendered cHTMLSelectElement
      * @throws cDbException
      */
-    public function generateArticleSelect($idCat = 0) {
+    public function generateArticleSelect($idCat = 0): string
+    {
         $htmlSelect = new cHTMLSelectElement('linkeditor_idart', '', 'linkeditor_idart_' . $this->_id);
         $htmlSelect->setSize(16);
 
@@ -652,7 +660,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *         the code for the link to file tab
      * @throws cInvalidArgumentException
      */
-    private function _generateTabFile() {
+    private function _generateTabFile(): string
+    {
         // define a wrapper which contains the whole content of the general tab
         $wrapper = new cHTMLDiv();
         $wrapperContent = [];
@@ -766,61 +775,22 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @SuppressWarnings docBlocks
      * @param string $directoryPath [optional]
      *         to directory of the files
-     * @param bool   $isEmptySelect
+     * @param bool $isEmptySelect
      *
-     * @return string|int
+     * @return string
      */
-    public function getUploadFileSelect($directoryPath = '', $isEmptySelect = false) {
-        // replace all backslashes with slashes
-        $directoryPath = str_replace('\\', '/', $directoryPath);
-        // if the directory path only contains a slash, leave it empty
-        // otherwise there will be two slashes in the end
-        if ($directoryPath === '/') {
-            $directoryPath = '';
-        }
-        // make sure the path ends with a slash if it is not empty
-        if ($directoryPath !== '' && cString::getPartOfString($directoryPath, -1) != '/') {
-            $directoryPath .= '/';
-        }
-
+    public function getUploadFileSelect(string $directoryPath = '', bool $isEmptySelect = false): string
+    {
         $htmlSelect = new cHTMLSelectElement('linkeditor_filename', '', 'linkeditor_filename_' . $this->_id);
         $htmlSelect->setSize(16);
         $htmlSelectOption = new cHTMLOptionElement('Kein', '', false);
         $htmlSelect->addOptionElement(0, $htmlSelectOption);
 
         if (!$isEmptySelect) {
-            $files = [];
-            if (cDirHandler::exists($this->_uploadPath . $directoryPath)) {
-                // get only files
-                if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
-                    foreach ($handle as $entry) {
-                        if (cFileHandler::fileNameBeginsWithDot($entry) === false) {
-                            $file = [];
-                            $file["name"] = $entry;
-                            $file["path"] = $directoryPath . $entry;
-                            $files[] = $file;
-                        }
-                    }
-                }
-            }
-
-            usort($files, function($a, $b) {
-                $a = cString::toLowerCase($a["name"]);
-                $b = cString::toLowerCase($b["name"]);
-                if ($a < $b) {
-                    return -1;
-                } elseif ($a > $b) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-
-            $i = 1;
-            foreach ($files as $file) {
-                $htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
-                $htmlSelect->addOptionElement($i, $htmlSelectOption);
-                $i++;
+            $files = $this->buildFileList($directoryPath);
+            foreach ($files as $pos => $file) {
+                $htmlSelectOption = new cHTMLOptionElement($file['name'], $file['path']);
+                $htmlSelect->addOptionElement($pos + 1, $htmlSelectOption);
             }
 
             // set default value
@@ -843,7 +813,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return bool
      *         whether the directory is the currently active directory
      */
-    protected function _isActiveDirectory(array $dirData) {
+    protected function _isActiveDirectory(array $dirData): bool
+    {
         return $dirData['path'] . $dirData['name'] === dirname($this->getFilename());
     }
 
@@ -858,7 +829,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return bool
      *         whether the directory should be shown expanded
      */
-    protected function _shouldDirectoryBeExpanded(array $dirData) {
+    protected function _shouldDirectoryBeExpanded(array $dirData): bool
+    {
         return $this->_isSubdirectory($dirData['path'] . $dirData['name'], $this->_dirname);
     }
 

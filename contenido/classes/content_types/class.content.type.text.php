@@ -20,7 +20,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-class cContentTypeText extends cContentTypeAbstract {
+class cContentTypeText extends cContentTypeAbstract
+{
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -35,7 +37,8 @@ class cContentTypeText extends cContentTypeAbstract {
      *
      * @throws cDbException
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
         $rawSettings = conHtmlSpecialChars($rawSettings ?? '');
 
         // call parent constructor
@@ -67,13 +70,10 @@ class cContentTypeText extends cContentTypeAbstract {
     }
 
     /**
-     * Generates the code which should be shown if this content type is edited.
-     *
-     * @return string
-     *         escaped HTML code which should be shown if content type is edited
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
-    public function generateEditCode() {
+    public function generateEditCode(): string
+    {
         $script = $this->_getEditJavaScript();
 
         $div = new cHTMLDiv($this->_rawSettings);
@@ -99,7 +99,8 @@ class cContentTypeText extends cContentTypeAbstract {
      *         the JS code for the content type
      * @throws cInvalidArgumentException
      */
-    protected function _getEditJavaScript() {
+    protected function _getEditJavaScript(): string
+    {
         $textbox = new cHTMLTextarea(
             $this->_prefix . '_text_' . $this->_id, '', '', '',
             $this->_prefix . '_text_' . $this->_id, false, null, '',
@@ -130,13 +131,10 @@ class cContentTypeText extends cContentTypeAbstract {
     }
 
     /**
-     * Generates the code which should be shown if this content type is shown in
-     * the frontend.
-     *
-     * @return string
-     *         escaped HTML code which should be shown if content type is shown in frontend
+     * @inheritDoc
      */
-    public function generateViewCode() {
+    public function generateViewCode(): string
+    {
         return $this->_encodeForOutput($this->_rawSettings);
     }
 
