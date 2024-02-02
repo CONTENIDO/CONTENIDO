@@ -174,13 +174,13 @@ abstract class cWYSIWYGEditor
      * Sets given setting if setting was not yet defined.
      * Overwriting defined setting can be achieved with $forceSetting = true.
      *
+     * @param string|null $type Normally unused (counterpart of {@see cTinyMCE4Editor::setSetting})
      * @param string $key
      *         of setting to set
      * @param string $value
      *         of setting to set
      * @param bool $forceSetting [optional]
      *         to overwrite defined setting
-     * @param bool $type Normally unused (counterpart of cTinyMCE4Editor::setSetting)
      */
     public function setSetting($type = null, $key = null, $value = '', $forceSetting = false)
     {
@@ -207,7 +207,7 @@ abstract class cWYSIWYGEditor
      *
      * @return string
      */
-    protected function _getEditorPath()
+    protected function _getEditorPath(): string
     {
         return $this->_sPath . $this->_sEditor;
     }
@@ -217,7 +217,7 @@ abstract class cWYSIWYGEditor
      *
      * @return string
      */
-    protected function _getEditorUrl()
+    protected function _getEditorUrl(): string
     {
         return $this->_sUrl . $this->_sEditor;
     }
@@ -257,7 +257,7 @@ abstract class cWYSIWYGEditor
      * @param string $input
      * @return string
      */
-    public function convertFormat($input)
+    public function convertFormat($input): string
     {
         $aFormatCodes = [
             'y' => '%y',
@@ -282,9 +282,9 @@ abstract class cWYSIWYGEditor
     /**
      * Set if editor should be loaded using tinymces gzip compression
      *
-     * @param string $bEnabled
+     * @param bool $bEnabled
      */
-    protected function setGZIPMode($bEnabled)
+    protected function setGZIPMode(bool $bEnabled)
     {
         if ($bEnabled) {
             $this->_useGZIP = true;
@@ -299,7 +299,7 @@ abstract class cWYSIWYGEditor
      * @return boolean
      *         if editor is loaded using gzip compression
      */
-    public function getGZIPMode()
+    public function getGZIPMode(): bool
     {
         return $this->_useGZIP;
     }
@@ -321,7 +321,7 @@ abstract class cWYSIWYGEditor
      * @return string
      *        plugins the plugins
      */
-    public function getPlugins()
+    public function getPlugins(): string
     {
         return cSecurity::toString($this->_aSettings['plugins'] ?? '');
     }
@@ -333,7 +333,7 @@ abstract class cWYSIWYGEditor
      * @return string
      *        Returns the themes
      */
-    public function getThemes()
+    public function getThemes(): string
     {
         return cSecurity::toString($this->_aSettings['theme'] ?? '');
     }
@@ -344,7 +344,7 @@ abstract class cWYSIWYGEditor
      * @param string $file
      * @return string
      */
-    public function addPath($file)
+    public function addPath($file): string
     {
         // Quick and dirty hack
         if (!preg_match('/^(http|https):\/\/((?:[a-zA-Z0-9_-]+\.?)+):?(\d*)/', $file)) {
@@ -363,7 +363,7 @@ abstract class cWYSIWYGEditor
      * @return string
      *         The name of current WYSIWYG editor
      */
-    public static function getCurrentWysiwygEditorName()
+    public static function getCurrentWysiwygEditorName(): string
     {
         // define fallback WYSIWYG editor
         if (!defined('DEFAULT_WYSIWYG_EDITOR')) {
@@ -398,7 +398,7 @@ abstract class cWYSIWYGEditor
      *
      * @throws cInvalidArgumentException
      */
-    public static function saveConfig($config)
+    public static function saveConfig($config): array
     {
         // Use the global variable $cfg here, the function modifies it!
         global $cfg;
