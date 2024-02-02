@@ -18,9 +18,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Prints some text to the console
  *
  * @param string $str string which should be printed
- * @param int $tab number of tab characters which should preceed the string
+ * @param int $tab number of tab characters which should preceded the string
  */
-function prnt($str = '', $tab = 0) {
+function prnt($str = '', $tab = 0)
+{
     for ($i = 0; $i < $tab; $i++) {
         echo("\t");
     }
@@ -31,9 +32,10 @@ function prnt($str = '', $tab = 0) {
  * Prints some text and a new line to the console
  *
  * @param string $str string which should be printed
- * @param int $tab number of tab characters which should preceed the string
+ * @param int $tab number of tab characters which should preceded the string
  */
-function prntln($str = '', $tab = 0) {
+function prntln($str = '', $tab = 0)
+{
     prnt($str . "\n\r", $tab);
 }
 
@@ -42,7 +44,8 @@ function prntln($str = '', $tab = 0) {
  *
  * @param string $str string which should be printed
  */
-function prntst($str = '') {
+function prntst($str = '')
+{
     echo($str . "\r");
 }
 
@@ -52,10 +55,11 @@ function prntst($str = '') {
  * function will print a warning for the user instead.
  *
  * @param string $title label text
- * @param int $tab number of tabs which should preceed the label text
+ * @param int $tab number of tabs which should preceded the label text
  * @return string user entered password
  */
-function passwordPrompt($title, $tab = 0) {
+function passwordPrompt($title, $tab = 0): string
+{
     if (cString::toUpperCase(cString::getPartOfString(PHP_OS, 0, 3)) === 'WIN') {
         prntln(i18n('Be careful! The password will be readable in the console window!', 'setup'), $tab);
     }
@@ -75,13 +79,13 @@ function passwordPrompt($title, $tab = 0) {
 /**
  * Prints a progress bar to the console
  *
- * @param int $width Widht of the progress bar in characters
+ * @param int $width Width of the progress bar in characters
  * @param int $filled Percent value to which it should be filled (e.g. 45)
  */
-function progressBar($width, $filled) {
+function progressBar($width, $filled)
+{
     echo("\r");
     echo("|");
-    $i = 0;
     for ($i = 0; $i <= $filled / 100 * $width; $i++) {
         echo("#");
     }
@@ -95,7 +99,8 @@ function progressBar($width, $filled) {
 /**
  * Initializes the globals the CONTENIDO setup needs
  */
-function initializeVariables() {
+function initializeVariables()
+{
     global $cfg, $_SESSION;
 
     $cfg['db'] = [
@@ -128,7 +133,8 @@ function initializeVariables() {
  *
  * @return boolean true if every setting has been entered
  */
-function checkInstallationSettings() {
+function checkInstallationSettings()
+{
     global $cfg, $_SESSION;
 
     $fine = true;
@@ -199,7 +205,8 @@ function checkInstallationSettings() {
  *
  * @return array An array representing the arguments and switches provided to the script
  */
-function getArgs() {
+function getArgs(): array
+{
     $args = $_SERVER['argv'];
 
     $out = [];
@@ -217,8 +224,9 @@ function getArgs() {
             }
             $last_arg = $key;
         } else if (preg_match("/^-([a-zA-Z0-9]+)/", $args[$i], $match)) {
+            $key = null;
             for ($j = 0, $jl = cString::getStringLength($match[1]); $j < $jl; $j++) {
-                $key = $match[1]{$j};
+                $key = $match[1][$j];
                 $out[$key] = true;
             }
             $last_arg = $key;
@@ -232,7 +240,8 @@ function getArgs() {
 /**
  * Prints the help text
  */
-function printHelpText() {
+function printHelpText()
+{
     prntln("\r" . i18n('CONTENIDO setup script', 'setup'));
     prntln(i18n('This script will install CONTENIDO to your computer.', 'setup'));
     prntln();
