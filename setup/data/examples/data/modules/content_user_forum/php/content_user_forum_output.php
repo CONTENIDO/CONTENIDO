@@ -22,74 +22,60 @@ if (cRegistry::isBackendEditMode()) {
 /**
  * @author claus.schunk
  */
-class UserForumArticle {
+class UserForumArticle
+{
 
     /**
-     *
      * @var bool
      */
     protected $_qoute = true;
 
     /**
-     *
      * @var string[]
      */
     protected $_messageTexts = [];
 
     /**
-     *
      * @var bool
      */
     protected $_generate = true;
 
     /**
-     *
      * @var bool
      */
     protected $_allowDeleting;
 
     /**
-     *
      * @var bool
      */
     protected $_userLoggedIn;
 
     /**
-     *
      * @var bool
      */
     protected $_allowedToEditForum;
 
     /**
-     *
      * @var bool
      */
     protected $_modMode;
 
     /**
-     *
-     * @access protected
-     * @var cSmartyFrontend
+     * @var cSmartyWrapper
      */
     protected $_tpl;
 
     /**
-     *
-     * @access protected
      * @var string email
      */
     protected $_currentEmail;
 
     /**
-     *
-     * @access protected
      * @var string realname
      */
     protected $_currentRealname;
 
     /**e
-     *
-     * @access protected
      * @var bool counter
      *      used from checkCookie for validation if like/dislike feature was
      *      already used from same user.
@@ -97,36 +83,26 @@ class UserForumArticle {
     protected $_counter;
 
     /**
-     *
-     * @access protected
      * @var int articleId
      */
     protected $_idart;
 
     /**
-     *
-     * @access protected
      * @var int CategoryId
      */
     protected $_idcat;
 
     /**
-     *
-     * @access protected
      * @var int LanguageId
      */
     protected $_idlang;
 
     /**
-     *
-     * @access protected
      * @var string userid
      */
     protected $_userid;
 
     /**
-     *
-     * @access protected
      * @var ArticleForumCollection
      */
     protected $_collection;
@@ -140,7 +116,8 @@ class UserForumArticle {
     /**
      *
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->_tpl = cSmartyFrontend::getInstance();
         $this->_messageTexts = [];
         $this->_generate = true;
@@ -156,15 +133,16 @@ class UserForumArticle {
     /**
      * main method for controlling different actions received from $_REQUEST[]
      */
-    public function receiveData() {
+    public function receiveData()
+    {
         $this->_checkCookie();
 
         $auth = cRegistry::getAuth();
-        $this->_allowDeleting = (cString::findFirstOccurrenceCI($auth->auth['perm'], 'admin') === FALSE) ? false : true;
-        $bAllowAnonymousforum = (getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1') ? true : false;
+        $this->_allowDeleting = !(cString::findFirstOccurrenceCI($auth->auth['perm'], 'admin') === FALSE);
+        $bAllowAnonymousforum = getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1';
 
         $this->_getUser($auth->auth['uid']);
-        $this->_allowedToEditForum = ($bAllowAnonymousforum || $this->_userLoggedIn && !$bAllowAnonymousforum) ? true : false;
+        $this->_allowedToEditForum = $bAllowAnonymousforum || $this->_userLoggedIn && !$bAllowAnonymousforum;
 
         switch ($this->_action) {
             // user interaction click on like button
@@ -200,7 +178,8 @@ class UserForumArticle {
      *
      * @param string $userid
      */
-    private function _getUser($userid) {
+    private function _getUser($userid)
+    {
         if (($userid != '') && ($userid != 'nobody')) {
             $this->_userLoggedIn = true;
             // TODO Fix this, selectUser() returns always boolean!
@@ -221,7 +200,8 @@ class UserForumArticle {
     /**
      * increments the current number of likes
      */
-    private function _incrementLike() {
+    private function _incrementLike()
+    {
         $form_id = cSecurity::toInteger($_REQUEST['user_forum_id'] ?? '0');
         if ($form_id > 0 && $this->_counter) {
             $this->_collection->incrementLike($form_id);
@@ -231,7 +211,8 @@ class UserForumArticle {
     /**
      * increments the current number of dislikes
      */
-    private function _incrementDislike() {
+    private function _incrementDislike()
+    {
         $form_id = cSecurity::toInteger($_REQUEST['user_forum_id'] ?? '0');
         if ($form_id > 0 && $this->_counter) {
             $this->_collection->incrementDislike($form_id);
@@ -241,7 +222,8 @@ class UserForumArticle {
     /**
      * submit for new entry will be called after click at new comment
      */
-    private function _saveForum() {
+    private function _saveForum()
+    {
         $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
         // Run the preg_match() function on regex against the email address
 
@@ -374,7 +356,8 @@ class UserForumArticle {
     /**
      * displays all existing comments
      */
-    private function _listForum() {
+    private function _listForum()
+    {
         $linkText = "$this->_userid&deleting=$this->_allowDeleting&idart=$this->_idart";
         if ($this->_generate) {
 
@@ -405,7 +388,7 @@ class UserForumArticle {
                 foreach ($arrUserforum as $key => $value) {
                     $record = [];
                     $record['REALNAME'] = str_replace('\\', '', $value['realname']);
-                    $record['EMAIL'] = str_replace('\\', '', $value['email']);
+                    #$record['EMAIL'] = str_replace('\\', '', $value['email']);
                     $record['NUMBER'] = $number;
                     $number++;
 
@@ -446,7 +429,7 @@ class UserForumArticle {
                         $record['EDIT_INFORMATION'] = "<br /><br /><em>$edit_information</em>";
                     }
 
-                    // ansers allowed or not.
+                    // answers allowed or not.
                     if ($this->_qoute) {
                         $record['REPLY'] = sprintf($linkText, $key);
                     } else {
@@ -479,8 +462,6 @@ class UserForumArticle {
                 $sTemp = str_replace('___', count($arrUserforum), $sTemp);
 
                 if ($this->_allowedToEditForum) {
-                    $link = $linkText;
-
                     $tplOptionList = new cTemplate();
                     $tplOptionList->set('s', 'SHOW_forum', $sTemp);
 
@@ -499,16 +480,17 @@ class UserForumArticle {
     }
 
     /**
-     * generate view for new entrys
+     * generate view for new entries
      */
-    private function _newEntry() {
+    private function _newEntry()
+    {
         if ($this->_allowedToEditForum) {
             $this->_tpl->assign('MESSAGES', $this->_messageTexts);
             $idquote = cSecurity::toInteger($_REQUEST['user_forum_quote'] ?? '0');
 
             if ($idquote > 0) {
                 $content = $this->_collection->selectNameAndNameByForumId($idquote);
-                $empty = count($content) > 0 ? false : true;
+                $empty = !(count($content) > 0);
                 if (!$empty) {
                     $ar = $this->_collection->getCommentContent($idquote);
                     $transTemplate = mi18n("quoteFrom");
@@ -524,7 +506,7 @@ class UserForumArticle {
 
             if ($replyId > 0) {
                 $content = $this->_collection->selectNameAndNameByForumId($replyId);
-                $empty = (count($content) > 0) ? false : true;
+                $empty = !(count($content) > 0);
 
                 if (!$empty) {
                     // Quote answer content
@@ -569,9 +551,10 @@ class UserForumArticle {
      * this function sets a cookie when receiving a click on like/dislike -
      * buttons.
      * After the first click the user can't add likes/dislikes for the same
-     * comment for a fixed time intervall (value in cookie).
+     * comment for a fixed time interval (value in cookie).
      */
-    private function _checkCookie() {
+    private function _checkCookie()
+    {
         $ip = $_SERVER['REMOTE_ADDR'] ?? '';
         $time = time();
         $params = session_get_cookie_params();
