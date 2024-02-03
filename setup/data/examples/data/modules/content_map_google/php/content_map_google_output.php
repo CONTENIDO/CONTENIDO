@@ -18,11 +18,11 @@ $tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
 $tpl->assign(
     'trans',
     [
-        'header'         => mi18n("HEADER"),
-        'address'        => mi18n("ADDRESS"),
-        'latitude'       => mi18n("LATITUDE"),
-        'longitude'      => mi18n("LONGITUDE"),
-        'markerTitle'    => mi18n("MARKER_TITLE"),
+        'header' => mi18n("HEADER"),
+        'address' => mi18n("ADDRESS"),
+        'latitude' => mi18n("LATITUDE"),
+        'longitude' => mi18n("LONGITUDE"),
+        'markerTitle' => mi18n("MARKER_TITLE"),
         'wayDescription' => mi18n("WAY_DESCRIPTION"),
     ]
 );

@@ -71,7 +71,7 @@ if (cRegistry::getBackendSessionId() === NULL) {
 
     $imgId = $art->getContent("CMS_IMG", 1);
 
-    if ((int) $imgId > 0) {
+    if ((int)$imgId > 0) {
         $upload = new cApiUpload($imgId);
         $rssLogo = cRegistry::getFrontendUrl() . 'upload/' . $upload->get('dirname') . $upload->get('filename');
 

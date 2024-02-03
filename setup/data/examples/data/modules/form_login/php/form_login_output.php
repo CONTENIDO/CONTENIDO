@@ -20,7 +20,7 @@ $idart = cSecurity::toInteger(cRegistry::getArticleId());
 
 if ($auth->auth["uid"] == "nobody") {
     $sTargetIdart = getEffectiveSetting('login', 'idart', '1');
-    $sFormAction = 'front_content.php?idart='.$sTargetIdart;
+    $sFormAction = 'front_content.php?idart=' . $sTargetIdart;
 
     $tpl->assign('form_action', $sFormAction);
     $tpl->assign('label_name', mi18n("NAME"));
@@ -40,10 +40,10 @@ if ($auth->auth["uid"] == "nobody") {
     $oFeUser = $oFeUserCollection->loadItem($auth->auth["uid"]);
     $sText = str_replace('[uname]', $oFeUser->get('username'), mi18n("TXT_WELCOME_USER"));
     if ($bCatIsPublic === true) {
-        $sUrl = 'front_content.php?idcat='.$idcat.'&idart='.$idart.'&logout=true';
+        $sUrl = 'front_content.php?idcat=' . $idcat . '&idart=' . $idart . '&logout=true';
     } else {
-        $iIdcatHome = (int) getEffectiveSetting('navigation', 'idcat-home', '1');
-        $sUrl = 'front_content.php?idcat='.$iIdcatHome.'&logout=true';
+        $iIdcatHome = (int)getEffectiveSetting('navigation', 'idcat-home', '1');
+        $sUrl = 'front_content.php?idcat=' . $iIdcatHome . '&logout=true';
     }
 
     $tpl->assign('text', $sText);

@@ -31,7 +31,7 @@ if (0 < $searchResultIdart) {
         $action = cUri::getInstance()->build(
             [
                 'idart' => $searchResultIdart,
-                'lang'  => cRegistry::getLanguageId(),
+                'lang' => cRegistry::getLanguageId(),
             ]
         );
     } else {

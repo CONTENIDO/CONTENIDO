@@ -73,7 +73,7 @@ if (0 < $idartChannel) {
     $channelUrl = cUri::getInstance()->build(
         [
             'idart' => $idartChannel,
-            'lang'  => cRegistry::getLanguageId(),
+            'lang' => cRegistry::getLanguageId(),
         ],
         true
     );

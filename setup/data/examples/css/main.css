@@ -276,8 +276,7 @@ p a:hover {
 .slider .images li h2,
 .slider .images li h3 {
     color: #fff;
-    display: block;
-    font-family: Verdana;
+    font-family: Verdana, serif;
     font-size: 18px;
     height: 150px;
     left: 290px;

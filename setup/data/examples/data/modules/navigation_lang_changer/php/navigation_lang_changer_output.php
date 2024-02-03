@@ -114,7 +114,7 @@ if (count($allLanguageIds) != 1) {
         $url = isset($catRetItem) ? $catRetItem->getLink($selectedLang) : '#';
     } else {
         $config = cRegistry::getClientConfig(cRegistry::getClientId());
-        $url = cRegistry::getFrontendUrl() . 'front_content.php?idart='.cSecurity::toInteger($idart).'&changelang=' . cSecurity::toInteger($selectedLang);
+        $url = cRegistry::getFrontendUrl() . 'front_content.php?idart=' . cSecurity::toInteger($idart) . '&changelang=' . cSecurity::toInteger($selectedLang);
     }
 
     $tpl->set('s', 'url', conHtmlSpecialChars($url));

@@ -7,7 +7,8 @@
 {$editor}
 
 {if NULL neq $image}
-    <img src="{$image->src|escape}" alt="{$image->alt|escape}" width="{$image->width|escape}" height="{$image->height|escape}" />
+    <img src="{$image->src|escape}" alt="{$image->alt|escape}" width="{$image->width|escape}"
+         height="{$image->height|escape}"/>
 {/if}
 
 <!-- /content_image -->

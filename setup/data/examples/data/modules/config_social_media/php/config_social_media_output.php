@@ -18,11 +18,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 if (cRegistry::isBackendEditMode()) {
     // get links from content type TEXT with different indexes
     $items = [
-        'rss'        => [
+        'rss' => [
             'name' => mi18n("NAME_RSS"),
             'link' => "CMS_TEXT[1]",
         ],
-        'facebook'   => [
+        'facebook' => [
             'name' => mi18n("NAME_FACEBOOK"),
             'link' => "CMS_TEXT[2]",
         ],
@@ -30,11 +30,11 @@ if (cRegistry::isBackendEditMode()) {
             'name' => mi18n("NAME_GOOGLEPLUS"),
             'link' => "CMS_TEXT[3]",
         ],
-        'twitter'    => [
+        'twitter' => [
             'name' => mi18n("NAME_TWITTER"),
             'link' => "CMS_TEXT[4]",
         ],
-        'xing'       => [
+        'xing' => [
             'name' => mi18n("NAME_XING"),
             'link' => "CMS_TEXT[5]",
         ],

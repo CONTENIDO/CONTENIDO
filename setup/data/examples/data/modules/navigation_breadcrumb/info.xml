@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>navigation_breadcrumb</name><description>Breadcrumb navigation</description><type></type><alias>navigation_breadcrumb</alias></module>
+<module>
+    <name>navigation_breadcrumb</name>
+    <description>Breadcrumb navigation</description>
+    <type></type>
+    <alias>navigation_breadcrumb</alias>
+</module>

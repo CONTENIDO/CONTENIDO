@@ -238,7 +238,7 @@ body.no-media .hide_desktop {
 		width: 100%;
 	}
 	#contact_form input[type="checkbox"] {
-		margin: 10px 3px 3px 0px;
+		margin: 10px 3px 3px 0;
 	}
 	#contact_form_submit_left,
 	#contact_form_submit_right {
@@ -434,9 +434,9 @@ body.no-media .hide_desktop {
 		background: black;
 		background: rgba(0,0,0,0.8);
 		bottom: 0;
-		-webkit-box-shadow: -10px 8px 35px 0px rgba(0,0,0,0.75);
-		-moz-box-shadow: -10px 8px 35px 0px rgba(0,0,0,0.75);
-		box-shadow: -10px 8px 35px 0px rgba(0,0,0,0.75);
+		-webkit-box-shadow: -10px 8px 35px 0 rgba(0,0,0,0.75);
+		-moz-box-shadow: -10px 8px 35px 0 rgba(0,0,0,0.75);
+		box-shadow: -10px 8px 35px 0 rgba(0,0,0,0.75);
 		right: -280px;
 		margin: 0;
 		overflow-y: auto;

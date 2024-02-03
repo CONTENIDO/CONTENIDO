@@ -21,11 +21,11 @@ if (0 < $configIdart) {
     $article = new cApiArticleLanguage($configIdart);
 
     $url = [
-        'rss'        => $article->getContent('CMS_TEXT', 1),
-        'facebook'   => $article->getContent('CMS_TEXT', 2),
+        'rss' => $article->getContent('CMS_TEXT', 1),
+        'facebook' => $article->getContent('CMS_TEXT', 2),
         'googleplus' => $article->getContent('CMS_TEXT', 3),
-        'twitter'    => $article->getContent('CMS_TEXT', 4),
-        'xing'       => $article->getContent('CMS_TEXT', 5),
+        'twitter' => $article->getContent('CMS_TEXT', 4),
+        'xing' => $article->getContent('CMS_TEXT', 5),
     ];
 
     // use smarty template to output header text

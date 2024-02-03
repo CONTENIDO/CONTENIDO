@@ -25,7 +25,7 @@ $categoryHelper->setAuth(cRegistry::getAuth());
 $tree = $categoryHelper->getSubCategories($rootIdcat, $depth);
 
 // get path (breadcrumb) of current category
-$path = array_map(function(cApiCategoryLanguage $item) {
+$path = array_map(function (cApiCategoryLanguage $item) {
     return $item->get('idcat');
 }, $categoryHelper->getCategoryPath(cRegistry::getCategoryId()));
 

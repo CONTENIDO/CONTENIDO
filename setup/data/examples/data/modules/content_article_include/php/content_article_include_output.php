@@ -110,8 +110,8 @@ if ($saved === true) {
 }
 
 // Check data
-$cms_idcat =  cSecurity::toInteger($cms_idcat);
-$cms_idcatart =  cSecurity::toInteger($cms_idcatart);
+$cms_idcat = cSecurity::toInteger($cms_idcat);
+$cms_idcatart = cSecurity::toInteger($cms_idcatart);
 
 // Create article select
 $selectElement = new cHTMLSelectElement("articleselect_" . $curContainerId, "", "articleselect_" . $curContainerId);
@@ -150,7 +150,7 @@ $tpl->assign("id", $curContainerId);
 $tpl->assign("backendUrl", cRegistry::getBackendUrl());
 $tpl->assign("categorySelect", buildCategorySelect("categoryselect_" . $curContainerId, $cms_idcat));
 $tpl->assign("articleSelect", $selectElement->toHtml());
-$tpl->assign("ajaxUrl", cRegistry::getBackendUrl() ."ajaxmain.php");
+$tpl->assign("ajaxUrl", cRegistry::getBackendUrl() . "ajaxmain.php");
 $tpl->assign("articleIncludeSettingsLabel", mi18n("ARTICLE_INCLUDE_SETTINGS_LABEL"));
 $tpl->assign("articleIncludeChooseCategoryLabel", mi18n("ARTICLE_INCLUDE_CHOOSE_CATEGORY_LABEL"));
 $tpl->assign("articleIncludeChooseArticleLabel", mi18n("ARTICLE_INCLUDE_CHOOSE_ARTICLE_LABEL"));

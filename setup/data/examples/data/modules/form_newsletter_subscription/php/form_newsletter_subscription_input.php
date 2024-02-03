@@ -16,7 +16,7 @@ $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 $client = cSecurity::toInteger(cRegistry::getClientId());
 
 // Initialisation
-$oClientLang       = new cApiClientLanguage(false, $client, $lang);
+$oClientLang = new cApiClientLanguage(false, $client, $lang);
 
 /*
  *  Used variables:
@@ -28,11 +28,11 @@ $oClientLang       = new cApiClientLanguage(false, $client, $lang);
  */
 
 $aSettings = [
-    'JoinSel'         => $oClientLang->getProperty('newsletter', 'joinsel'),
-    'JoinMultiple'    => $oClientLang->getProperty('newsletter', 'joinmultiple'),
-    'JoinGroups'      => $oClientLang->getProperty('newsletter', 'joingroups'),
+    'JoinSel' => $oClientLang->getProperty('newsletter', 'joinsel'),
+    'JoinMultiple' => $oClientLang->getProperty('newsletter', 'joinmultiple'),
+    'JoinGroups' => $oClientLang->getProperty('newsletter', 'joingroups'),
     'JoinMessageType' => $oClientLang->getProperty('newsletter', 'joinmessagetype'),
-    'OptNewWindow'    => "CMS_VALUE[4]",
+    'OptNewWindow' => "CMS_VALUE[4]",
 ];
 
 // Setting default values
@@ -109,7 +109,7 @@ $oCfgTable = new UI_Config_Table();
 $oHidAction = new cHTMLHiddenField($aFormFields['hidAction'], 'save');
 
 $oSelHandlerCatArt = new cHTMLInputSelectElement($aFormFields['selHandlerCatArt'], '', '', true);
-$oOption           = new cHTMLOptionElement(mi18n("PLEASE_SELECT"), '');
+$oOption = new cHTMLOptionElement(mi18n("PLEASE_SELECT"), '');
 $oSelHandlerCatArt->addOptionElement(0, $oOption);
 $oSelHandlerCatArt->addCategories(0, true, false, false, true);
 $oSelHandlerCatArt->setDefault($iHandlerCatArt);
@@ -121,12 +121,12 @@ $oCkbUpdate->setLabelText(mi18n("UPDATE"));
 $oCfgTable->setCell('handler', 0, mi18n("HANDLER_ARTICLE"));
 $oCfgTable->setCellClass('handler', 1, $aFormFields['ckbUpdateHandlerID'] . '_wrapper');
 $oCfgTable->setCell('handler', 1, $oHidAction->render() . $oSelHandlerCatArt->render() . "\n " . $oCkbUpdate->toHtml());
-$sCssStyle .= '<style>.' .  $aFormFields['ckbUpdateHandlerID'] . '_wrapper .checkbox_wrapper {display:inline-block;}</style>';
+$sCssStyle .= '<style>.' . $aFormFields['ckbUpdateHandlerID'] . '_wrapper .checkbox_wrapper {display:inline-block;}</style>';
 
 // Getting newsletter groups (if any)
 $oRcpGroups = new NewsletterRecipientGroupCollection();
 $oRcpGroups->setWhere('idclient', $client);
-$oRcpGroups->setWhere('idlang',   $lang);
+$oRcpGroups->setWhere('idlang', $lang);
 $oRcpGroups->setWhere('defaultgroup', '0');
 $oRcpGroups->setOrder('defaultgroup DESC, groupname ASC');
 $oRcpGroups->query();
@@ -161,10 +161,10 @@ if ($oRcpGroups->count() == 0) {
 
     // Join the groups the user has selected (-> provide a list for the user), optionally, the user may select more than one group
     if ($aSettings['JoinSel'] == 'UserSelected') {
-        $oRadJoinUserSel  = new cHTMLRadioButton($aFormFields['radJoin'], 'UserSelected', '', true);
+        $oRadJoinUserSel = new cHTMLRadioButton($aFormFields['radJoin'], 'UserSelected', '', true);
         $oCkbJoinMultiple = new cHTMLCheckbox($aFormFields['ckbJoinMultiple'], 'enabled', '', $aSettings['JoinMultiple']);
     } else {
-        $oRadJoinUserSel  = new cHTMLRadioButton($aFormFields['radJoin'], 'UserSelected');
+        $oRadJoinUserSel = new cHTMLRadioButton($aFormFields['radJoin'], 'UserSelected');
         $oCkbJoinMultiple = new cHTMLCheckbox($aFormFields['ckbJoinMultiple'], 'enabled', '', false, true);
     }
     $oRadJoinUserSel->setLabelText(mi18n("GROUP_USER_SELECTED"));

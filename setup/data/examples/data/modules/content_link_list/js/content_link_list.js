@@ -1,8 +1,7 @@
-
 //This function adds new hidden element to the form and submits the form.
-$(function() {
+$(function () {
 
-    $('[data-content-link-list-action]').live('click', function() {
+    $('[data-content-link-list-action]').live('click', function () {
         var $element = $(this),
             action = $element.data('content-link-list-action');
         if (action === 'create_link_fields') {

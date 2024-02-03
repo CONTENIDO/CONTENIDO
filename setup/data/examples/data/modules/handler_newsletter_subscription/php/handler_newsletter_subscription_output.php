@@ -43,17 +43,17 @@ if (!class_exists('NewsletterJobCollection')) {
      * ChangeEMailID: ID of change e-mail handler article ???
      */
     $aSettings = [
-        'JoinSel'         => $oClientLang->getProperty('newsletter', 'joinsel'),
-        'JoinMultiple'    => $oClientLang->getProperty('newsletter', 'joinmultiple'),
-        'JoinGroups'      => $oClientLang->getProperty('newsletter', 'joingroups'),
+        'JoinSel' => $oClientLang->getProperty('newsletter', 'joinsel'),
+        'JoinMultiple' => $oClientLang->getProperty('newsletter', 'joinmultiple'),
+        'JoinGroups' => $oClientLang->getProperty('newsletter', 'joingroups'),
         'JoinMessageType' => $oClientLang->getProperty('newsletter', 'joinmessagetype'),
         // Note: Stored for client, as frontendusers are language independent
-        'FrontendLink'    => $oClient->getProperty('newsletter', 'frontendlink'),
+        'FrontendLink' => $oClient->getProperty('newsletter', 'frontendlink'),
         'FrontendConfirm' => "CMS_VALUE[5]",
-        'FrontendDel'     => "CMS_VALUE[6]",
+        'FrontendDel' => "CMS_VALUE[6]",
         // This one could be recycled by other modules...
-        'SenderEMail'     => $oClient->getProperty('global', 'sender-email'),
-        'HandlerID'       => $oClientLang->getProperty('newsletter', 'idcatart'),
+        'SenderEMail' => $oClient->getProperty('global', 'sender-email'),
+        'HandlerID' => $oClientLang->getProperty('newsletter', 'idcatart'),
     ];
 
     $sTemplate = 'get.tpl';
@@ -266,7 +266,7 @@ if (!class_exists('NewsletterJobCollection')) {
                 if (($frontenduser = $oFrontendUsers->next()) !== false) {
                     $frontenduser->set('active', 1);
                     $sPassword = cString::getPartOfString(md5(rand()), 0, 8); // Generating
-                                                            // password
+                    // password
                     $frontenduser->set('password', $sPassword);
                     $frontenduser->store();
 

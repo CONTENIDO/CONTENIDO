@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>head_title</name><description>Output of the head title</description><type></type><alias>head_title</alias></module>
+<module>
+    <name>head_title</name>
+    <description>Output of the head title</description>
+    <type></type>
+    <alias>head_title</alias>
+</module>

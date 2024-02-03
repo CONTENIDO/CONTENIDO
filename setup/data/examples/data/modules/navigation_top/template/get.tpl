@@ -11,13 +11,14 @@
             {assign var="aClass" value=''}
         {/if}
         <li>
-            <a class="{$aClass|escape}" href="{$url|escape}" title="{$name|escape}">{$name|escape}</a>
-        {if $idcat|in_array:$path}
-            {include file="navigation_top/template/get.tpl"
+            <a class="{$aClass|escape}" href="{$url|escape}"
+               title="{$name|escape}">{$name|escape}</a>
+            {if $idcat|in_array:$path}
+                {include file="navigation_top/template/get.tpl"
                 tree=$wrapper.subcats path=$path}
-        {/if}
+            {/if}
         </li>
-     {/foreach}
+    {/foreach}
 </ul>
 
 <!-- /navigation_top/template/get.tpl -->

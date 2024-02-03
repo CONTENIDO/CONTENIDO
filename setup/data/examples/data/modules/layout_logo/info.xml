@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>layout_logo</name><description>Output of the CONTENIDO logo</description><type>layout</type><alias>layout_logo</alias></module>
+<module>
+    <name>layout_logo</name>
+    <description>Output of the CONTENIDO logo</description>
+    <type>layout</type>
+    <alias>layout_logo</alias>
+</module>

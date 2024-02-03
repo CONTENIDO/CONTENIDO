@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>navigation_bottom</name><description>Bottom navigation</description><type>navigation</type><alias>navigation_bottom</alias></module>
+<module>
+    <name>navigation_bottom</name>
+    <description>Bottom navigation</description>
+    <type>navigation</type>
+    <alias>navigation_bottom</alias>
+</module>
