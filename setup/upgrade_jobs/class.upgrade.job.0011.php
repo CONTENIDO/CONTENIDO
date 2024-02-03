@@ -24,17 +24,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0011 extends cUpgradeJobAbstract {
+class cUpgradeJob_0011 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.3";
 
-    public function _execute() {
-        global $db, $cfg;
-
-        if ($_SESSION['setuptype'] == 'upgrade' && $cfg['tab']['pifa_form'] != "") {
-            $db->query('
+    public function _execute()
+    {
+        $pifaFormTable = cRegistry::getDbTableName('pifa_form'); 
+        if ($_SESSION['setuptype'] == 'upgrade' && $pifaFormTable != "") {
+            $this->_oDb->query('
                 ALTER TABLE
-                    `' . $cfg['tab']['pifa_form'] . '`
+                    `' . $pifaFormTable . '`
                 ADD
                     `uri`
                     VARCHAR(1023)

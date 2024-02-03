@@ -24,7 +24,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cHTMLAlphaImage extends cHTMLImage
 {
-
     protected $_sClickImage;
 
     protected $_sMouseoverClickImage;
@@ -82,6 +81,7 @@ class cHTMLAlphaImage extends cHTMLImage
  */
 class cHTMLErrorMessageList extends cHTMLDiv
 {
+
     /**
      * @var cHTMLTable
      */
@@ -119,6 +119,7 @@ class cHTMLErrorMessageList extends cHTMLDiv
  */
 class cHTMLFoldableErrorMessage extends cHTMLTableRow
 {
+
     /**
      * @var cHTMLDiv
      */
@@ -236,6 +237,7 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow
  */
 class cHTMLInfoMessage extends cHTMLTableRow
 {
+
     /**
      * TODO: this should not be public!
      * @var cHTMLTableData

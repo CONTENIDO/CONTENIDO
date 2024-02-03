@@ -11,27 +11,27 @@
  * @subpackage Backend_ConfigFile
  * @author     System
  * @copyright  four for business AG <www.4fb.de>
- * @license    https://www.contenido.org/license/LIZENZ.txt
- * @link       https://www.4fb.de
- * @link       https://www.contenido.org
- */
+* @license    https://www.contenido.org/license/LIZENZ.txt
+* @link       https://www.4fb.de
+* @link       https://www.contenido.org
+*/
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $cfg;
 
 /* Section 1: Path settings
- * ------------------------
- *
- * Path settings which will vary along different CONTENIDO settings.
- *
- * A little note about web and server path settings:
- * - A Web Path can be imagined as web addresses. Example:
- *   http://192.168.1.1/test/
- * - A Server Path is the path on the server's hard disk. Example:
- *   /var/www/html/contenido    for Unix systems OR
- *   c:/htdocs/contenido        for Windows systems
- */
+* ------------------------
+*
+* Path settings which will vary along different CONTENIDO settings.
+*
+* A little note about web and server path settings:
+* - A Web Path can be imagined as web addresses. Example:
+*   http://192.168.1.1/test/
+* - A Server Path is the path on the server's hard disk. Example:
+*   /var/www/html/contenido    for Unix systems OR
+*   c:/htdocs/contenido        for Windows systems
+*/
 
 /* The root server path where all frontends reside */
 $cfg['path']['frontend']                = '{CONTENIDO_ROOT}';
@@ -61,12 +61,11 @@ $cfg['path']['all_wysiwyg_html']        = $cfg['path']['contenido_fullhtml'] . '
 $cfg['path']['wysiwyg_html']            = $cfg['path']['all_wysiwyg_html'] . $cfg['wysiwyg']['editor'] . '/';
 
 
-
 /* Section 2: Database settings
- * ----------------------------
- *
- * Database settings for MySQLi/MySQL. Note that we don't support other databases.
- */
+* ----------------------------
+*
+* Database settings for MySQLi/MySQL. Note that we don't support other databases.
+*/
 
 /* The prefix for all CONTENIDO system tables, usually 'con' */
 $cfg['sql']['sqlprefix'] = '{MYSQL_PREFIX}';
@@ -75,34 +74,34 @@ $cfg['sql']['sqlprefix'] = '{MYSQL_PREFIX}';
 $cfg['database_extension'] = '{DB_EXTENSION}';
 
 /**
- * Extended database settings. This settings will be used from CONTENIDO 4.9.0.
- *
- * @since  CONTENIDO version 4.9.0
- */
+* Extended database settings. This settings will be used from CONTENIDO 4.9.0.
+*
+* @since  CONTENIDO version 4.9.0
+*/
 $cfg['db'] = [
-    'connection' => [
-        'host'     => '{MYSQL_HOST}', // (string) The host where your database runs on
-        'database' => '{MYSQL_DB}',   // (string) The database name which you use
-        'user'     => '{MYSQL_USER}', // (string) The username to access the database
-        'password' => '{MYSQL_PASS}', // (string) The password to access the database
-        'charset'  => '{MYSQL_CHARSET}', // (string) The charset of connection to database
-        'options'  => [
-            // (string[]) Database options
+'connection' => [
+'host'     => '{MYSQL_HOST}', // (string) The host where your database runs on
+'database' => '{MYSQL_DB}',   // (string) The database name which you use
+'user'     => '{MYSQL_USER}', // (string) The username to access the database
+'password' => '{MYSQL_PASS}', // (string) The password to access the database
+'charset'  => '{MYSQL_CHARSET}', // (string) The charset of connection to database
+'options'  => [
+// (string[]) Database options
 {MYSQL_OPTIONS}
-        ],
-    ],
-    'engine'          => '{MYSQL_ENGINE}', // (string) The storage engine for tables
-    'collation'       => '{MYSQL_COLLATION}', // (string) The collation for tables & text fields
-    'haltBehavior'    => 'report', // (string) Feasible values are 'yes', 'no' or 'report'
-    'haltMsgPrefix'   => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
-    'enableProfiling' => false,    // (bool) Flag to enable profiling
+],
+],
+'engine'          => '{MYSQL_ENGINE}', // (string) The storage engine for tables
+'collation'       => '{MYSQL_COLLATION}', // (string) The collation for tables & text fields
+'haltBehavior'    => 'report', // (string) Feasible values are 'yes', 'no' or 'report'
+'haltMsgPrefix'   => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
+'enableProfiling' => false,    // (bool) Flag to enable profiling
 ];
 
 /* Section 3: UTF-8 flag
- * ----------------------------
- *
- * Setting for UTF-8 flag
- *
- * @since	CONTENIDO version 4.9.5
- */
+* ----------------------------
+*
+* Setting for UTF-8 flag
+*
+* @since    CONTENIDO version 4.9.5
+*/
 {CON_UTF8}

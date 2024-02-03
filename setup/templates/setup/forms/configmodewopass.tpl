@@ -1,4 +1,5 @@
-<table cellspacing="0" cellpadding="0" border="0" class="setupBodyOuterTable setupBodyOuterTableConfigModeWopass">
+<table cellspacing="0" cellpadding="0" border="0"
+       class="setupBodyOuterTable setupBodyOuterTableConfigModeWopass">
     <tr class="row-1">
         <td colspan="2" style="height:60px;overflow:hidden;">
             <h1>{TITLE}</h1>
@@ -7,7 +8,8 @@
     </tr>
     <tr class="row-2">
         <td class="column-1">
-            <div class="description">{LABEL_DESCRIPTION}</div><br>
+            <div class="description">{LABEL_DESCRIPTION}</div>
+            <br>
             <table border="0">
                 <tr>
                     <td style="padding-right: 30px;">{CONTROL_SAVE}</td>

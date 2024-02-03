@@ -23,7 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cSetupInstaller extends cSetupMask
 {
 
-    public function __construct(int $step) {
+    public function __construct(int $step)
+    {
         parent::__construct("templates/setup/forms/installer.tpl", $step);
 
         $this->_stepTemplateClass->set("s", "IFRAMEVISIBILITY", (CON_SETUP_DEBUG) ? 'visible' : 'hidden');

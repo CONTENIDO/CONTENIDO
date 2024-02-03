@@ -21,15 +21,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0015 extends cUpgradeJobAbstract {
+class cUpgradeJob_0015 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.4";
 
-    public function _execute() {
-        global $db, $cfg;
-
+    public function _execute()
+    {
         if ($_SESSION['setuptype'] == 'upgrade') {
-            $db->query('UPDATE ' . $cfg['tab']['upl'] . ' SET dirname="" WHERE dirname="/"');
+            $this->_oDb->query('UPDATE ' . cRegistry::getDbTableName('upl') . ' SET dirname="" WHERE dirname="/"');
         }
     }
 

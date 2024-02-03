@@ -25,7 +25,7 @@ if (checkMySQLDatabaseCreation($db, $_SESSION['dbname'], $_SESSION['dbcharset'],
     $db = getSetupMySQLDBConnection();
 }
 
-$currentStep = (isset($_GET['step']) && (int) $_GET['step'] > 0) ? (int) $_GET['step'] : 0;
+$currentStep = (isset($_GET['step']) && (int)$_GET['step'] > 0) ? (int)$_GET['step'] : 0;
 
 if ($currentStep == 0) {
     $currentStep = 1;
@@ -94,7 +94,7 @@ foreach ($fullChunks as $fullChunk) {
     if ($step == $currentStep) {
         $replacements = [
             '<!--{contenido_root}-->' => addslashes($rootPath),
-            '<!--{contenido_web}-->'  => addslashes($rootHttpPath),
+            '<!--{contenido_web}-->' => addslashes($rootHttpPath),
             '!CHARSET!' => $cfg['db']['connection']['charset'],
         ];
 

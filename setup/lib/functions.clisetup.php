@@ -105,15 +105,15 @@ function initializeVariables()
 
     $cfg['db'] = [
         'connection' => [
-            'host'     => '',
-            'user'     => '',
+            'host' => '',
+            'user' => '',
             'password' => '',
-            'charset'  => '',
+            'charset' => '',
             'database' => '',
-            'options'  => [],
+            'options' => [],
         ],
-        'haltBehavior'    => 'report',
-        'haltMsgPrefix'   => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
+        'haltBehavior' => 'report',
+        'haltMsgPrefix' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
         'enableProfiling' => false
     ];
     $_SESSION['setuptype'] = 'setup';

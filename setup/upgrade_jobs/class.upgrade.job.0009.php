@@ -21,10 +21,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0009 extends cUpgradeJobAbstract {
+class cUpgradeJob_0009 extends cUpgradeJobAbstract
+{
     public $maxVersion = "4.9.0";
 
-    public function _execute() {
+    public function _execute()
+    {
 
         if ($this->_setupType !== 'setup') {
             return;
@@ -114,7 +116,8 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
     /**
      * @throws cInvalidArgumentException
      */
-    private function _copyClientConfigFiles() {
+    private function _copyClientConfigFiles()
+    {
 
         // copy concache.php
         if (!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data")) {

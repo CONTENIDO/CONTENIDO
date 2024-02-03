@@ -17,16 +17,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $cfg;
 
 // Report all errors except warnings
-error_reporting(E_ALL ^E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE);
 
 header('Content-Type: text/html; charset=ISO-8859-1');
 
 /**
  * Setup file inclusion
  *
- * @param  string  $filename
+ * @param string $filename
  */
-function checkAndInclude(string $filename) {
+function checkAndInclude(string $filename)
+{
     if (file_exists($filename) && is_readable($filename)) {
         include_once($filename);
     } else {
@@ -83,7 +84,7 @@ if (is_array($_REQUEST)) {
 }
 
 // Set max_execution_time
-$maxExecutionTime = (int) ini_get('max_execution_time');
+$maxExecutionTime = (int)ini_get('max_execution_time');
 if ($maxExecutionTime < 60 && $maxExecutionTime !== 0) {
     ini_set('max_execution_time', 60);
 }

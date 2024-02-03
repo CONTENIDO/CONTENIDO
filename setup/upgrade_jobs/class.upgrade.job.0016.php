@@ -21,75 +21,67 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0016 extends cUpgradeJobAbstract {
+class cUpgradeJob_0016 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.5";
 
-    public function _execute() {
-        global $db, $cfg;
-
+    public function _execute()
+    {
         if ($_SESSION['setuptype'] == 'upgrade') {
-
-			// GROUPS
-			$groupColl = new cApiGroupCollection();
+            // GROUPS
+            $groupColl = new cApiGroupCollection();
 
             // Get all created groups
             $groupColl->select();
 
             while ($group = $groupColl->next()) {
+                $groupname = stripcslashes(preg_replace("/\"/", "", ($group->get('groupname'))));
+                $description = stripcslashes(preg_replace("/\"/", "", ($group->get('description') ?? '')));
 
-				$groupname = stripcslashes(preg_replace("/\"/", "", ($group->get('groupname'))));
-				$description = stripcslashes(preg_replace("/\"/", "", ($group->get('description') ?? '')));
+                $group->set('groupname', $groupname);
+                $group->set('description', $description);
 
-				$group->set('groupname', $groupname);
-				$group->set('description', $description);
-
-				// Update group
+                // Update group
                 $group->store();
+            }
 
-			}
+            // METATAGS
+            $metaColl = new cApiMetaTagCollection();
 
-			// METATAGS
-			$metaColl = new cApiMetaTagCollection();
-
-			// Get all created metatags
+            // Get all created metatags
             $metaColl->select();
 
             while ($meta = $metaColl->next()) {
+                $metavalue = stripcslashes(preg_replace("/\"/", "", ($meta->get('metavalue'))));
+                $meta->set('metavalue', $metavalue);
 
-				$metavalue = stripcslashes(preg_replace("/\"/", "", ($meta->get('metavalue'))));
-				$meta->set('metavalue', $metavalue);
-
-				// Update metatags
+                // Update metatags
                 $meta->store();
+            }
 
-			}
+            // UPLOAD METATAGS
+            $uplColl = new cApiUploadMetaCollection();
 
-			// UPLOAD METATAGS
-			$uplColl = new cApiUploadMetaCollection();
-
-			// Get all created upload metatags
+            // Get all created upload metatags
             $uplColl->select();
 
             while ($upl = $uplColl->next()) {
+                $medianame = stripcslashes(preg_replace("/\"/", "", ($upl->get('medianame'))));
+                $description = stripcslashes(preg_replace("/\"/", "", ($upl->get('description'))));
+                $keywords = stripcslashes(preg_replace("/\"/", "", ($upl->get('keywords'))));
+                $internal_notice = stripcslashes(preg_replace("/\"/", "", ($upl->get('internal_notice'))));
+                $copyright = stripcslashes(preg_replace("/\"/", "", ($upl->get('copyright'))));
 
-				$medianame = stripcslashes(preg_replace("/\"/", "", ($upl->get('medianame'))));
-				$description = stripcslashes(preg_replace("/\"/", "", ($upl->get('description'))));
-				$keywords = stripcslashes(preg_replace("/\"/", "", ($upl->get('keywords'))));
-				$internal_notice = stripcslashes(preg_replace("/\"/", "", ($upl->get('internal_notice'))));
-				$copyright = stripcslashes(preg_replace("/\"/", "", ($upl->get('copyright'))));
+                $upl->set('medianame', $medianame);
+                $upl->set('description', $description);
+                $upl->set('keywords', $keywords);
+                $upl->set('internal_notice', $internal_notice);
+                $upl->set('copyright', $copyright);
 
-				$upl->set('medianame', $medianame);
-				$upl->set('description', $description);
-				$upl->set('keywords', $keywords);
-				$upl->set('internal_notice', $internal_notice);
-				$upl->set('copyright', $copyright);
-
-				// Update upload meta tags
+                // Update upload meta tags
                 $upl->store();
-
-			}
-
+            }
         }
     }
 

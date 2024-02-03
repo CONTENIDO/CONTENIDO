@@ -12,7 +12,7 @@
  * @link       https://www.contenido.org
  */
 
- echo '<!-- Hello begin -->';
+echo '<!-- Hello begin -->';
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 

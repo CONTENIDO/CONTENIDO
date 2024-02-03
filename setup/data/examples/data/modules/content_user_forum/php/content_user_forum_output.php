@@ -66,6 +66,7 @@ $userForumArticle = new ContentUserForumModule([
         'sameOpinion' => mi18n("sameOpinion"),
         'answers' => mi18n("answers"),
         'replyQuote' => mi18n("replyQuote"),
+        'showHideArticles' => mi18n("showHideArticles"),
         'quoteFrom' => mi18n("quoteFrom"),
         'MODEMODETEXT' => mi18n("MODEMODETEXT"),
     ],

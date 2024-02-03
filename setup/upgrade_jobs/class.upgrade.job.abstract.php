@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage UpgradeJob
  */
-abstract class cUpgradeJobAbstract {
+abstract class cUpgradeJobAbstract
+{
 
     /**
      * @var cDb
@@ -79,12 +80,13 @@ abstract class cUpgradeJobAbstract {
 
     /**
      * Constructor, sets some properties
-     * @param  cDb $db
-     * @param  array|mixed  $cfg  Main configuration array
-     * @param  array|mixed  $cfgClient  Clients configuration array
-     * @param  string $version The CONTENIDO version which is upgraded
+     * @param cDb $db
+     * @param array|mixed $cfg Main configuration array
+     * @param array|mixed $cfgClient Clients configuration array
+     * @param string $version The CONTENIDO version which is upgraded
      */
-    public function __construct(cDb $db, $cfg, $cfgClient, $version) {
+    public function __construct(cDb $db, $cfg, $cfgClient, $version)
+    {
         $this->_version = $version;
         $this->_oDb = $db;
         $this->_aCfg = (is_array($cfg)) ? $cfg : $GLOBALS['cfg'];
@@ -112,7 +114,8 @@ abstract class cUpgradeJobAbstract {
      *
      * Do not override this.
      */
-    final public function execute() {
+    final public function execute()
+    {
         if (version_compare($this->_version, $this->maxVersion, "<") || $this->maxVersion === "0") {
             $this->_execute();
         }
@@ -127,7 +130,8 @@ abstract class cUpgradeJobAbstract {
      * Returns list of all available clients
      * @return cApiClient[]
      */
-    protected function _getAllClients() {
+    protected function _getAllClients()
+    {
         $oClientColl = new cApiClientCollection();
         $oClientColl->select();
 
@@ -143,7 +147,8 @@ abstract class cUpgradeJobAbstract {
      * Returns list of all available languages
      * @return cApiLanguage[]
      */
-    protected function _getAllLanguages() {
+    protected function _getAllLanguages()
+    {
         $oLanguageColl = new cApiLanguageCollection();
         $oLanguageColl->select();
 
@@ -157,10 +162,11 @@ abstract class cUpgradeJobAbstract {
 
     /**
      * Logs passed setup error, wrapper for logSetupFailure() function
-     * @param  string  $errorMsg
+     * @param string $errorMsg
      */
-    protected function _logError($errorMsg) {
+    protected function _logError($errorMsg)
+    {
         $className = get_class($this);
-        logSetupFailure($className . ': ' . $errorMsg. "\n");
+        logSetupFailure($className . ': ' . $errorMsg . "\n");
     }
 }

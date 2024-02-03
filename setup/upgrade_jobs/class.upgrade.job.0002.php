@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $cfg;
+$cfg = cRegistry::getConfig();
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.api.string.php');
 
 /**
