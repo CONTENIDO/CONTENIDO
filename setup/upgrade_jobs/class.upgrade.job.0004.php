@@ -113,9 +113,6 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
                     $sSql = "UPDATE " . $cfg['tab']['upl_meta'] . " SET
                             description = '" . $elem['description'] . "'
                             WHERE id_uplmeta = " . $aUplMeta[0]['id_uplmeta'];
-                } else {
-                    //there is already an entry with an exising content in "description"
-                    //do nothing;
                 }
 
                 $db->query($sSql);

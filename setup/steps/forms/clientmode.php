@@ -36,7 +36,7 @@ class cSetupClientMode extends cSetupMask
         $this->_stepTemplateClass->set("s", "TITLE", i18n("Example Client", "setup"));
         $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("If you are new to CONTENIDO, you should create an example client to start working with.", "setup"));
 
-        cArray::initializeKey($_SESSION, "clientmode", "");
+        cArray::initializeKey($_SESSION, "clientmode");
 
         $folders = "";
         $moduleFolderNotEmpty = false;

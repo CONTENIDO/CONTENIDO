@@ -16,13 +16,17 @@ if (!class_exists('NewsletterJobCollection')) {
     echo mi18n("ERROR_CLASS");
 } else {
 
+    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+    $client = cSecurity::toInteger(cRegistry::getClientId());
+
     // Initialisation
     $oClientLang = new cApiClientLanguage(false, $client, $lang);
     $oClient = new cApiClient($client);
     $oRecipients = new NewsletterRecipientCollection();
     $sMessage = " ";
-    unset($recipient); // Unset any existing recipient objects - note, that it
-                       // must be $recipient for the plugins...
+
+    // Unset any existing recipient objects - note, that it must be $recipient for the plugins...
+    unset($recipient);
 
     $frontendURL = cRegistry::getFrontendUrl();
 
@@ -93,6 +97,7 @@ if (!class_exists('NewsletterJobCollection')) {
             }
 
             // Analyze group specification
+            $recipient = '';
             switch ($aSettings['JoinSel']) {
                 case 'Selected':
                     $recipient = $oRecipients->create($sEMail, $sName, 0, $aSettings['JoinGroups'], $iMessageType);

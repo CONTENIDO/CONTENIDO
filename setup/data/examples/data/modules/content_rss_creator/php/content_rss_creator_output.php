@@ -67,7 +67,7 @@ if (cRegistry::getBackendSessionId() === NULL) {
     $rssChannel = $rssFeed->addChild('channel');
     $rssChannel->title = $art->getContent("CMS_TEXT", 1);
     $rssChannel->link = $art->getContent("CMS_TEXT", 2);
-    $rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent("CMS_HTML", 1)));;
+    $rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent("CMS_HTML", 1)));
 
     $imgId = $art->getContent("CMS_IMG", 1);
 

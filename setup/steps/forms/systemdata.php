@@ -35,14 +35,14 @@ class cSetupSystemData extends cSetupMask
 
         parent::__construct('templates/setup/forms/systemdata.tpl', $step);
 
-        cArray::initializeKey($_SESSION, 'dbprefix', '');
-        cArray::initializeKey($_SESSION, 'dbhost', '');
-        cArray::initializeKey($_SESSION, 'dbuser', '');
-        cArray::initializeKey($_SESSION, 'dbname', '');
-        cArray::initializeKey($_SESSION, 'dbpass', '');
-        cArray::initializeKey($_SESSION, 'dbengine', '');
-        cArray::initializeKey($_SESSION, 'dbcharset', '');
-        cArray::initializeKey($_SESSION, 'dbcollation', '');
+        cArray::initializeKey($_SESSION, 'dbprefix');
+        cArray::initializeKey($_SESSION, 'dbhost');
+        cArray::initializeKey($_SESSION, 'dbuser');
+        cArray::initializeKey($_SESSION, 'dbname');
+        cArray::initializeKey($_SESSION, 'dbpass');
+        cArray::initializeKey($_SESSION, 'dbengine');
+        cArray::initializeKey($_SESSION, 'dbcharset');
+        cArray::initializeKey($_SESSION, 'dbcollation');
         cArray::initializeKey($_SESSION, 'dboptions', []);
 
         $this->takeoverExistingDbSettingsToSession();

@@ -58,7 +58,7 @@ if ($_SESSION['setuptype'] == 'setup') {
 if ($_SESSION['configmode'] == 'save') {
     @unlink($cfg['path']['contenido_config'] . 'config.php');
 
-    cFileHandler::create($cfg['path']['contenido_config'] . 'config.php', $tpl->generate('templates/config.php.tpl', true, false));
+    cFileHandler::create($cfg['path']['contenido_config'] . 'config.php', $tpl->generate('templates/config.php.tpl', true));
 
     if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
         $_SESSION['configsavefailed'] = true;
@@ -69,5 +69,5 @@ if ($_SESSION['configmode'] == 'save') {
     header('Content-Type: application/octet-stream');
     header('Etag: ' . md5(mt_rand()));
     header('Content-Disposition: attachment;filename=config.php');
-    $tpl->generate('templates/config.php.tpl', false, false);
+    $tpl->generate('templates/config.php.tpl');
 }

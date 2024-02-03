@@ -12,6 +12,9 @@
  * @link       https://www.4fb.de
  */
 
+/**
+ * @var int $cCurrentContainer
+ */
 
 // Init vars and objects
 $curContainerId = $cCurrentContainer;
@@ -23,7 +26,7 @@ $tpl = cSmartyFrontend::getInstance();
 $saved = false;
 // Template config id
 $CiCMS_Var = 'C' . $curContainerId . 'CMS_VAR';
-
+$postData = [];
 
 // Save send configuration
 if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['articleselect_' . $curContainerId]) || isset($_POST['articleselect_ajax_' . $curContainerId])) && cRegistry::isBackendEditMode()) {
@@ -69,10 +72,7 @@ if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['article
     // Check values and create container value
     $containerData = [];
     if (isset($postData[$CiCMS_Var]) && is_array($postData[$CiCMS_Var])) {
-        if (!isset($containerData[$curContainerId])) {
-            $containerData[$curContainerId] = '';
-        }
-
+        $containerData[$curContainerId] = '';
         foreach ($postData[$CiCMS_Var] as $key => $value) {
             $containerData[$curContainerId] = cApiContainerConfiguration::addContainerValue($containerData[$curContainerId], $key, $value);
         }
@@ -102,8 +102,8 @@ if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['article
 
 // Get settings for values
 if ($saved === true) {
-    $cms_idcat = $postData[$CiCMS_Var][1];
-    $cms_idcatart = $postData[$CiCMS_Var][2];
+    $cms_idcat = $postData[$CiCMS_Var][1] ?? '';
+    $cms_idcatart = $postData[$CiCMS_Var][2] ?? '';
 } else {
     $cms_idcat = "CMS_VALUE[1]";
     $cms_idcatart = "CMS_VALUE[2]";

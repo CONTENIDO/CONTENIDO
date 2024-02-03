@@ -8,6 +8,13 @@
  * @copyright  four for business AG <www.4fb.de>
  */
 
+/**
+ * @var int $cCurrentContainer
+ */
+
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cSecurity::toInteger(cRegistry::getClientId());
+
 // Initialisation
 $oClientLang       = new cApiClientLanguage(false, $client, $lang);
 
@@ -104,7 +111,7 @@ $oHidAction = new cHTMLHiddenField($aFormFields['hidAction'], 'save');
 $oSelHandlerCatArt = new cHTMLInputSelectElement($aFormFields['selHandlerCatArt'], '', '', true);
 $oOption           = new cHTMLOptionElement(mi18n("PLEASE_SELECT"), '');
 $oSelHandlerCatArt->addOptionElement(0, $oOption);
-$oSelHandlerCatArt->addCategories(0, true, false, false, true, true);
+$oSelHandlerCatArt->addCategories(0, true, false, false, true);
 $oSelHandlerCatArt->setDefault($iHandlerCatArt);
 
 $oCkbUpdate = new cHTMLCheckbox($aFormFields['ckbUpdateHandlerID'], 'enabled');

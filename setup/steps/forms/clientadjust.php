@@ -79,7 +79,7 @@ class cSetupClientAdjust extends cSetupMask
             }
 
             if ($_SESSION['htmlpath'][$idclient] == "") {
-                // Use frontendpath instead of htmlpath as the directories should be aligned pairwhise
+                // Use frontendpath instead of htmlpath as the directories should be aligned pairwise
                 $iDifferencePos = findSimilarText($cfg['path']['frontend'] . "/", $frontendPath);
                 if ($iDifferencePos > 0) {
                     $sClientPath = $a_root_http_path . "/" . cString::getPartOfString($frontendPath, $iDifferencePos + 1, cString::getStringLength($frontendPath) - $iDifferencePos);

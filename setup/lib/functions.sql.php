@@ -17,15 +17,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Executes a file of SQL queries
  *
- * @param cDb    $db
+ * @param cDb $db
  * @param string $prefix
  * @param string $file
- * @param array  $replacements
+ * @param array $replacements
  *
  * @return bool
  * @throws cInvalidArgumentException
  */
-function injectSQL($db, $prefix, $file, $replacements = []) {
+function injectSQL(cDb $db, string $prefix, string $file, array $replacements = [])
+{
     $file = trim($file);
 
     if (!is_readable($file)) {
@@ -63,7 +64,8 @@ function injectSQL($db, $prefix, $file, $replacements = []) {
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
-function addAutoIncrementToTables($db, $cfg) {
+function addAutoIncrementToTables(cDB $db, array $cfg)
+{
     // All primary keys in tables except these below!
     $filterTables = [
         $cfg['sql']['sqlprefix'] . '_groups',
@@ -105,10 +107,11 @@ function addAutoIncrementToTables($db, $cfg) {
 
 /**
  * Adds salts to the passwords of the backend and frontend users. Converts old passwords into new ones
- * @param object $db The database object
+ * @param cDb $db The database object
  * @throws cDbException
  */
-function addSaltsToTables($db) {
+function addSaltsToTables(cDb $db)
+{
     global $cfg;
 
     $db2 = getSetupMySQLDBConnection();
@@ -122,8 +125,8 @@ function addSaltsToTables($db) {
     $db->query("SELECT * FROM `%s`", $cfg["tab"]["user"]);
     while ($db->nextRecord()) {
         if ($db->f("salt") == "") {
-            $salt = md5($db->f("username").rand(1000, 9999).rand(1000, 9999).rand(1000, 9999));
-            $hash = hash("sha256", $db->f("password").$salt);
+            $salt = md5($db->f("username") . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
+            $hash = hash("sha256", $db->f("password") . $salt);
             $db2->query(
                 "UPDATE `%s` SET salt='%s', password='%s' WHERE user_id='%s'",
                 $cfg["tab"]["user"], $salt, $hash, $db->f("user_id")
@@ -140,8 +143,8 @@ function addSaltsToTables($db) {
     $db->query("SELECT * FROM `%s`", $cfg["tab"]["frontendusers"]);
     while ($db->nextRecord()) {
         if ($db->f("salt") == "") {
-            $salt = md5($db->f("username").rand(1000, 9999).rand(1000, 9999).rand(1000, 9999));
-            $hash = hash("sha256", $db->f("password").$salt);
+            $salt = md5($db->f("username") . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
+            $hash = hash("sha256", $db->f("password") . $salt);
             $db2->query(
                 "UPDATE `%s` SET salt='%s', password='%s' WHERE idfrontenduser='%s'",
                 $cfg["tab"]["frontendusers"], $salt, $hash, $db->f("idfrontenduser")
@@ -150,7 +153,8 @@ function addSaltsToTables($db) {
     }
 }
 
-function urlDecodeTables($db) {
+function urlDecodeTables(cDb $db)
+{
     global $cfg;
 
     urlDecodeTable($db, $cfg['tab']['frontendusers']);
@@ -167,7 +171,8 @@ function urlDecodeTables($db) {
     urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pi_news_jobs', true);
 }
 
-function urlDecodeTable($db, $table, $checkTableExists = false) {
+function urlDecodeTable(cDb $db, string $table, bool $checkTableExists = false)
+{
     if ($checkTableExists === true) {
         $db->query("SHOW TABLES LIKE '%s'", $table);
         if ($db->nextRecord() === false) {
@@ -180,8 +185,7 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
     $db2 = getSetupMySQLDBConnection(false);
 
     while ($db->nextRecord()) {
-
-        $row = $db->toArray(cDb::FETCH_ASSOC);
+        $row = $db->toArray();
 
         $sql = "UPDATE `" . $table . "` SET ";
         foreach ($row as $key => $value) {
@@ -201,7 +205,8 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
     }
 }
 
-function convertToDatetime($db, $cfg) {
+function convertToDatetime(cDb $db, array $cfg)
+{
     $db->query("SHOW TABLES LIKE '%s'", $cfg['sql']['sqlprefix'] . '_piwf_art_allocation');
     if ($db->nextRecord()) {
         $db->query("ALTER TABLE `%s` CHANGE `starttime` `starttime` DATETIME NOT NULL", $cfg['sql']['sqlprefix'] . '_piwf_art_allocation');
@@ -214,13 +219,14 @@ function convertToDatetime($db, $cfg) {
  * Converts a table field value of type date to a datetime format ('YYYY-MM-DD HH:MM:SS'),
  * if the value has the date format ('YYYY-MM-DD').
  *
- * @param  cDb  $db
- * @param  string  $table
- * @param  string  $field
- * @param  string  $defaultTime - Format has to be 'HH:MM:SS'
+ * @param cDb $db
+ * @param string $table
+ * @param string $field
+ * @param string $defaultTime - Format has to be 'HH:MM:SS'
  * @throws cDbException
  */
-function convertDateValuesToDateTimeValue($db, $table, $field, $defaultTime = '00:00:00') {
+function convertDateValuesToDateTimeValue(cDb $db, string $table, string $field, string $defaultTime = '00:00:00')
+{
     // Update format 'YYYY-MM-DD' to 'YYYY-MM-DD 00:00:00'
     $sql = "UPDATE `:table` SET `:field` = CONCAT(`:field`, ' ', ':time') WHERE CHAR_LENGTH(`:field`) = 10";
     $db->query($sql, ['table' => $table, 'field' => $field, 'time' => $defaultTime]);
@@ -230,14 +236,17 @@ function convertDateValuesToDateTimeValue($db, $table, $field, $defaultTime = '0
  * Converts a table field value of type date to a datetime format ('YYYY-MM-DD HH:MM:SS'),
  * if the value is null (null or empty string).
  *
- * @param  cDb  $db
- * @param  string  $table
- * @param  string  $field
- * @param  string  $defaultDateTime - Format has to be 'YYYY-MM-DD HH:MM:SS'.
+ * @param cDb $db
+ * @param string $table
+ * @param string $field
+ * @param string $defaultDateTime - Format has to be 'YYYY-MM-DD HH:MM:SS'.
  *     You can also use 'CURRENT_TIMESTAMP' or 'NOW()' to update the field to current timestamp.
  * @throws cDbException
  */
-function convertNullDateValuesToDateTimeValue($db, $table, $field, $defaultDateTime = '0000-00-00 00:00:00') {
+function convertNullDateValuesToDateTimeValue(
+    cDb $db, string $table, string $field, string $defaultDateTime = '0000-00-00 00:00:00'
+)
+{
     // Update '' or NULL values to '0000-00-00 00:00:00'
     if ($defaultDateTime === 'CURRENT_TIMESTAMP' || $defaultDateTime === 'NOW()') {
         $sql = "UPDATE `:table` SET :field = :datetime WHERE `:field` IS NULL";
@@ -253,7 +262,8 @@ function convertNullDateValuesToDateTimeValue($db, $table, $field, $defaultDateT
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
-function alterTableHandling($tableName) {
+function alterTableHandling(string $tableName)
+{
     $db = getSetupMySQLDBConnection(false);
     $dbAlter = getSetupMySQLDBConnection(false);
 
@@ -274,28 +284,27 @@ function alterTableHandling($tableName) {
 /**
  * Will strip the sql comment lines out of an uploaded sql file
  * specifically for mssql and postgres type files in the install....
- * @param   string  $output
+ * @param string $output
  * @return  string
  */
-function removeComments(&$output) {
+function removeComments(string &$output): string
+{
     $lines = explode("\n", $output);
+    $lineCount = count($lines);
     $output = "";
+    $inComment = false;
 
-    // try to keep mem. use down
-    $linecount = count($lines);
-
-    $in_comment = false;
-    for ($i = 0; $i < $linecount; $i++) {
+    for ($i = 0; $i < $lineCount; $i++) {
         if (preg_match("/^\/\*/", preg_quote($lines[$i]))) {
-            $in_comment = true;
+            $inComment = true;
         }
 
-        if (!$in_comment) {
+        if (!$inComment) {
             $output .= $lines[$i] . "\n";
         }
 
         if (preg_match("/\*\/$/", preg_quote($lines[$i]))) {
-            $in_comment = false;
+            $inComment = false;
         }
     }
 
@@ -305,20 +314,17 @@ function removeComments(&$output) {
 
 /**
  * Will strip the sql comment lines out of an uploaded sql file
- * @param   string  $sql
- * @return  array
+ * @param string $sql
+ * @return  string
  */
-function removeRemarks($sql) {
+function removeRemarks(string $sql): string
+{
     $lines = explode("\n", $sql);
-
-    // try to keep mem. use down
-    $sql = "";
-
-    $linecount = count($lines);
+    $lineCount = count($lines);
     $output = "";
 
-    for ($i = 0; $i < $linecount; $i++) {
-        if (($i != ($linecount - 1)) || (cString::getStringLength($lines[$i]) > 0)) {
+    for ($i = 0; $i < $lineCount; $i++) {
+        if (($i != ($lineCount - 1)) || (cString::getStringLength($lines[$i]) > 0)) {
             if (!empty($lines[$i]) && $lines[$i][0] != "#") {
                 $output .= $lines[$i] . "\n";
             } else {
@@ -335,27 +341,26 @@ function removeRemarks($sql) {
 /**
  * Will split an uploaded sql file into single sql statements.
  * Note: expects trim() to have already been run on $sql.
- * @param   string  $sql
- * @param   string  $delimiter
+ *
+ * @param string $sql
+ * @param string $delimiter
  * @return  array
  */
-function splitSqlFile($sql, $delimiter) {
+function splitSqlFile(string $sql, string $delimiter): array
+{
     // Split up our string into "possible" SQL statements.
     $tokens = explode($delimiter, $sql);
-
-    // try to save memory
-    $sql = '';
 
     $output = [];
 
     // we don't actually care about the matches preg gives us.
     $matches = [];
 
-    // this is faster than calling count($oktens) every time thru the loop.
-    $token_count = count($tokens);
-    for ($i = 0; $i < $token_count; $i++) {
-        // Don't wanna add an empty string as the last thing in the array.
-        if (($i != ($token_count - 1)) || (cString::getStringLength($tokens[$i] > 0))) {
+    // this is faster than calling count($oktens) every time through the loop.
+    $tokenCount = count($tokens);
+    for ($i = 0; $i < $tokenCount; $i++) {
+        // Don't want to add an empty string as the last thing in the array.
+        if (($i != ($tokenCount - 1)) || (cString::getStringLength($tokens[$i] > 0))) {
             // This is the total number of single quotes in the token.
             $total_quotes = preg_match_all("/'/", $tokens[$i], $matches);
             // Counts single quotes that are preceded by an odd number of backslashes,
@@ -380,7 +385,7 @@ function splitSqlFile($sql, $delimiter) {
                 // Do we have a complete statement yet?
                 $complete_stmt = false;
 
-                for ($j = $i + 1; (!$complete_stmt && ($j < $token_count)); $j++) {
+                for ($j = $i + 1; (!$complete_stmt && ($j < $tokenCount)); $j++) {
                     // This is the total number of single quotes in the token.
                     $total_quotes = preg_match_all("/'/", $tokens[$j], $matches);
                     // Counts single quotes that are preceded by an odd number of backslashes,

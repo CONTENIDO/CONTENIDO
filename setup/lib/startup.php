@@ -95,7 +95,7 @@ checkAndInclude($cfg['path']['contenido_config'] . 'config.misc.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
 // Takeover configured PHP settings and set some PHP settings
-setupUpdateConfig();
+setupUpdatePHPConfig();
 
 // Initialization of autoloader
 checkAndInclude($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');

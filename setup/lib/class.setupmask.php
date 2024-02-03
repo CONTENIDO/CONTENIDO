@@ -67,7 +67,7 @@ class cSetupMask
      * @param string $stepTemplate
      * @param bool|int $step
      */
-    public function __construct($stepTemplate, $step = false)
+    public function __construct(string $stepTemplate, $step = false)
     {
         $this->_tpl = new cTemplate();
         $this->_stepTemplateClass = new cTemplate();
@@ -77,8 +77,8 @@ class cSetupMask
     }
 
     /**
-     * @param $backstep string
-     * @param $nextstep string
+     * @param string $backstep
+     * @param string $nextstep
      */
     public function setNavigation($backstep, $nextstep)
     {
@@ -88,7 +88,7 @@ class cSetupMask
     }
 
     /**
-     * @param $header string
+     * @param string $header
      */
     public function setHeader($header)
     {
@@ -149,9 +149,9 @@ class cSetupMask
         $this->_tpl->set("s", "HEADER", $this->_sHeader);
         $this->_tpl->set("s", "TITLE", "CONTENIDO Setup - " . $this->_sHeader);
 
-        $this->_tpl->set("s", "CONTENT", $this->_stepTemplateClass->generate($this->_stepTemplate, true, false));
+        $this->_tpl->set("s", "CONTENT", $this->_stepTemplateClass->generate($this->_stepTemplate, true));
 
-        $this->_tpl->generate("templates/setup.tpl", false, false);
+        $this->_tpl->generate("templates/setup.tpl");
     }
 
     public function renderSystemCheck()
@@ -169,9 +169,9 @@ class cSetupMask
         $this->_tpl->set("s", "HEADER", '');
         $this->_tpl->set("s", "TITLE", '');
 
-        $this->_tpl->set("s", "CONTENT", $this->_stepTemplateClass->generate($this->_stepTemplate, true, false));
+        $this->_tpl->set("s", "CONTENT", $this->_stepTemplateClass->generate($this->_stepTemplate, true));
 
-        $this->_tpl->generate("templates/systemcheck/setup.tpl", false, false);
+        $this->_tpl->generate("templates/systemcheck/setup.tpl");
     }
 
 }

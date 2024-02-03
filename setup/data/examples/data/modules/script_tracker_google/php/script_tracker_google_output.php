@@ -12,7 +12,7 @@
  * @link       https://www.contenido.org
  */
 
-$account = getEffectiveSetting('stats', 'ga_account', '');
+$account = getEffectiveSetting('stats', 'ga_account');
 
 if (0 < cString::getStringLength(trim($account)) && cRegistry::isTrackingAllowed() && !cRegistry::isBackendEditMode()) {
     $tpl = cSmartyFrontend::getInstance();

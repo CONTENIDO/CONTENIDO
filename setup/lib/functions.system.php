@@ -17,22 +17,20 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Checks if a plugin is already installed
  * @param cDb $db
- * @param string $sPluginname
+ * @param string $pluginName
  * @return bool
  * @throws cDbException
  */
-function checkExistingPlugin($db, $sPluginname) {
-    global $cfg;
-
-    #new install: all plugins are checked
+function checkExistingPlugin(cDb $db, string $pluginName): bool
+{
+    // new install: all plugins are checked
     if ($_SESSION['setuptype'] == 'setup') {
         return true;
     }
 
-    $sPluginname = (string) $sPluginname;
-    $sTable = $cfg['tab']['nav_sub'];
+    $sTable = cRegistry::getDbTableName('nav_sub');
 
-    switch ($sPluginname) {
+    switch ($pluginName) {
         case 'plugin_cronjob_overview':
             $sSql = "SELECT * FROM `%s` WHERE idnavs=950";
             break;
@@ -70,10 +68,11 @@ function checkExistingPlugin($db, $sPluginname) {
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
-function updateSystemProperties($db, $table) {
+function updateSystemProperties(cDb $db, string $table)
+{
     $table = $db->escape($table);
 
-    $aStandardvalues = [
+    $standardValues = [
         ['type' => 'pw_request', 'name' => 'enable', 'value' => 'true'],
         ['type' => 'system', 'name' => 'mail_transport', 'value' => 'smtp'],
         ['type' => 'system', 'name' => 'mail_sender_name', 'value' => 'CONTENIDO Backend'],
@@ -97,7 +96,7 @@ function updateSystemProperties($db, $table) {
         ['type' => 'stats', 'name' => 'tracking', 'value' => 'disabled'],
     ];
 
-    foreach ($aStandardvalues as $aData) {
+    foreach ($standardValues as $aData) {
         $sql = $db->prepare("SELECT `value` FROM `%s` WHERE `type` = '%s' AND `name` = '%s'", $table, $aData['type'], $aData['name']);
         $db->query($sql);
         if ($db->nextRecord()) {
@@ -124,7 +123,8 @@ function updateSystemProperties($db, $table) {
  * @param string $version Version
  * @throws cDbException
  */
-function updateContenidoVersion($db, $table, $version) {
+function updateContenidoVersion(cDb $db, string $table, string $version)
+{
     $db->query("SELECT `idsystemprop` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'", $table);
 
     if ($db->nextRecord()) {
@@ -138,10 +138,11 @@ function updateContenidoVersion($db, $table, $version) {
  * Returns current version
  * @param cDb $db
  * @param string $table DB table name
- * @return string
+ * @return string|false
  * @throws cDbException
  */
-function getContenidoVersion($db, $table) {
+function getContenidoVersion(cDb $db, string $table)
+{
     $db->query("SELECT `value` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'", $table);
 
     if ($db->nextRecord()) {
@@ -161,7 +162,8 @@ function getContenidoVersion($db, $table) {
  * @return bool
  * @throws cDbException
  */
-function updateSysadminPassword($db, $table, $password, $mail) {
+function updateSysadminPassword(cDb $db, string $table, string $password, string $mail)
+{
     $db->query("SELECT password FROM `%s` WHERE username='sysadmin'", $table);
 
     if ($db->nextRecord()) {
@@ -179,20 +181,19 @@ function updateSysadminPassword($db, $table, $password, $mail) {
  * @return array
  * @throws cDbException
  */
-function listClients($db, $table) {
-    global $cfgClient;
+function listClients(cDb $db, string $table)
+{
+    $cfgClient = cRegistry::getClientConfig();
 
-    $db->query("SELECT idclient, name FROM `%s`", $table);
+    $db->query("SELECT `idclient`, `name` FROM `%s`", $table);
 
     $clients = [];
     while ($db->nextRecord()) {
-        $frontendPath = $cfgClient[$db->f('idclient')]['path']['frontend'];
-        $htmlPath     = $cfgClient[$db->f('idclient')]['path']['htmlpath'];
-
-        $clients[$db->f("idclient")] = [
-            "name"         => $db->f("name"),
-            "frontendpath" => $frontendPath,
-            "htmlpath"     => $htmlPath,
+        $idClient = cSecurity::toInteger($db->f('idclient'));
+        $clients[$idClient] = [
+            "name" => $db->f("name"),
+            "frontendpath" => $cfgClient[$idClient]['path']['frontend'],
+            "htmlpath" => $cfgClient[$idClient]['path']['htmlpath'],
         ];
     }
 
@@ -201,18 +202,17 @@ function listClients($db, $table) {
 
 /**
  * Updates the path information of a client and refreshes the configuration file.
- * @param cDb $db
- * @param string $table
  * @param int $idclient
  * @param string $frontendpath
  * @param string $htmlpath
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
-function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath) {
-    global $cfg, $cfgClient;
-    checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
+function updateClientPath(int $idclient, string $frontendpath, string $htmlpath)
+{
+    $cfg = cRegistry::getConfig();
 
+    checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
     updateClientCache($idclient, $htmlpath, $frontendpath);
 }
 
@@ -222,7 +222,8 @@ function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath) {
  *
  * @return string
  */
-function stripLastSlash($sInput) {
+function stripLastSlash(string $sInput): string
+{
     if (cString::getPartOfString($sInput, cString::getStringLength($sInput) - 1, 1) == "/") {
         $sInput = cString::getPartOfString($sInput, 0, cString::getStringLength($sInput) - 1);
     }
@@ -232,15 +233,16 @@ function stripLastSlash($sInput) {
 
 /**
  * Returns the paths to the system directory (filesystem and web).
- * @param bool $bOriginalPath
+ * @param bool $originalPath
  *
  * @return array
  */
-function getSystemDirectories($bOriginalPath = false) {
-    $root_path = stripLastSlash(CON_FRONTEND_PATH);
+function getSystemDirectories(bool $originalPath = false): array
+{
+    $rootPath = stripLastSlash(CON_FRONTEND_PATH);
 
-    $root_http_path = dirname(dirname($_SERVER["REQUEST_URI"]));
-    $root_http_path = str_replace("\\", "/", $root_http_path);
+    $rootHttpPath = dirname($_SERVER["REQUEST_URI"], 2);
+    $rootHttpPath = str_replace("\\", "/", $rootHttpPath);
 
     $port = "";
     $protocol = "http://";
@@ -253,38 +255,39 @@ function getSystemDirectories($bOriginalPath = false) {
         }
     }
 
-    $root_http_path = $protocol . $_SERVER["SERVER_NAME"] . $port . $root_http_path;
+    $rootHttpPath = $protocol . $_SERVER["SERVER_NAME"] . $port . $rootHttpPath;
 
-    if (cString::getPartOfString($root_http_path, cString::getStringLength($root_http_path) - 1, 1) == "/") {
-        $root_http_path = cString::getPartOfString($root_http_path, 0, cString::getStringLength($root_http_path) - 1);
+    if (cString::getPartOfString($rootHttpPath, cString::getStringLength($rootHttpPath) - 1, 1) == "/") {
+        $rootHttpPath = cString::getPartOfString($rootHttpPath, 0, cString::getStringLength($rootHttpPath) - 1);
     }
 
-    if ($bOriginalPath == true) {
-        return [$root_path, $root_http_path];
+    if ($originalPath) {
+        return [$rootPath, $rootHttpPath];
     }
 
     if (isset($_SESSION['override_root_path'])) {
-        $root_path = $_SESSION['override_root_path'];
+        $rootPath = $_SESSION['override_root_path'];
     }
 
     if (isset($_SESSION['override_root_http_path'])) {
-        $root_http_path = $_SESSION['override_root_http_path'];
+        $rootHttpPath = $_SESSION['override_root_http_path'];
     }
 
-    $root_path = stripLastSlash($root_path);
-    $root_http_path = stripLastSlash($root_http_path);
+    $rootPath = stripLastSlash($rootPath);
+    $rootHttpPath = stripLastSlash($rootHttpPath);
 
-    return [$root_path, $root_http_path];
+    return [$rootPath, $rootHttpPath];
 }
 
 /**
  * Searchs for a string in a given text and returns the position of it.
- * @param $string1
- * @param $string2
+ * @param string $string1
+ * @param string $string2
  *
  * @return int
  */
-function findSimilarText($string1, $string2) {
+function findSimilarText(string $string1, string $string2): int
+{
     for ($i = 0; $i < cString::getStringLength($string1); $i++) {
         if (cString::getPartOfString($string1, 0, $i) != cString::getPartOfString($string2, 0, $i)) {
             return $i - 1;

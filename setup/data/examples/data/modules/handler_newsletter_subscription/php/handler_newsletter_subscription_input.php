@@ -8,6 +8,13 @@
  * @copyright  four for business AG <www.4fb.de>
  */
 
+/**
+ * @var int $cCurrentContainer
+ */
+
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cSecurity::toInteger(cRegistry::getClientId());
+
 // Initialisation
 $oClientLang       = new cApiClientLanguage(false, $client, $lang);
 $oClient           = new cApiClient($client);
@@ -128,7 +135,7 @@ $oCfgTable->setCell('sender', 1, $oHidAction->render().$oTxtSender->render());
 $oSelHandlerCatArt = new cHTMLInputSelectElement($aFormFields['selHandlerCatArt'], 1, '', true);
 $oOption           = new cHTMLOptionElement(mi18n("PLEASE_SELECT"), '');
 $oSelHandlerCatArt->addOptionElement(0, $oOption);
-$oSelHandlerCatArt->addCategories(0, true, false, false, true, true);
+$oSelHandlerCatArt->addCategories(0, true, false, false, true);
 $oSelHandlerCatArt->setDefault($iHandlerCatArt);
 
 $oCkbUpdate = new cHTMLCheckbox($aFormFields['ckbUpdateHandlerID'], 'enabled');

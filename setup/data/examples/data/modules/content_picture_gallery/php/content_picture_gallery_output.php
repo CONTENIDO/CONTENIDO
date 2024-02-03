@@ -24,6 +24,8 @@ $files = $filelist->getConfiguredFiles();
 $pictures = [];
 
 if (count($files) > 0) {
+    $cfgClient = cRegistry::getClientConfig();
+    $client = cRegistry::getClientId();
     foreach ($files as $file) {
         $pathThumb = $file['path'] . '/' . $file['filename'];
 

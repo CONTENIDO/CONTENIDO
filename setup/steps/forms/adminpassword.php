@@ -33,9 +33,9 @@ class cSetupAdminPassword extends cSetupMask
     {
         parent::__construct("templates/setup/forms/adminpassword.tpl", $step);
 
-        cArray::initializeKey($_SESSION, "adminmail", "");
-        cArray::initializeKey($_SESSION, "adminpass", "");
-        cArray::initializeKey($_SESSION, "adminpassrepeat", "");
+        cArray::initializeKey($_SESSION, "adminmail");
+        cArray::initializeKey($_SESSION, "adminpass");
+        cArray::initializeKey($_SESSION, "adminpassrepeat");
 
         $this->setHeader(i18n("Administrator password", "setup"));
         $this->_stepTemplateClass->set("s", "TITLE", i18n("Administrator password", "setup"));

@@ -16,5 +16,5 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 checkAndInclude("steps/forms/systemtest.php");
 
-$cSetupSystemtest = new cSetupSystemtest(4, "setup3", "setup5", true);
+$cSetupSystemtest = new cSetupSystemtest(4, "setup3", "setup5");
 $cSetupSystemtest->render();

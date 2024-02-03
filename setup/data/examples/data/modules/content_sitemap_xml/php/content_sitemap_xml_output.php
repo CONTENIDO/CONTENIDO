@@ -102,7 +102,7 @@ EOD;
             foreach ($currentCategoryIds as $key => $categoryId) {
                 $categoryLanguage = new cApiCategoryLanguage();
                 $categoryLanguage->loadByCategoryIdAndLanguageId($categoryId, $currentIdlang);
-                if ($categoryLanguage->get('visible') == false || $categoryLanguage->get('public') == false) {
+                if (!$categoryLanguage->get('visible') || !$categoryLanguage->get('public')) {
                     unset($currentCategoryIds[$key]);
                 }
             }

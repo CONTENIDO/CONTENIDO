@@ -13,6 +13,10 @@
  */
 
 $tpl = cSmartyFrontend::getInstance();
+$auth = cRegistry::getAuth();
+$idcat = cSecurity::toInteger(cRegistry::getCategoryId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$idart = cSecurity::toInteger(cRegistry::getArticleId());
 
 if ($auth->auth["uid"] == "nobody") {
     $sTargetIdart = getEffectiveSetting('login', 'idart', '1');
@@ -27,8 +31,9 @@ if ($auth->auth["uid"] == "nobody") {
     try {
         $category = new cApiCategoryLanguage();
         $category->loadByCategoryIdAndLanguageId($idcat, $lang);
-        $bCatIsPublic = ($category->get('visible') == 1 && $category->get('public') == 1) ? true : false;
+        $bCatIsPublic = $category->get('visible') == 1 && $category->get('public') == 1;
     } catch (Exception $e) {
+        $bCatIsPublic = false;
         echo $e->getMessage();
     }
     $oFeUserCollection = new cApiFrontendUserCollection();

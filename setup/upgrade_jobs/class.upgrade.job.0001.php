@@ -30,14 +30,14 @@ class cUpgradeJob_0001 extends cUpgradeJobAbstract {
             switch ($_SESSION['clientmode']) {
                 case 'CLIENTMODULES':
                 case 'CLIENTEXAMPLES':
-                    updateClientPath($this->_oDb, $cfg['tab']['clients'], 1, self::$_rootPath . '/cms/', self::$_rootHttpPath . '/cms/');
+                    updateClientPath(1, self::$_rootPath . '/cms/', self::$_rootHttpPath . '/cms/');
                     break;
                 default:
                     break;
             }
         }
         if (false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
-            updateClientPath($this->_oDb, $cfg['tab']['clients'], 0, self::$_rootPath . '/cms/', self::$_rootHttpPath . '/cms/');
+            updateClientPath(0, self::$_rootPath . '/cms/', self::$_rootHttpPath . '/cms/');
         }
     }
 

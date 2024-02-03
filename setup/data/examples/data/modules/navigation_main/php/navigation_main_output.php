@@ -27,7 +27,7 @@ $tree = $categoryHelper->getSubCategories($rootIdcat, $depth);
 // get path (breadcrumb) of current category
 $path = array_map(function(cApiCategoryLanguage $item) {
     return $item->get('idcat');
-}, $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1));
+}, $categoryHelper->getCategoryPath(cRegistry::getCategoryId()));
 
 // use template to display navigation
 $smarty = cSmartyFrontend::getInstance();

@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage Setup
  */
-class cCLISetup {
+class cCLISetup
+{
 
     /**
      * holds the setup settings
@@ -45,7 +46,8 @@ class cCLISetup {
      *
      * @param array $args the parsed command line
      */
-    public function __construct($args) {
+    public function __construct(array $args)
+    {
         $this->_settings['db']['host'] = 'localhost';
         $this->_settings['db']['user'] = 'root';
         $this->_settings['db']['password'] = '';
@@ -74,10 +76,11 @@ class cCLISetup {
     /**
      * Reads all parameters and gathers the settings for the installation accordingly
      */
-    public function interpretCommandline() {
+    public function interpretCommandline()
+    {
         global $belang;
 
-        $belang = ($this->_args['locale']) ? $this->_args['locale'] : "en_US"; // setting the language
+        $belang = $this->_args['locale'] ?? "en_US"; // setting the language
 
         cI18n::init(CON_SETUP_PATH . '/locale/', $belang, 'setup');
 
@@ -148,18 +151,20 @@ class cCLISetup {
     /**
      * Prints the settings json encoded to the console but removes passwords from it
      */
-    public function printSettings() {
+    public function printSettings()
+    {
         prntln(i18n('CONTENIDO will be installed with the following settings: ', 'setup'));
         $noPasswordArray = $this->_settings;
         $noPasswordArray['db']['password'] = '**********';
-        $noPasswordArray['admin_user']['password'] =  '**********';
+        $noPasswordArray['admin_user']['password'] = '**********';
         prntln(json_encode($noPasswordArray));
     }
 
     /**
      * Read the settings from various parameters from the command line
      */
-    public function getSettingsFromCommandLine() {
+    public function getSettingsFromCommandLine()
+    {
         $this->_settings['db']['host'] = ($this->_args['dbhost'] == '') ? $this->_settings['db']['host'] : $this->_args['dbhost'];
         $this->_settings['db']['user'] = ($this->_args['dbuser'] == '') ? $this->_settings['db']['user'] : $this->_args['dbuser'];
         $this->_settings['db']['password'] = ($this->_args['dbpassword'] == '') ? $this->_settings['db']['password'] : $this->_args['dbpassword'];
@@ -182,10 +187,11 @@ class cCLISetup {
     /**
      * Start a dialog with the user to get the settings
      */
-    public function getUserInputSettings() {
+    public function getUserInputSettings()
+    {
         // print welcome message
-        prntln('>>>>> '. i18n('Welcome to CONTENIDO', 'setup'). ' <<<<<');
-        prntln('');
+        prntln('>>>>> ' . i18n('Welcome to CONTENIDO', 'setup') . ' <<<<<');
+        prntln();
         prntln(i18n('Database settings:', 'setup'));
 
         // database host
@@ -203,7 +209,7 @@ class cCLISetup {
         $this->_settings['db']['password'] = ($dbpw == '') ? $this->_settings['db']['password'] : $dbpw;
 
         // database name
-        prnt(i18n('Database name', 'setup') .' [' . $this->_settings['db']['database'] . ']: ', 1);
+        prnt(i18n('Database name', 'setup') . ' [' . $this->_settings['db']['database'] . ']: ', 1);
         $line = trim(fgets(STDIN));
         $this->_settings['db']['database'] = ($line == "") ? $this->_settings['db']['database'] : $line;
 
@@ -236,7 +242,7 @@ class cCLISetup {
         prntln();
         prntln(i18n('Please enter the http path to where the contenido/ folder resides.', 'setup'));
         prntln(i18n('e.g. http://localhost/', 'setup'));
-        prnt(i18n('Backend web path', 'setup') .' [' . $this->_settings['paths']['http_root_path'] . ']: ', 1);
+        prnt(i18n('Backend web path', 'setup') . ' [' . $this->_settings['paths']['http_root_path'] . ']: ', 1);
         $line = trim(fgets(STDIN));
         $this->_settings['paths']['http_root_path'] = ($line == "") ? $this->_settings['paths']['http_root_path'] : $line;
 
@@ -296,7 +302,8 @@ class cCLISetup {
      *
      * @param string $file path to the file
      */
-    public function getSettingsFromFile($file) {
+    public function getSettingsFromFile(string $file)
+    {
         if (!cFileHandler::exists($file)) {
             return;
         }
@@ -344,7 +351,8 @@ class cCLISetup {
      * if not, quits the script.
      *
      */
-    public function executeSystemTests() {
+    public function executeSystemTests()
+    {
         global $args, $belang;
 
         $cfg = cRegistry::getConfig();
@@ -394,7 +402,7 @@ class cCLISetup {
                 continue;
             }
 
-            if ($testResult['result'] == false) {
+            if (!$testResult['result']) {
                 $fine = false;
             }
         }
@@ -405,7 +413,7 @@ class cCLISetup {
                     continue;
                 }
 
-                if ($testResult['result'] == false) {
+                if (!$testResult['result']) {
                     prntln(html_entity_decode(strip_tags($testResult['headline'], 1)));
                     prntln(html_entity_decode(strip_tags($testResult['message'], 2)));
                 }
@@ -438,22 +446,23 @@ class cCLISetup {
     /**
      * Take the settings from the settings array and write them to the appropriate places
      */
-    public function applySettings() {
+    public function applySettings()
+    {
         // NOTE: Use global $cfg variable!
         global $cfg;
 
         $cfg['db'] = [
             'connection' => [
-                'host'     => $this->_settings['db']['host'],
-                'user'     => $this->_settings['db']['user'],
+                'host' => $this->_settings['db']['host'],
+                'user' => $this->_settings['db']['user'],
                 'password' => $this->_settings['db']['password'],
-                'charset'  => $this->_settings['db']['charset'],
+                'charset' => $this->_settings['db']['charset'],
                 'database' => $this->_settings['db']['database'],
-                'options'  => [],
+                'options' => [],
             ],
-            'engine'          => $this->_settings['db']['engine'],
-            'haltBehavior'    => 'report',
-            'haltMsgPrefix'   => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
+            'engine' => $this->_settings['db']['engine'],
+            'haltBehavior' => 'report',
+            'haltMsgPrefix' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
             'enableProfiling' => false
         ];
         if (!empty($this->_settings['db']['option_mysqli_init_command'])) {

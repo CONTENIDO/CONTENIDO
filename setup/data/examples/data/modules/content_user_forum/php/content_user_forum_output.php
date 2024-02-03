@@ -222,10 +222,9 @@ class UserForumArticle
     /**
      * submit for new entry will be called after click at new comment
      */
-    private function _saveForum()
+    private function _saveForum(): bool
     {
-        $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
-        // Run the preg_match() function on regex against the email address
+        $bInputOK = false;
 
         if ($this->_allowedToEditForum) {
             $this->_userid = $_REQUEST['userid'] ?? '';
@@ -271,7 +270,7 @@ class UserForumArticle
             }
 
             if ($bInputOK) {
-                // build array for language synchonisation
+                // build array for language synchronisation
                 $ar = [
                     'NEWENTRY' => mi18n("NEWENTRY"),
                     'NEWENTRYTEXT' => mi18n("NEWENTRYTEXT"),
@@ -332,7 +331,7 @@ class UserForumArticle
                 // check for replied comments
                 if ($parent > 0) {
                     $content = $this->_collection->selectNameAndNameByForumId($parent);
-                    $empty = (count($content) > 0) ? false : true;
+                    $empty = !(count($content) > 0);
 
                     if (!$empty) {
                         $transTemplate = mi18n("answerToQuote");
@@ -393,8 +392,8 @@ class UserForumArticle
                     $number++;
 
                     // string manipulation for time
-                    $arrTmp = preg_split('/ /', $value['timestamp']);
-                    $arrTmp2 = preg_split('/-/', $arrTmp[0]);
+                    $arrTmp = explode(' ', $value['timestamp']);
+                    $arrTmp2 = explode('-', $arrTmp[0]);
                     $ts = $arrTmp2[2] . '.' . $arrTmp2[1] . '.' . $arrTmp2[0] . ' ' . mi18n("about") . ' ';
                     $ts .= cString::getPartOfString($arrTmp[1], 0, 5) . ' ' . mi18n("clock");
 
