@@ -129,7 +129,7 @@ abstract class cWYSIWYGEditor
      * @param string $editorName
      * @param string $editorContent
      */
-    public function __construct($editorName, $editorContent)
+    public function __construct(string $editorName, string $editorContent)
     {
         $cfg = cRegistry::getConfig();
 
@@ -150,7 +150,7 @@ abstract class cWYSIWYGEditor
      *
      * @param string $sEditorContent
      */
-    protected function _setEditorContent($sEditorContent)
+    protected function _setEditorContent(string $sEditorContent)
     {
         $this->_sEditorContent = $sEditorContent;
     }
@@ -159,7 +159,7 @@ abstract class cWYSIWYGEditor
      *
      * @param string $sEditor
      */
-    protected function _setEditor($sEditor)
+    protected function _setEditor(string $sEditor)
     {
         if (is_dir($this->_sPath . $sEditor)) {
             if (cString::getPartOfString($sEditor, cString::getStringLength($sEditor) - 1, 1) != '/') {
@@ -177,12 +177,12 @@ abstract class cWYSIWYGEditor
      * @param string|null $type Normally unused (counterpart of {@see cTinyMCE4Editor::setSetting})
      * @param string $key
      *         of setting to set
-     * @param string $value
+     * @param string|mixed $value
      *         of setting to set
      * @param bool $forceSetting [optional]
      *         to overwrite defined setting
      */
-    public function setSetting($type = null, $key = null, $value = '', $forceSetting = false)
+    public function setSetting($type = null, string $key = null, $value = '', bool $forceSetting = false)
     {
         if ($key === null) {
             cWarning(__FILE__, __LINE__, 'Key can not be null');
@@ -197,7 +197,7 @@ abstract class cWYSIWYGEditor
      *
      * @param string $key
      */
-    protected function _unsetSetting($key)
+    protected function _unsetSetting(string $key)
     {
         unset($this->_aSettings[$key]);
     }
@@ -226,7 +226,7 @@ abstract class cWYSIWYGEditor
      *
      * @param string $sEditorName
      */
-    protected function _setEditorName($sEditorName)
+    protected function _setEditorName(string $sEditorName)
     {
         $this->_sEditorName = $sEditorName;
     }
@@ -236,7 +236,7 @@ abstract class cWYSIWYGEditor
      * @throws cBadMethodCallException if this method is not overridden in the
      *         subclass
      */
-    protected function getScripts()
+    protected function getScripts(): string
     {
         throw new cBadMethodCallException('You need to override the method _getScripts');
     }
@@ -246,7 +246,7 @@ abstract class cWYSIWYGEditor
      * @throws cBadMethodCallException if this method is not overridden in the
      *         subclass
      */
-    protected function getEditor()
+    protected function getEditor(): string
     {
         throw new cBadMethodCallException('You need to override the method _getEditor');
     }
@@ -257,7 +257,7 @@ abstract class cWYSIWYGEditor
      * @param string $input
      * @return string
      */
-    public function convertFormat($input): string
+    public function convertFormat(string $input): string
     {
         $aFormatCodes = [
             'y' => '%y',
@@ -309,7 +309,7 @@ abstract class cWYSIWYGEditor
      *
      * @param string $baseUrl
      */
-    public function setBaseURL($baseUrl)
+    public function setBaseURL(string $baseUrl)
     {
         $this->_baseURL = $baseUrl;
     }
@@ -344,7 +344,7 @@ abstract class cWYSIWYGEditor
      * @param string $file
      * @return string
      */
-    public function addPath($file): string
+    public function addPath(string $file): string
     {
         // Quick and dirty hack
         if (!preg_match('/^(http|https):\/\/((?:[a-zA-Z0-9_-]+\.?)+):?(\d*)/', $file)) {
@@ -398,7 +398,7 @@ abstract class cWYSIWYGEditor
      *
      * @throws cInvalidArgumentException
      */
-    public static function saveConfig($config): array
+    public static function saveConfig(array $config): array
     {
         // Use the global variable $cfg here, the function modifies it!
         global $cfg;

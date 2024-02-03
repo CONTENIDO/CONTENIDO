@@ -52,7 +52,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
      * @param string $editorName
      * @param string $editorContent
      */
-    public function __construct($editorName, $editorContent)
+    public function __construct(string $editorName, string $editorContent)
     {
         parent::__construct($editorName, $editorContent);
 
@@ -413,7 +413,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
         foreach ($aParameters as $sParameter) {
             if (array_key_exists($sParameter, $this->_aSettings)) {
-                $this->setSetting(null, $sParameter, $this->addPath($this->_aSettings[$sParameter]), true);
+                $this->setSetting(null, $sParameter, $this->addPath((string) $this->_aSettings[$sParameter]), true);
             }
         }
 
@@ -435,7 +435,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
      *
      * @return string
      */
-    public function getScripts()
+    public function getScripts(): string
     {
         return "\n<!-- tinyMCE -->\n" . '<script type="text/javascript" src="' . $this->_baseURL . 'jscripts/tiny_mce/tiny_mce.js"></script>';
     }
@@ -445,7 +445,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
      *
      * @return string
      */
-    public function getEditor()
+    public function getEditor(): string
     {
         $sess = cRegistry::getSession();
 
