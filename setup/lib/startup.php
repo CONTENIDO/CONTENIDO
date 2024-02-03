@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $cfg;
+global $cfg, $lang;
 
 // Report all errors except warnings
 error_reporting(E_ALL ^ E_NOTICE);
@@ -94,6 +94,12 @@ setupInitializeConfig();
 checkAndInclude($cfg['path']['contenido_config'] . 'config.path.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'config.misc.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
+
+// Include registry class, initialize language and encoding. We need to set a dummy language with
+// proper encoding to use functions like `conHtmlSpecialChars()`, `conHtmlentities`()`, etc.
+checkAndInclude($cfg['path']['contenido'] . 'classes/class.registry.php');
+$lang = 1;
+cRegistry::setAppVar('languageEncodings', [$lang => 'utf-8']);
 
 // Takeover configured PHP settings and set some PHP settings
 setupUpdatePHPConfig();

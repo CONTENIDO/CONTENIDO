@@ -19,7 +19,7 @@ if (!defined('CON_FRAMEWORK')) {
 include_once('lib/startup.php');
 
 // Detect controller
-$controller = $_GET['c'] ?? '';
+$controller = $_GET['c'] ?? 'index';
 if (!in_array($controller, ['index', 'db', 'config'])) {
     die('Illegal setup call');
 }

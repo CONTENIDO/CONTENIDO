@@ -1,5 +1,4 @@
-<table cellspacing="0" cellpadding="0" border="0"
-       class="setupBodyOuterTable setupBodyOuterTableConfigMode">
+<table class="setupBodyOuterTable setupBodyOuterTableConfigMode">
     <tr class="row-1">
         <td class="header" colspan="2">
             <h1>{TITLE}</h1>

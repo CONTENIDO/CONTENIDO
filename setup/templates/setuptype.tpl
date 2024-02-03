@@ -1,5 +1,4 @@
-<table cellpadding="0" cellspacing="0" border="0"
-       class="setupBodyOuterTable setupBodyOuterTableSetupType">
+<table class="setupBodyOuterTable setupBodyOuterTableSetupType">
     <tr class="row-1">
         <td class="first">
             <h1>{TITLE_SETUP}</h1>{VERSION_SETUP}
