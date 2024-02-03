@@ -90,7 +90,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         $this->_setContent($this->_title);
 
         return parent::toHtml();

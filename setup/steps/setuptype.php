@@ -28,16 +28,17 @@ class cSetupTypeChooser extends cSetupMask
     /**
      * cSetupTypeChooser constructor.
      */
-    public function __construct() {
-        cSetupMask::__construct("templates/setuptype.tpl");
+    public function __construct()
+    {
+        parent::__construct("templates/setuptype.tpl");
         $this->setHeader(i18n("Please choose your setup type", "setup"));
         $this->_stepTemplateClass->set("s", "TITLE_SETUP", i18n("Install new CONTENIDO version", "setup"));
         $this->_stepTemplateClass->set("s", "VERSION_SETUP", sprintf(i18n("Version %s", "setup"), CON_VERSION));
-        $this->_stepTemplateClass->set("s", "DESCRIPTION_SETUP", sprintf(i18n("This setup type will install CONTENIDO %s.", "setup"), CON_VERSION)."<br><br>".i18n("Please choose this type if you want to start with an empty or an example installation.", "setup")."<br><br>".i18n("Recommended for new projects.", "setup"));
+        $this->_stepTemplateClass->set("s", "DESCRIPTION_SETUP", sprintf(i18n("This setup type will install CONTENIDO %s.", "setup"), CON_VERSION) . "<br><br>" . i18n("Please choose this type if you want to start with an empty or an example installation.", "setup") . "<br><br>" . i18n("Recommended for new projects.", "setup"));
 
         $this->_stepTemplateClass->set("s", "TITLE_UPGRADE", i18n("Upgrade existing installation", "setup"));
         $this->_stepTemplateClass->set("s", "VERSION_UPGRADE", sprintf(i18n("Upgrade to %s", "setup"), CON_VERSION));
-        $this->_stepTemplateClass->set("s", "DESCRIPTION_UPGRADE", i18n("This setup type will upgrade your existing installation (CONTENIDO 4.6.x or later required).", "setup")."<br><br>".i18n("Recommended for existing projects.", "setup"));
+        $this->_stepTemplateClass->set("s", "DESCRIPTION_UPGRADE", i18n("This setup type will upgrade your existing installation (CONTENIDO 4.6.x or later required).", "setup") . "<br><br>" . i18n("Recommended for existing projects.", "setup"));
 
         $link = new cHTMLLink("#");
         $link->setClass("nav");
@@ -57,16 +58,7 @@ class cSetupTypeChooser extends cSetupMask
         $this->_stepTemplateClass->set("s", "NEXT_UPGRADE", $link->render());
     }
 
-    /**
-     * Old constructor
-     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     */
-    public function cSetupTypeChooser() {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        $this->__construct();
-    }
-
 }
 
-$cSetupStep1 = new cSetupTypeChooser;
+$cSetupStep1 = new cSetupTypeChooser();
 $cSetupStep1->render();

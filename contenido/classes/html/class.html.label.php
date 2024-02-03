@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLLabel extends cHTMLContentElement {
+class cHTMLLabel extends cHTMLContentElement
+{
 
     /**
      * The text to display on the label
@@ -48,7 +49,8 @@ class cHTMLLabel extends cHTMLContentElement {
      * @param string $id [optional]
      *         the ID of this element
      */
-    public function __construct($text, $for, $class = '', $id = '') {
+    public function __construct($text, $for, $class = '', $id = '')
+    {
         parent::__construct('', $class, $id);
         $this->_tag = 'label';
         $this->updateAttribute('for', $for);
@@ -61,7 +63,8 @@ class cHTMLLabel extends cHTMLContentElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         $this->_setContent($this->text);
 
         return parent::toHtml();

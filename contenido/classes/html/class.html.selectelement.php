@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLSelectElement extends cHTMLFormElement {
+class cHTMLSelectElement extends cHTMLFormElement
+{
 
     /**
      * All cHTMLOptionElements
@@ -51,7 +52,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      */
     public function __construct(
         $name, $width = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = ''
-    ) {
+    )
+    {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'select';
         $this->_contentlessTag = false;
@@ -81,7 +83,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function autoFill(array $stuff) {
+    public function autoFill(array $stuff): cHTMLSelectElement
+    {
         foreach ($stuff as $key => $row) {
             if (is_array($row)) {
                 $option = new cHTMLOptionElement($row[1], $row[0]);
@@ -105,7 +108,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function addOptionElement($index, cHTMLOptionElement $element) {
+    public function addOptionElement($index, cHTMLOptionElement $element): cHTMLSelectElement
+    {
         $this->_options[$index] = $element;
         return $this;
     }
@@ -118,7 +122,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function appendOptionElement(cHTMLOptionElement $element) {
+    public function appendOptionElement(cHTMLOptionElement $element): cHTMLSelectElement
+    {
         $this->_options[] = $element;
         return $this;
     }
@@ -129,7 +134,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function setMultiselect() {
+    public function setMultiselect(): cHTMLSelectElement
+    {
         $name = $this->getAttribute('name');
         $strLength = cString::getStringLength($name);
         if (cString::getPartOfString($name, $strLength - 2, $strLength) != '[]') {
@@ -145,7 +151,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function setSize($size) {
+    public function setSize($size): cHTMLSelectElement
+    {
         return $this->updateAttribute('size', $size);
     }
 
@@ -157,7 +164,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function setDefault($lvalue) {
+    public function setDefault($lvalue): cHTMLSelectElement
+    {
         if (is_array($lvalue)) {
             foreach ($this->_options as $key => $value) {
                 if (in_array($value->getAttribute('value'), $lvalue)) {
@@ -188,7 +196,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return string|bool
      *         "lvalue" or false
      */
-    public function getDefault() {
+    public function getDefault()
+    {
         foreach ($this->_options as $key => $value) {
             if ($value->isSelected()) {
                 return $key;
@@ -205,7 +214,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function setSelected(array $elements) {
+    public function setSelected(array $elements): cHTMLSelectElement
+    {
         foreach ($this->_options as $key => $option) {
             $selected = in_array($option->getAttribute('value'), $elements);
             $option->setSelected($selected);
@@ -221,7 +231,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         $this->_setContent($this->_options);
         return parent::toHtml();
     }

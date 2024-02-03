@@ -17,7 +17,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Class FrontendList for scrollable frontend lists.
  */
-class FrontendList {
+class FrontendList
+{
 
     /**
      * Wrap for table start.
@@ -76,28 +77,11 @@ class FrontendList {
      * @param string $itemwrap
      *         Wrap for a single item
      */
-    public function __construct($startwrap, $endwrap, $itemwrap) {
+    public function __construct($startwrap, $endwrap, $itemwrap)
+    {
         $this->_startwrap = $startwrap;
         $this->_endwrap = $endwrap;
         $this->_itemwrap = $itemwrap;
-    }
-
-    /**
-     * Old FrontendList constructor.
-     *
-     * @param $startwrap
-     * @param $endwrap
-     * @param $itemwrap
-     *
-     * @return FrontendList
-     *
-     * @throws cInvalidArgumentException
-     *
-     * @deprecated [2016-04-06] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     */
-    public function FrontendList($startwrap, $endwrap, $itemwrap) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        return $this->__construct($startwrap, $endwrap, $itemwrap);
     }
 
     /**
@@ -116,10 +100,11 @@ class FrontendList {
      * @param ... Additional parameters (data)
      * @SuppressWarnings docBlocks
      */
-    public function setData($index) {
-        $numargs = func_num_args();
+    public function setData($index)
+    {
+        $numArgs = func_num_args();
 
-        for ($i = 1; $i < $numargs; $i++) {
+        for ($i = 1; $i < $numArgs; $i++) {
             $this->_data[$index][$i] = func_get_arg($i);
         }
     }
@@ -130,7 +115,8 @@ class FrontendList {
      * @param int $resultsPerPage
      *         Amount of records per page
      */
-    public function setResultsPerPage($resultsPerPage) {
+    public function setResultsPerPage($resultsPerPage)
+    {
         $this->_resultsPerPage = $resultsPerPage;
     }
 
@@ -140,8 +126,9 @@ class FrontendList {
      * @param int $listStart
      *         Page number on which the list display starts
      */
-    public function setListStart($listStart) {
-        $this->_listStart = $listStart;
+    public function setListStart($listStart)
+    {
+        $this->_listStart = cSecurity::toInteger($listStart);
     }
 
     /**
@@ -150,7 +137,8 @@ class FrontendList {
      * @return int
      *         Current page number
      */
-    public function getCurrentPage() {
+    public function getCurrentPage(): int
+    {
         if ($this->_resultsPerPage == 0) {
             return 1;
         }
@@ -164,7 +152,8 @@ class FrontendList {
      * @return int
      *         Amount of pages
      */
-    public function getNumPages() {
+    public function getNumPages(): int
+    {
         return ceil(count($this->_data) / $this->_resultsPerPage);
     }
 
@@ -177,13 +166,14 @@ class FrontendList {
      *         Sort order (see php's sort documentation)
      *         one of SORT_ASC, SORT_DESC, SORT_REGULAR, SORT_NUMERIC, SORT_STRING
      */
-    public function sort($field, $order) {
+    public function sort($field, $order)
+    {
         $this->_data = cArray::csort($this->_data, "$field", $order);
     }
 
     /**
      * Field converting facility.
-     * Needs to be overridden in the child class to work properbly.
+     * Needs to be overridden in the child class to work properly.
      *
      * @param int $field
      *         Field index
@@ -191,7 +181,8 @@ class FrontendList {
      *         Field value
      * @return mixed
      */
-    protected function convert($field, $value) {
+    protected function convert($field, $value)
+    {
         return $value;
     }
 
@@ -200,9 +191,10 @@ class FrontendList {
      *
      * @param bool $return
      *         if true, returns the list
-     * @return string
+     * @return string|void
      */
-    public function output($return = false) {
+    public function output($return = false)
+    {
         $output = $this->_startwrap;
 
         $currentpage = $this->getCurrentPage();

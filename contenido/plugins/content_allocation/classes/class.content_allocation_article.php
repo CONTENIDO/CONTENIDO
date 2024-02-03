@@ -22,7 +22,8 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
  * @package    Plugin
  * @subpackage ContentAllocation
  */
-class pApiContentAllocationArticle extends pApiTree {
+class pApiContentAllocationArticle extends pApiTree
+{
 
     /**
      * @var object cTemplate
@@ -47,7 +48,8 @@ class pApiContentAllocationArticle extends pApiTree {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($uuid) {
+    public function __construct($uuid)
+    {
         $cfg = cRegistry::getConfig();
 
         parent::__construct($uuid);
@@ -56,36 +58,19 @@ class pApiContentAllocationArticle extends pApiTree {
     }
 
     /**
-     * Old constructor
+     * Builds an render tree
      *
-     * @deprecated [2016-02-11]
-     *                This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     *
-     * @param string $uuid
-     *
-     * @return pApiContentAllocationArticle
-     * @throws cDbException
-     * @throws cException
-     */
-    public function pApiContentAllocationArticle($uuid) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        return $this->__construct($uuid);
-    }
-
-    /**
-     * Builed an render tree
-     *
-     * @param $tree
+     * @param array $tree
      * @return array
      */
-    protected function _buildRenderTree($tree) {
-
+    protected function _buildRenderTree(array $tree): array
+    {
         $result = [];
         foreach ($tree as $item_tmp) {
             $item = [];
 
             $expandCollapseImg = 'images/spacer.gif';
-            $expandCollapse = '<img class="borderless align_middle" src="'.$expandCollapseImg.'" alt="" width="11" height="11">';
+            $expandCollapse = '<img class="borderless align_middle" src="' . $expandCollapseImg . '" alt="" width="11" height="11">';
 
             $item['ITEMNAME'] = $expandCollapse . ' ' . $item_tmp['name'];
 
@@ -96,7 +81,7 @@ class pApiContentAllocationArticle extends pApiTree {
             if (in_array($item_tmp['idpica_alloc'], $this->_load)) {
                 $checked = ' checked="checked"';
             }
-            $item['CHECKBOX'] = '<input type="checkbox" name="allocation[]" value="'.$item_tmp['idpica_alloc'].'" '.$checked.'>';
+            $item['CHECKBOX'] = '<input type="checkbox" name="allocation[]" value="' . $item_tmp['idpica_alloc'] . '" ' . $checked . '>';
 
             $result[] = $item;
 
@@ -114,7 +99,8 @@ class pApiContentAllocationArticle extends pApiTree {
      *
      * @param array $load
      */
-    public function setChecked($load) {
+    public function setChecked(array $load)
+    {
         $this->_load = $load;
     }
 
@@ -126,7 +112,8 @@ class pApiContentAllocationArticle extends pApiTree {
      * @return bool|object|void
      * @throws cInvalidArgumentException|cException
      */
-    function renderTree($return = true) {
+    public function renderTree(bool $return = true)
+    {
         $this->_tpl->reset();
 
         $tree = $this->fetchTree();
@@ -155,4 +142,5 @@ class pApiContentAllocationArticle extends pApiTree {
             $this->_tpl->generate($this->_template);
         }
     }
+
 }

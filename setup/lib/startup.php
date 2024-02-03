@@ -121,6 +121,8 @@ checkAndInclude(CON_SETUP_PATH . '/lib/functions.libraries.php');
 checkAndInclude(CON_SETUP_PATH . '/lib/functions.sql.php');
 checkAndInclude(CON_SETUP_PATH . '/lib/class.setupmask.php');
 
+$sNotInstallableReason = '';
+
 // PHP version check
 if (false === isPHPCompatible()) {
     $sNotInstallableReason = 'php_version';

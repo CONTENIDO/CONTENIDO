@@ -23,8 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cSetupInstaller extends cSetupMask
 {
 
-    public function __construct($step) {
-        cSetupMask::__construct("templates/setup/forms/installer.tpl", $step);
+    public function __construct(int $step) {
+        parent::__construct("templates/setup/forms/installer.tpl", $step);
 
         $this->_stepTemplateClass->set("s", "IFRAMEVISIBILITY", (CON_SETUP_DEBUG) ? 'visible' : 'hidden');
         $this->_stepTemplateClass->set("s", "DBUPDATESCRIPT", "index.php?c=db");
@@ -51,13 +51,4 @@ class cSetupInstaller extends cSetupMask
         }
     }
 
-    /**
-     * Old constructor
-     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     * @param $step
-     */
-    public function cSetupInstaller($step) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        $this->__construct($step);
-    }
 }

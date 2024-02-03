@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLForm extends cHTMLContentElement {
+class cHTMLForm extends cHTMLContentElement
+{
     /**
      * @var string
      */
@@ -57,7 +58,8 @@ class cHTMLForm extends cHTMLContentElement {
      * @param string $id [optional]
      *         the ID of this element
      */
-    public function __construct($name = '', $action = 'main.php', $method = 'post', $class = '', $id = '') {
+    public function __construct($name = '', $action = 'main.php', $method = 'post', $class = '', $id = '')
+    {
         parent::__construct('', $class, $id);
         $this->_tag = 'form';
         $this->_name = $name;
@@ -73,7 +75,8 @@ class cHTMLForm extends cHTMLContentElement {
      * @return cHTMLForm
      *         $this for chaining
      */
-    public function setVar($var, $value) {
+    public function setVar($var, $value): cHTMLForm
+    {
         $this->_vars[$var] = $value;
 
         return $this;
@@ -85,7 +88,8 @@ class cHTMLForm extends cHTMLContentElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         $out = '';
         if (is_array($this->_vars)) {
             foreach ($this->_vars as $var => $value) {

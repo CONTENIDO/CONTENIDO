@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTML {
+class cHTML
+{
 
     /**
      * Id attribute counter, used to generate unique values for id-attributes
@@ -120,7 +121,8 @@ class cHTML {
      * @param array $attributes [optional]
      *         Associative array of table tag attributes
      */
-    public function __construct(array $attributes = NULL) {
+    public function __construct(array $attributes = NULL)
+    {
         if (!is_null($attributes)) {
             $this->setAttributes($attributes);
         }
@@ -152,8 +154,9 @@ class cHTML {
      *
      * @param bool $value
      */
-    public static function setGenerateXHTML($value) {
-        self::$_generateXHTML = (bool) $value;
+    public static function setGenerateXHTML($value)
+    {
+        self::$_generateXHTML = (bool)$value;
     }
 
     /**
@@ -165,7 +168,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function advanceID() {
+    public function advanceID(): cHTML
+    {
         self::$_idCounter++;
         return $this->updateAttribute('id', 'm' . self::$_idCounter);
     }
@@ -176,7 +180,8 @@ class cHTML {
      * @return string
      *         current ID
      */
-    public function getID() {
+    public function getID()
+    {
         return $this->getAttribute('id');
     }
 
@@ -188,7 +193,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function setID($id) {
+    public function setID($id): cHTML
+    {
         return $this->updateAttribute('id', $id);
     }
 
@@ -200,7 +206,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function setTag($tag) {
+    public function setTag($tag): cHTML
+    {
         $this->_tag = $tag;
 
         return $this;
@@ -223,7 +230,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function setAlt($alt, $setTitle = true) {
+    public function setAlt($alt, $setTitle = true): cHTML
+    {
         $attributes = ['alt' => $alt, 'title' => $alt];
 
         if ($setTitle === false) {
@@ -241,20 +249,22 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function setClass($class) {
+    public function setClass($class): cHTML
+    {
         return $this->updateAttribute('class', $class);
     }
 
     /**
      * Appends the CSS class, if it doesn't exist.
      *
-     * @since CONTENIDO 4.10.2
      * @param string $class
      *         Text to append to the "class" attribute
      * @return cHTML
      *         $this for chaining
+     * @since CONTENIDO 4.10.2
      */
-    public function appendClass($class) {
+    public function appendClass($class): cHTML
+    {
         $classes = explode(' ', $this->getAttribute('class'));
         if (!in_array($class, $classes)) {
             $classes[] = $class;
@@ -271,7 +281,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function setStyle($style) {
+    public function setStyle($style): cHTML
+    {
         return $this->updateAttribute('style', $style);
     }
 
@@ -288,7 +299,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function setEvent($event, $action) {
+    public function setEvent($event, $action): cHTML
+    {
         if (cString::getPartOfString($event, 0, 2) !== 'on' && $event != 'disabled') {
             return $this->updateAttribute('on' . $event, conHtmlSpecialChars($action));
         } else {
@@ -307,7 +319,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function unsetEvent($event) {
+    public function unsetEvent($event): cHTML
+    {
         if (cString::getPartOfString($event, 0, 2) !== 'on') {
             return $this->removeAttribute('on' . $event);
         } else {
@@ -323,7 +336,8 @@ class cHTML {
      * @return string
      *         NULL value or NULL if the attribute does not exist
      */
-    public function getAttribute($attributeName) {
+    public function getAttribute($attributeName)
+    {
         $attributeName = cString::toLowerCase($attributeName);
 
         if (isset($this->_attributes[$attributeName])) {
@@ -343,7 +357,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function setAttribute($attributeName, $value = NULL) {
+    public function setAttribute($attributeName, $value = NULL): cHTML
+    {
         $attributeName = cString::toLowerCase($attributeName);
 
         if ($this->_isAttributeToRemove($attributeName, $value)) {
@@ -365,7 +380,8 @@ class cHTML {
      *         Whether to return the attributes as string
      * @return array|string
      */
-    public function getAttributes($returnAsString = false) {
+    public function getAttributes($returnAsString = false)
+    {
         if ($returnAsString) {
             return $this->_getAttrString($this->_attributes);
         } else {
@@ -381,7 +397,7 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function setAttributes(array $attributes)
+    public function setAttributes(array $attributes): cHTML
     {
         list($validAttributes) = $this->_parseAttributes($attributes);
         $this->_attributes = $validAttributes;
@@ -400,7 +416,7 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function updateAttribute($name, $value)
+    public function updateAttribute($name, $value): cHTML
     {
         $this->updateAttributes([$name => $value]);
 
@@ -415,7 +431,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function updateAttributes(array $attributes) {
+    public function updateAttributes(array $attributes): cHTML
+    {
         list($validAttributes, $invalidAttributes) = $this->_parseAttributes($attributes);
         foreach ($validAttributes as $key => $value) {
             $this->_attributes[$key] = $value;
@@ -435,7 +452,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function removeAttribute($attributeName) {
+    public function removeAttribute($attributeName): cHTML
+    {
         if (isset($this->_attributes[$attributeName])) {
             unset($this->_attributes[$attributeName]);
         }
@@ -451,7 +469,8 @@ class cHTML {
      * @return array
      *         the parsed attributes as valid and invalid attributes
      */
-    protected function _parseAttributes(array $attributes) {
+    protected function _parseAttributes(array $attributes): array
+    {
         $validAttributes = $invalidAttributes = [];
 
         foreach ($attributes as $key => $value) {
@@ -482,7 +501,8 @@ class cHTML {
      * @return string
      *         filled SGML opener skeleton
      */
-    public function fillSkeleton($attributes) {
+    public function fillSkeleton($attributes): string
+    {
         if ($this->_contentlessTag == true) {
             return sprintf($this->_skeletonSingle, $this->_tag, $attributes);
         } else {
@@ -496,7 +516,8 @@ class cHTML {
      * @return string
      *         filled SGML closer skeleton
      */
-    public function fillCloseSkeleton() {
+    public function fillCloseSkeleton(): string
+    {
         return sprintf($this->_skeletonClose, $this->_tag);
     }
 
@@ -513,7 +534,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function appendStyleDefinition($property, $value) {
+    public function appendStyleDefinition($property, $value): cHTML
+    {
         if (!empty($value) && is_string($value)) {
             $value = trim($value, ' ;');
         }
@@ -523,8 +545,8 @@ class cHTML {
     }
 
     /**
-     * @since CONTENIDO 4.10.2
      * @return array
+     * @since CONTENIDO 4.10.2
      */
     public function getStyleDefinition(): array
     {
@@ -544,7 +566,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function appendStyleDefinitions(array $styles) {
+    public function appendStyleDefinitions(array $styles): cHTML
+    {
         foreach ($styles as $property => $value) {
             $this->appendStyleDefinition($property, $value);
         }
@@ -561,7 +584,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function addRequiredScript($script) {
+    public function addRequiredScript($script): cHTML
+    {
         $this->_requiredScripts[] = $script;
         $this->_requiredScripts = array_unique($this->_requiredScripts);
 
@@ -577,7 +601,8 @@ class cHTML {
      *
      * @return cHTML $this for chaining
      */
-    protected function _setContent($content) {
+    protected function _setContent($content): cHTML
+    {
         $this->_contentlessTag = false;
         if (is_array($content)) {
             // reset content
@@ -622,7 +647,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    protected function _appendContent($content) {
+    protected function _appendContent($content): cHTML
+    {
         if (!is_string($this->_content)) {
             $this->_content = '';
         }
@@ -668,7 +694,8 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function attachEventDefinition($name, $event, $code) {
+    public function attachEventDefinition($name, $event, $code): cHTML
+    {
         $this->_eventDefinitions[cString::toLowerCase($event)][$name] = $code;
 
         return $this;
@@ -682,7 +709,8 @@ class cHTML {
      * @return string
      *         Attribute string in HTML format
      */
-    protected function _getAttrString(array $attributes) {
+    protected function _getAttrString(array $attributes): string
+    {
         $attrString = '';
         foreach ($attributes as $key => $value) {
             $attrString .= ' ' . $key . '="' . $value . '"';
@@ -694,12 +722,12 @@ class cHTML {
     /**
      * Checks whether the attribute is to remove or not. Some attributes can't have empty values, they will be removed.
      *
-     * @param  string $attributeName The attribute to check
-     * @param  mixed  $value         The value of the attribute
+     * @param string $attributeName The attribute to check
+     * @param mixed $value The value of the attribute
      *
      * @return bool
      */
-    protected function _isAttributeToRemove($attributeName, $value)
+    protected function _isAttributeToRemove($attributeName, $value): bool
     {
         return in_array($attributeName, $this->_notEmptyAttributes) && cSecurity::toString($value) === '';
     }
@@ -710,7 +738,8 @@ class cHTML {
      * @return string
      *         generated markup
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         // Fill style definition
         $style = $this->getAttribute('style');
 
@@ -768,7 +797,8 @@ class cHTML {
      * @return string
      *         generated markup
      */
-    public function render() {
+    public function render(): string
+    {
         return $this->toHtml();
     }
 
@@ -778,14 +808,16 @@ class cHTML {
      * @return string
      *         Generated markup
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->render();
     }
 
     /**
      * Outputs the generated markup
      */
-    public function display() {
+    public function display()
+    {
         echo $this->render();
     }
 

@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage Form
  */
-class cSetupClientAdjust extends cSetupMask {
+class cSetupClientAdjust extends cSetupMask
+{
 
     /**
      * cSetupClientAdjust constructor.
@@ -28,12 +29,13 @@ class cSetupClientAdjust extends cSetupMask {
      * @param bool $previous
      * @param $next
      */
-    public function __construct($step, $previous, $next) {
+    public function __construct($step, $previous, $next)
+    {
         $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();
         $cfgClient = cRegistry::getClientConfig($client);
 
-        cSetupMask::__construct("templates/setup/forms/pathinfo.tpl", $step);
+        parent::__construct("templates/setup/forms/pathinfo.tpl", $step);
         $this->setHeader(i18n("Client Settings", "setup"));
         $this->_stepTemplateClass->set("s", "TITLE", i18n("Client Settings", "setup"));
         $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box.", "setup"));
@@ -117,18 +119,6 @@ class cSetupClientAdjust extends cSetupMask {
         $this->_stepTemplateClass->set("s", "CONTROL_PATHINFO", $cHTMLErrorMessageList->render());
 
         $this->setNavigation($previous, $next);
-    }
-
-    /**
-     * Old constructor
-     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     * @param $step
-     * @param $previous
-     * @param $next
-     */
-    public function cSetupClientAdjust($step, $previous, $next) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        $this->__construct($step, $previous, $next);
     }
 
 }

@@ -22,7 +22,8 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
  * @package    Plugin
  * @subpackage ContentAllocation
  */
-class pApiContentAllocationTreeView extends pApiTree {
+class pApiContentAllocationTreeView extends pApiTree
+{
 
     /**
      * @var object cTemplate
@@ -42,29 +43,13 @@ class pApiContentAllocationTreeView extends pApiTree {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($uuid) {
+    public function __construct($uuid)
+    {
         $cfg = cRegistry::getConfig();
 
         parent::__construct($uuid);
         $this->_tpl = new cTemplate();
         $this->_template = $cfg['pica']['treetemplate'];
-    }
-
-    /**
-     * Old constructor
-     *
-     * @deprecated [2016-02-11]
-     *                This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     *
-     * @param string $uuid
-     *
-     * @return pApiContentAllocationTreeView
-     * @throws cDbException
-     * @throws cException
-     */
-    public function pApiContentAllocationTreeView($uuid) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        return $this->__construct($uuid);
     }
 
     /**
@@ -74,7 +59,8 @@ class pApiContentAllocationTreeView extends pApiTree {
      * @return array $result html code
      * @throws cException
      */
-    protected function _buildRenderTree($tree) {
+    protected function _buildRenderTree(array $tree): array
+    {
         $idart = cRegistry::getArticleId();
         $sess = cRegistry::getBackendSessionId();
         $area = cRegistry::getArea();
@@ -111,7 +97,7 @@ class pApiContentAllocationTreeView extends pApiTree {
                         $expandCollapseImg = 'images/open_all.gif';
                     }
 
-                    $expandCollapse = '<a class="con_img_button text_center" href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area .  '&oldstate=' . 'huhu' . '&step=collapse&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img class="mgt3" src="' . $expandCollapseImg . '" alt=""></a>';
+                    $expandCollapse = '<a class="con_img_button text_center" href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&oldstate=' . 'huhu' . '&step=collapse&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img class="mgt3" src="' . $expandCollapseImg . '" alt=""></a>';
                 } else {
                     $expandCollapseImg = 'images/spacer.gif';
                     $expandCollapse = '<img class="con_img_button_off" src="' . $expandCollapseImg . '" alt="">';
@@ -183,7 +169,8 @@ class pApiContentAllocationTreeView extends pApiTree {
      * @throws cDbException
      * @throws cInvalidArgumentException|cException
      */
-    public function renderTree($return = true) {
+    public function renderTree(bool $return = true)
+    {
         $this->_tpl->reset();
 
         $tree = $this->fetchTree(false, 0, true); // modified 27.10.2005

@@ -22,7 +22,8 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
  * @package    Plugin
  * @subpackage ContentAllocation
  */
-class pApiContentAllocationSelectBox extends pApiTree {
+class pApiContentAllocationSelectBox extends pApiTree
+{
 
     /**
      * @var bool
@@ -42,34 +43,19 @@ class pApiContentAllocationSelectBox extends pApiTree {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($uuid) {
+    public function __construct($uuid)
+    {
         parent::__construct($uuid);
     }
 
     /**
-     * Old constructor
+     * Builds an render tree
      *
-     * @deprecated [2016-02-11]
-     *                This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     *
-     * @param string $uuid
-     *
-     * @return pApiContentAllocationSelectBox
-     * @throws cDbException
-     * @throws cException
-     */
-    public function pApiContentAllocationSelectBox($uuid) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        return $this->__construct($uuid);
-    }
-
-    /**
-     * Builed an render tree
-     *
-     * @param $tree
+     * @param array $tree
      * @return string
      */
-    protected function _buildRenderTree($tree) {
+    protected function _buildRenderTree(array $tree): string
+    {
         $this->_idSetter = false;
         $result = '';
 
@@ -77,7 +63,7 @@ class pApiContentAllocationSelectBox extends pApiTree {
             $spacer = '|-';
             $spacer = str_pad($spacer, (($item_tmp['level'] + 1) * 2), "--", STR_PAD_RIGHT);
 
-            $result .= '<option value="'.$item_tmp['idpica_alloc'].'_'.$item_tmp['level'].'">'.$spacer . $item_tmp['name'].'</option>';
+            $result .= '<option value="' . $item_tmp['idpica_alloc'] . '_' . $item_tmp['level'] . '">' . $spacer . $item_tmp['name'] . '</option>';
 
             if (count($item_tmp['children'])) {
                 $children = $this->_buildRenderTree($item_tmp['children']);
@@ -89,29 +75,17 @@ class pApiContentAllocationSelectBox extends pApiTree {
     }
 
     /**
-     * Old function
-     *
-     * @deprecated [2016-02-11]
-     * 				This method is deprecated and is not needed any longer.
-     * @param null $load
-     * @return bool
-     */
-    public function setChecked($load = null) {
-        cDeprecated('This method is deprecated and is not needed any longer.');
-        return false;
-    }
-
-    /**
      * Render tree
      *
      * @param bool $return
-     * @param mixed   $parentId
+     * @param mixed $parentId
      * @param bool $useTreeStatus (if true use expand/collapsed status of the tree, otherwise not)
      *
      * @return bool|string|void
      * @throws cDbException
      */
-    public function renderTree($return = true, $parentId = false, $useTreeStatus = false) {
+    public function renderTree(bool $return = true, $parentId = false, bool $useTreeStatus = false)
+    {
         $tree = $this->fetchTree($parentId, 0, $useTreeStatus);
 
         if ($tree === false) {
@@ -126,4 +100,5 @@ class pApiContentAllocationSelectBox extends pApiTree {
             echo $tree;
         }
     }
+
 }
