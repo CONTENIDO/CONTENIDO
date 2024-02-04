@@ -838,6 +838,7 @@ class cModuleHandler {
         }
 
         $oWriter = new cXmlWriter();
+        $oWriter->getDomDocument()->formatOutput = true;
         $oRootElement = $oWriter->addElement('module', '', NULL);
 
         $oWriter->addElement('name', conHtmlSpecialChars($moduleName), $oRootElement);

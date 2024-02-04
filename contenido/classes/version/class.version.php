@@ -313,6 +313,7 @@ class cVersion {
      */
     public function createNewXml($sDirectory, $sFileName) {
         $oWriter = new cXmlWriter();
+        $oWriter->getDomDocument()->formatOutput = true;
         $oRootElement = $oWriter->addElement('version', '', NULL, [
             'xml:lang' => 'de'
         ]);

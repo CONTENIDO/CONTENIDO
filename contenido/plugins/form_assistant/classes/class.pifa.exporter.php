@@ -56,6 +56,7 @@ class PifaExporter {
 
         // build XML writer
         $this->_writer = new cXmlWriter();
+        $this->_writer->getDomDocument()->formatOutput = true;
     }
 
     /**
