@@ -47,7 +47,7 @@ $sortby           = cSecurity::escapeString($_REQUEST['sortby'] ?? '');
 $sortmode         = cSecurity::escapeString($_REQUEST['sortmode'] ?? '');
 $thumbnailmode    = cSecurity::escapeString($_REQUEST['thumbnailmode'] ?? '');
 
-if ($startpage == '') {
+if ($startpage < 1) {
     $startpage = 1;
 }
 
@@ -58,206 +58,6 @@ if ($sortby == '') {
 
 if (!in_array($sortmode, ['ASC', 'DESC'])) {
     $sortmode = 'DESC';
-}
-
-/**
- * Class UploadSearchResultList
- */
-class UploadSearchResultList extends FrontendList {
-    /**
-     *
-     * @var string
-     */
-    private $_pathData;
-
-    /**
-     *
-     * @var string
-     */
-    private $_fileType;
-
-    /**
-     *
-     * @var int
-     */
-    protected $_size;
-
-    /**
-     * Field converting facility.
-     *
-     * @see FrontendList::convert()
-     *
-     * @param int $field
-     *         Field index
-     * @param mixed $data
-     *         Field value
-     *
-     * @return mixed
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
-     */
-    public function convert($field, $data) {
-        global $appendparameters, $clientsUploadPath, $clientsUploadUrlPath, $clientsCachePath, $clientsFrontendUrl;
-
-        $cfg = cRegistry::getConfig();
-        $sess = cRegistry::getSession();
-
-        if ($field == 5) {
-            if ($data == '') {
-                return i18n("None");
-            }
-        }
-        if ($field == 4) {
-            return humanReadableSize($data);
-        }
-
-        if ($field == 3) {
-            if ($data == '') {
-                return '&nbsp;';
-            } else {
-                return $data;
-            }
-        }
-
-        if ($field == 2) {
-            $vpath = str_replace($clientsUploadPath, '', $this->_pathData);
-            $slashpos = cString::findLastPos($vpath, '/');
-            if ($slashpos === false) {
-                $file = $vpath;
-                $path = '';
-            } else {
-                $path = cString::getPartOfString($vpath, 0, $slashpos + 1);
-                $file = cString::getPartOfString($vpath, $slashpos + 1);
-            }
-
-            // Get rid of the slash hell...
-            $subPath = trim(trim($path, '/') . '/' . $file, '/');
-
-            if ($appendparameters == 'imagebrowser' || $appendparameters == 'filebrowser') {
-                $fileUrlToAdd = $this->_getFileBrowserUrl($subPath);
-                $title = i18n("Use file");
-                $icon = '<img class="mgr5" src="' . $cfg['path']['images'] . '/but_ok.gif" alt="' . $title . '" title="' . $title . '" />';
-                $mstr = '<a href="javascript:void(0)" data-action="add_file_from_browser" data-file="' . $fileUrlToAdd . '" title="' . $title . '">' . $icon . $data . '</a>';
-            } elseif ('' !== $this->_fileType) {
-                $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
-                $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
-
-                // Link to right_top first, so we can use history.back() in right_bottom!
-                $mstr = sprintf(
-                    $tmp_mstr,
-                    'right_top',
-                    $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"),
-                    'right_bottom',
-                    $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$file"),
-                    $data
-                );
-            } else {
-                $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
-                $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
-
-                // Link to right_top first, so we can use history.back() in right_bottom!
-                $mstr = sprintf(
-                    $tmp_mstr,
-                    'right_top',
-                    $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"),
-                    'right_bottom',
-                    $sess->url("main.php?area=upl&frame=4&path=$path$file/&file="),
-                    $data
-                );
-            }
-            return $mstr;
-        }
-
-        if ($field == 1) {
-            $this->_pathData = $data;
-
-            // If this file is an image, try to open
-            $this->_fileType = cString::toLowerCase(cFileHandler::getExtension($data));
-            switch ($this->_fileType) {
-                case 'bmp':
-                case 'gif':
-                case 'iff':
-                case 'jpeg':
-                case 'jpg':
-                case 'png':
-                case 'tif':
-                case 'tiff':
-                case 'wbmp':
-                case 'webp':
-                case 'xbm':
-                    $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    $sCacheName = basename($sCacheThumbnail);
-                    $sFullPath = $clientsCachePath . $sCacheName;
-                    if (cFileHandler::isFile($sFullPath)) {
-                        $aDimensions = getimagesize($sFullPath);
-                        $iWidth = $aDimensions[0];
-                        $iHeight = $aDimensions[1];
-                    } else {
-                        $iWidth = 0;
-                        $iHeight = 0;
-                    }
-
-                    if (cApiDbfs::isDbfs($data)) {
-                        $href = $clientsFrontendUrl . 'dbfs.php?file=' . $data;
-                    } else {
-                        $href = $clientsFrontendUrl . $clientsUploadUrlPath . $data;
-                    }
-                    return '<a href="' . $href . '" data-action="zoom" data-action-mouseover="zoom">
-                               <img class="hover" alt="" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
-                               <img class="preview" alt="" src="' . $sCacheThumbnail . '">
-                           </a>';
-                case '':
-                    // folder has empty filetype column value
-                    return '<img class="hover_none" alt="" src="' . cRegistry::getBackendUrl() . 'images/grid_folder.gif' . '">';
-                default:
-                    $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    return '<img class="hover_none" alt="" src="' . $sCacheThumbnail . '">';
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * @return int $size
-     */
-    public function getSize() {
-        return $this->_size;
-    }
-
-    /**
-     * @param int $size
-     */
-    public function setSize($size) {
-        $this->_size = $size;
-    }
-
-    /**
-     * Returns the url to the image/file to add to the wysiwyg editor.
-     * Behaviour is configurable, see used effective setting.
-     *
-     * @param $subPath
-     * @return string
-     * @throws cDbException
-     * @throws cException
-     */
-    protected function _getFileBrowserUrl($subPath) {
-        global $appendparameters, $clientsUploadUrlPath, $clientsFrontendUrl;
-        static $addWithFullUrl;
-
-        if (!isset($addWithFullUrl)) {
-            $addWithFullUrl = getEffectiveSetting($appendparameters, 'add_with_full_url', 'false');
-            $addWithFullUrl = $addWithFullUrl === 'true';
-        }
-        if ($addWithFullUrl) {
-            return $clientsFrontendUrl . $clientsUploadUrlPath . $subPath;
-        } else {
-            return $clientsUploadUrlPath . $subPath;
-        }
-    }
-
 }
 
 $thisfile = $sess->url("main.php?area=$area&frame=$frame&appendparameters=$appendparameters&searchfor=$searchfor&thumbnailmode=$thumbnailmode");
@@ -369,7 +169,7 @@ $sItemWrapTpl = '
 $sEndWrapTpl = $sSpacedRowTpl . $sToolsRowTpl . $sSpacedRowTpl . $sPagerWrapTpl . '</table>';
 
 // Object initializing
-$list2 = new UploadSearchResultList($sStartWrapTpl, $sEndWrapTpl, $sItemWrapTpl);
+$list2 = new cFrontendListUploadSearchResult($sStartWrapTpl, $sEndWrapTpl, $sItemWrapTpl);
 
 // Fetch data
 $files = uplSearch($searchfor);
@@ -392,9 +192,7 @@ if (in_array($thumbnailmode, $resultsPerPageOptions)) {
 
 $currentuser->setUserProperty('upload_folder_thumbnailmode', md5('search_results_num_per_page'), $thumbnailmode);
 
-$list2->setResultsPerPage($numpics);
-
-$list2->setSize($thumbnailmode);
+$list2->setResultsPerPage(cSecurity::toInteger($numpics));
 
 $rownum = 0;
 

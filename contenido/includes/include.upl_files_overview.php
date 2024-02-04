@@ -67,7 +67,7 @@ if (!empty($file)) {
     $file = basename($file);
 }
 
-if ($startpage == '') {
+if ($startpage < 1) {
     $startpage = 1;
 }
 
@@ -363,245 +363,6 @@ if ($action === 'upl_renamefile' && $bDirectoryIsWritable) {
     rename($clientsUploadPath . $path . $oldname, $clientsUploadPath . $path . $newname);
 }
 
-/**
- * @author unknown
- */
-class UploadList extends FrontendList {
-
-    /**
-     *
-     * @var string
-     */
-    protected $_dark;
-
-    /**
-     *
-     * @var int
-     */
-    protected $_size;
-
-    /**
-     * @var int
-     */
-    protected $_data_count = 0;
-
-    /**
-     * Field converting facility.
-     *
-     * @see FrontendList::convert()
-     *
-     * @param int   $field
-     *         Field index
-     * @param mixed $data
-     *         Field value
-     *
-     * @return mixed
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
-     */
-    public function convert($field, $data) {
-        global $path, $appendparameters, $startpage, $sortby, $sortmode, $thumbnailmode, $clientsFrontendUrl;
-        global $clientsUploadUrlPath, $clientsCachePath;
-
-        $cfg = cRegistry::getConfig();
-        $sess = cRegistry::getSession();
-
-        if ($field == 4) {
-            return humanReadableSize($data);
-        }
-
-        if ($field == 3) {
-            // Get rid of the slash hell...
-            $subPath = trim(trim($path, '/') . '/' . $data, '/');
-
-            if ($appendparameters == 'imagebrowser' || $appendparameters == 'filebrowser') {
-                $fileUrlToAdd = $this->_getFileBrowserUrl($subPath);
-                $title = i18n("Use file");
-                $icon = '<img class="mgr5" src="' . $cfg['path']['images'] . '/but_ok.gif" alt="' . $title . '" title="' . $title . '" />';
-                $mstr = '<a href="javascript:void(0)" data-action="add_file_from_browser" data-file="' . $fileUrlToAdd . '" title="' . $title . '">' . $icon . $data . '</a>';
-            } else {
-                $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-
-                // Link to right_top first, so we can use history.back() in right_bottom!
-                $mstr = sprintf(
-                    $tmp_mstr,
-                    'right_top',
-                    $sess->url("main.php?area=upl&frame=3&path=$path&file=$data"),
-                    'right_bottom',
-                    $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$data&appendparameters=$appendparameters&startpage=" . $startpage . "&sortby=" . $sortby . "&sortmode=" . $sortmode . "&thumbnailmode=" . $thumbnailmode),
-                    $data
-                );
-            }
-            return $mstr;
-        }
-
-        if ($field == 5) {
-            return uplGetFileTypeDescription($data);
-        }
-
-        if ($field == 2) {
-            // If this file is an image, try to open
-            $fileType = cString::toLowerCase(cFileHandler::getExtension($data));
-            switch ($fileType) {
-                case 'bmp':
-                case 'gif':
-                case 'iff':
-                case 'jpeg':
-                case 'jpg':
-                case 'png':
-                case 'tif':
-                case 'tiff':
-                case 'wbmp':
-                case 'webp':
-                case 'xbm':
-                    $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    $sCacheName = basename($sCacheThumbnail);
-                    $sFullPath = $clientsCachePath . $sCacheName;
-                    if (cFileHandler::isFile($sFullPath)) {
-                        $aDimensions = getimagesize($sFullPath);
-                        $iWidth = $aDimensions[0];
-                        $iHeight = $aDimensions[1];
-                    } else {
-                        $iWidth = 0;
-                        $iHeight = 0;
-                    }
-
-                    if (cApiDbfs::isDbfs($data)) {
-                        $href = $clientsFrontendUrl . 'dbfs.php?file=' . $data;
-                    } else {
-                        $href = $clientsFrontendUrl . $clientsUploadUrlPath . $data;
-                    }
-                    return '<a href="' . $href . '" data-action="zoom" data-action-mouseover="zoom">
-                               <img class="hover" alt="" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
-                               <img class="preview" alt="" src="' . $sCacheThumbnail . '">
-                           </a>';
-                default:
-                    $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    return '<img class="hover_none" alt="" src="' . $sCacheThumbnail . '">';
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * @return int $size
-     */
-    public function getSize() {
-        return $this->_size;
-    }
-
-    /**
-     * @param int $size
-     */
-    public function setSize($size) {
-        $this->_size = $size;
-    }
-
-    /**
-     * Sets the total count of data entries. This is needed for calculating the pages.
-     * @param int $totalUploadsCount
-     */
-    public function setDataCount($totalUploadsCount) {
-        $this->_data_count = $totalUploadsCount;
-    }
-
-    /**
-     * Returns the number of pages.
-     * If the data count variable is set it will be used instead counting the data array.
-     * @return float|int
-     */
-    public function getNumPages() {
-        if ($this->_data_count > 0) {
-            return ceil($this->_data_count / $this->_resultsPerPage);
-        }
-
-        return parent::getNumPages();
-    }
-
-    /**
-     * Outputs or optionally returns
-     *
-     * @param bool $return
-     *         if true, returns the list
-     *
-     * @return string|void
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
-     */
-    public function output($return = false) {
-        // if the data count variable is not set, proceed with the previous logic
-        if ($this->_data_count === 0) {
-            return parent::output($return);
-        }
-
-        // if the data count variable is set, display all contents from data array
-
-        $output = $this->_startwrap;
-
-        $count = count($this->_data);
-
-        for ($i = 1; $i <= $count; $i++) {
-            $currentPos = $i - 1;
-            if (is_array($this->_data[$currentPos])) {
-                $items = "";
-                foreach ($this->_data[$currentPos] as $key => $value) {
-                    $items .= ", '" . addslashes($this->convert($key, $value)) . "'";
-                }
-
-                $itemWrap = str_replace('{LIST_ITEM_POS}', $currentPos, $this->_itemwrap);
-                $execute = '$output .= sprintf($itemWrap ' . $items . ');';
-                eval($execute);
-            }
-        }
-
-        $output .= $this->_endwrap;
-
-        $output = stripslashes($output);
-
-        if ($return == true) {
-            return $output;
-        } else {
-            echo $output;
-        }
-    }
-
-    /**
-     * Returns the url to the image/file to add to the wysiwyg editor.
-     * Behaviour is configurable, see used effective setting.
-     *
-     * @param $subPath
-     * @return string
-     * @throws cDbException
-     * @throws cException
-     */
-    protected function _getFileBrowserUrl($subPath) {
-        global $appendparameters, $clientsUploadUrlPath, $clientsFrontendUrl;
-        static $addWithFullUrl;
-
-        if (cApiDbfs::isDbfs($subPath)) {
-            $fileUrlToAdd = 'dbfs.php?file=' . $subPath;
-        } else {
-            $fileUrlToAdd = $clientsUploadUrlPath . $subPath;
-        }
-
-        if (!isset($addWithFullUrl)) {
-            $addWithFullUrl = getEffectiveSetting($appendparameters, 'add_with_full_url', 'false');
-            $addWithFullUrl = $addWithFullUrl === 'true';
-        }
-        if ($addWithFullUrl) {
-            return $clientsFrontendUrl . $fileUrlToAdd;
-        } else {
-            return $fileUrlToAdd;
-        }
-    }
-
-}
-
 uplSyncDirectory($path);
 
 $thisfile = $sess->url("main.php?idarea=$area&frame=$frame&path=$path&thumbnailmode=$thumbnailmode&appendparameters=$appendparameters");
@@ -711,7 +472,7 @@ $sItemWrapTpl = '
 $sEndWrapTpl = $sSpacedRowTpl . $sToolsRowTpl . $sSpacedRowTpl . $sPagerWrapTpl . '</table>';
 
 // Object initializing
-$list2 = new UploadList($sStartWrapTpl, $sEndWrapTpl, $sItemWrapTpl);
+$list2 = new cFrontendListUpload($sStartWrapTpl, $sEndWrapTpl, $sItemWrapTpl);
 
 $uploadCollection = new cApiUploadCollection();
 
@@ -745,8 +506,7 @@ if (in_array($thumbnailmode, $resultsPerPageOptions)) {
 
 $currentuser->setUserProperty('upload_folder_thumbnailmode', md5($path), $thumbnailmode);
 
-$list2->setResultsPerPage($numpics);
-$list2->setSize($thumbnailmode);
+$list2->setResultsPerPage(cSecurity::toInteger($numpics));
 
 $uploadCollection->select("idclient = '$client' AND dirname = '$qpath'");
 $totalUploadsCount = $uploadCollection->count();

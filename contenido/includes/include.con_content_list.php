@@ -257,29 +257,10 @@ if (($action == 'savecontype' || $action == 10)) {
     }
 } elseif ($action == 'exportrawcontent') {
 
-    /**
-     * extended class to add CDATA to content
-     */
-    class SimpleXMLExtended extends SimpleXMLElement
-    {
-
-        /**
-         *
-         * @param string $cdata_text
-         */
-        public function addCData($cdata_text)
-        {
-            $node = dom_import_simplexml($this);
-            $no = $node->ownerDocument;
-            $node->appendChild($no->createCDATASection($cdata_text));
-        }
-
-    }
-
     // load article language object
     $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
     // create xml element articles
-    $articleElement = new SimpleXMLExtended('<?xml version="1.0" encoding="UTF-8"?><articles></articles>');
+    $articleElement = new cSimpleXMLExtended('<?xml version="1.0" encoding="UTF-8"?><articles></articles>');
 
     // add child element article
     $articleNode = $articleElement->addChild("article");
