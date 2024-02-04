@@ -43,7 +43,8 @@ class cHTMLAlignmentTable extends cHTMLTable {
      * @return string
      *         generated markup
      */
-    public function render() {
+    public function render(): string
+    {
         $tr = new cHTMLTableRow();
         $td = new cHTMLTableData();
 

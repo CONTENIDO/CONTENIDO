@@ -219,7 +219,8 @@ class cGuiFoldingRow extends cHTML {
      * @return string
      *         Generated markup
      */
-    public function render() {
+    public function render(): string
+    {
         // Build the expand/collapse link
         $this->_link->setClass("foldingrow");
         if ($this->_linkId != NULL) {
