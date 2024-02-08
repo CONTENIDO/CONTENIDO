@@ -122,6 +122,8 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
                     break;
                 case 'subject':
                     $classes[] = 'col_100p';
+                    $td->setContent($item->get($key) . '&nbsp;');
+                    break;
                 case 'client':
                     $idclient = $item->get('idclient');
                     $clientItem = new cApiClient($idclient);

@@ -80,7 +80,7 @@ class NewsletterJobCollection extends ItemCollection {
             // Precompile messages
             $sPath = cRegistry::getFrontendUrl() . "front_content.php?changelang=" . $lang . "&idcatart=" . $iIDCatArt . "&";
 
-            $sMessageText = $oNewsletter->get("message");
+            $sMessageText = $oNewsletter->get("message") ?? "";
 
             // Preventing double lines in mail, you may wish to disable this
             // function on windows servers
