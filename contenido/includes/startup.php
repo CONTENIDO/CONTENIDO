@@ -78,6 +78,11 @@ if (false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.ph
     die($msg);
 }
 
+// Include user-defined file if exists
+if (cFileHandler::exists($backendPath . '/includes/include.local.php')) {
+    include_once($backendPath . '/includes/include.local.php');
+}
+
 include_once($backendPath . '/includes/functions.php54.php');
 include_once($backendPath . '/includes/functions.php_polyfill.php');
 
