@@ -28,6 +28,7 @@
         "ext-mysqli": "*",
         "ext-simplexml": "*",
         "ext-zip": "*",
-        "php": ">=7.0.0"
+        "ext-libxml": "*",
+        "php": ">=7.1"
     }
 }
