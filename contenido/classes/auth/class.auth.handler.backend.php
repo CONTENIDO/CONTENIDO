@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Authentication
  */
-class cAuthHandlerBackend extends cAuth {
+class cAuthHandlerBackend extends cAuth
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -28,7 +29,8 @@ class cAuthHandlerBackend extends cAuth {
      * Automatically sets the lifetime of the authentication to the
      * configured value.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $cfg = cRegistry::getConfig();
         $this->_lifetime = cSecurity::toInteger($cfg['backend']['timeout']);
         if ($this->_lifetime == 0) {
@@ -41,14 +43,16 @@ class cAuthHandlerBackend extends cAuth {
      *
      * @inheritdoc
      */
-    public function preAuthenticate() {
+    public function preAuthenticate()
+    {
         return false;
     }
 
     /**
      * @deprecated [2023-02-05] Since 4.10.2, use {@see cAuthHandlerBackend::preAuthenticate} instead
      */
-    public function preAuthorize() {
+    public function preAuthorize()
+    {
         return $this->preAuthenticate();
     }
 
@@ -57,7 +61,8 @@ class cAuthHandlerBackend extends cAuth {
      * @inheritdoc
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function displayLoginForm() {
+    public function displayLoginForm()
+    {
         // @TODO  We need a better solution for this.
         //        One idea could be to set the request/response type in
         //        global $cfg array instead of checking $_REQUEST['ajax']
@@ -75,7 +80,8 @@ class cAuthHandlerBackend extends cAuth {
      * @inheritdoc
      * @throws cDbException|cException
      */
-    public function validateCredentials() {
+    public function validateCredentials()
+    {
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
         $formtimestamp = $_POST['formtimestamp'] ?? '';
@@ -101,9 +107,7 @@ class cAuthHandlerBackend extends cAuth {
         if (isset($username)) {
             $this->auth['uname'] = $username;
         } elseif ($this->_defaultNobody) {
-            $uid = $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
-
-            return $uid;
+            return $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
         }
 
         $uid = false;
@@ -167,7 +171,8 @@ class cAuthHandlerBackend extends cAuth {
      *
      * @throws cDbException|cException
      */
-    public function logSuccessfulAuth() {
+    public function logSuccessfulAuth()
+    {
         global $client, $lang, $saveLoginTime;
 
         $perm = new cPermission();
@@ -214,7 +219,8 @@ class cAuthHandlerBackend extends cAuth {
      * @inheritdoc
      * @return bool
      */
-    public function isLoggedIn() {
+    public function isLoggedIn(): bool
+    {
         $userId = $this->getUserId();
         if (!empty($userId)) {
             $user = new cApiUser($userId);

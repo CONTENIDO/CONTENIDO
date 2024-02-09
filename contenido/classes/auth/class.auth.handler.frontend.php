@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Authentication
  */
-class cAuthHandlerFrontend extends cAuth {
+class cAuthHandlerFrontend extends cAuth
+{
 
     /**
      *
@@ -34,9 +35,10 @@ class cAuthHandlerFrontend extends cAuth {
      * Automatically sets the lifetime of the authentication to the
      * configured value.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $cfg = cRegistry::getConfig();
-        $this->_lifetime = (int) $cfg['frontend']['timeout'];
+        $this->_lifetime = (int)$cfg['frontend']['timeout'];
         if ($this->_lifetime == 0) {
             $this->_lifetime = 15;
         }
@@ -46,7 +48,8 @@ class cAuthHandlerFrontend extends cAuth {
      * @inheritdoc
      * @throws cDbException|cException
      */
-    public function preAuthenticate() {
+    public function preAuthenticate()
+    {
         $password = $_POST['password'] ?? '';
 
         if ($password == '') {
@@ -62,7 +65,8 @@ class cAuthHandlerFrontend extends cAuth {
     /**
      * @deprecated [2023-02-05] Since 4.10.2, use {@see cAuthHandlerFrontend::preAuthenticate} instead
      */
-    public function preAuthorize() {
+    public function preAuthorize()
+    {
         return $this->preAuthenticate();
     }
 
@@ -70,7 +74,8 @@ class cAuthHandlerFrontend extends cAuth {
      * Includes a file which displays the frontend login form.
      * @inheritdoc
      */
-    public function displayLoginForm() {
+    public function displayLoginForm()
+    {
         include(cRegistry::getFrontendPath() . 'front_crcloginform.inc.php');
     }
 
@@ -78,7 +83,8 @@ class cAuthHandlerFrontend extends cAuth {
      * @inheritdoc
      * @throws cDbException|cException
      */
-    public function validateCredentials() {
+    public function validateCredentials()
+    {
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
 
@@ -94,9 +100,7 @@ class cAuthHandlerFrontend extends cAuth {
         if (isset($username)) {
             $this->auth['uname'] = $username;
         } elseif ($this->_defaultNobody) {
-            $uid = $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
-
-            return $uid;
+            return $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
         }
 
         $uid = false;
@@ -166,14 +170,15 @@ class cAuthHandlerFrontend extends cAuth {
      *
      * @inheritdoc
      */
-    public function logSuccessfulAuth() {
-        return;
+    public function logSuccessfulAuth()
+    {
     }
 
     /**
      * @inheritdoc
      */
-    public function isLoggedIn() {
+    public function isLoggedIn(): bool
+    {
         $userId = $this->getUserId();
         if (!empty($userId)) {
             $user = new cApiUser($userId);

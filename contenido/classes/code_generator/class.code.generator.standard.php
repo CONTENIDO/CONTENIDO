@@ -27,7 +27,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
      * @inheritdoc
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function _generate($contype = true, $editable = true, $version = NULL)
+    public function _generate($contype = true, $editable = true, $version = NULL): string
     {
         $cfg = cRegistry::getConfig();
 
@@ -200,7 +200,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
         }
 
         if (cString::findFirstPos($this->_layoutCode, '{REV}') !== false) {
-            $this->_layoutCode = cString::iReplaceOnce('{REV}', ((int) getEffectiveSetting("ressource", "revision", 0)), $this->_layoutCode);
+            $this->_layoutCode = cString::iReplaceOnce('{REV}', ((int)getEffectiveSetting("ressource", "revision", 0)), $this->_layoutCode);
         }
 
         // add module JS at {JS} position
@@ -283,10 +283,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
      * Processes and adds or replaces title tag for an article.
      * Also calls the CEC 'Contenido.Content.CreateTitletag' for user defined title creation if none is given.
      *
-     * @see cCodeGeneratorAbstract::_processCodeTitleTag()
      * @return string
+     * @see cCodeGeneratorAbstract::_processCodeTitleTag()
      */
-    protected function _processCodeTitleTag()
+    protected function _processCodeTitleTag(): string
     {
         if ($this->_pageTitle == '') {
             cApiCecHook::setDefaultReturnValue($this->_pageTitle);
@@ -294,12 +294,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
         }
 
         // define regular expressions
-        $reHead  = '/<head>.*?<\/head>/is';
+        $reHead = '/<head>.*?<\/head>/is';
         $reTitle = '/<title>.*?<\/title>/is';
 
         // find head tags in layout code (case insensitive, search across linebreaks)
         $matches = [];
-        $succ    = preg_match_all($reHead, $this->_layoutCode, $matches);
+        $succ = preg_match_all($reHead, $this->_layoutCode, $matches);
 
         // check if head tag has been found
         if (false !== $succ && count($matches) && isset($matches[0], $matches[0][0])) {
@@ -310,8 +310,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             // add or replace title
             if ($this->_pageTitle != '') {
                 $replaceTag = '{__TITLE__' . md5(rand() . time()) . '}';
-                $headCode   = preg_replace($reTitle, $replaceTag, $headTag, 1);
-                $pageTitle  = conHtmlentities($this->_pageTitle);
+                $headCode = preg_replace($reTitle, $replaceTag, $headTag, 1);
+                $pageTitle = conHtmlentities($this->_pageTitle);
                 if (false !== cString::findFirstPos($headCode, $replaceTag)) {
                     $headCode = str_ireplace($replaceTag, "<title>$pageTitle</title>", $headCode);
                 } else {
@@ -336,7 +336,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
      *
      * @return string
      */
-    protected function _processCodeMetaTags()
+    protected function _processCodeMetaTags(): string
     {
         // get basic meta tags (from article & system)
         $metaTags = $this->_getBasicMetaTags();
@@ -401,11 +401,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
     /**
      * Saves the generated code if layout flag is false and save flag is true.
      *
-     * @param int    $idcatart
+     * @param int $idcatart
      *                               Category article id
-     * @param string $code           [optional]
+     * @param string $code [optional]
      *                               parameter for setting code manually instead of using the generated layout code
-     * @param bool   $flagCreateCode [optional]
+     * @param bool $flagCreateCode [optional]
      *                               whether the "create code" flag in cat_art should be set or not (optional)
      * @throws cDbException|cInvalidArgumentException
      */
@@ -441,7 +441,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             }
 
             if (is_dir($codePath)) {
-                $fileCode = ($code == '')? $this->_layoutCode : $code;
+                $fileCode = ($code == '') ? $this->_layoutCode : $code;
 
                 $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $fileCode;
                 cFileHandler::write($codePath . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
@@ -463,7 +463,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
      * @throws cDbException
      * @throws cException
      */
-    protected function _getBasicMetaTags()
+    protected function _getBasicMetaTags(): array
     {
         // collect all available meta tag entries with non-empty values
         $metaTags = [];
@@ -532,7 +532,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
      *         if links in article should be followed
      * @return array
      */
-    protected function _updateMetaRobots(array $metaTags, $index, $follow) {
+    protected function _updateMetaRobots(array $metaTags, $index, $follow): array
+    {
         // extract robots setting from current meta elements
         list($metaTags, $metaRobots) = $this->_extractMetaElement($metaTags, 'name', 'robots');
 
@@ -546,7 +547,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             $content = array_map('trim', explode(',', $metaRobots['content']));
             // determine index from extracted element if given value is NULL
             if (is_null($index)) {
-                $index = (bool) (in_array('all', $content) || in_array('index', $content));
+                $index = (bool)(in_array('all', $content) || in_array('index', $content));
                 if (in_array('index', $content) || in_array('all', $content)) {
                     $index = true;
                 } elseif (in_array('noindex', $content)) {
@@ -573,10 +574,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             $content[] = 'all';
         } else {
             if (!is_null($index)) {
-                $content[] = $index? 'index' : 'noindex';
+                $content[] = $index ? 'index' : 'noindex';
             }
             if (!is_null($follow)) {
-                $content[] = $follow? 'follow' : 'nofollow';
+                $content[] = $follow ? 'follow' : 'nofollow';
             }
         }
         $metaRobots['content'] = implode(',', $content);
@@ -602,7 +603,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
      * @param string $nameOrEquiv
      * @return array
      */
-    protected function _extractMetaElement(array $metaTags, $type, $nameOrEquiv) {
+    protected function _extractMetaElement(array $metaTags, $type, $nameOrEquiv): array
+    {
         // prepare result structure
         $result = [
             [],
