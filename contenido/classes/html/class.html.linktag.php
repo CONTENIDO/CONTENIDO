@@ -28,7 +28,8 @@ class cHTMLLinkTag extends cHTMLContentElement
      *
      * Creates an HTML script element.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->_tag = 'link';
         $this->_contentlessTag = true;
@@ -37,11 +38,11 @@ class cHTMLLinkTag extends cHTMLContentElement
     /**
      * Renders a link tag to reference an external stylesheet ressource.
      *
-     * @since CONTENIDO 4.10.2
      * @param string $href The reference (path) to the stylesheet file
      * @param array $attributes Attributes to set, `rel="stylesheet"` and
      *      `type="text/css"` will be set by default.
      * @return string
+     * @since CONTENIDO 4.10.2
      */
     public static function stylesheet(string $href, array $attributes = []): string
     {

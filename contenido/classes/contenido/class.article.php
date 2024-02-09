@@ -24,7 +24,8 @@ cInclude('includes', 'functions.str.php');
  * @method cApiArticle createNewItem
  * @method cApiArticle|bool next
  */
-class cApiArticleCollection extends ItemCollection {
+class cApiArticleCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -33,7 +34,8 @@ class cApiArticleCollection extends ItemCollection {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function __construct($select = false) {
+    public function __construct($select = false)
+    {
         $table = cRegistry::getDbTableName('art');
         parent::__construct($table, 'idart');
         $this->_setItemClass('cApiArticle');
@@ -55,7 +57,8 @@ class cApiArticleCollection extends ItemCollection {
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idclient) {
+    public function create($idclient)
+    {
         $item = $this->createNewItem();
 
         $item->set('idclient', $idclient);
@@ -73,7 +76,8 @@ class cApiArticleCollection extends ItemCollection {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getIdsByClientId($idclient) {
+    public function getIdsByClientId($idclient)
+    {
         $sql = "SELECT `idart` FROM `%s` WHERE `idclient` = %d";
         $this->db->query($sql, $this->table, $idclient);
         $list = [];
@@ -100,7 +104,8 @@ class cApiArticle extends Item
      *
      * @throws cDbException|cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         $table = cRegistry::getDbTableName('art');
         parent::__construct($table, 'idart');
         $this->setFilters([], []);
@@ -120,7 +125,8 @@ class cApiArticle extends Item
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getLink($changeLangId = 0) {
+    public function getLink($changeLangId = 0)
+    {
         if ($this->isLoaded() === false) {
             return '';
         }
@@ -144,7 +150,8 @@ class cApiArticle extends Item
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idclient':
                 $value = cSecurity::toInteger($value);

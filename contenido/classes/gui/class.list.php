@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cGuiList {
+class cGuiList
+{
 
     /**
      *
@@ -32,7 +33,8 @@ class cGuiList {
     /**
      * Constructor to create an instance of this class.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->cells = [];
     }
 
@@ -42,7 +44,8 @@ class cGuiList {
      * @param string|int $cell
      * @param string $value
      */
-    public function setCell($item, $cell, $value) {
+    public function setCell($item, $cell, $value)
+    {
         $this->cells[$item][$cell] = $value;
     }
 
@@ -54,7 +57,8 @@ class cGuiList {
      *         Complete template string or nothing
      * @throws cInvalidArgumentException
      */
-    public function render($print = false) {
+    public function render($print = false)
+    {
         global $cfg;
 
         $backendPath = cRegistry::getBackendPath();

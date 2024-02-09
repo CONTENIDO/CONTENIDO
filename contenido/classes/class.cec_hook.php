@@ -72,7 +72,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage CEC
  */
-class cApiCecHook {
+class cApiCecHook
+{
 
     /**
      * Temporary  stored break condition.
@@ -104,7 +105,8 @@ class cApiCecHook {
      * @param mixed $condition
      * @param mixed $defaultReturnValue [optional]
      */
-    public static function setBreakCondition($condition, $defaultReturnValue = NULL) {
+    public static function setBreakCondition($condition, $defaultReturnValue = NULL)
+    {
         self::$_breakCondition = $condition;
         self::setDefaultReturnValue($defaultReturnValue);
     }
@@ -114,7 +116,8 @@ class cApiCecHook {
      *
      * @param mixed $defaultReturnValue
      */
-    public static function setDefaultReturnValue($defaultReturnValue) {
+    public static function setDefaultReturnValue($defaultReturnValue)
+    {
         self::$_defaultReturnValue = $defaultReturnValue;
     }
 
@@ -126,11 +129,12 @@ class cApiCecHook {
      *
      * @throws cInvalidArgumentException if the given position is less than 1
      */
-    public static function setReturnArgumentPos($pos) {
-        if ((int) $pos < 1) {
+    public static function setReturnArgumentPos($pos)
+    {
+        if ((int)$pos < 1) {
             throw new cInvalidArgumentException('Return position has to be greater or equal than 1.');
         }
-        self::$_returnArgumentPos = (int) $pos;
+        self::$_returnArgumentPos = (int)$pos;
     }
 
     /**
@@ -141,7 +145,8 @@ class cApiCecHook {
      * as $chainName. NOTE: There is no restriction for number of passed
      * parameter.
      */
-    public static function execute() {
+    public static function execute()
+    {
         // get arguments
         $args = func_get_args();
 
@@ -176,7 +181,8 @@ class cApiCecHook {
      * @return mixed
      *         Parameter changed/processed by chain functions.
      */
-    public static function executeAndReturn() {
+    public static function executeAndReturn()
+    {
         // get arguments
         $args = func_get_args();
 
@@ -226,7 +232,8 @@ class cApiCecHook {
      * @return mixed
      *         The break condition or its default value
      */
-    public static function executeWhileBreakCondition() {
+    public static function executeWhileBreakCondition()
+    {
         // get arguments
         $args = func_get_args();
 
@@ -263,7 +270,8 @@ class cApiCecHook {
     /**
      * Resets some properties to defaults
      */
-    private static function _reset() {
+    private static function _reset()
+    {
         self::$_breakCondition = NULL;
         self::$_defaultReturnValue = NULL;
         self::$_returnArgumentPos = 1;
@@ -272,14 +280,15 @@ class cApiCecHook {
     /**
      * Used to debug some status information.
      *
-     * @param mixed  $var
+     * @param mixed $var
      *                    The variable to dump
      * @param string $msg [optional]
      *                    Additional message
      *
      * @throws cInvalidArgumentException
      */
-    private static function _debug($var, $msg = '') {
+    private static function _debug($var, $msg = '')
+    {
         $content = ($msg !== '') ? $msg . ': ' : '';
         if (is_object($var) || is_array($var)) {
             $content .= print_r($var, true);

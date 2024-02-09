@@ -73,7 +73,8 @@ cInclude('includes', 'functions.encoding.php');
  * @package    Core
  * @subpackage Frontend_Search
  */
-class cSearchIndex extends cSearchBaseAbstract {
+class cSearchIndex extends cSearchBaseAbstract
+{
 
     /**
      * content of the cms-types of an article
@@ -175,7 +176,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct($db = NULL) {
+    public function __construct($db = NULL)
+    {
         parent::__construct($db);
 
         $this->setContentTypes();
@@ -184,8 +186,8 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * Start indexing the article.
      *
-     * @param int    $idart             Article Id
-     * @param array  $aContent          The complete content of an article specified by its content types.
+     * @param int $idart Article Id
+     * @param array $aContent The complete content of an article specified by its content types.
      *                                  It looks like:
      *                                  [
      *                                  [CMS_HTMLHEAD] => [
@@ -196,14 +198,15 @@ class cSearchIndex extends cSearchBaseAbstract {
      *                                  [1] => Die Inhalte auf dieser Website ...
      *                                  ]
      *                                  ]
-     * @param string $place             [optional] The field where to store the index information in db.
-     * @param array  $cms_options       [optional] One can specify explicitly cms types which should not be indexed.
-     * @param array  $aStopwords        [optional] Array with words which should not be indexed.
+     * @param string $place [optional] The field where to store the index information in db.
+     * @param array $cms_options [optional] One can specify explicitly cms types which should not be indexed.
+     * @param array $aStopwords [optional] Array with words which should not be indexed.
      *
      * @throws cInvalidArgumentException|cDbException
      */
-    public function start($idart, $aContent, $place = 'auto', $cms_options = [], $aStopwords = []) {
-        if (!is_int((int) $idart) || $idart < 0) {
+    public function start($idart, $aContent, $place = 'auto', $cms_options = [], $aStopwords = [])
+    {
+        if (!is_int((int)$idart) || $idart < 0) {
             return;
         } else {
             $this->idart = $idart;
@@ -237,7 +240,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @return void
      * @throws cDbException
      */
-    public function addTitle() {
+    public function addTitle()
+    {
         $sql = "SELECT `title`, `pagetitle` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
         $this->db->query($sql, cRegistry::getDbTableName('art_lang'), $this->idart, $this->lang);
         if ($this->db->nextRecord()) {
@@ -263,7 +267,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      *
      * @throws cInvalidArgumentException
      */
-    public function createKeywords() {
+    public function createKeywords()
+    {
         // Create only keycodes, if some are available
         if (is_array($this->_keycode)) {
             foreach ($this->_keycode as $idtype => $data) {
@@ -302,7 +307,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cInvalidArgumentException
      * @throws cDbException
      */
-    public function saveKeywords() {
+    public function saveKeywords()
+    {
         $tabKeywords = cRegistry::getDbTableName('keywords');
 
         foreach ($this->_keywords as $keyword => $count) {
@@ -316,7 +322,7 @@ class cSearchIndex extends cSearchBaseAbstract {
 
             if (!array_key_exists($keyword, $this->_keywordsOld)) {
                 // if keyword is new, save index information
-                $sql   = "INSERT INTO `%s` (`keyword`, `%s`, `idlang`) VALUES ('%s', '%s', %d)";
+                $sql = "INSERT INTO `%s` (`keyword`, `%s`, `idlang`) VALUES ('%s', '%s', %d)";
                 $sql = $this->db->prepare($sql, $tabKeywords, $this->_place, $keyword, $index_string, $this->lang);
             } else {
                 // if keyword already exists, create new index_string
@@ -341,7 +347,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cInvalidArgumentException
      * @throws cDbException
      */
-    public function deleteKeywords() {
+    public function deleteKeywords()
+    {
         $tabKeywords = cRegistry::getDbTableName('keywords');
         foreach ($this->_keywordsDel as $key_del) {
             $index_string = preg_replace("/&$this->idart=[0-9]+\([\w\-,]+\)/", "", $this->_keywordsOld[$key_del]);
@@ -365,7 +372,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cInvalidArgumentException
      * @throws cDbException
      */
-    public function getKeywords() {
+    public function getKeywords()
+    {
         $keywords = array_map([
             $this->db, 'escape'
         ], array_keys($this->_keywords));
@@ -404,7 +412,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      *         Keyword
      * @return array|string|string[]
      */
-    public function removeSpecialChars($key) {
+    public function removeSpecialChars($key)
+    {
         $aSpecialChars = [
             /*"-",*/
             "_",
@@ -484,7 +493,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      *         Keyword
      * @return string
      */
-    public function addSpecialUmlauts($key) {
+    public function addSpecialUmlauts($key)
+    {
         $key = conHtmlentities($key, NULL, cRegistry::getEncoding());
         $aUmlautMap = [
             'Ue' => '&Uuml;',
@@ -508,7 +518,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      *
      * @param array $aStopwords
      */
-    public function setStopwords($aStopwords) {
+    public function setStopwords($aStopwords)
+    {
         if (is_array($aStopwords) && count($aStopwords) > 0) {
             $this->_stopwords = $aStopwords;
         }
@@ -520,7 +531,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cInvalidArgumentException
      * @throws cDbException
      */
-    public function setContentTypes() {
+    public function setContentTypes()
+    {
         $typeColl = new cApiTypeCollection();
         $typeColl->addResultField('type');
         $typeColl->query();
@@ -539,7 +551,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      *
      * @param mixed $cms_options
      */
-    public function setCmsOptions($cms_options) {
+    public function setCmsOptions($cms_options)
+    {
         if (is_array($cms_options) && count($cms_options) > 0) {
             foreach ($cms_options as $opt) {
                 $opt = cString::toUpperCase($opt);
@@ -568,7 +581,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @param string $idtype
      * @return bool
      */
-    public function checkCmsType($idtype) {
+    public function checkCmsType($idtype)
+    {
         $idtype = cString::toUpperCase($idtype);
 
         // Do not index CMS_RAW
@@ -584,7 +598,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      *
      * @return array
      */
-    public function getCmsType() {
+    public function getCmsType()
+    {
         return $this->_cmsType;
     }
 
@@ -593,7 +608,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      *
      * @return array
      */
-    public function getCmsTypeSuffix() {
+    public function getCmsTypeSuffix()
+    {
         return $this->_cmsTypeSuffix;
     }
 
@@ -606,7 +622,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @return string[] List of keyword to index
      * @throws cInvalidArgumentException
      */
-    protected function _splitCodeToKeywords($code) {
+    protected function _splitCodeToKeywords($code)
+    {
         $this->_debug('code', $code);
 
         // Remove backslash
@@ -630,10 +647,10 @@ class cSearchIndex extends cSearchBaseAbstract {
 
         // Split the keys also by hyphens, we want to index words with
         // and without hypens
-        $keywords2 = array_map(function($item) {
+        $keywords2 = array_map(function ($item) {
             return mb_split('[-]+', $item);
         }, $keywords);
-        $keywords2 = array_filter($keywords2, function($item) {
+        $keywords2 = array_filter($keywords2, function ($item) {
             return count($item) > 1;
         });
 

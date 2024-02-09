@@ -30,7 +30,8 @@ class cApiModuleCollection extends ItemCollection
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         $table = cRegistry::getDbTableName('mod');
         parent::__construct($table, 'idmod');
         $this->_setItemClass('cApiModule');
@@ -39,28 +40,28 @@ class cApiModuleCollection extends ItemCollection
     /**
      * Creates a new module item
      *
-     * @param string  $name
-     * @param int     $idclient     [optional]
-     * @param string  $alias        [optional]
-     * @param string  $type         [optional]
-     * @param string  $error        [optional]
-     * @param string  $description  [optional]
-     * @param int     $deletable    [optional]
-     * @param string  $template     [optional]
-     * @param int     $static       [optional]
-     * @param string  $package_guid [optional]
-     * @param string  $package_data [optional]
-     * @param string  $author       [optional]
-     * @param string  $created      [optional]
-     * @param string  $lastmodified [optional]
+     * @param string $name
+     * @param int $idclient [optional]
+     * @param string $alias [optional]
+     * @param string $type [optional]
+     * @param string $error [optional]
+     * @param string $description [optional]
+     * @param int $deletable [optional]
+     * @param string $template [optional]
+     * @param int $static [optional]
+     * @param string $package_guid [optional]
+     * @param string $package_data [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      *
      * @return cApiModule
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($name, $idclient = NULL, $alias = '', $type = '',
-            $error = 'none', $description = '', $deletable = 0, $template = '',
-            $static = 0, $package_guid = '', $package_data = '', $author = '',
-            $created = '', $lastmodified = ''
+                           $error = 'none', $description = '', $deletable = 0, $template = '',
+                           $static = 0, $package_guid = '', $package_data = '', $author = '',
+                           $created = '', $lastmodified = ''
     )
     {
         if (NULL === $idclient) {
@@ -126,9 +127,9 @@ class cApiModuleCollection extends ItemCollection
      * By default, the modules are ordered by name but can be ordered by any
      * property.
      *
-     * @param int    $idclient
+     * @param int $idclient
      * @param string $oderBy [optional]
-     * @param bool   $returnAsObjects [optional] Flag to return list of
+     * @param bool $returnAsObjects [optional] Flag to return list of
      *      cApiModule instances instead of record data list.
      *      Since CONTENIDO 4.10.2.
      *
@@ -164,7 +165,7 @@ class cApiModuleCollection extends ItemCollection
      * By default, the modules are ordered by name but can be ordered by any
      * property.
      *
-     * @param int    $idclient
+     * @param int $idclient
      * @param string $type
      * @param string $oderBy [optional]
      *
@@ -258,12 +259,12 @@ class cApiModule extends Item
      */
     private $_translationReplacement = 'mi18n("';
 
-	/**
+    /**
      * for finding module translations in source code of templates
      *
      * @var string
      */
-	private $_translationPatternTemplate = '/\{\s*"([^"]+)"\s*\|\s*mi18n\s*\}/';
+    private $_translationPatternTemplate = '/\{\s*"([^"]+)"\s*\|\s*mi18n\s*\}/';
 
     /**
      * @todo check if this property is still required
@@ -357,8 +358,8 @@ class cApiModule extends Item
      * from db-table.
      *
      * @param array $cfg
-     * @param int   $client Deprecated, is no longer used.
-     * @param int   $lang  Deprecated, is no longer used.
+     * @param int $client Deprecated, is no longer used.
+     * @param int $lang Deprecated, is no longer used.
      *
      * @return bool|array
      * @throws cException
@@ -411,23 +412,23 @@ class cApiModule extends Item
             }
         }
 
-		// Parse all templates too
-		$moduleTemplateHandler = new cModuleTemplateHandler($this, null);
-		$filesArray = $moduleTemplateHandler->getAllFilesFromDirectory('template');
+        // Parse all templates too
+        $moduleTemplateHandler = new cModuleTemplateHandler($this, null);
+        $filesArray = $moduleTemplateHandler->getAllFilesFromDirectory('template');
 
-		if (is_array($filesArray)) {
-			$code = '';
-			foreach ($filesArray as $file) {
-				$code .= $moduleTemplateHandler->getFilesContent('template', '', $file);
-			}
+        if (is_array($filesArray)) {
+            $code = '';
+            foreach ($filesArray as $file) {
+                $code .= $moduleTemplateHandler->getFilesContent('template', '', $file);
+            }
 
-			// Parse for the mi18n stuff
+            // Parse for the mi18n stuff
             preg_match_all($this->_translationPatternTemplate, $code, $results);
 
-			if (is_array($results) && is_array($results[1]) && count($results[1]) > 0) {
-				$strings = array_merge($strings, $results[1]);
-			}
-		}
+            if (is_array($results) && is_array($results[1]) && count($results[1]) > 0) {
+                $strings = array_merge($strings, $results[1]);
+            }
+        }
 
         // Adding dynamically new module translations by content types this
         // function was introduced with CONTENIDO 4.8.13 checking if array
@@ -483,7 +484,7 @@ class cApiModule extends Item
     /**
      * Checks if the module is in use
      *
-     * @param int  $module
+     * @param int $module
      * @param bool $bSetData [optional]
      * @return bool
      *                       true if the module is in use
@@ -593,8 +594,8 @@ class cApiModule extends Item
      *                         don't generate code for all articles using this module (default false)
      *
      * @return bool
-     * @see Item::store()
      * @throws cDbException|cInvalidArgumentException
+     * @see Item::store()
      */
     public function store($bJustStore = false)
     {
@@ -923,8 +924,6 @@ class cApiModule extends Item
      * Processes container placeholder (e.g. CMS_VALUE[123]) in given module output code.
      * Tries to find the proper container tag and replaces its value against
      * container configuration.
-
-     * @since CONTENIDO 4.10.2
      * @param int $containerNr
      *         The container number to process
      * @param string $containerCfg
@@ -932,6 +931,7 @@ class cApiModule extends Item
      * @param string $moduleIOutputCode
      * @return string
      *         Concatenated PHP code containing CMS_VALUE variables
+     * @since CONTENIDO 4.10.2
      */
     public static function processContainerOutputCode(
         int $containerNr, string $containerCfg, string &$moduleIOutputCode
@@ -945,15 +945,15 @@ class cApiModule extends Item
     /**
      * Processes container placeholder (e.g. CMS_VAR[123], CMS_VALUE[123]) in given module input/output code.
      *
-     * @since CONTENIDO 4.10.2
      * @param int $containerNr
      * @param string $containerCfg
      * @param string $moduleCode
      * @param bool $isModuleInput
      * @return string
+     * @since CONTENIDO 4.10.2
      */
     protected static function _processContainerCode(
-        int $containerNr, string $containerCfg, string &$moduleCode,
+        int  $containerNr, string $containerCfg, string &$moduleCode,
         bool $isModuleInput = true
     ): string
     {

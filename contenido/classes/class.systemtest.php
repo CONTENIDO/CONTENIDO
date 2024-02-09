@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Backend
  */
-class cSystemtest {
+class cSystemtest
+{
 
     /**
      * Messages have no influence on the result of the system integrity
@@ -275,7 +276,8 @@ class cSystemtest {
      * @param array $config
      *         A config array which should be similar to CONTENIDO's $cfg
      */
-    public function __construct($config, $setupType = '') {
+    public function __construct($config, $setupType = '')
+    {
         $this->_config = $config;
         $this->_setupType = $setupType;
     }
@@ -290,7 +292,8 @@ class cSystemtest {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function runTests($testFileSystem = true) {
+    public function runTests($testFileSystem = true)
+    {
         $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), CON_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), CON_MIN_PHP_VERSION), i18n("The PHP version is higher than ") . CON_MIN_PHP_VERSION);
         $this->storeResult($this->testFileUploadSetting(), self::C_SEVERITY_WARNING, i18n("File uploads disabled"), sprintf(i18n("Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"), '<a target="_blank" href="https://www.php.net/manual/en/ini.core.php#ini.file-uploads">https://www.php.net/manual/en/ini.core.php#ini.file-uploads</a>'), i18n("PHP file upload is enabled"));
         $this->storeResult($this->testMagicQuotesRuntimeSetting(), self::C_SEVERITY_ERROR, i18n("PHP setting 'magic_quotes_runtime' is turned on"), i18n("The PHP setting 'magic_quotes_runtime' is turned on. CONTENIDO has been developed to comply with magic_quotes_runtime=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."), i18n("'magic_quotes_runtime' is turned off"));
@@ -379,7 +382,7 @@ class cSystemtest {
                         $entryMsg[] = sprintf(i18n("Redundant primary key entries found in field %s."), '<code>' . implode(',', array_keys($entry['results']['redundantPrimary'])) . '</code>');
                     }
                     if (count($entryMsg)) {
-                        $errorMessage .= sprintf(i18n("Errors found in table %s:"), '<code>' . $table . '</code>') . '<br><ul><li>' . implode('</li><li>', $entryMsg). '</li></ul>';
+                        $errorMessage .= sprintf(i18n("Errors found in table %s:"), '<code>' . $table . '</code>') . '<br><ul><li>' . implode('</li><li>', $entryMsg) . '</li></ul>';
                     }
                 }
 
@@ -414,7 +417,8 @@ class cSystemtest {
      * @param string $successMessage [optional]
      *         The message which will be stored in the case that $result is true
      */
-    public function storeResult($result, $severity, $errorHeadline = "", $errorMessage = "", $successHeadline = "", $successMessage = "") {
+    public function storeResult($result, $severity, $errorHeadline = "", $errorMessage = "", $successHeadline = "", $successMessage = "")
+    {
         if ($result) {
             $this->_messages[] = [
                 "result" => $result,
@@ -435,23 +439,25 @@ class cSystemtest {
     /**
      * Returns the message array
      *
-     * @see cSystemtest::$_messages
      * @return array
+     * @see cSystemtest::$_messages
      */
-    public function getResults() {
+    public function getResults()
+    {
         return $this->_messages;
     }
 
     /**
      * Returns an array with information about the file, especially the file owner.
-     * Wrapper for @see cFileHandler::typeOwnerInfo()
-     *
-     * @param string $sFilename
+     * Wrapper for @param string $sFilename
      *         The path to the file
      * @return array|bool
      *         The file info array or false if the file can't be accessed
+     * @see cFileHandler::typeOwnerInfo()
+     *
      */
-    protected function getFileInfo($sFilename) {
+    protected function getFileInfo($sFilename)
+    {
         return cFileHandler::typeOwnerInfo(cSecurity::toString($sFilename));
     }
 
@@ -462,7 +468,8 @@ class cSystemtest {
      *         The path to the file
      * @return bool
      */
-    protected function canWriteFile($filename) {
+    protected function canWriteFile($filename)
+    {
         clearstatcache();
         if (cFileHandler::exists($filename)) {
             return cFileHandler::writeable($filename);
@@ -478,7 +485,8 @@ class cSystemtest {
      *         The path to the directory
      * @return bool
      */
-    protected function canWriteDir($dirname) {
+    protected function canWriteDir($dirname)
+    {
         clearstatcache();
         return cDirHandler::exists($dirname) && is_writable($dirname);
     }
@@ -491,7 +499,8 @@ class cSystemtest {
      *
      * @throws cInvalidArgumentException
      */
-    protected function getServerUID() {
+    protected function getServerUID()
+    {
         if (function_exists("posix_getuid")) {
             return posix_getuid();
         }
@@ -524,7 +533,8 @@ class cSystemtest {
      *
      * @throws cInvalidArgumentException
      */
-    protected function getServerGID() {
+    protected function getServerGID()
+    {
         if (function_exists("posix_getgid")) {
             return posix_getgid();
         }
@@ -554,7 +564,8 @@ class cSystemtest {
      *
      * @throws cInvalidArgumentException
      */
-    protected function predictCorrectFilepermissions($file) {
+    protected function predictCorrectFilepermissions($file)
+    {
         // Check if the system is a windows system. If yes, we can't predict
         // anything.
         if ($this->isWindows()) {
@@ -624,7 +635,8 @@ class cSystemtest {
      * @return mixed
      *         The value of the PHP setting or NULL if ini_get is disabled
      */
-    protected function getPHPIniSetting($setting) {
+    protected function getPHPIniSetting($setting)
+    {
         // Avoid errors if ini_get is in the disable_functions directive
         return @ini_get($setting);
     }
@@ -636,7 +648,8 @@ class cSystemtest {
      *         A string in the form of "12K", "12M" or "12G"
      * @return number
      */
-    protected function getAsBytes($val) {
+    protected function getAsBytes($val)
+    {
         if (cString::getStringLength($val) == 0) {
             return 0;
         }
@@ -645,15 +658,15 @@ class cSystemtest {
         switch ($last) {
             case 'k':
             case 'K':
-                return (int) $val * 1024;
+                return (int)$val * 1024;
             case 'm':
             case 'M':
-                return (int) $val * 1048576;
+                return (int)$val * 1048576;
             case 'g':
             case 'G':
-                return (int) $val * 1048576 * 1024;
+                return (int)$val * 1048576 * 1024;
             default:
-                return (int) $val;
+                return (int)$val;
         }
     }
 
@@ -669,7 +682,8 @@ class cSystemtest {
      * @return array
      *         with the cDB object on the first place and a bool on the second
      */
-    protected function doMySQLConnect($host, $username, $password) {
+    protected function doMySQLConnect($host, $username, $password)
+    {
         $aOptions = [
             'connection' => [
                 'host' => $host,
@@ -700,7 +714,8 @@ class cSystemtest {
      * @return int
      *         Returns one of the CON_EXTENSION constants
      */
-    public function isPHPExtensionLoaded($extension) {
+    public function isPHPExtensionLoaded($extension)
+    {
         $value = extension_loaded($extension);
 
         if ($value === NULL) {
@@ -719,7 +734,8 @@ class cSystemtest {
      *
      * @return bool
      */
-    public function isWindows() {
+    public function isWindows()
+    {
         if (cString::toLowerCase(cString::getPartOfString(PHP_OS, 0, 3)) == "win") {
             return true;
         } else {
@@ -733,7 +749,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testPHPVersion() {
+    public function testPHPVersion()
+    {
         if (version_compare(phpversion(), CON_MIN_PHP_VERSION, '>=') == true) {
             return true;
         } else {
@@ -746,7 +763,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function getSafeModeStatus() {
+    public function getSafeModeStatus()
+    {
         if ($this->getPHPIniSetting("safe_mode") == "1") {
             return true;
         } else {
@@ -759,7 +777,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function getSafeModeGidStatus() {
+    public function getSafeModeGidStatus()
+    {
         if ($this->getPHPIniSetting("safe_mode_gid") == "1") {
             return true;
         } else {
@@ -772,7 +791,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testXMLParserCreate() {
+    public function testXMLParserCreate()
+    {
         return function_exists("xml_parser_create");
     }
 
@@ -781,7 +801,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testFileUploadSetting() {
+    public function testFileUploadSetting()
+    {
         return $this->getPHPIniSetting('file_uploads');
     }
 
@@ -790,7 +811,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testMagicQuotesRuntimeSetting() {
+    public function testMagicQuotesRuntimeSetting()
+    {
         return !$this->getPHPIniSetting('magic_quotes_runtime');
     }
 
@@ -799,7 +821,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testMagicQuotesSybaseSetting() {
+    public function testMagicQuotesSybaseSetting()
+    {
         return !$this->getPHPIniSetting('magic_quotes_sybase');
     }
 
@@ -808,7 +831,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testMaxExecutionTime() {
+    public function testMaxExecutionTime()
+    {
         return (intval($this->getPHPIniSetting('max_execution_time') == 0) || (intval($this->getPHPIniSetting('max_execution_time')) >= 30));
     }
 
@@ -817,7 +841,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testZIPArchive() {
+    public function testZIPArchive()
+    {
         return class_exists("ZipArchive");
     }
 
@@ -826,7 +851,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testMemoryLimit() {
+    public function testMemoryLimit()
+    {
         $memoryLimit = $this->getAsBytes($this->getPHPIniSetting("memory_limit"));
         return ($memoryLimit > 1024 * 1024 * 32) || ($memoryLimit == 0) || (-1 === $memoryLimit);
     }
@@ -836,7 +862,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testPHPSQLSafeMode() {
+    public function testPHPSQLSafeMode()
+    {
         return !$this->getPHPIniSetting('sql.safe_mode');
     }
 
@@ -845,7 +872,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testDOMDocument() {
+    public function testDOMDocument()
+    {
         return class_exists("DOMDocument");
     }
 
@@ -855,7 +883,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testPHPExtension($ext) {
+    public function testPHPExtension($ext)
+    {
         return $this->isPHPExtensionLoaded($ext) == CON_EXTENSION_AVAILABLE;
     }
 
@@ -864,7 +893,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testIconv() {
+    public function testIconv()
+    {
         return function_exists("iconv");
     }
 
@@ -873,7 +903,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testGDGIFRead() {
+    public function testGDGIFRead()
+    {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
         }
@@ -885,7 +916,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testGDGIFWrite() {
+    public function testGDGIFWrite()
+    {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
         }
@@ -897,7 +929,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testGDJPEGRead() {
+    public function testGDJPEGRead()
+    {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
         }
@@ -909,7 +942,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testGDJPEGWrite() {
+    public function testGDJPEGWrite()
+    {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
         }
@@ -921,7 +955,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testGDPNGRead() {
+    public function testGDPNGRead()
+    {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
         }
@@ -933,7 +968,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testGDPNGWrite() {
+    public function testGDPNGWrite()
+    {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
         }
@@ -945,7 +981,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testMySQLExtension() {
+    public function testMySQLExtension()
+    {
         if ($this->isPHPExtensionLoaded("mysql") == self::CON_EXTENSION_AVAILABLE) {
             return true;
         } else {
@@ -958,7 +995,8 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testMySQLiExtension() {
+    public function testMySQLiExtension()
+    {
         if ($this->isPHPExtensionLoaded("mysqli") == self::CON_EXTENSION_AVAILABLE) {
             return true;
         } else {
@@ -978,7 +1016,8 @@ class cSystemtest {
      *
      * @throws cDbException
      */
-    public function testMySQLModeStrict($host, $username, $password, array $options = []) {
+    public function testMySQLModeStrict($host, $username, $password, array $options = [])
+    {
         // host, user, password and options
         $dbCfg = [
             'connection' => [
@@ -1018,7 +1057,8 @@ class cSystemtest {
      *
      * @throws cDbException
      */
-    public function testMySQL($host, $username, $password, array $options = []) {
+    public function testMySQL($host, $username, $password, array $options = [])
+    {
         list($handle, $status) = $this->doMySQLConnect($host, $username, $password);
 
         $errorMessage = "";
@@ -1051,7 +1091,6 @@ class cSystemtest {
      * The check will be skipped, if the system test runs for a setup and the
      * setup-type is 'setup'.
      *
-     * @since CONTENIDO 4.10.2
      * @return array Result array like:
      *      [
      *          // True on success, false in case of found errors
@@ -1073,6 +1112,7 @@ class cSystemtest {
      *      ]
      * @throws cDbException
      * @throws cInvalidArgumentException
+     * @since CONTENIDO 4.10.2
      */
     public function testDatabaseTables(): array
     {
@@ -1147,7 +1187,7 @@ class cSystemtest {
 
     /**
      *
-     * @param bool $testConfig   [optional]
+     * @param bool $testConfig [optional]
      * @param bool $testFrontend [optional]
      *
      * @return bool
@@ -1155,7 +1195,8 @@ class cSystemtest {
      *
      * @throws cInvalidArgumentException
      */
-    public function testFilesystem($testConfig = true, $testFrontend = true) {
+    public function testFilesystem($testConfig = true, $testFrontend = true)
+    {
         global $cfgClient;
 
         $status = true;
@@ -1297,9 +1338,9 @@ class cSystemtest {
      *
      * @param string $filename
      *                    The file
-     * @param int    $severity
+     * @param int $severity
      *                    The resulting C_SEVERITY constant should the test fail
-     * @param bool   $dir [optional]
+     * @param bool $dir [optional]
      *                    True if the $filename is a directory
      *
      * @return bool
@@ -1307,7 +1348,8 @@ class cSystemtest {
      *
      * @throws cInvalidArgumentException
      */
-    protected function testSingleFile($filename, $severity, $dir = false) {
+    protected function testSingleFile($filename, $severity, $dir = false)
+    {
         if (cString::findFirstPos($filename, $this->_config["path"]["frontend"]) === 0) {
             $length = cString::getStringLength($this->_config["path"]["frontend"]) + 1;
             $shortFilename = cString::getPartOfString($filename, $length);
@@ -1398,7 +1440,8 @@ class cSystemtest {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function testFrontendFolderCreation() {
+    public function testFrontendFolderCreation()
+    {
         $directories = [
             "cms/cache",
             "cms/cache/code",
@@ -1440,7 +1483,8 @@ class cSystemtest {
      *
      * @return int
      */
-    public function checkOpenBasedirCompatibility() {
+    public function checkOpenBasedirCompatibility()
+    {
         $value = $this->getPHPIniSetting("open_basedir");
 
         if ($this->isWindows()) {
@@ -1474,7 +1518,8 @@ class cSystemtest {
      * @return int
      *         Returns one of the CON_IMAGERESIZE constants
      */
-    public function checkImageResizer() {
+    public function checkImageResizer()
+    {
         $iGDStatus = $this->isPHPExtensionLoaded('gd');
 
         if ($iGDStatus == self::CON_EXTENSION_AVAILABLE) {
@@ -1485,7 +1530,7 @@ class cSystemtest {
             return self::CON_IMAGERESIZE_GD;
         }
 
-        if(function_exists("checkAndInclude")) {
+        if (function_exists("checkAndInclude")) {
             checkAndInclude($this->_config['path']['contenido'] . 'includes/functions.api.images.php');
         } else {
             cInclude('includes', 'functions.api.images.php');
@@ -1506,13 +1551,14 @@ class cSystemtest {
      * @param string $setupType
      * @param string $databaseName
      * @param string $databasePrefix
-     * @param string $charset   [optional]
+     * @param string $charset [optional]
      * @param string $collation [optional]
      * @param string $engine [optional]
      *
      * @throws cDbException
      */
-    public function checkSetupMysql($setupType, $databaseName, $databasePrefix, $charset = '', $collation = '', $engine = '') {
+    public function checkSetupMysql($setupType, $databaseName, $databasePrefix, $charset = '', $collation = '', $engine = '')
+    {
         switch ($setupType) {
             case "setup":
 

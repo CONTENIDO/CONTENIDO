@@ -39,11 +39,11 @@ class cHTMLScript extends cHTMLContentElement
     /**
      * Renders a script tag to reference an external script.
      *
-     * @since CONTENIDO 4.10.2
      * @param string $src The src (path) value for the script
      * @param array $attributes Attributes to set, `type="text/javascript"`
      *      will be set by default.
      * @return string
+     * @since CONTENIDO 4.10.2
      */
     public static function external(string $src, array $attributes = []): string
     {

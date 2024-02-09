@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cPager {
+class cPager
+{
 
     /**
      * Amount of items
@@ -77,7 +78,8 @@ class cPager {
      * @param int $currentPage
      *         Defines the current page
      */
-    public function __construct($items, $itemsPerPage, $currentPage) {
+    public function __construct($items, $itemsPerPage, $currentPage)
+    {
         $this->_items = $items;
         $this->_itemsPerPage = $itemsPerPage;
         $this->_currentPage = $currentPage;
@@ -93,7 +95,8 @@ class cPager {
      *
      * @return int
      */
-    public function getCurrentPage() {
+    public function getCurrentPage()
+    {
         return $this->_currentPage;
     }
 
@@ -103,7 +106,8 @@ class cPager {
      * @return bool
      *         True if we're on the first page.
      */
-    public function isFirstPage() {
+    public function isFirstPage()
+    {
         if ($this->_currentPage == 1) {
             return true;
         }
@@ -117,7 +121,8 @@ class cPager {
      * @return bool
      *         True if we're on the last page.
      */
-    public function isLastPage() {
+    public function isLastPage()
+    {
         if ($this->_currentPage == $this->getMaxPages()) {
             return true;
         }
@@ -131,7 +136,8 @@ class cPager {
      * @return int
      *         Page count
      */
-    public function getMaxPages() {
+    public function getMaxPages()
+    {
         if ($this->_items == 0) {
             return 1;
         } elseif ($this->_itemsPerPage == 0) {
@@ -151,7 +157,8 @@ class cPager {
      * @return array
      *         Pager structure
      */
-    public function getPagesInRange() {
+    public function getPagesInRange()
+    {
         $items = [];
 
         $maxPages = $this->getMaxPages();

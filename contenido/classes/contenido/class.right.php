@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiRight createNewItem
  * @method cApiRight|bool next
  */
-class cApiRightCollection extends ItemCollection {
+class cApiRightCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('rights'), 'idright');
         $this->_setItemClass('cApiRight');
 
@@ -45,19 +47,20 @@ class cApiRightCollection extends ItemCollection {
      * Creates a right entry.
      *
      * @param string $userId
-     * @param int    $idarea
-     * @param int    $idaction
-     * @param int    $idcat
-     * @param int    $idclient
-     * @param int    $idlang
-     * @param int    $type
+     * @param int $idarea
+     * @param int $idaction
+     * @param int $idcat
+     * @param int $idclient
+     * @param int $idlang
+     * @param int $type
      *
      * @return cApiRight
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type) {
+    public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type)
+    {
         $oItem = $this->createNewItem();
 
         $oItem->set('user_id', $userId);
@@ -76,26 +79,27 @@ class cApiRightCollection extends ItemCollection {
     /**
      * Checks if a specific user has frontend access to a protected category.
      *
-     * @param int    $idcat
+     * @param int $idcat
      * @param string $userId
      *
      * @return bool
      *
      * @throws cDbException
      */
-    public function hasFrontendAccessByCatIdAndUserId($idcat, $userId) {
+    public function hasFrontendAccessByCatIdAndUserId($idcat, $userId)
+    {
         $sql = "SELECT :pk FROM `:rights` AS A, `:actions` AS B, `:area` AS C
                 WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id = ':userid'
                     AND A.idcat = :idcat AND A.idarea = C.idarea AND B.idaction = A.idaction
                 LIMIT 1";
 
         $params = [
-            'pk'      => $this->getPrimaryKeyName(),
-            'rights'  => $this->table,
+            'pk' => $this->getPrimaryKeyName(),
+            'rights' => $this->table,
             'actions' => cRegistry::getDbTableName('actions'),
-            'area'    => cRegistry::getDbTableName('area'),
-            'userid'  => $userId,
-            'idcat'   => (int)$idcat,
+            'area' => cRegistry::getDbTableName('area'),
+            'userid' => $userId,
+            'idcat' => (int)$idcat,
         ];
 
         $sql = $this->db->prepare($sql, $params);
@@ -106,17 +110,18 @@ class cApiRightCollection extends ItemCollection {
     /**
      * Deletes right entries by user id.
      *
-     * @todo Implement functions to delete rights by area, action, cat, client,
-     *       language.
-     *
      * @param string $userId
      *
      * @return bool
      *
      * @throws cDbException
      * @throws cInvalidArgumentException
+     * @todo Implement functions to delete rights by area, action, cat, client,
+     *       language.
+     *
      */
-    public function deleteByUserId($userId) {
+    public function deleteByUserId($userId)
+    {
         $result = $this->deleteBy('user_id', $userId);
         return $result > 0;
     }
@@ -140,7 +145,8 @@ class cApiRight extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('rights'), 'idright');
         $this->setFilters([], []);
         if ($mId !== false) {
@@ -157,7 +163,8 @@ class cApiRight extends Item
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idaction':
             case 'idcat':

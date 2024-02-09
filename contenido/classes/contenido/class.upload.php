@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiUpload createNewItem
  * @method cApiUpload|bool next
  */
-class cApiUploadCollection extends ItemCollection {
+class cApiUploadCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('upl'), 'idupl');
         $this->_setItemClass('cApiUpload');
 
@@ -41,14 +43,15 @@ class cApiUploadCollection extends ItemCollection {
      *
      * @param string $sDirname
      * @param string $sFilename
-     * @param int    $client
+     * @param int $client
      *
      * @return cApiUpload
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function sync($sDirname, $sFilename, $client = 0) {
+    public function sync($sDirname, $sFilename, $client = 0)
+    {
         $client = cSecurity::toInteger($client);
 
         if ($client <= 0) {
@@ -84,19 +87,20 @@ class cApiUploadCollection extends ItemCollection {
     /**
      * Creates a upload entry.
      *
-     * @param string  $sDirname
-     * @param string  $sFilename
-     * @param string  $sFiletype    [optional]
-     * @param int     $iFileSize    [optional]
-     * @param string  $sDescription [optional]
-     * @param int     $iStatus      [optional]
+     * @param string $sDirname
+     * @param string $sFilename
+     * @param string $sFiletype [optional]
+     * @param int $iFileSize [optional]
+     * @param string $sDescription [optional]
+     * @param int $iStatus [optional]
      * @return cApiUpload
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
     public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0,
-            $sDescription = '', $iStatus = 0) {
+                           $sDescription = '', $iStatus = 0)
+    {
 
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $auth = cRegistry::getAuth();
@@ -120,15 +124,16 @@ class cApiUploadCollection extends ItemCollection {
     /**
      * Deletes upload file and its properties
      *
-     * @todo Code is similar/redundant to include.upl_files_overview.php 216-230
-     * @param int              $id
+     * @param int $id
      *
      * @return bool
      *
      * @throws cDbException
      * @throws cException
+     * @todo Code is similar/redundant to include.upl_files_overview.php 216-230
      */
-    public function delete($id) {
+    public function delete($id)
+    {
         $clientCfg = cRegistry::getClientConfig(cRegistry::getClientId());
 
         $oUpload = new cApiUpload();
@@ -170,7 +175,8 @@ class cApiUploadCollection extends ItemCollection {
      * @return bool
      * @throws cDbException
      */
-    protected function deleteUploadMetaData($idupl) {
+    protected function deleteUploadMetaData($idupl)
+    {
         $uploadMetaColl = new cApiUploadMetaCollection();
         $deletedItems = $uploadMetaColl->deleteBy('idupl', $idupl);
         return $deletedItems > 0;
@@ -184,7 +190,8 @@ class cApiUploadCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function deleteByDirname($sDirname) {
+    public function deleteByDirname($sDirname)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $this->select("dirname = '" . $this->escape($sDirname) . "' AND idclient = " . $client);
         while (($oUpload = $this->next()) !== false) {
@@ -199,7 +206,8 @@ class cApiUploadCollection extends ItemCollection {
  * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiUpload extends Item {
+class cApiUpload extends Item
+{
 
     /**
      * Property collection instance
@@ -217,7 +225,8 @@ class cApiUpload extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('upl'), 'idupl');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -231,7 +240,8 @@ class cApiUpload extends Item {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function update() {
+    public function update()
+    {
         $sDirname = $this->get('dirname');
         $sFilename = $this->get('filename');
         $sExtension = cFileHandler::getExtension($sDirname . $sFilename);
@@ -261,7 +271,8 @@ class cApiUpload extends Item {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function store() {
+    public function store()
+    {
         $auth = cRegistry::getAuth();
         $this->set('modifiedby', $auth->auth['uid']);
         $this->set('lastmodified', date('Y-m-d H:i:s'), false);
@@ -285,7 +296,8 @@ class cApiUpload extends Item {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function deletePropertiesByItemid($sItemid) {
+    public function deletePropertiesByItemid($sItemid)
+    {
         $oPropertiesColl = $this->_getPropertiesCollectionInstance();
         $oPropertiesColl->deleteProperties('upload', $sItemid);
     }
@@ -299,7 +311,8 @@ class cApiUpload extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public static function getFileSize($sDirname, $sFilename) {
+    public static function getFileSize($sDirname, $sFilename)
+    {
         $bIsDbfs = cApiDbfs::isDbfs($sDirname);
         if (!$bIsDbfs) {
             $clientCfg = cRegistry::getClientConfig(cRegistry::getClientId());
@@ -324,7 +337,8 @@ class cApiUpload extends Item {
      *
      * @return cApiPropertyCollection
      */
-    protected function _getPropertiesCollectionInstanceX() {
+    protected function _getPropertiesCollectionInstanceX()
+    {
         // Runtime on-demand allocation of the properties object
         if (!is_object($this->_oPropertyCollection)) {
             $this->_oPropertyCollection = new cApiPropertyCollection();

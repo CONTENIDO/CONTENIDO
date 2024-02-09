@@ -24,7 +24,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cGuiFoldingRow extends cHTML {
+class cGuiFoldingRow extends cHTML
+{
 
     /**
      * Table row with the header.
@@ -108,15 +109,16 @@ class cGuiFoldingRow extends cHTML {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string    $uuid
-     * @param string    $caption   [optional]
-     * @param string    $linkId    [optional]
+     * @param string $uuid
+     * @param string $caption [optional]
+     * @param string $linkId [optional]
      * @param bool|NULL $bExpanded [optional]
      *
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = NULL) {
+    public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = NULL)
+    {
         global $auth;
 
         $this->_uuid = $uuid;
@@ -165,7 +167,8 @@ class cGuiFoldingRow extends cHTML {
      *
      * @param bool $expanded [optional]
      */
-    public function setExpanded($expanded = false) {
+    public function setExpanded($expanded = false)
+    {
         if ($expanded) {
             $this->_foldingImage->setSrc("images/widgets/foldingrow/expanded.gif");
             $this->_foldingImage->updateAttributes(["data-state" => "expanded"]);
@@ -184,7 +187,8 @@ class cGuiFoldingRow extends cHTML {
      *
      * @param string $caption
      */
-    public function setCaption($caption) {
+    public function setCaption($caption)
+    {
         $this->_caption = $caption;
     }
 
@@ -193,7 +197,8 @@ class cGuiFoldingRow extends cHTML {
      *
      * @param mixed $context [optional]
      */
-    public function setHelpContext($context = false) {
+    public function setHelpContext($context = false)
+    {
         $this->_helpContext = $context;
     }
 
@@ -202,7 +207,8 @@ class cGuiFoldingRow extends cHTML {
      *
      * @param int $indent [optional]
      */
-    public function setIndent($indent = 0) {
+    public function setIndent($indent = 0)
+    {
         $this->_indent = $indent;
     }
 
@@ -210,14 +216,15 @@ class cGuiFoldingRow extends cHTML {
      *
      * @param string|object|array $content
      */
-    public function setContentData($content) {
+    public function setContentData($content)
+    {
         $this->_contentData->setContent($content);
     }
 
     /**
-     * @see cHTML::render()
      * @return string
      *         Generated markup
+     * @see cHTML::render()
      */
     public function render(): string
     {

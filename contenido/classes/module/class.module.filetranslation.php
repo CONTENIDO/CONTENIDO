@@ -23,7 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Backend
  */
-class cModuleFileTranslation extends cModuleHandler {
+class cModuleFileTranslation extends cModuleHandler
+{
 
     /**
      * Path to the module directory.
@@ -67,15 +68,16 @@ class cModuleFileTranslation extends cModuleHandler {
      * @param cApiModule|array|int $module [optional]
      *         The module instance or the module recordset array from the
      *         database or the id of the module
-     * @param bool $static         [optional]
+     * @param bool $static [optional]
      *                             if true it will load once the translation from file
-     * @param int  $overrideIdlang [optional]
+     * @param int $overrideIdlang [optional]
      *                             use different language if not NULL
      *
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function __construct($module = NULL, $static = false, $overrideIdlang = NULL) {
+    public function __construct($module = NULL, $static = false, $overrideIdlang = NULL)
+    {
         parent::__construct($module);
 
         // $this->_debug = true;
@@ -107,7 +109,8 @@ class cModuleFileTranslation extends cModuleHandler {
     /**
      * @deprecated [2023-02-08] Since 4.10.2, Function replaced by {@see cModuleFileTranslation::_getLanguageInfo}
      */
-    private function _getValueFromProperties($type, $name) {
+    private function _getValueFromProperties($type, $name)
+    {
         cApiPropertyCollection::reset();
         $propColl = new cApiPropertyCollection();
         $propColl->changeClient($this->_client);
@@ -119,7 +122,8 @@ class cModuleFileTranslation extends cModuleHandler {
      *
      * @return array
      */
-    public function getLangArray() {
+    public function getLangArray()
+    {
         return self::$langArray;
     }
 
@@ -127,11 +131,12 @@ class cModuleFileTranslation extends cModuleHandler {
      * Save the hole translations for an idmod and lang.
      * For the upgrade/setup.
      *
-     * @todo Remove this to setup routine (see cUpgradeJob_0002), it has nothing to do here!
      * @throws cDbException
      * @throws cException
+     * @todo Remove this to setup routine (see cUpgradeJob_0002), it has nothing to do here!
      */
-    public function saveTranslations() {
+    public function saveTranslations()
+    {
         $db = cRegistry::getDb();
 
         $oLangColl = new cApiLanguageCollection();
@@ -159,7 +164,7 @@ class cModuleFileTranslation extends cModuleHandler {
             mb_ereg_search_init($text, 'mi18n\(["|\'](.*?)["|\']\)');
             while (mb_ereg_search()) {
                 $translation = mb_ereg_search_getregs();
-                if(!isset($translations[$translation[1]])) {
+                if (!isset($translations[$translation[1]])) {
                     $translations[$translation[1]] = $translation[1];
                 }
             }
@@ -180,7 +185,8 @@ class cModuleFileTranslation extends cModuleHandler {
      * @param array $wordListArray
      * @return string
      */
-    private function _serializeArray($wordListArray) {
+    private function _serializeArray($wordListArray)
+    {
         $retString = '';
         foreach ($wordListArray as $key => $value) {
             // Original String [Divider] Translation String
@@ -205,7 +211,8 @@ class cModuleFileTranslation extends cModuleHandler {
      *         the contents of the file
      * @return array
      */
-    private function _unserializeArray($string) {
+    private function _unserializeArray($string)
+    {
         $retArray = [];
 
         $string = $string . PHP_EOL;
@@ -236,12 +243,13 @@ class cModuleFileTranslation extends cModuleHandler {
      * Composes the file name for the module translation file.
      *
      * @param int $idclient Client id to use
-     * @param int $idlang  Language id to use
+     * @param int $idlang Language id to use
      *
      * @return string The file name like `lang_[language]_[COUNTRY].txt`,
      *                e.g. `lang_en_US.txt`
      */
-    private function _composeTranslationFileName($idclient, $idlang) {
+    private function _composeTranslationFileName($idclient, $idlang)
+    {
         // Compose the translation file name lang_[language]_[COUNTRY].txt
         $info = $this->_getLanguageInfo($idclient, $idlang);
         $language = $info['language'] ?? '';
@@ -255,7 +263,7 @@ class cModuleFileTranslation extends cModuleHandler {
      * combination of client and language.
      *
      * @param int $idclient Client id to use
-     * @param int $idlang  Language id to use
+     * @param int $idlang Language id to use
      *
      * @return array  Language info array like
      *                <pre>
@@ -264,7 +272,8 @@ class cModuleFileTranslation extends cModuleHandler {
      *                Note: Array can also be empty, in case of an error!
      * @throws cDbException|cException
      */
-    private function _getLanguageInfo($idclient, $idlang) {
+    private function _getLanguageInfo($idclient, $idlang)
+    {
         if (!isset(self::$langInfo[$idclient][$idlang])) {
             cApiPropertyCollection::reset();
             $propColl = new cApiPropertyCollection();
@@ -289,7 +298,8 @@ class cModuleFileTranslation extends cModuleHandler {
      *         true on success or false on failure
      * @throws cInvalidArgumentException
      */
-    public function saveTranslationArray($wordListArray) {
+    public function saveTranslationArray($wordListArray)
+    {
         $fileName = $this->_modulePath . $this->_directories['lang'] . self::$fileName;
 
         if (!$this->createModuleDirectory('lang') || !$this->isWritable($fileName, $this->_modulePath . $this->_directories['lang'])) {
@@ -316,7 +326,8 @@ class cModuleFileTranslation extends cModuleHandler {
      * @return array
      * @throws cInvalidArgumentException
      */
-    public function getTranslationArray() {
+    public function getTranslationArray()
+    {
         if (cFileHandler::exists($this->_modulePath . $this->_directories['lang'] . self::$fileName)) {
             return $this->_unserializeArray(cFileHandler::read($this->_modulePath . $this->_directories['lang'] . self::$fileName));
         } else {

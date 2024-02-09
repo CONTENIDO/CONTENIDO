@@ -117,11 +117,11 @@ class cHTMLImage extends cHTML
     /**
      * Renders an img tag.
      *
-     * @since CONTENIDO 4.10.2
      * @param string $src The source (path) to the image
      * @param string $alt Alternate text
      * @param array $attributes Attributes to set
      * @return string
+     * @since CONTENIDO 4.10.2
      */
     public static function img(string $src, string $alt = '', array $attributes = []): string
     {

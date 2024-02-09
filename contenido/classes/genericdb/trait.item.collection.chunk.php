@@ -43,11 +43,11 @@ trait cItemCollectionChunkTrait
      * with the created Item instances, and calls the provided callback
      * function with each result block.
      *
-     * @param array    $ids      List of ids (primary keys) to load the data
+     * @param array $ids List of ids (primary keys) to load the data
      * @param callable $callback The callback function
      *                           First parameter: (Item[]) Results
      *                           Second parameter: (int) page
-     * @param int $size     The size for each block
+     * @param int $size The size for each block
      *
      * @return bool
      * @throws cDbException
@@ -63,11 +63,11 @@ trait cItemCollectionChunkTrait
      * with the records, and calls the provided callback
      * function with each result block.
      *
-     * @param array    $ids      List of ids (primary keys) to load the data
+     * @param array $ids List of ids (primary keys) to load the data
      * @param callable $callback The callback function
      *                           First parameter: (array[]) Results
      *                           Second parameter: (int) page
-     * @param int $size     The size for each block
+     * @param int $size The size for each block
      *
      * @return bool
      * @throws cDbException
@@ -141,7 +141,7 @@ trait cItemCollectionChunkTrait
     protected function _prepareChunkIds(array &$ids)
     {
         $db = $this->getDbInstance();
-        $ids = array_map(function($id) use ($db) {
+        $ids = array_map(function ($id) use ($db) {
             if (!empty($id) && !is_numeric($id) && is_string($id)) {
                 return $db->escape($id);
             } else {

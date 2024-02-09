@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLTime extends cHTMLContentElement {
+class cHTMLTime extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -33,7 +34,8 @@ class cHTMLTime extends cHTMLContentElement {
      *         the ID of this element
      * @param string $datetime [optional]
      */
-    public function __construct($content = '', $class = '', $id = '', $datetime = '') {
+    public function __construct($content = '', $class = '', $id = '', $datetime = '')
+    {
         parent::__construct($content, $class, $id);
         $this->_tag = 'time';
         $this->setDatetime($datetime);
@@ -44,7 +46,8 @@ class cHTMLTime extends cHTMLContentElement {
      *
      * @param string $datetime
      */
-    public function setDatetime($datetime) {
+    public function setDatetime($datetime)
+    {
         $this->setAttribute('datetime', $datetime);
     }
 

@@ -19,5 +19,6 @@
  * {@link OutOfRangeException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cOutOfRangeException extends cLogicException {
+class cOutOfRangeException extends cLogicException
+{
 }

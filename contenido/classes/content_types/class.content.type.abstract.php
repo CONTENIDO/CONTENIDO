@@ -263,11 +263,11 @@ abstract class cContentTypeAbstract
      * $myVariable = "" . (function(){ return $output; })() . "";
      * </pre>
      *
-     * @since CONTENIDO 4.10.2
      * @param string $code Content type PHP code.
      * @return string Content type PHP code wrapped with PHP comment marker
      *                and an immediately executed anonymous function.
      * @throws cInvalidArgumentException
+     * @since CONTENIDO 4.10.2
      */
     protected function _wrapPhpViewCode(string $code): string
     {
@@ -308,9 +308,9 @@ abstract class cContentTypeAbstract
     /**
      * Checks if the passed code is a wrapped content type PHP code.
      *
-     * @since CONTENIDO 4.10.2
      * @param string $code
      * @return bool
+     * @since CONTENIDO 4.10.2
      */
     public static function isWrappedContentTypeCodePhp(string $code): bool
     {
@@ -322,7 +322,8 @@ abstract class cContentTypeAbstract
     /**
      * @deprecated [2023-01-31] Since 4.10.2, use cContentTypeAbstract->getSettings() instead
      */
-    public function getConfiguration() {
+    public function getConfiguration()
+    {
         cDeprecated("The function cContentTypeAbstract->includePlugins() is deprecated since CONTENIDO 4.10.2, use cContentTypeAbstract->getSettings() instead.");
         return $this->getSettings();
     }
@@ -340,10 +341,10 @@ abstract class cContentTypeAbstract
     /**
      * Function returns current content type configuration item by its name
      *
-     * @since CONTENIDO 4.10.2
      * @param string $key Configuration item key
      * @param mixed $default Default value to return
      * @return string|mixed
+     * @since CONTENIDO 4.10.2
      */
     public function getSetting(string $key, $default = '')
     {
@@ -353,9 +354,9 @@ abstract class cContentTypeAbstract
     /**
      * Checks whether the content type configuration exists
      *
-     * @since CONTENIDO 4.10.2
      * @param string $key Configuration item key
      * @return bool
+     * @since CONTENIDO 4.10.2
      */
     public function hasSetting($key): bool
     {
@@ -365,9 +366,9 @@ abstract class cContentTypeAbstract
     /**
      * Sets current content type configuration item by its name and value
      *
-     * @since CONTENIDO 4.10.2
      * @param string $key Configuration item key
      * @param mixed $value Value to set
+     * @since CONTENIDO 4.10.2
      */
     public function setSetting(string $key, $value)
     {
@@ -409,8 +410,8 @@ abstract class cContentTypeAbstract
         // store new settings in the database
         conSaveContentEntry($this->_idArtLang, $this->_type, $this->_id, $settingsToStore);
 
-		$oArtLang = new cApiArticleLanguage($this->_idArtLang);
-		$this->_rawSettings = $oArtLang->getContent($this->_type, $this->_id);
+        $oArtLang = new cApiArticleLanguage($this->_idArtLang);
+        $this->_rawSettings = $oArtLang->getContent($this->_type, $this->_id);
         $this->_readSettings();
     }
 
@@ -429,7 +430,7 @@ abstract class cContentTypeAbstract
             $code = str_replace("\\'", "'", $code);
             return str_replace('$', '\\$', $code);
         }
-        return (string) $code;
+        return (string)$code;
     }
 
     /**
@@ -477,8 +478,7 @@ abstract class cContentTypeAbstract
     /**
      * Builds an array with directory information from the given upload path.
      *
-     * @since CONTENIDO 4.10.2
-     * @param string $directoryPath 
+     * @param string $directoryPath
      *         directory within upload directory
      *         (default: root upload path of client)
      * @return array{
@@ -489,6 +489,7 @@ abstract class cContentTypeAbstract
      *      },
      *      ...
      *  } with file information (keys: name, path, sub)
+     * @since CONTENIDO 4.10.2
      */
     public function buildFileList(string $directoryPath = ''): array
     {
@@ -522,9 +523,8 @@ abstract class cContentTypeAbstract
 
     /**
      * Sorts given directories or files list by their names.
-     * Only a directories list has entries with the key `sub`. 
+     * Only a directories list has entries with the key `sub`.
      *
-     * @since CONTENIDO 4.10.2
      * @param array{
      *     array{
      *         name: string,
@@ -534,10 +534,11 @@ abstract class cContentTypeAbstract
      *     ...
      * } $list
      * @return void
+     * @since CONTENIDO 4.10.2
      */
     protected function _sortDirectoriesOrFilesList(array &$list)
     {
-        usort($list, function($a, $b) {
+        usort($list, function ($a, $b) {
             $a = cString::toLowerCase($a['name']);
             $b = cString::toLowerCase($b['name']);
             if ($a < $b) {

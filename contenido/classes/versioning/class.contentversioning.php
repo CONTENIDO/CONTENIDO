@@ -78,12 +78,12 @@ class cContentVersioning
      * Cms type sort function for article output.
      *
      * @SuppressWarnings docBlocks
-     * @param array $result[cms type][typeId] = value
+     * @param array $result [cms type][typeId] = value
      * @return array $result[cms type][typeId] = value
      */
     public function sortResults(array $result): array
     {
-        uksort($result, function($a, $b) {
+        uksort($result, function ($a, $b) {
             // cms type sort sequence
             $cmsType = [
                 "CMS_HTMLHEAD",
@@ -166,19 +166,19 @@ class cContentVersioning
     /**
      * Returns selected article.
      *
-     * @todo $idArtlangVersion <-> $selectedArticleId
-     *
-     * @param int|string|NULL  $idArtLangVersion
+     * @param int|string|NULL $idArtLangVersion
      *      The id of version, 'current' for actual version or NULL
-     * @param int    $idArtLang
+     * @param int $idArtLang
      * @param string $articleType
-     * @param int|string|NULL  $selectedArticleId
+     * @param int|string|NULL $selectedArticleId
      *      The id of version, 'current', 'editable', or NULL
      *
      * @return cApiArticleLanguage|cApiArticleLanguageVersion $this->selectedArticle
      *
      * @throws cDbException
      * @throws cException
+     * @todo $idArtlangVersion <-> $selectedArticleId
+     *
      */
     public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType, $selectedArticleId = NULL)
     {
@@ -206,7 +206,7 @@ class cContentVersioning
      * Returns $list[1] = CMS_HTMLHEAD for every content existing
      * in article/version with $idArtLang.
      *
-     * @param int    $idArtLang
+     * @param int $idArtLang
      * @param string $articleType
      *
      * @return array $list
@@ -254,11 +254,11 @@ class cContentVersioning
     /**
      * Returns type of article (current, version or editable).
      *
-     * @param int|string|NULL  $idArtLangVersion
+     * @param int|string|NULL $idArtLangVersion
      *      The id of version, 'current' for actual version or NULL
-     * @param int    $idArtLang
+     * @param int $idArtLang
      * @param string $action
-     * @param int|string|NULL  $selectedArticleId
+     * @param int|string|NULL $selectedArticleId
      *      The id of version, 'current', 'editable', or NULL
      *
      * @return string $this->articleType
@@ -339,9 +339,9 @@ class cContentVersioning
      * Returns the JavaScript code which registers the change/click handler
      * on version select and copy button.
      *
-     * @since CONTENIDO 4.10.2
      * @param string $formName
      * @return string JavaScript code to add to the page output
+     * @since CONTENIDO 4.10.2
      */
     public function getVersionSelectionFieldJavaScript(string $formName): string
     {
@@ -411,7 +411,6 @@ class cContentVersioning
     /**
      * Returns idcontent or idcontentversion.
      *
-     * @todo check datatype of return value
      * @param int $idArtLang
      * @param int $typeId
      * @param int $type
@@ -420,6 +419,7 @@ class cContentVersioning
      * @param int $version
      * @return int $idContent
      * @throws cDbException
+     * @todo check datatype of return value
      */
     public function getContentId($idArtLang, $typeId, $type, $versioningState, $articleType, $version): int
     {
@@ -472,7 +472,7 @@ class cContentVersioning
      * Returns $artLangVersionMap[version][idartlangversion] = lastmodified
      * either from each article-/content- or metatag-version.
      *
-     * @param int    $idArtLang
+     * @param int $idArtLang
      * @param string $selectElementType [optional]
      *                                  either 'content', 'seo' or 'config'
      *
@@ -508,7 +508,7 @@ class cContentVersioning
 
                 // add ...
                 $contentVersionMap = [];
-                foreach ($table AS $key => $item) {
+                foreach ($table as $key => $item) {
                     $contentVersionMap[] = $item['version'];
                 }
                 $contentVersionMap = array_unique($contentVersionMap);
@@ -532,7 +532,7 @@ class cContentVersioning
 
                 // add ...
                 $metaVersionMap = [];
-                foreach ($table AS $key => $item) {
+                foreach ($table as $key => $item) {
                     $metaVersionMap[] = $item['version'];
                 }
                 $metaVersionMap = array_unique($metaVersionMap);
@@ -557,7 +557,7 @@ class cContentVersioning
         if (0 < $artLangVersionColl->count()) {
             $table = $artLangVersionColl->fetchTable($fields);
 
-            foreach ($table AS $key => $item) {
+            foreach ($table as $key => $item) {
                 $artLangVersionMap[$item['version']][$item['idartlangversion']] = $item['lastmodified'];
             }
         }
@@ -569,11 +569,11 @@ class cContentVersioning
      * Prepares content for saving (consider versioning-mode; prevents multiple
      * storings for filelists e.g.).
      *
-     * @param int         $idartlang
+     * @param int $idartlang
      *         the contents idartlang
      * @param cApiContent $content
      *         the content to store
-     * @param string      $value
+     * @param string $value
      *         the contents value to store
      *
      * @throws cDbException
@@ -856,7 +856,7 @@ class cContentVersioning
         $artLangVersion = $artLangVersionColl->create($artLangVersionParameters);
 
         // version Contents if contents are not versioned yet
-        if (isset($parameters['idartlang'])){
+        if (isset($parameters['idartlang'])) {
             $where = 'idartlang = ' . $parameters['idartlang'];
             $contentVersionColl = new cApiContentVersionCollection();
             $contentVersions = $contentVersionColl->getIdsByWhereClause($where);
@@ -894,7 +894,7 @@ class cContentVersioning
             $metaTagColl = new cApiMetaTagCollection();
             $metaTags = $metaTagColl->getIdsByWhereClause($where);
             $metaTag = new cApiMetaTag();
-            foreach ($metaTags AS $id) {
+            foreach ($metaTags as $id) {
                 $metaTag->loadBy('idmetatag', $id);
                 $metaTag->markAsEditable($artLangVersion->get('version'));
             }

@@ -18,5 +18,6 @@
  * {@link LengthException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cLengthException extends cLogicException {
+class cLengthException extends cLogicException
+{
 }

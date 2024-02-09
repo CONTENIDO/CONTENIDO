@@ -27,11 +27,11 @@ class cRights
      *
      * @param string $area
      *         Main area name (e.g. 'lay', 'mod', 'str', 'tpl', etc.)
-     * @param int    $iditem
+     * @param int $iditem
      *         ID of element to copy
-     * @param int    $newiditem
+     * @param int $newiditem
      *         ID of the new element
-     * @param bool   $idlang
+     * @param bool $idlang
      *         ID of language, if passed only rights for this language
      *         will be created, otherwise for all existing languages
      *
@@ -56,9 +56,9 @@ class cRights
             return false;
         }
 
-        $oDestRightCol    = new cApiRightCollection();
+        $oDestRightCol = new cApiRightCollection();
         $oSourceRightsColl = new cApiRightCollection();
-        $whereUsers       = [];
+        $whereUsers = [];
         $whereAreaActions = [];
 
         // get all user_id values for con_rights
@@ -115,9 +115,9 @@ class cRights
      *
      * @param string $area
      *         Main area name (e.g. 'lay', 'mod', 'str', 'tpl', etc.)
-     * @param int    $iditem
+     * @param int $iditem
      *         ID of new element
-     * @param bool   $idlang
+     * @param bool $idlang
      *         ID of language, if passed only rights for this language
      *         will be created, otherwise for all existing languages
      *
@@ -143,10 +143,10 @@ class cRights
             return false;
         }
 
-        $oDestRightCol    = new cApiRightCollection();
+        $oDestRightCol = new cApiRightCollection();
         $oSourceRightsColl = new cApiRightCollection();
-        $whereUsers       = [];
-        $rightsCache      = [];
+        $whereUsers = [];
+        $rightsCache = [];
 
         // get all user_id values for con_rights
         // add groups if available
@@ -205,9 +205,9 @@ class cRights
      *
      * @param string $area
      *         main area name
-     * @param int    $iditem
+     * @param int $iditem
      *         ID of new element
-     * @param bool   $idlang
+     * @param bool $idlang
      *         ID of lang parameter
      *
      * @throws cDbException
@@ -241,14 +241,14 @@ class cRights
      * Builds user/group permissions (sysadmin, admin, client and language) by processing request variables
      * ($msysadmin, $madmin, $mclient, $mlang) and returns the build permissions array.
      *
-     * @todo Do we really need to add other perms, if the user/group gets the 'sysadmin' permission?
-     *
      * @param bool $bAddUserToClient
      *         Flag to add current user to current client, if no client is specified.
      *
      * @return array
      *
      * @throws cDbException
+     * @todo Do we really need to add other perms, if the user/group gets the 'sysadmin' permission?
+     *
      */
     public static function buildUserOrGroupPermsFromRequest($bAddUserToClient = false)
     {
@@ -309,7 +309,7 @@ class cRights
         if (count($aLang) > 0 && count($aClient) > 0) {
             foreach ($aLang as $idlang) {
                 $oClientLanguageCollection = new cApiClientLanguageCollection();
-                $hasLanguageInClients      = $oClientLanguageCollection->hasLanguageInClients($idlang, $aClient);
+                $hasLanguageInClients = $oClientLanguageCollection->hasLanguageInClients($idlang, $aClient);
                 if ($hasLanguageInClients) {
                     $aPerms[] = sprintf('lang[%s]', $idlang);
                 }
@@ -368,7 +368,7 @@ class cRights
             $data[0] = $oAreaColl->getAreaId($data[0]);
             $data[1] = $perm->getIdForAction($data[1]);
 
-            $where      =
+            $where =
                 "user_id = '" . $db->escape($userid) . "' AND idclient = " . (int)$rights_client . " AND idlang = "
                 . (int)$rights_lang . " AND idarea = " . (int)$data[0] . " AND idcat = " . (int)$data[2]
                 . " AND idaction = " . (int)$data[1] . " AND type = 0";
@@ -452,7 +452,7 @@ class cRights
             $data[0] = $oAreaColl->getAreaId($data[0]);
             $data[1] = $perm->getIdForAction($data[1]);
 
-            $where      =
+            $where =
                 "user_id = '" . $db->escape($groupid) . "' AND idclient = " . (int)$rights_client . " AND idlang = "
                 . (int)$rights_lang . " AND idarea = " . (int)$data[0] . " AND idcat = " . (int)$data[2]
                 . " AND idaction = " . (int)$data[1] . " AND type = 1";
@@ -493,7 +493,7 @@ class cRights
      */
     public static function getRightsList()
     {
-        $areas   = new cApiAreaCollection();
+        $areas = new cApiAreaCollection();
         $navSubs = new cApiNavSubCollection();
         $actions = new cApiActionCollection();
 
@@ -503,7 +503,7 @@ class cRights
             $areas->select('relevant = 1 AND online = 1 AND name != "login" ORDER BY idarea ASC');
             while ($area = $areas->next()) {
                 $right = [
-                    'perm'     => $area->get('name'),
+                    'perm' => $area->get('name'),
                     'location' => '',
                 ];
 

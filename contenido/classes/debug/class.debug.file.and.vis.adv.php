@@ -66,11 +66,11 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv
     /**
      * Writes a line.
      *
-     * @see cDebugInterface::out()
-     *
      * @param string $sText
      *
      * @throws cInvalidArgumentException
+     * @see cDebugInterface::out()
+     *
      */
     public function out($sText)
     {
@@ -83,14 +83,14 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv
     /**
      * Outputs contents of passed variable in a preformatted, readable way.
      *
-     * @see cDebugVisibleAdv::show()
-     * @param mixed  $mVariable
+     * @param mixed $mVariable
      *                                     The variable to be displayed.
      * @param string $sVariableDescription [optional]
      *                                     The variable's name or description.
-     * @param bool   $bExit                [optional]
+     * @param bool $bExit [optional]
      *                                     If set to true, your app will die() after output of current var.
      * @throws cInvalidArgumentException
+     * @see cDebugVisibleAdv::show()
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false)
     {

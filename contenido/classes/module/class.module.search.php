@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Backend
  */
-class cModuleSearch extends cModuleHandler {
+class cModuleSearch extends cModuleHandler
+{
 
     /**
      * Items/Element per page.
@@ -108,7 +109,8 @@ class cModuleSearch extends cModuleHandler {
      *
      * @throws cException
      */
-    public function __construct($searchOptions) {
+    public function __construct($searchOptions)
+    {
         parent::__construct();
 
         $this->_elementPerPage = $searchOptions['elementPerPage'];
@@ -128,7 +130,8 @@ class cModuleSearch extends cModuleHandler {
      *
      * @param array $arg
      */
-    private function _echo($arg) {
+    private function _echo($arg)
+    {
         echo '<pre>' . print_r($arg) . '</pre>';
     }
 
@@ -138,7 +141,8 @@ class cModuleSearch extends cModuleHandler {
      * @return int
      *         count in result
      */
-    public function getModulCount() {
+    public function getModulCount()
+    {
         return count($this->_result);
     }
 
@@ -150,7 +154,8 @@ class cModuleSearch extends cModuleHandler {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function searchForAllModules() {
+    public function searchForAllModules()
+    {
         $db = cRegistry::getDb();
 
         // first fetch all modules for client
@@ -164,16 +169,16 @@ class cModuleSearch extends cModuleHandler {
         while ($db->nextRecord()) {
             $this->initWithDatabaseRow($db);
             if (cString::getStringLength(stripslashes($this->_filter)) === 0
-                    || cString::findFirstPos($this->readInput(), stripslashes($this->_filter)) !== false
-                    || cString::findFirstPos($this->readOutput(), stripslashes($this->_filter)) !== false) {
-                    $moduleIds[] = $db->f('idmod');
+                || cString::findFirstPos($this->readInput(), stripslashes($this->_filter)) !== false
+                || cString::findFirstPos($this->readOutput(), stripslashes($this->_filter)) !== false) {
+                $moduleIds[] = $db->f('idmod');
             }
         }
 
         // build query using whitelisted id's
         $idFilter = "";
         foreach ($moduleIds as $moduleId) {
-            $idFilter .= " OR idmod=" . (int) $moduleId;
+            $idFilter .= " OR idmod=" . (int)$moduleId;
         }
         $sql = "SELECT * FROM `%s` WHERE idclient = %d AND (
                     type LIKE '%s'
@@ -204,7 +209,8 @@ class cModuleSearch extends cModuleHandler {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function getModules() {
+    public function getModules()
+    {
         $modules = [];
 
         switch ($this->_searchIn) {
@@ -250,7 +256,8 @@ class cModuleSearch extends cModuleHandler {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function findeModulWithName() {
+    public function findeModulWithName()
+    {
         $db = cRegistry::getDb();
 
         $sql = "SELECT * FROM `%s` WHERE idclient = %d AND (type LIKE '%s' AND name LIKE '%s') ORDER BY %s %s ";
@@ -275,7 +282,8 @@ class cModuleSearch extends cModuleHandler {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function findModulWithInput() {
+    public function findModulWithInput()
+    {
         $db = cRegistry::getDb();
 
         $sql = "SELECT * FROM `%s` WHERE idclient = %d AND type LIKE '%s' ORDER BY %s %s";
@@ -300,7 +308,8 @@ class cModuleSearch extends cModuleHandler {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function findModulWithOutput() {
+    public function findModulWithOutput()
+    {
         $db = cRegistry::getDb();
 
         $sql = "SELECT * FROM `%s` WHERE idclient = %d AND type LIKE '%s' ORDER BY %s %s";
@@ -325,7 +334,8 @@ class cModuleSearch extends cModuleHandler {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function findModuleWithType() {
+    public function findModuleWithType()
+    {
         $db = cRegistry::getDb();
 
         $sql = "SELECT * FROM `%s` WHERE idclient = %d AND (type LIKE '%s' AND type LIKE '%s') ORDER BY %s %s";
@@ -350,7 +360,8 @@ class cModuleSearch extends cModuleHandler {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function findModuleWithDescription() {
+    public function findModuleWithDescription()
+    {
         $db = cRegistry::getDb();
 
         $sql = "SELECT * FROM `%s` WHERE idclient = %d AND (type LIKE '%s' AND description LIKE '%s') ORDER BY %s %s";
@@ -374,7 +385,8 @@ class cModuleSearch extends cModuleHandler {
      * @return array
      * @throws cInvalidArgumentException
      */
-    protected function _getModuleResultRow($db) {
+    protected function _getModuleResultRow($db)
+    {
         return [
             'name' => $db->f('name'),
             'description' => $db->f('description') ?? '',

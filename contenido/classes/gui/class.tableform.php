@@ -340,7 +340,8 @@ class cGuiTableForm
      *
      * @param string $tableClass
      */
-    public function setTableClass($tableClass) {
+    public function setTableClass($tableClass)
+    {
         $this->tableClass = $tableClass;
     }
 
@@ -348,7 +349,8 @@ class cGuiTableForm
      *
      * @param string $tableClass
      */
-    public function addTableClass($tableClass) {
+    public function addTableClass($tableClass)
+    {
         $tableClasses = explode(' ', trim($this->tableClass));
         $tableClass = trim($tableClass);
         if (!in_array($tableClass, $tableClasses)) {

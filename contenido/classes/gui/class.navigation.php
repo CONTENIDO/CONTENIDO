@@ -111,10 +111,10 @@ class cGuiNavigation
      *         caption from a plugin XML file.
      *         - "{XPath}": XPath value to extract caption from CONTENIDO
      *         XML file
-     * @throws cException
-     *         if XML language files could not be loaded
      * @return string
      *         The found caption
+     * @throws cException
+     *         if XML language files could not be loaded
      */
     public function getName($location)
     {
@@ -196,7 +196,7 @@ class cGuiNavigation
         $sql = "SELECT
                     a.idnavm AS idnavm, a.location AS location, b.name AS area, b.relevant
                 FROM
-                    `" .  cRegistry::getDbTableName('nav_sub') . "` AS a, 
+                    `" . cRegistry::getDbTableName('nav_sub') . "` AS a, 
                     `" . cRegistry::getDbTableName('area') . "` AS b
                 WHERE
                     a.idnavm IN (" . $inSql . ") AND
@@ -221,7 +221,7 @@ class cGuiNavigation
                 // Extract names from the XML document.
                 try {
                     $name = $this->getName($location);
-                } catch(cException $e) {
+                } catch (cException $e) {
                     $this->errors[] = i18n('Unable to load ' . $location);
                     continue;
                 }
@@ -257,7 +257,7 @@ class cGuiNavigation
         $numSubMenus = 0;
 
         $properties = new cApiPropertyCollection();
-        $clientImage = $properties->getValue('idclient', $this->_clientId , 'backend', 'clientimage', false);
+        $clientImage = $properties->getValue('idclient', $this->_clientId, 'backend', 'clientimage', false);
 
         $sJsEvents = '';
         foreach ($this->data as $id => $item) {
@@ -378,7 +378,7 @@ class cGuiNavigation
             $errors = $this->getErrors();
             $errorString = '';
             foreach ($errors as $error) {
-                $errorString .= $error.'<br>';
+                $errorString .= $error . '<br>';
             }
             $errorString .= '<br>' . i18n('Some plugin menus can not be shown because of these errors.');
             $helpBox = new cGuiBackendHelpbox($errorString, $this->_imagesPath . 'but_warn.gif');
@@ -388,7 +388,7 @@ class cGuiNavigation
         }
 
         if ($this->_clientId > 0) {
-            $oClient = new cApiClient($this->_clientId );
+            $oClient = new cApiClient($this->_clientId);
             if ($oClient->isLoaded()) {
                 $sClientName = $oClient->get('name');
             } else {
@@ -409,7 +409,7 @@ class cGuiNavigation
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
 
             $sClientName = $sClientName . ' (' . $this->_clientId . ')';
-            $sClientNameWithHtml = '<span id="chosen_client">' .$sClientName . '</span>';
+            $sClientNameWithHtml = '<span id="chosen_client">' . $sClientName . '</span>';
 
             $sClientUrl = cRegistry::getFrontendUrl();
             $frontendPath = cRegistry::getFrontendPath();

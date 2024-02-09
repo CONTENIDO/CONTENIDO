@@ -19,5 +19,6 @@
  * {@link BadMethodCallException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cBadMethodCallException extends cBadFunctionCallException {
+class cBadMethodCallException extends cBadFunctionCallException
+{
 }

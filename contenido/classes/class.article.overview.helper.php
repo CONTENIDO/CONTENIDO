@@ -226,7 +226,7 @@ class cArticleOverviewHelper
         if (!isset($this->_articleMarks)) {
             $this->_articleMarks = [];
 
-            $ids = array_map(function($item) {
+            $ids = array_map(function ($item) {
                 return $item['idartlang'];
             }, $this->_articles);
 
@@ -300,7 +300,7 @@ class cArticleOverviewHelper
         if (!isset($this->_articleTemplateInfos)) {
             $this->_articleTemplateInfos = [];
 
-            $ids = array_filter(array_map(function($item) {
+            $ids = array_filter(array_map(function ($item) {
                 return $item['idtplcfg'];
             }, $this->_articles));
 

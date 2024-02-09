@@ -52,7 +52,8 @@ cInclude('includes', 'functions.encoding.php');
  * @package    Core
  * @subpackage Frontend_Search
  */
-class cSearchResult extends cSearchBaseAbstract {
+class cSearchResult extends cSearchBaseAbstract
+{
 
     /**
      * Instance of class Index
@@ -135,16 +136,17 @@ class cSearchResult extends cSearchBaseAbstract {
      *
      * @param array $searchResult
      *                      list of article ids
-     * @param int   $resultPerPage
+     * @param int $resultPerPage
      *                      number of items per page
-     * @param cDb   $oDB    [optional]
+     * @param cDb $oDB [optional]
      *                      CONTENIDO database object
-     * @param bool  $bDebug [optional]
+     * @param bool $bDebug [optional]
      *                      flag to enable debugging
      *
      * @throws cInvalidArgumentException|cDbException
      */
-    public function __construct(array $searchResult, $resultPerPage, $oDB = NULL, $bDebug = false) {
+    public function __construct(array $searchResult, $resultPerPage, $oDB = NULL, $bDebug = false)
+    {
         parent::__construct($oDB, $bDebug);
 
         $this->_index = new cSearchIndex($oDB);
@@ -171,7 +173,8 @@ class cSearchResult extends cSearchBaseAbstract {
      * @param array $rankedSearch
      * @param int $resultPerPage
      */
-    public function setOrderedSearchResult(array $rankedSearch, $resultPerPage) {
+    public function setOrderedSearchResult(array $rankedSearch, $resultPerPage)
+    {
         asort($rankedSearch);
 
         $sorted_rank = array_reverse($rankedSearch, true);
@@ -186,17 +189,18 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int    $artId
+     * @param int $artId
      *                   Id of an article
      * @param string $cmsType
-     * @param int    $id [optional]
+     * @param int $id [optional]
      *
      * @return string
      *                   Content of an article, specified by its content type
      *
      * @throws cDbException|cException
      */
-    public function getContent($artId, $cmsType, $id = 0) {
+    public function getContent($artId, $cmsType, $id = 0)
+    {
         $article = new cApiArticleLanguage();
         $article->loadByArticleAndLanguageId($artId, $this->lang);
         return $article->getContent($cmsType, $id);
@@ -204,18 +208,19 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int    $artId
+     * @param int $artId
      *                       Id of an article
      * @param string $cmsType
      *                       Content type
-     * @param int    $cmsNr [optional]
+     * @param int $cmsNr [optional]
      *
      * @return array Content of an article in search result, specified by its type
      *         Content of an article in search result, specified by its type
      *
      * @throws cDbException|cException
      */
-    public function getSearchContent($artId, $cmsType, $cmsNr = NULL) {
+    public function getSearchContent($artId, $cmsType, $cmsNr = NULL)
+    {
         $cmsType = cString::toUpperCase($cmsType);
         if (cString::getStringLength($cmsType) > 0) {
             if (!cString::findFirstOccurrenceCI($cmsType, 'cms_')) {
@@ -276,7 +281,8 @@ class cSearchResult extends cSearchBaseAbstract {
      * @param string $cmsContent
      * @return string
      */
-    protected function highlightSearchWords(array $searchWords, $cmsContent) {
+    protected function highlightSearchWords(array $searchWords, $cmsContent)
+    {
         if (count($this->_replacement) == 2) {
             foreach ($searchWords as $word) {
                 // Build consistent escaped string, replace ae ue ..
@@ -304,7 +310,8 @@ class cSearchResult extends cSearchBaseAbstract {
      * @return array
      *         Articles in page $pageId
      */
-    public function getSearchResultPage($pageId) {
+    public function getSearchResultPage($pageId)
+    {
         if (isset($this->_orderedSearchResult[$pageId - 1])) {
             $this->_resultPage = $pageId;
             return $this->_orderedSearchResult[$pageId - 1];
@@ -318,7 +325,8 @@ class cSearchResult extends cSearchBaseAbstract {
      *
      * @return int
      */
-    public function getNumberOfPages() {
+    public function getNumberOfPages()
+    {
         return $this->_pages;
     }
 
@@ -327,7 +335,8 @@ class cSearchResult extends cSearchBaseAbstract {
      *
      * @return int
      */
-    public function getNumberOfResults() {
+    public function getNumberOfResults()
+    {
         return $this->_results;
     }
 
@@ -338,7 +347,8 @@ class cSearchResult extends cSearchBaseAbstract {
      * @return int
      *         Similarity between search-word and matching word in article
      */
-    public function getSimilarity($artId) {
+    public function getSimilarity($artId)
+    {
         return $this->_searchResult[$artId]['similarity'] ?? 0.0001;
     }
 
@@ -349,7 +359,8 @@ class cSearchResult extends cSearchBaseAbstract {
      * @return int
      *         number of matching search-words found in article
      */
-    public function getOccurrence($artId) {
+    public function getOccurrence($artId)
+    {
         $aOccurrence = $this->_searchResult[$artId]['occurence'];
         $iSumOfOccurrence = 0;
         for ($i = 0; $i < count($aOccurrence); $i++) {
@@ -366,7 +377,8 @@ class cSearchResult extends cSearchBaseAbstract {
      * @param string $rep2
      *         The closing html-tag e.g. '</b>'
      */
-    public function setReplacement($rep1, $rep2) {
+    public function setReplacement($rep1, $rep2)
+    {
         if (cString::getStringLength(trim($rep1)) > 0 && cString::getStringLength(trim($rep2)) > 0) {
             $this->_replacement[] = $rep1;
             $this->_replacement[] = $rep2;
@@ -382,7 +394,8 @@ class cSearchResult extends cSearchBaseAbstract {
      *         Category id or nothing
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getArtCat($artId) {
+    public function getArtCat($artId)
+    {
         $catArtColl = new cApiCategoryArticleCollection();
         $result = $catArtColl->getCategoryIdsByArticleId($artId);
         if (count($result) > 0) {

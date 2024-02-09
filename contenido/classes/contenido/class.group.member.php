@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiGroupMember createNewItem
  * @method cApiGroupMember|bool next
  */
-class cApiGroupMemberCollection extends ItemCollection {
+class cApiGroupMemberCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('groupmembers'), 'idgroupuser');
         $this->_setItemClass('cApiGroupMember');
 
@@ -48,7 +50,8 @@ class cApiGroupMemberCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($userId, $groupId) {
+    public function create($userId, $groupId)
+    {
         $oItem = $this->createNewItem();
 
         $oItem->set('user_id', $userId);
@@ -69,7 +72,8 @@ class cApiGroupMemberCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function deleteByUserId($userId) {
+    public function deleteByUserId($userId)
+    {
         $result = $this->deleteBy('user_id', $userId);
         return $result > 0;
     }
@@ -85,7 +89,8 @@ class cApiGroupMemberCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByUserIdAndGroupId($userId, $groupId) {
+    public function fetchByUserIdAndGroupId($userId, $groupId)
+    {
         $where = "user_id = '" . $this->escape($userId) . "' AND group_id = '" . $this->escape($groupId) . "'";
         if ($this->select($where)) {
             return $this->next();
@@ -113,7 +118,8 @@ class cApiGroupMember extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('groupmembers'), 'idgroupuser');
         $this->setFilters([], []);
         if ($mId !== false) {

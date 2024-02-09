@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Frontend_URI
  */
-abstract class cUriBuilder {
+abstract class cUriBuilder
+{
 
     /**
      * Holds final value of built URL.
@@ -47,7 +48,8 @@ abstract class cUriBuilder {
      *         if child class has not implemented this function
      */
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         throw new cBadMethodCallException("Child class has to implement this function");
     }
 
@@ -57,8 +59,9 @@ abstract class cUriBuilder {
      *
      * @param string $sBasePath
      */
-    public function setHttpBasePath($sBasePath) {
-        $this->sHttpBasePath = (string) $sBasePath;
+    public function setHttpBasePath($sBasePath)
+    {
+        $this->sHttpBasePath = (string)$sBasePath;
     }
 
     /**
@@ -67,7 +70,8 @@ abstract class cUriBuilder {
      *
      * @return string
      */
-    public function getHttpBasePath() {
+    public function getHttpBasePath()
+    {
         return $this->sHttpBasePath;
     }
 
@@ -88,8 +92,9 @@ abstract class cUriBuilder {
      *
      * @return string
      */
-    public function getUrl() {
-        return (string) $this->sUrl;
+    public function getUrl()
+    {
+        return (string)$this->sUrl;
     }
 
 }

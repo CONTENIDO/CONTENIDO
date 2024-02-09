@@ -23,7 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiUser createNewItem($data)
  * @method cApiUser|bool next
  */
-class cApiUserCollection extends ItemCollection {
+class cApiUserCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -34,7 +35,8 @@ class cApiUserCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct($where = false) {
+    public function __construct($where = false)
+    {
         parent::__construct(cRegistry::getDbTableName('user'), 'user_id');
         $this->_setItemClass('cApiUser');
         if ($where !== false) {
@@ -52,7 +54,8 @@ class cApiUserCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($username) {
+    public function create($username)
+    {
         if (cApiUser::usernameExists($username)) {
             return false;
         }
@@ -79,7 +82,8 @@ class cApiUserCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function deleteUserByUsername($username) {
+    public function deleteUserByUsername($username)
+    {
         $result = $this->deleteBy('username', $username);
         return $result > 0;
     }
@@ -87,18 +91,19 @@ class cApiUserCollection extends ItemCollection {
     /**
      * Returns all users which are accessible by the current user.
      *
-     * @param array  $perms
+     * @param array $perms
      *                              Permissions array
-     * @param bool   $includeAdmins [optional]
+     * @param bool $includeAdmins [optional]
      *                              Flag to get admins (admin and sysadmin) too
-     * @param string $orderBy       [optional]
+     * @param string $orderBy [optional]
      *                              Order by rule, uses 'realname, username' by default
      * @return array
      *                              Array of user objects
      * @throws cDbException
      * @throws cException
      */
-    public function fetchAccessibleUsers($perms, $includeAdmins = false, $orderBy = '') {
+    public function fetchAccessibleUsers($perms, $includeAdmins = false, $orderBy = '')
+    {
         $users = [];
         $limit = [];
         $where = '';
@@ -146,11 +151,11 @@ class cApiUserCollection extends ItemCollection {
      * Is a wrapper of fetchAccessibleUsers() and returns contrary to that
      * function a multidimensional array instead of a list of objects.
      *
-     * @param array  $perms
+     * @param array $perms
      *                              Permissions array
-     * @param bool   $includeAdmins [optional]
+     * @param bool $includeAdmins [optional]
      *                              Flag to get admins (admin and sysadmin) too
-     * @param string $orderBy       [optional]
+     * @param string $orderBy [optional]
      *                              Order by rule, uses 'realname, username' by default
      *
      * @return array
@@ -158,8 +163,9 @@ class cApiUserCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function getAccessibleUsers($perms, $includeAdmins = false, $orderBy = '') {
-        $users  = [];
+    public function getAccessibleUsers($perms, $includeAdmins = false, $orderBy = '')
+    {
+        $users = [];
         $oUsers = $this->fetchAccessibleUsers($perms, $includeAdmins, $orderBy);
         foreach ($oUsers as $oItem) {
             $users[$oItem->get('user_id')] = [
@@ -179,7 +185,8 @@ class cApiUserCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchAvailableUsers($orderBy = 'realname ASC') {
+    public function fetchAvailableUsers($orderBy = 'realname ASC')
+    {
         $users = [];
 
         $this->select('', '', $this->escape($orderBy));
@@ -200,7 +207,8 @@ class cApiUserCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchSystemAdmins($forceActive = false) {
+    public function fetchSystemAdmins($forceActive = false)
+    {
         $users = [];
 
         $where = "perms LIKE '%sysadmin%'";
@@ -251,10 +259,11 @@ class cApiUserCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchClientAdmins($client) {
+    public function fetchClientAdmins($client)
+    {
         $client = cSecurity::toInteger($client);
-        $users  = [];
-        $where  = "perms LIKE '%admin[" . $client . "]%'";
+        $users = [];
+        $where = "perms LIKE '%admin[" . $client . "]%'";
 
         $this->select($where);
         while (($item = $this->next()) !== false) {
@@ -315,7 +324,8 @@ class cApiUserCollection extends ItemCollection {
  * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiUser extends Item {
+class cApiUser extends Item
+{
 
     /**
      * Password is ok and stored.
@@ -416,7 +426,8 @@ class cApiUser extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('user'), 'user_id');
         $this->setFilters([], []);
         if ($mId !== false) {
@@ -435,7 +446,8 @@ class cApiUser extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function loadUserByUserID($userId) {
+    public function loadUserByUserID($userId)
+    {
         return $this->loadByPrimaryKey($userId);
     }
 
@@ -450,7 +462,8 @@ class cApiUser extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function loadUserByUsername($userName) {
+    public function loadUserByUsername($userName)
+    {
         return $this->loadBy('username', $userName);
     }
 
@@ -465,7 +478,8 @@ class cApiUser extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public static function userExists($userId) {
+    public static function userExists($userId)
+    {
         $test = new cApiUser();
 
         return $test->loadByPrimaryKey($userId);
@@ -482,7 +496,8 @@ class cApiUser extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public static function usernameExists($username) {
+    public static function usernameExists($username)
+    {
         $user = new cApiUser();
         return $user->loadBy('username', $username);
     }
@@ -497,7 +512,8 @@ class cApiUser extends Item {
      * @return int
      *         One of defined PASS_* constants (PASS_OK if everything was ok)
      */
-    public static function checkPasswordMask($password) {
+    public static function checkPasswordMask($password)
+    {
         $iResult = self::PASS_OK;
 
         $cfg = cRegistry::getConfig();
@@ -571,14 +587,14 @@ class cApiUser extends Item {
      * @return string
      *         Encoded password
      */
-    public function encodePassword($password) {
+    public function encodePassword($password)
+    {
         return hash("sha256", md5($password) . $this->get("salt"));
     }
 
     /**
      * User defined field value setter.
      *
-     * @see Item::setField()
      * @param string $sField
      *         Field name
      * @param string $mValue
@@ -586,8 +602,10 @@ class cApiUser extends Item {
      * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
+     * @see Item::setField()
      */
-    public function setField($sField, $mValue, $bSafe = true) {
+    public function setField($sField, $mValue, $bSafe = true)
+    {
         if ('perms' === $sField) {
             if (is_array($mValue)) {
                 $mValue = implode(',', $mValue);
@@ -604,7 +622,8 @@ class cApiUser extends Item {
      *
      * @return string
      */
-    public function getUserId() {
+    public function getUserId()
+    {
         return $this->get('user_id');
     }
 
@@ -617,7 +636,8 @@ class cApiUser extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function setUserId($uid) {
+    public function setUserId($uid)
+    {
         $this->loadByPrimaryKey($uid);
     }
 
@@ -628,7 +648,8 @@ class cApiUser extends Item {
      * @param string $password
      * @return int
      */
-    public function setPassword($password) {
+    public function setPassword($password)
+    {
         $result = self::checkPasswordMask($password);
         if ($result != self::PASS_OK) {
             return $result;
@@ -659,7 +680,8 @@ class cApiUser extends Item {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function savePassword($password) {
+    public function savePassword($password)
+    {
         if ($this->get('password') == $this->encodePassword($password)) {
             return self::PASS_OK;
         }
@@ -678,7 +700,8 @@ class cApiUser extends Item {
      *
      * @return string
      */
-    public function getUserName() {
+    public function getUserName()
+    {
         return $this->get('username');
     }
 
@@ -687,7 +710,8 @@ class cApiUser extends Item {
      *
      * @param string $sUserName
      */
-    public function setUserName($sUserName) {
+    public function setUserName($sUserName)
+    {
         if ($this->get('username') != $sUserName) {
             $this->set('username', $sUserName);
         }
@@ -699,7 +723,8 @@ class cApiUser extends Item {
      * @return string
      *         Realname of user
      */
-    public function getRealName() {
+    public function getRealName()
+    {
         return $this->get('realname');
     }
 
@@ -709,7 +734,8 @@ class cApiUser extends Item {
      * @return string
      *         Realname or username of user
      */
-    public function getEffectiveName() {
+    public function getEffectiveName()
+    {
         $name = trim($this->get('realname'));
         if (cString::getStringLength($name) == 0) {
             $name = trim($this->get('username'));
@@ -722,7 +748,8 @@ class cApiUser extends Item {
      *
      * @return string
      */
-    public function getMail() {
+    public function getMail()
+    {
         return $this->get('email');
     }
 
@@ -731,7 +758,8 @@ class cApiUser extends Item {
      *
      * @return string
      */
-    public function getTelNumber() {
+    public function getTelNumber()
+    {
         return $this->get('telephone');
     }
 
@@ -745,12 +773,13 @@ class cApiUser extends Item {
      *         $aAddress['zip']
      *         </pre>
      */
-    public function getAddressData() {
+    public function getAddressData()
+    {
         return [
-            'street'  => $this->get('address_street'),
-            'city'    => $this->get('address_city'),
+            'street' => $this->get('address_street'),
+            'city' => $this->get('address_city'),
             'country' => $this->get('address_country'),
-            'zip'     => $this->get('address_zip'),
+            'zip' => $this->get('address_zip'),
         ];
     }
 
@@ -759,7 +788,8 @@ class cApiUser extends Item {
      *
      * @return int
      */
-    public function getUseWysi() {
+    public function getUseWysi()
+    {
         return $this->get('wysi');
     }
 
@@ -768,7 +798,8 @@ class cApiUser extends Item {
      *
      * @return string
      */
-    public function getValidDateTo() {
+    public function getValidDateTo()
+    {
         return $this->get('valid_to');
     }
 
@@ -777,7 +808,8 @@ class cApiUser extends Item {
      *
      * @return string
      */
-    public function getValidDateFrom() {
+    public function getValidDateFrom()
+    {
         return $this->get('valid_from');
     }
 
@@ -786,7 +818,8 @@ class cApiUser extends Item {
      *
      * @return string
      */
-    public function getPerms() {
+    public function getPerms()
+    {
         return $this->get('perms');
     }
 
@@ -795,7 +828,8 @@ class cApiUser extends Item {
      *
      * @return array
      */
-    public function getPermsArray() {
+    public function getPermsArray()
+    {
         return explode(',', $this->get('perms'));
     }
 
@@ -804,7 +838,8 @@ class cApiUser extends Item {
      *
      * @param string $sRealName
      */
-    public function setRealName($sRealName) {
+    public function setRealName($sRealName)
+    {
         if ($this->get('realname') != $sRealName) {
             $this->set('realname', $sRealName);
         }
@@ -815,7 +850,8 @@ class cApiUser extends Item {
      *
      * @param string $sMail
      */
-    public function setMail($sMail) {
+    public function setMail($sMail)
+    {
         if ($this->get('email') != $sMail) {
             $this->set('email', $sMail);
         }
@@ -826,7 +862,8 @@ class cApiUser extends Item {
      *
      * @param string $sTelNumber
      */
-    public function setTelNumber($sTelNumber) {
+    public function setTelNumber($sTelNumber)
+    {
         if ($this->get('telephone') != $sTelNumber) {
             $this->set('telephone', $sTelNumber);
         }
@@ -840,7 +877,8 @@ class cApiUser extends Item {
      * @param string $sZip
      * @param string $sCountry
      */
-    public function setAddressData($sStreet, $sCity, $sZip, $sCountry) {
+    public function setAddressData($sStreet, $sCity, $sZip, $sCountry)
+    {
         if ($this->get('address_street') != $sStreet) {
             $this->set('address_street', $sStreet);
         }
@@ -860,7 +898,8 @@ class cApiUser extends Item {
      *
      * @param string $sStreet
      */
-    public function setStreet($sStreet) {
+    public function setStreet($sStreet)
+    {
         if ($this->get('address_street') != $sStreet) {
             $this->set('address_street', $sStreet);
         }
@@ -871,7 +910,8 @@ class cApiUser extends Item {
      *
      * @param string $sCity
      */
-    public function setCity($sCity) {
+    public function setCity($sCity)
+    {
         if ($this->get('address_city') != $sCity) {
             $this->set('address_city', $sCity);
         }
@@ -882,7 +922,8 @@ class cApiUser extends Item {
      *
      * @param string $sZip
      */
-    public function setZip($sZip) {
+    public function setZip($sZip)
+    {
         if ($this->get('address_zip') != $sZip) {
             $this->set('address_zip', $sZip);
         }
@@ -893,7 +934,8 @@ class cApiUser extends Item {
      *
      * @param string $sCountry
      */
-    public function setCountry($sCountry) {
+    public function setCountry($sCountry)
+    {
         if ($this->get('address_country') != $sCountry) {
             $this->set('address_country', $sCountry);
         }
@@ -904,7 +946,8 @@ class cApiUser extends Item {
      *
      * @param int $iUseWysi
      */
-    public function setUseWysi($iUseWysi) {
+    public function setUseWysi($iUseWysi)
+    {
         if ($this->get('wysi') != $iUseWysi) {
             $this->set('wysi', $iUseWysi);
         }
@@ -915,7 +958,8 @@ class cApiUser extends Item {
      *
      * @param string $sValidateTo
      */
-    public function setValidDateTo($sValidateTo) {
+    public function setValidDateTo($sValidateTo)
+    {
         if (is_string($sValidateTo) && cDate::isEmptyDate($this->get('valid_to')) && cDate::isEmptyDate(trim($sValidateTo))) {
             return;
         }
@@ -929,7 +973,8 @@ class cApiUser extends Item {
      *
      * @param string $sValidateFrom
      */
-    public function setValidDateFrom($sValidateFrom) {
+    public function setValidDateFrom($sValidateFrom)
+    {
         if (is_string($sValidateFrom) && cDate::isEmptyDate($this->get('valid_from')) && cDate::isEmptyDate(trim($sValidateFrom))) {
             return;
         }
@@ -943,7 +988,8 @@ class cApiUser extends Item {
      *
      * @param array|string $perms
      */
-    public function setPerms($perms) {
+    public function setPerms($perms)
+    {
         if ($this->get('perms') != $perms) {
             $this->set('perms', $perms);
         }
@@ -953,18 +999,19 @@ class cApiUser extends Item {
      * Function returns effective perms for user including group rights as perm
      * string.
      *
-     * @author     Timo Trautmann
      * @return string
      *         Current users permissions
+     * @author     Timo Trautmann
      */
-    public function getEffectiveUserPerms() {
+    public function getEffectiveUserPerms()
+    {
         if (!$this->isLoaded()) {
             return '';
         }
 
         // first get users own permissions and filter them into result array
         // $aUserPerms
-        $aUserPerms     = [];
+        $aUserPerms = [];
         $aUserPermsSelf = explode(',', $this->values['perms']);
         foreach ($aUserPermsSelf as $sPerm) {
             if (trim($sPerm) != '') {
@@ -995,15 +1042,16 @@ class cApiUser extends Item {
     /**
      * Returns group names where the user is in.
      *
-     * @param string $userid          [optional]
+     * @param string $userid [optional]
      *                                user id, uses id of loaded user by default.
-     * @param bool   $bAddDescription [optional]
+     * @param bool $bAddDescription [optional]
      *                                Flag to add description like "groupname (description)"
      * @return array
      * @throws cDbException
      * @throws cException
      */
-    public function getGroupNamesByUserID($userid = NULL, $bAddDescription = true) {
+    public function getGroupNamesByUserID($userid = NULL, $bAddDescription = true)
+    {
         $userid = (NULL === $userid) ? $this->get('user_id') : $userid;
 
         $aGroups = [];
@@ -1037,7 +1085,8 @@ class cApiUser extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function getGroupIDsByUserID($userid) {
+    public function getGroupIDsByUserID($userid)
+    {
         $userid = (NULL === $userid) ? $this->get('user_id') : $userid;
 
         $aGroups = [];
@@ -1059,7 +1108,7 @@ class cApiUser extends Item {
      *                      Type (class, category etc.) for the property to retrieve
      * @param string $name
      *                      Name of the property to retrieve
-     * @param bool   $group [optional]
+     * @param bool $group [optional]
      *                      Flag to search in groups
      * @return string|bool
      *                      value of the retrieved property or false
@@ -1067,7 +1116,8 @@ class cApiUser extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function getUserProperty($type, $name, $group = false) {
+    public function getUserProperty($type, $name, $group = false)
+    {
         $result = false;
 
         if ($group) {
@@ -1097,11 +1147,9 @@ class cApiUser extends Item {
     /**
      * Returns all user properties by type.
      *
-     * @todo return value should be similar to getUserProperties()
-     *
      * @param string $type
      *                      Type (class, category etc.) of the properties to retrieve
-     * @param bool   $group [optional]
+     * @param bool $group [optional]
      *                      Flag to retrieve in group properties. If enabled, group
      *                      properties will be merged with user properties where the user
      *                      properties will overwrite group properties
@@ -1110,8 +1158,11 @@ class cApiUser extends Item {
      *                      - $arr[name] = value
      * @throws cDbException
      * @throws cException
+     * @todo return value should be similar to getUserProperties()
+     *
      */
-    public function getUserPropertiesByType($type, $group = false) {
+    public function getUserPropertiesByType($type, $group = false)
+    {
         $props = [];
 
         if ($group) {
@@ -1149,15 +1200,16 @@ class cApiUser extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function getUserProperties() {
+    public function getUserProperties()
+    {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
         $userProps = $userPropColl->fetchByUserId();
 
         $props = [];
         foreach ($userProps as $userProp) {
             $props[$userProp->get('iduserprop')] = [
-                'name'  => $userProp->get('name'),
-                'type'  => $userProp->get('type'),
+                'name' => $userProp->get('name'),
+                'type' => $userProp->get('type'),
                 'value' => $userProp->get('value'),
             ];
         }
@@ -1179,7 +1231,8 @@ class cApiUser extends Item {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function setUserProperty($type, $name, $value) {
+    public function setUserProperty($type, $name, $value)
+    {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
         $userPropColl->setValueByTypeName($type, $name, $value);
     }
@@ -1198,7 +1251,8 @@ class cApiUser extends Item {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function deleteUserProperty($type, $name) {
+    public function deleteUserProperty($type, $name)
+    {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
         return $userPropColl->deleteByUserIdTypeName($type, $name);
     }
@@ -1210,7 +1264,8 @@ class cApiUser extends Item {
      * @param int $iErrorCode
      * @return string
      */
-    public static function getErrorString($iErrorCode) {
+    public static function getErrorString($iErrorCode)
+    {
         $cfg = cRegistry::getConfig();
 
         switch ($iErrorCode) {
@@ -1224,7 +1279,7 @@ class cApiUser extends Item {
                 $sError = sprintf(i18n('Please use at least %d symbols in your password!'), $cfg['password']['symbols_mandatory']);
                 break;
             case self::PASS_TO_SHORT:
-                $sError = sprintf(i18n('Password is too short! Please use at least %d signs.'), ($cfg['password']['min_length'] > 0? $cfg['password']['min_length'] : self::MIN_PASS_LENGTH_DEFAULT));
+                $sError = sprintf(i18n('Password is too short! Please use at least %d signs.'), ($cfg['password']['min_length'] > 0 ? $cfg['password']['min_length'] : self::MIN_PASS_LENGTH_DEFAULT));
                 break;
             case self::PASS_NOT_ENOUGH_DIFFERENT_CHARS:
                 $sError = i18n('Password does not contain enough different characters.');
@@ -1245,7 +1300,8 @@ class cApiUser extends Item {
      *
      * @return cPermission
      */
-    private function _getPermInstance() {
+    private function _getPermInstance()
+    {
         $perm = cRegistry::getPerm();
         if (!is_object($perm)) {
             $perm = new cPermission();

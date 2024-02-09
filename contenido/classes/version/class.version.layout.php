@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Versioning
  */
-class cVersionLayout extends cVersion {
+class cVersionLayout extends cVersion
+{
 
     /**
      * The name of Layout
@@ -58,17 +59,18 @@ class cVersionLayout extends cVersion {
      *
      * @param string $iIdLayout
      *         The name of style file
-     * @param array  $aCfg
-     * @param array  $aCfgClient
-     * @param cDb    $oDB
+     * @param array $aCfg
+     * @param array $aCfgClient
+     * @param cDb $oDB
      *         CONTENIDO database object
-     * @param int    $iClient
+     * @param int $iClient
      * @param string $sArea
-     * @param int    $iFrame
+     * @param int $iFrame
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function __construct($iIdLayout, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
+    public function __construct($iIdLayout, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame)
+    {
         // Init class members in super class
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
 
@@ -96,7 +98,8 @@ class cVersionLayout extends cVersion {
      *
      * @param string $code
      */
-    public function setCode($code) {
+    public function setCode($code)
+    {
         $this->setData('code', $code);
     }
 
@@ -106,7 +109,8 @@ class cVersionLayout extends cVersion {
      *
      * @throws cDbException|cException
      */
-    private function setLayoutTable() {
+    private function setLayoutTable()
+    {
         $oLayout = new cApiLayout($this->iIdentity);
         if ($oLayout->isLoaded()) {
             $this->iClient = $oLayout->get('idclient');
@@ -127,7 +131,8 @@ class cVersionLayout extends cVersion {
      * @return array
      *         returns array width this three nodes
      */
-    public function initXmlReader($sPath) {
+    public function initXmlReader($sPath)
+    {
         $aResult = [];
         if ($sPath != '') {
             // Output this xml file
@@ -160,7 +165,8 @@ class cVersionLayout extends cVersion {
      * @return string
      *         Javascript for refreshing frames
      */
-    public function renderReloadScript($sArea, $iIdLayout, $sess) {
+    public function renderReloadScript($sArea, $iIdLayout, $sess)
+    {
         $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&idlay=$iIdLayout");
         return <<<JS
 <script type="text/javascript">

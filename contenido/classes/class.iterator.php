@@ -31,7 +31,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Util
  */
-class cIterator {
+class cIterator
+{
 
     /**
      * Holds the items to iterate.
@@ -56,7 +57,8 @@ class cIterator {
      * @param array $aItems
      *         Items to add
      */
-    public function __construct($aItems) {
+    public function __construct($aItems)
+    {
         $this->_aIteratorItems = is_array($aItems) ? $aItems : [];
         $this->reset();
     }
@@ -66,7 +68,8 @@ class cIterator {
      *
      * This function moves the iterator to the first element
      */
-    public function reset() {
+    public function reset()
+    {
         $this->_keys = array_keys($this->_aIteratorItems);
     }
 
@@ -78,7 +81,8 @@ class cIterator {
      * @return mixed
      *         item or false if no items are left
      */
-    public function next() {
+    public function next()
+    {
         $key = array_shift($this->_keys);
         return isset($this->_aIteratorItems[$key]) ? $this->_aIteratorItems[$key] : false;
     }
@@ -89,7 +93,8 @@ class cIterator {
      * @return int
      *         number of items
      */
-    public function count() {
+    public function count()
+    {
         return count($this->_aIteratorItems);
     }
 }

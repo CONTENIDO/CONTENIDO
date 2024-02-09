@@ -39,9 +39,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int    $id
+     * @param int $id
      *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array  $contentTypes
+     * @param array $contentTypes
      *         array containing the values of all content types
      *
      * @throws cDbException
@@ -149,13 +149,13 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     public function getConfiguredData(): array
     {
         return [
-            'type'          => $this->getSetting('linkeditor_type'),
-            'externallink'  => $this->getSetting('linkeditor_externallink'),
-            'title'         => $this->getSetting('linkeditor_title'),
-            'newwindow'     => $this->getSetting('linkeditor_newwindow'),
-            'idart'         => $this->getSetting('linkeditor_idart'),
-            'filename'      => $this->getFilename(),
-            'href'          => $this->_generateHref()
+            'type' => $this->getSetting('linkeditor_type'),
+            'externallink' => $this->getSetting('linkeditor_externallink'),
+            'title' => $this->getSetting('linkeditor_title'),
+            'newwindow' => $this->getSetting('linkeditor_newwindow'),
+            'idart' => $this->getSetting('linkeditor_idart'),
+            'filename' => $this->getFilename(),
+            'href' => $this->_generateHref()
         ];
     }
 
@@ -418,7 +418,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     /**
      * Builds an array with category information.
      *
-     * @param int $level    [optional]
+     * @param int $level [optional]
      * @param int $parentid [optional]
      *
      * @return array
@@ -611,7 +611,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $htmlSelect->appendOptionElement($htmlSelectOptionCategory);
 
         // Select neither (deselection)
-        $htmlSelectOptionNothing = new cHTMLOptionElement('- '. i18n('Neither') . ' -', '', false);
+        $htmlSelectOptionNothing = new cHTMLOptionElement('- ' . i18n('Neither') . ' -', '', false);
         $htmlSelect->appendOptionElement($htmlSelectOptionNothing);
 
         // if no idcat has been given, do not search for articles

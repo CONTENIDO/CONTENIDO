@@ -48,11 +48,11 @@ class cValidatorDate extends cValidatorAbstract
     }
 
     /**
-     * @see cValidatorAbstract::_isValid()
-     *
      * @param mixed $value
      *
      * @return bool
+     * @see cValidatorAbstract::_isValid()
+     *
      */
     protected function _isValid($value): bool
     {
@@ -63,7 +63,7 @@ class cValidatorDate extends cValidatorAbstract
 
         $format = "Y-m-d H:i:s";
         // if $date is just a date, not datetime, simulate datetime, as it is only necessary to check validity
-        if (strlen($value) == 10)  $value = $value . " 00:00:00";
+        if (strlen($value) == 10) $value = $value . " 00:00:00";
 
         $d = DateTime::createFromFormat($format, $value);
         if ($d && $d->format($format) == $value) {

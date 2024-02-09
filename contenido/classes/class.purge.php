@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Backend
  */
-class cSystemPurge {
+class cSystemPurge
+{
 
     /**
      * These directories should not be deleted.
@@ -67,7 +68,8 @@ class cSystemPurge {
     /**
      * Constructor to create an instance of this class.
      */
-    public function __construct() {
+    public function __construct()
+    {
         // check and set the system directories to exclude from purge
         $dirsToExcludeWithFiles = getSystemProperty('system', 'purge-dirstoexclude-withfiles');
         $aDirsToExcludeWithFiles = array_map('trim', explode(',', $dirsToExcludeWithFiles));
@@ -88,7 +90,8 @@ class cSystemPurge {
      *
      * @throws cInvalidArgumentException
      */
-    public function resetClientConCode($clientId) {
+    public function resetClientConCode($clientId)
+    {
         global $currentuser;
 
         $perm = cRegistry::getPerm();
@@ -128,7 +131,8 @@ class cSystemPurge {
      *
      * @throws cDbException
      */
-    public function resetClientConCatArt($clientId) {
+    public function resetClientConCatArt($clientId)
+    {
         global $perm, $currentuser;
         $db = cRegistry::getDb();
         $cfg = cRegistry::getConfig();
@@ -144,8 +148,8 @@ class cSystemPurge {
                 WHERE
                     cc.idcat = cca.idcat
                     AND ca.idart = cca.idart
-                    AND cc.idclient = ' . (int) $clientId . '
-                    AND ca.idclient = ' . (int) $clientId);
+                    AND cc.idclient = ' . (int)$clientId . '
+                    AND ca.idclient = ' . (int)$clientId);
 
             return ($db->getErrorMessage() == '') ? true : false;
         } else {
@@ -160,7 +164,8 @@ class cSystemPurge {
      *
      * @throws cDbException
      */
-    public function resetConInuse() {
+    public function resetConInuse()
+    {
         global $currentuser;
 
         $perm = cRegistry::getPerm();
@@ -186,7 +191,8 @@ class cSystemPurge {
      *
      * @throws cInvalidArgumentException
      */
-    public function clearClientCache($clientId) {
+    public function clearClientCache($clientId)
+    {
         global $currentuser;
 
         $perm = cRegistry::getPerm();
@@ -206,15 +212,16 @@ class cSystemPurge {
     /**
      * Clear the cache directory for a client.
      *
-     * @param int  $clientId
+     * @param int $clientId
      * @param bool $keep
-     * @param int  $fileNumber
+     * @param int $fileNumber
      *
      * @return bool
      *
      * @throws cInvalidArgumentException
      */
-    public function clearClientHistory($clientId, $keep, $fileNumber) {
+    public function clearClientHistory($clientId, $keep, $fileNumber)
+    {
         global $currentuser;
 
         $perm = cRegistry::getPerm();
@@ -260,7 +267,8 @@ class cSystemPurge {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function clearClientContentVersioning($idclient) {
+    public function clearClientContentVersioning($idclient)
+    {
         global $currentuser;
 
         $perm = cRegistry::getPerm();
@@ -290,7 +298,8 @@ class cSystemPurge {
      *
      * @throws cInvalidArgumentException
      */
-    public function clearClientLog($idclient) {
+    public function clearClientLog($idclient)
+    {
         global $currentuser;
 
         $perm = cRegistry::getPerm();
@@ -314,7 +323,8 @@ class cSystemPurge {
      *
      * @throws cInvalidArgumentException
      */
-    public function clearConLog() {
+    public function clearConLog()
+    {
         global $currentuser;
 
         $perm = cRegistry::getPerm();
@@ -338,7 +348,8 @@ class cSystemPurge {
      *
      * @throws cInvalidArgumentException
      */
-    public function clearConCronjob() {
+    public function clearConCronjob()
+    {
         global $currentuser;
 
         $perm = cRegistry::getPerm();
@@ -362,7 +373,8 @@ class cSystemPurge {
      *
      * @throws cInvalidArgumentException
      */
-    public function clearConCache() {
+    public function clearConCache()
+    {
         global $currentuser;
 
         $perm = cRegistry::getPerm();
@@ -390,7 +402,8 @@ class cSystemPurge {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function clearArticleCache($idartlang) {
+    public function clearArticleCache($idartlang)
+    {
         $cfgClient = cRegistry::getClientConfig();
         $client = cRegistry::getClientId();
 
@@ -416,15 +429,16 @@ class cSystemPurge {
      * @param string $dirPath
      * @param string $tmpDirPath
      *                            root directory not deleted
-     * @param bool   $keep        [optional]
-     * @param array  $tmpFileList [optional]
+     * @param bool $keep [optional]
+     * @param array $tmpFileList [optional]
      *                            files are temporarily saved
      *
      * @return bool
      *
      * @throws cInvalidArgumentException
      */
-    public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = []) {
+    public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = [])
+    {
         if (cDirHandler::exists($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
             $bCanDelete = false;
             $tmp = str_replace([
@@ -454,13 +468,13 @@ class cSystemPurge {
             $dirName = end($dirs);
 
             if (str_replace([
-                '/',
-                '..'
+                    '/',
+                    '..'
                 ], '', $dirPath) != str_replace([
-                '/',
-                '..'
+                    '/',
+                    '..'
                 ], '', $tmpDirPath)
-            && $keep === false) {
+                && $keep === false) {
                 // check if directory contains reserved files folders
                 $bCanDelete = true;
                 $dirContent = cDirHandler::read($dirPath);
@@ -491,13 +505,14 @@ class cSystemPurge {
      * Empty a file content.
      *
      * @param string $dirPath
-     * @param array  $types
+     * @param array $types
      *
      * @return bool
      *
      * @throws cInvalidArgumentException
      */
-    public function emptyFile($dirPath, $types) {
+    public function emptyFile($dirPath, $types)
+    {
         $count = 0;
         $countCleared = 0;
 
@@ -532,7 +547,8 @@ class cSystemPurge {
      * @param int $clientId
      * @return string
      */
-    public function getClientDir($clientId) {
+    public function getClientDir($clientId)
+    {
         $cfgClient = cRegistry::getClientConfig();
 
         return $cfgClient[$clientId]['path']['frontend'];
@@ -543,7 +559,8 @@ class cSystemPurge {
      *
      * @param array $types
      */
-    public function setLogFileTypes($types) {
+    public function setLogFileTypes($types)
+    {
         if (count($types) > 0) {
             foreach ($types as $type) {
                 $this->_logFileTypes[] = $type;
@@ -556,7 +573,8 @@ class cSystemPurge {
      *
      * @param array $types
      */
-    public function setCronjobFileTypes($types) {
+    public function setCronjobFileTypes($types)
+    {
         if (count($types) > 0) {
             foreach ($types as $type) {
                 $this->_cronjobFileTypes[] = $type;

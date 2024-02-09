@@ -20,14 +20,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLTable extends cHTMLContentElement {
+class cHTMLTable extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
      *
      * Creates an HTML table element.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         $this->_tag = 'table';
@@ -41,7 +43,8 @@ class cHTMLTable extends cHTMLContentElement {
      * @return cHTMLTable
      *         $this for chaining
      */
-    public function setCellSpacing($cellspacing) {
+    public function setCellSpacing($cellspacing)
+    {
         return $this->updateAttribute('cellspacing', $cellspacing);
     }
 
@@ -52,7 +55,8 @@ class cHTMLTable extends cHTMLContentElement {
      * @return cHTMLTable
      *         $this for chaining
      */
-    public function setSpacing($cellspacing) {
+    public function setSpacing($cellspacing)
+    {
         return $this->setCellSpacing($cellspacing);
     }
 
@@ -64,7 +68,8 @@ class cHTMLTable extends cHTMLContentElement {
      * @return cHTMLTable
      *         $this for chaining
      */
-    public function setCellPadding($cellpadding) {
+    public function setCellPadding($cellpadding)
+    {
         return $this->updateAttribute('cellpadding', $cellpadding);
     }
 
@@ -75,7 +80,8 @@ class cHTMLTable extends cHTMLContentElement {
      * @return cHTMLTable
      *         $this for chaining
      */
-    public function setPadding($cellpadding) {
+    public function setPadding($cellpadding)
+    {
         return $this->setCellPadding($cellpadding);
     }
 
@@ -87,7 +93,8 @@ class cHTMLTable extends cHTMLContentElement {
      * @return cHTMLTable
      *         $this for chaining
      */
-    public function setBorder($border) {
+    public function setBorder($border)
+    {
         return $this->updateAttribute('border', $border);
     }
 
@@ -99,7 +106,8 @@ class cHTMLTable extends cHTMLContentElement {
      * @return cHTMLTable
      *         $this for chaining
      */
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         return $this->updateAttribute('width', $width);
     }
 

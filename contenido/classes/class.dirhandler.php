@@ -183,7 +183,6 @@ class cDirHandler
     /**
      * Sets the permissions for the given directory to the default.
      *
-     * @deprecated use setDefaultPermissions() instead
      * @param string $dirname
      *         the name of the directory
      *
@@ -191,6 +190,7 @@ class cDirHandler
      *         Returns true on success or false on failure.
      *
      * @throws cInvalidArgumentException
+     * @deprecated use setDefaultPermissions() instead
      */
     public static function setDefaultDirPerms($dirname): bool
     {
@@ -241,7 +241,7 @@ class cDirHandler
      *                     the name and path of the file
      * @param string $destination
      *                     the destination. Note that existing files get overwritten
-     * @param int    $mode [optional; default as configured or 0775]
+     * @param int $mode [optional; default as configured or 0775]
      *                     chmod mode
      *
      * @return bool
@@ -357,7 +357,7 @@ class cDirHandler
                         if (is_dir($dirname . $file)) {
                             $dirContent[] = $file;
                         }
-                    // bugfix: is_dir only checked file name without path, thus returning everything most of the time
+                        // bugfix: is_dir only checked file name without path, thus returning everything most of the time
                     } elseif ($fileOnly === true) { // get only files
 
                         if (is_file($dirname . $file)) {
@@ -418,7 +418,7 @@ class cDirHandler
      *
      * @param string $dirname
      *                          The directory name
-     * @param bool   $recursive [optional]
+     * @param bool $recursive [optional]
      *                          true if all the subdirectories should be included in the calculation
      *
      * @return int|bool

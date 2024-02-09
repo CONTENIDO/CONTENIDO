@@ -15,7 +15,7 @@
 
 // build a front_content.php URL
 try {
-    $aParams     = [
+    $aParams = [
         'idcat' => 1,
         'idart' => 5,
     ];
@@ -31,11 +31,11 @@ try {
 // build a URL with languagedependent category path
 // like /path/path/path/index-b-1-2-3.html
 try {
-    $aParams     = [
+    $aParams = [
         'idcat' => 1,
-        'lang'  => 1,
+        'lang' => 1,
         'level' => 1,
-        'b'     => [1, 2, 3],
+        'b' => [1, 2, 3],
     ];
     $oUriBuilder = cUriBuilderFactory::getUriBuilder('custom_path');
     $oUriBuilder->buildUrl($aParams);
@@ -47,15 +47,15 @@ try {
 // build a URL with languagedependent category path
 // like /path/path/path/rocknroll,goodies,1,2,3.4fb
 try {
-    $aParams     = [
-        'idcat'   => 1,
-        'lang'    => 1,
-        'level'   => 1,
+    $aParams = [
+        'idcat' => 1,
+        'lang' => 1,
+        'level' => 1,
         'goodies' => [1, 2, 3],
     ];
-    $aConfig     = [
-        'prefix'    => 'rocknroll',
-        'suffix'    => '.4fb',
+    $aConfig = [
+        'prefix' => 'rocknroll',
+        'suffix' => '.4fb',
         'separator' => ',',
     ];
     $oUriBuilder = cUriBuilderFactory::getUriBuilder('custom_path');

@@ -173,7 +173,7 @@ class cDate
      * @TODO We should use `IntlDateFormatter::format()` to support localized dates for PHP >= 8.1.0, but this requires the `ext-intl` extension.
      *
      * @param string $format Either `strftime()` format or `date()` format.
-     * @param int|null $timestamp  Unix timestamp, current time will be used if omitted.
+     * @param int|null $timestamp Unix timestamp, current time will be used if omitted.
      * @return false|string The formatted date string or false on error
      */
     public static function formatToDate(string $format, int $timestamp = null)
@@ -289,7 +289,7 @@ class cDate
         $dateSyntax = [
             'S', 'd', 'D', 'j', 'l', 'N', 'w', 'z',
             'W',
-            'F', 'm', 'M', 'M',  'n',
+            'F', 'm', 'M', 'M', 'n',
             'o', 'Y', 'y',
             'a', 'A', 'g', 'h', 'H', 'G', 'i', 's',
             'O', 'T',
@@ -299,17 +299,17 @@ class cDate
         switch ($syntax) {
             case 'date':
                 $from = $strfSyntax;
-                $to   = $dateSyntax;
+                $to = $dateSyntax;
                 break;
             case 'strf':
                 $from = $dateSyntax;
-                $to   = $strfSyntax;
+                $to = $strfSyntax;
                 break;
             default:
                 return false;
         }
 
-        $pattern = array_map(function($s) {
+        $pattern = array_map(function ($s) {
             return '/(?<!\\\\|\%)' . $s . '/';
         }, $from);
 

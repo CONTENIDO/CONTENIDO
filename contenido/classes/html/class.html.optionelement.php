@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLOptionElement extends cHTMLFormElement {
+class cHTMLOptionElement extends cHTMLFormElement
+{
 
     /**
      * Title to display
@@ -45,7 +46,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($title, $value, $selected = false, $disabled = false, $class = '') {
+    public function __construct($title, $value, $selected = false, $disabled = false, $class = '')
+    {
         parent::__construct('', '', $disabled, '', '', $class);
         $this->_tag = 'option';
         $this->_title = $title;
@@ -64,7 +66,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @return cHTMLOptionElement
      *         $this for chaining
      */
-    public function setSelected($selected) {
+    public function setSelected($selected)
+    {
         if ($selected == true) {
             return $this->updateAttribute('selected', 'selected');
         } else {
@@ -78,7 +81,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @return bool
      *         whether this option element is selected
      */
-    public function isSelected() {
+    public function isSelected()
+    {
         return $this->getAttribute('selected') === 'selected';
     }
 
@@ -100,15 +104,15 @@ class cHTMLOptionElement extends cHTMLFormElement {
     /**
      * Generates the indentation used to display a structure tree, e.g. within a select box.
      *
-     * @since CONTENIDO 4.10.2
      * @param int $level The category level
      * @param int $prefixAmount Initial amount of indentation characters to start with
      * @param int $levelAmount The amount of indentation characters for each level
      * @param string $character The indentation character itself
      * @return string Generated indentation string
+     * @since CONTENIDO 4.10.2
      */
     public static function indent(
-        int $level, int $prefixAmount = 2, int $levelAmount = 4,
+        int    $level, int $prefixAmount = 2, int $levelAmount = 4,
         string $character = '&nbsp;'
     ): string
     {

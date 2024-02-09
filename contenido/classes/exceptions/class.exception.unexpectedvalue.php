@@ -21,6 +21,7 @@
  * {@link UnexpectedValueException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cUnexpectedValueException extends cRuntimeException {
+class cUnexpectedValueException extends cRuntimeException
+{
 
 }

@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLAudio extends cHTMLContentElement {
+class cHTMLAudio extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -33,7 +34,8 @@ class cHTMLAudio extends cHTMLContentElement {
      *         the ID of this element
      * @param string $src [optional]
      */
-    public function __construct($content = '', $class = '', $id = '', $src = '') {
+    public function __construct($content = '', $class = '', $id = '', $src = '')
+    {
         parent::__construct($content, $class, $id);
         $this->_tag = 'audio';
         $this->setSrc($src);
@@ -44,7 +46,8 @@ class cHTMLAudio extends cHTMLContentElement {
      *
      * @param string $src
      */
-    public function setSrc($src) {
+    public function setSrc($src)
+    {
         $this->setAttribute('src', $src);
     }
 
@@ -54,7 +57,8 @@ class cHTMLAudio extends cHTMLContentElement {
      *
      * @param bool $autoplay
      */
-    public function setAutoplay($autoplay) {
+    public function setAutoplay($autoplay)
+    {
         if ($autoplay) {
             $this->setAttribute('autoplay', 'autoplay');
         } else {
@@ -68,7 +72,8 @@ class cHTMLAudio extends cHTMLContentElement {
      *
      * @param bool $controls
      */
-    public function setControls($controls) {
+    public function setControls($controls)
+    {
         if ($controls) {
             $this->setAttribute('controls', 'controls');
         } else {

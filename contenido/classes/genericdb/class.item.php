@@ -118,11 +118,11 @@ abstract class Item extends cItemBaseAbstract
      *
      * @param string $sField
      *                      Specifies the field
-     * @param mixed  $mValue
+     * @param mixed $mValue
      *                      Specifies the value
-     * @param bool   $bSafe [optional]
+     * @param bool $bSafe [optional]
      *                      Use inFilter or not
-     * @param bool   $bAllowOneResult [optional]
+     * @param bool $bAllowOneResult [optional]
      *                      Flag to allow only one result
      *
      * @return bool
@@ -182,9 +182,9 @@ abstract class Item extends cItemBaseAbstract
      *
      * @param array $aAttributes
      *                     associative array with field / value pairs
-     * @param bool  $bSafe [optional]
+     * @param bool $bSafe [optional]
      *                     Use inFilter or not
-     * @param bool   $bAllowOneResult [optional]
+     * @param bool $bAllowOneResult [optional]
      *                      Flag to allow only one result
      * @return bool
      *                     True if the load was successful
@@ -529,8 +529,8 @@ abstract class Item extends cItemBaseAbstract
     /**
      * Checks whether the item has been modified or not.
      *
-     * @since CONTENIDO 4.10.2
      * @return bool
+     * @since CONTENIDO 4.10.2
      */
     public function isModified(): bool
     {
@@ -601,7 +601,7 @@ abstract class Item extends cItemBaseAbstract
     public function toObject()
     {
         $return = $this->toArray();
-        return $return ? (object) $return : false;
+        return $return ? (object)$return : false;
     }
 
     /**
@@ -611,9 +611,9 @@ abstract class Item extends cItemBaseAbstract
      *                        Specifies the type
      * @param string $sName
      *                        Specifies the name
-     * @param mixed  $mValue
+     * @param mixed $mValue
      *                        Specifies the value
-     * @param int    $iClient [optional]
+     * @param int $iClient [optional]
      *                        Id of client to set property for
      *
      * @return bool
@@ -643,7 +643,7 @@ abstract class Item extends cItemBaseAbstract
      *                        Specifies the type
      * @param string $sName
      *                        Specifies the name
-     * @param int    $iClient [optional]
+     * @param int $iClient [optional]
      *                        Id of client to set property for
      *
      * @return mixed
@@ -673,7 +673,7 @@ abstract class Item extends cItemBaseAbstract
      *                        Specifies the type
      * @param string $sName
      *                        Specifies the name
-     * @param int    $iClient [optional]
+     * @param int $iClient [optional]
      *                        Id of client to delete properties
      *
      * @return bool
@@ -758,12 +758,12 @@ abstract class Item extends cItemBaseAbstract
      * Filters the passed data using the functions defines in the _arrInFilters
      * array.
      *
-     * @since CONTENIDO 4.10.2
-     * @see Item::setFilters()
      * @param mixed $mData
      *         Data to filter
      * @return mixed
      *         Filtered data
+     * @since CONTENIDO 4.10.2
+     * @see Item::setFilters()
      */
     public function inFilter($mData)
     {
@@ -774,11 +774,11 @@ abstract class Item extends cItemBaseAbstract
      * Filters the passed data using the functions defines in the _arrOutFilters
      * array.
      *
-     * @see Item::setFilters()
      * @param mixed $mData
      *         Data to filter
      * @return mixed
      *         Filtered data
+     * @see Item::setFilters()
      */
     public function outFilter($mData)
     {

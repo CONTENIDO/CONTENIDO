@@ -72,7 +72,7 @@ class cFrontendListUpload extends cFrontendList
             $fileType = cString::toLowerCase(cFileHandler::getExtension($value));
             if (self::isImageFileType($fileType)) {
                 // Image thumbnail with link to show image in popup
-                return self::getUploadImageLink((string) $value);
+                return self::getUploadImageLink((string)$value);
             } else {
                 // Thumbnail for other file types
                 $sCacheThumbnail = uplGetThumbnail($value, 150);
@@ -100,7 +100,7 @@ class cFrontendListUpload extends cFrontendList
     public function getNumPages(): int
     {
         if ($this->_dataCount > 0) {
-            return (int) ceil($this->_dataCount / $this->_resultsPerPage);
+            return (int)ceil($this->_dataCount / $this->_resultsPerPage);
         }
 
         return parent::getNumPages();

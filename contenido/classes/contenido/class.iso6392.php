@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiIso6392 createNewItem
  * @method cApiIso6392|bool next
  */
-class cApiIso6392Collection extends ItemCollection {
+class cApiIso6392Collection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -32,7 +33,8 @@ class cApiIso6392Collection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct($select = false) {
+    public function __construct($select = false)
+    {
         parent::__construct(cRegistry::getDbTableName('iso_639_2'), 'iso');
         $this->_setItemClass('cApiIso6392');
 
@@ -48,7 +50,8 @@ class cApiIso6392Collection extends ItemCollection {
  * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiIso6392 extends Item {
+class cApiIso6392 extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -58,7 +61,8 @@ class cApiIso6392 extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('iso_639_2'), 'iso');
         $this->setFilters([], []);
         if ($mId !== false) {

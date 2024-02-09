@@ -66,7 +66,7 @@ class cXmlReader extends cXmlBase
     {
         // Load document via object method to avoid warning in PHP strict mode.
         $oDoc = new DOMDocument();
-        if (false === $oDoc->loadXML($source )) {
+        if (false === $oDoc->loadXML($source)) {
             throw new cException('could not load XML');
         }
 

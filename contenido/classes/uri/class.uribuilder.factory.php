@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Frontend_URI
  */
-class cUriBuilderFactory {
+class cUriBuilderFactory
+{
 
     /**
      * Returns desired cUriBuilder object.
@@ -36,7 +37,8 @@ class cUriBuilderFactory {
      * @throws cInvalidArgumentException
      *         In case unknown type of builder is requested you'll get an Exception
      */
-    public static function getUriBuilder($sBuilder) {
+    public static function getUriBuilder($sBuilder)
+    {
         switch ($sBuilder) {
             case 'front_content':
                 return cUriBuilderFrontcontent::getInstance();
@@ -48,7 +50,7 @@ class cUriBuilderFactory {
                 return cUriBuilderCustomPath::getInstance();
                 break;
             default:
-                if ((string) $sBuilder !== '') {
+                if ((string)$sBuilder !== '') {
                     $sClassName = 'cUriBuilder' . $sBuilder;
 
                     if (!class_exists($sClassName)) {

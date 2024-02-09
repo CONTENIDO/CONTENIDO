@@ -34,7 +34,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @deprecated [2015-05-21]
  *         This class is no longer supported
  */
-class cModuleLog extends cLog {
+class cModuleLog extends cLog
+{
 
     /**
      * instance of module model
@@ -46,16 +47,17 @@ class cModuleLog extends cLog {
     /**
      * Constructor to create an instance of this class.
      *
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
-     *
      * @param mixed $writer [optional]
      *                      Writer object (any subclass of cLogWriter),
      *                      or false if cLog should handle the writer creation
      *
      * @throws cInvalidArgumentException
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
+     *
      */
-    public function __construct($writer = false) {
+    public function __construct($writer = false)
+    {
         cDeprecated("The cModuleLog classes are no longer supported.");
 
         parent::__construct($writer);
@@ -70,14 +72,15 @@ class cModuleLog extends cLog {
      * setModule automatically buffers basic module information to the
      * log to assist the developer in debugging his modules.
      *
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
      * @param int $idmod
      *         The module ID to use
      * @throws cException
      *         if the module with the given idmod could not be loaded
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
      */
-    public function setModule($idmod) {
+    public function setModule($idmod)
+    {
         cDeprecated("The cModuleLog setModule method are no longer supported.");
 
         $this->_module = new cApiModule($idmod);
@@ -90,12 +93,13 @@ class cModuleLog extends cLog {
      * Shortcut Handler Module.
      * Returns the ID and the name of the module.
      *
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
      * @return string
      *         ID and name of the module
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
      */
-    public function shModule() {
+    public function shModule()
+    {
         cDeprecated("The cModuleLog shModule method are no longer supported.");
 
         if ($this->_module->isLoaded() == false) {

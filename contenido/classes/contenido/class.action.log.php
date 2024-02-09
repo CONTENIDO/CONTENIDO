@@ -51,10 +51,10 @@ class cApiActionlogCollection extends ItemCollection
      *
      * @param string $userId
      *                             User id
-     * @param int    $idclient
-     * @param int    $idlang
-     * @param int    $idaction
-     * @param int    $idcatart
+     * @param int $idclient
+     * @param int $idlang
+     * @param int $idaction
+     * @param int $idcatart
      * @param string $logtimestamp [optional]
      *
      * @return cApiActionlog
@@ -86,12 +86,12 @@ class cApiActionlogCollection extends ItemCollection
     /**
      * Returns the minimum and maximum action log timestamps.
      *
-     * @since CONTENIDO 4.10.2
      * @return array|null Array like ['min' => (string), 'max' => (string))]
      *      or null, if no entries where found.
      *
      * @throws cDbException
      * @throws cInvalidArgumentException
+     * @since CONTENIDO 4.10.2
      */
     public function getMinMaxLogTimestamp()
     {

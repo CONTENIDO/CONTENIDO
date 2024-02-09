@@ -116,11 +116,11 @@ class cHTMLButton extends cHTMLFormElement
     /**
      * Renders a html input tag of type image.
      *
-     * @since CONTENIDO 4.10.2
      * @param string $src The source (path) to the image
      * @param string $alt Alternate text
      * @param array $attributes Attributes to set
      * @return string
+     * @since CONTENIDO 4.10.2
      */
     public static function image($src, $alt = '', array $attributes = [])
     {

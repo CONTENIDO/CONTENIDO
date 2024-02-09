@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLContentElement extends cHTML {
+class cHTMLContentElement extends cHTML
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -32,7 +33,8 @@ class cHTMLContentElement extends cHTML {
      * @param string $id [optional]
      *         the ID of this element
      */
-    public function __construct($content = '', $class = '', $id = '') {
+    public function __construct($content = '', $class = '', $id = '')
+    {
         parent::__construct();
         $this->setContent($content);
         $this->_contentlessTag = false;
@@ -49,7 +51,8 @@ class cHTMLContentElement extends cHTML {
      * @return cHTMLContentElement
      *         $this for chaining
      */
-    public function setContent($content) {
+    public function setContent($content)
+    {
         $this->_setContent($content);
         return $this;
     }
@@ -63,7 +66,8 @@ class cHTMLContentElement extends cHTML {
      * @return cHTMLContentElement
      *         $this for chaining
      */
-    public function appendContent($content) {
+    public function appendContent($content)
+    {
         $this->_appendContent($content);
         return $this;
     }

@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cTree extends cTreeItem {
+class cTree extends cTreeItem
+{
 
     /**
      * Tree icon
@@ -32,12 +33,13 @@ class cTree extends cTreeItem {
     /**
      * Constructor to create an instance of this class.
      *
+     * @param string $name [optional]
      * @todo The root item currently has to be a "0".
      * This is a bug, feel free to fix it.
      *
-     * @param string $name [optional]
      */
-    public function __construct($name = "") {
+    public function __construct($name = "")
+    {
         parent::__construct(0, $name);
     }
 
@@ -47,7 +49,8 @@ class cTree extends cTreeItem {
      * @param string $name
      *         Name of the tree
      */
-    public function setTreeName($name) {
+    public function setTreeName($name)
+    {
         $this->setName($name);
     }
 
@@ -57,7 +60,8 @@ class cTree extends cTreeItem {
      *
      * @param string $path
      */
-    public function setIcon($path) {
+    public function setIcon($path)
+    {
         $this->setTreeIcon($path);
     }
 
@@ -66,7 +70,8 @@ class cTree extends cTreeItem {
      *
      * @param string $path
      */
-    public function setTreeIcon($path) {
+    public function setTreeIcon($path)
+    {
         $this->_treeIcon = $path;
     }
 
@@ -75,7 +80,8 @@ class cTree extends cTreeItem {
      *
      * @return string
      */
-    public function getTreeIcon() {
+    public function getTreeIcon()
+    {
         return $this->_treeIcon;
     }
 

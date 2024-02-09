@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Backend
  */
-class cAjaxRequest {
+class cAjaxRequest
+{
     /**
      * Handles AJAX requests for certain data. Which data is returned
      * depends upon the given $action. If the $action is unknown an
@@ -67,24 +68,25 @@ class cAjaxRequest {
      *          request, e.g. due to an invalid or expired session.
      * </ul>
      *
-     * @todo split functionality into seperate methods
-     * @todo use registry instead of globals where possible
-     *
      * @param string $action
      *         name of requested ajax action
      *
      * @return string
      *
      * @throws cDbException|cException|cInvalidArgumentException
+     * @todo use registry instead of globals where possible
+     *
+     * @todo split functionality into seperate methods
      */
-    public function handle($action) {
+    public function handle($action)
+    {
         $backendPath = cRegistry::getBackendPath();
 
         $string = '';
         switch ($action) {
             case 'artsel':
 
-                $name  = cSecurity::toString($_REQUEST['name'] ?? '');
+                $name = cSecurity::toString($_REQUEST['name'] ?? '');
                 $idcat = cSecurity::toInteger($_REQUEST['idcat'] ?? '0');
                 $value = cSecurity::toInteger($_REQUEST['value'] ?? '0');
 
@@ -111,27 +113,27 @@ class cAjaxRequest {
 
             case 'imgdirlist':
 
-                $idartlang  = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
+                $idartlang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
                 $fileListId = cSecurity::toInteger($_REQUEST['id'] ?? '0');
-                $dirname    = cSecurity::toString($_REQUEST['dir'] ?? '');
+                $dirname = cSecurity::toString($_REQUEST['dir'] ?? '');
 
-                $clientId  = cRegistry::getClientId();
+                $clientId = cRegistry::getClientId();
                 $cfgClient = cRegistry::getClientConfig($clientId);
-                $uplPath   = $cfgClient['upl']['path'];
+                $uplPath = $cfgClient['upl']['path'];
 
-                $art     = new cApiArticleLanguage($idartlang);
+                $art = new cApiArticleLanguage($idartlang);
                 $content = $art->getContent('CMS_IMGEDITOR', $fileListId);
 
-                $fileList      = new cContentTypeImgeditor($content, $fileListId, []);
+                $fileList = new cContentTypeImgeditor($content, $fileListId, []);
                 $directoryList = $fileList->buildDirectoryList($uplPath . $dirname);
                 $string = $fileList->generateDirectoryList($directoryList);
                 break;
 
             case 'filelist':
 
-                $idartlang  = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
+                $idartlang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
                 $fileListId = cSecurity::toInteger($_REQUEST['id'] ?? '0');
-                $dirname    = cSecurity::toString($_REQUEST['dir'] ?? '');
+                $dirname = cSecurity::toString($_REQUEST['dir'] ?? '');
 
                 $art = new cApiArticleLanguage($idartlang);
                 $content = $art->getContent('CMS_FILELIST', $fileListId);
@@ -381,7 +383,7 @@ class cAjaxRequest {
 
                 if ($idCat === 0) {
                     $activeIdcats = $linkEditor->getActiveIdcats();
-                    $idCat        = $activeIdcats[0] ?? 0;
+                    $idCat = $activeIdcats[0] ?? 0;
                 }
 
                 if ($idCat > 0) {
@@ -522,7 +524,7 @@ class cAjaxRequest {
 
                 $requestMethod = cSecurity::toString($_REQUEST['method'] ?? '');
                 $string = cApiCecHook::executeAndReturn('Contenido.AjaxMain.CustomCall', $requestMethod);
-                if($string === NULL) {
+                if ($string === NULL) {
                     $string = 'Unknown Custom Ajax Action';
                 }
                 break;

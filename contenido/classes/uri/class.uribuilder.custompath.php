@@ -25,7 +25,8 @@ cInclude('includes', 'functions.pathresolver.php');
  * @package    Core
  * @subpackage Frontend_URI
  */
-class cUriBuilderCustomPath extends cUriBuilder {
+class cUriBuilderCustomPath extends cUriBuilder
+{
 
     /**
      * Self instance
@@ -44,7 +45,8 @@ class cUriBuilderCustomPath extends cUriBuilder {
     /**
      * Constructor to create an instance of this class.
      */
-    private function __construct() {
+    private function __construct()
+    {
         $this->sHttpBasePath = '';
     }
 
@@ -53,7 +55,8 @@ class cUriBuilderCustomPath extends cUriBuilder {
      *
      * @return cUriBuilderCustomPath
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance == NULL) {
             self::$_instance = new self();
         }
@@ -71,19 +74,20 @@ class cUriBuilderCustomPath extends cUriBuilder {
      *
      * If level is not set, level 0 will be used as default.
      *
-     * @todo Somehow get around using prCreateURLNameLocationString()
-     *
      * @param array $aParams
      *                                Required keys are: idcat, level, lang and at least one
      *                                custom key.
-     * @param bool  $bUseAbsolutePath [optional]
-     * @param array $aConfig          [optional]
+     * @param bool $bUseAbsolutePath [optional]
+     * @param array $aConfig [optional]
      *                                If not set, will use UriBuilderConfig::getConfig()
      *
      * @throws cException
      * @throws cInvalidArgumentException
+     * @todo Somehow get around using prCreateURLNameLocationString()
+     *
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = []) {
+    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = [])
+    {
         if (!isset($aParams['idcat'])) {
             throw new cInvalidArgumentException('$aParams[idcat] must be set!');
         }

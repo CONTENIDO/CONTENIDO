@@ -92,7 +92,7 @@ class cAsset
      *     Examples:
      *     - js/main.js
      *     - css/main.css
-     * @param int $client  Client id
+     * @param int $client Client id
      * @return string The modified path with the version parameter or
      *     the original value.
      *     Examples:
@@ -141,13 +141,13 @@ class cAsset
      */
     protected static function _isValidAsset(string $file): bool
     {
-        if (empty($file) || substr( $file, 0, 2) === '//') {
+        if (empty($file) || substr($file, 0, 2) === '//') {
             return false;
         }
         if (filter_var($file, FILTER_VALIDATE_URL) === true) {
             return false;
         }
-        if (!preg_match( '/\.(css|js)$/i', $file)) {
+        if (!preg_match('/\.(css|js)$/i', $file)) {
             return false;
         }
 
@@ -157,7 +157,7 @@ class cAsset
     /**
      * Returns the real path to the file (absolute pathname).
      *
-     * @param string $file  The relative asset file path
+     * @param string $file The relative asset file path
      * @param string $basePath The base path, e.g. path to CONTENIDO
      *     backend folder or to a client frontend folder.
      * @return string|null  The real path or null in case the path
@@ -187,7 +187,7 @@ class cAsset
      * Reads the file modification time and adds it to the file
      * as a query parameter.
      *
-     * @param string $file  The relative asset file path
+     * @param string $file The relative asset file path
      * @param string $filePathName The real path to the file.
      * @return string The modified asset file path, e.g. js/main.js?v=123456789
      */

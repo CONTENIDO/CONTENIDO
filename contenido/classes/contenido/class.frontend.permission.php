@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiFrontendPermission createNewItem
  * @method cApiFrontendPermission|bool next
  */
-class cApiFrontendPermissionCollection extends ItemCollection {
+class cApiFrontendPermissionCollection extends ItemCollection
+{
 
     /**
      * instance of cApiFrontendPermission to access defined filters
@@ -36,7 +37,8 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->_frontendPermission = new cApiFrontendPermission();
 
         parent::__construct(cRegistry::getDbTableName('frontendpermissions'), 'idfrontendpermission');
@@ -50,7 +52,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Creates a new permission entry.
      *
-     * @param int    $group
+     * @param int $group
      *         Specifies the frontend group
      * @param string $plugin
      *         Specifies the plugin
@@ -64,7 +66,8 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($group, $plugin, $action, $item) {
+    public function create($group, $plugin, $action, $item)
+    {
         $perm = false;
         if (!$this->checkPerm($group, $plugin, $action, $item)) {
             $lang = cSecurity::toInteger(cRegistry::getLanguageId());
@@ -84,7 +87,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Sets a permission entry, is a wrapper for create() function
      *
-     * @param int    $group
+     * @param int $group
      *         Specifies the frontend group
      * @param string $plugin
      *         Specifies the plugin
@@ -97,7 +100,8 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function setPerm($group, $plugin, $action, $item) {
+    public function setPerm($group, $plugin, $action, $item)
+    {
         $this->create($group, $plugin, $action, $item);
     }
 
@@ -107,7 +111,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * 1.) Checks for global permission
      * 2.) Checks for specific item permission
      *
-     * @param int    $group
+     * @param int $group
      *                        Specifies the frontend group
      * @param string $plugin
      *                        Specifies the plugin
@@ -115,13 +119,14 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      *                        Specifies the action
      * @param string $item
      *                        Specifies the item
-     * @param bool   $useLang [optional]
+     * @param bool $useLang [optional]
      *                        Flag to use language (Not used!)
      * @return bool
      * @throws cDbException
      * @throws cException
      */
-    public function checkPerm($group, $plugin, $action, $item, $useLang = false) {
+    public function checkPerm($group, $plugin, $action, $item, $useLang = false)
+    {
         // checklang = ($useLang !== false) ? $useLang : $lang;
 
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
@@ -144,7 +149,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Removes the permission.
      *
-     * @param int    $group
+     * @param int $group
      *                        Specifies the frontend group
      * @param string $plugin
      *                        Specifies the plugin
@@ -152,7 +157,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      *                        Specifies the action
      * @param string $item
      *                        Specifies the item
-     * @param bool   $useLang [optional]
+     * @param bool $useLang [optional]
      *                        Flag to use language (Not used!)
      * @return bool
      *
@@ -160,7 +165,8 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function removePerm($group, $plugin, $action, $item, $useLang = false) {
+    public function removePerm($group, $plugin, $action, $item, $useLang = false)
+    {
         // checklang = ($useLang !== false) ? $useLang : $lang;
 
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
@@ -195,7 +201,8 @@ class cApiFrontendPermission extends Item
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('frontendpermissions'), 'idfrontendpermission');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

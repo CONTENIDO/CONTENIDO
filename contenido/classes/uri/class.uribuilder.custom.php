@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Frontend_URI
  */
-class cUriBuilderCustom extends cUriBuilder {
+class cUriBuilderCustom extends cUriBuilder
+{
 
     /**
      * Self instance
@@ -39,7 +40,8 @@ class cUriBuilderCustom extends cUriBuilder {
     /**
      * Constructor to create an instance of this class.
      */
-    private function __construct() {
+    private function __construct()
+    {
         $this->sHttpBasePath = '';
     }
 
@@ -48,7 +50,8 @@ class cUriBuilderCustom extends cUriBuilder {
      *
      * @return cUriBuilderCustom
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance == NULL) {
             self::$_instance = new self();
         }
@@ -62,14 +65,15 @@ class cUriBuilderCustom extends cUriBuilder {
      * as "1" in this sample.
      *
      * @param array $aParams
-     * @param bool  $bUseAbsolutePath [optional]
-     * @param array $aConfig          [optional]
+     * @param bool $bUseAbsolutePath [optional]
+     * @param array $aConfig [optional]
      *                                If not set, will use cUriBuilderConfig::getConfig()
      *
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = []) {
+    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = [])
+    {
         if (sizeof($aParams) == 0) {
             throw new cInvalidArgumentException('$aParams must have at least one entry!');
         }

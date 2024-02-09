@@ -98,8 +98,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
     /**
      * Writes a line.
      *
-     * @see cDebugInterface::out()
      * @param string $sText
+     * @see cDebugInterface::out()
      */
     public function out($sText)
     {
@@ -224,7 +224,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
      */
     public function count(): int
     {
-        return (int) sizeof($this->_aItems);
+        return (int)sizeof($this->_aItems);
     }
 
     /**

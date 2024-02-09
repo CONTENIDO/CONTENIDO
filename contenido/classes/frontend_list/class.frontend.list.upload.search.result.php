@@ -118,8 +118,8 @@ class cFrontendListUploadSearchResult extends cFrontendList
             $this->_fileType = cString::toLowerCase(cFileHandler::getExtension($value));
             if (cFrontendListUpload::isImageFileType($this->_fileType)) {
                 // Image thumbnail with link to show image in popup
-                return cFrontendListUpload::getUploadImageLink((string) $value);
-            } elseif ($this->_fileType == '')  {
+                return cFrontendListUpload::getUploadImageLink((string)$value);
+            } elseif ($this->_fileType == '') {
                 // Folder has empty filetype column value
                 return '<img class="hover_none" alt="" src="' . cRegistry::getBackendUrl() . 'images/grid_folder.gif' . '">';
             } else {

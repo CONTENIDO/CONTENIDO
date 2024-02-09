@@ -22,32 +22,35 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiKeyword createNewItem
  * @method cApiKeyword|bool next
  */
-class cApiKeywordCollection extends ItemCollection {
+class cApiKeywordCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('keywords'), 'idkeyword');
         $this->_setItemClass('cApiKeyword');
     }
 
     /**
-     * @todo params w/ defaults should be relocated
-     *
      * @param string $keyword
-     * @param string $exp  [optional]
+     * @param string $exp [optional]
      * @param string $auto
      * @param string $self [optional]
-     * @param int    $idlang
+     * @param int $idlang
      *
      * @return cApiKeyword
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
+     * @todo params w/ defaults should be relocated
+     *
      */
-    public function create($keyword, $exp = '', $auto, $self = '', $idlang) {
+    public function create($keyword, $exp = '', $auto, $self = '', $idlang)
+    {
         $item = $this->createNewItem();
 
         $item->set('keyword', $keyword);
@@ -80,7 +83,8 @@ class cApiKeyword extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('keywords'), 'idkeyword');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
@@ -97,7 +101,8 @@ class cApiKeyword extends Item
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idlang':
                 $value = cSecurity::toInteger($value);

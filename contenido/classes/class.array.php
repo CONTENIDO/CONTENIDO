@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Util
  */
-class cArray {
+class cArray
+{
 
     /**
      * Strip whitespaces (or other characters) from the beginning and end of
@@ -36,7 +37,8 @@ class cArray {
      * @return array
      *         Array of trimmed strings.
      */
-    public static function trim(array $arr, $charlist = NULL) {
+    public static function trim(array $arr, $charlist = NULL)
+    {
         foreach ($arr as $key => $value) {
             $arr[$key] = isset($charlist) ? trim($value, $charlist) : trim($value);
         }
@@ -67,8 +69,6 @@ class cArray {
      * Another caveat is when searching for an empty string when using the
      * partial mode. This would lead to an error and is considered a bug!
      *
-     * @todo There should be only one flag for $partial and $strict in order to
-     *       avoid ambiguities (imagine $partial=true & $strict=true).
      * @param array $arr
      *         array to search
      * @param mixed $search
@@ -79,8 +79,11 @@ class cArray {
      *         if values are tested for identity
      * @return mixed
      *         key of the array containing the searched value or false
+     * @todo There should be only one flag for $partial and $strict in order to
+     *       avoid ambiguities (imagine $partial=true & $strict=true).
      */
-    public static function searchRecursive(array $arr, $search, $partial = false, $strict = false) {
+    public static function searchRecursive(array $arr, $search, $partial = false, $strict = false)
+    {
         foreach ($arr as $key => $value) {
             if (is_array($value)) {
                 $ret = static::searchRecursive($value, $search, $partial, $strict);
@@ -96,7 +99,7 @@ class cArray {
                     // convert $search explicitly to string
                     // we do not want to use the ordinal value of $search
                     $found = false !== cString::findFirstPos($value, strval($search));
-               } elseif ($strict == true) {
+                } elseif ($strict == true) {
                     // search by identity
                     $found = $value === $search;
                 } else {
@@ -122,7 +125,8 @@ class cArray {
      * @return array
      *         Sorted array
      */
-    public static function sortWithLocale(array $arr, $locale) {
+    public static function sortWithLocale(array $arr, $locale)
+    {
         $oldLocale = setlocale(LC_COLLATE, 0);
         setlocale(LC_COLLATE, $locale);
 
@@ -161,7 +165,8 @@ class cArray {
      *
      * @return array
      */
-    public static function csort() {
+    public static function csort()
+    {
         $args = func_get_args();
         $mArray = array_shift($args);
 
@@ -200,7 +205,8 @@ class cArray {
      * @param mixed $mDefault [optional]
      * @return bool
      */
-    public static function initializeKey(&$aArray, $sKey, $mDefault = '') {
+    public static function initializeKey(&$aArray, $sKey, $mDefault = '')
+    {
         if (!is_array($aArray)) {
             if (isset($aArray)) {
                 return false;
@@ -218,9 +224,9 @@ class cArray {
      * Get the first key of the given array without affecting the internal
      * array pointer.
      *
-     * @since CONTENIDO 4.10.2
      * @param array $array An array
      * @return int|string|null
+     * @since CONTENIDO 4.10.2
      */
     public static function getFirstKey(array $array)
     {
@@ -236,9 +242,9 @@ class cArray {
     /**
      * Get the last key of an array.
      *
-     * @since CONTENIDO 4.10.2
      * @param array $array An array
      * @return int|string|null
+     * @since CONTENIDO 4.10.2
      */
     public static function getLastKey(array $array)
     {

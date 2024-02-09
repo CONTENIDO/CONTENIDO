@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLUpload extends cHTMLFormElement {
+class cHTMLUpload extends cHTMLFormElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -47,7 +48,8 @@ class cHTMLUpload extends cHTMLFormElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $width = '', $maxlength = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = '') {
+    public function __construct($name, $width = '', $maxlength = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = '')
+    {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'input';
         $this->_contentlessTag = true;
@@ -66,7 +68,8 @@ class cHTMLUpload extends cHTMLFormElement {
      * @return cHTMLUpload
      *         $this for chaining
      */
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         $width = intval($width);
 
         if ($width <= 0) {
@@ -84,7 +87,8 @@ class cHTMLUpload extends cHTMLFormElement {
      * @return cHTMLUpload
      *         $this for chaining
      */
-    public function setMaxLength($maxlen) {
+    public function setMaxLength($maxlen)
+    {
         $maxlen = intval($maxlen);
 
         if ($maxlen <= 0) {

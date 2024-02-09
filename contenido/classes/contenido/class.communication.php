@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiCommunication createNewItem
  * @method cApiCommunication|bool next
  */
-class cApiCommunicationCollection extends ItemCollection {
+class cApiCommunicationCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('communications'), 'idcommunication');
         $this->_setItemClass('cApiCommunication');
 
@@ -44,7 +46,8 @@ class cApiCommunicationCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create() {
+    public function create()
+    {
         $auth = cRegistry::getAuth();
         $client = cSecurity::toInteger(cRegistry::getClientId());
 
@@ -65,7 +68,8 @@ class cApiCommunicationCollection extends ItemCollection {
  * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiCommunication extends Item {
+class cApiCommunication extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -75,7 +79,8 @@ class cApiCommunication extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('communications'), 'idcommunication');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -85,10 +90,11 @@ class cApiCommunication extends Item {
     /**
      * Saves a communication item
      *
-     * @see Item::store()
      * @return bool
+     * @see Item::store()
      */
-    public function store() {
+    public function store()
+    {
         $auth = cRegistry::getAuth();
         $this->set('modifiedby', $auth->auth['uid']);
         $this->set('modified', date('Y-m-d H:i:s'), false);
@@ -105,7 +111,8 @@ class cApiCommunication extends Item {
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idclient':
                 $value = cSecurity::toInteger($value);

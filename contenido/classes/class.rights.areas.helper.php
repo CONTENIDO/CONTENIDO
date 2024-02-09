@@ -279,7 +279,7 @@ class cRightsAreasHelper
      *
      * @param array $data Data to render
      * @param string $typeFieldName Name of property type input field
-     * @param string $nameFieldName  Name of property name input field
+     * @param string $nameFieldName Name of property name input field
      * @param string $valueFieldName Name of property value input field
      * @return string
      * @throws cException
@@ -324,7 +324,7 @@ class cRightsAreasHelper
             ->setContent([
                 new cHTMLTableData('<input class="text_medium" type="text" size="16" maxlength="32" name="' . $typeFieldName . '">'),
                 new cHTMLTableData('<input class="text_medium" type="text" size="16" maxlength="32" name="' . $nameFieldName . '">'),
-                new cHTMLTableData('<input class="text_medium" type="text" size="32" name="'. $valueFieldName . '">'),
+                new cHTMLTableData('<input class="text_medium" type="text" size="32" name="' . $valueFieldName . '">'),
                 new cHTMLTableData('&nbsp;'),
             ])
             ->render();

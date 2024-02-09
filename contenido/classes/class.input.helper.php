@@ -25,7 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Util
  */
-class cHTMLInputSelectElement extends cHTMLSelectElement {
+class cHTMLInputSelectElement extends cHTMLSelectElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -45,18 +46,19 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * @param string $sAccessKey [optional]
      *         Key to access the field
      */
-    public function __construct($sName, $iWidth = '', $sID = '', $bDisabled = false, $iTabIndex = NULL, $sAccessKey = '') {
+    public function __construct($sName, $iWidth = '', $sID = '', $bDisabled = false, $iTabIndex = NULL, $sAccessKey = '')
+    {
         parent::__construct($sName, $iWidth, $sID, $bDisabled, $iTabIndex, $sAccessKey);
     }
 
     /**
      * Adds articles to select options.
      *
-     * @param int    $iIDCat
+     * @param int $iIDCat
      *         idcat of the category to be listed
-     * @param bool   $bColored
+     * @param bool $bColored
      *         Add color information to option elements
-     * @param bool   $bArtOnline
+     * @param bool $bArtOnline
      *         If true, only online articles will be added
      * @param string $sSpaces
      *         Just some '&nbsp;' to show data hierarchically
@@ -67,7 +69,8 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *
      * @throws cDbException
      */
-    public function addArticles($iIDCat, $bColored = false, $bArtOnline = true, $sSpaces = '') {
+    public function addArticles($iIDCat, $bColored = false, $bArtOnline = true, $sSpaces = '')
+    {
         $iIDCat = cSecurity::toInteger($iIDCat ?? '0');
         if ($iIDCat <= 0) {
             return 0;
@@ -144,7 +147,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * will get negative values cause otherwise there is no way to distinguish
      * between a category id and an article id.
      *
-     * @param int  $iMaxLevel
+     * @param int $iMaxLevel
      *         Max. level shown (to be exact: except this level)
      * @param bool $bColored
      *         Add color information to option elements
@@ -162,7 +165,8 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *
      * @throws cDbException
      */
-    public function addCategories($iMaxLevel = 0, $bColored = false, $bCatVisible = true, $bCatPublic = true, $bWithArt = false, $bArtOnline = true) {
+    public function addCategories($iMaxLevel = 0, $bColored = false, $bCatVisible = true, $bCatPublic = true, $bWithArt = false, $bArtOnline = true)
+    {
         $iMaxLevel = cSecurity::toInteger($iMaxLevel ?? '0');
         $sql = "SELECT
                     c.idcat
@@ -238,7 +242,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * Function addTypesFromArt.
      * Adds types and type ids which are available for the specified article
      *
-     * @param int    $iIDCatArt
+     * @param int $iIDCatArt
      *         Article id
      * @param string $sTypeRange
      *         Comma separated list of CONTENIDO type ids
@@ -249,7 +253,8 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *
      * @throws cDbException
      */
-    public function addTypesFromArt($iIDCatArt, $sTypeRange = '') {
+    public function addTypesFromArt($iIDCatArt, $sTypeRange = '')
+    {
         $iIDCatArt = cSecurity::toInteger($iIDCatArt ?? '0');
 
         if ($iIDCatArt <= 0) {
@@ -398,13 +403,13 @@ class UI_Config_Table
      */
     public function __construct()
     {
-        $cfg         = cRegistry::getConfig();
+        $cfg = cRegistry::getConfig();
         $backendPath = cRegistry::getBackendPath();
 
-        $this->_padding      = 2;
-        $this->_border       = 0;
+        $this->_padding = 2;
+        $this->_border = 0;
         $this->_tplTableFile = $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper'];
-        $this->_tplCellCode  = $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper_row'];
+        $this->_tplCellCode = $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper_row'];
     }
 
     /**
@@ -432,15 +437,15 @@ class UI_Config_Table
      */
     public function setCell($row, $cell, $content)
     {
-        $this->_cells[$row][$cell]         = $content;
+        $this->_cells[$row][$cell] = $content;
         $this->_cellAlignment[$row][$cell] = '';
     }
 
     /**
      * Set method for cell alignment
      *
-     * @param string       $row
-     * @param string       $cell
+     * @param string $row
+     * @param string $cell
      * @param string $alignment
      */
     protected function setCellAlignment($row, $cell, $alignment)
@@ -451,8 +456,8 @@ class UI_Config_Table
     /**
      * Set method for cell vertical alignment
      *
-     * @param string       $row
-     * @param string       $cell
+     * @param string $row
+     * @param string $cell
      * @param string $alignment
      */
     public function setCellVAlignment($row, $cell, $alignment)
@@ -463,8 +468,8 @@ class UI_Config_Table
     /**
      * Set method for cell class
      *
-     * @param string       $row
-     * @param string       $cell
+     * @param string $row
+     * @param string $cell
      * @param string $class
      */
     public function setCellClass($row, $cell, $class)
@@ -482,13 +487,13 @@ class UI_Config_Table
     /**
      * Add inline javascript
      *
+     * @return string
      * @internal Trick: To save multiple selections in <select>-Element,
      * add some JS which saves the selection, comma separated
      * in a hidden input field on change.
      * Try ... catch prevents error messages, if function is added
      * more than once if (!fncUpdateSel) in JS has not worked ...
      *
-     * @return string
      */
     protected function _getMultiSelJS()
     {
@@ -538,7 +543,7 @@ try {
             foreach ($this->_cells as $row => $cells) {
                 $ColCount++;
                 // $dark = !$dark;
-                $line  = '';
+                $line = '';
                 $count = 0;
 
                 foreach ($cells as $cell => $data) {

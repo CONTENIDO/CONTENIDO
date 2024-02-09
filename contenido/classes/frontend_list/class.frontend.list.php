@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Class cFrontendList for scrollable frontend lists.
- * 
+ *
  * @TODO This class has similarities to {@see cGuiScrollList}, we may think to merge both into one solution.
  */
 class cFrontendList
@@ -157,7 +157,7 @@ class cFrontendList
      */
     public function getNumPages(): int
     {
-        return (int) ceil(count($this->_data) / $this->_resultsPerPage);
+        return (int)ceil(count($this->_data) / $this->_resultsPerPage);
     }
 
     /**

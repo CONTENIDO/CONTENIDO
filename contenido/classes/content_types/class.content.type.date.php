@@ -43,9 +43,9 @@ class cContentTypeDate extends cContentTypeAbstract
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int    $id
+     * @param int $id
      *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array  $contentTypes
+     * @param array $contentTypes
      *         array containing the values of all content types
      *
      * @throws cDbException
@@ -397,8 +397,7 @@ class cContentTypeDate extends cContentTypeAbstract
     {
         $formatSelect = new cHTMLSelectElement(
             $this->_prefix . '_format_select_' . $this->_id, '',
-            $this->_prefix . '_format_select_' . $this->_id)
-        ;
+            $this->_prefix . '_format_select_' . $this->_id);
         $formatSelect->setClass('con_select');
         $formatSelect->autoFill($this->_dateFormatsPhp);
         $phpDateFormat = conHtmlSpecialChars($this->getSetting($this->_prefix . '_format'));

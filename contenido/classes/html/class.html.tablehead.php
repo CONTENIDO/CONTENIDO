@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLTableHead extends cHTMLContentElement {
+class cHTMLTableHead extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -30,7 +31,8 @@ class cHTMLTableHead extends cHTMLContentElement {
      *         String or object with the contents
      *         Since CONTENIDO 4.10.2
      */
-    public function __construct($content = NULL) {
+    public function __construct($content = NULL)
+    {
         parent::__construct($content);
         $this->_tag = 'th';
     }

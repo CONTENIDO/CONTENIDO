@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage I18N
  */
-class cI18n {
+class cI18n
+{
 
     /**
      * i18n related associative data cache.
@@ -29,9 +30,9 @@ class cI18n {
      */
     protected static $_i18nData = [
         'language' => null,
-        'domains'  => [],
-        'files'    => [],
-        'cache'    => [],
+        'domains' => [],
+        'files' => [],
+        'cache' => [],
     ];
 
     /**
@@ -44,7 +45,8 @@ class cI18n {
      * @param string $domain [optional]
      *         Language domain
      */
-    public static function init($localePath, $langCode, $domain = 'contenido') {
+    public static function init($localePath, $langCode, $domain = 'contenido')
+    {
         if (function_exists('bindtextdomain')) {
             // Bind the domain 'contenido' to our locale path
             bindtextdomain($domain, $localePath);
@@ -83,7 +85,8 @@ class cI18n {
      *
      * @throws cException
      */
-    public static function __($string, $domain = 'contenido') {
+    public static function __($string, $domain = 'contenido')
+    {
         return self::translate($string, $domain);
     }
 
@@ -101,7 +104,8 @@ class cI18n {
      * @throws cException
      *         if this is the backend mode and the $belang is not set
      */
-    public static function translate($string, $domain = 'contenido') {
+    public static function translate($string, $domain = 'contenido')
+    {
         global $cfg, $belang, $contenido;
 
         // Auto initialization
@@ -167,7 +171,8 @@ class cI18n {
      *
      * @return string|false
      */
-    public static function getLanguage() {
+    public static function getLanguage()
+    {
         return (self::$_i18nData['language']) ? self::$_i18nData['language'] : false;
     }
 
@@ -176,7 +181,8 @@ class cI18n {
      *
      * @return array
      */
-    public static function getDomains() {
+    public static function getDomains()
+    {
         return self::$_i18nData['domains'];
     }
 
@@ -185,7 +191,8 @@ class cI18n {
      *
      * @return array
      */
-    public static function getFiles() {
+    public static function getFiles()
+    {
         return self::$_i18nData['files'];
     }
 
@@ -194,18 +201,20 @@ class cI18n {
      *
      * @return array
      */
-    public static function getCache() {
+    public static function getCache()
+    {
         return self::$_i18nData['cache'];
     }
 
     /**
      * Resets cached translation data (language, domains, files, and cache)
      */
-    public static function reset() {
+    public static function reset()
+    {
         self::$_i18nData['language'] = null;
-        self::$_i18nData['domains']  = [];
-        self::$_i18nData['files']    = [];
-        self::$_i18nData['cache']    = [];
+        self::$_i18nData['domains'] = [];
+        self::$_i18nData['files'] = [];
+        self::$_i18nData['cache'] = [];
     }
 
     /**
@@ -221,7 +230,8 @@ class cI18n {
      *
      * @throws cInvalidArgumentException
      */
-    public static function emulateGettext($string, $domain = 'contenido') {
+    public static function emulateGettext($string, $domain = 'contenido')
+    {
         if ($string == '') {
             return '';
         }
@@ -284,7 +294,8 @@ class cI18n {
      * @param string $localePath
      *         Path to the locales
      */
-    public static function registerDomain($domain, $localePath) {
+    public static function registerDomain($domain, $localePath)
+    {
         if (function_exists('bindtextdomain')) {
             // Bind the domain 'contenido' to our locale path
             bindtextdomain($domain, $localePath);
@@ -303,7 +314,8 @@ class cI18n {
      *
      * @throws cInvalidArgumentException
      */
-    protected static function _loadTranslationFile($translationFile) {
+    protected static function _loadTranslationFile($translationFile)
+    {
         $content = cFileHandler::read($translationFile);
 
         // Normalize eol chars

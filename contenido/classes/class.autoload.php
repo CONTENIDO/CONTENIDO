@@ -38,7 +38,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Backend
  */
-class cAutoload {
+class cAutoload
+{
 
     /**
      * Identifier for error if class file could not be found.
@@ -110,7 +111,8 @@ class cAutoload {
      * @param array $cfg
      *         The CONTENIDO cfg array
      */
-    public static function initialize(array $cfg) {
+    public static function initialize(array $cfg)
+    {
         if (self::$_initialized) {
             return;
         }
@@ -162,7 +164,8 @@ class cAutoload {
      *         ];
      *         </pre>
      */
-    public static function addClassmapConfig(array $config) {
+    public static function addClassmapConfig(array $config)
+    {
         $newConfig = self::_normalizeConfig($config);
         if (!is_array(self::$_includeFiles)) {
             self::$_includeFiles = [];
@@ -196,7 +199,8 @@ class cAutoload {
      *         ];
      *         </pre>
      */
-    public static function addClassmapConfigFile($configFile) {
+    public static function addClassmapConfigFile($configFile)
+    {
         if (is_file($configFile)) {
             $arr = include_once($configFile);
             if ($arr) {
@@ -215,7 +219,8 @@ class cAutoload {
      * @throws cBadMethodCallException
      *         If autoloader wasn't initialized before
      */
-    public static function autoload($className) {
+    public static function autoload($className)
+    {
         if (self::$_initialized !== true) {
             throw new cBadMethodCallException(
                 'Autoloader has to be initialized by calling method initialize()'
@@ -250,7 +255,8 @@ class cAutoload {
      *         - contenido/classes/class.foobar.php
      * @return bool
      */
-    public static function isAutoloadable($file) {
+    public static function isAutoloadable($file)
+    {
         foreach (self::$_includeFiles as $includeFile) {
             if (cString::findFirstPos($includeFile, $file) !== false) {
                 return true;
@@ -264,7 +270,8 @@ class cAutoload {
      *
      * @return array
      */
-    public static function getLoadedClasses() {
+    public static function getLoadedClasses()
+    {
         return self::$_loadedClasses;
     }
 
@@ -273,7 +280,8 @@ class cAutoload {
      *
      * @return array
      */
-    public static function getErrors() {
+    public static function getErrors()
+    {
         return self::$_errors;
     }
 
@@ -285,7 +293,8 @@ class cAutoload {
      * @return string|null
      *         string if validation was successful, otherwise NULL
      */
-    private static function _getContenidoClassFile($className) {
+    private static function _getContenidoClassFile($className)
+    {
         $classNameLower = cString::toLowerCase($className);
         $file = isset(self::$_includeFiles[$classNameLower])
             ? self::$_conRootPath . self::$_includeFiles[$classNameLower] : '';
@@ -300,7 +309,8 @@ class cAutoload {
      * @return string|null
      *         string if validation was successful, otherwise NULL
      */
-    private static function _validateClassAndFile($classname, $filename) {
+    private static function _validateClassAndFile($classname, $filename)
+    {
         if (class_exists($classname)) {
             self::$_errors[] = [
                 'class' => $classname,
@@ -329,7 +339,8 @@ class cAutoload {
      * @param array $config
      * @return array
      */
-    private static function _normalizeConfig(array $config) {
+    private static function _normalizeConfig(array $config)
+    {
         $newConfig = [];
         foreach ($config as $name => $file) {
             $newConfig[cString::toLowerCase($name)] = $file;
@@ -345,7 +356,8 @@ class cAutoload {
      *         Flag to prevent thrown warnings/errors by using the error control
      *         operator @
      */
-    private static function _loadFile($filePathName, $beQuiet = false) {
+    private static function _loadFile($filePathName, $beQuiet = false)
+    {
         if ($beQuiet) {
             @require_once($filePathName);
         } else {

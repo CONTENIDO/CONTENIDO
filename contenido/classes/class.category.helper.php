@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Frontend_Util
  */
-class cCategoryHelper {
+class cCategoryHelper
+{
 
     /**
      * Instance of the helper class.
@@ -76,7 +77,8 @@ class cCategoryHelper {
      *
      * @return cCategoryHelper
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance === NULL) {
             self::$_instance = new self();
         }
@@ -87,7 +89,8 @@ class cCategoryHelper {
     /**
      * Constructor to create an instance of this class.
      */
-    protected function __construct() {
+    protected function __construct()
+    {
     }
 
     /**
@@ -98,7 +101,8 @@ class cCategoryHelper {
      *
      * @throws cException
      */
-    public function setAuth($auth) {
+    public function setAuth($auth)
+    {
         $this->_auth = $auth;
 
         $feUser = new cApiFrontendUser($auth->auth['uid']);
@@ -117,7 +121,8 @@ class cCategoryHelper {
      *
      * @throws cInvalidArgumentException if no active client ID specified or found
      */
-    public function getClientId() {
+    public function getClientId()
+    {
         if ($this->_clientId == 0) {
             $clientId = cRegistry::getClientId();
             if ($clientId == 0) {
@@ -136,8 +141,9 @@ class cCategoryHelper {
      * @param int $clientId [optional]
      *         client ID
      */
-    public function setClientId($clientId = 0) {
-        $this->_clientId = (int) $clientId;
+    public function setClientId($clientId = 0)
+    {
+        $this->_clientId = (int)$clientId;
     }
 
     /**
@@ -149,7 +155,8 @@ class cCategoryHelper {
      * @throws cInvalidArgumentException
      *         if no active language ID specified or found
      */
-    public function getLanguageId() {
+    public function getLanguageId()
+    {
         if ($this->_languageId == 0) {
             $languageId = cRegistry::getLanguageId();
             if ($languageId == 0) {
@@ -168,8 +175,9 @@ class cCategoryHelper {
      * @param int $languageId [optional]
      *         language ID
      */
-    public function setLanguageId($languageId = 0) {
-        $this->_languageId = (int) $languageId;
+    public function setLanguageId($languageId = 0)
+    {
+        $this->_languageId = (int)$languageId;
     }
 
     /**
@@ -180,7 +188,8 @@ class cCategoryHelper {
      * @return int
      *         Top most category ID
      */
-    public function getTopMostCategoryId($categoryId) {
+    public function getTopMostCategoryId($categoryId)
+    {
         $category = new cApiCategory($categoryId);
 
         if ($category->get('parentid') == 0) {
@@ -200,7 +209,7 @@ class cCategoryHelper {
      *                           Last category ID in list.
      * @param int $startingLevel [optional, default: 1]
      *                           Define here, at which level the list should start.
-     * @param int $maxDepth      [optional, default: 20]
+     * @param int $maxDepth [optional, default: 20]
      *                           Amount of the max depth of categories.
      *
      * @return array
@@ -209,7 +218,8 @@ class cCategoryHelper {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function getCategoryPath($categoryId, $startingLevel = 1, $maxDepth = 20) {
+    public function getCategoryPath($categoryId, $startingLevel = 1, $maxDepth = 20)
+    {
         $languageId = $this->getLanguageId();
 
         $categoryLanguage = new cApiCategoryLanguage();
@@ -247,13 +257,14 @@ class cCategoryHelper {
      * @return array
      *         Array with parent category IDs.
      */
-    public function getParentCategoryIds($categoryId, $maxDepth = 20) {
+    public function getParentCategoryIds($categoryId, $maxDepth = 20)
+    {
         $nextCategoryId = $categoryId;
-        $categoryCount  = 1;
+        $categoryCount = 1;
 
-        $categoryIds    = [];
+        $categoryIds = [];
         while ($nextCategoryId != 0 && $categoryCount < $maxDepth) {
-            $category       = new cApiCategory($nextCategoryId);
+            $category = new cApiCategory($nextCategoryId);
             $nextCategoryId = $category->get('parentid');
             if ($nextCategoryId != 0) {
                 $categoryIds[] = $nextCategoryId;
@@ -276,7 +287,8 @@ class cCategoryHelper {
      * @throws cDbException
      * @throws cException
      */
-    public function getCategoryLevel($categoryId) {
+    public function getCategoryLevel($categoryId)
+    {
         if (isset($this->_levelCache[$categoryId]) === false) {
             $categoryTree = new cApiCategoryTree();
             $categoryTree->loadBy("idcat", $categoryId);
@@ -308,12 +320,13 @@ class cCategoryHelper {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function getSubCategories($categoryId, $depth) {
-        if ((int) $categoryId <= 0 || (int) $depth < 0) {
+    public function getSubCategories($categoryId, $depth)
+    {
+        if ((int)$categoryId <= 0 || (int)$depth < 0) {
             return [];
         }
 
-        $depth = (int) $depth;
+        $depth = (int)$depth;
 
         $cfg = cRegistry::getConfig();
 
@@ -355,8 +368,8 @@ class cCategoryHelper {
         $db->query($sql);
 
         while ($db->nextRecord()) {
-            $catId = (int) $db->f('idcat');
-            $catLevel = (int) $db->f('level');
+            $catId = (int)$db->f('idcat');
+            $catLevel = (int)$db->f('level');
 
             if ($depth > 0 && ($depth > ($catLevel))) {
                 $subCategories = $this->getSubCategories($catId, $depth);
@@ -395,7 +408,8 @@ class cCategoryHelper {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function hasCategoryAccess(cApiCategoryLanguage $categoryLanguage) {
+    public function hasCategoryAccess(cApiCategoryLanguage $categoryLanguage)
+    {
         $useAuthorization = ($this->_auth !== NULL && $this->_fePermColl !== NULL);
 
         if ($useAuthorization === false) {

@@ -20,18 +20,20 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GenericDB
  */
-class cGenericDbDriverMysql extends cGenericDbDriver {
+class cGenericDbDriverMysql extends cGenericDbDriver
+{
 
     /**
-     * @see cGenericDbDriver::buildJoinQuery()
      * @param string $destinationTable
      * @param string $destinationClass
      * @param string $destinationPrimaryKey
      * @param string $sourceClass
      * @param string $primaryKey
      * @return array
+     * @see cGenericDbDriver::buildJoinQuery()
      */
-    public function buildJoinQuery($destinationTable, $destinationClass, $destinationPrimaryKey, $sourceClass, $primaryKey) {
+    public function buildJoinQuery($destinationTable, $destinationClass, $destinationPrimaryKey, $sourceClass, $primaryKey)
+    {
         // Build a regular LEFT JOIN
         $field = "$destinationClass.$destinationPrimaryKey";
         $tables = "";
@@ -41,19 +43,20 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
         return [
             "field" => $field,
             "table" => $tables,
-            "join"  => $join,
+            "join" => $join,
             "where" => $where,
         ];
     }
 
     /**
-     * @see cGenericDbDriver::buildOperator()
      * @param string $sField
      * @param string $sOperator
      * @param string $sRestriction
      * @return string
+     * @see cGenericDbDriver::buildOperator()
      */
-    public function buildOperator($sField, $sOperator, $sRestriction) {
+    public function buildOperator($sField, $sOperator, $sRestriction)
+    {
         $sOperator = cString::toLowerCase($sOperator);
         $sField = cSecurity::toString($sField);
 
@@ -148,7 +151,8 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
      *
      * @return int|float|string
      */
-    private function _prepareInConditionValue($value) {
+    private function _prepareInConditionValue($value)
+    {
         if (is_null($value)) {
             return 'NULL';
         } elseif (is_int($value) || is_float($value)) {
@@ -166,7 +170,8 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
      *
      * @return int|float|string
      */
-    private function _prepareValue($value) {
+    private function _prepareValue($value)
+    {
         // It should return 'NULL' for a NULL value but we should stay downwards
         // compatible for now.
         if (is_int($value) || is_float($value)) {
@@ -182,7 +187,8 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
      * @param string $value
      * @return string
      */
-    private function _prepareString($value) {
+    private function _prepareString($value)
+    {
         $value = $this->_oItemClassInstance->inFilter($value);
         return $this->_oItemClassInstance->escape($value);
     }

@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Versioning
  */
-class cVersionModule extends cVersion {
+class cVersionModule extends cVersion
+{
 
     /**
      * Module type.
@@ -47,17 +48,18 @@ class cVersionModule extends cVersion {
      *
      * @param string $iIdMod
      *         The name of style file
-     * @param array  $aCfg
-     * @param array  $aCfgClient
-     * @param cDb    $oDB
+     * @param array $aCfg
+     * @param array $aCfgClient
+     * @param cDb $oDB
      *         CONTENIDO database object
-     * @param int    $iClient
+     * @param int $iClient
      * @param string $sArea
-     * @param int    $iFrame
+     * @param int $iFrame
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function __construct($iIdMod, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
+    public function __construct($iIdMod, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame)
+    {
         // Set globals in main class
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
 
@@ -75,7 +77,8 @@ class cVersionModule extends cVersion {
     /**
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    protected function _storeModuleInformation() {
+    protected function _storeModuleInformation()
+    {
         $iIdMod = cSecurity::toInteger($this->iIdentity);
         $oModule = new cApiModule($iIdMod);
 
@@ -104,7 +107,8 @@ class cVersionModule extends cVersion {
      * @return array
      *         returns array width this four nodes
      */
-    public function initXmlReader($sPath) {
+    public function initXmlReader($sPath)
+    {
         $aResult = [];
         if ($sPath != '') {
             // Output this xml file
@@ -138,7 +142,8 @@ class cVersionModule extends cVersion {
      * @return string
      *         Javascript for refreshing left_bottom frame
      */
-    public function renderReloadScript($sArea, $iIdModule, cSession $sess) {
+    public function renderReloadScript($sArea, $iIdModule, cSession $sess)
+    {
         $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&idmod=$iIdModule");
         return <<<JS
 <script type="text/javascript">

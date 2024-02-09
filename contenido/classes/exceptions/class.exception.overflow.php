@@ -18,5 +18,6 @@
  * {@link OverflowException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cOverflowException extends cRuntimeException {
+class cOverflowException extends cRuntimeException
+{
 }

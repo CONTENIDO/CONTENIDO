@@ -181,7 +181,7 @@ class cGuiFileOverview extends cGuiPage
      * Renders the page
      *
      * @param cTemplate|null $template
-     * @param bool           $return
+     * @param bool $return
      *
      * @throws cDbException
      * @throws cException

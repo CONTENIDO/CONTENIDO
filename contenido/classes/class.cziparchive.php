@@ -18,12 +18,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class contains the functionalities to handle zip archives.
  * @author claus.schunk@4fb.de
  */
-class cZipArchive {
+class cZipArchive
+{
     /**
      * Read all files from given path excluding files which names start with a
      * dot or are not valid according to CONTENIDO standards (validateFilename()).
-     *
-     * @see cFileHandler::validateFilename()
      *
      * @param string $dirPath
      *
@@ -31,8 +30,11 @@ class cZipArchive {
      *         of files
      *
      * @throws cInvalidArgumentException
+     * @see cFileHandler::validateFilename()
+     *
      */
-    public static function readExistingFiles($dirPath) {
+    public static function readExistingFiles($dirPath)
+    {
 
         // check if $dirPath is a dir
         if (!is_dir($dirPath)) {
@@ -69,7 +71,8 @@ class cZipArchive {
      * @param string $dirPath
      * @return bool
      */
-    public static function isExtracted($dirPath) {
+    public static function isExtracted($dirPath)
+    {
         if (!file_exists($dirPath)) {
             return false;
         } elseif (!is_dir($dirPath)) {
@@ -92,7 +95,8 @@ class cZipArchive {
      *
      * @throws cInvalidArgumentException
      */
-    public static function extractOverRide($file, $extractPath, $extractPathUserInput = NULL) {
+    public static function extractOverRide($file, $extractPath, $extractPathUserInput = NULL)
+    {
 
         // validate user input
         if (isset($extractPathUserInput)) {
@@ -103,7 +107,7 @@ class cZipArchive {
 
         // try to open archive
         if (!$zip->open($file)) {
-            echo ('can not open zip file!');
+            echo('can not open zip file!');
             return;
         }
 
@@ -132,7 +136,8 @@ class cZipArchive {
      *
      * @throws cInvalidArgumentException
      */
-    public static function extract($file, $extractPath, $extractPathUserInput = NULL) {
+    public static function extract($file, $extractPath, $extractPathUserInput = NULL)
+    {
         if (isset($extractPathUserInput)) {
 
             // validate user input
@@ -147,7 +152,7 @@ class cZipArchive {
 
         // try to open archive
         if (!$zip->open($file)) {
-            echo ('can not open zip file!');
+            echo('can not open zip file!');
             return;
         }
 
@@ -186,7 +191,8 @@ class cZipArchive {
      * @param array $filePathes
      *         files to store in archive
      */
-    public static function createZip($zipFilePath, $dirPath, array $filePathes) {
+    public static function createZip($zipFilePath, $dirPath, array $filePathes)
+    {
         $zip = new ZipArchive();
         if ($zip->open($dirPath . $zipFilePath, ZipArchive::CREATE) == TRUE) {
             foreach ($filePathes as $key => $file) {

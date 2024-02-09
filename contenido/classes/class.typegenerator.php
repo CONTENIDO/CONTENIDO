@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-class cTypeGenerator {
+class cTypeGenerator
+{
 
     /**
      *
@@ -64,7 +65,8 @@ class cTypeGenerator {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->_idart = cSecurity::toInteger(cRegistry::getArticleId(true));
         $this->_idlang = cSecurity::toInteger(cRegistry::getLanguageId());
         $this->cfg = cRegistry::getConfig();
@@ -82,7 +84,8 @@ class cTypeGenerator {
      * @return string
      *         The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
      */
-    protected function _getContentTypeClassName($type) {
+    protected function _getContentTypeClassName($type)
+    {
         return 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
     }
 
@@ -91,7 +94,8 @@ class cTypeGenerator {
      * @param string $type
      * @return string
      */
-    public static function getContentTypeClassName($type)  {
+    public static function getContentTypeClassName($type)
+    {
         $contentType = cString::getPartOfString($type, 4);
         return 'cContentType' . cString::toUpperCase($contentType[0]) . cString::toLowerCase(cString::getPartOfString($contentType, 1));
     }
@@ -106,7 +110,8 @@ class cTypeGenerator {
      *         {path_to_contenido_includes}/type/code/include.CMS_HTMLHEAD.code.php
      *         for content type CMS_HTMLHEAD
      */
-    protected function _getContentTypeCodeFilePathName($type) {
+    protected function _getContentTypeCodeFilePathName($type)
+    {
         return cRegistry::getBackendPath() . $this->cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
     }
 
@@ -115,7 +120,8 @@ class cTypeGenerator {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    private function fillContent() {
+    private function fillContent()
+    {
         self::$a_content[$this->_idart] = [];
 
         if (!isset(self::$articleContentHelper)) {
@@ -130,13 +136,14 @@ class cTypeGenerator {
     /**
      *
      * @param string $type
-     * @param int    $index
+     * @param int $index
      *
      * @return string
      *
      * @throws cDbException|cException
      */
-    private function _processCmsTags($type, $index) {
+    private function _processCmsTags($type, $index)
+    {
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
 
@@ -173,13 +180,14 @@ class cTypeGenerator {
      * Helper function to call a private function
      *
      * @param string $type
-     * @param int    $index
+     * @param int $index
      *
      * @return string
      *
      * @throws cDbException|cException
      */
-    public function getGeneratedCmsTag($type, $index) {
+    public function getGeneratedCmsTag($type, $index)
+    {
         return $this->_processCmsTags($type, $index);
     }
 

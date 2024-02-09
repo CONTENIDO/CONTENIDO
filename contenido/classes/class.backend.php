@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Backend
  */
-class cBackend {
+class cBackend
+{
 
     /**
      * Possible actions
@@ -64,7 +65,8 @@ class cBackend {
      */
     protected $_cfg;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->_cfg = cRegistry::getConfig();
     }
 
@@ -74,7 +76,8 @@ class cBackend {
      * @param int $frame [optional]
      *         as number
      */
-    public function setFrame($frame = 0) {
+    public function setFrame($frame = 0)
+    {
         $this->_frame = cSecurity::toInteger($frame);
     }
 
@@ -87,7 +90,8 @@ class cBackend {
      *
      * @throws cDbException|cInvalidArgumentException|cException
      */
-    public function select($area) {
+    public function select($area)
+    {
         // Required global vars
         global $idcat, $idtpl, $idmod, $idlay;
 
@@ -238,7 +242,8 @@ class cBackend {
      *
      * @throws cInvalidArgumentException
      */
-    public function getCode($action) {
+    public function getCode($action)
+    {
         $actionCodeFile = cRegistry::getBackendPath() . 'includes/type/action/include.' . $action . '.action.php';
         if (cFileHandler::exists($actionCodeFile)) {
             return cFileHandler::read($actionCodeFile);
@@ -258,7 +263,8 @@ class cBackend {
      *         'inc' / 'main'
      * @return array
      */
-    public function getFile($which) {
+    public function getFile($which)
+    {
         if (isset($this->_files[$which]) && is_array($this->_files[$which])) {
             return $this->_files[$which];
         } else {
@@ -269,13 +275,13 @@ class cBackend {
     /**
      * Creates a log entry for the specified parameters.
      *
-     * @param int        $idcat
+     * @param int $idcat
      *         Category-ID
-     * @param int        $idart
+     * @param int $idart
      *         Article-ID
-     * @param int        $client
+     * @param int $client
      *         Client-ID
-     * @param int        $lang
+     * @param int $lang
      *         Language-ID
      * @param int|string $idaction
      *         Action (ID or canonical name)
@@ -284,7 +290,8 @@ class cBackend {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function log($idcat, $idart, $client, $lang, $idaction) {
+    public function log($idcat, $idart, $client, $lang, $idaction)
+    {
         $client = cSecurity::toInteger($client);
         $lang = cSecurity::toInteger($lang);
 
@@ -319,7 +326,7 @@ class cBackend {
         } else {
             $frame = cRegistry::getFrame();
             $msg = 'cBackend: ' . $oldAction . ' is not in the actions table! ' . "\n"
-                . 'Parameter: '. print_r([
+                . 'Parameter: ' . print_r([
                     'idcat' => $idcat, 'idart' => $idart, 'client' => $client, 'lang' => $lang,
                     'frame' => $frame, 'idactionOriginal' => $idactionOrg, 'idaction' => $idaction
                 ], true

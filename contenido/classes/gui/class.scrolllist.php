@@ -317,7 +317,7 @@ class cGuiScrollList
      */
     public function getNumPages(): int
     {
-        return (int) ceil(count($this->data) / $this->resultsPerPage);
+        return (int)ceil(count($this->data) / $this->resultsPerPage);
     }
 
     /**
@@ -325,7 +325,7 @@ class cGuiScrollList
      *
      * @param int $field
      *         Field index
-     * @param string $order 
+     * @param string $order
      *         'ASC' or 'DESC'
      */
     public function sort(int $field, string $order = 'ASC')
@@ -350,7 +350,7 @@ class cGuiScrollList
      */
     public function convert(int $field, $value, array $hiddenData): string
     {
-        return (string) $value;
+        return (string)$value;
     }
 
     /**

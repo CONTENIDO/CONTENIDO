@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiLanguage createNewItem
  * @method cApiLanguage|bool next
  */
-class cApiLanguageCollection extends ItemCollection {
+class cApiLanguageCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('lang'), 'idlang');
         $this->_setItemClass('cApiLanguage');
     }
@@ -36,17 +38,18 @@ class cApiLanguageCollection extends ItemCollection {
     /**
      * Creates a language entry.
      *
-     * @param string  $name
-     * @param int     $active
-     * @param string  $encoding
-     * @param string  $direction
+     * @param string $name
+     * @param int $active
+     * @param string $encoding
+     * @param string $direction
      *
      * @return cApiLanguage
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($name, $active, $encoding, $direction) {
+    public function create($name, $active, $encoding, $direction)
+    {
         $auth = cRegistry::getAuth();
 
         $item = $this->createNewItem();
@@ -71,7 +74,8 @@ class cApiLanguageCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function nextAccessible() {
+    public function nextAccessible()
+    {
         $item = $this->next();
 
         if ($item === false) {
@@ -110,7 +114,8 @@ class cApiLanguageCollection extends ItemCollection {
      * @return string
      *         the name of the language
      */
-    public function getLanguageName($idlang) {
+    public function getLanguageName($idlang)
+    {
         $item = new cApiLanguage($idlang);
         if ($item->isLoaded()) {
             return $item->get('name');
@@ -127,7 +132,8 @@ class cApiLanguageCollection extends ItemCollection {
  * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiLanguage extends Item {
+class cApiLanguage extends Item
+{
     /**
      * @var array
      */
@@ -147,7 +153,8 @@ class cApiLanguage extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('lang'), 'idlang');
         $this->setFilters([], []);
         if ($mId !== false) {
@@ -162,7 +169,8 @@ class cApiLanguage extends Item {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function store() {
+    public function store()
+    {
         $this->set('lastmodified', date('Y-m-d H:i:s'), false);
         return parent::store();
     }
@@ -176,7 +184,8 @@ class cApiLanguage extends Item {
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'active':
                 $value = cSecurity::toInteger($value);
@@ -194,7 +203,8 @@ class cApiLanguage extends Item {
      * @throws cDbException
      * @throws cException
      */
-    protected function _loadProperties($idclient = 0) {
+    protected function _loadProperties($idclient = 0)
+    {
 
         if (!isset(self::$_propertiesCacheLoaded[$idclient])) {
             self::$_propertiesCache[$idclient] = [];
@@ -231,14 +241,15 @@ class cApiLanguage extends Item {
      *                         Specifies the type
      * @param string $name
      *                         Specifies the name
-     * @param int    $idclient [optional]
+     * @param int $idclient [optional]
      *                         Id of client to set property for
      * @return mixed
      *                         Value of the given property or false if item hasn't been loaded
      * @throws cDbException
      * @throws cException
      */
-    public function getProperty($type, $name, $idclient = 0) {
+    public function getProperty($type, $name, $idclient = 0)
+    {
 
         // skip & return false if item hasn't been loaded
         if (true !== $this->isLoaded()) {

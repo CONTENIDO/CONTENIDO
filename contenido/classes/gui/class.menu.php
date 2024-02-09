@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cGuiMenu {
+class cGuiMenu
+{
 
     /**
      * The id of the generic menu
@@ -125,7 +126,8 @@ class cGuiMenu {
      * Constructor to create an instance of this class.
      * @param string $menuId
      */
-    public function __construct($menuId = 'generic_menu_list') {
+    public function __construct($menuId = 'generic_menu_list')
+    {
         $this->setRowmark(true);
         $this->setMenuId($menuId);
         $this->setToolTipMaxLength(64);
@@ -136,7 +138,8 @@ class cGuiMenu {
      * @param mixed $item
      * @param string $title
      */
-    public function setTitle($item, $title) {
+    public function setTitle($item, $title)
+    {
         $this->title[$item] = $title;
     }
 
@@ -145,7 +148,8 @@ class cGuiMenu {
      * @param mixed $item
      * @param int|string $id
      */
-    public function setId($item, $id) {
+    public function setId($item, $id)
+    {
         $this->id[$item] = $id;
     }
 
@@ -154,7 +158,8 @@ class cGuiMenu {
      * @param mixed $item
      * @param string $tooltip
      */
-    public function setTooltip($item, $tooltip) {
+    public function setTooltip($item, $tooltip)
+    {
         $this->tooltips[$item] = $tooltip;
     }
 
@@ -163,9 +168,9 @@ class cGuiMenu {
      * will be truncated with ellipsis. A value of 0 removes the maximum
      * length constraint.
      *
-     * @since CONTENIDO 4.10.2
      * @param int $maxlength
      * @return void
+     * @since CONTENIDO 4.10.2
      */
     public function setToolTipMaxLength(int $maxlength = 0)
     {
@@ -176,7 +181,8 @@ class cGuiMenu {
      *
      * @param bool $rowmark [optional]
      */
-    public function setRowmark($rowmark = true) {
+    public function setRowmark($rowmark = true)
+    {
         $this->rowmark = $rowmark;
     }
 
@@ -184,7 +190,8 @@ class cGuiMenu {
      *
      * @param string $menuId
      */
-    public function setMenuId($menuId = 'generic_menu_list') {
+    public function setMenuId($menuId = 'generic_menu_list')
+    {
         $this->menuId = $menuId;
     }
 
@@ -195,7 +202,8 @@ class cGuiMenu {
      * @param int $maxWidth [optional]
      * @param string $alt [optional]
      */
-    public function setImage($item, $image, $maxWidth = 0, $alt = '') {
+    public function setImage($item, $image, $maxWidth = 0, $alt = '')
+    {
         $this->image[$item] = $image;
         $this->imagewidth[$item] = $maxWidth;
         $this->imageAlt[$item] = $alt;
@@ -207,7 +215,8 @@ class cGuiMenu {
      * @param mixed $item
      * @param cHTMLContentElement $link
      */
-    public function setLink($item, $link) {
+    public function setLink($item, $link)
+    {
         $this->link[$item] = $link;
     }
 
@@ -217,7 +226,8 @@ class cGuiMenu {
      * @param mixed $key
      * @param string $action
      */
-    public function setActions($item, $key, $action) {
+    public function setActions($item, $key, $action)
+    {
         $this->actions[$item][$key] = $action;
     }
 
@@ -225,7 +235,8 @@ class cGuiMenu {
      *
      * @param mixed $item
      */
-    public function setMarked($item) {
+    public function setMarked($item)
+    {
         $this->_marked = $item;
     }
 
@@ -246,7 +257,8 @@ class cGuiMenu {
      * @return string
      * @throws cInvalidArgumentException
      */
-    public function render($print = true) {
+    public function render($print = true)
+    {
         $cfg = cRegistry::getConfig();
         $tpl = new cTemplate();
 
@@ -341,7 +353,8 @@ class cGuiMenu {
      *
      * @return string
      */
-    protected function _getRowMouseEventHandlerJs() {
+    protected function _getRowMouseEventHandlerJs()
+    {
         $class = __CLASS__;
         $js = <<<JS
 <!-- $class -->

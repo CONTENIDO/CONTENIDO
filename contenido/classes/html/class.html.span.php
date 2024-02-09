@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLSpan extends cHTMLContentElement {
+class cHTMLSpan extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -30,7 +31,8 @@ class cHTMLSpan extends cHTMLContentElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($content = '', $class = "") {
+    public function __construct($content = '', $class = "")
+    {
         parent::__construct();
         $this->setContent($content);
         $this->_contentlessTag = false;

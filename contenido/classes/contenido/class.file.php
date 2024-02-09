@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiFile createNewItem
  * @method cApiFile|bool next
  */
-class cApiFileCollection extends ItemCollection {
+class cApiFileCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('files'), 'idfile');
         $this->_setItemClass('cApiFile');
 
@@ -49,7 +51,8 @@ class cApiFileCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($area, $filename, $filetype = 'main') {
+    public function create($area, $filename, $filetype = 'main')
+    {
         $item = $this->createNewItem();
 
         if (is_string($area)) {
@@ -85,7 +88,8 @@ class cApiFileCollection extends ItemCollection {
  * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiFile extends Item {
+class cApiFile extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -95,7 +99,8 @@ class cApiFile extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('files'), 'idfile');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {

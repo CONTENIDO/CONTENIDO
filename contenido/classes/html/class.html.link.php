@@ -117,7 +117,7 @@ class cHTMLLink extends cHTMLContentElement
     public function enableAutomaticParameterAppend(): cHTML
     {
         return $this->setEvent(
-            'click', 
+            'click',
             'var doit = true; try { var i = get_registered_parameters() } catch (e) { doit = false; }; if (doit == true) { this.href += i; }'
         );
     }

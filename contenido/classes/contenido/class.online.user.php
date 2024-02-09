@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiOnlineUser createNewItem($data)
  * @method cApiOnlineUser|bool next
  */
-class cApiOnlineUserCollection extends ItemCollection {
+class cApiOnlineUserCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -32,7 +33,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct($select = false) {
+    public function __construct($select = false)
+    {
         parent::__construct(cRegistry::getDbTableName('online_user'), 'user_id');
         $this->_setItemClass('cApiOnlineUser');
         if ($select !== false) {
@@ -53,7 +55,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function startUsersTracking($userId = NULL) {
+    public function startUsersTracking($userId = NULL)
+    {
         $userId = cSecurity::toString($userId);
 
         if (empty($userId)) {
@@ -86,7 +89,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function insertOnlineUser($userId) {
+    public function insertOnlineUser($userId)
+    {
         $oItem = $this->createNewItem(cSecurity::toString($userId));
         if ($oItem) {
             $created = date('Y-m-d H:i:s');
@@ -104,7 +108,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * @return bool
      *         Returns true if this User is found, else false
      */
-    public function findUser($userId) {
+    public function findUser($userId)
+    {
         $oUser = new cApiOnlineUser(cSecurity::toString($userId));
         return $oUser->isLoaded();
     }
@@ -118,10 +123,11 @@ class cApiOnlineUserCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function findAllUser() {
+    public function findAllUser()
+    {
         // todo use $perm
-        $aAllUser    = [];
-        $aUser       = [];
+        $aAllUser = [];
+        $aUser = [];
         $sClientName = '';
 
         // get all user_ids
@@ -153,7 +159,7 @@ class cApiOnlineUserCollection extends ItemCollection {
                     if (preg_match('/^admin\[(\d+)\]$/', $sPerm, $aResults)) {
                         $iClientId = $aResults[1];
                         $bIsAdmin = true;
-                        $sClientName = $oClientColl->getClientname((int) $iClientId);
+                        $sClientName = $oClientColl->getClientname((int)$iClientId);
                         if ($iCounter == 0 && $sClientName != '') {
                             $sClientNames .= $sClientName;
                         } elseif ($sClientName != '') {
@@ -164,7 +170,7 @@ class cApiOnlineUserCollection extends ItemCollection {
                         $iCounter++;
                     } elseif (preg_match('/^client\[(\d+)\]$/', $sPerm, $aResults) && !$bIsAdmin) {
                         $iClientId = $aResults[1];
-                        $sClientName = $oClientColl->getClientname((int) $iClientId);
+                        $sClientName = $oClientColl->getClientname((int)$iClientId);
                         if ($iCounter == 0 && $sClientName != '') {
                             $sClientNames .= $sClientName;
                         } elseif ($sClientName != '') {
@@ -191,7 +197,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function updateUser($userId) {
+    public function updateUser($userId)
+    {
         $oUser = new cApiOnlineUser(cSecurity::toString($userId));
         if ($oUser->isLoaded()) {
             $now = date('Y-m-d H:i:s');
@@ -210,7 +217,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function deleteInactiveUser() {
+    public function deleteInactiveUser()
+    {
         $cfg = cRegistry::getConfig();
         include_once($cfg['path']['contenido_config'] . 'config.misc.php');
         $iSetTimeOut = cSecurity::toInteger($cfg['backend']['timeout']);
@@ -232,13 +240,14 @@ class cApiOnlineUserCollection extends ItemCollection {
      *         Returns if exists a number of users
      * @throws cDbException
      */
-    public function getNumberOfUsers() {
+    public function getNumberOfUsers()
+    {
         $sql = 'SELECT COUNT(*) AS cnt FROM `%s`';
         $result = $this->db->query($sql, $this->table);
         $this->_lastSQL = $sql;
         if ($result) {
             $this->db->nextRecord();
-            return (int) $this->db->f('cnt');
+            return (int)$this->db->f('cnt');
         }
         return 0;
     }
@@ -254,7 +263,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function deleteUser($userId) {
+    public function deleteUser($userId)
+    {
         return $this->delete(cSecurity::toString($userId));
     }
 }
@@ -276,7 +286,8 @@ class cApiOnlineUser extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('online_user'), 'user_id');
         $this->setFilters([], []);
         if ($mId !== false) {

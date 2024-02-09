@@ -43,13 +43,13 @@ class cApiContentCollection extends ItemCollection
     /**
      * Creates a content entry.
      *
-     * @param int    $idArtLang
-     * @param int    $idType
-     * @param int    $typeId
+     * @param int $idArtLang
+     * @param int $idType
+     * @param int $typeId
      * @param string $value
-     * @param int    $version
-     * @param string $author       [optional]
-     * @param string $created      [optional]
+     * @param int $version
+     * @param string $author [optional]
+     * @param string $created [optional]
      * @param string $lastmodified [optional]
      *
      * @return cApiContent
@@ -59,7 +59,8 @@ class cApiContentCollection extends ItemCollection
      */
     public function create(
         $idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = ''
-    ) {
+    )
+    {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
@@ -144,7 +145,7 @@ class cApiContent extends Item
      * Creates a new, editable Version with same properties as this Content
      *
      * @param string $version
-     * @param mixed  $deleted
+     * @param mixed $deleted
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -176,8 +177,8 @@ class cApiContent extends Item
     {
         $aProps = [
             'idartlang' => $idartlang,
-            'idtype'    => $idtype,
-            'typeid'    => $typeid,
+            'idtype' => $idtype,
+            'typeid' => $typeid,
         ];
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
