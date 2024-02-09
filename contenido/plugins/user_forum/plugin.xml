@@ -33,9 +33,7 @@
         </frames>
 
         <nav_sub>
-            <nav area="user_forum" level="0" navm="extra">
-                user_forum/xml/lang_de_DE.xml;plugins/user_forum/label
-            </nav>
+            <nav area="user_forum" level="0" navm="extra">user_forum/xml/lang_de_DE.xml;plugins/user_forum/label</nav>
         </nav_sub>
 
     </contenido>

@@ -39,9 +39,7 @@
         </frames>
 
         <nav_sub>
-            <nav area="solr" level="0" navm="extra">
-                search_solr/xml/lang_de_DE.xml;plugins/solr/label
-            </nav>
+            <nav area="solr" level="0" navm="extra">search_solr/xml/lang_de_DE.xml;plugins/solr/label</nav>
         </nav_sub>
 
     </contenido>

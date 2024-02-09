@@ -221,6 +221,7 @@ if (count($backend->getFile('main')) > 0) {
 
 // Finalize debug of backend rendering
 cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldmemusage, $sFilename));
+if ($frame == 4 && (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest')) mp_d(cBuildBackendRenderDebugInfo($cfg, $oldmemusage, $sFilename));
 
 // User Tracking (who is online)
 $oActiveUser = new cApiOnlineUserCollection();

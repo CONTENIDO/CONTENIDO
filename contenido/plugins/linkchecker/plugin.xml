@@ -37,15 +37,9 @@
         </frames>
 
         <nav_sub>
-            <nav area="linkchecker" level="0" navm="content">
-                linkchecker/xml/;navigation/content/linkchecker/main
-            </nav>
-            <nav area="linkchecker" level="1" navm="0">
-                linkchecker/xml/;navigation/content/linkchecker/overview
-            </nav>
-            <nav area="lc_whitelist" level="1" navm="0">
-                linkchecker/xml/;navigation/content/linkchecker/whitelist
-            </nav>
+            <nav area="linkchecker" level="0" navm="content">linkchecker/xml/;navigation/content/linkchecker/main</nav>
+            <nav area="linkchecker" level="1" navm="0">linkchecker/xml/;navigation/content/linkchecker/overview</nav>
+            <nav area="lc_whitelist" level="1" navm="0">linkchecker/xml/;navigation/content/linkchecker/whitelist</nav>
         </nav_sub>
 
     </contenido>

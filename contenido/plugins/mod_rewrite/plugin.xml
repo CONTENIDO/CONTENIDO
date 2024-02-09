@@ -41,18 +41,10 @@
         </frames>
 
         <nav_sub>
-            <nav area="mod_rewrite" level="0" navm="extra">
-                mod_rewrite/xml/;navigation/extra/mod_rewrite/main
-            </nav>
-            <nav area="mod_rewrite" level="1" navm="0">
-                mod_rewrite/xml/;navigation/extra/mod_rewrite/settings
-            </nav>
-            <nav area="mod_rewrite_expert" level="1" navm="0">
-                mod_rewrite/xml/;navigation/extra/mod_rewrite/expert
-            </nav>
-            <nav area="mod_rewrite_test" level="1" navm="0">
-                mod_rewrite/xml/;navigation/extra/mod_rewrite/test
-            </nav>
+            <nav area="mod_rewrite" level="0" navm="extra">mod_rewrite/xml/;navigation/extra/mod_rewrite/main</nav>
+            <nav area="mod_rewrite" level="1" navm="0">mod_rewrite/xml/;navigation/extra/mod_rewrite/settings</nav>
+            <nav area="mod_rewrite_expert" level="1" navm="0">mod_rewrite/xml/;navigation/extra/mod_rewrite/expert</nav>
+            <nav area="mod_rewrite_test" level="1" navm="0">mod_rewrite/xml/;navigation/extra/mod_rewrite/test</nav>
         </nav_sub>
 
     </contenido>

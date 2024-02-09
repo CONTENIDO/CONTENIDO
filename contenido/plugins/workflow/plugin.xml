@@ -58,15 +58,9 @@
                    name="workflow/includes/include.workflow_tasks.php" frameId="4"/>
         </frames>
         <nav_sub>
-            <nav area="workflow" level="0" navm="extra">
-                workflow/xml/lang_de_DE.xml;navigation/extra/workflow/main
-            </nav>
-            <nav area="workflow_common" level="1" navm="0">
-                workflow/xml/lang_de_DE.xml;navigation/extra/workflow/settings
-            </nav>
-            <nav area="workflow_steps" level="1" navm="0">
-                workflow/xml/lang_de_DE.xml;navigation/extra/workflow/steps
-            </nav>
+            <nav area="workflow" level="0" navm="extra">workflow/xml/lang_de_DE.xml;navigation/extra/workflow/main</nav>
+            <nav area="workflow_common" level="1" navm="0">workflow/xml/lang_de_DE.xml;navigation/extra/workflow/settings</nav>
+            <nav area="workflow_steps" level="1" navm="0">workflow/xml/lang_de_DE.xml;navigation/extra/workflow/steps</nav>
         </nav_sub>
     </contenido>
 </plugin>

@@ -81,11 +81,8 @@
         </frames>
         <nav_sub>
             <nav area="news" level="0" navm="3">newsletter/xml/;navigation/extra/newsletter</nav>
-            <nav area="recipients" level="1" navm="3">newsletter/xml/;navigation/extra/recipients
-            </nav>
-            <nav area="recipientgroups" level="1" navm="3">
-                newsletter/xml/;navigation/extra/recipientgroups
-            </nav>
+            <nav area="recipients" level="1" navm="3">newsletter/xml/;navigation/extra/recipients</nav>
+            <nav area="recipientgroups" level="1" navm="3">newsletter/xml/;navigation/extra/recipientgroups</nav>
         </nav_sub>
     </contenido>
 </plugin>
