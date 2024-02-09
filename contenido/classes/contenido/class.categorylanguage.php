@@ -24,6 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cApiCategoryLanguageCollection extends ItemCollection
 {
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -33,7 +34,8 @@ class cApiCategoryLanguageCollection extends ItemCollection
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct($select = false) {
+    public function __construct($select = false)
+    {
         $table = cRegistry::getDbTableName('cat_lang');
         parent::__construct($table, 'idcatlang');
         $this->_setItemClass('cApiCategoryLanguage');
