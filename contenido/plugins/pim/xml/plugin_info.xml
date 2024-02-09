@@ -13,8 +13,8 @@
         <version>2.1.0</version>
     </general>
 
-    <requirements php="7.0">
-        <contenido minversion="4.10.0"/>
+    <requirements php="7.1">
+        <contenido minversion="4.10.0" />
     </requirements>
 
     <contenido>

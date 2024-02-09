@@ -12,8 +12,8 @@
         <version>1.0.0</version>
     </general>
 
-    <requirements php="7.0">
-        <contenido minversion="4.10.0"/>
+    <requirements php="7.1">
+        <contenido minversion="4.10.0" />
     </requirements>
 
     <contenido>
@@ -43,9 +43,7 @@
         </frames>
 
         <nav_sub>
-            <nav area="siwecos" level="0" navm="extra">
-                siwecos/xml/lang_de_DE.xml;plugins/siwecos/label
-            </nav>
+            <nav area="siwecos" level="0" navm="extra">siwecos/xml/lang_de_DE.xml;plugins/siwecos/label</nav>
         </nav_sub>
     </contenido>
 

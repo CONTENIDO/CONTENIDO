@@ -40,12 +40,12 @@ No Warranty - take a look at the GPL at the end of this file.
 
 **PHP Version**
 
-| Version | [DE] Beschreibung / [EN] Description |
-|---------|--------------------------------------|
-|>= 7.0.0 < 8.0.0|[DE] Voll funktionsfähig / [EN] Fully functional|
-|>= 8.0.0 < 8.1.0|[DE] Entwicklungs-Branch voll funktionsfähig (\*) / [EN] Develop branch fully functional (\*)|
-|>= 8.1.0 < 8.2.0|[DE] Entwicklungs-Branch größtenteils funktionsfähig (\*) / [EN] Develop branch mostly functional (\*)|
-|>= 8.2.0|[DE] Entwicklungs-Branch größtenteils funktionsfähig (\*) / [EN] Develop branch mostly functional (\*)|
+| Version          | [DE] Beschreibung / [EN] Description |
+|------------------|--------------------------------------|
+| >= 7.1.0 < 8.0.0 |[DE] Voll funktionsfähig / [EN] Fully functional|
+| >= 8.0.0 < 8.1.0 |[DE] Entwicklungs-Branch voll funktionsfähig (\*) / [EN] Develop branch fully functional (\*)|
+| >= 8.1.0 < 8.2.0 |[DE] Entwicklungs-Branch größtenteils funktionsfähig (\*) / [EN] Develop branch mostly functional (\*)|
+| >= 8.2.0         |[DE] Entwicklungs-Branch größtenteils funktionsfähig (\*) / [EN] Develop branch mostly functional (\*)|
 
 (*) [DE] Mit PHP Fehlerbehandlung eingestellt auf `error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT` /
 [EN] With PHP error reporting set to `error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT`
@@ -112,22 +112,22 @@ No Warranty - take a look at the GPL at the end of this file.
 
 ## [DE] Lizenzen von verwendeten Produkten / [EN] Licenses of used third party products
 
-|Name & Version|[DE] Lizenz / [EN] Licence|Information|
-|--------------|--------------------------|-----------|
-|CodeMirror 2.32|CodeMirror license|https://codemirror.net/LICENSE|
-|IDNA Converter 0.8.0|GNU Lesser General Public License 2.1|http://phlylabs.de|
-|jQuery 1.8.2|MIT License|https://www.jquery.com|
-|jQuery timepicker addon 1.0.2|MIT or GPL licenses|https://trentrichardson.com/examples/timepicker/|
-|jQuery UI 1.8.23|MIT License|https://www.jqueryui.com|
-|normalize.css v8.0.1|MIT License| https://github.com/necolas/normalize.css|
-|Pseudo-Cron (Cron-Emulator) 1.2.1|GNU General Public Licence (GPL)|http://www.bitfolge.de/?l=en&s=pseudocron|
-|Smarty 3.1.47|GNU Lesser General Public License 2.1 or later|https://www.smarty.net/|
-|SwiftMailer 5.4.6|GNU Lesser General Public License v3|https://swiftmailer.org/|
-|TinyMCE 3.5.12|GNU Lesser General Public License|https://www.tinymce.com/|
-|TinyMCE 4.1.10|GNU Lesser General Public License 2.1|https://www.tinymce.com/|
-|tipsy, facebook style tooltips for jquery 1.0.0a|MIT license|https://onehackoranother.com/projects/jquery/tipsy/|
-|Valums AJAX Upload 3.6|MIT license|https://valums.com/ajax-upload/|
-|Valums File Uploader 2.0|MIT license, GNU GPL 2 or later, GNU LGPL 2 or later, see license.txt|https://github.com/Valums-File-Uploader/file-uploader|
+| Name & Version                                   |[DE] Lizenz / [EN] Licence|Information|
+|--------------------------------------------------|--------------------------|-----------|
+| CodeMirror 2.32                                  |CodeMirror license|https://codemirror.net/LICENSE|
+| IDNA Converter 0.8.0                             |GNU Lesser General Public License 2.1|http://phlylabs.de|
+| jQuery 1.8.2                                     |MIT License|https://www.jquery.com|
+| jQuery timepicker addon 1.0.2                    |MIT or GPL licenses|https://trentrichardson.com/examples/timepicker/|
+| jQuery UI 1.8.23                                 |MIT License|https://www.jqueryui.com|
+| normalize.css v8.0.1                             |MIT License| https://github.com/necolas/normalize.css|
+| Pseudo-Cron (Cron-Emulator) 1.2.1                |GNU General Public Licence (GPL)|http://www.bitfolge.de/?l=en&s=pseudocron|
+| Smarty 4.3.4                                     |GNU Lesser General Public License 2.1 or later|https://www.smarty.net/|
+| SwiftMailer 5.4.6                                |GNU Lesser General Public License v3|https://swiftmailer.org/|
+| TinyMCE 3.5.12                                   |GNU Lesser General Public License|https://www.tinymce.com/|
+| TinyMCE 4.1.10                                   |GNU Lesser General Public License 2.1|https://www.tinymce.com/|
+| tipsy, facebook style tooltips for jquery 1.0.0a |MIT license|https://onehackoranother.com/projects/jquery/tipsy/|
+| Valums AJAX Upload 3.6                           |MIT license|https://valums.com/ajax-upload/|
+| Valums File Uploader 2.0                         |MIT license, GNU GPL 2 or later, GNU LGPL 2 or later, see license.txt|https://github.com/Valums-File-Uploader/file-uploader|
 
 ----
 
