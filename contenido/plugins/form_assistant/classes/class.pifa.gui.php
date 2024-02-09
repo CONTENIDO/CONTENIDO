@@ -107,7 +107,7 @@ class PifaLeftBottomPage extends cGuiPage {
         foreach ($formContent as $formRow) {
             // read settings
             $formRow['value'] = conHtmlEntityDecode($formRow['value']);
-            $formRow['value'] = utf8_encode($formRow['value']);
+            $formRow['value'] = @utf8_encode($formRow['value']);
             $settings = cXmlBase::xmlStringToArray($formRow['value']);
             // if it was successful append the array of articles using this form
             if ($settings['idform'] != '') {

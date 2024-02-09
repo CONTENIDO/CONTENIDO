@@ -95,7 +95,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
             if (false === class_exists($contentTypeClassName)) {
                 continue;
             }
-            $cContentType = new $contentTypeClassName(null, 0, []);
+            $cContentType = new $contentTypeClassName('', 0, []);
             if (false === $cContentType->isWysiwygCompatible()) {
                 continue;
             }
@@ -259,6 +259,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
                 }
             }
         }
+
+        mp_d($this->_aSettings, '$this->_aSettings');
     }
 
     /**

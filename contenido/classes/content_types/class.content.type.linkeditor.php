@@ -63,13 +63,13 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
 
         // encoding conversions to avoid problems with umlauts
         $rawSettings = conHtmlEntityDecode($rawSettings ?? '');
-        $rawSettings = utf8_encode($rawSettings);
+        $rawSettings = @utf8_encode($rawSettings);
 
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
         if ($this->hasSetting('linkeditor_title')) {
-            $title = utf8_decode($this->getSetting('linkeditor_title'));
+            $title = @utf8_decode($this->getSetting('linkeditor_title'));
             $title = conHtmlentities($title);
         } else {
             $title = '';

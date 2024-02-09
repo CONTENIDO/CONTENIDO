@@ -138,7 +138,7 @@ class cI18n {
             // hopefully a proper replacement for
             // mb_convert_encoding($string, 'HTML-ENTITIES', 'utf-8');
             // see https://stackoverflow.com/q/11974008
-            $ret = htmlspecialchars_decode(utf8_decode(conHtmlentities($ret, ENT_COMPAT, 'utf-8')));
+            $ret = htmlspecialchars_decode(@utf8_decode(conHtmlentities($ret, ENT_COMPAT, 'utf-8')));
             return $ret;
         }
 

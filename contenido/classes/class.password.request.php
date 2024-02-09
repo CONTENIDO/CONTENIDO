@@ -750,14 +750,14 @@ class cPasswordRequest
 
         // Decoding and encoding for charsets (without UTF-8)
         if ($cfg['php_settings']['default_charset'] != 'UTF-8') {
-            $subject = utf8_encode(
+            $subject = @utf8_encode(
                 conHtmlEntityDecode(
                     stripslashes(i18n('Your new password for CONTENIDO Backend')),
                     '',
                     $cfg['php_settings']['default_charset']
                 )
             );
-            $body    = utf8_encode(conHtmlEntityDecode($mailBody, '', $cfg['php_settings']['default_charset']));
+            $body    = @utf8_encode(conHtmlEntityDecode($mailBody, '', $cfg['php_settings']['default_charset']));
         } else {
             $subject = conHtmlEntityDecode(stripslashes(i18n('Your new password for CONTENIDO Backend')));
             $body    = conHtmlEntityDecode($mailBody);

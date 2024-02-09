@@ -431,7 +431,7 @@ class SolrIndexer {
         $content = [];
         while (false !== $db->nextRecord()) {
             $value = $db->f('value');
-            //$value = utf8_encode($value);
+            //$value = @utf8_encode($value);
             $value = strip_tags($value);
             //$value = html_entity_decode($value);
             $value = html_entity_decode($value, ENT_QUOTES, 'UTF-8');
