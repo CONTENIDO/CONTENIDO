@@ -22,7 +22,8 @@ use PHPUnit\Framework\Assert;
  * @package    Testing
  * @subpackage Helper
  */
-abstract class cTestingTestCase extends TestCase {
+abstract class cTestingTestCase extends TestCase
+{
     /**
      * Name of the test case
      * @var string
@@ -43,14 +44,16 @@ abstract class cTestingTestCase extends TestCase {
     /**
      * @deprecated [2019-11-25] Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
      */
-    public static function setOriginalSqlPrefix($sqlPrefix) {
+    public static function setOriginalSqlPrefix($sqlPrefix)
+    {
         self::$_originalSqlPrefix = $sqlPrefix;
     }
 
     /**
      * @deprecated [2019-11-25] Since 4.10.2, test suites are defined in the phpunit.xml
      */
-    protected static function _createSuite() {
+    protected static function _createSuite()
+    {
         if (self::$_testCaseName == '') {
             throw new cTestingException("No name provided for test case.");
         }
@@ -61,7 +64,8 @@ abstract class cTestingTestCase extends TestCase {
     /**
      * @deprecated [2019-11-25] Since 4.10.2, test files for test suites are defined in the phpunit.xml
      */
-    protected static function _addTestFiles(TestSuite $suite) {
+    protected static function _addTestFiles(TestSuite $suite)
+    {
         if (count(self::$_testDirectories) == 0) {
             throw new cTestingException("No directories specified for test case.");
         }
@@ -86,7 +90,8 @@ abstract class cTestingTestCase extends TestCase {
      *      - https://github.com/sebastianbergmann/phpunit/issues/3338
      *      - https://github.com/sebastianbergmann/phpunit/issues/3339
      */
-    protected function _readAttribute($object, $attributeName) {
+    protected function _readAttribute($object, $attributeName)
+    {
 //        return Assert::readAttribute($classOrObject, $attributeName);
         $reflector = new ReflectionObject($object);
         $property = $reflector->getProperty($attributeName);
@@ -103,7 +108,8 @@ abstract class cTestingTestCase extends TestCase {
      *      - https://github.com/sebastianbergmann/phpunit/issues/3338
      *      - https://github.com/sebastianbergmann/phpunit/issues/3339
      */
-    protected function _callMethod($reflection, $obj, $methodName, $params) {
+    protected function _callMethod($reflection, $obj, $methodName, $params)
+    {
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 
@@ -117,7 +123,8 @@ abstract class cTestingTestCase extends TestCase {
      * @return array
      * @throws cTestingException
      */
-    protected function _fetchSqlFileContent($databaseTable) {
+    protected function _fetchSqlFileContent($databaseTable)
+    {
         $cfg = cRegistry::getConfig();
 
         $fileName = CON_TEST_PATH . '/sql/test_' . $databaseTable . '.sql';
@@ -154,11 +161,12 @@ abstract class cTestingTestCase extends TestCase {
      * This function should be invoked within the setUp() function of the test case, and it requires
      * a defined $_tables property.
      *
-     * @global $cfg
      * @throws cDbException
      * @throws cTestingException
+     * @global $cfg
      */
-    protected function setUpTestCaseDbTables() {
+    protected function setUpTestCaseDbTables()
+    {
         global $cfg; // don't use cRegistry!
 
         if (!isset($this->_tables) || !is_array($this->_tables)) {
@@ -180,11 +188,12 @@ abstract class cTestingTestCase extends TestCase {
      * This function should be invoked within the tearDown() function of the test case, and it requires
      * a defined $_tables property.
      *
-     * @global $cfg
      * @throws cDbException
      * @throws cTestingException
+     * @global $cfg
      */
-    protected function tearDownTestCaseDbTables() {
+    protected function tearDownTestCaseDbTables()
+    {
         global $cfg; // don't use cRegistry!
 
         if (!isset($this->_tables) || !is_array($this->_tables)) {

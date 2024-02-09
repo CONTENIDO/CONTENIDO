@@ -39,8 +39,8 @@ function chain_ContenidoContentCreateTitletag_Test2()
 class ContenidoContentCreateTitletagTest extends TestCase
 {
     private $_chain = 'Contenido.Content.CreateTitletag';
-    private $_title          = 'Da title';
-    private $_titleOneChain  = 'Foobar';
+    private $_title = 'Da title';
+    private $_titleOneChain = 'Foobar';
     private $_titleTwoChains = 'Lorem ipsum';
 
 

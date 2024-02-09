@@ -53,18 +53,18 @@ class cArticleCollectorTest extends cTestingTestCase
 
         // default options that are set
         $this->_defaultOptions = [
-            'categories'  => [],
-            'lang'        => $this->_lang,
-            'client'      => $this->_client,
-            'start'       => false,
-            'startonly'   => false,
-            'offline'     => false,
+            'categories' => [],
+            'lang' => $this->_lang,
+            'client' => $this->_client,
+            'start' => false,
+            'startonly' => false,
+            'offline' => false,
             'offlineonly' => false,
-            'order'       => 'created',
-            'artspecs'    => [],
-            'direction'   => 'DESC',
-            'limit'       => 0,
-            'offset'      => 0,
+            'order' => 'created',
+            'artspecs' => [],
+            'direction' => 'DESC',
+            'limit' => 0,
+            'offset' => 0,
         ];
         ksort($this->_defaultOptions);
 
@@ -100,7 +100,7 @@ class cArticleCollectorTest extends cTestingTestCase
      */
     protected function _getArticleCollectorOptions(cArticleCollector $articleCollector)
     {
-        $options =  $this->_readAttribute($articleCollector, '_options');
+        $options = $this->_readAttribute($articleCollector, '_options');
         ksort($options);
         return $options;
     }
@@ -115,7 +115,7 @@ class cArticleCollectorTest extends cTestingTestCase
         $this->assertSame($this->_defaultOptions, $this->_getArticleCollectorOptions($this->_aColl));
 
         // test option idcat
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
                 'idcat' => 10,
             ]
@@ -128,7 +128,7 @@ class cArticleCollectorTest extends cTestingTestCase
         $this->assertSame($ar, $this->_getArticleCollectorOptions($this->_aColl));
 
         // test option start
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
                 'start' => false,
             ]
@@ -139,7 +139,7 @@ class cArticleCollectorTest extends cTestingTestCase
         $this->assertSame($ar, $this->_getArticleCollectorOptions($this->_aColl));
 
         // test options idcat & limit
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
                 'idcat' => 10,
                 'limit' => 10,
@@ -153,7 +153,7 @@ class cArticleCollectorTest extends cTestingTestCase
         $this->assertSame($ar, $this->_getArticleCollectorOptions($this->_aColl));
 
         // test options idcat, limit & start
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
                 'idcat' => 10,
                 'limit' => 10,
@@ -169,11 +169,11 @@ class cArticleCollectorTest extends cTestingTestCase
         $this->assertSame($ar, $this->_getArticleCollectorOptions($this->_aColl));
 
         // test options idcat, limit, start & startonly
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
-                'idcat'     => 10,
-                'limit'     => 10,
-                'start'     => true,
+                'idcat' => 10,
+                'limit' => 10,
+                'start' => true,
                 'startonly' => true,
             ]
         );
@@ -187,13 +187,13 @@ class cArticleCollectorTest extends cTestingTestCase
         $this->assertSame($ar, $this->_getArticleCollectorOptions($this->_aColl));
 
         // test options idcat, limit, start, startonly & offline
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
-                'idcat'     => 10,
-                'limit'     => 10,
-                'start'     => true,
+                'idcat' => 10,
+                'limit' => 10,
+                'start' => true,
                 'startonly' => true,
-                'offline'   => true,
+                'offline' => true,
             ]
         );
         $ar = $this->_defaultOptions;
@@ -207,13 +207,13 @@ class cArticleCollectorTest extends cTestingTestCase
         $this->assertSame($ar, $this->_getArticleCollectorOptions($this->_aColl));
 
         // test options idcat, limit, start, startonly, offline & offlineonly
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
-                'idcat'       => 10,
-                'limit'       => 10,
-                'start'       => true,
-                'startonly'   => true,
-                'offline'     => true,
+                'idcat' => 10,
+                'limit' => 10,
+                'start' => true,
+                'startonly' => true,
+                'offline' => true,
                 'offlineonly' => true,
             ]
         );
@@ -230,15 +230,15 @@ class cArticleCollectorTest extends cTestingTestCase
 
         // test options idcat, limit, start, startonly, offline, offlineonly &
         // direction
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
-                'idcat'       => 10,
-                'limit'       => 10,
-                'start'       => true,
-                'startonly'   => true,
-                'offline'     => true,
+                'idcat' => 10,
+                'limit' => 10,
+                'start' => true,
+                'startonly' => true,
+                'offline' => true,
                 'offlineonly' => true,
-                'direction'   => 'ASC',
+                'direction' => 'ASC',
             ]
         );
         $ar = $this->_defaultOptions;
@@ -255,16 +255,16 @@ class cArticleCollectorTest extends cTestingTestCase
 
         // test options idcat, limit, start, startonly, offline, offlineonly,
         // direction & order (publisheddate)
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
-                'idcat'       => 10,
-                'limit'       => 10,
-                'start'       => true,
-                'startonly'   => true,
-                'offline'     => true,
+                'idcat' => 10,
+                'limit' => 10,
+                'start' => true,
+                'startonly' => true,
+                'offline' => true,
                 'offlineonly' => true,
-                'direction'   => 'ASC',
-                'order'       => 'publisheddate',
+                'direction' => 'ASC',
+                'order' => 'publisheddate',
             ]
         );
         $ar = $this->_defaultOptions;
@@ -282,16 +282,16 @@ class cArticleCollectorTest extends cTestingTestCase
 
         // test options idcat, limit, start, startonly, offline, offlineonly,
         // direction & order (sortsequence)
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
-                'idcat'       => 10,
-                'limit'       => 10,
-                'start'       => true,
-                'startonly'   => true,
-                'offline'     => true,
+                'idcat' => 10,
+                'limit' => 10,
+                'start' => true,
+                'startonly' => true,
+                'offline' => true,
                 'offlineonly' => true,
-                'direction'   => 'ASC',
-                'order'       => 'sortsequence',
+                'direction' => 'ASC',
+                'order' => 'sortsequence',
             ]
         );
         $ar = $this->_defaultOptions;
@@ -309,16 +309,16 @@ class cArticleCollectorTest extends cTestingTestCase
 
         // test options idcat, limit, start, startonly, offline, offlineonly,
         // direction & order (modificationdate)
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
-                'idcat'       => 10,
-                'limit'       => 10,
-                'start'       => true,
-                'startonly'   => true,
-                'offline'     => true,
+                'idcat' => 10,
+                'limit' => 10,
+                'start' => true,
+                'startonly' => true,
+                'offline' => true,
                 'offlineonly' => true,
-                'direction'   => 'ASC',
-                'order'       => 'modificationdate',
+                'direction' => 'ASC',
+                'order' => 'modificationdate',
             ]
         );
         $ar = $this->_defaultOptions;
@@ -336,14 +336,14 @@ class cArticleCollectorTest extends cTestingTestCase
 
         // test options idcat, limit, start, startonly, offline, offlineonly,
         // direction & order (creationdate)
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
-                'idcat'       => 10,
-                'limit'       => 10,
-                'start'       => true,
-                'startonly'   => true,
-                'direction'   => 'ASC',
-                'order'       => 'creationdate',
+                'idcat' => 10,
+                'limit' => 10,
+                'start' => true,
+                'startonly' => true,
+                'direction' => 'ASC',
+                'order' => 'creationdate',
             ]
         );
         $ar = $this->_defaultOptions;
@@ -381,7 +381,7 @@ class cArticleCollectorTest extends cTestingTestCase
         $exp = array_merge(
             $this->_defaultOptions,
             [
-                'idcat'      => 1,
+                'idcat' => 1,
                 'categories' => [
                     1,
                 ],
@@ -526,7 +526,7 @@ class cArticleCollectorTest extends cTestingTestCase
     {
         // articles including start articles
         $this->_db->query('SELECT * FROM test_art_lang WHERE idlang = 1 AND online = 1');
-        $ret          = $this->_db->affectedRows();
+        $ret = $this->_db->affectedRows();
         $this->_aColl = new cArticleCollector(
             [
                 'start' => true,
@@ -538,7 +538,7 @@ class cArticleCollectorTest extends cTestingTestCase
         $this->_db->query(
             'SELECT * FROM test_art_lang WHERE idlang = 1 AND online = 1 AND idartlang NOT IN (SELECT startidartlang FROM test_cat_lang WHERE startidartlang>0)'
         );
-        $ret          = $this->_db->affectedRows();
+        $ret = $this->_db->affectedRows();
         $this->_aColl = new cArticleCollector(
             [
                 'start' => false,
@@ -592,14 +592,14 @@ class cArticleCollectorTest extends cTestingTestCase
      */
     public function testNextArticle()
     {
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
-                'idcat'       => 10,
-                'limit'       => 10,
-                'start'       => true,
-                'startonly'   => true,
-                'direction'   => 'ASC',
-                'order'       => 'creationdate',
+                'idcat' => 10,
+                'limit' => 10,
+                'start' => true,
+                'startonly' => true,
+                'direction' => 'ASC',
+                'order' => 'creationdate',
             ]
         );
         $article = $this->_aColl->nextArticle();
@@ -767,14 +767,14 @@ class cArticleCollectorTest extends cTestingTestCase
      */
     public function testCount()
     {
-        $this->_aColl      = new cArticleCollector(
+        $this->_aColl = new cArticleCollector(
             [
-                'idcat'       => 10,
-                'limit'       => 10,
-                'start'       => true,
-                'startonly'   => true,
-                'direction'   => 'ASC',
-                'order'       => 'creationdate',
+                'idcat' => 10,
+                'limit' => 10,
+                'start' => true,
+                'startonly' => true,
+                'direction' => 'ASC',
+                'order' => 'creationdate',
             ]
         );
         $this->assertSame(1, $this->_aColl->count());

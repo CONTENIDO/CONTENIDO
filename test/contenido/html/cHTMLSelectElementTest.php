@@ -52,10 +52,10 @@ class cHTMLSelectElementTest extends cTestingTestCase
     protected function setUp(): void
     {
         $this->_selectEmpty = new cHTMLSelectElement('empty');
-        $this->_selectData  = new cHTMLSelectElement('testName');
-        $this->_foo         = new cHTMLOptionElement('', 'foo');
-        $this->_bar         = new cHTMLOptionElement('', 'bar');
-        $this->_baz         = new cHTMLOptionElement('', 'baz');
+        $this->_selectData = new cHTMLSelectElement('testName');
+        $this->_foo = new cHTMLOptionElement('', 'foo');
+        $this->_bar = new cHTMLOptionElement('', 'bar');
+        $this->_baz = new cHTMLOptionElement('', 'baz');
         $this->_selectData->addOptionElement('foo', $this->_foo);
         $this->_selectData->addOptionElement('bar', $this->_bar);
         $this->_selectData->addOptionElement('baz', $this->_baz);
@@ -118,7 +118,7 @@ class cHTMLSelectElementTest extends cTestingTestCase
     public function testAutoFill()
     {
         $this->_selectData = new cHTMLSelectElement('testName', 100, 'testId');
-        $stuff             = [
+        $stuff = [
             'key1' => 'value1',
             'key2' => 'value2',
             'key3' => 'value3',

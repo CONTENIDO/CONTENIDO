@@ -82,17 +82,17 @@ class cContentTypeAbstractTest extends cTestingTestCase
         $this->assertEquals(true, $result);
 
         // Test with whitespace in string concatenation
-        $code =  '" . /*[CONTENT_TYPE]*/' . $this->_code . '/*[/CONTENT_TYPE]*/ . "';
+        $code = '" . /*[CONTENT_TYPE]*/' . $this->_code . '/*[/CONTENT_TYPE]*/ . "';
         $result = cContentTypeAbstract::isWrappedContentTypeCodePhp($code);
         $this->assertEquals(true, $result);
 
         // Test with multiple whitespaces in string concatenation
-        $code =  '"  .  /*[CONTENT_TYPE]*/' . $code . '/*[/CONTENT_TYPE]*/  .  "';
+        $code = '"  .  /*[CONTENT_TYPE]*/' . $code . '/*[/CONTENT_TYPE]*/  .  "';
         $result = cContentTypeAbstract::isWrappedContentTypeCodePhp($code);
         $this->assertEquals(true, $result);
 
         // Test with multiple whitespaces in string concatenation
-        $code =  '"  .  /*[CONTENT_TYPE]*/' . $code . '/*[/CONTENT_TYPE]*/  .  "';
+        $code = '"  .  /*[CONTENT_TYPE]*/' . $code . '/*[/CONTENT_TYPE]*/  .  "';
         $result = cContentTypeAbstract::isWrappedContentTypeCodePhp($code);
         $this->assertEquals(true, $result);
 
@@ -122,7 +122,7 @@ class cContentTypeAbstractTest extends cTestingTestCase
             echo "CMS_VALUE[123]";
         ?>';
 
-        $output = $this->getEvaluatedModuleCode($moduleCode,'CMS_VALUE[123]', $viewCode);
+        $output = $this->getEvaluatedModuleCode($moduleCode, 'CMS_VALUE[123]', $viewCode);
         $moduleOutput = $this->cleanUpOutputString($output);
         $contentTypeOutput = $this->cleanUpOutputString(cContentTypeA_Test::OUTPUT);
         $this->assertEquals($contentTypeOutput, $moduleOutput);
@@ -142,7 +142,7 @@ class cContentTypeAbstractTest extends cTestingTestCase
             echo $myVar;
         ?>';
 
-        $output = $this->getEvaluatedModuleCode($moduleCode,'CMS_VALUE[123]', $viewCode);
+        $output = $this->getEvaluatedModuleCode($moduleCode, 'CMS_VALUE[123]', $viewCode);
         $moduleOutput = $this->cleanUpOutputString($output);
         $contentTypeOutput = $this->cleanUpOutputString(cContentTypeA_Test::OUTPUT);
         $this->assertEquals($contentTypeOutput, $moduleOutput);
@@ -164,12 +164,11 @@ class cContentTypeAbstractTest extends cTestingTestCase
             echo $myVar["code"];
         ?>';
 
-        $output = $this->getEvaluatedModuleCode($moduleCode,'CMS_VALUE[123]', $viewCode);
+        $output = $this->getEvaluatedModuleCode($moduleCode, 'CMS_VALUE[123]', $viewCode);
         $moduleOutput = $this->cleanUpOutputString($output);
         $contentTypeOutput = $this->cleanUpOutputString(cContentTypeA_Test::OUTPUT);
         $this->assertEquals($contentTypeOutput, $moduleOutput);
     }
-
 
 
     /**
@@ -187,7 +186,7 @@ class cContentTypeAbstractTest extends cTestingTestCase
             echo $myVar->code;
         ?>';
 
-        $output = $this->getEvaluatedModuleCode($moduleCode,'CMS_VALUE[123]', $viewCode);
+        $output = $this->getEvaluatedModuleCode($moduleCode, 'CMS_VALUE[123]', $viewCode);
         $moduleOutput = $this->cleanUpOutputString($output);
         $contentTypeOutput = $this->cleanUpOutputString(cContentTypeA_Test::OUTPUT);
         $this->assertEquals($contentTypeOutput, $moduleOutput);
@@ -217,7 +216,7 @@ class cContentTypeAbstractTest extends cTestingTestCase
      */
     protected function cleanUpOutputString(string $string)
     {
-        return (string) preg_replace('!\s+!', ' ', $string);
+        return (string)preg_replace('!\s+!', ' ', $string);
     }
 
 }

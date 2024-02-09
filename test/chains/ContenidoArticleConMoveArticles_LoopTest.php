@@ -20,7 +20,8 @@ use PHPUnit\Framework\TestCase;
  *
  * @param array $data
  */
-function chain_ContenidoArticleConMoveArticles_Loop_Test(array $data) {
+function chain_ContenidoArticleConMoveArticles_Loop_Test(array $data)
+{
     if (isset($data['idartlang']) && $data['idartlang'] == 1234) {
         ContenidoArticleConMoveArticles_LoopTest::$invokeCounter++;
     }
@@ -31,7 +32,8 @@ function chain_ContenidoArticleConMoveArticles_Loop_Test(array $data) {
  *
  * @param array $data
  */
-function chain_ContenidoArticleConMoveArticles_Loop_Test2(array $data) {
+function chain_ContenidoArticleConMoveArticles_Loop_Test2(array $data)
+{
     if (isset($data['idartlang']) && $data['idartlang'] == 1234) {
         ContenidoArticleConMoveArticles_LoopTest::$invokeCounter++;
     }
@@ -43,7 +45,8 @@ function chain_ContenidoArticleConMoveArticles_Loop_Test2(array $data) {
  * @package    Testing
  * @subpackage Test_Chains
  */
-class ContenidoArticleConMoveArticles_LoopTest extends TestCase {
+class ContenidoArticleConMoveArticles_LoopTest extends TestCase
+{
 
     /**
      *
@@ -70,14 +73,16 @@ class ContenidoArticleConMoveArticles_LoopTest extends TestCase {
     /**
      *
      */
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         self::$invokeCounter = 0;
     }
 
     /**
      * Test Contenido.Article.conMoveArticles_Loop chain
      */
-    public function testNoChain() {
+    public function testNoChain()
+    {
         // execute chain
         cApiCecHook::execute($this->_chain, $this->_data);
 
@@ -93,7 +98,8 @@ class ContenidoArticleConMoveArticles_LoopTest extends TestCase {
     /**
      * Test Contenido.Article.conMoveArticles_Loop chain
      */
-    public function testOneChain() {
+    public function testOneChain()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -118,7 +124,8 @@ class ContenidoArticleConMoveArticles_LoopTest extends TestCase {
     /**
      * Test Contenido.Article.conMoveArticles_Loop chain
      */
-    public function testTwoChains() {
+    public function testTwoChains()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 

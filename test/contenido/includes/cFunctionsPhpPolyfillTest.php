@@ -33,7 +33,9 @@ class cFunctionsPhpPolyfillTest extends cTestingTestCase
         $this->assertSame(true, is_iterable([1, 2, 3]));
         $this->assertSame(true, is_iterable(new \ArrayObject()));
         $this->assertSame(true, is_iterable(new \ArrayIterator()));
-        $this->assertSame(true, is_iterable((function () { yield 1; })()));
+        $this->assertSame(true, is_iterable((function () {
+            yield 1;
+        })()));
     }
 
     /**
@@ -46,7 +48,9 @@ class cFunctionsPhpPolyfillTest extends cTestingTestCase
         $this->assertSame(false, is_countable(true));
         $this->assertSame(false, is_countable(1));
         $this->assertSame(false, is_countable(new \stdClass()));
-        $this->assertSame(false, is_countable((function () { yield 1; })()));
+        $this->assertSame(false, is_countable((function () {
+            yield 1;
+        })()));
 
         // true checks
         $this->assertSame(true, is_countable([1, 2, 3]));

@@ -31,7 +31,7 @@ class cFrontendSessionTest extends cTestingTestCase
 
     protected function setUp(): void
     {
-        $this->_session     = new cFrontendSession();
+        $this->_session = new cFrontendSession();
         $this->_session->id = 'TestFeXupedOhesi';
     }
 
@@ -40,7 +40,7 @@ class cFrontendSessionTest extends cTestingTestCase
         $url = self::URL_BASE;
 
         $expectedUrl = self::URL_BASE;
-        $sessUrl     = $this->_session->url($url);
+        $sessUrl = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
 
@@ -49,7 +49,7 @@ class cFrontendSessionTest extends cTestingTestCase
         $url = self::URL_BASE . '?foo=bar';
 
         $expectedUrl = self::URL_BASE . '?foo=bar';
-        $sessUrl     = $this->_session->url($url);
+        $sessUrl = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
 
@@ -58,7 +58,7 @@ class cFrontendSessionTest extends cTestingTestCase
         $url = self::URL_BASE . '?';
 
         $expectedUrl = self::URL_BASE;
-        $sessUrl     = $this->_session->url($url);
+        $sessUrl = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
 
@@ -67,7 +67,7 @@ class cFrontendSessionTest extends cTestingTestCase
         $url = self::URL_BASE . '?' . http_build_query([$this->_session->name => 'foobar']);
 
         $expectedUrl = self::URL_BASE;
-        $sessUrl     = $this->_session->url($url);
+        $sessUrl = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
 
@@ -77,7 +77,7 @@ class cFrontendSessionTest extends cTestingTestCase
             . '#baz';
 
         $expectedUrl = self::URL_BASE . '?foo=bar#baz';
-        $sessUrl     = $this->_session->url($url);
+        $sessUrl = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
 
@@ -86,7 +86,7 @@ class cFrontendSessionTest extends cTestingTestCase
         $url = self::URL_BASE . '?foo=bar&amp;baz=1';
 
         $expectedUrl = self::URL_BASE . '?foo=bar&baz=1';
-        $sessUrl     = $this->_session->url($url);
+        $sessUrl = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
 }

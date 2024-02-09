@@ -31,7 +31,7 @@ class cSessionTest extends cTestingTestCase
 
     protected function setUp(): void
     {
-        $this->_session     = new cSession();
+        $this->_session = new cSession();
         $this->_session->id = 'TestBeXupedOhesi';
     }
 
@@ -40,7 +40,7 @@ class cSessionTest extends cTestingTestCase
         $url = self::URL_BASE;
 
         $expectedUrl = self::URL_BASE . '?' . http_build_query([$this->_session->name => $this->_session->id]);
-        $sessUrl     = $this->_session->url($url);
+        $sessUrl = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
 
@@ -50,7 +50,7 @@ class cSessionTest extends cTestingTestCase
 
         $expectedUrl =
             self::URL_BASE . '?' . http_build_query([$this->_session->name => $this->_session->id, 'foo' => 'bar']);
-        $sessUrl     = $this->_session->url($url);
+        $sessUrl = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
 
@@ -59,7 +59,7 @@ class cSessionTest extends cTestingTestCase
         $url = self::URL_BASE . '?';
 
         $expectedUrl = self::URL_BASE . '?' . http_build_query([$this->_session->name => $this->_session->id]);
-        $sessUrl     = $this->_session->url($url);
+        $sessUrl = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
 
@@ -68,7 +68,7 @@ class cSessionTest extends cTestingTestCase
         $url = self::URL_BASE . '?' . http_build_query([$this->_session->name => 'foobar']);
 
         $expectedUrl = self::URL_BASE . '?' . http_build_query([$this->_session->name => $this->_session->id]);
-        $sessUrl     = $this->_session->url($url);
+        $sessUrl = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
 
@@ -80,7 +80,7 @@ class cSessionTest extends cTestingTestCase
         $expectedUrl =
             self::URL_BASE . '?' . http_build_query([$this->_session->name => $this->_session->id, 'foo' => 'bar'])
             . '#baz';
-        $sessUrl     = $this->_session->url($url);
+        $sessUrl = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
 
@@ -89,7 +89,7 @@ class cSessionTest extends cTestingTestCase
         $url = self::URL_BASE . '?foo=bar&amp;baz=1';
 
         $expectedUrl = self::URL_BASE . "?{$this->_session->name}={$this->_session->id}&foo=bar&baz=1";
-        $sessUrl     = $this->_session->url($url);
+        $sessUrl = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
 }

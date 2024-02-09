@@ -122,7 +122,8 @@ class cHtmlPasswordBoxTest extends cTestingTestCase
         $this->assertSame('testInitValue', $pwBox->getAttribute('value'));
     }
 
-    public function testAutofill() {
+    public function testAutofill()
+    {
         // Test default autofill
         $pwBox = new cHTMLPasswordbox('testName', 'testInitValue');
         $this->assertTrue($this->_readAttribute($pwBox, '_autofill'));

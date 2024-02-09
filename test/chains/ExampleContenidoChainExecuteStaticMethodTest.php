@@ -22,13 +22,15 @@ use PHPUnit\Framework\TestCase;
  * @package    Testing
  * @subpackage Test_Chains
  */
-class chain_ExampleContenidoChainExecuteStaticMethod_Test {
+class chain_ExampleContenidoChainExecuteStaticMethod_Test
+{
 
     /**
      *
      * @param object $obj
      */
-    public static function callMe($obj) {
+    public static function callMe($obj)
+    {
         $obj->counter++;
     }
 }
@@ -40,12 +42,14 @@ class chain_ExampleContenidoChainExecuteStaticMethod_Test {
  * @package    Testing
  * @subpackage Test_Chains
  */
-class chain_ExampleContenidoChainExecuteStaticMethod_Test2 {
+class chain_ExampleContenidoChainExecuteStaticMethod_Test2
+{
 
     /**
      * @param stdClass $obj
      */
-    public static function callMe($obj) {
+    public static function callMe($obj)
+    {
         $obj->counter++;
     }
 }
@@ -56,7 +60,8 @@ class chain_ExampleContenidoChainExecuteStaticMethod_Test2 {
  * @package    Testing
  * @subpackage Test_Chains
  */
-class ExampleContenidoChainExecuteStaticMethodTest extends TestCase {
+class ExampleContenidoChainExecuteStaticMethodTest extends TestCase
+{
 
     /**
      * @var string
@@ -71,7 +76,8 @@ class ExampleContenidoChainExecuteStaticMethodTest extends TestCase {
     /**
      *
      */
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->_obj = new stdClass();
         $this->_obj->counter = 0;
     }
@@ -79,7 +85,8 @@ class ExampleContenidoChainExecuteStaticMethodTest extends TestCase {
     /**
      * Test Example.Contenido.Chain.ExecuteStaticMethod chain
      */
-    public function testNoChain() {
+    public function testNoChain()
+    {
         // execute chain
         cApiCecHook::execute($this->_chain, $this->_obj);
 
@@ -89,7 +96,8 @@ class ExampleContenidoChainExecuteStaticMethodTest extends TestCase {
     /**
      * Test Example.Contenido.Chain.ExecuteStaticMethod chain
      */
-    public function testOneChain() {
+    public function testOneChain()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -108,7 +116,8 @@ class ExampleContenidoChainExecuteStaticMethodTest extends TestCase {
     /**
      * Test Example.Contenido.Chain.ExecuteStaticMethod chain
      */
-    public function testTwoChains() {
+    public function testTwoChains()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 

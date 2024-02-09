@@ -23,7 +23,8 @@ use PHPUnit\Framework\TestCase;
  * @param string $uid
  * @return boolean
  */
-function chain_ContenidoFrontendCategoryAccess_Test($lang, $idcat, $uid) {
+function chain_ContenidoFrontendCategoryAccess_Test($lang, $idcat, $uid)
+{
     return false;
 }
 
@@ -35,7 +36,8 @@ function chain_ContenidoFrontendCategoryAccess_Test($lang, $idcat, $uid) {
  * @param string $uid
  * @return boolean
  */
-function chain_ContenidoFrontendCategoryAccess_Test2($lang, $idcat, $uid) {
+function chain_ContenidoFrontendCategoryAccess_Test2($lang, $idcat, $uid)
+{
     return true;
 }
 
@@ -47,7 +49,8 @@ function chain_ContenidoFrontendCategoryAccess_Test2($lang, $idcat, $uid) {
  * @param string $uid
  * @return boolean
  */
-function chain_ContenidoFrontendCategoryAccess_Test3($lang, $idcat, $uid) {
+function chain_ContenidoFrontendCategoryAccess_Test3($lang, $idcat, $uid)
+{
     return false;
 }
 
@@ -57,7 +60,8 @@ function chain_ContenidoFrontendCategoryAccess_Test3($lang, $idcat, $uid) {
  * @package    Testing
  * @subpackage Test_Chains
  */
-class ContenidoFrontendCategoryAccessTest extends TestCase {
+class ContenidoFrontendCategoryAccessTest extends TestCase
+{
 
     /**
      *
@@ -87,7 +91,8 @@ class ContenidoFrontendCategoryAccessTest extends TestCase {
     /**
      *
      */
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->_lang = cRegistry::getLanguageId();
 
         if (!$user = cTestingTestHelper::getUserByUsername('sysadmin')) {
@@ -100,7 +105,8 @@ class ContenidoFrontendCategoryAccessTest extends TestCase {
     /**
      * Test Contenido.Frontend.CategoryAccess chain
      */
-    public function testNoChain() {
+    public function testNoChain()
+    {
         // set n' execute chain
         // break at "true", default value "false"
         cApiCecHook::setBreakCondition(true, false);
@@ -112,7 +118,8 @@ class ContenidoFrontendCategoryAccessTest extends TestCase {
     /**
      * Test Contenido.Frontend.CategoryAccess chain
      */
-    public function testOneChain() {
+    public function testOneChain()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -133,7 +140,8 @@ class ContenidoFrontendCategoryAccessTest extends TestCase {
     /**
      * Test Contenido.Frontend.CategoryAccess chain
      */
-    public function testTwoChains() {
+    public function testTwoChains()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 

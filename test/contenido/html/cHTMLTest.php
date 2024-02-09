@@ -55,19 +55,19 @@ class cHTMLTest extends cTestingTestCase
     public function dataConstruct()
     {
         return [
-            'null'                                       => [
+            'null' => [
                 [],
                 [],
             ],
-            'empty'                                      => [
+            'empty' => [
                 [],
                 [],
             ],
-            'attribute as number without value'          => [
+            'attribute as number without value' => [
                 [1],
                 [1 => '1'], // <= TODO is this correct?
             ],
-            'attribute as number with value'             => [
+            'attribute as number with value' => [
                 [1 => '1'],
                 [1 => '1'],
             ],
@@ -75,11 +75,11 @@ class cHTMLTest extends cTestingTestCase
                 ['' => ''],
                 ['' => ''], // <= TODO is this correct?
             ],
-            'attribute as string without value'          => [
+            'attribute as string without value' => [
                 ['id'],
                 ['id' => 'id'],
             ],
-            'attribute as string with value'             => [
+            'attribute as string with value' => [
                 ['id' => 'my-id'],
                 ['id' => 'my-id'],
             ],
@@ -89,7 +89,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataConstruct()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testConstruct(array $input = null, array $output = null)
@@ -106,7 +106,7 @@ class cHTMLTest extends cTestingTestCase
     public function testAdvanceID()
     {
         $html = new cHTML(['id' => 'testId']);
-        $id   = $html->getID();
+        $id = $html->getID();
         $html->advanceID();
         $this->assertNotSame($id, $html->getID());
     }
@@ -114,8 +114,8 @@ class cHTMLTest extends cTestingTestCase
     public function dataGetIDAndSetID()
     {
         return [
-            'null'   => [null, null],
-            'empty'  => ['', null],
+            'null' => [null, null],
+            'empty' => ['', null],
             'foobar' => ['foobar', 'foobar'],
         ];
     }
@@ -123,7 +123,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataGetIDAndSetID()
      *
-     * @param string|null $input  data to be used as input
+     * @param string|null $input data to be used as input
      * @param string|null $output data to be expected as output
      */
     public function testGetIDAndSetID(string $input = null, string $output = null)
@@ -144,8 +144,8 @@ class cHTMLTest extends cTestingTestCase
     public function dataSetTag()
     {
         return [
-            'null'   => [null, '< />'], // <= TODO is this correct?
-            'empty'  => ['', '< />'], // <= TODO is this correct?
+            'null' => [null, '< />'], // <= TODO is this correct?
+            'empty' => ['', '< />'], // <= TODO is this correct?
             'foobar' => ['foobar', '<foobar />'],
         ];
     }
@@ -153,7 +153,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataSetTag()
      *
-     * @param string|null $input  data to be used as input
+     * @param string|null $input data to be used as input
      * @param string|null $output data to be expected as output
      */
     public function testSetTag(string $input = null, string $output = null)
@@ -169,8 +169,8 @@ class cHTMLTest extends cTestingTestCase
     public function dataSetAlt()
     {
         return [
-            'null'   => [null, null, null, null],
-            'empty'  => ['', '', '', ''],
+            'null' => [null, null, null, null],
+            'empty' => ['', '', '', ''],
             'foobar' => ['foo', 'bar', 'foo', 'bar'],
         ];
     }
@@ -178,9 +178,9 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataSetAlt()
      *
-     * @param string|null $input     data to be used as input
-     * @param string|null $inputSec  data to be used as secondary input
-     * @param string|null $output    data to be expected as output
+     * @param string|null $input data to be used as input
+     * @param string|null $inputSec data to be used as secondary input
+     * @param string|null $output data to be expected as output
      * @param string|null $outputSec data to be expected as secondary output
      */
     public function testSetAlt(
@@ -188,7 +188,8 @@ class cHTMLTest extends cTestingTestCase
         string $inputSec = null,
         string $output = null,
         string $outputSec = null
-    ) {
+    )
+    {
         // set alt w/ title (by default)
         $html = new cHTML();
         $html->setAlt($input);
@@ -221,8 +222,8 @@ class cHTMLTest extends cTestingTestCase
     public function dataSetClass()
     {
         return [
-            'null'   => [null, null],
-            'empty'  => ['', null],
+            'null' => [null, null],
+            'empty' => ['', null],
             'foobar' => ['foobar', 'foobar'],
         ];
     }
@@ -230,7 +231,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataSetClass()
      *
-     * @param string|null $input  data to be used as input
+     * @param string|null $input data to be used as input
      * @param string|null $output data to be expected as output
      */
     public function testSetClass(string $input = null, string $output = null)
@@ -267,8 +268,8 @@ class cHTMLTest extends cTestingTestCase
     public function dataSetStyle()
     {
         return [
-            'null'   => [null, null],
-            'empty'  => ['', null],
+            'null' => [null, null],
+            'empty' => ['', null],
             'foobar' => ['foobar', 'foobar'],
         ];
     }
@@ -276,7 +277,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataSetStyle()
      *
-     * @param string|null $input  data to be used as input
+     * @param string|null $input data to be used as input
      * @param string|null $output data to be expected as output
      */
     public function testSetStyle(string $input = null, string $output = null)
@@ -309,7 +310,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataGetAttribute()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testGetAttribute(array $input = null, array $output = null)
@@ -344,7 +345,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataSetAttribute()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testSetAttribute(array $input = null, array $output = null)
@@ -382,7 +383,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataGetAttributes()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testGetAttributes(array $input = null, array $output = null)
@@ -412,7 +413,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataSetAttributes()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testSetAttributes(array $input = null, array $output = null)
@@ -422,7 +423,7 @@ class cHTMLTest extends cTestingTestCase
         $html->setAttributes(['id', 'name', 'class', 'foo', 'bar' => 'baz']);
         $this->assertSame('< id="id" name="name" class="class" foo="foo" bar="baz" />', $html->render());
 
-        $ar   = [1 => '1', 2 => '2', 3 => '3', 4 => '4', 5 => '5',];
+        $ar = [1 => '1', 2 => '2', 3 => '3', 4 => '4', 5 => '5',];
         $html = new cHTML();
         $html->setAttributes([1, 2, 3, 4, 5]);
         $this->assertSame($ar, $html->getAttributes());
@@ -445,7 +446,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataUpdateAttribute()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testUpdateAttribute(array $input = null, array $output = null)
@@ -479,7 +480,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataUpdateAttributes()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testUpdateAttributes(array $input = null, array $output = null)
@@ -506,7 +507,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataRemoveAttribute()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testRemoveAttribute(array $input = null, array $output = null)
@@ -522,7 +523,7 @@ class cHTMLTest extends cTestingTestCase
         $html->removeAttribute('foo');
         $this->assertSame('< id="my-id" />', $html->render());
 
-        $ar   = [2 => '2', 3 => '3', 4 => '4', 5 => '5'];
+        $ar = [2 => '2', 3 => '3', 4 => '4', 5 => '5'];
         $html = new cHTML();
         $html->setAttributes([1, 2, 3, 4, 5]);
         $html->removeAttribute('1');
@@ -550,23 +551,23 @@ class cHTMLTest extends cTestingTestCase
     public function dataAppendStyleDefinition()
     {
         return [
-            'empty array'                            => [
+            'empty array' => [
                 [],
                 [],
             ],
-            'empty property and value'               => [
+            'empty property and value' => [
                 ['' => ''],
                 ['' => ''],
             ],
-            'single valid style'                     => [
+            'single valid style' => [
                 ['prop' => 'value'],
                 ['prop' => 'value'],
             ],
-            'multiple valid styles'                  => [
+            'multiple valid styles' => [
                 ['prop' => 'value', 'another-prop' => 'another-value'],
                 ['prop' => 'value', 'another-prop' => 'another-value'],
             ],
-            'invalid style with single semicolon'    => [
+            'invalid style with single semicolon' => [
                 ['prop' => 'value;'],
                 ['prop' => 'value'],
             ],
@@ -580,7 +581,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataAppendStyleDefinition()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testAppendStyleDefinition(array $input = null, array $output = null)
@@ -605,7 +606,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataAppendStyleDefinitions()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testAppendStyleDefinitions(array $input = null, array $output = null)
@@ -614,7 +615,7 @@ class cHTMLTest extends cTestingTestCase
         // $html->();
         // $this->assertSame('<  />', $html->render());
 
-        $ar   = ['margin-top' => '5px !important', 'margin-bottom' => '5px !important'];
+        $ar = ['margin-top' => '5px !important', 'margin-bottom' => '5px !important'];
         $html = new cHTML();
         $html->appendStyleDefinitions(['margin-top' => '5px !important', 'margin-bottom' => '5px !important']);
         $this->assertEquals($ar, $html->getStyleDefinition());
@@ -633,7 +634,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataAddRequiredScript()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testAddRequiredScript(array $input = null, array $output = null)
@@ -642,7 +643,7 @@ class cHTMLTest extends cTestingTestCase
         // $html->addRequiredScript();
         // $this->assertSame('<  />', $html->render());
 
-        $ar   = [0 => 'test.js', 1 => '', 2 => 'test1.js', 3 => 'test2.js'];
+        $ar = [0 => 'test.js', 1 => '', 2 => 'test1.js', 3 => 'test2.js'];
         $html = new cHTML();
         $html->addRequiredScript('test.js');
         $html->addRequiredScript('test.js');
@@ -673,7 +674,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataToHtml()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testToHtml(array $input = null, array $output = null)
@@ -707,7 +708,7 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataRender()
      *
-     * @param array|null $input  data to be used as input
+     * @param array|null $input data to be used as input
      * @param array|null $output data to be expected as output
      */
     public function testRender(array $input = null, array $output = null)

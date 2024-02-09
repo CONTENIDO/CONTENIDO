@@ -39,8 +39,8 @@ function chain_ContenidoFrontendPostprocessUrlBuilding_Test2($url)
 class ContenidoFrontendPostprocessUrlBuildingTest extends TestCase
 {
     private $_chain = 'Contenido.Frontend.PostprocessUrlBuilding';
-    private $_url          = '/front_content.php?idart=123';
-    private $_urlOneChain  = '/front_content.php?idart=123&foo=bar';
+    private $_url = '/front_content.php?idart=123';
+    private $_urlOneChain = '/front_content.php?idart=123&foo=bar';
     private $_urlTwoChains = '/front_content.php?idart=123&foo=bar&myid=asdf';
 
 
