@@ -18,7 +18,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class SolrSearchModule {
+class SolrSearchModule
+{
 
     /**
      *
@@ -61,7 +62,8 @@ class SolrSearchModule {
      *
      * @throws cException
      */
-    public function __construct(array $options = NULL) {
+    public function __construct(array $options = NULL)
+    {
         if (NULL !== $options) {
             foreach ($options as $name => $value) {
                 $name = '_' . $name;
@@ -75,7 +77,8 @@ class SolrSearchModule {
      * @return SolrObject
      * @throws cException
      */
-    private function _getSearchResults() {
+    private function _getSearchResults()
+    {
         $searcher = new SolrSearcherSimple();
         $searcher->setSearchTerm($this->_searchTerm);
         $searcher->setPage($this->_page);
@@ -86,7 +89,8 @@ class SolrSearchModule {
     /**
      * @throws cException|cInvalidArgumentException
      */
-    public function render() {
+    public function render()
+    {
         $tpl = cSmartyFrontend::getInstance();
         $tpl->assign('label', $this->_label);
         $tpl->assign('href', cUri::getInstance()->build([
@@ -99,9 +103,9 @@ class SolrSearchModule {
 
         // calculate number of pages
         $numPages = $this->_response->numFound / $this->_itemsPerPage;
-		if (is_float($numPages)) {
-			$numPages = ceil($numPages);
-		}
+        if (is_float($numPages)) {
+            $numPages = ceil($numPages);
+        }
 
         $tpl->assign('numPages', $numPages);
         $tpl->assign('numFound', $this->_response->numFound);

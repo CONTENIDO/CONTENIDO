@@ -19,7 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-abstract class PifaExternalOptionsDatasourceInterface {
+abstract class PifaExternalOptionsDatasourceInterface
+{
 
     /**
      * Gets all option labels.

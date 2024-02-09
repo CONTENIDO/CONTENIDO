@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage UserForum
  */
-class UserForum {
+class UserForum
+{
 
     /**
      * name of this plugin
@@ -32,11 +33,13 @@ class UserForum {
 
     /**
      */
-    public static function getName() {
+    public static function getName()
+    {
         return self::$_name;
     }
 
-    public static function i18n($key) {
+    public static function i18n($key)
+    {
         $trans = i18n($key, self::$_name);
 
         return $trans;
@@ -47,7 +50,8 @@ class UserForum {
      *
      * @return string
      */
-    public static function getUrl() {
+    public static function getUrl()
+    {
         $cfg = cRegistry::getConfig();
 
         $path = cRegistry::getBackendUrl() . $cfg['path']['plugins'];

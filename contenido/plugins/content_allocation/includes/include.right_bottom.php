@@ -37,17 +37,17 @@ if (!is_object($db)) {
 }
 
 if (isset($requestTreeItem['idpica_alloc'])) {
-  $aPostTreeItem['idpica_alloc'] = cSecurity::toInteger($requestTreeItem['idpica_alloc']);
+    $aPostTreeItem['idpica_alloc'] = cSecurity::toInteger($requestTreeItem['idpica_alloc']);
 }
 
 if (isset($requestTreeItem['parentid'])) {
-  $aPostTreeItem['parentid'] = cSecurity::toInteger($requestTreeItem['parentid']);
+    $aPostTreeItem['parentid'] = cSecurity::toInteger($requestTreeItem['parentid']);
 }
 
 if (isset($requestTreeItem['name'])) {
-  $sName = stripslashes($requestTreeItem['name']);
-  $sName = $db->escape($sName);
-  $aPostTreeItem['name'] = $sName;
+    $sName = stripslashes($requestTreeItem['name']);
+    $sName = $db->escape($sName);
+    $aPostTreeItem['name'] = $sName;
 }
 
 $oPage = new cGuiPage("content_allocation_edit", "content_allocation");
@@ -82,7 +82,7 @@ if ($requestGetStep == 'offline') {
     $oTree->setOffline($requestIdPicaAlloc);
 }
 if ($requestGetStep == 'expanded') {
-	$oTree->setTreeStatus($requestIdPicaAlloc);
+    $oTree->setTreeStatus($requestIdPicaAlloc);
 }
 
 $oDiv = new cHTMLDiv();

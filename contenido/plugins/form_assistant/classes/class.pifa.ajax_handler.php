@@ -18,7 +18,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class PifaAjaxHandler {
+class PifaAjaxHandler
+{
 
     /**
      * Action constant to display a form for editing a PIFA form field.
@@ -98,7 +99,8 @@ class PifaAjaxHandler {
      * @throws cDbException
      * @throws cException
      */
-    function dispatch($action) {
+    function dispatch($action)
+    {
         $area = cRegistry::getArea();
 
         // check for permission
@@ -131,7 +133,7 @@ class PifaAjaxHandler {
                 break;
 
             case self::DELETE_DATA:
-                $idform  = cSecurity::toInteger($_GET['idform'] ?? '');
+                $idform = cSecurity::toInteger($_GET['idform'] ?? '');
                 $iddatas = explode(',', $_POST['iddatas'] ?? '');
                 $iddatas = array_map('cSecurity::toInteger', $iddatas);
                 $iddatas = array_filter($iddatas);
@@ -192,7 +194,8 @@ class PifaAjaxHandler {
      * @throws cDbException
      * @throws cException
      */
-    private function _getFieldForm($idform, $idfield, $fieldType) {
+    private function _getFieldForm($idform, $idfield, $fieldType)
+    {
         $cfg = cRegistry::getConfig();
 
         // get field
@@ -270,10 +273,10 @@ class PifaAjaxHandler {
         // build href to add new option row (requires right to add option)
         if (cRegistry::getPerm()->have_perm_area_action('form_ajax', self::POST_FIELD_FORM) && cRegistry::getPerm()->have_perm_area_action('form_ajax', self::GET_OPTION_ROW)) {
             $tpl->assign('hrefAddOption', 'main.php?' . implode('&', [
-                'area=form_ajax',
-                'frame=4',
-                'contenido=' . cRegistry::getBackendSessionId(),
-                'action=' . PifaAjaxHandler::GET_OPTION_ROW
+                    'area=form_ajax',
+                    'frame=4',
+                    'contenido=' . cRegistry::getBackendSessionId(),
+                    'action=' . PifaAjaxHandler::GET_OPTION_ROW
                 ]));
         }
 
@@ -293,10 +296,11 @@ class PifaAjaxHandler {
      * @throws cDbException
      * @throws cException
      */
-    private function _postFieldForm($idform, $idfield) {
+    private function _postFieldForm($idform, $idfield)
+    {
         $area = cRegistry::getArea();
 
-        $string_cast_deep = function($value) {
+        $string_cast_deep = function ($value) {
             $value = cSecurity::unescapeDB($value);
             $value = cSecurity::toString($value);
             $value = trim($value);
@@ -383,7 +387,7 @@ class PifaAjaxHandler {
             $displayLabel = cSecurity::unescapeDB($displayLabel);
             $displayLabel = cSecurity::toString($displayLabel);
             $displayLabel = trim($displayLabel);
-            $displayLabel = 'on' === $displayLabel? 1 : 0;
+            $displayLabel = 'on' === $displayLabel ? 1 : 0;
             if ($displayLabel !== $pifaField->get('display_label')) {
                 $pifaField->set('display_label', $displayLabel);
             }
@@ -446,7 +450,7 @@ class PifaAjaxHandler {
             $obligatory = cSecurity::unescapeDB($obligatory);
             $obligatory = cSecurity::toString($obligatory);
             $obligatory = trim($obligatory);
-            $obligatory = 'on' === $obligatory? 1 : 0;
+            $obligatory = 'on' === $obligatory ? 1 : 0;
             if ($obligatory !== $pifaField->get('obligatory')) {
                 $pifaField->set('obligatory', $obligatory);
             }
@@ -580,7 +584,8 @@ class PifaAjaxHandler {
      * @param int $idfield
      * @throws PifaException
      */
-    private function _deleteField($idfield) {
+    private function _deleteField($idfield)
+    {
         if (0 === $idfield) {
             $msg = Pifa::i18n('MISSING_IDFIELD');
             throw new PifaException($msg);
@@ -592,12 +597,13 @@ class PifaAjaxHandler {
 
     /**
      *
-     * @param int   $idform
+     * @param int $idform
      * @param array $iddatas
      *
      * @throws PifaException
      */
-    private function _deleteData($idform, array $iddatas) {
+    private function _deleteData($idform, array $iddatas)
+    {
         if (empty($iddatas)) {
             $msg = Pifa::i18n('MISSING_IDDATA');
             throw new PifaException($msg);
@@ -613,14 +619,16 @@ class PifaAjaxHandler {
      * @param int $idform
      * @param string $idfields CSV of integers
      */
-    private function _reorderFields($idform, $idfields) {
+    private function _reorderFields($idform, $idfields)
+    {
         PifaFieldCollection::reorder($idform, $idfields);
     }
 
     /**
      * @param int $idform
      */
-    private function _exportData($idform) {
+    private function _exportData($idform)
+    {
 
         // read and echo data
         $pifaForm = new PifaForm($idform);
@@ -654,7 +662,8 @@ class PifaAjaxHandler {
      * @param int $idform of form to be exported
      * @param bool $withData if form data should be included
      */
-    private function _exportForm($idform, $withData) {
+    private function _exportForm($idform, $withData)
+    {
 
         // read and echo data
         $pifaForm = new PifaForm($idform);
@@ -688,7 +697,8 @@ class PifaAjaxHandler {
      * @param string $name
      * @param string $file
      */
-    private function _getFile($name, $file) {
+    private function _getFile($name, $file)
+    {
         $cfg = cRegistry::getConfig();
 
         $path = $cfg['path']['contenido_cache'] . 'form_assistant/';
@@ -729,7 +739,8 @@ class PifaAjaxHandler {
      *
      * @throws cException
      */
-    private function _getOptionRow($index) {
+    private function _getOptionRow($index)
+    {
         $cfg = cRegistry::getConfig();
 
         $tpl = cSmartyBackend::getInstance(true);

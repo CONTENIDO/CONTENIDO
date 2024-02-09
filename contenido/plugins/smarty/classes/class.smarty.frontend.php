@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage SmartyWrapper
  */
-class cSmartyFrontend {
+class cSmartyFrontend
+{
 
     /**
      * The smarty Object
@@ -46,16 +47,17 @@ class cSmartyFrontend {
     /**
      * constructor
      *
-     * @param array &$aCfg       contenido cfg array
+     * @param array &$aCfg contenido cfg array
      * @param array &$aClientCfg contenido client cfg array of the specific
      *                           client
-     * @param bool  $bSanityCheck
+     * @param bool $bSanityCheck
      *
      * @throws cException
      * @throws cInvalidArgumentException if the given configurations are not an
      *         array
      */
-    public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false) {
+    public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false)
+    {
         // check if already instanciated
         if (isset(self::$bSmartyInstanciated) && self::$bSmartyInstanciated) {
             throw new cException("cSmartyFrontend class is intended to be used as singleton. Do not instanciate multiple times.");
@@ -104,7 +106,8 @@ class cSmartyFrontend {
      *
      * @throws cException if this function is called
      */
-    public function __clone() {
+    public function __clone()
+    {
         throw new cException("cSmartyFrontend class is intended to be used as singleton. Do not clone.");
     }
 
@@ -112,7 +115,8 @@ class cSmartyFrontend {
      * destructor
      * set cSmarty::bSmartyInstanciated to false
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         self::$bSmartyInstanciated = false;
     }
 
@@ -121,10 +125,11 @@ class cSmartyFrontend {
      *
      * @param boolean $bResetTemplate true if the template values shall all be
      *        retested
-     * @throws cException if singleton has not been instantiated yet
      * @return cSmartyWrapper
+     * @throws cException if singleton has not been instantiated yet
      */
-    public static function getInstance($bResetTemplate = false) {
+    public static function getInstance($bResetTemplate = false)
+    {
         if (!isset(self::$oSmarty)) {
             // @TODO find a smart way to instanciate smarty object on demand
             throw new cException("Smarty singleton not instantiated yet.");
@@ -139,7 +144,8 @@ class cSmartyFrontend {
     /**
      * sets the default paths again
      */
-    public static function resetPaths() {
+    public static function resetPaths()
+    {
         self::$oSmarty->setTemplateDir(self::$aDefaultPaths['template_dir']);
         self::$oSmarty->setCacheDir(self::$aDefaultPaths['cache_dir']);
         self::$oSmarty->setCompileDir(self::$aDefaultPaths['compile_dir']);

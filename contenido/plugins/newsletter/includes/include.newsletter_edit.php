@@ -33,7 +33,7 @@ $oNewsletters = new NewsletterCollection();
 
 // Ensure to have numeric newsletter id
 if (isset($idnewsletter)) {
-    $idnewsletter = (int) $idnewsletter;
+    $idnewsletter = (int)$idnewsletter;
 }
 
 // Include plugins
@@ -138,7 +138,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 
     // Get test destination
     if ($perm->have_perm_area_action($area, "news_send_test")) {
-        $iTestIDNewsGroup = (int) $oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang);
+        $iTestIDNewsGroup = (int)$oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang);
 //        $iTestIDNewsGroup = 0;
     } else {
         // If user doesn't have the news_send_test right, just send to himself

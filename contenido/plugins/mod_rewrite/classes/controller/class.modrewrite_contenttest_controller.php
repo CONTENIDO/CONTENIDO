@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
+class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
+{
 
     /**
      * Number of max items to process
@@ -32,20 +33,22 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
     /**
      * Initializer method, sets some view variables
      */
-    public function init() {
+    public function init()
+    {
         $this->_oView->content = '';
         $this->_oView->form_idart_chk = ($this->_getParam('idart')) ? ' checked="checked"' : '';
         $this->_oView->form_idcat_chk = ($this->_getParam('idcat')) ? ' checked="checked"' : '';
         $this->_oView->form_idcatart_chk = ($this->_getParam('idcatart')) ? ' checked="checked"' : '';
         $this->_oView->form_idartlang_chk = ($this->_getParam('idartlang')) ? ' checked="checked"' : '';
-        $this->_oView->form_maxitems = (int) $this->_getParam('maxitems', 200);
+        $this->_oView->form_maxitems = (int)$this->_getParam('maxitems', 200);
         $this->_iMaxItems = $this->_oView->form_maxitems;
     }
 
     /**
      * Index action
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $this->_oView->content = '';
     }
 
@@ -56,7 +59,8 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function testAction() {
+    public function testAction()
+    {
         $this->_oView->content = '';
 
         // Array for testcases

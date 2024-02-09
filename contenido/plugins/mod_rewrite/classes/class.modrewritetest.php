@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewriteTest {
+class ModRewriteTest
+{
 
     /**
      * Global $cfg array
@@ -55,12 +56,13 @@ class ModRewriteTest {
 
     /**
      * Constructor
-     * @param  int  $maxItems  Max items (urls to articles/categories) to process
+     * @param int $maxItems Max items (urls to articles/categories) to process
      */
-    public function __construct($maxItems) {
+    public function __construct($maxItems)
+    {
         global $cfg;
-        $this->_aCfg = & $cfg;
-        $this->_aCfgTab = & $cfg['tab'];
+        $this->_aCfg = &$cfg;
+        $this->_aCfgTab = &$cfg['tab'];
         $this->_iMaxItems = $maxItems;
     }
 
@@ -69,7 +71,8 @@ class ModRewriteTest {
      *
      * @return  string  Resolved URL
      */
-    public function getResolvedUrl() {
+    public function getResolvedUrl()
+    {
         return $this->_sResolvedUrl;
     }
 
@@ -78,15 +81,16 @@ class ModRewriteTest {
      *
      * @return  bool
      */
-    public function getRoutingFoundState() {
+    public function getRoutingFoundState()
+    {
         return $this->_bRoutingFound;
     }
 
     /**
      * Fetches full structure of the installation (categories and articles) and returns it back.
      *
-     * @param   int $idclient Client id
-     * @param   int $idlang   Language id
+     * @param int $idclient Client id
+     * @param int $idlang Language id
      *
      * @return  array  Full structure as follows
      * <code>
@@ -95,14 +99,15 @@ class ModRewriteTest {
      * </code>
      * @throws cDbException
      */
-    public function fetchFullStructure($idclient = NULL, $idlang = NULL) {
+    public function fetchFullStructure($idclient = NULL, $idlang = NULL)
+    {
         $db = cRegistry::getDb();
         $db2 = cRegistry::getDb();
 
-        if (!$idclient || (int) $idclient == 0) {
+        if (!$idclient || (int)$idclient == 0) {
             $idclient = cRegistry::getClientId();
         }
-        if (!$idlang || (int) $idlang == 0) {
+        if (!$idlang || (int)$idlang == 0) {
             $idlang = cRegistry::getLanguageId();
         }
 
@@ -171,19 +176,20 @@ class ModRewriteTest {
      *
      * The result is used to generate seo urls...
      *
-     * @param  array  $arr    Associative array with some data as follows:
+     * @param array $arr Associative array with some data as follows:
      *                        <code>
      *                        $arr['idcat']
      *                        $arr['idart']
      *                        $arr['idcatart']
      *                        $arr['idartlang']
      *                        </code>
-     * @param  string $type   Either 'c' or 'a' (category or article). If set to
+     * @param string $type Either 'c' or 'a' (category or article). If set to
      *                        'c' only the parameter idcat will be added to the URL
      *
      * @return string
      */
-    public function composeURL($arr, $type) {
+    public function composeURL($arr, $type)
+    {
         $type = ($type == 'a') ? 'a' : 'c';
 
         $param = [];
@@ -212,14 +218,15 @@ class ModRewriteTest {
      * Resolves variables of a page (idcat, idart, idclient, idlang, etc.) by
      * processing passed url using ModRewriteController
      *
-     * @param   string $url Url to resolve
+     * @param string $url Url to resolve
      *
      * @return  array   Associative array with resolved data
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function resolveUrl($url) {
+    public function resolveUrl($url)
+    {
         // some globals to reset
         $aGlobs = [
             'mr_preprocessedPageError', 'idart', 'idcat'
@@ -286,10 +293,11 @@ class ModRewriteTest {
     /**
      * Creates a readable string from passed resolved data array.
      *
-     * @param   array   $data Associative array with resolved data
+     * @param array $data Associative array with resolved data
      * @return  string  Readable resolved data
      */
-    public function getReadableResolvedData(array $data) {
+    public function getReadableResolvedData(array $data)
+    {
         // compose resolved string
         $ret = '';
         foreach ($data as $k => $v) {

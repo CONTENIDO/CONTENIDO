@@ -12,7 +12,7 @@
         <version>1.0.0</version>
     </general>
     <requirements php="5.2.3">
-        <contenido minversion="4.9.0" />
+        <contenido minversion="4.9.0"/>
     </requirements>
     <contenido>
         <areas>
@@ -47,27 +47,45 @@
             <action area="recipients_import">recipients_import_exec</action>
         </actions>
         <frames>
-            <frame area="news" filetype="main" name="newsletter/includes/include.newsletter_left_top.php" frameId="1" />
-            <frame area="news" filetype="main" name="newsletter/includes/include.newsletter_menu.php" frameId="2" />
-            <frame area="news" filetype="main" name="newsletter/includes/include.newsletter_edit.php" frameId="4" />
-            <frame area="recipients" filetype="main" name="newsletter/includes/include.recipients_left_top.php" frameId="1" />
-            <frame area="recipients" filetype="main" name="newsletter/includes/include.recipients_menu.php" frameId="2" />
-            <frame area="recipients" filetype="main" name="include.subnav_blank.php" frameId="3" />
-            <frame area="recipients" filetype="main" name="newsletter/includes/include.recipients_edit.php" frameId="4" />
-            <frame area="news" filetype="main" name="newsletter/includes/include.newsletter_subnav.php" frameId="3" />
-            <frame area="recipientgroups" filetype="main" name="newsletter/includes/include.recipients.group_menu.php" frameId="2" />
-            <frame area="recipientgroups" filetype="main" name="newsletter/includes/include.recipients.group.subnav.php" frameId="3" />
-            <frame area="recipientgroups" filetype="main" name="newsletter/includes/include.recipients.group_edit.php" frameId="4" />
-            <frame area="news_jobs" filetype="main" name="newsletter/includes/include.newsletter_jobs_menu.php" frameId="2" />
-            <frame area="news_jobs" filetype="main" name="newsletter/includes/include.newsletter_jobs_details.php" frameId="4" />
-            <frame area="news_jobs" filetype="main" name="newsletter/includes/include.newsletter_jobs_subnav.php" frameId="3" />
-            <frame area="news_edit" filetype="main" name="newsletter/includes/include.newsletter_edit_message.php" frameId="4" />
-            <frame area="recipients_import" filetype="main" name="newsletter/includes/include.recipients_import.php" frameId="4" />
+            <frame area="news" filetype="main"
+                   name="newsletter/includes/include.newsletter_left_top.php" frameId="1"/>
+            <frame area="news" filetype="main"
+                   name="newsletter/includes/include.newsletter_menu.php" frameId="2"/>
+            <frame area="news" filetype="main"
+                   name="newsletter/includes/include.newsletter_edit.php" frameId="4"/>
+            <frame area="recipients" filetype="main"
+                   name="newsletter/includes/include.recipients_left_top.php" frameId="1"/>
+            <frame area="recipients" filetype="main"
+                   name="newsletter/includes/include.recipients_menu.php" frameId="2"/>
+            <frame area="recipients" filetype="main" name="include.subnav_blank.php" frameId="3"/>
+            <frame area="recipients" filetype="main"
+                   name="newsletter/includes/include.recipients_edit.php" frameId="4"/>
+            <frame area="news" filetype="main"
+                   name="newsletter/includes/include.newsletter_subnav.php" frameId="3"/>
+            <frame area="recipientgroups" filetype="main"
+                   name="newsletter/includes/include.recipients.group_menu.php" frameId="2"/>
+            <frame area="recipientgroups" filetype="main"
+                   name="newsletter/includes/include.recipients.group.subnav.php" frameId="3"/>
+            <frame area="recipientgroups" filetype="main"
+                   name="newsletter/includes/include.recipients.group_edit.php" frameId="4"/>
+            <frame area="news_jobs" filetype="main"
+                   name="newsletter/includes/include.newsletter_jobs_menu.php" frameId="2"/>
+            <frame area="news_jobs" filetype="main"
+                   name="newsletter/includes/include.newsletter_jobs_details.php" frameId="4"/>
+            <frame area="news_jobs" filetype="main"
+                   name="newsletter/includes/include.newsletter_jobs_subnav.php" frameId="3"/>
+            <frame area="news_edit" filetype="main"
+                   name="newsletter/includes/include.newsletter_edit_message.php" frameId="4"/>
+            <frame area="recipients_import" filetype="main"
+                   name="newsletter/includes/include.recipients_import.php" frameId="4"/>
         </frames>
         <nav_sub>
             <nav area="news" level="0" navm="3">newsletter/xml/;navigation/extra/newsletter</nav>
-            <nav area="recipients" level="1" navm="3">newsletter/xml/;navigation/extra/recipients</nav>
-            <nav area="recipientgroups" level="1" navm="3">newsletter/xml/;navigation/extra/recipientgroups</nav>
+            <nav area="recipients" level="1" navm="3">newsletter/xml/;navigation/extra/recipients
+            </nav>
+            <nav area="recipientgroups" level="1" navm="3">
+                newsletter/xml/;navigation/extra/recipientgroups
+            </nav>
         </nav_sub>
     </contenido>
 </plugin>

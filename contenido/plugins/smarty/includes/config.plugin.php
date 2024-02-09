@@ -26,7 +26,7 @@ $cfgClient = cRegistry::getClientConfig();
 
 // Load smarty
 if (!defined('SMARTY_DIR')) {
-    define('SMARTY_DIR', $cfg['plugins'][$pluginName]. 'smarty_source/');
+    define('SMARTY_DIR', $cfg['plugins'][$pluginName] . 'smarty_source/');
 }
 
 require_once(SMARTY_DIR . 'Smarty.class.php');

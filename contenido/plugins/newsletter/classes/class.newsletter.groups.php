@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method NewsletterRecipientGroup createNewItem
  * @method NewsletterRecipientGroup|bool next
  */
-class NewsletterRecipientGroupCollection extends ItemCollection {
+class NewsletterRecipientGroupCollection extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('news_groups'), 'idnewsgroup');
         $this->_setItemClass('NewsletterRecipientGroup');
     }
@@ -43,7 +45,8 @@ class NewsletterRecipientGroupCollection extends ItemCollection {
      * @return Item
      * @throws cException
      */
-    public function create($groupname, $defaultgroup = 0) {
+    public function create($groupname, $defaultgroup = 0)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $group = new NewsletterRecipientGroup();
@@ -78,7 +81,8 @@ class NewsletterRecipientGroupCollection extends ItemCollection {
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function delete($itemID) {
+    public function delete($itemID)
+    {
         $oAssociations = new NewsletterRecipientGroupMemberCollection();
         $oAssociations->setWhere("idnewsgroup", $itemID);
         $oAssociations->query();
@@ -94,7 +98,8 @@ class NewsletterRecipientGroupCollection extends ItemCollection {
 /**
  * Single RecipientGroup Item
  */
-class NewsletterRecipientGroup extends Item {
+class NewsletterRecipientGroup extends Item
+{
     /**
      * Constructor Function
      *
@@ -103,7 +108,8 @@ class NewsletterRecipientGroup extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('news_groups'), 'idnewsgroup');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -115,7 +121,8 @@ class NewsletterRecipientGroup extends Item {
      *
      * @throws cException
      */
-    public function store() {
+    public function store()
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
@@ -139,12 +146,13 @@ class NewsletterRecipientGroup extends Item {
      * User-defined setter for newsletter recipient group fields.
      *
      * @param string $name
-     * @param mixed  $value
-     * @param bool   $bSafe Flag to run defined inFilter on passed value
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
      *
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idlang':
             case 'idclient':
@@ -163,13 +171,15 @@ class NewsletterRecipientGroup extends Item {
  * @method NewsletterRecipientGroupMember createNewItem
  * @method NewsletterRecipientGroupMember|bool next
  */
-class NewsletterRecipientGroupMemberCollection extends ItemCollection {
+class NewsletterRecipientGroupMemberCollection extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('news_groupmembers'), 'idnewsgroupmember');
         $this->_setJoinPartner('NewsletterRecipientGroupCollection');
         $this->_setJoinPartner('NewsletterRecipientCollection');
@@ -186,7 +196,8 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function create($idrecipientgroup, $idrecipient) {
+    public function create($idrecipientgroup, $idrecipient)
+    {
         $this->setWhere("idnewsgroup", $idrecipientgroup);
         $this->setWhere("idnewsrcp", $idrecipient);
         $this->query();
@@ -212,7 +223,8 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function remove($idrecipientgroup, $idrecipient) {
+    public function remove($idrecipientgroup, $idrecipient)
+    {
         $idrecipientgroup = cSecurity::toInteger($idrecipientgroup);
         $idrecipient = cSecurity::toInteger($idrecipient);
 
@@ -232,7 +244,8 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function removeRecipientFromGroups($idrecipient) {
+    public function removeRecipientFromGroups($idrecipient)
+    {
         $idrecipient = cSecurity::toInteger($idrecipient);
 
         $this->setWhere("idnewsrcp", $idrecipient);
@@ -250,7 +263,8 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function removeGroup($idgroup) {
+    public function removeGroup($idgroup)
+    {
         $idgroup = cSecurity::toInteger($idgroup);
 
         $this->setWhere("idnewsgroup", $idgroup);
@@ -271,7 +285,8 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function getRecipientsInGroup($idrecipientgroup, $asObjects = true) {
+    public function getRecipientsInGroup($idrecipientgroup, $asObjects = true)
+    {
         $idrecipientgroup = cSecurity::toInteger($idrecipientgroup);
 
         $this->setWhere("idnewsgroup", $idrecipientgroup);
@@ -298,7 +313,8 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
 /**
  * Single RecipientGroup Item
  */
-class NewsletterRecipientGroupMember extends Item {
+class NewsletterRecipientGroupMember extends Item
+{
     /**
      * Constructor Function
      *
@@ -307,7 +323,8 @@ class NewsletterRecipientGroupMember extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('news_groupmembers'), 'idnewsgroupmember');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -318,12 +335,13 @@ class NewsletterRecipientGroupMember extends Item {
      * User-defined setter for newsletter recipient group member fields.
      *
      * @param string $name
-     * @param mixed  $value
-     * @param bool   $bSafe Flag to run defined inFilter on passed value
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
      *
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idnewsrcp':
             case 'idnewsgroup':

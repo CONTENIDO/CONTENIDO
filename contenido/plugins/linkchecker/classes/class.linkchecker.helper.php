@@ -78,7 +78,7 @@ class cLinkcheckerHelper
      */
     public static function urlIsImage(string $url): bool
     {
-        return (bool) preg_match(self::IMAGE_TYPES_REGEX, $url);
+        return (bool)preg_match(self::IMAGE_TYPES_REGEX, $url);
     }
 
     /**
@@ -90,7 +90,7 @@ class cLinkcheckerHelper
      */
     public static function urlIsUri(string $url): bool
     {
-        return (bool) preg_match(self::URI_TYPES_REGEX, $url);
+        return (bool)preg_match(self::URI_TYPES_REGEX, $url);
     }
 
 }

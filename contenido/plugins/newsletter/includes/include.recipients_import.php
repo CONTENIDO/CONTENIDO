@@ -46,9 +46,9 @@ $aFieldDetails["name"]["fieldtype"] = "field"; // field, plugin or group
 $aFieldDetails["name"]["mandatory"] = false; // true or false
 $aFieldDetails["name"]["type"] = "string"; // string, boolean or date
 $aFieldDetails["name"]["link"] = false; // plugin name for plugins, recipient
-                                        // group id for groups
+// group id for groups
 $aFieldDetails["name"]["col"] = -1; // Stores column index where this field has
-                                    // been found
+// been found
 $aFields["email"] = cString::toLowerCase(i18n("Email", 'newsletter'));
 $aFieldDetails["email"]["fieldtype"] = "field";
 $aFieldDetails["email"]["mandatory"] = true;

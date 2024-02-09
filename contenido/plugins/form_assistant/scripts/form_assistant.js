@@ -13,7 +13,7 @@
  * @link       https://www.contenido.org
  */
 
-(function(Con, $) {
+(function (Con, $) {
 
     var NAME = 'plugin-form-assistant';
 
@@ -34,7 +34,7 @@
          * @param  {String}  key
          * @return  {String}  Decoded value
          */
-        getTrans: function(key) {
+        getTrans: function (key) {
             // get translations
             var value = FormAssistant.translations[key];
             // htmldecode value

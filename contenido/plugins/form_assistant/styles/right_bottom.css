@@ -1,9 +1,8 @@
-
 /******************************************************************************/
 /* FORM: all forms                                                            */
 /******************************************************************************/
 
-form+form {
+form + form {
     margin-top: 25px;
 }
 
@@ -63,7 +62,7 @@ legend {
 }
 
 #pifa-form label,
-/*#pifa-form-export label,*/
+    /*#pifa-form-export label,*/
 #pifa-form-import label {
     float: left;
     width: 20%;
@@ -71,7 +70,7 @@ legend {
 }
 
 #pifa-form div input,
-#pifa-form div select/*,
+#pifa-form div select /*,
 #pifa-form-export div input,
 #pifa-form-export div select,*/
 #pifa-form-import div input,
@@ -150,12 +149,13 @@ legend {
     padding-top: 3px;
 }
 
-#pifa-form-field-list li>div {
+#pifa-form-field-list li > div {
     float: left;
     padding: 3px;
     border-collapse: collapse;
 }
-#pifa-form-field-list li>div.descr-icon {
+
+#pifa-form-field-list li > div.descr-icon {
     padding: 0;
     width: 46px;
     height: 46px;
@@ -362,7 +362,7 @@ legend {
     width: auto;
 }
 
-.pseudo-fieldset>div {
+.pseudo-fieldset > div {
     margin: 5px;
 }
 
@@ -388,6 +388,7 @@ legend {
     padding: 1px 1px 3px;
 
 }
+
 .option-outer {
     background-color: #f1f1f1;
     margin-bottom: 2px;
@@ -456,11 +457,11 @@ legend {
     background-color: #f1f1f1;
 }
 
-#add-options-div input{
+#add-options-div input {
     margin-top: 3px;
 }
 
-#add-options-div span{
+#add-options-div span {
     margin-top: 3px;
 }
 
@@ -481,14 +482,14 @@ legend {
 }
 
 .ui-dialog .ui-dialog-titlebar-close span {
-  display: block;
-  margin: 0;
+    display: block;
+    margin: 0;
 
 }
 
 .ui-dialog-titlebar-close .ui-icon {
-     height: 17px;
-     width: 17px;
+    height: 17px;
+    width: 17px;
     background: url("../images/button_close.png") 0;
     margin-bottom: 4px;
 }
@@ -512,6 +513,7 @@ legend {
     height: 16px;
     border: 0;
 }
+
 .ui-dialog .ui-button.ui-state-hover {
     color: #fff;
     background: #0078a3 url("../../../images/but_ok.gif") repeat-x;
@@ -525,27 +527,89 @@ legend {
     margin-left: 5px;
 }
 
-.pifa-icon-1, .pifa-field-type-1 {background-image: url(../images/pifa_field_type_1.png);}
-.pifa-icon-2, .pifa-field-type-2 {background-image: url(../images/pifa_field_type_2.png);}
-.pifa-icon-3, .pifa-field-type-3 {background-image: url(../images/pifa_field_type_3.png);}
-.pifa-icon-4, .pifa-field-type-4 {background-image: url(../images/pifa_field_type_4.png);}
-.pifa-icon-5, .pifa-field-type-5 {background-image: url(../images/pifa_field_type_5.png);}
-.pifa-icon-6, .pifa-field-type-6 {background-image: url(../images/pifa_field_type_6.png);}
-.pifa-icon-7, .pifa-field-type-7 {background-image: url(../images/pifa_field_type_7.png);}
-.pifa-icon-8, .pifa-field-type-8 {background-image: url(../images/pifa_field_type_8.png);}
-.pifa-icon-9, .pifa-field-type-9 {background-image: url(../images/pifa_field_type_9.png);}
-.pifa-icon-10, .pifa-field-type-10 {background-image: url(../images/pifa_field_type_10.png);}
-.pifa-icon-11, .pifa-field-type-11 {background-image: url(../images/pifa_field_type_11.png);}
-.pifa-icon-12, .pifa-field-type-12 {background-image: url(../images/pifa_field_type_12.png);}
-.pifa-icon-13, .pifa-field-type-13 {background-image: url(../images/pifa_field_type_13.png);}
-.pifa-icon-14, .pifa-field-type-14 {background-image: url(../images/pifa_field_type_14.png);}
-.pifa-icon-15, .pifa-field-type-15 {background-image: url(../images/pifa_field_type_15.png);}
-.pifa-icon-16, .pifa-field-type-16 {background-image: url(../images/pifa_field_type_16.png);}
-.pifa-icon-17, .pifa-field-type-17 {background-image: url(../images/pifa_field_type_17.png);}
-.pifa-icon-18, .pifa-field-type-18 {background-image: url(../images/pifa_field_type_18.png);}
-.pifa-icon-19, .pifa-field-type-19 {background-image: url(../images/pifa_field_type_19.png);}
-.pifa-icon-20, .pifa-field-type-20 {background-image: url(../images/pifa_field_type_20.png);}
-.pifa-icon-21, .pifa-field-type-21 {background-image: url(../images/pifa_field_type_21.png);}
+.pifa-icon-1, .pifa-field-type-1 {
+    background-image: url(../images/pifa_field_type_1.png);
+}
+
+.pifa-icon-2, .pifa-field-type-2 {
+    background-image: url(../images/pifa_field_type_2.png);
+}
+
+.pifa-icon-3, .pifa-field-type-3 {
+    background-image: url(../images/pifa_field_type_3.png);
+}
+
+.pifa-icon-4, .pifa-field-type-4 {
+    background-image: url(../images/pifa_field_type_4.png);
+}
+
+.pifa-icon-5, .pifa-field-type-5 {
+    background-image: url(../images/pifa_field_type_5.png);
+}
+
+.pifa-icon-6, .pifa-field-type-6 {
+    background-image: url(../images/pifa_field_type_6.png);
+}
+
+.pifa-icon-7, .pifa-field-type-7 {
+    background-image: url(../images/pifa_field_type_7.png);
+}
+
+.pifa-icon-8, .pifa-field-type-8 {
+    background-image: url(../images/pifa_field_type_8.png);
+}
+
+.pifa-icon-9, .pifa-field-type-9 {
+    background-image: url(../images/pifa_field_type_9.png);
+}
+
+.pifa-icon-10, .pifa-field-type-10 {
+    background-image: url(../images/pifa_field_type_10.png);
+}
+
+.pifa-icon-11, .pifa-field-type-11 {
+    background-image: url(../images/pifa_field_type_11.png);
+}
+
+.pifa-icon-12, .pifa-field-type-12 {
+    background-image: url(../images/pifa_field_type_12.png);
+}
+
+.pifa-icon-13, .pifa-field-type-13 {
+    background-image: url(../images/pifa_field_type_13.png);
+}
+
+.pifa-icon-14, .pifa-field-type-14 {
+    background-image: url(../images/pifa_field_type_14.png);
+}
+
+.pifa-icon-15, .pifa-field-type-15 {
+    background-image: url(../images/pifa_field_type_15.png);
+}
+
+.pifa-icon-16, .pifa-field-type-16 {
+    background-image: url(../images/pifa_field_type_16.png);
+}
+
+.pifa-icon-17, .pifa-field-type-17 {
+    background-image: url(../images/pifa_field_type_17.png);
+}
+
+.pifa-icon-18, .pifa-field-type-18 {
+    background-image: url(../images/pifa_field_type_18.png);
+}
+
+.pifa-icon-19, .pifa-field-type-19 {
+    background-image: url(../images/pifa_field_type_19.png);
+}
+
+.pifa-icon-20, .pifa-field-type-20 {
+    background-image: url(../images/pifa_field_type_20.png);
+}
+
+.pifa-icon-21, .pifa-field-type-21 {
+    background-image: url(../images/pifa_field_type_21.png);
+}
 
 .pifa-form-field-error {
     font-color: red;

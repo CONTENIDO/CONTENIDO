@@ -55,11 +55,11 @@ $requestMode = cSecurity::toInteger($_GET['mode'] ?? '3');
 $requestAction = $_GET['action'] ?? 'linkchecker';
 
 // Initialization
-$aCats                = [];
-$aSearchIDInfosArt    = [];
-$aSearchIDInfosCat    = [];
+$aCats = [];
+$aSearchIDInfosArt = [];
+$aSearchIDInfosCat = [];
 $aSearchIDInfosCatArt = [];
-$aSearchIDInfosNonID  = [];
+$aSearchIDInfosNonID = [];
 
 // Var initialization
 $aUrl = [
@@ -88,7 +88,8 @@ $oCache = new cFileCache([
 /**
  * @deprecated [2023-01-25] Since 4.10.2, use cLinkcheckerHelper::sortErrors() instead
  */
-function linksort($sErrors, $requestSort) {
+function linksort($sErrors, $requestSort)
+{
     cDeprecated("The function linksort() is deprecated since CONTENIDO 4.10.2, use cLinkcheckerHelper::sortErrors() instead.");
     return cLinkcheckerHelper::sortErrors($sErrors, $requestSort);
 }
@@ -96,7 +97,8 @@ function linksort($sErrors, $requestSort) {
 /**
  * @deprecated [2023-01-25] Since 4.10.2, use cLinkcheckerHelper::urlIsImage() instead
  */
-function url_is_image($sUrl) {
+function url_is_image($sUrl)
+{
     cDeprecated("The function url_is_image() is deprecated since CONTENIDO 4.10.2, use cLinkcheckerHelper::urlIsImage() instead.");
     return cLinkcheckerHelper::urlIsImage($sUrl);
 }
@@ -104,7 +106,8 @@ function url_is_image($sUrl) {
 /**
  * @deprecated [2023-01-25] Since 4.10.2, use cLinkcheckerHelper::urlIsUri() instead
  */
-function url_is_uri($sUrl) {
+function url_is_uri($sUrl)
+{
     cDeprecated("The function url_is_uri() is deprecated since CONTENIDO 4.10.2, use cLinkcheckerHelper::urlIsUri() instead.");
     return cLinkcheckerHelper::urlIsUri($sUrl);
 }
@@ -180,7 +183,7 @@ if ($sCache_errors && $requestLive != 1) {
 
     // Select all categories
     // Check user-rights, if no cronjob
-    $db->query("SELECT `idcat` FROM `%s` GROUP BY `idcat`",  cRegistry::getDbTableName('cat'));
+    $db->query("SELECT `idcat` FROM `%s` GROUP BY `idcat`", cRegistry::getDbTableName('cat'));
     while ($db->nextRecord()) {
         if ($cronjob || cLinkcheckerCategoryHelper::checkPermission($db->f("idcat"), $db2)) {
             $aCats[] = cSecurity::toInteger($db->f("idcat"));

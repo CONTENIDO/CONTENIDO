@@ -1,76 +1,82 @@
-
-        <table>
-            <tr>
-                <td>
-                    <h2>{LANG_EXTRACTED}</h2>
-                    <div class="title_action_bar"><a href="javascript:void(0)" data-action="toggle_not_installed" data-status="0">{LANG_EXPAND_COLLAPSE_ALL}</a></div>
-                </td>
-            </tr>
-            <tr>
-                <td class="not_installed">{PLUGINS_EXTRACTED}</td>
-            </tr>
-        </table>
-        <div>&#160;</div>
-        <table>
-            <tr>
-                <td>
-                    <h2>{LANG_INSTALLED} (<span class="installed_info">{INSTALLED_PLUGINS}</span>)</h2>
-                    <div class="title_action_bar">
-                        <a href="javascript:void(0)" data-action="toggle_installed" data-status="0">{LANG_EXPAND_COLLAPSE_ALL}</a> -
-                        {LANG_FILTER}: (
-                            <a href="javascript:void(0)" data-action="display_all">{LANG_ALL}</a> /
-                            <a href="javascript:void(0)" data-action="display_active">{LANG_ACTIVE}</a> /
-                            <a href="javascript:void(0)" data-action="display_inactive">{LANG_INACTIVE}</a>
-                        )
-                    </div>
-                </td>
-            </tr>
-            <tr class="text_medium upload">
-                <td class="action">
-                    <a class="con_func_button" href="javascript:void(0)" data-action="toggle_element" data-element-id="upload_plugin"><img alt="{LANG_UPLOAD}" title="{LANG_UPLOAD}" src="images/but_art_new.gif"> {LANG_UPLOAD}</a>
-                </td>
-				<td class="info">
-					<a href="javascript:void(0)" data-tooltip-id="execution_order_info" title="" class="main i-link con_img_button con_info_button"></a>
-				</td>
-            </tr>
-        </table>
-        <div id="upload_plugin" class="folding_element_hidden">
-            <div>
-                <span class="title">{LANG_UPLOAD_CHOOSE}</span>
-                <form action="main.php" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="area" value="pim">
-                    <input type="hidden" name="frame" value="4">
-                    <input type="hidden" name="contenido" value="{_SID_}">
-                    <input type="hidden" name="pim_view" value="install">
-                    <input type="file" name="package" id="package">
-                    <input type="submit" name="upload_package" id="upload_package" value="{LANG_UPLOAD_BUTTON}">
-                </form>
+<table>
+    <tr>
+        <td>
+            <h2>{LANG_EXTRACTED}</h2>
+            <div class="title_action_bar"><a href="javascript:void(0)"
+                                             data-action="toggle_not_installed" data-status="0">{LANG_EXPAND_COLLAPSE_ALL}</a>
             </div>
-        </div>
-        <div>&#160;</div>
-		<div class="clear"></div>
-        <div id="execution_order_info" class="no_display">
-			<strong>{LANG_EXECUTIONORDERINFO_TITLE}:</strong><br />
-			{LANG_EXECUTIONORDERINFO_TEXT}
-        </div>
+        </td>
+    </tr>
+    <tr>
+        <td class="not_installed">{PLUGINS_EXTRACTED}</td>
+    </tr>
+</table>
+<div>&#160;</div>
+<table>
+    <tr>
+        <td>
+            <h2>{LANG_INSTALLED} (<span class="installed_info">{INSTALLED_PLUGINS}</span>)</h2>
+            <div class="title_action_bar">
+                <a href="javascript:void(0)" data-action="toggle_installed" data-status="0">{LANG_EXPAND_COLLAPSE_ALL}</a>
+                -
+                {LANG_FILTER}: (
+                <a href="javascript:void(0)" data-action="display_all">{LANG_ALL}</a> /
+                <a href="javascript:void(0)" data-action="display_active">{LANG_ACTIVE}</a> /
+                <a href="javascript:void(0)" data-action="display_inactive">{LANG_INACTIVE}</a>
+                )
+            </div>
+        </td>
+    </tr>
+    <tr class="text_medium upload">
+        <td class="action">
+            <a class="con_func_button" href="javascript:void(0)" data-action="toggle_element"
+               data-element-id="upload_plugin"><img alt="{LANG_UPLOAD}" title="{LANG_UPLOAD}"
+                                                    src="images/but_art_new.gif"> {LANG_UPLOAD}</a>
+        </td>
+        <td class="info">
+            <a href="javascript:void(0)" data-tooltip-id="execution_order_info" title=""
+               class="main i-link con_img_button con_info_button"></a>
+        </td>
+    </tr>
+</table>
+<div id="upload_plugin" class="folding_element_hidden">
+    <div>
+        <span class="title">{LANG_UPLOAD_CHOOSE}</span>
+        <form action="main.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="area" value="pim">
+            <input type="hidden" name="frame" value="4">
+            <input type="hidden" name="contenido" value="{_SID_}">
+            <input type="hidden" name="pim_view" value="install">
+            <input type="file" name="package" id="package">
+            <input type="submit" name="upload_package" id="upload_package"
+                   value="{LANG_UPLOAD_BUTTON}">
+        </form>
+    </div>
+</div>
+<div>&#160;</div>
+<div class="clear"></div>
+<div id="execution_order_info" class="no_display">
+    <strong>{LANG_EXECUTIONORDERINFO_TITLE}:</strong><br/>
+    {LANG_EXECUTIONORDERINFO_TEXT}
+</div>
 
-        <div class="installed">
-            {PLUGINS_INSTALLED}
-        </div>
+<div class="installed">
+    {PLUGINS_INSTALLED}
+</div>
 
-        <script type="text/javascript">
-            (function(Con, $) {
-                $(function() {
-                    // Instantiate PIM plugin component
-                    new Con.Plugin.Pim('{PAGE_NAME}', {
-                        installedPlugins: {INSTALLED_PLUGINS},
-                        textError: "{LANG_ERROR}",
-                        textPluginAlreadyAtBottom: "{LANG_PLUGIN_ALREADY_AT_BOTTOM}",
-                        textPluginAlreadyAtTop: "{LANG_PLUGIN_ALREADY_AT_TOP}",
-                        textUninstallPluginConfirmation: "{LANG_UNINSTALL_PLUGIN_CONFIRMATION}",
-                        textRemovePluginConfirmation: "{LANG_REMOVE_PLUGIN_CONFIRMATION}",
-                        textUninstallSqlSelectedInfo: "{LANG_SELECTION_UNINSTALL_SQL_INFO}"
-                    });
-                });
-            })(Con, Con.$);
-        </script>
+<script type="text/javascript">
+    (function (Con, $) {
+        $(function () {
+            // Instantiate PIM plugin component
+            new Con.Plugin.Pim('{PAGE_NAME}', {
+                installedPlugins: {INSTALLED_PLUGINS},
+                textError: "{LANG_ERROR}",
+                textPluginAlreadyAtBottom: "{LANG_PLUGIN_ALREADY_AT_BOTTOM}",
+                textPluginAlreadyAtTop: "{LANG_PLUGIN_ALREADY_AT_TOP}",
+                textUninstallPluginConfirmation: "{LANG_UNINSTALL_PLUGIN_CONFIRMATION}",
+                textRemovePluginConfirmation: "{LANG_REMOVE_PLUGIN_CONFIRMATION}",
+                textUninstallSqlSelectedInfo: "{LANG_SELECTION_UNINSTALL_SQL_INFO}"
+            });
+        });
+    })(Con, Con.$);
+</script>

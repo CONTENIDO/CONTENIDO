@@ -79,7 +79,7 @@ class PimPluginArchiveExtractor
         $this->tempDir = $source;
 
         // temp directory with zip archive
-        $this->_source = (string) $source . (string) $filename;
+        $this->_source = (string)$source . (string)$filename;
 
         if (file_exists($source)) {
             // generate absolute path to the plugin manager directory
@@ -91,7 +91,7 @@ class PimPluginArchiveExtractor
                 $message = ['Could not open zip archive `' . $filename . '`.'];
                 $resultMsg = $this->_openErrorToMessage($result);
                 if (!empty($resultMsg)) {
-                    $message[] = 'Reason: ' .$resultMsg;
+                    $message[] = 'Reason: ' . $resultMsg;
                 }
                 throw new cException(implode(' ', $message));
             }
@@ -121,7 +121,7 @@ class PimPluginArchiveExtractor
             if (!$makeDirectory) {
                 throw new cException('Can not set destination path: directory is not writable');
             }
-            $this->_destination = (string) $destination;
+            $this->_destination = (string)$destination;
         } else {
             throw new cException('Destination already exists');
         }
@@ -152,7 +152,7 @@ class PimPluginArchiveExtractor
      */
     public function extractArchiveFileToVariable($filename, $content = true)
     {
-        $filename = (string) $filename;
+        $filename = (string)$filename;
         $this->_extractor->extractTo($this->tempDir, $filename);
 
         if ($content) {

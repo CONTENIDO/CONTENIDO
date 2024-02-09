@@ -27,11 +27,11 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
     /**
      * Initialize class attributes and handles store events.
      *
-     * @param string $rawSettings  the raw settings in an XML structure or as
+     * @param string $rawSettings the raw settings in an XML structure or as
      *                             plaintext
-     * @param int    $id           ID of the content type, e.g. 3 if CMS_DATE[3] is
+     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
      *                             used
-     * @param array  $contentTypes array containing the values of all content
+     * @param array $contentTypes array containing the values of all content
      *                             types
      *
      * @throws cDbException
@@ -111,7 +111,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
         $code .= $this->_encodeForOutput($codeBottom);
         $code .= $this->generateViewCode();
 
-$code = "\n\n<!-- CODE (class.content.type.user_forum.php) -->
+        $code = "\n\n<!-- CODE (class.content.type.user_forum.php) -->
 $code
 <!-- /CODE -->\n\n";
 

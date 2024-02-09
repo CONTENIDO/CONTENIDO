@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method WorkflowAction createNewItem
  * @method WorkflowAction|bool next
  */
-class WorkflowActions extends ItemCollection {
+class WorkflowActions extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('workflow_actions'), "idworkflowaction");
         $this->_setItemClass("WorkflowAction");
     }
@@ -39,8 +41,9 @@ class WorkflowActions extends ItemCollection {
      *
      * @return bool
      */
-    public function get($idworkflowitem, $action) {
-        $this->select("idworkflowitem = " . (int) $idworkflowitem . " AND action = '" . $this->escape($action) . "'");
+    public function get($idworkflowitem, $action)
+    {
+        $this->select("idworkflowitem = " . (int)$idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if ($this->next()) {
             return true;
         } else {
@@ -51,7 +54,8 @@ class WorkflowActions extends ItemCollection {
     /**
      * @return array
      */
-    public function getAvailableWorkflowActions() {
+    public function getAvailableWorkflowActions()
+    {
         $availableWorkflowActions = [
             "publish" => i18n("Publish article", "workflow"),
             "lock" => i18n("Lock article", "workflow"),
@@ -74,8 +78,9 @@ class WorkflowActions extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function set($idworkflowitem, $action) {
-        $this->select("idworkflowitem = " . (int) $idworkflowitem . " AND action = '" . $this->escape($action) . "'");
+    public function set($idworkflowitem, $action)
+    {
+        $this->select("idworkflowitem = " . (int)$idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if (!$this->next()) {
             $newItem = $this->createNewItem();
             $newItem->setField("idworkflowitem", $idworkflowitem);
@@ -92,8 +97,9 @@ class WorkflowActions extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function remove($idworkflowitem, $action) {
-        $this->select("idworkflowitem = " . (int) $idworkflowitem . " AND action = '" . $this->escape($action) . "'");
+    public function remove($idworkflowitem, $action)
+    {
+        $this->select("idworkflowitem = " . (int)$idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if (($item = $this->next()) !== false) {
             $this->delete($item->getField("idworkflowaction"));
         }
@@ -108,7 +114,8 @@ class WorkflowActions extends ItemCollection {
      * @return bool
      * @throws cDbException
      */
-    public function select($where = "", $group_by = "", $order_by = "", $limit = "") {
+    public function select($where = "", $group_by = "", $order_by = "", $limit = "")
+    {
         return parent::select($where, $group_by, $order_by, $limit);
     }
 
@@ -124,13 +131,15 @@ class WorkflowActions extends ItemCollection {
  * @version 0.1
  * @copyright  four for business 2003
  */
-class WorkflowAction extends Item {
+class WorkflowAction extends Item
+{
 
     /**
      * Constructor Function
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('workflow_actions'), "idworkflowaction");
     }
 

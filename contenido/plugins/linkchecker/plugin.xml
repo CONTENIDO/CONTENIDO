@@ -14,7 +14,7 @@
     </general>
 
     <requirements php="5.2.3">
-        <contenido minversion="4.9.0" />
+        <contenido minversion="4.9.0"/>
     </requirements>
 
     <contenido>
@@ -30,14 +30,22 @@
         </actions>
 
         <frames>
-            <frame area="linkchecker" filetype="main" name="linkchecker/includes/include.linkchecker.php" frameId="4" />
-            <frame area="lc_whitelist" filetype="main" name="linkchecker/includes/include.linkchecker_whitelist.php" frameId="4" />
+            <frame area="linkchecker" filetype="main"
+                   name="linkchecker/includes/include.linkchecker.php" frameId="4"/>
+            <frame area="lc_whitelist" filetype="main"
+                   name="linkchecker/includes/include.linkchecker_whitelist.php" frameId="4"/>
         </frames>
 
         <nav_sub>
-            <nav area="linkchecker" level="0" navm="content">linkchecker/xml/;navigation/content/linkchecker/main</nav>
-            <nav area="linkchecker" level="1" navm="0">linkchecker/xml/;navigation/content/linkchecker/overview</nav>
-            <nav area="lc_whitelist" level="1" navm="0">linkchecker/xml/;navigation/content/linkchecker/whitelist</nav>
+            <nav area="linkchecker" level="0" navm="content">
+                linkchecker/xml/;navigation/content/linkchecker/main
+            </nav>
+            <nav area="linkchecker" level="1" navm="0">
+                linkchecker/xml/;navigation/content/linkchecker/overview
+            </nav>
+            <nav area="lc_whitelist" level="1" navm="0">
+                linkchecker/xml/;navigation/content/linkchecker/whitelist
+            </nav>
         </nav_sub>
 
     </contenido>

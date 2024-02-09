@@ -1,6 +1,5 @@
-
-(function(Con, $) {
-    $(function() {
+(function (Con, $) {
+    $(function () {
         // your code here
     });
 })(Con, Con.$);

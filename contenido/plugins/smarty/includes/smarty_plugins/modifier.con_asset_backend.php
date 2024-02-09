@@ -12,10 +12,10 @@
  * Name:     con_asset_backend
  * Purpose:  Adds version hash to js/css assets
  *
+ * @param string $path Relative path to asset file
+ * @return string  Modified path with version hash
  * @author     Murat Purc <murat@purc.de>
  *
- * @param string  $path      Relative path to asset file
- * @return string  Modified path with version hash
  */
 function smarty_modifier_con_asset_backend(string $path): string
 {

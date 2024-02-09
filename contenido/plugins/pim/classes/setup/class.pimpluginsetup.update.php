@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage PluginManager
  * @author     frederic.schneider
  */
-class PimPluginSetupUpdate extends PimPluginSetup {
+class PimPluginSetupUpdate extends PimPluginSetup
+{
 
     // Begin of update routine
 
@@ -32,7 +33,8 @@ class PimPluginSetupUpdate extends PimPluginSetup {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         // Check same plugin (uuid)
@@ -58,7 +60,8 @@ class PimPluginSetupUpdate extends PimPluginSetup {
      *
      * @throws cException
      */
-    private function _checkSamePlugin() {
+    private function _checkSamePlugin()
+    {
         $this->_pimPluginCollection->setWhere('idplugin', parent::_getPluginId());
         $this->_pimPluginCollection->query();
         while ($result = $this->_pimPluginCollection->next()) {
@@ -78,7 +81,8 @@ class PimPluginSetupUpdate extends PimPluginSetup {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    private function _updateSql() {
+    private function _updateSql()
+    {
         // Build sql filename with installed plugin version and new plugin
         // version, i.e.: "plugin_update_100_to_101.sql" (without dots)
         $tempSqlFilename = "plugin_update_" . str_replace('.', '', $this->_getInstalledPluginVersion()) . "_to_" . str_replace('.', '', parent::$XmlGeneral->version) . ".sql";
@@ -96,7 +100,8 @@ class PimPluginSetupUpdate extends PimPluginSetup {
      * @return string The plugin version or empty string.
      * @throws cException
      */
-    private function _getInstalledPluginVersion() {
+    private function _getInstalledPluginVersion()
+    {
         $this->_pimPluginCollection->setWhere('idplugin', parent::_getPluginId());
         $this->_pimPluginCollection->query();
         if ($result = $this->_pimPluginCollection->next()) {

@@ -192,9 +192,9 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     // Output form
     $oForm = new cGuiTableForm("properties", "main.php?1", "get"); // Use "get"
-                                                                   // for
-                                                                   // folding
-                                                                   // rows...
+    // for
+    // folding
+    // rows...
     $oForm->setVar("frame", $frame);
     $oForm->setVar("area", $area);
     $oForm->setVar("action", "recipientgroup_save_group");
@@ -305,7 +305,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $groupRecipients = [];
     while ($groupMember = $groupMembers->next()) {
-           $groupRecipients[] = $groupMember->get('idnewsrcp');
+        $groupRecipients[] = $groupMember->get('idnewsrcp');
     }
 
     $oInsiders = '';

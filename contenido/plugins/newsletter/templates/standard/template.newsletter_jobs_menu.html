@@ -1,14 +1,23 @@
-
 <!-- newsletter/templates/template.newsletter_jobs_menu.html -->
 
 <script type="text/javascript">
-    (function(Con, $) {
+    (function (Con, $) {
         var area = 'news_jobs';
 
         function actionShowNewsJob($row, id) {
             Con.multiLink(
-                'right_top', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 3, idnewsjob: id}),
-                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 4, idnewsjob: id})
+                'right_top', Con.UtilUrl.build('main.php', {
+                    area: area,
+                    action: '',
+                    frame: 3,
+                    idnewsjob: id
+                }),
+                'right_bottom', Con.UtilUrl.build('main.php', {
+                    area: area,
+                    action: '',
+                    frame: 4,
+                    idnewsjob: id
+                })
             );
             Con.ParameterCollector.register('idnewsjob', id);
         }
@@ -17,7 +26,7 @@
             var sendMessage = '{SEND_MESSAGE}',
                 name = $row.find('[data-type="item"]').text();
             sendMessage += '<b>' + name + '</b>';
-            Con.showConfirmation(sendMessage, function() {
+            Con.showConfirmation(sendMessage, function () {
                 var $form, formData, parameter;
                 $form = Con.getFrame('left_top').$('#newsletter_listoptionsform');
                 formData = Con.serializeForm($form);
@@ -42,7 +51,7 @@
             var deleteMessage = "{DELETE_MESSAGE}",
                 name = $row.find('[data-type="item"]').text();
             deleteMessage += '<b>' + name + '</b>';
-            Con.showConfirmation(deleteMessage, function() {
+            Con.showConfirmation(deleteMessage, function () {
                 var $form, formData, parameter;
                 $form = Con.getFrame('left_top').$('#newsletter_listoptionsform');
                 formData = Con.serializeForm($form);
@@ -63,7 +72,7 @@
             });
         }
 
-        $('#generic_menu_list [data-action]').live('click', function() {
+        $('#generic_menu_list [data-action]').live('click', function () {
             var action = $(this).data('action'),
                 $row = $(this).closest('[data-id]'),
                 id = $row.data('id');

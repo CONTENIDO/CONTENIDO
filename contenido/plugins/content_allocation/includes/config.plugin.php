@@ -21,19 +21,19 @@ $pluginName = basename(dirname(__DIR__, 1));
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
 // Plugin variables
-$cfg['tab']['pica_alloc']     = $cfg['sql']['sqlprefix'] . '_pica_alloc';
+$cfg['tab']['pica_alloc'] = $cfg['sql']['sqlprefix'] . '_pica_alloc';
 $cfg['tab']['pica_alloc_con'] = $cfg['sql']['sqlprefix'] . '_pica_alloc_con';
-$cfg['tab']['pica_lang']      = $cfg['sql']['sqlprefix'] . '_pica_lang';
+$cfg['tab']['pica_lang'] = $cfg['sql']['sqlprefix'] . '_pica_lang';
 
 $pluginTemplatesPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/templates";
 
-$cfg['pica']['logpath']                  = cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'repository/log/data/';
-$cfg['pica']['treetemplate']             = $pluginTemplatesPath . '/template.tree_structure.html';
-$cfg['pica']['treetemplate_article']     = $pluginTemplatesPath . '/template.tree_article.html';
+$cfg['pica']['logpath'] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'repository/log/data/';
+$cfg['pica']['treetemplate'] = $pluginTemplatesPath . '/template.tree_structure.html';
+$cfg['pica']['treetemplate_article'] = $pluginTemplatesPath . '/template.tree_article.html';
 $cfg['pica']['treetemplate_complexlist'] = $pluginTemplatesPath . '/template.tree_complexlist.html';
-$cfg['pica']['loglevel']                 = 'warn';
-$cfg['pica']['style_complexlist']        = 'complexlist.css';
-$cfg['pica']['script_complexlist']       = 'complexlist.js';
+$cfg['pica']['loglevel'] = 'warn';
+$cfg['pica']['style_complexlist'] = 'complexlist.css';
+$cfg['pica']['script_complexlist'] = 'complexlist.js';
 
 // Plugin translations, administration > users > area translations
 $lngAct['con_contentallocation']['storeallocation'] = i18n('Store tagging', $pluginName);

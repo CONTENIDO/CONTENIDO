@@ -18,14 +18,14 @@
     </general>
 
     <requirements php="5.2.3">
-        <contenido minversion="4.9.0" />
+        <contenido minversion="4.9.0"/>
     </requirements>
 
-	<dependencies>
-		<depend uuid="82b117e94bb2cbcbce4e56b79a7d0c23">Smarty Wrapper</depend>
-	</dependencies>
+    <dependencies>
+        <depend uuid="82b117e94bb2cbcbce4e56b79a7d0c23">Smarty Wrapper</depend>
+    </dependencies>
 
-     <contenido>
+    <contenido>
 
         <areas>
             <area>form</area>
@@ -55,20 +55,32 @@
         </actions>
 
         <frames>
-            <frame area="form" filetype="main" name="form_assistant/includes/include.left_top.php" frameId="1" />
-            <frame area="form" filetype="main" name="form_assistant/includes/include.left_bottom.php" frameId="2" />
-            <frame area="form" filetype="main" name="form_assistant/includes/include.right_top.php" frameId="3" />
-            <frame area="form_import" filetype="main" name="form_assistant/includes/include.right_top.php" frameId="3" />
-            <frame area="form" filetype="main" name="form_assistant/includes/include.right_bottom.form.php" frameId="4" />
-            <frame area="form_fields" filetype="main" name="form_assistant/includes/include.right_bottom.form_fields.php" frameId="4" />
-            <frame area="form_data" filetype="main" name="form_assistant/includes/include.right_bottom.form_data.php" frameId="4" />
-            <frame area="form_export" filetype="main" name="form_assistant/includes/include.right_bottom.form_export.php" frameId="4" />
-            <frame area="form_import" filetype="main" name="form_assistant/includes/include.right_bottom.form_import.php" frameId="4" />
-            <frame area="form_ajax" filetype="main" name="form_assistant/includes/include.right_bottom.form_ajax.php" frameId="4" />
+            <frame area="form" filetype="main" name="form_assistant/includes/include.left_top.php"
+                   frameId="1"/>
+            <frame area="form" filetype="main"
+                   name="form_assistant/includes/include.left_bottom.php" frameId="2"/>
+            <frame area="form" filetype="main" name="form_assistant/includes/include.right_top.php"
+                   frameId="3"/>
+            <frame area="form_import" filetype="main"
+                   name="form_assistant/includes/include.right_top.php" frameId="3"/>
+            <frame area="form" filetype="main"
+                   name="form_assistant/includes/include.right_bottom.form.php" frameId="4"/>
+            <frame area="form_fields" filetype="main"
+                   name="form_assistant/includes/include.right_bottom.form_fields.php" frameId="4"/>
+            <frame area="form_data" filetype="main"
+                   name="form_assistant/includes/include.right_bottom.form_data.php" frameId="4"/>
+            <frame area="form_export" filetype="main"
+                   name="form_assistant/includes/include.right_bottom.form_export.php" frameId="4"/>
+            <frame area="form_import" filetype="main"
+                   name="form_assistant/includes/include.right_bottom.form_import.php" frameId="4"/>
+            <frame area="form_ajax" filetype="main"
+                   name="form_assistant/includes/include.right_bottom.form_ajax.php" frameId="4"/>
         </frames>
 
         <nav_sub>
-            <nav area="form" level="0" navm="extra">form_assistant/xml/lang_de_DE.xml;plugins/form_assistant/label</nav>
+            <nav area="form" level="0" navm="extra">
+                form_assistant/xml/lang_de_DE.xml;plugins/form_assistant/label
+            </nav>
         </nav_sub>
 
     </contenido>

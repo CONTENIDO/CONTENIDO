@@ -24,39 +24,43 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-abstract class ModRewriteBase {
+abstract class ModRewriteBase
+{
 
     /**
      * Returns enabled state of mod rewrite plugin
      *
      * @return  bool
      */
-    public static function isEnabled() {
+    public static function isEnabled()
+    {
         return self::getConfig('use', 0) == 1;
     }
 
     /**
      * Sets the enabled state of mod rewrite plugin
      *
-     * @param  bool  $bEnabled
+     * @param bool $bEnabled
      */
-    public static function setEnabled($bEnabled) {
-        self::setConfig('use', (bool) $bEnabled);
+    public static function setEnabled($bEnabled)
+    {
+        self::setConfig('use', (bool)$bEnabled);
     }
 
     /**
      * Returns configuration of mod rewrite, content of global $cfg['mod_rewrite']
      *
-     * @param   string  $key  Name of configuration key
-     * @param   mixed   $default  Default value to return as a fallback
+     * @param string $key Name of configuration key
+     * @param mixed $default Default value to return as a fallback
      * @return  mixed   Desired value mr configuration, either the full configuration
      *                  or one of the desired subpart
      */
-    public static function getConfig($key = NULL, $default = NULL) {
+    public static function getConfig($key = NULL, $default = NULL)
+    {
         $cfg = cRegistry::getConfig();
         if ($key == NULL) {
             return $cfg['mod_rewrite'];
-        } elseif ((string) $key !== '') {
+        } elseif ((string)$key !== '') {
             return (isset($cfg['mod_rewrite'][$key])) ? $cfg['mod_rewrite'][$key] : $default;
         } else {
             return $default;
@@ -66,10 +70,11 @@ abstract class ModRewriteBase {
     /**
      * Sets the configuration of mod rewrite, content of global $cfg['mod_rewrite']
      *
-     * @param   string  $key    Name of configuration key
-     * @param   mixed   $value  The value to set
+     * @param string $key Name of configuration key
+     * @param mixed $value The value to set
      */
-    public static function setConfig($key, $value) {
+    public static function setConfig($key, $value)
+    {
         // Use global here, we update the variable!
         global $cfg;
         $cfg['mod_rewrite'][$key] = $value;

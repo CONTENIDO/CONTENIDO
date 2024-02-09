@@ -1,39 +1,42 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+        "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
     <title>right_bottom_crontab_edit.html</title>
-{_META_HEAD_CONTENIDO_}
-{_CSS_HEAD_CONTENIDO_}
-{_JS_HEAD_CONTENIDO_}
+    {_META_HEAD_CONTENIDO_}
+    {_CSS_HEAD_CONTENIDO_}
+    {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
     <script type="text/javascript" src="{_ASSET(scripts/infoBox.js)_}"></script>
 </head>
 <body class="page_generic">
-    <form enctype="multipart/form-data" class="mg0" name="properties" method="post" action="main.php">
-        <input type="hidden" name="frame" value="4">
-        <input type="hidden" name="area" value="cronjob">
-        <input type="hidden" name="action" value="crontab_edit">
-        <input type="hidden" name="contenido" value="{CONTENIDO}">
-        <input type="hidden" name="frame" value="4">
-        <table class="generic">
-            <tr>
-                <th colspan="2" class="align_top">
-                    {HEADER}
-                </th>
-            </tr>
-            <tr>
-                <td nclass="align_top">
-                    <textarea name="crontab_contents" cols="75" rows="25" class="text_medium">{CONTENTS}</textarea>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" class="text_right">
-                    <div class="con_form_action_control">
-                        <input class="con_img_button" title="{ALT_TITLE}" alt="{ALT_TITLE}" type="image" src="images/but_ok.gif" name="submit" onclick="" accesskey="s">
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </form>
+<form enctype="multipart/form-data" class="mg0" name="properties" method="post" action="main.php">
+    <input type="hidden" name="frame" value="4">
+    <input type="hidden" name="area" value="cronjob">
+    <input type="hidden" name="action" value="crontab_edit">
+    <input type="hidden" name="contenido" value="{CONTENIDO}">
+    <input type="hidden" name="frame" value="4">
+    <table class="generic">
+        <tr>
+            <th colspan="2" class="align_top">
+                {HEADER}
+            </th>
+        </tr>
+        <tr>
+            <td nclass="align_top">
+                <textarea name="crontab_contents" cols="75" rows="25"
+                          class="text_medium">{CONTENTS}</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="text_right">
+                <div class="con_form_action_control">
+                    <input class="con_img_button" title="{ALT_TITLE}" alt="{ALT_TITLE}" type="image"
+                           src="images/but_ok.gif" name="submit" onclick="" accesskey="s">
+                </div>
+            </td>
+        </tr>
+    </table>
+</form>
 </body>
 </html>

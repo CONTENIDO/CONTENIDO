@@ -13,7 +13,7 @@
  * @link       https://www.contenido.org
  */
 
-(function(Con, $) {
+(function (Con, $) {
 
     var NAME = 'plugin-pim',
         DIRECTION_UP = 1,
@@ -35,7 +35,7 @@
      * options.textUninstallSqlSelectedInfo  (String)  Selected uninstall SQL info
      * </pre>
      */
-    var Pim = function(page, options) {
+    var Pim = function (page, options) {
 
         /**
          * Page name
@@ -75,7 +75,7 @@
         }
 
         function registerEventHandler() {
-            $(_pageId + ' [data-action]').live('click', function() {
+            $(_pageId + ' [data-action]').live('click', function () {
                 var $element = $(this),
                     action = $element.data('action');
 
@@ -90,8 +90,8 @@
                 } else if (action === 'toggle_table_element') {
                     var $mainTable = $element.closest('.plugin_overview'),
                         tableId = $element.data('element-id')
-                        ? $element.data('element-id')
-                        : 'plugin_info_' + $mainTable.data('plugin-id');
+                            ? $element.data('element-id')
+                            : 'plugin_info_' + $mainTable.data('plugin-id');
                     actionToggleTableElement($mainTable, tableId);
                 } else if (action === 'sort_plugin_up') {
                     actionUpdatePluginOrder($element, DIRECTION_UP);
@@ -139,7 +139,7 @@
                     neworder: newOrder,
                     idplugin: pluginId
                 },
-                success: function(data, status, jqxhr) {
+                success: function (data, status, jqxhr) {
                     if (data.length === 0) {
                         window.console.warn(NAME + ': Update plugin order fail!');
                         return false;
@@ -171,7 +171,7 @@
 
         function actionToggleAll($element, pluginGroup) {
             var status = $element.data('status');
-            $(_pageId + ' .' + pluginGroup + ' .plugin_overview').each(function(pos, element) {
+            $(_pageId + ' .' + pluginGroup + ' .plugin_overview').each(function (pos, element) {
                 if (status === 1) {
                     collapseTableBody('plugin_info_' + $(element).data('plugin-id'));
                 } else {
@@ -217,13 +217,13 @@
                 newHref = href.replace('uninstallsql=1', 'uninstallsql=0');
             }
 
-            Con.showConfirmation(confirmationMessage, function() {
+            Con.showConfirmation(confirmationMessage, function () {
                 window.location.href = newHref;
             });
         }
 
         function actionRemovePlugin($element) {
-            Con.showConfirmation(_options.textRemovePluginConfirmation, function() {
+            Con.showConfirmation(_options.textRemovePluginConfirmation, function () {
                 window.location.href = $element.data('href');
             });
         }

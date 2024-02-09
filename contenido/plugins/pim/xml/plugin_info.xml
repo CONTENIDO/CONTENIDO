@@ -14,7 +14,7 @@
     </general>
 
     <requirements php="7.0">
-        <contenido minversion="4.10.0" />
+        <contenido minversion="4.10.0"/>
     </requirements>
 
     <contenido>
@@ -28,7 +28,8 @@
         </actions>
 
         <frames>
-            <frame area="pim" filetype="main" name="pim/includes/include.right_bottom.php" frameId="4" />
+            <frame area="pim" filetype="main" name="pim/includes/include.right_bottom.php"
+                   frameId="4"/>
         </frames>
 
         <nav_sub>

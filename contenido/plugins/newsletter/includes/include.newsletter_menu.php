@@ -33,7 +33,7 @@ $oUser = new cApiUser($auth->auth["uid"]);
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 
 // Get idCatArt to check, if we may send a test newsletter
-$lIDCatArt = (int) $oClientLang->getProperty("newsletter", "idcatart");
+$lIDCatArt = (int)$oClientLang->getProperty("newsletter", "idcatart");
 
 // Specify fields for search, sort and validation. Design makes enhancements
 // using plugins possible (currently not implemented). If you are changing

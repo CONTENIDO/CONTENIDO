@@ -20,14 +20,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class SolrSearcherSimple extends SolrSearcherAbstract {
+class SolrSearcherSimple extends SolrSearcherAbstract
+{
 
     /**
      *
-     * @throws cException if search cannot be performed for empty search term
      * @return SolrObject|null
+     * @throws cException if search cannot be performed for empty search term
      */
-    public function getSearchResults() {
+    public function getSearchResults()
+    {
         $searchTerm = $this->_searchTerm;
         $searchTerm = trim($searchTerm);
         $searchTerm = explode(' ', $searchTerm);

@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage PluginManager
  * @author     frederic.schneider
  */
-class PimPluginSetupStatus extends PimPluginSetup {
+class PimPluginSetupStatus extends PimPluginSetup
+{
 
     /**
      * @var cApiNavSubCollection
@@ -33,15 +34,18 @@ class PimPluginSetupStatus extends PimPluginSetup {
      *
      * @return cApiNavSubCollection
      */
-    private function _setApiNavSubCollection() {
+    private function _setApiNavSubCollection()
+    {
         return $this->_ApiNavSubCollection = new cApiNavSubCollection();
     }
 
     // Begin of installation routine
+
     /**
      * Construct function
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         // cApiClasses
@@ -55,7 +59,8 @@ class PimPluginSetupStatus extends PimPluginSetup {
      *
      * @throws cException
      */
-    public function changeActiveStatus($pluginId) {
+    public function changeActiveStatus($pluginId)
+    {
         // Set pluginId
         self::setPluginId($pluginId);
 
@@ -113,7 +118,8 @@ class PimPluginSetupStatus extends PimPluginSetup {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    private function _updateCheckDependencies() {
+    private function _updateCheckDependencies()
+    {
         // Call checkDependencies function at PimPlugin class
         // Function returns true or false
         $result = $this->checkDependencies();
@@ -127,13 +133,14 @@ class PimPluginSetupStatus extends PimPluginSetup {
     /**
      * Change *_nav_sub online status
      *
-     * @param int  $idnavs (equivalent to column name)
+     * @param int $idnavs (equivalent to column name)
      * @param bool $online (equivalent to column name)
      *
      * @throws cDbException
      * @throws cException
      */
-    private function _changeNavSubStatus($idnavs, $online) {
+    private function _changeNavSubStatus($idnavs, $online)
+    {
         $this->_ApiNavSubCollection->setWhere('idnavs', cSecurity::toInteger($idnavs));
         $this->_ApiNavSubCollection->query();
 

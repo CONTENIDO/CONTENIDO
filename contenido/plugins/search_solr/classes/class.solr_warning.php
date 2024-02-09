@@ -6,5 +6,6 @@
  * @subpackage SearchSolr
  * @author     marcus.gnass
  */
-class SolrWarning extends cException {
+class SolrWarning extends cException
+{
 }

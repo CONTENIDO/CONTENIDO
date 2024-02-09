@@ -197,8 +197,8 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         // First, get total data count
         $oLogs->query();
         $iRecipients = $oLogs->count(); // Getting item count without limit (for
-                                        // page function) - better idea anybody
-                                        // (performance)?
+        // page function) - better idea anybody
+        // (performance)?
 
         if ($iRecipients > 0 && $iRecipients > $requestElemPerPage) {
             $sBrowseLinks = "";
@@ -209,7 +209,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
                 }
                 if ($iNextPage == $i) {
                     $sBrowseLinks .= $i . "\n"; // I'm on the current page, no
-                                              // link
+                    // link
                 } else {
                     $sBrowseLinks .= '<a href="' . $sess->url("main.php?area=$area&action=$action&frame=$frame&idnewsjob=" . $requestIdNewsJob . "&nextpage=$i&sortmode=" . $requestSortMode . "&sortby=" . $requestSortBy) . '">' . $i . '</a>' . "\n";
                 }

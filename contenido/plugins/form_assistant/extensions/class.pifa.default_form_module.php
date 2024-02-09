@@ -18,7 +18,8 @@
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class DefaultFormModule extends PifaAbstractFormModule {
+class DefaultFormModule extends PifaAbstractFormModule
+{
 
     /**
      * Handle GET request.
@@ -28,7 +29,8 @@ class DefaultFormModule extends PifaAbstractFormModule {
      * @throws Exception if form could not be loaded
      * @see PifaAbstractFormModule::doGet()
      */
-    protected function doGet(array $values = [], array $errors = []) {
+    protected function doGet(array $values = [], array $errors = [])
+    {
 
         // set template to use
         $this->setTemplateName($this->getSetting('pifaform_template_get'));
@@ -67,10 +69,11 @@ class DefaultFormModule extends PifaAbstractFormModule {
     /**
      * Handle POST request.
      *
-     * @see PifaAbstractFormModule::doPost()
      * @throws Exception
+     * @see PifaAbstractFormModule::doPost()
      */
-    protected function doPost() {
+    protected function doPost()
+    {
 
         // set template to use
         $this->setTemplateName($this->getSetting('pifaform_template_post'));

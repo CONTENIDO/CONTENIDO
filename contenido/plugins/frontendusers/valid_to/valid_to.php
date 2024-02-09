@@ -17,21 +17,23 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * @return string
  */
-function frontendusers_valid_to_getTitle() {
+function frontendusers_valid_to_getTitle()
+{
     return i18n("Valid to");
 }
 
 /**
  * @return string
  */
-function frontendusers_valid_to_display() {
+function frontendusers_valid_to_display()
+{
     global $feuser;
 
     $cfg = cRegistry::getConfig();
 
-    $calenderPicPath =  cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
+    $calenderPicPath = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
 
-    $template  = '%s';
+    $template = '%s';
 
     $currentValue = $feuser->get('valid_to');
     if ($currentValue == '') {
@@ -40,12 +42,12 @@ function frontendusers_valid_to_display() {
     $currentValue = str_replace('00:00:00', '', $currentValue);
 
     // js-includes are defined in valid_from
-    $sValidFrom = '<input type="text" id="valid_to" name="valid_to" value="'.$currentValue.'">';
+    $sValidFrom = '<input type="text" id="valid_to" name="valid_to" value="' . $currentValue . '">';
     $sValidFrom .= '<script type="text/javascript">
 (function(Con, $) {
         $(function() {
     $("#valid_to").datetimepicker({
-        buttonImage: "'. $calenderPicPath .'",
+        buttonImage: "' . $calenderPicPath . '",
         buttonImageOnly: true,
         showOn: "both",
         dateFormat: "yy-mm-dd",
@@ -76,14 +78,16 @@ function frontendusers_valid_to_display() {
 /**
  * @return array
  */
-function frontendusers_valid_to_wantedVariables() {
+function frontendusers_valid_to_wantedVariables()
+{
     return (['valid_to']);
 }
 
 /**
  * @param $variables
  */
-function frontendusers_valid_to_store($variables) {
+function frontendusers_valid_to_store($variables)
+{
     global $feuser;
 
     $feuser->set('valid_to', $variables['valid_to'], false);

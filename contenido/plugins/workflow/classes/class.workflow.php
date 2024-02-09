@@ -22,14 +22,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method Workflow createNewItem
  * @method Workflow|bool next
  */
-class Workflows extends ItemCollection {
+class Workflows extends ItemCollection
+{
 
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('workflow'), "idworkflow");
         $this->_setItemClass("Workflow");
     }
@@ -38,7 +40,8 @@ class Workflows extends ItemCollection {
      * @return Workflow
      * @throws cDbException|cInvalidArgumentException|cException
      */
-    public function create() {
+    public function create()
+    {
         $auth = cRegistry::getAuth();
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
@@ -61,7 +64,8 @@ class Workflows extends ItemCollection {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function delete($idWorkflow) {
+    public function delete($idWorkflow)
+    {
         $oDb = cRegistry::getDb();
 
         $aItemIdsDelete = [];
@@ -112,13 +116,15 @@ class Workflows extends ItemCollection {
  * @version 0.1
  * @copyright  four for business 2003
  */
-class Workflow extends Item {
+class Workflow extends Item
+{
 
     /**
      * Constructor Function
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('workflow'), "idworkflow");
     }
 

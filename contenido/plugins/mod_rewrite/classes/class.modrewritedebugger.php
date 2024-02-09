@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewriteDebugger {
+class ModRewriteDebugger
+{
 
     /**
      * Flag to enable debugger
@@ -31,22 +32,24 @@ class ModRewriteDebugger {
 
     /**
      * Enable debugger setter.
-     * @param  bool  $bEnabled
+     * @param bool $bEnabled
      */
-    public static function setEnabled($bEnabled) {
-        self::$_bEnabled = (bool) $bEnabled;
+    public static function setEnabled($bEnabled)
+    {
+        self::$_bEnabled = (bool)$bEnabled;
     }
 
     /**
      * Adds variable to debugger.
      * Wrapper for <code>cDebug::getDebugger('visible_adv')</code>.
      *
-     * @param  mixed  $mVar   The variable to dump
-     * @param  string $sLabel Description for passed $mVar
+     * @param mixed $mVar The variable to dump
+     * @param string $sLabel Description for passed $mVar
      *
      * @throws cInvalidArgumentException
      */
-    public static function add($mVar, $sLabel = '') {
+    public static function add($mVar, $sLabel = '')
+    {
         if (!self::$_bEnabled) {
             return;
         }
@@ -59,7 +62,8 @@ class ModRewriteDebugger {
      * @return  string
      * @throws cInvalidArgumentException
      */
-    public static function getAll() {
+    public static function getAll()
+    {
         if (!self::$_bEnabled) {
             return '';
         }
@@ -74,12 +78,13 @@ class ModRewriteDebugger {
      * Logs variable to debugger.
      * Wrapper for <code>cDebug::getDebugger(cDebug::DEBUGGER_FILE)</code>.
      *
-     * @param  mixed  $mVar   The variable to log the contents
-     * @param  string $sLabel Description for passed $mVar
+     * @param mixed $mVar The variable to log the contents
+     * @param string $sLabel Description for passed $mVar
      *
      * @throws cInvalidArgumentException
      */
-    public static function log($mVar, $sLabel = '') {
+    public static function log($mVar, $sLabel = '')
+    {
         if (!self::$_bEnabled) {
             return;
         }

@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method WorkflowTask createNewItem
  * @method WorkflowTask|bool next
  */
-class WorkflowTasks extends ItemCollection {
+class WorkflowTasks extends ItemCollection
+{
     /**
      * WorkflowTasks constructor.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('tasks'), "idtask");
         $this->_setItemClass("WorkflowTask");
     }
@@ -37,7 +39,8 @@ class WorkflowTasks extends ItemCollection {
      * @return WorkflowTask
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create() {
+    public function create()
+    {
         return $this->createNewItem();
     }
 
@@ -50,7 +53,8 @@ class WorkflowTasks extends ItemCollection {
      * @return bool
      * @throws cDbException
      */
-    public function select($where = "", $group_by = "", $order_by = "", $limit = "") {
+    public function select($where = "", $group_by = "", $order_by = "", $limit = "")
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
 
         if ($where != "") {
@@ -71,13 +75,15 @@ class WorkflowTasks extends ItemCollection {
  * @version 0.1
  * @copyright  four for business 2003
  */
-class WorkflowTask extends Item {
+class WorkflowTask extends Item
+{
 
     /**
      * WorkflowTask constructor.
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('tasks'), "idtask");
     }
 

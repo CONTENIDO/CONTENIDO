@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method WorkflowAllocation createNewItem
  * @method WorkflowAllocation|bool next
  */
-class WorkflowAllocations extends ItemCollection {
+class WorkflowAllocations extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('workflow_allocation'), "idallocation");
         $this->_setItemClass("WorkflowAllocation");
     }
@@ -39,7 +41,8 @@ class WorkflowAllocations extends ItemCollection {
      * @return bool
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function delete($idallocation) {
+    public function delete($idallocation)
+    {
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
         $obj = new WorkflowAllocation();
@@ -88,7 +91,8 @@ class WorkflowAllocations extends ItemCollection {
      * @return bool|Item
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idworkflow, $idcatlang) {
+    public function create($idworkflow, $idcatlang)
+    {
         $idworkflow = cSecurity::toInteger($idworkflow);
         $idcatlang = cSecurity::toInteger($idcatlang);
 
@@ -137,13 +141,15 @@ class WorkflowAllocations extends ItemCollection {
  * @version 0.1
  * @copyright  four for business 2003
  */
-class WorkflowAllocation extends Item {
+class WorkflowAllocation extends Item
+{
 
     /**
      * Constructor Function
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('workflow_allocation'), "idallocation");
     }
 
@@ -155,11 +161,12 @@ class WorkflowAllocation extends Item {
      *                      function
      * @param string $value Void field since we override the usual setField
      *                      function
-     * @param bool   $safe
+     * @param bool $safe
      *
      * @throws cBadMethodCallException if this function is called
      */
-    public function setField($field, $value, $safe = true) {
+    public function setField($field, $value, $safe = true)
+    {
         throw new cBadMethodCallException("Don't use setField for WorkflowAllocation items! Use setWorkflow instead!");
     }
 
@@ -171,7 +178,8 @@ class WorkflowAllocation extends Item {
      * @return bool
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function setWorkflow($idworkflow) {
+    public function setWorkflow($idworkflow)
+    {
         $workflows = new Workflows();
 
         $workflows->select("idworkflow = '$idworkflow'");
@@ -196,7 +204,8 @@ class WorkflowAllocation extends Item {
      * @return bool
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function setCatLang($idcatlang) {
+    public function setCatLang($idcatlang)
+    {
         $idcatlang = cSecurity::toInteger($idcatlang);
 
         $allocations = new WorkflowAllocations();
@@ -210,7 +219,7 @@ class WorkflowAllocation extends Item {
 
         $db = cRegistry::getDb();
         $sql = "SELECT `idcatlang` FROM `%s` WHERE `idcatlang` = %d";
-        $db->query($sql,  cRegistry::getDbTableName('cat_lang'), $idcatlang);
+        $db->query($sql, cRegistry::getDbTableName('cat_lang'), $idcatlang);
 
         if (!$db->nextRecord()) {
             $this->lasterror = i18n("Category doesn't exist, assignment failed", "workflow");

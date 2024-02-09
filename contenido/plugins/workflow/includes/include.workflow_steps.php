@@ -107,8 +107,8 @@ if ($action == "workflow_save_step" || $action == "workflow_create_user") {
     $workflowItem = new WorkflowItem();
     $workflowItem->loadByPrimaryKey($requestIdWorkflowItem);
     $workflowItem->setField('idtask', $wftaskselect);
-    $workflowItem->setField('name', str_replace('\\','',$wfstepname));
-    $workflowItem->setField('description', str_replace('\\','',$wfstepdescription));
+    $workflowItem->setField('name', str_replace('\\', '', $wfstepname));
+    $workflowItem->setField('description', str_replace('\\', '', $wfstepdescription));
     $workflowItem->store();
 
     $userSequences = new WorkflowUserSequences();
@@ -135,7 +135,8 @@ if ($action == "workflow_save_step" || $action == "workflow_create_user") {
  * @return string
  * @throws cInvalidArgumentException
  */
-function getTimeUnitSelector($listid, $default) {
+function getTimeUnitSelector($listid, $default)
+{
     $cfg = cRegistry::getConfig();
     $timeunits = [];
     $timeunits['Seconds'] = i18n("Seconds", "workflow");
@@ -175,7 +176,8 @@ function getTimeUnitSelector($listid, $default) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function getWorkflowList($idWorkflow, $idWorkflowItem) {
+function getWorkflowList($idWorkflow, $idWorkflowItem)
+{
     $cfg = cRegistry::getConfig();
     $backendUrl = cRegistry::getBackendUrl();
 
@@ -186,7 +188,7 @@ function getWorkflowList($idWorkflow, $idWorkflowItem) {
 
     while (($workflowItem = $workflowItems->next()) !== false) {
         $pos = $workflowItem->get("position");
-        $name = preg_replace("/\"/","",($workflowItem->get("name")));
+        $name = preg_replace("/\"/", "", ($workflowItem->get("name")));
         $id = cSecurity::toInteger($workflowItem->get("idworkflowitem"));
 
         $edititem = new cHTMLLink();
@@ -254,7 +256,8 @@ function getWorkflowList($idWorkflow, $idWorkflowItem) {
  * @return string
  * @throws cInvalidArgumentException
  */
-function createNewWorkflow($idWorkflow) {
+function createNewWorkflow($idWorkflow)
+{
     $cfg = cRegistry::getConfig();
     $backendUrl = cRegistry::getBackendUrl();
 
@@ -283,7 +286,8 @@ function createNewWorkflow($idWorkflow) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function editWorkflowStep($idWorkflow, $idWorkflowItem) {
+function editWorkflowStep($idWorkflow, $idWorkflowItem)
+{
     global $availableWorkflowActions;
 
     $workflowItem = new WorkflowItem();
@@ -297,8 +301,8 @@ function editWorkflowStep($idWorkflow, $idWorkflowItem) {
 
     $workflowActions = new WorkflowActions();
 
-    $stepname = str_replace('\\','',conHtmlSpecialChars($workflowItem->get("name")));
-    $stepdescription = str_replace('\\','',conHtmlSpecialChars($workflowItem->get("description")));
+    $stepname = str_replace('\\', '', conHtmlSpecialChars($workflowItem->get("name")));
+    $stepdescription = str_replace('\\', '', conHtmlSpecialChars($workflowItem->get("description")));
     $id = $workflowItem->get("idworkflowitem");
     $task = $workflowItem->get("idtask");
 
@@ -339,7 +343,8 @@ function editWorkflowStep($idWorkflow, $idWorkflowItem) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function getWorkflowUsers($idWorkflow, $idWorkflowItem) {
+function getWorkflowUsers($idWorkflow, $idWorkflowItem)
+{
     $cfg = cRegistry::getConfig();
     $backendUrl = cRegistry::getBackendUrl();
 

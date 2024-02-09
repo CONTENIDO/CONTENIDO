@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method NewsletterJob createNewItem
  * @method NewsletterJob|bool next
  */
-class NewsletterJobCollection extends ItemCollection {
+class NewsletterJobCollection extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('news_jobs'), 'idnewsjob');
         $this->_setItemClass("NewsletterJob");
     }
@@ -43,7 +45,8 @@ class NewsletterJobCollection extends ItemCollection {
      * @return bool|Item
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($iIDNews, $iIDCatArt, $sName = "") {
+    public function create($iIDNews, $iIDCatArt, $sName = "")
+    {
         $cfg = cRegistry::getConfig();
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
@@ -208,8 +211,8 @@ class NewsletterJobCollection extends ItemCollection {
             $oItem->set("rcpcount", $iRecipientCount);
             $oItem->set("sendcount", 0);
             $oItem->set("status", 1); // Waiting for sending; note, that status
-                                      // will be set to 9, if $iRecipientCount =
-                                      // 0 in store() method
+            // will be set to 9, if $iRecipientCount =
+            // 0 in store() method
 
             $oItem->store();
 
@@ -226,7 +229,8 @@ class NewsletterJobCollection extends ItemCollection {
      *
      * @param $iItemID int specifies the frontend user group
      */
-    public function delete($iItemID) {
+    public function delete($iItemID)
+    {
         $oLogs = new NewsletterLogCollection();
         $oLogs->delete($iItemID);
 
@@ -238,7 +242,8 @@ class NewsletterJobCollection extends ItemCollection {
 /**
  * Single NewsletterJob Item
  */
-class NewsletterJob extends Item {
+class NewsletterJob extends Item
+{
     /**
      * Constructor Function
      *
@@ -247,7 +252,8 @@ class NewsletterJob extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('news_jobs'), 'idnewsjob');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -259,7 +265,8 @@ class NewsletterJob extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function runJob() {
+    public function runJob()
+    {
         global $recipient;
 
         $cfg = cRegistry::getConfig();
@@ -391,7 +398,7 @@ class NewsletterJob extends Item {
                 }
 
                 if (cString::getStringLength($sKey) == 30) { // Prevents sending without having a
-                                           // key
+                    // key
                     $sRcpMsgText = str_replace("{KEY}", $sKey, $sRcpMsgText);
                     $sRcpMsgText = str_replace("MAIL_MAIL", $sEMail, $sRcpMsgText);
                     $sRcpMsgText = str_replace("MAIL_NAME", $oLog->get("rcpname"), $sRcpMsgText);
@@ -475,7 +482,7 @@ class NewsletterJob extends Item {
                 $oLogs->setLimit(0, $this->get("dispatch_count"));
                 $oLogs->query();
 
-                If ($oLogs->next()) {
+                if ($oLogs->next()) {
                     // Remaining recipients found, set job back to pending
                     $this->set("status", 1);
                     $this->set("started", "0000-00-00 00:00:00", false);
@@ -500,7 +507,8 @@ class NewsletterJob extends Item {
      *
      * @return bool
      */
-    public function store() {
+    public function store()
+    {
         if ($this->get("rcpcount") == 0) {
             // No recipients, job finished
             $this->set("status", 9);

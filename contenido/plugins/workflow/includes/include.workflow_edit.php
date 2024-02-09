@@ -51,7 +51,7 @@ if ($action == "workflow_save") {
     } elseif ($idworkflow > 0) {
         $page->displayOk(i18n("Saved changes successfully!", 'workflow'));
     }
-    $workflow->set("name",  str_replace('\\', '', $wfname));
+    $workflow->set("name", str_replace('\\', '', $wfname));
     $workflow->set("description", str_replace('\\', '', $wfdescription));
     $idworkflow = cSecurity::toInteger($workflow->get("idworkflow"));
     $workflow->store();
@@ -73,8 +73,8 @@ if (true !== $workflow->isLoaded()) {
     $author = '';
 } else {
     $header = i18n("Edit workflow", "workflow");
-    $description = preg_replace("/\"/","",($workflow->getField("description")));
-    $name = preg_replace("/\"/","",($workflow->getField("name")));
+    $description = preg_replace("/\"/", "", ($workflow->getField("description")));
+    $name = preg_replace("/\"/", "", ($workflow->getField("name")));
     $created = cDate::formatDatetime($workflow->get("created"));
     $userObj = new cApiUser($workflow->get("idauthor"));
     $author = $userObj->getEffectiveName();

@@ -26,7 +26,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Class ArticleForumRightBottom
  */
-class ArticleForumRightBottom extends cGuiPage {
+class ArticleForumRightBottom extends cGuiPage
+{
 
     /**
      * @var int
@@ -41,7 +42,8 @@ class ArticleForumRightBottom extends cGuiPage {
     /**
      *
      */
-    function __construct() {
+    function __construct()
+    {
         $this->_collection = new ArticleForumCollection();
         parent::__construct('right_bottom', 'user_forum');
         $this->addStyle('right_bottom.css');
@@ -53,7 +55,8 @@ class ArticleForumRightBottom extends cGuiPage {
      *
      * @return array
      */
-    protected function formatTimeString($timeStamp) {
+    protected function formatTimeString($timeStamp)
+    {
         $nullString = '0';
         if ($timeStamp == "0000-00-00 00:00:00") {
             return [];
@@ -78,7 +81,8 @@ class ArticleForumRightBottom extends cGuiPage {
      * @param string $realName
      * @return cHTMLLink
      */
-    protected function checkValidEmail($emailAddr, $realName) {
+    protected function checkValidEmail($emailAddr, $realName)
+    {
         $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
         // Run the preg_match() function on regex against the email address
         if (preg_match($regex, $emailAddr)) {
@@ -105,7 +109,8 @@ class ArticleForumRightBottom extends cGuiPage {
      *
      * @return array with buttons
      */
-    protected function buildOnlineButtonBackendListMode(&$key, &$cont, &$cfg, $mod = null) {
+    protected function buildOnlineButtonBackendListMode(&$key, &$cont, &$cfg, $mod = null)
+    {
         $area = cRegistry::getArea();
         $buttons = [];
 
@@ -173,12 +178,13 @@ class ArticleForumRightBottom extends cGuiPage {
      * generate main menu
      *
      * @param array $result array with comments
-     * @param null  $mod
+     * @param null $mod
      *
      * @return ArticleForumRightBottom|cHTMLTable
      * @throws cException
      */
-    public function getMenu(&$result, $mod = null) {
+    public function getMenu(&$result, $mod = null)
+    {
         $area = cRegistry::getArea();
         $table = new cHTMLTable();
         if (count($result) < 1) {
@@ -216,7 +222,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $cont['level'] = $cont['level'] ?? 0;
 
             $arrDate = $this->formatTimeString($cont['timestamp']);
-            $date =  (empty($arrDate)) ? '' : $arrDate['day'] . '.' . $arrDate['month'] . '.' . $arrDate['year'] . ' ' . UserForum::i18n("AT") . ' ' . $arrDate['hour'] . ':' . $arrDate['minute'] . ' ' . UserForum::i18n("CLOCK");
+            $date = (empty($arrDate)) ? '' : $arrDate['day'] . '.' . $arrDate['month'] . '.' . $arrDate['year'] . ' ' . UserForum::i18n("AT") . ' ' . $arrDate['hour'] . ':' . $arrDate['minute'] . ' ' . UserForum::i18n("CLOCK");
 
             $buttons = $this->buildOnlineButtonBackendListMode($key, $cont, $cfg, $mod);
 
@@ -373,7 +379,8 @@ class ArticleForumRightBottom extends cGuiPage {
      * @throws cDbException
      * @throws cException
      */
-    protected function getEditModeMenu($post) {
+    protected function getEditModeMenu($post)
+    {
         $changes = 0;
         $cfg = cRegistry::getConfig();
         $idart = cRegistry::getArticleId();
@@ -399,7 +406,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $user->loadByPrimaryKey($post['editedby']);
         $username = $user->getField('username');
 
-        $name = new cHTMLTextBox("realname", str_replace('\\', '',(conHtmlSpecialChars($post['realname']))), 30, 255);
+        $name = new cHTMLTextBox("realname", str_replace('\\', '', (conHtmlSpecialChars($post['realname']))), 30, 255);
         $email = new cHTMLTextBox("email", $post['email'], 30, 255);
         $like = new cHTMLTextBox("like", $post['like'], 7, 7);
         $dislike = new cHTMLTextBox("dislike", $post['dislike'], 7, 7);
@@ -466,7 +473,8 @@ class ArticleForumRightBottom extends cGuiPage {
      * @return ArticleForumRightBottom
      * @throws cException
      */
-    public function getForum($idCat, $idArt, $idLang) {
+    public function getForum($idCat, $idArt, $idLang)
+    {
         $arrUsers = $this->_collection->getExistingforum();
 
         $arrForum = [];
@@ -481,9 +489,10 @@ class ArticleForumRightBottom extends cGuiPage {
     /**
      * @param array $arrForum
      * @param array $result
-     * @param int   $level
+     * @param int $level
      */
-    protected function normalizeArray($arrForum, &$result, $level = 0) {
+    protected function normalizeArray($arrForum, &$result, $level = 0)
+    {
         if (is_array($arrForum)) {
             foreach ($arrForum as $key => $value) {
                 $value['level'] = $level;
@@ -502,7 +511,8 @@ class ArticleForumRightBottom extends cGuiPage {
      * @param $post
      * @throws Exception
      */
-    public function receiveData(&$get, &$post) {
+    public function receiveData(&$get, &$post)
+    {
         if (isset($_REQUEST['action']) && $_REQUEST['action'] != NULL) {
             $this->switchActions();
         }
@@ -511,7 +521,8 @@ class ArticleForumRightBottom extends cGuiPage {
     /**
      * @throws cException
      */
-    public function getStartpage() {
+    public function getStartpage()
+    {
         $cGuiNotification = new cGuiNotification();
         echo $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, UserForum::i18n('MODMODE'));
         echo '<br />';
@@ -525,7 +536,8 @@ class ArticleForumRightBottom extends cGuiPage {
      *
      * @throws Exception
      */
-    protected function switchActions() {
+    protected function switchActions()
+    {
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $idart = $_REQUEST['idart'];
         $idcat = $_REQUEST['idcat'];
@@ -538,9 +550,9 @@ class ArticleForumRightBottom extends cGuiPage {
             case 'online_toggle':
                 $this->_collection->toggleOnlineState($_REQUEST['online'], $_REQUEST['id_user_forum'], $idart);
 
-                if(!isset($_REQUEST['mod'])) {
+                if (!isset($_REQUEST['mod'])) {
                     $this->getForum($idcat, $idart, $lang);
-                } else{
+                } else {
                     $this->getStartpage();
                 }
 
@@ -554,9 +566,9 @@ class ArticleForumRightBottom extends cGuiPage {
             // after click on save button in edit dialog
             case 'update':
                 $this->_collection->updateValues($_POST['id_user_forum'], $_POST['realname'], $_POST['email'], $_POST['like'], $_POST['dislike'], $_POST['forum'], $online);
-                if(!isset($_REQUEST['mod'])) {
+                if (!isset($_REQUEST['mod'])) {
                     $this->getForum($idcat, $idart, $lang);
-                } else{
+                } else {
                     $this->getStartpage();
                 }
 
@@ -574,11 +586,11 @@ class ArticleForumRightBottom extends cGuiPage {
                 // shows edit mode for a comment
                 $this->getEditModeMenu($_POST);
                 break;
-                // cancel Button in edit dialog
+            // cancel Button in edit dialog
             case 'back':
-                if(!isset($_REQUEST['mod'])) {
+                if (!isset($_REQUEST['mod'])) {
                     $this->getForum($idcat, $idart, $lang);
-                } else{
+                } else {
                     $this->getStartpage();
                 }
                 // $this->getForum($idcat, $idart, $lang);

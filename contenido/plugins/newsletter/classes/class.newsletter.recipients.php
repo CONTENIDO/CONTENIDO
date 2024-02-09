@@ -23,13 +23,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method NewsletterRecipient createNewItem
  * @method NewsletterRecipient|bool next
  */
-class NewsletterRecipientCollection extends ItemCollection {
+class NewsletterRecipientCollection extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('news_rcp'), 'idnewsrcp');
         $this->_setItemClass('NewsletterRecipient');
     }
@@ -37,18 +39,19 @@ class NewsletterRecipientCollection extends ItemCollection {
     /**
      * Creates a new recipient
      *
-     * @param string $sEMail       Specifies the e-mail address
-     * @param string $sName        Specifies the recipient name (optional)
-     * @param int    $iConfirmed   Specifies, if the recipient is confirmed
+     * @param string $sEMail Specifies the e-mail address
+     * @param string $sName Specifies the recipient name (optional)
+     * @param int $iConfirmed Specifies, if the recipient is confirmed
      *                             (optional)
-     * @param string $sJoinID      Specifies additional recipient group ids to join
+     * @param string $sJoinID Specifies additional recipient group ids to join
      *                             (optional, e.g. 47,12,...)
-     * @param int    $iMessageType Specifies the message type for the recipient (0 = text, 1 = html)
+     * @param int $iMessageType Specifies the message type for the recipient (0 = text, 1 = html)
      *
      * @return Item
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($sEMail, $sName = "", $iConfirmed = 0, $sJoinID = "", $iMessageType = 0) {
+    public function create($sEMail, $sName = "", $iConfirmed = 0, $sJoinID = "", $iMessageType = 0)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $auth = cRegistry::getAuth();
@@ -121,12 +124,13 @@ class NewsletterRecipientCollection extends ItemCollection {
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function delete($itemID) {
+    public function delete($itemID)
+    {
         $oAssociations = new NewsletterRecipientGroupMemberCollection();
         $oAssociations->setWhere("idnewsrcp", $itemID);
         $oAssociations->query();
 
-        While ($oItem = $oAssociations->next()) {
+        while ($oItem = $oAssociations->next()) {
             $oAssociations->delete($oItem->get("idnewsgroupmember"));
         }
         parent::delete($itemID);
@@ -142,7 +146,8 @@ class NewsletterRecipientCollection extends ItemCollection {
      * @return int Count of deleted recipients
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function purge($timeframe) {
+    public function purge($timeframe)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
@@ -173,7 +178,8 @@ class NewsletterRecipientCollection extends ItemCollection {
      * @return NewsletterRecipient|false recipient item if item with e-mail exists, false otherwise
      * @throws cException
      */
-    public function emailExists($sEmail) {
+    public function emailExists($sEmail)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
@@ -197,7 +203,8 @@ class NewsletterRecipientCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function updateKeys() {
+    public function updateKeys()
+    {
         $this->setWhere("LENGTH(hash)", 30, "<>");
         $this->query();
 
@@ -216,7 +223,8 @@ class NewsletterRecipientCollection extends ItemCollection {
 /**
  * Single Recipient Item
  */
-class NewsletterRecipient extends Item {
+class NewsletterRecipient extends Item
+{
     /**
      * Constructor Function
      *
@@ -225,7 +233,8 @@ class NewsletterRecipient extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('news_rcp'), 'idnewsrcp');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -237,7 +246,8 @@ class NewsletterRecipient extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function store() {
+    public function store()
+    {
         $auth = cRegistry::getAuth();
 
         $this->set("lastmodified", date('Y-m-d H:i:s'), false);
@@ -274,12 +284,13 @@ class NewsletterRecipient extends Item {
      * User-defined setter for newsletter recipients fields.
      *
      * @param string $name
-     * @param mixed  $value
-     * @param bool   $bSafe Flag to run defined inFilter on passed value
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
      *
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'news_type':
             case 'confirmed':
