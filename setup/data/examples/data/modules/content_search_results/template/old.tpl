@@ -61,8 +61,10 @@
             {if $currentPage eq $page}
                 <strong>{$page}</strong>
                     
+                                        
 {else}
             
+                
                 <a href="{$href}" title="{$page}">{$page}</a>
             {/if}
             &nbsp;

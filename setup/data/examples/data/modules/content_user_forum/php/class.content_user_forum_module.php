@@ -108,7 +108,7 @@ class ContentUserForumModule
 
     /**
      * Translation list
-     * @var string[] 
+     * @var string[]
      */
     protected $_mi18n;
 
@@ -586,6 +586,5 @@ class ContentUserForumModule
             $this->_counter = true;
         }
     }
-    
 
 }

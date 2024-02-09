@@ -28,7 +28,6 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract
 
     public function _execute()
     {
-
         if ($this->_setupType != 'setup') {
             $done = false;
             $sSql = "SHOW COLUMNS FROM " . cRegistry::getDbTableName('upl');
@@ -104,7 +103,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract
 
                 if (count($aUplMeta) < 1) {
                     //there is no entry in con_upl_meta for this upload
-                    $sSql = "INSERT INTO " .  $uploadMetaTable . " SET
+                    $sSql = "INSERT INTO " . $uploadMetaTable . " SET
                                 idupl = $idupl,
                                 idlang = $idlang,
                                 medianame = '',
@@ -118,7 +117,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract
                                 copyright = ''";
                 } elseif (count($aUplMeta) == 1 && $aUplMeta[0]['description'] == '') {
                     //there is already an entry and the field "description" is empty
-                    $sSql = "UPDATE " .  $uploadMetaTable . " SET
+                    $sSql = "UPDATE " . $uploadMetaTable . " SET
                             description = '" . $elem['description'] . "'
                             WHERE id_uplmeta = " . $aUplMeta[0]['id_uplmeta'];
                 }

@@ -129,8 +129,8 @@ class ContentSitemapHtmlModule
 
             // add article languages to result
             $result[] = new cApiArticleLanguage(
-                cSecurity::toInteger($this->db->f('idartlang')))
-            ;
+                cSecurity::toInteger($this->db->f('idartlang'))
+            );
         }
 
         return $result;

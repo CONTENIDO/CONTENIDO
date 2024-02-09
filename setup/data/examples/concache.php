@@ -61,9 +61,9 @@ $cfgConCache['cacheprefix'] = 'cache_';
  *     output differs on authenticated user.
  */
 $cfgConCache['idoptions'] = [
-    'uri'  => &$_SERVER['REQUEST_URI'],
+    'uri' => &$_SERVER['REQUEST_URI'],
     'post' => &$_POST,
-    'get'  => &$_GET,
+    'get' => &$_GET,
     'auth' => &$auth->auth['perm'],
 ];
 
@@ -99,7 +99,7 @@ $cfgConCache['idoptions'] = [
  */
 $cfgConCache['raiseonevent'] = [
     'beforeoutput' => ['/* some code here */'],
-    'afteroutput'  => [
+    'afteroutput' => [
         // Define code to update CONTENIDO statistics.
         // This will be executed on 'afteroutput' event of cache object.
         '

@@ -1,5 +1,5 @@
 <!-- @deprecated  Is not in use? -->
-<table style="padding-top:26px;" 
+<table style="padding-top:26px;"
        class="setupBodyOuterTable setupBodyOuterTableDatabaseData">
     <tr class="row-1">
         <td colspan="2">
