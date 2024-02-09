@@ -41,11 +41,11 @@ $clientsUploadUrlPath = $cfgClient[$client]['upl']['frontendpath'];
 $clientsFrontendUrl = cRegistry::getFrontendUrl();
 
 $appendparameters = $_REQUEST['appendparameters'] ?? '';
-$searchfor        = cSecurity::escapeString($_REQUEST['searchfor'] ?? '');
-$startpage        = cSecurity::toInteger($_REQUEST['startpage'] ?? '1');
-$sortby           = cSecurity::escapeString($_REQUEST['sortby'] ?? '');
-$sortmode         = cSecurity::escapeString($_REQUEST['sortmode'] ?? '');
-$thumbnailmode    = cSecurity::escapeString($_REQUEST['thumbnailmode'] ?? '');
+$searchfor = cSecurity::escapeString($_REQUEST['searchfor'] ?? '');
+$startpage = cSecurity::toInteger($_REQUEST['startpage'] ?? '1');
+$sortby = cSecurity::escapeString($_REQUEST['sortby'] ?? '');
+$sortmode = cSecurity::escapeString($_REQUEST['sortmode'] ?? '');
+$thumbnailmode = cSecurity::escapeString($_REQUEST['thumbnailmode'] ?? '');
 
 if ($startpage < 1) {
     $startpage = 1;

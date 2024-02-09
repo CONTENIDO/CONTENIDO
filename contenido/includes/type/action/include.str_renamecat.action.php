@@ -21,9 +21,9 @@ if ($perm->have_perm_area_action("str", "str_renamecat") || $perm->have_perm_are
     cApiCecHook::execute(
         "Contenido.Action.str_renamecat.AfterCall",
         [
-            'idcat'            => $idcat,
-            'lang'             => $lang,
-            'newcategoryname'  => $newcategoryname,
+            'idcat' => $idcat,
+            'lang' => $lang,
+            'newcategoryname' => $newcategoryname,
             'newcategoryalias' => $newcategoryalias,
         ]
     );

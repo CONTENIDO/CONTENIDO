@@ -27,7 +27,7 @@ $frame = cRegistry::getFrame();
 
 cIncludePlugins('languages');
 
-if ($action == "lang_newlanguage" && (int) $newidlang > 0) {
+if ($action == "lang_newlanguage" && (int)$newidlang > 0) {
     $idlang = $newidlang;
 }
 
@@ -121,7 +121,7 @@ if ($action == "lang_newlanguage") {
 
                 // Set utf-8 as encoding if CON_UTF8 constant is defined
                 if (defined('CON_UTF8') && CON_UTF8 !== false) {
-                        $sencoding = 'utf-8';
+                    $sencoding = 'utf-8';
                 }
 
                 if (false === $invalidData) {

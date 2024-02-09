@@ -54,7 +54,7 @@ if ($idfrontenduser) {
 }
 
 if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "frontend_create")) {
-    $feuser = $feUsers->create(" ".i18n("-- new user --"));
+    $feuser = $feUsers->create(" " . i18n("-- new user --"));
     $idfrontenduser = $feuser->get("idfrontenduser");
     // Put idfrontenduser of newly created user into superglobals for plugins
     $_GET['idfrontenduser'] = $idfrontenduser;
@@ -114,8 +114,8 @@ if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
         }
 
         if ($feuser->get("username") != $username) {
-			$usernameDb = $feuser->escape($username);
-            $feUsers->select("username = '".$usernameDb."' and idclient='$client'");
+            $usernameDb = $feuser->escape($username);
+            $feUsers->select("username = '" . $usernameDb . "' and idclient='$client'");
             if ($feUsers->next()) {
                 $messages[] = i18n("Could not set new username: Username already exists");
             } else {
@@ -137,8 +137,7 @@ if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
         if (cHasPlugins('frontendusers')) {
             foreach ($cfg['plugins']['frontendusers'] as $plugin) {
                 if (function_exists('frontendusers_' . $plugin . '_wantedVariables') &&
-                    function_exists('frontendusers_' . $plugin . '_store'))
-                {
+                    function_exists('frontendusers_' . $plugin . '_store')) {
                     // check if user belongs to a specific group
                     // if true store values defined in frontenduser plugin
                     if (function_exists('frontendusers_' . $plugin . '_checkUserGroup')) {
@@ -170,9 +169,9 @@ if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
         $iterator = $_cecRegistry->getIterator('Contenido.Permissions.FrontendUser.BeforeStore');
 
         if ($iterator->count() > 0) {
-        	while (false !== $chainEntry = $iterator->next()) {
-        		$chainEntry->execute($variablesToStore);
-        	}
+            while (false !== $chainEntry = $iterator->next()) {
+                $chainEntry->execute($variablesToStore);
+            }
         }
 
         $feuser->store();
@@ -212,8 +211,7 @@ if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
     if (is_array($pluginOrder)) {
         foreach ($pluginOrder as $plugin) {
             if (function_exists('frontendusers_' . $plugin . '_getTitle') &&
-                function_exists('frontendusers_' . $plugin . '_display'))
-            {
+                function_exists('frontendusers_' . $plugin . '_display')) {
                 // check if user belongs to a specific group
                 // if true display frontenduser plugin
                 if (function_exists('frontendusers_' . $plugin . '_checkUserGroup')) {
@@ -261,9 +259,9 @@ if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
         $form->add(i18n("Group membership"), $sTemp);
 
         $oUser = new cApiUser($feuser->get("author"));
-        $form->add(i18n("Author"), $oUser->get('username') . " (". cDate::formatDatetime($feuser->get("created")).")");
+        $form->add(i18n("Author"), $oUser->get('username') . " (" . cDate::formatDatetime($feuser->get("created")) . ")");
         $oUser2 = new cApiUser($feuser->get("modifiedby"));
-        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (". cDate::formatDatetime($feuser->get("modified")).")");
+        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (" . cDate::formatDatetime($feuser->get("modified")) . ")");
     }
     $page->setContent($form);
     if (!empty($sReloadScript)) {

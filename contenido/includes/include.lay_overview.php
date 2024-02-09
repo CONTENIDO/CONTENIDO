@@ -68,7 +68,7 @@ while (($layout = $oLayouts->next()) !== false) {
         continue;
     }
 
-    $name  = conHtmlSpecialChars(cString::stripSlashes($layout->get('name')));
+    $name = conHtmlSpecialChars(cString::stripSlashes($layout->get('name')));
     $description = conHtmlSpecialChars(nl2br($layout->get('description') ?? ''));
 
     $menu->setId($idlay, $idlay);
@@ -112,7 +112,7 @@ while (($layout = $oLayouts->next()) !== false) {
 $tpl->set('s', 'GENERIC_MENU', $menu->render(false));
 
 $tpl->set('s', 'AREA', $area);
-$tpl->set('s', 'AJAX_URL',  cRegistry::getBackendUrl() . 'ajaxmain.php');
+$tpl->set('s', 'AJAX_URL', cRegistry::getBackendUrl() . 'ajaxmain.php');
 $tpl->set('s', 'BOX_TITLE', i18n("The layout '%s' is used for following templates") . ":");
 $tpl->set('s', 'DELETE_MESSAGE', i18n("Do you really want to delete the following layout:<br><br>%s<br>"));
 

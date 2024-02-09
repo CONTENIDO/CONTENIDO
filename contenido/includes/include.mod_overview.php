@@ -148,8 +148,8 @@ foreach ($allModules as $idmod => $module) {
         if ($inUse) {
             $inUseString = i18n("For more information about usage click on this button");
             $inUseLink = '<a class="con_img_button" href="javascript:void(0)" data-action="inused_module">'
-                       . cHTMLImage::img($cfg['path']['images'] . 'exclamation.gif', $inUseString)
-                       . '</a>';
+                . cHTMLImage::img($cfg['path']['images'] . 'exclamation.gif', $inUseString)
+                . '</a>';
             $delDescription = i18n("Module can not be deleted, because it is already in use!");
         } else {
             $inUseLink = cHTMLImage::img($cfg['path']['images'] . 'spacer.gif', '', ['class' => 'con_img_button_off']);
@@ -160,8 +160,8 @@ foreach ($allModules as $idmod => $module) {
                 } else {
                     $delTitle = i18n("Delete module");
                     $deleteLink = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_module" title="' . $delTitle . '">'
-                                . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
-                                . '</a>';
+                        . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
+                        . '</a>';
                 }
             } else {
                 $delDescription = i18n("No permissions");

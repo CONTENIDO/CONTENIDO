@@ -80,14 +80,14 @@ if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_
 }
 
 //check for data in the old data folders
-$foldersToCheck = [$cfg["path"]["frontend"]."/contenido/logs", $cfg["path"]["frontend"]."/contenido/temp"];
+$foldersToCheck = [$cfg["path"]["frontend"] . "/contenido/logs", $cfg["path"]["frontend"] . "/contenido/temp"];
 if (is_array($cfgClient)) {
     foreach ($cfgClient as $iclient => $aclient) {
         if (!is_numeric($iclient)) {
             continue;
         }
-        $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."layouts";
-        $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."logs";
+        $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend'] . "layouts";
+        $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend'] . "logs";
     }
 }
 $faultyFolders = [];
@@ -120,7 +120,7 @@ if (count($clients) > 1) {
     foreach ($clients as $key => $v_client) {
         if ($perm->hasClientPermission($key)) {
             $cApiClient->loadByPrimaryKey($key);
-                $choices[$key] = $v_client['name'] . ' (' . $key . ')';
+            $choices[$key] = $v_client['name'] . ' (' . $key . ')';
         }
     }
 
@@ -161,7 +161,7 @@ if (count($clients) > 1) {
 }
 
 $props = new cApiPropertyCollection();
-$props->select("itemtype = 'idcommunication' AND idclient = " . (int) $client . " AND type = 'todo' AND name = 'status' AND value != 'done'");
+$props->select("itemtype = 'idcommunication' AND idclient = " . (int)$client . " AND type = 'todo' AND name = 'status' AND value != 'done'");
 
 $todoitems = [];
 
@@ -176,7 +176,7 @@ if (count($todoitems) > 0) {
 }
 $todoitems = new TODOCollection();
 $recipient = $auth->auth['uid'];
-$todoitems->select("recipient = '$recipient' AND idclient = " . (int) $client . " AND $in");
+$todoitems->select("recipient = '$recipient' AND idclient = " . (int)$client . " AND $in");
 
 $openTasks = 0;
 while ($todo = $todoitems->next()) {

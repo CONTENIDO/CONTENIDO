@@ -55,7 +55,7 @@ $sJsAfter = '';
 $sTable = '';
 
 $sJsBefore .= "var itemids = [];\n"
-            . "var actareaids = [];\n";
+    . "var actareaids = [];\n";
 
 // Init Table
 $oTable = new cHTMLTable();
@@ -165,11 +165,11 @@ $sql = "SELECT A.idcat, level, name, parentid
             AND B.idclient = " . cSecurity::toInteger($rights_client) . " ORDER BY idtree";
 
 $db->query($sql);
-$counter  = [];
+$counter = [];
 $parentid = "leer";
 
 $aRowname = [];
-$iLevel   = 0;
+$iLevel = 0;
 
 while ($db->nextRecord()) {
     $iCurrentIdCat = $db->f('idcat');
@@ -199,12 +199,12 @@ while ($db->nextRecord()) {
         // find out parentid for inheritance
         // if parentid is the same increase the counter
         if ($parentid == $db->f("parentid")) {
-            $counter[$parentid] ++;
+            $counter[$parentid]++;
         } else {
             $parentid = $db->f("parentid");
             // if these parentid is in use increase the counter
             if (isset($counter[$parentid])) {
-                $counter[$parentid] ++;
+                $counter[$parentid]++;
             } else {
                 $counter[$parentid] = 0;
             }

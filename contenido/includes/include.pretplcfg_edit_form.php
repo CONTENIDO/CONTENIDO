@@ -21,21 +21,21 @@ $tpl->reset();
 //Form
 $formaction = $sess->url("main.php");
 // <input type="hidden" name="action" value="tplcfg_edit">
-$hidden     = '<input type="hidden" name="area" value="tpl_cfg">
-               <input type="hidden" name="frame" value="'.$frame.'">
-               <input type="hidden" name="idcat" value="'.$idcat.'">
-               <input type="hidden" name="idart" value="'.$idart.'">
-               <input type="hidden" name="idtpl" value="'.$idtpl.'">
-               <input type="hidden" name="lang" value="'.$lang.'">
-               <input type="hidden" name="idtplcfg" value="'.$idtplcfg.'">
+$hidden = '<input type="hidden" name="area" value="tpl_cfg">
+               <input type="hidden" name="frame" value="' . $frame . '">
+               <input type="hidden" name="idcat" value="' . $idcat . '">
+               <input type="hidden" name="idart" value="' . $idart . '">
+               <input type="hidden" name="idtpl" value="' . $idtpl . '">
+               <input type="hidden" name="lang" value="' . $lang . '">
+               <input type="hidden" name="idtplcfg" value="' . $idtplcfg . '">
                <input type="hidden" name="changetemplate" value="0">';
 
 $tpl->set('s', 'FORMACTION', $formaction);
 $tpl->set('s', 'HIDDEN', $hidden);
 
-$templateItem = new cApiTemplate((int) $idtpl);
+$templateItem = new cApiTemplate((int)$idtpl);
 
-$tpl->set('s', 'TEMPLATECAPTION', i18n("Template"). ": ");
+$tpl->set('s', 'TEMPLATECAPTION', i18n("Template") . ": ");
 $tpl->set('s', 'TEMPLATESELECTBOX', $templateItem->get('name'));
 
 $tpl->set('s', 'LABLE_DESCRIPTION', i18n('Description'));

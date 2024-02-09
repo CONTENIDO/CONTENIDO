@@ -18,14 +18,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Adds sorting images to string
  *
- * @param int    $index
+ * @param int $index
  * @param string $text
  *
  * @return string
  *
  * @throws cException
  */
-function addSortImages($index, $text) {
+function addSortImages($index, $text)
+{
     $cfg = cRegistry::getConfig();
     $sortUp = '<img src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'sort_up.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
     $sortDown = '<img src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'sort_down.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
@@ -300,8 +301,8 @@ if ($search != '' || ($filter != '' && $filter != -1)) {
 }
 
 if (empty($allTranslations)) {
-	$page->displayInfo(i18n("Can not find some module translations for your selection."));
-	$noResults = true;
+    $page->displayInfo(i18n("Can not find some module translations for your selection."));
+    $noResults = true;
 }
 
 unset($strings);
@@ -548,7 +549,7 @@ foreach ($allTranslations as $hash => $translationArray) {
         $currentModuleInUse = i18n('No template');
     } else {
         $inUseString = i18n("Click for more information about usage");
-        $currentModuleInUse = '<a href="javascript:void(0)" rel="' . $translationArray['idmod'] . '" class="inused_module" data-action="inused_module" data-id="' . $translationArray['idmod'] . '"><img src="' . $cfg['path']['images'] . 'info.gif" title="' . $inUseString . '" alt="' . $inUseString . '">' . $countCurrentModuleInUse . ' ' . ($countCurrentModuleInUse == 1? i18n('Template') : i18n('Templates')) . ' </a>';
+        $currentModuleInUse = '<a href="javascript:void(0)" rel="' . $translationArray['idmod'] . '" class="inused_module" data-action="inused_module" data-id="' . $translationArray['idmod'] . '"><img src="' . $cfg['path']['images'] . 'info.gif" title="' . $inUseString . '" alt="' . $inUseString . '">' . $countCurrentModuleInUse . ' ' . ($countCurrentModuleInUse == 1 ? i18n('Template') : i18n('Templates')) . ' </a>';
     }
     $fields = [
         $counter,

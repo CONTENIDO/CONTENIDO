@@ -22,7 +22,7 @@ cInclude('classes', 'class.layout.handler.php');
 /**
  * Edit or Create a new layout
  *
- * @param int    $idlay
+ * @param int $idlay
  *         Id of the Layout
  * @param string $name
  *         Name of the Layout
@@ -38,14 +38,15 @@ cInclude('classes', 'class.layout.handler.php');
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function layEditLayout($idlay, $name, $description, $code) {
+function layEditLayout($idlay, $name, $description, $code)
+{
     global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $area, $frame, $cfgClient;
 
     $db2 = cRegistry::getDb();
     $db = cRegistry::getDb();
 
     $date = date('Y-m-d H:i:s');
-    $author = (string) $auth->auth['uname'];
+    $author = (string)$auth->auth['uname'];
     if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
         $name = stripslashes($name);
         $description = stripslashes($description);
@@ -158,7 +159,8 @@ function layEditLayout($idlay, $name, $description, $code) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function layDeleteLayout($idlay) {
+function layDeleteLayout($idlay)
+{
     global $client, $cfg, $area_tree, $perm, $cfgClient;
 
     $tplColl = new cApiTemplateCollection();

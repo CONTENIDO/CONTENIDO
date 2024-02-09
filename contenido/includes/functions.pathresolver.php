@@ -33,15 +33,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function prResolvePathViaURLNames($path) {
+function prResolvePathViaURLNames($path)
+{
     global $cfg, $lang, $client;
 
     $handle = startTiming('prResolvePathViaURLNames', [$path]);
 
     // Initialize variables
-    $db         = cRegistry::getDb();
+    $db = cRegistry::getDb();
     $categories = [];
-    $results    = [];
+    $results = [];
 
     // Pre-process path
     $path = cString::toLowerCase(str_replace(' ', '', $path));
@@ -62,8 +63,8 @@ function prResolvePathViaURLNames($path) {
 
     // Fetch all category names, build path strings
     // @todo change the where statement for get all languages
-    $sql = "SELECT * FROM " . $cfg["tab"]["cat_tree"] . " AS A, " . $cfg["tab"]["cat"] . " AS B, " . $cfg["tab"]["cat_lang"] . " AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang=" . (int) $lang . "
-            AND C.visible = 1 AND B.idclient=" . (int) $client . " ORDER BY A.idtree";
+    $sql = "SELECT * FROM " . $cfg["tab"]["cat_tree"] . " AS A, " . $cfg["tab"]["cat"] . " AS B, " . $cfg["tab"]["cat_lang"] . " AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang=" . (int)$lang . "
+            AND C.visible = 1 AND B.idclient=" . (int)$client . " ORDER BY A.idtree";
     $db->query($sql);
 
     $catpath = [];
@@ -109,7 +110,7 @@ function prResolvePathViaURLNames($path) {
         $oPathresolveCache = $oPathresolveCacheColl->create($path, key($results), $lang, time());
     }
 
-    return (int) key($results);
+    return (int)key($results);
 }
 
 /**
@@ -131,15 +132,16 @@ function prResolvePathViaURLNames($path) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function prResolvePathViaCategoryNames($path, &$iLangCheck) {
+function prResolvePathViaCategoryNames($path, &$iLangCheck)
+{
     global $cfg, $lang, $client;
 
     $handle = startTiming('prResolvePathViaCategoryNames', [$path]);
 
     // Initialize variables
-    $db            = cRegistry::getDb();
-    $categories    = [];
-    $results       = [];
+    $db = cRegistry::getDb();
+    $categories = [];
+    $results = [];
     $iLangCheckOrg = $iLangCheck;
 
     // To take only path body
@@ -166,17 +168,17 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
     // Fetch all category names, build path strings
     // @todo change the where statement for get all languages
     $sql = "SELECT * FROM " . $cfg["tab"]["cat_tree"] . " AS A, " . $cfg["tab"]["cat"] . " AS B, " . $cfg["tab"]["cat_lang"] . " AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat
-            AND C.visible = 1 AND B.idclient= " . (int) $client . " ORDER BY A.idtree";
+            AND C.visible = 1 AND B.idclient= " . (int)$client . " ORDER BY A.idtree";
     $db->query($sql);
 
-    $catpath        = [];
+    $catpath = [];
     $arrLangMatches = [];
 
     while ($db->nextRecord()) {
         $cat_str = '';
-        $aTemp   = '';
-        $iFor    = 0;
-        $bLang   = false;
+        $aTemp = '';
+        $iFor = 0;
+        $bLang = false;
 
         // $level is changeless 0!!!
         conCreateLocationString($db->f('idcat'), '/', $cat_str, false, '', 0, $db->f('idlang'));
@@ -241,27 +243,27 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
     reset($results);
 
     endAndLogTiming($handle);
-    return (int) key($results);
+    return (int)key($results);
 }
 
 /**
  * Recursive function to create an URL name location string.
  *
- * @param int    $idcat
+ * @param int $idcat
  *         ID of the starting category
  * @param string $seperator
  *         Separation string
  * @param string $cat_str
  *         Category location string (by reference)
- * @param bool   $makeLink
+ * @param bool $makeLink
  *         create location string with links
  * @param string $linkClass
  *         stylesheet class for the links
- * @param int    $firstTreeElementToUse
+ * @param int $firstTreeElementToUse
  *         first navigation level location string should be printed out (first level = 0!!)
- * @param int    $uselang
- * @param bool   $final
- * @param bool   $usecache
+ * @param int $uselang
+ * @param bool $final
+ * @param bool $usecache
  *
  * @return string
  *         location string
@@ -269,7 +271,8 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
  * @throws cDbException
  * @throws cException
  */
-function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink = false, $linkClass = '', $firstTreeElementToUse = 0, $uselang = 0, $final = true, $usecache = false) {
+function prCreateURLNameLocationString($idcat, $seperator, &$cat_str, $makeLink = false, $linkClass = '', $firstTreeElementToUse = 0, $uselang = 0, $final = true, $usecache = false)
+{
     global $cfg, $client, $cfgClient, $lang, $sess, $_URLlocationStringCache;
 
     if ($final == true) {
@@ -313,9 +316,9 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
                 " . $cfg["tab"]["cat"] . " AS b,
                 " . $cfg["tab"]["cat_tree"] . " AS c
             WHERE
-                a.idlang    = " . (int) $uselang . " AND
-                b.idclient  = " . (int) $client . " AND
-                b.idcat     = " . (int) $idcat . " AND
+                a.idlang    = " . (int)$uselang . " AND
+                b.idclient  = " . (int)$client . " AND
+                b.idcat     = " . (int)$idcat . " AND
                 a.idcat     = b.idcat AND
                 c.idcat     = b.idcat";
 
@@ -330,7 +333,7 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
         }
 
         $parentid = $db->f('parentid');
-        $idtpl = (int) $db->f('idtpl');
+        $idtpl = (int)$db->f('idtpl');
 
         //create link
 
@@ -363,9 +366,9 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
 /**
  * Writes path location string cache data file.
  *
- * @param array  $data
- * @param int    $client
- * @param int    $lang
+ * @param array $data
+ * @param int $client
+ * @param int $lang
  *
  * @return bool
  *
@@ -373,7 +376,8 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
  *
  * @global array $cfgClient
  */
-function prWriteCacheFileContent($data, $client, $lang) {
+function prWriteCacheFileContent($data, $client, $lang)
+{
     global $cfgClient;
 
     $path = $cfgClient[$client]['cache']['path'];
@@ -390,8 +394,8 @@ function prWriteCacheFileContent($data, $client, $lang) {
 /**
  * Get path location string cache data file content.
  *
- * @param int    $client
- * @param int    $lang
+ * @param int $client
+ * @param int $lang
  *
  * @return array $data
  *
@@ -399,7 +403,8 @@ function prWriteCacheFileContent($data, $client, $lang) {
  *
  * @global array $cfgClient
  */
-function prGetCacheFileContent($client, $lang) {
+function prGetCacheFileContent($client, $lang)
+{
     global $cfgClient;
 
     $path = $cfgClient[$client]['cache']['path'];
@@ -417,12 +422,13 @@ function prGetCacheFileContent($client, $lang) {
 /**
  * Deletes path location string cache data file.
  *
- * @global array $cfgClient
  * @param int $client
  * @param int $lang
  * @return bool
+ * @global array $cfgClient
  */
-function prDeleteCacheFileContent($client, $lang) {
+function prDeleteCacheFileContent($client, $lang)
+{
     global $cfgClient;
 
     $path = $cfgClient[$client]['cache']['path'];

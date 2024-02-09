@@ -99,7 +99,7 @@ $statusselect->autoFill($todos->getStatusTypes());
 $statusselect->setDefault($todoitem->getProperty("todo", "status"));
 $ui->add(i18n("Status"), $statusselect->render());
 
-$progress = new cHTMLTextbox("progress", (int) $todoitem->getProperty("todo", "progress"), 5);
+$progress = new cHTMLTextbox("progress", (int)$todoitem->getProperty("todo", "progress"), 5);
 $ui->add(i18n("Progress"), $progress->render() . "%");
 
 $calscript = '

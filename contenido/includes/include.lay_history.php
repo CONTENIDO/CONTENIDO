@@ -69,7 +69,7 @@ if ((!$readOnly) && $requestAction === 'history_truncate') {
 }
 
 // Save action
-if ((!$readOnly) && $requestLaySend && $requestLayName != '' && $requestLayCode != '' && (int) $idlay > 0) {
+if ((!$readOnly) && $requestLaySend && $requestLayName != '' && $requestLayCode != '' && (int)$idlay > 0) {
     $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
     $sLayoutName = $requestLayName;
     $sLayoutCode = $requestLayCode;
@@ -142,17 +142,17 @@ $oForm->unsetActionButton('submit');
 
 // Render and handle history area
 $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
-    if($readOnly) {
-        $oCodeMirrorOutput->setProperty('readOnly', 'true');
-    }
+if ($readOnly) {
+    $oCodeMirrorOutput->setProperty('readOnly', 'true');
+}
 $oPage->addScript($oCodeMirrorOutput->renderScript());
 
 if ($sSelectBox != '') {
     $div = new cHTMLDiv();
     $div->setContent($sSelectBox . '<br>');
     $oPage->setContent([
-            $div,
-            $oForm
+        $div,
+        $oForm
     ]);
 } else {
     if ($bDeleteFile) {

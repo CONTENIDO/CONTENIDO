@@ -33,15 +33,15 @@ i18nInit($cfg['path']['contenido_locale'], $belang);
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
 // Create CONTENIDO classes
-$db  = cRegistry::getDb();
+$db = cRegistry::getDb();
 $tpl = new cTemplate();
 
 // Build the CONTENIDO content area frameset
 $tpl->reset();
 
 if (isset($_GET['appendparameters'])) {
-    $tpl->set('s', 'FRAME[1]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=1&appendparameters=".$_GET['appendparameters'])));
-    $tpl->set('s', 'FRAME[2]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=2&appendparameters=".$_GET['appendparameters'])));
+    $tpl->set('s', 'FRAME[1]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=1&appendparameters=" . $_GET['appendparameters'])));
+    $tpl->set('s', 'FRAME[2]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=2&appendparameters=" . $_GET['appendparameters'])));
     $tpl->set('s', 'FRAME[3]', 'templates/standard/template.deco.html');
 } else {
     $tpl->set('s', 'FRAME[1]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=1")));

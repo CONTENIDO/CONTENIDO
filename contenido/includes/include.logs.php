@@ -158,11 +158,11 @@ $toYearSelect->setDefault($toYear > 0 ? $toYear : date('Y'));
 // Number of actions select
 $entries = [
     '%' => i18n('Unlimited'),
-    10  => '10 '. i18n('Entries'),
-    20  => '20 '. i18n('Entries'),
-    30  => '30 '. i18n('Entries'),
-    50  => '50 '. i18n('Entries'),
-    100 => '100 '. i18n('Entries'),
+    10 => '10 ' . i18n('Entries'),
+    20 => '20 ' . i18n('Entries'),
+    30 => '30 ' . i18n('Entries'),
+    50 => '50 ' . i18n('Entries'),
+    100 => '100 ' . i18n('Entries'),
 ];
 if (!isset($entries[$limit])) {
     $limit = 10;
@@ -195,7 +195,7 @@ if ($languageId !== '%') {
     $where[] = '`idlang` = ' . $languageId;
 }
 if ($actionId !== '%') {
-    $where[] =  '`idaction` = ' . $actionId;
+    $where[] = '`idaction` = ' . $actionId;
 }
 if ($userId == '%' || $userId == "") {
     $userValues = implode("', '", array_keys($accessibleUsers));
@@ -218,7 +218,7 @@ $result = $actionLogColl->select($where, '', '`logtimestamp` DESC', $limitSql);
 // Set 'no results' message when nothing was found
 if (!$result) {
     $noResultsRow = '<tr>'
-        . '<td class="align_top" colspan="7">'. i18n("No results") . '</td>'
+        . '<td class="align_top" colspan="7">' . i18n("No results") . '</td>'
         . '</tr>';
 } else {
     $noResultsRow = '';
@@ -308,7 +308,7 @@ while ($oItem = $actionLogColl->next()) {
     $tpl->set('d', 'ROWNAME', 'row_' . $counter);
     $tpl->set('d', 'RCLIENT', $clientList[$oItem->get('idclient')]['name']);
     $tpl->set('d', 'RDATETIME', $oItem->get('logtimestamp'));
-    $tpl->set('d', 'RUSER' , $users[$oItem->get('user_id')]['username']);
+    $tpl->set('d', 'RUSER', $users[$oItem->get('user_id')]['username']);
     $tpl->set('d', 'RLANG', $aDisplayLanguage[$idlang] ?? $idlang);
     $areaName = $classarea->getAreaName($actionColl->getAreaForAction($oItem->get('idaction')));
     $actionName = $actionColl->getActionName($oItem->get('idaction'));

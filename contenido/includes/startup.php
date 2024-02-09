@@ -35,7 +35,7 @@ global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 @ini_set('log_errors', true);
 
 // Report all errors except warnings
-error_reporting(E_ALL ^E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE);
 
 /* Initial PHP session settings.
  * NOTE: When you change these values by custom configuration, the length of the session ID may differ from 32 characters.
@@ -70,7 +70,7 @@ if (false === cFileHandler::exists($cfg['path']['contenido_config'])) {
 }
 
 if (false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')
-|| false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
+    || false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
     $msg = "<h1>Fatal Error</h1><br>"
         . "Could not open a configuration file <b>config.php</b> or <b>config.clients.php</b>.<br><br>"
         . "Please make sure that you saved the file in the setup program and that your CON_ENVIRONMENT is valid. "
@@ -168,7 +168,7 @@ if (is_dir($localePath)) {
             if (cFileHandler::fileNameIsDot($locale) === false
                 && is_dir($localePath . $locale)) {
                 if (cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.po') &&
-                cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
+                    cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
                     $cfg['login_languages'][] = $locale;
                     $cfg['lang'][$locale] = 'lang_' . $locale . '.xml';
                 }

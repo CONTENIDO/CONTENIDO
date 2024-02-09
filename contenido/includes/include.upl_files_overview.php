@@ -57,11 +57,11 @@ $clientsUploadUrlPath = $cfgClient[$client]['upl']['frontendpath'];
 $clientsFrontendUrl = cRegistry::getFrontendUrl();
 
 $appendparameters = $_REQUEST['appendparameters'] ?? '';
-$file             = cSecurity::escapeString($_REQUEST['file'] ?? '');
-$startpage        = cSecurity::toInteger($_REQUEST['startpage'] ?? '1');
-$sortby           = cSecurity::escapeString($_REQUEST['sortby'] ?? '');
-$sortmode         = cSecurity::escapeString($_REQUEST['sortmode'] ?? '');
-$thumbnailmode    = cSecurity::escapeString($_REQUEST['thumbnailmode'] ?? '');
+$file = cSecurity::escapeString($_REQUEST['file'] ?? '');
+$startpage = cSecurity::toInteger($_REQUEST['startpage'] ?? '1');
+$sortby = cSecurity::escapeString($_REQUEST['sortby'] ?? '');
+$sortmode = cSecurity::escapeString($_REQUEST['sortmode'] ?? '');
+$thumbnailmode = cSecurity::escapeString($_REQUEST['thumbnailmode'] ?? '');
 
 if (!empty($file)) {
     $file = basename($file);
@@ -110,7 +110,7 @@ if (cApiDbfs::isDbfs($path)) {
     $qpath = $path;
 }
 
-if ((is_writable($clientsUploadPath . $path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
+if ((is_writable($clientsUploadPath . $path) || cApiDbfs::isDbfs($path)) && (int)$client > 0) {
     $bDirectoryIsWritable = true;
 } else {
     $bDirectoryIsWritable = false;
@@ -219,7 +219,7 @@ if ($action === 'upl_modify_file' && !empty($file)) {
     $iIdupl = is_object($upload) ? $upload->get('idupl') : 0;
     if (!empty($iIdupl) && $iIdupl > 0) {
         // check for new entry:
-        $oUploadMeta = new cApiUploadMeta((int) $iIdupl);
+        $oUploadMeta = new cApiUploadMeta((int)$iIdupl);
         if ($oUploadMeta->loadByUploadIdAndLanguageId($iIdupl, $lang)) {
             // Update existing entry
             $oUploadMeta->set('medianame', $medianame);
@@ -513,7 +513,7 @@ $totalUploadsCount = $uploadCollection->count();
 $list2->setDataCount($totalUploadsCount);
 
 $uploadCollection->resetQuery();
-$uploadCollection->select("idclient = '$client' AND dirname = '$qpath'", '', '', $numpics * ($startpage - 1) . ", " .  $numpics);
+$uploadCollection->select("idclient = '$client' AND dirname = '$qpath'", '', '', $numpics * ($startpage - 1) . ", " . $numpics);
 
 $rownum = 0;
 

@@ -17,15 +17,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  *
- * @param int    $idlang
- * @param int    $idcat
+ * @param int $idlang
+ * @param int $idcat
  * @param string $user
  *
  * @return bool
  *
  * @throws cDbException
  */
-function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user) {
+function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
+{
     global $cfg, $perm;
 
     if ($perm->have_perm()) {
@@ -48,9 +49,9 @@ function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user) {
     $sSearchFor = implode(",", $arrSearchFor);
 
     $sql = "SELECT idright
-            FROM ".$cfg["tab"]["rights"]." AS A,
-                 ".$cfg["tab"]["actions"]." AS B,
-                 ".$cfg["tab"]["area"]." AS C
+            FROM " . $cfg["tab"]["rights"] . " AS A,
+                 " . $cfg["tab"]["actions"] . " AS B,
+                 " . $cfg["tab"]["area"] . " AS C
             WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id IN (" . $sSearchFor . ") AND A.idcat = " . cSecurity::toInteger($idcat) . "
             AND A.idarea = C.idarea AND B.idaction = A.idaction AND A.idlang = " . cSecurity::toInteger($idlang);
 

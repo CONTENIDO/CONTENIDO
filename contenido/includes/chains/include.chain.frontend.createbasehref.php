@@ -30,7 +30,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function cecCreateBaseHref($currentBaseHref) {
+function cecCreateBaseHref($currentBaseHref)
+{
 
     // get props of current client
     $props = cRegistry::getClient()->getProperties();

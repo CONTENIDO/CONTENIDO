@@ -25,7 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
-function cecIndexArticle(array $articleIds) {
+function cecIndexArticle(array $articleIds)
+{
 
     $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();

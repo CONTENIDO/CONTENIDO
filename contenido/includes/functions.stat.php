@@ -19,20 +19,17 @@ cInclude('includes', 'functions.database.php');
 /**
  * Displays statistic information layer (a div Tag)
  *
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
- * @param int    $id
+ * @param int $id
  *         Either article or directory id
  * @param string $type
  *         The type
- * @param int    $x
+ * @param int $x
  *         Style top position
- * @param int    $y
+ * @param int $y
  *         Style left position
- * @param int    $w
+ * @param int $w
  *         Style width
- * @param int    $h
+ * @param int $h
  *         Style height
  *
  * @return string
@@ -40,6 +37,9 @@ cInclude('includes', 'functions.database.php');
  *
  * @throws cException
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ *
  */
 function statsDisplayInfo($id, $type, $x, $y, $w, $h)
 {
@@ -234,7 +234,7 @@ function statsOverviewAll($yearMonth)
 
         // hits of category total
         if (strcmp($yearMonth, "current") == 0) {
-            $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " .cRegistry::getDbTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . " AND B.idclient=" . $client;
+            $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . " AND B.idclient=" . $client;
         } else {
             if (!$bUseHeapTable) {
                 $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
@@ -254,7 +254,7 @@ function statsOverviewAll($yearMonth)
                     AND B.idlang=" . $lang . " AND B.idclient=" . $client;
         } else {
             if (!$bUseHeapTable) {
-                $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat  . "
+                $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
                         AND B.idlang=" . $lang . " AND B.idclient=" . $client . " AND B.archived='" . $db2->escape($yearMonth) . "'";
             } else {
                 $sql = "SELECT SUM(visited) FROM " . $db2->escape($sHeapTable) . " WHERE idcat=" . $idcat . " AND idlang=" . $lang . "
@@ -735,7 +735,7 @@ function statsOverviewYear($year)
  * @param string $yearMonth
  *         Specifies the year and month from which to retrieve the statistics,
  *         specify "current" to retrieve the current entries.
- * @param int    $top
+ * @param int $top
  *         Specifies the amount of pages to display
  *
  * @throws cDbException
@@ -802,7 +802,7 @@ function statsOverviewTop($yearMonth, $top)
  *
  * Performs a recursive call, if parent category doesn't match to 0
  *
- * @param int    $idcat
+ * @param int $idcat
  *         The category id
  * @param string $seperator
  *         Separator for location string
@@ -895,13 +895,13 @@ function statDisplayTopChooser($default)
     $defaultAll = ($default == 'all') ? 'selected' : '';
 
     return ("<form name=\"name\">" .
-            "  <select class=\"text_medium\" onchange=\"top10Action(this)\">" .
-            "    <option value=\"top10\" $defaultTop10>" . i18n("Top 10") . "</option>" .
-            "    <option value=\"top20\" $defaultTop20>" . i18n("Top 20") . "</option>" .
-            "    <option value=\"top30\" $defaultTop30>" . i18n("Top 30") . "</option>" .
-            "    <option value=\"all\" $defaultAll>" . i18n("All") . "</option>" .
-            "  </select>" .
-            "</form>");
+        "  <select class=\"text_medium\" onchange=\"top10Action(this)\">" .
+        "    <option value=\"top10\" $defaultTop10>" . i18n("Top 10") . "</option>" .
+        "    <option value=\"top20\" $defaultTop20>" . i18n("Top 20") . "</option>" .
+        "    <option value=\"top30\" $defaultTop30>" . i18n("Top 30") . "</option>" .
+        "    <option value=\"all\" $defaultAll>" . i18n("All") . "</option>" .
+        "  </select>" .
+        "</form>");
 }
 
 /**
@@ -922,13 +922,13 @@ function statDisplayYearlyTopChooser($default)
     $defaultAll = ($default == 'all') ? 'selected' : '';
 
     return ("<form name=\"name\">" .
-            "  <select class=\"text_medium\" onchange=\"top10ActionYearly(this)\">" .
-            "    <option value=\"top10\" $defaultTop10>" . i18n("Top 10") . "</option>" .
-            "    <option value=\"top20\" $defaultTop20>" . i18n("Top 20") . "</option>" .
-            "    <option value=\"top30\" $defaultTop30>" . i18n("Top 30") . "</option>" .
-            "    <option value=\"all\" $defaultAll>" . i18n("All") . "</option>" .
-            "  </select>" .
-            "</form>");
+        "  <select class=\"text_medium\" onchange=\"top10ActionYearly(this)\">" .
+        "    <option value=\"top10\" $defaultTop10>" . i18n("Top 10") . "</option>" .
+        "    <option value=\"top20\" $defaultTop20>" . i18n("Top 20") . "</option>" .
+        "    <option value=\"top30\" $defaultTop30>" . i18n("Top 30") . "</option>" .
+        "    <option value=\"all\" $defaultAll>" . i18n("All") . "</option>" .
+        "  </select>" .
+        "</form>");
 }
 
 /**
@@ -972,8 +972,8 @@ function statGetAvailableYears($client, $lang)
  * as stat files.
  *
  * @param string $year
- * @param int    $client
- * @param int    $lang
+ * @param int $client
+ * @param int $lang
  *
  * @return array
  *         Array of strings with months.
@@ -1027,7 +1027,7 @@ function statResetStatistic($client)
  *
  * @param string $sHeapTable
  *         Table name
- * @param cDb    $db
+ * @param cDb $db
  *         Database object
  *
  * @throws cDbException

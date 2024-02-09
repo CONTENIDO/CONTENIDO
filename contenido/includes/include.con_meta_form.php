@@ -172,8 +172,7 @@ if ($art->getField('created')) {
         $tpl->set("s", "REASON", i18n('This article is currently frozen and can not be edited!'));
     } elseif ($versioning->getState() == $versioning::STATE_ADVANCED && $articleType == 'editable'
         || $versioning->getState() == $versioning::STATE_SIMPLE && $articleType != 'version'
-        || $versioning->getState() == $versioning::STATE_DISABLED)
-    {
+        || $versioning->getState() == $versioning::STATE_DISABLED) {
         $tpl->set('s', 'DISABLED', '');
         $tpl->set("s", "REASON", "");
     } else {
@@ -226,7 +225,7 @@ if (isset($tmp_notification)) {
     $tpl->set('s', 'NOTIFICATION', '');
 }
 if (!empty($notifications)) {
-        error_log(implode('', $notifications));
+    error_log(implode('', $notifications));
     $tpl->set('s', 'NOTIFICATIONS', implode('', $notifications));
 } else {
     $tpl->set('s', 'NOTIFICATIONS', '');
@@ -347,7 +346,7 @@ foreach ($availableTags as $key => $value) {
         $tpl->set('d', 'CURSOR', 'pointer');
         $tpl->set('d', 'DELETE_META',
             "Con.showConfirmation('" .
-                    i18n('Are you sure to delete this Meta tag?') . "' ,
+            i18n('Are you sure to delete this Meta tag?') . "' ,
                     function() {
                         deleteMetaTag(" . $value['idmetatype'] . "," . $idart . "," . $idcat . "," . $art->getField('idartlang') . ");
                     }
@@ -381,12 +380,12 @@ switch ($versioning->getState()) {
         $temp_id = $selectedArticleId;
         $temp_ids = [];
 
-        foreach (array_values($optionElementParameters) AS $key => $value) {
+        foreach (array_values($optionElementParameters) as $key => $value) {
             $temp_ids[] = key($value);
         }
         if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
             && $selectedArticleId != 'editable') {
-            foreach ($temp_ids AS $key => $value) {
+            foreach ($temp_ids as $key => $value) {
                 if ($value < $selectedArticleId) {
                     $temp_id = $value;
                     break;
@@ -394,7 +393,7 @@ switch ($versioning->getState()) {
             }
         }
 
-        foreach ($optionElementParameters AS $key => $value) {
+        foreach ($optionElementParameters as $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
             //if ($articleType == 'version') {
@@ -466,12 +465,12 @@ switch ($versioning->getState()) {
         $temp_id = $selectedArticleId;
         $temp_ids = [];
 
-        foreach (array_values($optionElementParameters) AS $key => $value) {
+        foreach (array_values($optionElementParameters) as $key => $value) {
             $temp_ids[] = key($value);
         }
         if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
             && $selectedArticleId != 'editable' && $articleType != 'current' && $articleType != 'editable') {
-            foreach ($temp_ids AS $key => $value) {
+            foreach ($temp_ids as $key => $value) {
                 if ($value < $selectedArticleId) {
                     $temp_id = $value;
                     break;
@@ -486,13 +485,13 @@ switch ($versioning->getState()) {
         }
         $selectElement->appendOptionElement($optionElement);
 
-        foreach ($optionElementParameters AS $key => $value) {
+        foreach ($optionElementParameters as $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
             //if ($articleType == 'version') {
-                if ($selectedArticleId == key($value)) {
-                    $optionElement->setSelected(true);
-                }
+            if ($selectedArticleId == key($value)) {
+                $optionElement->setSelected(true);
+            }
             //}
             $selectElement->appendOptionElement($optionElement);
         }
@@ -663,7 +662,7 @@ while ($db->nextRecord()) {
 if (cPermission::checkSysadminPermission($auth->getPerms())) {
     // disable/grey out button if a non-editable version is selected
     if ($versioning->getState() == $versioning::STATE_SIMPLE && $articleType != 'current'
-            || $versioning->getState() == $versioning::STATE_ADVANCED && $articleType != 'editable') {
+        || $versioning->getState() == $versioning::STATE_ADVANCED && $articleType != 'editable') {
         $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new_off.png" id="addMetaDisabled" alt="">');
     } else {
         $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta" alt="">');

@@ -204,8 +204,8 @@ foreach ($aUserTable as $mkey => $params) {
 
     $delTitle = i18n("Delete user");
     $deleteLink = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_frontenduser" title="' . $delTitle . '">'
-                . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
-                . '</a>';
+        . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
+        . '</a>';
 
     $cGuiMenu->setId($iMenu, $idfrontenduser);
     $cGuiMenu->setTitle($iMenu, conHtmlentities($params["username"]));

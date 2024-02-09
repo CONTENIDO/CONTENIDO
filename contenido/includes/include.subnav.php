@@ -29,8 +29,8 @@ $sql = "SELECT
             a.name AS name,
             a.relevant AS relevant
         FROM
-            ".$cfg['tab']['area']." AS a,
-            ".$cfg['tab']['nav_sub']." AS b
+            " . $cfg['tab']['area'] . " AS a,
+            " . $cfg['tab']['nav_sub'] . " AS b
         WHERE
             b.level = 1 AND
             b.idarea = a.idarea AND
@@ -47,7 +47,7 @@ while ($db->nextRecord()) {
 
     if ($perm->have_perm_area_action($areaName) || ($db->f('relevant') == 0)) {
         // Set template data
-        $tpl->set('d', 'ID',  'c_' . $tpl->dyn_cnt);
+        $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
         $tpl->set('d', 'DATA_NAME', $areaName);
         $tpl->set('d', 'CLASS', '');
         $tpl->set('d', 'OPTIONS', '');

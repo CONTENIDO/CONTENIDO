@@ -180,7 +180,7 @@ if (!$bInUse) {
     $form->setVar("action", "mod_edit");
 }
 
-$form->setHeader(i18n("Edit module") . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
+$form->setHeader(i18n("Edit module") . " &quot;" . conHtmlSpecialChars($module->get('name')) . "&quot;");
 
 $name = new cHTMLTextbox("name", conHtmlSpecialChars(stripslashes($module->get("name"))), 60);
 $descr = new cHTMLTextarea("descr", str_replace([
@@ -336,10 +336,10 @@ if ($module->get("type") == "" || $module->get("type") == "0") {
 $isCodeError = $module->get('error');
 if (getSystemProperty('system', 'modulecheck') !== 'false') {
     $outled = '<img src="images/ajax-loader_16x16.gif" class="outputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '" data-success-src="images/but_online.gif" data-fail-src="images/but_online_no.gif">';
-    $inled  = '<img src="images/ajax-loader_16x16.gif" class="inputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '" data-success-src="images/but_online.gif" data-fail-src="images/but_online_no.gif">';
+    $inled = '<img src="images/ajax-loader_16x16.gif" class="inputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '" data-success-src="images/but_online.gif" data-fail-src="images/but_online_no.gif">';
 } else {
     $outled = '';
-    $inled  = '';
+    $inled = '';
 }
 
 if ($readOnly) {

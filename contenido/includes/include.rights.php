@@ -215,7 +215,7 @@ if ($area != 'user_content') {
 
 $bEndScript = false;
 
-$oClientLang = new cApiClientLanguage((int) $rights_clientslang);
+$oClientLang = new cApiClientLanguage((int)$rights_clientslang);
 if ($oClientLang->isLoaded()) {
     $rights_client = $oClientLang->get('idclient');
     $rights_lang = $oClientLang->get('idlang');

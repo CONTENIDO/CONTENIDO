@@ -47,14 +47,14 @@ $maxPostSize = 0;
 
 // max upload size
 if (ini_get("max_upload_size") == "") {
-    $maxUploadSize = (double) 99999999999999;
+    $maxUploadSize = (double)99999999999999;
 } else {
     $maxUploadSize = machineReadableSize(ini_get("max_upload_size"));
 }
 
 // max post size
 if (ini_get("post_max_size") == "") {
-    $maxPostSize = (double) 99999999999999;
+    $maxPostSize = (double)99999999999999;
 } else {
     $maxPostSize = machineReadableSize(ini_get("post_max_size"));
 }

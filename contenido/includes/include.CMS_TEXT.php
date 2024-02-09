@@ -64,23 +64,31 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 ob_start();
 
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
-<html>
-<head>
-    <base href="<?php echo $frontendUrl; ?>">
-    <title>include.CMS_TEXT.php</title>
-{_META_HEAD_CONTENIDO_}
-{_CSS_HEAD_CONTENIDO_FULLHTML_}
-    <style type="text/css">
-    body.cms_edit {margin: 19px;}
-    .cms_edit_row {padding: 4px 0; margin: 0;}
-    </style>
-{_JS_HEAD_CONTENIDO_FULLHTML_}
-</head>
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+            "http://www.w3.org/TR/html4/frameset.dtd">
+    <html>
+    <head>
+        <base href="<?php echo $frontendUrl; ?>">
+        <title>include.CMS_TEXT.php</title>
+        {_META_HEAD_CONTENIDO_}
+        {_CSS_HEAD_CONTENIDO_FULLHTML_}
+        <style type="text/css">
+            body.cms_edit {
+                margin: 19px;
+            }
 
-<body class="cms_edit">
+            .cms_edit_row {
+                padding: 4px 0;
+                margin: 0;
+            }
+        </style>
+        {_JS_HEAD_CONTENIDO_FULLHTML_}
+    </head>
+
+    <body class="cms_edit">
     <div class="cms_edit_wrap">
-        <form method="post" action="<?php echo $backendUrl . $cfg["path"]["includes"] ?>include.backendedit.php">
+        <form method="post"
+              action="<?php echo $backendUrl . $cfg["path"]["includes"] ?>include.backendedit.php">
             <input type="hidden" name="action" value="10">
             <input type="hidden" name="changeview" value="edit">
             <input type="hidden" name="doedit" value="1">
@@ -95,21 +103,28 @@ ob_start();
             <input type="hidden" name="typenr" value="<?php echo $typenr ?>">
 
             <p class="cms_edit_row text_medium">
-                &nbsp;<?php echo $typenr?>.&nbsp;<?php echo $a_description[$type][$typenr] ?? '' ?>:&nbsp;
+                &nbsp;<?php echo $typenr ?>.&nbsp;<?php echo $a_description[$type][$typenr] ?? '' ?>
+                :&nbsp;
             </p>
 
             <div class="cms_edit_row">
-                <textarea name="CMS_TEXT" rows="15" cols="90"><?php echo $a_content[$type][$typenr] ?? '' ?></textarea>
+                <textarea name="CMS_TEXT" rows="15"
+                          cols="90"><?php echo $a_content[$type][$typenr] ?? '' ?></textarea>
             </div>
 
             <div class="con_form_action_control cms_edit_row">
-                <input class="con_img_button mg0" type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif" alt="<?php echo i18n('Save changes') ?>" title="<?php echo i18n('Save changes') ?>">
-                <a class="con_img_button" href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" alt="<?php echo i18n("Cancel") ?>" title="<?php echo i18n("Cancel") ?>"></a>
+                <input class="con_img_button mg0" type="image" name="submit" value="editcontent"
+                       src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif"
+                       alt="<?php echo i18n('Save changes') ?>"
+                       title="<?php echo i18n('Save changes') ?>">
+                <a class="con_img_button" href="<?php echo $sess->url($path2) ?>"><img
+                            src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif"
+                            alt="<?php echo i18n("Cancel") ?>" title="<?php echo i18n("Cancel") ?>"></a>
             </div>
         </form>
     </div>
-</body>
-</html>
+    </body>
+    </html>
 <?php
 
 $output = ob_get_contents();

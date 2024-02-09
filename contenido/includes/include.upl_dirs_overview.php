@@ -43,8 +43,8 @@ if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegi
 }
 
 $appendparameters = $_REQUEST['appendparameters'] ?? '';
-$collapse         = $_REQUEST['collapse'] ?? '';
-$expand           = $_REQUEST['expand'] ?? '';
+$collapse = $_REQUEST['collapse'] ?? '';
+$expand = $_REQUEST['expand'] ?? '';
 
 $cfgClient = cRegistry::getClientConfig();
 
@@ -56,7 +56,8 @@ $cfgClient = cRegistry::getClientConfig();
  *
  * @throws cException
  */
-function getUplExpandCollapseButton($item) {
+function getUplExpandCollapseButton($item)
+{
     if (count($item->getSubItems()) > 0) {
         if ($item->isCollapsed() == true) {
             $title = i18n('Open category');
@@ -82,7 +83,8 @@ function getUplExpandCollapseButton($item) {
     return $link;
 }
 
-function getUplIdAttrPath($pathStr) {
+function getUplIdAttrPath($pathStr)
+{
     return str_replace(['/', ':'], ['_', ''], trim($pathStr, '/'));
 }
 
@@ -171,9 +173,9 @@ $rootTreeItem->traverse($objects);
 unset($objects[0]);
 
 if ($appendparameters == 'filebrowser') {
-    $mtree   = new cGuiTree('b58f0ae3-8d4e-4bb3-a754-5f0628863364');
+    $mtree = new cGuiTree('b58f0ae3-8d4e-4bb3-a754-5f0628863364');
     $cattree = conFetchCategoryTree();
-    $marray  = [];
+    $marray = [];
 
     foreach ($cattree as $key => $catitem) {
         $no_start = true;
@@ -205,9 +207,9 @@ if ($appendparameters == 'filebrowser') {
 
         $name = '&nbsp;<a href="' . $sess->url("main.php?area=$area&frame=5&idcat=$idcat&appendparameters=$appendparameters") . '" target="right_bottom">' . $catitem['name'] . '</a>';
         $marray[] = [
-            'id'         => $catitem['idcat'],
-            'name'       => $name,
-            'level'      => $catitem['level'],
+            'id' => $catitem['idcat'],
+            'name' => $name,
+            'level' => $catitem['level'],
             'attributes' => [
                 'icon' => $icon,
             ],

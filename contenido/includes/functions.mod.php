@@ -20,7 +20,7 @@ cInclude('includes', 'functions.con.php');
 /**
  * Saves changes of modules and regenerates code cache if required
  *
- * @param int    $idmod
+ * @param int $idmod
  *         module id
  * @param string $name
  *         name of the module

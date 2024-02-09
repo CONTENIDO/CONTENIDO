@@ -32,7 +32,7 @@ $restrict = cSecurity::toString($_REQUEST['restrict'] ?? '');
 $oUser = new cApiUser($auth->auth["uid"]);
 if ($elemPerPage < 0) {
     $elemPerPage = $oUser->getProperty("itemsperpage", $area);
-    if ((int) $elemPerPage <= 0) {
+    if ((int)$elemPerPage <= 0) {
         $oUser->setProperty("itemsperpage", $area, 25);
         $elemPerPage = 25;
     }

@@ -23,11 +23,11 @@ if ($perm->have_perm_area_action("str", "str_newtree")) {
         "Contenido.Action.str_newtree.AfterCall",
         [
             'newcategoryid' => $tmp_newid,
-            'categoryname'  => $categoryname,
+            'categoryname' => $categoryname,
             'categoryalias' => $categoryalias,
-            'visible'       => $visible,
-            'public'        => $public,
-            'idtplcfg'      => $idtplcfg,
+            'visible' => $visible,
+            'public' => $public,
+            'idtplcfg' => $idtplcfg,
         ]
     );
 } else {

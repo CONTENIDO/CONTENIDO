@@ -33,7 +33,7 @@ i18nInit($cfg['path']['contenido_locale'], $belang);
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
 // Create CONTENIDO classes
-$db  = cRegistry::getDb();
+$db = cRegistry::getDb();
 $tpl = new cTemplate();
 
 // Build the CONTENIDO content area frameset

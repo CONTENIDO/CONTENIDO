@@ -88,11 +88,11 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
     // construct the header
     $headers = [
         'checkbox' => i18n('Mark'),
-        'subject'  => i18n('Subject'),
-        'to'       => i18n('To'),
-        'created'  => i18n('Date'),
-        'client'   => i18n('Client'),
-        'action'   => i18n('Action'),
+        'subject' => i18n('Subject'),
+        'to' => i18n('To'),
+        'created' => i18n('Date'),
+        'client' => i18n('Client'),
+        'action' => i18n('Action'),
     ];
     $thead = new cHTMLTableHeader();
     $tr = new cHTMLTableRow();
@@ -188,14 +188,14 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
 
         // construct the email details table
         $tableHeaderDetail = [
-            'from'     => i18n('From'),
-            'to'       => i18n('To'),
+            'from' => i18n('From'),
+            'to' => i18n('To'),
             'reply_to' => i18n('Reply to'),
-            'cc'       => i18n('CC'),
-            'bcc'      => i18n('BCC'),
-            'subject'  => i18n('Subject'),
-            'body'     => i18n('Body'),
-            'created'  => i18n('Date'),
+            'cc' => i18n('CC'),
+            'bcc' => i18n('BCC'),
+            'subject' => i18n('Subject'),
+            'body' => i18n('Body'),
+            'created' => i18n('Date'),
         ];
         $table = new cHTMLTable();
         $table->setClass('generic');
@@ -339,7 +339,8 @@ $page->render();
  * @return string
  *         HTML code showing the given mail addresses and names
  */
-function mailLogDecodeAddresses($addresses) {
+function mailLogDecodeAddresses($addresses)
+{
     $result = '';
     $addresses = json_decode($addresses, true);
     if (!is_array($addresses)) {

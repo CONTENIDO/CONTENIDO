@@ -37,21 +37,21 @@ $requestFilterNon = $_POST['filter_non'] ?? '';
 $requestIdFrontendGroup = cSecurity::toInteger($_REQUEST['idfrontendgroup'] ?? '0');
 $requestNewMember = $_REQUEST['newmember'] ?? [];
 $requestGroupName = $_REQUEST['groupname'] ?? '';
-$requestDefaultGroup =  cSecurity::toInteger($_REQUEST['defaultgroup'] ?? '0');
+$requestDefaultGroup = cSecurity::toInteger($_REQUEST['defaultgroup'] ?? '0');
 
 $successMessage = '';
-$fegroup      = new cApiFrontendGroup();
+$fegroup = new cApiFrontendGroup();
 $groupmembers = new cApiFrontendGroupMemberCollection();
 $fegroup->loadByPrimaryKey($requestIdFrontendGroup);
 $sRefreshRightTopLinkJs = "";
 
 if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $action)) {
-   $fegroup = $fegroups->create(" ".i18n("-- New group --"));
-   $requestIdFrontendGroup = $fegroup->get("idfrontendgroup");
-   $sRefreshRightTopLink = $sess->url('main.php?frame=3&area='.$area.'&idfrontendgroup='.$requestIdFrontendGroup);
-   $sRefreshRightTopLink = "Con.multiLink('right_top', '".$sRefreshRightTopLink."')";
-   $sRefreshRightTopLinkJs = '<script type="text/javascript">' . $sRefreshRightTopLink . '</script>';
-   $successMessage = i18n("Created new frontend-group successfully");
+    $fegroup = $fegroups->create(" " . i18n("-- New group --"));
+    $requestIdFrontendGroup = $fegroup->get("idfrontendgroup");
+    $sRefreshRightTopLink = $sess->url('main.php?frame=3&area=' . $area . '&idfrontendgroup=' . $requestIdFrontendGroup);
+    $sRefreshRightTopLink = "Con.multiLink('right_top', '" . $sRefreshRightTopLink . "')";
+    $sRefreshRightTopLinkJs = '<script type="text/javascript">' . $sRefreshRightTopLink . '</script>';
+    $successMessage = i18n("Created new frontend-group successfully");
 } elseif ($action == "frontendgroups_user_delete" && $perm->have_perm_area_action($area, $action)) {
     $aDeleteMembers = [];
     if (!is_array($requestUserInGroup)) {
@@ -78,11 +78,11 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
     // also save other variables
     $action = "frontendgroup_save_group";
 } elseif ($action == "frontendgroup_delete" && $perm->have_perm_area_action($area, $action)) {
-   $fegroups->delete($requestIdFrontendGroup);
-   $requestIdFrontendGroup= 0;
-   $fegroup = new cApiFrontendGroup();
+    $fegroups->delete($requestIdFrontendGroup);
+    $requestIdFrontendGroup = 0;
+    $fegroup = new cApiFrontendGroup();
 
-  cRegistry::addOkMessage(i18n("Deleted group successfully!"));
+    cRegistry::addOkMessage(i18n("Deleted group successfully!"));
 }
 
 if ($action != '') {
@@ -155,7 +155,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
 
     $cells = [];
     foreach ($addeduserobjects as $addeduserobject) {
-        if ((int) $addeduserobject->get("idfrontenduser") != 0 && $addeduserobject->get("username") != '') {
+        if ((int)$addeduserobject->get("idfrontenduser") != 0 && $addeduserobject->get("username") != '') {
             $cells[$addeduserobject->get("idfrontenduser")] = $addeduserobject->get("username");
         }
     }
@@ -163,7 +163,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
 
     $sInGroupOptions = '';
     foreach ($cells as $idfrontenduser => $name) {
-        $sInGroupOptions .= '<option value="'.$idfrontenduser.'">'.conHtmlSpecialChars($name).'</option>'."\n";
+        $sInGroupOptions .= '<option value="' . $idfrontenduser . '">' . conHtmlSpecialChars($name) . '</option>' . "\n";
     }
     $page->set('s', 'IN_GROUP_OPTIONS', $sInGroupOptions);
 
@@ -171,8 +171,8 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     while ($feuser = $feusers->next()) {
         $idfrontenduser = $feuser->get("idfrontenduser");
         $sUsername = $feuser->get("username");
-        if (!in_array($idfrontenduser,$addedusers)) {
-            if ((int) $idfrontenduser != 0 && $sUsername != '') {
+        if (!in_array($idfrontenduser, $addedusers)) {
+            if ((int)$idfrontenduser != 0 && $sUsername != '') {
                 $items[$idfrontenduser] = $sUsername;
             }
         }
@@ -181,11 +181,11 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
 
     $sNonGroupOptions = '';
     foreach ($items as $idfrontenduser => $name) {
-        $sNonGroupOptions .= '<option value="'.$idfrontenduser.'">'.conHtmlSpecialChars($name).'</option>'."\n";
+        $sNonGroupOptions .= '<option value="' . $idfrontenduser . '">' . conHtmlSpecialChars($name) . '</option>' . "\n";
     }
     $page->set('s', 'NON_GROUP_OPTIONS', $sNonGroupOptions);
 
-    $groupname = new cHTMLTextbox("groupname", $fegroup->get("groupname"),40);
+    $groupname = new cHTMLTextbox("groupname", $fegroup->get("groupname"), 40);
 
     $defaultgroup = new cHTMLCheckbox("defaultgroup", "1");
     $defaultgroup->setChecked($fegroup->get("defaultgroup"));
@@ -204,8 +204,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     if (is_array($pluginOrder)) {
         foreach ($pluginOrder as $plugin) {
             if (function_exists('frontendgroups_' . $plugin . '_getTitle') &&
-                function_exists('frontendgroups_' . $plugin . '_display'))
-            {
+                function_exists('frontendgroups_' . $plugin . '_display')) {
                 $plugTitle = call_user_func('frontendgroups_' . $plugin . '_getTitle');
                 $display = call_user_func('frontendgroups_' . $plugin . '_display', $fegroup);
 
@@ -244,7 +243,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     $page->set('s', 'IN_GROUP_VALUE', $requestFilterIn);
     $page->set('s', 'NON_GROUP_VALUE', $requestFilterNon);
     $page->set('s', 'RECORD_ID_NAME', 'idfrontendgroup');
-    $page->set('s', 'RELOADSCRIPT', $reloadLeftBottom.$sRefreshRightTopLinkJs);
+    $page->set('s', 'RELOADSCRIPT', $reloadLeftBottom . $sRefreshRightTopLinkJs);
 
     $page->render();
 } else {

@@ -59,7 +59,7 @@ if ($client < 1) {
     return;
 }
 
-$page->displayInfo(i18n('Edit file') . " &quot;". conHtmlSpecialChars($module->get('name')) . "&quot;");
+$page->displayInfo(i18n('Edit file') . " &quot;" . conHtmlSpecialChars($module->get('name')) . "&quot;");
 
 $moduleTemplateHandler = new cModuleTemplateHandler($idmod, $page);
 $moduleTemplateHandler->checkWritePermissions();

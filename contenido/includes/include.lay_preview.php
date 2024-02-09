@@ -23,6 +23,6 @@ if (($code = $layoutInFile->getLayoutCode()) == false) {
 $base = '<base href="' . cRegistry::getFrontendUrl() . '">';
 $tags = $base;
 
-$code = str_replace("<head>", "<head>\n".$tags, $code);
+$code = str_replace("<head>", "<head>\n" . $tags, $code);
 
-eval("?>\n".cSecurity::unescapeDB($code)."\n<?php\n");
+eval("?>\n" . cSecurity::unescapeDB($code) . "\n<?php\n");

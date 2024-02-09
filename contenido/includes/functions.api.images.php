@@ -242,9 +242,9 @@ function cApiImgScaleHQ(
 
         // Preserve transparency
         if (cString::toLowerCase($fileType) == 'gif' || cString::toLowerCase($fileType) == 'png' || cString::toLowerCase($fileType) == 'webp') {
-        	imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
-        	imagealphablending($targetImage, false);
-        	imagesavealpha($targetImage, true);
+            imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
+            imagealphablending($targetImage, false);
+            imagesavealpha($targetImage, true);
         }
 
         // crop image from center
@@ -431,25 +431,25 @@ function cApiImageIsAnimGif($sFile): bool
  *
  * @param string $img
  *                          The path to the image (relative to the frontend)
- * @param int    $maxX
+ * @param int $maxX
  *                          The maximum size in x-direction
- * @param int    $maxY
+ * @param int $maxY
  *                          The maximum size in y-direction
- * @param bool   $crop      [optional]
+ * @param bool $crop [optional]
  *                          If true, the image is cropped and not scaled.
- * @param bool   $expand    [optional]
+ * @param bool $expand [optional]
  *                          If true, the image is expanded (e.g. really scaled).
  *                          If false, the image will only be made smaller.
- * @param int    $cacheTime [optional]
+ * @param int $cacheTime [optional]
  *                          The number of minutes to cache the image, use 0 for unlimited
- * @param bool   $wantHQ    [optional]
+ * @param bool $wantHQ [optional]
  *                          If true, try to force high quality mode
  *                          Deprecated 4.8.* This is not used anymore.
  *                          Configure the quality via following setting:
  *                          $cfg['images']['image_quality']['compression_rate']
- * @param int    $quality   [optional]
+ * @param int $quality [optional]
  *                          The quality of the output file
- * @param bool   $keepType  [optional]
+ * @param bool $keepType [optional]
  *                          If true and a png file is source, output file is also png
  *
  * @return string|false
@@ -488,12 +488,12 @@ function cApiImgScale(
     }
 
     $fileName = $img;
-	$fileType = cFileHandler::getExtension($fileName);
+    $fileType = cFileHandler::getExtension($fileName);
     $quality = cApiImgGetCompressionRate(cFileHandler::getExtension($fileName), $quality);
 
     $mxdAvImgEditingPossibility = cApiImageCheckImageEditingPossibility();
 
-	if ( $fileType == "svg") $mxdAvImgEditingPossibility = "untouched" ;
+    if ($fileType == "svg") $mxdAvImgEditingPossibility = "untouched";
 
     switch ($mxdAvImgEditingPossibility) {
         case '1': // gd1
@@ -591,10 +591,11 @@ function cApiImageCheckImageEditingPossibility(): string
 }
 
 /**
- * @deprecated Use cApiImageCheckImageEditingPossibility()
  * @return mixed @see \cApiImageCheckImageEditingPossibility()
+ * @deprecated Use cApiImageCheckImageEditingPossibility()
  */
-function cApiImageCheckImageEditingPosibility() {
+function cApiImageCheckImageEditingPosibility()
+{
     return cApiImageCheckImageEditingPossibility();
 }
 
@@ -711,7 +712,7 @@ function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime): bool
             }
         } else {
             return true;
-       }
+        }
     }
 
     return false;
@@ -768,10 +769,10 @@ function cApiIsImageMagickAvailable(): bool
  * Converts the compression rate to PNG compression level. Compression rate is only supported
  * for JPG, JPEG or PNG images.
  *
- * @since CONTENIDO 4.10.2
  * @param string $imgType The image type, e.g. 'jpg', 'jpeg' or 'png'
  * @param int $quality The quality of the image (0 - 100)
  * @return int Returns 100-1 for JPG and JPEG images, 0-9 for PNG images and null for other images.
+ * @since CONTENIDO 4.10.2
  */
 function cApiImgGetCompressionRate(string $imgType, int $quality = 0): int
 {
@@ -806,10 +807,10 @@ function cApiImgGetCompressionRate(string $imgType, int $quality = 0): int
 /**
  * Returns image resource by file name.
  *
- * @since CONTENIDO 4.10.2
  * @param string $fileName Path to image
  * @param string|null $fileType File type (extension)
  * @return resource|null Created image resource or null
+ * @since CONTENIDO 4.10.2
  */
 function cApiImgCreateImageResourceFromFile(string $fileName, string $fileType = null)
 {
@@ -842,13 +843,13 @@ function cApiImgCreateImageResourceFromFile(string $fileName, string $fileType =
 /**
  * Saves the given image resource.
  *
- * @since CONTENIDO 4.10.2
  * @param false|GdImage|resource $targetImage The image resource
  * @param string $saveTo The path to save the image to
  * @param int $quality The quality of the image
  * @param string $fileType The file type (extension)
  * @param bool $keepType Flag to keep the type. If false, the image resource will be saved as JPEG.
  * @return bool
+ * @since CONTENIDO 4.10.2
  */
 function cApiImgSaveImageResourceToFile(
     $targetImage, string $saveTo, int $quality, string $fileType, bool $keepType
@@ -863,7 +864,7 @@ function cApiImgSaveImageResourceToFile(
             case 'gif':
                 return imagegif($targetImage, $saveTo);
             case 'webp':
-				$quality = cApiImgGetCompressionRate($fileType, $quality);
+                $quality = cApiImgGetCompressionRate($fileType, $quality);
                 return imagewebp($targetImage, $saveTo, $quality);
             default:
                 $quality = cApiImgGetCompressionRate($fileType, $quality);

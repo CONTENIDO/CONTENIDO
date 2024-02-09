@@ -130,8 +130,8 @@ while ($cApiUser = $cApiUserCollection->next()) {
             if ($perm->have_perm_area_action('user', "user_delete")) {
                 $delTitle = i18n("Delete user");
                 $deleteLink = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_user" title="' . $delTitle . '">'
-                            . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
-                            . '</a>';
+                    . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
+                    . '</a>';
             } else {
                 $deleteLink = '';
             }

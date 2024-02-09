@@ -34,20 +34,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This would output "This is a", since this function respects word boundaries
  * and doesn't operate beyond the limit given by $maxlen.
  *
- * @deprecated [2015-05-21]
- *         use cString::trimAfterWord
- *
  * @param string $string
  *         The string to operate on
- * @param int    $maxlen
+ * @param int $maxlen
  *         The maximum number of characters
  *
  * @return string
  *         The resulting string
  *
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         use cString::trimAfterWord
+ *
  */
-function cApiStrTrimAfterWord($string, $maxlen) {
+function cApiStrTrimAfterWord($string, $maxlen)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
     return cString::trimAfterWord($string, $maxlen);
 }
@@ -64,12 +65,9 @@ function cApiStrTrimAfterWord($string, $maxlen) {
  * This would output "This is a si...", since the string is longer than $maxlen
  * and the resulting string matches 15 characters including the dots.
  *
- * @deprecated [2015-05-21]
- *         use cString::trimHard() instead
- *
  * @param string $string
  *                       The string to operate on
- * @param int    $maxlen
+ * @param int $maxlen
  *                       The maximum number of characters
  * @param string $fillup [optional]
  *
@@ -77,8 +75,12 @@ function cApiStrTrimAfterWord($string, $maxlen) {
  *         The resulting string
  *
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         use cString::trimHard() instead
+ *
  */
-function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
+function cApiStrTrimHard($string, $maxlen, $fillup = '...')
+{
     cDeprecated('This method is deprecated and is not needed any longer');
     return cString::trimHard($string, $maxlen, $fillup);
 }
@@ -124,22 +126,23 @@ function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
  *
  * This function ensures that at least one sentence is returned.
  *
- * @deprecated [2015-05-21]
- *         use cString::trimSentence
- *
  * @param string $string
  *                     The string to operate on
- * @param int    $approxlen
+ * @param int $approxlen
  *                     The approximate number of characters
- * @param bool   $hard [optional]
+ * @param bool $hard [optional]
  *                     If true, use a hard limit for the number of characters
  *
  * @return string
  *         The resulting string
  *
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         use cString::trimSentence
+ *
  */
-function cApiStrTrimSentence($string, $approxlen, $hard = false) {
+function cApiStrTrimSentence($string, $approxlen, $hard = false)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
     return cString::trimSentence($string, $approxlen, $hard);
 }
@@ -155,9 +158,6 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  *
  * For other languages, the diacritic marks are removed, if possible.
  *
- * @deprecated [2015-05-21]
- *         use cString::replaceDiacritics
- *
  * @param string $sString
  *                               The string to operate on
  * @param string $sourceEncoding [optional; default: UTF-8]
@@ -169,8 +169,12 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  *         The resulting string
  *
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         use cString::replaceDiacritics
+ *
  */
-function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8') {
+function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8')
+{
     cDeprecated('This method is deprecated and is not needed any longer');
     return cString::replaceDiacritics($sString, $sourceEncoding, $targetEncoding);
 }
@@ -197,11 +201,6 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEn
  * - ASCII
  * - UTF-8
  *
- * @deprecated [2015-05-21]
- *         use cString::recodeString
- * @todo       Check if the charset names are the same for both converters
- * @todo       Implement a converter and charset checker to ensure compilance.
- *
  * @param string $sString
  *         The string to operate on
  * @param string $sourceEncoding
@@ -213,8 +212,14 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEn
  *         The resulting string
  *
  * @throws cInvalidArgumentException
+ * @todo       Implement a converter and charset checker to ensure compilance.
+ *
+ * @deprecated [2015-05-21]
+ *         use cString::recodeString
+ * @todo       Check if the charset names are the same for both converters
  */
-function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding) {
+function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
     return cString::recodeString($sString, $sourceEncoding, $targetEncoding);
 }
@@ -228,29 +233,27 @@ function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding) {
  * - All characters between 32 and 126 which are not alphanumeric and
  * aren't one of the following: _-.
  *
- * @deprecated [2015-05-21]
- *         use cString::cleanURLCharacters
- *
  * @param string $sString
  *                         The string to operate on
- * @param bool   $bReplace [optional]
+ * @param bool $bReplace [optional]
  *                         If true, all "unclean" characters are replaced
  *
  * @return string
  *         The resulting string
  *
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         use cString::cleanURLCharacters
+ *
  */
-function cApiStrCleanURLCharacters($sString, $bReplace = false) {
+function cApiStrCleanURLCharacters($sString, $bReplace = false)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
     return cString::cleanURLCharacters($sString, $bReplace);
 }
 
 /**
  * Normalizes line endings in passed string.
- *
- * @deprecated [2015-05-21]
- *         use cString::normalizeLineEndings
  *
  * @param string $sString
  * @param string $sLineEnding
@@ -259,8 +262,12 @@ function cApiStrCleanURLCharacters($sString, $bReplace = false) {
  * @return string
  *
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         use cString::normalizeLineEndings
+ *
  */
-function cApiStrNormalizeLineEndings($sString, $sLineEnding = "\n") {
+function cApiStrNormalizeLineEndings($sString, $sLineEnding = "\n")
+{
     cDeprecated('This method is deprecated and is not needed any longer');
     return cString::normalizeLineEndings($sString, $sLineEnding);
 }

@@ -183,7 +183,7 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction !== 'hist
     $oForm->add(i18n('Name'), $sName);
     $oForm->add(i18n('Description'), $description);
     $oForm->add(i18n('Code'), $sCode);
-    $oForm->setActionButton('apply', 'images/but_ok' . (($readOnly) ? '_off' : '' ) . '.gif', i18n('Copy to current'), 'c'/*, 'mod_history_takeover'*/);
+    $oForm->setActionButton('apply', 'images/but_ok' . (($readOnly) ? '_off' : '') . '.gif', i18n('Copy to current'), 'c'/*, 'mod_history_takeover'*/);
     $oForm->unsetActionButton('submit');
 
     // Render and handle history area

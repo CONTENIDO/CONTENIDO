@@ -176,7 +176,7 @@ if ('tinymce4' === $wysiwygeditor) {
     // Get configuration for fullscreen editor
     $aConfigFullscreen = $oEditor->getConfigFullscreen();
 
-    foreach($aConfigInlineEdit as $sCmsType => $setting) {
+    foreach ($aConfigInlineEdit as $sCmsType => $setting) {
         // Get configuration for popup and inline tiny
         $aTinyOptions[$sCmsType] = $aConfigInlineEdit[$sCmsType];
         $aTinyOptions[$sCmsType]['fullscreen_settings'] = $aConfigFullscreen[$sCmsType];
@@ -185,7 +185,7 @@ if ('tinymce4' === $wysiwygeditor) {
     $oScriptTpl->set('s', 'TINY_OPTIONS', json_encode($aTinyOptions));
 //     $oScriptTpl->set('s', 'TINY_OPTIONS', '[{' . $sTinyOptions . '},{' . $sCmsHtmlHeadConfig . '}]');
 } else {
-    $sTinyOptions= $sConfigInlineEdit . ",\nfullscreen_settings: {\n" . $sConfigFullscreen . "\n}";
+    $sTinyOptions = $sConfigInlineEdit . ",\nfullscreen_settings: {\n" . $sConfigFullscreen . "\n}";
     $oScriptTpl->set('s', 'TINY_OPTIONS', '{' . $sTinyOptions . '}');
 }
 $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
@@ -355,7 +355,7 @@ switch ($versioning->getState()) {
         }
 
         // load selected article
-        $selectedArticle = $versioning->getSelectedArticle((int) $idArtLangVersion, $idartlang, $articleType);
+        $selectedArticle = $versioning->getSelectedArticle((int)$idArtLangVersion, $idartlang, $articleType);
 
         // Get version numbers for Select Element
         $optionElementParameters = $versioning->getDataForSelectElement($idartlang, 'content');
@@ -367,7 +367,7 @@ switch ($versioning->getState()) {
                 $optionElement->setSelected(true);
             }
             $selectElement->appendOptionElement($optionElement);
-            if (count($optionElementParameters) > 0 ) {
+            if (count($optionElementParameters) > 0) {
                 unset($optionElementParameters[max(array_keys($optionElementParameters))]);
             }
         }

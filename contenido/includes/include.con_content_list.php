@@ -44,7 +44,7 @@ $sess->register('encoding');
 // Initialize encodings
 if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
     // Get encodings of all languages
-    $encoding  = [];
+    $encoding = [];
     $oLangColl = new cApiLanguageCollection();
     $oLangColl->select('');
     while ($oLang = $oLangColl->next()) {
@@ -244,7 +244,7 @@ if (($action == 'savecontype' || $action == 10)) {
 
             // Execute cec hook
             cApiCecHook::execute('Contenido.Article.DeletecontentType', [
-                'idcontent' => (int) $_REQUEST['idcontent'],
+                'idcontent' => (int)$_REQUEST['idcontent'],
                 'idart' => cRegistry::getArticleId(),
                 'idlang' => cRegistry::getArticleLanguageId(),
                 'idartlang' => cRegistry::getArticleLanguageId()
@@ -534,12 +534,12 @@ switch ($versioningState) {
         $temp_id = $selectedArticleId;
         $temp_ids = [];
 
-        foreach (array_values($optionElementParameters) AS $key => $value) {
+        foreach (array_values($optionElementParameters) as $key => $value) {
             $temp_ids[] = key($value);
         }
         if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
             && $selectedArticleId != 'editable' && $articleType != 'current' && $articleType != 'editable') {
-            foreach ($temp_ids AS $key => $value) {
+            foreach ($temp_ids as $key => $value) {
                 if ($value < $selectedArticleId) {
                     $temp_id = $value;
                     break;
@@ -548,7 +548,7 @@ switch ($versioningState) {
         }
 
         // Create Content Version Option Elements
-        foreach ($optionElementParameters AS $key => $value) {
+        foreach ($optionElementParameters as $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Version ' . $key . ': ' . $lastModified, key($value));
             //if ($articleType == 'version') {
@@ -680,13 +680,13 @@ switch ($versioningState) {
         $temp_id = $selectedArticleId;
         $temp_ids = [];
 
-        foreach (array_values($optionElementParameters) AS $key => $value) {
+        foreach (array_values($optionElementParameters) as $key => $value) {
             $temp_ids[] = key($value);
         }
         if ($_POST['changeview'] != 'edit' && !in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
             && $selectedArticleId != 'editable' && $selectedArticleId != $versioning->editableArticleId
         ) {
-            foreach ($temp_ids AS $key => $value) {
+            foreach ($temp_ids as $key => $value) {
                 if ($value < $selectedArticleId) {
                     $temp_id = $value;
                     break;
@@ -695,7 +695,7 @@ switch ($versioningState) {
         }
 
         // Create Content Version Option Elements
-        foreach ($optionElementParameters AS $key => $value) {
+        foreach ($optionElementParameters as $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
             if (key($value) == $temp_id) {
@@ -851,8 +851,8 @@ $page->set('s', 'CATEGORY', $breadcrumb);
 if (count($result) <= 0) {
     $page->displayInfo(i18n('Article has no raw data'));
 } else {
-    foreach ($result AS $type => $typeIdValue) {
-        foreach ($typeIdValue AS $typeId => $value) {
+    foreach ($result as $type => $typeIdValue) {
+        foreach ($typeIdValue as $typeId => $value) {
             if (($articleType == 'editable' || $articleType == 'current' && ($versioningState == $versioning::STATE_DISABLED || $versioningState == $versioning::STATE_SIMPLE))) {
                 $class = '';
             } elseif ($articleType == 'current' || $articleType == 'version') {
@@ -919,14 +919,14 @@ cRegistry::shutdown();
  *         CMS_...tags list
  * @param array $contentList
  *         Associative list of CMS variables
- * @param bool  $saveKeywords
+ * @param bool $saveKeywords
  *         Flag to save collected keywords during replacement process.
  * @param       $layoutCode
  * @param       $articleType
  * @param       $versioningState
  * @param       $version
- * @param bool  $isLocked
- * @param bool  $isAdmin
+ * @param bool $isLocked
+ * @param bool $isAdmin
  *
  * @return mixed
  *
@@ -975,8 +975,8 @@ function _processCmsTags(
     $_typeList = [];
     $oTypeColl = new cApiTypeCollection();
     $oTypeColl->select('`idtype` IN (' . implode(',', array_map(function ($i) {
-        return (int)$i;
-    }, array_keys($list))) . ')');
+            return (int)$i;
+        }, array_keys($list))) . ')');
     if (0 < $oTypeColl->count()) {
         while (false !== ($oType = $oTypeColl->next())) {
             $_typeList[] = $oType->toObject();
@@ -1044,7 +1044,7 @@ function _processCmsTags(
             // article is not frozen or admin accesses page (admin can do everything, even when article is frozen)
             // article can be edited or (article is published version and versioning is turned off or set to simple mode)
             if ((!$isLocked || $isAdmin) && ($articleType == 'editable' || ($articleType == 'current' && ($versioningState == cContentVersioning::STATE_DISABLED || $versioningState == cContentVersioning::STATE_SIMPLE)))) { // No freeze
-                $replacements[$num]   = $tmp . '<span class="con_content_type_controls"><a class="con_img_button con_img_button_content_type" href="javascript:void(0)" data-con-action="delete_content_type" data-con-idcontent="' . $idcontent . '">
+                $replacements[$num] = $tmp . '<span class="con_content_type_controls"><a class="con_img_button con_img_button_content_type" href="javascript:void(0)" data-con-action="delete_content_type" data-con-idcontent="' . $idcontent . '">
             <img src="' . $backendUrl . 'images/delete.gif" alt="">
             </a></span>';
                 $keycode[$type][$num] = $tmp . '<span class="con_content_type_controls"></span><a class="con_img_button con_img_button_content_type" href="javascript:void(0)" data-con-action="delete_content_type" data-con-idcontent="' . $idcontent . '">

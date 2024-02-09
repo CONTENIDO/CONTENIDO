@@ -43,21 +43,22 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *         The area which should be included
  * @param string $sWhat
  *         The filename of the include
- * @param bool   $bForce
+ * @param bool $bForce
  *         If true, force the file to be included
- * @param bool   $bReturnPath
+ * @param bool $bReturnPath
  *         Flag to return the path instead of including the file
  *
  * @return bool|string|NULL
  *
  * @throws cInvalidArgumentException
  */
-function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
+function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false)
+{
     $backendPath = cRegistry::getBackendPath();
     global $client, $cfg, $cfgClient, $cCurrentModule;
 
     // Sanity check for $sWhat
-    $sWhat  = trim($sWhat);
+    $sWhat = trim($sWhat);
     $sWhere = cString::toLowerCase($sWhere);
     $bError = false;
 
@@ -74,10 +75,10 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
                 // The class file will be loaded automatically by the autoloader - get out here
                 return NULL;
             }
-            $sInclude = $backendPath  . $cfg['path'][$sWhere] . $sWhat;
+            $sInclude = $backendPath . $cfg['path'][$sWhere] . $sWhat;
             break;
         default:
-            $sInclude = $backendPath  . $cfg['path'][$sWhere] . $sWhat;
+            $sInclude = $backendPath . $cfg['path'][$sWhere] . $sWhat;
             break;
     }
 
@@ -125,10 +126,11 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
  * @param string $sWhat
  *         The filename of the include
  */
-function plugin_include($sWhere, $sWhat) {
+function plugin_include($sWhere, $sWhat)
+{
     global $cfg;
 
-    $sInclude = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $sWhere. '/' . $sWhat;
+    $sInclude = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $sWhere . '/' . $sWhat;
 
     include_once($sInclude);
 }

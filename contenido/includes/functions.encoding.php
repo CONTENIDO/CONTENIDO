@@ -24,17 +24,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * return
  * false, otherwise the encoding as string like it is stored in database.
  *
- * @deprecated [2015-05-21]
- *         use cRegistry::getEncoding
- *
  * @param cDb $db
  *         not used any more!
  * @param int $lang
  *
  * @return string|bool
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         use cRegistry::getEncoding
+ *
  */
-function getEncodingByLanguage($db, $lang) {
+function getEncodingByLanguage($db, $lang)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
     return cRegistry::getEncoding();
 }
@@ -46,7 +47,8 @@ function getEncodingByLanguage($db, $lang) {
  * @param string $input
  * @return string
  */
-function htmlentities_iso88592($input = '') {
+function htmlentities_iso88592($input = '')
+{
     $arrEntities_pl = [
         '&ecirc;',
         '&oacute;',

@@ -35,7 +35,7 @@ if ($sCatList != '') {
 }
 
 $aConExpandedList = unserialize($currentuser->getUserProperty('system', 'con_cat_expandstate'));
-if (!is_array($aConExpandedList))  {
+if (!is_array($aConExpandedList)) {
     $aConExpandedList = [];
 }
 

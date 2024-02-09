@@ -27,20 +27,21 @@ global $cfg, $auth, $perm, $area, $frame;
  *
  * @param string $name
  *         the name of the form element
- * @param array  $possibleValues
+ * @param array $possibleValues
  *         the possible values
  * @param string $value
  *         the value which should be selected
  * @param string $label
  *         the label text which should be rendered
- * @param int    $width
+ * @param int $width
  *
  * @return array
  *         associative array with the label and the input field
  *
  * @throws cException
  */
-function renderSelectProperty($name, $possibleValues, $value, $label, $width = 322) {
+function renderSelectProperty($name, $possibleValues, $value, $label, $width = 322)
+{
     $auth = cRegistry::getAuth();
     $return = [
         'label' => '',
@@ -48,9 +49,8 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
     ];
 
     if (count($possibleValues) === 2 && (in_array('true', $possibleValues) && in_array('false', $possibleValues)
-        || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues)
-        || in_array('0', $possibleValues) && in_array('1', $possibleValues)))
-    {
+            || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues)
+            || in_array('0', $possibleValues) && in_array('1', $possibleValues))) {
         // render a checkbox if there are only the values true and false
         $checked = $value == 'true' || $value == '1' || $value == 'enabled';
         $html = new cHTMLCheckbox($name, $possibleValues[0], $name, $checked);
@@ -71,19 +71,19 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
         if ($name == 'versioning{_}enabled') {
             $html->setStyle('float: left; width: ' . $width . 'px;');
             $infoBox = new cGuiBackendHelpbox(i18n('<p><strong>Article versioning:</strong></p>'
-                . '<ul style="list-style:none;">'
+                    . '<ul style="list-style:none;">'
                     . '<li>'
-                        . 'Review and restore older versions (simple) and create drafts (advanced).'
-                        . ' Versions are generated automatically by changing an article.'
+                    . 'Review and restore older versions (simple) and create drafts (advanced).'
+                    . ' Versions are generated automatically by changing an article.'
                     . '</li>'
-                . '</ul>'
-                . '<p><strong>Modes:</strong></p>'
-                . '<ul class="list">'
+                    . '</ul>'
+                    . '<p><strong>Modes:</strong></p>'
+                    . '<ul class="list">'
                     . '<li class="first"><strong>disabled: </strong> The article versioning is disabled.</li>'
                     . '<li><strong>simple: </strong>Older article versions can be reviewed and restored.</li>'
                     . '<li><strong>advanced: </strong>Additional to the simple-mode, unpublished drafts can be created.</li>'
-                . '</ul>'
-                . '<p><strong>Further information</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>')
+                    . '</ul>'
+                    . '<p><strong>Further information</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>')
             );
             $return['label'] =
                 ' <div>
@@ -128,7 +128,8 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
  * @return string
  *         the rendered cHTMLLabel element
  */
-function renderLabel($text, $name, $width = 280, $separator = ':', $float = '') {
+function renderLabel($text, $name, $width = 280, $separator = ':', $float = '')
+{
     $label = new cHTMLLabel($text . $separator, $name);
     $label->setClass("sys_config_txt_lbl");
     if ($float != '') {
@@ -156,7 +157,8 @@ function renderLabel($text, $name, $width = 280, $separator = ':', $float = '') 
  * @return array
  *         associative array with the label and the input field
  */
-function renderTextProperty($name, $value, $label, $password = false) {
+function renderTextProperty($name, $value, $label, $password = false)
+{
     $auth = cRegistry::getAuth();
 
     if ($password === true) {

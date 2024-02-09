@@ -111,7 +111,7 @@ if ($action == "mycontenido_tasks_delete") {
     $todoItems->delete($idcommunication);
 }
 $recipient = $auth->auth["uid"];
-$todoItems->select("recipient = '" . $todoItems->escape($recipient) . "' AND idclient = " . (int) $client);
+$todoItems->select("recipient = '" . $todoItems->escape($recipient) . "' AND idclient = " . (int)$client);
 
 $editLink = new cHTMLLink();
 $editLink->setCLink("mycontenido_tasks_edit", 4, "");

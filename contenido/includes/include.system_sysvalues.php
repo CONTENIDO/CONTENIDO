@@ -41,7 +41,7 @@ $aServerConfiguration = [
     [i18n('CONTENIDO backend path'), cRegistry::getBackendPath(), 1],
     [i18n('CONTENIDO WYSIWYG repository path'), $cfg['path']['all_wysiwyg'], 2],
     [i18n('CONTENIDO WYSIWYG editor path'), $cfg['path']['wysiwyg'], 3],
-    [i18n('CONTENIDO backend URL'),  cRegistry::getBackendUrl(), 0],
+    [i18n('CONTENIDO backend URL'), cRegistry::getBackendUrl(), 0],
     [i18n('CONTENIDO WYSIWYG repository URL'), $cfg['path']['all_wysiwyg_html'], 4],
     [i18n('CONTENIDO WYSIWYG editor URL'), $cfg['path']['wysiwyg_html'], 5],
 ];
@@ -126,7 +126,7 @@ $tpl->set('s', 'INSTALLED_VERSIONS', $sInstalledVersions);
 // php configuration
 $aPhpConfiguration = [
     'date.timezone', 'include_path', 'memory_limit', 'upload_max_filesize', 'post_max_size',
-    'max_execution_time', 'max_file_uploads', 'max_input_time',  'sql.safe_mode', 'disable_classes', 'disable_functions'
+    'max_execution_time', 'max_file_uploads', 'max_input_time', 'sql.safe_mode', 'disable_classes', 'disable_functions'
 ];
 
 $oTpl2 = new cTemplate();
@@ -228,7 +228,7 @@ $readableName = [
     'options' => i18n('Options'),
 ];
 
-foreach($cfg['db']['connection'] as $key => $value) {
+foreach ($cfg['db']['connection'] as $key => $value) {
     if ($key === 'password') {
         // Skip password
         continue;

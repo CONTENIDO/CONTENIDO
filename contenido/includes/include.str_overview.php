@@ -72,7 +72,8 @@ if ($action == 'str_duplicate' && ($perm->have_perm_area_action('str', 'str_dupl
  * @throws cDbException
  * @throws cException
  */
-function buildCategorySelectRights() {
+function buildCategorySelectRights()
+{
     global $tmp_area;
 
     $db = cRegistry::getDb();
@@ -139,13 +140,14 @@ function buildCategorySelectRights() {
 /**
  *
  * @param TreeItem $item
- * @param string   $catName
+ * @param string $catName
  *
  * @return string
  *
  * @throws cException
  */
-function getStrExpandCollapseButton($item, $catName) {
+function getStrExpandCollapseButton($item, $catName)
+{
     $area = cRegistry::getArea();
     $sess = cRegistry::getSession();
     $frame = cRegistry::getFrame();
@@ -195,7 +197,8 @@ function getStrExpandCollapseButton($item, $catName) {
  * @throws cDbException
  * @throws cException
  */
-function getTemplateSelect() {
+function getTemplateSelect()
+{
     $db = cRegistry::getDb();
     $client = cSecurity::toInteger(cRegistry::getClientId());
 
@@ -224,7 +227,8 @@ function getTemplateSelect() {
  *
  * @param array $listColumns
  */
-function insertEmptyStrRow($listColumns) {
+function insertEmptyStrRow($listColumns)
+{
     global $tpl;
 
     $tpl->set('d', 'BGCOLOR', '#FFFFFF');
@@ -346,7 +350,8 @@ function hasStrRights(int $idCat): bool
  * @param TreeItem $rootItem
  * @param ArrayIterator $itemsIterator
  */
-function buildTree(&$rootItem, $itemsIterator) {
+function buildTree(&$rootItem, $itemsIterator)
+{
     global $nextItem;
 
     $perm = cRegistry::getPerm();
@@ -366,7 +371,7 @@ function buildTree(&$rootItem, $itemsIterator) {
             $newItem = new TreeItem($item['name'], $item['idcat'], false);
         }
 
-        $newItem->setCollapsedIcon($cfg['path']['images']. 'open_all.gif');
+        $newItem->setCollapsedIcon($cfg['path']['images'] . 'open_all.gif');
         $newItem->setExpandedIcon($cfg['path']['images'] . 'close_all.gif');
         $newItem->setCustom('idtree', $item['idtree']);
         $newItem->setCustom('level', $item['level']);
@@ -431,9 +436,9 @@ $listColumns = [];
 
 if ($db->numRows() == 0) { // If we have no categories, display warning message
     $additionalHeader = $notification->returnNotification(
-        "warning",
-        i18n("You have no categories for this client. Please create a new root category with your categories. Without categories, you can't create some articles.")
-    ) . "<br />";
+            "warning",
+            i18n("You have no categories for this client. Please create a new root category with your categories. Without categories, you can't create some articles.")
+        ) . "<br />";
 } else {
     $bIgnore = false;
     $iIgnoreLevel = 0;
@@ -825,7 +830,7 @@ foreach ($treeItemObjects as $key => $value) {
                     $href = $sess->url("main.php?area=$area&action=str_moveupcat&frame=$frame&idcat=" . $value->getId() . "&rand=$rand") . '#clickedhere';
                     $button = '<a class="con_img_button" href="' . $href . '" title="' . $lngMoveCategoryUp . '"><img src="' . $cfg['path']['images'] . 'folder_moveup.gif" alt="' . $lngMoveCategoryUp . '" title="' . $lngMoveCategoryUp . '"></a>';
                 } else {
-                    $button ='<img class="con_img_button_off" src="' . $cfg['path']['images'] . 'folder_moveup_inact.gif" title="' . $lngCategoryAtTheTopMsg . '">';
+                    $button = '<img class="con_img_button_off" src="' . $cfg['path']['images'] . 'folder_moveup_inact.gif" title="' . $lngCategoryAtTheTopMsg . '">';
                 }
             }
         } else {
@@ -851,7 +856,7 @@ foreach ($treeItemObjects as $key => $value) {
         if (($action === 'str_movesubtree') && (!isset($parentid_new))) {
             if ($perm->have_perm_area_action($tmp_area, 'str_movesubtree') || $perm->have_perm_area_action_item($tmp_area, 'str_movesubtree', $value->getId())) {
                 if ($value->getId() == $idcat) {
-                    $href =  $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=0");
+                    $href = $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=0");
                     $button = '<a id="#movesubtreehere" class="con_img_button" href="' . $href . '" title="' . $lngMoveTree . '"><img src="' . $cfg["path"]["images"] . 'but_move_subtree_main.gif" alt="' . $lngMoveTree . '" title="' . $lngMoveTree . '"></a>';
                 } else {
                     $allowed = strMoveCatTargetallowed($value->getId(), $idcat);

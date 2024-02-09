@@ -60,7 +60,7 @@ while ($cApiCategoryArticle = $cApiCategoryArticleCollection->next()) {
 
     $martlink = '';
     $idart = $obj->get('idart');
-    if($idart == null) {
+    if ($idart == null) {
         continue;
     }
 

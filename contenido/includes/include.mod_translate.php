@@ -81,7 +81,7 @@ foreach ($strings as $string) {
 ksort($myTrans);
 
 // count translations (counter started with zero)
-$myTransCount = count($myTrans)-1;
+$myTransCount = count($myTrans) - 1;
 
 // If changed save in file
 if (count(array_diff_assoc($myTrans, $translationArray)) > 0 || count(array_diff_assoc($translationArray, $myTrans)) > 0) {

@@ -26,7 +26,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @throws cDbException
  * @throws cException
  */
-function cecFrontendCategoryAccess($idlang, $idcat, $idfrontenduser) {
+function cecFrontendCategoryAccess($idlang, $idcat, $idfrontenduser)
+{
 
     global $cfg;
 

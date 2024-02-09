@@ -20,21 +20,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Function checks if a language is associated with a given list of clients
  *
- * @deprecated [2019-03-26] use cApiClientLanguageCollection::hasLanguageInClients() instead
- *
  * @param array $aClients
  *         array of clients to check
- * @param int   $iLang
+ * @param int $iLang
  *         language id which should be checked
  * @param array $aCfg
  *         CONTENIDO configruation array (not needed anymore)
- * @param cDb   $oDb
+ * @param cDb $oDb
  *         CONTENIDO database object (not needed anymore)
  *
  * @return bool
  *         If language id corresponds to list of clients true otherwise false.
  *
  * @throws cDbException
+ * @deprecated [2019-03-26] use cApiClientLanguageCollection::hasLanguageInClients() instead
+ *
  */
 function checkLangInClients($aClients, $iLang, $aCfg, $oDb)
 {
@@ -46,15 +46,13 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb)
 /**
  * Duplicate rights for any element.
  *
- * @deprecated [2019-03-26] use cRights::copyRightsForElement() instead
- *
  * @param string $area
  *         Main area name (e.g. 'lay', 'mod', 'str', 'tpl', etc.)
- * @param int    $iditem
+ * @param int $iditem
  *         ID of element to copy
- * @param int    $newiditem
+ * @param int $newiditem
  *         ID of the new element
- * @param bool   $idlang
+ * @param bool $idlang
  *         ID of language, if passed only rights for this language
  *         will be created, otherwise for all existing languages
  *
@@ -64,6 +62,8 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb)
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
+ * @deprecated [2019-03-26] use cRights::copyRightsForElement() instead
+ *
  */
 function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
 {
@@ -73,13 +73,11 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
 /**
  * Create rights for any element
  *
- * @deprecated [2019-03-26] use cRights::createRightsForElement() instead
- *
  * @param string $area
  *         Main area name (e.g. 'lay', 'mod', 'str', 'tpl', etc.)
- * @param int    $iditem
+ * @param int $iditem
  *         ID of new element
- * @param bool   $idlang
+ * @param bool $idlang
  *         ID of language, if passed only rights for this language
  *         will be created, otherwise for all existing languages
  *
@@ -89,6 +87,8 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
+ * @deprecated [2019-03-26] use cRights::createRightsForElement() instead
+ *
  */
 function createRightsForElement($area, $iditem, $idlang = false)
 {
@@ -98,18 +98,18 @@ function createRightsForElement($area, $iditem, $idlang = false)
 /**
  * Delete rights for any element
  *
- * @deprecated [2019-03-26] use cRights::deleteRightsForElement() instead
- *
  * @param string $area
  *         main area name
- * @param int    $iditem
+ * @param int $iditem
  *         ID of new element
- * @param bool   $idlang
+ * @param bool $idlang
  *         ID of lang parameter
  *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
+ * @deprecated [2019-03-26] use cRights::deleteRightsForElement() instead
+ *
  */
 function deleteRightsForElement($area, $iditem, $idlang = false)
 {
@@ -121,14 +121,14 @@ function deleteRightsForElement($area, $iditem, $idlang = false)
  * processing request variables ($msysadmin, $madmin, $mclient, $mlang) and
  * returns the build permissions array.
  *
- * @deprecated [2019-03-26] use cRights::buildUserOrGroupPermsFromRequest() instead
- *
  * @param bool $bAddUserToClient
  *         Flag to add current user to current client, if no client is specified.
  *
  * @return array
  *
  * @throws cDbException
+ * @deprecated [2019-03-26] use cRights::buildUserOrGroupPermsFromRequest() instead
+ *
  */
 function buildUserOrGroupPermsFromRequest($bAddUserToClient = false)
 {
@@ -136,12 +136,12 @@ function buildUserOrGroupPermsFromRequest($bAddUserToClient = false)
 }
 
 /**
- * @deprecated [2019-03-26] use cRights::saveRights() instead
  * @return bool
  *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
+ * @deprecated [2019-03-26] use cRights::saveRights() instead
  */
 function saveRights()
 {
@@ -149,12 +149,12 @@ function saveRights()
 }
 
 /**
- * @deprecated [2019-03-26] use cRights::saveGroupRights() instead
  * @return bool
  *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
+ * @deprecated [2019-03-26] use cRights::saveGroupRights() instead
  */
 function saveGroupRights()
 {
@@ -164,8 +164,8 @@ function saveGroupRights()
 /**
  * Build list of rights for all relevant and online areas except "login" and their relevant actions.
  *
- * @deprecated [2019-03-26] use cRights::getRightsList() instead
  * @return array
+ * @deprecated [2019-03-26] use cRights::getRightsList() instead
  */
 function getRightsList()
 {

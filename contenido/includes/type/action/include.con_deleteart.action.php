@@ -23,7 +23,7 @@ if ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_are
         foreach ($idarts as $article) {
             conDeleteArt($article);
         }
-    } else  {
+    } else {
         conDeleteArt($idart);
     }
 

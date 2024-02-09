@@ -54,7 +54,7 @@ $sJsExternal = '';
 $sTable = '';
 
 $sJsBefore .= "var itemids = [];\n"
-            . "var actareaids = [];\n";
+    . "var actareaids = [];\n";
 
 $possible_areas = [];
 $sCheckboxesRow = '';
@@ -101,7 +101,7 @@ foreach ($right_list['lay'] as $value2) {
             $sJsBefore .= 'actareaids["' . $value3 . '|' . $value2['perm'] . "\"]=\"x\";\n";
 
             // checkbox for the whole action
-            $objHeaderItem->setContent($lngAct[$value2['perm']][$value3]? $lngAct[$value2['perm']][$value3] : '&nbsp;');
+            $objHeaderItem->setContent($lngAct[$value2['perm']][$value3] ? $lngAct[$value2['perm']][$value3] : '&nbsp;');
             $items .= $objHeaderItem->render();
             $objHeaderItem->advanceID();
             $aSecondHeaderRow[] = '<input type="checkbox" name="checkall_' . $value2['perm'] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2['perm'] . "', '$value3', '')\">";
@@ -164,14 +164,14 @@ while ($db->nextRecord()) {
     $objItem->updateAttributes([
         'class' => 'td_rights0'
     ]);
-    $objItem->setContent($tplname? $tplname : '&nbsp;');
+    $objItem->setContent($tplname ? $tplname : '&nbsp;');
     $items .= $objItem->render();
     $objItem->advanceID();
     $objItem->updateAttributes([
         'class' => 'td_rights1',
         'style' => 'white-space:normal;'
     ]);
-    $objItem->setContent($description? $description : '&nbsp;');
+    $objItem->setContent($description ? $description : '&nbsp;');
     $items .= $objItem->render();
     $objItem->advanceID();
 
