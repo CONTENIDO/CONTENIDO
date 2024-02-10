@@ -2,11 +2,7 @@
 function con_dbg_toggle(myItem) {
     var myItemObj = document.getElementById(myItem);
     if (myItemObj) {
-        if (myItemObj.style.display == '') {
-            myItemObj.style.display = 'none';
-        } else {
-            myItemObj.style.display = '';
-        }
+        myItemObj.style.display = myItemObj.style.display === 'none' ? '' : 'none';
     }
 }
 function con_dbg_hide(myItem) {
@@ -18,17 +14,19 @@ function con_dbg_hide(myItem) {
 </script>
 
 <style type="text/css">
-    #conDbgBox { position:absolute; z-index:100000; left:5px; top:5px; margin:0; border:1px solid #ccc;padding:5px; background-color:#f6f6f6; text-align: left;color: #000000; }
-    #conDbgBox a { text-decoration:none; color: #000000; margin-top: 6px; }
+    #con_dbg_box { position:absolute; z-index:100000; top:5px; margin:0; border:1px solid #ccc;padding:5px; background-color:#f6f6f6; text-align: left;color: #000000; }
+    #con_dbg_box a { text-decoration:none; color: #000000; margin-top: 6px; }
+    #con_dbg_box.con_dbg_box_align_left {left: 5px;}
+    #con_dbg_box.con_dbg_box_align_right {right: 5px;}
     #dbg_item_block { margin: 0 0 0 20px; color: #000000; }
     #dbg_item_block textarea, #dbg_item_block pre { font-size:11px; margin: 0; padding: 5px; color: #000000; border: 1px solid #6c6c6c; background-color: #ffffff; }
     #dbg_item_block a { display:block; color: #000000; }
-    #conDbgClose { padding-left:10px; }
+    #con_dbg_box_close { padding-left:10px; }
 </style>
 
-<div id="conDbgBox">
+<div id="con_dbg_box" class="{DBG_BOX_CSS_CLASS}">
     <a href="javascript:void(0)" title="Toggle Debug Output" onclick="con_dbg_toggle('dbg_item_block');">con dbg</a>
-    <a id="conDbgClose" href="javascript:void(0)" title="Hide Debug Output" onclick="con_dbg_hide('conDbgBox');">(x)</a>
+    <a id="con_dbg_box_close" href="javascript:void(0)" title="Hide Debug Output" onclick="con_dbg_hide('con_dbg_box');">(x)</a>
     <div id="dbg_item_block" style="display:none;">
         <!-- BEGIN:BLOCK -->
         <a href="javascript:void(0)" title="Toggle Item" onclick="con_dbg_toggle('dbg_item_{DBG_ITEM_COUNT}');">{DBG_ITEM_NAME}</a>
