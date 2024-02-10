@@ -3,7 +3,7 @@
     <label class="con_content_type_label">{$label|escape}</label>
     {$editor}
 
-    {if 0 lt $image|trim|strlen}
+    {if 0 lt $image|count_characters}
         <br/>
         <img src="{$image}" alt=""/>
     {/if}

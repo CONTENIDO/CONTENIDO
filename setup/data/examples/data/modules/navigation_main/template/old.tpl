@@ -6,7 +6,7 @@
             {assign var="name" value=$wrapper.item->get('name')}
             {assign var="class" value='navmainStandardLevel'}
             {*assign var="class" value='navmainStandardLevel_{css_level}'*}
-            {if $idcat|in_array:$path}
+            {if in_array($idcat, $path)}
                 {assign var="class" value='active'}
             {/if}
             {if $smarty.foreach.navi.first}

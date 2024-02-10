@@ -18,14 +18,14 @@
     <div class="pagination">
         <span>{$msgRange}</span>
         <ul>
-            {if 0 < $prev|strlen}
+            {if 0 < $prev|count_characters}
                 <li><a href="{$prev}">{$label.previous|escape}</a></li>
             {/if}
-            {foreach item=page from=$pages|array_keys}
-                {assign var="href" value=$pages.$page}
-                <li><a href="{$href}"{if $currentPage eq $page}{/if}>{$page}</a></li>
+            {foreach $pages as $page}
+                {assign var="href" value=$page}
+                <li><a href="{$href}"{if $currentPage eq $page@key}{/if}>{$page@key}</a></li>
             {/foreach}
-            {if 0 < $next|strlen}
+            {if 0 < $next|count_characters}
                 <li><a href="{$next}">{$label.next|escape}</a></li>
             {/if}
         </ul>
@@ -48,14 +48,14 @@
     <div class="pagination">
         <span>{$msgRange}</span>
         <ul>
-            {if 0 < $prev|strlen}
+            {if 0 < $prev|count_characters}
                 <li><a href="{$prev}">{$label.previous|escape}</a></li>
             {/if}
-            {foreach item=page from=$pages|array_keys}
-                {assign var="href" value=$pages.$page}
-                <li><a href="{$href}"{if $currentPage eq $page}{/if}>{$page}</a></li>
+            {foreach $pages as $page}
+                {assign var="href" value=$page}
+                <li><a href="{$href}"{if $currentPage eq $page@key}{/if}>{$page@key}</a></li>
             {/foreach}
-            {if 0 < $next|strlen}
+            {if 0 < $next|count_characters}
                 <li><a href="{$next}">{$label.next|escape}</a></li>
             {/if}
         </ul>

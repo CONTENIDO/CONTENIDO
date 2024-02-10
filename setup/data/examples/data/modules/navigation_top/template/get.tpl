@@ -5,7 +5,7 @@
         {assign var="idcat" value=$wrapper.idcat}
         {assign var="url" value=$wrapper.item->getLink()}
         {assign var="name" value=$wrapper.item->get('name')}
-        {if $idcat|in_array:$path}
+        {if in_array($idcat, $path)}
             {assign var="aClass" value='active'}
         {else}
             {assign var="aClass" value=''}
@@ -13,7 +13,7 @@
         <li>
             <a class="{$aClass|escape}" href="{$url|escape}"
                title="{$name|escape}">{$name|escape}</a>
-            {if $idcat|in_array:$path}
+            {if in_array($idcat, $path)}
                 {include file="navigation_top/template/get.tpl"
                 tree=$wrapper.subcats path=$path}
             {/if}

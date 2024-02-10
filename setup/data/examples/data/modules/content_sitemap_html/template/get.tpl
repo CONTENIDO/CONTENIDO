@@ -31,7 +31,7 @@
                 {include file="content_sitemap_html/template/get.tpl"
                 tree=$wrapper.subcats path=$path ulId=""}
                 {* loop articles *}
-                {if isset($wrapper.articles) && $wrapper.articles|is_array && 0 lt $wrapper.articles|count}
+                {if isset($wrapper.articles) && is_array($wrapper.articles) && 0 lt count($wrapper.articles)}
                     <ul>
                         {foreach from=$wrapper.articles item=article}
                             <li>

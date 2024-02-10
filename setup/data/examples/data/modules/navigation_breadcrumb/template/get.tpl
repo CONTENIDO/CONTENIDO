@@ -11,7 +11,7 @@
                 </li>
             {/if}
         {/foreach}
-        {if 0 lt $headline|trim|strlen}
+        {if 0 lt $headline|count_characters}
             <li>{$headline|escape}</li>
         {/if}
     </ul>
