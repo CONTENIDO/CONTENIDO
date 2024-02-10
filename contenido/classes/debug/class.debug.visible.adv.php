@@ -110,11 +110,22 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
 
     /**
      * Outputs all Debug items in collection to screen in a HTML Box at left top
-     * of the page. The alignment can be configured via setting:
+     * of the page.
+     *
+     * The alignment can be configured via setting:
      * - Type: 'debug'
      * - Name: 'debug_to_screen_align'
      * - Value: 'left' or 'right' (default is 'left')
-     * No output happen in case of an Ajax request.
+     * 
+     * The output of the debug box can be configured for specific backend frame/frames via setting:
+     * - Type: 'debug'
+     * - Name: 'debug_to_screen_in_backend_frames'
+     * - Value: Comma separated list of frame numbers, e.g. 
+     *      - '1,2' (frame 1 & 2) 
+     *      - '3,4' (frame 3 & 4)
+     *      - '2,3,' (frame 2 & 3, and other frame having no number)
+     * 
+     * No output happens in case of an Ajax request.
      *
      * @throws cInvalidArgumentException
      */
@@ -126,8 +137,12 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
 
         $cfg = cRegistry::getConfig();
 
-        $alignment = cEffectiveSetting::get('debug', 'debug_to_screen_align', 'left');
-        $cssClass = $alignment === 'right' ? 'con_dbg_box_align_right' : 'con_dbg_box_align_left';
+        $cssClass = $this->_getAlignmentCssClass();
+
+        // Check if the debug box is to show in current backend frame
+        if (!$this->_isDebugBoxToShow()) {
+            return;
+        }
 
         if (!empty($this->_buffer)) {
             // Add buffer as a debug item
@@ -215,6 +230,28 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
             // throw $e;
             echo $e->getMessage();
         }
+    }
+
+    protected function _getAlignmentCssClass(): string
+    {
+        $alignment = cEffectiveSetting::get('debug', 'debug_to_screen_align', 'left');
+        return $alignment === 'right' ? 'con_dbg_box_align_right' : 'con_dbg_box_align_left';
+    }
+
+    protected function _isDebugBoxToShow(): bool
+    {
+        if (cRegistry::getBackendSessionId()) {
+            $showInFrames =  cEffectiveSetting::get('debug', 'debug_to_screen_in_backend_frames', '');
+            if (!empty($showInFrames)) {
+                $showInFrames = explode(',', $showInFrames);
+                $showInFrames = array_map('trim', $showInFrames);
+                if (!in_array(cRegistry::getFrame(), $showInFrames)) {
+                    return false;
+                }
+            }
+        }        
+
+        return true;
     }
 
 }
