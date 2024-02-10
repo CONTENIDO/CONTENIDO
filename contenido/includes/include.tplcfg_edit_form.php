@@ -106,9 +106,9 @@ if ($idart) {
         $isAdmin = cPermission::checkAdminPermission($auth->getPerms());
 
         if ($artlang->isLoaded()) {
-            if(!$idtpl && $idcat && $idart && (int) $artlang->get('locked') === 1) {
-                $inUse    = true;
-                $disabled = ($isAdmin === false)? 'disabled="disabled"' : '';
+            if (!$idtpl && $idcat && $idart && (int)$artlang->get('locked') === 1) {
+                $inUse = true;
+                $disabled = ($isAdmin === false) ? 'disabled="disabled"' : '';
                 // display notification if article configuration can not be edited
                 if (false === $isAdmin) {
                     $message = i18n('This article is currently frozen and can not be edited!');
@@ -144,8 +144,8 @@ if ($idart) {
 
             if ($db->f('locked') == 1) {
                 $inUse = true;
-                $disabled = ($isAdmin)? '': 'disabled="disabled"';
-                if ($configLocked === false){
+                $disabled = ($isAdmin) ? '' : 'disabled="disabled"';
+                if ($configLocked === false) {
                     $message = i18n('This article is currently frozen and can not be edited!');
                     $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
                 }
@@ -281,8 +281,8 @@ $tpl2->set('s', 'NAME', 'idtpl');
 $tpl2->set('s', 'CLASS', 'text_medium');
 
 // CON-2157 fix categorie page has no article
-if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || is_object($artlang) && $artlang->get('locked') === 1 ) {
-    $disabled2 = ($isAdmin) ? '' : 'disabled="disabled"' ;
+if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || is_object($artlang) && $artlang->get('locked') === 1) {
+    $disabled2 = ($isAdmin) ? '' : 'disabled="disabled"';
 } else {
     $disabled2 = '';
 }
@@ -458,10 +458,10 @@ if ($idtpl) {
     $tpl->set('s', 'LABLE_DESCRIPTION', '');
 }
 
-if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
+if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && $idart == 0) {
     $tpl->set('s', 'HEADER', i18n('Category template configuration'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
-} elseif ($area == 'con_tplcfg' && (int) $idart > 0) {
+} elseif ($area == 'con_tplcfg' && $idart > 0) {
     $tpl->set('s', 'HEADER', i18n('Article template configuration'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
 } else {
