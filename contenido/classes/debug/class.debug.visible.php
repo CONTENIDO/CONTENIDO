@@ -26,6 +26,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cDebugVisible implements cDebugInterface
 {
 
+    use cDebugVisibleTrait;
+
     /**
      * Singleton instance
      *
@@ -78,64 +80,16 @@ class cDebugVisible implements cDebugInterface
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false)
     {
-        $bTextarea = false;
-        $bPlainText = false;
-        if (is_array($mVariable)) {
-            if (sizeof($mVariable) > 10) {
-                $bTextarea = true;
-            } else {
-                $bPlainText = true;
-            }
-        }
-        if (is_object($mVariable)) {
-            $bTextarea = true;
-        }
-        if (is_string($mVariable)) {
-            if (preg_match('/<(.*)>/', $mVariable)) {
-                if (cString::getStringLength($mVariable) > 40) {
-                    $bTextarea = true;
-                } else {
-                    $bPlainText = true;
-                    $mVariable = conHtmlSpecialChars($mVariable);
-                }
-            } else {
-                $bPlainText = true;
-            }
-        }
+        $varText = $this->_prepareDumpValue($mVariable);
 
         $tpl = new cTemplate();
         $tpl->set("s", "VAR_DESCRIPTION", $sVariableDescription);
-        $varText = "";
-        if ($bTextarea === true) {
-            $varText .= '<textarea rows="10" cols="100">';
-        } elseif ($bPlainText === true) {
-            $varText .= '<pre class="debug_output">';
-        } else {
-            $varText .= '<pre class="debug_output">';
-        }
-
-        if (is_array($mVariable)) {
-            $varText .= print_r($mVariable, true);
-        } else {
-            ob_start();
-            var_dump($mVariable);
-            $varText .= ob_get_contents();
-            ob_end_clean();
-        }
-
-        if ($bTextarea === true) {
-            $varText .= '</textarea>';
-        } elseif ($bPlainText === true) {
-            $varText .= '</pre>';
-        } else {
-            $varText .= '</pre>';
-        }
         $tpl->set("s", "VAR_TEXT", $varText);
 
         $cfg = cRegistry::getConfig();
         $tpl->generate($cfg["templates"]["debug_visible"]);
         if ($bExit === true) {
-            die('<p class="debug_footer"><b>debugg\'ed</b></p>');
+            die('<p class="cms_debug_footer"><b>debugg\'ed</b></p>');
         }
     }
 

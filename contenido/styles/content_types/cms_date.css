@@ -15,8 +15,10 @@
     vertical-align: middle;;
 }
 
-.cms_date .ui-datepicker-trigger {
-    margin-right: 5px;
+/* Reset image z-index when WYSIWYG editor is in fullscreen mode or a parent has the overlay class */
+.mce-fullscreen .cms_date .ui-datepicker,
+.cms_has_overlay .cms_date .ui-datepicker {
+    z-index: auto !important;
 }
 
 .cms_date .con_select,
