@@ -190,6 +190,7 @@ class cApiCategoryLanguageCollection extends ItemCollection
  */
 class cApiCategoryLanguage extends Item
 {
+
     /**
      * Constructor to create an instance of this class.
      *
