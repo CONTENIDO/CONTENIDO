@@ -259,8 +259,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
                 }
             }
         }
-
-        mp_d($this->_aSettings, '$this->_aSettings');
     }
 
     /**
