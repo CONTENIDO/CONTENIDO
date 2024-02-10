@@ -116,6 +116,11 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
     {
         $cfg = cRegistry::getConfig();
 
+        if (!empty($this->_buffer)) {
+            // Add buffer as a debug item
+            $this->add($this->_buffer, 'Buffer');
+        }
+
         $sHtml = '';
         if ($this->count() > 0) {
             $tpl = new cTemplate();
