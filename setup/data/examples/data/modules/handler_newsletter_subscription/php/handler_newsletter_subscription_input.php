@@ -8,9 +8,16 @@
  * @copyright  four for business AG <www.4fb.de>
  */
 
+/**
+ * @var int $cCurrentContainer
+ */
+
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cSecurity::toInteger(cRegistry::getClientId());
+
 // Initialisation
-$oClientLang       = new cApiClientLanguage(false, $client, $lang);
-$oClient           = new cApiClient($client);
+$oClientLang = new cApiClientLanguage(false, $client, $lang);
+$oClient = new cApiClient($client);
 
 /*
  *  Used variables:
@@ -27,16 +34,16 @@ $oClient           = new cApiClient($client);
  */
 
 $aSettings = [
-    'JoinSel'         => $oClientLang->getProperty('newsletter', 'joinsel'),
-    'JoinMultiple'    => $oClientLang->getProperty('newsletter', 'joinmultiple'),
-    'JoinGroups'      => $oClientLang->getProperty('newsletter', 'joingroups'),
+    'JoinSel' => $oClientLang->getProperty('newsletter', 'joinsel'),
+    'JoinMultiple' => $oClientLang->getProperty('newsletter', 'joinmultiple'),
+    'JoinGroups' => $oClientLang->getProperty('newsletter', 'joingroups'),
     'JoinMessageType' => $oClientLang->getProperty('newsletter', 'joinmessagetype'),
     // Note: Stored for client, as frontendusers are language independent
-    'FrontendLink'    => $oClient->getProperty('newsletter', 'frontendlink'),
+    'FrontendLink' => $oClient->getProperty('newsletter', 'frontendlink'),
     'FrontendConfirm' => "CMS_VALUE[5]",
-    'FrontendDel'     => "CMS_VALUE[6]",
+    'FrontendDel' => "CMS_VALUE[6]",
     // This one could be recycled by other modules...
-    'SenderEMail'     => $oClient->getProperty('global', 'sender-email'),
+    'SenderEMail' => $oClient->getProperty('global', 'sender-email'),
 ];
 
 // Setting default values
@@ -116,19 +123,19 @@ $sCssStyle = '';
 $sJavaScript = '';
 
 // Show options
-$oCfgTable  = new UI_Config_Table();
+$oCfgTable = new UI_Config_Table();
 
 $oHidAction = new cHTMLHiddenField($aFormFields['hidAction'], 'save');
 
 $oTxtSender = new cHTMLTextbox($aFormFields['txtSender'], $aSettings['SenderEMail'], 30);
 
 $oCfgTable->setCell('sender', 0, mi18n("SENDER_EMAIL_COLON"));
-$oCfgTable->setCell('sender', 1, $oHidAction->render().$oTxtSender->render());
+$oCfgTable->setCell('sender', 1, $oHidAction->render() . $oTxtSender->render());
 
 $oSelHandlerCatArt = new cHTMLInputSelectElement($aFormFields['selHandlerCatArt'], 1, '', true);
-$oOption           = new cHTMLOptionElement(mi18n("PLEASE_SELECT"), '');
+$oOption = new cHTMLOptionElement(mi18n("PLEASE_SELECT"), '');
 $oSelHandlerCatArt->addOptionElement(0, $oOption);
-$oSelHandlerCatArt->addCategories(0, true, false, false, true, true);
+$oSelHandlerCatArt->addCategories(0, true, false, false, true);
 $oSelHandlerCatArt->setDefault($iHandlerCatArt);
 
 $oCkbUpdate = new cHTMLCheckbox($aFormFields['ckbUpdateHandlerID'], 'enabled');
@@ -138,12 +145,12 @@ $oCkbUpdate->setLabelText(mi18n("UPDATE"));
 $oCfgTable->setCell('handler', 0, mi18n("HANDLER_ARTICLE_COLON"));
 $oCfgTable->setCellClass('handler', 1, $aFormFields['ckbUpdateHandlerID'] . '_wrapper');
 $oCfgTable->setCell('handler', 1, $oSelHandlerCatArt->render() . "\n" . $oCkbUpdate->toHtml());
-$sCssStyle .= '<style>.' .  $aFormFields['ckbUpdateHandlerID'] . '_wrapper .checkbox_wrapper {display:inline-block;}</style>';
+$sCssStyle .= '<style>.' . $aFormFields['ckbUpdateHandlerID'] . '_wrapper .checkbox_wrapper {display:inline-block;}</style>';
 
 // Getting newsletter groups (if any)
 $oRcpGroups = new NewsletterRecipientGroupCollection();
 $oRcpGroups->setWhere('idclient', $client);
-$oRcpGroups->setWhere('idlang',   $lang);
+$oRcpGroups->setWhere('idlang', $lang);
 $oRcpGroups->setWhere('defaultgroup', '0');
 $oRcpGroups->setOrder('defaultgroup DESC, groupname ASC');
 $oRcpGroups->query();
@@ -178,10 +185,10 @@ if ($oRcpGroups->count() == 0) {
 
     // Join the groups the user has selected (-> provide a list for the user), optionally, the user may select more than one group
     if ($aSettings['JoinSel'] == 'UserSelected') {
-        $oRadJoinUserSel  = new cHTMLRadioButton($aFormFields['radJoin'], 'UserSelected', '', true);
+        $oRadJoinUserSel = new cHTMLRadioButton($aFormFields['radJoin'], 'UserSelected', '', true);
         $oCkbJoinMultiple = new cHTMLCheckbox($aFormFields['ckbJoinMultiple'], 'enabled', '', $aSettings['JoinMultiple']);
     } else {
-        $oRadJoinUserSel  = new cHTMLRadioButton($aFormFields['radJoin'], 'UserSelected');
+        $oRadJoinUserSel = new cHTMLRadioButton($aFormFields['radJoin'], 'UserSelected');
         $oCkbJoinMultiple = new cHTMLCheckbox($aFormFields['ckbJoinMultiple'], 'enabled', '', false, true);
     }
     $oRadJoinUserSel->setLabelText(mi18n("GROUP_S_USER_SELECTED"));
@@ -295,29 +302,29 @@ $oCfgTable->setCell('link_02', 0, '');
 
 switch ($aSettings['FrontendConfirm']) {
     case 'Nothing':
-        $oRadActivateUser    = new cHTMLRadioButton("CMS_VAR[5]", 'ActivateUser', '', false);
-        $oRadActivateNothing = new cHTMLRadioButton("CMS_VAR[5]", 'Nothing',      '', true);
+        $oRadActivateUser = new cHTMLRadioButton("CMS_VAR[5]", 'ActivateUser', '', false);
+        $oRadActivateNothing = new cHTMLRadioButton("CMS_VAR[5]", 'Nothing', '', true);
         break;
     default:
-        $oRadActivateUser    = new cHTMLRadioButton("CMS_VAR[5]", 'ActivateUser', '', true);
-        $oRadActivateNothing = new cHTMLRadioButton("CMS_VAR[5]", 'Nothing',      '', false);
+        $oRadActivateUser = new cHTMLRadioButton("CMS_VAR[5]", 'ActivateUser', '', true);
+        $oRadActivateNothing = new cHTMLRadioButton("CMS_VAR[5]", 'Nothing', '', false);
 }
 
 switch ($aSettings['FrontendDel']) {
     case 'DisableUser':
-        $oRadDelDelete  = new cHTMLRadioButton("CMS_VAR[6]", 'DeleteUser',  '', false);
+        $oRadDelDelete = new cHTMLRadioButton("CMS_VAR[6]", 'DeleteUser', '', false);
         $oRadDelDisable = new cHTMLRadioButton("CMS_VAR[6]", 'DisableUser', '', true);
-        $oRadDelNothing = new cHTMLRadioButton("CMS_VAR[6]", 'Nothing',     '', false);
+        $oRadDelNothing = new cHTMLRadioButton("CMS_VAR[6]", 'Nothing', '', false);
         break;
     case 'Nothing':
-        $oRadDelDelete  = new cHTMLRadioButton("CMS_VAR[6]", 'DeleteUser',  '', false);
+        $oRadDelDelete = new cHTMLRadioButton("CMS_VAR[6]", 'DeleteUser', '', false);
         $oRadDelDisable = new cHTMLRadioButton("CMS_VAR[6]", 'DisableUser', '', false);
-        $oRadDelNothing = new cHTMLRadioButton("CMS_VAR[6]", 'Nothing',     '', true);
+        $oRadDelNothing = new cHTMLRadioButton("CMS_VAR[6]", 'Nothing', '', true);
         break;
     default:
-        $oRadDelDelete  = new cHTMLRadioButton("CMS_VAR[6]", 'DeleteUser',  '', true);
+        $oRadDelDelete = new cHTMLRadioButton("CMS_VAR[6]", 'DeleteUser', '', true);
         $oRadDelDisable = new cHTMLRadioButton("CMS_VAR[6]", 'DisableUser', '', false);
-        $oRadDelNothing = new cHTMLRadioButton("CMS_VAR[6]", 'Nothing',     '', false);
+        $oRadDelNothing = new cHTMLRadioButton("CMS_VAR[6]", 'Nothing', '', false);
 }
 
 $oRadActivateUser->setLabelText(mi18n("ACTIVATE"));

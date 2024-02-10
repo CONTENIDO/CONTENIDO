@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cGuiSourceEditor extends cGuiPage {
+class cGuiSourceEditor extends cGuiPage
+{
 
     /**
      * Name of the file that is being edited.
@@ -81,12 +82,12 @@ class cGuiSourceEditor extends cGuiPage {
      *
      * @param string $filename
      *                           Name of the edited file
-     * @param bool   $versioning [optional]
+     * @param bool $versioning [optional]
      *                           Is versioning activated or not. Defaults to true
-     * @param string $filetype   [optional]
+     * @param string $filetype [optional]
      *                           The type of the file. If omitted the class tries to determine
      *                           the type from the area
-     * @param string $filepath   [optional]
+     * @param string $filepath [optional]
      *                           Path to the file. If omitted the class tries to determine the
      *                           path from the type and the area
      *
@@ -94,7 +95,8 @@ class cGuiSourceEditor extends cGuiPage {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function __construct($filename, $versioning = true, $filetype = '', $filepath = '') {
+    public function __construct($filename, $versioning = true, $filetype = '', $filepath = '')
+    {
         $cfg = cRegistry::getConfig();
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $perm = cRegistry::getPerm();
@@ -166,7 +168,8 @@ class cGuiSourceEditor extends cGuiPage {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function update(array $request) {
+    protected function update(array $request)
+    {
         $cfg = cRegistry::getConfig();
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $db = cRegistry::getDb();
@@ -199,7 +202,7 @@ class cGuiSourceEditor extends cGuiPage {
         // if read only is activated or no data has been sent, skip the update step
         if (($this->_readOnly || ($requestStatus != 'send')) && $requestDelFile == '') {
             if ($requestAction == '') {
-               $this->abortRendering();
+                $this->abortRendering();
             }
             return;
         }
@@ -337,14 +340,15 @@ class cGuiSourceEditor extends cGuiPage {
     /**
      * Renders the page.
      *
-     * @see cGuiPage::render()
      * @param cTemplate|null $template
-     * @param bool           $return
+     * @param bool $return
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
+     * @see cGuiPage::render()
      */
-    public function render($template = NULL, $return = false) {
+    public function render($template = NULL, $return = false)
+    {
         $cfg = cRegistry::getConfig();
         $area = cRegistry::getArea();
         $action = cRegistry::getAction();

@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage Form
  */
-class cSetupSystemtest extends cSetupMask {
+class cSetupSystemtest extends cSetupMask
+{
 
     private $_systemtest;
 
@@ -30,10 +31,11 @@ class cSetupSystemtest extends cSetupMask {
      * @param bool $previous
      * @param $next
      */
-    public function __construct($step, $previous, $next) {
+    public function __construct($step, $previous, $next)
+    {
         $cfg = cRegistry::getConfig();
 
-        cSetupMask::__construct("templates/setup/forms/systemtest.tpl", $step);
+        parent::__construct("templates/setup/forms/systemtest.tpl", $step);
 
         $errors = false;
 
@@ -87,7 +89,7 @@ class cSetupSystemtest extends cSetupMask {
             $this->doChangedDirsFilesTest();
         }
 
-        $maxExecutionTime = (int) ini_get('max_execution_time');
+        $maxExecutionTime = (int)ini_get('max_execution_time');
         if ($maxExecutionTime < 60 && $maxExecutionTime !== 0) {
             $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to set max_execution_time.", "setup"), i18n("Your PHP configuration for max_execution_time can not be changed via this script. We recommend setting the value for the installation or upgrade process to 60 seconds. You can try to execute the process with your current configuration. If the process is stopped, the system is not usable (any longer)", "setup"));
         }
@@ -125,7 +127,7 @@ class cSetupSystemtest extends cSetupMask {
 
         $this->_stepTemplateClass->set("s", "CONTROL_TESTRESULTS", $cHTMLErrorMessageList->render());
 
-        if ($errors == true) {
+        if ($errors) {
             $this->setNavigation($previous, "");
 
             switch ($_SESSION['setuptype']) {
@@ -150,8 +152,9 @@ class cSetupSystemtest extends cSetupMask {
         }
     }
 
-    public function doExistingOldPluginTests() {
-        $db = getSetupMySQLDBConnection(true);
+    public function doExistingOldPluginTests()
+    {
+        $db = getSetupMySQLDBConnection();
         $message = '';
 
         // get all tables in database and list it into array
@@ -206,7 +209,8 @@ class cSetupSystemtest extends cSetupMask {
         }
     }
 
-    public function doChangedDirsFilesTest() {
+    public function doChangedDirsFilesTest()
+    {
         $cfg = cRegistry::getConfig();
 
         $db = getSetupMySQLDBConnection(false);
@@ -227,7 +231,8 @@ class cSetupSystemtest extends cSetupMask {
         }
     }
 
-    public function checkCountryLanguageCode() {
+    public function checkCountryLanguageCode()
+    {
         if ($_SESSION['setuptype'] != 'upgrade') {
             return;
         }
@@ -259,7 +264,7 @@ class cSetupSystemtest extends cSetupMask {
                 $oClient = new cApiClient();
                 $oClient->loadByPrimaryKey($client);
 
-                array_push($errors, sprintf(i18n('Language "%s" (%s) of the client "%s" (%s) is configured without ISO language code.', "setup"), $langName, $lang, $clientName, $client));
+                $errors[] = sprintf(i18n('Language "%s" (%s) of the client "%s" (%s) is configured without ISO language code.', "setup"), $langName, $lang, $clientName, $client);
             }
         }
 
@@ -268,7 +273,8 @@ class cSetupSystemtest extends cSetupMask {
         }
     }
 
-    public function initDB() {
+    public function initDB()
+    {
         $this->_systemtest->checkSetupMysql(
             $_SESSION['setuptype'], $_SESSION['dbname'], $_SESSION['dbprefix'], $_SESSION['dbcharset'],
             $_SESSION['dbcollation'], $_SESSION['dbengine']

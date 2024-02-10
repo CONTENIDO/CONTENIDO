@@ -236,7 +236,7 @@ class PimPluginSetup
         self::$XmlRequirements = $xml->requirements;
 
         // Plugin dependencies
-		self::$XmlDependencies = $xml->dependencies;
+        self::$XmlDependencies = $xml->dependencies;
 
         // CONTENIDO areas: *_area
         self::$XmlArea = $xml->contenido->areas;
@@ -278,7 +278,7 @@ class PimPluginSetup
      */
     public function setPluginName($pluginName = '')
     {
-    	return self::$_pluginName = $pluginName;
+        return self::$_pluginName = $pluginName;
     }
 
     /**
@@ -308,7 +308,7 @@ class PimPluginSetup
      */
     protected static function _getPluginName()
     {
-    	return self::$_pluginName;
+        return self::$_pluginName;
     }
 
     /**
@@ -343,13 +343,13 @@ class PimPluginSetup
 
             // Check if temp directory exists, otherwise try to create it
             if (!cDirHandler::exists($tempArchiveNewPath)) {
-				$success = cDirHandler::create($tempArchiveNewPath);
+                $success = cDirHandler::create($tempArchiveNewPath);
 
-				// If PIM can not create a temporary directory (if it does not exist), throw an error message
-				if (!$success) {
-					self::error(sprintf(i18n('Plugin Manager could not find a temporary CONTENIDO directory. Also, it is not possible to create a temporary directory at <em>%s</em>. You have to create it manually.', 'pim'), $tempArchiveNewPath));
+                // If PIM can not create a temporary directory (if it does not exist), throw an error message
+                if (!$success) {
+                    self::error(sprintf(i18n('Plugin Manager could not find a temporary CONTENIDO directory. Also, it is not possible to create a temporary directory at <em>%s</em>. You have to create it manually.', 'pim'), $tempArchiveNewPath));
                     return false;
-				}
+                }
             }
 
             // Check valid Zip archive
@@ -403,68 +403,68 @@ class PimPluginSetup
      */
     public function checkDependencies()
     {
-    	// Initializing
-    	$cfg = cRegistry::getConfig();
-    	$pluginsDir = cRegistry::getBackendPath() . $cfg['path']['plugins'];
+        // Initializing
+        $cfg = cRegistry::getConfig();
+        $pluginsDir = cRegistry::getBackendPath() . $cfg['path']['plugins'];
 
-    	// Get uuid from plugin to uninstall
-    	$this->_pimPluginCollection->setWhere('idplugin', self::_getPluginId());
-    	$this->_pimPluginCollection->query();
-    	$pimPluginSql = $this->_pimPluginCollection->next();
-    	$uuidUninstall = $pimPluginSql->get('uuid');
+        // Get uuid from plugin to uninstall
+        $this->_pimPluginCollection->setWhere('idplugin', self::_getPluginId());
+        $this->_pimPluginCollection->query();
+        $pimPluginSql = $this->_pimPluginCollection->next();
+        $uuidUninstall = $pimPluginSql->get('uuid');
 
-    	// Reset query, so we can use PimPluginCollection later again...
-    	$this->_pimPluginCollection->resetQuery();
+        // Reset query, so we can use PimPluginCollection later again...
+        $this->_pimPluginCollection->resetQuery();
 
-    	// Read all dirs
-    	$dirs = cDirHandler::read($pluginsDir);
-    	foreach ($dirs as $dirname) {
-    		// Skip plugin if it has no plugin.xml file
-    		if (!cFileHandler::exists($pluginsDir . $dirname . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME)) {
-    			continue;
-    		}
+        // Read all dirs
+        $dirs = cDirHandler::read($pluginsDir);
+        foreach ($dirs as $dirname) {
+            // Skip plugin if it has no plugin.xml file
+            if (!cFileHandler::exists($pluginsDir . $dirname . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME)) {
+                continue;
+            }
 
-    		// Read plugin.xml files from existing plugins at contenido/plugins dir
-    		$tempXmlContent = cFileHandler::read($pluginsDir . $dirname . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME);
+            // Read plugin.xml files from existing plugins at contenido/plugins dir
+            $tempXmlContent = cFileHandler::read($pluginsDir . $dirname . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME);
 
-    		// Write plugin.xml content into temporary variable
-    		$tempXml = simplexml_load_string($tempXmlContent);
+            // Write plugin.xml content into temporary variable
+            $tempXml = simplexml_load_string($tempXmlContent);
 
-    		$dependenciesCount = count($tempXml->dependencies);
-    		for ($i = 0; $i < $dependenciesCount; $i++) {
-    			// Security check
-    			$depend = cSecurity::escapeString($tempXml->dependencies->depend[$i]);
+            $dependenciesCount = count($tempXml->dependencies);
+            for ($i = 0; $i < $dependenciesCount; $i++) {
+                // Security check
+                $depend = cSecurity::escapeString($tempXml->dependencies->depend[$i]);
 
-    			// If is no dependencies name defined please go to next dependencies
-    			if ($depend == "") {
-    				continue;
-    			}
+                // If is no dependencies name defined please go to next dependencies
+                if ($depend == "") {
+                    continue;
+                }
 
-    			// Build uuid variable from attributes
+                // Build uuid variable from attributes
                 $uuidTemp = "";
-    			foreach ($tempXml->dependencies->depend[$i]->attributes() as $key => $value) {
-    				// We use only uuid attribute and can ignore other attributes
-    				if ($key  == "uuid") {
-    					$uuidTemp = cSecurity::escapeString($value);
-    				}
-    			}
+                foreach ($tempXml->dependencies->depend[$i]->attributes() as $key => $value) {
+                    // We use only uuid attribute and can ignore other attributes
+                    if ($key == "uuid") {
+                        $uuidTemp = cSecurity::escapeString($value);
+                    }
+                }
 
-    			// Return false if uuid from plugin to uninstall and depended on plugin is the same
-    			// AND depended on plugin is active
-    			if ($uuidTemp === $uuidUninstall) {
-    				$this->_pimPluginCollection->setWhere('uuid', $tempXml->general->uuid);
-    				$this->_pimPluginCollection->setWhere('active', '1');
-    				$this->_pimPluginCollection->query();
+                // Return false if uuid from plugin to uninstall and depended on plugin is the same
+                // AND depended on plugin is active
+                if ($uuidTemp === $uuidUninstall) {
+                    $this->_pimPluginCollection->setWhere('uuid', $tempXml->general->uuid);
+                    $this->_pimPluginCollection->setWhere('active', '1');
+                    $this->_pimPluginCollection->query();
 
-    				if ($this->_pimPluginCollection->count() != 0) {
-    					self::setPluginName($tempXml->general->plugin_name);
-    					return false;
-    				}
-    			}
-    		}
-    	}
+                    if ($this->_pimPluginCollection->count() != 0) {
+                        self::setPluginName($tempXml->general->plugin_name);
+                        return false;
+                    }
+                }
+            }
+        }
 
-    	return true;
+        return true;
     }
 
     /**

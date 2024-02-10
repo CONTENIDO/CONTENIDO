@@ -22,18 +22,18 @@ class cHtmlListTest extends cTestingTestCase
     {
         $cList = new cHTMLList(
             'ul', 'testId', 'testclass', [
-            '<li>bla</li>',
-            '<li>haa</li>',
-        ]
+                '<li>bla</li>',
+                '<li>haa</li>',
+            ]
         );
         $this->assertSame('<ul id="testId" class="testclass"><li>bla</li><li>haa</li></ul>', $cList->toHtml());
         $cList = new cHTMLList('ul', 'testId', 'testclass', []);
         $this->assertSame('<ul id="testId" class="testclass"></ul>', $cList->toHtml());
         $cListItem = new cHTMLListItem('testId', 'testClass');
-        $cList     = new cHTMLList(
+        $cList = new cHTMLList(
             'ul', 'testId', 'testclass', [
-            $cListItem,
-        ]
+                $cListItem,
+            ]
         );
         $this->assertSame(
             '<ul id="testId" class="testclass"><li id="testId" class="testClass"></li></ul>',

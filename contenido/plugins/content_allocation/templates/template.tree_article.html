@@ -1,6 +1,7 @@
 <form method="post" action="main.php" name="contentallocation">
     {HIDDENFIELDS}
-    <table id="tree_article" border="0" cellpadding="2" cellspacing="0" width="500" class="border_b3 no_border_t no_border_r">
+    <table id="tree_article" border="0" cellpadding="2" cellspacing="0" width="500"
+           class="border_b3 no_border_t no_border_r">
         <tr class="text_medium fett bg_c_e2">
             <td width="450" class="textg_medium border_b3 no_border_l no_border_b">
                 {CATEGORY}
@@ -24,8 +25,8 @@
 </form>
 
 <script type="text/javascript">
-    (function(Con, $) {
-        $(function() {
+    (function (Con, $) {
+        $(function () {
             Con.RowMark.initialize('#tree_article .row_mark', 'row');
         });
     })(Con, Con.$);

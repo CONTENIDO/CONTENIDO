@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GenericDB
  */
-class cGenericDb {
+class cGenericDb
+{
 
     /**
      * Callbacks are executed before a item is created.
@@ -121,7 +122,8 @@ class cGenericDb {
      * @throws cInvalidArgumentException
      *         if event or class are not set or the callback is not callable
      */
-    public static function register($event, $callback, $class) {
+    public static function register($event, $callback, $class)
+    {
         if (isset($event) === false) {
             throw new cInvalidArgumentException("No callback event for execution was given");
         }
@@ -157,7 +159,8 @@ class cGenericDb {
      * @throws cInvalidArgumentException
      *         if the event or the class are not set
      */
-    public static function unregister($event, $class) {
+    public static function unregister($event, $class)
+    {
         if (isset($event) === false) {
             throw new cInvalidArgumentException("No callback event for execution was given");
         }
@@ -187,7 +190,8 @@ class cGenericDb {
      * @throws cInvalidArgumentException
      *         if the event or class is not set
      */
-    protected final function _executeCallbacks($event, $class, $arguments = []) {
+    protected final function _executeCallbacks($event, $class, $arguments = [])
+    {
         if (isset($event) === false) {
             throw new cInvalidArgumentException("No callback event for execution was given");
         }

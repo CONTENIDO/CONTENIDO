@@ -50,7 +50,7 @@ if (cRegistry::isBackendEditMode()) {
     $createLabel = '';
 }
 
-$val            = [];
+$val = [];
 $valDescription = [];
 // create typegenerator object
 $ocType = new cTypeGenerator();

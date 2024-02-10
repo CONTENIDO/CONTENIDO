@@ -17,5 +17,6 @@
  * @package    Testing
  * @subpackage Helper
  */
-class cTestingException extends Exception {
+class cTestingException extends Exception
+{
 }

@@ -65,21 +65,21 @@ class cSession
      * It will be valid for the host name of the server which generated the cookie
      * and the path as in either the configured backend or frontend URL.
      *
-     * @since CON-2785 the cookie path can be configured as $cfg['cookie']['path'].
-     *        Configure in <CLIENT>/data/config/<ENV>/config.local.php
-     *
+     * @param string $prefix The prefix for the session variables
      * @since CON-2423 Via $cfg['secure'] you can define if the cookie should only be sent over secure connections.
      *        Configure in data/config/<ENV>/config.misc.php
      *
      * The session cookie is accessible only through the HTTP protocol.
      *
-     * @param  string  $prefix  The prefix for the session variables
+     * @since CON-2785 the cookie path can be configured as $cfg['cookie']['path'].
+     *        Configure in <CLIENT>/data/config/<ENV>/config.local.php
+     *
      */
     public function __construct($prefix = 'backend')
     {
-        $this->_pt     = [];
+        $this->_pt = [];
         $this->_prefix = $prefix;
-        $this->name    = 'contenido';
+        $this->name = 'contenido';
 
         if (isset($_SESSION)) {
             return;
@@ -89,7 +89,7 @@ class cSession
         $lifetime = 0;
 
         // determine cookie path (entire domain if path could not be determined)
-        $url  = 'backend' === $prefix ? cRegistry::getBackendUrl() : cRegistry::getFrontendUrl();
+        $url = 'backend' === $prefix ? cRegistry::getBackendUrl() : cRegistry::getFrontendUrl();
         $path = parse_url($url, PHP_URL_PATH);
         $path = cRegistry::getConfigValue('cookie', 'path', $path);
         if (empty($path)) {
@@ -115,7 +115,7 @@ class cSession
     /**
      * Registers a global variable which will become persistent
      *
-     * @param  string  $things  The name of the variable (e.g. "idclient")
+     * @param string $things The name of the variable (e.g. "idclient")
      */
     public function register($things)
     {
@@ -132,7 +132,7 @@ class cSession
     /**
      * Unregisters a variable
      *
-     * @param  string  $name  The name of the variable (e.g. "idclient")
+     * @param string $name The name of the variable (e.g. "idclient")
      */
     public function unregister($name)
     {
@@ -142,7 +142,7 @@ class cSession
     /**
      * Checks if a variable is registered
      *
-     * @param  string  $name  The name of the variable (e.g. "idclient")
+     * @param string $name The name of the variable (e.g. "idclient")
      * @return  bool
      */
     public function isRegistered($name)
@@ -158,7 +158,7 @@ class cSession
      * This is no longer needed to make sessions work but some CONTENIDO
      * functions/classes rely on it
      *
-     * @param  string  $url  A URL
+     * @param string $url A URL
      * @return  mixed
      */
     public function url($url)
@@ -185,7 +185,7 @@ class cSession
      * Returns PHP code which can be used to rebuild the variable by evaluating it.
      * This will work recursively on arrays
      *
-     * @param  mixed  $var  A variable which should get serialized.
+     * @param mixed $var A variable which should get serialized.
      * @return  string  The PHP code which can be evaluated.
      */
     public function serialize($var)
@@ -198,8 +198,8 @@ class cSession
     /**
      * This function will go recursively through arrays and objects to serialize them.
      *
-     * @param  mixed  $var  The variable to serialize
-     * @param  string  $str  The PHP code will be attached to this string
+     * @param mixed $var The variable to serialize
+     * @param string $str The PHP code will be attached to this string
      */
     protected function _rSerialize($var, &$str)
     {
@@ -286,8 +286,8 @@ class cSession
     /**
      * Removes existing session parameter (e.g., contenido=1) from the URL and returns the rebuild URL back
      *
-     * @param  string  $url  The URL to process
-     * @param  bool  $addSession  Flag to add the current session parameter (e.g., contenido=1) to it, e.g. used by the backend
+     * @param string $url The URL to process
+     * @param bool $addSession Flag to add the current session parameter (e.g., contenido=1) to it, e.g. used by the backend
      * @return  string
      */
     protected function _url($url, $addSession)
@@ -354,15 +354,15 @@ class cFrontendSession extends cSession
      * It will be valid for the host name of the server which generated the cookie
      * and the path as in the configured frontend URL.
      *
-     * @since CON-2785 the cookie path can be configured as $cfg['cookie']['path'].
-     *        Configure in <CLIENT>/data/config/<ENV>/config.local.php
-     *
+     * @param string $prefix The prefix for the session variables
      * @since CON-2423 Via $cfg['secure'] you can define if the cookie should only be sent over secure connections.
      *        Configure in data/config/<ENV>/config.misc.php
      *
      * The session cookie is accessible only through the HTTP protocol.
      *
-     * @param  string  $prefix  The prefix for the session variables
+     * @since CON-2785 the cookie path can be configured as $cfg['cookie']['path'].
+     *        Configure in <CLIENT>/data/config/<ENV>/config.local.php
+     *
      */
     public function __construct($prefix = 'frontend')
     {
@@ -375,9 +375,9 @@ class cFrontendSession extends cSession
      * This function overrides cSession::url() so that the contenido=1 isn't
      * attached to the URL for the frontend
      *
-     * @see cSession::url()
-     * @param  string  $url A URL
+     * @param string $url A URL
      * @return  mixed
+     * @see cSession::url()
      */
     public function url($url)
     {

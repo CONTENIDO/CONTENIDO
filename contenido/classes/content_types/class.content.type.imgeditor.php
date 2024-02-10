@@ -110,9 +110,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int    $id
+     * @param int $id
      *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array  $contentTypes
+     * @param array $contentTypes
      *         array containing the values of all content types
      *
      * @throws cDbException
@@ -183,9 +183,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *
      * @param string $contentTypeName
      *                         Content type name
-     * @param int    $id
+     * @param int $id
      *                         ID of the content type
-     * @param array  $contentTypes
+     * @param array $contentTypes
      *                         Content type array
      * @param bool $editable [optional]
      * @return string The raw setting or an empty string
@@ -820,12 +820,12 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      * Returns the raw settings from content version by article language id,
      * content type id, and content id.
      *
-     * @since CONTENIDO 4.10.2
      * @param int $idArtLang Article language id
      * @param int $idType Content type id (e.g. id of `CONTENT_TYPE`)
      * @param int $typeId Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
      * @return string
      * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
      */
     protected function _getRawSettingsFromContentVersion(
         int $idArtLang, int $idType, int $typeId

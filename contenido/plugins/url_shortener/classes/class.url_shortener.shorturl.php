@@ -24,7 +24,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiShortUrl createNewItem
  * @method cApiShortUrl|bool next
  */
-class cApiShortUrlCollection extends ItemCollection {
+class cApiShortUrlCollection extends ItemCollection
+{
 
     /**
      *
@@ -65,7 +66,8 @@ class cApiShortUrlCollection extends ItemCollection {
     /**
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('url_shortener_shorturl'), 'idshorturl');
         $this->_setItemClass('cApiShortUrl');
     }
@@ -73,16 +75,17 @@ class cApiShortUrlCollection extends ItemCollection {
     /**
      *
      * @param string $shorturl
-     * @param int    $idart
-     * @param int    $idlang
-     * @param int    $idclient
+     * @param int $idart
+     * @param int $idlang
+     * @param int $idclient
      *
      * @return cApiShortUrl
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($shorturl, $idart = NULL, $idlang = NULL, $idclient = NULL) {
+    public function create($shorturl, $idart = NULL, $idlang = NULL, $idclient = NULL)
+    {
         if (is_null($idart)) {
             $idart = cRegistry::getArticleId();
         }
@@ -118,7 +121,8 @@ class cApiShortUrlCollection extends ItemCollection {
      *         if it is valid
      * @throws cDbException
      */
-    public function isValidShortUrl($shorturl) {
+    public function isValidShortUrl($shorturl)
+    {
         $cfg = cRegistry::getConfig();
 
         if (cString::getStringLength(trim($shorturl)) === 0) {
@@ -171,7 +175,8 @@ class cApiShortUrlCollection extends ItemCollection {
  * @package    Plugin
  * @subpackage UrlShortener
  */
-class cApiShortUrl extends Item {
+class cApiShortUrl extends Item
+{
     /**
      * Constructor Function
      *
@@ -180,7 +185,8 @@ class cApiShortUrl extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($id = false) {
+    public function __construct($id = false)
+    {
         parent::__construct(cRegistry::getDbTableName('url_shortener_shorturl'), 'idshorturl');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

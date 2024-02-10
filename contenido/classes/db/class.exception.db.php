@@ -21,5 +21,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Database
  */
-class cDbException extends cException {
+class cDbException extends cException
+{
 }

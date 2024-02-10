@@ -23,7 +23,8 @@ cInclude("includes", "functions.con.php");
  * @return string
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function getUsers($listid, $default) {
+function getUsers($listid, $default)
+{
     $cfg = cRegistry::getConfig();
     $auth = cRegistry::getAuth();
 
@@ -90,7 +91,8 @@ function getUsers($listid, $default) {
  * @return bool
  * @throws cDbException|cException
  */
-function isCurrentEditor($uid) {
+function isCurrentEditor($uid)
+{
     $auth = cRegistry::getAuth();
 
     // Check if the UID is a group. If yes, check if we are in it
@@ -122,14 +124,15 @@ function isCurrentEditor($uid) {
  * @return bool|string
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function getActionSelect($idartlang, $idusersequence) {
+function getActionSelect($idartlang, $idusersequence)
+{
     $idartlang = cSecurity::toInteger($idartlang);
     $idusersequence = cSecurity::toInteger($idusersequence);
 
     $cfg = cRegistry::getConfig();
 
     $workflowActions = new WorkflowActions();
-    $allActions      = $workflowActions->getAvailableWorkflowActions();
+    $allActions = $workflowActions->getAvailableWorkflowActions();
 
     $wfSelect = new cTemplate();
     $wfSelect->set('s', 'NAME', 'wfselect' . $idartlang);
@@ -203,7 +206,8 @@ function getActionSelect($idartlang, $idusersequence) {
  * @return bool
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function setUserSequence($idartlang, $defaultidworkflow) {
+function setUserSequence($idartlang, $defaultidworkflow)
+{
     $idartlang = cSecurity::toInteger($idartlang);
     $defaultidworkflow = cSecurity::toInteger($defaultidworkflow);
 
@@ -249,13 +253,14 @@ function setUserSequence($idartlang, $defaultidworkflow) {
  * Returns current user sequence, either from workflow article allocations or
  * from workflow user sequences.
  *
- * @param int $idartlang         Article language id
+ * @param int $idartlang Article language id
  * @param int $defaultidworkflow Default workflow id
  *
  * @return int false of found user sequence or false
  * @throws cDbException|cException
  */
-function getCurrentUserSequence($idartlang, $defaultidworkflow) {
+function getCurrentUserSequence($idartlang, $defaultidworkflow)
+{
     $idartlang = cSecurity::toInteger($idartlang);
     $defaultidworkflow = cSecurity::toInteger($defaultidworkflow);
 
@@ -308,7 +313,8 @@ function getCurrentUserSequence($idartlang, $defaultidworkflow) {
  * @return bool|string
  * @throws cDbException|cException
  */
-function getLastWorkflowStatus($idartlang) {
+function getLastWorkflowStatus($idartlang)
+{
     $idartlang = cSecurity::toInteger($idartlang);
 
     $wfaa = new WorkflowArtAllocations();
@@ -339,7 +345,8 @@ function getLastWorkflowStatus($idartlang) {
  *
  * @throws cDbException|cException
  */
-function doWorkflowAction($idartlang, $action) {
+function doWorkflowAction($idartlang, $action)
+{
     $idcat = cRegistry::getCategoryId();
     $idartlang = cSecurity::toInteger($idartlang);
 
@@ -405,7 +412,7 @@ function doWorkflowAction($idartlang, $action) {
                         $obj->store();
                     }
                 } else {
-                    $workflowitems->select("idworkflow = $idworkflow AND position = " . (int) $workflowitem->get("position"));
+                    $workflowitems->select("idworkflow = $idworkflow AND position = " . (int)$workflowitem->get("position"));
                     if (($nextObj = $workflowitems->next()) !== false) {
                         $userSequences = new WorkflowUserSequences();
                         $idworkflowitem = cSecurity::toInteger($nextObj->get("idworkflowitem"));
@@ -474,7 +481,8 @@ function doWorkflowAction($idartlang, $action) {
  * @throws cDbException
  * @throws cException
  */
-function getWorkflowForUserSequence($usersequence) {
+function getWorkflowForUserSequence($usersequence)
+{
     $usersequence = cSecurity::toInteger($usersequence);
     $usersequences = new WorkflowUserSequences();
     $usersequences->select("idusersequence = $usersequence");
@@ -498,7 +506,8 @@ function getWorkflowForUserSequence($usersequence) {
  *
  * @return string
  */
-function workflowSelect($listid, $default, $idcat) {
+function workflowSelect($listid, $default, $idcat)
+{
     global $workflowSelectBox;
 
     $cfg = cRegistry::getConfig();
@@ -525,7 +534,8 @@ function workflowSelect($listid, $default, $idcat) {
  *
  * @return string
  */
-function workflowInherit($idcat) {
+function workflowInherit($idcat)
+{
     $idcat = cSecurity::toInteger($idcat);
     $cfg = cRegistry::getConfig();
     $frame = cRegistry::getFrame();
@@ -543,7 +553,8 @@ function workflowInherit($idcat) {
  * @return int
  * @throws cDbException|cException
  */
-function getWorkflowForCat($idcat) {
+function getWorkflowForCat($idcat)
+{
     $idcat = cSecurity::toInteger($idcat);
     $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
@@ -570,7 +581,8 @@ function getWorkflowForCat($idcat) {
  * @return int
  * @throws cDbException
  */
-function getCatLang($idcat, $idlang) {
+function getCatLang($idcat, $idlang)
+{
     $idcat = cSecurity::toInteger($idcat);
     $idlang = cSecurity::toInteger($idlang);
     // Get the idcatlang
@@ -586,7 +598,8 @@ function getCatLang($idcat, $idlang) {
  * @return string
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function prepareWorkflowItems() {
+function prepareWorkflowItems()
+{
     global $modidcat, $workflowSelectBox, $workflowworkflows, $tpl;
 
     $action = cRegistry::getAction();
@@ -727,7 +740,8 @@ function prepareWorkflowItems() {
  * @return string
  * @throws cDbException|cException
  */
-function piworkflowCategoryRenderColumn($idcat, $type) {
+function piworkflowCategoryRenderColumn($idcat, $type)
+{
     $idcat = cSecurity::toInteger($idcat);
     $value = '';
     switch ($type) {
@@ -813,7 +827,8 @@ function piworkflowCategoryPageEnd()
  * @return array
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function piworkflowCategoryColumns($array) {
+function piworkflowCategoryColumns($array)
+{
     return [
         "workflow" => i18n("Workflow", "workflow")
     ];
@@ -825,7 +840,8 @@ function piworkflowCategoryColumns($array) {
  * @return array
  * @throws cDbException|cException
  */
-function piworkflowProcessActions($array) {
+function piworkflowProcessActions($array)
+{
     $idcat = cRegistry::getCategoryId();
 
     $defaultidworkflow = getWorkflowForCat($idcat);
@@ -856,7 +872,8 @@ function piworkflowProcessActions($array) {
  * @return string
  * @throws cDbException|cException
  */
-function piworkflowRenderAction($idcat, $idart, $idartlang, $type) {
+function piworkflowRenderAction($idcat, $idart, $idartlang, $type)
+{
     global $tmp_artconf, $onlinelink, $lockedlink, $tplconf_link;
 
     $idcat = cSecurity::toInteger($idcat);
@@ -913,7 +930,8 @@ function piworkflowRenderAction($idcat, $idart, $idartlang, $type) {
  * @return array
  * @throws cDbException|cException
  */
-function piworkflowProcessArticleColumns($array) {
+function piworkflowProcessArticleColumns($array)
+{
     global $modidartlang;
 
     $idcat = cRegistry::getCategoryId();
@@ -960,7 +978,8 @@ function piworkflowProcessArticleColumns($array) {
  * @return bool
  * @throws cDbException|cException
  */
-function piworkflowAllowArticleEdit($idlang, $idcat, $idart, $user) {
+function piworkflowAllowArticleEdit($idlang, $idcat, $idart, $user)
+{
     $idlang = cSecurity::toInteger($idlang);
     $idcat = cSecurity::toInteger($idcat);
     $idart = cSecurity::toInteger($idart);
@@ -1002,7 +1021,8 @@ function piworkflowAllowArticleEdit($idlang, $idcat, $idart, $user) {
  * @return string
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function piworkflowRenderColumn($idcat, $idart, $idartlang, $column) {
+function piworkflowRenderColumn($idcat, $idart, $idartlang, $column)
+{
     global $idtpl, $alttitle, $tmp_articletitle;
 
     $idcat = cSecurity::toInteger($idcat);
@@ -1090,7 +1110,8 @@ function piworkflowRenderColumn($idcat, $idart, $idartlang, $column) {
 /**
  * @return array
  */
-function piworkflowCreateTasksFolder() {
+function piworkflowCreateTasksFolder()
+{
     $sess = cRegistry::getSession();
     $cfg = cRegistry::getConfig();
 

@@ -20,14 +20,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLTableBody extends cHTMLContentElement {
+class cHTMLTableBody extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
      *
      * Creates an HTML tbody element.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->_tag = 'tbody';
     }

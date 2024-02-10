@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>content_header_first</name><description>Configurable h1 element in an article</description><type>content</type><alias>content_header_first</alias></module>
+<module>
+    <name>content_header_first</name>
+    <description>Configurable h1 element in an article</description>
+    <type>content</type>
+    <alias>content_header_first</alias>
+</module>

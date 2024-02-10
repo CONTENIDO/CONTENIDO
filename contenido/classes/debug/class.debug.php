@@ -73,9 +73,9 @@ class cDebug
      *
      * @param string $sType [optional]
      *         The debugger to get, empty string to get debugger defined in system settings
+     * @return cDebugInterface
      * @throws cInvalidArgumentException
      *         If type of debugger is unknown
-     * @return cDebugInterface
      */
     public static function getDebugger(string $sType = ''): cDebugInterface
     {
@@ -132,7 +132,7 @@ class cDebug
      * Adds a variable to the debugger.
      * This variable will be watched.
      *
-     * @param mixed  $var
+     * @param mixed $var
      *                      A variable or an object
      * @param string $label [optional]
      *                      An optional description for the variable

@@ -63,7 +63,7 @@ class ItemTest extends cTestingTestCase
         $this->_testItemNonVirgin->setLoaded(true);
         $this->_testItemNonVirgin->values = [
             'ID' => 123,
-            'foo'  => 'bar',
+            'foo' => 'bar',
             'spam' => 'eggs',
         ];
 
@@ -137,7 +137,7 @@ class ItemTest extends cTestingTestCase
     {
         $this->_testItemVirgin->loadByMany(
             [
-                'ID'          => '1',
+                'ID' => '1',
                 'CountryCode' => 'AFG',
             ]
         );
@@ -152,7 +152,7 @@ class ItemTest extends cTestingTestCase
     {
         $this->_testItemVirgin->loadByMany(
             [
-                'ID'          => '1',
+                'ID' => '1',
                 'CountryCode' => 'AFG',
             ],
             true
@@ -168,7 +168,7 @@ class ItemTest extends cTestingTestCase
     {
         $this->_testItemVirgin->loadByMany(
             [
-                'ID'          => '1',
+                'ID' => '1',
                 'CountryCode' => 'AFG',
             ],
             false

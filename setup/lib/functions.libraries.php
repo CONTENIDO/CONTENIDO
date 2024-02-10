@@ -15,7 +15,8 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 
-function checkImageResizer() {
+function checkImageResizer()
+{
     global $cfg;
 
     $iGDStatus = isPHPExtensionLoaded('gd');

@@ -24,13 +24,15 @@ cInclude('includes', 'functions.file.php');
  * @method cApiDbfs createNewItem
  * @method cApiDbfs|bool next
  */
-class cApiDbfsCollection extends ItemCollection {
+class cApiDbfsCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('dbfs'), 'iddbfs');
         $this->_setItemClass('cApiDbfs');
 
@@ -46,7 +48,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function outputFile($path) {
+    public function outputFile($path)
+    {
         $path = $this->escape($path);
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
@@ -106,7 +109,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function writeFromFile($localfile, $targetfile) {
+    public function writeFromFile($localfile, $targetfile)
+    {
         $targetfile = cApiDbfs::stripPath($targetfile);
         $stat = cFileHandler::info($localfile);
         $mimetype = $stat['mime'];
@@ -124,7 +128,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function writeToFile($sourcefile, $localfile) {
+    public function writeToFile($sourcefile, $localfile)
+    {
         $sourcefile = cApiDbfs::stripPath($sourcefile);
 
         cFileHandler::write($localfile, $this->read($sourcefile));
@@ -134,13 +139,14 @@ class cApiDbfsCollection extends ItemCollection {
      * Writes dbfs file, creates if if not exists.
      *
      * @param string $file
-     * @param string $content  [optional]
+     * @param string $content [optional]
      * @param string $mimetype [optional]
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function write($file, $content = '', $mimetype = '') {
+    public function write($file, $content = '', $mimetype = '')
+    {
         $file = cApiDbfs::stripPath($file);
 
         if (!$this->fileExists($file)) {
@@ -156,7 +162,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @return bool
      * @throws cDbException
      */
-    public function hasFiles($path) {
+    public function hasFiles($path)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
 
@@ -178,7 +185,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function read($file) {
+    public function read($file)
+    {
         return $this->getContent($file);
     }
 
@@ -190,7 +198,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fileExists($path) {
+    public function fileExists($path)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
         $dir = dirname($path);
@@ -216,7 +225,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function dirExists($path) {
+    public function dirExists($path)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
 
@@ -237,7 +247,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @param string $path
      * @return string
      */
-    public function parentDir($path) {
+    public function parentDir($path)
+    {
         return dirname($path);
     }
 
@@ -245,13 +256,14 @@ class cApiDbfsCollection extends ItemCollection {
      * Creates a dbfs item entry
      * @param string $path
      * @param string $mimetype [optional]
-     * @param string $content  [optional]
+     * @param string $content [optional]
      * @return cApiDbfs|false
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($path, $mimetype = '', $content = '') {
+    public function create($path, $mimetype = '', $content = '')
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $item = false;
 
@@ -317,7 +329,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function setContent($path, $content) {
+    public function setContent($path, $content)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
         $dirname = dirname($path);
@@ -342,7 +355,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function getSize($path) {
+    public function getSize($path)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
         $dirname = dirname($path);
@@ -368,7 +382,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function getContent($path) {
+    public function getContent($path)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $dirname = dirname($path);
         $filename = basename($path);
@@ -394,7 +409,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function remove($path) {
+    public function remove($path)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
         $dirname = dirname($path);
@@ -415,7 +431,7 @@ class cApiDbfsCollection extends ItemCollection {
      * Checks if time management is activated and if yes then check if file is
      * in period
      *
-     * @param string                 $sPath
+     * @param string $sPath
      * @param cApiPropertyCollection $oProperties
      *
      * @return bool
@@ -423,7 +439,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function checkTimeManagement($sPath, $oProperties) {
+    public function checkTimeManagement($sPath, $oProperties)
+    {
         if (cRegistry::getBackendSessionId()) {
             return true;
         }
@@ -437,7 +454,7 @@ class cApiDbfsCollection extends ItemCollection {
         $sStartDate = $oProperties->getValue('upload', $sPath, 'file', 'datestart');
         $sEndDate = $oProperties->getValue('upload', $sPath, 'file', 'dateend');
         $iNow = time();
-        if ($iNow < $this->dateToTimestamp($sStartDate) || ($iNow > $this->dateToTimestamp($sEndDate) && (int) $this->dateToTimestamp($sEndDate) > 0)) {
+        if ($iNow < $this->dateToTimestamp($sStartDate) || ($iNow > $this->dateToTimestamp($sEndDate) && (int)$this->dateToTimestamp($sEndDate) > 0)) {
             return false;
         }
 
@@ -450,7 +467,8 @@ class cApiDbfsCollection extends ItemCollection {
      * @param string $sDate
      * @return int|bool $iTimestamp
      */
-    public function dateToTimestamp($sDate) {
+    public function dateToTimestamp($sDate)
+    {
         return strtotime($sDate);
     }
 }
@@ -461,7 +479,8 @@ class cApiDbfsCollection extends ItemCollection {
  * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiDbfs extends Item {
+class cApiDbfs extends Item
+{
 
     /**
      * DBFS protocol
@@ -479,7 +498,8 @@ class cApiDbfs extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('dbfs'), 'iddbfs');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -490,10 +510,11 @@ class cApiDbfs extends Item {
      * Stores the loaded and modified item to the database.
      * The properties "modified" & "modifiedby" are set automatically.
      *
-     * @see Item::store()
      * @return bool
+     * @see Item::store()
      */
-    public function store() {
+    public function store()
+    {
         $auth = cRegistry::getAuth();
 
         $this->set('modified', date('Y-m-d H:i:s'), false);
@@ -514,7 +535,8 @@ class cApiDbfs extends Item {
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($sField, $mValue, $bSafe = true) {
+    public function setField($sField, $mValue, $bSafe = true)
+    {
         if ('content' === $sField) {
             // Disable always filter for field 'content'
             return parent::setField($sField, $mValue, false);
@@ -534,7 +556,8 @@ class cApiDbfs extends Item {
      * @return mixed
      *         Value of the field
      */
-    public function getField($sField, $bSafe = true) {
+    public function getField($sField, $bSafe = true)
+    {
         if ('content' === $sField) {
             // Disable always filter for field 'content'
             return parent::getField($sField, false);
@@ -549,7 +572,8 @@ class cApiDbfs extends Item {
      * @param string $path
      * @return string
      */
-    public static function stripPath($path) {
+    public static function stripPath($path)
+    {
         $path = self::stripProtocol($path);
         if (cString::getPartOfString($path, 0, 1) == '/') {
             $path = cString::getPartOfString($path, 1);
@@ -563,7 +587,8 @@ class cApiDbfs extends Item {
      * @param string $path
      * @return string
      */
-    public static function stripProtocol($path) {
+    public static function stripProtocol($path)
+    {
         if (self::isDbfs($path)) {
             $path = cString::getPartOfString($path, cString::getStringLength(cApiDbfs::PROTOCOL_DBFS));
         }
@@ -576,7 +601,8 @@ class cApiDbfs extends Item {
      * @param string $file
      * @return bool
      */
-    public static function isDbfs($file) {
+    public static function isDbfs($file)
+    {
         return cString::getPartOfString($file, 0, 5) == self::PROTOCOL_DBFS;
     }
 }

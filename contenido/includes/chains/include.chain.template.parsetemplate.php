@@ -28,7 +28,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Does some replacements in the given template.
  * Replaces some CONTENIDO specific placeholders against their values.
  *
- * @param string    $template
+ * @param string $template
  *         Template string to preprocess
  * @param cTemplate $templateObj
  *         The current template instance
@@ -37,7 +37,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @throws cInvalidArgumentException
  */
-function cecParseTemplate($template, cTemplate $templateObj) {
+function cecParseTemplate($template, cTemplate $templateObj)
+{
 
     global $frame;
 
@@ -48,7 +49,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     $prefix = "\n    ";
 
     $cfg = cRegistry::getConfig();
-    $sessid = (string) cRegistry::getBackendSessionId();
+    $sessid = (string)cRegistry::getBackendSessionId();
     $backendPath = cRegistry::getBackendUrl();
     $backendLang = cRegistry::getBackendLanguage();
     $area = cRegistry::getArea();
@@ -81,7 +82,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     (function(Con, $) {
         Con.sid = "' . $sessid . '";
         $.extend(Con.cfg, {
-            urlBackend: "' .  $backendPath . '",
+            urlBackend: "' . $backendPath . '",
             urlHelp: "' . $urlHelp . '",
             belang: "' . $backendLang . '",
             area: "' . ($area ?? '') . '",
@@ -91,7 +92,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     </script>';
 
     // Anonymous function to deal with the '{basePath}' prefix
-    $assetBackendFn = function($file) {
+    $assetBackendFn = function ($file) {
         if (strpos($file, '{basePath}') === 0) {
             $file = str_replace('{basePath}', '', $file);
             $file = cAsset::backend($file);
@@ -131,13 +132,13 @@ function cecParseTemplate($template, cTemplate $templateObj) {
 
     // Placeholders to replace
     $replacements = [
-        '_SID_'                         => $sessid,
-        '_PATH_CONTENIDO_FULLHTML_'     => $backendPath,
-        '_META_HEAD_CONTENIDO_'         => $metaCon,
-        '_CSS_HEAD_CONTENIDO_'          => str_replace('{basePath}', '', $cssHeadCon),
+        '_SID_' => $sessid,
+        '_PATH_CONTENIDO_FULLHTML_' => $backendPath,
+        '_META_HEAD_CONTENIDO_' => $metaCon,
+        '_CSS_HEAD_CONTENIDO_' => str_replace('{basePath}', '', $cssHeadCon),
         '_CSS_HEAD_CONTENIDO_FULLHTML_' => str_replace('{basePath}', $backendPath, $cssHeadCon),
-        '_JS_HEAD_CONTENIDO_'           => str_replace('{basePath}', '', $jsHeadCon),
-        '_JS_HEAD_CONTENIDO_FULLHTML_'  => str_replace('{basePath}', $backendPath, $jsHeadCon),
+        '_JS_HEAD_CONTENIDO_' => str_replace('{basePath}', '', $jsHeadCon),
+        '_JS_HEAD_CONTENIDO_FULLHTML_' => str_replace('{basePath}', $backendPath, $jsHeadCon),
     ];
 
     // Loop through all replacements and replace keys which are not in needles but found
@@ -150,7 +151,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     }
 
     // Replace all asset marker like {_ASSET(scripts/rowMark.js)_}
-    $template = preg_replace_callback('#{_ASSET\((.*)\)_}#', function($matches) {
+    $template = preg_replace_callback('#{_ASSET\((.*)\)_}#', function ($matches) {
         return cAsset::backend($matches[1]);
     }, $template);
 

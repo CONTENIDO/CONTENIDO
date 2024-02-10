@@ -46,31 +46,28 @@ foreach ($resultClientLangs as $clientLang) {
         ]
     );
     if ($languageInstance->get('idlang')) {
-        $allLanguages[] = $languageInstance->get('idlang');
+        $allLanguageIds[] = cSecurity::toInteger($languageInstance->get('idlang'));
     }
-    $languageInstance = new cApiLanguage();
 }
 
-if (empty($allLanguages)) {
-    // no active languages. handling was moved to include.front_content.php (lines 433 - 439).
-} else if (count($allLanguages) != 1) {
-
+if (count($allLanguageIds) != 1) {
+    $idart = cSecurity::toInteger(cRegistry::getArticleId());
     $langName = '';
 
-    // else check if there more as one language
-    $currentLanguage = cRegistry::getLanguageId();
+    // else check if there is more than one language
+    $currentLanguage = cSecurity::toInteger(cRegistry::getLanguageId());
 
     // set next language if exists
-    foreach ($allLanguages as $langs) {
-        if ($langs > $currentLanguage) {
-            $langName = conHtmlSpecialChars($languageCollectionInstance->getLanguageName((int) $langs));
+    foreach ($allLanguageIds as $languageId) {
+        if ($languageId > $currentLanguage) {
+            $langName = conHtmlSpecialChars($languageCollectionInstance->getLanguageName($languageId));
             if ('' === trim($langName)) {
                 $langName = mi18n("LANGUAGE_NAME_EMPTY");
             }
             $tpl->set('s', 'label', $langName);
             $tpl->set('s', 'title', $langName);
 
-            $selectedLang = $langs;
+            $selectedLang = $languageId;
             $nextLang = true;
             break;
         }
@@ -78,24 +75,23 @@ if (empty($allLanguages)) {
 
     // otherwise set first language
     if ($nextLang === false) {
-        $languageName = conHtmlSpecialChars($languageCollectionInstance->getLanguageName(reset($allLanguages)));
+        $languageName = conHtmlSpecialChars($languageCollectionInstance->getLanguageName(reset($allLanguageIds)));
         if ('' === trim($langName)) {
             $langName = mi18n("LANGUAGE_NAME_EMPTY");
         }
 
         $tpl->set('s', 'label', $languageName);
         $tpl->set('s', 'title', $languageName);
-        $selectedLang = reset($allLanguages);
+        $selectedLang = reset($allLanguageIds);
     }
 
     // check articles, if article exists and is online and not locked set the check to true
-    $artCheck = $artCollection->select("idart = '" . cSecurity::toInteger($idart) . "' AND idlang = '" . cSecurity::toInteger($selectedLang) . "' AND online = '1' AND locked = '0'", NULL, NULL, NULL);
+    $artCheck = $artCollection->select("idart = '" . $idart . "' AND idlang = '" . cSecurity::toInteger($selectedLang) . "' AND online = '1' AND locked = '0'", NULL, NULL, NULL);
 
     // check if this article is an startarticle
     $startart = $catCollection->getStartIdartByIdcatAndIdlang($idcatAuto, $selectedLang);
 
     if ($artCheck !== true || ($startart == $idart)) {
-
         // check category and articles, if category exists and has start article
         // which is online and not locked the set check to true
         $catCheck = $catCollection->select("idcat = '" . cSecurity::toInteger($idcatAuto) . "' AND idlang = '" . cSecurity::toInteger($selectedLang) . "' AND startidartlang != '0'", NULL, NULL, NULL);
@@ -115,10 +111,10 @@ if (empty($allLanguages)) {
 
     // if check is true then set url, otherwise check for next language
     if ($checkedCatArt === true) {
-        $url = $catRetItem->getLink($selectedLang);
+        $url = isset($catRetItem) ? $catRetItem->getLink($selectedLang) : '#';
     } else {
         $config = cRegistry::getClientConfig(cRegistry::getClientId());
-        $url = cRegistry::getFrontendUrl() . 'front_content.php?idart='.cSecurity::toInteger($idart).'&changelang=' . cSecurity::toInteger($selectedLang);
+        $url = cRegistry::getFrontendUrl() . 'front_content.php?idart=' . cSecurity::toInteger($idart) . '&changelang=' . cSecurity::toInteger($selectedLang);
     }
 
     $tpl->set('s', 'url', conHtmlSpecialChars($url));

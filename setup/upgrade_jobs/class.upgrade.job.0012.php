@@ -23,15 +23,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0012 extends cUpgradeJobAbstract {
+class cUpgradeJob_0012 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.3";
 
-    public function _execute() {
-        global $cfg;
+    public function _execute()
+    {
+        $cfg = cRegistry::getConfig();
 
         if ($_SESSION['setuptype'] == 'upgrade') {
-
             // Initializing cApiActionCollection
             $actionColl = new cApiActionCollection();
 
@@ -48,7 +49,6 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract {
             // Get all installed plugins
             $pluginColl->select();
             while ($plugin = $pluginColl->next()) {
-
                 // Get path to plugin.xml
                 $pluginXmlPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($plugin->get('folder')) . DIRECTORY_SEPARATOR . "plugin.xml";
 
@@ -59,7 +59,6 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract {
                 $actionCount = count($xml->contenido->actions->action);
 
                 for ($i = 0; $i < $actionCount; $i++) {
-
                     // Build and execute sql query for selected action
                     $actionColl->setWhere('name', cSecurity::escapeString($xml->contenido->actions->action[$i]));
                     $actionColl->query();

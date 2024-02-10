@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiLayout createNewItem
  * @method cApiLayout|bool next
  */
-class cApiLayoutCollection extends ItemCollection {
+class cApiLayoutCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('lay'), 'idlay');
         $this->_setItemClass('cApiLayout');
 
@@ -40,13 +42,13 @@ class cApiLayoutCollection extends ItemCollection {
      * Creates a layout entry.
      *
      * @param string $name
-     * @param int    $idclient     [optional]
-     * @param string $alias        [optional]
-     * @param string $description  [optional]
-     * @param int    $deletable    [optional]
+     * @param int $idclient [optional]
+     * @param string $alias [optional]
+     * @param string $description [optional]
+     * @param int $deletable [optional]
      *                             Either 1 or 0
-     * @param string $author       [optional]
-     * @param string $created      [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
      * @param string $lastmodified [optional]
      *
      * @return cApiLayout
@@ -54,7 +56,8 @@ class cApiLayoutCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($name, $idclient = NULL, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '') {
+    public function create($name, $idclient = NULL, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '')
+    {
         if (NULL === $idclient) {
             $idclient = cRegistry::getClientId();
         }
@@ -91,11 +94,11 @@ class cApiLayoutCollection extends ItemCollection {
     /**
      * Returns all used layout types.
      *
-     * @since CONTENIDO 4.10.2
-     * @param int|null $idclient  Id of client to limit the result for a specific client
+     * @param int|null $idclient Id of client to limit the result for a specific client
      * @param bool $sort Flag to sort the result
      * @return string[] List of layout types
      * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
      */
     public function getAllUsedLayoutTypesPropertyValues(int $idclient = NULL, bool $sort = true): array
     {
@@ -127,7 +130,8 @@ class cApiLayoutCollection extends ItemCollection {
  * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiLayout extends Item {
+class cApiLayout extends Item
+{
 
     /**
      * List of templates being used by current layout
@@ -145,7 +149,8 @@ class cApiLayout extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('lay'), 'idlay');
         $this->setFilters([], []);
         if ($mId !== false) {
@@ -156,13 +161,14 @@ class cApiLayout extends Item {
     /**
      * Checks if the layout is in use in any templates.
      *
-     * @throws cException
-     *         If layout item has not been loaded before
      * @param bool $setData [optional]
      *         Flag to set used templates data structure
      * @return bool
+     * @throws cException
+     *         If layout item has not been loaded before
      */
-    public function isInUse($setData = false) {
+    public function isInUse($setData = false)
+    {
         if (!$this->isLoaded()) {
             throw new cException('Layout item not loaded!');
         }
@@ -177,7 +183,7 @@ class cApiLayout extends Item {
             $this->_aUsedTemplates = [];
             foreach ($templates as $i => $template) {
                 $this->_aUsedTemplates[$i] = [
-                    'tpl_id'   => $template->get('idtpl'),
+                    'tpl_id' => $template->get('idtpl'),
                     'tpl_name' => $template->get('name'),
                 ];
             }
@@ -192,7 +198,8 @@ class cApiLayout extends Item {
      * @return array
      *         template data
      */
-    public function getUsedTemplates() {
+    public function getUsedTemplates()
+    {
         return $this->_aUsedTemplates;
     }
 
@@ -205,7 +212,8 @@ class cApiLayout extends Item {
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'deletable':
                 $value = ($value == 1) ? 1 : 0;

@@ -18,5 +18,6 @@
  * {@link DomainException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cDomainException extends cLogicException {
+class cDomainException extends cLogicException
+{
 }

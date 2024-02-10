@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>navigation_main</name><description>Main navigation</description><type>navigation</type><alias>navigation_main</alias></module>
+<module>
+    <name>navigation_main</name>
+    <description>Main navigation</description>
+    <type>navigation</type>
+    <alias>navigation_main</alias>
+</module>

@@ -26,7 +26,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiGroupProperty createNewItem
  * @method cApiGroupProperty|bool next
  */
-class cApiGroupPropertyCollection extends ItemCollection {
+class cApiGroupPropertyCollection extends ItemCollection
+{
 
     /**
      * Groups id (usually the current logged in users group)
@@ -65,7 +66,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function __construct($groupId) {
+    public function __construct($groupId)
+    {
         parent::__construct(cRegistry::getDbTableName('group_prop'), 'idgroupprop');
         $this->_setItemClass('cApiGroupProperty');
 
@@ -90,7 +92,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
     /**
      * Resets the states of static properties.
      */
-    public static function reset() {
+    public static function reset()
+    {
         self::$_enableCache = null;
         self::$_entries = null;
         self::$_maxGroups = 3;
@@ -105,7 +108,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException If passed group id is empty
      */
-    public function setGroupId($groupId) {
+    public function setGroupId($groupId)
+    {
         if (empty($groupId)) {
             throw new cInvalidArgumentException("Empty group id");
         }
@@ -121,7 +125,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @param string $type
      * @param string $name
      * @param string $value
-     * @param int    $idcatlang [optional]
+     * @param int $idcatlang [optional]
      *
      * @return cApiGroupProperty
      *
@@ -129,7 +133,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function setValueByTypeName($type, $name, $value, $idcatlang = 0) {
+    public function setValueByTypeName($type, $name, $value, $idcatlang = 0)
+    {
         $item = $this->fetchByGroupIdTypeName($type, $name);
         if ($item) {
             $item->set('value', $value);
@@ -151,13 +156,14 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @param string $type
      * @param string $name
      * @param string $value
-     * @param int    $idcatlang [optional]
+     * @param int $idcatlang [optional]
      * @return cApiGroupProperty
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($type, $name, $value, $idcatlang = 0) {
+    public function create($type, $name, $value, $idcatlang = 0)
+    {
         $item = $this->createNewItem();
 
         $item->set('group_id', $this->_groupId);
@@ -185,7 +191,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByGroupIdTypeName($type, $name) {
+    public function fetchByGroupIdTypeName($type, $name)
+    {
         if (self::$_enableCache) {
             return $this->_fetchByGroupIdTypeNameFromCache($type, $name);
         }
@@ -208,7 +215,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByGroupIdType($type) {
+    public function fetchByGroupIdType($type)
+    {
         if (self::$_enableCache) {
             return $this->_fetchByGroupIdTypeFromCache($type);
         }
@@ -230,7 +238,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByGroupId() {
+    public function fetchByGroupId()
+    {
         if (self::$_enableCache) {
             return $this->_fetchByGroupIdFromCache();
         }
@@ -256,7 +265,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function deleteByGroupIdTypeName($type, $name) {
+    public function deleteByGroupIdTypeName($type, $name)
+    {
         $sql = $this->db->prepare("group_id = '%s' AND type = '%s' AND name = '%s'", $this->_groupId, $type, $name);
         $this->select($sql);
         return $this->_deleteSelected();
@@ -273,7 +283,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function deleteByGroupIdType($type) {
+    public function deleteByGroupIdType($type)
+    {
         $sql = $this->db->prepare("group_id = '%s' AND type = '%s'", $this->_groupId, $type);
         $this->select($sql);
         return $this->_deleteSelected();
@@ -288,7 +299,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function deleteByGroupId() {
+    public function deleteByGroupId()
+    {
         $sql = $this->db->prepare("group_id = '%s'", $this->_groupId);
         $this->select($sql);
         return $this->_deleteSelected();
@@ -302,7 +314,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function _deleteSelected() {
+    protected function _deleteSelected()
+    {
         $result = false;
         while (($prop = $this->next()) !== false) {
             $id = $prop->get('idgroupprop');
@@ -320,7 +333,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    protected function _loadFromCache() {
+    protected function _loadFromCache()
+    {
         if (!isset(self::$_entries)) {
             self::$_entries = [];
         }
@@ -351,7 +365,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      *
      * @param cApiGroupProperty $item
      */
-    protected function _addToCache($item) {
+    protected function _addToCache($item)
+    {
         $data = $item->toArray();
         self::$_entries[$this->_groupId][$data['idgroupprop']] = $data;
     }
@@ -363,7 +378,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @param string $name
      * @return cApiGroupProperty NULL
      */
-    protected function _fetchByGroupIdTypeNameFromCache($type, $name) {
+    protected function _fetchByGroupIdTypeNameFromCache($type, $name)
+    {
         $obj = new cApiGroupProperty();
         foreach (self::$_entries[$this->_groupId] as $entry) {
             if ($entry['type'] == $type && $entry['name'] == $name) {
@@ -380,9 +396,10 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @param string $type
      * @return array
      */
-    protected function _fetchByGroupIdTypeFromCache($type) {
+    protected function _fetchByGroupIdTypeFromCache($type)
+    {
         $props = [];
-        $obj   = new cApiGroupProperty();
+        $obj = new cApiGroupProperty();
         foreach (self::$_entries[$this->_groupId] as $entry) {
             if ($entry['type'] == $type) {
                 $obj->loadByRecordSet($entry);
@@ -397,9 +414,10 @@ class cApiGroupPropertyCollection extends ItemCollection {
      *
      * @return array
      */
-    protected function _fetchByGroupIdFromCache() {
+    protected function _fetchByGroupIdFromCache()
+    {
         $props = [];
-        $obj   = new cApiGroupProperty();
+        $obj = new cApiGroupProperty();
         foreach (self::$_entries[$this->_groupId] as $entry) {
             $obj->loadByRecordSet($entry);
             $props[] = clone $obj;
@@ -412,7 +430,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      *
      * @param int $id
      */
-    protected function _deleteFromCache($id) {
+    protected function _deleteFromCache($id)
+    {
         if (isset(self::$_entries[$this->_groupId][$id])) {
             unset(self::$_entries[$this->_groupId][$id]);
         }
@@ -452,7 +471,8 @@ class cApiGroupProperty extends Item
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('group_prop'), 'idgroupprop');
         $this->setFilters([], []);
         if ($mId !== false) {
@@ -468,7 +488,8 @@ class cApiGroupProperty extends Item
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function updateValue($value) {
+    public function updateValue($value)
+    {
         $this->set('value', $value);
         return $this->store();
     }
@@ -482,9 +503,10 @@ class cApiGroupProperty extends Item
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
-             case 'idcatlang':
+            case 'idcatlang':
                 $value = cSecurity::toInteger($value);
                 break;
         }

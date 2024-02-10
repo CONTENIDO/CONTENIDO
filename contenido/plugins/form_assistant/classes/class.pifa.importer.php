@@ -25,7 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class PifaImporter {
+class PifaImporter
+{
 
     /**
      * The XML reader that is used to import a XML file.
@@ -59,16 +60,18 @@ class PifaImporter {
      * Create an instance.
      * Creates XML reader member instances.
      */
-    public function __construct() {
-        $this->_reader        = new cXmlReader();
-        $this->_pifaFormColl  = new PifaFormCollection();
+    public function __construct()
+    {
+        $this->_reader = new cXmlReader();
+        $this->_pifaFormColl = new PifaFormCollection();
         $this->_pifaFieldColl = new PifaFieldCollection();
     }
 
     /**
      * @param string $_tableName
      */
-    public function setTableName($_tableName) {
+    public function setTableName($_tableName)
+    {
         $this->_tableName = $_tableName;
     }
 
@@ -82,7 +85,8 @@ class PifaImporter {
      * @throws cDbException
      * @throws cException
      */
-    public function import($xml) {
+    public function import($xml)
+    {
 
         // load XML
         if (!$this->_reader->loadXML($xml)) {
@@ -134,14 +138,15 @@ class PifaImporter {
      * @param DOMElement $formElem to get data from
      * @return PifaForm
      */
-    private function _createPifaForm(DOMElement $formElem) {
+    private function _createPifaForm(DOMElement $formElem)
+    {
         return $this->_pifaFormColl->createNewItem([
             'idclient' => cRegistry::getClientId(),
             'idlang' => cRegistry::getLanguageId(),
             'name' => $formElem->getAttribute('name'),
             'data_table' => $this->_tableName,
             'method' => $formElem->getAttribute('method'),
-            'with_timestamp' => (int) ('true' === $formElem->getAttribute('timestamp')),
+            'with_timestamp' => (int)('true' === $formElem->getAttribute('timestamp')),
         ]);
     }
 
@@ -149,13 +154,14 @@ class PifaImporter {
      * Create PIFA field for given PIFA form..
      *
      * @param DOMElement $fieldElem
-     * @param PifaForm   $pifaForm
+     * @param PifaForm $pifaForm
      *
      * @return PifaField
      * @throws PifaException
      * @throws cException
      */
-    private function _createPifaField(DOMElement $fieldElem, PifaForm $pifaForm) {
+    private function _createPifaField(DOMElement $fieldElem, PifaForm $pifaForm)
+    {
 
         // get XPATH of this element to access children
         $fieldPath = $fieldElem->getNodePath();
@@ -166,7 +172,7 @@ class PifaImporter {
             'field_rank' => $fieldElem->getAttribute('rank'),
             'field_type' => $this->_getPifaFieldTypeId($fieldElem->getAttribute('type')),
             'column_name' => $fieldElem->getAttribute('column'),
-            'obligatory' => (int) ('true' === $fieldElem->getAttribute('obligatory')),
+            'obligatory' => (int)('true' === $fieldElem->getAttribute('obligatory')),
         ];
 
         // import default (optional)
@@ -180,7 +186,7 @@ class PifaImporter {
         /** @var DOMElement $labelElem */
         $labelElem = $this->_reader->getXpathNode($fieldPath . '/label');
         if ($labelElem) {
-            $display = (int) ('true' === $labelElem->getAttribute('display'));
+            $display = (int)('true' === $labelElem->getAttribute('display'));
             $data['display_label'] = $display;
         }
 
@@ -238,7 +244,8 @@ class PifaImporter {
      * @throws PifaDatabaseException
      * @throws cDbException
      */
-    private function _checkTableName() {
+    private function _checkTableName()
+    {
         $db = cRegistry::getDb();
         $sql = "-- _checkTableName()
             SHOW TABLES 
@@ -258,7 +265,8 @@ class PifaImporter {
      *
      * @return mixed
      */
-    private function _getPifaFieldTypeId($fieldTypeName) {
+    private function _getPifaFieldTypeId($fieldTypeName)
+    {
         $fieldTypeName = cString::toUpperCase($fieldTypeName);
         $fieldTypeIds = [
             'INPUTTEXT' => PifaField::INPUTTEXT,
@@ -293,15 +301,16 @@ class PifaImporter {
      * Remove CDATA syntax from a string using a regular expression.
      *
      * @param string $str to handle
-     * @throws PifaException
      * @return string
+     * @throws PifaException
      */
-    private function _unCdata($str) {
+    private function _unCdata($str)
+    {
         $regex = '/<\!\[CDATA\[(.*)\]\]>/is';
         $match = preg_replace($regex, '$1', $str);
         if (is_null($match)) {
             throw new PifaException("could not _unCdata() '$str'");
         }
-        return (string) $match;
+        return (string)$match;
     }
 }

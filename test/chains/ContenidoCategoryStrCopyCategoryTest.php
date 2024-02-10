@@ -43,7 +43,7 @@ function chain_ContenidoCategoryStrCopyCategory_Test2(array $data)
 class ContenidoCategoryStrCopyCategoryTest extends TestCase
 {
     private $_chain = 'Contenido.Category.strCopyCategory';
-    private $_data  = array('oldcat' => 1, 'newcat' => 2, 'newcatlang2' => 1);
+    private $_data = array('oldcat' => 1, 'newcat' => 2, 'newcatlang2' => 1);
 
     public static $invokeCounter = 0;
 

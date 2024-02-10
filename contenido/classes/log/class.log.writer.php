@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Log
  */
-abstract class cLogWriter {
+abstract class cLogWriter
+{
 
     /**
      * Contains all options of the current writer instance.
@@ -36,7 +37,8 @@ abstract class cLogWriter {
      * @param array $options [optional]
      *         Array with options for the writer instance (optional)
      */
-    public function __construct(array $options = []) {
+    public function __construct(array $options = [])
+    {
         $this->setOptions($options);
 
         // Set all default options if they were not set already
@@ -51,13 +53,14 @@ abstract class cLogWriter {
      *         Name of the writer
      * @param array $writerOptions
      *         Options array for the writer instance
+     * @return cLogWriter
+     *         Log writer instance
      * @throws cInvalidArgumentException
      *         if the writer class with the given name does not exist
      *         or is not an instance of clogWriter
-     * @return cLogWriter
-     *         Log writer instance
      */
-    public static function factory($writerName, array $writerOptions) {
+    public static function factory($writerName, array $writerOptions)
+    {
         $logWriterClassName = 'cLogWriter' . ucfirst($writerName);
         if (!class_exists($logWriterClassName)) {
             throw new cInvalidArgumentException('Unknown writer class: ' . $writerName);
@@ -77,7 +80,8 @@ abstract class cLogWriter {
      * @param array $options
      *         Array with options
      */
-    public function setOptions(array $options) {
+    public function setOptions(array $options)
+    {
         $this->_options = $options;
     }
 
@@ -87,7 +91,8 @@ abstract class cLogWriter {
      * @return array
      *         Array with all options
      */
-    public function getOptions() {
+    public function getOptions()
+    {
         return $this->_options;
     }
 
@@ -102,7 +107,8 @@ abstract class cLogWriter {
      * @param bool $force [optional]
      *         Flag to force setting the option value (optional, default: false)
      */
-    public function setOption($option, $value, $force = false) {
+    public function setOption($option, $value, $force = false)
+    {
         if (!$force && isset($this->_options[$option])) {
             return;
         }
@@ -118,7 +124,8 @@ abstract class cLogWriter {
      * @return mixed
      *         Value of the option entry
      */
-    public function getOption($option) {
+    public function getOption($option)
+    {
         return $this->_options[$option];
     }
 
@@ -128,7 +135,8 @@ abstract class cLogWriter {
      * @param string $option
      *         Name of the option
      */
-    public function removeOption($option) {
+    public function removeOption($option)
+    {
         unset($this->_options[$option]);
     }
 

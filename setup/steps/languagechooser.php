@@ -28,33 +28,26 @@ class cSetupLanguageChooser extends cSetupMask
     /**
      * cSetupLanguageChooser constructor.
      */
-    public function __construct() {
-        cSetupMask::__construct("templates/languagechooser.tpl");
+    public function __construct()
+    {
+        parent::__construct("templates/languagechooser.tpl");
         $this->setHeader('Version ' . CON_VERSION);
         $this->_stepTemplateClass->set("s", "DE_HINT", "Diese Anwendung hilft Ihnen bei der Installation von CONTENIDO.");
         $this->_stepTemplateClass->set("s", "EN_HINT", "This application will guide you trough the setup process.");
         $this->_stepTemplateClass->set("s", "DE_HINT_LANG", "W&auml;hlen Sie bitte die gew&uuml;nschte Sprache f&uuml;r das Setup aus.");
         $this->_stepTemplateClass->set("s", "EN_HINT_LANG", "Please choose your language to continue.");
 
-        $langs = ["de_DE" => "Deutsch", "C" => "English"];
+        $languages = ["de_DE" => "Deutsch", "C" => "English"];
 
-        $m = "";
-        foreach ($langs as $entity => $lang) {
+        $links = "";
+        foreach ($languages as $entity => $lang) {
             $test = new cHTMLLanguageLink($entity, $lang, "setuptype");
-            $m .= $test->render();
+            $links .= $test->render();
         }
 
-        $this->_stepTemplateClass->set("s", "LANGUAGECHOOSER", $m);
+        $this->_stepTemplateClass->set("s", "LANGUAGECHOOSER", $links);
     }
 
-    /**
-     * Old constructor
-     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     */
-    public function cSetupLanguageChooser() {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        $this->__construct();
-    }
 }
 
 $cSetupStep1 = new cSetupLanguageChooser();

@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>login_top</name><description>Login Top</description><type/><alias>login_top</alias></module>
+<module>
+    <name>login_top</name>
+    <description>Login Top</description>
+    <type/>
+    <alias>login_top</alias>
+</module>

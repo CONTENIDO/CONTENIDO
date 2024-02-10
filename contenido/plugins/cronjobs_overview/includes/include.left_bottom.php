@@ -29,7 +29,7 @@ if (!$perm->have_perm_area_action($area, 'cronjob_overview')) {
 }
 
 // TODO: this should not be necessary
-include_once(dirname(__FILE__).'/config.plugin.php');
+include_once(dirname(__FILE__) . '/config.plugin.php');
 
 $page = new cGuiPage('cronjobs_overview', 'cronjobs_overview');
 $menu = new cGuiMenu();

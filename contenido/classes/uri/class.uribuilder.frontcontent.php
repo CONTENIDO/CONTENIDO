@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Frontend_URI
  */
-class cUriBuilderFrontcontent extends cUriBuilder {
+class cUriBuilderFrontcontent extends cUriBuilder
+{
 
     /**
      * Self instance
@@ -39,7 +40,8 @@ class cUriBuilderFrontcontent extends cUriBuilder {
     /**
      * Constructor to create an instance of this class.
      */
-    private function __construct() {
+    private function __construct()
+    {
         $this->sHttpBasePath = '';
     }
 
@@ -48,7 +50,8 @@ class cUriBuilderFrontcontent extends cUriBuilder {
      *
      * @return cUriBuilderFrontcontent
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance == NULL) {
             self::$_instance = new self();
         }
@@ -78,7 +81,8 @@ class cUriBuilderFrontcontent extends cUriBuilder {
      * @throws cInvalidArgumentException
      * @throws cException
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = []) {
+    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = [])
+    {
         $bIdcatSet = isset($aParams['idcat']);
         $bIdartSet = isset($aParams['idart']);
         $bIdcatArtSet = isset($aParams['idcatart']);
@@ -109,7 +113,7 @@ class cUriBuilderFrontcontent extends cUriBuilder {
             if ($param == 'idcat' || $param == 'idart' || $param == 'idcatart') {
                 continue;
             }
-            $this->sUrl .= $this->_sAmp . $param . '=' . urlencode(urldecode((string) $value));
+            $this->sUrl .= $this->_sAmp . $param . '=' . urlencode(urldecode((string)$value));
         }
     }
 

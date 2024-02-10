@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
-<plugin>
-    <pim>Plugin Manager</pim>
-</plugin>
+    <plugin>
+        <pim>Plugin Manager</pim>
+    </plugin>
 </language>

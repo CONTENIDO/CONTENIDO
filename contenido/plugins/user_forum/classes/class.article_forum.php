@@ -27,7 +27,8 @@ defined('CON_FRAMEWORK') or die('Illegal call');
 /**
  * Class ArticleForum
  */
-class ArticleForum extends Item {
+class ArticleForum extends Item
+{
     /**
      * ArticleForum constructor.
      *
@@ -36,7 +37,8 @@ class ArticleForum extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($id = false) {
+    public function __construct($id = false)
+    {
         parent::__construct(cRegistry::getDbTableName('user_forum'), 'id_user_forum');
         $this->setFilters([], []);
         if (false !== $id) {

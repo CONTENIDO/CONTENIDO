@@ -18,20 +18,22 @@
  * {@link ErrorException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cErrorException extends cException {
+class cErrorException extends cException
+{
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string    $message
+     * @param string $message
      *                            The Exception message to throw.
-     * @param int       $code     [optional]
+     * @param int $code [optional]
      *                            The Exception code.
      * @param Exception $previous [optional]
      *                            The previous exception used for the exception chaining.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct($message, $code = 0, Exception $previous = NULL) {
+    public function __construct($message, $code = 0, Exception $previous = NULL)
+    {
         $cfg = cRegistry::getConfig();
 
         // determine if exception should be logged

@@ -21,18 +21,20 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0008 extends cUpgradeJobAbstract {
+class cUpgradeJob_0008 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.0";
 
-    public function _execute() {
-        global $cfg, $db;
+    public function _execute()
+    {
+        $systemPropTable = cRegistry::getDbTableName('system_prop');
 
         if ($this->_setupType == 'upgrade') {
-            $sql = "UPDATE `" . $cfg['tab']['system_prop'] . "` SET `name` = 'insite_editing_activated' WHERE `name` = 'insight_editing_activated'";
-            $db->query($sql);
+            $sql = "UPDATE `" . $systemPropTable . "` SET `name` = 'insite_editing_activated' WHERE `name` = 'insight_editing_activated'";
+            $this->_oDb->query($sql);
 
-            $db->query("DELETE FROM " . $cfg["tab"]["system_prop"] . " WHERE `name` = 'available' AND `type`='imagemagick'");
+            $this->_oDb->query("DELETE FROM " . $systemPropTable . " WHERE `name` = 'available' AND `type`='imagemagick'");
         }
     }
 }

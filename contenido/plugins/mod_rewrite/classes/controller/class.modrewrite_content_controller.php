@@ -21,12 +21,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
+class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
+{
 
     /**
      * Index action
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         // donut
     }
 
@@ -35,7 +37,8 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
      *
      * @throws cInvalidArgumentException
      */
-    public function saveAction() {
+    public function saveAction()
+    {
         $bDebug = $this->getProperty('bDebug');
         $aSeparator = $this->getProperty('aSeparator');
         $aWordSeparator = $this->getProperty('aWordSeparator');
@@ -381,10 +384,11 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
 
     /**
      * Checks, if any separators setting is modified or not
-     * @param   array  $aNewCfg  New configuration send by requests.
+     * @param array $aNewCfg New configuration send by requests.
      * @return  bool
      */
-    protected function _separatorModified($aNewCfg) {
+    protected function _separatorModified($aNewCfg)
+    {
         $aCfg = ModRewrite::getConfig();
 
         if ($aCfg['category_seperator'] != $aNewCfg['category_seperator']) {

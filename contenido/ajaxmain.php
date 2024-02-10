@@ -88,7 +88,7 @@ if (!cSecurity::isPositiveInteger($lang ?? 0)) {
     $sess->register('lang');
     // Search for the first language of this client
     $oClientLangColl = new cApiClientLanguageCollection();
-    $lang = (int) $oClientLangColl->getFirstLanguageIdByClient($client);
+    $lang = (int)$oClientLangColl->getFirstLanguageIdByClient($client);
 } else {
     $sess->register('lang');
 }

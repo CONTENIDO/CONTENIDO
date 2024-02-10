@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Core
  */
-abstract class cHttpRequest {
+abstract class cHttpRequest
+{
 
     /**
      * Creates a new cHttpRequest object. The function determines the
@@ -32,7 +33,8 @@ abstract class cHttpRequest {
      *         URL of the HTTP request
      * @return cHttpRequest
      */
-    public static function getHttpRequest($url = '') {
+    public static function getHttpRequest($url = '')
+    {
         $className = 'cHttpRequestCurl';
         if (!function_exists('curl_exec') || CURLOPT_RETURNTRANSFER != 19913) {
             $className = 'cHttpRequestSocket';

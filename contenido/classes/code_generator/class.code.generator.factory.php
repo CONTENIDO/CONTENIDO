@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-class cCodeGeneratorFactory {
+class cCodeGeneratorFactory
+{
 
     /**
      * Returns code generator instance by its name.
@@ -34,7 +35,8 @@ class cCodeGeneratorFactory {
      * @throws cInvalidArgumentException
      *         If name is invalid, class file is missing or class isn't available.
      */
-    public static function getInstance($name = '') {
+    public static function getInstance($name = '')
+    {
         if ($name == '') {
             $cfg = cRegistry::getConfig();
             $name = $cfg['code_generator']['name'];

@@ -45,7 +45,7 @@ if ($oMRController->errorOccured()) {
 
     $iRedirToErrPage = ModRewrite::getConfig('redirect_invalid_article_to_errorsite', 0);
     // try to redirect to errorpage if desired
-    if ($iRedirToErrPage == 1 && (int) $client > 0 && (int) $lang > 0) {
+    if ($iRedirToErrPage == 1 && (int)$client > 0 && (int)$lang > 0) {
         // errorpage
         $aParams = [
             'client' => $client, 'idcat' => $cfgClient[$client]["errsite"]["idcat"], 'idart' => $cfgClient[$client]["errsite"]["idart"],

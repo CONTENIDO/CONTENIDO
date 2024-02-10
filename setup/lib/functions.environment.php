@@ -39,9 +39,9 @@ function getServerUID()
         return ($iUserId);
     } else {
         if (is_writeable("/tmp/")) {
-            cFileHandler::create("/tmp/".$sFilename, "w");
-            $iUserId = fileowner("/tmp/".$sFilename);
-            cFileHandler::remove("/tmp/".$sFilename);
+            cFileHandler::create("/tmp/" . $sFilename, "w");
+            $iUserId = fileowner("/tmp/" . $sFilename);
+            cFileHandler::remove("/tmp/" . $sFilename);
 
             return ($iUserId);
         }
@@ -49,7 +49,8 @@ function getServerUID()
     }
 }
 
-function getServerGID() {
+function getServerGID()
+{
     if (function_exists("posix_getgid")) {
         return posix_getgid();
     }

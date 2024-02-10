@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiArea createNewItem
  * @method cApiArea|bool next
  */
-class cApiAreaCollection extends ItemCollection {
+class cApiAreaCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('area'), 'idarea');
         $this->_setItemClass('cApiArea');
     }
@@ -36,15 +38,15 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Creates an area item entry.
      *
-     * @param string     $name
+     * @param string $name
      *                             Name
      * @param string|int $parentId [optional]
      *                             Parent id as a string or number
-     * @param int        $relevant [optional]
+     * @param int $relevant [optional]
      *                             0 or 1
-     * @param int        $online   [optional]
+     * @param int $online [optional]
      *                             0 or 1
-     * @param int        $menuless [optional]
+     * @param int $menuless [optional]
      *                             0 or 1
      *
      * @return cApiArea
@@ -53,8 +55,9 @@ class cApiAreaCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($name, $parentId = 0, $relevant = 1, $online = 1, $menuless = 0) {
-        $parentId = (is_string($parentId)) ? $this->escape($parentId) : (int) $parentId;
+    public function create($name, $parentId = 0, $relevant = 1, $online = 1, $menuless = 0)
+    {
+        $parentId = (is_string($parentId)) ? $this->escape($parentId) : (int)$parentId;
 
         $item = $this->createNewItem();
 
@@ -80,7 +83,8 @@ class cApiAreaCollection extends ItemCollection {
      *
      * @throws cDbException
      */
-    public function getParentAreaId($area) {
+    public function getParentAreaId($area)
+    {
         if (is_numeric($area)) {
             $sql = "SELECT b.name FROM `%s` AS a, `%s` AS b WHERE a.idarea = %d AND b.name = a.parent_id";
         } else {
@@ -101,7 +105,8 @@ class cApiAreaCollection extends ItemCollection {
      *
      * @throws cDbException
      */
-    public function getIdareasByAreaNameOrParentId($nameOrId) {
+    public function getIdareasByAreaNameOrParentId($nameOrId)
+    {
         $sql = "SELECT idarea FROM `%s` AS a WHERE a.name = '%s' OR a.parent_id = '%s' ORDER BY idarea";
         $this->db->query($sql, $this->table, $nameOrId, $nameOrId);
 
@@ -119,10 +124,10 @@ class cApiAreaCollection extends ItemCollection {
      * This function is similar to {@see cApiAreaCollection::getAreaName()},
      * but it uses direct SQL instead a cApiArea instance.
      *
-     * @since CONTENIDO 4.10.2
      * @param int $areaId The area id
      * @return string
      * @throws cDbException
+     * @since CONTENIDO 4.10.2
      */
     public function getNameByAreaId(int $areaId): string
     {
@@ -134,11 +139,11 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Returns area ids of areas by parent id and area id.
      *
-     * @since CONTENIDO 4.10.2
      * @param string|int $parentId Parent id as a string or number
      * @param int $areaId The area id
      * @return array
      * @throws cDbException
+     * @since CONTENIDO 4.10.2
      */
     public function getAreaIdsByParentIdOrAreaId($parentId, int $areaId): array
     {
@@ -162,7 +167,8 @@ class cApiAreaCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function getAvailableAreas() {
+    public function getAvailableAreas()
+    {
         $this->select();
 
         $aAreas = [];
@@ -182,7 +188,8 @@ class cApiAreaCollection extends ItemCollection {
      * @return string
      *         String with the name for the area
      */
-    public function getAreaName($area) {
+    public function getAreaName($area)
+    {
         $oItem = new cApiArea($area);
         return $oItem->get('name');
     }
@@ -198,7 +205,8 @@ class cApiAreaCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function getAreaId($area) {
+    public function getAreaId($area)
+    {
         // if area name is numeric (legacy areas)
         if (is_numeric($area)) {
             return $area;
@@ -232,7 +240,8 @@ class cApiArea extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('area'), 'idarea');
         $this->setFilters([], []);
         if ($mId !== false) {
@@ -249,7 +258,8 @@ class cApiArea extends Item
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'online':
             case 'menuless':

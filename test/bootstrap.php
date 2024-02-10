@@ -58,7 +58,7 @@ include_once('data/config/' . CON_ENVIRONMENT . '/config.php');
 if (!is_file($contenido_path . 'includes/startup.php')) {
     die("<h1>Fatal Error</h1><br>Couldn't include CONTENIDO startup.");
 }
-include_once($contenido_path.'includes/startup.php');
+include_once($contenido_path . 'includes/startup.php');
 
 // Add all CONTENIDO test related classes
 cAutoload::addClassmapConfig([
@@ -80,10 +80,10 @@ cAutoload::addClassmapConfig([
 
 
 // Initialize common variables
-$idcat    = isset($idcat) ? $idcat : 0;
-$idart    = isset($idart) ? $idart : 0;
+$idcat = isset($idcat) ? $idcat : 0;
+$idart = isset($idart) ? $idart : 0;
 $idcatart = isset($idcatart) ? $idcatart : 0;
-$error    = isset($error) ? $error : 0;
+$error = isset($error) ? $error : 0;
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.con2.php');
@@ -121,7 +121,7 @@ $sess->register('encoding');
 // Initialize encodings
 if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
     // Get encodings of all languages
-    $encoding  = [];
+    $encoding = [];
     $oLangColl = new cApiLanguageCollection();
     $oLangColl->select('');
     while ($oLang = $oLangColl->next()) {
@@ -148,7 +148,7 @@ if (!isset($lang)) {
         $lang = $load_lang;
     } else {
         $oClientLangColl = new cApiClientLanguageCollection();
-        $lang = (int) $oClientLangColl->getFirstLanguageIdByClient($client);
+        $lang = (int)$oClientLangColl->getFirstLanguageIdByClient($client);
     }
 }
 
@@ -187,7 +187,7 @@ if (isset($path) && cString::getStringLength($path) > 1) {
         $idcat = prResolvePathViaURLNames($path);
     } else {
         $iLangCheck = 0;
-        $idcat      = prResolvePathViaCategoryNames($path, $iLangCheck);
+        $idcat = prResolvePathViaCategoryNames($path, $iLangCheck);
         if (($lang != $iLangCheck) && ((int)$iLangCheck != 0)) {
             $lang = $iLangCheck;
         }
@@ -197,10 +197,10 @@ if (isset($path) && cString::getStringLength($path) > 1) {
 // Error page
 $aParams = [
     'client' => $client,
-    'idcat'  => $cfgClient[$client]['errsite']['idcat'],
-    'idart'  => $cfgClient[$client]['errsite']['idart'],
-    'lang'   => $lang,
-    'error'  => '1'
+    'idcat' => $cfgClient[$client]['errsite']['idcat'],
+    'idart' => $cfgClient[$client]['errsite']['idart'],
+    'lang' => $lang,
+    'error' => '1'
 ];
 $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
 

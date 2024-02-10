@@ -32,13 +32,14 @@ class cLinkcheckerCategoryHelper
     private static $_categoryIds = null;
 
     /**
-     * @param int  $widcat
+     * @param int $widcat
      * @param null $db
      *
      * @return bool
      * @throws cDbException
      */
-    public static function checkPermission($widcat, $db = null) {
+    public static function checkPermission($widcat, $db = null)
+    {
         $auth = cRegistry::getAuth();
 
         if (cString::findFirstPos($auth->auth['perm'], 'admin') !== false) {
@@ -49,7 +50,7 @@ class cLinkcheckerCategoryHelper
             $db = cRegistry::getDb();
         }
 
-        $group_ids   = self::_getGroupIDs($db);
+        $group_ids = self::_getGroupIDs($db);
         $group_ids[] = $db->escape($auth->auth['uid']);
 
         if (!is_array(self::$_categoryIds)) {
@@ -72,7 +73,8 @@ class cLinkcheckerCategoryHelper
      * @return array
      * @throws cDbException
      */
-    private static function _getGroupIDs($db) {
+    private static function _getGroupIDs($db)
+    {
         if (is_array(self::$_groupIds)) {
             return self::$_groupIds;
         }

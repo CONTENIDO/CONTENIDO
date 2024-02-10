@@ -332,9 +332,9 @@ class cSearch extends cSearchBaseAbstract
      *                           1 = Slightest similarity
      *                           100 = Exact match
      *             </pre>
-     * @param cDb   $db [optional]
+     * @param cDb $db [optional]
      *                  CONTENIDO database object
-     * @param cAuth  $auth [optional]
+     * @param cAuth $auth [optional]
      *                  Authentication object
      *
      * @throws cDbException
@@ -399,13 +399,13 @@ class cSearch extends cSearchBaseAbstract
                 // exact match
                 $search_exact = implode(" OR keyword = ", $tmpSearchWords);
                 $kwSql = "`keyword` LIKE " . $search_exact;
-            break;
+                break;
         }
 
         // Prepare sql without keywords, we don't want any strings in keywords sql
         // being interpreted as specifiers
         $sql = "SELECT `keyword`, `auto` FROM `%s` WHERE `idlang` = %d AND {KEYWORDS}";
-        $sql =  $this->db->prepare($sql, cRegistry::getDbTableName('keywords'), $this->lang);
+        $sql = $this->db->prepare($sql, cRegistry::getDbTableName('keywords'), $this->lang);
         $sql = str_replace('{KEYWORDS}', $kwSql, $sql);
         $this->_debug('sql', $sql);
         $this->db->query($sql);
@@ -555,13 +555,13 @@ class cSearch extends cSearchBaseAbstract
     /**
      * Returns the category tree array.
      *
-     * @todo This is not the job for search, should be outsourced ...
      * @param int $cat_start
      *         Root of a category tree
      * @return array
      *         Category Tree
      * @throws cDbException
      * @throws cInvalidArgumentException
+     * @todo This is not the job for search, should be outsourced ...
      */
     public function getSubTree($cat_start)
     {

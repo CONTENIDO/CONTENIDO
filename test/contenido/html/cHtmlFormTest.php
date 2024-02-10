@@ -85,12 +85,12 @@ class cHtmlFormTest extends cTestingTestCase
         //$this->assertSame($exp, $act);
 
         $this->_form->setVar('foo', 'bar');
-        $act        = $this->_readAttribute($this->_form, '_vars');
+        $act = $this->_readAttribute($this->_form, '_vars');
         $exp['foo'] = 'bar';
         $this->assertSame($exp, $act);
 
         $this->_form->setVar('spam', 'eggs');
-        $act         = $this->_readAttribute($this->_form, '_vars');
+        $act = $this->_readAttribute($this->_form, '_vars');
         $exp['spam'] = 'eggs';
         $this->assertSame($exp, $act);
     }

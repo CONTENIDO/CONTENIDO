@@ -79,11 +79,11 @@ class cLinkcheckerTester
             for ($i = 0; $i < count($matches[0]); $i++) {
                 if (!in_array($matches[0][$i], $aWhitelist)) {
                     $aSearchIDInfosArt[] = [
-                        "id"      => $matches[1][$i],
-                        "url"     => $matches[0][$i],
-                        "idart"   => $iArt,
+                        "id" => $matches[1][$i],
+                        "url" => $matches[0][$i],
+                        "idart" => $iArt,
                         "nameart" => $sArt,
-                        "idcat"   => $iCat,
+                        "idcat" => $iCat,
                         "namecat" => $sCat,
                         "urltype" => "intern",
                     ];
@@ -97,11 +97,11 @@ class cLinkcheckerTester
             for ($i = 0; $i < count($matches[0]); $i++) {
                 if (!in_array($matches[0][$i], $aWhitelist)) {
                     $aSearchIDInfosCat[] = [
-                        "id"      => $matches[1][$i],
-                        "url"     => $matches[0][$i],
-                        "idart"   => $iArt,
+                        "id" => $matches[1][$i],
+                        "url" => $matches[0][$i],
+                        "idart" => $iArt,
                         "nameart" => $sArt,
-                        "idcat"   => $iCat,
+                        "idcat" => $iCat,
                         "namecat" => $sCat,
                         "urltype" => "intern",
                     ];
@@ -120,11 +120,11 @@ class cLinkcheckerTester
             for ($i = 0; $i < count($matches[0]); $i++) {
                 if (!in_array($matches[0][$i], $aWhitelist)) {
                     $aSearchIDInfosCatArt[] = [
-                        "id"      => $matches[1][$i],
-                        "url"     => $matches[0][$i],
-                        "idart"   => $iArt,
+                        "id" => $matches[1][$i],
+                        "url" => $matches[0][$i],
+                        "idart" => $iArt,
                         "nameart" => $sArt,
-                        "idcat"   => $iCat,
+                        "idcat" => $iCat,
                         "namecat" => $sCat,
                         "urltype" => "intern",
                     ];
@@ -144,7 +144,8 @@ class cLinkcheckerTester
      * @return void
      * @throws cDbException
      */
-    private static function _checkArticles(array &$aSearchIDInfosArt, array &$aErrors, $db, $cfg) {
+    private static function _checkArticles(array &$aSearchIDInfosArt, array &$aErrors, $db, $cfg)
+    {
         $aIds = [];
         foreach ($aSearchIDInfosArt as $entry) {
             $aIds[] = cSecurity::toInteger($entry['id']);
@@ -189,7 +190,8 @@ class cLinkcheckerTester
      * @return void
      * @throws cDbException
      */
-    private static function _checkCategories(array &$aSearchIDInfosCat, array &$aErrors, $db, $cfg, $lang) {
+    private static function _checkCategories(array &$aSearchIDInfosCat, array &$aErrors, $db, $cfg, $lang)
+    {
         $aIds = [];
         foreach ($aSearchIDInfosCat as $entry) {
             $aIds[] = cSecurity::toInteger($entry['id']);
@@ -204,7 +206,7 @@ class cLinkcheckerTester
         $aFind = [];
         while ($db->nextRecord()) {
             $aFind[$db->f('idcat')] = [
-                'online'     => $db->f('visible'),
+                'online' => $db->f('visible'),
                 'startidart' => $db->f('startidartlang'),
             ];
         }
@@ -253,7 +255,8 @@ class cLinkcheckerTester
      * @return void
      * @throws cDbException
      */
-    private static function _checkCategoryArticles(array &$aSearchIDInfosCatArt, array &$aErrors, $db, $cfg) {
+    private static function _checkCategoryArticles(array &$aSearchIDInfosCatArt, array &$aErrors, $db, $cfg)
+    {
         $aIds = [];
         foreach ($aSearchIDInfosCatArt as $entry) {
             $aIds[] = cSecurity::toInteger($entry['id']);
@@ -291,7 +294,8 @@ class cLinkcheckerTester
      * @return void
      * @throws cDbException
      */
-    private static function _checkOtherLinks(array &$aSearchIDInfosNonID, array &$aErrors, $db, array $cfg, $auth, $cronjob) {
+    private static function _checkOtherLinks(array &$aSearchIDInfosNonID, array &$aErrors, $db, array $cfg, $auth, $cronjob)
+    {
         // Select user-rights (is the user admin or sysadmin?)
         $sql = "SELECT `username` FROM `:tab_user` WHERE `user_id` = ':user_id' AND `perms` LIKE '%admin%'";
         $db->query($sql, [
@@ -306,7 +310,7 @@ class cLinkcheckerTester
         }
 
         $frontendPath = cRegistry::getFrontendPath();
-        $frontendURL  = cRegistry::getFrontendUrl();
+        $frontendURL = cRegistry::getFrontendUrl();
 
         for ($i = 0; $i < count($aSearchIDInfosNonID); $i++) {
             $url = $aSearchIDInfosNonID[$i]['url'];
@@ -316,7 +320,7 @@ class cLinkcheckerTester
                     'error_type' => 'invalidurl',
                 ]);
             } elseif (cLinkcheckerHelper::urlIsUri($url)) {
-                if (cString::getPartOfString($url,0, $urlLength) == $frontendURL) {
+                if (cString::getPartOfString($url, 0, $urlLength) == $frontendURL) {
                     $iPing = @cFileHandler::exists(str_replace($frontendURL, $frontendPath, $url));
                 } else {
                     $iPing = @fopen($url, 'r');
@@ -345,7 +349,7 @@ class cLinkcheckerTester
                 $sDBurl = cString::getPartOfString($url, 20, $urlLength);
                 $iPos = cString::findLastPos($sDBurl, '/');
                 $sDirname = cString::getPartOfString($sDBurl, 0, $iPos);
-                $sFilename= cString::getPartOfString($sDBurl, $iPos + 1);
+                $sFilename = cString::getPartOfString($sDBurl, $iPos + 1);
 
                 // Check dbfs
                 $sql = "SELECT `iddbfs` FROM `:tab_dbfs`"

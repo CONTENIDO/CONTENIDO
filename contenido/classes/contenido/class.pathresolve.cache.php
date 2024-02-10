@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Util
  */
-class cApiPathresolveCacheHelper {
+class cApiPathresolveCacheHelper
+{
 
     /**
      * Flag to state about created heap table.
@@ -38,7 +39,8 @@ class cApiPathresolveCacheHelper {
      *
      * @throws cDbException
      */
-    public static function setup($cfg) {
+    public static function setup($cfg)
+    {
         if (isset($cfg['pathresolve_heapcache']) && true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
             $db = cRegistry::getDb();
             $tableName = $cfg['sql']['sqlprefix'] . '_pathresolve_cache';
@@ -75,14 +77,16 @@ class cApiPathresolveCacheHelper {
  * @method cApiPathresolveCache createNewItem
  * @method cApiPathresolveCache|bool next
  */
-class cApiPathresolveCacheCollection extends ItemCollection {
+class cApiPathresolveCacheCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         $cfg = cRegistry::getConfig();
         cApiPathresolveCacheHelper::setup($cfg);
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
@@ -93,15 +97,16 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * Creates a pathresolve cache entry.
      *
      * @param string $path
-     * @param int    $idcat
-     * @param int    $idlang
+     * @param int $idcat
+     * @param int $idlang
      * @param string $lastcached [optional]
      * @return cApiPathresolveCache
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($path, $idcat, $idlang, $lastcached = '') {
+    public function create($path, $idcat, $idlang, $lastcached = '')
+    {
         $oItem = $this->createNewItem();
 
         if (empty($lastcached)) {
@@ -121,12 +126,13 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * Returns a last cached entry by path and language.
      *
      * @param string $path
-     * @param int    $idlang
+     * @param int $idlang
      * @return cApiPathresolveCache|NULL
      * @throws cDbException
      * @throws cException
      */
-    public function fetchLatestByPathAndLanguage($path, $idlang) {
+    public function fetchLatestByPathAndLanguage($path, $idlang)
+    {
         $where = $this->db->prepare("path LIKE '%s' AND idlang = %d", $path, $idlang);
         $this->select($where, '', 'lastcached DESC', '1');
         return $this->next();
@@ -142,7 +148,8 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function deleteByCategoryAndLanguage($idcat, $idlang) {
+    public function deleteByCategoryAndLanguage($idcat, $idlang)
+    {
         $where = $this->db->prepare('idcat = %d AND idlang = %d', $idcat, $idlang);
         $this->select($where);
         while (($oCode = $this->next()) !== false) {
@@ -169,7 +176,8 @@ class cApiPathresolveCache extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         $cfg = cRegistry::getConfig();
         cApiPathresolveCacheHelper::setup($cfg);
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
@@ -182,10 +190,11 @@ class cApiPathresolveCache extends Item
     /**
      * Checks if item's cache time has expired.
      *
-     * @throws cException If item has not been loaded before
      * @return bool
+     * @throws cException If item has not been loaded before
      */
-    public function isCacheTimeExpired() {
+    public function isCacheTimeExpired()
+    {
         if (!$this->isLoaded()) {
             throw new cException('Item not loaded!');
         }
@@ -204,7 +213,8 @@ class cApiPathresolveCache extends Item
      *
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idcat':
             case 'idlang':

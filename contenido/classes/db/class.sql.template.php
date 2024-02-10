@@ -24,7 +24,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Database
  */
-class cSqlTemplate {
+class cSqlTemplate
+{
 
     // Placeholders
     const PREFIX_PLACEHOLDER = '!PREFIX!';

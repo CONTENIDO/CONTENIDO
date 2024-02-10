@@ -34,9 +34,9 @@ cAutoload::addClassmapConfig([
     'ArticleForum' => $pluginClassesPath . '/class.article_forum.php',
     'ArticleForumLeftBottom' => $pluginClassesPath . '/class.article_forum_left_bottom.php',
     'ArticleForumRightBottom' => $pluginClassesPath . '/class.article_forum_right_bottom.php',
-    'ArticleForumItem' => $pluginClassesPath .'/class.article_forum_item.php',
-    'UserForum' => $pluginClassesPath .'/class.user_forum.php',
-    'cContentTypeUserForum' => $pluginClassesPath .'/class.content.type.user_forum.php'
+    'ArticleForumItem' => $pluginClassesPath . '/class.article_forum_item.php',
+    'UserForum' => $pluginClassesPath . '/class.user_forum.php',
+    'cContentTypeUserForum' => $pluginClassesPath . '/class.content.type.user_forum.php'
 ]);
 
 unset($pluginName, $pluginTemplatesPath, $pluginClassesPath);

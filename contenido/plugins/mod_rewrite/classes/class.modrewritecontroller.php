@@ -27,7 +27,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewriteController extends ModRewriteBase {
+class ModRewriteController extends ModRewriteBase
+{
     // Error constants
 
     const ERROR_CLIENT = 1;
@@ -110,9 +111,10 @@ class ModRewriteController extends ModRewriteBase {
     /**
      * Constructor, sets several properties.
      *
-     * @param  string  $incomingUrl  Incoming URL
+     * @param string $incomingUrl Incoming URL
      */
-    public function __construct($incomingUrl) {
+    public function __construct($incomingUrl)
+    {
 
         // CON-1266 make incoming URL lowercase if option "URLS to
         // lowercase" is set
@@ -130,7 +132,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @return  int  Client id
      */
-    public function getClient() {
+    public function getClient()
+    {
         return cRegistry::getClientId();
     }
 
@@ -139,7 +142,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @return  int  Change client id
      */
-    public function getChangeClient() {
+    public function getChangeClient()
+    {
         return $GLOBALS['changeclient'];
     }
 
@@ -148,7 +152,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @return  int  Article id
      */
-    public function getIdArt() {
+    public function getIdArt()
+    {
         return cRegistry::getArticleId();
     }
 
@@ -157,7 +162,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @return  int  Category id
      */
-    public function getIdCat() {
+    public function getIdCat()
+    {
         return cRegistry::getCategoryId();
     }
 
@@ -166,7 +172,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @return  int  Language id
      */
-    public function getLang() {
+    public function getLang()
+    {
         return cRegistry::getLanguageId();
     }
 
@@ -175,8 +182,9 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @return  int  Change language id
      */
-    public function getChangeLang() {
-        return (int) cRegistry::getChangeLang();
+    public function getChangeLang()
+    {
+        return (int)cRegistry::getChangeLang();
     }
 
     /**
@@ -184,7 +192,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @return  string  Path, used by path resolver
      */
-    public function getPath() {
+    public function getPath()
+    {
         return $this->_sPath;
     }
 
@@ -193,7 +202,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @return  string  Resolved url
      */
-    public function getResolvedUrl() {
+    public function getResolvedUrl()
+    {
         return $this->_sResolvedUrl;
     }
 
@@ -202,7 +212,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * return  bool  Flag about found routing
      */
-    public function getRoutingFoundState() {
+    public function getRoutingFoundState()
+    {
         return $this->_bRoutingFound;
     }
 
@@ -211,7 +222,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @return  bool  Flag for occurred error
      */
-    public function errorOccured() {
+    public function errorOccured()
+    {
         return $this->_bError;
     }
 
@@ -220,7 +232,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @return  int  Numeric error code
      */
-    public function getError() {
+    public function getError()
+    {
         return $this->_iError;
     }
 
@@ -234,7 +247,8 @@ class ModRewriteController extends ModRewriteBase {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function execute() {
+    public function execute()
+    {
         if (!parent::isEnabled()) {
             return;
         }
@@ -264,14 +278,15 @@ class ModRewriteController extends ModRewriteBase {
     /**
      * Extracts request URI and sets member variables $this->_sArtName and $this->_aParts
      *
-     * @param  bool $secondCall  Flag about second call of this function, is needed
+     * @param bool $secondCall Flag about second call of this function, is needed
      *                           to re extract url if a routing definition was found
      *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    private function _extractRequestUri($secondCall = false) {
+    private function _extractRequestUri($secondCall = false)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
 
         // get REQUEST_URI
@@ -285,7 +300,7 @@ class ModRewriteController extends ModRewriteBase {
         // check for defined rootdir
         // allows for root dir being alternatively defined as path of setting client/%frontend_path%
         $rootdir = cUriBuilderMR::getMultiClientRootDir(parent::getConfig('rootdir'));
-        if ('/' !==  $rootdir && 0 === cString::findFirstPos($requestUri, $this->_sIncomingUrl)) {
+        if ('/' !== $rootdir && 0 === cString::findFirstPos($requestUri, $this->_sIncomingUrl)) {
             $this->_sIncomingUrl = str_replace($rootdir, '/', $this->_sIncomingUrl);
         }
 
@@ -367,13 +382,14 @@ class ModRewriteController extends ModRewriteBase {
      * Tries to initialize the client id.
      * This is required to load the proper plugin configuration for current client.
      */
-    private function _initializeClientId() {
+    private function _initializeClientId()
+    {
         // Use global here, the variables will be updated!
         global $client, $changeclient, $load_client;
 
-        $iClient = (isset($client) && (int) $client > 0) ? $client : 0;
-        $iChangeClient = (isset($changeclient) && (int) $changeclient > 0) ? $changeclient : 0;
-        $iLoadClient = (isset($load_client) && (int) $load_client > 0) ? $load_client : 0;
+        $iClient = (isset($client) && (int)$client > 0) ? $client : 0;
+        $iChangeClient = (isset($changeclient) && (int)$changeclient > 0) ? $changeclient : 0;
+        $iLoadClient = (isset($load_client) && (int)$load_client > 0) ? $load_client : 0;
 
         if ($iClient > 0 && $iChangeClient == 0) {
             $this->_iClientMR = $iClient;
@@ -383,22 +399,23 @@ class ModRewriteController extends ModRewriteBase {
             $this->_iClientMR = $iLoadClient;
         }
 
-        if ((int) $this->_iClientMR > 0) {
+        if ((int)$this->_iClientMR > 0) {
             // set global client variable
-            $client = (int) $this->_iClientMR;
+            $client = (int)$this->_iClientMR;
         }
     }
 
     /**
      * Tries to initialize the language id.
      */
-    private function _initializeLanguageId() {
+    private function _initializeLanguageId()
+    {
         // Use global here, the variables will be updated!
         global $lang, $changelang, $load_lang;
 
-        $iLang = (isset($lang) && (int) $lang > 0) ? $lang : 0;
-        $iChangeLang = (isset($changelang) && (int) $changelang > 0) ? $changelang : 0;
-        $iLoadLang = (isset($load_lang) && (int) $load_lang > 0) ? $load_lang : 0;
+        $iLang = (isset($lang) && (int)$lang > 0) ? $lang : 0;
+        $iChangeLang = (isset($changelang) && (int)$changelang > 0) ? $changelang : 0;
+        $iLoadLang = (isset($load_lang) && (int)$load_lang > 0) ? $load_lang : 0;
 
         if ($iLang > 0 && $iChangeLang == 0) {
             $this->_iLangMR = $iLang;
@@ -408,9 +425,9 @@ class ModRewriteController extends ModRewriteBase {
             $this->_iLangMR = $iLoadLang;
         }
 
-        if ((int) $this->_iLangMR > 0) {
+        if ((int)$this->_iLangMR > 0) {
             // set global lang variable
-            $lang = (int) $this->_iLangMR;
+            $lang = (int)$this->_iLangMR;
         }
     }
 
@@ -419,7 +436,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @throws cDbException
      */
-    private function _setClientId() {
+    private function _setClientId()
+    {
         // Use global here, the variables will be updated!
         global $client;
 
@@ -433,9 +451,9 @@ class ModRewriteController extends ModRewriteBase {
         }
 
         if (parent::getConfig('use_client_name') == 1) {
-            $detectedClientId = (int) ModRewrite::getClientId(array_shift($this->_aParts));
+            $detectedClientId = (int)ModRewrite::getClientId(array_shift($this->_aParts));
         } else {
-            $detectedClientId = (int) array_shift($this->_aParts);
+            $detectedClientId = (int)array_shift($this->_aParts);
             if ($detectedClientId > 0 && !ModRewrite::languageIdExists($detectedClientId)) {
                 $detectedClientId = 0;
             }
@@ -455,7 +473,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @throws cDbException
      */
-    private function _setLanguageId() {
+    private function _setLanguageId()
+    {
         global $lang;
 
         if ($this->_bError) {
@@ -472,7 +491,7 @@ class ModRewriteController extends ModRewriteBase {
             $languageName = array_shift($this->_aParts);
             $detectedLanguageId = ModRewrite::getLanguageId($languageName, $this->_iClientMR);
         } else {
-            $detectedLanguageId = (int) array_shift($this->_aParts);
+            $detectedLanguageId = (int)array_shift($this->_aParts);
             if ($detectedLanguageId > 0 && !ModRewrite::clientIdExists($detectedLanguageId)) {
                 $detectedLanguageId = 0;
             }
@@ -492,7 +511,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @throws cException
      */
-    private function _setPathresolverSetting() {
+    private function _setPathresolverSetting()
+    {
         global $client, $lang, $load_lang, $idcat;
 
         if ($this->_bError) {
@@ -503,10 +523,10 @@ class ModRewriteController extends ModRewriteBase {
 
         $this->_sPath = '/' . implode('/', $this->_aParts) . '/';
 
-        if (!isset($lang) || (int) $lang <= 0) {
-            if ((int) $load_lang > 0) {
+        if (!isset($lang) || (int)$lang <= 0) {
+            if ((int)$load_lang > 0) {
                 // load_client is set in __FRONTEND_PATH__/data/config/config.php
-                $lang = (int) $load_lang;
+                $lang = (int)$load_lang;
             } else {
                 // get client id from table
                 $clCol = new cApiClientLanguageCollection();
@@ -539,7 +559,8 @@ class ModRewriteController extends ModRewriteBase {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    private function _setIdart() {
+    private function _setIdart()
+    {
         global $idcat, $idart, $lang;
 
         if ($this->_bError) {
@@ -548,8 +569,8 @@ class ModRewriteController extends ModRewriteBase {
             return;
         }
 
-        $iIdCat = (isset($idcat) && (int) $idcat > 0) ? $idcat : 0;
-        $iIdArt = (isset($idart) && (int) $idart > 0) ? $idart : 0;
+        $iIdCat = (isset($idcat) && (int)$idcat > 0) ? $idcat : 0;
+        $iIdArt = (isset($idart) && (int)$idart > 0) ? $idart : 0;
         $detectedIdart = 0;
         $defaultStartArtName = parent::getConfig('default_startart_name');
         $currArtName = $this->_sArtName;
@@ -572,16 +593,16 @@ class ModRewriteController extends ModRewriteBase {
 
         if ($iIdCat > 0 && $iIdArt == 0 && !empty($currArtName)) {
             // existing idcat with no idart and with article name
-            $detectedIdart = (int) ModRewrite::getArtIdByWebsafeName($currArtName, $iIdCat, $lang);
+            $detectedIdart = (int)ModRewrite::getArtIdByWebsafeName($currArtName, $iIdCat, $lang);
         } elseif ($iIdCat > 0 && $iIdArt == 0 && empty($currArtName)) {
             if (parent::getConfig('add_startart_name_to_url') && ($currArtName == '' || $defaultStartArtName == '' || $defaultStartArtName == $this->_sArtName)) {
                 // existing idcat without idart and without article name or with default start article name
                 $catLangColl = new cApiCategoryLanguageCollection();
-                $detectedIdart = (int) $catLangColl->getStartIdartByIdcatAndIdlang($iIdCat, $lang);
+                $detectedIdart = (int)$catLangColl->getStartIdartByIdcatAndIdlang($iIdCat, $lang);
             }
         } elseif ($iIdCat == 0 && $iIdArt == 0 && !empty($currArtName)) {
             // no idcat and idart but article name
-            $detectedIdart = (int) ModRewrite::getArtIdByWebsafeName($currArtName, $iIdCat, $lang);
+            $detectedIdart = (int)ModRewrite::getArtIdByWebsafeName($currArtName, $iIdCat, $lang);
         }
 
         if ($detectedIdart > 0) {
@@ -602,7 +623,8 @@ class ModRewriteController extends ModRewriteBase {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    private function _postValidation() {
+    private function _postValidation()
+    {
         global $idcat, $idart, $client;
 
         if ($this->_bError || $this->_bRoutingFound || !$this->_hasPartArrayItems()) {
@@ -613,16 +635,16 @@ class ModRewriteController extends ModRewriteBase {
 
             // prevention of duplicated content if '/firstcat/' is directly requested!
 
-            $idcat = (isset($idcat) && (int) $idcat > 0) ? $idcat : NULL;
-            $idart = (isset($idart) && (int) $idart > 0) ? $idart : NULL;
+            $idcat = (isset($idcat) && (int)$idcat > 0) ? $idcat : NULL;
+            $idart = (isset($idart) && (int)$idart > 0) ? $idart : NULL;
 
             // compose new parameter
             $param = '';
             if ($idcat) {
-                $param .= 'idcat=' . (int) $idcat;
+                $param .= 'idcat=' . (int)$idcat;
             }
             if ($idart) {
-                $param .= ($param !== '') ? '&idart=' . (int) $idart : 'idart=' . (int) $idart;
+                $param .= ($param !== '') ? '&idart=' . (int)$idart : 'idart=' . (int)$idart;
             }
 
             if ($param == '') {
@@ -652,10 +674,11 @@ class ModRewriteController extends ModRewriteBase {
     /**
      * Parses the url using defined separators
      *
-     * @param   string  $url  Incoming url
+     * @param string $url Incoming url
      * @return  array|bool  Parsed url
      */
-    private function _parseUrl($url) {
+    private function _parseUrl($url)
+    {
         $this->_sResolvedUrl = $url;
 
         $oMrUrlUtil = ModRewriteUrlUtil::getInstance();
@@ -669,7 +692,8 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @return  bool  True if $this->_aParts property contains items
      */
-    private function _hasPartArrayItems() {
+    private function _hasPartArrayItems()
+    {
         return (!empty($this->_aParts));
     }
 
@@ -678,17 +702,19 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @return  bool
      */
-    private function _isRootRequest() {
+    private function _isRootRequest()
+    {
         return ($this->_sIncomingUrl == '/' || $this->_sIncomingUrl == '');
     }
 
     /**
      * Sets error code and error flag (everything greater than 0 is an error)
-     * @param  int  $errCode
+     * @param int $errCode
      */
-    private function _setError($errCode) {
-        $this->_iError = (int) $errCode;
-        $this->_bError = ((int) $errCode > 0);
+    private function _setError($errCode)
+    {
+        $this->_iError = (int)$errCode;
+        $this->_bError = ((int)$errCode > 0);
     }
 
 }

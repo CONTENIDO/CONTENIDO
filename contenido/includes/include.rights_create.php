@@ -286,7 +286,7 @@ $tpl->set('d', 'CATFIELD', $sCheckboxes);
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Use WYSIWYG-Editor"));
-$oCheckbox = new cHTMLCheckbox('wysi', '1', 'wysi1', ((int) $wysi == 1));
+$oCheckbox = new cHTMLCheckbox('wysi', '1', 'wysi1', ((int)$wysi == 1));
 $tpl->set('d', 'CATFIELD', $oCheckbox->toHtml(false));
 $tpl->next();
 

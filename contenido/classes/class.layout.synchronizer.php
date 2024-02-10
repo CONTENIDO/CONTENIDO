@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage LayoutHandler
  */
-class cLayoutSynchronizer {
+class cLayoutSynchronizer
+{
 
     /**
      * @var array
@@ -55,7 +56,8 @@ class cLayoutSynchronizer {
      * @param int $lang
      * @param int $client
      */
-    public function __construct($cfg, $cfgClient, $lang, $client) {
+    public function __construct($cfg, $cfgClient, $lang, $client)
+    {
         $this->_cfg = $cfg;
         $this->_cfgClient = $cfgClient;
         $this->_lang = $lang;
@@ -74,7 +76,8 @@ class cLayoutSynchronizer {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    private function _addOrUpdateLayout($dir, $oldLayoutName, $newLayoutName, $idclient) {
+    private function _addOrUpdateLayout($dir, $oldLayoutName, $newLayoutName, $idclient)
+    {
         // if layout dont exist in the $cfg["tab"]["lay"] table.
         if ($this->_isExistInTable($oldLayoutName, $idclient) == false) {
             // add new Layout in db-table
@@ -103,15 +106,16 @@ class cLayoutSynchronizer {
      *         old name
      * @param string $newName
      *         new module name
-     * @param int    $idclient
+     * @param int $idclient
      *         id of client
      *
      * @throws cDbException
      * @throws cException
      */
-    private function _updateModulnameInDb($oldName, $newName, $idclient) {
+    private function _updateModulnameInDb($oldName, $newName, $idclient)
+    {
         $oLayColl = new cApiLayoutCollection();
-        $oLayColl->select("alias='" . $oLayColl->escape($oldName) . "' AND idclient=" . (int) $idclient);
+        $oLayColl->select("alias='" . $oLayColl->escape($oldName) . "' AND idclient=" . (int)$idclient);
         if (false !== $oLay = $oLayColl->next()) {
             $oLay->set('alias', $newName);
             $oLay->store();
@@ -128,7 +132,8 @@ class cLayoutSynchronizer {
      *         unused
      * @return bool
      */
-    private function _renameFileAndDir($dir, $dirNameOld, $dirNameNew, $client) {
+    private function _renameFileAndDir($dir, $dirNameOld, $dirNameNew, $client)
+    {
         if (rename($dir . $dirNameOld, $dir . $dirNameNew) == false) {
             return false;
         }
@@ -143,15 +148,16 @@ class cLayoutSynchronizer {
      *
      * @param string $alias
      *         layout name
-     * @param int    $idclient
+     * @param int $idclient
      *         client id
      * @return bool
      * @throws cDbException
      */
-    private function _isExistInTable($alias, $idclient) {
+    private function _isExistInTable($alias, $idclient)
+    {
         // Select depending from idclient all moduls wiht the name $name
         $oLayColl = new cApiLayoutCollection();
-        $ids = $oLayColl->getIdsByWhereClause("alias='" . $oLayColl->escape($alias) . "' AND idclient=" . (int) $idclient);
+        $ids = $oLayColl->getIdsByWhereClause("alias='" . $oLayColl->escape($alias) . "' AND idclient=" . (int)$idclient);
         return (count($ids) > 0) ? true : false;
     }
 
@@ -165,7 +171,8 @@ class cLayoutSynchronizer {
      * @param string $newLayoutName
      *         clear layout name
      */
-    private function _renameFiles($dir, $oldLayoutName, $newLayoutName) {
+    private function _renameFiles($dir, $oldLayoutName, $newLayoutName)
+    {
         if (cFileHandler::exists($dir . $newLayoutName . '/' . $oldLayoutName . '.html') == true) {
             rename($dir . $newLayoutName . '/' . $oldLayoutName . '.html', $dir . $newLayoutName . '/' . $newLayoutName . '.html');
         }
@@ -182,8 +189,9 @@ class cLayoutSynchronizer {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function setLastModified($timestamp, $idlay) {
-        $oLay = new cApiLayout((int) $idlay);
+    public function setLastModified($timestamp, $idlay)
+    {
+        $oLay = new cApiLayout((int)$idlay);
         if ($oLay->isLoaded()) {
             $oLay->set('lastmodified', date('Y-m-d H:i:s', $timestamp));
             $oLay->store();
@@ -198,7 +206,8 @@ class cLayoutSynchronizer {
      * @throws cInvalidArgumentException
      * @throws cException
      */
-    private function _compareFileAndLayoutTimestamp() {
+    private function _compareFileAndLayoutTimestamp()
+    {
         // get all layouts from client
         $sql = sprintf("SELECT UNIX_TIMESTAMP(lastmodified) AS lastmodified, alias, name, description, idlay FROM %s WHERE idclient=%s", $this->_cfg['tab']['lay'], $this->_client);
         $notification = new cGuiNotification();
@@ -249,7 +258,8 @@ class cLayoutSynchronizer {
 
     /**
      */
-    private function _showOutputMessage() {
+    private function _showOutputMessage()
+    {
         $emptyMessage = true;
         $notification = new cGuiNotification();
         foreach ($this->_outputMessage as $typ) {
@@ -274,7 +284,8 @@ class cLayoutSynchronizer {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function synchronize() {
+    public function synchronize()
+    {
         // update file and layout
         $this->_compareFileAndLayoutTimestamp();
 

@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @return mixed
  */
-function calcDensity($singleWordCounter, $string, $quantifier = 1) {
+function calcDensity($singleWordCounter, $string, $quantifier = 1)
+{
     $minLen = 3;
 
     //check if the current language is german
@@ -281,7 +282,7 @@ function calcDensity($singleWordCounter, $string, $quantifier = 1) {
                 }
                 $singleWordCounter[cString::toLowerCase($tmp[$i])] += cString::getStringLength($tmp[$i]) + 10000;
             } else {
-                if (empty( $singleWordCounter[$tmp[$i]])) {
+                if (empty($singleWordCounter[$tmp[$i]])) {
                     $singleWordCounter[$tmp[$i]] = 0;
                 }
                 $singleWordCounter[$tmp[$i]] += cString::getStringLength($tmp[$i]);
@@ -298,7 +299,8 @@ function calcDensity($singleWordCounter, $string, $quantifier = 1) {
  *
  * @return int
  */
-function __cmp($a, $b) {
+function __cmp($a, $b)
+{
     if ($a == $b)
         return 0;
     return ($a > $b) ? -1 : 1;
@@ -310,7 +312,8 @@ function __cmp($a, $b) {
  *
  * @return array
  */
-function stripCount($singleWordCounter, $maxKeywords = 15) {
+function stripCount($singleWordCounter, $maxKeywords = 15)
+{
 
     // strip all with only 1
     $tmp = [];
@@ -371,7 +374,8 @@ function stripCount($singleWordCounter, $maxKeywords = 15) {
  *
  * @return bool|string
  */
-function keywordDensity($headline, $text) {
+function keywordDensity($headline, $text)
+{
     $headline = strip_tags($headline);
     $text = strip_tags($text);
 

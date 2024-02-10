@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @deprecated [2015-05-21]
  *         This class is no longer supported
  */
-class cFrontendHelper {
+class cFrontendHelper
+{
 
     /**
      * Instance of the helper class.
@@ -34,11 +35,12 @@ class cFrontendHelper {
     /**
      * Returns the instance of this class.
      *
+     * @return cFrontendHelper
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
-     * @return cFrontendHelper
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         cDeprecated("The cFrontendHelper getInstance method are no longer supported.");
 
         if (self::$_instance === NULL) {
@@ -54,15 +56,13 @@ class cFrontendHelper {
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
      */
-    protected function __construct() {
+    protected function __construct()
+    {
         cDeprecated("The cFrontendHelper classes are no longer supported.");
     }
 
     /**
      * Fetches the requested category tree.
-     *
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
      *
      * @param int $baseCategoryId
      *         root category ID
@@ -78,11 +78,15 @@ class cFrontendHelper {
      * @throws cException
      * @throws cInvalidArgumentException
      * @throws cUnexpectedValueException if given category ID is not greater than 0
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
+     *
      */
-    protected function _fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId) {
+    protected function _fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId)
+    {
         cDeprecated("The cFrontendHelper _fetchCategoryTree method are no longer supported.");
 
-        if ((int) $baseCategoryId == 0) {
+        if ((int)$baseCategoryId == 0) {
             throw new cUnexpectedValueException("Expect category ID greater than 0.");
         }
 
@@ -124,9 +128,6 @@ class cFrontendHelper {
     /**
      * Helper function to render the navigation.
      *
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
-     *
      * @param int $baseCategoryId
      *         root category ID
      * @param int $depth
@@ -141,8 +142,12 @@ class cFrontendHelper {
      * @throws cException
      * @throws cInvalidArgumentException
      * @throws cUnexpectedValueException
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
+     *
      */
-    public function renderNavigation($baseCategoryId, $depth, $currentCategoryId) {
+    public function renderNavigation($baseCategoryId, $depth, $currentCategoryId)
+    {
         cDeprecated("The cFrontendHelper renderNavigation method are no longer supported.");
 
         $tree = $this->_fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId);
@@ -153,12 +158,9 @@ class cFrontendHelper {
     /**
      * Helper function to render the sitemap.
      *
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
-     *
-     * @param int       $baseCategoryId
+     * @param int $baseCategoryId
      *         root category ID
-     * @param int       $depth
+     * @param int $depth
      *         maximum depth
      * @param cTemplate $tpl
      *         template reference
@@ -167,8 +169,12 @@ class cFrontendHelper {
      * @throws cException
      * @throws cInvalidArgumentException
      * @throws cUnexpectedValueException
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
+     *
      */
-    public function renderSitemap($baseCategoryId, $depth, cTemplate &$tpl) {
+    public function renderSitemap($baseCategoryId, $depth, cTemplate &$tpl)
+    {
         cDeprecated("The cFrontendHelper renderSitemap method are no longer supported.");
 
         $tree = $this->_fetchCategoryTree($baseCategoryId, $depth, 0);

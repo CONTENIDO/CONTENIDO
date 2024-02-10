@@ -22,7 +22,7 @@ if ($perm->have_perm_area_action("str", "str_movesubtree") || $perm->have_perm_a
     cApiCecHook::execute(
         "Contenido.Action.str_movesubtree.AfterCall",
         [
-            'idcat'        => $idcat,
+            'idcat' => $idcat,
             'parentid_new' => $parentid_new,
         ]
     );

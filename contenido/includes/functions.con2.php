@@ -22,23 +22,23 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Generates the code for one article
  *
- * @param int      $idcat
+ * @param int $idcat
  *                           Id of category
- * @param int      $idart
+ * @param int $idart
  *                           Id of article
- * @param int      $lang
+ * @param int $lang
  *                           Id of language
- * @param int      $client
+ * @param int $client
  *                           Id of client
- * @param bool     $layout   [optional]
+ * @param bool $layout [optional]
  *                           Layout-ID of alternate Layout (if false, use associated layout)
- * @param bool     $save     [optional]
+ * @param bool $save [optional]
  *                           Flag to persist generated code in database
- * @param bool     $contype  [optional]
+ * @param bool $contype [optional]
  *                           Flag to enable/disable replacement of CMS_TAGS[].
- * @param bool     $editable [optional]
+ * @param bool $editable [optional]
  *                           deprecated?
- * @param int|NULL $version  [optional]
+ * @param int|NULL $version [optional]
  *                           version number if article is a revision, else NULL;
  *
  * @return string
@@ -49,7 +49,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true, $editable = false, $version = NULL) {
+function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true, $editable = false, $version = NULL)
+{
     global $cfg, $frontend_debug;
 
     // @todo make generator configurable
@@ -79,7 +80,8 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save 
  *
  * @throws cDbException
  */
-function getArtLang($idart, $idlang) {
+function getArtLang($idart, $idlang)
+{
     $oArtLangColl = new cApiArticleLanguageCollection();
     $idartlang = $oArtLangColl->getIdByArticleIdAndLanguageId($idart, $idlang);
     return ($idartlang) ? $idartlang : false;
@@ -94,7 +96,8 @@ function getArtLang($idart, $idlang) {
  * @throws cDbException
  * @throws cException
  */
-function conGetAvailableMetaTagTypes() {
+function conGetAvailableMetaTagTypes()
+{
     $oMetaTypeColl = new cApiMetaTypeCollection();
     $oMetaTypeColl->select();
 
@@ -102,10 +105,10 @@ function conGetAvailableMetaTagTypes() {
     while (($oMetaType = $oMetaTypeColl->next()) !== false) {
         $rs = $oMetaType->toArray();
         $aMetaTypes[$rs['idmetatype']] = [
-            'metatype'   => $rs['metatype'],
-            'fieldtype'  => $rs['fieldtype'],
-            'maxlength'  => $rs['maxlength'],
-            'fieldname'  => $rs['fieldname'],
+            'metatype' => $rs['metatype'],
+            'fieldtype' => $rs['fieldtype'],
+            'maxlength' => $rs['maxlength'],
+            'fieldname' => $rs['fieldname'],
             'idmetatype' => $rs["idmetatype"],
         ];
     }
@@ -164,13 +167,13 @@ function conGetMetaValue($idartlang, $idmetatype, $version = null)
 /**
  * Set the meta tag value or its version for a specific article.
  *
- * @param int    $idartlang
+ * @param int $idartlang
  *         ID of the article
- * @param int    $idmetatype
+ * @param int $idmetatype
  *         Metatype-ID
  * @param string $value
  *         Value of the meta tag
- * @param int    $version
+ * @param int $version
  *         version number
  *
  * @return bool
@@ -180,7 +183,8 @@ function conGetMetaValue($idartlang, $idmetatype, $version = null)
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
+function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL)
+{
     static $metaTagColl = NULL;
     //$ids[] = array ();
     $versioning = new cContentVersioning();
@@ -254,14 +258,14 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
 
             // create meta tag version
             $metaTagVersionParameters = [
-                'idmetatag'  => $idmetatag,
-                'idartlang'  => $idartlang,
+                'idmetatag' => $idmetatag,
+                'idartlang' => $idartlang,
                 'idmetatype' => $idmetatype,
-                'value'      => $value,
-                'version'    => $version,
+                'value' => $value,
+                'version' => $version,
             ];
             $versioning->createMetaTagVersion($metaTagVersionParameters);
-            //echo "version2:";var_export($version);echo "<hr>";
+        //echo "version2:";var_export($version);echo "<hr>";
         case $versioning::STATE_DISABLED:
             // update article
             $artLang = new cApiArticleLanguage($idartlang);
@@ -293,11 +297,11 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
                 $idmetatag = $metaTag->get('idmetatag');
             }
             $metaTagVersionParameters = [
-                'idmetatag'  => $idmetatag,
-                'idartlang'  => $idartlang,
+                'idmetatag' => $idmetatag,
+                'idartlang' => $idartlang,
                 'idmetatype' => $idmetatype,
-                'value'      => $value,
-                'version'    => $version,
+                'value' => $value,
+                'version' => $version,
             ];
             $versioning->createMetaTagVersion($metaTagVersionParameters);
 
@@ -323,7 +327,8 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
  * @deprecated [2014-07-24]
  *         Not used anymore
  */
-function conGenerateKeywords($client, $lang) {
+function conGenerateKeywords($client, $lang)
+{
     $cfg = cRegistry::getConfig();
 
     static $oDB = NULL;
@@ -335,7 +340,7 @@ function conGenerateKeywords($client, $lang) {
     $options = $cfg['search_index']['excluded_content_types'];
 
     $sql = 'SELECT a.idart, b.idartlang FROM ' . $cfg['tab']['art'] . ' AS a, ' . $cfg['tab']['art_lang'] . ' AS b
-            WHERE a.idart=b.idart AND a.idclient=' . (int) $client . ' AND b.idlang=' . (int) $lang;
+            WHERE a.idart=b.idart AND a.idclient=' . (int)$client . ' AND b.idlang=' . (int)$lang;
 
     $oDB->query($sql);
 
@@ -365,7 +370,8 @@ function conGenerateKeywords($client, $lang) {
  *
  * @throws cDbException|cInvalidArgumentException
  */
-function conGetContentFromArticle($iIdArtLang) {
+function conGetContentFromArticle($iIdArtLang)
+{
     static $oDB = NULL;
     if (!isset($oDB)) {
         $oDB = cRegistry::getDb();
@@ -389,13 +395,14 @@ function conGetContentFromArticle($iIdArtLang) {
  * @throws cDbException
  * @throws cException
  */
-function conGetUsedModules($idtpl) {
+function conGetUsedModules($idtpl)
+{
     $oContainerColl = new cApiContainerCollection();
-    $oContainerColl->select('idtpl = ' . (int) $idtpl, '', 'number ASC');
+    $oContainerColl->select('idtpl = ' . (int)$idtpl, '', 'number ASC');
 
     $modules = [];
     while (($oContainer = $oContainerColl->next()) !== false) {
-        $modules[(int) $oContainer->get('number')] = (int) $oContainer->get('idmod');
+        $modules[(int)$oContainer->get('number')] = (int)$oContainer->get('idmod');
     }
 
     return $modules;
@@ -414,7 +421,8 @@ function conGetUsedModules($idtpl) {
  * @throws cDbException
  * @throws cException
  */
-function conGetContainerConfiguration($idtplcfg) {
+function conGetContainerConfiguration($idtplcfg)
+{
     $containerConfColl = new cApiContainerConfigurationCollection();
     return $containerConfColl->getByTemplateConfiguration($idtplcfg);
 }
@@ -429,7 +437,8 @@ function conGetContainerConfiguration($idtplcfg) {
  *
  * @throws cDbException
  */
-function conGetCategoryArticleId($idcat, $idart) {
+function conGetCategoryArticleId($idcat, $idart)
+{
     global $cfg, $db;
 
     // Get idcatart, we need this to retrieve the template configuration
@@ -453,12 +462,13 @@ function conGetCategoryArticleId($idcat, $idart) {
  *
  * @throws cDbException
  */
-function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client) {
+function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client)
+{
     global $cfg, $db;
 
     // Retrieve template configuration id
     $sql = "SELECT a.idtplcfg AS idtplcfg FROM `%s` AS a, `%s` AS b WHERE a.idart = %d "
-         . "AND a.idlang = %d AND b.idart = a.idart AND b.idclient = %d";
+        . "AND a.idlang = %d AND b.idart = a.idart AND b.idclient = %d";
     $sql = $db->prepare($sql, $cfg['tab']['art_lang'], $cfg['tab']['art'], $idart, $lang, $client);
     $db->query($sql);
 
@@ -476,12 +486,13 @@ function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client)
  *
  * @throws cDbException
  */
-function conGetTemplateConfigurationIdForCategory($idcat, $lang, $client) {
+function conGetTemplateConfigurationIdForCategory($idcat, $lang, $client)
+{
     global $cfg, $db;
 
     // Retrieve template configuration id
     $sql = "SELECT a.idtplcfg AS idtplcfg FROM `%s` AS a, `%s` AS b WHERE a.idcat = %d AND "
-         . "a.idlang = %d AND b.idcat = a.idcat AND b.idclient = %d";
+        . "a.idlang = %d AND b.idcat = a.idcat AND b.idclient = %d";
     $sql = $db->prepare($sql, $cfg['tab']['cat_lang'], $cfg['tab']['cat'], $idcat, $lang, $client);
     $db->query($sql);
 

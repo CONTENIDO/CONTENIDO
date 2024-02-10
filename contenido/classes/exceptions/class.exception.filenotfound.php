@@ -16,5 +16,6 @@
  * Exception thrown if a file could not be found.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cFileNotFoundException extends cRuntimeException {
+class cFileNotFoundException extends cRuntimeException
+{
 }

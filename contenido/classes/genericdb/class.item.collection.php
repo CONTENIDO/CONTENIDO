@@ -702,7 +702,7 @@ abstract class ItemCollection extends cItemBaseAbstract
         // verified, if enabling will result in negative side effects.
         $this->_bAllMode = false;
 
-        return (bool) $result;
+        return (bool)$result;
     }
 
     /**
@@ -732,8 +732,8 @@ abstract class ItemCollection extends cItemBaseAbstract
     /**
      * Adds multiple result fields
      *
-     * @since CONTENIDO 4.10.2
      * @param string[] $aFields
+     * @since CONTENIDO 4.10.2
      */
     public function addResultFields(array $aFields)
     {
@@ -759,8 +759,8 @@ abstract class ItemCollection extends cItemBaseAbstract
     /**
      * Removes multiple result fields
      *
-     * @since CONTENIDO 4.10.2
      * @param string[] $aFields
+     * @since CONTENIDO 4.10.2
      */
     public function removeResultFields(array $aFields)
     {
@@ -823,8 +823,8 @@ abstract class ItemCollection extends cItemBaseAbstract
      * Returns the key (table field to use for JOIN clause) for the
      * reverse join partner.
      *
-     * @param  Item|object  $joinPartnerObj  Join partner instance
-     * @param  string  $sClassName  Join partner class name
+     * @param Item|object $joinPartnerObj Join partner instance
+     * @param string $sClassName Join partner class name
      *
      * @return  string  Join partner key (table field)
      */
@@ -841,13 +841,13 @@ abstract class ItemCollection extends cItemBaseAbstract
      * Selects all entries from the database.
      * Objects are loaded using their primary key.
      *
-     * @param string $sWhere   [optional]
+     * @param string $sWhere [optional]
      *                         Specifies the WHERE clause.
      * @param string $sGroupBy [optional]
      *                         Specifies the GROUP BY clause.
      * @param string $sOrderBy [optional]
      *                         Specifies the ORDER BY clause.
-     * @param string $sLimit   [optional]
+     * @param string $sLimit [optional]
      *                         Specifies the LIMIT clause.
      *
      * @return bool
@@ -896,16 +896,16 @@ abstract class ItemCollection extends cItemBaseAbstract
      * @param string $sDistinct [optional]
      *                          Specifies if distinct will be added to the SQL statement
      *                          ($sDistinct !== '' -> DISTINCT)
-     * @param string $sFrom     [optional]
+     * @param string $sFrom [optional]
      *                          Specifies the additional FROM clause (e.g.
      *                          'con_news_groups AS groups, con_news_groupmembers AS groupmembers').
-     * @param string $sWhere    [optional]
+     * @param string $sWhere [optional]
      *                          Specifies the WHERE clause.
-     * @param string $sGroupBy  [optional]
+     * @param string $sGroupBy [optional]
      *                          Specifies the GROUP BY clause.
-     * @param string $sOrderBy  [optional]
+     * @param string $sOrderBy [optional]
      *                          Specifies the ORDER BY clause.
-     * @param string $sLimit    [optional]
+     * @param string $sLimit [optional]
      *                          Specifies the LIMIT clause.
      * @return bool
      *                          True on success, otherwise false
@@ -1027,7 +1027,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      * Fetches the result of a previous run query (e.g. `$obj->query()`) into a
      * desired result list.
      *
-     * @param array $aFields  [optional] Array of fields to fetch from the result.
+     * @param array $aFields [optional] Array of fields to fetch from the result.
      *     If it is an indexed array, the value will be used for the field, and
      *     the result entries will be also an indexed array.
      *     <pre>
@@ -1217,7 +1217,7 @@ abstract class ItemCollection extends cItemBaseAbstract
     public function fetchById($id)
     {
         if (is_numeric($id)) {
-            $id = (int) $id;
+            $id = (int)$id;
         } elseif (is_string($id)) {
             $id = $this->escape($id);
         }
@@ -1313,7 +1313,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      *
      * @param Item|object $srcItem
      *                                  Source Item instance to copy
-     * @param array  $fieldsToOverwrite [optional]
+     * @param array $fieldsToOverwrite [optional]
      *                                  Associative list of fields to overwrite.
      * @return Item|object|NULL
      * @throws cDbException
@@ -1387,7 +1387,6 @@ abstract class ItemCollection extends cItemBaseAbstract
      * Returns all ids of the records in the table that match the criteria
      * in the passed WHERE clause ($field $operator $value).
      *
-     * @since CONTENIDO 4.10.2
      * @param string $field
      *         The table field name
      * @param string|int|null|mixed $value
@@ -1397,6 +1396,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      * @return int[]|string[]
      *         List of ids
      * @throws cDbException|cInvalidArgumentException
+     * @since CONTENIDO 4.10.2
      */
     public function getIdsWhere(string $field, $value, string $operator = '='): array
     {
@@ -1411,7 +1411,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      * Returns all specified fields of the records in the table that match
      * the criteria in the passed WHERE clause.
      *
-     * @param array  $aFields
+     * @param array $aFields
      *         List of fields to get
      * @param string $sWhere
      *         The WHERE clause of the SQL statement
@@ -1455,8 +1455,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      * Returns all specified fields of the records in the table that match
      * the criteria in the passed WHERE clause ($field $operator $value).
      *
-     * @since CONTENIDO 4.10.2
-     * @param array  $aFields
+     * @param array $aFields
      *         List of fields to get
      * @param string $field
      *         The table field name to query
@@ -1468,6 +1467,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      * @return int[]|string[]
      *         List of ids
      * @throws cDbException|cInvalidArgumentException
+     * @since CONTENIDO 4.10.2
      */
     public function getFieldsWhere(
         array $aFields, string $field, $value, string $operator = '='
@@ -1487,7 +1487,8 @@ abstract class ItemCollection extends cItemBaseAbstract
      *         List of ids
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getAllIds() {
+    public function getAllIds()
+    {
         $oDb = $this->_getSecondDBInstance();
 
         $aIds = [];
@@ -1549,7 +1550,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      *
      * @param string $sField
      *         The field name
-     * @param mixed  $mValue
+     * @param mixed $mValue
      *         The value of the field
      *
      * @return int
@@ -1678,7 +1679,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      *
      * @param string $sKey
      *         Name of the field to use for the key
-     * @param string|string[]  $mFields
+     * @param string|string[] $mFields
      *         String or array
      * @return array
      *         Resulting array

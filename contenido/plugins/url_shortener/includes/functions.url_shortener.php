@@ -27,7 +27,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @throws cDbException
  * @throws cException
  */
-function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled) {
+function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled)
+{
     $shortUrl = new cApiShortUrl();
     $shortUrl->loadByMany([
         'idart' => $idart,
@@ -42,7 +43,7 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled) {
     $td->setContent(i18n('Short URL', 'url_shortener'));
     $tr->appendContent($td);
 
-	$infoButton = new cGuiBackendHelpbox(i18n('INFO', 'url_shortener'));
+    $infoButton = new cGuiBackendHelpbox(i18n('INFO', 'url_shortener'));
 
     $td = new cHTMLTableData();
     $td->setClass('text_medium');
@@ -64,7 +65,8 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function piUsConSaveArtAfter($editedIdArt, $values) {
+function piUsConSaveArtAfter($editedIdArt, $values)
+{
     // if not all parameters have been given, do nothing
     if (!isset($_POST['url_shortener_shorturl']) || !isset($editedIdArt)) {
         return;
@@ -143,14 +145,15 @@ function piUsConSaveArtAfter($editedIdArt, $values) {
 /**
  * Computes an error message which describes the given error code.
  *
- * @param int          $errorCode the error code
+ * @param int $errorCode the error code
  * @param cApiShortUrl $shortUrlItem
  *
  * @return string the error message describing the given error code
  * @throws cDbException
  * @throws cException
  */
-function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL) {
+function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL)
+{
     switch ($errorCode) {
         case cApiShortUrlCollection::ERR_INVALID_CHARS:
             return i18n('The entered short URL contains invalid characters!', 'url_shortener');
@@ -200,7 +203,8 @@ function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function piUsAfterLoadPlugins() {
+function piUsAfterLoadPlugins()
+{
     $requestUri = $_SERVER['REQUEST_URI'] ?? '';
     $shorturl = cString::getPartOfString($requestUri, cString::findLastPos($requestUri, '/') + 1);
     $shortUrlItem = new cApiShortUrl();
@@ -228,7 +232,8 @@ function piUsAfterLoadPlugins() {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function piUseConDeleteArtAfter($idart) {
+function piUseConDeleteArtAfter($idart)
+{
     $count = 0;
     if (cRegistry::getPerm()->have_perm_area_action('url_shortener', 'url_shortener_delete')) {
         $idart = cSecurity::toInteger($idart);

@@ -54,7 +54,7 @@ $sJsExternal = '';
 $sTable = '';
 
 $sJsBefore .= "var itemids = [];\n"
-            . "var actareaids = [];\n";
+    . "var actareaids = [];\n";
 
 // Init Table
 $oTable = new cHTMLTable();
@@ -106,7 +106,7 @@ foreach ($right_list["str"] as $value2) {
                     "valign" => "top",
                     "align" => "center"
                 ]);
-                $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3]? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
+                $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
                 $items .= $objHeaderItem->render();
                 $objHeaderItem->advanceID();
 
@@ -166,10 +166,10 @@ $sql = "SELECT A.idcat, level, name, parentid
             AND B.idclient = " . cSecurity::toInteger($rights_client) . " ORDER BY idtree";
 $db->query($sql);
 
-$counter  = [];
+$counter = [];
 $parentid = "leer";
 $aRowname = [];
-$iLevel   = 0;
+$iLevel = 0;
 
 while ($db->nextRecord()) {
     if ($db->f("level") == 0 && $db->f("preid") != 0) {

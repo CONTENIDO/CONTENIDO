@@ -594,7 +594,7 @@ class cTinymce4Configuration {
             if (false === class_exists($contentTypeClassName)) {
                 continue;
             }
-            $cContentType = new $contentTypeClassName(null, 0, []);
+            $cContentType = new $contentTypeClassName('', 0, []);
             if (false === $cContentType->isWysiwygCompatible()) {
                 continue;
             }

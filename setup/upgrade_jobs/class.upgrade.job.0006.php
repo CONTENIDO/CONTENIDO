@@ -21,16 +21,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0006 extends cUpgradeJobAbstract {
+class cUpgradeJob_0006 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.0-beta1";
 
     /**
      * @throws cInvalidArgumentException
      */
-    public function _execute() {
-
-        global $cfg, $cfgClient;
+    public function _execute()
+    {
+        $cfg = cRegistry::getConfig();
+        $cfgClient = cRegistry::getClientConfig();
 
         include_once($cfg['path']['contenido'] . 'includes/functions.file.php');
 
@@ -38,15 +40,15 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
 
             // List of source and destination folder or files based on clients frontend dir.
             $clientCopyList = [
-                'layouts/'                     => 'data/layouts/',
-                'logs/'                        => 'data/logs/',
-                'version/'                     => 'data/version/',
-                'data/config/config.php'       => 'data/config/' . CON_ENVIRONMENT . '/config.php',
+                'layouts/' => 'data/layouts/',
+                'logs/' => 'data/logs/',
+                'version/' => 'data/version/',
+                'data/config/config.php' => 'data/config/' . CON_ENVIRONMENT . '/config.php',
                 'data/config/config.local.php' => 'data/config/' . CON_ENVIRONMENT . '/config.local.php',
                 'data/config/config.after.php' => 'data/config/' . CON_ENVIRONMENT . '/config.after.php',
-                'config.php'                   => 'data/config/' . CON_ENVIRONMENT . '/config.php',
-                'config.local.php'             => 'data/config/' . CON_ENVIRONMENT . '/config.local.php',
-                'config.after.php'             => 'data/config/' . CON_ENVIRONMENT . '/config.after.php',
+                'config.php' => 'data/config/' . CON_ENVIRONMENT . '/config.php',
+                'config.local.php' => 'data/config/' . CON_ENVIRONMENT . '/config.local.php',
+                'config.after.php' => 'data/config/' . CON_ENVIRONMENT . '/config.after.php',
             ];
 
             // Load client configuration

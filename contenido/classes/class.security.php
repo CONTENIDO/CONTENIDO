@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Security
  */
-class cSecurity {
+class cSecurity
+{
     /**
      * Checks some CONTENIDO core related request parameters against XSS.
      *
@@ -30,7 +31,8 @@ class cSecurity {
      * @throws cFileNotFoundException
      * @throws cInvalidArgumentException
      */
-    public static function checkRequests() {
+    public static function checkRequests()
+    {
         $requestValidator = cRequestValidator::getInstance();
 
         return $requestValidator->checkParams();
@@ -46,7 +48,8 @@ class cSecurity {
      * @return string
      *         Filtered string
      */
-    public static function filter($sString, $oDb) {
+    public static function filter($sString, $oDb)
+    {
         $sString = self::toString($sString);
         if (defined('CON_STRIPSLASHES')) {
             $sString = stripslashes($sString);
@@ -62,7 +65,8 @@ class cSecurity {
      * @return string
      *         Unfiltered string
      */
-    public static function unFilter($sString) {
+    public static function unFilter($sString)
+    {
         $sString = self::toString($sString);
         return htmldecode(self::unescapeDB($sString));
     }
@@ -75,7 +79,8 @@ class cSecurity {
      * @return bool
      *         Check state
      */
-    public static function isBoolean($sVar) {
+    public static function isBoolean($sVar)
+    {
         $sTempVar = $sVar;
         $sTemp2Var = self::toBoolean($sVar);
         return $sTempVar === $sTemp2Var;
@@ -89,7 +94,8 @@ class cSecurity {
      * @return bool
      *         Check state
      */
-    public static function isInteger($sVar) {
+    public static function isInteger($sVar)
+    {
         return preg_match('/^[0-9]+$/', $sVar);
     }
 
@@ -116,7 +122,8 @@ class cSecurity {
      * @return bool
      *         Check state
      */
-    public static function isString($sVar) {
+    public static function isString($sVar)
+    {
         return is_string($sVar);
     }
 
@@ -128,8 +135,9 @@ class cSecurity {
      * @return bool
      *         Type casted input string
      */
-    public static function toBoolean($sString) {
-        return (bool) $sString;
+    public static function toBoolean($sString)
+    {
+        return (bool)$sString;
     }
 
     /**
@@ -140,8 +148,9 @@ class cSecurity {
      * @return int
      *         Type casted input string
      */
-    public static function toInteger($sString) {
-        return (int) $sString;
+    public static function toInteger($sString)
+    {
+        return (int)$sString;
     }
 
     /**
@@ -156,8 +165,9 @@ class cSecurity {
      * @return string
      *         Converted string
      */
-    public static function toString($sString, $bHTML = false, $sAllowableTags = '') {
-        $sString = (string) $sString;
+    public static function toString($sString, $bHTML = false, $sAllowableTags = '')
+    {
+        $sString = (string)$sString;
         if ($bHTML == true) {
             $sString = strip_tags(stripslashes($sString), $sAllowableTags);
         }
@@ -176,7 +186,8 @@ class cSecurity {
      * @return string
      *         Converted string
      */
-    public static function escapeDB($sString, $oDB, $bUndoAddSlashes = true) {
+    public static function escapeDB($sString, $oDB, $bUndoAddSlashes = true)
+    {
         if (!is_object($oDB)) {
             return self::escapeString($sString);
         } else {
@@ -195,8 +206,9 @@ class cSecurity {
      * @return string
      *         Converted string
      */
-    public static function escapeString($sString) {
-        $sString = (string) $sString;
+    public static function escapeString($sString)
+    {
+        $sString = (string)$sString;
         if (defined('CON_STRIPSLASHES')) {
             $sString = stripslashes($sString);
         }
@@ -211,7 +223,8 @@ class cSecurity {
      * @return string
      *         Converted string
      */
-    public static function unescapeDB($sString) {
+    public static function unescapeDB($sString)
+    {
         return stripslashes($sString);
     }
 

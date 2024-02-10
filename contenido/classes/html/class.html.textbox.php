@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLTextbox extends cHTMLFormElement {
+class cHTMLTextbox extends cHTMLFormElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -52,7 +53,8 @@ class cHTMLTextbox extends cHTMLFormElement {
     public function __construct(
         $name, $initvalue = '', $width = '', $maxlength = '', $id = '',
         $disabled = false, $tabindex = null, $accesskey = '', $class = ''
-    ) {
+    )
+    {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
 
         $this->_tag = 'input';
@@ -73,7 +75,8 @@ class cHTMLTextbox extends cHTMLFormElement {
      * @return cHTMLTextbox
      *         $this for chaining
      */
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         $width = intval($width);
 
         if ($width <= 0) {
@@ -91,7 +94,8 @@ class cHTMLTextbox extends cHTMLFormElement {
      * @return cHTMLTextbox
      *         $this for chaining
      */
-    public function setMaxLength($maxlen) {
+    public function setMaxLength($maxlen)
+    {
         $maxlen = intval($maxlen);
 
         if ($maxlen <= 0) {
@@ -109,7 +113,8 @@ class cHTMLTextbox extends cHTMLFormElement {
      * @return cHTMLTextbox
      *         $this for chaining
      */
-    public function setValue($value) {
+    public function setValue($value)
+    {
         return $this->updateAttribute('value', $value);
     }
 

@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiArticleLanguage createNewItem
  * @method cApiArticleLanguage|bool next
  */
-class cApiArticleLanguageCollection extends ItemCollection {
+class cApiArticleLanguageCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -31,7 +32,8 @@ class cApiArticleLanguageCollection extends ItemCollection {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function __construct($select = false) {
+    public function __construct($select = false)
+    {
         $table = cRegistry::getDbTableName('art_lang');
         parent::__construct($table, 'idartlang');
         $this->_setItemClass('cApiArticleLanguage');
@@ -55,7 +57,8 @@ class cApiArticleLanguageCollection extends ItemCollection {
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create(array $parameters) {
+    public function create(array $parameters)
+    {
         if (empty($parameters['author'])) {
             $auth = cRegistry::getAuth();
             $parameters['author'] = $auth->auth['uname'];
@@ -119,7 +122,8 @@ class cApiArticleLanguageCollection extends ItemCollection {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getIdByArticleIdAndLanguageId($idart, $idlang) {
+    public function getIdByArticleIdAndLanguageId($idart, $idlang)
+    {
         $sql = "SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
         $this->db->query($sql, $this->table, $idart, $idlang);
         return ($this->db->nextRecord()) ? $this->db->f('idartlang') : 0;
@@ -213,7 +217,8 @@ class cApiArticleLanguageCollection extends ItemCollection {
  * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiArticleLanguage extends Item {
+class cApiArticleLanguage extends Item
+{
 
     /**
      * Config array
@@ -238,7 +243,8 @@ class cApiArticleLanguage extends Item {
      *
      * @throws cDbException|cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         $table = cRegistry::getDbTableName('art_lang');
         parent::__construct($table, 'idartlang');
         $this->setFilters([], []);
@@ -256,7 +262,8 @@ class cApiArticleLanguage extends Item {
      *
      * @throws cDbException|cException
      */
-    public function markAsEditable($type = '') {
+    public function markAsEditable($type = '')
+    {
         // create new editable version
         $maxVersion = 0;
         $sql = 'SELECT MAX(version) AS `max` FROM `%s` WHERE `idartlang` = %d';
@@ -279,34 +286,34 @@ class cApiArticleLanguage extends Item {
 
             // get all Contents/Versions
             $mergedContent = [];
-            foreach ($this->content AS $type => $typeids) {
-                foreach ($typeids AS $typeid => $value) {
-                        $mergedContent[$type][$typeid] = '';
+            foreach ($this->content as $type => $typeids) {
+                foreach ($typeids as $typeid => $value) {
+                    $mergedContent[$type][$typeid] = '';
                 }
             }
-            foreach ($artLangVersion->content AS $type => $typeids) {
-                foreach ($typeids AS $typeid => $value) {
-                        $mergedContent[$type][$typeid] = '';
+            foreach ($artLangVersion->content as $type => $typeids) {
+                foreach ($typeids as $typeid => $value) {
+                    $mergedContent[$type][$typeid] = '';
                 }
             }
 
             // set new Content Versions
-            foreach ($mergedContent AS $type => $typeids) {
-                foreach ($typeids AS $typeid => $value) {
+            foreach ($mergedContent as $type => $typeids) {
+                foreach ($typeids as $typeid => $value) {
                     $oType->loadByType($type);
                     if (isset($this->content[$type][$typeid])) {
                         $contentVersion->loadByArticleLanguageIdTypeAndTypeId($this->get('idartlang'), $oType->get('idtype'), $typeid);
                         if ($contentVersion->isLoaded()) {
-                                $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
+                            $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
                         }
                     } else {
                         $contentParameters = [
-                                'idartlang' => $artLangVersion->get('idartlang'),
-                                'idtype' => $oType->get('idtype'),
-                                'typeid' => $typeid,
-                                'version' => $artLangVersion->get('version'),
-                                'author' => $this->get('author'),
-                                'deleted' => 1
+                            'idartlang' => $artLangVersion->get('idartlang'),
+                            'idtype' => $oType->get('idtype'),
+                            'typeid' => $typeid,
+                            'version' => $artLangVersion->get('version'),
+                            'author' => $this->get('author'),
+                            'deleted' => 1
                         ];
                         $contentVersionColl = new cApiContentVersionCollection();
                         $contentVersionColl->create($contentParameters);
@@ -343,7 +350,8 @@ class cApiArticleLanguage extends Item {
      *
      * @throws cDbException|cException
      */
-    public function loadByArticleAndLanguageId($idart, $idlang) {
+    public function loadByArticleAndLanguageId($idart, $idlang)
+    {
         $result = true;
         if (!$this->isLoaded()) {
             $aProps = [
@@ -376,7 +384,8 @@ class cApiArticleLanguage extends Item {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    protected function _getIdArtLang($idart, $idlang) {
+    protected function _getIdArtLang($idart, $idlang)
+    {
         $sql = 'SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
         $this->db->query($sql, cRegistry::getDbTableName('art_lang'), $idart, $idlang);
         $this->db->nextRecord();
@@ -390,12 +399,13 @@ class cApiArticleLanguage extends Item {
      *
      * $article->content[type][number] = value;
      *
+     * @throws cDbException|cInvalidArgumentException
      * @deprecated [2015-05-15]
      *         use _loadArticleContent, automatically loaded with getContent()
      *
-     * @throws cDbException|cInvalidArgumentException
      */
-    public function loadArticleContent() {
+    public function loadArticleContent()
+    {
         cDeprecated('This method is deprecated and is not needed any longer');
         $this->_loadArticleContent();
     }
@@ -406,12 +416,13 @@ class cApiArticleLanguage extends Item {
      *
      * $article->content[type][number] = value;
      *
+     * @throws cDbException|cInvalidArgumentException
      * @deprecated [2015-05-15]
      *         use _loadArticleContent, automatically loaded with getContent()
      *
-     * @throws cDbException|cInvalidArgumentException
      */
-    protected function _getArticleContent() {
+    protected function _getArticleContent()
+    {
         cDeprecated('This method is deprecated and is not needed any longer');
         $this->_loadArticleContent();
     }
@@ -424,7 +435,8 @@ class cApiArticleLanguage extends Item {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    protected function _loadArticleContent() {
+    protected function _loadArticleContent()
+    {
         if (NULL !== $this->content) {
             return;
         }
@@ -480,7 +492,8 @@ class cApiArticleLanguage extends Item {
      * @return string|null
      *         Value of property
      */
-    public function getField($name, $bSafe = true) {
+    public function getField($name, $bSafe = true)
+    {
         return $this->values[$name] ?? null;
     }
 
@@ -495,7 +508,8 @@ class cApiArticleLanguage extends Item {
      * @return bool
      * @throws cInvalidArgumentException
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'urlname':
                 $value = conHtmlSpecialChars(cString::cleanURLCharacters($value), ENT_QUOTES);
@@ -550,7 +564,7 @@ class cApiArticleLanguage extends Item {
      * linkdescr - Link description
      * swf - Upload id of the element
      *
-     * @param string   $type
+     * @param string $type
      *                     CMS_TYPE - Legal cms type string
      * @param int|NULL $id [optional]
      *                     Id of the content
@@ -560,7 +574,8 @@ class cApiArticleLanguage extends Item {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getContent($type = '', $id = NULL) {
+    public function getContent($type = '', $id = NULL)
+    {
         if (NULL === $this->content) {
             $this->_loadArticleContent();
         }
@@ -593,7 +608,7 @@ class cApiArticleLanguage extends Item {
      *
      * @param string $type
      *         Name of the content type
-     * @param int    $id
+     * @param int $id
      *         Id of the content type in this article
      *
      * @return bool|cContentTypeAbstract
@@ -601,7 +616,8 @@ class cApiArticleLanguage extends Item {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getContentObject($type, $id) {
+    public function getContentObject($type, $id)
+    {
         $typeClassName = 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
 
         if (!class_exists($typeClassName)) {
@@ -616,14 +632,15 @@ class cApiArticleLanguage extends Item {
      *
      * @param string $type
      *         Name of the content type
-     * @param int    $id
+     * @param int $id
      *         Id of the content type in this article
      *
      * @return string
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getContentViewCode($type, $id) {
+    public function getContentViewCode($type, $id)
+    {
         $object = $this->getContentObject($type, $id);
         if ($object === false) {
             return '';
@@ -640,7 +657,8 @@ class cApiArticleLanguage extends Item {
      * @throws cException
      *         if no content has been loaded
      */
-    public function getContentTypes() {
+    public function getContentTypes()
+    {
         if (empty($this->content)) {
             $this->_loadArticleContent();
         }
@@ -659,7 +677,8 @@ class cApiArticleLanguage extends Item {
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getLink($changeLangId = 0) {
+    public function getLink($changeLangId = 0)
+    {
         if ($this->isLoaded() === false) {
             return '';
         }

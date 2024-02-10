@@ -16,5 +16,5 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 checkAndInclude("steps/forms/clientmode.php");
 
-$cSetupClientMode = new cSetupClientMode(5, "setup4", "setup6", true);
+$cSetupClientMode = new cSetupClientMode(5, "setup4", "setup6");
 $cSetupClientMode->render();

@@ -183,7 +183,7 @@ foreach ($right_list as $key => $value) {
             $objRow->advanceID();
             // set javascript array for areatree
             $sJsBefore .= "areatree[\"$key\"] = [];\n"
-                        . "areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\";\n";
+                . "areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\";\n";
         }
 
         // if there are some

@@ -6,5 +6,6 @@
  * @subpackage SearchSolr
  * @author     Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class SolrException extends cException {
+class SolrException extends cException
+{
 }

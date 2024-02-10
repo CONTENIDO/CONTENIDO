@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cGuiObjectPager extends cGuiFoldingRow {
+class cGuiObjectPager extends cGuiFoldingRow
+{
 
     /**
      * @var string Spacer as replacement for first-/prev-/next-/last-page
@@ -47,21 +48,22 @@ class cGuiObjectPager extends cGuiFoldingRow {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string    $uuid
-     * @param int       $items
+     * @param string $uuid
+     * @param int $items
      *                      Amount of items
-     * @param int       $itemsperpage
+     * @param int $itemsperpage
      *                      Items displayed per page
-     * @param int       $currentpage
+     * @param int $currentpage
      *                      Defines the current page
      * @param cHTMLLink $link
-     * @param string    $parameterToAdd
-     * @param string    $id [optional]
+     * @param string $parameterToAdd
+     * @param string $id [optional]
      *
      * @throws cException if the given link is not an object
      */
-    public function __construct($uuid, $items, $itemsperpage, $currentpage, $link, $parameterToAdd, $id = '') {
-        if ((int) $currentpage == 0) {
+    public function __construct($uuid, $items, $itemsperpage, $currentpage, $link, $parameterToAdd, $id = '')
+    {
+        if ((int)$currentpage == 0) {
             $currentpage = 1;
         }
 
@@ -87,7 +89,8 @@ class cGuiObjectPager extends cGuiFoldingRow {
      * @return string
      *         Generated markup
      */
-    public function render($bContentOnly = false) {
+    public function render($bContentOnly = false): string
+    {
         // Do not display page navigation if there is only one page,
         // and we are not in newsletter section.
         if ($this->_cPager->getMaxPages() == 1) {
@@ -130,11 +133,14 @@ class cGuiObjectPager extends cGuiFoldingRow {
             $link->setAttribute('data-page', $key);
 
             switch ($item) {
-                case "|": $output .= '<span class="cpager_more">...</span>';
+                case "|":
+                    $output .= '<span class="cpager_more">...</span>';
                     break;
-                case "current": $output .= '<span class="cpager_currentitem">' . $key . "</span>";
+                case "current":
+                    $output .= '<span class="cpager_currentitem">' . $key . "</span>";
                     break;
-                default: $output .= $link->render();
+                default:
+                    $output .= $link->render();
             }
 
             $output .= " ";

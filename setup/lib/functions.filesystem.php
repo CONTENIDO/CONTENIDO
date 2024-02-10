@@ -15,7 +15,8 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 
-function canWriteFile($filename) {
+function canWriteFile($filename)
+{
     clearstatcache();
     if (is_file($filename)) {
         return is_writable($filename);
@@ -24,16 +25,19 @@ function canWriteFile($filename) {
     }
 }
 
-function canWriteDir($dirname) {
+function canWriteDir($dirname)
+{
     clearstatcache();
     return is_dir($dirname) && is_writable($dirname);
 }
 
-function getFileInfo($sFilename) {
+function getFileInfo($sFilename)
+{
     return cFileHandler::typeOwnerInfo(cSecurity::toString($sFilename));
 }
 
-function checkOpenBasedirCompatibility() {
+function checkOpenBasedirCompatibility()
+{
     $value = getPHPIniSetting("open_basedir");
 
     if (isWindows()) {
@@ -61,7 +65,8 @@ function checkOpenBasedirCompatibility() {
     return CON_BASEDIR_INCOMPATIBLE;
 }
 
-function predictCorrectFilepermissions($file) {
+function predictCorrectFilepermissions($file)
+{
     // Check if the system is a windows system. If yes, we can't predict
     // anything.
     if (isWindows()) {

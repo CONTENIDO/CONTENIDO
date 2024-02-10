@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Cache
  */
-class cFileCache {
+class cFileCache
+{
 
     /**
      * Options for the cache.
@@ -35,7 +36,8 @@ class cFileCache {
      * @param array $options [optional]
      *         array with options for the cache (optional, default: empty array)
      */
-    public function __construct($options = []) {
+    public function __construct(array $options = [])
+    {
         $this->setOptions($options);
     }
 
@@ -47,7 +49,8 @@ class cFileCache {
      * @param array $options
      *         array with option
      */
-    public function setOptions($options) {
+    public function setOptions(array $options)
+    {
         // complete all options
         if (isset($options['cacheDir']) === true && cString::getPartOfString($options['cacheDir'], -1) != '/') {
             $options['cacheDir'] = $options['cacheDir'] . '/';
@@ -90,7 +93,8 @@ class cFileCache {
      * @return string
      *         filename
      */
-    public function generateFileName($id, $group = '') {
+    public function generateFileName($id, $group = ''): string
+    {
         $id = ($this->_options['fileNameProtection'] === true) ? md5($id) : $id;
         if ($group != '') {
             $groupName = ($this->_options['fileNameProtection'] === true ? md5($group) : $group) . '_';
@@ -105,7 +109,8 @@ class cFileCache {
      *
      * @throws cInvalidArgumentException
      */
-    protected function _validateDirectory() {
+    protected function _validateDirectory()
+    {
         $directory = $this->_options['cacheDir'];
         if ($directory == '') {
             throw new cInvalidArgumentException('The caching directory is empty.');
@@ -133,7 +138,8 @@ class cFileCache {
      *
      * @throws cInvalidArgumentException
      */
-    public function getDestination($id, $group = '') {
+    public function getDestination($id, $group = '')
+    {
         $this->_validateDirectory();
 
         $directory = $this->_options['cacheDir'];
@@ -157,7 +163,8 @@ class cFileCache {
      *
      * @throws cInvalidArgumentException
      */
-    public function get($id, $group = '') {
+    public function get($id, $group = '')
+    {
         $data = false;
 
         $destination = $this->getDestination($id, $group);
@@ -166,7 +173,7 @@ class cFileCache {
             return false;
         }
 
-        $refreshTime = ($this->_options['lifetime'] == 0) ? 0 : time() - (int) $this->_options['lifetime'];
+        $refreshTime = ($this->_options['lifetime'] == 0) ? 0 : time() - (int)$this->_options['lifetime'];
 
         clearstatcache();
         $info = cFileHandler::info($destination);
@@ -194,7 +201,8 @@ class cFileCache {
      *
      * @throws cInvalidArgumentException
      */
-    public function save($data, $id, $group = '') {
+    public function save($data, $id, $group = ''): bool
+    {
         return cFileHandler::write($this->getDestination($id, $group), $data);
     }
 
@@ -211,7 +219,8 @@ class cFileCache {
      *
      * @throws cInvalidArgumentException
      */
-    public function remove($id, $group = '') {
+    public function remove($id, $group = ''): bool
+    {
         $destination = $this->getDestination($id, $group);
         if (cFileHandler::exists($destination) === false) {
             return false;
@@ -228,7 +237,8 @@ class cFileCache {
      * @return string
      *         generated ID
      */
-    public function generateID($variables) {
+    public function generateID($variables): string
+    {
         return md5(serialize($variables));
     }
 

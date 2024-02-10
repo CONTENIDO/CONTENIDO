@@ -56,10 +56,11 @@ class cDebugDevNull implements cDebugInterface
      * Writes a line.
      * This method does nothing!
      *
-     * @see cDebugInterface::out()
      * @param string $sText
+     * @see cDebugInterface::out()
      */
-    public function out($sText) {
+    public function out($sText)
+    {
     }
 
     /**

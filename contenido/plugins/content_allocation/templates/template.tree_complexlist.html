@@ -1,79 +1,81 @@
 <form method="post" action="main.php" name="contentallocation">
-{HIDDENFIELDS}
-<div id="finderparent">
-    {TREE}
-</div>
-<div id="choosenList">
-    <ul id="choosenValues">
-    </ul>
-    <br><a href="javascript:removeAll();">{REMOVE_ALL}</a>
-</div>
-{DIV}
+    {HIDDENFIELDS}
+    <div id="finderparent">
+        {TREE}
+    </div>
+    <div id="choosenList">
+        <ul id="choosenValues">
+        </ul>
+        <br><a href="javascript:removeAll();">{REMOVE_ALL}</a>
+    </div>
+    {DIV}
 </form>
 
 <script type="text/javascript">
-function addToList(obj) {
-    var list = document.getElementById("choosenValues");
-    var elmId = obj.attributes["id"].value;
-    elmId = elmId.replace(/e/, "");
+    function addToList(obj) {
+        var list = document.getElementById("choosenValues");
+        var elmId = obj.attributes["id"].value;
+        elmId = elmId.replace(/e/, "");
 
-    if (obj.checked == false) {
-        removeFromList(elmId);
-    } else {
-        if (obj.nextSibling.innerHTML == undefined) {
-            text = obj.nextSibling.data;
+        if (obj.checked == false) {
+            removeFromList(elmId);
         } else {
-            text = obj.nextSibling.innerHTML;
-        }
+            if (obj.nextSibling.innerHTML == undefined) {
+                text = obj.nextSibling.data;
+            } else {
+                text = obj.nextSibling.innerHTML;
+            }
 
-        var removeLink = "<a href=\"javascript:removeFromList("+elmId+")\">[{REMOVE}]</a> " + text;
+            var removeLink = "<a href=\"javascript:removeFromList(" + elmId + ")\">[{REMOVE}]</a> " + text;
 
-        listelm = document.createElement("LI");
-        listelm.innerHTML = removeLink;
-        listelm.id = "rl" + elmId;
+            listelm = document.createElement("LI");
+            listelm.innerHTML = removeLink;
+            listelm.id = "rl" + elmId;
 
-        //list.appendChild(listelm);
-        list.appendChild(listelm);
-    }
-}
-
-function removeFromList(id) {
-    var list = document.getElementById("choosenValues");
-    var remElm = document.getElementById("rl" + id);
-
-    if (remElm != null) {
-        list.removeChild(remElm);
-        var uncheckElm = document.getElementById("e" + id);
-        uncheckElm.checked = false;
-    }
-}
-
-function removeAll() {
-    var list = document.getElementById("choosenValues");
-
-    formElms = document.forms["contentallocation"].elements;
-
-    for (i = 0; i < formElms.length; i++) {
-        if (formElms[i].type == "checkbox") {
-            formElms[i].checked = false;
+            //list.appendChild(listelm);
+            list.appendChild(listelm);
         }
     }
-    list.innerHTML = '';
-}
 
-{ARRAY_CHECKED_BOXES}
+    function removeFromList(id) {
+        var list = document.getElementById("choosenValues");
+        var remElm = document.getElementById("rl" + id);
 
-function listAllCheckedBoxes() {
-    if (checkedBoxes.length == 0) {
-        return false;
+        if (remElm != null) {
+            list.removeChild(remElm);
+            var uncheckElm = document.getElementById("e" + id);
+            uncheckElm.checked = false;
+        }
     }
 
-    for (i = 0; i < checkedBoxes.length; i++) {
-        obj = document.getElementById("e" + checkedBoxes[i]);
-        addToList(obj);
-    }
-}
+    function removeAll() {
+        var list = document.getElementById("choosenValues");
 
-listAllCheckedBoxes();
+        formElms = document.forms["contentallocation"].elements;
+
+        for (i = 0; i < formElms.length; i++) {
+            if (formElms[i].type == "checkbox") {
+                formElms[i].checked = false;
+            }
+        }
+        list.innerHTML = '';
+    }
+
+    {
+        ARRAY_CHECKED_BOXES
+    }
+
+    function listAllCheckedBoxes() {
+        if (checkedBoxes.length == 0) {
+            return false;
+        }
+
+        for (i = 0; i < checkedBoxes.length; i++) {
+            obj = document.getElementById("e" + checkedBoxes[i]);
+            addToList(obj);
+        }
+    }
+
+    listAllCheckedBoxes();
 
 </script>

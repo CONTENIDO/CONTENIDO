@@ -73,11 +73,11 @@ if (isset($_GET['save_search']) && $_GET['save_search'] == 'true') {
 }
 
 // ARTICLE SEARCH
-$arrDays      = [];
-$arrMonths    = [];
+$arrDays = [];
+$arrMonths = [];
 $sCurrentYear = cSecurity::toInteger(date('Y'));
-$arrYears     = range($sCurrentYear - 10, $sCurrentYear + 30);
-$arrYears     = ['-----'] + array_combine($arrYears, $arrYears);
+$arrYears = range($sCurrentYear - 10, $sCurrentYear + 30);
+$arrYears = ['-----'] + array_combine($arrYears, $arrYears);
 
 // Ensure that days and month have two digits
 foreach (['--'] + range(0, cDate::MAX_DAY_VALUE) as $pos => $value) {
@@ -98,24 +98,24 @@ foreach (['--'] + range(0, cDate::MAX_MONTH_VALUE) as $pos => $value) {
 }
 
 // get user input
-$bsSearchText              = $_REQUEST['bs_search_text'] ?? '';
-$bsSearchId                = $_REQUEST['bs_search_id'] ?? '';
-$bsSearchDateType          = $_REQUEST['bs_search_date_type'] ?? 'n/a';
-$bsSearchDateTypeFromDay   = cSecurity::toInteger($_REQUEST['bs_search_date_from_day'] ?? '0');
+$bsSearchText = $_REQUEST['bs_search_text'] ?? '';
+$bsSearchId = $_REQUEST['bs_search_id'] ?? '';
+$bsSearchDateType = $_REQUEST['bs_search_date_type'] ?? 'n/a';
+$bsSearchDateTypeFromDay = cSecurity::toInteger($_REQUEST['bs_search_date_from_day'] ?? '0');
 $bsSearchDateTypeFromMonth = cSecurity::toInteger($_REQUEST['bs_search_date_from_month'] ?? '0');
-$bsSearchDateTypeFromYear  = cSecurity::toInteger($_REQUEST['bs_search_date_from_year'] ?? '0');
-$bsSearchDateToDay         = cSecurity::toInteger($_REQUEST['bs_search_date_to_day'] ?? '0');
-$bsSearchDateToMonth       = cSecurity::toInteger($_REQUEST['bs_search_date_to_month'] ?? '0');
-$bsSearchDateToYear        = cSecurity::toInteger($_REQUEST['bs_search_date_to_year'] ?? '0');
-$bsSearchAuthor            = $_REQUEST['bs_search_author'] ?? 'n/a';
+$bsSearchDateTypeFromYear = cSecurity::toInteger($_REQUEST['bs_search_date_from_year'] ?? '0');
+$bsSearchDateToDay = cSecurity::toInteger($_REQUEST['bs_search_date_to_day'] ?? '0');
+$bsSearchDateToMonth = cSecurity::toInteger($_REQUEST['bs_search_date_to_month'] ?? '0');
+$bsSearchDateToYear = cSecurity::toInteger($_REQUEST['bs_search_date_to_year'] ?? '0');
+$bsSearchAuthor = $_REQUEST['bs_search_author'] ?? 'n/a';
 
 // validate user input
-$bsSearchDateTypeFromDay   = cDate::padDay(cSecurity::toString(max(0, $bsSearchDateTypeFromDay)));
+$bsSearchDateTypeFromDay = cDate::padDay(cSecurity::toString(max(0, $bsSearchDateTypeFromDay)));
 $bsSearchDateTypeFromMonth = cDate::padMonth(cSecurity::toString(max(0, $bsSearchDateTypeFromMonth)));
-$bsSearchDateTypeFromYear  = cSecurity::toString(max(0, $bsSearchDateTypeFromYear));
-$bsSearchDateToDay         = cDate::padDay(cSecurity::toString(max(0, $bsSearchDateToDay)));
-$bsSearchDateToMonth       = cDate::padMonth(cSecurity::toString(max(0, $bsSearchDateToMonth)));
-$bsSearchDateToYear        = cSecurity::toString(max(0, $bsSearchDateToYear));
+$bsSearchDateTypeFromYear = cSecurity::toString(max(0, $bsSearchDateTypeFromYear));
+$bsSearchDateToDay = cDate::padDay(cSecurity::toString(max(0, $bsSearchDateToDay)));
+$bsSearchDateToMonth = cDate::padMonth(cSecurity::toString(max(0, $bsSearchDateToMonth)));
+$bsSearchDateToYear = cSecurity::toString(max(0, $bsSearchDateToYear));
 
 // get users
 $userColl = new cApiUserCollection();
@@ -146,10 +146,10 @@ $oSelectArtDateType = new cHTMLSelectElement("bs_search_date_type");
 $oSelectArtDateType->setClass('text_medium');
 $oSelectArtDateType->autoFill(
     [
-        'n/a'          => i18n('Ignore'),
-        'created'      => i18n('Date created'),
+        'n/a' => i18n('Ignore'),
+        'created' => i18n('Date created'),
         'lastmodified' => i18n('Date modified'),
-        'published'    => i18n('Date published'),
+        'published' => i18n('Date published'),
     ]
 );
 $oSelectArtDateType->setStyle('width:135px;');
@@ -334,8 +334,8 @@ $aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml", $aData, $aInformatio
 foreach ($aData as $key => $item) {
     $divKey = new cHTMLDiv("", $key);
     foreach ($item as $data) {
-        $image = new cHTMLImage((string) $data['imgsrc'], 'align_middle');
-        $description = new cHTMLSpan(i18n((string) $data['description']), 'mgl3');
+        $image = new cHTMLImage((string)$data['imgsrc'], 'align_middle');
+        $description = new cHTMLSpan(i18n((string)$data['description']), 'mgl3');
         $divItem = new cHTMLDiv($image->render() . $description->render());
         $divItem->setClass('mgb5');
         $divKey->appendContent($divItem->render());
@@ -350,14 +350,14 @@ $tpl->set('s', 'LEGENDLINK', $legendLinkId);
 // Help
 $tpl->set('s', 'HELPSCRIPT', getJsHelpContext("con"));
 // CON-1907 show workflow icon only when plugin is installed
-$tpl->set('s', 'DISPLAY', class_exists('Workflows')?'' : 'display:none;');
+$tpl->set('s', 'DISPLAY', class_exists('Workflows') ? '' : 'display:none;');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top']);
 
 /**
  *
  * @param string $filename
- * @param array  $aData
- * @param array  $aInformation
+ * @param array $aData
+ * @param array $aInformation
  *
  * @return array
  */

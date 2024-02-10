@@ -49,10 +49,10 @@ if (!$contenido && !isset($cfgClient["set"])) {
 global $cfg, $belang, $force, $load_client;
 
 // Initialize common variables
-$idcat    = $idcat ?? 0;
-$idart    = $idart ?? 0;
+$idcat = $idcat ?? 0;
+$idart = $idart ?? 0;
 $idcatart = $idcatart ?? 0;
-$error    = $error ?? 0;
+$error = $error ?? 0;
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.con2.php');
@@ -60,7 +60,7 @@ cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.pathresolver.php');
 
 $backendPath = cRegistry::getBackendPath();
-$backendUrl  = cRegistry::getBackendUrl();
+$backendUrl = cRegistry::getBackendUrl();
 
 // Include cronjob-Emulator
 if ($cfg['use_pseudocron'] == true) {
@@ -92,7 +92,7 @@ if (cRegistry::getBackendSessionId()) {
 require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
-$db   = cRegistry::getDb();
+$db = cRegistry::getDb();
 $sess = cRegistry::getSession();
 $lang = cRegistry::getLanguageId();
 $auth = cRegistry::getAuth();
@@ -119,7 +119,7 @@ if (isset($tmpchangelang) && $tmpchangelang > 0) {
     // savelang is needed to set language before closing the page, see
     // {frontend_clientdir}/front_content.php before cRegistry::shutdown()
     $savedlang = $lang;
-    $lang      = $tmpchangelang;
+    $lang = $tmpchangelang;
 }
 
 // Change client
@@ -153,7 +153,7 @@ if (!isset($lang)) {
         $lang = $load_lang;
     } else {
         $oClientLangColl = new cApiClientLanguageCollection();
-        $lang = (int) $oClientLangColl->getFirstLanguageIdByClient($client);
+        $lang = (int)$oClientLangColl->getFirstLanguageIdByClient($client);
     }
 }
 
@@ -193,7 +193,7 @@ if (isset($path) && cString::getStringLength($path) > 1) {
         $idcat = prResolvePathViaURLNames($path);
     } else {
         $iLangCheck = 0;
-        $idcat      = prResolvePathViaCategoryNames($path, $iLangCheck);
+        $idcat = prResolvePathViaCategoryNames($path, $iLangCheck);
         if (($lang != $iLangCheck) && ((int)$iLangCheck != 0)) {
             $lang = $iLangCheck;
         }
@@ -203,10 +203,10 @@ if (isset($path) && cString::getStringLength($path) > 1) {
 // Error page
 $aParams = [
     'client' => $client,
-    'idcat'  => $cfgClient[$client]["errsite"]["idcat"],
-    'idart'  => $cfgClient[$client]["errsite"]["idart"],
-    'lang'   => $lang,
-    'error'  => '1'
+    'idcat' => $cfgClient[$client]["errsite"]["idcat"],
+    'idart' => $cfgClient[$client]["errsite"]["idart"],
+    'lang' => $lang,
+    'error' => '1'
 ];
 $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
 
@@ -227,7 +227,7 @@ if ($idart && !$idcat && !$idcatart) {
     // Try to fetch the idcat by idart
     $catArtColl = new cApiCategoryArticleCollection();
     $categories = $catArtColl->getCategoryIdsByArticleId($idart);
-    $idcat      = $categories[0] ?? 0;
+    $idcat = $categories[0] ?? 0;
 }
 
 unset($code, $markscript);
@@ -244,7 +244,7 @@ if ($idcatart) {
         // Try to get caetgory and article id of first item in current
         // clients tree structure
         $oCatArtColl = new cApiCategoryArticleCollection();
-        $oCatArt     = $oCatArtColl->fetchFirstFromTreeByClientIdAndLangId($client, $lang);
+        $oCatArt = $oCatArtColl->fetchFirstFromTreeByClientIdAndLangId($client, $lang);
         if ($oCatArt) {
             $idart = $oCatArt->get('idart');
             $idcat = $oCatArt->get('idcat');
@@ -269,7 +269,7 @@ if ($idcatart) {
         if ($oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
             if ($oCatLang->get('startidartlang') != 0) {
                 $oArtLang = new cApiArticleLanguage($oCatLang->get('startidartlang'));
-                $idart    = $oArtLang->get('idart');
+                $idart = $oArtLang->get('idart');
             }
         }
 
@@ -311,7 +311,7 @@ $idartlang = getArtLang($idart, $lang);
 // check if category is online, allow access if article is specified for loading
 if (isset($idart)) {
     $oArtLang = new cApiArticleLanguage($idartlang);
-    $online   = $oArtLang->get('online');
+    $online = $oArtLang->get('online');
 } else {
     $online = ('0' !== $oCatLang->get('visible'));
 }
@@ -349,7 +349,7 @@ if ($cfg['cache']['disable'] != '1') {
 // We'll check if it's inuse, if they want to edit it and if all plugins allow it.
 $inUse = false;
 $allow = false;
-$view  = false;
+$view = false;
 if ($contenido) {
     $perm->load_permissions();
 
@@ -361,10 +361,10 @@ if ($contenido) {
 
     $col = new cApiInUseCollection();
 
-    $overrideid   = $overrideid ?? '';
+    $overrideid = $overrideid ?? '';
     $overridetype = $overridetype ?? '';
-    $type         = $type ?? '';
-    $typenr       = $typenr ?? '';
+    $type = $type ?? '';
+    $typenr = $typenr ?? '';
 
     if ($overrideid != '' && $overridetype != '') {
         $col->removeItemMarks($overridetype, $overrideid);
@@ -375,12 +375,12 @@ if ($contenido) {
 
     $inUseUrl = $backendUrl . "external/backendedit/front_content.php?changeview=edit&action=con_editart&idartlang=$idartlang&type=$type&typenr=$typenr&idart=$idart&idcat=$idcat&idcatart=$idcatart&client=$client&lang=$lang";
     list($inUse, $message) = $col->checkAndMark('article', $idartlang, true, i18n('Article is in use by %s (%s)'), true, $inUseUrl);
-    $sHtmlInUse        = '';
+    $sHtmlInUse = '';
     $sHtmlInUseMessage = '';
 
     if ($inUse == true) {
-        $disabled          = 'disabled="disabled"';
-        $sHtmlInUseCss     = cHTMLLinkTag::stylesheet($backendUrl . cAsset::backend('styles/inuse.css'));
+        $disabled = 'disabled="disabled"';
+        $sHtmlInUseCss = cHTMLLinkTag::stylesheet($backendUrl . cAsset::backend('styles/inuse.css'));
         $sHtmlInUseMessage = $message;
     }
 
@@ -392,10 +392,10 @@ if ($contenido) {
         // admin can edit article despite its locked status
         $isAdmin = cPermission::checkAdminPermission($auth->getPerms());
         if (false === $isAdmin) {
-            $notification      = new cGuiNotification();
-            $modErrorMessage   = i18n('This article is currently frozen and can not be edited!');
-            $inUse             = true;
-            $sHtmlInUseCss     = cHTMLLinkTag::stylesheet($backendUrl . cAsset::backend('styles/inuse.css'));
+            $notification = new cGuiNotification();
+            $modErrorMessage = i18n('This article is currently frozen and can not be edited!');
+            $inUse = true;
+            $sHtmlInUseCss = cHTMLLinkTag::stylesheet($backendUrl . cAsset::backend('styles/inuse.css'));
             $sHtmlInUseMessage = $notification->returnMessageBox('warning', $modErrorMessage, 0);
         }
     }
@@ -422,13 +422,13 @@ if ($contenido) {
         }
 
         if (isset($view) && $view === 'edit' && count($erroneousModules) > 0) {
-            $notification    = new cGuiNotification();
+            $notification = new cGuiNotification();
             $modErrorMessage = i18n("The following modules are erroneous and are therefore not executed:<br>\n");
             foreach ($erroneousModules as $erroneousModule) {
                 $modErrorMessage .= "- " . $erroneousModule . "<br />\n";
             }
-            $inUse             = true;
-            $sHtmlInUseCss     = cHTMLLinkTag::stylesheet($backendUrl . cAsset::backend('styles/inuse.css'));
+            $inUse = true;
+            $sHtmlInUseCss = cHTMLLinkTag::stylesheet($backendUrl . cAsset::backend('styles/inuse.css'));
             $sHtmlInUseMessage = $notification->returnMessageBox('error', $modErrorMessage, 0);
         }
     }
@@ -439,49 +439,27 @@ if ($contenido) {
     $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']);
 }
 
+// Set global db instance, some modules may still need this!
+$db = cRegistry::getDb();
+
 // check if isset parent category template
 // do not show error message if user calls an article explicitly via idart URL parameter
 if ($contenido) {
-    $sql        = "
-        SELECT
-            a.idtplcfg
-        FROM
-            `" . $cfg['tab']['cat_lang'] . "` AS a,
-            `" . $cfg['tab']['cat_art'] . "` AS b
-        WHERE
-            a.idcat = b.idcat
-            AND b.idart = $idart
-            AND a.idlang = $lang
-        ;";
-    $errorText  = i18n("Editing/Showing is not possible because there is no template assigned to this category.");
+    $errorText = i18n("Editing/Showing is not possible because there is no template assigned to this category.");
     $errorTitle = i18n("FATAL ERROR");
 } else {
-    $article    = new cApiArticleLanguage($idartlang);
-    $idart      = $article->getField('idart');
-    $sql        = "
-        SELECT
-            a.idtplcfg
-        FROM
-            `" . $cfg['tab']['cat_lang'] . "` AS a,
-            `" . $cfg['tab']['cat_art'] . "` AS b
-        WHERE
-            a.idcat = b.idcat
-            AND b.idart = $idart
-            AND a.idlang = $lang
-        ;";
-    $errorText  = 'Editing/Showing is not possible because there is no template assigned to this category.';
+    $article = new cApiArticleLanguage($idartlang);
+    $idart = $article->getField('idart');
+    $errorText = 'Editing/Showing is not possible because there is no template assigned to this category.';
     $errorTitle = 'FATAL ERROR!';
 }
 
-$db = cRegistry::getDb();
-$db->query($sql);
+$catLangColl = new cApiCategoryLanguageCollection();
+$tplCfgData = $catLangColl->fetchIdTplCfgByArticleIdAndLanguageId(
+    cSecurity::toInteger($idart), cSecurity::toInteger($lang)
+);
 
-$data = [];
-while ($db->nextRecord()) {
-    array_push($data, $db->toArray());
-}
-
-if (isset($data[0]) && $data[0]['idtplcfg'] === '0' && !isset($_REQUEST['idart'])) {
+if (isset($tplCfgColl[0]) && $tplCfgColl[0] === 0 && !isset($_REQUEST['idart'])) {
     $tpl = new cTemplate();
     $tpl->set("s", "ERROR_TITLE", $errorTitle);
     $tpl->set("s", "ERROR_TEXT", $errorText);
@@ -519,7 +497,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     unset($edit);
 
     $oCatArtColl = new cApiCategoryArticleCollection();
-    $oCatArt     = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart);
+    $oCatArt = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart);
 
     if ($oCatArt == false) {
         $tpl = new cTemplate();
@@ -562,13 +540,13 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Protected categories
     if ($public == 0) {
         if ($auth->auth['uid'] == 'nobody') {
-            $userPropColl   = new cApiUserPropertyCollection($auth->auth['uid']);
+            $userPropColl = new cApiUserPropertyCollection($auth->auth['uid']);
             $userProperties = $userPropColl->fetchByTypeName('frontend', 'allowed_ip');
             $validated = 0;
             foreach ($userProperties as $userProperty) {
                 $user_id = $userProperty->get('user_id');
-                $range   = $userProperty->f('value');
-                $slash   = cString::findFirstPos($range, '/');
+                $range = $userProperty->f('value');
+                $slash = cString::findFirstPos($range, '/');
 
                 if ($slash == false) {
                     $netmask = '255.255.255.255';
@@ -582,7 +560,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                     $oRightColl = new cApiRightCollection();
                     if (true === $oRightColl->hasFrontendAccessByCatIdAndUserId($idcat, $user_id)) {
                         $auth->auth['uid'] = $user_id;
-                        $validated         = 1;
+                        $validated = 1;
                     }
                 }
             }
@@ -637,16 +615,16 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Time management, redirect
     $oArtLang = new cApiArticleLanguage();
     $oArtLang->loadByArticleAndLanguageId($idart, $lang);
-    $online       = cSecurity::toInteger($oArtLang->get('online'));
-    $redirect     = $oArtLang->get('redirect');
+    $online = cSecurity::toInteger($oArtLang->get('online'));
+    $redirect = $oArtLang->get('redirect');
     $redirect_url = $oArtLang->get('redirect_url');
 
     @eval("\$" . "redirect_url = \"$redirect_url\";");
 
     if ($oArtLang->get('timemgmt') == '1' && $isstart != 1) {
-        $online    = 0;
+        $online = 0;
         $dateStart = $oArtLang->get('datestart');
-        $dateEnd   = $oArtLang->get('dateend');
+        $dateEnd = $oArtLang->get('dateend');
 
         if ($dateStart != '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00' && (strtotime($dateStart) <= time() || strtotime($dateEnd) > time()) && strtotime($dateStart) < strtotime($dateEnd)) {
             $online = 1;
@@ -695,7 +673,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             // Encode to punycode/IDNA (Internationalized Domain Name)
             $IDN = new idna_convert();
 
-            $redirect_url  = $IDN->encode($redirect_url);
+            $redirect_url = $IDN->encode($redirect_url);
             $redirect_mode = $oArtLang->get('redirect_mode');
 
             // default redirection is temporary

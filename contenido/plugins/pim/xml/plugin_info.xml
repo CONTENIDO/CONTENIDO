@@ -28,7 +28,8 @@
         </actions>
 
         <frames>
-            <frame area="pim" filetype="main" name="pim/includes/include.right_bottom.php" frameId="4" />
+            <frame area="pim" filetype="main" name="pim/includes/include.right_bottom.php"
+                   frameId="4"/>
         </frames>
 
         <nav_sub>

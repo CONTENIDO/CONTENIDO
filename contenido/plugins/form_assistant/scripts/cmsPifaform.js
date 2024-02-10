@@ -12,7 +12,7 @@
  * @link       https://www.contenido.org
  */
 
-(function(Con, $) {
+(function (Con, $) {
 
     var NAME = 'content-type-pifa-form';
 
@@ -40,7 +40,7 @@
      * @param {Object|String} settings The settings of this content type.
      */
     function cContentTypePifaForm(frameId, imageId, pathBackend, pathFrontend,
-            idArtLang, id, fields, prefix, session, settings) {
+                                  idArtLang, id, fields, prefix, session, settings) {
         // call the constructor of the parent class with the same arguments
         Con.cContentTypeAbstractTabbed.apply(this, arguments);
     }

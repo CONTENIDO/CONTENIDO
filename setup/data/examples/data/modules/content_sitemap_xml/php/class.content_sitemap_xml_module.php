@@ -8,7 +8,7 @@
  * @link       https://www.4fb.de
  */
 
-class ModuleContentSitemapXml
+class ContentSitemapXmlModule
 {
 
     /**
@@ -47,7 +47,7 @@ class ModuleContentSitemapXml
     private $msgXmlWriteFail;
 
     /**
-     * ModuleContentSitemapXml constructor.
+     * ContentSitemapXmlModule constructor.
      * @param array $options
      */
     public function __construct(array $options)
@@ -109,7 +109,7 @@ class ModuleContentSitemapXml
             $useCategoryUrlsForStartArticles = 'true' == $this->catUrlForStartArt;
 
             $lang = cSecurity::toInteger($lang);
-            $categoryIds = implode(',', array_map(function($categoryId) {
+            $categoryIds = implode(',', array_map(function ($categoryId) {
                 return cSecurity::toInteger($categoryId);
             }, $categoryIds));
 
@@ -185,7 +185,7 @@ class ModuleContentSitemapXml
      * @param string $filename [optional] the filename to which the sitemap should
      *        be written
      * @todo How can I save this properly formatted?
-     *       @see https://stackoverflow.com/questions/1191167/format-output-of-simplexml-asxml
+     * @see https://stackoverflow.com/questions/1191167/format-output-of-simplexml-asxml
      */
     public function saveSitemap(SimpleXMLElement $sitemap, string $filename = '')
     {
@@ -241,6 +241,42 @@ class ModuleContentSitemapXml
         $tzd = cString::getPartOfString($tzd, 0, 6);
         $date = date('Y-m-d\TH:i:s', $time);
         return $date . $tzd;
+    }
+
+    /**
+     * Builds an array with category information.
+     * Each entry has the following keys:
+     * idcat, level, name, name_indented
+     *
+     * @return array with category information
+     */
+    public static function buildCategoryArray(): array
+    {
+        $cfg = cRegistry::getConfig();
+        $lang = cRegistry::getLanguageId();
+        $db = cRegistry::getDb();
+
+        $query = 'SELECT * FROM ' . $cfg['tab']['cat_lang'] . ' AS a, ' . $cfg['tab']['cat_tree'] . ' as b WHERE (a.idcat = b.idcat) AND (a.visible = 1) AND (a.public = 1) AND (a.idlang = ' . $lang . ') ORDER BY b.idtree';
+        $db->query($query);
+
+        $categories = [];
+        while ($db->nextRecord()) {
+            $category = [];
+            $category['idcat'] = $db->f('idcat');
+            $category['level'] = $db->f('level');
+
+            $prefix = '';
+            for ($i = 0; $i < $db->f('level'); $i++) {
+                $prefix .= '-->';
+            }
+
+            $category['name'] = $db->f('name');
+            $category['name_indented'] = $prefix . $db->f('name');
+
+            $categories[] = $category;
+        }
+
+        return $categories;
     }
 
 }

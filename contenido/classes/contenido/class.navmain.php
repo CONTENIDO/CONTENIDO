@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiNavMain createNewItem
  * @method cApiNavMain|bool next
  */
-class cApiNavMainCollection extends ItemCollection {
+class cApiNavMainCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('nav_main'), 'idnavm');
         $this->_setItemClass('cApiNavMain');
     }
@@ -38,14 +40,15 @@ class cApiNavMainCollection extends ItemCollection {
      *
      * @param string $name
      * @param string $location
-     * @param null   $id
+     * @param null $id
      *
      * @return cApiNavMain
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($name, $location, $id = null) {
+    public function create($name, $location, $id = null)
+    {
         $item = $this->createNewItem();
 
         if ($id != null) {
@@ -76,7 +79,8 @@ class cApiNavMain extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('nav_main'), 'idnavm');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {

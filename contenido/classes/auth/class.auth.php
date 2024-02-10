@@ -20,17 +20,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Authentication
  */
-abstract class cAuth {
+abstract class cAuth
+{
 
     /**
-     * Authentification user ID for nobody.
+     * Authentication user ID for nobody.
      *
      * @var string
      */
     const AUTH_UID_NOBODY = 'nobody';
 
     /**
-     * Authentification user ID for calling login form.
+     * Authentication user ID for calling login form.
      *
      * @var string
      */
@@ -130,7 +131,8 @@ abstract class cAuth {
      *         name of the variable
      * @return mixed
      */
-    public function __get($name) {
+    public function __get($name)
+    {
         if ($name == 'lifetime') {
             return $this->_lifetime;
         }
@@ -143,7 +145,8 @@ abstract class cAuth {
     /**
      * Starts the authentication process.
      */
-    public function start() {
+    public function start()
+    {
         $sess = cRegistry::getSession();
         if (!$this->_in) {
             $sess->register('auth');
@@ -184,7 +187,8 @@ abstract class cAuth {
     /**
      * Restarts the authentication process.
      */
-    public function restart() {
+    public function restart()
+    {
         $this->resetAuthInfo();
         $this->_defaultNobody = false;
         $this->start();
@@ -197,8 +201,9 @@ abstract class cAuth {
      *         If flag set to true, the default authentication is
      *         switched to nobody. (optional, default: false)
      */
-    public function resetAuthInfo($nobody = false) {
-        $this->auth['uid']  = $nobody ? self::AUTH_UID_NOBODY : '';
+    public function resetAuthInfo($nobody = false)
+    {
+        $this->auth['uid'] = $nobody ? self::AUTH_UID_NOBODY : '';
         $this->auth['perm'] = '';
         $this->_setExpiration($nobody ? 0x7fffffff : 0);
     }
@@ -211,7 +216,8 @@ abstract class cAuth {
      *         If flag set to true, nobody is recreated as user.
      * @return bool true
      */
-    public function logout($nobody = false) {
+    public function logout($nobody = false): bool
+    {
         $sess = cRegistry::getSession();
 
         $sess->unregister('auth');
@@ -228,7 +234,8 @@ abstract class cAuth {
      *
      * @return array
      */
-    public function getAuthInfo() {
+    public function getAuthInfo(): array
+    {
         return $this->auth;
     }
 
@@ -237,12 +244,13 @@ abstract class cAuth {
      *
      * @return bool
      */
-    public function isAuthenticated() {
+    public function isAuthenticated()
+    {
         $authInfo = $this->getAuthInfo();
         $userId = $this->getUserId();
 
         if (!empty($userId) && (($this->_lifetime <= 0) || (time() < $authInfo['exp']))) {
-            return$userId;
+            return $userId;
         } else {
             return false;
         }
@@ -253,7 +261,8 @@ abstract class cAuth {
      *
      * @return bool
      */
-    public function isLoginForm() {
+    public function isLoginForm(): bool
+    {
         return $this->getUserId() === self::AUTH_UID_FORM;
     }
 
@@ -262,7 +271,8 @@ abstract class cAuth {
      *
      * @return string
      */
-    public function getUserId() {
+    public function getUserId(): string
+    {
         $authInfo = $this->getAuthInfo();
 
         return $authInfo['uid'] ?? '';
@@ -273,7 +283,8 @@ abstract class cAuth {
      *
      * @return string
      */
-    public function getUsername() {
+    public function getUsername(): string
+    {
         $authInfo = $this->getAuthInfo();
 
         return $authInfo['uname'] ?? '';
@@ -284,7 +295,8 @@ abstract class cAuth {
      *
      * @return string
      */
-    public function getPerms() {
+    public function getPerms(): string
+    {
         $authInfo = $this->getAuthInfo();
 
         return $authInfo['perm'] ?? '';
@@ -296,7 +308,8 @@ abstract class cAuth {
      * @param int $expiration [optional]
      *         new expiration (optional, default: NULL = current time plus lifetime minutes)
      */
-    protected function _setExpiration($expiration = NULL) {
+    protected function _setExpiration($expiration = NULL)
+    {
         if ($expiration === NULL) {
             $expiration = time() + (60 * $this->_lifetime);
         }
@@ -307,7 +320,8 @@ abstract class cAuth {
     /**
      * Fetches the login form.
      */
-    protected function _fetchLoginForm() {
+    protected function _fetchLoginForm()
+    {
         $sess = cRegistry::getSession();
         $this->_setAuthInfo(self::AUTH_UID_FORM, 0x7fffffff);
         $this->displayLoginForm();
@@ -323,7 +337,8 @@ abstract class cAuth {
      * @param int $expiration [optional]
      *         expiration (optional, default: NULL)
      */
-    protected function _setAuthInfo($userId, $expiration = NULL) {
+    protected function _setAuthInfo($userId, $expiration = NULL)
+    {
         $this->auth['uid'] = $userId;
         $this->_setExpiration($expiration);
     }

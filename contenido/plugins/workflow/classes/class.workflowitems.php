@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method WorkflowItem createNewItem
  * @method WorkflowItem|false next
  */
-class WorkflowItems extends ItemCollection {
+class WorkflowItems extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('workflow_items'), "idworkflowitem");
         $this->_setItemClass("WorkflowItem");
     }
@@ -40,7 +42,8 @@ class WorkflowItems extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function delete($id) {
+    public function delete($id)
+    {
         $item = new WorkflowItem();
         $item->loadByPrimaryKey($id);
         $pos = cSecurity::toInteger($item->get("position"));
@@ -72,12 +75,13 @@ class WorkflowItems extends ItemCollection {
     }
 
     /**
-     * @param int  $idworkflowitem
+     * @param int $idworkflowitem
      * @param bool $delete
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function updateArtAllocation($idworkflowitem, $delete = false) {
+    public function updateArtAllocation($idworkflowitem, $delete = false)
+    {
         global $idworkflow;
 
         $oDb = cRegistry::getDb();
@@ -117,7 +121,8 @@ class WorkflowItems extends ItemCollection {
      * @return bool
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function swap($idworkflow, $pos1, $pos2) {
+    public function swap($idworkflow, $pos1, $pos2)
+    {
         $idworkflow = cSecurity::toInteger($idworkflow);
         $pos1 = cSecurity::toInteger($pos1);
         $pos2 = cSecurity::toInteger($pos2);
@@ -157,7 +162,8 @@ class WorkflowItems extends ItemCollection {
      * @return bool|Item
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idworkflow) {
+    public function create($idworkflow)
+    {
         $idworkflow = cSecurity::toInteger($idworkflow);
 
         $workflows = new Workflows();
@@ -204,13 +210,15 @@ class WorkflowItems extends ItemCollection {
  * @version 0.1
  * @copyright  four for business 2003
  */
-class WorkflowItem extends Item {
+class WorkflowItem extends Item
+{
 
     /**
      * Constructor Function
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('workflow_items'), "idworkflowitem");
     }
 
@@ -218,7 +226,8 @@ class WorkflowItem extends Item {
      * @return array
      * @throws cDbException|cException
      */
-    public function getStepRights() {
+    public function getStepRights()
+    {
         $idwfi = $this->values["idworkflowitem"];
         $workflowActions = new WorkflowActions();
 
@@ -244,7 +253,8 @@ class WorkflowItem extends Item {
      * @return bool
      * @throws cInvalidArgumentException|cException
      */
-    public function setField($field, $value, $safe = true) {
+    public function setField($field, $value, $safe = true)
+    {
         if (true !== $this->isLoaded()) {
             $this->lasterror = i18n("No item loaded", "workflow");
             return false;
@@ -286,7 +296,8 @@ class WorkflowItem extends Item {
      * @return bool
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function init($idworkflow, $idposition) {
+    public function init($idworkflow, $idposition)
+    {
         $idworkflow = cSecurity::toInteger($idworkflow);
         $idposition = cSecurity::toInteger($idposition);
 
@@ -322,7 +333,8 @@ class WorkflowItem extends Item {
      * @return bool
      * @throws cDbException|cInvalidArgumentException
      */
-    public function setPosition($idposition) {
+    public function setPosition($idposition)
+    {
         parent::setField("position", cSecurity::toInteger($idposition));
         $this->store();
         return true;

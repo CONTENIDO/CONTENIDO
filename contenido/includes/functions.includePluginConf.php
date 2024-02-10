@@ -38,7 +38,7 @@ if ($cfg['debug']['disable_plugins'] === false) {
         if (is_dir($pluginFolder . $pluginName . '/')) {
             $plugins[] = $pluginName;
         } else {
-            cWarning(__FILE__, __LINE__, "Plugin <" . $pluginName. "> is activated in database, but folder does not exist. This leads to errors e.g. in user or group rights area settings.");
+            cWarning(__FILE__, __LINE__, "Plugin <" . $pluginName . "> is activated in database, but folder does not exist. This leads to errors e.g. in user or group rights area settings.");
         }
     }
 }
@@ -55,7 +55,7 @@ foreach ($plugins as $pluginName) {
     if (cFileHandler::exists($pluginConfigFile)) {
         include_once($pluginConfigFile);
     } else {
-        cWarning(__FILE__, __LINE__, "Plugin <" . $pluginName. "> configuration file config.plugin.php is missing.");
+        cWarning(__FILE__, __LINE__, "Plugin <" . $pluginName . "> configuration file config.plugin.php is missing.");
     }
 }
 

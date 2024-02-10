@@ -158,7 +158,7 @@ class cSqlTemplateTest extends cTestingTestCase
         $this->assertEquals($expected, $sqlTemplate->parse($template));
 
         // Custom replacement with escaping
-        $escaped = "My escaped \'value\'" ;
+        $escaped = "My escaped \'value\'";
         $template = "INSERT INTO `!PREFIX!_foo` (`t`) VALUES ('!MY_PLACEHOLDER2!');";
         $expected = "INSERT INTO `{$prefix}_foo` (`t`) VALUES ('{$escaped}');";
         $sqlTemplate = new cSqlTemplate();

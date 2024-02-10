@@ -33,9 +33,9 @@ foreach ($areasNavSubs as $areasNavSub) {
 
     if ($perm->have_perm_area_action($areaName)) {
         // Set template data
-        $tpl->set('d', 'ID',      'c_' . $tpl->dyn_cnt);
+        $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
         $tpl->set('d', 'DATA_NAME', $areaName);
-        $tpl->set('d', 'CLASS',   '');
+        $tpl->set('d', 'CLASS', '');
         $tpl->set('d', 'OPTIONS', '');
         $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$areaName&frame=4&groupid=$groupid"), $areasNavSub['caption']));
         $tpl->next();

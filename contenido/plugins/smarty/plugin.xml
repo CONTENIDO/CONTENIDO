@@ -4,7 +4,8 @@
         <plugin_name>Smarty Wrapper</plugin_name>
         <plugin_foldername>smarty</plugin_foldername>
         <uuid>82b117e94bb2cbcbce4e56b79a7d0c23</uuid>
-        <description>Provides smarty template engine for CONTENIDO Backend and Frontend</description>
+        <description>Provides smarty template engine for CONTENIDO Backend and Frontend
+        </description>
         <author>Bilal Arslan, Andreas Dieter</author>
         <copyright>four for business AG</copyright>
         <mail>info@4fb.de</mail>
@@ -13,7 +14,7 @@
     </general>
 
     <requirements php="5.2.3">
-        <contenido minversion="4.9.0" />
+        <contenido minversion="4.9.0"/>
     </requirements>
 
     <contenido/>

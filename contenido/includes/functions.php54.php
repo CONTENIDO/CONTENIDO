@@ -27,7 +27,8 @@ if (function_exists('conHtmlSpecialChars') == false) {
      * @param string $encoding
      * @return string
      */
-    function conHtmlSpecialChars($value, $flags = '', $encoding = '') {
+    function conHtmlSpecialChars($value, $flags = '', $encoding = '')
+    {
 
         if ($encoding == '') {
             $encoding = cRegistry::getEncoding();
@@ -55,7 +56,8 @@ if (function_exists('conHtmlEntityDecode') == false) {
      * @param string $encoding
      * @return string
      */
-    function conHtmlEntityDecode($value, $flags = '', $encoding = '') {
+    function conHtmlEntityDecode($value, $flags = '', $encoding = '')
+    {
 
         if ($encoding == '') {
             $encoding = cRegistry::getEncoding();
@@ -78,7 +80,8 @@ if (function_exists('conHtmlentities') == false) {
      * @param string $encoding
      * @return string
      */
-    function conHtmlentities($value, $flags = '', $encoding = '') {
+    function conHtmlentities($value, $flags = '', $encoding = '')
+    {
 
         if ($encoding == '') {
             $encoding = cRegistry::getEncoding();
@@ -100,7 +103,8 @@ if (function_exists('conGetHtmlTranslationTable') == false) {
      *
      * @return array
      */
-    function conGetHtmlTranslationTable($table = '', $flags = '') {
+    function conGetHtmlTranslationTable($table = '', $flags = '')
+    {
 
         $table = ($table == '') ? HTML_SPECIALCHARS : $table;
         $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;

@@ -60,11 +60,11 @@ $sql = "SELECT
             " . $cfg["tab"]["cat_art"] . " AS c,
             " . $cfg["tab"]["actionlog"] . " AS d
         WHERE
-            a.idlang    = " . (int) $lang . " AND
+            a.idlang    = " . (int)$lang . " AND
             a.idart     = b.idart AND
-            b.idclient  = " . (int) $client . " AND
+            b.idclient  = " . (int)$client . " AND
             b.idart     = c.idart AND
-            d.idaction  = " . (int) $idaction . " AND
+            d.idaction  = " . (int)$idaction . " AND
             d.user_id   = '" . $db->escape($auth->auth["uid"]) . "' AND
             d.idcatart  = c.idcatart
         GROUP BY
@@ -128,7 +128,7 @@ while ($db->nextRecord()) {
                     " . $cfg["tab"]["tpl_conf"] . " AS a,
                     " . $cfg["tab"]["tpl"] . " AS b
                  WHERE
-                    a.idtplcfg = " . (int) $idtplcfg . " AND
+                    a.idtplcfg = " . (int)$idtplcfg . " AND
                     a.idtpl = b.idtpl";
 
         $db2->query($sql2);
@@ -202,9 +202,9 @@ $sql = "SELECT
         ON
             d.idtpl = c.idtpl
         WHERE
-            a.idclient = " . (int) $client . " AND
-            a.idcat = " . (int) $idcat . " AND
-            b.idlang = " . (int) $lang . " AND
+            a.idclient = " . (int)$client . " AND
+            a.idcat = " . (int)$idcat . " AND
+            b.idlang = " . (int)$lang . " AND
             b.idcat = a.idcat AND
             c.idtplcfg = b.idtplcfg";
 

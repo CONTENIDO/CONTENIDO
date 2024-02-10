@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cGuiTree extends cTree {
+class cGuiTree extends cTree
+{
 
     /**
      *
@@ -105,7 +106,8 @@ class cGuiTree extends cTree {
      * @param string $uuid
      * @param false|string $treename [optional]
      */
-    public function __construct($uuid, $treename = false) {
+    public function __construct($uuid, $treename = false)
+    {
         global $cfg, $auth;
 
         parent::__construct();
@@ -125,7 +127,8 @@ class cGuiTree extends cTree {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function processParameters() {
+    public function processParameters()
+    {
         if (($items = $this->_user->getUserProperty("expandstate", $this->_uuid)) !== false) {
             $list = unserialize($items);
 
@@ -161,7 +164,8 @@ class cGuiTree extends cTree {
      *         - cGuiTree::TREEVIEW_GRIDLINE_DOTTED
      *         - cGuiTree::TREEVIEW_GRIDLINE_NONE
      */
-    public function setGridlineMode($mode) {
+    public function setGridlineMode($mode)
+    {
         $this->_gridlineMode = $mode;
     }
 
@@ -171,7 +175,8 @@ class cGuiTree extends cTree {
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
      */
-    public function setBackgroundMode($mode) {
+    public function setBackgroundMode($mode)
+    {
         cDeprecated('This method is deprecated and is not needed any longer');
         $this->_backgroundMode = $mode;
     }
@@ -182,7 +187,8 @@ class cGuiTree extends cTree {
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
      */
-    public function setMouseoverMode($mode) {
+    public function setMouseoverMode($mode)
+    {
         cDeprecated('This method is deprecated and is not needed any longer');
         $this->_mouseoverMode = $mode;
     }
@@ -193,7 +199,8 @@ class cGuiTree extends cTree {
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
      */
-    public function setBackgroundColors($colors) {
+    public function setBackgroundColors($colors)
+    {
         cDeprecated('This method is deprecated and is not needed any longer');
         $this->_backgroundColors = $colors;
     }
@@ -203,7 +210,8 @@ class cGuiTree extends cTree {
      * @param bool $with_root [optional]
      * @return string
      */
-    public function render($with_root = true) {
+    public function render($with_root = true)
+    {
 
         /* @var $objects cTreeItem[] */
         $objects = $this->flatTraverse(0);
@@ -383,7 +391,8 @@ class cGuiTree extends cTree {
      * @param cTreeItem $object
      * @return string
      */
-    public function _getExpandCollapseIcon($object) {
+    public function _getExpandCollapseIcon($object)
+    {
 
         $img = $object->getCollapsed() ? "grid_expand.gif" : "grid_collapse.gif";
 
@@ -393,11 +402,12 @@ class cGuiTree extends cTree {
     /**
      * Sets collapsed state.
      *
-     * @param cHTMLLink  $link
-     * @param cTreeItem  $object
+     * @param cHTMLLink $link
+     * @param cTreeItem $object
      * @return cHTMLLink
      */
-    public function _setExpandCollapseLink($link, $object) {
+    public function _setExpandCollapseLink($link, $object)
+    {
         if (!empty($this->_name)) {
             $treename = $this->_name . "_";
         }
@@ -419,7 +429,8 @@ class cGuiTree extends cTree {
      * @param string $image
      * @return string
      */
-    public function _buildImagePath($image) {
+    public function _buildImagePath($image)
+    {
         return "./images/" . $this->_gridlineMode . "/" . $image;
     }
 
@@ -427,7 +438,8 @@ class cGuiTree extends cTree {
      *
      * @param string $link
      */
-    public function setBaseLink($link) {
+    public function setBaseLink($link)
+    {
         $this->_baseLink = $link;
     }
 

@@ -107,7 +107,7 @@ $sSelectBox = $oVersion->buildSelectBox(
 $oForm = new cGuiTableForm('mod_display');
 $oForm->addTableClass('col_flx_m_50p');
 $oForm->setTableID('mod_history');
-$oForm->setHeader(i18n('Edit module') . ' &quot;'. conHtmlSpecialChars($module->get('name')). '&quot;');
+$oForm->setHeader(i18n('Edit module') . ' &quot;' . conHtmlSpecialChars($module->get('name')) . '&quot;');
 $oForm->setVar('area', 'mod_history');
 $oForm->setVar('frame', $frame);
 $oForm->setVar('idmod', $idmod);

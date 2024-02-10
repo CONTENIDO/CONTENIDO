@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiMailLogSuccess createNewItem
  * @method cApiMailLogSuccess|bool next
  */
-class cApiMailLogSuccessCollection extends ItemCollection {
+class cApiMailLogSuccessCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('mail_log_success'), 'idmailsuccess');
         $this->_setItemClass('cApiMailLogSuccess');
 
@@ -39,9 +41,9 @@ class cApiMailLogSuccessCollection extends ItemCollection {
     /**
      * Creates a new mail log success entry with the given data.
      *
-     * @param int    $idmail
-     * @param array  $recipient
-     * @param bool   $success
+     * @param int $idmail
+     * @param array $recipient
+     * @param bool $success
      * @param string $exception
      *
      * @return cApiMailLogSuccess
@@ -49,7 +51,8 @@ class cApiMailLogSuccessCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idmail, $recipient, $success, $exception) {
+    public function create($idmail, $recipient, $success, $exception)
+    {
         $item = $this->createNewItem();
 
         $item->set('idmail', $idmail);
@@ -79,7 +82,8 @@ class cApiMailLogSuccess extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('mail_log_success'), 'idmailsuccess');
         $this->setFilters([], []);
         if ($mId !== false) {

@@ -14,102 +14,19 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-/**
- * Extend cGuiScrollList for some special features like CSS class for table data
- */
-class cGuiScrollListAlltranslations extends cGuiScrollList {
-
-    /**
-     * Constructor to create an instance of this class.
-     */
-    function __construct() {
-        parent::__construct(false);
-        $this->objTable->setClass("generic all_translations");
-        $this->objTable->updateAttributes([
-            "cellpadding" => "2"
-        ]);
-    }
-
-    /**
-     * Is called when a new row is rendered
-     *
-     * @param int $row
-     *         The current row which is being rendered
-     */
-    public function onRenderRow($row) {
-        // Add module name to the table row, we need it for the "inused_module" action
-        $this->objRow->setAttribute('data-name', $this->data[$row - 1][1] ?? '');
-    }
-
-    /**
-     * Is called when a new column is rendered
-     *
-     * @param int $column
-     *         The current column which is being rendered
-     */
-    public function onRenderColumn($column) {
-        $iColumns = count($this->data[0]);
-
-        switch ($column) {
-            case 1:
-                $sClass = 'module';
-                break;
-            case 2:
-                $sClass = 'inuse';
-                break;
-            case 3:
-                $sClass = 'keyword';
-                break;
-            case $iColumns:
-                $sClass = 'actions';
-                break;
-
-            default:
-                $sClass = 'translation';
-                break;
-        }
-
-        $this->objItem->setClass($sClass);
-    }
-
-    /**
-     * Sorts the list by a given field and a given order.
-     *
-     * @param int $field
-     *         Field index
-     * @param string $order
-     *         Sort order (see php's sort documentation)
-     */
-    public function sort($field, $order) {
-        $this->sortkey = $field;
-        $this->sortmode = ($order === 'DESC') ? SORT_DESC : SORT_ASC;
-
-        $field = $field + 1;
-
-        if ($field > 3) {
-            $sortby = [];
-            foreach ($this->data as $row => $cols) {
-                $sortby[$row] = trim(cString::toLowerCase(conHtmlentities($cols[$field])));
-            }
-            $this->data = cArray::csort($this->data, $sortby, $this->sortmode);
-        } else {
-            $this->data = cArray::csort($this->data, "$field", $this->sortmode);
-        }
-    }
-
-}
 
 /**
  * Adds sorting images to string
  *
- * @param int    $index
+ * @param int $index
  * @param string $text
  *
  * @return string
  *
  * @throws cException
  */
-function addSortImages($index, $text) {
+function addSortImages($index, $text)
+{
     $cfg = cRegistry::getConfig();
     $sortUp = '<img src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'sort_up.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
     $sortDown = '<img src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'sort_down.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
@@ -384,8 +301,8 @@ if ($search != '' || ($filter != '' && $filter != -1)) {
 }
 
 if (empty($allTranslations)) {
-	$page->displayInfo(i18n("Can not find some module translations for your selection."));
-	$noResults = true;
+    $page->displayInfo(i18n("Can not find some module translations for your selection."));
+    $noResults = true;
 }
 
 unset($strings);
@@ -559,7 +476,7 @@ $list->setCustom("filter", $filter);
 foreach ($extraLanguages as $idExtraLang) {
     $list->setCustom("extralang[]", $idExtraLang);
 }
-$list->setResultsPerPage($_REQUEST["elemperpage"]);
+$list->setResultsPerPage(cSecurity::toInteger($_REQUEST["elemperpage"] ?? '1'));
 $list->objHeaderItem->updateAttributes([
     'width' => 52
 ]);
@@ -632,7 +549,7 @@ foreach ($allTranslations as $hash => $translationArray) {
         $currentModuleInUse = i18n('No template');
     } else {
         $inUseString = i18n("Click for more information about usage");
-        $currentModuleInUse = '<a href="javascript:void(0)" rel="' . $translationArray['idmod'] . '" class="inused_module" data-action="inused_module" data-id="' . $translationArray['idmod'] . '"><img src="' . $cfg['path']['images'] . 'info.gif" title="' . $inUseString . '" alt="' . $inUseString . '">' . $countCurrentModuleInUse . ' ' . ($countCurrentModuleInUse == 1? i18n('Template') : i18n('Templates')) . ' </a>';
+        $currentModuleInUse = '<a href="javascript:void(0)" rel="' . $translationArray['idmod'] . '" class="inused_module" data-action="inused_module" data-id="' . $translationArray['idmod'] . '"><img src="' . $cfg['path']['images'] . 'info.gif" title="' . $inUseString . '" alt="' . $inUseString . '">' . $countCurrentModuleInUse . ' ' . ($countCurrentModuleInUse == 1 ? i18n('Template') : i18n('Templates')) . ' </a>';
     }
     $fields = [
         $counter,
@@ -723,7 +640,7 @@ foreach ($allTranslations as $hash => $translationArray) {
 $counter = count($allTranslations);
 
 $list->sort(cSecurity::toInteger($_REQUEST["sortby"]), $_REQUEST["sortmode"]);
-$list->setListStart($_REQUEST["page"]);
+$list->setListStart(cSecurity::toInteger($_REQUEST["page"] ?? '1'));
 $form = new cHTMLForm('all_mod_translations');
 $form->setVar('area', $area);
 $form->setVar('action', 'con_translate_edit');

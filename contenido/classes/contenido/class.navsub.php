@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiNavSub createNewItem
  * @method cApiNavSub|bool next
  */
-class cApiNavSubCollection extends ItemCollection {
+class cApiNavSubCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('nav_sub'), 'idnavs');
         $this->_setItemClass('cApiNavSub');
 
@@ -40,12 +42,12 @@ class cApiNavSubCollection extends ItemCollection {
     /**
      * Create new item with given values.
      *
-     * @param int        $navm
+     * @param int $navm
      * @param int|string $area
      *                           AreaId or area name
-     * @param int        $level
-     * @param string     $location
-     * @param int        $online [optional]
+     * @param int $level
+     * @param string $location
+     * @param int $online [optional]
      *
      * @return cApiNavSub
      *
@@ -53,7 +55,8 @@ class cApiNavSubCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($navm, $area, $level, $location, $online = 1) {
+    public function create($navm, $area, $level, $location, $online = 1)
+    {
         $item = $this->createNewItem();
 
         if (is_string($area)) {
@@ -83,8 +86,8 @@ class cApiNavSubCollection extends ItemCollection {
      * Returns sub navigation by area name
      *
      * @param string $area
-     * @param int    $level  [optional]
-     * @param int    $online [optional]
+     * @param int $level [optional]
+     * @param int $online [optional]
      *
      * @return array
      *                       List of assiziative arrays like
@@ -99,8 +102,9 @@ class cApiNavSubCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function getSubnavigationsByAreaName($area, $level = 1, $online = 1) {
-        $level = (int) $level;
+    public function getSubnavigationsByAreaName($area, $level = 1, $online = 1)
+    {
+        $level = (int)$level;
         $online = (1 == $online) ? 1 : 0;
 
         $nav = new cGuiNavigation();
@@ -147,7 +151,8 @@ class cApiNavSubCollection extends ItemCollection {
  * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiNavSub extends Item {
+class cApiNavSub extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -157,7 +162,8 @@ class cApiNavSub extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('nav_sub'), 'idnavs');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
@@ -174,7 +180,8 @@ class cApiNavSub extends Item {
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idarea':
             case 'idnavm':

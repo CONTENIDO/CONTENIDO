@@ -97,14 +97,14 @@ class SIWECOSCollection extends ItemCollection
 
         $forms = [];
         while ($db->nextRecord()) {
-            $forms[$db->f('idsiwecos')]['idsiwecos']   = $db->f('idsiwecos');
-            $forms[$db->f('idsiwecos')]['domain']      = $db->f('domain');
-            $forms[$db->f('idsiwecos')]['email']       = $db->f('email');
-            $forms[$db->f('idsiwecos')]['userToken']   = $db->f('userToken');
+            $forms[$db->f('idsiwecos')]['idsiwecos'] = $db->f('idsiwecos');
+            $forms[$db->f('idsiwecos')]['domain'] = $db->f('domain');
+            $forms[$db->f('idsiwecos')]['email'] = $db->f('email');
+            $forms[$db->f('idsiwecos')]['userToken'] = $db->f('userToken');
             $forms[$db->f('idsiwecos')]['domainToken'] = $db->f('domainToken');
             $forms[$db->f('idsiwecos')]['dangerLevel'] = $db->f('dangerLevel');
-            $forms[$db->f('idsiwecos')]['author']      = $db->f('author');
-            $forms[$db->f('idsiwecos')]['created']     = $db->f('created');
+            $forms[$db->f('idsiwecos')]['author'] = $db->f('author');
+            $forms[$db->f('idsiwecos')]['created'] = $db->f('created');
         }
 
         return $forms;
@@ -160,10 +160,10 @@ class SIWECOS extends Item
     public static function logException(Exception $e)
     {
         if (getSystemProperty('debug', 'debug_for_plugins') == 'true') {
-            $cfg         = cRegistry::getConfig();
+            $cfg = cRegistry::getConfig();
             $destination = $cfg['path']['contenido_logs'] . 'errorlog.txt';
-            $writer      = cLogWriter::factory('file', ['destination' => $destination]);
-            $log         = new cLog($writer);
+            $writer = cLogWriter::factory('file', ['destination' => $destination]);
+            $log = new cLog($writer);
             $log->err($e->getMessage());
             $log->err($e->getTraceAsString());
         }
@@ -180,8 +180,8 @@ class SIWECOS extends Item
     public static function notifyException(Exception $e)
     {
         $cGuiNotification = new cGuiNotification();
-        $level            = cGuiNotification::LEVEL_ERROR;
-        $message          = $e->getMessage();
+        $level = cGuiNotification::LEVEL_ERROR;
+        $message = $e->getMessage();
 
         return $cGuiNotification->returnNotification($level, $message);
     }

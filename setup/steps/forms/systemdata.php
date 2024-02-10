@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage Form
  */
-class cSetupSystemData extends cSetupMask {
+class cSetupSystemData extends cSetupMask
+{
 
     /**
      * cSetupSystemData constructor.
@@ -28,19 +29,20 @@ class cSetupSystemData extends cSetupMask {
      * @param bool $previous
      * @param $next
      */
-    public function __construct($step, $previous, $next) {
+    public function __construct($step, $previous, $next)
+    {
         $cfg = cRegistry::getConfig();
 
-        cSetupMask::__construct('templates/setup/forms/systemdata.tpl', $step);
+        parent::__construct('templates/setup/forms/systemdata.tpl', $step);
 
-        cArray::initializeKey($_SESSION, 'dbprefix', '');
-        cArray::initializeKey($_SESSION, 'dbhost', '');
-        cArray::initializeKey($_SESSION, 'dbuser', '');
-        cArray::initializeKey($_SESSION, 'dbname', '');
-        cArray::initializeKey($_SESSION, 'dbpass', '');
-        cArray::initializeKey($_SESSION, 'dbengine', '');
-        cArray::initializeKey($_SESSION, 'dbcharset', '');
-        cArray::initializeKey($_SESSION, 'dbcollation', '');
+        cArray::initializeKey($_SESSION, 'dbprefix');
+        cArray::initializeKey($_SESSION, 'dbhost');
+        cArray::initializeKey($_SESSION, 'dbuser');
+        cArray::initializeKey($_SESSION, 'dbname');
+        cArray::initializeKey($_SESSION, 'dbpass');
+        cArray::initializeKey($_SESSION, 'dbengine');
+        cArray::initializeKey($_SESSION, 'dbcharset');
+        cArray::initializeKey($_SESSION, 'dbcollation');
         cArray::initializeKey($_SESSION, 'dboptions', []);
 
         $this->takeoverExistingDbSettingsToSession();
@@ -143,7 +145,7 @@ class cSetupSystemData extends cSetupMask {
                 $option = new cHTMLOptionElement($collation, $collation, $selected);
                 $dbcollation->addOptionElement(++$pos, $option);
             }
-            $dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText'). $dbcollation->render();
+            $dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText') . $dbcollation->render();
         }
 
         if (isset($_SESSION['dboptions'][MYSQLI_INIT_COMMAND])) {
@@ -183,7 +185,8 @@ class cSetupSystemData extends cSetupMask {
         $this->setNavigation($previous, $next);
     }
 
-    protected function _createNavigation() {
+    protected function _createNavigation()
+    {
         $link = new cHTMLLink('#');
 
         if ($_SESSION['setuptype'] == 'setup') {
@@ -208,7 +211,8 @@ class cSetupSystemData extends cSetupMask {
         $this->_stepTemplateClass->set('s', 'BACK', $backlink->render());
     }
 
-    protected function takeoverExistingDbSettingsToSession() {
+    protected function takeoverExistingDbSettingsToSession()
+    {
         $cfg = cRegistry::getConfig();
 
         if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
@@ -235,10 +239,11 @@ class cSetupSystemData extends cSetupMask {
             unset($cfgBackup);
 
             foreach ($aVars as $aVar => $sValue) {
-                if ($_SESSION[$aVar] == '') {
+                if (empty($_SESSION[$aVar])) {
                     $_SESSION[$aVar] = $sValue;
                 }
             }
         }
     }
+
 }

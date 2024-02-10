@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiContainerConfiguration createNewItem
  * @method cApiContainerConfiguration|bool next
  */
-class cApiContainerConfigurationCollection extends ItemCollection {
+class cApiContainerConfigurationCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -31,7 +32,8 @@ class cApiContainerConfigurationCollection extends ItemCollection {
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function __construct($select = false) {
+    public function __construct($select = false)
+    {
         $table = cRegistry::getDbTableName('container_conf');
         parent::__construct($table, 'idcontainerc');
         $this->_setItemClass('cApiContainerConfiguration');
@@ -47,14 +49,15 @@ class cApiContainerConfigurationCollection extends ItemCollection {
     /**
      * Creates a container configuration item
      *
-     * @param int    $idtplcfg
-     * @param int    $number
+     * @param int $idtplcfg
+     * @param int $number
      * @param string $container
      *
      * @return cApiContainerConfiguration
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idtplcfg, $number, $container) {
+    public function create($idtplcfg, $number, $container)
+    {
         $item = $this->createNewItem();
 
         $item->set('idtplcfg', $idtplcfg);
@@ -75,7 +78,8 @@ class cApiContainerConfigurationCollection extends ItemCollection {
      *         container configuration.
      * @throws cDbException|cException
      */
-    public function getByTemplateConfiguration($idtplcfg) {
+    public function getByTemplateConfiguration($idtplcfg)
+    {
         $configuration = [];
         $this->select('idtplcfg = ' . cSecurity::toInteger($idtplcfg), '', 'number ASC');
         while (($item = $this->next()) !== false) {
@@ -101,7 +105,8 @@ class cApiContainerConfiguration extends Item
      *
      * @throws cDbException|cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         $table = cRegistry::getDbTableName('container_conf');
         parent::__construct($table, 'idcontainerc');
         $this->setFilters([], []);
@@ -115,7 +120,8 @@ class cApiContainerConfiguration extends Item
      *
      * @inheritdoc
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idtplcfg':
             case 'number':
@@ -135,7 +141,8 @@ class cApiContainerConfiguration extends Item
      * @param string $value
      * @return string
      */
-    public static function addContainerValue($container, $key, $value) {
+    public static function addContainerValue($container, $key, $value)
+    {
         $container .= $key . '=' . urlencode(stripslashes($value)) . '&';
         return $container;
     }
@@ -146,7 +153,8 @@ class cApiContainerConfiguration extends Item
      * @param string $value
      * @return array
      */
-    public static function parseContainerValue($value) {
+    public static function parseContainerValue($value)
+    {
         $value = preg_replace('/(&\$)/', '', $value);
         parse_str($value, $vars);
         return is_array($vars) ? $vars : [];

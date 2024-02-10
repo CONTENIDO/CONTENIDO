@@ -39,13 +39,14 @@ cInclude('includes', 'functions.lang.php');
  * @throws cInvalidArgumentException
  * @throws cException
  */
-function showTree($iIdcat, &$aWholelist) {
+function showTree($iIdcat, &$aWholelist)
+{
     global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client, $lang, $navigationTree;
 
     $tpl = new cTemplate();
     $tpl->reset();
 
-    $iIdcat = (int) $iIdcat;
+    $iIdcat = (int)$iIdcat;
 
     foreach ($navigationTree[$iIdcat] as $sKey => $aValue) {
 
@@ -63,7 +64,7 @@ function showTree($iIdcat, &$aWholelist) {
             $check_rights = ($aValue['forcedisplay'] == 1) ? true : false;
         }
 
-        $idcat = (int) $aValue['idcat'];
+        $idcat = (int)$aValue['idcat'];
         $level = $aValue['level'] - 1;
         $name = $aValue['name'];
 
@@ -106,9 +107,9 @@ function showTree($iIdcat, &$aWholelist) {
             if ($aValue["idlang"] == $lang) {
                 // Build cfgdata string
                 $cfgdata = $idcat . "-" . $idtpl . "-" . $aValue['online'] . "-" . $aValue['public'] . "-" .
-                        $changetemplate . "-" .
-                        $onoffline . "-" .
-                        $makepublic . "-" . $templateconfig;
+                    $changetemplate . "-" .
+                    $onoffline . "-" .
+                    $makepublic . "-" . $templateconfig;
             } else {
                 $cfgdata = "";
             }
@@ -192,20 +193,20 @@ function showTree($iIdcat, &$aWholelist) {
                     $cfgdata .= '-1';
                 } else {
                     $cfgdata = $idcat . "-" . $idtpl . "-" . $aValue['online'] . "-" . $aValue['public'] .
-                            "-0-0-0-0-1";
+                        "-0-0-0-0-1";
                 }
             } else {
                 if ($cfgdata != '') {
                     $cfgdata .= '-0';
                 } else {
                     $cfgdata = $idcat . "-" . $idtpl . "-" . $aValue['online'] . "-" . $aValue['public'] .
-                            "-0-0-0-0-0";
+                        "-0-0-0-0-0";
                 }
             }
 
             $strName = cSecurity::unFilter($name);
-            $title = ($aValue['langPopup'] && $aValue['langPopup'] != "") ? $aValue['langPopup']."\n " : "";
-            $mstr = '<a class="' . $aAnchorClass . '" href="#" title="'.$title.'idcat' . '&#58; ' . $idcat . '">' . $strName . '</a>';
+            $title = ($aValue['langPopup'] && $aValue['langPopup'] != "") ? $aValue['langPopup'] . "\n " : "";
+            $mstr = '<a class="' . $aAnchorClass . '" href="#" title="' . $title . 'idcat' . '&#58; ' . $idcat . '">' . $strName . '</a>';
 
             // Build Tree
             $tpl->set('d', 'CFGDATA', $cfgdata);
@@ -222,8 +223,8 @@ function showTree($iIdcat, &$aWholelist) {
 
             $tpl->next();
         } else {
-            if (is_array($navigationTree[(int) $aValue['idcat']])) {
-                $sTpl = showTree((int) $aValue['idcat'], $aWholelist);
+            if (is_array($navigationTree[(int)$aValue['idcat']])) {
+                $sTpl = showTree((int)$aValue['idcat'], $aWholelist);
                 if (!preg_match('/^<ul>\s*<\/ul>$/', $sTpl)) {
                     $tpl->set('d', 'CFGDATA', '0-0-0-0-0-0-0-0-0');
                     $tpl->set('d', 'SUBCATS', $sTpl);
@@ -469,6 +470,7 @@ if ($syncoptions == -1) {
                 b.idart = c.idart AND
                 c.idcat = d.idcat
             GROUP BY c.idcat, online, d.startidartlang";
+    mp_d($sql2, 'include.con_str_overview.php $sql2');
 }
 $db->query($sql2);
 
@@ -576,29 +578,29 @@ $fallbackLang = getEffectiveSetting('system', 'cat_fallback_language', 0);
 $sqlLangPopup = ($fallbackLang != 0) ? "LEFT JOIN {$cfg['tab']['cat_lang']} AS b1 ON(b1.idcat = a.idcat AND b1.idlang = $fallbackLang) " : "";
 $sqlLangB1 = ($fallbackLang != 0) ? "b1.name as langPopup, " : "";
 
-$client = (int) $client;
+$client = (int)$client;
 $sql = "SELECT DISTINCT " .
-        "a.idcat, " .
-        "a.parentid, " .
-        "a.preid, " .
-        "a.postid, " .
-        "a.parentid, " .
-        "b.name, " .
-        $sqlLangB1 .
-        "b.idlang, " .
-        "b.visible, " .
-        "b.public, " .
-        "c.idtree, " .
-        "c.level, " .
-        "d.idtpl " .
-        "FROM {$cfg['tab']['cat']} AS a " .
-        "LEFT JOIN {$cfg['tab']['cat_lang']} AS b ON a.idcat = b.idcat " .
-        $sqlLangPopup .
-        "LEFT JOIN {$cfg['tab']['cat_tree']} AS c ON (a.idcat = c.idcat AND b.idcat = c.idcat) " .
-        "LEFT JOIN {$cfg["tab"]["tpl_conf"]} AS d ON b.idtplcfg = d.idtplcfg " .
-        "WHERE " .
-        "   a.idclient = {$client} " .
-        "ORDER BY b.idlang {$sOrder}, c.idtree ASC ";
+    "a.idcat, " .
+    "a.parentid, " .
+    "a.preid, " .
+    "a.postid, " .
+    "a.parentid, " .
+    "b.name, " .
+    $sqlLangB1 .
+    "b.idlang, " .
+    "b.visible, " .
+    "b.public, " .
+    "c.idtree, " .
+    "c.level, " .
+    "d.idtpl " .
+    "FROM {$cfg['tab']['cat']} AS a " .
+    "LEFT JOIN {$cfg['tab']['cat_lang']} AS b ON a.idcat = b.idcat " .
+    $sqlLangPopup .
+    "LEFT JOIN {$cfg['tab']['cat_tree']} AS c ON (a.idcat = c.idcat AND b.idcat = c.idcat) " .
+    "LEFT JOIN {$cfg["tab"]["tpl_conf"]} AS d ON b.idtplcfg = d.idtplcfg " .
+    "WHERE " .
+    "   a.idclient = {$client} " .
+    "ORDER BY b.idlang {$sOrder}, c.idtree ASC ";
 $db->query($sql);
 if ($client == 0) {
     $client = '';
@@ -621,7 +623,7 @@ if (!isset($conexpandedList[$client]) || !is_array($conexpandedList[$client])) {
 }
 
 $navigationTree = [];
-$aWholelist     = [];
+$aWholelist = [];
 
 while ($db->nextRecord()) {
     if (!isset($navigationTree[$db->f('parentid')][$db->f('idcat')]) && ($db->f('idlang') == $lang || $db->f('idlang') == $syncoptions)) {
@@ -641,22 +643,22 @@ while ($db->nextRecord()) {
             $active = false;
         }
         $navigationTree[$db->f('parentid')][$db->f('idcat')] = [
-            'idcat'        => $db->f('idcat'),
-            'preid'        => $db->f('preid'),
-            'postid'       => $db->f('postid'),
-            'visible'      => $db->f('visible'),
-            'online'       => $db->f('visible'),
-            'public'       => $db->f('public'),
-            'name'         => $db->f('name'),
-            'langPopup'    => $db->f('langPopup'),
-            'idlang'       => $db->f('idlang'),
-            'idtpl'        => $db->f('idtpl'),
-            'collapsed'    => $collapsed,
+            'idcat' => $db->f('idcat'),
+            'preid' => $db->f('preid'),
+            'postid' => $db->f('postid'),
+            'visible' => $db->f('visible'),
+            'online' => $db->f('visible'),
+            'public' => $db->f('public'),
+            'name' => $db->f('name'),
+            'langPopup' => $db->f('langPopup'),
+            'idlang' => $db->f('idlang'),
+            'idtpl' => $db->f('idtpl'),
+            'collapsed' => $collapsed,
             'forcedisplay' => $forcedisplay,
-            'active'       => $active,
-            'islast'       => false,
-            'articles'     => !empty($aIsArticles[$db->f("idcat")]) ? $aIsArticles[$db->f("idcat")] : false,
-            'level'        => $db->f('level'),
+            'active' => $active,
+            'islast' => false,
+            'articles' => !empty($aIsArticles[$db->f("idcat")]) ? $aIsArticles[$db->f("idcat")] : false,
+            'level' => $db->f('level'),
         ];
         if ($aStartOnlineArticles[$db->f('idcat')]['is_start'] ?? false) {
             $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_start'] = false;
@@ -681,7 +683,7 @@ $tpl->set('s', 'CATS', $sCategories ?? '');
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'DIRECTION', 'dir="' . langGetTextDirection($lang) . '"');
 $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
-$tpl->set('s', 'AJAXURL',  cRegistry::getBackendUrl() . 'ajaxmain.php');
+$tpl->set('s', 'AJAXURL', cRegistry::getBackendUrl() . 'ajaxmain.php');
 $tpl->set('s', 'WHOLELIST', implode(', ', $aWholelist));
 $tpl->set('s', 'EXPANDEDLIST', implode(', ', $conexpandedList[$client]));
 

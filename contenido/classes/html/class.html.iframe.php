@@ -20,14 +20,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLIFrame extends cHTML {
+class cHTMLIFrame extends cHTML
+{
 
     /**
      * Constructor to create an instance of this class.
      *
      * Creates an HTML iframe element.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->_contentlessTag = false;
         $this->_tag = 'iframe';
@@ -41,7 +43,8 @@ class cHTMLIFrame extends cHTML {
      * @return cHTMLIFrame
      *         $this for chaining
      */
-    public function setSrc($src) {
+    public function setSrc($src)
+    {
         return $this->updateAttribute('src', $src);
     }
 
@@ -53,7 +56,8 @@ class cHTMLIFrame extends cHTML {
      * @return cHTMLIFrame
      *         $this for chaining
      */
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         return $this->updateAttribute('width', $width);
     }
 
@@ -65,7 +69,8 @@ class cHTMLIFrame extends cHTML {
      * @return cHTMLIFrame
      *         $this for chaining
      */
-    public function setHeight($height) {
+    public function setHeight($height)
+    {
         return $this->updateAttribute('height', $height);
     }
 
@@ -77,7 +82,8 @@ class cHTMLIFrame extends cHTML {
      * @return cHTMLIFrame
      *         $this for chaining
      */
-    public function setBorder($border) {
+    public function setBorder($border)
+    {
         return $this->updateAttribute('frameborder', intval($border));
     }
 

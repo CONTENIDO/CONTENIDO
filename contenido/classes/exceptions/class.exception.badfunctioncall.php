@@ -19,5 +19,6 @@
  * {@link BadFunctionCallException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cBadFunctionCallException extends cLogicException {
+class cBadFunctionCallException extends cLogicException
+{
 }

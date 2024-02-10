@@ -1,6 +1,6 @@
 <!-- search_solr/templates/template.right_bottom.html -->
 
-<input type="hidden" id="i18n" value="{I18N}" />
+<input type="hidden" id="i18n" value="{I18N}"/>
 
 {notification}
 
@@ -20,112 +20,114 @@
 
             <tr class="section-start required">
                 <td><label for="hostname">hostname *</label></td>
-                <td><input type="text" id="hostname" name="hostname" value="{HOSTNAME}" /></td>
+                <td><input type="text" id="hostname" name="hostname" value="{HOSTNAME}"/></td>
                 <td>{I18N_DESCR_HOSTNAME}</td>
             </tr>
 
             <tr class="required">
                 <td><label for="port">port *</label></td>
-                <td><input type="text" id="port" name="port" value="{PORT}" /></td>
+                <td><input type="text" id="port" name="port" value="{PORT}"/></td>
                 <td>{I18N_DESCR_PORT}</td>
             </tr>
 
             <tr class="required">
                 <td><label for="path">path *</label></td>
-                <td><input type="text" id="path" name="path" value="{PATH}" /></td>
+                <td><input type="text" id="path" name="path" value="{PATH}"/></td>
                 <td>{I18N_DESCR_PATH}</td>
             </tr>
 
             <tr>
                 <td><label for="login">login</label></td>
-                <td><input type="text" id="login" name="login" value="{LOGIN}" /></td>
+                <td><input type="text" id="login" name="login" value="{LOGIN}"/></td>
                 <td>{I18N_DESCR_LOGIN}</td>
             </tr>
 
             <tr>
                 <td><label for="password">password</label></td>
-                <td><input type="text" id="password" name="password" value="{PASSWORD}" /></td>
+                <td><input type="text" id="password" name="password" value="{PASSWORD}"/></td>
                 <td>{I18N_DESCR_PASSWORD}</td>
             </tr>
 
             <tr class="section-start">
                 <td><label for="secure">secure</label></td>
-                <td><input type="checkbox" id="secure" name="secure" {SECURE} /></td>
+                <td><input type="checkbox" id="secure" name="secure" {SECURE}/></td>
                 <td>{I18N_DESCR_SECURE}</td>
             </tr>
 
             <tr>
                 <td><label for="timeout">timeout</label></td>
-                <td><input type="text" id="timeout" name="timeout" value="{TIMEOUT}" /></td>
+                <td><input type="text" id="timeout" name="timeout" value="{TIMEOUT}"/></td>
                 <td>{I18N_DESCR_TIMEOUT}</td>
             </tr>
 
             <tr class="section-end">
                 <td><label for="wt">wt</label></td>
-                <td><input type="text" id="wt" name="wt" value="{WT}" /></td>
+                <td><input type="text" id="wt" name="wt" value="{WT}"/></td>
                 <td>{I18N_DESCR_WT}</td>
             </tr>
 
             <tr class="section-start">
                 <td><label for="proxy_host">proxy_host</label></td>
-                <td><input type="text" id="proxy_host" name="proxy_host" value="{PROXY_HOST}" /></td>
+                <td><input type="text" id="proxy_host" name="proxy_host" value="{PROXY_HOST}"/></td>
                 <td>{I18N_DESCR_PROXY_HOST}</td>
             </tr>
 
             <tr>
                 <td><label for="proxy_port">proxy_port</label></td>
-                <td><input type="text" id="proxy_port" name="proxy_port" value="{PROXY_PORT}" /></td>
+                <td><input type="text" id="proxy_port" name="proxy_port" value="{PROXY_PORT}"/></td>
                 <td>{I18N_DESCR_PROXY_PORT}</td>
             </tr>
 
             <tr>
                 <td><label for="proxy_login">proxy_login</label></td>
-                <td><input type="text" id="proxy_login" name="proxy_login" value="{PROXY_LOGIN}" /></td>
+                <td><input type="text" id="proxy_login" name="proxy_login" value="{PROXY_LOGIN}"/>
+                </td>
                 <td>{I18N_DESCR_PROXY_LOGIN}</td>
             </tr>
 
             <tr class="section-end">
                 <td><label for="proxy_password">proxy_password</label></td>
-                <td><input type="text" id="proxy_password" name="proxy_password" value="{PROXY_PASSWORD}" /></td>
+                <td><input type="text" id="proxy_password" name="proxy_password"
+                           value="{PROXY_PASSWORD}"/></td>
                 <td>{I18N_DESCR_PROXY_PASSWORD}</td>
             </tr>
 
             <tr class="section-start">
                 <td><label for="ssl_cert">ssl_cert</label></td>
-                <td><input type="text" id="ssl_cert" name="ssl_cert" value="{SSL_CERT}" /></td>
+                <td><input type="text" id="ssl_cert" name="ssl_cert" value="{SSL_CERT}"/></td>
                 <td>{I18N_DESCR_SSL_CERT}</td>
             </tr>
 
             <tr>
                 <td><label for="ssl_key">ssl_key</label></td>
-                <td><input type="text" id="ssl_key" name="ssl_key" value="{SSL_KEY}" /></td>
+                <td><input type="text" id="ssl_key" name="ssl_key" value="{SSL_KEY}"/></td>
                 <td>{I18N_DESCR_SSL_KEY}</td>
             </tr>
 
             <tr>
                 <td><label for="ssl_keypassword">ssl_keypassword</label></td>
-                <td><input type="text" id="ssl_keypassword" value="{SSL_KEYPASSWORD}" /></td>
+                <td><input type="text" id="ssl_keypassword" value="{SSL_KEYPASSWORD}"/></td>
                 <td>{I18N_DESCR_SSL_KEYPASSWORD}</td>
             </tr>
 
             <tr>
                 <td><label for="ssl_cainfo">ssl_cainfo</label></td>
-                <td><input type="text" id="ssl_cainfo" name="ssl_cainfo" value="{SSL_CAINFO}" /></td>
+                <td><input type="text" id="ssl_cainfo" name="ssl_cainfo" value="{SSL_CAINFO}"/></td>
                 <td>{I18N_DESCR_SSL_CAINFO}</td>
             </tr>
 
             <tr>
                 <td><label for="ssl_capath">ssl_capath</label></td>
-                <td><input type="text" id="ssl_capath" value="{SSL_CAPATH}" /></td>
+                <td><input type="text" id="ssl_capath" value="{SSL_CAPATH}"/></td>
                 <td>{I18N_DESCR_SSL_CAPATH}</td>
             </tr>
 
             <tr>
                 <td colspan="3">
-                    <input type="hidden" name="area" value="solr" />
-                    <input type="hidden" name="frame" value="4" />
-                    <input type="hidden" name="action" value="store_client_options" />
-                    <input type="hidden" name="contenido" value="{CONTENIDO}" />
+                    <input type="hidden" name="area" value="solr"/>
+                    <input type="hidden" name="frame" value="4"/>
+                    <input type="hidden" name="action" value="store_client_options"/>
+                    <input type="hidden" name="contenido" value="{CONTENIDO}"/>
                     <input type="image" title="store" alt="store" src="images/but_ok.gif">
                 </td>
             </tr>
@@ -138,9 +140,9 @@
 
 <form action="main.php" method="POST">
 
-    <input type="hidden" name="area" value="solr" />
-    <input type="hidden" name="frame" value="4" />
-    <input type="hidden" name="contenido" value="{CONTENIDO}" />
+    <input type="hidden" name="area" value="solr"/>
+    <input type="hidden" name="frame" value="4"/>
+    <input type="hidden" name="contenido" value="{CONTENIDO}"/>
 
     <fieldset>
 
@@ -154,17 +156,17 @@
             </tr>
 
             <tr class="section-start section-end">
-                <td><input type="submit" name="action" value="reload" {DISABLED_RELOAD} /></td>
+                <td><input type="submit" name="action" value="reload" {DISABLED_RELOAD}/></td>
                 <td>{I18N_DESCR_RELOAD}</td>
             </tr>
 
             <tr class="section-start section-end">
-                <td><input type="submit" name="action" value="reindex" {DISABLED_REINDEX} /></td>
+                <td><input type="submit" name="action" value="reindex" {DISABLED_REINDEX}/></td>
                 <td>{I18N_DESCR_REINDEX}</td>
             </tr>
 
             <tr class="section-start section-end">
-                <td><input type="submit" name="action" value="delete" {DISABLED_DELETE} /></td>
+                <td><input type="submit" name="action" value="delete" {DISABLED_DELETE}/></td>
                 <td>{I18N_DESCR_DELETE}</td>
             </tr>
 

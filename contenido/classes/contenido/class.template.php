@@ -52,18 +52,18 @@ class cApiTemplateCollection extends ItemCollection
     /**
      * Creates a template entry.
      *
-     * @param int    $idclient
-     * @param int    $idlay
-     * @param int    $idtplcfg
+     * @param int $idclient
+     * @param int $idlay
+     * @param int $idtplcfg
      *      Either a valid template configuration id or an empty string
      * @param string $name
      * @param string $description
-     * @param int    $deletable       [optional]
-     * @param int    $status          [optional]
-     * @param int    $defaulttemplate [optional]
-     * @param string $author          [optional]
-     * @param string $created         [optional]
-     * @param string $lastmodified    [optional]
+     * @param int $deletable [optional]
+     * @param int $status [optional]
+     * @param int $defaulttemplate [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      *
      * @return cApiTemplate
      * @throws cDbException
@@ -71,8 +71,8 @@ class cApiTemplateCollection extends ItemCollection
      * @throws cInvalidArgumentException
      */
     public function create($idclient, $idlay, $idtplcfg, $name, $description,
-            $deletable = 1, $status = 0, $defaulttemplate = 0, $author = '',
-            $created = '', $lastmodified = ''
+                           $deletable = 1, $status = 0, $defaulttemplate = 0, $author = '',
+                           $created = '', $lastmodified = ''
     )
     {
         if (empty($author)) {

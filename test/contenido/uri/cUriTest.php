@@ -37,8 +37,8 @@ class cUriTest extends cTestingTestCase
 
     protected function setUp(): void
     {
-        $this->clientId   = cRegistry::getClientId();
-        $this->clientCfg  = cRegistry::getClientConfig($this->clientId);
+        $this->clientId = cRegistry::getClientId();
+        $this->clientCfg = cRegistry::getClientConfig($this->clientId);
         $this->languageId = cRegistry::getLanguageId();
     }
 
@@ -54,10 +54,10 @@ class cUriTest extends cTestingTestCase
         // error page
         $aParams = [
             'client' => $this->clientId,
-            'idcat'  => $errSite['idcat'],
-            'idart'  => $errSite['idart'],
-            'lang'   => $this->languageId,
-            'error'  => '1',
+            'idcat' => $errSite['idcat'],
+            'idart' => $errSite['idart'],
+            'lang' => $this->languageId,
+            'error' => '1',
         ];
 
         $url = cUri::getInstance()->buildRedirect($aParams);
@@ -240,7 +240,8 @@ class cUriTest extends cTestingTestCase
      * Test redirect url with complex parameters
      * @link https://github.com/CONTENIDO/CONTENIDO/issues/132
      */
-    public function testRedirectUrlWithComplexParameters() {
+    public function testRedirectUrlWithComplexParameters()
+    {
         $redirectUrl = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12';
         // Query parameter a=1&b[]=2&b[1][]=3
         $parameters = ['a' => 1, 'b' => [2, [3]]];

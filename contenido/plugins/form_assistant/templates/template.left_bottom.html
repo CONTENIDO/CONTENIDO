@@ -3,7 +3,7 @@
 {menu}
 
 <script type="text/javascript">
-    (function(Con, $) {
+    (function (Con, $) {
         var formAssistant,
             area = '{AREA}';
 
@@ -13,7 +13,12 @@
         function actionShowForm($row, id) {
             Con.multiLink(
                 'right_top', Con.UtilUrl.build('main.php', {area: area, frame: 3, idform: id}),
-                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: '{ACTION_EDIT}', frame: 4, idform: id})
+                'right_bottom', Con.UtilUrl.build('main.php', {
+                    area: area,
+                    action: '{ACTION_EDIT}',
+                    frame: 4,
+                    idform: id
+                })
             );
             Con.ParameterCollector.register('idform', id);
         }
@@ -33,12 +38,17 @@
             if (contentWindow.confirm(deleteMessage.replace('%s', name))) {
                 Con.multiLink(
                     'right_top', Con.UtilUrl.build('main.php', {area: area, frame: 3}),
-                    'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: '{ACTION_DELETE}', frame: 4, idform: id})
+                    'right_bottom', Con.UtilUrl.build('main.php', {
+                        area: area,
+                        action: '{ACTION_DELETE}',
+                        frame: 4,
+                        idform: id
+                    })
                 );
             }
         }
 
-        $('#generic_menu_list [data-action]').live('click', function() {
+        $('#generic_menu_list [data-action]').live('click', function () {
             var action = $(this).data('action'),
                 $row = $(this).closest('[data-id]'),
                 id = $row.data('id');

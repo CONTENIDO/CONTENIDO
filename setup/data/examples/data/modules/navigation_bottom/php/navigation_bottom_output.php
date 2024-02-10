@@ -29,10 +29,10 @@ $articles = [];
 foreach ($collector as $article) {
     $articles[] = [
         'title' => $article->get('title'),
-        'url'   => cUri::getInstance()->build(
+        'url' => cUri::getInstance()->build(
             [
                 'idart' => $article->get('idart'),
-                'lang'  => cRegistry::getLanguageId(),
+                'lang' => cRegistry::getLanguageId(),
             ],
             true
         ),

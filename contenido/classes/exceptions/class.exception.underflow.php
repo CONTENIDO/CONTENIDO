@@ -19,6 +19,7 @@
  * {@link UnderflowException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cUnderflowException extends cRuntimeException {
+class cUnderflowException extends cRuntimeException
+{
 
 }

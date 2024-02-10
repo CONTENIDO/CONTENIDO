@@ -55,9 +55,9 @@ class SIWECOSLeftBottomPage extends cGuiPage
     {
         global $idsiwecos;
 
-        $cfg    = cRegistry::getConfig();
+        $cfg = cRegistry::getConfig();
         $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang   = cSecurity::toInteger(cRegistry::getLanguageId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $requestIdSiwecos = cSecurity::toInteger($_REQUEST['idsiwecos'] ?? '0');
 
         // Unset global $idsiwecos variable so we can get all menu entries
@@ -79,7 +79,7 @@ class SIWECOSLeftBottomPage extends cGuiPage
         foreach ($forms as $form) {
             $counter++;
             $idsiwecos = $form['idsiwecos'];
-            $domain    = $form['domain'];
+            $domain = $form['domain'];
 
             $menu->setId($counter, $idsiwecos);
             $menu->setTitle($counter, $domain);
@@ -137,14 +137,14 @@ class SIWECOSRightBottomPage extends cGuiPage
      *
      * @var string
      */
-    const METHODE_GET       = 'GET';
-    const METHODE_POST      = 'POST';
-    const SHOW_FORM         = 'siwecos_show';
+    const METHODE_GET = 'GET';
+    const METHODE_POST = 'POST';
+    const SHOW_FORM = 'siwecos_show';
     const VERIFICATION_FORM = 'siwecos_verification';
-    const ADD_FORM          = 'siwecos_add';
-    const SCAN_FORM         = 'siwecos_scan';
-    const STORE_FORM        = 'siwecos_store';
-    const DELETE_FORM       = 'siwecos_delete';
+    const ADD_FORM = 'siwecos_add';
+    const SCAN_FORM = 'siwecos_scan';
+    const STORE_FORM = 'siwecos_store';
+    const DELETE_FORM = 'siwecos_delete';
 
     private $_SIWECOSForm;
 
@@ -192,7 +192,7 @@ class SIWECOSRightBottomPage extends cGuiPage
             $this->_dispatch($action);
         } catch (SIWECOSException $e) {
             $cGuiNotification = new cGuiNotification();
-            $notification     = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
+            $notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
             $this->set('s', 'notification', $notification);
             $this->set('s', 'content', '');
         }
@@ -264,7 +264,7 @@ class SIWECOSRightBottomPage extends cGuiPage
                     }
 
                     // reload left_bottom & right_top after saving of form
-                    $idsiwecos  = $this->_SIWECOSForm->get('idsiwecos');
+                    $idsiwecos = $this->_SIWECOSForm->get('idsiwecos');
                     $this->reloadLeftBottomFrame(['idsiwecos' => $idsiwecos]);
                     $this->reloadRightTopFrame(['idsiwecos' => $idsiwecos]);
                     $content = $this->_showForm();
@@ -319,28 +319,28 @@ class SIWECOSRightBottomPage extends cGuiPage
         }
 
         if (empty($idsiwecos)) {
-            $idsiwecos   = null;
-            $domain      = $_POST['domain'] ?? '';
+            $idsiwecos = null;
+            $domain = $_POST['domain'] ?? '';
             if (!empty($domain)) {
-                $domain      = parse_url($domain);
-                $domain      = $domain['scheme'] . '://' . $domain['host'];
+                $domain = parse_url($domain);
+                $domain = $domain['scheme'] . '://' . $domain['host'];
             }
-            $email       = $_POST['email'] ?? '';
-            $password    = $_POST['password'] ?? '';
-            $userToken   = '';
+            $email = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
+            $userToken = '';
             $domainToken = '';
             $dangerLevel = 10;
-            $author      = $auth->getUsername();
-            $created     = '';
+            $author = $auth->getUsername();
+            $created = '';
         } else {
-            $domain      = $this->_SIWECOSForm->get('domain');
-            $email       = $this->_SIWECOSForm->get('email');
-            $password    = '';
-            $userToken   = $this->_SIWECOSForm->get('userToken');
+            $domain = $this->_SIWECOSForm->get('domain');
+            $email = $this->_SIWECOSForm->get('email');
+            $password = '';
+            $userToken = $this->_SIWECOSForm->get('userToken');
             $domainToken = $this->_SIWECOSForm->get('domainToken');
             $dangerLevel = $this->_SIWECOSForm->get('dangerLevel');
-            $author      = $this->_SIWECOSForm->get('author');
-            $created     = $this->_SIWECOSForm->get('created');
+            $author = $this->_SIWECOSForm->get('author');
+            $created = $this->_SIWECOSForm->get('created');
         }
 
         $page = cSmartyBackend::getInstance(true);
@@ -440,18 +440,18 @@ class SIWECOSRightBottomPage extends cGuiPage
      */
     private function _login()
     {
-        $email          = $this->_SIWECOSForm->get('email');
-        $password       = $_POST['password'] ?? '';
-        $data           = [
-            'email'    => $email,
+        $email = $this->_SIWECOSForm->get('email');
+        $password = $_POST['password'] ?? '';
+        $data = [
+            'email' => $email,
             'password' => $password,
         ];
-        $header         = [
+        $header = [
             'Accept: application/json',
             'Content-Type: application/json;charset=utf-8',
         ];
         $curlConnection = new CurlService();
-        $result         = $curlConnection->post(SIWECOS_API_URL . '/users/login', $data, $header);
+        $result = $curlConnection->post(SIWECOS_API_URL . '/users/login', $data, $header);
         if (200 !== (int)$curlConnection->error['info']['http_code']) {
             throw new SIWECOSException($curlConnection->error['resp']);
         } else {
@@ -470,13 +470,13 @@ class SIWECOSRightBottomPage extends cGuiPage
      */
     private function _getDomainList(string $userToken)
     {
-        $header  = [
+        $header = [
             'Accept: application/json',
             'Content-Type: application/json;charset=utf-8',
             'userToken: ' . $userToken,
         ];
         $service = new CurlService();
-        $result  = $service->post(SIWECOS_API_URL . '/domains/listDomains', [], $header);
+        $result = $service->post(SIWECOS_API_URL . '/domains/listDomains', [], $header);
 
         if (200 !== (int)$service->error['info']['http_code']) {
             throw new SIWECOSException($service->error['resp']);
@@ -495,11 +495,11 @@ class SIWECOSRightBottomPage extends cGuiPage
      */
     private function _getDomainResult()
     {
-        $belang         = cRegistry::getBackendLanguage();
-        $userToken      = $this->_SIWECOSForm->get('userToken');
-        $domain         = $this->_SIWECOSForm->get('domain');
+        $belang = cRegistry::getBackendLanguage();
+        $userToken = $this->_SIWECOSForm->get('userToken');
+        $domain = $this->_SIWECOSForm->get('domain');
         $curlConnection = new CurlService();
-        $header         = [
+        $header = [
             'Accept: application/json',
             'Content-Type: application/json;charset=utf-8',
             'userToken: ' . $userToken,
@@ -527,17 +527,17 @@ class SIWECOSRightBottomPage extends cGuiPage
      */
     private function _scanForm()
     {
-        $idsiwecos   = $this->_SIWECOSForm->get('idsiwecos');
-        $domain      = $this->_SIWECOSForm->get('domain');
-        $userToken   = $this->_SIWECOSForm->get('userToken');
+        $idsiwecos = $this->_SIWECOSForm->get('idsiwecos');
+        $domain = $this->_SIWECOSForm->get('domain');
+        $userToken = $this->_SIWECOSForm->get('userToken');
         $dangerLevel = $this->_SIWECOSForm->get('dangerLevel');
 
         if ($idsiwecos && $userToken) {
             $curlConnection = new CurlService();
             // Submit new Domain
-            $data   = [
+            $data = [
                 'dangerLevel' => $dangerLevel,
-                'domain'      => $domain,
+                'domain' => $domain,
             ];
             $header = [
                 'Accept: application/json',
@@ -564,10 +564,10 @@ class SIWECOSRightBottomPage extends cGuiPage
         if (!filter_var($domain, FILTER_VALIDATE_URL)) {
             throw new SIWECOSException(i18n('ERR_MALFORMED_URL', 'siwecos'));
         }
-        $domain    = parse_url($domain);
-        $domain    = $domain['scheme'] . '://' . $domain['host'];
-        $email     = trim(cSecurity::toString(cSecurity::unescapeDB($_POST['email'])));
-        $password  = trim(cSecurity::toString(cSecurity::unescapeDB($_POST['password'])));
+        $domain = parse_url($domain);
+        $domain = $domain['scheme'] . '://' . $domain['host'];
+        $email = trim(cSecurity::toString(cSecurity::unescapeDB($_POST['email'])));
+        $password = trim(cSecurity::toString(cSecurity::unescapeDB($_POST['password'])));
         $idsiwecos = $this->_SIWECOSForm->get('idsiwecos');
         if (!$idsiwecos) {
             if ($this->_in_multiarray($domain, $forms)) {
@@ -612,36 +612,36 @@ class SIWECOSRightBottomPage extends cGuiPage
      */
     private function _storeForm()
     {
-        $auth           = cRegistry::getAuth();
+        $auth = cRegistry::getAuth();
         $curlConnection = new CurlService();
-        $idsiwecos      = $this->_SIWECOSForm->get('idsiwecos');
+        $idsiwecos = $this->_SIWECOSForm->get('idsiwecos');
 
         // read item data from form
         $domain = trim(cSecurity::toString(cSecurity::unescapeDB($_POST['domain'])));
         $domain = parse_url($domain);
         $domain = $domain['scheme'] . '://' . $domain['host'];
-        $email  = trim(cSecurity::toString(cSecurity::unescapeDB($_POST['email'])));
+        $email = trim(cSecurity::toString(cSecurity::unescapeDB($_POST['email'])));
         // $password    = trim(cSecurity::toString(cSecurity::unescapeDB($_POST['password'])));
         $dangerLevel = trim(cSecurity::toString(cSecurity::unescapeDB($_POST['dangerLevel'])));
-        $author      = $auth->getUsername();
-        $created     = date('Y-m-d H:i:s');
+        $author = $auth->getUsername();
+        $created = date('Y-m-d H:i:s');
 
         // create new item for given client & language
         if (!$idsiwecos) {
             // create new item for given client & language
-            $SIWECOSCollection  = new SIWECOSCollection();
+            $SIWECOSCollection = new SIWECOSCollection();
             $this->_SIWECOSForm = $SIWECOSCollection->createNewItem(
                 [
-                    'idclient'    => cRegistry::getClientId(),
-                    'idlang'      => cRegistry::getLanguageId(),
-                    'domain'      => $domain,
-                    'email'       => $email,
+                    'idclient' => cRegistry::getClientId(),
+                    'idlang' => cRegistry::getLanguageId(),
+                    'domain' => $domain,
+                    'email' => $email,
                     'dangerLevel' => $dangerLevel,
-                    'author'      => $author,
-                    'created'     => $created,
+                    'author' => $author,
+                    'created' => $created,
                 ]
             );
-            $idsiwecos          = $this->_SIWECOSForm->get('idsiwecos');
+            $idsiwecos = $this->_SIWECOSForm->get('idsiwecos');
         }
         if ($domain !== $this->_SIWECOSForm->get('domain')) {
             $this->_SIWECOSForm->set('domain', $domain);
@@ -665,7 +665,7 @@ class SIWECOSRightBottomPage extends cGuiPage
 
         $userToken = $this->_SIWECOSForm->get('userToken');
         if (!$userToken && $idsiwecos) {
-            $result    = $this->_login();
+            $result = $this->_login();
             $userToken = $result->token;
             if ($userToken !== $this->_SIWECOSForm->get('userToken')) {
                 $this->_SIWECOSForm->set('userToken', $userToken);
@@ -677,27 +677,27 @@ class SIWECOSRightBottomPage extends cGuiPage
             }
         }
         $domainToken = $this->_SIWECOSForm->get('domainToken');
-        $addDomain   = true;
+        $addDomain = true;
         if ($userToken) {
             $result = $this->_getDomainList($userToken);
             foreach ($result->domains as $ele) {
                 if ($ele->domain === $domain) {
                     $domainToken = $ele->domainToken;
-                    $addDomain   = false;
+                    $addDomain = false;
                 }
             }
         }
         if ($addDomain) {
-            $data        = [
+            $data = [
                 'danger_level' => $dangerLevel,
-                'domain'       => $domain,
+                'domain' => $domain,
             ];
-            $header      = [
+            $header = [
                 'Accept: application/json',
                 'Content-Type: application/json;charset=utf-8',
                 'userToken: ' . $userToken,
             ];
-            $result      = $curlConnection->post(SIWECOS_API_URL . '/domains/addNewDomain', $data, $header);
+            $result = $curlConnection->post(SIWECOS_API_URL . '/domains/addNewDomain', $data, $header);
             $domainToken = $result->domainToken;
         }
         if ($domainToken !== $this->_SIWECOSForm->get('domainToken')) {
@@ -718,13 +718,13 @@ class SIWECOSRightBottomPage extends cGuiPage
     private function _startVerification()
     {
         $curlConnection = new CurlService();
-        $domain         = $this->_SIWECOSForm->get('domain');
-        $userToken      = $this->_SIWECOSForm->get('userToken');
-        $dangerLevel    = $this->_SIWECOSForm->get('dangerLevel');
+        $domain = $this->_SIWECOSForm->get('domain');
+        $userToken = $this->_SIWECOSForm->get('userToken');
+        $dangerLevel = $this->_SIWECOSForm->get('dangerLevel');
 
-        $data   = [
+        $data = [
             'danger_level' => $dangerLevel,
-            'domain'       => $domain,
+            'domain' => $domain,
         ];
         $header = [
             'Accept: application/json',

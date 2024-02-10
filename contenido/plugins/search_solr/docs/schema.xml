@@ -4,15 +4,15 @@
 
     <types>
 
-        <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0" />
+        <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
 
         <!-- boolean type: "true" or "false" -->
-        <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" />
+        <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
 
         <!-- The StrField type is not analyzed, but indexed/stored verbatim. It
             supports doc values but in that case the field needs to be single-valued
             and either required or have a default value. -->
-        <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+        <fieldType name="string" class="solr.StrField" sortMissingLast="true"/>
 
         <!-- A general text field that has reasonable, generic cross-language defaults:
             it tokenizes with StandardTokenizer, removes stop words from case-insensitive
@@ -21,18 +21,21 @@
 
         <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
             <analyzer type="index">
-                <tokenizer class="solr.StandardTokenizerFactory" />
-                <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" enablePositionIncrements="true" />
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"
+                        enablePositionIncrements="true"/>
                 <!-- in this example, we will only use synonyms at query time <filter
                     class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true"
                     expand="false" /> -->
-                <filter class="solr.LowerCaseFilterFactory" />
+                <filter class="solr.LowerCaseFilterFactory"/>
             </analyzer>
             <analyzer type="query">
-                <tokenizer class="solr.StandardTokenizerFactory" />
-                <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" enablePositionIncrements="true" />
-                <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true" />
-                <filter class="solr.LowerCaseFilterFactory" />
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"
+                        enablePositionIncrements="true"/>
+                <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true"
+                        expand="true"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
             </analyzer>
         </fieldType>
 
@@ -45,66 +48,85 @@
         -->
 
         <!-- CONTENIDO IDs .. the usual suspects :) -->
-        <field name="id_client"                type="int" indexed="true" stored="true" />
-        <field name="id_lang"                type="int" indexed="true" stored="true" />
-        <field name="id_cat"                type="int" indexed="true" stored="true" />
-        <field name="id_art"                type="int" indexed="true" stored="true" />
-        <field name="id_cat_lang"            type="int" indexed="true" stored="true" />
-        <field name="id_art_lang"            type="int" indexed="true" stored="true" />
+        <field name="id_client" type="int" indexed="true" stored="true"/>
+        <field name="id_lang" type="int" indexed="true" stored="true"/>
+        <field name="id_cat" type="int" indexed="true" stored="true"/>
+        <field name="id_art" type="int" indexed="true" stored="true"/>
+        <field name="id_cat_lang" type="int" indexed="true" stored="true"/>
+        <field name="id_art_lang" type="int" indexed="true" stored="true"/>
 
         <!-- CONTENIDO IDs .. the usual suspects :) -->
-        <field name="cms_htmlhead"            type="text_general" indexed="true" stored="true" multiValued="true" />
-        <field name="cms_html"                type="text_general" indexed="true" stored="true" multiValued="true" />
-        <field name="cms_text"                type="text_general" indexed="true" stored="true" multiValued="true" />
-        <field name="cms_img"                type="text_general" indexed="false" stored="true" multiValued="true" />
-        <field name="cms_imgdescr"            type="text_general" indexed="true" stored="true" multiValued="true" />
-        <field name="cms_link"                type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_linktarget"        type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_linkdescr"            type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_head"                type="text_general" indexed="true" stored="true" multiValued="true" />
-        <field name="cms_swf"                type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_linktitle"            type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_linkedit"            type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_rawlink"            type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_imgedit"            type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_imgtitle"            type="text_general" indexed="true" stored="true" multiValued="true" />
-        <field name="cms_simplelinkedit"    type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_htmltext"            type="text_general" indexed="true" stored="true" multiValued="true" />
-        <field name="cms_easyimgedit"        type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_date"                type="text_general" indexed="true" stored="true" multiValued="true" />
-        <field name="cms_teaser"            type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_filelist"            type="text_general" indexed="false" stored="true" multiValued="true" />
-        <field name="cms_imgeditor"            type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_linkeditor"        type="text_general" indexed="false" stored="false" multiValued="true" />
-        <field name="cms_pifaform"            type="text_general" indexed="false" stored="false" multiValued="true" />
+        <field name="cms_htmlhead" type="text_general" indexed="true" stored="true"
+               multiValued="true"/>
+        <field name="cms_html" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="cms_text" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="cms_img" type="text_general" indexed="false" stored="true" multiValued="true"/>
+        <field name="cms_imgdescr" type="text_general" indexed="true" stored="true"
+               multiValued="true"/>
+        <field name="cms_link" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_linktarget" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_linkdescr" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_head" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="cms_swf" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_linktitle" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_linkedit" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_rawlink" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_imgedit" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_imgtitle" type="text_general" indexed="true" stored="true"
+               multiValued="true"/>
+        <field name="cms_simplelinkedit" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_htmltext" type="text_general" indexed="true" stored="true"
+               multiValued="true"/>
+        <field name="cms_easyimgedit" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_date" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="cms_teaser" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_filelist" type="text_general" indexed="false" stored="true"
+               multiValued="true"/>
+        <field name="cms_imgeditor" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_linkeditor" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
+        <field name="cms_pifaform" type="text_general" indexed="false" stored="false"
+               multiValued="true"/>
 
         <!-- the whole text -->
-        <field name="content"                type="text_general" indexed="true" stored="false" multiValued="true" />
+        <field name="content" type="text_general" indexed="true" stored="false" multiValued="true"/>
 
     </fields>
 
     <uniqueKey>id_art_lang</uniqueKey>
 
-    <copyField source="*_t" dest="content" />
-    <copyField dest="content" source="cms_htmlhead" />
-    <copyField dest="content" source="cms_html" />
-    <copyField dest="content" source="cms_text" />
+    <copyField source="*_t" dest="content"/>
+    <copyField dest="content" source="cms_htmlhead"/>
+    <copyField dest="content" source="cms_html"/>
+    <copyField dest="content" source="cms_text"/>
     <!-- <copyField dest="content" source="cms_img" /> -->
-    <copyField dest="content" source="cms_imgdescr" />
+    <copyField dest="content" source="cms_imgdescr"/>
     <!-- <copyField dest="content" source="cms_link" /> -->
     <!-- <copyField dest="content" source="cms_linktarget" /> -->
     <!-- <copyField dest="content" source="cms_linkdescr" /> -->
-    <copyField dest="content" source="cms_head" />
+    <copyField dest="content" source="cms_head"/>
     <!-- <copyField dest="content" source="cms_swf" /> -->
     <!-- <copyField dest="content" source="cms_linktitle" /> -->
     <!-- <copyField dest="content" source="cms_linkedit" /> -->
     <!-- <copyField dest="content" source="cms_rawlink" /> -->
     <!-- <copyField dest="content" source="cms_imgedit" /> -->
-    <copyField dest="content" source="cms_imgtitle" />
+    <copyField dest="content" source="cms_imgtitle"/>
     <!-- <copyField dest="content" source="cms_simplelinkedit" /> -->
-    <copyField dest="content" source="cms_htmltext" />
+    <copyField dest="content" source="cms_htmltext"/>
     <!-- <copyField dest="content" source="cms_easyimgedit" /> -->
-    <copyField dest="content" source="cms_date" />
+    <copyField dest="content" source="cms_date"/>
     <!-- <copyField dest="content" source="cms_teaser" /> -->
     <!-- <copyField dest="content" source="cms_filelist" /> -->
     <!-- <copyField dest="content" source="cms_imgeditor" /> -->

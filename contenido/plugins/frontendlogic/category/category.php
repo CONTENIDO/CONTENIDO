@@ -26,19 +26,22 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage FrontendLogic
  */
-class frontendlogic_category extends FrontendLogic {
+class frontendlogic_category extends FrontendLogic
+{
 
     /**
      * @inheritdoc
      */
-    public function getFriendlyName() {
+    public function getFriendlyName()
+    {
         return i18n("Category", "frontendlogic_category");
     }
 
     /**
      * @inheritdoc
      */
-    public function listActions() {
+    public function listActions()
+    {
         return [
             "access" => i18n("Access category", "frontendlogic_category")
         ];
@@ -48,7 +51,8 @@ class frontendlogic_category extends FrontendLogic {
      * @inheritdoc
      * @throws cDbException
      */
-    public function listItems() {
+    public function listItems()
+    {
         $cfg = cRegistry::getConfig();
         $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $db = cRegistry::getDb();

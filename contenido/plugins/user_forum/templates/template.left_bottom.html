@@ -1,54 +1,65 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN""http://www.w3.org/TR/html4/frameset.dtd">
 <!-- user_forum/templates/template.left_bottom.html -->
 <html>
 <head>
     <title>template.left_bottom.html</title>
-{_META_HEAD_CONTENIDO_}
-{_CSS_HEAD_CONTENIDO_}
+    {_META_HEAD_CONTENIDO_}
+    {_CSS_HEAD_CONTENIDO_}
     <link rel="stylesheet" type="text/css" href="{_ASSET(styles/jquery/plugins/tipsy.css)_}">
-{_JS_HEAD_CONTENIDO_}
+    {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="{_ASSET(scripts/jquery/plugins/tipsy.js)_}"></script>
     <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
     <script type="text/javascript" src="{_ASSET(plugins/user_forum/scripts/location.js)_}"></script>
     <script type="text/javascript" src="{_ASSET(scripts/parameterCollector.js)_}"></script>
 
 </head>
-    <body class="page_generic">
-        {menu}
-        <script type="text/javascript">
-            (function(Con, $) {
-                var area = 'user_forum';
+<body class="page_generic">
+{menu}
+<script type="text/javascript">
+    (function (Con, $) {
+        var area = 'user_forum';
 
-                function actionShowForum($row, id, idart, idcat) {
-                    Con.multiLink(
-                        'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: 'show_forum', frame: 4, idart: idart, idcat: idcat})
-                    );
-                    Con.ParameterCollector.register({idart: idart, idcat: idcat});
+        function actionShowForum($row, id, idart, idcat) {
+            Con.multiLink(
+                'right_bottom', Con.UtilUrl.build('main.php', {
+                    area: area,
+                    action: 'show_forum',
+                    frame: 4,
+                    idart: idart,
+                    idcat: idcat
+                })
+            );
+            Con.ParameterCollector.register({idart: idart, idcat: idcat});
+        }
+
+        function actionDeleteForum($row, id, idart) {
+            var deleteMessage = "{DELETE_MESSAGE}";
+            Con.showConfirmation(deleteMessage, function () {
+                Con.multiLink(
+                    'right_bottom', Con.UtilUrl.build('main.php', {
+                        area: area,
+                        action: 'delete_forum',
+                        frame: 4,
+                        idart: idart
+                    })
+                );
+            });
+        }
+
+        $('#generic_menu_list [data-action]').live('click', function () {
+            var action = $(this).data('action'),
+                $row = $(this).closest('[data-id]'),
+                id = $row.data('id');
+
+            if ($row && action && id) {
+                if (action === 'show_forum') {
+                    actionShowForum($row, id, $(this).data('idart'), $(this).data('idcat'));
+                } else if (action === 'delete_forum') {
+                    actionDeleteForum($row, id, $(this).data('idart'));
                 }
-
-                function actionDeleteForum($row, id, idart) {
-                    var deleteMessage = "{DELETE_MESSAGE}";
-                    Con.showConfirmation(deleteMessage, function() {
-                        Con.multiLink(
-                            'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: 'delete_forum', frame: 4, idart: idart})
-                        );
-                    });
-                }
-
-                $('#generic_menu_list [data-action]').live('click', function() {
-                    var action = $(this).data('action'),
-                        $row = $(this).closest('[data-id]'),
-                        id = $row.data('id');
-
-                    if ($row && action && id) {
-                        if (action === 'show_forum') {
-                            actionShowForum($row, id, $(this).data('idart'), $(this).data('idcat'));
-                        } else if (action === 'delete_forum') {
-                            actionDeleteForum($row, id, $(this).data('idart'));
-                        }
-                    }
-                });
-            })(Con, Con.$);
-        </script>
-    </body>
+            }
+        });
+    })(Con, Con.$);
+</script>
+</body>
 </html>

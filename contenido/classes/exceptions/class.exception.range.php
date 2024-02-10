@@ -20,6 +20,7 @@
  * {@link RangeException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cRangeException extends cRuntimeException {
+class cRangeException extends cRuntimeException
+{
 
 }

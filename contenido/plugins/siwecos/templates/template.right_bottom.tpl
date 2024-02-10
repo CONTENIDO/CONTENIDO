@@ -28,12 +28,13 @@
                 *
             </td>
             <td class="no_wrap align_top text_left">
-                <input type="password" id="password" name="password" value="{$password}" autocomplete="off" readonly="readonly">
+                <input type="password" id="password" name="password" value="{$password}"
+                       autocomplete="off" readonly="readonly">
                 <script type="text/javascript">
-                    (function(Con, $) {
-                        $(function() {
+                    (function (Con, $) {
+                        $(function () {
                             // Remove readonly attribute on focus
-                            $("#password").on("focus", function() {
+                            $("#password").on("focus", function () {
                                 $(this).prop("readonly", false);
                             });
                         });
@@ -46,7 +47,8 @@
                 {i18n("LBL_DANGER_LEVEL", 'siwecos')}
             </td>
             <td class="no_wrap align_top text_left">
-                <input type="dangerLevel" id="dangerLevel" name="dangerLevel" value="{$dangerLevel}">
+                <input type="dangerLevel" id="dangerLevel" name="dangerLevel"
+                       value="{$dangerLevel}">
             </td>
         </tr>
         <tr>
@@ -77,8 +79,10 @@
         <tr>
             <td colspan="2" class="no_wrap align_top text_right">
                 <div class="con_form_action_control">
-                    <input class="con_img_button" type="image" id="siwecos-new-form" src="images/but_ok.gif"
-                           alt="{i18n("BTN_SAVE", 'siwecos')}" title="{i18n("BTN_SAVE", 'siwecos')}">
+                    <input class="con_img_button" type="image" id="siwecos-new-form"
+                           src="images/but_ok.gif"
+                           alt="{i18n("BTN_SAVE", 'siwecos')}"
+                           title="{i18n("BTN_SAVE", 'siwecos')}">
                 </div>
             </td>
         </tr>

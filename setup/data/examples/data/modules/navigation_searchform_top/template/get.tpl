@@ -7,9 +7,9 @@
     -->
 {else}
     <form action="{$action|escape}" method="{$method|escape}" id="navigation_searchform_top">
-    {if isset($idart)}<input type="hidden" name="idart" value="{$idart|escape}" />{/if}
-    {if isset($idlang)}<input type="hidden" name="idlang" value="{$idlang|escape}" />{/if}
-        <input type="text" id="search_term" name="search_term" />
+        {if isset($idart)}<input type="hidden" name="idart" value="{$idart|escape}" />{/if}
+        {if isset($idlang)}<input type="hidden" name="idlang" value="{$idlang|escape}" />{/if}
+        <input type="text" id="search_term" name="search_term"/>
     </form>
 {/if}
 

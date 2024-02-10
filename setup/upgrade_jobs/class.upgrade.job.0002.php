@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $cfg;
+$cfg = cRegistry::getConfig();
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.api.string.php');
 
 /**
@@ -24,7 +24,8 @@ checkAndInclude($cfg['path']['contenido'] . 'includes/functions.api.string.php')
  * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0002 extends cUpgradeJobAbstract {
+class cUpgradeJob_0002 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.0-alpha1";
 
@@ -33,13 +34,11 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
      * file system.
      * This Method will be called by setup
      */
-    private function _convertModulesToFile($clientId) {
-        global $cfg;
-
+    private function _convertModulesToFile($clientId)
+    {
         $db = getSetupMySQLDBConnection();
-
-        $sql = sprintf("SELECT * FROM %s WHERE idclient='%s' ORDER BY idmod", $cfg['tab']['mod'], $clientId);
-        $db->query($sql);
+        $modulesTable = cRegistry::getDbTableName('mod');
+        $db->query("SELECT * FROM `%s` WHERE `idclient` = %d ORDER BY `idmod`", $modulesTable, $clientId);
 
         $moduleHandler = new cModuleHandler();
 
@@ -49,10 +48,10 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             $moduleHandler->initWithDatabaseRow($db);
 
             // make new module only if modul not exist in directory
-            if ($moduleHandler->modulePathExists() != true) {
+            if (!$moduleHandler->modulePathExists()) {
                 // we need no error handling here because module could still
                 // exist from previous version
-                if ($moduleHandler->createModule($db->f('input'), $db->f('output')) == true) {
+                if ($moduleHandler->createModule($db->f('input'), $db->f('output'))) {
                     // save module translation
                     $translations = new cModuleFileTranslation($db->f('idmod'));
                     $translations->saveTranslations();
@@ -61,35 +60,32 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         }
 
         // update input and output fields
-        $sql = sprintf("UPDATE %s SET input = '', output = '' WHERE idclient='%s'", $cfg['tab']['mod'], $clientId);
+        $sql = sprintf("UPDATE %s SET input = '', output = '' WHERE idclient='%s'", $modulesTable, $clientId);
         $db->query($sql);
     }
 
-    public function _execute() {
-        global $cfg;
-        global $client, $lang, $cfgClient;
+    public function _execute()
+    {
+        // NOTE: Use globals here!
+        global $cfg, $client, $lang, $cfgClient;
 
         if ($this->_setupType != 'upgrade') {
             return;
         }
 
-        $sql = "SHOW COLUMNS FROM %s LIKE 'frontendpath'";
-        $sql = sprintf($sql, $cfg['tab']['clients']);
+        $clientsTable = cRegistry::getDbTableName('clients');
 
-        $this->_oDb->query($sql);
+        $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'frontendpath'", $clientsTable);
         if ($this->_oDb->numRows() != 0) {
-            $sql = "SELECT * FROM " . $cfg['tab']['clients'];
-            $this->_oDb->query($sql);
+            $this->_oDb->query("SELECT * FROM `%s`", $clientsTable);
 
             while ($this->_oDb->nextRecord()) {
                 updateClientCache($this->_oDb->f("idclient"), $this->_oDb->f("htmlpath"), $this->_oDb->f("frontendpath"));
             }
 
-            $sql = sprintf("ALTER TABLE %s DROP htmlpath", $cfg['tab']['clients']);
-            $this->_oDb->query($sql);
-
-            $sql = sprintf("ALTER TABLE %s DROP frontendpath", $cfg['tab']['clients']);
-            $this->_oDb->query($sql);
+            $this->_oDb->query(
+                "ALTER TABLE `%s` DROP COLUMN `htmlpath`, DROP COLUMN `frontendpath`", $clientsTable
+            );
         }
 
         $cfgClient = updateClientCache();
@@ -100,37 +96,39 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         $db2 = getSetupMySQLDBConnection();
 
         // Update module aliases
-        $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['mod']);
+        $modulesTable = cRegistry::getDbTableName('mod');
+        $this->_oDb->query("SELECT * FROM `%s`", $modulesTable);
         while ($this->_oDb->nextRecord()) {
             $newName = cString::toLowerCase(cModuleHandler::getCleanName($this->_oDb->f('name')));
-            $sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idmod` = %d", $cfg['tab']['mod'], $newName, $this->_oDb->f('idmod'));
+            $sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idmod` = %d", $modulesTable, $newName, $this->_oDb->f('idmod'));
             $db2->query($sql);
         }
 
         // Update layout aliases
-        $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['lay']);
+        $layoutsTable = cRegistry::getDbTableName('lay');
+        $this->_oDb->query("SELECT * FROM `%s`", $layoutsTable);
         while ($this->_oDb->nextRecord()) {
             $newName = cModuleHandler::getCleanName(cString::toLowerCase($this->_oDb->f('name')));
-            $sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idlay` = %d", $cfg['tab']['lay'], $newName, $this->_oDb->f('idlay'));
+            $sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idlay` = %d", $layoutsTable, $newName, $this->_oDb->f('idlay'));
             $db2->query($sql);
         }
 
         // Makes the new concept of modules (save the modules to the file) save the translation
         foreach ($cfgClient as $iClient => $aClient) {
-            if ((int) $iClient == 0) {
+            if ((int)$iClient == 0) {
                 continue;
             }
 
             $client = $iClient; // this should work for all clients now
 
             // Save all modules from db-table to the filesystem if exists
-            $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'output'", $cfg['tab']['mod']);
+            $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'output'", $modulesTable);
             if ($this->_oDb->numRows() > 0) {
                 $this->_convertModulesToFile($client);
             }
 
             // Save all layouts from db-table to the filesystem if exists
-            $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'code'", $cfg['tab']['lay']);
+            $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'code'", $layoutsTable);
             if ($this->_oDb->numRows() > 0) {
                 cLayoutHandler::upgrade($this->_oDb, $cfg, $client);
             }

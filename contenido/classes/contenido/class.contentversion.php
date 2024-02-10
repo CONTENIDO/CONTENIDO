@@ -96,13 +96,13 @@ class cApiContentVersionCollection extends ItemCollection
     /**
      * Returns the maximum version of a content version entry.
      *
-     * @since CONTENIDO 4.10.2
-     * @param int $idArtLang  Article language id
+     * @param int $idArtLang Article language id
      * @param int $idType Content type id (e.g. id of `CONTENT_TYPE`)
      * @param int $typeId Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
      * @return int Found maximum version or 0
      * @throws cDbException
      * @throws cException
+     * @since CONTENIDO 4.10.2
      */
     public function getMaximumVersionByArticleLanguageId(
         int $idArtLang, int $idType, int $typeId
@@ -204,7 +204,7 @@ class cApiContentVersion extends Item
      * Creates a new, editable Version with same properties as this Content Version
      *
      * @param string $version
-     * @param mixed  $deleted
+     * @param mixed $deleted
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -229,7 +229,7 @@ class cApiContentVersion extends Item
     /**
      * Loads a content entry by its article language id, idtype, type id and version.
      *
-     * @param array $contentParameters  Assoziative array like:
+     * @param array $contentParameters Assoziative array like:
      *      <pre>
      *      $contentParameters = [
      *          'idartlang' => (int) Article language id
@@ -247,9 +247,9 @@ class cApiContentVersion extends Item
     {
         $props = [
             'idartlang' => $contentParameters['idartlang'],
-            'idtype'    => $contentParameters['idtype'],
-            'typeid'    => $contentParameters['typeid'],
-            'version'   => $contentParameters['version'],
+            'idtype' => $contentParameters['idtype'],
+            'typeid' => $contentParameters['typeid'],
+            'version' => $contentParameters['version'],
         ];
         $recordSet = $this->_oCache->getItemByProperties($props);
         if ($recordSet) {

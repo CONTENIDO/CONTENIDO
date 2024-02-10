@@ -1,10 +1,9 @@
-
-(function(Con, $) {
+(function (Con, $) {
 
     /**
      * TODO add graphic for loading when executing action
      */
-    $(function() {
+    $(function () {
 
         // Get reference to FormAssistant
         var formAssistant = Con.Plugin.FormAssistant;
@@ -32,7 +31,7 @@
          * then its form is requested via AJAX and displayed
          * as a dialog.
          */
-        $body.delegate('.pifa-icon-edit-field', 'click', function(event) {
+        $body.delegate('.pifa-icon-edit-field', 'click', function (event) {
             event.preventDefault();
             var href = $(this).attr('href');
             // If no href is given user lacks rights to add field.
@@ -42,24 +41,24 @@
             $.ajax({
                 type: 'GET',
                 url: href,
-                success: function(data, textStatus, jqXHR) {
-                    if (Con.checkAjaxResponse(data) === false)  {
+                success: function (data, textStatus, jqXHR) {
+                    if (Con.checkAjaxResponse(data) === false) {
                         return false;
                     }
                     $pifaFormFieldForm.html(data);
                     pifaShowFormFieldDialog($pifaFormFieldForm, null);
 
-                    $pifaFormFieldForm.find('.pseudo-fieldset').find('#deselectCss').click(function() {
+                    $pifaFormFieldForm.find('.pseudo-fieldset').find('#deselectCss').click(function () {
                         $('#css_class option:selected').removeAttr('selected');
                     });
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     $(jqXHR.responseText).appendTo('body').dialog({
                         modal: true,
                         title: errorThrown,
                         buttons: [{
                             text: formAssistant.getTrans('cancel'),
-                            click: function() {
+                            click: function () {
                                 $(this).dialog('close');
                             }
                         }]
@@ -75,7 +74,7 @@
          * Ajax request is send which deletes the field. Eventually
          * the field is removed via a hide animation.
          */
-        $body.delegate('.pifa-icon-delete-field', 'click', function(event) {
+        $body.delegate('.pifa-icon-delete-field', 'click', function (event) {
             event.preventDefault();
             if (false === confirm(formAssistant.getTrans('confirm_delete_field'))) {
                 return;
@@ -89,22 +88,22 @@
             $.ajax({
                 type: 'GET',
                 url: href,
-                success: function(data, textStatus, jqXHR) {
-                    if (Con.checkAjaxResponse(data) === false)  {
+                success: function (data, textStatus, jqXHR) {
+                    if (Con.checkAjaxResponse(data) === false) {
                         return false;
                     }
 
-                    $li.hide('slide', function() {
+                    $li.hide('slide', function () {
                         $(this).remove();
                     }, 'fast');
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     $(jqXHR.responseText).appendTo('body').dialog({
                         modal: true,
                         title: errorThrown,
                         buttons: [{
                             text: formAssistant.getTrans('cancel'),
-                            click: function() {
+                            click: function () {
                                 $(this).dialog('close');
                             }
                         }]
@@ -124,13 +123,13 @@
                 items: 'li:not(.header)',
                 axis: 'y',
                 //containment: 'parent',
-                start: function(e, ui) {
+                start: function (e, ui) {
                     ui.placeholder.height(ui.item.height());
                 },
                 revert: true,
-                update: function(event, ui) {
+                update: function (event, ui) {
                     var idfields = [];
-                    $.each($('li', this), function() {
+                    $.each($('li', this), function () {
                         idfields.push($(this).attr('id'));
                     });
                     var sortParams = $('#sortParams').val();
@@ -154,49 +153,49 @@
             helper: 'clone',
             revert: 'invalid'
         })
-        .disableSelection()
-        .on('click', function(event) {
-            // append to list when clicked
-            event.preventDefault();
-            var href = $(this).attr('href');
-            // If no href is given user lacks rights to add field.
-            if (0 === href.length) {
-                return;
-            }
-            $.ajax({
-                type: 'GET',
-                url: 'main.php',
-                data: href,
-                success: function(data, textStatus, jqXHR) {
-                    if (Con.checkAjaxResponse(data) === false)  {
-                        return false;
-                    }
-
-                    $pifaFormFieldForm.html(data);
-                    $('#field_rank', $pifaFormFieldForm).val($pifaFormFieldList.find('li').length + 1);
-                    pifaShowFormFieldDialog($pifaFormFieldForm, null);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    $(jqXHR.responseText).appendTo('body').dialog({
-                        modal: true,
-                        title: errorThrown,
-                        buttons: [{
-                            text: formAssistant.getTrans('cancel'),
-                            click: function() {
-                                $(this).dialog('close');
-                            }
-                        }]
-                    });
+            .disableSelection()
+            .on('click', function (event) {
+                // append to list when clicked
+                event.preventDefault();
+                var href = $(this).attr('href');
+                // If no href is given user lacks rights to add field.
+                if (0 === href.length) {
+                    return;
                 }
+                $.ajax({
+                    type: 'GET',
+                    url: 'main.php',
+                    data: href,
+                    success: function (data, textStatus, jqXHR) {
+                        if (Con.checkAjaxResponse(data) === false) {
+                            return false;
+                        }
+
+                        $pifaFormFieldForm.html(data);
+                        $('#field_rank', $pifaFormFieldForm).val($pifaFormFieldList.find('li').length + 1);
+                        pifaShowFormFieldDialog($pifaFormFieldForm, null);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $(jqXHR.responseText).appendTo('body').dialog({
+                            modal: true,
+                            title: errorThrown,
+                            buttons: [{
+                                text: formAssistant.getTrans('cancel'),
+                                click: function () {
+                                    $(this).dialog('close');
+                                }
+                            }]
+                        });
+                    }
+                });
             });
-        });
 
         /**
          * Make form field list droppable.
          */
         $pifaFormFieldList.droppable({
             accept: '.img-draggable', // accept only field type icons
-            drop: function(event, ui) {
+            drop: function (event, ui) {
                 // Prevent multiple form field requests in a row.
                 if (formRequestIsRunning) {
                     return;
@@ -216,20 +215,20 @@
                     type: 'GET',
                     url: 'main.php',
                     data: href,
-                    success: function(data, textStatus, jqXHR) {
+                    success: function (data, textStatus, jqXHR) {
                         formRequestIsRunning = false;
                         $pifaFormFieldForm.html(data);
                         $('#field_rank', $pifaFormFieldForm).val(droppedPosition);
                         pifaShowFormFieldDialog($pifaFormFieldForm, ui.draggable);
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
+                    error: function (jqXHR, textStatus, errorThrown) {
                         formRequestIsRunning = false;
                         $(jqXHR.responseText).appendTo('body').dialog({
                             modal: true,
                             title: errorThrown,
                             buttons: [{
                                 text: formAssistant.getTrans('cancel'),
-                                click: function() {
+                                click: function () {
                                     $(this).dialog('close');
                                 }
                             }]
@@ -279,15 +278,15 @@
                 height: 'auto',
                 modal: true,
                 resizable: true,
-                open: function(event, ui) {
+                open: function (event, ui) {
                     $pifaFormFieldForm = $(event.target);
                     // focus label
                     $pifaFormFieldForm.find('#label').focus();
-                    $pifaFormFieldForm.find('#column_name').on('blur change keyup', function(e) {
+                    $pifaFormFieldForm.find('#column_name').on('blur change keyup', function (e) {
                         pifaValidateFormFieldElement($(e.currentTarget));
                     });
                 },
-                close: function(event, ui) {
+                close: function (event, ui) {
                     // remove dragged item
                     if (null !== $draggedItem) {
                         $draggedItem.remove();
@@ -298,9 +297,9 @@
             // form has no hidden action when user lacks rights to save form field
             // add buttons only if user has appropriate rights
             if (0 < $pifaFormFieldForm.find('#action').length) {
-                opt.buttons= [{
+                opt.buttons = [{
                     text: ' ',
-                    click: function() {
+                    click: function () {
                         if (!pifaValidateFormFieldDialog($pifaFormFieldForm)) {
                             $(this).dialog('close').submit();
                         }
@@ -347,7 +346,7 @@
         /**
          * Get new options row via Ajax and insert them at the end of list of options.
          */
-        $body.delegate('#icon-add-option', 'click', function(event) {
+        $body.delegate('#icon-add-option', 'click', function (event) {
             event.preventDefault();
             var href = $(this).attr('href');
             // If no href is given user lacks rights to add option.
@@ -359,19 +358,19 @@
                 type: 'GET',
                 url: href,
                 data: 'index=' + ($optionsList.children().length + 1),
-                success: function(data, textStatus, jqXHR) {
-                    if (Con.checkAjaxResponse(data) === false)  {
+                success: function (data, textStatus, jqXHR) {
+                    if (Con.checkAjaxResponse(data) === false) {
                         return false;
                     }
                     $optionsList.append(data);
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     $(jqXHR.responseText).appendTo('body').dialog({
                         modal: true,
                         title: errorThrown,
                         buttons: [{
                             text: formAssistant.getTrans('cancel'),
-                            click: function() {
+                            click: function () {
                                 $(this).dialog('close');
                             }
                         }]
@@ -383,9 +382,9 @@
         /**
          * Delete option row. In order for this action to take effect the form has to be saved!
          */
-        $body.delegate('.del-option a', 'click', function(event) {
+        $body.delegate('.del-option a', 'click', function (event) {
             event.preventDefault();
-            $(this).parents('.option-outer').hide('slide', function() {
+            $(this).parents('.option-outer').hide('slide', function () {
                 $(this).remove();
             }, 'fast');
 
@@ -395,14 +394,14 @@
          * Submit form via AJAX.
          * The response is the row for the edited form field to be shown in the list of form fields.
          */
-        $pifaFormFieldForm.on('submit', function(event) {
+        $pifaFormFieldForm.on('submit', function (event) {
             event.preventDefault();
             $.ajax({
                 type: 'POST',
                 url: 'main.php',
                 data: $(this).serialize(),
-                success: function(data, textStatus, jqXHR) {
-                    if (Con.checkAjaxResponse(data) === false)  {
+                success: function (data, textStatus, jqXHR) {
+                    if (Con.checkAjaxResponse(data) === false) {
                         return false;
                     }
                     // get idfield & field_rank of current item and list of existing items
@@ -426,13 +425,13 @@
                         $pifaFormFieldList.append(data);
                     }
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     $(jqXHR.responseText).appendTo('body').dialog({
                         modal: true,
                         title: errorThrown,
                         buttons: [{
                             text: formAssistant.getTrans('cancel'),
-                            click: function() {
+                            click: function () {
                                 $(this).dialog('close');
                             }
                         }]
@@ -442,8 +441,8 @@
         });
 
         // On flip mark click
-        $('a.invert_selection').click(function() {
-            $('input.mark_data').each(function() {
+        $('a.invert_selection').click(function () {
+            $('input.mark_data').each(function () {
                 $(this).prop('checked', !$(this).prop('checked'));
             });
         });
@@ -451,7 +450,7 @@
         /**
          * Submit form via Ajax and delete form data.
          */
-        $('#right_bottom img.delete').on('click', function(event) {
+        $('#right_bottom img.delete').on('click', function (event) {
             event.preventDefault();
             var iddatas = [];
             if ($(event.target).data('action') === 'delete_form_data') {
@@ -462,23 +461,23 @@
                 }
             } else {
                 // Delete selected (one or multiple)
-                $('input.mark_data').each(function() {
+                $('input.mark_data').each(function () {
                     if ($(this).prop('checked')) {
                         iddatas.push($(this).val());
                     }
                 });
             }
-            if (!iddatas.length){
+            if (!iddatas.length) {
                 return;
             }
 
             var deleteUrl = $('input.deleteUrl').val();
             $.ajax({
                 type: 'POST',
-                url:  deleteUrl,
+                url: deleteUrl,
                 data: 'iddatas=' + iddatas.join(','),
-                success: function(msg) {
-                    if (Con.checkAjaxResponse(msg) === false)  {
+                success: function (msg) {
+                    if (Con.checkAjaxResponse(msg) === false) {
                         return false;
                     }
                     document.location.reload();

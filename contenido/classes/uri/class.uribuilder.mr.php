@@ -34,7 +34,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class cUriBuilderMR extends cUriBuilder {
+class cUriBuilderMR extends cUriBuilder
+{
 
     /**
      * Self instance
@@ -87,7 +88,8 @@ class cUriBuilderMR extends cUriBuilder {
      *
      * Tries to set some member variables.
      */
-    private function __construct() {
+    private function __construct()
+    {
         $this->sHttpBasePath = '';
         if (ModRewrite::isEnabled()) {
             $this->_aMrCfg = ModRewrite::getConfig();
@@ -102,7 +104,8 @@ class cUriBuilderMR extends cUriBuilder {
      *
      * @return cUriBuilderMR
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance == NULL) {
             self::$_instance = new self();
         }
@@ -117,7 +120,7 @@ class cUriBuilderMR extends cUriBuilder {
      *                                <code>
      *                                $params[0] = 'front_content.php?idart=123...'
      *                                </code>
-     * @param bool  $bUseAbsolutePath [optional]
+     * @param bool $bUseAbsolutePath [optional]
      *                                Flag to use absolute path (not used at the moment)
      *
      * @return string
@@ -126,10 +129,11 @@ class cUriBuilderMR extends cUriBuilder {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function buildUrl(array $params, $bUseAbsolutePath = false) {
+    public function buildUrl(array $params, $bUseAbsolutePath = false)
+    {
         ModRewriteDebugger::add($params, 'cUriBuilderMR::buildUrl() $params');
 
-        $urlDebug       = [];
+        $urlDebug = [];
         $urlDebug['in'] = $params;
 
         $url = self::_buildUrl($params);
@@ -163,7 +167,8 @@ class cUriBuilderMR extends cUriBuilder {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    private function _buildUrl(array $aParams) {
+    private function _buildUrl(array $aParams)
+    {
         // language should changed, set lang parameter
         if (isset($aParams['changelang'])) {
             $aParams['lang'] = $aParams['changelang'];
@@ -254,7 +259,8 @@ class cUriBuilderMR extends cUriBuilder {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public static function getMultiClientRootDir($configuredRootDir) {
+    public static function getMultiClientRootDir($configuredRootDir)
+    {
 
         // return cached rootdir if set
         if (isset(self::$_cachedRootDir)) {
@@ -324,7 +330,8 @@ class cUriBuilderMR extends cUriBuilder {
      *         composed query part for the URL
      *         like '?foo=bar&amp;param=value'
      */
-    private function _createUrlQueryPart(array $aArgs) {
+    private function _createUrlQueryPart(array $aArgs)
+    {
         // set list of parameter which are to ignore while setting additional parameter
         $aIgnoredParams = [
             'idcat',
@@ -375,12 +382,13 @@ class cUriBuilderMR extends cUriBuilder {
      * @return mixed
      *         Client id, client name or NULL
      */
-    private function _getClientParameter(array $aArgs) {
+    private function _getClientParameter(array $aArgs)
+    {
         global $client;
 
         // set client if desired
         if ($this->_aMrCfg['use_client'] == 1) {
-            $iChangeClient = (isset($aArgs['changeclient'])) ? (int) $aArgs['changeclient'] : 0;
+            $iChangeClient = (isset($aArgs['changeclient'])) ? (int)$aArgs['changeclient'] : 0;
             $idclient = ($iChangeClient > 0) ? $iChangeClient : $client;
             if ($this->_aMrCfg['use_client_name'] == 1) {
                 return urlencode(ModRewrite::getClientName($idclient));
@@ -399,12 +407,13 @@ class cUriBuilderMR extends cUriBuilder {
      * @return mixed
      *         Language id, language name or NULL
      */
-    private function _getLanguageParameter(array $aArgs) {
+    private function _getLanguageParameter(array $aArgs)
+    {
         global $lang;
 
         // set language if desired
         if ($this->_aMrCfg['use_language'] == 1) {
-            $iChangeLang = (isset($aArgs['changelang'])) ? (int) $aArgs['changelang'] : 0;
+            $iChangeLang = (isset($aArgs['changelang'])) ? (int)$aArgs['changelang'] : 0;
             $idlang = ($iChangeLang > 0) ? $iChangeLang : $lang;
             if ($this->_aMrCfg['use_language_name'] == 1) {
                 return urlencode(ModRewrite::getLanguageName($idlang));
@@ -423,7 +432,8 @@ class cUriBuilderMR extends cUriBuilder {
      * @return string
      *         Path
      */
-    private function _getPath(array $aPretty) {
+    private function _getPath(array $aPretty)
+    {
         $sPath = (isset($aPretty['urlpath'])) ? $aPretty['urlpath'] : '';
 
         // check start directory settings
@@ -451,14 +461,15 @@ class cUriBuilderMR extends cUriBuilder {
      * @return string
      *         Articlename
      */
-    private function _getArticleName(array $aPretty, array $aArgs) {
+    private function _getArticleName(array $aPretty, array $aArgs)
+    {
         $sArticle = (isset($aPretty['urlname'])) ? $aPretty['urlname'] : '';
 
-        $iIdCat = (isset($aArgs['idcat'])) ? (int) $aArgs['idcat'] : 0;
-        $iIdCatLang = (isset($aArgs['idcatlang'])) ? (int) $aArgs['idcatlang'] : 0;
-        $iIdCatArt = (isset($aArgs['idcatart'])) ? (int) $aArgs['idcatart'] : 0;
-        $iIdArt = (isset($aArgs['idart'])) ? (int) $aArgs['idart'] : 0;
-        $iIdArtLang = (isset($aArgs['idartlang'])) ? (int) $aArgs['idartlang'] : 0;
+        $iIdCat = (isset($aArgs['idcat'])) ? (int)$aArgs['idcat'] : 0;
+        $iIdCatLang = (isset($aArgs['idcatlang'])) ? (int)$aArgs['idcatlang'] : 0;
+        $iIdCatArt = (isset($aArgs['idcatart'])) ? (int)$aArgs['idcatart'] : 0;
+        $iIdArt = (isset($aArgs['idart'])) ? (int)$aArgs['idart'] : 0;
+        $iIdArtLang = (isset($aArgs['idartlang'])) ? (int)$aArgs['idartlang'] : 0;
 
         // category id was passed but not article id
         if (($iIdCat > 0 || $iIdCatLang > 0) && $iIdCatArt == 0 && $iIdArt == 0 && $iIdArtLang == 0) {

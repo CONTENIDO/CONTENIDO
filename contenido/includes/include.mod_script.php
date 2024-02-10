@@ -66,7 +66,7 @@ if (!$perm->have_perm_area_action('js', $actionRequest) || $permCreate) {
 }
 
 // display critical error if no valid client is selected
-if ((int) $client < 1) {
+if ((int)$client < 1) {
     $page->displayCriticalError(i18n("No Client selected"));
     $page->render();
     return;
@@ -193,7 +193,7 @@ if ($actionRequest == $sActionEdit
 $form = new cGuiTableForm('file_editor');
 $form->setTableID('mod_javascript');
 $form->addTableClass('col_flx_m_50p col_first_100');
-$form->setHeader(i18n('Edit file') . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
+$form->setHeader(i18n('Edit file') . " &quot;" . conHtmlSpecialChars($module->get('name')) . "&quot;");
 $form->setVar('area', $area);
 $form->setVar('action', $sAction);
 $form->setVar('frame', $frame);

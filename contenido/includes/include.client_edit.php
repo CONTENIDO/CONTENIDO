@@ -232,7 +232,7 @@ $oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace([
     '//',
     '\\',
     '"'
-], '', ($cApiClient->isLoaded())? $cApiClient->get("name") : $clientname)), 75, 255, "clientname");
+], '', ($cApiClient->isLoaded()) ? $cApiClient->get("name") : $clientname)), 75, 255, "clientname");
 $page->set('d', 'CATFIELD', $oTxtClient->render());
 $page->set('d', 'BRDRT', 0);
 $page->set('d', 'BRDRB', 1);

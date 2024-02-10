@@ -1,4 +1,4 @@
- <?php
+<?php
 
 /**
  *
@@ -14,7 +14,7 @@
 /**
  *
  * @property array $_cfg
- * @property array $_artSpecs
+ * @property string $_artSpecs
  * @property cDb $_db
  * @property int $_client
  * @property int $_lang
@@ -26,7 +26,8 @@
  *
  * @author marcus.gnass
  */
-class SearchResultModule {
+class SearchResultModule
+{
 
     /**
      *
@@ -113,7 +114,8 @@ class SearchResultModule {
      *
      * @param array $options
      */
-    public function __construct(array $options = NULL) {
+    public function __construct(array $options = NULL)
+    {
         global $sArtSpecs;
 
         // generic way to set options
@@ -187,7 +189,8 @@ class SearchResultModule {
 
     /**
      */
-    public function render() {
+    public function render()
+    {
         $tpl = cSmartyFrontend::getInstance(true);
 
         $tpl->assign('label', $this->_label);
@@ -220,7 +223,8 @@ class SearchResultModule {
 
     /**
      */
-    protected function _performSearch() {
+    protected function _performSearch()
+    {
         // build search object
         // only certain content types will be searched
         $search = new cSearch([
@@ -250,7 +254,7 @@ class SearchResultModule {
         ]);
 
         if (cString::getStringLength($this->_prepSearchTerm) > 1) {
-            $searchResultArray = $search->searchIndex($this->_prepSearchTerm, '');
+            $searchResultArray = $search->searchIndex($this->_prepSearchTerm);
 
             if (false !== $searchResultArray) {
 
@@ -279,7 +283,8 @@ class SearchResultModule {
      *
      * @return string
      */
-    protected function _getMsgResult() {
+    protected function _getMsgResult(): string
+    {
         return $this->_msgResult;
     }
 
@@ -288,7 +293,8 @@ class SearchResultModule {
      * @param int $count
      * @param int $countIdarts
      */
-    protected function _setMsgResult($count, $countIdarts) {
+    protected function _setMsgResult(int $count, int $countIdarts)
+    {
         $this->_countValues = $count;
 
         // $this->_numberOfPages = 1;
@@ -306,7 +312,8 @@ class SearchResultModule {
      * @return array
      * @throws cDbException|cException
      */
-    protected function _getSearchableIdcats() {
+    protected function _getSearchableIdcats(): array
+    {
         $searchableIdcats = getEffectiveSetting('searchable', 'idcats', 1);
         return explode(',', $searchableIdcats);
     }
@@ -319,7 +326,8 @@ class SearchResultModule {
      * @return array
      * @throws cDbException|cInvalidArgumentException
      */
-    protected function _getArticleSpecs() {
+    protected function _getArticleSpecs(): array
+    {
         $sql = "-- getArticleSpecs()
             SELECT
                 `idartspec`, `artspec`
@@ -345,7 +353,8 @@ class SearchResultModule {
      * @return array
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    protected function _getResults() {
+    protected function _getResults(): array
+    {
         if (NULL === $this->_searchResults) {
             return [];
         }
@@ -414,7 +423,8 @@ class SearchResultModule {
      *
      * @return string
      */
-    protected function _getPreviousLink() {
+    protected function _getPreviousLink(): string
+    {
         // skip if there are no previous pages
         if (1 >= $this->_page) {
             return '';
@@ -428,7 +438,8 @@ class SearchResultModule {
      *
      * @return string
      */
-    protected function _getNextLink() {
+    protected function _getNextLink(): string
+    {
         // skip if there are no next pages
         if ($this->_page >= $this->_numberOfPages) {
             return '';
@@ -443,7 +454,8 @@ class SearchResultModule {
      *
      * @return array
      */
-    protected function _getPageLinks() {
+    protected function _getPageLinks(): array
+    {
         $pageLinks = [];
         for ($i = 1; $i <= $this->_numberOfPages; $i++) {
             $pageLinks[$i] = $this->_getPageLink($this->_dispSearchTerm, $i);
@@ -456,12 +468,13 @@ class SearchResultModule {
      * This method builds URLs for each result link and the pagination links.
      *
      *
-     * @param string $searchTerm
-     * @param int $page
+     * @param string|null $searchTerm
+     * @param int|null $page
      * @return mixed
      * @throws cDbException|cException
      */
-    protected function _getPageLink($searchTerm = NULL, $page = NULL) {
+    protected function _getPageLink(string $searchTerm = NULL, int $page = NULL)
+    {
         // define standard params
         $params = [
             'lang' => $this->_lang,

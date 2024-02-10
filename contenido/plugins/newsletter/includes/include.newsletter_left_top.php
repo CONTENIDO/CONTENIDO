@@ -33,7 +33,7 @@ if (!is_object($oTpl)) {
 }
 if (!is_object($oDB)) {
     $oDB = cRegistry::getDb(); // We have really to send a special SQL statement
-                               // - we need a DB object
+    // - we need a DB object
 }
 
 $oUser = new cApiUser($auth->auth["uid"]);
@@ -161,14 +161,14 @@ while ($oDB->nextRecord()) {
 }
 
 // Get html template category
-$iHTMLTemplateIDCat = (int) $oClientLang->getProperty("newsletter", "html_template_idcat");
+$iHTMLTemplateIDCat = (int)$oClientLang->getProperty("newsletter", "html_template_idcat");
 if ($iHTMLTemplateIDCat < 0) {
     $iHTMLTemplateIDCat = 0;
 }
 $oSelHTMLTemplateIDCat->setDefault($iHTMLTemplateIDCat);
 
 // Get html newsletter article category
-$iHTMLNewsletterIDCat = (int) $oClientLang->getProperty("newsletter", "html_newsletter_idcat");
+$iHTMLNewsletterIDCat = (int)$oClientLang->getProperty("newsletter", "html_newsletter_idcat");
 if ($iHTMLNewsletterIDCat < 0) {
     $iHTMLNewsletterIDCat = 0;
 }
@@ -197,15 +197,15 @@ $oOption = new cHTMLOptionElement(i18n("My E-Mail address", 'newsletter'), 0);
 $oSelTestDestination->addOptionElement(0, $oOption);
 
 $oRcpGroups = new NewsletterRecipientGroupCollection();
-$oRcpGroups->setWhere("idclient", (int) $client);
-$oRcpGroups->setWhere("idlang", (int) $lang);
+$oRcpGroups->setWhere("idclient", (int)$client);
+$oRcpGroups->setWhere("idlang", (int)$lang);
 $oRcpGroups->setOrder("groupname");
 $oRcpGroups->query();
 
 $bTestTargetFound = false;
 // Get client and language specific test destination. As lang is client
 // specific, lang is sufficient
-$iTestDestination = (int) $oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang);
+$iTestDestination = (int)$oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang);
 while ($oRcpGroup = $oRcpGroups->next()) {
     $iID = $oRcpGroup->get($oRcpGroup->getPrimaryKeyName());
 
@@ -281,9 +281,9 @@ $oSettingsRow->setContentData($sContent);
 // 1.3 Newsletter: List options folding row
 // ####################################
 // Items per Page
-$iItemsPerPage = (int) $oUser->getProperty("itemsperpage", "news"); // Also used
-                                                                   // in query
-                                                                   // below
+$iItemsPerPage = (int)$oUser->getProperty("itemsperpage", "news"); // Also used
+// in query
+// below
 if ($iItemsPerPage == 0) {
     $iItemsPerPage = 25; // All can't be saved
 }
@@ -489,7 +489,7 @@ if (!$bUserInList) {
 $oSelAuthor->setDefault($auth->auth["uid"]);
 
 // Items per page, used also below in query
-$iItemsPerPage = (int) $oUser->getProperty("itemsperpage", "news_jobs");
+$iItemsPerPage = (int)$oUser->getProperty("itemsperpage", "news_jobs");
 if ($iItemsPerPage == 0) {
     $iItemsPerPage = 25; // All can't be saved
 }
@@ -674,7 +674,7 @@ if ($perm->have_perm_area_action("recipients", "recipients_create")) {
     $sContent .= $oLink->render() . '<br>' . "\n";
 }
 
-$iTimeframe = (int) $oClient->getProperty("newsletter", "purgetimeframe");
+$iTimeframe = (int)$oClient->getProperty("newsletter", "purgetimeframe");
 if ($iTimeframe <= 0) {
     $iTimeframe = 30;
 }
@@ -743,7 +743,7 @@ $oTpl->set('s', 'SETTINGSLINKREC', $sLink);
 // ####################################
 // 3.3 Recipients: List options folding row
 // ####################################
-$iItemsPerPage = (int) $oUser->getProperty("itemsperpage", "recipients");
+$iItemsPerPage = (int)$oUser->getProperty("itemsperpage", "recipients");
 if ($iItemsPerPage === 0) {
     $iItemsPerPage = 25; // All can't be saved
 }
@@ -947,7 +947,7 @@ $oTpl->set('s', 'ACTIONLINKGROUP', $sLink);
 // ####################################
 // 4.2 Recipient groups: List Options
 // ####################################
-$iItemsPerPage = (int) $oUser->getProperty("itemsperpage", "recipientgroups");
+$iItemsPerPage = (int)$oUser->getProperty("itemsperpage", "recipientgroups");
 if ($iItemsPerPage == 0) {
     $iItemsPerPage = 25; // All can't be saved
 }

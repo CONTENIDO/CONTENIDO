@@ -132,7 +132,7 @@ foreach ($aFields as $sKey => $aData) {
 
 if (!$bSortByFound) {
     $requestSortBy = "name"; // Default sort by field, possible values see
-                                      // above
+    // above
 }
 if (!$bSearchInFound) {
     $requestSearchIn = "--all--";

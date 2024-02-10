@@ -56,9 +56,9 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract
      *
      * @param string $contentTypeName
      *         Content type name (e.g. `CONTENT_TYPE`)
-     * @param int    $id
+     * @param int $id
      *         Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
-     * @param array  $contentTypes
+     * @param array $contentTypes
      *         Content type array
      *
      * @return string
@@ -103,12 +103,12 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract
      * Returns the raw settings from content by article language id,
      * content type id, and content id.
      *
-     * @since CONTENIDO 4.10.2
      * @param int $idArtLang Article language id
      * @param int $idType Content type id (e.g. id of `CONTENT_TYPE`)
      * @param int $typeId Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
      * @return string
      * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
      */
     protected function _getRawSettingsFromContent(
         int $idArtLang, int $idType, int $typeId

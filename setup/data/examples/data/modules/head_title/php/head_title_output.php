@@ -16,7 +16,7 @@ $breadcrumb = [];
 
 // get category path
 $helper = cCategoryHelper::getInstance();
-foreach ($helper->getCategoryPath(cRegistry::getCategoryId(), 1) as $categoryLang) {
+foreach ($helper->getCategoryPath(cRegistry::getCategoryId()) as $categoryLang) {
     $breadcrumb[] = $categoryLang->get('name');
 }
 

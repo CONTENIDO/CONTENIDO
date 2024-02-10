@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLHeader extends cHTMLContentElement {
+class cHTMLHeader extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -32,7 +33,8 @@ class cHTMLHeader extends cHTMLContentElement {
      * @param string $id [optional]
      *         the ID of this element
      */
-    public function __construct($content = '', $class = '', $id = '') {
+    public function __construct($content = '', $class = '', $id = '')
+    {
         parent::__construct($content, $class, $id);
         $this->_tag = 'header';
     }

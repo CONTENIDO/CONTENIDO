@@ -53,7 +53,7 @@ $articleOverviewHelper = new cArticleOverviewHelper($db, $auth, $perm, [], $idca
 
 
 if ($action == 'con_duplicate' && $articleOverviewHelper->hasArticleDuplicatePermission()) {
-    $count = (int) $_SESSION['count_duplicate'];
+    $count = (int)$_SESSION['count_duplicate'];
 
     // check if duplicate action was called from click or from back button
     if ($_GET['count_duplicate'] < $count) {
@@ -162,8 +162,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         || $perm->have_perm_area_action_item('con', 'con_lock', $idcat) || $perm->have_perm_area_action_item('con', 'con_makecatonline', $idcat)
         || $perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || $perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat)
         || $perm->have_perm_area_action_item('con_editart', 'con_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)
-        || $perm->have_perm_area_action_item('con_tplcfg', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat))
-    {
+        || $perm->have_perm_area_action_item('con_tplcfg', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat)) {
 
         // SQL template to get number of articles in category for current client and language
         $articleCountSql = "SELECT
@@ -532,7 +531,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             if ($articleOverviewHelper->isArticleInMultipleUse($idart)) {
                 $imgsrc .= 'm';
             }
-            if ((int) $redirect == 1) {
+            if ((int)$redirect == 1) {
                 $imgsrc .= 'r';
             }
 
@@ -559,7 +558,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $tmp_start = $tmp_link;
 
             // Make copy button
-            if ($articleOverviewHelper->hasArticleDuplicatePermission() && $idcat != 0 && ($locked === 0 || $isAdmin )) {
+            if ($articleOverviewHelper->hasArticleDuplicatePermission() && $idcat != 0 && ($locked === 0 || $isAdmin)) {
                 $imgsrc = "but_copy.gif";
                 // add count_duplicate param to identify if the duplicate action
                 // is called from click or back button.
@@ -604,7 +603,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             }
 
             // Delete button
-            if ($articleOverviewHelper->hasArticleDeletePermission() && $inUse === false && ($locked === 0  || $isAdmin)) {
+            if ($articleOverviewHelper->hasArticleDeletePermission() && $inUse === false && ($locked === 0 || $isAdmin)) {
                 $tmp_title = $title;
                 if (cString::getStringLength($tmp_title) > 30) {
                     $tmp_title = cString::getPartOfString($tmp_title, 0, 27) . "...";
@@ -771,7 +770,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
                 if ($next == $iNext) {
                     $sBrowseLinks .= $i . "\n"; // I'm on the current page, no
-                                                    // link
+                    // link
                 } else {
                     $tmp_alink = $sess->url("main.php?area=con&frame=$frame&idcat=$idcat&next=$iNext");
                     $sBrowseLinks .= '<a href="' . $tmp_alink . '">' . $i . '</a>' . "\n";
@@ -806,7 +805,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'Con.showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
         }
         if ($articlesToEdit > 0 && $articleOverviewHelper->hasArticleEditPermission()) {
-        	$bulkEditingFunctions .= createBulkEditingFunction('con_inlineeditart', 'images/editieren.gif', i18n('Edit articles'));
+            $bulkEditingFunctions .= createBulkEditingFunction('con_inlineeditart', 'images/editieren.gif', i18n('Edit articles'));
         }
 
         if ($bulkEditingFunctions == "") {
@@ -814,7 +813,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
 
         $tpl->set('s', 'BULK_EDITING_FUNCTIONS', $bulkEditingFunctions);
-		$tpl->set('s', 'SAVE_ARTICLES', i18n('Save articles'));
+        $tpl->set('s', 'SAVE_ARTICLES', i18n('Save articles'));
 
         if (count($artlist) > 0) {
             foreach ($artlist as $key2 => $artitem) {
@@ -945,8 +944,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
          */
 
         if (($perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)
-            || $perm->have_perm_area_action('con', 'con_tplcfg_edit')) && $foreignlang == false)
-        {
+                || $perm->have_perm_area_action('con', 'con_tplcfg_edit')) && $foreignlang == false) {
             if (0 != $idcat) {
                 $tpl->set('s', 'CATEGORY', $cat_name);
                 $tpl->set('s', 'CATEGORY_CONF', $tmp_img ?? '');
@@ -973,8 +971,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // New Article link
         if (($perm->have_perm_area_action('con_editart', 'con_newart')
-            || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)) && $foreignlang == false)
-        {
+                || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)) && $foreignlang == false) {
             // check if category has an assigned template
             if ($idcat != 0 && $cat_idtpl != 0) {
                 $link = new cHTMLLink(
@@ -1044,7 +1041,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
  * @return string
  *         rendered HTML code
  */
-function createBulkEditingFunction($class, $imageSrc, $alt, $onclick = '') {
+function createBulkEditingFunction($class, $imageSrc, $alt, $onclick = '')
+{
     $function = new cHTMLLink();
     $function->setClass($class);
     if ($onclick !== '') {

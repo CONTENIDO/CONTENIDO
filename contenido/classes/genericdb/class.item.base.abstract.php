@@ -26,7 +26,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GenericDB
  */
-abstract class cItemBaseAbstract extends cGenericDb {
+abstract class cItemBaseAbstract extends cGenericDb
+{
 
     /**
      * Database instance, contains the database object
@@ -134,7 +135,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @throws cInvalidArgumentException
      *         If table name or primary key is not set
      */
-    protected function __construct($sTable, $sPrimaryKey, $sClassName) {
+    protected function __construct($sTable, $sPrimaryKey, $sClassName)
+    {
         $cfg = cRegistry::getConfig();
         $sTable = cSecurity::toString($sTable);
         $sPrimaryKey = cSecurity::toString($sPrimaryKey);
@@ -165,7 +167,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * Resets class variables back to default
      * This is handy in case a new item is tried to be loaded into this class instance.
      */
-    protected function _resetItem() {
+    protected function _resetItem()
+    {
         $this->_setLoaded(false);
         $this->properties = null;
         $this->lasterror = '';
@@ -179,7 +182,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @return string
      *         Escaped string
      */
-    public function escape($sString) {
+    public function escape($sString)
+    {
         return $this->db->escape($sString);
     }
 
@@ -189,8 +193,9 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * If it is false then no object is loaded and only load-functions are allowed to be used
      * @return bool Whether an object has been loaded
      */
-    public function isLoaded() {
-        return (bool) $this->_loaded;
+    public function isLoaded()
+    {
+        return (bool)$this->_loaded;
     }
 
     /**
@@ -201,8 +206,9 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @param bool $value
      *         Whether an object is loaded
      */
-    protected function _setLoaded($value) {
-        $this->_loaded = (bool) $value;
+    protected function _setLoaded($value)
+    {
+        $this->_loaded = (bool)$value;
     }
 
     /**
@@ -213,7 +219,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      *         Name of the variable that should be accessed
      * @return mixed|void
      */
-    public function __get($name) {
+    public function __get($name)
+    {
         if ('primaryKey' === $name) {
             return static::getPrimaryKeyName();
         }
@@ -231,19 +238,20 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @param mixed $value
      *         Value that should be assigned to variable
      */
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         if ('primaryKey' === $name) {
             static::_setPrimaryKeyName($value);
         } elseif ('virgin' === $name) {
-            static::_setLoaded(!(bool) $value);
+            static::_setLoaded(!(bool)$value);
         }
     }
 
     /**
      * Get the table name.
      *
-     * @since CONTENIDO 4.10.2
      * @return string Name of table
+     * @since CONTENIDO 4.10.2
      */
     public function getTable(): string
     {
@@ -255,7 +263,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @return string
      *         Name of primary key
      */
-    public function getPrimaryKeyName() {
+    public function getPrimaryKeyName()
+    {
         return $this->_primaryKeyName;
     }
 
@@ -264,11 +273,11 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * The function can be called with a statement and replacement parameters,
      * see {@see cDbDriverHandler::prepare()} for more details.
      *
-     * @since CONTENIDO 4.10.2
      * @param ... Multiple parameters where the first is the statement and the further ones the replacements.
      *     See {@see cDbDriverHandler::prepare()} for more details.
      * @return string
      * @throws cDbException
+     * @since CONTENIDO 4.10.2
      */
     public function prepare(): string
     {
@@ -284,7 +293,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      *
      * @param string $keyName
      */
-    protected function _setPrimaryKeyName($keyName) {
+    protected function _setPrimaryKeyName($keyName)
+    {
         $this->_primaryKeyName = cSecurity::toString($keyName);
     }
 
@@ -294,7 +304,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      *
      * @return cDb
      */
-    protected function _getSecondDBInstance() {
+    protected function _getSecondDBInstance()
+    {
         if (!isset($this->secondDb) || !($this->secondDb instanceof cDb)) {
             $this->secondDb = cRegistry::getDb();
         }
@@ -311,7 +322,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      *         If not passed it uses global variable
      * @return cApiPropertyCollection
      */
-    protected function _getPropertiesCollectionInstance($idclient = 0) {
+    protected function _getPropertiesCollectionInstance($idclient = 0)
+    {
         $idclient = cSecurity::toInteger($idclient);
         if ($idclient <= 0) {
             $idclient = cSecurity::toInteger(cRegistry::getClientId());

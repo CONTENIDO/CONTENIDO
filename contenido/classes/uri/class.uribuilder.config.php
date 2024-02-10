@@ -17,7 +17,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 if (!class_exists('NotInitializedException')) {
     /**
      */
-    class NotInitializedException extends Exception {
+    class NotInitializedException extends Exception
+    {
     }
 }
 
@@ -49,7 +50,8 @@ if (!class_exists('NotInitializedException')) {
  * @package    Core
  * @subpackage Frontend_URI
  */
-class cUriBuilderConfig {
+class cUriBuilderConfig
+{
 
     /**
      * UriBuilder configuration array
@@ -58,8 +60,8 @@ class cUriBuilderConfig {
      */
     private static $_aUriBuilderCfg = [
         'config' => [
-            'prefix'    => 'index',
-            'suffix'    => '.html',
+            'prefix' => 'index',
+            'suffix' => '.html',
             'separator' => '-',
         ],
     ];
@@ -75,10 +77,11 @@ class cUriBuilderConfig {
      *         If $cfg ist empty, $cfg['name'] is missing
      *         or $cfg['config'] exists but is not a array
      */
-    public static function setConfig(array $cfg) {
+    public static function setConfig(array $cfg)
+    {
         if (count($cfg) == 0) {
             throw new cInvalidArgumentException('cUriBuilderConfig: Empty configuration');
-        } elseif (!isset($cfg['name']) || (string) $cfg['name'] === '') {
+        } elseif (!isset($cfg['name']) || (string)$cfg['name'] === '') {
             throw new cInvalidArgumentException('cUriBuilderConfig: Missing UriBuilder name');
         } elseif (isset($cfg['config']) && !is_array($cfg['config'])) {
             throw new cInvalidArgumentException('cUriBuilderConfig: Invalid UriBuilder configuration');
@@ -90,12 +93,13 @@ class cUriBuilderConfig {
     /**
      * Returns cUriBuilder name.
      *
-     * @throws cException
-     *         If cUriBuilder configuration wasn't initialized before
      * @return string
      *         cUriBuilder name
+     * @throws cException
+     *         If cUriBuilder configuration wasn't initialized before
      */
-    public static function getUriBuilderName() {
+    public static function getUriBuilderName()
+    {
         if (!is_array(self::$_aUriBuilderCfg) || !isset(self::$_aUriBuilderCfg['name'])) {
             throw new cException('cUriBuilderConfig: Configuration is not set');
         }
@@ -106,12 +110,13 @@ class cUriBuilderConfig {
     /**
      * Returns cUriBuilder configuration.
      *
-     * @throws cException
-     *         If cUriBuilder configuration wasn't initialized before
      * @return array
      *         cUriBuilder configuration
+     * @throws cException
+     *         If cUriBuilder configuration wasn't initialized before
      */
-    public static function getConfig() {
+    public static function getConfig()
+    {
         if (!is_array(self::$_aUriBuilderCfg)) {
             throw new cException('cUriBuilderConfig: Configuration is not set');
         }

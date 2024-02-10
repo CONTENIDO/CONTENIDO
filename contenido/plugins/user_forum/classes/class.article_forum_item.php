@@ -20,13 +20,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage UserForum
  */
-class ArticleForumItem extends Item {
+class ArticleForumItem extends Item
+{
 
     protected $cfg;
 
     protected $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = cRegistry::getDb();
         $this->cfg = cRegistry::getConfig();
 
@@ -36,7 +38,8 @@ class ArticleForumItem extends Item {
     /**
      * returns current config
      */
-    public function getCfg() {
+    public function getCfg()
+    {
         return $this->cfg;
     }
 

@@ -1,74 +1,102 @@
-
 /* ==== Example CSS for modules using a PIFA form ==== */
 
 /* == Positioning labels beneath their form fields ==
 All labels should be displayed left of their form fields.
 The surrounding division has to clear the floating though. */
 
-.pifa-form div {clear: both;}
-.pifa-form label {float: left;}
-.pifa-form label {width: 200px;} /* optionally set a common label width */
+.pifa-form div {
+    clear: both;
+}
+
+.pifa-form label {
+    float: left;
+}
+
+.pifa-form label {
+    width: 200px;
+}
+
+/* optionally set a common label width */
 
 /* == Styling fields according to their field types ==
 In order to style fields according to their field types a class pifa-field-<n>
 is set to all form fields where <n> is its type id. */
 
 /* INPUTTEXT */
-.pifa-field-1 {}
+.pifa-field-1 {
+}
 
 /* TEXTAREA */
-.pifa-field-2 {}
+.pifa-field-2 {
+}
 
 /* INPUTPASSWORD */
-.pifa-field-3 {}
+.pifa-field-3 {
+}
 
 /* INPUTRADIO */
-.pifa-field-4 {}
+.pifa-field-4 {
+}
 
 /* INPUTCHECKBOX */
-.pifa-field-5 {}
+.pifa-field-5 {
+}
 
 /* SELECT */
-.pifa-field-6 {}
+.pifa-field-6 {
+}
 
 /* SELECTMULTI */
-.pifa-field-7 {}
+.pifa-field-7 {
+}
 
 /* DATEPICKER */
-.pifa-field-8 {}
+.pifa-field-8 {
+}
 
 /* INPUTFILE */
-.pifa-field-9 {}
+.pifa-field-9 {
+}
 
 /* PROCESSBAR */
-.pifa-field-10 {}
+.pifa-field-10 {
+}
 
 /* SLIDER */
-.pifa-field-11 {}
+.pifa-field-11 {
+}
 
 /* CAPTCHA */
-.pifa-field-12 {}
+.pifa-field-12 {
+}
 
 /* BUTTONSUBMIT */
-.pifa-field-13 {}
+.pifa-field-13 {
+}
 
 /* BUTTONRESET */
-.pifa-field-14 {}
+.pifa-field-14 {
+}
 
 /* BUTTON */
-.pifa-field-15 {}
+.pifa-field-15 {
+}
 
 /* MATRIX */
-.pifa-field-16 {}
+.pifa-field-16 {
+}
 
 /* PARA */
-.pifa-field-17 {}
+.pifa-field-17 {
+}
 
 /* INPUTHIDDEN */
-.pifa-field-18 {}
+.pifa-field-18 {
+}
 
 /* BUTTONIMAGE */
-.pifa-field-21 {}
+.pifa-field-21 {
+}
 
 
 /* == Styling obligatory fields  ==
@@ -76,10 +104,14 @@ The class pifa-obligatory is set to all divisions containing an obligatory field
 In this case ' *' is appended to any label describing an obligatory field.
 Unfortunately this doesn't seem to work in IE though. */
 
-div.pifa-obligatory label:after {content: ' *'}
+div.pifa-obligatory label:after {
+    content: ' *'
+}
 
 /* == Styling fields with erroneous data  ==
 The class pifa-error is set to all divisions containing a field with erroneous
 data. */
 
-div.pifa-error {border: 1px solid red;}
+div.pifa-error {
+    border: 1px solid red;
+}

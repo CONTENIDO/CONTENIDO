@@ -19,7 +19,8 @@ use PHPUnit\Framework\TestCase;
  *
  * @param int $idart
  */
-function chain_ContenidoContentCopyArticle_Test($idart) {
+function chain_ContenidoContentCopyArticle_Test($idart)
+{
     ContenidoContentCopyArticleTest::$invokeCounter++;
 }
 
@@ -28,7 +29,8 @@ function chain_ContenidoContentCopyArticle_Test($idart) {
  *
  * @param int $idart
  */
-function chain_ContenidoContentCopyArticle_Test2($idart) {
+function chain_ContenidoContentCopyArticle_Test2($idart)
+{
     ContenidoContentCopyArticleTest::$invokeCounter++;
 }
 
@@ -38,7 +40,8 @@ function chain_ContenidoContentCopyArticle_Test2($idart) {
  * @package    Testing
  * @subpackage Test_Chains
  */
-class ContenidoContentCopyArticleTest extends TestCase {
+class ContenidoContentCopyArticleTest extends TestCase
+{
 
     /**
      *
@@ -67,14 +70,16 @@ class ContenidoContentCopyArticleTest extends TestCase {
     /**
      *
      */
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         self::$invokeCounter = 0;
     }
 
     /**
      * Test Contenido.Content.CopyArticle chain
      */
-    public function testNoChain() {
+    public function testNoChain()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -100,7 +105,8 @@ class ContenidoContentCopyArticleTest extends TestCase {
     /**
      * Test Contenido.Content.CopyArticle chain
      */
-    public function testOneChain() {
+    public function testOneChain()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -132,7 +138,8 @@ class ContenidoContentCopyArticleTest extends TestCase {
     /**
      * Test Contenido.Content.CopyArticle chain
      */
-    public function testTwoChains() {
+    public function testTwoChains()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 

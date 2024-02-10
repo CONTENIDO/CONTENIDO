@@ -24,15 +24,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0013 extends cUpgradeJobAbstract {
+class cUpgradeJob_0013 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.3";
 
-    public function _execute() {
-        global $cfg;
-
+    public function _execute()
+    {
         if ($_SESSION['setuptype'] == 'upgrade') {
-
             // Initializing cApiArea
             $area = new cApiArea();
 

@@ -61,12 +61,12 @@ function pica_RenderArticleAction($idcat, $idart, $idartlang, $actionkey)
 
     $anchor = '';
     if ($actionkey == 'con_contentallocation') {
-        $label  = i18n('Tagging', 'content_allocation');
-        $url    = $sess->url(
+        $label = i18n('Tagging', 'content_allocation');
+        $url = $sess->url(
             'main.php?area=con_contentallocation&action=con_edit&idart=' . $idart . '&idartlang=' . $idartlang
             . '&idcat=' . $idcat . '&frame=4'
         );
-        $image  = '<img src="plugins/content_allocation/images/call_contentallocation.gif" alt="' . $label . '">';
+        $image = '<img src="plugins/content_allocation/images/call_contentallocation.gif" alt="' . $label . '">';
         $anchor = '<a title="' . $label . '" href="' . $url . '">' . $image . '</a>';
     }
 

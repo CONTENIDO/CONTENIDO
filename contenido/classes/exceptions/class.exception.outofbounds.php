@@ -19,5 +19,6 @@
  * {@link OutOfBoundsException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cOutOfBoundsException  extends cRuntimeException {
+class cOutOfBoundsException extends cRuntimeException
+{
 }

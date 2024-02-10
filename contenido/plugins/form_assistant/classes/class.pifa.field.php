@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method PifaField createNewItem($data)
  * @method PifaField|bool next
  */
-class PifaFieldCollection extends ItemCollection {
+class PifaFieldCollection extends ItemCollection
+{
     /**
      * Create an instance.
      *
@@ -30,7 +31,8 @@ class PifaFieldCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct($where = false) {
+    public function __construct($where = false)
+    {
         parent::__construct(cRegistry::getDbTableName('pifa_field'), 'idfield');
         $this->_setItemClass('PifaField');
         if (false !== $where) {
@@ -41,12 +43,13 @@ class PifaFieldCollection extends ItemCollection {
     /**
      * Reorders a forms fields according to the given.
      *
-     * @param int    $idform
+     * @param int $idform
      * @param string $idfields containing a CSV list of idfield as integer
      *
      * @throws cDbException
      */
-    public static function reorder($idform, $idfields) {
+    public static function reorder($idform, $idfields)
+    {
         $sql = "-- PifaFieldCollection::reorder()
             UPDATE
                 " . cRegistry::getDbTableName('pifa_field') . "
@@ -66,7 +69,8 @@ class PifaFieldCollection extends ItemCollection {
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class PifaField extends Item {
+class PifaField extends Item
+{
 
     /**
      * Size to use for VARCHAR fields.
@@ -255,7 +259,8 @@ class PifaField extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($id = false) {
+    public function __construct($id = false)
+    {
         parent::__construct(cRegistry::getDbTableName('pifa_field'), 'idfield');
         $this->setFilters([], []);
         if (false !== $id) {
@@ -270,7 +275,8 @@ class PifaField extends Item {
      * @param array $aRecordSet Associative array with pre-set values.
      * @return void
      */
-    function loadByRecordSetTemplate(array $aRecordSet) {
+    function loadByRecordSetTemplate(array $aRecordSet)
+    {
         $aRecordSet = array_merge([
             'idfield' => 0,
             'idform' => 0,
@@ -296,14 +302,15 @@ class PifaField extends Item {
      * Rule has to be stripslashed to allow regular expressions with
      * backslashes.
      *
-     * @see Item::getField()
-     *
      * @param string $field
-     * @param bool   $bSafe
+     * @param bool $bSafe
      *
      * @return mixed|string
+     * @see Item::getField()
+     *
      */
-    function getField($field, $bSafe = true) {
+    function getField($field, $bSafe = true)
+    {
         if (is_null($this->values[$field])) {
             return '';
         }
@@ -317,7 +324,8 @@ class PifaField extends Item {
     /**
      * Getter for protected prop.
      */
-    public function getLastError() {
+    public function getLastError()
+    {
         return $this->lasterror;
     }
 
@@ -326,7 +334,8 @@ class PifaField extends Item {
      *
      * @return mixed the $_value
      */
-    public function getValue() {
+    public function getValue()
+    {
         return $this->_value;
     }
 
@@ -334,7 +343,8 @@ class PifaField extends Item {
      *
      * @param mixed $value
      */
-    public function setValue($value) {
+    public function setValue($value)
+    {
         $this->_value = $value;
     }
 
@@ -343,21 +353,24 @@ class PifaField extends Item {
      *
      * @return array the $_file
      */
-    public function getFile() {
+    public function getFile()
+    {
         return $this->_file;
     }
 
     /**
      * @param array $_file
      */
-    public function setFile(array $_file) {
+    public function setFile(array $_file)
+    {
         $this->_file = $_file;
     }
 
     /**
      * @throws PifaValidationException if an error occurred
      */
-    public function validate() {
+    public function validate()
+    {
 
         // get value
         $values = $this->getValue();
@@ -390,7 +403,7 @@ class PifaField extends Item {
                     //get verify response data
                     $response = urlencode($_POST['g-recaptcha-response']);
                     $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response);
-                    $responseData   = json_decode($verifyResponse);
+                    $responseData = json_decode($verifyResponse);
 
                     $isValid = $responseData->success ? true : false;
                 }
@@ -429,7 +442,8 @@ class PifaField extends Item {
      * @return string
      * @throws PifaException
      */
-    public function toHtml(array $errors = NULL) {
+    public function toHtml(array $errors = NULL)
+    {
         $out = '';
         switch (cSecurity::toInteger($this->get('field_type'))) {
 
@@ -488,7 +502,7 @@ class PifaField extends Item {
                     $class .= ' ' . implode(' ', explode(',', $this->get('css_class')));
                 }
                 // optional class for obligatory field
-                if (true === (bool) $this->get('obligatory')) {
+                if (true === (bool)$this->get('obligatory')) {
                     $class .= ' pifa-obligatory';
                 }
                 // optional error class for field
@@ -509,7 +523,8 @@ class PifaField extends Item {
     /**
      * @return cHTMLLabel|string
      */
-    private function _getElemLabel() {
+    private function _getElemLabel()
+    {
         if (1 !== cSecurity::toInteger($this->get('display_label'))) {
             return '';
         }
@@ -535,7 +550,7 @@ class PifaField extends Item {
         }
 
         // obligatory fields have an additional ' *'
-        if (true === (bool) $this->get('obligatory')) {
+        if (true === (bool)$this->get('obligatory')) {
             $label .= ' *';
         }
 
@@ -562,7 +577,8 @@ class PifaField extends Item {
      * @throws PifaException
      * @throws PifaNotImplementedException if field type is not implemented
      */
-    private function _getElemField() {
+    private function _getElemField()
+    {
 
         // get field data
         $idfield = cSecurity::toInteger($this->get('idfield'));
@@ -624,7 +640,7 @@ class PifaField extends Item {
         }
 
         // try to prevent XSS ... the lazy way ...
-        if ( is_array($value) ) {
+        if (is_array($value)) {
             foreach ($value as $key => $val) {
                 $value[$key] = conHtmlentities($val, ENT_COMPAT | ENT_HTML401, 'UTF-8');
             }
@@ -831,7 +847,7 @@ class PifaField extends Item {
                     $elemField->removeAttribute('value');
                 } else {
                     // set label or mode as value
-                    $elemField->setTitle($label? $label : $mode);
+                    $elemField->setTitle($label ? $label : $mode);
                 }
                 break;
 
@@ -869,7 +885,8 @@ class PifaField extends Item {
     /**
      * @return cHTMLParagraph|null
      */
-    private function _getElemHelp() {
+    private function _getElemHelp()
+    {
         $helpText = $this->get('help_text');
 
         $p = NULL;
@@ -883,7 +900,8 @@ class PifaField extends Item {
     /**
      * @return cHTMLScript|null
      */
-    public function _getElemScript() {
+    public function _getElemScript()
+    {
 
         // ID for field & FOR for label
         $idfield = cSecurity::toInteger($this->get('idfield'));
@@ -919,7 +937,8 @@ class PifaField extends Item {
      *
      * @return array
      */
-    public static function getFieldTypeIds() {
+    public static function getFieldTypeIds()
+    {
         return array_keys(self::getFieldTypeNames());
     }
 
@@ -931,7 +950,8 @@ class PifaField extends Item {
      *
      * @return array
      */
-    public static function getFieldTypeNames() {
+    public static function getFieldTypeNames()
+    {
         return [
             self::INPUTTEXT => Pifa::i18n('INPUTTEXT'),
             self::TEXTAREA => Pifa::i18n('TEXTAREA'),
@@ -963,7 +983,8 @@ class PifaField extends Item {
      * @param int $fieldTypeId
      * @return string
      */
-    public static function getFieldTypeName($fieldTypeId) {
+    public static function getFieldTypeName($fieldTypeId)
+    {
         $fieldTypeId = cSecurity::toInteger($fieldTypeId);
         $fieldTypeNames = self::getFieldTypeNames();
 
@@ -981,7 +1002,8 @@ class PifaField extends Item {
      *
      * @return string
      */
-    public function getMyFieldTypeName() {
+    public function getMyFieldTypeName()
+    {
         return self::getFieldTypeName($this->get('field_type'));
     }
 
@@ -992,7 +1014,8 @@ class PifaField extends Item {
      * @throws PifaException if field is not loaded
      * @throws PifaException if field type is not implemented
      */
-    public function getDbDataType() {
+    public function getDbDataType()
+    {
         if (!$this->isLoaded()) {
             $msg = Pifa::i18n('FIELD_LOAD_ERROR');
             throw new PifaException($msg);
@@ -1088,7 +1111,8 @@ class PifaField extends Item {
      * @throws PifaException
      * @throws cDbException
      */
-    public function delete() {
+    public function delete()
+    {
         $db = cRegistry::getDb();
 
         if (!$this->isLoaded()) {
@@ -1149,7 +1173,8 @@ class PifaField extends Item {
      *
      * @throws PifaException
      */
-    public function showField($columnName) {
+    public function showField($columnName)
+    {
         $fieldType = $this->get('field_type');
         $fieldType = cSecurity::toInteger($fieldType);
 
@@ -1391,7 +1416,8 @@ class PifaField extends Item {
     /**
      * @return array
      */
-    public function getOptions() {
+    public function getOptions()
+    {
         $option_labels = $this->get('option_labels');
         $option_values = $this->get('option_values');
 
@@ -1405,7 +1431,7 @@ class PifaField extends Item {
             // $option_values = str_getcsv($option_values);
 
             // instead replace commas stored as entities by real commas
-            $func = function($v) {
+            $func = function ($v) {
                 return str_replace('&#44;', ',', $v);
             };
             $option_labels = array_map($func, $option_labels);

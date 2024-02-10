@@ -1,4 +1,4 @@
-<table cellspacing="0" cellpadding="0" border="0" class="setupBodyOuterTable setupBodyOuterTableSystemData">
+<table class="setupBodyOuterTable setupBodyOuterTableSystemData">
     <tr class="row-1">
         <td colspan="2">
             <h1>{TITLE}</h1>
@@ -9,46 +9,65 @@
         <td class="column-1">
             <table border="0">
                 <tr>
-                    <td class="first"><div class="description">{LABEL_DBHOST}</div></td>
+                    <td class="first">
+                        <div class="description">{LABEL_DBHOST}</div>
+                    </td>
                     <td class="last">{INPUT_DBHOST}</td>
                 </tr>
                 <tr>
-                    <td class="first first2"><div class="description">{LABEL_DBNAME}</div></td>
+                    <td class="first first2">
+                        <div class="description">{LABEL_DBNAME}</div>
+                    </td>
                     <td class="last">{INPUT_DBNAME}</td>
                 </tr>
                 <tr>
-                    <td class="first"><div class="description">{LABEL_DBUSERNAME}</div></td>
+                    <td class="first">
+                        <div class="description">{LABEL_DBUSERNAME}</div>
+                    </td>
                     <td class="last">{INPUT_DBUSERNAME}</td>
                 </tr>
                 <tr>
-                    <td class="first"><div class="description">{LABEL_DBPASSWORD}</div></td>
+                    <td class="first">
+                        <div class="description">{LABEL_DBPASSWORD}</div>
+                    </td>
                     <td class="last">{INPUT_DBPASSWORD}</td>
                 </tr>
                 <tr>
-                    <td class="first"><div class="description">{LABEL_DBPREFIX}</div></td>
+                    <td class="first">
+                        <div class="description">{LABEL_DBPREFIX}</div>
+                    </td>
                     <td class="last">{INPUT_DBPREFIX}</td>
                 </tr>
                 <tr>
-                	<td><a href="javascript:void(0)" onclick="toggleSettings()">
-                		<img class="advancedSettingsImage" alt="" style="margin-bottom: -.25em;" src="images/controls/arrow_closed.png">
-                		{LABEL_DBADVANCED}
-                	</td>
-                	<td>&nbsp;</td>
+                    <td><a href="javascript:void(0)" onclick="toggleSettings()">
+                            <img class="advancedSettingsImage" alt="" style="margin-bottom: -.25em;"
+                                 src="images/controls/arrow_closed.png">
+                            {LABEL_DBADVANCED}
+                    </td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="advancedSetting" style="visibility: hidden;">
-                    <td class="first"><div class="description">{LABEL_DBCHARSET}</div></td>
+                    <td class="first">
+                        <div class="description">{LABEL_DBCHARSET}</div>
+                    </td>
                     <td class="last">{INPUT_DBCHARSET}</td>
                 </tr>
                 <tr class="advancedSetting" style="visibility: hidden;">
-                    <td class="first"><div class="description">{LABEL_DBENGINE}</div></td>
+                    <td class="first">
+                        <div class="description">{LABEL_DBENGINE}</div>
+                    </td>
                     <td class="last">{INPUT_DBENGINE}</td>
                 </tr>
                 <tr class="advancedSetting" style="visibility: hidden;">
-                    <td class="first"><div class="description">{LABEL_DBCOLLATION}</div></td>
+                    <td class="first">
+                        <div class="description">{LABEL_DBCOLLATION}</div>
+                    </td>
                     <td class="last">{INPUT_DBCOLLATION}</td>
                 </tr>
                 <tr class="advancedSetting" style="visibility: hidden;">
-                    <td class="first"><div class="description">{LABEL_DBOPTION_INIT_COMMAND}</div></td>
+                    <td class="first">
+                        <div class="description">{LABEL_DBOPTION_INIT_COMMAND}</div>
+                    </td>
                     <td class="last">{INPUT_DBOPTION_INIT_COMMAND}</td>
                 </tr>
             </table>

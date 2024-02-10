@@ -12,8 +12,8 @@
  * @link       https://www.contenido.org
  */
 
-$url = getEffectiveSetting('stats', 'piwik_url', '');
-$site = getEffectiveSetting('stats', 'piwik_site', '');
+$url = getEffectiveSetting('stats', 'piwik_url');
+$site = getEffectiveSetting('stats', 'piwik_site');
 
 if (0 < cString::getStringLength(trim($url))
     && 0 < cString::getStringLength(trim($site))

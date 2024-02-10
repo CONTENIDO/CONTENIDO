@@ -46,7 +46,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewriteUrlStack {
+class ModRewriteUrlStack
+{
 
     /**
      * Self instance
@@ -102,7 +103,8 @@ class ModRewriteUrlStack {
     /**
      * Constructor, sets some properties.
      */
-    private function __construct() {
+    private function __construct()
+    {
         $cfg = cRegistry::getConfig();
         $this->_oDb = cRegistry::getDb();
         $this->_aTab = $cfg['tab'];
@@ -114,7 +116,8 @@ class ModRewriteUrlStack {
      *
      * @return  ModRewriteUrlStack
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance == NULL) {
             self::$_instance = new ModRewriteUrlStack();
         }
@@ -124,9 +127,10 @@ class ModRewriteUrlStack {
     /**
      * Adds an url to the stack
      *
-     * @param  string $url Url, like front_content.php?idcat=123...
+     * @param string $url Url, like front_content.php?idcat=123...
      */
-    public function add($url) {
+    public function add($url)
+    {
         $url = ModRewrite::urlPreClean($url);
         if (isset($this->_aUrls[$url])) {
             return;
@@ -139,12 +143,12 @@ class ModRewriteUrlStack {
             if (!isset($this->_aConParams[$p])) {
                 unset($aUrl['params'][$p]);
             } else {
-                $aUrl['params'][$p] = (int) $v;
+                $aUrl['params'][$p] = (int)$v;
             }
         }
 
         // add language id, if not available
-        if ((int) mr_arrayValue($aUrl['params'], 'lang') == 0) {
+        if ((int)mr_arrayValue($aUrl['params'], 'lang') == 0) {
             $aUrl['params']['lang'] = $this->_idLang;
         }
 
@@ -157,7 +161,7 @@ class ModRewriteUrlStack {
      * Returns the pretty url-parts (only category path an article name) of the
      * desired url.
      *
-     * @param   string  $url  Url, like front_content.php?idcat=123...
+     * @param string $url Url, like front_content.php?idcat=123...
      *
      * @return  array   Associative array like
      * <code>
@@ -167,7 +171,8 @@ class ModRewriteUrlStack {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function getPrettyUrlParts($url) {
+    public function getPrettyUrlParts($url)
+    {
         $url = ModRewrite::urlPreClean($url);
         if (!isset($this->_aUrls[$url])) {
             $this->add($url);
@@ -186,11 +191,12 @@ class ModRewriteUrlStack {
     /**
      * Extracts passed url using parse_url and adds also the 'params' array to it
      *
-     * @param   string  $url  Url, like front_content.php?idcat=123...
+     * @param string $url Url, like front_content.php?idcat=123...
      * @return  array  Components containing result of parse_url with additional
      *                 'params' array
      */
-    private function _extractUrl($url) {
+    private function _extractUrl($url)
+    {
         return cUri::getInstance()->parse($url);
     }
 
@@ -198,20 +204,21 @@ class ModRewriteUrlStack {
      * Extracts article or category related parameter from passed params array
      * and generates an identifier.
      *
-     * @param   array   $aParams  Parameter array
+     * @param array $aParams Parameter array
      * @return  string  Composed stack id
      */
-    private function _makeStackId(array $aParams) {
+    private function _makeStackId(array $aParams)
+    {
         // idcatart
-        if ((int) mr_arrayValue($aParams, 'idart') > 0) {
+        if ((int)mr_arrayValue($aParams, 'idart') > 0) {
             $sStackId = 'idart_' . $aParams['idart'] . '_lang_' . $aParams['lang'];
-        } elseif ((int) mr_arrayValue($aParams, 'idartlang') > 0) {
+        } elseif ((int)mr_arrayValue($aParams, 'idartlang') > 0) {
             $sStackId = 'idartlang_' . $aParams['idartlang'];
-        } elseif ((int) mr_arrayValue($aParams, 'idcatart') > 0) {
+        } elseif ((int)mr_arrayValue($aParams, 'idcatart') > 0) {
             $sStackId = 'idcatart_' . $aParams['idcatart'] . '_lang_' . $aParams['lang'];
-        } elseif ((int) mr_arrayValue($aParams, 'idcat') > 0) {
+        } elseif ((int)mr_arrayValue($aParams, 'idcat') > 0) {
             $sStackId = 'idcat_' . $aParams['idcat'] . '_lang_' . $aParams['lang'];
-        } elseif ((int) mr_arrayValue($aParams, 'idcatlang') > 0) {
+        } elseif ((int)mr_arrayValue($aParams, 'idcatlang') > 0) {
             $sStackId = 'idcatlang_' . $aParams['idcatlang'];
         } else {
             $sStackId = 'lang_' . $aParams['lang'];
@@ -230,7 +237,8 @@ class ModRewriteUrlStack {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    private function _chunkSetPrettyUrlParts($sStackId) {
+    private function _chunkSetPrettyUrlParts($sStackId)
+    {
         // collect stack parameter to get urlpath and urlname
         $aStack = [];
         foreach ($this->_aStack as $stackId => $item) {

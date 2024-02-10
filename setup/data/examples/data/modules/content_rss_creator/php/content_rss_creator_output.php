@@ -67,11 +67,11 @@ if (cRegistry::getBackendSessionId() === NULL) {
     $rssChannel = $rssFeed->addChild('channel');
     $rssChannel->title = $art->getContent("CMS_TEXT", 1);
     $rssChannel->link = $art->getContent("CMS_TEXT", 2);
-    $rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent("CMS_HTML", 1)));;
+    $rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent("CMS_HTML", 1)));
 
     $imgId = $art->getContent("CMS_IMG", 1);
 
-    if ((int) $imgId > 0) {
+    if ((int)$imgId > 0) {
         $upload = new cApiUpload($imgId);
         $rssLogo = cRegistry::getFrontendUrl() . 'upload/' . $upload->get('dirname') . $upload->get('filename');
 

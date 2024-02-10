@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiMetaType createNewItem
  * @method cApiMetaType|bool next
  */
-class cApiMetaTypeCollection extends ItemCollection {
+class cApiMetaTypeCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('meta_type'), 'idmetatype');
         $this->_setItemClass('cApiMetaType');
     }
@@ -38,7 +40,7 @@ class cApiMetaTypeCollection extends ItemCollection {
      *
      * @param string $metatype
      * @param string $fieldtype
-     * @param int    $maxlength
+     * @param int $maxlength
      * @param string $fieldname
      *
      * @return cApiMetaType
@@ -46,7 +48,8 @@ class cApiMetaTypeCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($metatype, $fieldtype, $maxlength, $fieldname) {
+    public function create($metatype, $fieldtype, $maxlength, $fieldname)
+    {
         $oItem = $this->createNewItem();
 
         $oItem->set('metatype', $metatype);
@@ -77,7 +80,8 @@ class cApiMetaType extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('meta_type'), 'idmetatype');
         $this->setFilters([], []);
         if ($mId !== false) {
@@ -94,7 +98,8 @@ class cApiMetaType extends Item
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         if ('maxlength' == $name) {
             $value = cSecurity::toInteger($value);
         }

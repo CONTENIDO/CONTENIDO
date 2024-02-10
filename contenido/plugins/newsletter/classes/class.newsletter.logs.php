@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method NewsletterLog createNewItem
  * @method NewsletterLog|bool next
  */
-class NewsletterLogCollection extends ItemCollection {
+class NewsletterLogCollection extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('news_log'), 'idnewslog');
         $this->_setItemClass("NewsletterLog");
     }
@@ -42,7 +44,8 @@ class NewsletterLogCollection extends ItemCollection {
      * @return bool|Item
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idnewsjob, $idnewsrcp) {
+    public function create($idnewsjob, $idnewsrcp)
+    {
         $this->resetQuery();
         $this->setWhere("idnewsjob", $idnewsjob);
         $this->setWhere("idnewsrcp", $idnewsrcp);
@@ -85,13 +88,14 @@ class NewsletterLogCollection extends ItemCollection {
      * Gets all active recipients as specified for the newsletter and adds for
      * every recipient a log item
      *
-     * @param  int $idnewsjob ID of corresponding newsletter dispatch job
-     * @param  int $idnews    ID of newsletter
+     * @param int $idnewsjob ID of corresponding newsletter dispatch job
+     * @param int $idnews ID of newsletter
      *
      * @return  int  Recipient count
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function initializeJob($idnewsjob, $idnews) {
+    public function initializeJob($idnewsjob, $idnews)
+    {
         $idnewsjob = cSecurity::toInteger($idnewsjob);
         $idnews = cSecurity::toInteger($idnews);
 
@@ -167,7 +171,8 @@ class NewsletterLogCollection extends ItemCollection {
      *
      * @param int $idnewslog ID
      */
-    public function delete($idnewslog) {
+    public function delete($idnewslog)
+    {
         $idnewslog = cSecurity::toInteger($idnewslog);
 
         $oLog = new NewsletterLog($idnewslog);
@@ -188,7 +193,8 @@ class NewsletterLogCollection extends ItemCollection {
      * @return bool
      * @throws cException
      */
-    public function deleteJob($idnewsjob) {
+    public function deleteJob($idnewsjob)
+    {
         $idnewsjob = cSecurity::toInteger($idnewsjob);
         $this->setWhere("idnewsjob", $idnewsjob);
         $this->query();
@@ -205,7 +211,8 @@ class NewsletterLogCollection extends ItemCollection {
 /**
  * Single NewsletterLog Item
  */
-class NewsletterLog extends Item {
+class NewsletterLog extends Item
+{
     /**
      * Constructor Function
      *
@@ -214,7 +221,8 @@ class NewsletterLog extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('news_log'), 'idnewslog');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -225,12 +233,13 @@ class NewsletterLog extends Item {
      * User-defined setter for newsletter logs fields.
      *
      * @param string $name
-     * @param mixed  $value
-     * @param bool   $bSafe Flag to run defined inFilter on passed value
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
      *
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idnewsrcp':
             case 'idnewsjob':

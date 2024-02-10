@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>script_fb_channel</name><description>Improvements of the JS SDK</description><type/><alias>script_fb_channel</alias></module>
+<module>
+    <name>script_fb_channel</name>
+    <description>Improvements of the JS SDK</description>
+    <type/>
+    <alias>script_fb_channel</alias>
+</module>

@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method WorkflowArtAllocation createNewItem
  * @method WorkflowArtAllocation|bool next
  */
-class WorkflowArtAllocations extends ItemCollection {
+class WorkflowArtAllocations extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('workflow_art_allocation'), "idartallocation");
         $this->_setItemClass("WorkflowArtAllocation");
     }
@@ -39,7 +41,8 @@ class WorkflowArtAllocations extends ItemCollection {
      * @return bool|Item
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idartlang) {
+    public function create($idartlang)
+    {
         $idartlang = cSecurity::toInteger($idartlang);
 
         $sql = "SELECT `idartlang` FROM `%s` WHERE idartlang = %d";
@@ -74,13 +77,15 @@ class WorkflowArtAllocations extends ItemCollection {
  * @version 0.1
  * @copyright  four for business 2003
  */
-class WorkflowArtAllocation extends Item {
+class WorkflowArtAllocation extends Item
+{
 
     /**
      * Constructor Function
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('workflow_art_allocation'), "idartallocation");
     }
 
@@ -88,7 +93,8 @@ class WorkflowArtAllocation extends Item {
      * @return bool|WorkflowItem
      * @throws cDbException|cException
      */
-    public function getWorkflowItem() {
+    public function getWorkflowItem()
+    {
         $userSequence = new WorkflowUserSequence();
         $userSequence->loadByPrimaryKey($this->values["idusersequence"]);
 
@@ -101,7 +107,8 @@ class WorkflowArtAllocation extends Item {
      * @return mixed|false
      * @throws cDbException|cException
      */
-    public function currentItemPosition() {
+    public function currentItemPosition()
+    {
         $idworkflowitem = cSecurity::toInteger($this->get("idworkflowitem"));
 
         $workflowItems = new WorkflowItems();
@@ -118,7 +125,8 @@ class WorkflowArtAllocation extends Item {
      * Returns the current user position.
      * @return mixed|false
      */
-    public function currentUserPosition() {
+    public function currentUserPosition()
+    {
         return $this->get("position");
     }
 
@@ -128,7 +136,8 @@ class WorkflowArtAllocation extends Item {
      * @return bool
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function store() {
+    public function store()
+    {
         $mailer = new cMailer();
 
         if (array_key_exists("idusersequence", $this->modifiedValues)) {
@@ -171,7 +180,7 @@ class WorkflowArtAllocation extends Item {
                 }
 
                 if ($idcat > 0) {
-                    $sql = "SELECT `name` FROM `%s` WHERE `idcat` = %d" ;
+                    $sql = "SELECT `name` FROM `%s` WHERE `idcat` = %d";
                     $db->query($sql, cRegistry::getDbTableName('cat_lang'), $idcat);
                     if ($db->nextRecord()) {
                         $catName = $db->f("name");

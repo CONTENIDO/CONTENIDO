@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Cache
  */
-class cOutputCache {
+class cOutputCache
+{
 
     /**
      * File cache object.
@@ -161,7 +162,8 @@ VALID UNTIL: %s
      * @param string $cacheprefix [optional]
      *         Prefix name to add to cached files
      */
-    public function __construct($cachedir = NULL, $cachegroup = NULL, $cacheprefix = NULL) {
+    public function __construct($cachedir = NULL, $cachegroup = NULL, $cacheprefix = NULL)
+    {
         // wherever you want the cache files
         if (!is_null($cachedir)) {
             $this->_sDir = $cachedir;
@@ -179,7 +181,7 @@ VALID UNTIL: %s
 
         // config options are passed to the cache as an array
         $this->_aCacheOptions = [
-            'cacheDir'       => $this->_sDir,
+            'cacheDir' => $this->_sDir,
             'fileNamePrefix' => $this->_sPrefix,
         ];
     }
@@ -192,7 +194,8 @@ VALID UNTIL: %s
      * @return bool|void
      *         Enable flag or void
      */
-    public function enable($enable = NULL) {
+    public function enable($enable = NULL)
+    {
         if (is_bool($enable)) {
             $this->_bEnableCaching = $enable;
         } else {
@@ -209,7 +212,8 @@ VALID UNTIL: %s
      * @return bool|void
      *         Debug flag or void
      */
-    public function debug($debug) {
+    public function debug($debug)
+    {
         if (is_bool($debug)) {
             $this->_bDebug = $debug;
         } else {
@@ -225,7 +229,8 @@ VALID UNTIL: %s
      * @return bool|void
      *         Htmlcomment flag or void
      */
-    public function htmlComment($htmlcomment) {
+    public function htmlComment($htmlcomment)
+    {
         if (is_bool($htmlcomment)) {
             $this->_bHtmlComment = $htmlcomment;
         } else {
@@ -241,7 +246,8 @@ VALID UNTIL: %s
      * @return int|void
      *         Actual lifetime or void
      */
-    public function lifetime($seconds = NULL) {
+    public function lifetime($seconds = NULL)
+    {
         if (is_numeric($seconds) && $seconds > 0) {
             $this->_iLifetime = $seconds;
         } else {
@@ -255,7 +261,8 @@ VALID UNTIL: %s
      * @param string $template
      *         Template string including the '%s' format definition.
      */
-    public function infoTemplate($template) {
+    public function infoTemplate($template)
+    {
         $this->_sDebugTpl = $template;
     }
 
@@ -269,7 +276,8 @@ VALID UNTIL: %s
      * @param string $option
      *         Value of option (any variable)
      */
-    public function addOption($name, $option) {
+    public function addOption($name, $option)
+    {
         $this->_aIDOptions[$name] = $option;
     }
 
@@ -280,7 +288,8 @@ VALID UNTIL: %s
      * @return string|void
      *         Information about cache if caching is enabled, otherwise nothing.
      */
-    public function getInfo() {
+    public function getInfo()
+    {
         if ($this->_bEnableCaching) {
             return $this->_sDebugMsg;
         }
@@ -293,7 +302,8 @@ VALID UNTIL: %s
      *
      * @throws cInvalidArgumentException
      */
-    protected function _start() {
+    protected function _start()
+    {
         $id = $this->_sID;
         $group = $this->_sGroup;
 
@@ -321,7 +331,8 @@ VALID UNTIL: %s
      *
      * @throws cInvalidArgumentException
      */
-    public function start($iPageStartTime = NULL) {
+    public function start($iPageStartTime = NULL)
+    {
         if (!$this->_bEnableCaching) {
             return;
         }
@@ -339,7 +350,7 @@ VALID UNTIL: %s
             $fEndTime = $this->_getMicroTime();
             if ($this->_bHtmlComment) {
                 $time = sprintf("%2.4f", $fEndTime - $this->_fStartTime);
-                $exp = ($this->_iLifetime == 0? 'infinite' : date('Y-m-d H:i:s', time() + $this->_iLifetime));
+                $exp = ($this->_iLifetime == 0 ? 'infinite' : date('Y-m-d H:i:s', time() + $this->_iLifetime));
                 $content .= sprintf($this->_sHtmlCommentTpl, 'HIT', $time . ' sec.', $exp);
                 if ($iPageStartTime != NULL && is_numeric($iPageStartTime)) {
                     $content .= '<!-- [' . sprintf("%2.4f", $fEndTime - $iPageStartTime) . '] -->';
@@ -366,7 +377,8 @@ VALID UNTIL: %s
      *
      * @throws cInvalidArgumentException
      */
-    public function end() {
+    public function end()
+    {
         if (!$this->_bEnableCaching) {
             return;
         }
@@ -392,7 +404,8 @@ VALID UNTIL: %s
      *
      * @throws cInvalidArgumentException
      */
-    public function removeFromCache() {
+    public function removeFromCache()
+    {
         // set cache object and unique id
         $this->_initFileCache();
         $this->_fileCache->remove($this->_sID, $this->_sGroup);
@@ -402,7 +415,8 @@ VALID UNTIL: %s
      * Creates one-time an instance of PEAR cache output object and also
      * the unique id, if proper $this->_oPearCache is not set.
      */
-    protected function _initFileCache() {
+    protected function _initFileCache()
+    {
         if (is_object($this->_fileCache)) {
             return;
         }
@@ -420,7 +434,8 @@ VALID UNTIL: %s
      * @param string $name
      *         Name of event to raise
      */
-    protected function _raiseEvent($name) {
+    protected function _raiseEvent($name)
+    {
         // skip if event does not exist
         if (!isset($this->_aEventCode[$name]) && !is_array($this->_aEventCode[$name])) {
             return;
@@ -438,7 +453,8 @@ VALID UNTIL: %s
      * @return float
      *         Timestamp
      */
-    protected function _getMicroTime() {
+    protected function _getMicroTime(): float
+    {
         $mtime = explode(' ', microtime());
         return (float)$mtime[1] + (float)$mtime[0];
     }
@@ -485,15 +501,16 @@ class cOutputCacheHandler extends cOutputCache
      *                               'uri'  => $_SERVER['REQUEST_URI'],
      *                               'post' => $_POST, 'get' => $_GET
      *                           ]
-     * @param cDb   $db
+     * @param cDb $db
      *                           CONTENIDO database object
-     * @param int   $iCreateCode [optional]
+     * @param int $iCreateCode [optional]
      *                           Flag of createcode state from table con_cat_art
      *
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($aConf, $db, $iCreateCode = NULL) {
+    public function __construct($aConf, $db, $iCreateCode = NULL)
+    {
         // Check if caching is allowed in backend
         if ($aConf['excludecontenido']) {
             if (cRegistry::getBackendSessionId()) {
@@ -560,7 +577,8 @@ class cOutputCacheHandler extends cOutputCache
      * @throws cDbException
      * @throws cException
      */
-    protected function _isCode2Create($iCreateCode) {
+    protected function _isCode2Create($iCreateCode): bool
+    {
         if (!$this->_bEnableCaching) {
             return false;
         }

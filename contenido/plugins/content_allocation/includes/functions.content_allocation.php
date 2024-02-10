@@ -31,7 +31,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 function piContentAllocationBuildContentAllocationForm(
     $step, $nextStep, $action, $frame, $sessId, $area, $fieldName, $fieldValue, $name
-) {
+)
+{
     $newRow = '';
     if ($step === 'createRoot') {
         $newRow = '<tr><td colspan="2" class="text_medium">' . i18n("Create new tree", 'content_allocation') . '</td></tr>';

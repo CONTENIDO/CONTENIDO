@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method WorkflowUserSequence createNewItem
  * @method WorkflowUserSequence|bool next
  */
-class WorkflowUserSequences extends ItemCollection {
+class WorkflowUserSequences extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('workflow_user_sequences'), "idusersequence");
         $this->_setItemClass("WorkflowUserSequence");
     }
@@ -40,7 +42,8 @@ class WorkflowUserSequences extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function delete($id) {
+    public function delete($id)
+    {
         $id = cSecurity::toInteger($id);
         $item = new WorkflowUserSequence();
         $item->loadByPrimaryKey($id);
@@ -66,7 +69,8 @@ class WorkflowUserSequences extends ItemCollection {
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function updateArtAllocation($idusersequence) {
+    public function updateArtAllocation($idusersequence)
+    {
         global $idworkflow;
 
         $idusersequence = cSecurity::toInteger($idusersequence);
@@ -93,7 +97,8 @@ class WorkflowUserSequences extends ItemCollection {
      * @return bool|Item
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idworkflowitem) {
+    public function create($idworkflowitem)
+    {
         $idworkflowitem = cSecurity::toInteger($idworkflowitem);
         $workflowItems = new WorkflowItems();
         if (!$workflowItems->exists($idworkflowitem)) {
@@ -127,7 +132,8 @@ class WorkflowUserSequences extends ItemCollection {
      * @return bool
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function swap($idworkflowitem, $pos1, $pos2) {
+    public function swap($idworkflowitem, $pos1, $pos2)
+    {
         $idworkflowitem = cSecurity::toInteger($idworkflowitem);
         $pos1 = cSecurity::toInteger($pos1);
         $pos2 = cSecurity::toInteger($pos2);
@@ -174,13 +180,15 @@ class WorkflowUserSequences extends ItemCollection {
  * @version 0.1
  * @copyright  four for business 2003
  */
-class WorkflowUserSequence extends Item {
+class WorkflowUserSequence extends Item
+{
 
     /**
      * Constructor Function
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('workflow_user_sequences'), "idusersequence");
     }
 
@@ -190,12 +198,13 @@ class WorkflowUserSequence extends Item {
      *
      * @param string $field Field to set
      * @param string $value Value to set
-     * @param bool   $safe
+     * @param bool $safe
      *
      * @return bool
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function setField($field, $value, $safe = true) {
+    public function setField($field, $value, $safe = true)
+    {
         $idusersquence = false;
         switch ($field) {
             case "idworkflowitem":
@@ -238,7 +247,8 @@ class WorkflowUserSequence extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function getWorkflowItem() {
+    public function getWorkflowItem()
+    {
         if ($this->isLoaded()) {
             $workflowItem = new WorkflowItem();
             $workflowItem->loadByPrimaryKey($this->values["idworkflowitem"]);
@@ -254,7 +264,8 @@ class WorkflowUserSequence extends Item {
      *
      * @param int $value The value to set
      */
-    public function setWorkflowItem($value) {
+    public function setWorkflowItem($value)
+    {
         parent::setField("idworkflowitem", cSecurity::toInteger($value));
     }
 
@@ -264,7 +275,8 @@ class WorkflowUserSequence extends Item {
      *
      * @param int $value The value to set
      */
-    public function setPosition($value) {
+    public function setPosition($value)
+    {
         parent::setField("position", cSecurity::toInteger($value));
     }
 

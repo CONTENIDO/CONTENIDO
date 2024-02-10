@@ -21,6 +21,7 @@
     content: " ";
     display: table;
 }
+
 .gallery .pagination::after {
     clear: both;
 }
@@ -48,7 +49,7 @@
     margin-left: 20px;
 }
 
-.gallery .pagination li+li {
+.gallery .pagination li + li {
     margin-left: 2px;
 }
 
@@ -84,6 +85,7 @@
     margin-left: 5px;
     text-decoration: none;
 }
+
 .lightbox .next_image {
     right: 5px;
 }

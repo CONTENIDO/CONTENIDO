@@ -24,7 +24,8 @@ use PHPUnit\Framework\TestCase;
  * @param string $value
  * @return mixed
  */
-function chain_ContenidoContentSaveContentEntry_Test($idartlang, $type, $typeid, $value) {
+function chain_ContenidoContentSaveContentEntry_Test($idartlang, $type, $typeid, $value)
+{
     if ($type == 'CMS_HTML') {
         $value = str_replace('<p>', '<p>[foo] ', $value);
     }
@@ -40,7 +41,8 @@ function chain_ContenidoContentSaveContentEntry_Test($idartlang, $type, $typeid,
  * @param string $value
  * @return mixed
  */
-function chain_ContenidoContentSaveContentEntry_Test2($idartlang, $type, $typeid, $value) {
+function chain_ContenidoContentSaveContentEntry_Test2($idartlang, $type, $typeid, $value)
+{
     if ($type == 'CMS_HTML') {
         $value = str_replace('</p>', ' [bar]</p>', $value);
     }
@@ -53,7 +55,8 @@ function chain_ContenidoContentSaveContentEntry_Test2($idartlang, $type, $typeid
  * @package    Testing
  * @subpackage Test_Chains
  */
-class ContenidoContentSaveContentEntryTest extends TestCase {
+class ContenidoContentSaveContentEntryTest extends TestCase
+{
 
     /**
      *
@@ -100,7 +103,8 @@ class ContenidoContentSaveContentEntryTest extends TestCase {
     /**
      * Test Contenido.Content.SaveContentEntry chain
      */
-    public function testNoChain() {
+    public function testNoChain()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -118,7 +122,8 @@ class ContenidoContentSaveContentEntryTest extends TestCase {
     /**
      * Test Contenido.Content.SaveContentEntry chain
      */
-    public function testOneChain() {
+    public function testOneChain()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -142,7 +147,8 @@ class ContenidoContentSaveContentEntryTest extends TestCase {
     /**
      * Test Contenido.Content.SaveContentEntry chain
      */
-    public function testTwoChains() {
+    public function testTwoChains()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 

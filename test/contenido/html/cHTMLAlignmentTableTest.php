@@ -90,16 +90,16 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
         $this->_element = new cHTML();
         $this->_element->setTag('foobar');
 
-        $this->_tableEmpty         = new cHTMLAlignmentTable();
-        $this->_tableInt           = new cHTMLAlignmentTable(0);
-        $this->_tableFloat         = new cHTMLAlignmentTable(1.0);
+        $this->_tableEmpty = new cHTMLAlignmentTable();
+        $this->_tableInt = new cHTMLAlignmentTable(0);
+        $this->_tableFloat = new cHTMLAlignmentTable(1.0);
         $this->_tableFloatAsString = new cHTMLAlignmentTable('1.23');
-        $this->_tableEmptyString   = new cHTMLAlignmentTable('');
-        $this->_tableString        = new cHTMLAlignmentTable(' foo ');
-        $this->_tableBool          = new cHTMLAlignmentTable(true);
-        $this->_tableNull          = new cHTMLAlignmentTable(null);
-        $this->_tableObject        = new cHTMLAlignmentTable($this->_element);
-        $this->_tableData          = new cHTMLAlignmentTable(0, 1.0, 1.23, '1.0', '', ' foo ', true, null, $this->_element);
+        $this->_tableEmptyString = new cHTMLAlignmentTable('');
+        $this->_tableString = new cHTMLAlignmentTable(' foo ');
+        $this->_tableBool = new cHTMLAlignmentTable(true);
+        $this->_tableNull = new cHTMLAlignmentTable(null);
+        $this->_tableObject = new cHTMLAlignmentTable($this->_element);
+        $this->_tableData = new cHTMLAlignmentTable(0, 1.0, 1.23, '1.0', '', ' foo ', true, null, $this->_element);
 
         $this->_complexParameter = [0, 1.0, 1.23, '1.0', '', ' foo ', true, null, $this->_element];
     }

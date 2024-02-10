@@ -20,9 +20,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Usage:
  * trans('Your text which has to be translated');
  *
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
  * @param string $string
  *         The string to translate
  *
@@ -30,8 +27,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *         Returns the translation
  *
  * @throws cException
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ *
  */
-function trans($string) {
+function trans($string)
+{
     return cI18n::__($string);
 }
 
@@ -51,7 +52,8 @@ function trans($string) {
  *
  * @throws cException
  */
-function i18n($string, $domain = 'contenido') {
+function i18n($string, $domain = 'contenido')
+{
     return cI18n::__($string, $domain);
 }
 
@@ -68,7 +70,8 @@ function i18n($string, $domain = 'contenido') {
  *
  * @throws cInvalidArgumentException
  */
-function i18nEmulateGettext($string, $domain = 'contenido') {
+function i18nEmulateGettext($string, $domain = 'contenido')
+{
     return cI18n::emulateGettext($string, $domain);
 }
 
@@ -82,7 +85,8 @@ function i18nEmulateGettext($string, $domain = 'contenido') {
  * @param string $domain
  *         Language domain
  */
-function i18nInit($localePath, $langCode, $domain = 'contenido') {
+function i18nInit($localePath, $langCode, $domain = 'contenido')
+{
     cI18n::init($localePath, $langCode, $domain);
 }
 
@@ -96,7 +100,8 @@ function i18nInit($localePath, $langCode, $domain = 'contenido') {
  * @return string
  *         Returns the translation
  */
-function i18nRegisterDomain($domain, $localePath) {
+function i18nRegisterDomain($domain, $localePath)
+{
     cI18n::registerDomain($domain, $localePath);
 }
 
@@ -109,7 +114,8 @@ function i18nRegisterDomain($domain, $localePath) {
  * @return array
  *         array with the short form of the accept languages
  */
-function i18nStripAcceptLanguages($accept) {
+function i18nStripAcceptLanguages($accept)
+{
     $languages = explode(',', $accept);
     $shortLanguages = [];
     foreach ($languages as $value) {
@@ -129,7 +135,8 @@ function i18nStripAcceptLanguages($accept) {
  * @return string
  *         The locale key for the given accept string
  */
-function i18nMatchBrowserAccept($accept) {
+function i18nMatchBrowserAccept($accept)
+{
     $available_languages = i18nGetAvailableLanguages();
 
     // Try to match the whole accept string
@@ -164,7 +171,8 @@ function i18nMatchBrowserAccept($accept) {
  * @return array
  *         All available languages
  */
-function i18nGetAvailableLanguages() {
+function i18nGetAvailableLanguages()
+{
     /*
      * array notes: First field: Language Second field: Country Third field:
      * ISO-Encoding Fourth field: Browser accept mapping Fifth field: SPAW
@@ -458,9 +466,9 @@ function mi18n($key)
     cInclude('classes', 'module/class.module.filetranslation.php');
 
     // get all translations of current module
-    $cCurrentModule             = cRegistry::getCurrentModuleId();
+    $cCurrentModule = cRegistry::getCurrentModuleId();
     $contenidoTranslateFromFile = new cModuleFileTranslation($cCurrentModule, true);
-    $translations               = $contenidoTranslateFromFile->getLangArray();
+    $translations = $contenidoTranslateFromFile->getLangArray();
 
     $translation = isset($translations[$key]) ? $translations[$key] : '';
 
@@ -471,14 +479,14 @@ function mi18n($key)
         // Get module_translation_message setting value
         $moduleTranslationMessage = getEffectiveSetting('debug', 'module_translation_message', 'true');
         $moduleTranslationMessage = 'true' === $moduleTranslationMessage ? true : false;
-        $translation              = $moduleTranslationMessage ? 'Module translation not found: ' : '';
-        $translation              .= $key;
+        $translation = $moduleTranslationMessage ? 'Module translation not found: ' : '';
+        $translation .= $key;
     }
 
     // call sprintf on translation with additional params
     if (1 < func_num_args()) {
-        $arrArgs     = func_get_args();
-        $arrArgs[0]  = $translation;
+        $arrArgs = func_get_args();
+        $arrArgs[0] = $translation;
         $translation = call_user_func_array('sprintf', $arrArgs);
     }
 

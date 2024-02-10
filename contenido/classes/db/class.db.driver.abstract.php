@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Database
  */
-abstract class cDbDriverAbstract {
+abstract class cDbDriverAbstract
+{
 
     /**
      * Local database configuration, see `$cfg['db']` configuration.
@@ -45,7 +46,8 @@ abstract class cDbDriverAbstract {
      * @param array $dbCfg
      *         database configuration
      */
-    public function __construct(array $dbCfg) {
+    public function __construct(array $dbCfg)
+    {
         $this->_dbCfg = $dbCfg;
     }
 
@@ -55,7 +57,8 @@ abstract class cDbDriverAbstract {
      * @param cDbDriverHandler $handler
      *         database driver handler instance
      */
-    public function setHandler(cDbDriverHandler $handler) {
+    public function setHandler(cDbDriverHandler $handler)
+    {
         $this->_handler = $handler;
     }
 
@@ -64,7 +67,8 @@ abstract class cDbDriverAbstract {
      *
      * @return cDbDriverHandler|NULL
      */
-    public function getHandler() {
+    public function getHandler()
+    {
         return $this->_handler;
     }
 
@@ -236,8 +240,8 @@ abstract class cDbDriverAbstract {
     /**
      * Returns the data-type of a specific table field.
      *
-     * @since CONTENIDO 4.10.2
      * @return string|null
+     * @since CONTENIDO 4.10.2
      */
     abstract public function getTableFieldDataType(string $table, string $field);
 

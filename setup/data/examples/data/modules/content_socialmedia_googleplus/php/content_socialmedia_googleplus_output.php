@@ -39,7 +39,7 @@ if (cRegistry::isBackendEditMode() && 'POST' === cString::toUpperCase($_SERVER['
     // CON-2174
     $url = $_POST['url'];
     if (null === parse_url($url, PHP_URL_SCHEME)) {
-    	$url = 'https://' . $url;
+        $url = 'https://' . $url;
     }
 
     conSaveContentEntry($idartlang, "CMS_HTML", 3000, $url);

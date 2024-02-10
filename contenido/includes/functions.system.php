@@ -23,7 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function emptyLogFile() {
+function emptyLogFile()
+{
     global $notification;
 
     $perm = cRegistry::getPerm();
@@ -51,7 +52,8 @@ function emptyLogFile() {
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
  */
-function phpInfoToHtml() {
+function phpInfoToHtml()
+{
     cDeprecated('This method is deprecated and is not needed any longer');
 
     // get output
@@ -112,7 +114,8 @@ function isIPv4($strHostAddress): bool
 /**
  * @deprecated [2015-05-21]
  */
-function checkPathInformation($strConUrl, $strBrowserUrl) {
+function checkPathInformation($strConUrl, $strBrowserUrl)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
 
     // parse url
@@ -166,7 +169,8 @@ function checkPathInformation($strConUrl, $strBrowserUrl) {
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
  */
-function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false) {
+function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
 
     // && $isIP == false

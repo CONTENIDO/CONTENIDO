@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLListItem extends cHTMLContentElement {
+class cHTMLListItem extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -32,7 +33,8 @@ class cHTMLListItem extends cHTMLContentElement {
      * @param string $class [optional]
      *         the class of this list item
      */
-    public function __construct($id = '', $class = '') {
+    public function __construct($id = '', $class = '')
+    {
         parent::__construct('', $class, $id);
         $this->_tag = 'li';
     }

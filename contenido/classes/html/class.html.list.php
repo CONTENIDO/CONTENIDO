@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLList extends cHTMLContentElement {
+class cHTMLList extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -36,7 +37,8 @@ class cHTMLList extends cHTMLContentElement {
      * @param array|string|object $elements [optional]
      *         the elements of this list
      */
-    public function __construct($type = 'ul', $id = '', $class = '', $elements = []) {
+    public function __construct($type = 'ul', $id = '', $class = '', $elements = [])
+    {
         parent::__construct($elements, $class, $id);
         if ($type !== 'ul' && $type !== 'ol') {
             $type = 'ul';

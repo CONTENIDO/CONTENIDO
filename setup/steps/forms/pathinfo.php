@@ -29,8 +29,9 @@ class cSetupPath extends cSetupMask
      * @param bool $previous
      * @param $next
      */
-    public function __construct($step, $previous, $next) {
-        cSetupMask::__construct("templates/setup/forms/pathinfo.tpl", $step);
+    public function __construct($step, $previous, $next)
+    {
+        parent::__construct("templates/setup/forms/pathinfo.tpl", $step);
         $this->setHeader(i18n("System Directories", "setup"));
         $this->_stepTemplateClass->set("s", "TITLE", i18n("System Directories", "setup"));
         $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box.", "setup"));
@@ -46,9 +47,9 @@ class cSetupPath extends cSetupMask
         $oWebPath->setClass("small");
 
         $cHTMLFoldableErrorMessages = [];
-        $cHTMLFoldableErrorMessages[0] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Root Path", "setup").":<br>".$rootPath, $oRootPath);
+        $cHTMLFoldableErrorMessages[0] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Root Path", "setup") . ":<br>" . $rootPath, (string)$oRootPath);
         $cHTMLFoldableErrorMessages[0]->_oContent->setStyle("padding-bottom: 8px;");
-        $cHTMLFoldableErrorMessages[1] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Web Path", "setup").":<br>".$rootHttpPath, $oWebPath);
+        $cHTMLFoldableErrorMessages[1] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Web Path", "setup") . ":<br>" . $rootHttpPath, (string)$oWebPath);
         $cHTMLFoldableErrorMessages[1]->_oContent->setStyle("padding-bottom: 8px;");
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
@@ -59,15 +60,4 @@ class cSetupPath extends cSetupMask
         $this->setNavigation($previous, $next);
     }
 
-    /**
-     * Old constructor
-     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     * @param $step
-     * @param $previous
-     * @param $next
-     */
-    public function cSetupPath($step, $previous, $next) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        $this->__construct($step, $previous, $next);
-    }
 }

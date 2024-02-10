@@ -44,21 +44,21 @@ if (count($dbOptions) > 0) {
 }
 $tpl->set('s', 'MYSQL_OPTIONS', $dbOptions);
 
-$tpl->set('s', 'DB_EXTENSION', (string) getMySQLDatabaseExtension());
+$tpl->set('s', 'DB_EXTENSION', (string)getMySQLDatabaseExtension());
 
 $tpl->set('s', 'NOLOCK', $_SESSION['nolock'] ?? '');
 
 // Set CON_UTF8 constant only for new installations
 if ($_SESSION['setuptype'] == 'setup') {
-	$tpl->set('s', 'CON_UTF8', "define('CON_UTF8', true);");
+    $tpl->set('s', 'CON_UTF8', "define('CON_UTF8', true);");
 } else {
-	$tpl->set('s', 'CON_UTF8', '');
+    $tpl->set('s', 'CON_UTF8', '');
 }
 
 if ($_SESSION['configmode'] == 'save') {
     @unlink($cfg['path']['contenido_config'] . 'config.php');
 
-    cFileHandler::create($cfg['path']['contenido_config'] . 'config.php', $tpl->generate('templates/config.php.tpl', true, false));
+    cFileHandler::create($cfg['path']['contenido_config'] . 'config.php', $tpl->generate('templates/config.php.tpl', true));
 
     if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
         $_SESSION['configsavefailed'] = true;
@@ -69,5 +69,5 @@ if ($_SESSION['configmode'] == 'save') {
     header('Content-Type: application/octet-stream');
     header('Etag: ' . md5(mt_rand()));
     header('Content-Disposition: attachment;filename=config.php');
-    $tpl->generate('templates/config.php.tpl', false, false);
+    $tpl->generate('templates/config.php.tpl');
 }

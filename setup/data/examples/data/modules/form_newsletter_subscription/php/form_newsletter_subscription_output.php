@@ -26,11 +26,11 @@ if (class_exists('NewsletterJobCollection')) {
      * browser window?
      */
     $aSettings = [
-        'JoinSel'         => $oClientLang->getProperty('newsletter', 'joinsel'),
-        'JoinMultiple'    => $oClientLang->getProperty('newsletter', 'joinmultiple'),
-        'JoinGroups'      => $oClientLang->getProperty('newsletter', 'joingroups'),
+        'JoinSel' => $oClientLang->getProperty('newsletter', 'joinsel'),
+        'JoinMultiple' => $oClientLang->getProperty('newsletter', 'joinmultiple'),
+        'JoinGroups' => $oClientLang->getProperty('newsletter', 'joingroups'),
         'JoinMessageType' => $oClientLang->getProperty('newsletter', 'joinmessagetype'),
-        'OptNewWindow'    => "CMS_VALUE[4]",
+        'OptNewWindow' => "CMS_VALUE[4]",
     ];
 
     $sTemplate = 'get.tpl';
@@ -89,7 +89,7 @@ if (class_exists('NewsletterJobCollection')) {
                 'id' => 'selNewsletterGroup',
                 'cssClass' => 'contact_rowNlGroup',
                 'label' => mi18n("SELECT"),
-                'elementHtml' =>  $oSelGroup->render()
+                'elementHtml' => $oSelGroup->render()
             ];
         }
     }
@@ -111,7 +111,7 @@ if (class_exists('NewsletterJobCollection')) {
             'id' => 'selNewsletterType',
             'cssClass' => 'contact_rowNlType',
             'label' => mi18n("TYPE"),
-            'elementHtml' =>  $oSelType->render()
+            'elementHtml' => $oSelType->render()
         ];
     }
 

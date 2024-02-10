@@ -15,7 +15,7 @@
 // get category path
 $categoryHelper = cCategoryHelper::getInstance();
 $categoryHelper->setAuth(cRegistry::getAuth());
-$categories = $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1);
+$categories = $categoryHelper->getCategoryPath(cRegistry::getCategoryId());
 
 // get breadcrumb (w/o first level)
 $breadcrumb = [];

@@ -50,7 +50,7 @@ class ContenidoFrontendAllowEditTest extends TestCase
     private $_lang;
     private $_idcat = 10; // Hauptnavigation/Features-dieser-Website/Geschlossener-Bereich/Vertraulich/
     private $_idart = 17; // idart from above
-    private $_uid   = null;
+    private $_uid = null;
 
 
     protected function setUp(): void

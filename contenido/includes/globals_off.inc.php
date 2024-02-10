@@ -27,8 +27,8 @@ if (CON_STRIPSLASHES) {
         include_once dirname(__DIR__) . '/classes/class.string.php';
     }
 
-    $_POST   = array_map(['cString', 'addSlashes'], $_POST);
-    $_GET    = array_map(['cString', 'addSlashes'], $_GET);
+    $_POST = array_map(['cString', 'addSlashes'], $_POST);
+    $_GET = array_map(['cString', 'addSlashes'], $_GET);
     $_COOKIE = array_map(['cString', 'addSlashes'], $_COOKIE);
 
     $cfg['simulate_magic_quotes'] = true;

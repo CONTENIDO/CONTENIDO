@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Debug
  */
-interface cDebugInterface {
+interface cDebugInterface
+{
 
     /**
      */

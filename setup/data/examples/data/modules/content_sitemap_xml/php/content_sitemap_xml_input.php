@@ -12,6 +12,10 @@
  * @link       https://www.contenido.org
  */
 
+if (!class_exists('ContentSitemapXmlModule')) {
+    cInclude('module', 'class.content_sitemap_xml_module.php');
+}
+
 $db = cRegistry::getDb();
 $cfg = cRegistry::getConfig();
 $client = cRegistry::getClientId();
@@ -28,7 +32,7 @@ if ($selected == '') {
     $selected = $db->f('idcat');
 }
 
-$categories = buildCategoryArray();
+$categories = ContentSitemapXmlModule::buildCategoryArray();
 // construct the HTML
 $table = new cHTMLTable();
 $trs = [];
@@ -73,39 +77,4 @@ $table->setContent($trs);
 
 // echo the whole HTML
 echo $table->render();
-
-/**
- * Builds an array with category information.
- * Each entry has the following keys:
- * idcat, level, name, name_indented
- *
- * @return array with category information
- */
-function buildCategoryArray() {
-    $cfg = cRegistry::getConfig();
-    $lang = cRegistry::getLanguageId();
-    $db = cRegistry::getDb();
-
-    $query = 'SELECT * FROM ' . $cfg['tab']['cat_lang'] . ' AS a, ' . $cfg['tab']['cat_tree'] . ' as b WHERE (a.idcat = b.idcat) AND (a.visible = 1) AND (a.public = 1) AND (a.idlang = ' . $lang . ') ORDER BY b.idtree';
-    $db->query($query);
-
-    $categories = [];
-    while ($db->nextRecord()) {
-        $category = [];
-        $category['idcat'] = $db->f('idcat');
-        $category['level'] = $db->f('level');
-
-        $prefix = '';
-        for ($i = 0; $i < $db->f('level'); $i++) {
-            $prefix .= '-->';
-        }
-
-        $category['name'] = $db->f('name');
-        $category['name_indented'] = $prefix . $db->f('name');
-
-        $categories[] = $category;
-    }
-
-    return $categories;
-}
 

@@ -48,7 +48,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Log
  */
-class cLog {
+class cLog
+{
 
     /**
      * logging level
@@ -161,7 +162,8 @@ class cLog {
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct($writer = false) {
+    public function __construct($writer = false)
+    {
         $cfg = cRegistry::getConfig();
         $createWriter = false;
 
@@ -193,7 +195,8 @@ class cLog {
      *
      * @return cLogWriter
      */
-    public function getWriter() {
+    public function getWriter()
+    {
         return $this->_writer;
     }
 
@@ -203,7 +206,8 @@ class cLog {
      * @param cLogWriter $writer
      *         Writer instance
      */
-    public function setWriter(cLogWriter $writer) {
+    public function setWriter(cLogWriter $writer)
+    {
         $this->_writer = $writer;
     }
 
@@ -217,13 +221,14 @@ class cLog {
      *         Shortcut name
      * @param string|array $handler
      *         Name of the function to call
+     * @return bool
+     *         True if setting was successful
      * @throws cInvalidArgumentException
      *         if the given shortcut is empty or already in use or if the
      *         handler is not callable
-     * @return bool
-     *         True if setting was successful
      */
-    public function setShortcutHandler($shortcut, $handler) {
+    public function setShortcutHandler($shortcut, $handler)
+    {
         if ($shortcut == '') {
             throw new cInvalidArgumentException('The shortcut name must not be empty.');
         }
@@ -250,11 +255,12 @@ class cLog {
      *
      * @param string $shortcut
      *         Name of the shortcut
+     * @return bool
      * @throws cInvalidArgumentException
      *         if the given shortcut handler does not exist
-     * @return bool
      */
-    public function unsetShortcutHandler($shortcut) {
+    public function unsetShortcutHandler($shortcut)
+    {
         if (!in_array($shortcut, $this->_shortcutHandlers)) {
             throw new cInvalidArgumentException('The specified shortcut handler does not exist.');
         }
@@ -271,7 +277,8 @@ class cLog {
      * @param mixed $priority [optional]
      *         Priority of the log entry (optional)
      */
-    public function buffer($message, $priority = NULL) {
+    public function buffer($message, $priority = NULL)
+    {
         $this->_buffer[] = [$message, $priority];
     }
 
@@ -284,7 +291,8 @@ class cLog {
      * @return bool|void
      * @throws cInvalidArgumentException
      */
-    public function commit($revoke = true) {
+    public function commit($revoke = true)
+    {
         if (count($this->_buffer) == 0) {
             cWarning(__FILE__, __LINE__, 'There are no buffered messages to commit.');
             return false;
@@ -302,7 +310,8 @@ class cLog {
     /**
      * Empties the message buffer.
      */
-    public function revoke() {
+    public function revoke()
+    {
         $this->_buffer = [];
     }
 
@@ -314,7 +323,8 @@ class cLog {
      * @param mixed $priority [optional]
      *         Priority of the log entry (optional)
      */
-    public function log($message, $priority = NULL) {
+    public function log($message, $priority = NULL)
+    {
         if ($priority && !is_int($priority) && in_array($priority, $this->_priorities)) {
             $priority = array_search($priority, $this->_priorities);
         }
@@ -354,7 +364,8 @@ class cLog {
      * @throws cInvalidArgumentException
      *         if the given name is empty, already exists or the value already exists
      */
-    public function addPriority($name, $value) {
+    public function addPriority($name, $value)
+    {
         if ($name == '') {
             throw new cInvalidArgumentException('Priority name must not be empty.');
         }
@@ -379,7 +390,8 @@ class cLog {
      * @throws cInvalidArgumentException
      *         if the given name is empty, does not exist or is a default priority
      */
-    public function removePriority($name) {
+    public function removePriority($name)
+    {
         if ($name == '') {
             throw new cInvalidArgumentException('Priority name must not be empty.');
         }
@@ -407,7 +419,8 @@ class cLog {
      * @throws cInvalidArgumentException
      *         if the given priority is not supported
      */
-    public function __call($method, $arguments) {
+    public function __call($method, $arguments)
+    {
         $priorityName = cString::toUpperCase($method);
 
         if (!in_array($priorityName, $this->_priorities)) {
@@ -426,7 +439,8 @@ class cLog {
      * @return string
      *     The current date
      */
-    public function shDate() {
+    public function shDate()
+    {
         return date('Y-m-d H:i:s');
     }
 
@@ -440,7 +454,8 @@ class cLog {
      * @return string
      *         The canonical log level
      */
-    public function shLevel($info) {
+    public function shLevel($info)
+    {
         $logLevel = $info['priority'];
         return str_pad($this->_priorities[$logLevel], 10, ' ', STR_PAD_BOTH);
     }
@@ -453,7 +468,8 @@ class cLog {
      * @return string
      *         The log message
      */
-    public function shMessage($info) {
+    public function shMessage($info)
+    {
         return $info['message'];
     }
 }

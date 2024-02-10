@@ -39,8 +39,8 @@ function chain_ContenidoContentConGenerateCode_Test2($html)
 class ContenidoContentConGenerateCodeTest extends TestCase
 {
     private $_chain = 'Contenido.Content.conGenerateCode';
-    private $_code          = '<html lang="en"><head><title>test</title><body>content</body></html>';
-    private $_codeOneChain  = '<html lang="en"><head><title><?php echo $title ?></title><body>content</body></html>';
+    private $_code = '<html lang="en"><head><title>test</title><body>content</body></html>';
+    private $_codeOneChain = '<html lang="en"><head><title><?php echo $title ?></title><body>content</body></html>';
     private $_codeTwoChains = '<html lang="en"><head><title><?php echo $title ?></title><body><?php echo $body ?></body></html>';
 
 

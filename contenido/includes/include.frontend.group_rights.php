@@ -77,7 +77,7 @@ $rights->setHeader(sprintf(i18n("Permissions for plugin '%s'"), $class->getFrien
 
 foreach ($actions as $key => $action) {
     $check[$key] = new cHTMLCheckbox('action_' . $key, 1);
-    $check[$key]->setLabelText($action." ".i18n("(All)"));
+    $check[$key]->setLabelText($action . " " . i18n("(All)"));
 
     if ($perms->checkPerm($requestIdFrontendGroup, $requestUsePlugin, $key, '__GLOBAL__')) {
         $check[$key]->setChecked(true);
@@ -91,7 +91,7 @@ foreach ($actions as $key => $action) {
 
     if (count($items) > 0) {
         foreach ($items as $item => $value) {
-            $check[$item] = new cHTMLCheckbox('item_'.$item.'_'.$key, 1);
+            $check[$item] = new cHTMLCheckbox('item_' . $item . '_' . $key, 1);
             $check[$item]->setLabelText($value);
             if ($perms->checkPerm($requestIdFrontendGroup, $requestUsePlugin, $key, $item)) {
                 $check[$item]->setChecked(true);

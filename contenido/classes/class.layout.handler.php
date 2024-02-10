@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage LayoutHandler
  */
-class cLayoutHandler {
+class cLayoutHandler
+{
 
     /**
      * The ID of the layout
@@ -89,17 +90,18 @@ class cLayoutHandler {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param int    $layoutId
+     * @param int $layoutId
      * @param string $layoutCode [optional]
-     * @param array  $cfg        [optional]
-     * @param int    $lang       [optional]
-     * @param cDb    $db         [optional]
+     * @param array $cfg [optional]
+     * @param int $lang [optional]
+     * @param cDb $db [optional]
      *                           CONTENIDO database object
      *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct($layoutId = 0, $layoutCode = '', array $cfg = [], $lang = 0, cDb $db = null) {
+    public function __construct($layoutId = 0, $layoutCode = '', array $cfg = [], $lang = 0, cDb $db = null)
+    {
         if ($db === NULL) {
             $db = cRegistry::getDb();
         }
@@ -114,7 +116,8 @@ class cLayoutHandler {
      *
      * @return string
      */
-    public function _getLayoutPath() {
+    public function _getLayoutPath()
+    {
         return $this->_layoutPath;
     }
 
@@ -123,7 +126,8 @@ class cLayoutHandler {
      *
      * @return string
      */
-    public function _getFileName() {
+    public function _getFileName()
+    {
         return $this->_fileName;
     }
 
@@ -136,7 +140,8 @@ class cLayoutHandler {
      * @return bool
      *         true if file exist
      */
-    static function existLayout($layoutAlias, $cfgClient, $client) {
+    static function existLayout($layoutAlias, $cfgClient, $client)
+    {
         $file = $cfgClient[$client]['layout']['path'] . $layoutAlias . '/';
         return cFileHandler::exists($file);
     }
@@ -144,22 +149,23 @@ class cLayoutHandler {
     /**
      * Init all vars for the class
      *
-     * @param int    $layoutId
+     * @param int $layoutId
      * @param string $layoutCode
-     * @param array  $cfg
-     * @param int    $language
+     * @param array $cfg
+     * @param int $language
      *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function init($layoutId, $layoutCode, $cfg, $language) {
+    public function init($layoutId, $layoutCode, $cfg, $language)
+    {
         $this->_layoutCode = $layoutCode;
         $this->_cfg = $cfg;
 
         // set encoding
         $this->_setEncoding($language);
 
-        if ((int) $layoutId == 0) {
+        if ((int)$layoutId == 0) {
             return;
         }
 
@@ -167,7 +173,7 @@ class cLayoutHandler {
 
         $cApiLayout = new cApiLayout($layoutId);
 
-        if (true === $cApiLayout->isLoaded() && is_array($cfgClient) && (int) $client > 0) {
+        if (true === $cApiLayout->isLoaded() && is_array($cfgClient) && (int)$client > 0) {
             $this->_layoutName = $cApiLayout->get('alias');
             $this->_layoutMainPath = $cfgClient[$client]['layout']['path'];
             $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . '/';
@@ -184,7 +190,8 @@ class cLayoutHandler {
      * @return string
      *         layoutname
      */
-    public function getLayoutName() {
+    public function getLayoutName()
+    {
         return $this->_layoutName;
     }
 
@@ -196,7 +203,8 @@ class cLayoutHandler {
      *
      * @throws cInvalidArgumentException
      */
-    public function initWithDbObject($dbObject) {
+    public function initWithDbObject($dbObject)
+    {
         global $cfgClient;
 
         $this->_layoutCode = $dbObject->f('code');
@@ -218,7 +226,8 @@ class cLayoutHandler {
      *
      * @throws cInvalidArgumentException
      */
-    private function _makeDirectories() {
+    private function _makeDirectories()
+    {
         if ($this->_makeDirectory($this->_layoutMainPath)) {
             if ($this->_makeDirectory($this->_layoutPath)) {
                 return true;
@@ -238,7 +247,8 @@ class cLayoutHandler {
      *
      * @throws cInvalidArgumentException
      */
-    private function _makeDirectory($directory) {
+    private function _makeDirectory($directory)
+    {
         if (is_dir($directory)) {
             $success = true;
         } else {
@@ -258,15 +268,16 @@ class cLayoutHandler {
      *
      * @throws cDbException
      */
-    private function _setEncoding($lang) {
-        if ((int) $lang == 0) {
+    private function _setEncoding($lang)
+    {
+        if ((int)$lang == 0) {
             $clientId = cRegistry::getClientId();
 
             $clientsLangColl = new cApiClientLanguageCollection();
             $clientLanguages = $clientsLangColl->getLanguagesByClient($clientId);
             sort($clientLanguages);
 
-            if (isset($clientLanguages[0]) && (int) $clientLanguages[0] != 0) {
+            if (isset($clientLanguages[0]) && (int)$clientLanguages[0] != 0) {
                 $languageId = $clientLanguages[0];
             }
         } else {
@@ -289,7 +300,8 @@ class cLayoutHandler {
      * @return bool
      *         true on success else false
      */
-    public function isWritable($fileName, $directory) {
+    public function isWritable($fileName, $directory)
+    {
         if (cFileHandler::exists($fileName)) {
             if (!is_writable($fileName)) {
                 return false;
@@ -312,7 +324,8 @@ class cLayoutHandler {
      *
      * @throws cInvalidArgumentException
      */
-    public function saveLayout($layoutCode = '') {
+    public function saveLayout($layoutCode = '')
+    {
         $fileName = $this->_layoutPath . $this->_fileName;
 
         if (!$this->isWritable($fileName, $this->_layoutPath)) {
@@ -332,7 +345,8 @@ class cLayoutHandler {
      *
      * @throws cInvalidArgumentException
      */
-    public function saveLayoutByUpgrade($layoutCode = '') {
+    public function saveLayoutByUpgrade($layoutCode = '')
+    {
         // if file exist dont overwirte it
         if (cFileHandler::exists($this->_layoutPath . $this->_fileName)) {
             return true;
@@ -349,7 +363,8 @@ class cLayoutHandler {
      *
      * @throws cInvalidArgumentException
      */
-    private function _save($layoutCode = '') {
+    private function _save($layoutCode = '')
+    {
         if ($layoutCode == '') {
             $layoutCode = $this->_layoutCode;
         }
@@ -377,7 +392,8 @@ class cLayoutHandler {
      *
      * @throws cInvalidArgumentException
      */
-    public function eraseLayout() {
+    public function eraseLayout()
+    {
         global $area, $frame;
         $cfg = cRegistry::getConfig();
         $cfgClient = cRegistry::getClientConfig();
@@ -400,7 +416,8 @@ class cLayoutHandler {
      * @param string $new
      * @return bool
      */
-    public function rename($old, $new) {
+    public function rename($old, $new)
+    {
         // try to rename the dir
         $newPath = $this->_layoutMainPath . $new . '/';
 
@@ -434,7 +451,8 @@ class cLayoutHandler {
      *
      * @throws cInvalidArgumentException
      */
-    public function getLayoutCode() {
+    public function getLayoutCode()
+    {
         // cant read it dont exist file
         if (!is_readable($this->_layoutPath . $this->_fileName)) {
             return false;
@@ -462,7 +480,8 @@ class cLayoutHandler {
      *
      * @throws cException if the layout could not be saved
      */
-    public static function upgrade($adb, $cfg, $clientId) {
+    public static function upgrade($adb, $cfg, $clientId)
+    {
         // get name of layout and frontendpath
         if (!$adb->query("SELECT * FROM `%s` WHERE idclient='%s'", $cfg['tab']['lay'], $clientId)) {
             return;

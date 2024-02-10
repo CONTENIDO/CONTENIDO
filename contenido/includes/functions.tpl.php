@@ -35,13 +35,14 @@ cInclude("includes", "functions.con.php");
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c, $default) {
+function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c, $default)
+{
     $db = cRegistry::getDb();
     $auth = cRegistry::getAuth();
     $cfg = cRegistry::getConfig();
     $client = cRegistry::getClientId();
 
-    $author = (string) $auth->auth['uname'];
+    $author = (string)$auth->auth['uname'];
 
     if (!is_array($c)) {
         $c = [];
@@ -99,7 +100,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         if (is_array($c)) {
             foreach ($c as $idcontainer => $idmodule) {
                 $containerColl2 = new cApiContainerCollection();
-                if ($idmodule != 0 && in_array($idcontainer, $layContainers) ) {
+                if ($idmodule != 0 && in_array($idcontainer, $layContainers)) {
                     $containerColl2->create($idtpl, $idcontainer, $idmodule);
                 }
             }
@@ -138,7 +139,8 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
-function tplDeleteTemplate($idtpl) {
+function tplDeleteTemplate($idtpl)
+{
     $idtpl = cSecurity::toInteger($idtpl);
 
     // Delete template
@@ -174,7 +176,8 @@ function tplDeleteTemplate($idtpl) {
  *
  * @throws cInvalidArgumentException
  */
-function tplBrowseLayoutForContainers($idlay) {
+function tplBrowseLayoutForContainers($idlay)
+{
     global $containerinf;
 
     $cfg = cRegistry::getConfig();
@@ -226,7 +229,8 @@ function tplBrowseLayoutForContainers($idlay) {
  *
  * @throws cInvalidArgumentException
  */
-function tplGetContainerNumbersInLayout($idlay) {
+function tplGetContainerNumbersInLayout($idlay)
+{
     $containerNumbers = [];
 
     tplPreparseLayout($idlay);
@@ -248,7 +252,8 @@ function tplGetContainerNumbersInLayout($idlay) {
  * @return string|null
  *         Container name or null
  */
-function tplGetContainerName($idlay, $container) {
+function tplGetContainerName($idlay, $container)
+{
     global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
@@ -270,7 +275,8 @@ function tplGetContainerName($idlay, $container) {
  * @return string|null
  *         Container name or null
  */
-function tplGetContainerMode($idlay, $container) {
+function tplGetContainerMode($idlay, $container)
+{
     global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
@@ -292,7 +298,8 @@ function tplGetContainerMode($idlay, $container) {
  * @return array
  *         Allowed container types
  */
-function tplGetContainerTypes($idlay, $container) {
+function tplGetContainerTypes($idlay, $container)
+{
     global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
@@ -321,7 +328,8 @@ function tplGetContainerTypes($idlay, $container) {
  * @return string|null
  *         Default module name or null
  */
-function tplGetContainerDefault($idlay, $container) {
+function tplGetContainerDefault($idlay, $container)
+{
     global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
@@ -341,7 +349,8 @@ function tplGetContainerDefault($idlay, $container) {
  *
  * @throws cInvalidArgumentException
  */
-function tplPreparseLayout($idlay) {
+function tplPreparseLayout($idlay)
+{
     global $containerinf;
 
     $cfg = cRegistry::getConfig();
@@ -396,7 +405,8 @@ function tplPreparseLayout($idlay) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function tplDuplicateTemplate($idtpl) {
+function tplDuplicateTemplate($idtpl)
+{
     $auth = cRegistry::getAuth();
     $idtpl = cSecurity::toInteger($idtpl);
     $template = new cApiTemplate($idtpl);
@@ -462,7 +472,8 @@ function tplDuplicateTemplate($idtpl) {
  *
  * @throws cDbException
  */
-function tplIsTemplateInUse($idtpl) {
+function tplIsTemplateInUse($idtpl)
+{
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
     $client = cRegistry::getClientId();
@@ -515,7 +526,8 @@ function tplIsTemplateInUse($idtpl) {
  *
  * @throws cDbException
  */
-function tplGetInUsedData($idtpl) {
+function tplGetInUsedData($idtpl)
+{
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
     $client = cRegistry::getClientId();
@@ -574,7 +586,6 @@ function tplGetInUsedData($idtpl) {
 /**
  * Returns the information about a template and the referenced layout.
  *
- * @since CONTENIDO 4.10.2
  * @param int $idtpl Template id
  * @return array Associative array as follows or an empty array
  *               <pre>
@@ -588,6 +599,7 @@ function tplGetInUsedData($idtpl) {
  *               ]
  *               </pre>
  * @throws cDbException|cInvalidArgumentException
+ * @since CONTENIDO 4.10.2
  */
 function tplGetTplAndLayoutData(int $idtpl): array
 {
@@ -635,7 +647,8 @@ function tplGetTplAndLayoutData(int $idtpl): array
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function tplcfgDuplicate($idtplcfg) {
+function tplcfgDuplicate($idtplcfg)
+{
     $auth = cRegistry::getAuth();
     $idtplcfg = cSecurity::toInteger($idtplcfg);
     $templateConfig = new cApiTemplateConfiguration($idtplcfg);
@@ -646,7 +659,7 @@ function tplcfgDuplicate($idtplcfg) {
     // Copy template configuration
     $templateConfigColl = new cApiTemplateConfigurationCollection();
     $newTemplateConfig = $templateConfigColl->copyItem($templateConfig, [
-        'author' => (string) $auth->auth['uname'],
+        'author' => (string)$auth->auth['uname'],
         'created' => date('Y-m-d H:i:s'),
         'lastmodified' => date('Y-m-d H:i:s'),
     ]);
@@ -671,16 +684,17 @@ function tplcfgDuplicate($idtplcfg) {
  * - If the container mode is fixed, insert the named module (if exists)
  * - If the container mode is mandatory, insert the "default" module (if exists)
  *
- * @todo Default module is only inserted in mandatory mode if container is empty. We need a better logic for handling "changes".
- *
  * @param int $idtpl
  *
  * @return bool
  *
  * @throws cDbException
  * @throws cInvalidArgumentException
+ * @todo Default module is only inserted in mandatory mode if container is empty. We need a better logic for handling "changes".
+ *
  */
-function tplAutoFillModules($idtpl) {
+function tplAutoFillModules($idtpl)
+{
     global $db_autofill, $containerinf, $_autoFillContainerCache;
 
     $cfg = cRegistry::getConfig();
@@ -766,8 +780,8 @@ function tplAutoFillModules($idtpl) {
  * Takes over send container configuration data, stores send data (via POST) by article
  * or template configuration in container configuration table.
  *
- * @param int   $idtpl
- * @param int   $idtplcfg
+ * @param int $idtpl
+ * @param int $idtplcfg
  * @param array $postData
  *         Usually $_POST
  *
@@ -775,7 +789,8 @@ function tplAutoFillModules($idtpl) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function tplProcessSendContainerConfiguration($idtpl, $idtplcfg, array $postData) {
+function tplProcessSendContainerConfiguration($idtpl, $idtplcfg, array $postData)
+{
     $containerColl = new cApiContainerCollection();
     $containerConfColl = new cApiContainerConfigurationCollection();
     $containerData = [];

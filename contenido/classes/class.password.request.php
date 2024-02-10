@@ -104,7 +104,7 @@ class cPasswordRequest
     /**
      * Constructor to create an instance of this class.
      *
-     * @param cDb   $db
+     * @param cDb $db
      *         CONTENIDO database object
      * @param array $cfg
      *         The CONTENIDO configuration array
@@ -122,10 +122,10 @@ class cPasswordRequest
         }
 
         // init class variables
-        $this->_cfg      = $cfg;
-        $this->_tpl      = new cTemplate();
+        $this->_cfg = $cfg;
+        $this->_tpl = new cTemplate();
         $this->_username = '';
-        $this->_email    = '';
+        $this->_email = '';
 
         // set reload to 4 hours (60*4 minutes)
         $this->_reloadTime = 240;
@@ -303,7 +303,7 @@ class cPasswordRequest
      */
     public static function getResetThresholdSetting(): int
     {
-        $resetThreshold =  cSecurity::toInteger(
+        $resetThreshold = cSecurity::toInteger(
             cEffectiveSetting::get('pw_request', 'reset_threshold', '0')
         );
         if ($resetThreshold <= 0) {
@@ -583,9 +583,9 @@ class cPasswordRequest
     {
         $this->_tpl->set('s', 'JS_CALL', 'showResetFormLayer();');
         $username = cSecurity::toString($_POST['user_name']);
-        $pw       = cSecurity::toString($_POST['user_pw']);
+        $pw = cSecurity::toString($_POST['user_pw']);
         $pwRepeat = cSecurity::toString($_POST['user_pw_repeat']);
-        $pwReset  = cSecurity::toString($_GET['pw_reset']);
+        $pwReset = cSecurity::toString($_GET['pw_reset']);
 
         if (0 === cString::getStringLength($username)) {
             $this->_tpl->set('s', 'RESET_MESSAGE', i18n('Username can\'t be empty'));
@@ -692,7 +692,7 @@ class cPasswordRequest
     /**
      * Save request into db for future validity check
      *
-     * @param string   $token
+     * @param string $token
      *         Token used to check for validity at user confirmation part
      * @param DateTime $expiration
      *
@@ -706,11 +706,11 @@ class cPasswordRequest
     protected function _safePwResetRequest($token, DateTime $expiration)
     {
         $oUserPwRequestCol = new cApiUserPasswordRequestCollection();
-        $oUserPwRequest    = $oUserPwRequestCol->create();
+        $oUserPwRequest = $oUserPwRequestCol->create();
 
         // set request data
         $requestTime = new DateTime('now', new DateTimeZone('UTC'));
-        $oApiUser    = new cApiUser();
+        $oApiUser = new cApiUser();
         $oApiUser->loadBy('username', $this->_username);
 
         $oUserPwRequest->set($oApiUser->getPrimaryKeyName(), $oApiUser->get($oApiUser->getPrimaryKeyName()));
@@ -738,29 +738,29 @@ class cPasswordRequest
         $token = (string)$token;
 
         // get translation for mailbody and insert username and new password
-        $msg      = i18n(
+        $msg = i18n(
             "Dear CONTENIDO-User %s,\n\nA request to change your password for Content Management System CONTENIDO was made. "
         );
-        $msg      .= i18n("Use the following URL to confirm the password change:\n\n");
-        $msg      .= cRegistry::getBackendUrl() . '?pw_reset=';
-        $msg      .= i18n("%s\n\nBest regards\n\nYour CONTENIDO sysadmin");
+        $msg .= i18n("Use the following URL to confirm the password change:\n\n");
+        $msg .= cRegistry::getBackendUrl() . '?pw_reset=';
+        $msg .= i18n("%s\n\nBest regards\n\nYour CONTENIDO sysadmin");
         $mailBody = sprintf($msg, $this->_username, $token);
 
         $from = [$this->_sendermail => $this->_sendername];
 
         // Decoding and encoding for charsets (without UTF-8)
         if ($cfg['php_settings']['default_charset'] != 'UTF-8') {
-            $subject = utf8_encode(
+            $subject = @utf8_encode(
                 conHtmlEntityDecode(
                     stripslashes(i18n('Your new password for CONTENIDO Backend')),
                     '',
                     $cfg['php_settings']['default_charset']
                 )
             );
-            $body    = utf8_encode(conHtmlEntityDecode($mailBody, '', $cfg['php_settings']['default_charset']));
+            $body = @utf8_encode(conHtmlEntityDecode($mailBody, '', $cfg['php_settings']['default_charset']));
         } else {
             $subject = conHtmlEntityDecode(stripslashes(i18n('Your new password for CONTENIDO Backend')));
-            $body    = conHtmlEntityDecode($mailBody);
+            $body = conHtmlEntityDecode($mailBody);
         }
 
         try {

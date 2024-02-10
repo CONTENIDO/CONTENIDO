@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
+class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
+{
 
     /**
      * Path to restrictive htaccess file
@@ -38,7 +39,8 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
     /**
      * Initializer method, sets the paths to htaccess files
      */
-    public function init() {
+    public function init()
+    {
         $this->_oView->content_before = '';
 
         $pluginPath = $this->_cfg['path']['contenido'] . $this->_cfg['path']['plugins'] . 'mod_rewrite/';
@@ -49,13 +51,15 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
     /**
      * Index action
      */
-    public function indexAction() {
+    public function indexAction()
+    {
     }
 
     /**
      * Copy htaccess action
      */
-    public function copyHtaccessAction() {
+    public function copyHtaccessAction()
+    {
         $type = $this->_getParam('htaccesstype');
         $copy = $this->_getParam('copy');
 
@@ -99,7 +103,8 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
      * @throws cInvalidArgumentException
      * @throws cException
      */
-    public function downloadHtaccessAction() {
+    public function downloadHtaccessAction()
+    {
         $type = $this->_getParam('htaccesstype');
 
         if ($type != 'restrictive' && $type != 'simple') {
@@ -126,7 +131,8 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function resetAction() {
+    public function resetAction()
+    {
         // recreate all aliases
         ModRewrite::recreateAliases(false);
         $this->_oView->content_before = $this->_notifyBox('info', i18n('All aliases have been reset.', $this->_pluginName));
@@ -138,7 +144,8 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function resetEmptyAction() {
+    public function resetEmptyAction()
+    {
         // recreate only empty aliases
         ModRewrite::recreateAliases(true);
         $this->_oView->content_before = $this->_notifyBox('info', i18n('Only empty aliases have been reset.', $this->_pluginName));

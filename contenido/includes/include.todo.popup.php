@@ -74,7 +74,7 @@ if ($action === 'todo_save_item') {
     $ui->add(i18n('Reminder date'), $reminderdate->render());
 
     $reminderdue = new cHTMLTextbox('enddate', '', '', '', 'enddate');
-    $ui->add(i18n('End date'),$reminderdue->render());
+    $ui->add(i18n('End date'), $reminderdue->render());
     $notiemail = new cHTMLCheckbox('notiemail', '1');
     $notiemail->setLabelText(i18n('E-mail notification'));
 
@@ -84,7 +84,7 @@ if ($action === 'todo_save_item') {
         $langScripts[] = 'jquery/plugins/datepicker-' . $langCodeShort . '.js';
     }
 
-    $calendarButtonImage = cRegistry::getBackendUrl(). $cfg['path']['images'] . 'calendar.gif';
+    $calendarButtonImage = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
 
     $ui->add(i18n('Reminder options'), $notiemail->toHtml());
     $calScript = '
@@ -92,7 +92,7 @@ if ($action === 'todo_save_item') {
 (function(Con, $) {
     $(function() {
         $("#reminderdate").datetimepicker({
-            buttonImage:"'. $calendarButtonImage.'",
+            buttonImage:"' . $calendarButtonImage . '",
             buttonImageOnly: true,
             showOn: "both",
             dateFormat: "yy-mm-dd",
@@ -114,7 +114,7 @@ if ($action === 'todo_save_item') {
             }
         });
         $("#enddate").datetimepicker({
-            buttonImage: "'. $calendarButtonImage .'",
+            buttonImage: "' . $calendarButtonImage . '",
             buttonImageOnly: true,
             showOn: "both",
             dateFormat: "yy-mm-dd",

@@ -68,7 +68,8 @@ class ArticleForumLeftBottom extends cGuiPage
      * @return cGuiMenu
      * @throws cDbException
      */
-    public function receiveData(&$get) {
+    public function receiveData(&$get)
+    {
         return $this->getMenu();
     }
 

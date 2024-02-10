@@ -27,7 +27,8 @@ cInclude('plugins', 'repository/keyword_density.php');
  *
  * @throws cDbException|cException
  */
-function cecCreateMetatags($metatags) {
+function cecCreateMetatags($metatags)
+{
     // (Re)build metatags
 
     $db = cRegistry::getDb();
@@ -131,7 +132,7 @@ function cecCreateMetatags($metatags) {
 
         // Get idart of homepage
         $sql = "SELECT `idart` FROM `%s` WHERE `idartlang` = %d";
-        $db->query($sql,  $cfg['tab']['art_lang'], $iIdArtLangHomepage);
+        $db->query($sql, $cfg['tab']['art_lang'], $iIdArtLangHomepage);
         $iIdArtHomepage = $db->nextRecord() ? cSecurity::toInteger($db->f('idart')) : 0;
 
         $t1 = $cfg['tab']['meta_tag'];
@@ -192,7 +193,7 @@ function cecCreateMetatags($metatags) {
                     // Build these 3 metatags from entries in homepage
                     $sCurrentTag = isset($value['name']) ? cString::toLowerCase($value['name']) : '';
                     $iCheck = CheckIfMetaTagExists($metatags, $sCurrentTag);
-                    if($sCurrentTag != '' && $arrHomepageMetaTags[$sCurrentTag] != "") {
+                    if ($sCurrentTag != '' && $arrHomepageMetaTags[$sCurrentTag] != "") {
                         $metatags[$iCheck]['name'] = $sCurrentTag;
                         $metatags[$iCheck]['content'] = $arrHomepageMetaTags[$sCurrentTag];
                     }
@@ -215,7 +216,8 @@ function cecCreateMetatags($metatags) {
  * @return int
  *         Position of metatag inside the metatag list or the next available position
  */
-function CheckIfMetaTagExists($arrMetatags, $sCheckForMetaTag) {
+function CheckIfMetaTagExists($arrMetatags, $sCheckForMetaTag)
+{
     if (!is_array($arrMetatags) || count($arrMetatags) == 0) {
         // metatag list ist not set or empty, return initial position
         return 0;

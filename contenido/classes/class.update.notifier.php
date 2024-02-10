@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Security
  */
-class cUpdateNotifier {
+class cUpdateNotifier
+{
 
     /**
      * Minor release for the simplexml xpath() method
@@ -210,9 +211,9 @@ class cUpdateNotifier {
      */
     protected $aPropConf = [
         "itemType" => "update",
-        "itemID"   => 1,
-        "type"     => "file_check",
-        "name"     => "xml",
+        "itemID" => 1,
+        "type" => "file_check",
+        "name" => "xml",
     ];
 
     /**
@@ -255,16 +256,17 @@ class cUpdateNotifier {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param array       $aCfg
-     * @param cApiUser    $oUser
+     * @param array $aCfg
+     * @param cApiUser $oUser
      * @param cPermission $oPerm
-     * @param cSession    $oSession
-     * @param string      $sBackendLanguage
+     * @param cSession $oSession
+     * @param string $sBackendLanguage
      *
      * @throws cInvalidArgumentException
      * @throws cException
      */
-    public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage) {
+    public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage)
+    {
         $this->oProperties = new cApiPropertyCollection();
         $this->oSession = $oSession;
         $this->aCfg = $aCfg;
@@ -316,7 +318,8 @@ class cUpdateNotifier {
     /**
      * Sets the actual RSS file for the reader
      */
-    protected function setRSSFile() {
+    protected function setRSSFile()
+    {
         if ($this->sBackendLanguage == "de_DE") {
             $this->sRSSFile = $this->sVendorRssDeFile;
         } else {
@@ -329,7 +332,8 @@ class cUpdateNotifier {
      *
      * @param string $sAction
      */
-    protected function updateSystemProperty($sAction) {
+    protected function updateSystemProperty($sAction)
+    {
         if ($sAction == "activate") {
             setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "true");
         } elseif ($sAction == "deactivate") {
@@ -344,7 +348,8 @@ class cUpdateNotifier {
     /**
      * Sets the cache path
      */
-    protected function setCachePath() {
+    protected function setCachePath()
+    {
         $sCachePath = $this->aCfg['path']['contenido_cache'];
         if (!is_dir($sCachePath)) {
             mkdir($sCachePath, cDirHandler::getDefaultPermissions());
@@ -363,7 +368,8 @@ class cUpdateNotifier {
      *
      * @throws cInvalidArgumentException
      */
-    protected function checkUpdateNecessity() {
+    protected function checkUpdateNecessity()
+    {
         $bUpdateNecessity = false;
 
         $aCheckFiles = [
@@ -380,7 +386,7 @@ class cUpdateNotifier {
         }
 
         if ($bUpdateNecessity == false) {
-            $iLastUpdate = (int) cFileHandler::read($this->sCacheDirectory . $this->sTimestampCacheFile);
+            $iLastUpdate = (int)cFileHandler::read($this->sCacheDirectory . $this->sTimestampCacheFile);
 
             $iCheckTimestamp = $iLastUpdate + ($this->iCacheDuration * 60);
             $iCurrentTime = time();
@@ -398,7 +404,8 @@ class cUpdateNotifier {
     /**
      * Detects and converts the minor release of the system version
      */
-    protected function detectMinorRelease() {
+    protected function detectMinorRelease()
+    {
         $sVersion = CON_VERSION;
         $aExplode = explode(".", $sVersion);
         $sMinorRelease = "con" . $aExplode[0] . $aExplode[1];
@@ -411,7 +418,8 @@ class cUpdateNotifier {
      *
      * @throws cException
      */
-    protected function readVendorContent() {
+    protected function readVendorContent()
+    {
         $this->sXMLContent = "";
 
         if ($this->bUpdateNecessity == true) {
@@ -468,7 +476,8 @@ class cUpdateNotifier {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function handleVendorUpdate($aXMLContent) {
+    protected function handleVendorUpdate($aXMLContent)
+    {
         $bValidXMLFile = true;
         $bValidDeRSSFile = true;
         $bValidEnRSSFile = true;
@@ -532,7 +541,8 @@ class cUpdateNotifier {
      *
      * @throws cException
      */
-    protected function getVendorHostFiles() {
+    protected function getVendorHostFiles()
+    {
         // get update file
         $sXMLUpdate = $this->fetchUrl($this->sVendorHostPath . $this->sVendorXMLFile);
 
@@ -557,7 +567,8 @@ class cUpdateNotifier {
      *
      * @throws cInvalidArgumentException
      */
-    protected function updateCacheFiles($aRSSContent) {
+    protected function updateCacheFiles($aRSSContent)
+    {
         $aWriteCache = [];
         $aWriteCache[$this->sVendorXMLFile] = $this->sXMLContent;
         $aWriteCache[$this->sVendorRssDeFile] = $aRSSContent[$this->sVendorRssDeFile];
@@ -580,7 +591,8 @@ class cUpdateNotifier {
      * @throws cDbException
      * @throws cException
      */
-    protected function getHashProperty() {
+    protected function getHashProperty()
+    {
         $sProperty = $this->oProperties->getValue($this->aPropConf['itemType'], $this->aPropConf['itemID'], $this->aPropConf['type'], $this->aPropConf['name']);
         return $sProperty;
     }
@@ -594,7 +606,8 @@ class cUpdateNotifier {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function updateHashProperty($aXMLContent) {
+    protected function updateHashProperty($aXMLContent)
+    {
         $sXML = $aXMLContent[$this->sVendorXMLFile];
         $sDeRSS = $aXMLContent[$this->sVendorRssDeFile];
         $sEnRSS = $aXMLContent[$this->sVendorRssEnFile];
@@ -608,7 +621,8 @@ class cUpdateNotifier {
      *
      * @return string
      */
-    protected function checkPatchLevel() {
+    protected function checkPatchLevel()
+    {
         $sVersionCompare = version_compare(CON_VERSION, $this->sVendorVersion);
         return $sVersionCompare;
     }
@@ -618,7 +632,8 @@ class cUpdateNotifier {
      *
      * @return string
      */
-    protected function getDownloadURL() {
+    protected function getDownloadURL()
+    {
         $sVendorURLVersion = str_replace(".", "_", $this->sVendorVersion);
         $sVendorURL = $this->sVendorURL . "/Contenido_" . $sVendorURLVersion;
         return $sVendorURL;
@@ -633,7 +648,8 @@ class cUpdateNotifier {
      *
      * @throws cException
      */
-    protected function renderOutput($sMessage) {
+    protected function renderOutput($sMessage)
+    {
         $oTpl = new cTemplate();
         $oTpl->set('s', 'UPDATE_MESSAGE', $sMessage);
 
@@ -678,7 +694,8 @@ class cUpdateNotifier {
      *
      * @throws cException
      */
-    protected function renderRss($oTpl) {
+    protected function renderRss($oTpl)
+    {
         if (!is_object($oTpl)) {
             $oTpl = new cTemplate();
         }
@@ -698,8 +715,8 @@ class cUpdateNotifier {
                 // hotfix do not call conHtmlentities because of different
                 // umlaut handling on PHP 5.3 and PHP 5.4
                 // perhaps it is a bug in conHtmlentities.
-                $title = utf8_encode($title);
-                $sText = utf8_encode($description);
+                $title = @utf8_encode($title);
+                $sText = @utf8_encode($description);
 
                 if (cString::getStringLength($sText) > 150) {
                     $sText = cString::trimAfterWord($sText, 150) . '...';
@@ -741,14 +758,15 @@ class cUpdateNotifier {
     /**
      * fetches given url for vendorfiles
      *
-     * @todo add a retry counter and a deathpoint with warning in errorlog
      * @param string $sUrl
      *
      * @return string|bool
      *
      * @throws cException
+     * @todo add a retry counter and a deathpoint with warning in errorlog
      */
-    private function fetchUrl($sUrl) {
+    private function fetchUrl($sUrl)
+    {
         if ($this->bVendorHostReachable != true) {
             return false;
         }
@@ -773,7 +791,8 @@ class cUpdateNotifier {
      *
      * @throws cException
      */
-    public function displayOutput() {
+    public function displayOutput()
+    {
         if (!$this->bEnableView) {
             $sOutput = "";
         } elseif ($this->bNoWritePermissions == true) {

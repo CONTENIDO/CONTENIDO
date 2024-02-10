@@ -45,7 +45,8 @@ class cModuleSynchronizer extends cModuleHandler
     /**
      * @inheritdoc
      */
-    public function __construct($module = NULL) {
+    public function __construct($module = NULL)
+    {
         parent::__construct($module);
         $this->_moduleCollection = new cApiModuleCollection();
     }
@@ -150,7 +151,7 @@ class cModuleSynchronizer extends cModuleHandler
         $modules = $this->_moduleCollection->getAllByIdclient($this->_client, '', true);
 
         $syncLock = 0;
-        $retIdMod  = 0;
+        $retIdMod = 0;
         $syncedModuleIds = [];
 
         foreach ($modules as $module) {
@@ -395,18 +396,18 @@ class cModuleSynchronizer extends cModuleHandler
     private function _addModule(string $name)
     {
         // initializing variables
-        $client       = cRegistry::getClientId();
-        $alias        = $name;
-        $type         = '';
-        $error        = 'none';
-        $description  = '';
-        $deletable    = 0;
-        $template     = '';
-        $static       = 0;
+        $client = cRegistry::getClientId();
+        $alias = $name;
+        $type = '';
+        $error = 'none';
+        $description = '';
+        $deletable = 0;
+        $template = '';
+        $static = 0;
         $package_guid = '';
         $package_data = '';
-        $author       = '';
-        $created      = '';
+        $author = '';
+        $created = '';
         $lastmodified = '1970-01-01 00:00:00';
 
         // old behaviour before CON-2603

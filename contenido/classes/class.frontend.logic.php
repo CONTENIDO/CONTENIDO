@@ -28,7 +28,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage FrontendLogic
  */
-abstract class FrontendLogic {
+abstract class FrontendLogic
+{
 
     /**
      * getFriendlyName: Returns the friendly (e.g. display) name of your
@@ -37,7 +38,8 @@ abstract class FrontendLogic {
      * @return string
      *         Name of the object
      */
-    public function getFriendlyName() {
+    public function getFriendlyName()
+    {
         return "Inherited class *must* override getFriendlyName";
     }
 
@@ -49,7 +51,8 @@ abstract class FrontendLogic {
      * @return array
      *         Array of all actions
      */
-    public function listActions() {
+    public function listActions()
+    {
         return ["Inherited class *must* override listActions"];
     }
 
@@ -61,7 +64,8 @@ abstract class FrontendLogic {
      * @return array
      *         Array of items
      */
-    public function listItems() {
+    public function listItems()
+    {
         return ["Inherited class *must* override listItems"];
     }
 

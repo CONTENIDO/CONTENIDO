@@ -22,8 +22,8 @@ global $cfg, $cfgClient, $idcat, $idart, $idcatart, $lang, $client, $username, $
 $sess = cRegistry::getSession();
 
 $err_catart = trim(getEffectiveSetting('login_error_page', 'idcatart', ''));
-$err_cat    = trim(getEffectiveSetting('login_error_page', 'idcat', ''));
-$err_art    = trim(getEffectiveSetting('login_error_page', 'idart', ''));
+$err_cat = trim(getEffectiveSetting('login_error_page', 'idcat', ''));
+$err_art = trim(getEffectiveSetting('login_error_page', 'idart', ''));
 
 $oUrl = cUri::getInstance();
 
@@ -37,16 +37,16 @@ $bRedirect = false;
 
 if ($err_catart != '') {
     $sErrorUrl .= '?idcatart=' . $err_catart . '&lang=' . $lang;
-    $bRedirect  = true;
+    $bRedirect = true;
 } elseif ($err_art != '' && $err_cat != '') {
     $sErrorUrl .= '?idcat=' . $err_cat . '&idart=' . $err_art . '&lang=' . $lang;
-    $bRedirect  = true;
+    $bRedirect = true;
 } elseif ($err_cat != '') {
     $sErrorUrl .= '?idcat=' . $err_cat . '&lang=' . $lang;
-    $bRedirect  = true;
+    $bRedirect = true;
 } elseif ($err_art != '') {
     $sErrorUrl .= '?idart=' . $err_art . '&lang=' . $lang;
-    $bRedirect  = true;
+    $bRedirect = true;
 }
 
 if ($bRedirect) {
@@ -54,7 +54,7 @@ if ($bRedirect) {
     $aUrl['params']['wrongpass'] = 1;
     $sErrorUrl = $oUrl->buildRedirect($aUrl['params']);
 
-	$sErrorUrl = str_replace($sClientHtmlPath, $basePath, $sErrorUrl);
+    $sErrorUrl = str_replace($sClientHtmlPath, $basePath, $sErrorUrl);
 
     header('Location: ' . $sErrorUrl);
     exit();
@@ -64,10 +64,10 @@ if (isset($_GET['return']) || isset($_POST['return'])) {
     $aLocator = ['lang=' . (int)$lang];
 
     if ($idcat > 0) {
-        $aLocator[] = 'idcat=' . (int) $idcat;
+        $aLocator[] = 'idcat=' . (int)$idcat;
     }
     if ($idart > 0) {
-        $aLocator[] = 'idart=' . (int) $idart;
+        $aLocator[] = 'idart=' . (int)$idart;
     }
     if (isset($_POST['username']) || isset($_GET['username'])) {
         $aLocator[] = 'wrongpass=1';
@@ -77,14 +77,14 @@ if (isset($_GET['return']) || isset($_POST['return'])) {
     $aUrl = $oUrl->parse($sess->url($sErrorUrl));
     $sErrorUrl = $oUrl->buildRedirect($aUrl['params']);
 
-	$sErrorUrl = str_replace($sClientHtmlPath, $basePath, $sErrorUrl);
+    $sErrorUrl = str_replace($sClientHtmlPath, $basePath, $sErrorUrl);
 
     header('Location: ' . $sErrorUrl);
     exit();
 }
 
 // set form action
-$sFormAction = $sess->url($sUrl . '?idcat=' . (int) $idcat . '&lang=' . $lang);
+$sFormAction = $sess->url($sUrl . '?idcat=' . (int)$idcat . '&lang=' . $lang);
 $aUrl = $oUrl->parse($sFormAction);
 $sFormAction = $oUrl->build($aUrl['params']);
 

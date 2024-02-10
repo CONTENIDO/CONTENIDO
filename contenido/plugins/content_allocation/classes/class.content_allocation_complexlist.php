@@ -22,7 +22,8 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
  * @package    Plugin
  * @subpackage ContentAllocation
  */
-class pApiContentAllocationComplexList extends pApiTree {
+class pApiContentAllocationComplexList extends pApiTree
+{
 
     /**
      * @var bool
@@ -42,34 +43,19 @@ class pApiContentAllocationComplexList extends pApiTree {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($uuid) {
+    public function __construct($uuid)
+    {
         parent::__construct($uuid);
     }
 
     /**
-     * Old constructor
+     * Builds an render tree
      *
-     * @deprecated [2016-02-11]
-     *                This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     *
-     * @param string $uuid
-     *
-     * @return pApiContentAllocationComplexList
-     * @throws cDbException
-     * @throws cException
-     */
-    public function pApiContentAllocationComplexList($uuid) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        return $this->__construct($uuid);
-    }
-
-    /**
-     * Builed an render tree
-     *
-     * @param $tree
+     * @param array $tree
      * @return string
      */
-    protected function _buildRenderTree($tree) {
+    protected function _buildRenderTree(array $tree): string
+    {
         $oldIdSetter = $this->_idSetter;
         $this->_idSetter = false;
 
@@ -98,8 +84,8 @@ class pApiContentAllocationComplexList extends pApiTree {
             // for wrapping purposes
             $item_tmp['name'] = str_replace('-', '- ', $item_tmp['name']);
 
-            $checkbox = '<input type="checkbox" name="allocation[]" onClick="addToList(this);" ' . $checked . '" id="e'.$item_tmp['idpica_alloc'].'" value="'.$item_tmp['idpica_alloc'].'">';
-            $item = "\n<li baseClass=\"" . $bgColor . "\" ".$li_closeElm.">" . $checkbox . " " . $item_tmp['name'];
+            $checkbox = '<input type="checkbox" name="allocation[]" onClick="addToList(this);" ' . $checked . '" id="e' . $item_tmp['idpica_alloc'] . '" value="' . $item_tmp['idpica_alloc'] . '">';
+            $item = "\n<li baseClass=\"" . $bgColor . "\" " . $li_closeElm . ">" . $checkbox . " " . $item_tmp['name'];
 
             $result .= $item;
 
@@ -123,7 +109,8 @@ class pApiContentAllocationComplexList extends pApiTree {
      *
      * @param array $load
      */
-    public function setChecked($load) {
+    public function setChecked(array $load)
+    {
         $this->_load = $load;
     }
 
@@ -135,7 +122,8 @@ class pApiContentAllocationComplexList extends pApiTree {
      * @return bool|string|void
      * @throws cDbException
      */
-    public function renderTree($return = true) {
+    public function renderTree(bool $return = true)
+    {
         $tree = $this->fetchTree();
         if ($tree === false) {
             return false;
@@ -146,4 +134,5 @@ class pApiContentAllocationComplexList extends pApiTree {
             return $tree;
         }
     }
+
 }

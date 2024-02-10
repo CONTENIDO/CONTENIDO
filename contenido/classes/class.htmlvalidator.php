@@ -90,7 +90,7 @@ class cHTMLValidator
         $htmlParser = new HtmlParser($this->_html);
 
         while ($htmlParser->parse()) {
-            $nodeName              = $htmlParser->getNodeName();
+            $nodeName = $htmlParser->getNodeName();
             $this->_existingTags[] = $nodeName;
 
             // Check if we found a double tag
@@ -108,10 +108,10 @@ class cHTMLValidator
                     // Push the current element to the stack, remember ID and Name, if possible
                     $nestingLevel++;
 
-                    $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["name"]  = $htmlParser->getNodeAttributes('name');
-                    $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["id"]    = $htmlParser->getNodeAttributes('id');
+                    $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["name"] = $htmlParser->getNodeAttributes('name');
+                    $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["id"] = $htmlParser->getNodeAttributes('id');
                     $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["level"] = $nestingLevel;
-                    $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["char"]  = $htmlParser->getHtmlTextIndex();
+                    $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["char"] = $htmlParser->getHtmlTextIndex();
                     $this->_nestingLevel[$nodeName]++;
                 }
 
@@ -144,8 +144,8 @@ class cHTMLValidator
 
                     list($line, $char) = $this->_getLineAndCharPos($node["char"]);
                     $this->missingNodes[] = [
-                        "tag"  => $key,
-                        "id"   => $node["id"],
+                        "tag" => $key,
+                        "id" => $node["id"],
                         "name" => $node["name"],
                         "line" => $line,
                         "char" => $char,
@@ -185,8 +185,8 @@ class cHTMLValidator
     }
 
     /**
-     * @deprecated not used anymore
      * @return string
+     * @deprecated not used anymore
      */
     protected function _returnErrorMap()
     {
@@ -225,8 +225,8 @@ class cHTMLValidator
     protected function _getLineAndCharPos($charpos)
     {
         $mangled = cString::getPartOfString($this->_html, 0, $charpos);
-        $line    = cString::countSubstring($mangled, "\n") + 1;
-        $char    = $charpos - cString::findLastPos($mangled, "\n");
+        $line = cString::countSubstring($mangled, "\n") + 1;
+        $char = $charpos - cString::findLastPos($mangled, "\n");
 
         return [$line, $char];
     }

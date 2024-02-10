@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLCanvas extends cHTMLContentElement {
+class cHTMLCanvas extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -32,7 +33,8 @@ class cHTMLCanvas extends cHTMLContentElement {
      * @param string $id [optional]
      *         the ID of this element
      */
-    public function __construct($content = '', $class = '', $id = '') {
+    public function __construct($content = '', $class = '', $id = '')
+    {
         parent::__construct($content, $class, $id);
         $this->_tag = 'canvas';
     }
@@ -41,7 +43,8 @@ class cHTMLCanvas extends cHTMLContentElement {
      *
      * @param int $height
      */
-    public function setHeight($height) {
+    public function setHeight($height)
+    {
         $this->setAttribute('height', $height);
     }
 
@@ -49,7 +52,8 @@ class cHTMLCanvas extends cHTMLContentElement {
      *
      * @param int $width
      */
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         $this->setAttribute('width', $width);
     }
 

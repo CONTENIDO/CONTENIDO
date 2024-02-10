@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLAlignmentTable extends cHTMLTable {
+class cHTMLAlignmentTable extends cHTMLTable
+{
     /**
      * @var array
      */
@@ -29,7 +30,8 @@ class cHTMLAlignmentTable extends cHTMLTable {
     /**
      * Constructor to create an instance of this class.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         $this->_data = func_get_args();
@@ -39,11 +41,12 @@ class cHTMLAlignmentTable extends cHTMLTable {
     /**
      * Generates the markup of the element.
      *
-     * @see cHTML::render()
      * @return string
      *         generated markup
+     * @see cHTML::render()
      */
-    public function render() {
+    public function render(): string
+    {
         $tr = new cHTMLTableRow();
         $td = new cHTMLTableData();
 

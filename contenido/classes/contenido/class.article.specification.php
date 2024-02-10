@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiArticleSpecification createNewItem
  * @method cApiArticleSpecification|bool next
  */
-class cApiArticleSpecificationCollection extends ItemCollection {
+class cApiArticleSpecificationCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('art_spec'), 'idartspec');
         $this->_setItemClass('cApiArticleSpecification');
     }
@@ -36,8 +38,8 @@ class cApiArticleSpecificationCollection extends ItemCollection {
     /**
      * Returns all article specifications by client and language.
      *
-     * @param int    $client
-     * @param int    $lang
+     * @param int $client
+     * @param int $lang
      * @param string $orderBy
      *
      * @return array
@@ -45,8 +47,9 @@ class cApiArticleSpecificationCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByClientLang($client, $lang, $orderBy = '') {
-        $this->select("client=" . (int) $client . " AND lang=" . (int) $lang, '', $this->escape($orderBy));
+    public function fetchByClientLang($client, $lang, $orderBy = '')
+    {
+        $this->select("client=" . (int)$client . " AND lang=" . (int)$lang, '', $this->escape($orderBy));
         $entries = [];
         while (($entry = $this->next()) !== false) {
             $entries[] = clone $entry;
@@ -73,7 +76,8 @@ class cApiArticleSpecification extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('art_spec'), 'idartspec');
         $this->setFilters([], []);
         if ($mId !== false) {

@@ -22,27 +22,27 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0007 extends cUpgradeJobAbstract {
+class cUpgradeJob_0007 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.0-beta1";
 
-    public function _execute() {
-        global $cfg, $db;
-
+    public function _execute()
+    {
         if ($this->_setupType == 'upgrade') {
             // check if the column "path" still exists
-            $db->query('SHOW COLUMNS FROM `%s`;', $cfg['tab']['plugins']);
+            $this->_oDb->query('SHOW COLUMNS FROM `%s`;', cRegistry::getDbTableName('plugins'));
 
             $columns = [];
-            while ($db->nextRecord()) {
-                $columns[] = $db->f('Field');
+            while ($this->_oDb->nextRecord()) {
+                $columns[] = $this->_oDb->f('Field');
             }
 
             if (in_array('path', $columns)) {
                 // copy path to folder
-                $db->query('UPDATE `%s` SET folder = path;', $cfg['tab']['plugins']);
+                $this->_oDb->query('UPDATE `%s` SET folder = path;', cRegistry::getDbTableName('plugins'));
                 // drop column "path"
-                $db->query('ALTER TABLE `%s` DROP path;', $cfg['tab']['plugins']);
+                $this->_oDb->query('ALTER TABLE `%s` DROP path;', cRegistry::getDbTableName('plugins'));
             }
         }
     }

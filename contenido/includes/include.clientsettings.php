@@ -112,8 +112,8 @@ if ($aItems !== false) {
 
     $iCounter = 0;
     foreach ($aItems as $iKey => $aValue) {
-        $settingType  = conHtmlentities($aValue['type']);
-        $settingName  = conHtmlentities($aValue['name']);
+        $settingType = conHtmlentities($aValue['type']);
+        $settingName = conHtmlentities($aValue['name']);
         $settingValue = conHtmlentities($aValue['value']);
 
         $oLnkDelete->setCustom("idprop", $iKey);

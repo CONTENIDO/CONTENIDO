@@ -32,13 +32,13 @@
  * @see        https://www.sitemaps.org/
  */
 if (cRegistry::getBackendSessionId() === NULL) {
-    if (!class_exists('ModuleContentSitemapXml')) {
-        cInclude('module', 'class.module_content_sitemap_xml.php');
+    if (!class_exists('ContentSitemapXmlModule')) {
+        cInclude('module', 'class.content_sitemap_xml_module.php');
     }
 
     $cfg = cRegistry::getConfig();
 
-    $moduleContentSitemapXml = new ModuleContentSitemapXml([
+    $contentSitemapXmlModule = new ContentSitemapXmlModule([
         'cfg' => $cfg,
         'cronLogPath' => $cfg['path']['contenido_cronlog'],
         'db' => cRegistry::getDb(),
@@ -68,7 +68,7 @@ if (cRegistry::getBackendSessionId() === NULL) {
         // check if this is a rerun (a cException will then be thrown)
         // check is skipped when 'rerun' is forced
         if (!empty($filename) && !array_key_exists('rerun', $_REQUEST)) {
-            $moduleContentSitemapXml->checkJobRerun('xml_sitemap_' . cRegistry::getClient()->get('name') . '_' . cRegistry::getLanguage()->get('name') . '_' . cRegistry::getArticleLanguageId());
+            $contentSitemapXmlModule->checkJobRerun('xml_sitemap_' . cRegistry::getClient()->get('name') . '_' . cRegistry::getLanguage()->get('name') . '_' . cRegistry::getArticleLanguageId());
         }
 
         // get all categories recursively
@@ -102,12 +102,12 @@ EOD;
             foreach ($currentCategoryIds as $key => $categoryId) {
                 $categoryLanguage = new cApiCategoryLanguage();
                 $categoryLanguage->loadByCategoryIdAndLanguageId($categoryId, $currentIdlang);
-                if ($categoryLanguage->get('visible') == false || $categoryLanguage->get('public') == false) {
+                if (!$categoryLanguage->get('visible') || !$categoryLanguage->get('public')) {
                     unset($currentCategoryIds[$key]);
                 }
             }
 
-            $itemCount[] = $moduleContentSitemapXml->addArticlesToSitemap(
+            $itemCount[] = $contentSitemapXmlModule->addArticlesToSitemap(
                 $sitemap, $currentCategoryIds, cSecurity::toInteger($currentIdlang)
             );
         }
@@ -119,7 +119,7 @@ EOD;
         }
 
         // echo sitemap or write it to file with the specified filename
-        $moduleContentSitemapXml->saveSitemap($sitemap, $filename);
+        $contentSitemapXmlModule->saveSitemap($sitemap, $filename);
     } catch (cException $e) {
         echo "\n\n[" . date('Y-m-d') . "] " . $e->getMessage() . "\n";
     }

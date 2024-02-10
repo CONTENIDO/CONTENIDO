@@ -14,19 +14,20 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $cfg;
+global $cfg, $lang;
 
 // Report all errors except warnings
-error_reporting(E_ALL ^E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE);
 
 header('Content-Type: text/html; charset=ISO-8859-1');
 
 /**
  * Setup file inclusion
  *
- * @param  string  $filename
+ * @param string $filename
  */
-function checkAndInclude(string $filename) {
+function checkAndInclude(string $filename)
+{
     if (file_exists($filename) && is_readable($filename)) {
         include_once($filename);
     } else {
@@ -83,7 +84,7 @@ if (is_array($_REQUEST)) {
 }
 
 // Set max_execution_time
-$maxExecutionTime = (int) ini_get('max_execution_time');
+$maxExecutionTime = (int)ini_get('max_execution_time');
 if ($maxExecutionTime < 60 && $maxExecutionTime !== 0) {
     ini_set('max_execution_time', 60);
 }
@@ -94,8 +95,14 @@ checkAndInclude($cfg['path']['contenido_config'] . 'config.path.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'config.misc.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
+// Include registry class, initialize language and encoding. We need to set a dummy language with
+// proper encoding to use functions like `conHtmlSpecialChars()`, `conHtmlentities`()`, etc.
+checkAndInclude($cfg['path']['contenido'] . 'classes/class.registry.php');
+$lang = 1;
+cRegistry::setAppVar('languageEncodings', [$lang => 'utf-8']);
+
 // Takeover configured PHP settings and set some PHP settings
-setupUpdateConfig();
+setupUpdatePHPConfig();
 
 // Initialization of autoloader
 checkAndInclude($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
@@ -120,6 +127,8 @@ checkAndInclude(CON_SETUP_PATH . '/lib/functions.phpinfo.php');
 checkAndInclude(CON_SETUP_PATH . '/lib/functions.libraries.php');
 checkAndInclude(CON_SETUP_PATH . '/lib/functions.sql.php');
 checkAndInclude(CON_SETUP_PATH . '/lib/class.setupmask.php');
+
+$sNotInstallableReason = '';
 
 // PHP version check
 if (false === isPHPCompatible()) {

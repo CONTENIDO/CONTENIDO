@@ -75,7 +75,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
      * @param string $editorName
      * @param string $editorContent
      */
-    public function __construct($editorName, $editorContent)
+    public function __construct(string $editorName, string $editorContent)
     {
         parent::__construct($editorName, $editorContent);
         $this->_setEditor('tinymce4');
@@ -95,7 +95,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
             if (false === class_exists($contentTypeClassName)) {
                 continue;
             }
-            $cContentType = new $contentTypeClassName(null, 0, []);
+            $cContentType = new $contentTypeClassName('', 0, []);
             if (false === $cContentType->isWysiwygCompatible()) {
                 continue;
             }
@@ -508,7 +508,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
 
         foreach ($aParameters as $sParameter) {
             if (array_key_exists($sParameter, $this->_aSettings[$cmsType])) {
-                $this->setSetting($cmsType, $sParameter, $this->addPath($this->_aSettings[$cmsType][$sParameter]), true);
+                $this->setSetting($cmsType, $sParameter, $this->addPath((string) $this->_aSettings[$cmsType][$sParameter]), true);
             }
         }
 
@@ -529,7 +529,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
      *
      * @return string
      */
-    public function getScripts()
+    public function getScripts(): string
     {
         if ($this->_useGZIP) {
             $return = "\n<!-- tinyMCE -->\n" . cHTMLScript::external($this->_baseURL . 'tinymce/js/tinymce/tinymce.gzip.js');
@@ -544,7 +544,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
      *
      * @return string
      */
-    public function getEditor()
+    public function getEditor(): string
     {
         $sess = cRegistry::getSession();
 
@@ -590,12 +590,12 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
      *        CMS type where setting should apply
      * @param string $key
      *        of setting to set
-     * @param string $value
+     * @param string|mixed $value
      *        of setting to set
      * @param bool $forceSetting
      *      to overwrite defined setting
      */
-    public function setSetting($type = null, $key = null, $value = '', $forceSetting = false)
+    public function setSetting($type = null, string $key = null, $value = '', bool $forceSetting = false)
     {
         if ($type === null || $key === null) {
             cWarning(__FILE__, __LINE__, 'Type and key can not be null');
@@ -611,7 +611,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
      *
      * @param string $key Normally unused (counterpart of cWYSIWYGEditor::_unsetSetting)
      */
-    protected function _unsetSetting($key = '')
+    protected function _unsetSetting(string $key = '')
     {
         $numargs = func_num_args();
         // if no args passed there is nothing to do
@@ -651,6 +651,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
     }
 
     /**
+     * NOTE:
+     * @see cTinyMCEEditor::getConfigFullscreen() returns string, this function returns an array.
      *
      * @return array
      */
@@ -676,7 +678,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
      * @return array
      *        Array with values that were not accepted
      */
-    public static function saveConfig($config)
+    public static function saveConfig(array $config): array
     {
         return parent::saveConfig($config['tinymce4']);
     }

@@ -53,7 +53,7 @@ if (($action == "group_deletemember") && ($perm->have_perm_area_action($area, $a
 
     $groupMemberColl = new cApiGroupMemberCollection();
     foreach ($aDeleteMembers as $idgroupuser) {
-        $groupMemberColl->delete((int) $idgroupuser);
+        $groupMemberColl->delete((int)$idgroupuser);
     }
 
     $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Removed member from group successfully!"));

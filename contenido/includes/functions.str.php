@@ -25,11 +25,11 @@ cInclude('includes', 'functions.database.php');
  *         The category name
  * @param string $catalias
  *         Alias of category
- * @param int    $visible
+ * @param int $visible
  *         Flag about visible status
- * @param int    $public
+ * @param int $public
  *         Flag about public status
- * @param int    $iIdtplcfg
+ * @param int $iIdtplcfg
  *         Id of template configuration
  *
  * @return int|NULL
@@ -39,7 +39,8 @@ cInclude('includes', 'functions.database.php');
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0) {
+function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0)
+{
     global $client, $lang, $perm;
 
     // Flag to rebuild the category table
@@ -59,8 +60,8 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
         $catalias = trim($catname);
     }
 
-    $client = (int) $client;
-    $lang = (int) $lang;
+    $client = (int)$client;
+    $lang = (int)$lang;
 
     $visible = ($visible == 1) ? 1 : 0;
     if (!$perm->have_perm_area_action('str', 'str_makevisible')) {
@@ -124,19 +125,19 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
 /**
  * Creates a new category.
  *
- * @param int    $parentid
+ * @param int $parentid
  *         Id of parent category
  * @param string $catname
  *         The category name
- * @param bool   $remakeTree
+ * @param bool $remakeTree
  *         Flag to rebuild category tree structure
  * @param string $catalias
  *         Alias of category
- * @param int    $visible
+ * @param int $visible
  *         Flag about visible status
- * @param int    $public
+ * @param int $public
  *         Flag about public status
- * @param int    $iIdtplcfg
+ * @param int $iIdtplcfg
  *         Id of template configuration
  *
  * @return int|NULL
@@ -146,13 +147,14 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0) {
+function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0)
+{
     global $client, $lang, $perm;
 
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
-    $parentid = (int) $parentid;
+    $parentid = (int)$parentid;
 
     if (trim($catname) == '') {
         return;
@@ -168,8 +170,8 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
         $catalias = trim($catname);
     }
 
-    $client = (int) $client;
-    $lang = (int) $lang;
+    $client = (int)$client;
+    $lang = (int)$lang;
 
     $visible = ($visible == 1) ? 1 : 0;
     if (!$perm->have_perm_area_action('str', 'str_makevisible')) {
@@ -258,7 +260,8 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
  *
  * @throws cDbException
  */
-function strCheckAlias($catalias) {
+function strCheckAlias($catalias)
+{
     $lang = cRegistry::getLanguageId();
     $catLangColl = new cApiCategoryLanguageCollection();
     $result = $catLangColl->select("idlang = " . $lang . " AND urlname = '" . cSecurity::escapeString($catalias) . "'");
@@ -268,7 +271,7 @@ function strCheckAlias($catalias) {
 /**
  * Builds ordered post string for a passed category
  *
- * @param int    $idcat
+ * @param int $idcat
  * @param string $poststring
  *
  * @return string
@@ -276,9 +279,10 @@ function strCheckAlias($catalias) {
  * @throws cDbException
  * @throws cException
  */
-function strOrderedPostTreeList($idcat, $poststring) {
+function strOrderedPostTreeList($idcat, $poststring)
+{
     $oCatColl = new cApiCategoryCollection();
-    $oCatColl->select('parentid = 0 AND preid = ' . (int) $idcat . ' AND idcat != 0');
+    $oCatColl->select('parentid = 0 AND preid = ' . (int)$idcat . ' AND idcat != 0');
     if (($oCat = $oCatColl->next()) !== false) {
         $postIdcat = $oCat->get('idcat');
         $poststring = $poststring . ',' . $postIdcat;
@@ -296,7 +300,8 @@ function strOrderedPostTreeList($idcat, $poststring) {
  * @throws cDbException
  * @throws cException
  */
-function strRemakeTreeTable() {
+function strRemakeTreeTable()
+{
     global $db, $client, $cfg;
 
     // Flag to rebuild the category table
@@ -336,7 +341,7 @@ function strRemakeTreeTable() {
     $db->query($sql);
 
     // Get all categories by client
-    $sql = "SELECT idcat, parentid, preid, postid FROM " . $cfg['tab']['cat'] . " WHERE idclient = " . (int) $client . " ORDER BY parentid ASC, preid ASC, postid ASC";
+    $sql = "SELECT idcat, parentid, preid, postid FROM " . $cfg['tab']['cat'] . " WHERE idclient = " . (int)$client . " ORDER BY parentid ASC, preid ASC, postid ASC";
     $db->query($sql);
 
     $aCategories = [];
@@ -360,11 +365,12 @@ function strRemakeTreeTable() {
 /**
  * Sorts passed associative categories array.
  *
- * @todo Check logic, move sorting to db layer, if possible!
  * @param array $arr
  * @return array
+ * @todo Check logic, move sorting to db layer, if possible!
  */
-function strSortPrePost($arr) {
+function strSortPrePost($arr)
+{
     $firstElement = NULL;
     foreach ($arr as $row) {
         if ($row['preid'] == 0) {
@@ -408,11 +414,12 @@ function strSortPrePost($arr) {
  *         Category level
  * @return string
  */
-function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
+function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0)
+{
     if (is_array($aCats)) {
         $aCats = strSortPrePost($aCats);
         foreach ($aCats as $aCat) {
-            $sInsertQuery .= '(' . (int) $aCat['idcat'] . ', ' . (int) $iLevel . '), ';
+            $sInsertQuery .= '(' . (int)$aCat['idcat'] . ', ' . (int)$iLevel . '), ';
             if (isset($aAllCats[$aCat['idcat']]) && is_array($aAllCats[$aCat['idcat']])) {
                 $iSubLevel = $iLevel + 1;
                 $sInsertQuery = strBuildSqlValues($aAllCats[$aCat['idcat']], $sInsertQuery, $aAllCats, $iSubLevel);
@@ -425,7 +432,7 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
 /**
  * Returns id of next deeper category.
  *
- * @param int  $idcat
+ * @param int $idcat
  *         Category id to check next deeper item
  * @param bool $ignoreLang
  *         Flag to check for existing entry in category language table
@@ -434,8 +441,9 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
  *
  * @throws cDbException
  */
-function strNextDeeper($idcat, $ignoreLang = false) {
-	$lang = cRegistry::getLanguageId();
+function strNextDeeper($idcat, $ignoreLang = false)
+{
+    $lang = cRegistry::getLanguageId();
 
     $languageId = (true == $ignoreLang) ? NULL : $lang;
     $oCatColl = new cApiCategoryCollection();
@@ -452,7 +460,8 @@ function strNextDeeper($idcat, $ignoreLang = false) {
  *
  * @throws cDbException
  */
-function strHasArticles($idcat) {
+function strHasArticles($idcat)
+{
     $lang = cRegistry::getLanguageId();
 
     $oCatArtColl = new cApiCategoryArticleCollection();
@@ -469,7 +478,8 @@ function strHasArticles($idcat) {
  *
  * @throws cDbException
  */
-function strNextPost($idcat) {
+function strNextPost($idcat)
+{
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getNextPostCategoryId($idcat);
 }
@@ -484,7 +494,8 @@ function strNextPost($idcat) {
  *
  * @throws cDbException
  */
-function strNextBackwards($idcat) {
+function strNextBackwards($idcat)
+{
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getParentsNextPostCategoryId($idcat);
 }
@@ -492,7 +503,7 @@ function strNextBackwards($idcat) {
 /**
  * Returns list of child categories.
  *
- * @param int  $idcat
+ * @param int $idcat
  * @param bool $ignoreLang
  *
  * @return array
@@ -501,7 +512,8 @@ function strNextBackwards($idcat) {
  *
  * @global int $lang
  */
-function strNextDeeperAll($idcat, $ignoreLang = false) {
+function strNextDeeperAll($idcat, $ignoreLang = false)
+{
     global $lang;
 
     $languageId = (true == $ignoreLang) ? NULL : $lang;
@@ -512,9 +524,9 @@ function strNextDeeperAll($idcat, $ignoreLang = false) {
 /**
  * Renames a category
  *
- * @param int    $idcat
+ * @param int $idcat
  *         Category id
- * @param int    $lang
+ * @param int $lang
  *         Language id
  * @param string $newCategoryName
  *         New category name
@@ -525,7 +537,8 @@ function strNextDeeperAll($idcat, $ignoreLang = false) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
+function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias)
+{
     if (trim($newCategoryName) == '') {
         return;
     }
@@ -537,8 +550,8 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
     }
 
     $oldData = [
-        'idcat'   => $oCatLang->get('idcat'),
-        'name'    => $oCatLang->get('name'),
+        'idcat' => $oCatLang->get('idcat'),
+        'name' => $oCatLang->get('name'),
         'urlname' => $oCatLang->get('urlname'),
     ];
 
@@ -561,8 +574,8 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
     $oCatLang->store();
 
     $newData = [
-        'idcat'   => $idcat,
-        'name'    => $name,
+        'idcat' => $idcat,
+        'name' => $name,
         'urlname' => $urlName,
     ];
 
@@ -572,9 +585,9 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
 /**
  * Renames a category alias.
  *
- * @param int    $idcat
+ * @param int $idcat
  *         Category id
- * @param int    $lang
+ * @param int $lang
  *         Language id
  * @param string $newcategoryalias
  *         New category alias
@@ -583,7 +596,8 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
+function strRenameCategoryAlias($idcat, $lang, $newcategoryalias)
+{
     $oCatLang = new cApiCategoryLanguage();
     if (!$oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
         // Couldn't load category language
@@ -591,7 +605,7 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
     }
 
     $oldData = [
-        'idcat'   => $oCatLang->get('idcat'),
+        'idcat' => $oCatLang->get('idcat'),
         'urlname' => $oCatLang->get('urlname'),
     ];
 
@@ -609,7 +623,7 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
     prDeleteCacheFileContent($client, $lang);
 
     $newData = [
-        'idcat'   => $idcat,
+        'idcat' => $idcat,
         'urlname' => $newcategoryalias,
     ];
 
@@ -630,9 +644,10 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function strMakeVisible($idcat, $lang, $visible) {
-    $visible = (int) $visible;
-    $lang = (int) $lang;
+function strMakeVisible($idcat, $lang, $visible)
+{
+    $visible = (int)$visible;
+    $lang = (int)$lang;
 
     $categories = strDeeperCategoriesArray($idcat);
     foreach ($categories as $value) {
@@ -666,7 +681,8 @@ function strMakeVisible($idcat, $lang, $visible) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function strMakePublic($idcat, $lang, $public) {
+function strMakePublic($idcat, $lang, $public)
+{
 
     foreach (strDeeperCategoriesArray($idcat) as $tmpIdcat) {
         $oCatLang = new cApiCategoryLanguage();
@@ -689,7 +705,8 @@ function strMakePublic($idcat, $lang, $public) {
  *
  * @throws cDbException
  */
-function strDeeperCategoriesArray($idcat) {
+function strDeeperCategoriesArray($idcat)
+{
     global $client;
 
     $coll = new cApiCategoryCollection();
@@ -713,7 +730,8 @@ function strDeeperCategoriesArray($idcat) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function strDeleteCategory($idcat) {
+function strDeleteCategory($idcat)
+{
     $lang = cRegistry::getLanguageId();
 
     // Flag to rebuild the category table
@@ -747,7 +765,7 @@ function strDeleteCategory($idcat) {
 
     // Are there any additional entries for other languages?
     $oCatLangColl = new cApiCategoryLanguageCollection();
-    $oCatLangColl->select('idcat = ' . (int) $idcat);
+    $oCatLangColl->select('idcat = ' . (int)$idcat);
     if (($oCatLang = $oCatLangColl->next()) !== false) {
         // More languages found, delete rights for current category
         cRights::deleteRightsForElement('str', $idcat, $lang);
@@ -756,9 +774,9 @@ function strDeleteCategory($idcat) {
     }
 
     // Load category
-    $oCat = new cApiCategory((int) $idcat);
-    $preid = (int) $oCat->get('preid');
-    $postid = (int) $oCat->get('postid');
+    $oCat = new cApiCategory((int)$idcat);
+    $preid = (int)$oCat->get('preid');
+    $postid = (int)$oCat->get('postid');
 
     // Update pre cat, set it to new postid
     if ($preid != 0) {
@@ -791,10 +809,10 @@ function strDeleteCategory($idcat) {
 
     // Delete category
     $oCatColl = new cApiCategoryCollection();
-    $oCatColl->deleteBy('idcat', (int) $idcat);
+    $oCatColl->deleteBy('idcat', (int)$idcat);
 
     $oCatLangColl = new cApiCategoryLanguageCollection();
-    $oCatLangColl->select('idcat = ' . (int) $idcat);
+    $oCatLangColl->select('idcat = ' . (int)$idcat);
     if (($oCatLang = $oCatLangColl->next()) !== false) {
         // Delete template configuration (deletes also all container
         // configurations)
@@ -804,11 +822,11 @@ function strDeleteCategory($idcat) {
 
     // Delete category language entry by category id
     $oCatLangColl->resetQuery();
-    $oCatLangColl->deleteBy('idcat', (int) $idcat);
+    $oCatLangColl->deleteBy('idcat', (int)$idcat);
 
     // Delete category tree entry by category id
     $oCatTreeColl = new cApiCategoryTreeCollection();
-    $oCatTreeColl->deleteBy('idcat', (int) $idcat);
+    $oCatTreeColl->deleteBy('idcat', (int)$idcat);
 
     // Delete rights for element
     cRights::deleteRightsForElement('str', $idcat);
@@ -824,13 +842,14 @@ function strDeleteCategory($idcat) {
  * @throws cDbException
  * @throws cException
  */
-function strMoveUpCategory($idcat) {
+function strMoveUpCategory($idcat)
+{
     // Flag to rebuild the category table and initializing notification variable
     global $remakeCatTable, $remakeStrTable, $notification;
 
     // Load current category
     $oCat = new cApiCategory();
-    $oCat->loadByPrimaryKey((int) $idcat);
+    $oCat->loadByPrimaryKey((int)$idcat);
     $preid = $oCat->get('preid');
     $postid = $oCat->get('postid');
 
@@ -844,20 +863,20 @@ function strMoveUpCategory($idcat) {
 
     // Load previous category
     $oPreCat = new cApiCategory();
-    $oPreCat->loadByPrimaryKey((int) $preid);
+    $oPreCat->loadByPrimaryKey((int)$preid);
     $prePreid = $oPreCat->get('preid');
     $preIdcat = $oPreCat->get('idcat');
 
     // Load category before previous category
     $oPrePreCat = new cApiCategory();
-    if ((int) $prePreid > 0) {
-        $oPrePreCat->loadByPrimaryKey((int) $prePreid);
+    if ((int)$prePreid > 0) {
+        $oPrePreCat->loadByPrimaryKey((int)$prePreid);
     }
 
     // Load post category
     $oPostCat = new cApiCategory();
-    if ((int) $postid > 0) {
-        $oPostCat->loadByPrimaryKey((int) $postid);
+    if ((int)$postid > 0) {
+        $oPostCat->loadByPrimaryKey((int)$postid);
     }
 
     $updateCats = [];
@@ -906,13 +925,14 @@ function strMoveUpCategory($idcat) {
  * @throws cDbException
  * @throws cException
  */
-function strMoveDownCategory($idcat) {
+function strMoveDownCategory($idcat)
+{
     // Flag to rebuild the category table and initializing notification variable
     global $remakeCatTable, $remakeStrTable, $notification;
 
     // Load current category
     $oCat = new cApiCategory();
-    $oCat->loadByPrimaryKey((int) $idcat);
+    $oCat->loadByPrimaryKey((int)$idcat);
     $preid = $oCat->get('preid');
     $postid = $oCat->get('postid');
 
@@ -926,16 +946,16 @@ function strMoveDownCategory($idcat) {
 
     // Load previous category
     $oPreCat = new cApiCategory();
-    if ((int) $preid > 0) {
-        $oPreCat->loadByPrimaryKey((int) $preid);
-        $preIdcat = (int) $oPreCat->get('idcat');
+    if ((int)$preid > 0) {
+        $oPreCat->loadByPrimaryKey((int)$preid);
+        $preIdcat = (int)$oPreCat->get('idcat');
     } else {
         $preIdcat = 0;
     }
 
     // Load post category
     $oPostCat = new cApiCategory();
-    $oPostCat->loadByPrimaryKey((int) $postid);
+    $oPostCat->loadByPrimaryKey((int)$postid);
     $postIdcat = $oPostCat->get('idcat');
     $postPostid = $oPostCat->get('postid');
 
@@ -943,7 +963,7 @@ function strMoveDownCategory($idcat) {
 
     if ($preIdcat != 0) {
         // Update previous category, if exists
-        $oPreCat->set('postid', (int) $postIdcat);
+        $oPreCat->set('postid', (int)$postIdcat);
         $updateCats[$preIdcat] = $oPreCat;
     }
 
@@ -996,7 +1016,8 @@ function strMoveDownCategory($idcat) {
  * @throws cDbException
  * @throws cException
  */
-function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NULL) {
+function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NULL)
+{
     global $movesubtreeidcat, $notification;
 
     $idlang = cRegistry::getLanguageId();
@@ -1071,7 +1092,7 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
             $categoryCollection = new cApiCategoryCollection();
             $categoryCollection->select("parentid = " . $newParentId . " AND postid = 0");
             $newPreCategory = $categoryCollection->next();
-            if($newPreCategory != null) {
+            if ($newPreCategory != null) {
                 $newPreId = $newPreCategory->get('idcat');
                 $newPreCategory->set('postid', $idcat);
                 $updateCats[$newPreId] = $newPreCategory;
@@ -1135,18 +1156,19 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
  *         Id of source category
  * @return bool
  */
-function strMoveCatTargetallowed($idcat, $source) {
+function strMoveCatTargetallowed($idcat, $source)
+{
     return ($idcat == $source) ? 0 : 1;
 }
 
 /**
  * Synchronizes a category from one language to another language.
  *
- * @param int  $idcatParam
+ * @param int $idcatParam
  *         Id of category to synchronize
- * @param int  $sourcelang
+ * @param int $sourcelang
  *         Id of source language
- * @param int  $targetlang
+ * @param int $targetlang
  *         Id of target language
  * @param bool $bMultiple
  *         Flag to synchronize child languages
@@ -1157,8 +1179,9 @@ function strMoveCatTargetallowed($idcat, $source) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = false) {
-    $bMultiple = (bool) $bMultiple;
+function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = false)
+{
+    $bMultiple = (bool)$bMultiple;
 
     $aCatArray = [];
     if ($bMultiple == true) {
@@ -1192,7 +1215,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
             // Execute CEC hook
             $param = $aRs;
             $param['idlang'] = $targetlang;
-            $param['idtplcfg'] = (int) $newidtplcfg;
+            $param['idtplcfg'] = (int)$newidtplcfg;
             $param['visible'] = $visible;
             cApiCecHook::execute('Contenido.Category.strSyncCategory_Loop', $param);
 
@@ -1215,7 +1238,8 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
  *
  * @throws cDbException
  */
-function strHasStartArticle($idcat, $idlang) {
+function strHasStartArticle($idcat, $idlang)
+{
     $oCatLangColl = new cApiCategoryLanguageCollection();
     return ($oCatLangColl->getStartIdartlangByIdcatAndIdlang($idcat, $idlang) > 0);
 }
@@ -1223,9 +1247,9 @@ function strHasStartArticle($idcat, $idlang) {
 /**
  * Copies the category, and its existing articles into another category.
  *
- * @param int  $idcat
+ * @param int $idcat
  *         Id of category to copy
- * @param int  $destidcat
+ * @param int $destidcat
  *         Id of destination category
  * @param bool $remakeTree
  *         Flag to rebuild category tree
@@ -1238,10 +1262,11 @@ function strHasStartArticle($idcat, $idlang) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel = true) {
+function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel = true)
+{
     global $cfg, $lang;
 
-    $newidcat = (int) strNewCategory($destidcat, 'a', $remakeTree);
+    $newidcat = (int)strNewCategory($destidcat, 'a', $remakeTree);
     if ($newidcat == 0) {
         return;
     }
@@ -1258,8 +1283,8 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
     }
 
     // Worker objects
-    $oNewCat = new cApiCategory((int) $newidcat);
-    $oOldCat = new cApiCategory((int) $idcat);
+    $oNewCat = new cApiCategory((int)$newidcat);
+    $oOldCat = new cApiCategory((int)$idcat);
 
     // Copy properties
     if ($bUseCopyLabel == true) {
@@ -1276,8 +1301,8 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
     cApiCecHook::execute(
         'Contenido.Category.strCopyCategory',
         [
-            'oldcat'     => $oOldCat,
-            'newcat'     => $oNewCat,
+            'oldcat' => $oOldCat,
+            'newcat' => $oNewCat,
             'newcatlang' => $oNewCatLang,
         ]
     );
@@ -1289,7 +1314,7 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
 
         // Copy the container configuration
         $oContainerConfColl = new cApiContainerConfigurationCollection();
-        $oContainerConfColl->select('idtplcfg = ' . (int) $oOldCatLang->get('idtplcfg'));
+        $oContainerConfColl->select('idtplcfg = ' . (int)$oOldCatLang->get('idtplcfg'));
 
         $oNewContainerConfColl = new cApiContainerConfigurationCollection();
         while (($oItem = $oContainerConfColl->next()) !== false) {
@@ -1306,7 +1331,7 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
     $db->query($sql, $cfg['tab']['cat_art'], $cfg['tab']['art_lang'], $idcat, $lang);
 
     while ($db->nextRecord()) {
-        $newidart = (int) conCopyArticle($db->f('idart'), $newidcat, '', $bUseCopyLabel);
+        $newidart = (int)conCopyArticle($db->f('idart'), $newidcat, '', $bUseCopyLabel);
         if ($db->f('idartlang') == $oOldCatLang->get('startidartlang')) {
             $oCatArtColl->resetQuery();
             $idcatart = $oCatArtColl->getIdByCategoryIdAndArticleId($newidcat, $newidart);
@@ -1322,9 +1347,9 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
 /**
  * Copies the categorytree (category and its childs) to an another category.
  *
- * @param int  $idcat
+ * @param int $idcat
  *         Id of category to copy
- * @param int  $destcat
+ * @param int $destcat
  *         Id of destination category
  * @param bool $remakeTree
  *         Flag to rebuild category tree
@@ -1335,11 +1360,12 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true) {
+function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true)
+{
     $newidcat = strCopyCategory($idcat, $destcat, false, $bUseCopyLabel);
 
     $oCatColl = new cApiCategoryCollection();
-    $aIds = $oCatColl->getIdsByWhereClause('parentid = ' . (int) $idcat);
+    $aIds = $oCatColl->getIdsByWhereClause('parentid = ' . (int)$idcat);
     foreach ($aIds as $id) {
         strCopyTree($id, $newidcat, false, $bUseCopyLabel);
     }
@@ -1359,16 +1385,17 @@ function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true
  * @throws cDbException
  * @throws cException
  */
-function strAssignTemplate($idcat, $client, $idTplCfg) {
+function strAssignTemplate($idcat, $client, $idTplCfg)
+{
     global $perm;
 
     // Template permission check
-    $iIdtplcfg = ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) ? (int) $idTplCfg : 0;
+    $iIdtplcfg = ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) ? (int)$idTplCfg : 0;
 
     $idtpl = NULL;
     if ($iIdtplcfg == 0) {
         // Get default template
-        $oTemplateColl = new cApiTemplateCollection('defaulttemplate = 1 AND idclient = ' . (int) $client);
+        $oTemplateColl = new cApiTemplateCollection('defaulttemplate = 1 AND idclient = ' . (int)$client);
         if (($oTemplate = $oTemplateColl->next()) !== false) {
             $idtpl = $oTemplate->get('idtpl');
         }
@@ -1379,7 +1406,7 @@ function strAssignTemplate($idcat, $client, $idTplCfg) {
 
     if ($idtpl) {
         // Assign template
-        $oCatLangColl = new cApiCategoryLanguageCollection('idcat = ' . (int) $idcat);
+        $oCatLangColl = new cApiCategoryLanguageCollection('idcat = ' . (int)$idcat);
         while (($oCatLang = $oCatLangColl->next()) !== false) {
             $oCatLang->assignTemplate($idtpl);
         }
@@ -1403,7 +1430,8 @@ function strAssignTemplate($idcat, $client, $idTplCfg) {
  * @throws cDbException
  * @throws cException
  */
-function strCheckTreeForErrors($addCats = [], $ignoreCats = []) {
+function strCheckTreeForErrors($addCats = [], $ignoreCats = [])
+{
     $errorMessages = [];
 
     // Get all categories into memory
@@ -1453,7 +1481,7 @@ function strCheckTreeForErrors($addCats = [], $ignoreCats = []) {
         // first, check for multiple preids and postids
         // the category tree will miss some categories if multiple categories
         // share preids and/or postids
-        $preIds  = [];
+        $preIds = [];
         $postIds = [];
         foreach ($parent as $idcat => $cat) {
             $preId = $cat->get('preid');
@@ -1486,8 +1514,8 @@ function strCheckTreeForErrors($addCats = [], $ignoreCats = []) {
             continue;
         }
         // loop through the categories using the postid
-        $actCat        = $startCat;
-        $checkedCats   = [];
+        $actCat = $startCat;
+        $checkedCats = [];
         $checkedCats[] = $startCat->get('idcat');
         while ($actCat != null) {
             $catId = $actCat->get('idcat');
@@ -1540,8 +1568,8 @@ function strCheckTreeForErrors($addCats = [], $ignoreCats = []) {
             continue;
         }
         // loop through the categories using the preid
-        $actCat        = $startCat;
-        $checkedCats   = [];
+        $actCat = $startCat;
+        $checkedCats = [];
         $checkedCats[] = $startCat->get('idcat');
         while ($actCat != null) {
             $catId = $actCat->get('idcat');

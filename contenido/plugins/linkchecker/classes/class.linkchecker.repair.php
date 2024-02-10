@@ -57,7 +57,8 @@ class cLinkcheckerRepair
      *
      * @return string|bool
      */
-    public function checkLink($link) {
+    public function checkLink($link)
+    {
         foreach ($this->errorTypes as $errorTypeKey => $errorType) {
             if (cString::getPartOfString($link, 0, cString::getStringLength($errorType)) == $errorType) {
                 $repaired_link = str_replace($errorType, $this->correctTypes[$errorTypeKey], $link);
@@ -78,7 +79,8 @@ class cLinkcheckerRepair
      *
      * @return  bool  true or false
      */
-    private function _pingRepairedLink($repaired_link) {
+    private function _pingRepairedLink($repaired_link)
+    {
         $repaired_link = cSecurity::escapeString($repaired_link);
 
         return @fopen($repaired_link, 'r');

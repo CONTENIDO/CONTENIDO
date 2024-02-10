@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Backend
  */
-class cRegistry {
+class cRegistry
+{
 
     /**
      * Container for application variables.
@@ -67,7 +68,7 @@ class cRegistry {
      * Function which returns path after the last possible place changing via
      * configuration file.
      *
-     * @param  bool  $relativeToRoot
+     * @param bool $relativeToRoot
      *         Flag to return relative path from project root
      *         Since CONTENIDO 4.10.2
      * @return string
@@ -88,9 +89,9 @@ class cRegistry {
      * Function which returns the backend URL after the last possible place
      * changing via configuration file.
      *
-     * @author konstantinos.katikakis
      * @return string
      *         URL
+     * @author konstantinos.katikakis
      */
     public static function getBackendUrl()
     {
@@ -103,9 +104,9 @@ class cRegistry {
      * configuration file.
      * The path point to the current client
      *
-     * @author konstantinos.katikakis
      * @return string
      *         path
+     * @author konstantinos.katikakis
      */
     public static function getFrontendPath()
     {
@@ -119,9 +120,9 @@ class cRegistry {
      * configuration file.
      * The path point to the current client
      *
-     * @author konstantinos.katikakis
      * @return string
      *         URL
+     * @author konstantinos.katikakis
      */
     public static function getFrontendUrl()
     {
@@ -167,8 +168,8 @@ class cRegistry {
      * Checks if the visual edit mode in backend is active (contenido session and
      * global variable "tpl_visual").
      *
-     * @since CONTENIDO 4.10.2
      * @return bool
+     * @since CONTENIDO 4.10.2
      */
     public static function isBackendVisualEditMode(): bool
     {
@@ -387,8 +388,8 @@ class cRegistry {
     /**
      * Returns the current frame id stored in the global variable "frame".
      *
-     * @author thomas.stauer
      * @return string
+     * @author thomas.stauer
      */
     public static function getFrame()
     {
@@ -418,19 +419,19 @@ class cRegistry {
     /**
      * Returns the area stored in the global variable "area".
      *
-     * @author thomas.stauer
      * @return string
+     * @author thomas.stauer
      */
     public static function getArea()
     {
         return self::_fetchGlobalVariable('area');
     }
 
-   /**
+    /**
      * Returns the action stored in the global variable "action".
      *
-     * @author jann.diekmann
      * @return string
+     * @author jann.diekmann
      */
     public static function getAction()
     {
@@ -441,8 +442,8 @@ class cRegistry {
      * Returns the language when switching languages. Must be set for URL-Build.
      * Stored in the global variable "changelang".
      *
-     * @author jann.diekmann
      * @return string
+     * @author jann.diekmann
      */
     public static function getChangeLang()
     {
@@ -453,16 +454,16 @@ class cRegistry {
      * Returns the global "idcat" and "idart" of the Error-Site stored in the
      * Client Configurations
      *
-     * @author jann.diekmann
      * @return array [
      *      'idcat' => (int)
      *      'idart' => (int)
      * ];
+     * @author jann.diekmann
      */
     public static function getErrSite()
     {
-         $idcat = self::_fetchGlobalVariable('errsite_idcat');
-         $idart = self::_fetchGlobalVariable('errsite_idart');
+        $idcat = self::_fetchGlobalVariable('errsite_idcat');
+        $idart = self::_fetchGlobalVariable('errsite_idart');
 
         return [
             'idcat' => $idcat[1],
@@ -547,9 +548,9 @@ class cRegistry {
     /**
      * Returns a new CONTENIDO database object.
      *
+     * @return cDb
      * @todo perhaps its better to instantiate only one object and reset it on
      *       call
-     * @return cDb
      */
     public static function getDb()
     {
@@ -657,7 +658,7 @@ class cRegistry {
      */
     protected final static function _fetchItemObject($apiClassName, $objectId)
     {
-        if ((int) $objectId <= 0) {
+        if ((int)$objectId <= 0) {
             throw new cInvalidArgumentException('Object ID must be greater than 0.');
         }
 
@@ -722,11 +723,11 @@ class cRegistry {
     /**
      * Shutdowns the CONTENIDO framework on page close.
      *
-     * @author frederic.schneider
-     *
      * @param bool $debugShowAll [optional]
      *
      * @throws cInvalidArgumentException
+     * @author frederic.schneider
+     *
      */
     public final static function shutdown(bool $debugShowAll = true)
     {
@@ -750,8 +751,8 @@ class cRegistry {
     /**
      * Stores an ok message in the cRegistry.
      *
-     * @author frederic.schneider
      * @param string $message
+     * @author frederic.schneider
      */
     public static function addOkMessage($message)
     {
@@ -761,8 +762,8 @@ class cRegistry {
     /**
      * Stores an information massage in the cRegistry.
      *
-     * @author konstantinos.katikakis
      * @param string $message
+     * @author konstantinos.katikakis
      */
     public static function addInfoMessage($message)
     {
@@ -772,8 +773,8 @@ class cRegistry {
     /**
      * Stores an error message in the cRegistry.
      *
-     * @author konstantinos.katikakis
      * @param string $message
+     * @author konstantinos.katikakis
      */
     public static function addErrorMessage($message)
     {
@@ -783,8 +784,8 @@ class cRegistry {
     /**
      * Stores a warning massage in the cRegistry.
      *
-     * @author konstantinos.katikakis
      * @param string $message
+     * @author konstantinos.katikakis
      */
     public static function addWarningMessage($message)
     {
@@ -794,8 +795,8 @@ class cRegistry {
     /**
      * Appends the last ok message that will be outputted
      *
-     * @author frederic.schneider
      * @param string $message
+     * @author frederic.schneider
      */
     public static function appendLastOkMessage($message)
     {
@@ -810,8 +811,8 @@ class cRegistry {
     /**
      * Appends the last info message that will be outputted
      *
-     * @author mischa.holz
      * @param string $message
+     * @author mischa.holz
      */
     public static function appendLastInfoMessage($message)
     {
@@ -826,8 +827,8 @@ class cRegistry {
     /**
      * Appends the last error message that will be outputted
      *
-     * @author mischa.holz
      * @param string $message
+     * @author mischa.holz
      */
     public static function appendLastErrorMessage($message)
     {
@@ -842,8 +843,8 @@ class cRegistry {
     /**
      * Appends the last warning that will be outputted
      *
-     * @author mischa.holz
      * @param string $message
+     * @author mischa.holz
      */
     public static function appendLastWarningMessage($message)
     {
@@ -858,8 +859,8 @@ class cRegistry {
     /**
      * Return an array with ok message
      *
-     * @author frederic.schneider
      * @return array
+     * @author frederic.schneider
      */
     public static function getOkMessages()
     {
@@ -869,8 +870,8 @@ class cRegistry {
     /**
      * Returns an array with information messages.
      *
-     * @author konstantinos.katikakis
      * @return array
+     * @author konstantinos.katikakis
      */
     public static function getInfoMessages()
     {
@@ -880,8 +881,8 @@ class cRegistry {
     /**
      * Returns an array with error messages.
      *
-     * @author konstantinos.katikakis
      * @return array
+     * @author konstantinos.katikakis
      */
     public static function getErrorMessages()
     {
@@ -891,8 +892,8 @@ class cRegistry {
     /**
      * Returns an array with warning messages.
      *
-     * @author konstantinos.katikakis
      * @return array
+     * @author konstantinos.katikakis
      */
     public static function getWarningMessages()
     {

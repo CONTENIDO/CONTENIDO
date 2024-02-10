@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Database
  */
-class cDb extends cDbDriverHandler {
+class cDb extends cDbDriverHandler
+{
 
     /**
      * Link ID resource
@@ -69,7 +70,8 @@ class cDb extends cDbDriverHandler {
      * @inheritdoc
      * @return NULL|resource|mysqli_result
      */
-    public function getQueryId() {
+    public function getQueryId()
+    {
         return $this->_queryId;
     }
 
@@ -77,7 +79,8 @@ class cDb extends cDbDriverHandler {
      * @inheritdoc
      * @param NULL|resource|mysqli_result $queryId
      */
-    public function setQueryId($queryId) {
+    public function setQueryId($queryId)
+    {
         $this->_queryId = $queryId;
     }
 
@@ -85,7 +88,8 @@ class cDb extends cDbDriverHandler {
      * @inheritdoc
      * @return NULL|resource|mysqli
      */
-    public function getLinkId() {
+    public function getLinkId()
+    {
         return $this->_linkId;
     }
 
@@ -93,21 +97,24 @@ class cDb extends cDbDriverHandler {
      * @inheritdoc
      * @param NULL|resource|mysqli $linkId
      */
-    public function setLinkId($linkId) {
+    public function setLinkId($linkId)
+    {
         $this->_linkId = $linkId;
     }
 
     /**
      * @inheritdoc
      */
-    public function getRecord() {
+    public function getRecord()
+    {
         return $this->_record;
     }
 
     /**
      * @inheritdoc
      */
-    public function setRecord($record) {
+    public function setRecord($record)
+    {
         $this->_record = $record;
     }
 
@@ -116,7 +123,8 @@ class cDb extends cDbDriverHandler {
      *
      * @return int
      */
-    public function getRow() {
+    public function getRow()
+    {
         return $this->_row;
     }
 
@@ -127,44 +135,50 @@ class cDb extends cDbDriverHandler {
      * @param int $row
      *         current row count
      */
-    public function setRow($row) {
-        $this->_row = (int) $row;
+    public function setRow($row)
+    {
+        $this->_row = (int)$row;
     }
 
     /**
      * Increments current row count by 1.
      * Do not set it manually unless you know what you are doing.
      */
-    public function incrementRow() {
+    public function incrementRow()
+    {
         $this->_row += 1;
     }
 
     /**
      * @inheritdoc
      */
-    public function getErrorMessage() {
+    public function getErrorMessage()
+    {
         return $this->_errorMessage;
     }
 
     /**
      * @inheritdoc
      */
-    public function setErrorMessage($errorMessage) {
+    public function setErrorMessage($errorMessage)
+    {
         $this->_errorMessage = $errorMessage;
     }
 
     /**
      * @inheritdoc
      */
-    public function getErrorNumber() {
+    public function getErrorNumber()
+    {
         return $this->_errorNumber;
     }
 
     /**
      * @inheritdoc
      */
-    public function setErrorNumber($errorNumber) {
-        $this->_errorNumber = (int) $errorNumber;
+    public function setErrorNumber($errorNumber)
+    {
+        $this->_errorNumber = (int)$errorNumber;
     }
 
 }

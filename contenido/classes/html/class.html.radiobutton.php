@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLRadiobutton extends cHTMLFormElement {
+class cHTMLRadiobutton extends cHTMLFormElement
+{
 
     /**
      * Values for the check box
@@ -65,7 +66,10 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $value, $id = '', $checked = false, $disabled = false, $tabindex = null, $accesskey = '', $class = '') {
+    public function __construct(
+        $name, $value, $id = '', $checked = false, $disabled = false, $tabindex = null, $accesskey = '', $class = ''
+    )
+    {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'input';
         $this->_value = $value;
@@ -84,10 +88,11 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * @return cHTMLRadiobutton
      *         $this for chaining
      */
-    public function setChecked($checked) {
+    public function setChecked($checked): cHTMLRadiobutton
+    {
         // NOTE: We cast the parameter to boolean, because it could be of another type!
         $checked = cSecurity::toBoolean($checked);
-        if ($checked == true) {
+        if ($checked) {
             return $this->updateAttribute('checked', 'checked');
         } else {
             return $this->removeAttribute('checked');
@@ -102,7 +107,8 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * @return cHTMLRadiobutton
      *         $this for chaining
      */
-    public function setLabelText($text) {
+    public function setLabelText($text): cHTMLRadiobutton
+    {
         $this->_labelText = $text;
 
         return $this;
@@ -116,7 +122,8 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * @return cHTMLRadiobutton
      *         $this for chaining
      */
-    public function appendMarkup($markup) {
+    public function appendMarkup($markup): cHTMLRadiobutton
+    {
         $this->_markupToAppend = $markup;
         return $this;
     }
@@ -135,7 +142,8 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHtml($renderLabel = true) {
+    public function toHtml($renderLabel = true): string
+    {
         $renderedLabel = '';
         if ($renderLabel && !empty($this->_labelText)) {
             // We need the id-attribute render with label

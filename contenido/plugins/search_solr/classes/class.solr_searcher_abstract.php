@@ -17,7 +17,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-abstract class SolrSearcherAbstract {
+abstract class SolrSearcherAbstract
+{
 
     /**
      * Term to be searched for.
@@ -44,7 +45,8 @@ abstract class SolrSearcherAbstract {
      *
      * @param string $searchTerm
      */
-    public function setSearchTerm($searchTerm) {
+    public function setSearchTerm($searchTerm)
+    {
         $this->_searchTerm = $searchTerm;
     }
 
@@ -52,7 +54,8 @@ abstract class SolrSearcherAbstract {
      *
      * @param int $page
      */
-    public function setPage($page) {
+    public function setPage($page)
+    {
         $this->_page = $page;
     }
 
@@ -60,7 +63,8 @@ abstract class SolrSearcherAbstract {
      *
      * @param int $itemsPerPage
      */
-    public function setItemsPerPage($itemsPerPage) {
+    public function setItemsPerPage($itemsPerPage)
+    {
         $this->_itemsPerPage = $itemsPerPage;
     }
 

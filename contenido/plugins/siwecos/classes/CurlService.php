@@ -17,8 +17,8 @@ class CurlService
 
     /**
      * @param string $url
-     * @param array  $data
-     * @param array  $header
+     * @param array $data
+     * @param array $header
      *
      * @return \stdClass
      * @throws CurlException
@@ -28,7 +28,7 @@ class CurlService
         // define base options
         $options = [
             CURLOPT_POST => true,
-            CURLOPT_URL  => $url,
+            CURLOPT_URL => $url,
         ];
 
         // add optional POST data
@@ -44,7 +44,7 @@ class CurlService
 
     /**
      * @param string $url
-     * @param array  $header
+     * @param array $header
      *
      * @return \stdClass
      * @throws CurlException
@@ -54,7 +54,7 @@ class CurlService
         // define base options
         $options = [
             CURLOPT_POST => false,
-            CURLOPT_URL  => $url,
+            CURLOPT_URL => $url,
         ];
 
         $options = $this->_getCurlOptions($options, $header);
@@ -68,23 +68,23 @@ class CurlService
         $curlOptions = [
             //CURLOPT_HEADER         => true,
             CURLOPT_RETURNTRANSFER => true,
-            CURLINFO_HEADER_OUT    => true,
-            CURLOPT_VERBOSE        => true,
-            CURLOPT_FILETIME       => true,
+            CURLINFO_HEADER_OUT => true,
+            CURLOPT_VERBOSE => true,
+            CURLOPT_FILETIME => true,
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_MAXREDIRS      => 3,
+            CURLOPT_MAXREDIRS => 3,
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_SSL_VERIFYPEER => false,
         ];
 
         if (self::DBG) {
             $additional = [
-                CURLOPT_HEADER         => true,
-                CURLINFO_HEADER_OUT    => true,
-                CURLOPT_VERBOSE        => true,
-                CURLOPT_FILETIME       => true,
+                CURLOPT_HEADER => true,
+                CURLINFO_HEADER_OUT => true,
+                CURLOPT_VERBOSE => true,
+                CURLOPT_FILETIME => true,
                 CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_MAXREDIRS      => 3,
+                CURLOPT_MAXREDIRS => 3,
                 CURLOPT_SSL_VERIFYHOST => false,
                 CURLOPT_SSL_VERIFYPEER => false,
             ];

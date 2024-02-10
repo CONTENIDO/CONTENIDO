@@ -213,9 +213,9 @@ if (is_dir($cfg['path']['plugins'])) {
                 $pagePlugins->set('s', 'LANG_TOOLTIP_INSTALL', i18n('Install extracted plugin', 'pim'));
                 $pagePlugins->set('s', 'LANG_INSTALL', i18n('Install', 'pim'));
                 $pagePlugins->set('s', 'LANG_TOOLTIP_REMOVE', i18n('Uninstall extracted plugin (deleted plugin files from filesystem)', 'pim'));
-				$pagePlugins->set('s', 'LANG_REMOVE', i18n('Remove from filesystem', 'pim'));
-				$pagePlugins->set('s', 'LANG_DEPENDENCIES', i18n('Dependencies', 'pim'));
-				$pagePlugins->set('s', 'LANG_WRITEABLE', i18n('Writeable', 'pim'));
+                $pagePlugins->set('s', 'LANG_REMOVE', i18n('Remove from filesystem', 'pim'));
+                $pagePlugins->set('s', 'LANG_DEPENDENCIES', i18n('Dependencies', 'pim'));
+                $pagePlugins->set('s', 'LANG_WRITEABLE', i18n('Writeable', 'pim'));
                 $pagePlugins->set('s', 'FOLDERNAME', $pluginFoldername);
                 $pagePlugins->set('s', 'INSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=install-extracted&pluginFoldername=' . $pluginFoldername));
 

@@ -114,15 +114,15 @@ if (isset($changelang) && is_numeric($changelang)) {
     // If user switch language and the previously selected article is not existing in the new language
     // redirect to MyCONTENIDO area
     if ($area == 'con_editart' || $area == 'con_meta' || $area == 'con_tplcfg' || $area == 'con_content_list') {
-    	$artLangColl = new cApiArticleLanguageCollection;
-    	$artLangColl->setWhere('idart', $idart);
-    	$artLangColl->setWhere('idlang', $lang);
-    	$artLangColl->query();
+        $artLangColl = new cApiArticleLanguageCollection;
+        $artLangColl->setWhere('idart', $idart);
+        $artLangColl->setWhere('idlang', $lang);
+        $artLangColl->query();
 
-		if ($artLangColl->count() == 0) {
-			$frame = $sess->url('index.php?area=mycontenido&frame=4');
-			echo "<script type='text/javascript'>parent.frames.top.location.href='" . $frame . "';</script>";
-		}
+        if ($artLangColl->count() == 0) {
+            $frame = $sess->url('index.php?area=mycontenido&frame=4');
+            echo "<script type='text/javascript'>parent.frames.top.location.href='" . $frame . "';</script>";
+        }
     }
 }
 
@@ -143,7 +143,7 @@ if (!cSecurity::isPositiveInteger($lang ?? 0)) {
     $sess->register('lang');
     // Search for the first language of this client
     $oClientLangColl = new cApiClientLanguageCollection();
-    $lang = (int) $oClientLangColl->getFirstLanguageIdByClient($client);
+    $lang = (int)$oClientLangColl->getFirstLanguageIdByClient($client);
 } else {
     $sess->register('lang');
 }

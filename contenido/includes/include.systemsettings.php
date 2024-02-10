@@ -122,8 +122,8 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
 
         $value['value'] = $value['value'] ?? '';
 
-        $settingType  = conHtmlentities($type);
-        $settingName  = conHtmlentities($name);
+        $settingType = conHtmlentities($type);
+        $settingName = conHtmlentities($name);
         $settingValue = conHtmlentities($value['value']);
 
         if (($action == "systemsettings_edit_item") && ($requestSysType == $type) && ($requestSysName == $name) && $isSysadmin) {
@@ -146,7 +146,7 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
 
             if (cString::getStringLength($type) > 35) {
                 $sShort = conHtmlentities(cString::trimHard($type, 35));
-                $type = sprintf($sMouseoverTemplate,  $settingType, $sShort);
+                $type = sprintf($sMouseoverTemplate, $settingType, $sShort);
             }
 
             if (cString::getStringLength($name) > 35) {
@@ -155,7 +155,7 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
             }
 
             if (cString::getStringLength($value['value']) > 35) {
-                $sShort =  conHtmlentities(cString::trimHard($value['value'], 35));
+                $sShort = conHtmlentities(cString::trimHard($value['value'], 35));
                 $settingValue = sprintf($sMouseoverTemplate, $settingValue, $sShort);
             }
 

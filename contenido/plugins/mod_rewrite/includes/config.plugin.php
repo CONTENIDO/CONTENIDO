@@ -42,10 +42,10 @@ $area = cRegistry::getArea();
 $client = cSecurity::toInteger(cRegistry::getClientId());
 
 // Initialize client id
-if (isset($client) && (int) $client > 0) {
-    $clientId = (int) $client;
-} elseif (isset($load_client) && (int) $load_client > 0) {
-    $clientId = (int) $load_client;
+if (isset($client) && (int)$client > 0) {
+    $clientId = (int)$client;
+} elseif (isset($load_client) && (int)$load_client > 0) {
+    $clientId = (int)$load_client;
 } else {
     $clientId = '';
 }

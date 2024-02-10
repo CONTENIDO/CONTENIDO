@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Versioning
  */
-class cVersionFile extends cVersion {
+class cVersionFile extends cVersion
+{
 
     /**
      * Content code of current file.
@@ -60,17 +61,17 @@ class cVersionFile extends cVersion {
      *
      * @param string $iIdOfType
      *                                 The name of style file
-     * @param array  $aFileInfo
+     * @param array $aFileInfo
      *                                 Get FileInformation from table file_information
      * @param string $sFileName
      * @param string $sTypeContent
-     * @param array  $aCfg
-     * @param array  $aCfgClient
-     * @param cDb    $oDB
+     * @param array $aCfg
+     * @param array $aCfgClient
+     * @param cDb $oDB
      *                                 CONTENIDO database object
-     * @param int    $iClient
+     * @param int $iClient
      * @param string $sArea
-     * @param int    $iFrame
+     * @param int $iFrame
      * @param string $sVersionFileName [optional]
      *
      * @throws cInvalidArgumentException
@@ -78,7 +79,8 @@ class cVersionFile extends cVersion {
     public function __construct(
         $iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient,
         $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = ''
-    ) {
+    )
+    {
 
         // Set globals in super class constructor
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
@@ -132,7 +134,8 @@ class cVersionFile extends cVersion {
      *
      * @throws cInvalidArgumentException
      */
-    protected function initFileContent() {
+    protected function initFileContent()
+    {
         if (cFileHandler::exists($this->sPath . $this->sFileName)) {
             $this->sCode = cFileHandler::read($this->sPath . $this->sFileName);
         } else {
@@ -150,7 +153,8 @@ class cVersionFile extends cVersion {
      *         returns array width nodes
      * @throws cException
      */
-    public function initXmlReader($sPath) {
+    public function initXmlReader($sPath)
+    {
         $aResult = [];
         if ($sPath != '') {
             $xml = new cXmlReader();
@@ -170,7 +174,8 @@ class cVersionFile extends cVersion {
      * @return string
      *         the path of file
      */
-    public function getPathFile() {
+    public function getPathFile()
+    {
         return $this->sPath;
     }
 
@@ -189,7 +194,8 @@ class cVersionFile extends cVersion {
      * @return string
      *         Javascript for refreshing frames
      */
-    public function renderReloadScript($sArea, $sFilename, $sess) {
+    public function renderReloadScript($sArea, $sFilename, $sess)
+    {
         $urlRightTop = $sess->url("main.php?area=$sArea&frame=3&file=$sFilename&history=true");
         $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&file=$sFilename");
         return <<<JS

@@ -32,10 +32,14 @@
         </actions>
 
         <frames>
-            <frame area="siwecos" filetype="main" name="siwecos/includes/include.left_top.php" frameId="1" />
-            <frame area="siwecos" filetype="main" name="siwecos/includes/include.left_bottom.php" frameId="2" />
-            <frame area="siwecos" filetype="main" name="siwecos/includes/include.subnav_blank.php" frameId="3" />
-            <frame area="siwecos" filetype="main" name="siwecos/includes/include.right_bottom.php" frameId="4" />
+            <frame area="siwecos" filetype="main" name="siwecos/includes/include.left_top.php"
+                   frameId="1"/>
+            <frame area="siwecos" filetype="main" name="siwecos/includes/include.left_bottom.php"
+                   frameId="2"/>
+            <frame area="siwecos" filetype="main" name="siwecos/includes/include.subnav_blank.php"
+                   frameId="3"/>
+            <frame area="siwecos" filetype="main" name="siwecos/includes/include.right_bottom.php"
+                   frameId="4"/>
         </frames>
 
         <nav_sub>

@@ -58,9 +58,9 @@ class cDebugHidden implements cDebugInterface
      */
     public function out($sText)
     {
-        echo ("\n <!-- dbg\n");
-        echo ($sText);
-        echo ("\n-->");
+        echo("\n <!-- dbg\n");
+        echo($sText);
+        echo("\n-->");
     }
 
     /**

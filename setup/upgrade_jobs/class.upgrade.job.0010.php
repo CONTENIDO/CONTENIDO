@@ -21,13 +21,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0010 extends cUpgradeJobAbstract {
+class cUpgradeJob_0010 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.1";
 
-    public function _execute() {
-        global $db, $cfg;
-
+    public function _execute()
+    {
         plugin_include('pim', 'classes/class.pim.plugin.collection.php');
 
         $pluginColl = new PimPluginCollection();
@@ -36,7 +36,6 @@ class cUpgradeJob_0010 extends cUpgradeJobAbstract {
         while ($plugin = $pluginColl->next()) {
             $plugin->set('executionorder', $i);
             $plugin->store();
-
             $i++;
         }
     }

@@ -23,13 +23,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method PimPluginRelations createNewItem
  * @method PimPluginRelations|bool next
  */
-class PimPluginRelationsCollection extends ItemCollection {
+class PimPluginRelationsCollection extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('plugins_rel'), 'idpluginrelation');
         $this->_setItemClass('PimPluginRelations');
     }
@@ -47,7 +49,8 @@ class PimPluginRelationsCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idItem, $idPlugin, $type) {
+    public function create($idItem, $idPlugin, $type)
+    {
 
         // create a new entry
         $item = $this->createNewItem();
@@ -65,7 +68,8 @@ class PimPluginRelationsCollection extends ItemCollection {
 /**
  * Single Plugin Manager Relations Item
  */
-class PimPluginRelations extends Item {
+class PimPluginRelations extends Item
+{
 
     /**
      * @var string Error storage
@@ -75,12 +79,13 @@ class PimPluginRelations extends Item {
     /**
      * Constructor Function
      *
-     * @param  mixed $id Specifies the id of item to load
+     * @param mixed $id Specifies the id of item to load
      *
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($id = false) {
+    public function __construct($id = false)
+    {
         parent::__construct(cRegistry::getDbTableName('plugins_rel'), 'idpluginrelation');
         $this->_sError = '';
         if ($id !== false) {
@@ -92,12 +97,13 @@ class PimPluginRelations extends Item {
      * User-defined setter for pim relations fields.
      *
      * @param string $name
-     * @param mixed  $value
-     * @param bool   $bSafe Flag to run defined inFilter on passed value
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
      *
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idplugin':
             case 'iditem':

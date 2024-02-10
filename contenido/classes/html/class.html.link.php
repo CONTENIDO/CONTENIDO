@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLLink extends cHTMLContentElement {
+class cHTMLLink extends cHTMLContentElement
+{
     /**
      * Stores the link location
      * @var string
@@ -93,7 +94,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @param string $id [optional]
      *         the ID of this element
      */
-    public function __construct($href = '', $content = '', $class = '', $id = '') {
+    public function __construct($href = '', $content = '', $class = '', $id = '')
+    {
         parent::__construct($content, $class, $id);
 
         $this->setLink($href);
@@ -112,8 +114,12 @@ class cHTMLLink extends cHTMLContentElement {
      * @return cHTML
      *         $this for chaining
      */
-    public function enableAutomaticParameterAppend() {
-        return $this->setEvent('click', 'var doit = true; try { var i = get_registered_parameters() } catch (e) { doit = false; }; if (doit == true) { this.href += i; }');
+    public function enableAutomaticParameterAppend(): cHTML
+    {
+        return $this->setEvent(
+            'click',
+            'var doit = true; try { var i = get_registered_parameters() } catch (e) { doit = false; }; if (doit == true) { this.href += i; }'
+        );
     }
 
     /**
@@ -121,7 +127,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @return cHTML
      *         $this for chaining
      */
-    public function disableAutomaticParameterAppend() {
+    public function disableAutomaticParameterAppend(): cHTML
+    {
         return $this->unsetEvent('click');
     }
 
@@ -133,7 +140,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @return cHTMLLink
      *         $this for chaining
      */
-    public function setLink($href) {
+    public function setLink($href): cHTMLLink
+    {
         $this->_link = $href;
         $this->_type = 'link';
 
@@ -152,7 +160,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @return cHTMLLink
      *         $this for chaining
      */
-    public function setTargetFrame($target) {
+    public function setTargetFrame($target): cHTMLLink
+    {
         return $this->updateAttribute('target', $target);
     }
 
@@ -168,7 +177,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @return cHTMLLink
      *         $this for chaining
      */
-    public function setCLink($targetarea, $targetframe, $targetaction = '') {
+    public function setCLink($targetarea, $targetframe, $targetaction = ''): cHTMLLink
+    {
         $this->_targetarea = $targetarea;
         $this->_targetframe = $targetframe;
         $this->_targetaction = $targetaction;
@@ -191,7 +201,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @return cHTMLLink
      *         $this for chaining
      */
-    public function setMultiLink($righttoparea, $righttopaction, $rightbottomarea, $rightbottomaction) {
+    public function setMultiLink($righttoparea, $righttopaction, $rightbottomarea, $rightbottomaction): cHTMLLink
+    {
         $this->_targetarea = $righttoparea;
         $this->_targetframe = 3;
         $this->_targetaction = $righttopaction;
@@ -213,7 +224,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @return cHTMLLink
      *         $this for chaining
      */
-    public function setCustom($key, $value) {
+    public function setCustom($key, $value): cHTMLLink
+    {
         $this->_custom[$key] = $value;
 
         return $this;
@@ -225,7 +237,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @return cHTMLLink
      *         $this for chaining
      */
-    public function setImage($src) {
+    public function setImage($src): cHTMLLink
+    {
         $this->_image = $src;
 
         return $this;
@@ -239,7 +252,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @return cHTMLLink
      *         $this for chaining
      */
-    public function unsetCustom($key) {
+    public function unsetCustom($key): cHTMLLink
+    {
         if (isset($this->_custom[$key])) {
             unset($this->_custom[$key]);
         }
@@ -251,8 +265,9 @@ class cHTMLLink extends cHTMLContentElement {
      *
      * @return string
      */
-    public function getHref() {
-        global $sess;
+    public function getHref(): string
+    {
+        $sess = cRegistry::getSession();
 
         $custom = '';
         if (is_array($this->_custom)) {
@@ -303,7 +318,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @return cHTMLLink
      *         $this for chaining
      */
-    public function setAnchor($anchor) {
+    public function setAnchor($anchor): cHTMLLink
+    {
         $this->_anchor = $anchor;
 
         return $this;
@@ -315,7 +331,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         $this->updateAttribute('href', $this->getHref());
 
         if ($this->_image != '') {

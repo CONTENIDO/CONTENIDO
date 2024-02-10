@@ -24,8 +24,10 @@ session_unset();
  */
 class cSetupNotInstallable extends cSetupMask
 {
-    public function __construct($reason) {
-        cSetupMask::__construct("templates/notinstallable.tpl");
+
+    public function __construct(string $reason)
+    {
+        parent::__construct("templates/notinstallable.tpl");
         $this->setHeader("CONTENIDO Version " . CON_VERSION);
         $this->_stepTemplateClass->set("s", "TITLE", "Willkommen zu dem Setup von CONTENIDO / Welcome to the CONTENIDO Setup");
         $this->_stepTemplateClass->set("s", "ERRORTEXT", "Setup nicht ausf&uuml;hrbar / Setup not runnable");
@@ -41,16 +43,6 @@ class cSetupNotInstallable extends cSetupMask
         }
     }
 
-
-    /**
-     * Old constructor
-     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     * @param $reason
-     */
-    public function cSetupNotInstallable($reason) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        $this->__construct($reason);
-    }
 }
 
 global $sNotInstallableReason;

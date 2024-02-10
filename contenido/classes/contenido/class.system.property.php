@@ -27,7 +27,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiSystemProperty createNewItem
  * @method cApiSystemProperty|bool next
  */
-class cApiSystemPropertyCollection extends ItemCollection {
+class cApiSystemPropertyCollection extends ItemCollection
+{
 
     /**
      * List of cached entries
@@ -50,7 +51,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('system_prop'), 'idsystemprop');
         $this->_setItemClass('cApiSystemProperty');
 
@@ -67,7 +69,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
     /**
      * Resets the states of static properties.
      */
-    public static function reset() {
+    public static function reset()
+    {
         self::$_enableCache = null;
         self::$_entries = null;
     }
@@ -78,14 +81,15 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @param string $type
      * @param string $name
      * @param string $value
-     * @param int    $id
+     * @param int $id
      *
      * @return cApiSystemProperty|NULL
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function setTypeNameValueById($type, $name, $value, $id) {
+    public function setTypeNameValueById($type, $name, $value, $id)
+    {
         $item = $this->fetchById($id);
         if (!$item) {
             return NULL;
@@ -116,7 +120,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function setValueByTypeName($type, $name, $value) {
+    public function setValueByTypeName($type, $name, $value)
+    {
         $item = $this->fetchByTypeName($type, $name);
         if ($item) {
             $item->set('value', $value);
@@ -143,7 +148,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($type, $name, $value) {
+    public function create($type, $name, $value)
+    {
         $item = $this->createNewItem();
 
         $item->set('type', $type);
@@ -167,7 +173,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchAll($orderBy = '') {
+    public function fetchAll($orderBy = '')
+    {
         if (self::$_enableCache) {
             // no order for cached results
             return $this->_fetchAllFromCache();
@@ -188,7 +195,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @return cApiSystemProperty|NULL
      * @throws cException
      */
-    public function fetchById($id) {
+    public function fetchById($id)
+    {
         if (self::$_enableCache) {
             return $this->_fetchByIdFromCache($id);
         }
@@ -209,7 +217,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByTypeName($type, $name) {
+    public function fetchByTypeName($type, $name)
+    {
         if (self::$_enableCache) {
             return $this->_fetchByTypeNameFromCache($type, $name);
         }
@@ -232,7 +241,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByType($type) {
+    public function fetchByType($type)
+    {
         if (self::$_enableCache) {
             return $this->_fetchByTypeFromCache($type);
         }
@@ -258,7 +268,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function deleteByTypeName($type, $name) {
+    public function deleteByTypeName($type, $name)
+    {
         $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
         $this->select($sql);
         return $this->_deleteSelected();
@@ -275,7 +286,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function deleteByType($type) {
+    public function deleteByType($type)
+    {
         $sql = $this->db->prepare("type = '%s'", $type);
         $this->select($sql);
         return $this->_deleteSelected();
@@ -290,7 +302,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function _deleteSelected() {
+    protected function _deleteSelected()
+    {
         $result = false;
         while (($system = $this->next()) !== false) {
             $id = $system->get('idsystemprop');
@@ -308,7 +321,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    protected function _loadFromCache() {
+    protected function _loadFromCache()
+    {
         self::$_entries = [];
         $this->select();
         while (($property = $this->next()) !== false) {
@@ -322,7 +336,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      *
      * @param cApiSystemProperty $entry
      */
-    protected function _addToCache($entry) {
+    protected function _addToCache($entry)
+    {
         $data = $entry->toArray();
         self::$_entries[$data['idsystemprop']] = $data;
     }
@@ -332,9 +347,10 @@ class cApiSystemPropertyCollection extends ItemCollection {
      *
      * @return array
      */
-    protected function _fetchAllFromCache() {
+    protected function _fetchAllFromCache()
+    {
         $props = [];
-        $obj   = new cApiSystemProperty();
+        $obj = new cApiSystemProperty();
         foreach (self::$_entries as $entry) {
             $obj->loadByRecordSet($entry);
             $props[] = clone $obj;
@@ -348,7 +364,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @param int $id
      * @return cApiSystemProperty|NULL
      */
-    protected function _fetchByIdFromCache($id) {
+    protected function _fetchByIdFromCache($id)
+    {
         $obj = new cApiSystemProperty();
         foreach (self::$_entries as $_id => $entry) {
             if ($_id == $id) {
@@ -366,7 +383,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @param string $name
      * @return cApiSystemProperty|NULL
      */
-    protected function _fetchByTypeNameFromCache($type, $name) {
+    protected function _fetchByTypeNameFromCache($type, $name)
+    {
         $obj = new cApiSystemProperty();
         foreach (self::$_entries as $entry) {
             if ($entry['type'] == $type && $entry['name'] == $name) {
@@ -383,9 +401,10 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @param string $type
      * @return array
      */
-    protected function _fetchByTypeFromCache($type) {
+    protected function _fetchByTypeFromCache($type)
+    {
         $props = [];
-        $obj   = new cApiSystemProperty();
+        $obj = new cApiSystemProperty();
         foreach (self::$_entries as $entry) {
             if ($entry['type'] == $type) {
                 $obj->loadByRecordSet($entry);
@@ -400,7 +419,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      *
      * @param int $id
      */
-    protected function _deleteFromCache($id) {
+    protected function _deleteFromCache($id)
+    {
         if (isset(self::$_entries[$id])) {
             unset(self::$_entries[$id]);
         }
@@ -437,7 +457,8 @@ class cApiSystemProperty extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('system_prop'), 'idsystemprop');
         $this->setFilters([], []);
         if ($mId !== false) {
@@ -453,7 +474,8 @@ class cApiSystemProperty extends Item
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function updateValue($value) {
+    public function updateValue($value)
+    {
         $this->set('value', $value);
         return $this->store();
     }

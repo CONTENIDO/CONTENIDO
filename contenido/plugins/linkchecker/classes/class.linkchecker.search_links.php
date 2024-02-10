@@ -73,19 +73,19 @@ class cLinkcheckerSearchLinks
     /**
      * Searches extern and intern links.
      *
+     * @param string $value
+     * @param int $idart
+     * @param string $nameart
+     * @param int $idcat
+     * @param string $namecat
+     * @param int $idlang
+     * @param int $idartlang
+     * @param int $idcontent
+     *
+     * @return array
      * @todo Optimize this function!
      * @todo Do not use global!
      *
-     * @param string $value
-     * @param int    $idart
-     * @param string $nameart
-     * @param int    $idcat
-     * @param string $namecat
-     * @param int    $idlang
-     * @param int    $idartlang
-     * @param int    $idcontent
-     *
-     * @return array
      */
     public function search($value, $idart, $nameart, $idcat, $namecat, $idlang, $idartlang, $idcontent = 0)
     {
@@ -98,15 +98,15 @@ class cLinkcheckerSearchLinks
             for ($i = 0; $i < count($aMatches[1]); $i++) {
                 if (!in_array($aMatches[1][$i], $aWhitelist)) {
                     $aSearchIDInfosNonID[] = [
-                        "url"       => $aMatches[1][$i],
-                        "idart"     => $idart,
-                        "nameart"   => $nameart,
-                        "idcat"     => $idcat,
-                        "namecat"   => $namecat,
+                        "url" => $aMatches[1][$i],
+                        "idart" => $idart,
+                        "nameart" => $nameart,
+                        "idcat" => $idcat,
+                        "namecat" => $namecat,
                         "idcontent" => $idcontent,
                         "idartlang" => $idartlang,
-                        "lang"      => $idlang,
-                        "urltype"   => "extern",
+                        "lang" => $idlang,
+                        "urltype" => "extern",
                     ];
                 }
             }
@@ -120,16 +120,16 @@ class cLinkcheckerSearchLinks
             && !in_array($aMatches[0], $aWhitelist)
         ) {
             $aSearchIDInfosNonID[] = [
-                "url"       => $aMatches[0],
-                "idart"     => $idart,
-                "nameart"   => $nameart,
-                "idcat"     => $idcat,
-                "namecat"   => $namecat,
+                "url" => $aMatches[0],
+                "idart" => $idart,
+                "nameart" => $nameart,
+                "idcat" => $idcat,
+                "namecat" => $namecat,
                 "idcontent" => 0,
                 "idartlang" => $idartlang,
-                "lang"      => $idlang,
-                "urltype"   => "unknown",
-                "redirect"  => true,
+                "lang" => $idlang,
+                "urltype" => "unknown",
+                "redirect" => true,
             ];
         }
 
@@ -149,15 +149,15 @@ class cLinkcheckerSearchLinks
                     )
                 ) {
                     $aSearchIDInfosNonID[] = [
-                        "url"       => $aMatches[1][$i],
-                        "idart"     => $idart,
-                        "nameart"   => $nameart,
-                        "idcat"     => $idcat,
-                        "namecat"   => $namecat,
+                        "url" => $aMatches[1][$i],
+                        "idart" => $idart,
+                        "nameart" => $nameart,
+                        "idcat" => $idcat,
+                        "namecat" => $namecat,
                         "idcontent" => $idcontent,
                         "idartlang" => $idartlang,
-                        "lang"      => $idlang,
-                        "urltype"   => "intern",
+                        "lang" => $idlang,
+                        "urltype" => "intern",
                     ];
                 }
             }

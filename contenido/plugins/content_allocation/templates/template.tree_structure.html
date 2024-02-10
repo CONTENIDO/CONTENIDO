@@ -19,7 +19,8 @@
         </td>
         <td class="border_b3 no_border_l no_border_b">
             <div class="con_form_action_control">
-                {ACTION_CREATE} {ACTION_RENAME} {ACTION_ONOFFLINE} {ACTION_MOVE_UP} {ACTION_MOVE_DOWN} {ACTION_DELETE}
+                {ACTION_CREATE} {ACTION_RENAME} {ACTION_ONOFFLINE} {ACTION_MOVE_UP}
+                {ACTION_MOVE_DOWN} {ACTION_DELETE}
             </div>
         </td>
     </tr>
@@ -27,8 +28,8 @@
 </table>
 
 <script type="text/javascript">
-    (function(Con, $) {
-        $(function() {
+    (function (Con, $) {
+        $(function () {
             Con.RowMark.initialize('#tree_structure .row_mark', 'row');
         });
     })(Con, Con.$);

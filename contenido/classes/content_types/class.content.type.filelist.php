@@ -95,9 +95,9 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int    $id
+     * @param int $id
      *         ID of the content type, e.g. 3 if CMS_TEASER[3] is used
-     * @param array  $contentTypes
+     * @param array $contentTypes
      *         array containing the values of all content types
      *
      * @throws cDbException

@@ -40,10 +40,10 @@ $description = $description ?? '';
 $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
 // create group instance
-$bError        = false;
+$bError = false;
 $sNotification = '';
-$aPerms        = [];
-$groupId       = NULL;
+$aPerms = [];
+$groupId = NULL;
 
 if ($action == 'group_create') {
     $aPerms = cRights::buildUserOrGroupPermsFromRequest();

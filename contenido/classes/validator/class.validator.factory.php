@@ -44,10 +44,10 @@ class cValidatorFactory
      * @param array $options [optional]
      *         Options to use for the validator. Any passed option overwrites
      *         the related option in global validator configuration.
+     * @return cValidatorAbstract
      * @throws cInvalidArgumentException
      *         If type of validator is unknown or not available or if someone
      *         tries to get cValidatorFactory instance.
-     * @return cValidatorAbstract
      */
     public static function getInstance(string $validator, array $options = []): cValidatorAbstract
     {

@@ -46,11 +46,11 @@ class cValidatorIpv4 extends cValidatorAbstract
     }
 
     /**
-     * @see cValidatorAbstract::_isValid()
-     *
      * @param mixed $value
      *
      * @return bool
+     * @see cValidatorAbstract::_isValid()
+     *
      */
     protected function _isValid($value): bool
     {

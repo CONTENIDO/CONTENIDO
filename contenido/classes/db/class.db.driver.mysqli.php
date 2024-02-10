@@ -35,7 +35,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Database
  */
-class cDbDriverMysqli extends cDbDriverAbstract {
+class cDbDriverMysqli extends cDbDriverAbstract
+{
 
     /**
      * List of data types.
@@ -63,7 +64,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function check() {
+    public function check()
+    {
         return extension_loaded('mysqli');
     }
 
@@ -72,7 +74,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * @return mysqli|object|resource|int|NULL
      * @throws cDbException|cInvalidArgumentException
      */
-    public function connect() {
+    public function connect()
+    {
         $dbHandler = @mysqli_init();
         if (!$dbHandler || $dbHandler->connect_error != "" || $dbHandler->error != "") {
             $this->_handler->halt('Can not initialize database connection.');
@@ -141,7 +144,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function buildInsert($tableName, array $fields) {
+    public function buildInsert($tableName, array $fields)
+    {
         $fieldList = '';
         $valueList = '';
 
@@ -164,7 +168,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function buildUpdate($tableName, array $fields, array $whereClauses) {
+    public function buildUpdate($tableName, array $fields, array $whereClauses)
+    {
         $updateList = '';
         $whereList = '';
 
@@ -184,7 +189,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
             if (is_int($value)) {
                 $whereList .= ' = ' . $value . ' AND ';
             } elseif (is_null($value)) {
-                $whereList .=  ' IS NULL AND ';
+                $whereList .= ' IS NULL AND ';
             } else {
                 $whereList .= " = '" . $this->escape($value) . "' AND ";
             }
@@ -199,7 +204,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function query($query) {
+    public function query($query)
+    {
         $linkId = $this->_handler->getLinkId();
         $queryId = mysqli_query($linkId, $query);
 
@@ -214,7 +220,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function nextRecord() {
+    public function nextRecord()
+    {
         $queryId = $this->_handler->getQueryId();
         $record = mysqli_fetch_array($queryId, MYSQLI_BOTH);
 
@@ -230,7 +237,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * @inheritdoc
      * @return false|null|object|stdClass
      */
-    public function getResultObject($className = NULL) {
+    public function getResultObject($className = NULL)
+    {
         $result = NULL;
         $queryId = $this->_handler->getQueryId();
 
@@ -248,7 +256,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function affectedRows() {
+    public function affectedRows()
+    {
         $linkId = $this->_handler->getLinkId();
         return ($linkId) ? mysqli_affected_rows($linkId) : 0;
     }
@@ -256,7 +265,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function numRows() {
+    public function numRows()
+    {
         $queryId = $this->_handler->getQueryId();
         return ($queryId) ? mysqli_num_rows($queryId) : 0;
     }
@@ -264,19 +274,21 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function numFields() {
+    public function numFields()
+    {
         $queryId = $this->_handler->getQueryId();
         return ($queryId) ? mysqli_num_fields($queryId) : 0;
     }
 
     /**
      * @inheritdoc
-     * @todo check if $this should be returned
      * @return void|cDbDriverMysqli
      *         If aggregated handler has no query id, this object is returned,
      *         otherwise void.
+     * @todo check if $this should be returned
      */
-    public function free() {
+    public function free()
+    {
         if (!is_object($this->_handler->getQueryId())) {
             return $this;
         }
@@ -288,7 +300,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function escape($string) {
+    public function escape($string)
+    {
         if (is_string($string)) {
             $linkId = $this->_handler->getLinkId();
             return mysqli_real_escape_string($linkId, $string);
@@ -300,7 +313,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function seek($pos = 0) {
+    public function seek($pos = 0)
+    {
         $queryId = $this->_handler->getQueryId();
 
         $status = mysqli_data_seek($queryId, $pos);
@@ -317,7 +331,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * @inheritdoc
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getMetaData($tableName, $full = false) {
+    public function getMetaData($tableName, $full = false)
+    {
         $res = [];
 
         $this->query(sprintf('SELECT * FROM `%s` LIMIT 1', $tableName));
@@ -353,7 +368,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function getTableNames() {
+    public function getTableNames()
+    {
         $return = [];
 
         $linkId = $this->_handler->getLinkId();
@@ -414,7 +430,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function getServerInfo() {
+    public function getServerInfo()
+    {
         $linkId = $this->_handler->getLinkId();
 
         if ($linkId) {
@@ -430,7 +447,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function getErrorNumber() {
+    public function getErrorNumber()
+    {
         $linkId = $this->_handler->getLinkId();
 
         if ($linkId) {
@@ -443,7 +461,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function getErrorMessage() {
+    public function getErrorMessage()
+    {
         $linkId = $this->_handler->getLinkId();
 
         if ($linkId) {
@@ -456,7 +475,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     /**
      * @inheritdoc
      */
-    public function disconnect() {
+    public function disconnect()
+    {
         mysqli_close($this->_handler->getLinkId());
     }
 

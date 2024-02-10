@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiType createNewItem
  * @method cApiType|bool next
  */
-class cApiTypeCollection extends ItemCollection {
+class cApiTypeCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('type'), 'idtype');
         $this->_setItemClass('cApiType');
     }
@@ -38,10 +40,10 @@ class cApiTypeCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $description
-     * @param string $code         [optional]
-     * @param int    $status       [optional]
-     * @param string $author       [optional]
-     * @param string $created      [optional]
+     * @param string $code [optional]
+     * @param int $status [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
      * @param string $lastmodified [optional]
      *
      * @return cApiType
@@ -49,7 +51,8 @@ class cApiTypeCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($type, $description, $code = '', $status = 0, $author = '', $created = '', $lastmodified = '') {
+    public function create($type, $description, $code = '', $status = 0, $author = '', $created = '', $lastmodified = '')
+    {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
@@ -94,7 +97,8 @@ class cApiType extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($id = false) {
+    public function __construct($id = false)
+    {
         parent::__construct(cRegistry::getDbTableName('type'), 'idtype');
         $this->setFilters([], []);
         if ($id !== false) {
@@ -112,7 +116,8 @@ class cApiType extends Item
      *
      * @throws cException
      */
-    public function loadByType($type) {
+    public function loadByType($type)
+    {
         $aProps = [
             'type' => $type,
         ];
@@ -137,7 +142,8 @@ class cApiType extends Item
      *
      * @return bool
      */
-    public function setField($name, $value, $safe = true) {
+    public function setField($name, $value, $safe = true)
+    {
         if ('status' === $name) {
             $value = cSecurity::toInteger($value);
         }

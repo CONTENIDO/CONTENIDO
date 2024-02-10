@@ -53,15 +53,15 @@ $changefreq = $changefreq ?? '0';
 // remember old values to be passed to listeners of Contenido.Action.con_saveart.AfterCall
 $oldData = [];
 
-if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat))  && ($locked === 0 || $admin)) {
+if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat)) && ($locked === 0 || $admin)) {
 
-	// get idartlang
-	if (!isset($idartlang) || $idartlang == 0) {
+    // get idartlang
+    if (!isset($idartlang) || $idartlang == 0) {
         $sql = 'SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
-		$db->query($sql, $cfg["tab"]["art_lang"], $idart, $lang);
-		$db->nextRecord();
-		$idartlang = cSecurity::toInteger($db->f("idartlang"));
-	}
+        $db->query($sql, $cfg["tab"]["art_lang"], $idart, $lang);
+        $db->nextRecord();
+        $idartlang = cSecurity::toInteger($db->f("idartlang"));
+    }
 
     if (1 == $tmp_firstedit) {
         // insert article
@@ -109,28 +109,28 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
             }
 
             // set old article data
-            $oldData['idart']        = $oArtLang->get('idart');
-            $oldData['idartlang']    = $oArtLang->get('idartlang');
-            $oldData['lang']         = $oArtLang->get('idlang');
-            $oldData['title']        = $oArtLang->get('title');
-            $oldData['urlname']      = $oArtLang->get('urlname');
-            $oldData['summary']      = $oArtLang->get('summary');
-            $oldData['artspec']      = $oArtLang->get('artspec');
-            $oldData['created']      = $oArtLang->get('created');
+            $oldData['idart'] = $oArtLang->get('idart');
+            $oldData['idartlang'] = $oArtLang->get('idartlang');
+            $oldData['lang'] = $oArtLang->get('idlang');
+            $oldData['title'] = $oArtLang->get('title');
+            $oldData['urlname'] = $oArtLang->get('urlname');
+            $oldData['summary'] = $oArtLang->get('summary');
+            $oldData['artspec'] = $oArtLang->get('artspec');
+            $oldData['created'] = $oArtLang->get('created');
             $oldData['lastmodified'] = $oArtLang->get('lastmodified');
-            $oldData['author']       = $oArtLang->get('author');
-            $oldData['online']       = $oArtLang->get('online');
-            $oldData['searchable']   = $oArtLang->get('searchable');
-            $oldData['sitemapprio']  = $oArtLang->get('sitemapprio');
-            $oldData['changefreq']   = $oArtLang->get('changefreq');
-            $oldData['published']    = $oArtLang->get('published');
-            $oldData['datestart']    = $oArtLang->get('datestart');
-            $oldData['dateend']      = $oArtLang->get('dateend');
-            $oldData['artsort']      = $oArtLang->get('artsort');
-            $oldData['idtpl']        = $idtpl;
-            $oldData['idcat']        = $idcat;
-            $oldData['idcatnew']     = $idcatold;
-            $oldData['is_start']     = $wasStart;
+            $oldData['author'] = $oArtLang->get('author');
+            $oldData['online'] = $oArtLang->get('online');
+            $oldData['searchable'] = $oArtLang->get('searchable');
+            $oldData['sitemapprio'] = $oArtLang->get('sitemapprio');
+            $oldData['changefreq'] = $oArtLang->get('changefreq');
+            $oldData['published'] = $oArtLang->get('published');
+            $oldData['datestart'] = $oArtLang->get('datestart');
+            $oldData['dateend'] = $oArtLang->get('dateend');
+            $oldData['artsort'] = $oArtLang->get('artsort');
+            $oldData['idtpl'] = $idtpl;
+            $oldData['idcat'] = $idcat;
+            $oldData['idcatnew'] = $idcatold;
+            $oldData['is_start'] = $wasStart;
         }
 
         // update article
@@ -158,27 +158,27 @@ if (in_array($_POST['redirect_mode'] ?? '', ['permanently', 'temporary'])) {
 }
 
 $newData = [
-    'idcat'        => $idcat,
-    'idcatnew'     => $idcatnew,
-    'idart'        => $idart,
-    'is_start'     => $is_start,
-    'idtpl'        => $idtpl,
-    'idartlang'    => $idartlang,
-    'lang'         => $lang,
-    'title'        => $title,
-    'urlname'      => $urlname,
-    'summary'      => $summary,
-    'artspec'      => $artspec,
-    'created'      => $created,
+    'idcat' => $idcat,
+    'idcatnew' => $idcatnew,
+    'idart' => $idart,
+    'is_start' => $is_start,
+    'idtpl' => $idtpl,
+    'idartlang' => $idartlang,
+    'lang' => $lang,
+    'title' => $title,
+    'urlname' => $urlname,
+    'summary' => $summary,
+    'artspec' => $artspec,
+    'created' => $created,
     'lastmodified' => $lastmodified,
-    'author'       => $author,
-    'online'       => $online,
-    'searchable'   => $searchable,
-    'sitemapprio'  => $sitemapprio,
-    'changefreq'   => $changefreq,
-    'datestart'    => $datestart,
-    'dateend'      => $dateend,
-    'published'    => $publishing_date,
-    'artsort'      => $artsort,
+    'author' => $author,
+    'online' => $online,
+    'searchable' => $searchable,
+    'sitemapprio' => $sitemapprio,
+    'changefreq' => $changefreq,
+    'datestart' => $datestart,
+    'dateend' => $dateend,
+    'published' => $publishing_date,
+    'artsort' => $artsort,
 ];
 cApiCecHook::execute('Contenido.Action.con_saveart.AfterCall', $newData, $oldData);

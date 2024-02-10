@@ -67,7 +67,7 @@ class cPermission
     {
         $oGroupMemberColl = new cApiGroupMemberCollection();
         $result = $oGroupMemberColl->getFieldsWhere(['group_id'], 'user_id', $userId);
-        return array_map(function($item) {
+        return array_map(function ($item) {
             return $item['group_id'];
         }, $result);
     }
@@ -76,14 +76,14 @@ class cPermission
      * Returns the id of an area.
      * If passed area is numeric, it will be returned directly.
      *
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
      * @param string|int $area
      *
      * @return int
      *
      * @throws cDbException
      * @throws cException
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
      */
     public function getIdForArea($area)
     {
@@ -229,7 +229,7 @@ class cPermission
     /**
      *
      * @param string $area
-     * @param int    $action [optional]
+     * @param int $action [optional]
      *
      * @return bool
      *
@@ -256,7 +256,7 @@ class cPermission
      *
      * @param string $area
      * @param string $action
-     * @param mixed  $itemid
+     * @param mixed $itemid
      *
      * @return bool
      *
@@ -324,8 +324,6 @@ class cPermission
     /**
      * Returns the parent id of passed area
      *
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
      * @param int|string $area
      *         Area id or name
      *
@@ -333,6 +331,8 @@ class cPermission
      *         name of parent area or passed area
      *
      * @throws cDbException
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
      */
     public function getParentAreaId($area)
     {
@@ -343,7 +343,7 @@ class cPermission
     /**
      *
      * @param string $area
-     * @param int|string    $action [optional]
+     * @param int|string $action [optional]
      *
      * @return bool
      *
@@ -418,7 +418,7 @@ class cPermission
      *
      * @param bool $iClient [optional]
      *                      idclient to check, or false for the current client
-     * @param cApiUser|bool $oUser   [optional]
+     * @param cApiUser|bool $oUser [optional]
      *                      User object to check against, or false for the current user
      *
      * @return bool
@@ -465,7 +465,7 @@ class cPermission
     /**
      * Checks if the given user has access permission for a client
      *
-     * @param int    $iClient
+     * @param int $iClient
      *         idclient to check
      * @param cApiUser|bool $oUser
      *         User object to check against, or false for the current user
@@ -497,7 +497,7 @@ class cPermission
     /**
      * Checks if the given user has an admin permission for a specific client.
      *
-     * @param int    $iClient
+     * @param int $iClient
      *         idclient to check
      * @param cApiUser|bool $oUser
      *         User object to check against, or false for the current user
@@ -516,7 +516,6 @@ class cPermission
     /**
      * Checks if the given user has an admin permission
      *
-     * @since CONTENIDO 4.10.2
      * @param cApiUser|bool $oUser
      *         User object to check against, or false for the current user
      * @param bool $strict
@@ -526,6 +525,7 @@ class cPermission
      * @return bool
      *
      * @throws cInvalidArgumentException
+     * @since CONTENIDO 4.10.2
      */
     public function isAdmin($oUser = false, bool $strict = false): bool
     {
@@ -637,7 +637,7 @@ class cPermission
      * Checks if an item have any perms
      *
      * @param string|int $mainArea
-     * @param int        $itemid
+     * @param int $itemid
      *
      * @return bool
      *
@@ -749,9 +749,9 @@ class cPermission
      * Splits passed permission string and returns it as an array. If the passed permission is already an array,
      * then it will be returned without any further ado.
      *
-     * @since CONTENIDO 4.10.2
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return string[]
+     * @since CONTENIDO 4.10.2
      */
     public static function permissionToArray($permission): array
     {
@@ -762,10 +762,10 @@ class cPermission
     /**
      * Checks for language permissions.
      *
-     * @since CONTENIDO 4.10.2
      * @param int $languageId
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
+     * @since CONTENIDO 4.10.2
      */
     public static function checkLanguagePermission($languageId, $permission): bool
     {
@@ -777,10 +777,10 @@ class cPermission
     /**
      * Checks for client permissions.
      *
-     * @since CONTENIDO 4.10.2
      * @param int $clientId
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
+     * @since CONTENIDO 4.10.2
      */
     public static function checkClientPermission($clientId, $permission): bool
     {
@@ -792,11 +792,11 @@ class cPermission
     /**
      * Checks for client and language permissions.
      *
-     * @since CONTENIDO 4.10.2
      * @param int $clientId
      * @param int $languageId
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
+     * @since CONTENIDO 4.10.2
      */
     public static function checkClientAndLanguagePermission(int $clientId, int $languageId, $permission): bool
     {
@@ -807,10 +807,10 @@ class cPermission
     /**
      * Checks for client admin permissions.
      *
-     * @since CONTENIDO 4.10.2
      * @param int $clientId
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
+     * @since CONTENIDO 4.10.2
      */
     public static function checkClientAdminPermission(int $clientId, $permission): bool
     {
@@ -821,13 +821,13 @@ class cPermission
     /**
      * Checks for admin permissions.
      *
-     * @since CONTENIDO 4.10.2
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @param bool $strict Flag to run a strict check.
      *      If true, then the check is only for admin value.
      *      If false, then the check is only for admin or sysadmin value.
      *
      * @return bool
+     * @since CONTENIDO 4.10.2
      */
     public static function checkAdminPermission($permission, bool $strict = false): bool
     {
@@ -839,9 +839,9 @@ class cPermission
     /**
      * Checks for sysadmin permissions.
      *
-     * @since CONTENIDO 4.10.2
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
+     * @since CONTENIDO 4.10.2
      */
     public static function checkSysadminPermission($permission): bool
     {
@@ -852,12 +852,12 @@ class cPermission
     /**
      * Check if permissions (needle) are all available in other permissions (haystack).
      *
-     * @since CONTENIDO 4.10.2
      * @param string|string[] $haystackPerm The permissions to search in.
      *      Comma separated permission string or list of permissions.
      * @param string|string[] $needlePerm The permissions to search for, all of them must be found in haystackPerm.
      *      Comma separated permission string or list of permissions.
      * @return bool
+     * @since CONTENIDO 4.10.2
      */
     public static function checkPermission($haystackPerm, $needlePerm): bool
     {

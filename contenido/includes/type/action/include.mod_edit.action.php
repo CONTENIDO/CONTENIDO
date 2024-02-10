@@ -37,7 +37,7 @@ if ($perm->have_perm_area_action($area, "mod_edit")) {
     }
 
     $readOonly = (getEffectiveSetting("client", "readonly", "false") == "true");
-    if($readOonly) {
+    if ($readOonly) {
         cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
     } else {
         // this is used to determine if the left bottom frame has to be reloaded

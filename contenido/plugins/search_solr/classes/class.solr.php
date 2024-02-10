@@ -17,7 +17,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class Solr {
+class Solr
+{
 
     /**
      * name of this plugin
@@ -28,12 +29,13 @@ class Solr {
 
     /**
      * @param mixed $whatever
-     * @param null  $file
-     * @param null  $line
+     * @param null $file
+     * @param null $line
      *
      * @throws cInvalidArgumentException
      */
-    public static function log($whatever, $file = NULL, $line = NULL) {
+    public static function log($whatever, $file = NULL, $line = NULL)
+    {
         static $start = 0;
         if (0 == $start) {
             $start = microtime(true);
@@ -66,7 +68,8 @@ class Solr {
      *
      * @throws cInvalidArgumentException
      */
-    public static function logException(Exception $e) {
+    public static function logException(Exception $e)
+    {
         $cfg = cRegistry::getConfig();
 
         $log = new cLog(cLogWriter::factory('file', [
@@ -82,7 +85,8 @@ class Solr {
      *
      * @return string
      */
-    public static function getName() {
+    public static function getName()
+    {
         return self::$_name;
     }
 
@@ -91,7 +95,8 @@ class Solr {
      *
      * @return string
      */
-    public static function getPath() {
+    public static function getPath()
+    {
         $cfg = cRegistry::getConfig();
 
         $path = cRegistry::getBackendPath() . $cfg['path']['plugins'];
@@ -105,7 +110,8 @@ class Solr {
      * @param string $key
      * @return string
      */
-    public static function i18n($key) {
+    public static function i18n($key)
+    {
         try {
             $trans = i18n($key, self::$_name);
         } catch (cException $e) {
@@ -128,7 +134,8 @@ class Solr {
      * @throws cDbException
      * @throws cException
      */
-    public static function getClientOptions($idclient, $idlang) {
+    public static function getClientOptions($idclient, $idlang)
+    {
         $options = [];
 
         // Boolean value indicating whether to connect in secure mode.
@@ -205,7 +212,8 @@ class Solr {
      * @param array $options
      * @throws SolrWarning when required options don't exist
      */
-    public static function validateClientOptions(array $options) {
+    public static function validateClientOptions(array $options)
+    {
         $valid = true;
         $valid &= array_key_exists('hostname', $options);
         $valid &= array_key_exists('port', $options);
@@ -226,7 +234,8 @@ class Solr {
      * @param Exception $e
      * @param bool $showTrace if trace should be displayed too
      */
-    public static function displayException(Exception $e, $showTrace = false) {
+    public static function displayException(Exception $e, $showTrace = false)
+    {
         header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
 
         if (true) {
@@ -262,7 +271,8 @@ class Solr {
      * @param Exception $e
      * @return string
      */
-    public static function notifyException(Exception $e) {
+    public static function notifyException(Exception $e)
+    {
         $cGuiNotification = new cGuiNotification();
         $level = cGuiNotification::LEVEL_ERROR;
         $message = $e->getMessage();

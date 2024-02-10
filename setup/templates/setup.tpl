@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-       "http://www.w3.org/TR/html4/loose.dtd">
+        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <title>{TITLE}</title>
@@ -18,7 +18,8 @@
                     <img src="images/logo.gif" alt="CONTENIDO Logo">
                 </div>
                 <div id="setupHeadlinePath">
-                    <div class="column-1">{HEADER}</div><div class="column-2">{STEPS}</div>
+                    <div class="column-1">{HEADER}</div>
+                    <div class="column-2">{STEPS}</div>
                 </div>
                 <div id="setupBody">
                     {CONTENT}

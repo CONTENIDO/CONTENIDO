@@ -17,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Generates the step display.
  *
- * @param   int  $iCurrentStep  The current step to display active.
+ * @param int $iCurrentStep The current step to display active.
  * @return  string
  */
-function cGenerateSetupStepsDisplay($iCurrentStep) {
+function cGenerateSetupStepsDisplay($iCurrentStep)
+{
     if (!defined('CON_SETUP_STEPS')) {
         return '';
     }
@@ -30,7 +31,7 @@ function cGenerateSetupStepsDisplay($iCurrentStep) {
         if ($iCurrentStep == $i) {
             $sCssActive = 'active';
         }
-        $sStepsPath .= '<span class="' . $sCssActive . '">&nbsp;' . strval($i) . '&nbsp;</span>&nbsp;&nbsp;&nbsp;';
+        $sStepsPath .= '<span class="' . $sCssActive . '">&nbsp;' . cSecurity::toString($i) . '&nbsp;</span>&nbsp;&nbsp;&nbsp;';
     }
     return $sStepsPath;
 }
@@ -42,8 +43,9 @@ function cGenerateSetupStepsDisplay($iCurrentStep) {
  * @throws cInvalidArgumentException
  * @global  array $cfg
  */
-function logSetupFailure($sErrorMessage) {
-    global $cfg;
+function logSetupFailure(string $sErrorMessage)
+{
+    $cfg = cRegistry::getConfig();
     cFileHandler::write($cfg['path']['contenido_logs'] . 'setuplog.txt', $sErrorMessage . PHP_EOL . PHP_EOL, true);
 }
 
@@ -55,8 +57,12 @@ function logSetupFailure($sErrorMessage) {
  * @global  array $cfg
  * @global  array $cfgClient
  */
-function setupInitializeCfgClient($reset = false) {
-    global $cfg, $cfgClient;
+function setupInitializeCfgClient($reset = false)
+{
+    // NOTE: Use global here
+    global $cfgClient;
+
+    $cfg = cRegistry::getConfig();
 
     if (true === $reset) {
         $cfgClient = [];
@@ -80,11 +86,12 @@ function setupInitializeCfgClient($reset = false) {
 /**
  * Check configuration path for the environment
  * If no configuration for environment found, copy from production
- * @param $installationPath
+ * @param string $installationPath
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function setupCheckConfiguration($installationPath) {
+function setupCheckConfiguration(string $installationPath)
+{
     $configPath = $installationPath . '/data/config/' . CON_ENVIRONMENT;
     if (!cFileHandler::exists($configPath)) {
         // create environment config
@@ -120,7 +127,9 @@ function setupCheckConfiguration($installationPath) {
  * Initializes the configuration
  * @global $cfg
  */
-function setupInitializeConfig() {
+function setupInitializeConfig()
+{
+    // NOTE: Use global here
     global $cfg;
 
     // Prepare $cfg array
@@ -141,7 +150,7 @@ function setupInitializeConfig() {
     $cfg['path']['contenido'] = $cfg['path']['frontend'] . '/contenido/';
     $cfg['path']['contenido_config'] = CON_FRONTEND_PATH . '/data/config/' . CON_ENVIRONMENT . '/';
     $cfg['path']['contenido_fullhtml'] = $systemDirs[1] . '/contenido/';
-    $cfg['path']['all_wysiwyg'] = $cfg['path']['contenido']  . 'external/wysiwyg/';
+    $cfg['path']['all_wysiwyg'] = $cfg['path']['contenido'] . 'external/wysiwyg/';
     $cfg['path']['all_wysiwyg_html'] = $cfg['path']['contenido_fullhtml'] . 'external/wysiwyg/';
     $cfg['path']['wysiwyg_html'] = $cfg['path']['all_wysiwyg_html'] . $cfg['wysiwyg']['editor'] . '/';
 
@@ -168,8 +177,9 @@ function setupInitializeConfig() {
  * Updates the configuration and set PHP settings
  * @global $cfg
  */
-function setupUpdateConfig() {
-    global $cfg;
+function setupUpdatePHPConfig()
+{
+    $cfg = cRegistry::getConfig();
 
     // Takeover configured PHP settings
     if (isset($cfg['php_settings']) && is_array($cfg['php_settings'])) {
@@ -197,7 +207,8 @@ function setupUpdateConfig() {
  * Stores setup request variables in session
  * @param array $request
  */
-function takeoverRequestToSession(array $request) {
+function takeoverRequestToSession(array $request)
+{
     foreach ($request as $key => $value) {
         if ($key == 'c') {
             // c = setup controller to process
@@ -206,8 +217,7 @@ function takeoverRequestToSession(array $request) {
         if (($value != '' && $key != 'dbpass' && $key != 'adminpass' && $key != 'adminpassrepeat') ||
             ($key == 'dbpass' && $request['dbpass_changed'] == 'true') ||
             ($key == 'adminpass' && $request['adminpass_changed'] == 'true') ||
-            ($key == 'adminpassrepeat' && $request['adminpassrepeat_changed'] == 'true'))
-        {
+            ($key == 'adminpassrepeat' && $request['adminpassrepeat_changed'] == 'true')) {
             if ($key === 'dboptions') {
                 $_SESSION[$key] = [];
                 foreach ($value as $subKey => $subValue) {

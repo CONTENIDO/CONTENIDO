@@ -20,11 +20,11 @@ cInclude('includes', 'functions.str.php');
 /**
  * Edit a language
  *
- * @param int    $idlang
+ * @param int $idlang
  * @param string $langname
  *         Name of the language
  * @param string $encoding
- * @param int    $active
+ * @param int $active
  *         Flag for active state, 1 or 0
  * @param string $direction
  *
@@ -34,11 +34,12 @@ cInclude('includes', 'functions.str.php');
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function langEditLanguage($idlang, $langname, $encoding, $active, $direction = 'ltr') {
+function langEditLanguage($idlang, $langname, $encoding, $active, $direction = 'ltr')
+{
     $oLang = new cApiLanguage();
-    if ($oLang->loadByPrimaryKey((int) $idlang)) {
+    if ($oLang->loadByPrimaryKey((int)$idlang)) {
         if ('' === $langname) {
-            $langname = "-- ".i18n("New language")." --";
+            $langname = "-- " . i18n("New language") . " --";
         }
         $oLang->set('name', $langname, false);
         $oLang->set('encoding', $encoding, false);
@@ -54,7 +55,7 @@ function langEditLanguage($idlang, $langname, $encoding, $active, $direction = '
  *
  * @param string $name
  *         Name of the language
- * @param int    $client
+ * @param int $client
  *         Id of client
  *
  * @return int
@@ -64,7 +65,8 @@ function langEditLanguage($idlang, $langname, $encoding, $active, $direction = '
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function langNewLanguage($name, $client) {
+function langNewLanguage($name, $client)
+{
     global $cfgClient, $notification;
 
     // Add new language to database
@@ -96,7 +98,7 @@ function langNewLanguage($name, $client) {
 /**
  * Rename a language
  *
- * @param int    $idlang
+ * @param int $idlang
  *         Id of the language
  * @param string $name
  *         Name of the language
@@ -107,7 +109,8 @@ function langNewLanguage($name, $client) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function langRenameLanguage($idlang, $name) {
+function langRenameLanguage($idlang, $name)
+{
     $oLang = new cApiLanguage();
     if ($oLang->loadByPrimaryKey(cSecurity::toInteger($idlang))) {
         $oLang->set('name', $name, false);
@@ -130,12 +133,13 @@ function langRenameLanguage($idlang, $name) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function langDeleteLanguage($iIdLang, $iIdClient = 0) {
+function langDeleteLanguage($iIdLang, $iIdClient = 0)
+{
     global $db, $sess, $client, $cfg, $notification, $cfgClient;
 
     $deleteok = 1;
-    $iIdLang = (int) $iIdLang;
-    $iIdClient = (int) $iIdClient;
+    $iIdLang = (int)$iIdLang;
+    $iIdClient = (int)$iIdClient;
 
     // Bugfix: New idclient parameter introduced, as Administration -> Languages
     // is used for different clients to delete the language
@@ -161,10 +165,10 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
     }
 
     $aIdArtLang = [];
-    $aIdArt     = [];
+    $aIdArt = [];
     $aIdCatLang = [];
-    $aIdCat     = [];
-    $aIdTplCfg  = [];
+    $aIdCat = [];
+    $aIdTplCfg = [];
 
     if ($deleteok == 1) {
         // ********* check if this is the clients last language to be deleted,
@@ -214,7 +218,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
             $aIdTplCfg[] = $db->f('idtplcfg'); // added
         }
         foreach ($aIdCatLang as $value) {
-            $sql = "DELETE FROM " . $cfg['tab']['cat_lang'] . " WHERE idcatlang=" . (int) $value;
+            $sql = "DELETE FROM " . $cfg['tab']['cat_lang'] . " WHERE idcatlang=" . (int)$value;
             $db->query($sql);
         }
         if ($lastlanguage == 1) {
@@ -251,7 +255,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
         }
 
         foreach ($aIdTplCfg as $tplcfg) {
-            $tplcfg = (int) $tplcfg;
+            $tplcfg = (int)$tplcfg;
             if ($tplcfg != 0) {
                 // ********** delete from 'tpl_conf'-table
                 $sql = "DELETE FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtplcfg=" . $tplcfg;
@@ -290,10 +294,11 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function langActivateDeactivateLanguage($idlang, $active) {
+function langActivateDeactivateLanguage($idlang, $active)
+{
     $oLang = new cApiLanguage();
-    if ($oLang->loadByPrimaryKey((int) $idlang)) {
-        $oLang->set('active', (int) $active, false);
+    if ($oLang->loadByPrimaryKey((int)$idlang)) {
+        $oLang->set('active', (int)$active, false);
         return $oLang->store();
     }
     return false;
@@ -313,13 +318,14 @@ function langActivateDeactivateLanguage($idlang, $active) {
  * @throws cDbException
  * @throws cException
  */
-function langGetTextDirection($idlang, $db = NULL) {
+function langGetTextDirection($idlang, $db = NULL)
+{
     static $oLang;
     if (!isset($oLang)) {
         $oLang = new cApiLanguage();
     }
     $direction = '';
-    if ($oLang->loadByPrimaryKey((int) $idlang)) {
+    if ($oLang->loadByPrimaryKey((int)$idlang)) {
         $direction = $oLang->get('direction');
     }
     if ($direction != 'ltr' && $direction != 'rtl') {

@@ -24,7 +24,8 @@ cInclude('includes', 'functions.encoding.php');
  * @package    Core
  * @subpackage Frontend_Search
  */
-abstract class cSearchBaseAbstract {
+abstract class cSearchBaseAbstract
+{
 
     /**
      * CONTENIDO database object.
@@ -76,7 +77,8 @@ abstract class cSearchBaseAbstract {
      * @param bool $bDebug [optional]
      *         Optional, flag to enable debugging (no longer needed, deprecated since 4.10.2)
      */
-    protected function __construct($oDB = NULL, $bDebug = false) {
+    protected function __construct($oDB = NULL, $bDebug = false)
+    {
         $this->cfg = cRegistry::getConfig();
         $this->lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $this->client = cSecurity::toInteger(cRegistry::getClientId());
@@ -96,12 +98,13 @@ abstract class cSearchBaseAbstract {
      *
      * @param string $msg
      *         Some text
-     * @param mixed  $var
+     * @param mixed $var
      *         The variable to dump
      *
      * @throws cInvalidArgumentException
      */
-    protected function _debug($msg, $var) {
+    protected function _debug($msg, $var)
+    {
         $dump = $msg . ': ';
         if (is_array($var) || is_object($var)) {
             $dump .= print_r($var, true);

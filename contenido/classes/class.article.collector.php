@@ -27,7 +27,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Util
  */
-class cArticleCollector implements SeekableIterator, Countable {
+class cArticleCollector implements SeekableIterator, Countable
+{
 
     /**
      * Options for the collector.
@@ -92,7 +93,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function __construct(array $options = []) {
+    public function __construct(array $options = [])
+    {
         $this->setOptions($options);
         $this->loadArticles();
     }
@@ -104,7 +106,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * @param array $options
      *         array with option
      */
-    public function setOptions(array $options) {
+    public function setOptions(array $options)
+    {
         if (isset($options['idcat']) && !isset($options['categories'])) {
             $options['categories'] = [
                 $options['idcat']
@@ -133,7 +136,7 @@ class cArticleCollector implements SeekableIterator, Countable {
             'publisheddate' => 'published',
             'creationdate' => 'created',
         ];
-        $options['order'] = $orderMap[$options['order']] ??  $orderMap['creationdate'];
+        $options['order'] = $orderMap[$options['order']] ?? $orderMap['creationdate'];
 
         $options['artspecs'] = $options['artspecs'] ?? [];
 
@@ -153,7 +156,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function loadArticles() {
+    public function loadArticles()
+    {
         $this->_articles = [];
 
         // Collect start articles
@@ -193,7 +197,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @throws cBadMethodCallException|cDbException|cException
      */
-    public function startArticle() {
+    public function startArticle()
+    {
         if (count($this->_startArticles) != 1) {
             throw new cBadMethodCallException("Can not load start article due to multiple loaded start articles.");
         }
@@ -207,7 +212,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @return bool|cApiArticleLanguage
      */
-    public function nextArticle() {
+    public function nextArticle()
+    {
         $next = $this->current();
         $this->next();
 
@@ -231,7 +237,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @param int $resPerPage
      */
-    public function setResultPerPage($resPerPage) {
+    public function setResultPerPage($resPerPage)
+    {
         if ($resPerPage > 0) {
             if (is_array($this->_articles)) {
                 $this->_pages = array_chunk($this->_articles, $resPerPage);
@@ -251,7 +258,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * @param int $page
      *         The page of the article collection
      */
-    public function setPage($page) {
+    public function setPage($page)
+    {
         if (array_key_exists($page, $this->_pages)) {
             $this->_articles = $this->_pages[$page];
         }
@@ -265,7 +273,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * @throws cOutOfBoundsException
      */
     #[\ReturnTypeWillChange]
-    public function seek($position) {
+    public function seek($position)
+    {
         $this->_currentPosition = $position;
 
         if ($this->valid() === false) {
@@ -277,7 +286,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * Method "rewind" of the implemented iterator.
      */
     #[\ReturnTypeWillChange]
-    public function rewind() {
+    public function rewind()
+    {
         $this->_currentPosition = 0;
     }
 
@@ -287,7 +297,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * @return cApiArticleLanguage|null
      */
     #[\ReturnTypeWillChange]
-    public function current() {
+    public function current()
+    {
         return $this->_articles[$this->_currentPosition] ?? null;
     }
 
@@ -297,7 +308,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * @return int
      */
     #[\ReturnTypeWillChange]
-    public function key() {
+    public function key()
+    {
         return $this->_currentPosition;
     }
 
@@ -305,7 +317,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * Method "next" of the implemented iterator.
      */
     #[\ReturnTypeWillChange]
-    public function next() {
+    public function next()
+    {
         ++$this->_currentPosition;
     }
 
@@ -315,7 +328,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * @return bool
      */
     #[\ReturnTypeWillChange]
-    public function valid() {
+    public function valid()
+    {
         return isset($this->_articles[$this->_currentPosition]);
     }
 
@@ -326,7 +340,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * @return int
      */
     #[\ReturnTypeWillChange]
-    public function count() {
+    public function count()
+    {
         return count($this->_articles);
     }
 
@@ -335,7 +350,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @return array
      */
-    public function getStartArticles() {
+    public function getStartArticles()
+    {
         return $this->_startArticles;
     }
 
@@ -346,7 +362,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      *                the id of the start article.
      * @throws cDbException|cException
      */
-    protected function _fetchStartArticles() {
+    protected function _fetchStartArticles()
+    {
         $catLangColl = new cApiCategoryLanguageCollection();
         $catLangColl->addResultFields(['startidartlang', 'idcat']);
         $catLangColl->setWhere('idlang', $this->_options['lang']);
@@ -372,7 +389,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @return string
      */
-    protected function _buildArticlesQuery() {
+    protected function _buildArticlesQuery()
+    {
         $options = $this->_options;
 
         // This sql-line uses cat_art table with alias c. If no categories found, it writes only "WHERE" into sql-query

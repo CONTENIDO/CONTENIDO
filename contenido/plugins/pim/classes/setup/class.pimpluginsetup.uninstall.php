@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage PluginManager
  * @author     frederic.schneider
  */
-class PimPluginSetupUninstall extends PimPluginSetup {
+class PimPluginSetupUninstall extends PimPluginSetup
+{
     /**
      * Foldername of installed plugin
      *
@@ -72,7 +73,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * @param string $foldername
      * @return string
      */
-    public function setPluginFoldername($foldername) {
+    public function setPluginFoldername($foldername)
+    {
         return $this->_PluginFoldername = cSecurity::escapeString($foldername);
     }
 
@@ -81,7 +83,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      *
      * @return cApiAreaCollection
      */
-    private function _setApiAreaCollection() {
+    private function _setApiAreaCollection()
+    {
         return $this->_ApiAreaCollection = new cApiAreaCollection();
     }
 
@@ -90,7 +93,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      *
      * @return cApiActionCollection
      */
-    private function _setApiActionCollection() {
+    private function _setApiActionCollection()
+    {
         return $this->_ApiActionCollection = new cApiActionCollection();
     }
 
@@ -99,7 +103,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      *
      * @return cApiFileCollection
      */
-    private function _setApiFileCollection() {
+    private function _setApiFileCollection()
+    {
         return $this->_ApiFileCollection = new cApiFileCollection();
     }
 
@@ -108,7 +113,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      *
      * @return cApiFrameFileCollection
      */
-    private function _setApiFrameFileCollection() {
+    private function _setApiFrameFileCollection()
+    {
         return $this->_ApiFrameFileCollection = new cApiFrameFileCollection();
     }
 
@@ -117,7 +123,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      *
      * @return cApiNavMainCollection
      */
-    private function _setApiNavMainCollection() {
+    private function _setApiNavMainCollection()
+    {
         return $this->_ApiNavMainCollection = new cApiNavMainCollection();
     }
 
@@ -126,7 +133,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      *
      * @return cApiNavSubCollection
      */
-    private function _setApiNavSubCollection() {
+    private function _setApiNavSubCollection()
+    {
         return $this->_ApiNavSubCollection = new cApiNavSubCollection();
     }
 
@@ -135,7 +143,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      *
      * @return cApiTypeCollection
      */
-    private function _setApiTypeCollection() {
+    private function _setApiTypeCollection()
+    {
         return $this->_ApiTypeCollection = new cApiTypeCollection();
     }
 
@@ -144,15 +153,18 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      *
      * @return string
      */
-    protected function _getPluginFoldername() {
+    protected function _getPluginFoldername()
+    {
         return $this->_PluginFoldername;
     }
 
     // Begin of uninstallation routine
+
     /**
      * Construct function
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         // cApiClasses
@@ -174,7 +186,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function uninstall($sql = true) {
+    public function uninstall($sql = true)
+    {
         // Dependencies checks
         $this->_uninstallCheckDependencies();
 
@@ -203,7 +216,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
 
         // Delete entries with relations to *_frame_files
         if (!empty($relations['framefl'])) {
-        	$this->_ApiFrameFileCollection->deleteByWhereClause("idframefile IN('" . join("', '", $relations['framefl']) . "')");
+            $this->_ApiFrameFileCollection->deleteByWhereClause("idframefile IN('" . join("', '", $relations['framefl']) . "')");
         }
 
         // Delete entries with relations to *_area
@@ -265,7 +278,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    private function _uninstallCheckDependencies() {
+    private function _uninstallCheckDependencies()
+    {
         // Call checkDependencies function at PimPlugin class
         // Function returns true or false
         $result = $this->checkDependencies();
@@ -282,7 +296,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    protected function _uninstallDeleteSpecificSql() {
+    protected function _uninstallDeleteSpecificSql()
+    {
         $cfg = cRegistry::getConfig();
 
         $tempSqlFilename = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_uninstall.sql';
@@ -297,7 +312,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function uninstallDir() {
+    public function uninstallDir()
+    {
         $cfg = cRegistry::getConfig();
 
         // delete folders
@@ -322,7 +338,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * @throws cDbException
      * @throws cException
      */
-    protected function _writeNewExecutionOrder() {
+    protected function _writeNewExecutionOrder()
+    {
         // Lowest executionorder is one
         $i = 1;
 

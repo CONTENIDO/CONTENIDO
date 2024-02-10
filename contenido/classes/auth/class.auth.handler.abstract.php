@@ -32,6 +32,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage Authentication
  * @deprecated [2023-02-05] Since 4.10.2, use {@see cAuth} instead
  */
-abstract class cAuthHandlerAbstract extends cAuth {
+abstract class cAuthHandlerAbstract extends cAuth
+{
 
 }

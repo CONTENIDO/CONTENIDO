@@ -332,7 +332,7 @@ class cEffectiveSetting
      *
      * @param string $key
      *         The setting key
-     * @param string $value|string[]
+     * @param string $value |string[]
      *         Value to store
      */
     protected static function _set($key, $value)

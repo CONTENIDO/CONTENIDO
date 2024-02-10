@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiFrontendGroup createNewItem
  * @method cApiFrontendGroup|bool next
  */
-class cApiFrontendGroupCollection extends ItemCollection {
+class cApiFrontendGroupCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('frontendgroups'), 'idfrontendgroup');
         $this->_setItemClass('cApiFrontendGroup');
 
@@ -47,7 +49,8 @@ class cApiFrontendGroupCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($groupname) {
+    public function create($groupname)
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
 
         $group = new cApiFrontendGroup();
@@ -82,9 +85,10 @@ class cApiFrontendGroupCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function delete($itemID) {
+    public function delete($itemID)
+    {
         $associations = new cApiFrontendGroupMemberCollection();
-        $associations->select('idfrontendgroup = ' . (int) $itemID);
+        $associations->select('idfrontendgroup = ' . (int)$itemID);
 
         while (($item = $associations->next()) !== false) {
             $associations->delete($item->get('idfrontendgroupmember'));
@@ -111,7 +115,8 @@ class cApiFrontendGroup extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('frontendgroups'), 'idfrontendgroup');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

@@ -21,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLHiddenField extends cHTMLFormElement {
+class cHTMLHiddenField extends cHTMLFormElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -35,7 +36,8 @@ class cHTMLHiddenField extends cHTMLFormElement {
      * @param string $id [optional]
      *         ID of the element
      */
-    public function __construct($name, $value = '', $id = '') {
+    public function __construct($name, $value = '', $id = '')
+    {
         parent::__construct($name, $id, false, '', '', '');
         $this->_contentlessTag = true;
         $this->updateAttribute('type', 'hidden');
@@ -52,7 +54,8 @@ class cHTMLHiddenField extends cHTMLFormElement {
      * @return cHTMLHiddenField
      *         $this for chaining
      */
-    public function setValue($value) {
+    public function setValue($value)
+    {
         $this->updateAttribute('value', $value);
 
         return $this;

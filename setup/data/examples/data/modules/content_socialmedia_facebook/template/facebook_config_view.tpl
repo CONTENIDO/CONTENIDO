@@ -7,7 +7,8 @@
         </tr>
         <tr>
             <td>{$automaticURLLabel}</td>
-            <td><input type="checkbox" name="automaticURL" value="1" {if $useAutomaticURL == "1" } checked="1" {/if}>&nbsp;{$autoUrlHelp->render()}
+            <td><input type="checkbox" name="automaticURL"
+                       value="1" {if $useAutomaticURL == "1" } checked="1" {/if}>&nbsp;{$autoUrlHelp->render()}
             </td>
         </tr>
         <tr>
@@ -18,9 +19,9 @@
                 <input style="margin-left: 4px;" type="radio" name="plugin"
                        value="like_button" {if $pluginvalue == "like_button" } checked="checked" {/if}>
                 {$likeButtonLabel|escape}&nbsp;&nbsp;{$likeButtonHelp->render()}
-                <br />
+                <br/>
                 <input style="margin-left: 4px;" type="radio" name="plugin"
-                       value="like_box" {if $pluginvalue == "like_box"} checked="checked"  {/if}">
+                       value="like_box" {if $pluginvalue == "like_box"} checked="checked" {/if}">
                 {$likeBoxLabel|escape}&nbsp;&nbsp;{$likeBoxHelp->render()}
             </td>
         </tr>
@@ -32,15 +33,15 @@
                 <input style="margin-left: 4px;" type="radio" name="layout"
                        value="standard" {if $layoutvalue == "standard" || ($layoutvalue !="button_count" && $layoutvalue !="box_count")} checked="checked" {/if}>
                 {$standardLabel|escape}&nbsp;&nbsp;{$standardHelp->render()}
-                <br />
+                <br/>
                 <input style="margin-left: 4px;" type="radio" name="layout"
                        value="box_count" {if $layoutvalue == "box_count"} checked="checked" {/if}>
                 {$boxCountLabel|escape}&nbsp;&nbsp;{$boxCountHelp->render()}
-                <br />
+                <br/>
                 <input style="margin-left: 4px;" type="radio" name="layout"
                        value="button_count" {if $layoutvalue =="button_count"} checked="checked" {/if}>
                 {$buttonCountLabel|escape}&nbsp;&nbsp;{$buttonCountHelp->render()}
-                <br />
+                <br/>
                 <input style="margin-left: 4px;" type="radio" name="layout"
                        value="button" {if $layoutvalue == "button"} checked="checked" {/if}>
                 {$buttonLabel|escape}&nbsp;&nbsp;{$buttonHelp->render()}

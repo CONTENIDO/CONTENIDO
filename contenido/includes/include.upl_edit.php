@@ -77,7 +77,7 @@ if (cApiDbfs::isDbfs($_REQUEST['path'])) {
     $qpath = $pathname;
 }
 
-if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
+if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs($path)) && (int)$client > 0) {
     $bDirectoryIsWritable = true;
 } else {
     $bDirectoryIsWritable = false;
@@ -91,19 +91,19 @@ if ($upload = $uploads->next()) {
 
     // Which rows to display?
     $aListRows = [
-        'filename'    => i18n('File name'),
-        'path'        => i18n('Path'),
+        'filename' => i18n('File name'),
+        'path' => i18n('Path'),
         'replacefile' => i18n('Replace file'),
-        'medianame'   => i18n('Media name'),
+        'medianame' => i18n('Media name'),
         'description' => i18n('Description'),
-        'keywords'    => i18n('Keywords'),
-        'medianotes'  => i18n('Internal notes'),
-        'copyright'   => i18n('Copyright'),
-        'protected'   => i18n('Protection'),
+        'keywords' => i18n('Keywords'),
+        'medianotes' => i18n('Internal notes'),
+        'copyright' => i18n('Copyright'),
+        'protected' => i18n('Protection'),
         'timecontrol' => i18n('Time control'),
-        'preview'     => i18n('Preview'),
-        'author'      => i18n('Author'),
-        'modified'    => i18n('Last modified by'),
+        'preview' => i18n('Preview'),
+        'author' => i18n('Author'),
+        'modified' => i18n('Last modified by'),
     ];
 
     if ($isZipFile) {
@@ -245,7 +245,7 @@ if ($upload = $uploads->next()) {
                 break;
 
             case 'timecontrol':
-                $iTimeMng = (int) $properties->getValue('upload', $qpath . $filename, 'file', 'timemgmt');
+                $iTimeMng = (int)$properties->getValue('upload', $qpath . $filename, 'file', 'timemgmt');
                 $sStartDate = $properties->getValue('upload', $qpath . $filename, 'file', 'datestart');
                 $sEndDate = $properties->getValue('upload', $qpath . $filename, 'file', 'dateend');
 
@@ -257,10 +257,10 @@ if ($upload = $uploads->next()) {
                 $sHtmlTimeMng .= "<table id='dbfsTimecontrol' class='borderless' border='0' cellpadding='0' cellspacing='0'>\n";
                 $sHtmlTimeMng .= "<tr><td><label for='datestart'>" . i18n('Start date') . "</label></td>\n";
                 $sHtmlTimeMng .= '<td><input type="text" name="datestart" id="datestart" value="' . $sStartDate . '"  size="20" maxlength="40" class="text_medium">' .
-                        '</td></tr>';
+                    '</td></tr>';
                 $sHtmlTimeMng .= "<tr><td><label for='dateend'>" . i18n('End date') . "</label></td>\n";
                 $sHtmlTimeMng .= '<td><input type="text" name="dateend" id="dateend" value="' . $sEndDate . '"  size="20" maxlength="40" class="text_medium">' .
-                        '</td></tr>';
+                    '</td></tr>';
                 $sHtmlTimeMng .= "</table>\n";
 
                 $sCell = $sHtmlTimeMng;

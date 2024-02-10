@@ -1,20 +1,29 @@
-
 <!-- newsletter/templates/template.newsletter_menu.html -->
 <script type="text/javascript">
-    (function(Con, $) {
+    (function (Con, $) {
         var area = 'news';
 
         function actionShowNews($row, id) {
             Con.multiLink(
-                'right_top', Con.UtilUrl.build('main.php', {area: area, action: 'news_show', frame: 3, idnewsletter: id}),
-                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: 'news_show', frame: 4, idnewsletter: id})
+                'right_top', Con.UtilUrl.build('main.php', {
+                    area: area,
+                    action: 'news_show',
+                    frame: 3,
+                    idnewsletter: id
+                }),
+                'right_bottom', Con.UtilUrl.build('main.php', {
+                    area: area,
+                    action: 'news_show',
+                    frame: 4,
+                    idnewsletter: id
+                })
             );
             Con.ParameterCollector.register('idnewsletter', id);
         }
 
         function actionSendTestNews($row, id) {
             var sendTestMessage = '{SEND_TEST_MESSAGE}';
-            Con.showConfirmation(sendTestMessage, function() {
+            Con.showConfirmation(sendTestMessage, function () {
                 var $form, formData, parameter;
                 $form = Con.getFrame('left_top').$('#newsletter_listoptionsform');
                 formData = Con.serializeForm($form);
@@ -36,15 +45,35 @@
 
         function actionAddJobNews($row, id) {
             Con.multiLink(
-                'right_top', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 3, idnewsletter: id}),
-                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: 'news_add_job', frame: 4, idnewsletter: id})
+                'right_top', Con.UtilUrl.build('main.php', {
+                    area: area,
+                    action: '',
+                    frame: 3,
+                    idnewsletter: id
+                }),
+                'right_bottom', Con.UtilUrl.build('main.php', {
+                    area: area,
+                    action: 'news_add_job',
+                    frame: 4,
+                    idnewsletter: id
+                })
             );
         }
 
         function actionDuplicateNews($row, id) {
             Con.multiLink(
-                'right_top', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 3, idnewsletter: id}),
-                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: 'news_duplicate', frame: 4, idnewsletter: id})
+                'right_top', Con.UtilUrl.build('main.php', {
+                    area: area,
+                    action: '',
+                    frame: 3,
+                    idnewsletter: id
+                }),
+                'right_bottom', Con.UtilUrl.build('main.php', {
+                    area: area,
+                    action: 'news_duplicate',
+                    frame: 4,
+                    idnewsletter: id
+                })
             );
         }
 
@@ -52,7 +81,7 @@
             var deleteMessage = "{DELETE_MESSAGE}",
                 name = $row.find('[data-type="item"]').text();
             deleteMessage += '<b>' + name + '</b>';
-            Con.showConfirmation(deleteMessage, function() {
+            Con.showConfirmation(deleteMessage, function () {
                 var $form, formData, parameter;
                 $form = Con.getFrame('left_top').$('#newsletter_listoptionsform');
                 formData = Con.serializeForm($form);
@@ -72,7 +101,7 @@
             });
         }
 
-        $('#generic_menu_list [data-action]').live('click', function() {
+        $('#generic_menu_list [data-action]').live('click', function () {
             var action = $(this).data('action'),
                 $row = $(this).closest('[data-id]'),
                 id = $row.data('id');

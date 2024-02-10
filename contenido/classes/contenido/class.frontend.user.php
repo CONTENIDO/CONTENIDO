@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiFrontendUser createNewItem
  * @method cApiFrontendUser|bool next
  */
-class cApiFrontendUserCollection extends ItemCollection {
+class cApiFrontendUserCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('frontendusers'), 'idfrontenduser');
         $this->_setItemClass('cApiFrontendUser');
 
@@ -45,7 +47,8 @@ class cApiFrontendUserCollection extends ItemCollection {
      * @return bool
      * @throws cException
      */
-    public function userExists($sUsername) {
+    public function userExists($sUsername)
+    {
         $feUsers = new cApiFrontendUserCollection();
         $feUsers->setWhere('idclient', cRegistry::getClientId());
         $feUsers->setWhere('username', cString::toLowerCase($sUsername));
@@ -67,12 +70,13 @@ class cApiFrontendUserCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($username, $password = '') {
+    public function create($username, $password = '')
+    {
         $client = cSecurity::toInteger(cRegistry::getClientId());
         $auth = cRegistry::getAuth();
 
         // Check if the username already exists
-        $this->select("idclient = " . (int) $client . " AND username = '" . $this->escape($username) . "'");
+        $this->select("idclient = " . (int)$client . " AND username = '" . $this->escape($username) . "'");
 
         if ($this->next()) {
             return $this->create($username . '_' . cString::getPartOfString(md5(rand()), 0, 10), $password);
@@ -91,7 +95,7 @@ class cApiFrontendUserCollection extends ItemCollection {
 
         // Put this user into the default groups
         $feGroups = new cApiFrontendGroupCollection();
-        $feGroups->select("idclient = " . (int) $client . " AND defaultgroup = 1");
+        $feGroups->select("idclient = " . (int)$client . " AND defaultgroup = 1");
 
         $feGroupMembers = new cApiFrontendGroupMemberCollection();
 
@@ -118,10 +122,11 @@ class cApiFrontendUserCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function delete($itemId) {
+    public function delete($itemId)
+    {
         // delete group memberships
         $feGroupMembers = new cApiFrontendGroupMemberCollection();
-        $feGroupMembers->select('idfrontenduser = ' . (int) $itemId);
+        $feGroupMembers->select('idfrontenduser = ' . (int)$itemId);
         while (($item = $feGroupMembers->next()) !== false) {
             $feGroupMembers->delete($item->get('idfrontendgroupmember'));
         }
@@ -150,7 +155,8 @@ class cApiFrontendUser extends Item
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('frontendusers'), 'idfrontenduser');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -169,7 +175,8 @@ class cApiFrontendUser extends Item
      *         Flag to use defined inFilter
      * @return bool
      */
-    public function setField($field, $value, $safe = true) {
+    public function setField($field, $value, $safe = true)
+    {
         if ($field == 'password') {
             return parent::setField($field, hash('sha256', md5($value) . $this->get('salt')), $safe);
         } else {
@@ -184,7 +191,8 @@ class cApiFrontendUser extends Item
      *         Raw password
      * @return bool
      */
-    public function setRawPassword($password) {
+    public function setRawPassword($password)
+    {
         return $this->setField('password', $password);
     }
 
@@ -196,7 +204,8 @@ class cApiFrontendUser extends Item
      * @return bool
      *         True if the password is correct, false otherwise
      */
-    public function checkPassword($password) {
+    public function checkPassword($password)
+    {
         if ($this->isLoaded() === false) {
             return false;
         }
@@ -214,7 +223,8 @@ class cApiFrontendUser extends Item
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function store() {
+    public function store()
+    {
         $auth = cRegistry::getAuth();
 
         $this->set('modified', date('Y-m-d H:i:s'), false);
@@ -229,7 +239,8 @@ class cApiFrontendUser extends Item
      *         List of frontend group ids
      * @throws cException
      */
-    public function getGroupsForUser() {
+    public function getGroupsForUser()
+    {
         $feGroupMembers = new cApiFrontendGroupMemberCollection();
         $feGroupMembers->setWhere('idfrontenduser', $this->get('idfrontenduser'));
         $feGroupMembers->query();

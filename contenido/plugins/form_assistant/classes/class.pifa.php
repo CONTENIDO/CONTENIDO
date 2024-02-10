@@ -18,7 +18,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class Pifa {
+class Pifa
+{
 
     /**
      * These constants describe if forms have a timestamp.
@@ -46,7 +47,8 @@ class Pifa {
 
     /**
      */
-    public static function getName() {
+    public static function getName()
+    {
         return self::$_name;
     }
 
@@ -55,7 +57,8 @@ class Pifa {
      *
      * @return string
      */
-    public static function getPath() {
+    public static function getPath()
+    {
         $cfg = cRegistry::getConfig();
 
         $path = cRegistry::getBackendPath() . $cfg['path']['plugins'];
@@ -69,7 +72,8 @@ class Pifa {
      *
      * @return string
      */
-    public static function getUrl() {
+    public static function getUrl()
+    {
         $cfg = cRegistry::getConfig();
 
         $path = cRegistry::getBackendUrl() . $cfg['path']['plugins'];
@@ -83,7 +87,8 @@ class Pifa {
      * @param string $key
      * @return string
      */
-    public static function i18n($key) {
+    public static function i18n($key)
+    {
         $trans = i18n($key, self::$_name);
         return $trans;
     }
@@ -95,7 +100,8 @@ class Pifa {
      *
      * @return string
      */
-    public static function getNote($level, $note) {
+    public static function getNote($level, $note)
+    {
         $note = self::i18n($note);
         $notification = new cGuiNotification();
         return $notification->returnNotification($level, $note);
@@ -107,7 +113,8 @@ class Pifa {
      *
      * @return string
      */
-    public static function getError($note) {
+    public static function getError($note)
+    {
         return self::getNote(cGuiNotification::LEVEL_ERROR, $note);
     }
 
@@ -117,7 +124,8 @@ class Pifa {
      *
      * @throws cInvalidArgumentException
      */
-    public static function logException(Exception $e) {
+    public static function logException(Exception $e)
+    {
         if (getSystemProperty('debug', 'debug_for_plugins') == 'true') {
             $cfg = cRegistry::getConfig();
 
@@ -136,7 +144,8 @@ class Pifa {
      * @param Exception $e
      * @param bool $showTrace if trace should be displayed too
      */
-    public static function displayException(Exception $e, $showTrace = false) {
+    public static function displayException(Exception $e, $showTrace = false)
+    {
         header($_SERVER['SERVER_PROTOCOL'] . ' 500 ' . self::i18n('INTERNAL_SERVER_ERROR'), true, 500);
 
         if (true) {
@@ -171,7 +180,8 @@ class Pifa {
      * @param Exception $e
      * @return string
      */
-    public static function notifyException(Exception $e) {
+    public static function notifyException(Exception $e)
+    {
         $cGuiNotification = new cGuiNotification();
         $level = cGuiNotification::LEVEL_ERROR;
         $message = $e->getMessage();
@@ -183,10 +193,11 @@ class Pifa {
      * Returns array of extension classes that subclass the given $parentClass.
      *
      * @param string $parentClass
-     * @throws PifaException
      * @return array
+     * @throws PifaException
      */
-    public static function getExtensionClasses($parentClass) {
+    public static function getExtensionClasses($parentClass)
+    {
         // ignore if extensions folder is missing
         if (false === ($handle = cDirHandler::read(self::getPath() . 'extensions/'))) {
             return [];
@@ -238,7 +249,8 @@ class Pifa {
      * @return array
      * @throws PifaException
      */
-    public static function getTemplates($re = '/cms_pifaform_[^\.]+\.tpl/') {
+    public static function getTemplates($re = '/cms_pifaform_[^\.]+\.tpl/')
+    {
         $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
 
         // ignore if template folder is missing
@@ -287,9 +299,10 @@ class Pifa {
      * @param string $str String in camel case format
      * @return string $str Translated into underscore format
      */
-    public static function fromCamelCase($str) {
+    public static function fromCamelCase($str)
+    {
         $str[0] = cString::toLowerCase($str[0]);
-        return preg_replace_callback('/([A-Z])/', function($c) {
+        return preg_replace_callback('/([A-Z])/', function ($c) {
             return '_' . cString::toLowerCase($c[1]);
         }, $str);
     }
@@ -304,11 +317,12 @@ class Pifa {
      *        char in $str
      * @return string $str translated into camel caps
      */
-    public static function toCamelCase($str, $capitalise_first_char = false) {
+    public static function toCamelCase($str, $capitalise_first_char = false)
+    {
         if ($capitalise_first_char) {
             $str[0] = cString::toUpperCase($str[0]);
         }
-        return preg_replace_callback('/_([a-z])/', function($c) {
+        return preg_replace_callback('/_([a-z])/', function ($c) {
             return cString::toUpperCase($c[1]);
         }, $str);
     }
@@ -323,7 +337,8 @@ class Pifa {
      *
      * @return string $str translated into camel caps
      */
-    public static function getTimestampSetting($force = false) {
+    public static function getTimestampSetting($force = false)
+    {
         if (is_null(self::$_timestampSetting) || $force) {
             self::$_timestampSetting = getEffectiveSetting('pifa', 'timestamp', self::TIMESTAMP_ALWAYS);
             if (!in_array(self::$_timestampSetting, [
@@ -342,7 +357,8 @@ class Pifa {
      *
      * @return bool
      */
-    public static function isHttps() {
+    public static function isHttps()
+    {
         $isHttps = false;
         $isHttps |= 443 === $_SERVER['SERVER_PORT'];
         $isHttps |= array_key_exists('HTTP_X_SSL_CIPHER', $_SERVER);

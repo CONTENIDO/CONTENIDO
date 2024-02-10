@@ -2,109 +2,106 @@
 
 /**
  * *************************************************************************
-
-  pseudo-cron v1.2.1.con // modified version for CONTENIDO
-  (c) 2003 Kai Blankenhorn
-  www.bitfolge.de/en
-  kaib@bitfolge.de
-
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
+ *
+ * pseudo-cron v1.2.1.con // modified version for CONTENIDO
+ * (c) 2003 Kai Blankenhorn
+ * www.bitfolge.de/en
+ * kaib@bitfolge.de
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * ***************************************************************************
-
-  Usually regular tasks like backup up the site's database are run using cron
-  jobs. With cron jobs, you can exactly plan when a certain command is to be
-  executed. But most homepage owners can't create cron jobs on their web
-  server - providers demand some extra money for that.
-  The only thing that's certain to happen quite regularly on a web page are
-  page requests. This is where pseudo-cron comes into play: With every page
-  request it checks if any cron jobs should have been run since the previous
-  request. If there are, they are run and logged.
-
-  Pseudo-cron uses a syntax very much like the Unix cron's one. For an
-  overview of the syntax used, see a page of the UNIXGEEKS. The syntax
-  pseudo-cron uses is different from the one described on that page in
-  the following points:
-
-  -  there is no user column
-  -  the executed command has to be an include()able file (which may contain further PHP code)
-
-
-  All job definitions are made in a text file on the server with a
-  user-definable name. A valid command line in this file is, for example:
-
+ *
+ * Usually regular tasks like backup up the site's database are run using cron
+ * jobs. With cron jobs, you can exactly plan when a certain command is to be
+ * executed. But most homepage owners can't create cron jobs on their web
+ * server - providers demand some extra money for that.
+ * The only thing that's certain to happen quite regularly on a web page are
+ * page requests. This is where pseudo-cron comes into play: With every page
+ * request it checks if any cron jobs should have been run since the previous
+ * request. If there are, they are run and logged.
+ *
+ * Pseudo-cron uses a syntax very much like the Unix cron's one. For an
+ * overview of the syntax used, see a page of the UNIXGEEKS. The syntax
+ * pseudo-cron uses is different from the one described on that page in
+ * the following points:
+ *
+ * -  there is no user column
+ * -  the executed command has to be an include()able file (which may contain further PHP code)
+ *
+ *
+ * All job definitions are made in a text file on the server with a
+ * user-definable name. A valid command line in this file is, for example:
  *   2   1,15   *   *   samplejob.inc.php
-
-  This runs samplejob.inc.php at 2am on the 1st and 15th of each month.
-
-
-  Features:
-  -  runs any PHP script
-  -  periodical or time-controlled script execution
-  -  logs all executed jobs
-  -  can be run from an IMG tag in an HTML page
-  -  follow Unix cron syntax for crontabs
-
-
-  Usage:
-  -  Modify the variables in the config section below to match your server.
-  -  Write a PHP script that does the job you want to be run regularly. Be
-  sure that any paths in it are relative to the script that will run
-  pseudo-cron in the end.
-  -  Set up your crontab file with your script
-  -  Wait for the next scheduled run :)
-
-
-  Note:
-  You can log messages to pseudo-cron's log file by calling
-  logMessage("log a message", $PC_writeDir, $PC_useLog, $PC_debug);
-
-
-  Changelog:
-
-  v1.2.1.con   11-28-03
-  changed: removed all global variables
-  changed: renamed intern variables
-  changed: intern function calls
-  changed: extended debug information
-  modified by horwath@opensa.org
-
-  v1.2.1   02-03-03
-  fixed:    jobs may be run too often under certain conditions
-  added:    global debug switch
-  changed: typo in imagecron.php which prevented it from working
-
-
-  v1.2   01-31-03
-  added:   more documentation
-  changed: log file should now be easier to use
-  changed: log file name
-
-
-  v1.1   01-29-03
-  changed: renamed pseudo-cron.php to pseudo-cron.inc.php
-  fixed:   comments at the end of a line don't work
-  fixed:   empty lines in crontab file create nonsense jobs
-  changed: log file grows big very quickly
-  changed: included config file in main file to avoid directory confusion
-  added:   day of week abbreviations may now be used (three letters, english)
-
-
-  v1.0   01-17-03
-  inital release
-
+ *
+ * This runs samplejob.inc.php at 2am on the 1st and 15th of each month.
+ *
+ *
+ * Features:
+ * -  runs any PHP script
+ * -  periodical or time-controlled script execution
+ * -  logs all executed jobs
+ * -  can be run from an IMG tag in an HTML page
+ * -  follow Unix cron syntax for crontabs
+ *
+ *
+ * Usage:
+ * -  Modify the variables in the config section below to match your server.
+ * -  Write a PHP script that does the job you want to be run regularly. Be
+ * sure that any paths in it are relative to the script that will run
+ * pseudo-cron in the end.
+ * -  Set up your crontab file with your script
+ * -  Wait for the next scheduled run :)
+ *
+ *
+ * Note:
+ * You can log messages to pseudo-cron's log file by calling
+ * logMessage("log a message", $PC_writeDir, $PC_useLog, $PC_debug);
+ *
+ *
+ * Changelog:
+ *
+ * v1.2.1.con   11-28-03
+ * changed: removed all global variables
+ * changed: renamed intern variables
+ * changed: intern function calls
+ * changed: extended debug information
+ * modified by horwath@opensa.org
+ *
+ * v1.2.1   02-03-03
+ * fixed:    jobs may be run too often under certain conditions
+ * added:    global debug switch
+ * changed: typo in imagecron.php which prevented it from working
+ *
+ *
+ * v1.2   01-31-03
+ * added:   more documentation
+ * changed: log file should now be easier to use
+ * changed: log file name
+ *
+ *
+ * v1.1   01-29-03
+ * changed: renamed pseudo-cron.php to pseudo-cron.inc.php
+ * fixed:   comments at the end of a line don't work
+ * fixed:   empty lines in crontab file create nonsense jobs
+ * changed: log file grows big very quickly
+ * changed: included config file in main file to avoid directory confusion
+ * added:   day of week abbreviations may now be used (three letters, english)
+ *
+ *
+ * v1.0   01-17-03
+ * inital release
  * ************************************************************************* */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -205,7 +202,7 @@ function logMessage(string $msg, string $PC_writeDir, string $PC_useLog, bool $P
         if (is_writable($logfile)) {
             $file = fopen($logfile, "ab");
             if ($msg[cString::getStringLength($msg) - 1] != "\n") {
-                $msg.="\r\n";
+                $msg .= "\r\n";
             }
             if ($PC_debug) {
                 echo $msg;
@@ -290,7 +287,7 @@ function decDate(array &$dateArr, int $amount, string $unit, bool $PC_debug)
         $dateArr["mday"] -= $amount;
         $dateArr["wday"] -= $amount % 7;
         if ($dateArr["wday"] < 0) {
-            $dateArr["wday"]+=7;
+            $dateArr["wday"] += 7;
         }
         if ($dateArr["mday"] < 1) {
             $dateArr["mon"]--;
@@ -359,7 +356,7 @@ function getLastScheduledRunTime(array $job, bool $PC_debug): int
         $minutesBack < 525600 && (
             empty($job[PC_MINUTE][$dateArr["minutes"]]) ||
             empty($job[PC_HOUR][$dateArr["hours"]]) ||
-            (empty($job[PC_DOM][$dateArr["mday"]]) || empty($job[PC_DOW][$dateArr["wday"]])) OR
+            (empty($job[PC_DOM][$dateArr["mday"]]) || empty($job[PC_DOW][$dateArr["wday"]])) or
             empty($job[PC_MONTH][$dateArr["mon"]])
         )
     ) {
@@ -415,7 +412,7 @@ function getLastActialRunTime(string $jobName, string $PC_writeDir): int
         $lastRun = fgets($file, 100);
         fclose($file);
         if (is_numeric($lastRun)) {
-            return (int) $lastRun;
+            return (int)$lastRun;
         }
     }
     return 0;
@@ -518,7 +515,7 @@ function runJob(
 function parseCronFile(string $PC_cronTabFile, bool $PC_debug): array
 {
     $file = @file($PC_cronTabFile);
-    $job  = [];
+    $job = [];
     $jobs = [];
 
     if (!is_array($file)) {
@@ -531,7 +528,7 @@ function parseCronFile(string $PC_cronTabFile, bool $PC_debug): array
             if (preg_match($pattern, $file[$i], $job)) {
                 $jobNumber = count($jobs);
                 $jobs[$jobNumber] = $job;
-                if ($jobs[$jobNumber][PC_DOW][0] != '*' AND !is_numeric($jobs[$jobNumber][PC_DOW])) {
+                if ($jobs[$jobNumber][PC_DOW][0] != '*' and !is_numeric($jobs[$jobNumber][PC_DOW])) {
                     $jobs[$jobNumber][PC_DOW] = str_replace(
                         ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
                         [0, 1, 2, 3, 4, 5, 6],

@@ -54,7 +54,7 @@ $sJsExternal = '';
 $sTable = '';
 
 $sJsBefore .= "var itemids = [];\n"
-            . "var actareaids = [];\n";
+    . "var actareaids = [];\n";
 
 // Init Table
 $oTable = new cHTMLTable();
@@ -94,14 +94,14 @@ foreach ($right_list["mod"] as $value2) {
     // if there are some actions
     if (isset($value2["action"]) && is_array($value2["action"])) {
         foreach ($value2["action"] as $key3 => $value3) { // set the areas that
-                                                          // are in use
+            // are in use
             $possible_areas[$value2["perm"]] = "";
 
             // set the possible areas and actions for this areas
             $sJsBefore .= "actareaids[\"$value3|" . $value2["perm"] . "\"]=\"x\";\n";
 
             // checkbox for the whole action
-            $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3]? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
+            $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
             $items .= $objHeaderItem->render();
             $objHeaderItem->advanceID();
             $aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onclick=\"setRightsFor('" . $value2["perm"] . "', '$value3', '')\">";
@@ -173,7 +173,7 @@ while ($db->nextRecord()) {
         "class" => "td_rights1",
         "style" => "white-space:normal;"
     ]);
-    $objItem->setContent($description? $description : "&nbsp;");
+    $objItem->setContent($description ? $description : "&nbsp;");
     $items .= $objItem->render();
     $objItem->advanceID();
 

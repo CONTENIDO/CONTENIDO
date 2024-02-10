@@ -38,10 +38,9 @@ foreach ($_GET as $sTempKey => $sTempValue) {
         // Basic parameters attached
         $iCountBasicVal++;
     } elseif ((cString::getPartOfString($sTempKey, 0, 2) == 'id' || cString::getPartOfString($sTempKey, -2, 2) == 'id')
-        && ((int) $sTempValue == $sTempValue                      // check integer
-        || preg_match('/^[0-9a-f]{32}$/', $sTempValue)) // check md5
-        )
-    {
+        && ((int)$sTempValue == $sTempValue                      // check integer
+            || preg_match('/^[0-9a-f]{32}$/', $sTempValue)) // check md5
+    ) {
         // Complement the selected data
         $sUrlParams .= '&' . $sTempKey . '=' . $sTempValue;
     }

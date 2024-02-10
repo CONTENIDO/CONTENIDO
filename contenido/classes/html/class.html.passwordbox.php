@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLPasswordbox extends cHTMLFormElement {
+class cHTMLPasswordbox extends cHTMLFormElement
+{
 
     /**
      * @var bool $_autofill
@@ -54,7 +55,8 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $value = '', $width = 0, $maxlength = 0, $id = '', $disabled = false, $tabindex = null, $accessKey = '', $class = '') {
+    public function __construct($name, $value = '', $width = 0, $maxlength = 0, $id = '', $disabled = false, $tabindex = null, $accessKey = '', $class = '')
+    {
         parent::__construct($name, $id, $disabled, $tabindex, $accessKey, $class);
         $this->_tag = 'input';
         $this->setValue($value);
@@ -68,11 +70,12 @@ class cHTMLPasswordbox extends cHTMLFormElement {
     /**
      * Sets the autofill property of the element.
      *
-     * @since CONTENIDO 4.10.2
      * @param boolean $autofill - The autofill flag
      * @return cHTMLPasswordbox|cHTML
+     * @since CONTENIDO 4.10.2
      */
-    public function setAutofill(bool $autofill) {
+    public function setAutofill(bool $autofill)
+    {
         $this->_autofill = $autofill;
         return $this;
     }
@@ -85,7 +88,8 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      * @return cHTMLPasswordbox
      *         $this for chaining
      */
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         $width = cSecurity::toInteger($width);
 
         if ($width <= 0) {
@@ -103,7 +107,8 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      * @return cHTMLPasswordbox
      *         $this for chaining
      */
-    public function setMaxLength($maxLength) {
+    public function setMaxLength($maxLength)
+    {
         $maxLength = cSecurity::toInteger($maxLength);
 
         if ($maxLength <= 0) {
@@ -121,7 +126,8 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      * @return cHTMLPasswordbox
      *         $this for chaining
      */
-    public function setValue($value) {
+    public function setValue($value)
+    {
         return $this->updateAttribute('value', $value);
     }
 
@@ -134,13 +140,13 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      * Setting the field initially to readonly and enabling it again after
      * getting focus does the trick!
      *
+     * @return string
      * @since CONTENIDO 4.10.2
      * @TODO This function could be moved to somewhere else, because all input, textarea,
      *       select and form elements could use the autocomplete attribute.
      *       But, only input and textarea can have readonly attribute.
      *
      *
-     * @return string
      */
     public function toHtml(): string
     {

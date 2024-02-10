@@ -22,13 +22,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiStat createNewItem
  * @method cApiStat|bool next
  */
-class cApiStatCollection extends ItemCollection {
+class cApiStatCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('stat'), 'idstat');
         $this->_setItemClass('cApiStat');
 
@@ -50,7 +52,8 @@ class cApiStatCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function trackVisit($iIdCatArt, $iIdLang, $iIdClient) {
+    public function trackVisit($iIdCatArt, $iIdLang, $iIdClient)
+    {
         $oStat = $this->fetchByCatArtAndLang($iIdCatArt, $iIdLang);
         if (is_object($oStat)) {
             $oStat->increment();
@@ -72,7 +75,8 @@ class cApiStatCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($iIdCatArt, $iIdLang, $iIdClient, $iVisited = 1) {
+    public function create($iIdCatArt, $iIdLang, $iIdClient, $iVisited = 1)
+    {
         $oItem = $this->createNewItem();
 
         $oItem->set('visited', $iVisited);
@@ -93,7 +97,8 @@ class cApiStatCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
+    public function fetchByCatArtAndLang($iIdCatArt, $iIdLang)
+    {
         $where = $this->db->prepare('idcatart = %d AND idlang = %d', $iIdCatArt, $iIdLang);
         $this->select($where);
         return $this->next();
@@ -109,7 +114,8 @@ class cApiStatCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function deleteByCategoryArticleAndLanguage($idcatart, $idlang) {
+    public function deleteByCategoryArticleAndLanguage($idcatart, $idlang)
+    {
         $where = $this->db->prepare('idcatart = %d AND idlang = %d', $idcatart, $idlang);
         return $this->deleteByWhereClause($where);
     }
@@ -132,7 +138,8 @@ class cApiStat extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
+    public function __construct($mId = false)
+    {
         parent::__construct(cRegistry::getDbTableName('stat'), 'idstat');
         $this->setFilters([], []);
         if ($mId !== false) {
@@ -146,7 +153,8 @@ class cApiStat extends Item
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function increment() {
+    public function increment()
+    {
         $this->set('visited', $this->get('visited') + 1);
         $this->store();
     }
@@ -160,7 +168,8 @@ class cApiStat extends Item
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idcatart':
             case 'idlang':

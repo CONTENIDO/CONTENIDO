@@ -96,9 +96,9 @@ if ($perm->have_perm_area_action($area, 'con_meta_edit') || $perm->have_perm_are
             $atime = '';
             $dateValue = $_POST['META' . $value['metatype']] ?? '';
             // fix store hours and minutes
-                // if (is_int(strtotime($dateValue))) {
-                // $atime = date('c', strtotime($dateValue));
-                // }
+            // if (is_int(strtotime($dateValue))) {
+            // $atime = date('c', strtotime($dateValue));
+            // }
             $atime = $dateValue;
             conSetMetaValue($idartlang, $key, $atime, $version);
             $newData[$value['metatype']] = $atime;

@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Returns existing indexes of a specific table.
  *
- * @param cDb    $db
+ * @param cDb $db
  * @param string $table
  *
  * @return array|bool
@@ -25,7 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @throws cDbException
  */
-function dbGetIndexes($db, $table) {
+function dbGetIndexes($db, $table)
+{
     if (!is_object($db)) {
         return false;
     }
@@ -62,7 +63,7 @@ function dbGetIndexes($db, $table) {
  *  - $oldVal might be empty if the field didn't exist
  *  - $tableValues['fieldname'] contains the already existing values
  *
- * @param cDb    $db
+ * @param cDb $db
  *         Database instance
  * @param string $table
  *         Name of table to create/update
@@ -85,14 +86,15 @@ function dbGetIndexes($db, $table) {
  *         field should have the AUTO_INCREMENT attribute and empty otherwise.
  * @param string $upgradeStatement
  *         NOT USED AT THE MOMENT
- * @param bool   $bRemoveIndexes
+ * @param bool $bRemoveIndexes
  *         Flag to remove all indexes
  *
  * @return bool
  *
  * @throws cDbException
  */
-function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extra, $upgradeStatement, $bRemoveIndexes = false) {
+function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extra, $upgradeStatement, $bRemoveIndexes = false)
+{
     global $columnCache;
     global $tableCache;
 
@@ -223,10 +225,10 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
     // Third check: Compare field properties
     if (($structure[$field]['Type'] != $type) ||
-            ($structure[$field]['Null'] != $null) ||
-            ($structure[$field]['Key'] != $key) ||
-            ($structure[$field]['Default'] != $default) ||
-            ($structure[$field]['Extra'] != $extra)) {
+        ($structure[$field]['Null'] != $null) ||
+        ($structure[$field]['Key'] != $key) ||
+        ($structure[$field]['Default'] != $default) ||
+        ($structure[$field]['Extra'] != $extra)) {
 
         if ($structure[$field]['Key'] == 'PRI') {
             $sql = "ALTER TABLE `" . $db->escape($table) . "` ADD PRIMARY KEY (" . $db->escape($field) . ") ";
@@ -244,14 +246,15 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 /**
  * Checks, if passed table exists in the database
  *
- * @param cDb    $db
+ * @param cDb $db
  * @param string $table
  *
  * @return bool
  *
  * @throws cDbException
  */
-function dbTableExists($db, $table) {
+function dbTableExists($db, $table)
+{
     global $tableCache;
 
     if (!is_object($db)) {
@@ -278,7 +281,7 @@ function dbTableExists($db, $table) {
 /**
  * Returns the column structure of a table
  *
- * @param cDb    $db
+ * @param cDb $db
  * @param string $table
  *
  * @return array|bool
@@ -286,7 +289,8 @@ function dbTableExists($db, $table) {
  *
  * @throws cDbException
  */
-function dbGetColumns($db, $table) {
+function dbGetColumns($db, $table)
+{
     global $columnCache;
 
     if (!is_object($db)) {
@@ -313,18 +317,19 @@ function dbGetColumns($db, $table) {
 /**
  * Returns the primary key column of a table
  *
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
- * @param cDb    $db
+ * @param cDb $db
  * @param string $table
  *
  * @return string
  *
  * @throws cDbException
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ *
  */
-function dbGetPrimaryKeyName($db, $table) {
+function dbGetPrimaryKeyName($db, $table)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
 
     $sReturn = '';
@@ -349,7 +354,8 @@ function dbGetPrimaryKeyName($db, $table) {
  * @param cDb $db The database instance
  * @return bool
  */
-function dbSupportsSqlModeMYSQL40($version = '', $db = null) {
+function dbSupportsSqlModeMYSQL40($version = '', $db = null)
+{
     if (empty($version) && !is_object($db)) {
         return false;
     }

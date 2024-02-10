@@ -35,7 +35,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class SolrRightBottomPage extends cGuiPage {
+class SolrRightBottomPage extends cGuiPage
+{
 
     /**
      *
@@ -46,7 +47,8 @@ class SolrRightBottomPage extends cGuiPage {
     /**
      * @throws SolrClientException|cDbException|cException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct('right_bottom', Solr::getName());
 
         $action = cRegistry::getAction();
@@ -133,7 +135,8 @@ class SolrRightBottomPage extends cGuiPage {
      *
      * @throws SolrClientException|cDbException|cException
      */
-    protected function _dispatch($action) {
+    protected function _dispatch($action)
+    {
         $area = cRegistry::getArea();
 
         // check for permission
@@ -175,7 +178,8 @@ class SolrRightBottomPage extends cGuiPage {
      *
      * @return string
      */
-    private function _storeClientOptions() {
+    private function _storeClientOptions()
+    {
         $settings = 'secure,hostname,port,path,wt,login,password,timeout,';
         $settings .= 'proxy_host,proxy_port,proxy_login,proxy_password,';
         $settings .= 'ssl_cert,ssl_key,ssl_keypassword,ssl_cainfo,ssl_capath';
@@ -199,7 +203,8 @@ class SolrRightBottomPage extends cGuiPage {
      * @return string
      * @throws cException
      */
-    private function _reload() {
+    private function _reload()
+    {
 
         // build URL
         // @see https://en.wikipedia.org/wiki/Basic_access_authentication
@@ -208,8 +213,8 @@ class SolrRightBottomPage extends cGuiPage {
         $url .= $this->_clientOptions['login'] . ':' . $this->_clientOptions['password'] . '@';
         $url .= $this->_clientOptions['hostname'] . ':' . $this->_clientOptions['port'];
         $url .= '/solr/admin/cores?' . http_build_query([
-            'action' => 'RELOAD',
-            'core' => array_pop($pathList)
+                'action' => 'RELOAD',
+                'core' => array_pop($pathList)
             ]);
 
         // create curl resource
@@ -248,7 +253,7 @@ class SolrRightBottomPage extends cGuiPage {
             // close curl resource to free up system resources
             curl_close($ch);
 
-            if (200 !== (int) $curlInfo['http_code']) {
+            if (200 !== (int)$curlInfo['http_code']) {
                 $msg = 'HTTP status code ' . $curlInfo['http_code'];
                 // may contain an error message
                 // $msg .= '\ndata: ' . $sData;
@@ -276,7 +281,8 @@ class SolrRightBottomPage extends cGuiPage {
      * @throws cDbException
      * @throws cException
      */
-    private function _reindex() {
+    private function _reindex()
+    {
         $cfg = cRegistry::getConfig();
 
         $idclient = cRegistry::getClientId();
@@ -342,7 +348,8 @@ class SolrRightBottomPage extends cGuiPage {
      * @throws cDbException
      * @throws cException
      */
-    private function _delete() {
+    private function _delete()
+    {
         $cfg = cRegistry::getConfig();
 
         // statement is not correct if articles are related to more than one category.

@@ -17,7 +17,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * @return string
  */
-function frontendusers_valid_from_getTitle() {
+function frontendusers_valid_from_getTitle()
+{
     return i18n("Valid from");
 }
 
@@ -25,7 +26,8 @@ function frontendusers_valid_from_getTitle() {
  * @return string|void
  * @throws cInvalidArgumentException
  */
-function frontendusers_valid_from_display() {
+function frontendusers_valid_from_display()
+{
     global $feuser;
 
     $belang = cRegistry::getBackendLanguage();
@@ -92,14 +94,16 @@ function frontendusers_valid_from_display() {
 /**
  * @return array
  */
-function frontendusers_valid_from_wantedVariables() {
+function frontendusers_valid_from_wantedVariables()
+{
     return (['valid_from']);
 }
 
 /**
  * @param $variables
  */
-function frontendusers_valid_from_store($variables) {
+function frontendusers_valid_from_store($variables)
+{
     global $feuser;
 
     $feuser->set('valid_from', $variables['valid_from'], false);

@@ -25,7 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-abstract class PifaAbstractFormProcessor {
+abstract class PifaAbstractFormProcessor
+{
 
     /**
      * @var PifaAbstractFormModule
@@ -53,7 +54,8 @@ abstract class PifaAbstractFormProcessor {
      *         or param
      * @throws PifaException if form could not be loaded
      */
-    public function __construct(PifaAbstractFormModule $module = NULL, $idform = NULL) {
+    public function __construct(PifaAbstractFormModule $module = NULL, $idform = NULL)
+    {
         $this->_module = $module;
 
         // for backward compatibility
@@ -79,28 +81,32 @@ abstract class PifaAbstractFormProcessor {
     /**
      * @return PifaAbstractFormModule
      */
-    public function getModule() {
+    public function getModule()
+    {
         return $this->_module;
     }
 
     /**
      * @param PifaAbstractFormModule $_module
      */
-    public function setModule($_module) {
+    public function setModule($_module)
+    {
         $this->_module = $_module;
     }
 
     /**
      * @return PifaForm
      */
-    public function getForm() {
+    public function getForm()
+    {
         return $this->_form;
     }
 
     /**
      * @param PifaForm $_form
      */
-    public function setForm($_form) {
+    public function setForm($_form)
+    {
         $this->_form = $_form;
     }
 
@@ -142,7 +148,8 @@ abstract class PifaAbstractFormProcessor {
      * @throws PifaValidationException if data is invalid
      * @throws PifaDatabaseException if data could not be stored
      */
-    public function process() {
+    public function process()
+    {
 
         // assert there is a form to process
         if (NULL === $this->_form) {

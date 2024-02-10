@@ -16,11 +16,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // generates obj that renders the content on the right side.
 if (!empty($_REQUEST['idart'])) {
-	$rightBottom = new ArticleForumRightBottom();
-	$rightBottom->receiveData($_GET, $_POST);
-	$rightBottom->render();
+    $rightBottom = new ArticleForumRightBottom();
+    $rightBottom->receiveData($_GET, $_POST);
+    $rightBottom->render();
 } else {
-	$rightBottom = new ArticleForumRightBottom();
-	$rightBottom->getStartpage();
-	$rightBottom->render();
+    $rightBottom = new ArticleForumRightBottom();
+    $rightBottom->getStartpage();
+    $rightBottom->render();
 }

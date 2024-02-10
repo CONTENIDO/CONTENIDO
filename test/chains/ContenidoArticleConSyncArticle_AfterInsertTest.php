@@ -20,7 +20,8 @@ use PHPUnit\Framework\TestCase;
  *
  * @param array $data
  */
-function chain_ContenidoArticleConSyncArticle_AfterInsert_Test(array $data) {
+function chain_ContenidoArticleConSyncArticle_AfterInsert_Test(array $data)
+{
     if (isset($data['dest_art_lang']) && is_array($data['dest_art_lang'])) {
         ContenidoArticleConSyncArticle_AfterInsertTest::$invokeCounter++;
     }
@@ -31,7 +32,8 @@ function chain_ContenidoArticleConSyncArticle_AfterInsert_Test(array $data) {
  *
  * @param array $data
  */
-function chain_ContenidoArticleConSyncArticle_AfterInsert_Test2(array $data) {
+function chain_ContenidoArticleConSyncArticle_AfterInsert_Test2(array $data)
+{
     if (isset($data['dest_art_lang']) && is_array($data['dest_art_lang'])) {
         ContenidoArticleConSyncArticle_AfterInsertTest::$invokeCounter++;
     }
@@ -43,7 +45,8 @@ function chain_ContenidoArticleConSyncArticle_AfterInsert_Test2(array $data) {
  * @package    Testing
  * @subpackage Test_Chains
  */
-class ContenidoArticleConSyncArticle_AfterInsertTest extends TestCase {
+class ContenidoArticleConSyncArticle_AfterInsertTest extends TestCase
+{
 
     /**
      * @var int
@@ -71,14 +74,16 @@ class ContenidoArticleConSyncArticle_AfterInsertTest extends TestCase {
     /**
      *
      */
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         self::$invokeCounter = 0;
     }
 
     /**
      * Test Contenido.Article.conSyncArticle_AfterInsert chain
      */
-    public function testNoChain() {
+    public function testNoChain()
+    {
         // execute chain
         cApiCecHook::execute($this->_chain, $this->_data);
 
@@ -94,7 +99,8 @@ class ContenidoArticleConSyncArticle_AfterInsertTest extends TestCase {
     /**
      * Test Contenido.Article.conSyncArticle_AfterInsert chain
      */
-    public function testOneChain() {
+    public function testOneChain()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -119,7 +125,8 @@ class ContenidoArticleConSyncArticle_AfterInsertTest extends TestCase {
     /**
      * Test Contenido.Article.conSyncArticle_AfterInsert chain
      */
-    public function testTwoChains() {
+    public function testTwoChains()
+    {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 

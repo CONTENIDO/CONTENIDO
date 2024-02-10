@@ -40,10 +40,10 @@ if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegi
 }
 
 $appendparameters = $_REQUEST['appendparameters'] ?? '';
-$searchfor        = cSecurity::escapeString($_REQUEST['searchfor'] ?? '');
-$sDisplayPath     = cSecurity::escapeString($_REQUEST['path'] ?? '');
-$pathstring       = cSecurity::escapeString($_REQUEST['pathstring'] ?? '');
-$file             = cSecurity::escapeString($_REQUEST['file'] ?? '');
+$searchfor = cSecurity::escapeString($_REQUEST['searchfor'] ?? '');
+$sDisplayPath = cSecurity::escapeString($_REQUEST['path'] ?? '');
+$pathstring = cSecurity::escapeString($_REQUEST['pathstring'] ?? '');
+$file = cSecurity::escapeString($_REQUEST['file'] ?? '');
 
 $cfgClient = cRegistry::getClientConfig();
 
@@ -87,7 +87,7 @@ if ($perm->have_perm_area_action('upl', 'upl_mkdir') && $client > 0) {
     $tpl->set('s', 'PATH', $path);
     $sessURL = $sess->url("main.php?area=upl_mkdir&frame=2&appendparameters=$appendparameters");
     $tpl->set('s', 'TARGET', 'onsubmit="parent.frames[2].location.href=\'' . $sess->url("main.php?area=upl&action=upl_mkdir&frame=2&appendparameters=$appendparameters") .
-            '&path=\'+document.newdir.path.value+\'&foldername=\'+document.newdir.foldername.value;"');
+        '&path=\'+document.newdir.path.value+\'&foldername=\'+document.newdir.foldername.value;"');
     $tpl->set('s', 'DISPLAY_DIR', 'block');
 } else {
     // No permission with current rights

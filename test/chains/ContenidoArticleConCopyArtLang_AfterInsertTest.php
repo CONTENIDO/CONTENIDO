@@ -45,10 +45,10 @@ class ContenidoArticleConCopyArtLang_AfterInsertTest extends TestCase
     private $_chain = 'Contenido.Article.conCopyArtLang_AfterInsert';
     private $_data = array(
         'idartlang' => 2345,
-        'idart'     => 123,
-        'idlang'    => 1,
-        'idtplcfg'  => 33,
-        'title'     => 'this is a title'
+        'idart' => 123,
+        'idlang' => 1,
+        'idtplcfg' => 33,
+        'title' => 'this is a title'
     );
 
     public static $invokeCounter = 0;
