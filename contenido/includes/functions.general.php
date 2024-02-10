@@ -2060,3 +2060,63 @@ function cBuildBackendRenderDebugInfo(array &$cfg, $oldMemoryUsage, $includedFil
     ];
     return implode("\n", $debugInfo);
 }
+
+/**
+ * Checks if the current request is a Ajax request.
+ *
+ * @since CONTENIDO 4.10.2
+ * @return bool
+ */
+function cIsAjaxRequest(): bool
+{
+    return isset($_SERVER['HTTP_X_REQUESTED_WITH']) 
+        && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+}
+
+/**
+ * Checks if the current request is a GET request.
+ *
+ * @since CONTENIDO 4.10.2
+ * @return bool
+ */
+function cIsGetRequest(): bool
+{
+    return isset($_SERVER['REQUEST_METHOD'])
+        && $_SERVER['REQUEST_METHOD'] === 'GET';
+}
+
+/**
+ * Checks if the current request is a POST request.
+ *
+ * @since CONTENIDO 4.10.2
+ * @return bool
+ */
+function cIsPostRequest(): bool
+{
+    return isset($_SERVER['REQUEST_METHOD'])
+        && $_SERVER['REQUEST_METHOD'] === 'POST';
+}
+
+/**
+ * Checks if the current request is a HEAD request.
+ *
+ * @since CONTENIDO 4.10.2
+ * @return bool
+ */
+function cIsHeadRequest(): bool
+{
+    return isset($_SERVER['REQUEST_METHOD'])
+        && $_SERVER['REQUEST_METHOD'] === 'HEAD';
+}
+
+/**
+ * Checks if the current request is a PUT request.
+ *
+ * @since CONTENIDO 4.10.2
+ * @return bool
+ */
+function cIsPutRequest(): bool
+{
+    return isset($_SERVER['REQUEST_METHOD'])
+        && $_SERVER['REQUEST_METHOD'] === 'PUT';
+}

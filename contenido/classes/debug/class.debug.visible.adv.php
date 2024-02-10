@@ -108,13 +108,23 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
 
     /**
      * Outputs all Debug items in collection to screen in a HTML Box at left top
-     * of page.
+     * of the page.
+     * No output happen in case of an Ajax request.
      *
      * @throws cInvalidArgumentException
      */
     public function showAll()
     {
+        if (cIsAjaxRequest()) {
+            return;
+        }
+
         $cfg = cRegistry::getConfig();
+
+        if (!empty($this->_buffer)) {
+            // Add buffer as a debug item
+            $this->add($this->_buffer, 'Buffer');
+        }
 
         $sHtml = '';
         if ($this->count() > 0) {
