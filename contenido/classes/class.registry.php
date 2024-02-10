@@ -728,7 +728,7 @@ class cRegistry {
      *
      * @throws cInvalidArgumentException
      */
-    public final static function shutdown($debugShowAll = true)
+    public final static function shutdown(bool $debugShowAll = true)
     {
         if ($debugShowAll) {
             cDebug::showAll();
