@@ -3,12 +3,18 @@ function con_dbg_toggle(myItem) {
     var myItemObj = document.getElementById(myItem);
     if (myItemObj) {
         myItemObj.style.display = myItemObj.style.display === 'none' ? '' : 'none';
+        if (myItemObj.style.display === 'none') {
+            document.body.classList.remove('cms_has_overlay')
+        } else {
+            document.body.classList.add('cms_has_overlay')
+        }
     }
 }
 function con_dbg_hide(myItem) {
     var myItemObj = document.getElementById(myItem);
     if (myItemObj) {
         myItemObj.style.display = 'none';
+        document.body.classList.remove('cms_has_overlay');
     }
 }
 </script>
