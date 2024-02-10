@@ -697,7 +697,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             exit();
         } else {
             if ($cfg['debug']['codeoutput']) {
-                echo '<textarea>' . conHtmlSpecialChars($code) . '</textarea>';
+                cDebug::add(conHtmlSpecialChars($code), 'Article code');
             }
 
             // That's it! The code of an article will be evaluated.
