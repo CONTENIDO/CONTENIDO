@@ -111,7 +111,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
     /**
      * Outputs all Debug items in collection to screen in a HTML Box at left top
      * of the page. The alignment can be configured via setting:
-     * - Type: 'dev'
+     * - Type: 'debug'
      * - Name: 'debug_to_screen_align'
      * - Value: 'left' or 'right' (default is 'left')
      * No output happen in case of an Ajax request.
@@ -126,7 +126,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
 
         $cfg = cRegistry::getConfig();
 
-        $alignment = cEffectiveSetting::get('dev', 'debug_to_screen_align', 'left');
+        $alignment = cEffectiveSetting::get('debug', 'debug_to_screen_align', 'left');
         $cssClass = $alignment === 'right' ? 'con_dbg_box_align_right' : 'con_dbg_box_align_left';
 
         if (!empty($this->_buffer)) {
