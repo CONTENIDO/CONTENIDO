@@ -4,18 +4,18 @@
     <legend>{$trans.legend}</legend>
     {if true neq $form->isLoaded()}
         <p>{$trans.pleaseSaveFirst}</p>
-    {elseif not $fields|is_array}
+    {elseif not is_array($fields)}
         {* an error is a string instead of an array *}
         {$fields}
-    {elseif not $data|is_array}
+    {elseif not is_array($data)}
         {* an error is a string instead of an array *}
         {$data}
     {else}
         {* If no $exportUrl is given user lacks rights to download CSV. *}
-        {if isset($exportUrl) && 0 lt $exportUrl|trim|strlen}
+        {if isset($exportUrl) && 0 lt $exportUrl|count_characters}
             <a class="form-data-export" href="{$exportUrl}">{$trans.export}</a>
         {/if}
-        {if $data|count}
+        {if count($data)}
             {$lnkDel}
         {/if}
         <table class="generic">
@@ -29,7 +29,7 @@
                     {* skip columns that don't store data into DB *}
                     {if NULL eq $field->getDbDataType()}{continue}{/if}
                     {assign var=columnName value=$field->get('column_name')}
-                    {if 0 eq $columnName|strlen}
+                    {if 0 eq $columnName|count_characters}
                         <th class="no_wrap">&nbsp;</th>
                     {else}
                         <th class="no_wrap">{$columnName}</th>
@@ -37,9 +37,9 @@
                 {/foreach}
                 <th class="no_wrap">{$trans.delete}</th>
             </tr>
-            {if 0 eq $data|count}
+            {if 0 eq count($data)}
                 <tr>
-                    <td colspan="{$fields|count + 1}">{$trans.nodata}</td>
+                    <td colspan="{count($fields) + 1}">{$trans.nodata}</td>
                 </tr>
             {else}
                 {foreach from=$data item=row}
@@ -55,12 +55,12 @@
                             {if NULL eq $field->getDbDataType()}{continue}{/if}
                             {assign var=columnName value=$field->get('column_name')}
                             {assign var=columnData value=$row.$columnName}
-                            {if 0 eq $columnData|strlen}
+                            {if 0 eq $columnData|count_characters}
                                 <td class="no_wrap bordercell">&nbsp;</td>
                             {elseif '9' eq $field->get('field_type')}
                                 {* display INPUTFILE values as link *}
                                 <td class="no_wrap bordercell"><a
-                                            href="{$getFileUrl}&name={$columnData|htmlentities}&file={$form->get('data_table')}_{$row.id}_{$columnName}">{$columnData|escape:htmlall}</a>
+                                            href="{$getFileUrl}&name={$columnData|escape:'url'}&file={$form->get('data_table')}_{$row.id}_{$columnName}">{$columnData|escape:htmlall}</a>
                                 </td>
                             {else}
                                 <td class="no_wrap bordercell">{$columnData|escape:htmlall}</td>
@@ -74,7 +74,7 @@
                 {/foreach}
             {/if}
         </table>
-        {if $data|count}
+        {if count($data)}
             <table>
                 <tr>
                     <th>

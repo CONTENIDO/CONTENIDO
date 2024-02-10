@@ -45,7 +45,7 @@
             {$label.resultPage}
             &nbsp;
             &nbsp;
-            {if 0 < $prev|strlen}
+            {if 0 < $prev|count_characters}
                 <a href="{$prev}" title="{$label.previous}">
                     <img src="images/link_pfeil_klein_links.gif" alt=""/>
                     &nbsp;
@@ -54,23 +54,19 @@
                 </a>
                 &nbsp;
             {/if}
-            {foreach item=page from=$pages|array_keys}
-                {assign var="href" value=$pages.$page}
+            {foreach $pages as $page}
+                {assign var="href" value=$page}
                 <span style="white-space:nowrap;">
-            &nbsp;
-            {if $currentPage eq $page}
-                <strong>{$page}</strong>
-                    
-                                        
-{else}
-            
-                
-                <a href="{$href}" title="{$page}">{$page}</a>
-            {/if}
-            &nbsp;
-        </span>
+                    &nbsp;
+                {if $currentPage eq $page@key}
+                    <strong>{$page@key}</strong>
+                {else}
+                    <a href="{$href}" title="{$page@key}">{$page@key}</a>
+                {/if}
+                &nbsp;
+            </span>
             {/foreach}
-            {if 0 < $next|strlen}
+            {if 0 < $next|count_characters}
                 &nbsp;
                 <a href="{$next}" title="{$label.next}">
                     {$label.next}

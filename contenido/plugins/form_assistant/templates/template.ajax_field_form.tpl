@@ -3,11 +3,11 @@
 <input type="hidden" id="area" name="area" value="form_ajax"/>
 <input type="hidden" id="frame" name="frame" value="4"/>
 {* If no $contenido is given user lacks rights to save form. *}
-{if 0 lt $contenido|trim|strlen}
+{if 0 lt $contenido|count_characters}
     <input type="hidden" id="contenido" name="contenido" value="{$contenido}"/>
 {/if}
 {* If no $action is given user lacks rights to save form. *}
-{if 0 lt $action|trim|strlen}
+{if 0 lt $action|count_characters}
     <input type="hidden" id="action" name="action" value="{$action}"/>
 {/if}
 
@@ -135,7 +135,7 @@ OPTION VALUES
         </div>
 
         {* If no $hrefAddOption is given user lacks rights to add option. *}
-        {if 0 lt $hrefAddOption|trim|strlen}
+        {if 0 lt $hrefAddOption|count_characters}
             <div id="add-options-div">
                 <a id="icon-add-option" href="{$hrefAddOption}">
                     <img src="images/but_art_new.gif"/>

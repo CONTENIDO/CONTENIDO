@@ -17,7 +17,7 @@
     <input type="hidden" id="ajaxParams" value="{$ajaxParams}"/>
     {* params used for an AJAX call on sorting form fields *}
     {* If no $sortParams is given user lacks rights to reorder fields. *}
-    {if 0 lt $sortParams|trim|strlen}
+    {if 0 lt $sortParams|count_characters}
         <input type="hidden" id="sortParams" value="{$sortParams}">
     {/if}
 
@@ -29,7 +29,7 @@
                 <li>
                     <a
                             {* If no $dragParams is given user lacks rights to add form field. *}
-                            {if 0 lt $dragParams|trim|strlen}
+                            {if 0 lt $dragParams|count_characters}
                                 class="pifa-field-type-{$fieldTypeId} img-draggable"
                                 href="{$dragParams}&field_type={$fieldTypeId}"
                             {else}
@@ -43,7 +43,7 @@
     {* list of this forms fields *}
     <fieldset id="field-list-field">
         <ul id="pifa-form-field-list"
-                {if 0 lt $sortParams|trim|strlen}
+                {if 0 lt $sortParams|count_characters}
             class="sortable"
                 {/if}>
             {* $fields might be NULL, but the UL has to be displayed for dropping nonetheless *}

@@ -1,6 +1,6 @@
 <!-- navigation_searchform_top/template/get.tpl -->
 
-{if 0 eq $action|trim|strlen}
+{if 0 eq $action|count_characters}
     <!--
         In order for the search form to be shown
         you have to define a search result page.

@@ -22,22 +22,22 @@ or some parts of the SDK may not work properly. *}
         // init the FB JS SDK
         FB.init({
             {/literal}
-            {if 0 lt $channelUrl|trim|strlen}
+            {if 0 lt $channelUrl|count_characters}
             channelUrl: '{$channelUrl|escape:'javascript'}',
             {/if}
-            {if 0 lt $cookie|trim|strlen}
+            {if 0 lt $cookie|count_characters}
             cookie: {$cookie},
             {/if}
-            {if 0 lt $kidDirectedSite|trim|strlen}
+            {if 0 lt $kidDirectedSite|count_characters}
             kidDirectedSite: {$kidDirectedSite|escape:'javascript'},
             {/if}
-            {if 0 lt $status|trim|strlen}
+            {if 0 lt $status|count_characters}
             status: {$status|escape:'javascript'},
             {/if}
-            {if 0 lt $appId|trim|strlen}
+            {if 0 lt $appId|count_characters}
             appId: '{$appId|escape:'javascript'}',
             {/if}
-            {if 0 lt $xfbml|trim|strlen}
+            {if 0 lt $xfbml|count_characters}
             xfbml: {$xfbml|escape:'javascript'}
             {else}
             xfbml: false

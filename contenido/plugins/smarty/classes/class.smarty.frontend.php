@@ -137,6 +137,7 @@ class cSmartyFrontend
         if ($bResetTemplate) {
             self::$oSmarty = new cSmartyWrapper();
             self::resetPaths();
+            self::registerDeprecatedPhpModifier();
         }
         return self::$oSmarty;
     }
@@ -149,6 +150,33 @@ class cSmartyFrontend
         self::$oSmarty->setTemplateDir(self::$aDefaultPaths['template_dir']);
         self::$oSmarty->setCacheDir(self::$aDefaultPaths['cache_dir']);
         self::$oSmarty->setCompileDir(self::$aDefaultPaths['compile_dir']);
+    }
+
+    /**
+     * Function to register deprecated PHP functions as modifier.
+     * This is deprecated as of Smarty 4.3.0, therefore we want to give the CONTENIDO 
+     * community some time to adapt their templates.
+     *
+     * The list of registered modifier plugins is based on the CONTENIDO source 
+     * (plugins and example client), this may differ on installations with custom and
+     * modified templates.
+     *
+     * TODO This is a temporary solution, remove this later!
+     *
+     * @since CONTENIDO 4.10.2
+     * @link https://github.com/CONTENIDO/CONTENIDO/issues/453
+     * @return void
+     * @throws SmartyException
+     */
+    private static function registerDeprecatedPhpModifier()
+    {
+        self::$oSmarty->registerPlugin('modifier', 'trim', 'trim');
+        self::$oSmarty->registerPlugin('modifier', 'strlen', 'strlen');
+        self::$oSmarty->registerPlugin('modifier', 'htmlentities', 'htmlentities');
+        self::$oSmarty->registerPlugin('modifier', 'strtoupper', 'strtoupper');
+        self::$oSmarty->registerPlugin('modifier', 'is_array', 'is_array');
+        self::$oSmarty->registerPlugin('modifier', 'in_array', 'in_array');
+        self::$oSmarty->registerPlugin('modifier', 'array_keys', 'array_keys');
     }
 
 }

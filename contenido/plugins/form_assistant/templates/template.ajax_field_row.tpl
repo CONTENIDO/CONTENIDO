@@ -18,7 +18,7 @@
             <img class="con_img_button_off" alt="{$trans.obligatory}" title="{$trans.obligatory}"
                  src="images/reminder/prio_high.gif"/>
         {/if}
-        {if 0 lt $editField|trim|strlen}
+        {if 0 lt $editField|count_characters}
             <a href="{$editField}&amp;idfield={$field->get('idfield')}"
                class="con_img_button pifa-icon-edit-field" title="{$trans.edit}">
                 <img alt="{$trans.edit}" title="{$trans.edit}" src="images/editieren.gif"/>
@@ -27,7 +27,7 @@
             <img class="con_img_button_off" alt="{$trans.edit}" title="{$trans.edit}"
                  src="images/editieren_off.gif"/>
         {/if}
-        {if 0 lt $deleteField|trim|strlen}
+        {if 0 lt $deleteField|count_characters}
             <a href="{$deleteField}&amp;idfield={$field->get('idfield')}"
                class="con_img_button pifa-icon-delete-field " title="{$trans.delete}">
                 <img alt="{$trans.delete}" title="{$trans.delete}" src="images/delete.gif"/>
