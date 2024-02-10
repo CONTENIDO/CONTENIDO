@@ -506,8 +506,8 @@ if ($code == "0601") {
 
 $code = preg_replace("/(<body[^>]*)>/i", "\${1}> \n $versioningElement", $code, 1);
 
-if ($cfg["debug"]["codeoutput"]) {
-    cDebug::out(conHtmlSpecialChars($code));
+if ($cfg['debug']['codeoutput'] || $cfg['debug']['article_editor_codeoutput']) {
+    cDebug::add(conHtmlSpecialChars($code), 'Article code');
 }
 
 chdir(cRegistry::getFrontendPath());
