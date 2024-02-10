@@ -442,12 +442,34 @@ if ($contenido) {
 // check if isset parent category template
 // do not show error message if user calls an article explicitly via idart URL parameter
 if ($contenido) {
-    $errorText = i18n("Editing/Showing is not possible because there is no template assigned to this category.");
+    $sql        = "
+        SELECT
+            a.idtplcfg
+        FROM
+            `" . $cfg['tab']['cat_lang'] . "` AS a,
+            `" . $cfg['tab']['cat_art'] . "` AS b
+        WHERE
+            a.idcat = b.idcat
+            AND b.idart = $idart
+            AND a.idlang = $lang
+        ;";
+    $errorText  = i18n("Editing/Showing is not possible because there is no template assigned to this category.");
     $errorTitle = i18n("FATAL ERROR");
 } else {
-    $article = new cApiArticleLanguage($idartlang);
-    $idart = $article->getField('idart');
-    $errorText = 'Editing/Showing is not possible because there is no template assigned to this category.';
+    $article    = new cApiArticleLanguage($idartlang);
+    $idart      = $article->getField('idart');
+    $sql        = "
+        SELECT
+            a.idtplcfg
+        FROM
+            `" . $cfg['tab']['cat_lang'] . "` AS a,
+            `" . $cfg['tab']['cat_art'] . "` AS b
+        WHERE
+            a.idcat = b.idcat
+            AND b.idart = $idart
+            AND a.idlang = $lang
+        ;";
+    $errorText  = 'Editing/Showing is not possible because there is no template assigned to this category.';
     $errorTitle = 'FATAL ERROR!';
 }
 
