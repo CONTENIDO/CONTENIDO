@@ -16,7 +16,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $db, $notification, $tpl, $idcat, $idart, $idtpl, $idtplcfg, $syncoptions;
+global $db, $notification, $tpl, $idtpl, $idtplcfg, $syncoptions;
 
 cInclude('includes', 'functions.pathresolver.php');
 
@@ -26,8 +26,10 @@ $perm = cRegistry::getPerm();
 $area = cRegistry::getArea();
 $frame = cRegistry::getFrame();
 $cfg = cRegistry::getConfig();
-$client = cRegistry::getClientId();
-$lang = cRegistry::getLanguageId();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$idart = cSecurity::toInteger(cRegistry::getArticleId());
+$idcat = cSecurity::toInteger(cRegistry::getCategoryId());
 
 $message = '';
 $description = '';
@@ -37,52 +39,47 @@ $disabled = '';
 $artlang = null;
 $inUse = false;
 
-if (isset($idart)) {
-    if ($idart > 0) {
-        $idartlang = getArtLang($idart, $lang);
+if ($idart > 0) {
+    $idartlang = getArtLang($idart, $lang);
 
-        // Remove all own marks
-        $col = new cApiInUseCollection();
-        $col->removeSessionMarks($sess->id);
+    // Remove all own marks
+    $col = new cApiInUseCollection();
+    $col->removeSessionMarks($sess->id);
 
-        if (($obj = $col->checkMark('article', $idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) {
-            $col->markInUse('article', $idartlang, $sess->id, $auth->auth['uid']);
-            $inUse = false;
-            $disabled = '';
-        } else {
-            $vuser = new cApiUser($obj->get('userid'));
-            $inUseUser = $vuser->getField('username');
-            $inUseUserRealName = $vuser->getField('realname');
-
-            $message = sprintf(i18n("Article is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
-            $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
-            $inUse = true;
-            $disabled = 'disabled="disabled"';
-        }
+    if (($obj = $col->checkMark('article', $idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) {
+        $col->markInUse('article', $idartlang, $sess->id, $auth->auth['uid']);
+        $inUse = false;
+        $disabled = '';
     } else {
-        // Remove all own marks
-        $col = new cApiInUseCollection();
-        $col->removeSessionMarks($sess->id);
-        if (($obj = $col->checkMark('categorytpl', $idcat)) === false || $obj->get("userid") == $auth->auth['uid']) {
-            $col->markInUse('categorytpl', $idcat, $sess->id, $auth->auth['uid']);
-            $inUse = false;
-            $disabled = '';
-        } else {
-            $vuser = new cApiUser($obj->get('userid'));
-            $inUseUser = $vuser->getField('username');
-            $inUseUserRealName = $vuser->getField('realname');
+        $vuser = new cApiUser($obj->get('userid'));
+        $inUseUser = $vuser->getField('username');
+        $inUseUserRealName = $vuser->getField('realname');
 
-            $message = sprintf(i18n("Category template configuration is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
-            $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
-            $inUse = true;
-            $disabled = 'disabled="disabled"';
-        }
+        $message = sprintf(i18n("Article is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
+        $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
+        $inUse = true;
+        $disabled = 'disabled="disabled"';
+    }
+} else {
+    // Remove all own marks
+    $col = new cApiInUseCollection();
+    $col->removeSessionMarks($sess->id);
+    if (($obj = $col->checkMark('categorytpl', $idcat)) === false || $obj->get("userid") == $auth->auth['uid']) {
+        $col->markInUse('categorytpl', $idcat, $sess->id, $auth->auth['uid']);
+        $inUse = false;
+        $disabled = '';
+    } else {
+        $vuser = new cApiUser($obj->get('userid'));
+        $inUseUser = $vuser->getField('username');
+        $inUseUserRealName = $vuser->getField('realname');
+
+        $message = sprintf(i18n("Category template configuration is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
+        $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
+        $inUse = true;
+        $disabled = 'disabled="disabled"';
     }
 }
 
-if (!isset($idart)) {
-    $idart = 0;
-}
 if (!isset($idlay)) {
     $idlay = 0;
 }
@@ -345,12 +342,22 @@ foreach ($containerModules as $containerNumber => $containerModuleId) {
         cSecurity::toInteger($containerNumber), $containerConfig, $input
     );
 
+    if ($cfg['debug']['article_template_configuration_codeoutput']) {
+        $debugModuleCode = conHtmlSpecialChars($modulecode);
+    } else {
+        $debugModuleCode = '';
+    }
+
     ob_start();
     eval($modulecode);
     $modulecode = ob_get_contents();
     ob_end_clean();
 
     $modulecaption = i18n("Module in container") . ' ' . $containerNumber . ': ';
+
+    if ($cfg['debug']['article_template_configuration_codeoutput']) {
+        cDebug::add($debugModuleCode, $modulecaption);
+    }
 
     $tpl->set('d', 'MODULECAPTION', $modulecaption);
     $tpl->set('d', 'MODULENAME', $moduleItem->get('name'));

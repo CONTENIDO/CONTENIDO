@@ -731,6 +731,13 @@ class cRegistry
      */
     public final static function shutdown(bool $debugShowAll = true)
     {
+        static $shutdownInvoked;
+
+        if (isset($shutdownInvoked)) {
+            return;
+        }
+        $shutdownInvoked = true;
+
         if ($debugShowAll) {
             cDebug::showAll();
         }

@@ -2,9 +2,10 @@
     z-index: 2147483647 !important;
 }
 
-/* Hide image when WYSIWYG editor is in fullscreen mode */
-.mce-fullscreen .cms_abstract_img {
-    display: none;
+/* Reset image z-index when WYSIWYG editor is in fullscreen mode or a parent has the overlay class */
+.mce-fullscreen .cms_abstract_img,
+.cms_has_overlay .cms_abstract_img {
+    z-index: auto !important;
 }
 
 .cms_abstract {

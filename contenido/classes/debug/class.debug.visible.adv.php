@@ -31,6 +31,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cDebugVisibleAdv implements cDebugInterface, Countable
 {
 
+    use cDebugVisibleTrait;
+
     /**
      * Singleton instance
      *
@@ -108,7 +110,10 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
 
     /**
      * Outputs all Debug items in collection to screen in a HTML Box at left top
-     * of the page.
+     * of the page. The alignment can be configured via setting:
+     * - Type: 'dev'
+     * - Name: 'debug_to_screen_align'
+     * - Value: 'left' or 'right' (default is 'left')
      * No output happen in case of an Ajax request.
      *
      * @throws cInvalidArgumentException
@@ -121,6 +126,9 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
 
         $cfg = cRegistry::getConfig();
 
+        $alignment = cEffectiveSetting::get('dev', 'debug_to_screen_align', 'left');
+        $cssClass = $alignment === 'right' ? 'con_dbg_box_align_right' : 'con_dbg_box_align_left';
+
         if (!empty($this->_buffer)) {
             // Add buffer as a debug item
             $this->add($this->_buffer, 'Buffer');
@@ -129,6 +137,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
         $sHtml = '';
         if ($this->count() > 0) {
             $tpl = new cTemplate();
+
+            $tpl->set('s', 'DBG_BOX_CSS_CLASS', $cssClass);
 
             $i = 1;
             foreach ($this->_aItems as $oItem) {
@@ -173,58 +183,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
      */
     private function _prepareValue($mValue): string
     {
-        $bTextarea = false;
-        $bPlainText = false;
-        $sReturn = '';
-        if (is_array($mValue)) {
-            if (sizeof($mValue) > 10) {
-                $bTextarea = true;
-            } else {
-                $bPlainText = true;
-            }
-        }
-        if (is_object($mValue)) {
-            $bTextarea = true;
-        }
-        if (is_string($mValue)) {
-            if (preg_match('/<(.*)>/', $mValue)) {
-                if (cString::getStringLength($mValue) > 40) {
-                    $bTextarea = true;
-                } else {
-                    $bPlainText = true;
-                    $mValue = conHtmlSpecialChars($mValue);
-                }
-            } else {
-                $bPlainText = true;
-            }
-        }
-
-        if ($bTextarea === true) {
-            $sReturn .= '<textarea rows="14" cols="100">';
-        } elseif ($bPlainText === true) {
-            $sReturn .= '<pre>';
-        } else {
-            $sReturn .= '<pre>';
-        }
-
-        if (is_array($mValue)) {
-            $sReturn .= print_r($mValue, true);
-        } else {
-            ob_start();
-            var_dump($mValue);
-            $sReturn .= ob_get_contents();
-            ob_end_clean();
-        }
-
-        if ($bTextarea === true) {
-            $sReturn .= '</textarea>';
-        } elseif ($bPlainText === true) {
-            $sReturn .= '</pre>';
-        } else {
-            $sReturn .= '</pre>';
-        }
-
-        return $sReturn;
+        return $this->_prepareDumpValue($mValue);
     }
 
     /**
