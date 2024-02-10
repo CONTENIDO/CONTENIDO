@@ -439,6 +439,9 @@ if ($contenido) {
     $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']);
 }
 
+// Set global db instance, some modules may still need this!
+$db = cRegistry::getDb();
+
 // check if isset parent category template
 // do not show error message if user calls an article explicitly via idart URL parameter
 if ($contenido) {
@@ -451,15 +454,12 @@ if ($contenido) {
     $errorTitle = 'FATAL ERROR!';
 }
 
-$db = cRegistry::getDb();
-$db->query($sql);
+$catLangColl = new cApiCategoryLanguageCollection();
+$tplCfgData = $catLangColl->fetchIdTplCfgByArticleIdAndLanguageId(
+    cSecurity::toInteger($idart), cSecurity::toInteger($lang)
+);
 
-$data = [];
-while ($db->nextRecord()) {
-    array_push($data, $db->toArray());
-}
-
-if (isset($data[0]) && $data[0]['idtplcfg'] === '0' && !isset($_REQUEST['idart'])) {
+if (isset($tplCfgColl[0]) && $tplCfgColl[0] === 0 && !isset($_REQUEST['idart'])) {
     $tpl = new cTemplate();
     $tpl->set("s", "ERROR_TITLE", $errorTitle);
     $tpl->set("s", "ERROR_TEXT", $errorText);

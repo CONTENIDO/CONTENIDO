@@ -180,6 +180,44 @@ class cApiCategoryLanguageCollection extends ItemCollection
         $this->db->query($sql);
         return ($this->db->nextRecord() && $this->db->f('startidartlang') != 0);
     }
+
+    /**
+     * Returns list of template configuration ids `idtplcfg``by article id and language id
+     * @param int $idart
+     * @param int $idlang
+     * @return array
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     */
+    public function fetchIdTplCfgByArticleIdAndLanguageId(int $idart, int $idlang): array
+    {
+        $sql = "-- cApiCategoryLanguageCollection->fetchIdTplCfgByArticleIdAndLanguageId()
+        SELECT
+            a.idtplcfg
+        FROM
+            `:tab_cat_lang` AS a,
+            `:tab_cat_art` AS b
+        WHERE
+            a.idcat = b.idcat
+            AND b.idart = :id_art
+            AND a.idlang = :id_lang
+        ";
+
+        $this->db->query($sql, [
+            'tab_cat_lang' => $this->table,
+            'tab_cat_art' => cRegistry::getDbTableName('cat_art'),
+            'id_art' => $idart,
+            'id_lang' => $idlang,
+        ]);
+
+        $result = [];
+        while ($this->db->nextRecord()) {
+            $result[] = cSecurity::toInteger($this->db->f('idtplcfg'));
+        }
+
+        return $result;
+    }
+
 }
 
 /**
