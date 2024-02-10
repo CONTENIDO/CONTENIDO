@@ -31,6 +31,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cDebugVisibleAdv implements cDebugInterface, Countable
 {
 
+    use cDebugVisibleTrait;
+
     /**
      * Singleton instance
      *
@@ -181,58 +183,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
      */
     private function _prepareValue($mValue): string
     {
-        $bTextarea = false;
-        $bPlainText = false;
-        $sReturn = '';
-        if (is_array($mValue)) {
-            if (sizeof($mValue) > 10) {
-                $bTextarea = true;
-            } else {
-                $bPlainText = true;
-            }
-        }
-        if (is_object($mValue)) {
-            $bTextarea = true;
-        }
-        if (is_string($mValue)) {
-            if (preg_match('/<(.*)>/', $mValue)) {
-                if (cString::getStringLength($mValue) > 40) {
-                    $bTextarea = true;
-                } else {
-                    $bPlainText = true;
-                    $mValue = conHtmlSpecialChars($mValue);
-                }
-            } else {
-                $bPlainText = true;
-            }
-        }
-
-        if ($bTextarea === true) {
-            $sReturn .= '<textarea rows="14" cols="100">';
-        } elseif ($bPlainText === true) {
-            $sReturn .= '<pre>';
-        } else {
-            $sReturn .= '<pre>';
-        }
-
-        if (is_array($mValue)) {
-            $sReturn .= print_r($mValue, true);
-        } else {
-            ob_start();
-            var_dump($mValue);
-            $sReturn .= ob_get_contents();
-            ob_end_clean();
-        }
-
-        if ($bTextarea === true) {
-            $sReturn .= '</textarea>';
-        } elseif ($bPlainText === true) {
-            $sReturn .= '</pre>';
-        } else {
-            $sReturn .= '</pre>';
-        }
-
-        return $sReturn;
+        return $this->_prepareDumpValue($mValue);
     }
 
     /**

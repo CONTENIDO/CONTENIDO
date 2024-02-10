@@ -204,6 +204,7 @@ return [
     'cDebugVisible' => 'contenido/classes/debug/class.debug.visible.php',
     'cDebugVisibleAdv' => 'contenido/classes/debug/class.debug.visible.adv.php',
     'cDebugVisibleAdvItem' => 'contenido/classes/debug/class.debug.visible.adv.php',
+    'cDebugVisibleTrait' => 'contenido/classes/debug/trait.debug.visible.php',
     'cDirHandler' => 'contenido/classes/class.dirhandler.php',
     'cDomainException' => 'contenido/classes/exceptions/class.exception.domain.php',
     'cEffectiveSetting' => 'contenido/classes/class.effective.setting.php',
