@@ -24,6 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class NewsletterJobCollection extends ItemCollection
 {
+
     /**
      * Constructor Function
      *
@@ -38,8 +39,8 @@ class NewsletterJobCollection extends ItemCollection
     /**
      * Creates a newsletter job
      *
-     * @param        $iIDNews
-     * @param        $iIDCatArt
+     * @param int    $iIDNews
+     * @param int    $iIDCatArt
      * @param string $sName
      *
      * @return bool|Item
@@ -227,7 +228,8 @@ class NewsletterJobCollection extends ItemCollection
      * logs table
      * before deleting newsletter job
      *
-     * @param $iItemID int specifies the frontend user group
+     * @param int $iItemID Specifies the frontend user group
+     * @throws cDbException|cInvalidArgumentException
      */
     public function delete($iItemID)
     {
@@ -244,13 +246,13 @@ class NewsletterJobCollection extends ItemCollection
  */
 class NewsletterJob extends Item
 {
+
     /**
      * Constructor Function
      *
      * @param mixed $mId Specifies the ID of item to load
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($mId = false)
     {
@@ -262,10 +264,9 @@ class NewsletterJob extends Item
 
     /**
      * @return int
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function runJob()
+    public function runJob(): int
     {
         global $recipient;
 
@@ -307,10 +308,10 @@ class NewsletterJob extends Item
             unset($oLanguage);
 
             if ($sFormatDate == "") {
-                $sFormatDate = "%d.%m.%Y";
+                $sFormatDate = "d.m.Y";
             }
             if ($sFormatTime == "") {
-                $sFormatTime = "%H:%M";
+                $sFormatTime = "H:i";
             }
 
             // Get newsletter data
@@ -344,12 +345,9 @@ class NewsletterJob extends Item
                 $sMessageHTML = str_replace("MAIL_NUMBER", $this->get("rcpcount"), $sMessageHTML);
             }
 
-            // Enabling plugin interface
-            $bPluginEnabled = false;
+            // Plugin interface
+            $aPlugins = [];
             if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
-                $bPluginEnabled = true;
-                $aPlugins = [];
-
                 if (cHasPlugins('recipients')) {
                     cIncludePlugins('recipients');
                     foreach ($cfg['plugins']['recipients'] as $sPlugin) {
@@ -410,9 +408,8 @@ class NewsletterJob extends Item
                         $sRcpMsgHTML = str_replace("MAIL_NAME", $oLog->get("rcpname"), $sRcpMsgHTML);
                     }
 
-                    if ($bPluginEnabled) {
-                        // Don't change name of $recipient variable as it is
-                        // used in plugins!
+                    if (count($aPlugins)) {
+                        // Don't change name of $recipient variable as it is used in plugins!
                         $recipient = new NewsletterRecipient();
                         $recipient->loadByPrimaryKey($oLog->get("idnewsrcp"));
 
@@ -506,8 +503,9 @@ class NewsletterJob extends Item
      * Overridden store() method to set status to finished if rcpcount is 0.
      *
      * @return bool
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function store()
+    public function store(): bool
     {
         if ($this->get("rcpcount") == 0) {
             // No recipients, job finished
