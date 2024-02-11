@@ -56,6 +56,12 @@ $cfg['debug']['rendering'] = false;
 // (bool) To output the code when editing and browsing the frontend, set this to true
 $cfg['debug']['codeoutput'] = false;
 
+// (bool) To output the code when editing in article editor, set this to true
+$cfg['debug']['article_editor_codeoutput'] = false;
+
+// (bool) To output the module codes in article template configuration, set this to true
+$cfg['debug']['article_template_configuration_codeoutput'] = false;
+
 // (bool) Whether the chain system should be disabled.
 $cfg['debug']['disable_chains'] = false;
 

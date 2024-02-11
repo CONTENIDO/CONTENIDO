@@ -127,5 +127,3 @@ $aCheck = [
         'path'   => cRequestValidator::CHECK_PATHSTRING,
     ],
 ];
-
-?>

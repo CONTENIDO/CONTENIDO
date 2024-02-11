@@ -30,4 +30,3 @@ $_cecRegistry->addChainFunction('Contenido.Content.CreateMetatags', 'cecCreateMe
 $_cecRegistry->addChainFunction('Contenido.Frontend.BaseHrefGeneration', 'cecCreateBaseHref');
 $_cecRegistry->addChainFunction('Contenido.Content.AfterStore', 'cecIndexArticle');
 $_cecRegistry->addChainFunction('Contenido.Template.BeforeParse', 'cecParseTemplate');
-

@@ -213,5 +213,3 @@ $lngAct['']['send_mail']                              = i18n('Send mail');
 $lngAct['']['fake_permission_action']                 = i18n('Fake permissions');
 
 $lngAct['']['login']                 = i18n('User login');
-
-?>

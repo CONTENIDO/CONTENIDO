@@ -146,5 +146,3 @@ $cfg['templates']['breadcrumb']           = 'template.breadcrumb.html';
 
 $cfg['templates']['con_edit_form_synclang'] = 'template.con_edit_form_synclang.html';
 $cfg['templates']['con_edit_form_sync'] = 'template.con_edit_form_sync.html';
-
-?>

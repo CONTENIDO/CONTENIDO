@@ -76,5 +76,3 @@ $cfg['path']['tinymce4_scripts']     = [
     $cfg['path']['all_wysiwyg_html'] . 'tinymce4/contenido/js/con_tiny.js',
     $cfg['path']['all_wysiwyg_html'] . 'tinymce4/tinymce/js/tinymce/tinymce.min.js',
 ];
-
-?>
