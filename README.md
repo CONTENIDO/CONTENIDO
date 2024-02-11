@@ -124,7 +124,7 @@ No Warranty - take a look at the GPL at the end of this file.
 | Smarty 4.3.4                                     |GNU Lesser General Public License 2.1 or later|https://www.smarty.net/|
 | SwiftMailer 5.4.6                                |GNU Lesser General Public License v3|https://swiftmailer.org/|
 | TinyMCE 3.5.12                                   |GNU Lesser General Public License|https://www.tinymce.com/|
-| TinyMCE 4.1.10                                   |GNU Lesser General Public License 2.1|https://www.tinymce.com/|
+| TinyMCE 4.9.11                                   |GNU Lesser General Public License 2.1|https://www.tinymce.com/|
 | tipsy, facebook style tooltips for jquery 1.0.0a |MIT license|https://onehackoranother.com/projects/jquery/tipsy/|
 | Valums AJAX Upload 3.6                           |MIT license|https://valums.com/ajax-upload/|
 | Valums File Uploader 2.0                         |MIT license, GNU GPL 2 or later, GNU LGPL 2 or later, see license.txt|https://github.com/Valums-File-Uploader/file-uploader|
