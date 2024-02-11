@@ -254,13 +254,13 @@ abstract class cCodeGeneratorAbstract
         $idtplcfg = conGetTemplateConfigurationIdForArticle($this->_idart, $this->_idcat, $this->_lang, $this->_client);
         if (is_numeric($idtplcfg) && $idtplcfg != 0) {
             // article is configured
-            cDebug::out("configuration for article found: $idtplcfg<br><br>");
+            cDebug::out("configuration for article found: $idtplcfg");
         } else {
             // check whether category is configured
             $idtplcfg = conGetTemplateConfigurationIdForCategory($this->_idcat, $this->_lang, $this->_client);
             if (NULL !== $idtplcfg) {
                 // category is configured
-                cDebug::out("configuration for category found: $idtplcfg<br><br>");
+                cDebug::out("configuration for category found: $idtplcfg");
             }
         }
 
