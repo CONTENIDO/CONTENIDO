@@ -170,7 +170,7 @@ if (true === $layout->isLoaded()) {
             $msg .= "<br>";
         }
 
-        foreach ($v->missingNodes as $value) {
+        foreach ($v->getMissingNodes() as $value) {
             $idQualifier = "";
 
             $attr = [];
