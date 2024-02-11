@@ -19,9 +19,9 @@ trait cDebugVisibleTrait
 
     /**
      * Prepares debug item value for output as string representation.
+     * Wraps the value with `<textarea>` or `<pre>` elements.
      *
      * @param mixed $value
-     *
      * @return string
      */
     protected function _prepareDumpValue($value): string
@@ -68,6 +68,17 @@ trait cDebugVisibleTrait
         }
 
         return $sReturn;
+    }
+
+    /**
+     * Prepares debug item value for output as string representation.
+     *
+     * @param mixed $value
+     * @return string
+     */
+    protected function _preparePlainDumpValue($value): string
+    {
+        return $this->_dumpWithType($value);
     }
 
     private function _dumpWithType($value): string

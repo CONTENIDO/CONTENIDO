@@ -319,7 +319,7 @@ abstract class cCodeGeneratorAbstract
 
         $idLay = $data['idlay'] ?? '0';
         $idTpl = $data['idtpl'] ?? '0';
-        cDebug::out("Using Layout: $idLay and Template: $idTpl for generation of code.<br><br>");
+        cDebug::out("Using Layout: $idLay and Template: $idTpl for generation of code.");
 
         return $data;
     }

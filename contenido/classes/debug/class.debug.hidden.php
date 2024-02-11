@@ -23,6 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cDebugHidden implements cDebugInterface
 {
 
+    use cDebugVisibleTrait;
+    
     /**
      * Singleton instance
      *
@@ -58,9 +60,7 @@ class cDebugHidden implements cDebugInterface
      */
     public function out($sText)
     {
-        echo("\n <!-- dbg\n");
-        echo($sText);
-        echo("\n-->");
+        echo "\n" . implode("\n", ['<!-- dbg', $sText, '-->']) . "\n";
     }
 
     /**
@@ -75,19 +75,16 @@ class cDebugHidden implements cDebugInterface
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false)
     {
-        echo "\n <!-- dbg";
-        if ($sVariableDescription != '') {
-            echo ' ' . strval($sVariableDescription);
+        $out = ['<!-- dbg -->', '<!--'];
+        if (!empty($sVariableDescription)) {
+            $out[] = 'Description: ' . $sVariableDescription;
         }
-        echo " -->\n";
-        echo '<!--' . "\n";
-        if (is_array($mVariable)) {
-            print_r($mVariable);
-        } else {
-            var_dump($mVariable);
-        }
-        echo "\n" . '//-->' . "\n";
-        echo "\n <!-- /dbg -->\n";
+
+        $out[] = conHtmlSpecialChars($this->_preparePlainDumpValue($mVariable));
+        $out[] = '-->';
+        $out[] = '<!-- /dbg -->';
+
+        echo "\n" . implode("\n", $out) . "\n";
 
         if ($bExit === true) {
             die();
