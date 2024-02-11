@@ -1223,6 +1223,7 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
     $db->query($sql);
     $db->nextRecord();
 
+    $parentid = 0;
     if ($db->f('level') >= $firstTreeElementToUse) {
         $name = $db->f('name');
         $parentid = $db->f('parentid');
