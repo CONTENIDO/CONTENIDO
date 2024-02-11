@@ -27,7 +27,7 @@ $page = new cGuiPage('rights', '', 7);
 // set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("str")]) . "'";
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
-        FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
+        FROM " . $cfg['tab']['rights'] . " AS A, " . $cfg['tab']['area'] . " AS B, " . $cfg['tab']['actions'] . " AS C
         WHERE user_id = '" . $db->escape($groupid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
         AND A.type = 1 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
         AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
@@ -161,7 +161,7 @@ $objHeaderRow->advanceID();
 $output = "";
 
 $sql = "SELECT A.idcat, level, name, parentid
-        FROM " . $cfg["tab"]["cat_tree"] . " AS A, " . $cfg["tab"]["cat"] . " AS B, " . $cfg["tab"]["cat_lang"] . " AS C
+        FROM " . $cfg['tab']['cat_tree'] . " AS A, " . $cfg['tab']['cat'] . " AS B, " . $cfg['tab']['cat_lang'] . " AS C
         WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND C.idlang = " . cSecurity::toInteger($rights_lang) . "
             AND B.idclient = " . cSecurity::toInteger($rights_client) . " ORDER BY idtree";
 $db->query($sql);

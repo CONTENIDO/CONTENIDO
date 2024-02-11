@@ -73,7 +73,7 @@ foreach ($limit as $key => $value) {
     $tpl2->next();
 }
 
-$select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true);
+$select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 
 $tpl->set('s', 'ACTION', '');
 
@@ -121,7 +121,7 @@ $tplFilter->set("s", "ITEMS_PER_PAGE", $oSelectItemsPerPage->render());
 $tplFilter->set("s", "SORT_BY", $oSelectSortBy->render());
 $tplFilter->set("s", "SORT_ORDER", $oSelectSortOrder->render());
 $tplFilter->set("s", "FILTER_USER", $oTextboxFilter->render());
-$oListOptionRow->setContentData($tplFilter->generate($cfg["path"]["templates"] . $cfg["templates"]["rights_left_top_filter"], true));
+$oListOptionRow->setContentData($tplFilter->generate($cfg['path']['templates'] . $cfg['templates']['rights_left_top_filter'], true));
 $tpl->set('s', 'LISTOPTIONS', $oListOptionRow->render());
 
 /*

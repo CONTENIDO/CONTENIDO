@@ -29,7 +29,7 @@ $frame = cRegistry::getFrame();
 $sql = "SELECT
             logtimestamp
         FROM
-            " . $cfg["tab"]["actionlog"] . "
+            " . $cfg['tab']['actionlog'] . "
         WHERE
            user_id = '" . $db->escape($auth->auth["uid"]) . "'
         ORDER BY
@@ -55,10 +55,10 @@ $sql = "SELECT
             a.created AS created,
             a.lastmodified AS lastmodified
         FROM
-            " . $cfg["tab"]["art_lang"] . " AS a,
-            " . $cfg["tab"]["art"] . " AS b,
-            " . $cfg["tab"]["cat_art"] . " AS c,
-            " . $cfg["tab"]["actionlog"] . " AS d
+            " . $cfg['tab']['art_lang'] . " AS a,
+            " . $cfg['tab']['art'] . " AS b,
+            " . $cfg['tab']['cat_art'] . " AS c,
+            " . $cfg['tab']['actionlog'] . " AS d
         WHERE
             a.idlang    = " . (int)$lang . " AND
             a.idart     = b.idart AND
@@ -125,8 +125,8 @@ while ($db->nextRecord()) {
                     b.name AS tplname,
                     b.idtpl AS idtpl
                  FROM
-                    " . $cfg["tab"]["tpl_conf"] . " AS a,
-                    " . $cfg["tab"]["tpl"] . " AS b
+                    " . $cfg['tab']['tpl_conf'] . " AS a,
+                    " . $cfg['tab']['tpl'] . " AS b
                  WHERE
                     a.idtplcfg = " . (int)$idtplcfg . " AND
                     a.idtpl = b.idtpl";
@@ -183,7 +183,7 @@ foreach ($s_types as $key => $value) {
     $tpl2->next();
 }
 
-$select = (!$no_article) ? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '';
+$select = (!$no_article) ? $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true) : '';
 $caption = (!$no_article) ? 'Artikel sortieren' : '';
 
 $tpl->set('s', 'ARTSORTCAPTION', $caption);
@@ -194,11 +194,11 @@ $sql = "SELECT
             b.name AS name,
             d.idtpl AS idtpl
         FROM
-            (" . $cfg["tab"]["cat"] . " AS a,
-            " . $cfg["tab"]["cat_lang"] . " AS b,
-            " . $cfg["tab"]["tpl_conf"] . " AS c)
+            (" . $cfg['tab']['cat'] . " AS a,
+            " . $cfg['tab']['cat_lang'] . " AS b,
+            " . $cfg['tab']['tpl_conf'] . " AS c)
         LEFT JOIN
-            " . $cfg["tab"]["tpl"] . " AS d
+            " . $cfg['tab']['tpl'] . " AS d
         ON
             d.idtpl = c.idtpl
         WHERE

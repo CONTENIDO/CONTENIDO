@@ -15,4 +15,4 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $tpl->reset();
-$tpl->generate($cfg["path"]["templates"] . $cfg['templates']['left_top_blank']);
+$tpl->generate($cfg['path']['templates'] . $cfg['templates']['left_top_blank']);

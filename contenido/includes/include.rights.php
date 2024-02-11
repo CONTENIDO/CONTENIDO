@@ -89,7 +89,7 @@ $firstClientsLang = 0;
 $availableClients = [];
 
 foreach ($clientList as $key => $value) {
-    $sql = "SELECT * FROM " . $cfg["tab"]["lang"] . " AS A, " . $cfg["tab"]["clients_lang"]
+    $sql = "SELECT * FROM " . $cfg['tab']['lang'] . " AS A, " . $cfg['tab']['clients_lang']
         . " AS B WHERE B.idclient=" . cSecurity::toInteger($key) . " AND A.idlang=B.idlang";
     $db->query($sql);
 

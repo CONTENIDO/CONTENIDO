@@ -46,7 +46,7 @@ if (($action == "group_delete") && ($perm->have_perm_area_action($area, $action)
 $sql = "SELECT
             groupname, group_id, perms
         FROM
-            " . $cfg["tab"]["groups"] . "
+            " . $cfg['tab']['groups'] . "
         ORDER BY
             groupname ASC";
 
@@ -54,9 +54,9 @@ if ($restriction == 1) {
     $sql = "SELECT
             A.groupname AS groupname, A.group_id as group_id, A.perms as perms
         FROM
-            " . $cfg["tab"]["groups"] . " AS A,
-            " . $cfg["tab"]["rights"] . " AS B,
-            " . $cfg["tab"]["actions"] . " AS C
+            " . $cfg['tab']['groups'] . " AS A,
+            " . $cfg['tab']['rights'] . " AS B,
+            " . $cfg['tab']['actions'] . " AS C
         WHERE
             C.name = 'front_allow' AND
             B.user_id = A.group_id AND
@@ -72,9 +72,9 @@ if ($restriction == 3) {
     $sql = "SELECT
             A.groupname AS groupname, A.group_id as group_id, A.perms as perms
         FROM
-            " . $cfg["tab"]["groups"] . " AS A,
-            " . $cfg["tab"]["rights"] . " AS B,
-            " . $cfg["tab"]["actions"] . " AS C
+            " . $cfg['tab']['groups'] . " AS A,
+            " . $cfg['tab']['rights'] . " AS B,
+            " . $cfg['tab']['actions'] . " AS C
         WHERE
             C.name NOT LIKE 'front_allow' AND
             B.user_id = A.group_id AND

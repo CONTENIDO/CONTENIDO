@@ -575,9 +575,9 @@ $tpl->set('s', 'EXPAND_ALL', $expandImg);
 // Fill inline edit table row
 $tpl->set('s', 'SUM_COLUMNS_EDIT', 15 + count($listColumns));
 $tpl->set('s', 'ACTION_EDIT_URL', $sess->url("main.php?frame=$frame"));
-$tpl->set('s', 'SRC_OK', $backendUrl . $cfg["path"]["images"] . 'but_ok.gif');
+$tpl->set('s', 'SRC_OK', $backendUrl . $cfg['path']['images'] . 'but_ok.gif');
 
-$cancelLink = '<a class="con_img_button" href="javascript:void(0)" data-action="cancel_inline_edit"><img src="' . $cfg["path"]["images"] . 'but_cancel.gif" alt=""></a>';
+$cancelLink = '<a class="con_img_button" href="javascript:void(0)" data-action="cancel_inline_edit"><img src="' . $cfg['path']['images'] . 'but_cancel.gif" alt=""></a>';
 $tpl->set('s', 'CANCEL_LINK', $cancelLink);
 
 
@@ -611,7 +611,7 @@ while ($db->nextRecord()) {
     ];
 }
 
-$spacerButton = '<img class="con_img_button_off" src="' . $cfg["path"]["images"] . 'spacer.gif" alt="" title="">';
+$spacerButton = '<img class="con_img_button_off" src="' . $cfg['path']['images'] . 'spacer.gif" alt="" title="">';
 
 $languageDirection = langGetTextDirection($lang, cRegistry::getDb());
 
@@ -761,7 +761,7 @@ foreach ($treeItemObjects as $key => $value) {
         // Button: Rename/edit category
         if ($perm->have_perm_area_action($area, "str_renamecat") || $perm->have_perm_area_action_item($area, "str_renamecat", $value->getId())) {
             $button = '<a class="con_img_button" href="javascript:void(0)" data-action="display_inline_edit" data-id="' . $value->getId() . '" title="' . $lngEditCategory . '">'
-                . '<img src="' . $cfg["path"]["images"] . 'but_todo.gif" id="cat_' . $value->getId() . '_image" alt="' . $lngEditCategory . '" title="' . $lngEditCategory . '">'
+                . '<img src="' . $cfg['path']['images'] . 'but_todo.gif" id="cat_' . $value->getId() . '_image" alt="' . $lngEditCategory . '" title="' . $lngEditCategory . '">'
                 . '</a>';
         } else {
             $button = $spacerButton;
@@ -800,7 +800,7 @@ foreach ($treeItemObjects as $key => $value) {
         $hasArticles = strHasArticles($value->getId());
         if (($hasChildren == 0) && !$hasArticles && ($perm->have_perm_area_action($tmp_area, 'str_deletecat') || $perm->have_perm_area_action_item($tmp_area, 'str_deletecat', $value->getId()))) {
             $button = '<a class="con_img_button" href="javascript:void(0)" data-action="str_deletecat" data-name="' . addslashes(conHtmlSpecialChars($value->getName())) . '" title="' . $lngDeleteCategory . '">'
-                . '<img src="' . $cfg["path"]["images"] . 'delete.gif" alt="' . $lngDeleteCategory . '" title="' . $lngDeleteCategory . '">'
+                . '<img src="' . $cfg['path']['images'] . 'delete.gif" alt="' . $lngDeleteCategory . '" title="' . $lngDeleteCategory . '">'
                 . '</a>';
         } else {
             $alt = $lngNoPermissions;
@@ -816,7 +816,7 @@ foreach ($treeItemObjects as $key => $value) {
                 $alt = $lngUnableToDeleteReasonArticleMsg;
             }
 
-            $button = '<img class="con_img_button_off" src="' . $cfg["path"]["images"] . $button . '" alt="' . $alt . '" title="' . $alt . '">';
+            $button = '<img class="con_img_button_off" src="' . $cfg['path']['images'] . $button . '" alt="' . $alt . '" title="' . $alt . '">';
         }
         $tpl->set('d', 'DELETEBUTTON', $button);
 
@@ -857,12 +857,12 @@ foreach ($treeItemObjects as $key => $value) {
             if ($perm->have_perm_area_action($tmp_area, 'str_movesubtree') || $perm->have_perm_area_action_item($tmp_area, 'str_movesubtree', $value->getId())) {
                 if ($value->getId() == $idcat) {
                     $href = $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=0");
-                    $button = '<a id="#movesubtreehere" class="con_img_button" href="' . $href . '" title="' . $lngMoveTree . '"><img src="' . $cfg["path"]["images"] . 'but_move_subtree_main.gif" alt="' . $lngMoveTree . '" title="' . $lngMoveTree . '"></a>';
+                    $button = '<a id="#movesubtreehere" class="con_img_button" href="' . $href . '" title="' . $lngMoveTree . '"><img src="' . $cfg['path']['images'] . 'but_move_subtree_main.gif" alt="' . $lngMoveTree . '" title="' . $lngMoveTree . '"></a>';
                 } else {
                     $allowed = strMoveCatTargetallowed($value->getId(), $idcat);
                     if ($allowed == 1) {
                         $href = $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=" . $value->getId());
-                        $button = '<a class="con_img_button" href="' . $href . '" title="' . $lngPlaceTreeHere . '"><img src="' . $cfg["path"]["images"] . 'but_move_subtree_target.gif" alt="' . $lngPlaceTreeHere . '" title="' . $lngPlaceTreeHere . '"></a>';
+                        $button = '<a class="con_img_button" href="' . $href . '" title="' . $lngPlaceTreeHere . '"><img src="' . $cfg['path']['images'] . 'but_move_subtree_target.gif" alt="' . $lngPlaceTreeHere . '" title="' . $lngPlaceTreeHere . '"></a>';
                     } else {
                         $button = $spacerButton;
                     }
@@ -874,9 +874,9 @@ foreach ($treeItemObjects as $key => $value) {
             if ($perm->have_perm_area_action($tmp_area, 'str_movesubtree') || $perm->have_perm_area_action_item($tmp_area, 'str_movesubtree', $value->getId())) {
                 if ($value->getCustom('parentid') != 0) {
                     $href = $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=" . $value->getId()) . '#movesubtreehere';
-                    $button = '<a class="con_img_button" href="' . $href . '" title="' . $lngMoveTree . '" title="' . $lngMoveTree . '"><img src="' . $cfg["path"]["images"] . 'but_move_subtree.gif" alt="' . $lngMoveTree . '" title="' . $lngMoveTree . '"></a>';
+                    $button = '<a class="con_img_button" href="' . $href . '" title="' . $lngMoveTree . '" title="' . $lngMoveTree . '"><img src="' . $cfg['path']['images'] . 'but_move_subtree.gif" alt="' . $lngMoveTree . '" title="' . $lngMoveTree . '"></a>';
                 } else {
-                    $button = '<img class="con_img_button_off" src="' . $cfg["path"]["images"] . 'but_move_subtree_grey.png" title="' . $lngRootCategoryCantBeMovedMsg . '">';
+                    $button = '<img class="con_img_button_off" src="' . $cfg['path']['images'] . 'but_move_subtree_grey.png" title="' . $lngRootCategoryCantBeMovedMsg . '">';
                 }
             } else {
                 $button = $spacerButton;
@@ -887,7 +887,7 @@ foreach ($treeItemObjects as $key => $value) {
         // Button: Duplicate
         if ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $value->getId())) {
             $button = '<a class="con_img_button" href="javascript:void(0)"  data-action="str_duplicate" data-name="' . addslashes(conHtmlSpecialChars($value->getName())) . '" title="' . $lngDuplicateCategory . '">'
-                . '<img src="' . $cfg["path"]["images"] . 'folder_duplicate.gif" alt="' . $lngDuplicateCategory . '" title="' . $lngDuplicateCategory . '">'
+                . '<img src="' . $cfg['path']['images'] . 'folder_duplicate.gif" alt="' . $lngDuplicateCategory . '" title="' . $lngDuplicateCategory . '">'
                 . '</a>';
         } else {
             $button = $spacerButton;
@@ -929,10 +929,10 @@ $tpl->set('s', 'JS_DATA', $jsDataArray);
 $tpl->set('s', 'JS_MARK_SUBMENU_ITEM', markSubMenuItem(0, true));
 
 // Set DHTML generic Values
-$sImagepath = $cfg["path"]["images"];
+$sImagepath = $cfg['path']['images'];
 $tpl->set('s', 'SUM_COLUMNS', 15 + count($listColumns));
 $tpl->set('s', 'HREF_ACTION', $sess->url("main.php?frame=$frame"));
-$tpl->set('s', 'CON_IMAGES', $backendUrl . $cfg["path"]["images"]);
+$tpl->set('s', 'CON_IMAGES', $backendUrl . $cfg['path']['images']);
 
 // Generate input fields for category new layer and category edit layer
 $oSession = new cHTMLHiddenField($sess->name, $sess->id);

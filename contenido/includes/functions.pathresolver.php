@@ -63,7 +63,7 @@ function prResolvePathViaURLNames($path)
 
     // Fetch all category names, build path strings
     // @todo change the where statement for get all languages
-    $sql = "SELECT * FROM " . $cfg["tab"]["cat_tree"] . " AS A, " . $cfg["tab"]["cat"] . " AS B, " . $cfg["tab"]["cat_lang"] . " AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang=" . (int)$lang . "
+    $sql = "SELECT * FROM " . $cfg['tab']['cat_tree'] . " AS A, " . $cfg['tab']['cat'] . " AS B, " . $cfg['tab']['cat_lang'] . " AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang=" . (int)$lang . "
             AND C.visible = 1 AND B.idclient=" . (int)$client . " ORDER BY A.idtree";
     $db->query($sql);
 
@@ -167,7 +167,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck)
 
     // Fetch all category names, build path strings
     // @todo change the where statement for get all languages
-    $sql = "SELECT * FROM " . $cfg["tab"]["cat_tree"] . " AS A, " . $cfg["tab"]["cat"] . " AS B, " . $cfg["tab"]["cat_lang"] . " AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat
+    $sql = "SELECT * FROM " . $cfg['tab']['cat_tree'] . " AS A, " . $cfg['tab']['cat'] . " AS B, " . $cfg['tab']['cat_lang'] . " AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat
             AND C.visible = 1 AND B.idclient= " . (int)$client . " ORDER BY A.idtree";
     $db->query($sql);
 
@@ -311,10 +311,10 @@ function prCreateURLNameLocationString($idcat, $seperator, &$cat_str, $makeLink 
                 c.level as level,
                 d.idtpl as idtpl
             FROM
-                " . $cfg["tab"]["cat_lang"] . " AS a
-                LEFT JOIN " . $cfg["tab"]["tpl_conf"] . " AS d on a.idtplcfg  = d.idtplcfg,
-                " . $cfg["tab"]["cat"] . " AS b,
-                " . $cfg["tab"]["cat_tree"] . " AS c
+                " . $cfg['tab']['cat_lang'] . " AS a
+                LEFT JOIN " . $cfg['tab']['tpl_conf'] . " AS d on a.idtplcfg  = d.idtplcfg,
+                " . $cfg['tab']['cat'] . " AS b,
+                " . $cfg['tab']['cat_tree'] . " AS c
             WHERE
                 a.idlang    = " . (int)$uselang . " AND
                 b.idclient  = " . (int)$client . " AND

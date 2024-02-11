@@ -20,8 +20,8 @@ if ($perm->have_perm_area_action($area, "con_newart") || $perm->have_perm_area_a
                 a.idtplcfg,
                 a.name
             FROM
-                " . $cfg["tab"]["cat_lang"] . " AS a,
-                " . $cfg["tab"]["cat"] . " AS b
+                " . $cfg['tab']['cat_lang'] . " AS a,
+                " . $cfg['tab']['cat'] . " AS b
             WHERE
                 a.idlang    = '" . $lang . "' AND
                 b.idclient  = '" . $client . "' AND

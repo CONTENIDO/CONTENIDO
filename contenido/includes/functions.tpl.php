@@ -108,7 +108,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 
     if ($default == 1) {
         $sql = "UPDATE `%s` SET `defaulttemplate` = 0 WHERE `idclient` = %d AND `idtpl` != %d";
-        $db->query($sql, $cfg["tab"]["tpl"], $client, $template->get('idtpl'));
+        $db->query($sql, $cfg['tab']['tpl'], $client, $template->get('idtpl'));
 
         $template->set('defaulttemplate', 1);
         $template->store();
@@ -470,12 +470,12 @@ function tplIsTemplateInUse($idtpl): bool
     $sql = "SELECT
                    b.idcatlang, b.name, b.idlang, b.idcat
             FROM
-                " . $cfg["tab"]["cat"] . " AS a,
-                " . $cfg["tab"]["cat_lang"] . " AS b
+                " . $cfg['tab']['cat'] . " AS a,
+                " . $cfg['tab']['cat_lang'] . " AS b
             WHERE
                 a.idclient  = '" . cSecurity::toInteger($client) . "' AND
                 a.idcat     = b.idcat AND
-                b.idtplcfg  IN (SELECT idtplcfg FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtpl = '" . $idtpl . "')
+                b.idtplcfg  IN (SELECT idtplcfg FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtpl = '" . $idtpl . "')
             ORDER BY b.idlang ASC, b.name ASC ";
     $db->query($sql);
     if ($db->numRows() > 0) {
@@ -486,12 +486,12 @@ function tplIsTemplateInUse($idtpl): bool
     $sql = "SELECT
                    b.idartlang, b.title, b.idlang, b.idart
             FROM
-                " . $cfg["tab"]["art"] . " AS a,
-                " . $cfg["tab"]["art_lang"] . " AS b
+                " . $cfg['tab']['art'] . " AS a,
+                " . $cfg['tab']['art_lang'] . " AS b
             WHERE
                 a.idclient  = '" . cSecurity::toInteger($client) . "' AND
                 a.idart     = b.idart AND
-                b.idtplcfg IN (SELECT idtplcfg FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtpl = '" . $idtpl . "')
+                b.idtplcfg IN (SELECT idtplcfg FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtpl = '" . $idtpl . "')
             ORDER BY b.idlang ASC, b.title ASC ";
 
     $db->query($sql);
@@ -524,12 +524,12 @@ function tplGetInUsedData($idtpl): array
     $sql = "SELECT
                    b.idcatlang, b.name, b.idlang, b.idcat
             FROM
-                " . $cfg["tab"]["cat"] . " AS a,
-                " . $cfg["tab"]["cat_lang"] . " AS b
+                " . $cfg['tab']['cat'] . " AS a,
+                " . $cfg['tab']['cat_lang'] . " AS b
             WHERE
                 a.idclient  = '" . cSecurity::toInteger($client) . "' AND
                 a.idcat     = b.idcat AND
-                b.idtplcfg  IN (SELECT idtplcfg FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtpl = '" . $idtpl . "')
+                b.idtplcfg  IN (SELECT idtplcfg FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtpl = '" . $idtpl . "')
             ORDER BY b.idlang ASC, b.name ASC ";
     $db->query($sql);
     if ($db->numRows() > 0) {
@@ -546,12 +546,12 @@ function tplGetInUsedData($idtpl): array
     $sql = "SELECT
                    b.idartlang, b.title, b.idlang, b.idart
             FROM
-                " . $cfg["tab"]["art"] . " AS a,
-                " . $cfg["tab"]["art_lang"] . " AS b
+                " . $cfg['tab']['art'] . " AS a,
+                " . $cfg['tab']['art_lang'] . " AS b
             WHERE
                 a.idclient  = '" . cSecurity::toInteger($client) . "' AND
                 a.idart     = b.idart AND
-                b.idtplcfg IN (SELECT idtplcfg FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtpl = '" . $idtpl . "')
+                b.idtplcfg IN (SELECT idtplcfg FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtpl = '" . $idtpl . "')
             ORDER BY b.idlang ASC, b.title ASC ";
 
     $db->query($sql);
@@ -683,7 +683,7 @@ function tplAutoFillModules($idtpl): bool
     }
 
     // Get layout id
-    $db_autofill->query("SELECT idlay FROM `%s` WHERE idtpl = %d", $cfg["tab"]["tpl"], $idtpl);
+    $db_autofill->query("SELECT idlay FROM `%s` WHERE idtpl = %d", $cfg['tab']['tpl'], $idtpl);
     if (!$db_autofill->nextRecord()) {
         return false;
     }
@@ -706,7 +706,7 @@ function tplAutoFillModules($idtpl): bool
             case "fixed":
                 if ($currContainerInfo["default"] != "") {
                     $db_autofill->query(
-                        "SELECT idmod FROM `%s` WHERE name = '%s'", $cfg["tab"]["mod"], $currContainerInfo["default"]
+                        "SELECT idmod FROM `%s` WHERE name = '%s'", $cfg['tab']['mod'], $currContainerInfo["default"]
                     );
 
                     if ($db_autofill->nextRecord()) {
@@ -732,7 +732,7 @@ function tplAutoFillModules($idtpl): bool
             case "mandatory":
                 if ($currContainerInfo["default"] != "") {
                     $db_autofill->query(
-                        "SELECT idmod FROM `%s` WHERE name = '%s'", $cfg["tab"]["mod"], $currContainerInfo["default"]
+                        "SELECT idmod FROM `%s` WHERE name = '%s'", $cfg['tab']['mod'], $currContainerInfo["default"]
                     );
 
                     if ($db_autofill->nextRecord()) {

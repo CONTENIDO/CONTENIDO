@@ -139,8 +139,8 @@ if ($action == "lang_newlanguage") {
                         A.idlang AS idlang, A.name AS name, A.active as active, A.encoding as encoding,
                         A.direction as direction, B.idclient AS idclient
                     FROM
-                        " . $cfg["tab"]["lang"] . " AS A,
-                        " . $cfg["tab"]["clients_lang"] . " AS B
+                        " . $cfg['tab']['lang'] . " AS A,
+                        " . $cfg['tab']['clients_lang'] . " AS B
                     WHERE
                         A.idlang = " . cSecurity::toInteger($idlang) . " AND
                         B.idlang = " . cSecurity::toInteger($idlang);

@@ -128,7 +128,7 @@ if ($cms_idcat != "0" && cString::getStringLength($cms_idcat) > 0) {
             b.idcat = %d AND a.idart = b.idart AND a.idlang = %d
     ";
 
-    $db->query($sql, $cfg["tab"]["art_lang"], $cfg["tab"]["cat_art"], $cms_idcat, $languageId);
+    $db->query($sql, $cfg['tab']['art_lang'], $cfg['tab']['cat_art'], $cms_idcat, $languageId);
     $i = 1;
     while ($db->nextRecord()) {
         $selectedCatArtId = $db->f('idcatart');
@@ -185,7 +185,7 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
         $cmsFieldId = $cms_idcatart;
     }
 
-    $db->query($sql, $cfg["tab"]["cat_art"], $cfg["tab"]["art_lang"], $languageId, $cmsFieldId);
+    $db->query($sql, $cfg['tab']['cat_art'], $cfg['tab']['art_lang'], $languageId, $cmsFieldId);
 
     $includeCatId = 0;
     $includeArtId = 0;
@@ -222,7 +222,7 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
             idcat = %d AND idlang = %d
     ";
 
-    $db->query($sql, $cfg["tab"]["cat_lang"], $includeCatId, $languageId);
+    $db->query($sql, $cfg['tab']['cat_lang'], $includeCatId, $languageId);
     $db->nextRecord();
 
     $public = $db->f("public");

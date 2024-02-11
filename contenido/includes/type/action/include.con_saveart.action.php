@@ -58,7 +58,7 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
     // get idartlang
     if (!isset($idartlang) || $idartlang == 0) {
         $sql = 'SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
-        $db->query($sql, $cfg["tab"]["art_lang"], $idart, $lang);
+        $db->query($sql, $cfg['tab']['art_lang'], $idart, $lang);
         $db->nextRecord();
         $idartlang = cSecurity::toInteger($db->f("idartlang"));
     }

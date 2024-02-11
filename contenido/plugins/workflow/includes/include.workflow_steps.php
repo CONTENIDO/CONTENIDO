@@ -204,7 +204,7 @@ function getWorkflowList($idWorkflow, $idWorkflowItem)
         $moveup->setCustom("idworkflow", $idWorkflow);
         $moveup->setCustom("position", $pos);
         $moveup->setAlt(i18n("Move step up", "workflow"));
-        $moveup->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/no_verschieben.gif" . '">');
+        $moveup->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/no_verschieben.gif" . '">');
 
         $movedown = new cHTMLLink();
         $movedown->setClass("con_img_button");
@@ -213,7 +213,7 @@ function getWorkflowList($idWorkflow, $idWorkflowItem)
         $movedown->setCustom("idworkflow", $idWorkflow);
         $movedown->setCustom("position", $pos);
         $movedown->setAlt(i18n("Move step down", "workflow"));
-        $movedown->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
+        $movedown->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/nu_verschieben.gif" . '">');
 
         $deletestep = new cHTMLLink();
         $deletestep->setClass("con_img_button");
@@ -222,7 +222,7 @@ function getWorkflowList($idWorkflow, $idWorkflowItem)
         $deletestep->setCustom("idworkflow", $idWorkflow);
         $deletestep->setCustom("position", $pos);
         $deletestep->setAlt(i18n("Delete step", "workflow"));
-        $deletestep->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/workflow_step_delete.gif" . '">');
+        $deletestep->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/workflow_step_delete.gif" . '">');
 
         $ui->setTitle($id, "$pos. $name");
         $ui->setLink($id, $edititem);
@@ -270,7 +270,7 @@ function createNewWorkflow($idWorkflow)
 
     // ui->setLink("spacer", NULL);
     $ui->setTitle("create", i18n("Create new step", "workflow"));
-    $ui->setImage("create", $backendUrl . $cfg["path"]["plugins"] . "workflow/images/workflow_step_new.gif");
+    $ui->setImage("create", $backendUrl . $cfg['path']['plugins'] . "workflow/images/workflow_step_new.gif");
     $ui->setLink("create", $createstep);
     $ui->setRowmark($rowmark);
 
@@ -370,7 +370,7 @@ function getWorkflowUsers($idWorkflow, $idWorkflowItem)
         $moveup->setCustom("idworkflow", $idWorkflow);
         $moveup->setCustom("position", $pos);
         $moveup->setAlt(i18n("Move user up", "workflow"));
-        $moveup->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/no_verschieben.gif" . '">');
+        $moveup->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/no_verschieben.gif" . '">');
 
         $movedown = new cHTMLLink();
         $movedown->setCLink("workflow_steps", 4, "workflow_user_down");
@@ -378,7 +378,7 @@ function getWorkflowUsers($idWorkflow, $idWorkflowItem)
         $movedown->setCustom("idworkflow", $idWorkflow);
         $movedown->setCustom("position", $pos);
         $movedown->setAlt(i18n("Move user down", "workflow"));
-        $movedown->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
+        $movedown->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/nu_verschieben.gif" . '">');
 
         $deletestep = new cHTMLLink();
         $deletestep->setCLink("workflow_steps", 4, "workflow_user_delete");
@@ -387,7 +387,7 @@ function getWorkflowUsers($idWorkflow, $idWorkflowItem)
         $deletestep->setCustom("position", $pos);
         $deletestep->setCustom("idusersequence", $id);
         $deletestep->setAlt(i18n("Delete user", "workflow"));
-        $deletestep->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/workflow_step_delete.gif" . '">');
+        $deletestep->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/workflow_step_delete.gif" . '">');
 
         $title = "$pos. " . getUsers($id, $iduser);
 
@@ -398,10 +398,10 @@ function getWorkflowUsers($idWorkflow, $idWorkflowItem)
         $altnoti = i18n("Escalate to this user via E-Mail", "workflow");
 
         $oCheckbox = new cHTMLCheckbox("wfemailnoti[" . $id . "]", "1", "wfemailnoti[" . $id . "]1", $email);
-        $title .= $oCheckbox->toHtml(false) . '<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" src="' . $backendUrl . $cfg["path"]["plugins"] . 'workflow/images/workflow_email_noti.gif"></label>';
+        $title .= $oCheckbox->toHtml(false) . '<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" src="' . $backendUrl . $cfg['path']['plugins'] . 'workflow/images/workflow_email_noti.gif"></label>';
 
         $oCheckbox = new cHTMLCheckbox("wfescalnoti[" . $id . "]", "1", "wfescalnoti[" . $id . "]1", $escalation);
-        $title .= $oCheckbox->toHtml(false) . '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" src="' . $backendUrl . $cfg["path"]["plugins"] . 'workflow/images/workflow_escal_noti.gif"></label>';
+        $title .= $oCheckbox->toHtml(false) . '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" src="' . $backendUrl . $cfg['path']['plugins'] . 'workflow/images/workflow_escal_noti.gif"></label>';
 
         $ui->setTitle($id, $title);
         $ui->setLink($id, NULL);
@@ -420,7 +420,7 @@ function getWorkflowUsers($idWorkflow, $idWorkflowItem)
 
         $ui->setActions($id, "delete", $deletestep->render());
 
-        $ui->setImage($id, $backendUrl . $cfg["path"]["plugins"] . "workflow/images/workflow_user.gif");
+        $ui->setImage($id, $backendUrl . $cfg['path']['plugins'] . "workflow/images/workflow_user.gif");
     }
 
     $createstep = new cHTMLLink();

@@ -38,7 +38,7 @@ function cecFrontendCategoryAccess($idlang, $idcat, $idfrontenduser)
         SELECT
             idcatlang
         FROM
-            " . $cfg["tab"]["cat_lang"] . "
+            " . $cfg['tab']['cat_lang'] . "
         WHERE
             idcat = " . cSecurity::toInteger($idcat) . "
             AND idlang = " . cSecurity::toInteger($idlang));

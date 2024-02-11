@@ -221,7 +221,7 @@ foreach ($savedSearchList as $value) {
     }
 }
 
-$oListOptionRow->setContentData($tplSearch->generate($cfg['path']['templates'] . $cfg["templates"]["con_left_top_art_search"], true));
+$oListOptionRow->setContentData($tplSearch->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top_art_search'], true));
 
 $sSelfLink = 'main.php?area=' . $area . '&frame=2&' . $sess->name . "=" . $sess->id;
 $tpl->set('s', 'SELFLINK', $sSelfLink);
@@ -264,7 +264,7 @@ $tplCatConfig->set("s", "TEMPLATE_SELECT", $tpl->generate($cfg['path']['template
 
 $categoryLink = "editcat";
 $editCategory = new cGuiFoldingRow("3498dbbb-ed4a-4618-8e49-3a3635396e22", i18n("Edit category"), $categoryLink);
-$editCategory->setContentData($tplCatConfig->generate($cfg["path"]["templates"] . $cfg['templates']['con_left_top_cat_edit'], true));
+$editCategory->setContentData($tplCatConfig->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top_cat_edit'], true));
 
 $tpl->set('s', 'CAT_HREF', $sess->url("main.php?area=con_tplcfg&action=tplcfg_edit&frame=4&mode=art") . '&idcat=');
 $tpl->set('s', 'IDCAT', $idcat);
@@ -300,7 +300,7 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
     $tplSync->set("s", "FRAME", $frame);
     $tplSync->set("s", "SELECTBOX", $selectBox->render());
 
-    $oListOptionRow->setContentData($tplSync->generate($cfg["path"]["templates"] . $cfg["templates"]["con_left_top_sync"], true));
+    $oListOptionRow->setContentData($tplSync->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top_sync'], true));
 
     $tpl->set('s', 'SYNCRONIZATION', $oListOptionRow->render());
     $tpl->set('s', 'SYNCLINK', $sListId);

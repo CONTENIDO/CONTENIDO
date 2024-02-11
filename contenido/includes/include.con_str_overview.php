@@ -169,12 +169,12 @@ function showTree($iIdcat, &$aWholelist)
             if ($aValue["idlang"] != $lang) {
                 // Fetch parent id and check if it is syncronized
                 $sql = "SELECT parentid FROM %s WHERE idcat = '%s'";
-                $db->query(sprintf($sql, $cfg["tab"]["cat"], $idcat));
+                $db->query(sprintf($sql, $cfg['tab']['cat'], $idcat));
                 if ($db->nextRecord()) {
                     if ($db->f("parentid") != 0) {
                         $parentid = $db->f("parentid");
                         $sql = "SELECT idcatlang FROM %s WHERE idcat = '%s' AND idlang = '%s'";
-                        $db->query(sprintf($sql, $cfg["tab"]["cat_lang"], cSecurity::toInteger($parentid), cSecurity::toInteger($lang)));
+                        $db->query(sprintf($sql, $cfg['tab']['cat_lang'], cSecurity::toInteger($parentid), cSecurity::toInteger($lang)));
 
                         if ($db->nextRecord()) {
                             $aCssClasses[] = 'con_sync';
@@ -319,11 +319,11 @@ if ($syncoptions == -1) {
                 b.idlang AS idlang,
                 c.idtree AS idtree
             FROM
-                (" . $cfg["tab"]["cat"] . " AS a,
-                " . $cfg["tab"]["cat_lang"] . " AS b,
-                " . $cfg["tab"]["cat_tree"] . " AS c)
+                (" . $cfg['tab']['cat'] . " AS a,
+                " . $cfg['tab']['cat_lang'] . " AS b,
+                " . $cfg['tab']['cat_tree'] . " AS c)
             LEFT JOIN
-                " . $cfg["tab"]["tpl_conf"] . " AS d
+                " . $cfg['tab']['tpl_conf'] . " AS d
                 ON d.idtplcfg = b.idtplcfg
             WHERE
                 a.idclient = '" . cSecurity::toInteger($client) . "' AND
@@ -346,11 +346,11 @@ if ($syncoptions == -1) {
                 b.idlang AS idlang,
                 c.idtree AS idtree
             FROM
-                (" . $cfg["tab"]["cat"] . " AS a,
-                " . $cfg["tab"]["cat_lang"] . " AS b,
-                " . $cfg["tab"]["cat_tree"] . " AS c)
+                (" . $cfg['tab']['cat'] . " AS a,
+                " . $cfg['tab']['cat_lang'] . " AS b,
+                " . $cfg['tab']['cat_tree'] . " AS c)
             LEFT JOIN
-                " . $cfg["tab"]["tpl_conf"] . " AS d
+                " . $cfg['tab']['tpl_conf'] . " AS d
                 ON d.idtplcfg = b.idtplcfg
             WHERE
                 a.idclient = '" . cSecurity::toInteger($client) . "' AND
@@ -396,7 +396,7 @@ if (count($arrIn) > 0) {
     $sIn = implode(',', $arrIn);
 
     $sql2 = "SELECT b.idcat, a.idart, idlang
-            FROM " . $cfg["tab"]["art_lang"] . " AS a, " . $cfg["tab"]["cat_art"] . " AS b
+            FROM " . $cfg['tab']['art_lang'] . " AS a, " . $cfg['tab']['cat_art'] . " AS b
             WHERE b.idcat IN (" . $db->escape($sIn) . ")
                 AND (a.idlang = " . cSecurity::toInteger($syncoptions) . " OR a.idlang = " . cSecurity::toInteger($lang) . ")
                 AND b.idart = a.idart";
@@ -443,10 +443,10 @@ if ($syncoptions == -1) {
                 SUM(a.online) AS online,
                 d.startidartlang
             FROM
-                " . $cfg["tab"]["art_lang"] . " AS a,
-                " . $cfg["tab"]["art"] . " AS b,
-                " . $cfg["tab"]["cat_art"] . " AS c,
-                " . $cfg["tab"]["cat_lang"] . " AS d
+                " . $cfg['tab']['art_lang'] . " AS a,
+                " . $cfg['tab']['art'] . " AS b,
+                " . $cfg['tab']['cat_art'] . " AS c,
+                " . $cfg['tab']['cat_lang'] . " AS d
             WHERE
                 a.idlang = " . cSecurity::toInteger($lang) . " AND
                 a.idart = b.idart AND
@@ -460,10 +460,10 @@ if ($syncoptions == -1) {
                 SUM(a.online) AS online,
                 d.startidartlang
             FROM
-                " . $cfg["tab"]["art_lang"] . " AS a,
-                " . $cfg["tab"]["art"] . " AS b,
-                " . $cfg["tab"]["cat_art"] . " AS c,
-                " . $cfg["tab"]["cat_lang"] . " AS d
+                " . $cfg['tab']['art_lang'] . " AS a,
+                " . $cfg['tab']['art'] . " AS b,
+                " . $cfg['tab']['cat_art'] . " AS c,
+                " . $cfg['tab']['cat_lang'] . " AS d
             WHERE
                 a.idart = b.idart AND
                 b.idclient = '" . cSecurity::toInteger($client) . "' AND
@@ -597,7 +597,7 @@ $sql = "SELECT DISTINCT " .
     "LEFT JOIN {$cfg['tab']['cat_lang']} AS b ON a.idcat = b.idcat " .
     $sqlLangPopup .
     "LEFT JOIN {$cfg['tab']['cat_tree']} AS c ON (a.idcat = c.idcat AND b.idcat = c.idcat) " .
-    "LEFT JOIN {$cfg["tab"]["tpl_conf"]} AS d ON b.idtplcfg = d.idtplcfg " .
+    "LEFT JOIN {$cfg['tab']['tpl_conf']} AS d ON b.idtplcfg = d.idtplcfg " .
     "WHERE " .
     "   a.idclient = {$client} " .
     "ORDER BY b.idlang {$sOrder}, c.idtree ASC ";

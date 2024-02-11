@@ -56,9 +56,9 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
         "SELECT
                     COUNT(*) AS article_count
                  FROM
-                    " . $cfg["tab"]["art_lang"] . " AS a,
-                    " . $cfg["tab"]["art"] . " AS b,
-                    " . $cfg["tab"]["cat_art"] . " AS c
+                    " . $cfg['tab']['art_lang'] . " AS a,
+                    " . $cfg['tab']['art'] . " AS b,
+                    " . $cfg['tab']['cat_art'] . " AS c
                  WHERE
                     (a.idlang   = " . cSecurity::toInteger($lang) . " {SYNCOPTIONS}) AND
                     a.idart     = b.idart AND

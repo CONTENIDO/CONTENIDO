@@ -59,7 +59,7 @@ foreach ($clients as $key => $value) {
     $tpl2->next();
 }
 
-$select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true);
+$select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 
 $tpl->set('s', 'CLIENTSELECT', $select);
 

@@ -85,7 +85,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract
     protected function _jobConvertOldStartArticlesToNewOne()
     {
         // Convert old category start articles to new format, we don't support
-        // the configuration '$cfg["is_start_compatible"] = true;'
+        // the configuration '$cfg['is_start_compatible'] = true;'
         if ($this->_setupType == 'upgrade') {
             $catArtTable = cRegistry::getDbTableName('cat_art');
             $artLangTable = cRegistry::getDbTableName('art_lang');

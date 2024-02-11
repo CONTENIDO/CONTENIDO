@@ -20,4 +20,4 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $oUi = new cTemplate();
 $oUi->set("s", "ACTION", '');
-$oUi->generate($cfg["path"]["templates"] . $cfg["templates"]["left_top"]);
+$oUi->generate($cfg['path']['templates'] . $cfg['templates']['left_top']);

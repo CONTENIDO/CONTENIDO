@@ -73,7 +73,7 @@ $firstSel = false;
 $firstClientsLang = 0;
 
 foreach ($clientList as $key => $value) {
-    $sql = "SELECT * FROM " . $cfg["tab"]["lang"] . " AS A, " . $cfg["tab"]["clients_lang"] . " AS B WHERE B.idclient=" . (int)$key . " AND A.idlang=B.idlang";
+    $sql = "SELECT * FROM " . $cfg['tab']['lang'] . " AS A, " . $cfg['tab']['clients_lang'] . " AS B WHERE B.idclient=" . (int)$key . " AND A.idlang=B.idlang";
     $db->query($sql);
 
     while ($db->nextRecord()) {

@@ -125,7 +125,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
         //Reset all other default groups
         if ($requestDefaultGroup == 1) {
             $sSql = 'UPDATE `%s` SET defaultgroup = 0 WHERE idfrontendgroup != %d AND idclient = %d;';
-            $db->query($sSql, $cfg["tab"]["frontendgroups"], $requestIdFrontendGroup, $client);
+            $db->query($sSql, $cfg['tab']['frontendgroups'], $requestIdFrontendGroup, $client);
         }
         $fegroup->set("defaultgroup", $requestDefaultGroup);
 

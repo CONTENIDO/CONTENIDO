@@ -51,7 +51,7 @@ $sButtonRow = '';
 // News
 if ($perm->have_perm_area_action('news')) {
     $sButtonRow .= '<a href="javascript:void(0)" onclick="toggleContainer(\'' . $sId . '\');reloadLeftBottomAndTransportFormVars(document.newsletter_listoptionsform);">';
-    $sButtonRow .= '<img onmouseover="hoverEffect(\'' . $sId . '\', \'in\')" onmouseout="hoverEffect(\'' . $sId . '\', \'out\')" alt="' . i18n("Newsletter", 'newsletter') . '" title="' . i18n("Newsletter", 'newsletter') . '" name="' . $sId . '" id="' . $sId . '" src="' . $cfg["path"]["images"] . 'newsletter_on.gif">';
+    $sButtonRow .= '<img onmouseover="hoverEffect(\'' . $sId . '\', \'in\')" onmouseout="hoverEffect(\'' . $sId . '\', \'out\')" alt="' . i18n("Newsletter", 'newsletter') . '" title="' . i18n("Newsletter", 'newsletter') . '" name="' . $sId . '" id="' . $sId . '" src="' . $cfg['path']['images'] . 'newsletter_on.gif">';
     $sButtonRow .= '</a>';
 }
 
@@ -60,7 +60,7 @@ $sId = 'img_dispatch';
 $oTpl->set('s', 'IDISPATCH', $sId);
 if ($perm->have_perm_area_action('news_jobs')) {
     $sButtonRow .= '<a href="javascript:void(0)" onclick="toggleContainer(\'' . $sId . '\');reloadLeftBottomAndTransportFormVars(document.dispatch_listoptionsform);">';
-    $sButtonRow .= '<img onmouseover="hoverEffect(\'' . $sId . '\', \'in\')" onmouseout="hoverEffect(\'' . $sId . '\', \'out\')" alt="' . i18n("Dispatch", 'newsletter') . '" title="' . i18n("Dispatch", 'newsletter') . '" name="' . $sId . '" id="' . $sId . '" src="' . $cfg["path"]["images"] . 'newsletter_dispatch_on.gif">';
+    $sButtonRow .= '<img onmouseover="hoverEffect(\'' . $sId . '\', \'in\')" onmouseout="hoverEffect(\'' . $sId . '\', \'out\')" alt="' . i18n("Dispatch", 'newsletter') . '" title="' . i18n("Dispatch", 'newsletter') . '" name="' . $sId . '" id="' . $sId . '" src="' . $cfg['path']['images'] . 'newsletter_dispatch_on.gif">';
     $sButtonRow .= '</a>';
 }
 
@@ -69,7 +69,7 @@ $sId = 'img_recipient';
 $oTpl->set('s', 'IRECIPIENTS', $sId);
 if ($perm->have_perm_area_action('recipients')) {
     $sButtonRow .= '<a href="javascript:void(0)" onclick="toggleContainer(\'' . $sId . '\');reloadLeftBottomAndTransportFormVars(document.recipients_listoptionsform);">';
-    $sButtonRow .= '<img onmouseover="hoverEffect(\'' . $sId . '\', \'in\')" onmouseout="hoverEffect(\'' . $sId . '\', \'out\')" alt="' . i18n("Recipients", 'newsletter') . '" title="' . i18n("Recipients", 'newsletter') . '" id="' . $sId . '" src="' . $cfg["path"]["images"] . 'newsletter_recipients_on.gif">';
+    $sButtonRow .= '<img onmouseover="hoverEffect(\'' . $sId . '\', \'in\')" onmouseout="hoverEffect(\'' . $sId . '\', \'out\')" alt="' . i18n("Recipients", 'newsletter') . '" title="' . i18n("Recipients", 'newsletter') . '" id="' . $sId . '" src="' . $cfg['path']['images'] . 'newsletter_recipients_on.gif">';
     $sButtonRow .= '</a>';
 }
 
@@ -78,7 +78,7 @@ $sId = 'img_recipientgroup';
 $oTpl->set('s', 'IRECIPIENTGROUP', $sId);
 if ($perm->have_perm_area_action('recipientgroups')) {
     $sButtonRow .= '<a href="javascript:void(0)" onclick="toggleContainer(\'' . $sId . '\');reloadLeftBottomAndTransportFormVars(groups_listoptionsform);">';
-    $sButtonRow .= '<img onmouseover="hoverEffect(\'' . $sId . '\', \'in\')" onmouseout="hoverEffect(\'' . $sId . '\', \'out\')" alt="' . i18n("Recipient groups", 'newsletter') . '" title="' . i18n("Recipient groups", 'newsletter') . '" id="' . $sId . '" src="' . $cfg["path"]["images"] . 'newsletter_recipientgroups_on.gif">';
+    $sButtonRow .= '<img onmouseover="hoverEffect(\'' . $sId . '\', \'in\')" onmouseout="hoverEffect(\'' . $sId . '\', \'out\')" alt="' . i18n("Recipient groups", 'newsletter') . '" title="' . i18n("Recipient groups", 'newsletter') . '" id="' . $sId . '" src="' . $cfg['path']['images'] . 'newsletter_recipientgroups_on.gif">';
     $sButtonRow .= '</a>';
 }
 
@@ -661,7 +661,7 @@ if ($perm->have_perm_area_action("recipients", "recipients_create")) {
     $oLink = new cHTMLLink();
     $oLink->setClass('con_func_button');
     $oLink->setMultiLink("recipients", "", "recipients", "recipients_create");
-    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif" alt=""> ' . i18n("Create recipient", 'newsletter') . '</a>');
+    $oLink->setContent('<img src="' . $cfg['path']['images'] . 'folder_new.gif" alt=""> ' . i18n("Create recipient", 'newsletter') . '</a>');
     $sContent .= $oLink->render() . '<br>' . "\n";
 }
 
@@ -670,7 +670,7 @@ if ($perm->have_perm_area_action("recipients", "recipients_create")) {
     $oLink = new cHTMLLink();
     $oLink->setClass('con_func_button');
     $oLink->setMultiLink("recipients", "", "recipients_import", "recipients_import");
-    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'importieren.gif" alt=""> ' . i18n("Import recipients", 'newsletter') . '</a>');
+    $oLink->setContent('<img src="' . $cfg['path']['images'] . 'importieren.gif" alt=""> ' . i18n("Import recipients", 'newsletter') . '</a>');
     $sContent .= $oLink->render() . '<br>' . "\n";
 }
 
@@ -684,7 +684,7 @@ if ($perm->have_perm_area_action("recipients", "recipients_delete")) {
     $oLink = new cHTMLLink();
     $oLink->setClass('con_func_button');
     $oLink->setLink("javascript:showPurgeMsg('" . i18n('Purge recipients', 'newsletter') . "', '" . sprintf(i18n('Do you really want to remove recipients, that have not been confirmed since %s days and over?', 'newsletter'), $iTimeframe) . "')");
-    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'delete.gif" alt=""> ' . i18n("Purge recipients", 'newsletter') . '</a>');
+    $oLink->setContent('<img src="' . $cfg['path']['images'] . 'delete.gif" alt=""> ' . i18n("Purge recipients", 'newsletter') . '</a>');
     $sContent .= $oLink->render();
 }
 

@@ -524,7 +524,7 @@ function workflowSelect($listid, $default, $idcat)
     ]);
     $workflowSelectBox->setDefault($default);
 
-    $sButton = '<a href="javascript:setWorkflow(' . $idcat . ', \'' . "wfselect" . $idcat . '\')"><img src="' . $cfg["path"]["images"] . 'submit.gif" alt="" class="spaced"></a>';
+    $sButton = '<a href="javascript:setWorkflow(' . $idcat . ', \'' . "wfselect" . $idcat . '\')"><img src="' . $cfg['path']['images'] . 'submit.gif" alt="" class="spaced"></a>';
 
     return $workflowSelectBox->render() . $sButton;
 }
@@ -543,7 +543,7 @@ function workflowInherit($idcat)
     $sess = cRegistry::getSession();
 
     $sUrl = $sess->url("main.php?area=$area&frame=$frame&modidcat=$idcat&action=workflow_inherit_down");
-    return '<a class="con_img_button mgr5" href="' . $sUrl . '"><img src="' . $cfg["path"]["images"] . 'pfeil_runter.gif" alt="" title="' . i18n("Inherit workflow to sub-categories", "workflow") . '"></a>';
+    return '<a class="con_img_button mgr5" href="' . $sUrl . '"><img src="' . $cfg['path']['images'] . 'pfeil_runter.gif" alt="" title="' . i18n("Inherit workflow to sub-categories", "workflow") . '"></a>';
 }
 
 
@@ -730,7 +730,7 @@ function prepareWorkflowItems()
     ]);
 
     return $workflowSelectBox->render()
-        . '<a class="con_img_button mgl5" href="javascript:void(0)" data-action-workflow="set_workflow"><img src="' . $cfg["path"]["images"] . 'submit.gif" alt=""></a>';
+        . '<a class="con_img_button mgl5" href="javascript:void(0)" data-action-workflow="set_workflow"><img src="' . $cfg['path']['images'] . 'submit.gif" alt=""></a>';
 }
 
 /**
@@ -1088,7 +1088,7 @@ function piworkflowRenderColumn($idcat, $idart, $idartlang, $column)
             $form->setVar("modidartlang", $idartlang);
             $form->setVar("idtpl", $idtpl);
             $form->appendContent('<table cellspacing="0" border="0"><tr><td>' . $sActionSelect . '</td><td>');
-            $form->appendContent('<input type="image" src="' . cRegistry::getBackendUrl() . $cfg["path"]["images"] . "submit.gif" . '" alt=""></tr></table>');
+            $form->appendContent('<input type="image" src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . "submit.gif" . '" alt=""></tr></table>');
 
             if ($mayEdit == true) {
                 return ($form->render());
@@ -1122,7 +1122,7 @@ function piworkflowCreateTasksFolder()
 
     $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=con_workflow&frame=4"), 'right_top', $sess->url("main.php?area=con_workflow&frame=3"), 'Workflow / Todo');
 
-    $item["image"] = '<img alt="" src="' . cRegistry::getBackendUrl() . $cfg["path"]["plugins"] . 'workflow/images/workflow_erstellen.gif">';
+    $item["image"] = '<img alt="" src="' . cRegistry::getBackendUrl() . $cfg['path']['plugins'] . 'workflow/images/workflow_erstellen.gif">';
     $item["title"] = $mstr;
 
     return $item;

@@ -78,7 +78,7 @@ class cLayoutSynchronizer
      */
     private function _addOrUpdateLayout($dir, $oldLayoutName, $newLayoutName, $idclient)
     {
-        // if layout dont exist in the $cfg["tab"]["lay"] table.
+        // if layout dont exist in the $cfg['tab']['lay'] table.
         if ($this->_isExistInTable($oldLayoutName, $idclient) == false) {
             // add new Layout in db-table
             $layoutCollection = new cApiLayoutCollection();

@@ -144,7 +144,7 @@ class cGuiScrollListMyContenidoTasks extends cGuiScrollList
             $amount = min(max(0, $amount), 5);
 
             if ($amount != 0) {
-                $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/progress.gif");
+                $image = new cHTMLImage($backendUrl . $cfg['path']['images'] . "reminder/progress.gif");
                 $image->setAlt(sprintf(i18n("%d %% complete"), $value));
                 $ret = "";
 
@@ -183,7 +183,7 @@ class cGuiScrollListMyContenidoTasks extends cGuiScrollList
                     break;
             }
 
-            $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/" . $img);
+            $image = new cHTMLImage($backendUrl . $cfg['path']['images'] . "reminder/" . $img);
             $image->setAlt($this->_priorityTypes[$p]);
             return $image->render();
         }

@@ -259,12 +259,12 @@ auch das Plugin kann dann keine URLs umschreiben.
 
 Alle URLs zu Kategorien werden mit / oder /index.html umschrieben:
 ------------------------------------------------------------------
-Ist CONTENIDO mit der Konfiguration $cfg["is_start_compatible"] = true;
+Ist CONTENIDO mit der Konfiguration $cfg['is_start_compatible'] = true;
 (siehe contenidoincludes/config.php) eingestellt, um die Startartikeldefinition in Kategorien
 kompatibel zu älteren CONTENIDO-Versionen halten, kann das Plugin die URLs zu Kategorien nicht
 generieren, weil es diese Konfiguration nicht unterstützt.
 
-Die einfachste Lösung ist, die Konfiguration $cfg["is_start_compatible"] auf false zu setzen und im
+Die einfachste Lösung ist, die Konfiguration $cfg['is_start_compatible'] auf false zu setzen und im
 Backend in den vorhandenen Kategorien erneut die Startartikel zu setzen.
 
 

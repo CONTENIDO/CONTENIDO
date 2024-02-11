@@ -331,8 +331,8 @@ if (is_array($allLanguages)) {
     $sql = "SELECT
               A.name AS name, A.idlang AS idlang, B.idclientslang AS idclientslang
             FROM
-              " . $cfg["tab"]["lang"] . " AS A,
-              " . $cfg["tab"]["clients_lang"] . " AS B
+              " . $cfg['tab']['lang'] . " AS A,
+              " . $cfg['tab']['clients_lang'] . " AS B
             WHERE
               A.idlang = B.idlang AND
               B.idclient = '" . cSecurity::toInteger($client) . "'

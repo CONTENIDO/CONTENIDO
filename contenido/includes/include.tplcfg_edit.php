@@ -33,21 +33,21 @@ if ($idtpl != 0 && $idtplcfg != 0) {
 
     if ($idart) {
         //echo "art: idart: $idart, idcat: $idcat";
-        $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "' WHERE idart='$idart' AND idlang='" . cSecurity::toInteger($lang) . "'";
+        $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "' WHERE idart='$idart' AND idlang='" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
     } else {
         //echo "cat: idart: $idart, idcat: $idcat";
-        $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "' WHERE idcat='$idcat' AND idlang='" . cSecurity::toInteger($lang) . "'";
+        $sql = "UPDATE " . $cfg['tab']['cat_lang'] . " SET idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "' WHERE idcat='$idcat' AND idlang='" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
     }
 
     if ($changetemplate == 1 && $idtplcfg != 0) {
         // update template conf
-        $sql = "UPDATE " . $cfg["tab"]["tpl_conf"] . " SET idtpl='" . cSecurity::toInteger($idtpl) . "' WHERE idtplcfg='" . cSecurity::toInteger($idtplcfg) . "'";
+        $sql = "UPDATE " . $cfg['tab']['tpl_conf'] . " SET idtpl='" . cSecurity::toInteger($idtpl) . "' WHERE idtplcfg='" . cSecurity::toInteger($idtplcfg) . "'";
         $db->query($sql);
 
         // delete old configured containers
-        $sql = "DELETE FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg='" . cSecurity::toInteger($idtplcfg) . "'";
+        $sql = "DELETE FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg='" . cSecurity::toInteger($idtplcfg) . "'";
         $db->query($sql);
         $changetemplate = 0;
     } else {
@@ -71,10 +71,10 @@ if ($idtpl != 0 && $idtplcfg != 0) {
     // template deselected
 
     if (isset($idtplcfg) && $idtplcfg != 0) {
-        $sql = "DELETE FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
+        $sql = "DELETE FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
         $db->query($sql);
 
-        $sql = "DELETE FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
+        $sql = "DELETE FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
         $db->query($sql);
     }
 
@@ -82,18 +82,18 @@ if ($idtpl != 0 && $idtplcfg != 0) {
 
     if ($idcat != 0 && $changetemplate == 1 && !$idart) {
         // Category
-        $sql = "SELECT idtplcfg FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
+        $sql = "SELECT idtplcfg FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
         $db->nextRecord();
         $tmp_idtplcfg = $db->f("idtplcfg");
 
-        $sql = "DELETE FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
+        $sql = "DELETE FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
         $db->query($sql);
 
-        $sql = "DELETE FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
+        $sql = "DELETE FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
         $db->query($sql);
 
-        $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET idtplcfg = 0 WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
+        $sql = "UPDATE " . $cfg['tab']['cat_lang'] . " SET idtplcfg = 0 WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
 
         conGenerateCodeForAllArtsInCategory($idcat);
@@ -101,18 +101,18 @@ if ($idtpl != 0 && $idtplcfg != 0) {
     } elseif (isset($idart) && $idart != 0 && $changetemplate == 1) {
 
         // Article
-        $sql = "SELECT idtplcfg FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
+        $sql = "SELECT idtplcfg FROM " . $cfg['tab']['art_lang'] . " WHERE idart = '" . cSecurity::toInteger($idart) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
         $db->nextRecord();
         $tmp_idtplcfg = $db->f("idtplcfg");
 
-        $sql = "DELETE FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
+        $sql = "DELETE FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
         $db->query($sql);
 
-        $sql = "DELETE FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
+        $sql = "DELETE FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
         $db->query($sql);
 
-        $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET idtplcfg = 0 WHERE idart = '" . cSecurity::toInteger($idart) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
+        $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET idtplcfg = 0 WHERE idart = '" . cSecurity::toInteger($idart) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
 
         conGenerateCodeForAllArtsInCategory($idcat);
@@ -123,26 +123,26 @@ if ($idtpl != 0 && $idtplcfg != 0) {
 
     if ($changetemplate == 1) {
         if (!$idart) {
-            $sql = "SELECT idtplcfg FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
+            $sql = "SELECT idtplcfg FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
             $db->query($sql);
             $db->nextRecord();
             $tmp_idtplcfg = $db->f("idtplcfg");
 
-            $sql = "DELETE FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
+            $sql = "DELETE FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
             $db->query($sql);
 
-            $sql = "DELETE FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
+            $sql = "DELETE FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
             $db->query($sql);
         } else {
-            $sql = "SELECT idtplcfg FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
+            $sql = "SELECT idtplcfg FROM " . $cfg['tab']['art_lang'] . " WHERE idart = '" . cSecurity::toInteger($idart) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
             $db->query($sql);
             $db->nextRecord();
             $tmp_idtplcfg = $db->f("idtplcfg");
 
-            $sql = "DELETE FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
+            $sql = "DELETE FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
             $db->query($sql);
 
-            $sql = "DELETE FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
+            $sql = "DELETE FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg = '" . cSecurity::toInteger($tmp_idtplcfg) . "'";
             $db->query($sql);
         }
     }

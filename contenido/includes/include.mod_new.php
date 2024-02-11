@@ -137,7 +137,7 @@ $tplModFilter->set("s", "SORT_ORDER", $oSelectSortOrder->render());
 $tplModFilter->set("s", "TYPE_FILTER", $oSelectTypeFilter->render());
 $tplModFilter->set("s", "SEARCH_FOR", $oTextboxFilter->render());
 $tplModFilter->set("s", "SEARCH_IN", $oSelectSearchIn->render());
-$oListOptionRow->setContentData($tplModFilter->generate($cfg["path"]["templates"] . $cfg["templates"]["mod_left_top_filter"], true));
+$oListOptionRow->setContentData($tplModFilter->generate($cfg['path']['templates'] . $cfg['templates']['mod_left_top_filter'], true));
 
 // Pager
 $cApiModuleCollection = new cApiModuleCollection();

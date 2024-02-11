@@ -489,7 +489,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             // Article conf button
             if ($articleOverviewHelper->hasArticleEditPermission()) {
-                $tmp_artconf = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idart=$idart&idcat=$idcat") . '" title="' . $lngArticleProperties . '"><img src="' . $cfg["path"]["images"] . 'but_art_conf2.gif" alt="' . $lngArticleProperties . '" title="' . $lngArticleProperties . '"></a>';
+                $tmp_artconf = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idart=$idart&idcat=$idcat") . '" title="' . $lngArticleProperties . '"><img src="' . $cfg['path']['images'] . 'but_art_conf2.gif" alt="' . $lngArticleProperties . '" title="' . $lngArticleProperties . '"></a>';
             } else {
                 $tmp_artconf = '';
             }
@@ -500,7 +500,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $db->query($sql);
 
                 if ($db->nextRecord()) {
-                    $tmp_sync = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con&action=con_syncarticle&idart=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next") . '" title="' . $lngCopyArticleToTheCurrentLanguage . '"><img src="' . $cfg["path"]["images"] . 'but_sync_art.gif" alt="' . $lngCopyArticleToTheCurrentLanguage . '" title="' . $lngCopyArticleToTheCurrentLanguage . '"></a>';
+                    $tmp_sync = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con&action=con_syncarticle&idart=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next") . '" title="' . $lngCopyArticleToTheCurrentLanguage . '"><img src="' . $cfg['path']['images'] . 'but_sync_art.gif" alt="' . $lngCopyArticleToTheCurrentLanguage . '" title="' . $lngCopyArticleToTheCurrentLanguage . '"></a>';
                 } else {
                     $tmp_sync = '';
                     $articlesToSync--;
@@ -878,7 +878,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $tpl2->next();
         }
 
-        $select = (!$no_article) ? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '&nbsp;';
+        $select = (!$no_article) ? $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true) : '&nbsp;';
         $caption = (!$no_article) ? i18n("Items per page:") : '&nbsp;';
         $sourcelanguage = $sourcelanguage ?? $syncoptions;
 

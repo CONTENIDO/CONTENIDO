@@ -118,36 +118,36 @@ function addSaltsToTables(cDb $db)
 
     $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", $cfg['tab']['user']);
     if ($db->numRows() == 0) {
-        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", $cfg["tab"]["user"]);
-        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", $cfg["tab"]["user"]);
+        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", $cfg['tab']['user']);
+        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", $cfg['tab']['user']);
     }
 
-    $db->query("SELECT * FROM `%s`", $cfg["tab"]["user"]);
+    $db->query("SELECT * FROM `%s`", $cfg['tab']['user']);
     while ($db->nextRecord()) {
         if ($db->f("salt") == "") {
             $salt = md5($db->f("username") . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
             $hash = hash("sha256", $db->f("password") . $salt);
             $db2->query(
                 "UPDATE `%s` SET salt='%s', password='%s' WHERE user_id='%s'",
-                $cfg["tab"]["user"], $salt, $hash, $db->f("user_id")
+                $cfg['tab']['user'], $salt, $hash, $db->f("user_id")
             );
         }
     }
 
     $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", $cfg['tab']['frontendusers']);
     if ($db->numRows() == 0) {
-        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", $cfg["tab"]["frontendusers"]);
-        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", $cfg["tab"]["frontendusers"]);
+        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", $cfg['tab']['frontendusers']);
+        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", $cfg['tab']['frontendusers']);
     }
 
-    $db->query("SELECT * FROM `%s`", $cfg["tab"]["frontendusers"]);
+    $db->query("SELECT * FROM `%s`", $cfg['tab']['frontendusers']);
     while ($db->nextRecord()) {
         if ($db->f("salt") == "") {
             $salt = md5($db->f("username") . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
             $hash = hash("sha256", $db->f("password") . $salt);
             $db2->query(
                 "UPDATE `%s` SET salt='%s', password='%s' WHERE idfrontenduser='%s'",
-                $cfg["tab"]["frontendusers"], $salt, $hash, $db->f("idfrontenduser")
+                $cfg['tab']['frontendusers'], $salt, $hash, $db->f("idfrontenduser")
             );
         }
     }

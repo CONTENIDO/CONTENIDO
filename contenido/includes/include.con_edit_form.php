@@ -513,17 +513,17 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             && ($articleType == 'current' || $articleType == 'editable'))
         || $versioningState == $versioning::STATE_ADVANCED && $articleType == 'current') {
         $sql = 'SELECT * FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
-        $sql = $db->prepare($sql, $cfg["tab"]["art_lang"], $idart, $lang);
+        $sql = $db->prepare($sql, $cfg['tab']['art_lang'], $idart, $lang);
     } elseif ($action != 'con_newart' && ($selectedArticleId == 'current' || $selectedArticleId == 'editable')
         || $selectedArticleId == NULL) {
         if (is_numeric($versioning->getEditableArticleId($idartlang))) {
             $sql = 'SELECT * FROM `%s` WHERE `idartlangversion` = %d';
-            $sql = $db->prepare($sql, $cfg["tab"]["art_lang_version"], $versioning->getEditableArticleId($idartlang));
+            $sql = $db->prepare($sql, $cfg['tab']['art_lang_version'], $versioning->getEditableArticleId($idartlang));
         }
     } else {
         if (is_numeric($selectedArticleId)) {
             $sql = 'SELECT * FROM `%s` WHERE `idartlangversion` = %d';
-            $sql = $db->prepare($sql, $cfg["tab"]["art_lang_version"], $selectedArticleId);
+            $sql = $db->prepare($sql, $cfg['tab']['art_lang_version'], $selectedArticleId);
         }
     }
 
@@ -936,7 +936,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     } elseif ($idart != 0) {
         // get all idcats that contain art
         $sql = 'SELECT `idcat` FROM `%s` WHERE `idart` = %d';
-        $db->query($sql, $cfg["tab"]["cat_art"], $idart);
+        $db->query($sql, $cfg['tab']['cat_art'], $idart);
         while ($db->nextRecord()) {
             $tmp_idcat_in_art[] = $db->f("idcat");
         }
@@ -996,7 +996,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
             // find this article in other languages
             $sql = 'SELECT `idartlang`, `online` FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
-            $db->query($sql, $cfg["tab"]["art_lang"], $idart, $someLang->get("idlang"));
+            $db->query($sql, $cfg['tab']['art_lang'], $idart, $someLang->get("idlang"));
             $db->nextRecord();
             $isOnline = $db->f("online");
             $idOfSyncedArticle = $db->f("idartlang");
@@ -1073,9 +1073,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 C.name,
                 C.idtplcfg
             FROM
-                " . $cfg["tab"]["cat_tree"] . " AS A,
-                " . $cfg["tab"]["cat"] . " AS B,
-                " . $cfg["tab"]["cat_lang"] . " AS C
+                " . $cfg['tab']['cat_tree'] . " AS A,
+                " . $cfg['tab']['cat'] . " AS B,
+                " . $cfg['tab']['cat_lang'] . " AS C
             WHERE
                 A.idcat = B.idcat AND
                 B.idcat = C.idcat AND
@@ -1121,7 +1121,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         }
     }
 
-    $select = $tpl2->generate($cfg["path"]["templates"] . $cfg["templates"]["con_edit_form_cat"], true);
+    $select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['con_edit_form_cat'], true);
 
     // Struktur
     $page->set('s', 'STRUKTUR', i18n("Category"));
@@ -1167,9 +1167,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 A.level,
                 C.name
             FROM
-                " . $cfg["tab"]["cat_tree"] . " AS A,
-                " . $cfg["tab"]["cat"] . " AS B,
-                " . $cfg["tab"]["cat_lang"] . " AS C
+                " . $cfg['tab']['cat_tree'] . " AS A,
+                " . $cfg['tab']['cat'] . " AS B,
+                " . $cfg['tab']['cat_lang'] . " AS C
             WHERE
                 A.idcat = B.idcat AND
                 B.idcat = C.idcat AND
@@ -1200,7 +1200,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         }
     }
 
-    $select = $tpl2->generate($cfg["path"]["templates"] . $cfg["templates"]["generic_select"], true);
+    $select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 
     // Seitentitel
     $title_input = '<input type="text" ' . $disabled . ' class="text_medium" name="page_title" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
@@ -1228,9 +1228,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $sql = "SELECT
                 b.idcat
             FROM
-                " . $cfg["tab"]["cat"] . " AS a,
-                " . $cfg["tab"]["cat_lang"] . " AS b,
-                " . $cfg["tab"]["cat_art"] . " AS c
+                " . $cfg['tab']['cat'] . " AS a,
+                " . $cfg['tab']['cat_lang'] . " AS b,
+                " . $cfg['tab']['cat_art'] . " AS c
             WHERE
                 a.idclient = " . cSecurity::toInteger($client) . " AND
                 a.idcat = b.idcat AND

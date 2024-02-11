@@ -137,7 +137,7 @@ $imgUserId = 'img_user';
 $tpl->set('s', 'IUSER', $imgUserId);
 $buttonRow .= '
 <a class="selectuserfunction" href="javascript:void(0)" data-action="switch_frontenduser">
-    <img onmouseover="hoverEffect(\'' . $imgUserId . '\', \'in\')" onmouseout="hoverEffect(\'' . $imgUserId . '\', \'out\')" alt="' . i18n("Frontend users") . '" title="' . i18n("Frontend users") . '" id="' . $imgUserId . '" src="' . $cfg["path"]["images"] . 'users.gif">
+    <img onmouseover="hoverEffect(\'' . $imgUserId . '\', \'in\')" onmouseout="hoverEffect(\'' . $imgUserId . '\', \'out\')" alt="' . i18n("Frontend users") . '" title="' . i18n("Frontend users") . '" id="' . $imgUserId . '" src="' . $cfg['path']['images'] . 'users.gif">
 </a>';
 
 // Frontend Groups
@@ -145,7 +145,7 @@ $imgGroupId = 'img_group';
 $tpl->set('s', 'IGROUP', $imgGroupId);
 $buttonRow .= '
 <a class="selectgroupfunction" href="javascript:void(0)" data-action="switch_frontendgroup">
-    <img onmouseover="hoverEffect(\'' . $imgGroupId . '\', \'in\')" onmouseout="hoverEffect(\'' . $imgGroupId . '\', \'out\')" alt="' . i18n("Frontend groups") . '" title="' . i18n("Frontend groups") . '" id="' . $imgGroupId . '" src="' . $cfg["path"]["images"] . 'groups.gif">
+    <img onmouseover="hoverEffect(\'' . $imgGroupId . '\', \'in\')" onmouseout="hoverEffect(\'' . $imgGroupId . '\', \'out\')" alt="' . i18n("Frontend groups") . '" title="' . i18n("Frontend groups") . '" id="' . $imgGroupId . '" src="' . $cfg['path']['images'] . 'groups.gif">
 </a>
 ';
 
@@ -332,7 +332,7 @@ if ((int)$client > 0) {
     $link->setLink('');
     $menu->setTitle("-2", i18n("No Client selected"));
 }
-$menu->setImage("-2", $cfg["path"]["images"] . "folder_new.gif");
+$menu->setImage("-2", $cfg['path']['images'] . "folder_new.gif");
 $menu->setLink("-2", $link);
 $menu->setLink("10", $link);
 $menu->setTitle("10", "");
