@@ -11,8 +11,8 @@
         <website>https://www.4fb.de</website>
         <version>1.0.0</version>
     </general>
-    <requirements php="5.2.3">
-        <contenido minversion="4.9.0"/>
+    <requirements php="7.0">
+        <contenido minversion="4.10.0"/>
     </requirements>
     <contenido>
         <areas>
