@@ -135,6 +135,7 @@ $cfg['templates']['system_purge']         = 'template.system_purge.html';
 $cfg['templates']['inuse_tpl']            = 'template.inuse_tpl.html';
 $cfg['templates']['inuse_lay_mod']        = 'template.inuse_lay_mod.html';
 
+$cfg['templates']['debug_styles']         = 'template.debug.styles.html';
 $cfg['templates']['debug_visibleadv']     = 'template.debug.visibleadv.html';
 $cfg['templates']['debug_header']         = 'template.debug.header.html';
 $cfg['templates']['debug_visible']        = 'template.debug.visible.html';

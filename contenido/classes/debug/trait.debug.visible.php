@@ -81,6 +81,20 @@ trait cDebugVisibleTrait
         return $this->_dumpWithType($value);
     }
 
+    protected function _getStyles(): string
+    {
+        static $stylesRendered;
+
+        if (isset($stylesRendered)) {
+            return '';
+        }
+        $stylesRendered = true;
+
+        $cfg = cRegistry::getConfig();
+        $tpl = new cTemplate();
+        return $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['debug_styles'], true);
+    }
+
     private function _dumpWithType($value): string
     {
         $type = gettype($value);

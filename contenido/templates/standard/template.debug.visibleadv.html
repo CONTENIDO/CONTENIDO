@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    function con_dbg_toggle(myItem) {
+    function conCmsDebugToggle(myItem) {
         var myItemObj = document.getElementById(myItem);
         if (myItemObj) {
             myItemObj.style.display = myItemObj.style.display === 'none' ? '' : 'none';
@@ -11,7 +11,7 @@
         }
     }
 
-    function con_dbg_hide(myItem) {
+    function conCmsDebugHide(myItem) {
         var myItemObj = document.getElementById(myItem);
         if (myItemObj) {
             myItemObj.style.display = 'none';
@@ -20,98 +20,24 @@
     }
 </script>
 
-<style type="text/css">
-    #con_dbg_box {
-        position: absolute;
-        z-index: 100000;
-        top: 5px;
-        margin: 0;
-        border: 1px solid #ccc;
-        padding: 5px;
-        background-color: #f6f6f6;
-        text-align: left;
-        color: #000;
-        /* default value for older browser */
-        max-width: 100%;
-        max-height: 100%;
-        /* never browser will interpret the calc */
-        max-width: calc(100vw - 20px);
-        max-height: calc(100vh - 20px);
-        overflow-y: auto;
-    }
+{STYLES}
 
-    #con_dbg_box a {
-        text-decoration: none;
-        color: #000000;
-        margin-top: 6px;
-    }
-
-    #con_dbg_box.con_dbg_box_align_left {
-        left: 5px;
-    }
-
-    #con_dbg_box.con_dbg_box_align_right {
-        right: 5px;
-    }
-
-    #con_dbg_box.con_dbg_box_align_right > .con_dbg_box_controls {
-        text-align: right;
-    }
-
-    #con_dbg_box .con_sr_only {
-        position: absolute;
-        left: -10000px;
-        top: auto;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
-    }
-
-    #dbg_item_block {
-        margin: 0;
-        color: #000;
-    }
-
-    #dbg_item_block textarea, #dbg_item_block pre {
-        font-size: 11px;
-        margin: 0;
-        padding: 5px;
-        color: #000;
-        border: 1px solid #6c6c6c;
-        background-color: #fff;
-    }
-
-    #dbg_item_block a {
-        display: block;
-        color: #000;
-        padding: 5px;
-    }
-
-    #dbg_item_block a:hover {
-        background-color: #e6e6e6;
-    }
-
-    #con_dbg_box_close {
-        padding-left: 10px;
-    }
-</style>
-
-<div id="con_dbg_box" class="{DBG_BOX_CSS_CLASS}">
-    <div class="con_dbg_box_controls">
+<div id="cms_debug_box" class="{DBG_BOX_CSS_CLASS}">
+    <div class="cms_debug_box_controls">
         <a href="javascript:void(0)" title="Toggle Debug Output"
-           onclick="con_dbg_toggle('dbg_item_block');"><img
+           onclick="conCmsDebugToggle('cms_debug_item_block');"><img
                 src="data:image/gif;base64,R0lGODlhEAAQAHAAACH5BAEAAB8ALAAAAAAQABAAhDN/wDmDwgBgsUCHxBBptUmNx26k0nGm03Cl0yl5vQpmtH+v11iWyw1otAdksyF0uyx7vgZjsi18vhVtt3yt1hZtt0yPyBxxuXus1ghkswRisiJ1uxJrtmaf0Gui0QAAAAVr4CeOHwCQKBkIQpB+w0iwLDHGX2F8B00jH0NhlBD5WKLiSLH4MBqsBkOkQDkeTRLEkYLQIhGaZDQ5CigUc2VkoRlZltTF/aFdSJjMYiV4BxYZGCIaIxt9dRsjhB8cJB0ijyONHx4vKJWWliEAOw=="
                 alt="con dbg"><span class="con_sr_only">con dbg</span></a>
-        <a id="con_dbg_box_close" href="javascript:void(0)" title="Hide Debug Output"
-           onclick="con_dbg_hide('con_dbg_box');"><img
+        <a id="cms_debug_box_close" href="javascript:void(0)" title="Hide Debug Output"
+           onclick="conCmsDebugHide('cms_debug_box');"><img
                 src="data:image/gif;base64,R0lGODlhEAAQAKIEANcyEeuaieuXh////wAAAAAAAAAAAAAAACH5BAEAAAQALAAAAAAQABAAAAMtSLDcrS7KOYWINoZxmRiBtHVfOI0ltWygunycW45UCtBYy+BNYPY/l5ACERISADs="
                 alt="(x)"><span class="con_sr_only">(x)</span></a>
     </div>
-    <div id="dbg_item_block" style="display:none;">
+    <div id="cms_debug_item_block" style="display:none;">
         <!-- BEGIN:BLOCK -->
         <a href="javascript:void(0)" title="Toggle Item"
-           onclick="con_dbg_toggle('dbg_item_{DBG_ITEM_COUNT}');">{DBG_ITEM_NAME}</a>
-        <div id="dbg_item_{DBG_ITEM_COUNT}" style="display:none;margin-left:20px;">
+           onclick="conCmsDebugToggle('cms_debug_item_{DBG_ITEM_COUNT}');">{DBG_ITEM_NAME}</a>
+        <div id="cms_debug_item_{DBG_ITEM_COUNT}" style="display:none;">
             {DBG_ITEM_VALUE}
         </div>
         <!-- END:BLOCK -->

@@ -153,6 +153,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
         if ($this->count() > 0) {
             $tpl = new cTemplate();
 
+            $tpl->set('s', 'STYLES', $this->_getStyles());
             $tpl->set('s', 'DBG_BOX_CSS_CLASS', $cssClass);
 
             $i = 1;
@@ -181,7 +182,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
 
         $tpl = new cTemplate();
         $tpl->set('s', 'DBG_MESSAGE_CONTENT', $buffer);
-        $sHtml .= $tpl->generate($cfg['path']['templates'] . $cfg['templates']['debug_header'], true);
+        $sHtml .= $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['debug_header'], true);
 
         // switching back to the old directory if needed
         chdir($dir);
@@ -235,7 +236,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
     protected function _getAlignmentCssClass(): string
     {
         $alignment = cEffectiveSetting::get('debug', 'debug_to_screen_align', 'left');
-        return $alignment === 'right' ? 'con_dbg_box_align_right' : 'con_dbg_box_align_left';
+        return $alignment === 'right' ? 'cms_debug_box_align_right' : 'cms_debug_box_align_left';
     }
 
     protected function _isDebugBoxToShow(): bool

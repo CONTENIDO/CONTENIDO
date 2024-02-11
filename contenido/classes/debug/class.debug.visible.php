@@ -83,11 +83,12 @@ class cDebugVisible implements cDebugInterface
         $varText = $this->_prepareDumpValue($mVariable);
 
         $tpl = new cTemplate();
-        $tpl->set("s", "VAR_DESCRIPTION", $sVariableDescription);
-        $tpl->set("s", "VAR_TEXT", $varText);
+        $tpl->set('s', 'STYLES', $this->_getStyles());
+        $tpl->set('s', 'VAR_DESCRIPTION', $sVariableDescription);
+        $tpl->set('s', 'VAR_TEXT', $varText);
 
         $cfg = cRegistry::getConfig();
-        $tpl->generate($cfg["templates"]["debug_visible"]);
+        $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['debug_visible']);
         if ($bExit === true) {
             die('<p class="cms_debug_footer"><b>debugg\'ed</b></p>');
         }

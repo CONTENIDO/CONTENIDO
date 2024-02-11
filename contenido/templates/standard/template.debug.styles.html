@@ -1,0 +1,105 @@
+<style type="text/css">
+    #cms_debug_box {
+        position: absolute;
+        z-index: 100000;
+        top: 5px;
+        margin: 0;
+        border: 1px solid #ccc;
+        padding: 5px;
+        background-color: #f6f6f6;
+        text-align: left;
+        color: #000;
+        /* default value for older browser */
+        max-width: 100%;
+        max-height: 100%;
+        /* never browser will interpret the calc */
+        max-width: calc(100vw - 20px);
+        max-height: calc(100vh - 20px);
+        overflow-y: auto;
+    }
+
+    #cms_debug_box a {
+        text-decoration: none;
+        color: #000;
+        margin-top: 6px;
+    }
+
+    #cms_debug_box.cms_debug_box_align_left {
+        left: 5px;
+    }
+
+    #cms_debug_box.cms_debug_box_align_right {
+        right: 5px;
+    }
+
+    #cms_debug_box.cms_debug_box_align_right > .cms_debug_box_controls {
+        text-align: right;
+    }
+
+    #cms_debug_box .con_sr_only {
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    }
+
+    #cms_debug_item_block {
+        margin: 0;
+        color: #000;
+    }
+
+    #cms_debug_item_block textarea,
+    #cms_debug_item_block pre,
+    .cms_debug_output {
+        font-size: 11px;
+        margin: 0;
+        padding: 5px;
+        color: #000;
+        border: 1px solid #6c6c6c;
+        background-color: #fff;
+    }
+
+    #cms_debug_item_block a {
+        display: block;
+        color: #000;
+        padding: 5px;
+    }
+
+    #cms_debug_item_block a:hover {
+        background-color: #e6e6e6;
+    }
+
+    #cms_debug_box_close {
+        padding-left: 10px;
+    }
+
+    .cms_debug_item {
+        margin: 5px 0;
+        padding: 5px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        font-family: Georgia, serif;
+        text-align: left;
+    }
+
+    .cms_debug_item .cms_debug_item_descr {
+        font-size: 80%;
+        margin: 0;
+        padding: 2px 5px;
+        background-color: #ccc;
+        color: #000;
+        font-family: Verdana, sans-serif;
+        text-align: left;
+    }
+
+    .cms_debug_footer {
+        font-size: 80%;
+        margin: 5px 0;
+        padding: 5px;
+        background-color: #ccc;
+        color: #000;
+        text-align: left;
+    }
+</style>
