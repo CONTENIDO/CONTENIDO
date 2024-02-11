@@ -28,12 +28,8 @@ cInclude("includes", "functions.con.php");
  * @param int $idlay
  * @param int[]|null $c Array of container id (key) and set module ids (value)
  * @param mixed|int $default 1 if template is defined as standard template
- *
- * @return number|mixed <mixed, bool, multitype:>
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @return int|mixed The given $idtpl or -1
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c, $default)
 {
@@ -135,9 +131,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
  *
  * @param int $idtpl
  *         ID of the template to duplicate
- *
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException|cException
  */
 function tplDeleteTemplate($idtpl)
 {
@@ -170,13 +164,11 @@ function tplDeleteTemplate($idtpl)
  * Browse a specific layout for containers
  *
  * @param $idlay
- *
  * @return string
  *         &-separated string of all containers
- *
- * @throws cInvalidArgumentException
+ * @throws cInvalidArgumentException|cDbException
  */
-function tplBrowseLayoutForContainers($idlay)
+function tplBrowseLayoutForContainers($idlay): string
 {
     global $containerinf;
 
@@ -224,12 +216,10 @@ function tplBrowseLayoutForContainers($idlay)
  * the list of found container numbers.
  *
  * @param int $idlay
- *
  * @return array
- *
- * @throws cInvalidArgumentException
+ * @throws cInvalidArgumentException|cDbException
  */
-function tplGetContainerNumbersInLayout($idlay)
+function tplGetContainerNumbersInLayout($idlay): array
 {
     $containerNumbers = [];
 
@@ -252,7 +242,7 @@ function tplGetContainerNumbersInLayout($idlay)
  * @return string|null
  *         Container name or null
  */
-function tplGetContainerName($idlay, $container)
+function tplGetContainerName($idlay, $container): ?string
 {
     global $containerinf;
 
@@ -275,7 +265,7 @@ function tplGetContainerName($idlay, $container)
  * @return string|null
  *         Container name or null
  */
-function tplGetContainerMode($idlay, $container)
+function tplGetContainerMode($idlay, $container): ?string
 {
     global $containerinf;
 
@@ -298,7 +288,7 @@ function tplGetContainerMode($idlay, $container)
  * @return array
  *         Allowed container types
  */
-function tplGetContainerTypes($idlay, $container)
+function tplGetContainerTypes($idlay, $container): array
 {
     global $containerinf;
 
@@ -328,7 +318,7 @@ function tplGetContainerTypes($idlay, $container)
  * @return string|null
  *         Default module name or null
  */
-function tplGetContainerDefault($idlay, $container)
+function tplGetContainerDefault($idlay, $container): ?string
 {
     global $containerinf;
 
@@ -346,8 +336,7 @@ function tplGetContainerDefault($idlay, $container)
  *
  * @param int $idlay
  *         Layout number to browse
- *
- * @throws cInvalidArgumentException
+ * @throws cInvalidArgumentException|cDbException
  */
 function tplPreparseLayout($idlay)
 {
@@ -356,18 +345,22 @@ function tplPreparseLayout($idlay)
     $cfg = cRegistry::getConfig();
     $lang = cRegistry::getLanguageId();
 
-    $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $lang);
-    $code = $layoutInFile->getLayoutCode();
-
-    $parser = new HtmlParser($code);
-    $bIsBody = false;
-
     if (!is_array($containerinf)) {
         $containerinf = [];
     }
     if (!isset($containerinf[$idlay])) {
         $containerinf[$idlay] = [];
     }
+
+    $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $lang);
+    $code = $layoutInFile->getLayoutCode();
+
+    if (!is_string($code)) {
+        return;
+    }
+
+    $parser = new HtmlParser($code);
+    $bIsBody = false;
 
     while ($parser->parse()) {
         if (cString::toLowerCase($parser->getNodeName()) == 'body') {
@@ -398,14 +391,11 @@ function tplPreparseLayout($idlay)
  *
  * @param int $idtpl
  *         ID of the template to duplicate
- *
  * @return int
  *         ID of the duplicated template
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function tplDuplicateTemplate($idtpl)
+function tplDuplicateTemplate($idtpl): int
 {
     $auth = cRegistry::getAuth();
     $idtpl = cSecurity::toInteger($idtpl);
@@ -466,13 +456,11 @@ function tplDuplicateTemplate($idtpl)
  *
  * @param int $idtpl
  *         Template ID
- *
  * @return bool
  *         is template in use
- *
  * @throws cDbException
  */
-function tplIsTemplateInUse($idtpl)
+function tplIsTemplateInUse($idtpl): bool
 {
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
@@ -520,13 +508,11 @@ function tplIsTemplateInUse($idtpl)
  *
  * @param int $idtpl
  *         Template ID
- *
  * @return array
  *         category name, article name
- *
- * @throws cDbException
+ * @throws cDbException|cInvalidArgumentException
  */
-function tplGetInUsedData($idtpl)
+function tplGetInUsedData($idtpl): array
 {
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
@@ -639,15 +625,11 @@ function tplGetTplAndLayoutData(int $idtpl): array
  *
  * @param int $idtplcfg
  *         Template Configuration ID
- *
  * @return int
  *         new template configuration ID
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function tplcfgDuplicate($idtplcfg)
+function tplcfgDuplicate($idtplcfg): int
 {
     $auth = cRegistry::getAuth();
     $idtplcfg = cSecurity::toInteger($idtplcfg);
@@ -663,7 +645,7 @@ function tplcfgDuplicate($idtplcfg)
         'created' => date('Y-m-d H:i:s'),
         'lastmodified' => date('Y-m-d H:i:s'),
     ]);
-    $newidtplcfg = $newTemplateConfig->get('idtplcfg');
+    $newidtplcfg = cSecurity::toInteger($newTemplateConfig->get('idtplcfg'));
 
     // Copy container configuration from old template configuration to new template configuration
     if ($idtplcfg) {
@@ -685,15 +667,11 @@ function tplcfgDuplicate($idtplcfg)
  * - If the container mode is mandatory, insert the "default" module (if exists)
  *
  * @param int $idtpl
- *
  * @return bool
- *
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException|cException
  * @todo Default module is only inserted in mandatory mode if container is empty. We need a better logic for handling "changes".
- *
  */
-function tplAutoFillModules($idtpl)
+function tplAutoFillModules($idtpl): bool
 {
     global $db_autofill, $containerinf, $_autoFillContainerCache;
 
@@ -785,9 +763,7 @@ function tplAutoFillModules($idtpl)
  * @param array $postData
  *         Usually $_POST
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function tplProcessSendContainerConfiguration($idtpl, $idtplcfg, array $postData)
 {

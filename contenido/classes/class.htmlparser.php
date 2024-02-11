@@ -33,6 +33,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class HtmlParser
 {
+
     /**
      * Node type ID for elements.
      *
@@ -66,34 +67,30 @@ class HtmlParser
 
     /**
      * Field iNodeType.
-     *
      * May be one of the NODE_TYPE_* constants above.
      *
      * @var int
      */
-    protected $_NodeType;
+    protected $_NodeType = 0;
 
     /**
      * Field iNodeName.
-     *
      * For elements, it's the name of the element.
      *
      * @var string
      */
-    protected $_NodeName = "";
+    protected $_NodeName = '';
 
     /**
      * Field iNodeValue.
-     *
      * For text nodes, it's the text.
      *
      * @var string
      */
-    protected $_NodeValue = "";
+    protected $_NodeValue = '';
 
     /**
      * Field iNodeAttributes.
-     *
      * A string-indexed array containing attribute values
      * of the current node. Indexes are always lowercase.
      *
@@ -109,7 +106,7 @@ class HtmlParser
     /**
      * @var int
      */
-    protected $_HtmlTextLength;
+    protected $_HtmlTextLength = 0;
 
     /**
      * @var int
@@ -118,60 +115,83 @@ class HtmlParser
 
     /**
      * Constructor to create an instance of this class.
-     *
      * Constructs an HtmlParser instance with the HTML text given.
      *
-     * @param string $HtmlText
+     * @param string $htmlText
      */
-    public function __construct($HtmlText)
+    public function __construct($htmlText)
     {
-        $this->setHtmlText($HtmlText);
-        $this->setHtmlTextLength(cString::getStringLength($HtmlText));
+        $this->setHtmlText($htmlText);
+        if ($this->getHtmlText()) {
+            $this->setHtmlTextLength(cString::getStringLength($htmlText));
+        }
     }
 
     /**
      * Set method for HtmlText variable.
      *
      * @param string $htmlText
-     *
      * @return string
      */
-    public function setHtmlText($htmlText)
+    public function setHtmlText($htmlText): string
     {
-        return $this->_HtmlText = $htmlText;
+        if (!is_string($htmlText)) {
+            try {
+                cDeprecated('Parameter $htmlText is not of type string');
+            } catch (cInvalidArgumentException $e) {
+            }
+            return '';
+        }
+        $this->_HtmlText = $htmlText;
+        return $this->_HtmlText;
     }
 
     /**
      * Set method for HtmlTextLength variable.
      *
      * @param int $htmlTextLength
-     *
      * @return int
      */
-    public function setHtmlTextLength($htmlTextLength)
+    public function setHtmlTextLength($htmlTextLength): int
     {
-        return $this->_HtmlTextLength = $htmlTextLength;
+        try {
+            if (!is_numeric($htmlTextLength)) {
+                cDeprecated('Parameter $htmlTextLength is not numeric');
+                return 0;
+            } elseif ($htmlTextLength !== cString::getStringLength($this->getHtmlText())) {
+                cDeprecated('Parameter $htmlTextLength mismatch the length of set $htmlText');
+                return 0;
+            }
+        } catch (cInvalidArgumentException $e) {
+        }
+
+        $this->_HtmlTextLength = cSecurity::toInteger($htmlTextLength);
+
+        return $this->_HtmlTextLength;
     }
 
     /**
      * Set method for HtmlTextIndex variable.
      *
-     * @param int $HtmlTextIndex
-     *
+     * @param int $htmlTextIndex
      * @return int
      */
-    public function setHtmlTextIndex($HtmlTextIndex)
+    public function setHtmlTextIndex($htmlTextIndex): int
     {
-        return $this->_HtmlTextIndex = $HtmlTextIndex;
+        if (!is_numeric($htmlTextIndex)) {
+            cDeprecated('Parameter $htmlTextIndex is not numeric');
+            return 0;
+        }
+        $this->_HtmlTextIndex = cSecurity::toInteger($htmlTextIndex);
+
+        return $this->_HtmlTextIndex;
     }
 
     /**
      * Set method for NodeAttributes.
-     *
      * To clear this array please use _clearAttributes function.
      *
      * @param array $NodeAttributes
-     *
      * @return bool|array
      */
     public function _setNodeAttributes($NodeAttributes)
@@ -179,8 +199,9 @@ class HtmlParser
         if (!is_array($NodeAttributes)) {
             return false;
         }
+        $this->_NodeAttributes = $NodeAttributes;
 
-        return $this->_NodeAttributes = $NodeAttributes;
+        return $this->_NodeAttributes;
     }
 
     /**
@@ -188,7 +209,7 @@ class HtmlParser
      *
      * @return string
      */
-    public function getHtmlText()
+    public function getHtmlText(): string
     {
         return $this->_HtmlText;
     }
@@ -198,7 +219,7 @@ class HtmlParser
      *
      * @return int
      */
-    public function getHtmlTextLength()
+    public function getHtmlTextLength(): int
     {
         return $this->_HtmlTextLength;
     }
@@ -206,9 +227,9 @@ class HtmlParser
     /**
      * Get method for _NodeType.
      *
-     * @return string
+     * @return int
      */
-    public function getNodeType()
+    public function getNodeType(): int
     {
         return $this->_NodeType;
     }
@@ -218,17 +239,17 @@ class HtmlParser
      *
      * @return string
      */
-    public function getNodeName()
+    public function getNodeName(): string
     {
         return $this->_NodeName;
     }
 
     /**
-     * Getmethod for _NodeAttributes.
+     * Get method for _NodeAttributes.
      *
      * @return array
      */
-    public function getNodeAttributesArray()
+    public function getNodeAttributesArray(): array
     {
         return $this->_NodeAttributes;
     }
@@ -240,9 +261,9 @@ class HtmlParser
      *
      * @return string
      */
-    public function getNodeAttributes($attribute)
+    public function getNodeAttributes($attribute): string
     {
-        return isset($this->_NodeAttributes[$attribute]) ? $this->_NodeAttributes[$attribute] : '';
+        return $this->_NodeAttributes[$attribute] ?? '';
     }
 
     /**
@@ -250,7 +271,7 @@ class HtmlParser
      *
      * @return int
      */
-    public function getHtmlTextIndex()
+    public function getHtmlTextIndex(): int
     {
         return $this->_HtmlTextIndex;
     }
@@ -258,11 +279,12 @@ class HtmlParser
     /**
      * Increase HtmlTextIndex.
      *
-     * @return bool
+     * @return int
      */
-    protected function increaseHtmlTextIndex()
+    protected function increaseHtmlTextIndex(): int
     {
-        return $this->_HtmlTextIndex++;
+        $this->_HtmlTextIndex++;
+        return $this->_HtmlTextIndex;
     }
 
     /**
@@ -273,7 +295,7 @@ class HtmlParser
      *
      * @return bool
      */
-    public function parse()
+    public function parse(): bool
     {
         $text = $this->_skipToElement();
         if ($text != "") {
@@ -292,19 +314,19 @@ class HtmlParser
      *
      * @return array
      */
-    protected function _clearAttributes()
+    protected function _clearAttributes(): array
     {
-        return $this->_NodeAttributes = [];
+        $this->_NodeAttributes = [];
+        return $this->_NodeAttributes;
     }
 
     /**
      * @return bool
      */
-    protected function _readTag()
+    protected function _readTag(): bool
     {
         if ($this->_currentChar() != "<") {
             $this->_NodeType = self::NODE_TYPE_DONE;
-
             return false;
         }
 
@@ -377,18 +399,17 @@ class HtmlParser
 
     /**
      * @param string $name
-     *
-     * @return number
+     * @return int
      */
-    protected function _isValidTagIdentifier($name)
+    protected function _isValidTagIdentifier($name): int
     {
-        return preg_match('/[A-Za-z0-9]+/', $name);
+        return (int) preg_match('/[A-Za-z0-9]+/', $name);
     }
 
     /**
      * @return bool
      */
-    protected function _skipBlanksInTag()
+    protected function _skipBlanksInTag(): bool
     {
         return "" != ($this->_skipInTag([" ", "\t", "\r", "\n"]));
     }
@@ -396,7 +417,7 @@ class HtmlParser
     /**
      * @return string
      */
-    protected function _skipToBlanksOrEqualsInTag()
+    protected function _skipToBlanksOrEqualsInTag(): string
     {
         return $this->_skipToInTag([" ", "\t", "\r", "\n", "="]);
     }
@@ -404,7 +425,7 @@ class HtmlParser
     /**
      * @return string
      */
-    protected function _skipToBlanksInTag()
+    protected function _skipToBlanksInTag(): string
     {
         return $this->_skipToInTag([" ", "\t", "\r", "\n"]);
     }
@@ -412,7 +433,7 @@ class HtmlParser
     /**
      * @return string
      */
-    protected function _skipEqualsInTag()
+    protected function _skipEqualsInTag(): string
     {
         return $this->_skipInTag(["="]);
     }
@@ -420,7 +441,7 @@ class HtmlParser
     /**
      * @return string
      */
-    protected function _readValueInTag()
+    protected function _readValueInTag(): string
     {
         $ch = $this->_currentChar();
 
@@ -440,26 +461,25 @@ class HtmlParser
     }
 
     /**
-     * @return number|string
+     * @return int|string
      */
     protected function _currentChar()
     {
         if ($this->getHtmlTextIndex() >= $this->getHtmlTextLength()) {
             return -1;
         }
-        $HtmlText = $this->getHtmlText();
+        $htmlText = $this->getHtmlText();
 
-        return cString::getPartOfString($HtmlText, $this->getHtmlTextIndex(), 1);
+        return cString::getPartOfString($htmlText, $this->getHtmlTextIndex(), 1);
     }
 
     /**
      * @return bool
      */
-    protected function _moveNext()
+    protected function _moveNext(): bool
     {
         if ($this->getHtmlTextIndex() < $this->getHtmlTextLength()) {
             $this->increaseHtmlTextIndex();
-
             return true;
         } else {
             return false;
@@ -469,7 +489,7 @@ class HtmlParser
     /**
      * @return string
      */
-    protected function _skipEndOfTag()
+    protected function _skipEndOfTag(): string
     {
         $sb = "";
         if (($ch = $this->_currentChar()) !== -1) {
@@ -489,7 +509,7 @@ class HtmlParser
      *
      * @return string
      */
-    protected function _skipInTag($chars)
+    protected function _skipInTag($chars): string
     {
         $sb = "";
         while (($ch = $this->_currentChar()) !== -1) {
@@ -519,7 +539,7 @@ class HtmlParser
      *
      * @return string
      */
-    protected function _skipToInTag($chars)
+    protected function _skipToInTag($chars): string
     {
         $sb = "";
         while (($ch = $this->_currentChar()) !== -1) {
@@ -545,7 +565,7 @@ class HtmlParser
     /**
      * @return string
      */
-    protected function _skipToElement()
+    protected function _skipToElement(): string
     {
         $sb = "";
         while (($ch = $this->_currentChar()) !== -1) {
@@ -568,17 +588,19 @@ class HtmlParser
      *
      * @return string
      */
-    protected function _skipToStringInTag($needle)
+    protected function _skipToStringInTag($needle): string
     {
         $pos = cString::findFirstPos($this->getHtmlText(), $needle, $this->getHtmlTextIndex());
         if ($pos === false) {
             return "";
         }
         $top = $pos + cString::getStringLength($needle);
-        $retvalue =
-            cString::getPartOfString($this->getHtmlText(), $this->getHtmlTextIndex(), $top - $this->getHtmlTextIndex());
+        $retValue = cString::getPartOfString(
+            $this->getHtmlText(), $this->getHtmlTextIndex(), $top - $this->getHtmlTextIndex()
+        );
         $this->setHtmlTextIndex($top);
 
-        return $retvalue;
+        return $retValue;
     }
+
 }
