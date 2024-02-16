@@ -48,10 +48,10 @@ class cGuiScrollListAlltranslations extends cGuiScrollList
     /**
      * Is called when a new column is rendered
      *
-     * @param int $column
+     * @param int|string $column
      *         The current column which is being rendered
      */
-    public function onRenderColumn(int $column)
+    public function onRenderColumn($column)
     {
         $iColumns = count($this->data[0]);
 

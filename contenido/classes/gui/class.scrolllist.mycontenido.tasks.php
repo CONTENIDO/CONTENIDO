@@ -59,11 +59,11 @@ class cGuiScrollListMyContenidoTasks extends cGuiScrollList
     /**
      * Is called when a new column is rendered.
      *
-     * @param int $column
+     * @param int|string $column
      *         The current column which is being rendered
      * @see cGuiScrollList::onRenderColumn()
      */
-    public function onRenderColumn(int $column)
+    public function onRenderColumn($column)
     {
         if ($column == 6 || $column == 5) {
             $this->objItem->updateAttributes(["align" => "center"]);
