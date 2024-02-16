@@ -1,7 +1,10 @@
+./classes/class.linkchecker.category_helper.php
+./classes/class.linkchecker.helper.php
+./classes/class.linkchecker.repair.php
+./classes/class.linkchecker.search_links.php
+./classes/class.linkchecker.tester.php
 ./includes/config.plugin.php
-./includes/include.checkperms.php
 ./includes/include.linkchecker.php
-./includes/include.linkchecker_tests.php
 ./includes/include.linkchecker_whitelist.php
 ./plugin.xml
 ./templates/standard/template.linkchecker_noerrors.html
