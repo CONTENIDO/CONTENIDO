@@ -631,17 +631,10 @@ class Newsletter extends Item
             $sName = $sEMail;
         }
 
-        $oLanguage = new cApiLanguage($lang);
-        $sFormatDate = $oLanguage->getProperty("dateformat", "date");
-        $sFormatTime = $oLanguage->getProperty("dateformat", "time");
-        unset($oLanguage);
-
-        if ($sFormatDate == "") {
-            $sFormatDate = "%d.%m.%Y";
-        }
-        if ($sFormatTime == "") {
-            $sFormatTime = "%H:%M";
-        }
+        /** @var PiNewsletter $plugin */
+        $plugin = cRegistry::getAppVar('pluginNewsletter');
+        $sFormatDate = $plugin->getDateFormat(cSecurity::toInteger($this->get('idlang')));
+        $sFormatTime = $plugin->getTimeFormat(cSecurity::toInteger($this->get('idlang')));
 
         // Get newsletter data
         $sFrom = $this->get("newsfrom");
@@ -802,19 +795,10 @@ class Newsletter extends Item
         // Initialization
         $aMessages = [];
 
-        // Initializing cApiLanguage and get properties for dateformat
-        $oLanguage = new cApiLanguage($lang);
-        $sFormatDate = $oLanguage->getProperty("dateformat", "date");
-        $sFormatTime = $oLanguage->getProperty("dateformat", "time");
-        unset($oLanguage);
-
-        // If no date- and format defined please set standard values
-        if ($sFormatDate == "") {
-            $sFormatDate = "%d.%m.%Y";
-        }
-        if ($sFormatTime == "") {
-            $sFormatTime = "%H:%M";
-        }
+        /** @var PiNewsletter $plugin */
+        $plugin = cRegistry::getAppVar('pluginNewsletter');
+        $sFormatDate = $plugin->getDateFormat(cSecurity::toInteger($this->get('idlang')));
+        $sFormatTime = $plugin->getTimeFormat(cSecurity::toInteger($this->get('idlang')));
 
         $sPath = cRegistry::getFrontendUrl() . "front_content.php?changelang=" . $lang . "&idcatart=" . $iIDCatArt . "&";
 

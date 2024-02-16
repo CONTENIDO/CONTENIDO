@@ -16,9 +16,20 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $cfg;
 
-$pluginName = basename(dirname(__DIR__, 1));
+require_once dirname(__DIR__, 1) . '/classes/class.pi.newsletter.php';
+$piNewsletter = new PiNewsletter();
+cRegistry::setAppVar('pluginNewsletter', $piNewsletter);
+
+$pluginName = $piNewsletter->getFolderName();
 
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
+
+// Plugin configuration
+$cfg['pi_newsletter'] = [
+    'pluginName' => $pluginName,
+    'defaultDateFormat' => 'd.m.Y',
+    'defaultTimeFormat' => 'H:i',
+];
 
 // Plugin tables configuration
 $cfg['tab']['news_groupmembers'] = $cfg['sql']['sqlprefix'] . '_pi_news_groupmembers';
@@ -50,7 +61,7 @@ cAutoload::addClassmapConfig([
     'NewsletterCollection' => $pluginClassesPath . '/class.newsletter.php',
     'Newsletter' => $pluginClassesPath . '/class.newsletter.php',
     'NewsletterRecipientCollection' => $pluginClassesPath . '/class.newsletter.recipients.php',
-    'NewsletterRecipient' => $pluginClassesPath . '/class.newsletter.recipients.php',
+    'NewsletterRecipient' => $pluginClassesPath . '/class.newsletter.recipients.php'
 ]);
 
 unset($pluginName, $pluginTemplatesPath, $pluginClassesPath);

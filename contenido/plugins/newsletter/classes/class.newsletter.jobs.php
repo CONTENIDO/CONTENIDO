@@ -302,17 +302,10 @@ class NewsletterJob extends Item
             $this->set("started", date("Y-m-d H:i:s"), false);
             $this->store();
 
-            $oLanguage = new cApiLanguage($this->get("idlang"));
-            $sFormatDate = $oLanguage->getProperty("dateformat", "date");
-            $sFormatTime = $oLanguage->getProperty("dateformat", "time");
-            unset($oLanguage);
-
-            if ($sFormatDate == "") {
-                $sFormatDate = "d.m.Y";
-            }
-            if ($sFormatTime == "") {
-                $sFormatTime = "H:i";
-            }
+            /** @var PiNewsletter $plugin */
+            $plugin = cRegistry::getAppVar('pluginNewsletter');
+            $sFormatDate = $plugin->getDateFormat(cSecurity::toInteger($this->get('idlang')));
+            $sFormatTime = $plugin->getTimeFormat(cSecurity::toInteger($this->get('idlang')));
 
             // Get newsletter data
             $sFrom = $this->get("newsfrom");
