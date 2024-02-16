@@ -1574,7 +1574,6 @@ function buildStackString($startlevel = 2)
  * </pre>
  *
  * @SuppressWarnings docBlocks
- * @throws cInvalidArgumentException
  * @internal has variadic parameters
  */
 function cWarning()
@@ -1608,7 +1607,10 @@ function cWarning()
         $msg .= "\n";
     }
 
-    cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
+    try {
+        cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
+    } catch (cInvalidArgumentException $e) {
+    }
 
     trigger_error($message, E_USER_WARNING);
 }
@@ -1626,7 +1628,6 @@ function cWarning()
  *
  * @param string $message
  *
- * @throws cInvalidArgumentException
  * @SuppressWarnings docBlocks
  * @internal         has variadic parameters
  */
@@ -1661,7 +1662,10 @@ function cError($message)
         $msg .= "\n";
     }
 
-    cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
+    try {
+        cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
+    } catch (cInvalidArgumentException $e) {
+    }
 
     trigger_error($message, E_USER_ERROR);
 }
@@ -1673,7 +1677,6 @@ function cError($message)
  *
  * @param string $message The error message to log
  * @return void
- * @throws cInvalidArgumentException
  */
 function cLogError($message)
 {
@@ -1693,7 +1696,10 @@ function cLogError($message)
         $msg .= "\n";
     }
 
-    cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
+    try {
+        cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
+    } catch (cInvalidArgumentException $e) {
+    }
 }
 
 /**
@@ -1701,8 +1707,6 @@ function cLogError($message)
  *
  * @param string $message
  *         Optional message (e.g. "Use function XYZ instead")
- *
- * @throws cInvalidArgumentException
  */
 function cDeprecated($message = '')
 {
@@ -1728,7 +1732,10 @@ function cDeprecated($message = '')
         $msg .= "\n";
     }
 
-    cFileHandler::write($cfg['path']['contenido_logs'] . 'deprecatedlog.txt', $msg, true);
+    try {
+        cFileHandler::write($cfg['path']['contenido_logs'] . 'deprecatedlog.txt', $msg, true);
+    } catch (cInvalidArgumentException $e) {
+    }
 }
 
 /**
