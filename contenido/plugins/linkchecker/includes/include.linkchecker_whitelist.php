@@ -55,7 +55,7 @@ while ($db->nextRecord()) {
 
     $tpl2->set('s', 'URL', $db->f('url'));
     $tpl2->set('s', 'URL_ENCODE', base64_encode($db->f('url')));
-    $tpl2->set('s', 'ENTRY', cDate::formatToDate(i18n('%Y-%m-%d, %I:%M%S %p', $pluginName), $db->f('lastview')));
+    $tpl2->set('s', 'ENTRY', cDate::formatToDate(i18n('d.m.Y H:i:s', $pluginName), $db->f('lastview')));
 
     $aWhitelist[] = $tpl2->generate($cfg['templates']['linkchecker_whitelist_urls'], 1);
 }

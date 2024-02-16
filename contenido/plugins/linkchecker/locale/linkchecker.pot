@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-05 13:55+0200\n"
+"POT-Creation-Date: 2024-02-16 20:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,119 +17,162 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/include.linkchecker.php:32
+#: includes/include.linkchecker.php:38
+#: includes/include.linkchecker_whitelist.php:29
+msgid "No permissions"
+msgstr ""
+
+#: includes/include.linkchecker.php:46
 msgid "No Client selected"
 msgstr ""
 
-#: includes/include.linkchecker.php:75
+#: includes/include.linkchecker.php:277
 msgid "Interns"
 msgstr ""
 
-#: includes/include.linkchecker.php:77
+#: includes/include.linkchecker.php:279
 msgid "Externs"
 msgstr ""
 
-#: includes/include.linkchecker.php:79
+#: includes/include.linkchecker.php:281
 msgid "Intern/extern Links"
 msgstr ""
 
-#: includes/include.linkchecker.php:264
+#: includes/include.linkchecker.php:286
 msgid "Link analysis from "
 msgstr ""
 
-#: includes/include.linkchecker.php:264
-msgid "%Y-%m-%d"
+#: includes/include.linkchecker.php:286
+msgid "d.m.Y"
 msgstr ""
 
-#: includes/include.linkchecker.php:273
+#: includes/include.linkchecker.php:293
 msgid "<strong>No errors</strong> were found."
 msgstr ""
 
-#: includes/include.linkchecker.php:277
+#: includes/include.linkchecker.php:297
 msgid "Total checked links"
 msgstr ""
 
-#: includes/include.linkchecker.php:278
+#: includes/include.linkchecker.php:298
 msgid "idart"
 msgstr ""
 
-#: includes/include.linkchecker.php:279
+#: includes/include.linkchecker.php:299
 msgid "Article"
 msgstr ""
 
-#: includes/include.linkchecker.php:280
+#: includes/include.linkchecker.php:300
 msgid "idcat"
 msgstr ""
 
-#: includes/include.linkchecker.php:281
+#: includes/include.linkchecker.php:301
 msgid "Category"
 msgstr ""
 
-#: includes/include.linkchecker.php:282
+#: includes/include.linkchecker.php:302
 msgid "Description"
 msgstr ""
 
-#: includes/include.linkchecker.php:283
+#: includes/include.linkchecker.php:303
+msgid "Repair"
+msgstr ""
+
+#: includes/include.linkchecker.php:304
 msgid "Linkerror"
 msgstr ""
 
-#: includes/include.linkchecker.php:284
+#: includes/include.linkchecker.php:305
 msgid "Links to articles"
 msgstr ""
 
-#: includes/include.linkchecker.php:285
+#: includes/include.linkchecker.php:306
 msgid "Links to categories"
 msgstr ""
 
-#: includes/include.linkchecker.php:286
+#: includes/include.linkchecker.php:307
 msgid "Links to documents and images"
 msgstr ""
 
-#: includes/include.linkchecker.php:287
+#: includes/include.linkchecker.php:308
 msgid "Links to extern sites and not defined links"
 msgstr ""
 
-#: includes/include.linkchecker.php:289
+#: includes/include.linkchecker.php:310
 msgid "Wrong links"
 msgstr ""
 
-#: includes/include.linkchecker.php:324
+#: includes/include.linkchecker.php:356
+msgid "Unknown"
+msgstr ""
+
+#: includes/include.linkchecker.php:357
 msgid "Unknown: articles, documents etc. do not exist."
 msgstr ""
 
-#: includes/include.linkchecker.php:326 includes/include.linkchecker.php:328
+#: includes/include.linkchecker.php:359
+msgid "Offline"
+msgstr ""
+
+#: includes/include.linkchecker.php:360 includes/include.linkchecker.php:363
 msgid "Offline: article or category is offline."
 msgstr ""
 
-#: includes/include.linkchecker.php:330
-msgid "dbfs: no matches found in the dbfs database."
+#: includes/include.linkchecker.php:362
+msgid "Offline startarticle"
 msgstr ""
 
 #: includes/include.linkchecker.php:365
+msgid "Filemanager"
+msgstr ""
+
+#: includes/include.linkchecker.php:366
+msgid "dbfs: no matches found in the dbfs database."
+msgstr ""
+
+#: includes/include.linkchecker.php:368
+msgid "Invalid url"
+msgstr ""
+
+#: includes/include.linkchecker.php:369
+msgid "Invalid url, i. e. syntax error."
+msgstr ""
+
+#: includes/include.linkchecker.php:381
+msgid "No repaired link"
+msgstr ""
+
+#: includes/include.linkchecker.php:384
+msgid ""
+"Linkchecker has found a way to repair your wrong link. Do you want to "
+"automatically repair the link to the URL below?"
+msgstr ""
+
+#: includes/include.linkchecker.php:426
 msgid "No errors for this type."
 msgstr ""
 
-#: includes/include.linkchecker_whitelist.php:59
-msgid "%Y-%m-%d, %I:%M%S %p"
+#: includes/include.linkchecker_whitelist.php:58
+msgid "d.m.Y H:i:s"
 msgstr ""
 
-#: includes/include.linkchecker_whitelist.php:65
+#: includes/include.linkchecker_whitelist.php:64
 msgid "Links at whitelist"
 msgstr ""
 
-#: includes/include.linkchecker_whitelist.php:66
+#: includes/include.linkchecker_whitelist.php:65
 msgid "Delete"
 msgstr ""
 
-#: includes/include.linkchecker_whitelist.php:67
+#: includes/include.linkchecker_whitelist.php:66
 msgid "Entry"
 msgstr ""
 
-#: includes/include.linkchecker_whitelist.php:68
+#: includes/include.linkchecker_whitelist.php:67
 msgid "URLs"
 msgstr ""
 
-#: includes/include.linkchecker_whitelist.php:69
+#: includes/include.linkchecker_whitelist.php:68
 msgid ""
 "This links are on the whitelist. Whitelist-links won't be check at "
 "linkchecker."

@@ -283,7 +283,7 @@ if (!$cronjob) {
     // Fill Subnav III
     $tpl->set('s', 'UPDATE_HREF', $sLink . $requestMode . '&live=1');
 
-    $tpl->set('s', 'TITLE', i18n('Link analysis from ', $pluginName) . cDate::formatToDate(i18n('%Y-%m-%d', $pluginName), time()));
+    $tpl->set('s', 'TITLE', i18n('Link analysis from ', $pluginName) . cDate::formatToDate(i18n('d.m.Y', $pluginName), time()));
 
     // If no errors found, say that
     if (empty($aErrors)) {
