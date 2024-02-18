@@ -164,7 +164,17 @@
             buttonImage: calendarPic,
             buttonImageOnly: true,
             changeYear: true,
-            showOn: 'both'
+            showOn: 'both',
+            beforeShow: function () {
+                $('body').addClass('cms_has_overlay');
+                setTimeout(function(){
+                    $('.ui-datepicker').css('z-index', 20000);
+                }, 0);
+            },
+            onClose: function () {
+                $('body').removeClass('cms_has_overlay');
+                $('.ui-datepicker').css('z-index', 'auto');
+            }
         });
         $(function() {
             // set the initial date

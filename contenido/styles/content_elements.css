@@ -38,3 +38,13 @@
     display: inline-block;
     margin: 5px 0;
 }
+
+.ui-widget {
+    z-index: 20000;
+}
+.ui-widget,
+.ui-widget * {
+    font-family: verdana, arial, helvetica, sans-serif !important;
+    color: #000 !important;
+    font-size: 12px !important;
+}
