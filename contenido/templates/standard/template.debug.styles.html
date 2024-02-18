@@ -1,7 +1,7 @@
 <style type="text/css">
     #cms_debug_box {
         position: absolute;
-        z-index: 100000;
+        z-index: 19990; /* 10 less than .cms_abstract */
         top: 5px;
         margin: 0;
         border: 1px solid #ccc;
@@ -45,13 +45,13 @@
         overflow: hidden;
     }
 
-    #cms_debug_item_block {
+    #cms_debug_items_block {
         margin: 0;
         color: #000;
     }
 
-    #cms_debug_item_block textarea,
-    #cms_debug_item_block pre,
+    #cms_debug_items_block textarea,
+    #cms_debug_items_block pre,
     .cms_debug_output {
         font-size: 11px;
         margin: 0;
@@ -61,13 +61,13 @@
         background-color: #fff;
     }
 
-    #cms_debug_item_block a {
+    #cms_debug_items_block a {
         display: block;
         color: #000;
         padding: 5px;
     }
 
-    #cms_debug_item_block a:hover {
+    #cms_debug_items_block a:hover {
         background-color: #e6e6e6;
     }
 

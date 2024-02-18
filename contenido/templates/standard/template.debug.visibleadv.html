@@ -8,6 +8,7 @@
             } else {
                 document.body.classList.add('cms_has_overlay')
             }
+            conCmsDebugSyncDebugBox();
         }
     }
 
@@ -16,6 +17,17 @@
         if (myItemObj) {
             myItemObj.style.display = 'none';
             document.body.classList.remove('cms_has_overlay');
+            conCmsDebugSyncDebugBox();
+        }
+    }
+
+    function conCmsDebugSyncDebugBox() {
+        var debugBox = document.getElementById('cms_debug_box');
+        var itemsBlock = document.getElementById('cms_debug_items_block');
+        if (itemsBlock.style.display === 'none') {
+            debugBox.style.zIndex = '';
+        } else {
+            debugBox.style.zIndex = 20000;
         }
     }
 </script>
@@ -25,7 +37,7 @@
 <div id="cms_debug_box" class="{DBG_BOX_CSS_CLASS}">
     <div class="cms_debug_box_controls">
         <a href="javascript:void(0)" title="Toggle Debug Output"
-           onclick="conCmsDebugToggle('cms_debug_item_block');"><img
+           onclick="conCmsDebugToggle('cms_debug_items_block');"><img
                 src="data:image/gif;base64,R0lGODlhEAAQAHAAACH5BAEAAB8ALAAAAAAQABAAhDN/wDmDwgBgsUCHxBBptUmNx26k0nGm03Cl0yl5vQpmtH+v11iWyw1otAdksyF0uyx7vgZjsi18vhVtt3yt1hZtt0yPyBxxuXus1ghkswRisiJ1uxJrtmaf0Gui0QAAAAVr4CeOHwCQKBkIQpB+w0iwLDHGX2F8B00jH0NhlBD5WKLiSLH4MBqsBkOkQDkeTRLEkYLQIhGaZDQ5CigUc2VkoRlZltTF/aFdSJjMYiV4BxYZGCIaIxt9dRsjhB8cJB0ijyONHx4vKJWWliEAOw=="
                 alt="con dbg"><span class="con_sr_only">con dbg</span></a>
         <a id="cms_debug_box_close" href="javascript:void(0)" title="Hide Debug Output"
@@ -33,7 +45,7 @@
                 src="data:image/gif;base64,R0lGODlhEAAQAKIEANcyEeuaieuXh////wAAAAAAAAAAAAAAACH5BAEAAAQALAAAAAAQABAAAAMtSLDcrS7KOYWINoZxmRiBtHVfOI0ltWygunycW45UCtBYy+BNYPY/l5ACERISADs="
                 alt="(x)"><span class="con_sr_only">(x)</span></a>
     </div>
-    <div id="cms_debug_item_block" style="display:none;">
+    <div id="cms_debug_items_block" style="display:none;">
         <!-- BEGIN:BLOCK -->
         <a href="javascript:void(0)" title="Toggle Item"
            onclick="conCmsDebugToggle('cms_debug_item_{DBG_ITEM_COUNT}');">{DBG_ITEM_NAME}</a>

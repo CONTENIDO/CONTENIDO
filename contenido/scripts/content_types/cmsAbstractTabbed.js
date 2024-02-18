@@ -187,6 +187,7 @@
         $(this.imageId).css('cursor', 'pointer');
         $(this.imageId).click(function() {
             var top = $(document).scrollTop()+($(window).height()/2);
+            $('body').addClass('cms_has_overlay');
             self.$frame.fadeIn('normal');
             self.$frame.css({
                 position: 'absolute',
@@ -270,11 +271,13 @@
 
         // add cancel image event
         $close.css('cursor', 'pointer').click(function() {
+            $('body').removeClass('cms_has_overlay');
             self.$frame.fadeOut('normal');
         });
 
         // add cancel button event
         $cancel.css('cursor', 'pointer').click(function() {
+            $('body').removeClass('cms_has_overlay');
             self.$frame.fadeOut('normal');
         });
     };
