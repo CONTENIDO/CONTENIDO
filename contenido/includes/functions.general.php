@@ -1238,18 +1238,14 @@ function machineReadableSize($sizeString)
 }
 
 /**
- * Checks if the script is being runned from the web
+ * Checks if the script is running from the web
  *
  * @return bool
  *         True if the script is running from the web
  */
-function isRunningFromWeb()
+function isRunningFromWeb(): bool
 {
-    if (empty($_SERVER['REQUEST_URI']) || php_sapi_name() == 'cgi' || php_sapi_name() == 'cli') {
-        return false;
-    }
-
-    return true;
+    return !(substr(PHP_SAPI, 0, 3) === 'cli' || empty($_SERVER['REQUEST_URI']));
 }
 
 /**
@@ -1537,29 +1533,19 @@ function cDie($file, $line, $message)
 
 /**
  * Returns a formatted string with a stack trace ready for output.
- * "\tfunction1() called in file $filename($line)"
- * "\tfunction2() called in file $filename($line)"
+ * "\t#$pos function1() called in file $filename:$line"
+ * "\t#$pos class->function2() called in file $filename:$line"
  * ...
  *
- * @param int $startlevel
- *         The startlevel. Note that 0 is always buildStackString
+ * @param int $startLevel
+ *         The start level. Note that 0 is always buildStackString
  *         and 1 is the function called buildStackString (e.g. cWarning)
  * @return string
  */
-function buildStackString($startlevel = 2)
+function buildStackString($startLevel = 2)
 {
-    $e = new Exception();
-    $stack = $e->getTrace();
-
-    $msg = '';
-
-    for ($i = $startlevel; $i < count($stack); $i++) {
-        $filename = basename($stack[$i]['file']);
-
-        $msg .= "\t" . $stack[$i]['function'] . "() called in file " . $filename . "(" . $stack[$i]['line'] . ")\n";
-    }
-
-    return $msg;
+    $data = cLogEntryBuilder::buildTraceDetails((new Exception())->getTrace(), (int) $startLevel);
+    return implode("\n", $data) . "\n";
 }
 
 /**
@@ -1582,30 +1568,18 @@ function cWarning()
 
     $args = func_get_args();
     if (count($args) == 3) {
-        // Old version
-        $file = $args[0];
-        $line = $args[1];
+        // Old version cWarning($file, $line, $message)
         $message = $args[2];
     } else {
         // New version
-        $file = '';
-        $line = '';
         $message = $args[0];
     }
 
-    $msg = "[" . date("Y-m-d H:i:s") . "] ";
-    $msg .= "Warning: \"" . $message . "\" at ";
-
-    $e = new Exception();
-    $stack = $e->getTrace();
-    $function_name = $stack[1]['function'];
-
-    $msg .= $function_name . "() [" . basename($stack[0]['file']) . "(" . $stack[0]['line'] . ")]\n";
-
-    if ($cfg['debug']['log_stacktraces'] == true) {
-        $msg .= buildStackString();
-        $msg .= "\n";
-    }
+    $builder = new cLogEntryBuilder($message, 'Warning');
+    $msg = $builder->setTrace((new Exception())->getTrace(), 2)
+        ->setAddStackTrace((bool) $cfg['debug']['log_stacktraces'])
+        ->setAddSapiDetails((bool) $cfg['debug']['log_sapi_details'])
+        ->build();
 
     try {
         cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
@@ -1637,30 +1611,18 @@ function cError($message)
 
     $args = func_get_args();
     if (count($args) == 3) {
-        // Old version
-        $file = $args[0];
-        $line = $args[1];
+        // Old version cError($file, $line, $message)
         $message = $args[2];
     } else {
         // New version
-        $file = '';
-        $line = '';
         $message = $args[0];
     }
 
-    $msg = "[" . date("Y-m-d H:i:s") . "] ";
-    $msg .= "Error: \"" . $message . "\" at ";
-
-    $e = new Exception();
-    $stack = $e->getTrace();
-    $function_name = $stack[1]['function'];
-
-    $msg .= $function_name . "() called in " . basename($stack[1]['file']) . "(" . $stack[1]['line'] . ")\n";
-
-    if ($cfg['debug']['log_stacktraces'] == true) {
-        $msg .= buildStackString();
-        $msg .= "\n";
-    }
+    $builder = new cLogEntryBuilder($message, 'Error');
+    $msg = $builder->setTrace((new Exception())->getTrace(), 2)
+        ->setAddStackTrace((bool) $cfg['debug']['log_stacktraces'])
+        ->setAddSapiDetails((bool) $cfg['debug']['log_sapi_details'])
+        ->build();
 
     try {
         cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
@@ -1682,19 +1644,11 @@ function cLogError($message)
 {
     $cfg = cRegistry::getConfig();
 
-    $msg = "[" . date("Y-m-d H:i:s") . "] ";
-    $msg .= "Error: \"" . $message . "\" at ";
-
-    $e = new Exception();
-    $stack = $e->getTrace();
-    $function_name = $stack[0]['function'];
-
-    $msg .= $function_name . "() called in " . basename($stack[0]['file']) . "(" . $stack[0]['line'] . ")\n";
-
-    if ($cfg['debug']['log_stacktraces'] == true) {
-        $msg .= buildStackString();
-        $msg .= "\n";
-    }
+    $builder = new cLogEntryBuilder($message, 'Error');
+    $msg = $builder->setTrace((new Exception())->getTrace(), 2)
+        ->setAddStackTrace((bool) $cfg['debug']['log_stacktraces'])
+        ->setAddSapiDetails((bool) $cfg['debug']['log_sapi_details'])
+        ->build();
 
     try {
         cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
@@ -1716,21 +1670,11 @@ function cDeprecated($message = '')
         return;
     }
 
-    $e = new Exception();
-    $stack = $e->getTrace();
-    $function_name = $stack[1]['function'];
-
-    $msg = "Deprecated call: " . $function_name . "() [" . basename($stack[0]['file']) . "(" . $stack[0]['line'] . ")]: ";
-    if ($message != '') {
-        $msg .= "\"" . $message . "\"" . "\n";
-    } else {
-        $msg .= "\n";
-    }
-
-    if ($cfg['debug']['log_stacktraces'] == true) {
-        $msg .= buildStackString(2);
-        $msg .= "\n";
-    }
+    $builder = new cLogEntryBuilder($message, 'Deprecated call');
+    $msg = $builder->setTrace((new Exception())->getTrace(), 2)
+        ->setAddStackTrace((bool) $cfg['debug']['log_stacktraces'])
+        ->setAddSapiDetails((bool) $cfg['debug']['log_sapi_details'])
+        ->build();
 
     try {
         cFileHandler::write($cfg['path']['contenido_logs'] . 'deprecatedlog.txt', $msg, true);

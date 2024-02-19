@@ -71,8 +71,11 @@ $cfg['debug']['disable_plugins'] = true;
 // (bool) Whether deprecations should be logged. If disabled, there are no information on usage of outdated code.
 $cfg['debug']['log_deprecations'] = true;
 
-// (bool) Whether stacktraces should be logged. If disabled, the stacktrace is not logged with the corresponding error in log.
+// (bool) Whether stack traces should be logged. If disabled, the stack trace is not logged with the corresponding entry in log file.
 $cfg['debug']['log_stacktraces'] = true;
+
+// (bool) Whether SAPI details (request uri with get parameter or cli script with arguments) should be logged. If disabled, the request details is not logged with the corresponding entry in log file.
+$cfg['debug']['log_sapi_details'] = true;
 
 // (bool) If true, use the field 'urlname' for resolving. 'name' otherwise
 $cfg['urlpathresolve'] = false;

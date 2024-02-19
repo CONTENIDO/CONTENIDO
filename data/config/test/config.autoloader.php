@@ -297,6 +297,7 @@ return [
     'cLayoutSynchronizer' => 'contenido/classes/class.layout.synchronizer.php',
     'cLengthException' => 'contenido/classes/exceptions/class.exception.length.php',
     'cLog' => 'contenido/classes/log/class.log.php',
+    'cLogEntryBuilder' => 'contenido/classes/log/class.log.entry.builder.php',
     'cLogicException' => 'contenido/classes/exceptions/class.exception.logic.php',
     'cLogWriter' => 'contenido/classes/log/class.log.writer.php',
     'cLogWriterFile' => 'contenido/classes/log/class.log.writer.file.php',
