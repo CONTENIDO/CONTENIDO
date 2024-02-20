@@ -470,7 +470,6 @@ if ($syncoptions == -1) {
                 b.idart = c.idart AND
                 c.idcat = d.idcat
             GROUP BY c.idcat, online, d.startidartlang";
-    mp_d($sql2, 'include.con_str_overview.php $sql2');
 }
 $db->query($sql2);
 
