@@ -1,4 +1,4 @@
-<table cellspacing="0" cellpadding="0" border="0" class="setupBodyOuterTable setupBodyOuterTablePathInfo">
+<table class="setupBodyOuterTable setupBodyOuterTablePathInfo">
     <tr class="row-1">
         <td colspan="2">
             <h1>{TITLE}</h1>

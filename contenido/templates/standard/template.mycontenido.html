@@ -1,15 +1,16 @@
-<div class="right_content_box">
+<!-- template.mycontenido.html -->
+<div class="right_content_box clearfix">
     <span class="text_medium">{WELCOME}</span>
     <hr class="sep">
     <span class="text_medium text_gray sep">{LASTLOGIN}</span>
 
     <div id="welcome_left">
         <!-- CLIENTS -->
-        <div id="mandanten" class="content_box_welcome">
+        <div id="clients" class="content_box_welcome">
             <h2 class="content_box">i18n("Available clients"):</h2>
-            <form style="margin: 0" name="clientselect" method="post" target="_top" action="index.php?contenido=1">
+            <form name="clientselect" method="post" target="_top" action="index.php?contenido=1">
                 <div>
-                    {CLIENTSDROPDOWN}<span class="vAlignMiddle form_image">{OKBUTTON}</span>
+                    {CLIENTSDROPDOWN}{OKBUTTON}
                 </div>
             </form>
         </div>
@@ -42,13 +43,12 @@
     </div> <!-- welcome_left -->
 
     <div id="welcome_right">
-        <div id="messageboard">
+        <div id="message_board">
             {UPDATENOTIFICATION}
         </div>
     </div>
 </div>
 <!--
-template.mycontenido
 
 i18n("Available clients")
 i18n("Currently")
@@ -56,3 +56,4 @@ i18n("Users online")
 i18n("Contact System Administrators")
 
 -->
+<!-- /template.mycontenido.html -->

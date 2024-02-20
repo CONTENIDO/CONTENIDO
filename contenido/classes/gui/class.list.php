@@ -3,13 +3,13 @@
 /**
  * This file contains the list GUI class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cGuiList {
+class cGuiList
+{
 
     /**
      *
@@ -32,8 +33,9 @@ class cGuiList {
     /**
      * Constructor to create an instance of this class.
      */
-    public function __construct() {
-        $this->cells = array();
+    public function __construct()
+    {
+        $this->cells = [];
     }
 
     /**
@@ -42,7 +44,8 @@ class cGuiList {
      * @param string|int $cell
      * @param string $value
      */
-    public function setCell($item, $cell, $value) {
+    public function setCell($item, $cell, $value)
+    {
         $this->cells[$item][$cell] = $value;
     }
 
@@ -54,7 +57,8 @@ class cGuiList {
      *         Complete template string or nothing
      * @throws cInvalidArgumentException
      */
-    public function render($print = false) {
+    public function render($print = false)
+    {
         global $cfg;
 
         $backendPath = cRegistry::getBackendPath();

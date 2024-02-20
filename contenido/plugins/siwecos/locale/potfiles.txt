@@ -1,0 +1,17 @@
+./classes/class.siwecos.form.php
+./classes/class.siwecos.gui.php
+./classes/CurlService.php
+./includes/config.plugin.php
+./includes/include.left_bottom.php
+./includes/include.left_top.php
+./includes/include.right_bottom.php
+./includes/include.subnav_blank.php
+./plugin.xml
+./templates/template.left_bottom.html
+./templates/template.left_top.html
+./templates/template.right_bottom.html
+./templates/template.right_bottom.tpl
+./templates/template.siwecos_report.tpl
+./templates/template.siwecos_verification.tpl
+./xml/lang_de_DE.xml
+./xml/lang_en_US.xml

@@ -1,49 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!-- Xml example -->
 <plugin>
 
     <general active="1">
-        <plugin_name>Linkchecker</plugin_name>
-        <plugin_foldername>linkchecker</plugin_foldername>
-        <uuid>428CB6BC-2DE3-284D-34C9-C30C010F6B20</uuid>
-        <description>Checks intern and extern links to valid</description>
+        <plugin_name>Plugin Manager</plugin_name>
+        <plugin_foldername>pim</plugin_foldername>
+        <uuid>5519F6C6-A533-840F-5CE1-5C93277C37D8</uuid>
+        <description>Manages installation of plugins</description>
         <author>Frederic Schneider (4fb)</author>
         <copyright>four for business AG</copyright>
         <mail>frederic.schneider@4fb.de</mail>
-        <website>http://www.4fb.de</website>
-        <version>2.0.1</version>
+        <website>https://www.4fb.de</website>
+        <version>2.1.0</version>
     </general>
 
-    <requirements php="5.2.3">
-        <contenido minversion="4.9.0" />
+    <requirements php="7.1">
+        <contenido minversion="4.10.0" />
     </requirements>
 
     <contenido>
 
         <areas>
-            <area menuless="1">linkchecker</area>
-            <area parent="linkchecker" menuless="1">lc_whitelist</area>
+            <area menuless="1">pim</area>
         </areas>
 
         <actions>
-            <action area="linkchecker">linkchecker</action>
+            <action area="pim">pim</action>
         </actions>
 
         <frames>
-            <frame area="linkchecker" filetype="main" name="linkchecker/includes/include.linkchecker.php" frameId="4" />
-            <frame area="lc_whitelist" filetype="main" name="linkchecker/includes/include.linkchecker_whitelist.php" frameId="4" />
+            <frame area="pim" filetype="main" name="pim/includes/include.right_bottom.php"
+                   frameId="4"/>
         </frames>
 
         <nav_sub>
-            <nav area="linkchecker" level="0" navm="content">linkchecker/xml/;navigation/content/linkchecker/main</nav>
-            <nav area="linkchecker" level="1" navm="0">linkchecker/xml/;navigation/content/linkchecker/overview</nav>
-            <nav area="lc_whitelist" level="1" navm="0">linkchecker/xml/;navigation/content/linkchecker/whitelist</nav>
         </nav_sub>
 
     </contenido>
-
-    <content_types>
-        <type>CMS_LINKCHECKER</type>
-    </content_types>
 
 </plugin>

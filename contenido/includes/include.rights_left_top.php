@@ -3,13 +3,13 @@
 /**
  * This file contains the left top frame backend page for rights management.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -23,16 +23,16 @@ $area = cRegistry::getArea();
 $cfg = cRegistry::getConfig();
 
 $page = isset($_REQUEST['page']) ? abs(cSecurity::toInteger($_REQUEST['page'])) : 1;
-$elemPerPage = (isset($_REQUEST['elemperpage'])) ? cSecurity::toInteger($_REQUEST['elemperpage']) : 0;
-$sortby = (isset($_REQUEST['sortby'])) ? cSecurity::toString($_REQUEST['sortby']) : '';
-$sortorder = (isset($_REQUEST['sortorder'])) ? cSecurity::toString($_REQUEST['sortorder']) : '';
-$filter = (isset($_REQUEST['filter'])) ? cSecurity::toString($_REQUEST['filter']) : '';
-$restrict = (isset($_REQUEST['restrict'])) ? cSecurity::toString($_REQUEST['restrict']) : '';
+$elemPerPage = cSecurity::toInteger($_REQUEST['elemperpage'] ?? '0');
+$sortby = cSecurity::toString($_REQUEST['sortby'] ?? '');
+$sortorder = cSecurity::toString($_REQUEST['sortorder'] ?? '');
+$filter = cSecurity::toString($_REQUEST['filter'] ?? '');
+$restrict = cSecurity::toString($_REQUEST['restrict'] ?? '');
 
 $oUser = new cApiUser($auth->auth["uid"]);
 if ($elemPerPage < 0) {
     $elemPerPage = $oUser->getProperty("itemsperpage", $area);
-    if ((int) $elemPerPage <= 0) {
+    if ((int)$elemPerPage <= 0) {
         $oUser->setProperty("itemsperpage", $area, 25);
         $elemPerPage = 25;
     }
@@ -73,12 +73,12 @@ foreach ($limit as $key => $value) {
     $tpl2->next();
 }
 
-$select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true);
+$select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 
 $tpl->set('s', 'ACTION', '');
 
-$tmp_mstr = '<div class="leftTopAction">
-              <a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\')">%s</a></div>';
+$tmp_mstr = '<div class="top_left_action">
+              <a class="con_func_button addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\')">%s</a></div>';
 $area = "user";
 $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=user_create&frame=4"), i18n("Create user"));
 
@@ -121,7 +121,7 @@ $tplFilter->set("s", "ITEMS_PER_PAGE", $oSelectItemsPerPage->render());
 $tplFilter->set("s", "SORT_BY", $oSelectSortBy->render());
 $tplFilter->set("s", "SORT_ORDER", $oSelectSortOrder->render());
 $tplFilter->set("s", "FILTER_USER", $oTextboxFilter->render());
-$oListOptionRow->setContentData($tplFilter->generate($cfg["path"]["templates"] . $cfg["templates"]["rights_left_top_filter"], true));
+$oListOptionRow->setContentData($tplFilter->generate($cfg['path']['templates'] . $cfg['templates']['rights_left_top_filter'], true));
 $tpl->set('s', 'LISTOPTIONS', $oListOptionRow->render());
 
 /*

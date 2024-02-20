@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains various to-do classes.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,16 +18,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class uses the communication collection to serve a special collection
  * for to-do entries.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
-class TODOCollection extends cApiCommunicationCollection {
+class TODOCollection extends cApiCommunicationCollection
+{
+
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->_setItemClass('TODOItem');
     }
@@ -35,25 +39,26 @@ class TODOCollection extends cApiCommunicationCollection {
      * Selects all entries from the database.
      * Objects are loaded using their primary key.
      *
-     * @param string $where    [optional]
+     * @param string $where [optional]
      *                         Specifies the where clause.
      * @param string $group_by [optional]
      *                         Specifies the group by clause.
      * @param string $order_by [optional]
      *                         Specifies the order by clause.
-     * @param string $limit    [optional]
+     * @param string $limit [optional]
      *                         Specifies the limit by clause.
      *
      * @return bool
      *         True on success, otherwise false
-     * 
+     *
      * @throws cDbException
      */
-    public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
+    public function select($where = '', $group_by = '', $order_by = '', $limit = '')
+    {
         if ($where == '') {
-            $where = "comtype='todo'";
+            $where = "`comtype` = 'todo'";
         } else {
-            $where .= " AND comtype='todo'";
+            $where .= " AND `comtype`= 'todo'";
         }
 
         return parent::select($where, $group_by, $order_by, $limit);
@@ -62,24 +67,27 @@ class TODOCollection extends cApiCommunicationCollection {
     /**
      * Creates a new communication item
      *
-     * @param string     $itemtype
-     * @param int        $itemid
+     * @param string $itemtype
+     * @param int|string $itemid
      * @param int|string $reminderdate
      *          if not given as timestamp it is expected to be a string
      *          using the English date format
-     * @param string     $subject
-     * @param string     $content
-     * @param string     $notimail
-     * @param string     $notibackend
-     * @param string     $recipient
-     * 
+     * @param string $subject
+     * @param string $content
+     * @param string $notimail
+     * @param string $notibackend
+     * @param string $recipient
+     *
      * @return cApiCommunication
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function createItem($itemtype, $itemid, $reminderdate, $subject, $content, $notimail, $notibackend, $recipient) {
+    public function createItem(
+        $itemtype, $itemid, $reminderdate, $subject, $content, $notimail, $notibackend, $recipient
+    ): cApiCommunication
+    {
         $item = parent::create();
 
         $item->set('comtype', 'todo');
@@ -111,30 +119,32 @@ class TODOCollection extends cApiCommunicationCollection {
     }
 
     /**
-     *
      * @return array
+     * @throws cException
      */
-    public function getStatusTypes() {
-        return array(
+    public function getStatusTypes(): array
+    {
+        return [
             'new' => i18n('New'),
             'progress' => i18n('In progress'),
             'done' => i18n('Done'),
             'waiting' => i18n('Waiting for action'),
-            'deferred' => i18n('Deferred')
-        );
+            'deferred' => i18n('Deferred'),
+        ];
     }
 
     /**
-     *
      * @return array
+     * @throws cException
      */
-    public function getPriorityTypes() {
-        return array(
+    public function getPriorityTypes(): array
+    {
+        return [
             'low' => i18n('Low'),
             'medium' => i18n('Medium'),
             'high' => i18n('High'),
-            'immediately' => i18n('Immediately')
-        );
+            'immediately' => i18n('Immediately'),
+        ];
     }
 }
 
@@ -142,23 +152,22 @@ class TODOCollection extends cApiCommunicationCollection {
  * This class uses the communication collection to serve a special collection
  * for to-do entries.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class TODOItem extends cApiCommunication
 {
+
     /**
      * Sets a custom property.
-     *
-     * @see Item::setProperty()
      *
      * @param string $type
      *                       Specifies the type
      * @param string $name
      *                       Specifies the name
-     * @param mixed  $value
+     * @param mixed $value
      *                       Specifies the value
-     * @param int    $client [optional]
+     * @param int $client [optional]
      *                       unused (should be "Id of client to set property for")
      *
      * @return bool
@@ -166,8 +175,11 @@ class TODOItem extends cApiCommunication
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
+     * @see Item::setProperty()
+     *
      */
-    public function setProperty($type, $name, $value, $client = 0) {
+    public function setProperty($type, $name, $value, $client = 0): bool
+    {
         if ($type == 'todo' && $name == 'emailnoti') {
             if ($value) {
                 parent::setProperty('todo', 'emailnoti-sent', false);
@@ -179,40 +191,46 @@ class TODOItem extends cApiCommunication
 
         return parent::setProperty($type, $name, $value);
     }
+
 }
 
 /**
  * This class uses the link GUI class to serve a special link for to-do entries.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
-class TODOLink extends cHTMLLink {
+class TODOLink extends cHTMLLink
+{
 
     /**
      * Constructor to create an instance of this class.
      *
      * @param string $itemtype
-     * @param int $itemid
+     * @param int|string $itemid
      * @param string $subject
      * @param string $message
+     * @throws cException
      */
-    public function __construct($itemtype, $itemid, $subject, $message) {
-        global $sess;
+    public function __construct($itemtype, $itemid, $subject, $message)
+    {
         parent::__construct();
 
         $subject = urlencode($subject);
         $message = urlencode($message);
 
-        $this->setEvent('click', 'javascript:window.open(' . "'" . $sess->url("main.php?subject=$subject&message=$message&area=todo&frame=1&itemtype=$itemtype&itemid=$itemid") . "', 'todo', 'scrollbars=yes,resizable=yes,height=350,width=625');");
-        $this->setEvent('mouseover', "this.style.cursor='pointer'");
+        $sess = cRegistry::getSession();
+        $url = $sess->url("main.php?subject=$subject&message=$message&area=todo&frame=1&itemtype=$itemtype&itemid=$itemid");
+        $this->setEvent('click', 'javascript:window.open(' . "'" . $url . "', 'todo', 'scrollbars=yes,resizable=yes,height=350,width=625');");
 
         $img = new cHTMLImage('images/but_setreminder.gif');
-        $img->setClass("vAlignMiddle tableElement");
-
         $img->setAlt(i18n('Set reminder / add to todo list'));
+
+        // Don't set 'javascript:void(0)' here, it will remove the click handler from above!
         $this->setLink('#');
+        $this->setClass('con_img_button');
         $this->setContent($img->render());
         $this->setAlt(i18n('Set reminder / add to todo list'));
     }
+
 }

@@ -3,13 +3,13 @@
 /**
  * This file contains the group member collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @author           Dominik Ziegler
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage GenericDB_Model
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Group member collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiGroupMember createNewItem
+ * @method cApiGroupMember|bool next
  */
-class cApiGroupMemberCollection extends ItemCollection {
+class cApiGroupMemberCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['groupmembers'], 'idgroupuser');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('groupmembers'), 'idgroupuser');
         $this->_setItemClass('cApiGroupMember');
 
         // set the join partners so that joins can be used via link() method
@@ -47,7 +50,8 @@ class cApiGroupMemberCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($userId, $groupId) {
+    public function create($userId, $groupId)
+    {
         $oItem = $this->createNewItem();
 
         $oItem->set('user_id', $userId);
@@ -68,9 +72,10 @@ class cApiGroupMemberCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function deleteByUserId($userId) {
+    public function deleteByUserId($userId)
+    {
         $result = $this->deleteBy('user_id', $userId);
-        return ($result > 0) ? true : false;
+        return $result > 0;
     }
 
     /**
@@ -78,13 +83,14 @@ class cApiGroupMemberCollection extends ItemCollection {
      *
      * @param string $userId
      * @param string $groupId
-     * 
+     *
      * @return cApiGroupMember|NULL
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByUserIdAndGroupId($userId, $groupId) {
+    public function fetchByUserIdAndGroupId($userId, $groupId)
+    {
         $where = "user_id = '" . $this->escape($userId) . "' AND group_id = '" . $this->escape($groupId) . "'";
         if ($this->select($where)) {
             return $this->next();
@@ -98,7 +104,7 @@ class cApiGroupMemberCollection extends ItemCollection {
 /**
  * Group member item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiGroupMember extends Item
@@ -112,10 +118,10 @@ class cApiGroupMember extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['groupmembers'], 'idgroupuser');
-        $this->setFilters(array(), array());
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('groupmembers'), 'idgroupuser');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

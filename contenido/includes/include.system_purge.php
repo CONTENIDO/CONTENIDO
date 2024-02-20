@@ -3,13 +3,13 @@
 /**
  * This file contains the system purge backend page.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Munkh-Ulzii Balidar
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Munkh-Ulzii Balidar
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -49,13 +49,13 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
             $aClientToClear[] = $iClientId;
         }
 
-    } else if (isset($_POST['purge_clients']) && is_array($_POST['purge_clients']) && count($_POST['purge_clients']) > 0) {
+    } elseif (isset($_POST['purge_clients']) && is_array($_POST['purge_clients']) && count($_POST['purge_clients']) > 0) {
         // selected multiple clients
         foreach ($_POST['purge_clients'] as $iClientId) {
             $aClientToClear[] = (int)$iClientId;
         }
 
-    } else if (isset($_POST['purge_clients']) && (int)$_POST['purge_clients'] > 0) {
+    } elseif (isset($_POST['purge_clients']) && (int)$_POST['purge_clients'] > 0) {
         // selected single client
         $aClientToClear[] = (int)$_POST['purge_clients'];
     }
@@ -72,14 +72,14 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
         }
 
         foreach ($aClientToClear as $iClientId) {
-            $iClientId = (int) $iClientId;
+            $iClientId = (int)$iClientId;
             $aCurrentClientCfg = cRegistry::getClientConfig($iClientId);
             if ($iClientId > 0) {
                 if (isset($_POST['conCode']) && $_POST['conCode'] == 1) {
                     if (!$oPurge->resetClientConCode($iClientId)) {
                         $bError = true;
                         $sErrorMsg .= i18n('Client ') . $aClientName[$iClientId] . ': ' .
-                               sprintf(i18n('The files in the cache folder %s are not deleted!'), $aCurrentClientCfg['code']['path']) . '<br>';
+                            sprintf(i18n('The files in the cache folder %s are not deleted!'), $aCurrentClientCfg['code']['path']) . '<br>';
                     }
                 }
 
@@ -87,7 +87,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
                     if (!$oPurge->resetClientConCatArt($iClientId)) {
                         $bError = true;
                         $sErrorMsg .= i18n('Client ') . $aClientName[$iClientId] . ': ' .
-                               sprintf(i18n('The %s is not updated!'), $cfg['tab']['cat_art']) . '<br>';
+                            sprintf(i18n('The %s is not updated!'), $cfg['tab']['cat_art']) . '<br>';
                     }
                 }
 
@@ -95,7 +95,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
                     if (!$oPurge->clearClientCache($iClientId)) {
                         $bError = true;
                         $sErrorMsg .= i18n('Client ') . $aClientName[$iClientId] . ': ' .
-                               i18n('The cache is not deleted!') . '<br>';
+                            i18n('The cache is not deleted!') . '<br>';
                     }
                 }
 
@@ -103,16 +103,16 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
                     if (!$oPurge->clearClientLog($iClientId)) {
                         $bError = true;
                         $sErrorMsg .= i18n('Client ') . $aClientName[$iClientId] . ': ' .
-                               i18n('The log is not deleted!') . '<br>';
+                            i18n('The log is not deleted!') . '<br>';
                     }
                 }
 
                 if (isset($_POST['clientHistory']) && $_POST['clientHistory'] == 1) {
-                    $bKeep = ($_POST['keepHistory'] == 1 && (int) $_POST['keepHistoryNumber'] > 0) ? true : false;
-                    if (!$oPurge->clearClientHistory($iClientId, $bKeep, (int) $_POST['keepHistoryNumber'])) {
+                    $bKeep = ($_POST['keepHistory'] == 1 && (int)$_POST['keepHistoryNumber'] > 0) ? true : false;
+                    if (!$oPurge->clearClientHistory($iClientId, $bKeep, (int)$_POST['keepHistoryNumber'])) {
                         $bError = true;
                         $sErrorMsg .= i18n('Client ') . $aClientName[$iClientId] . ': ' .
-                               i18n('The history is not deleted!') . '<br>';
+                            i18n('The history is not deleted!') . '<br>';
                     }
                 }
 
@@ -120,7 +120,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
                     if (!$oPurge->clearClientContentVersioning($iClientId)) {
                         $bError = true;
                         $sErrorMsg .= i18n('Client ') . $aClientName[$iClientId] . ': ' .
-                                i18n('The content versioning is not deleted!') . '<br>';
+                            i18n('The content versioning is not deleted!') . '<br>';
                     }
                 }
 

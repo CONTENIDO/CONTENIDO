@@ -3,13 +3,13 @@
 /**
  * This file contains some little function to retrieving current encoding.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Holger Librenz
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Holger Librenz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -24,17 +24,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * return
  * false, otherwise the encoding as string like it is stored in database.
  *
- * @deprecated [2015-05-21]
- *         use cRegistry::getEncoding
- *
  * @param cDb $db
  *         not used any more!
  * @param int $lang
  *
  * @return string|bool
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         use cRegistry::getEncoding
+ *
  */
-function getEncodingByLanguage($db, $lang) {
+function getEncodingByLanguage($db, $lang)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
     return cRegistry::getEncoding();
 }
@@ -46,8 +47,9 @@ function getEncodingByLanguage($db, $lang) {
  * @param string $input
  * @return string
  */
-function htmlentities_iso88592($input = '') {
-    $arrEntities_pl = array(
+function htmlentities_iso88592($input = '')
+{
+    $arrEntities_pl = [
         '&ecirc;',
         '&oacute;',
         '&plusmn;',
@@ -65,8 +67,8 @@ function htmlentities_iso88592($input = '') {
         '&not;',
         '&macr;',
         '&AElig;',
-        '&Ntilde;'
-    );
+        '&Ntilde;',
+    ];
     $arrEntities = conGetHtmlTranslationTable(HTML_ENTITIES);
     $arrEntities = array_diff($arrEntities, $arrEntities_pl);
 

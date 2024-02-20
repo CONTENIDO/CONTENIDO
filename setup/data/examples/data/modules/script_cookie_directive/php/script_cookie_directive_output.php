@@ -3,14 +3,14 @@
 /**
  * Description: Cookie Directive
  *
- * @package Module
+ * @package    Module
  * @subpackage ScriptCookieDirective
- * @author ilia.schwarz
- * @author claus.schunk@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     ilia.schwarz
+ * @author     claus.schunk@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!cRegistry::getBackendSessionId()) {
@@ -20,14 +20,14 @@ if (!cRegistry::getBackendSessionId()) {
 
     if (array_key_exists('acceptCookie', $_GET)) {
         // Check value in get, if js is off
-        $allowCookie = $_GET['acceptCookie'] === '1'? 1 : 0;
+        $allowCookie = $_GET['acceptCookie'] === '1' ? 1 : 0;
         setcookie('allowCookie', $allowCookie, 0, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
 
         // Save value
         $session->register('allowCookie');
     } elseif (array_key_exists('allowCookie', $_COOKIE)) {
         // Check value in cookies
-        $allowCookie = $_COOKIE['allowCookie'] === '1'? 1 : 0;
+        $allowCookie = $_COOKIE['allowCookie'] === '1' ? 1 : 0;
 
         // Save value
         $session->register('allowCookie');
@@ -35,7 +35,6 @@ if (!cRegistry::getBackendSessionId()) {
 
     // Show notify
     if (!isset($allowCookie)) {
-
         $tpl = cSmartyFrontend::getInstance();
         $url = cUri::getInstance();
 
@@ -65,7 +64,6 @@ if (!cRegistry::getBackendSessionId()) {
         $tpl->assign('pageUrlDeny', $denyUrl);
 
         $tpl->display('get.tpl');
-
     }
 }
 

@@ -7,9 +7,9 @@
  * @subpackage Frontend_URI
  * @author     Murat Purc
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Frontend_URI
  */
-class cUri {
+class cUri
+{
 
     /**
      * Self instance.
@@ -53,7 +54,8 @@ class cUri {
      *
      * @throws cException
      */
-    private function __construct() {
+    private function __construct()
+    {
         $this->_sUriBuilderName = cUriBuilderConfig::getUriBuilderName();
         $this->_oUriBuilder = cUriBuilderFactory::getUriBuilder($this->_sUriBuilderName);
     }
@@ -63,7 +65,8 @@ class cUri {
      *
      * @return cUri
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance == NULL) {
             self::$_instance = new self();
         }
@@ -88,7 +91,8 @@ class cUri {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function build($param, $bUseAbsolutePath = false, array $aConfig = []) {
+    public function build($param, $bUseAbsolutePath = false, array $aConfig = [])
+    {
         if (!is_array($param)) {
             $arr = $this->parse($param);
             $param = $arr['params'];
@@ -108,13 +112,13 @@ class cUri {
         if ($aResult) {
             $param = (isset($aResult['param'])) ? $aResult['param'] : '';
             if (isset($aResult['bUseAbsolutePath'])) {
-                $bUseAbsolutePath = (bool) $aResult['bUseAbsolutePath'];
+                $bUseAbsolutePath = (bool)$aResult['bUseAbsolutePath'];
             }
             if (isset($aResult['aConfig']) && is_array($aResult['aConfig'])) {
                 $aConfig = $aResult['aConfig'];
             }
         }
-        
+
         if ($this->_sUriBuilderName == 'custom_path' && !isset($aParams['level'])) {
             // downwards compatibility to cUriBuilderCustomPath
             $aParams['level'] = '1';
@@ -142,7 +146,7 @@ class cUri {
         // execute postprocess hook
         $result = cApiCecHook::executeAndReturn('Contenido.Frontend.PostprocessUrlBuilding', $url);
         if ($result) {
-            $url = (string) $result;
+            $url = (string)$result;
         }
 
         return $url;
@@ -165,7 +169,8 @@ class cUri {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function buildRedirect($param, array $aConfig = []) {
+    public function buildRedirect($param, array $aConfig = [])
+    {
         $url = $this->build($param, true, $aConfig);
         return str_replace('&amp;', '&', $url);
     }
@@ -179,7 +184,8 @@ class cUri {
      *         Associative array created by using parse_url()
      *         having the key 'params' which includes the parameter value pairs.
      */
-    public function parse($sUrl) {
+    public function parse($sUrl)
+    {
         $aUrl = @parse_url($sUrl);
 
         if (isset($aUrl['query'])) {
@@ -187,7 +193,7 @@ class cUri {
             parse_str($aUrl['query'], $aUrl['params']);
         }
 
-        if (!isset($aUrl['params']) || !is_array($aUrl['params'])) {
+        if (!isset($aUrl['params'])) {
             $aUrl['params'] = [];
         }
 
@@ -202,15 +208,16 @@ class cUri {
      * @return string
      *         The composed Url
      */
-    public function composeByComponents(array $aComponents) {
+    public function composeByComponents(array $aComponents)
+    {
         $sUrl = (isset($aComponents['scheme']) ? $aComponents['scheme'] . '://' : '') .
-                (isset($aComponents['user']) ? $aComponents['user'] . ':' : '') .
-                (isset($aComponents['pass']) ? $aComponents['pass'] . '@' : '') .
-                (isset($aComponents['host']) ? $aComponents['host'] : '') .
-                (isset($aComponents['port']) ? ':' . $aComponents['port'] : '') .
-                (isset($aComponents['path']) ? $aComponents['path'] : '') .
-                (isset($aComponents['query']) ? '?' . $aComponents['query'] : '') .
-                (isset($aComponents['fragment']) ? '#' . $aComponents['fragment'] : '');
+            (isset($aComponents['user']) ? $aComponents['user'] . ':' : '') .
+            (isset($aComponents['pass']) ? $aComponents['pass'] . '@' : '') .
+            (isset($aComponents['host']) ? $aComponents['host'] : '') .
+            (isset($aComponents['port']) ? ':' . $aComponents['port'] : '') .
+            (isset($aComponents['path']) ? $aComponents['path'] : '') .
+            (isset($aComponents['query']) ? '?' . $aComponents['query'] : '') .
+            (isset($aComponents['fragment']) ? '#' . $aComponents['fragment'] : '');
         return $sUrl;
     }
 
@@ -223,7 +230,8 @@ class cUri {
      * @return bool
      *         True if url is a external url, otherwise false.
      */
-    public function isExternalUrl($sUrl) {
+    public function isExternalUrl($sUrl)
+    {
         $aComponents = $this->parse($sUrl);
         if (!isset($aComponents['host'])) {
             return false;
@@ -251,8 +259,8 @@ class cUri {
      * - The path component of an client HTML base path: e.g. "/cms/", "/cms/?idart=123", "/cms/?idcat=123"
      * - Also possible: "/cms/front_content.php", "/cms/front_content.php?idart=123", "/cms/front_content.php?idcat=123"
      *
-     * All of them prefixed with protocol and client host (e.g. http://host/) will also be identified
-     * as a internal Url.
+     * All of them prefixed with protocol and client host (e.g. https://host/) will also be identified
+     * as an internal Url.
      *
      * Other Urls, even internal Urls like /unknown/path/to/some/page.html
      * will not be identified as internal url event if they are real
@@ -263,7 +271,8 @@ class cUri {
      * @return bool
      *         True if url is identifiable internal url, otherwise false.
      */
-    public function isIdentifiableFrontContentUrl($sUrl) {
+    public function isIdentifiableFrontContentUrl($sUrl)
+    {
         if ($this->isExternalUrl($sUrl)) {
             // detect a external url, return false
             return false;
@@ -308,7 +317,8 @@ class cUri {
     }
 
     /**
-     * Appends additional query parameters to a URI
+     * Appends additional query parameters to a URI.
+     *
      * @param string $uri - The URI to append parameters to
      * @param array $parameters - Parameter to append
      * @param array|null $reservedParameters - List of reserved parameters to skip from overwriting.
@@ -317,8 +327,13 @@ class cUri {
      * @param bool $overwrite - Flag to overwrite other already existing parameters in given url.
      *     Note, enabled flag won't invalidate the $reservedParameters value!
      * @return string - The modified URI
+     * @since CONTENIDO 4.10.2
      */
-    public function appendParameters($uri, array $parameters, $reservedParameters = null, $overwrite = false) {
+    public function appendParameters(
+        string $uri, array $parameters, array $reservedParameters = null,
+        bool   $overwrite = false
+    ): string
+    {
         if (!is_array($reservedParameters)) {
             $reservedParameters = [
                 'client', 'idart', 'idcat', 'idartlang', 'lang', 'error'
@@ -342,7 +357,7 @@ class cUri {
             $filteredParameters[$key] = $value;
         }
 
-       // Clean parameter values recursive
+        // Clean parameter values recursive
         array_walk_recursive($filteredParameters, function (&$value) {
             if (!is_array($value)) {
                 $value = htmlentities(cRequestValidator::cleanParameter($value));
@@ -357,9 +372,7 @@ class cUri {
 
         // Merge url parameters with filtered parameters
         $urlParts['query'] = http_build_query(array_merge($urlParameters, $filteredParameters2), '', '&');
-        $uri = $this->composeByComponents($urlParts);
-
-        return $uri;
+        return $this->composeByComponents($urlParts);
     }
 
     /**
@@ -367,7 +380,8 @@ class cUri {
      *
      * @return cUriBuilder
      */
-    public function getUriBuilder() {
+    public function getUriBuilder()
+    {
         return $this->_oUriBuilder;
     }
 

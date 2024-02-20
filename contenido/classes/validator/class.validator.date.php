@@ -7,9 +7,9 @@
  * @subpackage Validation
  * @author     Viktor Lehmann <info@tone2tone.com>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -32,6 +32,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * }
  * </pre>
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Validation
  */
@@ -47,26 +48,30 @@ class cValidatorDate extends cValidatorAbstract
     }
 
     /**
-     * @see cValidatorAbstract::_isValid()
-     *
      * @param mixed $value
      *
      * @return bool
+     * @see cValidatorAbstract::_isValid()
+     *
      */
-    protected function _isValid($date)
+    protected function _isValid($value): bool
     {
+        if (!is_string($value) || empty($value)) {
+            $this->addError('Parameter must be string and not empty', 2);
+            return false;
+        }
+
         $format = "Y-m-d H:i:s";
         // if $date is just a date, not datetime, simulate datetime, as it is only necessary to check validity
-        if (strlen($date) == 10)  $date = $date . " 00:00:00";
+        if (strlen($value) == 10) $value = $value . " 00:00:00";
 
-        $d = DateTime::createFromFormat($format, $date);
-        if ($d && $d->format($format) == $date) {
+        $d = DateTime::createFromFormat($format, $value);
+        if ($d && $d->format($format) == $value) {
             return true;
         } else {
             $this->addError('Invalid date', 1);
             return false;
         }
-        
     }
-  
+
 }

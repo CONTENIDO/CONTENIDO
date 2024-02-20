@@ -8,12 +8,12 @@
     #btn_save_changes {margin-left:5px; float:right;}
     </style>
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
-    <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <script type="text/javascript" src="scripts/group_association.js"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/infoBox.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/group_association.js)_}"></script>
     {RELOADSCRIPT}
 </head>
-<body style="margin:10px">
+<body class="page_generic">
 
 <form name="group_properties" id="group_properties" method="post" action="{FORM_ACTION}">
     <input type="hidden" name="area" value="{AREA}">
@@ -23,16 +23,16 @@
     <input type="hidden" name="idlang" value="{IDLANG}">
     <table id="stats" class="generic" cellspacing="0" cellpadding="4">
         <tr class="text_medium">
-            <th colspan="2" align="left" valign="top" style="font-weight: normal; padding-left:3px">{CATNAME}</th>
+            <th colspan="2" class="align_top text_left" style="font-weight: normal; padding-left:3px">{CATNAME}</th>
         </tr>
         <!-- BEGIN:BLOCK -->
         <tr class="text_medium">
-            <td valign="top" style="padding-left:3px; vertical-align:middle;">{LABEL}</td>
-            <td valign="top" style="padding-left:3px; vertical-align:middle;">{INPUT}</td>
+            <td class="align_middle" style="padding-left:3px;">{LABEL}</td>
+            <td class="align_middle" style="padding-left:3px;">{INPUT}</td>
         </tr>
         <!-- END:BLOCK -->
         <tr class="text_medium">
-            <td colspan="2" valign="top" style="padding-left:3px">
+            <td colspan="2" class="align_top" style="padding-left:3px">
                  <div class="memberselect">
                     <p class="column_header">i18n('Groupmembers')</p>
                     <div style="float:right;">
@@ -67,7 +67,7 @@
             </td>
         </tr>
         <tr class="text_medium" >
-            <td colspan="2" valign="top" style="padding-left:{PADDING_LEFT}px">
+            <td colspan="2" class="align_top" style="padding-left:{PADDING_LEFT}px">
                 <div>&lt;=: i18n('Add right side selected users to group').</div>
                 <div>
                     <img id="btn_save_changes" style="display:{DISPLAY_OK};" title="i18n('Save changes')" alt="i18n('Save changes')" src="./images/but_ok.gif" accesskey="s">

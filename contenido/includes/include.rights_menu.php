@@ -3,13 +3,13 @@
 /**
  * This file contains the menu frame backend page for user management.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -24,11 +24,11 @@ $frame = cRegistry::getFrame();
 $cfg = cRegistry::getConfig();
 
 $page = isset($_REQUEST['page']) ? abs(cSecurity::toInteger($_REQUEST['page'])) : 1;
-$elemPerPage = (isset($_REQUEST['elemperpage'])) ? cSecurity::toInteger($_REQUEST['elemperpage']) : 0;
-$sortby = (isset($_REQUEST['sortby'])) ? cSecurity::toString($_REQUEST['sortby']) : '';
-$sortorder = (isset($_REQUEST['sortorder'])) ? cSecurity::toString($_REQUEST['sortorder']) : 'asc';
-$filter = (isset($_REQUEST['filter'])) ? cSecurity::toString($_REQUEST['filter']) : '';
-$userid = (isset($_GET['userid'])) ? cSecurity::toString($_GET['userid']) : '';
+$elemPerPage = cSecurity::toInteger($_REQUEST['elemperpage'] ?? '0');
+$sortby = cSecurity::toString($_REQUEST['sortby'] ?? '');
+$sortorder = cSecurity::toString($_REQUEST['sortorder'] ?? 'asc');
+$filter = cSecurity::toString($_REQUEST['filter'] ?? '');
+$userid = cSecurity::toString($_GET['userid'] ?? '');
 
 $oPage = new cGuiPage("rights_menu");
 
@@ -79,36 +79,49 @@ if (($elemPerPage * $mPage) >= $iSumUsers + $elemPerPage && $mPage != 1) {
     $mPage--;
 }
 
-while ($cApiUser = $cApiUserCollection->next()) {
-    $userid = $cApiUser->get("user_id");
+/**
+ * @var cApiUser $currentuser
+ */
+$rightsAreasHelper = new cRightsAreasHelper($currentuser, $auth, []);
 
-    $aUserPermissions = explode(',', $cApiUser->get('perms'));
+$isAuthUserSysadmin = $rightsAreasHelper->isAuthSysadmin();
+
+while ($cApiUser = $cApiUserCollection->next()) {
+    $userid = $cApiUser->get('user_id');
+
+    $aUserPermissions = explode(',', $cApiUser->get('perms') ?? '');
+    $rightsAreasHelper->setContextPermissions($aUserPermissions);
+
 
     $bDisplayUser = false;
 
-    if (in_array("sysadmin", $aCurrentUserPermissions)) {
+    if ($isAuthUserSysadmin) {
         $bDisplayUser = true;
     }
 
-    foreach ($aCurrentUserAccessibleClients as $key => $value) {
-        if (in_array("client[$key]", $aUserPermissions)) {
-            $bDisplayUser = true;
+    if (!$bDisplayUser) {
+        foreach ($aCurrentUserAccessibleClients as $key => $value) {
+            if (cPermission::checkClientPermission(cSecurity::toInteger($key), $aUserPermissions)) {
+                $bDisplayUser = true;
+            }
         }
     }
 
-    foreach ($aUserPermissions as $sLocalPermission) {
-        if (in_array($sLocalPermission, $aCurrentUserPermissions)) {
-            $bDisplayUser = true;
+    if (!$bDisplayUser) {
+        foreach ($aUserPermissions as $sLocalPermission) {
+            if (in_array($sLocalPermission, $aCurrentUserPermissions)) {
+                $bDisplayUser = true;
+            }
         }
     }
 
-    $link = new cHTMLLink();
-    $link->setClass('show_item')
-        ->setLink('javascript:;')
-        ->setAttribute('data-action', 'show_user');
-
-    if ($bDisplayUser == true) {
+    if ($bDisplayUser) {
         $iItemCount++;
+
+        $link = new cHTMLLink();
+        $link->setClass('show_item')
+            ->setLink('javascript:void(0)')
+            ->setAttribute('data-action', 'show_user');
 
         if ($iItemCount > ($elemPerPage * ($mPage - 1)) && $iItemCount < (($elemPerPage * $mPage) + 1)) {
             $iMenu++;
@@ -116,21 +129,20 @@ while ($cApiUser = $cApiUserCollection->next()) {
             // Delete button
             if ($perm->have_perm_area_action('user', "user_delete")) {
                 $delTitle = i18n("Delete user");
-                $deleteLink = '
-                    <a href="javascript:;" data-action="delete_user" title="' . $delTitle . '" >
-                        <img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
-                    </a>
-                ';
+                $deleteLink = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_user" title="' . $delTitle . '">'
+                    . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
+                    . '</a>';
             } else {
                 $deleteLink = '';
             }
 
-            if (($sToday < $cApiUser->get("valid_from") && ($cApiUser->get("valid_from") != '0000-00-00 00:00:00' && $cApiUser->get("valid_from") != '')) || ($sToday > $cApiUser->get("valid_to") && ($cApiUser->get("valid_to") != '0000-00-00 00:00:00') && $cApiUser->get("valid_from") != '')) {
-                $mlist->setTitle($iMenu, '<span class="inactiveUser"><span class="name">' . conHtmlSpecialChars($cApiUser->get("username")) . "</span><br>" . conHtmlSpecialChars($cApiUser->get("realname")) . '</span>');
-            } else {
-                $mlist->setTitle($iMenu, '<span class="name">' . conHtmlSpecialChars($cApiUser->get("username")) . "</span><br>" . conHtmlSpecialChars($cApiUser->get("realname")));
+            $userInfo = '<span class="name">' . conHtmlSpecialChars($cApiUser->get("username")) . "</span><br>" . conHtmlSpecialChars($cApiUser->get("realname") ?? '');
+            $isValidFromEmpty = cDate::isEmptyDate($cApiUser->get("valid_from"));
+            $isValidToEmpty = cDate::isEmptyDate($cApiUser->get("valid_to"));
+            if (($sToday < $cApiUser->get("valid_from") && !$isValidFromEmpty) || ($sToday > $cApiUser->get("valid_to") && !$isValidToEmpty && !$isValidFromEmpty)) {
+                $userInfo = '<span class="is_inactive">' . $userInfo . '</span>';
             }
-
+            $mlist->setTitle($iMenu, $userInfo);
             $mlist->setId($iMenu, $userid);
             $mlist->setLink($iMenu, $link);
             $mlist->setActions($iMenu, "delete", $deleteLink);
@@ -146,8 +158,8 @@ $deleteMsg = i18n("Do you really want to delete the user %s?");
 $oPage->set("s", "DELETE_MESSAGE", $deleteMsg);
 $oPage->set("s", "MPAGE", $mPage);
 
-// <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
-$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+// <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
+$oPage->addScript('parameterCollector.js');
 $oPage->set("s", "FORM", $mlist->render(false));
 
 // generate current content for Object Pager

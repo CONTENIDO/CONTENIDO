@@ -3,11 +3,11 @@
 /**
  * This file contains the PifaExporter class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -27,7 +27,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class PifaExporter {
+class PifaExporter
+{
 
     /**
      * The PIFA form to export.
@@ -49,13 +50,15 @@ class PifaExporter {
      *
      * @param PifaForm $pifaForm to export
      */
-    public function __construct(PifaForm $pifaForm) {
+    public function __construct(PifaForm $pifaForm)
+    {
 
         // aggregate PIFA form
         $this->_form = $pifaForm;
 
         // build XML writer
         $this->_writer = new cXmlWriter();
+        $this->_writer->getDomDocument()->formatOutput = true;
     }
 
     /**
@@ -65,7 +68,8 @@ class PifaExporter {
      * @param bool $addData if form data should be included in export
      * @return string created XML
      */
-    public function export($addData) {
+    public function export($addData)
+    {
 
         // add pifa (root) element
         $pifa = $this->_writer->addElement('pifa');
@@ -92,10 +96,11 @@ class PifaExporter {
      * @param DOMElement $parent to add element to
      * @param PifaForm $pifaForm to create XML for
      */
-    private function _addForm(DOMElement $parent, PifaForm $pifaForm) {
+    private function _addForm(DOMElement $parent, PifaForm $pifaForm)
+    {
 
         // build attributes
-        $attr = array();
+        $attr = [];
         $attr['name'] = $pifaForm->get('name');
         $attr['table'] = $pifaForm->get('data_table');
         $attr['method'] = cString::toLowerCase($pifaForm->get('method'));
@@ -122,10 +127,11 @@ class PifaExporter {
      * @param DOMElement $parent to add element to
      * @param PifaField $pifaField to create XML for
      */
-    private function _addField(DOMElement $parent, PifaField $pifaField) {
+    private function _addField(DOMElement $parent, PifaField $pifaField)
+    {
 
         // build attributes
-        $attr = array();
+        $attr = [];
         $attr['rank'] = $pifaField->get('field_rank');
         $attr['type'] = $this->_getFieldTypeName($pifaField->get('field_type'));
         $attr['column'] = $pifaField->get('column_name');
@@ -155,7 +161,8 @@ class PifaExporter {
      * @param DOMElement $parent to add element to
      * @param PifaField $pifaField to create XML for
      */
-    private function _addLabel(DOMElement $parent, PifaField $pifaField) {
+    private function _addLabel(DOMElement $parent, PifaField $pifaField)
+    {
 
         // get value
         $value = strip_tags($pifaField->get('label'));
@@ -164,7 +171,7 @@ class PifaExporter {
         }
 
         // build attributes
-        $attr = array();
+        $attr = [];
         if ($pifaField->get('display_label')) {
             $attr['display'] = 'true';
         } else {
@@ -183,7 +190,8 @@ class PifaExporter {
      * @param DOMElement $parent to add element to
      * @param PifaField $pifaField to create XML for
      */
-    private function _addHelp(DOMElement $parent, PifaField $pifaField) {
+    private function _addHelp(DOMElement $parent, PifaField $pifaField)
+    {
 
         // get value
         $value = $pifaField->get('help_text');
@@ -192,7 +200,7 @@ class PifaExporter {
         }
 
         // add element
-        $this->_writer->addElement('help', $value, $parent, array(), true);
+        $this->_writer->addElement('help', $value, $parent, [], true);
     }
 
     /**
@@ -202,7 +210,8 @@ class PifaExporter {
      * @param DOMElement $parent to add element to
      * @param PifaField $pifaField to create XML for
      */
-    private function _addError(DOMElement $parent, PifaField $pifaField) {
+    private function _addError(DOMElement $parent, PifaField $pifaField)
+    {
 
         // get value
         $value = $pifaField->get('error_message');
@@ -211,7 +220,7 @@ class PifaExporter {
         }
 
         // add element
-        $this->_writer->addElement('error', $value, $parent, array(), true);
+        $this->_writer->addElement('error', $value, $parent, [], true);
     }
 
     /**
@@ -221,7 +230,8 @@ class PifaExporter {
      * @param DOMElement $parent to add element to
      * @param PifaField $pifaField to create XML for
      */
-    private function _addRule(DOMElement $parent, PifaField $pifaField) {
+    private function _addRule(DOMElement $parent, PifaField $pifaField)
+    {
 
         // get value
         $value = $pifaField->get('rule');
@@ -230,7 +240,7 @@ class PifaExporter {
         }
 
         // add element
-        $this->_writer->addElement('rule', $value, $parent, array(), true);
+        $this->_writer->addElement('rule', $value, $parent, [], true);
     }
 
     /**
@@ -240,7 +250,8 @@ class PifaExporter {
      * @param DOMElement $parent to add element to
      * @param PifaField $pifaField to create XML for
      */
-    private function _addClasses(DOMElement $parent, PifaField $pifaField) {
+    private function _addClasses(DOMElement $parent, PifaField $pifaField)
+    {
         $cssClasses = $pifaField->get('css_class');
         $cssClasses = trim($cssClasses);
         $cssClasses = explode(',', $cssClasses);
@@ -267,7 +278,8 @@ class PifaExporter {
      * @param DOMElement $parent to add element to
      * @param PifaField $pifaField to create XML for
      */
-    private function _addOptions(DOMElement $parent, PifaField $pifaField) {
+    private function _addOptions(DOMElement $parent, PifaField $pifaField)
+    {
 
         // add child elements
         $optionLabels = $pifaField->get('option_labels');
@@ -280,13 +292,13 @@ class PifaExporter {
         $optionValues = explode(',', $optionValues);
         $optionValues = array_filter($optionValues);
 
-        $count = min(array(
+        $count = min([
             count($optionLabels),
             count($optionValues),
-        ));
+        ]);
 
         // build attributes
-        $attr = array();
+        $attr = [];
         $attr['source'] = $pifaField->get('option_class');
         $attr = array_filter($attr);
 
@@ -300,7 +312,7 @@ class PifaExporter {
         for ($i = 0; $i < $count; $i++) {
 
             // build attributes
-            $attr = array();
+            $attr = [];
             $attr['value'] = $optionValues[$i];
             $attr = array_filter($attr);
 
@@ -318,7 +330,8 @@ class PifaExporter {
      * @param DOMElement $parent to add element to
      * @param PifaForm $pifaForm to create XML for
      */
-    private function _addData(DOMElement $parent, PifaForm $pifaForm) {
+    private function _addData(DOMElement $parent, PifaForm $pifaForm)
+    {
 
         // get fields from form
         $fields = $pifaForm->getFields();
@@ -327,7 +340,7 @@ class PifaExporter {
         }
 
         // get all column names as array
-        $columns = array();
+        $columns = [];
         /** @var PifaField $pifaField */
         foreach ($fields as $pifaField) {
             $columns[] = $pifaField->get('column_name');
@@ -347,8 +360,8 @@ class PifaExporter {
         foreach ($data as $row) {
 
             // build attributes
-            $attr = array();
-            if (true === (bool) $pifaForm->get('with_timestamp')) {
+            $attr = [];
+            if (true === (bool)$pifaForm->get('with_timestamp')) {
                 $attr['timestamp'] = $row['pifa_timestamp'];
             }
             $attr = array_filter($attr);
@@ -360,7 +373,7 @@ class PifaExporter {
             foreach ($columns as $index => $columnName) {
 
                 // build attributes
-                $attr = array();
+                $attr = [];
                 $attr['name'] = $columnName;
                 $attr = array_filter($attr);
 
@@ -378,8 +391,9 @@ class PifaExporter {
      *
      * @return string
      */
-    private function _getFieldTypeName($fieldTypeId) {
-        $fieldTypeNames = array(
+    private function _getFieldTypeName($fieldTypeId)
+    {
+        $fieldTypeNames = [
             PifaField::INPUTTEXT => 'INPUTTEXT',
             PifaField::TEXTAREA => 'TEXTAREA',
             PifaField::INPUTPASSWORD => 'INPUTPASSWORD',
@@ -401,9 +415,8 @@ class PifaExporter {
             PifaField::FIELDSET_BEGIN => 'FIELDSET_BEGIN',
             PifaField::FIELDSET_END => 'FIELDSET_END',
             PifaField::BUTTONIMAGE => 'BUTTONIMAGE',
-        );
+        ];
         $fieldTypeName = $fieldTypeNames[$fieldTypeId];
-        $fieldTypeName = cString::toLowerCase($fieldTypeName);
-        return $fieldTypeName;
+        return cString::toLowerCase($fieldTypeName);
     }
 }

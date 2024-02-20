@@ -1,19 +1,23 @@
 <?php
+
 /**
  * This file contains the Backend page for showing and editing short URLs.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage UrlShortener
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $action, $cfg;
+/**
+ * @var cPermission $perm
+ * @var array $cfg
+ */
 
 $page = new cGuiPage('url_shortener', 'url_shortener');
 
@@ -24,6 +28,8 @@ $userPerm = explode(',', $auth->auth['perm']);
 if (!$perm->have_perm_area_action('url_shortener')) {
     $page->displayError(i18n('Short URLs can only be managed by authorized user!', 'url_shortener'));
 }
+
+$action = $action ?? '';
 
 // process the actions
 if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm->have_perm_area_action('url_shortener', 'url_shortener_delete')) {
@@ -82,12 +88,12 @@ if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm-
     }
 } elseif ($action === 'url_shortener_copy_htaccess' && !empty($_GET['htaccess_type'])) {
     // copy the .htaccess file to the client path
-    $validTypes = array(
+    $validTypes = [
         'simple',
         'restrictive'
-    );
+    ];
     if (in_array($_GET['htaccess_type'], $validTypes)) {
-        $source = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'url_shortener/files/htaccess_' . $_GET['htaccess_type'] . '.txt';
+        $source = cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'url_shortener/files/htaccess_' . $_GET['htaccess_type'] . '.txt';
         $dest = cRegistry::getFrontendPath() . '.htaccess';
         if (cFileHandler::exists($dest)) {
             $page->displayError(i18n('The .htaccess file already exists, so that it has not been copied!', 'url_shortener'));
@@ -136,12 +142,11 @@ $form->setVar('newshorturl', '');
 $page->appendContent($form);
 
 $table = new cHTMLTable();
-$table->setClass('generic');
-$table->setWidth('100%');
+$table->setClass('generic col_100p');
 
 // construct the table header
 $theader = new cHTMLTableHeader();
-$tableHeads = array(
+$tableHeads = [
     i18n('Client', 'url_shortener'),
     i18n('Language', 'url_shortener'),
     i18n('Category', 'url_shortener'),
@@ -150,7 +155,7 @@ $tableHeads = array(
     i18n('Creation Date', 'url_shortener'),
     i18n('URL With idart And idlang', 'url_shortener'),
     i18n('Actions', 'url_shortener')
-);
+];
 foreach ($tableHeads as $tableHead) {
     $th = new cHTMLTableHead();
     $th->setContent($tableHead);
@@ -165,7 +170,7 @@ $tbody = new cHTMLTableBody();
 while (($shortUrl = $shortUrlColl->next()) !== false) {
     $tr = new cHTMLTableRow();
     $tr->setID('shorturl-' . $shortUrl->get('idshorturl'));
-    $contents = array();
+    $contents = [];
 
     // get the client name
     $apiClient = new cApiClient($shortUrl->get('idclient'));
@@ -215,10 +220,10 @@ while (($shortUrl = $shortUrlColl->next()) !== false) {
 
     // construct URL with idart and idlang
     $uriBuilder = cUriBuilderFactory::getUriBuilder('front_content');
-    $uriParams = array(
+    $uriParams = [
         'idart' => $shortUrl->get('idart'),
         'lang' => $shortUrl->get('idlang')
-    );
+    ];
     $uriBuilder->buildUrl($uriParams, true);
     $url = $uriBuilder->getUrl();
     $link = new cHTMLLink(cRegistry::getFrontendUrl() . $url);

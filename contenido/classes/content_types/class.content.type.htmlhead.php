@@ -3,13 +3,13 @@
 /**
  * This file contains the cContentTypeHtmlhead class.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,10 +18,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Content type CMS_HTMLHEAD which lets the editor enter HTML with the help of a
  * WYSIWYG editor.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
  */
-class cContentTypeHtmlhead extends cContentTypeHtml {
+class cContentTypeHtmlhead extends cContentTypeHtml
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -35,15 +36,14 @@ class cContentTypeHtmlhead extends cContentTypeHtml {
      * @param array $contentTypes
      *         array containing the values of all content types
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
-
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // set props
         $this->_type = 'CMS_HTMLHEAD';
         $this->_prefix = 'htmlhead';
-
     }
 
 }

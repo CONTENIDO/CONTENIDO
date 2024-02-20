@@ -1,17 +1,18 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+        "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
     <title>mod_rewrite_content_expert</title>
-{_META_HEAD_CONTENIDO_}
-{_CSS_HEAD_CONTENIDO_}
-    <link rel="stylesheet" type="text/css" href="plugins/mod_rewrite/styles/styles.css">
-{_JS_HEAD_CONTENIDO_}
+    {_META_HEAD_CONTENIDO_}
+    {_CSS_HEAD_CONTENIDO_}
+    <link rel="stylesheet" type="text/css" href="{_ASSET(plugins/mod_rewrite/styles/styles.css)_}">
+    {_JS_HEAD_CONTENIDO_}
 </head>
 
 <body class="mrPlugin mrPluginExpert">
 
-<div class="headerBox">
-{LNG_PLUGIN_FUNCTIONS}
+<div class="mr_header_box con_navbar con_block col_lg">
+    {LNG_PLUGIN_FUNCTIONS}
 </div>
 
 {CONTENT_BEFORE}
@@ -24,98 +25,106 @@
     <input type="hidden" name="frame" value="4">
     <input type="hidden" name="idclient" value="{IDCLIENT}">
 
-<table id="contenttable" cellspacing="0" cellpadding="3" border="0">
-<colgroup>
-    <col width="30%">
-    <col width="70%">
-</colgroup>
+    <table class="generic col_lg">
+        <colgroup>
+            <col width="30%">
+            <col width="70%">
+        </colgroup>
+
+        <!-- copy .htaccess -->
+        <tr style="{COPY_HTACCESS_CSS}">
+            <td class="border_t_b3">{LNG_COPY_HTACCESS_TYPE}</td>
+            <td class="border_t_b3 text_left">
+                {COPY_HTACCESS_ERROR}
+
+                <label for="mr_copy_htaccess_type">{LNG_COPY_HTACCESS_TYPE_LBL}</label><br>
+                <select name="htaccesstype" id="mr_copy_htaccess_type">
+                    <option value="restrictive">{LNG_COPY_HTACCESS_TYPE1}</option>
+                    <option value="simple">{LNG_COPY_HTACCESS_TYPE2}</option>
+                </select>
+                <a href="javascript:void(0)" data-tooltip-id="copyHtaccessInfo1" title=""
+                   class="main i-link con_img_button con_info_button"></a>
+                <div id="copyHtaccessInfo1" class="no_display">
+                    <strong>{LNG_COPY_HTACCESS_TYPE1}:</strong><br>
+                    {LNG_COPY_HTACCESS_TYPE_INFO1}<br>
+                    <br>
+                    <strong>{LNG_COPY_HTACCESS_TYPE2}:</strong><br>
+                    {LNG_COPY_HTACCESS_TYPE_INFO2}<br>
+                </div>
+                <br>
+                <br>
+                {LNG_COPY_HTACCESS_TO}<br>
+                <a class="con_func_button mr_action_link" data-action="copyhtaccess"
+                   data-params="copy=contenido">{LNG_COPY_HTACCESS_TO_CONTENIDO}</a>
+                <a href="javascript:void(0)" data-tooltip-id="copyHtaccessInfo2" title=""
+                   class="main i-link con_img_button con_info_button"></a>
+                <div id="copyHtaccessInfo2" class="no_display">
+                    {LNG_COPY_HTACCESS_TO_CONTENIDO_INFO}
+                </div>
+                <br>
+
+                <a class="con_func_button mr_action_link" data-action="copyhtaccess"
+                   data-params="copy=cms">{LNG_COPY_HTACCESS_TO_CLIENT}</a>
+                <a href="javascript:void(0)" data-tooltip-id="copyHtaccessInfo3" title=""
+                   class="main i-link con_img_button con_info_button"></a>
+                <div id="copyHtaccessInfo3" class="no_display">
+                    {LNG_COPY_HTACCESS_TO_CLIENT_INFO}
+                </div>
+                <br>
+                <br>
+
+                {LNG_OR}<br>
+                <a class="con_func_button mr_action_link" data-action="downloadhtaccess"
+                   data-params="">{LNG_DOWNLOAD}</a>
+                <a href="javascript:void(0)" data-tooltip-id="showHtaccessInfo" title=""
+                   class="main i-link con_img_button con_info_button"></a>
+                <div id="showHtaccessInfo" class="no_display">
+                    {LNG_DOWNLOAD_INFO}
+                </div>
+            </td>
+        </tr>
+
+        <!-- reset -->
+        <tr>
+            <td>
+                {LNG_RESETALIASES}
+            </td>
+            <td>
+                <a class="con_func_button mr_action_link" data-action="resetempty" data-params="">{LNG_RESETEMPTY_LINK}</a>
+                <a href="javascript:void(0)" data-tooltip-id="resetAliasesInfo1" title=""
+                   class="main i-link con_img_button con_info_button"></a>
+                <div id="resetAliasesInfo1" class="no_display">
+                    {LNG_RESETEMPTY_INFO}
+                </div>
+                <br>
+
+                <a class="con_func_button mr_action_link" data-action="reset" data-params="">{LNG_RESETALL_LINK}</a>
+                <a href="javascript:void(0)" data-tooltip-id="resetAliasesInfo2" title=""
+                   class="main i-link con_img_button con_info_button"></a>
+                <div id="resetAliasesInfo2" class="no_display">
+                    {LNG_RESETALL_INFO}
+                </div>
+                <br>
+                <br>
+                <strong>{LNG_NOTE}:</strong><br>
+                {LNG_RESETALIASES_NOTE}
+            </td>
+        </tr>
 
 
-<!-- copy .htaccess -->
-<tr style="{COPY_HTACCESS_CSS}">
-    <td class="text_medium col-I">{LNG_COPY_HTACCESS_TYPE}</td>
-    <td class="text_medium col-II" align="left">
-        {COPY_HTACCESS_ERROR}
-
-        <label for="mr_copy_htaccess_type">{LNG_COPY_HTACCESS_TYPE_LBL}</label><br>
-        <select class="blockLeft" name="htaccesstype" id="mr_copy_htaccess_type">
-            <option value="restrictive">{LNG_COPY_HTACCESS_TYPE1}</option>
-            <option value="simple">{LNG_COPY_HTACCESS_TYPE2}</option>
-        </select>
-        <a href="#" id="copyHtaccessInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="copyHtaccessInfo1" class="nodisplay">
-<strong>{LNG_COPY_HTACCESS_TYPE1}:</strong><br>
-{LNG_COPY_HTACCESS_TYPE_INFO1}<br>
-<br>
-<strong>{LNG_COPY_HTACCESS_TYPE2}:</strong><br>
-{LNG_COPY_HTACCESS_TYPE_INFO2}<br>
-        </div>
-
-        <div class="clear"></div>
-        <br>
-
-        {LNG_COPY_HTACCESS_TO}<br>
-        <br>
-        <a class="actionLink" data-action="copyhtaccess" data-params="copy=contenido">{LNG_COPY_HTACCESS_TO_CONTENIDO}</a>
-        <a href="#" id="copyHtaccessInfo2-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="copyHtaccessInfo2" class="nodisplay">
-        {LNG_COPY_HTACCESS_TO_CONTENIDO_INFO}
-        </div>
-        <br>
-
-        <a class="actionLink" data-action="copyhtaccess" data-params="copy=cms">{LNG_COPY_HTACCESS_TO_CLIENT}</a>
-        <a href="#" id="copyHtaccessInfo3-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="copyHtaccessInfo3" class="nodisplay">
-        {LNG_COPY_HTACCESS_TO_CLIENT_INFO}
-        </div>
-        <br>
-
-        {LNG_OR}<br>
-        <br>
-        <a class="actionLink" data-action="downloadhtaccess" data-params="">{LNG_DOWNLOAD}</a>
-        <a href="#" id="showHtaccessInfo-link1" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="showHtaccessInfo" class="nodisplay">
-        {LNG_DOWNLOAD_INFO}
-        </div>
-        <br>
-
-        <div class="clear"></div>
-    </td>
-</tr>
-
-<!-- reset -->
-<tr>
-    <td class="text_medium col-I">
-    {LNG_RESETALIASES}
-    </td>
-    <td class="text_medium col-II">
-        <a class="actionLink" data-action="resetempty" data-params="">{LNG_RESETEMPTY_LINK}</a>
-        <a href="#" id="resetAliasesInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="resetAliasesInfo1" class="nodisplay">
-        {LNG_RESETEMPTY_INFO}
-        </div>
-        <br>
-
-        <a class="actionLink" data-action="reset" data-params="">{LNG_RESETALL_LINK}</a>
-        <a href="#" id="resetAliasesInfo2-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="resetAliasesInfo2" class="nodisplay">
-        {LNG_RESETALL_INFO}
-        </div>
-        <br>
-        <strong>{LNG_NOTE}:</strong><br>
-        {LNG_RESETALIASES_NOTE}
-    </td>
-</tr>
-
-
-<tr>
-    <td colspan="2" class="text_medium col-I tgright noborderb">
-        <a accesskey="c" href="main.php?area={AREA}&amp;frame=4&amp;idclient={IDCLIENT}&amp;contenido={_SID_}">
-            <img src="images/but_cancel.gif" alt="" title="{LNG_DISCARD_CHANGES}"></a>
-        <input class="mgl20" accesskey="s" type="image" src="images/but_ok.gif" alt="" title="{LNG_SAVE_CHANGES}">
-    </td>
-</tr>
-</table>
+        <tr>
+            <td colspan="2" class="text_right">
+                <div class="con_form_action_control">
+                    <input class="con_img_button" accesskey="s" type="image" src="images/but_ok.gif"
+                           alt="" title="{LNG_SAVE_CHANGES}">
+                    <a class="con_img_button mgr3" accesskey="c"
+                       href="main.php?area={AREA}&amp;frame=4&amp;idclient={IDCLIENT}&amp;contenido={_SID_}">
+                        <img src="images/but_cancel.gif" alt="" title="{LNG_DISCARD_CHANGES}">
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </table>
 
 </form>
 
@@ -123,11 +132,11 @@
 
 <script type="text/javascript" src="plugins/mod_rewrite/scripts/mod_rewrite.js"></script>
 <script type="text/javascript">
-(function(Con, $) {
-    $(function() {
-        new Con.Plugin.ModRewrite('expert', {lng: {more_informations: "{LNG_MORE_INFORMATIONS}"}});
-    });
-})(Con, Con.$);
+    (function (Con, $) {
+        $(function () {
+            new Con.Plugin.ModRewrite('expert', {lng: {more_information: "{LNG_MORE_INFORMATIONS}"}});
+        });
+    })(Con, Con.$);
 </script>
 
 </body>

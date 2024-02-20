@@ -1,4 +1,4 @@
-            <tr>
-                <td valign="top" class="entry">{TITLE}</td>
-                <td valign="top" class="entry">{MESSAGE}</td>
-            </tr>
+<tr>
+    <td class="align_top entry">{TITLE}</td>
+    <td class="align_top entry">{MESSAGE}</td>
+</tr>

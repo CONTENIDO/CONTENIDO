@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the update notifier class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Security
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains function for the update notifier.
  *
- * @package Core
+ * @package    Core
  * @subpackage Security
  */
-class cUpdateNotifier {
+class cUpdateNotifier
+{
 
     /**
      * Minor release for the simplexml xpath() method
@@ -103,7 +105,7 @@ class cUpdateNotifier {
      *
      * @var string
      */
-    protected $sVendorURL = "http://www.contenido.org/de/redir";
+    protected $sVendorURL = "https://www.contenido.org/de/redir";
 
     /**
      * Current backend language
@@ -207,63 +209,64 @@ class cUpdateNotifier {
      *
      * @var array
      */
-    protected $aPropConf = array(
+    protected $aPropConf = [
         "itemType" => "update",
         "itemID" => 1,
         "type" => "file_check",
-        "name" => "xml"
-    );
+        "name" => "xml",
+    ];
 
     /**
      * System property configuration array for update notification
      *
      * @var array
      */
-    protected $aSysPropConf = array(
+    protected $aSysPropConf = [
         "type" => "update",
-        "name" => "check"
-    );
+        "name" => "check",
+    ];
 
     /**
      * System property configuration array for rss notification
      *
      * @var array
      */
-    protected $aSysPropConfRss = array(
+    protected $aSysPropConfRss = [
         "type" => "update",
-        "name" => "news_feed"
-    );
+        "name" => "news_feed",
+    ];
 
     /**
      * System property configuration array for update period
      *
      * @var array
      */
-    protected $aSysPropConfPeriod = array(
+    protected $aSysPropConfPeriod = [
         "type" => "update",
-        "name" => "check_period"
-    );
+        "name" => "check_period",
+    ];
 
     /**
      * CONTENIDO configuration array
      *
      * @var array
      */
-    protected $aCfg = array();
+    protected $aCfg = [];
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @param array       $aCfg
-     * @param cApiUser    $oUser
+     * @param array $aCfg
+     * @param cApiUser $oUser
      * @param cPermission $oPerm
-     * @param cSession    $oSession
-     * @param string      $sBackendLanguage
+     * @param cSession $oSession
+     * @param string $sBackendLanguage
      *
      * @throws cInvalidArgumentException
      * @throws cException
      */
-    public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage) {
+    public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage)
+    {
         $this->oProperties = new cApiPropertyCollection();
         $this->oSession = $oSession;
         $this->aCfg = $aCfg;
@@ -315,7 +318,8 @@ class cUpdateNotifier {
     /**
      * Sets the actual RSS file for the reader
      */
-    protected function setRSSFile() {
+    protected function setRSSFile()
+    {
         if ($this->sBackendLanguage == "de_DE") {
             $this->sRSSFile = $this->sVendorRssDeFile;
         } else {
@@ -328,14 +332,15 @@ class cUpdateNotifier {
      *
      * @param string $sAction
      */
-    protected function updateSystemProperty($sAction) {
+    protected function updateSystemProperty($sAction)
+    {
         if ($sAction == "activate") {
             setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "true");
-        } else if ($sAction == "deactivate") {
+        } elseif ($sAction == "deactivate") {
             setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "false");
-        } else if ($sAction == "activate_rss") {
+        } elseif ($sAction == "activate_rss") {
             setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "true");
-        } else if ($sAction == "deactivate_rss") {
+        } elseif ($sAction == "deactivate_rss") {
             setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "false");
         }
     }
@@ -343,7 +348,8 @@ class cUpdateNotifier {
     /**
      * Sets the cache path
      */
-    protected function setCachePath() {
+    protected function setCachePath()
+    {
         $sCachePath = $this->aCfg['path']['contenido_cache'];
         if (!is_dir($sCachePath)) {
             mkdir($sCachePath, cDirHandler::getDefaultPermissions());
@@ -362,15 +368,16 @@ class cUpdateNotifier {
      *
      * @throws cInvalidArgumentException
      */
-    protected function checkUpdateNecessity() {
+    protected function checkUpdateNecessity()
+    {
         $bUpdateNecessity = false;
 
-        $aCheckFiles = array(
+        $aCheckFiles = [
             $this->sVendorXMLFile,
             $this->sVendorRssDeFile,
             $this->sVendorRssEnFile,
-            $this->sTimestampCacheFile
-        );
+            $this->sTimestampCacheFile,
+        ];
         foreach ($aCheckFiles as $sFilename) {
             if (!cFileHandler::exists($this->sCacheDirectory . $sFilename)) {
                 $bUpdateNecessity = true;
@@ -379,7 +386,7 @@ class cUpdateNotifier {
         }
 
         if ($bUpdateNecessity == false) {
-            $iLastUpdate = (int) cFileHandler::read($this->sCacheDirectory . $this->sTimestampCacheFile);
+            $iLastUpdate = (int)cFileHandler::read($this->sCacheDirectory . $this->sTimestampCacheFile);
 
             $iCheckTimestamp = $iLastUpdate + ($this->iCacheDuration * 60);
             $iCurrentTime = time();
@@ -397,7 +404,8 @@ class cUpdateNotifier {
     /**
      * Detects and converts the minor release of the system version
      */
-    protected function detectMinorRelease() {
+    protected function detectMinorRelease()
+    {
         $sVersion = CON_VERSION;
         $aExplode = explode(".", $sVersion);
         $sMinorRelease = "con" . $aExplode[0] . $aExplode[1];
@@ -410,7 +418,8 @@ class cUpdateNotifier {
      *
      * @throws cException
      */
-    protected function readVendorContent() {
+    protected function readVendorContent()
+    {
         $this->sXMLContent = "";
 
         if ($this->bUpdateNecessity == true) {
@@ -467,7 +476,8 @@ class cUpdateNotifier {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function handleVendorUpdate($aXMLContent) {
+    protected function handleVendorUpdate($aXMLContent)
+    {
         $bValidXMLFile = true;
         $bValidDeRSSFile = true;
         $bValidEnRSSFile = true;
@@ -528,11 +538,11 @@ class cUpdateNotifier {
      * Connects with vendor host and gets the xml files
      *
      * @return array
-     * 
+     *
      * @throws cException
      */
-    protected function getVendorHostFiles() {
-        $aXMLContent = array();
+    protected function getVendorHostFiles()
+    {
         // get update file
         $sXMLUpdate = $this->fetchUrl($this->sVendorHostPath . $this->sVendorXMLFile);
 
@@ -542,6 +552,7 @@ class cUpdateNotifier {
         // get english rss file
         $sEnRSSContent = $this->fetchUrl($this->sVendorHostPath . $this->sVendorRssEnFile);
 
+        $aXMLContent = [];
         $aXMLContent[$this->sVendorXMLFile] = $sXMLUpdate;
         $aXMLContent[$this->sVendorRssDeFile] = $sDeRSSContent;
         $aXMLContent[$this->sVendorRssEnFile] = $sEnRSSContent;
@@ -556,8 +567,9 @@ class cUpdateNotifier {
      *
      * @throws cInvalidArgumentException
      */
-    protected function updateCacheFiles($aRSSContent) {
-        $aWriteCache = array();
+    protected function updateCacheFiles($aRSSContent)
+    {
+        $aWriteCache = [];
         $aWriteCache[$this->sVendorXMLFile] = $this->sXMLContent;
         $aWriteCache[$this->sVendorRssDeFile] = $aRSSContent[$this->sVendorRssDeFile];
         $aWriteCache[$this->sVendorRssEnFile] = $aRSSContent[$this->sVendorRssEnFile];
@@ -575,11 +587,12 @@ class cUpdateNotifier {
      * Gets the xml file hash from the property table
      *
      * @return string
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
-    protected function getHashProperty() {
+    protected function getHashProperty()
+    {
         $sProperty = $this->oProperties->getValue($this->aPropConf['itemType'], $this->aPropConf['itemID'], $this->aPropConf['type'], $this->aPropConf['name']);
         return $sProperty;
     }
@@ -593,7 +606,8 @@ class cUpdateNotifier {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function updateHashProperty($aXMLContent) {
+    protected function updateHashProperty($aXMLContent)
+    {
         $sXML = $aXMLContent[$this->sVendorXMLFile];
         $sDeRSS = $aXMLContent[$this->sVendorRssDeFile];
         $sEnRSS = $aXMLContent[$this->sVendorRssEnFile];
@@ -607,7 +621,8 @@ class cUpdateNotifier {
      *
      * @return string
      */
-    protected function checkPatchLevel() {
+    protected function checkPatchLevel()
+    {
         $sVersionCompare = version_compare(CON_VERSION, $this->sVendorVersion);
         return $sVersionCompare;
     }
@@ -617,7 +632,8 @@ class cUpdateNotifier {
      *
      * @return string
      */
-    protected function getDownloadURL() {
+    protected function getDownloadURL()
+    {
         $sVendorURLVersion = str_replace(".", "_", $this->sVendorVersion);
         $sVendorURL = $this->sVendorURL . "/Contenido_" . $sVendorURLVersion;
         return $sVendorURL;
@@ -627,12 +643,13 @@ class cUpdateNotifier {
      * Generates the output for the backend
      *
      * @param string $sMessage
-     * 
+     *
      * @return string
-     * 
+     *
      * @throws cException
      */
-    protected function renderOutput($sMessage) {
+    protected function renderOutput($sMessage)
+    {
         $oTpl = new cTemplate();
         $oTpl->set('s', 'UPDATE_MESSAGE', $sMessage);
 
@@ -671,13 +688,14 @@ class cUpdateNotifier {
      * Generates the output for the rss informations
      *
      * @param cTemplate $oTpl
-     * 
+     *
      * @return cTemplate
      *         CONTENIDO template object
-     * 
+     *
      * @throws cException
      */
-    protected function renderRss($oTpl) {
+    protected function renderRss($oTpl)
+    {
         if (!is_object($oTpl)) {
             $oTpl = new cTemplate();
         }
@@ -697,8 +715,8 @@ class cUpdateNotifier {
                 // hotfix do not call conHtmlentities because of different
                 // umlaut handling on PHP 5.3 and PHP 5.4
                 // perhaps it is a bug in conHtmlentities.
-                $title = utf8_encode($title);
-                $sText = utf8_encode($description);
+                $title = @utf8_encode($title);
+                $sText = @utf8_encode($description);
 
                 if (cString::getStringLength($sText) > 150) {
                     $sText = cString::trimAfterWord($sText, 150) . '...';
@@ -728,7 +746,7 @@ class cUpdateNotifier {
                 $oTpl->set("s", "NEWS_NOCONTENT", "");
                 $oTpl->set("s", "DISPLAY_DISABLED", 'none');
             }
-        } else if ($this->bNoWritePermissions == true) {
+        } elseif ($this->bNoWritePermissions == true) {
             $oTpl->set("s", "NEWS_NOCONTENT", i18n('Your webserver does not have write permissions for the directory /contenido/data/cache/!'));
         } else {
             $oTpl->set("s", "NEWS_NOCONTENT", i18n("No RSS content available"));
@@ -740,14 +758,15 @@ class cUpdateNotifier {
     /**
      * fetches given url for vendorfiles
      *
-     * @todo add a retry counter and a deathpoint with warning in errorlog
      * @param string $sUrl
-     * 
+     *
      * @return string|bool
-     * 
+     *
      * @throws cException
+     * @todo add a retry counter and a deathpoint with warning in errorlog
      */
-    private function fetchUrl($sUrl) {
+    private function fetchUrl($sUrl)
+    {
         if ($this->bVendorHostReachable != true) {
             return false;
         }
@@ -769,31 +788,32 @@ class cUpdateNotifier {
      * Displays the rendered output
      *
      * @return string
-     * 
+     *
      * @throws cException
      */
-    public function displayOutput() {
+    public function displayOutput()
+    {
         if (!$this->bEnableView) {
             $sOutput = "";
-        } else if ($this->bNoWritePermissions == true) {
+        } elseif ($this->bNoWritePermissions == true) {
             $sMessage = i18n('Your webserver does not have write permissions for the directory /contenido/data/cache/!');
             $sOutput = $this->renderOutput($sMessage);
-        } else if (!$this->bEnableCheck) {
+        } elseif (!$this->bEnableCheck) {
             $sMessage = i18n('Update notification is disabled! For actual update information, please activate.');
             $sOutput = $this->renderOutput($sMessage);
-        } else if ($this->sErrorOutput != "") {
+        } elseif ($this->sErrorOutput != "") {
             $sOutput = $this->sErrorOutput;
-        } else if ($this->sVendorVersion == '') {
+        } elseif ($this->sVendorVersion == '') {
             $sMessage = i18n('You have an unknown or unsupported version of CONTENIDO!');
             $sOutput = $this->renderOutput($sMessage);
-        } else if ($this->sVendorVersion == "deprecated") {
-            $sMessage = sprintf(i18n("Your version of CONTENIDO is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href='%s' class='blue' target='_blank'>Download now!</a>"), 'http://www.contenido.org');
+        } elseif ($this->sVendorVersion == "deprecated") {
+            $sMessage = sprintf(i18n("Your version of CONTENIDO is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href='%s' class='blue' target='_blank'>Download now!</a>"), 'https://www.contenido.org');
             $sOutput = $this->renderOutput($sMessage);
-        } else if ($this->checkPatchLevel() == "-1") {
+        } elseif ($this->checkPatchLevel() == "-1") {
             $sVendorDownloadURL = $this->getDownloadURL();
             $sMessage = sprintf(i18n("A new version of CONTENIDO is available! <br /> <a href='%s' class='blue' target='_blank'>Download %s now!</a>"), $sVendorDownloadURL, $this->sVendorVersion);
             $sOutput = $this->renderOutput($sMessage);
-        } else if ($this->checkPatchLevel() == "1") {
+        } elseif ($this->checkPatchLevel() == "1") {
             $sMessage = sprintf(i18n('It seems to be that your version string was manipulated. CONTENIDO %s does not exist!'), CON_VERSION);
             $sOutput = $this->renderOutput($sMessage);
         } else {

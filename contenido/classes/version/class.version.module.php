@@ -7,9 +7,9 @@
  * @subpackage Versioning
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Versioning
  */
-class cVersionModule extends cVersion {
+class cVersionModule extends cVersion
+{
 
     /**
      * Module type.
@@ -30,23 +31,35 @@ class cVersionModule extends cVersion {
     public $sModType;
 
     /**
+     * Module template, see table `con_mod.template`.
+     * Seems not to be used anymore, but still exists in the database
+     * and some places in the source code are accessing this property,
+     * see calls of {@see modEditModule()} function.
+     * The table field is also still in use in {@see cApiModule}.
+     *
+     * @var string
+     */
+    public $sTemplate;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * Initializes class variables.
      *
      * @param string $iIdMod
      *         The name of style file
-     * @param array  $aCfg
-     * @param array  $aCfgClient
-     * @param cDb    $oDB
+     * @param array $aCfg
+     * @param array $aCfgClient
+     * @param cDb $oDB
      *         CONTENIDO database object
-     * @param int    $iClient
+     * @param int $iClient
      * @param string $sArea
-     * @param int    $iFrame
+     * @param int $iFrame
      *
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function __construct($iIdMod, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
+    public function __construct($iIdMod, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame)
+    {
         // Set globals in main class
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
 
@@ -54,18 +67,18 @@ class cVersionModule extends cVersion {
         $this->sType = 'module';
         $this->iIdentity = $iIdMod;
 
+        $this->sTemplate = '';
+
         $this->prune();
         $this->initRevisions();
         $this->_storeModuleInformation();
     }
 
     /**
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    protected function _storeModuleInformation() {
+    protected function _storeModuleInformation()
+    {
         $iIdMod = cSecurity::toInteger($this->iIdentity);
         $oModule = new cApiModule($iIdMod);
 
@@ -73,7 +86,7 @@ class cVersionModule extends cVersion {
         $this->setData('Name', $oModule->getField('name'));
         $this->setData('Type', $oModule->getField('type'));
         $this->setData('Error', $oModule->getField('error'));
-        $this->setData('Description', $oModule->getField('description'));
+        $this->setData('Description', $oModule->getField('description') ?? '');
         $this->setData('Deletable', $oModule->getField('deletable'));
         $this->setData('Template', $oModule->getField('template'));
         $this->setData('Static', $oModule->getField('static'));
@@ -94,7 +107,8 @@ class cVersionModule extends cVersion {
      * @return array
      *         returns array width this four nodes
      */
-    public function initXmlReader($sPath) {
+    public function initXmlReader($sPath)
+    {
         $aResult = [];
         if ($sPath != '') {
             // Output this xml file
@@ -128,9 +142,10 @@ class cVersionModule extends cVersion {
      * @return string
      *         Javascript for refreshing left_bottom frame
      */
-    public function renderReloadScript($sArea, $iIdModule, cSession $sess) {
+    public function renderReloadScript($sArea, $iIdModule, cSession $sess)
+    {
         $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&idmod=$iIdModule");
-        $sReloadScript = <<<JS
+        return <<<JS
 <script type="text/javascript">
 (function(Con, $) {
     var frame = Con.getFrame('left_bottom');
@@ -140,7 +155,6 @@ class cVersionModule extends cVersion {
 })(Con, Con.$);
 </script>
 JS;
-        return $sReloadScript;
     }
 
 }

@@ -3,13 +3,13 @@
 /**
  * This file contains the cHTMLTextarea class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLTextarea class represents a textarea.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLTextarea extends cHTMLFormElement {
+class cHTMLTextarea extends cHTMLFormElement
+{
 
     protected $_value;
 
@@ -51,7 +52,10 @@ class cHTMLTextarea extends cHTMLFormElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $initvalue = '', $width = '', $height = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = '') {
+    public function __construct(
+        $name, $initvalue = '', $width = '', $height = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = ''
+    )
+    {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'textarea';
         $this->setValue($initvalue);
@@ -68,7 +72,8 @@ class cHTMLTextarea extends cHTMLFormElement {
      * @return cHTMLTextarea
      *         $this for chaining
      */
-    public function setWidth($width) {
+    public function setWidth($width): cHTMLTextarea
+    {
         $width = intval($width);
 
         if ($width <= 0) {
@@ -81,12 +86,13 @@ class cHTMLTextarea extends cHTMLFormElement {
     /**
      * Sets the maximum input length of the text box.
      *
-     * @param int $maxlen
+     * @param int $height
      *         maximum input length
      * @return cHTMLTextarea
      *         $this for chaining
      */
-    public function setHeight($height) {
+    public function setHeight($height): cHTMLTextarea
+    {
         $height = intval($height);
 
         if ($height <= 0) {
@@ -104,7 +110,8 @@ class cHTMLTextarea extends cHTMLFormElement {
      * @return cHTMLTextarea
      *         $this for chaining
      */
-    public function setValue($value) {
+    public function setValue($value): cHTMLTextarea
+    {
         $this->_value = $value;
 
         return $this;
@@ -116,7 +123,8 @@ class cHTMLTextarea extends cHTMLFormElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         $this->_setContent($this->_value);
 
         return parent::toHtml();

@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains various note classes.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,16 +18,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class uses the communication collection to serve a special collection
  * for notes.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method NoteItem createNewItem
+ * @method cApiCommunication|bool next
  */
-class NoteCollection extends cApiCommunicationCollection {
+class NoteCollection extends cApiCommunicationCollection
+{
+
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->_setItemClass('NoteItem');
     }
@@ -37,23 +43,24 @@ class NoteCollection extends cApiCommunicationCollection {
      * This function only extends the where statement. See the
      * original function for the parameters.
      *
-     * @see ItemCollection::select()
-     *
-     * @param string $where    [optional]
+     * @param string $where [optional]
      *                         Specifies the where clause.
      * @param string $group_by [optional]
      *                         Specifies the group by clause.
      * @param string $order_by [optional]
      *                         Specifies the order by clause.
-     * @param string $limit    [optional]
+     * @param string $limit [optional]
      *                         Specifies the limit by clause.
      *
      * @return bool
      *         True on success, otherwise false
      *
      * @throws cDbException
+     * @see ItemCollection::select()
+     *
      */
-    public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
+    public function select($where = '', $group_by = '', $order_by = '', $limit = '')
+    {
         if ($where == '') {
             $where = "comtype='note'";
         } else {
@@ -68,22 +75,24 @@ class NoteCollection extends cApiCommunicationCollection {
      *
      * @param string $itemtype
      *                         Item type (usually the class name)
-     * @param mixed  $itemid
+     * @param mixed $itemid
      *                         Item ID (usually the primary key)
-     * @param int    $idlang
+     * @param int $idlang
      *                         Language-ID
      * @param string $message
      *                         Message to store
      * @param string $category [optional]
      *
-     * @return object
+     * @return NoteItem
      *                         The new item
      *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function createItem($itemtype, $itemid, $idlang, $message, $category = '') {
+    public function createItem($itemtype, $itemid, $idlang, $message, $category = ''): NoteItem
+    {
+        /** @var NoteItem $item */
         $item = parent::create();
 
         $item->set('subject', 'Note Item');
@@ -106,27 +115,30 @@ class NoteCollection extends cApiCommunicationCollection {
 /**
  * This class uses the communication item to serve a special item for notes.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
-class NoteItem extends cApiCommunication {
+class NoteItem extends cApiCommunication
+{
 }
 
 /**
  * This class uses the iframe GUI class to serve a special iframe for notes.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
-class NoteView extends cHTMLIFrame {
+class NoteView extends cHTMLIFrame
+{
 
     /**
      *
      * @param string $sItemType
      * @param string $sItemId
      */
-    public function __construct($sItemType, $sItemId) {
-        global $sess;
+    public function __construct($sItemType, $sItemId)
+    {
+        $sess = cRegistry::getSession();
         parent::__construct();
         $this->setSrc($sess->url("main.php?itemtype=$sItemType&itemid=$sItemId&area=note&frame=2"));
         $this->setBorder(0);
@@ -136,10 +148,12 @@ class NoteView extends cHTMLIFrame {
 /**
  * This class uses the div GUI class to serve a special div for note lists.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
-class NoteList extends cHTMLDiv {
+class NoteList extends cHTMLDiv
+{
+
     /**
      * @var bool
      */
@@ -161,7 +175,8 @@ class NoteList extends cHTMLDiv {
      * @param string $sItemType
      * @param string $sItemId
      */
-    public function __construct($sItemType, $sItemId) {
+    public function __construct($sItemType, $sItemId)
+    {
         parent::__construct();
 
         $this->_sItemType = $sItemType;
@@ -174,31 +189,33 @@ class NoteList extends cHTMLDiv {
      *
      * @param bool $bDeleteable
      */
-    public function setDeleteable($bDeleteable) {
+    public function setDeleteable($bDeleteable)
+    {
         $this->_bDeleteable = $bDeleteable;
     }
 
     /**
      * (non-PHPdoc)
      *
-     * @see cHTML::toHtml()
-     *
      * @return string
      *     generated markup
      *
      * @throws cDbException
      * @throws cException
+     * @see cHTML::toHtml()
+     *
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         global $lang;
 
         $sItemType = $this->_sItemType;
         $sItemId = $this->_sItemId;
 
         $oPropertyCollection = new cApiPropertyCollection();
-        $oPropertyCollection->select("itemtype = 'idcommunication' AND type = 'note' AND name = 'idlang' AND value = " . (int) $lang);
+        $oPropertyCollection->select("itemtype = 'idcommunication' AND type = 'note' AND name = 'idlang' AND value = " . (int)$lang);
 
-        $items = array();
+        $items = [];
 
         while ($oProperty = $oPropertyCollection->next()) {
             $items[] = $oProperty->get('itemid');
@@ -212,7 +229,7 @@ class NoteList extends cHTMLDiv {
 
         $oNoteItems->select('idcommunication IN (' . implode(', ', $items) . ')', '', 'created DESC');
 
-        $i = array();
+        $i = [];
         $dark = false;
         while ($oNoteItem = $oNoteItems->next()) {
             if ($oNoteItem->getProperty('note', 'itemtype') == $sItemType && $oNoteItem->getProperty('note', 'itemid') == $sItemId) {
@@ -238,10 +255,46 @@ class NoteList extends cHTMLDiv {
 /**
  * This class uses the div GUI class to serve a special div for note list items.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
-class NoteListItem extends cHTMLDiv {
+class NoteListItem extends cHTMLDiv
+{
+
+    /**
+     * @var int
+     */
+    private $_iDeleteItem;
+
+    /**
+     * @var string
+     */
+    private $_sItemType;
+
+    /**
+     * @var string
+     */
+    private $_sItemId;
+
+    /**
+     * @var bool
+     */
+    private $_bDeleteable;
+
+    /**
+     * @var bool|string
+     */
+    private $_sAuthor;
+
+    /**
+     * @var false|string
+     */
+    private $_sDate;
+
+    /**
+     * @var string
+     */
+    private $_sMessage;
 
     /**
      * Constructor to create an instance of this class.
@@ -250,7 +303,8 @@ class NoteListItem extends cHTMLDiv {
      * @param string $sItemId
      * @param int $iDeleteItem
      */
-    public function __construct($sItemType, $sItemId, $iDeleteItem) {
+    public function __construct($sItemType, $sItemId, $iDeleteItem)
+    {
         parent::__construct();
         $this->appendStyleDefinition('padding', '2px');
         $this->setBackground();
@@ -265,7 +319,8 @@ class NoteListItem extends cHTMLDiv {
      *
      * @param bool $bDeleteable
      */
-    public function setDeleteable($bDeleteable) {
+    public function setDeleteable($bDeleteable)
+    {
         $this->_bDeleteable = $bDeleteable;
     }
 
@@ -273,14 +328,16 @@ class NoteListItem extends cHTMLDiv {
      *
      * @param bool $dark [optional]
      */
-    public function setBackground($dark = false) {
+    public function setBackground($dark = false)
+    {
     }
 
     /**
      *
      * @param string $sAuthor
      */
-    public function setAuthor($sAuthor) {
+    public function setAuthor($sAuthor)
+    {
         if (cString::getStringLength($sAuthor) == 32) {
             $result = getGroupOrUserName($sAuthor);
 
@@ -296,7 +353,8 @@ class NoteListItem extends cHTMLDiv {
      *
      * @param string|int $iDate
      */
-    public function setDate($iDate) {
+    public function setDate($iDate)
+    {
         $dateformat = getEffectiveSetting('dateformat', 'full', 'Y-m-d H:i:s');
 
         if (cSecurity::isString($iDate)) {
@@ -309,33 +367,35 @@ class NoteListItem extends cHTMLDiv {
      *
      * @param string $sMessage
      */
-    public function setMessage($sMessage) {
+    public function setMessage($sMessage)
+    {
         $this->_sMessage = $sMessage;
     }
 
     /**
      *
-     * @see cHTML::render()
      * @return string
      *         Generated markup
+     * @see cHTML::render()
      */
-    public function render() {
-        global $sess;
+    public function render(): string
+    {
+        $sess = cRegistry::getSession();
         $itemtype = $this->_sItemType;
         $itemid = $this->_sItemId;
         $deleteitem = $this->_iDeleteItem;
 
         $table = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td><b>';
         $table .= $this->_sAuthor;
-        $table .= '</b></td><td align="right">';
+        $table .= '</b></td><td class="text_right">';
         $table .= $this->_sDate;
 
         if ($this->_bDeleteable == true) {
             $oDeleteable = new cHTMLLink();
-            $oDeleteable->setClass("vAlignMiddle tableElement");
+            $oDeleteable->setClass("con_img_button mgl3");
             $oDeletePic = new cHTMLImage(cRegistry::getBackendUrl() . '/images/delete.gif');
             $oDeleteable->setContent($oDeletePic);
-            $oDeleteable->setLink($sess->url("main.php?frame=2&area=note&itemtype=$itemtype&itemid=$itemid&action=note_delete&deleteitem=$deleteitem"));
+            $oDeleteable->setLink($sess->url("main.php?frame=2&area=note&itemtype=$itemtype&itemid=$itemid&action=con&deleteitem=$deleteitem"));
 
             $table .= '</td><td width="1">' . $oDeleteable->render();
         }
@@ -345,10 +405,7 @@ class NoteListItem extends cHTMLDiv {
         $oMessage->setContent($this->_sMessage);
         $oMessage->setStyle("padding-bottom: 8px; margin-top: 4px;");
 
-        $this->setContent(array(
-            $table,
-            $oMessage
-        ));
+        $this->setContent([$table, $oMessage]);
 
         return parent::render();
     }
@@ -357,10 +414,11 @@ class NoteListItem extends cHTMLDiv {
 /**
  * This class uses the link GUI class to serve a special link for notes.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
-class NoteLink extends cHTMLLink {
+class NoteLink extends cHTMLLink
+{
 
     /**
      *
@@ -397,7 +455,8 @@ class NoteLink extends cHTMLLink {
      * @param mixed $sItemID
      *         Item ID (usually the primary key)
      */
-    public function __construct($sItemType, $sItemID) {
+    public function __construct($sItemType, $sItemID)
+    {
         parent::__construct();
 
         $img = new cHTMLImage('images/note.gif');
@@ -417,39 +476,43 @@ class NoteLink extends cHTMLLink {
     /**
      * Enables the display of all note items
      */
-    public function enableHistory() {
+    public function enableHistory()
+    {
         $this->_bShowHistory = true;
     }
 
     /**
      * Disables the display of all note items
      */
-    public function disableHistory() {
+    public function disableHistory()
+    {
         $this->_bShowHistory = false;
     }
 
     /**
      * Enables the delete function in the history view
      */
-    public function enableHistoryDelete() {
+    public function enableHistoryDelete()
+    {
         $this->_bDeleteHistoryItems = true;
     }
 
     /**
      * Disables the delete function in the history view
      */
-    public function disableHistoryDelete() {
+    public function disableHistoryDelete()
+    {
         $this->_bDeleteHistoryItems = false;
     }
 
     /**
-     * @see cHTML::render()
      * @return string
      *         Generated markup
+     * @see cHTML::render()
      */
-    public function render() {
-        global $sess;
-
+    public function render(): string
+    {
+        $sess = cRegistry::getSession();
         $itemtype = $this->_sItemType;
         $itemid = $this->_sItemID;
 

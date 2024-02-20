@@ -19,7 +19,11 @@
 ./includes/include.recipients_import.php
 ./includes/include.recipients_menu.php
 ./plugin.xml
+./templates/standard/template.newsletter_jobs_menu.html
 ./templates/standard/template.newsletter_left_top.html
+./templates/standard/template.newsletter_menu.html
+./templates/standard/template.recipients.group_menu.html
+./templates/standard/template.recipients_menu.html
 ./xml/lang_de_DE.xml
 ./xml/lang_en_US.xml
 ./xml/lang_fr_FR.xml

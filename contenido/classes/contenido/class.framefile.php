@@ -3,13 +3,13 @@
 /**
  * This file contains the frame file and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Frame file collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiFrameFile createNewItem
+ * @method cApiFrameFile|bool next
  */
-class cApiFrameFileCollection extends ItemCollection {
+class cApiFrameFileCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['framefiles'], 'idframefile');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('framefiles'), 'idframefile');
         $this->_setItemClass('cApiFrameFile');
 
         // set the join partners so that joins can be used via link() method
@@ -40,16 +43,17 @@ class cApiFrameFileCollection extends ItemCollection {
      * Creates a frame file item
      *
      * @param string $area
-     * @param int    $idframe
-     * @param int    $idfile
+     * @param int $idframe
+     * @param int $idfile
      *
      * @return cApiFrameFile
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($area, $idframe, $idfile) {
+    public function create($area, $idframe, $idfile)
+    {
         $item = $this->createNewItem();
 
         if (is_string($area)) {
@@ -77,10 +81,11 @@ class cApiFrameFileCollection extends ItemCollection {
 /**
  * Frame file item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiFrameFile extends Item {
+class cApiFrameFile extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -90,21 +95,17 @@ class cApiFrameFile extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['framefiles'], 'idframefile');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('framefiles'), 'idframefile');
+        $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Userdefined setter for framefile fields.
+     * User-defined setter for framefile fields.
      *
      * @param string $name
      * @param mixed $value
@@ -112,16 +113,13 @@ class cApiFrameFile extends Item {
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
-            case 'idarea':
-                $value = (int) $value;
-                break;
             case 'idfile':
-                $value = (int) $value;
-                break;
             case 'idframe':
-                $value = (int) $value;
+            case 'idarea':
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

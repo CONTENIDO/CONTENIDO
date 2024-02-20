@@ -1,4 +1,4 @@
-<table cellpadding="0" cellspacing="0" border="0" class="setupBodyOuterTable setupBodyOuterTableSetupResults">
+<table class="setupBodyOuterTable setupBodyOuterTableSetupResults">
     <tr class="row-1">
         <td colspan="2">
             <h1>{TITLE}</h1>
@@ -7,16 +7,16 @@
         </td>
     </tr>
     <tr class="row-2">
-        <td style="padding-right: 20px;" width="30%" valign="top">
+        <td class="align_top" style="padding-right: 20px;" width="30%">
             <br>
             {FINISHTEXT}
             <br>
         </td>
-        <td width="30%" valign="top">
+        <td class="align_top" width="30%">
             <br>
             {CHOOSENEXTSTEP}
         </td>
-        <td style="padding-left: 20px;" width="30%" valign="top">
+        <td class="align_top" style="padding-left: 20px;" width="30%">
             <br>
             {BACKEND}{FRONTEND}{WEBSITE}{FORUM}{FAQ}
         </td>

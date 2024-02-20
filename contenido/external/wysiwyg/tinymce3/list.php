@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Project:
  * CONTENIDO Content Management System
@@ -16,9 +17,9 @@
  * @version    0.0.5
  * @author     Martin Horwath <horwath@dayside.net>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  *
  *
  * {@internal
@@ -53,9 +54,9 @@ switch ($_REQUEST['mode']) {
         $sql = "SELECT
                     *
                 FROM
-                    ".$cfg["tab"]["cat_tree"]." AS a,
-                    ".$cfg["tab"]["cat_lang"]." AS b,
-                    ".$cfg["tab"]["cat"]." AS c
+                    ".$cfg['tab']['cat_tree']." AS a,
+                    ".$cfg['tab']['cat_lang']." AS b,
+                    ".$cfg['tab']['cat']." AS c
                 WHERE
                     a.idcat = b.idcat AND
                     c.idcat = a.idcat AND
@@ -91,9 +92,9 @@ switch ($_REQUEST['mode']) {
             $sql2 = "SELECT
                          *
                      FROM
-                         ".$cfg["tab"]["cat_art"]." AS a,
-                        ".$cfg["tab"]["art"]." AS b,
-                        ".$cfg["tab"]["art_lang"]." AS c
+                         ".$cfg['tab']['cat_art']." AS a,
+                        ".$cfg['tab']['art']." AS b,
+                        ".$cfg['tab']['art_lang']." AS c
                      WHERE
                         a.idcat = '".$db->f("idcat")."' AND
                         b.idart = a.idart AND
@@ -130,7 +131,7 @@ switch ($_REQUEST['mode']) {
         break;
 
     case 'image':
-        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('gif', 'jpg', 'jpeg', 'png') ORDER BY dirname, filename ASC";
+        $sql = "SELECT * FROM ".$cfg['tab']['upl']." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('gif', 'jpg', 'jpeg', 'png') ORDER BY dirname, filename ASC";
         $db->query($sql);
 
         $output .= "var tinyMCEImageList = new Array(";
@@ -151,7 +152,7 @@ switch ($_REQUEST['mode']) {
         break;
 
     case 'media':
-        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('swf','dcr','mov','qt','mpg','mpg3','mpg4','mpeg','avi','wmv','wm','asf','asx','wmx','wvx','rm','ra','ram') ORDER BY dirname, filename ASC";
+        $sql = "SELECT * FROM ".$cfg['tab']['upl']." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('swf','dcr','mov','qt','mpg','mpg3','mpg4','mpeg','avi','wmv','wm','asf','asx','wmx','wvx','rm','ra','ram') ORDER BY dirname, filename ASC";
         $db->query($sql);
 
         $output .= "var tinyMCEMediaList = new Array(";

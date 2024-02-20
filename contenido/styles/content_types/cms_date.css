@@ -1,17 +1,39 @@
+.cms_date {
+    margin-bottom: 5px;
+}
+
 .cms_date .date_timestamp {
     border: 1px dashed #CCC;
     display: block;
     width: 200px;
+    margin-bottom: 3px;
 }
 
 .cms_date .ui-datepicker-trigger {
     cursor: pointer;
-    margin: 2px 2px 0;
-    z-index: 10000;	
+    z-index: 10000;
+    vertical-align: middle;;
+}
+
+/* Reset image z-index when WYSIWYG editor is in fullscreen mode or a parent has the overlay class */
+.mce-fullscreen .cms_date .ui-datepicker,
+.cms_has_overlay .cms_date .ui-datepicker {
+    z-index: auto !important;
+}
+
+.cms_date .con_select,
+.cms_date .con_img_button {
+    margin-right: 5px;
+    vertical-align: middle;;
 }
 
 .cms_date .ui-datepicker {
     z-index: 2147483647 !important;
+}
+
+/* Hide date picker when WYSIWYG editor is in fullscreen mode */
+.mce-fullscreen .cms_date .ui-datepicker {
+    display: none;
 }
 
 .ui-datepicker .ui-datepicker-prev span,

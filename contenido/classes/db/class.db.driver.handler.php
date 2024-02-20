@@ -7,9 +7,9 @@
  * @subpackage Database
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Database
  */
-abstract class cDbDriverHandler {
+abstract class cDbDriverHandler
+{
 
     /**
      *
@@ -61,7 +62,7 @@ abstract class cDbDriverHandler {
     /**
      * Loader database driver.
      *
-     * @var cDbDriverAbstract
+     * @var cDbDriverAbstract|NULL
      */
     protected $_driver = NULL;
 
@@ -80,13 +81,13 @@ abstract class cDbDriverHandler {
     protected static $_defaultDbCfg = [];
 
     /**
-     * Assoziative list of database connections
+     * Associative list of database connections
      * @var array
      */
     protected static $_connectionCache = [];
 
     /**
-     * Assoziative list of database tables metadata
+     * Associative list of database tables metadata
      * @var array
      */
     protected static $_metaCache = [];
@@ -117,6 +118,13 @@ abstract class cDbDriverHandler {
     protected $_haltMsgPrefix = '';
 
     /**
+     * Database connection link id.
+     *
+     * @var int|null|object|resource
+     */
+    protected $_linkId = NULL;
+
+    /**
      * Profile data array
      *
      * @var array
@@ -134,7 +142,7 @@ abstract class cDbDriverHandler {
      * @param array $options [optional]
      *         Associative options as follows:
      *         - $options['haltBehavior'] (string) Optional, halt behavior on
-     *             occured errors
+     *             occurred errors
      *         - $options['haltMsgPrefix'] (string) Optional, Text to prepend to
      *             the halt message
      *         - $options['enableProfiling'] (bool) Optional, flag to enable
@@ -147,12 +155,12 @@ abstract class cDbDriverHandler {
      *         - $options['connection']['password'] (string) User password
      * @throws cDbException
      */
-    public function __construct($options = []) {
-        // use default connection configuration, but overwrite it by passed
-        // options
+    public function __construct($options = [])
+    {
+        // use default connection configuration, but overwrite it by passed options
         $this->_dbCfg = array_merge(self::$_defaultDbCfg, $options);
 
-            // in case we do not have any configuration for database, try to load it from configuration
+        // in case we do not have any configuration for database, try to load it from configuration
         if (count($this->_dbCfg) == 0) {
             $cfg = cRegistry::getConfig();
             if (isset($cfg['db']) && count($cfg['db']) > 0) {
@@ -162,19 +170,7 @@ abstract class cDbDriverHandler {
             }
         }
 
-        if (isset($this->_dbCfg['haltBehavior'])) {
-            switch ($this->_dbCfg['haltBehavior']) {
-                case self::HALT_YES:
-                    $this->_haltBehaviour = self::HALT_YES;
-                    break;
-                case self::HALT_NO:
-                    $this->_haltBehaviour = self::HALT_NO;
-                    break;
-                case self::HALT_REPORT:
-                    $this->_haltBehaviour = self::HALT_REPORT;
-                    break;
-            }
-        }
+        $this->_setHaltBehaviour($this->_dbCfg['haltBehavior'] ?? '');
 
         if (isset($this->_dbCfg['haltMsgPrefix']) && is_string($this->_dbCfg['haltMsgPrefix'])) {
             $this->_haltMsgPrefix = $this->_dbCfg['haltMsgPrefix'];
@@ -197,13 +193,98 @@ abstract class cDbDriverHandler {
         }
     }
 
+    #region ABSTRACT
+
+    /**
+     * Returns error code of last occurred error from database.
+     *
+     * @return int
+     *         database error code
+     */
+    abstract public function getErrorNumber();
+
+    /**
+     * Sets the current error number from database.
+     *
+     * @param int $errorNumber
+     *         current error number
+     */
+    abstract public function setErrorNumber($errorNumber);
+
+    /**
+     * Returns error message of last occurred error from database.
+     *
+     * @return string
+     *         database error message
+     */
+    abstract public function getErrorMessage();
+
+    /**
+     * Sets the current error message from database.
+     *
+     * @param string $errorMessage
+     *         current error message
+     */
+    abstract public function setErrorMessage($errorMessage);
+
+    /**
+     * Returns the query ID resource.
+     *
+     * @return NULL|resource
+     */
+    abstract public function getQueryId();
+
+    /**
+     * Sets the query ID resource.
+     * Do not set it manually unless you know what you are doing.
+     *
+     * @param NULL|resource $queryId
+     *         query ID resource
+     */
+    abstract public function setQueryId($queryId);
+
+    /**
+     * Returns the link ID resource.
+     *
+     * @return NULL|resource
+     */
+    abstract public function getLinkId();
+
+    /**
+     * Sets the link ID resource.
+     * Do not set it manually unless you know what you are doing.
+     *
+     * @param NULL|resource $linkId
+     *         link ID resource
+     */
+    abstract public function setLinkId($linkId);
+
+    /**
+     * Returns the current record data.
+     *
+     * @return array|false|NULL
+     */
+    abstract public function getRecord();
+
+    /**
+     * Sets the current record data set.
+     * Do not set it manually unless you know what you are doing.
+     *
+     * @param array|false|NULL $record
+     *         current record set data
+     */
+    abstract public function setRecord($record);
+
+    #endregion ABSTRACT
+
     /**
      * Checks if profiling was enabled via configuration.
      *
      * @return bool
      */
-    public function isProfilingEnabled() {
-        return isset($this->_dbCfg['enableProfiling']) ? (bool) $this->_dbCfg['enableProfiling'] : false;
+    public function isProfilingEnabled()
+    {
+        return cSecurity::toBoolean($this->_dbCfg['enableProfiling'] ?? '0');
     }
 
     /**
@@ -211,7 +292,8 @@ abstract class cDbDriverHandler {
      *
      * @return string
      */
-    public function getHaltBehaviour() {
+    public function getHaltBehaviour()
+    {
         return $this->_haltBehaviour;
     }
 
@@ -220,13 +302,15 @@ abstract class cDbDriverHandler {
      *
      * @throws cDbException
      */
-    public function loadDriver() {
+    public function loadDriver()
+    {
         if ($this->_driver != NULL) {
             return;
         }
 
         $classNameSuffix = ucfirst($this->_driverType);
 
+        // Driver name, e.g. cDbDriverMysql, cDbDriverMysqli
         $driverName = 'cDbDriver' . $classNameSuffix;
 
         if (class_exists($driverName) === false) {
@@ -252,7 +336,8 @@ abstract class cDbDriverHandler {
      *
      * @return cDbDriverAbstract
      */
-    public function getDriver() {
+    public function getDriver()
+    {
         return $this->_driver;
     }
 
@@ -261,7 +346,8 @@ abstract class cDbDriverHandler {
      *
      * @param array $defaultDbCfg
      */
-    public static function setDefaultConfiguration(array $defaultDbCfg) {
+    public static function setDefaultConfiguration(array $defaultDbCfg)
+    {
         self::$_defaultDbCfg = $defaultDbCfg;
     }
 
@@ -273,10 +359,11 @@ abstract class cDbDriverHandler {
      * @return mixed
      *         Either The connection (object, resource, integer) or NULL
      */
-    protected function _getConnection($data) {
+    protected function _getConnection($data)
+    {
         $hash = md5($this->_driverType . '-' . (is_array($data) ? json_encode($data) : (string)$data));
 
-        return (isset(self::$_connectionCache[$hash])) ? self::$_connectionCache[$hash] : NULL;
+        return self::$_connectionCache[$hash] ?? NULL;
     }
 
     /**
@@ -287,7 +374,8 @@ abstract class cDbDriverHandler {
      * @param mixed $connection
      *         The connection to store in cache
      */
-    protected function _setConnection($data, $connection) {
+    protected function _setConnection($data, $connection)
+    {
         $hash = md5($this->_driverType . '-' . (is_array($data) ? json_encode($data) : (string)$data));
         self::$_connectionCache[$hash] = $connection;
     }
@@ -298,7 +386,8 @@ abstract class cDbDriverHandler {
      * @param mixed $connection
      *         The connection to remove in cache
      */
-    protected function _removeConnection($connection) {
+    protected function _removeConnection($connection)
+    {
         foreach (self::$_connectionCache as $hash => $res) {
             if ($res == $connection) {
                 unset(self::$_connectionCache[$hash]);
@@ -311,13 +400,15 @@ abstract class cDbDriverHandler {
     /**
      * Adds a entry to the profile data.
      *
-     * @param float  $timeStart
-     * @param float  $timeEnd
+     * @param float $timeStart
+     * @param float $timeEnd
      * @param string $statement
      */
-    protected static function _addProfileData($timeStart, $timeEnd, $statement) {
+    protected static function _addProfileData($timeStart, $timeEnd, $statement)
+    {
         self::$_profileData[] = [
-            'time' => $timeEnd - $timeStart, 'query' => $statement
+            'time' => $timeEnd - $timeStart,
+            'query' => $statement
         ];
     }
 
@@ -329,7 +420,8 @@ abstract class cDbDriverHandler {
      *         - $arr[$i]['time'] (float) Elapsed time to execute the query
      *         - $arr[$i]['query'] (string) The query itself
      */
-    public static function getProfileData() {
+    public static function getProfileData()
+    {
         return self::$_profileData;
     }
 
@@ -370,7 +462,8 @@ abstract class cDbDriverHandler {
      * @throws cDbException
      *         If statement is empty or function is called with less than 2 parameters
      */
-    public function prepare($statement) {
+    public function prepare($statement, ...$params)
+    {
         // No empty queries
         if (empty($statement)) {
             throw new cDbException('Empty statement!');
@@ -382,20 +475,20 @@ abstract class cDbDriverHandler {
         }
 
         array_shift($arguments);
-        $statement = $this->_prepareStatement($statement, $arguments);
 
-        return $statement;
+        return $this->_prepareStatement($statement, $arguments);
     }
 
     /**
      * Prepares the passed statement.
      *
      * @param string $statement
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return string
      */
-    protected function _prepareStatement($statement, array $arguments) {
+    protected function _prepareStatement($statement, array $arguments)
+    {
         if (count($arguments) == 1 && is_array($arguments[0])) {
             $arguments = $arguments[0];
             if (count(array_filter(array_keys($arguments), 'is_string')) > 0) {
@@ -422,13 +515,14 @@ abstract class cDbDriverHandler {
      * </pre>
      *
      * @param string $statement
-     * @param array  $arguments
+     * @param array $arguments
      *         Arguments array containing the query with formatting signs and
      *         the entries.
      *
      * @return string
      */
-    protected function _prepareStatementF($statement, array $arguments) {
+    protected function _prepareStatementF($statement, array $arguments)
+    {
         if (count($arguments) > 0) {
             $arguments = array_map([
                 $this, 'escape'
@@ -456,19 +550,20 @@ abstract class cDbDriverHandler {
      * </pre>
      *
      * @param string $statement
-     * @param array  $arguments
+     * @param array $arguments
      *         Arguments array containing the query with named parameter and
      *         associative entries array
      *
      * @return string
      */
-    protected function _prepareStatementA($statement, array $arguments) {
+    protected function _prepareStatementA($statement, array $arguments)
+    {
         if (count($arguments) > 0) {
             foreach ($arguments as $key => $value) {
                 $param = ':' . $key;
                 if (cSecurity::isInteger($value)) {
-                    $statement = preg_replace('/' . $param . '/', cSecurity::toInteger($value), $statement);
-                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toInteger($value) . '\'', $statement);
+                    $statement = preg_replace('/' . $param . '/', cSecurity::toString($value), $statement);
+                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toString($value) . '\'', $statement);
                 } else {
                     $param = cSecurity::toString($param);
                     $statement = preg_replace('/' . $param . '/', cSecurity::escapeString($value), $statement);
@@ -482,12 +577,35 @@ abstract class cDbDriverHandler {
     }
 
     /**
+     * Sets the halt behaviour.
+     *
+     * @param string $haltBehaviour
+     * @return void
+     */
+    protected function _setHaltBehaviour($haltBehaviour)
+    {
+        switch ($haltBehaviour) {
+            case self::HALT_YES:
+                $this->_haltBehaviour = self::HALT_YES;
+                break;
+            case self::HALT_REPORT:
+                $this->_haltBehaviour = self::HALT_REPORT;
+                break;
+            case self::HALT_NO:
+            default:
+                $this->_haltBehaviour = self::HALT_NO;
+                break;
+        }
+    }
+
+    /**
      * Establishes a connection to the database server.
      *
      * @return object|resource|int|NULL
      *         value depends on used driver and is NULL in case of an error.
      */
-    public function connect() {
+    public function connect()
+    {
         if (isset($this->_dbCfg['connection']) && $this->_linkId = $this->_getConnection($this->_dbCfg['connection'])) {
             return $this->_linkId;
         } else {
@@ -502,9 +620,8 @@ abstract class cDbDriverHandler {
     }
 
     /**
-     * Builds and executes a insert query.
-     * String values in passed aFields
-     * parameter will be escaped automatically.
+     * Builds and executes an insert query.
+     * String values in passed fields parameter will be escaped automatically.
      *
      * Example:
      * <pre>
@@ -520,13 +637,14 @@ abstract class cDbDriverHandler {
      *
      * @param string $tableName
      *         The table name
-     * @param array  $fields
-     *         Assoziative array of fields to insert
+     * @param array $fields
+     *         Associative array of fields to insert
      *
      * @return bool
      * @throws cDbException
      */
-    public function insert($tableName, array $fields) {
+    public function insert($tableName, array $fields)
+    {
         $statement = $this->buildInsert($tableName, $fields);
 
         return $this->query($statement);
@@ -534,8 +652,7 @@ abstract class cDbDriverHandler {
 
     /**
      * Builds and returns a insert query.
-     * String values in passed fields
-     * parameter will be escaped automatically.
+     * String values in passed fields parameter will be escaped automatically.
      *
      * Example:
      * <pre>
@@ -553,19 +670,19 @@ abstract class cDbDriverHandler {
      *
      * @param string $tableName
      *         The table name
-     * @param array  $fields
+     * @param array $fields
      *         Associative array of fields to insert
      *
      * @return string
      */
-    public function buildInsert($tableName, array $fields) {
+    public function buildInsert($tableName, array $fields)
+    {
         return $this->getDriver()->buildInsert($tableName, $fields);
     }
 
     /**
      * Builds and executes a update query.
-     * String values in passed fields
-     * and whereClauses parameter will be escaped automatically.
+     * String values in passed fields and where parameter will be escaped automatically.
      *
      * Example:
      * <pre>
@@ -577,24 +694,24 @@ abstract class cDbDriverHandler {
      *
      * @param string $tableName
      *         The table name
-     * @param array  $fields
+     * @param array $fields
      *         Associative array of fields to update
-     * @param array  $whereClauses
+     * @param array $whereClauses
      *         Associative array of field in where clause.
-     *         Multiple entries will be concatenated with AND
+     *         Multiple entries will be concatenated with AND.
      * @return bool
      * @throws cDbException
      */
-    public function update($tableName, array $fields, array $whereClauses) {
+    public function update($tableName, array $fields, array $whereClauses)
+    {
         $statement = $this->buildUpdate($tableName, $fields, $whereClauses);
 
         return $this->query($statement);
     }
 
     /**
-     * Builds and returns a update query.
-     * String values in passed aFields
-     * and aWhere parameter will be escaped automatically.
+     * Builds and returns an update query.
+     * String values in passed fields and where parameter will be escaped automatically.
      *
      * Example:
      * <pre>
@@ -607,14 +724,15 @@ abstract class cDbDriverHandler {
      *
      * @param string $tableName
      *         The table name
-     * @param array  $fields
+     * @param array $fields
      *         Associative array of fields to update
-     * @param array  $whereClauses
+     * @param array $whereClauses
      *         Associative array of field in where clause.
      *         Multiple entries will be concatenated with AND
      * @return string
      */
-    public function buildUpdate($tableName, array $fields, array $whereClauses) {
+    public function buildUpdate($tableName, array $fields, array $whereClauses)
+    {
         return $this->getDriver()->buildUpdate($tableName, $fields, $whereClauses);
     }
 
@@ -662,7 +780,8 @@ abstract class cDbDriverHandler {
      *         database driver, false on error
      * @throws cDbException
      */
-    public function query($statement) {
+    public function query($statement, ...$params)
+    {
         // No empty queries, please, since PHP4 chokes on them
         if ($statement == '') {
             // The empty query string is passed on from the constructor, when
@@ -687,9 +806,7 @@ abstract class cDbDriverHandler {
             $this->free();
         }
 
-        if ($this->isProfilingEnabled() === true) {
-            $timeStart = microtime(true);
-        }
+        $timeStart = $this->isProfilingEnabled() === true ? microtime(true) : 0;
 
         $this->getDriver()->query($statement);
 
@@ -710,9 +827,10 @@ abstract class cDbDriverHandler {
      * Fetches the next record set from result set
      *
      * @return bool
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function nextRecord() {
+    public function nextRecord()
+    {
         if (!$this->getQueryId()) {
             $currentModule = cRegistry::getCurrentModuleId();
             if ($currentModule > 0) {
@@ -736,7 +854,8 @@ abstract class cDbDriverHandler {
      * @param string $className [optional]
      * @return object
      */
-    public function getResultObject($className = NULL) {
+    public function getResultObject($className = NULL)
+    {
         return $this->getDriver()->getResultObject($className);
     }
 
@@ -746,7 +865,8 @@ abstract class cDbDriverHandler {
      * @return int
      *         Number of affected rows
      */
-    public function affectedRows() {
+    public function affectedRows()
+    {
         return $this->getDriver()->affectedRows();
     }
 
@@ -756,7 +876,8 @@ abstract class cDbDriverHandler {
      * @return int
      *         The number of rows from last select query result
      */
-    public function numRows() {
+    public function numRows()
+    {
         return $this->getDriver()->numRows();
     }
 
@@ -766,7 +887,8 @@ abstract class cDbDriverHandler {
      * @return int
      *         Number of fields
      */
-    public function numFields() {
+    public function numFields()
+    {
         return $this->getDriver()->numFields();
     }
 
@@ -775,7 +897,8 @@ abstract class cDbDriverHandler {
      *
      * @return int
      */
-    public function free() {
+    public function free()
+    {
         return $this->getDriver()->free();
     }
 
@@ -787,7 +910,8 @@ abstract class cDbDriverHandler {
      * @return string
      *         Escaped string
      */
-    public function escape($string) {
+    public function escape($string)
+    {
         if (!$this->getLinkId()) {
             $this->connect();
         }
@@ -801,9 +925,10 @@ abstract class cDbDriverHandler {
      * @param int $pos
      *         The position to move to inside the current result set
      * @return int
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function seek($pos) {
+    public function seek($pos)
+    {
         $status = $this->getDriver()->seek($pos);
         if ($status == 0) {
             $this->halt("seek($pos) failed: result has " . $this->numRows() . " rows.");
@@ -817,9 +942,10 @@ abstract class cDbDriverHandler {
      *
      * @return int
      *         NULL id of table
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function getLastInsertedId() {
+    public function getLastInsertedId()
+    {
         $lastId = NULL;
 
         $this->query('SELECT LAST_INSERT_ID() as last_id');
@@ -841,7 +967,8 @@ abstract class cDbDriverHandler {
      * @return array
      *         Depends on used database and on parameter $full
      */
-    public function getMetaData($tableName = '', $full = false) {
+    public function getMetaData($tableName = '', $full = false)
+    {
         $databaseName = '';
         $key = (string)$databaseName . '_' . $tableName . '_' . (($full) ? '1' : '0');
 
@@ -862,7 +989,8 @@ abstract class cDbDriverHandler {
      *         - $info[$i]['tablespace_name']
      *         - $info[$i]['database']
      */
-    public function getTableNames() {
+    public function getTableNames()
+    {
         if (!$this->connect()) {
             return NULL;
         }
@@ -871,15 +999,29 @@ abstract class cDbDriverHandler {
     }
 
     /**
+     * Returns the data-type of a specific table field.
+     *
+     * @return string|null
+     * @since CONTENIDO 4.10.2
+     */
+    public function getTableFieldDataType(string $table, string $field)
+    {
+        if (!$this->connect()) {
+            return NULL;
+        }
+
+        return $this->getDriver()->getTableFieldDataType($table, $field);
+    }
+
+
+    /**
      * Returns information about DB server.
      * The return value depends always on used DBMS.
      *
-     * @return array|NULL
-     *         array as follows or NULL:
-     *         - $arr['description'] (string) Optional, server description
-     *         - $arr['version'] (string) Optional, server version
+     * @return array|NULL {@see cDbDriverAbstract::getServerInfo()}
      */
-    public function getServerInfo() {
+    public function getServerInfo()
+    {
         if (!$this->connect()) {
             return NULL;
         }
@@ -890,7 +1032,8 @@ abstract class cDbDriverHandler {
     /**
      * Closes the connection and frees the query id.
      */
-    public function disconnect() {
+    public function disconnect()
+    {
         $linkId = $this->getLinkId();
 
         if (is_resource($linkId)) {
@@ -898,8 +1041,8 @@ abstract class cDbDriverHandler {
             $this->_removeConnection($linkId);
         }
 
-        $this->setLinkId(0);
-        $this->setQueryId(0);
+        $this->setLinkId(NULL);
+        $this->setQueryId(NULL);
     }
 
     /**
@@ -912,10 +1055,11 @@ abstract class cDbDriverHandler {
      * @return mixed
      *         The value of field
      */
-    public function f($name, $default = NULL) {
+    public function f($name, $default = NULL)
+    {
         $record = $this->getRecord();
 
-        return (isset($record[$name])) ? $record[$name] : $default;
+        return $record[$name] ?? $default;
     }
 
     /**
@@ -925,7 +1069,8 @@ abstract class cDbDriverHandler {
      *         One of cDbDriverHandler::FETCH_* constants
      * @return array
      */
-    public function toArray($fetchMode = self::FETCH_ASSOC) {
+    public function toArray($fetchMode = self::FETCH_ASSOC)
+    {
         switch ($fetchMode) {
             case self::FETCH_NUMERIC:
             case self::FETCH_ASSOC:
@@ -958,8 +1103,9 @@ abstract class cDbDriverHandler {
      *
      * @return stdClass
      */
-    public function toObject() {
-        return (object) $this->toArray(self::FETCH_ASSOC);
+    public function toObject()
+    {
+        return (object)$this->toArray(self::FETCH_ASSOC);
     }
 
     /**
@@ -974,9 +1120,10 @@ abstract class cDbDriverHandler {
      *
      * @param string $message
      *         The message to use for error handling
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function halt($message) {
+    public function halt($message)
+    {
         if ($this->_haltBehaviour == self::HALT_REPORT) {
             $this->reportHalt($this->_haltMsgPrefix . $message);
         }
@@ -992,8 +1139,10 @@ abstract class cDbDriverHandler {
      * method.
      *
      * @param string $message
+     * @throws cInvalidArgumentException
      */
-    public function reportHalt($message) {
+    public function reportHalt($message)
+    {
         $errorNumber = $this->getErrorNumber();
         $errorMessage = $this->getErrorMessage();
 
@@ -1010,46 +1159,38 @@ abstract class cDbDriverHandler {
     }
 
     /**
-     * Returns the number of rows from last executed select query.
-     *
-     * @see cDbDriverHandler::numRows
-     * @return int
-     *         The number of rows from last select query result
+     * @deprecated [2023-01-25] Since 4.10.2, use {@see cDbDriverHandler::numRows} instead
      */
-    public function num_rows() {
+    public function num_rows()
+    {
+        cDeprecated("The function cDbDriverHandler::num_rows() is deprecated since CONTENIDO 4.10.2, use cDbDriverHandler::numRows() instead.");
         return $this->numRows();
     }
 
     /**
-     * Returns number of affected rows from last executed query (update, delete)
-     *
-     * @see cDbDriverHandler::affectedRows
-     * @return int
-     *         Number of affected rows
+     * @deprecated [2023-01-25] Since 4.10.2, use {@see cDbDriverHandler::affectedRows} instead
      */
-    public function affected_rows() {
+    public function affected_rows()
+    {
+        cDeprecated("The function cDbDriverHandler::affected_rows() is deprecated since CONTENIDO 4.10.2, use cDbDriverHandler::affectedRows() instead.");
         return $this->affectedRows();
     }
 
     /**
-     * Returns the number of fields (columns) from current record set
-     *
-     * @see cDbDriverHandler::numFields
-     * @return int
-     *         Number of fields
+     * @deprecated [2023-01-25] Since 4.10.2, use {@see cDbDriverHandler::numFields} instead
      */
-    public function num_fields() {
+    public function num_fields()
+    {
+        cDeprecated("The function cDbDriverHandler::num_fields() is deprecated since CONTENIDO 4.10.2, use cDbDriverHandler::numFields() instead.");
         return $this->numFields();
     }
 
     /**
-     * Fetches the next record set from result set
-     *
-     * @see cDbDriverHandler::nextRecord
-     * @return bool
-     * @throws cDbException
+     * @deprecated [2023-01-25]  Since 4.10.2, use {@see cDbDriverHandler::nextRecord} instead
      */
-    public function next_record() {
+    public function next_record()
+    {
+        cDeprecated("The function cDbDriverHandler::next_record() is deprecated since CONTENIDO 4.10.2, use cDbDriverHandler::nextRecord() instead.");
         return $this->nextRecord();
     }
 }

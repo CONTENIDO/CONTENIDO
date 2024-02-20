@@ -3,13 +3,13 @@
 /**
  * This file contains the base class for content search.
  *
- * @package Core
+ * @package    Core
  * @subpackage Frontend_Search
- * @author Willi Man
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Willi Man
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,12 +20,12 @@ cInclude('includes', 'functions.encoding.php');
  * Abstract base search class.
  *
  * Provides general properties and functions for child implementations.
- *
- * @author Murat Purc <murat@purc.de>
- * @package Core
+ * @author     Murat Purc <murat@purc.de>
+ * @package    Core
  * @subpackage Frontend_Search
  */
-abstract class cSearchBaseAbstract {
+abstract class cSearchBaseAbstract
+{
 
     /**
      * CONTENIDO database object.
@@ -56,6 +56,18 @@ abstract class cSearchBaseAbstract {
     protected $client;
 
     /**
+     * Database instance.
+     *
+     * @var cDb
+     */
+    protected $db;
+
+    /**
+     * @deprecated [2023-02-13] Since 4.10.2, debug flag is no longer needed since 05/2015.
+     */
+    protected $bDebug;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * Initialises some properties.
@@ -63,14 +75,13 @@ abstract class cSearchBaseAbstract {
      * @param cDb $oDB [optional]
      *         CONTENIDO database object
      * @param bool $bDebug [optional]
-     *         Optional, flag to enable debugging (no longer needed)
+     *         Optional, flag to enable debugging (no longer needed, deprecated since 4.10.2)
      */
-    protected function __construct($oDB = NULL, $bDebug = false) {
-        global $cfg, $lang, $client;
-
-        $this->cfg = $cfg;
-        $this->lang = $lang;
-        $this->client = $client;
+    protected function __construct($oDB = NULL, $bDebug = false)
+    {
+        $this->cfg = cRegistry::getConfig();
+        $this->lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $this->client = cSecurity::toInteger(cRegistry::getClientId());
 
         $this->bDebug = $bDebug;
 
@@ -87,12 +98,13 @@ abstract class cSearchBaseAbstract {
      *
      * @param string $msg
      *         Some text
-     * @param mixed  $var
+     * @param mixed $var
      *         The variable to dump
      *
      * @throws cInvalidArgumentException
      */
-    protected function _debug($msg, $var) {
+    protected function _debug($msg, $var)
+    {
         $dump = $msg . ': ';
         if (is_array($var) || is_object($var)) {
             $dump .= print_r($var, true);
@@ -101,4 +113,5 @@ abstract class cSearchBaseAbstract {
         }
         cDebug::out($dump);
     }
+
 }

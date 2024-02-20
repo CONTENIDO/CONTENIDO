@@ -1,7 +1,7 @@
 This documentation section is outdated and partially contains not longer valid
 information. We are moving all documentation stuff to:
 
-http://docs.contenido.org
+https://contenido.atlassian.net/wiki
 
 where you can find all relevant information for your CONTENIDO installation.
 This directory soon gets deleted.
@@ -11,7 +11,7 @@ This directory soon gets deleted.
 Dieser Dokumentationsbereich ist veraltet und beinhaltet teilweise ungültige
 Informationen. Wir ziehen momentan sämtliche Dokumentationsseiten nach
 
-http://docs.contenido.org
+https://contenido.atlassian.net/wiki
 
 um, wo du künftig alle relevanten Informationen zu deiner Installation finden
 kannst. Dieses Verzeichnis wird bald entfernt.

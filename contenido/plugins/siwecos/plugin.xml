@@ -8,8 +8,8 @@
         <author>Fulai Zhang</author>
         <copyright>four for business AG</copyright>
         <mail>fulai.zhang@4fb.de</mail>
-        <website>http://www.4fb.de</website>
-        <version>1.0.0</version>
+        <website>https://www.4fb.de</website>
+        <version>2.0.0</version>
     </general>
 
     <requirements php="7.0">
@@ -32,10 +32,14 @@
         </actions>
 
         <frames>
-            <frame area="siwecos" filetype="main" name="siwecos/includes/include.left_top.php" frameId="1" />
-            <frame area="siwecos" filetype="main" name="siwecos/includes/include.left_bottom.php" frameId="2" />
-            <frame area="siwecos" filetype="main" name="siwecos/includes/include.subnav_blank.php" frameId="3" />
-            <frame area="siwecos" filetype="main" name="siwecos/includes/include.right_bottom.php" frameId="4" />
+            <frame area="siwecos" filetype="main" name="siwecos/includes/include.left_top.php"
+                   frameId="1"/>
+            <frame area="siwecos" filetype="main" name="siwecos/includes/include.left_bottom.php"
+                   frameId="2"/>
+            <frame area="siwecos" filetype="main" name="siwecos/includes/include.subnav_blank.php"
+                   frameId="3"/>
+            <frame area="siwecos" filetype="main" name="siwecos/includes/include.right_bottom.php"
+                   frameId="4"/>
         </frames>
 
         <nav_sub>

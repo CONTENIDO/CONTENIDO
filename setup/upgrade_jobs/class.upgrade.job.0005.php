@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the upgrade job 5.
  *
@@ -6,9 +7,9 @@
  * @subpackage UpgradeJob
  * @author     Murat Purc <murat@purc>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,14 +18,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Upgrade job 5.
  * Runs the upgrade job to convert old content types.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0005 extends cUpgradeJobAbstract {
+class cUpgradeJob_0005 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.0-beta1";
 
-    public function _execute() {
+    public function _execute()
+    {
         $cfg = cRegistry::getConfig();
 
         $db = $this->_oDb;
@@ -33,11 +36,10 @@ class cUpgradeJob_0005 extends cUpgradeJobAbstract {
             // map all content types to their IDs
             $types = [];
             $typeCollection = new cApiTypeCollection();
-            $typeCollection->addResultField('idtype');
-            $typeCollection->addResultField('type');
+            $typeCollection->addResultFields(['idtype', 'type']);
             $typeCollection->query();
-            while (($typeItem = $typeCollection->next()) !== false) {
-                $types[$typeItem->get('type')] = $typeItem->get('idtype');
+            foreach ($typeCollection->fetchTable(['idtype' => 'idtype', 'type' => 'type']) as $entry) {
+                $types[$entry['type']] = $entry['idtype'];
             }
 
             /* Convert the value of each CMS_DATE entry.
@@ -142,7 +144,7 @@ EOT;
              * Since CONTENIDO 4.9, CMS_IMGEDITOR saves the idupl and the description is saved
              * in the con_upl_meta table.
              */
-            $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . $cfg['tab']['content'] . '` WHERE `idtype`=' . $types['CMS_IMG'] . ' OR `idtype`=' . $types['CMS_IMGDESCR'] . ' ORDER BY `typeid` ASC';
+            $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . cRegistry::getDbTableName('content') . '` WHERE `idtype`=' . $types['CMS_IMG'] . ' OR `idtype`=' . $types['CMS_IMGDESCR'] . ' ORDER BY `typeid` ASC';
             $db->query($sql);
             $result = [];
             while ($db->nextRecord()) {
@@ -178,7 +180,7 @@ EOT;
                 $contentCollection->resetQuery();
                 $contentCollection->create($imageInfo['idartlang'], $types['CMS_IMGEDITOR'], $imageInfo['typeid'], $imageInfo['idupl'], '');
                 // save description in con_upl_meta if it does not already exist
-                $sql = 'SELECT `idlang` FROM `' . $cfg['tab']['art_lang'] . '` WHERE `idartlang`=' . $imageInfo['idartlang'];
+                $sql = 'SELECT `idlang` FROM `' . cRegistry::getDbTableName('art_lang') . '` WHERE `idartlang`=' . $imageInfo['idartlang'];
                 $db->query($sql);
                 if ($db->nextRecord()) {
                     $idlang = $db->f('idlang');
@@ -209,7 +211,7 @@ EOT;
              * New:
              * Since CONTENIDO 4.9, CMS_LINKEDITOR contains an XML structure with all information.
              */
-            $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . $cfg['tab']['content'] . '` WHERE `idtype`=' . $types['CMS_LINK'] . ' OR `idtype`=' . $types['CMS_LINKTARGET'] . ' OR `idtype`=' . $types['CMS_LINKDESCR'] . ' ORDER BY `typeid` ASC';
+            $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . cRegistry::getDbTableName('content') . '` WHERE `idtype`=' . $types['CMS_LINK'] . ' OR `idtype`=' . $types['CMS_LINKTARGET'] . ' OR `idtype`=' . $types['CMS_LINKDESCR'] . ' ORDER BY `typeid` ASC';
             $db->query($sql);
             $result = [];
             while ($db->nextRecord()) {
@@ -247,7 +249,7 @@ EOT;
 
                 $link = $type = $articleId = $fileName = '';
 
-                if ((int) $linkInfo['link'] > 0) {
+                if ((int)$linkInfo['link'] > 0) {
                     $type = 'internal';
                     $cApiCategoryArticle = new cApiCategoryArticle($linkInfo['link']);
                     $articleId = $cApiCategoryArticle->get('idart');

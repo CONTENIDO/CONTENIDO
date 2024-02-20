@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the abstract frontend logic class.
  *
@@ -6,9 +7,9 @@
  * @subpackage FrontendLogic
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -27,7 +28,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage FrontendLogic
  */
-abstract class FrontendLogic {
+abstract class FrontendLogic
+{
 
     /**
      * getFriendlyName: Returns the friendly (e.g. display) name of your
@@ -36,7 +38,8 @@ abstract class FrontendLogic {
      * @return string
      *         Name of the object
      */
-    public function getFriendlyName() {
+    public function getFriendlyName()
+    {
         return "Inherited class *must* override getFriendlyName";
     }
 
@@ -48,8 +51,9 @@ abstract class FrontendLogic {
      * @return array
      *         Array of all actions
      */
-    public function listActions() {
-        return array("Inherited class *must* override listActions");
+    public function listActions()
+    {
+        return ["Inherited class *must* override listActions"];
     }
 
     /**
@@ -60,8 +64,9 @@ abstract class FrontendLogic {
      * @return array
      *         Array of items
      */
-    public function listItems() {
-        return array("Inherited class *must* override listItems");
+    public function listItems()
+    {
+        return ["Inherited class *must* override listItems"];
     }
 
 }

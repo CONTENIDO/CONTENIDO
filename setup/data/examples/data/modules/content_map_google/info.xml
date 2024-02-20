@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>content_map_google</name><description>Google maps integration with a configurable marker</description><type></type><alias>content_map_google</alias></module>
+<module>
+    <name>content_map_google</name>
+    <description>Google maps integration with a configurable marker</description>
+    <type></type>
+    <alias>content_map_google</alias>
+</module>

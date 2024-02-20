@@ -10,9 +10,9 @@
  * @author     Timo Hummel
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  * @requires   jQuery JavaScript Framework
  */
 
@@ -204,7 +204,41 @@
 
             var self = this;
             Header.show.apply(self, [menu.getActiveSubMenu(), menu.getActiveMenu()]);
+        },
+
+        /**
+         * Registers event handler (click/change) on some header elements
+         */
+        registerEventHandler: function() {
+            $('#head_logo, #imgMyContenido, #imgInfo').click(function() {
+                Con.Header.resetHeaderMenu();
+            });
+
+            $('#head [data-action]').live('click', function() {
+                var $element = $(this),
+                    action = $element.data('action');
+
+                if (action === 'change_client') {
+                    $('#chosen_client').hide();
+                    $('#select_client').show();
+                    $element.hide();
+                } else if (action === 'show_help') {
+                    Con.Help.show($element.attr('data'));
+                }
+            });
+
+            $('#head [data-action-change]').on('change', function() {
+                var $element = $(this),
+                    action = $element.data('action-change');
+
+                if (action === 'select_client') {
+                    Con.Header.changeContenidoClient($element.val());
+                } else if (action === 'select_language') {
+                    Con.Header.changeContenidoLanguage($element.val());
+                }
+            });
         }
+
     };
 
     Con.Header = Header;
@@ -376,8 +410,12 @@
             // Now find out the related menu item on level 1 and store it
             // We need to do this for restoring highlighting of the current
             // active menu on mouseout of hover menu
-            this.setActiveMenu(this.getMenuIdBySubMenuId(curElement));
-            this.setActiveSubMenu(curElement);
+            if (typeof curElement !== "undefined") {
+                // Do the rest only if we have an element, which may not be
+                // the case during a language switch.
+                this.setActiveMenu(this.getMenuIdBySubMenuId(curElement));
+                this.setActiveSubMenu(curElement);
+            }
         }
     };
 
@@ -530,17 +568,6 @@
     });
 
     Con.HeaderDelayMenu = HeaderDelayMenu;
-
-    // Bootstrap header on document load
-    // @TODO  Move this to a separate file...
-    $(function() {
-        $('#changeclient').click(function() {
-            $('#chosenclient').hide();
-            $('#cClientSelect').show();
-            $(this).hide();
-        });
-    });
-
 
 })(Con, Con.$);
 

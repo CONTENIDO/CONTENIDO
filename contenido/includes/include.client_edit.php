@@ -3,16 +3,27 @@
 /**
  * This file contains the backend page for client management.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cPermission $perm
+ * @var cGuiNotification $notification
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $area
+ * @var int $frame
+ * @var int $errsite_cat
+ * @var int $errsite_art
+ */
 
 if (!$perm->have_perm_area_action($area)) {
     $notification->displayNotification('error', i18n('Permission denied'));
@@ -31,17 +42,21 @@ if (defined('CON_STRIPSLASHES')) {
     $request = $_REQUEST;
 }
 
-$idclient = isset($request['idclient']) ? cSecurity::toInteger($request['idclient']) : 0;
-$clientname = isset($request['clientname']) ? $request['clientname'] : '';
-$htmlpath = isset($request['htmlpath']) ? $request['htmlpath'] : '';
-$frontendpath = isset($request['frontendpath']) ? $request['frontendpath'] : '';
-$clientlogo = isset($request['clientlogo']) ? $request['clientlogo'] : '';
-$serverpath = isset($request['serverpath']) ? $request['serverpath'] : '';
+$idclient = cSecurity::toInteger($request['idclient'] ?? '0');
+$clientname = $request['clientname'] ?? '';
+$htmlpath = $request['htmlpath'] ?? '';
+$frontendpath = $request['frontendpath'] ?? '';
+$clientlogo = $request['clientlogo'] ?? '';
+$serverpath = $request['serverpath'] ?? '';
+$oldpath = $request['oldpath'] ?? '';
 $active = isset($request['active']) && $request['active'] == 1 ? $request['active'] : '0';
+$copytemplate = cSecurity::toInteger($request['copytemplate'] ?? '0');
+$action = $action ?? '';
+
 if ($action == 'client_new') {
     $new = true;
 } else {
-    $new = isset($request['new']) && $request['new'] == '1' ? true : false;
+    $new = isset($request['new']) && $request['new'] == '1';
 }
 
 if ($idclient) {
@@ -81,7 +96,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
                         url_left_bottom  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 2, targetclient: " . $idclient . "});
                         url_left_top  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 1, targetclient: " . $idclient . "});
                     Con.multiLink('right_top', url_right_top, 'right_bottom', url_right_bottom, 'left_top', url_left_top, 'left_bottom', url_left_bottom);";
-        $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="' . $sJsLink . '">', '</a>');
+        $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript:void(0)" onclick="' . $sJsLink . '">', '</a>');
         $sNewNotification = '<br>' . $sLangNotification . '<br>' . $sLangNotificationLink;
         if (cString::getPartOfString($frontendpath, cString::getStringLength($frontendpath) - 1) != '/') {
             $frontendpath .= '/';
@@ -217,7 +232,7 @@ $oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace([
     '//',
     '\\',
     '"'
-], '', ($cApiClient->isLoaded())? $cApiClient->get("name") : $clientname)), 75, 255, "clientname");
+], '', ($cApiClient->isLoaded()) ? $cApiClient->get("name") : $clientname)), 75, 255, "clientname");
 $page->set('d', 'CATFIELD', $oTxtClient->render());
 $page->set('d', 'BRDRT', 0);
 $page->set('d', 'BRDRB', 1);

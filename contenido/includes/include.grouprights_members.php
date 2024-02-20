@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for user to group assigment.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -42,8 +42,8 @@ if (!$perm->have_perm_area_action($area, $action)) {
 }
 
 if (($action == "group_deletemember") && ($perm->have_perm_area_action($area, $action))) {
-    $aDeleteMembers = array();
     if (!is_array($user_in_group)) {
+        $aDeleteMembers = [];
         if ($user_in_group > 0) {
             $aDeleteMembers[] = $user_in_group;
         }
@@ -53,7 +53,7 @@ if (($action == "group_deletemember") && ($perm->have_perm_area_action($area, $a
 
     $groupMemberColl = new cApiGroupMemberCollection();
     foreach ($aDeleteMembers as $idgroupuser) {
-        $groupMemberColl->delete((int) $idgroupuser);
+        $groupMemberColl->delete((int)$idgroupuser);
     }
 
     $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Removed member from group successfully!"));
@@ -99,7 +99,7 @@ if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $acti
     }
 }
 
-$tab1 = $cfg["tab"]["groupmembers"];
+$tab1 = $cfg['tab']['groupmembers'];
 $tab2 = $cfg['tab']['user'];
 
 $sortby = getEffectiveSetting("backend", "sort_backend_users_by", "");

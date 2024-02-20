@@ -3,20 +3,29 @@
 /**
  * This is the main AJAX file of the backend.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Olaf Niemann
- * @author           Jan Lengowski
- * @author           Ingo van Peeren
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Olaf Niemann
+ * @author     Jan Lengowski
+ * @author     Ingo van Peeren
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
+
+/**
+ * @var cPermission $perm
+ * @var cAuth $auth
+ * @var string $belang
+ * @var array $cfg
+ * @var cSession $sess
+ * @var int $idcat
+ */
 
 // CONTENIDO startup process
 include_once('./includes/startup.php');
@@ -27,11 +36,11 @@ $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
 
 cInclude('includes', 'functions.api.php');
 
-cRegistry::bootstrap(array(
+cRegistry::bootstrap([
     'sess' => 'cSession',
     'auth' => 'cAuthHandlerBackend',
     'perm' => 'cPermission'
-));
+]);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
@@ -62,10 +71,8 @@ if (isset($changelang) && is_numeric($changelang)) {
     $lang = $changelang;
 }
 
-if (!is_numeric($client)
-    || (!$perm->have_perm_client('client[' . $client . ']')
-    && !$perm->have_perm_client('admin[' . $client . ']'))) {
-
+if (!cSecurity::isPositiveInteger($client ?? 0)
+    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))) {
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
@@ -73,30 +80,15 @@ if (!is_numeric($client)
         unset($lang);
         $client = $oClient->get('idclient');
     }
-
 } else {
-
     $sess->register('client');
-
 }
 
-if (!is_numeric($lang) || $lang == '') {
+if (!cSecurity::isPositiveInteger($lang ?? 0)) {
     $sess->register('lang');
-    // search for the first language of this client
-    $db->query("
-        SELECT
-            *
-        FROM
-            " . $cfg['tab']['lang'] . " AS A
-            , " . $cfg['tab']['clients_lang'] . " AS B
-        WHERE
-            A.idlang=B.idlang
-            AND idclient=" . cSecurity::toInteger($client) . "
-        ORDER BY
-            A.idlang ASC
-        ;");
-    $db->nextRecord();
-    $lang = $db->f('idlang');
+    // Search for the first language of this client
+    $oClientLangColl = new cApiClientLanguageCollection();
+    $lang = (int)$oClientLangColl->getFirstLanguageIdByClient($client);
 } else {
     $sess->register('lang');
 }
@@ -130,8 +122,8 @@ $backend->select($area);
 
 $cfg['debug']['backend_exectime']['start'] = getmicrotime();
 
-// If $action is set -> User klicked some button/link
-// get the appopriate code for this action and evaluate it.
+// If $action is set -> User clicked some button/link
+// get the appropriate code for this action and evaluate it.
 if (isset($action) && $action != '') {
     if (!isset($idart)) {
         $idart = 0;
@@ -139,7 +131,7 @@ if (isset($action) && $action != '') {
     $backend->log($idcat, $idart, $client, $lang, $action);
 }
 
-
+// Include action file if exists
 if (isset($action)) {
     $actionCodeFile = $backendPath . 'includes/type/action/include.' . $action . '.action.php';
     if (cFileHandler::exists($actionCodeFile)) {
@@ -150,6 +142,7 @@ if (isset($action)) {
     }
 }
 
+// Include the main ajax request handler or for the selected area.
 $sFilename = '';
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
     $oAjax = new cAjaxRequest();
@@ -160,18 +153,9 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
     include_once($backendPath . $sFilename);
 }
 
+// Finalize debug of backend rendering
 if ($cfg['debug']['rendering'] == true) {
-    $cfg['debug']['backend_exectime']['end'] = getmicrotime();
-    $debugInfo = array(
-    'Building this page (excluding CONTENIDO includes) took: ' .
-        ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds',
-    'Building the complete page took: ' .
-        ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds',
-        'Include memory usage: ' . humanReadableSize(memory_get_usage() - $oldmemusage),
-    'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
-    "*****" . $sFilename . "*****"
-    );
-    cDebug::out(implode("\n", $debugInfo));
+    cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldmemusage, $sFilename));
 }
 
 // User Tracking (who is online)

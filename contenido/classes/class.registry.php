@@ -1,14 +1,15 @@
 <?php
+
 /**
- * This file contains the the registry class.
+ * This file contains the registry class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains functions for global interaction in CONTENIDO.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
  */
-class cRegistry {
+class cRegistry
+{
 
     /**
      * Container for application variables.
@@ -28,7 +30,7 @@ class cRegistry {
      *
      * @var array
      */
-    protected static $_appVars = array();
+    protected static $_appVars = [];
 
     /**
      * Container for ok messages.
@@ -36,7 +38,7 @@ class cRegistry {
      * @author frederic.schneider
      * @var array
      */
-    protected static $_okMessages = array();
+    protected static $_okMessages = [];
 
     /**
      * Container for information messages.
@@ -44,7 +46,7 @@ class cRegistry {
      * @author konstantinos.katikakis
      * @var array
      */
-    protected static $_infoMessages = array();
+    protected static $_infoMessages = [];
 
     /**
      * Container for error messages.
@@ -52,7 +54,7 @@ class cRegistry {
      * @author konstantinos.katikakis
      * @var array
      */
-    protected static $_errMessages = array();
+    protected static $_errMessages = [];
 
     /**
      * Container for warning messages.
@@ -60,30 +62,39 @@ class cRegistry {
      * @author konstantinos.katikakis
      * @var array
      */
-    protected static $_warnMessages = array();
+    protected static $_warnMessages = [];
 
     /**
      * Function which returns path after the last possible place changing via
      * configuration file.
      *
-     * @author konstantinos.katikakis
+     * @param bool $relativeToRoot
+     *         Flag to return relative path from project root
+     *         Since CONTENIDO 4.10.2
      * @return string
      *         path
+     * @author konstantinos.katikakis
      */
-    public static function getBackendPath() {
+    public static function getBackendPath(bool $relativeToRoot = false): string
+    {
         $cfg = self::getConfig();
-        return $cfg['path']['contenido'];
+        if (!$relativeToRoot) {
+            return $cfg['path']['contenido'];
+        } else {
+            return str_replace($cfg['path']['frontend'] . '/', '', $cfg['path']['contenido']);
+        }
     }
 
     /**
      * Function which returns the backend URL after the last possible place
      * changing via configuration file.
      *
-     * @author konstantinos.katikakis
      * @return string
      *         URL
+     * @author konstantinos.katikakis
      */
-    public static function getBackendUrl() {
+    public static function getBackendUrl()
+    {
         $cfg = self::getConfig();
         return $cfg['path']['contenido_fullhtml'];
     }
@@ -93,11 +104,12 @@ class cRegistry {
      * configuration file.
      * The path point to the current client
      *
-     * @author konstantinos.katikakis
      * @return string
      *         path
+     * @author konstantinos.katikakis
      */
-    public static function getFrontendPath() {
+    public static function getFrontendPath()
+    {
         $cfgClient = self::getClientConfig();
         $client = self::getClientId();
         return $cfgClient[$client]['path']['frontend'];
@@ -108,11 +120,12 @@ class cRegistry {
      * configuration file.
      * The path point to the current client
      *
-     * @author konstantinos.katikakis
      * @return string
      *         URL
+     * @author konstantinos.katikakis
      */
-    public static function getFrontendUrl() {
+    public static function getFrontendUrl()
+    {
         $cfgClient = self::getClientConfig();
         $client = self::getClientId();
         return $cfgClient[$client]['path']['htmlpath'];
@@ -124,7 +137,8 @@ class cRegistry {
      *
      * @return string
      */
-    public static function getBackendSessionId() {
+    public static function getBackendSessionId()
+    {
         return self::_fetchGlobalVariable('contenido');
     }
 
@@ -134,7 +148,8 @@ class cRegistry {
      *
      * @return string
      */
-    public static function getBackendLanguage() {
+    public static function getBackendLanguage()
+    {
         return self::_fetchGlobalVariable('belang');
     }
 
@@ -144,7 +159,8 @@ class cRegistry {
      *
      * @return bool
      */
-    public static function isBackendEditMode() {
+    public static function isBackendEditMode()
+    {
         return self::_fetchGlobalVariable('edit', false);
     }
 
@@ -153,8 +169,10 @@ class cRegistry {
      * global variable "tpl_visual").
      *
      * @return bool
+     * @since CONTENIDO 4.10.2
      */
-    public static function isBackendVisualEditMode() {
+    public static function isBackendVisualEditMode(): bool
+    {
         return self::getBackendSessionId() && self::getArea() === 'tpl_visual';
     }
 
@@ -163,7 +181,8 @@ class cRegistry {
      *
      * @return int
      */
-    public static function getLanguageId() {
+    public static function getLanguageId()
+    {
         return self::_fetchGlobalVariable('lang', self::_fetchGlobalVariable('load_lang', 0));
     }
 
@@ -174,8 +193,11 @@ class cRegistry {
      *
      * @throws cInvalidArgumentException
      */
-    public static function getLanguage() {
-        return self::_fetchItemObject('cApiLanguage', self::getLanguageId());
+    public static function getLanguage()
+    {
+        /** @var cApiLanguage $obj */
+        $obj = self::_fetchItemObject('cApiLanguage', self::getLanguageId());
+        return $obj;
     }
 
     /**
@@ -183,7 +205,8 @@ class cRegistry {
      *
      * @return int
      */
-    public static function getClientId() {
+    public static function getClientId()
+    {
         return self::_fetchGlobalVariable('client', self::_fetchGlobalVariable('load_client', 0));
     }
 
@@ -194,8 +217,11 @@ class cRegistry {
      *
      * @throws cInvalidArgumentException
      */
-    public static function getClient() {
-        return self::_fetchItemObject('cApiClient', self::getClientId());
+    public static function getClient()
+    {
+        /** @var cApiClient $obj */
+        $obj = self::_fetchItemObject('cApiClient', self::getClientId());
+        return $obj;
     }
 
     /**
@@ -205,7 +231,8 @@ class cRegistry {
      *         If true, the value is tried to detected automatically.
      * @return int
      */
-    public static function getArticleId($autoDetect = false) {
+    public static function getArticleId($autoDetect = false)
+    {
         // TODO: autoDetect from front_content.php
         return self::_fetchGlobalVariable('idart', 0);
     }
@@ -217,8 +244,11 @@ class cRegistry {
      *
      * @throws cInvalidArgumentException
      */
-    public static function getArticle() {
-        return self::_fetchItemObject('cApiArticle', self::getArticleId());
+    public static function getArticle()
+    {
+        /** @var cApiArticle $obj */
+        $obj = self::_fetchItemObject('cApiArticle', self::getArticleId());
+        return $obj;
     }
 
     /**
@@ -229,7 +259,8 @@ class cRegistry {
      *         If true, the value is tried to detected automatically.
      * @return int
      */
-    public static function getArticleLanguageId($autoDetect = false) {
+    public static function getArticleLanguageId($autoDetect = false)
+    {
         // TODO: autoDetect from front_content.php
         return self::_fetchGlobalVariable('idartlang', 0);
     }
@@ -241,8 +272,11 @@ class cRegistry {
      *
      * @throws cInvalidArgumentException
      */
-    public static function getArticleLanguage() {
-        return self::_fetchItemObject('cApiArticleLanguage', self::getArticleLanguageId());
+    public static function getArticleLanguage()
+    {
+        /** @var cApiArticleLanguage $obj */
+        $obj = self::_fetchItemObject('cApiArticleLanguage', self::getArticleLanguageId());
+        return $obj;
     }
 
     /**
@@ -252,7 +286,8 @@ class cRegistry {
      *         If true, the value is tried to detected automatically.
      * @return int
      */
-    public static function getCategoryId($autoDetect = false) {
+    public static function getCategoryId($autoDetect = false)
+    {
         // TODO: autoDetect from front_content.php
         return self::_fetchGlobalVariable('idcat', 0);
     }
@@ -264,8 +299,11 @@ class cRegistry {
      *
      * @throws cInvalidArgumentException
      */
-    public static function getCategory() {
-        return self::_fetchItemObject('cApiCategory', self::getCategoryId());
+    public static function getCategory()
+    {
+        /** @var cApiCategory $obj */
+        $obj = self::_fetchItemObject('cApiCategory', self::getCategoryId());
+        return $obj;
     }
 
     /**
@@ -276,7 +314,8 @@ class cRegistry {
      *         If true, the value is tried to detected automatically.
      * @return int
      */
-    public static function getCategoryLanguageId($autoDetect = false) {
+    public static function getCategoryLanguageId($autoDetect = false)
+    {
         // TODO: autoDetect from front_content.php
         return self::_fetchGlobalVariable('idcatlang', 0);
     }
@@ -288,8 +327,11 @@ class cRegistry {
      *
      * @throws cInvalidArgumentException
      */
-    public static function getCategoryLanguage() {
-        return self::_fetchItemObject('cApiCategoryLanguage', self::getCategoryLanguageId());
+    public static function getCategoryLanguage()
+    {
+        /** @var cApiCategoryLanguage $obj */
+        $obj = self::_fetchItemObject('cApiCategoryLanguage', self::getCategoryLanguageId());
+        return $obj;
     }
 
     /**
@@ -300,7 +342,8 @@ class cRegistry {
      *         If true, the value is tried to detected automatically.
      * @return int
      */
-    public static function getCategoryArticleId($autoDetect = false) {
+    public static function getCategoryArticleId($autoDetect = false)
+    {
         // TODO: autoDetect from front_content.php
         return self::_fetchGlobalVariable('idcatart', 0);
     }
@@ -313,8 +356,11 @@ class cRegistry {
      *
      * @throws cInvalidArgumentException
      */
-    public static function getCategoryArticle() {
-        return self::_fetchItemObject('cApiCategoryArticle', self::getCategoryArticleId());
+    public static function getCategoryArticle()
+    {
+        /** @var cApiCategoryArticle $obj */
+        $obj = self::_fetchItemObject('cApiCategoryArticle', self::getCategoryArticleId());
+        return $obj;
     }
 
     /**
@@ -323,7 +369,8 @@ class cRegistry {
      *
      * @return int
      */
-    public static function getCurrentModuleId() {
+    public static function getCurrentModuleId()
+    {
         return self::_fetchGlobalVariable('cCurrentModule', 0);
     }
 
@@ -333,17 +380,19 @@ class cRegistry {
      *
      * @return int
      */
-    public static function getCurrentContainerId() {
+    public static function getCurrentContainerId()
+    {
         return self::_fetchGlobalVariable('cCurrentContainer', 0);
     }
 
     /**
      * Returns the current frame id stored in the global variable "frame".
      *
-     * @author thomas.stauer
      * @return string
+     * @author thomas.stauer
      */
-    public static function getFrame() {
+    public static function getFrame()
+    {
         return self::_fetchGlobalVariable('frame', '');
     }
 
@@ -352,7 +401,8 @@ class cRegistry {
      *
      * @return cSession
      */
-    public static function getSession() {
+    public static function getSession()
+    {
         return self::_fetchGlobalVariable('sess');
     }
 
@@ -361,27 +411,30 @@ class cRegistry {
      *
      * @return cAuth
      */
-    public static function getAuth() {
+    public static function getAuth()
+    {
         return self::_fetchGlobalVariable('auth');
     }
 
     /**
      * Returns the area stored in the global variable "area".
      *
-     * @author thomas.stauer
      * @return string
+     * @author thomas.stauer
      */
-    public static function getArea() {
+    public static function getArea()
+    {
         return self::_fetchGlobalVariable('area');
     }
 
-   /**
+    /**
      * Returns the action stored in the global variable "action".
      *
-     * @author jann.diekmann
      * @return string
+     * @author jann.diekmann
      */
-    public static function getAction() {
+    public static function getAction()
+    {
         return self::_fetchGlobalVariable('action');
     }
 
@@ -389,10 +442,11 @@ class cRegistry {
      * Returns the language when switching languages. Must be set for URL-Build.
      * Stored in the global variable "changelang".
      *
-     * @author jann.diekmann
      * @return string
+     * @author jann.diekmann
      */
-    public static function getChangeLang() {
+    public static function getChangeLang()
+    {
         return self::_fetchGlobalVariable('changelang');
     }
 
@@ -400,17 +454,21 @@ class cRegistry {
      * Returns the global "idcat" and "idart" of the Error-Site stored in the
      * Client Configurations
      *
+     * @return array [
+     *      'idcat' => (int)
+     *      'idart' => (int)
+     * ];
      * @author jann.diekmann
-     * @return array
      */
-    public static function getErrSite() {
-         $idcat = self::_fetchGlobalVariable('errsite_idcat');
-         $idart = self::_fetchGlobalVariable('errsite_idart');
+    public static function getErrSite()
+    {
+        $idcat = self::_fetchGlobalVariable('errsite_idcat');
+        $idart = self::_fetchGlobalVariable('errsite_idart');
 
-        return $errArtIds = array (
+        return [
             'idcat' => $idcat[1],
             'idart' => $idart[1]
-        );
+        ];
     }
 
     /**
@@ -418,7 +476,8 @@ class cRegistry {
      *
      * @return cPermission
      */
-    public static function getPerm() {
+    public static function getPerm()
+    {
         return self::_fetchGlobalVariable('perm');
     }
 
@@ -427,8 +486,9 @@ class cRegistry {
      *
      * @return array
      */
-    public static function getConfig() {
-        return self::_fetchGlobalVariable('cfg', array());
+    public static function getConfig()
+    {
+        return self::_fetchGlobalVariable('cfg', []);
     }
 
     /**
@@ -442,12 +502,13 @@ class cRegistry {
      * @param string $defaultValue [optional]
      * @return mixed
      */
-    public static function getConfigValue($sectionName = NULL, $optionName = NULL, $defaultValue = NULL) {
+    public static function getConfigValue($sectionName = NULL, $optionName = NULL, $defaultValue = NULL)
+    {
         // get general configuration array
         $cfg = self::getConfig();
 
         // determine configuration section
-        $section = array();
+        $section = [];
         if (isset($cfg[$sectionName])) {
             $section = $cfg[$sectionName];
         }
@@ -473,24 +534,26 @@ class cRegistry {
      *         Client ID
      * @return array
      */
-    public static function getClientConfig($clientId = 0) {
-        $clientConfig = self::_fetchGlobalVariable('cfgClient', array());
+    public static function getClientConfig($clientId = 0)
+    {
+        $clientConfig = self::_fetchGlobalVariable('cfgClient', []);
 
         if ($clientId == 0) {
             return $clientConfig;
         }
 
-        return (isset($clientConfig[$clientId]) ? $clientConfig[$clientId] : array());
+        return $clientConfig[$clientId] ?? [];
     }
 
     /**
      * Returns a new CONTENIDO database object.
      *
+     * @return cDb
      * @todo perhaps its better to instantiate only one object and reset it on
      *       call
-     * @return cDb
      */
-    public static function getDb() {
+    public static function getDb()
+    {
         try {
             $db = new cDb();
         } catch (Exception $e) {
@@ -507,7 +570,8 @@ class cRegistry {
      *         name of the index
      * @return string
      */
-    public static function getDbTableName($index) {
+    public static function getDbTableName($index)
+    {
         $cfg = self::getConfig();
 
         if (!is_array($cfg['tab']) || !isset($cfg['tab'][$index])) {
@@ -522,7 +586,8 @@ class cRegistry {
      *
      * @return cApiCecRegistry
      */
-    public static function getCecRegistry() {
+    public static function getCecRegistry()
+    {
         return self::_fetchGlobalVariable('_cecRegistry');
     }
 
@@ -532,7 +597,8 @@ class cRegistry {
      * @param string $key
      * @param mixed $value
      */
-    public static function setAppVar($key, $value) {
+    public static function setAppVar($key, $value)
+    {
         self::$_appVars[$key] = $value;
     }
 
@@ -541,11 +607,12 @@ class cRegistry {
      *
      * @param string $key
      * @param mixed $default [optional]
-     *         Default value to return, if the application variable doesn't exists
+     *         Default value to return, if the application variable doesn't exist
      * @return mixed
      */
-    public static function getAppVar($key, $default = NULL) {
-        return (isset(self::$_appVars[$key])) ? self::$_appVars[$key] : $default;
+    public static function getAppVar($key, $default = NULL)
+    {
+        return self::$_appVars[$key] ?? $default;
     }
 
     /**
@@ -553,7 +620,8 @@ class cRegistry {
      *
      * @param string $key
      */
-    public static function unsetAppVar($key) {
+    public static function unsetAppVar($key)
+    {
         if (isset(self::$_appVars[$key])) {
             unset(self::$_appVars[$key]);
         }
@@ -569,12 +637,9 @@ class cRegistry {
      *         default value
      * @return mixed
      */
-    protected final static function _fetchGlobalVariable($variableName, $defaultValue = NULL) {
-        if (!isset($GLOBALS[$variableName])) {
-            return $defaultValue;
-        }
-
-        return $GLOBALS[$variableName];
+    protected final static function _fetchGlobalVariable($variableName, $defaultValue = NULL)
+    {
+        return $GLOBALS[$variableName] ?? $defaultValue;
     }
 
     /**
@@ -591,8 +656,9 @@ class cRegistry {
      * @throws cInvalidArgumentException
      *         if the given objectId is not greater than 0 or the given class does not exist
      */
-    protected final static function _fetchItemObject($apiClassName, $objectId) {
-        if ((int) $objectId <= 0) {
+    protected final static function _fetchItemObject($apiClassName, $objectId)
+    {
+        if ((int)$objectId <= 0) {
             throw new cInvalidArgumentException('Object ID must be greater than 0.');
         }
 
@@ -610,16 +676,17 @@ class cRegistry {
      * @param array $features
      *         array with class name definitions
      */
-    public final static function bootstrap($features) {
+    public final static function bootstrap($features)
+    {
         $cfg = self::getConfig();
 
         $sessClass = $authClass = $permClass = NULL;
 
-        $bootstrapFeatures = array(
+        $bootstrapFeatures = [
             'sess',
             'auth',
-            'perm'
-        );
+            'perm',
+        ];
 
         foreach ($bootstrapFeatures as $feature) {
             $varFeatureClass = $feature . 'Class';
@@ -632,20 +699,20 @@ class cRegistry {
 
         if (isset($sessClass)) {
             global $sess;
-            /** @var cSession */
+            /** @var cSession $sess */
             $sess = new $sessClass();
             $sess->start();
             if (isset($authClass)) {
                 global $auth;
                 if (!isset($auth)) {
-                    /** @var cAuthHandlerAbstract */
+                    /** @var cAuth $auth */
                     $auth = new $authClass();
                 }
                 $auth->start();
                 if (isset($permClass)) {
                     global $perm;
                     if (!isset($perm)) {
-                        /** @var cPermission */
+                        /** @var cPermission $perm */
                         $perm = new $permClass();
                     }
                 }
@@ -656,14 +723,22 @@ class cRegistry {
     /**
      * Shutdowns the CONTENIDO framework on page close.
      *
-     * @author frederic.schneider
-     *
      * @param bool $debugShowAll [optional]
      *
      * @throws cInvalidArgumentException
+     * @author frederic.schneider
+     *
      */
-    public final static function shutdown($debugShowAll = true) {
-        if ($debugShowAll == true) {
+    public final static function shutdown(bool $debugShowAll = true)
+    {
+        static $shutdownInvoked;
+
+        if (isset($shutdownInvoked)) {
+            return;
+        }
+        $shutdownInvoked = true;
+
+        if ($debugShowAll) {
             cDebug::showAll();
         }
 
@@ -676,176 +751,193 @@ class cRegistry {
     /**
      * Stores an ok message in the cRegistry.
      *
-     * @author frederic.schneider
      * @param string $message
+     * @author frederic.schneider
      */
-    public static function addOkMessage($message) {
-        array_push(self::$_okMessages, $message);
+    public static function addOkMessage($message)
+    {
+        self::$_okMessages[] = $message;
     }
-
 
     /**
      * Stores an information massage in the cRegistry.
      *
-     * @author konstantinos.katikakis
      * @param string $message
+     * @author konstantinos.katikakis
      */
-    public static function addInfoMessage($message) {
-        array_push(self::$_infoMessages, $message);
+    public static function addInfoMessage($message)
+    {
+        self::$_infoMessages[] = $message;
     }
 
     /**
-     * Stores an error massage in the cRegistry.
+     * Stores an error message in the cRegistry.
      *
-     * @author konstantinos.katikakis
      * @param string $message
+     * @author konstantinos.katikakis
      */
-    public static function addErrorMessage($message) {
-        array_push(self::$_errMessages, $message);
+    public static function addErrorMessage($message)
+    {
+        self::$_errMessages[] = $message;
     }
 
     /**
-     * Stores an warning massage in the cRegistry.
+     * Stores a warning massage in the cRegistry.
      *
-     * @author konstantinos.katikakis
      * @param string $message
+     * @author konstantinos.katikakis
      */
-    public static function addWarningMessage($message) {
-        array_push(self::$_warnMessages, $message);
+    public static function addWarningMessage($message)
+    {
+        self::$_warnMessages[] = $message;
     }
 
     /**
      * Appends the last ok message that will be outputted
      *
-     * @author frederic.schneider
      * @param string $message
+     * @author frederic.schneider
      */
-    public static function appendLastOkMessage($message) {
-        if(count(self::$_okMessages) == 0) {
+    public static function appendLastOkMessage($message)
+    {
+        $key = cArray::getLastKey(self::$_okMessages);
+        if (is_null($key)) {
             self::$_okMessages[] = $message;
-            return;
+        } else {
+            self::$_okMessages[$key] .= "<br>" . $message;
         }
-        end(self::$_okMessages);
-        $lastKey = key(self::$_okMessages);
-        self::$_okMessages[$lastKey] .= "<br>" . $message;
-        reset(self::$_okMessages);
     }
 
     /**
      * Appends the last info message that will be outputted
      *
-     * @author mischa.holz
      * @param string $message
+     * @author mischa.holz
      */
-    public static function appendLastInfoMessage($message) {
-        if(count(self::$_infoMessages) == 0) {
+    public static function appendLastInfoMessage($message)
+    {
+        $key = cArray::getLastKey(self::$_infoMessages);
+        if (is_null($key)) {
             self::$_infoMessages[] = $message;
-            return;
+        } else {
+            self::$_infoMessages[$key] .= "<br>" . $message;
         }
-        end(self::$_infoMessages);
-        $lastKey = key(self::$_infoMessages);
-        self::$_infoMessages[$lastKey] .= "<br>" . $message;
-        reset(self::$_infoMessages);
     }
 
     /**
      * Appends the last error message that will be outputted
      *
-     * @author mischa.holz
      * @param string $message
+     * @author mischa.holz
      */
-    public static function appendLastErrorMessage($message) {
-        if(count(self::$_errMessages) == 0) {
+    public static function appendLastErrorMessage($message)
+    {
+        $key = cArray::getLastKey(self::$_errMessages);
+        if (is_null($key)) {
             self::$_errMessages[] = $message;
-            return;
+        } else {
+            self::$_errMessages[$key] .= "<br>" . $message;
         }
-        end(self::$_errMessages);
-        $lastKey = key(self::$_errMessages);
-        self::$_errMessages[$lastKey] .= "<br>" . $message;
-        reset(self::$_errMessages);
     }
 
     /**
      * Appends the last warning that will be outputted
      *
-     * @author mischa.holz
      * @param string $message
+     * @author mischa.holz
      */
-    public static function appendLastWarningMessage($message) {
-        if(count(self::$_warnMessages) == 0) {
+    public static function appendLastWarningMessage($message)
+    {
+        $key = cArray::getLastKey(self::$_warnMessages);
+        if (is_null($key)) {
             self::$_warnMessages[] = $message;
-            return;
+        } else {
+            self::$_warnMessages[$key] .= "<br>" . $message;
         }
-        end(self::$_warnMessages);
-        $lastKey = key(self::$_warnMessages);
-        self::$_warnMessages[$lastKey] .= "<br>" . $message;
-        reset(self::$_warnMessages);
     }
 
     /**
      * Return an array with ok message
      *
-     * @author frederic.schneider
      * @return array
+     * @author frederic.schneider
      */
-    public static function getOkMessages() {
+    public static function getOkMessages()
+    {
         return self::$_okMessages;
     }
 
     /**
      * Returns an array with information messages.
      *
-     * @author konstantinos.katikakis
      * @return array
+     * @author konstantinos.katikakis
      */
-    public static function getInfoMessages() {
+    public static function getInfoMessages()
+    {
         return self::$_infoMessages;
     }
 
     /**
      * Returns an array with error messages.
      *
-     * @author konstantinos.katikakis
      * @return array
+     * @author konstantinos.katikakis
      */
-    public static function getErrorMessages() {
+    public static function getErrorMessages()
+    {
         return self::$_errMessages;
     }
 
     /**
      * Returns an array with warning messages.
      *
-     * @author konstantinos.katikakis
      * @return array
+     * @author konstantinos.katikakis
      */
-    public static function getWarningMessages() {
+    public static function getWarningMessages()
+    {
         return self::$_warnMessages;
     }
 
     /**
-     * Returns true if the DNT header is set and equal to 1.
-     * Returns false if the DNT header is unset or not equal to 1.
+     * Returns true if the DNT header is not set or not equal to 1.
+     * Returns false if the DNT header is equal to 1.
      *
      * @return bool
      *         whether tracking is allowed by the DNT header
      */
-    public static function isTrackingAllowed() {
-        return (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] != 1) || !isset($_SERVER['HTTP_DNT']);
+    public static function isTrackingAllowed(): bool
+    {
+        return cSecurity::toInteger($_SERVER['HTTP_DNT'] ?? '0') != 1;
     }
 
     /**
-    * Returns the actual encoding (standard: utf-8)
-    *
-    * @return string|bool
-    *         name of encoding or false if no language found
-    */
-    public static function getEncoding() {
+     * Returns the actual encoding (standard: utf-8)
+     *
+     * @return string|bool
+     *         name of encoding or false if no language found
+     */
+    public static function getEncoding()
+    {
+        $encodings = self::getAppVar('languageEncodings', []);
+        $id = self::getLanguageId();
 
-        $apiLanguage = new cApiLanguage(self::getLanguageId());
-        if ($apiLanguage->isLoaded()) {
-            return trim($apiLanguage->get('encoding'));
+        if (!isset($encodings[$id])) {
+            try {
+                $apiLanguage = new cApiLanguage($id);
+            } catch (cDbException $e) {
+                return false;
+            } catch (cException $e) {
+                return false;
+            }
+            if ($apiLanguage->isLoaded()) {
+                $encodings[$id] = trim($apiLanguage->get('encoding'));
+                self::setAppVar('languageEncodings', $encodings);
+            }
         }
 
-        return false;
+        return $encodings[$id] ?? false;
     }
+
 }

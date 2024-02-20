@@ -12,9 +12,9 @@
  * @version    1.0.1
  * @author     CONTENIDO
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  *
  * {@internal
  *   created  YYYY-MM-DD
@@ -113,7 +113,6 @@ input.textbox {
 div.errorlist {
     font-size: 10px;
     color: black;
-    width: 100%;
     margin: 0;
     padding: 0;
     background-color: #e8e8ee;
@@ -174,6 +173,7 @@ input {
     border: 1px solid #b3b3b8;
     width: 240px;
 }
+
 table td,
 p {
     color: black;
@@ -181,13 +181,14 @@ p {
 
 table.setupBodyOuterTable {
     width: 730px;
-    height: 360px;
+    height: 380px;
 }
 
 
 table.setupBodyOuterTable tr.row-1 {
     height: 90px;
 }
+
 table.setupBodyOuterTable tr.row-2 {
     height: 225px;
 }
@@ -215,12 +216,12 @@ table.setupBodyOuterTable td.column-2 a.nav {
     display: block;
     float: right;
 }
+
 table.setupBodyOuterTable td.column-2 a.navBack {
     float: left;
 }
 
 .setupBodyOuterTable a.nav {
-    display: inline-block;
     display: block;
     font-size: 12px;
     height: 16px;
@@ -239,6 +240,7 @@ table.setupBodyOuterTable td.column-2 a.navBack {
     top: 0;
     left: 0;
 }
+
 .setupBodyOuterTable a.nav:hover span {
     background-position: 0 -30px;
 }
@@ -279,12 +281,14 @@ table.setupBodyOuterTable td.column-2 a.navBack {
 table.setupBodyOuterTableLanguageChooser {
     margin: 0;
     padding: 0;
-    border-collapse:collapse;
+    border-collapse: collapse;
 }
+
 table.setupBodyOuterTableLanguageChooser td {
     width: 240px;
     padding-right: 20px;
 }
+
 table.setupBodyOuterTableLanguageChooser td.last {
     width: auto;
     padding-right: 0;
@@ -299,11 +303,13 @@ table.setupBodyOuterTableLanguageChooser td.last {
 table.setupBodyOuterTableSetupType tr.row-2 {
     height: auto;
 }
+
 table.setupBodyOuterTableSetupType .row-1 td {
     padding: 0 10px 10px 10px;
     width: 355px;
     height: 70px;
 }
+
 table.setupBodyOuterTableSetupType .row-2 div {
     width: 355px;
     display: inline;
@@ -313,9 +319,11 @@ table.setupBodyOuterTableSetupType .row-2 td {
     padding: 0 10px 10px 10px;
     width: 355px;
 }
+
 table.setupBodyOuterTableSetupType .row-1 td.first {
     padding-left: 0;
 }
+
 table.setupBodyOuterTableSetupType .row-2 td.first {
     padding-left: 0;
 }
@@ -342,9 +350,11 @@ table.setupBodyOuterTableNotInstallable {
 table.setupBodyOuterTableNotInstallable td p {
     margin-bottom: 2.0em;
 }
+
 table.setupBodyOuterTableNotInstallable td p.errorMsg {
     color: red;
 }
+
 table.setupBodyOuterTableNotInstallable td p.last {
     margin-bottom: 0;
 }
@@ -378,9 +388,11 @@ table.setupBodyOuterTableClientMode td.column-1 td {
 table.setupBodyOuterTableSystemData td.column-1 td.first {
     padding-right: 30px;
 }
+
 table.setupBodyOuterTableSystemData td.column-1 td.first2 {
     padding-bottom: 11px;
 }
+
 table.setupBodyOuterTableSystemData td.column-1 td.last {
     padding-bottom: 10px;
 }
@@ -391,7 +403,7 @@ table.setupBodyOuterTableSystemData td.column-1 select {
 
 table.setupBodyOuterTableSystemData td.column-1 input#collationText {
     width: 125px;
-	margin-right: 5px;
+    margin-right: 5px;
 }
 
 
@@ -442,7 +454,7 @@ table.setupBodyOuterTable .progressOutput {
     color: black;
     text-align: left;
     border: 1px solid #b3b3b8;
-	height: 520px;
+    height: 540px;
 }
 
 #setupHead {
@@ -450,6 +462,7 @@ table.setupBodyOuterTable .progressOutput {
     height: 70px;
     padding: 30px 0 0 30px;
 }
+
 * html #setupHead {
     height: 100px;
 }
@@ -475,7 +488,7 @@ table.setupBodyOuterTable .progressOutput {
 #setupBody {
     background-color: #f1f1f1;
     padding: 20px 10px 10px 10px;
-    height: 360px;
+    height: 380px;
 }
 
 #setupFootnote {

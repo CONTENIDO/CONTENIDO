@@ -3,13 +3,13 @@
 /**
  * This file contains the category tree collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,10 +17,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Category tree collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiCategoryTree createNewItem
+ * @method cApiCategoryTree|bool next
  */
-class cApiCategoryTreeCollection extends ItemCollection {
+class cApiCategoryTreeCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -30,9 +33,9 @@ class cApiCategoryTreeCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct($select = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['cat_tree'], 'idtree');
+    public function __construct($select = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('cat_tree'), 'idtree');
 
         // set the join partners so that joins can be used via link() method
         $this->_setJoinPartner('cApiCategoryCollection');
@@ -65,27 +68,29 @@ class cApiCategoryTreeCollection extends ItemCollection {
      *         $arr[n]['urlname'] (string)
      *         $arr[n]['is_start'] (int)
      *         </pre>
-     * 
+     *
      * @throws cDbException
      */
-    function getCategoryTreeStructureByClientIdAndLanguageId($client, $lang) {
-        global $cfg;
-
-        $aCatTree = array();
+    function getCategoryTreeStructureByClientIdAndLanguageId($client, $lang)
+    {
+        $aCatTree = [];
 
         $sql = 'SELECT * FROM `:cat_tree` AS A, `:cat` AS B, `:cat_lang` AS C ' . 'WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND C.idlang = :idlang AND idclient = :idclient ' . 'ORDER BY idtree';
 
-        $sql = $this->db->prepare($sql, array(
-            'cat_tree' => $this->table,
-            'cat' => $cfg['tab']['cat'],
-            'cat_lang' => $cfg['tab']['cat_lang'],
-            'idlang' => (int) $lang,
-            'idclient' => (int) $client
-        ));
+        $sql = $this->db->prepare(
+            $sql,
+            [
+                'cat_tree' => $this->table,
+                'cat' => cRegistry::getDbTableName('cat'),
+                'cat_lang' => cRegistry::getDbTableName('cat_lang'),
+                'idlang' => (int)$lang,
+                'idclient' => (int)$client,
+            ]
+        );
         $this->db->query($sql);
 
         while ($this->db->nextRecord()) {
-            $aCatTree[$this->db->f('idtree')] = array(
+            $aCatTree[$this->db->f('idtree')] = [
                 'idcat' => $this->db->f('idcat'),
                 'level' => $this->db->f('level'),
                 'idtplcfg' => $this->db->f('idtplcfg'),
@@ -93,8 +98,8 @@ class cApiCategoryTreeCollection extends ItemCollection {
                 'name' => $this->db->f('name'),
                 'public' => $this->db->f('public'),
                 'urlname' => $this->db->f('urlname'),
-                'is_start' => $this->db->f('is_start')
-            );
+                'is_start' => $this->db->f('is_start'),
+            ];
         }
 
         return $aCatTree;
@@ -104,10 +109,11 @@ class cApiCategoryTreeCollection extends ItemCollection {
 /**
  * Category tree item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiCategoryTree extends Item {
+class cApiCategoryTree extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -117,10 +123,10 @@ class cApiCategoryTree extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['cat_tree'], 'idtree');
-        $this->setFilters(array(), array());
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('cat_tree'), 'idtree');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

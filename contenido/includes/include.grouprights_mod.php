@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for module group rights management.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -27,7 +27,7 @@ $page = new cGuiPage('rights', '', '5');
 // set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("mod")]) . "'";
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
-        FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
+        FROM " . $cfg['tab']['rights'] . " AS A, " . $cfg['tab']['area'] . " AS B, " . $cfg['tab']['actions'] . " AS C
         WHERE user_id = '" . $db->escape($groupid) . "'
         AND idclient = " . cSecurity::toInteger($rights_client) . " AND A.type = 1 AND idlang = " . cSecurity::toInteger($rights_lang) . "
         AND B.idarea IN ($possible_area) AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
@@ -54,7 +54,7 @@ $sJsExternal = '';
 $sTable = '';
 
 $sJsBefore .= "var itemids = [];\n"
-            . "var actareaids = [];\n";
+    . "var actareaids = [];\n";
 
 // Init Table
 $oTable = new cHTMLTable();
@@ -94,14 +94,14 @@ foreach ($right_list["mod"] as $value2) {
     // if there are some actions
     if (isset($value2["action"]) && is_array($value2["action"])) {
         foreach ($value2["action"] as $key3 => $value3) { // set the areas that
-                                                          // are in use
+            // are in use
             $possible_areas[$value2["perm"]] = "";
 
             // set the possible areas and actions for this areas
             $sJsBefore .= "actareaids[\"$value3|" . $value2["perm"] . "\"]=\"x\";\n";
 
             // checkbox for the whole action
-            $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3]? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
+            $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
             $items .= $objHeaderItem->render();
             $objHeaderItem->advanceID();
             $aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onclick=\"setRightsFor('" . $value2["perm"] . "', '$value3', '')\">";
@@ -155,12 +155,12 @@ $objHeaderRow->advanceID();
 $output = "";
 
 // Select the itemids
-$sql = "SELECT * FROM " . $cfg["tab"]["mod"] . " WHERE idclient = " . cSecurity::toInteger($rights_client) . " ORDER BY name";
+$sql = "SELECT * FROM " . $cfg['tab']['mod'] . " WHERE idclient = " . cSecurity::toInteger($rights_client) . " ORDER BY name";
 $db->query($sql);
 
 while ($db->nextRecord()) {
-    $tplname = conHtmlentities($db->f("name"));
-    $description = conHtmlentities($db->f("description"));
+    $tplname = conHtmlentities($db->f('name'));
+    $description = conHtmlentities($db->f('description') ?? '');
 
     $objItem->updateAttributes([
         "class" => "td_rights0"
@@ -173,7 +173,7 @@ while ($db->nextRecord()) {
         "class" => "td_rights1",
         "style" => "white-space:normal;"
     ]);
-    $objItem->setContent($description? $description : "&nbsp;");
+    $objItem->setContent($description ? $description : "&nbsp;");
     $items .= $objItem->render();
     $objItem->advanceID();
 
@@ -225,7 +225,12 @@ $objItem->updateAttributes([
     "align" => "right",
     "colspan" => "10"
 ]);
-$objItem->setContent("<a href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=\"javascript:submitrightsform('group_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>");
+$objItem->setContent(
+    '<div class="con_form_action_control">'
+    . "<a class=\"con_img_button\" href=\"javascript:submitrightsform('group_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>"
+    . "<a class=\"con_img_button\" href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a>"
+    . '</div>'
+);
 $items = $objItem->render();
 $objItem->advanceID();
 $objFooterRow->setContent($items);

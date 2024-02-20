@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLAlignmentTable class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLAlignmentTable class represents an alignment table.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLAlignmentTable extends cHTMLTable {
+class cHTMLAlignmentTable extends cHTMLTable
+{
     /**
      * @var array
      */
@@ -30,7 +30,8 @@ class cHTMLAlignmentTable extends cHTMLTable {
     /**
      * Constructor to create an instance of this class.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         $this->_data = func_get_args();
@@ -40,11 +41,12 @@ class cHTMLAlignmentTable extends cHTMLTable {
     /**
      * Generates the markup of the element.
      *
-     * @see cHTML::render()
      * @return string
      *         generated markup
+     * @see cHTML::render()
      */
-    public function render() {
+    public function render(): string
+    {
         $tr = new cHTMLTableRow();
         $td = new cHTMLTableData();
 

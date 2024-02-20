@@ -3,18 +3,27 @@
 /**
  * This file contains the menu frame backend page for statistics area.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Olaf Niemann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cTemplate $tpl
+ * @var cSession $sess
+ * @var array $cfg
+ */
+
 $tpl->reset();
+
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
 // CON-2718
 // Do not display anything if the statistic is disabled
@@ -54,7 +63,7 @@ foreach ($availableYears as $yearIterator) {
     $availableMonths = statGetAvailableMonths($yearIterator, $client, $lang);
 
     foreach ($availableMonths as $monthIterator) {
-        $monthCanonical = getCanonicalMonth($monthIterator);
+        $monthCanonical = cDate::getCanonicalMonth($monthIterator);
         $monthLink = '<a target="right_bottom" href="' . $sess->url("main.php?area=stat&frame=4&action=stat_show&displaytype=top10&yearmonth=" . $yearIterator . $monthIterator) . '">' . "$monthCanonical" . '</a>';
 
         $tpl->set('d', 'TEXT', $monthLink);
@@ -65,5 +74,3 @@ foreach ($availableYears as $yearIterator) {
 
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['stat_menu']);
-
-?>

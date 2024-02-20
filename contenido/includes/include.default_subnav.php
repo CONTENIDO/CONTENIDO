@@ -3,13 +3,13 @@
 /**
  * This file contains the default sub navigation frame backend page.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Oliver Lohkemper
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Oliver Lohkemper
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -21,11 +21,8 @@ if (isset($dont_print_subnav) && $dont_print_subnav == 1) {
     return;
 }
 
-$aExectime = array();
-$aExectime['fullstart'] = getmicrotime();
-
 // Requires all query parameter passed by frame
-$aBasicParams = array('area', 'frame', 'contenido', 'appendparameters');
+$aBasicParams = ['area', 'frame', 'contenido', 'appendparameters'];
 
 // Flag to check is file is loading from Main-Frame
 $bVirgin = false;
@@ -40,11 +37,10 @@ foreach ($_GET as $sTempKey => $sTempValue) {
     if (in_array($sTempKey, $aBasicParams)) {
         // Basic parameters attached
         $iCountBasicVal++;
-    } else if ((cString::getPartOfString($sTempKey, 0, 2) == 'id' || cString::getPartOfString($sTempKey, -2, 2) == 'id')
-        && ((int) $sTempValue == $sTempValue                      // check integer
-        || preg_match('/^[0-9a-f]{32}$/', $sTempValue)) // check md5
-        )
-    {
+    } elseif ((cString::getPartOfString($sTempKey, 0, 2) == 'id' || cString::getPartOfString($sTempKey, -2, 2) == 'id')
+        && ((int)$sTempValue == $sTempValue                      // check integer
+            || preg_match('/^[0-9a-f]{32}$/', $sTempValue)) // check md5
+    ) {
         // Complement the selected data
         $sUrlParams .= '&' . $sTempKey . '=' . $sTempValue;
     }

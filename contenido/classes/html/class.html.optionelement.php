@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLOptionElement class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLOptionElement class represents a select option element.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLOptionElement extends cHTMLFormElement {
+class cHTMLOptionElement extends cHTMLFormElement
+{
 
     /**
      * Title to display
@@ -46,7 +46,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($title, $value, $selected = false, $disabled = false, $class = '') {
+    public function __construct($title, $value, $selected = false, $disabled = false, $class = '')
+    {
         parent::__construct('', '', $disabled, '', '', $class);
         $this->_tag = 'option';
         $this->_title = $title;
@@ -65,7 +66,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @return cHTMLOptionElement
      *         $this for chaining
      */
-    public function setSelected($selected) {
+    public function setSelected($selected)
+    {
         if ($selected == true) {
             return $this->updateAttribute('selected', 'selected');
         } else {
@@ -79,7 +81,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @return bool
      *         whether this option element is selected
      */
-    public function isSelected() {
+    public function isSelected()
+    {
         return $this->getAttribute('selected') === 'selected';
     }
 
@@ -91,7 +94,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         $this->_setContent($this->_title);
 
         return parent::toHtml();
@@ -105,11 +109,16 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @param int $levelAmount The amount of indentation characters for each level
      * @param string $character The indentation character itself
      * @return string Generated indentation string
+     * @since CONTENIDO 4.10.2
      */
-    public static function indent($level, $prefixAmount = 2, $levelAmount = 4, $character = '&nbsp;') {
-        $prefixStr = str_repeat($character, max(0, cSecurity::toInteger($prefixAmount)));
-        $levelStr = str_repeat($character, max(0, cSecurity::toInteger($levelAmount)));
-        return $prefixStr . str_repeat($levelStr, max(0, cSecurity::toInteger($level)));
+    public static function indent(
+        int    $level, int $prefixAmount = 2, int $levelAmount = 4,
+        string $character = '&nbsp;'
+    ): string
+    {
+        $prefixStr = str_repeat($character, max(0, $prefixAmount));
+        $levelStr = str_repeat($character, max(0, $levelAmount));
+        return $prefixStr . str_repeat($levelStr, max(0, $level));
     }
 
 }

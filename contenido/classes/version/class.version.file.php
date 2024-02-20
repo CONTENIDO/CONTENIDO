@@ -8,9 +8,9 @@
  * @author     Bilal Arslan
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Versioning
  */
-class cVersionFile extends cVersion {
+class cVersionFile extends cVersion
+{
 
     /**
      * Content code of current file.
@@ -60,17 +61,17 @@ class cVersionFile extends cVersion {
      *
      * @param string $iIdOfType
      *                                 The name of style file
-     * @param array  $aFileInfo
+     * @param array $aFileInfo
      *                                 Get FileInformation from table file_information
      * @param string $sFileName
      * @param string $sTypeContent
-     * @param array  $aCfg
-     * @param array  $aCfgClient
-     * @param cDb    $oDB
+     * @param array $aCfg
+     * @param array $aCfgClient
+     * @param cDb $oDB
      *                                 CONTENIDO database object
-     * @param int    $iClient
+     * @param int $iClient
      * @param string $sArea
-     * @param int    $iFrame
+     * @param int $iFrame
      * @param string $sVersionFileName [optional]
      *
      * @throws cInvalidArgumentException
@@ -78,9 +79,10 @@ class cVersionFile extends cVersion {
     public function __construct(
         $iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient,
         $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = ''
-    ) {
+    )
+    {
 
-        // Set globals in super class constructer
+        // Set globals in super class constructor
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
 
         // Folder name is css or js ...
@@ -90,17 +92,17 @@ class cVersionFile extends cVersion {
         $this->sFileName = $sFileName;
 
         // File Information, set for class Version to generate head xml nodes
-        $this->sDescription = $aFileInfo['description'];
-        $this->sAuthor = $aFileInfo['author'];
-        $this->dLastModified = $aFileInfo['lastmodified'];
-        $this->dCreated = $aFileInfo['created'];
+        $this->sDescription = $aFileInfo['description'] ?? '';
+        $this->sAuthor = $aFileInfo['author'] ?? '';
+        $this->dLastModified = $aFileInfo['lastmodified'] ?? '';
+        $this->dCreated = $aFileInfo['created'] ?? '';
 
         // Frontendpath to files
-        if ($sTypeContent == "templates") {
-            $sTypeContent = "tpl";
+        if ($sTypeContent == 'templates') {
+            $sTypeContent = 'tpl';
         }
 
-        $this->sPath = $this->aCfgClient[$this->iClient][$sTypeContent]["path"];
+        $this->sPath = $this->aCfgClient[$this->iClient][$sTypeContent]['path'];
 
         // Identity the Id of Content Type
         $this->iIdentity = $iIdOfType;
@@ -114,7 +116,7 @@ class cVersionFile extends cVersion {
         // Get code of style
         $this->initFileContent();
 
-        // Set Layout Table Iformation, currently not in use!
+        // Set Layout Table Information, currently not in use!
         // this->setLayoutTable();
 
         if ($sVersionFileName == '') {
@@ -122,9 +124,9 @@ class cVersionFile extends cVersion {
         }
 
         // Create Body Node of Xml File
-        $this->setData("name", $sVersionFileName);
-        $this->setData("code", $this->sCode);
-        $this->setData("description", $this->sDescription);
+        $this->setData('name', $sVersionFileName);
+        $this->setData('code', $this->sCode);
+        $this->setData('description', $this->sDescription);
     }
 
     /**
@@ -132,11 +134,12 @@ class cVersionFile extends cVersion {
      *
      * @throws cInvalidArgumentException
      */
-    protected function initFileContent() {
+    protected function initFileContent()
+    {
         if (cFileHandler::exists($this->sPath . $this->sFileName)) {
             $this->sCode = cFileHandler::read($this->sPath . $this->sFileName);
         } else {
-            echo "<br>File not exists " . $this->sPath . $this->sFileName;
+            echo '<br>File not exists ' . $this->sPath . $this->sFileName;
         }
     }
 
@@ -150,9 +153,10 @@ class cVersionFile extends cVersion {
      *         returns array width nodes
      * @throws cException
      */
-    public function initXmlReader($sPath) {
-        $aResult = array();
-        if ($sPath != "") {
+    public function initXmlReader($sPath)
+    {
+        $aResult = [];
+        if ($sPath != '') {
             $xml = new cXmlReader();
             $xml->load($sPath);
 
@@ -170,13 +174,14 @@ class cVersionFile extends cVersion {
      * @return string
      *         the path of file
      */
-    public function getPathFile() {
+    public function getPathFile()
+    {
         return $this->sPath;
     }
 
     /**
      * Function returns javascript which refreshes CONTENIDO frames for file
-     * list an subnavigation.
+     * list an sub-navigation.
      * This is necessary, if filenames where changed, when a history entry is
      * restored
      *
@@ -187,12 +192,13 @@ class cVersionFile extends cVersion {
      * @param object $sess
      *         CONTENIDO session object
      * @return string
-     *         Javascript for refrehing frames
+     *         Javascript for refreshing frames
      */
-    public function renderReloadScript($sArea, $sFilename, $sess) {
+    public function renderReloadScript($sArea, $sFilename, $sess)
+    {
         $urlRightTop = $sess->url("main.php?area=$sArea&frame=3&file=$sFilename&history=true");
         $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&file=$sFilename");
-        $sReloadScript = <<<JS
+        return <<<JS
 <script type="text/javascript">
 (function(Con, $) {
     var right_top = Con.getFrame('right_top'),
@@ -208,7 +214,6 @@ class cVersionFile extends cVersion {
 })(Con, Con.$);
 </script>
 JS;
-        return $sReloadScript;
     }
 
 }

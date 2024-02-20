@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLList class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLList class represents a list.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLList extends cHTMLContentElement {
+class cHTMLList extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -37,7 +37,8 @@ class cHTMLList extends cHTMLContentElement {
      * @param array|string|object $elements [optional]
      *         the elements of this list
      */
-    public function __construct($type = 'ul', $id = '', $class = '', $elements = array()) {
+    public function __construct($type = 'ul', $id = '', $class = '', $elements = [])
+    {
         parent::__construct($elements, $class, $id);
         if ($type !== 'ul' && $type !== 'ol') {
             $type = 'ul';

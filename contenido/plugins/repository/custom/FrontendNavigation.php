@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file includes the "frontend navigation" sub plugin from the old plugin repository.
  *
@@ -6,9 +7,9 @@
  * @subpackage Repository_FrontendNavigation
  * @author     Willi Man
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -19,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage Repository_FrontendNavigation
  */
-class FrontendNavigation {
+class FrontendNavigation
+{
 
     /**
      * References database object
@@ -30,34 +32,35 @@ class FrontendNavigation {
 
     /*
      *
-     * @var boolean
+     * @var bool
      */
     protected $_debug = false;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $_client = 0;
 
     /**
      * @var array
      */
-    protected $_cfgClient = array();
+    protected $_cfgClient = [];
 
     /**
      * @var array
      */
-    protected $_cfg = array();
+    protected $_cfg = [];
 
     /**
-     * @var integer
+     * @var int
      */
     protected $_lang = 0;
 
     /**
      * FrontendNavigation constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->_db = cRegistry::getDb();
         $this->_cfgClient = cRegistry::getClientConfig();
         $this->_cfg = cRegistry::getConfig();
@@ -66,28 +69,16 @@ class FrontendNavigation {
     }
 
     /**
-     * Old constructor
-     *
-     * @deprecated [2016-02-11]
-     *                This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     * @return FrontendNavigation
-     */
-    public function FrontendNavigation() {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        return $this->__construct();
-    }
-
-    /**
      * Get child categories by given parent category
      *
-     * @param integer $parentCategory
-     *
+     * @param int $parentCategory
      * @return array
      * @throws cDbException
      */
-    public function getSubCategories($parentCategory) {
-        if (!is_int((int) $parentCategory)) {
-            return array();
+    public function getSubCategories($parentCategory): array
+    {
+        if (!is_int((int)$parentCategory)) {
+            return [];
         }
 
         $sql = "SELECT
@@ -108,14 +99,12 @@ class FrontendNavigation {
                     A.idtree ";
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         $this->_db->query($sql);
 
-        $navigation = array();
+        $navigation = [];
         while ($this->_db->nextRecord()) {
             $navigation[] = $this->_db->f("idcat");
         }
@@ -126,13 +115,13 @@ class FrontendNavigation {
     /**
      * Check if child categories of a given parent category exist
      *
-     * @param integer $parentCategory
-     *
-     * @return boolean
+     * @param int $parentCategory
+     * @return bool
      * @throws cDbException
      */
-    public function hasChildren($parentCategory) {
-        if (!is_int((int) $parentCategory)) {
+    public function hasChildren($parentCategory): bool
+    {
+        if (!is_int((int)$parentCategory)) {
             return false;
         }
 
@@ -150,18 +139,12 @@ class FrontendNavigation {
                     B.parentid = " . $parentCategory . " ";
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         $this->_db->query($sql);
 
-        if ($this->_db->nextRecord()) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->_db->nextRecord();
     }
 
     /**
@@ -169,13 +152,13 @@ class FrontendNavigation {
      * Note: does not work if direct successor (with preid 0) is not visible
      * or not public
      *
-     * @param integer $category
-     *
-     * @return integer
+     * @param int $category
+     * @return int
      * @throws cDbException
      */
-    public function getSuccessor($category) {
-        if (!is_int((int) $category)) {
+    public function getSuccessor($category): int
+    {
+        if (!is_int((int)$category)) {
             return -1;
         }
 
@@ -194,15 +177,13 @@ class FrontendNavigation {
                     B.parentid = " . $category . " ";
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         $this->_db->query($sql);
 
         if ($this->_db->nextRecord()) {
-            return $this->_db->f("idcat");
+            return cSecurity::toInteger($this->_db->f("idcat"));
         } else {
             return -1;
         }
@@ -211,13 +192,13 @@ class FrontendNavigation {
     /**
      * Check if a given category has a direct successor
      *
-     * @param integer $category
-     *
-     * @return boolean
+     * @param int $category
+     * @return bool
      * @throws cDbException
      */
-    public function hasSuccessor($category) {
-        if (!is_int((int) $category)) {
+    public function hasSuccessor($category)
+    {
+        if (!is_int((int)$category)) {
             return false;
         }
 
@@ -236,30 +217,24 @@ class FrontendNavigation {
                     B.parentid = " . $category . " ";
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         $this->_db->query($sql);
 
-        if ($this->_db->nextRecord()) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->_db->nextRecord();
     }
 
     /**
      * Get category name
      *
-     * @param integer $cat_id
-     *
+     * @param int $cat_id
      * @return string
      * @throws cDbException
      */
-    public function getCategoryName($cat_id) {
-        if (!is_int((int) $cat_id)) {
+    public function getCategoryName($cat_id): string
+    {
+        if (!is_int((int)$cat_id)) {
             return '';
         }
 
@@ -276,9 +251,7 @@ class FrontendNavigation {
                 ";
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         $this->_db->query($sql);
@@ -293,13 +266,13 @@ class FrontendNavigation {
     /**
      * Get category urlname
      *
-     * @param integer $cat_id
-     *
+     * @param int $cat_id
      * @return string
      * @throws cDbException
      */
-    public function getCategoryURLName($cat_id) {
-        if (!is_int((int) $cat_id)) {
+    public function getCategoryURLName($cat_id): string
+    {
+        if (!is_int((int)$cat_id)) {
             return '';
         }
 
@@ -316,9 +289,7 @@ class FrontendNavigation {
                 ";
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         $this->_db->query($sql);
@@ -333,13 +304,13 @@ class FrontendNavigation {
     /**
      * Check if category is visible
      *
-     * @param integer $cat_id
-     *
-     * @return boolean
+     * @param int $cat_id
+     * @return bool
      * @throws cDbException
      */
-    public function isVisible($cat_id) {
-        if (!is_int((int) $cat_id)) {
+    public function isVisible($cat_id): bool
+    {
+        if (!is_int((int)$cat_id)) {
             return false;
         }
 
@@ -356,31 +327,25 @@ class FrontendNavigation {
                 ";
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         $this->_db->query($sql);
         $this->_db->nextRecord();
 
-        if ($this->_db->f("visible") == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->_db->f("visible") == 1;
     }
 
     /**
      * Check if category is public
      *
-     * @param integer $cat_id
-     *
-     * @return boolean
+     * @param int $cat_id
+     * @return bool
      * @throws cDbException
      */
-    public function isPublic($cat_id) {
-        if (!is_int((int) $cat_id)) {
+    public function isPublic($cat_id): bool
+    {
+        if (!is_int((int)$cat_id)) {
             return false;
         }
 
@@ -397,32 +362,26 @@ class FrontendNavigation {
                 ";
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         $this->_db->query($sql);
         $this->_db->nextRecord();
 
-        if ($this->_db->f("public") == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->_db->f("public") == 1;
     }
 
     /**
      * Return true if $parentid is parent of $catid
      *
-     * @param integer $parentid
-     * @param integer $catid
-     *
-     * @return boolean
+     * @param int $parentid
+     * @param int $catid
+     * @return bool
      * @throws cDbException
      */
-    public function isParent($parentid, $catid) {
-        if (!is_int((int) $parentid)) {
+    public function isParent($parentid, $catid)
+    {
+        if (!is_int((int)$parentid)) {
             return false;
         }
 
@@ -441,30 +400,24 @@ class FrontendNavigation {
         $this->_db->nextRecord();
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         $pre = $this->_db->f("parentid");
 
-        if ($parentid == $pre) {
-            return true;
-        } else {
-            return false;
-        }
+        return $parentid == $pre;
     }
 
     /**
      * Get parent id of a category
      *
-     * @param integer $preid
-     *
-     * @return integer
+     * @param int $preid
+     * @return int
      * @throws cDbException
      */
-    public function getParent($preid) {
-        if (!is_int((int) $preid)) {
+    public function getParent($preid): int
+    {
+        if (!is_int((int)$preid)) {
             return -1;
         }
 
@@ -482,13 +435,11 @@ class FrontendNavigation {
         $this->_db->query($sql);
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         if ($this->_db->nextRecord()) {
-            return $this->_db->f("parentid");
+            return cSecurity::toInteger($this->_db->f("parentid"));
         } else {
             return -1;
         }
@@ -497,13 +448,13 @@ class FrontendNavigation {
     /**
      * Check if a category has a parent
      *
-     * @param integer $preid
-     *
-     * @return boolean
+     * @param int $preid
+     * @return bool
      * @throws cDbException
      */
-    public function hasParent($preid) {
-        if (!is_int((int) $preid)) {
+    public function hasParent($preid): bool
+    {
+        if (!is_int((int)$preid)) {
             return false;
         }
 
@@ -521,28 +472,22 @@ class FrontendNavigation {
         $this->_db->query($sql);
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
-        if ($this->_db->nextRecord()) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->_db->nextRecord();
     }
 
     /**
      * Get level of a category
      *
-     * @param integer $catid
-     *
-     * @return integer
+     * @param int $catid
+     * @return int
      * @throws cDbException
      */
-    public function getLevel($catid) {
-        if (!is_int((int) $catid)) {
+    public function getLevel($catid): int
+    {
+        if (!is_int((int)$catid)) {
             return -1;
         }
 
@@ -556,13 +501,11 @@ class FrontendNavigation {
         $this->_db->query($sql);
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         if ($this->_db->nextRecord()) {
-            return $this->_db->f("level");
+            return cSecurity::toInteger($this->_db->f("level"));
         } else {
             return -1;
         }
@@ -576,20 +519,21 @@ class FrontendNavigation {
      * @param bool $absolute return absolute path or not [optional]
      * @return string $url
      */
-    public function getFrontContentUrl($idcat, $idart, $absolute = true) {
-        if (!is_int((int) $idcat) && $idcat < 0) {
+    public function getFrontContentUrl($idcat, $idart, $absolute = true): string
+    {
+        if (!is_int((int)$idcat) && $idcat < 0) {
             return '';
         }
 
         if ($absolute === true) {
             # add absolute web path to urlpath
-            if (is_int((int) $idart) && $idart > 0) {
-                $url = $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'front_content.php?idcat=' . $idcat . '&idart=' . $idart;
+            if (is_int((int)$idart) && $idart > 0) {
+                $url = cRegistry::getFrontendUrl() . 'front_content.php?idcat=' . $idcat . '&idart=' . $idart;
             } else {
-                $url = $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'front_content.php?idcat=' . $idcat;
+                $url = cRegistry::getFrontendUrl() . 'front_content.php?idcat=' . $idcat;
             }
         } else {
-            if (is_int((int) $idart) && $idart > 0) {
+            if (is_int((int)$idart) && $idart > 0) {
                 $url = 'front_content.php?idcat=' . $idcat . '&idart=' . $idart;
             } else {
                 $url = 'front_content.php?idcat=' . $idcat;
@@ -607,12 +551,13 @@ class FrontendNavigation {
      * @param int $idcat
      * @param int $idart
      * @param bool $absolute return absolute path or not [optional]
-     * @param integer $level [optional]
+     * @param int $level [optional]
      * @param string $urlSuffix [optional]
      * @return string path information or empty string
      */
-    public function getUrlPath($idcat, $idart, $absolute = true, $level = 0, $urlSuffix = 'index.html') {
-        if (!is_int((int) $idcat) && $idcat < 0) {
+    public function getUrlPath($idcat, $idart, $absolute = true, $level = 0, $urlSuffix = 'index.html'): string
+    {
+        if (!is_int((int)$idcat) && $idcat < 0) {
             return '';
         }
 
@@ -626,13 +571,13 @@ class FrontendNavigation {
 
         if ($absolute === true) {
             # add absolute web path to urlpath
-            if (is_int((int) $idart) && $idart > 0) {
-                return $this->_cfgClient[$this->_client]['path']['htmlpath'] . $cat_str . '/index-d-' . $idart . '.html';
+            if (is_int((int)$idart) && $idart > 0) {
+                return cRegistry::getFrontendUrl() . $cat_str . '/index-d-' . $idart . '.html';
             } else {
-                return $this->_cfgClient[$this->_client]['path']['htmlpath'] . $cat_str . '/' . $urlSuffix;
+                return cRegistry::getFrontendUrl() . $cat_str . '/' . $urlSuffix;
             }
         } else {
-            if (is_int((int) $idart) && $idart > 0) {
+            if (is_int((int)$idart) && $idart > 0) {
                 return $cat_str . '/index-d-' . $idart . '.html';
             } else {
                 return $cat_str . '/' . $urlSuffix;
@@ -647,11 +592,12 @@ class FrontendNavigation {
      * @param int $idcat
      * @param int $selectedNumber
      * @param bool $absolute return absolute path or not [optional]
-     * @param integer $level [optional]
+     * @param int $level [optional]
      * @return string path information or empty string
      */
-    public function getUrlPathGenParam($idcat, $selectedNumber, $absolute = true, $level = 0) {
-        if (!is_int((int) $idcat) && $idcat < 0) {
+    public function getUrlPathGenParam($idcat, $selectedNumber, $absolute = true, $level = 0): string
+    {
+        if (!is_int((int)$idcat) && $idcat < 0) {
             return '';
         }
 
@@ -665,29 +611,31 @@ class FrontendNavigation {
 
         if ($absolute === true) {
             // add absolute web path to urlpath
-            if (is_int((int) $selectedNumber)) {
-                return $this->_cfgClient[$this->_client]['path']['htmlpath'] . $cat_str . '/index-g-' . $selectedNumber . '.html';
+            if (is_int((int)$selectedNumber)) {
+                return cRegistry::getFrontendUrl() . $cat_str . '/index-g-' . $selectedNumber . '.html';
             }
         } else {
-            if (is_int((int) $selectedNumber)) {
+            if (is_int((int)$selectedNumber)) {
                 return $cat_str . '/index-g-' . $selectedNumber . '.html';
             }
         }
+
+        return '';
     }
 
     /**
      * Get URL by given categoryid and/or articleid
      *
-     * @param int     $idcat    url name to create for
-     * @param int     $idart
-     * @param string  $type
-     * @param bool    $absolute return absolute path or not [optional]
-     * @param integer $level
-     *
+     * @param int $idcat url name to create for
+     * @param int $idart
+     * @param string $type
+     * @param bool $absolute return absolute path or not [optional]
+     * @param int $level
      * @return string $url or empty
      */
-    public function getURL($idcat, $idart, $type = '', $absolute = true, $level = 0) {
-        if (!is_int((int) $idcat) AND $idcat < 0) {
+    public function getURL($idcat, $idart, $type = '', $absolute = true, $level = 0): string
+    {
+        if (!is_int((int)$idcat) and $idcat < 0) {
             return '';
         }
 
@@ -715,15 +663,15 @@ class FrontendNavigation {
      * If an article is assigned to more than one category take the first
      * category.
      *
-     * @param  int $idart
-     *
+     * @param int $idart
      * @return int category id or negative integer
      * @throws cDbException
      */
-    public function getCategoryOfArticle($idart) {
+    public function getCategoryOfArticle($idart): int
+    {
 
         # validate input
-        if (!is_int((int) $idart) || $idart <= 0) {
+        if (!is_int((int)$idart) || $idart <= 0) {
             return -1;
         }
 
@@ -742,7 +690,7 @@ class FrontendNavigation {
             a.idart = b.idart ';
 
         if ($this->_debug) {
-            echo "<pre>" . $sql . "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         $this->_db->query($sql);
@@ -750,13 +698,13 @@ class FrontendNavigation {
         # $this->db->getErrorNumber() returns 0 (zero) if no error occurred.
         if ($this->_db->getErrorNumber() == 0) {
             if ($this->_db->nextRecord()) {
-                return $this->_db->f('idcat');
+                return cSecurity::toInteger($this->_db->f('idcat'));
             } else {
                 return -1;
             }
         } else {
             if ($this->_debug) {
-                echo "<pre>Mysql Error:" . $this->_db->getErrorMessage() . "(" . $this->_db->getErrorNumber() . ")</pre>";
+                cDebug::getDebugger()->add("Mysql Error:" . $this->_db->getErrorMessage() . "(" . $this->_db->getErrorNumber() . ")", __FUNCTION__);
             }
             return -1; # error occurred.
         }
@@ -765,30 +713,29 @@ class FrontendNavigation {
     /**
      * Get path  of a given category up to a certain level
      *
-     * @param integer $cat_id
-     * @param integer $level [optional]
-     * @param boolean $reverse
-     *
+     * @param int $cat_id
+     * @param int $level [optional]
+     * @param bool $reverse
      * @return array
      * @throws cDbException
      */
-    public function getCategoryPath($cat_id, $level = 0, $reverse = true) {
-        if (!is_int((int) $cat_id) && $cat_id < 0) {
-            return array();
+    public function getCategoryPath($cat_id, $level = 0, $reverse = true): array
+    {
+        if (!is_int((int)$cat_id) && $cat_id < 0) {
+            return [];
         }
 
-        $root_path = array();
-        array_push($root_path, $cat_id);
+        $root_path = [$cat_id];
         $parent_id = $cat_id;
 
         while ($this->getLevel($parent_id) >= 0 && $this->getLevel($parent_id) > $level) {
             $parent_id = $this->getParent($parent_id);
             if ($parent_id >= 0) {
-                array_push($root_path, $parent_id);
+                $root_path[] = $parent_id;
             }
         }
 
-        if ($reverse == true) {
+        if ($reverse) {
             $root_path = array_reverse($root_path);
         }
 
@@ -798,21 +745,22 @@ class FrontendNavigation {
     /**
      * Get root category of a given category
      *
-     * @param integer $cat_id
-     *
-     * @return array
+     * @param int $catId
+     * @return int|false
      * @throws cDbException
      */
-    function getRoot($cat_id) {
-        if (!is_int((int) $cat_id) && $cat_id < 0) {
-            return array();
+    function getRoot($catId)
+    {
+        if (!is_int((int)$catId) && $catId < 0) {
+            return false;
         }
 
-        $parent_id = $cat_id;
+        $rootCategory = false;
+        $parentId = $catId;
 
-        while ($this->getLevel($parent_id) >= 0) {
-            $rootCategory = $parent_id;
-            $parent_id = $this->getParent($parent_id);
+        while ($this->getLevel($parentId) >= 0) {
+            $rootCategory = $parentId;
+            $parentId = $this->getParent($parentId);
         }
 
         return $rootCategory;
@@ -822,14 +770,13 @@ class FrontendNavigation {
      * get subtree by a given id
      *
      * @param int $idcat_start Id of category
-     *
      * @return array Array with subtree
      * @throws cDbException
      */
-    function getSubTree($idcat_start) {
-
-        if (!is_int((int) $idcat_start)) {
-            return array();
+    function getSubTree($idcat_start): array
+    {
+        if (!is_int((int)$idcat_start)) {
+            return [];
         }
 
         $sql = "SELECT
@@ -844,15 +791,14 @@ class FrontendNavigation {
                     idtree";
 
         if ($this->_debug) {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
+            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
         $this->_db->query($sql);
 
         $i = false;
         $curLevel = 0;
+        $deeperCats = [];
 
         while ($this->_db->nextRecord()) {
             if ($this->_db->f("idcat") == $idcat_start) {
@@ -865,12 +811,11 @@ class FrontendNavigation {
                 }
             }
 
-            if ($i == true) {
-                $deeper_cats[] = $this->_db->f("idcat");
+            if ($i) {
+                $deeperCats[] = $this->_db->f("idcat");
             }
         }
-        return $deeper_cats;
+        return $deeperCats;
     }
 
 }
-?>

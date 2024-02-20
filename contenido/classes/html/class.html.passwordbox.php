@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLPasswordbox class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLPasswordbox class represents a password form field.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLPasswordbox extends cHTMLFormElement {
+class cHTMLPasswordbox extends cHTMLFormElement
+{
 
     /**
      * @var bool $_autofill
@@ -55,7 +55,8 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $value = '', $width = 0, $maxlength = 0, $id = '', $disabled = false, $tabindex = null, $accessKey = '', $class = '') {
+    public function __construct($name, $value = '', $width = 0, $maxlength = 0, $id = '', $disabled = false, $tabindex = null, $accessKey = '', $class = '')
+    {
         parent::__construct($name, $id, $disabled, $tabindex, $accessKey, $class);
         $this->_tag = 'input';
         $this->setValue($value);
@@ -71,9 +72,11 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      *
      * @param boolean $autofill - The autofill flag
      * @return cHTMLPasswordbox|cHTML
+     * @since CONTENIDO 4.10.2
      */
-    public function setAutofill($autofill) {
-        $this->_autofill = cSecurity::toBoolean($autofill);
+    public function setAutofill(bool $autofill)
+    {
+        $this->_autofill = $autofill;
         return $this;
     }
 
@@ -85,7 +88,8 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      * @return cHTMLPasswordbox
      *         $this for chaining
      */
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         $width = cSecurity::toInteger($width);
 
         if ($width <= 0) {
@@ -103,7 +107,8 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      * @return cHTMLPasswordbox
      *         $this for chaining
      */
-    public function setMaxLength($maxLength) {
+    public function setMaxLength($maxLength)
+    {
         $maxLength = cSecurity::toInteger($maxLength);
 
         if ($maxLength <= 0) {
@@ -121,27 +126,30 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      * @return cHTMLPasswordbox
      *         $this for chaining
      */
-    public function setValue($value) {
+    public function setValue($value)
+    {
         return $this->updateAttribute('value', $value);
     }
 
     /**
      * Generates the HTML markup for the input field of type password.
-     * Additionally, it deals with the enabled status of th property $_autofill.
+     * Additionally, it deals with the enabled status of the property $_autofill.
      * Setting the autocomplete to "off" will prevent from autocompletion but
      * some browser or password manager may autofill the field with the
      * previous stored value, which is not always wanted.
      * Setting the field initially to readonly and enabling it again after
      * getting focus does the trick!
      *
+     * @return string
+     * @since CONTENIDO 4.10.2
      * @TODO This function could be moved to somewhere else, because all input, textarea,
      *       select and form elements could use the autocomplete attribute.
      *       But, only input and textarea can have readonly attribute.
      *
      *
-     * @return string
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         $sReadonly = $this->getAttribute('readonly') !== null;
 
         if ($this->_autofill === true || $sReadonly) {

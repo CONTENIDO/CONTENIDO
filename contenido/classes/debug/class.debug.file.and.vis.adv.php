@@ -3,14 +3,13 @@
 /**
  * This file contains the file and vis adv debug class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
- *
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,24 +19,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * In case you cannot output directly to screen when debugging a live system,
  * this object writes the info to a file located in /data/logs/debug.log.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
  */
-class cDebugFileAndVisAdv extends cDebugVisibleAdv {
+class cDebugFileAndVisAdv extends cDebugVisibleAdv
+{
 
     /**
      * Singleton instance
      *
      * @var cDebugFileAndVisAdv
-     * @todo should be private
      */
-    protected static $_instance;
-
-    /**
-     *
-     * @var array
-     */
-    private $_aItems;
+    private static $_instance;
 
     /**
      *
@@ -50,9 +43,10 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
      *
      * @return cDebugFileAndVisAdv
      */
-    public static function getInstance() {
+    public static function getInstance(): cDebugInterface
+    {
         if (self::$_instance == NULL) {
-            self::$_instance = new cDebugFileAndVisAdv();
+            self::$_instance = new self();
         }
         return self::$_instance;
     }
@@ -60,47 +54,56 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
     /**
      * Constructor to create an instance of this class.
      */
-    private function __construct() {
-        global $cfg;
-        $this->_aItems = array();
+    private function __construct()
+    {
+        $this->_aItems = [];
+        $this->_buffer = '';
+
+        $cfg = cRegistry::getConfig();
         $this->_filePathName = $cfg['path']['contenido_logs'] . 'debug.log';
     }
 
     /**
      * Writes a line.
      *
-     * @see cDebugInterface::out()
-     *
-     * @param string $msg
+     * @param string $sText
      *
      * @throws cInvalidArgumentException
+     * @see cDebugInterface::out()
+     *
      */
-    public function out($msg) {
-        parent::out($msg);
+    public function out($sText)
+    {
+        parent::out($sText);
 
         $sDate = date('Y-m-d H:i:s');
-        cFileHandler::write($this->_filePathName, $sDate . ": " . $msg . "\n", true);
+        cFileHandler::write($this->_filePathName, $sDate . ": " . $sText . "\n", true);
     }
 
     /**
      * Outputs contents of passed variable in a preformatted, readable way.
      *
-     * @see cDebugVisibleAdv::show()
-     * @param mixed  $mVariable
+     * @param mixed $mVariable
      *                                     The variable to be displayed.
      * @param string $sVariableDescription [optional]
      *                                     The variable's name or description.
-     * @param bool   $bExit                [optional]
+     * @param bool $bExit [optional]
      *                                     If set to true, your app will die() after output of current var.
      * @throws cInvalidArgumentException
-*/
-    public function show($mVariable, $sVariableDescription = '', $bExit = false) {
+     * @see cDebugVisibleAdv::show()
+     */
+    public function show($mVariable, $sVariableDescription = '', $bExit = false)
+    {
         parent::show($mVariable, $sVariableDescription, $bExit);
 
         if (is_writeable($this->_filePathName)) {
             $sDate = date('Y-m-d H:i:s');
-            $sContent = '#################### ' . $sDate . ' ####################' . "\n" . $sVariableDescription . "\n" . print_r($mVariable, true) . "\n" . '#################### /' . $sDate . ' ###################' . "\n\n";
+            $sContent = '#################### ' . $sDate . ' ####################' . "\n"
+                . $sVariableDescription . "\n"
+                . print_r($mVariable, true) . "\n"
+                . '#################### /' . $sDate . ' ###################' . "\n\n";
             cFileHandler::write($this->_filePathName, $sContent, true);
         }
     }
+
 }

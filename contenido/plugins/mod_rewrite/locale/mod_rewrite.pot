@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-21 10:55+0200\n"
+"POT-Creation-Date: 2023-03-05 16:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,13 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: classes/controller/class.modrewrite_contentexpert_controller.php:74
+#: classes/controller/class.modrewrite_contentexpert_controller.php:71
 msgid ""
 ".htaccess already exists at CONTENIDO-/or client directory, so it is not "
 "copied."
 msgstr ""
 
-#: classes/controller/class.modrewrite_contentexpert_controller.php:91
+#: classes/controller/class.modrewrite_contentexpert_controller.php:88
 #, php-format
 msgid ""
 ".htaccess could not copy from <strong>%s</strong> to <strong>%s</strong>! "
@@ -31,22 +31,22 @@ msgid ""
 "your webserver."
 msgstr ""
 
-#: classes/controller/class.modrewrite_contentexpert_controller.php:95
+#: classes/controller/class.modrewrite_contentexpert_controller.php:92
 #, php-format
 msgid ".htaccess are successfully copied to %s"
 msgstr ""
 
-#: classes/controller/class.modrewrite_contentexpert_controller.php:129
+#: classes/controller/class.modrewrite_contentexpert_controller.php:132
 msgid "All aliases have been reset."
 msgstr ""
 
-#: classes/controller/class.modrewrite_contentexpert_controller.php:138
+#: classes/controller/class.modrewrite_contentexpert_controller.php:144
 msgid "Only empty aliases have been reset."
 msgstr ""
 
 #: classes/controller/class.modrewrite_content_controller.php:62
 msgid ""
-"The root directory has a invalid format, alowed are the chars [a-zA-Z0-9\\-_"
+"The root directory has a invalid format, allowed are the chars [a-zA-Z0-9\\-_"
 "\\/\\.]"
 msgstr ""
 
@@ -157,103 +157,105 @@ msgstr ""
 msgid "Configuration could not saved. Please check write permissions for %s "
 msgstr ""
 
-#: classes/controller/class.modrewrite_controller_abstract.php:105
-msgid "More informations"
+#: classes/controller/class.modrewrite_controller_abstract.php:110
+#: includes/include.mod_rewrite_content.php:282
+#: includes/include.mod_rewrite_contentexpert.php:91
+msgid "More information"
 msgstr ""
 
-#: includes/config.plugin.php:72
+#: includes/config.plugin.php:63
 msgid "Advanced Mod Rewrite"
 msgstr ""
 
-#: includes/config.plugin.php:73
+#: includes/config.plugin.php:64
 msgid "Advanced Mod Rewrite functions"
 msgstr ""
 
-#: includes/config.plugin.php:74
+#: includes/config.plugin.php:65
 msgid "Advanced Mod Rewrite test"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:26
-#: includes/include.mod_rewrite_contentexpert.php:26
+#: includes/include.mod_rewrite_content.php:27
+#: includes/include.mod_rewrite_contentexpert.php:27
 #: includes/include.mod_rewrite_contenttest.php:34
 msgid "No Client selected"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:175
+#: includes/include.mod_rewrite_content.php:171
 msgid "Version"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:176
+#: includes/include.mod_rewrite_content.php:172
 msgid "Author"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:177
+#: includes/include.mod_rewrite_content.php:173
 msgid "E-Mail to author"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:178
+#: includes/include.mod_rewrite_content.php:174
 msgid "Plugin page"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:179
+#: includes/include.mod_rewrite_content.php:175
 msgid "Visit plugin page"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:180
+#: includes/include.mod_rewrite_content.php:176
 msgid "opens page in new window"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:181
+#: includes/include.mod_rewrite_content.php:177
 msgid "CONTENIDO forum"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:182
+#: includes/include.mod_rewrite_content.php:178
 msgid "Plugin thread in CONTENIDO forum"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:183
+#: includes/include.mod_rewrite_content.php:179
 msgid "Plugin settings"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:184
-#: includes/include.mod_rewrite_contentexpert.php:87
+#: includes/include.mod_rewrite_content.php:180
+#: includes/include.mod_rewrite_contentexpert.php:85
 msgid "Note"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:186
+#: includes/include.mod_rewrite_content.php:182
 #, php-format
 msgid ""
-"The .htaccess file could not found either in CONTENIDO installation "
+"The .htaccess file could not be found either in CONTENIDO installation "
 "directory nor in client directory.<br>It should set up in %sFunctions%s "
 "area, if needed."
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:189
+#: includes/include.mod_rewrite_content.php:185
 #, php-format
 msgid ""
 "Found some category and/or article aliases. It is recommended to run the "
 "reset function in %sFunctions%s area, if needed."
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:192
+#: includes/include.mod_rewrite_content.php:188
 msgid "Enable Advanced Mod Rewrite"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:194
+#: includes/include.mod_rewrite_content.php:190
 msgid ""
 "Disabling of plugin does not result in disabling mod rewrite module of the "
 "web server - This means,<br> all defined rules in the .htaccess are still "
 "active and could create unwanted side effects.<br><br>Apache mod rewrite "
 "could be enabled/disabled by setting the RewriteEngine directive.<br>Any "
-"defined rewrite rules could remain in the .htaccess and they will not "
+"defined rewrite rules could remain in the .htaccess and they will not be "
 "processed,<br>if the mod rewrite module is disabled"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:196
+#: includes/include.mod_rewrite_content.php:192
 msgid "Example"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:198
+#: includes/include.mod_rewrite_content.php:194
 msgid ""
 "# enable apache mod rewrite module\n"
 "RewriteEngine on\n"
@@ -262,75 +264,75 @@ msgid ""
 "RewriteEngine off"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:200
+#: includes/include.mod_rewrite_content.php:196
 msgid "Path to .htaccess from DocumentRoot"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:201
+#: includes/include.mod_rewrite_content.php:197
 msgid ""
 "Type '/' if the .htaccess file lies inside the wwwroot (DocumentRoot) folder."
 "<br>Type the path to the subfolder fromm wwwroot, if CONTENIDO is installed "
-"in a subfolder within the wwwroot<br>(e. g. http://domain/mycontenido -&gt; "
+"in a subfolder within the wwwroot<br>(e. g. https://domain/mycontenido -&gt; "
 "path = '/mycontenido/')"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:203
+#: includes/include.mod_rewrite_content.php:199
 msgid "Check path to .htaccess"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:204
+#: includes/include.mod_rewrite_content.php:200
 msgid ""
 "The path will be checked, if this option is enabled.<br>But this could "
 "result in an error in some cases, even if the specified path is valid "
 "and<br>clients DocumentRoot differs from CONTENIDO backend DocumentRoot."
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:206
+#: includes/include.mod_rewrite_content.php:202
 msgid "Should the name of root category be displayed in the URL?"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:207
+#: includes/include.mod_rewrite_content.php:203
 msgid "Start from root category"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:208
+#: includes/include.mod_rewrite_content.php:204
 msgid ""
-"If enabled, the name of the root category (e. g. \"Mainnavigation\" in a "
+"If enabled, the name of the root category (e. g. \"Main Navigation\" in a "
 "CONTENIDO default installation), will be preceded to the URL."
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:210
+#: includes/include.mod_rewrite_content.php:206
 msgid "Are several clients maintained in one directory?"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:211
+#: includes/include.mod_rewrite_content.php:207
 msgid "Prepend client to the URL"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:212
+#: includes/include.mod_rewrite_content.php:208
 msgid "Use client name instead of the id"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:214
+#: includes/include.mod_rewrite_content.php:210
 msgid ""
 "Should the language appear in the URL (required for multi language websites)?"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:215
+#: includes/include.mod_rewrite_content.php:211
 msgid "Prepend language to the URL"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:216
+#: includes/include.mod_rewrite_content.php:212
 msgid "Use language name instead of the id"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:218
+#: includes/include.mod_rewrite_content.php:214
 msgid ""
 "Configure your own separators with following 4 settings<br>to control "
 "generated URLs to your own taste"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:219
+#: includes/include.mod_rewrite_content.php:215
 msgid ""
 "www.domain.com/category1-category2.articlename.html\n"
 "www.domain.com/category1/category2-articlename.html\n"
@@ -338,127 +340,127 @@ msgid ""
 "www.domain.com/category_name1-category2-articlename.foo"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:220
+#: includes/include.mod_rewrite_content.php:216
 msgid "Category separator has to be different from category-word separator"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:221
+#: includes/include.mod_rewrite_content.php:217
 msgid ""
 "# Example: Category separator (/) and category-word separator (_)\n"
 "category_one/category_two/articlename.html"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:222
+#: includes/include.mod_rewrite_content.php:218
 msgid "Category separator has to be different from article-word separator"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:223
+#: includes/include.mod_rewrite_content.php:219
 msgid ""
 "# Example: Category separator (/) and article-word separator (-)\n"
 "category_one/category_two/article-description.html"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:224
+#: includes/include.mod_rewrite_content.php:220
 msgid ""
 "Category-article separator has to be different from article-word separator"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:225
+#: includes/include.mod_rewrite_content.php:221
 msgid ""
 "# Example: Category-article separator (/) and article-word separator (-)\n"
 "category_one/category_two/article-description.html"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:227
-msgid "Category separator (delemiter between single categories)"
+#: includes/include.mod_rewrite_content.php:223
+msgid "Category separator (delimiter between single categories)"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:228
-#: includes/include.mod_rewrite_content.php:229
+#: includes/include.mod_rewrite_content.php:224
+#: includes/include.mod_rewrite_content.php:225
 #, php-format
 msgid "(possible values: %s)"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:230
-msgid "Category-word separator (delemiter between category words)"
+#: includes/include.mod_rewrite_content.php:226
+msgid "Category-word separator (delimiter between category words)"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:231
+#: includes/include.mod_rewrite_content.php:227
 msgid ""
-"Category-article separator (delemiter between category-block and article)"
+"Category-article separator (delimiter between category-block and article)"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:232
-msgid "Article-word separator (delemiter between article words)"
+#: includes/include.mod_rewrite_content.php:228
+msgid "Article-word separator (delimiter between article words)"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:234
+#: includes/include.mod_rewrite_content.php:230
 msgid "Append article name to URLs"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:235
+#: includes/include.mod_rewrite_content.php:231
 msgid "Append article name always to URLs (even at URLs to categories)"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:236
+#: includes/include.mod_rewrite_content.php:232
 msgid "Default article name without extension"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:237
+#: includes/include.mod_rewrite_content.php:233
 msgid ""
 "e. g. \"index\" for index.ext<br>In case of selected \"Append article name "
 "always to URLs\" option and a empty field,<br>the name of the start article "
 "will be used"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:239
+#: includes/include.mod_rewrite_content.php:235
 msgid "File extension at the end of the URL"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:240
+#: includes/include.mod_rewrite_content.php:236
 msgid ""
 "Specification of file extension with a preceded dot<br>e.g. \".html\" for "
-"http://host/foo/bar.html"
+"https://host/foo/bar.html"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:241
+#: includes/include.mod_rewrite_content.php:237
 msgid ""
-"It's strongly recommended to specify a extension here,<br>if the option "
-"\"Append article name always to URLs\" was not selected.<br><br>Otherwise "
+"It's strongly recommended to specify an extension here,<br>if the option "
+"\"Append article name always to URLs\" was not selected.<br><br>Otherwise, "
 "URLs to categories and articles would have the same format<br>which may "
 "result in unresolvable categories/articles in some cases."
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:242
+#: includes/include.mod_rewrite_content.php:238
 msgid ""
 "It's necessary to specify a file extension at the moment, due do existing "
 "issues, which are not solved until yet. An not defined extension may result "
 "in invalid article detection in some cases."
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:244
+#: includes/include.mod_rewrite_content.php:240
 msgid "Should the URLs be written in lower case?"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:245
+#: includes/include.mod_rewrite_content.php:241
 msgid "URLs in lower case"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:247
+#: includes/include.mod_rewrite_content.php:243
 msgid "Duplicated content"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:248
+#: includes/include.mod_rewrite_content.php:244
 msgid "Prevent duplicated content"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:250
+#: includes/include.mod_rewrite_content.php:246
 msgid ""
-"Depending on configuration, pages could be found thru different URLs."
+"Depending on configuration, pages could be found through different URLs."
 "<br>Enabling of this option prevents this. Examples for duplicated content"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:251
+#: includes/include.mod_rewrite_content.php:247
 msgid ""
 "Name of the root category in the URL: Feasible is /maincategory/subcategory/ "
 "and /subcategory/\n"
@@ -466,47 +468,47 @@ msgid ""
 "Client in the URL: Feasible is /client/category/ und /1/category/"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:254
+#: includes/include.mod_rewrite_content.php:250
 msgid "Percentage for similar category paths in URLs"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:255
+#: includes/include.mod_rewrite_content.php:251
 msgid ""
 "This setting refers only to the category path of a URL. If AMR is "
 "configured<br>to prepend e. g. the root category, language and/or client to "
-"the URL,<br>the specified percentage will not applied to those parts of the "
+"the URL,<br>the specified percentage will not apply to those parts of the "
 "URL.<br>A incoming URL will be cleaned from those values and the remaining "
 "path (urlpath of the category)<br>will be checked against similarities."
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:256
+#: includes/include.mod_rewrite_content.php:252
 msgid ""
 "100 = exact match with no tolerance\n"
 "85  = paths with little errors will match to similar ones\n"
 "0   = matching will work even for total wrong paths"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:258
+#: includes/include.mod_rewrite_content.php:254
 msgid "Redirect in case of invalid articles"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:259
-msgid "Redirect to error page in case of invaid articles"
+#: includes/include.mod_rewrite_content.php:255
+msgid "Redirect to error page in case of invalid articles"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:260
+#: includes/include.mod_rewrite_content.php:256
 msgid "The start page will be displayed if this option is not enabled"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:262
+#: includes/include.mod_rewrite_content.php:258
 msgid "Moment of URL generation"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:263
+#: includes/include.mod_rewrite_content.php:259
 msgid "a.) During the output of HTML code of the page"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:264
+#: includes/include.mod_rewrite_content.php:260
 msgid ""
 "Clean-URLs will be generated during page output. Modules/Plugins are able to "
 "generate URLs to frontend<br>as usual as in previous CONTENIDO versions "
@@ -514,11 +516,11 @@ msgid ""
 "will be replaced by the plugin to Clean-URLs before sending the HTML output."
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:265
+#: includes/include.mod_rewrite_content.php:261
 msgid "Differences to variant b.)"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:266
+#: includes/include.mod_rewrite_content.php:262
 msgid ""
 "Still compatible to old modules/plugins, since no changes in codes are "
 "required\n"
@@ -528,11 +530,11 @@ msgid ""
 "<br>Doing it this way reduces the amount of executed database significantly."
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:269
+#: includes/include.mod_rewrite_content.php:265
 msgid "b.) In modules or plugins"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:270
+#: includes/include.mod_rewrite_content.php:266
 msgid ""
 "By using this option, all Clean-URLs will be generated directly in module or "
 "plugins.<br>This means, all areas in modules/plugins, who generate internal "
@@ -540,7 +542,7 @@ msgid ""
 "have to be generated by using following function:"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:271
+#: includes/include.mod_rewrite_content.php:267
 msgid ""
 "# structure of a normal url\n"
 "$url = 'front_content.php?idart=123&amp;lang=2&amp;client=1';\n"
@@ -551,30 +553,30 @@ msgid ""
 "$newUrl = cUri::getInstance()->build($params);"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:272
+#: includes/include.mod_rewrite_content.php:268
 msgid "Differences to variant a.)"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:273
+#: includes/include.mod_rewrite_content.php:269
 msgid ""
 "The default way to generate URLs to fronend pages\n"
 "Each URL in modules/plugins has to be generated by UriBuilder\n"
 "Each generated Clean-Url requires a database query"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:276
+#: includes/include.mod_rewrite_content.php:272
 msgid "Routing"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:277
+#: includes/include.mod_rewrite_content.php:273
 msgid "Routing definitions for incoming URLs"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:278
+#: includes/include.mod_rewrite_content.php:274
 msgid "Type one routing definition per line as follows:"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:279
+#: includes/include.mod_rewrite_content.php:275
 msgid ""
 "# {incoming_url}>>>{new_url}\n"
 "/incoming_url/name.html>>>new_url/new_name.html\n"
@@ -587,81 +589,80 @@ msgid ""
 "/>>>front_content.php?idart=16"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:280
+#: includes/include.mod_rewrite_content.php:276
 msgid ""
-"The routing does not sends a HTTP header redirection to the destination URL, "
+"The routing does not send a HTTP header redirection to the destination URL, "
 "the redirection will happen internally by<br>replacing the detected incoming "
 "URL against the new destination URL (overwriting of article- categoryid)\n"
-"Incoming URLs can point to non existing resources (category/article), but "
-"the desttination URLs should point<br>to valid CONTENIDO articles/"
-"categories\n"
+"Incoming URLs can point to non-existing resources (category/article), but "
+"the destination URLs should point<br>to valid CONTENIDO articles/categories\n"
 "Destination URLs should point to real URLs to categories/articles,<br>e. g."
 "front_content.php?idcat=23 or front_content.php?idart=34\n"
-"The language id should attached to the URL in multi language sites<br>e. g. "
-"front_content.php?idcat=23&amp;lang=1\n"
-"The client id should attached to the URL in multi client sites sharing the "
-"same folder<br>e. g. front_content.php?idcat=23&amp;client=2\n"
+"The language id should be attached to the URL on multi-language sites<br>e. "
+"g. front_content.php?idcat=23&amp;lang=1\n"
+"The client id should be attached to the URL in multi client sites sharing "
+"the same folder<br>e. g. front_content.php?idcat=23&amp;client=2\n"
 "The destination URL should not start with '/' or './' (wrong: /front_content."
 "php, correct: front_content.php)"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:283
-#: includes/include.mod_rewrite_contentexpert.php:90
+#: includes/include.mod_rewrite_content.php:279
+#: includes/include.mod_rewrite_contentexpert.php:88
 msgid "Discard changes"
 msgstr ""
 
-#: includes/include.mod_rewrite_content.php:284
-#: includes/include.mod_rewrite_contentexpert.php:91
+#: includes/include.mod_rewrite_content.php:280
+#: includes/include.mod_rewrite_contentexpert.php:89
 msgid "Save changes"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:61
+#: includes/include.mod_rewrite_contentexpert.php:59
 msgid "Plugin functions"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:63
+#: includes/include.mod_rewrite_contentexpert.php:61
 msgid "Copy/Download .htaccess template"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:64
+#: includes/include.mod_rewrite_contentexpert.php:62
 msgid "Select .htaccess template"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:65
+#: includes/include.mod_rewrite_contentexpert.php:63
 msgid "Restrictive .htaccess"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:66
+#: includes/include.mod_rewrite_contentexpert.php:64
 msgid "Simple .htaccess"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:67
+#: includes/include.mod_rewrite_contentexpert.php:65
 msgid ""
 "Contains rules with restrictive settings.<br>All requests pointing to "
 "extension avi, css, doc, flv, gif, gzip, ico, jpeg, jpg, js, mov, <br>mp3, "
-"pdf, png, ppt, rar, svg, swf, txt, wav, wmv, xml, zip, will be excluded vom rewriting."
-"<br>Remaining requests will be rewritten to front_content.php,<br>except "
-"requests to 'contenido/', 'setup/', 'cms/upload', 'cms/front_content.php', "
-"etc.<br>Each resource, which has to be excluded from rewriting must be "
-"specified explicitly."
+"pdf, png, ppt, rar, svg, swf, txt, wav, wmv, xml, zip, will be excluded vom "
+"rewriting.<br>Remaining requests will be rewritten to front_content.php,"
+"<br>except requests to 'contenido/', 'setup/', 'cms/upload', 'cms/"
+"front_content.php', etc.<br>Each resource, which has to be excluded from "
+"rewriting must be specified explicitly."
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:69
+#: includes/include.mod_rewrite_contentexpert.php:67
 msgid ""
 "Contains a simple collection of rules. Each requests pointing to valid "
 "symlinks, folders or<br>files, will be excluded from rewriting. Remaining "
 "requests will be rewritten to front_content.php"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:71
+#: includes/include.mod_rewrite_contentexpert.php:69
 msgid "and copy to"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:72
+#: includes/include.mod_rewrite_contentexpert.php:70
 msgid "CONTENIDO installation directory"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:73
+#: includes/include.mod_rewrite_contentexpert.php:71
 msgid ""
 "Copy the selected .htaccess template into CONTENIDO installation "
 "directory<br><br>&nbsp;&nbsp;&nbsp;&nbsp;{CONTENIDO_FULL_PATH}.<br><br>This "
@@ -669,11 +670,11 @@ msgid ""
 "clients<br>who are running on the same domain."
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:75
+#: includes/include.mod_rewrite_contentexpert.php:73
 msgid "client directory"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:76
+#: includes/include.mod_rewrite_contentexpert.php:74
 msgid ""
 "Copy the selected .htaccess template into client's directory<br><br>&nbsp;"
 "&nbsp;&nbsp;&nbsp;{CLIENT_FULL_PATH}.<br><br>This is the recommended option "
@@ -681,44 +682,44 @@ msgid ""
 "subdomain"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:78
+#: includes/include.mod_rewrite_contentexpert.php:76
 msgid "or"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:79
+#: includes/include.mod_rewrite_contentexpert.php:77
 msgid "Download"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:80
+#: includes/include.mod_rewrite_contentexpert.php:78
 msgid ""
 "Download selected .htaccess template to copy it to the destination "
 "folder<br>or to take over the settings manually."
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:82
+#: includes/include.mod_rewrite_contentexpert.php:80
 msgid "Reset category-/ and article aliases"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:83
+#: includes/include.mod_rewrite_contentexpert.php:81
 msgid "Reset only empty aliases"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:84
+#: includes/include.mod_rewrite_contentexpert.php:82
 msgid ""
 "Only empty aliases will be reset, existing aliases, e. g. manually set "
 "aliases, will not be changed."
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:85
+#: includes/include.mod_rewrite_contentexpert.php:83
 msgid "Reset all aliases"
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:86
+#: includes/include.mod_rewrite_contentexpert.php:84
 msgid ""
 "Reset all category-/article aliases. Existing aliases will be overwritten."
 msgstr ""
 
-#: includes/include.mod_rewrite_contentexpert.php:88
+#: includes/include.mod_rewrite_contentexpert.php:86
 msgid ""
 "This process could require some time depending on amount of categories/"
 "articles.<br>The aliases will not contain the configured plugin separators, "
@@ -727,25 +728,24 @@ msgid ""
 "empty aliases for the usage by the plugin."
 msgstr ""
 
-#: includes/include.mod_rewrite_contenttest.php:54
+#: includes/include.mod_rewrite_contenttest.php:51
 msgid ""
-"Define options to genereate the URLs by using the form below and run the "
-"test."
+"Define options to generate the URLs by using the form below and run the test."
 msgstr ""
 
-#: includes/include.mod_rewrite_contenttest.php:55
+#: includes/include.mod_rewrite_contenttest.php:52
 msgid "Parameter to use"
 msgstr ""
 
-#: includes/include.mod_rewrite_contenttest.php:56
+#: includes/include.mod_rewrite_contenttest.php:53
 msgid "Number of URLs to generate"
 msgstr ""
 
-#: includes/include.mod_rewrite_contenttest.php:57
+#: includes/include.mod_rewrite_contenttest.php:54
 msgid "Run test"
 msgstr ""
 
-#: includes/include.mod_rewrite_contenttest.php:59
+#: includes/include.mod_rewrite_contenttest.php:56
 msgid ""
 "{pref}<strong>{name}</strong><br>{pref}Builder in:    {url_in}<br>{pref}"
 "Builder out:   {url_out}<br>{pref}<span style=\"color:{color}\">Resolved "
@@ -753,7 +753,7 @@ msgid ""
 "{data}"
 msgstr ""
 
-#: includes/include.mod_rewrite_contenttest.php:61
+#: includes/include.mod_rewrite_contenttest.php:58
 msgid ""
 "Duration of test run: {time} seconds.<br>Number of processed URLs: {num_urls}"
 "<br><span class=\"settingFine\">Successful resolved: {num_success}</"

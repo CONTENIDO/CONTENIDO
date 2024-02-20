@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the item class for userforum plugin.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage UserForum
- * @author Claus Schunk
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Claus Schunk
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,16 +17,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains functions db-query for cfg.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage UserForum
  */
-class ArticleForumItem extends Item {
+class ArticleForumItem extends Item
+{
 
     protected $cfg;
 
     protected $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = cRegistry::getDb();
         $this->cfg = cRegistry::getConfig();
 
@@ -35,9 +38,9 @@ class ArticleForumItem extends Item {
     /**
      * returns current config
      */
-    public function getCfg() {
+    public function getCfg()
+    {
         return $this->cfg;
     }
 
 }
-?>

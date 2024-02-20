@@ -1,2 +1,3 @@
 Back=Zurück
 Forward=Weiter
+Label=Auswahl für Bildergalerie

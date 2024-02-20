@@ -2,11 +2,11 @@
 
 /**
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -29,7 +29,7 @@ switch ($area) {
 
         // show blank menu when form was just deleted
         if (PifaRightBottomFormPage::DELETE_FORM === $action) {
-        	$tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
+            $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
             break;
         }
 
@@ -97,5 +97,3 @@ $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
 
 // Generate the third navigation layer
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav']);
-
-?>

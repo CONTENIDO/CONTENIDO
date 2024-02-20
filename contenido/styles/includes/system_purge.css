@@ -6,7 +6,6 @@
 
 .system_clear_header {
     background-color: #E2E2E2;
-    height: 11px;
     color: #666;
     padding: 2px 5px 5px 5px;
 }
@@ -47,7 +46,6 @@
 }
 
 .system_clear_group {
-    border-top: 1px solid #B3B3B3;
 }
 
 .system_clear_group .leftCol {
@@ -59,8 +57,12 @@
 .system_clear_group .rightCol {
     float:left;
     border-left: 1px solid #B3B3B3;
-    padding-bottom: 5px;
+    padding: 5px;
     white-space: nowrap;
+}
+
+.system_clear_group .rightCol fieldset {
+    margin-bottom: 5px;
 }
 
 .system_clear_group .bottom {
@@ -74,7 +76,6 @@
 }
 
 #select_list_clients {
-    margin-left: 20px;
     width: 150px;
 }
 
@@ -99,7 +100,8 @@
     display: block;
 }
 
-*+html .clearfix:after, * html .clearfix:after{
+*+html .clearfix:after,
+* html .clearfix:after {
     height: 1px;
 }
 

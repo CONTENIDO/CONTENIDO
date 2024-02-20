@@ -1,45 +1,75 @@
-		<table style="width: 800px; margin-bottom: 3px;" class="pluginoverview">
-			<tr id="plugin-extracted-row-{IDPLUGIN}">
-                <td style="width: 3%;"><a href="#" onclick="javascript:toggleTableBody('plugin-extracted-{IDPLUGIN}')" style="margin-left: 5px;"><img src="images/open_all.gif" id="plugin-extracted-{IDPLUGIN}_img"></a></td>
-                <td style="width: 97%;"><strong>{PLUGIN_NAME}</strong> <em>{VERSION}</em></td>
-            </tr>
-            <tr id="plugin-extracted-{IDPLUGIN}" style="display: none;">
-                <td style="width: 3%;">&#160;</td>
-                <td style="width: 90%;">
-                    <table class="plugininfo">
-                        <tr>
-                            <td colspan="2" style="width: 100%;"><span class="textg_medium">{DESCRIPTION}</span></td>
-                        </tr>
-                        <tr><td colspan="2">&nbsp;</td></tr>
-                        <tr>
-                            <td style="width: 15%;">{LANG_FOLDERNAME}:</td>
-                            <td style="width: 85%;">{FOLDERNAME}</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 15%;">{LANG_AUTHOR}:</td>
-                            <td style="width: 85%;"><a href="{WEBSITE}" target="_blank">{AUTHOR}</a> <span class="textg_medium">&copy; {COPYRIGHT}</span></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 15%;">{LANG_CONTACT}:</td>
-                            <td style="width: 85%;"><a href="mailto:{MAIL}">{MAIL}</a></td>
-                        </tr>
-                        <tr><td colspan="2">&#160;</td></tr>
-                        <tr>
-                        	<td style="width: 15%; vertical-align: top;">{LANG_DEPENDENCIES}:</td>
-                            <td style="width: 85%">{DEPENDENCIES}</td>
-                        </tr>
-                        <tr><td colspan="2">&#160;</td></tr>
-                        <tr>
-                            <td style="width: 15%;">{LANG_WRITEABLE}:</td>
-                            <td style="width: 85%;">{WRITEABLE}</td>
-                        </tr>
-                        <tr><td colspan="2">&#160;</td></tr>
-                        <tr>
-							<td><a href="{INSTALL_LINK}" title="{LANG_TOOLTIP_INSTALL}" style="margin-left: 5px;"><img src="images/but_install.gif" id="plugin-extracted-{FOLDERNAME}_installimg" class="vAlignMiddle" />&nbsp;{LANG_INSTALL}</a></td>
-							<td><a href="{REMOVE_LINK}" title="{LANG_TOOLTIP_REMOVE}" style="margin-left: 5px;"><img src="images/but_delete.gif" id="plugin-extracted-{FOLDERNAME}_deleteimg" class="vAlignMiddle" />&nbsp;{LANG_REMOVE}</a></td>
-                        </tr>
-                    </table>
-                </td>
-                <td style="width: 7%">&nbsp;</td>
-            </tr>
-        </table>
+<table class="plugin_overview" data-plugin-id="extracted_{IDPLUGIN}">
+    <tr id="plugin_extracted_row-{IDPLUGIN}">
+        <td style="width: 3%;"><a class="toggle" href="javascript:void(0)"
+                                  data-action="toggle_table_element"><img src="images/open_all.gif"
+                                                                          id="plugin_info_extracted_{IDPLUGIN}_img"></a>
+        </td>
+        <td style="width: 97%;"><strong>{PLUGIN_NAME}</strong> <em>{VERSION}</em></td>
+    </tr>
+    <tr id="plugin_info_extracted_{IDPLUGIN}" class="foldingrow_hidden">
+        <td style="width: 3%;">
+            <div>&#160;</div>
+        </td>
+        <td style="width: 90%;">
+            <div>
+                <table class="plugin_info">
+                    <tr>
+                        <td colspan="2" style="width: 100%;"><span
+                                class="text_medium">{DESCRIPTION}</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 15%;">{LANG_FOLDERNAME}:</td>
+                        <td style="width: 85%;">{FOLDERNAME}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 15%;">{LANG_AUTHOR}:</td>
+                        <td style="width: 85%;"><a href="{WEBSITE}" target="_blank">{AUTHOR}</a>
+                            <span class="text_medium">&copy; {COPYRIGHT}</span></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 15%;">{LANG_CONTACT}:</td>
+                        <td style="width: 85%;"><a href="mailto:{MAIL}">{MAIL}</a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&#160;</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 15%; vertical-align: top;">{LANG_DEPENDENCIES}:</td>
+                        <td style="width: 85%">{DEPENDENCIES}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&#160;</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 15%;">{LANG_WRITEABLE}:</td>
+                        <td style="width: 85%;">{WRITEABLE}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&#160;</td>
+                    </tr>
+                    <tr>
+                        <td class="align_middle"><a class="con_func_button" href="{INSTALL_LINK}"
+                                                    title="{LANG_TOOLTIP_INSTALL}"><img
+                                src="images/but_install.gif"
+                                id="plugin_extracted_{FOLDERNAME}_installimg"/>&nbsp;{LANG_INSTALL}</a>
+                        </td>
+                        <td class="align_middle"><a class="con_func_button"
+                                                    href="javascript:void(0)"
+                                                    data-action="remove_plugin"
+                                                    data-href="{REMOVE_LINK}"
+                                                    title="{LANG_TOOLTIP_REMOVE}"><img
+                                src="images/but_delete.gif"
+                                id="plugin_info_extracted_{FOLDERNAME}_deleteimg"/>&nbsp;{LANG_REMOVE}</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <td style="width: 7%">
+            <div>&nbsp;</div>
+        </td>
+    </tr>
+</table>

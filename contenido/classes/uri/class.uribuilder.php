@@ -7,9 +7,9 @@
  * @subpackage Frontend_URI
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Frontend_URI
  */
-abstract class cUriBuilder {
+abstract class cUriBuilder
+{
 
     /**
      * Holds final value of built URL.
@@ -31,7 +32,7 @@ abstract class cUriBuilder {
 
     /**
      * Holds URL that is used as base for an absolute path
-     * E.g. http://contenido.org/
+     * E.g. https://contenido.org/
      *
      * @var string
      */
@@ -47,27 +48,30 @@ abstract class cUriBuilder {
      *         if child class has not implemented this function
      */
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         throw new cBadMethodCallException("Child class has to implement this function");
     }
 
     /**
      * Set http base path.
-     * E.g. http://contenido.org/
+     * E.g. https://contenido.org/
      *
      * @param string $sBasePath
      */
-    public function setHttpBasePath($sBasePath) {
-        $this->sHttpBasePath = (string) $sBasePath;
+    public function setHttpBasePath($sBasePath)
+    {
+        $this->sHttpBasePath = (string)$sBasePath;
     }
 
     /**
      * Return http base path.
-     * E.g. http://contenido.org/
+     * E.g. https://contenido.org/
      *
      * @return string
      */
-    public function getHttpBasePath() {
+    public function getHttpBasePath()
+    {
         return $this->sHttpBasePath;
     }
 
@@ -88,8 +92,9 @@ abstract class cUriBuilder {
      *
      * @return string
      */
-    public function getUrl() {
-        return (string) $this->sUrl;
+    public function getUrl()
+    {
+        return (string)$this->sUrl;
     }
 
 }

@@ -3,18 +3,23 @@
 /**
  * This file contains the backend page for the group overview.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $notification, $mclient;
+/**
+ * @var cApiUser $currentuser
+ * @var cGuiNotification $notification
+ */
+
+global $mclient;
 
 $auth = cRegistry::getAuth();
 $perm = cRegistry::getPerm();
@@ -124,104 +129,75 @@ $page->set('d', 'CATFIELD', stripslashes(conHtmlSpecialChars($oGroup->getGroupNa
 $page->next();
 
 $page->set('d', 'CATNAME', i18n("Description"));
-$oTxtDesc = new cHTMLTextbox('description', conHtmlSpecialChars($oGroup->getField('description')), 40, 255);
+$oTxtDesc = new cHTMLTextbox('description', conHtmlSpecialChars($oGroup->getField('description') ?? ''), 40, 255);
 $page->set('d', 'CATFIELD', $oTxtDesc->render());
 $page->next();
 
-// permissions of current logged in user
-$aAuthPerms = explode(',', $auth->auth['perm']);
+// Build perm checkboxes and properties table with the helper
+$rightsAreasHelper = new cRightsAreasHelper($currentuser, $auth, $aPerms);
+$isAuthUserSysadmin = $rightsAreasHelper->isAuthSysadmin();
+$isContextSysadmin = $rightsAreasHelper->isContextSysadmin();
 
-// sysadmin perm
-if (in_array('sysadmin', $aAuthPerms)) {
+// Sysadmin perm checkbox
+if ($isAuthUserSysadmin) {
     $page->set('d', 'CATNAME', i18n("System administrator"));
-    $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', in_array('sysadmin', $aPerms));
+    $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', $isContextSysadmin);
     $page->set('d', 'CATFIELD', $oCheckbox->toHtml(false));
     $page->next();
 }
 
-// clients admin perms
-$oClientsCollection = new cApiClientCollection();
-$aClients = $oClientsCollection->getAvailableClients();
-$sClientCheckboxes = '';
-foreach ($aClients as $idclient => $item) {
-    if (in_array("admin[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
-        $oCheckbox = new cHTMLCheckbox("madmin[" . $idclient . "]", $idclient, "madmin[" . $idclient . "]" . $idclient, in_array("admin[" . $idclient . "]", $aPerms));
-        $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
-        $sClientCheckboxes .= $oCheckbox->toHtml();
-    }
-}
-
-if ($sClientCheckboxes !== '' && !in_array('sysadmin', $aPerms)) {
+// Clients admin perms checkboxes
+$aClients = $rightsAreasHelper->getAvailableClients();
+$sCheckboxes = $rightsAreasHelper->renderClientAdminCheckboxes($aClients);
+if (!empty($sCheckboxes) && !$isContextSysadmin) {
     $page->set('d', 'CATNAME', i18n("Administrator"));
-    $page->set('d', 'CATFIELD', $sClientCheckboxes);
+    $page->set('d', 'CATFIELD', $sCheckboxes);
     $page->next();
 }
 
-// clients perms
-$sClientCheckboxes = '';
+// Clients perms checkboxes
+$sCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    if ((in_array("client[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[" . $idclient . "]", $aAuthPerms)) && !in_array("admin[" . $idclient . "]", $aPerms)) {
-        $oCheckbox = new cHTMLCheckbox("mclient[" . $idclient . "]", $idclient, "mclient[" . $idclient . "]" . $idclient, in_array("client[" . $idclient . "]", $aPerms));
-        $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
-        $sClientCheckboxes .= $oCheckbox->toHtml();
+    $hasAuthUserClientPerm = $rightsAreasHelper->hasAuthClientPerm($idclient);
+    $isAuthUserClientAdmin = $rightsAreasHelper->isAuthClientAdmin($idclient);
+    $isContextClientAdmin = $rightsAreasHelper->isContextClientAdmin($idclient);
+    if (($hasAuthUserClientPerm || $isAuthUserSysadmin || $isAuthUserClientAdmin) && !$isContextClientAdmin) {
+        $sCheckboxes .= $rightsAreasHelper->renderClientPermCheckbox($idclient, $item['name']);
     }
 }
-
-if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
+if (!empty($sCheckboxes) && !$isContextSysadmin) {
     $page->set('d', 'CATNAME', i18n("Access clients"));
-    $page->set('d', 'CATFIELD', $sClientCheckboxes);
+    $page->set('d', 'CATFIELD', $sCheckboxes);
     $page->next();
 }
 
-// languages perms
-$aClientsLanguages = getAllClientsAndLanguages();
-$sClientCheckboxes = '';
+// Languages perms checkboxes
+$aClientsLanguages = $rightsAreasHelper->getAllClientsAndLanguages();
+$sCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
-    if (($perm->have_perm_client("lang[" . $item['idlang'] . "]") || $perm->have_perm_client("admin[" . $item['idclient'] . "]")) && !in_array("admin[" . $item['idclient'] . "]", $aPerms)) {
-        $oCheckbox = new cHTMLCheckbox("mlang[" . $item['idlang'] . "]", $item['idlang'], "mlang[" . $item['idlang'] . "]" . $item['idlang'], in_array("lang[" . $item['idlang'] . "]", $aPerms));
-        $oCheckbox->setLabelText(conHtmlSpecialChars($item['langname']) . " (" . $item['clientname'] . ")");
-        $sClientCheckboxes .= $oCheckbox->toHtml();
+    $hasLanguagePerm = $rightsAreasHelper->hasAuthLanguagePerm($item['idlang']);
+    $isAuthUserClientAdmin = $rightsAreasHelper->isAuthClientAdmin($item['idclient']);
+    $isContextClientAdmin = $rightsAreasHelper->isContextClientAdmin($item['idclient']);
+    if (($hasLanguagePerm || $isAuthUserClientAdmin) && !$isContextClientAdmin) {
+        $sCheckboxes .= $rightsAreasHelper->renderLanguagePermCheckbox(
+            $item['idlang'], $item['langname'], $item['clientname']
+        );
     }
 }
-
-if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
+if (!empty($sCheckboxes) && !$isContextSysadmin) {
     $page->set('d', 'CATNAME', i18n("Access languages"));
-    $page->set('d', 'CATFIELD', $sClientCheckboxes);
+    $page->set('d', 'CATFIELD', $sCheckboxes);
     $page->next();
 }
 
-// group properties
+// Group properties
 $aProperties = $oGroup->getGroupProperties();
-$sPropRows = '';
-foreach ($aProperties as $propertyId => $prop) {
-    $type = $prop['type'];
-    $name = $prop['name'];
-    $value = $prop['value'];
-    $sPropRows .= '
-    <tr class="text_medium">
-        <td>' . $type . '</td>
-        <td>' . $name . '</td>
-        <td>' . $value . '</td>
-        <td>
-            <a href="' . $sess->url("main.php?area=$area&frame=4&groupid={$request['groupid']}&del_groupprop_type=$type&del_groupprop_name=$name") . '"><img src="images/delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '"></a>
-        </td>
-    </tr>';
+foreach ($aProperties as $pos => $entry) {
+    $aProperties[$pos]['href'] = $sess->url("main.php?area=$area&frame=4&groupid={$request['groupid']}&del_groupprop_type={$entry['type']}&del_groupprop_name={$entry['name']}");
 }
-
-$table = '
-    <table class="generic" width="100%" cellspacing="0" cellpadding="2">
-    <tr>
-        <th>' . i18n("Area/Type") . '</th>
-        <th>' . i18n("Property") . '</th>
-        <th>' . i18n("Value") . '</th>
-    </tr>
-    ' . $sPropRows . '
-    <tr class="text_medium">
-        <td><input class="text_medium"  type="text" size="16" maxlen="32" name="groupprop_type"></td>
-        <td><input class="text_medium" type="text" size="16" maxlen="32" name="groupprop_name"></td>
-        <td><input class="text_medium" type="text" size="32" name="groupprop_value"></td>
-    </tr>
-    </table>';
+$table = $rightsAreasHelper->renderPropertiesTable(
+    $aProperties, 'groupprop_type', 'groupprop_name', 'groupprop_value'
+);
 
 $page->set('d', 'CATNAME', i18n("User-defined properties"));
 $page->set('d', 'CATFIELD', $table);

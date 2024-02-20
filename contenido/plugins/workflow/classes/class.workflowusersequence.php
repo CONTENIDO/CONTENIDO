@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the class for workflow user sequence managements.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,39 +17,40 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Class for workflow user sequence management.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
  * @method WorkflowUserSequence createNewItem
- * @method WorkflowUserSequence next
+ * @method WorkflowUserSequence|bool next
  */
-class WorkflowUserSequences extends ItemCollection {
+class WorkflowUserSequences extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg["tab"]["workflow_user_sequences"], "idusersequence");
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('workflow_user_sequences'), "idusersequence");
         $this->_setItemClass("WorkflowUserSequence");
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      *
      * @return bool|void
      * @throws cDbException
      * @throws cException
      */
-    public function delete($id) {
-        global $cfg, $idworkflow;
-
+    public function delete($id)
+    {
+        $id = cSecurity::toInteger($id);
         $item = new WorkflowUserSequence();
         $item->loadByPrimaryKey($id);
 
         $pos = $item->get("position");
-        $idworkflowitem = $item->get("idworkflowitem");
-        $this->select("position > $pos AND idworkflowitem = " . (int) $idworkflowitem);
+        $idworkflowitem = cSecurity::toInteger($item->get("idworkflowitem"));
+        $this->select("position > $pos AND idworkflowitem = " . $idworkflowitem);
         while (($obj = $this->next()) !== false) {
             $pos = $obj->get("position") - 1;
             $obj->setPosition($pos);
@@ -58,28 +60,31 @@ class WorkflowUserSequences extends ItemCollection {
         parent::delete($id);
 
         $this->updateArtAllocation($id);
+
+        return true;
     }
 
     /**
-     * @param $idusersequence
+     * @param int $idusersequence
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function updateArtAllocation($idusersequence) {
-        global $idworkflow, $cfg;
+    public function updateArtAllocation($idusersequence)
+    {
+        global $idworkflow;
+
+        $idusersequence = cSecurity::toInteger($idusersequence);
         $oDb = cRegistry::getDb();
 
-        $aIdArtLang = array();
-        $sSql = 'SELECT idartlang FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence = ' . $oDb->escape($idusersequence) . ';';
-        $oDb->query($sSql);
+        $aIdArtLang = [];
+        $sSql = 'SELECT `idartlang` FROM `%s` WHERE `idusersequence` = %d';
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_art_allocation'), $idusersequence);
         while ($oDb->nextRecord()) {
-            array_push($aIdArtLang, $oDb->f('idartlang'));
+            $aIdArtLang[] = cSecurity::toInteger($oDb->f('idartlang'));
         }
 
-        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence = ' . $oDb->escape($idusersequence) . ';';
-        $oDb->query($sSql);
+        $sSql = 'DELETE FROM `%s` WHERE `idusersequence` = %d';
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_art_allocation'), $idusersequence);
 
         foreach ($aIdArtLang as $iIdArtLang) {
             setUserSequence($iIdArtLang, $idworkflow);
@@ -87,23 +92,21 @@ class WorkflowUserSequences extends ItemCollection {
     }
 
     /**
-     * @param $idworkflowitem
+     * @param int $idworkflowitem
      *
      * @return bool|Item
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idworkflowitem) {
-        global $auth, $client, $idworkflow;
-
-        $workflowitems = new WorkflowItems();
-        if (!$workflowitems->exists($idworkflowitem)) {
+    public function create($idworkflowitem)
+    {
+        $idworkflowitem = cSecurity::toInteger($idworkflowitem);
+        $workflowItems = new WorkflowItems();
+        if (!$workflowItems->exists($idworkflowitem)) {
             $this->lasterror = i18n("Workflow item doesn't exist. Can't create entry.", "workflow");
             return false;
         }
 
-        $this->select("idworkflowitem = " . (int) $idworkflowitem, "", "position DESC", "1");
+        $this->select("idworkflowitem = " . $idworkflowitem, "", "position DESC", "1");
 
         $item = $this->next();
 
@@ -113,26 +116,29 @@ class WorkflowUserSequences extends ItemCollection {
             $lastPos = $item->getField("position") + 1;
         }
 
-        $newitem = $this->createNewItem();
-        $newitem->setWorkflowItem($idworkflowitem);
-        $newitem->setPosition($lastPos);
-        $newitem->store();
+        $newItem = $this->createNewItem();
+        $newItem->setWorkflowItem($idworkflowitem);
+        $newItem->setPosition($lastPos);
+        $newItem->store();
 
-        return $newitem;
+        return $newItem;
     }
 
     /**
-     * @param $idworkflowitem
-     * @param $pos1
-     * @param $pos2
+     * @param int $idworkflowitem
+     * @param int $pos1
+     * @param int $pos2
      *
      * @return bool
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function swap($idworkflowitem, $pos1, $pos2) {
-        $this->select("idworkflowitem = '$idworkflowitem' AND position = " . (int) $pos1);
+    public function swap($idworkflowitem, $pos1, $pos2)
+    {
+        $idworkflowitem = cSecurity::toInteger($idworkflowitem);
+        $pos1 = cSecurity::toInteger($pos1);
+        $pos2 = cSecurity::toInteger($pos2);
+
+        $this->select("idworkflowitem = $idworkflowitem AND position = " . $pos1);
         if (($item = $this->next()) === false) {
             $this->lasterror = i18n("Swapping items failed: Item doesn't exist", "workflow");
             return false;
@@ -140,7 +146,7 @@ class WorkflowUserSequences extends ItemCollection {
 
         $pos1ID = $item->getField("idusersequence");
 
-        $this->select("idworkflowitem = '$idworkflowitem' AND position = " . (int) $pos2);
+        $this->select("idworkflowitem = $idworkflowitem AND position = " . $pos2);
         if (($item = $this->next()) === false) {
             $this->lasterror(i18n("Swapping items failed: Item doesn't exist", "workflow"));
             return false;
@@ -168,20 +174,22 @@ class WorkflowUserSequences extends ItemCollection {
  * Class WorkflowUserSequence
  * Class for a single workflow item
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
+ * @author     Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
- * @copyright four for business 2003
+ * @copyright  four for business 2003
  */
-class WorkflowUserSequence extends Item {
+class WorkflowUserSequence extends Item
+{
 
     /**
      * Constructor Function
+     * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg["tab"]["workflow_user_sequences"], "idusersequence");
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('workflow_user_sequences'), "idusersequence");
     }
 
     /**
@@ -190,17 +198,14 @@ class WorkflowUserSequence extends Item {
      *
      * @param string $field Field to set
      * @param string $value Value to set
-     * @param bool   $safe
+     * @param bool $safe
      *
      * @return bool
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException if the field is idworkflowitem,
-     *         idusersequence or position
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function setField($field, $value, $safe = true) {
-        global $cfg;
-
+    public function setField($field, $value, $safe = true)
+    {
+        $idusersquence = false;
         switch ($field) {
             case "idworkflowitem":
                 throw new cInvalidArgumentException("Please use create to modify idsequence. Direct modifications are not allowed");
@@ -211,13 +216,12 @@ class WorkflowUserSequence extends Item {
             case "iduser":
                 if ($value != 0) {
                     $db = cRegistry::getDb();
-                    $sql = "SELECT user_id FROM " . $cfg['tab']['user'] . " WHERE user_id = '" . $db->escape($value) . "'";
-                    $db->query($sql);
 
+                    $sql = "SELECT `user_id` FROM `%s` WHERE `user_id` = '%s'";
+                    $db->query($sql, cRegistry::getDbTableName('user'), $value);
                     if (!$db->nextRecord()) {
-                        $sql = "SELECT group_id FROM " . $cfg["tab"]["groups"] . " WHERE group_id = '" . $db->escape($value) . "'";
-
-                        $db->query($sql);
+                        $sql = "SELECT `group_id` FROM `%s` WHERE `group_id` = '%s'";
+                        $db->query($sql, cRegistry::getDbTableName('groups'), $value);
                         if (!$db->nextRecord()) {
                             $this->lasterror = i18n("Can't set user_id: User or group doesn't exist", "workflow");
                             return false;
@@ -227,11 +231,13 @@ class WorkflowUserSequence extends Item {
                 }
         }
 
-        parent::setField($field, $value, $safe);
+        $result = parent::setField($field, $value, $safe);
         if ($idusersquence) {
             $workflowUserSequences = new WorkflowUserSequences();
             $workflowUserSequences->updateArtAllocation(0);
         }
+
+        return $result;
     }
 
     /**
@@ -241,7 +247,8 @@ class WorkflowUserSequence extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function getWorkflowItem() {
+    public function getWorkflowItem()
+    {
         if ($this->isLoaded()) {
             $workflowItem = new WorkflowItem();
             $workflowItem->loadByPrimaryKey($this->values["idworkflowitem"]);
@@ -255,20 +262,22 @@ class WorkflowUserSequence extends Item {
      * Interface to set idworkflowitem.
      * Should only be called by "create".
      *
-     * @param string $value The value to set
+     * @param int $value The value to set
      */
-    public function setWorkflowItem($value) {
-        parent::setField("idworkflowitem", $value);
+    public function setWorkflowItem($value)
+    {
+        parent::setField("idworkflowitem", cSecurity::toInteger($value));
     }
 
     /**
-     * Interface to set idworkflowitem.
+     * Interface to set position.
      * Should only be called by "create".
      *
-     * @param string $value The value to set
+     * @param int $value The value to set
      */
-    public function setPosition($value) {
-        parent::setField("position", $value);
+    public function setPosition($value)
+    {
+        parent::setField("position", cSecurity::toInteger($value));
     }
 
 }

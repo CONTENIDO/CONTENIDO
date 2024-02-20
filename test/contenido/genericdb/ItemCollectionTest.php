@@ -1,12 +1,11 @@
 <?php
 
 /**
- *
- * @author    claus.schunk@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license   http://www.contenido.org/license/LIZENZ.txt
- * @link      http://www.4fb.de
- * @link      http://www.contenido.org
+ * @author     claus.schunk@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
@@ -44,7 +43,7 @@ class ItemCollectionTest extends cTestingTestCase
 
         $this->setUpTestCaseDbTables();
 
-        $this->_collection            = new TCollection();
+        $this->_collection = new TCollection();
         $this->_noItemClassCollection = new TFCollection();
 
         $db = cRegistry::getDb();
@@ -105,7 +104,7 @@ class ItemCollectionTest extends cTestingTestCase
 
         // test member _sEncoding of driver of collection
         $_driver = $this->_readAttribute($this->_collection, '_driver');
-        $act     = $this->_readAttribute($_driver, '_sEncoding');
+        $act = $this->_readAttribute($_driver, '_sEncoding');
         $this->assertEquals($encoding, $act);
     }
 
@@ -158,13 +157,13 @@ class ItemCollectionTest extends cTestingTestCase
     public function testSetWhere()
     {
         $this->_collection->setWhere('foo', 'bar');
-        $act                                 = $this->_readAttribute($this->_collection, '_where');
-        $exp                                 = [];
-        $exp['global']                       = [];
-        $exp['global']['foo']                = [];
-        $exp['global']['foo']['operator']    = '=';
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
+        $exp['global'] = [];
+        $exp['global']['foo'] = [];
+        $exp['global']['foo']['operator'] = '=';
         $exp['global']['foo']['restriction'] = 'bar';
-        $exp['groups']                       = [];
+        $exp['groups'] = [];
         $this->assertEquals(true, is_array($act));
         $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
     }
@@ -175,13 +174,13 @@ class ItemCollectionTest extends cTestingTestCase
     public function testSetWhereOperator()
     {
         $this->_collection->setWhere('foo', 'bar', 'LIKE');
-        $act                                 = $this->_readAttribute($this->_collection, '_where');
-        $exp                                 = [];
-        $exp['global']                       = [];
-        $exp['global']['foo']                = [];
-        $exp['global']['foo']['operator']    = 'LIKE';
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
+        $exp['global'] = [];
+        $exp['global']['foo'] = [];
+        $exp['global']['foo']['operator'] = 'LIKE';
         $exp['global']['foo']['restriction'] = 'bar';
-        $exp['groups']                       = [];
+        $exp['groups'] = [];
         $this->assertEquals(true, is_array($act));
         $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
     }
@@ -194,8 +193,8 @@ class ItemCollectionTest extends cTestingTestCase
     {
         // test deleting a nonexistant where condition
         $this->_collection->deleteWhere('foo', 'bar');
-        $act           = $this->_readAttribute($this->_collection, '_where');
-        $exp           = [];
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
         $exp['global'] = [];
         $exp['groups'] = [];
         $this->assertEquals(true, is_array($act));
@@ -203,8 +202,8 @@ class ItemCollectionTest extends cTestingTestCase
 
         // test deleting a nonexistant where condition w/ default operator
         $this->_collection->deleteWhere('foo', 'bar', '=');
-        $act           = $this->_readAttribute($this->_collection, '_where');
-        $exp           = [];
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
         $exp['global'] = [];
         $exp['groups'] = [];
         $this->assertEquals(true, is_array($act));
@@ -212,8 +211,8 @@ class ItemCollectionTest extends cTestingTestCase
 
         // test deleting a nonexistant where condition w/ nondefault operator
         $this->_collection->deleteWhere('foo', 'bar', 'LIKE');
-        $act           = $this->_readAttribute($this->_collection, '_where');
-        $exp           = [];
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
         $exp['global'] = [];
         $exp['groups'] = [];
         $this->assertEquals(true, is_array($act));
@@ -230,13 +229,13 @@ class ItemCollectionTest extends cTestingTestCase
         // this field but w/ another restriction
         $this->_collection->setWhere('foo', 'bar');
         $this->_collection->deleteWhere('foo', 'eggs');
-        $act                                 = $this->_readAttribute($this->_collection, '_where');
-        $exp                                 = [];
-        $exp['global']                       = [];
-        $exp['global']['foo']                = [];
-        $exp['global']['foo']['operator']    = '=';
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
+        $exp['global'] = [];
+        $exp['global']['foo'] = [];
+        $exp['global']['foo']['operator'] = '=';
         $exp['global']['foo']['restriction'] = 'bar';
-        $exp['groups']                       = [];
+        $exp['groups'] = [];
         $this->assertEquals(true, is_array($act));
         $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
 
@@ -244,13 +243,13 @@ class ItemCollectionTest extends cTestingTestCase
         // this restriction but w/ another field
         $this->_collection->setWhere('foo', 'bar');
         $this->_collection->deleteWhere('spam', 'bar');
-        $act                                 = $this->_readAttribute($this->_collection, '_where');
-        $exp                                 = [];
-        $exp['global']                       = [];
-        $exp['global']['foo']                = [];
-        $exp['global']['foo']['operator']    = '=';
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
+        $exp['global'] = [];
+        $exp['global']['foo'] = [];
+        $exp['global']['foo']['operator'] = '=';
         $exp['global']['foo']['restriction'] = 'bar';
-        $exp['groups']                       = [];
+        $exp['groups'] = [];
         $this->assertEquals(true, is_array($act));
         $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
 
@@ -258,13 +257,13 @@ class ItemCollectionTest extends cTestingTestCase
         // this restriction but w/ another field
         $this->_collection->setWhere('foo', 'bar');
         $this->_collection->deleteWhere('foo', 'bar', 'LIKE');
-        $act                                 = $this->_readAttribute($this->_collection, '_where');
-        $exp                                 = [];
-        $exp['global']                       = [];
-        $exp['global']['foo']                = [];
-        $exp['global']['foo']['operator']    = '=';
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
+        $exp['global'] = [];
+        $exp['global']['foo'] = [];
+        $exp['global']['foo']['operator'] = '=';
         $exp['global']['foo']['restriction'] = 'bar';
-        $exp['groups']                       = [];
+        $exp['groups'] = [];
         $this->assertEquals(true, is_array($act));
         $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
 
@@ -272,8 +271,8 @@ class ItemCollectionTest extends cTestingTestCase
         // field w/ this restriction
         $this->_collection->setWhere('foo', 'bar');
         $this->_collection->deleteWhere('foo', 'bar');
-        $act           = $this->_readAttribute($this->_collection, '_where');
-        $exp           = [];
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
         $exp['global'] = [];
         $exp['groups'] = [];
         $this->assertEquals(true, is_array($act));
@@ -285,13 +284,13 @@ class ItemCollectionTest extends cTestingTestCase
     public function testSetWhereGroup()
     {
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
-        $act                                            = $this->_readAttribute($this->_collection, '_where');
-        $exp                                            = [];
-        $exp['global']                                  = [];
-        $exp['groups']                                  = [];
-        $exp['groups']['myGroup']                       = [];
-        $exp['groups']['myGroup']['foo']                = [];
-        $exp['groups']['myGroup']['foo']['operator']    = '=';
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
+        $exp['global'] = [];
+        $exp['groups'] = [];
+        $exp['groups']['myGroup'] = [];
+        $exp['groups']['myGroup']['foo'] = [];
+        $exp['groups']['myGroup']['foo']['operator'] = '=';
         $exp['groups']['myGroup']['foo']['restriction'] = 'bar';
         $this->assertEquals(true, is_array($act));
         $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
@@ -302,13 +301,13 @@ class ItemCollectionTest extends cTestingTestCase
     public function testSetWhereGroupOperator()
     {
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar', 'LIKE');
-        $act                                            = $this->_readAttribute($this->_collection, '_where');
-        $exp                                            = [];
-        $exp['global']                                  = [];
-        $exp['groups']                                  = [];
-        $exp['groups']['myGroup']                       = [];
-        $exp['groups']['myGroup']['foo']                = [];
-        $exp['groups']['myGroup']['foo']['operator']    = 'LIKE';
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
+        $exp['global'] = [];
+        $exp['groups'] = [];
+        $exp['groups']['myGroup'] = [];
+        $exp['groups']['myGroup']['foo'] = [];
+        $exp['groups']['myGroup']['foo']['operator'] = 'LIKE';
         $exp['groups']['myGroup']['foo']['restriction'] = 'bar';
         $this->assertEquals(true, is_array($act));
         $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
@@ -320,12 +319,8 @@ class ItemCollectionTest extends cTestingTestCase
      */
     public function testDeleteWhereGroupUnconditioned()
     {
-        try {
-            $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar');
-            $this->fail('should have thrown PHPUnit\Framework\Error\Notice');
-        } catch (PHPUnit\Framework\Error\Notice $e) {
-            $this->assertEquals('Undefined index: myGroup', $e->getMessage());
-        }
+        $this->expectNotToPerformAssertions();
+        $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar');
     }
 
     /**
@@ -336,13 +331,13 @@ class ItemCollectionTest extends cTestingTestCase
         // this field but w/ another restriction
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
         $this->_collection->deleteWhereGroup('myGroup', 'foo', 'eggs');
-        $act                                            = $this->_readAttribute($this->_collection, '_where');
-        $exp                                            = [];
-        $exp['global']                                  = [];
-        $exp['groups']                                  = [];
-        $exp['groups']['myGroup']                       = [];
-        $exp['groups']['myGroup']['foo']                = [];
-        $exp['groups']['myGroup']['foo']['operator']    = '=';
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
+        $exp['global'] = [];
+        $exp['groups'] = [];
+        $exp['groups']['myGroup'] = [];
+        $exp['groups']['myGroup']['foo'] = [];
+        $exp['groups']['myGroup']['foo']['operator'] = '=';
         $exp['groups']['myGroup']['foo']['restriction'] = 'bar';
         $this->assertEquals(true, is_array($act));
         $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
@@ -351,13 +346,13 @@ class ItemCollectionTest extends cTestingTestCase
         // this restriction but w/ another field
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
         $this->_collection->deleteWhereGroup('myGroup', 'spam', 'bar');
-        $act                                            = $this->_readAttribute($this->_collection, '_where');
-        $exp                                            = [];
-        $exp['global']                                  = [];
-        $exp['groups']                                  = [];
-        $exp['groups']['myGroup']                       = [];
-        $exp['groups']['myGroup']['foo']                = [];
-        $exp['groups']['myGroup']['foo']['operator']    = '=';
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
+        $exp['global'] = [];
+        $exp['groups'] = [];
+        $exp['groups']['myGroup'] = [];
+        $exp['groups']['myGroup']['foo'] = [];
+        $exp['groups']['myGroup']['foo']['operator'] = '=';
         $exp['groups']['myGroup']['foo']['restriction'] = 'bar';
         $this->assertEquals(true, is_array($act));
         $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
@@ -366,13 +361,13 @@ class ItemCollectionTest extends cTestingTestCase
         // this restriction but w/ another field
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
         $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar', 'LIKE');
-        $act                                            = $this->_readAttribute($this->_collection, '_where');
-        $exp                                            = [];
-        $exp['global']                                  = [];
-        $exp['groups']                                  = [];
-        $exp['groups']['myGroup']                       = [];
-        $exp['groups']['myGroup']['foo']                = [];
-        $exp['groups']['myGroup']['foo']['operator']    = '=';
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
+        $exp['global'] = [];
+        $exp['groups'] = [];
+        $exp['groups']['myGroup'] = [];
+        $exp['groups']['myGroup']['foo'] = [];
+        $exp['groups']['myGroup']['foo']['operator'] = '=';
         $exp['groups']['myGroup']['foo']['restriction'] = 'bar';
         $this->assertEquals(true, is_array($act));
         $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
@@ -381,10 +376,10 @@ class ItemCollectionTest extends cTestingTestCase
         // field w/ this restriction
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
         $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar');
-        $act                      = $this->_readAttribute($this->_collection, '_where');
-        $exp                      = [];
-        $exp['global']            = [];
-        $exp['groups']            = [];
+        $act = $this->_readAttribute($this->_collection, '_where');
+        $exp = [];
+        $exp['global'] = [];
+        $exp['groups'] = [];
         $exp['groups']['myGroup'] = [];
         $this->assertEquals(true, is_array($act));
         $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
@@ -424,18 +419,18 @@ class ItemCollectionTest extends cTestingTestCase
     public function testSetOrder()
     {
         $asc = [
-            'id'    => '2',
-            'name'  => 'Jake',
+            'id' => '2',
+            'name' => 'Jake',
             'descr' => 'It loves human companionship and being part of the group.',
-            'size'  => 'medium',
-            'date'  => '2013-09-26 12:14:28',
+            'size' => 'medium',
+            'date' => '2013-09-26 12:14:28',
         ];
         $des = [
-            'id'    => '1',
-            'name'  => 'Max',
+            'id' => '1',
+            'name' => 'Max',
             'descr' => 'Its distinctive appearance and deep foghorn voice make it stand out in a crowd.',
-            'size'  => 'medium',
-            'date'  => '2013-09-26 12:14:28',
+            'size' => 'medium',
+            'date' => '2013-09-26 12:14:28',
         ];
 
         $dogColl = new DogCollection();
@@ -456,17 +451,113 @@ class ItemCollectionTest extends cTestingTestCase
     }
 
     /**
+     * Test {@see ItemCollection::addResultField()}
      */
     public function testAddResultField()
     {
-        $this->markTestIncomplete('incomplete implementation');
+        // Initial status
+        $dogColl = new DogCollection();
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEmpty($resultFields, 'Result fields are not empty');
+
+        // Add single result field
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name']);
+
+        // Add single result field in upper-case
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('NAME');
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name']);
+
+        // Add several result fields
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $dogColl->addResultField('descr');
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name', 'descr']);
     }
 
     /**
+     * Test {@see ItemCollection::removeResultField()}
      */
     public function testRemoveResultField()
     {
-        $this->markTestIncomplete('incomplete implementation');
+        // Remove a result field
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $dogColl->removeResultField('name');
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, []);
+
+        // Remove an invalid result field
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $dogColl->removeResultField('invalid name');
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name']);
+
+        // Remove multiple result fields
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $dogColl->addResultField('descr');
+        $dogColl->removeResultField('name');
+        $dogColl->removeResultField('descr');
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, []);
+    }
+
+    /**
+     * Test {@see ItemCollection::addResultFields()}
+     */
+    public function testAddResultFields()
+    {
+        // Add single result field
+        $dogColl = new DogCollection();
+        $dogColl->addResultFields(['name']);
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name']);
+
+        // Add single result field in upper-case
+        $dogColl = new DogCollection();
+        $dogColl->addResultFields(['NAME']);
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name']);
+
+        // Add several result fields
+        $dogColl = new DogCollection();
+        $dogColl->addResultFields(['name', 'descr']);
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name', 'descr']);
+    }
+
+    /**
+     * Test {@see ItemCollection::removeResultFields()}
+     */
+    public function testRemoveResultFields()
+    {
+        // Remove a result field
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $dogColl->removeResultFields(['name']);
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, []);
+
+        // Remove an invalid result field
+        $dogColl = new DogCollection();
+        $dogColl->addResultField('name');
+        $dogColl->removeResultFields(['invalid name']);
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, ['name']);
+
+        // Remove multiple result fields
+        $dogColl = new DogCollection();
+        $dogColl->addResultFields(['name', 'descr']);
+        $dogColl->removeResultFields(['name', 'descr']);
+        $resultFields = $this->_readAttribute($dogColl, '_resultFields');
+        $this->assertEquals($resultFields, []);
     }
 
     /**
@@ -562,7 +653,7 @@ class ItemCollectionTest extends cTestingTestCase
         $this->assertTrue(
             $ret->loadByMany(
                 [
-                    'ID'   => 1,
+                    'ID' => 1,
                     'Name' => 'Kabul',
                 ]
             )
@@ -575,21 +666,21 @@ class ItemCollectionTest extends cTestingTestCase
     public function testLoadItem()
     {
         $item = $this->_collection->loadItem(1);
-        $ar   = [
-            'ID'          => '1',
-            'Name'        => 'Kabul',
+        $ar = [
+            'ID' => '1',
+            'Name' => 'Kabul',
             'CountryCode' => 'AFG',
-            'District'    => 'Kabol',
-            'Population'  => '1780000',
+            'District' => 'Kabol',
+            'Population' => '1780000',
         ];
         $this->assertSame($item->toArray(), $ar);
 
         $ar = [
-            'ID'          => '1',
-            'Name'        => 'Kabul',
+            'ID' => '1',
+            'Name' => 'Kabul',
             'CountryCode' => 'AFG',
-            'District'    => 'Kabol',
-            'Population'  => '178888',
+            'District' => 'Kabol',
+            'Population' => '178888',
         ];
         $item->set('Population', '178888');
         $this->assertSame($item->toArray(), $ar);
@@ -637,6 +728,38 @@ class ItemCollectionTest extends cTestingTestCase
     }
 
     /**
+     * Test {@see ItemCollection::getIdsWhere()}.
+     */
+    public function testGetIdsWhere()
+    {
+        $dogColl = new DogCollection();
+        $ids = $dogColl->getIdsWhere('name', 'Jake');
+        $expected = ['2'];
+        $this->assertEquals($expected, $ids);
+
+        $dogColl = new DogCollection();
+        $ids = $dogColl->getIdsWhere('size', 'medium');
+        $expected = ['1', '2'];
+        $this->assertEquals($expected, $ids);
+
+        $dogColl = new DogCollection();
+        $ids = $dogColl->getIdsWhere('size', 'medium');
+        $expected = ['1', '2'];
+        $this->assertEquals($expected, $ids);
+
+        $dogColl = new DogCollection();
+        $ids = $dogColl->getIdsWhere('descr', 'strong', 'LIKE');
+        $expected = ['3'];
+        $this->assertEquals($expected, $ids);
+
+        $dogColl = new DogCollection();
+        $ids = $dogColl->getIdsWhere('id', 1, '>');
+        $expected = ['2', '3'];
+        $this->assertEquals($expected, $ids);
+    }
+
+
+    /**
      */
     public function testGetIdsByWhereClause()
     {
@@ -659,6 +782,19 @@ class ItemCollectionTest extends cTestingTestCase
         $ar = $this->_collection->getFieldsByWhereClause([], 'ID=1');
         $this->assertEquals(0, count($ar));
     }
+
+    /**
+     * Test {@see ItemCollection::getFieldsWhere()}
+     */
+    public function testGetFieldsWhere()
+    {
+        $ar = $this->_collection->getFieldsWhere(['Name'], 'ID', 1);
+        $this->assertEquals('Kabul', $ar[0]['Name']);
+
+        $ar = $this->_collection->getFieldsWhere([], 'ID', 1);
+        $this->assertEquals(0, count($ar));
+    }
+
 
     /**
      * @throws cDbException
@@ -691,7 +827,7 @@ class ItemCollectionTest extends cTestingTestCase
      */
     public function testDeleteBy()
     {
-        $dogColl       = new DogCollection();
+        $dogColl = new DogCollection();
         $columnsBefore = count($dogColl->getAllIds());
         $this->assertEquals(3, $columnsBefore);
         $dogColl->deleteBy('id', 1);
@@ -724,9 +860,9 @@ class ItemCollectionTest extends cTestingTestCase
     }
 
     /**
+     * @throws cException
      * @todo this is no test for a ItemCollection-method!
      *
-     * @throws cException
      */
     public function testSetProperty()
     {

@@ -3,13 +3,13 @@
 /**
  * This file contains the cContentTypeAbstract class.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Abstract content type from which every content type should inherit.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
  */
-abstract class cContentTypeAbstract {
+abstract class cContentTypeAbstract
+{
 
     /**
      * Constant defining that the settings should be interpreted as plaintext.
@@ -35,6 +36,22 @@ abstract class cContentTypeAbstract {
      * @var string
      */
     const SETTINGS_TYPE_XML = 'xml';
+
+    /**
+     * Constant defining the PHP comment marker used to wrap content type code.
+     *
+     * @since CONTENIDO 4.10.2
+     * @var string
+     */
+    const COMMENT_MARKER = '" . /*[CONTENT_TYPE]*/%s/*[/CONTENT_TYPE]*/ . "';
+
+    /**
+     * Constant defining the regular expression to detect wrapped content type code.
+     *
+     * @since CONTENIDO 4.10.2
+     * @var string
+     */
+    const COMMENT_MARKER_PATTERN = '#(\s*).(\s*)/\*\[CONTENT_TYPE\]\*/(.*?)/\*\[/CONTENT_TYPE\]\*/(\s*).(\s*)#mis';
 
     /**
      * Name of the content type, e.g. 'CMS_TEASER'.
@@ -146,21 +163,21 @@ abstract class cContentTypeAbstract {
      *
      * @var string
      */
-    protected $_rawSettings = array();
+    protected $_rawSettings = [];
 
     /**
      * The parsed settings.
      *
      * @var array|string
      */
-    protected $_settings = array();
+    protected $_settings = [];
 
     /**
      * List of form field names which are used by this content type!
      *
      * @var array
      */
-    protected $_formFields = array();
+    protected $_formFields = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -174,8 +191,8 @@ abstract class cContentTypeAbstract {
      * @param array $contentTypes
      *         array containing the values of all content types
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
-
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
         // set props
         $this->_rawSettings = $rawSettings;
         $this->_id = $id;
@@ -190,7 +207,7 @@ abstract class cContentTypeAbstract {
         $this->_cfgClient = cRegistry::getClientConfig();
         $this->_session = cRegistry::getSession();
         $this->_useXHTML = cSecurity::toBoolean(getEffectiveSetting('generator', 'xhtml', 'false'));
-        $this->_uploadPath = $this->_cfgClient[$this->_client]['upl']['path'];
+        $this->_uploadPath = $this->_cfgClient[$this->_client]['upl']['path'] ?? '';
 
         $this->_readSettings();
     }
@@ -200,7 +217,8 @@ abstract class cContentTypeAbstract {
      * and stores them in the $_settings attribute (associative array or
      * plaintext).
      */
-    protected function _readSettings() {
+    protected function _readSettings()
+    {
         // if no settings have been given, do nothing
         if (empty($this->_rawSettings)) {
             return;
@@ -221,12 +239,140 @@ abstract class cContentTypeAbstract {
     }
 
     /**
+     * Wraps generated PHP code by content types with an anonymous function,
+     * which will be executed immediately and will return the output as a
+     * string, so it can be used to replace container placeholder in module
+     * codes. Surrounds the wrapped code also with special PHP comment
+     * marker like:
+     * <pre>
+     * / *[CONTENT_TYPE]* / . ' . $code . ' . / *[/CONTENT_TYPE]* /
+     * </pre>
+     * This has no effect to the
+     *
+     * Container placeholder in module outputs are defined as follows:
+     * <pre>
+     * echo "CMS_VALUE[123]";
+     * // or
+     * $myVariable = "CMS_VALUE[123]";
+     * </pre>
+     * The result of this function will be used to replace container
+     * placeholder of a content type. The result will look like
+     * <pre>
+     * echo "" . (function(){ return $output; })() . "";
+     * // or
+     * $myVariable = "" . (function(){ return $output; })() . "";
+     * </pre>
+     *
+     * @param string $code Content type PHP code.
+     * @return string Content type PHP code wrapped with PHP comment marker
+     *                and an immediately executed anonymous function.
+     * @throws cInvalidArgumentException
+     * @since CONTENIDO 4.10.2
+     */
+    protected function _wrapPhpViewCode(string $code): string
+    {
+        $code = trim($code);
+
+        /* Content type PHP code must start with an opening PHP tag `<?php`
+         * and must end with a closing PHP tag `?>` as a convention. */
+        if (
+            cString::getPartOfString($code, 0, 5) !== '<?php'
+            || cString::getPartOfString($code, -2) !== '?>'
+        ) {
+            throw new cInvalidArgumentException('Code should start with `<?php` and end with `?>`!');
+        }
+
+        /**
+         * Wrap content type PHP code properly, so we have a result which
+         * replaces a container placeholder like
+         *     `echo "CMS_VALUE[123]";`
+         * to something like
+         *     `echo "" . (function(){ return $output; })() . "";`
+         */
+
+        // Strip starting and ending PHP tag in the code, and strip whitespace/semicolon
+        // from the beginning and end of the code.
+        $code = cString::getPartOfString($code, 5);
+        $code = cString::getPartOfString($code, 0, -2);
+        $code = trim($code, "\n;");
+
+        // Wrap code with an immediately executed anonymous function. Buffer the
+        // output of the content type code, so we can return it in the anonymous
+        // function. This will enable us to use the result for a string
+        // concatenation, thus as a replacement for content types.
+        $code = "(function(){ ob_start(); $code \$output = ob_get_contents(); ob_end_clean(); return \$output; })()";
+
+        return sprintf(self::COMMENT_MARKER, $code);
+    }
+
+    /**
+     * Checks if the passed code is a wrapped content type PHP code.
+     *
+     * @param string $code
+     * @return bool
+     * @since CONTENIDO 4.10.2
+     */
+    public static function isWrappedContentTypeCodePhp(string $code): bool
+    {
+        return cSecurity::toBoolean(
+            preg_match_all(self::COMMENT_MARKER_PATTERN, $code)
+        );
+    }
+
+    /**
+     * @deprecated [2023-01-31] Since 4.10.2, use cContentTypeAbstract->getSettings() instead
+     */
+    public function getConfiguration()
+    {
+        cDeprecated("The function cContentTypeAbstract->includePlugins() is deprecated since CONTENIDO 4.10.2, use cContentTypeAbstract->getSettings() instead.");
+        return $this->getSettings();
+    }
+
+    /**
      * Function returns current content type configuration as array
      *
      * @return array|string
      */
-    public function getConfiguration() {
+    public function getSettings()
+    {
         return $this->_settings;
+    }
+
+    /**
+     * Function returns current content type configuration item by its name
+     *
+     * @param string $key Configuration item key
+     * @param mixed $default Default value to return
+     * @return string|mixed
+     * @since CONTENIDO 4.10.2
+     */
+    public function getSetting(string $key, $default = '')
+    {
+        return $this->_settings[$key] ?? $default;
+    }
+
+    /**
+     * Checks whether the content type configuration exists
+     *
+     * @param string $key Configuration item key
+     * @return bool
+     * @since CONTENIDO 4.10.2
+     */
+    public function hasSetting($key): bool
+    {
+        return isset($this->_settings[$key]);
+    }
+
+    /**
+     * Sets current content type configuration item by its name and value
+     *
+     * @param string $key Configuration item key
+     * @param mixed $value Value to set
+     * @since CONTENIDO 4.10.2
+     */
+    public function setSetting(string $key, $value)
+    {
+        $this->_settings[$key] = $value;
     }
 
     /**
@@ -234,52 +380,57 @@ abstract class cContentTypeAbstract {
      * (associative array) and saves them in the database (XML).
      *
      * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
-    protected function _storeSettings() {
-        $settingsToStore = '';
+    protected function _storeSettings()
+    {
         if ($this->_settingsType === self::SETTINGS_TYPE_XML) {
             // if the settings should be stored as XML, process them accordingly
-            $settings = array();
+            $settings = [];
             // update the values in the settings array with the values from the
             // $_POST array
             foreach ($this->_formFields as $key) {
                 $keyWithoutPrefix = str_replace($this->_prefix . '_', '', $key);
                 if (isset($_POST[$key])) {
-                    $this->_settings[$key] = $_POST[$key];
-                } else if (isset($_POST[$this->_prefix . '_array_' . $keyWithoutPrefix])) {
+                    $this->setSetting($key, $_POST[$key]);
+                } elseif (isset($_POST[$this->_prefix . '_array_' . $keyWithoutPrefix])) {
                     // key is of type prefix_array_field, so interpret value as an array
-                    $this->_settings[$key] = explode(',', $_POST[$this->_prefix . '_array_' . $keyWithoutPrefix]);
+                    $value = explode(',', $_POST[$this->_prefix . '_array_' . $keyWithoutPrefix]);
+                    $this->setSetting($key, $value);
                 }
-                $settings[$keyWithoutPrefix] = $this->_settings[$key];
+                $settings[$keyWithoutPrefix] = $this->getSetting($key);
             }
             $xml = cXmlBase::arrayToXml($settings, NULL, $this->_prefix);
             $settingsToStore = $xml->asXML();
         } else {
-            $settingsToStore = $this->_settings;
+            $settingsToStore = $this->getSettings();
         }
 
         // store new settings in the database
         conSaveContentEntry($this->_idArtLang, $this->_type, $this->_id, $settingsToStore);
-		
-		$oArtLang = new cApiArticleLanguage($this->_idArtLang);
-		$this->_rawSettings = $oArtLang->getContent($this->_type, $this->_id);
+
+        $oArtLang = new cApiArticleLanguage($this->_idArtLang);
+        $this->_rawSettings = $oArtLang->getContent($this->_type, $this->_id);
         $this->_readSettings();
     }
 
     /**
-     * Since the content type code is evaled by php, the code has to be encoded.
+     * Since the content type code is evaluated by php, the code has to be encoded.
      *
-     * @param string $code
+     * @param string|mixed $code
      *         code to encode
      * @return string
      *         encoded code
      */
-    protected function _encodeForOutput($code) {
-        $code = addslashes($code);
-        $code = str_replace("\\'", "'", $code);
-        $code = str_replace('$', '\\$', $code);
-
-        return $code;
+    protected function _encodeForOutput($code): string
+    {
+        if (is_string($code)) {
+            $code = addslashes($code);
+            $code = str_replace("\\'", "'", $code);
+            return str_replace('$', '\\$', $code);
+        }
+        return (string)$code;
     }
 
     /**
@@ -292,7 +443,8 @@ abstract class cContentTypeAbstract {
      * @return array
      *         with directory information (keys: name, path, sub)
      */
-    public function buildDirectoryList($uploadPath = '') {
+    public function buildDirectoryList(string $uploadPath = ''): array
+    {
         // make sure the upload path is set and ends with a slash
         if ($uploadPath === '') {
             $uploadPath = $this->_uploadPath;
@@ -301,14 +453,14 @@ abstract class cContentTypeAbstract {
             $uploadPath .= '/';
         }
 
-        $directories = array();
+        $directories = [];
 
-        if (is_dir($uploadPath)) {
+        if (cDirHandler::exists($uploadPath)) {
             if (false !== ($handle = cDirHandler::read($uploadPath, false, true))) {
                 foreach ($handle as $entry) {
-                    if (cFileHandler::fileNameBeginsWithDot($entry) === false && is_dir($uploadPath . $entry)) {
-
-                        $directory = array();
+                    if (cFileHandler::fileNameBeginsWithDot($entry) === false
+                        && cDirHandler::exists($uploadPath . $entry)) {
+                        $directory = [];
                         $directory['name'] = $entry;
                         $directory['path'] = str_replace($this->_uploadPath, '', $uploadPath);
                         $directory['sub'] = $this->buildDirectoryList($uploadPath . $entry);
@@ -318,19 +470,85 @@ abstract class cContentTypeAbstract {
             }
         }
 
-        usort($directories, function($a, $b) {
-            $a = cString::toLowerCase($a["name"]);
-            $b = cString::toLowerCase($b["name"]);
-            if($a < $b) {
+        $this->_sortDirectoriesOrFilesList($directories);
+
+        return $directories;
+    }
+
+    /**
+     * Builds an array with directory information from the given upload path.
+     *
+     * @param string $directoryPath
+     *         directory within upload directory
+     *         (default: root upload path of client)
+     * @return array{
+     *      array{
+     *          name: string,
+     *          path: string,
+     *          sub?: array,
+     *      },
+     *      ...
+     *  } with file information (keys: name, path, sub)
+     * @since CONTENIDO 4.10.2
+     */
+    public function buildFileList(string $directoryPath = ''): array
+    {
+        $directoryPath = str_replace('\\', '/', $directoryPath);
+
+        // make sure the path ends with a slash but does not start with a slash
+        if ($directoryPath === '/') {
+            $directoryPath = '';
+        } elseif (!empty($directoryPath) && cString::getPartOfString($directoryPath, -1) != '/') {
+            $directoryPath .= '/';
+        }
+
+        $files = [];
+        if (cDirHandler::exists($this->_uploadPath . $directoryPath)) {
+            if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
+                foreach ($handle as $entry) {
+                    if (false === cFileHandler::fileNameBeginsWithDot($entry)) {
+                        $file = [];
+                        $file['name'] = $entry;
+                        $file['path'] = $directoryPath . $entry;
+                        $files[] = $file;
+                    }
+                }
+            }
+        }
+
+        $this->_sortDirectoriesOrFilesList($files);
+
+        return $files;
+    }
+
+    /**
+     * Sorts given directories or files list by their names.
+     * Only a directories list has entries with the key `sub`.
+     *
+     * @param array{
+     *     array{
+     *         name: string,
+     *         path: string,
+     *         sub?: array,
+     *     },
+     *     ...
+     * } $list
+     * @return void
+     * @since CONTENIDO 4.10.2
+     */
+    protected function _sortDirectoriesOrFilesList(array &$list)
+    {
+        usort($list, function ($a, $b) {
+            $a = cString::toLowerCase($a['name']);
+            $b = cString::toLowerCase($b['name']);
+            if ($a < $b) {
                 return -1;
-            } else if($a > $b) {
+            } elseif ($a > $b) {
                 return 1;
             } else {
                 return 0;
             }
         });
-
-        return $directories;
     }
 
     /**
@@ -344,7 +562,8 @@ abstract class cContentTypeAbstract {
      *         HTML code showing a directory list
      * @throws cInvalidArgumentException
      */
-    public function generateDirectoryList(array $dirs) {
+    public function generateDirectoryList(array $dirs): string
+    {
         $template = new cTemplate();
         $i = 1;
 
@@ -356,11 +575,11 @@ abstract class cContentTypeAbstract {
             $template->set('d', 'TITLE', $dirData['path'] . $dirData['name']);
             $template->set('d', 'DIRNAME', $dirData['name']);
 
-            $liClasses = array();
+            $liClasses = [];
             // check if the directory should be shown expanded or collapsed
             if ($this->_shouldDirectoryBeExpanded($dirData)) {
                 $template->set('d', 'SUBDIRLIST', $this->generateDirectoryList($dirData['sub']));
-            } else if (isset($dirData['sub']) && count($dirData['sub']) > 0) {
+            } elseif (isset($dirData['sub']) && count($dirData['sub']) > 0) {
                 $liClasses[] = 'collapsed';
                 $template->set('d', 'SUBDIRLIST', '');
             } else {
@@ -375,7 +594,10 @@ abstract class cContentTypeAbstract {
             $template->next();
         }
 
-        return $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_filelist_dirlistitem.html', true);
+        return $template->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_filelist_dirlistitem.html',
+            true
+        );
     }
 
     /**
@@ -388,7 +610,8 @@ abstract class cContentTypeAbstract {
      * @return bool
      *         whether the directory is the currently active directory
      */
-    protected function _isActiveDirectory(array $dirData) {
+    protected function _isActiveDirectory(array $dirData): bool
+    {
         return false;
     }
 
@@ -402,7 +625,8 @@ abstract class cContentTypeAbstract {
      * @return bool
      *         whether the directory should be shown expanded
      */
-    protected function _shouldDirectoryBeExpanded(array $dirData) {
+    protected function _shouldDirectoryBeExpanded(array $dirData): bool
+    {
         return false;
     }
 
@@ -416,7 +640,8 @@ abstract class cContentTypeAbstract {
      * @return bool
      *         whether the given $subDir is a subdirectory of $dir
      */
-    protected function _isSubdirectory($subDir, $dir) {
+    protected function _isSubdirectory($subDir, $dir): bool
+    {
         $dirArray = explode('/', $dir);
         $expand = false;
         $checkDir = '';
@@ -439,7 +664,8 @@ abstract class cContentTypeAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->generateViewCode();
     }
 
@@ -448,9 +674,9 @@ abstract class cContentTypeAbstract {
      * the frontend.
      *
      * @return string
-     *         escaped HTML code which sould be shown if content type is shown in frontend
+     *         escaped HTML code which should be shown if content type is shown in frontend
      */
-    public abstract function generateViewCode();
+    public abstract function generateViewCode(): string;
 
     /**
      * Generates the code which should be shown if this content type is edited.
@@ -458,14 +684,15 @@ abstract class cContentTypeAbstract {
      * @return string
      *         escaped HTML code which should be shown if content type is edited
      */
-    public abstract function generateEditCode();
+    public abstract function generateEditCode(): string;
 
     /**
      * Checks if this content type can be edited by a WYSIWYG editor
      *
      * @return bool
      */
-    public function isWysiwygCompatible() {
+    public function isWysiwygCompatible(): bool
+    {
         return false;
     }
 

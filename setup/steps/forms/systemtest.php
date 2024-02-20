@@ -1,24 +1,27 @@
 <?php
+
 /**
  * This file contains the system test setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * System test setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
  */
-class cSetupSystemtest extends cSetupMask {
+class cSetupSystemtest extends cSetupMask
+{
 
     private $_systemtest;
 
@@ -28,10 +31,11 @@ class cSetupSystemtest extends cSetupMask {
      * @param bool $previous
      * @param $next
      */
-    public function __construct($step, $previous, $next) {
+    public function __construct($step, $previous, $next)
+    {
         $cfg = cRegistry::getConfig();
 
-        cSetupMask::__construct("templates/setup/forms/systemtest.tpl", $step);
+        parent::__construct("templates/setup/forms/systemtest.tpl", $step);
 
         $errors = false;
 
@@ -47,7 +51,7 @@ class cSetupSystemtest extends cSetupMask {
             setupInitializeCfgClient(true);
         }
 
-        $this->_systemtest = new cSystemtest($cfg);
+        $this->_systemtest = new cSystemtest($cfg, $_SESSION['configmode']);
         $this->_systemtest->runTests(false);
         $this->_systemtest->testFilesystem($_SESSION['configmode'] == 'save', $_SESSION['setuptype'] == 'upgrade');
         if ($_SESSION['setuptype'] == 'setup') {
@@ -85,9 +89,9 @@ class cSetupSystemtest extends cSetupMask {
             $this->doChangedDirsFilesTest();
         }
 
-        $maxExecutionTime = (int) ini_get('max_execution_time');
+        $maxExecutionTime = (int)ini_get('max_execution_time');
         if ($maxExecutionTime < 60 && $maxExecutionTime !== 0) {
-            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to set max_execution_time", "setup"), i18n("Your PHP configuration for max_execution_time can not be changed via this script. We recommend setting the value for the installation or upgrade process to 60 seconds. You can try to execute the process with your current configuration. If the process is stopped, the system is not usable (any longer)", "setup"));
+            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to set max_execution_time.", "setup"), i18n("Your PHP configuration for max_execution_time can not be changed via this script. We recommend setting the value for the installation or upgrade process to 60 seconds. You can try to execute the process with your current configuration. If the process is stopped, the system is not usable (any longer)", "setup"));
         }
 
         $results = $this->_systemtest->getResults();
@@ -116,14 +120,14 @@ class cSetupSystemtest extends cSetupMask {
         }
 
         if (count($cHTMLFoldableErrorMessages) == 0) {
-            $cHTMLFoldableErrorMessages[] = new cHTMLFoldableErrorMessage(i18n("No problems detected", "setup"), i18n("Setup could not detect any problems with your system environment", "setup"), "images/icons/info.png");
+            $cHTMLFoldableErrorMessages[] = new cHTMLFoldableErrorMessage(i18n("No problems detected", "setup"), i18n("Setup could not detect any problems with your system environment.", "setup"), "images/icons/info.png");
         }
 
         $cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);
 
         $this->_stepTemplateClass->set("s", "CONTROL_TESTRESULTS", $cHTMLErrorMessageList->render());
 
-        if ($errors == true) {
+        if ($errors) {
             $this->setNavigation($previous, "");
 
             switch ($_SESSION['setuptype']) {
@@ -148,8 +152,9 @@ class cSetupSystemtest extends cSetupMask {
         }
     }
 
-    public function doExistingOldPluginTests() {
-        $db = getSetupMySQLDBConnection(false);
+    public function doExistingOldPluginTests()
+    {
+        $db = getSetupMySQLDBConnection();
         $message = '';
 
         // get all tables in database and list it into array
@@ -204,7 +209,8 @@ class cSetupSystemtest extends cSetupMask {
         }
     }
 
-    public function doChangedDirsFilesTest() {
+    public function doChangedDirsFilesTest()
+    {
         $cfg = cRegistry::getConfig();
 
         $db = getSetupMySQLDBConnection(false);
@@ -225,7 +231,8 @@ class cSetupSystemtest extends cSetupMask {
         }
     }
 
-    public function checkCountryLanguageCode() {
+    public function checkCountryLanguageCode()
+    {
         if ($_SESSION['setuptype'] != 'upgrade') {
             return;
         }
@@ -257,7 +264,7 @@ class cSetupSystemtest extends cSetupMask {
                 $oClient = new cApiClient();
                 $oClient->loadByPrimaryKey($client);
 
-                array_push($errors, sprintf(i18n('Language "%s" (%s) of the client "%s" (%s) is configured without ISO language code.', "setup"), $langName, $lang, $clientName, $client));
+                $errors[] = sprintf(i18n('Language "%s" (%s) of the client "%s" (%s) is configured without ISO language code.', "setup"), $langName, $lang, $clientName, $client);
             }
         }
 
@@ -266,8 +273,12 @@ class cSetupSystemtest extends cSetupMask {
         }
     }
 
-    public function initDB() {
-        $this->_systemtest->checkSetupMysql($_SESSION['setuptype'], $_SESSION['dbname'], $_SESSION['dbprefix'], $_SESSION['dbcharset'], $_SESSION['dbcollation']);
+    public function initDB()
+    {
+        $this->_systemtest->checkSetupMysql(
+            $_SESSION['setuptype'], $_SESSION['dbname'], $_SESSION['dbprefix'], $_SESSION['dbcharset'],
+            $_SESSION['dbcollation'], $_SESSION['dbengine']
+        );
     }
 
 }

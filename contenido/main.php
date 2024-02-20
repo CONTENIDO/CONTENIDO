@@ -1,36 +1,51 @@
 <?php
+
 /**
  * This is the main file of backend actions.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Olaf Niemann
- * @author           Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Olaf Niemann
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+/**
+ * @var cPermission $perm
+ * @var cAuth $auth
+ * @var string $belang
+ * @var array $cfg
+ * @var cSession $sess
+ * @var int $changelang
+ * @var int $client
+ * @var int $frame
+ * @var string $area
+ * @var int $idart
+ * @var int $idcat
+ * @var bool $bJobRunned
+ */
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-//includes the backendpath
 $backendPath = cRegistry::getBackendPath();
 
 $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
 
 cInclude('includes', 'functions.api.php');
 
-cRegistry::bootstrap(array(
+cRegistry::bootstrap([
     'sess' => 'cSession',
     'auth' => 'cAuthHandlerBackend',
     'perm' => 'cPermission'
-));
+]);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
@@ -40,16 +55,15 @@ require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
 $sess->register('belang');
 
+// Include cronjob-Emulator (for frame 1 only)
 if ($cfg['use_pseudocron'] == true) {
-    // Include cronjob-Emulator, but only for frame 1
     if ($frame == 1) {
         $sess->freeze();
 
-        $oldpwd = getcwd();
-
+        $currentWorkingDirectory = getcwd();
         chdir($backendPath . $cfg['path']['cronjobs']);
         cInclude('includes', 'pseudo-cron.inc.php');
-        chdir($oldpwd);
+        chdir($currentWorkingDirectory);
 
         if ($bJobRunned == true) {
             // Some cronjobs might overwrite important system variables.
@@ -62,7 +76,7 @@ if ($cfg['use_pseudocron'] == true) {
 // Remove all own marks, only for frame 1 and 4 if $_REQUEST['appendparameters']
 // == 'filebrowser'
 // filebrowser is used in tiny in this case also do not remove session marks
-$appendparameters = isset($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
+$appendparameters = $_REQUEST['appendparameters'] ?? '';
 if (in_array($frame, [1, 4]) && $appendparameters != 'filebrowser') {
     $col = new cApiInUseCollection();
     $col->removeSessionMarks($sess->id);
@@ -76,7 +90,7 @@ if (isset($overrideid) && isset($overridetype)) {
 }
 
 // Create CONTENIDO classes
-// FIXME: Correct variable names, instances of classes at objects, not classes!
+// FIXME: Correct variable names, instances of classes are objects, not classes!
 $db = cRegistry::getDb();
 $notification = new cGuiNotification();
 $classarea = new cApiAreaCollection();
@@ -99,22 +113,21 @@ if (isset($changelang) && is_numeric($changelang)) {
 
     // If user switch language and the previously selected article is not existing in the new language
     // redirect to MyCONTENIDO area
-    if ($area == "con_editart" || $area == "con_meta" || $area == "con_tplcfg" || $area == "con_content_list") {
+    if ($area == 'con_editart' || $area == 'con_meta' || $area == 'con_tplcfg' || $area == 'con_content_list') {
+        $artLangColl = new cApiArticleLanguageCollection;
+        $artLangColl->setWhere('idart', $idart);
+        $artLangColl->setWhere('idlang', $lang);
+        $artLangColl->query();
 
-    	$artLangColl = new cApiArticleLanguageCollection;
-    	$artLangColl->setWhere('idart', $idart);
-    	$artLangColl->setWhere('idlang', $lang);
-    	$artLangColl->query();
-
-		if ($artLangColl->count() == 0) {
-			$frame = $sess->url("index.php?area=mycontenido&frame=4");
-			echo "<script>parent.frames.top.location.href='" . $frame . "';</script>";
-		}
+        if ($artLangColl->count() == 0) {
+            $frame = $sess->url('index.php?area=mycontenido&frame=4');
+            echo "<script type='text/javascript'>parent.frames.top.location.href='" . $frame . "';</script>";
+        }
     }
-
 }
 
-if (!is_numeric($client) || (!$perm->have_perm_client('client[' . $client . ']') && !$perm->have_perm_client('admin[' . $client . ']'))) {
+if (!cSecurity::isPositiveInteger($client ?? 0)
+    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))) {
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
@@ -126,14 +139,11 @@ if (!is_numeric($client) || (!$perm->have_perm_client('client[' . $client . ']')
     $sess->register('client');
 }
 
-if (!is_numeric($lang) || $lang == '') {
+if (!cSecurity::isPositiveInteger($lang ?? 0)) {
     $sess->register('lang');
-    // search for the first language of this client
-    // @TODO  Move this to cApiClientLanguageCollection
-    $sql = "SELECT * FROM " . $cfg['tab']['lang'] . " AS A, " . $cfg['tab']['clients_lang'] . " AS B WHERE A.idlang=B.idlang AND idclient=" . cSecurity::toInteger($client) . " ORDER BY A.idlang ASC";
-    $db->query($sql);
-    $db->nextRecord();
-    $lang = $db->f('idlang');
+    // Search for the first language of this client
+    $oClientLangColl = new cApiClientLanguageCollection();
+    $lang = (int)$oClientLangColl->getFirstLanguageIdByClient($client);
 } else {
     $sess->register('lang');
 }
@@ -173,8 +183,8 @@ foreach ($backend->getFile('inc') as $filename) {
     include_once($backendPath . $filename);
 }
 
-// If $action is set -> User klicked some button/link
-// get the appopriate code for this action and evaluate it.
+// If $action is set -> User clicked some button/link
+// get the appropriate code for this action and evaluate it.
 if (isset($action) && $action != '') {
     if (!isset($idart)) {
         $idart = 0;
@@ -182,7 +192,7 @@ if (isset($action) && $action != '') {
     $backend->log($idcat, $idart, $client, $lang, $action);
 }
 
-// include action file if it exists
+// Include action file if exists
 if (isset($action)) {
     $actionCodeFile = $backendPath . 'includes/type/action/include.' . $action . '.action.php';
     if (cFileHandler::exists($actionCodeFile)) {
@@ -195,7 +205,7 @@ if (isset($action)) {
 
 // Include the 'main' file for the selected area. Usually there is only one main
 // file
-$sFilename = "";
+$sFilename = '';
 if (count($backend->getFile('main')) > 0) {
     foreach ($backend->getFile('main') as $id => $filename) {
         $sFilename = $filename;
@@ -209,21 +219,11 @@ if (count($backend->getFile('main')) > 0) {
     $sFilename = 'include.blank.php';
 }
 
-$cfg['debug']['backend_exectime']['end'] = getmicrotime();
+// Finalize debug of backend rendering
+cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldmemusage, $sFilename));
 
-$debugInfo = array(
-    'Building this page (excluding CONTENIDO includes) took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds',
-    'Building the complete page took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds',
-    'Include memory usage: ' . humanReadableSize(memory_get_usage() - $oldmemusage),
-    'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
-    "*****" . $sFilename . "*****"
-);
-cDebug::out(implode("\n", $debugInfo));
-
-// Do user tracking (who is online)
+// User Tracking (who is online)
 $oActiveUser = new cApiOnlineUserCollection();
 $oActiveUser->startUsersTracking();
 
 cRegistry::shutdown();
-
-?>

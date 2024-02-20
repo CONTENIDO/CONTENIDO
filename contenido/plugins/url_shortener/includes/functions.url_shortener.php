@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the Plugin Manager configurations.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage UrlShortener
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -26,25 +27,26 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @throws cDbException
  * @throws cException
  */
-function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled) {
+function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled)
+{
     $shortUrl = new cApiShortUrl();
-    $shortUrl->loadByMany(array(
+    $shortUrl->loadByMany([
         'idart' => $idart,
         'idlang' => $idlang,
         'idclient' => $idclient
-    ));
+    ]);
 
     $tr = new cHTMLTableRow();
 
     $td = new cHTMLTableData();
-    $td->setClass('text_medium');
+    $td->setClass('text_medium no_wrap');
     $td->setContent(i18n('Short URL', 'url_shortener'));
     $tr->appendContent($td);
 
-	$infoButton = new cGuiBackendHelpbox(i18n('INFO', 'url_shortener'));
+    $infoButton = new cGuiBackendHelpbox(i18n('INFO', 'url_shortener'));
 
     $td = new cHTMLTableData();
-    $td->setClass('leftData');
+    $td->setClass('text_medium');
     $textbox = new cHTMLTextbox('url_shortener_shorturl', $shortUrl->get('shorturl'), 24, '', '', $disabled, NULL, '', 'textField');
     $td->setContent($textbox . ' ' . $infoButton->render());
     $tr->appendContent($td);
@@ -63,7 +65,8 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function piUsConSaveArtAfter($editedIdArt, $values) {
+function piUsConSaveArtAfter($editedIdArt, $values)
+{
     // if not all parameters have been given, do nothing
     if (!isset($_POST['url_shortener_shorturl']) || !isset($editedIdArt)) {
         return;
@@ -73,11 +76,11 @@ function piUsConSaveArtAfter($editedIdArt, $values) {
     $idlang = cRegistry::getLanguageId();
     $idclient = cRegistry::getClientId();
     $shortUrlItem = new cApiShortUrl();
-    $shortUrlItem->loadByMany(array(
+    $shortUrlItem->loadByMany([
         'idart' => $idart,
         'idlang' => $idlang,
         'idclient' => $idclient
-    ));
+    ]);
     // if given shorturl is already in use, show error message
     $checkShortUrlItem = new cApiShortUrl();
     $checkShortUrlItem->loadBy('shorturl', $shorturl);
@@ -142,37 +145,33 @@ function piUsConSaveArtAfter($editedIdArt, $values) {
 /**
  * Computes an error message which describes the given error code.
  *
- * @param int          $errorCode the error code
+ * @param int $errorCode the error code
  * @param cApiShortUrl $shortUrlItem
  *
  * @return string the error message describing the given error code
  * @throws cDbException
  * @throws cException
  */
-function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL) {
+function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL)
+{
     switch ($errorCode) {
         case cApiShortUrlCollection::ERR_INVALID_CHARS:
             return i18n('The entered short URL contains invalid characters!', 'url_shortener');
-            break;
         case cApiShortUrlCollection::ERR_IS_ARTICLE_ALIAS:
             return i18n('The entered short URL is already an article alias!', 'url_shortener');
-            break;
         case cApiShortUrlCollection::ERR_IS_CATEGORY_ALIAS:
             return i18n('The entered short URL is already a category alias!', 'url_shortener');
-            break;
         case cApiShortUrlCollection::ERR_IS_CLIENT_FOLDER:
             return i18n('The entered short URL is a subdirectory of the client directory!', 'url_shortener');
-            break;
         case cApiShortUrlCollection::ERR_TOO_SHORT:
             return i18n('The entered short URL is too short!', 'url_shortener');
-            break;
         case cApiShortUrlCollection::ERR_ALREADY_EXISTS:
             $message = i18n('The entered short URL already exists!', 'url_shortener');
             $message .= '<br />';
             if ($shortUrlItem !== NULL) {
                 // add the client name to the error message
                 $clientColl = new cApiClientCollection();
-                $message .= i18n('Client', 'url_shortener') . ': ' . $clientColl->getClientname($shortUrlItem->get('idclient'));;
+                $message .= i18n('Client', 'url_shortener') . ': ' . $clientColl->getClientname($shortUrlItem->get('idclient'));
                 $message .= '<br />';
                 // add the language name to the error message
                 $langColl = new cApiLanguageCollection();
@@ -191,7 +190,6 @@ function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL) {
                 $message .= i18n('Article', 'url_shortener') . ': ' . $artlang->get('title');
             }
             return $message;
-            break;
     }
     return i18n('The entered short URL is not valid!', 'url_shortener');
 }
@@ -205,16 +203,17 @@ function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function piUsAfterLoadPlugins() {
-    $requestUri = $_SERVER['REQUEST_URI'];
+function piUsAfterLoadPlugins()
+{
+    $requestUri = $_SERVER['REQUEST_URI'] ?? '';
     $shorturl = cString::getPartOfString($requestUri, cString::findLastPos($requestUri, '/') + 1);
     $shortUrlItem = new cApiShortUrl();
     $shortUrlItem->loadBy('shorturl', $shorturl);
     if ($shortUrlItem->isLoaded()) {
-        $uriParams = array(
+        $uriParams = [
             'idart' => $shortUrlItem->get('idart'),
             'lang' => $shortUrlItem->get('idlang')
-        );
+        ];
         $url = cUri::getInstance()->build($uriParams, true);
         header('Location:' . $url);
         exit();
@@ -237,9 +236,9 @@ function piUseConDeleteArtAfter($idart)
 {
     $count = 0;
     if (cRegistry::getPerm()->have_perm_area_action('url_shortener', 'url_shortener_delete')) {
-        $idart        = cSecurity::toInteger($idart);
+        $idart = cSecurity::toInteger($idart);
         $shortUrlColl = new cApiShortUrlCollection();
-        $count        = $shortUrlColl->deleteBy('idart', $idart);
+        $count = $shortUrlColl->deleteBy('idart', $idart);
     }
 
     return $count;

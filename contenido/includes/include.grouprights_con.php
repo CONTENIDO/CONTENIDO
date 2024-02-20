@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for content group rights management.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -28,7 +28,7 @@ $page = new cGuiPage('rights', '', 4);
 // set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("con")]) . "'";
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
-        FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
+        FROM " . $cfg['tab']['rights'] . " AS A, " . $cfg['tab']['area'] . " AS B, " . $cfg['tab']['actions'] . " AS C
         WHERE user_id = '" . $db->escape($groupid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
         AND A.type = 1 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
         AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
@@ -55,7 +55,7 @@ $sJsAfter = '';
 $sTable = '';
 
 $sJsBefore .= "var itemids = [];\n"
-            . "var actareaids = [];\n";
+    . "var actareaids = [];\n";
 
 // Init Table
 $oTable = new cHTMLTable();
@@ -160,15 +160,15 @@ $objHeaderRow->advanceID();
 // table content
 $output = "";
 $sql = "SELECT A.idcat, level, name, parentid
-        FROM " . $cfg["tab"]["cat_tree"] . " AS A, " . $cfg["tab"]["cat"] . " AS B, " . $cfg["tab"]["cat_lang"] . " AS C
+        FROM " . $cfg['tab']['cat_tree'] . " AS A, " . $cfg['tab']['cat'] . " AS B, " . $cfg['tab']['cat_lang'] . " AS C
         WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND C.idlang = " . cSecurity::toInteger($rights_lang) . "
             AND B.idclient = " . cSecurity::toInteger($rights_client) . " ORDER BY idtree";
 
 $db->query($sql);
-$counter = array();
+$counter = [];
 $parentid = "leer";
 
-$aRowname = array();
+$aRowname = [];
 $iLevel = 0;
 
 while ($db->nextRecord()) {
@@ -199,12 +199,12 @@ while ($db->nextRecord()) {
         // find out parentid for inheritance
         // if parentid is the same increase the counter
         if ($parentid == $db->f("parentid")) {
-            $counter[$parentid] ++;
+            $counter[$parentid]++;
         } else {
             $parentid = $db->f("parentid");
             // if these parentid is in use increase the counter
             if (isset($counter[$parentid])) {
-                $counter[$parentid] ++;
+                $counter[$parentid]++;
             } else {
                 $counter[$parentid] = 0;
             }
@@ -212,16 +212,12 @@ while ($db->nextRecord()) {
 
         $spaces = '<img src="images/spacer.gif" height="1" width="' . ($db->f("level") * 15) . '"><a><img src="images/spacer.gif" width="7" id="' . implode('_', $aRowname) . '_img"></a>';
 
-        $objItem->updateAttributes(array(
-            "class" => "td_rights0"
-        ));
+        $objItem->updateAttributes(["class" => "td_rights0"]);
         $objItem->setContent($spaces . $db->f("name"));
         $items .= $objItem->render();
         $objItem->advanceID();
 
-        $objItem->updateAttributes(array(
-            "class" => "td_rights1"
-        ));
+        $objItem->updateAttributes(["class" => "td_rights1"]);
         $objItem->setContent("<a href=\"javascript:rightsInheritanceUp('$parentid', '$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\" alt=\"" . i18n("Apply rights for this category to all categories on the same level or above") . "\" title=\"" . i18n("Apply rights for this category to all categories on the same level or above") . "\"></a><img src=\"images/spacer.gif\" width=\"3\"><a href=\"javascript:rightsInheritanceDown('" . $db->f("idcat") . "')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\" alt=\"" . i18n("Apply rights for this category to all categories below the current category") . "\" title=\"" . i18n("Apply rights for this category to all categories below the current category") . "\"></a>");
         $items .= $objItem->render();
         $objItem->advanceID();
@@ -281,7 +277,12 @@ $objItem->updateAttributes([
     "align" => "center",
     "colspan" => "26"
 ]);
-$objItem->setContent("<a href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=\"javascript:submitrightsform('group_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>");
+$objItem->setContent(
+    '<div class="con_form_action_control">'
+    . "<a class=\"con_img_button\" href=\"javascript:submitrightsform('group_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>"
+    . "<a class=\"con_img_button\" href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a>"
+    . '</div>'
+);
 $items = $objItem->render();
 $objItem->advanceID();
 $objFooterRow->setContent($items);

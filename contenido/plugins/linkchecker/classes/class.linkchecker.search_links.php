@@ -5,9 +5,9 @@
  * @subpackage Linkchecker
  * @author     Mario Diaz
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -23,11 +23,18 @@ class cLinkcheckerSearchLinks
     private $mode = '';
 
     /**
+     * Link type mode, 1 = intern, 2 = extern, 3 = intern/extern
+     * @var int
+     */
+    private $linkTypeMode = 0;
+
+    /**
      * cLinkcheckerSearchLinks constructor.
      */
-    public function __construct()
+    public function __construct($mode = 'text', $linkTypeMode = 3)
     {
-        $this->setMode("text");
+        $this->setMode($mode);
+        $this->setLinkTypeMode($linkTypeMode);
     }
 
     /**
@@ -39,7 +46,7 @@ class cLinkcheckerSearchLinks
      *
      * @param $mode
      *
-     * @return mixed
+     * @return string
      */
     public function setMode($mode)
     {
@@ -47,21 +54,38 @@ class cLinkcheckerSearchLinks
     }
 
     /**
-     * Searchs extern and intern links.
+     * Setter method Link type mode
      *
+     * mode:
+     * - 1 = intern
+     * - 2 = extern
+     * - 3 = intern/extern
+     *
+     * @param int $linkTypeMode
+     *
+     * @return int
+     */
+    public function setLinkTypeMode($linkTypeMode)
+    {
+        return $this->linkTypeMode = cSecurity::toInteger($linkTypeMode);
+    }
+
+    /**
+     * Searches extern and intern links.
+     *
+     * @param string $value
+     * @param int $idart
+     * @param string $nameart
+     * @param int $idcat
+     * @param string $namecat
+     * @param int $idlang
+     * @param int $idartlang
+     * @param int $idcontent
+     *
+     * @return array
      * @todo Optimize this function!
      * @todo Do not use global!
      *
-     * @param string $value
-     * @param int    $idart
-     * @param string $nameart
-     * @param int    $idcat
-     * @param string $namecat
-     * @param int    $idlang
-     * @param int    $idartlang
-     * @param int    $idcontent
-     *
-     * @return array
      */
     public function search($value, $idart, $nameart, $idcat, $namecat, $idlang, $idartlang, $idcontent = 0)
     {
@@ -69,20 +93,20 @@ class cLinkcheckerSearchLinks
 
         // Extern URL
         if (preg_match_all('~(?:(?:action|data|href|src)=["\']((?:file|ftp|http|ww)[^\s]*)["\'])~i', $value, $aMatches)
-            && $_GET['mode'] != 1
+            && $this->linkTypeMode != 1
         ) {
             for ($i = 0; $i < count($aMatches[1]); $i++) {
                 if (!in_array($aMatches[1][$i], $aWhitelist)) {
                     $aSearchIDInfosNonID[] = [
-                        "url"       => $aMatches[1][$i],
-                        "idart"     => $idart,
-                        "nameart"   => $nameart,
-                        "idcat"     => $idcat,
-                        "namecat"   => $namecat,
+                        "url" => $aMatches[1][$i],
+                        "idart" => $idart,
+                        "nameart" => $nameart,
+                        "idcat" => $idcat,
+                        "namecat" => $namecat,
                         "idcontent" => $idcontent,
                         "idartlang" => $idartlang,
-                        "lang"      => $idlang,
-                        "urltype"   => "extern",
+                        "lang" => $idlang,
+                        "urltype" => "extern",
                     ];
                 }
             }
@@ -91,21 +115,21 @@ class cLinkcheckerSearchLinks
         // Redirect
         if ($this->mode == "redirect"
             && (preg_match('!(' . preg_quote($aUrl['cms']) . '[^\s]*)!i', $value, $aMatches)
-                || (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $value, $aMatches) && $_GET['mode'] != 1))
+                || (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $value, $aMatches) && $this->linkTypeMode != 1))
             && (cString::findFirstPosCI($value, 'front_content.php') === false)
             && !in_array($aMatches[0], $aWhitelist)
         ) {
             $aSearchIDInfosNonID[] = [
-                "url"       => $aMatches[0],
-                "idart"     => $idart,
-                "nameart"   => $nameart,
-                "idcat"     => $idcat,
-                "namecat"   => $namecat,
+                "url" => $aMatches[0],
+                "idart" => $idart,
+                "nameart" => $nameart,
+                "idcat" => $idcat,
+                "namecat" => $namecat,
                 "idcontent" => 0,
                 "idartlang" => $idartlang,
-                "lang"      => $idlang,
-                "urltype"   => "unknown",
-                "redirect"  => true,
+                "lang" => $idlang,
+                "urltype" => "unknown",
+                "redirect" => true,
             ];
         }
 
@@ -115,7 +139,7 @@ class cLinkcheckerSearchLinks
                 $value,
                 $aMatches
             )
-            && $_GET['mode'] != 2
+            && $this->linkTypeMode != 2
         ) {
             for ($i = 0; $i < count($aMatches[1]); $i++) {
                 if (cString::findFirstPos($aMatches[1][$i], "front_content.php") === false
@@ -125,15 +149,15 @@ class cLinkcheckerSearchLinks
                     )
                 ) {
                     $aSearchIDInfosNonID[] = [
-                        "url"       => $aMatches[1][$i],
-                        "idart"     => $idart,
-                        "nameart"   => $nameart,
-                        "idcat"     => $idcat,
-                        "namecat"   => $namecat,
+                        "url" => $aMatches[1][$i],
+                        "idart" => $idart,
+                        "nameart" => $nameart,
+                        "idcat" => $idcat,
+                        "namecat" => $namecat,
                         "idcontent" => $idcontent,
                         "idartlang" => $idartlang,
-                        "lang"      => $idlang,
-                        "urltype"   => "intern",
+                        "lang" => $idlang,
+                        "urltype" => "intern",
                     ];
                 }
             }

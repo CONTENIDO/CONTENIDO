@@ -1,28 +1,47 @@
 <?php
+
 /**
  * This file contains the workflow task overview mask.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');
 
-global $sess;
+/**
+ * @var cSession $sess
+ * @var cPermission $perm
+ * @var cAuth $auth
+ * @var cTemplate $tpl
+ * @var cDb $db
+ * @var string $area
+ * @var string $sFlagTitle
+ * @var int $frame
+ * @var int $lang
+ * @var int $client
+ * @var int $idtpl
+ * @var array $cfg
+ */
+
 $sSession = $sess->id;
 
 $wfa = new WorkflowArtAllocations();
 $wfu = new WorkflowUserSequences();
 $user = new cApiUser();
 $db2 = cRegistry::getDb();
+
+$action = $action ?? '';
+
+$usershow = $usershow ?? '';
+$modidartlang = cSecurity::toInteger($modidartlang ?? '0');
 
 ob_start();
 
@@ -39,8 +58,11 @@ if ($action == "workflow_do_action") {
     doWorkflowAction($modidartlang, $GLOBALS[$selectedAction]);
 }
 
-$wfa->select();
+$usersequence = [];
+$lastusersequence = [];
+$article = [];
 
+$wfa->select();
 while (($wfaitem = $wfa->next()) !== false) {
     $wfaid = $wfaitem->get("idartallocation");
     $usersequence[$wfaid] = $wfaitem->get("idusersequence");
@@ -48,6 +70,7 @@ while (($wfaitem = $wfa->next()) !== false) {
     $article[$wfaid] = $wfaitem->get("idartlang");
 }
 
+$userids = [];
 if (is_array($usersequence)) {
     foreach ($usersequence as $key => $value) {
         $wfu->select("idusersequence = '$value'");
@@ -67,7 +90,7 @@ if (is_array($userids)) {
 
         if ($user->loadByPrimaryKey($value) == false) {
             // Yes, it's a group. Let's try to load the group members!
-            $sql = "SELECT user_id FROM " . $cfg["tab"]["groupmembers"] . " WHERE group_id = '" . $db2->escape($value) . "'";
+            $sql = "SELECT user_id FROM " . cRegistry::getDbTableName('groupmembers') . " WHERE group_id = '" . $db2->escape($value) . "'";
             $db2->query($sql);
 
             while ($db2->nextRecord()) {
@@ -99,7 +122,7 @@ if ($perm->have_perm_area_action($area, "workflow_task_user_select")) {
     $form->setVar("frame", $frame);
     $form->setVar("action", "workflow_task_user_select");
     $form->appendContent(i18n("Show users") . ": " . getUsers("show", $usershow));
-    $form->appendContent('<input class="vAlignMiddle" type="image" src="' . $cfg["path"]["htmlpath"] . $cfg["path"]["images"] . "submit.gif" . '">');
+    $form->appendContent('<input class="align_middle" type="image" src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . "submit.gif" . '">');
 
     $tpl->set('s', 'USERSELECT', $form->render());
 } else {
@@ -132,12 +155,12 @@ if (is_array($isCurrent)) {
             $sql = "SELECT B.idcat AS idcat, A.title AS title, A.created AS created, A.lastmodified AS changed,
                            A.idart as idart, E.name as tpl_name, A.idartlang as idartlang, F.idcatlang as idcatlang,
                            B.idcatart as idcatart, A.idlang as art_lang, F.startidartlang as startidartlang
-                    FROM (" . $cfg["tab"]["art_lang"] . " AS A,
-                         " . $cfg["tab"]["cat_art"] . " AS B,
-                          " . $cfg["tab"]["art"] . " AS C)
-                          LEFT JOIN " . $cfg['tab']['tpl_conf'] . " as D ON A.idtplcfg = D.idtplcfg
-                          LEFT JOIN " . $cfg['tab']['tpl'] . " as E ON D.idtpl = E.`idtpl`
-                          LEFT JOIN " . $cfg['tab']['cat_lang'] . " as F ON B.idcat = F.`idcat`
+                    FROM (" . cRegistry::getDbTableName('art_lang') . " AS A,
+                         " . cRegistry::getDbTableName('cat_art') . " AS B,
+                          " . cRegistry::getDbTableName('art') . " AS C)
+                          LEFT JOIN " . cRegistry::getDbTableName('tpl_conf') . " as D ON A.idtplcfg = D.idtplcfg
+                          LEFT JOIN " . cRegistry::getDbTableName('tpl') . " as E ON D.idtpl = E.`idtpl`
+                          LEFT JOIN " . cRegistry::getDbTableName('cat_lang') . " as F ON B.idcat = F.`idcat`
                          WHERE A.idartlang = '$idartlang' AND
                                A.idart = B.idart AND
                                A.idart = C.idart AND
@@ -153,7 +176,7 @@ if (is_array($isCurrent)) {
                 $idart = $db->f("idart");
 
                 // Create javascript multilink
-                $tmp_mstr = '<a href="javascript://" onclick="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '" alt="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '">%s</a>';
+                $tmp_mstr = '<a href="javascript:void(0)" onclick="Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '" title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '">%s</a>';
 
                 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idtpl=$idtpl&idart=$idart"), $db->f("title"));
 
@@ -176,7 +199,7 @@ if (is_array($isCurrent)) {
 
                 $todoListeSubject = i18n("Reminder");
                 $sReminder = i18n("Set reminder / add to todo list");
-                $sReminderHtml = "<a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=550');\" href=\"#\"><img alt=\"$sReminder\" title=\"$sReminder\" id=\"m2\" src=\"images/but_setreminder.gif\" border=\"0\"></a>";
+                $sReminderHtml = "<a id=\"m1\" onclick=\"window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=550');\" href=\"#\"><img alt=\"$sReminder\" title=\"$sReminder\" id=\"m2\" src=\"images/but_setreminder.gif\" border=\"0\"></a>";
 
                 $templatename = $db->f('tpl_name');
                 if (!empty($templatename)) {
@@ -220,4 +243,4 @@ $tpl->set('s', 'SUBNAVI', $sLoadSubnavi);
 $frame = ob_get_contents();
 ob_end_clean();
 
-$tpl->generate($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/templates/template.workflow_tasks.html");
+$tpl->generate(cRegistry::getBackendPath() . $cfg['path']['plugins'] . "workflow/templates/template.workflow_tasks.html");

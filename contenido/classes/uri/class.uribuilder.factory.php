@@ -7,9 +7,9 @@
  * @subpackage Frontend_URI
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Frontend_URI
  */
-class cUriBuilderFactory {
+class cUriBuilderFactory
+{
 
     /**
      * Returns desired cUriBuilder object.
@@ -36,7 +37,8 @@ class cUriBuilderFactory {
      * @throws cInvalidArgumentException
      *         In case unknown type of builder is requested you'll get an Exception
      */
-    public static function getUriBuilder($sBuilder) {
+    public static function getUriBuilder($sBuilder)
+    {
         switch ($sBuilder) {
             case 'front_content':
                 return cUriBuilderFrontcontent::getInstance();
@@ -48,13 +50,14 @@ class cUriBuilderFactory {
                 return cUriBuilderCustomPath::getInstance();
                 break;
             default:
-                if ((string) $sBuilder !== '') {
+                if ((string)$sBuilder !== '') {
                     $sClassName = 'cUriBuilder' . $sBuilder;
 
                     if (!class_exists($sClassName)) {
                         throw new cInvalidArgumentException('The classfile of cUriBuilder couldn\'t included by cUriBuilderFactory: ' . $sBuilder . '!');
                     }
-                    return call_user_func(array($sClassName, 'getInstance'));
+
+                    return call_user_func([$sClassName, 'getInstance']);
                 }
 
                 throw new cInvalidArgumentException('Invalid/Empty cUriBuilder passed to cUriBuilderFactory: ' . $sBuilder . '!');

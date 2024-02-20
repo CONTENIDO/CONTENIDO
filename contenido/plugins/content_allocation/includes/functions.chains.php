@@ -7,9 +7,9 @@
  * @subpackage ContentAllocation
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -25,7 +25,7 @@ function pica_RegisterCustomTab()
 /**
  * @param $sIntName
  *
- * @return array
+ * @return array|void
  */
 function pica_GetCustomTabProperties($sIntName)
 {
@@ -35,11 +35,11 @@ function pica_GetCustomTabProperties($sIntName)
 }
 
 /**
- * @param $aActions
+ * @param array $aActions
  *
- * @return mixed
+ * @return array
  */
-function pica_ArticleListActions($aActions)
+function pica_ArticleListActions(array $aActions)
 {
     $aTmpActions["con_contentallocation"] = "con_contentallocation";
 
@@ -47,27 +47,27 @@ function pica_ArticleListActions($aActions)
 }
 
 /**
- * @param $idcat
- * @param $idart
- * @param $idartlang
- * @param $actionkey
+ * @param int $idcat
+ * @param int $idart
+ * @param int $idartlang
+ * @param string $actionkey
  *
  * @return string
  * @throws cException
  */
 function pica_RenderArticleAction($idcat, $idart, $idartlang, $actionkey)
 {
-    global $sess;
+    $sess = cRegistry::getSession();
 
     $anchor = '';
     if ($actionkey == 'con_contentallocation') {
-        $label  = i18n('Tagging', 'content_allocation');
-        $url    = $sess->url(
+        $label = i18n('Tagging', 'content_allocation');
+        $url = $sess->url(
             'main.php?area=con_contentallocation&action=con_edit&idart=' . $idart . '&idartlang=' . $idartlang
             . '&idcat=' . $idcat . '&frame=4'
         );
-        $image  = '<img src="plugins/content_allocation/images/call_contentallocation.gif" alt="' . $label . '">';
-        $anchor = '<a title="' . $label . '" alt="' . $label . '" href="' . $url . '">' . $image . '</a>';
+        $image = '<img src="plugins/content_allocation/images/call_contentallocation.gif" alt="' . $label . '">';
+        $anchor = '<a title="' . $label . '" href="' . $url . '">' . $image . '</a>';
     }
 
     return $anchor;
@@ -105,5 +105,3 @@ function pica_DeleteArticleAllocations($idart, $idartlang)
         $oAlloc->deleteAllocationsByIdartlang($idartlang);
     }
 }
-
-?>

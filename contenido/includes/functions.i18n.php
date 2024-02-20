@@ -3,13 +3,13 @@
 /**
  * Defines the I18N CONTENIDO functions
  *
- * @package          Core
- * @subpackage       I18N
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage I18N
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,18 +20,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Usage:
  * trans('Your text which has to be translated');
  *
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
  * @param string $string
  *         The string to translate
  *
  * @return string
  *         Returns the translation
- * 
+ *
  * @throws cException
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ *
  */
-function trans($string) {
+function trans($string)
+{
     return cI18n::__($string);
 }
 
@@ -48,10 +49,11 @@ function trans($string) {
  *
  * @return string
  *         Returns the translation
- * 
+ *
  * @throws cException
  */
-function i18n($string, $domain = 'contenido') {
+function i18n($string, $domain = 'contenido')
+{
     return cI18n::__($string, $domain);
 }
 
@@ -65,10 +67,11 @@ function i18n($string, $domain = 'contenido') {
  *
  * @return string
  *         Returns the translation
- * 
+ *
  * @throws cInvalidArgumentException
  */
-function i18nEmulateGettext($string, $domain = 'contenido') {
+function i18nEmulateGettext($string, $domain = 'contenido')
+{
     return cI18n::emulateGettext($string, $domain);
 }
 
@@ -82,7 +85,8 @@ function i18nEmulateGettext($string, $domain = 'contenido') {
  * @param string $domain
  *         Language domain
  */
-function i18nInit($localePath, $langCode, $domain = 'contenido') {
+function i18nInit($localePath, $langCode, $domain = 'contenido')
+{
     cI18n::init($localePath, $langCode, $domain);
 }
 
@@ -96,7 +100,8 @@ function i18nInit($localePath, $langCode, $domain = 'contenido') {
  * @return string
  *         Returns the translation
  */
-function i18nRegisterDomain($domain, $localePath) {
+function i18nRegisterDomain($domain, $localePath)
+{
     cI18n::registerDomain($domain, $localePath);
 }
 
@@ -109,9 +114,10 @@ function i18nRegisterDomain($domain, $localePath) {
  * @return array
  *         array with the short form of the accept languages
  */
-function i18nStripAcceptLanguages($accept) {
+function i18nStripAcceptLanguages($accept)
+{
     $languages = explode(',', $accept);
-    $shortLanguages = array();
+    $shortLanguages = [];
     foreach ($languages as $value) {
         $components = explode(';', $value);
         $shortLanguages[] = $components[0];
@@ -129,7 +135,8 @@ function i18nStripAcceptLanguages($accept) {
  * @return string
  *         The locale key for the given accept string
  */
-function i18nMatchBrowserAccept($accept) {
+function i18nMatchBrowserAccept($accept)
+{
     $available_languages = i18nGetAvailableLanguages();
 
     // Try to match the whole accept string
@@ -164,266 +171,267 @@ function i18nMatchBrowserAccept($accept) {
  * @return array
  *         All available languages
  */
-function i18nGetAvailableLanguages() {
+function i18nGetAvailableLanguages()
+{
     /*
      * array notes: First field: Language Second field: Country Third field:
      * ISO-Encoding Fourth field: Browser accept mapping Fifth field: SPAW
      * language
      */
-    $aLanguages = array(
-        'ar_AA' => array(
+    $aLanguages = [
+        'ar_AA' => [
             'Arabic',
             'Arabic Countries',
             'ISO8859-6',
             'ar',
-            'en'
-        ),
-        'be_BY' => array(
+            'en',
+        ],
+        'be_BY' => [
             'Byelorussian',
             'Belarus',
             'ISO8859-5',
             'be',
-            'en'
-        ),
-        'bg_BG' => array(
+            'en',
+        ],
+        'bg_BG' => [
             'Bulgarian',
             'Bulgaria',
             'ISO8859-5',
             'bg',
-            'en'
-        ),
-        'cs_CZ' => array(
+            'en',
+        ],
+        'cs_CZ' => [
             'Czech',
             'Czech Republic',
             'ISO8859-2',
             'cs',
-            'cz'
-        ),
-        'da_DK' => array(
+            'cz',
+        ],
+        'da_DK' => [
             'Danish',
             'Denmark',
             'ISO8859-1',
             'da',
-            'dk'
-        ),
-        'de_CH' => array(
+            'dk',
+        ],
+        'de_CH' => [
             'German',
             'Switzerland',
             'ISO8859-1',
             'de-ch',
-            'de'
-        ),
-        'de_DE' => array(
+            'de',
+        ],
+        'de_DE' => [
             'German',
             'Germany',
             'ISO8859-1',
             'de',
-            'de'
-        ),
-        'el_GR' => array(
+            'de',
+        ],
+        'el_GR' => [
             'Greek',
             'Greece',
             'ISO8859-7',
             'el',
-            'en'
-        ),
-        'en_GB' => array(
+            'en',
+        ],
+        'en_GB' => [
             'English',
             'Great Britain',
             'ISO8859-1',
             'en-gb',
-            'en'
-        ),
-        'en_US' => array(
+            'en',
+        ],
+        'en_US' => [
             'English',
             'United States',
             'ISO8859-1',
             'en',
-            'en'
-        ),
-        'es_ES' => array(
+            'en',
+        ],
+        'es_ES' => [
             'Spanish',
             'Spain',
             'ISO8859-1',
             'es',
-            'es'
-        ),
-        'fi_FI' => array(
+            'es',
+        ],
+        'fi_FI' => [
             'Finnish',
             'Finland',
             'ISO8859-1',
             'fi',
-            'en'
-        ),
-        'fr_BE' => array(
+            'en',
+        ],
+        'fr_BE' => [
             'French',
             'Belgium',
             'ISO8859-1',
             'fr-be',
-            'fr'
-        ),
-        'fr_CA' => array(
+            'fr',
+        ],
+        'fr_CA' => [
             'French',
             'Canada',
             'ISO8859-1',
             'fr-ca',
-            'fr'
-        ),
-        'fr_FR' => array(
+            'fr',
+        ],
+        'fr_FR' => [
             'French',
             'France',
             'ISO8859-1',
             'fr',
-            'fr'
-        ),
-        'fr_CH' => array(
+            'fr',
+        ],
+        'fr_CH' => [
             'French',
             'Switzerland',
             'ISO8859-1',
             'fr-ch',
-            'fr'
-        ),
-        'hr_HR' => array(
+            'fr',
+        ],
+        'hr_HR' => [
             'Croatian',
             'Croatia',
             'ISO8859-2',
             'hr',
-            'en'
-        ),
-        'hu_HU' => array(
+            'en',
+        ],
+        'hu_HU' => [
             'Hungarian',
             'Hungary',
             'ISO8859-2',
             'hu',
-            'hu'
-        ),
-        'is_IS' => array(
+            'hu',
+        ],
+        'is_IS' => [
             'Icelandic',
             'Iceland',
             'ISO8859-1',
             'is',
-            'en'
-        ),
-        'it_IT' => array(
+            'en',
+        ],
+        'it_IT' => [
             'Italian',
             'Italy',
             'ISO8859-1',
             'it',
-            'it'
-        ),
-        'iw_IL' => array(
+            'it',
+        ],
+        'iw_IL' => [
             'Hebrew',
             'Israel',
             'ISO8859-8',
             'he',
-            'he'
-        ),
-        'nl_BE' => array(
+            'he',
+        ],
+        'nl_BE' => [
             'Dutch',
             'Belgium',
             'ISO8859-1',
             'nl-be',
-            'nl'
-        ),
-        'nl_NL' => array(
+            'nl',
+        ],
+        'nl_NL' => [
             'Dutch',
             'Netherlands',
             'ISO8859-1',
             'nl',
-            'nl'
-        ),
-        'no_NO' => array(
+            'nl',
+        ],
+        'no_NO' => [
             'Norwegian',
             'Norway',
             'ISO8859-1',
             'no',
-            'en'
-        ),
-        'pl_PL' => array(
+            'en',
+        ],
+        'pl_PL' => [
             'Polish',
             'Poland',
             'ISO8859-2',
             'pl',
-            'en'
-        ),
-        'pt_BR' => array(
+            'en',
+        ],
+        'pt_BR' => [
             'Brazillian',
             'Brazil',
             'ISO8859-1',
             'pt-br',
-            'br'
-        ),
-        'pt_PT' => array(
+            'br',
+        ],
+        'pt_PT' => [
             'Portuguese',
             'Portugal',
             'ISO8859-1',
             'pt',
-            'en'
-        ),
-        'ro_RO' => array(
+            'en',
+        ],
+        'ro_RO' => [
             'Romanian',
             'Romania',
             'ISO8859-2',
             'ro',
-            'en'
-        ),
-        'ru_RU' => array(
+            'en',
+        ],
+        'ru_RU' => [
             'Russian',
             'Russia',
             'ISO8859-5',
             'ru',
-            'ru'
-        ),
-        'sh_SP' => array(
+            'ru',
+        ],
+        'sh_SP' => [
             'Serbian Latin',
             'Yugoslavia',
             'ISO8859-2',
             'sr',
-            'en'
-        ),
-        'sl_SI' => array(
+            'en',
+        ],
+        'sl_SI' => [
             'Slovene',
             'Slovenia',
             'ISO8859-2',
             'sl',
-            'en'
-        ),
-        'sk_SK' => array(
+            'en',
+        ],
+        'sk_SK' => [
             'Slovak',
             'Slovakia',
             'ISO8859-2',
             'sk',
-            'en'
-        ),
-        'sq_AL' => array(
+            'en',
+        ],
+        'sq_AL' => [
             'Albanian',
             'Albania',
             'ISO8859-1',
             'sq',
-            'en'
-        ),
-        'sr_SP' => array(
+            'en',
+        ],
+        'sr_SP' => [
             'Serbian Cyrillic',
             'Yugoslavia',
             'ISO8859-5',
             'sr-cy',
-            'en'
-        ),
-        'sv_SE' => array(
+            'en',
+        ],
+        'sv_SE' => [
             'Swedish',
             'Sweden',
             'ISO8859-1',
             'sv',
-            'se'
-        ),
-        'tr_TR' => array(
+            'se',
+        ],
+        'tr_TR' => [
             'Turkisch',
             'Turkey',
             'ISO8859-9',
             'tr',
-            'tr'
-        )
-    );
+            'tr',
+        ],
+    ];
 
     return $aLanguages;
 }
@@ -458,9 +466,9 @@ function mi18n($key)
     cInclude('classes', 'module/class.module.filetranslation.php');
 
     // get all translations of current module
-    $cCurrentModule             = cRegistry::getCurrentModuleId();
+    $cCurrentModule = cRegistry::getCurrentModuleId();
     $contenidoTranslateFromFile = new cModuleFileTranslation($cCurrentModule, true);
-    $translations               = $contenidoTranslateFromFile->getLangArray();
+    $translations = $contenidoTranslateFromFile->getLangArray();
 
     $translation = isset($translations[$key]) ? $translations[$key] : '';
 
@@ -471,14 +479,14 @@ function mi18n($key)
         // Get module_translation_message setting value
         $moduleTranslationMessage = getEffectiveSetting('debug', 'module_translation_message', 'true');
         $moduleTranslationMessage = 'true' === $moduleTranslationMessage ? true : false;
-        $translation              = $moduleTranslationMessage ? 'Module translation not found: ' : '';
-        $translation              .= $key;
+        $translation = $moduleTranslationMessage ? 'Module translation not found: ' : '';
+        $translation .= $key;
     }
 
     // call sprintf on translation with additional params
     if (1 < func_num_args()) {
-        $arrArgs     = func_get_args();
-        $arrArgs[0]  = $translation;
+        $arrArgs = func_get_args();
+        $arrArgs[0] = $translation;
         $translation = call_user_func_array('sprintf', $arrArgs);
     }
 

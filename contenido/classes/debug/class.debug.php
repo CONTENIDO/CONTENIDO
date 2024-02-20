@@ -3,15 +3,14 @@
 /**
  * This file contains the static debugger class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
- *
- * @author Rudi Bieller
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rudi Bieller
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -19,10 +18,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Debugger class
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
  */
-class cDebug {
+class cDebug
+{
 
     /**
      *
@@ -73,16 +73,16 @@ class cDebug {
      *
      * @param string $sType [optional]
      *         The debugger to get, empty string to get debugger defined in system settings
+     * @return cDebugInterface
      * @throws cInvalidArgumentException
      *         If type of debugger is unknown
-     * @return cDebugInterface
      */
-    public static function getDebugger($sType = '') {
+    public static function getDebugger(string $sType = ''): cDebugInterface
+    {
         if (empty($sType)) {
             $sType = self::_getSystemSettingDebugger();
         }
 
-        $oDebugger = NULL;
         switch ($sType) {
             case self::DEBUGGER_VISIBLE:
                 $oDebugger = cDebugVisible::getInstance();
@@ -104,7 +104,6 @@ class cDebug {
                 break;
             default:
                 throw new cInvalidArgumentException('This type of debugger is unknown to cDebug: ' . $sType);
-                break;
         }
 
         return $oDebugger;
@@ -113,18 +112,19 @@ class cDebug {
     /**
      * Prints a debug message if the settings allow it.
      * The debug messages will be
-     * in a textrea in the header and in the file debuglog.txt. All messages are
+     * in a textarea in the header and in the file debuglog.txt. All messages are
      * immediately
-     * written to the filesystem but they will only show up when
+     * written to the filesystem, but they will only show up when
      * cDebug::showAll() is called.
      *
      * @param string $message
      *         Message to display.
-     *         NOTE: You can use buildStackString to show stacktraces
+     *         NOTE: You can use buildStackString to show stacktrace
      *
      * @throws cInvalidArgumentException
      */
-    public static function out($message) {
+    public static function out(string $message)
+    {
         self::getDebugger()->out($message);
     }
 
@@ -132,13 +132,14 @@ class cDebug {
      * Adds a variable to the debugger.
      * This variable will be watched.
      *
-     * @param mixed  $var
+     * @param mixed $var
      *                      A variable or an object
      * @param string $label [optional]
      *                      An optional description for the variable
      * @throws cInvalidArgumentException
      */
-    public static function add($var, $label = '') {
+    public static function add($var, string $label = '')
+    {
         self::getDebugger()->add($var, $label);
     }
 
@@ -147,7 +148,8 @@ class cDebug {
      *
      * @throws cInvalidArgumentException
      */
-    public static function showAll() {
+    public static function showAll()
+    {
         self::getDebugger()->showAll();
     }
 
@@ -156,7 +158,8 @@ class cDebug {
      *
      * @return string
      */
-    public static function getDefaultDebuggerName() {
+    public static function getDefaultDebuggerName(): string
+    {
         return self::_getSystemSettingDebugger();
     }
 
@@ -165,20 +168,28 @@ class cDebug {
      *
      * @return string
      */
-    protected static function _getSystemSettingDebugger() {
+    protected static function _getSystemSettingDebugger(): string
+    {
         if (isset(self::$_defaultDebuggerName)) {
             return self::$_defaultDebuggerName;
         }
+
         self::$_defaultDebuggerName = self::DEBUGGER_DEVNULL;
-        if (getSystemProperty('debug', 'debug_to_file') == 'true') {
-            self::$_defaultDebuggerName = self::DEBUGGER_FILE;
-        } else if (getSystemProperty('debug', 'debug_to_screen') == 'true') {
-            self::$_defaultDebuggerName = self::DEBUGGER_VISIBLE_ADV;
-        }
-        if ((getSystemProperty('debug', 'debug_to_screen') == 'true') && (getSystemProperty('debug', 'debug_to_file') == 'true')) {
-            self::$_defaultDebuggerName = self::DEBUGGER_VISIBLE_AND_FILE;
+
+        try {
+            if (getSystemProperty('debug', 'debug_to_file') == 'true') {
+                self::$_defaultDebuggerName = self::DEBUGGER_FILE;
+            } elseif (getSystemProperty('debug', 'debug_to_screen') == 'true') {
+                self::$_defaultDebuggerName = self::DEBUGGER_VISIBLE_ADV;
+            }
+            if ((getSystemProperty('debug', 'debug_to_screen') == 'true') && (getSystemProperty('debug', 'debug_to_file') == 'true')) {
+                self::$_defaultDebuggerName = self::DEBUGGER_VISIBLE_AND_FILE;
+            }
+        } catch (cDbException $e) {
+        } catch (cException $e) {
         }
 
         return self::$_defaultDebuggerName;
     }
+
 }

@@ -3,20 +3,39 @@
 /**
  * This file contains the backend page for the to-do popup.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var cAuth $auth
+ * @var array $cfg
+ * @var int $frame
+ * @var string $area
+ * @var string $belang
+ *
+ * @var string $subject
+ * @var string $message
+ * @var string $itemtype
+ * @var string $reminderdate
+ * @var string $enddate
+ * @var int|string $itemid
+ */
+
 $oPage = new cGuiPage("todo.popup");
 
-if ($action == 'todo_save_item') {
+$action = $action ?? '';
+
+if ($action === 'todo_save_item') {
     $todo = new TODOCollection();
 
     $subject = stripslashes($subject);
@@ -33,10 +52,10 @@ if ($action == 'todo_save_item') {
         }
     }
 
-    $oPage->addScript('<script>window.close();</script>');
+    $oPage->addScript('<script type="text/javascript">window.close();</script>');
 } else {
     $ui = new cGuiTableForm('reminder');
-    $ui->addHeader(i18n('Add TODO item'));
+    $ui->setHeader(i18n('Add TODO item'));
 
     $ui->setVar('area', $area);
     $ui->setVar('frame', $frame);
@@ -55,17 +74,17 @@ if ($action == 'todo_save_item') {
     $ui->add(i18n('Reminder date'), $reminderdate->render());
 
     $reminderdue = new cHTMLTextbox('enddate', '', '', '', 'enddate');
-    $ui->add(i18n('End date'),$reminderdue->render());
+    $ui->add(i18n('End date'), $reminderdue->render());
     $notiemail = new cHTMLCheckbox('notiemail', '1');
     $notiemail->setLabelText(i18n('E-mail notification'));
-    $langScripts = array();
 
+    $langScripts = [];
     if (($langCodeShort = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != 'en') {
         $langScripts[] = 'jquery/plugins/timepicker-' . $langCodeShort . '.js';
         $langScripts[] = 'jquery/plugins/datepicker-' . $langCodeShort . '.js';
     }
 
-    $calendarButtonImage = cRegistry::getBackendUrl(). $cfg['path']['images'] . 'calendar.gif';
+    $calendarButtonImage = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
 
     $ui->add(i18n('Reminder options'), $notiemail->toHtml());
     $calScript = '
@@ -73,7 +92,7 @@ if ($action == 'todo_save_item') {
 (function(Con, $) {
     $(function() {
         $("#reminderdate").datetimepicker({
-            buttonImage:"'. $calendarButtonImage.'",
+            buttonImage:"' . $calendarButtonImage . '",
             buttonImageOnly: true,
             showOn: "both",
             dateFormat: "yy-mm-dd",
@@ -95,7 +114,7 @@ if ($action == 'todo_save_item') {
             }
         });
         $("#enddate").datetimepicker({
-            buttonImage: "'. $calendarButtonImage .'",
+            buttonImage: "' . $calendarButtonImage . '",
             buttonImageOnly: true,
             showOn: "both",
             dateFormat: "yy-mm-dd",

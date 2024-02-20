@@ -7,9 +7,9 @@
  * @subpackage XML
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,7 +20,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage XML
  */
-class cXmlWriter extends cXmlBase {
+class cXmlWriter extends cXmlBase
+{
+
+    /**
+     * Indentation to use when generating the XML.
+     * The indentation has only an effect, when the format output flag of `DOMDocument` is set to `true`.
+     * @var int
+     */
+    private $indentation = 4;
 
     /**
      * Constructor to create an instance of this class.
@@ -32,8 +40,22 @@ class cXmlWriter extends cXmlBase {
      * @param string $encoding [optional, default: UTF-8]
      *         encoding of XML document
      */
-    public function __construct($version = '', $encoding = '') {
+    public function __construct(string $version = '', string $encoding = '')
+    {
         $this->_createDocument($version, $encoding);
+    }
+
+    /**
+     * Sets the indentation.
+     *
+     * @param int $indentation Supported values are 2 or 4.
+     * @return void
+     */
+    public function setIndentation(int $indentation)
+    {
+        if (in_array($indentation, [2, 4])) {
+            $this->indentation = $indentation;
+        }
     }
 
     /**
@@ -43,21 +65,26 @@ class cXmlWriter extends cXmlBase {
      *
      * @param string $name
      *         name of the element
-     * @param string $value [optional]
+     * @param string|int|mixed $value [optional]
      *         value of the element
-     * @param DOMElement $rootElement [optional]
+     * @param DOMElement|NULL $rootElement [optional]
      *         root element
      * @param array $attributes [optional]
      *         array of attributes added to this element
      * @param bool $cdata [optional]
-     *         whether the value is surround by CDATA blocks
+     *         whether the value is surrounded by CDATA blocks
      * @return DOMElement
      *         created DOM element
+     * @throws DOMException
      */
-    public function addElement($name, $value = '', $rootElement = NULL, $attributes = array(), $cdata = false) {
-        if ($value == '' || ($value != '' && $cdata == true)) {
+    public function addElement(
+        string $name, $value = '', DOMElement $rootElement = NULL, array $attributes = [], bool $cdata = false
+    ): DOMElement
+    {
+        $isEmptyValue = in_array($value, ['', NULL]);
+        if ($isEmptyValue || $cdata) {
             $element = $this->_dom->createElement($name);
-            if ($value != '' && $cdata == true) {
+            if (!$isEmptyValue && $cdata) {
                 $element->appendChild($this->_dom->createCDATASection($value));
             }
         } else {
@@ -85,7 +112,8 @@ class cXmlWriter extends cXmlBase {
      * @return DOMElement
      *         DOM element with assigned attributes
      */
-    protected function _addElementAttributes(DOMElement $element, array $attributes = array()) {
+    protected function _addElementAttributes(DOMElement $element, array $attributes = []): DOMElement
+    {
         if (count($attributes) == 0) {
             return $element;
         }
@@ -103,8 +131,21 @@ class cXmlWriter extends cXmlBase {
      * @return string
      *         XML tree
      */
-    public function saveToString() {
-        return $this->_dom->saveXML();
+    public function saveToString(): string
+    {
+        $xml = $this->_dom->saveXML();
+        if (empty($xml)) {
+            return '';
+        }
+
+        // Modify indentation when the formatOutput is set and indentation is > 2 (default value is 2)
+        if ($this->_dom->formatOutput && $this->indentation > 2) {
+            $xml = preg_replace_callback('/^( +)</m', function ($a) {
+                return str_repeat(' ', intval(strlen($a[1]) / 2) * $this->indentation) . '<';
+            }, $xml);
+        }
+
+        return $xml;
     }
 
     /**
@@ -114,12 +155,13 @@ class cXmlWriter extends cXmlBase {
      *         path to destination directory
      * @param string $fileName
      *         name of the written file
-     * @throws cException
-     *         if the directory is not writable
      * @return bool
      *         state of saving process (true if file was created, false otherwise)
+     * @throws cException
+     *         if the directory is not writable
      */
-    public function saveToFile($directory, $fileName) {
+    public function saveToFile(string $directory, string $fileName): bool
+    {
         if (is_writable($directory) === false) {
             throw new cException('Can not write XML file: Directory is not writable.');
         }

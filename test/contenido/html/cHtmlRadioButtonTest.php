@@ -1,12 +1,13 @@
 <?PHP
 
 /**
- *
- * @author    claus.schunk@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license   http://www.contenido.org/license/LIZENZ.txt
- * @link      http://www.4fb.de
- * @link      http://www.contenido.org
+ * @package    Testing
+ * @subpackage GUI_HTML
+ * @author     claus.schunk@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 class cHtmlRadioButtonTest extends cTestingTestCase
 {
@@ -86,7 +87,8 @@ class cHtmlRadioButtonTest extends cTestingTestCase
         // Render with label
         $radioButton = new cHTMLRadiobutton('testName', 'testValue');
         $this->assertNull($radioButton->getAttribute('id'));
-        // Note: Calling render() renders with label, see cHTMLRadiobutton->totoHtml()
+        // Note: Calling render() renders with label, if label ist set, see cHTMLRadiobutton->totoHtml()
+        $radioButton->setLabelText('myLabel');
         $radioButton->render();
         $this->assertNotNull($radioButton->getAttribute('id'));
     }

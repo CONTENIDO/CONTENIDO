@@ -3,14 +3,13 @@
 /**
  * This file contains the cDomainException class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Exception
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
@@ -19,5 +18,6 @@
  * {@link DomainException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cDomainException extends cLogicException {
+class cDomainException extends cLogicException
+{
 }

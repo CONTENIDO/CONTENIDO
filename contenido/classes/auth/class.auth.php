@@ -3,13 +3,13 @@
 /**
  * This file contains the global authentication class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Authentication
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,20 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains functions for global authentication in CONTENIDO.
  *
- * @package Core
+ * @package    Core
  * @subpackage Authentication
  */
-class cAuth {
+abstract class cAuth
+{
 
     /**
-     * Authentification user ID for nobody.
+     * Authentication user ID for nobody.
      *
      * @var string
      */
     const AUTH_UID_NOBODY = 'nobody';
 
     /**
-     * Authentification user ID for calling login form.
+     * Authentication user ID for calling login form.
      *
      * @var string
      */
@@ -47,7 +48,7 @@ class cAuth {
      *
      * @var array
      */
-    public $auth = array();
+    public $auth = [];
 
     /**
      * Lifetime for authenticated users in minutes.
@@ -81,13 +82,57 @@ class cAuth {
     public $persistent_slots = ['auth'];
 
     /**
+     * Handle the pre authorization.
+     *
+     * When implementing this method let it return a valid user ID to be
+     * set before the login form is handled, otherwise false.
+     *
+     * @return string|false
+     */
+    abstract public function preAuthenticate();
+
+    /**
+     * @deprecated [2023-02-05] Since 4.10.2, use {@see cAuthHandlerAbstract::preAuthenticate} instead
+     */
+    abstract public function preAuthorize();
+
+    /**
+     * When implementing this method let this method render the login form.
+     */
+    abstract public function displayLoginForm();
+
+    /**
+     * Validate the credentials.
+     *
+     * When implementing this method let this method validate the users
+     * input against source and return a valid user ID or false.
+     *
+     * @return string|false
+     */
+    abstract public function validateCredentials();
+
+    /**
+     * Log a successful authentication.
+     * This method can be executed to log a successful login.
+     */
+    abstract public function logSuccessfulAuth();
+
+    /**
+     * Returns true if a user is logged in
+     *
+     * @return bool
+     */
+    abstract public function isLoggedIn();
+
+    /**
      * Magic getter function for outdated variable names.
      *
      * @param string $name
      *         name of the variable
      * @return mixed
      */
-    public function __get($name) {
+    public function __get($name)
+    {
         if ($name == 'lifetime') {
             return $this->_lifetime;
         }
@@ -100,8 +145,8 @@ class cAuth {
     /**
      * Starts the authentication process.
      */
-    public function start() {
-
+    public function start()
+    {
         $sess = cRegistry::getSession();
         if (!$this->_in) {
             $sess->register('auth');
@@ -109,8 +154,7 @@ class cAuth {
         }
 
         if ($this->isAuthenticated()) {
-            $authInfo = $this->getAuthInfo();
-            $userId = $authInfo['uid'];
+            $userId = $this->getUserId();
             if ($userId == self::AUTH_UID_FORM) {
                 $userId = $this->validateCredentials();
                 if ($userId !== false) {
@@ -125,14 +169,14 @@ class cAuth {
         } else {
             $this->resetAuthInfo();
 
-            $userId = $this->preAuthorize();
+            $userId = $this->preAuthenticate();
             if ($userId !== false) {
                 $this->_setAuthInfo($userId);
 
                 return;
             }
 
-            if ($this->_defaultNobody == true) {
+            if ($this->_defaultNobody) {
                 $this->_setAuthInfo(self::AUTH_UID_NOBODY, 0x7fffffff);
             } else {
                 $this->_fetchLoginForm();
@@ -143,7 +187,8 @@ class cAuth {
     /**
      * Restarts the authentication process.
      */
-    public function restart() {
+    public function restart()
+    {
         $this->resetAuthInfo();
         $this->_defaultNobody = false;
         $this->start();
@@ -156,8 +201,9 @@ class cAuth {
      *         If flag set to true, the default authentication is
      *         switched to nobody. (optional, default: false)
      */
-    public function resetAuthInfo($nobody = false) {
-        $this->auth['uid']  = $nobody ? self::AUTH_UID_NOBODY : '';
+    public function resetAuthInfo($nobody = false)
+    {
+        $this->auth['uid'] = $nobody ? self::AUTH_UID_NOBODY : '';
         $this->auth['perm'] = '';
         $this->_setExpiration($nobody ? 0x7fffffff : 0);
     }
@@ -170,13 +216,14 @@ class cAuth {
      *         If flag set to true, nobody is recreated as user.
      * @return bool true
      */
-    public function logout($nobody = false) {
+    public function logout($nobody = false): bool
+    {
         $sess = cRegistry::getSession();
 
         $sess->unregister('auth');
         unset($this->auth['uname']);
 
-        $this->resetAuthInfo($nobody == false? $this->_defaultNobody : $nobody);
+        $this->resetAuthInfo(!$nobody ? $this->_defaultNobody : $nobody);
         $sess->freeze();
 
         return true;
@@ -187,7 +234,8 @@ class cAuth {
      *
      * @return array
      */
-    public function getAuthInfo() {
+    public function getAuthInfo(): array
+    {
         return $this->auth;
     }
 
@@ -196,11 +244,13 @@ class cAuth {
      *
      * @return bool
      */
-    public function isAuthenticated() {
+    public function isAuthenticated()
+    {
         $authInfo = $this->getAuthInfo();
+        $userId = $this->getUserId();
 
-        if (isset($authInfo['uid']) && $authInfo['uid'] && (($this->_lifetime <= 0) || (time() < $authInfo['exp']))) {
-            return $authInfo['uid'];
+        if (!empty($userId) && (($this->_lifetime <= 0) || (time() < $authInfo['exp']))) {
+            return $userId;
         } else {
             return false;
         }
@@ -211,10 +261,9 @@ class cAuth {
      *
      * @return bool
      */
-    public function isLoginForm() {
-        $authInfo = $this->getAuthInfo();
-
-        return isset($authInfo['uid']) && $authInfo['uid'] == self::AUTH_UID_FORM;
+    public function isLoginForm(): bool
+    {
+        return $this->getUserId() === self::AUTH_UID_FORM;
     }
 
     /**
@@ -222,10 +271,11 @@ class cAuth {
      *
      * @return string
      */
-    public function getUserId() {
+    public function getUserId(): string
+    {
         $authInfo = $this->getAuthInfo();
 
-        return $authInfo['uid'];
+        return $authInfo['uid'] ?? '';
     }
 
     /**
@@ -233,10 +283,11 @@ class cAuth {
      *
      * @return string
      */
-    public function getUsername() {
+    public function getUsername(): string
+    {
         $authInfo = $this->getAuthInfo();
 
-        return $authInfo['uname'];
+        return $authInfo['uname'] ?? '';
     }
 
     /**
@@ -244,19 +295,21 @@ class cAuth {
      *
      * @return string
      */
-    public function getPerms() {
+    public function getPerms(): string
+    {
         $authInfo = $this->getAuthInfo();
 
-        return $authInfo['perm'];
+        return $authInfo['perm'] ?? '';
     }
 
     /**
-     * Sets or refreshs the expiration of the authentication.
+     * Sets or refreshes the expiration of the authentication.
      *
      * @param int $expiration [optional]
      *         new expiration (optional, default: NULL = current time plus lifetime minutes)
      */
-    protected function _setExpiration($expiration = NULL) {
+    protected function _setExpiration($expiration = NULL)
+    {
         if ($expiration === NULL) {
             $expiration = time() + (60 * $this->_lifetime);
         }
@@ -267,16 +320,11 @@ class cAuth {
     /**
      * Fetches the login form.
      */
-    protected function _fetchLoginForm() {
+    protected function _fetchLoginForm()
+    {
         $sess = cRegistry::getSession();
-
         $this->_setAuthInfo(self::AUTH_UID_FORM, 0x7fffffff);
-
-        // TODO Method displayLoginForm() is declared in cAuthHandlerAbstract
-        // which is extending this class! Better declare it in this class and
-        // make it abstract!
         $this->displayLoginForm();
-
         $sess->freeze();
         exit();
     }
@@ -289,8 +337,10 @@ class cAuth {
      * @param int $expiration [optional]
      *         expiration (optional, default: NULL)
      */
-    protected function _setAuthInfo($userId, $expiration = NULL) {
+    protected function _setAuthInfo($userId, $expiration = NULL)
+    {
         $this->auth['uid'] = $userId;
         $this->_setExpiration($expiration);
     }
+
 }

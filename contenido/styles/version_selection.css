@@ -1,0 +1,87 @@
+/**
+ * Version selection box.
+ *
+ * The prefix "con_" is needed to prevent any conflicts when using the elements
+ * within a frontend layout.
+ */
+
+.con_version_selection {
+    border: 1px solid #B3B3B3;
+    padding: 10px;
+    margin: 10px 0;
+    vertical-align: middle;
+}
+.con_version_selection.con_version_selection_inline {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.con_version_selection .con_version_selection_content,
+.con_version_selection .con_version_selection_label,
+.con_version_selection .con_version_selection_controls select,
+.con_version_selection .con_version_selection_controls input,
+.con_version_selection .con_version_selection_controls a {
+    line-height: 16px !important;
+}
+
+.con_version_selection .con_version_selection_content {
+    display: inline-block;
+}
+
+.con_version_selection .con_version_selection_label,
+.con_version_selection .con_version_selection_controls select,
+.con_version_selection .con_version_selection_controls input {
+    font-family: verdana, arial, helvetica, sans-serif !important;
+    font-size: 11px !important;
+    color: #000 !important;
+    margin-right: 3px;
+}
+
+.con_version_selection .con_version_selection_controls select,
+.con_version_selection .con_version_selection_controls input {
+    padding: 0 3px;
+    border: 1px solid #666;
+    border-radius: 3px;
+    height: 17px;
+    line-height: 17px;
+    vertical-align: middle;
+}
+
+.con_version_selection .con_version_selection_label {
+    font-weight: bold;
+    color: black;
+    position: relative;
+    top: 1px;
+}
+.con_version_selection .con_version_selection_label:empty {
+    display: none;
+}
+
+.con_version_selection .con_version_selection_controls {
+    margin: 0;
+}
+
+.con_version_selection .con_version_selection_controls input {
+    margin: 0 3px 0 0 !important;
+    padding: 0 4px !important;
+    line-height: 14px !important;
+    border: 1px solid #666;
+}
+
+.con_version_selection .con_version_selection_controls a {
+    vertical-align: middle !important;
+    font-size: 11px !important;
+    text-decoration: none !important;
+    vertical-align: middle;
+}
+
+.con_version_selection .no_active {
+    border: 1px solid red;
+}
+.con_version_selection div {
+    min-height: 13px;
+}
+.con_version_selection span.mceEditor div {
+    min-height: 0;
+}

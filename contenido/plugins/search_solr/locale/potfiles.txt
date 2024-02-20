@@ -1,0 +1,17 @@
+./classes/class.solr.gui.php
+./classes/class.solr.php
+./classes/class.solr_exception.php
+./classes/class.solr_indexer.php
+./classes/class.solr_searcher_abstract.php
+./classes/class.solr_searcher_simple.php
+./classes/class.solr_search_module.php
+./classes/class.solr_warning.php
+./docs/schema.orig.xml
+./docs/schema.xml
+./includes/config.plugin.php
+./includes/include.right_bottom.php
+./plugin.xml
+./templates/template.right_bottom.html
+./templates/template.right_bottom.tpl
+./xml/lang_de_DE.xml
+./xml/lang_en_US.xml

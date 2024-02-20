@@ -3,13 +3,13 @@
 /**
  * This file contains the file cache class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Cache
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,17 +17,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains functions for the CONTENIDO file cache.
  *
- * @package Core
+ * @package    Core
  * @subpackage Cache
  */
-class cFileCache {
+class cFileCache
+{
 
     /**
      * Options for the cache.
      *
      * @var array
      */
-    protected $_options = array();
+    protected $_options = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -35,7 +36,8 @@ class cFileCache {
      * @param array $options [optional]
      *         array with options for the cache (optional, default: empty array)
      */
-    public function __construct($options = array()) {
+    public function __construct(array $options = [])
+    {
         $this->setOptions($options);
     }
 
@@ -47,7 +49,8 @@ class cFileCache {
      * @param array $options
      *         array with option
      */
-    public function setOptions($options) {
+    public function setOptions(array $options)
+    {
         // complete all options
         if (isset($options['cacheDir']) === true && cString::getPartOfString($options['cacheDir'], -1) != '/') {
             $options['cacheDir'] = $options['cacheDir'] . '/';
@@ -90,7 +93,8 @@ class cFileCache {
      * @return string
      *         filename
      */
-    public function generateFileName($id, $group = '') {
+    public function generateFileName($id, $group = ''): string
+    {
         $id = ($this->_options['fileNameProtection'] === true) ? md5($id) : $id;
         if ($group != '') {
             $groupName = ($this->_options['fileNameProtection'] === true ? md5($group) : $group) . '_';
@@ -105,7 +109,8 @@ class cFileCache {
      *
      * @throws cInvalidArgumentException
      */
-    protected function _validateDirectory() {
+    protected function _validateDirectory()
+    {
         $directory = $this->_options['cacheDir'];
         if ($directory == '') {
             throw new cInvalidArgumentException('The caching directory is empty.');
@@ -130,10 +135,11 @@ class cFileCache {
      *
      * @return string
      *         full filename
-     * 
+     *
      * @throws cInvalidArgumentException
      */
-    public function getDestination($id, $group = '') {
+    public function getDestination($id, $group = '')
+    {
         $this->_validateDirectory();
 
         $directory = $this->_options['cacheDir'];
@@ -151,13 +157,14 @@ class cFileCache {
      *                      cache ID
      * @param string $group [optional]
      *                      cache group
-     *                      
+     *
      * @return bool|string
      *                      content or false
-     * 
+     *
      * @throws cInvalidArgumentException
      */
-    public function get($id, $group = '') {
+    public function get($id, $group = '')
+    {
         $data = false;
 
         $destination = $this->getDestination($id, $group);
@@ -166,7 +173,7 @@ class cFileCache {
             return false;
         }
 
-        $refreshTime = ($this->_options['lifetime'] == 0) ? 0 : time() - (int) $this->_options['lifetime'];
+        $refreshTime = ($this->_options['lifetime'] == 0) ? 0 : time() - (int)$this->_options['lifetime'];
 
         clearstatcache();
         $info = cFileHandler::info($destination);
@@ -191,10 +198,11 @@ class cFileCache {
      *
      * @return bool
      *         success state
-     * 
+     *
      * @throws cInvalidArgumentException
      */
-    public function save($data, $id, $group = '') {
+    public function save($data, $id, $group = ''): bool
+    {
         return cFileHandler::write($this->getDestination($id, $group), $data);
     }
 
@@ -205,13 +213,14 @@ class cFileCache {
      *                      cache ID
      * @param string $group [optional]
      *                      cache group
-     *                      
+     *
      * @return bool
      *                      success state
-     * 
+     *
      * @throws cInvalidArgumentException
      */
-    public function remove($id, $group = '') {
+    public function remove($id, $group = ''): bool
+    {
         $destination = $this->getDestination($id, $group);
         if (cFileHandler::exists($destination) === false) {
             return false;
@@ -228,7 +237,8 @@ class cFileCache {
      * @return string
      *         generated ID
      */
-    public function generateID($variables) {
+    public function generateID($variables): string
+    {
         return md5(serialize($variables));
     }
 

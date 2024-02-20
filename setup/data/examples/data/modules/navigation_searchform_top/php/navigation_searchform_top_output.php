@@ -3,13 +3,13 @@
 /**
  * description: top search form
  *
- * @package Module
+ * @package    Module
  * @subpackage NavigationSearchformTop
- * @author marcus.gnass@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     marcus.gnass@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert framework initialization
@@ -28,10 +28,12 @@ if (0 < $searchResultIdart) {
 
     // determine action & method for search form
     if ($isModRewriteEnabled) {
-        $action = cUri::getInstance()->build(array(
-            'idart' => $searchResultIdart,
-            'lang' => cRegistry::getLanguageId()
-        ));
+        $action = cUri::getInstance()->build(
+            [
+                'idart' => $searchResultIdart,
+                'lang' => cRegistry::getLanguageId(),
+            ]
+        );
     } else {
         $action = 'front_content.php';
     }

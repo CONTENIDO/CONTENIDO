@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the class for workflow task collections.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,27 +17,30 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Class for workflow task collections.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
  * @method WorkflowTask createNewItem
- * @method WorkflowTask next
+ * @method WorkflowTask|bool next
  */
-class WorkflowTasks extends ItemCollection {
+class WorkflowTasks extends ItemCollection
+{
     /**
      * WorkflowTasks constructor.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg["tab"]["tasks"], "idtask");
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('tasks'), "idtask");
         $this->_setItemClass("WorkflowTask");
     }
 
     /**
      * @return WorkflowTask
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create() {
+    public function create()
+    {
         return $this->createNewItem();
     }
 
@@ -47,12 +51,14 @@ class WorkflowTasks extends ItemCollection {
      * @param string $limit
      *
      * @return bool
+     * @throws cDbException
      */
-    public function select($where = "", $group_by = "", $order_by = "", $limit = "") {
-        global $client;
+    public function select($where = "", $group_by = "", $order_by = "", $limit = "")
+    {
+        $client = cSecurity::toInteger(cRegistry::getClientId());
 
         if ($where != "") {
-            $where = $where . " AND idclient = " . cSecurity::toInteger($client);
+            $where = $where . " AND idclient = " . $client;
         }
         return parent::select($where, $group_by, $order_by, $limit);
     }
@@ -63,19 +69,22 @@ class WorkflowTasks extends ItemCollection {
  * Class WorkflowTask
  * Class for a single workflow task item
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
+ * @author     Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
- * @copyright four for business 2003
+ * @copyright  four for business 2003
  */
-class WorkflowTask extends Item {
+class WorkflowTask extends Item
+{
+
     /**
      * WorkflowTask constructor.
+     * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg["tab"]["tasks"], "idtask");
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('tasks'), "idtask");
     }
 
 }

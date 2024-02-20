@@ -3,13 +3,13 @@
 /**
  * This file contains the nav sub collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @author           Frederic Schneider
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage GenericDB_Model
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * File collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiNavSub createNewItem
+ * @method cApiNavSub|bool next
  */
-class cApiNavSubCollection extends ItemCollection {
+class cApiNavSubCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['nav_sub'], 'idnavs');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('nav_sub'), 'idnavs');
         $this->_setItemClass('cApiNavSub');
 
         // set the join partners so that joins can be used via link() method
@@ -39,20 +42,21 @@ class cApiNavSubCollection extends ItemCollection {
     /**
      * Create new item with given values.
      *
-     * @param int        $navm
+     * @param int $navm
      * @param int|string $area
      *                           AreaId or area name
-     * @param int        $level
-     * @param string     $location
-     * @param int        $online [optional]
+     * @param int $level
+     * @param string $location
+     * @param int $online [optional]
      *
      * @return cApiNavSub
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($navm, $area, $level, $location, $online = 1) {
+    public function create($navm, $area, $level, $location, $online = 1)
+    {
         $item = $this->createNewItem();
 
         if (is_string($area)) {
@@ -80,29 +84,28 @@ class cApiNavSubCollection extends ItemCollection {
 
     /**
      * Returns sub navigation by area name
+     *
      * @param string $area
-     * @param int    $level  [optional]
-     * @param int    $online [optional]
+     * @param int $level [optional]
+     * @param int $online [optional]
+     *
      * @return array
      *                       List of assiziative arrays like
      *                       <pre>
-     *                       $arr[] = array(
-     *                       'location' => location xml path
-     *                       'caption' => The tanslation of location from XML file
-     *                       'name' => area name for sub navigation item
-     *                       'menulesss' => Menuless state
-     *                       );
+     *                       $arr[] = [
+     *                           'location'  => location xml path
+     *                           'caption'   => The tanslation of location from XML file
+     *                           'name'      => area name for sub navigation item
+     *                           'menulesss' => Menuless state
+     *                       ];
      *                       </pre>
      * @throws cDbException
      * @throws cException
      */
-    public function getSubnavigationsByAreaName($area, $level = 1, $online = 1) {
-        global $cfg;
-
-        $level = (int) $level;
+    public function getSubnavigationsByAreaName($area, $level = 1, $online = 1)
+    {
+        $level = (int)$level;
         $online = (1 == $online) ? 1 : 0;
-
-        $areasNsRs = array();
 
         $nav = new cGuiNavigation();
 
@@ -111,7 +114,7 @@ class cApiNavSubCollection extends ItemCollection {
                     a.name AS name,
                     a.menuless AS menuless
                 FROM
-                    " . $cfg['tab']['area'] . " AS a,
+                    " . cRegistry::getDbTableName('area') . " AS a,
                     " . $this->table . " AS ns
                 WHERE
                     a.idarea = ns.idarea
@@ -130,6 +133,7 @@ class cApiNavSubCollection extends ItemCollection {
 
         $this->db->query($sql);
 
+        $areasNsRs = [];
         while ($this->db->nextRecord()) {
             $rs = $this->db->toArray();
             $rs['caption'] = $nav->getName($rs['location']);
@@ -144,10 +148,11 @@ class cApiNavSubCollection extends ItemCollection {
 /**
  * NavMain item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiNavSub extends Item {
+class cApiNavSub extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -157,21 +162,17 @@ class cApiNavSub extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['nav_sub'], 'idnavs');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('nav_sub'), 'idnavs');
+        $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Userdefined setter for navsub fields.
+     * User-defined setter for navsub fields.
      *
      * @param string $name
      * @param mixed $value
@@ -179,12 +180,13 @@ class cApiNavSub extends Item {
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idarea':
             case 'idnavm':
             case 'level':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
             case 'online':
                 $value = (1 == $value) ? 1 : 0;

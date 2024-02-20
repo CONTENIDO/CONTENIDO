@@ -4,23 +4,23 @@
     <title>template.upl_left_top.html</title>
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
-    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
+    <link rel="stylesheet" type="text/css" href="{_ASSET(styles/jquery/plugins/tipsy.css)_}">
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
-    <script type="text/javascript" src="scripts/registerTipsy.js"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/jquery/plugins/tipsy.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/registerTipsy.js)_}"></script>
 </head>
 
-<body>
+<body class="page_top_left">
 
 <div id="top_left_container" data-resizegap="1">
     {NOTIFICATION}
-    <div class="leftTopAction" style="display:{DISPLAY_SEARCH};">
+    <div class="top_left_action" style="display:{DISPLAY_SEARCH};">
       <!-- SEARCH -->
       {SEARCHTITLE}:<br>
       {SEARCHFORM}
     </div>
     <!-- CREATE DIR -->
-    <div class="leftTopAction leftTopActionNext" style="display:{DISPLAY_DIR};">
+    <div class="top_left_action top_left_action_next" style="display:{DISPLAY_DIR};">
         <form method="POST" {TARGET} name="newdir">
             <input type="hidden" name="path" value="{PATH}">
             <input type="hidden" name="contenido" value="1">
@@ -30,8 +30,8 @@
             i18n("Create directory in"):<br>
             <span id="caption2">{CAPTION2}</span><br>
             <div>
-                  <input class="text_small vAlignMiddle" type="text" name="foldername">
-                  <input class="vAlignMiddle tableElement" type="image" onclick="document.newdir.submit();" src="images/submit.gif">
+                <input class="align_middle mgr5" type="text" name="foldername">
+                <input class="con_img_button align_middle" type="image" onclick="document.newdir.submit();" src="images/submit.gif" alt="{CREATEALT}" title="{CREATEALT}">
             </div>
         </form>
     </div>

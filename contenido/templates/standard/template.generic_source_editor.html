@@ -9,30 +9,30 @@
 <input id="m8" name="tmp_file" type="hidden" value="{FILENAME}" />
 <input id="m9" name="contenido" type="hidden" value="1" />
 
-<table style="width: auto;" id="" class="generic" cellspacing="0" cellpadding="2">
-    <tr id="m10"><th id="m11" colspan="2" valign="top">i18n("Edit file")</th></tr>
-    
-    
+<table class="generic col_flx_m_50p col_first_100">
+    <tr id="m10"><th id="m11" colspan="2" class="align_top">i18n("Edit file")</th></tr>
+
     <tr id="1">
-        <td nowrap="nowrap" valign="top" style="white-space: nowrap;" width="1"><nobr>i18n("Name")</nobr></td>
-        <td nowrap="nowrap" valign="top" align="left"><input id="m1" name="file" value="{FILENAME}" size="60" type="text" /></td>
+        <td class="no_wrap align_top">i18n("Name")</td>
+        <td class="no_wrap align_top text_left"><input id="m1" name="file" value="{FILENAME}" size="60" type="text" /></td>
     </tr>
-    
-    
+
     <tr id="2">
-        <td nowrap="nowrap" valign="top" style="white-space: nowrap;" width="1"><nobr>i18n("Description")</nobr></td>
-        <td nowrap="nowrap" valign="top" align="left"><textarea id="m3" name="description" cols="100" rows="5" style="font-family: monospace;width: 100%;">{DESCRIPTION}</textarea></td>
+        <td class="no_wrap align_top">i18n("Description")</td>
+        <td class="no_wrap align_top text_left"><textarea id="m3" name="description" cols="100" rows="5" class="con_code">{DESCRIPTION}</textarea></td>
     </tr>
-    
-    
+
     <tr id="3">
-        <td nowrap="nowrap" valign="top" style="white-space: nowrap;" width="1"><nobr>i18n("Source code")</nobr></td>
-        <td nowrap="nowrap" valign="top" align="left"><textarea id="code" name="code" cols="100" rows="35" style="font-family: monospace;width: 100%;" wrap="off">{SOURCE}</textarea></td>
+        <td class="no_wrap align_top">i18n("Source code")</td>
+        <td class="no_wrap align_top text_left"><textarea id="code" name="code" cols="100" rows="35" class="con_code" wrap="off">{SOURCE}</textarea></td>
     </tr>
-    
+
     <tr id="4">
-        <td nowrap="nowrap" valign="top">&nbsp;</td>
-        <td nowrap="nowrap" valign="top" style="white-space: nowrap;" align="right"><input id="m12" name="submit" type="image" src="{SAVE_BUTTON_IMAGE}" alt="{SAVE_BUTTON_DESC}" title="{SAVE_BUTTON_DESC}" accesskey="s" onclick="" /></td>
+        <td colspan="2" class="no_wrap text_right">
+            <div class="con_form_action_control">
+                <input class="con_img_button" name="submit" type="image" src="{SAVE_BUTTON_IMAGE}" alt="{SAVE_BUTTON_DESC}" title="{SAVE_BUTTON_DESC}" accesskey="s" />
+            </div>
+        </td>
     </tr>
 </table>
 </form>

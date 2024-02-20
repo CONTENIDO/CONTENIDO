@@ -1,15 +1,16 @@
 <?php
+
 /**
  * This file contains the CEC registry class.
  *
- * @package Core
+ * @package    Core
  * @subpackage CEC
- * @author Timo A. Hummel
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo A. Hummel
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -29,10 +30,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *      untill a defined break condition achieves,
  * @see cApiCecHook::executeWhileBreakCondition()
  *
- * @package Core
+ * @package    Core
  * @subpackage CEC
  */
-class cApiCecRegistry {
+class cApiCecRegistry
+{
 
     /**
      * List of available chains
@@ -51,14 +53,16 @@ class cApiCecRegistry {
     /**
      * Constructor to create an instance of this class.
      */
-    protected function __construct() {
-        $this->_aChains = array();
+    protected function __construct()
+    {
+        $this->_aChains = [];
     }
 
     /**
      * Prevent cloning
      */
-    private function __clone() {
+    private function __clone()
+    {
         // donut
     }
 
@@ -67,7 +71,8 @@ class cApiCecRegistry {
      *
      * @return cApiCecRegistry
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance == NULL) {
             self::$_instance = new cApiCecRegistry();
         }
@@ -81,34 +86,37 @@ class cApiCecRegistry {
      * You can pass
      * as much parameter as you want.
      *
+     * @param string $sChainName
      * @deprecated [2014-08-07]
      *         This method is deprecated and is not needed any longer
-     * @param string $sChainName
      */
-    public function registerChain($sChainName) {
+    public function registerChain($sChainName)
+    {
         cDeprecated('This method is deprecated and is not needed any longer');
     }
 
     /**
      * Unregisters a chain
      *
+     * @param string $sChainName
      * @deprecated [2014-08-07]
      *         This method is deprecated and is not needed any longer
-     * @param string $sChainName
      */
-    public function unregisterChain($sChainName) {
+    public function unregisterChain($sChainName)
+    {
         cDeprecated('This method is deprecated and is not needed any longer');
     }
 
     /**
      * Checks if a chain is registered or not.
      *
-     * @deprecated [2014-08-07]
-     *         This method is deprecated and is not needed any longer
      * @param string $sChainName
      * @return bool
+     * @deprecated [2014-08-07]
+     *         This method is deprecated and is not needed any longer
      */
-    public function isChainRegistered($sChainName) {
+    public function isChainRegistered($sChainName)
+    {
         cDeprecated('This method is deprecated and is not needed any longer');
         return true;
     }
@@ -116,27 +124,30 @@ class cApiCecRegistry {
     /**
      * Returns list of registered chain names
      *
+     * @return array
      * @deprecated [2014-08-07]
      *         This method is deprecated and is not needed any longer
-     * @return array
      */
-    public function getRegisteredChainNames() {
+    public function getRegisteredChainNames()
+    {
         cDeprecated('This method is deprecated and is not needed any longer');
-        return array();
+
+        return [];
     }
 
     /**
      * Adds the chain to the internal chain holder
      *
-     * @deprecated [2014-08-07]
-     *         This method is deprecated and is not needed any longer
      * @param string $sChainName
      *         Chain name
      * @param array $aParameters [optional]
      *         Chain parameter
      * @return NULL
+     * @deprecated [2014-08-07]
+     *         This method is deprecated and is not needed any longer
      */
-    protected function _addChain($sChainName, array $aParameters = array()) {
+    protected function _addChain($sChainName, array $aParameters = [])
+    {
         cDeprecated('This method is deprecated and is not needed any longer');
         return NULL;
     }
@@ -156,14 +167,15 @@ class cApiCecRegistry {
      *         - "FunctionName" to invoke a function.
      *         NOTE: Necessary files must be manually included before or by
      *         defined autoloader.
-     * 
+     *
      * @return bool
      *         True on success, otherwise false
-     * 
+     *
      * @throws cInvalidArgumentException
      *         if the given chain is not registered or the given callback is not callable
      */
-    public function addChainFunction($sChainName, $sFunctionName) {
+    public function addChainFunction($sChainName, $sFunctionName)
+    {
         $cfg = cRegistry::getConfig();
 
         // do not add the chain if the chain system is disabled
@@ -179,10 +191,10 @@ class cApiCecRegistry {
             } elseif (!method_exists($class, $method)) {
                 throw new cInvalidArgumentException('Method ' . $method . ' in class ' . $class . ' doesn\'t exist, can\'t add ' . $sFunctionName . ' to chain ' . $sChainName);
             }
-            $call = array(
+            $call = [
                 new $class(),
-                $method
-            );
+                $method,
+            ];
         } elseif (cString::findFirstPos($sFunctionName, '::') > 0) {
             // chain function is static method of a object
             list($class, $method) = explode('::', $sFunctionName);
@@ -191,10 +203,10 @@ class cApiCecRegistry {
             } elseif (!method_exists($class, $method)) {
                 throw new cInvalidArgumentException('Method ' . $method . ' in class ' . $class . ' doesn\'t exist, can\'t add ' . $sFunctionName . ' to chain ' . $sChainName);
             }
-            $call = array(
+            $call = [
                 $class,
-                $method
-            );
+                $method,
+            ];
         } else {
             // chain function is a function
             if (!function_exists($sFunctionName)) {
@@ -232,7 +244,8 @@ class cApiCecRegistry {
      *         Name of function to check
      * @return bool
      */
-    public function chainFunctionExists($sChainName, $sFunctionName) {
+    public function chainFunctionExists($sChainName, $sFunctionName)
+    {
         $this->_resetIterator($sChainName);
         $chainFunctions = $this->_aChains[$sChainName]['functions'];
         foreach ($chainFunctions as $pos => $item) {
@@ -252,7 +265,8 @@ class cApiCecRegistry {
      * @param string $sFunctionName
      *         Name of function to remove from chain.
      */
-    public function removeChainFunction($sChainName, $sFunctionName) {
+    public function removeChainFunction($sChainName, $sFunctionName)
+    {
         $this->_resetIterator($sChainName);
 
         foreach ($this->_aChains[$sChainName]['functions'] as $pos => $item) {
@@ -271,7 +285,8 @@ class cApiCecRegistry {
      *         Chain name
      * @return cIterator
      */
-    public function getIterator($sChainName) {
+    public function getIterator($sChainName)
+    {
         if (isset($this->_aChains[$sChainName]) && isset($this->_aChains[$sChainName]['functions'])) {
             $functions = $this->_aChains[$sChainName]['functions'];
         } else {
@@ -285,7 +300,8 @@ class cApiCecRegistry {
      *
      * @param string $sChainName
      */
-    protected function _resetIterator($sChainName) {
+    protected function _resetIterator($sChainName)
+    {
         $iterator = $this->getIterator($sChainName);
         $iterator->reset();
     }
@@ -294,18 +310,20 @@ class cApiCecRegistry {
      * Flushs added chains
      *
      */
-    public function flushAddedChains() {
-        $this->_aChains = array();
+    public function flushAddedChains()
+    {
+        $this->_aChains = [];
     }
 }
 
 /**
  * CEC chain item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage CEC
  */
-class cApiCecChainItem {
+class cApiCecChainItem
+{
 
     /**
      * Chain name
@@ -323,9 +341,8 @@ class cApiCecChainItem {
 
     /**
      * Callback name.
-     * Contains either the function name to invoke, or a indexed array
-     * (class/object and method)
-     * and it's method to execute.
+     * Contains either the function name to invoke, or an indexed array
+     * (class/object and method) and it's method to execute.
      *
      * @var array string
      */
@@ -341,7 +358,7 @@ class cApiCecChainItem {
     /**
      * Temporary arguments holder
      *
-     * @var array NULL
+     * @var array|NULL
      */
     protected $_mTemporaryArguments;
 
@@ -352,11 +369,12 @@ class cApiCecChainItem {
      *
      * @param string $sChainName
      * @param string $sFunctionName
-     * @param array  $aParameters
+     * @param array $aParameters
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct($sChainName, $sFunctionName, $aParameters) {
+    public function __construct($sChainName, $sFunctionName, $aParameters)
+    {
         $this->setChainName($sChainName);
         $this->setFunctionName($sFunctionName);
         $this->setCallback($this->getFunctionName());
@@ -367,7 +385,8 @@ class cApiCecChainItem {
      *
      * @param string $sChainName
      */
-    public function setChainName($sChainName) {
+    public function setChainName($sChainName)
+    {
         $this->_sChainName = $sChainName;
     }
 
@@ -376,7 +395,8 @@ class cApiCecChainItem {
      *
      * @return string
      */
-    public function getChainName() {
+    public function getChainName()
+    {
         return $this->_sChainName;
     }
 
@@ -385,7 +405,8 @@ class cApiCecChainItem {
      *
      * @param string $sFunctionName
      */
-    public function setFunctionName($sFunctionName) {
+    public function setFunctionName($sFunctionName)
+    {
         $this->_sFunctionName = $sFunctionName;
     }
 
@@ -394,42 +415,46 @@ class cApiCecChainItem {
      *
      * @return string
      */
-    public function getFunctionName() {
+    public function getFunctionName()
+    {
         return $this->_sFunctionName;
     }
 
     /**
      * Sets the callback parameters
      *
+     * @param array $aParameters
      * @deprecated [2014-08-07]
      *         This method is deprecated and is not needed any longer
-     * @param array $aParameters
      */
-    public function setParameters(array $aParameters) {
+    public function setParameters(array $aParameters)
+    {
         cDeprecated('This method is deprecated and is not needed any longer');
     }
 
     /**
      * Returns the function name
      *
+     * @return array
      * @deprecated [2014-08-07]
      *         This method is deprecated and is not needed any longer
-     * @return array
      */
-    public function getParameters() {
+    public function getParameters()
+    {
         cDeprecated('This method is deprecated and is not needed any longer');
-        return array();
+        return [];
     }
 
     /**
      * Sets the callback
      *
      * @param string|array $callback
-     * 
+     *
      * @throws cInvalidArgumentException if the given callback is not a string
      *         or an array
      */
-    public function setCallback($callback) {
+    public function setCallback($callback)
+    {
         if (is_string($callback) || is_array($callback)) {
             $this->_mCallback = $callback;
         } else {
@@ -442,7 +467,8 @@ class cApiCecChainItem {
      *
      * @return string|array
      */
-    public function getCallback() {
+    public function getCallback()
+    {
         return $this->_mCallback;
     }
 
@@ -451,7 +477,8 @@ class cApiCecChainItem {
      *
      * @param array $args [optional]
      */
-    public function setTemporaryArguments(array $args = array()) {
+    public function setTemporaryArguments(array $args = [])
+    {
         $this->_mTemporaryArguments = $args;
     }
 
@@ -462,7 +489,8 @@ class cApiCecChainItem {
      *
      * @return array
      */
-    public function getTemporaryArguments() {
+    public function getTemporaryArguments()
+    {
         $args = $this->_mTemporaryArguments;
         $this->_mTemporaryArguments = NULL;
 
@@ -475,7 +503,8 @@ class cApiCecChainItem {
      * @return mixed
      *         If available, the result of the CEC function/callback
      */
-    public function execute() {
+    public function execute()
+    {
         // get temporary arguments, if the where set before
         if (!$args = $this->getTemporaryArguments()) {
             // no temporary arguments available, get them by func_get_args()

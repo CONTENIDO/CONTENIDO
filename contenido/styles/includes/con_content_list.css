@@ -1,17 +1,36 @@
 @CHARSET "ISO-8859-1";
 
-.contypeList {
-    border: 1px solid #B3B3B3;
-    padding: 10px;
-    margin: 10px 0;
+@import "../version_selection.css";
+@import "../content_elements.css";
+
+#con_content_list .rawdata {
+    display: block;
+    margin: 15px 0 15px 0;
+    font-weight: bold;
 }
-.noactive {
+#con_content_list div.rawtypes {
+    display: none;
+}
+
+#con_content_list #importrawdata input[type=file] {
+    display: block;
+    margin: 0;
+}
+
+#con_content_list #importrawdata input[type=submit] {
+    display: block;
+    margin: 10px 0 5px 0;
+}
+
+.no_active {
     border: 1px solid red;
 }
-.contypeList div {
-    min-height: 13px;
+
+.con_content_type_block {
+    margin-bottom: 1.0em;
 }
-.contypeList span.mceEditor div {
+
+.con_content_type_block span.mceEditor div {
     min-height: 0;
 }
 

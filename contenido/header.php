@@ -1,28 +1,38 @@
 <?php
+
 /**
  * This file loads the header of the backend frameset.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+/**
+ * @var cPermission $perm
+ * @var string $belang
+ * @var array $cfg
+ * @var cSession $sess
+ * @var int $changelang
+ * @var int $client
+ */
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-cRegistry::bootstrap(array(
+cRegistry::bootstrap([
     'sess' => 'cSession',
     'auth' => 'cAuthHandlerBackend',
     'perm' => 'cPermission'
-));
+]);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
@@ -44,7 +54,7 @@ if (isset($area)) {
     $area = (isset($sess_area)) ? $sess_area : 'login';
 }
 
-if (is_numeric($changelang)) {
+if (isset($changelang) && is_numeric($changelang)) {
     unset($area_rights);
     unset($item_rights);
 
@@ -52,10 +62,8 @@ if (is_numeric($changelang)) {
     $lang = $changelang;
 }
 
-if (!is_numeric($client) ||
-    (!$perm->have_perm_client('client['.$client.']') &&
-    !$perm->have_perm_client('admin['.$client.']')))
-{
+if (!cSecurity::isPositiveInteger($client ?? 0)
+    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))) {
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
@@ -67,12 +75,11 @@ if (!is_numeric($client) ||
     $sess->register('client');
 }
 
-if (!is_numeric($lang)) { // use first language found
-    $sess->register("lang");
-    $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE A.idlang=B.idlang AND idclient='".cSecurity::toInteger($client)."' ORDER BY A.idlang ASC";
-    $db->query($sql);
-    $db->nextRecord();
-    $lang = $db->f('idlang');
+if (!cSecurity::isPositiveInteger($lang ?? 0)) {
+    $sess->register('lang');
+    // Search for the first language of this client
+    $oClientLangColl = new cApiClientLanguageCollection();
+    $lang = (int)$oClientLangColl->getFirstLanguageIdByClient($client);
 } else {
     $sess->register('lang');
 }
@@ -88,5 +95,3 @@ $nav = new cGuiNavigation();
 $nav->buildHeader($lang);
 
 cRegistry::shutdown();
-
-?>

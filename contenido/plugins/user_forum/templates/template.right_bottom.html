@@ -1,4 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+        "http://www.w3.org/TR/html4/frameset.dtd">
 <!-- user_forum/templates/template.right_bottom.html -->
 <!-- @deprecated [2020-03-07] Is not in use! -->
 <html>
@@ -6,16 +7,15 @@
     <title>template.right_bottom.html</title>
     {_META_HEAD_CONTENIDO_}
     {_CSS_HEAD_CONTENIDO_}
-    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
+    <link rel="stylesheet" type="text/css" href="{_ASSET(styles/jquery/plugins/tipsy.css)_}">
     {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
-    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
-    <script type="text/javascript" src="plugins/user_forum/scripts/location.js"></script>
-    <script>
-
-        (function(Con, $) {
+    <script type="text/javascript" src="{_ASSET(scripts/jquery/plugins/tipsy.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(plugins/user_forum/scripts/location.js)_}"></script>
+    <script type="text/javascript">
+        (function (Con, $) {
         })(Con, Con.$);
-        setTimeout(function(){
+        setTimeout(function () {
             top.content.left.left_bottom.location.reload(true);
         }, 2000);
     </script>

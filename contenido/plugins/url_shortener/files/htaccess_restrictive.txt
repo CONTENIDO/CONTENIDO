@@ -9,9 +9,9 @@
 # @version    0.0.1
 # @author     Murat Purc <murat@purc.de>
 # @copyright  four for business AG <www.4fb.de>
-# @license    http://www.contenido.org/license/LIZENZ.txt
-# @link       http://www.4fb.de
-# @link       http://www.contenido.org
+# @license    https://www.contenido.org/license/LIZENZ.txt
+# @link       https://www.4fb.de
+# @link       https://www.contenido.org
 # @since      file available since CONTENIDO release 4.9.0
 #
 # $Id: htaccess_restrictive.txt 1563 2011-09-12 09:34:51Z fulai.zhang $
@@ -56,7 +56,7 @@
     # One RewriteRule to rule them all.
     # Exclude common extensions from rewriting and pass remaining requests to
     # front_content.php.
-    RewriteRule !\.(avi|css|doc|flv|gif|gzip|ico|jpeg|jpg|js|mov|mp3|pdf|png|ppt|rar|svg|swf|txt|wav|wmv|xml|zip)$ front_content.php [NC,QSA,L]
+    RewriteRule !\.(avi|bmp|css|doc|flv|gif|gz|gzip|ico|jpeg|jpg|js|json|mov|mp3|mp4|pdf|png|ppt|rar|svg|swf|tiff|txt|wbmp|webp|wav|wmv|xml|zip)$ front_content.php [NC,QSA,L]
 
 </IfModule>
 

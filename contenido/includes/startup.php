@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Central CONTENIDO file to initialize the application. Performs following steps:
  * - Initial PHP setting
@@ -11,13 +12,13 @@
  * - Sets/Checks DB connection
  * - Initializes UriBuilder
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -34,7 +35,7 @@ global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 @ini_set('log_errors', true);
 
 // Report all errors except warnings
-error_reporting(E_ALL ^E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE);
 
 /* Initial PHP session settings.
  * NOTE: When you change these values by custom configuration, the length of the session ID may differ from 32 characters.
@@ -69,12 +70,17 @@ if (false === cFileHandler::exists($cfg['path']['contenido_config'])) {
 }
 
 if (false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')
-|| false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
+    || false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
     $msg = "<h1>Fatal Error</h1><br>"
         . "Could not open a configuration file <b>config.php</b> or <b>config.clients.php</b>.<br><br>"
         . "Please make sure that you saved the file in the setup program and that your CON_ENVIRONMENT is valid. "
         . "If you had to place the file manually on your webserver, make sure that it is placed in your contenido/data/config/{environment}/ directory.";
     die($msg);
+}
+
+// Include user-defined file if exists
+if (cFileHandler::exists($backendPath . '/includes/include.local.php')) {
+    include_once($backendPath . '/includes/include.local.php');
 }
 
 include_once($backendPath . '/includes/functions.php54.php');
@@ -144,7 +150,7 @@ $timezoneCfg = $cfg['php_settings']['date.timezone'];
 if (!empty($timezoneCfg) && ini_get('date.timezone') !== $timezoneCfg) {
     // if the timezone setting from the cfg differs from the php.ini setting, set timezone from CFG
     date_default_timezone_set($timezoneCfg);
-} else if (empty($timezoneCfg) && (ini_get('date.timezone') === '' || ini_get('date.timezone') === false)) {
+} elseif (empty($timezoneCfg) && (ini_get('date.timezone') === '' || ini_get('date.timezone') === false)) {
     // if there are no timezone settings, set UTC timezone
     date_default_timezone_set('UTC');
 }
@@ -167,7 +173,7 @@ if (is_dir($localePath)) {
             if (cFileHandler::fileNameIsDot($locale) === false
                 && is_dir($localePath . $locale)) {
                 if (cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.po') &&
-                cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
+                    cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
                     $cfg['login_languages'][] = $locale;
                     $cfg['lang'][$locale] = 'lang_' . $locale . '.xml';
                 }

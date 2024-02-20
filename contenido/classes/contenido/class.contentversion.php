@@ -3,13 +3,13 @@
 /**
  * This file contains the content version collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @author           Jann Dieckmann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage GenericDB_Model
+ * @author     Jann Dieckmann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,16 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Content Version collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiContentVersion createNewItem
+ * @method cApiContentVersion|bool next
  */
-class cApiContentVersionCollection extends ItemCollection {
+class cApiContentVersionCollection extends ItemCollection
+{
+
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(cRegistry::getDbTableName('content_version'), 'idcontentversion');
         $this->_setItemClass('cApiContentVersion');
 
@@ -38,24 +43,24 @@ class cApiContentVersionCollection extends ItemCollection {
     /**
      * Creates a content version entry.
      *
-     * @param mixed[] $parameters {
+     * @param array $parameters
      *
      * @return cApiContentVersion
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create(array $parameters) {
-        global $auth;
-
-        if (empty($author)) {
-            $author = $auth->auth['uname'];
+    public function create(array $parameters)
+    {
+        if (empty($parameters['author'])) {
+            $auth = cRegistry::getAuth();
+            $parameters['author'] = $auth->auth['uname'];
         }
-        if (empty($created)) {
-            $created = date('Y-m-d H:i:s');
+        if (empty($parameters['created'])) {
+            $parameters['created'] = date('Y-m-d H:i:s');
         }
-        if (empty($lastmodified)) {
-            $lastmodified = date('Y-m-d H:i:s');
+        if (empty($parameters['lastmodified'])) {
+            $parameters['lastmodified'] = date('Y-m-d H:i:s');
         }
 
         $item = $this->createNewItem();
@@ -64,29 +69,55 @@ class cApiContentVersionCollection extends ItemCollection {
         foreach (array_keys($parameters) as $key) {
             $item->set($key, $parameters[$key]);
         }
-    $item->store();
+        $item->store();
 
         return $item;
     }
 
     /**
-     * Gets idcontentversions by where clause
+     * Gets ids of content version entries by WHERE clause
      *
      * @param string $where
      * @return array $ids
      * @throws cDbException
      * @throws cException
      */
-    public function getIdsByWhereClause($where){
-
+    public function getIdsByWhereClause($where)
+    {
         $this->select($where);
 
-        $ids = array();
-        while($item = $this->next()){
-            $ids[] = $item->get('idcontentversion');
+        $ids = [];
+        while ($item = $this->next()) {
+            $ids[] = cSecurity::toInteger($item->get('idcontentversion'));
         }
         return $ids;
+    }
 
+    /**
+     * Returns the maximum version of a content version entry.
+     *
+     * @param int $idArtLang Article language id
+     * @param int $idType Content type id (e.g. id of `CONTENT_TYPE`)
+     * @param int $typeId Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
+     * @return int Found maximum version or 0
+     * @throws cDbException
+     * @throws cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function getMaximumVersionByArticleLanguageId(
+        int $idArtLang, int $idType, int $typeId
+    ): int
+    {
+        $contentVersionColl = new self();
+        $contentVersionColl->addResultField('version');
+        $contentVersionColl->setWhere('idartlang', $idArtLang);
+        $contentVersionColl->setWhere('idtype', $idType);
+        $contentVersionColl->setWhere('typeid', $typeId);
+        $contentVersionColl->setOrder('`version` DESC');
+        $contentVersionColl->setLimit(0, 1);
+        $contentVersionColl->query();
+        $data = $contentVersionColl->fetchTable(['version']);
+        return count($data) ? cSecurity::toInteger($data[1]['version']) : 0;
     }
 
 }
@@ -94,11 +125,12 @@ class cApiContentVersionCollection extends ItemCollection {
 /**
  * Content Version item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiContentVersion extends Item
 {
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -108,16 +140,19 @@ class cApiContentVersion extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($id = false) {
-        parent::__construct(cRegistry::getDbTableName('content_version'), 'idcontentversion');
-        $this->setFilters(array(), array());
+    public function __construct($id = false)
+    {
+        parent::__construct(
+            cRegistry::getDbTableName('content_version'), 'idcontentversion'
+        );
+        $this->setFilters([], []);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
     }
 
     /**
-     * Userdefined setter for item fields.
+     * User-defined setter for item fields.
      *
      * @param string $name
      * @param mixed $value
@@ -126,7 +161,8 @@ class cApiContentVersion extends Item
      *
      * @return bool
      */
-    public function setField($name, $value, $safe = true) {
+    public function setField($name, $value, $safe = true)
+    {
         return parent::setField($name, $value, $safe);
     }
 
@@ -135,8 +171,8 @@ class cApiContentVersion extends Item
      *
      * @throws cException
      */
-    public function markAsCurrent() {
-
+    public function markAsCurrent()
+    {
         // try to get item from database
         $content = new cApiContent();
         $succ = $content->loadByArticleLanguageIdTypeAndTypeId(
@@ -168,13 +204,13 @@ class cApiContentVersion extends Item
      * Creates a new, editable Version with same properties as this Content Version
      *
      * @param string $version
-     * @param mixed  $deleted
+     * @param mixed $deleted
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function markAsEditable($version, $deleted) {
-
+    public function markAsEditable($version, $deleted)
+    {
         // get parameters for editable version
         $parameters = $this->toArray();
         unset($parameters['idcontentversion']);
@@ -188,35 +224,46 @@ class cApiContentVersion extends Item
         }
 
         $contentVersion->store();
-
     }
 
     /**
      * Loads a content entry by its article language id, idtype, type id and version.
      *
-     * @param mixed $contentParameters []{
+     * @param array $contentParameters Assoziative array like:
+     *      <pre>
+     *      $contentParameters = [
+     *          'idartlang' => (int) Article language id
+     *          'idtype' => (int) Content type id (e.g. id of `CONTENT_TYPE`)
+     *          'typeid' => (int) Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
+     *          'version' => (int) Content version
+     *      ];
+     *      </pre>
      *
      * @return bool
-     * 
+     *
      * @throws cException
      */
-    public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters) {
-        $props = array(
+    public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters)
+    {
+        $props = [
             'idartlang' => $contentParameters['idartlang'],
             'idtype' => $contentParameters['idtype'],
             'typeid' => $contentParameters['typeid'],
-            'version' => $contentParameters['version']
-        );
+            'version' => $contentParameters['version'],
+        ];
         $recordSet = $this->_oCache->getItemByProperties($props);
         if ($recordSet) {
             // entry in cache found, load entry from cache
             $this->loadByRecordSet($recordSet);
             return true;
         } else {
-            $where = $this->db->prepare('idartlang = %d AND idtype = %d AND typeid = %d AND version <= %d GROUP BY pk desc LIMIT 1', $contentParameters['idartlang'], $contentParameters['idtype'], $contentParameters['typeid'], $contentParameters['version']);
+            $where = '`idartlang` = %d AND `idtype` = %d AND `typeid` = %d AND `version` <= %d GROUP BY `pk` desc LIMIT 1';
+            $where = $this->db->prepare(
+                $where, $contentParameters['idartlang'], $contentParameters['idtype'],
+                $contentParameters['typeid'], $contentParameters['version']
+            );
             return $this->_loadByWhereClause($where);
         }
-
     }
 
 }

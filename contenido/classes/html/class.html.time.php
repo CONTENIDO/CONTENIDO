@@ -3,13 +3,13 @@
 /**
  * This file contains the cHTMLTime class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLTime class represents a date/time.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLTime extends cHTMLContentElement {
+class cHTMLTime extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -33,7 +34,8 @@ class cHTMLTime extends cHTMLContentElement {
      *         the ID of this element
      * @param string $datetime [optional]
      */
-    public function __construct($content = '', $class = '', $id = '', $datetime = '') {
+    public function __construct($content = '', $class = '', $id = '', $datetime = '')
+    {
         parent::__construct($content, $class, $id);
         $this->_tag = 'time';
         $this->setDatetime($datetime);
@@ -44,7 +46,8 @@ class cHTMLTime extends cHTMLContentElement {
      *
      * @param string $datetime
      */
-    public function setDatetime($datetime) {
+    public function setDatetime($datetime)
+    {
         $this->setAttribute('datetime', $datetime);
     }
 

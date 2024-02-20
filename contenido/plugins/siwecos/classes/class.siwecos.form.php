@@ -6,7 +6,7 @@
  * @subpackage SIWECOS
  * @author     Fulai Zhang <fulai.zhang@4fb.de>
  * @copyright  four for business AG
- * @link       http://www.4fb.de
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -14,9 +14,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * SIWECOS form item collection class.
- * It's a kind of a model.
+ * It's a kind of model.
  *
- * @author Fulai Zhang <fulai.zhang@4fb.de>
+ * @author     Fulai Zhang <fulai.zhang@4fb.de>
+ * @method SIWECOS createNewItem
+ * @method SIWECOS|bool next
  */
 class SIWECOSCollection extends ItemCollection
 {
@@ -77,7 +79,7 @@ class SIWECOSCollection extends ItemCollection
         global $idsiwecos;
 
         if ($idsiwecos) {
-            $str = "AND idsiwecos = " . cSecurity::toInteger($idsiwecos);
+            $str = "AND `idsiwecos` = " . cSecurity::toInteger($idsiwecos);
         } else {
             $str = '';
         }
@@ -85,24 +87,24 @@ class SIWECOSCollection extends ItemCollection
         $db = cRegistry::getDb();
         $db->query(
             "SELECT *
-            FROM `con_pi_siwecos`
+            FROM `" . cRegistry::getDbTableName('siwecos') . "`
             WHERE 
-                idclient = " . cSecurity::toInteger($client) . "
-                AND idlang = " . cSecurity::toInteger($lang) . "
+                `idclient` = " . cSecurity::toInteger($client) . "
+                AND `idlang` = " . cSecurity::toInteger($lang) . "
                 " . $str . "
             ;"
         );
 
         $forms = [];
         while ($db->nextRecord()) {
-            $forms[$db->f('idsiwecos')]['idsiwecos']   = $db->f('idsiwecos');
-            $forms[$db->f('idsiwecos')]['domain']      = $db->f('domain');
-            $forms[$db->f('idsiwecos')]['email']       = $db->f('email');
-            $forms[$db->f('idsiwecos')]['userToken']   = $db->f('userToken');
+            $forms[$db->f('idsiwecos')]['idsiwecos'] = $db->f('idsiwecos');
+            $forms[$db->f('idsiwecos')]['domain'] = $db->f('domain');
+            $forms[$db->f('idsiwecos')]['email'] = $db->f('email');
+            $forms[$db->f('idsiwecos')]['userToken'] = $db->f('userToken');
             $forms[$db->f('idsiwecos')]['domainToken'] = $db->f('domainToken');
             $forms[$db->f('idsiwecos')]['dangerLevel'] = $db->f('dangerLevel');
-            $forms[$db->f('idsiwecos')]['author']      = $db->f('author');
-            $forms[$db->f('idsiwecos')]['created']     = $db->f('created');
+            $forms[$db->f('idsiwecos')]['author'] = $db->f('author');
+            $forms[$db->f('idsiwecos')]['created'] = $db->f('created');
         }
 
         return $forms;
@@ -158,10 +160,10 @@ class SIWECOS extends Item
     public static function logException(Exception $e)
     {
         if (getSystemProperty('debug', 'debug_for_plugins') == 'true') {
-            $cfg         = cRegistry::getConfig();
+            $cfg = cRegistry::getConfig();
             $destination = $cfg['path']['contenido_logs'] . 'errorlog.txt';
-            $writer      = cLogWriter::factory('file', ['destination' => $destination]);
-            $log         = new cLog($writer);
+            $writer = cLogWriter::factory('file', ['destination' => $destination]);
+            $log = new cLog($writer);
             $log->err($e->getMessage());
             $log->err($e->getTraceAsString());
         }
@@ -178,8 +180,8 @@ class SIWECOS extends Item
     public static function notifyException(Exception $e)
     {
         $cGuiNotification = new cGuiNotification();
-        $level            = cGuiNotification::LEVEL_ERROR;
-        $message          = $e->getMessage();
+        $level = cGuiNotification::LEVEL_ERROR;
+        $message = $e->getMessage();
 
         return $cGuiNotification->returnNotification($level, $message);
     }
@@ -195,19 +197,11 @@ class SIWECOS extends Item
     public function delete()
     {
         global $idsiwecos;
-        $db = cRegistry::getDb();
 
-        // delete form
-        $succ = $db->query(
-            "
-            DELETE
-            FROM con_pi_siwecos
-            WHERE
-                idsiwecos = " . cSecurity::toInteger($idsiwecos) . "
-            ;"
-        );
+        $oSIWECOSCollection = new SIWECOSCollection();
+        $success = $oSIWECOSCollection->delete($idsiwecos);
 
-        if (false === $succ) {
+        if (!$success) {
             $msg = i18n('ERR_DELETE_ENTITY', 'siwecos');
             throw new SIWECOSException($msg);
         }

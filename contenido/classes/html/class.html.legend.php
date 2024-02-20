@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLLegend class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call');
@@ -18,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call');
 /**
  * cHTMLLegend class represents a legend element.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLLegend extends cHTMLContentElement {
+class cHTMLLegend extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -35,7 +35,8 @@ class cHTMLLegend extends cHTMLContentElement {
      * @param string $id [optional]
      *         the ID of this element
      */
-    public function __construct($content = '', $class = '', $id = '') {
+    public function __construct($content = '', $class = '', $id = '')
+    {
         parent::__construct($content, $class, $id);
         $this->_tag = 'legend';
     }

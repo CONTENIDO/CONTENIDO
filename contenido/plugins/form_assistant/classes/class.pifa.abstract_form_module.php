@@ -3,11 +3,11 @@
 /**
  * This file contains the PifaAbstractFormModule class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-abstract class PifaAbstractFormModule {
+abstract class PifaAbstractFormModule
+{
 
     /**
      * The HTTP GET request method.
@@ -43,7 +44,7 @@ abstract class PifaAbstractFormModule {
      *
      * @var array
      */
-    protected $_settings = array();
+    protected $_settings = [];
 
     /**
      * The unique ID of the form to be displayed and processed by this module.
@@ -72,16 +73,18 @@ abstract class PifaAbstractFormModule {
      *
      * @throws cException
      */
-    public function __construct(array $settings = NULL) {
+    public function __construct(array $settings = NULL)
+    {
         $this->_settings = $settings;
-        $this->_idform = cSecurity::toInteger($this->_settings['pifaform_idform']);
+        $this->_idform = cSecurity::toInteger($this->getSetting('pifaform_idform'));
         $this->_tpl = cSmartyFrontend::getInstance(true);
     }
 
     /**
      * @return array
      */
-    public function getSettings() {
+    public function getSettings()
+    {
         return $this->_settings;
     }
 
@@ -89,56 +92,65 @@ abstract class PifaAbstractFormModule {
      * @param string $key
      * @return mixed
      */
-    public function getSetting($key) {
-        return $this->_settings[$key];
+    public function getSetting($key, $default = '')
+    {
+        return $this->_settings[$key] ?? $default;
     }
+
 
     /**
      * @param array $_settings
      */
-    public function setSettings(array $_settings) {
+    public function setSettings(array $_settings)
+    {
         $this->_settings = $_settings;
     }
 
     /**
      * @return int
      */
-    public function getIdform() {
+    public function getIdform()
+    {
         return $this->_idform;
     }
 
     /**
      * @param int $_idform
      */
-    public function setIdform($_idform) {
+    public function setIdform($_idform)
+    {
         $this->_idform = $_idform;
     }
 
     /**
      * @return string
      */
-    public function getTemplateName() {
+    public function getTemplateName()
+    {
         return $this->_templateName;
     }
 
     /**
      * @param string $_templateName
      */
-    public function setTemplateName($_templateName) {
+    public function setTemplateName($_templateName)
+    {
         $this->_templateName = $_templateName;
     }
 
     /**
      * @return cSmartyWrapper
      */
-    public function getTpl() {
+    public function getTpl()
+    {
         return $this->_tpl;
     }
 
     /**
      * @param cSmartyWrapper $_tpl
      */
-    public function setTpl(cSmartyWrapper $_tpl) {
+    public function setTpl(cSmartyWrapper $_tpl)
+    {
         $this->_tpl = $_tpl;
     }
 
@@ -148,7 +160,8 @@ abstract class PifaAbstractFormModule {
      *
      * @return string
      */
-    protected function _getRequestMethod() {
+    protected function _getRequestMethod()
+    {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         $requestMethod = cString::toUpperCase($requestMethod);
 
@@ -162,7 +175,8 @@ abstract class PifaAbstractFormModule {
      *
      * @throws PifaException if request method is unknown
      */
-    public function render($return = false) {
+    public function render($return = false)
+    {
 
         // dispatch request method
         switch ($this->_getRequestMethod()) {
@@ -211,7 +225,7 @@ abstract class PifaAbstractFormModule {
      * @param array $values
      * @param array $errors
      */
-    abstract protected function doGet(array $values = array(), array $errors = array());
+    abstract protected function doGet(array $values = [], array $errors = []);
 
     /**
      * Handle POST request.

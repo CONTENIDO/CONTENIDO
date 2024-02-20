@@ -5,9 +5,9 @@
  * @subpackage Linkchecker
  * @author     Frederic Schneider
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cLinkcheckerRepair
 {
     /**
-     * Typical link misstakes
+     * Typical link mistakes
      *
      * @var array
      */
@@ -35,7 +35,7 @@ class cLinkcheckerRepair
     ];
 
     /**
-     * Fixed link misstakes
+     * Fixed link mistakes
      * Keys are equivalent to $errorTypes
      *
      * @var array
@@ -69,6 +69,7 @@ class cLinkcheckerRepair
                 }
             }
         }
+        return false;
     }
 
     /**

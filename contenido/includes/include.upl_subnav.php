@@ -3,30 +3,40 @@
 /**
  * This file contains the sub navigation frame backend page in upload section.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// Use remembered path from upl_last_path (from session)
-if (!isset($_GET['path']) && $sess->isRegistered('upl_last_path')) {
-    $_GET['path'] = $upl_last_path;
-}
+/**
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var cTemplate $tpl
+ * @var array $cfg
+ * @var string $upl_last_path Session variable
+ */
 
-if (!isset($_GET['path'])) {
+// Use remembered path from upl_last_path (from session)
+if (!isset($path) && $sess->isRegistered('upl_last_path')) {
+    $path = $upl_last_path ?? '';
+}
+$path = $path ?? '';
+
+if (empty($path)) {
     $tpl->reset();
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
     return;
 }
 
-$path = $_GET['path'];
-$area = $_GET['area'];
+$area = $area ?? '';
+$appendparameters = $appendparameters ?? '';
+
 $anchorTpl = '<a class="white" target="right_bottom" href="%s">%s</a>';
 
 // Get all sub navigation items

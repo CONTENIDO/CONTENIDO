@@ -3,13 +3,13 @@
 /**
  * This file contains the layout collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage GenericDB_Model
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Layout collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiLayout createNewItem
+ * @method cApiLayout|bool next
  */
-class cApiLayoutCollection extends ItemCollection {
+class cApiLayoutCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['lay'], 'idlay');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('lay'), 'idlay');
         $this->_setItemClass('cApiLayout');
 
         // set the join partners so that joins can be used via link() method
@@ -39,13 +42,13 @@ class cApiLayoutCollection extends ItemCollection {
      * Creates a layout entry.
      *
      * @param string $name
-     * @param int    $idclient     [optional]
-     * @param string $alias        [optional]
-     * @param string $description  [optional]
-     * @param int    $deletable    [optional]
+     * @param int $idclient [optional]
+     * @param string $alias [optional]
+     * @param string $description [optional]
+     * @param int $deletable [optional]
      *                             Either 1 or 0
-     * @param string $author       [optional]
-     * @param string $created      [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
      * @param string $lastmodified [optional]
      *
      * @return cApiLayout
@@ -53,11 +56,10 @@ class cApiLayoutCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($name, $idclient = NULL, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '') {
-        global $client, $auth;
-
+    public function create($name, $idclient = NULL, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '')
+    {
         if (NULL === $idclient) {
-            $idclient = $client;
+            $idclient = cRegistry::getClientId();
         }
 
         if (empty($alias)) {
@@ -65,6 +67,7 @@ class cApiLayoutCollection extends ItemCollection {
         }
 
         if (empty($author)) {
+            $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
@@ -88,22 +91,54 @@ class cApiLayoutCollection extends ItemCollection {
         return $item;
     }
 
+    /**
+     * Returns all used layout types.
+     *
+     * @param int|null $idclient Id of client to limit the result for a specific client
+     * @param bool $sort Flag to sort the result
+     * @return string[] List of layout types
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function getAllUsedLayoutTypesPropertyValues(int $idclient = NULL, bool $sort = true): array
+    {
+        $propertyCollection = new cApiPropertyCollection();
+        $propertyCollection->addResultField('value');
+        if (is_numeric($idclient)) {
+            $propertyCollection->setWhere('idclient', $idclient);
+        }
+        $propertyCollection->setWhere('type', 'layout');
+        $propertyCollection->setWhere('name', 'used-types');
+        $propertyCollection->query();
+        $types = [];
+        foreach ($propertyCollection->fetchTable(['value' => 'value']) as $entry) {
+            $types = array_merge(explode(';', $entry['value']), $types);
+        }
+        $types = array_unique($types);
+        if ($sort) {
+            sort($types);
+        }
+
+        return $types;
+    }
+
 }
 
 /**
  * Layout item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiLayout extends Item {
+class cApiLayout extends Item
+{
 
     /**
      * List of templates being used by current layout
      *
      * @var array
      */
-    protected $_aUsedTemplates = array();
+    protected $_aUsedTemplates = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -114,10 +149,10 @@ class cApiLayout extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['lay'], 'idlay');
-        $this->setFilters(array(), array());
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('lay'), 'idlay');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -126,13 +161,14 @@ class cApiLayout extends Item {
     /**
      * Checks if the layout is in use in any templates.
      *
-     * @throws cException
-     *         If layout item has not been loaded before
      * @param bool $setData [optional]
      *         Flag to set used templates data structure
      * @return bool
+     * @throws cException
+     *         If layout item has not been loaded before
      */
-    public function isInUse($setData = false) {
+    public function isInUse($setData = false)
+    {
         if (!$this->isLoaded()) {
             throw new cException('Layout item not loaded!');
         }
@@ -144,12 +180,12 @@ class cApiLayout extends Item {
         }
 
         if ($setData === true) {
-            $this->_aUsedTemplates = array();
+            $this->_aUsedTemplates = [];
             foreach ($templates as $i => $template) {
-                $this->_aUsedTemplates[$i] = array(
+                $this->_aUsedTemplates[$i] = [
                     'tpl_id' => $template->get('idtpl'),
-                    'tpl_name' => $template->get('name')
-                );
+                    'tpl_name' => $template->get('name'),
+                ];
             }
         }
 
@@ -157,17 +193,18 @@ class cApiLayout extends Item {
     }
 
     /**
-     * Get the informations of used templates
+     * Get the information of used templates
      *
      * @return array
      *         template data
      */
-    public function getUsedTemplates() {
+    public function getUsedTemplates()
+    {
         return $this->_aUsedTemplates;
     }
 
     /**
-     * Userdefined setter for layout fields.
+     * User-defined setter for layout fields.
      *
      * @param string $name
      * @param mixed $value
@@ -175,13 +212,14 @@ class cApiLayout extends Item {
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'deletable':
                 $value = ($value == 1) ? 1 : 0;
                 break;
             case 'idclient':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

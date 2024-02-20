@@ -2,8 +2,8 @@
 <!--
 CONTENIDO XML language file
 
-NOTE: Comments below with i18n() are used for translation purposes and the are
-      required for the parser to detect/extract text to translate.
+NOTE: Comments below with i18n() are used for translation purposes, and
+      they are required for the parser to detect/extract text to translate.
 
 gettext:
 i18n("Versioning")
@@ -24,7 +24,7 @@ i18n("Port")
 i18n("Sender mail")
 i18n("Sender name")
 i18n("Type for mails")
-i18n("Use passwordrequest in Backend")
+i18n("Use password-request in Backend")
 i18n("Activate maintenance mode")
 i18n("Use CodeMirror for code highlighting")
 i18n("Default client (ID)")
@@ -65,7 +65,7 @@ i18n("Maximum number of stored versions")
                 </values>
                 <label>Style versioning activated</label>
                 <group>Versioning</group>
-            </activated>            
+            </activated>
             <path>
                 <values/>
                 <label>Serverpath to style version files</label>
@@ -194,7 +194,7 @@ i18n("Maximum number of stored versions")
                     <array_value>true</array_value>
                     <array_value>false</array_value>
                 </values>
-                <label>Use passwordrequest in Backend</label>
+                <label>Use password-request in Backend</label>
                 <group>Backend</group>
             </enable>
             <reset_threshold>
@@ -305,7 +305,7 @@ i18n("Maximum number of stored versions")
             	</values>
             	<label>Debug function for plugins</label>
             	<group>Development</group>
-            </debug_for_plugins> 
+            </debug_for_plugins>
             <module_translation_message>
             	<values>
                     <array_value>true</array_value>

@@ -3,13 +3,13 @@
 /**
  * description: top login
  *
- * @package Module
+ * @package    Module
  * @subpackage LoginTop
- * @author timo.trautmann@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo.trautmann@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert framework initialization
@@ -24,13 +24,13 @@ $label = mi18n("LOGIN");
 
 $curIdart = cRegistry::getArticleId();
 if ($curIdart == $loginIdart) {
-	$active = 'active';
+    $active = 'active';
 }
 
 $curAuth = cRegistry::getAuth();
 if ($curAuth->auth['uid'] != '' && $curAuth->auth['uid'] != 'nobody') {
-	$link = 'front_content.php?logout=true';
-	$label = mi18n("LOGOUT");
+    $link = 'front_content.php?logout=true';
+    $label = mi18n("LOGOUT");
 }
 
 // use template to display navigation

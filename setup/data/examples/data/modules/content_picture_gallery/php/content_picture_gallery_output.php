@@ -1,15 +1,15 @@
 <?php
 
 /**
- * description: google map
+ * description: picture gallery
  *
- * @package Module
+ * @package    Module
  * @subpackage ContentPictureGallery
- * @author timo.trautmann@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo.trautmann@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 $filelistIndex = 1;
@@ -18,22 +18,24 @@ $art = new cApiArticleLanguage();
 $art->loadByArticleAndLanguageId(cRegistry::getArticleId(), cRegistry::getLanguageId());
 $contentValue = $art->getContent("FILELIST", $filelistIndex);
 
-$filelist = new cContentTypeFilelist($contentValue, $filelistIndex, array());
+$filelist = new cContentTypeFilelist($contentValue, $filelistIndex, []);
 $files = $filelist->getConfiguredFiles();
 
-$pictures = array();
+$pictures = [];
 
 if (count($files) > 0) {
+    $cfgClient = cRegistry::getClientConfig();
+    $client = cRegistry::getClientId();
     foreach ($files as $file) {
         $pathThumb = $file['path'] . '/' . $file['filename'];
 
-        $record = array();
+        $record = [];
         $record['thumb'] = cApiImgScale($pathThumb, 319, 199);
         $record['lightbox'] = $cfgClient[$client]['upload'] . $pathThumb;
-        $record['description'] = $file['metadata']['description'];
-        $record['copyright'] = $file['metadata']['copyright'];
+        $record['description'] = $file['metadata']['description'] ?? '';
+        $record['copyright'] = $file['metadata']['copyright'] ?? '';
 
-        array_push($pictures, $record);
+        $pictures[] = $record;
     }
 }
 
@@ -47,6 +49,7 @@ $tpl->assign('forward', mi18n("Forward"));
 $tpl->display('picture_gallery.tpl');
 
 if (cRegistry::isBackendEditMode()) {
+    echo '<div><label class="con_content_type_label">' . mi18n("Label") . '</label></div>';
     echo "CMS_FILELIST[1]";
 }
 

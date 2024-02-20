@@ -3,44 +3,47 @@
 /**
  * This file contains the menu frame (overview) backend page for module management.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Olaf Niemann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $db;
 
+// Display critical error if client or language does not exist
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
+    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+    $oPage = new cGuiPage("mod_overview");
+    $oPage->displayCriticalError($message);
+    $oPage->render();
+    return;
+}
+
 $auth = cRegistry::getAuth();
 $perm = cRegistry::getPerm();
 $sess = cRegistry::getSession();
 $frame = cRegistry::getFrame();
 $area = cRegistry::getArea();
-$client = cRegistry::getClientId();
 $cfg = cRegistry::getConfig();
 
 $oPage = new cGuiPage('mod_overview');
 
-// display critical error if no valid client is selected
-if (cSecurity::toInteger($client) < 1) {
-    $oPage->displayCriticalError(i18n("No Client selected"));
-    $oPage->render();
-    return;
-}
-
 $requestIdMod = (isset($_REQUEST['idmod'])) ? cSecurity::toInteger($_REQUEST['idmod']) : 0;
-$elemPerPage = (isset($_REQUEST['elemperpage'])) ? cSecurity::toInteger($_REQUEST['elemperpage']) : 0;
-$page = (isset($_REQUEST['page'])) ? cSecurity::toInteger($_REQUEST['page']) : 1;
-$sortby = (isset($_REQUEST['sortby'])) ? cSecurity::toString($_REQUEST['sortby']) : '';
-$sortorder = (isset($_REQUEST['sortorder'])) ? cSecurity::toString($_REQUEST['sortorder']) : '';
-$filter = (isset($_REQUEST['filter'])) ? cSecurity::toString($_REQUEST['filter']) : '';
-$filterType = (isset($_REQUEST['filtertype'])) ? cSecurity::toString($_REQUEST['filtertype']) : '';
-$searchIn = (isset($_REQUEST['searchin'])) ? cSecurity::toString($_REQUEST['searchin']) : '';
+$elemPerPage = cSecurity::toInteger($_REQUEST['elemperpage'] ?? '0');
+$page = cSecurity::toInteger($_REQUEST['page'] ?? '1');
+$sortby = cSecurity::toString($_REQUEST['sortby'] ?? '');
+$sortorder = cSecurity::toString($_REQUEST['sortorder'] ?? '');
+$filter = cSecurity::toString($_REQUEST['filter'] ?? '');
+$filterType = cSecurity::toString($_REQUEST['filtertype'] ?? '');
+$searchIn = cSecurity::toString($_REQUEST['searchin'] ?? '');
 
 // Now build bottom with list
 $cApiModuleCollection = new cApiModuleCollection();
@@ -109,7 +112,7 @@ foreach ($allModules as $idmod => $module) {
 
         $link = new cHTMLLink();
         $link->setClass('show_item')
-            ->setLink('javascript:;')
+            ->setLink('javascript:void(0)')
             ->setAttribute('data-action', 'show_module');
 
         $moduleName = (cString::getStringLength(trim($module['name'])) > 0) ? $module['name'] : i18n("- Unnamed module -");
@@ -121,10 +124,10 @@ foreach ($allModules as $idmod => $module) {
 
         if ($sModuleError == "none") {
             $colName = $sName;
-        } else if ($sModuleError == "input" || $sModuleError == "output") {
-            $colName = '<span class="moduleError">' . $sName . '</span>';
+        } elseif ($sModuleError == "input" || $sModuleError == "output") {
+            $colName = '<span class="con_module_error">' . $sName . '</span>';
         } else {
-            $colName = '<span class="moduleCriticalError">' . $sName . '</span>';
+            $colName = '<span class="con_module_critical_error">' . $sName . '</span>';
         }
 
         $iMenu++;
@@ -139,23 +142,26 @@ foreach ($allModules as $idmod => $module) {
 
         $inUse = $cApiModule->moduleInUse($idmod);
 
-        $deleteLink = "";
+        $deleteLink = '';
+        $delDescription = '';
 
         if ($inUse) {
             $inUseString = i18n("For more information about usage click on this button");
-            $inUseLink = '<a href="javascript:;" data-action="inused_module">'
-                       . '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'exclamation.gif" title="' . $inUseString . '" alt="' . $inUseString . '"></a>';
+            $inUseLink = '<a class="con_img_button" href="javascript:void(0)" data-action="inused_module">'
+                . cHTMLImage::img($cfg['path']['images'] . 'exclamation.gif', $inUseString)
+                . '</a>';
             $delDescription = i18n("Module can not be deleted, because it is already in use!");
         } else {
-            $inUseLink = '<img class="vAlignMiddle" src="./images/spacer.gif" alt="" width="16">';
+            $inUseLink = cHTMLImage::img($cfg['path']['images'] . 'spacer.gif', '', ['class' => 'con_img_button_off']);
             if ($perm->have_perm_area_action_item('mod', 'mod_delete', $idmod)) {
                 if (getEffectiveSetting('client', 'readonly', 'false') == 'true') {
                     $delTitle = i18n('This area is read only! The administrator disabled edits!');
-                    $deleteLink = '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete_inact.gif" title="' . $delTitle . '" alt="' . $delTitle . '">';
+                    $deleteLink = cHTMLImage::img($cfg['path']['images'] . 'delete_inact.gif', $delTitle, ['class' => 'con_img_button_off']);
                 } else {
                     $delTitle = i18n("Delete module");
-                    $deleteLink = '<a href="javascript:;" data-action="delete_module" title="' . $delTitle . '">'
-                                . '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+                    $deleteLink = '<a class="con_img_button" href="javascript:void(0)" data-action="delete_module" title="' . $delTitle . '">'
+                        . cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $delTitle)
+                        . '</a>';
                 }
             } else {
                 $delDescription = i18n("No permissions");
@@ -163,7 +169,7 @@ foreach ($allModules as $idmod => $module) {
         }
 
         if ($deleteLink == "") {
-            $deleteLink = '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete_inact.gif" title="' . $delDescription . '" alt="' . $delDescription . '">';
+            $deleteLink = cHTMLImage::img($cfg['path']['images'] . 'delete_inact.gif', $delDescription, ['class' => 'con_img_button_off']);
         }
 
         $todo = new TODOLink("idmod", $idmod, "Module: $sName", "");
@@ -179,7 +185,7 @@ foreach ($allModules as $idmod => $module) {
 }
 
 $oPage->addScript("cfoldingrow.js");
-$oPage->addScript("parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e");
+$oPage->addScript("parameterCollector.js");
 $oPage->set("s", "FORM", $cGuiMenu->render(false));
 $oPage->set("s", "DELETE_MESSAGE", i18n("Do you really want to delete the following module:<br /><br />%s<br />"));
 

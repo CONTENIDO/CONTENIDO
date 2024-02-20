@@ -3,14 +3,13 @@
 /**
  * This file contains the file debug class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
- *
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -21,10 +20,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * this object writes
  * the info to a file located in /data/logs/debug.log.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
  */
-class cDebugFile implements cDebugInterface {
+class cDebugFile implements cDebugInterface
+{
 
     /**
      * Singleton instance
@@ -56,9 +56,10 @@ class cDebugFile implements cDebugInterface {
      *
      * @return cDebugFile
      */
-    public static function getInstance() {
+    public static function getInstance(): cDebugInterface
+    {
         if (self::$_instance == NULL) {
-            self::$_instance = new cDebugFile();
+            self::$_instance = new self();
         }
         return self::$_instance;
     }
@@ -66,10 +67,11 @@ class cDebugFile implements cDebugInterface {
     /**
      * Constructor to create an instance of this class.
      *
-     * Opens filehandle for debug logfile.
+     * Opens file handle for debug logfile.
      */
-    private function __construct() {
-        global $cfg; // omfg, I know... TODO
+    private function __construct()
+    {
+        $cfg = cRegistry::getConfig();
         $this->_sPathToLogs = $cfg['path']['contenido_logs'];
         $this->_sFileName = 'debug.log';
         $this->_sPathToFile = $this->_sPathToLogs . $this->_sFileName;
@@ -78,37 +80,38 @@ class cDebugFile implements cDebugInterface {
     /**
      * Writes a line.
      *
-     * @see cDebugInterface::out()
-     *
-     * @param string $msg
+     * @param string $sText
      *
      * @throws cInvalidArgumentException
+     * @see cDebugInterface::out()
      */
-    public function out($msg) {
-        if (cFileHandler::writeable($this->_sPathToFile)) {
-            $sDate = date('Y-m-d H:i:s');
-            cFileHandler::write($this->_sPathToFile, $sDate . ": " . $msg . "\n", true);
-        }
+    public function out($sText)
+    {
+        $sDate = date('Y-m-d H:i:s');
+        $sText = $this->_indentLines($sText);
+        cFileHandler::write($this->_sPathToFile, $sDate . ": " . $sText . "\n", true);
     }
 
     /**
      * Outputs contents of passed variable in a preformatted, readable way
      *
-     * @param mixed  $mVariable
+     * @param mixed $mVariable
      *                                     The variable to be displayed
      * @param string $sVariableDescription [optional]
      *                                     The variable's name or description
-     * @param bool   $bExit                [optional]
+     * @param bool $bExit [optional]
      *                                     If set to true, your app will die() after output of current var
      * @throws cInvalidArgumentException
-*/
-    public function show($mVariable, $sVariableDescription = '', $bExit = false) {
+     */
+    public function show($mVariable, $sVariableDescription = '', $bExit = false)
+    {
         if (cFileHandler::writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');
-            cFileHandler::write($this->_sPathToFile, '#################### ' . $sDate . ' ####################' . "\n", true);
-            cFileHandler::write($this->_sPathToFile, $sVariableDescription . "\n", true);
-            cFileHandler::write($this->_sPathToFile, print_r($mVariable, true) . "\n", true);
-            cFileHandler::write($this->_sPathToFile, '#################### /' . $sDate . ' ###################' . "\n\n", true);
+            $content = '#################### ' . $sDate . ' ####################' . "\n"
+                . $sVariableDescription . "\n"
+                . print_r($mVariable, true) . "\n"
+                . '#################### /' . $sDate . ' ###################' . "\n\n";
+            cFileHandler::write($this->_sPathToFile, $content, true);
         }
     }
 
@@ -118,18 +121,42 @@ class cDebugFile implements cDebugInterface {
      * @param mixed $mVariable
      * @param string $sVariableDescription [optional]
      */
-    public function add($mVariable, $sVariableDescription = '') {
+    public function add($mVariable, $sVariableDescription = '')
+    {
     }
 
     /**
      * Interface implementation
      */
-    public function reset() {
+    public function reset()
+    {
     }
 
     /**
      * Interface implementation
      */
-    public function showAll() {
+    public function showAll()
+    {
     }
+
+    /**
+     * Indents each line of the message by the defined spaces.
+     *
+     * @param mixed $message
+     * @param int $spaces
+     * @return string The indented message
+     */
+    protected function _indentLines($message, int $spaces = 4): string
+    {
+        if (is_string($message) && !empty($message)) {
+            $prefix = str_pad(' ', $spaces);
+            $lines = explode("\n", $message);
+            $lines = array_map(function ($item) use ($prefix) {
+                return $prefix . $item;
+            }, $lines);
+            $message = implode("\n", $lines);
+        }
+        return trim($message);
+    }
+
 }

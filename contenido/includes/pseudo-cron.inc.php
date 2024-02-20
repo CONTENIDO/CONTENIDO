@@ -2,113 +2,113 @@
 
 /**
  * *************************************************************************
-
-  pseudo-cron v1.2.1.con // modified version for CONTENIDO
-  (c) 2003 Kai Blankenhorn
-  www.bitfolge.de/en
-  kaib@bitfolge.de
-
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
+ *
+ * pseudo-cron v1.2.1.con // modified version for CONTENIDO
+ * (c) 2003 Kai Blankenhorn
+ * www.bitfolge.de/en
+ * kaib@bitfolge.de
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * ***************************************************************************
-
-  Usually regular tasks like backup up the site's database are run using cron
-  jobs. With cron jobs, you can exactly plan when a certain command is to be
-  executed. But most homepage owners can't create cron jobs on their web
-  server - providers demand some extra money for that.
-  The only thing that's certain to happen quite regularly on a web page are
-  page requests. This is where pseudo-cron comes into play: With every page
-  request it checks if any cron jobs should have been run since the previous
-  request. If there are, they are run and logged.
-
-  Pseudo-cron uses a syntax very much like the Unix cron's one. For an
-  overview of the syntax used, see a page of the UNIXGEEKS. The syntax
-  pseudo-cron uses is different from the one described on that page in
-  the following points:
-
-  -  there is no user column
-  -  the executed command has to be an include()able file (which may contain further PHP code)
-
-
-  All job definitions are made in a text file on the server with a
-  user-definable name. A valid command line in this file is, for example:
-
+ *
+ * Usually regular tasks like backup up the site's database are run using cron
+ * jobs. With cron jobs, you can exactly plan when a certain command is to be
+ * executed. But most homepage owners can't create cron jobs on their web
+ * server - providers demand some extra money for that.
+ * The only thing that's certain to happen quite regularly on a web page are
+ * page requests. This is where pseudo-cron comes into play: With every page
+ * request it checks if any cron jobs should have been run since the previous
+ * request. If there are, they are run and logged.
+ *
+ * Pseudo-cron uses a syntax very much like the Unix cron's one. For an
+ * overview of the syntax used, see a page of the UNIXGEEKS. The syntax
+ * pseudo-cron uses is different from the one described on that page in
+ * the following points:
+ *
+ * -  there is no user column
+ * -  the executed command has to be an include()able file (which may contain further PHP code)
+ *
+ *
+ * All job definitions are made in a text file on the server with a
+ * user-definable name. A valid command line in this file is, for example:
  *   2   1,15   *   *   samplejob.inc.php
-
-  This runs samplejob.inc.php at 2am on the 1st and 15th of each month.
-
-
-  Features:
-  -  runs any PHP script
-  -  periodical or time-controlled script execution
-  -  logs all executed jobs
-  -  can be run from an IMG tag in an HTML page
-  -  follow Unix cron syntax for crontabs
-
-
-  Usage:
-  -  Modify the variables in the config section below to match your server.
-  -  Write a PHP script that does the job you want to be run regularly. Be
-  sure that any paths in it are relative to the script that will run
-  pseudo-cron in the end.
-  -  Set up your crontab file with your script
-  -  Wait for the next scheduled run :)
-
-
-  Note:
-  You can log messages to pseudo-cron's log file by calling
-  logMessage("log a message", $PC_writeDir, $PC_useLog, $PC_debug);
-
-
-  Changelog:
-
-  v1.2.1.con   11-28-03
-  changed: removed all global variables
-  changed: renamed intern variables
-  changed: intern function calls
-  changed: extended debug information
-  modified by horwath@opensa.org
-
-  v1.2.1   02-03-03
-  fixed:    jobs may be run too often under certain conditions
-  added:    global debug switch
-  changed: typo in imagecron.php which prevented it from working
-
-
-  v1.2   01-31-03
-  added:   more documentation
-  changed: log file should now be easier to use
-  changed: log file name
-
-
-  v1.1   01-29-03
-  changed: renamed pseudo-cron.php to pseudo-cron.inc.php
-  fixed:   comments at the end of a line don't work
-  fixed:   empty lines in crontab file create nonsense jobs
-  changed: log file grows big very quickly
-  changed: included config file in main file to avoid directory confusion
-  added:   day of week abbreviations may now be used (three letters, english)
-
-
-  v1.0   01-17-03
-  inital release
-
+ *
+ * This runs samplejob.inc.php at 2am on the 1st and 15th of each month.
+ *
+ *
+ * Features:
+ * -  runs any PHP script
+ * -  periodical or time-controlled script execution
+ * -  logs all executed jobs
+ * -  can be run from an IMG tag in an HTML page
+ * -  follow Unix cron syntax for crontabs
+ *
+ *
+ * Usage:
+ * -  Modify the variables in the config section below to match your server.
+ * -  Write a PHP script that does the job you want to be run regularly. Be
+ * sure that any paths in it are relative to the script that will run
+ * pseudo-cron in the end.
+ * -  Set up your crontab file with your script
+ * -  Wait for the next scheduled run :)
+ *
+ *
+ * Note:
+ * You can log messages to pseudo-cron's log file by calling
+ * logMessage("log a message", $PC_writeDir, $PC_useLog, $PC_debug);
+ *
+ *
+ * Changelog:
+ *
+ * v1.2.1.con   11-28-03
+ * changed: removed all global variables
+ * changed: renamed intern variables
+ * changed: intern function calls
+ * changed: extended debug information
+ * modified by horwath@opensa.org
+ *
+ * v1.2.1   02-03-03
+ * fixed:    jobs may be run too often under certain conditions
+ * added:    global debug switch
+ * changed: typo in imagecron.php which prevented it from working
+ *
+ *
+ * v1.2   01-31-03
+ * added:   more documentation
+ * changed: log file should now be easier to use
+ * changed: log file name
+ *
+ *
+ * v1.1   01-29-03
+ * changed: renamed pseudo-cron.php to pseudo-cron.inc.php
+ * fixed:   comments at the end of a line don't work
+ * fixed:   empty lines in crontab file create nonsense jobs
+ * changed: log file grows big very quickly
+ * changed: included config file in main file to avoid directory confusion
+ * added:   day of week abbreviations may now be used (three letters, english)
+ *
+ *
+ * v1.0   01-17-03
+ * inital release
  * ************************************************************************* */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @global array $cfg
+ */
 
 /* * ************************************* */
 /*      config section               */
@@ -187,20 +187,22 @@ if ($PC_debug) {
 }
 
 /**
+ * Logs an entry into the cron log file.
  *
  * @param string $msg
  * @param string $PC_writeDir
  * @param string $PC_useLog
- * @param int $PC_debug
+ * @param bool $PC_debug
  */
-function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
+function logMessage(string $msg, string $PC_writeDir, string $PC_useLog, bool $PC_debug)
+{
     if ($PC_useLog == 1) {
         $logfile = $PC_writeDir . "pseudo-cron.log";
 
         if (is_writable($logfile)) {
             $file = fopen($logfile, "ab");
             if ($msg[cString::getStringLength($msg) - 1] != "\n") {
-                $msg.="\r\n";
+                $msg .= "\r\n";
             }
             if ($PC_debug) {
                 echo $msg;
@@ -212,29 +214,33 @@ function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
 }
 
 /**
- * @param int|string $number
+ * Trims preceding zeros from given value.
  *
+ * @param int|string $number
  * @return int
  */
-function lTrimZeros($number)
+function lTrimZeros($number): int
 {
     return (int)ltrim($number, '0');
 }
 
 /**
+ * Parses a crontab schedule expression item.
  *
- * @param array $element
+ * @param string $element
  * @param array $targetArray
  * @param int $numberOfElements
  */
-function parseElement($element, &$targetArray, $numberOfElements) {
-    $subelements = explode(",", $element);
+function parseElement(string $element, array &$targetArray, int $numberOfElements)
+{
+    $subElements = explode(",", $element);
     for ($i = 0; $i < $numberOfElements; $i++) {
-        $targetArray[$i] = $subelements[0] == "*";
+        $targetArray[$i] = $subElements[0] == "*";
     }
 
-    for ($i = 0; $i < count($subelements); $i++) {
-        if (preg_match("~^(\\*|([0-9]{1,2})(-([0-9]{1,2}))?)(/([0-9]{1,2}))?$~", $subelements[$i], $matches)) {
+    $pattern = "~^(\\*|([0-9]{1,2})(-([0-9]{1,2}))?)(/([0-9]{1,2}))?$~";
+    for ($i = 0; $i < count($subElements); $i++) {
+        if (preg_match($pattern, $subElements[$i], $matches)) {
             if ($matches[1] == "*") {
                 $matches[2] = 0;      // from
                 $matches[4] = $numberOfElements;      //to
@@ -248,7 +254,10 @@ function parseElement($element, &$targetArray, $numberOfElements) {
             } else {
                 $matches[6] = 1;      // step
             }
-            for ($j = lTrimZeros($matches[2]); $j <= lTrimZeros($matches[4]); $j+=lTrimZeros($matches[6])) {
+            $begin = lTrimZeros($matches[2]);
+            $end = lTrimZeros($matches[4]);
+            $step = lTrimZeros($matches[6]);
+            for ($j = $begin; $j <= $end; $j += $step) {
                 $targetArray[$j] = TRUE;
             }
         }
@@ -256,15 +265,20 @@ function parseElement($element, &$targetArray, $numberOfElements) {
 }
 
 /**
+ * Decreases the passed date array by amount and date unit.
  *
  * @param array $dateArr
  * @param int $amount
  * @param string $unit
  * @param bool $PC_debug
  */
-function decDate(&$dateArr, $amount, $unit, $PC_debug) {
+function decDate(array &$dateArr, int $amount, string $unit, bool $PC_debug)
+{
     if ($PC_debug) {
-        echo sprintf("Decreasing from %02d.%02d. %02d:%02d by %d %6s ", $dateArr['mday'], $dateArr['mon'], $dateArr['hours'], $dateArr['minutes'], $amount, $unit);
+        echo sprintf(
+            "Decreasing from %02d.%02d. %02d:%02d by %d %6s ",
+            $dateArr['mday'], $dateArr['mon'], $dateArr['hours'], $dateArr['minutes'], $amount, $unit
+        );
     }
     if ($unit == "mday") {
         $dateArr["hours"] = 23;
@@ -273,7 +287,7 @@ function decDate(&$dateArr, $amount, $unit, $PC_debug) {
         $dateArr["mday"] -= $amount;
         $dateArr["wday"] -= $amount % 7;
         if ($dateArr["wday"] < 0) {
-            $dateArr["wday"]+=7;
+            $dateArr["wday"] += 7;
         }
         if ($dateArr["mday"] < 1) {
             $dateArr["mon"]--;
@@ -319,40 +333,46 @@ function decDate(&$dateArr, $amount, $unit, $PC_debug) {
         }
     }
     if ($PC_debug) {
-        echo sprintf("to %02d.%02d. %02d:%02d\n", $dateArr['mday'], $dateArr['mon'], $dateArr['hours'], $dateArr['minutes']);
+        echo sprintf(
+            "to %02d.%02d. %02d:%02d\n",
+            $dateArr['mday'], $dateArr['mon'], $dateArr['hours'], $dateArr['minutes']
+        );
     }
 }
 
 /**
+ * Returns the last scheduled run time of a job.
  *
- * @param string $job
+ * @param array $job
  * @param bool $PC_debug
  * @return int
  */
-function getLastScheduledRunTime($job, $PC_debug) {
+function getLastScheduledRunTime(array $job, bool $PC_debug): int
+{
     $dateArr = getdate();
     $minutesBack = 0;
+
     while (
-        $minutesBack < 525600 AND
-        (!$job[PC_MINUTE][$dateArr["minutes"]] OR
-        !$job[PC_HOUR][$dateArr["hours"]] OR
-        (!$job[PC_DOM][$dateArr["mday"]] OR !$job[PC_DOW][$dateArr["wday"]]) OR
-        !$job[PC_MONTH][$dateArr["mon"]])
+        $minutesBack < 525600 && (
+            empty($job[PC_MINUTE][$dateArr["minutes"]]) ||
+            empty($job[PC_HOUR][$dateArr["hours"]]) ||
+            (empty($job[PC_DOM][$dateArr["mday"]]) || empty($job[PC_DOW][$dateArr["wday"]])) or
+            empty($job[PC_MONTH][$dateArr["mon"]])
+        )
     ) {
-        if (!$job[PC_DOM][$dateArr["mday"]] OR !$job[PC_DOW][$dateArr["wday"]]) {
+        if (empty($job[PC_DOM][$dateArr["mday"]]) || empty($job[PC_DOW][$dateArr["wday"]])) {
             decDate($dateArr, 1, "mday", $PC_debug);
-            $minutesBack+=1440;
+            $minutesBack += 1440;
             continue;
         }
-        if (!$job[PC_HOUR][$dateArr["hours"]]) {
+        if (empty($job[PC_HOUR][$dateArr["hours"]])) {
             decDate($dateArr, 1, "hour", $PC_debug);
-            $minutesBack+=60;
+            $minutesBack += 60;
             continue;
         }
-        if (!$job[PC_MINUTE][$dateArr["minutes"]]) {
+        if (empty($job[PC_MINUTE][$dateArr["minutes"]])) {
             decDate($dateArr, 1, "minute", $PC_debug);
             $minutesBack++;
-            continue;
         }
     }
 
@@ -360,59 +380,70 @@ function getLastScheduledRunTime($job, $PC_debug) {
         print_r($dateArr);
     }
 
-    return mktime($dateArr["hours"], $dateArr["minutes"], 0, $dateArr["mon"], $dateArr["mday"], $dateArr["year"]);
+    return mktime(
+        $dateArr["hours"], $dateArr["minutes"], 0, $dateArr["mon"], $dateArr["mday"], $dateArr["year"]
+    );
 }
 
 /**
+ * Returns the file name (full path + file name) to a job.
  *
- * @param string $jobname
+ * @param string $jobName
  * @param string $PC_writeDir
  * @return string
  */
-function getJobFileName($jobname, $PC_writeDir) {
-    $jobfile = $PC_writeDir . urlencode($jobname) . ".job";
-    return $jobfile;
+function getJobFileName(string $jobName, string $PC_writeDir): string
+{
+    return $PC_writeDir . urlencode($jobName) . ".job";
 }
 
 /**
+ * Return last run time of a job.
  *
- * @param string $jobname
+ * @param string $jobName
  * @param string $PC_writeDir
- * @return string|number
+ * @return int
  */
-function getLastActialRunTime($jobname, $PC_writeDir) {
-    $jobfile = getJobFileName($jobname, $PC_writeDir);
-    if (cFileHandler::exists($jobfile)) {
-        $file = fopen($jobfile, "rb");
+function getLastActialRunTime(string $jobName, string $PC_writeDir): int
+{
+    $jobFile = getJobFileName($jobName, $PC_writeDir);
+    if (cFileHandler::exists($jobFile)) {
+        $file = fopen($jobFile, "rb");
         $lastRun = fgets($file, 100);
         fclose($file);
         if (is_numeric($lastRun)) {
-            return $lastRun;
+            return (int)$lastRun;
         }
     }
     return 0;
 }
 
 /**
+ * Marks last run time of a job.
  *
- * @param string $jobname
+ * @param string $jobName
  * @param int $lastRun
  * @param string $PC_writeDir
  */
-function markLastRun($jobname, $lastRun, $PC_writeDir) {
-    $jobfile = getJobFileName($jobname, $PC_writeDir);
+function markLastRun(string $jobName, int $lastRun, string $PC_writeDir)
+{
+    $jobFile = getJobFileName($jobName, $PC_writeDir);
 
-    if ($file = @fopen($jobfile, "w")) {
+    if ($file = @fopen($jobFile, "w")) {
         fputs($file, $lastRun);
         fclose($file);
     } else {
-        //echo "Could not write into file $jobfile - permission denied.";
+        try {
+            cWarning("Could not write into file $jobFile - permission denied.");
+        } catch (cInvalidArgumentException $e) {
+        }
     }
 }
 
 /**
+ * Runs a job.
  *
- * @param string $job
+ * @param array $job
  * @param string $PC_jobDir
  * @param string $PC_writeDir
  * @param int $PC_useLog
@@ -420,18 +451,27 @@ function markLastRun($jobname, $lastRun, $PC_writeDir) {
  *
  * @return bool
  */
-function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
-    global $sess;
-    $extjob = array();
+function runJob(
+    array $job, string $PC_jobDir, string $PC_writeDir, int $PC_useLog, bool $PC_debug = false
+): bool
+{
+    $sess = cRegistry::getSession();
+    $extJob = [
+        PC_MINUTE => [],
+        PC_HOUR => [],
+        PC_DOM => [],
+        PC_MONTH => [],
+        PC_DOW => [],
+    ];
 
-    parseElement($job[PC_MINUTE], $extjob[PC_MINUTE], 60);
-    parseElement($job[PC_HOUR], $extjob[PC_HOUR], 24);
-    parseElement($job[PC_DOM], $extjob[PC_DOM], 31);
-    parseElement($job[PC_MONTH], $extjob[PC_MONTH], 12);
-    parseElement($job[PC_DOW], $extjob[PC_DOW], 7);
+    parseElement($job[PC_MINUTE], $extJob[PC_MINUTE], 60);
+    parseElement($job[PC_HOUR], $extJob[PC_HOUR], 24);
+    parseElement($job[PC_DOM], $extJob[PC_DOM], 31);
+    parseElement($job[PC_MONTH], $extJob[PC_MONTH], 12);
+    parseElement($job[PC_DOW], $extJob[PC_DOW], 7);
 
     $lastActual = getLastActialRunTime($job[PC_CMD], $PC_writeDir);
-    $lastScheduled = getLastScheduledRunTime($extjob, $PC_debug);
+    $lastScheduled = getLastScheduledRunTime($extJob, $PC_debug);
 
     if ($lastScheduled > $lastActual) {
         logMessage("Running    " . $job[PC_CRONLINE], $PC_writeDir, $PC_useLog, $PC_debug);
@@ -446,7 +486,7 @@ function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
             if (is_object($sess)) {
                 $sess->freeze();
             }
-            @include($PC_jobDir . $job[PC_CMD]);      // any error messages are supressed
+            @include($PC_jobDir . $job[PC_CMD]);      // any error messages are suppressed
             if (is_object($sess)) {
                 $sess->thaw();
             }
@@ -465,31 +505,34 @@ function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
 }
 
 /**
+ * Parses the content of the cron file and returns the list of found jobs.
  *
  * @param string $PC_cronTabFile
  * @param bool $PC_debug
  *
- * @return array
+ * @return array List of jobs
  */
-function parseCronFile($PC_cronTabFile, $PC_debug) {
+function parseCronFile(string $PC_cronTabFile, bool $PC_debug): array
+{
     $file = @file($PC_cronTabFile);
-    $job = array();
-    $jobs = array();
+    $job = [];
+    $jobs = [];
 
     if (!is_array($file)) {
         return $jobs;
     }
 
+    $pattern = "~^([-0-9,/*]+)\\s+([-0-9,/*]+)\\s+([-0-9,/*]+)\\s+([-0-9,/*]+)\\s+([-0-7,/*]+|(-|/|Sun|Mon|Tue|Wed|Thu|Fri|Sat)+)\\s+([^#]*)(#.*)?$~i";
     for ($i = 0; $i < count($file); $i++) {
         if ($file[$i][0] != '#') {
-//         old regex, without dow abbreviations:
-//         if (preg_match("~^([-0-9,/*]+)\\s+([-0-9,/*]+)\\s+([-0-9,/*]+)\\s+([-0-9,/*]+)\\s+([-0-7,/*]+|Sun|Mon|Tue|Wen|Thu|Fri|Sat)\\s+([^#]*)(#.*)?$~i",$file[$i],$job)) {
-            if (preg_match("~^([-0-9,/*]+)\\s+([-0-9,/*]+)\\s+([-0-9,/*]+)\\s+([-0-9,/*]+)\\s+([-0-7,/*]+|(-|/|Sun|Mon|Tue|Wed|Thu|Fri|Sat)+)\\s+([^#]*)(#.*)?$~i", $file[$i], $job)) {
+            if (preg_match($pattern, $file[$i], $job)) {
                 $jobNumber = count($jobs);
                 $jobs[$jobNumber] = $job;
-                if ($jobs[$jobNumber][PC_DOW][0] != '*' AND !is_numeric($jobs[$jobNumber][PC_DOW])) {
+                if ($jobs[$jobNumber][PC_DOW][0] != '*' and !is_numeric($jobs[$jobNumber][PC_DOW])) {
                     $jobs[$jobNumber][PC_DOW] = str_replace(
-                        array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"), array(0, 1, 2, 3, 4, 5, 6), $jobs[$jobNumber][PC_DOW]
+                        ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                        [0, 1, 2, 3, 4, 5, 6],
+                        $jobs[$jobNumber][PC_DOW]
                     );
                 }
                 $jobs[$jobNumber][PC_CMD] = trim($job[PC_CMD]);

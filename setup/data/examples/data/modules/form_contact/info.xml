@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>form_contact</name><description>Output of the pifa contact form (works only with installed and active Form Assistant plugin)</description><type/><alias>form_contact</alias></module>
+<module>
+    <name>form_contact</name>
+    <description>Output of the pifa contact form (works only with installed and active Form
+        Assistant plugin)
+    </description>
+    <type/>
+    <alias>form_contact</alias>
+</module>

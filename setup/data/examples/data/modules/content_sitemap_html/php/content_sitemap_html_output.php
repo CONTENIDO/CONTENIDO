@@ -2,13 +2,19 @@
 
 /**
  *
- * @package Module
+ * @package    Module
  * @subpackage ContentSitemapHtml
- * @author marcus.gnass@4fb.de
- * @author alexander.scheider@4fb.de
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     marcus.gnass@4fb.de
+ * @author     alexander.scheider@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
+
+if (!class_exists('ContentSitemapHtmlModule')) {
+    cInclude('module', 'class.content_sitemap_html_module.php');
+}
 
 // get globals
 $client = cRegistry::getClientId();
@@ -55,109 +61,15 @@ if (false === is_numeric($content) || false === is_numeric($level)) {
     $categoryHelper->setAuth(cRegistry::getAuth());
     $tree = $categoryHelper->getSubCategories($content, $level);
     if (1 == $article) {
-        $tree = addArticlesToTree($tree);
+        $contentSitemapHtmlModule = new ContentSitemapHtmlModule([
+            'db' => cRegistry::getDb(),
+            'idlang' => cRegistry::getLanguageId(),
+        ]);
+        $tree = $contentSitemapHtmlModule->addArticlesToTree($tree);
     }
     $tpl->assign('tree', $tree);
 }
 
 $tpl->display('get.tpl');
-
-/**
- * Adds articles to categories in given array $tree as returned by
- * cCategoryHelper->getSubCategories().
- *
- * @param array $tree
- * @return array
- */
-function addArticlesToTree(array $tree) {
-    $startIdArtLang = getStartIdArtLang();
-
-    foreach ($tree as $key => $wrapper) {
-        $tree[$key]['articles'] = getArticlesFromCategory($wrapper['idcat'], $startIdArtLang);
-        $tree[$key]['subcats'] = addArticlesToTree($tree[$key]['subcats']);
-    }
-
-    return $tree;
-}
-
-/**
- * Read the IDs of all article languages that are used as start article
- * of their respective category.
- *
- * @return array
- *         of article language IDs
- */
-function getStartIdArtLang() {
-    $cfg = cRegistry::getConfig();
-    $db = cRegistry::getDb();
-
-    // get all startidartlangs
-    $ret = $db->query('-- getStartIdArtLang()
-        SELECT
-            startidartlang
-        FROM
-            `' . $cfg['tab']['cat_lang'] . '`
-        WHERE
-            visible = 1
-            AND public = 1
-        ;');
-
-    $result = [];
-    while ($db->nextRecord()) {
-        $result[] = $db->f('startidartlang');
-    }
-
-    return $result;
-}
-
-/**
- * Read article languages of given category and the current language.
- * Only online articles that are searchable are considered.
- * Optionally an array of article language IDs to exclude can be given.
- * If no article languages were found an empty array will be returned.
- *
- * @param int $idcat
- *         ID of category to search in
- * @param array $excludedIdArtLangs [optional]
- *         ID of article languages to exclude
- * @return array
- *         of article languages
- */
-function getArticlesFromCategory($idcat, array $excludedIdArtLangs = []) {
-    $cfg = cRegistry::getConfig();
-    $db = cRegistry::getDb();
-    $idlang = cRegistry::getLanguageId();
-
-    $ret = $db->query('-- getArticlesFromCategory()
-        SELECT
-            art_lang.idartlang
-        FROM
-            `' . $cfg['tab']['art_lang'] . '` AS art_lang,
-            `' . $cfg['tab']['cat_art'] . '` AS cat_art
-        WHERE
-            art_lang.idart = cat_art.idart
-            AND art_lang.idlang = ' . cSecurity::toInteger($idlang) . '
-            AND art_lang.online = 1
-            AND art_lang.searchable = 1
-            AND cat_art.idcat = ' . cSecurity::toInteger($idcat) . '
-        ;');
-
-    if (false === $ret) {
-        return [];
-    }
-
-    $result = [];
-    while ($db->nextRecord()) {
-        // skip article languages to exclude
-        if (in_array($db->f('idartlang'), $excludedIdArtLangs)) {
-            continue;
-        }
-
-        // add article languages to result
-        $result[] = new cApiArticleLanguage($db->f('idartlang'));
-    }
-
-    return $result;
-}
 
 ?>

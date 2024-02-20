@@ -1,15 +1,16 @@
 <?php
+
 /**
  * Description: Google Plus
  *
- * @version   1.0.0
- * @author    unknown
- * @copyright four for business AG <www.4fb.de>
- *
- * {@internal
- *   created unknown
- *   $Id: googleplus_output.php 2755 2012-07-25 20:10:28Z xmurrix $
- * }}
+ * @package    Module
+ * @subpackage ContentSocialMediaGooglePlus
+ * @version    1.0.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 $tpl = cSmartyFrontend::getInstance();
@@ -38,7 +39,7 @@ if (cRegistry::isBackendEditMode() && 'POST' === cString::toUpperCase($_SERVER['
     // CON-2174
     $url = $_POST['url'];
     if (null === parse_url($url, PHP_URL_SCHEME)) {
-    	$url = 'http://' . $url;
+        $url = 'https://' . $url;
     }
 
     conSaveContentEntry($idartlang, "CMS_HTML", 3000, $url);

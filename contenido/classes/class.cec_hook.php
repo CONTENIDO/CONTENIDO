@@ -1,15 +1,16 @@
 <?php
+
 /**
  * This file contains the CEC hook class.
  *
- * @package Core
+ * @package    Core
  * @subpackage CEC
- * @author Timo A. Hummel
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo A. Hummel
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -28,66 +29,68 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * cApiCecHook::execute('Contenido.Content.Somewhere', $param);
  *
  * // example of executing a cec with multiple parameter but without a return
- * value
- * $param = array('foo' => $bar, 'foo2' => $bar2);
+ * // value
+ * $param = ['foo' => $bar, 'foo2' => $bar2];
  * $param = cApiCecHook::execute('Contenido.Content.Somewhere', $param);
  *
  * // example of executing a cec without a parameter but a return value (with
- * predefined
- * // default return value)
+ * // predefined default return value)
  * cApiCecHook::setDefaultReturnValue('this is the default title');
  * $title = cApiCecHook::executeAndReturn('Contenido.Content.CreateTitletag');
  *
  * // example of executing a cec with a parameter and a return value
  * // (usually the modified version of passed parameter)
  * $baseHref = cRegistry::getFrontendUrl();
- * $newBaseHref =
- * cApiCecHook::executeAndReturn('Contenido.Frontend.BaseHrefGeneration',
- * $baseHref);
+ * $newBaseHref = cApiCecHook::executeAndReturn(
+ *     'Contenido.Frontend.BaseHrefGeneration', $baseHref
+ * );
  *
  * // example of executing a cec with a break condition and default return value
- * cApiCecHook::setBreakCondition(false, true); // break condition = "false",
- * default return value = "true"
- * $allow =
- * cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit',
- * $lang, $idcat, $idart, $auth->auth['uid']);
- * if ($allow == false) {
- * die('You're not coming in!');
+ * // if break condition = "false", then default return value = "true"
+ * cApiCecHook::setBreakCondition(false, true);
+ * $allow = cApiCecHook::executeWhileBreakCondition(
+ *     'Contenido.Frontend.AllowEdit',
+ *     $lang, $idcat, $idart, $auth->auth['uid']
+ * );
+ * if (!$allow) {
+ *     die('You're not coming in!');
  * }
  *
  * // another example of executing a cec with a break condition and default
- * return value
- * cApiCecHook::setBreakCondition(true, false); // break condition = "true",
- * default return value = "false"
- * $allow =
- * cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.CategoryAccess',
- * $lang, $idcat, $auth->auth['uid']);
- * if ($allow == false) {
- * die('I said, you're not coming in!');
+ * // return value
+ * // if break condition = "true", then default return value = "false"
+ * cApiCecHook::setBreakCondition(true, false);
+ * $allow = cApiCecHook::executeWhileBreakCondition(
+ *     'Contenido.Frontend.CategoryAccess',
+ *     $lang, $idcat, $auth->auth['uid']
+ * );
+ * if (!$allow) {
+ *     die('I said, you're not coming in!');
  * }
  * </code>
  *
- * @package Core
+ * @package    Core
  * @subpackage CEC
  */
-class cApiCecHook {
+class cApiCecHook
+{
 
     /**
-     * Temporaly stored break condition.
+     * Temporary  stored break condition.
      *
-     * @var int
+     * @var int|NULL
      */
     private static $_breakCondition = NULL;
 
     /**
-     * Temporaly stored default return value of CEC functions
+     * Temporary  stored default return value of CEC functions
      *
      * @var mixed
      */
     private static $_defaultReturnValue = NULL;
 
     /**
-     * Temporaly stored position of argument to return.
+     * Temporary  stored position of argument to return.
      * It's used by cApiCecHook::executeAndReturn()
      * to store/extract the return value into/from arguments list.
      *
@@ -96,54 +99,58 @@ class cApiCecHook {
     private static $_returnArgumentPos = 1;
 
     /**
-     * Temporaly setting of break condition and optional the default return
+     * Temporary  setting of break condition and optional the default return
      * value.
      *
      * @param mixed $condition
      * @param mixed $defaultReturnValue [optional]
      */
-    public static function setBreakCondition($condition, $defaultReturnValue = NULL) {
+    public static function setBreakCondition($condition, $defaultReturnValue = NULL)
+    {
         self::$_breakCondition = $condition;
         self::setDefaultReturnValue($defaultReturnValue);
     }
 
     /**
-     * Temporaly setting of default return value.
+     * Temporary  setting of default return value.
      *
      * @param mixed $defaultReturnValue
      */
-    public static function setDefaultReturnValue($defaultReturnValue) {
+    public static function setDefaultReturnValue($defaultReturnValue)
+    {
         self::$_defaultReturnValue = $defaultReturnValue;
     }
 
     /**
-     * Temporaly setting of position in argument to return.
+     * Temporary  setting of position in argument to return.
      *
      * @param int $pos
      *         Position, feasible value greater 0
      *
      * @throws cInvalidArgumentException if the given position is less than 1
      */
-    public static function setReturnArgumentPos($pos) {
-        if ((int) $pos < 1) {
+    public static function setReturnArgumentPos($pos)
+    {
+        if ((int)$pos < 1) {
             throw new cInvalidArgumentException('Return position has to be greater or equal than 1.');
         }
-        self::$_returnArgumentPos = (int) $pos;
+        self::$_returnArgumentPos = (int)$pos;
     }
 
     /**
      * Method to execute registered functions for CONTENIDO Extension Chainer
      * (CEC).
      * Gets the desired CEC iterator and executes each registered chain function
-     * by passing the given arguments to it. NOTE: the first param is interpeted
+     * by passing the given arguments to it. NOTE: the first param is interpreted
      * as $chainName. NOTE: There is no restriction for number of passed
      * parameter.
      */
-    public static function execute() {
+    public static function execute()
+    {
         // get arguments
         $args = func_get_args();
 
-        // get chainname
+        // get chain name
         $chainName = array_shift($args);
 
         // process CEC
@@ -166,19 +173,20 @@ class cApiCecHook {
      * Method to execute registered functions for CONTENIDO Extension Chainer
      * (CEC).
      * Gets the desired CEC iterator and executes each registered chain
-     * function. You can pass as much parameters as you want. NOTE: the first
-     * param is interpeted as $chainName. NOTE: There is no restriction for
+     * function. You can pass as many parameters as you want. NOTE: the first
+     * param is interpreted as $chainName. NOTE: There is no restriction for
      * number of passed parameter. NOTE: If no chain function is registered,
      * $_defaultReturnValue will be returned.
      *
      * @return mixed
      *         Parameter changed/processed by chain functions.
      */
-    public static function executeAndReturn() {
+    public static function executeAndReturn()
+    {
         // get arguments
         $args = func_get_args();
 
-        // get chainname
+        // get chain name
         $chainName = array_shift($args);
 
         // position of return value in arguments list
@@ -213,22 +221,23 @@ class cApiCecHook {
     }
 
     /**
-     * CEC function to process chains untill a break condition occurs.
+     * CEC function to process chains until a break condition occurs.
      *
      * Gets the desired CEC iterator and executes each registered chain function
      * as long as defined break condition doesn't occur. NOTE: the first
-     * param is interpeted as $chainName. NOTE: There is no restriction for
+     * param is interpreted as $chainName. NOTE: There is no restriction for
      * number of passed parameter. NOTE: If no chain function is registered,
      * $_defaultReturnValue will be returned.
      *
      * @return mixed
-     *         The break condition or it's default value
+     *         The break condition or its default value
      */
-    public static function executeWhileBreakCondition() {
+    public static function executeWhileBreakCondition()
+    {
         // get arguments
         $args = func_get_args();
 
-        // get chainname
+        // get chain name
         $chainName = array_shift($args);
 
         // break condition and default return value
@@ -261,29 +270,25 @@ class cApiCecHook {
     /**
      * Resets some properties to defaults
      */
-    private static function _reset() {
+    private static function _reset()
+    {
         self::$_breakCondition = NULL;
         self::$_defaultReturnValue = NULL;
         self::$_returnArgumentPos = 1;
     }
 
     /**
-     * Used to debug some status informations.
+     * Used to debug some status information.
      *
-     * @todo Implement cec_hook debug mode for automatic logging when activated.
-     *       Writes the debug value into a logfile (see
-     *       contenido/data/log/cec_hook_debug.log).
-     *
-     * @param mixed  $var
+     * @param mixed $var
      *                    The variable to dump
      * @param string $msg [optional]
      *                    Additional message
      *
      * @throws cInvalidArgumentException
      */
-    private static function _debug($var, $msg = '') {
-        global $cfg;
-
+    private static function _debug($var, $msg = '')
+    {
         $content = ($msg !== '') ? $msg . ': ' : '';
         if (is_object($var) || is_array($var)) {
             $content .= print_r($var, true);
@@ -291,10 +296,8 @@ class cApiCecHook {
             $content .= $var . "\n";
         }
 
-        $sLogPathName = $cfg['path']['contenido_logs'] . 'cec_hook_debug.log';
-        cFileHandler::write($sLogPathName, $content . "\n", true);
-
-        cDebug::out($content);
+        cDebug::out('cApiCecHook: ' . $content);
     }
+
 }
 

@@ -1,8 +1,9 @@
 <?php
 
 /**
- *
  * @author marcus.gnass
+ * @method TFItem createNewItem
+ * @method TFItem|bool next
  */
 class TFCollection extends ItemCollection
 {
@@ -15,7 +16,7 @@ class TFCollection extends ItemCollection
     public function __construct($where = false)
     {
         parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
-        // $this->_setItemClass('TestItem');
+        // $this->_setItemClass('TFItem');
         if (false !== $where) {
             $this->select($where);
         }
@@ -23,7 +24,6 @@ class TFCollection extends ItemCollection
 }
 
 /**
- *
  * @author marcus.gnass
  */
 class TFItem extends Item

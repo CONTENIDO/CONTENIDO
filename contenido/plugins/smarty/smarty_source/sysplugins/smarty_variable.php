@@ -7,6 +7,7 @@
  * @package    Smarty
  * @subpackage Template
  */
+#[\AllowDynamicProperties]
 class Smarty_Variable
 {
     /**
@@ -42,7 +43,6 @@ class Smarty_Variable
      */
     public function __toString()
     {
-        return (string) $this->value;
+        return (string)$this->value;
     }
 }
-

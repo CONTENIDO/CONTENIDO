@@ -1,20 +1,25 @@
 <?php
+
 /**
  * This file contains CONTENIDO constants.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Backend
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // CONTENIDO version
 defined('CON_VERSION') || define('CON_VERSION', '4.10.1');
+
+// Minimum supported PHP version
+define('CON_MIN_PHP_VERSION', '7.1');
 
 // Not supported MySQL SQL modes
 if (!defined('CON_DB_NOT_SUPPORTED_SQL_MODES')) {
@@ -24,9 +29,15 @@ if (!defined('CON_DB_NOT_SUPPORTED_SQL_MODES')) {
     );
 }
 
+// Database defaults
+define('CON_DB_PREFIX', 'con');
+define('CON_DB_CHARSET', 'utf8mb4');
+define('CON_DB_COLLATION', 'utf8mb4_general_ci');
+define('CON_DB_ENGINE', 'InnoDB');
+
 // Flag to strip slashes
 if (function_exists('get_magic_quotes_gpc')) {
-    define('CON_STRIPSLASHES', !get_magic_quotes_gpc());
+    define('CON_STRIPSLASHES', !@get_magic_quotes_gpc());
 } else {
     define('CON_STRIPSLASHES', true);
 }

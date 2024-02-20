@@ -19,8 +19,8 @@
     border-color:{BORDERCOLOR}; }
     </style>
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
-    <script type="text/javascript" src="scripts/infoBox.js"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/infoBox.js)_}"></script>
 	<script type="text/javascript">
     (function(Con, $) {
         Con.getFrame('left_bottom').location.reload();
@@ -35,23 +35,23 @@
     })(Con, Con.$);
     </script>
 </head>
-<body style="margin:10px">
+<body class="page_generic">
 {NOTIFICATION}
 {FORM}
-<table class="generic" cellspacing="0" cellpadding="2" border="0">
+<table class="generic col_md">
     <tr>
-        <th valign="top">{PROPERTY}</th>
-        <th valign="top" align="left">{VALUE}</th>
+        <th class="align_top">{PROPERTY}</th>
+        <th class="align_top text_left">{VALUE}</th>
     </tr>
     <!-- BEGIN:BLOCK -->
     <tr>
-        <td valign="top">{CATNAME}</td>
-        <td valign="top" align="left">{CATFIELD}</td>
+        <td class="align_top">{CATNAME}</td>
+        <td class="align_top text_left">{CATFIELD}</td>
     </tr>
     <!-- END:BLOCK -->
     <tr>
-        <td valign="top">&nbsp;</td>
-        <td valign="top" align="right">
+        <td class="align_top">&nbsp;</td>
+        <td class="align_top text_right">
             <input type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}">
         </td>
     </tr>

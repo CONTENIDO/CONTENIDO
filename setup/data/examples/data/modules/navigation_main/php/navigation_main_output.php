@@ -3,13 +3,13 @@
 /**
  * description: main navigation
  *
- * @package Module
+ * @package    Module
  * @subpackage NavigationMain
- * @author marcus.gnass@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     marcus.gnass@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert framework initialization
@@ -25,10 +25,9 @@ $categoryHelper->setAuth(cRegistry::getAuth());
 $tree = $categoryHelper->getSubCategories($rootIdcat, $depth);
 
 // get path (breadcrumb) of current category
-$filter = function(cApiCategoryLanguage $item) {
+$path = array_map(function (cApiCategoryLanguage $item) {
     return $item->get('idcat');
-};
-$path = array_map($filter, $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1));
+}, $categoryHelper->getCategoryPath(cRegistry::getCategoryId()));
 
 // use template to display navigation
 $smarty = cSmartyFrontend::getInstance();

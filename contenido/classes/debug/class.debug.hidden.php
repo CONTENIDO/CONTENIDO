@@ -3,14 +3,13 @@
 /**
  * This file contains the hidden debug class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
- *
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,11 +17,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Debug object to show info hidden in HTML comment-blocks.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
  */
-class cDebugHidden implements cDebugInterface {
+class cDebugHidden implements cDebugInterface
+{
 
+    use cDebugVisibleTrait;
+    
     /**
      * Singleton instance
      *
@@ -35,9 +37,10 @@ class cDebugHidden implements cDebugInterface {
      *
      * @return cDebugHidden
      */
-    static public function getInstance() {
+    static public function getInstance(): cDebugInterface
+    {
         if (self::$_instance == NULL) {
-            self::$_instance = new cDebugHidden();
+            self::$_instance = new self();
         }
         return self::$_instance;
     }
@@ -45,19 +48,19 @@ class cDebugHidden implements cDebugInterface {
     /**
      * Constructor to create an instance of this class.
      */
-    private function __construct() {
+    private function __construct()
+    {
     }
 
     /**
      * Writes a line.
      *
+     * @param string $sText
      * @see cDebugInterface::out()
-     * @param string $msg
      */
-    public function out($msg) {
-        echo ("\n <!-- dbg\n");
-        echo ($msg);
-        echo ("\n-->");
+    public function out($sText)
+    {
+        echo "\n" . implode("\n", ['<!-- dbg', $sText, '-->']) . "\n";
     }
 
     /**
@@ -70,20 +73,18 @@ class cDebugHidden implements cDebugInterface {
      * @param bool $bExit [optional]
      *         If set to true, your app will die() after output of current var
      */
-    public function show($mVariable, $sVariableDescription = '', $bExit = false) {
-        echo "\n <!-- dbg";
-        if ($sVariableDescription != '') {
-            echo ' ' . strval($sVariableDescription);
+    public function show($mVariable, $sVariableDescription = '', $bExit = false)
+    {
+        $out = ['<!-- dbg -->', '<!--'];
+        if (!empty($sVariableDescription)) {
+            $out[] = 'Description: ' . $sVariableDescription;
         }
-        echo " -->\n";
-        echo '<!--' . "\n";
-        if (is_array($mVariable)) {
-            print_r($mVariable);
-        } else {
-            var_dump($mVariable);
-        }
-        echo "\n" . '//-->' . "\n";
-        echo "\n <!-- /dbg -->\n";
+
+        $out[] = conHtmlSpecialChars($this->_preparePlainDumpValue($mVariable));
+        $out[] = '-->';
+        $out[] = '<!-- /dbg -->';
+
+        echo "\n" . implode("\n", $out) . "\n";
 
         if ($bExit === true) {
             die();
@@ -96,18 +97,22 @@ class cDebugHidden implements cDebugInterface {
      * @param mixed $mVariable
      * @param string $sVariableDescription [optional]
      */
-    public function add($mVariable, $sVariableDescription = '') {
+    public function add($mVariable, $sVariableDescription = '')
+    {
     }
 
     /**
      * Interface implementation
      */
-    public function reset() {
+    public function reset()
+    {
     }
 
     /**
      * Interface implementation
      */
-    public function showAll() {
+    public function showAll()
+    {
     }
+
 }

@@ -1,23 +1,32 @@
 <?php
+
 /**
  * Wrapper class for Integration of smarty.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage SmartyWrapper
- * @author Andreas Dieter
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Andreas Dieter
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$client = cRegistry::getClientId();
+global $cfg;
+
+$pluginName = basename(dirname(__DIR__, 1));
+
+$cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
+
+$client = cSecurity::toInteger(cRegistry::getClientId());
 $cfgClient = cRegistry::getClientConfig();
+
 
 // Load smarty
 if (!defined('SMARTY_DIR')) {
-    define('SMARTY_DIR', $cfg['path']['contenido'] . 'plugins/smarty/smarty_source/');
+    define('SMARTY_DIR', $cfg['plugins'][$pluginName] . 'smarty_source/');
 }
 
 require_once(SMARTY_DIR . 'Smarty.class.php');
@@ -31,4 +40,5 @@ try {
 } catch (Exception $e) {
     cWarning($e->getFile(), $e->getLine(), $e->getMessage());
 }
-?>
+
+unset($pluginName);

@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!ELEMENT setup (db, path, client, admin_user, advanced?)>
-<!ELEMENT db (host, user, password, database, charset, collation, prefix, option_mysqli_init_command)>
-<!ELEMENT path (http_root_path)>
-<!ELEMENT client (client_mode)>
-<!ELEMENT admin_user (password, email)>
+        <!ELEMENT setup (db, path, client, admin_user, advanced?)>
+        <!ELEMENT db (host, user, password, database, charset, engine, collation, prefix, option_mysqli_init_command)>
+        <!ELEMENT path (http_root_path)>
+        <!ELEMENT client (client_mode)>
+        <!ELEMENT admin_user (password, email)>
 
-<!ELEMENT host (#PCDATA)>
-<!ELEMENT user (#PCDATA)>
-<!ELEMENT password (#PCDATA)>
-<!ELEMENT database (#PCDATA)>
-<!ELEMENT charset (#PCDATA)>
-<!ELEMENT prefix (#PCDATA)>
-<!ELEMENT collation (#PCDATA)>
-<!ELEMENT option_mysqli_init_command (#PCDATA)>
+        <!ELEMENT host (#PCDATA)>
+        <!ELEMENT user (#PCDATA)>
+        <!ELEMENT password (#PCDATA)>
+        <!ELEMENT database (#PCDATA)>
+        <!ELEMENT charset (#PCDATA)>
+        <!ELEMENT prefix (#PCDATA)>
+        <!ELEMENT engine (#PCDATA)>
+        <!ELEMENT collation (#PCDATA)>
+        <!ELEMENT option_mysqli_init_command (#PCDATA)>
 
-<!ELEMENT http_root_path (#PCDATA)>
+        <!ELEMENT http_root_path (#PCDATA)>
 
-<!ELEMENT client_mode (#PCDATA)>
+        <!ELEMENT client_mode (#PCDATA)>
 
-<!ELEMENT email (#PCDATA)>
+        <!ELEMENT email (#PCDATA)>
 
-<!ELEMENT advanced (delete_database)>
-<!ELEMENT delete_database (#PCDATA)>
+        <!ELEMENT advanced (delete_database)>
+        <!ELEMENT delete_database (#PCDATA)>

@@ -3,13 +3,13 @@
 /**
  * Backend action file con_newart
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Dominik Ziegler
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,12 +20,12 @@ if ($perm->have_perm_area_action($area, "con_newart") || $perm->have_perm_area_a
                 a.idtplcfg,
                 a.name
             FROM
-                ".$cfg["tab"]["cat_lang"]." AS a,
-                ".$cfg["tab"]["cat"]." AS b
+                " . $cfg['tab']['cat_lang'] . " AS a,
+                " . $cfg['tab']['cat'] . " AS b
             WHERE
-                a.idlang    = '".$lang."' AND
-                b.idclient  = '".$client."' AND
-                a.idcat     = '".$idcat."' AND
+                a.idlang    = '" . $lang . "' AND
+                b.idclient  = '" . $client . "' AND
+                a.idcat     = '" . $idcat . "' AND
                 b.idcat     = a.idcat";
 
     $db->query($sql);
@@ -41,5 +41,3 @@ if ($perm->have_perm_area_action($area, "con_newart") || $perm->have_perm_area_a
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }
-
-?>

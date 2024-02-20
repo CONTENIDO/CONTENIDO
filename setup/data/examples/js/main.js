@@ -1,8 +1,7 @@
-
 /**
  * @param {jQuery} $
  */
-(function($) {
+(function ($) {
 
     /**
      * Define behaviour for "self-labeled" input fields.
@@ -12,14 +11,14 @@
      * gains focus and should be restored if it looses its focus and there is no
      * user input.
      */
-    $.fn.self_labeled_input = function() {
+    $.fn.self_labeled_input = function () {
         var $input = this;
-        $input.focus(function() {
+        $input.focus(function () {
             // remove label so user can enter value
             if ($input.val() == $input.attr("title")) {
                 $input.val("");
             }
-        }).focusout(function() {
+        }).focusout(function () {
             // restore label if user has entered nothing
             if (0 === $input.val().trim().length) {
                 $input.val($input.attr("title"));
@@ -35,30 +34,33 @@
      * cursor.
      *
      */
-    $.fn.link_section = function() {
-        this.children().css({"cursor": "pointer"}).click(function() {
+    $.fn.link_section = function () {
+        this.children().css({"cursor": "pointer"}).click(function () {
             window.location = $(this).find("a").attr("href");
         });
     };
 
 })(jQuery);
 
-$(function() {
+$(function () {
 
     /* ----- HEADER SEARCH FIELD ----- */
 
-    $("#header #navigation_header #search_term").on("focus", function(e) {
+    $("#header #navigation_header #search_term").on("focus", function (e) {
         $search_container = $(this).parent();
         if (!$search_container.hasClass("active")) {
             $search_container.addClass("active")
-                    .animate({"width": "135px", "paddingLeft": "30px"}, 500, "swing");
+                .animate({"width": "135px", "paddingLeft": "30px"}, 500, "swing");
         }
     });
-    $("#header #navigation_header #search_term").on("blur", function(e) {
+    $("#header #navigation_header #search_term").on("blur", function (e) {
         $search_container = $(this).parent();
         $(this).val("");
         if ($search_container.hasClass("active")) {
-            $search_container.animate({"width": "24px", "paddingLeft": "2px"}, 500, "swing", function() {
+            $search_container.animate({
+                "width": "24px",
+                "paddingLeft": "2px"
+            }, 500, "swing", function () {
                 $search_container.removeClass("active");
             });
         }
@@ -75,8 +77,8 @@ $(function() {
     //fix for safer sliding in IE 7/8
     $(".slider .images li").not(".active").css({"opacity": "0"});
 
-    var slider = window.setInterval(function() {
-        
+    var slider = window.setInterval(function () {
+
         if ($(window).width() < 769) {
             return false;
         }
@@ -84,7 +86,7 @@ $(function() {
         $('.slider').trigger('slider.next');
     }, 7000);
 
-    $(".slider").on('slider.next', function() {
+    $(".slider").on('slider.next', function () {
 
         var _ = $(this);
 
@@ -96,17 +98,17 @@ $(function() {
 
         var index = $(".slider .images li.active").index();
         $(".slider .pagination li a").removeClass("active");
-        $(".slider .images li:eq(" + index + ")").animate({"opacity": "0"}, 500, function() {
+        $(".slider .images li:eq(" + index + ")").animate({"opacity": "0"}, 500, function () {
             $(this).removeClass("active");
         });
         if ((index + 1) == $(".slider .images li").length) {
-            $(".slider .images li:eq(0)").animate({"opacity": "1"}, 900, function() {
+            $(".slider .images li:eq(0)").animate({"opacity": "1"}, 900, function () {
                 $(this).addClass("active");
                 $(".slider .pagination li:eq(0) a").addClass("active");
                 _.removeClass('animate');
             });
         } else {
-            $(".slider .images li:eq(" + (index + 1) + ")").animate({"opacity": "1"}, 900, function() {
+            $(".slider .images li:eq(" + (index + 1) + ")").animate({"opacity": "1"}, 900, function () {
                 $(this).addClass("active");
                 $(".slider .pagination li:eq(" + (index + 1) + ") a").addClass("active");
                 _.removeClass('animate');
@@ -114,7 +116,7 @@ $(function() {
         }
     });
 
-    $(".slider").on('slider.prev', function() {
+    $(".slider").on('slider.prev', function () {
 
         var _ = $(this);
 
@@ -126,25 +128,25 @@ $(function() {
 
         var index = $(".slider .images li.active").index();
         $(".slider .pagination li a").removeClass("active");
-        $(".slider .images li:eq(" + index + ")").animate({"opacity": "0"}, 500, function() {
+        $(".slider .images li:eq(" + index + ")").animate({"opacity": "0"}, 500, function () {
             $(this).removeClass("active");
         });
         if ((index - 1) == $(".slider .images li").length) {
-            $(".slider .images li:last").animate({"opacity": "1"}, 900, function() {
+            $(".slider .images li:last").animate({"opacity": "1"}, 900, function () {
                 $(this).addClass("active");
                 $(".slider .pagination li:last a").addClass("active");
                 _.removeClass('animate');
             });
         } else {
-            $(".slider .images li:eq(" + (index - 1) + ")").animate({"opacity": "1"}, 900, function() {
+            $(".slider .images li:eq(" + (index - 1) + ")").animate({"opacity": "1"}, 900, function () {
                 $(this).addClass("active");
                 $(".slider .pagination li:eq(" + (index - 1) + ") a").addClass("active");
                 _.removeClass('animate');
             });
-        } 
+        }
     });
 
-    $(".slider").mouseenter(function() {
+    $(".slider").mouseenter(function () {
         clearTimeout(slider);
     });
 
@@ -158,14 +160,14 @@ $(function() {
     }
 
     //Navigate through pagination
-    $(".slider .pagination li").delegate("a", "click", function(e) {
+    $(".slider .pagination li").delegate("a", "click", function (e) {
         e.preventDefault();
         var old = $(".slider .pagination li a.active").parent().index(),
             next = $(this).parent().index();
-        $(".slider .images li:eq(" + old + ")").animate({"opacity": "0"}, 500, function() {
+        $(".slider .images li:eq(" + old + ")").animate({"opacity": "0"}, 500, function () {
             $(".slider .pagination li:eq(" + old + ") a").removeClass("active");
         });
-        $(".slider .images li:eq(" + (next) + ")").animate({"opacity": "1"}, 900, function() {
+        $(".slider .images li:eq(" + (next) + ")").animate({"opacity": "1"}, 900, function () {
             $(".slider .pagination li:eq(" + next + ") a").addClass("active");
             $(".slider .images li").removeClass('active');
             $(".slider .images li:eq(" + (next) + ")").addClass('active');
@@ -174,7 +176,7 @@ $(function() {
     });
 
     var maxHeight = 0;
-    $(".column_quarter.text div.col").each(function() {
+    $(".column_quarter.text div.col").each(function () {
         if (maxHeight < $(this).height()) {
             maxHeight = $(this).height();
         }
@@ -184,12 +186,12 @@ $(function() {
 
     window.prevMaxColHeight = maxHeight - 20;
 
-    $(window).on('resize', function() {
+    $(window).on('resize', function () {
         if ($(window).width() > 768 && !$('body').hasClass('init-col-d')) {
 
             var maxHeight = 0;
 
-            $(".column_quarter.text div.col").each(function() {
+            $(".column_quarter.text div.col").each(function () {
                 var h = $(this).height();
                 $(this).css('height', 'auto');
 
@@ -208,7 +210,7 @@ $(function() {
     });
 
     //make teaser image clickable
-    $('.teaser_img').click(function() {
+    $('.teaser_img').click(function () {
         var link = $(this).children("p").children("a").attr('href');
         document.location.href = link;
     });

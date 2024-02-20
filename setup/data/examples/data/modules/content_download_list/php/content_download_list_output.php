@@ -3,13 +3,13 @@
 /**
  * description: standard download list
  *
- * @package Module
- * @subpackage ContentTeaser
- * @author timo.trautmann@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @package    Module
+ * @subpackage ContentDownloadList
+ * @author     Timo.trautmann@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert framework initialization
@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 if (cRegistry::isBackendEditMode()) {
     $label = mi18n("LABEL_HEADER_DOWNLOADLIST");
 } else {
-    $label = NULL;
+    $label = '';
 }
 
 ob_start();

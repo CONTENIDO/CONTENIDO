@@ -3,13 +3,13 @@
 /**
  * A class to render help boxes (aka tooltips).
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -24,10 +24,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * If using this class please make sure that the atooltip.jquery.js
  * and the atooltip.css are embedded in the pages template.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
-class cGuiBackendHelpbox {
+class cGuiBackendHelpbox
+{
 
     /**
      * Text that will be displayed in the help box.
@@ -54,7 +55,8 @@ class cGuiBackendHelpbox {
      * @param string $imageURL [optional]
      *         This image will be used for the help box
      */
-    public function __construct($helpText, $imageURL = '') {
+    public function __construct($helpText, $imageURL = '')
+    {
         $this->setHelpText($helpText);
         $this->setImageURL($imageURL);
     }
@@ -65,7 +67,8 @@ class cGuiBackendHelpbox {
      * @param string $helpText
      *         the text that will appear in the help box
      */
-    public function setHelpText($helpText) {
+    public function setHelpText($helpText)
+    {
         $this->helpText = $helpText;
     }
 
@@ -75,7 +78,8 @@ class cGuiBackendHelpbox {
      * @param string $imageURL
      *         the image file
      */
-    public function setImageURL($imageURL) {
+    public function setImageURL($imageURL)
+    {
         $this->imageURL = $imageURL;
     }
 
@@ -84,19 +88,20 @@ class cGuiBackendHelpbox {
      *
      * @param bool $return [optional]
      *         If true the rendered markup will be returned.
-     *         Otherwise it will be echoed.
+     *         Otherwise, it will be echoed.
      * @return string|NULL
      *         rendered markup or NULL if it's been printed
      */
-    public function render($return = true) {
-        $id = md5(rand()) . "-Info";
+    public function render($return = true)
+    {
+        $id = md5(rand());
 
         $style = '';
         if ($this->imageURL != '') {
             $style = 'style="background: transparent url(' . $this->imageURL . ') no-repeat;"';
         }
 
-        $html = "<a " . $style . " href='javascript://' id='" . $id . "-link' title='" . i18n("More information") . "' class='i-link infoButton'></a>";
+        $html = "<a " . $style . " href='javascript:void(0)' data-tooltip-id='" . $id . "' title='" . i18n("More information") . "' class='i-link con_img_button con_info_button'><span class='sr_only'>" . i18n("More information") . "</span></a>";
         $html .= "<div id='" . $id . "' style='display: none;'>" . $this->helpText . "</div>";
 
         if ($return) {
@@ -106,4 +111,16 @@ class cGuiBackendHelpbox {
             return NULL;
         }
     }
+
+    /**
+     * Direct call of object as string will return its generated markup.
+     *
+     * @return string
+     *         Generated markup
+     */
+    public function __toString()
+    {
+        return $this->render();
+    }
+
 }

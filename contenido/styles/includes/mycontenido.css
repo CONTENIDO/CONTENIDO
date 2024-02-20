@@ -1,0 +1,83 @@
+/**
+ * mycontenido styles
+ */
+
+#welcome_left {
+    float: left;
+    margin-top: 25px;
+}
+
+#welcome_right {
+    margin-left: 350px;
+    margin-top: 25px;
+}
+
+#clients {
+    background: url(../../images/avail_clients.gif) no-repeat 0 0;
+}
+
+#my_contenido {
+    background: url(../../images/my_contenido.gif) no-repeat 0 0;
+}
+
+#contact_admin {
+    background: url(../../images/contact.gif) no-repeat 0 0;
+}
+
+#user_online {
+    background: url(../../images/user_online.gif) no-repeat 0 0;
+}
+
+#update_notifier {
+    background: url(../../images/but_news.gif) no-repeat 0 0;
+}
+
+#rss_notifier {
+    background: url(../../images/but_rss.gif) no-repeat 0 0;
+    margin-top: 25px;
+}
+
+.content_box_welcome {
+    padding: 0 0 0 25px;
+    margin: 0 0 30px 0;
+}
+
+h2.content_box {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    line-height: 16px;
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.content_box_welcome .newest_news {
+    background-color: #f1f1f1;
+    padding: 2px;
+}
+
+.content_box_welcome .con_func_button {
+    width: 100%;
+}
+
+.content_box_welcome .con_func_button img {
+    float: right;
+}
+
+.content_box_welcome .content_box_welcome_message {
+    padding-right: 20px;
+}
+
+#message_board {
+}
+
+ul.welcome {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    list-style-type: none;
+    width: 320px;
+}
+
+li.welcome {
+    padding: 0 0 6px 0;
+}

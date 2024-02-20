@@ -1,49 +1,70 @@
 <?php
+
 /**
  * This file contains the backend page for the content allocation plugin in
  * content area.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage ContentAllocation
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var array $cfg
+ * @var int $idart
+ * @var int $idcat
+ * @var int $lang
+ * @var cDb $db
+ * @var cGuiNotification $notification
+ * @var cSession $sess
+ * @var string $area
+ * @var int $frame
+ * @var cTemplate|null $tpl
+ * @var int|string $syncoptions
+ * @var string $contenido
+ */
+
 cInclude('includes', 'functions.pathresolver.php');
 
+$oPage = new cGuiPage("contentallocation_article", "content_allocation", "7");
+
+$this_idartlang = 0;
+$this_locked = 0;
+
 // fetch idartlang for idart
-$sql = "SELECT idartlang, locked
-        FROM " . $cfg['tab']['art_lang'] . "
-        WHERE idart=" . (int) $idart . "
-            AND idlang=" . (int) $lang;
-$db->query($sql);
-$db->nextRecord();
-$this_idartlang = $db->f('idartlang');
-$this_locked = $db->f('locked');
+$articleLanguage = new cApiArticleLanguage();
+$articleLanguage->loadByArticleAndLanguageId($idart, $lang);
+if ($articleLanguage->isLoaded()) {
+    $this_idartlang = cSecurity::toInteger($articleLanguage->get('idartlang'));
+    $this_locked = cSecurity::toInteger($articleLanguage->get('locked'));
+}
 
 if ($this_locked == 1) {
     $disabled = 'disabled="disabled"';
-    $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+    $oPage->displayWarning(i18n('This article is currently frozen and can not be edited!'));
 }
-
-$oPage = new cGuiPage("contentallocation_article", "content_allocation", "7");
 
 $oTree = new pApiContentAllocationComplexList('06bd456d-fe76-40cb-b041-b9ba90dc400a');
 $oAlloc = new pApiContentAllocation();
 
-if ($_POST['action'] == 'storeallocation') {
-    $oAlloc->storeAllocations($this_idartlang, $_POST['allocation']);
+$requestAction = $_POST['action'] ?? '';
+$requestStep = $_GET['step'] ?? '';
+
+if ($requestAction == 'storeallocation') {
+    $oAlloc->storeAllocations($this_idartlang, $_POST['allocation'] ?? []);
 }
-if ($_GET['step'] == 'collapse') {
+if ($requestStep == 'collapse') {
     $oTree->setTreeStatus($_GET['idpica_alloc']);
 }
 
-// uild category path
+// Build category path
+$syncoptions = $syncoptions ?? '';
 $sLocationString = renderBackendBreadcrumb($syncoptions, true, true);
 
 // load allocations
@@ -52,7 +73,7 @@ $loadedAllocations = $oAlloc->loadAllocations($this_idartlang);
 $oTree->setChecked($loadedAllocations);
 $result = $oTree->renderTree(true);
 
-if ($result == false) {
+if (!$result) {
     $result = $notification->returnNotification('warning', i18n('There is no tagging tree.', 'content_allocation'));
 } else {
     if (!is_object($tpl)) {
@@ -72,11 +93,8 @@ if ($result == false) {
         $tpl->set('s', 'ARRAY_CHECKED_BOXES', 'var checkedBoxes = [];');
     }
 
-    $oDiv = new cHTMLDiv();
-    $oDiv->updateAttributes(array(
-        'style' => 'text-align:right;padding:5px;width:730px;border:1px #B3B3B3 solid;background-color:#FFF;'
-    ));
-    $oDiv->setContent('<input type="image" src="images/but_ok.gif">');
+    $oDiv = new cHTMLDiv('', 'con_form_action_control ');
+    $oDiv->setContent('<input class="con_img_button" type="image" alt="" src="images/but_ok.gif">');
     $tpl->set('s', 'DIV', '<br>' . $oDiv->render());
 
     $tpl->set('s', 'TREE', $result);
@@ -122,5 +140,3 @@ $div->setContent($sLocationString . $result);
 
 $oPage->setContent($div);
 $oPage->render();
-
-?>

@@ -1,28 +1,33 @@
 <?php
+
 /**
- * This file contains the the effective setting class.
+ * This file contains the effective setting class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Frederic Schneider
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Effective setting manager class.
- * Provides a interface to retrieve effective
- * settings.
+ *
+ * Provides an interface to retrieve effective settings.
  *
  * Requested effective settings will be cached at first time. Further requests
- * will
- * return cached settings.
+ * will return cached settings.
  *
- * The order to retrieve a effective setting is:
+ * NOTE:
+ * Don't use this class to retrieve setting within an early bootstrapping process
+ * of the CONTENIDO application, e.g. in plugin configuration files, which are
+ * loaded before detecting/setting the global variables $client and $lang!
+ *
+ * The order to retrieve an effective setting is:
  * System => Client => Client (language) => Group => User
  *
  * - System properties can be overridden by the client
@@ -30,108 +35,79 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * - Client language properties can be overridden by group
  * - Group properties can be overridden by user
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
  */
-class cEffectiveSetting {
+class cEffectiveSetting
+{
 
     /**
-     *
      * @var array
      */
-    protected static $_settings = array();
+    protected static $_settings = [];
 
     /**
-     *
-     * @var cApiUser
+     * @var cApiUser|NULL
      */
     protected static $_user;
 
     /**
-     *
-     * @var cApiClient
+     * @var cApiClient|NULL
      */
     protected static $_client;
 
     /**
-     *
-     * @var cApiClientLanguage
+     * @var cApiClientLanguage|NULL
      */
     protected static $_clientLanguage;
 
     /**
-     *
-     * @var bool
+     * @var bool[]
      */
-    protected static $_loaded = array();
+    protected static $_loaded = [];
 
     /**
-     *
      * @var cApiLanguage
      */
     protected static $_language;
 
     /**
-     * Loads all client, clientlanguage an system properties into an static array.
+     * Loads all client, clientLanguage a system properties into a static array.
+     *
      * The order is: System => Client => Client (language)
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
-    private static function _loadSettings() {
-		if (!isset(self::$_loaded[self::_getKeyPrefix()])) {
-            global $contenido;
+    private static function _loadSettings()
+    {
+        if (!isset(self::$_loaded[self::_getKeyPrefix()])) {
+            $typeGroup = [];
 
-            $typeGroup = array();
-
-            //get all client settings
+            // Get all client settings
             $client = self::_getClientInstance();
             $settings = $client->getProperties();
-
             if (is_array($settings)) {
-                foreach ($settings as $setting) {
-                    $key = self::_makeKey($setting['type'], $setting['name']);
-                    self::_set($key, $setting['value']);
-                    if (!isset($typeGroup[$setting['type']])) {
-                        $typeGroup[$setting['type']] = array();
-                    }
-                    $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
-                }
+                self::_takeoverTypeGroupSettings($settings, $typeGroup);
             }
 
-            //get all clientlang setting
-            $clientlang = self::_getClientLanguageInstance();
-            $settings = $clientlang->getProperties();
-
+            // Get all clientLang setting
+            $clientLang = self::_getClientLanguageInstance();
+            $settings = $clientLang->getProperties();
             if (is_array($settings)) {
-                foreach ($settings as $setting) {
-                    $key = self::_makeKey($setting['type'], $setting['name']);
-                    self::_set($key, $setting['value']);
-                    if (!isset($typeGroup[$setting['type']])) {
-                        $typeGroup[$setting['type']] = array();
-                    }
-                    $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
-                }
+                self::_takeoverTypeGroupSettings($settings, $typeGroup);
             }
 
-            //get user settings
-            if (self::_isAuthenticated() && isset($contenido)) {
+            // Get user settings
+            if (self::_isAuthenticated() && !empty(cRegistry::getBackendSessionId())) {
                 $user = self::_getUserInstance();
                 $settings = $user->getUserProperties();
-
                 if (is_array($settings)) {
-                    foreach ($settings as $setting) {
-                        $key = self::_makeKey($setting['type'], $setting['name']);
-                        self::_set($key, $setting['value']);
-                        if (!isset($typeGroup[$setting['type']])) {
-                            $typeGroup[$setting['type']] = array();
-                        }
-                        $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
-                    }
+                    self::_takeoverTypeGroupSettings($settings, $typeGroup);
                 }
             }
 
-            //write cache by type settings
+            // Write cache by type settings
             foreach ($typeGroup as $key => $group) {
                 $key = self::_makeKey($key, ' ');
                 self::_set($key, $group);
@@ -149,8 +125,8 @@ class cEffectiveSetting {
      * System properties can be overridden by the group, and group properties
      * can be overridden by the user.
      *
-     * NOTE: If you provide a default value (other than empty string), then it will be returned back
-     *       in case of not existing or empty setting.
+     * NOTE: If you provide a default value (other than empty string),
+     * then it will be returned in case of not existing or empty setting.
      *
      * @param string $type
      *                        The type of the item
@@ -161,27 +137,26 @@ class cEffectiveSetting {
      *
      * @return bool|string
      *         Setting value or false
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
-    public static function get($type, $name, $default = '') {
+    public static function get($type, $name, $default = '')
+    {
         self::_loadSettings();
 
         $key = self::_makeKey($type, $name);
 
         $value = self::_get($key);
-        if (false !== $value) {
+        if ($value !== false) {
             return $value;
         }
 
-        if (false === $value) {
-            $value = getSystemProperty($type, $name);
-        }
+        $value = getSystemProperty($type, $name);
 
-        if (false === $value || NULL === $value) {
+        if ($value === false || $value === NULL) {
             $value = $default;
-        } else if ('' === $value && '' !== $default) {
+        } elseif ($value === '' && $default !== '') {
             // NOTE: A non empty default value overrides an empty value
             $value = $default;
         }
@@ -191,25 +166,24 @@ class cEffectiveSetting {
 
     /**
      * Returns effective setting for a type of properties.
-     * Caches also the collected settings, but contrary to get() it returns
-     * never cached entries.
      *
-     * The order is:
-     * System => Client => Client (language) => Group => User
+     * Caches also the collected settings, but contrary to get() it returns never cached entries.
      *
-     * System properties can be overridden by the group, and group
-     * properties can be overridden by the user.
+     * The order is: System => Client => Client (language) => Group => User
+     *
+     * System properties can be overridden by the group, and group properties can be overridden by the user.
      *
      * @param string $type
      *         The type of the item
      *
      * @return array
-     *         Assoziative array like $arr[name] = value
-     * 
+     *         Associative array like $arr[name] = value
+     *
      * @throws cDbException
      * @throws cException
      */
-    public static function getByType($type) {
+    public static function getByType($type)
+    {
         self::_loadSettings();
 
         $settings = getSystemPropertiesByType($type);
@@ -222,15 +196,14 @@ class cEffectiveSetting {
         if (isset($settings) && is_array($settings)) {
             return $settings;
         } else {
-            return array();
+            return [];
         }
     }
 
     /**
-     * Sets a effective setting.
+     * Sets an effective setting.
      *
-     * Note:
-     * The setting will be set only in cache, not in persistency layer.
+     * Note: The setting will be set only in cache, not in persistence layer.
      *
      * @param string $type
      *         The type of the item
@@ -239,23 +212,24 @@ class cEffectiveSetting {
      * @param string $value
      *         The value of the setting
      */
-    public static function set($type, $name, $value) {
+    public static function set($type, $name, $value)
+    {
         $key = self::_makeKey($type, $name);
         self::_set($key, $value);
     }
 
     /**
-     * Deletes a effective setting.
+     * Deletes an effective setting.
      *
-     * Note:
-     * The setting will be deleted only from cache, not from persistency layer.
+     * Note: The setting will be deleted only from cache, not from persistence layer.
      *
      * @param string $type
      *         The type of the item
      * @param string $name
      *         The name of the item
      */
-    public static function delete($type, $name) {
+    public static function delete($type, $name)
+    {
         $keySuffix = '_' . $type . '_' . $name;
         foreach (self::$_settings as $key => $value) {
             if (cString::findFirstPos($key, $keySuffix) !== false) {
@@ -266,22 +240,26 @@ class cEffectiveSetting {
 
     /**
      * Resets all properties of the effective settings class.
+     *
      * Usable to start getting settings from scratch.
      */
-    public static function reset() {
-        self::$_settings = array();
-        unset(self::$_user, self::$_client, self::$_clientLanguage);
+    public static function reset()
+    {
+        self::$_settings = [];
+        self::$_user = self::$_client = self::$_clientLanguage = NULL;
     }
 
     /**
      * Returns the user object instance.
      *
      * @return cApiUser
+     * @throws cDbException
+     * @throws cException
      */
-    protected static function _getUserInstance() {
-        global $auth;
-
+    protected static function _getUserInstance()
+    {
         if (!isset(self::$_user)) {
+            $auth = cRegistry::getAuth();
             self::$_user = new cApiUser($auth->auth['uid']);
         }
         return self::$_user;
@@ -291,11 +269,14 @@ class cEffectiveSetting {
      * Returns the client language object instance.
      *
      * @return cApiClientLanguage
+     * @throws cDbException
+     * @throws cException
      */
-    protected static function _getClientLanguageInstance() {
-        global $client, $lang;
-
+    protected static function _getClientLanguageInstance()
+    {
         if (!isset(self::$_clientLanguage)) {
+            $client = cRegistry::getClientId();
+            $lang = cRegistry::getLanguageId();
             self::$_clientLanguage = new cApiClientLanguage(false, $client, $lang);
         }
         return self::$_clientLanguage;
@@ -305,11 +286,13 @@ class cEffectiveSetting {
      * Returns the language object instance.
      *
      * @return cApiLanguage
+     * @throws cDbException
+     * @throws cException
      */
-    protected static function _getLanguageInstance() {
-        global $lang;
-
+    protected static function _getLanguageInstance()
+    {
         if (!isset(self::$_language)) {
+            $lang = cRegistry::getLanguageId();
             self::$_language = new cApiLanguage($lang);
         }
         return self::$_language;
@@ -319,11 +302,13 @@ class cEffectiveSetting {
      * Returns the client language object instance.
      *
      * @return cApiClient
+     * @throws cDbException
+     * @throws cException
      */
-    protected static function _getClientInstance() {
-        $client = cRegistry::getClientId();
-
+    protected static function _getClientInstance()
+    {
         if (!isset(self::$_client)) {
+            $client = cRegistry::getClientId();
             self::$_client = new cApiClient($client);
         }
         return self::$_client;
@@ -334,11 +319,12 @@ class cEffectiveSetting {
      *
      * @param string $key
      *         The setting key
-     * @return string
+     * @return string|string[]
      *         bool setting value or false
      */
-    protected static function _get($key) {
-        return (isset(self::$_settings[$key])) ? self::$_settings[$key] : false;
+    protected static function _get($key)
+    {
+        return self::$_settings[$key] ?? false;
     }
 
     /**
@@ -346,10 +332,11 @@ class cEffectiveSetting {
      *
      * @param string $key
      *         The setting key
-     * @param string $value
+     * @param string $value |string[]
      *         Value to store
      */
-    protected static function _set($key, $value) {
+    protected static function _set($key, $value)
+    {
         self::$_settings[$key] = $value;
     }
 
@@ -363,10 +350,9 @@ class cEffectiveSetting {
      * @return string
      *         The setting key
      */
-    protected static function _makeKey($type, $name) {
-        $key = self::_getKeyPrefix() . '_' . $type . '_' . $name;
-
-        return $key;
+    protected static function _makeKey($type, $name)
+    {
+        return self::_getKeyPrefix() . '_' . $type . '_' . $name;
     }
 
     /**
@@ -374,24 +360,24 @@ class cEffectiveSetting {
      *
      * @return string
      */
-    protected static function _getKeyPrefix() {
-    	global $auth;
+    protected static function _getKeyPrefix()
+    {
+        $auth = cRegistry::getAuth();
+        $prefix = '';
 
-    	$prefix = '';
+        if ($auth instanceof cAuth) {
+            if (!self::_isAuthenticated()) {
+                $prefix = cAuth::AUTH_UID_NOBODY;
+            } else {
+                $prefix = $auth->auth['uid'];
+            }
+        }
 
-    	if ($auth instanceof cAuth) {
-    		if (!self::_isAuthenticated()) {
-    			$prefix = cAuth::AUTH_UID_NOBODY;
-    		} else {
-    			$prefix = $auth->auth['uid'];
-    		}
-    	}
+        if (cString::getStringLength($prefix) == 0) {
+            $prefix = cAuth::AUTH_UID_NOBODY;
+        }
 
-		if (cString::getStringLength($prefix) == 0) {
-			$prefix = cAuth::AUTH_UID_NOBODY;
-		}
-		
-    	return $prefix;
+        return $prefix;
     }
 
     /**
@@ -399,8 +385,30 @@ class cEffectiveSetting {
      *
      * @return bool
      */
-    protected static function _isAuthenticated() {
-        global $auth;
+    protected static function _isAuthenticated()
+    {
+        $auth = cRegistry::getAuth();
         return $auth instanceof cAuth && $auth->isAuthenticated() && !$auth->isLoginForm();
     }
+
+    /**
+     * Saves the passed settings array structure in the type group array.
+     *
+     * @param array $settings
+     * @param array $typeGroup
+     *
+     * @return void
+     */
+    protected static function _takeoverTypeGroupSettings(array $settings, array &$typeGroup)
+    {
+        foreach ($settings as $setting) {
+            $key = self::_makeKey($setting['type'], $setting['name']);
+            self::_set($key, $setting['value']);
+            if (!isset($typeGroup[$setting['type']])) {
+                $typeGroup[$setting['type']] = [];
+            }
+            $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
+        }
+    }
+
 }

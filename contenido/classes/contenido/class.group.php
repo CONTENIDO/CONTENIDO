@@ -3,13 +3,13 @@
 /**
  * This file contains the group collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Group collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiGroup createNewItem($data)
+ * @method cApiGroup|bool next
  */
-class cApiGroupCollection extends ItemCollection {
+class cApiGroupCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['groups'], 'group_id');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('groups'), 'group_id');
         $this->_setItemClass('cApiGroup');
     }
 
@@ -44,10 +47,10 @@ class cApiGroupCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($groupname, $perms, $description) {
+    public function create($groupname, $perms, $description)
+    {
         $primaryKeyValue = md5($groupname . time());
 
-        /** @var cApiGroup $item */
         $item = $this->createNewItem($primaryKeyValue);
         if (!is_object($item)) {
             return false;
@@ -72,15 +75,14 @@ class cApiGroupCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByUserID($userid) {
-        global $cfg;
-
-        $aIds = array();
-        $aGroups = array();
+    public function fetchByUserID($userid)
+    {
+        $aIds = [];
+        $aGroups = [];
 
         $sql = "SELECT a.group_id FROM `%s` AS a, `%s` AS b " . "WHERE (a.group_id  = b.group_id) AND (b.user_id = '%s')";
 
-        $this->db->query($sql, $this->table, $cfg['tab']['groupmembers'], $userid);
+        $this->db->query($sql, $this->table, cRegistry::getDbTableName('groupmembers'), $userid);
         $this->_lastSQL = $sql;
 
         while ($this->db->nextRecord()) {
@@ -112,10 +114,11 @@ class cApiGroupCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function deleteGroupByGroupname($groupname) {
+    public function deleteGroupByGroupname($groupname)
+    {
         $groupname = cApiGroup::prefixedGroupName($groupname);
         $result = $this->deleteBy('groupname', $groupname);
-        return ($result > 0) ? true : false;
+        return $result > 0;
     }
 
     /**
@@ -126,9 +129,10 @@ class cApiGroupCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchAccessibleGroups($perms) {
-        $groups = array();
-        $limit = array();
+    public function fetchAccessibleGroups($perms)
+    {
+        $groups = [];
+        $limit = [];
         $where = '';
 
         if (!in_array('sysadmin', $perms)) {
@@ -174,14 +178,15 @@ class cApiGroupCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function getAccessibleGroups($perms) {
-        $groups = array();
+    public function getAccessibleGroups($perms)
+    {
+        $groups = [];
         $oGroups = $this->fetchAccessibleGroups($perms);
         foreach ($oGroups as $oItem) {
-            $groups[$oItem->get('group_id')] = array(
+            $groups[$oItem->get('group_id')] = [
                 'groupname' => $oItem->getGroupName(true),
-                'description' => $oItem->get('description')
-            );
+                'description' => $oItem->get('description') ?? '',
+            ];
         }
         return $groups;
     }
@@ -190,10 +195,11 @@ class cApiGroupCollection extends ItemCollection {
 /**
  * Group item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
-class cApiGroup extends Item {
+class cApiGroup extends Item
+{
 
     /**
      * Prefix to be used for group names.
@@ -211,10 +217,10 @@ class cApiGroup extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['groups'], 'group_id');
-        $this->setFilters(array(), array());
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('groups'), 'group_id');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -232,7 +238,8 @@ class cApiGroup extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function loadGroupByGroupID($groupId) {
+    public function loadGroupByGroupID($groupId)
+    {
         return $this->loadByPrimaryKey($groupId);
     }
 
@@ -248,7 +255,8 @@ class cApiGroup extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function loadGroupByGroupname($groupname) {
+    public function loadGroupByGroupname($groupname)
+    {
         $groupname = cApiGroup::prefixedGroupName($groupname);
         return $this->loadBy('groupname', $groupname);
     }
@@ -256,7 +264,6 @@ class cApiGroup extends Item {
     /**
      * User defined field value setter.
      *
-     * @see Item::setField()
      * @param string $sField
      *         Field name
      * @param string $mValue
@@ -264,8 +271,10 @@ class cApiGroup extends Item {
      * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
+     * @see Item::setField()
      */
-    public function setField($sField, $mValue, $bSafe = true) {
+    public function setField($sField, $mValue, $bSafe = true)
+    {
         if ('perms' === $sField) {
             if (is_array($mValue)) {
                 $mValue = implode(',', $mValue);
@@ -280,7 +289,8 @@ class cApiGroup extends Item {
      *
      * @return array
      */
-    public function getPermsArray() {
+    public function getPermsArray()
+    {
         return explode(',', $this->get('perms'));
     }
 
@@ -289,7 +299,8 @@ class cApiGroup extends Item {
      *
      * @return string
      */
-    public function getGroupId() {
+    public function getGroupId()
+    {
         return $this->get('group_id');
     }
 
@@ -300,7 +311,8 @@ class cApiGroup extends Item {
      *         Flag to remove "grp_" prefix from group name
      * @return string
      */
-    public function getGroupName($removePrefix = false) {
+    public function getGroupName($removePrefix = false)
+    {
         $groupname = $this->get('groupname');
         return (false === $removePrefix) ? $groupname : self::getUnprefixedGroupName($groupname);
     }
@@ -311,7 +323,8 @@ class cApiGroup extends Item {
      * @param string $groupname
      * @return string
      */
-    public static function getUnprefixedGroupName($groupname) {
+    public static function getUnprefixedGroupName($groupname)
+    {
         return cString::getPartOfString($groupname, cString::getStringLength(self::PREFIX));
     }
 
@@ -321,7 +334,8 @@ class cApiGroup extends Item {
      * @param string $groupname
      * @return string
      */
-    public static function prefixedGroupName($groupname) {
+    public static function prefixedGroupName($groupname)
+    {
         if (cString::getPartOfString($groupname, 0, cString::getStringLength(cApiGroup::PREFIX)) != cApiGroup::PREFIX) {
             return cApiGroup::PREFIX . $groupname;
         }
@@ -340,7 +354,8 @@ class cApiGroup extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function getGroupProperty($type, $name) {
+    public function getGroupProperty($type, $name)
+    {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         $groupProp = $groupPropColl->fetchByGroupIdTypeName($type, $name);
         return ($groupProp) ? $groupProp->get('value') : false;
@@ -358,17 +373,18 @@ class cApiGroup extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function getGroupProperties() {
-        $props = array();
-
+    public function getGroupProperties()
+    {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         $groupProps = $groupPropColl->fetchByGroupId();
+
+        $props = [];
         foreach ($groupProps as $groupProp) {
-            $props[$groupProp->get('idgroupprop')] = array(
+            $props[$groupProp->get('idgroupprop')] = [
                 'name' => $groupProp->get('name'),
                 'type' => $groupProp->get('type'),
-                'value' => $groupProp->get('value')
-            );
+                'value' => $groupProp->get('value'),
+            ];
         }
 
         return $props;
@@ -390,7 +406,8 @@ class cApiGroup extends Item {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function setGroupProperty($type, $name, $value) {
+    public function setGroupProperty($type, $name, $value)
+    {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         return $groupPropColl->setValueByTypeName($type, $name, $value);
     }
@@ -409,7 +426,8 @@ class cApiGroup extends Item {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function deleteGroupProperty($type, $name) {
+    public function deleteGroupProperty($type, $name)
+    {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         return $groupPropColl->deleteByGroupIdTypeName($type, $name);
     }

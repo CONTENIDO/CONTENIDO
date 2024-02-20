@@ -5,9 +5,9 @@
  * @author     Timo Trautmann <timo.trautmann@4fb.de>
  * @copyright  Jan Lengowski 2002
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  * @todo       Rework this, make a CONTENIDO module
  */
 
@@ -33,7 +33,7 @@
  *       <td><img src="einbild.gif"></td>
  *   </tr>
  *   </table>
- *   <script>
+ *   <script type="text/javascript">
  *   (function(Con, $) {
  *      $(function() {
  *         Con.RowMark.initialize('#myTable .row_mark', 'myRow');
@@ -458,7 +458,9 @@ lay = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'rowMarkLayClick(oRow)', 'lay
     var NAME = 'rowmark';
 
     /**
-     * RowMark class
+     * RowMark class.
+     *
+     * @since CONTENIDO 4.10.2
      * @class  RowMark
      * @static
      */

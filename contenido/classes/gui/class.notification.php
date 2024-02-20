@@ -3,14 +3,13 @@
 /**
  * This file contains the notification GUI class.
  *
- * @package          Core
- * @subpackage       GUI
- *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage GUI
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -36,7 +35,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cGuiNotification {
+class cGuiNotification
+{
 
     /**
      * Error message level.
@@ -83,7 +83,8 @@ class cGuiNotification {
     /**
      * Constructor to create an instance of this class.
      */
-    public function __construct() {
+    public function __construct()
+    {
         global $cfg;
         $this->_sPathImages = cRegistry::getBackendUrl() . $cfg['path']['images'];
     }
@@ -99,7 +100,8 @@ class cGuiNotification {
      *         Flag tp use styles for display or not (feasible 1 or 0)
      * @return string
      */
-    public function returnMessageBox($sLevel, $sMessage, $iStyle = 1) {
+    public function returnMessageBox($sLevel, $sMessage, $iStyle = 1)
+    {
         switch ($sLevel) {
             case self::LEVEL_ERROR:
                 $sHead = i18n('Error');
@@ -129,17 +131,17 @@ class cGuiNotification {
         if ($iStyle == 1) {
             // Box on login page
             $sMessageBox =
-                    '<div class="alertbox ' . $sHeadClass . '_color" id="contenido_notification">' .
-                    '<h1 class="alertbox_head ' . $sHeadClass . '">' . $sHead . '</h1>' .
-                    '<div class="alertbox_message">' . $sMessage . '</div>' .
-                    '</div>';
+                '<div class="alertbox ' . $sHeadClass . '_color" id="contenido_notification">' .
+                '<h1 class="alertbox_head ' . $sHeadClass . '">' . $sHead . '</h1>' .
+                '<div class="alertbox_message">' . $sMessage . '</div>' .
+                '</div>';
         } else {
             // Simple box
             $sMessageBox =
-                    '<div class="alertbox_line ' . $sHeadClass . '_color" id="contenido_notification">' .
-                    '<h1 class=" alertbox_head ' . $sHeadClass . ' ' . $sHeadClass . '_color">' . $sHead . '</h1>' .
-                    '<div class="alertbox_message ' . $sHeadClass . '_color">' . $sMessage . '</div>' .
-                    '</div>';
+                '<div class="alertbox_line ' . $sHeadClass . '_color" id="contenido_notification">' .
+                '<h1 class=" alertbox_head ' . $sHeadClass . ' ' . $sHeadClass . '_color">' . $sHead . '</h1>' .
+                '<div class="alertbox_message ' . $sHeadClass . '_color">' . $sMessage . '</div>' .
+                '</div>';
         }
         return $sMessageBox;
     }
@@ -153,7 +155,8 @@ class cGuiNotification {
      *         The message to display
      * @return string
      */
-    public function returnNotification($sLevel, $sMessage) {
+    public function returnNotification($sLevel, $sMessage)
+    {
 
         $oNotifySpan = new cHTMLSpan($sMessage);
 
@@ -190,7 +193,8 @@ class cGuiNotification {
      * @param string $sMessage
      *         The message to display
      */
-    public function displayNotification($sLevel, $sMessage) {
+    public function displayNotification($sLevel, $sMessage)
+    {
         echo $this->returnNotification($sLevel, $sMessage) . '<br>';
     }
 
@@ -204,7 +208,8 @@ class cGuiNotification {
      * @param int $iStyle [optional]
      *         Flag tp use styles for display or not (feasible 1 or 0)
      */
-    public function displayMessageBox($sLevel, $sMessage, $iStyle = 1) {
+    public function displayMessageBox($sLevel, $sMessage, $iStyle = 1)
+    {
         echo $this->returnMessageBox($sLevel, $sMessage, $iStyle) . '<br>';
     }
 

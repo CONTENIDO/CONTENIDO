@@ -1,17 +1,17 @@
 <?php
 
 /**
- *
- * @author    claus.schunk@4fb.de
- * @author    marcus.gnass@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license   http://www.contenido.org/license/LIZENZ.txt
- * @link      http://www.4fb.de
- * @link      http://www.contenido.org
+ * @package    Testing
+ * @subpackage GUI_HTML
+ * @author     claus.schunk@4fb.de
+ * @author     marcus.gnass@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
- *
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  */
@@ -39,6 +39,8 @@ class cHtmlImageTest extends cTestingTestCase
      */
     protected function setUp(): void
     {
+        cHTML::setGenerateXHTML(false);
+
         // image w/o data
         $this->_imageEmpty = new cHTMLImage();
 
@@ -166,5 +168,29 @@ class cHtmlImageTest extends cTestingTestCase
     {
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
+
+    /**
+     * Tests {@see cHTMLImage::img()}
+     */
+    public function testImg()
+    {
+        // With src
+        $result = cHTMLImage::img('images/conlogo.gif');
+        $this->assertSame('<img src="images/conlogo.gif" alt="" title="">', $result);
+
+        // With src + alt
+        $result = cHTMLImage::img('images/conlogo.gif', 'CONTENIDO Logo');
+        $this->assertSame('<img src="images/conlogo.gif" alt="CONTENIDO Logo" title="CONTENIDO Logo">', $result);
+
+        // With src + alt + class
+        $result = cHTMLImage::img('images/conlogo.gif', 'CONTENIDO Logo', ['class' => 'con_img_button']);
+        $this->assertSame('<img src="images/conlogo.gif" alt="CONTENIDO Logo" title="CONTENIDO Logo" class="con_img_button">', $result);
+
+        // With src + alt + multiple attributes
+        $result = cHTMLImage::img('images/conlogo.gif', 'CONTENIDO Logo', ['class' => 'con_img_button', 'referrerpolicy' => 'no-referrer']);
+        $this->assertSame('<img src="images/conlogo.gif" alt="CONTENIDO Logo" title="CONTENIDO Logo" class="con_img_button" referrerpolicy="no-referrer">', $result);
+    }
+
+
 }
 

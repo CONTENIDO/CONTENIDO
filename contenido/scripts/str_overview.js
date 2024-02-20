@@ -5,9 +5,9 @@
  * @id         SVN Id $Id$
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 //Defining vars for translations and CONTENIDO imagepath
@@ -125,14 +125,14 @@ function handleInlineEdit(iCatId) {
  * Function shows Layer for generating a new Category
  */
 function showNewForm() {
-    // get Layer objects and get position of cat_navbar.
+    // get Layer objects and get position of con_navbar.
     // On this basis, the layer is displayed.
     // We need a hidelayer to inactivate input elements.
     // this is important, when template Layer is displayed.
     var oHideEditLayer = document.getElementById('cat_new_layer_disable'),
         oHideEditLayerImage = document.getElementById('cat_new_layer_disable_image'),
         oEditLayer = document.getElementById('cat_edit'),
-        pos = $("#cat_navbar").position(),
+        pos = $("#con_navbar").position(),
         select = document.getElementById('new_idcat');
 
     document.getElementById('new_tree_button').style.color = '#0060B1';
@@ -291,10 +291,10 @@ function checkForm() {
 }
 
 /**
- * On creating a new category this function enables a sencod layer, which allows
- * to select a templat for this new category. In this step it is not possible to
- * configure template. It is only allowed to selet a template. This function
- * also disables serveral inputs in the new category layer and switches
+ * On creating a new category this function enables a second layer, which allows
+ * to select a template for this new category. In this step it is not possible to
+ * configure template. It is only allowed to select a template. This function
+ * also disables several inputs in the new category layer and switches
  * submitbuttons to grey.
  */
 function showTemplateSelect() {

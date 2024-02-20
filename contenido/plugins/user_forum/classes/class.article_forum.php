@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the class for db queries.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage UserForum
- * @author Claus Schunk
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Claus Schunk
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,15 +18,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class contains feature for db queries.
  *
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage UserForum
  */
+
 defined('CON_FRAMEWORK') or die('Illegal call');
 
 /**
  * Class ArticleForum
  */
-class ArticleForum extends Item {
+class ArticleForum extends Item
+{
     /**
      * ArticleForum constructor.
      *
@@ -34,15 +37,13 @@ class ArticleForum extends Item {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($id = false) {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg['tab']['user_forum'], 'id_user_forum');
-        $this->setFilters(array(), array());
+    public function __construct($id = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('user_forum'), 'id_user_forum');
+        $this->setFilters([], []);
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }
     }
 
 }
-
-?>

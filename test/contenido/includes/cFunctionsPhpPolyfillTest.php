@@ -7,9 +7,9 @@
  * @subpackage Polyfill
  * @author     Murat Purc
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
@@ -33,7 +33,9 @@ class cFunctionsPhpPolyfillTest extends cTestingTestCase
         $this->assertSame(true, is_iterable([1, 2, 3]));
         $this->assertSame(true, is_iterable(new \ArrayObject()));
         $this->assertSame(true, is_iterable(new \ArrayIterator()));
-        $this->assertSame(true, is_iterable((function () { yield 1; })()));
+        $this->assertSame(true, is_iterable((function () {
+            yield 1;
+        })()));
     }
 
     /**
@@ -46,7 +48,9 @@ class cFunctionsPhpPolyfillTest extends cTestingTestCase
         $this->assertSame(false, is_countable(true));
         $this->assertSame(false, is_countable(1));
         $this->assertSame(false, is_countable(new \stdClass()));
-        $this->assertSame(false, is_countable((function () { yield 1; })()));
+        $this->assertSame(false, is_countable((function () {
+            yield 1;
+        })()));
 
         // true checks
         $this->assertSame(true, is_countable([1, 2, 3]));

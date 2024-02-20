@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for area rights management.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -28,15 +28,23 @@ $debug = (cDebug::getDefaultDebuggerName() != cDebug::DEBUGGER_DEVNULL);
 
 // set the areas which are in use for selecting these
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
-        FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
-        WHERE user_id = '" . $db->escape($userid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
-        AND idlang = " . cSecurity::toInteger($rights_lang) . " AND idcat = 0 AND A.idaction = C.idaction AND A.idarea = B.idarea";
-$db->query($sql);
+        FROM `:tab_rights` AS A, `:tab_area` AS B, `:tab_actions` AS C
+        WHERE user_id = ':user_id' AND idclient = :idclient
+        AND idlang = :idlang AND idcat = 0 AND A.idaction = C.idaction AND A.idarea = B.idarea";
+$db->query($sql, [
+    'tab_rights' => $cfg['tab']['rights'],
+    'tab_area' => $cfg['tab']['area'],
+    'tab_actions' => $cfg['tab']['actions'],
+    'user_id' => $userid,
+    'idclient' => $rights_client,
+    'idlang' => $rights_lang,
+]);
 
 $rights_list_old = [];
 while ($db->nextRecord()) { // set a new rights list for this user
     $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
 }
+$rights_list_old_keys = array_keys($rights_list_old);
 
 $sMessage = '';
 if (($perm->have_perm_area_action("user_overview", $action)) && ($action == "user_edit")) {
@@ -60,9 +68,8 @@ $sJsBefore .= "var areatree = [];\n";
 
 if (!isset($rights_perms) || $action == "" || !isset($action)) {
     // search for the permissions of this user
-    $sql = "SELECT perms FROM " . $cfg['tab']['user'] . " WHERE user_id='$userid'";
-
-    $db->query($sql);
+    $sql = "SELECT `perms` FROM `%s` WHERE `user_id` = '%s'";
+    $db->query($sql, $cfg['tab']['user'], $userid);
     $db->nextRecord();
     $rights_perms = $db->f("perms");
 }
@@ -134,7 +141,7 @@ foreach ($right_list as $key => $value) {
         $items = "";
         if ($key == $key2) {
             // does the user have the right
-            if (in_array($value2["perm"] . "|fake_permission_action|0", array_keys($rights_list_old))) {
+            if (in_array($value2["perm"] . "|fake_permission_action|0", $rights_list_old_keys)) {
                 $checked = 'checked="checked"';
             } else {
                 $checked = "";
@@ -176,15 +183,15 @@ foreach ($right_list as $key => $value) {
             $objRow->advanceID();
             // set javascript array for areatree
             $sJsBefore .= "areatree[\"$key\"] = [];\n"
-                         ."areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\"\n";
+                . "areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\";\n";
         }
 
-        // if there area some
+        // if there are some
         if (isset($value2["action"]) && is_array($value2["action"])) {
             foreach ($value2["action"] as $key3 => $value3) {
                 $idaction = $value3;
                 // does the user have the right
-                if (in_array($value2["perm"] . "|$idaction|0", array_keys($rights_list_old))) {
+                if (in_array($value2["perm"] . "|$idaction|0", $rights_list_old_keys)) {
                     $checked = 'checked="checked"';
                 } else {
                     $checked = "";
@@ -193,9 +200,10 @@ foreach ($right_list as $key => $value) {
                 // set the checkbox the name consists of areaid+actionid+itemid
                 $sCellContent = '';
                 if ($debug) {
-                    $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | " . $value3 . "-->" . $lngAct[$value2["perm"]][$value3] . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                    $label = $lngAct[$value2["perm"]][$value3] ?? i18n('not available');
+                    $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | " . $value3 . "-->" . $label . "&nbsp;&nbsp;&nbsp;&nbsp;";
                 } else {
-                    if ($lngAct[$value2["perm"]][$value3] == "") {
+                    if (empty($lngAct[$value2["perm"]][$value3])) {
                         $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . "|" . $value3 . "&nbsp;&nbsp;&nbsp;&nbsp;";
                     } else {
                         $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $lngAct[$value2["perm"]][$value3] . "&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -241,7 +249,12 @@ $objItem->updateAttributes([
     "align" => "right",
     "colspan" => "3"
 ]);
-$objItem->setContent("<a href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a><img src=\"images/spacer.gif\" width=\"20\"><a href=\"javascript:submitrightsform('user_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>");
+$objItem->setContent(
+    '<div class="con_form_action_control">'
+    . "<a class=\"con_img_button\" href=\"javascript:submitrightsform('user_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>"
+    . "<a class=\"con_img_button\" href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a>"
+    . '</div>'
+);
 $items = $objItem->render();
 $objItem->advanceID();
 $objFooterRow->setContent($items);

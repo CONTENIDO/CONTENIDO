@@ -1,6 +1,8 @@
-<div class="syncLanguage">
-    <input class="vAlignMiddle massSyncCheckbox" data-sync="{SYNC_DISABLED}" data-online="{ONLINE_DISABLED}" id="syncLang_{LANG_ID}" type="checkbox" name="syncingLanguage[]" value="{LANG_ID}">
-    <label class="vAlignMiddle" for="syncLang_{LANG_ID}">{LANG_NAME}</label>
-    <input {ONLINE_DISABLED} class="vAlignMiddle button" title="{ONLINE_TEXT}" alt="{ONLINE_TEXT}" style="float: right; background-image: url({ONLINE_IMAGE});" name="{BUTTON_NAME}" type="submit" value="{LANG_ID}">
-    <input {SYNC_DISABLED} class="vAlignMiddle button" title="{SYNC_TEXT}" alt="{SYNC_TEXT}" style="float: right; background-image: url({SYNC_IMAGE}); visibility: {SYNC_IMAGE_VISIBLE};" name="syncOne" type="submit" value="{LANG_ID}">
+<div class="con_sync_list_sync_language">
+    <input class="align_middle massSyncCheckbox" data-sync="{SYNC_DISABLED}" data-online="{ONLINE_DISABLED}" id="syncLang_{LANG_ID}" type="checkbox" name="syncingLanguage[]" value="{LANG_ID}">
+    <label class="align_middle" for="syncLang_{LANG_ID}">{LANG_NAME}</label>
+    <div class="con_sync_list_sync_language_buttons">
+        <input {SYNC_DISABLED} class="con_img_button" title="{SYNC_TEXT}" alt="{SYNC_TEXT}" style="background-image: url({SYNC_IMAGE}); visibility: {SYNC_IMAGE_VISIBLE};" name="syncOne" type="submit" value="{LANG_ID}">
+        <input {ONLINE_DISABLED} class="con_img_button mgr0" title="{ONLINE_TEXT}" alt="{ONLINE_TEXT}" style="background-image: url({ONLINE_IMAGE});" name="{BUTTON_NAME}" type="submit" value="{LANG_ID}">
+    </div>
 </div>

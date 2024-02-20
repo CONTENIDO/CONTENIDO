@@ -1,139 +1,143 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+        "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
     <title>{TITLE}</title>
-{_META_HEAD_CONTENIDO_}
-{_CSS_HEAD_CONTENIDO_}
-{_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
+    {_META_HEAD_CONTENIDO_}
+    {_CSS_HEAD_CONTENIDO_}
+    {_JS_HEAD_CONTENIDO_}
+    <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
     <script type="text/javascript" src="scripts/articleObject.js.php?contenido={_SID_}"></script>
 </head>
-<body class="mg10">
-    <div class="workflow_tasks">
-        <div class="right widthpx400 tgright">{USERSELECT}</div>
-        {PAGE_TITLE}
-        <div class="clearb"></div>
-    </div>
+<body class="page_generic">
+<div class="workflow_tasks">
+    <div class="right widthpx400 text_right">{USERSELECT}</div>
+    {PAGE_TITLE}
+    <div class="clearb"></div>
+</div>
 
-    <table id="workflow_tasks_list" width="100%" border="0" cellspacing="0" cellpadding="2" class="generic" style="display:{DISPLAY}">
+<table id="workflow_tasks_list" width="100%" border="0" cellspacing="0" cellpadding="2"
+       class="generic" style="display:{DISPLAY}">
     <tr>
-        <th width="1%" nowrap="nowrap">{TH_START}</th>
-        <th width="100%" nowrap="nowrap">{TH_TITLE}</th>
-        <th width="100%"nowrap="nowrap">{TH_WORKFLOW_STEP}</th>
-        <th width="1%" nowrap="nowrap">{TH_WORKFLOW_ACTION}</th>
-        <th width="1%" nowrap="nowrap">{TH_WORKFLOW_EDITOR}</th>
-        <th width="1%" nowrap="nowrap">{TH_LAST_STATUS}</th>
-        <th width="1%" nowrap="nowrap">{TH_TEMPLATE}</th>
-        <th width="1%" nowrap="nowrap">{TH_ACTIONS}</th>
+        <th width="1%" class="no_wrap">{TH_START}</th>
+        <th width="100%" class="no_wrap">{TH_TITLE}</th>
+        <th width="100%" class="no_wrap">{TH_WORKFLOW_STEP}</th>
+        <th width="1%" class="no_wrap">{TH_WORKFLOW_ACTION}</th>
+        <th width="1%" class="no_wrap">{TH_WORKFLOW_EDITOR}</th>
+        <th width="1%" class="no_wrap">{TH_LAST_STATUS}</th>
+        <th width="1%" class="no_wrap">{TH_TEMPLATE}</th>
+        <th width="1%" class="no_wrap">{TH_ACTIONS}</th>
     </tr>
 
     <!-- BEGIN:BLOCK -->
     <tr id="{ROWID}" class="text_medium row_mark">
-        <td nowrap="nowrap">{START}</td>
-        <td nowrap="nowrap">{TITLE}</td>
-        <td nowrap="nowrap">{WORKFLOW_STEP}</td>
-        <td nowrap="nowrap">{WORKFLOW_ACTION}</td>
-        <td nowrap="nowrap">{WORKFLOW_EDITOR}</td>
-        <td nowrap="nowrap">{LAST_STATUS}</td>
-        <td nowrap="nowrap">{TEMPLATE}</td>
-        <td nowrap="nowrap">{ACTIONS}</td>
+        <td class="no_wrap">{START}</td>
+        <td class="no_wrap">{TITLE}</td>
+        <td class="no_wrap">{WORKFLOW_STEP}</td>
+        <td class="no_wrap">{WORKFLOW_ACTION}</td>
+        <td class="no_wrap">{WORKFLOW_EDITOR}</td>
+        <td class="no_wrap">{LAST_STATUS}</td>
+        <td class="no_wrap">{TEMPLATE}</td>
+        <td class="no_wrap">{ACTIONS}</td>
     </tr>
     <!-- END:BLOCK -->
 
     {NO_ARTICLES_ROW}
 
-    </table>
+</table>
 
 
 <script type="text/javascript">
-var rcount = 0;
+    var rcount = 0;
 
-// Update frame right top for sub navigation
-{SUBNAVI}
+    // Update frame right top for sub navigation
+    {
+        SUBNAVI
+    }
 
-// Create a reference to the Article Object in frame 'right_top'
-var artObj = Con.getFrame('left_top').artObj;
+    // Create a reference to the Article Object in frame 'right_top'
+    var artObj = Con.getFrame('left_top').artObj;
 
-// Reset article object properties. e.g. Some article was edited and we are now back in the
-// overview mask. There is now no marked article, the articleObject data should be reset.
-if (artObj) {
-    artObj.reset();
-    artObj.enable();
-    artObj.setHrefOverview(document.location.href);
-}
+    // Reset article object properties. e.g. Some article was edited and we are now back in the
+    // overview mask. There is now no marked article, the articleObject data should be reset.
+    if (artObj) {
+        artObj.reset();
+        artObj.enable();
+        artObj.setHrefOverview(document.location.href);
+    }
 
-// Timeout to call the function afer 250ms
-window.setTimeout(function() {
-    createReference();
-}, 250);
+    // Timeout to call the function afer 250ms
+    window.setTimeout(function () {
+        createReference();
+    }, 250);
 
-Con.markSubmenuItem('c_0');
+    Con.markSubmenuItem('c_0');
 
-// Javascript-Error work-around... try to create the reference after
-// 250ms again... and hope it works..
-function createReference() {
-    if (!artObj) {
-        artObj = Con.getFrame('left_top').artObj;
-        if (artObj) {
-            artObj.reset();
-            artObj.enable();
-            artObj.setHrefOverview(document.location.href);
+    // Javascript-Error work-around... try to create the reference after
+    // 250ms again... and hope it works..
+    function createReference() {
+        if (!artObj) {
+            artObj = Con.getFrame('left_top').artObj;
+            if (artObj) {
+                artObj.reset();
+                artObj.enable();
+                artObj.setHrefOverview(document.location.href);
+            }
         }
-    }
-    if (!artObj) {
-        return false;
-    }
-}
-
-// Extract data from the article grid and send them to the articleObject Instance. The data is
-// stored in the attribute 'id' of the row object.
-function conArtOverviewExtractData(obj) {
-    if (!artObj) {
-        var rval = createReference();
-        if (rval == false) {
+        if (!artObj) {
             return false;
         }
     }
 
-    var datastring = obj.id;
-    var data = datastring.split('-');
+    // Extract data from the article grid and send them to the articleObject Instance. The data is
+    // stored in the attribute 'id' of the row object.
+    function conArtOverviewExtractData(obj) {
+        if (!artObj) {
+            var rval = createReference();
+            if (rval == false) {
+                return false;
+            }
+        }
 
-    if (data.length === 6) {
-        /* Send data to articleObject instance:
-            0: idart
-            1: idartlang
-            2: idcat
-            3: idcatlang
-            5: idcatart */
-        artObj.setProperties(data[0], data[1], data[2], data[3], data[4], data[5]);
+        var datastring = obj.id;
+        var data = datastring.split('-');
+
+        if (data.length === 6) {
+            /* Send data to articleObject instance:
+                0: idart
+                1: idartlang
+                2: idcat
+                3: idcatlang
+                5: idcatart */
+            artObj.setProperties(data[0], data[1], data[2], data[3], data[4], data[5]);
+        }
+        return true;
     }
-    return true;
-}
 
-// Function for deleting articles
-function deleteArticle(idart, idcat) {
-    var url = "main.php?area=con&action=con_deleteart&frame=4&idcat="+idcat+"&idart="+idart+"&contenido="+Con.sid;
-    window.location.href = url;
-}
+    // Function for deleting articles
+    function deleteArticle(idart, idcat) {
+        var url = "main.php?area=con&action=con_deleteart&frame=4&idcat=" + idcat + "&idart=" + idart + "&contenido=" + Con.sid;
+        window.location.href = url;
+    }
 
-function setUsershow() {
-    document.forms['showusers'].setAttribute('action', document.forms['showusers'].getAttribute('action')+'&usershow='+document.showusers.usershow.value);
-}
+    function setUsershow() {
+        document.forms['showusers'].setAttribute('action', document.forms['showusers'].getAttribute('action') + '&usershow=' + document.showusers.usershow.value);
+    }
 
-function initTheOne() {
-   var theOne = document.getElementById("{FIRST_ROWID}");
-   artRow.reset();
-   artRow.over(theOne);
-   artRow.click(theOne)
-}
+    function initTheOne() {
+        var theOne = document.getElementById("{FIRST_ROWID}");
+        artRow.reset();
+        artRow.over(theOne);
+        artRow.click(theOne)
+    }
 
-initTheOne();
+    initTheOne();
 
-(function(Con, $) {
-    $(function() {
-        Con.RowMark.initialize('#workflow_tasks_list .row_mark', 'artRow');
-    });
-})(Con, Con.$);
+    (function (Con, $) {
+        $(function () {
+            Con.RowMark.initialize('#workflow_tasks_list .row_mark', 'artRow');
+        });
+    })(Con, Con.$);
 
 </script>
 </body>

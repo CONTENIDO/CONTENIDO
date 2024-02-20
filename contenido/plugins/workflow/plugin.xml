@@ -8,11 +8,11 @@
         <author>Timo Hummel</author>
         <copyright>four for business AG</copyright>
         <mail>info@4fb.de</mail>
-        <website>http://www.4fb.de</website>
+        <website>https://www.4fb.de</website>
         <version>1.0.0</version>
     </general>
-    <requirements php="5.2.3">
-        <contenido minversion="4.9.0" />
+    <requirements php="7.0">
+        <contenido minversion="4.10.0"/>
     </requirements>
     <contenido>
         <areas>
@@ -44,12 +44,18 @@
             <action area="con_workflow">workflow_do_action</action>
         </actions>
         <frames>
-            <frame area="workflow" filetype="main" name="workflow/includes/include.workflow_left_top.php" frameId="1" />
-            <frame area="workflow" filetype="main" name="workflow/includes/include.workflow_list.php" frameId="2" />
-            <frame area="workflow_common" filetype="main" name="workflow/includes/include.workflow_edit.php" frameId="4" />
-            <frame area="workflow" filetype="main" name="workflow/includes/include.workflow_subnav.php" frameId="3" />
-            <frame area="workflow_steps" filetype="main" name="workflow/includes/include.workflow_steps.php" frameId="4" />
-            <frame area="con_workflow" filetype="main" name="workflow/includes/include.workflow_tasks.php" frameId="4" />
+            <frame area="workflow" filetype="main"
+                   name="workflow/includes/include.workflow_left_top.php" frameId="1"/>
+            <frame area="workflow" filetype="main"
+                   name="workflow/includes/include.workflow_list.php" frameId="2"/>
+            <frame area="workflow_common" filetype="main"
+                   name="workflow/includes/include.workflow_edit.php" frameId="4"/>
+            <frame area="workflow" filetype="main"
+                   name="workflow/includes/include.workflow_subnav.php" frameId="3"/>
+            <frame area="workflow_steps" filetype="main"
+                   name="workflow/includes/include.workflow_steps.php" frameId="4"/>
+            <frame area="con_workflow" filetype="main"
+                   name="workflow/includes/include.workflow_tasks.php" frameId="4"/>
         </frames>
         <nav_sub>
             <nav area="workflow" level="0" navm="extra">workflow/xml/lang_de_DE.xml;navigation/extra/workflow/main</nav>

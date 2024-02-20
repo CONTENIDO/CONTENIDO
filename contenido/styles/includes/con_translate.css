@@ -1,0 +1,127 @@
+/**
+ * con_translate styles
+ */
+
+/**
+ * #############################################################################
+ * @section All_Translations
+ */
+
+/* all translations */
+.all_translations {
+    width: 100%;
+}
+
+.all_translations th {
+    width: auto;
+    white-space: nowrap;
+}
+
+.all_translations th img.sort_img {
+    padding: 4px 4px;
+    vertical-align: text-bottom;
+    margin-left: 3px;
+}
+.all_translations th .con_img_button {
+    vertical-align: middle;
+}
+
+.all_translations td img,
+.all_translations td input {
+    float: right;
+}
+
+.all_translations td .con_form_action_control {
+    margin-top: 5px;
+}
+.all_translations td .con_form_action_control input {
+    float: none;
+    display: inline-block;
+}
+
+.all_translations td.actions {
+    text-align: right;
+}
+
+.all_translations td.actions input {
+    display: inline;
+}
+
+.all_translations td.inuse {
+    width: 120px;
+}
+
+.all_translations td.actions {
+    width: 50px;
+}
+
+.all_translations_filter,
+.all_translations_pager {
+    overflow: hidden;
+}
+
+.all_translations_filter form,
+.all_translations_filter input,
+.all_translations_filter button,
+.all_translations_filter a,
+.all_translations_pager form,
+.all_translations_pager input,
+.all_translations_pager button,
+.all_translations_pager a {
+    vertical-align: middle;
+}
+
+.all_translations_pager > img,
+.all_translations_pager > span,
+.all_translations_pager > a {
+    display: inline-block;
+    line-height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+    text-align: center;
+    vertical-align: top;
+}
+.all_translations_pager > a > img {
+    margin-top: 4px;
+}
+
+#con_translate #new_lang_submit {
+}
+
+#con_translate #newlang,
+#con_translate div.all_translations_filter div.right select,
+#con_translate div.all_translations_filter div.right input:not(.con_img_button) {
+    height: 17px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+#con_translate #newlang .con_img_button,
+#con_translate div.all_translations_filter div.right {
+    vertical-align: middle;
+}
+
+#con_translate div.all_translations_filter div.right {
+    margin-top: 1px;
+}
+
+#con_translate select.elem_per_page {
+    height: 17px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+#con_translate #elem_per_page_submit {
+    margin-top: 1px;
+    vertical-align: top;
+}
+
+#con_translate div.all_translations_pager {
+}
+
+#con_translate span.cpager_currentitem {
+    vertical-align: middle;
+}
+
+#con_translate div.all_translations_pager img {
+}

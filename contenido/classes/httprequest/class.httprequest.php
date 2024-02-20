@@ -1,17 +1,17 @@
 <?php
 
 /**
- * This file contains the the general HttpRequest class
+ * This file contains the general HttpRequest class
  * Extends this class and implement the functions to use
  * other methods of doing HTTP requests
  *
- * @package Core
+ * @package    Core
  * @subpackage Core
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -19,10 +19,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Abstract HttpRequest class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Core
  */
-abstract class cHttpRequest {
+abstract class cHttpRequest
+{
 
     /**
      * Creates a new cHttpRequest object. The function determines the
@@ -32,7 +33,8 @@ abstract class cHttpRequest {
      *         URL of the HTTP request
      * @return cHttpRequest
      */
-    public static function getHttpRequest($url = '') {
+    public static function getHttpRequest($url = '')
+    {
         $className = 'cHttpRequestCurl';
         if (!function_exists('curl_exec') || CURLOPT_RETURNTRANSFER != 19913) {
             $className = 'cHttpRequestSocket';

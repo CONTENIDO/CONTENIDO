@@ -1,64 +1,70 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+        "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
     <title>template.linkchecker_whitelist.html</title>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css?v=4ff97ee40f1ac052f634e7e8c2f3e37e">
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-{_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
+    <link rel="stylesheet" type="text/css" href="{_ASSET(styles/normalize.css)_}">
+    <link rel="stylesheet" type="text/css" href="{_ASSET(styles/contenido.css)_}">
+    <link rel="stylesheet" type="text/css" href="{_ASSET(styles/jquery/jquery-ui.css)_}">
+    {_JS_HEAD_CONTENIDO_}
+    <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
 </head>
-<body class="mg10">
-    <a href="javascript:location.reload()" accesskey="s"></a>
-    <table cellspacing="0" cellpadding="2" border="0">
-        <tr valign="middle">
-            <td>
-                <h2>{TITLE}</h2>
-            </td>
-        </tr>
-        <tr valign="middle">
-            <td class="text_medium">
-                {HELP}
-            </td>
-        </tr>
-    </table>
-    <div class="mgt5">
-    </div>
-    <table width="100%" class="borderlB5" cellspacing="0" cellpadding="3" border="0">
-        <tr class="text_medium bgcE2">
-            <td nowrap="nowrap" valign="top" class="borderB5 noborderl nowrap width75">
-                <strong>{HEADLINE_URLS}</strong>
-                ({WHITELIST_COUNT})
-            </td>
-            <td nowrap="nowrap" valign="top" class="borderB5 noborderl nowrap width15 tgcenter">
-                <strong>{HEADLINE_ENTRY}</strong>
-            </td>
-            <td nowrap="nowrap" valign="top" class="borderB5 noborderl nowrap width10">
-                <strong>{HEADLINE_DELETE}</strong>
-            </td>
-        </tr>
-    </table>
-    <div class="mgt10">
-    </div>
-    <table id="white_list" width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
-        {WHITELIST}
-    </table>
-    <div class="mgt10">
-    </div>
-    <table width="100%" cellspacing="0" cellpadding="3" border="0">
-        <tr>
-            <td class="tgleft">
-                <a href="javascript:print()"><img src="{_PATH_CONTENIDO_FULLHTML_}images/print.gif" alt=""></a>
-            </td>
-        </tr>
-    </table>
+<body class="page_generic">
+<a href="javascript:location.reload()" accesskey="s"></a>
+<table cellspacing="0" cellpadding="2" border="0">
+    <tr class="align_middle">
+        <td>
+            <h2>{TITLE}</h2>
+        </td>
+    </tr>
+    <tr class="align_middle">
+        <td class="text_medium">
+            {HELP}
+        </td>
+    </tr>
+</table>
+<div class="mgt5">
+</div>
+<table width="100%" class="border_l_b5" cellspacing="0" cellpadding="3" border="0">
+    <tr class="text_medium bg_c_e2">
+        <td class="align_top border_b5 no_border_l no_wrap width75">
+            <strong>{HEADLINE_URLS}</strong>
+            ({WHITELIST_COUNT})
+        </td>
+        <td class="align_top border_b5 no_border_l no_wrap width15 text_center">
+            <strong>{HEADLINE_ENTRY}</strong>
+        </td>
+        <td class="align_top border_b5 no_border_l no_wrap width10">
+            <strong>{HEADLINE_DELETE}</strong>
+        </td>
+    </tr>
+</table>
+<div class="mgt10">
+</div>
+<table id="white_list" width="100%" class="border_b5 no_border_t" cellspacing="0" cellpadding="3"
+       border="0">
+    {WHITELIST}
+</table>
+<div class="mgt10">
+</div>
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tr>
+        <td>
+            <div class="con_form_action_control text_left">
+                <a class="con_img_button mgl3" href="javascript:print()"><img
+                        src="{_PATH_CONTENIDO_FULLHTML_}images/print.gif" alt=""></a>
+            </div>
+        </td>
+    </tr>
+</table>
 
-    <script type="text/javascript">
-        (function(Con, $) {
-            $(function() {
-                Con.RowMark.initialize('#white_list .row_mark', 'row');
-            });
-        })(Con, Con.$);
-    </script>
+<script type="text/javascript">
+    (function (Con, $) {
+        $(function () {
+            Con.RowMark.initialize('#white_list .row_mark', 'row');
+        });
+    })(Con, Con.$);
+</script>
 
 </body>
 </html>

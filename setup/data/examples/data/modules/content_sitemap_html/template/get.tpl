@@ -1,7 +1,7 @@
 <!-- content_sitemap_html -->
 
 {if true eq $isBackendEditMode}
-    <label class="content_type_label">{$trans.headline}</label>
+    <label class="con_content_type_label">{$trans.headline}</label>
     <div class="sitemapdiv">
         <h2>{$trans.categoryLabel|escape}</h2>
         <label>{$trans.categoryHintLabel|escape}</label>
@@ -19,30 +19,31 @@
     </div>
     {if $error}<p class="error">{$error|escape}</p>{/if}
 {elseif $tree}
-<ul{if $first == false} class="sitemap"{/if}>
-    {$first = true}
-    {* loop categories *}
-    {foreach from=$tree item=wrapper}
-        {assign var="idcat" value=$wrapper.idcat}
-        {assign var="url" value=$wrapper.item->getLink()}
-        {assign var="name" value=$wrapper.item->get('name')}
-        <li>
-            <a href="{$url|escape}" title="{$name|escape}">{$name|escape}</a>
-            {include file="content_sitemap_html/template/get.tpl"
+    <ul{if $first == false} class="sitemap"{/if}>
+        {$first = true}
+        {* loop categories *}
+        {foreach from=$tree item=wrapper}
+            {assign var="idcat" value=$wrapper.idcat}
+            {assign var="url" value=$wrapper.item->getLink()}
+            {assign var="name" value=$wrapper.item->get('name')}
+            <li>
+                <a href="{$url|escape}" title="{$name|escape}">{$name|escape}</a>
+                {include file="content_sitemap_html/template/get.tpl"
                 tree=$wrapper.subcats path=$path ulId=""}
-        {* loop articles *}
-        {if isset($wrapper.articles) && $wrapper.articles|is_array && 0 lt $wrapper.articles|count}
-        	<ul>
-	            {foreach from=$wrapper.articles item=article}
-	            <li>
-	                <a href="{$article->getLink()|escape}" title="{$article->get('title')|escape}">{$article->get('title')|escape}</a>
-	            </li>
-	            {/foreach}
-            </ul>
-        {/if}
-        </li>
-     {/foreach}
-</ul>
+                {* loop articles *}
+                {if isset($wrapper.articles) && is_array($wrapper.articles) && 0 lt count($wrapper.articles)}
+                    <ul>
+                        {foreach from=$wrapper.articles item=article}
+                            <li>
+                                <a href="{$article->getLink()|escape}"
+                                   title="{$article->get('title')|escape}">{$article->get('title')|escape}</a>
+                            </li>
+                        {/foreach}
+                    </ul>
+                {/if}
+            </li>
+        {/foreach}
+    </ul>
 {/if}
 
 <!-- /content_sitemap_html -->

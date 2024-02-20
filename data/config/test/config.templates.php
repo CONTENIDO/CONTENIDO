@@ -1,16 +1,15 @@
 <?php
+
 /**
  * This file contains the configuration variables for template names.
  *
- * @package          Core
- * @subpackage       Backend_ConfigFile
- * @version          SVN Revision $Rev:$
- *
- * @author           Bjoern Behrens
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend_ConfigFile
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -136,6 +135,7 @@ $cfg['templates']['system_purge']         = 'template.system_purge.html';
 $cfg['templates']['inuse_tpl']            = 'template.inuse_tpl.html';
 $cfg['templates']['inuse_lay_mod']        = 'template.inuse_lay_mod.html';
 
+$cfg['templates']['debug_styles']         = 'template.debug.styles.html';
 $cfg['templates']['debug_visibleadv']     = 'template.debug.visibleadv.html';
 $cfg['templates']['debug_header']         = 'template.debug.header.html';
 $cfg['templates']['debug_visible']        = 'template.debug.visible.html';
@@ -146,5 +146,3 @@ $cfg['templates']['breadcrumb']           = 'template.breadcrumb.html';
 
 $cfg['templates']['con_edit_form_synclang'] = 'template.con_edit_form_synclang.html';
 $cfg['templates']['con_edit_form_sync'] = 'template.con_edit_form_sync.html';
-
-?>

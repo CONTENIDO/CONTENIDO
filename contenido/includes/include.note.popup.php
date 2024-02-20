@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for the note popup.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -32,13 +32,13 @@ if ($action == 'note_save_item') {
     $item = $notes->createItem($itemtype, $itemid, $lang, $note, $categoryname);
     $item->store();
 
-    $cpage->addScript('<script>window.close();</script>');
+    $cpage->addScript('<script type="text/javascript">window.close();</script>');
 } else {
     $list = new NoteView($itemtype, $itemid);
     $list->setWidth('100%');
     $list->appendStyleDefinition('margin-bottom', '10px');
     $ui = new cGuiTableForm('note');
-    $ui->addHeader(i18n('Add note'));
+    $ui->setHeader(i18n('Add note'));
 
     $ui->setVar('area', $area);
     $ui->setVar('frame', $frame);
@@ -51,7 +51,7 @@ if ($action == 'note_save_item') {
     $notesData = $propColl->getValuesOnlyByTypeName('note', 'category');
     $notesData = array_unique($notesData);
 
-    $categories = array('' => i18n('No category'));
+    $categories = ['' => i18n('No category')];
 
     $oNoteItem = new NoteItem();
 
@@ -68,12 +68,10 @@ if ($action == 'note_save_item') {
     $message = new cHTMLTextarea('note');
     $message->setStyle('width: 100%');
     $ui->add(i18n('Note'), $message->render());
-    $ui->add(i18n('Category'), array($cselect, $centry));
+    $ui->add(i18n('Category'), [$cselect, $centry]);
     $ui->setWidth('100%');
 
-    $cpage->setContent(array($list, $ui));
+    $cpage->setContent([$list, $ui]);
 }
 
 $cpage->render();
-
-?>

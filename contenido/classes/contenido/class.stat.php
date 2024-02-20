@@ -3,13 +3,13 @@
 /**
  * This file contains the stat collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Statistic collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiStat createNewItem
+ * @method cApiStat|bool next
  */
-class cApiStatCollection extends ItemCollection {
+class cApiStatCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['stat'], 'idstat');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('stat'), 'idstat');
         $this->_setItemClass('cApiStat');
 
         // set the join partners so that joins can be used via link() method
@@ -39,7 +42,7 @@ class cApiStatCollection extends ItemCollection {
 
     /**
      * Tracks a visit.
-     * Increments a existing entry or creates a new one.
+     * Increments an existing entry or creates a new one.
      *
      * @param int $iIdCatArt
      * @param int $iIdLang
@@ -49,7 +52,8 @@ class cApiStatCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function trackVisit($iIdCatArt, $iIdLang, $iIdClient) {
+    public function trackVisit($iIdCatArt, $iIdLang, $iIdClient)
+    {
         $oStat = $this->fetchByCatArtAndLang($iIdCatArt, $iIdLang);
         if (is_object($oStat)) {
             $oStat->increment();
@@ -71,7 +75,8 @@ class cApiStatCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($iIdCatArt, $iIdLang, $iIdClient, $iVisited = 1) {
+    public function create($iIdCatArt, $iIdLang, $iIdClient, $iVisited = 1)
+    {
         $oItem = $this->createNewItem();
 
         $oItem->set('visited', $iVisited);
@@ -92,8 +97,10 @@ class cApiStatCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
-        $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
+    public function fetchByCatArtAndLang($iIdCatArt, $iIdLang)
+    {
+        $where = $this->db->prepare('idcatart = %d AND idlang = %d', $iIdCatArt, $iIdLang);
+        $this->select($where);
         return $this->next();
     }
 
@@ -107,8 +114,9 @@ class cApiStatCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function deleteByCategoryArticleAndLanguage($idcatart, $idlang) {
-        $where = 'idcatart = ' . (int) $idcatart . ' AND idlang = ' . (int) $idlang;
+    public function deleteByCategoryArticleAndLanguage($idcatart, $idlang)
+    {
+        $where = $this->db->prepare('idcatart = %d AND idlang = %d', $idcatart, $idlang);
         return $this->deleteByWhereClause($where);
     }
 }
@@ -116,7 +124,7 @@ class cApiStatCollection extends ItemCollection {
 /**
  * Statistic item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiStat extends Item
@@ -130,10 +138,10 @@ class cApiStat extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['stat'], 'idstat');
-        $this->setFilters(array(), array());
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('stat'), 'idstat');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -141,17 +149,18 @@ class cApiStat extends Item
 
     /**
      * Increment and store property 'visited'.
-     * 
+     *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function increment() {
+    public function increment()
+    {
         $this->set('visited', $this->get('visited') + 1);
         $this->store();
     }
 
     /**
-     * Userdefined setter for stat fields.
+     * User-defined setter for stat fields.
      *
      * @param string $name
      * @param mixed $value
@@ -159,19 +168,14 @@ class cApiStat extends Item
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
-            case 'visited':
-                $value = (int) $value;
-                break;
             case 'idcatart':
-                $value = (int) $value;
-                break;
             case 'idlang':
-                $value = (int) $value;
-                break;
             case 'idclient':
-                $value = (int) $value;
+            case 'visited':
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

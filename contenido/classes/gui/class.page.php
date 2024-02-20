@@ -3,14 +3,13 @@
 /**
  * This file contains the generic page GUI class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
- *
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,10 +19,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * Manages HTML pages and provides functions for rendering them.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI
  */
-class cGuiPage {
+class cGuiPage
+{
 
     /**
      * The name of the page.
@@ -97,7 +97,7 @@ class cGuiPage {
     protected $_subnav;
 
     /**
-     * The script to markup the current submenu item.
+     * The script to mark up the current submenu item.
      * This will be included in the final page.
      *
      * @var string
@@ -182,6 +182,13 @@ class cGuiPage {
     protected $_skipTemplateCheck = false;
 
     /**
+     * The current logged-in user in backend.
+     *
+     * @var cApiUser
+     */
+    protected $_currentUser;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * The constructor initializes the class and tries to get the
@@ -202,7 +209,10 @@ class cGuiPage {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($pageName, $pluginName = '', $subMenu = '') {
+    public function __construct($pageName, $pluginName = '', $subMenu = '')
+    {
+        global $currentuser;
+
         $this->_pageName = $pageName;
         $this->_pluginName = $pluginName;
         $this->_pageTemplate = new cTemplate();
@@ -219,6 +229,7 @@ class cGuiPage {
         $this->_objects = [];
         $this->_metaTags = [];
         $this->_bodyClassNames = [];
+        $this->_currentUser = $currentuser;
 
         $lang = cRegistry::getLanguageId();
         $cfg = cRegistry::getConfig();
@@ -235,12 +246,12 @@ class cGuiPage {
 
         $this->_pageTemplate->set('s', 'SUBMENU', $subMenu);
         $this->_pageTemplate->set('s', 'PAGENAME', $pageName);
-        $pageid = str_replace('.', '_', $pageName);
+        $pageId = str_replace('.', '_', $pageName);
         $this->_pageTemplate->set('s', 'PAGENAME', $pageName);
-        $this->_pageTemplate->set('s', 'PAGEID', $pageid);
+        $this->_pageTemplate->set('s', 'PAGEID', $pageId);
 
         $this->addBodyClassName('page_generic');
-        $this->addBodyClassName('page_' . $pageid);
+        $this->addBodyClassName('page_' . $pageId);
 
         if ($pluginName != '') {
             $this->_filesDirectory = '';
@@ -256,11 +267,10 @@ class cGuiPage {
             $this->addStyle($this->_filesDirectory . $pageName . '.css');
         }
 
-        /* @var $stylefile SplFileInfo */
         if (cFileHandler::exists($styleDir)) {
-            foreach (new DirectoryIterator($styleDir) as $stylefile) {
-                if (cString::endsWith($stylefile->getFilename(), '.' . $pageName . '.css')) {
-                    $this->addStyle($this->_filesDirectory . $stylefile->getFilename());
+            foreach (new DirectoryIterator($styleDir) as $styleFile) {
+                if (cString::endsWith($styleFile->getFilename(), '.' . $pageName . '.css')) {
+                    $this->addStyle($this->_filesDirectory . $styleFile->getFilename());
                 }
             }
         }
@@ -269,11 +279,10 @@ class cGuiPage {
             $this->addScript($this->_filesDirectory . $pageName . '.js');
         }
 
-        /* @var $scriptfile SplFileInfo */
         if (cFileHandler::exists($scriptDir)) {
-            foreach (new DirectoryIterator($scriptDir) as $scriptfile) {
-                if (cString::endsWith($scriptfile->getFilename(), '.' . $pageName . '.js')) {
-                    $this->addScript($this->_filesDirectory . $scriptfile->getFilename());
+            foreach (new DirectoryIterator($scriptDir) as $scriptFile) {
+                if (cString::endsWith($scriptFile->getFilename(), '.' . $pageName . '.js')) {
+                    $this->addScript($this->_filesDirectory . $scriptFile->getFilename());
                 }
             }
         }
@@ -297,9 +306,8 @@ class cGuiPage {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function addScript($script) {
-        global $currentuser;
-
+    public function addScript($script)
+    {
         $script = trim($script);
         if (empty($script)) {
             return;
@@ -312,9 +320,9 @@ class cGuiPage {
         $filePathName = $this->_getRealFilePathName($script);
 
         // Warning message for not existing resources
-        if ($perm->isSysadmin($currentuser) && cString::findFirstPos(trim($script), '<script') === false &&
-           ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $script)) &&
-           (!cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)))) {
+        if ($perm->isSysadmin($this->_currentUser) && cString::findFirstPos(trim($script), '<script') === false &&
+            ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $script)) &&
+                (!cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)))) {
             $this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
 
@@ -323,13 +331,13 @@ class cGuiPage {
             if (!in_array($script, $this->_scripts)) {
                 $this->_scripts[] = $script;
             }
-        } else if (!empty($this->_pluginName) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $filePathName)) {
+        } elseif (!empty($this->_pluginName) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $filePathName)) {
             // the given script path is relative to the plugin scripts folder
             $fullPath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $script;
             if (!in_array($fullPath, $this->_scripts)) {
                 $this->_scripts[] = $fullPath;
             }
-        } else if (cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)) {
+        } elseif (cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)) {
             // the given script path is relative to the CONTENIDO scripts folder
             $fullPath = $backendUrl . $cfg['path']['scripts'] . $script;
 
@@ -350,9 +358,8 @@ class cGuiPage {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function addStyle($stylesheet) {
-        global $currentuser;
-
+    public function addStyle($stylesheet)
+    {
         $stylesheet = trim($stylesheet);
         if (empty($stylesheet)) {
             return;
@@ -365,8 +372,8 @@ class cGuiPage {
         $filePathName = $this->_getRealFilePathName($stylesheet);
 
         // Warning message for not existing resources
-        if ($perm->isSysadmin($currentuser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet))) ||
-           (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName))) {
+        if ($perm->isSysadmin($this->_currentUser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet))) ||
+            (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName))) {
             $this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
 
@@ -375,14 +382,14 @@ class cGuiPage {
             if (!in_array($stylesheet, $this->_styles)) {
                 $this->_styles[] = $stylesheet;
             }
-        } else if (!empty($this->_pluginName) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $filePathName)) {
+        } elseif (!empty($this->_pluginName) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $filePathName)) {
             // the given stylesheet path is relative to the plugin stylesheets
             // folder
             $fullPath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet;
             if (!in_array($fullPath, $this->_styles)) {
                 $this->_styles[] = $fullPath;
             }
-        } else if (cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName)) {
+        } elseif (cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName)) {
             // the given stylesheet path is relative to the CONTENIDO
             // stylesheets folder
             $fullPath = $backendUrl . $cfg['path']['styles'] . $stylesheet;
@@ -400,7 +407,8 @@ class cGuiPage {
      * @throws cInvalidArgumentException
      *         if an invalid attribute for the meta tag has been given
      */
-    public function addMeta(array $meta) {
+    public function addMeta(array $meta)
+    {
         $allowedAttributes = [
             'charset',
             'content',
@@ -421,7 +429,8 @@ class cGuiPage {
      *
      * @param string $className
      */
-    public function addBodyClassName($className) {
+    public function addBodyClassName($className)
+    {
         if (!in_array($className, $this->_bodyClassNames)) {
             $this->_bodyClassNames[] = $className;
         }
@@ -437,7 +446,8 @@ class cGuiPage {
      *         The area of the subnavigation.
      *         If none is given the current area will be loaded.
      */
-    public function setSubnav($additional = '', $aarea = '') {
+    public function setSubnav($additional = '', $aarea = '')
+    {
         $area = cRegistry::getArea();
         $sess = cRegistry::getSession();
 
@@ -458,7 +468,8 @@ class cGuiPage {
      *
      * @param array $parameters Associative array with key/value pairs
      */
-    public function setReload(array $parameters = []) {
+    public function setReload(array $parameters = [])
+    {
         $reloadParameters = count($parameters) > 0 ? json_encode($parameters) : '';
         $this->_uniqueScripts['left_bottom'] = '
             <script type="text/javascript">
@@ -479,7 +490,8 @@ class cGuiPage {
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
      */
-    public function reloadFrame($frameName, $updatedParameters = null) {
+    public function reloadFrame($frameName, $updatedParameters = null)
+    {
         if (is_array($updatedParameters)) {
             $reloadParameters = count($updatedParameters) > 0 ? json_encode($updatedParameters) : '{}';
             $this->_uniqueScripts[$frameName] = '
@@ -498,7 +510,7 @@ class cGuiPage {
                     (function(Con, $) {
                         var frame = Con.getFrame("' . $frameName . '");
                         if (frame) {
-                            frame.location.href = "' . $updatedParameters .'";
+                            frame.location.href = "' . $updatedParameters . '";
                         }
                     })(Con, Con.$);
                 </script>
@@ -513,8 +525,10 @@ class cGuiPage {
      *         Either an array with keys that will be passed to
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
+     * @since CONTENIDO 4.10.2
      */
-    public function reloadLeftTopFrame($updatedParameters = null) {
+    public function reloadLeftTopFrame($updatedParameters = null)
+    {
         if (is_array($updatedParameters) && !isset($updatedParameters['frame'])) {
             $updatedParameters['frame'] = 1;
         }
@@ -528,8 +542,10 @@ class cGuiPage {
      *         Either an array with keys that will be passed to
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
+     * @since CONTENIDO 4.10.2
      */
-    public function reloadLeftBottomFrame($updatedParameters = null) {
+    public function reloadLeftBottomFrame($updatedParameters = null)
+    {
         if (is_array($updatedParameters) && !isset($updatedParameters['frame'])) {
             $updatedParameters['frame'] = 2;
         }
@@ -543,8 +559,10 @@ class cGuiPage {
      *         Either an array with keys that will be passed to
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
+     * @since CONTENIDO 4.10.2
      */
-    public function reloadRightTopFrame($updatedParameters = null) {
+    public function reloadRightTopFrame($updatedParameters = null)
+    {
         if (is_array($updatedParameters) && !isset($updatedParameters['frame'])) {
             $updatedParameters['frame'] = 3;
         }
@@ -558,8 +576,10 @@ class cGuiPage {
      *         Either an array with keys that will be passed to
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
+     * @since CONTENIDO 4.10.2
      */
-    public function reloadRightBottomFrame($updatedParameters = null) {
+    public function reloadRightBottomFrame($updatedParameters = null)
+    {
         if (is_array($updatedParameters) && !isset($updatedParameters['frame'])) {
             $updatedParameters['frame'] = 4;
         }
@@ -572,7 +592,8 @@ class cGuiPage {
      * @param string $item
      *         The number of the submenu which should be marked.
      */
-    public function setMarkScript($item) {
+    public function setMarkScript($item)
+    {
         $this->_markScript = markSubMenuItem($item, true);
     }
 
@@ -582,7 +603,8 @@ class cGuiPage {
      * @param string $encoding
      *         An encoding which should be valid to use in the meta tag
      */
-    public function setEncoding($encoding) {
+    public function setEncoding($encoding)
+    {
         if (empty($encoding)) {
             return;
         }
@@ -595,15 +617,16 @@ class cGuiPage {
     /**
      * Applies a value to a key in the content template.
      *
-     * @see cTemplate::set()
      * @param string $type
      *         Either "s" or "d" for "static" or "dynamic" values
      * @param string $key
      *         The key which should be replaced
      * @param string $value
      *         The value which should replace the key
+     * @see cTemplate::set()
      */
-    public function set($type, $key, $value) {
+    public function set($type, $key, $value)
+    {
         $this->_contentTemplate->set($type, $key, $value);
     }
 
@@ -613,7 +636,8 @@ class cGuiPage {
      * @param string $filename [optional]
      *         the page base file
      */
-    public function setPageBase($filename = '') {
+    public function setPageBase($filename = '')
+    {
         if ('' === $filename) {
             $cfg = cRegistry::getConfig();
             $this->_pageBase = $cfg['path']['templates'] . $cfg['templates']['generic_page'];
@@ -627,7 +651,8 @@ class cGuiPage {
      *
      * @see cTemplate::next()
      */
-    public function next() {
+    public function next()
+    {
         $this->_contentTemplate->next();
     }
 
@@ -637,7 +662,8 @@ class cGuiPage {
      *
      * NOTE: You still have to call render() to actually show any messages.
      */
-    public function abortRendering() {
+    public function abortRendering()
+    {
         $this->_abort = true;
     }
 
@@ -649,7 +675,8 @@ class cGuiPage {
      * @param string $msg
      *         A message
      */
-    public function displayCriticalError($msg) {
+    public function displayCriticalError($msg)
+    {
         $this->_error = $msg;
         $this->_abort = true;
     }
@@ -661,7 +688,8 @@ class cGuiPage {
      * @param string $msg
      *         A message
      */
-    public function displayError($msg) {
+    public function displayError($msg)
+    {
         $this->_error .= $msg . '<br>';
     }
 
@@ -671,7 +699,8 @@ class cGuiPage {
      * @param string $msg
      *         The warning
      */
-    public function displayWarning($msg) {
+    public function displayWarning($msg)
+    {
         $this->_warning .= $msg . '<br>';
     }
 
@@ -681,7 +710,8 @@ class cGuiPage {
      * @param string $msg
      *         The info message
      */
-    public function displayInfo($msg) {
+    public function displayInfo($msg)
+    {
         $this->_info .= $msg . '<br>';
     }
 
@@ -691,7 +721,8 @@ class cGuiPage {
      * @param string $msg
      *         The ok message
      */
-    public function displayOk($msg) {
+    public function displayOk($msg)
+    {
         $this->_ok .= $msg . '<br>';
     }
 
@@ -702,10 +733,11 @@ class cGuiPage {
      * NOTE: All these objects must have a render() method or else they
      * won't be shown.
      *
-     * @param array|object $objects
-     *         An array of objects
+     * @param array|object|string $objects
+     *         A list of objects, a single object or a string to output
      */
-    public function setContent($objects) {
+    public function setContent($objects)
+    {
         if (!is_array($objects)) {
             $objects = [
                 $objects
@@ -721,10 +753,11 @@ class cGuiPage {
      * NOTE: All these objects must have a render() method or else they
      * won't be shown.
      *
-     * @param array|object $objects
-     *         An array of objects or a single object
+     * @param array|object|string $objects
+     *         A list of objects, a single object or a string to output
      */
-    public function appendContent($objects) {
+    public function appendContent($objects)
+    {
         if (!is_array($objects)) {
             $this->_objects[] = $objects;
         } else {
@@ -744,8 +777,8 @@ class cGuiPage {
      * @throws cInvalidArgumentException
      * @throws cException
      */
-    public function render($template = NULL, $return = false) {
-
+    public function render($template = NULL, $return = false)
+    {
         if ($template == NULL) {
             $template = $this->_contentTemplate;
         }
@@ -781,7 +814,8 @@ class cGuiPage {
     /**
      * Renders set meta tags and adds them to _pageTemplate property.
      */
-    protected function _renderMetaTags() {
+    protected function _renderMetaTags()
+    {
         // render the meta tags
         // NB! We don't produce xhtml in the backend
         // $produceXhtml = getEffectiveSetting('generator', 'xhtml', 'false');
@@ -808,14 +842,15 @@ class cGuiPage {
     /**
      * Renders set scripts and adds them to _pageTemplate property.
      */
-    protected function _renderScripts() {
+    protected function _renderScripts()
+    {
         $scripts = $this->_subnav . "\n" . $this->_markScript . "\n";
         $scripts .= implode("\n", $this->_uniqueScripts);
         foreach ($this->_scripts as $script) {
             if (cString::findFirstPos($script, 'http') === 0 || cString::findFirstPos($script, '//') === 0) {
-                $scripts .= '<script type="text/javascript" src="' . $script . '"></script>' . "\n";
-            } else if (cString::findFirstPos($script, '<script') === false) {
-                $scripts .= '<script type="text/javascript" src="scripts/' . $script . '"></script>' . "\n";
+                $scripts .= cHTMLScript::external($script) . "\n";
+            } elseif (cString::findFirstPos($script, '<script') === false) {
+                $scripts .= cHTMLScript::external(cAsset::backend('scripts/' . $scripts)) . "\n";
             } else {
                 $scripts .= $script;
             }
@@ -826,13 +861,14 @@ class cGuiPage {
     /**
      * Renders set styles and adds them to _pageTemplate property.
      */
-    protected function _renderStyles() {
+    protected function _renderStyles()
+    {
         $styles = '';
         foreach ($this->_styles as $style) {
             if (cString::findFirstPos($style, 'http') === 0 || cString::findFirstPos($style, '//') === 0) {
-                $styles .= '<link href="' . $style . '" type="text/css" rel="stylesheet">' . "\n";
+                $styles .= cHTMLLinkTag::stylesheet($style) . "\n";
             } else {
-                $styles .= '<link href="styles/' . $style . '" type="text/css" rel="stylesheet">' . "\n";
+                $styles .= cHTMLLinkTag::stylesheet(cAsset::backend('scripts/' . $style)) . "\n";
             }
         }
         $this->_pageTemplate->set('s', 'STYLES', $styles);
@@ -844,7 +880,8 @@ class cGuiPage {
      *
      * @return string
      */
-    protected function _renderContentMessages() {
+    protected function _renderContentMessages()
+    {
         global $notification;
 
         // Get messages from cRegistry
@@ -892,7 +929,8 @@ class cGuiPage {
      * @return string
      * @throws cInvalidArgumentException
      */
-    protected function _renderObjects() {
+    protected function _renderObjects()
+    {
         $output = '';
 
         foreach ($this->_objects as $obj) {
@@ -933,8 +971,9 @@ class cGuiPage {
      * @throws cInvalidArgumentException
      * @throws cException
      */
-    protected function _renderTemplate($template) {
-        global $currentuser, $notification;
+    protected function _renderTemplate($template)
+    {
+        global $notification;
 
         $perm = cRegistry::getPerm();
         $cfg = cRegistry::getConfig();
@@ -947,7 +986,7 @@ class cGuiPage {
 
         $output = '';
         // Warning message for not existing resources
-        if (!$this->_skipTemplateCheck && $perm->isSysadmin($currentuser) && !cFileHandler::exists($file)) {
+        if (!$this->_skipTemplateCheck && $perm->isSysadmin($this->_currentUser) && !cFileHandler::exists($file)) {
             $output .= $notification->returnNotification('warning', i18n("The requested resource") . " <strong>template." . $this->_pageName . ".html</strong> " . i18n("was not found")) . '<br>';
         }
 
@@ -970,7 +1009,8 @@ class cGuiPage {
      * @param string $file
      * @return string
      */
-    protected function _getRealFilePathName($file) {
+    protected function _getRealFilePathName($file)
+    {
         $tmp = explode('?', $file);
         return $tmp[0];
     }

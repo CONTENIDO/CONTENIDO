@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLHiddenField class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  *
  */
 
@@ -19,10 +18,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLHiddenField class represents a hidden form field.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLHiddenField extends cHTMLFormElement {
+class cHTMLHiddenField extends cHTMLFormElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -36,7 +36,8 @@ class cHTMLHiddenField extends cHTMLFormElement {
      * @param string $id [optional]
      *         ID of the element
      */
-    public function __construct($name, $value = '', $id = '') {
+    public function __construct($name, $value = '', $id = '')
+    {
         parent::__construct($name, $id, false, '', '', '');
         $this->_contentlessTag = true;
         $this->updateAttribute('type', 'hidden');
@@ -53,7 +54,8 @@ class cHTMLHiddenField extends cHTMLFormElement {
      * @return cHTMLHiddenField
      *         $this for chaining
      */
-    public function setValue($value) {
+    public function setValue($value)
+    {
         $this->updateAttribute('value', $value);
 
         return $this;

@@ -8,24 +8,24 @@
         <description>
             Generating forms in backend, includes data storage and mailing.
             Please see our documentation (german only):
-            https://docs.contenido.org/pages/viewpage.action?pageId=4456708
+            https://contenido.atlassian.net/wiki/x/QICwCw
         </description>
         <author>Marcus Gnaß (4fb)</author>
         <copyright>four for business AG</copyright>
         <mail>marcus.gnass@4fb.de</mail>
-        <website>http://www.4fb.de</website>
-        <version>1.1.0</version>
+        <website>https://www.4fb.de</website>
+        <version>2.0.0</version>
     </general>
 
-    <requirements php="5.2.3">
-        <contenido minversion="4.9.0" />
+    <requirements php="7.0">
+        <contenido minversion="4.10.0"/>
     </requirements>
 
-	<dependencies>
-		<depend uuid="82b117e94bb2cbcbce4e56b79a7d0c23">Smarty Wrapper</depend>
-	</dependencies>
+    <dependencies>
+        <depend uuid="82b117e94bb2cbcbce4e56b79a7d0c23">Smarty Wrapper</depend>
+    </dependencies>
 
-     <contenido>
+    <contenido>
 
         <areas>
             <area>form</area>
@@ -55,16 +55,26 @@
         </actions>
 
         <frames>
-            <frame area="form" filetype="main" name="form_assistant/includes/include.left_top.php" frameId="1" />
-            <frame area="form" filetype="main" name="form_assistant/includes/include.left_bottom.php" frameId="2" />
-            <frame area="form" filetype="main" name="form_assistant/includes/include.right_top.php" frameId="3" />
-            <frame area="form_import" filetype="main" name="form_assistant/includes/include.right_top.php" frameId="3" />
-            <frame area="form" filetype="main" name="form_assistant/includes/include.right_bottom.form.php" frameId="4" />
-            <frame area="form_fields" filetype="main" name="form_assistant/includes/include.right_bottom.form_fields.php" frameId="4" />
-            <frame area="form_data" filetype="main" name="form_assistant/includes/include.right_bottom.form_data.php" frameId="4" />
-            <frame area="form_export" filetype="main" name="form_assistant/includes/include.right_bottom.form_export.php" frameId="4" />
-            <frame area="form_import" filetype="main" name="form_assistant/includes/include.right_bottom.form_import.php" frameId="4" />
-            <frame area="form_ajax" filetype="main" name="form_assistant/includes/include.right_bottom.form_ajax.php" frameId="4" />
+            <frame area="form" filetype="main" name="form_assistant/includes/include.left_top.php"
+                   frameId="1"/>
+            <frame area="form" filetype="main"
+                   name="form_assistant/includes/include.left_bottom.php" frameId="2"/>
+            <frame area="form" filetype="main" name="form_assistant/includes/include.right_top.php"
+                   frameId="3"/>
+            <frame area="form_import" filetype="main"
+                   name="form_assistant/includes/include.right_top.php" frameId="3"/>
+            <frame area="form" filetype="main"
+                   name="form_assistant/includes/include.right_bottom.form.php" frameId="4"/>
+            <frame area="form_fields" filetype="main"
+                   name="form_assistant/includes/include.right_bottom.form_fields.php" frameId="4"/>
+            <frame area="form_data" filetype="main"
+                   name="form_assistant/includes/include.right_bottom.form_data.php" frameId="4"/>
+            <frame area="form_export" filetype="main"
+                   name="form_assistant/includes/include.right_bottom.form_export.php" frameId="4"/>
+            <frame area="form_import" filetype="main"
+                   name="form_assistant/includes/include.right_bottom.form_import.php" frameId="4"/>
+            <frame area="form_ajax" filetype="main"
+                   name="form_assistant/includes/include.right_bottom.form_ajax.php" frameId="4"/>
         </frames>
 
         <nav_sub>

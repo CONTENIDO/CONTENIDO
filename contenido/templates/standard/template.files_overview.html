@@ -5,11 +5,11 @@
     <title>template.files_overview.html</title>
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
-    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
+    <link rel="stylesheet" type="text/css" href="{_ASSET(styles/jquery/plugins/tipsy.css)_}">
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
-    <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
-    <script type="text/javascript" src="scripts/registerTipsy.js"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/jquery/plugins/tipsy.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/registerTipsy.js)_}"></script>
     <script type="text/javascript">
 	function deleteFile(file) {
 	    var url = Con.UtilUrl.build("main.php", {
@@ -32,7 +32,7 @@
             <table width="100%" cellspacing="0" cellpadding="3" border="0">
                 <tr>
                 <td width="100%">{FILENAME}</td>
-                <td align="right">{DELETE}</td>
+                <td class="text_right">{DELETE}</td>
                 </tr>
             </table>
         </td>

@@ -1,12 +1,17 @@
 <?php
+
 /**
  * Description: Twitter module
  *
+ * @package    Module
+ * @subpackage ContentSocialMediaTwitter
  * @version    1.0.1
  * @author     konstantinos.katikak
  * @author     alexander.scheider@4fb.de
  * @copyright  four for business AG <www.4fb.de>
- *
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 //get smarty instance
@@ -34,17 +39,21 @@ $idclient = cRegistry::getClientId();
 
 //create article object
 $art = new cApiArticleLanguage($idartlang);
-if (cRegistry::isBackendEditMode()) conSaveContentEntry($idartlang, "CMS_HTML", 4004, $_POST['show_replies']);
+
+if (cRegistry::isBackendEditMode()) {
+    conSaveContentEntry($idartlang, "CMS_HTML", 4004, $_POST['show_replies'] ?? '');
+}
+
 //if post save values in db
 if (cRegistry::isBackendEditMode() && 'POST' === cString::toUpperCase($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'twitter') {
-    conSaveContentEntry($idartlang, "CMS_HTML", 4000, $_POST['twitter_name']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 4001, $_POST['width']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 4002, $_POST['height']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 4003, $_POST['theme']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 4004, $_POST['show_replies']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 4005, $_POST['link_color']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 4006, $_POST['border_color']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 4007, $_POST['related']);
+    conSaveContentEntry($idartlang, "CMS_HTML", 4000, $_POST['twitter_name'] ?? '');
+    conSaveContentEntry($idartlang, "CMS_HTML", 4001, $_POST['width'] ?? '');
+    conSaveContentEntry($idartlang, "CMS_HTML", 4002, $_POST['height'] ?? '');
+    conSaveContentEntry($idartlang, "CMS_HTML", 4003, $_POST['theme'] ?? '');
+    conSaveContentEntry($idartlang, "CMS_HTML", 4004, $_POST['show_replies'] ?? '');
+    conSaveContentEntry($idartlang, "CMS_HTML", 4005, $_POST['link_color'] ?? '');
+    conSaveContentEntry($idartlang, "CMS_HTML", 4006, $_POST['border_color'] ?? '');
+    conSaveContentEntry($idartlang, "CMS_HTML", 4007, $_POST['related'] ?? '');
 }
 
 //get saved content
@@ -62,7 +71,7 @@ $tpl->assign('twitterName', $twitterName);
 $tpl->assign('twitterWidth', $twitterWidth);
 $tpl->assign('twitterHeight', $twitterHeight);
 $tpl->assign('twitterTheme', $twitterTheme);
-$tpl->assign('twitterReplies', $twitterShowReplies);
+$tpl->assign('twitterShowReplies', $twitterShowReplies);
 $tpl->assign('twitterLinkColor', $twitterLinkColor);
 $tpl->assign('twitterBorderColor', $twitterBorderColor);
 $tpl->assign('twitterRelated', $twitterRelated);
@@ -80,12 +89,10 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign('labelBorderColor', $labelBorderColor);
     $tpl->assign('labelRelated', $labelRelated);
     $tpl->assign('labelRelatedExplanation', $labelRelatedExplanation);
-    $tpl->assign('urlToShareLabel', $urlToShareLabel);
-    $tpl->assign('showCountLabel', $showCountLabel);
     $tpl->assign('save', $save);
-	
-	$tpl->assign("showRepliesHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SHOWREPLIES_HELP"))));
-	$tpl->assign("relatedExplanationHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("RELATEDEXPLANATION_HELP"))));
+
+    $tpl->assign("showRepliesHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SHOWREPLIES_HELP"))));
+    $tpl->assign("relatedExplanationHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("RELATEDEXPLANATION_HELP"))));
 
     $tpl->display('twitter_config_view.tpl');
 } else {

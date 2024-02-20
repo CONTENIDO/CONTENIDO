@@ -3,25 +3,33 @@
 /**
  * This file contains the backend page for managing module translations.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var array $cfg
+ * @var int $lang
+ * @var int $client
+ * @var int $idmod
+ */
+
 global $t_orig, $t_trans;
+
+$action = $action ?? '';
 
 $langObj = new cApiLanguage($lang);
 
 $langString = $langObj->get('name') . ' (' . $lang . ')';
 
-$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
-
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -49,10 +57,6 @@ if ((!$readOnly) && $action == 'mod_translation_save') {
     }
 }
 
-if (!isset($idmodtranslation)) {
-    $idmodtranslation = 0;
-}
-
 // Get the mi18n strings from module input/output
 $strings = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
 if (!is_array($strings)) {
@@ -77,18 +81,21 @@ foreach ($strings as $string) {
 ksort($myTrans);
 
 // count translations (counter started with zero)
-$myTransCount = count($myTrans)-1;
+$myTransCount = count($myTrans) - 1;
 
 // If changed save in file
 if (count(array_diff_assoc($myTrans, $translationArray)) > 0 || count(array_diff_assoc($translationArray, $myTrans)) > 0) {
     $moduleTranslation->saveTranslationArray($myTrans);
 }
 
+$lastString = '';
+$lastTranslation = '';
+$current = 0;
+
 if (!isset($row)) {
     $row = 0; // first string
-    $current = 0;
     $lastString = reset($strings);
-    $lastTranslation = isset($myTrans[$lastString]) ? $myTrans[$lastString] : '';
+    $lastTranslation = $myTrans[$lastString] ?? '';
 } else {
     // Get the string
     $index = 0;

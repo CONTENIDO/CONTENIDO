@@ -3,13 +3,13 @@
 /**
  * This file contains the meta tag collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage GenericDB_Model
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,22 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Metatag collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiMetaTag createNewItem
+ * @method cApiMetaTag|bool next
  */
-class cApiMetaTagCollection extends ItemCollection {
+class cApiMetaTagCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['meta_tag'], 'idmetatag');
+    public function __construct()
+    {
+        $table = cRegistry::getDbTableName('meta_tag');
+        parent::__construct($table, 'idmetatag');
         $this->_setItemClass('cApiMetaTag');
 
         // set the join partners so that joins can be used via link() method
@@ -39,16 +43,15 @@ class cApiMetaTagCollection extends ItemCollection {
     /**
      * Creates a meta tag entry.
      *
-     * @param int    $iIdArtLang
-     * @param int    $iIdMetaType
+     * @param int $iIdArtLang
+     * @param int $iIdMetaType
      * @param string $sMetaValue
      *
      * @return cApiMetaTag
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($iIdArtLang, $iIdMetaType, $sMetaValue) {
+    public function create($iIdArtLang, $iIdMetaType, $sMetaValue)
+    {
         $oItem = $this->createNewItem();
 
         $oItem->set('idartlang', $iIdArtLang, false);
@@ -65,12 +68,35 @@ class cApiMetaTagCollection extends ItemCollection {
      * @param int $iIdArtLang
      * @param int $iIdMetaType
      * @return cApiMetaTag|NULL
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function fetchByArtLangAndMetaType($iIdArtLang, $iIdMetaType) {
-        $this->select('idartlang=' . (int) $iIdArtLang . ' AND idmetatype=' . (int) $iIdMetaType);
+    public function fetchByArtLangAndMetaType($iIdArtLang, $iIdMetaType)
+    {
+        $where = sprintf('`idartlang` = %d AND `idmetatype` = %d', $iIdArtLang, $iIdMetaType);
+        $this->select($where);
         return $this->next();
+    }
+
+    /**
+     * Returns meta tag ids (idmetatag) by passed article language id.
+     *
+     * @param int $idArtLang Article language id
+     * @return int[] List of meta tag ids
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function getIdMetatagsByIdArtLang(int $idArtLang): array
+    {
+        if ($idArtLang <= 0) {
+            return [];
+        }
+        $sql = 'SELECT `idmetatag` FROM `%s` WHERE `idartlang` = %d';
+        $this->db->query($sql, $this->table, $idArtLang);
+        $metaTagIds = [];
+        while ($this->db->nextRecord()) {
+            $metaTagIds[] = cSecurity::toInteger($this->db->f('idmetatag'));
+        }
+        return $metaTagIds;
     }
 
 }
@@ -78,7 +104,7 @@ class cApiMetaTagCollection extends ItemCollection {
 /**
  * Metatag item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiMetaTag extends Item
@@ -89,13 +115,13 @@ class cApiMetaTag extends Item
      * @param mixed $mId
      *         Specifies the ID of item to load
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['meta_tag'], 'idmetatag');
-        $this->setFilters(array(), array());
+    public function __construct($mId = false)
+    {
+        $table = cRegistry::getDbTableName('meta_tag');
+        parent::__construct($table, 'idmetatag');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -106,16 +132,16 @@ class cApiMetaTag extends Item
      *
      * @param string $sMetaValue
      * @return bool
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function updateMetaValue($sMetaValue) {
+    public function updateMetaValue($sMetaValue)
+    {
         $this->set('metavalue', $sMetaValue, false);
         return $this->store();
     }
 
     /**
-     * Userdefined setter for meta tag fields.
+     * predefined setter for meta tag fields.
      *
      * @param string $name
      * @param mixed $value
@@ -123,13 +149,12 @@ class cApiMetaTag extends Item
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
-            case 'idartlang':
-                $value = (int) $value;
-                break;
             case 'idmetatype':
-                $value = (int) $value;
+            case 'idartlang':
+                $value = cSecurity::toInteger($value);
                 break;
         }
 
@@ -140,14 +165,10 @@ class cApiMetaTag extends Item
      * Creates a new, editable Version with same properties
      *
      * @param string $version
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function markAsEditable($version) {
-        //var_export($this->values);
-        //$parameters = $this->values;
-        //$parameters['version'] = $version;
+    public function markAsEditable($version)
+    {
         $metaTagVersionColl = new cApiMetaTagVersionCollection();
         $metaTagVersionColl->create(
             $this->getField('idmetatag'),
@@ -156,7 +177,6 @@ class cApiMetaTag extends Item
             $this->getField('metavalue'),
             $version
         );
-
     }
 
 }

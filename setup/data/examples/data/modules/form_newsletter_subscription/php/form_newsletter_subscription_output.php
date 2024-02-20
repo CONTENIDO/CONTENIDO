@@ -1,14 +1,15 @@
 <?php
+
 /**
  * Description: Newsletter form output
  *
- * @package Module
+ * @package    Module
  * @subpackage FormNewsletterSubscription
- * @author unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (class_exists('NewsletterJobCollection')) {
@@ -24,13 +25,13 @@ if (class_exists('NewsletterJobCollection')) {
      * select (user), text or html OptNewWindow: Open handler window in new
      * browser window?
      */
-    $aSettings = array(
+    $aSettings = [
         'JoinSel' => $oClientLang->getProperty('newsletter', 'joinsel'),
         'JoinMultiple' => $oClientLang->getProperty('newsletter', 'joinmultiple'),
         'JoinGroups' => $oClientLang->getProperty('newsletter', 'joingroups'),
         'JoinMessageType' => $oClientLang->getProperty('newsletter', 'joinmessagetype'),
-        'OptNewWindow' => "CMS_VALUE[4]"
-    );
+        'OptNewWindow' => "CMS_VALUE[4]",
+    ];
 
     $sTemplate = 'get.tpl';
     $cmsLinkeditor = "CMS_LINKEDITOR[1]";
@@ -88,7 +89,7 @@ if (class_exists('NewsletterJobCollection')) {
                 'id' => 'selNewsletterGroup',
                 'cssClass' => 'contact_rowNlGroup',
                 'label' => mi18n("SELECT"),
-                'elementHtml' =>  $oSelGroup->render()
+                'elementHtml' => $oSelGroup->render()
             ];
         }
     }
@@ -110,7 +111,7 @@ if (class_exists('NewsletterJobCollection')) {
             'id' => 'selNewsletterType',
             'cssClass' => 'contact_rowNlType',
             'label' => mi18n("TYPE"),
-            'elementHtml' =>  $oSelType->render()
+            'elementHtml' => $oSelType->render()
         ];
     }
 

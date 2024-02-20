@@ -3,13 +3,13 @@
 /**
  * description: rss creator
  *
- * @package Module
+ * @package    Module
  * @subpackage ContentRssCreator
- * @author timo.trautmann@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo.trautmann@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 $teaserIndex = 5;
@@ -59,7 +59,7 @@ if (cRegistry::getBackendSessionId() === NULL) {
 
     $teaser = new cContentTypeTeaser($contentValue, $teaserIndex, []);
     $articles = $teaser->getConfiguredArticles();
-    $configuration = $teaser->getConfiguration();
+    $configuration = $teaser->getSettings();
 
     $xmlString = '<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"></rss>';
 
@@ -67,13 +67,13 @@ if (cRegistry::getBackendSessionId() === NULL) {
     $rssChannel = $rssFeed->addChild('channel');
     $rssChannel->title = $art->getContent("CMS_TEXT", 1);
     $rssChannel->link = $art->getContent("CMS_TEXT", 2);
-    $rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent("CMS_HTML", 1)));;
+    $rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent("CMS_HTML", 1)));
 
     $imgId = $art->getContent("CMS_IMG", 1);
 
-    if ((int) $imgId > 0) {
+    if ((int)$imgId > 0) {
         $upload = new cApiUpload($imgId);
-        $rssLogo = $cfgClient[$client]['path']['htmlpath'] . 'upload/' . $upload->get('dirname') . $upload->get('filename');
+        $rssLogo = cRegistry::getFrontendUrl() . 'upload/' . $upload->get('dirname') . $upload->get('filename');
 
         $rssImage = $rssChannel->addChild('image');
         $rssImage->url = $rssLogo;

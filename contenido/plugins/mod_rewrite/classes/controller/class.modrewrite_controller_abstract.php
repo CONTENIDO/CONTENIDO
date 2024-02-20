@@ -1,15 +1,15 @@
 <?php
+
 /**
  * AMR abstract controller class
  *
- * @package     Plugin
- * @subpackage  ModRewrite
- * @id          $Id$:
- * @author      Murat Purc <murat@purc.de>
- * @copyright   four for business AG <www.4fb.de>
- * @license     http://www.contenido.org/license/LIZENZ.txt
- * @link        http://www.4fb.de
- * @link        http://www.contenido.org
+ * @package    Plugin
+ * @subpackage ModRewrite
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,11 +17,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Abstract controller for all concrete mod_rewrite controller implementations.
  *
- * @author      Murat Purc <murat@purc.de>
- * @package     Plugin
- * @subpackage  ModRewrite
+ * @author     Murat Purc <murat@purc.de>
+ * @package    Plugin
+ * @subpackage ModRewrite
  */
-abstract class ModRewrite_ControllerAbstract {
+abstract class ModRewrite_ControllerAbstract
+{
 
     /**
      * View object, holds all view variables
@@ -66,6 +67,12 @@ abstract class ModRewrite_ControllerAbstract {
     protected $_contenido;
 
     /**
+     * Plugin name
+     * @var  string
+     */
+    protected $_pluginName;
+
+    /**
      * Template file or template string to render
      * @var  string
      */
@@ -75,7 +82,7 @@ abstract class ModRewrite_ControllerAbstract {
      * Additional properties list
      * @var  array
      */
-    protected $_properties = array();
+    protected $_properties = [];
 
     /**
      * Debug flag
@@ -86,38 +93,41 @@ abstract class ModRewrite_ControllerAbstract {
     /**
      * Constructor, sets some properties by assigning global variables to them.
      */
-    public function __construct() {
-        global $cfg, $client, $area, $action, $frame, $contenido, $sess;
-
+    public function __construct()
+    {
         $this->_oView = new stdClass();
-        $this->_cfg = $cfg;
-        $this->_area = $area;
-        $this->_action = $action;
-        $this->_frame = $frame;
-        $this->_client = $client;
-        $this->_contenido = $contenido;
+        $this->_cfg = cRegistry::getConfig();
+        $this->_area = cRegistry::getArea();
+        $this->_action = cRegistry::getAction();
+        $this->_frame = cRegistry::getFrame();
+        $this->_client = cRegistry::getClientId();
+        $this->_contenido = cRegistry::getBackendSessionId();
+        $this->_pluginName = $this->_cfg['pi_mod_rewrite']['pluginName'];
+        $sess = cRegistry::getSession();
 
         $this->_oView->area = $this->_area;
         $this->_oView->frame = $this->_frame;
         $this->_oView->contenido = $this->_contenido;
         $this->_oView->sessid = $sess->id;
-        $this->_oView->lng_more_informations = i18n('More informations', 'mod_rewrite');
+        $this->_oView->lng_more_information = i18n('More information', $this->_pluginName);
 
         $this->init();
     }
 
     /**
-     * Initializer method, could be overwritten by childs.
+     * Initializer method, could be overwritten by children.
      * This method will be invoked in constructor of ModRewrite_ControllerAbstract.
      */
-    public function init() {
+    public function init()
+    {
     }
 
     /**
      * View property setter.
-     * @param  object  $oView
+     * @param object $oView
      */
-    public function setView($oView) {
+    public function setView($oView)
+    {
         if (is_object($oView)) {
             $this->_oView = $oView;
         }
@@ -127,34 +137,38 @@ abstract class ModRewrite_ControllerAbstract {
      * View property getter.
      * @return  object
      */
-    public function getView() {
+    public function getView()
+    {
         return $this->_oView;
     }
 
     /**
      * Property setter.
-     * @param  string  $key
-     * @param  mixed   $value
+     * @param string $key
+     * @param mixed $value
      */
-    public function setProperty($key, $value) {
+    public function setProperty($key, $value)
+    {
         $this->_properties[$key] = $value;
     }
 
     /**
      * Property getter.
-     * @param   string  $key
-     * @param   mixed   $default
+     * @param string $key
+     * @param mixed $default
      * @return  mixed
      */
-    public function getProperty($key, $default = NULL) {
+    public function getProperty($key, $default = NULL)
+    {
         return (isset($this->_properties[$key])) ? $this->_properties[$key] : $default;
     }
 
     /**
      * Template setter.
-     * @param  string  $sTemplate  Either full path and name of template file or a template string.
+     * @param string $sTemplate Either full path and name of template file or a template string.
      */
-    public function setTemplate($sTemplate) {
+    public function setTemplate($sTemplate)
+    {
         $this->_template = $sTemplate;
     }
 
@@ -162,18 +176,20 @@ abstract class ModRewrite_ControllerAbstract {
      * Template getter.
      * @return  string
      */
-    public function getTemplate() {
+    public function getTemplate()
+    {
         return $this->_template;
     }
 
     /**
      * Renders template by replacing all view variables in template.
-     * @param   string  $template Either full path and name of template file or a template string.
+     * @param string $template Either full path and name of template file or a template string.
      *                  If not passed, previous set template will be used.
+     * @return  void
      * @throws cException if no template is set
-     * @return  string
      */
-    public function render($template = NULL) {
+    public function render($template = NULL)
+    {
         if ($template == NULL) {
             $template = $this->_template;
         }
@@ -194,11 +210,12 @@ abstract class ModRewrite_ControllerAbstract {
      * - Return from $_GET, if found
      * - Return from $_POST, if found
      *
-     * @param   string  $key
-     * @param   mixed   $default  The default value
+     * @param string $key
+     * @param mixed $default The default value
      * @return  mixed
      */
-    protected function _getParam($key, $default = NULL) {
+    protected function _getParam($key, $default = NULL)
+    {
         if (isset($_GET[$key])) {
             return $_GET[$key];
         } elseif (isset($_POST[$key])) {
@@ -210,11 +227,12 @@ abstract class ModRewrite_ControllerAbstract {
 
     /**
      * Returns rendered notification markup by using global $notification variable.
-     * @param   string  $type  One of cGuiNotification::LEVEL_* constants
-     * @param   string  $msg   The message to display
+     * @param string $type One of cGuiNotification::LEVEL_* constants
+     * @param string $msg The message to display
      * @return  string
      */
-    protected function _notifyBox($type, $msg) {
+    protected function _notifyBox($type, $msg)
+    {
         global $notification;
         return $notification->returnNotification($type, $msg) . '<br>';
     }

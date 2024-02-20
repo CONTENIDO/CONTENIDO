@@ -1,11 +1,11 @@
 <!-- template.generic_menu.html -->
-<table id="{MENU_ID}" class="borderless menu_overview_list" width="100%" cellspacing="0" cellpadding="2">
+<table id="{MENU_ID}" class="menu_overview_list">
 
     <!-- BEGIN:BLOCK -->
     <tr {EXTRA}>
-        <td align="left" data-type="icon">{ICON}</td>
-        <td align="left" data-type="item" width="100%" class="text_medium" style="white-space:nowrap" nowrap="nowrap">{NAME}</td>
-        <td valign="top" data-type="actions" align="right" style="white-space:nowrap" nowrap="nowrap">{ACTIONS}</td>
+        <td class="menu_overview_list_icon" data-type="icon">{ICON}</td>
+        <td class="menu_overview_list_item" data-type="item">{NAME}</td>
+        <td class="menu_overview_list_actions" data-type="actions">{ACTIONS}</td>
     </tr>
     <!-- END:BLOCK -->
 

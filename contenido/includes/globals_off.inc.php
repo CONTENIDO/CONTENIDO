@@ -8,15 +8,14 @@
  * variables. This is highly insecure, so variables need to be checked
  * carefully.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Martin Horwarth
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Martin Horwarth
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
-
 
 // Simulate get_magic_quotes_gpc on if turned off
 if (CON_STRIPSLASHES) {
@@ -28,9 +27,9 @@ if (CON_STRIPSLASHES) {
         include_once dirname(__DIR__) . '/classes/class.string.php';
     }
 
-    $_POST = array_map(array('cString', 'addSlashes'), $_POST);
-    $_GET = array_map(array('cString', 'addSlashes'), $_GET);
-    $_COOKIE = array_map(array('cString', 'addSlashes'), $_COOKIE);
+    $_POST = array_map(['cString', 'addSlashes'], $_POST);
+    $_GET = array_map(['cString', 'addSlashes'], $_GET);
+    $_COOKIE = array_map(['cString', 'addSlashes'], $_COOKIE);
 
     $cfg['simulate_magic_quotes'] = true;
 } else {
@@ -51,7 +50,7 @@ $types_to_register = [
     'SERVER'
 ];
 foreach ($types_to_register as $global_type) {
-    $arr = @ ${'_' . $global_type};
+    $arr = ${'_' . $global_type} ?? [];
     if (is_array($arr) && count($arr) > 0) {
         // Second loop to prevent overwriting of globals by other globals'
         // values

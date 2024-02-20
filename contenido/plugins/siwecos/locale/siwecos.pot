@@ -1,0 +1,152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-05 17:43+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: classes/class.siwecos.form.php:56
+msgid "ERR_MISSING_CLIENT"
+msgstr ""
+
+#: classes/class.siwecos.form.php:61
+msgid "ERR_MISSING_LANG"
+msgstr ""
+
+#: classes/class.siwecos.form.php:205
+msgid "ERR_DELETE_ENTITY"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:72
+msgid "DELETE_ENTITY"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:119
+msgid "DELETE_MESSAGE"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:185
+msgid "ERR_LOAD_ENTITY"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:219 includes/include.left_top.php:31
+msgid "ERR_PERMISSION_DENIED"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:226
+msgid "MSG_SELECT_DOMAIN"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:278
+msgid "MSG_DELETED_ENTITY"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:289
+msgid "ERR_UNKNOWN_ACTION"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:366
+msgid "ERR_MISSING_USER_TOKEN"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:375
+msgid "ERR_DOMAIN_NOT_FOUND"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:401
+msgid "BTN_HOWTO"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:516
+msgid "MISSING_REPORT"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:565
+msgid "ERR_MALFORMED_URL"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:574
+msgid "ERR_DOMAIN_EXISTS"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:576
+msgid "ERR_FORM_VALIDATION"
+msgstr ""
+
+#: classes/class.siwecos.gui.php:662 classes/class.siwecos.gui.php:674
+#: classes/class.siwecos.gui.php:707
+msgid "FORM_STORE_ERROR"
+msgstr ""
+
+#: includes/include.left_top.php:24
+msgid "BTN_CREATE"
+msgstr ""
+
+#: templates/template.right_bottom.tpl:5
+msgid "LBL_CONFIGURATION"
+msgstr ""
+
+#: templates/template.right_bottom.tpl:9
+msgid "LBL_DOMAIN"
+msgstr ""
+
+#: templates/template.right_bottom.tpl:18
+msgid "LBL_EMAIL_ADDRESS"
+msgstr ""
+
+#: templates/template.right_bottom.tpl:27
+msgid "LBL_PASSWORD"
+msgstr ""
+
+#: templates/template.right_bottom.tpl:46
+msgid "LBL_DANGER_LEVEL"
+msgstr ""
+
+#: templates/template.right_bottom.tpl:54
+msgid "LBL_USER_TOKEN"
+msgstr ""
+
+#: templates/template.right_bottom.tpl:60
+msgid "LBL_DOMAIN_TOKEN"
+msgstr ""
+
+#: templates/template.right_bottom.tpl:66
+msgid "LBL_AUTHOR"
+msgstr ""
+
+#: templates/template.right_bottom.tpl:72
+msgid "LBL_CREATION_DATE"
+msgstr ""
+
+#: templates/template.siwecos_report.tpl:10
+msgid "TTL_SCAN_RESULTS"
+msgstr ""
+
+#: templates/template.siwecos_report.tpl:22
+#: templates/template.siwecos_report.tpl:46
+msgid "BTN_BACKGROUND_INFO"
+msgstr ""
+
+#: templates/template.siwecos_report.tpl:39
+msgid "BTN_EXPAND"
+msgstr ""
+
+#: templates/template.siwecos_report.tpl:63
+msgid "BTN_START_SCAN"
+msgstr ""
+
+#: templates/template.siwecos_report.tpl:64
+msgid "BTN_SIWECOS_SITE"
+msgstr ""

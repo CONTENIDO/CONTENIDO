@@ -3,22 +3,22 @@
 /**
  * This module handles the breadcrumb output.
  *
- * @package Module
+ * @package    Module
  * @subpackage NavigationBreadcrumb
- * @author dominik.ziegler@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     dominik.ziegler@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // get category path
 $categoryHelper = cCategoryHelper::getInstance();
 $categoryHelper->setAuth(cRegistry::getAuth());
-$categories = $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1);
+$categories = $categoryHelper->getCategoryPath(cRegistry::getCategoryId());
 
 // get breadcrumb (w/o first level)
-$breadcrumb = array();
+$breadcrumb = [];
 foreach ($categories as $categoryLang) {
     $breadcrumb[] = $categoryLang;
 }

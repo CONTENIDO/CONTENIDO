@@ -3,15 +3,15 @@
 /**
  * This file contains the CONTENIDO template functions.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Olaf Niemann
- * @author           Jan Lengowski
- * @author           Munkh-Ulzii Balidar
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Olaf Niemann
+ * @author     Jan Lengowski
+ * @author     Munkh-Ulzii Balidar
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -28,28 +28,26 @@ cInclude("includes", "functions.con.php");
  * @param int $idlay
  * @param int[]|null $c Array of container id (key) and set module ids (value)
  * @param mixed|int $default 1 if template is defined as standard template
- *
- * @return number|mixed <mixed, bool, multitype:>
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @return int|mixed The given $idtpl or -1
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c, $default) {
+function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c, $default)
+{
     $db = cRegistry::getDb();
     $auth = cRegistry::getAuth();
     $cfg = cRegistry::getConfig();
     $client = cRegistry::getClientId();
 
-    $author = (string) $auth->auth['uname'];
+    $author = (string)$auth->auth['uname'];
 
     if (!is_array($c)) {
         $c = [];
     }
 
     $template = new cApiTemplate();
-    /*CON-2545: load template by id and not by its name */
-    $template->loadByMany(array('idclient' => $client, 'idtpl' => $idtpl));
+
+    // CON-2545: load template by id and not by its name
+    $template->loadByMany(['idclient' => $client, 'idtpl' => $idtpl]);
 
     if ($template->isLoaded() && $template->get('idtpl') != $idtpl) {
         cRegistry::addErrorMessage(i18n("Template name already exists"));
@@ -65,7 +63,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         // Insert new entry in the template table
         $templateColl = new cApiTemplateCollection();
         $template = $templateColl->create($client, $idlay, 0, $name, $description, 1, 0, 0);
-        $idtpl = $template->get('idtpl');
+        $idtpl = cSecurity::toInteger($template->get('idtpl'));
 
         // Insert new entry in the template configuration table
         $templateConfColl = new cApiTemplateConfigurationCollection();
@@ -98,7 +96,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         if (is_array($c)) {
             foreach ($c as $idcontainer => $idmodule) {
                 $containerColl2 = new cApiContainerCollection();
-                if ($idmodule != 0 && in_array($idcontainer, $layContainers) ) {
+                if ($idmodule != 0 && in_array($idcontainer, $layContainers)) {
                     $containerColl2->create($idtpl, $idcontainer, $idmodule);
                 }
             }
@@ -110,7 +108,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 
     if ($default == 1) {
         $sql = "UPDATE `%s` SET `defaulttemplate` = 0 WHERE `idclient` = %d AND `idtpl` != %d";
-        $db->query($sql, $cfg["tab"]["tpl"], $client, $template->get('idtpl'));
+        $db->query($sql, $cfg['tab']['tpl'], $client, $template->get('idtpl'));
 
         $template->set('defaulttemplate', 1);
         $template->store();
@@ -133,11 +131,10 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
  *
  * @param int $idtpl
  *         ID of the template to duplicate
- *
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException|cException
  */
-function tplDeleteTemplate($idtpl) {
+function tplDeleteTemplate($idtpl)
+{
     $idtpl = cSecurity::toInteger($idtpl);
 
     // Delete template
@@ -167,13 +164,12 @@ function tplDeleteTemplate($idtpl) {
  * Browse a specific layout for containers
  *
  * @param $idlay
- *
  * @return string
  *         &-separated string of all containers
- *
- * @throws cInvalidArgumentException
+ * @throws cInvalidArgumentException|cDbException
  */
-function tplBrowseLayoutForContainers($idlay) {
+function tplBrowseLayoutForContainers($idlay): string
+{
     global $containerinf;
 
     $cfg = cRegistry::getConfig();
@@ -220,12 +216,11 @@ function tplBrowseLayoutForContainers($idlay) {
  * the list of found container numbers.
  *
  * @param int $idlay
- *
  * @return array
- *
- * @throws cInvalidArgumentException
+ * @throws cInvalidArgumentException|cDbException
  */
-function tplGetContainerNumbersInLayout($idlay) {
+function tplGetContainerNumbersInLayout($idlay): array
+{
     $containerNumbers = [];
 
     tplPreparseLayout($idlay);
@@ -247,7 +242,8 @@ function tplGetContainerNumbersInLayout($idlay) {
  * @return string|null
  *         Container name or null
  */
-function tplGetContainerName($idlay, $container) {
+function tplGetContainerName($idlay, $container): ?string
+{
     global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
@@ -269,7 +265,8 @@ function tplGetContainerName($idlay, $container) {
  * @return string|null
  *         Container name or null
  */
-function tplGetContainerMode($idlay, $container) {
+function tplGetContainerMode($idlay, $container): ?string
+{
     global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
@@ -291,7 +288,8 @@ function tplGetContainerMode($idlay, $container) {
  * @return array
  *         Allowed container types
  */
-function tplGetContainerTypes($idlay, $container) {
+function tplGetContainerTypes($idlay, $container): array
+{
     global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
@@ -320,7 +318,8 @@ function tplGetContainerTypes($idlay, $container) {
  * @return string|null
  *         Default module name or null
  */
-function tplGetContainerDefault($idlay, $container) {
+function tplGetContainerDefault($idlay, $container): ?string
+{
     global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
@@ -337,20 +336,14 @@ function tplGetContainerDefault($idlay, $container) {
  *
  * @param int $idlay
  *         Layout number to browse
- *
- * @throws cInvalidArgumentException
+ * @throws cInvalidArgumentException|cDbException
  */
-function tplPreparseLayout($idlay) {
+function tplPreparseLayout($idlay)
+{
     global $containerinf;
 
     $cfg = cRegistry::getConfig();
     $lang = cRegistry::getLanguageId();
-
-    $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $lang);
-    $code = $layoutInFile->getLayoutCode();
-
-    $parser = new HtmlParser($code);
-    $bIsBody = false;
 
     if (!is_array($containerinf)) {
         $containerinf = [];
@@ -358,6 +351,16 @@ function tplPreparseLayout($idlay) {
     if (!isset($containerinf[$idlay])) {
         $containerinf[$idlay] = [];
     }
+
+    $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $lang);
+    $code = $layoutInFile->getLayoutCode();
+
+    if (!is_string($code)) {
+        return;
+    }
+
+    $parser = new HtmlParser($code);
+    $bIsBody = false;
 
     while ($parser->parse()) {
         if (cString::toLowerCase($parser->getNodeName()) == 'body') {
@@ -388,14 +391,12 @@ function tplPreparseLayout($idlay) {
  *
  * @param int $idtpl
  *         ID of the template to duplicate
- *
  * @return int
  *         ID of the duplicated template
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function tplDuplicateTemplate($idtpl) {
+function tplDuplicateTemplate($idtpl): int
+{
     $auth = cRegistry::getAuth();
     $idtpl = cSecurity::toInteger($idtpl);
     $template = new cApiTemplate($idtpl);
@@ -455,13 +456,12 @@ function tplDuplicateTemplate($idtpl) {
  *
  * @param int $idtpl
  *         Template ID
- *
  * @return bool
  *         is template in use
- *
  * @throws cDbException
  */
-function tplIsTemplateInUse($idtpl) {
+function tplIsTemplateInUse($idtpl): bool
+{
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
     $client = cRegistry::getClientId();
@@ -470,12 +470,12 @@ function tplIsTemplateInUse($idtpl) {
     $sql = "SELECT
                    b.idcatlang, b.name, b.idlang, b.idcat
             FROM
-                " . $cfg["tab"]["cat"] . " AS a,
-                " . $cfg["tab"]["cat_lang"] . " AS b
+                " . $cfg['tab']['cat'] . " AS a,
+                " . $cfg['tab']['cat_lang'] . " AS b
             WHERE
                 a.idclient  = '" . cSecurity::toInteger($client) . "' AND
                 a.idcat     = b.idcat AND
-                b.idtplcfg  IN (SELECT idtplcfg FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtpl = '" . $idtpl . "')
+                b.idtplcfg  IN (SELECT idtplcfg FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtpl = '" . $idtpl . "')
             ORDER BY b.idlang ASC, b.name ASC ";
     $db->query($sql);
     if ($db->numRows() > 0) {
@@ -486,12 +486,12 @@ function tplIsTemplateInUse($idtpl) {
     $sql = "SELECT
                    b.idartlang, b.title, b.idlang, b.idart
             FROM
-                " . $cfg["tab"]["art"] . " AS a,
-                " . $cfg["tab"]["art_lang"] . " AS b
+                " . $cfg['tab']['art'] . " AS a,
+                " . $cfg['tab']['art_lang'] . " AS b
             WHERE
                 a.idclient  = '" . cSecurity::toInteger($client) . "' AND
                 a.idart     = b.idart AND
-                b.idtplcfg IN (SELECT idtplcfg FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtpl = '" . $idtpl . "')
+                b.idtplcfg IN (SELECT idtplcfg FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtpl = '" . $idtpl . "')
             ORDER BY b.idlang ASC, b.title ASC ";
 
     $db->query($sql);
@@ -508,13 +508,12 @@ function tplIsTemplateInUse($idtpl) {
  *
  * @param int $idtpl
  *         Template ID
- *
  * @return array
  *         category name, article name
- *
- * @throws cDbException
+ * @throws cDbException|cInvalidArgumentException
  */
-function tplGetInUsedData($idtpl) {
+function tplGetInUsedData($idtpl): array
+{
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
     $client = cRegistry::getClientId();
@@ -525,12 +524,12 @@ function tplGetInUsedData($idtpl) {
     $sql = "SELECT
                    b.idcatlang, b.name, b.idlang, b.idcat
             FROM
-                " . $cfg["tab"]["cat"] . " AS a,
-                " . $cfg["tab"]["cat_lang"] . " AS b
+                " . $cfg['tab']['cat'] . " AS a,
+                " . $cfg['tab']['cat_lang'] . " AS b
             WHERE
                 a.idclient  = '" . cSecurity::toInteger($client) . "' AND
                 a.idcat     = b.idcat AND
-                b.idtplcfg  IN (SELECT idtplcfg FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtpl = '" . $idtpl . "')
+                b.idtplcfg  IN (SELECT idtplcfg FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtpl = '" . $idtpl . "')
             ORDER BY b.idlang ASC, b.name ASC ";
     $db->query($sql);
     if ($db->numRows() > 0) {
@@ -547,12 +546,12 @@ function tplGetInUsedData($idtpl) {
     $sql = "SELECT
                    b.idartlang, b.title, b.idlang, b.idart
             FROM
-                " . $cfg["tab"]["art"] . " AS a,
-                " . $cfg["tab"]["art_lang"] . " AS b
+                " . $cfg['tab']['art'] . " AS a,
+                " . $cfg['tab']['art_lang'] . " AS b
             WHERE
                 a.idclient  = '" . cSecurity::toInteger($client) . "' AND
                 a.idart     = b.idart AND
-                b.idtplcfg IN (SELECT idtplcfg FROM " . $cfg["tab"]["tpl_conf"] . " WHERE idtpl = '" . $idtpl . "')
+                b.idtplcfg IN (SELECT idtplcfg FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtpl = '" . $idtpl . "')
             ORDER BY b.idlang ASC, b.title ASC ";
 
     $db->query($sql);
@@ -571,19 +570,67 @@ function tplGetInUsedData($idtpl) {
 }
 
 /**
+ * Returns the information about a template and the referenced layout.
+ *
+ * @param int $idtpl Template id
+ * @return array Associative array as follows or an empty array
+ *               <pre>
+ *               [
+ *                   [idtpl] => (int)
+ *                   [name] => (string)
+ *                   [description] => (string)
+ *                   [defaulttemplate] => (int)
+ *                   [idlay] => (int)
+ *                   [laydescription] => (string)
+ *               ]
+ *               </pre>
+ * @throws cDbException|cInvalidArgumentException
+ * @since CONTENIDO 4.10.2
+ */
+function tplGetTplAndLayoutData(int $idtpl): array
+{
+    $db = cRegistry::getDb();
+
+    $sql = "-- tplGetTplAndLayoutData()
+        SELECT
+            a.idtpl,
+            a.name AS name,
+            a.description,
+            a.defaulttemplate,
+            a.idlay,
+            b.description AS laydescription
+        FROM
+            " . cRegistry::getDbTableName('tpl') . " AS a
+        LEFT JOIN
+            " . cRegistry::getDbTableName('lay') . " AS b 
+        ON a.idlay = b.idlay
+        WHERE a.idtpl = " . $idtpl . "
+        ORDER BY name";
+
+    $db->query($sql);
+    if ($db->nextRecord()) {
+        $data = $db->toArray();
+        foreach (['idtpl', 'idlay', 'defaulttemplate'] as $field) {
+            $data[$field] = cSecurity::toInteger($data[$field]);
+        }
+    } else {
+        $data = [];
+    }
+
+    return $data;
+}
+
+/**
  * Copies a complete template configuration
  *
  * @param int $idtplcfg
  *         Template Configuration ID
- *
  * @return int
  *         new template configuration ID
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function tplcfgDuplicate($idtplcfg) {
+function tplcfgDuplicate($idtplcfg): int
+{
     $auth = cRegistry::getAuth();
     $idtplcfg = cSecurity::toInteger($idtplcfg);
     $templateConfig = new cApiTemplateConfiguration($idtplcfg);
@@ -594,11 +641,11 @@ function tplcfgDuplicate($idtplcfg) {
     // Copy template configuration
     $templateConfigColl = new cApiTemplateConfigurationCollection();
     $newTemplateConfig = $templateConfigColl->copyItem($templateConfig, [
-        'author' => (string) $auth->auth['uname'],
+        'author' => (string)$auth->auth['uname'],
         'created' => date('Y-m-d H:i:s'),
         'lastmodified' => date('Y-m-d H:i:s'),
     ]);
-    $newidtplcfg = $newTemplateConfig->get('idtplcfg');
+    $newidtplcfg = cSecurity::toInteger($newTemplateConfig->get('idtplcfg'));
 
     // Copy container configuration from old template configuration to new template configuration
     if ($idtplcfg) {
@@ -619,16 +666,13 @@ function tplcfgDuplicate($idtplcfg) {
  * - If the container mode is fixed, insert the named module (if exists)
  * - If the container mode is mandatory, insert the "default" module (if exists)
  *
- * @todo Default module is only inserted in mandatory mode if container is empty. We need a better logic for handling "changes".
- *
  * @param int $idtpl
- *
  * @return bool
- *
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException|cException
+ * @todo Default module is only inserted in mandatory mode if container is empty. We need a better logic for handling "changes".
  */
-function tplAutoFillModules($idtpl) {
+function tplAutoFillModules($idtpl): bool
+{
     global $db_autofill, $containerinf, $_autoFillContainerCache;
 
     $cfg = cRegistry::getConfig();
@@ -639,7 +683,7 @@ function tplAutoFillModules($idtpl) {
     }
 
     // Get layout id
-    $db_autofill->query("SELECT idlay FROM `%s` WHERE idtpl = %d", $cfg["tab"]["tpl"], $idtpl);
+    $db_autofill->query("SELECT idlay FROM `%s` WHERE idtpl = %d", $cfg['tab']['tpl'], $idtpl);
     if (!$db_autofill->nextRecord()) {
         return false;
     }
@@ -662,7 +706,7 @@ function tplAutoFillModules($idtpl) {
             case "fixed":
                 if ($currContainerInfo["default"] != "") {
                     $db_autofill->query(
-                        "SELECT idmod FROM `%s` WHERE name = '%s'", $cfg["tab"]["mod"], $currContainerInfo["default"]
+                        "SELECT idmod FROM `%s` WHERE name = '%s'", $cfg['tab']['mod'], $currContainerInfo["default"]
                     );
 
                     if ($db_autofill->nextRecord()) {
@@ -688,7 +732,7 @@ function tplAutoFillModules($idtpl) {
             case "mandatory":
                 if ($currContainerInfo["default"] != "") {
                     $db_autofill->query(
-                        "SELECT idmod FROM `%s` WHERE name = '%s'", $cfg["tab"]["mod"], $currContainerInfo["default"]
+                        "SELECT idmod FROM `%s` WHERE name = '%s'", $cfg['tab']['mod'], $currContainerInfo["default"]
                     );
 
                     if ($db_autofill->nextRecord()) {
@@ -714,16 +758,15 @@ function tplAutoFillModules($idtpl) {
  * Takes over send container configuration data, stores send data (via POST) by article
  * or template configuration in container configuration table.
  *
- * @param int   $idtpl
- * @param int   $idtplcfg
+ * @param int $idtpl
+ * @param int $idtplcfg
  * @param array $postData
  *         Usually $_POST
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function tplProcessSendContainerConfiguration($idtpl, $idtplcfg, array $postData) {
+function tplProcessSendContainerConfiguration($idtpl, $idtplcfg, array $postData)
+{
     $containerColl = new cApiContainerCollection();
     $containerConfColl = new cApiContainerConfigurationCollection();
     $containerData = [];

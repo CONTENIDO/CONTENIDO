@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the test case class.
  *
- * @package          Testing
- * @subpackage       Helper
- * @author           Dominik Ziegler
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Testing
+ * @subpackage Helper
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 use PHPUnit\Framework\TestCase;
@@ -18,10 +19,11 @@ use PHPUnit\Framework\Assert;
 
 /**
  * CONTENIDO test case class
- * @package          Testing
- * @subpackage       Helper
+ * @package    Testing
+ * @subpackage Helper
  */
-abstract class cTestingTestCase extends TestCase {
+abstract class cTestingTestCase extends TestCase
+{
     /**
      * Name of the test case
      * @var string
@@ -35,28 +37,23 @@ abstract class cTestingTestCase extends TestCase {
     protected static $_testDirectories = array();
 
     /**
-     * Original database prefix
-     * @var
-     * @deprecated Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
+     * @deprecated [2019-11-25] Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
      */
     protected static $_originalSqlPrefix;
 
     /**
-     * Sets the original database prefix
-     * @param $sqlPrefix
-     * @deprecated Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
+     * @deprecated [2019-11-25] Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
      */
-    public static function setOriginalSqlPrefix($sqlPrefix) {
+    public static function setOriginalSqlPrefix($sqlPrefix)
+    {
         self::$_originalSqlPrefix = $sqlPrefix;
     }
 
     /**
-     * Creates a test suite.
-     * @return TestSuite
-     * @throws cTestingException
-     * @deprecated Since 4.10.2, test suites are defined in the phpunit.xml
+     * @deprecated [2019-11-25] Since 4.10.2, test suites are defined in the phpunit.xml
      */
-    protected static function _createSuite() {
+    protected static function _createSuite()
+    {
         if (self::$_testCaseName == '') {
             throw new cTestingException("No name provided for test case.");
         }
@@ -65,13 +62,10 @@ abstract class cTestingTestCase extends TestCase {
     }
 
     /**
-     * Adds test files to the given test suite and returns it.
-     * @param TestSuite $suite
-     *
-     * @return TestSuite
-     * @deprecated Since 4.10.2, test files for test suites are defined in the phpunit.xml
+     * @deprecated [2019-11-25] Since 4.10.2, test files for test suites are defined in the phpunit.xml
      */
-    protected static function _addTestFiles(TestSuite $suite) {
+    protected static function _addTestFiles(TestSuite $suite)
+    {
         if (count(self::$_testDirectories) == 0) {
             throw new cTestingException("No directories specified for test case.");
         }
@@ -96,7 +90,8 @@ abstract class cTestingTestCase extends TestCase {
      *      - https://github.com/sebastianbergmann/phpunit/issues/3338
      *      - https://github.com/sebastianbergmann/phpunit/issues/3339
      */
-    protected function _readAttribute($object, $attributeName) {
+    protected function _readAttribute($object, $attributeName)
+    {
 //        return Assert::readAttribute($classOrObject, $attributeName);
         $reflector = new ReflectionObject($object);
         $property = $reflector->getProperty($attributeName);
@@ -113,7 +108,8 @@ abstract class cTestingTestCase extends TestCase {
      *      - https://github.com/sebastianbergmann/phpunit/issues/3338
      *      - https://github.com/sebastianbergmann/phpunit/issues/3339
      */
-    protected function _callMethod($reflection, $obj, $methodName, $params) {
+    protected function _callMethod($reflection, $obj, $methodName, $params)
+    {
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 
@@ -127,7 +123,8 @@ abstract class cTestingTestCase extends TestCase {
      * @return array
      * @throws cTestingException
      */
-    protected function _fetchSqlFileContent($databaseTable) {
+    protected function _fetchSqlFileContent($databaseTable)
+    {
         $cfg = cRegistry::getConfig();
 
         $fileName = CON_TEST_PATH . '/sql/test_' . $databaseTable . '.sql';
@@ -139,12 +136,12 @@ abstract class cTestingTestCase extends TestCase {
             throw new cTestingException('Current used database SQL prefix does not match the required test prefix - can not proceed.');
         }
 
-        $sqlStatements = array();
+        $sqlTemplate = new cSqlTemplate();
+        $sqlStatements = [];
         $content = file($fileName);
         $lineBuffer = '';
         foreach ($content as $fileLine) {
-            $lineBuffer .= str_replace('!PREFIX!', $cfg['sql']['sqlprefix'], $fileLine);
-
+            $lineBuffer .= $sqlTemplate->parse($fileLine);
             if (cString::getPartOfString(trim($fileLine), -1) == ';') {
                 $sqlStatements[] = $lineBuffer;
                 $lineBuffer = '';
@@ -164,11 +161,12 @@ abstract class cTestingTestCase extends TestCase {
      * This function should be invoked within the setUp() function of the test case, and it requires
      * a defined $_tables property.
      *
-     * @global $cfg
      * @throws cDbException
      * @throws cTestingException
+     * @global $cfg
      */
-    protected function setUpTestCaseDbTables() {
+    protected function setUpTestCaseDbTables()
+    {
         global $cfg; // don't use cRegistry!
 
         if (!isset($this->_tables) || !is_array($this->_tables)) {
@@ -180,7 +178,7 @@ abstract class cTestingTestCase extends TestCase {
             $cfg['tab'][$table] = $table;
         }
 
-        // Ensure to remove any left over tables from previous tests, e. g. failed tests!
+        // Ensure to remove any leftover tables from previous tests, e.g. failed tests!
         $sql = SqlItemCollection::getDeleteStatement($this->_tables);
         cRegistry::getDb()->query($sql);
     }
@@ -190,11 +188,12 @@ abstract class cTestingTestCase extends TestCase {
      * This function should be invoked within the tearDown() function of the test case, and it requires
      * a defined $_tables property.
      *
-     * @global $cfg
      * @throws cDbException
      * @throws cTestingException
+     * @global $cfg
      */
-    protected function tearDownTestCaseDbTables() {
+    protected function tearDownTestCaseDbTables()
+    {
         global $cfg; // don't use cRegistry!
 
         if (!isset($this->_tables) || !is_array($this->_tables)) {

@@ -1,6 +1,11 @@
 .cms_abstract_img {
-    margin: 2px 2px 0;
     z-index: 2147483647 !important;
+}
+
+/* Reset image z-index when WYSIWYG editor is in fullscreen mode or a parent has the overlay class */
+.mce-fullscreen .cms_abstract_img,
+.cms_has_overlay .cms_abstract_img {
+    z-index: auto !important;
 }
 
 .cms_abstract {
@@ -20,6 +25,13 @@
     margin: 0;
     padding: 0;
     line-height: 100%;
+}
+
+.cms_abstract,
+.cms_abstract * {
+    font-family: verdana, arial, helvetica, sans-serif !important;
+    color: #000 !important;
+    font-size: 12px !important;
 }
 
 .cms_abstract .close {

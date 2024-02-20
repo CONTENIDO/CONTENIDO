@@ -3,14 +3,13 @@
 /**
  * This file contains the visible adv debug class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
- *
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -19,17 +18,20 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Debug object to show info on screen in a box / HTML Block at the top of page.
  * Instead of doing the output immediately using method show, values can be
  * collected and printed to screen in one go.
- * Therefore there's a box positioned at the left top of the page that can be
+ * Therefore, there's a box positioned at the left top of the page that can be
  * toggled and hidden.
  *
  * Please note:
  * When using method Debug_VisibleAdv::showAll() you'll produce invalid HTML
  * when having an XHTML doctype.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
  */
-class cDebugVisibleAdv implements cDebugInterface, Countable {
+class cDebugVisibleAdv implements cDebugInterface, Countable
+{
+
+    use cDebugVisibleTrait;
 
     /**
      * Singleton instance
@@ -42,22 +44,23 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      *
      * @var array
      */
-    private $_aItems;
+    protected $_aItems;
 
     /**
      *
      * @var string
      */
-    private $_buffer;
+    protected $_buffer;
 
     /**
      * Return singleton instance.
      *
      * @return cDebugVisibleAdv
      */
-    public static function getInstance() {
+    public static function getInstance(): cDebugInterface
+    {
         if (self::$_instance == NULL) {
-            self::$_instance = new cDebugVisibleAdv();
+            self::$_instance = new self();
         }
 
         return self::$_instance;
@@ -66,8 +69,10 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     /**
      * Constructor to create an instance of this class.
      */
-    private function __construct() {
-        $this->_aItems = array();
+    private function __construct()
+    {
+        $this->_aItems = [];
+        $this->_buffer = '';
     }
 
     /**
@@ -76,7 +81,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      * @param mixed $mVariable
      * @param string $sVariableDescription [optional]
      */
-    public function add($mVariable, $sVariableDescription = '') {
+    public function add($mVariable, $sVariableDescription = '')
+    {
         $oItem = new cDebugVisibleAdvItem();
         $oItem->setValue($mVariable);
         $oItem->setDescription($sVariableDescription);
@@ -86,46 +92,83 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     /**
      * Reset internal collection with Debug items.
      */
-    public function reset() {
-        $this->_aItems = array();
+    public function reset()
+    {
+        $this->_aItems = [];
     }
 
     /**
      * Writes a line.
      *
-     * @see cDebugInterface::out()
      * @param string $sText
+     * @see cDebugInterface::out()
      */
-    public function out($sText) {
+    public function out($sText)
+    {
         $this->_buffer .= $sText . "\n";
     }
 
     /**
      * Outputs all Debug items in collection to screen in a HTML Box at left top
-     * of page.
+     * of the page.
+     *
+     * The alignment can be configured via setting:
+     * - Type: 'debug'
+     * - Name: 'debug_to_screen_align'
+     * - Value: 'left' or 'right' (default is 'left')
+     * 
+     * The output of the debug box can be configured for specific backend frame/frames via setting:
+     * - Type: 'debug'
+     * - Name: 'debug_to_screen_in_backend_frames'
+     * - Value: Comma separated list of frame numbers, e.g. 
+     *      - '1,2' (frame 1 & 2) 
+     *      - '3,4' (frame 3 & 4)
+     *      - '2,3,' (frame 2 & 3, and other frame having no number)
+     * 
+     * No output happens in case of an Ajax request.
      *
      * @throws cInvalidArgumentException
      */
-    public function showAll() {
-        global $cfg;
+    public function showAll()
+    {
+        if (cIsAjaxRequest()) {
+            return;
+        }
 
-        $sHtml = "";
+        $cfg = cRegistry::getConfig();
+
+        $cssClass = $this->_getAlignmentCssClass();
+
+        // Check if the debug box is to show in current backend frame
+        if (!$this->_isDebugBoxToShow()) {
+            return;
+        }
+
+        if (!empty($this->_buffer)) {
+            // Add buffer as a debug item
+            $this->add($this->_buffer, 'Buffer');
+        }
+
+        $sHtml = '';
         if ($this->count() > 0) {
             $tpl = new cTemplate();
+
+            $tpl->set('s', 'STYLES', $this->_getStyles());
+            $tpl->set('s', 'DBG_BOX_CSS_CLASS', $cssClass);
 
             $i = 1;
             foreach ($this->_aItems as $oItem) {
                 $sItemName = cString::getStringLength($oItem->getDescription()) > 0 ? $oItem->getDescription() : ('debug item #' . $i);
                 $sItemValue = $this->_prepareValue($oItem->getValue());
 
-                $tpl->set("d", "DBG_ITEM_COUNT", $i);
-                $tpl->set("d", "DBG_ITEM_NAME", $sItemName);
-                $tpl->set("d", "DBG_ITEM_VALUE", $sItemValue);
+                $tpl->set('d', 'DBG_ITEM_COUNT', $i);
+                $tpl->set('d', 'DBG_ITEM_NAME', $sItemName);
+                $tpl->set('d', 'DBG_ITEM_VALUE', $sItemValue);
                 $tpl->next();
 
                 ++$i;
             }
-            $sHtml .= $tpl->generate($cfg['path']['contenido'] . $cfg["path"]["templates"] . $cfg['templates']['debug_visibleadv'], true);
+            $sHtml .= $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['debug_visibleadv'], true);
         }
 
         $buffer = str_replace("\'", "\\'", $this->_buffer);
@@ -135,11 +178,11 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 
         // making sure that the working directory is right
         $dir = getcwd();
-        chdir($cfg['path']['contenido']);
+        chdir(cRegistry::getBackendPath());
 
         $tpl = new cTemplate();
-        $tpl->set("s", "DBG_MESSAGE_CONTENT", $buffer);
-        $sHtml .= $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["debug_header"], true);
+        $tpl->set('s', 'DBG_MESSAGE_CONTENT', $buffer);
+        $sHtml .= $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['debug_header'], true);
 
         // switching back to the old directory if needed
         chdir($dir);
@@ -154,68 +197,19 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      *
      * @return string
      */
-    private function _prepareValue($mValue) {
-        $bTextarea = false;
-        $bPlainText = false;
-        $sReturn = '';
-        if (is_array($mValue)) {
-            if (sizeof($mValue) > 10) {
-                $bTextarea = true;
-            } else {
-                $bPlainText = true;
-            }
-        }
-        if (is_object($mValue)) {
-            $bTextarea = true;
-        }
-        if (is_string($mValue)) {
-            if (preg_match('/<(.*)>/', $mValue)) {
-                if (cString::getStringLength($mValue) > 40) {
-                    $bTextarea = true;
-                } else {
-                    $bPlainText = true;
-                    $mValue = conHtmlSpecialChars($mValue);
-                }
-            } else {
-                $bPlainText = true;
-            }
-        }
-
-        if ($bTextarea === true) {
-            $sReturn .= '<textarea rows="14" cols="100">';
-        } elseif ($bPlainText === true) {
-            $sReturn .= '<pre>';
-        } else {
-            $sReturn .= '<pre>';
-        }
-
-        if (is_array($mValue)) {
-            $sReturn .= print_r($mValue, true);
-        } else {
-            ob_start();
-            var_dump($mValue);
-            $sReturn .= ob_get_contents();
-            ob_end_clean();
-        }
-
-        if ($bTextarea === true) {
-            $sReturn .= '</textarea>';
-        } elseif ($bPlainText === true) {
-            $sReturn .= '</pre>';
-        } else {
-            $sReturn .= '</pre>';
-        }
-
-        return $sReturn;
+    private function _prepareValue($mValue): string
+    {
+        return $this->_prepareDumpValue($mValue);
     }
 
     /**
-     * Implemenation of Countable interface
+     * Implementation of Countable interface
      *
      * @return int
      */
-    public function count() {
-        return sizeof($this->_aItems);
+    public function count(): int
+    {
+        return (int)sizeof($this->_aItems);
     }
 
     /**
@@ -228,14 +222,37 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      * @param bool $bExit [optional]
      *         If set to true, your app will die() after output of current var.
      */
-    public function show($mVariable, $sVariableDescription = '', $bExit = false) {
+    public function show($mVariable, $sVariableDescription = '', $bExit = false)
+    {
         try {
             $oDbgVisible = cDebug::getDebugger(cDebug::DEBUGGER_VISIBLE);
+            $oDbgVisible->show($mVariable, $sVariableDescription, $bExit);
         } catch (Exception $e) {
             // throw $e;
             echo $e->getMessage();
         }
-        $oDbgVisible->show($mVariable, $sVariableDescription, $bExit);
+    }
+
+    protected function _getAlignmentCssClass(): string
+    {
+        $alignment = cEffectiveSetting::get('debug', 'debug_to_screen_align', 'left');
+        return $alignment === 'right' ? 'cms_debug_box_align_right' : 'cms_debug_box_align_left';
+    }
+
+    protected function _isDebugBoxToShow(): bool
+    {
+        if (cRegistry::getBackendSessionId()) {
+            $showInFrames =  cEffectiveSetting::get('debug', 'debug_to_screen_in_backend_frames', '');
+            if (!empty($showInFrames)) {
+                $showInFrames = explode(',', $showInFrames);
+                $showInFrames = array_map('trim', $showInFrames);
+                if (!in_array(cRegistry::getFrame(), $showInFrames)) {
+                    return false;
+                }
+            }
+        }        
+
+        return true;
     }
 
 }
@@ -243,10 +260,11 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 /**
  * An object representing one Debug item of a Debug_VisibleBlock.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
  */
-class cDebugVisibleAdvItem {
+class cDebugVisibleAdvItem
+{
 
     /**
      *
@@ -265,7 +283,8 @@ class cDebugVisibleAdvItem {
      *
      * @return mixed
      */
-    public function getValue() {
+    public function getValue()
+    {
         return $this->_mValue;
     }
 
@@ -274,7 +293,8 @@ class cDebugVisibleAdvItem {
      *
      * @param mixed $mValue
      */
-    public function setValue($mValue) {
+    public function setValue($mValue)
+    {
         $this->_mValue = $mValue;
     }
 
@@ -283,7 +303,8 @@ class cDebugVisibleAdvItem {
      *
      * @return string
      */
-    public function getDescription() {
+    public function getDescription(): string
+    {
         return $this->_sDescription;
     }
 
@@ -292,7 +313,8 @@ class cDebugVisibleAdvItem {
      *
      * @param string $sDescription
      */
-    public function setDescription($sDescription) {
+    public function setDescription(string $sDescription)
+    {
         $this->_sDescription = $sDescription;
     }
 

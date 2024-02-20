@@ -7,26 +7,27 @@
  * @subpackage Setup
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $cfg;
+global $cfg, $lang;
 
 // Report all errors except warnings
-error_reporting(E_ALL ^E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE);
 
 header('Content-Type: text/html; charset=ISO-8859-1');
 
 /**
  * Setup file inclusion
  *
- * @param  string  $filename
+ * @param string $filename
  */
-function checkAndInclude($filename) {
+function checkAndInclude(string $filename)
+{
     if (file_exists($filename) && is_readable($filename)) {
         include_once($filename);
     } else {
@@ -41,16 +42,16 @@ function checkAndInclude($filename) {
 
 include_once(__DIR__ . '/defines.php');
 
-// Check minimum required PHP version in the 'first' line
-if (version_compare(PHP_VERSION, CON_SETUP_MIN_PHP_VERSION, '<')) {
-    die(sprintf("You need PHP >= %s for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: %s\n", CON_SETUP_MIN_PHP_VERSION, PHP_VERSION));
-}
-
 // Include the environment definer file
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/environment.php');
 
 // Include CONTENIDO defines
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/includes/defines.php');
+
+// Check minimum required PHP version in the 'first' line
+if (version_compare(PHP_VERSION, CON_MIN_PHP_VERSION, '<')) {
+    die(sprintf("You need PHP >= %s for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: %s\n", CON_MIN_PHP_VERSION, PHP_VERSION));
+}
 
 // Include cStringMultiByteWrapper and cString
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.string.multi.byte.wrapper.php');
@@ -83,7 +84,7 @@ if (is_array($_REQUEST)) {
 }
 
 // Set max_execution_time
-$maxExecutionTime = (int) ini_get('max_execution_time');
+$maxExecutionTime = (int)ini_get('max_execution_time');
 if ($maxExecutionTime < 60 && $maxExecutionTime !== 0) {
     ini_set('max_execution_time', 60);
 }
@@ -94,8 +95,14 @@ checkAndInclude($cfg['path']['contenido_config'] . 'config.path.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'config.misc.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
+// Include registry class, initialize language and encoding. We need to set a dummy language with
+// proper encoding to use functions like `conHtmlSpecialChars()`, `conHtmlentities`()`, etc.
+checkAndInclude($cfg['path']['contenido'] . 'classes/class.registry.php');
+$lang = 1;
+cRegistry::setAppVar('languageEncodings', [$lang => 'utf-8']);
+
 // Takeover configured PHP settings and set some PHP settings
-setupUpdateConfig();
+setupUpdatePHPConfig();
 
 // Initialization of autoloader
 checkAndInclude($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
@@ -120,6 +127,8 @@ checkAndInclude(CON_SETUP_PATH . '/lib/functions.phpinfo.php');
 checkAndInclude(CON_SETUP_PATH . '/lib/functions.libraries.php');
 checkAndInclude(CON_SETUP_PATH . '/lib/functions.sql.php');
 checkAndInclude(CON_SETUP_PATH . '/lib/class.setupmask.php');
+
+$sNotInstallableReason = '';
 
 // PHP version check
 if (false === isPHPCompatible()) {

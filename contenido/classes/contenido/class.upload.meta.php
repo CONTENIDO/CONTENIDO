@@ -3,13 +3,13 @@
 /**
  * This file contains the upload meta collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Upload meta collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiUploadMeta createNewItem
+ * @method cApiUploadMeta|bool next
  */
-class cApiUploadMetaCollection extends ItemCollection {
+class cApiUploadMetaCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['upl_meta'], 'id_uplmeta');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('upl_meta'), 'id_uplmeta');
         $this->_setItemClass('cApiUploadMeta');
 
         // set the join partners so that joins can be used via link() method
@@ -38,30 +41,30 @@ class cApiUploadMetaCollection extends ItemCollection {
     /**
      * Creates a upload meta entry.
      *
-     * @param int     $idupl
-     * @param int     $idlang
-     * @param string  $medianame       [optional]
-     * @param string  $description     [optional]
-     * @param string  $keywords        [optional]
-     * @param string  $internal_notice [optional]
-     * @param string  $copyright       [optional]
-     * @param string  $author          [optional]
-     * @param string  $created         [optional]
-     * @param string  $modified        [optional]
-     * @param string  $modifiedby      [optional]
+     * @param int $idupl
+     * @param int $idlang
+     * @param string $medianame [optional]
+     * @param string $description [optional]
+     * @param string $keywords [optional]
+     * @param string $internal_notice [optional]
+     * @param string $copyright [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $modified [optional]
+     * @param string $modifiedby [optional]
      *
      * @return cApiUploadMeta
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
-     * @global object $auth
      */
     public function create($idupl, $idlang, $medianame = '', $description = '',
-            $keywords = '', $internal_notice = '', $copyright = '', $author = '',
-            $created = '', $modified = '', $modifiedby = '') {
-        global $auth;
+                           $keywords = '', $internal_notice = '', $copyright = '', $author = '',
+                           $created = '', $modified = '', $modifiedby = '')
+    {
 
         if (empty($author)) {
+            $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
@@ -93,7 +96,7 @@ class cApiUploadMetaCollection extends ItemCollection {
 /**
  * Upload meta item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiUploadMeta extends Item
@@ -107,10 +110,10 @@ class cApiUploadMeta extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['upl_meta'], 'id_uplmeta');
-        $this->setFilters(array(), array());
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('upl_meta'), 'id_uplmeta');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -123,14 +126,15 @@ class cApiUploadMeta extends Item
      * @param int $idlang
      *
      * @return bool
-     * 
+     *
      * @throws cException
      */
-    public function loadByUploadIdAndLanguageId($idupl, $idlang) {
-        $aProps = array(
+    public function loadByUploadIdAndLanguageId($idupl, $idlang)
+    {
+        $aProps = [
             'idupl' => $idupl,
-            'idlang' => $idlang
-        );
+            'idlang' => $idlang,
+        ];
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
             // entry in cache found, load entry from cache
@@ -143,7 +147,7 @@ class cApiUploadMeta extends Item
     }
 
     /**
-     * Userdefined setter for upload meta fields.
+     * User-defined setter for upload meta fields.
      *
      * @param string $name
      * @param mixed $value
@@ -152,11 +156,12 @@ class cApiUploadMeta extends Item
      *
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idupl':
             case 'idlang':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

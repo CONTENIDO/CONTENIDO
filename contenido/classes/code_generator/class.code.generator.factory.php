@@ -7,9 +7,9 @@
  * @subpackage ContentType
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,24 +20,25 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage ContentType
  */
-class cCodeGeneratorFactory {
+class cCodeGeneratorFactory
+{
 
     /**
-     * Returns code generator instance by it's name.
+     * Returns code generator instance by its name.
      *
      * @param string $name [optional]
      *         The generator name, e.g. 'Standard' to retrieve instance of
      *         cCodeGeneratorStandard.
-     * 
+     *
      * @return cCodeGeneratorAbstract
-     *                     
+     *
      * @throws cInvalidArgumentException
      *         If name is invalid, class file is missing or class isn't available.
      */
-    public static function getInstance($name = '') {
-        global $cfg;
-
+    public static function getInstance($name = '')
+    {
         if ($name == '') {
+            $cfg = cRegistry::getConfig();
             $name = $cfg['code_generator']['name'];
         }
 

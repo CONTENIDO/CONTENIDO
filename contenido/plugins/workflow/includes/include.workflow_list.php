@@ -1,32 +1,33 @@
 <?php
+
 /**
  * This file contains the workflow list.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $idworkflow;
+/**
+ * @var array $cfg
+ */
 
-$iIdMarked = cSecurity::toInteger($_GET['idworkflow']);
-
-plugin_include('workflow', 'classes/class.workflow.php');
+$requestIdWorkflow = cSecurity::toInteger($_GET['idworkflow'] ?? '0');
 
 $page = new cGuiPage('workflow_list', 'workflow');
 $page->addStyle('workflow.css');
 $workflows = new Workflows();
-$client = cRegistry::getClientId();
-$lang = cRegistry::getLanguageId();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
 $delTitle = i18n('Delete workflow', 'workflow');
 
-$page->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+$page->addScript('parameterCollector.js');
 
 $ui = new cGuiMenu();
 $workflows->select("idclient = '$client' AND idlang = '$lang'");
@@ -42,22 +43,23 @@ while (($workflow = $workflows->next()) !== false) {
     // Create the link to show/edit the workflow
     $link = new cHTMLLink();
     $link->setClass('show_item')
-        ->setLink('javascript:;')
+        ->setLink('javascript:void(0)')
         ->setAlt($wfdescription)
         ->setAttribute('data-action', 'workflow_show');
     $ui->setLink($wfid, $link);
 
     // Delete recipient
-    $image = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+    $image = new cHTMLImage($cfg['path']['images'] . 'delete.gif');
     $image->setAlt($delTitle);
     $delete = new cHTMLLink();
-    $delete->setLink('javascript:;')
+    $delete->setLink('javascript:void(0)')
+        ->setClass('con_img_button')
         ->setAlt($delTitle)
         ->setAttribute('data-action', 'workflow_delete')
         ->setContent($image->render());
     $ui->setActions($wfid, 'delete', $delete->render());
 
-    if ($wfid == $iIdMarked) {
+    if ($wfid == $requestIdWorkflow) {
         $ui->setMarked($wfid);
     }
 }

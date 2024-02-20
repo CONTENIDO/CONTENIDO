@@ -1,14 +1,23 @@
-
 <!-- siwecos/templates/template.left_bottom.html -->
 
 <script type="text/javascript">
-    (function(Con, $) {
+    (function (Con, $) {
         var area = 'siwecos';
 
         function actionShowSiwecos($row, id) {
             Con.multiLink(
-                'right_top', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 3, idsiwecos: id}),
-                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: 'siwecos_show', frame: 4, idsiwecos: id})
+                'right_top', Con.UtilUrl.build('main.php', {
+                    area: area,
+                    action: '',
+                    frame: 3,
+                    idsiwecos: id
+                }),
+                'right_bottom', Con.UtilUrl.build('main.php', {
+                    area: area,
+                    action: 'siwecos_show',
+                    frame: 4,
+                    idsiwecos: id
+                })
             );
             Con.ParameterCollector.register('idsiwecos', id);
         }
@@ -18,15 +27,25 @@
         function actionDeleteSiwecos($row, id) {
             var deleteMessage = "{DELETE_MESSAGE}",
                 name = $row.find('[data-type="item"]').text();
-            Con.showConfirmation(deleteMessage.replace('%s', name), function() {
+            Con.showConfirmation(deleteMessage.replace('%s', name), function () {
                 Con.multiLink(
-                    'right_top', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 3, idsiwecos: id}),
-                    'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: 'siwecos_delete', frame: 4, idsiwecos: id})
+                    'right_top', Con.UtilUrl.build('main.php', {
+                        area: area,
+                        action: '',
+                        frame: 3,
+                        idsiwecos: id
+                    }),
+                    'right_bottom', Con.UtilUrl.build('main.php', {
+                        area: area,
+                        action: 'siwecos_delete',
+                        frame: 4,
+                        idsiwecos: id
+                    })
                 );
             });
         }
 
-        $('#generic_menu_list [data-action]').live('click', function() {
+        $('#generic_menu_list [data-action]').live('click', function () {
             var action = $(this).data('action'),
                 $row = $(this).closest('[data-id]'),
                 id = $row.data('id');

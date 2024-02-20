@@ -3,14 +3,13 @@
 /**
  * This file contains the generic db class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB
- *
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -19,10 +18,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Class cGenericDb.
  * Handles the generic execution of callbacks.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB
  */
-class cGenericDb {
+class cGenericDb
+{
 
     /**
      * Callbacks are executed before a item is created.
@@ -103,16 +103,14 @@ class cGenericDb {
      *
      * @var array
      */
-    private static $_callbacks = array();
+    private static $_callbacks = [];
 
     /**
      * Registers a new callback.
      *
      * Example:
-     * cGenericDb::register(cGenericDb::CREATE_SUCCESS, 'itemCreateHandler',
-     * 'cApiArticle');
-     * cGenericDb::register(cGenericDb::CREATE_SUCCESS,
-     * array('cCallbackHandler', 'executeCreateHandle'), 'cApiArticle');
+     * cGenericDb::register(cGenericDb::CREATE_SUCCESS, 'itemCreateHandler', 'cApiArticle');
+     * cGenericDb::register(cGenericDb::CREATE_SUCCESS, ['cCallbackHandler', 'executeCreateHandle'], 'cApiArticle');
      *
      * @param string $event
      *         Callback event, must be a valid value of a cGenericDb event constant
@@ -124,7 +122,8 @@ class cGenericDb {
      * @throws cInvalidArgumentException
      *         if event or class are not set or the callback is not callable
      */
-    public static function register($event, $callback, $class) {
+    public static function register($event, $callback, $class)
+    {
         if (isset($event) === false) {
             throw new cInvalidArgumentException("No callback event for execution was given");
         }
@@ -160,7 +159,8 @@ class cGenericDb {
      * @throws cInvalidArgumentException
      *         if the event or the class are not set
      */
-    public static function unregister($event, $class) {
+    public static function unregister($event, $class)
+    {
         if (isset($event) === false) {
             throw new cInvalidArgumentException("No callback event for execution was given");
         }
@@ -190,7 +190,8 @@ class cGenericDb {
      * @throws cInvalidArgumentException
      *         if the event or class is not set
      */
-    protected final function _executeCallbacks($event, $class, $arguments = array()) {
+    protected final function _executeCallbacks($event, $class, $arguments = [])
+    {
         if (isset($event) === false) {
             throw new cInvalidArgumentException("No callback event for execution was given");
         }

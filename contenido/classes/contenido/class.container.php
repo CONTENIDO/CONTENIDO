@@ -3,13 +3,13 @@
 /**
  * This file contains the container collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,10 +17,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Container collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiContainer createNewItem
+ * @method cApiContainer|bool next
  */
-class cApiContainerCollection extends ItemCollection {
+class cApiContainerCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
@@ -30,9 +33,9 @@ class cApiContainerCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct($select = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['container'], 'idcontainer');
+    public function __construct($select = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('container'), 'idcontainer');
         $this->_setItemClass('cApiContainer');
 
         // set the join partners so that joins can be used via link() method
@@ -55,7 +58,8 @@ class cApiContainerCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idtpl, $number, $idmod) {
+    public function create($idtpl, $number, $idmod)
+    {
         $item = $this->createNewItem();
 
         $item->set('idtpl', $idtpl);
@@ -73,8 +77,9 @@ class cApiContainerCollection extends ItemCollection {
      * @return array
      * @throws cDbException
      */
-    public function getNumbersByTemplate($idtpl) {
-        $list = array();
+    public function getNumbersByTemplate($idtpl)
+    {
+        $list = [];
         $sql = "SELECT number FROM `%s` WHERE idtpl = %d";
         $this->db->query($sql, $this->table, $idtpl);
         while ($this->db->nextRecord()) {
@@ -91,8 +96,9 @@ class cApiContainerCollection extends ItemCollection {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function clearAssignments($idtpl) {
-        $this->deleteBy('idtpl', (int) $idtpl);
+    public function clearAssignments($idtpl)
+    {
+        $this->deleteBy('idtpl', (int)$idtpl);
     }
 
     /**
@@ -104,8 +110,9 @@ class cApiContainerCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function assignModule($idtpl, $number, $idmod) {
-        $this->select('idtpl = ' . (int) $idtpl . ' AND number = ' . (int) $number);
+    public function assignModule($idtpl, $number, $idmod)
+    {
+        $this->select('idtpl = ' . (int)$idtpl . ' AND number = ' . (int)$number);
         if (($item = $this->next()) !== false) {
             $item->set('idmod', $idmod);
             $item->store();
@@ -118,7 +125,7 @@ class cApiContainerCollection extends ItemCollection {
 /**
  * Container item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiContainer extends Item
@@ -132,17 +139,17 @@ class cApiContainer extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['container'], 'idcontainer');
-        $this->setFilters(array(), array());
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('container'), 'idcontainer');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Userdefined setter for container fields.
+     * User-defined setter for container fields.
      *
      * @param string $name
      * @param mixed $value
@@ -151,12 +158,13 @@ class cApiContainer extends Item
      *
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idtpl':
             case 'number':
             case 'idmod':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

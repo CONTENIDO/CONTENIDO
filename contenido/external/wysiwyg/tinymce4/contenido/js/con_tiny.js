@@ -9,9 +9,9 @@
  * @author     Timo Trautmann
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.9
  */
 
@@ -178,14 +178,14 @@
          * When retrieving the content w/ getContent(), cleaned up content will be returned
          * that eventually will be reinserted into the editor.
          *
-         * @see http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
+         * @see https://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
          * @method customSetupContentCallback
          * @param  {String}  editorId
          * @static
          */
         customSetupContentCallback: function(editorId) {
             var cleanContent = tinymce.get(editorId).getContent();
-            tinymce.get(editorId).setContent(cleanContent);
+            tinymce.get(editorId).setContent(cleanContent, {no_events: true});
         },
 
         /**
@@ -262,7 +262,7 @@
         /**
          * Custom url converter callback function for TinyMCE, see TinyMCE setting
          * 'urlconverter_callback'.
-         * http://www.tinymce.com/wiki.php/Configuration3x:urlconverter_callback
+         * https://www.tinymce.com/wiki.php/Configuration3x:urlconverter_callback
          * NOTE: This function does nothing but return the input url back at the moment.
          * @method customURLConverterCallback
          *
@@ -359,6 +359,8 @@
             // Set the action, but check for invalid values
             if (action !== 0 && action !== '' && action !== '0') {
                 $_form.attr('action', action);
+                // Remove existing form action field, this would overwrite the action in GET variables
+                $_form.find('[name="action"]').remove();
             }
 
             // Submit the form
@@ -647,7 +649,7 @@
                 var contenidoPlugins = [{'name': 'conabbr', 'path': contenidoPluginFolderUrl + 'con_abbr/plugin.js'}];
                 contenidoPlugins.forEach(function(plugin) {
                     // load current add-on
-                    // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
+                    // https://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
                     tinymce.PluginManager.load(plugin.name, plugin.path);
 
                     if ('undefined' === typeof(settings.plugins)) {
@@ -676,7 +678,7 @@
                         settings.externalplugins.forEach(function (plugin) {
                             // if plugin is not loaded
 
-                            // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
+                            // https://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
                             customPluginsLoaded[plugin.name] = plugin.url;
                             if (customPluginsLoaded[plugin.name] === plugin.url) {
                                 // load current plugin
@@ -696,7 +698,7 @@
                     // register handlers before editor initialises
                     // Fires before the editor has been initialized.
                     // This is before any contents gets inserted into the editor but after we have selection and dom instances.
-                    // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PreInit
+                    // https://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PreInit
                     ed.on("PreInit", function() {
                         var resizeTiny = function() {
                             if (true === options.dedicatedPage) {
@@ -767,7 +769,7 @@
                     });
 
                     // Fires after an undo level has been added to the editor.
-                    // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.AddUndo
+                    // https://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.AddUndo
                     ed.on('AddUndo', function(e) {
                         if (false !== Con.Tiny.changingFullscreen) {
                             return;
@@ -800,7 +802,7 @@
                         Con.Tiny.typingUndo[ed.id] = true;
                     });
                     // Fires before the contents is processed.
-                    // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PreProcess
+                    // https://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PreProcess
                     ed.on('PreProcess', function(ev) {
                         // ignore dirty state fullscreen state
                         if (false === Con.Tiny.changingFullscreen) {
@@ -809,7 +811,7 @@
                             ev.node.innerHTML = Con.Tiny.customCleanupCallback(ev.node.innerHTML);
                     });
                     // Fires after the contents has been processed.
-                    // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PostProcess
+                    // https://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PostProcess
                     ed.on('PostProcess', function(ev) {
                         // ignore dirty state fullscreen state
                         if (false === Con.Tiny.changingFullscreen) {
@@ -818,7 +820,7 @@
                         }
                     });
                     // Fires after contents has been loaded into the editor.
-                    // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
+                    // https://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
                     ed.on('LoadContent', function(e) {
                         // dirty state fullscreen state is over when content is loaded
                         if (Con.Tiny.changingFullscreen) {
@@ -831,7 +833,7 @@
                         Con.Tiny.updateContent(ed.getContent(), ed.id);
                     });
                     // Fires after contents has been saved/extracted from the editor.
-                    // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.SaveContent
+                    // https://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.SaveContent
                     ed.on('SaveContent', function (e) {
                         // ignore dirty state fullscreen state
                         if (false === Con.Tiny.changingFullscreen) {
@@ -852,7 +854,7 @@
                 // check if used in non-fullscreen mode
                 if (settings.plugins.split(" ").indexOf("save") > -1) {
                     // use callback documented in
-                    // http://www.tinymce.com/wiki.php/Plugin:save
+                    // https://www.tinymce.com/wiki.php/Plugin:save
                     settings.save_onsavecallback = function() {
                         Con.Tiny.setContent(Con.Tiny.idartlang);
                     };
@@ -860,7 +862,7 @@
                 // check if used in fullscreen mode
                 if (settings.fullscreen_settings.plugins.split(" ").indexOf("save") > -1) {
                     // use callback documented in
-                    // http://www.tinymce.com/wiki.php/Plugin:save
+                    // https://www.tinymce.com/wiki.php/Plugin:save
                     settings.fullscreen_settings.save_onsavecallback = function() {
                         Con.Tiny.setContent(Con.Tiny.idartlang);
                     };
@@ -875,6 +877,7 @@
                             elem.id = d.getSeconds() + "_" + d.getMilliseconds();
                         }
                         Con.Tiny.tinySettings[elem.id] = settings;
+                        //console.log(elem, settings);
                     });
                 });
             });

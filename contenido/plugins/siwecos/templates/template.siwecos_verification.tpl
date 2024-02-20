@@ -15,8 +15,10 @@
                 {i18n('MSG_META_TAG_1', 'siwecos')}
                 <li>
                     Meta-Tag:<br>
-                    <strong id="metaDomainToken">&lt;meta name="siwecostoken" content="{$domainToken}" /&gt;</strong>
-                    <button type="button" onclick="copy2Clipboard('metaDomainToken')">{i18n('BTN_COPY', 'siwecos')}</button>
+                    <strong id="metaDomainToken">&lt;meta name="siwecostoken"
+                        content="{$domainToken}" /&gt;</strong>
+                    <button type="button"
+                            onclick="copy2Clipboard('metaDomainToken')">{i18n('BTN_COPY', 'siwecos')}</button>
                 </li>
                 {i18n('MSG_META_TAG_2', 'siwecos')}
             </ul>
@@ -26,17 +28,20 @@
                 <li>
                     {i18n('MSG_FILE_1', 'siwecos')}:
                     <strong id="htmlDomainToken">{$domainToken}.html</strong>
-                    <button type="button" onclick="copy2Clipboard('htmlDomainToken')">{i18n('BTN_COPY', 'siwecos')}</button>
+                    <button type="button"
+                            onclick="copy2Clipboard('htmlDomainToken')">{i18n('BTN_COPY', 'siwecos')}</button>
                 </li>
                 <li>
                     {i18n('MSG_FILE_2', 'siwecos')}:
                     <strong id="codeDomainToken">{$domainToken}</strong>
-                    <button type="button" onclick="copy2Clipboard('codeDomainToken')">{i18n('BTN_COPY', 'siwecos')}</button>
+                    <button type="button"
+                            onclick="copy2Clipboard('codeDomainToken')">{i18n('BTN_COPY', 'siwecos')}</button>
                 </li>
                 {i18n('MSG_FILE_3', 'siwecos')}
             </ul>
 
-            <a href="{$verificationHref}" class="btn btn-primary">{i18n('BTN_VERIFY', 'siwecos')}</a>
+            <a href="{$verificationHref}"
+               class="btn btn-primary">{i18n('BTN_VERIFY', 'siwecos')}</a>
 
         </div>
 

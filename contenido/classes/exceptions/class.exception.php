@@ -3,14 +3,13 @@
 /**
  * This file contains the cException class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Exception
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This exception type is logged to data/logs/exception.txt.
  * If there is a more specific and more appropriate subclass, use the subclass!
  */
-class cException extends Exception {
+class cException extends Exception
+{
 
     /**
      * Defines if an exception if this type should be logged.
@@ -44,28 +44,32 @@ class cException extends Exception {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string    $message
+     * @param string $message
      *                            The Exception message to throw.
-     * @param int       $code     [optional]
+     * @param int $code [optional]
      *                            The Exception code.
      * @param Exception $previous [optional]
      *                            The previous exception used for the exception chaining.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct($message, $code = 0, Exception $previous = NULL) {
+    public function __construct($message, $code = 0, Exception $previous = NULL)
+    {
         parent::__construct($message, $code, $previous);
 
         // create a logger class and save it for all logging purposes
         $cfg = cRegistry::getConfig();
-        $writer = cLogWriter::factory("File", array(
-            'destination' => $cfg['path']['contenido_logs'] . 'exception.txt'
-        ));
+        $writer = cLogWriter::factory(
+            "File",
+            [
+                'destination' => $cfg['path']['contenido_logs'] . 'exception.txt',
+            ]
+        );
         $this->_logger = new cLog($writer);
 
         // determine if exception should be logged
         if (false === $this->_log_exception
-        && isset($cfg['debug']['log_exceptions'])) {
+            && isset($cfg['debug']['log_exceptions'])) {
             $this->_log_exception = $cfg['debug']['log_exceptions'];
         }
 
@@ -78,7 +82,8 @@ class cException extends Exception {
     /**
      * Logs this exception no matter if the log flag is set or not.
      */
-    public function log() {
+    public function log()
+    {
         // construct the log message with all infos and write it via the logger
         $logMessage = get_class($this) . ' thrown at line ' . $this->getLine() . ' of file ' . $this->getFile() . ".\r\n";
         $logMessage .= 'Exception message: ' . $this->getMessage() . "\r\n";

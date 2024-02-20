@@ -7,9 +7,9 @@
  * @subpackage Frontend_URI
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,7 +17,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 if (!class_exists('NotInitializedException')) {
     /**
      */
-    class NotInitializedException extends Exception {
+    class NotInitializedException extends Exception
+    {
     }
 }
 
@@ -49,36 +50,38 @@ if (!class_exists('NotInitializedException')) {
  * @package    Core
  * @subpackage Frontend_URI
  */
-class cUriBuilderConfig {
+class cUriBuilderConfig
+{
 
     /**
      * UriBuilder configuration array
      *
      * @var array
      */
-    private static $_aUriBuilderCfg = array(
-        'config' => array(
+    private static $_aUriBuilderCfg = [
+        'config' => [
             'prefix' => 'index',
             'suffix' => '.html',
-            'separator' => '-'
-        )
-    );
+            'separator' => '-',
+        ],
+    ];
 
     /**
      * Set cUriBuilder configuration.
      *
      * @param array $cfg
-     *         Assoziative configuration array as follows:
+     *         Associative configuration array as follows:
      *         - $cfg['name'] = Name of UriBuilder class to use
      *         - $cfg['config'] = UriBuilder configuration
      * @throws cInvalidArgumentException
      *         If $cfg ist empty, $cfg['name'] is missing
      *         or $cfg['config'] exists but is not a array
      */
-    public static function setConfig(array $cfg) {
+    public static function setConfig(array $cfg)
+    {
         if (count($cfg) == 0) {
             throw new cInvalidArgumentException('cUriBuilderConfig: Empty configuration');
-        } elseif (!isset($cfg['name']) || (string) $cfg['name'] === '') {
+        } elseif (!isset($cfg['name']) || (string)$cfg['name'] === '') {
             throw new cInvalidArgumentException('cUriBuilderConfig: Missing UriBuilder name');
         } elseif (isset($cfg['config']) && !is_array($cfg['config'])) {
             throw new cInvalidArgumentException('cUriBuilderConfig: Invalid UriBuilder configuration');
@@ -90,12 +93,13 @@ class cUriBuilderConfig {
     /**
      * Returns cUriBuilder name.
      *
-     * @throws cException
-     *         If cUriBuilder configuration wasn't initialized before
      * @return string
      *         cUriBuilder name
+     * @throws cException
+     *         If cUriBuilder configuration wasn't initialized before
      */
-    public static function getUriBuilderName() {
+    public static function getUriBuilderName()
+    {
         if (!is_array(self::$_aUriBuilderCfg) || !isset(self::$_aUriBuilderCfg['name'])) {
             throw new cException('cUriBuilderConfig: Configuration is not set');
         }
@@ -106,12 +110,13 @@ class cUriBuilderConfig {
     /**
      * Returns cUriBuilder configuration.
      *
-     * @throws cException
-     *         If cUriBuilder configuration wasn't initialized before
      * @return array
      *         cUriBuilder configuration
+     * @throws cException
+     *         If cUriBuilder configuration wasn't initialized before
      */
-    public static function getConfig() {
+    public static function getConfig()
+    {
         if (!is_array(self::$_aUriBuilderCfg)) {
             throw new cException('cUriBuilderConfig: Configuration is not set');
         }

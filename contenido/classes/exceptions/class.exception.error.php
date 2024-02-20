@@ -3,14 +3,13 @@
 /**
  * This file contains the cErrorException class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Exception
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
@@ -19,20 +18,22 @@
  * {@link ErrorException}.
  * This exception type is logged to data/logs/exception.txt.
  */
-class cErrorException extends cException {
+class cErrorException extends cException
+{
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string    $message
+     * @param string $message
      *                            The Exception message to throw.
-     * @param int       $code     [optional]
+     * @param int $code [optional]
      *                            The Exception code.
      * @param Exception $previous [optional]
      *                            The previous exception used for the exception chaining.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct($message, $code = 0, Exception $previous = NULL) {
+    public function __construct($message, $code = 0, Exception $previous = NULL)
+    {
         $cfg = cRegistry::getConfig();
 
         // determine if exception should be logged

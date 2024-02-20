@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the string utility class.
  *
@@ -6,9 +7,9 @@
  * @subpackage Util
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * String helper class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Util
  */
-class cString extends cStringMultiByteWrapper {
+class cString extends cStringMultiByteWrapper
+{
 
     /**
      * Replaces a string only once.
@@ -35,7 +37,8 @@ class cString extends cStringMultiByteWrapper {
      * @return string
      *         Processed string
      */
-    public static function iReplaceOnce($find, $replace, $subject) {
+    public static function iReplaceOnce($find, $replace, $subject)
+    {
         $start = parent::findFirstPos(parent::toLowerCase($subject), parent::toLowerCase($find));
 
         if ($start === false) {
@@ -65,7 +68,8 @@ class cString extends cStringMultiByteWrapper {
      * @return string
      *         Processed string
      */
-    public static function iReplaceOnceReverse($find, $replace, $subject) {
+    public static function iReplaceOnceReverse($find, $replace, $subject)
+    {
         $start = self::posReverse(parent::toLowerCase($subject), parent::toLowerCase($find));
 
         if ($start === false) {
@@ -97,7 +101,8 @@ class cString extends cStringMultiByteWrapper {
      * @return int
      *         String position
      */
-    public static function posReverse($haystack, $needle, $start = 0) {
+    public static function posReverse($haystack, $needle, $start = 0)
+    {
         $tempPos = parent::findFirstPos($haystack, $needle, $start);
 
         if ($tempPos === false) {
@@ -121,9 +126,9 @@ class cString extends cStringMultiByteWrapper {
      *         Either a string or a multi-dimensional array of values
      * @return string|array
      */
-    public static function addSlashes($value) {
-        $value = is_array($value) ? array_map(array('cString', 'addSlashes'), $value) : addslashes($value);
-        return $value;
+    public static function addSlashes($value)
+    {
+        return is_array($value) ? array_map(['cString', 'addSlashes'], $value) : addslashes($value);
     }
 
     /**
@@ -133,9 +138,9 @@ class cString extends cStringMultiByteWrapper {
      *         Either a string or a multi-dimensional array of values
      * @return string|array
      */
-    public static function stripSlashes($value) {
-        $value = is_array($value) ? array_map(array('cString', 'stripSlashes'), $value) : stripslashes($value);
-        return $value;
+    public static function stripSlashes($value)
+    {
+        return is_array($value) ? array_map(['cString', 'stripSlashes'], $value) : stripslashes($value);
     }
 
     /**
@@ -147,7 +152,8 @@ class cString extends cStringMultiByteWrapper {
      *         The string with which it should end
      * @return bool
      */
-    public static function endsWith($haystack, $needle) {
+    public static function endsWith($haystack, $needle)
+    {
         $length = parent::getStringLength($needle);
         if ($length == 0) {
             return true;
@@ -165,7 +171,8 @@ class cString extends cStringMultiByteWrapper {
      *         String to search for
      * @return bool
      */
-    public static function contains($haystack, $needle) {
+    public static function contains($haystack, $needle)
+    {
         return !(parent::findFirstPos($haystack, $needle) === false);
     }
 
@@ -179,10 +186,11 @@ class cString extends cStringMultiByteWrapper {
      * @param bool $beforeNeedle [optional]
      *         If true, return everything BEFORE needle
      * @return string
-     * @link http://php.net/manual/de/function.mb-strstr.php
-     * @link http://php.net/manual/de/function.strstr.php
+     * @link https://php.net/manual/de/function.mb-strstr.php
+     * @link https://php.net/manual/de/function.strstr.php
      */
-    public static function strstr($haystack, $needle, $beforeNeedle = false) {
+    public static function strstr($haystack, $needle, $beforeNeedle = false)
+    {
 
         if (!$beforeNeedle) {
             if (self::_functionExists('mb_strstr')) {
@@ -203,7 +211,8 @@ class cString extends cStringMultiByteWrapper {
      * @return bool
      *         true if format is correct, false otherwise
      */
-    public static function validateDateFormat($format) {
+    public static function validateDateFormat($format)
+    {
         // try to create a DateTime instance based on php's date function format specification
         // return true if date is valid (no wrong format)
         return false !== DateTime::createFromFormat($format, date($format, time()));
@@ -216,7 +225,8 @@ class cString extends cStringMultiByteWrapper {
      *         String var by reference
      * @return string
      */
-    public static function extractNumber(&$string) {
+    public static function extractNumber(&$string)
+    {
         $string = preg_replace('/[^0-9]/', '', $string);
         return $string;
     }
@@ -228,7 +238,8 @@ class cString extends cStringMultiByteWrapper {
      * @param string $input
      * @return bool
      */
-    public static function isUtf8($input) {
+    public static function isUtf8($input)
+    {
         $len = parent::getStringLength($input);
 
         for ($i = 0; $i < $len; $i++) {
@@ -237,13 +248,13 @@ class cString extends cStringMultiByteWrapper {
             if ($char < 0x80) {
                 // ASCII char
                 continue;
-            } else if (($char & 0xE0) === 0xC0 && $char > 0xC1) {
+            } elseif (($char & 0xE0) === 0xC0 && $char > 0xC1) {
                 // 2 byte long char
                 $n = 1;
-            } else if (($char & 0xF0) === 0xE0) {
+            } elseif (($char & 0xF0) === 0xE0) {
                 // 3 byte long char
                 $n = 2;
-            } else if (($char & 0xF8) === 0xF0 && $char < 0xF5) {
+            } elseif (($char & 0xF8) === 0xF0 && $char < 0xF5) {
                 // 4 byte long char
                 $n = 3;
             } else {
@@ -272,7 +283,8 @@ class cString extends cStringMultiByteWrapper {
      * @return bool
      *         Value is alphanumeric
      */
-    public static function isAlphanumeric($test, $umlauts = true) {
+    public static function isAlphanumeric($test, $umlauts = true)
+    {
         if ($umlauts == true) {
             $match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
         } else {
@@ -304,7 +316,8 @@ class cString extends cStringMultiByteWrapper {
      * @return string
      *         The resulting string
      */
-    public static function trimAfterWord($string, $maxlen) {
+    public static function trimAfterWord($string, $maxlen)
+    {
         // If the string is smaller than the maximum lenght, it makes no sense to
         // process it any further. Return it.
         if (parent::getStringLength($string) < $maxlen) {
@@ -347,7 +360,8 @@ class cString extends cStringMultiByteWrapper {
      * @return string
      *         The resulting string
      */
-    public static function trimHard($string, $maxlen, $fillup = '...') {
+    public static function trimHard($string, $maxlen, $fillup = '...')
+    {
         // If the string is smaller than the maximum lenght, it makes no sense to
         // process it any further. Return it.
         if (parent::getStringLength($string) < $maxlen) {
@@ -361,7 +375,7 @@ class cString extends cStringMultiByteWrapper {
         if ($maximum_text_length > 0) {
             if (preg_match('/(*UTF8)^.{0,' . $maximum_text_length . '}/', $string, $result_array)) {
                 $cutted_string = $result_array[0];
-            } else if (preg_match('/^.{0,' . $maximum_text_length . '}/u', $string, $result_array)) {
+            } elseif (preg_match('/^.{0,' . $maximum_text_length . '}/u', $string, $result_array)) {
                 $cutted_string = $result_array[0];
             } else {
                 $cutted_string = parent::getPartOfString($string, 0, $maximum_text_length);
@@ -420,7 +434,8 @@ class cString extends cStringMultiByteWrapper {
      * @return string
      *         The resulting string
      */
-    public static function trimSentence($string, $approxlen, $hard = false) {
+    public static function trimSentence($string, $approxlen, $hard = false)
+    {
         // If the string is smaller than the maximum lenght, it makes no sense to
         // process it any further. Return it.
         if (parent::getStringLength($string) < $approxlen) {
@@ -479,7 +494,7 @@ class cString extends cStringMultiByteWrapper {
      * equivalents (e.g. ä => ae).
      *
      * For more information about diacritics, refer to
-     * http://en.wikipedia.org/wiki/Diacritic
+     * https://en.wikipedia.org/wiki/Diacritic
      *
      * For other languages, the diacritic marks are removed, if possible.
      *
@@ -494,7 +509,8 @@ class cString extends cStringMultiByteWrapper {
      *         The resulting string
      * @throws cInvalidArgumentException
      */
-    public static function replaceDiacritics($string, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8') {
+    public static function replaceDiacritics($string, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8')
+    {
         if ($sourceEncoding != 'UTF-8') {
             $string = self::recodeString($string, $sourceEncoding, "UTF-8");
         }
@@ -503,7 +519,7 @@ class cString extends cStringMultiByteWrapper {
         // diacritics
         static $search, $replace;
         if (!isset($search)) {
-            $search = array(
+            $search = [
                 'Ä',
                 'Ö',
                 'Ü',
@@ -540,9 +556,9 @@ class cString extends cStringMultiByteWrapper {
                 'Û',
                 'ú',
                 'ù',
-                'û'
-            );
-            $replace = array(
+                'û',
+            ];
+            $replace = [
                 'Ae',
                 'Oe',
                 'Ue',
@@ -579,8 +595,8 @@ class cString extends cStringMultiByteWrapper {
                 'U',
                 'u',
                 'u',
-                'u'
-            );
+                'u',
+            ];
         }
         $string = str_replace($search, $replace, $string);
 
@@ -599,10 +615,10 @@ class cString extends cStringMultiByteWrapper {
      * returns immediately.
      *
      * For more information about encodings, refer to
-     * http://en.wikipedia.org/wiki/Character_encoding
+     * https://en.wikipedia.org/wiki/Character_encoding
      *
      * For more information about the supported encodings in recode, refer to
-     * http://www.delorie.com/gnu/docs/recode/recode_toc.html
+     * https://www.delorie.com/gnu/docs/recode/recode_toc.html
      *
      * Note: depending on whether recode or iconv is used, the supported
      * charsets differ. The following ones are commonly used and are most likely
@@ -611,9 +627,6 @@ class cString extends cStringMultiByteWrapper {
      * - ISO-8859-1 to ISO-8859-15
      * - ASCII
      * - UTF-8
-     *
-     * @todo Check if the charset names are the same for both converters
-     * @todo Implement a converter and charset checker to ensure compilance.
      *
      * @param string $string
      *         The string to operate on
@@ -625,8 +638,12 @@ class cString extends cStringMultiByteWrapper {
      * @return string
      *         The resulting string
      * @throws cInvalidArgumentException
+     * @todo Implement a converter and charset checker to ensure compilance.
+     *
+     * @todo Check if the charset names are the same for both converters
      */
-    public static function recodeString($string, $sourceEncoding, $targetEncoding) {
+    public static function recodeString($string, $sourceEncoding, $targetEncoding)
+    {
         // If sourceEncoding and targetEncoding are the same, return
         if (parent::toLowerCase($sourceEncoding) == parent::toLowerCase($targetEncoding)) {
             return $string;
@@ -661,14 +678,15 @@ class cString extends cStringMultiByteWrapper {
      *
      * @param string $string
      *                        The string to operate on
-     * @param bool   $replace [optional]
+     * @param bool $replace [optional]
      *                        If true, all "unclean" characters are replaced
      *
      * @return string
      *         The resulting string
      * @throws cInvalidArgumentException
      */
-    public static function cleanURLCharacters($string, $replace = false) {
+    public static function cleanURLCharacters($string, $replace = false)
+    {
         $string = self::replaceDiacritics($string);
         $string = str_replace(' ', '-', $string);
         $string = str_replace('/', '-', $string);
@@ -702,7 +720,8 @@ class cString extends cStringMultiByteWrapper {
      *         Feasible values are "\n", "\r" or "\r\n"
      * @return string
      */
-    public static function normalizeLineEndings($string, $lineEnding = "\n") {
+    public static function normalizeLineEndings($string, $lineEnding = "\n")
+    {
         if ($lineEnding !== "\n" && $lineEnding !== "\r" && $lineEnding !== "\r\n") {
             $lineEnding = "\n";
         }

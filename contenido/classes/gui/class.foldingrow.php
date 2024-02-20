@@ -3,13 +3,13 @@
 /**
  * This file contains the foldable table row GUI class.
  *
- * @package          Core
- * @subpackage       GUI
- * @author           Bjoern Behrens
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage GUI
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -24,7 +24,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cGuiFoldingRow extends cHTML {
+class cGuiFoldingRow extends cHTML
+{
 
     /**
      * Table row with the header.
@@ -46,6 +47,13 @@ class cGuiFoldingRow extends cHTML {
      * @var cHTMLTableRow
      */
     protected $_contentRow;
+
+    /**
+     * Id of the row.
+     *
+     * @var string
+     */
+    private $_uuid;
 
     /**
      * ID for link that triggers expandCollapse.
@@ -79,17 +87,38 @@ class cGuiFoldingRow extends cHTML {
     protected $_hiddenField;
 
     /**
+     * @var bool
+     */
+    protected $_expanded;
+
+    /**
+     * @var string
+     */
+    protected $_caption;
+
+    /**
+     * @var mixed
+     */
+    protected $_helpContext;
+
+    /**
+     * @var int
+     */
+    protected $_indent;
+
+    /**
      * Constructor to create an instance of this class.
      *
-     * @param string    $uuid
-     * @param string    $caption   [optional]
-     * @param string    $linkId    [optional]
+     * @param string $uuid
+     * @param string $caption [optional]
+     * @param string $linkId [optional]
      * @param bool|NULL $bExpanded [optional]
      *
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = NULL) {
+    public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = NULL)
+    {
         global $auth;
 
         $this->_uuid = $uuid;
@@ -102,7 +131,7 @@ class cGuiFoldingRow extends cHTML {
         $this->_headerData->setClass("foldingrow");
 
         $this->_contentRow = new cHTMLTableRow();
-        $this->_contentRow->updateAttributes(array("id" => $uuid));
+        $this->_contentRow->updateAttributes(["id" => $uuid]);
 
         $this->_contentData = new cHTMLTableData();
 
@@ -117,12 +146,12 @@ class cGuiFoldingRow extends cHTML {
 
         $this->setExpanded(false);
 
-        $this->addRequiredScript("parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e");
+        $this->addRequiredScript("parameterCollector.js");
         $this->addRequiredScript("cfoldingrow.js");
 
         $user = new cApiUser($auth->auth["uid"]);
 
-        if ($bExpanded == NULL) {
+        if ($bExpanded === NULL) {
             // Check for expandstate
             if ($user->isLoaded()) {
                 if ($user->getProperty("expandstate", $uuid) == "true") {
@@ -130,11 +159,7 @@ class cGuiFoldingRow extends cHTML {
                 }
             }
         } else {
-            if ($bExpanded) {
-                $this->setExpanded(true);
-            } else {
-                $this->setExpanded(false);
-            }
+            $this->setExpanded(cSecurity::toBoolean($bExpanded));
         }
     }
 
@@ -142,15 +167,16 @@ class cGuiFoldingRow extends cHTML {
      *
      * @param bool $expanded [optional]
      */
-    public function setExpanded($expanded = false) {
-        if ($expanded == true) {
+    public function setExpanded($expanded = false)
+    {
+        if ($expanded) {
             $this->_foldingImage->setSrc("images/widgets/foldingrow/expanded.gif");
-            $this->_foldingImage->updateAttributes(array("data-state" => "expanded"));
+            $this->_foldingImage->updateAttributes(["data-state" => "expanded"]);
             $this->_contentRow->setStyle("display: ;");
             $this->_hiddenField->setValue('expanded');
         } else {
             $this->_foldingImage->setSrc("images/widgets/foldingrow/collapsed.gif");
-            $this->_foldingImage->updateAttributes(array("data-state" => "collapsed"));
+            $this->_foldingImage->updateAttributes(["data-state" => "collapsed"]);
             $this->_contentRow->setStyle("display: none;");
             $this->_hiddenField->setValue('collapsed');
         }
@@ -161,7 +187,8 @@ class cGuiFoldingRow extends cHTML {
      *
      * @param string $caption
      */
-    public function setCaption($caption) {
+    public function setCaption($caption)
+    {
         $this->_caption = $caption;
     }
 
@@ -170,7 +197,8 @@ class cGuiFoldingRow extends cHTML {
      *
      * @param mixed $context [optional]
      */
-    public function setHelpContext($context = false) {
+    public function setHelpContext($context = false)
+    {
         $this->_helpContext = $context;
     }
 
@@ -179,7 +207,8 @@ class cGuiFoldingRow extends cHTML {
      *
      * @param int $indent [optional]
      */
-    public function setIndent($indent = 0) {
+    public function setIndent($indent = 0)
+    {
         $this->_indent = $indent;
     }
 
@@ -187,31 +216,33 @@ class cGuiFoldingRow extends cHTML {
      *
      * @param string|object|array $content
      */
-    function setContentData($content) {
+    public function setContentData($content)
+    {
         $this->_contentData->setContent($content);
     }
 
     /**
-     * @see cHTML::render()
      * @return string
      *         Generated markup
+     * @see cHTML::render()
      */
-    public function render() {
+    public function render(): string
+    {
         // Build the expand/collapse link
         $this->_link->setClass("foldingrow");
         if ($this->_linkId != NULL) {
             $this->_link->setID($this->_linkId);
         }
 
-        $imgid = $this->_foldingImage->getID();
-        $rowid = $this->_contentRow->getID();
-        $hiddenid = $this->_hiddenField->getID();
+        $imgId = $this->_foldingImage->getID();
+        $rowId = $this->_contentRow->getID();
+        $hiddenId = $this->_hiddenField->getID();
         $uuid = $this->_uuid;
 
-        $this->_link->setLink("javascript:void(0);");
+        $this->_link->setLink("javascript:void(0)");
         $this->_link->setContent($this->_foldingImage->render() . $this->_caption);
 
-        $this->_headerData->setContent(array($this->_hiddenField, $this->_link));
+        $this->_headerData->setContent([$this->_hiddenField, $this->_link]);
         $this->_headerRow->setContent($this->_headerData);
 
         $this->_contentRow->setContent($this->_contentData);
@@ -219,22 +250,20 @@ class cGuiFoldingRow extends cHTML {
         $output = $this->_headerRow->render();
         $output .= $this->_contentRow->render();
 
-        $output = <<<HTML
+        return <<<HTML
 <!-- cGuiFoldingRow -->
 {$output}
 <script type="text/javascript">
 (function(Con, $) {
     $(function() {
         $("#{$this->_linkId}").click(function() {
-            Con.FoldingRow.toggle("{$imgid}", "{$rowid}", "{$hiddenid}", "{$uuid}");
+            Con.FoldingRow.toggle("{$imgId}", "{$rowId}", "{$hiddenId}", "{$uuid}");
         });
     });
 })(Con, Con.$);
 </script>
 <!-- /cGuiFoldingRow -->
 HTML;
-
-        return $output;
     }
 
 }

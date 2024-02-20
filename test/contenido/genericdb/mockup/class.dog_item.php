@@ -1,8 +1,9 @@
 <?php
 
 /**
- *
  * @author marcus.gnass
+ * @method DogItem createNewItem
+ * @method DogItem|bool next
  */
 class DogCollection extends ItemCollection
 {
@@ -24,7 +25,6 @@ class DogCollection extends ItemCollection
 }
 
 /**
- *
  * @author marcus.gnass
  */
 class DogItem extends Item

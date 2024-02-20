@@ -1,10 +1,9 @@
-$(document).ready(function(){
-
+$(function () {
     if ($('input[type="checkbox"]').attr('checked') === 'checked') {
-            disableInput();
+        disableInput();
     }
 
-    $('input[type="checkbox"]').on('change', function(){
+    $('input[type="checkbox"]').on('change', function () {
         if ($(this).attr('checked') === 'checked') {
             disableInput();
         }

@@ -1,15 +1,16 @@
 <?php
+
 /**
- * This file contains the the request validator class.
+ * This file contains the request validator class.
  *
  * @package    Core
  * @subpackage Security
  * @author     Mischa Holz
  * @author     Andreas Kummer
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,7 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Security
  */
-class cRequestValidator {
+class cRequestValidator
+{
 
     /**
      * Instance of this class.
@@ -61,7 +63,7 @@ class cRequestValidator {
      *
      * @var array
      */
-    protected $_check = array();
+    protected $_check = [];
 
     /**
      * Array with forbidden parameters.
@@ -69,7 +71,7 @@ class cRequestValidator {
      *
      * @var array
      */
-    protected $_blacklist = array();
+    protected $_blacklist = [];
 
     /**
      * Contains first invalid parameter name.
@@ -143,14 +145,14 @@ class cRequestValidator {
      *
      * @throws cFileNotFoundException if the configuration can not be loaded
      */
-    private function __construct() {
-
+    private function __construct()
+    {
         // globals from config.http_check.php file which is included below
         global $bLog, $sMode, $aCheck, $aBlacklist;
 
         // some paths...
         $installationPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..'));
-        $configPath       = $installationPath . '/data/config/' . CON_ENVIRONMENT;
+        $configPath = $installationPath . '/data/config/' . CON_ENVIRONMENT;
 
         $this->_logPath = $installationPath . '/data/logs/security.txt';
 
@@ -169,7 +171,7 @@ class cRequestValidator {
             require($this->_configPath . '/config.http_check.local.php');
         }
 
-        $this->_log  = $bLog;
+        $this->_log = $bLog;
         $this->_mode = $sMode;
 
         if ($this->_log === true) {
@@ -188,9 +190,10 @@ class cRequestValidator {
      * Returns the instance of this class.
      *
      * @return cRequestValidator
+     * @throws cFileNotFoundException if the configuration can not be loaded
      */
-    public static function getInstance() {
-
+    public static function getInstance()
+    {
         if (self::$_instance === null) {
             self::$_instance = new self();
         }
@@ -208,17 +211,13 @@ class cRequestValidator {
      *
      * @throws cInvalidArgumentException
      */
-    public function checkParams() {
-
+    public function checkParams()
+    {
         if ((!$this->checkGetParams()) || (!$this->checkPostParams() || (!$this->checkCookieParams()))) {
             $this->logHackTrial();
 
             if ($this->_mode == 'stop') {
-                ob_end_clean();
-                $msg = 'Parameter check failed! (%s = %s %s %s)';
-                // prevent XSS!
-                $msg = sprintf($msg, htmlentities($this->_failure), htmlentities($_GET[$this->_failure]), htmlentities($_POST[$this->_failure]), htmlentities($_COOKIE[$this->_failure]));
-                die($msg);
+                die();
             }
         }
 
@@ -228,69 +227,68 @@ class cRequestValidator {
     /**
      * Checks GET parameters only.
      *
-     * @see    cRequestValidator::checkParams()
      * @return bool
      *         True if every parameter is fine
+     * @see    cRequestValidator::checkParams()
      */
-    public function checkGetParams() {
-
+    public function checkGetParams()
+    {
         return $this->checkArray($_GET, 'GET');
     }
 
     /**
      * Checks POST parameters only.
      *
-     * @see    cRequestValidator::checkParams()
      * @return bool
      *         True if every parameter is fine
+     * @see    cRequestValidator::checkParams()
      */
-    public function checkPostParams() {
-
+    public function checkPostParams()
+    {
         return $this->checkArray($_POST, 'POST');
     }
 
     /**
      * Checks COOKIE parameters only.
      *
-     * @see    cRequestValidator::checkParams()
      * @return bool
      *         True if every parameter is fine
+     * @see    cRequestValidator::checkParams()
      */
-    public function checkCookieParams() {
-
+    public function checkCookieParams()
+    {
         return $this->checkArray($_COOKIE, 'COOKIE');
     }
 
-
     /**
      * Checks a single parameter.
-     *
-     * @see cRequestValidator::checkParams()
      *
      * @param string $type
      *         GET or POST
      * @param string $key
      *         the key of the parameter
-     * @param mixed  $value
+     * @param mixed $value
      *         the value of the parameter
      *
      * @return bool
      *         True if the parameter is fine
+     * @see cRequestValidator::checkParams()
+     *
      */
-    public function checkParameter($type, $key, $value) {
-
+    public function checkParameter($type, $key, $value)
+    {
         $result = false;
 
         if (in_array(cString::toLowerCase($key), $this->_blacklist)) {
             return false;
         }
 
-        if (in_array(cString::toUpperCase($type), array(
+        if (in_array(cString::toUpperCase($type), [
             'GET',
             'POST',
             'COOKIE'
-        ))) {
-            if (!isset($this->_check[$type][$key]) && (is_null($value) || empty($value))) {
+        ])) {
+            if (!isset($this->_check[$type][$key]) && empty($value)) {
                 // if unknown but empty the value is unaesthetic but ok
                 $result = true;
             } elseif (isset($this->_check[$type][$key])) {
@@ -311,8 +309,8 @@ class cRequestValidator {
      * @return string
      *         the key of the bad parameter
      */
-    public function getBadParameter() {
-
+    public function getBadParameter()
+    {
         return $this->_failure;
     }
 
@@ -322,8 +320,8 @@ class cRequestValidator {
      *
      * @throws cInvalidArgumentException
      */
-    protected function logHackTrial() {
-
+    protected function logHackTrial()
+    {
         if ($this->_log === true && !empty($this->_logPath)) {
             $content = date('Y-m-d H:i:s') . '    ';
             $content .= $_SERVER['REMOTE_ADDR'] . str_repeat(' ', 17 - cString::getStringLength($_SERVER['REMOTE_ADDR'])) . "\n";
@@ -345,11 +343,11 @@ class cRequestValidator {
      *
      * @return string
      */
-    public static function cleanParameter($param) {
-
-        $charsToReplace = array(
+    public static function cleanParameter($param)
+    {
+        $charsToReplace = [
             '<', '>', '?', '&', '$', '{', '}', '(', ')'
-        );
+        ];
 
         foreach ($charsToReplace as $char) {
             $param = str_replace($char, '', $param);
@@ -361,7 +359,7 @@ class cRequestValidator {
     /**
      * Checks an array for validity.
      *
-     * @param array  $arr
+     * @param array $arr
      *         the array which has to be checked
      * @param string $type
      *         GET or POST
@@ -369,14 +367,14 @@ class cRequestValidator {
      * @return bool
      *         true if everything is fine.
      */
-    protected function checkArray($arr, $type) {
-
+    protected function checkArray($arr, $type)
+    {
         $result = true;
 
         foreach ($arr as $key => $value) {
             if (!$this->checkParameter(cString::toUpperCase($type), $key, $value)) {
                 $this->_failure = $key;
-                $result         = false;
+                $result = false;
                 break;
             }
         }

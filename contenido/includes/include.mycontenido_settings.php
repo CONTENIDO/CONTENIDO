@@ -3,16 +3,24 @@
 /**
  * This file contains the backend page for the personal user settings.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cAuth $auth
+ * @var int $lang
+ * @var int $client
+ * @var int $frame
+ * @var string $area
+ */
 
 // Global variables, send by the form
 global $newpassword, $oldpassword, $newpassword2, $name, $email, $phonenumber, $street, $zip,
@@ -21,6 +29,8 @@ global $newpassword, $oldpassword, $newpassword2, $name, $email, $phonenumber, $
 $page = new cGuiPage("mycontenido_settings", "", "2");
 
 $user = new cApiUser($auth->auth["uid"]);
+
+$action = cRegistry::getAction();
 
 if ($action == "mycontenido_editself") {
 
@@ -106,8 +116,8 @@ if ($action == "mycontenido_editself") {
 
     if ($user->store() && !$notificationDisplayed) {
         $page->displayOk(i18n("Changes saved"));
-    } else if (!$notificationDisplayed) {
-        $page->displayError(i18n("An error occured while saving user info."));
+    } elseif (!$notificationDisplayed) {
+        $page->displayError(i18n("An error occurred while saving user info."));
     }
 }
 
@@ -125,9 +135,9 @@ $form->setVar("area", $area);
 $form->setVar("action", "mycontenido_editself");
 $form->setVar("frame", $frame);
 
-$form->addHeader($settingsFor);
+$form->setHeader($settingsFor);
 
-$realname = new cHTMLTextbox("name", $user->get("realname"));
+$realname = new cHTMLTextbox("name", $user->get("realname") ?? '');
 $form->add(i18n("Name"), $realname);
 
 // @since 2006-07-04 Display password fields if not authenticated via LDAP/AD,
@@ -188,7 +198,7 @@ $formathint .= "d.m.Y H:i:s => 01.01.2004 00:00:00";
 // $form->add(i18n("Time format"), $timeformat->render().'
 // '.generateInfoIcon(i18n("FORMATE_TIME")));
 // $form->add(i18n("Date/Time locale"), $dateLocale->render().'
-// '.generateInfoIcon(i18n("LANUAGE_DATE_TIME")));
+// '.generateInfoIcon(i18n("LANGUAGE_DATE_TIME")));
 
 $format = new cHTMLTextbox("format", $user->getUserProperty("dateformat", "full"));
 $format2 = new cHTMLTextbox("formatdate", $user->getUserProperty("dateformat", "date"));

@@ -1,5 +1,6 @@
 <!-- @deprecated  Is not in use? -->
-<table style="padding-top:26px;" width="710" height="251" cellspacing="0" cellpadding="0" border="0" class="setupBodyOuterTable setupBodyOuterTableDatabaseData">
+<table style="padding-top:26px;"
+       class="setupBodyOuterTable setupBodyOuterTableDatabaseData">
     <tr class="row-1">
         <td colspan="2">
             <h1>{TITLE}</h1>
@@ -10,23 +11,33 @@
         <td class="column-1">
             <table border="0">
                 <tr>
-                    <td><div class="description">{LABEL_DBHOST}</div></td>
+                    <td>
+                        <div class="description">{LABEL_DBHOST}</div>
+                    </td>
                     <td style="padding-bottom:5px;">{INPUT_DBHOST}</td>
                 </tr>
                 <tr>
-                    <td><div class="description">{LABEL_DBNAME}</div></td>
+                    <td>
+                        <div class="description">{LABEL_DBNAME}</div>
+                    </td>
                     <td style="padding-bottom:5px;">{INPUT_DBNAME}</td>
                 </tr>
                 <tr>
-                    <td><div class="description">{LABEL_DBUSERNAME}</div></td>
+                    <td>
+                        <div class="description">{LABEL_DBUSERNAME}</div>
+                    </td>
                     <td style="padding-bottom:5px;">{INPUT_DBUSERNAME}</td>
                 </tr>
                 <tr>
-                    <td><div class="description">{LABEL_DBPASSWORD}</div></td>
+                    <td>
+                        <div class="description">{LABEL_DBPASSWORD}</div>
+                    </td>
                     <td style="padding-bottom:5px;">{INPUT_DBPASSWORD}</td>
                 </tr>
                 <tr>
-                    <td><div class="description">{LABEL_DBPREFIX}</div></td>
+                    <td>
+                        <div class="description">{LABEL_DBPREFIX}</div>
+                    </td>
                     <td style="padding-bottom:5px;">{INPUT_DBPREFIX}</td>
                 </tr>
             </table>

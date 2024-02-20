@@ -1,15 +1,15 @@
 <?php
+
 /**
  * This file contains the cronjob to send the reminder items.
  *
  * @package    Core
  * @subpackage Cronjob
- *
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -32,8 +32,8 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $sql = 'SELECT idclient FROM '.$cfg['tab']['clients'];
     $db->query($sql);
 
-    $clients = array();
-    $clientNames = array();
+    $clients     = [];
+    $clientNames = [];
 
     while ($db->nextRecord()) {
         $clients[] = $db->f('idclient');
@@ -44,7 +44,8 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
         $props = new cApiPropertyCollection();
         $props->select("itemtype = 'idcommunication' AND type = 'todo' AND name = 'reminderdate' AND value < $mydate AND value != 0 AND idclient=$client");
-        $pastreminders = array();
+
+        $pastreminders = [];
 
         while (($prop = $props->next()) !== false) {
             $pastreminders[] = $prop->get('itemid');

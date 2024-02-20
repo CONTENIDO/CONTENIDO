@@ -2,11 +2,11 @@
 
 /**
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -15,7 +15,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 plugin_include(Pifa::getName(), 'extensions/class.pifa.default_form_processor.php');
 
 /**
- * The given data should be send via email to the systems mail address and a
+ * The given data should be sent via email to the systems mail address and a
  * confirmation mail to the user itself.
  * This feature can be accomplished by extending the class
  * PifaFormAbstractProcessor and implementing its method _processStoredData().
@@ -25,21 +25,23 @@ plugin_include(Pifa::getName(), 'extensions/class.pifa.default_form_processor.ph
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class MailedFormProcessor extends DefaultFormProcessor {
-	const MAIL_MODE_CLIENT = 'client';
-	const MAIL_MODE_SYSTEM = 'system';
+class MailedFormProcessor extends DefaultFormProcessor
+{
+    const MAIL_MODE_CLIENT = 'client';
+    const MAIL_MODE_SYSTEM = 'system';
 
     /**
      * Sends client & system mail independantly.
      * If an error occurs on sending the first mail the second mail is sent
      * nonetheless.
      *
-     * @see DefaultFormProcessor::_processStoredData()
      * @throws PifaMailException if any mail could not be sent
      * @throws cException
      * @throws cInvalidArgumentException
+     * @see DefaultFormProcessor::_processStoredData()
      */
-    protected function _processStoredData() {
+    protected function _processStoredData()
+    {
         // array to collect errors
         $errors = [];
 
@@ -49,7 +51,7 @@ class MailedFormProcessor extends DefaultFormProcessor {
 
             // send mail
             if ($mailOptions !== false) {
-            	$this->getForm()->toMailRecipient($mailOptions);
+                $this->getForm()->toMailRecipient($mailOptions);
             }
         } catch (PifaMailException $e) {
             $errors[] = mi18n("PIFA_CLIENT_MAIL") . ": " . $e->getMessage();
@@ -61,7 +63,7 @@ class MailedFormProcessor extends DefaultFormProcessor {
 
             // send mail
             if ($mailOptions !== false) {
-            	$this->getForm()->toMailRecipient($mailOptions);
+                $this->getForm()->toMailRecipient($mailOptions);
             }
         } catch (PifaMailException $e) {
             $errors[] = mi18n("PIFA_SYSTEM_MAIL") . ": " . $e->getMessage();
@@ -82,47 +84,48 @@ class MailedFormProcessor extends DefaultFormProcessor {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function _getMailOptions($mode) {
-    	if ($mode != self::MAIL_MODE_CLIENT && $mode != self::MAIL_MODE_SYSTEM) {
-    		return false;
-    	}
+    protected function _getMailOptions($mode)
+    {
+        if ($mode != self::MAIL_MODE_CLIENT && $mode != self::MAIL_MODE_SYSTEM) {
+            return false;
+        }
 
-    	$bodyTemplate = $this->getModule()->getSetting('pifaform_mail_' . $mode . '_template');
-    	if ($bodyTemplate == '') {
-    		return false;
-    	}
+        $bodyTemplate = $this->getModule()->getSetting('pifaform_mail_' . $mode . '_template');
+        if ($bodyTemplate == '') {
+            return false;
+        }
 
-    	// get values
-    	$values = $this->getForm()->getValues();
+        // get values
+        $values = $this->getForm()->getValues();
 
-    	// get subject from template
-    	$tpl = cSmartyFrontend::getInstance(true);
-    	$tpl->assign('values', $values);
-    	$subject = $tpl->fetch('eval:' . $this->getModule()->getSetting('pifaform_mail_' . $mode . '_subject'));
+        // get subject from template
+        $tpl = cSmartyFrontend::getInstance(true);
+        $tpl->assign('values', $values);
+        $subject = $tpl->fetch('eval:' . $this->getModule()->getSetting('pifaform_mail_' . $mode . '_subject'));
 
-    	// get body from template
-    	$tpl = cSmartyFrontend::getInstance(true);
-    	$tpl->assign('values', $values);
-    	$body = $tpl->fetchGeneral($bodyTemplate);
+        // get body from template
+        $tpl = cSmartyFrontend::getInstance(true);
+        $tpl->assign('values', $values);
+        $body = $tpl->fetchGeneral($bodyTemplate);
 
-    	if ($mode == self::MAIL_MODE_CLIENT) {
-    		$mailTo = $values['email'];
-    	} else {
-    		$mailTo = $this->getModule()->getSetting('pifaform_mail_system_recipient_email');
-    	}
+        if ($mode == self::MAIL_MODE_CLIENT) {
+            $mailTo = $values['email'];
+        } else {
+            $mailTo = $this->getModule()->getSetting('pifaform_mail_system_recipient_email');
+        }
 
         $encoding = null;
-    	if (cRegistry::getLanguageId() != 0) {
-	    	$language = cRegistry::getLanguage();
-	    	$encoding = $language->getField('encoding');
-	    	if ($encoding == '') {
-	    		$encoding = 'UTF-8';
-	    	}
-    	}
+        if (cRegistry::getLanguageId() != 0) {
+            $language = cRegistry::getLanguage();
+            $encoding = $language->getField('encoding');
+            if ($encoding == '') {
+                $encoding = 'UTF-8';
+            }
+        }
 
-    	// Set reply-to email address
-    	$replyTo = $this->getModule()->getSetting('pifaform_mail_' . $mode . '_reply_to_email');
-    	if ($replyTo === 'system') {
+        // Set reply-to email address
+        $replyTo = $this->getModule()->getSetting('pifaform_mail_' . $mode . '_reply_to_email');
+        if ($replyTo === 'system') {
             $replyTo = getSystemProperty('system', 'mail_sender');
         } elseif ($mode == self::MAIL_MODE_SYSTEM && $replyTo === 'form') {
             $replyTo = $values['email'];
@@ -130,22 +133,22 @@ class MailedFormProcessor extends DefaultFormProcessor {
             $replyTo = '';
         }
 
-    	$mailOptions = [
-    		'from' => $this->getModule()->getSetting('pifaform_mail_' . $mode . '_from_email'),
-    		'fromName' => $this->getModule()->getSetting('pifaform_mail_' . $mode . '_from_name'),
-    		'to' => $mailTo,
-    		'replyTo' => $replyTo,
-    		'subject' => $subject,
-    		'body' => $body,
-    		'charSet' => $encoding
+        $mailOptions = [
+            'from' => $this->getModule()->getSetting('pifaform_mail_' . $mode . '_from_email'),
+            'fromName' => $this->getModule()->getSetting('pifaform_mail_' . $mode . '_from_name'),
+            'to' => $mailTo,
+            'replyTo' => $replyTo,
+            'subject' => $subject,
+            'body' => $body,
+            'charSet' => $encoding
         ];
 
-    	if ($mode == self::MAIL_MODE_SYSTEM) {
-    		$mailOptions['attachmentNames'] = $this->_getAttachmentNames();
-    		$mailOptions['attachmentStrings'] = $this->_getAttachmentStrings();
-    	}
+        if ($mode == self::MAIL_MODE_SYSTEM) {
+            $mailOptions['attachmentNames'] = $this->_getAttachmentNames();
+            $mailOptions['attachmentStrings'] = $this->_getAttachmentStrings();
+        }
 
-    	return $mailOptions;
+        return $mailOptions;
     }
 
     /**
@@ -154,7 +157,8 @@ class MailedFormProcessor extends DefaultFormProcessor {
      *
      * @return array
      */
-    protected function _getAttachmentNames() {
+    protected function _getAttachmentNames()
+    {
         // determine attachment names
         // these are already stored in the FS
         $attachmentNames = [];
@@ -182,9 +186,8 @@ class MailedFormProcessor extends DefaultFormProcessor {
      *
      * @return array
      */
-    protected function _getAttachmentStrings() {
+    protected function _getAttachmentStrings()
+    {
         return [];
     }
 }
-
-?>

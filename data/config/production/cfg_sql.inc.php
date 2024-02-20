@@ -1,16 +1,15 @@
 <?php
+
 /**
  * This file contains the configuration values for the database table names.
  *
- * @package          Core
- * @subpackage       Backend_ConfigFile
- * @version          SVN Revision $Rev:$
- *
- * @author           Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend_ConfigFile
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -91,4 +90,3 @@ $cfg['tab']['iso_3166'] = $cfg['sql']['sqlprefix'] . '_iso_3166';
 $cfg['tab']['search_tracking'] = $cfg['sql']['sqlprefix'] . '_search_tracking';
 
 $cfg['tab']['phplib_auth_user_md5'] = $cfg['tab']['user'];
-?>

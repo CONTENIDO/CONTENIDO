@@ -3,14 +3,13 @@
 /**
  * This file contains the generic db item cache class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB
- *
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,24 +21,25 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Contains a list of self instances, where each instance contains cached Items
  * fore one specific table.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB
  */
-class cItemCache {
+class cItemCache
+{
 
     /**
      * List of self instances (cItemCache)
      *
      * @var array
      */
-    protected static $_oInstances = array();
+    protected static $_oInstances = [];
 
     /**
-     * Assoziative cache array
+     * Associative cache array
      *
      * @var array
      */
-    protected $_aItemsCache = array();
+    protected $_aItemsCache = [];
 
     /**
      * Table name for current instance
@@ -72,20 +72,22 @@ class cItemCache {
      *         - $aOptions['max_items_to_cache'] = (int) Number of items to cache
      *         - $aOptions['enable'] = (bool) Flag to enable caching
      */
-    protected function __construct($sTable, array $aOptions = array()) {
+    protected function __construct($sTable, array $aOptions = [])
+    {
         $this->_sTable = $sTable;
-        if (isset($aOptions['max_items_to_cache']) && (int) $aOptions['max_items_to_cache'] > 0) {
-            $this->_iMaxItemsToCache = (int) $aOptions['max_items_to_cache'];
+        if (isset($aOptions['max_items_to_cache']) && (int)$aOptions['max_items_to_cache'] > 0) {
+            $this->_iMaxItemsToCache = (int)$aOptions['max_items_to_cache'];
         }
         if (isset($aOptions['enable']) && is_bool($aOptions['enable'])) {
-            $this->_bEnable = (bool) $aOptions['enable'];
+            $this->_bEnable = (bool)$aOptions['enable'];
         }
     }
 
     /**
      * Prevent cloning
      */
-    protected function __clone() {
+    protected function __clone()
+    {
     }
 
     /**
@@ -100,7 +102,8 @@ class cItemCache {
      *         - $aOptions['enable'] = (bool) Flag to enable caching
      * @return cItemCache
      */
-    public static function getInstance($sTable, array $aOptions = array()) {
+    public static function getInstance($sTable, array $aOptions = [])
+    {
         if (!isset(self::$_oInstances[$sTable])) {
             self::$_oInstances[$sTable] = new self($sTable, $aOptions);
         }
@@ -112,17 +115,19 @@ class cItemCache {
      *
      * @return array
      */
-    public function getItemsCache() {
+    public function getItemsCache()
+    {
         return $this->_aItemsCache;
     }
 
     /**
-     * Returns existing entry from cache by it's id.
+     * Returns existing entry from cache by its id.
      *
      * @param mixed $mId
      * @return array|NULL
      */
-    public function getItem($mId) {
+    public function getItem($mId)
+    {
         if (!$this->_bEnable) {
             return NULL;
         }
@@ -141,12 +146,13 @@ class cItemCache {
      * @param mixed $mValue
      * @return array|NULL
      */
-    public function getItemByProperty($mProperty, $mValue) {
+    public function getItemByProperty($mProperty, $mValue)
+    {
         if (!$this->_bEnable) {
             return NULL;
         }
 
-        // loop thru all cached entries and try to find a entry by it's property
+        // loop thru all cached entries and try to find an entry by its property
         foreach ($this->_aItemsCache as $id => $aEntry) {
             if (isset($aEntry[$mProperty]) && $aEntry[$mProperty] == $mValue) {
                 return $aEntry;
@@ -160,15 +166,16 @@ class cItemCache {
      * values.
      *
      * @param array $aProperties
-     *         Assoziative key value pairs
+     *         Associative key value pairs
      * @return array|NULL
      */
-    public function getItemByProperties(array $aProperties) {
+    public function getItemByProperties(array $aProperties)
+    {
         if (!$this->_bEnable) {
             return NULL;
         }
 
-        // loop thru all cached entries and try to find a entry by it's property
+        // loop through all cached entries and try to find an entry by its property
         foreach ($this->_aItemsCache as $id => $aEntry) {
             $mFound = NULL;
             foreach ($aProperties as $key => $value) {
@@ -191,13 +198,14 @@ class cItemCache {
     /**
      * Adds passed item data to internal cache
      *
-     * @todo check if null should be returned
      * @param mixed $mId
      * @param array $aData
      *         Usually the recordset
      * @return void|null
+     * @todo check if null should be returned
      */
-    public function addItem($mId, array $aData) {
+    public function addItem($mId, array $aData)
+    {
         if (!$this->_bEnable) {
             return NULL;
         }
@@ -215,13 +223,14 @@ class cItemCache {
     }
 
     /**
-     * Removes existing cache entry by it's key
+     * Removes existing cache entry by its key
      *
-     * @todo check if null should be returned
      * @param mixed $mId
      * @return void|null
+     * @todo check if null should be returned
      */
-    public function removeItem($mId) {
+    public function removeItem($mId)
+    {
         if (!$this->_bEnable) {
             return NULL;
         }
@@ -235,11 +244,12 @@ class cItemCache {
     /**
      * Removes multiple existing cache entries by their keys
      *
-     * @todo check if null should be returned
      * @param array $aIds
      * @return void|null
+     * @todo check if null should be returned
      */
-    public function removeItems(array $aIds) {
+    public function removeItems(array $aIds)
+    {
         if (!$this->_bEnable) {
             return NULL;
         }

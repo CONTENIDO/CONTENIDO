@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>content_link_list</name><description>Representation of a configurable link</description><type>content</type><alias>content_link_list</alias></module>
+<module>
+    <name>content_link_list</name>
+    <description>Representation of a configurable link</description>
+    <type>content</type>
+    <alias>content_link_list</alias>
+</module>

@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the class for plugin settings
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage UserForum
- * @author Claus Schunk
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Claus Schunk
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,10 +18,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class contains plugin settings.
  *
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage UserForum
  */
-class UserForum {
+class UserForum
+{
 
     /**
      * name of this plugin
@@ -31,11 +33,13 @@ class UserForum {
 
     /**
      */
-    public static function getName() {
+    public static function getName()
+    {
         return self::$_name;
     }
 
-    public static function i18n($key) {
+    public static function i18n($key)
+    {
         $trans = i18n($key, self::$_name);
 
         return $trans;
@@ -46,7 +50,8 @@ class UserForum {
      *
      * @return string
      */
-    public static function getUrl() {
+    public static function getUrl()
+    {
         $cfg = cRegistry::getConfig();
 
         $path = cRegistry::getBackendUrl() . $cfg['path']['plugins'];

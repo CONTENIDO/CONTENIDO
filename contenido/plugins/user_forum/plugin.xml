@@ -9,24 +9,27 @@
         <author>Claus Schunk (4fb)</author>
         <copyright>four for business AG</copyright>
         <mail>claus.schunk@4fb.de</mail>
-        <website>http://www.4fb.de</website>
-        <version>1.0.0</version>
+        <website>https://www.4fb.de</website>
+        <version>2.0.0</version>
     </general>
 
-    <requirements php="5.2.3">
-        <contenido minversion="4.9.0" />
+    <requirements php="7.0">
+        <contenido minversion="4.10.0"/>
     </requirements>
 
-     <contenido>
+    <contenido>
 
         <areas>
             <area>user_forum</area>
         </areas>
 
         <frames>
-            <frame area="user_forum" filetype="main" name="user_forum/includes/include.left_bottom.php" frameId="2" />
-            <frame area="user_forum" filetype="main" name="user_forum/includes/include.right_bottom.php" frameId="4" />
-            <frame area="user_forum" filetype="main" name="user_forum/includes/include.left_top.php" frameId="1" />
+            <frame area="user_forum" filetype="main"
+                   name="user_forum/includes/include.left_bottom.php" frameId="2"/>
+            <frame area="user_forum" filetype="main"
+                   name="user_forum/includes/include.right_bottom.php" frameId="4"/>
+            <frame area="user_forum" filetype="main" name="user_forum/includes/include.left_top.php"
+                   frameId="1"/>
         </frames>
 
         <nav_sub>

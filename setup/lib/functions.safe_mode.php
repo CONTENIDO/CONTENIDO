@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains various helper functions to read specific values needed for setup checks.
  *
@@ -6,45 +7,42 @@
  * @subpackage Helper_PHP
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-function getSafeModeStatus ()
+function getSafeModeStatus()
 {
-    if (getPHPIniSetting("safe_mode") == "1")
-    {
+    if (getPHPIniSetting("safe_mode") == "1") {
         return true;
     } else {
         return false;
     }
 }
 
-function getSafeModeGidStatus ()
+function getSafeModeGidStatus()
 {
-    if (getPHPIniSetting("safe_mode_gid") == "1")
-    {
+    if (getPHPIniSetting("safe_mode_gid") == "1") {
         return true;
     } else {
         return false;
     }
 }
 
-function getSafeModeIncludeDir ()
+function getSafeModeIncludeDir()
 {
     return getPHPIniSetting("safe_mode_include_dir");
 }
 
-function getOpenBasedir ()
+function getOpenBasedir()
 {
     return getPHPIniSetting("open_basedir");
 }
 
-function getDisabledFunctions ()
+function getDisabledFunctions()
 {
     return getPHPIniSetting("disable_functions");
 }
-?>

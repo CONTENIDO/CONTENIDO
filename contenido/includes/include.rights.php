@@ -4,13 +4,13 @@
  * Project: CONTENIDO Content Management System Description: CONTENIDO User
  * Rights
  *
- * @package CONTENIDO Backend Includes
+ * @package    Backend Includes
  * @version 1.0.2
- * @author unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  * @since file available since CONTENIDO release <= 4.6
  */
 
@@ -18,20 +18,33 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $notification, $oTpl, $db, $db2, $aViewRights, $bExclusive;
 
+// Display critical error if client or language does not exist
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
+    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+    $oPage = new cGuiPage("mod_overview");
+    $oPage->displayCriticalError($message);
+    $oPage->render();
+    // We exit the process here, this file is included by others
+    cRegistry::shutdown();
+    exit();
+}
+
 $sess = cRegistry::getSession();
 $area = cRegistry::getArea();
 $perm = cRegistry::getPerm();
 $cfg = cRegistry::getConfig();
-$client = cRegistry::getClientId();
-$lang = cRegistry::getLanguageId();
 
-$userid = (isset($_REQUEST['userid'])) ? cSecurity::toString($_REQUEST['userid']) : '';
-$actionarea = (isset($_REQUEST['actionarea'])) ? cSecurity::toString($_REQUEST['actionarea']) : 'area';
-$right_list = (isset($_POST['right_list']) && is_array($_POST['right_list'])) ? $_POST['right_list'] : null;
-$rights_perms = (isset($_POST['rights_perms'])) ? cSecurity::toString($_POST['rights_perms']) : '';
-$rights_clientslang = (isset($_POST['rights_clientslang']) && is_numeric($_POST['rights_clientslang']))
-    ? cSecurity::toInteger($_POST['rights_clientslang']) : 0;
-$filter_rights = (isset($_POST['filter_rights'])) ? cSecurity::toString($_POST['filter_rights']) : '';
+$userid = cSecurity::toString($_REQUEST['userid'] ?? '');
+$actionarea = cSecurity::toString($_REQUEST['actionarea'] ?? 'area');
+$right_list = $_POST['right_list'] ?? null;
+if (!is_array($right_list)) {
+    $right_list = null;
+}
+$rights_perms = cSecurity::toString($_POST['rights_perms'] ?? '');
+$rights_clientslang = cSecurity::toInteger($_POST['rights_clientslang'] ?? '0');
+$filter_rights = cSecurity::toString($_POST['filter_rights'] ?? '');
 
 if (!isset($rights_client)) {
     $rights_client = $client;
@@ -66,7 +79,7 @@ ob_start();
 $oTpl->set('s', 'RIGHTS_PERMS', $rights_perms);
 
 // Selectbox for clients
-$oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang', false, NULL, '', 'vAlignMiddle');
+$oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang', false, NULL, '');
 
 $oClientColl = new cApiClientCollection();
 $clientList = $oClientColl->getAccessibleClients();
@@ -76,7 +89,7 @@ $firstClientsLang = 0;
 $availableClients = [];
 
 foreach ($clientList as $key => $value) {
-    $sql = "SELECT * FROM " . $cfg["tab"]["lang"] . " AS A, " . $cfg["tab"]["clients_lang"]
+    $sql = "SELECT * FROM " . $cfg['tab']['lang'] . " AS A, " . $cfg['tab']['clients_lang']
         . " AS B WHERE B.idclient=" . cSecurity::toInteger($key) . " AND A.idlang=B.idlang";
     $db->query($sql);
 
@@ -197,12 +210,12 @@ if ($area != 'user_content') {
         }
     }
     $oTpl->set('s', 'INPUT_SELECT_RIGHTS', $oHtmlSelect->render());
-    $oTpl->set('s', 'DISPLAY_RIGHTS', 'block');
+    $oTpl->set('s', 'DISPLAY_RIGHTS', 'inline-block');
 }
 
 $bEndScript = false;
 
-$oClientLang = new cApiClientLanguage((int) $rights_clientslang);
+$oClientLang = new cApiClientLanguage((int)$rights_clientslang);
 if ($oClientLang->isLoaded()) {
     $rights_client = $oClientLang->get('idclient');
     $rights_lang = $oClientLang->get('idlang');
@@ -215,7 +228,7 @@ if ($oClientLang->isLoaded()) {
     // Account is sysadmin
     if (cString::findFirstPos($userPerms, 'sysadmin') !== false) {
         $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('warning', i18n("The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."), 0));
-    } else if (cString::findFirstPos($userPerms, 'admin[') !== false) {
+    } elseif (cString::findFirstPos($userPerms, 'admin[') !== false) {
         // Account is only assigned to clients with admin rights
         $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('warning', i18n("The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."), 0));
     } else {

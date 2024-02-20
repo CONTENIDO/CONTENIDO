@@ -3,13 +3,13 @@
 /**
  * This file contains the frontend group collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Frontend group collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiFrontendGroup createNewItem
+ * @method cApiFrontendGroup|bool next
  */
-class cApiFrontendGroupCollection extends ItemCollection {
+class cApiFrontendGroupCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['frontendgroups'], 'idfrontendgroup');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('frontendgroups'), 'idfrontendgroup');
         $this->_setItemClass('cApiFrontendGroup');
 
         // set the join partners so that joins can be used via link() method
@@ -46,14 +49,15 @@ class cApiFrontendGroupCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($groupname) {
-        global $client;
+    public function create($groupname)
+    {
+        $client = cSecurity::toInteger(cRegistry::getClientId());
 
         $group = new cApiFrontendGroup();
 
-        // _arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
+        // _arrInFilters = ['urlencode', 'htmlspecialchars', 'addslashes'];
 
-        $mangledGroupName = $group->_inFilter($groupname);
+        $mangledGroupName = $group->inFilter($groupname);
         $this->select("idclient = " . cSecurity::toInteger($client) . " AND groupname = '" . $mangledGroupName . "'");
 
         if (($obj = $this->next()) !== false) {
@@ -76,14 +80,15 @@ class cApiFrontendGroupCollection extends ItemCollection {
      *         specifies the frontend user group
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function delete($itemID) {
+    public function delete($itemID)
+    {
         $associations = new cApiFrontendGroupMemberCollection();
-        $associations->select('idfrontendgroup = ' . (int) $itemID);
+        $associations->select('idfrontendgroup = ' . (int)$itemID);
 
         while (($item = $associations->next()) !== false) {
             $associations->delete($item->get('idfrontendgroupmember'));
@@ -96,7 +101,7 @@ class cApiFrontendGroupCollection extends ItemCollection {
 /**
  * Frontend group item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiFrontendGroup extends Item
@@ -110,9 +115,9 @@ class cApiFrontendGroup extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['frontendgroups'], 'idfrontendgroup');
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('frontendgroups'), 'idfrontendgroup');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

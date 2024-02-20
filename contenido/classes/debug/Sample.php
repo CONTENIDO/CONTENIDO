@@ -18,19 +18,18 @@
  *
  * @package    Core
  * @subpackage Debug
- *
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 $oMyObj = new stdClass();
 $oMyObj->sTest = 'some property value';
-$oMyObj->aTest = array('item1', 'item2');
+$oMyObj->aTest = ['item1', 'item2'];
 
-$aMyArray = array('somekey' => 'somevalue');
+$aMyArray = ['somekey' => 'somevalue'];
 
 $iMyInt = 5;
 

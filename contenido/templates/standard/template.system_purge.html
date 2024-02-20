@@ -4,13 +4,13 @@
     <title>template.system_purge.html</title>
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
-    <link rel="stylesheet" type="text/css" href="styles/includes/system_purge.css">
+    <link rel="stylesheet" type="text/css" href="{_ASSET(styles/includes/system_purge.css)_}">
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/infoBox.js"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/infoBox.js)_}"></script>
 </head>
 
-<body style="margin: 10px;">
-    
+<body class="page_generic">
+
 <div id="system_clear_info_box">
     {INFO_MSG_BOX}
 </div>
@@ -23,12 +23,12 @@
       <div class="system_clear_header">
         {TITLE}
       </div>
-      <div class="system_clear_group clearfix">
+      <div class="system_clear_group border_t_b3 clearfix">
         <div class="leftCol">
             {GROUP_CLIENT}
         </div>
         <div class="rightCol clearfix">
-            <fieldset style="margin-left: 10px;">
+            <fieldset>
                 <legend>{CLIENT_CHOOSE}</legend>
                 <div class="system_clear_form_row clearfix">
                     <input id="select_all_clients" class="input" name="selectClient" type="radio" value="all">
@@ -73,15 +73,15 @@
                 <label for="checkbox_clearhistory" class="label_middle">{NUMBER_OF_HISTORY}: </label>
                 <input class="input" name="keepHistoryNumber" type="text" value="10" style="width: 25px;" maxlength="5">
             </div>
-            
+
             <div class="system_clear_form_row clearfix">
                 <input id="checkbox_clearversioning" class="input" name="clearVersioning" type="checkbox" value="1">
                 <label for="checkbox_clearversioning" class="label_middle">{CLEAR_CONTENT_VERSIONING}</label>
             </div>
 
         </div>
-      </div>        
-      <div class="system_clear_group clearfix">
+      </div>
+      <div class="system_clear_group border_t_b3 clearfix">
         <div class="leftCol">
             {GROUP_CONTENIDO}
         </div>
@@ -109,10 +109,12 @@
         </div>
       </div>
 
-      <div class="system_clear_group clearfix">
+      <div class="system_clear_group border_t_b3 clearfix">
           <div class="bottom">
               <input type="hidden" name="send" value="store">
-              <img id="imgFormSubmit" src="images/but_ok.gif" alt="{SUBMIT_TEXT}" border="0">
+              <div class="con_form_action_control">
+                  <input id="imgFormSubmit" class="con_img_button" accesskey="s" type="image" src="images/but_ok.gif" alt="SUBMIT_TEXT" title="{SUBMIT_TEXT}">
+              </div>
           </div>
       </div>
     </div>
@@ -141,12 +143,15 @@
             }
         });
 
-        $('#imgFormSubmit').click(function() {
+        $('#imgFormSubmit').click(function(event) {
             var iSelClient = $('input[name="selectClient"]:checked', '#frmSystemPurge').val();
             var bSelClient = false;
             var iActionSel = $('input[type="checkbox"]:checked').length;
             var sErrMsg = '';
             var bErr = false;
+
+            event.stopPropagation();
+            event.preventDefault();
 
             if ($.trim($('#system_clear_info_box').html()) != '') {
                 $('#system_clear_info_box').html('');
@@ -154,7 +159,10 @@
 
             if (typeof iSelClient != 'undefined') {
                 if (iSelClient == 'all') {
-                    bSelClient = true;
+                    var aAllClients = $('#client_select option', '#frmSystemPurge').map(function() {
+                        return this.value;
+                    }).get();
+                    bSelClient = aAllClients.length > 0;
                 } else if (iSelClient == 'list') {
                     var countClient = $('#client_select option:selected', '#frmSystemPurge').length;
                     bSelClient = countClient > 0;

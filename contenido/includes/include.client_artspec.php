@@ -3,22 +3,33 @@
 /**
  * This file contains the backend page for client article specification.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cPermission $perm
+ * @var cGuiNotification $notification
+ * @var array $cfg
+ * @var string $area
+ * @var int $frame
+ * @var int $idartspec
+ */
 
 $page = new cGuiPage("client_artspec");
 
 if (!isset($online)) {
     $online = 0;
 }
+
+$action = $action ?? '';
 
 if ($action == "client_artspec_save") {
     if (!$perm->have_perm_area_action($area, $action)) {
@@ -52,117 +63,112 @@ if ($action == "client_artspec_default") {
     }
 }
 
-$artspec = getArtspec();
+$artspecs = getArtspec();
 
-if (!empty($artspec)) {
+$list = new cGuiList();
+
+$list->setCell(1, 1, i18n("Article specification"));
+$list->setCell(1, 2, i18n("Options"));
+
+$count = 2;
+
+$artspecs = [];
+if (!empty($artspecs)) {
     $backendUrl = cRegistry::getBackendUrl();
 
-    $list = new cGuiList();
+    $imagesPath = $backendUrl . $cfg['path']['images'];
 
-    $list->setCell(1, 1, i18n("Article specification"));
-    $list->setCell(1, 2, i18n("Options"));
-
-    $count = 2;
+    // Wrapper for the buttons
+    $controls = new cHTMLDiv('', 'con_form_action_control');
 
     $link = new cHTMLLink();
-    $link->setCLink($area, $frame, "client_artspec_edit");
-    $link->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n('Edit') . '" title="' . i18n('Edit') . '">');
-
-    $dlink = new cHTMLLink();
-    $dlink->setCLink($area, $frame, "client_artspec_delete");
-    $dlink->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'delete.gif" alt="' . i18n('Delete') . '" title="' . i18n('Delete') . '">');
+    $link->setClass('con_img_button')
+        ->setCLink($area, $frame, "client_artspec_edit")
+        ->setContent(cHTMLImage::img($imagesPath . 'editieren.gif', i18n('Edit')));
 
     $olink = new cHTMLLink();
-    $olink->setCLink($area, $frame, "client_artspec_online");
+    $olink->setClass('con_img_button')
+        ->setCLink($area, $frame, "client_artspec_online");
 
     $defLink = new cHTMLLink();
-    $defLink->setCLink($area, $frame, "client_artspec_default");
+    $defLink->setClass('con_img_button')
+        ->setCLink($area, $frame, "client_artspec_default");
 
-    $artspec = getArtspec();
+    $dlink = new cHTMLLink();
+    $dlink->setClass('con_img_button')
+        ->setCLink($area, $frame, "client_artspec_delete")
+        ->setContent(cHTMLImage::img($imagesPath . 'delete.gif', i18n('Delete')));
 
-    if (is_array($artspec)) {
-        foreach ($artspec as $id => $tmp_artspec) {
-            $link->setCustom("idartspec", $id);
-            $link->updateAttributes([
-                'style' => 'padding:3'
-            ]);
+    foreach ($artspecs as $id => $artspecItem) {
+        $link->setCustom("idartspec", $id);
+        $olink->setCustom("idartspec", $id);
+        $defLink->setCustom("idartspec", $id);
+        $dlink->setCustom("idartspec", $id);
 
-            $dlink->setCustom("idartspec", $id);
-            $dlink->updateAttributes([
-                'style' => 'padding:3'
-            ]);
+        if (($action == "client_artspec_edit") && ($idartspec == $id)) {
+            $form = new cHTMLForm("artspec");
+            $form->setVar("area", $area);
+            $form->setVar("frame", $frame);
+            $form->setVar("idartspec", $id);
+            $form->setVar("action", "client_artspec_save");
+            $form->setVar("online", $artspecItem['online']);
+            $inputBox = new cHTMLTextbox("artspectext", conHtmlentities(stripslashes($artspecItem['artspec'])));
+            $form->appendContent($inputBox->render());
+            $form->appendContent(cHTMLButton::image($imagesPath . 'submit.gif', i18n('Save'), ['class' => 'con_img_button']));
 
-            $olink->setCustom("idartspec", $id);
-            $olink->updateAttributes([
-                'style' => 'padding:3'
-            ]);
-
-            $defLink->setCustom("idartspec", $id);
-            $defLink->updateAttributes([
-                'style' => 'padding:3'
-            ]);
-
-            if (($action == "client_artspec_edit") && ($idartspec == $id)) {
-                $form = new cHTMLForm("artspec");
-                $form->setVar("area", $area);
-                $form->setVar("frame", $frame);
-                $form->setVar("idartspec", $id);
-                $form->setVar("action", "client_artspec_save");
-                $form->setVar("online", $artspec[$id]['online']);
-                $inputbox = new cHTMLTextbox("artspectext", conHtmlentities(stripslashes($artspec[$id]['artspec'])));
-                $form->appendContent($inputbox->render());
-                $form->appendContent('<input type="image" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif" alt="' . i18n('Save') . '" title="' . i18n('Save') . '">');
-
-                $list->setCell($count, 1, $form->render());
-            } else {
-                $list->setCell($count, 1, stripslashes($artspec[$id]['artspec']));
-            }
-
-            if ($artspec[$id]['online'] == 0) {
-                // it is offline (std!)
-                $olink->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'offline.gif" alt="' . i18n('Make online') . '" title="' . i18n('Make online') . '">');
-                $olink->setCustom("online", 1);
-            } else {
-                $olink->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'online.gif" alt="' . i18n('Make offline') . '" title="' . i18n('Make offline') . '">');
-                $olink->setCustom("online", 0);
-            }
-
-            if ($artspec[$id]['default'] == 0) {
-                $defLink->setContent('<img alt="" src="' . $backendUrl . $cfg['path']['images'] . 'artikel_spez_inakt.gif" title="' . i18n("Make this article specification default") . '">');
-                $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $defLink->render());
-            } else {
-                $standardImage = new cHTMLImage($backendUrl . $cfg['path']['images'] . 'artikel_spez_akt.gif');
-                $standardImage->setAttribute("title", i18n("This is the default article specification"));
-                $standardImage->appendStyleDefinition("padding-left", "3px");
-                $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $standardImage->toHtml());
-            }
-
-            $count++;
+            $list->setCell($count, 1, $form->render());
+        } else {
+            $list->setCell($count, 1, stripslashes($artspecItem['artspec']));
         }
-    } else {
-        $list->setCell($count, 1, i18n("No article specifications found!"));
-        $list->setCell($count, 2, '');
+
+        if ($artspecItem['online'] == 0) {
+            // it is offline (std!)
+            $olink->setContent(cHTMLImage::img($imagesPath . 'offline.gif', i18n('Make online')));
+            $olink->setCustom("online", 1);
+        } else {
+            $olink->setContent(cHTMLImage::img($imagesPath . 'online.gif', i18n('Make offline')));
+            $olink->setCustom("online", 0);
+        }
+
+        if ($artspecItem['default'] == 0) {
+            $defLink->setContent(cHTMLImage::img($imagesPath . 'artikel_spez_inakt.gif', i18n("Make this article specification default")));
+        } else {
+            // @TODO Where and how was this meant to be used?
+            $standardImage = cHTMLImage::img(
+                $imagesPath . 'artikel_spez_akt.gif', i18n("This is the default article specification"),
+                ['class' => 'con_img_button']
+            );
+        }
+
+        $controls->setContent([
+            $link->render(), $olink->render(), $defLink->render(), $dlink->render()
+        ]);
+        $list->setCell($count, 2, $controls->render());
+
+        $count++;
     }
+} else {
+    $list->setCell($count, 1, i18n("No article specifications found!"));
+    $list->setCell($count, 2, '&nbsp;');
 }
 unset($form);
 
 $form = new cGuiTableForm("artspec");
+$form->setTableClass('generic con_block col_sm');
 $form->setVar("area", $area);
 $form->setVar("frame", $frame);
 $form->setVar("action", "client_artspec_save");
-$form->addHeader(i18n("Create new article specification"));
-$inputbox = new cHTMLTextbox("artspectext");
-$form->add(i18n("Specification name"), $inputbox->render());
-
-$spacer = new cHTMLDiv();
-$spacer->setStyle("width: 1%");
-$spacer->setContent("<br>" . $form->render());
+$form->setHeader(i18n("Create new article specification"));
+$inputBox = new cHTMLTextbox("artspectext");
+$form->add(i18n("Specification name"), $inputBox->render());
 
 $content = [];
 if (!empty($list)) {
-    $content[] = $list;
+    // Wrap the list with a block
+    $block = new cHTMLDiv($list->render(), 'con_block');
+    $content[] = $block->render();
 }
-$content[] = $spacer;
+$content[] = $form->render();
 $page->setContent($content);
 
 $page->render();

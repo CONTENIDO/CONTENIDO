@@ -3,13 +3,13 @@
 /**
  * description: standard image
  *
- * @package Module
+ * @package    Module
  * @subpackage ContentImage
- * @author marcus.gnass@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     marcus.gnass@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert framework initialization
@@ -48,7 +48,7 @@ if (0 < cString::getStringLength($imageSource)) {
 if (cRegistry::isBackendEditMode()) {
     $label = mi18n("LABEL_IMAGE");
 } else {
-    $label = NULL;
+    $label = '';
 }
 
 // use smarty template to output header text

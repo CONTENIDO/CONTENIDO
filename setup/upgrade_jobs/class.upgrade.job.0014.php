@@ -3,13 +3,13 @@
 /**
  * This file contains the upgrade job 14.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
- * @author frederic.schneider
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     frederic.schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert CONTENIDO framework
@@ -20,14 +20,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * Switched AMR and url_shortener plugins from "Content" navigation to "Extras" navigation
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0014 extends cUpgradeJobAbstract {
+class cUpgradeJob_0014 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.4";
 
-    public function _execute() {
+    public function _execute()
+    {
 
         if ($_SESSION['setuptype'] == 'upgrade') {
 
@@ -40,8 +42,8 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract {
 
             // If entry exist, change location to mod_rewrite/xml/;navigation/extra/mod_rewrite/main
             if ($navsub !== null) {
-            	$navsub->set('location', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/main');
-            	$navsub->store();
+                $navsub->set('location', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/main');
+                $navsub->store();
             }
 
             // mod_rewrite/settings
@@ -50,8 +52,8 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract {
 
             // If entry exist, change location to mod_rewrite/xml/;navigation/extra/mod_rewrite/settings
             if ($navsub !== null) {
-            	$navsub->set('location', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/settings');
-            	$navsub->store();
+                $navsub->set('location', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/settings');
+                $navsub->store();
             }
 
             // mod_rewrite/expert
@@ -60,8 +62,8 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract {
 
             // If entry exist, change location to mod_rewrite/xml/;navigation/extra/mod_rewrite/expert
             if ($navsub !== null) {
-            	$navsub->set('location', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/expert');
-            	$navsub->store();
+                $navsub->set('location', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/expert');
+                $navsub->store();
             }
 
             // mod_rewrite/test
@@ -70,8 +72,8 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract {
 
             // If entry exist, change location to mod_rewrite/xml/;navigation/extra/mod_rewrite/test
             if ($navsub !== null) {
-            	$navsub->set('location', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/test');
-            	$navsub->store();
+                $navsub->set('location', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/test');
+                $navsub->store();
             }
 
             // url_shortener/main
@@ -80,8 +82,8 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract {
 
             // If entry exist, change location to url_shortener/xml/;navigation/extra/url_shortener/main
             if ($navsub !== null) {
-            	$navsub->set('location', 'url_shortener/xml/;navigation/extra/url_shortener/main');
-            	$navsub->store();
+                $navsub->set('location', 'url_shortener/xml/;navigation/extra/url_shortener/main');
+                $navsub->store();
             }
 
             // mod_rewrite

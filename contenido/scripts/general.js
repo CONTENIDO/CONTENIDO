@@ -6,19 +6,20 @@
  * Following modules are implemented here: - Registry - Loader - UtilUrl -
  * FrameLeftTop
  *
- * @module contenido
- * @requires jQuery, Con
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @module     contenido
+ * @requires   jQuery, Con
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 (function(Con, $) {
 
     var NAME = 'registry';
 
+    // Polyfill for Browser, who don't support `Array.prototype.forEach`.
     // define forEach loops on arrays for browsers who do not understand this (e.g. IE 8)
     // use definition from Mozilla
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
@@ -39,7 +40,7 @@
             var len = O.length >>> 0;
 
             // 4. If IsCallable(callback) is false, throw a TypeError exception.
-            // See: http://es5.github.com/#x9.11
+            // See: https://es5.github.com/#x9.11
             if (typeof callback !== "function") {
                 throw new TypeError(callback + ' is not a function');
             }
@@ -78,6 +79,7 @@
         };
     }
 
+    // Polyfill for Browser, who don't support `Array.prototype.indexOf`.
     // define indexOf on arrays for browsers who do not understand this (e.g. IE 8, IE 9)
     // use definition from Mozilla
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf#Polyfill
@@ -145,6 +147,7 @@
         };
     }
 
+    // Polyfill for Browser, who don't support `Object.keys`.
     // define Object.keys for browser that don't implement it (e.g. IE 8)
     // use definition from Mozilla
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
@@ -187,6 +190,23 @@
                 return result;
             };
         }());
+    }
+
+    // Polyfill for Browser, who don't support `String.prototype.endsWith`, e.g. IE 11
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith
+    if (!String.prototype.endsWith) {
+        String.prototype.endsWith = function(suffix) {
+            return this.indexOf(suffix, this.length - suffix.length) !== -1;
+        };
+    }
+
+    // Polyfill for Browser, who don't support `String.prototype.startsWith`, e.g. IE 11
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
+    if (!String.prototype.startsWith) {
+        String.prototype.startsWith = function(searchString, position) {
+            var pos = position > 0 ? position|0 : 0;
+            return this.substring(pos, pos + searchString.length) === searchString;
+        };
     }
 
     /**
@@ -360,6 +380,37 @@
     }
 
     /**
+     * Processes the file url, adds version parameter to the file url,
+     * to ensure to load a fresh version once a day.
+     *
+     * @method _processFileUrl
+     * @param {String} file
+     * @private
+     */
+    function _processFileUrl(file) {
+        if ((Con.UtilUrl.validate(file) || file.substring(0, 2) === '//') && file.search(Con.cfg.urlBackend) === -1) {
+            // We don't add version parameter to fully qualified or schemeless urls, except to CONTENIDO backend
+            return file;
+        }
+        var path = Con.UtilUrl.getUrlWithPath(file),
+            params = Con.UtilUrl.getParams(file);
+        //console.log({file: file, path: path, params: params});
+
+        if ($.type(params['v']) !== 'undefined') {
+            // File url already contains the v parameter
+            return file;
+        }
+
+        // Create a daily 'v' parameter for the url
+        var date = new Date(),
+            month = date.getMonth() + 1;
+        month = month < 9 ? '0' + month : month;
+        params['v'] = date.getFullYear() + '-' + month + '-' + date.getDate();
+
+        return Con.UtilUrl.build(path, params);
+    }
+
+    /**
      * Loads CSS file by appending a link node to the head
      *
      * @method _loadCss
@@ -369,7 +420,7 @@
      */
     function _loadCss(file, callback) {
         var link = document.createElement('link');
-        link.href = file;
+        link.href = _processFileUrl(file);
         link.rel = 'stylesheet';
         link.type = 'text/css';
         _head.appendChild(link);
@@ -411,7 +462,7 @@
     }
 
     /**
-     * Loads JavaScript file by using $.getScript
+     * Loads JavaScript file by using $.ajax
      *
      * @method _loadJs
      * @param {String} file
@@ -423,12 +474,12 @@
         $.ajax({
             dataType: 'script',
             cache: true,
-            url: file
+            url: _processFileUrl(file)
         }).done(function () {
             callback();
         }).fail(function (jqXHR, settings, exception) {
             if (jqXHR.status === "200" && jqXHR.responseText !== "") {
-                // Give other files a little bit of time to load in case there are dependencies
+                // Give other files a bit of time to load in case there are dependencies
                 // Try to evaluate the file after 250ms
                 setTimeout(function () {
                     _lateEval(jqXHR.responseText, callback, 1, file, jqXHR, settings);
@@ -610,9 +661,9 @@
     Con.FrameLeftTop = {
         /**
          * Resize top left frame. Retrieves the container element
-         * top_left_container and it's data attributes to handle the resize.
+         * top_left_container and its data attributes to handle the resize.
          * Following attributes are supported: - data-resizegap: (Number) The
-         * amount of extar pixels to add to the detected content height of top
+         * amount of extra pixels to add to the detected content height of top
          * left frame - data-resizeinitcb: (String) Optional a callback to call
          * which does the initial frame resizing Example:
          *
@@ -663,9 +714,12 @@
             if (callback && 'function' === $.type(scope[callback])) {
                 scope[callback]();
             } else {
-                Con.getFrame('content')
-                    .frameResize
-                    .resizeTopLeftFrame($container.height() + gap);
+                // We may not have access to the content frame, i.e. in the imagebrowser/filebrowser
+                if (Con.frameHasProperty('content', 'frameResize')) {
+                    Con.getFrame('content')
+                        .frameResize
+                        .resizeTopLeftFrame($container.height() + gap);
+                }
             }
         },
 
@@ -693,6 +747,7 @@
     /**
      * FrameLeftBottom class
      *
+     * @since CONTENIDO 4.10.2
      * @submodule base-frame-left-bottom
      * @class FrameLeftBottom
      * @static
@@ -802,20 +857,24 @@
          * from a given url. Example:
          *
          * <pre>
-         * var url = 'http://hostname/some/path/page.html?foobar=1&amp;user=JaneDoe';
-         * // result: 'http://hostname/some/path/'
+         * var url = 'https://hostname/some/path/page.html?foobar=1&amp;user=JaneDoe';
+         * // result: 'https://hostname/some/path/'
          * var newUrl = Con.UtilUrl.getUrlWithPath(url);
          * </pre>
          *
          * @method getUrlWithPath
          * @param {String} [url] Url to determine params from, uses
          *            window.location.href by default
-         * @return {String} The folder starting like 'http://hostname/some/path/'
+         * @return {String} The folder starting like 'https://hostname/some/path/'
          * @static
          */
         getUrlWithPath: function(url) {
             url = url || scope.location.href;
-            return decodeURI(url.substring(0, (url.lastIndexOf('/', url.indexOf('?')) + 1)));
+            if (url.indexOf('?') !== -1) {
+                return url.substring(0, (url.lastIndexOf('/', url.indexOf('?')) + 1));
+            } else {
+                return url;
+            }
         },
 
         /**
@@ -873,7 +932,7 @@
          * @method replaceParams
          * @param {String} url  The url to change the query parameters
          * @param {Object} params  Key value pairs of params to update or remove. NB:
-         *            A null value will remove the parameter! e. g. {action:
+         *            A null value will remove the parameter! e.g. {action:
          *            null} will remove existing action parameter.
          * @return {String}
          * @static
@@ -909,7 +968,7 @@
          * Returns true if the parameter seems to be a valid URL. Example:
          *
          * <pre>
-         * var url = 'http://hostname/some/path/page.html?foobar=1&amp;user=JaneDoe';
+         * var url = 'https://hostname/some/path/page.html?foobar=1&amp;user=JaneDoe';
          * if (Con.UtilUrl.validate(url)) {
          *     // do something here...
          * }
@@ -936,9 +995,9 @@
     /**
      * Miscellaneous/common functions, extends Con.
      *
-     * @class Common
-     * @extends Contenido
-     * @module contenido
+     * @class     Common
+     * @extends   Contenido
+     * @module    contenido
      * @submodule base-common
      * @static
      */
@@ -1139,14 +1198,14 @@
 
             contentWindow = Con.getContentWindow();
             if (!contentWindow.$ || !contentWindow.$.ui) {
-                // This may happen, e. g. in layout preview
+                // This may happen, e.g. in layout preview
                 Con.log('Could not find $ or $.ui in content window', 'Con.showConfirmation', 'warn');
                 return;
             }
 
             // Define the options and extend them with the given ones.
             // NOTE: Code in dialog callbacks should be executed in the context of the
-            //       content window (e. g. contentWindow.$), not in this window (e. g. $).
+            //       content window (e.g. contentWindow.$), not in this window (e.g. $).
             buttons = {};
             buttons[translations.OK] = function() {
                 if (typeof callback === 'function') {
@@ -1188,7 +1247,7 @@
      * @param {String} description  The text which is displayed in the box
      * @param {Object} additionalOptions  Options which can be used to customise the
      *            behaviour of the dialog box, see
-     *            http://api.jqueryui.com/dialog/
+     *            https://api.jqueryui.com/dialog/
      * @param {Boolean} hideButtons
      */
     Con.showNotification = function(title, description, additionalOptions,
@@ -1204,14 +1263,14 @@
 
             contentWindow = Con.getContentWindow();
             if (!contentWindow.$ || !contentWindow.$.ui) {
-                // This may happen, e. g. in layout preview
+                // This may happen, e.g. in layout preview
                 Con.log('Could not find $ or $.ui in content window', 'Con.showNotification', 'warn');
                 return;
             }
 
             // Define the options and extend them with the given ones.
             // NOTE: Code in dialog callbacks should be executed in the context of the
-            //       content window (e. g. contentWindow.$), not in this window (e. g. $).
+            //       content window (e.g. contentWindow.$), not in this window (e.g. $).
             buttons = {};
             if (!hideButtons) {
                 buttons[translations.OK] = function() {
@@ -1238,7 +1297,7 @@
 
     /**
     * Check Ajax response and located user to login page
-    * if authentication failed (e. g. user timeout)
+    * if authentication failed (e.g. user timeout)
     *
     * @method checkAjaxResponse
     * @param {String|Object} response
@@ -1261,14 +1320,14 @@
 
     /**
      * Marks submenu item in header, handles also context of different frames.
-     * It supports to mark a submenu (aka subnav) item by it's position and also
-     * by it's data-name attribute value. Examples:
+     * It supports to mark a submenu (aka subnav) item by its position and also
+     * by its data-name attribute value. Examples:
      *
      * <pre>
      * // Mark second submenu item (index starts at 0)
      * Con.markSubmenuItem('c_1');
      *
-     * // Mark submenu item by it's data-name attribute, e. g. data-name=&quot;con_editart&quot;
+     * // Mark submenu item by its data-name attribute, e.g. data-name=&quot;con_editart&quot;
      * Con.markSubmenuItem('con_editart');
      * </pre>
      *
@@ -1300,11 +1359,12 @@
      * Serializes given form elements and returns them back, either as array of names and values
      * (see jQuery serializeArray()) or as an object with name and values.
      *
+     * @since CONTENIDO 4.10.2
      * @param {jQuery} form - jQuery form element
      * @param {Boolean} [asObject=true] - Flag to return the form elements data as an object.
      * @returns {Object|JQuery.NameValuePair[]} - The form data. If return type is object, form data
      *     having multiple values for a multi select or option group (same element name!) will be returned
-     *     as an list of values, e. g. {multiselect: ['value1', 'value2']}
+     *     as a list of values, e.g. {multiselect: ['value1', 'value2']}
      */
     Con.serializeForm = function (form, asObject) {
         var objData,
@@ -1329,7 +1389,29 @@
         });
 
         return objData;
-    }
+    };
+
+    /**
+     * Checks if the passed event, it should be passed by a 'keydown' handler,
+     * is a pressed escape key on the keyboard.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param {Event} event
+     * @returns {boolean}
+     */
+    Con.isEscapeKeyEvent = function(event) {
+        if (typeof event === 'object' && event !== null && event.hasOwnProperty('type')) {
+            if ('key' in event) {
+                // Modern browser
+                return (event.key === 'Escape' || event.key === 'Esc');
+            } else {
+                // All browser
+                return event.keyCode === 27;
+            }
+        }
+        return false;
+    };
+
 })(Con, Con.$);
 
-console.log(window.name + ':general query parameter', window.location.search.replace('?', ''));
+//console.log(window.name + ':general query parameter', window.location.search.replace('?', ''));

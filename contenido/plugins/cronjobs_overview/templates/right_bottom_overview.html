@@ -1,68 +1,64 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+        "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
     <title>right_bottom_overview.html</title>
-{_META_HEAD_CONTENIDO_}
-{_CSS_HEAD_CONTENIDO_}
-{_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
-    <script type="text/javascript" src="scripts/infoBox.js"></script>
+    {_META_HEAD_CONTENIDO_}
+    {_CSS_HEAD_CONTENIDO_}
+    {_JS_HEAD_CONTENIDO_}
+    <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/infoBox.js)_}"></script>
 </head>
-<body class="mg10">
-    <form enctype="multipart/form-data" class="mg0" name="properties" method="post" action="main.php">
-        <input type="hidden" name="frame" value="4">
-        <input type="hidden" name="area" value="cronjob">
-        <input type="hidden" name="action" value="cronjob_execute">
-        <input type="hidden" name="contenido" value="{CONTENIDO}">
-        <input type="hidden" name="frame" value="4">
-        <input type="hidden" name="file" value="{FILE}">
-        <table id="" class="borderB3 nobordert noborderr" cellspacing="0" cellpadding="2" border="0">
-            <tr class="text_medium bgcE2">
-                <td colspan="2" valign="top" class="textg_medium borderB3 noborderl noborderb">
-                    {HEADER}
-                </td>
-            </tr>
-            <tr id="1" class="textg_medium bgcwhite">
-                <td nowrap="nowrap" valign="top" class="borderB3 noborderl nobordert pdl0 nowrap" width="1">
-                    <nobr>
-                        {LABLE_DIRECTORY}
-                    </nobr>
-                </td>
-                <td nowrap="nowrap" valign="top" class="borderB3 noborderl nobordert" align="left">
-                    {DIRECTORY}
-                </td>
-            </tr>
-            <tr id="2" class="textg_medium bgcwhite">
-                <td nowrap="nowrap" valign="top" class="borderB3 noborderl nobordert pdl0 nowrap" width="1">
-                    <nobr>
-                        {LABLE_EXECUTION_TIME}
-                    </nobr>
-                </td>
-                <td nowrap="nowrap" valign="top" class="borderB3 noborderl nobordert" align="left">
-                    {EXECUTION_TIME}&nbsp;
-                </td>
-            </tr>
-            <tr id="3" class="textg_medium bgcwhite">
-                <td nowrap="nowrap" valign="top" class="borderB3 noborderl nobordert pdl0 nowrap" width="1">
-                    <nobr>
-                        {LABLE_LOG}
-                    </nobr>
-                </td>
-                <td valign="top" class="borderB3 noborderl nobordert" align="left">
-                    {LOG}&nbsp;
-                </td>
-            </tr>
-            <tr id="9" class="textg_medium">
-                <td nowrap="nowrap" valign="top" class="borderB3 noborderl nobordert noborderb pdl0 nowrap" width="1">
-                    <nobr>
-                        {LABLE_EXECUTE}
-                    </nobr>
-                </td>
-                <td nowrap="nowrap" valign="top" class="borderB3 nobordert noborderl noborderb" align="right">
-                    <input class="mgl5" title="{ALT_TITLE}" alt="{ALT_TITLE}" type="image" src="images/submit.gif" name="submit" accesskey="s">
-                </td>
-            </tr>
-        </table>
-    </form>
+<body class="page_generic">
+<form enctype="multipart/form-data" class="mg0" name="properties" method="post" action="main.php">
+    <input type="hidden" name="frame" value="4">
+    <input type="hidden" name="area" value="cronjob">
+    <input type="hidden" name="action" value="cronjob_execute">
+    <input type="hidden" name="contenido" value="{CONTENIDO}">
+    <input type="hidden" name="frame" value="4">
+    <input type="hidden" name="file" value="{FILE}">
+    <table class="generic">
+        <tr>
+            <th colspan="2">
+                {HEADER}
+            </th>
+        </tr>
+        <tr id="1">
+            <td class="no_wrap">
+                {LABLE_DIRECTORY}
+            </td>
+            <td class="no_wrap">
+                {DIRECTORY}
+            </td>
+        </tr>
+        <tr id="2">
+            <td class="no_wrap">
+                {LABLE_EXECUTION_TIME}
+            </td>
+            <td class="no_wrap">
+                {EXECUTION_TIME}&nbsp;
+            </td>
+        </tr>
+        <tr id="3">
+            <td class="no_wrap">
+                {LABLE_LOG}
+            </td>
+            <td class="no_wrap">
+                {LOG}&nbsp;
+            </td>
+        </tr>
+        <tr id="9">
+            <td class="no_wrap">
+                {LABLE_EXECUTE}
+            </td>
+            <td class="text_right">
+                <div class="con_form_action_control">
+                    <input class="con_img_button" title="{ALT_TITLE}" alt="{ALT_TITLE}" type="image"
+                           src="images/submit.gif" name="submit" accesskey="s">
+                </div>
+            </td>
+        </tr>
+    </table>
+</form>
 </body>
 </html>

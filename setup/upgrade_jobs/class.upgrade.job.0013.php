@@ -3,13 +3,13 @@
 /**
  * This file contains the upgrade job 13.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
- * @author frederic.schneider
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     frederic.schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert CONTENIDO framework
@@ -21,18 +21,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Change of areas for actions pifa_export_form, pifa_show_fields and
  * pifa_show_data
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0013 extends cUpgradeJobAbstract {
+class cUpgradeJob_0013 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.3";
 
-    public function _execute() {
-        global $cfg;
-
+    public function _execute()
+    {
         if ($_SESSION['setuptype'] == 'upgrade') {
-
             // Initializing cApiArea
             $area = new cApiArea();
 

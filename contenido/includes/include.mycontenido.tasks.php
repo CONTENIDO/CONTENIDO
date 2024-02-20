@@ -3,16 +3,49 @@
 /**
  * This file contains the backend page for managing tasks.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cAuth $auth
+ * @var cApiUser $currentuser
+ * @var array $cfg
+ * @var int $client
+ * @var int $frame
+ * @var string $area
+ *
+ * @var int $idcommunication
+ * @var int $progress
+ * @var string $subject
+ * @var string $message
+ * @var string $userassignment
+ * @var string $notiemail
+ * @var string $status
+ * @var string $priority
+ * @var string $enddate
+ */
+
+$oPage = new cGuiPage("mycontenido.tasks", "", "1");
+
+// Display critical error if client or language does not exist
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
+    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+    $oPage->displayCriticalError($message);
+    $oPage->render();
+    return;
+}
+
+$action = $action ?? '';
 
 if (!isset($sortmode)) {
     $sortmode = $currentuser->getUserProperty("system", "tasks_sortmode");
@@ -37,277 +70,72 @@ if (isset($_REQUEST["listsubmit"])) {
     }
 }
 
-/**
- *
- */
-class TODOBackendList extends cGuiScrollList {
-
-    /**
-     * @var array
-     */
-    protected $_statustypes;
-
-    /**
-     * @var array
-     */
-    protected $_prioritytypes;
-
-    /**
-     * TODOBackendList constructor.
-     */
-    public function __construct() {
-        global $todoitems;
-
-        parent::__construct();
-
-        $this->_statustypes = $todoitems->getStatusTypes();
-        $this->_prioritytypes = $todoitems->getPriorityTypes();
-    }
-
-    /**
-     * Old constructor
-     *
-     * @throws cInvalidArgumentException
-     */
-    public function TODOBackendList() {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        $this->__construct();
-    }
-
-    /**
-     * Is called when a new column is rendered.
-     *
-     * @see cGuiScrollList::onRenderColumn()
-     * @param int $column
-     *         The current column which is being rendered
-     */
-    public function onRenderColumn($column) {
-        if ($column == 6 || $column == 5) {
-            $this->objItem->updateAttributes(array("align" => "center"));
-        } else {
-            $this->objItem->updateAttributes(array("align" => "left"));
-        }
-
-        if ($column == 7) {
-            $this->objItem->updateAttributes(array("style" => "width: 85px;"));
-        } else {
-            $this->objItem->updateAttributes(array("style" => ""));
-        }
-    }
-
-    /**
-     * Field converting facility.
-     * Needs to be overridden in the child class to work properbly.
-     *
-     * @see cGuiScrollList::convert()
-     *
-     * @param int    $key
-     *         Field index
-     * @param string $value
-     *         Field value
-     * @param array  $hidden
-     *
-     * @return string
-     *
-     * @throws cException
-     */
-    public function convert($key, $value, $hidden) {
-        global $link, $dateformat, $cfg;
-
-        $backendUrl = cRegistry::getBackendUrl();
-
-        if ($key == 2) {
-            $link->setCustom("idcommunication", $hidden[1]);
-            $link->setContent($value);
-            return $link->render();
-        }
-
-        if ($key == 3) {
-            return date($dateformat, strtotime($value));
-        }
-
-        if ($key == 5) {
-            switch ($value) {
-                case "new":
-                    $img = "status_new.gif";
-                    break;
-                case "progress":
-                    $img = "status_inprogress.gif";
-                    break;
-                case "done":
-                    $img = "status_done.gif";
-                    break;
-                case "deferred":
-                    $img = "status_deferred.gif";
-                    break;
-                case "waiting":
-                    $img = "status_waiting.gif";
-                    break;
-                default:
-                    break;
-            }
-
-            if (!array_key_exists($value, $this->_statustypes)) {
-                return i18n("No status type set");
-            }
-
-            $backendUrl = cRegistry::getBackendUrl();
-
-            $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/" . $img);
-            $image->setAlt($this->_statustypes[$value]);
-
-            //Do not display statuicon, only show statustext
-            //return $image->render();
-            return $this->_statustypes[$value];
-        }
-
-        if ($key == 7) {
-            $amount = $value / 20;
-
-            if ($amount < 0) {
-                $amount = 0;
-            }
-
-            if ($amount > 5) {
-                $amount = 5;
-            }
-
-            $amount = round($amount);
-
-            if ($amount != 0) {
-                $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/progress.gif");
-                $image->setAlt(sprintf(i18n("%d %% complete"), $value));
-                $ret = "";
-
-                for ($i = 0; $i < $amount; $i++) {
-                    $ret .= $image->render();
-                }
-
-                return $ret;
-            } else {
-                return '&nbsp;';
-            }
-        }
-
-        if ($key == 6) {
-            $p = $img = '';
-
-            switch ($value) {
-                case 0:
-                    $img = "prio_low.gif";
-                    $p = "low";
-                    break;
-                case 1:
-                    $img = "prio_medium.gif";
-                    $p = "medium";
-                    break;
-                case 2:
-                    $img = "prio_high.gif";
-                    $p = "high";
-                    break;
-                case 3:
-                    $img = "prio_veryhigh.gif";
-                    $p = "immediately";
-                    break;
-                default:
-                    break;
-            }
-
-            $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/" . $img);
-            $image->setAlt($this->_prioritytypes[$p]);
-            return $image->render();
-        }
-
-        if ($key == 8) {
-
-            if ($value !== "") {
-                if (round($value, 2) == 0) {
-                    return i18n("Today");
-                } else {
-                    if ($value < 0) {
-                        return number_format(0 - $value, 2, ',', '') . " " . i18n("Day(s)");
-                    } else {
-                        return '<font color="red">' . number_format(0 - $value, 2, ',', '') . " " . i18n("Day(s)") . '</font>';
-                    }
-                }
-            } else {
-                return '&nbsp;';
-            }
-        }
-
-        return $value;
-    }
-
-}
-
 if ($action == "todo_save_item") {
     $subject = stripslashes($subject);
     $message = stripslashes($message);
 
-    $todoitem = new TODOItem();
-    $todoitem->loadByPrimaryKey($idcommunication);
+    $todoItem = new TODOItem();
+    $todoItem->loadByPrimaryKey($idcommunication);
 
-    $todoitem->set("subject", $subject);
-    $todoitem->set("message", $message);
-    $todoitem->set("recipient", $userassignment);
+    $todoItem->set("subject", $subject);
+    $todoItem->set("message", $message);
+    $todoItem->set("recipient", $userassignment);
 
     if (isset($reminderdate)) {
-        $todoitem->setProperty("todo", "reminderdate", strtotime($reminderdate));
+        $todoItem->setProperty("todo", "reminderdate", strtotime($reminderdate));
     }
 
     if (isset($notibackend)) {
-        $todoitem->setProperty("todo", "backendnoti", $notibackend);
+        $todoItem->setProperty("todo", "backendnoti", $notibackend);
     }
 
-    $todoitem->setProperty("todo", "emailnoti", $notiemail);
-
-    $todoitem->setProperty("todo", "status", $status);
-
-    if ($progress < 0) {
-        $progress = 0;
+    if (isset($notiemail)) {
+        $todoItem->setProperty("todo", "emailnoti", $notiemail);
     }
 
-    if ($progress > 100) {
-        $progress = 100;
-    }
+    $todoItem->setProperty("todo", "status", $status);
 
-    $todoitem->setProperty("todo", "priority", $priority);
-    $todoitem->setProperty("todo", "progress", $progress);
+    // Progress can be between 0 - 100
+    $progress = min(max(0, $progress), 100);
 
-    $todoitem->setProperty("todo", "enddate", $enddate);
+    $todoItem->setProperty("todo", "priority", $priority);
+    $todoItem->setProperty("todo", "progress", $progress);
 
-    $todoitem->store();
+    $todoItem->setProperty("todo", "enddate", $enddate);
+
+    $todoItem->store();
 }
 
-$cpage = new cGuiPage("mycontenido.tasks", "", "1");
-
-$todoitems = new TODOCollection();
-
+$todoItems = new TODOCollection();
 if ($action == "mycontenido_tasks_delete") {
-    $todoitems->delete($idcommunication);
+    $todoItems->delete($idcommunication);
 }
-
 $recipient = $auth->auth["uid"];
+$todoItems->select("recipient = '" . $todoItems->escape($recipient) . "' AND idclient = " . (int)$client);
 
-$todoitems->select("recipient = '" . $todoitems->escape($recipient) . "' AND idclient=" . (int) $client);
+$editLink = new cHTMLLink();
+$editLink->setCLink("mycontenido_tasks_edit", 4, "");
+$editLink->setCustom("sortmode", $sortmode);
+$editLink->setCustom("sortby", $sortby);
 
-$list = new TODOBackendList();
+$deleteLink = new cHTMLLink();
+$deleteLink->setCLink("mycontenido_tasks", 4, "mycontenido_tasks_delete");
+$deleteLink->setCustom("sortby", $sortby);
+$deleteLink->setCustom("sortmode", $sortmode);
+
+$list = new cGuiScrollListMyContenidoTasks($todoItems, $editLink, $dateformat);
 
 $list->setHeader(
     '&nbsp;', i18n("Subject"), i18n("Created"), i18n("End Date"), i18n("Status"),
     i18n("Priority"), sprintf(i18n("%% complete")), i18n("Due in"), i18n("Actions")
 );
 
-$lcount = 0;
+$listCount = 0;
 
-$link = new cHTMLLink();
-$link->setCLink("mycontenido_tasks_edit", 4, "");
-$link->setCustom("sortmode", $sortmode);
-$link->setCustom("sortby", $sortby);
+while ($todo = $todoItems->next()) {
+    if ((($todo->getProperty("todo", "status") != "done") && $c_restrict) || (empty($c_restrict))) {
 
-while ($todo = $todoitems->next()) {
-    if ((($todo->getProperty("todo", "status") != "done") && ($c_restrict == true)) || ($c_restrict == '')) {
-
+        $idcommunication = cSecurity::toInteger($todo->get("idcommunication"));
         $subject = $todo->get("subject");
         $created = $todo->get("created");
 
@@ -330,36 +158,19 @@ while ($todo = $todoitems->next()) {
             $status = i18n("No status set");
         }
 
-        $link->setCustom("idcommunication", $todo->get("idcommunication"));
-        $link->setContent('<img id="myContenidoTodoButton" src="images/but_todo.gif" alt="">');
+        $image = cHTMLImage::img("images/but_todo.gif", i18n("Edit item"));
 
-        $mimg = $link->render();
+        $img = cHTMLImage::img("images/delete.gif", i18n("Delete item"));
+        $deleteLink->setClass('con_img_button');
+        $deleteLink->setCustom("idcommunication", $idcommunication);
+        $deleteLink->setContent($img);
 
-        $link->setContent($subject);
+        $img = cHTMLImage::img("images/but_art_conf2.gif", i18n("Edit item"));
+        $editLink->setClass('con_img_button mgr5');
+        $editLink->setCustom('idcommunication', $idcommunication);
+        $editLink->setContent($img);
 
-        $msubject = $link->render();
-
-        $idcommunication = $todo->get("idcommunication");
-
-        $delete = new cHTMLLink();
-        $delete->setCLink("mycontenido_tasks", 4, "mycontenido_tasks_delete");
-        $delete->setCustom("idcommunication", $idcommunication);
-        $delete->setCustom("sortby", $sortby);
-        $delete->setCustom("sortmode", $sortmode);
-
-        $img = new cHTMLImage("images/delete.gif");
-        $img->setAlt(i18n("Delete item"));
-
-        $delete->setContent($img->render());
-
-        $properties = $link;
-
-        $img = new cHTMLImage("images/but_art_conf2.gif");
-        $img->setAlt(i18n("Edit item"));
-        $img->setStyle("padding-right: 4px;");
-        $properties->setContent($img);
-
-        $actions = $properties->render() . $delete->render();
+        $actions = $editLink->render() . $deleteLink->render();
 
         if ($todo->getProperty("todo", "enddate") != "") {
             $duein = round((time() - strtotime($todo->getProperty("todo", "enddate"))) / 86400, 2);
@@ -368,9 +179,6 @@ while ($todo = $todoitems->next()) {
         }
 
         switch ($priority) {
-            case "low":
-                $p = 0;
-                break;
             case "medium":
                 $p = 1;
                 break;
@@ -381,19 +189,20 @@ while ($todo = $todoitems->next()) {
                 $p = 3;
                 break;
             default:
+                $p = 0;
                 break;
         }
 
-        $list->setData($lcount, $mimg, $subject, $created, $reminder, $status, $p, $complete, $duein, $actions);
-        $list->setHiddenData($lcount, $idcommunication, $idcommunication);
+        $list->setData($listCount, $image, $subject, $created, $reminder, $status, $p, $complete, $duein, $actions);
+        $list->setHiddenData($listCount, $idcommunication, $idcommunication);
 
-        $lcount++;
+        $listCount++;
     }
 }
 
 $form = new cGuiTableForm("restrict");
 $form->setTableID("todoList");
-$form->addHeader(i18n("Restrict display"));
+$form->setHeader(i18n("Restrict display"));
 $form->setVar("listsubmit", "true");
 
 $form->unsetActionButton("submit");
@@ -405,7 +214,7 @@ $form->setVar("frame", $frame);
 $restrict = new cHTMLCheckbox("c_restrict", "true");
 $restrict->setLabelText(i18n("Hide done tasks"));
 
-if ($c_restrict == true) {
+if ($c_restrict) {
     $restrict->setChecked(true);
 }
 
@@ -415,17 +224,12 @@ $submit->setImageSource("images/submit.gif");
 
 $form->add(i18n("Options"), $restrict->render());
 
-if ($lcount == 0) {
-    $cpage->displayInfo(i18n("No tasks found"));
-    $cpage->setContent(array($form));
+if ($listCount == 0) {
+    $oPage->displayInfo(i18n("No tasks found"));
+    $oPage->setContent([$form]);
 } else {
-    if (!isset($sortby)) {
-        $sortby = 1;
-    }
-
-    if (!isset($sortmode)) {
-        $sortmode = "ASC";
-    }
+    $sortby = $sortby ?? 1;
+    $sortmode = $sortmode ?? 'ASC';
 
     $list->setSortable(1, true);
     $list->setSortable(2, true);
@@ -436,11 +240,9 @@ if ($lcount == 0) {
     $list->setSortable(7, true);
     $list->sort(cSecurity::toInteger($sortby), $sortmode);
 
-    $cpage->setContent(array($form, $list));
+    $oPage->setContent([$form, $list]);
 }
-$cpage->render();
+$oPage->render();
 
 $currentuser->setUserProperty("system", "tasks_sortby", $sortby);
 $currentuser->setUserProperty("system", "tasks_sortmode", $sortmode);
-
-?>

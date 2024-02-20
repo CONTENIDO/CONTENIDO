@@ -1,12 +1,13 @@
 <?PHP
 
 /**
- *
- * @author    claus.schunk@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license   http://www.contenido.org/license/LIZENZ.txt
- * @link      http://www.4fb.de
- * @link      http://www.contenido.org
+ * @package    Testing
+ * @subpackage GUI_HTML
+ * @author     claus.schunk@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 class cHtmlFormTest extends cTestingTestCase
 {
@@ -84,12 +85,12 @@ class cHtmlFormTest extends cTestingTestCase
         //$this->assertSame($exp, $act);
 
         $this->_form->setVar('foo', 'bar');
-        $act        = $this->_readAttribute($this->_form, '_vars');
+        $act = $this->_readAttribute($this->_form, '_vars');
         $exp['foo'] = 'bar';
         $this->assertSame($exp, $act);
 
         $this->_form->setVar('spam', 'eggs');
-        $act         = $this->_readAttribute($this->_form, '_vars');
+        $act = $this->_readAttribute($this->_form, '_vars');
         $exp['spam'] = 'eggs';
         $this->assertSame($exp, $act);
     }

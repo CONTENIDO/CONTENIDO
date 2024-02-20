@@ -1,16 +1,15 @@
 <?php
+
 /**
  * This file contains the configuration variables for paths to important directories.
  *
- * @package          Core
- * @subpackage       Backend_ConfigFile
- * @version          SVN Revision $Rev:$
- *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend_ConfigFile
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -67,13 +66,13 @@ $cfg['path']['contenido_locale']     = $cfg['path']['frontend'] . '/' . $cfg['pa
 
 $cfg['path']['contenido_temp']       = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
 
-$cfg['path']['tinymce3_scripts']     = array($cfg['path']['contenido_fullhtml'] . 'scripts/con_tiny.js');
+$cfg['path']['tinymce3_scripts']     = [$cfg['path']['contenido_fullhtml'] . 'scripts/con_tiny.js'];
 
 $cfg['path']['tinymce3_editor']      = $cfg['path']['all_wysiwyg'] . 'tinymce3/editor.php';
 $cfg['path']['tinymce3_editorclass'] = $cfg['path']['all_wysiwyg'] . 'tinymce3/editorclass.php';
 
 $cfg['path']['tinymce4_editor']      = $cfg['path']['all_wysiwyg'] . 'tinymce4/contenido/editor.php';
-$cfg['path']['tinymce4_scripts']     = array($cfg['path']['all_wysiwyg_html'] . 'tinymce4/contenido/js/con_tiny.js',
-                                       $cfg['path']['all_wysiwyg_html'] . 'tinymce4/tinymce/js/tinymce/tinymce.min.js');
-
-?>
+$cfg['path']['tinymce4_scripts']     = [
+    $cfg['path']['all_wysiwyg_html'] . 'tinymce4/contenido/js/con_tiny.js',
+    $cfg['path']['all_wysiwyg_html'] . 'tinymce4/tinymce/js/tinymce/tinymce.min.js',
+];

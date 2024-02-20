@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the class for contenttype CMS_USERFORUM
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage UserForum
- * @author Claus Schunk
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Claus Schunk
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,57 +18,57 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class contains the features of the contenttype CMS_USERFORUM.
  *
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage UserForum
  */
-class cContentTypeUserForum extends cContentTypeAbstractTabbed {
+class cContentTypeUserForum extends cContentTypeAbstractTabbed
+{
+
     /**
      * Initialize class attributes and handles store events.
      *
-     * @param string $rawSettings  the raw settings in an XML structure or as
+     * @param string $rawSettings the raw settings in an XML structure or as
      *                             plaintext
-     * @param int    $id           ID of the content type, e.g. 3 if CMS_DATE[3] is
+     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
      *                             used
-     * @param array  $contentTypes array containing the values of all content
+     * @param array $contentTypes array containing the values of all content
      *                             types
      *
      * @throws cDbException
      */
-    function __construct($rawSettings, $id, array $contentTypes) {
-
+    function __construct($rawSettings, $id, array $contentTypes)
+    {
         // set attributes of the parent class and call the parent constructor
         $this->_type = 'CMS_USERFORUM';
         $this->_prefix = 'userforum';
         $this->_settingsType = self::SETTINGS_TYPE_XML;
-        $this->_formFields = array(
+        $this->_formFields = [
             'userforum_email',
             'userforum_subcomments',
             'userforum_modactive'
-        );
+        ];
 
         // encoding conversions to avoid problems with umlauts
-        $rawSettings = conHtmlEntityDecode($rawSettings);
-        $rawSettings = utf8_encode($rawSettings);
+        $rawSettings = conHtmlEntityDecode($rawSettings ?? '');
+        $rawSettings = @utf8_encode($rawSettings);
 
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // if form is submitted, store the current settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        $action = isset($_POST['userforum_action']) ? $_POST['userforum_action'] : NULL;
-        $id = isset($_POST['userforum_id']) ? $_POST['userforum_id'] : NULL;
+        $action = $_POST['userforum_action'] ?? NULL;
+        $id = $_POST['userforum_id'] ?? NULL;
         if ('store' === $action && $this->_id == $id) {
             $this->_storeSettings();
         }
     }
 
     /**
-     * Generate the escaped HTML code for editor.
-     *
-     * @return string escaped HTML code for editor
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
-    public function generateEditCode() {
+    public function generateEditCode(): string
+    {
         $cfg = cRegistry::getConfig();
 
         // build top code
@@ -92,13 +93,13 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
 
         // build bottom code
         $tplBottom = new cTemplate();
-        $tplBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
+        $tplBottom->set('s', 'PATH_FRONTEND', cRegistry::getFrontendUrl());
         $tplBottom->set('s', 'ID', $this->_id);
         $tplBottom->set('s', 'PREFIX', $this->_prefix);
         $tplBottom->set('s', 'IDARTLANG', $this->_idArtLang);
         $tplBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $tplBottom->set('s', 'SETTINGS', json_encode($this->_settings));
-        $tplBottom->set('s', 'JS_CLASS_SCRIPT', UserForum::getUrl() . 'scripts/cmsUserforum.js');
+        $tplBottom->set('s', 'JS_CLASS_SCRIPT', UserForum::getUrl() . cAsset::backend('scripts/cmsUserforum.js'));
         $tplBottom->set('s', 'JS_CLASS_NAME', 'Con.' . get_class($this));
         $codeBottom = $tplBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
 
@@ -110,7 +111,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         $code .= $this->_encodeForOutput($codeBottom);
         $code .= $this->generateViewCode();
 
-$code = "\n\n<!-- CODE (class.content.type.user_forum.php) -->
+        $code = "\n\n<!-- CODE (class.content.type.user_forum.php) -->
 $code
 <!-- /CODE -->\n\n";
 
@@ -122,12 +123,13 @@ $code
      *
      * @return string  The code for the base panel
      */
-    private function _getPanel() {
-        $wrapper = new cHTMLDiv(array(
+    private function _getPanel(): string
+    {
+        $wrapper = new cHTMLDiv([
             $this->_getModEmail(),
             $this->_getModMode(),
             $this->_getEditMode()
-        ), $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
+        ], $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
         $wrapper->setStyle('clear:both');
 
         return $wrapper->render();
@@ -136,7 +138,8 @@ $code
     /**
      * @return cHTMLDiv
      */
-    private function _getModMode() {
+    private function _getModMode(): cHTMLDiv
+    {
         $id = 'userforum_modactive_' . $this->_id;
 
         // build html elements
@@ -145,14 +148,14 @@ $code
         $checkBoxMod->setID($id);
 
         // check state
-        ($this->_settings['userforum_modactive'] === 'false') ? $checkBoxMod->setChecked(false) : $checkBoxMod->setChecked(true);
+        $checkBoxMod->setChecked($this->getSetting('userforum_modactive', 'false') === 'false');
 
         // build div element as wrapper
-        $div = new cHTMLDiv(array(
+        $div = new cHTMLDiv([
             '<br />',
             $labelModMode,
             $checkBoxMod
-        ));
+        ]);
         $div->setClass('modMode');
 
         // return div element
@@ -162,7 +165,8 @@ $code
     /**
      * @return cHTMLDiv
      */
-    private function _getEditMode() {
+    private function _getEditMode(): cHTMLDiv
+    {
         $id = 'userforum_subcomments_' . $this->_id;
 
         // build html elements
@@ -171,13 +175,13 @@ $code
         $checkBoxMod->setID($id);
 
         // check state
-        ($this->_settings['userforum_subcomments'] === 'false') ? $checkBoxMod->setChecked(false) : $checkBoxMod->setChecked(true);
+        $checkBoxMod->setChecked($this->getSetting('userforum_subcomments', 'false') === 'false');
 
         // build div element as wrapper
-        $div = new cHTMLDiv(array(
+        $div = new cHTMLDiv([
             $labelModMode,
             $checkBoxMod
-        ));
+        ]);
         $div->setClass('editMode');
 
         // return div element
@@ -190,7 +194,8 @@ $code
      *
      * @return cHTMLDiv
      */
-    private function _getModEmail() {
+    private function _getModEmail(): cHTMLDiv
+    {
         $id = 'userforum_email_' . $this->_id;
 
         // build html elements
@@ -199,13 +204,13 @@ $code
 
         $inputEmail = new cHTMLTextbox($id);
         $inputEmail->setID($id);
-        $inputEmail->setValue($this->_settings['userforum_email']);
+        $inputEmail->setValue($this->getSetting('userforum_email', ''));
 
         // build div element as wrapper
-        $div = new cHTMLDiv(array(
+        $div = new cHTMLDiv([
             $labelEmail,
             $inputEmail
-        ));
+        ]);
         $div->setClass('mail');
 
         // return div element
@@ -213,31 +218,29 @@ $code
     }
 
     /**
-     * Generates the code which should be shown if this content type is shown in
-     * the frontend.
-     * This code is cached. Thatfor ist no more than the initialisation of this
-     * class and the call of its method buildCode(). Otherwise the generated
-     * HTML would have been cached.
-     *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @inheritDoc
      */
-    public function generateViewCode() {
-        $code = '";?' . '><' . '?php $form = new %s(\'%s\', %s, %s); echo $form->buildCode(); ?' . '><' . '?php echo "';
-        $code = sprintf($code, get_class($this), $this->_rawSettings, $this->_id, 'array()');
+    public function generateViewCode(): string
+    {
+        $code = '<?php
+            $form = new %s(\'%s\', %s, %s);
+            echo $form->buildCode();
+        ?>';
 
-        return $code;
+        $code = $this->_wrapPhpViewCode($code);
+
+        return sprintf($code, get_class($this), $this->_rawSettings, $this->_id, '[]');
     }
 
     /**
      * Get code of form (either GET or POST request).
      *
-     * @return string escaped HTML code which sould be shown if content type is
+     * @return string escaped HTML code which should be shown if content type is
      *         shown in frontend
      */
-    public function buildCode() {
-        $out = '';
-        return $out;
+    public function buildCode(): string
+    {
+        return '';
     }
 
 }

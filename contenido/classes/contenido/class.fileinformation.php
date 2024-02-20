@@ -3,13 +3,13 @@
 /**
  * This file contains the file information collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Konstantinos Katikakis
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Konstantinos Katikakis
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -19,25 +19,26 @@ cInclude('includes', 'functions.file.php');
 /**
  * File information collection.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiFileInformation createNewItem
+ * @method cApiFileInformation|bool next
  */
-class cApiFileInformationCollection extends ItemCollection {
+class cApiFileInformationCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['file_information'], 'idsfi');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('file_information'), 'idsfi');
         $this->_setItemClass('cApiFileInformation');
     }
 
     /**
      * Creates a new entry in the database
-     *
-     * @todo  Pass additional fields as optional parameters
      *
      * @param string $typeContent
      *                            type of the entry
@@ -48,20 +49,25 @@ class cApiFileInformationCollection extends ItemCollection {
      *
      * @return cApiFileInformation
      *         the new item
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
+     * @todo  Pass additional fields as optional parameters
+     *
      */
-    public function create($typeContent, $filename, $description = '') {
-        $client = cRegistry::getClientId();
+    public function create($typeContent, $filename, $description = '')
+    {
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $auth = cRegistry::getAuth();
         $item = new cApiFileInformation();
-        $item->loadByMany(array(
-            'idclient' => $client,
-            'type' => $typeContent,
-            'filename' => $filename
-        ));
+        $item->loadByMany(
+            [
+                'idclient' => $client,
+                'type' => $typeContent,
+                'filename' => $filename,
+            ]
+        );
         if (!$item->isLoaded()) {
             $item = $this->createNewItem();
 
@@ -84,8 +90,6 @@ class cApiFileInformationCollection extends ItemCollection {
     /**
      * updates a new entry in the database
      *
-     * @todo  Pass additional fields as optional parameters
-     *
      * @param string $filename
      *                            name of the file
      * @param string $typeContent
@@ -94,25 +98,30 @@ class cApiFileInformationCollection extends ItemCollection {
      *                            an optional description
      * @param string $newFilename [optional]
      *                            an optional new filename
-     * @param string $author      [optional]
+     * @param string $author [optional]
      *                            an optional author
      *
      * @return cApiFileInformation
      *                            the updated item
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
+     * @todo  Pass additional fields as optional parameters
+     *
      */
-    public function updateFile($filename, $typeContent, $description = '', $newFilename = '', $author = '') {
+    public function updateFile($filename, $typeContent, $description = '', $newFilename = '', $author = '')
+    {
         $auth = cRegistry::getAuth();
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $item = new cApiFileInformation();
-        $item->loadByMany(array(
-            'idclient' => $client,
-            'type' => $typeContent,
-            'filename' => $filename
-        ));
+        $item->loadByMany(
+            [
+                'idclient' => $client,
+                'type' => $typeContent,
+                'filename' => $filename,
+            ]
+        );
         $id = $item->get('idsfi');
         if ($item->isLoaded()) {
             $item->set('idsfi', $id);
@@ -132,18 +141,20 @@ class cApiFileInformationCollection extends ItemCollection {
     }
 
     /**
-     * Deletes all found items in the table matching the passed field and it's
-     * value.
+     * Deletes all found items in the table matching the passed field,
+     * and its value.
      * Deletes also cached e entries and any existing properties.
      *
      * @param array $values
      *         with parameters
+     *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
-    public function removeFileInformation(array $values) {
+    public function removeFileInformation(array $values)
+    {
         $item = new cApiFileInformation();
         $item->loadByMany($values);
         $idsfi = $item->get('idsfi');
@@ -158,19 +169,22 @@ class cApiFileInformationCollection extends ItemCollection {
      * @param string $type
      *         type of the entry
      * @return array
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
-    public function getFileInformation($filename, $type) {
-        $client = cRegistry::getClientId();
-        $fileInformation = array();
+    public function getFileInformation($filename, $type)
+    {
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $fileInformation = [];
         $item = new cApiFileInformation();
-        $item->loadByMany(array(
-            'idclient' => $client,
-            'type' => $type,
-            'filename' => $filename
-        ));
+        $item->loadByMany(
+            [
+                'idclient' => $client,
+                'type' => $type,
+                'filename' => $filename,
+            ]
+        );
         if ($item->isLoaded()) {
             $fileInformation['idsfi'] = $item->get('idsfi');
             $fileInformation['created'] = $item->get('created');
@@ -186,7 +200,7 @@ class cApiFileInformationCollection extends ItemCollection {
 /**
  * File information item.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiFileInformation extends Item
@@ -199,9 +213,9 @@ class cApiFileInformation extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($id = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['file_information'], 'idsfi');
+    public function __construct($id = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('file_information'), 'idsfi');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }

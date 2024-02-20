@@ -41,11 +41,29 @@ a.aToolTipCloseBtn {
     padding:0;
 }
 
+/**
+ * @deprecated Since CONTENIDO 4.10.2, Don't use `infoButton`, use `con_info_button` instead
+ */
 a.infoButton,
 .infoButton:hover {
     display: inline-block;
     width: 16px;
     height: 16px;
     background: transparent url(../../../images/info.gif) no-repeat;
-    margin-bottom: -3px;
+}
+a.con_info_button,
+.con_info_button:hover {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: transparent url(../../../images/info.gif) no-repeat;
+    vertical-align: inherit;
+}
+
+.align_top > a.con_info_button {
+    vertical-align: top;
+}
+
+.align_bottom > a.con_info_button {
+    vertical-align: bottom;
 }

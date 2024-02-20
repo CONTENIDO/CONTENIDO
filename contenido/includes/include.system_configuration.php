@@ -3,14 +3,14 @@
 /**
  * This file contains the system configuration backend page.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Timo Trautmann
- * @author           Simon Sprankel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Timo Trautmann
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -27,20 +27,21 @@ global $cfg, $auth, $perm, $area, $frame;
  *
  * @param string $name
  *         the name of the form element
- * @param array  $possibleValues
+ * @param array $possibleValues
  *         the possible values
  * @param string $value
  *         the value which should be selected
  * @param string $label
  *         the label text which should be rendered
- * @param int    $width
+ * @param int $width
  *
  * @return array
  *         associative array with the label and the input field
  *
  * @throws cException
  */
-function renderSelectProperty($name, $possibleValues, $value, $label, $width = 328) {
+function renderSelectProperty($name, $possibleValues, $value, $label, $width = 322)
+{
     $auth = cRegistry::getAuth();
     $return = [
         'label' => '',
@@ -48,9 +49,8 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
     ];
 
     if (count($possibleValues) === 2 && (in_array('true', $possibleValues) && in_array('false', $possibleValues)
-        || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues)
-        || in_array('0', $possibleValues) && in_array('1', $possibleValues)))
-    {
+            || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues)
+            || in_array('0', $possibleValues) && in_array('1', $possibleValues))) {
         // render a checkbox if there are only the values true and false
         $checked = $value == 'true' || $value == '1' || $value == 'enabled';
         $html = new cHTMLCheckbox($name, $possibleValues[0], $name, $checked);
@@ -69,38 +69,32 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
 
         //if (in_array($value, ['disabled', 'simple', 'advanced'])) {
         if ($name == 'versioning{_}enabled') {
-            $html->setStyle('float:left;padding:3px;width:' . $width . 'px;');
+            $html->setStyle('float: left; width: ' . $width . 'px;');
+            $infoBox = new cGuiBackendHelpbox(i18n('<p><strong>Article versioning:</strong></p>'
+                    . '<ul style="list-style:none;">'
+                    . '<li>'
+                    . 'Review and restore older versions (simple) and create drafts (advanced).'
+                    . ' Versions are generated automatically by changing an article.'
+                    . '</li>'
+                    . '</ul>'
+                    . '<p><strong>Modes:</strong></p>'
+                    . '<ul class="list">'
+                    . '<li class="first"><strong>disabled: </strong> The article versioning is disabled.</li>'
+                    . '<li><strong>simple: </strong>Older article versions can be reviewed and restored.</li>'
+                    . '<li><strong>advanced: </strong>Additional to the simple-mode, unpublished drafts can be created.</li>'
+                    . '</ul>'
+                    . '<p><strong>Further information</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>')
+            );
             $return['label'] =
                 ' <div>
-                    <span style="width: 284px; display: inline-block; padding: 0 0 0 2px; float:left;">
-                        <span style="margin: 0 10px 0 0;">' . i18n("Article versioning") . ':' . '</span>
-                        <a
-                            href="#"
-                            id="pluginInfoDetails-link"
-                            class="main i-link infoButton"
-                            title="">
-                        </a>
+                    <span class="left align_middle pdl2" style="width: 280px; display: inline-block;">
+                        <span class="mgr5">' . i18n("Article versioning") . ':' . '</span>
+                        ' . $infoBox->render() . '
                     </span>
                     ' . $html->render() . '
-                  </div>
-                  <div id="pluginInfoDetails" class="nodisplay">'
-                  . i18n('<p><strong>Article versioning:</strong></p>'
-                      . '<ul style="list-style:none;">'
-                        . '<li>'
-                            . 'Review and restore older versions (simple) and create drafts (advanced).'
-                            . ' Versions are generated automatically by changing an article.'
-                        . '</li>'
-                    . '</ul>'
-                  . '<p><strong>Modes:</strong></p>'
-                      . '<ul class="list">'
-                          . '<li class="first"><strong>disabled: </strong> The article versioning is disabled.</li>'
-                          . '<li><strong>simple: </strong>Older article versions can be reviewed and restored.</li>'
-                          . '<li><strong>advanced: </strong>Additional to the simple-mode, unpublished drafts can be created.</li>'
-                      . '</ul>'
-                  . '<p><strong>Further informations</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>'
-                  . '</div>');
+                  </div>';
         } else {
-            $html->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');
+            $html->setStyle('display: block; float: left; width: ' . $width . 'px;');
             $return['label'] = renderLabel($label, $name, 280, ':', 'left');
         }
 
@@ -134,13 +128,14 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
  * @return string
  *         the rendered cHTMLLabel element
  */
-function renderLabel($text, $name, $width = 280, $separator = ':', $float = '') {
+function renderLabel($text, $name, $width = 280, $separator = ':', $float = '')
+{
     $label = new cHTMLLabel($text . $separator, $name);
     $label->setClass("sys_config_txt_lbl");
     if ($float != '') {
-        $label->setStyle('width:' . $width . 'px;' . 'float:' . $float . ';');
+        $label->setStyle('width: ' . $width . 'px; ' . 'float: ' . $float . ';');
     } else {
-        $label->setStyle('width:' . $width . 'px;');
+        $label->setStyle('width: ' . $width . 'px;');
     }
 
     return $label->render();
@@ -162,7 +157,8 @@ function renderLabel($text, $name, $width = 280, $separator = ':', $float = '') 
  * @return array
  *         associative array with the label and the input field
  */
-function renderTextProperty($name, $value, $label, $password = false) {
+function renderTextProperty($name, $value, $label, $password = false)
+{
     $auth = cRegistry::getAuth();
 
     if ($password === true) {
@@ -172,7 +168,7 @@ function renderTextProperty($name, $value, $label, $password = false) {
     } else {
         $textBox = new cHTMLTextbox($name, conHtmlSpecialChars($value), 50, 96);
     }
-    $textBox->updateAttribute('style', 'width:322px');
+    $textBox->updateAttribute('style', 'width: 322px');
 
     // disable the text box if user is not a sysadmin
     if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
@@ -217,7 +213,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
                     $value = (isset($infos['values'][1])) ? $infos['values'][1] : 'false';
                 }
 
-                $storedValue = $settings[$type][$name];
+                $storedValue = $settings[$type][$name] ?? '';
                 if ($storedValue != $value && (is_array($infos['values']) && $value != '' || !is_array($infos['values']))) {
                     if ($type == 'update' && $name == 'check_period' && $value < 60) {
                         $page->displayError(i18n('Update check period must be at least 60 minutes.'));
@@ -245,7 +241,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
 
 // generate the table for changing the system properties
 $form = new cGuiTableForm('system_configuration');
-$form->addHeader(i18n('System configuration'));
+$form->setTableClass('generic col_lg');
+$form->setHeader(i18n('System configuration'));
 $form->setVar('area', $area);
 $form->setVar('frame', $frame);
 $form->setVar('action', 'edit_sysconf');

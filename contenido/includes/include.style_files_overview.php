@@ -3,22 +3,30 @@
 /**
  * This file contains the backend page for style files overview.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Willi Man
- * @author Olaf Niemann
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Willi Man
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$client = cRegistry::getClientId();
+// Display critical error if client does not exist
+$client = cSecurity::toInteger(cRegistry::getClientId());
+if ($client < 1 || !cRegistry::getClient()->isLoaded()) {
+    $oPage = new cGuiPage("style_files_overview");
+    $oPage->displayCriticalError(i18n('No Client selected'));
+    $oPage->render();
+    return;
+}
+
 $cfgClient = cRegistry::getClientConfig();
 
-$file = (isset($_REQUEST['file'])) ? cSecurity::toString($_REQUEST['file']) : '';
+$file = cSecurity::toString($_REQUEST['file'] ?? '');
 
 $files = new cGuiFileOverview($cfgClient[$client]['css']['path'], stripslashes($file), 'css');
 

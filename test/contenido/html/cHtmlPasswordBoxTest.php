@@ -1,12 +1,13 @@
 <?PHP
 
 /**
- *
- * @author    claus.schunk@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license   http://www.contenido.org/license/LIZENZ.txt
- * @link      http://www.4fb.de
- * @link      http://www.contenido.org
+ * @package    Testing
+ * @subpackage GUI_HTML
+ * @author     claus.schunk@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 class cHtmlPasswordBoxTest extends cTestingTestCase
 {
@@ -121,7 +122,8 @@ class cHtmlPasswordBoxTest extends cTestingTestCase
         $this->assertSame('testInitValue', $pwBox->getAttribute('value'));
     }
 
-    public function testAutofill() {
+    public function testAutofill()
+    {
         // Test default autofill
         $pwBox = new cHTMLPasswordbox('testName', 'testInitValue');
         $this->assertTrue($this->_readAttribute($pwBox, '_autofill'));

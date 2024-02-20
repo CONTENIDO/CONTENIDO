@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file defines the CodeMirror editor integration class.
  *
@@ -6,9 +7,9 @@
  * @subpackage Backend
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -26,14 +27,14 @@ class CodeMirror {
      *
      * @var array
      */
-    private $_properties = array();
+    private $_properties = [];
 
     /**
      * HTML-ID of textarea which is replaced by CodeMirror
      *
      * @var string
      */
-    private $_textareaId = '';
+    private $_textareaId;
 
     /**
      * defines if textarea is used or not (by system/client/user property)
@@ -47,28 +48,28 @@ class CodeMirror {
      *
      * @var boolean
      */
-    private $_addScript = true;
+    private $_addScript;
 
     /**
      * The CONTENIDO configuration array
      *
      * @var array
      */
-    private $_cfg = array();
+    private $_cfg;
 
     /**
      * Language of CodeMirror
      *
      * @var string
      */
-    private $_language = '';
+    private $_language;
 
     /**
      * Syntax of CodeMirror
      *
      * @var string
      */
-    private $_syntax = '';
+    private $_syntax;
 
     /**
      * Constructor of CodeMirror initializes class variables
@@ -88,16 +89,14 @@ class CodeMirror {
      */
     public function __construct($id, $syntax, $lang, $addScript, $cfg, $editable = true) {
         // init class variables
-        $this->_properties = array();
-        $this->_cfg = (array) $cfg;
-        $this->_addScript = (boolean) $addScript;
-        $this->_textareaId = (string) $id;
-        $this->_activated = true;
-        $this->_language = (string) $lang;
-        $this->_syntax = (string) $syntax;
+        $this->_cfg        = (array)$cfg;
+        $this->_addScript  = (boolean)$addScript;
+        $this->_textareaId = (string)$id;
+        $this->_language   = (string)$lang;
+        $this->_syntax     = (string)$syntax;
 
         // make content not editable if not allowed
-        if ($editable == false) {
+        if (!$editable) {
             $this->setProperty('readOnly', 'true', true);
         }
 
@@ -110,19 +109,17 @@ class CodeMirror {
         $this->setProperty('tabMode', 'shift', false);
 
         // internal function which appends more properties to $this->setProperty
-        // wich where defined
-        // by user or sysadmin in systemproperties / client settings / user
-        // settings ...
+        // which where defined by user or sysadmin in system-properties /
+        // client settings / user settings ...
         $this->_getSystemProperties();
     }
 
     /**
      * Function gets properties from CONTENIDO for CodeMirror and stores it into
-     * $this->setProperty so user is able to overwride standard settings or
-     * append
-     * other settings.
+     * $this->setProperty so user is able to overwrite standard settings or
+     * append other settings.
      * Function also checks if CodeMirror is activated or deactivated
-     * by user
+     * by user.
      */
     private function _getSystemProperties() {
         // check if editor is disabled or enabled by user/admin
@@ -159,23 +156,19 @@ class CodeMirror {
         $isNumeric = (boolean) $isNumeric;
 
         // generate a new array for new property
-        $record = array();
-        $record['name'] = $name;
-        $record['value'] = $value;
-        $record['is_numeric'] = $isNumeric;
+        $record = [
+            'name'       => $name,
+            'value'      => $value,
+            'is_numeric' => $isNumeric,
+        ];
 
         // append it to class variable $this->aProperties
-        // when key already exists, overwride it
+        // when key already exists, overwrite it
         $this->_properties[$name] = $record;
     }
 
     private function _getSyntaxScripts() {
-        $path = $this->_cfg['path']['contenido_fullhtml'] . 'external/codemirror';
-
-        $js = '';
-        $jsTemplate = '<script type="text/javascript" src="%s/mode/%s/%s.js"></script>';
-
-        $modes = array();
+        $modes = [];
 
         $syntax = $this->_syntax;
         if ($syntax == 'js' || $syntax == 'html' || $syntax == 'php') {
@@ -199,8 +192,12 @@ class CodeMirror {
             $modes[] = 'htmlmixed';
         }
 
+        $js = '';
+        $conPath = cRegistry::getBackendUrl();
+        $pathTemplate = 'external/codemirror/mode/%s/%s.js';
         foreach ($modes as $mode) {
-            $js .= sprintf($jsTemplate, $path, $mode, $mode) . PHP_EOL;
+            $path = sprintf($pathTemplate, $mode, $mode);
+            $js .= cHTMLScript::external($conPath . cAsset::backend($path)) . PHP_EOL;
         }
 
         return $js;
@@ -225,20 +222,20 @@ class CodeMirror {
     }
 
     /**
-     * Function renders js_script for inclusion into an header of a html file
+     * Function renders js_script for inclusion into a header of a html file
      *
      * @return string - js_script for CodeMirror
      */
     public function renderScript() {
         // if editor is disabled, there is no need to render this script
-        if ($this->_activated == false) {
+        if (!$this->_activated) {
             return '';
         }
 
         // if external js file for editor should be included, do this here
         $js = '';
         if ($this->_addScript) {
-            $conPath = $this->_cfg['path']['contenido_fullhtml'];
+            $conPath = cRegistry::getBackendUrl();
             $path = $conPath . 'external/codemirror/';
 
             $language = $this->_language;
@@ -246,17 +243,17 @@ class CodeMirror {
                 $language = 'en';
             }
 
-            $js .= '<script type="text/javascript" src="' . $path . 'lib/lang/' . $language . '.js"></script>' . PHP_EOL;
-            $js .= '<script type="text/javascript" src="' . $path . 'lib/codemirror.js"></script>' . PHP_EOL;
-            $js .= '<script type="text/javascript" src="' . $path . 'lib/util/foldcode.js"></script>' . PHP_EOL;
-            $js .= '<script type="text/javascript" src="' . $path . 'lib/util/dialog.js"></script>' . PHP_EOL;
-            $js .= '<script type="text/javascript" src="' . $path . 'lib/util/searchcursor.js"></script>' . PHP_EOL;
-            $js .= '<script type="text/javascript" src="' . $path . 'lib/util/search.js"></script>' . PHP_EOL;
-            $js .= '<script type="text/javascript" src="' . $path . 'lib/contenido_integration.js"></script>' . PHP_EOL;
+            $js .= cHTMLScript::external($conPath . cAsset::backend('external/codemirror/lib/lang/' . $language . '.js')) . PHP_EOL;
+            $js .= cHTMLScript::external($conPath . cAsset::backend('external/codemirror/lib/codemirror.js')) . PHP_EOL;
+            $js .= cHTMLScript::external($conPath . cAsset::backend('external/codemirror/lib/util/foldcode.js')) . PHP_EOL;
+            $js .= cHTMLScript::external($conPath . cAsset::backend('external/codemirror/lib/util/dialog.js')) . PHP_EOL;
+            $js .= cHTMLScript::external($conPath . cAsset::backend('external/codemirror/lib/util/searchcursor.js')) . PHP_EOL;
+            $js .= cHTMLScript::external($conPath . cAsset::backend('external/codemirror/lib/util/search.js')) . PHP_EOL;
+            $js .= cHTMLScript::external($conPath . cAsset::backend('external/codemirror/lib/contenido_integration.js')) . PHP_EOL;
             $js .= $this->_getSyntaxScripts();
-            $js .= '<link rel="stylesheet" href="' . $path . 'lib/codemirror.css">' . PHP_EOL;
-            $js .= '<link rel="stylesheet" href="' . $path . 'lib/util/dialog.css">' . PHP_EOL;
-            $js .= '<link rel="stylesheet" href="' . $path . 'lib/contenido_integration.css">' . PHP_EOL;
+            $js .= cHTMLLinkTag::stylesheet($conPath . cAsset::backend('external/codemirror/lib/codemirror.css')) . PHP_EOL;
+            $js .= cHTMLLinkTag::stylesheet($conPath . cAsset::backend('external/codemirror/lib/util/dialog.css')) . PHP_EOL;
+            $js .= cHTMLLinkTag::stylesheet($conPath . cAsset::backend('external/codemirror/lib/contenido_integration.css')) . PHP_EOL;
         }
 
         // define template for CodeMirror script
@@ -291,7 +288,7 @@ JS;
         // CodeMirror js template
         $properties = '';
         foreach ($this->_properties as $property) {
-            if ($property['is_numeric'] == true) {
+            if ($property['is_numeric']) {
                 $properties .= ', ' . $property['name'] . ': ' . $property['value'];
             } else {
                 $properties .= ', ' . $property['name'] . ': "' . $property['value'] . '"';
@@ -301,9 +298,7 @@ JS;
         // fill js template
         $textareaId = $this->_textareaId;
         $jsResult = str_replace('{ID}', $textareaId, $js);
-        $jsResult = str_replace('{PROPERTIES}', $properties, $jsResult);
-
-        return $jsResult;
+        return str_replace('{PROPERTIES}', $properties, $jsResult);
     }
 
 }

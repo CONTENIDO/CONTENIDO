@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the Newsletter recipient class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Newsletter
- * @author Bjoern Behrens
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,10 +17,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Newsletter recipient class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Newsletter
  * @method Newsletter createNewItem
- * @method Newsletter next
+ * @method Newsletter|bool next
  */
 class NewsletterCollection extends ItemCollection
 {
@@ -30,9 +31,8 @@ class NewsletterCollection extends ItemCollection
      */
     public function __construct()
     {
-        global $cfg;
-        parent::__construct($cfg["tab"]["news"], "idnews");
-        $this->_setItemClass("Newsletter");
+        parent::__construct(cRegistry::getDbTableName('news'), 'idnews');
+        $this->_setItemClass('Newsletter');
     }
 
     /**
@@ -41,13 +41,13 @@ class NewsletterCollection extends ItemCollection
      * @param $sName string specifies the newsletter name
      *
      * @return Item
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($sName)
     {
-        global $client, $lang, $auth;
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $auth = cRegistry::getAuth();
 
         // Check if the newsletter name already exists
         $this->resetQuery();
@@ -75,19 +75,16 @@ class NewsletterCollection extends ItemCollection
     /**
      * Duplicates the newsletter specified by $itemID
      *
-     * @param  int $iItemID specifies the newsletter id
+     * @param int $iItemID specifies the newsletter id
      *
      * @return Item
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function duplicate($iItemID)
     {
-        global $client, $lang, $auth;
-
-        $client = cSecurity::toInteger($client);
-        $lang   = cSecurity::toInteger($lang);
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $auth = cRegistry::getAuth();
 
         cInclude("includes", "functions.con.php");
 
@@ -162,33 +159,31 @@ class Newsletter extends Item
     /**
      * Constructor Function
      *
-     * @param  mixed $mId Specifies the ID of item to load
+     * @param mixed $mId Specifies the ID of item to load
      *
      * @throws cDbException
      * @throws cException
      */
     public function __construct($mId = false)
     {
-        global $cfg;
-        parent::__construct($cfg["tab"]["news"], "idnews");
-        $this->_sError = "";
+        parent::__construct(cRegistry::getDbTableName('news'), 'idnews');
+        $this->_sError = '';
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Overriden store()-Method to set modified and modifiedby data and
+     * Overridden store()-Method to set modified and modifiedby data and
      * to ensure, that there is only one welcome newsletter
      *
      * @throws cException
      */
     public function store()
     {
-        global $client, $lang, $auth;
-
-        $client = cSecurity::toInteger($client);
-        $lang     = cSecurity::toInteger($lang);
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $auth = cRegistry::getAuth();
 
         $this->set("modified", date('Y-m-d H:i:s'), false);
         $this->set("modifiedby", $auth->auth["uid"]);
@@ -213,21 +208,20 @@ class Newsletter extends Item
     }
 
     /**
-     * Userdefined setter for newsletter fields.
+     * User-defined setter for newsletter fields.
      *
      * @param string $name
-     * @param mixed  $value
-     * @param bool   $bSafe Flag to run defined inFilter on passed value
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
      *
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
+            case 'idlang':
             case 'idclient':
-                $value = (int) $value;
-                break;
-			case 'idlang':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 
@@ -237,30 +231,30 @@ class Newsletter extends Item
     /**
      * Replaces newsletter tag (e.g. MAIL_NAME) with data.
      * If code is just text using str_replace; if it is HTML by using regular expressions
-     * @param string    $sCode    Code, where the tags will be replaced (by reference)
-     * @param bool        $bIsHTML    Is code HTML?
-     * @param string    $sField    Field name, without MAIL_ (e.g. just "name")
-     * @param string    $sData    Data
+     * @param string $sCode Code, where the tags will be replaced (by reference)
+     * @param bool $bIsHTML Is code HTML?
+     * @param string $sField Field name, without MAIL_ (e.g. just "name")
+     * @param string $sData Data
      */
     public function _replaceTag(&$sCode, $bIsHTML, $sField, $sData)
     {
         if ($sCode && !$bIsHTML) {
-            $sCode = str_replace("MAIL_".cString::toUpperCase($sField), $sData, $sCode);
+            $sCode = str_replace("MAIL_" . cString::toUpperCase($sField), $sData, $sCode);
         } elseif ($sCode) {
             // Extract certain tag
-            $sRegExp   = '/\[mail\s*([^]]+)\s*name=(?:"|&quot;)'.$sField.'(?:"|&quot;)\s*(.*?)\s*\]((?:.|\s)+?)\[\/mail\]/i';
-            $aMatch    = [];
-            $iMatches  = preg_match($sRegExp, $sCode, $aMatch) ;
+            $sRegExp = '/\[mail\s*([^]]+)\s*name=(?:"|&quot;)' . $sField . '(?:"|&quot;)\s*(.*?)\s*\]((?:.|\s)+?)\[\/mail\]/i';
+            $aMatch = [];
+            $iMatches = preg_match($sRegExp, $sCode, $aMatch);
 
             if ($iMatches > 0) {
                 // $aMatch contains parameter info from left [1] or right [2] to name="field"
                 $sParameter = $aMatch[1] . $aMatch[2];
-                $sMessage   = $aMatch[3];
-                $sRegExp    = '/\s*(.*?)\s*=\s*(?:"|&quot;)(.*?)(?:"|&quot;)\s*/i';
-                $aMatch     = [];
+                $sMessage = $aMatch[3];
+                $sRegExp = '/\s*(.*?)\s*=\s*(?:"|&quot;)(.*?)(?:"|&quot;)\s*/i';
+                $aMatch = [];
 
                 if (preg_match_all($sRegExp, $sParameter, $aMatch) > 0) {
-                    // Store parameter data as assoziative array
+                    // Store parameter data as associative array
                     $aParameter = array_combine($aMatch[1], $aMatch[2]);
                     unset($aMatch); // $aMatch not needed anymore
 
@@ -295,30 +289,30 @@ class Newsletter extends Item
                             $sParameter = "";
                             if (count($aParameter) > 0) {
                                 foreach ($aParameter as $sKey => $sValue) {
-                                    $sParameter .= ' '.$sKey . '="' . $sValue . '"';
+                                    $sParameter .= ' ' . $sKey . '="' . $sValue . '"';
                                 }
                             }
-                            $sMessage    = str_replace("MAIL_".cString::toUpperCase($sField), '<a href="'.conHtmlentities($sData).'"'.$sParameter.'>'.$sText.'</a>', $sMessage);
+                            $sMessage = str_replace("MAIL_" . cString::toUpperCase($sField), '<a href="' . conHtmlentities($sData) . '"' . $sParameter . '>' . $sText . '</a>', $sMessage);
                             #$sMessage    = '<a href="'.conHtmlentities($sData).'"'.$sParameter.'>'.$sMessage.'</a>';
                             break;
                         default:
-                            $sMessage    = str_replace("MAIL_".cString::toUpperCase($sField), $sData, $sMessage);
-                            #$sMessage    = $sData;
+                            $sMessage = str_replace("MAIL_" . cString::toUpperCase($sField), $sData, $sMessage);
+                        #$sMessage    = $sData;
                     }
 
-                    $sRegExp = '/\[mail[^]]+name=(?:"|&quot;)'.$sField.'(?:"|&quot;).*?\].*?\[\/mail\]/is';
-                    $sCode   = preg_replace($sRegExp, $sMessage, $sCode, -1);
+                    $sRegExp = '/\[mail[^]]+name=(?:"|&quot;)' . $sField . '(?:"|&quot;).*?\].*?\[\/mail\]/is';
+                    $sCode = preg_replace($sRegExp, $sMessage, $sCode, -1);
                     // Just to replace "text"-tags in HTML message also, just in case...
-                    $sCode   = str_replace("MAIL_".cString::toUpperCase($sField), $sData, $sCode);
+                    $sCode = str_replace("MAIL_" . cString::toUpperCase($sField), $sData, $sCode);
                 }
             }
         }
     }
 
     /**
-     * @todo HerrB: Remove or insert some functionality
      * @param $sHTML
      * @param $sTag
+     * @todo HerrB: Remove or insert some functionality
      */
     protected function _getNewsletterTagData($sHTML, $sTag)
     {
@@ -383,15 +377,15 @@ class Newsletter extends Item
         $aParts = preg_split("/\r?\n/", $sHeader, -1, PREG_SPLIT_NO_EMPTY);
 
         $aHeader = [];
-        for ($i = 0;$i < sizeof ($aParts); $i++) {
+        for ($i = 0; $i < sizeof($aParts); $i++) {
             if ($i != 0) {
-                $iPos       = cString::findFirstPos($aParts[$i], ':');
+                $iPos = cString::findFirstPos($aParts[$i], ':');
                 $sParameter = cString::toLowerCase(str_replace(' ', '', cString::getPartOfString($aParts[$i], 0, $iPos)));
-                $sValue     = trim(cString::getPartOfString($aParts[$i], ($iPos + 1)));
+                $sValue = trim(cString::getPartOfString($aParts[$i], ($iPos + 1)));
             } else {
-                $sField      = 'status';
+                $sField = 'status';
                 $aParameters = explode(' ', $aParts[$i]);
-                $sParameter  = $aParameters[1];
+                $sParameter = $aParameters[1];
             }
 
             if ($sParameter == 'set-cookie') {
@@ -419,9 +413,9 @@ class Newsletter extends Item
             $isHex = true;
 
             do {
-                $sBody    = ltrim ($sBody);
-                $iPos     = cString::findFirstPos($sBody, $sEOL);
-                $nextChunkLength =  cString::getPartOfString($sBody, 0, (int) $iPos);
+                $sBody = ltrim($sBody);
+                $iPos = cString::findFirstPos($sBody, $sEOL);
+                $nextChunkLength = cString::getPartOfString($sBody, 0, (int)$iPos);
 
                 // workaround begin
                 preg_match('/^[0-9A-F]$/', $nextChunkLength, $isHex);
@@ -434,14 +428,14 @@ class Newsletter extends Item
                 $iDataLen = hexdec($nextChunkLength);
 
                 if (isset($aHeader['content-encoding'])) {
-                    $sBuffer .= gzinflate(cString::getPartOfString($sBody, ((int) $iPos + (int) $iEOLLen + 10), (int) $iDataLen));
+                    $sBuffer .= gzinflate(cString::getPartOfString($sBody, ((int)$iPos + (int)$iEOLLen + 10), (int)$iDataLen));
                 } else {
-                    $sBuffer .= cString::getPartOfString($sBody, ((int) $iPos + (int) $iEOLLen), (int) $iDataLen);
+                    $sBuffer .= cString::getPartOfString($sBody, ((int)$iPos + (int)$iEOLLen), (int)$iDataLen);
                 }
 
-                $sBody      = cString::getPartOfString($sBody, ((int) $iPos + (int) $iDataLen + (int) $iEOLLen));
+                $sBody = cString::getPartOfString($sBody, ((int)$iPos + (int)$iDataLen + (int)$iEOLLen));
 
-                $sRemaining = trim ($sBody);
+                $sRemaining = trim($sBody);
             } while ($sRemaining != '');
 
             // workarround begin
@@ -473,16 +467,17 @@ class Newsletter extends Item
      */
     public function getHTMLMessage()
     {
-        global $lang, $client, $contenido;
         $frontendURL = cRegistry::getFrontendUrl();
         if ($this->get("type") == "html" && $this->get("idart") > 0 && $this->htmlArticleExists()) {
+            $client = cSecurity::toInteger(cRegistry::getClientId());
+            $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
             // Article ID
             $iIDArt = $this->get("idart");
 
             // Category ID
             $oClientLang = new cApiClientLanguage(false, $client, $lang);
-            $iIDCat      = $oClientLang->getProperty("newsletter", "html_newsletter_idcat");
+            $iIDCat = $oClientLang->getProperty("newsletter", "html_newsletter_idcat");
             unset($oClientLang);
 
             // Get http username and password, if frontend is protected
@@ -511,7 +506,7 @@ class Newsletter extends Item
 
                 $sFile = "front_content.php?client=$client&lang=$lang&idcat=$iIDCat&idart=$iIDArt&noex=1&send=1";
 
-                $handler = cHttpRequest::getHttpRequest($frontendURL.$sFile);
+                $handler = cHttpRequest::getHttpRequest($frontendURL . $sFile);
                 $headers = [];
 
                 // Maybe the website has been protected using .htaccess, then login
@@ -519,16 +514,16 @@ class Newsletter extends Item
                     $headers['Authorization'] = "Basic " . base64_encode("$sHTTPUserName:$sHTTPPassword");
                 }
 
-                $headers['Referer'] = "Referer: http://".$frontendURL;
+                $headers['Referer'] = "Referer: http://" . $frontendURL;
                 $headers['User-Agent'] = "User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
 
                 $handler->setHeaders($headers);
 
-                $iErrorNo    = 0;
-                $sErrorMsg   = "";
+                $iErrorNo = 0;
+                $sErrorMsg = "";
                 if ($output = $handler->getRequest(true, true)) {
                     // Get the HTTP header and body separately
-                    $sHTML   = strstr(strstr($output, "200"), "\r\n\r\n");
+                    $sHTML = strstr(strstr($output, "200"), "\r\n\r\n");
                     $sHeader = strstr($output, "\r\n\r\n", true);
                     $sHTML = $this->_deChunkHTTPBody($sHeader, $sHTML);
 
@@ -541,17 +536,17 @@ class Newsletter extends Item
 
                         // Fix source path
                         // TODO: Test any URL specification that may exist under the sun...
-                        $sHTML = preg_replace('/[sS[rR][cC][ ]*=[ ]*"([^h][^t][^t][^p][^:].*)"/', 'rc="'.$frontendURL.'$1"', $sHTML);
-                        $sHTML = preg_replace('/[hH][rR][eE][fF][ ]*=[ ]*"([^h][^t][^t][^p][^:][A-Za-z0-9#\.?\-=_&]*)"/', 'href="'.$frontendURL.'$1"', $sHTML);
-                        $sHTML = preg_replace('/url\((.*)\)/', 'url('. $frontendURL.'$1)', $sHTML);
+                        $sHTML = preg_replace('/[sS[rR][cC][ ]*=[ ]*"([^h][^t][^t][^p][^:].*)"/', 'rc="' . $frontendURL . '$1"', $sHTML);
+                        $sHTML = preg_replace('/[hH][rR][eE][fF][ ]*=[ ]*"([^h][^t][^t][^p][^:][A-Za-z0-9#\.?\-=_&]*)"/', 'href="' . $frontendURL . '$1"', $sHTML);
+                        $sHTML = preg_replace('/url\((.*)\)/', 'url(' . $frontendURL . '$1)', $sHTML);
 
                         // Now replace anchor tags to the newsletter article itself just by the anchor
-                        $sHTML = str_replace($frontendURL . "front_content.php?idart=".$iIDArt."#", "#", $sHTML);
+                        $sHTML = str_replace($frontendURL . "front_content.php?idart=" . $iIDArt . "#", "#", $sHTML);
                     }
 
                     $sReturn = $sHTML;
                 } else {
-                    if ($contenido) { // Use i18n only in backend
+                    if (cRegistry::getBackendSessionId()) { // Use i18n only in backend
                         $sErrorText = i18n("There was a problem getting the newsletter article using http. Error: %s (%s)", "newsletter");
                     } else {
                         $sErrorText = "There was a problem getting the newsletter article using http. Error: %s (%s)";
@@ -616,12 +611,12 @@ class Newsletter extends Item
     /**
      * Sends test newsletter directly to specified email address
      *
-     * @param int    $iIDCatArt          idcatart of newsletter handler article
-     * @param string $sEMail             Recipient email address
-     * @param string $sName              Optional: Recipient name
-     * @param bool   $bSimulatePlugins   If recipient plugin activated, include plugins
+     * @param int $iIDCatArt idcatart of newsletter handler article
+     * @param string $sEMail Recipient email address
+     * @param string $sName Optional: Recipient name
+     * @param bool $bSimulatePlugins If recipient plugin activated, include plugins
      *                                   and simulate values from plugins
-     * @param string $sEncoding          Message (and header) encoding, e.g. iso-8859-1
+     * @param string $sEncoding Message (and header) encoding, e.g. iso-8859-1
      *
      * @return bool
      * @throws cDbException
@@ -629,37 +624,30 @@ class Newsletter extends Item
      */
     public function sendEMail($iIDCatArt, $sEMail, $sName = "", $bSimulatePlugins = true, $sEncoding = "iso-8859-1")
     {
-        global $lang, $client, $cfg, $cfgClient, $contenido;
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
         // Initialization
         if ($sName == "") {
             $sName = $sEMail;
         }
 
-        $oLanguage = new cApiLanguage($lang);
-        $sFormatDate = $oLanguage->getProperty("dateformat", "date");
-        $sFormatTime = $oLanguage->getProperty("dateformat", "time");
-        unset($oLanguage);
-
-        if ($sFormatDate == "") {
-            $sFormatDate = "%d.%m.%Y";
-        }
-        if ($sFormatTime == "") {
-            $sFormatTime = "%H:%M";
-        }
+        /** @var PiNewsletter $plugin */
+        $plugin = cRegistry::getAppVar('pluginNewsletter');
+        $sFormatDate = $plugin->getDateFormat(cSecurity::toInteger($this->get('idlang')));
+        $sFormatTime = $plugin->getTimeFormat(cSecurity::toInteger($this->get('idlang')));
 
         // Get newsletter data
-        $sFrom            = $this->get("newsfrom");
-        $sFromName        = $this->get("newsfromname");
+        $sFrom = $this->get("newsfrom");
+        $sFromName = $this->get("newsfromname");
         if ($sFromName == "") {
-            $sFromName    = $sFrom;
+            $sFromName = $sFrom;
         }
-        $sSubject        = $this->get("subject");
-        $sMessageText    = $this->get("message");
+        $sSubject = $this->get("subject");
+        $sMessageText = $this->get("message");
 
-        $bIsHTML        = false;
+        $bIsHTML = false;
         if ($this->get("type") == "html") {
-            $sMessageHTML    = $this->getHTMLMessage();
+            $sMessageHTML = $this->getHTMLMessage();
 
             if ($sMessageHTML === false) {
                 // There was a problem getting the html message (maybe article
@@ -670,7 +658,7 @@ class Newsletter extends Item
                 } else {
                     $sError = "Newsletter to %s could not be sent: No html message available";
                 }
-                $this->_sError = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
+                $this->_sError = $sName . " (" . $sEMail . "): " . sprintf($sError, $sEMail);
                 return false;
             } else {
                 $bIsHTML = true;
@@ -683,47 +671,48 @@ class Newsletter extends Item
         }
 
         // Simulate key, an alphanumeric string of 30 characters
-        $sKey    = str_repeat("key", 10);
-        $sPath    = cRegistry::getFrontendUrl() . "front_content.php?changelang=".$lang."&idcatart=".$iIDCatArt."&";
+        $sKey = str_repeat("key", 10);
+        $sPath = cRegistry::getFrontendUrl() . "front_content.php?changelang=" . $lang . "&idcatart=" . $iIDCatArt . "&";
 
         // Replace message tags (text message)
         $this->_replaceTag($sMessageText, false, "name", $sName);
         $this->_replaceTag($sMessageText, false, "number", 1);
-        $this->_replaceTag($sMessageText, false, "date", strftime($sFormatDate));
-        $this->_replaceTag($sMessageText, false, "time", strftime($sFormatTime));
-        $this->_replaceTag($sMessageText, false, "unsubscribe", $sPath."unsubscribe=".$sKey);
-        $this->_replaceTag($sMessageText, false, "change", $sPath."change=".$sKey);
-        $this->_replaceTag($sMessageText, false, "stop", $sPath."stop=".$sKey);
-        $this->_replaceTag($sMessageText, false, "goon", $sPath."goon=".$sKey);
+        $this->_replaceTag($sMessageText, false, "date", cDate::formatToDate($sFormatDate));
+        $this->_replaceTag($sMessageText, false, "time", cDate::formatToDate($sFormatTime));
+        $this->_replaceTag($sMessageText, false, "unsubscribe", $sPath . "unsubscribe=" . $sKey);
+        $this->_replaceTag($sMessageText, false, "change", $sPath . "change=" . $sKey);
+        $this->_replaceTag($sMessageText, false, "stop", $sPath . "stop=" . $sKey);
+        $this->_replaceTag($sMessageText, false, "goon", $sPath . "goon=" . $sKey);
 
         // Replace message tags (html message)
         if ($bIsHTML) {
             $this->_replaceTag($sMessageHTML, true, "name", $sName);
             $this->_replaceTag($sMessageHTML, true, "number", 1);
-            $this->_replaceTag($sMessageHTML, true, "date", strftime($sFormatDate));
-            $this->_replaceTag($sMessageHTML, true, "time", strftime($sFormatTime));
-            $this->_replaceTag($sMessageHTML, true, "unsubscribe", $sPath."unsubscribe=".$sKey);
-            $this->_replaceTag($sMessageHTML, true, "change", $sPath."change=".$sKey);
-            $this->_replaceTag($sMessageHTML, true, "stop", $sPath."stop=".$sKey);
-            $this->_replaceTag($sMessageHTML, true, "goon", $sPath."goon=".$sKey);
+            $this->_replaceTag($sMessageHTML, true, "date", cDate::formatToDate($sFormatDate));
+            $this->_replaceTag($sMessageHTML, true, "time", cDate::formatToDate($sFormatTime));
+            $this->_replaceTag($sMessageHTML, true, "unsubscribe", $sPath . "unsubscribe=" . $sKey);
+            $this->_replaceTag($sMessageHTML, true, "change", $sPath . "change=" . $sKey);
+            $this->_replaceTag($sMessageHTML, true, "stop", $sPath . "stop=" . $sKey);
+            $this->_replaceTag($sMessageHTML, true, "goon", $sPath . "goon=" . $sKey);
         }
 
         if ($bSimulatePlugins) {
             // Enabling plugin interface
             if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
-                if (is_array($cfg['plugins']['recipients'])) {
+                if (cHasPlugins('recipients')) {
+                    cIncludePlugins('recipients');
+                    $cfg = cRegistry::getConfig();
                     foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-                        plugin_include("recipients", $sPlugin."/".$sPlugin.".php");
-                        if (function_exists("recipients_".$sPlugin."_wantedVariables")) {
+                        if (function_exists('recipients_' . $sPlugin . '_wantedVariables')) {
                             $aPluginVars = [];
-                            $aPluginVars = call_user_func("recipients_".$sPlugin."_wantedVariables");
+                            $aPluginVars = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
 
                             foreach ($aPluginVars as $sPluginVar) {
                                 // Replace tags in text message
-                                $this->_replaceTag($sMessageText, false, $sPluginVar, ":: ".$sPlugin.": ".$sPluginVar." ::");
+                                $this->_replaceTag($sMessageText, false, $sPluginVar, ":: " . $sPlugin . ": " . $sPluginVar . " ::");
                                 // Replace tags in html message
                                 if ($bIsHTML) {
-                                    $this->_replaceTag($sMessageHTML, true,     $sPluginVar, ":: ".$sPlugin.": ".$sPluginVar." ::");
+                                    $this->_replaceTag($sMessageHTML, true, $sPluginVar, ":: " . $sPlugin . ": " . $sPluginVar . " ::");
                                 }
                             }
                         }
@@ -736,18 +725,18 @@ class Newsletter extends Item
 
         if (!isValidMail($sEMail) || cString::toLowerCase($sEMail) == "sysadmin@ihresite.de") {
             // No valid destination mail address specified
-            if ($contenido) { // Use i18n only in backend
+            if (cRegistry::getBackendSessionId()) { // Use i18n only in backend
                 $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address", "newsletter");
             } else {
                 $sError = "Newsletter to %s could not be sent: No valid e-mail address";
             }
-            $this->_sError = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
+            $this->_sError = $sName . " (" . $sEMail . "): " . sprintf($sError, $sEMail);
             return false;
         } else {
             if ($bIsHTML) {
                 $body = $sMessageHTML;
             } else {
-                $body = $sMessageText."\n\n";
+                $body = $sMessageText . "\n\n";
             }
             if ($bIsHTML) {
                 $contentType = 'text/html';
@@ -769,12 +758,12 @@ class Newsletter extends Item
 
             if (!$result) {
                 // Use i18n only in backend
-                if ($contenido) {
+                if (cRegistry::getBackendSessionId()) {
                     $sError = i18n("Newsletter to %s could not be sent", "newsletter");
                 } else {
                     $sError = "Newsletter to %s could not be sent";
                 }
-                $this->_sError = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
+                $this->_sError = $sName . " (" . $sEMail . "): " . sprintf($sError, $sEMail);
                 return false;
             } else {
                 return true;
@@ -788,52 +777,43 @@ class Newsletter extends Item
      * Note: Sending in chunks not supported! Only usable for tests and only a few
      * recipients.
      *
-     * @param int    $iIDCatArt    idcatart of newsletter handler article
-     * @param bool   $iIDNewsRcp   If specified, newsletter recipient id, ignored, if group specified
-     * @param bool   $iIDNewsGroup If specified, newsletter recipient group id
-     * @param array  $aSendRcps    As reference: Filled with a list of succesfull recipients
-     * @param string $sEncoding    Message (and header) encoding, e.g. iso-8859-1
+     * @param int $iIDCatArt idcatart of newsletter handler article
+     * @param bool $iIDNewsRcp If specified, newsletter recipient id, ignored, if group specified
+     * @param bool $iIDNewsGroup If specified, newsletter recipient group id
+     * @param array $aSendRcps As reference: Filled with a list of succesfull recipients
+     * @param string $sEncoding Message (and header) encoding, e.g. iso-8859-1
      *
      * @return bool
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function sendDirect($iIDCatArt, $iIDNewsRcp = false, $iIDNewsGroup = false, &$aSendRcps = [], $sEncoding = "iso-8859-1")
     {
-        global $lang, $client, $cfg, $cfgClient, $contenido, $recipient;
+        global $recipient;
+
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
         // Initialization
-        $aMessages  = [];
+        $aMessages = [];
 
-        // Initializing cApiLanguage and get properties for dateformat
-        $oLanguage = new cApiLanguage($lang);
-        $sFormatDate = $oLanguage->getProperty("dateformat", "date");
-        $sFormatTime = $oLanguage->getProperty("dateformat", "time");
-        unset($oLanguage);
+        /** @var PiNewsletter $plugin */
+        $plugin = cRegistry::getAppVar('pluginNewsletter');
+        $sFormatDate = $plugin->getDateFormat(cSecurity::toInteger($this->get('idlang')));
+        $sFormatTime = $plugin->getTimeFormat(cSecurity::toInteger($this->get('idlang')));
 
-        // If no date- and format defined please set standard values
-        if ($sFormatDate == "") {
-            $sFormatDate = "%d.%m.%Y";
-        }
-        if ($sFormatTime == "") {
-            $sFormatTime = "%H:%M";
-        }
-
-        $sPath = cRegistry::getFrontendUrl() . "front_content.php?changelang=".$lang."&idcatart=".$iIDCatArt."&";
+        $sPath = cRegistry::getFrontendUrl() . "front_content.php?changelang=" . $lang . "&idcatart=" . $iIDCatArt . "&";
 
         // Get newsletter data
-        $sFrom     = $this->get("newsfrom");
+        $sFrom = $this->get("newsfrom");
         $sFromName = $this->get("newsfromname");
         if ($sFromName == "") {
             $sFromName = $sFrom;
         }
-        $sSubject     = $this->get("subject");
+        $sSubject = $this->get("subject");
         $sMessageText = $this->get("message");
 
-        $bIsHTML      = false;
+        $bIsHTML = false;
         if ($this->get("type") == "html") {
-            $sMessageHTML    = $this->getHTMLMessage();
+            $sMessageHTML = $this->getHTMLMessage();
 
             if ($sMessageHTML === false) {
                 // There was a problem getting the html message (maybe article
@@ -858,25 +838,26 @@ class Newsletter extends Item
 
         // Single replacements
         // Replace message tags (text message)
-        $this->_replaceTag($sMessageText, false, "date", strftime($sFormatDate));
-        $this->_replaceTag($sMessageText, false, "time", strftime($sFormatTime));
+        $this->_replaceTag($sMessageText, false, "date", cDate::formatToDate($sFormatDate));
+        $this->_replaceTag($sMessageText, false, "time", cDate::formatToDate($sFormatTime));
 
         // Replace message tags (html message)
         if ($bIsHTML) {
-            $this->_replaceTag($sMessageHTML, true, "date", strftime($sFormatDate));
-            $this->_replaceTag($sMessageHTML, true, "time", strftime($sFormatTime));
+            $this->_replaceTag($sMessageHTML, true, "date", cDate::formatToDate($sFormatDate));
+            $this->_replaceTag($sMessageHTML, true, "time", cDate::formatToDate($sFormatTime));
         }
 
         // Enabling plugin interface
         if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
             $bPluginEnabled = true;
-            $aPlugins       = [];
+            $aPlugins = [];
 
-            if (is_array($cfg['plugins']['recipients'])) {
+            if (cHasPlugins('recipients')) {
+                cIncludePlugins('recipients');
+                $cfg = cRegistry::getConfig();
                 foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-                    plugin_include("recipients", $sPlugin."/".$sPlugin.".php");
-                    if (function_exists("recipients_".$sPlugin."_wantedVariables")) {
-                        $aPlugins[$sPlugin] = call_user_func("recipients_".$sPlugin."_wantedVariables");
+                    if (function_exists('recipients_' . $sPlugin . '_wantedVariables')) {
+                        $aPlugins[$sPlugin] = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
                     }
                 }
             }
@@ -893,13 +874,15 @@ class Newsletter extends Item
             $aRecipients[] = $iIDNewsRcp;
         }
 
+        $contenido = cRegistry::getBackendSessionId();
+
         $iCount = count($aRecipients);
         if ($iCount > 0) {
             $this->_replaceTag($sMessageText, false, "number", $iCount);
 
             // Replace message tags (html message)
             if ($bIsHTML) {
-                $this->_replaceTag($sMessageHTML, true,     "number", $iCount);
+                $this->_replaceTag($sMessageHTML, true, "number", $iCount);
             }
 
             foreach ($aRecipients as $iID) {
@@ -907,15 +890,15 @@ class Newsletter extends Item
                 $sRcpMsgHTML = $sMessageHTML;
 
                 // Don't change name of $recipient variable as it is used in plugins!
-                $recipient   = new NewsletterRecipient;
+                $recipient = new NewsletterRecipient;
                 $recipient->loadByPrimaryKey($iID);
 
-                $sEMail  = $recipient->get("email");
-                $sName   = $recipient->get("name");
+                $sEMail = $recipient->get("email");
+                $sName = $recipient->get("name");
                 if (empty ($sName)) {
                     $sName = $sEMail;
                 }
-                $sKey    = $recipient->get("hash");
+                $sKey = $recipient->get("hash");
 
                 $bSendHTML = false;
                 if ($recipient->get("news_type") == 1) {
@@ -923,28 +906,28 @@ class Newsletter extends Item
                 }
 
                 $this->_replaceTag($sRcpMsgText, false, "name", $sName);
-                $this->_replaceTag($sRcpMsgText, false, "unsubscribe", $sPath."unsubscribe=".$sKey);
-                $this->_replaceTag($sRcpMsgText, false, "change", $sPath."change=".$sKey);
-                $this->_replaceTag($sRcpMsgText, false, "stop", $sPath."stop=".$sKey);
-                $this->_replaceTag($sRcpMsgText, false, "goon", $sPath."goon=".$sKey);
+                $this->_replaceTag($sRcpMsgText, false, "unsubscribe", $sPath . "unsubscribe=" . $sKey);
+                $this->_replaceTag($sRcpMsgText, false, "change", $sPath . "change=" . $sKey);
+                $this->_replaceTag($sRcpMsgText, false, "stop", $sPath . "stop=" . $sKey);
+                $this->_replaceTag($sRcpMsgText, false, "goon", $sPath . "goon=" . $sKey);
 
                 // Replace message tags (html message)
                 if ($bIsHTML && $bSendHTML) {
                     $this->_replaceTag($sRcpMsgHTML, true, "name", $sName);
-                    $this->_replaceTag($sRcpMsgHTML, true, "unsubscribe", $sPath."unsubscribe=".$sKey);
-                    $this->_replaceTag($sRcpMsgHTML, true, "change", $sPath."change=".$sKey);
-                    $this->_replaceTag($sRcpMsgHTML, true, "stop", $sPath."stop=".$sKey);
-                    $this->_replaceTag($sRcpMsgHTML, true, "goon", $sPath."goon=".$sKey);
+                    $this->_replaceTag($sRcpMsgHTML, true, "unsubscribe", $sPath . "unsubscribe=" . $sKey);
+                    $this->_replaceTag($sRcpMsgHTML, true, "change", $sPath . "change=" . $sKey);
+                    $this->_replaceTag($sRcpMsgHTML, true, "stop", $sPath . "stop=" . $sKey);
+                    $this->_replaceTag($sRcpMsgHTML, true, "goon", $sPath . "goon=" . $sKey);
                 }
 
                 if ($bPluginEnabled) {
                     foreach ($aPlugins as $sPlugin => $aPluginVar) {
                         foreach ($aPluginVar as $sPluginVar) {
                             // Replace tags in text message
-                            $this->_replaceTag($sRcpMsgText, false, $sPluginVar, call_user_func("recipients_".$sPlugin."_getvalue", $sPluginVar));
+                            $this->_replaceTag($sRcpMsgText, false, $sPluginVar, call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar));
                             // Replace tags in html message
                             if ($bIsHTML && $bSendHTML) {
-                                $this->_replaceTag($sRcpMsgHTML, true, $sPluginVar, call_user_func("recipients_".$sPlugin."_getvalue", $sPluginVar));
+                                $this->_replaceTag($sRcpMsgHTML, true, $sPluginVar, call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar));
                             }
                         }
                     }
@@ -956,19 +939,19 @@ class Newsletter extends Item
                     } else {
                         $sError = "Newsletter to %s could not be sent: Recipient has an incompatible or empty key";
                     }
-                    $aMessages[] = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
+                    $aMessages[] = $sName . " (" . $sEMail . "): " . sprintf($sError, $sEMail);
                 } elseif (!isValidMail($sEMail)) {
                     if ($contenido) { // Use i18n only in backend
                         $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address specified", "newsletter");
                     } else {
                         $sError = "Newsletter to %s could not be sent: No valid e-mail address specified";
                     }
-                    $aMessages[] = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
+                    $aMessages[] = $sName . " (" . $sEMail . "): " . sprintf($sError, $sEMail);
                 } else {
                     if ($bIsHTML && $bSendHTML) {
                         $body = $sRcpMsgHTML;
                     } else {
-                        $body = $sRcpMsgText."\n\n";
+                        $body = $sRcpMsgText . "\n\n";
                     }
 
                     if ($bIsHTML && $bSendHTML) {
@@ -984,14 +967,14 @@ class Newsletter extends Item
                     $result = $mailer->send($message);
 
                     if ($result) {
-                        $aSendRcps[] = $sName." (".$sEMail.")";
+                        $aSendRcps[] = $sName . " (" . $sEMail . ")";
                     } else {
                         if ($contenido) { // Use i18n only in backend
                             $sError = i18n("Newsletter to %s could not be sent", "newsletter");
                         } else {
                             $sError = "Newsletter to %s could not be sent";
                         }
-                        $aMessages[] = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
+                        $aMessages[] = $sName . " (" . $sEMail . "): " . sprintf($sError, $sEMail);
                     }
                 }
             }
@@ -999,7 +982,7 @@ class Newsletter extends Item
             if ($contenido) { // Use i18n only in backend
                 $sError = i18n("No recipient with specified recipient/group id %s/%s found", "newsletter");
             } else {
-                $sError = "No recipient with specified recpient/group id %s/%s found";
+                $sError = "No recipient with specified recipient/group id %s/%s found";
             }
             $aMessages[] = sprintf($sError, $iIDNewsRcp, $iIDNewsGroup);
         }

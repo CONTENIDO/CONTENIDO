@@ -1,17 +1,17 @@
 <?php
 
 /**
- *
- * @author    claus.schunk@4fb.de
- * @author    marcus.gnass@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license   http://www.contenido.org/license/LIZENZ.txt
- * @link      http://www.4fb.de
- * @link      http://www.contenido.org
+ * @package    Testing
+ * @subpackage GUI_HTML
+ * @author     claus.schunk@4fb.de
+ * @author     marcus.gnass@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
- *
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  */
@@ -36,6 +36,11 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
      * @var cHTMLAlignmentTable
      */
     private $_tableFloat;
+
+    /**
+     * @var cHTMLAlignmentTable
+     */
+    private $_tableFloatAsString;
 
     /**
      * @var cHTMLAlignmentTable
@@ -68,6 +73,11 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
     private $_tableData;
 
     /**
+     * @var array
+     */
+    private $_complexParameter;
+
+    /**
      * Creates tables with values of different datatypes.
      */
     protected function setUp(): void
@@ -75,18 +85,23 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
         ini_set('display_errors', true);
         error_reporting(E_ALL);
 
+        cHTML::setGenerateXHTML(false);
+
         $this->_element = new cHTML();
         $this->_element->setTag('foobar');
 
-        $this->_tableEmpty       = new cHTMLAlignmentTable();
-        $this->_tableInt         = new cHTMLAlignmentTable(0);
-        $this->_tableFloat       = new cHTMLAlignmentTable(1.0);
+        $this->_tableEmpty = new cHTMLAlignmentTable();
+        $this->_tableInt = new cHTMLAlignmentTable(0);
+        $this->_tableFloat = new cHTMLAlignmentTable(1.0);
+        $this->_tableFloatAsString = new cHTMLAlignmentTable('1.23');
         $this->_tableEmptyString = new cHTMLAlignmentTable('');
-        $this->_tableString      = new cHTMLAlignmentTable(' foo ');
-        $this->_tableBool        = new cHTMLAlignmentTable(true);
-        $this->_tableNull        = new cHTMLAlignmentTable(null);
-        $this->_tableObject      = new cHTMLAlignmentTable($this->_element);
-        $this->_tableData        = new cHTMLAlignmentTable(0, 1.0, '', ' foo ', true, null, $this->_element);
+        $this->_tableString = new cHTMLAlignmentTable(' foo ');
+        $this->_tableBool = new cHTMLAlignmentTable(true);
+        $this->_tableNull = new cHTMLAlignmentTable(null);
+        $this->_tableObject = new cHTMLAlignmentTable($this->_element);
+        $this->_tableData = new cHTMLAlignmentTable(0, 1.0, 1.23, '1.0', '', ' foo ', true, null, $this->_element);
+
+        $this->_complexParameter = [0, 1.0, 1.23, '1.0', '', ' foo ', true, null, $this->_element];
     }
 
     /**
@@ -127,6 +142,10 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
         $this->assertSame(true, is_array($act));
         $this->assertEmpty(array_diff([1.0], $act));
 
+        $act = $this->_readAttribute($this->_tableFloatAsString, '_data');
+        $this->assertSame(true, is_array($act));
+        $this->assertEmpty(array_diff(['1.23'], $act));
+
         $act = $this->_readAttribute($this->_tableEmptyString, '_data');
         $this->assertSame(true, is_array($act));
         $this->assertEmpty(array_diff([''], $act));
@@ -152,7 +171,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
 
         // Usage of json_decode/json_encode is to prevent error that object of class cHTML could not be converted to string!
         $act = json_decode(json_encode($act), true);
-        $exp = json_decode(json_encode([0, 1.0, '', ' foo ', true, null, $this->_element]), true);
+        $exp = json_decode(json_encode($this->_complexParameter), true);
         $this->assertTrue($exp == $act);
     }
 
@@ -164,7 +183,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
         // $table = new cHTMLAlignmentTable();
         // $this->assertSame($table->render(), $table->toHtml());
         $act = $this->_tableEmpty->render();
-        $exp = '<table cellpadding="0" cellspacing="0"><tr></tr></table>';
+        $exp = '<table><tr></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -174,7 +193,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
     public function testRenderInt()
     {
         $act = $this->_tableInt->render();
-        $exp = '<table cellpadding="0" cellspacing="0"><tr><td>0</td></tr></table>';
+        $exp = '<table><tr><td>0</td></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -183,8 +202,31 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
      */
     public function testRenderFloat()
     {
+        // NOTE: Trailing zeros will be removed, e.g. 1.0 -> 1
         $act = $this->_tableFloat->render();
-        $exp = '<table cellpadding="0" cellspacing="0"><tr><td>1.0</td></tr></table>';
+        $exp = '<table><tr><td>1</td></tr></table>';
+        $this->assertSame($exp, $act);
+    }
+
+
+    /**
+     * Tests rendering of table w/ float value and no trailing zeros.
+     */
+    public function testRenderFloatNoTrailingZeros()
+    {
+        $table = new cHTMLAlignmentTable(1.23456789);
+        $act = $table->render();
+        $exp = '<table><tr><td>1.23456789</td></tr></table>';
+        $this->assertSame($exp, $act);
+    }
+
+    /**
+     * Tests rendering of table w/ float in string representation value.
+     */
+    public function testRenderFloatAsString()
+    {
+        $act = $this->_tableFloatAsString->render();
+        $exp = '<table><tr><td>1.23</td></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -194,7 +236,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
     public function testRenderEmptyString()
     {
         $act = $this->_tableEmptyString->render();
-        $exp = '<table cellpadding="0" cellspacing="0"><tr><td></td></tr></table>';
+        $exp = '<table><tr><td></td></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -204,7 +246,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
     public function testRenderString()
     {
         $act = $this->_tableString->render();
-        $exp = '<table cellpadding="0" cellspacing="0"><tr><td> foo </td></tr></table>';
+        $exp = '<table><tr><td> foo </td></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -214,7 +256,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
     public function testRenderBool()
     {
         $act = $this->_tableBool->render();
-        $exp = '<table cellpadding="0" cellspacing="0"><tr><td>1</td></tr></table>';
+        $exp = '<table><tr><td>1</td></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -224,7 +266,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
     public function testRenderNull()
     {
         $act = $this->_tableNull->render();
-        $exp = '<table cellpadding="0" cellspacing="0"><tr><td></td></tr></table>';
+        $exp = '<table><tr><td></td></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -234,7 +276,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
     public function testRenderObject()
     {
         $act = $this->_tableObject->render();
-        $exp = '<table cellpadding="0" cellspacing="0"><tr><td><foobar /></td></tr></table>';
+        $exp = '<table><tr><td><foobar></td></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -244,7 +286,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase
     public function testRenderData()
     {
         $act = $this->_tableData->render();
-        $exp = '<table cellpadding="0" cellspacing="0"><tr><td>0</td><td>1.0</td><td></td><td> foo </td><td>1</td><td></td><td><foobar /></td></tr></table>';
+        $exp = '<table><tr><td>0</td><td>1</td><td>1.23</td><td>1.0</td><td></td><td> foo </td><td>1</td><td></td><td><foobar></td></tr></table>';
         $this->assertSame($exp, $act);
     }
 }

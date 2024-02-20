@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the client adjust setup mask.
  *
@@ -6,9 +7,9 @@
  * @subpackage Form
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Client adjust setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
  */
-class cSetupClientAdjust extends cSetupMask {
+class cSetupClientAdjust extends cSetupMask
+{
 
     /**
      * cSetupClientAdjust constructor.
@@ -27,12 +29,13 @@ class cSetupClientAdjust extends cSetupMask {
      * @param bool $previous
      * @param $next
      */
-    public function __construct($step, $previous, $next) {
+    public function __construct($step, $previous, $next)
+    {
         $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();
         $cfgClient = cRegistry::getClientConfig($client);
 
-        cSetupMask::__construct("templates/setup/forms/pathinfo.tpl", $step);
+        parent::__construct("templates/setup/forms/pathinfo.tpl", $step);
         $this->setHeader(i18n("Client Settings", "setup"));
         $this->_stepTemplateClass->set("s", "TITLE", i18n("Client Settings", "setup"));
         $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box.", "setup"));
@@ -43,7 +46,7 @@ class cSetupClientAdjust extends cSetupMask {
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
 
-        $aPathList = array();
+        $aPathList = [];
 
         list($a_root_path, $a_root_http_path) = getSystemDirectories();
 
@@ -76,7 +79,7 @@ class cSetupClientAdjust extends cSetupMask {
             }
 
             if ($_SESSION['htmlpath'][$idclient] == "") {
-                // Use frontendpath instead of htmlpath as the directories should be aligned pairwhise
+                // Use frontendpath instead of htmlpath as the directories should be aligned pairwise
                 $iDifferencePos = findSimilarText($cfg['path']['frontend'] . "/", $frontendPath);
                 if ($iDifferencePos > 0) {
                     $sClientPath = $a_root_http_path . "/" . cString::getPartOfString($frontendPath, $iDifferencePos + 1, cString::getStringLength($frontendPath) - $iDifferencePos);
@@ -93,7 +96,7 @@ class cSetupClientAdjust extends cSetupMask {
             $oSystemPathBox = new cHTMLTextbox("frontendpath[$idclient]", $_SESSION['frontendpath'][$idclient]);
             $oSystemPathBox->setWidth(100);
             $oSystemPathBox->setClass("small");
-            $oClientSystemPath = new cHTMLInfoMessage(array($sName, $oSystemPathBox), "&nbsp;");
+            $oClientSystemPath = new cHTMLInfoMessage([$sName, $oSystemPathBox], "&nbsp;");
             $oClientSystemPath->_oTitle->setStyle("padding-left:8px;padding-bottom:8px;width:90%;");
 
             $aPathList[] = $oClientSystemPath;
@@ -105,7 +108,7 @@ class cSetupClientAdjust extends cSetupMask {
             $oSystemPathBox = new cHTMLTextbox("htmlpath[$idclient]", $_SESSION['htmlpath'][$idclient]);
             $oSystemPathBox->setWidth(100);
             $oSystemPathBox->setClass("small");
-            $oClientSystemPath = new cHTMLInfoMessage(array($sName, $oSystemPathBox), "&nbsp;");
+            $oClientSystemPath = new cHTMLInfoMessage([$sName, $oSystemPathBox], "&nbsp;");
             $oClientSystemPath->_oTitle->setStyle("padding-left:8px;padding-bottom:8px;width:90%;");
 
             $aPathList[] = $oClientSystemPath;
@@ -118,18 +121,4 @@ class cSetupClientAdjust extends cSetupMask {
         $this->setNavigation($previous, $next);
     }
 
-    /**
-     * Old constructor
-     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     * @param $step
-     * @param $previous
-     * @param $next
-     */
-    public function cSetupClientAdjust($step, $previous, $next) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        $this->__construct($step, $previous, $next);
-    }
-
 }
-
-?>

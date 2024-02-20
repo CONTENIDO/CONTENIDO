@@ -4,21 +4,32 @@
  * This file contains the backend page for the form of editing template
  * configurations.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Jan Lengowski
- * @author Olaf Niemann
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Jan Lengowski
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $db, $notification, $tpl, $auth, $perm, $cfg, $sess, $client, $area, $frame, $idcat, $idart, $idtpl, $lang, $idtplcfg, $syncoptions;
+global $db, $notification, $tpl, $idtpl, $idtplcfg, $syncoptions;
 
 cInclude('includes', 'functions.pathresolver.php');
+
+$auth = cRegistry::getAuth();
+$sess = cRegistry::getSession();
+$perm = cRegistry::getPerm();
+$area = cRegistry::getArea();
+$frame = cRegistry::getFrame();
+$cfg = cRegistry::getConfig();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$idart = cSecurity::toInteger(cRegistry::getArticleId());
+$idcat = cSecurity::toInteger(cRegistry::getCategoryId());
 
 $message = '';
 $description = '';
@@ -28,52 +39,47 @@ $disabled = '';
 $artlang = null;
 $inUse = false;
 
-if (isset($idart)) {
-    if ($idart > 0) {
-        $idartlang = getArtLang($idart, $lang);
+if ($idart > 0) {
+    $idartlang = getArtLang($idart, $lang);
 
-        // Remove all own marks
-        $col = new cApiInUseCollection();
-        $col->removeSessionMarks($sess->id);
+    // Remove all own marks
+    $col = new cApiInUseCollection();
+    $col->removeSessionMarks($sess->id);
 
-        if (($obj = $col->checkMark('article', $idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) {
-            $col->markInUse('article', $idartlang, $sess->id, $auth->auth['uid']);
-            $inUse = false;
-            $disabled = '';
-        } else {
-            $vuser = new cApiUser($obj->get('userid'));
-            $inUseUser = $vuser->getField('username');
-            $inUseUserRealName = $vuser->getField('realname');
-
-            $message = sprintf(i18n("Article is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
-            $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
-            $inUse = true;
-            $disabled = 'disabled="disabled"';
-        }
+    if (($obj = $col->checkMark('article', $idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) {
+        $col->markInUse('article', $idartlang, $sess->id, $auth->auth['uid']);
+        $inUse = false;
+        $disabled = '';
     } else {
-        // Remove all own marks
-        $col = new cApiInUseCollection();
-        $col->removeSessionMarks($sess->id);
-        if (($obj = $col->checkMark('categorytpl', $idcat)) === false || $obj->get("userid") == $auth->auth['uid']) {
-            $col->markInUse('categorytpl', $idcat, $sess->id, $auth->auth['uid']);
-            $inUse = false;
-            $disabled = '';
-        } else {
-            $vuser = new cApiUser($obj->get('userid'));
-            $inUseUser = $vuser->getField('username');
-            $inUseUserRealName = $vuser->getField('realname');
+        $vuser = new cApiUser($obj->get('userid'));
+        $inUseUser = $vuser->getField('username');
+        $inUseUserRealName = $vuser->getField('realname');
 
-            $message = sprintf(i18n("Category template configuration is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
-            $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
-            $inUse = true;
-            $disabled = 'disabled="disabled"';
-        }
+        $message = sprintf(i18n("Article is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
+        $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
+        $inUse = true;
+        $disabled = 'disabled="disabled"';
+    }
+} else {
+    // Remove all own marks
+    $col = new cApiInUseCollection();
+    $col->removeSessionMarks($sess->id);
+    if (($obj = $col->checkMark('categorytpl', $idcat)) === false || $obj->get("userid") == $auth->auth['uid']) {
+        $col->markInUse('categorytpl', $idcat, $sess->id, $auth->auth['uid']);
+        $inUse = false;
+        $disabled = '';
+    } else {
+        $vuser = new cApiUser($obj->get('userid'));
+        $inUseUser = $vuser->getField('username');
+        $inUseUserRealName = $vuser->getField('realname');
+
+        $message = sprintf(i18n("Category template configuration is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
+        $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
+        $inUse = true;
+        $disabled = 'disabled="disabled"';
     }
 }
 
-if (!isset($idart)) {
-    $idart = 0;
-}
 if (!isset($idlay)) {
     $idlay = 0;
 }
@@ -86,25 +92,22 @@ if (!isset($db3) || !is_object($db3)) {
 
 $tpl->reset();
 
+$isAdmin = false;
+
 if ($idart) {
     if ($perm->have_perm_area_action('con', 'con_tplcfg_edit') || $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)) {
 
         $artlang = new cApiArticleLanguage($idartlang);
 
         // check admin rights
-        $aAuthPerms = explode(',', $auth->auth['perm']);
-
-        $admin = false;
-        if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-            $admin = true;
-        }
+        $isAdmin = cPermission::checkAdminPermission($auth->getPerms());
 
         if ($artlang->isLoaded()) {
-            if(!$idtpl && $idcat && $idart && (int) $artlang->get('locked') === 1) {
-                $inUse    = true;
-                $disabled = ($admin === false)? 'disabled="disabled"' : '';
+            if (!$idtpl && $idcat && $idart && (int)$artlang->get('locked') === 1) {
+                $inUse = true;
+                $disabled = ($isAdmin === false) ? 'disabled="disabled"' : '';
                 // display notification if article configuration can not be edited
-                if (false === $admin) {
+                if (false === $isAdmin) {
                     $message = i18n('This article is currently frozen and can not be edited!');
                     $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
                 }
@@ -134,12 +137,12 @@ if ($idart) {
             // template configuration found
             $idtplcfg = $db->f('idtplcfg');
             $idtpl = $db->f('idtpl');
-            $description = $db->f('description');
+            $description = $db->f('description') ?? '';
 
             if ($db->f('locked') == 1) {
                 $inUse = true;
-                $disabled = ($admin)? '': 'disabled="disabled"';
-                if ($configLocked === false){
+                $disabled = ($isAdmin) ? '' : 'disabled="disabled"';
+                if ($configLocked === false) {
                     $message = i18n('This article is currently frozen and can not be edited!');
                     $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
                 }
@@ -185,7 +188,7 @@ if ($idart) {
         // template configuration found
         $idtplcfg = $db->f('idtplcfg');
         $idtpl = $db->f('idtpl');
-        $description = $db->f('description');
+        $description = $db->f('description') ?? '';
     } else {
         if ($idtpl) {
             // create new configuration entry
@@ -218,7 +221,7 @@ if (!$db->nextRecord()) {
 
     $db->query($sql);
     $db->nextRecord();
-    $description = $db->f('description');
+    $description = $db->f('description') ?? '';
     if (0 != $db->f('idtplcfg')) {
         // Template has a pre-configuration, copy pre-configuration data to
         // category configuration with the $idtplcfg from the category
@@ -275,8 +278,8 @@ $tpl2->set('s', 'NAME', 'idtpl');
 $tpl2->set('s', 'CLASS', 'text_medium');
 
 // CON-2157 fix categorie page has no article
-if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || is_object($artlang) && $artlang->get('locked') === 1 ) {
-    $disabled2 = ($admin) ? '' : 'disabled="disabled"' ;
+if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || is_object($artlang) && $artlang->get('locked') === 1) {
+    $disabled2 = ($isAdmin) ? '' : 'disabled="disabled"';
 } else {
     $disabled2 = '';
 }
@@ -334,8 +337,16 @@ foreach ($containerModules as $containerNumber => $containerModuleId) {
         $input = $contenidoModuleHandler->readInput() . "\n";
     }
 
-    $containerConfig = isset($containerConfigurations[$containerNumber]) ? $containerConfigurations[$containerNumber] : '';
-    $modulecode = cApiModule::processContainerInputCode($containerNumber, $containerConfig, $input);
+    $containerConfig = $containerConfigurations[$containerNumber] ?? '';
+    $modulecode = cApiModule::processContainerInputCode(
+        cSecurity::toInteger($containerNumber), $containerConfig, $input
+    );
+
+    if ($cfg['debug']['article_template_configuration_codeoutput']) {
+        $debugModuleCode = conHtmlSpecialChars($modulecode);
+    } else {
+        $debugModuleCode = '';
+    }
 
     ob_start();
     eval($modulecode);
@@ -343,6 +354,10 @@ foreach ($containerModules as $containerNumber => $containerModuleId) {
     ob_end_clean();
 
     $modulecaption = i18n("Module in container") . ' ' . $containerNumber . ': ';
+
+    if ($cfg['debug']['article_template_configuration_codeoutput']) {
+        cDebug::add($debugModuleCode, $modulecaption);
+    }
 
     $tpl->set('d', 'MODULECAPTION', $modulecaption);
     $tpl->set('d', 'MODULENAME', $moduleItem->get('name'));
@@ -408,34 +423,52 @@ if ($idart) {
     $tpl->set('s', 'MARKSUBMENU', "");
 }
 
-$cancelbutton = '';
-$acceptbutton = '';
 if ($idart || $area == 'con_tplcfg') {
-    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=con&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
-    $acceptbutton = '<input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
+    $linkArea = 'con';
 } else {
-    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=str&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
-    $acceptbutton = '<input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
+    $linkArea = 'str';
 }
+
+$controls = new cHTMLDiv('', 'con_form_action_control');
+
+$acceptElement = new cHTMLButton('save_tplcfg');
+$acceptElement->setAttributes([
+    'class' => 'con_img_button',
+    'accesskey' => 's',
+    'type' => 'image',
+    'src' => 'images/but_ok.gif',
+    'title' => i18n('Save'),
+    'data-action' => 'save_tplcfg',
+]);
+
+$cancelElement = new cHTMLLink(
+    $sess->url("main.php?area=$linkArea&frame=4&idcat=$idcat"),
+    cHTMLImage::img('images/but_cancel.gif', i18n('Cancel')),
+    'con_img_button'
+);
+$cancelElement->setAttribute('accesskey', 'c');
+
+$controls->appendContent([$acceptElement, $cancelElement]);
+
 if ($idtpl != 0 && $inUse == false) {
-    $tpl->set('s', 'BUTTONS', $cancelbutton.$acceptbutton);
+    $tpl->set('s', 'BUTTONS', $controls->render());
 } else {
-    $tpl->set('s', 'BUTTONS', $cancelbutton);
+    $tpl->set('s', 'BUTTONS', '');
 }
 
 // Display template description
 if ($idtpl) {
-    $tpl->set('s', 'DESCRIPTION', nl2br($description));
+    $tpl->set('s', 'DESCRIPTION', nl2br(conHtmlentities($description)));
     $tpl->set('s', 'LABLE_DESCRIPTION', i18n("Description"));
 } else {
     $tpl->set('s', 'DESCRIPTION', '');
     $tpl->set('s', 'LABLE_DESCRIPTION', '');
 }
 
-if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
+if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && $idart == 0) {
     $tpl->set('s', 'HEADER', i18n('Category template configuration'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
-} else if ($area == 'con_tplcfg' && (int) $idart > 0) {
+} elseif ($area == 'con_tplcfg' && $idart > 0) {
     $tpl->set('s', 'HEADER', i18n('Article template configuration'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
 } else {

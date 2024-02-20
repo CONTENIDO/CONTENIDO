@@ -7,9 +7,9 @@
  * @subpackage CronjobOverview
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,7 +22,8 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
  * @package    Plugin
  * @subpackage CronjobOverview
  */
-class Cronjobs {
+class Cronjobs
+{
     /**
      * @var string
      */
@@ -69,7 +70,8 @@ class Cronjobs {
      *
      * @param string $phpFile
      */
-    public function __construct($phpFile = '') {
+    public function __construct($phpFile = '')
+    {
         $this->_phpFile = $phpFile;
 
         //get the name of the file withouth the mime type
@@ -78,7 +80,7 @@ class Cronjobs {
         }
 
         $cfg = cRegistry::getConfig();
-        $this->_cronjobDirectory = $cfg['path']['contenido'] . $cfg['path']['cronjobs'];
+        $this->_cronjobDirectory = cRegistry::getBackendPath() . $cfg['path']['cronjobs'];
         $this->_cronlogDirectory = $cfg['path']['contenido_cronlog'];
     }
 
@@ -87,7 +89,8 @@ class Cronjobs {
      *
      * @return string
      */
-    public function getFile() {
+    public function getFile()
+    {
         return $this->_phpFile;
     }
 
@@ -96,7 +99,8 @@ class Cronjobs {
      *
      * @return string
      */
-    public function getCronjobDirectory() {
+    public function getCronjobDirectory()
+    {
         return $this->_cronjobDirectory;
     }
 
@@ -105,7 +109,8 @@ class Cronjobs {
      *
      * @return string
      */
-    public function getCronlogDirectory() {
+    public function getCronlogDirectory()
+    {
         return $this->_cronlogDirectory;
     }
 
@@ -116,7 +121,8 @@ class Cronjobs {
      * @return string date
      * @throws cInvalidArgumentException
      */
-    public function getDateLastExecute() {
+    public function getDateLastExecute()
+    {
         $timestamp = '';
         if (cFileHandler::exists($this->_cronlogDirectory . $this->_phpFile . self::$JOB_ENDING)) {
             if (($timestamp = cFileHandler::read($this->_cronlogDirectory . $this->_phpFile . self::$JOB_ENDING))) {
@@ -134,7 +140,8 @@ class Cronjobs {
      *      contents of the file or ''
      * @throws cInvalidArgumentException
      */
-    public function getContentsCrontabFile() {
+    public function getContentsCrontabFile()
+    {
         if (cFileHandler::exists($this->_cronlogDirectory . self::$CRONTAB_FILE)) {
             return cFileHandler::read($this->_cronlogDirectory . self::$CRONTAB_FILE);
         } else {
@@ -151,7 +158,8 @@ class Cronjobs {
      * @return bool
      * @throws cInvalidArgumentException
      */
-    public function saveCrontabFile($data) {
+    public function saveCrontabFile($data)
+    {
         return cFileHandler::write($this->_cronlogDirectory . self::$CRONTAB_FILE, $data);
     }
 
@@ -162,7 +170,8 @@ class Cronjobs {
      *
      * @throws cInvalidArgumentException
      */
-    public function setRunTime($timestamp) {
+    public function setRunTime($timestamp)
+    {
         cFileHandler::write($this->_cronlogDirectory . $this->_phpFile . self::$JOB_ENDING, $timestamp);
     }
 
@@ -174,7 +183,8 @@ class Cronjobs {
      * @return string
      * @throws cInvalidArgumentException
      */
-    public function getLastLines($lines = 25) {
+    public function getLastLines($lines = 25)
+    {
         if (cFileHandler::exists($this->_cronlogDirectory . $this->_phpFile . self::$LOG_ENDING)) {
             $content = explode("\n", cFileHandler::read($this->_cronlogDirectory . $this->_phpFile . self::$LOG_ENDING));
             $number = count($content);
@@ -195,7 +205,8 @@ class Cronjobs {
      *
      * @return bool if exist
      */
-    public function existFile() {
+    public function existFile()
+    {
         if (!cFileHandler::exists($this->_cronjobDirectory . $this->_phpFile) && !is_dir($this->_cronjobDirectory . $this->_phpFile)) {
             return false;
         } elseif (cString::getPartOfString($this->_phpFile, -4) == '.php') {
@@ -208,9 +219,10 @@ class Cronjobs {
     /**
      * Get all Cronjobs in directory cronjobs from contenido
      */
-    public function getAllCronjobs() {
-        $retArray = array();
-        
+    public function getAllCronjobs()
+    {
+        $retArray = [];
+
         if (is_dir($this->_cronjobDirectory)) {
             // get only files
             if (false !== ($handle = cDirHandler::read($this->_cronjobDirectory, false, false, true))) {

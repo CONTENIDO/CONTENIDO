@@ -3,23 +3,33 @@
 /**
  * This file contains the backend page for showing last edited articles.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude("includes", "functions.con.php");
 
+global $tpl, $db;
+
+$cfg = cRegistry::getConfig();
+$perm = cRegistry::getPerm();
+$auth = cRegistry::getAuth();
+$lang = cRegistry::getLanguageId();
+$client = cRegistry::getClientId();
+$sess = cRegistry::getSession();
+$frame = cRegistry::getFrame();
+
 $sql = "SELECT
             logtimestamp
         FROM
-            " . $cfg["tab"]["actionlog"] . "
+            " . $cfg['tab']['actionlog'] . "
         WHERE
            user_id = '" . $db->escape($auth->auth["uid"]) . "'
         ORDER BY
@@ -31,7 +41,7 @@ $db->nextRecord();
 
 $lastlogin = $db->f("logtimestamp");
 
-$idaction = $perm->getIDForAction("con_editart");
+$idaction = $perm->getIdForAction("con_editart");
 
 $sql = "SELECT
             a.idart AS idart,
@@ -45,16 +55,16 @@ $sql = "SELECT
             a.created AS created,
             a.lastmodified AS lastmodified
         FROM
-            " . $cfg["tab"]["art_lang"] . " AS a,
-            " . $cfg["tab"]["art"] . " AS b,
-            " . $cfg["tab"]["cat_art"] . " AS c,
-            " . $cfg["tab"]["actionlog"] . " AS d
+            " . $cfg['tab']['art_lang'] . " AS a,
+            " . $cfg['tab']['art'] . " AS b,
+            " . $cfg['tab']['cat_art'] . " AS c,
+            " . $cfg['tab']['actionlog'] . " AS d
         WHERE
-            a.idlang    = " . (int) $lang . " AND
+            a.idlang    = " . (int)$lang . " AND
             a.idart     = b.idart AND
-            b.idclient  = " . (int) $client . " AND
+            b.idclient  = " . (int)$client . " AND
             b.idart     = c.idart AND
-            d.idaction  = " . (int) $idaction . " AND
+            d.idaction  = " . (int)$idaction . " AND
             d.user_id   = '" . $db->escape($auth->auth["uid"]) . "' AND
             d.idcatart  = c.idcatart
         GROUP BY
@@ -115,10 +125,10 @@ while ($db->nextRecord()) {
                     b.name AS tplname,
                     b.idtpl AS idtpl
                  FROM
-                    " . $cfg["tab"]["tpl_conf"] . " AS a,
-                    " . $cfg["tab"]["tpl"] . " AS b
+                    " . $cfg['tab']['tpl_conf'] . " AS a,
+                    " . $cfg['tab']['tpl'] . " AS b
                  WHERE
-                    a.idtplcfg = " . (int) $idtplcfg . " AND
+                    a.idtplcfg = " . (int)$idtplcfg . " AND
                     a.idtpl = b.idtpl";
 
         $db2->query($sql2);
@@ -154,11 +164,11 @@ while ($db->nextRecord()) {
 }
 
 // Sort select
-$s_types = array(
+$s_types = [
     1 => i18n("Alphabetical"),
     2 => i18n("Last change"),
-    3 => i18n("Creation date")
-);
+    3 => i18n("Creation date"),
+];
 
 $tpl2 = new cTemplate();
 $tpl2->set('s', 'NAME', 'sort');
@@ -173,7 +183,7 @@ foreach ($s_types as $key => $value) {
     $tpl2->next();
 }
 
-$select = (!$no_article) ? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '';
+$select = (!$no_article) ? $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true) : '';
 $caption = (!$no_article) ? 'Artikel sortieren' : '';
 
 $tpl->set('s', 'ARTSORTCAPTION', $caption);
@@ -184,17 +194,17 @@ $sql = "SELECT
             b.name AS name,
             d.idtpl AS idtpl
         FROM
-            (" . $cfg["tab"]["cat"] . " AS a,
-            " . $cfg["tab"]["cat_lang"] . " AS b,
-            " . $cfg["tab"]["tpl_conf"] . " AS c)
+            (" . $cfg['tab']['cat'] . " AS a,
+            " . $cfg['tab']['cat_lang'] . " AS b,
+            " . $cfg['tab']['tpl_conf'] . " AS c)
         LEFT JOIN
-            " . $cfg["tab"]["tpl"] . " AS d
+            " . $cfg['tab']['tpl'] . " AS d
         ON
             d.idtpl = c.idtpl
         WHERE
-            a.idclient = " . (int) $client . " AND
-            a.idcat = " . (int) $idcat . " AND
-            b.idlang = " . (int) $lang . " AND
+            a.idclient = " . (int)$client . " AND
+            a.idcat = " . (int)$idcat . " AND
+            b.idlang = " . (int)$lang . " AND
             b.idcat = a.idcat AND
             c.idtplcfg = b.idtplcfg";
 
@@ -232,4 +242,3 @@ $tpl->set('s', 'HELP', "");
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['mycontenido_lastarticles']);
 
-?>

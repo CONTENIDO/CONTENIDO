@@ -2,11 +2,11 @@
 
 /**
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage SearchSolr
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -19,7 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class SolrIndexer {
+class SolrIndexer
+{
 
     /**
      * @var bool
@@ -27,7 +28,7 @@ class SolrIndexer {
     const DBG = false;
 
     /**
-     * Prefix to be used for Solr <uniqueKey> in order to distinguish docuemnts
+     * Prefix to be used for Solr <uniqueKey> in order to distinguish documents
      * from different sources.
      *
      * @var string
@@ -45,7 +46,7 @@ class SolrIndexer {
      *
      * @var array
      */
-    private $_articleIds = array();
+    private $_articleIds = [];
 
     /**
      * CEC chain function for updating an article in the Solr core (index).
@@ -64,8 +65,8 @@ class SolrIndexer {
      * @throws cDbException
      * @throws cException
      */
-    public static function handleStoringOfArticle(array $newData, array $oldData) {
-
+    public static function handleStoringOfArticle(array $newData, array $oldData)
+    {
         // get IDs of given article language
         if (cRegistry::getArticleLanguageId() == $newData['idartlang']) {
             // quite easy if given article is current article
@@ -89,7 +90,8 @@ class SolrIndexer {
             }
             // get first idcat by idart
             $coll = new cApiCategoryArticleCollection();
-            $idcat = array_shift($coll->getCategoryIdsByArticleId($newData['idart']));
+            $categoryIds = $coll->getCategoryIdsByArticleId($newData['idart']);
+            $idcat = array_shift($categoryIds);
             // get idcatlang by idcat & idlang
             $categoryLanguage = new cApiCategoryLanguage();
             $categoryLanguage->loadByCategoryIdAndLanguageId($idcat, $idlang);
@@ -98,14 +100,14 @@ class SolrIndexer {
             }
         }
 
-        self::handleStoringOfContentEntry(array(
+        self::handleStoringOfContentEntry([
             'idclient' => $idclient,
             'idlang' => $idlang,
             'idcat' => $idcat,
             'idcatlang' => $idcatlang,
             'idart' => $idart,
             'idartlang' => $idartlang
-        ));
+        ]);
     }
 
     /**
@@ -121,16 +123,17 @@ class SolrIndexer {
      *
      * @param array $articleIds of article to be updated
      */
-    public static function handleStoringOfContentEntry(array $articleIds) {
+    public static function handleStoringOfContentEntry(array $articleIds)
+    {
         try {
             // build indexer instance
-            $indexer = new self(array(
+            $indexer = new self([
                 $articleIds
-            ));
+            ]);
             // update given articles
             $indexer->updateArticles();
         } catch (cException $e) {
-            $lvl = $e instanceof SolrWarning? cGuiNotification::LEVEL_WARNING : cGuiNotification::LEVEL_ERROR;
+            $lvl = $e instanceof SolrWarning ? cGuiNotification::LEVEL_WARNING : cGuiNotification::LEVEL_ERROR;
             $note = new cGuiNotification();
             $note->displayNotification($lvl, $e->getMessage());
         }
@@ -144,7 +147,8 @@ class SolrIndexer {
      *
      * @param array $articleIds IDs of articles to be handled
      */
-    public function __construct(array $articleIds) {
+    public function __construct(array $articleIds)
+    {
         $this->_articleIds = $articleIds;
     }
 
@@ -154,7 +158,8 @@ class SolrIndexer {
      * Destroys Solr client to free memory. Is this really necessary?
      * As SolClient has a method __destruct() this seems to be correct.
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         foreach ($this->_solrClients as $key => $client) {
             unset($this->_solrClients[$key]);
         }
@@ -165,11 +170,10 @@ class SolrIndexer {
      * @param int $idlang
      *
      * @return SolrClient
-     * @throws SolrWarning
-     * @throws cException
+     * @throws SolrWarning|cException
      */
-    private function _getSolrClient($idclient, $idlang) {
-
+    private function _getSolrClient($idclient, $idlang)
+    {
         if (!isset($this->_solrClients[$idclient][$idlang])) {
             $opt = Solr::getClientOptions($idclient, $idlang);
             Solr::validateClientOptions($opt);
@@ -186,9 +190,9 @@ class SolrIndexer {
      *
      * @throws cException if Solr add request failed
      */
-    public function addArticles() {
-
-        $toAdd = array();
+    public function addArticles()
+    {
+        $toAdd = [];
         foreach ($this->_articleIds as $articleIds) {
 
             // skip if article should not be indexed
@@ -197,10 +201,10 @@ class SolrIndexer {
             }
 
             if (!isset($toAdd[$articleIds['idlang']])) {
-                $toAdd[$articleIds['idlang']] = array(
+                $toAdd[$articleIds['idlang']] = [
                     'idclient' => $articleIds['idclient'],
-                    'documents' => array()
-                );
+                    'documents' => []
+                ];
             }
 
             // get article content to be indexed
@@ -209,10 +213,10 @@ class SolrIndexer {
             // create input document
             $solrInputDocument = new SolrInputDocument();
             $solrInputDocument->addField('source', 'contenido_article');
-            $solrInputDocument->addField('url', cUri::getInstance()->build(array(
+            $solrInputDocument->addField('url', cUri::getInstance()->build([
                 'idart' => $articleIds['idart'],
                 'lang' => $articleIds['idlang']
-            )));
+            ]));
             $solrInputDocument->addField('id', self::ID_PREFIX . $articleIds['idartlang']);
             // $solrInputDocument->addField('raise_exception', 'uncomment this
             // to raise an exception');
@@ -235,7 +239,7 @@ class SolrIndexer {
                 // displayed first.
                 ksort($typeContent);
 
-                // add each content entry seperatly (content type fields are
+                // add each content entry separately (content type fields are
                 // defined as multiValued)
                 foreach ($typeContent as $typeid => $contentEntry) {
                     $contentEntry = trim($contentEntry);
@@ -259,11 +263,11 @@ class SolrIndexer {
                 }
             }
 
-            array_push($toAdd[$articleIds['idlang']]['documents'], $solrInputDocument);
+            $toAdd[$articleIds['idlang']]['documents'][] = $solrInputDocument;
 
         }
 
-        // add and commit documents and then optimze index
+        // add and commit documents and then optimize index
         foreach ($toAdd as $idlang => $data) {
             try {
                 $solrClient = $this->_getSolrClient($data['idclient'], $idlang);
@@ -295,7 +299,8 @@ class SolrIndexer {
      *
      * @return bool|string
      */
-    private function _getImageUrlByIdupl($idupl) {
+    private function _getImageUrlByIdupl($idupl)
+    {
         $upload = new cApiUpload($idupl);
 
         if (false === $upload->isLoaded()) {
@@ -307,29 +312,27 @@ class SolrIndexer {
         $filename = $upload->get('filename');
 
         $clientConfig = cRegistry::getClientConfig($idclient);
-        $image = $clientConfig['upl']['htmlpath'] . $dirname . $filename;
-
-        return $image;
+        return $clientConfig['upl']['htmlpath'] . $dirname . $filename;
     }
 
     /**
      * Delete all CONTENIDO article documents that are aggregated as
      * $this->_articleIds.
      *
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cException|cInvalidArgumentException
      */
-    public function deleteArticles() {
-        $toDelete = array();
+    public function deleteArticles()
+    {
+        $toDelete = [];
         foreach ($this->_articleIds as $articleIds) {
             if (!isset($toDelete[$articleIds['idlang']])) {
-                $toDelete[$articleIds['idlang']] = array(
+                $toDelete[$articleIds['idlang']] = [
                     'idclient' => $articleIds['idclient'],
-                    'idartlangs' => array()
-                );
+                    'idartlangs' => []
+                ];
             }
             $key = self::ID_PREFIX . strval($articleIds['idartlang']);
-            array_push($toDelete[$articleIds['idlang']]['idartlangs'], $key);
+            $toDelete[$articleIds['idlang']]['idartlangs'][] = $key;
         }
         foreach ($toDelete as $idlang => $data) {
             try {
@@ -357,13 +360,13 @@ class SolrIndexer {
     /**
      * @throws cException if Solr delete request failed
      */
-    public function updateArticles() {
-
+    public function updateArticles()
+    {
         // Always delete articles from index, even if article should not be
         // indexed it might have been indexed before
-        // What happens if an article could not be deleted cause it was not
+        // What happens if an article could not be deleted because it was not
         // indexed before? does this throw an exception? if yes an article
-        // could never been indexed!
+        // could never have been indexed!
         try {
             $this->deleteArticles();
         } catch (cException $e) {
@@ -379,14 +382,14 @@ class SolrIndexer {
      * An article is indexable if it is online and searchable.
      *
      * Articles that are hidden due to a protected category are indexable. The
-     * searcher is responsible for making sure these aticles are only displayed
+     * searcher is responsible for making sure these articles are only displayed
      * to privileged users.
      *
      * @param int $idartlang of article to be checked
      * @return bool
      */
-    private function _isIndexable($idartlang) {
-
+    private function _isIndexable($idartlang)
+    {
         // What about time managment?
         $articleLanguage = new cApiArticleLanguage($idartlang);
         if (!$articleLanguage->isLoaded()) {
@@ -406,8 +409,8 @@ class SolrIndexer {
      * @return array
      * @throws cDbException
      */
-    private function _getContent($idartlang) {
-
+    private function _getContent($idartlang)
+    {
         // 'CMS_IMG', 'CMS_LINK', 'CMS_LINKTARGET', 'CMS_SWF'
         $cms = "'CMS_HTMLHEAD','CMS_HTML','CMS_TEXT','CMS_IMGDESCR',"
             . "'CMS_LINKDESCR','CMS_HEAD','CMS_LINKTITLE','CMS_LINKEDIT',"
@@ -437,10 +440,10 @@ class SolrIndexer {
                 , con_content.typeid
             ;");
 
-        $content = array();
+        $content = [];
         while (false !== $db->nextRecord()) {
             $value = $db->f('value');
-            //$value = utf8_encode($value);
+            //$value = @utf8_encode($value);
             $value = strip_tags($value);
             //$value = html_entity_decode($value);
             $value = html_entity_decode($value, ENT_QUOTES, 'UTF-8');
@@ -465,11 +468,12 @@ class SolrIndexer {
     /**
      *
      * @param SolrResponse $solrResponse
-     * @param string       $msg
+     * @param string $msg
      *
      * @throws cException if Solr update request failed
      */
-    private function _checkResponse(SolrResponse $solrResponse, $msg = 'Solr update request failed') {
+    private function _checkResponse(SolrResponse $solrResponse, $msg = 'Solr update request failed')
+    {
         $response = $solrResponse->getResponse();
 
         // SolrResponse::getDigestedResponse — Returns the XML response as

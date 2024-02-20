@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the right bottom frame backend page for the plugin cronjob overview.
  *
@@ -6,20 +7,31 @@
  * @subpackage CronjobOverview
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
-// TODO: this should not be necessary
-include_once(dirname(__FILE__).'/config.plugin.php');
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cPermission $perm
+ * @var string $area
+ * @var string $contenido
+ * @var array $cfg
+ */
 
 $tpl = new cTemplate();
 
-$cronjobs = new Cronjobs($_REQUEST['file']);
+$pluginName = $cfg['pi_cronjob_overview']['pluginName'];
+
+$requestFile = $_REQUEST['file'] ?? '';
+$requestAction = $_REQUEST['action'] ?? '';
+
+$cronjobs = new Cronjobs($requestFile);
 $notification = new cGuiNotification();
 
-switch ($_REQUEST['action']) {
+switch ($requestAction) {
     case 'cronjob_overview':
         if (!$perm->have_perm_area_action($area, 'cronjob_overview')) {
             $notification->displayNotification('error', i18n('Permission denied', 'cronjobs_overview'));
@@ -27,18 +39,18 @@ switch ($_REQUEST['action']) {
         }
 
         if ($cronjobs->existFile()) {
-            $tpl->set('s', 'HEADER', i18n('Cronjob overview: ', 'cronjobs_overview').$cronjobs->getFile());
-            $tpl->set('s', 'LABLE_DIRECTORY',i18n("Location", 'cronjobs_overview'));
+            $tpl->set('s', 'HEADER', i18n('Cronjob overview: ', 'cronjobs_overview') . $cronjobs->getFile());
+            $tpl->set('s', 'LABLE_DIRECTORY', i18n("Location", 'cronjobs_overview'));
             $tpl->set('s', 'DIRECTORY', $cronjobs->getCronjobDirectory());
             $tpl->set('s', 'LABLE_EXECUTION_TIME', i18n("Last time executed: ", 'cronjobs_overview'));
             $tpl->set('s', 'LABLE_LOG', i18n('Log', 'cronjobs_overview'));
             $tpl->set('s', 'LOG', $cronjobs->getLastLines());
-            $tpl->set('s', 'EXECUTION_TIME',$cronjobs->getDateLastExecute());
+            $tpl->set('s', 'EXECUTION_TIME', $cronjobs->getDateLastExecute());
             $tpl->set('s', 'CONTENIDO', $contenido);
-            $tpl->set('s', 'LABLE_EXECUTE',i18n("Execute cronjob:", 'cronjobs_overview'));
+            $tpl->set('s', 'LABLE_EXECUTE', i18n("Execute cronjob:", 'cronjobs_overview'));
             $tpl->set('s', 'ALT_TITLE', i18n('Execute cronjob', 'cronjobs_overview'));
             $tpl->set('s', 'FILE', $cronjobs->getFile());
-            $tpl->generate($dir_plugin.'templates/right_bottom_overview.html');
+            $tpl->generate($cfg['plugins'][$pluginName] . 'templates/right_bottom_overview.html');
         }
         break;
 
@@ -50,16 +62,16 @@ switch ($_REQUEST['action']) {
         if (!empty($_POST['crontab_contents'])) {
             //save contents
             if ($cronjobs->saveCrontabFile($_POST['crontab_contents']) === FALSE) {
-                $notification-> displayNotification('warning', i18n('Could not be saved!', 'cronjobs_overview'));
+                $notification->displayNotification('warning', i18n('Could not be saved!', 'cronjobs_overview'));
             } else {
-                $notification-> displayNotification('ok', i18n('Successfully saved!', 'cronjobs_overview'));
+                $notification->displayNotification('ok', i18n('Successfully saved!', 'cronjobs_overview'));
             }
         }
-        $tpl->set('s', 'HEADER', i18n('Edit cronjob: ', 'cronjobs_overview').$cronjobs->getCronlogDirectory(). Cronjobs::$CRONTAB_FILE);
+        $tpl->set('s', 'HEADER', i18n('Edit cronjob: ', 'cronjobs_overview') . $cronjobs->getCronlogDirectory() . Cronjobs::$CRONTAB_FILE);
         $tpl->set('s', 'CONTENTS', $cronjobs->getContentsCrontabFile());
         $tpl->set('s', 'CONTENIDO', $contenido);
         $tpl->set('s', 'ALT_TITLE', i18n('Save changes', 'cronjobs_overview'));
-        $tpl->generate($dir_plugin.'templates/right_bottom_crontab_edit.html');
+        $tpl->generate($cfg['plugins'][$pluginName] . 'templates/right_bottom_crontab_edit.html');
         break;
 
     case 'cronjob_execute':
@@ -70,7 +82,7 @@ switch ($_REQUEST['action']) {
 
         if ($cronjobs->existFile()) {
             $area = 'cronjobs';
-            include($cronjobs->getCronjobDirectory().$cronjobs->getFile());
+            include($cronjobs->getCronjobDirectory() . $cronjobs->getFile());
             $cronjobs->setRunTime(time());
             //$cronjobs->executeCronjob();
             $message = $notification->returnNotification('info', i18n('File has been included!', 'cronjobs_overview'));
@@ -79,5 +91,3 @@ switch ($_REQUEST['action']) {
         }
         break;
 }
-
-?>

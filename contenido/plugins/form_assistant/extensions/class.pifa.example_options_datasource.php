@@ -2,11 +2,11 @@
 
 /**
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -19,7 +19,8 @@ plugin_include(Pifa::getName(), 'classes/class.pifa.external_options_datasource_
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class ExampleOptionsDatasource extends PifaExternalOptionsDatasourceInterface {
+class ExampleOptionsDatasource extends PifaExternalOptionsDatasourceInterface
+{
 
     /**
      * Stores the options as associative array which maps values to labels.
@@ -34,21 +35,23 @@ class ExampleOptionsDatasource extends PifaExternalOptionsDatasourceInterface {
      *
      * @return array
      */
-    protected function _getData() {
-        $options = array(
+    protected function _getData()
+    {
+        $options = [
             'n/a' => mi18n("CHOOSE_OPTION"),
             'foo' => mi18n("FOO"),
             'bar' => mi18n("BAR")
-        );
+        ];
 
         return $options;
     }
 
     /**
-     * @see ExternalOptionsDatasourceInterface::getOptionLabels()
      * @return array
+     * @see ExternalOptionsDatasourceInterface::getOptionLabels()
      */
-    public function getOptionLabels() {
+    public function getOptionLabels()
+    {
         if (NULL === $this->_options) {
             $this->_options = $this->_getData();
         }
@@ -56,10 +59,11 @@ class ExampleOptionsDatasource extends PifaExternalOptionsDatasourceInterface {
     }
 
     /**
-     * @see ExternalOptionsDatasourceInterface::getOptionValues()
      * @return array
+     * @see ExternalOptionsDatasourceInterface::getOptionValues()
      */
-    public function getOptionValues() {
+    public function getOptionValues()
+    {
         if (NULL === $this->_options) {
             $this->_options = $this->_getData();
         }

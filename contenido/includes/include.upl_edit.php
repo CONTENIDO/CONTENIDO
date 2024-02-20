@@ -3,18 +3,32 @@
 /**
  * This file contains the backend page for editing meta information of file in upload section.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
+ */
+
+/**
+ * @var string $belang
+ * @var array $cfg
+ * @var array $cfgClient
+ * @var int $lang
+ * @var int $client
+ * @var int $frame
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.upl.php');
+
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+
+$path = $path ?? '';
 
 // Define local filename variable
 $filename = cSecurity::escapeString($_REQUEST['file']);
@@ -46,12 +60,13 @@ $form->setVar('area', 'upl');
 $form->setVar('path', $pathname);
 $form->setVar('file', $filename);
 $form->setVar('action', 'upl_modify_file');
-$form->setVar('startpage', cSecurity::toInteger($_REQUEST['startpage']));
-$form->setVar('sortby', cSecurity::escapeString($_REQUEST['sortby']));
-$form->setVar('sortmode', cSecurity::escapeString($_REQUEST['sortmode']));
-$form->setVar('thumbnailmode', cSecurity::escapeString($_REQUEST['thumbnailmode']));
+$form->setVar('startpage', cSecurity::toInteger($_REQUEST['startpage'] ?? '1'));
+$form->setVar('sortby', cSecurity::escapeString($_REQUEST['sortby'] ?? ''));
+$form->setVar('sortmode', cSecurity::escapeString($_REQUEST['sortmode'] ?? ''));
+$form->setVar('thumbnailmode', cSecurity::escapeString($_REQUEST['thumbnailmode'] ?? ''));
 // $form->setVar('zip', (isArchive( $filename)) ? '1' : '0');
-$form->addHeader(i18n('Edit'));
+$form->setCancelLink('javascript:history.back();', i18n('Back'));
+$form->setHeader(i18n('Edit'));
 
 $properties = new cApiPropertyCollection();
 $uploads = new cApiUploadCollection();
@@ -62,39 +77,41 @@ if (cApiDbfs::isDbfs($_REQUEST['path'])) {
     $qpath = $pathname;
 }
 
-if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
+if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs($path)) && (int)$client > 0) {
     $bDirectoryIsWritable = true;
 } else {
     $bDirectoryIsWritable = false;
 }
 
-$uploads->select("idclient = '" . $client . "' AND dirname = '" . $qpath . "' AND filename='" . $filename . "'");
+$where = "`idclient` = %d AND `dirname` = '%s' AND `filename` = '%s'";
+$where = $uploads->prepare($where, $client, $qpath, $filename);
+$uploads->select($where);
 
 if ($upload = $uploads->next()) {
 
     // Which rows to display?
-    $aListRows = array();
-    $aListRows['filename'] = i18n('File name');
-    $aListRows['path'] = i18n('Path');
-    $aListRows['replacefile'] = i18n('Replace file');
-    $aListRows['medianame'] = i18n('Media name');
-    $aListRows['description'] = i18n('Description');
-    $aListRows['keywords'] = i18n('Keywords');
-    $aListRows['medianotes'] = i18n('Internal notes');
-    $aListRows['copyright'] = i18n('Copyright');
-    $aListRows['protected'] = i18n('Protection');
-    $aListRows['timecontrol'] = i18n('Time control');
-    $aListRows['preview'] = i18n('Preview');
-    $aListRows['author'] = i18n('Author');
-    $aListRows['modified'] = i18n('Last modified by');
+    $aListRows = [
+        'filename' => i18n('File name'),
+        'path' => i18n('Path'),
+        'replacefile' => i18n('Replace file'),
+        'medianame' => i18n('Media name'),
+        'description' => i18n('Description'),
+        'keywords' => i18n('Keywords'),
+        'medianotes' => i18n('Internal notes'),
+        'copyright' => i18n('Copyright'),
+        'protected' => i18n('Protection'),
+        'timecontrol' => i18n('Time control'),
+        'preview' => i18n('Preview'),
+        'author' => i18n('Author'),
+        'modified' => i18n('Last modified by'),
+    ];
 
     if ($isZipFile) {
         $id = $_GET['user_id'];
         //echo '<input type="button" value="test";
 
-        if (isset($_SESSION['zip']) && $_SESSION['zip'] === 'extract') {
-
-        }
+        //if (isset($_SESSION['zip']) && $_SESSION['zip'] === 'extract') {
+        //}
 
         $link = new cHTMLLink();
         $link->appendContent(i18n('extract'));
@@ -109,6 +126,7 @@ if ($upload = $uploads->next()) {
     }
 
     // Call chains to process the rows
+    $_cecRegistry = cApiCecRegistry::getInstance();
     $_cecIterator = $_cecRegistry->getIterator('Contenido.Upl_edit.Rows');
     if ($_cecIterator->count() > 0) {
         while ($chainEntry = $_cecIterator->next()) {
@@ -227,7 +245,7 @@ if ($upload = $uploads->next()) {
                 break;
 
             case 'timecontrol':
-                $iTimeMng = (int) $properties->getValue('upload', $qpath . $filename, 'file', 'timemgmt');
+                $iTimeMng = (int)$properties->getValue('upload', $qpath . $filename, 'file', 'timemgmt');
                 $sStartDate = $properties->getValue('upload', $qpath . $filename, 'file', 'datestart');
                 $sEndDate = $properties->getValue('upload', $qpath . $filename, 'file', 'dateend');
 
@@ -239,10 +257,10 @@ if ($upload = $uploads->next()) {
                 $sHtmlTimeMng .= "<table id='dbfsTimecontrol' class='borderless' border='0' cellpadding='0' cellspacing='0'>\n";
                 $sHtmlTimeMng .= "<tr><td><label for='datestart'>" . i18n('Start date') . "</label></td>\n";
                 $sHtmlTimeMng .= '<td><input type="text" name="datestart" id="datestart" value="' . $sStartDate . '"  size="20" maxlength="40" class="text_medium">' .
-                        '</td></tr>';
+                    '</td></tr>';
                 $sHtmlTimeMng .= "<tr><td><label for='dateend'>" . i18n('End date') . "</label></td>\n";
                 $sHtmlTimeMng .= '<td><input type="text" name="dateend" id="dateend" value="' . $sEndDate . '"  size="20" maxlength="40" class="text_medium">' .
-                        '</td></tr>';
+                    '</td></tr>';
                 $sHtmlTimeMng .= "</table>\n";
 
                 $sCell = $sHtmlTimeMng;
@@ -258,12 +276,12 @@ if ($upload = $uploads->next()) {
 
             case 'author':
                 $oUser = new cApiUser($upload->get('author'));
-                $sCell = $oUser->get('username') . ' (' . displayDatetime($upload->get('created')) . ')';
+                $sCell = $oUser->get('username') . ' (' . cDate::formatDatetime($upload->get('created')) . ')';
                 break;
 
             case 'modified':
                 $oUser = new cApiUser($upload->get('modifiedby'));
-                $sCell = $oUser->get('username') . ' (' . displayDatetime($upload->get('lastmodified')) . ')';
+                $sCell = $oUser->get('username') . ' (' . cDate::formatDatetime($upload->get('lastmodified')) . ')';
                 break;
 
             default:
@@ -271,7 +289,7 @@ if ($upload = $uploads->next()) {
                 $_cecIterator = $_cecRegistry->getIterator('Contenido.Upl_edit.RenderRows');
 
                 if ($_cecIterator->count() > 0) {
-                    $contents = array();
+                    $contents = [];
                     while ($chainEntry = $_cecIterator->next()) {
                         $contents[] = $chainEntry->execute($iIdupl, $qpath, $filename, $sListRow);
                     }
@@ -282,7 +300,7 @@ if ($upload = $uploads->next()) {
     }
 
     if ($bDirectoryIsWritable == false) {
-        $pager->displayError(i18n('Directory not writable') . ' (' . $cfgClient[$client]['upl']['path'] . $path . ')');
+        $page->displayError(i18n('Directory not writable') . ' (' . $cfgClient[$client]['upl']['path'] . $path . ')');
     }
 
     $page->set('s', 'FORM', $form->render());

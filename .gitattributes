@@ -1468,11 +1468,9 @@ contenido/plugins/form_assistant/classes/class.pifa.gui.php -text
 contenido/plugins/form_assistant/classes/class.pifa.importer.php -text
 contenido/plugins/form_assistant/docs/.htaccess -text
 contenido/plugins/form_assistant/docs/example.module.css -text svneol=unset#text/plain
-contenido/plugins/form_assistant/docs/install.sql -text
 contenido/plugins/form_assistant/docs/pifa.xsd -text svneol=unset#text/plain
 contenido/plugins/form_assistant/docs/todo.txt -text svneol=unset#text/plain
 contenido/plugins/form_assistant/docs/todo_de.txt -text svneol=unset#text/plain
-contenido/plugins/form_assistant/docs/uninstall.sql -text
 contenido/plugins/form_assistant/extensions/class.pifa.default_form_module.php -text
 contenido/plugins/form_assistant/extensions/class.pifa.default_form_processor.php -text
 contenido/plugins/form_assistant/extensions/class.pifa.example_options_datasource.php -text
@@ -1860,7 +1858,6 @@ contenido/plugins/user_forum/includes/config.plugin.php -text
 contenido/plugins/user_forum/includes/include.left_bottom.php -text
 contenido/plugins/user_forum/includes/include.left_top.php -text
 contenido/plugins/user_forum/includes/include.right_bottom.php -text
-contenido/plugins/user_forum/install/sql.txt -text
 contenido/plugins/user_forum/locale/de_DE/LC_MESSAGES/user_forum.po -text
 contenido/plugins/user_forum/locale/en_US/LC_MESSAGES/user_forum.po -text
 contenido/plugins/user_forum/plugin.xml -text svneol=unset#text/plain
@@ -2148,7 +2145,6 @@ contenido/templates/standard/template.tplcfg_edit_form.html -text
 contenido/templates/standard/template.upl_artlist.html -text svneol=unset#text/plain
 contenido/templates/standard/template.upl_dirs_overview.html -text
 contenido/templates/standard/template.upl_edit.html -text
-contenido/templates/standard/template.upl_files_overview.html -text
 contenido/templates/standard/template.upl_files_upload.html -text
 contenido/templates/standard/template.upl_left_top.html -text
 contenido/templates/standard/template.upl_search_results.html -text

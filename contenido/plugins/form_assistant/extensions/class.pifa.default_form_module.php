@@ -2,11 +2,11 @@
 
 /**
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 /**
@@ -18,7 +18,8 @@
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class DefaultFormModule extends PifaAbstractFormModule {
+class DefaultFormModule extends PifaAbstractFormModule
+{
 
     /**
      * Handle GET request.
@@ -28,7 +29,8 @@ class DefaultFormModule extends PifaAbstractFormModule {
      * @throws Exception if form could not be loaded
      * @see PifaAbstractFormModule::doGet()
      */
-    protected function doGet(array $values = array(), array $errors = array()) {
+    protected function doGet(array $values = [], array $errors = [])
+    {
 
         // set template to use
         $this->setTemplateName($this->getSetting('pifaform_template_get'));
@@ -48,29 +50,30 @@ class DefaultFormModule extends PifaAbstractFormModule {
         // set errors
         $pifaForm->setErrors($errors);
 
-        $actionPath = cUri::getInstance()->build(array(
+        $actionPath = cUri::getInstance()->build([
             'idart' => cRegistry::getArticleId(),
             'lang' => cRegistry::getLanguageId()
-        ), true);
+        ], true);
 
         if (Pifa::isHttps()) {
             $actionPath = str_replace('http://', 'https://', $actionPath);
         }
 
         // assign rendered form
-        $this->getTpl()->assign('form', $pifaForm->toHtml(array(
+        $this->getTpl()->assign('form', $pifaForm->toHtml([
             'action' => $actionPath,
             'headline' => $this->getSetting('pifaform_headline')
-        )));
+        ]));
     }
 
     /**
      * Handle POST request.
      *
-     * @see PifaAbstractFormModule::doPost()
      * @throws Exception
+     * @see PifaAbstractFormModule::doPost()
      */
-    protected function doPost() {
+    protected function doPost()
+    {
 
         // set template to use
         $this->setTemplateName($this->getSetting('pifaform_template_post'));
@@ -102,17 +105,17 @@ class DefaultFormModule extends PifaAbstractFormModule {
             $postProcessor->process();
 
             // assign reply to post template
-            $this->getTpl()->assign('reply', array(
+            $this->getTpl()->assign('reply', [
                 'headline' => mi18n("REPLY_HEADLINE"),
                 'text' => mi18n("REPLY_TEXT")
-            ));
+            ]);
         } catch (PifaValidationException $e) {
 
             // display form with valid values again
             $this->doGet($postProcessor->getForm()->getValues(), $e->getErrors());
 
             // store validation state as (global) application so another module
-            // can show a reply text but when validation is successfull
+            // can show a reply text but when validation is successful
             cRegistry::setAppVar('pifaFormValidity', 'invalid');
         } catch (PifaException $e) {
             // display form with valid values again

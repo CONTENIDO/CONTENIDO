@@ -3,31 +3,35 @@
 /**
  * This file contains the collections and items for search tracking
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Tracking collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiSearchTracking createNewItem
+ * @method cApiSearchTracking|bool next
  */
-class cApiSearchTrackingCollection extends ItemCollection {
+class cApiSearchTrackingCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['search_tracking'], 'idsearchtracking');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('search_tracking'), 'idsearchtracking');
 
         $this->_setItemClass('cApiSearchTracking');
     }
@@ -37,13 +41,13 @@ class cApiSearchTrackingCollection extends ItemCollection {
      *
      * @param string $searchTerm
      *                          Term the user searched for
-     * @param int    $searchResults
+     * @param int $searchResults
      *                          Number of results
      * @param string $timestamp [optional]
      *                          Timestamp of the search
-     * @param int    $idclient  [optional]
+     * @param int $idclient [optional]
      *                          Client
-     * @param int    $idlang    [optional]
+     * @param int $idlang [optional]
      *                          Language
      *
      * @return bool
@@ -51,7 +55,8 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($searchTerm, $searchResults, $timestamp = "", $idclient = 0, $idlang = 0) {
+    public function create($searchTerm, $searchResults, $timestamp = "", $idclient = 0, $idlang = 0)
+    {
         $item = $this->createNewItem();
         $item->set("searchterm", $searchTerm);
         $item->set("results", $searchResults);
@@ -67,7 +72,7 @@ class cApiSearchTrackingCollection extends ItemCollection {
      *
      * @param string $searchTerm
      *         Term the user searched for
-     * @param int    $resultCount
+     * @param int $resultCount
      *         Number of results
      *
      * @return bool
@@ -75,7 +80,8 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function trackSearch($searchTerm, $resultCount) {
+    public function trackSearch($searchTerm, $resultCount)
+    {
         if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
             return false;
         }
@@ -89,14 +95,19 @@ class cApiSearchTrackingCollection extends ItemCollection {
      *
      * @param int $idclient [optional]
      *                      Use this client instead of the current one
-     * @param int $idlang   [optional]
+     * @param int $idlang [optional]
      *                      Use this language instead of the current one
      * @return bool
      * @throws cDbException
      * @deprecated Since 4.10.1, We can't use fields created by AVG or COUNT here! Result sets received by this function will contain all search term entries, not the cumulated ones.
      */
-    public function selectPopularSearchTerms($idclient = 0, $idlang = 0) {
-        return $this->select('idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), 'searchterm, idsearchtracking, idclient, idlang, results, datesearched', 'COUNT(searchterm) DESC');
+    public function selectPopularSearchTerms($idclient = 0, $idlang = 0)
+    {
+        return $this->select('idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient)
+            . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang),
+            'searchterm, idsearchtracking, idclient, idlang, results, datesearched',
+            'COUNT(searchterm) DESC'
+        );
     }
 
     /**
@@ -110,17 +121,18 @@ class cApiSearchTrackingCollection extends ItemCollection {
      *
      * @param int $idclient [optional]
      *                      Use this client instead of the current one
-     * @param int $idlang   [optional]
+     * @param int $idlang [optional]
      *                      Use this language instead of the current one
      * @return cDb
      * @throws cDbException
      */
-    public function queryPopularSearchTerms($idclient = 0, $idlang = 0) {
+    public function queryPopularSearchTerms($idclient = 0, $idlang = 0)
+    {
         $idclient = ($idclient == 0) ? cRegistry::getClientId() : $idclient;
         $idlang = ($idlang == 0) ? cRegistry::getLanguageId() : $idclient;
         $db = cRegistry::getDb(); // Don't use own db instance, use a new one!
         $sql = 'SELECT searchterm, AVG(results) AS avgresults, COUNT(searchterm) AS countsearchterm FROM `%s` '
-             . 'WHERE idclient=%d AND idlang=%d GROUP BY searchterm ORDER BY COUNT(searchterm) DESC';
+            . 'WHERE idclient=%d AND idlang=%d GROUP BY searchterm ORDER BY COUNT(searchterm) DESC';
         $db->query($sql, $this->table, $idclient, $idlang);
         return $db;
     }
@@ -131,15 +143,18 @@ class cApiSearchTrackingCollection extends ItemCollection {
      *
      * @param string $term
      *                         Term the user searched for
-     * @param int    $idclient [optional]
+     * @param int $idclient [optional]
      *                         Use this client instead of the current one
-     * @param int    $idlang   [optional]
+     * @param int $idlang [optional]
      *                         Use this language instead of the current one
      * @return bool
      * @throws cDbException
      */
-    public function selectSearchTerm($term, $idclient = 0, $idlang = 0) {
-        return $this->select('searchterm=\'' . addslashes($term) . '\' AND idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), '', 'datesearched DESC');
+    public function selectSearchTerm($term, $idclient = 0, $idlang = 0)
+    {
+        return $this->select('searchterm=\'' . addslashes($term) . '\' AND idclient='
+            . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang='
+            . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), '', 'datesearched DESC');
     }
 
 }
@@ -147,7 +162,7 @@ class cApiSearchTrackingCollection extends ItemCollection {
 /**
  * SearchTracking item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiSearchTracking extends Item
@@ -161,16 +176,10 @@ class cApiSearchTracking extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-
-        parent::__construct($cfg['tab']['search_tracking'], 'idsearchtracking');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
-
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('search_tracking'), 'idsearchtracking');
+        $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

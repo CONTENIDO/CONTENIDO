@@ -1,0 +1,16 @@
+./classes/class.article_forum.php
+./classes/class.article_forum_collection.php
+./classes/class.article_forum_item.php
+./classes/class.article_forum_left_bottom.php
+./classes/class.article_forum_right_bottom.php
+./classes/class.content.type.user_forum.php
+./classes/class.user_forum.php
+./includes/config.plugin.php
+./includes/include.left_bottom.php
+./includes/include.left_top.php
+./includes/include.right_bottom.php
+./plugin.xml
+./templates/template.left_bottom.html
+./templates/template.right_bottom.html
+./xml/lang_de_DE.xml
+./xml/lang_en_US.xml

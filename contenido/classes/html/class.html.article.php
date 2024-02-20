@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLArticle class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,10 +19,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Examples: Forum posts, newspaper articles, blog entries, user-submitted
  * comments, ...
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLArticle extends cHTMLContentElement {
+class cHTMLArticle extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -35,7 +35,8 @@ class cHTMLArticle extends cHTMLContentElement {
      * @param string $id [optional]
      *         the ID of this element
      */
-    public function __construct($content = '', $class = '', $id = '') {
+    public function __construct($content = '', $class = '', $id = '')
+    {
         parent::__construct($content, $class, $id);
         $this->_tag = 'article';
     }

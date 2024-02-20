@@ -16,39 +16,39 @@ or some parts of the SDK may not work properly. *}
 <div id="fb-root"></div>
 
 <script type="text/javascript">
-{literal}
-$(document).ready(function() {
-    $.ajaxSetup({
-        cache: true
-    });
-    $.getScript('//connect.facebook.net/{/literal}{$locale|escape:'javascript'}{literal}/all.js', function() {
-        FB.init({{/literal}
-{if 0 lt $channelUrl|trim|strlen}
-            channelUrl : '{$channelUrl|escape:'javascript'}',
-{/if}
-{if 0 lt $cookie|trim|strlen}
-            cookie : {$cookie|escape:'javascript'},
-{/if}
-{if 0 lt $kidDirectedSite|trim|strlen}
-            kidDirectedSite : {$kidDirectedSite|escape:'javascript'},
-{/if}
-{if 0 lt $status|trim|strlen}
-            status : {$status|escape:'javascript'},
-{/if}
-{if 0 lt $appId|trim|strlen}
-            appId : '{$appId|escape:'javascript'}'
-{/if}
-{if 0 lt $xfbml|trim|strlen}
-            xfbml : {$xfbml|escape:'javascript'}
-{else}
-            xfbml : false
-{/if}{literal}
+    {literal}
+    $(document).ready(function () {
+        $.ajaxSetup({
+            cache: true
         });
-        //$('#loginbutton, #feedbutton').removeAttr('disabled');
-        //FB.getLoginStatus(updateStatusCallback);
+        $.getScript('//connect.facebook.net/{/literal}{$locale|escape:'javascript'}{literal}/all.js', function () {
+            FB.init({{/literal}
+                {if 0 lt $channelUrl|count_characters}
+                channelUrl: '{$channelUrl|escape:'javascript'}',
+                {/if}
+                {if 0 lt $cookie|count_characters}
+                cookie: {$cookie|escape:'javascript'},
+                {/if}
+                {if 0 lt $kidDirectedSite|count_characters}
+                kidDirectedSite: {$kidDirectedSite|escape:'javascript'},
+                {/if}
+                {if 0 lt $status|count_characters}
+                status: {$status|escape:'javascript'},
+                {/if}
+                {if 0 lt $appId|count_characters}
+                appId: '{$appId|escape:'javascript'}'
+                {/if}
+                {if 0 lt $xfbml|count_characters}
+                xfbml: {$xfbml|escape:'javascript'}
+                {else}
+                xfbml: false
+                {/if}{literal}
+            });
+            //$('#loginbutton, #feedbutton').removeAttr('disabled');
+            //FB.getLoginStatus(updateStatusCallback);
+        });
     });
-});
-{/literal}
+    {/literal}
 </script>
 
 <!-- /script_fb_sdk/template/jQuery.tpl -->

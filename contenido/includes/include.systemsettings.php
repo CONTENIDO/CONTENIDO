@@ -3,40 +3,50 @@
 /**
  * This file contains the system settings backend page.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cApiUser $currentuser
+ * @var cPermission $perm
+ * @var int $frame
+ * @var string $area
+ * @var array $cfg
+ */
+
 $page = new cGuiPage("systemsettings");
 
-$aManagedValues = array(
+$aManagedValues = [
     'versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated',
     'update_check_period', 'system_clickmenu', 'mail_transport', 'system_mail_host', 'system_mail_sender',
     'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'codemirror_activated',
     'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml', 'system_insite_editing_activated',
     'backend_backend_label', 'backend_file_extensions', 'module_translation_message', 'versioning_enabled',
     'stats_tracking'
-);
+];
 
-// @TODO Find a general solution for this!
-$request = $_REQUEST;
+$requestSysType = trim($_REQUEST['systype'] ?? '');
+$requestSysName = trim($_REQUEST['sysname'] ?? '');
+$requestSysValue = trim($_REQUEST['sysvalue'] ?? '');
+$requestCsIdSystemProp = cSecurity::toInteger($_REQUEST['csidsystemprop'] ?? '0');
 
-// @TODO: Check possibility to use $perm->isSysadmin()
-$isSysadmin = (false !== cString::findFirstPos($auth->auth["perm"], "sysadmin"));
+$action = cRegistry::getAction();
+$isSysadmin = $perm->isSysadmin($currentuser);
 
 if ($action == "systemsettings_save_item") {
-    if (false === $isSysadmin) {
+    if (!$isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
-        if (!in_array($request['systype'] . '_' . $request['sysname'], $aManagedValues)) {
-            setSystemProperty(trim($request['systype']), trim($request['sysname']), trim($request['sysvalue']), cSecurity::toInteger($request['csidsystemprop']));
+        if (!in_array($requestSysType . '_' . $requestSysName, $aManagedValues)) {
+            setSystemProperty($requestSysType, $requestSysName, $requestSysValue, $requestCsIdSystemProp);
             if (isset($x)) {
                 $page->displayOk(i18n('Saved changes successfully!'));
             } else {
@@ -49,10 +59,10 @@ if ($action == "systemsettings_save_item") {
 }
 
 if ($action == "systemsettings_delete_item") {
-    if (false === $isSysadmin) {
+    if (!$isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
-        deleteSystemProperty($request['systype'], $request['sysname']);
+        deleteSystemProperty($requestSysType, $requestSysName);
         $page->displayOk(i18n('Deleted item successfully!'));
     }
 }
@@ -63,28 +73,37 @@ $list->setCell(1, 1, i18n("Type"));
 $list->setCell(1, 2, i18n("Name"));
 $list->setCell(1, 3, i18n("Value"));
 
-if (true === $isSysadmin) {
-    $list->setCell(1, 4, i18n("Action"));
+if ($isSysadmin) {
+    $list->setCell(1, 4, i18n("Actions"));
 }
 
 $backendUrl = cRegistry::getBackendUrl();
 
+$imagesPath = $backendUrl . $cfg['path']['images'];
+
 $count = 2;
 
-if (true === $isSysadmin) {
+$controls = null;
+$oLinkEdit = null;
+$oLinkDelete = null;
+if ($isSysadmin) {
+    // Wrapper for the buttons
+    $controls = new cHTMLDiv('', 'con_form_action_control');
+
     // Edit/delete links only for sysadmin
     $oLinkEdit = new cHTMLLink();
     $oLinkEdit->setCLink($area, $frame, "systemsettings_edit_item");
+    $oLinkEdit->setClass('con_img_button');
+    $oLinkEdit->setContent(cHTMLImage::img($imagesPath . 'editieren.gif', i18n("Edit")));
     $oLinkDelete = new cHTMLLink();
+    $oLinkDelete->setClass('con_img_button');
     $oLinkDelete->setCLink($area, $frame, "systemsettings_delete_item");
-    $oLinkEdit->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
-    $oLinkDelete->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
+    $oLinkDelete->setContent(cHTMLImage::img($imagesPath . 'delete.gif', i18n("Delete")));
 }
 
-$spacer = new cHTMLImage();
-$spacer->setWidth(5);
-
+$sSubmit = cHTMLButton::image($imagesPath . 'submit.gif', i18n("Save"), ['class' => 'con_img_button']);
 $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
+#$sSubmit = '<input type="image" class="con_img_button align_middle mgl3" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
 
 try {
     $allSystemProperties = getSystemProperties(true);
@@ -101,11 +120,13 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
             continue;
         }
 
-        $settingType  = conHtmlentities($type);
-        $settingName  = conHtmlentities($name);
+        $value['value'] = $value['value'] ?? '';
+
+        $settingType = conHtmlentities($type);
+        $settingName = conHtmlentities($name);
         $settingValue = conHtmlentities($value['value']);
 
-        if (($action == "systemsettings_edit_item") && ($request['systype'] == $type) && ($request['sysname'] == $name) && $isSysadmin) {
+        if (($action == "systemsettings_edit_item") && ($requestSysType == $type) && ($requestSysName == $name) && $isSysadmin) {
 
             $oInputboxType = new cHTMLTextbox("systype", $settingType);
             $oInputboxType->setWidth(10);
@@ -117,7 +138,6 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
             $oInputboxValue->setWidth(30);
 
             $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
-            $sSubmit = '<input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
 
             $list->setCell($count, 1, $oInputboxType->render());
             $list->setCell($count, 2, $oInputboxName->render());
@@ -126,7 +146,7 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
 
             if (cString::getStringLength($type) > 35) {
                 $sShort = conHtmlentities(cString::trimHard($type, 35));
-                $type = sprintf($sMouseoverTemplate,  $settingType, $sShort);
+                $type = sprintf($sMouseoverTemplate, $settingType, $sShort);
             }
 
             if (cString::getStringLength($name) > 35) {
@@ -135,7 +155,7 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
             }
 
             if (cString::getStringLength($value['value']) > 35) {
-                $sShort =  conHtmlentities(cString::trimHard($value['value'], 35));
+                $sShort = conHtmlentities(cString::trimHard($value['value'], 35));
                 $settingValue = sprintf($sMouseoverTemplate, $settingValue, $sShort);
             }
 
@@ -155,13 +175,11 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
             $oLinkDelete->setCustom("systype", urlencode($type));
             $oLinkDelete->setCustom("sysname", urlencode($name));
 
-            $list->setCell(
-                $count,
-                4,
-                $spacer->render() . $oLinkEdit->render()
-                . $spacer->render() . $oLinkDelete->render()
-                . $spacer->render()
-            );
+            $controls->setContent([
+                $oLinkEdit->render(), $oLinkDelete->render()
+            ]);
+
+            $list->setCell($count, 4, $controls->render());
         }
         $count++;
     }
@@ -179,7 +197,7 @@ $form = new cGuiTableForm("systemsettings");
 $form->setVar("area", $area);
 $form->setVar("frame", $frame);
 $form->setVar("action", "systemsettings_save_item");
-$form->addHeader(i18n("Add new variable"));
+$form->setHeader(i18n("Add new variable"));
 $inputbox = new cHTMLTextbox("systype");
 $inputbox->setWidth(30);
 $form->add(i18n("Type"), $inputbox->render());
@@ -195,28 +213,28 @@ $form->add(i18n("Value"), $inputbox->render());
 $spacer = new cHTMLDiv();
 $spacer->setContent("<br>");
 
-$renderobj = array();
+$renderObjects = [];
 
 if ($action == "systemsettings_edit_item") {
-    if (false === $isSysadmin) {
+    if (!$isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
-        $renderobj[] = $list;
+        $renderObjects[] = $list;
     } else {
         $form2 = new cHTMLForm("systemsettings");
         $form2->setVar("area", $area);
         $form2->setVar("frame", $frame);
         $form2->setVar("action", "systemsettings_save_item");
         $form2->appendContent($list->render());
-        $renderobj[] = $form2;
+        $renderObjects[] = $form2;
     }
 } else {
-    $renderobj[] = $list;
+    $renderObjects[] = $list;
 }
 
-if (true === $isSysadmin) {
-    $renderobj[] = $spacer;
-    $renderobj[] = $form;
+if ($isSysadmin) {
+    $renderObjects[] = $spacer;
+    $renderObjects[] = $form;
 }
 
-$page->setContent($renderobj);
+$page->setContent($renderObjects);
 $page->render();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO setup script. Main entry point for the setup requests.
  *
@@ -6,9 +7,9 @@
  * @subpackage Setup
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -18,22 +19,9 @@ if (!defined('CON_FRAMEWORK')) {
 include_once('lib/startup.php');
 
 // Detect controller
-$controller = 'index';
-if (isset($_GET['c'])) {
-    switch ($_GET['c']) {
-        case 'index';
-            $controller = 'index';
-            break;
-        case 'db';
-            $controller = 'db';
-            break;
-        case 'config';
-            $controller = 'config';
-            break;
-        default:
-            // we should never land here
-            die('Illegal setup call');
-    }
+$controller = $_GET['c'] ?? 'index';
+if (!in_array($controller, ['index', 'db', 'config'])) {
+    die('Illegal setup call');
 }
 
 // Include detected controller
@@ -44,5 +32,3 @@ if (is_file($filePathName)) {
 } else {
     die('Illegal setup call 2');
 }
-
-?>

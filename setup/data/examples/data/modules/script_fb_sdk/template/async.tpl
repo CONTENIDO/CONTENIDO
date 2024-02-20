@@ -17,48 +17,48 @@ or some parts of the SDK may not work properly. *}
 
 <script type="text/javascript">
 
-{literal}
-window.fbAsyncInit = function() {
-    // init the FB JS SDK
-    FB.init({
-{/literal}
-{if 0 lt $channelUrl|trim|strlen}
-        channelUrl : '{$channelUrl|escape:'javascript'}',
-{/if}
-{if 0 lt $cookie|trim|strlen}
-        cookie : {$cookie},
-{/if}
-{if 0 lt $kidDirectedSite|trim|strlen}
-        kidDirectedSite : {$kidDirectedSite|escape:'javascript'},
-{/if}
-{if 0 lt $status|trim|strlen}
-        status : {$status|escape:'javascript'},
-{/if}
-{if 0 lt $appId|trim|strlen}
-        appId : '{$appId|escape:'javascript'}',
-{/if}
-{if 0 lt $xfbml|trim|strlen}
-        xfbml : {$xfbml|escape:'javascript'}
-{else}
-        xfbml : false
-{/if}
-{literal}
-    });
-    // Additional initialization code such as adding Event Listeners goes here
-};
-{/literal}
+    {literal}
+    window.fbAsyncInit = function () {
+        // init the FB JS SDK
+        FB.init({
+            {/literal}
+            {if 0 lt $channelUrl|count_characters}
+            channelUrl: '{$channelUrl|escape:'javascript'}',
+            {/if}
+            {if 0 lt $cookie|count_characters}
+            cookie: {$cookie},
+            {/if}
+            {if 0 lt $kidDirectedSite|count_characters}
+            kidDirectedSite: {$kidDirectedSite|escape:'javascript'},
+            {/if}
+            {if 0 lt $status|count_characters}
+            status: {$status|escape:'javascript'},
+            {/if}
+            {if 0 lt $appId|count_characters}
+            appId: '{$appId|escape:'javascript'}',
+            {/if}
+            {if 0 lt $xfbml|count_characters}
+            xfbml: {$xfbml|escape:'javascript'}
+            {else}
+            xfbml: false
+            {/if}
+            {literal}
+        });
+        // Additional initialization code such as adding Event Listeners goes here
+    };
+    {/literal}
 
-// Load the SDK asynchronously
-{literal}
-(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s);
-    js.id = id;
-    js.src = '//connect.facebook.net/{/literal}{$locale|escape:'javascript'}{literal}/all.js';
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-{/literal}
+    // Load the SDK asynchronously
+    {literal}
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = '//connect.facebook.net/{/literal}{$locale|escape:'javascript'}{literal}/all.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    {/literal}
 </script>
 
 <!-- /script_fb_sdk/template/async.tpl -->

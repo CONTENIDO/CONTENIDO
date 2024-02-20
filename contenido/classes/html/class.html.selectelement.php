@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLSelectElement class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,17 +17,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLSelectElement class represents a select element.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLSelectElement extends cHTMLFormElement {
+class cHTMLSelectElement extends cHTMLFormElement
+{
 
     /**
      * All cHTMLOptionElements
      *
      * @var cHTMLOptionElement[]
      */
-    protected $_options = array();
+    protected $_options = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -50,7 +50,10 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $width = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = '') {
+    public function __construct(
+        $name, $width = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = ''
+    )
+    {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'select';
         $this->_contentlessTag = false;
@@ -64,23 +67,24 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * Automatically creates and fills cHTMLOptionElements
      *
      * Array format:
-     * $stuff = array(
-     * array('value', 'title'),
-     * array('value', 'title')
-     * );
+     * $stuff = [
+     *     ['value', 'title'],
+     *     ['value', 'title'],
+     * ];
      *
      * or regular key => value arrays:
-     * $stuff = array(
-     * 'value' => 'title',
-     * 'value' => 'title'
-     * );
+     * $stuff = [
+     *     'value' => 'title',
+     *     'value' => 'title'
+     * ];
      *
      * @param array $stuff
      *         Array with all items
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function autoFill(array $stuff) {
+    public function autoFill(array $stuff): cHTMLSelectElement
+    {
         foreach ($stuff as $key => $row) {
             if (is_array($row)) {
                 $option = new cHTMLOptionElement($row[1], $row[0]);
@@ -104,7 +108,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function addOptionElement($index, cHTMLOptionElement $element) {
+    public function addOptionElement($index, cHTMLOptionElement $element): cHTMLSelectElement
+    {
         $this->_options[$index] = $element;
         return $this;
     }
@@ -117,7 +122,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function appendOptionElement(cHTMLOptionElement $element) {
+    public function appendOptionElement(cHTMLOptionElement $element): cHTMLSelectElement
+    {
         $this->_options[] = $element;
         return $this;
     }
@@ -128,7 +134,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function setMultiselect() {
+    public function setMultiselect(): cHTMLSelectElement
+    {
         $name = $this->getAttribute('name');
         $strLength = cString::getStringLength($name);
         if (cString::getPartOfString($name, $strLength - 2, $strLength) != '[]') {
@@ -144,7 +151,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function setSize($size) {
+    public function setSize($size): cHTMLSelectElement
+    {
         return $this->updateAttribute('size', $size);
     }
 
@@ -156,7 +164,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function setDefault($lvalue) {
+    public function setDefault($lvalue): cHTMLSelectElement
+    {
         if (is_array($lvalue)) {
             foreach ($this->_options as $key => $value) {
                 if (in_array($value->getAttribute('value'), $lvalue)) {
@@ -187,7 +196,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return string|bool
      *         "lvalue" or false
      */
-    public function getDefault() {
+    public function getDefault()
+    {
         foreach ($this->_options as $key => $value) {
             if ($value->isSelected()) {
                 return $key;
@@ -204,7 +214,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function setSelected(array $elements)
+    public function setSelected(array $elements): cHTMLSelectElement
     {
         foreach ($this->_options as $key => $option) {
             $selected = in_array($option->getAttribute('value'), $elements);
@@ -221,7 +231,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         $this->_setContent($this->_options);
         return parent::toHtml();
     }

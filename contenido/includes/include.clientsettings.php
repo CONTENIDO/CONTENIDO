@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for client settings.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -21,19 +21,22 @@ $frame = cRegistry::getFrame();
 
 $oPage = new cGuiPage("clientsettings");
 $oList = new cGuiScrollList();
+$oList->objTable->setClass('generic col_md');
 
 // @TODO Find a general solution for this!
 $request = $_REQUEST;
 
-$idclientslang = isset($request["idclientslang"]) ? cSecurity::toInteger($request["idclientslang"]) : 0;
-$action = isset($request["action"]) ? $request["action"] : '';
-$idclient = isset($request["idclient"]) ? cSecurity::toInteger($request["idclient"]) : 0;
+$idclientslang = cSecurity::toInteger($request['idclientslang'] ?? '0');
+$action = $request['action'] ?? '';
+$idclient = cSecurity::toInteger($request['idclient'] ?? '0');
+$csidproperty = cSecurity::toInteger($request['csidproperty'] ?? '0');
 
 $oFrmRange = new cGuiTableForm('range');
+$oFrmRange->setTableClass('generic col_sm');
 $oFrmRange->setVar('area', $area);
 $oFrmRange->setVar('frame', $frame);
 $oFrmRange->setVar('idclient', $idclient);
-$oFrmRange->addHeader(i18n('Select range'));
+$oFrmRange->setHeader(i18n('Select range'));
 
 $oSelRange = new cHTMLSelectElement('idclientslang');
 $oOption = new cHTMLOptionElement(i18n("Language independent"), 0);
@@ -64,7 +67,7 @@ if (!$idclientslang) {
 }
 
 if ($action == 'clientsettings_save_item') {
-    $oClient->setProperty(trim($request['cstype']), trim($request['csname']), trim($request['csvalue']), $request['csidproperty']);
+    $oClient->setProperty(trim($request['cstype']), trim($request['csname']), trim($request['csvalue']), $csidproperty);
     $oPage->displayOk(i18n("Save changes successfully!"));
 }
 
@@ -73,7 +76,7 @@ if ($action == 'clientsettings_delete_item') {
     $oPage->displayOk(i18n("Deleted item successfully!"));
 }
 
-$oList->setHeader(i18n('Type'), i18n('Name'), i18n('Value'), '&nbsp;');
+$oList->setHeader(i18n('Type'), i18n('Name'), i18n('Value'), i18n('Actions'));
 $oList->objHeaderItem->updateAttributes([
     'width' => 52
 ]);
@@ -81,32 +84,44 @@ $oList->objRow->updateAttributes([
     'valign' => 'top'
 ]);
 
+$imagesPath = $backendUrl . $cfg['path']['images'];
+
 $aItems = $oClient->getProperties();
 
 if ($aItems !== false) {
+
+    // Wrapper for the buttons
+    $controls = new cHTMLDiv('', 'con_form_action_control');
+
     $oLnkDelete = new cHTMLLink();
-    $oLnkDelete->setCLink($area, $frame, "clientsettings_delete_item");
-    $oLnkDelete->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
-    $oLnkDelete->setCustom("idclient", $idclient);
-    $oLnkDelete->setCustom("idclientslang", $idclientslang);
+    $oLnkDelete->setClass('con_img_button')
+        ->setCLink($area, $frame, "clientsettings_delete_item")
+        ->setContent(cHTMLImage::img($imagesPath . 'delete.gif', i18n("Delete")))
+        ->setCustom("idclient", $idclient)
+        ->setCustom("idclientslang", $idclientslang);
 
     $oLnkEdit = new cHTMLLink();
-    $oLnkEdit->setCLink($area, $frame, "clientsettings_edit_item");
-    $oLnkEdit->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
-    $oLnkEdit->setCustom("idclient", $idclient);
-    $oLnkEdit->setCustom("idclientslang", $idclientslang);
+    $oLnkEdit->setClass('con_img_button')
+        ->setCLink($area, $frame, "clientsettings_edit_item")
+        ->setContent(cHTMLImage::img($imagesPath . 'editieren.gif', i18n("Edit")))
+        ->setCustom("idclient", $idclient)
+        ->setCustom("idclientslang", $idclientslang);
 
-    $sSubmit = ' <input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
+    $sSubmit = cHTMLButton::image($imagesPath . 'submit.gif', i18n("Save"), ['class' => 'con_img_button']);
     $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
     $iCounter = 0;
     foreach ($aItems as $iKey => $aValue) {
-        $settingType  = conHtmlentities($aValue['type']);
-        $settingName  = conHtmlentities($aValue['name']);
+        $settingType = conHtmlentities($aValue['type']);
+        $settingName = conHtmlentities($aValue['name']);
         $settingValue = conHtmlentities($aValue['value']);
 
         $oLnkDelete->setCustom("idprop", $iKey);
         $oLnkEdit->setCustom("idprop", $iKey);
+
+        $controls->setContent([
+            $oLnkEdit->render(), $oLnkDelete->render()
+        ]);
 
         if (($action == "clientsettings_edit_item") && ($request['idprop'] == $iKey)) {
 
@@ -115,7 +130,8 @@ if ($aItems !== false) {
             $oInputboxName = new cHTMLTextbox("csname", $settingName);
             $oInputboxName->setWidth(15);
             $oInputboxValue = new cHTMLTextbox("csvalue", $settingValue);
-            $oInputboxValue->setWidth(30);
+            $oInputboxValue->setClass('mgr5')
+                ->setWidth(30);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
 
@@ -124,7 +140,7 @@ if ($aItems !== false) {
                 $oInputboxType->render(),
                 $oInputboxName->render(),
                 $oInputboxValue->render() . $sSubmit . $hidden,
-                $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render() . '&nbsp;&nbsp;&nbsp;'
+                $controls->render()
             );
         } else {
 
@@ -148,7 +164,7 @@ if ($aItems !== false) {
                 $settingType,
                 $settingName,
                 $settingValue,
-                $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render()
+                $controls->render()
             );
         }
         $iCounter++;
@@ -161,12 +177,13 @@ if ($aItems !== false) {
 }
 
 $oForm = new cGuiTableForm('clientsettings');
+$oForm->setTableClass('generic col_sm');
 $oForm->setVar('area', $area);
 $oForm->setVar('frame', $frame);
 $oForm->setVar('action', 'clientsettings_save_item');
 $oForm->setVar('idclient', $idclient);
 $oForm->setVar('idclientslang', $idclientslang);
-$oForm->addHeader(i18n('Add new variable'));
+$oForm->setHeader(i18n('Add new variable'));
 
 $oInputbox = new cHTMLTextbox('cstype');
 $oInputbox->setWidth(15);

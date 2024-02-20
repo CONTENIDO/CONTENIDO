@@ -7,9 +7,9 @@
  * @subpackage XML
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage XML
  */
-abstract class cXmlBase {
+abstract class cXmlBase
+{
 
     /**
      *
@@ -42,7 +43,8 @@ abstract class cXmlBase {
      * @param string $encoding [optional, default: UTF-8]
      *         encoding of DOMDocument
      */
-    protected function _createDocument($version = '', $encoding = '') {
+    protected function _createDocument(string $version = '', string $encoding = '')
+    {
         if ($version == '') {
             $version = '1.0';
         }
@@ -58,7 +60,8 @@ abstract class cXmlBase {
      * Returns the DOMDocument object.
      * @return DOMDocument
      */
-    public function getDomDocument() {
+    public function getDomDocument(): DOMDocument
+    {
         return $this->_dom;
     }
 
@@ -70,7 +73,8 @@ abstract class cXmlBase {
      *
      * @throws cException
      */
-    public function setDomDocument(DOMDocument $domDocument) {
+    public function setDomDocument(DOMDocument $domDocument)
+    {
         $this->_dom = $domDocument;
         $this->_initXpathInstance();
     }
@@ -78,11 +82,12 @@ abstract class cXmlBase {
     /**
      * Returns the encoding of the XML document.
      *
-     * @throws cException if there is no DOM document
      * @return string
      *     encoding
+     * @throws cException if there is no DOM document
      */
-    public function getEncoding() {
+    public function getEncoding(): string
+    {
         if ($this->_dom === NULL) {
             throw new cException('Can not determine encoding: DOMDocument not found.');
         }
@@ -95,7 +100,8 @@ abstract class cXmlBase {
      * @param string $name
      * @param string $value
      */
-    public function registerXpathNamespace($name, $value) {
+    public function registerXpathNamespace(string $name, string $value)
+    {
         $this->_xpath->registerNamespace($name, $value);
     }
 
@@ -104,7 +110,8 @@ abstract class cXmlBase {
      *
      * @throws cException if there is no valid DOM document
      */
-    protected function _initXpathInstance() {
+    protected function _initXpathInstance()
+    {
         if (!($this->_dom instanceof DOMDocument)) {
             throw new cException('Can not initialize XPath instance: DOMDocument not found.');
         }
@@ -121,7 +128,8 @@ abstract class cXmlBase {
      * @return string
      *         resolved path
      */
-    public static function resolvePath($path) {
+    public static function resolvePath(string $path): string
+    {
         if (cString::getPartOfString($path, 0, 1) != '/') {
             $path = '/' . $path;
         }
@@ -145,7 +153,7 @@ abstract class cXmlBase {
     }
 
     /**
-     * Returns given XPath with integrad level definition.
+     * Returns given XPath with integrated level definition.
      *
      * @param string $path
      *         XPath to extend
@@ -154,7 +162,8 @@ abstract class cXmlBase {
      * @return string
      *         extended XPath
      */
-    public static function getLevelXpath($path, $level) {
+    public static function getLevelXpath(string $path, int $level): string
+    {
         $splits = explode('/', $path);
         $splitCount = count($splits);
 
@@ -207,15 +216,18 @@ abstract class cXmlBase {
      *
      * @param array $array
      *         the array which should be converted to XML
-     * @param SimpleXMLElement $xml [optional]
+     * @param SimpleXMLElement|NULL $xml [optional]
      *         the element to which the array should be added
      * @param string $rootTagName [optional]
      *         the root tag name which should be used - is only used when $xml is NULL!
      * @return SimpleXMLElement
      *         the array as a SimpleXMLElement
+     * @throws Exception
      */
-
-    public static function arrayToXml($array, $xml = NULL, $rootTagName = 'root') {
+    public static function arrayToXml(
+        array $array, SimpleXMLElement $xml = NULL, string $rootTagName = 'root'
+    )
+    {
         if ($xml == NULL) {
             $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><' . $rootTagName . '/>', LIBXML_NOCDATA);
         }
@@ -253,30 +265,32 @@ abstract class cXmlBase {
      * Example:
      * <?xml version="1.0" encoding="utf-8"?>
      * <root>
-     * <key1>value1</key1>
-     * <key2>
-     * <array_value>value21</array_value>
-     * <array_value>value22</array_value>
-     * </key2>
-     * <key3>
-     * <key31>value31</key31>
-     * <key32>value32</key32>
-     * </key3>
+     *     <key1>value1</key1>
+     *     <key2>
+     *         <array_value>value21</array_value>
+     *         <array_value>value22</array_value>
+     *     </key2>
+     *     <key3>
+     *         <key31>value31</key31>
+     *         <key32>value32</key32>
+     *     </key3>
      * </root>
      *
      * becomes
      *
      * array(
-     * 'key1' => 'value1',
-     * 'key2' => array('value21', 'value22'),
-     * 'key3' => array('key31' => 'value31', 'key32' => 'value32')
+     *     'key1' => 'value1',
+     *     'key2' => array('value21', 'value22'),
+     *     'key3' => array('key31' => 'value31', 'key32' => 'value32')
      * );
      *
      * @param string $xmlString
      *         contains a valid XML structure
      * @return array
+     * @throws Exception
      */
-    public static function xmlStringToArray($xmlString) {
+    public static function xmlStringToArray(string $xmlString): array
+    {
         return self::xmlToArray(new SimpleXMLElement($xmlString, LIBXML_NOCDATA));
     }
 
@@ -287,12 +301,11 @@ abstract class cXmlBase {
      * @return bool
      *         True if the XML is valid
      */
-    public static function isValidXML($xmlString) {
-        $testArray = null;
-
+    public static function isValidXML(string $xmlString): bool
+    {
         try {
             $testArray = @cXmlBase::xmlStringToArray($xmlString);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
 
@@ -303,35 +316,34 @@ abstract class cXmlBase {
      * Converts the given SimpleXMLElement object to an array.
      * Example:
      * <?xml version="1.0" encoding="utf-8"?>
-     * <root>
-     * <key1>value1</key1>
-     * <key2>
-     * <array_value>value21</array_value>
-     * <array_value>value22</array_value>
-     * </key2>
-     * <key3>
-     * <key31>value31</key31>
-     * <key32>value32</key32>
-     * </key3>
-     * </root>
+     *  <root>
+     *      <key1>value1</key1>
+     *      <key2>
+     *          <array_value>value21</array_value>
+     *          <array_value>value22</array_value>
+     *      </key2>
+     *      <key3>
+     *          <key31>value31</key31>
+     *          <key32>value32</key32>
+     *      </key3>
+     *  </root>
      *
-     * becomes
+     *  becomes
      *
-     * array(
-     * 'key1' => 'value1',
-     * 'key2' => array('value21', 'value22'),
-     * 'key3' => array('key31' => 'value31', 'key32' => 'value32')
-     * );
+     *  array(
+     *      'key1' => 'value1',
+     *      'key2' => array('value21', 'value22'),
+     *      'key3' => array('key31' => 'value31', 'key32' => 'value32')
+     *  );
      *
      * @param SimpleXMLElement $xml
      * @return array
      */
-    public static function xmlToArray($xml) {
+    public static function xmlToArray(SimpleXMLElement $xml): array
+    {
         $json = json_encode($xml);
         $array = json_decode($json, true);
-        $array = self::_cleanArray($array);
-
-        return $array;
+        return self::_cleanArray($array);
     }
 
     /**
@@ -344,7 +356,8 @@ abstract class cXmlBase {
      * @return array
      *         the cleaned array
      */
-    private static function _cleanArray($array) {
+    private static function _cleanArray(array $array): array
+    {
         // replace empty arrays with empty strings recursively
         foreach ($array as $key => $value) {
             if (is_array($value)) {
@@ -360,9 +373,10 @@ abstract class cXmlBase {
             }
         }
         // if array only contains empty values, return the array keys
-        if (count(array_keys($array, '')) == count($array)) {
+        if (count(array_keys($array, '')) === count($array)) {
             return array_keys($array);
-        } else if (count(array_keys($array, 'array_value')) == count($array)) {
+        } /** @noinspection PhpStatementHasEmptyBodyInspection */
+        elseif (count(array_keys($array, 'array_value')) === count($array)) {
         }
 
         return $array;

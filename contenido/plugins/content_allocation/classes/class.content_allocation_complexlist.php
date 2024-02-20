@@ -7,9 +7,9 @@
  * @subpackage ContentAllocation
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,7 +22,8 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
  * @package    Plugin
  * @subpackage ContentAllocation
  */
-class pApiContentAllocationComplexList extends pApiTree {
+class pApiContentAllocationComplexList extends pApiTree
+{
 
     /**
      * @var bool
@@ -32,7 +33,7 @@ class pApiContentAllocationComplexList extends pApiTree {
     /**
      * @var array
      */
-    protected $_load = array();
+    protected $_load = [];
 
     /**
      * pApiContentAllocationComplexList constructor
@@ -42,35 +43,19 @@ class pApiContentAllocationComplexList extends pApiTree {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($uuid) {
+    public function __construct($uuid)
+    {
         parent::__construct($uuid);
     }
 
     /**
-     * Old constructor
+     * Builds an render tree
      *
-     * @deprecated [2016-02-11]
-     *                This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     *
-     * @param string $uuid
-     *
-     * @return pApiContentAllocationComplexList
-     * @throws cDbException
-     * @throws cException
-     */
-    public function pApiContentAllocationComplexList($uuid) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        return $this->__construct($uuid);
-    }
-
-    /**
-     * Builed an render tree
-     *
-     * @param $tree
+     * @param array $tree
      * @return string
      */
-    protected function _buildRenderTree($tree) {
-
+    protected function _buildRenderTree(array $tree): string
+    {
         $oldIdSetter = $this->_idSetter;
         $this->_idSetter = false;
 
@@ -94,17 +79,17 @@ class pApiContentAllocationComplexList extends pApiTree {
             $cnt++;
 
             $even = !$even;
-            $bgcolor = ($even) ? 'bright' : 'dark';
+            $bgColor = ($even) ? 'bright' : 'dark';
 
             // for wrapping purposes
             $item_tmp['name'] = str_replace('-', '- ', $item_tmp['name']);
 
-            $checkbox = '<input type="checkbox" name="allocation[]" onClick="addToList(this);" ' . $checked . '" id="e'.$item_tmp['idpica_alloc'].'" value="'.$item_tmp['idpica_alloc'].'">';
-            $item = "\n<li baseClass=\"" . $bgcolor . "\" ".$li_closeElm.">" . $checkbox . " " . $item_tmp['name'];
+            $checkbox = '<input type="checkbox" name="allocation[]" onClick="addToList(this);" ' . $checked . '" id="e' . $item_tmp['idpica_alloc'] . '" value="' . $item_tmp['idpica_alloc'] . '">';
+            $item = "\n<li baseClass=\"" . $bgColor . "\" " . $li_closeElm . ">" . $checkbox . " " . $item_tmp['name'];
 
             $result .= $item;
 
-            if ($item_tmp['children']) {
+            if (count($item_tmp['children'])) {
                 $children = $this->_buildRenderTree($item_tmp['children']);
                 $result .= "\n<ul>" . $children . "</li>";
             } else {
@@ -124,7 +109,8 @@ class pApiContentAllocationComplexList extends pApiTree {
      *
      * @param array $load
      */
-    public function setChecked($load) {
+    public function setChecked(array $load)
+    {
         $this->_load = $load;
     }
 
@@ -133,10 +119,11 @@ class pApiContentAllocationComplexList extends pApiTree {
      *
      * @param bool $return
      *
-     * @return bool|string
+     * @return bool|string|void
      * @throws cDbException
      */
-    public function renderTree($return = true) {
+    public function renderTree(bool $return = true)
+    {
         $tree = $this->fetchTree();
         if ($tree === false) {
             return false;
@@ -147,4 +134,5 @@ class pApiContentAllocationComplexList extends pApiTree {
             return $tree;
         }
     }
+
 }

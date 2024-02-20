@@ -6,8 +6,8 @@
 {_CSS_HEAD_CONTENIDO_}
     <style type="text/css">
     /* @TODO: style like addfunction (see contenido.css) */
-    .leftTopAction .selectuserfunction,
-    .leftTopAction .selectgroupfunction {
+    .top_left_action .selectuserfunction,
+    .top_left_action .selectgroupfunction {
         display: inline-block;
         height: 16px;
         line-height: 16px;
@@ -19,14 +19,14 @@
     }
     </style>
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/cfoldingrow.js"></script>
-    <script type="text/javascript" src="scripts/parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/cfoldingrow.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/parameterCollector.js)_}"></script>
 </head>
 
-<body class="page_frontend_left_top">
+<body class="page_top_left">
 
 <div id="top_left_container" data-resizegap="1" data-resizeinitcb="frameLeftTopResizeInitCallback">
-    <div class="leftTopAction">
+    <div class="top_left_action">
         {BUTTONROW}
     </div>
     {CUSERS}
@@ -98,7 +98,7 @@ function toggleContainer(activeButton) {
             document.getElementById(buttonArray[i].containerId).style.display = 'none';
         }
     }
-    hoverEffect(activeButton, 'in');    
+    hoverEffect(activeButton, 'in');
     resizeFrame(activeButton);
 }
 
@@ -207,7 +207,7 @@ function frameLeftTopResizeInitCallback() {
         toggleContainer('img_group');
     }
 
-    $('.leftTopAction [data-action]').live('click', function() {
+    $('.top_left_action [data-action]').live('click', function() {
         var action = $(this).data('action');
 
         if (action === 'switch_frontenduser') {

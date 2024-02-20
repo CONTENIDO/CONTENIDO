@@ -9,13 +9,13 @@
  * Name:    frontend_pathX (X any number/character)
  * Value:   base href URL (e.g. http://www.example.org/example/)
  *
- * @package          Core
- * @subpackage       Chain
- * @author           Andreas Lindner
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Chain
+ * @author     Andreas Lindner
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -30,7 +30,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function cecCreateBaseHref($currentBaseHref) {
+function cecCreateBaseHref($currentBaseHref)
+{
 
     // get props of current client
     $props = cRegistry::getClient()->getProperties();
@@ -80,5 +81,3 @@ function cecCreateBaseHref($currentBaseHref) {
     return $currentBaseHref;
 
 }
-
-?>

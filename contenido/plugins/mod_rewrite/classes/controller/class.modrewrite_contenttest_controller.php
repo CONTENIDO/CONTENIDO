@@ -1,15 +1,15 @@
 <?php
+
 /**
  * AMR test controller
  *
- * @package     Plugin
- * @subpackage  ModRewrite
- * @id          $Id$:
- * @author      Murat Purc <murat@purc.de>
- * @copyright   four for business AG <www.4fb.de>
- * @license     http://www.contenido.org/license/LIZENZ.txt
- * @link        http://www.4fb.de
- * @link        http://www.contenido.org
+ * @package    Plugin
+ * @subpackage ModRewrite
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,11 +17,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Content controller to run tests.
  *
- * @author      Murat Purc <murat@purc.de>
- * @package     Plugin
- * @subpackage  ModRewrite
+ * @author     Murat Purc <murat@purc.de>
+ * @package    Plugin
+ * @subpackage ModRewrite
  */
-class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
+class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
+{
 
     /**
      * Number of max items to process
@@ -32,20 +33,22 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
     /**
      * Initializer method, sets some view variables
      */
-    public function init() {
+    public function init()
+    {
         $this->_oView->content = '';
         $this->_oView->form_idart_chk = ($this->_getParam('idart')) ? ' checked="checked"' : '';
         $this->_oView->form_idcat_chk = ($this->_getParam('idcat')) ? ' checked="checked"' : '';
         $this->_oView->form_idcatart_chk = ($this->_getParam('idcatart')) ? ' checked="checked"' : '';
         $this->_oView->form_idartlang_chk = ($this->_getParam('idartlang')) ? ' checked="checked"' : '';
-        $this->_oView->form_maxitems = (int) $this->_getParam('maxitems', 200);
+        $this->_oView->form_maxitems = (int)$this->_getParam('maxitems', 200);
         $this->_iMaxItems = $this->_oView->form_maxitems;
     }
 
     /**
      * Index action
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $this->_oView->content = '';
     }
 
@@ -56,11 +59,12 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function testAction() {
+    public function testAction()
+    {
         $this->_oView->content = '';
 
         // Array for testcases
-        $aTests = array();
+        $aTests = [];
 
         // Instance of mr test
         $oMRTest = new ModRewriteTest($this->_iMaxItems);
@@ -74,19 +78,19 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
         // Loop through the structure and compose testcases
         foreach ($aStruct as $idcat => $aCat) {
             // category
-            $aTests[] = array(
+            $aTests[] = [
                 'url' => $oMRTest->composeURL($aCat, 'c'),
                 'level' => $aCat['level'],
                 'name' => $aCat['name']
-            );
+            ];
 
             foreach ($aCat['articles'] as $idart => $aArt) {
                 // articles
-                $aTests[] = array(
+                $aTests[] = [
                     'url' => $oMRTest->composeURL($aArt, 'a'),
                     'level' => $aCat['level'],
                     'name' => $aCat['name'] . ' :: ' . $aArt['title']
-                );
+                ];
             }
         }
 

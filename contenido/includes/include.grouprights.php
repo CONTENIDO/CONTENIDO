@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for group rights management.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,13 +22,15 @@ $db = cRegistry::getDb();
 $perm = cRegistry::getPerm();
 $sess = cRegistry::getSession();
 
-$groupid = (isset($_REQUEST['groupid'])) ? cSecurity::toString($_REQUEST['groupid']) : '';
-$actionarea = (isset($_REQUEST['actionarea'])) ? cSecurity::toString($_REQUEST['actionarea']) : 'area';
-$right_list = (isset($_POST['right_list']) && is_array($_POST['right_list'])) ? $_POST['right_list'] : null;
-$rights_perms = (isset($_POST['rights_perms'])) ? cSecurity::toString($_POST['rights_perms']) : '';
-$rights_clientslang = (isset($_POST['rights_clientslang']) && is_numeric($_POST['rights_clientslang']))
-    ? cSecurity::toInteger($_POST['rights_clientslang']) : 0;
-$filter_rights = (isset($_POST['filter_rights'])) ? cSecurity::toString($_POST['filter_rights']) : '';
+$groupid = cSecurity::toString($_REQUEST['groupid'] ?? '');
+$actionarea = cSecurity::toString($_REQUEST['actionarea'] ?? 'area');
+$right_list = $_POST['right_list'] ?? null;
+if (!is_array($right_list)) {
+    $right_list = null;
+}
+$rights_perms = cSecurity::toString($_POST['rights_perms'] ?? '');
+$rights_clientslang = cSecurity::toInteger($_POST['rights_clientslang'] ?? '0');
+$filter_rights = cSecurity::toString($_POST['filter_rights'] ?? '');
 
 $dataSync = [];
 
@@ -71,7 +73,7 @@ $firstSel = false;
 $firstClientsLang = 0;
 
 foreach ($clientList as $key => $value) {
-    $sql = "SELECT * FROM " . $cfg["tab"]["lang"] . " AS A, " . $cfg["tab"]["clients_lang"] . " AS B WHERE B.idclient=" . (int) $key . " AND A.idlang=B.idlang";
+    $sql = "SELECT * FROM " . $cfg['tab']['lang'] . " AS A, " . $cfg['tab']['clients_lang'] . " AS B WHERE B.idclient=" . (int)$key . " AND A.idlang=B.idlang";
     $db->query($sql);
 
     while ($db->nextRecord()) {
@@ -171,12 +173,12 @@ if ($area != 'groups_content') {
     }
 
     $dataSync['INPUT_SELECT_RIGHTS'] = $oHtmlSelect->render();
-    $dataSync['DISPLAY_RIGHTS'] = 'block';
+    $dataSync['DISPLAY_RIGHTS'] = 'inline-block';
     // $oTpl->set('s', 'INPUT_SELECT_RIGHTS', $oHtmlSelect->render());
-    // $oTpl->set('s', 'DISPLAY_RIGHTS', 'block');
+    // $oTpl->set('s', 'DISPLAY_RIGHTS', 'inline-block');
 }
 
-$oClientLang = new cApiClientLanguage((int) $rights_clientslang);
+$oClientLang = new cApiClientLanguage((int)$rights_clientslang);
 if ($oClientLang->isLoaded()) {
     $rights_client = $oClientLang->get('idclient');
     $rights_lang = $oClientLang->get('idlang');

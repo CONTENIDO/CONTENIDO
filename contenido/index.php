@@ -3,32 +3,37 @@
 /**
  * This file is the main entrance point of the backend.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Olaf Niemann
- * @author Jan Lengowski
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Olaf Niemann
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+/**
+ * @var cPermission $perm
+ * @var string $belang
+ * @var array $cfg
+ * @var cSession $sess
+ * @var int $changelang
+ * @var int $client
+ */
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-// ugly globals that are used in this script
-// global $sess, $perm, $area;
-// global $belang, $changelang, $changeclient;
-
-cRegistry::bootstrap(array(
+cRegistry::bootstrap([
     'sess' => 'cSession',
     'auth' => 'cAuthHandlerBackend',
     'perm' => 'cPermission'
-));
+]);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
@@ -76,7 +81,7 @@ if (!$sess->isRegistered('client')) {
     unset($iTmpLang);
 }
 
-if (!is_numeric($client) || $client == '') {
+if (!cSecurity::isPositiveInteger($client ?? 0)) {
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
     $oClientColl->select('', '', 'idclient ASC', '1');
@@ -90,31 +95,20 @@ if (!is_numeric($client) || $client == '') {
     $sess->register('client');
 }
 
-if (!is_numeric($lang) || $lang == '') {
+if (!cSecurity::isPositiveInteger($lang ?? 0)) {
     $sess->register('lang');
-    // search for the first language of this client
-    $sql = "SELECT
-                *
-            FROM
-                " . $cfg["tab"]["lang"] . " AS A
-                , " . $cfg["tab"]["clients_lang"] . " AS B
-            WHERE
-                A.idlang=B.idlang
-                AND idclient='" . cSecurity::toInteger($client) . "'
-            ORDER BY
-                A.idlang ASC";
-    $db->query($sql);
-    $db->nextRecord();
-    $lang = $db->f('idlang');
 
-    if (!$perm->have_perm_client_lang($client, $lang)) {
-        $lang = '';
-        while ($db->nextRecord() && ($lang == '')) {
-            if ($perm->have_perm_client_lang($client, $db->f('idlang'))) {
-                $lang = $db->f('idlang');
-            }
+    $oClientLangColl = new cApiClientLanguageCollection();
+    $aClientLanguages = $oClientLangColl->getAllLanguageIdsByClient(
+        cSecurity::toInteger($client)
+    );
+    do {
+        $lang = array_shift($aClientLanguages);
+        if (!$perm->have_perm_client_lang($client, $lang)) {
+            $lang = '';
         }
-    }
+    } while (count($aClientLanguages) && !is_numeric($lang));
+    unset($aClientLanguages);
 } else {
     $sess->register('lang');
 }
@@ -124,7 +118,7 @@ $perm->load_permissions();
 if (isset($area)) {
     $sess_area = $area;
 } else {
-    $area = (isset($sess_area)) ? $sess_area : 'login';
+    $area = $sess_area ?? 'login';
 }
 
 $backendUrl = cRegistry::getBackendUrl();
@@ -133,7 +127,7 @@ $tpl->reset();
 
 // Get backend label
 $backend_label = getSystemProperty('backend', 'backend_label');
-$backend_label = " " . $backend_label . " ";
+$backend_label = ' ' . $backend_label . ' ';
 $tpl->set('s', 'BACKEND_LABEL', $backend_label);
 
 // Template settings
@@ -145,5 +139,3 @@ $tpl->set('s', 'CONTENIDOPATH', $backendUrl . 'favicon.ico');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset']);
 
 cRegistry::shutdown();
-
-?>

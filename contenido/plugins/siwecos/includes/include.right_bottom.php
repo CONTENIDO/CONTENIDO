@@ -2,11 +2,11 @@
 
 /**
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage SIWECOS
- * @author Fulai Zhang <fulai.zhang@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Fulai Zhang <fulai.zhang@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -20,5 +20,3 @@ try {
     SIWECOS::logException($e);
     echo SIWECOS::notifyException($e);
 }
-
-?>

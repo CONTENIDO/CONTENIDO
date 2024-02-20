@@ -1,16 +1,16 @@
 <?php
+
 /**
  * This file is the main entrance point for the frontend.
  *
- * @package          Core
- * @subpackage       Frontend
- *
- * @author           Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Frontend
+ * @author     Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -42,4 +42,3 @@ include_once($contenido_path . 'includes/startup.php');
 // Include article view handler
 include(cRegistry::getBackendPath() . $cfg['path']['includes'] . '/frontend/include.front_content.php');
 
-?>

@@ -1,4 +1,28 @@
-<div id="artsearch" style="margin:0;padding: 0 0 10px;">
+<style>
+    #artsearch {
+        margin: 0;
+        padding: 0 0 10px;
+    }
+    #artsearch table.borderless td.label {
+        padding-left: 15px;
+        padding-right: 5px;
+    }
+    #artsearch div.artikel_search > .title {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    #artsearch ul.artikel_search li {
+        margin-bottom: 3px;
+    }
+    #artsearch ul.artikel_search li > a {
+        padding-left: 3px;
+    }
+    #artsearch ul.artikel_search li > a > img {
+        vertical-align: middle;
+        padding-left: 3px;
+    }
+</style>
+<div id="artsearch">
     <form action="backend_search.php" method="post" name="backend_search" target="right_bottom" id="backend_search">
         <input type="hidden" name="area" value="{AREA}">
         <input type="hidden" name="frame" value="{FRAME}">
@@ -6,7 +30,7 @@
         <input type="hidden" name="speach" value="{LANG}">
         <table class="borderless" dir="{LANGTEXTDIRECTION}">
             <tr>
-                <td style="padding-left: 15px;">
+                <td class="label">
                     i18n("Title/Content")
                 </td>
                 <td>
@@ -14,7 +38,7 @@
                 </td>
             </tr>
             <tr>
-                <td style="padding-left: 15px;">
+                <td class="label">
                     i18n("Article ID")
                 </td>
                 <td>
@@ -22,31 +46,23 @@
                 </td>
             </tr>
             <tr>
-                <td style="padding-left: 15px;">
+                <td class="label">
                     i18n("Date")
                 </td>
                 <td>
                     <nobr>{SELECT_ARTDATE}</nobr>
                 </td>
             </tr>
-            <tr id="tr_date_from" style="display:none;">
-                <td>
-                    i18n("Date from")
-                </td>
-                <td>
-                    <nobr>{SELECT_ARTDATEFROM}</nobr>
-                </td>
+            <tr id="tr_date_from" class="foldingrow_hidden">
+                <td class="label"><div>i18n("Date from")</div></td>
+                <td><div><nobr>{SELECT_ARTDATEFROM}</nobr></div></td>
             </tr>
-            <tr id="tr_date_to" style="display:none;">
-                <td>
-                    i18n("Date to")
-                </td>
-                <td>
-                    <nobr>{SELECT_ARTDATETO}</nobr>
-                </td>
+            <tr id="tr_date_to" class="foldingrow_hidden">
+                <td class="label"><div>i18n("Date to")</div></td>
+                <td><div><nobr>{SELECT_ARTDATETO}</nobr></div></td>
             </tr>
             <tr>
-                <td style="padding-left: 15px;">
+                <td class="label">
                     i18n("Author")
                 </td>
                 <td>
@@ -60,24 +76,38 @@
         </table>
     </form>
     <div class="artikel_search">
-        <div style="font-weight:bold; margin-bottom: 10px;">i18n("Saved searches"):</div>
+        <div class="title">i18n("Saved searches"):</div>
         <ul class="artikel_search">
-            <li style="margin-bottom: 3px;">
-                <img alt="" style="vertical-align:middle; padding-left: 3px;" src="images/delete_inact.gif"><a style="padding-left: 3px;" href="javascript:Con.multiLink('right_bottom', 'backend_search.php?area={AREA}&frame=4&contenido=1&recentedit=true'); resetSearchForm();">i18n("Recently edited articles")</a>
+            <li>
+                <a href="javascript:void(0)" data-action="saved_search" data-type="recent_edited_articles">
+                    <img alt="" src="images/delete_inact.gif">
+                    i18n("Recently edited articles")
+                </a>
             </li>
-            <li style="margin-bottom: 3px;">
-                <img alt="" style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif"><a style="padding-left: 3px;" href="javascript:Con.multiLink('right_bottom', 'backend_search.php?area={AREA}&frame=4&contenido=1&myarticles=true'); resetSearchForm();">i18n("My articles")</a>
+            <li>
+                <a href="javascript:void(0)" data-action="saved_search" data-type="my_articles">
+                    <img alt="" src="images/delete_inact.gif">
+                    i18n("My articles")
+                </a>
             </li>
-            <li style="margin-bottom: 3px;">
-                <img alt="" style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif"><a style="padding-left: 3px;" href="javascript:Con.multiLink('right_bottom', 'backend_search.php?area={AREA}&frame=4&contenido=1&lostfound=true'); resetSearchForm();">i18n("Lost and found")</a>
+            <li>
+                <a href="javascript:void(0)" data-action="saved_search" data-type="lost_and_found">
+                    <img alt="" src="images/delete_inact.gif">
+                    i18n("Lost and found")
+                </a>
             </li>
-            <li style="margin-bottom: 3px; {DISPLAY}">
-                <img alt="" style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif"><a style="padding-left: 3px;" href="javascript:Con.multiLink('right_bottom', 'main.php?area=con_workflow&frame=4&contenido=1'); resetSearchForm();">i18n("Workflow")</a>
+            <li style="{DISPLAY}">
+                <a href="javascript:void(0)" data-action="saved_search" data-type="workflow">
+                    <img alt="" src="images/delete_inact.gif">
+                    i18n("Workflow")
+                </a>
             </li>
             <!-- BEGIN:BLOCK -->
-            <li style="margin-bottom: 3px;">
-                <a  href="javascript:Con.multiLink('left_top', 'main.php?area={AREA}&frame=1&delsavedsearch=true&contenido=1&itemid={ITEM_ID}&itemtype={ITEM_TYPE}')"><img style="padding-left: 3px; vertical-align:middle;" src="images/delete.gif"></a>
-                <a style="padding-left: 3px;" href="javascript:Con.multiLink('right_bottom', 'backend_search.php?area={AREA}&frame=4&contenido=1&itemid={ITEM_ID}&itemtype={ITEM_TYPE}')">{SEARCH_NAME}</a>
+            <li data-itemid="{ITEM_ID}" data-itemtype="{ITEM_TYPE}">
+                <a href="javascript:void(0)" data-action="saved_search" data-type="delete_my_saved_search">
+                    <img src="images/delete.gif">
+                </a>
+                <a href="javascript:void(0)" data-action="saved_search" data-type="my_saved_search">{SEARCH_NAME}</a>
             </li>
             <!-- END:BLOCK -->
         </ul>

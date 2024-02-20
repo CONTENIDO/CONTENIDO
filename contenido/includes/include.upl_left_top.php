@@ -3,66 +3,79 @@
 /**
  * This file contains the left top frame backend page in upload section.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var cTemplate $tpl
+ * @var array $cfg
+ * @var int $frame
+ * @var string $area
+ * @var string $upl_last_path Session variable
+ */
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.upl.php');
 
-$appendparameters = isset($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
-$searchfor        = isset($_REQUEST['searchfor']) ? cSecurity::escapeString($_REQUEST['searchfor']) : '';
-$sDisplayPath     = isset($_REQUEST['path']) ? cSecurity::escapeString($_REQUEST['path']) : '';
-$pathstring       = isset($_REQUEST['pathstring']) ? cSecurity::escapeString($_REQUEST['pathstring']) : '';
-$file             = isset($_REQUEST['file']) ? cSecurity::escapeString($_REQUEST['file']) : '';
+// Display critical error if client or language does not exist
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
+    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+    $oPage = new cGuiPage("upl_left_top");
+    $oPage->displayCriticalError($message);
+    $oPage->render();
+    return;
+}
+
+$appendparameters = $_REQUEST['appendparameters'] ?? '';
+$searchfor = cSecurity::escapeString($_REQUEST['searchfor'] ?? '');
+$sDisplayPath = cSecurity::escapeString($_REQUEST['path'] ?? '');
+$pathstring = cSecurity::escapeString($_REQUEST['pathstring'] ?? '');
+$file = cSecurity::escapeString($_REQUEST['file'] ?? '');
+
+$cfgClient = cRegistry::getClientConfig();
 
 $tpl->set('s', 'FORMACTION', '');
 
 $sDisplayPath = generateDisplayFilePath($sDisplayPath, 35);
 $tpl->set('s', 'CAPTION2', $sDisplayPath);
-
-// Display notification, if there is no client
-if ((int) $client == 0) {
-    $sNoClientNotification = '<div class="leftTopAction>' . i18n('No Client selected') . '</div>';
-    $tpl->set('s', 'NOTIFICATION', $sNoClientNotification);
-} else {
-    $tpl->set('s', 'NOTIFICATION', '');
-}
+$tpl->set('s', 'CREATEALT', i18n('Create'));
+$tpl->set('s', 'NOTIFICATION', '');
 
 // Form for 'Search'
-if ((int) $client > 0) {
-    $search = new cHTMLTextbox('searchfor', $searchfor, 26);
-    $search->setClass('text_small vAlignMiddle');
-    $sSearch = $search->render();
+$search = new cHTMLTextbox('searchfor', $searchfor, 26);
+$search->setClass('align_middle mgr5');
+$sSearch = $search->render();
 
-    $form = new cHTMLForm('search');
-    $form->appendContent($sSearch . ' <input class="vAlignMiddle tableElement" type="image" src="images/submit.gif">');
-    $form->setVar('area', $area);
-    $form->setVar('frame', $frame);
-    $form->setVar('contenido', $sess->id);
-    $form->setVar('appendparameters', $appendparameters);
-    $tpl->set('s', 'SEARCHFORM', $form->render());
-    $tpl->set('s', 'SEARCHTITLE', i18n('Search for'));
-    $tpl->set('s', 'DISPLAY_SEARCH', 'block');
-} else {
-    $tpl->set('s', 'SEARCHFORM', '');
-    $tpl->set('s', 'SEARCHTITLE', '');
-    $tpl->set('s', 'DISPLAY_SEARCH', 'none');
-}
+$submitImg = cHTMLButton::image('images/submit.gif', i18n('Search'), ['class' => 'con_img_button align_middle']);
+$form = new cHTMLForm('search');
+$form->appendContent($sSearch . ' ' . $submitImg);
+$form->setVar('area', $area);
+$form->setVar('frame', $frame);
+$form->setVar('contenido', $sess->id);
+$form->setVar('appendparameters', $appendparameters);
+$tpl->set('s', 'SEARCHFORM', $form->render());
+$tpl->set('s', 'SEARCHTITLE', i18n('Search for'));
+$tpl->set('s', 'DISPLAY_SEARCH', 'block');
 
-if ($perm->have_perm_area_action('upl', 'upl_mkdir') && (int) $client > 0) {
+if ($perm->have_perm_area_action('upl', 'upl_mkdir') && $client > 0) {
     $sCurrentPathInfo = '';
-    if ($sess->isRegistered('upl_last_path') && !isset($path)) {
+    if (!isset($path) && $sess->isRegistered('upl_last_path')) {
         $path = $upl_last_path;
     }
+    $path = $path ?? '';
 
     if ($path == '' || cApiDbfs::isDbfs($path)) {
         $sCurrentPathInfo = $path;
@@ -74,13 +87,13 @@ if ($perm->have_perm_area_action('upl', 'upl_mkdir') && (int) $client > 0) {
     $tpl->set('s', 'PATH', $path);
     $sessURL = $sess->url("main.php?area=upl_mkdir&frame=2&appendparameters=$appendparameters");
     $tpl->set('s', 'TARGET', 'onsubmit="parent.frames[2].location.href=\'' . $sess->url("main.php?area=upl&action=upl_mkdir&frame=2&appendparameters=$appendparameters") .
-            '&path=\'+document.newdir.path.value+\'&foldername=\'+document.newdir.foldername.value;"');
+        '&path=\'+document.newdir.path.value+\'&foldername=\'+document.newdir.foldername.value;"');
     $tpl->set('s', 'DISPLAY_DIR', 'block');
 } else {
     // No permission with current rights
     $tpl->set('s', 'CAPTION', '');
     $tpl->set('s', 'CAPTION2', '');
-    $inputfield = '';
+    $tpl->set('s', 'CREATEALT', i18n('Create'));
     $tpl->set('s', 'TARGET', '');
     $tpl->set('s', 'SUBMIT', '');
     $tpl->set('s', 'ACTION', '');
@@ -89,7 +102,6 @@ if ($perm->have_perm_area_action('upl', 'upl_mkdir') && (int) $client > 0) {
 
 // Searching
 if ($searchfor != '') {
-
     $items = uplSearch($searchfor);
 
     $tmp_mstr = 'Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')';
@@ -103,18 +115,7 @@ if ($searchfor != '') {
     $tpl->set('s', 'RESULT', '');
 }
 
-// Create javascript multilink
-$tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\',\'%s\', \'%s\')">%s</a>';
-$mstr = sprintf(
-    $tmp_mstr,
-    'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"),
-    'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"),
-    '<img class="borderless" src="images/ordner_oben.gif" align="middle" alt=""><img class="borderless" align="middle" src="images/spacer.gif" width="5">' . $file
-);
-
 $tpl->set('d', 'PATH', $pathstring);
-$tpl->set('d', 'DIRNAME', $mstr);
-$tpl->set('d', 'COLLAPSE', '');
 $tpl->next();
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['upl_left_top']);

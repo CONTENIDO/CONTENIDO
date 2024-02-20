@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLCanvas class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLCanvas class can be used for creating graphics.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLCanvas extends cHTMLContentElement {
+class cHTMLCanvas extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -33,7 +33,8 @@ class cHTMLCanvas extends cHTMLContentElement {
      * @param string $id [optional]
      *         the ID of this element
      */
-    public function __construct($content = '', $class = '', $id = '') {
+    public function __construct($content = '', $class = '', $id = '')
+    {
         parent::__construct($content, $class, $id);
         $this->_tag = 'canvas';
     }
@@ -42,7 +43,8 @@ class cHTMLCanvas extends cHTMLContentElement {
      *
      * @param int $height
      */
-    public function setHeight($height) {
+    public function setHeight($height)
+    {
         $this->setAttribute('height', $height);
     }
 
@@ -50,7 +52,8 @@ class cHTMLCanvas extends cHTMLContentElement {
      *
      * @param int $width
      */
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         $this->setAttribute('width', $width);
     }
 

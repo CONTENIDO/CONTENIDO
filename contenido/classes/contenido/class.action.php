@@ -3,13 +3,13 @@
 /**
  * This file contains the action collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,22 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Action collection.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiAction createNewItem
+ * @method cApiAction|bool next
  */
-class cApiActionCollection extends ItemCollection {
+class cApiActionCollection extends ItemCollection
+{
+
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['actions'], 'idaction');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('actions'), 'idaction');
         $this->_setItemClass('cApiAction');
 
         // set the join partners so that joins can be used via link() method
@@ -41,9 +45,9 @@ class cApiActionCollection extends ItemCollection {
      * @param string|int $area
      * @param string|int $name
      * @param string|int $alt_name [optional]
-     * @param string     $code     [optional]
-     * @param string     $location [optional]
-     * @param int        $relevant [optional]
+     * @param string $code [optional]
+     * @param string $location [optional]
+     * @param int $relevant [optional]
      *
      * @return cApiAction
      *
@@ -51,7 +55,8 @@ class cApiActionCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1) {
+    public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1)
+    {
         $item = $this->createNewItem();
 
         if (is_string($area)) {
@@ -95,17 +100,16 @@ class cApiActionCollection extends ItemCollection {
      *
      * @throws cDbException
      */
-    public function getAvailableActions() {
-        global $cfg;
-
+    public function getAvailableActions()
+    {
         $sql = "SELECT action.idaction, action.name, area.name AS areaname
                 FROM `%s` AS action LEFT JOIN `%s` AS area
                 ON area.idarea = action.idarea
                 WHERE action.relevant = 1 ORDER BY action.name;";
 
-        $this->db->query($sql, $this->table, $cfg['tab']['area']);
+        $this->db->query($sql, $this->table, cRegistry::getDbTableName('area'));
 
-        $actions = array();
+        $actions = [];
 
         while ($this->db->nextRecord()) {
             $newentry['name'] = $this->db->f('name');
@@ -126,7 +130,8 @@ class cApiActionCollection extends ItemCollection {
      *
      * @throws cDbException
      */
-    public function getActionName($action) {
+    public function getActionName($action)
+    {
         $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
 
         return ($this->db->nextRecord()) ? $this->db->f('name') : NULL;
@@ -143,7 +148,8 @@ class cApiActionCollection extends ItemCollection {
      *
      * @throws cDbException
      */
-    function getAreaForAction($action) {
+    function getAreaForAction($action)
+    {
         if (!is_numeric($action)) {
             $this->db->query("SELECT idarea FROM `%s` WHERE name = '%s'", $this->table, $action);
         } else {
@@ -157,7 +163,7 @@ class cApiActionCollection extends ItemCollection {
 /**
  * Action item.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiAction extends Item
@@ -171,26 +177,21 @@ class cApiAction extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-
-        parent::__construct($cfg['tab']['actions'], 'idaction');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('actions'), 'idaction');
+        $this->setFilters(['addslashes'], ['stripslashes']);
 
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
 
         // @todo Where is this used???
-        $this->_wantParameters = array();
+        $this->_wantParameters = [];
     }
 
     /**
-     * Userdefined setter for action fields.
+     * User-defined setter for action fields.
      *
      * @param string $name
      * @param mixed $value
@@ -198,10 +199,11 @@ class cApiAction extends Item
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
-             case 'relevant':
-                $value = (int) $value;
+            case 'relevant':
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

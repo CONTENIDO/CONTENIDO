@@ -9,7 +9,6 @@
 ./classes/controller/class.modrewrite_contenttest_controller.php
 ./classes/controller/class.modrewrite_content_controller.php
 ./classes/controller/class.modrewrite_controller_abstract.php
-./includes/config.mod_rewrite_1.php
 ./includes/config.mod_rewrite_default.php
 ./includes/config.plugin.php
 ./includes/front_content_controller.php

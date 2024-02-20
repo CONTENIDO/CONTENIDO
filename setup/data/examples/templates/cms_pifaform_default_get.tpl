@@ -1,4 +1,4 @@
 <div class="clear hr">
-    <hr />
+    <hr/>
 </div>
 {$form}

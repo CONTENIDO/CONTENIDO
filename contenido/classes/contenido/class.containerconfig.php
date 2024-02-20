@@ -3,13 +3,13 @@
 /**
  * This file contains the container configuration collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,22 +17,25 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Container configuration collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiContainerConfiguration createNewItem
+ * @method cApiContainerConfiguration|bool next
  */
-class cApiContainerConfigurationCollection extends ItemCollection {
+class cApiContainerConfigurationCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param bool $select [optional]
      *                     where clause to use for selection (see ItemCollection::select())
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function __construct($select = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['container_conf'], 'idcontainerc');
+    public function __construct($select = false)
+    {
+        $table = cRegistry::getDbTableName('container_conf');
+        parent::__construct($table, 'idcontainerc');
         $this->_setItemClass('cApiContainerConfiguration');
 
         // set the join partners so that joins can be used via link() method
@@ -46,16 +49,15 @@ class cApiContainerConfigurationCollection extends ItemCollection {
     /**
      * Creates a container configuration item
      *
-     * @param int    $idtplcfg
-     * @param int    $number
+     * @param int $idtplcfg
+     * @param int $number
      * @param string $container
      *
      * @return cApiContainerConfiguration
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idtplcfg, $number, $container) {
+    public function create($idtplcfg, $number, $container)
+    {
         $item = $this->createNewItem();
 
         $item->set('idtplcfg', $idtplcfg);
@@ -72,19 +74,17 @@ class cApiContainerConfigurationCollection extends ItemCollection {
      * @param int $idtplcfg
      *         Template configuration id
      * @return array
-     *         Assoziative array where the key is the number and value the
+     *         Associative array where the key is the number and value the
      *         container configuration.
-     * @throws cDbException
-     * @throws cException
-*/
-    public function getByTemplateConfiguration($idtplcfg) {
-        $configuration = array();
-
-        $this->select('idtplcfg = ' . (int) $idtplcfg, '', 'number ASC');
+     * @throws cDbException|cException
+     */
+    public function getByTemplateConfiguration($idtplcfg)
+    {
+        $configuration = [];
+        $this->select('idtplcfg = ' . cSecurity::toInteger($idtplcfg), '', 'number ASC');
         while (($item = $this->next()) !== false) {
-            $configuration[(int) $item->get('number')] = $item->get('container');
+            $configuration[cSecurity::toInteger($item->get('number'))] = $item->get('container');
         }
-
         return $configuration;
     }
 }
@@ -92,7 +92,7 @@ class cApiContainerConfigurationCollection extends ItemCollection {
 /**
  * Container configuration item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiContainerConfiguration extends Item
@@ -103,29 +103,25 @@ class cApiContainerConfiguration extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['container_conf'], 'idcontainerc');
-        $this->setFilters(array(), array());
+    public function __construct($mId = false)
+    {
+        $table = cRegistry::getDbTableName('container_conf');
+        parent::__construct($table, 'idcontainerc');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Userdefined setter for container config fields.
+     * User-defined setter for container config fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritdoc
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idtplcfg':
             case 'number':
@@ -145,7 +141,8 @@ class cApiContainerConfiguration extends Item
      * @param string $value
      * @return string
      */
-    public static function addContainerValue($container, $key, $value) {
+    public static function addContainerValue($container, $key, $value)
+    {
         $container .= $key . '=' . urlencode(stripslashes($value)) . '&';
         return $container;
     }
@@ -156,19 +153,11 @@ class cApiContainerConfiguration extends Item
      * @param string $value
      * @return array
      */
-    public static function parseContainerValue($value) {
-        $vars = array();
-
-        $value = preg_replace('/&$/', '', $value);
-        $parts = preg_split('/&/', $value);
-        foreach ($parts as $key1 => $value1) {
-            $param = explode('=', $value1);
-            foreach ($param as $key2 => $value2) {
-                $vars[$param[0]] = urldecode($param[1]);
-            }
-        }
-
-        return $vars;
+    public static function parseContainerValue($value)
+    {
+        $value = preg_replace('/(&\$)/', '', $value);
+        parse_str($value, $vars);
+        return is_array($vars) ? $vars : [];
     }
 
 }

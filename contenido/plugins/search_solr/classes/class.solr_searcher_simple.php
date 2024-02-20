@@ -2,11 +2,11 @@
 
 /**
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage SearchSolr
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -16,19 +16,20 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Simple Solr search implementation.
  *
  * This searcher is restricted on single core searches (due to the fact that
- * SolrQuery does not support multi core requests).
+ * SolrQuery does not support multicore requests).
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class SolrSearcherSimple extends SolrSearcherAbstract {
+class SolrSearcherSimple extends SolrSearcherAbstract
+{
 
     /**
      *
+     * @return SolrObject|null
      * @throws cException if search cannot be performed for empty search term
-     * @return SolrObject
      */
-    public function getSearchResults() {
-
+    public function getSearchResults()
+    {
         $searchTerm = $this->_searchTerm;
         $searchTerm = trim($searchTerm);
         $searchTerm = explode(' ', $searchTerm);
@@ -67,6 +68,7 @@ class SolrSearcherSimple extends SolrSearcherAbstract {
             $response = $solrQueryResponse->getResponse();
             $response = $response->response;
         } catch (SolrClientException $e) {
+            $response = null;
             Solr::log($e, $e->getFile(), $e->getLine());
             Solr::log($solrClient->getDebug());
             Solr::log($query->toString());

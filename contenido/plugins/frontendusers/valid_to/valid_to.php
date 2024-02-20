@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the valid_to extension of the frontend user plugin.
  *
@@ -6,9 +7,9 @@
  * @subpackage FrontendUsers
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * @return string
  */
-function frontendusers_valid_to_getTitle ()
+function frontendusers_valid_to_getTitle()
 {
     return i18n("Valid to");
 }
@@ -24,30 +25,29 @@ function frontendusers_valid_to_getTitle ()
 /**
  * @return string
  */
-function frontendusers_valid_to_display ()
+function frontendusers_valid_to_display()
 {
-    global $feuser,$db,$belang,$cfg;
+    global $feuser;
 
-    $langscripts = '';
+    $cfg = cRegistry::getConfig();
 
-    $path_to_calender_pic =  cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
+    $calenderPicPath = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
 
-    $template  = '%s';
+    $template = '%s';
 
-    $currentValue = $feuser->get("valid_to");
-
+    $currentValue = $feuser->get('valid_to');
     if ($currentValue == '') {
         $currentValue = '0000-00-00';
     }
     $currentValue = str_replace('00:00:00', '', $currentValue);
 
     // js-includes are defined in valid_from
-    $sValidFrom = '<input type="text" id="valid_to" name="valid_to" value="'.$currentValue.'">';
+    $sValidFrom = '<input type="text" id="valid_to" name="valid_to" value="' . $currentValue . '">';
     $sValidFrom .= '<script type="text/javascript">
 (function(Con, $) {
         $(function() {
     $("#valid_to").datetimepicker({
-        buttonImage: "'. $path_to_calender_pic .'",
+        buttonImage: "' . $calenderPicPath . '",
         buttonImageOnly: true,
         showOn: "both",
         dateFormat: "yy-mm-dd",
@@ -72,7 +72,7 @@ function frontendusers_valid_to_display ()
 })(Con, Con.$);
 </script>';
 
-    return sprintf($template,$sValidFrom);
+    return sprintf($template, $sValidFrom);
 }
 
 /**
@@ -80,7 +80,7 @@ function frontendusers_valid_to_display ()
  */
 function frontendusers_valid_to_wantedVariables()
 {
-    return (array("valid_to"));
+    return (['valid_to']);
 }
 
 /**
@@ -90,7 +90,5 @@ function frontendusers_valid_to_store($variables)
 {
     global $feuser;
 
-    $feuser->set("valid_to", $variables["valid_to"], false);
+    $feuser->set('valid_to', $variables['valid_to'], false);
 }
-
-?>

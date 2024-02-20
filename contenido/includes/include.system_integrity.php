@@ -3,16 +3,20 @@
 /**
  * This file contains the system integrity backend page.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Mischa Holz
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var array $cfg
+ */
 
 $page = new cGuiPage("system_integrity");
 
@@ -26,13 +30,13 @@ foreach ($results as $result) {
     }
 
     if ($result["result"] == true) {
-        $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/but_ok.gif");
-    } else if ($result["severity"] == cSystemtest::C_SEVERITY_WARNING) {
-        $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/icon_warning.gif");
-    } else if ($result["severity"] == cSystemtest::C_SEVERITY_ERROR) {
-        $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/icon_fatalerror.gif");
-    } else if ($result["severity"] == cSystemtest::C_SEVERITY_INFO) {
-        $page->set("d", "IMAGESOURCE", $cfg['path']['contenido_fullhtml']."images/info.gif");
+        $page->set("d", "IMAGESOURCE", cRegistry::getBackendUrl() . "images/but_ok.gif");
+    } elseif ($result["severity"] == cSystemtest::C_SEVERITY_WARNING) {
+        $page->set("d", "IMAGESOURCE", cRegistry::getBackendUrl() . "images/icon_warning.gif");
+    } elseif ($result["severity"] == cSystemtest::C_SEVERITY_ERROR) {
+        $page->set("d", "IMAGESOURCE", cRegistry::getBackendUrl() . "images/icon_fatalerror.gif");
+    } elseif ($result["severity"] == cSystemtest::C_SEVERITY_INFO) {
+        $page->set("d", "IMAGESOURCE", cRegistry::getBackendUrl() . "images/info.gif");
     }
     $page->set("d", "HEADLINE", $result["headline"]);
     $page->set("d", "MESSAGE", $result["message"]);
@@ -41,5 +45,3 @@ foreach ($results as $result) {
 
 $page->set("s", "RESULTS", i18n("Results"));
 $page->render();
-
-?>

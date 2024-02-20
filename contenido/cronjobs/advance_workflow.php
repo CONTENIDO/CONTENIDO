@@ -1,16 +1,16 @@
 <?php
+
 /**
  * This file contains the cronjob to advance workflow.
  * Advances to the next step if the time limit is 'over'
  *
  * @package    Plugin
  * @subpackage Workflow
- *
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -31,73 +31,73 @@ cInclude('includes', 'functions.con.php');
 plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');
 
-$workflowartallocations = new WorkflowArtAllocations();
-$workflowusersequences = new WorkflowUserSequences();
+$workflowArtAllocations = new WorkflowArtAllocations();
+$workflowUserSequences = new WorkflowUserSequences();
 
-$workflowartallocations->select();
+$workflowArtAllocations->select();
 
-while ($obj = $workflowartallocations->next()) {
-    $starttime = $obj->get('starttime');
-    $idartlang = $obj->get('idartlang');
-    $lastidusersequence = $obj->get('lastusersequence');
+while ($obj = $workflowArtAllocations->next()) {
+    $startTime = $obj->get('starttime');
+    $idArtLang = $obj->get('idartlang');
+    $lastIdUserSequence = $obj->get('lastusersequence');
 
-    $usersequence = getCurrentUserSequence($idartlang, 0);
-    if (false === $usersequence) {
+    $userSequence = getCurrentUserSequence($idArtLang, 0);
+    if (false === $userSequence) {
         continue;
     }
 
-    if ($usersequence != $lastidusersequence) {
-        $workflowusersequences->select('idusersequence=' . $usersequence);
+    if ($userSequence != $lastIdUserSequence) {
+        $workflowUserSequences->select('idusersequence=' . $userSequence);
 
-        if ($wfobj = $workflowusersequences->next()) {
-            $wfitem = (int) $wfobj->get('idworkflowitem');
-            $pos = (int) $wfobj->get('position');
-            $timeunit = $wfobj->get('timeunit');
-            $timelimit = $wfobj->get('timelimit');
+        if ($wfObj = $workflowUserSequences->next()) {
+            $idWorkflowItem = (int) $wfObj->get('idworkflowitem');
+            $pos = (int) $wfObj->get('position');
+            $timeUnit = $wfObj->get('timeunit');
+            $timeLimit = $wfObj->get('timelimit');
+        } else {
+            continue;
         }
 
-        $starttime = strtotime(
-            substr_replace(cString::getPartOfString(cString::getPartOfString($starttime, 0, 2)
-            . chunk_split(cString::getPartOfString($starttime, 2, 6), 2, '-')
-            . chunk_split(cString::getPartOfString($starttime, 8), 2, ':'), 0, 19), ' ', 10, 1)
+        $startTime = strtotime(
+            substr_replace(cString::getPartOfString(cString::getPartOfString($startTime, 0, 2)
+            . chunk_split(cString::getPartOfString($startTime, 2, 6), 2, '-')
+            . chunk_split(cString::getPartOfString($startTime, 8), 2, ':'), 0, 19), ' ', 10, 1)
         );
 
-        switch ($timeunit) {
+        switch ($timeUnit) {
             case 'Seconds':
-                    $maxtime = $starttime + $timelimit;
-                    break;
+                $maxTme = $startTime + $timeLimit;
+                break;
             case 'Minutes':
-                    $maxtime = $starttime + ($timelimit * 60);
-                    break;
+                $maxTme = $startTime + ($timeLimit * 60);
+                break;
             case 'Hours':
-                    $maxtime = $starttime + ($timelimit * 3600);
-                    break;
+                $maxTme = $startTime + ($timeLimit * 3600);
+                break;
             case 'Days':
-                    $maxtime = $starttime + ($timelimit * 86400);
-                    break;
+                $maxTme = $startTime + ($timeLimit * 86400);
+                break;
             case 'Weeks':
-                    $maxtime = $starttime + ($timelimit * 604800);
-                    break;
+                $maxTme = $startTime + ($timeLimit * 604800);
+                break;
             case 'Months':
-                    $maxtime = $starttime + ($timelimit * 2678400);
-                    break;
+                $maxTme = $startTime + ($timeLimit * 2678400);
+                break;
             case 'Years':
-                    $maxtime = $starttime + ($timelimit * 31536000);
-                    break;
+                $maxTme = $startTime + ($timeLimit * 31536000);
+                break;
             default:
-                    $maxtime = $starttime + $timelimit;
+                $maxTme = $startTime + $timeLimit;
         }
 
-        if ($maxtime < time()) {
+        if ($maxTme < time()) {
             $pos = $pos + 1;
-            $workflowusersequences->select('idworkflowitem=' . $wfitem . ' AND position=' . $pos);
+            $workflowUserSequences->select('idworkflowitem=' . $idWorkflowItem . ' AND position=' . $pos);
 
-            if ($wfobj = $workflowusersequences->next()) {
-                $obj->set('idusersequence', $wfobj->get('idusersequence'));
+            if ($wfObj = $workflowUserSequences->next()) {
+                $obj->set('idusersequence', $wfObj->get('idusersequence'));
                 $obj->store();
             }
         }
     }
 }
-
-?>

@@ -3,16 +3,30 @@
 /**
  * This file contains the backend page for creating new groups.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var cTemplate $tpl
+ * @var cGuiNotification $notification
+ * @var cAuth $auth
+ * @var cApiUser $currentuser
+ * @var array $cfg
+ * @var int $frame
+ * @var string $area
+ */
+
+$action = cRegistry::getAction();
 
 if (!$perm->have_perm_area_action($area, $action)) {
     // access denied
@@ -20,11 +34,16 @@ if (!$perm->have_perm_area_action($area, $action)) {
     return;
 }
 
+$groupname = $groupname ?? '';
+$description = $description ?? '';
+
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+
 // create group instance
-$bError        = false;
+$bError = false;
 $sNotification = '';
-$aPerms        = array();
-$groupId       = NULL;
+$aPerms = [];
+$groupId = NULL;
 
 if ($action == 'group_create') {
     $aPerms = cRights::buildUserOrGroupPermsFromRequest();
@@ -57,11 +76,11 @@ $tpl->reset();
 $tpl->set('s', 'NOTIFICATION', $sNotification);
 $tpl->set('s', 'GROUPID', $groupId);
 
-$form = '<form name="group_properties" method="post" action="'.$sess->url("main.php?").'">
-             <input type="hidden" name="area" value="'.$area.'">
+$form = '<form name="group_properties" method="post" action="' . $sess->url("main.php?") . '">
+             <input type="hidden" name="area" value="' . $area . '">
              <input type="hidden" name="action" value="group_create">
-             <input type="hidden" name="frame" value="'.$frame.'">
-             <input type="hidden" name="idlang" value="'.$lang.'">';
+             <input type="hidden" name="frame" value="' . $frame . '">
+             <input type="hidden" name="idlang" value="' . $lang . '">';
 
 $tpl->set('s', 'FORM', $form);
 $tpl->set('s', 'SUBMITTEXT', i18n("Save changes"));
@@ -80,62 +99,62 @@ $oTxtDesc = new cHTMLTextbox('description', $description, 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtDesc->render());
 $tpl->next();
 
-// permissions of current logged in user
-$aAuthPerms = explode(',', $auth->auth['perm']);
+// Build perm checkboxes and properties table with the helper
+$rightsAreasHelper = new cRightsAreasHelper($currentuser, $auth, $aPerms);
+$isAuthUserSysadmin = $rightsAreasHelper->isAuthSysadmin();
+$isContextSysadmin = $rightsAreasHelper->isContextSysadmin();
 
-// sysadmin perm
-if (in_array('sysadmin', $aAuthPerms)) {
+// Sysadmin perm checkbox
+if ($isAuthUserSysadmin) {
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
-    $defaultsysadmin = new cHTMLCheckbox("msysadmin", "1", "msysadmin1", in_array('sysadmin', $aPerms));
+    $defaultsysadmin = new cHTMLCheckbox("msysadmin", "1", "msysadmin1", $isContextSysadmin);
     $tpl->set('d', 'CATFIELD', $defaultsysadmin->toHtml(false));
     $tpl->next();
 }
 
-// clients admin perms
-$oClientsCollection = new cApiClientCollection();
-$aClients = $oClientsCollection->getAvailableClients();
-$sClientCheckboxes = '';
-foreach ($aClients as $idclient => $item) {
-    if (in_array("admin[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
-        $defaultadmin = new cHTMLCheckbox("madmin[".$idclient."]", $idclient, "madmin[".$idclient."]".$idclient, in_array("admin[".$idclient."]", $aPerms));
-        $defaultadmin->setLabelText(conHtmlSpecialChars($item['name']) . " (".$idclient.")");
-        $sClientCheckboxes .= $defaultadmin->toHtml(true);
-    }
-}
-
-if ($sClientCheckboxes !== '') {
+// Clients admin perms checkboxes
+$aClients = $rightsAreasHelper->getAvailableClients();
+$sCheckboxes = $rightsAreasHelper->renderClientAdminCheckboxes($aClients);
+if ($sCheckboxes !== '') {
     $tpl->set('d', 'CATNAME', i18n("Administrator"));
-    $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
+    $tpl->set('d', 'CATFIELD', $sCheckboxes);
     $tpl->next();
 }
 
-// clients perms
-$sClientCheckboxes = '';
+// Clients perms checkboxes
+$sCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    if (in_array("client[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[".$idclient."]", $aAuthPerms)) {
-        $defaultperms = new cHTMLCheckbox("mclient[".$idclient."]", $idclient, "mclient[".$idclient."]".$idclient, in_array("client[".$idclient."]", $aPerms));
-        $defaultperms->setLabelText(conHtmlSpecialChars($item['name']) . " (". $idclient . ")");
-        $sClientCheckboxes .= $defaultperms->toHtml(true);
+    $hasAuthUserClientPerm = $rightsAreasHelper->hasAuthClientPerm($idclient);
+    $isAuthUserClientAdmin = $rightsAreasHelper->isAuthClientAdmin($idclient);
+    if ($hasAuthUserClientPerm || $isAuthUserSysadmin || $isAuthUserClientAdmin) {
+        $sCheckboxes .= $rightsAreasHelper->renderClientPermCheckbox($idclient, $item['name']);
     }
 }
-
+if (empty($sCheckboxes)) {
+    $sCheckboxes = i18n("No client");
+}
 $tpl->set('d', 'CATNAME', i18n("Access clients"));
-$tpl->set('d', 'CATFIELD', $sClientCheckboxes);
+$tpl->set('d', 'CATFIELD', $sCheckboxes);
 $tpl->next();
 
-// languages perms
-$aClientsLanguages = getAllClientsAndLanguages();
-$sClientCheckboxes = '';
+// Languages perms checkboxes
+$aClientsLanguages = $rightsAreasHelper->getAllClientsAndLanguages();
+$sCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
-    if ($perm->have_perm_client("lang[".$item['idlang']."]") || $perm->have_perm_client("admin[".$item['idclient']."]")) {
-        $defaultlanguages = new cHTMLCheckbox("mlang[".$item['idlang']."]", $item['idlang'], "mlang[".$item['idlang']."]".$item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms));
-        $defaultlanguages->setLabelText(conHtmlSpecialChars($item['langname'])." (". $item['clientname'] .")");
-        $sClientCheckboxes .= $defaultlanguages->toHtml(true);
+    $hasLanguagePerm = $rightsAreasHelper->hasAuthLanguagePerm($item['idlang']);
+    $isAuthUserClientAdmin = $rightsAreasHelper->isAuthClientAdmin($item['idclient']);
+    if ($hasLanguagePerm || $isAuthUserClientAdmin) {
+        $sCheckboxes .= $rightsAreasHelper->renderLanguagePermCheckbox(
+            $item['idlang'], $item['langname'], $item['clientname']
+        );
     }
+}
+if (empty($sCheckboxes)) {
+    $sCheckboxes = i18n("No language");
 }
 
 $tpl->set('d', 'CATNAME', i18n("Access languages"));
-$tpl->set('d', 'CATFIELD', $sClientCheckboxes);
+$tpl->set('d', 'CATFIELD', $sCheckboxes);
 $tpl->next();
 
 // Generate template

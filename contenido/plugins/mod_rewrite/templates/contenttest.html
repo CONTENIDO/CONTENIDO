@@ -1,17 +1,19 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+        "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
     <title>mod_rewrite_content_test</title>
-{_META_HEAD_CONTENIDO_}
-{_CSS_HEAD_CONTENIDO_}
-    <link rel="stylesheet" type="text/css" href="plugins/mod_rewrite/styles/styles.css">
-{_JS_HEAD_CONTENIDO_}
+    {_META_HEAD_CONTENIDO_}
+    {_CSS_HEAD_CONTENIDO_}
+    <link rel="stylesheet" type="text/css" href="{_ASSET(plugins/mod_rewrite/styles/styles.css)_}">
+    {_JS_HEAD_CONTENIDO_}
 </head>
 
 <body class="mrPlugin mrPluginTest">
 
-<div class="headerBox">
-    <p>{LNG_FORM_INFO}<p>
+<div class="mr_header_box con_navbar con_block col_lg clearfix">
+    <p>{LNG_FORM_INFO}
+    <p>
     <form name="mr_test" id="mr_test" action="main.php">
         <input type="hidden" name="area" value="{AREA}">
         <input type="hidden" name="frame" value="{FRAME}">
@@ -20,41 +22,45 @@
             <legend>{LNG_FORM_LABEL}</legend>
             <p></p>
             <div class="chk">
-                <input type="checkbox" id="idart" name="idart" value="1"{FORM_IDART_CHK}><label for="idart">idart</label>
+                <input type="checkbox" id="idart" name="idart" value="1" {FORM_IDART_CHK}><label
+                    for="idart">idart</label>
             </div>
             <div class="chk">
-                <input type="checkbox" id="idcat" name="idcat" value="1"{FORM_IDCAT_CHK}><label for="idcat">idcat</label>
+                <input type="checkbox" id="idcat" name="idcat" value="1" {FORM_IDCAT_CHK}><label
+                    for="idcat">idcat</label>
             </div>
             <div class="chk">
-                <input type="checkbox" id="idcatart" name="idcatart" value="1"{FORM_IDCATART_CHK}><label for="idcatart">idcatart</label>
+                <input type="checkbox" id="idcatart" name="idcatart" value="1"
+                       {FORM_IDCATART_CHK}><label for="idcatart">idcatart</label>
             </div>
             <div class="chk">
-                <input type="checkbox" id="idartlang" name="idartlang" value="1"{FORM_IDARTLANG_CHK}><label for="idartlang">idartlang</label>
+                <input type="checkbox" id="idartlang" name="idartlang" value="1"
+                       {FORM_IDARTLANG_CHK}><label for="idartlang">idartlang</label>
             </div>
-            <br class="clear">
         </fieldset>
-        <div class="contenttest">
-            <div class="blockLeft">
-                <label for="maxitems">{LNG_MAXITEMS_LBL}: </label><input type="text" id="maxitems" maxlength="4" name="maxitems" value="{FORM_MAXITEMS}">
+        <div class="contenttest clearfix">
+            <div class="left">
+                <label for="maxitems">{LNG_MAXITEMS_LBL}: </label><input type="text" id="maxitems"
+                                                                         maxlength="4"
+                                                                         name="maxitems"
+                                                                         value="{FORM_MAXITEMS}">
             </div>
-            <div class="blockRight pdr5">
+            <div class="right pdr5">
                 <input type="submit" name="test" value="{LNG_RUN_TEST}">
             </div>
-            <br class="clear">
         </div>
     </form>
-    <br class="clear">
 </div>
 
 {CONTENT}
 
 <script type="text/javascript" src="plugins/mod_rewrite/scripts/mod_rewrite.js"></script>
 <script type="text/javascript">
-(function(Con, $) {
-    $(function() {
-        new Con.Plugin.ModRewrite('test', {lng: {more_informations: "{LNG_MORE_INFORMATIONS}"}});
-    });
-})(Con, Con.$);
+    (function (Con, $) {
+        $(function () {
+            new Con.Plugin.ModRewrite('test', {lng: {more_information: "{LNG_MORE_INFORMATIONS}"}});
+        });
+    })(Con, Con.$);
 </script>
 
 </body>

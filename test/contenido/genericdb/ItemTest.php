@@ -1,19 +1,17 @@
 <?php
 
 /**
- *
- * @author    claus.schunk@4fb.de
- * @author    marcus.gnass@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license   http://www.contenido.org/license/LIZENZ.txt
- * @link      http://www.4fb.de
- * @link      http://www.contenido.org
+ * @author     claus.schunk@4fb.de
+ * @author     marcus.gnass@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
- *
  * @author claus.schunk@4fb.de
- * @author marcus.gnass@4fb.de
+ * @author     marcus.gnass@4fb.de
  */
 class ItemTest extends cTestingTestCase
 {
@@ -64,7 +62,8 @@ class ItemTest extends cTestingTestCase
         $this->_testItemNonVirgin = new TestItem();
         $this->_testItemNonVirgin->setLoaded(true);
         $this->_testItemNonVirgin->values = [
-            'foo'  => 'bar',
+            'ID' => 123,
+            'foo' => 'bar',
             'spam' => 'eggs',
         ];
 
@@ -138,7 +137,7 @@ class ItemTest extends cTestingTestCase
     {
         $this->_testItemVirgin->loadByMany(
             [
-                'ID'          => '1',
+                'ID' => '1',
                 'CountryCode' => 'AFG',
             ]
         );
@@ -153,7 +152,7 @@ class ItemTest extends cTestingTestCase
     {
         $this->_testItemVirgin->loadByMany(
             [
-                'ID'          => '1',
+                'ID' => '1',
                 'CountryCode' => 'AFG',
             ],
             true
@@ -169,7 +168,7 @@ class ItemTest extends cTestingTestCase
     {
         $this->_testItemVirgin->loadByMany(
             [
-                'ID'          => '1',
+                'ID' => '1',
                 'CountryCode' => 'AFG',
             ],
             false
@@ -207,6 +206,24 @@ class ItemTest extends cTestingTestCase
     }
 
     /**
+     * Test getting id of virgin item.
+     */
+    public function testGetIdVirgin()
+    {
+        $act = $this->_testItemVirgin->getId();
+        $this->assertSame($act, false);
+    }
+
+    /**
+     * Test getting id of non-virgin item.
+     */
+    public function testGetIdNonVirgin()
+    {
+        $act = $this->_testItemNonVirgin->getId();
+        $this->assertSame($act, 123);
+    }
+
+    /**
      * Test getting field of virgin item.
      */
     public function testGetFieldVirgin()
@@ -217,7 +234,7 @@ class ItemTest extends cTestingTestCase
     }
 
     /**
-     * Test getting field of non virgin item.
+     * Test getting field of non-virgin item.
      */
     public function testGetFieldNonVirgin()
     {
@@ -227,13 +244,11 @@ class ItemTest extends cTestingTestCase
     }
 
     /**
-     * Test getting none existing field of non virgin item.
+     * Test getting none existing field of non-virgin item.
      */
     public function testGetFieldNonVirginMissing()
     {
-        // TODO This should work but it doesn't
-        //$this->expectNoticeMessage('Undefined index: bar');
-        $this->expectNotice();
+        $this->expectWarning();
         $this->_testItemNonVirgin->getField('bar');
     }
 
@@ -415,7 +430,6 @@ class ItemTest extends cTestingTestCase
 }
 
 /**
- *
  * @author marcus.gnass@4fb.de
  */
 class DummyItem extends Item

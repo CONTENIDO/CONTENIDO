@@ -13,13 +13,13 @@
  * - {_JS_HEAD_CONTENIDO_}:  Default script tags to load core JS files
  * - {_JS_HEAD_CONTENIDO_FULLHTML_}:  Default script tags with full URL to contenido backend
  *
- * @package          Core
- * @subpackage       Chain
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Chain
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -28,7 +28,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Does some replacements in the given template.
  * Replaces some CONTENIDO specific placeholders against their values.
  *
- * @param string    $template
+ * @param string $template
  *         Template string to preprocess
  * @param cTemplate $templateObj
  *         The current template instance
@@ -37,7 +37,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @throws cInvalidArgumentException
  */
-function cecParseTemplate($template, cTemplate $templateObj) {
+function cecParseTemplate($template, cTemplate $templateObj)
+{
 
     global $frame;
 
@@ -48,9 +49,11 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     $prefix = "\n    ";
 
     $cfg = cRegistry::getConfig();
-    $sessid = (string) cRegistry::getBackendSessionId();
+    $sessid = (string)cRegistry::getBackendSessionId();
     $backendPath = cRegistry::getBackendUrl();
     $backendLang = cRegistry::getBackendLanguage();
+    $area = cRegistry::getArea();
+
     // Fixme: Creates an error on backend login form, since we have no language there, see main.loginform.php
     // $oLanguage = cRegistry::getLanguage();
     // $encoding = $oLanguage->get("encoding");
@@ -79,19 +82,32 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     (function(Con, $) {
         Con.sid = "' . $sessid . '";
         $.extend(Con.cfg, {
-            urlBackend: "' .  $backendPath . '",
+            urlBackend: "' . $backendPath . '",
             urlHelp: "' . $urlHelp . '",
             belang: "' . $backendLang . '",
+            area: "' . ($area ?? '') . '",
             frame: ' . $frameNr . '
         });
     })(Con, Con.$);
     </script>';
 
+    // Anonymous function to deal with the '{basePath}' prefix
+    $assetBackendFn = function ($file) {
+        if (strpos($file, '{basePath}') === 0) {
+            $file = str_replace('{basePath}', '', $file);
+            $file = cAsset::backend($file);
+            return '{basePath}' . $file;
+        } else {
+            return cAsset::backend($file);
+        }
+    };
+
     // Default CSS styles
     $cssHeadCon = '';
     $files = $cfg['backend_template']['css_files'];
     foreach ($files as $file) {
-        $cssHeadCon .= $prefix . '<link rel="stylesheet" type="text/css" href="' . $file . '">';
+        $file = $assetBackendFn($file);
+        $cssHeadCon .= $prefix . cHTMLLinkTag::stylesheet($file);
     }
     $cssHeadCon = $prefix . "<!-- CSS -->" . $cssHeadCon . $prefix . "<!-- /CSS -->";
 
@@ -103,7 +119,8 @@ function cecParseTemplate($template, cTemplate $templateObj) {
             $jsHeadCon .= $jsConfiguration;
             $jsConfigurationAdded = true;
         } else {
-            $jsHeadCon .= $prefix . '<script type="text/javascript" src="' . $file . '"></script>';
+            $file = $assetBackendFn($file);
+            $jsHeadCon .= $prefix . cHTMLScript::external($file);
         }
     }
 
@@ -114,7 +131,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     $jsHeadCon = $prefix . "<!-- JS -->" . $jsHeadCon . $prefix . "<!-- /JS -->";
 
     // Placeholders to replace
-    $replacements = array(
+    $replacements = [
         '_SID_' => $sessid,
         '_PATH_CONTENIDO_FULLHTML_' => $backendPath,
         '_META_HEAD_CONTENIDO_' => $metaCon,
@@ -122,7 +139,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
         '_CSS_HEAD_CONTENIDO_FULLHTML_' => str_replace('{basePath}', $backendPath, $cssHeadCon),
         '_JS_HEAD_CONTENIDO_' => str_replace('{basePath}', '', $jsHeadCon),
         '_JS_HEAD_CONTENIDO_FULLHTML_' => str_replace('{basePath}', $backendPath, $jsHeadCon),
-    );
+    ];
 
     // Loop through all replacements and replace keys which are not in needles but found
     // in the template
@@ -132,6 +149,11 @@ function cecParseTemplate($template, cTemplate $templateObj) {
             $template = str_replace($placeholder, $value, $template);
         }
     }
+
+    // Replace all asset marker like {_ASSET(scripts/rowMark.js)_}
+    $template = preg_replace_callback('#{_ASSET\((.*)\)_}#', function ($matches) {
+        return cAsset::backend($matches[1]);
+    }, $template);
 
     return $template;
 

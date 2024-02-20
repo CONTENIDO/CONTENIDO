@@ -1,23 +1,23 @@
 <?php
+
 /**
  * Plugin Advanced Mod Rewrite initialization file.
  *
  * This file will be included by CONTENIDO plugin loader routine, and the content
  * of this file ensures that the AMR Plugin will be initialized correctly.
  *
- * @package     Plugin
- * @subpackage  ModRewrite
- * @id          $Id$:
- * @author      Murat Purc <murat@purc.de>
- * @copyright   four for business AG <www.4fb.de>
- * @license     http://www.contenido.org/license/LIZENZ.txt
- * @link        http://www.4fb.de
- * @link        http://www.contenido.org
+ * @package    Plugin
+ * @subpackage ModRewrite
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $_cecRegistry, $cfg, $contenido, $area, $client, $load_client;
+global $_cecRegistry, $cfg, $lngAct, $load_client;
 
 ####################################################################################################
 /**
@@ -36,52 +36,59 @@ global $_cecRegistry, $cfg, $contenido, $area, $client, $load_client;
  */
 
 ####################################################################################################
-// initialize client id
-if (isset($client) && (int) $client > 0) {
-    $clientId = (int) $client;
-} elseif (isset($load_client) && (int) $load_client > 0) {
-    $clientId = (int) $load_client;
+
+$contenido = cRegistry::getBackendSessionId();
+$area = cRegistry::getArea();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+
+// Initialize client id
+if (isset($client) && (int)$client > 0) {
+    $clientId = (int)$client;
+} elseif (isset($load_client) && (int)$load_client > 0) {
+    $clientId = (int)$load_client;
 } else {
     $clientId = '';
 }
 
-// include necessary sources, setup autoloader for plugin
-// @todo Use config variables for $pluginClassPath below!
-$pluginClassPath = 'contenido/plugins/mod_rewrite/classes/';
-cAutoload::addClassmapConfig(array(
-    'ModRewrite_ControllerAbstract' => $pluginClassPath . 'controller/class.modrewrite_controller_abstract.php',
-    'ModRewrite_ContentController' => $pluginClassPath . 'controller/class.modrewrite_content_controller.php',
-    'ModRewrite_ContentExpertController' => $pluginClassPath . 'controller/class.modrewrite_contentexpert_controller.php',
-    'ModRewrite_ContentTestController' => $pluginClassPath . 'controller/class.modrewrite_contenttest_controller.php',
-    'ModRewriteBase' => $pluginClassPath . 'class.modrewritebase.php',
-    'ModRewrite' => $pluginClassPath . 'class.modrewrite.php',
-    'ModRewriteController' => $pluginClassPath . 'class.modrewritecontroller.php',
-    'ModRewriteDebugger' => $pluginClassPath . 'class.modrewritedebugger.php',
-    'ModRewriteTest' => $pluginClassPath . 'class.modrewritetest.php',
-    'ModRewriteUrlStack' => $pluginClassPath . 'class.modrewriteurlstack.php',
-    'ModRewriteUrlUtil' => $pluginClassPath . 'class.modrewriteurlutil.php'
-));
-unset($pluginClassPath);
-plugin_include('mod_rewrite', 'includes/functions.mod_rewrite.php');
+$pluginName = basename(dirname(__DIR__, 1));
 
-global $lngAct;
+$cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
-$lngAct['mod_rewrite']['mod_rewrite'] = i18n('Advanced Mod Rewrite', 'mod_rewrite');
-$lngAct['mod_rewrite']['mod_rewrite_expert'] = i18n('Advanced Mod Rewrite functions', 'mod_rewrite');
-$lngAct['mod_rewrite']['mod_rewrite_test'] = i18n('Advanced Mod Rewrite test', 'mod_rewrite');
+// Plugin configuration
+$cfg['pi_mod_rewrite'] = [
+    'pluginName' => $pluginName,
+];
 
-// set debug configuration
-if (isset($contenido)) {
-    ModRewriteDebugger::setEnabled(true);
-} else {
-    ModRewriteDebugger::setEnabled(false);
-}
+// Plugin translation for usage in backend areas (menus, right, etc.)
+$lngAct[$pluginName]['mod_rewrite'] = i18n('Advanced Mod Rewrite', $pluginName);
+$lngAct[$pluginName]['mod_rewrite_expert'] = i18n('Advanced Mod Rewrite functions', $pluginName);
+$lngAct[$pluginName]['mod_rewrite_test'] = i18n('Advanced Mod Rewrite test', $pluginName);
 
-// initialize mr plugin
+// Include necessary sources, Setup autoloader for plugin
+$pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
+cAutoload::addClassmapConfig([
+    'ModRewrite_ControllerAbstract' => $pluginClassesPath . '/controller/class.modrewrite_controller_abstract.php',
+    'ModRewrite_ContentController' => $pluginClassesPath . '/controller/class.modrewrite_content_controller.php',
+    'ModRewrite_ContentExpertController' => $pluginClassesPath . '/controller/class.modrewrite_contentexpert_controller.php',
+    'ModRewrite_ContentTestController' => $pluginClassesPath . '/controller/class.modrewrite_contenttest_controller.php',
+    'ModRewriteBase' => $pluginClassesPath . '/class.modrewritebase.php',
+    'ModRewrite' => $pluginClassesPath . '/class.modrewrite.php',
+    'ModRewriteController' => $pluginClassesPath . '/class.modrewritecontroller.php',
+    'ModRewriteDebugger' => $pluginClassesPath . '/class.modrewritedebugger.php',
+    'ModRewriteTest' => $pluginClassesPath . '/class.modrewritetest.php',
+    'ModRewriteUrlStack' => $pluginClassesPath . '/class.modrewriteurlstack.php',
+    'ModRewriteUrlUtil' => $pluginClassesPath . '/class.modrewriteurlutil.php'
+]);
+
+plugin_include($pluginName, 'includes/functions.mod_rewrite.php');
+
+// Set debug configuration
+ModRewriteDebugger::setEnabled(!empty(cRegistry::getBackendSessionId()));
+
+// Initialize mr plugin
 ModRewrite::initialize($clientId);
 
 if (ModRewrite::isEnabled()) {
-
     $aMrCfg = ModRewrite::getConfig();
 
     $_cecRegistry = cApiCecRegistry::getInstance();
@@ -122,18 +129,21 @@ if (ModRewrite::isEnabled()) {
     // Add sync article function to CONTENIDO Extension Chainer
     $_cecRegistry->addChainFunction('Contenido.Article.conSyncArticle_AfterInsert', 'mr_conSyncArticle');
 
-    if (!isset($contenido)) {
-        // we are not in backend, add cec functions for rewriting
+    if (!cRegistry::getBackendSessionId()) {
+        // We are not in backend, add cec functions for rewriting
 
-        if ((int)$_GET['idart'] == 0 && (int)$_GET['idcat'] == 0 && (int)$_POST['idart'] == 0 && (int)$_POST['idcat'] == 0) {
-            // submitted idart and idcat vars has a higher priority than submitted seo url
+        $requestIdArt = cRegistry::getArticleId($_REQUEST['idart'] ?? '0');
+        $requestIdCat = cRegistry::getArticleId($_REQUEST['idcat'] ?? '0');
+
+        if ($requestIdArt <= 0 && $requestIdCat <= 0) {
+            // Submitted idart and idcat vars have a higher priority than submitted seo url
             // Add mr related function for hook "after plugins loaded" to CONTENIDO Extension Chainer
             $_cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'mr_runFrontendController');
         }
 
-        // overwrite url builder configuration with own url builder
+        // Overwrite url builder configuration with own url builder
         $cfg['url_builder']['name'] = 'MR';
-        $cfg['config'] = array();
+        $cfg['config'] = [];
         cUriBuilderConfig::setConfig($cfg['url_builder']);
 
         if ($aMrCfg['rewrite_urls_at_congeneratecode'] == 1) {
@@ -149,19 +159,19 @@ if (ModRewrite::isEnabled()) {
     }
 }
 
-if (isset($contenido) && isset($area) && $area == 'mod_rewrite_test') {
-    // configure url builder to enable it on test page
+if (cRegistry::getBackendSessionId() && $area === 'mod_rewrite_test') {
+    // Configure url builder to enable it on test page
     $cfg['url_builder']['name'] = 'MR';
-    $cfg['config'] = array();
+    $cfg['config'] = [];
     cUriBuilderConfig::setConfig($cfg['url_builder']);
     ModRewrite::setEnabled(true);
 }
 
-//activate the plugin in the meta section to display the correct link
-if (isset($contenido) && isset($area) && $area == 'con_meta' && ModRewrite::isEnabled()) {
+// Activate the plugin in the meta section to display the correct link
+if (cRegistry::getBackendSessionId() && $area === 'con_meta' && ModRewrite::isEnabled()) {
     $cfg['url_builder']['name'] = 'MR';
-    $cfg['config'] = array();
+    $cfg['config'] = [];
     cUriBuilderConfig::setConfig($cfg['url_builder']);
 }
 
-unset($clientId);
+unset($pluginName, $pluginClassesPath, $clientId);

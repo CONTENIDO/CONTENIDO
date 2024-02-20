@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the Collection management class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Newsletter
- * @author Bjoern Behrens
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,38 +17,42 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Collection management class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Newsletter
  * @method NewsletterJob createNewItem
- * @method NewsletterJob next
+ * @method NewsletterJob|bool next
  */
-class NewsletterJobCollection extends ItemCollection {
+class NewsletterJobCollection extends ItemCollection
+{
+
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg["tab"]["news_jobs"], "idnewsjob");
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('news_jobs'), 'idnewsjob');
         $this->_setItemClass("NewsletterJob");
     }
 
     /**
      * Creates a newsletter job
      *
-     * @param        $iIDNews
-     * @param        $iIDCatArt
+     * @param int    $iIDNews
+     * @param int    $iIDCatArt
      * @param string $sName
      *
      * @return bool|Item
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($iIDNews, $iIDCatArt, $sName = "") {
+    public function create($iIDNews, $iIDCatArt, $sName = "")
+    {
+        $cfg = cRegistry::getConfig();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $auth = cRegistry::getAuth();
 
-        global $client, $lang, $cfg, $cfgClient, $auth;
         $oNewsletter = new Newsletter();
         if ($oNewsletter->loadByPrimaryKey($iIDNews)) {
             $iIDNews = cSecurity::toInteger($iIDNews);
@@ -114,15 +119,15 @@ class NewsletterJobCollection extends ItemCollection {
 
                     // Replace plugin tags by simple MAIL_ tags
                     if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
-                        if (is_array($cfg['plugins']['recipients'])) {
+                        if (cHasPlugins('recipients')) {
+                            cIncludePlugins('recipients');
                             foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-                                plugin_include("recipients", $sPlugin . "/" . $sPlugin . ".php");
-                                if (function_exists("recipients_" . $sPlugin . "_wantedVariables")) {
-                                    $aPluginVars = array();
-                                    $aPluginVars = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
-
-                                    foreach ($aPluginVars as $sPluginVar) {
-                                        $oNewsletter->_replaceTag($sMessageHTML, true, $sPluginVar, "MAIL_" . cString::toUpperCase($sPluginVar));
+                                if (function_exists('recipients_' . $sPlugin . '_wantedVariables')) {
+                                    $wantVariables = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
+                                    if (is_array($wantVariables)) {
+                                        foreach ($wantVariables as $sPluginVar) {
+                                            $oNewsletter->_replaceTag($sMessageHTML, true, $sPluginVar, "MAIL_" . cString::toUpperCase($sPluginVar));
+                                        }
                                     }
                                 }
                             }
@@ -151,7 +156,7 @@ class NewsletterJobCollection extends ItemCollection {
             $oItem->set("dispatch_delay", $oNewsletter->get("dispatch_delay"));
 
             // Store "send to" info in serialized array (just info)
-            $aSendInfo = array();
+            $aSendInfo = [];
             $aSendInfo[] = $oNewsletter->get("send_to");
 
             switch ($oNewsletter->get("send_to")) {
@@ -207,8 +212,8 @@ class NewsletterJobCollection extends ItemCollection {
             $oItem->set("rcpcount", $iRecipientCount);
             $oItem->set("sendcount", 0);
             $oItem->set("status", 1); // Waiting for sending; note, that status
-                                      // will be set to 9, if $iRecipientCount =
-                                      // 0 in store() method
+            // will be set to 9, if $iRecipientCount =
+            // 0 in store() method
 
             $oItem->store();
 
@@ -223,9 +228,11 @@ class NewsletterJobCollection extends ItemCollection {
      * logs table
      * before deleting newsletter job
      *
-     * @param $iItemID int specifies the frontend user group
+     * @param int $iItemID Specifies the frontend user group
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function delete($iItemID) {
+    public function delete($iItemID)
+    {
         $oLogs = new NewsletterLogCollection();
         $oLogs->delete($iItemID);
 
@@ -237,18 +244,19 @@ class NewsletterJobCollection extends ItemCollection {
 /**
  * Single NewsletterJob Item
  */
-class NewsletterJob extends Item {
+class NewsletterJob extends Item
+{
+
     /**
      * Constructor Function
      *
      * @param mixed $mId Specifies the ID of item to load
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg["tab"]["news_jobs"], "idnewsjob");
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('news_jobs'), 'idnewsjob');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -256,12 +264,15 @@ class NewsletterJob extends Item {
 
     /**
      * @return int
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function runJob() {
-        global $cfg, $recipient;
+    public function runJob(): int
+    {
+        global $recipient;
 
+        $cfg = cRegistry::getConfig();
+
+        $oLogs = null;
         $iCount = 0;
         if ($this->get("status") == 2) {
             // Job is currently running, check start time and restart if
@@ -291,20 +302,10 @@ class NewsletterJob extends Item {
             $this->set("started", date("Y-m-d H:i:s"), false);
             $this->store();
 
-            // Initialization
-            $aMessages = array();
-
-            $oLanguage = new cApiLanguage($this->get("idlang"));
-            $sFormatDate = $oLanguage->getProperty("dateformat", "date");
-            $sFormatTime = $oLanguage->getProperty("dateformat", "time");
-            unset($oLanguage);
-
-            if ($sFormatDate == "") {
-                $sFormatDate = "%d.%m.%Y";
-            }
-            if ($sFormatTime == "") {
-                $sFormatTime = "%H:%M";
-            }
+            /** @var PiNewsletter $plugin */
+            $plugin = cRegistry::getAppVar('pluginNewsletter');
+            $sFormatDate = $plugin->getDateFormat(cSecurity::toInteger($this->get('idlang')));
+            $sFormatTime = $plugin->getTimeFormat(cSecurity::toInteger($this->get('idlang')));
 
             // Get newsletter data
             $sFrom = $this->get("newsfrom");
@@ -326,28 +327,25 @@ class NewsletterJob extends Item {
 
             // Single replacements
             // Replace message tags (text message)
-            $sMessageText = str_replace("MAIL_DATE", strftime($sFormatDate, $dNewsDate), $sMessageText);
-            $sMessageText = str_replace("MAIL_TIME", strftime($sFormatTime, $dNewsDate), $sMessageText);
+            $sMessageText = str_replace("MAIL_DATE", cDate::formatToDate($sFormatDate, $dNewsDate), $sMessageText);
+            $sMessageText = str_replace("MAIL_TIME", cDate::formatToDate($sFormatTime, $dNewsDate), $sMessageText);
             $sMessageText = str_replace("MAIL_NUMBER", $this->get("rcpcount"), $sMessageText);
 
             // Replace message tags (html message)
             if ($bIsHTML) {
-                $sMessageHTML = str_replace("MAIL_DATE", strftime($sFormatDate, $dNewsDate), $sMessageHTML);
-                $sMessageHTML = str_replace("MAIL_TIME", strftime($sFormatTime, $dNewsDate), $sMessageHTML);
+                $sMessageHTML = str_replace("MAIL_DATE", cDate::formatToDate($sFormatDate, $dNewsDate), $sMessageHTML);
+                $sMessageHTML = str_replace("MAIL_TIME", cDate::formatToDate($sFormatTime, $dNewsDate), $sMessageHTML);
                 $sMessageHTML = str_replace("MAIL_NUMBER", $this->get("rcpcount"), $sMessageHTML);
             }
 
-            // Enabling plugin interface
-            $bPluginEnabled = false;
+            // Plugin interface
+            $aPlugins = [];
             if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
-                $bPluginEnabled = true;
-                $aPlugins = array();
-
-                if (is_array($cfg['plugins']['recipients'])) {
+                if (cHasPlugins('recipients')) {
+                    cIncludePlugins('recipients');
                     foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-                        plugin_include("recipients", $sPlugin . "/" . $sPlugin . ".php");
-                        if (function_exists("recipients_" . $sPlugin . "_wantedVariables")) {
-                            $aPlugins[$sPlugin] = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
+                        if (function_exists('recipients_' . $sPlugin . '_wantedVariables')) {
+                            $aPlugins[$sPlugin] = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
                         }
                     }
                 }
@@ -391,7 +389,7 @@ class NewsletterJob extends Item {
                 }
 
                 if (cString::getStringLength($sKey) == 30) { // Prevents sending without having a
-                                           // key
+                    // key
                     $sRcpMsgText = str_replace("{KEY}", $sKey, $sRcpMsgText);
                     $sRcpMsgText = str_replace("MAIL_MAIL", $sEMail, $sRcpMsgText);
                     $sRcpMsgText = str_replace("MAIL_NAME", $oLog->get("rcpname"), $sRcpMsgText);
@@ -403,9 +401,8 @@ class NewsletterJob extends Item {
                         $sRcpMsgHTML = str_replace("MAIL_NAME", $oLog->get("rcpname"), $sRcpMsgHTML);
                     }
 
-                    if ($bPluginEnabled) {
-                        // Don't change name of $recipient variable as it is
-                        // used in plugins!
+                    if (count($aPlugins)) {
+                        // Don't change name of $recipient variable as it is used in plugins!
                         $recipient = new NewsletterRecipient();
                         $recipient->loadByPrimaryKey($oLog->get("idnewsrcp"));
 
@@ -475,7 +472,7 @@ class NewsletterJob extends Item {
                 $oLogs->setLimit(0, $this->get("dispatch_count"));
                 $oLogs->query();
 
-                If ($oLogs->next()) {
+                if ($oLogs->next()) {
                     // Remaining recipients found, set job back to pending
                     $this->set("status", 1);
                     $this->set("started", "0000-00-00 00:00:00", false);
@@ -496,9 +493,13 @@ class NewsletterJob extends Item {
     }
 
     /**
-     * Overriden store() method to set status to finished if rcpcount is 0
+     * Overridden store() method to set status to finished if rcpcount is 0.
+     *
+     * @return bool
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function store() {
+    public function store(): bool
+    {
         if ($this->get("rcpcount") == 0) {
             // No recipients, job finished
             $this->set("status", 9);

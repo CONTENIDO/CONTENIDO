@@ -7,15 +7,15 @@
  * @subpackage Util
  * @author     marcus.gnass
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
  * This class tests the static class methods of the cArray util class.
  *
- * @author marcus.gnass
+ * @author     marcus.gnass
  */
 class cArrayTest extends cTestingTestCase
 {
@@ -44,12 +44,12 @@ class cArrayTest extends cTestingTestCase
 
         // nonempty array
         $data = explode(',', 'foo , bar, baz ');
-        $exp  = explode(',', 'foo,bar,baz');
+        $exp = explode(',', 'foo,bar,baz');
         $this->assertSame($exp, cArray::trim($data));
 
         // nonempty array with arbitrary character
         $data = explode(',', 'foo,bar,baz');
-        $exp  = explode(',', 'foo,ar,az');
+        $exp = explode(',', 'foo,ar,az');
         $this->assertSame($exp, cArray::trim($data, 'b'));
     }
 
@@ -107,14 +107,14 @@ class cArrayTest extends cTestingTestCase
         $this->assertSame(3, cArray::searchRecursive($data, 'false'));
         $this->assertSame(4, cArray::searchRecursive($data, 'foo'));
         $this->assertSame(5, cArray::searchRecursive($data, 'bar'));
-        // 'ba' equals 0!
-        $this->assertSame(9, cArray::searchRecursive($data, 'ba'));
+        // 'ba' does not exist
+        $this->assertSame(false, cArray::searchRecursive($data, 'ba'));
         // NULL equals ''!
         $this->assertSame(7, cArray::searchRecursive($data, null));
-        // 0 equals 'NULL'!
-        $this->assertSame(0, cArray::searchRecursive($data, 0));
-        // 0.0 equals 'NULL'!
-        $this->assertSame(0, cArray::searchRecursive($data, 0.0));
+        // 0 is in $data[[1 => '0']];
+        $this->assertSame(1, cArray::searchRecursive($data, 0));
+        // 0.0 equals '0', is in is in $data[[1 => '0']];
+        $this->assertSame(1, cArray::searchRecursive($data, 0.0));
         // false equals '0'!
         $this->assertSame(1, cArray::searchRecursive($data, false));
         $this->assertSame(7, cArray::searchRecursive($data, ''));
@@ -201,22 +201,22 @@ class cArrayTest extends cTestingTestCase
     public function testCsort()
     {
         // source data
-        $tr_31_we  = [
+        $tr_31_we = [
             'name' => 'Trautmann',
-            'age'  => '31',
+            'age' => '31',
             'town' => 'Weitengesäß',
         ];
-        $zi_23_ba  = [
+        $zi_23_ba = [
             'name' => 'Ziegler',
-            'age'  => '23',
+            'age' => '23',
             'town' => 'Bad Nauheim',
         ];
         $gn_142_of = [
             'name' => 'Gnaß',
-            'age'  => '142',
+            'age' => '142',
             'town' => 'Offenbach am Main',
         ];
-        $src       = [
+        $src = [
             $tr_31_we,
             $zi_23_ba,
             $gn_142_of,
@@ -339,7 +339,7 @@ class cArrayTest extends cTestingTestCase
 
         $data = null;
         $this->assertSame($data, cArray::csort($data, 'town', SORT_STRING));
-   }
+    }
 
     /**
      * Tests initializing of array values in empty and nonempty array, with

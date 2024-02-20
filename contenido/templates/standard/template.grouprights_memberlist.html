@@ -5,21 +5,21 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
-    <script type="text/javascript" src="scripts/infoBox.js"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/infoBox.js)_}"></script>
     <script type="text/javascript">
     Con.getFrame('left_bottom').location.reload();
     </script>
 </head>
-<body style="margin:10px">
+<body class="page_generic">
 
 {FORM}
 <div style="height:10px;"></div>
 <table id="stats" class="generic" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
     <tr class="{ROWNAME} {CLASS}" style="background-color: {BGCOLOR};">
-        <td valign="top" style="padding-left:{PADDING_LEFT}px">{CATNAME}</td>
-        <td valign="top" style="" align="left">{CATFIELD}</td>
+        <td class="align_top" style="padding-left:{PADDING_LEFT}px">{CATNAME}</td>
+        <td class="align_top text_left">{CATFIELD}</td>
     </tr>
     <!-- END:BLOCK -->
 </table>

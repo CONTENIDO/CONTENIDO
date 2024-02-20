@@ -1,21 +1,22 @@
 <?php
+
 /**
  * This module handles the content of the title element.
  *
- * @package Module
+ * @package    Module
  * @subpackage HeadTitle
- * @author dominik.ziegler@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     dominik.ziegler@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
-$breadcrumb = array();
+$breadcrumb = [];
 
 // get category path
 $helper = cCategoryHelper::getInstance();
-foreach ($helper->getCategoryPath(cRegistry::getCategoryId(), 1) as $categoryLang) {
+foreach ($helper->getCategoryPath(cRegistry::getCategoryId()) as $categoryLang) {
     $breadcrumb[] = $categoryLang->get('name');
 }
 

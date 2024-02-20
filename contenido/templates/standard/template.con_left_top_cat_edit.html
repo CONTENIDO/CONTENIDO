@@ -1,26 +1,28 @@
+<!--
+data-action handler are defined in template.con_left_top.html.
+-->
 <div style="height:110px;padding-top:5px; padding-left: 17px; margin-bottom:-1px;">
     i18n("Template:")<br>
-    <div class="vAlignMiddle">
+    <div class="align_middle">
         {TEMPLATE_SELECT}
-        <a class="vAlignMiddle" style="display: inline-block;" id="changetpl" href="#"><img class="vAlignMiddle" src="images/submit.gif" alt=""></a><br>
+        <a class="con_img_button" data-action="change_category_template" href="javascript:void(0)"><img class="align_middle" src="images/submit.gif" alt=""></a><br>
     </div>
-    <div style="margin: 5px 0 5px 0;">
-        <div id="oTemplatecfg_label">
-            <a href="javascript:configureCategory();">
-                <img class="vAlignMiddle" id="oTemplatecfg" vspace="3" hspace="2" src="images/but_cat_conf2.gif" title="i18n("Configure category")" alt="i18n("Configure Category")">
+    <div class="mgt5 mgb5">
+        <div id="oTemplatecfg_label" class="mgb5" data-action="configure_category">
+            <a class="con_func_button" href="javascript:void(0)">
+                <img class="_align_middle" id="oTemplatecfg" src="images/but_cat_conf2.gif" title="i18n("Configure category")" alt="i18n("Configure Category")">
+                i18n("Configure category")
             </a>
-            <a href="javascript:configureCategory();">i18n("Configure category")</a>
         </div>
-        <div id="oOnline_label">
-            <a href="#">
-                <img class="vAlignMiddle" id="oOnline" src="images/offline.gif" vspace="2" hspace="2" title="i18n("Online / Offline")" alt="i18n("Online / Offline")">
-            i18n("Online / Offline")
+        <div id="oOnline_label" class="mgb5" data-action="change_category_online_state">
+            <a class="con_func_button" href="javascript:void(0)">
+                <img class="align_middle_" id="oOnline" src="images/offline.gif" title="i18n("Online / Offline")" alt="i18n("Online / Offline")">
+                i18n("Online / Offline")
             </a>
-
         </div>
-        <div id="oLock_label">
-            <a href="#">
-                <img class="vAlignMiddle" id="oLock" src="images/folder_lock.gif" vspace="2" hspace="2"  title="i18n("Lock / Unlock")" alt="i18n("Lock / Unlock")">
+        <div id="oLock_label" data-action="change_category_lock_state">
+            <a class="con_func_button" href="javascript:void(0)">
+                <img class="align_middle_" id="oLock" src="images/folder_lock.gif" title="i18n("Lock / Unlock")" alt="i18n("Lock / Unlock")">
                 i18n("Lock / Unlock")
             </a>
             <br>

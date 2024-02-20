@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLCheckbox class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLCheckbox class represents a checkbox.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLCheckbox extends cHTMLFormElement {
+class cHTMLCheckbox extends cHTMLFormElement
+{
 
     /**
      * Values for the check box
@@ -36,6 +36,13 @@ class cHTMLCheckbox extends cHTMLFormElement {
      * @var string
      */
     protected $_labelText;
+
+    /**
+     * HTML markup to append to the checkbox
+     *
+     * @var string
+     */
+    protected $_markupToAppend;
 
     /**
      * Constructor to create an instance of this class.
@@ -59,7 +66,10 @@ class cHTMLCheckbox extends cHTMLFormElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $value, $id = '', $checked = false, $disabled = false, $tabindex = null, $accesskey = '', $class = '') {
+    public function __construct(
+        $name, $value, $id = '', $checked = false, $disabled = false, $tabindex = null, $accesskey = '', $class = ''
+    )
+    {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'input';
         $this->_value = $value;
@@ -78,7 +88,8 @@ class cHTMLCheckbox extends cHTMLFormElement {
      * @return cHTMLCheckbox
      *         $this for chaining
      */
-    public function setChecked($checked) {
+    public function setChecked($checked): cHTMLCheckbox
+    {
         // NOTE: We use toBoolean() because of downwards compatibility.
         // The variable was of type string before 4.10.2!
         $checked = cSecurity::toBoolean($checked);
@@ -99,9 +110,24 @@ class cHTMLCheckbox extends cHTMLFormElement {
      * @return cHTMLCheckbox
      *         $this for chaining
      */
-    public function setLabelText($text) {
+    public function setLabelText($text): cHTMLCheckbox
+    {
         $this->_labelText = $text;
 
+        return $this;
+    }
+
+    /**
+     * Appends HTML markup to the checkbox.
+     *
+     * @param string $markup
+     *         The HTML markup to append to the checkbox
+     * @return cHTMLCheckbox
+     *         $this for chaining
+     */
+    public function appendMarkup($markup): cHTMLCheckbox
+    {
+        $this->_markupToAppend = $markup;
         return $this;
     }
 
@@ -119,28 +145,32 @@ class cHTMLCheckbox extends cHTMLFormElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHtml($renderLabel = true) {
-        if ($renderLabel !== true) {
+    public function toHtml($renderLabel = true): string
+    {
+        $renderedLabel = '';
+        if ($renderLabel && !empty($this->_labelText)) {
+            // We need the id-attribute render with label
+            $id = $this->getAttribute('id');
+            if (!$id) {
+                $this->advanceID();
+            }
+
+            // Render label
+            $label = new cHTMLLabel($this->_value, $this->getAttribute('id'));
+            $label->setClass($this->getAttribute('class'));
+            if ($this->_labelText != '') {
+                $label->text = $this->_labelText;
+            }
+            $renderedLabel = $label->toHtml();
+        }
+
+        if (!empty($renderedLabel) || !empty($this->_markupToAppend)) {
+            $result = new cHTMLDiv(parent::toHtml() . $renderedLabel . $this->_markupToAppend);
+            $result->setClass('checkbox_wrapper');
+            return $result->render();
+        } else {
             return parent::toHtml();
         }
-
-        // We need the id-attribute render with label
-        $id = $this->getAttribute('id');
-        if (!$id) {
-            $this->advanceID();
-        }
-
-        // Render label
-        $label = new cHTMLLabel($this->_value, $this->getAttribute('id'));
-        $label->setClass($this->getAttribute('class'));
-        if ($this->_labelText != '') {
-            $label->text = $this->_labelText;
-        }
-        $renderedLabel = $label->toHtml();
-
-        $result = new cHTMLDiv(parent::toHtml() . $renderedLabel);
-        $result->setClass('checkbox_wrapper');
-        return $result->render();
     }
 
 }

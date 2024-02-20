@@ -9,15 +9,15 @@
  * @requires   jQuery
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
  * Initialization of CONTENIDO module
  * @param {Object} jQuery  jQuery object
- * @param {Object} scope  The scope, e. g. window
+ * @param {Object} scope  The scope, e.g. window
  * @returns {undefined}
  */
 (function(jQuery, scope) {
@@ -27,7 +27,7 @@
     var NAME = 'contenido';
 
     /**
-     * CONTENIDO class, is available as property Con in global scope, e. g. window.Con!
+     * CONTENIDO class, is available as property Con in global scope, e.g. window.Con!
      * @class  Contenido
      * @static
      */
@@ -180,6 +180,20 @@
             Con.log(["getFrame: Couldn't get frame " + name, e], NAME, 'warn');
             return null;
         }
+    };
+
+    /**
+     * Checks if the desired property (variable, function, object, etc.) exists within a specific frame.
+     *
+     * @since CONTENIDO 4.10.2
+     * @method getFrameProperty
+     * @param {String}  frameName The name of frame to get the property
+     * @param {String } propertyName The name of the property in the frame
+     * @returns {Boolean}
+     */
+    Con.frameHasProperty = function(frameName, propertyName) {
+        var frame = Con.getFrame(frameName);
+        return ($.type(frame) !== 'undefined' && $.type(frame[propertyName]) !== 'undefined');
     };
 
     /**

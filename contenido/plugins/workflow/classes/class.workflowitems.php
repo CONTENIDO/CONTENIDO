@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains the class for workflow item management.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,20 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Class for workflow item management.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
  * @method WorkflowItem createNewItem
- * @method WorkflowItem next
+ * @method WorkflowItem|false next
  */
-class WorkflowItems extends ItemCollection {
+class WorkflowItems extends ItemCollection
+{
     /**
      * Constructor Function
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg["tab"]["workflow_items"], "idworkflowitem");
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('workflow_items'), "idworkflowitem");
         $this->_setItemClass("WorkflowItem");
     }
 
@@ -40,12 +42,12 @@ class WorkflowItems extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function delete($id) {
-        global $cfg;
+    public function delete($id)
+    {
         $item = new WorkflowItem();
         $item->loadByPrimaryKey($id);
-        $pos = (int) $item->get("position");
-        $idworkflow = (int) $item->get("idworkflow");
+        $pos = cSecurity::toInteger($item->get("position"));
+        $idworkflow = cSecurity::toInteger($item->get("idworkflow"));
         $oDb = cRegistry::getDb();
 
         $this->select("position > {$pos} AND idworkflow = {$idworkflow}");
@@ -54,53 +56,52 @@ class WorkflowItems extends ItemCollection {
             $obj->store();
         }
 
-        $aUserSequencesDelete = array();
-        $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem = ' . (int) $id;
-        $oDb->query($sSql);
+        $aUserSequencesDelete = [];
+        $sSql = 'SELECT `idusersequence` FROM `%s` WHERE `idworkflowitem` = %d';
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_user_sequences'), $id);
         while ($oDb->nextRecord()) {
-            $aUserSequencesDelete[] = (int) $oDb->f('idusersequence');
+            $aUserSequencesDelete[] = cSecurity::toInteger($oDb->f('idusersequence'));
         }
 
-        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_actions"] . ' WHERE idworkflowitem = ' . (int) $id;
-        $oDb->query($sSql);
+        $sSql = 'DELETE FROM `%s` WHERE `idworkflowitem` = %d';
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_actions'), $id);
 
         $this->updateArtAllocation($id, 1);
 
         if (count($aUserSequencesDelete) > 0) {
-            $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idusersequence in (' . implode(',', $aUserSequencesDelete) . ')';
-            $oDb->query($sSql);
+            $sSql = 'DELETE FROM `%s` WHERE `idusersequence` IN (' . implode(',', $aUserSequencesDelete) . ')';
+            $oDb->query($sSql, cRegistry::getDbTableName('workflow_user_sequences'));
         }
     }
 
     /**
-     * @param      $idworkflowitem
+     * @param int $idworkflowitem
      * @param bool $delete
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function updateArtAllocation($idworkflowitem, $delete = false) {
-        global $idworkflow, $cfg;
+    public function updateArtAllocation($idworkflowitem, $delete = false)
+    {
+        global $idworkflow;
+
         $oDb = cRegistry::getDb();
 
-        $aUserSequences = array();
-        $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem = ' . (int) $idworkflowitem;
-
-        $oDb->query($sSql);
+        $aUserSequences = [];
+        $sSql = 'SELECT `idusersequence` FROM `%s` WHERE idworkflowitem = %d';
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_user_sequences'), $idworkflowitem);
         while ($oDb->nextRecord()) {
-            $aUserSequences[] = (int) $oDb->f('idusersequence');
+            $aUserSequences[] = cSecurity::toInteger($oDb->f('idusersequence'));
         }
 
-        $aIdArtLang = array();
+        $aIdArtLang = [];
         if (count($aUserSequences) > 0) {
-            $sSql = 'SELECT idartlang FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence in (' . implode(',', $aUserSequences) . ')';
-            $oDb->query($sSql);
+            $sSql = 'SELECT `idartlang` FROM `%s` WHERE `idusersequence` IN (' . implode(',', $aUserSequences) . ')';
+            $oDb->query($sSql, cRegistry::getDbTableName('workflow_art_allocation'));
             while ($oDb->nextRecord()) {
-                $aIdArtLang[] = (int) $oDb->f('idartlang');
+                $aIdArtLang[] = cSecurity::toInteger($oDb->f('idartlang'));
             }
-            $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence in (' . implode(',', $aUserSequences) . ')';
-            $oDb->query($sSql);
+            $sSql = 'DELETE FROM `%s` WHERE `idusersequence` IN (' . implode(',', $aUserSequences) . ')';
+            $oDb->query($sSql, cRegistry::getDbTableName('workflow_art_allocation'));
         }
 
         if ($delete) {
@@ -113,19 +114,18 @@ class WorkflowItems extends ItemCollection {
     }
 
     /**
-     * @param $idworkflow
-     * @param $pos1
-     * @param $pos2
+     * @param int $idworkflow
+     * @param int $pos1
+     * @param int $pos2
      *
      * @return bool
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function swap($idworkflow, $pos1, $pos2) {
-        $idworkflow = (int) $idworkflow;
-        $pos1 = (int) $pos1;
-        $pos2 = (int) $pos2;
+    public function swap($idworkflow, $pos1, $pos2)
+    {
+        $idworkflow = cSecurity::toInteger($idworkflow);
+        $pos1 = cSecurity::toInteger($pos1);
+        $pos2 = cSecurity::toInteger($pos2);
 
         $this->select("idworkflow = {$idworkflow} AND position = {$pos1}");
         if (($item = $this->next()) === false) {
@@ -153,19 +153,18 @@ class WorkflowItems extends ItemCollection {
 
         $this->updateArtAllocation($pos1ID);
         $this->updateArtAllocation($pos2ID);
-        return (true);
+        return true;
     }
 
     /**
-     * @param $idworkflow
+     * @param int $idworkflow
      *
      * @return bool|Item
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idworkflow) {
-        $idworkflow = (int) $idworkflow;
+    public function create($idworkflow)
+    {
+        $idworkflow = cSecurity::toInteger($idworkflow);
 
         $workflows = new Workflows();
         $workflows->select("idworkflow = {$idworkflow}");
@@ -205,34 +204,36 @@ class WorkflowItems extends ItemCollection {
  * Class WorkflowItem
  * Class for a single workflow item
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Workflow
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
+ * @author     Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
- * @copyright four for business 2003
+ * @copyright  four for business 2003
  */
-class WorkflowItem extends Item {
+class WorkflowItem extends Item
+{
 
     /**
      * Constructor Function
+     * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-
-        parent::__construct($cfg["tab"]["workflow_items"], "idworkflowitem");
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('workflow_items'), "idworkflowitem");
     }
 
     /**
-     * @return mixed
-     * @throws cDbException
-     * @throws cException
+     * @return array
+     * @throws cDbException|cException
      */
-    public function getStepRights() {
+    public function getStepRights()
+    {
         $idwfi = $this->values["idworkflowitem"];
         $workflowActions = new WorkflowActions();
 
         $actions = $workflowActions->getAvailableWorkflowActions();
 
+        $rights = [];
         foreach ($actions as $key => $value) {
             $rights[$key] = $workflowActions->get($idwfi, $key);
         }
@@ -247,13 +248,13 @@ class WorkflowItem extends Item {
      *                      function
      * @param string $value Void field since we override the usual setField
      *                      function
-     * @param bool   $safe
+     * @param bool $safe
      *
      * @return bool
-     * @throws cInvalidArgumentException if the field is idsequence, idworkflow
-     *         or position
+     * @throws cInvalidArgumentException|cException
      */
-    public function setField($field, $value, $safe = true) {
+    public function setField($field, $value, $safe = true)
+    {
         if (true !== $this->isLoaded()) {
             $this->lasterror = i18n("No item loaded", "workflow");
             return false;
@@ -273,14 +274,15 @@ class WorkflowItem extends Item {
 
         if ($field == "idtask" && $value != 0) {
             $taskCollection = new WorkflowTasks();
-            $taskCollection->select("idtask = '$value'");
+            $intValue = cSecurity::toInteger($value);
+            $taskCollection->select("idtask = $intValue");
             if ($taskCollection->next() === false) {
                 $this->lasterror = i18n("Requested task doesn't exist, can't assign", "workflow");
                 return false;
             }
         }
 
-        parent::setField($field, $value, $safe);
+        return parent::setField($field, $value, $safe);
     }
 
     /**
@@ -292,16 +294,16 @@ class WorkflowItem extends Item {
      * @param int $idposition Position of workflow item
      *
      * @return bool
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function init($idworkflow, $idposition) {
-        global $cfg;
+    public function init($idworkflow, $idposition)
+    {
+        $idworkflow = cSecurity::toInteger($idworkflow);
+        $idposition = cSecurity::toInteger($idposition);
 
         $workflows = new Workflows();
 
-        $workflows->select("idworkflow = '$idworkflow'");
+        $workflows->select("idworkflow = $idworkflow");
 
         if ($workflows->next() === false) {
             $this->lasterror = i18n("Workflow doesn't exist", "workflow");
@@ -309,7 +311,7 @@ class WorkflowItem extends Item {
         }
 
         $workflowItems = new WorkflowItems();
-        $workflowItems->select("position = '$idposition' AND idworkflow = '$idworkflow'");
+        $workflowItems->select("position = $idposition AND idworkflow = $idworkflow");
         if ($workflowItems->next()) {
             $this->lasterror = i18n("Position in this workflow already exists.", "workflow");
             return false;
@@ -329,11 +331,11 @@ class WorkflowItem extends Item {
      * @param int $idposition The new position ID
      *
      * @return bool
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function setPosition($idposition) {
-        parent::setField("position", $idposition);
+    public function setPosition($idposition)
+    {
+        parent::setField("position", cSecurity::toInteger($idposition));
         $this->store();
         return true;
     }

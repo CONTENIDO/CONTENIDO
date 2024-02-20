@@ -1,17 +1,17 @@
 <?php
 
 /**
- *
- * @author    claus.schunk@4fb.de
- * @author    marcus.gnass@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license   http://www.contenido.org/license/LIZENZ.txt
- * @link      http://www.4fb.de
- * @link      http://www.contenido.org
+ * @package    Testing
+ * @subpackage GUI_HTML
+ * @author     claus.schunk@4fb.de
+ * @author     marcus.gnass@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
- *
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  */
@@ -52,10 +52,10 @@ class cHTMLSelectElementTest extends cTestingTestCase
     protected function setUp(): void
     {
         $this->_selectEmpty = new cHTMLSelectElement('empty');
-        $this->_selectData  = new cHTMLSelectElement('testName');
-        $this->_foo         = new cHTMLOptionElement('', 'foo');
-        $this->_bar         = new cHTMLOptionElement('', 'bar');
-        $this->_baz         = new cHTMLOptionElement('', 'baz');
+        $this->_selectData = new cHTMLSelectElement('testName');
+        $this->_foo = new cHTMLOptionElement('', 'foo');
+        $this->_bar = new cHTMLOptionElement('', 'bar');
+        $this->_baz = new cHTMLOptionElement('', 'baz');
         $this->_selectData->addOptionElement('foo', $this->_foo);
         $this->_selectData->addOptionElement('bar', $this->_bar);
         $this->_selectData->addOptionElement('baz', $this->_baz);
@@ -118,7 +118,7 @@ class cHTMLSelectElementTest extends cTestingTestCase
     public function testAutoFill()
     {
         $this->_selectData = new cHTMLSelectElement('testName', 100, 'testId');
-        $stuff             = [
+        $stuff = [
             'key1' => 'value1',
             'key2' => 'value2',
             'key3' => 'value3',

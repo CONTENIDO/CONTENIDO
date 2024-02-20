@@ -2,22 +2,26 @@ form {
     word-wrap: break-word;
     max-width: 600px;
 }
+
 .emailactive {
     font-weight: bold;
     font-style: italic;
 }
+
 .emaildeactive {
     font-weight: bold;
     font-style: italic;
 }
+
 a.emaildeactive:hover {
     color: #000;
 }
+
 .links {
     margin-left: 33%;
 }
 
-h2.user-forum.headline{
+h2.user-forum.headline {
     margin: 20px;
 }
 

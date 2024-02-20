@@ -24,8 +24,8 @@ class Smarty_Internal_Method_LoadPlugin
      * plugin filename format: plugintype.pluginname.php
      *
      * @param \Smarty $smarty
-     * @param  string $plugin_name class plugin name to load
-     * @param  bool   $check       check if already loaded
+     * @param string  $plugin_name class plugin name to load
+     * @param bool    $check       check if already loaded
      *
      * @return bool|string
      * @throws \SmartyException
@@ -40,7 +40,7 @@ class Smarty_Internal_Method_LoadPlugin
             throw new SmartyException("plugin {$plugin_name} is not a valid name format");
         }
         if (!empty($match[ 2 ])) {
-            $file = SMARTY_SYSPLUGINS_DIR . strtolower($plugin_name) . '.php';
+            $file = SMARTY_SYSPLUGINS_DIR . smarty_strtolower_ascii($plugin_name) . '.php';
             if (isset($this->plugin_files[ $file ])) {
                 if ($this->plugin_files[ $file ] !== false) {
                     return $this->plugin_files[ $file ];
@@ -50,7 +50,7 @@ class Smarty_Internal_Method_LoadPlugin
             } else {
                 if (is_file($file)) {
                     $this->plugin_files[ $file ] = $file;
-                    require_once($file);
+                    include_once $file;
                     return $file;
                 } else {
                     $this->plugin_files[ $file ] = false;
@@ -60,7 +60,7 @@ class Smarty_Internal_Method_LoadPlugin
         }
         // plugin filename is expected to be: [type].[name].php
         $_plugin_filename = "{$match[1]}.{$match[4]}.php";
-        $_lower_filename = strtolower($_plugin_filename);
+        $_lower_filename = smarty_strtolower_ascii($_plugin_filename);
         if (isset($this->plugin_files)) {
             if (isset($this->plugin_files[ 'plugins_dir' ][ $_lower_filename ])) {
                 if (!$smarty->use_include_path || $this->plugin_files[ 'plugins_dir' ][ $_lower_filename ] !== false) {
@@ -76,7 +76,7 @@ class Smarty_Internal_Method_LoadPlugin
             }
         }
         $_file_names = array($_plugin_filename);
-        if ($_lower_filename != $_plugin_filename) {
+        if ($_lower_filename !== $_plugin_filename) {
             $_file_names[] = $_lower_filename;
         }
         $_p_dirs = $smarty->getPluginsDir();
@@ -87,7 +87,7 @@ class Smarty_Internal_Method_LoadPlugin
                     $file = $_plugin_dir . $name;
                     if (is_file($file)) {
                         $this->plugin_files[ 'plugins_dir' ][ $_lower_filename ] = $file;
-                        require_once($file);
+                        include_once $file;
                         return $file;
                     }
                     $this->plugin_files[ 'plugins_dir' ][ $_lower_filename ] = false;
@@ -100,7 +100,7 @@ class Smarty_Internal_Method_LoadPlugin
                 $file = $smarty->ext->_getIncludePath->getIncludePath($_p_dirs, $_file_name, $smarty);
                 $this->plugin_files[ 'include_path' ][ $_lower_filename ] = $file;
                 if ($file !== false) {
-                    require_once($file);
+                    include_once $file;
                     return $file;
                 }
             }

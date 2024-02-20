@@ -3,13 +3,13 @@
 /**
  * This file contains the abstract database driver class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Database
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,17 +18,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class contains abstract method definitions for each database driver in
  * CONTENIDO.
  *
- * @package Core
+ * @package    Core
  * @subpackage Database
  */
-abstract class cDbDriverAbstract {
+abstract class cDbDriverAbstract
+{
 
     /**
-     * Local database configuration.
+     * Local database configuration, see `$cfg['db']` configuration.
      *
      * @var array
      */
-    protected $_dbCfg = array();
+    protected $_dbCfg = [];
 
     /**
      * Driver handler instance.
@@ -45,7 +46,8 @@ abstract class cDbDriverAbstract {
      * @param array $dbCfg
      *         database configuration
      */
-    public function __construct($dbCfg) {
+    public function __construct(array $dbCfg)
+    {
         $this->_dbCfg = $dbCfg;
     }
 
@@ -55,7 +57,8 @@ abstract class cDbDriverAbstract {
      * @param cDbDriverHandler $handler
      *         database driver handler instance
      */
-    public function setHandler(cDbDriverHandler $handler) {
+    public function setHandler(cDbDriverHandler $handler)
+    {
         $this->_handler = $handler;
     }
 
@@ -64,7 +67,8 @@ abstract class cDbDriverAbstract {
      *
      * @return cDbDriverHandler|NULL
      */
-    public function getHandler() {
+    public function getHandler()
+    {
         return $this->_handler;
     }
 
@@ -85,7 +89,7 @@ abstract class cDbDriverAbstract {
     abstract public function connect();
 
     /**
-     * Builds a insert query.
+     * Builds an insert query.
      * String values in passed fields parameter will be escaped automatically.
      *
      * @param string $tableName
@@ -98,15 +102,15 @@ abstract class cDbDriverAbstract {
     abstract public function buildInsert($tableName, array $fields);
 
     /**
-     * Builds a update query. String values in passed fields and whereClauses
+     * Builds an update query. String values in passed fields and whereClauses
      * parameter will be escaped automatically.
      *
      * @param string $tableName
      *         The table name
      * @param array $fields
-     *         Assoziative array of fields to update
+     *         Associative array of fields to update
      * @param array $whereClauses
-     *         Assoziative array of field in where clause.
+     *         Associative array of field in where clause.
      *         Multiple entries will be concatenated with AND.
      * @return string
      *         The UPDATE query
@@ -118,6 +122,8 @@ abstract class cDbDriverAbstract {
      *
      * @param string $statement
      *         The query to execute
+     * @return bool
+     *         The query success status
      */
     abstract public function query($statement);
 
@@ -125,8 +131,8 @@ abstract class cDbDriverAbstract {
      * Moves the result to the next record, if exists and returns the status of
      * the movement
      *
-     * @return int
-     *         Flag about move status 1 on success or 0
+     * @return bool
+     *         Flag about move status true on success or false
      */
     abstract public function nextRecord();
 
@@ -183,7 +189,7 @@ abstract class cDbDriverAbstract {
      * Moves the cursor (position inside current result sets).
      *
      * @param int $iPos [optional]
-     *         The positon to move to inside the current result set
+     *         The position to move to inside the current result set
      * @return int
      */
     abstract public function seek($iPos = 0);
@@ -232,21 +238,32 @@ abstract class cDbDriverAbstract {
     abstract public function getTableNames();
 
     /**
+     * Returns the data-type of a specific table field.
+     *
+     * @return string|null
+     * @since CONTENIDO 4.10.2
+     */
+    abstract public function getTableFieldDataType(string $table, string $field);
+
+    /**
      * Fetches server information.
      *
-     * @return array
+     * @return array|NULL
+     *         array as follows or NULL:
+     *         - $arr['description'] (string) Optional, server description
+     *         - $arr['version'] (string) Optional, server version
      */
     abstract public function getServerInfo();
 
     /**
-     * Returns error code of last occured error by using databases interface.
+     * Returns error code of last occurred error by using databases interface.
      *
      * @return int
      */
     abstract public function getErrorNumber();
 
     /**
-     * Returns error message of last occured error by using databases interface.
+     * Returns error message of last occurred error by using databases interface.
      *
      * @return string
      */

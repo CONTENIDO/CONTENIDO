@@ -1,0 +1,118 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-05 17:40+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: classes/class.solr.gui.php:60
+msgid "CLIENT_OPTIONS"
+msgstr ""
+
+#: classes/class.solr.gui.php:61
+msgid "OPTION"
+msgstr ""
+
+#: classes/class.solr.gui.php:62
+msgid "VALUE"
+msgstr ""
+
+#: classes/class.solr.gui.php:63
+msgid "DESCRIPTION"
+msgstr ""
+
+#: classes/class.solr.gui.php:64
+msgid "DESCR_HOSTNAME"
+msgstr ""
+
+#: classes/class.solr.gui.php:65
+msgid "DESCR_PORT"
+msgstr ""
+
+#: classes/class.solr.gui.php:66
+msgid "DESCR_PATH"
+msgstr ""
+
+#: classes/class.solr.gui.php:67
+msgid "DESCR_LOGIN"
+msgstr ""
+
+#: classes/class.solr.gui.php:68
+msgid "DESCR_PASSWORD"
+msgstr ""
+
+#: classes/class.solr.gui.php:69
+msgid "DESCR_SECURE"
+msgstr ""
+
+#: classes/class.solr.gui.php:70
+msgid "DESCR_TIMEOUT"
+msgstr ""
+
+#: classes/class.solr.gui.php:71
+msgid "DESCR_WT"
+msgstr ""
+
+#: classes/class.solr.gui.php:72
+msgid "DESCR_PROXY_HOST"
+msgstr ""
+
+#: classes/class.solr.gui.php:73
+msgid "DESCR_PROXY_PORT"
+msgstr ""
+
+#: classes/class.solr.gui.php:74
+msgid "DESCR_PROXY_LOGIN"
+msgstr ""
+
+#: classes/class.solr.gui.php:75
+msgid "DESCR_PROXY_PASSWORD"
+msgstr ""
+
+#: classes/class.solr.gui.php:76
+msgid "DESCR_SSL_CERT"
+msgstr ""
+
+#: classes/class.solr.gui.php:77
+msgid "DESCR_SSL_KEY"
+msgstr ""
+
+#: classes/class.solr.gui.php:78
+msgid "DESCR_SSL_KEYPASSWORD"
+msgstr ""
+
+#: classes/class.solr.gui.php:79
+msgid "DESCR_SSL_CAINFO"
+msgstr ""
+
+#: classes/class.solr.gui.php:80
+msgid "DESCR_SSL_CAPATH"
+msgstr ""
+
+#: classes/class.solr.gui.php:81
+msgid "DESCR_RELOAD"
+msgstr ""
+
+#: classes/class.solr.gui.php:82
+msgid "DESCR_REINDEX"
+msgstr ""
+
+#: classes/class.solr.gui.php:83
+msgid "DESCR_DELETE"
+msgstr ""
+
+#: classes/class.solr.php:219
+msgid "WARNING_INVALID_CLIENT_OPTIONS"
+msgstr ""

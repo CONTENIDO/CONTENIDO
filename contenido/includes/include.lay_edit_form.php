@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for editing layouts.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Olaf Niemann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -25,7 +25,7 @@ $refreshTemplates = isset($_REQUEST['refreshtemplates']) ? $_REQUEST['refreshtem
 $belang = cRegistry::getBackendLanguage();
 
 // check the read only setting and display a warning if it's active
-$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -60,7 +60,7 @@ if (!$readOnly && $action == "lay_new") {
             if ($layoutInFile->saveLayout('') == false) {
                 $page->displayError(i18n("Cant save layout in filesystem!"));
             } else {
-                $page->displayOk(i18n("Created layout succsessfully!"));
+                $page->displayOk(i18n("Created layout successfully!"));
                 $page->reloadRightTopFrame(['area' => 'lay', 'action' => null, 'idlay' => $layout->get('idlay')]);
             }
         }
@@ -93,7 +93,7 @@ if (!$readOnly && $action == "lay_new") {
 
 if ($refreshTemplates != "") {
     // Update all templates for containers with mode fixed and mandatory
-    $sql = "SELECT idtpl FROM " . $cfg["tab"]["tpl"] . " WHERE idlay = '" . cSecurity::toInteger($idlay) . "'";
+    $sql = "SELECT idtpl FROM " . $cfg['tab']['tpl'] . " WHERE idlay = '" . cSecurity::toInteger($idlay) . "'";
     $db->query($sql);
 
     $fillTemplates = [];
@@ -115,7 +115,7 @@ if (true === $layout->isLoaded()) {
     $code = $layoutInFile->getLayoutCode();
     // code = $layout->get("code");
     $name = cString::stripSlashes(conHtmlSpecialChars($layout->get("name")));
-    $description = $layout->get("description");
+    $description = $layout->get('description') ?? '';
 
     if (!$layoutInFile->isWritable($name, $layoutInFile->_getLayoutPath())) {
         $page->displayWarning(i18n("You have no write permissions for this file"));
@@ -170,7 +170,7 @@ if (true === $layout->isLoaded()) {
             $msg .= "<br>";
         }
 
-        foreach ($v->missingNodes as $value) {
+        foreach ($v->getMissingNodes() as $value) {
             $idQualifier = "";
 
             $attr = [];
@@ -198,7 +198,8 @@ if (true === $layout->isLoaded()) {
     }
 
     $form = new cGuiTableForm("module");
-    $form->addHeader(i18n("Edit Layout"));
+    $form->addTableClass('col_flx_m_50p col_first_100');
+    $form->setHeader(i18n("Edit Layout"));
     $form->setVar("area", $area);
     $form->setVar("action", 'lay_edit');
     $form->setVar("frame", $frame);
@@ -207,13 +208,13 @@ if (true === $layout->isLoaded()) {
 
     $tb_name = new cHTMLTextbox("layname", $name, 60);
     $ta_description = new cHTMLTextarea("description", $description, 100, 10);
-    $ta_description->setStyle("font-family: monospace;width: 100%;");
+    $ta_description->setClass('con_code');
     $ta_description->updateAttributes([
         "wrap" => "off"
     ]);
 
     $ta_code = new cHTMLTextarea("code", conHtmlSpecialChars($code), 100, 20, 'code');
-    $ta_code->setStyle("font-family: monospace;width: 100%;");
+    $ta_code->setClass('con_code');
     $ta_code->updateAttributes([
         "wrap" => "off"
     ]);
@@ -261,4 +262,3 @@ if ($bReloadSyncScript) {
 
 $page->render();
 
-?>

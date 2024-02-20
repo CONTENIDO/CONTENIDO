@@ -9,12 +9,12 @@
         <author>Murat Purc</author>
         <copyright>Murat Purc</copyright>
         <mail>murat@purc.de</mail>
-        <website>http://www.purc.de</website>
-        <version>1.0.0</version>
+        <website>https://www.purc.de</website>
+        <version>2.0.0</version>
     </general>
 
-    <requirements php="5.2.3">
-        <contenido minversion="4.9.0" />
+    <requirements php="7.0">
+        <contenido minversion="4.10.0"/>
     </requirements>
 
     <contenido>
@@ -32,9 +32,12 @@
         </actions>
 
         <frames>
-            <frame area="mod_rewrite" filetype="main" name="mod_rewrite/includes/include.mod_rewrite_content.php" frameId="4" />
-            <frame area="mod_rewrite_expert" filetype="main" name="mod_rewrite/includes/include.mod_rewrite_contentexpert.php" frameId="4" />
-            <frame area="mod_rewrite_test" filetype="main" name="mod_rewrite/includes/include.mod_rewrite_contenttest.php" frameId="4" />
+            <frame area="mod_rewrite" filetype="main"
+                   name="mod_rewrite/includes/include.mod_rewrite_content.php" frameId="4"/>
+            <frame area="mod_rewrite_expert" filetype="main"
+                   name="mod_rewrite/includes/include.mod_rewrite_contentexpert.php" frameId="4"/>
+            <frame area="mod_rewrite_test" filetype="main"
+                   name="mod_rewrite/includes/include.mod_rewrite_contenttest.php" frameId="4"/>
         </frames>
 
         <nav_sub>

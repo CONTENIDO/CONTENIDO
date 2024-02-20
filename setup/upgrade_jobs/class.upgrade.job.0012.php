@@ -3,13 +3,13 @@
 /**
  * This file contains the upgrade job 12.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
- * @author frederic.schneider
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     frederic.schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // assert CONTENIDO framework
@@ -20,18 +20,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * Generates plugin relations for plugin specific action entries
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
-class cUpgradeJob_0012 extends cUpgradeJobAbstract {
+class cUpgradeJob_0012 extends cUpgradeJobAbstract
+{
 
     public $maxVersion = "4.9.3";
 
-    public function _execute() {
-        global $cfg;
+    public function _execute()
+    {
+        $cfg = cRegistry::getConfig();
 
         if ($_SESSION['setuptype'] == 'upgrade') {
-
             // Initializing cApiActionCollection
             $actionColl = new cApiActionCollection();
 
@@ -48,7 +49,6 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract {
             // Get all installed plugins
             $pluginColl->select();
             while ($plugin = $pluginColl->next()) {
-
                 // Get path to plugin.xml
                 $pluginXmlPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($plugin->get('folder')) . DIRECTORY_SEPARATOR . "plugin.xml";
 
@@ -59,7 +59,6 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract {
                 $actionCount = count($xml->contenido->actions->action);
 
                 for ($i = 0; $i < $actionCount; $i++) {
-
                     // Build and execute sql query for selected action
                     $actionColl->setWhere('name', cSecurity::escapeString($xml->contenido->actions->action[$i]));
                     $actionColl->query();

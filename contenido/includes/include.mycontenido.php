@@ -3,22 +3,34 @@
 /**
  * This file contains the backend page for the backend start page known as "My CONTENIDO".
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cAuth $auth
+ * @var cSession $sess
+ * @var cPermission $perm
+ * @var array $cfg
+ * @var array $cfgClient
+ * @var int $client
+ * @var string $belang
+ */
 
 $page = new cGuiPage("mycontenido", "", "0");
 
 $vuser = new cApiUser($auth->auth['uid']);
 
-if ($saveLoginTime == true) {
+$saveLoginTime = $saveLoginTime ?? false;
+
+if ($saveLoginTime === true) {
     $sess->register('saveLoginTime');
     $saveLoginTime = 0;
 
@@ -28,13 +40,13 @@ if ($saveLoginTime == true) {
     $vuser->setUserProperty('system', 'lastlogintime', $lastTime);
 }
 
-$lastlogin = displayDatetime($vuser->getUserProperty('system', 'lastlogintime'));
+$lastlogin = cDate::formatDatetime($vuser->getUserProperty('system', 'lastlogintime'));
 if ($lastlogin == '') {
     $lastlogin = i18n('No Login Information available.');
 }
 
 // notification for requested password
-$aNotificationText = array();
+$aNotificationText = [];
 if ($vuser->getField('using_pw_request') == 1) {
     $page->displayWarning(i18n("You're logged in with a temporary password. Please change your password."));
 }
@@ -68,17 +80,17 @@ if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_
 }
 
 //check for data in the old data folders
-$foldersToCheck = array($cfg["path"]["frontend"]."/contenido/logs", $cfg["path"]["frontend"]."/contenido/temp");
-if(is_array($cfgClient)) {
+$foldersToCheck = [$cfg['path']['frontend'] . "/contenido/logs", $cfg['path']['frontend'] . "/contenido/temp"];
+if (is_array($cfgClient)) {
     foreach ($cfgClient as $iclient => $aclient) {
         if (!is_numeric($iclient)) {
             continue;
         }
-        $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."layouts";
-        $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."logs";
+        $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend'] . "layouts";
+        $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend'] . "logs";
     }
 }
-$faultyFolders = array();
+$faultyFolders = [];
 foreach ($foldersToCheck as $folder) {
     if (true === @file_exists($folder)) {
         $faultyFolders[] = $folder;
@@ -99,22 +111,21 @@ $clientCollection = new cApiClientCollection();
 $clients = $clientCollection->getAccessibleClients();
 
 $cApiClient = new cApiClient();
-$warnings = array();
+$warnings = [];
 
 if (count($clients) > 1) {
     $select = new cHTMLSelectElement('changeclient');
-    $select->setClass("vAlignMiddle");
-    $choices = array();
+    $choices = [];
 
     foreach ($clients as $key => $v_client) {
         if ($perm->hasClientPermission($key)) {
             $cApiClient->loadByPrimaryKey($key);
-                $choices[$key] = $v_client['name'] . ' (' . $key . ')';
+            $choices[$key] = $v_client['name'] . ' (' . $key . ')';
         }
     }
 
     $select->autoFill($choices);
-    $select->setDefault($client);
+    $select->setDefault($client ?? 0);
 
     $clientselect = $select->render();
 
@@ -123,7 +134,7 @@ if (count($clients) > 1) {
     if ($perm->have_perm() && count($warnings) > 0) {
         $page->displayWarning(implode('<br>', $warnings));
     }
-    $page->set('s', 'OKBUTTON', '<input class="vAlignMiddle" type="image" src="images/but_ok.gif" alt="' . i18n('Change client') . '" title="' . i18n('Change client') . '">');
+    $page->set('s', 'OKBUTTON', cHTMLButton::image('images/but_ok.gif', i18n('Change client'), ['class' => 'con_img_button mgl3']));
 } else {
     $page->set('s', 'OKBUTTON', '');
     $name = '';
@@ -150,9 +161,9 @@ if (count($clients) > 1) {
 }
 
 $props = new cApiPropertyCollection();
-$props->select("itemtype = 'idcommunication' AND idclient = " . (int) $client . " AND type = 'todo' AND name = 'status' AND value != 'done'");
+$props->select("itemtype = 'idcommunication' AND idclient = " . (int)$client . " AND type = 'todo' AND name = 'status' AND value != 'done'");
 
-$todoitems = array();
+$todoitems = [];
 
 while ($prop = $props->next()) {
     $todoitems[] = $prop->get('itemid');
@@ -165,16 +176,17 @@ if (count($todoitems) > 0) {
 }
 $todoitems = new TODOCollection();
 $recipient = $auth->auth['uid'];
-$todoitems->select("recipient = '$recipient' AND idclient = " . (int) $client . " AND $in");
+$todoitems->select("recipient = '$recipient' AND idclient = " . (int)$client . " AND $in");
 
+$openTasks = 0;
 while ($todo = $todoitems->next()) {
     if ($todo->getProperty('todo', 'status') != 'done') {
-        $todoitems++;
+        $openTasks++;
     }
 }
 
 $sTaskTranslation = '';
-if ($todoitems->count() == 1) {
+if ($openTasks == 1) {
     $sTaskTranslation = i18n('Reminder list: %d Task open');
 } else {
     $sTaskTranslation = i18n('Reminder list: %d Tasks open');
@@ -202,9 +214,9 @@ foreach ($admins as $pos => $item) {
         $li = '<li class="welcome">';
         if ($sAdminName !== '' && $sAdminEmail !== '') {
             $li .= $sAdminName . ', ' . $sAdminEmail . '</li>';
-        } else if ($sAdminName === '' && $sAdminEmail !== '') {
+        } elseif ($sAdminName === '' && $sAdminEmail !== '') {
             $li .= $sAdminEmail . '</li>';
-        } else if ($sAdminName !== '' && $sAdminEmail === '') {
+        } elseif ($sAdminName !== '' && $sAdminEmail === '') {
             $li .= $sAdminName . '</li>';
         } else {
             $li = '';
@@ -216,7 +228,7 @@ foreach ($admins as $pos => $item) {
 $page->set('s', 'ADMIN_EMAIL', $sOutputAdmin);
 
 // For display current online user in CONTENIDO-Backend
-$aMemberList = array();
+$aMemberList = [];
 $oActiveUsers = new cApiOnlineUserCollection();
 $iNumberOfUsers = 0;
 
@@ -256,7 +268,10 @@ $page->set('s', 'NUMBER', $iNumberOfUsers);
 $oUpdateNotifier = new cUpdateNotifier($cfg, $vuser, $perm, $sess, $belang);
 $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
 try {
-    $page->set('s', 'UPDATENOTIFICATION', mb_convert_encoding($sUpdateNotifierOutput, cRegistry::getLanguage()->get('encoding')));
+    // Get encoding or use UTF-8 as default, the language may not yet exist
+    $encoding = cRegistry::getEncoding();
+    $encoding = $encoding ?: 'utf-8';
+    $page->set('s', 'UPDATENOTIFICATION', mb_convert_encoding($sUpdateNotifierOutput, $encoding));
 } catch (cInvalidArgumentException $e) {
     $page->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 }

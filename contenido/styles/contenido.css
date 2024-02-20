@@ -9,18 +9,135 @@
  * @version    1.1.0
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
- * @license    http: //www.contenido.org/license/LIZENZ.txt
- * @link       http: //www.4fb.de
- * @link       http: //www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 @import "notifications.css"; /* @see CON-1992 */
+@import "content_elements.css";
 
-/* some reset */
-form, h1, h2, h3, h4 {
-    margin: 0;
-    padding: 0;
+/*region RESET*/
+/**
+ * #############################################################################
+ * @section Reset
+ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
+/*endregion RESET*/
+
+/*region TAGS*/
+/**
+ * #############################################################################
+ * @section Tags
+ */
+
+body {
+    background-color: #fff;
+    margin: 0;
+    scrollbar-face-color: #fff;
+    scrollbar-highlight-color: #fff;
+    scrollbar-3dlight-color: #e2e2e2;
+    scrollbar-darkshadow-color: #000;
+    scrollbar-shadow-color: #334f77;
+    scrollbar-arrow-color: #334f77;
+    scrollbar-track-color: #c7c7d6;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    line-height: 17px;
+    color: #000;
+}
+
+frameset,
+frame {
+    background-color: #fff;
+    border-color: #fff;
+}
+
+p,
+table,
+tr,
+td,
+th {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    color: #000;
+}
+
+button,
+[type="button"],
+[type="file"],
+[type="password"],
+[type="reset"],
+[type="submit"],
+[type="text"],
+input,
+select,
+textarea {
+    padding: 0 3px;
+    border: 1px solid #666;
+    border-radius: 3px;
+    height: 17px;
+    line-height: 17px;
+    vertical-align: middle;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+}
+[type="file"] {
+    margin: 0;
+    padding: 0 3px 0 0;
+    line-height: 11px;
+}
+select[multiple] {
+    height: auto;
+}
+textarea {
+    height: auto;
+}
+select {
+    padding: 0 5px;
+}
+
+button[disabled],
+input[disabled],
+select[disabled],
+textarea[disabled] {
+    border: 1px solid #999;
+}
+
+
+[type="checkbox"],
+[type="radio"] {
+    position: relative;
+    margin-right: 7px;
+    vertical-align: middle;
+    bottom: 1px;
+}
+
+[type="checkbox"] + label,
+[type="radio"] + label {
+    line-height: 16px;
+    position: relative;
+    left: -3px;
+}
+
+.checkbox_wrapper [type="checkbox"],
+.checkbox_wrapper [type="radio"] {
+}
+
+table {
+    border-spacing: 0;
+}
+table th,
+table td {
+    vertical-align: top;
+}
+/*endregion TAGS*/
+
 
 #head {
     background-color: #f1f1f1;
@@ -54,20 +171,19 @@ form, h1, h2, h3, h4 {
 .contenido_background_gray {
     background-color: #f1f1f1;
 }
-#head_content {
-    padding-left: 10px;
-}
 #head_info {
     height: 30px;
     line-height: 30px;
     background-color: #f1f1f1;
 }
-
+#head_info .con_img_button {
+}
 #head_info + form#login {
     margin: 0;
     overflow: auto;
 }
-.head_nav {
+.head_nav,
+.head_nav_login {
     line-height: 25px;
     width: 700px;
     margin-left: 250px;
@@ -75,13 +191,8 @@ form, h1, h2, h3, h4 {
     white-space: nowrap;
 }
 .head_nav_login {
-    background-color: #fff;
-    float: right;
-    height: 25px;
-    line-height: 25px;
-    margin: 0 30px 0 0;
     overflow: hidden;
-    width: 700px;
+    margin-left: 0;
 }
 .head_nav_login input,
 .head_nav_login select  {
@@ -90,32 +201,44 @@ form, h1, h2, h3, h4 {
 #request_layer {
     background-color: #f1f1f1;
     float: right;
-    /*height:26px;*/
-    line-height:28px;
-    margin: 0 30px 0 0;
-    padding:0 5px;
-    width:250px;
+    line-height: 26px;
+    padding: 0 5px;
+    width: 250px;
     position: absolute;
-    right: 0;
+    right: 50px;
 }
-#request_layer #request_form .message {
+#request_layer p {
+    margin: 0;
+    padding: 0;
+}
+#request_layer > div > div {
+    margin-bottom: 5px;
+}
+#request_layer form,
+#request_layer .message {
     line-height: 16px;
+}
+#request_layer input {
+    width: 212px;
+}
+#request_layer .message {
     margin: 0 0 5px 0;
     padding: 0;
 }
-#request_layer .password_request_input {
-    vertical-align: top;
-    margin-top: 2px;
-    float: right;
-    margin-right: 6px;
+#request_layer .message:empty {
+    margin: 0;
+}
+
+#request_layer label {
+    display: inline-block;
+    padding-top: 7px;
+}
+#request_layer .con_img_button {
+    margin-left: 7px;
+    width: 16px;
 }
 #request_layer .last_row {
     padding-bottom: 7px;
-}
-#request_layer .last_row .send_btn {
-    position: relative;
-    top: 3px;
-    padding-left: 5px;
 }
 
 hr.sep {
@@ -144,6 +267,52 @@ input.image_button {
     margin-left: 5px;
 }
 
+/*region COLUMNS*/
+/**
+ * #############################################################################
+ * @section Columns
+ */
+
+.col_xs {
+    width: 400px;
+}
+
+.col_sm {
+    width: 540px;
+}
+
+.col_md {
+    width: 720px;
+}
+
+.col_lg {
+    width: 960px;
+}
+
+.col_lx {
+    width: 1140px;
+}
+
+.col_50p {
+    width: 50%;
+}
+
+.col_flx_m_50p {
+    min-width: 50%;
+    max-width: 100%;
+}
+
+.col_100p {
+    width: 100%;
+}
+/*endregion COLUMNS*/
+
+/*region TABLES*/
+/**
+ * #############################################################################
+ * @section Tables
+ */
+
 table.generic {
     border-left: 1px solid #b3b3b3;
 }
@@ -155,13 +324,13 @@ table.fullborder {
 table.topborder {
     border-top: 1px solid #b3b3b3;
 }
-table.generic td {
+table.generic td:not(:empty) {
     border-bottom: 1px solid #b3b3b3;
     border-right: 1px solid #b3b3b3;
     padding: 4px;
 }
 
-table.generic th {
+table.generic th:not(:empty) {
     border-top: 1px solid #b3b3b3;
     border-right: 1px solid #b3b3b3;
     background-color: #e2e2e2;
@@ -171,7 +340,7 @@ table.generic th {
     color: #666;
 }
 
-table.strong_headline th {
+table.strong_headline th:not(:empty) {
     border-top: 1px solid #b3b3b3;
     border-right: 1px solid #b3b3b3;
     background-color: #e2e2e2;
@@ -214,7 +383,11 @@ table.borderless tr.active {
 }
 
 table.borderless tr {
-    /*background-color: #fff;*/
+}
+
+table.borderless tr th:not(:empty),
+table.borderless tr td:not(:empty) {
+    padding: 4px;
 }
 
 table.borderless tr td {
@@ -245,6 +418,72 @@ table.foldingrow th {
     color: #666;
 }
 
+table.menu_overview_list a,
+table.menu_overview_list a:hover {
+    line-height: 16px;
+}
+table.menu_overview_list tr th:not(:empty),
+table.menu_overview_list tr td:not(:empty) {
+    padding: 2px;
+}
+
+table.menu_overview_list .menu_overview_list_icon {
+    text-align: left;
+}
+table.menu_overview_list .menu_overview_list_item {
+    text-align: left;
+    white-space: nowrap;
+    width: 100%;
+}
+table.menu_overview_list .menu_overview_list_actions {
+    text-align: right;
+    white-space: nowrap;
+}
+table.menu_overview_list .menu_overview_list_actions .con_img_button,
+table.menu_overview_list .menu_overview_list_actions .con_img_button_off {
+    margin-left: 3px;
+}
+
+table.col_first_100 > tbody > tr > td:first-of-type {
+    width: 100px;
+}
+
+table.col_first_20p > tbody > tr > td:first-of-type {
+    width: 20%;
+}
+
+/** @deprecated [2023-03-03] Since CONTENIDO 4.10.2, Don't use `table.bordered`, use `fullborder` instead */
+table.bordered {
+    border: 1px solid #b3b3b3;
+    border-right: none;
+    border-bottom: none;
+}
+
+/** @deprecated [2023-03-03] Since CONTENIDO 4.10.2, Don't use `td.headerbordercell`, use `th` instead */
+td.headerbordercell {
+    border-right: 1px solid #b3b3b3;
+    background: #e2e2e2;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    color: #666;
+}
+td.bordercell {
+    height: 23px;
+    border-right: 1px solid #b3b3b3;
+    border-bottom: 1px solid #b3b3b3;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    color: black;
+}
+
+table.art_overview th,
+table.art_overview td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+/*endregion TABLES*/
+
+/*region PAGE_GENERIC*/
 /**
  * #############################################################################
  * @section Page_Generic
@@ -252,21 +491,96 @@ table.foldingrow th {
 .page_generic {
     margin: 10px;
 }
+/*endregion PAGE_GENERIC*/
 
+/*region FRAME_TOP_LEFT*/
 /**
  * #############################################################################
- * @section page_left_top
+ * @section frame_top_left
  * @extends Page_Generic
  */
-.page_left_top {
+/** @deprecated [2023-03-17] Since CONTENIDO 4.10.2, Don't use `page_left_top`, use `page_top_left` instead */
+.page_left_top,
+.page_top_left {
     margin: 0;
 }
 
+/** @deprecated [2023-03-04] Since CONTENIDO 4.10.2, Don't use `leftTopAction`, use `top_left_action` instead */
+.leftTopAction,
+.top_left_action {
+    min-height: 2em;
+    border: 1px solid #b3b3b3;
+    padding: 5px 0 5px 16px;
+    margin-top: 1px;
+}
+/** @deprecated [2023-03-04] Since CONTENIDO 4.10.2, Don't use `leftTopAction`, use `top_left_action` instead */
+.leftTopActionNext,
+.top_left_action_next {
+    border-top: none;
+    padding: 5px 0 5px 16px;
+    margin-top: 0;
+}
+
+/** @deprecated [2023-03-04] Since CONTENIDO 4.10.2, Don't use `leftTopAction`, use `top_left_action` instead */
+.leftTopAction input[type=text],
+.top_left_action input[type=text] {
+    width: 170px;
+}
+/*endregion FRAME_TOP_LEFT*/
+
+/*region FRAME_LEFT_DECO*/
+/**
+ * #############################################################################
+ * @section Frame_Left_Deco
+ */
+.page_deco {
+    background-color: #e2e2e2;
+}
+.page_deco .frame_handle {
+    height: 28px;
+    border-bottom: 1px solid #b3b3b3;
+}
+.page_deco .frame_handle img {
+    border: none;
+    float: right;
+}
+.page_deco .frame_handle img#toggleimage {
+    cursor: pointer;
+    float: none;
+    margin:7px 0 0 17px;
+}
+/*endregion FRAME_LEFT_DECO*/
+
+/*region FRAME_SUB_NAVIGATION*/
+/**
+ * #############################################################################
+ * @section Sub_Navigation_Frame
+ */
+.page_subnav .frame_handle {
+    float: left;
+}
+.page_subnav .frame_handle img {
+    border: none;
+    float: left;
+}
+.page_subnav .frame_handle img#toggleimage {
+    cursor: pointer;
+    float: none;
+    margin: 7px 0 0 6px;
+}
+.page_subnav div.menuless {
+    padding-left: 250px;
+}
+.page_subnav div.menuless .frame_handle {
+    display: none;
+}
+/*endregion FRAME_SUB_NAVIGATION*/
+
+/*region PAGE_LOGIN_FORM-PAGE_HEADER*/
 /**
  * #############################################################################
  * @section Page_Login_Form, Page_Header
  */
-
 #lblusername,
 #lblpasswd {
     margin-left: 54px;
@@ -279,12 +593,12 @@ table.foldingrow th {
     height: 17px;
     line-height: 17px;
     margin-left: 13px;
-    margin-top: 3px;
+    margin-top: 5px;
     padding: 0 2px;
     width: 150px;
 }
 #lang {
-    margin-top: 3px;
+    margin-top: 5px;
     margin-right: 10px;
     float: right;
     width: 150px;
@@ -296,13 +610,9 @@ table.foldingrow th {
     height: 20px;
 }
 #okbutton {
-    margin-top: 3px;
+    margin-top: 5px;
     margin-right: 10px;
     float: right;
-}
-.navcontainer {
-    border-top: 1px solid #666;
-    clear: left;
 }
 .text_login_error {
     float: right;
@@ -316,72 +626,13 @@ table.foldingrow th {
 #infobox {
     float: left;
 }
+/*endregion PAGE_LOGIN_FORM-PAGE_HEADER*/
 
-/**
- * #############################################################################
- * @section Page_Welcome
- */
-#welcome_left {
-    float: left;
-    margin-top: 25px;
-}
-#welcome_right {
-    margin-left: 350px;
-    margin-top: 25px;
-}
-.content_box_welcome {
-    padding: 0 0 0 25px;
-    margin: 0 0 30px 0;
-}
-h2.content_box {
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    color: #000;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-#mandanten {
-    background: url(../images/avail_clients.gif) no-repeat 0 2px;
-}
-#my_contenido {
-    background: url(../images/my_contenido.gif) no-repeat 0 2px;
-}
-#contact_admin {
-    background: url(../images/contact.gif) no-repeat 0 2px;
-}
-#user_online {
-    background: url(../images/user_online.gif) no-repeat 0 2px;
-}
-#update_notifier {
-    background: url(../images/but_news.gif) no-repeat 0 2px;
-}
-#rss_notifier {
-    background: url(../images/but_rss.gif) no-repeat 0 2px;
-    margin-top: 25px;
-}
+/** @deprecated [2023-03-05] Since CONTENIDO 4.10.2, Is no longer used! */
+.form_image {vertical-align: middle; margin-left: 10px; padding-top: 4px;}
 
-#messageboard {
-}
-ul.welcome {
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-    list-style-type: none;
-    width: 320px;
-}
-li.welcome {
-    padding: 0 0 6px 0;
-}
 
-li#kontakt.welcome {
-    line-height: 17px;
-}
-
-.form_image {
-    vertical-align: middle;
-    margin-left: 10px;
-    padding-top: 4px;
-}
-
+/*region SYSTEM_CONFIGURATION*/
 /**
  * #############################################################################
  * @section system_configuration
@@ -393,10 +644,12 @@ label.sys_config_txt_lbl {
     white-space:normal;
     vertical-align:middle;
 }
+/*endregion SYSTEM_CONFIGURATION*/
 
+/*region CALENDAR_TABLE*/
 /**
  * #############################################################################
- * @section Calendar
+ * @section Calendar_Table
  */
 table.calendar {
     border: 1px solid #e2e2e2;
@@ -428,13 +681,12 @@ table.calendar tbody td.marked {
     border: 1px solid black !important;
     text-align: center;
 }
+/*endregion CALENDAR_TABLE*/
 
-.overview_dist_left {
-    margin-left: 5px;
-}
-.overview_dist_right {
-    margin-right: 5px;
-}
+/** @deprecated [2023-02-27] Since CONTENIDO 4.10.2, Don't use `overview_dist_left`, use `mgl5` instead */
+.overview_dist_left {margin-left: 5px;}
+/** @deprecated [2023-02-27] Since CONTENIDO 4.10.2, Don't use `overview_dist_right`, use `mgr5` instead */
+.overview_dist_right {margin-right: 5px;}
 
 #mhighlight {
     position: absolute;
@@ -446,7 +698,7 @@ table.calendar tbody td.marked {
     visibility: hidden;
 }
 
-#htext {
+#mhighlight #htext {
     font-family: verdana, arial, helvetica, sans-serif;
     color: #fff;
     font-size: 11px;
@@ -481,98 +733,7 @@ td.sub {
     vertical-align: middle;
 }
 
-a:link {
-    text-decoration: none;
-}
-a.nav:link {
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    color: #fff;
-}
-
-a img, label img, img.borderless, input[type=image] {
-    border: 0;
-}
-
-/* <body> properties */
-body {
-    background-color: #fff;
-    margin: 0;
-    scrollbar-face-color: #fff;
-    scrollbar-highlight-color: #fff;
-    scrollbar-3dlight-color: #e2e2e2;
-    scrollbar-darkshadow-color: #000;
-    scrollbar-shadow-color: #334f77;
-    scrollbar-arrow-color: #334f77;
-    scrollbar-track-color: #c7c7d6;
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    color: #000;
-}
-
-frameset,
-frame {
-    background-color: #fff;
-    border-color: #fff;
-}
-
-p, table, tr, td, th {
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    color: #000;
-}
-
-/* link style for adding anything */
-.addfunction {
-    background: transparent url(../images/folder_new.gif) no-repeat scroll 0 2px;
-    display: block;
-    height: 2em;
-    line-height: 2em;
-    padding-left: 20px;
-}
-
-/* link style for adding anything */
-.addfunction_disabled {
-    background: transparent url(../images/but_cancel.gif) no-repeat scroll 0 8px;
-    display: block;
-    height: 3em;
-    line-height: 3em;
-    padding-left: 20px;
-}
-
-/* link style for synchronization anything */
-.syncronizefunction {
-    background: transparent url(../images/but_refresh.gif) no-repeat scroll 0 2px;
-    display: block;
-    height: 2em;
-    line-height: 2em;
-    padding-left: 20px;
-}
-
-.syncronizefunction_disabled {
-    background: transparent url(../images/but_cancel.gif) no-repeat scroll 0 10px;
-    display: block;
-    height: 3em;
-    line-height: 1.5em;
-    padding-left: 20px;
-}
-
-.deletefunction {
-    display: block;
-    background: transparent url(../images/delete.gif) no-repeat scroll 0 2px;
-    height: 2em;
-    line-height: 2em;
-    padding-left: 20px;
-}
-
-.editfunction {
-    background: transparent url(../images/but_edittext.gif) no-repeat scroll 0 2px;
-    display: block;
-    height: 2em;
-    line-height: 2em;
-    padding-left: 20px;
-}
-
+/*region LINK*/
 /**
  * #############################################################################
  * @section Links
@@ -691,6 +852,63 @@ a.activemenu:hover {
     text-decoration: none;
 }
 
+a.nav:link {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    color: #fff;
+}
+
+/* link style for adding anything */
+.addfunction {
+    background: transparent url(../images/folder_new.gif) no-repeat scroll 0 2px;
+    display: block;
+    height: 2em;
+    line-height: 2em;
+    padding-left: 20px;
+}
+
+/* link style for adding anything */
+.addfunction_disabled {
+    background: transparent url(../images/but_cancel.gif) no-repeat scroll 0 8px;
+    display: block;
+    height: 3em;
+    line-height: 3em;
+    padding-left: 20px;
+}
+
+/* link style for synchronization anything */
+.syncronizefunction {
+    background: transparent url(../images/but_refresh.gif) no-repeat scroll 0 2px;
+    display: block;
+    height: 2em;
+    line-height: 2em;
+    padding-left: 20px;
+}
+
+.syncronizefunction_disabled {
+    background: transparent url(../images/but_cancel.gif) no-repeat scroll 0 10px;
+    display: block;
+    height: 3em;
+    line-height: 1.5em;
+    padding-left: 20px;
+}
+
+.deletefunction {
+    display: block;
+    background: transparent url(../images/delete.gif) no-repeat scroll 0 2px;
+    height: 2em;
+    line-height: 2em;
+    padding-left: 20px;
+}
+
+.editfunction {
+    background: transparent url(../images/but_edittext.gif) no-repeat scroll 0 2px;
+    display: block;
+    height: 2em;
+    line-height: 2em;
+    padding-left: 20px;
+}
+
 /* Links in overview lists (frame left_bottom) */
 .menu_overview_list a.show_item {
     display: block;
@@ -698,6 +916,43 @@ a.activemenu:hover {
     height: 100%;
 }
 
+a.scroll_list_sort_link {
+    color: #666666;
+}
+
+a > img {
+    vertical-align: middle;
+}
+
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `infoButton`, use `con_info_button` instead */
+a.infoButton,
+.infoButton:hover {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: transparent url(../images/info.gif) no-repeat;
+    margin-bottom: -3px;
+}
+a.con_info_button,
+.con_info_button:hover {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: transparent url(../images/info.gif) no-repeat;
+    vertical-align: inherit;
+}
+
+.align_top > a.con_info_button {
+    vertical-align: top;
+}
+
+.align_bottom > a.con_info_button {
+    vertical-align: bottom;
+}
+
+/*endregion LINK*/
+
+/*region TEXT*/
 /**
  * #############################################################################
  * @section Text
@@ -709,8 +964,7 @@ a.activemenu:hover {
     font-size: 10px;
     color: #000
 }
-.text_medium,
-select {
+.text_medium {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size: 11px;
     color: #000
@@ -777,6 +1031,7 @@ select {
     font-size: 11px;
     color: #f00
 }
+/*endregion TEXT*/
 
 /* Code areas */
 .code {
@@ -853,6 +1108,27 @@ input.textbox_readonly {
     padding: 1px 1px 3px 1px;
 }
 
+textarea.con_code {
+    font-family: monospace;
+    width: 100%;
+}
+
+.con_form_action_control {
+    line-height: 17px;
+}
+.con_form_action_control .con_img_button,
+.con_form_action_control .con_img_button_off,
+.con_form_action_control.text_right .con_img_button,
+.con_form_action_control.text_right .con_img_button_off {
+    margin-left: 10px;
+}
+.con_form_action_control.text_left .con_img_button,
+.con_form_action_control.text_left .con_img_button_off {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+/*region FOLDING_ROW*/
 /**
  * #############################################################################
  * @section Foldingrow
@@ -880,37 +1156,57 @@ a.foldingrow img {
     margin: 0 4px 0 12px;
 }
 
+/* Animated folding rows */
+tr.foldingrow_hidden:not(.display) {
+    border: none;
+}
+tr.foldingrow_hidden:not(.display) > td {
+    box-sizing: border-box;
+    padding: 0 !important;
+}
+tr.foldingrow_hidden:not(.display) > td > div {
+    box-sizing: border-box;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.6s ease, opacity 0.6s;
+}
+tr.foldingrow_hidden.display > td > div {
+    max-height: 1000px;
+    opacity: 1;
+    transition: max-height 0.6s ease, opacity 0.6s;
+}
+
+/* Animated folding elements */
+.folding_element_hidden {
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+}
+.folding_element_hidden.display {
+    max-height: none;
+}
+.folding_element_hidden > div {
+    box-sizing: border-box;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.6s ease, opacity 0.6s;
+}
+.folding_element_hidden.display > div {
+    max-height: 1000px;
+    opacity: 1;
+    overflow: auto;
+    transition: max-height 0.6s ease, opacity 0.6s;
+}
+/*endregion FOLDING_ROW*/
 
 span.cpager_currentitem {
     color: #000;
     font-weight: bold;
 }
 
-table.bordered {
-    border: 1px solid #b3b3b3;
-    border-right: none;
-    border-bottom: none;
-}
-td.headerbordercell {
-    border-right: 1px solid #b3b3b3;
-    background: #e2e2e2;
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    color: #666;
-}
-td.bordercell {
-    height: 23px;
-    border-right: 1px solid #b3b3b3;
-    border-bottom: 1px solid #b3b3b3;
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
-    color: black;
-}
-
-td#m197 {
-    border-right: 1px solid #b3b3b3;
-}
-
+/*region SUB_NAVIGATION*/
 /**
  * #############################################################################
  * @section Subnavigation
@@ -919,12 +1215,14 @@ div.navcontainer {
     height: 28px;
     background-color: #e2e2e2;
     border-bottom: 1px solid #b3b3b3;
+    border-top: 1px solid #666;
+    clear: left;
     text-align: left;
 }
 
 div.navcontainer ul#navlist {
     background-color: #e2e2e2;
-    padding: 12px 0 3px 0;
+    padding: 8px 0 3px 0;
     margin-left: 0;
     margin-top: 0;
     margin-bottom: 0;
@@ -939,7 +1237,7 @@ div.navcontainer ul#navlist li {
 }
 
 div.navcontainer ul#navlist li a {
-    padding: 2px .6em 3px .5em;
+    padding: 3px .6em 4px .5em;
     margin-left: 3px;
     text-decoration: none;
     border-left: 1px solid #e2e2e2;
@@ -958,7 +1256,7 @@ div.navcontainer ul#navlist li a:link.current,
 div.navcontainer ul#navlist li a:visited.current {
     background-color: white;
     border: 1px solid #b3b3b3;
-    border-bottom-color: white;
+    border-bottom-color: transparent;
     color: #0060b1;
     outline: none;
     cursor: pointer;
@@ -977,7 +1275,9 @@ div.navcontainer ul#navlist li a:link,
 div.navcontainer ul#navlist li a:visited {
     color: black;
 }
+/*endregion SUB_NAVIGATION*/
 
+/* Category breadcrumb */
 .categorypath {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size: 10px;
@@ -985,6 +1285,7 @@ div.navcontainer ul#navlist li a:visited {
     color: #999;
 }
 
+/*region HOVER_BOX*/
 /**
  * #############################################################################
  * @section Hoverbox
@@ -1024,10 +1325,10 @@ div.navcontainer ul#navlist li a:visited {
     border-style: solid;
     border-width: 1px;
     color: inherit;
-    padding: 7px;
+    padding: 2px;
     vertical-align: top;
-    width: 16px;
-    height: 16px;
+    width: 26px;
+    height: 26px;
 }
 
 .hoverbox li {
@@ -1047,7 +1348,9 @@ div.navcontainer ul#navlist li a:visited {
     border: 1px solid black;
     background-color: white;
 }
+/*endregion HOVER_BOX*/
 
+/*region RIGHTS_TABLE`*/
 .td_rights0 {
     vertical-align: top;
     border: 0 solid #b3b3b3;
@@ -1082,7 +1385,9 @@ div.navcontainer ul#navlist li a:visited {
     text-align: center;
     white-space: nowrap;
 }
+/*endregion RIGHTS_TABLE`*/
 
+/*region STATS_TABLE`*/
 .td_stats1 {
     border: 0 solid #b3b3b3;
     border-right-width: 1px;
@@ -1104,7 +1409,9 @@ div.navcontainer ul#navlist li a:visited {
     border-bottom-width: 1px;
     text-align: right;
 }
+/*endregion STATS_TABLE`*/
 
+/*region WORKFLOW_PLUGIN*/
 /**
  * #############################################################################
  * @section WORKFLOW PLUGIN
@@ -1134,6 +1441,17 @@ div.left_list {
     max-width: 500px;
 }
 
+.mg10 .workflow_tasks {
+    border: 1px solid #b3b3b3;
+    background: #e2e2e2;
+    margin: 0 0 10px 0;
+    padding: 2px;
+    vertical-align: middle;
+    line-height: 20px;
+}
+
+/*endregion WORKFLOW_PLUGIN*/
+
 .message_box_head {
     font-family: verdana, arial, helvetica, sans-serif;
     font-weight: bold;
@@ -1147,9 +1465,10 @@ div.left_list {
     color: #000
 }
 
+/*region ARTICLE_SEARCH*/
 /**
  * #############################################################################
- * @section ARTIKELSUCHE
+ * @section Article_Search
  */
 div.artikel_search {
     padding-top: 10px;
@@ -1163,7 +1482,9 @@ ul.artikel_search {
     margin: 0;
     list-style: none;
 }
+/*endregion ARTICLE_SEARCH*/
 
+/* Where is this used? */
 #scroll * *,
 #scroll *,
 #scroll {
@@ -1217,6 +1538,7 @@ p.column_header {
     font-weight: bold;
 }
 
+/*region IM_USE*/
 /**
  * #############################################################################
  * @section Inuse
@@ -1250,71 +1572,118 @@ p.column_header {
     width: 245px;
 }
 
-/**
- * #############################################################################
- * @section Frame_Left_Deco
- */
-.page_deco {
-    background-color: #e2e2e2;
-}
-.page_deco .frame_handle {
-    height: 28px;
-    border-bottom: 1px solid #b3b3b3;
-}
-.page_deco .frame_handle img {
+table.inuse_lay_mod td,
+table.inuse_lay_mod th {
     border: none;
-    float: right;
-}
-.page_deco .frame_handle img#toggleimage {
-    cursor: pointer;
-    float: none;
-    margin:7px 0 0 17px;
 }
 
-/**
- * #############################################################################
- * @section Frame_Sub_Navigation
- */
-.page_subnav .frame_handle {
-    float: left;
-}
-.page_subnav .frame_handle img {
-    border: none;
-    float: left;
-}
-.page_subnav .frame_handle img#toggleimage {
-    cursor: pointer;
-    float: none;
-    margin: 7px 0 0 6px;
-}
-.page_subnav div.menuless {
-    padding-left: 250px;
-}
-.page_subnav div.menuless .frame_handle {
-    display: none;
+table.inuse_lay_mod {
+    border: 1px solid #ccc;
 }
 
+table.inuse_lay_mod td.grey {
+    background-color: #eee;
+}
+
+table.inuse_tpl {
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+/*endregion IM_USE*/
+
+/*region JQUERY_UI*/
 /**
  * #############################################################################
- * @section Datetime_Picker
+ * @section jQuery_UI
  */
+
+/** Set box sizing back to default value for jQuery UI Dialog */
+.ui-dialog,
+.ui-dialog *,
+.ui-dialog *::before,
+.ui-dialog *::after {
+    box-sizing: content-box;
+}
+
+#ui-dialog-title-single_dialog {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.ui-dialog {
+    position: relative;
+    z-index: 2000;
+    border-radius: 0;
+}
+
+.ui-widget {
+    font-size: 11px !important;
+}
+
+.ui-widget button,
+.ui-widget input,
+.ui-widget optgroup,
+.ui-widget select,
+.ui-widget textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit !important;
+    height: inherit;
+    margin: 0;
+}
 
 .ui-datepicker {
     width: 24em !important;
 }
 .ui-datepicker-trigger {
     vertical-align: top;
-    margin-top: 2px;
-    margin-left: 5px;
+    margin-left: 3px;
 }
 
+.ui-widget-header {
+    border: none;
+    background: none;
+    margin-top: 10px;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.ui-widget-header .ui-state-hover {
+    border: none;
+    background: none;
+}
+
+.ui-widget-header .ui-state-hover span {
+    background-position: -97px -127px;
+}
+
+.ui-widget-header .ui-datepicker-prev.ui-state-hover span {
+    background-position: -80px -192px;
+}
+
+.ui-widget-header .ui-datepicker-next.ui-state-hover span {
+    background-position: -48px -192px;
+}
+
+.ui-widget-overlay {
+    background: #333 none;
+}
+/*endregion JQUERY_UI*/
+
+/*region MARGIN_PADDING*/
 /**
  * #############################################################################
  * @section Margin_Padding
  */
 
 .mg0 {
-    margin: 0;
+    margin: 0 !important;
 }
 .mg10 {
     margin: 10px;
@@ -1324,6 +1693,9 @@ p.column_header {
 }
 .mgt1 {
     margin-top: 1px;
+}
+.mgt3 {
+    margin-top: 3px !important;
 }
 .mgt5 {
     margin-top: 5px;
@@ -1359,19 +1731,25 @@ p.column_header {
     margin-left: 25px;
 }
 .mgr0 {
-    margin-right: 0;
+    margin-right: 0 !important;
 }
 .mgr3 {
     margin-right: 3px;
 }
+.mgr5 {
+    margin-right: 5px !important;
+}
 .mgr15 {
-    margin-right: 15px;
+    margin-right: 15px !important;
 }
 .mgr30 {
     margin-right: 30px;
 }
 .mgb2 {
     margin-bottom: 2px;
+}
+.mgb3 {
+    margin-bottom: 3px !important;
 }
 .mgb5 {
     margin-bottom: 5px;
@@ -1383,13 +1761,16 @@ p.column_header {
     margin-bottom: 20px;
 }
 .pd0 {
-    padding: 0;
+    padding: 0 !important;
 }
 .pd2 {
     padding: 2px;
 }
 .pd5 {
-    padding: 5px;
+    padding: 5px !important;
+}
+.pdt0 {
+    padding-top: 0 !important;
 }
 .pdt3 {
     padding-top: 3px;
@@ -1413,10 +1794,10 @@ p.column_header {
     padding-left: 5px;
 }
 .pdl10 {
-    padding-left: 10px;
+    padding-left: 10px !important;
 }
 .pdl15 {
-    padding-left: 15px;
+    padding-left: 15px !important;
 }
 .pdl17 {
     padding-left: 17px;
@@ -1439,20 +1820,25 @@ p.column_header {
 .pdr20 {
     padding-right: 20px;
 }
+.pdb0 {
+    padding-bottom: 0 !important;
+}
 .pdb5 {
     padding-bottom: 5px;
 }
 .pdb15 {
     padding-bottom: 15px;
 }
+/*endregion MARGIN_PADDING*/
 
+/*region FONT*/
 /**
  * #############################################################################
  * @section Font
  */
 
 .bold {
-    font-weight: bold;
+    font-weight: bold !important;
 }
 .color6 {
     color: #666;
@@ -1463,7 +1849,9 @@ p.column_header {
 .red {
     color: red;
 }
+/*endregion FONT*/
 
+/*region WIDTH_HEIGHT*/
 /**
  * #############################################################################
  * @section Width_Height
@@ -1652,83 +2040,147 @@ p.column_header {
 .lheightpx25 {
     line-height: 25px;
 }
+/*endregion WIDTH_HEIGHT*/
 
+/*region BACKGROUND_COLOR*/
 /**
  * #############################################################################
  * @section Background_Color
  */
 
-.bgcA9 {
-    background-color: #a9aec2;
-}
-.bgcF4 {
-    background-color: #f4f4f7;
-}
-.bgcE2 {
-    background-color: #e2e2e2;
-}
-.bgcF1 {
-    background-color: #f1f1f1;
-}
-.bgcCC {
-    background-color: #ccc;
-}
-.bgcwhite {
-    background-color: #fff;
-}
-.bgct {
-    background-color: transparent;
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgcA9`, use `bg_c_a9` instead */
+.bgcA9 {background-color: #a9aec2}
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgcF4`, use `bg_c_f4` instead */
+.bgcF4 {background-color: #f4f4f7;}
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgcE2`, use `bg_c_f1` instead */
+.bgcE2 {background-color: #e2e2e2;}
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgcF1`, use `bg_c_e2` instead */
+.bgcF1 {background-color: #f1f1f1;}
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgcCC`, use `bg_c_cc` instead */
+.bgcCC {background-color: #ccc;}
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgcwhite`, use `bg_c_ff` instead */
+.bgcwhite {background-color: #fff;}
+/** @deprecated [2023-02-26] Since CONTENIDO 4.10.2, Don't use `bgct`, use `bg_c_t` instead */
+.bgct {background-color: transparent;}
+
+.bg_c_a9 {
+    background-color: #a9aec2
 }
 
+.bg_c_f4 {
+    background-color: #f4f4f7;
+}
+
+.bg_c_e2 {
+    background-color: #e2e2e2;
+}
+
+.bg_c_f1 {
+    background-color: #f1f1f1;
+}
+
+.bg_c_cc {
+    background-color: #ccc;
+}
+
+.bg_c_ff {
+    background-color: #fff;
+}
+
+.bg_c_t {
+    background-color: transparent;
+}
+/*endregion BACKGROUND_COLOR*/
+
+/*region BORDER*/
 /**
  * #############################################################################
  * @section Border
  */
 
-.noborder {
-    border: 0;
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `noborder`, use `no_border` instead */
+.noborder {border: 0;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `borderB5`, use `border_b5` instead */
+.borderB5 {border: 1px solid #b5b5b5;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `bordertB5`, use `border_t_b5` instead */
+.bordertB5 {border-top: 1px solid #b5b5b5;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `borderlB5`, use `border_l_b5` instead */
+.borderlB5 {border-left: 1px solid #b5b5b5;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `borderrB5`, use `border_r_b5` instead */
+.borderrB5 {border-right: 1px solid #b5b5b5;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `borderB3`, use `border_b3` instead */
+.borderB3 {border: 1px solid #b3b3b3;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `borderrB3`, use `border_r_b3` instead */
+.borderrB3 {border-right: 1px solid #b3b3b3;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `border74`, use `border_74` instead */
+.border74 {border: 1px solid #747488;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `bordert06`, use `border_t_06` instead */
+.bordert06 {border-top: 1px solid #0060b1;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `border169`, use `border_169` instead */
+.border169 {border: 0 solid rgb(169, 174, 194); border-top-width: 1px;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `nobordert`, use `no_border_t` instead */
+.nobordert {border-top: 0;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `noborderr`, use `no_border_r` instead */
+.noborderr {border-right: 0;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `noborderb`, use `no_border_b` instead */
+.noborderb {border-bottom: 0;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `noborderl`, use `no_border_l` instead */
+.noborderl {border-left: 0;}
+
+.no_border {
+    border: 0 !important;
 }
-.borderB5 {
-    border: 1px solid #b5b5b5;
+.no_border_t {
+    border-top: 0 !important;
 }
-.bordertB5 {
-    border-top: 1px solid #b5b5b5;
+.no_border_r {
+    border-right: 0 !important;
 }
-.borderlB5 {
-    border-left: 1px solid #b5b5b5;
+.no_border_b {
+    border-bottom: 0 !important;
 }
-.borderrB5 {
-    border-right: 1px solid #b5b5b5;
-}
-.borderB3 {
-    border: 1px solid #b3b3b3;
-}
-.borderrB3 {
-    border-right: 1px solid #b3b3b3;
-}
-.border74 {
-    border: 1px solid #747488;
-}
-.bordert06 {
-    border-top: 1px solid #0060b1;
-}
-.border169 {
-    border: 0 solid rgb(169, 174, 194);
-    border-top-width: 1px;
-}
-.nobordert {
-    border-top: 0;
-}
-.noborderr {
-    border-right: 0;
-}
-.noborderb {
-    border-bottom: 0;
-}
-.noborderl {
-    border-left: 0;
+.no_border_l {
+    border-left: 0 !important;
 }
 
+.border_b5 {
+    border: 1px solid #b5b5b5 !important;
+}
+.border_t_b5 {
+    border-top: 1px solid #b5b5b5 !important;
+}
+.border_l_b5 {
+    border-left: 1px solid #b5b5b5 !important;
+}
+.border_r_b5 {
+    border-right: 1px solid #b5b5b5 !important;
+}
+
+.border_b3 {
+    border: 1px solid #b3b3b3 !important;
+}
+.border_r_b3 {
+    border-right: 1px solid #b3b3b3 !important;
+}
+.border_t_b3 {
+    border-top: 1px solid #b3b3b3 !important;
+}
+
+.border_74 {
+    border: 1px solid #747488 !important;
+}
+
+.border_t_06 {
+    border-top: 1px solid #0060b1 !important;
+}
+
+.border_169 {
+    border: 0 solid rgb(169, 174, 194) !important;
+    border-top-width: 1px !important;
+}
+/*endregion BORDER*/
+
+/*region DIRECTION*/
 /**
  * #############################################################################
  * @section Direction
@@ -1749,41 +2201,87 @@ p.column_header {
 .clearr {
     clear: right;
 }
+/*endregion DIRECTION*/
 
+/*region TEXT_ALIGN*/
 /**
  * #############################################################################
  * @section Text_align
  */
 
-.vgmiddle {
-    vertical-align: middle;
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `vgmiddle`, use `align_middle` instead */
+.vgmiddle {vertical-align: middle;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `vgtop`, use `align_top` instead */
+.vgtop {vertical-align: top;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `text_center`, use `text_left` instead */
+.tgcenter {text-align: center;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `tgleft`, use `text_left` instead */
+.tgleft {text-align: left;}
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `tgright`, use `text_right` instead */
+.tgright {text-align: right;}
+
+.align_top {
+    vertical-align: top !important;
 }
-.vgtop {
-    vertical-align: top;
+.align_middle {
+    vertical-align: middle !important;
 }
-.tgcenter {
-    text-align: center;
-}
-.tgleft {
-    text-align: left;
-}
-.tgright {
-    text-align: right;
+.align_bottom {
+    vertical-align: bottom !important;
 }
 
+.text_left {
+    text-align: left !important;
+}
+.text_center {
+    text-align: center !important;
+}
+.text_right {
+    text-align: right !important;
+}
+/*endregion TEXT_ALIGN*/
+
+/*region MISC*/
 /**
  * #############################################################################
- * @section Other
+ * @section Misc
  */
 
-.nodisplay {
-    display: none;
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `nodisplay`, use `no_display` instead */
+.nodisplay {display: none !important;}
+.no_display {
+    display: none !important;
 }
+
+/* Only for screen reader */
+.sr_only {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: "";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
+.clearfix {
+    zoom: 1;
+}
+
 .block {
-    display: block;
+    display: block !important;
 }
-.nowrap {
-    white-space: nowrap;
+/** @deprecated [2023-02-24] Since CONTENIDO 4.10.2, Don't use `nowrap`, use `no_wrap` instead */
+.nowrap {white-space: nowrap;}
+.no_wrap {
+    white-space: nowrap !important;
 }
 .noresize {
     resize: none;
@@ -1803,6 +2301,13 @@ a.h1e {
 .ofauto {
     overflow: auto;
 }
+
+.con_block:not(:empty) {
+    margin-bottom: 10px !important;
+}
+/*endregion MISC*/
+
+/*region ID*/
 /**
  * #############################################################################
  * @section ID
@@ -1855,22 +2360,6 @@ div#top_left_container.style_left_top {
     margin-top: 1px
 }
 
-.mg10 .workflow_tasks {
-    border: 1px solid #b3b3b3;
-    background: #e2e2e2;
-    margin: 0 0 10px 0;
-    padding: 2px;
-    vertical-align: middle;
-    line-height: 20px;
-}
-.contenttest {
-    margin: 0.3em 0;
-}
-
-#defaultStartArtNameInfo1-link {
-    margin-top: 1.2em;
-}
-
 div#legend {
     margin: 0;
     padding-left: 10px;
@@ -1883,36 +2372,38 @@ div#legend table.article {
     padding-bottom: 10px;
 }
 
+/* Module edit styles */
+#mod_edit .inputok,
+#mod_edit .outputok {
+    float: right;
+}
+
+
+#setupBody,
+div.errorlist {
+    background-color: #fff;
+}
+
+.contenttest {
+    margin: 0.3em 0;
+}
+
 /* CodeMirror Styles */
 .CodeMirror-wrap pre {
     line-height: 1.2em;
 }
 
-#mod_edit,
-#mod_translate,
-#mod_template,
-#mod_style,
-#mod_javascript {
-    width: 99% !important;
-}
-
-#imgFormSubmit {
-    cursor: pointer;
-}
-
 /* Bulk Editing Functions on Article Overview and Mail Logging Page */
-a.flip_mark {
-    float: left;
+a.invert_selection {
     margin-right: 25px;
 }
 
-a.flip_mark img {
+a.invert_selection img {
     vertical-align: middle;
 }
 
 div.bulk_editing_functions {
-    display: none;
-    float: left;
+    display: inline-block;
 }
 
 div.bulk_editing_functions a img {
@@ -1920,116 +2411,22 @@ div.bulk_editing_functions a img {
     vertical-align: middle;
 }
 
-#setupBody,
-div.errorlist {
-    background-color: #fff;
-}
-
-.log-header,
-.log-footer {
-    background: #e2e2e2;
-    border: 1px solid #b5b5b5;
-    height: 25px;
-    width: 99%;
-}
-
-.log-header img,
-.log-footer img {
-    margin: 3px;
-    vertical-align: middle;
-}
-
-.log-header select,
-.log-footer input {
-    margin: 3px;
-}
-
-/* all translations */
-.alltranslations {
-    margin: 20px 0;
-    width: 100%;
-}
-
-.alltranslations th {
-    width: auto;
-}
-
-.alltranslations th img {
-    padding: 4px 1px;
-}
-
-.alltranslations td img,
-.alltranslations td input {
-    float: right;
-}
-
-.alltranslations td input.vAlignTop {
-    float: none;
-    display: block;
-}
-
-.alltranslations td.actions {
-    text-align: right;
-}
-
-.alltranslations td.actions input {
-    display: inline;
-}
-
-.alltranslations td.inuse {
-    width: 120px;
-}
-
-.alltranslations td.actions {
-    width: 50px;
-}
-
-.atfilter,
-.atpager {
-    padding: 0 5px;
-    border: 1px solid #b3b3b3;
-    background-color: #e2e2e2;
-    overflow: hidden;
-}
-
-.atfilter form,
-.atfilter input,
-.atfilter button,
-.atfilter a,
-.atpager form,
-.atpager input,
-.atpager button,
-.atpager a {
-    vertical-align: middle;
-}
-
-/**
- * Leaves a little margin after the file chooser in the mod html section
- */
-#choose_mod_template_file {
-    margin-bottom: 10px;
-}
-
-/**
- * aligns something vertically with a line of text
- */
+/** @deprecated [2023-03-16] Since CONTENIDO 4.10.2, Don't use `vAlignMiddle`, use `align_middle` instead */
 .vAlignMiddle {
     vertical-align: middle;
     margin-bottom: 0.25em;
 }
 
 /* I have no idea why this is needed but it looks better for image inputs */
+/** @deprecated [2023-03-16] Since CONTENIDO 4.10.2, Don't use `vAlignMiddle`, there is no replacement */
 input[type=image].vAlignMiddle {
     margin-bottom: 0.1em;
 }
 
+/** @deprecated [2023-03-06] Since CONTENIDO 4.10.2, Don't use `vAlignTop`, use `align_top` instead */
 .vAlignTop {
     vertical-align: top;
     margin-top: 0.25em;
-}
-
-#version_selector {
-    margin-bottom: 10px;
 }
 
 /**
@@ -2037,40 +2434,6 @@ input[type=image].vAlignMiddle {
  */
 .tableElement {
     margin-left: 3px;
-}
-
-.conEditForm {
-    width: 700px;
-    min-width: 700px;
-    max-width: 700px;
-}
-
-.conEditForm tr:first-child td {
-    border-top: 1px solid #B3B3B3;
-}
-
-.conEditForm input.text_medium {
-    width: 400px;
-}
-
-.conEditForm input.sitemapPriority {
-    width: 140px;
-}
-
-.conEditForm input.redirectURL {
-    width: 380px;
-}
-
-.conEditForm input.shorter {
-    width: 380px;
-}
-
-.conEditForm select.categories {
-    width: 200px;
-}
-
-.conEditForm textarea {
-    width: 400px;
 }
 
 #cont_groups {
@@ -2083,40 +2446,27 @@ input[type=image].vAlignMiddle {
     margin-left: 15px;
 }
 
-.leftTopAction {
-    min-height: 2em;
-    border: 1px solid #b3b3b3;
-    padding: 5px 0 5px 16px;
-    margin-top: 1px;
-}
-.leftTopActionNext {
-    border-top: none;
-    padding: 5px 0 5px 16px;
-    margin-top: 0;
-}
-
-.leftTopAction input[type=text] {
-    width: 170px;
-}
-
-.moduleError {
+/** @deprecated [2023-03-16] Since CONTENIDO 4.10.2, Don't use `moduleError`, use `con_module_error` instead */
+.moduleError,
+.con_module_error {
     color: #B1AC58;
 }
 
-.moduleCriticalError {
+/** @deprecated [2023-03-16] Since CONTENIDO 4.10.2, Don't use `moduleCriticalError`, use `con_module_critical_error` instead */
+.moduleCriticalError,
+.con_module_critical_error {
     color: red;
 }
 
-#myContenidoTodoButton {
-    padding-top: 2px;
-    padding-bottom: 2px;
-}
-
-.inactiveUser {
+/** @deprecated [2023-02-28] Since CONTENIDO 4.10.2, Don't use `inactiveUser`, use `is_inactive` instead */
+.inactiveUser,
+.is_inactive {
     color: #b3b3b8;
 }
 
-.emptyCell {
+/** @deprecated [2023-03-16] Since CONTENIDO 4.10.2, Don't use `emptyCell`, use `con_empty_cell` instead */
+.emptyCell,
+.con_empty_cell {
     border-bottom: 0 !important;
 }
 
@@ -2143,20 +2493,35 @@ input[type=image].vAlignMiddle {
     margin-left: 20px;
 }
 
-#cat_navbar {
-    border-bottom: 1px solid #b3b3b3;
+/*region NAV_BAR*/
+/**
+ * #############################################################################
+ * @section Navbar
+ */
+/** @deprecated [2023-03-01] Since CONTENIDO 4.10.2, Don't use `cat_navbar`, use `con_navbar` instead */
+#cat_navbar,
+td.con_navbar,
+.con_navbar {
+    height: 25px;
+    line-height: 16px;
+    vertical-align: middle;
+    border: 1px solid #B3B3B3 !important;
+    background-color: #E2E2E2 !important;
+    padding: 4px 5px 3px 5px !important;
 }
 
-.toolsRight {
-    display: inline-block;
-    float: right;
+.con_navbar > table {
+    border: 0;
 }
-
-.toolsRight .vAlignMiddle {
-    display: inline-block;
-    width: 100px;
-    padding: 0 5px;
+.con_navbar > table td {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
 }
+.con_navbar > table td > span {
+    display: inline-block;
+}
+/*endregion NAV_BAR*/
 
 #todoList {
     margin-bottom: 10px;
@@ -2167,170 +2532,31 @@ input[type=image].vAlignMiddle {
     width: 110px;
 }
 
-#con_translate span.vALignMiddle {
-    line-height: 20px;
+/* Disabled links */
+.is_disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+a[aria-disabled="true"],
+input[aria-disabled="true"],
+button[aria-disabled="true"] {
+    /* NOTE: Disabling pointer events works on modern clients, we still
+       need a JS fallback to block clicks on elements like a, button, etc. */
+    pointer-events: none;
+    text-decoration: none;
 }
 
-#con_translate #newlangsubmit {
-    vertical-align: top;
-    margin-top: 3px;
-}
-
-#con_translate #newlang {
-    margin-top: 1px;
-    height: 20px;
-
-}
-
-#con_translate div.atfilter div.right select,
-#con_translate div.atfilter div.right input {
-    vertical-align: top;
-    margin-top: 1px;
-    height: 20px;
-    margin-right: 3px;
-}
-
-#con_translate div.atfilter div.right input  {
-    height: 15px;
-    padding: 0;
-    margin: 1px 0 0;
-}
-
-#con_translate div.atfilter div.right input.vAlignTop {
-    margin-top: 4px;
-}
-
-#con_translate select.elemperpage {
-    margin-right: 3px;
-    margin-left: 3px;
-}
-
-#con_translate #elemperpagesubmit {
-    margin-top: 1px;
-    vertical-align: top;
-}
-
-#con_translate div.atpager {
-    height: 18px;
-}
-
-#con_translate span.cpager_currentitem {
+/* User and group rights selection box */
+.con_rights_selection_box {
+    border: 1px solid #b3b3b3;
+    display: inline-block;
+    padding: 4px 5px;
+    margin-bottom: 10px;
     vertical-align: middle;
 }
-
-#con_translate div.atpager img {
-    margin-top: 1px;
+.con_rights_selection_box > span {
+    margin-right: 5px;
 }
-
-.ui-widget-header {
-    border: none;
-    background: none;
-    margin-top: 10px;
-    font-size: 11px;
-    font-weight: normal;
-}
-
-#ui-dialog-title-single_dialog {
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.ui-dialog .ui-dialog-titlebar-close {
-   position: absolute;
-   right: 0;
-   top: 0;
-}
-
-.ui-dialog {
-    position: relative;
-    z-index: 2000;
-}
-
-.ui-widget-header .ui-state-hover {
-    border: none;
-    background: none;
-}
-
-.ui-widget-header .ui-state-hover span {
-    background-position: -97px -127px;
-}
-
-.ui-widget-header .ui-datepicker-prev.ui-state-hover span {
-    background-position: -80px -192px;
-}
-
-.ui-widget-header .ui-datepicker-next.ui-state-hover span {
-    background-position: -48px -192px;
-}
-
-.ui-widget-overlay {
-    background: #333 none;
-}
-
-.ui-dialog {
-    border-radius: 0;
-}
-
-table.inuse_lay_mod td,
-table.inuse_lay_mod th {
-    border: none;
-}
-
-table.inuse_lay_mod {
-    border: 1px solid #ccc;
-}
-
-table.inuse_lay_mod td.grey {
-    background-color: #eee;
-}
-
-table.inuse_tpl {
-    margin-bottom: 10px;
-    margin-top: 5px;
-}
-
-#con_content_list .rawdata {
-    display: block;
-    margin: 15px 0 15px 0;
-    font-weight: bold;
-}
-#con_content_list div.rawtypes {
-    display: none;
-}
-
-#con_content_list #importrawdata input[type=file] {
-    display: block;
-    margin: 0;
-}
-
-#con_content_list #importrawdata input[type=submit] {
-    display: block;
-    margin: 10px 0 5px 0;
-}
-
-a.infoButton,
-.infoButton:hover {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    background: transparent url(../images/info.gif) no-repeat;
-    margin-bottom: -3px;
-}
-
- /* toggle for category list*/
-.str_overview_toggle {
-    opacity: 0.3 !important;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-
-    /* IE 5-7 */
-    filter: alpha(opacity=30) !important;
-
-    /* Netscape */
-    -moz-opacity: 0.3 !important;
-
-    /* Safari 1.x */
-    -khtml-opacity: 0.3 !important;
-
-    /* Good browsers */
-    opacity: 0.3 !important;
+.con_rights_selection_box > span:last-of-type {
+    margin-right: 0;
 }

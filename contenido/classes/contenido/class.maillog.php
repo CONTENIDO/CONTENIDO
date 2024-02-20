@@ -3,13 +3,13 @@
 /**
  * This file contains the maillog collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Mail log collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiMailLog createNewItem
+ * @method cApiMailLog|bool next
  */
-class cApiMailLogCollection extends ItemCollection {
+class cApiMailLogCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['mail_log'], 'idmail');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('mail_log'), 'idmail');
         $this->_setItemClass('cApiMailLog');
     }
 
@@ -40,19 +43,20 @@ class cApiMailLogCollection extends ItemCollection {
      * @param string|array $replyTo
      * @param string|array $cc
      * @param string|array $bcc
-     * @param string       $subject
-     * @param string       $body
-     * @param string       $created
+     * @param string $subject
+     * @param string $body
+     * @param string $created
      *         timestamp!
-     * @param string       $charset
-     * @param string       $contentType
+     * @param string $charset
+     * @param string $contentType
      *
      * @return cApiMailLog
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($from, $to, $replyTo, $cc, $bcc, $subject, $body, $created, $charset, $contentType) {
+    public function create($from, $to, $replyTo, $cc, $bcc, $subject, $body, $created, $charset, $contentType)
+    {
         $item = $this->createNewItem();
 
         $item->set('from', json_encode($from));
@@ -80,7 +84,7 @@ class cApiMailLogCollection extends ItemCollection {
 /**
  * Mail log item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiMailLog extends Item
@@ -93,10 +97,10 @@ class cApiMailLog extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['mail_log'], 'idmail');
-        $this->setFilters(array(), array());
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('mail_log'), 'idmail');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

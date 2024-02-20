@@ -1,24 +1,27 @@
 <?php
+
 /**
  * Several functions to help the cli setup of CONTENIDO
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Setup
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Prints some text to the console
  *
  * @param string $str string which should be printed
- * @param int $tab number of tab characters which should preceed the string
+ * @param int $tab number of tab characters which should preceded the string
  */
-function prnt($str = '', $tab = 0) {
+function prnt($str = '', $tab = 0)
+{
     for ($i = 0; $i < $tab; $i++) {
         echo("\t");
     }
@@ -29,9 +32,10 @@ function prnt($str = '', $tab = 0) {
  * Prints some text and a new line to the console
  *
  * @param string $str string which should be printed
- * @param int $tab number of tab characters which should preceed the string
+ * @param int $tab number of tab characters which should preceded the string
  */
-function prntln($str = '', $tab = 0) {
+function prntln($str = '', $tab = 0)
+{
     prnt($str . "\n\r", $tab);
 }
 
@@ -40,7 +44,8 @@ function prntln($str = '', $tab = 0) {
  *
  * @param string $str string which should be printed
  */
-function prntst($str = '') {
+function prntst($str = '')
+{
     echo($str . "\r");
 }
 
@@ -50,10 +55,11 @@ function prntst($str = '') {
  * function will print a warning for the user instead.
  *
  * @param string $title label text
- * @param int $tab number of tabs which should preceed the label text
+ * @param int $tab number of tabs which should preceded the label text
  * @return string user entered password
  */
-function passwordPrompt($title, $tab = 0) {
+function passwordPrompt($title, $tab = 0): string
+{
     if (cString::toUpperCase(cString::getPartOfString(PHP_OS, 0, 3)) === 'WIN') {
         prntln(i18n('Be careful! The password will be readable in the console window!', 'setup'), $tab);
     }
@@ -73,13 +79,13 @@ function passwordPrompt($title, $tab = 0) {
 /**
  * Prints a progress bar to the console
  *
- * @param int $width Widht of the progress bar in characters
+ * @param int $width Width of the progress bar in characters
  * @param int $filled Percent value to which it should be filled (e.g. 45)
  */
-function progressBar($width, $filled) {
+function progressBar($width, $filled)
+{
     echo("\r");
     echo("|");
-    $i = 0;
     for ($i = 0; $i <= $filled / 100 * $width; $i++) {
         echo("#");
     }
@@ -93,20 +99,21 @@ function progressBar($width, $filled) {
 /**
  * Initializes the globals the CONTENIDO setup needs
  */
-function initializeVariables() {
+function initializeVariables()
+{
     global $cfg, $_SESSION;
 
     $cfg['db'] = [
         'connection' => [
-            'host'     => '',
-            'user'     => '',
+            'host' => '',
+            'user' => '',
             'password' => '',
-            'charset'  => '',
+            'charset' => '',
             'database' => '',
-            'options'  => [],
+            'options' => [],
         ],
-        'haltBehavior'    => 'report',
-        'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
+        'haltBehavior' => 'report',
+        'haltMsgPrefix' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
         'enableProfiling' => false
     ];
     $_SESSION['setuptype'] = 'setup';
@@ -117,6 +124,7 @@ function initializeVariables() {
     $_SESSION['adminpass'] = '';
     $_SESSION['adminmail'] = '';
     $_SESSION['dbprefix'] = '';
+    $_SESSION['dbengine'] = '';
     $_SESSION['dboptions'] = [];
 }
 
@@ -125,7 +133,8 @@ function initializeVariables() {
  *
  * @return boolean true if every setting has been entered
  */
-function checkInstallationSettings() {
+function checkInstallationSettings()
+{
     global $cfg, $_SESSION;
 
     $fine = true;
@@ -156,6 +165,10 @@ function checkInstallationSettings() {
     }
     if ($_SESSION['dbprefix'] == '') {
         prntln(i18n('You did not specify a database prefix!', 'setup'));
+        $fine = false;
+    }
+    if ($_SESSION['dbengine'] == '') {
+        prntln(i18n('You did not specify a database engine!', 'setup'));
         $fine = false;
     }
 
@@ -192,7 +205,8 @@ function checkInstallationSettings() {
  *
  * @return array An array representing the arguments and switches provided to the script
  */
-function getArgs() {
+function getArgs(): array
+{
     $args = $_SERVER['argv'];
 
     $out = [];
@@ -210,8 +224,9 @@ function getArgs() {
             }
             $last_arg = $key;
         } else if (preg_match("/^-([a-zA-Z0-9]+)/", $args[$i], $match)) {
+            $key = null;
             for ($j = 0, $jl = cString::getStringLength($match[1]); $j < $jl; $j++) {
-                $key = $match[1]{$j};
+                $key = $match[1][$j];
                 $out[$key] = true;
             }
             $last_arg = $key;
@@ -225,9 +240,10 @@ function getArgs() {
 /**
  * Prints the help text
  */
-function printHelpText() {
+function printHelpText()
+{
     prntln("\r" . i18n('CONTENIDO setup script', 'setup'));
-    prntln(i18n('This script will install CONTENIDO to your computer', 'setup'));
+    prntln(i18n('This script will install CONTENIDO to your computer.', 'setup'));
     prntln();
     prntln(i18n("CONTENIDO can be installed using the interactive mode or a non-interactive mode.", 'setup'));
     prntln(i18n("If the script is executed without any parameters it will look for the\nautoinstall.ini file (or any other file specified with \"--file\").", 'setup'));
@@ -237,7 +253,7 @@ function printHelpText() {
     prntln('--interactive, -i');
     prntln(i18n("Forces the script to be interactive and wait for user input even if the\n\tautoinstall.ini file is present.", 'setup'), 1);
     prntln('--non-interactive');
-    prntln(i18n("Will prevent all waiting for user input. The script will abort\n\tin case of any errors", 'setup'), 1);
+    prntln(i18n("Will prevent all waiting for user input. The script will abort\n\tin case of any errors.", 'setup'), 1);
     prntln('--file [' . i18n('file', 'setup') . ']');
     prntln(i18n('Use [file] instead of the default autoinstall.ini.', 'setup'), 1);
     prntln('--locale [' . i18n('language code', 'setup') . ']');
@@ -247,7 +263,6 @@ function printHelpText() {
     prntln();
     prntln(i18n("Furthermore, you can use parameters to overwrite setup settings.\nUse \"--[ini-group].[ini-name]=\"value\" (e.g. --db.host=\"localhost\")", 'setup'));
     prntln();
-    prntln('CONTENIDO version ' . CON_SETUP_VERSION);
+    prntln('CONTENIDO version ' . CON_VERSION);
 }
 
-?>

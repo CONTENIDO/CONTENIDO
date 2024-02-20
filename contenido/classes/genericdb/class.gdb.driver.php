@@ -3,14 +3,13 @@
 /**
  * This file contains the root database driver for the generic db.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB
- *
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Root database driver.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB
  */
-class cGenericDbDriver {
+class cGenericDbDriver
+{
 
     /**
      * @var string
@@ -36,14 +36,16 @@ class cGenericDbDriver {
     /**
      * @param string $sEncoding
      */
-    public function setEncoding($sEncoding) {
+    public function setEncoding($sEncoding)
+    {
         $this->_sEncoding = $sEncoding;
     }
 
     /**
      * @param Item $oInstance
      */
-    public function setItemClassInstance($oInstance) {
+    public function setItemClassInstance($oInstance)
+    {
         $this->_oItemClassInstance = $oInstance;
     }
 
@@ -55,7 +57,8 @@ class cGenericDbDriver {
      * @param string $primaryKey
      * @return array
      */
-    public function buildJoinQuery($destinationTable, $destinationClass, $destinationPrimaryKey, $sourceClass, $primaryKey) {
+    public function buildJoinQuery($destinationTable, $destinationClass, $destinationPrimaryKey, $sourceClass, $primaryKey)
+    {
     }
 
     /**
@@ -64,6 +67,7 @@ class cGenericDbDriver {
      * @param string $sRestriction
      * @return string
      */
-    public function buildOperator($sField, $sOperator, $sRestriction) {
+    public function buildOperator($sField, $sOperator, $sRestriction)
+    {
     }
 }

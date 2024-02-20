@@ -9,9 +9,9 @@
  * @author     Timo Trautmann
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.9
  */
 
@@ -315,10 +315,19 @@
          */
         storeCurrentTinyContent: function() {
             // Store last tiny changes if tiny is still open
-            var editor = tinymce.getInstanceById(Con.Tiny.activeId);
+            var editor = tinymce.getInstanceById(Con.Tiny.activeId),
+                content;
 
             if (editor) {
-                var content = editor.getContent();
+                // Wrap the access to editor.getContent in a try-catch block, we might get an
+                // "Cannot read properties of null (reading 'body')" error.
+                try {
+                    content = editor.getContent();
+                } catch (e) {
+                    console.log('Con.Tiny.storeCurrentTinyContent() error: ' + e.message);
+                    return;
+                }
+
                 content = content.replace(Con.Tiny.frontendPath, '');
                 Con.Tiny.editData[Con.Tiny.activeId] = content;
             }
@@ -361,6 +370,8 @@
             // Set the action, but check for invalid values
             if (action !== 0 && action !== '' && action !== '0') {
                 $_form.attr('action', action);
+                // Remove existing form action field, this would overwrite the action in GET variables
+                $_form.find('[name="action"]').remove();
             }
 
             // Submit the form
@@ -518,7 +529,7 @@
 
         /**
          * Function checks if content has changed if user leaves page.
-         * Then he has the possiblity to save this content. So there is no
+         * Then he has the possibility to save this content. So there is no
          * guess, that changes get lost.
          * @method leaveCheck
          * @static

@@ -1,17 +1,29 @@
 <?php
+
 /**
  * This file contains the Recipient user list.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Newsletter
- * @author Bjoern Behrens
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cAuth $auth
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $area
+ * @var int $client
+ * @var int $lang
+ * @var int $frame
+ */
 
 // ################################
 // Initialization
@@ -57,68 +69,74 @@ $aFields = [
 // ################################
 // Store settings
 // ################################
+
+$requestTxtPurgeTimeframe = cSecurity::toInteger($_REQUEST['txtPurgeTimeframe'] ?? '0');
+
 // Update purgetimeframe if submitted
 // $sRefreshTop = '';
 $iTimeframe = $oClient->getProperty("newsletter", "purgetimeframe");
-if (isset($_REQUEST["txtPurgeTimeframe"]) && $_REQUEST["txtPurgeTimeframe"] > 0 && $_REQUEST["txtPurgeTimeframe"] != $iTimeframe && $perm->have_perm_area_action($area, "recipients_delete")) {
-    $oClient->setProperty("newsletter", "purgetimeframe", $_REQUEST["txtPurgeTimeframe"]);
+if ($requestTxtPurgeTimeframe > 0 && $requestTxtPurgeTimeframe != $iTimeframe && $perm->have_perm_area_action($area, "recipients_delete")) {
+    $oClient->setProperty("newsletter", "purgetimeframe", $requestTxtPurgeTimeframe);
     // $sRefreshTop = '<script
     // type="text/javascript">Con.getFrame('left_top').purgetimeframe =
-    // '.$_REQUEST["txtPurgeTimeframe"].'</script>';
+    // '.$requestTxtPurgeTimeframe.'</script>';
 }
 
 // ################################
 // Check external input
 // ################################
+
+$requestElemPerPage = $_REQUEST['elemperpage'] ?? '';
+$requestPage = cSecurity::toInteger($_REQUEST['page'] ?? '0');
+$requestSortOrder = !isset($_REQUEST['sortorder']) || $_REQUEST['sortorder'] !== 'DESC' ? 'ASC' : 'DESC';
+$requestFilter = $_REQUEST['filter'] ?? '';
+$requestSortBy = $_REQUEST['sortby'] ?? '';
+$requestSearchIn = $_REQUEST['searchin'] ?? '';
+$requestRestrictGroup = cSecurity::toInteger($_REQUEST['restrictgroup'] ?? '0');
+$requestIdRecipient = (isset($_REQUEST['idrecipient'])) ? cSecurity::toInteger($_REQUEST['idrecipient']) : 0;
+
 // Items per page (value stored per area in user property)
-if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) || $_REQUEST["elemperpage"] < 0) {
-    $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
+if (!is_numeric($requestElemPerPage) || $requestElemPerPage < 0) {
+    $requestElemPerPage = $oUser->getProperty("itemsperpage", $area);
 }
-if (!is_numeric($_REQUEST["elemperpage"])) {
+if (!is_numeric($requestElemPerPage)) {
     // This is the case, if the user property has never been set (first time
     // user)
-    $_REQUEST["elemperpage"] = 25;
+    $requestElemPerPage = 25;
 }
-if ($_REQUEST["elemperpage"] > 0) {
+if ($requestElemPerPage > 0) {
     // -- All -- will not be stored, as it may be impossible to change this back
     // to something more useful
-    $oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
+    $oUser->setProperty("itemsperpage", $area, $requestElemPerPage);
 }
 
-$_REQUEST["restrictgroup"] = (int) $_REQUEST["restrictgroup"];
-if ($_REQUEST["restrictgroup"] == 0) {
-    $_REQUEST["restrictgroup"] = "--all--";
+if ($requestRestrictGroup <= 0) {
+    $requestRestrictGroup = "--all--";
 }
-$_REQUEST["page"] = (int) $_REQUEST["page"];
-if ($_REQUEST["page"] <= 0 || $_REQUEST["elemperpage"] == 0) {
-    $_REQUEST["page"] = 1;
-}
-// Sort order
-if ($_REQUEST["sortorder"] != "DESC") {
-    $_REQUEST["sortorder"] = "ASC";
+
+if ($requestPage <= 0 || $requestElemPerPage == 0) {
+    $requestPage = 1;
 }
 
 // Check sort by and search in criteria
 $bSortByFound = false;
 $bSearchInFound = false;
 foreach ($aFields as $sKey => $aData) {
-    if ($aData["field"] == $_REQUEST["sortby"] && cString::findFirstPos($aData["type"], "sort") !== false) {
+    if ($aData["field"] == $requestSortBy && cString::findFirstPos($aData["type"], "sort") !== false) {
         $bSortByFound = true;
     }
-    if ($aData["field"] == $_REQUEST["searchin"] && cString::findFirstPos($aData["type"], "search") !== false) {
+    if ($aData["field"] == $requestSearchIn && cString::findFirstPos($aData["type"], "search") !== false) {
         $bSearchInFound = true;
     }
 }
 
 if (!$bSortByFound) {
-    $_REQUEST["sortby"] = "name"; // Default sort by field, possible values see
-                                      // above
+    $requestSortBy = "name"; // Default sort by field, possible values see
+    // above
 }
 if (!$bSearchInFound) {
-    $_REQUEST["searchin"] = "--all--";
+    $requestSearchIn = "--all--";
 }
-
-$requestIdRecipient = (isset($_REQUEST['idrecipient'])) ? cSecurity::toInteger($_REQUEST['idrecipient']) : 0;
 
 // Free memory
 unset($oUser);
@@ -139,40 +157,40 @@ $oRecipients->setWhere("idclient", $client);
 $oRecipients->setWhere("idlang", $lang);
 
 // sort by and sort order
-$oRecipients->setOrder($_REQUEST["sortby"] . " " . $_REQUEST["sortorder"]);
+$oRecipients->setOrder($requestSortBy . " " . $requestSortOrder);
 
 // Show group
-if ($_REQUEST["restrictgroup"] != "--all--") {
+if ($requestRestrictGroup != "--all--") {
     $oRecipients->link("RecipientGroupMemberCollection");
-    $oRecipients->setWhere("idnewsgroup", $_REQUEST["restrictgroup"]);
+    $oRecipients->setWhere("idnewsgroup", $requestRestrictGroup);
 }
 
 // Search for
-if ($_REQUEST["filter"] != "") {
-    if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
+if ($requestFilter != "") {
+    if ($requestSearchIn == "--all--" || $requestSearchIn == "") {
         foreach ($aFields as $sKey => $aData) {
             if (cString::findFirstPos($aData["type"], "search") !== false) {
-                $oRecipients->setWhereGroup("filter", $aData["field"], $_REQUEST["filter"], "LIKE");
+                $oRecipients->setWhereGroup("filter", $aData["field"], $requestFilter, "LIKE");
             }
         }
         $oRecipients->setInnerGroupCondition("filter", "OR");
     } else {
-        $oRecipients->setWhere($_REQUEST["searchin"], $_REQUEST["filter"], "LIKE");
+        $oRecipients->setWhere($requestSearchIn, $requestFilter, "LIKE");
     }
 }
 
 // Items / page
-if ($_REQUEST["elemperpage"] > 0) {
+if ($requestElemPerPage > 0) {
     // Getting item count without limit (for page function) - better idea anyone
     // (performance)?
     $oRecipients->query();
     $iItemCount = $oRecipients->count();
 
-    if ($_REQUEST["elemperpage"] * ($_REQUEST["page"]) >= $iItemCount + $_REQUEST["elemperpage"] && $_REQUEST["page"] != 1) {
-        $_REQUEST["page"]--;
+    if ($requestElemPerPage * ($requestPage) >= $iItemCount + $requestElemPerPage && $requestPage != 1) {
+        $requestPage--;
     }
 
-    $oRecipients->setLimit($_REQUEST["elemperpage"] * ($_REQUEST["page"] - 1), $_REQUEST["elemperpage"]);
+    $oRecipients->setLimit($requestElemPerPage * ($requestPage - 1), $requestElemPerPage);
 } else {
     $iItemCount = 0;
 }
@@ -202,7 +220,7 @@ while ($oRecipient = $oRecipients->next()) {
     // Show recipient
     $oLnk = new cHTMLLink();
     $oLnk->setClass('show_item')
-        ->setLink('javascript:;')
+        ->setLink('javascript:void(0)')
         ->setAttribute('data-action', 'recipients_show');
     if ($oRecipient->get("deactivated") == 1 || $oRecipient->get("confirmed") == 0) {
         $oLnk->updateAttributes([
@@ -220,10 +238,11 @@ while ($oRecipient = $oRecipients->next()) {
 
     if ($perm->have_perm_area_action("recipients", "recipients_delete")) {
         // Delete recipient
-        $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+        $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif');
         $oImage->setAlt($aMsg["DelTitle"]);
         $oDelete = new cHTMLLink();
-        $oDelete->setLink('javascript:;')
+        $oDelete->setLink('javascript:void(0)')
+            ->setClass('con_img_button')
             ->setAlt($aMsg["DelTitle"])
             ->setAttribute('data-action', 'recipients_delete')
             ->setContent($oImage->render());
@@ -231,7 +250,7 @@ while ($oRecipient = $oRecipients->next()) {
     }
 }
 
-$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+$oPage->addScript('parameterCollector.js');
 // $oPage->addScript('refreshTop', $sRefreshTop);
 
 // generate current content for Object Pager�
@@ -239,12 +258,12 @@ $sPagerId = '0ed6d632-6adf-4f09-a0c6-1e38ab60e304';
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
-$oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);
-$oPagerLink->setCustom("filter", $_REQUEST["filter"]);
-$oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
-$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
-$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
-$oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
+$oPagerLink->setCustom("elemperpage", $requestElemPerPage);
+$oPagerLink->setCustom("filter", $requestFilter);
+$oPagerLink->setCustom("restrictgroup", $requestRestrictGroup);
+$oPagerLink->setCustom("sortby", $requestSortBy);
+$oPagerLink->setCustom("sortorder", $requestSortOrder);
+$oPagerLink->setCustom("searchin", $requestSearchIn);
 $oPagerLink->setCustom("frame", $frame);
 $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
@@ -253,7 +272,7 @@ $oPagerLink->setCustom("contenido", $sess->id);
 // it is not used, as the JS below only uses the INNER html and the "pagerlink"
 // parameter is
 // set by ...left_top.html for the foldingrow itself
-$oPager = new cGuiObjectPager($sPagerId, $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page");
+$oPager = new cGuiObjectPager($sPagerId, $iItemCount, $requestElemPerPage, $requestPage, $oPagerLink, "page");
 
 // add slashes, to insert in javascript
 $sPagerContent = $oPager->render(1);
@@ -268,7 +287,7 @@ $sRefreshPager = <<<JS
 var sNavigation = '{$sPagerContent}';
 // Activate time to refresh pager folding row in left top
 var oTimer = window.setInterval(function() {
-    fncSetPager('{$sPagerId}', '{$_REQUEST["page"]}');
+    fncSetPager('{$sPagerId}', '{$requestPage}');
 }, 200);
 </script>
 JS;
@@ -278,7 +297,7 @@ $oPage->addScript($sRefreshPager);
 // Generate template
 $oTpl = new cTemplate();
 $oTpl->set('s', 'DELETE_MESSAGE', $aMsg["DelDescr"]);
-$sTemplate = $oTpl->generate(cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.recipients_menu.html', true);
+$sTemplate = $oTpl->generate($cfg['templates']['newsletter_recipients_menu'], true);
 
 $oPage->setContent([$oMenu, $sTemplate]);
 $oPage->render();

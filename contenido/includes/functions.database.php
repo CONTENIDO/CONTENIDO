@@ -3,13 +3,13 @@
 /**
  * This file contains CONTENIDO database functions.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,15 +17,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Returns existing indexes of a specific table.
  *
- * @param cDb    $db
+ * @param cDb $db
  * @param string $table
  *
- * @return array
- *         Assoziative array where the key and the value is the index name
+ * @return array|bool
+ *         Associative array where the key and the value is the index name
  *
  * @throws cDbException
  */
-function dbGetIndexes($db, $table) {
+function dbGetIndexes($db, $table)
+{
     if (!is_object($db)) {
         return false;
     }
@@ -33,8 +34,7 @@ function dbGetIndexes($db, $table) {
     $sql = 'SHOW INDEX FROM ' . $db->escape($table);
     $db->query($sql);
 
-    $indexes = array();
-
+    $indexes = [];
     while ($db->nextRecord()) {
         $indexes[$db->f('Key_name')] = $db->f('Key_name');
     }
@@ -43,7 +43,7 @@ function dbGetIndexes($db, $table) {
 }
 
 /**
- * Updates a specific table. Used e. g. by CONTENIDO setup to create or update
+ * Updates a specific table. Used e.g. by CONTENIDO setup to create or update
  * tables.
  * Function logic:
  * 1 .) Check, if the table exists
@@ -63,7 +63,7 @@ function dbGetIndexes($db, $table) {
  *  - $oldVal might be empty if the field didn't exist
  *  - $tableValues['fieldname'] contains the already existing values
  *
- * @param cDb    $db
+ * @param cDb $db
  *         Database instance
  * @param string $table
  *         Name of table to create/update
@@ -71,7 +71,7 @@ function dbGetIndexes($db, $table) {
  *         Name of field to create/update
  * @param string $type
  *         Data type of field. Feasible values are all possible data types
- *         e. g. int(10), varchar(32), datetime, varchar(255), text, tinyint(1)
+ *         e.g. int(10), varchar(32), datetime, varchar(255), text, tinyint(1)
  * @param string $null
  *         Parameter to forbid NULL values, feasible values '', 'NULL' or 'YES'
  *         where 'NULL' or 'YES' allows NULL values and '' doesn't
@@ -82,18 +82,19 @@ function dbGetIndexes($db, $table) {
  *         The default value for the field. Feasible is each possible
  *         value depending on passed $type
  * @param string $extra
- *         Additional info for the field, e. g. 'auto_increment', if the
+ *         Additional info for the field, e.g. 'auto_increment', if the
  *         field should have the AUTO_INCREMENT attribute and empty otherwise.
  * @param string $upgradeStatement
  *         NOT USED AT THE MOMENT
- * @param bool   $bRemoveIndexes
+ * @param bool $bRemoveIndexes
  *         Flag to remove all indexes
  *
  * @return bool
  *
  * @throws cDbException
  */
-function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extra, $upgradeStatement, $bRemoveIndexes = false) {
+function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extra, $upgradeStatement, $bRemoveIndexes = false)
+{
     global $columnCache;
     global $tableCache;
 
@@ -101,7 +102,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
         return false;
     }
 
-    $parameter = array();
+    $parameter = [];
 
     // Parameter checking for $null. If parameter is 'NULL' or 'YES', we
     // know that we want the colum to allow null entries, otherwise forbid null entries.
@@ -123,7 +124,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
     // Parameter check for $default. If set, create a default value
     if ($default != '') {
-        if (((cString::findFirstPos($type, 'timestamp') !== FALSE) && ($default != '')) || ($default == 'NULL') || ($default == 'CURRENT_TIMESTAMP')) {
+        if (cString::findFirstPos($type, 'timestamp') !== FALSE || in_array($default, ['NULL', 'CURRENT_TIMESTAMP'])) {
             $parameter['DEFAULT'] = "DEFAULT " . $db->escape($default);
         } else {
             $parameter['DEFAULT'] = "DEFAULT '" . $db->escape($default) . "'";
@@ -132,8 +133,12 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
         $parameter['DEFAULT'] = '';
     }
 
+    // Set default charset
+    $cfg = cRegistry::getConfig();
+    $parameter['CHARSET'] = 'DEFAULT CHARSET=' . $cfg['db']['connection']['charset'];
+
     if (!dbTableExists($db, $table)) {
-        $sql = "CREATE TABLE `" . $db->escape($table) . "` (`" . $db->escape($field) . "` $type " . $parameter['NULL'] . " " . $parameter['DEFAULT'] . " " . $parameter['KEY'] . ")";
+        $sql = "CREATE TABLE `" . $db->escape($table) . "` (`" . $db->escape($field) . "` $type " . $parameter['NULL'] . " " . $parameter['DEFAULT'] . " " . $parameter['KEY'] . ") " . $parameter['CHARSET'] . ';';
         $db->query($sql);
         $tableCache[] = $table;
         return true;
@@ -142,9 +147,9 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
     // Remove auto_increment
     $structure = dbGetColumns($db, $table);
     if (isset($structure[$field]) && $structure[$field]['Extra'] == 'auto_increment') {
-        if ($structure[$field]['NULL'] == '') {
-            $structure[$field]['NULL'] = 'NOT NULL';
-        }
+        $structure[$field]['NULL'] = $structure[$field]['NULL'] ?? 'NOT NULL';
+        $structure[$field]['DEFAULT'] = $structure[$field]['DEFAULT'] ?? '';
+        $structure[$field]['KEY'] = $structure[$field]['KEY'] ?? '';
         $sql = "ALTER TABLE `" . $db->escape($table) . "` CHANGE COLUMN `" . $db->escape($field) . "` `" . $db->escape($field) . "` " . $db->escape($type) . " " . $structure[$field]['NULL'] . " " . $structure[$field]['DEFAULT'] . " " . $structure[$field]['KEY'];
         $db->query($sql);
     }
@@ -182,6 +187,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
     if (!array_key_exists($field, $structure)) {
         // HerrB: Search field using $previousName
         $blnFound = false;
+        $strPrevious = '';
         if ($previousName != '') {
             $arrPreviousName = explode(',', $previousName);
             foreach ($arrPreviousName as $strPrevious) {
@@ -219,10 +225,10 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
     // Third check: Compare field properties
     if (($structure[$field]['Type'] != $type) ||
-            ($structure[$field]['Null'] != $null) ||
-            ($structure[$field]['Key'] != $key) ||
-            ($structure[$field]['Default'] != $default) ||
-            ($structure[$field]['Extra'] != $extra)) {
+        ($structure[$field]['Null'] != $null) ||
+        ($structure[$field]['Key'] != $key) ||
+        ($structure[$field]['Default'] != $default) ||
+        ($structure[$field]['Extra'] != $extra)) {
 
         if ($structure[$field]['Key'] == 'PRI') {
             $sql = "ALTER TABLE `" . $db->escape($table) . "` ADD PRIMARY KEY (" . $db->escape($field) . ") ";
@@ -240,14 +246,15 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 /**
  * Checks, if passed table exists in the database
  *
- * @param cDb    $db
+ * @param cDb $db
  * @param string $table
  *
  * @return bool
  *
  * @throws cDbException
  */
-function dbTableExists($db, $table) {
+function dbTableExists($db, $table)
+{
     global $tableCache;
 
     if (!is_object($db)) {
@@ -255,9 +262,10 @@ function dbTableExists($db, $table) {
     }
 
     if (!is_array($tableCache)) {
-        $tableCache = array();
         $sql = 'SHOW TABLES';
         $db->query($sql);
+
+        $tableCache = [];
         while ($db->nextRecord()) {
             $tableCache[] = $db->f(0);
         }
@@ -273,15 +281,16 @@ function dbTableExists($db, $table) {
 /**
  * Returns the column structure of a table
  *
- * @param cDb    $db
+ * @param cDb $db
  * @param string $table
  *
  * @return array|bool
- *         Either assoziative column array or false
+ *         Either associative column array or false
  *
  * @throws cDbException
  */
-function dbGetColumns($db, $table) {
+function dbGetColumns($db, $table)
+{
     global $columnCache;
 
     if (!is_object($db)) {
@@ -292,10 +301,10 @@ function dbGetColumns($db, $table) {
         return $columnCache[$table];
     }
 
-    $structure = array();
-
     $sql = 'SHOW COLUMNS FROM ' . $db->escape($table);
     $db->query($sql);
+
+    $structure = [];
     while ($db->nextRecord()) {
         $structure[$db->f('Field')] = $db->toArray();
     }
@@ -308,18 +317,19 @@ function dbGetColumns($db, $table) {
 /**
  * Returns the primary key column of a table
  *
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
- * @param cDb    $db
+ * @param cDb $db
  * @param string $table
  *
  * @return string
  *
  * @throws cDbException
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ *
  */
-function dbGetPrimaryKeyName($db, $table) {
+function dbGetPrimaryKeyName($db, $table)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
 
     $sReturn = '';
@@ -334,4 +344,31 @@ function dbGetPrimaryKeyName($db, $table) {
     }
 
     return $sReturn;
+}
+
+/**
+ * Checks if passed database version supports the SQL-mode 'MYSQL40'.
+ * MySQL up to 5.7 and MariaDB supports SQL-Mode 'MYSQL40', but not MySQL.
+ *
+ * @param string $version The SQL server version string, e.g. '5.7.37-nmm1-log', '8.0.1-dmr-log', or '10.4.11-MariaDB'
+ * @param cDb $db The database instance
+ * @return bool
+ */
+function dbSupportsSqlModeMYSQL40($version = '', $db = null)
+{
+    if (empty($version) && !is_object($db)) {
+        return false;
+    }
+
+    if (empty($version)) {
+        // Get the SQL server version
+        $db->query('SELECT VERSION() AS version');
+        $version = $db->nextRecord() ? $db->f('version') : '';
+    }
+
+    if (stripos($version, 'MariaDB') !== false) {
+        return true;
+    }
+
+    return (version_compare($version, '8.0') < 0);
 }

@@ -1,15 +1,15 @@
 <?php
+
 /**
  * AMR Content expert controller class
  *
- * @package     Plugin
- * @subpackage  ModRewrite
- * @id          $Id$:
- * @author      Murat Purc <murat@purc.de>
- * @copyright   four for business AG <www.4fb.de>
- * @license     http://www.contenido.org/license/LIZENZ.txt
- * @link        http://www.4fb.de
- * @link        http://www.contenido.org
+ * @package    Plugin
+ * @subpackage ModRewrite
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,11 +17,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Content expert controller for expert settings/actions.
  *
- * @author      Murat Purc <murat@purc.de>
- * @package     Plugin
- * @subpackage  ModRewrite
+ * @author     Murat Purc <murat@purc.de>
+ * @package    Plugin
+ * @subpackage ModRewrite
  */
-class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
+class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
+{
 
     /**
      * Path to restrictive htaccess file
@@ -38,7 +39,8 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
     /**
      * Initializer method, sets the paths to htaccess files
      */
-    public function init() {
+    public function init()
+    {
         $this->_oView->content_before = '';
 
         $pluginPath = $this->_cfg['path']['contenido'] . $this->_cfg['path']['plugins'] . 'mod_rewrite/';
@@ -49,13 +51,15 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
     /**
      * Index action
      */
-    public function indexAction() {
+    public function indexAction()
+    {
     }
 
     /**
      * Copy htaccess action
      */
-    public function copyHtaccessAction() {
+    public function copyHtaccessAction()
+    {
         $type = $this->_getParam('htaccesstype');
         $copy = $this->_getParam('copy');
 
@@ -68,7 +72,7 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
         $aInfo = $this->getProperty('htaccessInfo');
 
         if ($aInfo['has_htaccess']) {
-            $this->_oView->content_before = $this->_notifyBox('warning', i18n('.htaccess already exists at CONTENIDO-/or client directory, so it is not copied.', 'mod_rewrite'));
+            $this->_oView->content_before = $this->_notifyBox('warning', i18n('.htaccess already exists at CONTENIDO-/or client directory, so it is not copied.', $this->_pluginName));
             return;
         }
 
@@ -85,11 +89,11 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
         }
 
         if (!$result = @copy($source, $dest)) {
-            $this->_oView->content_before = $this->_notifyBox('warning', sprintf(i18n('.htaccess could not copy from <strong>%s</strong> to <strong>%s</strong>! Perhaps the target directory has not the required rights to write files at your webserver.', 'mod_rewrite'), $source, $dest));
+            $this->_oView->content_before = $this->_notifyBox('warning', sprintf(i18n('.htaccess could not copy from <strong>%s</strong> to <strong>%s</strong>! Perhaps the target directory has not the required rights to write files at your webserver.', $this->_pluginName), $source, $dest));
             return;
         }
 
-        $msg = sprintf(i18n('.htaccess are successfully copied to %s', 'mod_rewrite'), str_replace('.htaccess', '', $dest));
+        $msg = sprintf(i18n('.htaccess are successfully copied to %s', $this->_pluginName), str_replace('.htaccess', '', $dest));
         $this->_oView->content_before = $this->_notifyBox('info', $msg);
     }
 
@@ -99,7 +103,8 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
      * @throws cInvalidArgumentException
      * @throws cException
      */
-    public function downloadHtaccessAction() {
+    public function downloadHtaccessAction()
+    {
         $type = $this->_getParam('htaccesstype');
 
         if ($type != 'restrictive' && $type != 'simple') {
@@ -126,10 +131,11 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function resetAction() {
+    public function resetAction()
+    {
         // recreate all aliases
         ModRewrite::recreateAliases(false);
-        $this->_oView->content_before = $this->_notifyBox('info', i18n('All aliases have been reset.', 'mod_rewrite'));
+        $this->_oView->content_before = $this->_notifyBox('info', i18n('All aliases have been reset.', $this->_pluginName));
     }
 
     /**
@@ -138,10 +144,11 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function resetEmptyAction() {
+    public function resetEmptyAction()
+    {
         // recreate only empty aliases
         ModRewrite::recreateAliases(true);
-        $this->_oView->content_before = $this->_notifyBox('info', i18n('Only empty aliases have been reset.', 'mod_rewrite'));
+        $this->_oView->content_before = $this->_notifyBox('info', i18n('Only empty aliases have been reset.', $this->_pluginName));
     }
 
 }

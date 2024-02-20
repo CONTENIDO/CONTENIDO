@@ -3,13 +3,13 @@
 /**
  * This file contains the keyword collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @author           Frederic Schneider
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage GenericDB_Model
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,36 +17,40 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Keyword collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiKeyword createNewItem
+ * @method cApiKeyword|bool next
  */
-class cApiKeywordCollection extends ItemCollection {
+class cApiKeywordCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['keywords'], 'idkeyword');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('keywords'), 'idkeyword');
         $this->_setItemClass('cApiKeyword');
     }
 
     /**
-     * @todo params w/ defaults should be relocated
-     *
      * @param string $keyword
-     * @param string $exp  [optional]
+     * @param string $exp [optional]
      * @param string $auto
      * @param string $self [optional]
-     * @param int    $idlang
+     * @param int $idlang
      *
      * @return cApiKeyword
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
+     * @todo params w/ defaults should be relocated
+     *
      */
-    public function create($keyword, $exp = '', $auto, $self = '', $idlang) {
+    public function create($keyword, $exp = '', $auto, $self = '', $idlang)
+    {
         $item = $this->createNewItem();
 
         $item->set('keyword', $keyword);
@@ -65,7 +69,7 @@ class cApiKeywordCollection extends ItemCollection {
 /**
  * Keyword item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiKeyword extends Item
@@ -79,21 +83,17 @@ class cApiKeyword extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['keywords'], 'idkeyword');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('keywords'), 'idkeyword');
+        $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
 
     /**
-     * Userdefined setter for keyword fields.
+     * User-defined setter for keyword fields.
      *
      * @param string $name
      * @param mixed $value
@@ -101,10 +101,11 @@ class cApiKeyword extends Item
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
-    public function setField($name, $value, $bSafe = true) {
+    public function setField($name, $value, $bSafe = true)
+    {
         switch ($name) {
             case 'idlang':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

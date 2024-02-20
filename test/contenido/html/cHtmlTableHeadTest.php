@@ -1,12 +1,13 @@
 <?PHP
 
 /**
- *
- * @author    claus.schunk@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license   http://www.contenido.org/license/LIZENZ.txt
- * @link      http://www.4fb.de
- * @link      http://www.contenido.org
+ * @package    Testing
+ * @subpackage GUI_HTML
+ * @author     claus.schunk@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 class cHtmlTableHeadTest extends cTestingTestCase
 {
@@ -21,6 +22,11 @@ class cHtmlTableHeadTest extends cTestingTestCase
     {
         $this->assertSame('th', $this->_readAttribute($this->_tableHead, '_tag'));
     }
+
+    public function testConstructorWithContent()
+    {
+        $tableHead = new cHTMLTableHead('Dog');
+        $this->assertSame('Dog', $this->_readAttribute($tableHead, '_content'));
+    }
+
 }
-
-

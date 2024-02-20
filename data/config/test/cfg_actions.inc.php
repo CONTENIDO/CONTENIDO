@@ -1,16 +1,15 @@
 <?php
+
 /**
  * This file contains the global configuration variable $lngAct for translated action names.
  *
- * @package          Core
- * @subpackage       Backend_ConfigFile
- * @version          SVN Revision $Rev:$
- *
- * @author           Olaf Niemann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend_ConfigFile
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -24,8 +23,8 @@ $lngAct['con']['con_makecatonline']                 = i18n('Make category online
 $lngAct['con']['con_changetemplate']                = i18n('Change template');
 $lngAct['con']['con_makestart']                     = i18n('Set start article');
 $lngAct['con']['con_makeonline']                    = i18n('Make article online');
-$lngAct['con']['con_synccat']                       = i18n('Syncronize category');
-$lngAct['con']['con_syncarticle']                   = i18n('Syncronize article');
+$lngAct['con']['con_synccat']                       = i18n('Synchronize category');
+$lngAct['con']['con_syncarticle']                   = i18n('Synchronize article');
 $lngAct['con']['con_makepublic']                    = i18n('Protect category');
 $lngAct['con']['con_deleteart']                     = i18n('Delete article');
 $lngAct['con']['con_tplcfg_edit']                   = i18n('Edit template configuration');
@@ -199,7 +198,7 @@ $lngAct['system_settings']['systemsettings_edit_item']         = i18n('Edit syst
 $lngAct['system_settings']['systemsettings_save_item']         = i18n('Save system property');
 
 $lngAct['system']['empty_log']                                 = i18n('Empty log');
-$lngAct['system_configuration']['edit_sysconf']                = i18n('Edit system configration');
+$lngAct['system_configuration']['edit_sysconf']                = i18n('Edit system configuration');
 $lngAct['system_purge']['do_purge']                            = i18n('Do system purge');
 
 $lngAct['logs']['log_show']                           = i18n('Show log');
@@ -214,5 +213,3 @@ $lngAct['']['send_mail']                              = i18n('Send mail');
 $lngAct['']['fake_permission_action']                 = i18n('Fake permissions');
 
 $lngAct['']['login']                 = i18n('User login');
-
-?>

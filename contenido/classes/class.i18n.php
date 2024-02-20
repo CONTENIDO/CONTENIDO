@@ -1,14 +1,15 @@
 <?php
+
 /**
- * This file contains the the I18N class.
+ * This file contains the I18N class.
  *
- * @package Core
+ * @package    Core
  * @subpackage I18N
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,22 +17,23 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Internationalization (i18n) class.
  *
- * @package Core
+ * @package    Core
  * @subpackage I18N
  */
-class cI18n {
+class cI18n
+{
 
     /**
-     * i18n related assoziative data cache.
+     * i18n related associative data cache.
      *
      * @var array
      */
-    protected static $_i18nData = array(
-        'language' => NULL,
-        'domains' => array(),
-        'files' => array(),
-        'cache' => array()
-    );
+    protected static $_i18nData = [
+        'language' => null,
+        'domains' => [],
+        'files' => [],
+        'cache' => [],
+    ];
 
     /**
      * Initializes the i18n.
@@ -43,7 +45,8 @@ class cI18n {
      * @param string $domain [optional]
      *         Language domain
      */
-    public static function init($localePath, $langCode, $domain = 'contenido') {
+    public static function init($localePath, $langCode, $domain = 'contenido')
+    {
         if (function_exists('bindtextdomain')) {
             // Bind the domain 'contenido' to our locale path
             bindtextdomain($domain, $localePath);
@@ -82,7 +85,8 @@ class cI18n {
      *
      * @throws cException
      */
-    public static function __($string, $domain = 'contenido') {
+    public static function __($string, $domain = 'contenido')
+    {
         return self::translate($string, $domain);
     }
 
@@ -100,7 +104,8 @@ class cI18n {
      * @throws cException
      *         if this is the backend mode and the $belang is not set
      */
-    public static function translate($string, $domain = 'contenido') {
+    public static function translate($string, $domain = 'contenido')
+    {
         global $cfg, $belang, $contenido;
 
         // Auto initialization
@@ -124,9 +129,9 @@ class cI18n {
                     $country = $oApiLang->getProperty('country', 'code');
 
                     $locale = $language . '_' . cString::toUpperCase($country);
-                    self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $locale, $domain);
+                    self::init(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $domain . '/locale/', $locale, $domain);
                 } else {
-                    self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $belang, $domain);
+                    self::init(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $domain . '/locale/', $belang, $domain);
                 }
             }
         }
@@ -136,8 +141,8 @@ class cI18n {
             $ret = self::emulateGettext($string, $domain);
             // hopefully a proper replacement for
             // mb_convert_encoding($string, 'HTML-ENTITIES', 'utf-8');
-            // see http://stackoverflow.com/q/11974008
-            $ret = htmlspecialchars_decode(utf8_decode(conHtmlentities($ret, ENT_COMPAT, 'utf-8')));
+            // see https://stackoverflow.com/q/11974008
+            $ret = htmlspecialchars_decode(@utf8_decode(conHtmlentities($ret, ENT_COMPAT, 'utf-8')));
             return $ret;
         }
 
@@ -166,7 +171,8 @@ class cI18n {
      *
      * @return string|false
      */
-    public static function getLanguage() {
+    public static function getLanguage()
+    {
         return (self::$_i18nData['language']) ? self::$_i18nData['language'] : false;
     }
 
@@ -175,7 +181,8 @@ class cI18n {
      *
      * @return array
      */
-    public static function getDomains() {
+    public static function getDomains()
+    {
         return self::$_i18nData['domains'];
     }
 
@@ -184,7 +191,8 @@ class cI18n {
      *
      * @return array
      */
-    public static function getFiles() {
+    public static function getFiles()
+    {
         return self::$_i18nData['files'];
     }
 
@@ -193,18 +201,20 @@ class cI18n {
      *
      * @return array
      */
-    public static function getCache() {
+    public static function getCache()
+    {
         return self::$_i18nData['cache'];
     }
 
     /**
      * Resets cached translation data (language, domains, files, and cache)
      */
-    public static function reset() {
-        self::$_i18nData['language'] = NULL;
-        self::$_i18nData['domains'] = array();
-        self::$_i18nData['files'] = array();
-        self::$_i18nData['cache'] = array();
+    public static function reset()
+    {
+        self::$_i18nData['language'] = null;
+        self::$_i18nData['domains'] = [];
+        self::$_i18nData['files'] = [];
+        self::$_i18nData['cache'] = [];
     }
 
     /**
@@ -220,13 +230,14 @@ class cI18n {
      *
      * @throws cInvalidArgumentException
      */
-    public static function emulateGettext($string, $domain = 'contenido') {
+    public static function emulateGettext($string, $domain = 'contenido')
+    {
         if ($string == '') {
             return '';
         }
 
         if (!isset(self::$_i18nData['cache'][$domain])) {
-            self::$_i18nData['cache'][$domain] = array();
+            self::$_i18nData['cache'][$domain] = [];
         }
         if (isset(self::$_i18nData['cache'][$domain][$string])) {
             return self::$_i18nData['cache'][$domain][$string];
@@ -244,45 +255,29 @@ class cI18n {
             self::$_i18nData['files'][$domain] = self::_loadTranslationFile($translationFile);
         }
 
-        $stringStart = cString::findFirstPos(self::$_i18nData['files'][$domain], '"' . str_replace(array(
-            "\n",
-            "\r",
-            "\t"
-        ), array(
-            '\n',
-            '\r',
-            '\t'
-        ), $string) . '"');
+        $stringStart = cString::findFirstPos(
+            self::$_i18nData['files'][$domain],
+            '"' . str_replace(["\n", "\r", "\t"], ['\n', '\r', '\t'], $string) . '"'
+        );
         if ($stringStart === false) {
             return $string;
         }
 
-        $matches = array();
-        $quotedString = preg_quote(str_replace(array(
-            "\n",
-            "\r",
-            "\t"
-        ), array(
-            '\n',
-            '\r',
-            '\t'
-        ), $string), '/');
-        $result = preg_match("/msgid.*\"(" . $quotedString . ")\"(?:\s*)?\nmsgstr(?:\s*)\"(.*)\"/", self::$_i18nData['files'][$domain], $matches);
+        $matches = [];
+        $quotedString = preg_quote(str_replace(["\n", "\r", "\t"], ['\n', '\r', '\t'], $string), '/');
+        $result = preg_match(
+            "/msgid.*\"(" . $quotedString . ")\"(?:\s*)?\nmsgstr(?:\s*)\"(.*)\"/",
+            self::$_i18nData['files'][$domain],
+            $matches
+        );
         // Old:
         // preg_match("/msgid.*\"".preg_quote($string,"/")."\".*\nmsgstr(\s*)\"(.*)\"/",
         // self::$_i18nData['files'][$domain], $matches);
 
         if ($result && !empty($matches[2])) {
             // Translation found, cache it
-            self::$_i18nData['cache'][$domain][$string] = stripslashes(str_replace(array(
-                '\n',
-                '\r',
-                '\t'
-            ), array(
-                "\n",
-                "\r",
-                "\t"
-            ), $matches[2]));
+            self::$_i18nData['cache'][$domain][$string] =
+                stripslashes(str_replace(['\n', '\r', '\t'], ["\n", "\r", "\t"], $matches[2]));
         } else {
             // Translation not found, cache original string
             self::$_i18nData['cache'][$domain][$string] = $string;
@@ -299,7 +294,8 @@ class cI18n {
      * @param string $localePath
      *         Path to the locales
      */
-    public static function registerDomain($domain, $localePath) {
+    public static function registerDomain($domain, $localePath)
+    {
         if (function_exists('bindtextdomain')) {
             // Bind the domain 'contenido' to our locale path
             bindtextdomain($domain, $localePath);
@@ -318,7 +314,8 @@ class cI18n {
      *
      * @throws cInvalidArgumentException
      */
-    protected static function _loadTranslationFile($translationFile) {
+    protected static function _loadTranslationFile($translationFile)
+    {
         $content = cFileHandler::read($translationFile);
 
         // Normalize eol chars

@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>navigation_social_media</name><description>Output of the social media links in the footer area</description><type>navigation</type><alias>navigation_social_media</alias></module>
+<module>
+    <name>navigation_social_media</name>
+    <description>Output of the social media links in the footer area</description>
+    <type>navigation</type>
+    <alias>navigation_social_media</alias>
+</module>

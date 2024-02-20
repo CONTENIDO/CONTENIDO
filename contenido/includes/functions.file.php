@@ -9,14 +9,14 @@
  *
  * TODO: merge with cFileHandler and cDirHandler
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Willi Man
- * @author Timo Trautmann
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Willi Man
+ * @author     Timo Trautmann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -25,22 +25,23 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Function removes file meta information from database (used when a file is
  * deleted)
  *
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
- * @param int    $iIdClient
+ * @param int $iIdClient
  *         id of client which contains this file
  * @param string $sFilename
  *         name of corresponding file
  * @param string $sType
  *         type of file (css, js or templates)
- * @param cDb    $oDb
+ * @param cDb $oDb
  *         CONTENIDO database object
  *
  * @throws cDbException
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ *
  */
-function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
+function removeFileInformation($iIdClient, $sFilename, $sType, $oDb)
+{
     global $cfg;
 
     cDeprecated('This method is deprecated and is not needed any longer');
@@ -50,10 +51,10 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     }
 
     $iIdClient = cSecurity::toInteger($iIdClient);
-    $sFilename = cSecurity::filter((string) $sFilename, $oDb);
-    $sType = cSecurity::filter((string) $sType, $oDb);
+    $sFilename = cSecurity::filter((string)$sFilename, $oDb);
+    $sType = cSecurity::filter((string)$sType, $oDb);
 
-    $sSql = "DELETE FROM `" . $cfg["tab"]["file_information"] . "` WHERE idclient = $iIdClient AND
+    $sSql = "DELETE FROM `" . $cfg['tab']['file_information'] . "` WHERE idclient = $iIdClient AND
             filename = '$sFilename' AND type = '$sType';";
     $oDb->query($sSql);
     $oDb->free();
@@ -63,16 +64,13 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  * Function returns file meta information from database (used when files were
  * versionned or description is displayed)
  *
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
- * @param int    $iIdClient
+ * @param int $iIdClient
  *         id of client which contains this file
  * @param string $sFilename
  *         name of corresponding file
  * @param string $sType
  *         type of file (css, js or templates)
- * @param cDb    $oDb
+ * @param cDb $oDb
  *         CONTENIDO database object
  *
  * @return array
@@ -86,8 +84,12 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  *
  * @throws cDbException
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ *
  */
-function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
+function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
+{
     global $cfg;
 
     cDeprecated('This method is deprecated and is not needed any longer');
@@ -97,13 +99,14 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     }
 
     $iIdClient = cSecurity::toInteger($iIdClient);
-    $sFilename = cSecurity::filter((string) $sFilename, $oDb);
-    $sType = cSecurity::filter((string) $sType, $oDb);
+    $sFilename = cSecurity::filter((string)$sFilename, $oDb);
+    $sType = cSecurity::filter((string)$sType, $oDb);
 
-    $aFileInformation = array();
-    $sSql = "SELECT * FROM `" . $cfg["tab"]["file_information"] . "` WHERE idclient = $iIdClient AND
+    $sSql = "SELECT * FROM `" . $cfg['tab']['file_information'] . "` WHERE idclient = $iIdClient AND
             filename = '$sFilename' AND type = '$sType';";
     $oDb->query($sSql);
+
+    $aFileInformation = [];
     if ($oDb->numRows() > 0) {
         $oDb->nextRecord();
         $aFileInformation['idsfi'] = $oDb->f('idsfi');
@@ -125,10 +128,7 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  * does
  * not exist. Otherwise, existing record will be updated
  *
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
- * @param int    $iIdClient
+ * @param int $iIdClient
  *         id of client which contains this file
  * @param string $sFilename
  *         name of corresponding file
@@ -138,15 +138,19 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  *         author of file
  * @param string $sDescription
  *         description of file
- * @param cDb    $oDb
+ * @param cDb $oDb
  *         CONTENIDO database object
  * @param string $sFilenameNew
  *         new filename if filename was changed (optional)
  *
  * @throws cDbException
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ *
  */
-function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $oDb, $sFilenameNew = '') {
+function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $oDb, $sFilenameNew = '')
+{
     global $cfg;
 
     cDeprecated('This method is deprecated and is not needed any longer');
@@ -160,17 +164,17 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
     }
 
     $iIdClient = cSecurity::toInteger($iIdClient);
-    $sFilename = cSecurity::filter((string) $sFilename, $oDb);
-    $sType = cSecurity::filter((string) $sType, $oDb);
-    $sDescription = cSecurity::filter((string) stripslashes($sDescription), $oDb);
-    $sAuthor = cSecurity::filter((string) $sAuthor, $oDb);
+    $sFilename = cSecurity::filter((string)$sFilename, $oDb);
+    $sType = cSecurity::filter((string)$sType, $oDb);
+    $sDescription = cSecurity::filter((string)stripslashes($sDescription), $oDb);
+    $sAuthor = cSecurity::filter((string)$sAuthor, $oDb);
 
-    $sSql = "SELECT * from `" . $cfg["tab"]["file_information"] . "` WHERE idclient = $iIdClient AND
+    $sSql = "SELECT * from `" . $cfg['tab']['file_information'] . "` WHERE idclient = $iIdClient AND
             filename = '$sFilename' AND type = '$sType';";
     $oDb->query($sSql);
     if ($oDb->numRows() == 0) {
         // $iNextId = $oDb->nextid('con_style_file_information');
-        $sSql = "INSERT INTO `" . $cfg["tab"]["file_information"] . "` (
+        $sSql = "INSERT INTO `" . $cfg['tab']['file_information'] . "` (
                     `idclient` ,
                     `type` ,
                     `filename` ,
@@ -190,7 +194,7 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
                     '$sDescription'
                 );";
     } else {
-        $sSql = "UPDATE `" . $cfg["tab"]["file_information"] . "` SET `lastmodified` = NOW(),
+        $sSql = "UPDATE `" . $cfg['tab']['file_information'] . "` SET `lastmodified` = NOW(),
                 `modifiedby` = '$sAuthor',
                 `description` = '$sDescription',
                 `filename` = '$sFilenameNew'
@@ -207,17 +211,18 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
 /**
  * Returns the filetype (extension).
  *
- * @deprecated [2015-05-21]
- *         use cFileHandler::getExtension
- *
  * @param string $filename
  *         The file to get the type
  *
  * @return string
  *         Filetype
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         use cFileHandler::getExtension
+ *
  */
-function getFileType($filename) {
+function getFileType($filename)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
     return cFileHandler::getExtension($filename);
 }
@@ -228,20 +233,21 @@ function getFileType($filename) {
  * Note that this function uses filesize(). There could be problems with files
  * that are larger than 2GiB
  *
- * @deprecated [2015-05-21]
- *         use cDirHandler::getDirectorySize
- *
  * @param string $sDirectory
  *         The directory
- * @param bool   $bRecursive
+ * @param bool $bRecursive
  *         true if all the subdirectories should be included in the calculation
  *
  * @return int|bool
  *         false in case of an error or the size
  *
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         use cDirHandler::getDirectorySize
+ *
  */
-function getDirectorySize($sDirectory, $bRecursive = false) {
+function getDirectorySize($sDirectory, $bRecursive = false)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
     return cDirHandler::getDirectorySize($sDirectory, $bRecursive);
 }
@@ -249,18 +255,19 @@ function getDirectorySize($sDirectory, $bRecursive = false) {
 /**
  * Scans passed directory and collects all found files
  *
- * @deprecated [2015-05-21]
- *         use cDirHandler::read with parameter fileOnly true
- *
  * @param string $sDirectory
- * @param bool   $bRecursive
+ * @param bool $bRecursive
  *
  * @return array|bool
  *         array of found files (full path and name) or false
  *
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         use cDirHandler::read with parameter fileOnly true
+ *
  */
-function scanDirectory($sDirectory, $bRecursive = false) {
+function scanDirectory($sDirectory, $bRecursive = false)
+{
     cDeprecated('This method is deprecated and is not needed any longer');
     return cDirHandler::read($sDirectory, $bRecursive, false, true);
 }
@@ -268,25 +275,27 @@ function scanDirectory($sDirectory, $bRecursive = false) {
 /**
  * Copies source directory to destination directory.
  *
- * @deprecated [2015-05-21]
- *         use cDirHandler::recursiveCopy
- *
  * @param string $sourcePath
  * @param string $destinationPath
- * @param int    $mode
+ * @param int $mode
  *             Octal representation of file mode (0644, 0750, etc.)
- * @param array  $options
+ * @param array $options
  *             Some additional options as follows
  *             <pre>
  *             $options['force_overwrite'] (bool) Flag to overwrite existing
  *             destination file, default value is false
  *             </pre>
  *
- * @return bool ::recursiceCopy method (bool)
+ * @return bool
  *
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         use cDirHandler::recursiveCopy
+ *
  */
-function recursiveCopy($sourcePath, $destinationPath, $mode = null, array $options = array()) {
+function recursiveCopy($sourcePath, $destinationPath, $mode = null, array $options = [])
+{
     cDeprecated('This method is deprecated and is not needed any longer');
+
     return cDirHandler::recursiveCopy($sourcePath, $destinationPath, $mode);
 }

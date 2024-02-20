@@ -3,14 +3,14 @@
 /**
  * description: standard link list
  *
- * @package Module
+ * @package    Module
  * @subpackage ContentList
- * @author timo.trautmann@4fb.de
- * @author alexander.scheider@4fb.de
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo.trautmann@4fb.de
+ * @author     alexander.scheider@4fb.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 // include class
@@ -27,32 +27,31 @@ $lang = cRegistry::getLanguageId();
 // create art object
 $art = new cApiArticleLanguage();
 $art->loadByArticleAndLanguageId($artId, $lang);
-$linkCount = (int) $art->getContent($type, $typeid);
+$linkCount = cSecurity::toInteger($art->getContent($type, $typeid));
 
 // if backendmode then add additional fields
 if (cRegistry::isBackendEditMode()) {
-
-    if ($_POST['linkCount']) {
-        $linkCount = (int) $_POST['linkCount'];
+    if (isset($_POST['linkCount'])) {
+        $linkCount = cSecurity::toInteger($_POST['linkCount']);
         conSaveContentEntry($idartlang, $type, $typeid, $linkCount);
     }
 
-    $backend = TRUE;
+    $backend = true;
     $label = mi18n("LABEL_HEADER_LINKLIST");
     $createLabel = mi18n("createLabel");
     $createButton = mi18n("createButton");
-    $input = '<input type="text" name="text_field" id="text_field" value="' . $linkCount . '"/>';
-    $button = '<input type="button" id="create_linkfields" value="' . conHtmlSpecialChars($createButton) . '"/>';
+    $input = '<input type="text" name="link_count" value="' . $linkCount . '"/>';
+    $button = '<input type="button" data-content-link-list-action="create_link_fields" value="' . conHtmlSpecialChars($createButton) . '"/>';
 } else {
     $backend = false;
-    $label = NULL;
+    $label = '';
     $input = NULL;
     $button = NULL;
-    $createLabel = NULL;
+    $createLabel = '';
 }
 
-$val = array();
-$valDescription = array();
+$val = [];
+$valDescription = [];
 // create typegenerator object
 $ocType = new cTypeGenerator();
 for ($i = 0; $i < $linkCount; $i++) {
@@ -64,14 +63,14 @@ for ($i = 0; $i < $linkCount; $i++) {
 $tpl = cSmartyFrontend::getInstance();
 $tpl->assign('label', $label);
 $tpl->assign('createLabel', $createLabel);
-$tpl->assign('usable_links', mi18n("usable_links"));
+$tpl->assign('usableLinks', mi18n("usable_links"));
 $tpl->assign('breakForBackend', $backend);
 // if article was successfully loaded assign the content
 if ($art->isLoaded()) {
     $tpl->assign('contents', $val);
     $tpl->assign('descriptions', $valDescription);
 }
-$tpl->assign('inputfield', $input);
+$tpl->assign('inputField', $input);
 $tpl->assign('button', $button);
 $tpl->display('get.tpl');
 

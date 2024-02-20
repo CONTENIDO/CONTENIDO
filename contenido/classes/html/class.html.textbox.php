@@ -3,13 +3,13 @@
 /**
  * This file contains the cHTMLTextbox class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLTextbox class represents a textbox.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLTextbox extends cHTMLFormElement {
+class cHTMLTextbox extends cHTMLFormElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -52,7 +53,8 @@ class cHTMLTextbox extends cHTMLFormElement {
     public function __construct(
         $name, $initvalue = '', $width = '', $maxlength = '', $id = '',
         $disabled = false, $tabindex = null, $accesskey = '', $class = ''
-    ) {
+    )
+    {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
 
         $this->_tag = 'input';
@@ -73,7 +75,8 @@ class cHTMLTextbox extends cHTMLFormElement {
      * @return cHTMLTextbox
      *         $this for chaining
      */
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         $width = intval($width);
 
         if ($width <= 0) {
@@ -91,7 +94,8 @@ class cHTMLTextbox extends cHTMLFormElement {
      * @return cHTMLTextbox
      *         $this for chaining
      */
-    public function setMaxLength($maxlen) {
+    public function setMaxLength($maxlen)
+    {
         $maxlen = intval($maxlen);
 
         if ($maxlen <= 0) {
@@ -109,7 +113,8 @@ class cHTMLTextbox extends cHTMLFormElement {
      * @return cHTMLTextbox
      *         $this for chaining
      */
-    public function setValue($value) {
+    public function setValue($value)
+    {
         return $this->updateAttribute('value', $value);
     }
 

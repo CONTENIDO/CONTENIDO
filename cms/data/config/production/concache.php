@@ -1,145 +1,119 @@
 <?php
+
 /**
  * This file contains the cache configuration of the client.
  *
- * @package          Core
- * @subpackage       Frontend_ConfigFile
- * @author           System
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Frontend_ConfigFile
+ * @author     System
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// uncomment following line 4 debugging any occured errors and warnings
+// Uncomment following line 4 debugging any occurred errors and warnings
 #error_reporting(E_ALL);
 
+$auth = cRegistry::getAuth();
+$cfgClient = cRegistry::getClientConfig();
+$client = cSecurity::toInteger(cRegistry::getClientId());
 
-/**
- * configuration array of frontend caching
- * @var array  $cfgConCache
- */
+// Configuration array of frontend caching
 global $cfgConCache;
-global $auth;
 
 $cfgConCache = [];
 
-/**
- * don't cache output, if we have a CONTENIDO variable, e. g. on calling frontend preview from backend
- * @var bool  $cfgConCache['excludecontenido']
- */
+// (bool) Don't cache output, if we have a CONTENIDO variable, e.g. on calling
+//        frontend preview from backend.
 $cfgConCache['excludecontenido'] = true;
 
-/**
- * activate caching of frontend output
- * @var bool  $cfgConCache['enable']
- */
+// (bool) Enable caching of frontend output
 $cfgConCache['enable'] = true;
 
-/**
- * compose debuginfo (hit/miss and execution time of caching)
- * @var bool  $cfgConCache['debug']
- */
+// (bool) Compose debugging information (hit/miss and execution time of caching)
 $cfgConCache['debug'] = false;
 
-/**
- * debug information template
- * @var string  $cfgConCache['infotemplate']
- */
+// (string) Debug information template
 $cfgConCache['infotemplate'] = '<div id="debug">%s</div>';
 
-/**
- * add a html comment including several debug messages to output
- * @var bool  $cfgConCache['htmlcomment']
- */
+// (bool) Add a html comment including several debug messages to output
 $cfgConCache['htmlcomment'] = true;
 
-/**
- * lifetime in seconds 2 cache output
- * @var int  $cfgConCache['lifetime']
- */
+// (int) Lifetime in seconds to cache output
 $cfgConCache['lifetime'] = 3600;
 
-/**
- * directory where cached content is 2 store.
- * @var string  $cfgConCache['cachedir']
- */
+// (string) Directory where cached content is to store.
 $cfgConCache['cachedir'] = $cfgClient[$client]['cache']['path'];
 
-/**
- * cache group, will be a subdirectory inside cachedir
- * @var string  $cfgConCache['cachegroup']
- */
+// (string) Cache group, will be a subdirectory inside the cache directory
 $cfgConCache['cachegroup'] = 'content';
 
-/**
- * add prefix 2 stored filenames
- * @var string  $cfgConCache['cacheprefix']
- */
+// (string) Prefix to use for the cache filenames
 $cfgConCache['cacheprefix'] = 'cache_';
 
 /**
- * array of several variables 2 create a unique id, if the output depends on them.
- * default variables are $_SERVER['REQUEST_URI'], $_POST and $_GET. its also possible to add the
- * auth object, if output differs on authentificated user.
- * @var array  $cfgConCache['idoptions']
+ * (array) Array of several variables 2 create a unique id, if the output
+ *     depends on them. Default variables are $_SERVER['REQUEST_URI'],
+ *     $_POST and $_GET. It's also possible to add the auth object, if
+ *     output differs on authenticated user.
  */
-$cfgConCache['idoptions'] = array(
+$cfgConCache['idoptions'] = [
     'uri'  => &$_SERVER['REQUEST_URI'],
     'post' => &$_POST,
     'get'  => &$_GET,
     'auth' => &$auth->auth['perm']
-);
+];
 
 /**
- * array of eventhandler, beeing raised on some events.
- * we have actually two events:
- * - 'beforeoutput': code to execute before doing the output
- * - 'afteroutput'   code to execute after output
- * you can define any php-code beeing 2 excute on raising a event.
- * be aware to define a correct php-code block including finishing semicolon ';'
- * example:
- * [code]
- *   $cfgConCache['raiseonevent']['beforeoutput'] = array(
- *      'functionCall_One();',
- *      'functionCall_Two();',
- *      'functionCall_Three();'
- * [/code]
- * on raising a beforeoutput event the code 'functionCall_One();',
- * 'functionCall_Two();' and 'functionCall_Three();' will be executes
- * one after another.
+ * (array) Array of event-handler, being raised on some events.
+ *     We have actually two events:
+ *     - 'beforeoutput': code to execute before doing the output
+ *     - 'afteroutput'   code to execute after output
  *
- * [code]
- * $cfgConCache['raiseonevent'] = array(
- *     'beforeoutput' => array('echo("<pre>beforeoutput</pre>");'),
- *     'afteroutput'  => array('echo("<pre>afteroutput</pre>");')
- * );
- * [/code]
- * another example with output
+ *     You can define any php-code to be executed on raising an event.
+ *     Be aware to define a correct php-code block including finishing
+ *     semicolon ';'.
+ *
+ *     Example:
+ *     <pre>
+ *     $cfgConCache['raiseonevent']['beforeoutput'] = [
+ *         'functionCall_One();',
+ *         'functionCall_Two();',
+ *         'functionCall_Three();'
+ *     ];
+ *     </pre>
+ *     On raising a beforeoutput event, the code 'functionCall_One();',
+ *     'functionCall_Two();' and 'functionCall_Three();' will be executed
+ *     one after another.
+ *
+ *     Another example with output:
+ *     <pre>
+ *     $cfgConCache['raiseonevent'] = [
+ *         'beforeoutput' => ['echo("<pre>beforeoutput</pre>");'],
+ *         'afteroutput'  => ['echo("<pre>afteroutput</pre>");'],
+ *     ];
+ *     </pre>
  */
-
-// define code 2 update CONTENIDO statistics
-// this will be excuted on 'afteroutput' event of cache object
-
-// set Security fix
-$sStatCode = '
-    global $client, $idcatart, $lang;
-    $cApiClient = new cApiClient($client);
-    // Dont track page hit if tracking off
-    if ($cApiClient->getProperty(\'stats\', \'tracking\') != \'off\') {
-        // Statistic, track page hit
-        $oStatColl = new cApiStatCollection();
-        $oStat = $oStatColl->trackVisit($idcatart, $lang, $client);
-    }
-';
-
-$cfgConCache['raiseonevent'] = array(
-    'beforeoutput' => array('/* some code here */'),
-    'afteroutput'  => array($sStatCode, 'cRegistry::shutdown();')
-);
-
-?>
+$cfgConCache['raiseonevent'] = [
+    'beforeoutput' => ['/* some code here */'],
+    'afteroutput'  => [
+        // Define code to update CONTENIDO statistics.
+        // This will be executed on 'afteroutput' event of cache object.
+        '
+        // Don\'t track page hit if tracking off
+        if (getSystemProperty(\'stats\', \'tracking\') != \'disabled\' && cRegistry::isTrackingAllowed()) {
+            // Track page hit for statistics
+            global $idcatart;
+            $client = cSecurity::toInteger(cRegistry::getClientId());
+            $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+            $idcatart = cSecurity::toInteger($idcatart);
+            $oStatColl = new cApiStatCollection();
+            $oStatColl->trackVisit($idcatart, $lang, $client);
+        }
+        ',
+        'cRegistry::shutdown();',
+    ],
+];

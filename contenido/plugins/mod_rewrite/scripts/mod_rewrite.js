@@ -8,12 +8,12 @@
  * @requires   jQuery, Con
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
-(function(Con, $) {
+(function (Con, $) {
 
     var NAME = 'plugin-mod-rewrite';
 
@@ -27,7 +27,7 @@
      * options.lng  (Object)  Translation strings
      * </pre>
      */
-    var ModRewrite = function(page, options) {
+    var ModRewrite = function (page, options) {
         /**
          * Pagename
          * @property _page
@@ -43,7 +43,7 @@
          * @private
          */
         this._lng = $.extend({
-            more_informations: "More informations"
+            more_information: "More information"
         }, options.lng);
 
         this._initializePage();
@@ -56,7 +56,7 @@
          * @method toggle
          * @param {String}  id
          */
-        toggle: function(id) {
+        toggle: function (id) {
             // do some animation ;-)
             $('#' + id).slideToggle("slow");
         },
@@ -65,7 +65,7 @@
          * Initializes the current page
          * @method initializePage
          */
-        _initializePage: function() {
+        _initializePage: function () {
             var method = '_initializePage' + this._page.charAt(0).toUpperCase() + this._page.slice(1);
             if ('function' === $.type(this[method])) {
                 this[method].call(this);
@@ -79,8 +79,8 @@
          * @method _initializePageSettings
          * @private
          */
-        _initializePageSettings: function(options) {
-            $("#mr_use_language").change(function() {
+        _initializePageSettings: function (options) {
+            $("#mr_use_language").change(function () {
                 if (true == $(this).attr("checked")) {
                     $("#mr_use_language_name").removeAttr("disabled");
                 } else {
@@ -88,7 +88,7 @@
                 }
             });
 
-            $("#mr_use_client").change(function() {
+            $("#mr_use_client").change(function () {
                 if (true == $(this).attr("checked")) {
                     $("#mr_use_client_name").removeAttr("disabled");
                 } else {
@@ -96,13 +96,13 @@
                 }
             });
 
-            $("#mr_add_startart_name_to_url").change(function() {
+            $("#mr_add_startart_name_to_url").change(function () {
                 if (true == $(this).attr("checked")) {
                     $("#mr_default_startart_name").removeAttr("disabled")
-                                                  .removeClass("disabled");
+                        .removeClass("disabled");
                 } else {
                     $("#mr_default_startart_name").attr("disabled", "disabled")
-                                                  .addClass("disabled");
+                        .addClass("disabled");
                 }
             });
 
@@ -114,8 +114,8 @@
          * @method _initializePageExpert
          * @private
          */
-        _initializePageExpert: function() {
-            $('.mrPlugin a.actionLink').click(function() {
+        _initializePageExpert: function () {
+            $('.mrPlugin a.mr_action_link').click(function () {
                 var action = $(this).data('action'),
                     params = $(this).data('params'),
                     $form = $('#mr_expert');
@@ -131,7 +131,7 @@
          * @method _initializePageTest
          * @private
          */
-        _initializePageTest: function() {
+        _initializePageTest: function () {
             this._initializeTooltips();
         },
 
@@ -140,10 +140,10 @@
          * @method _initializeTooltips
          * @private
          */
-        _initializeTooltips: function() {
+        _initializeTooltips: function () {
             var that = this;
-            $(".mrPlugin a.i-link").each(function() {
-                $(this).attr("href", "javascript:void(0);").attr("title", that._lng.more_informations);
+            $(".mrPlugin a.i-link").each(function () {
+                $(this).attr("href", "javascript:void(0)").attr("title", that._lng.more_information);
             });
         }
 

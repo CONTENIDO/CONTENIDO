@@ -3,13 +3,13 @@
 /**
  * This file contains the nav main collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Frederic Schneider
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * File collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiNavMain createNewItem
+ * @method cApiNavMain|bool next
  */
-class cApiNavMainCollection extends ItemCollection {
+class cApiNavMainCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['nav_main'], 'idnavm');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('nav_main'), 'idnavm');
         $this->_setItemClass('cApiNavMain');
     }
 
@@ -37,14 +40,15 @@ class cApiNavMainCollection extends ItemCollection {
      *
      * @param string $name
      * @param string $location
-     * @param null   $id
+     * @param null $id
      *
      * @return cApiNavMain
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($name, $location, $id = null) {
+    public function create($name, $location, $id = null)
+    {
         $item = $this->createNewItem();
 
         if ($id != null) {
@@ -61,7 +65,7 @@ class cApiNavMainCollection extends ItemCollection {
 /**
  * NavMain item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiNavMain extends Item
@@ -75,14 +79,10 @@ class cApiNavMain extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['nav_main'], 'idnavm');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('nav_main'), 'idnavm');
+        $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

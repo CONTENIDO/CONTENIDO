@@ -3,13 +3,13 @@
 /**
  * This file contains the cHTMLTableData class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLTableData class represents a table date.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLTableData extends cHTMLContentElement {
+class cHTMLTableData extends cHTMLContentElement
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -28,7 +29,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * @param mixed $content [optional]
      *         String or object with the contents
      */
-    public function __construct($content = NULL) {
+    public function __construct($content = NULL)
+    {
         parent::__construct($content);
         $this->_tag = 'td';
     }
@@ -41,7 +43,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * @return cHTMLTableData
      *         $this for chaining
      */
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         return $this->updateAttribute('width', $width);
     }
 
@@ -53,7 +56,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * @return cHTMLTableData
      *         $this for chaining
      */
-    public function setHeight($height) {
+    public function setHeight($height)
+    {
         return $this->updateAttribute('height', $height);
     }
 
@@ -65,7 +69,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * @return cHTMLTableData
      *         $this for chaining
      */
-    public function setAlignment($alignment) {
+    public function setAlignment($alignment)
+    {
         return $this->updateAttribute('align', $alignment);
     }
 
@@ -77,7 +82,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * @return cHTMLTableData
      *         $this for chaining
      */
-    public function setVerticalAlignment($alignment) {
+    public function setVerticalAlignment($alignment)
+    {
         return $this->updateAttribute('valign', $alignment);
     }
 
@@ -89,7 +95,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * @return cHTMLTableData
      *         $this for chaining
      */
-    public function setBackgroundColor($color) {
+    public function setBackgroundColor($color)
+    {
         return $this->updateAttribute('bgcolor', $color);
     }
 
@@ -101,7 +108,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * @return cHTMLTableData
      *         $this for chaining
      */
-    public function setColspan($colspan) {
+    public function setColspan($colspan)
+    {
         return $this->updateAttribute('colspan', $colspan);
     }
 

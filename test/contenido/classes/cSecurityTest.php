@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file contains tests for the cSecurity class.
  *
- * @package          Testing
- * @subpackage       Test_Security
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Testing
+ * @subpackage Test_Security
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 /**
@@ -16,8 +17,8 @@
  *
  * @todo             Implement more tests
  *
- * @package          Testing
- * @subpackage       Test_Security
+ * @package    Testing
+ * @subpackage Test_Security
  */
 class cSecurityTest extends cTestingTestCase
 {
@@ -76,6 +77,28 @@ class cSecurityTest extends cTestingTestCase
         $this->assertEquals(false, cSecurity::isInteger(null));
         $this->assertEquals(true, cSecurity::isInteger(123));
         $this->assertEquals(true, cSecurity::isInteger('123'));
+    }
+
+    /**
+     * Test {@see cSecurity::isPositiveInteger()}
+     */
+    public function testIsPositiveInteger()
+    {
+        $this->assertEquals(false, cSecurity::isPositiveInteger(null));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(true));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(false));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(''));
+        $this->assertEquals(false, cSecurity::isPositiveInteger('asdf'));
+        $this->assertEquals(false, cSecurity::isPositiveInteger('-1'));
+        $this->assertEquals(false, cSecurity::isPositiveInteger('0'));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(-1));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(0));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(-1.23));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(0.00));
+        $this->assertEquals(false, cSecurity::isPositiveInteger(1.23));
+
+        $this->assertEquals(true, cSecurity::isPositiveInteger('1'));
+        $this->assertEquals(true, cSecurity::isPositiveInteger(1));
     }
 
     /**

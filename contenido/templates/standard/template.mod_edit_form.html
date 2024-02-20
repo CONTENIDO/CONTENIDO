@@ -1,125 +1,150 @@
-<script type="text/javascript"><!--
-/**
- * Insert a tab at the current text position in a textarea
- * Jan Dittmer, jdittmer@ppp0.net, 2005-05-28
- * Inspired by http://www.forum4designers.com/archive22-2004-9-127735.html
- * Tested on:
- *   Mozilla Firefox 1.0.3 (Linux)
- *   Mozilla 1.7.8 (Linux)
- *   Epiphany 1.4.8 (Linux)
- *   Internet Explorer 6.0 (Linux)
- * Does not work in:
- *   Konqueror (no tab inserted, but focus stays)
- * Fix for IE "free focus" problem:
- *   Idea from mastercomputers from New Zealand
- *   http://www.antilost.com/community/index.php?showtopic=134&pid=1022&st=0&#entry1022
- *   integrated by HerrB
- */
-function insertTab(event, obj) {
-    var tabKeyCode = 9;
-
-    if (event.which) { // mozilla
-        var keycode = event.which;
-    } else { // ie
-        var keycode = event.keyCode;
-    }
-
-    if (keycode == tabKeyCode) {
-        if (event.type == "keydown") {
-            if (obj.setSelectionRange) { // mozilla
-                var s = obj.selectionStart;
-                var e = obj.selectionEnd;
-                obj.value = obj.value.substring(0, s) + "\t" + obj.value.substr(e);
-                obj.setSelectionRange(s + 1, s + 1);
-                obj.focus();
-            } else if (obj.createTextRange) { // ie
-                document.selection.createRange().text = "\t";
-                setTimeout(function() {
-                    $("#" + obj.id).focus();
-                }, 5);
-            } else {
-                // unsupported browsers
-            }
-        }
-        if (event.returnValue) { // ie ?
-            event.returnValue = false;
-        }
-        if (event.preventDefault) { // dom
-            event.preventDefault();
-        }
-        return false; // should work in all browsers
-    } else {
-        return true;
-    }
-}
-//--></script>
 
 {FORM}
 
-<script>
-function verifyModuleRequest(img, modId, type) {
+<script type="text/javascript">
+(function(Con, $) {
 
-    $.ajax({
-        url: "ajaxmain.php",
-        type: "POST",
-        data: {
-            ajax: "verify_module",
-            idmod: modId,
-            type: type
-        },
-        success: function(data, status, jqxhr) {
+    // @TODO This handles the tab behaviour in an texarea element but CodeMirror replaces the texarea element against a custom div. There seems use for this anymore! See also `include.mod_edit_form.php`.
+    /**
+     * Insert a tab at the current text position in a textarea
+     * Jan Dittmer, jdittmer@ppp0.net, 2005-05-28
+     * Inspired by https://www.forum4designers.com/archive22-2004-9-127735.html
+     * Tested on:
+     *   Mozilla Firefox 1.0.3 (Linux)
+     *   Mozilla 1.7.8 (Linux)
+     *   Epiphany 1.4.8 (Linux)
+     *   Internet Explorer 6.0 (Linux)
+     * Does not work in:
+     *   Konqueror (no tab inserted, but focus stays)
+     * Fix for IE "free focus" problem:
+     *   Idea from mastercomputers from New Zealand
+     *   https://www.antilost.com/community/index.php?showtopic=134&pid=1022&st=0&#entry1022
+     *   integrated by HerrB
+     */
+    function insertTab(event, obj) {
+        var tabKeyCode = 9;
 
-			if (Con.checkAjaxResponse(data) === false)  {
-				return false;
-			}
-
-            try {
-                var result = $.parseJSON(data);
-            } catch(e) {
-                var result = data;
-            }
-
-            if (typeof result == 'string') {
-
-                var state = 'error';
-                var src   = 'images/but_online_no.gif';
-                var msg   = $.trim(result.replace(/(<b>|<\/b>|<phperror>|<\/phperror>|<br \/>|<br>|<br\/>)/igm, ''));
-                var errPart1 = msg.substr(0, msg.search(' in '));
-                var errPart2 = msg.substr(msg.search(' on line '));
-                msg = errPart1 + errPart2;
-
-            } else {
-
-                if (result.state == 'ok') {
-                    var src = 'images/but_online.gif';
-                } else {
-                    var src = 'images/but_online_no.gif';
-                }
-                var state = result.state;
-                var msg   = result.message;
-
-            }
-
-            img.attr('src', src);
-            img.attr('title', msg);
-            img.attr('alt', msg);
-
-            //refresh left sidebar if need
-            if (state == 'ok' && img.attr('data-state') != 'none') {
-                Con.FrameLeftBottom.reload();
-            }
+        if (event.which) { // mozilla
+            var keycode = event.which;
+        } else { // ie
+            var keycode = event.keyCode;
         }
+
+        if (keycode == tabKeyCode) {
+            if (event.type == "keydown") {
+                if (typeof obj.setSelectionRange !== 'function') { // mozilla
+                    var s = obj.selectionStart;
+                    var e = obj.selectionEnd;
+                    obj.value = obj.value.substring(0, s) + "\t" + obj.value.substr(e);
+                    obj.setSelectionRange(s + 1, s + 1);
+                    obj.focus();
+                } else if (obj.createTextRange) { // ie
+                    document.selection.createRange().text = "\t";
+                    setTimeout(function() {
+                        $("#" + obj.id).focus();
+                    }, 5);
+                } else {
+                    // unsupported browsers
+                }
+            }
+            if (event.returnValue) { // ie ?
+                event.returnValue = false;
+            }
+            if (event.preventDefault) { // dom
+                event.preventDefault();
+            }
+            return false; // should work in all browsers
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Handle the module validation result.
+     *
+     * @param {JSON|String} result Response JSON or a regular string containing the error message
+     * @param {jQuery} $img Image element to display the result status
+     */
+    function onVerifyRequestSuccess(result, $img) {
+        var state, src, msg;
+
+        if (typeof result === 'string') {
+            state = 'error';
+            src   = 'images/but_online_no.gif';
+            msg   = $.trim(result.replace(/(<b>|<\/b>|<phperror>|<\/phperror>|<br \/>|<br>|<br\/>)/igm, ''));
+            var errPart1 = msg.substr(0, msg.search(' in '));
+            var errPart2 = msg.substr(msg.search(' on line '));
+            msg = errPart1 + errPart2;
+        } else {
+            if (result.state === 'ok') {
+                src = $img.data('success-src');
+            } else {
+                src = $img.data('success-fail');
+            }
+            state = result.state;
+            msg   = result.message;
+        }
+
+        $img.attr('src', src)
+            .attr('title', msg)
+            .attr('alt', msg);
+
+        // Refresh left sidebar if needed
+        if (state === 'ok' && $img.data('state') !== 'none') {
+            Con.FrameLeftBottom.reload();
+        }
+    }
+
+    /**
+     * Perform ajax request to validate module code.
+     *
+     * @param {jQuery} $img Image element to display the result status
+     * @param {Number} modId Module id
+     * @param {String} type Type of code ('input' or 'output')
+     */
+    function verifyModuleRequest($img, modId, type) {
+        $.ajax({
+            url: 'ajaxmain.php',
+            type: 'POST',
+            data: {
+                ajax: 'verify_module',
+                idmod: modId,
+                type: type
+            },
+            success: function(data, status, jqxhr) {
+                var result;
+
+                if (Con.checkAjaxResponse(data) === false)  {
+                    return false;
+                }
+
+                try {
+                    result = $.parseJSON(data);
+                } catch (e) {
+                    result = data;
+                }
+
+                onVerifyRequestSuccess(result, $img);
+            }
+        });
+    }
+
+
+    $(function() {
+        var $imgInput  = $('#mod_edit img.inputok');
+        var $imgOutput = $('#mod_edit img.outputok');
+        var $inpIdmod  = $('#mod_edit_form input[name="idmod"]');
+
+        verifyModuleRequest($imgInput, $inpIdmod.val(), 'input');
+        verifyModuleRequest($imgOutput, $inpIdmod.val(), 'output');
+
+        $('#mod_edit [data-action-init]').each(function(pos, element) {
+            if ($(element).data('action-init') === 'register_insert_tab') {
+                $(element).on('keydown', insertTab);
+            }
+        });
     });
 
-}
-
-var imgInput  = $('#mod_edit img.inputok');
-var imgOutput = $('#mod_edit img.outputok');
-var inpIdmod  = $('#mod_edit_form input[name="idmod"]');
-
-verifyModuleRequest(imgInput, inpIdmod.val(), 'input');
-verifyModuleRequest(imgOutput, inpIdmod.val(), 'output');
-
-//Con.FrameLeftBottom.reload();
+})(Con, Con.$);
 
 </script>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains various helper functions to read specific values needed for setup checks.
  *
@@ -6,15 +7,16 @@
  * @subpackage Helper_Filesystem
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 
-function canWriteFile($filename) {
+function canWriteFile($filename)
+{
     clearstatcache();
     if (is_file($filename)) {
         return is_writable($filename);
@@ -23,16 +25,19 @@ function canWriteFile($filename) {
     }
 }
 
-function canWriteDir($dirname) {
+function canWriteDir($dirname)
+{
     clearstatcache();
     return is_dir($dirname) && is_writable($dirname);
 }
 
-function getFileInfo($sFilename) {
-    return cFileHandler::typeOwnerInfo($sFilename);
+function getFileInfo($sFilename)
+{
+    return cFileHandler::typeOwnerInfo(cSecurity::toString($sFilename));
 }
 
-function checkOpenBasedirCompatibility() {
+function checkOpenBasedirCompatibility()
+{
     $value = getPHPIniSetting("open_basedir");
 
     if (isWindows()) {
@@ -60,7 +65,8 @@ function checkOpenBasedirCompatibility() {
     return CON_BASEDIR_INCOMPATIBLE;
 }
 
-function predictCorrectFilepermissions($file) {
+function predictCorrectFilepermissions($file)
+{
     // Check if the system is a windows system. If yes, we can't predict
     // anything.
     if (isWindows()) {

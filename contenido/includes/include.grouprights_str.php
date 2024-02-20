@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for structure group rights management.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -27,7 +27,7 @@ $page = new cGuiPage('rights', '', 7);
 // set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("str")]) . "'";
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
-        FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
+        FROM " . $cfg['tab']['rights'] . " AS A, " . $cfg['tab']['area'] . " AS B, " . $cfg['tab']['actions'] . " AS C
         WHERE user_id = '" . $db->escape($groupid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
         AND A.type = 1 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
         AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
@@ -54,7 +54,7 @@ $sJsExternal = '';
 $sTable = '';
 
 $sJsBefore .= "var itemids = [];\n"
-            . "var actareaids = [];\n";
+    . "var actareaids = [];\n";
 
 // Init Table
 $oTable = new cHTMLTable();
@@ -106,7 +106,7 @@ foreach ($right_list["str"] as $value2) {
                     "valign" => "top",
                     "align" => "center"
                 ]);
-                $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3]? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
+                $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
                 $items .= $objHeaderItem->render();
                 $objHeaderItem->advanceID();
 
@@ -161,14 +161,14 @@ $objHeaderRow->advanceID();
 $output = "";
 
 $sql = "SELECT A.idcat, level, name, parentid
-        FROM " . $cfg["tab"]["cat_tree"] . " AS A, " . $cfg["tab"]["cat"] . " AS B, " . $cfg["tab"]["cat_lang"] . " AS C
+        FROM " . $cfg['tab']['cat_tree'] . " AS A, " . $cfg['tab']['cat'] . " AS B, " . $cfg['tab']['cat_lang'] . " AS C
         WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND C.idlang = " . cSecurity::toInteger($rights_lang) . "
             AND B.idclient = " . cSecurity::toInteger($rights_client) . " ORDER BY idtree";
 $db->query($sql);
 
-$counter = array();
+$counter = [];
 $parentid = "leer";
-$aRowname = array();
+$aRowname = [];
 $iLevel = 0;
 
 while ($db->nextRecord()) {
@@ -285,7 +285,12 @@ $objItem->updateAttributes([
     "align" => "right",
     "colspan" => "16"
 ]);
-$objItem->setContent("<a href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a><img src=\"images/spacer.gif\" width=\"20\"><a href=\"javascript:submitrightsform('group_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>");
+$objItem->setContent(
+    '<div class="con_form_action_control">'
+    . "<a class=\"con_img_button\" href=\"javascript:submitrightsform('group_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>"
+    . "<a class=\"con_img_button\" href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a>"
+    . '</div>'
+);
 $items = $objItem->render();
 $objItem->advanceID();
 $objFooterRow->setContent($items);
@@ -328,4 +333,3 @@ $page->set('s', 'NOTIFICATION_SAVE_RIGHTS', '');
 
 $page->render();
 
-?>

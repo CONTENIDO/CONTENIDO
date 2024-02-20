@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for layout group rights management.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -54,7 +54,7 @@ $sJsExternal = '';
 $sTable = '';
 
 $sJsBefore .= "var itemids = [];\n"
-            . "var actareaids = [];\n";
+    . "var actareaids = [];\n";
 
 $possible_areas = [];
 $sCheckboxesRow = '';
@@ -101,7 +101,7 @@ foreach ($right_list['lay'] as $value2) {
             $sJsBefore .= 'actareaids["' . $value3 . '|' . $value2['perm'] . "\"]=\"x\";\n";
 
             // checkbox for the whole action
-            $objHeaderItem->setContent($lngAct[$value2['perm']][$value3]? $lngAct[$value2['perm']][$value3] : '&nbsp;');
+            $objHeaderItem->setContent($lngAct[$value2['perm']][$value3] ? $lngAct[$value2['perm']][$value3] : '&nbsp;');
             $items .= $objHeaderItem->render();
             $objHeaderItem->advanceID();
             $aSecondHeaderRow[] = '<input type="checkbox" name="checkall_' . $value2['perm'] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2['perm'] . "', '$value3', '')\">";
@@ -159,19 +159,19 @@ $db->query($sql);
 
 while ($db->nextRecord()) {
     $tplname = conHtmlentities($db->f('name'));
-    $description = conHtmlentities($db->f('description'));
+    $description = conHtmlentities($db->f('description') ?? '');
 
     $objItem->updateAttributes([
         'class' => 'td_rights0'
     ]);
-    $objItem->setContent($tplname? $tplname : '&nbsp;');
+    $objItem->setContent($tplname ? $tplname : '&nbsp;');
     $items .= $objItem->render();
     $objItem->advanceID();
     $objItem->updateAttributes([
         'class' => 'td_rights1',
         'style' => 'white-space:normal;'
     ]);
-    $objItem->setContent($description? $description : '&nbsp;');
+    $objItem->setContent($description ? $description : '&nbsp;');
     $items .= $objItem->render();
     $objItem->advanceID();
 
@@ -220,7 +220,12 @@ $objItem->updateAttributes([
     "align" => "right",
     "colspan" => "8"
 ]);
-$objItem->setContent("<a href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a><img src=\"images/spacer.gif\" width=\"20\"><a href=\"javascript:submitrightsform('group_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>");
+$objItem->setContent(
+    '<div class="con_form_action_control">'
+    . "<a class=\"con_img_button\" href=\"javascript:submitrightsform('group_edit', '');\"><img src=\"" . $cfg['path']['images'] . "but_ok.gif\"></a>"
+    . "<a class=\"con_img_button\" href=\"javascript:submitrightsform('', 'area');\"><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\"></a>"
+    . '</div>'
+);
 $items = $objItem->render();
 $objItem->advanceID();
 $objFooterRow->setContent($items);

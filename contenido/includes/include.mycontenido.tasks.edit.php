@@ -3,16 +3,26 @@
 /**
  * This file contains the backend page for editing tasks.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cAuth $auth
+ * @var cSession $sess
+ * @var int $idcommunication
+ * @var int $frame
+ * @var array $cfg
+ * @var string $belang
+ */
+
 
 $cpage = new cGuiPage("mycontenido.tasks.edit");
 
@@ -20,9 +30,9 @@ $todoitem = new TODOItem();
 $todoitem->loadByPrimaryKey($idcommunication);
 
 $ui = new cGuiTableForm("reminder");
-$ui->addHeader(i18n("Edit reminder item"));
+$ui->setHeader(i18n("Edit reminder item"));
 
-$ui->addCancel($sess->url("main.php?area=mycontenido_tasks&frame=$frame"));
+$ui->setCancelLink($sess->url("main.php?area=mycontenido_tasks&frame=$frame"));
 
 $ui->setVar("area", "mycontenido_tasks");
 $ui->setVar("frame", $frame);
@@ -61,8 +71,8 @@ $ui->add(i18n("Reminder options"), $notiemail->toHtml());
 
 $remindertimestamp = $todoitem->getProperty("todo", "reminderdate");
 
-if ($remindertimestamp != 0) {
-    $mydate = date("Y-m-d H:i:s", $remindertimestamp);
+if (!empty($remindertimestamp) && is_numeric($remindertimestamp)) {
+    $mydate = date("Y-m-d H:i:s", cSecurity::toInteger($remindertimestamp));
 } else {
     $mydate = "";
 }
@@ -89,7 +99,7 @@ $statusselect->autoFill($todos->getStatusTypes());
 $statusselect->setDefault($todoitem->getProperty("todo", "status"));
 $ui->add(i18n("Status"), $statusselect->render());
 
-$progress = new cHTMLTextbox("progress", (int) $todoitem->getProperty("todo", "progress"), 5);
+$progress = new cHTMLTextbox("progress", (int)$todoitem->getProperty("todo", "progress"), 5);
 $ui->add(i18n("Progress"), $progress->render() . "%");
 
 $calscript = '
@@ -145,9 +155,7 @@ $calscript = '
 </script>';
 
 $cpage->addScript($calscript);
-$cpage->setContent(array(
-    $ui
-));
+$cpage->setContent([$ui]);
 $cpage->addStyle("jquery/plugins/timepicker.css");
 // $cpage->addStyle("jquery/jquery-ui.css");
 

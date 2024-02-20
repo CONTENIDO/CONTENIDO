@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLFormElement class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLFormElement class represents a form element.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLFormElement extends cHTML {
+class cHTMLFormElement extends cHTML
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -49,7 +49,8 @@ class cHTMLFormElement extends cHTML {
         $tabindex = null,
         $accessKey = '',
         $class = 'text_medium'
-    ) {
+    )
+    {
         $this->_tag = 'input';
         parent::__construct(['name' => $name, 'id' => $id, 'class' => $class]);
         $this->setDisabled($disabled);
@@ -74,7 +75,8 @@ class cHTMLFormElement extends cHTML {
      * @return cHTMLFormElement
      *         $this for chaining
      */
-    public function setDisabled($disabled) {
+    public function setDisabled($disabled)
+    {
         // NOTE: We use toBoolean() because of downwards compatibility.
         // The variable was of type string before 4.10.2!
         $disabled = cSecurity::toBoolean($disabled);
@@ -97,7 +99,8 @@ class cHTMLFormElement extends cHTML {
      * @return cHTMLFormElement
      *         $this for chaining
      */
-    public function setTabindex($tabindex) {
+    public function setTabindex($tabindex)
+    {
         if (is_numeric($tabindex)) {
             $tabindex = cSecurity::toInteger($tabindex);
             if (-1 <= $tabindex && $tabindex <= 32767) {
@@ -118,7 +121,8 @@ class cHTMLFormElement extends cHTML {
      * @return cHTMLFormElement
      *         $this for chaining
      */
-    public function setAccessKey($accessKey) {
+    public function setAccessKey($accessKey)
+    {
         if ((cString::getStringLength($accessKey) == 1) && cString::isAlphanumeric($accessKey)) {
             $this->updateAttribute('accesskey', $accessKey);
         } else {

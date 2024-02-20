@@ -1,15 +1,15 @@
 <?php
+
 /**
  * AMR url stack class
  *
- * @package     Plugin
- * @subpackage  ModRewrite
- * @id          $Id$:
- * @author      Murat Purc <murat@purc.de>
- * @copyright   four for business AG <www.4fb.de>
- * @license     http://www.contenido.org/license/LIZENZ.txt
- * @link        http://www.4fb.de
- * @link        http://www.contenido.org
+ * @package    Plugin
+ * @subpackage ModRewrite
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -21,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Main goal of this class is to collect urls and to get the urlpath and urlname
  * of the related categories/articles at one go. This will reduce the queries
  * against the database.
- * Therefore the full advantage will be taken by rewriting the urls at codeoutput
+ * Therefore, the full advantage will be taken by rewriting the urls at codeoutput
  * in front_content.php, where you will be able to collect all urls at once...
  *
  * Usage:
@@ -42,11 +42,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * echo $aPrettyParts['urlname']; // something like 'Name-of-an-article'
  * </code>
  *
- * @author      Murat Purc <murat@purc.de>
- * @package     Plugin
- * @subpackage  ModRewrite
+ * @author     Murat Purc <murat@purc.de>
+ * @package    Plugin
+ * @subpackage ModRewrite
  */
-class ModRewriteUrlStack {
+class ModRewriteUrlStack
+{
 
     /**
      * Self instance
@@ -67,23 +68,23 @@ class ModRewriteUrlStack {
      *
      * @var  array
      */
-    private $_aUrls = array();
+    private $_aUrls = [];
 
     /**
      * Url stack array
      *
      * @var  array
      */
-    private $_aStack = array();
+    private $_aStack = [];
 
     /**
      * CONTENIDO related parameter array
      *
      * @var  array
      */
-    private $_aConParams = array(
+    private $_aConParams = [
         'idcat' => 1, 'idart' => 1, 'lang' => 1, 'idcatlang' => 1, 'idcatart' => 1, 'idartlang' => 1
-    );
+    ];
 
     /**
      * Database tables array
@@ -102,19 +103,21 @@ class ModRewriteUrlStack {
     /**
      * Constructor, sets some properties.
      */
-    private function __construct() {
-        global $cfg, $lang;
+    private function __construct()
+    {
+        $cfg = cRegistry::getConfig();
         $this->_oDb = cRegistry::getDb();
         $this->_aTab = $cfg['tab'];
-        $this->_idLang = $lang;
+        $this->_idLang = cRegistry::getLanguageId();
     }
 
     /**
-     * Returns a instance of ModRewriteUrlStack (singleton implementation)
+     * Returns an instance of ModRewriteUrlStack (singleton implementation)
      *
      * @return  ModRewriteUrlStack
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance == NULL) {
             self::$_instance = new ModRewriteUrlStack();
         }
@@ -124,9 +127,10 @@ class ModRewriteUrlStack {
     /**
      * Adds an url to the stack
      *
-     * @param  string $url Url, like front_content.php?idcat=123...
+     * @param string $url Url, like front_content.php?idcat=123...
      */
-    public function add($url) {
+    public function add($url)
+    {
         $url = ModRewrite::urlPreClean($url);
         if (isset($this->_aUrls[$url])) {
             return;
@@ -139,27 +143,27 @@ class ModRewriteUrlStack {
             if (!isset($this->_aConParams[$p])) {
                 unset($aUrl['params'][$p]);
             } else {
-                $aUrl['params'][$p] = (int) $v;
+                $aUrl['params'][$p] = (int)$v;
             }
         }
 
         // add language id, if not available
-        if ((int) mr_arrayValue($aUrl['params'], 'lang') == 0) {
+        if ((int)mr_arrayValue($aUrl['params'], 'lang') == 0) {
             $aUrl['params']['lang'] = $this->_idLang;
         }
 
         $sStackId = $this->_makeStackId($aUrl['params']);
         $this->_aUrls[$url] = $sStackId;
-        $this->_aStack[$sStackId] = array('params' => $aUrl['params']);
+        $this->_aStack[$sStackId] = ['params' => $aUrl['params']];
     }
 
     /**
-     * Returns the pretty urlparts (only category path an article name) of the
+     * Returns the pretty url-parts (only category path an article name) of the
      * desired url.
      *
-     * @param   string  Url, like front_content.php?idcat=123...
+     * @param string $url Url, like front_content.php?idcat=123...
      *
-     * @return  array   Assoziative array like
+     * @return  array   Associative array like
      * <code>
      * $arr['urlpath']
      * $arr['urlname']
@@ -167,7 +171,8 @@ class ModRewriteUrlStack {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function getPrettyUrlParts($url) {
+    public function getPrettyUrlParts($url)
+    {
         $url = ModRewrite::urlPreClean($url);
         if (!isset($this->_aUrls[$url])) {
             $this->add($url);
@@ -177,50 +182,43 @@ class ModRewriteUrlStack {
         if (!isset($this->_aStack[$sStackId]['urlpath'])) {
             $this->_chunkSetPrettyUrlParts($sStackId);
         }
-        $aPretty = array(
-            'urlpath' => $this->_aStack[$sStackId]['urlpath'],
-            'urlname' => $this->_aStack[$sStackId]['urlname']
-        );
-        return $aPretty;
+        return [
+            'urlpath' => $this->_aStack[$sStackId]['urlpath'] ?? '',
+            'urlname' => $this->_aStack[$sStackId]['urlname'] ?? ''
+        ];
     }
 
     /**
-     * Extracts passed url using parse_urla and adds also the 'params' array to it
+     * Extracts passed url using parse_url and adds also the 'params' array to it
      *
-     * @param   string  Url, like front_content.php?idcat=123...
+     * @param string $url Url, like front_content.php?idcat=123...
      * @return  array  Components containing result of parse_url with additional
      *                 'params' array
      */
-    private function _extractUrl($url) {
-        $aUrl = @parse_url($url);
-        if (isset($aUrl['query'])) {
-            $aUrl['query'] = str_replace('&amp;', '&', $aUrl['query']);
-            parse_str($aUrl['query'], $aUrl['params']);
-        }
-        if (!isset($aUrl['params']) && !is_array($aUrl['params'])) {
-            $aUrl['params'] = array();
-        }
-        return $aUrl;
+    private function _extractUrl($url)
+    {
+        return cUri::getInstance()->parse($url);
     }
 
     /**
      * Extracts article or category related parameter from passed params array
      * and generates an identifier.
      *
-     * @param   array   $aParams  Parameter array
+     * @param array $aParams Parameter array
      * @return  string  Composed stack id
      */
-    private function _makeStackId(array $aParams) {
-        # idcatart
-        if ((int) mr_arrayValue($aParams, 'idart') > 0) {
+    private function _makeStackId(array $aParams)
+    {
+        // idcatart
+        if ((int)mr_arrayValue($aParams, 'idart') > 0) {
             $sStackId = 'idart_' . $aParams['idart'] . '_lang_' . $aParams['lang'];
-        } elseif ((int) mr_arrayValue($aParams, 'idartlang') > 0) {
+        } elseif ((int)mr_arrayValue($aParams, 'idartlang') > 0) {
             $sStackId = 'idartlang_' . $aParams['idartlang'];
-        } elseif ((int) mr_arrayValue($aParams, 'idcatart') > 0) {
+        } elseif ((int)mr_arrayValue($aParams, 'idcatart') > 0) {
             $sStackId = 'idcatart_' . $aParams['idcatart'] . '_lang_' . $aParams['lang'];
-        } elseif ((int) mr_arrayValue($aParams, 'idcat') > 0) {
+        } elseif ((int)mr_arrayValue($aParams, 'idcat') > 0) {
             $sStackId = 'idcat_' . $aParams['idcat'] . '_lang_' . $aParams['lang'];
-        } elseif ((int) mr_arrayValue($aParams, 'idcatlang') > 0) {
+        } elseif ((int)mr_arrayValue($aParams, 'idcatlang') > 0) {
             $sStackId = 'idcatlang_' . $aParams['idcatlang'];
         } else {
             $sStackId = 'lang_' . $aParams['lang'];
@@ -229,9 +227,9 @@ class ModRewriteUrlStack {
     }
 
     /**
-     * Main function to get the urlparts of urls.
+     * Main function to get the url-parts of urls.
      *
-     * Composes the query by looping thru stored but non processed urls, executes
+     * Composes the query by looping through stored but non-processed urls, executes
      * the query and adds the (urlpath and urlname) result to the stack.
      *
      * @param $sStackId
@@ -239,9 +237,10 @@ class ModRewriteUrlStack {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    private function _chunkSetPrettyUrlParts($sStackId) {
+    private function _chunkSetPrettyUrlParts($sStackId)
+    {
         // collect stack parameter to get urlpath and urlname
-        $aStack = array();
+        $aStack = [];
         foreach ($this->_aStack as $stackId => $item) {
             if (!isset($item['urlpath'])) {
                 // pretty url is to create
@@ -252,7 +251,6 @@ class ModRewriteUrlStack {
         // now, it's time to compose the where clause of the query
         $sWhere = '';
         foreach ($aStack as $stackId => $item) {
-
             if ($stackId == $sStackId) {
                 $aP = $item['params'];
                 if ((int)mr_arrayValue($aP, 'idart') > 0) {
@@ -289,16 +287,16 @@ WHERE
 SQL;
         ModRewriteDebugger::add($sql, 'ModRewriteUrlStack->_chunkSetPrettyUrlParts() $sql');
 
-        $aNewStack = array();
+        $aNewStack = [];
 
         // create array of fields, which are to reduce step by step from record set below
-        $aFields = array('', 'idart', 'idartlang', 'idcatart', 'idcat');
+        $aFields = ['', 'idart', 'idartlang', 'idcatart', 'idcat'];
 
         $this->_oDb->query($sql);
         while ($this->_oDb->nextRecord()) {
             $aRS = $this->_oDb->getRecord();
 
-            // loop thru fields array
+            // loop through fields array
             foreach ($aFields as $field) {
                 if (isset($aRS[$field])) {
                     // reduce existing field

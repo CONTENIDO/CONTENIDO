@@ -5,8 +5,8 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
-    <script type="text/javascript" src="scripts/parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
+    <script type="text/javascript" src="{_ASSET(scripts/parameterCollector.js)_}"></script>
     <style type="text/css">
         #upl_dirs_list .dir_list_entry {
             margin-top: -1px;
@@ -25,13 +25,15 @@
             width: 18px;
             height: 18px;
             padding: 0;
+            vertical-align: middle;
         }
         #upl_dirs_list td.dir_item .dir_folder_img,
         #upl_dirs_list td.dir_item .dir_root_img {
             display: inline-block;
             width: 16px;
             height: 16px;
-            padding: 0 5px 0 2px;
+            margin: 2px 5px 2px 2px;
+            vertical-align: top;
         }
         #upl_dirs_list td.dir_item > a,
         #upl_dirs_list td.dir_item a.dir_folder_link {

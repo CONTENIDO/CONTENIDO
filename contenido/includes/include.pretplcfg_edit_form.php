@@ -3,13 +3,13 @@
 /**
  * This file contains the backend page for the form of template pre configuration.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Olaf Niemann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -21,25 +21,25 @@ $tpl->reset();
 //Form
 $formaction = $sess->url("main.php");
 // <input type="hidden" name="action" value="tplcfg_edit">
-$hidden     = '<input type="hidden" name="area" value="tpl_cfg">
-               <input type="hidden" name="frame" value="'.$frame.'">
-               <input type="hidden" name="idcat" value="'.$idcat.'">
-               <input type="hidden" name="idart" value="'.$idart.'">
-               <input type="hidden" name="idtpl" value="'.$idtpl.'">
-               <input type="hidden" name="lang" value="'.$lang.'">
-               <input type="hidden" name="idtplcfg" value="'.$idtplcfg.'">
+$hidden = '<input type="hidden" name="area" value="tpl_cfg">
+               <input type="hidden" name="frame" value="' . $frame . '">
+               <input type="hidden" name="idcat" value="' . $idcat . '">
+               <input type="hidden" name="idart" value="' . $idart . '">
+               <input type="hidden" name="idtpl" value="' . $idtpl . '">
+               <input type="hidden" name="lang" value="' . $lang . '">
+               <input type="hidden" name="idtplcfg" value="' . $idtplcfg . '">
                <input type="hidden" name="changetemplate" value="0">';
 
 $tpl->set('s', 'FORMACTION', $formaction);
 $tpl->set('s', 'HIDDEN', $hidden);
 
-$templateItem = new cApiTemplate((int) $idtpl);
+$templateItem = new cApiTemplate((int)$idtpl);
 
-$tpl->set('s', 'TEMPLATECAPTION', i18n("Template"). ": ");
+$tpl->set('s', 'TEMPLATECAPTION', i18n("Template") . ": ");
 $tpl->set('s', 'TEMPLATESELECTBOX', $templateItem->get('name'));
 
 $tpl->set('s', 'LABLE_DESCRIPTION', i18n('Description'));
-$tpl->set('s', 'DESCRIPTION', nl2br($templateItem->get('description')));
+$tpl->set('s', 'DESCRIPTION', nl2br($templateItem->get('description') ?? ''));
 
 // List of configured container
 $containerConfigurations = conGetContainerConfiguration($idtplcfg);
@@ -70,8 +70,10 @@ foreach ($containerModules as $containerNumber => $containerModuleId) {
         $input = $contenidoModuleHandler->readInput() . "\n";
     }
 
-    $containerConfig = isset($containerConfigurations[$containerNumber]) ? $containerConfigurations[$containerNumber] : '';
-    $modulecode = cApiModule::processContainerInputCode($containerNumber, $containerConfig, $input);
+    $containerConfig = $containerConfigurations[$containerNumber] ?? '';
+    $modulecode = cApiModule::processContainerInputCode(
+        cSecurity::toInteger($containerNumber), $containerConfig, $input
+    );
 
     ob_start();
     eval($modulecode);
@@ -94,8 +96,8 @@ $tpl->set('s', 'NOTIFICATION', '');
 $tpl->set('s', 'HEADER', i18n('Template preconfiguration'));
 $tpl->set('s', 'DISPLAY_HEADER', 'block');
 
-$buttons = '<a href="javascript:history.back()"><img src="images/but_cancel.gif" alt=""></a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="image" alt="" src="images/but_ok.gif">';
+$buttons = '<a class="con_img_button mgr5" href="javascript:history.back()" title="' . i18n('Back') . '"><img src="images/but_cancel.gif" alt=""></a>
+            <input class="con_img_button" type="image" title="' . i18n('Save') . '" alt="" src="images/but_ok.gif">';
 
 $tpl->set('s', 'BUTTONS', $buttons);
 

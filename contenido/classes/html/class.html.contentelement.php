@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLContentElement class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLContentElement class represents an element which can contain content.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLContentElement extends cHTML {
+class cHTMLContentElement extends cHTML
+{
 
     /**
      * Constructor to create an instance of this class.
@@ -33,7 +33,8 @@ class cHTMLContentElement extends cHTML {
      * @param string $id [optional]
      *         the ID of this element
      */
-    public function __construct($content = '', $class = '', $id = '') {
+    public function __construct($content = '', $class = '', $id = '')
+    {
         parent::__construct();
         $this->setContent($content);
         $this->_contentlessTag = false;
@@ -50,7 +51,8 @@ class cHTMLContentElement extends cHTML {
      * @return cHTMLContentElement
      *         $this for chaining
      */
-    public function setContent($content) {
+    public function setContent($content)
+    {
         $this->_setContent($content);
         return $this;
     }
@@ -64,7 +66,8 @@ class cHTMLContentElement extends cHTML {
      * @return cHTMLContentElement
      *         $this for chaining
      */
-    public function appendContent($content) {
+    public function appendContent($content)
+    {
         $this->_appendContent($content);
         return $this;
     }

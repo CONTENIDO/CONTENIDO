@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLRadiobutton class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLRadiobutton class represents a radio button.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLRadiobutton extends cHTMLFormElement {
+class cHTMLRadiobutton extends cHTMLFormElement
+{
 
     /**
      * Values for the check box
@@ -36,6 +36,13 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * @var string
      */
     protected $_labelText;
+
+    /**
+     * HTML markup to append to the radio button
+     *
+     * @var string
+     */
+    protected $_markupToAppend;
 
     /**
      * Constructor to create an instance of this class.
@@ -59,7 +66,10 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $value, $id = '', $checked = false, $disabled = false, $tabindex = null, $accesskey = '', $class = '') {
+    public function __construct(
+        $name, $value, $id = '', $checked = false, $disabled = false, $tabindex = null, $accesskey = '', $class = ''
+    )
+    {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'input';
         $this->_value = $value;
@@ -78,10 +88,11 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * @return cHTMLRadiobutton
      *         $this for chaining
      */
-    public function setChecked($checked) {
+    public function setChecked($checked): cHTMLRadiobutton
+    {
         // NOTE: We cast the parameter to boolean, because it could be of another type!
         $checked = cSecurity::toBoolean($checked);
-        if ($checked == true) {
+        if ($checked) {
             return $this->updateAttribute('checked', 'checked');
         } else {
             return $this->removeAttribute('checked');
@@ -96,9 +107,24 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * @return cHTMLRadiobutton
      *         $this for chaining
      */
-    public function setLabelText($text) {
+    public function setLabelText($text): cHTMLRadiobutton
+    {
         $this->_labelText = $text;
 
+        return $this;
+    }
+
+    /**
+     * Appends HTML markup to the radio button.
+     *
+     * @param string $markup
+     *         The HTML markup to append to the radio button
+     * @return cHTMLRadiobutton
+     *         $this for chaining
+     */
+    public function appendMarkup($markup): cHTMLRadiobutton
+    {
+        $this->_markupToAppend = $markup;
         return $this;
     }
 
@@ -116,25 +142,32 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHtml($renderLabel = true) {
-        if ($renderLabel !== true) {
-            return $this->fillSkeleton($this->getAttributes(true));
+    public function toHtml($renderLabel = true): string
+    {
+        $renderedLabel = '';
+        if ($renderLabel && !empty($this->_labelText)) {
+            // We need the id-attribute render with label
+            $id = $this->getAttribute('id');
+            if (!$id) {
+                $this->advanceID();
+            }
+
+            // Render label
+            $label = new cHTMLLabel($this->_value, $this->getAttribute('id'));
+            $label->setClass($this->getAttribute('class'));
+            if ($this->_labelText != '') {
+                $label->text = $this->_labelText;
+            }
+            $renderedLabel = $label->toHtml();
         }
 
-        // We need the id-attribute render with label
-        $id = $this->getAttribute('id');
-        if (!$id) {
-            $this->advanceID();
+        if (!empty($renderedLabel) || !empty($this->_markupToAppend)) {
+            $result = new cHTMLDiv(parent::toHtml() . $renderedLabel . $this->_markupToAppend);
+            $result->setClass('radiobutton_wrapper');
+            return $result->render();
+        } else {
+            return parent::toHtml();
         }
-
-        // Render label
-        $label = new cHTMLLabel($this->_value, $this->getAttribute('id'));
-        if ($this->_labelText != '') {
-            $label->text = $this->_labelText;
-        }
-        $renderedLabel = $label->toHtml();
-
-        return $this->fillSkeleton($this->getAttributes(true)) . $renderedLabel;
     }
 
 }

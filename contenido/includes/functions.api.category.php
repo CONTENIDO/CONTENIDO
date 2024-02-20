@@ -8,13 +8,13 @@
  * 2.) The function is documented
  * 3.) The function makes sense and is generally usable
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -39,9 +39,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * The example would return "Category A" (idcat 15). If you specify an
  * invalid level the results are undefined.
  *
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
  * @param int $idcat
  *                      The category number
  * @param int $minLevel [optional]
@@ -52,8 +49,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @throws cDbException
  * @throws cInvalidArgumentException
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ *
  */
-function cApiCatGetLevelNode($idcat, $minLevel = 0) {
+function cApiCatGetLevelNode($idcat, $minLevel = 0)
+{
 
     global $cfg, $client, $lang;
 
@@ -71,9 +72,9 @@ function cApiCatGetLevelNode($idcat, $minLevel = 0) {
                 " . $cfg['tab']['cat'] . " AS b,
                 " . $cfg['tab']['cat_tree'] . " AS c
             WHERE
-                a.idlang   = " . (int) $lang . " AND
-                b.idclient = " . (int) $client . " AND
-                b.idcat    = " . (int) $idcat . " AND
+                a.idlang   = " . (int)$lang . " AND
+                b.idclient = " . (int)$client . " AND
+                b.idcat    = " . (int)$idcat . " AND
                 c.idcat    = b.idcat AND
                 a.idcat    = b.idcat";
 

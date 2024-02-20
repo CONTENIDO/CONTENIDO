@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Creates/Updates the database tables and fills them with entries (depending on
  * selected options during setup process)
@@ -7,9 +8,9 @@
  * @subpackage Controller
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -24,7 +25,7 @@ if (checkMySQLDatabaseCreation($db, $_SESSION['dbname'], $_SESSION['dbcharset'],
     $db = getSetupMySQLDBConnection();
 }
 
-$currentStep = (isset($_GET['step']) && (int) $_GET['step'] > 0) ? (int) $_GET['step'] : 0;
+$currentStep = (isset($_GET['step']) && (int)$_GET['step'] > 0) ? (int)$_GET['step'] : 0;
 
 if ($currentStep == 0) {
     $currentStep = 1;
@@ -91,10 +92,11 @@ $totalSteps = ceil($fullCount / CON_SETUP_MAX_CHUNKS_PER_STEP) + count($fullChun
 foreach ($fullChunks as $fullChunk) {
     $step++;
     if ($step == $currentStep) {
-        $replacements = array(
+        $replacements = [
             '<!--{contenido_root}-->' => addslashes($rootPath),
-            '<!--{contenido_web}-->' => addslashes($rootHttpPath)
-        );
+            '<!--{contenido_web}-->' => addslashes($rootHttpPath),
+            '!CHARSET!' => $cfg['db']['connection']['charset'],
+        ];
 
         injectSQL($db, $cfg['sql']['sqlprefix'], 'data/' . $fullChunk, $replacements);
     }
@@ -144,5 +146,3 @@ if ($currentStep < $totalSteps) {
         echo '<a href="javascript:nextStep();">Last step</a>';
     }
 }
-
-?>

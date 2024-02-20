@@ -1,13 +1,15 @@
 /*
-    jQuery Version:                jQuery 1.3.2
+    jQuery Version:             jQuery 1.3.2
     Plugin Name:                aToolTip V 1.0
-    Plugin by:                     Ara Abcarians: http://ara-abcarians.com
+    Plugin by:                  Ara Abcarians: http://ara-abcarians.com
     License:                    aToolTip is licensed under a Creative Commons Attribution 3.0 Unported License
                                 Read more about this license at --> http://creativecommons.org/licenses/by/3.0/
-    Modified:                   Murat Purc <murat@purc>, 2010-01-28: Position clickable tooltip on right side,
-                                                                     remove previous opened tooltip
-    Modified:                   Murat Purc <murat@purc>, 2019-12-21: Option to close opened tooltip on outside
-                                                                     click.
+    Modified:                   Murat Purç (www.purc.de), 2010-01-28: Position clickable tooltip on right side,
+                                    remove previous opened tooltip
+    Modified:                   Murat Purç (www.purc.de), 2019-12-21: Option to close opened tooltip on outside
+                                    click.
+    Modified:                   Murat Purç (www.purc.de), 2023-03-17: Option to close opened tooltip on pressing
+                                    the escape key, and option to define max width of the tooltip.
 
 Creates following node:
 -----------------------
@@ -21,7 +23,7 @@ Creates following node:
 
 */
 
-(function($, jQuery) {
+(function($, jQuery, Con) {
 
 (function($) {
     $.fn.aToolTip = function(options) {
@@ -37,21 +39,33 @@ Creates following node:
             toolTipClass: 'aToolTip',
             xOffset: 0,
             yOffset: 0,
-            removeOnOutsideClick: false
+            maxWidth: 'none',
+            removeOnOutsideClick: false,
+            removeOnEscapeKey: false
         },
 
         // This makes it so the users custom options overrides the default ones
         settings = $.extend({}, defaults, options);
 
-        // If setting to remove tooltip on outside click is set, register proper event handler. but only once!
+        // If setting to remove tooltip on outside click is set, then register the event handler, but only once!
         if (settings.removeOnOutsideClick && !$.fn.aToolTip.documentClickEventHandlerRegistered) {
             $.fn.aToolTip.documentClickEventHandlerRegistered = true;
-            $(document).click(function (e) {
+            $(document).click(function(e) {
                 if ($(e.target).hasClass(settings.toolTipClass) || $(e.target).closest('.' + settings.toolTipClass).length > 0) {
                     return;
                 }
                 // Fade out
                 $('.' + settings.toolTipClass).stop().fadeOut(settings.outSpeed, function(){$(this).remove();});
+            });
+        }
+
+        // If setting to remove tooltip on pressing the escape key is set, then register the event handler, but only once!
+        if (settings.removeOnEscapeKey && !$.fn.aToolTip.documentKeydownEventHandlerRegistered) {
+            $.fn.aToolTip.documentKeydownEventHandlerRegistered = true;
+            $(document).on('keydown', function(e) {
+                if (Con.isEscapeKeyEvent(e)) {
+                    $('.' + settings.toolTipClass).stop().fadeOut(settings.outSpeed, function(){$(this).remove();});
+                }
             });
         }
 
@@ -77,7 +91,8 @@ Creates following node:
                         display: 'none',
                         zIndex: '50000',
                         top: (obj.offset().top - $('.' + settings.toolTipClass).outerHeight() - settings.yOffset) + 'px',
-                        left: (obj.offset().left + obj.outerWidth() + settings.xOffset) + 'px'
+                        left: (obj.offset().left + obj.outerWidth() + settings.xOffset) + 'px',
+                        maxWidth: settings.maxWidth
                     })
                     .stop().fadeIn(settings.inSpeed);
                 },
@@ -116,7 +131,8 @@ Creates following node:
 //                        top: (obj.offset().top - $('.' + settings.toolTipClass).outerHeight() - settings.yOffset) + 'px',
 //                        left: (obj.offset().left + obj.outerWidth() + settings.xOffset) + 'px'
                         top: (obj.offset().top - settings.yOffset) + 'px',
-                        left: (obj.offset().left + obj.outerWidth() + settings.xOffset) + 'px'
+                        left: (obj.offset().left + obj.outerWidth() + settings.xOffset) + 'px',
+                        maxWidth: settings.maxWidth
                     })
                     .fadeIn(settings.inSpeed);
                     // Click to close tooltip
@@ -135,4 +151,4 @@ Creates following node:
     };
 })(jQuery);
 
-})(Con.$, Con.$);
+})(Con.$, Con.$, Con);

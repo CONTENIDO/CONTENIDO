@@ -3,14 +3,14 @@
 /**
  * This file contains the backend page for editing language.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Timo Hummel
- * @author Jan Lengowski
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -25,9 +25,9 @@ $client = cRegistry::getClientId();
 $action = cRegistry::getAction();
 $frame = cRegistry::getFrame();
 
-includePlugins('languages');
+cIncludePlugins('languages');
 
-if ($action == "lang_newlanguage" && (int) $newidlang > 0) {
+if ($action == "lang_newlanguage" && (int)$newidlang > 0) {
     $idlang = $newidlang;
 }
 
@@ -85,7 +85,7 @@ if ($action == "lang_newlanguage") {
     // whether all data is ok
     $invalidData = false;
     if ($action == "lang_edit") {
-        callPluginStore('languages');
+        cCallPluginStore('languages');
 
         if (true === cString::validateDateFormat(stripslashes($datetimeformat))) {
             $oLanguage->setProperty("dateformat", "full", stripslashes($datetimeformat), $targetclient);
@@ -95,13 +95,13 @@ if ($action == "lang_newlanguage") {
         }
         if (true === cString::validateDateFormat(stripslashes($dateformat))) {
             $oLanguage->setProperty("dateformat", "date", stripslashes($dateformat), $targetclient);
-        } else if (false === $invalidData) {
+        } elseif (false === $invalidData) {
             $invalidData = true;
             $page->displayError(i18n("Incorrect date format"));
         }
         if (true === cString::validateDateFormat(stripslashes($timeformat))) {
             $oLanguage->setProperty("dateformat", "time", stripslashes($timeformat), $targetclient);
-        } else if (false === $invalidData) {
+        } elseif (false === $invalidData) {
             $invalidData = true;
             $page->displayError(i18n("Incorrect time format"));
         }
@@ -121,7 +121,7 @@ if ($action == "lang_newlanguage") {
 
                 // Set utf-8 as encoding if CON_UTF8 constant is defined
                 if (defined('CON_UTF8') && CON_UTF8 !== false) {
-                        $sencoding = 'utf-8';
+                    $sencoding = 'utf-8';
                 }
 
                 if (false === $invalidData) {
@@ -139,8 +139,8 @@ if ($action == "lang_newlanguage") {
                         A.idlang AS idlang, A.name AS name, A.active as active, A.encoding as encoding,
                         A.direction as direction, B.idclient AS idclient
                     FROM
-                        " . $cfg["tab"]["lang"] . " AS A,
-                        " . $cfg["tab"]["clients_lang"] . " AS B
+                        " . $cfg['tab']['lang'] . " AS A,
+                        " . $cfg['tab']['clients_lang'] . " AS B
                     WHERE
                         A.idlang = " . cSecurity::toInteger($idlang) . " AND
                         B.idlang = " . cSecurity::toInteger($idlang);
@@ -149,6 +149,7 @@ if ($action == "lang_newlanguage") {
             $db->nextRecord();
 
             $form = new cGuiTableForm("lang_properties");
+            $form->setTableClass('generic col_sm');
             $form->setVar("idlang", $idlang);
             $form->setVar("targetclient", $db->f("idclient"));
             $form->setVar("action", "lang_edit");
@@ -209,7 +210,7 @@ if ($action == "lang_newlanguage") {
 
             $dateLocale = new cHTMLTextbox("datetimelocale", $oLanguage->getProperty("dateformat", "locale", $targetclient), 40);
 
-            $form->addHeader(i18n("Edit language"));
+            $form->setHeader(i18n("Edit language"));
             $oTxtLang = new cHTMLTextBox("langname", conHtmlSpecialChars($db->f("name")), 40, 255);
             $form->add(i18n("Language name"), $oTxtLang->render());
             $oCheckbox = new cHTMLCheckbox("active", "1", "active1", $db->f("active"));
@@ -231,7 +232,7 @@ if ($action == "lang_newlanguage") {
             $form->add(i18n("Date format"), $dateformat->render() . ' ' . $infoButton->render());
             $infoButton->setHelpText(i18n("FORMATE_TIME"));
             $form->add(i18n("Time format"), $timeformat->render() . ' ' . $infoButton->render());
-            $infoButton->setHelpText(i18n("LANUAGE_DATE_TIME"));
+            $infoButton->setHelpText(i18n("LANGUAGE_DATE_TIME"));
             $form->add(i18n("Date/Time locale"), $dateLocale->render() . ' ' . $infoButton->render());
 
             // update language dropdown in header, but only for current client

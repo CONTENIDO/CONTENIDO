@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the system data setup mask.
  *
@@ -6,9 +7,9 @@
  * @subpackage Form
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * System data setup mask.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage Form
  */
-class cSetupSystemData extends cSetupMask {
+class cSetupSystemData extends cSetupMask
+{
 
     /**
      * cSetupSystemData constructor.
@@ -27,18 +29,20 @@ class cSetupSystemData extends cSetupMask {
      * @param bool $previous
      * @param $next
      */
-    public function __construct($step, $previous, $next) {
+    public function __construct($step, $previous, $next)
+    {
         $cfg = cRegistry::getConfig();
 
-        cSetupMask::__construct('templates/setup/forms/systemdata.tpl', $step);
+        parent::__construct('templates/setup/forms/systemdata.tpl', $step);
 
-        cArray::initializeKey($_SESSION, 'dbprefix', '');
-        cArray::initializeKey($_SESSION, 'dbhost', '');
-        cArray::initializeKey($_SESSION, 'dbuser', '');
-        cArray::initializeKey($_SESSION, 'dbname', '');
-        cArray::initializeKey($_SESSION, 'dbpass', '');
-        cArray::initializeKey($_SESSION, 'dbcharset', '');
-        cArray::initializeKey($_SESSION, 'dbcollation', '');
+        cArray::initializeKey($_SESSION, 'dbprefix');
+        cArray::initializeKey($_SESSION, 'dbhost');
+        cArray::initializeKey($_SESSION, 'dbuser');
+        cArray::initializeKey($_SESSION, 'dbname');
+        cArray::initializeKey($_SESSION, 'dbpass');
+        cArray::initializeKey($_SESSION, 'dbengine');
+        cArray::initializeKey($_SESSION, 'dbcharset');
+        cArray::initializeKey($_SESSION, 'dbcollation');
         cArray::initializeKey($_SESSION, 'dboptions', []);
 
         $this->takeoverExistingDbSettingsToSession();
@@ -56,11 +60,19 @@ class cSetupSystemData extends cSetupMask {
         }
 
         if ($_SESSION['dbprefix'] == '') {
-            $_SESSION['dbprefix'] = 'con';
+            $_SESSION['dbprefix'] = CON_DB_PREFIX;
+        }
+
+        if ($_SESSION['dbengine'] == '' && $_SESSION['setuptype'] == 'setup') {
+            $_SESSION['dbengine'] = CON_DB_ENGINE;
         }
 
         if ($_SESSION['dbcharset'] == '' && $_SESSION['setuptype'] == 'setup') {
-            $_SESSION['dbcharset'] = CON_SETUP_DB_CHARSET;
+            $_SESSION['dbcharset'] = CON_DB_CHARSET;
+        }
+
+        if ($_SESSION['dbcollation'] == '' && $_SESSION['setuptype'] == 'setup') {
+            $_SESSION['dbcollation'] = CON_DB_COLLATION;
         }
 
         unset($_SESSION['install_failedchunks']);
@@ -87,24 +99,29 @@ class cSetupSystemData extends cSetupMask {
 
         $dbprefix = new cHTMLTextbox('dbprefix', $_SESSION['dbprefix'], 10, 30);
         $dbcharset = new cHTMLSelectElement('dbcharset');
+        $dbEngine = new cHTMLSelectElement('dbengine');
         $dbcollation = new cHTMLSelectElement('collationSelect', '1', 'collationSelect');
         $dbcollation->setAttribute("onchange", "comboBox('collationSelect', 'collationText')");
 
         // Compose charset and collation select box, only if CON_UTF8 flag is not set
         if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php') || (defined('CON_UTF8') && CON_UTF8 === true)) {
             // database charset
-            $hiddenFieldDbCharset = new cHTMLHiddenField('dbcharset', 'utf8');
-            $dbcharsetTextbox = $hiddenFieldDbCharset . 'utf8';
+            $hiddenFieldDbCharset = new cHTMLHiddenField('dbcharset', CON_DB_CHARSET);
+            $dbcharsetTextbox = $hiddenFieldDbCharset . CON_DB_CHARSET;
+
+            // database storage engine
+            $hiddenFieldDbEngine = new cHTMLHiddenField('dbengine', CON_DB_ENGINE);
+            $dbEngineTextbox = $hiddenFieldDbEngine . CON_DB_ENGINE;
 
             // database collation
-            $hiddenFieldDbCollation = new cHTMLHiddenField('dbcollation', 'utf8_general_ci');
-            $dbCollationTextbox = $hiddenFieldDbCollation . 'utf8_general_ci';
+            $hiddenFieldDbCollation = new cHTMLHiddenField('dbcollation', CON_DB_COLLATION);
+            $dbCollationTextbox = $hiddenFieldDbCollation . CON_DB_COLLATION;
         } else {
             // database charset
             $pos = 0;
             $option = new cHTMLOptionElement('-- ' . i18n("No character set", "setup") . ' --', '');
             $dbcharset->addOptionElement(++$pos, $option);
-            $selectedCharset = (!empty($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : '';
+            $selectedCharset = !empty($_SESSION['dbcharset']) ? $_SESSION['dbcharset'] : '';
             $aCharsets = fetchMySQLCharsets();
             foreach ($aCharsets as $p => $charset) {
                 $selected = ($selectedCharset == $charset);
@@ -113,18 +130,22 @@ class cSetupSystemData extends cSetupMask {
             }
             $dbcharsetTextbox = $dbcharset->render();
 
+            // database storage engine
+            $hiddenFieldDbEngine = new cHTMLHiddenField('dbengine', CON_DB_ENGINE);
+            $dbEngineTextbox = $hiddenFieldDbEngine . CON_DB_ENGINE;
+
             // database collation
             $pos = 0;
             $noOp = new cHTMLOptionElement('-- ' . i18n("Other", "setup") . ' --', '');
             $dbcollation->addOptionElement(++$pos, $noOp);
-            $selectedCollation = (!empty($_SESSION['dbcollation'])) ? $_SESSION['dbcollation'] : 'utf8_general_ci';
+            $selectedCollation = !empty($_SESSION['dbcollation']) ? $_SESSION['dbcollation'] : CON_DB_COLLATION;
             $collations = fetchMySQLCollations();
             foreach ($collations as $p => $collation) {
                 $selected = ($selectedCollation == $collation);
                 $option = new cHTMLOptionElement($collation, $collation, $selected);
                 $dbcollation->addOptionElement(++$pos, $option);
             }
-            $dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText'). $dbcollation->render();
+            $dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText') . $dbcollation->render();
         }
 
         if (isset($_SESSION['dboptions'][MYSQLI_INIT_COMMAND])) {
@@ -136,7 +157,7 @@ class cSetupSystemData extends cSetupMask {
         $this->_stepTemplateClass->set('s', 'LABEL_DBHOST', i18n("Database Server (IP or name)", "setup"));
 
         if ($_SESSION['setuptype'] == 'setup') {
-            $this->_stepTemplateClass->set('s', 'LABEL_DBNAME', i18n("Database Name", "setup") . '<br>' . i18n("(use empty or non-existant database)", "setup"));
+            $this->_stepTemplateClass->set('s', 'LABEL_DBNAME', i18n("Database Name", "setup") . '<br>' . i18n("(use empty or non-existent database)", "setup"));
         } else {
             $this->_stepTemplateClass->set('s', 'LABEL_DBNAME', i18n("Database Name", "setup"));
             $dbcharset->setDisabled(true);
@@ -147,6 +168,7 @@ class cSetupSystemData extends cSetupMask {
         $this->_stepTemplateClass->set('s', 'LABEL_DBPREFIX', i18n("Table Prefix", "setup"));
         $this->_stepTemplateClass->set('s', 'LABEL_DBADVANCED', i18n("Advanced Settings", "setup"));
         $this->_stepTemplateClass->set('s', 'LABEL_DBCHARSET', i18n("Database character set", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_DBENGINE', i18n("Database storage engine", "setup"));
         $this->_stepTemplateClass->set('s', 'LABEL_DBCOLLATION', i18n("Database collation", "setup"));
         $this->_stepTemplateClass->set('s', 'LABEL_DBOPTION_INIT_COMMAND', i18n("Database option MYSQLI_INIT_COMMAND", "setup"));
 
@@ -156,13 +178,15 @@ class cSetupSystemData extends cSetupMask {
         $this->_stepTemplateClass->set('s', 'INPUT_DBPASSWORD', $dbpass->render() . $dbpass_hidden->render());
         $this->_stepTemplateClass->set('s', 'INPUT_DBPREFIX', $dbprefix->render());
         $this->_stepTemplateClass->set('s', 'INPUT_DBCHARSET', $dbcharsetTextbox);
+        $this->_stepTemplateClass->set('s', 'INPUT_DBENGINE', $dbEngineTextbox);
         $this->_stepTemplateClass->set('s', 'INPUT_DBCOLLATION', $dbCollationTextbox);
         $this->_stepTemplateClass->set('s', 'INPUT_DBOPTION_INIT_COMMAND', $dbOptionInitCommand);
 
         $this->setNavigation($previous, $next);
     }
 
-    protected function _createNavigation() {
+    protected function _createNavigation()
+    {
         $link = new cHTMLLink('#');
 
         if ($_SESSION['setuptype'] == 'setup') {
@@ -187,7 +211,8 @@ class cSetupSystemData extends cSetupMask {
         $this->_stepTemplateClass->set('s', 'BACK', $backlink->render());
     }
 
-    protected function takeoverExistingDbSettingsToSession() {
+    protected function takeoverExistingDbSettingsToSession()
+    {
         $cfg = cRegistry::getConfig();
 
         if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
@@ -205,6 +230,8 @@ class cSetupSystemData extends cSetupMask {
                 'dbpass' => $cfg['db']['connection']['password'],
                 'dbprefix' => $cfg['sql']['sqlprefix'],
                 'dbcharset' => $cfg['db']['connection']['charset'],
+                'dbengine' => $cfg['db']['engine'] ?? CON_DB_ENGINE,
+                'dbcollation' => $cfg['db']['collation'] ?? CON_DB_COLLATION,
                 'dboptions' => !empty($cfg['db']['connection']['options']) ? $cfg['db']['connection']['options'] : []
             ];
 
@@ -212,12 +239,11 @@ class cSetupSystemData extends cSetupMask {
             unset($cfgBackup);
 
             foreach ($aVars as $aVar => $sValue) {
-                if ($_SESSION[$aVar] == '') {
+                if (empty($_SESSION[$aVar])) {
                     $_SESSION[$aVar] = $sValue;
                 }
             }
         }
     }
-}
 
-?>
+}

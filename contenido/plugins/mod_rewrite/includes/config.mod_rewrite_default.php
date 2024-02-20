@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Plugin Advanced Mod Rewrite default settings. This file will be included if
  * mod rewrite settings of an client couldn't loaded.
  *
  * Containing settings are taken over from CONTENIDO-4.6.15mr setup installer
- * template beeing made originally by stese.
+ * template being made originally by stese.
  *
  * NOTE:
  * Changes in these Advanced Mod Rewrite settings will affect all clients, as long
@@ -12,14 +13,13 @@
  * PHP needs write permissions to the folder, where this file resides. Mod Rewrite
  * configuration files will be created in this folder.
  *
- * @package     Plugin
- * @subpackage  ModRewrite
- * @id          $Id$:
- * @author      Murat Purc <murat@purc.de>
- * @copyright   four for business AG <www.4fb.de>
- * @license     http://www.contenido.org/license/LIZENZ.txt
- * @link        http://www.4fb.de
- * @link        http://www.contenido.org
+ * @package    Plugin
+ * @subpackage ModRewrite
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -29,7 +29,7 @@ global $cfg;
 // Use advanced mod_rewrites  ( 1 = yes, 0 = none )
 $cfg['mod_rewrite']['use'] = 0;
 
-// Path to the htaccess file with trailling slash from domain-root!
+// Path to the htaccess file with trailing slash from domain-root!
 $cfg['mod_rewrite']['rootdir'] = '/';
 
 // Check path to the htaccess file ( 1 = yes, 0 = none )
@@ -41,13 +41,13 @@ $cfg['mod_rewrite']['startfromroot'] = 0;
 // Prevent Duplicated Content, if startfromroot is enabled ( 1 = yes, 0 = none )
 $cfg['mod_rewrite']['prevent_duplicated_content'] = 0;
 
-// is multilanguage? ( 1 = yes, 0 = none )
+// is multilingual? ( 1 = yes, 0 = none )
 $cfg['mod_rewrite']['use_language'] = 0;
 
 // use language name in url? ( 1 = yes, 0 = none )
 $cfg['mod_rewrite']['use_language_name'] = 0;
 
-// is multiclient in only one directory? ( 1 = yes, 0 = none )
+// is multi-client in only one directory? ( 1 = yes, 0 = none )
 $cfg['mod_rewrite']['use_client'] = 0;
 
 // use client name in url? ( 1 = yes, 0 = none )
@@ -69,12 +69,12 @@ $cfg['mod_rewrite']['add_startart_name_to_url'] = 1;
 $cfg['mod_rewrite']['default_startart_name'] = 'index';
 
 // Rewrite urls on generating the code for the page. If active, the responsibility will be
-// outsourced to moduleoutputs and you have to adapt the moduleoutputs manually. Each output of
+// outsourced to module outputs, and you have to adapt the module outputs manually. Each output of
 // internal article/category links must be processed by using $sess->url. (1 = yes, 0 = none)
 $cfg['mod_rewrite']['rewrite_urls_at_congeneratecode'] = 0;
 
-// Rewrite urls on output of htmlcode at front_content.php. Is the old way, and doesn't require
-// adapting of moduleoutputs. On the other hand usage of this way will be slower than rewriting
+// Rewrite urls on output of html code at front_content.php. Is the old way, and doesn't require
+// adapting of module outputs. On the other hand usage of this way will be slower than rewriting
 // option above. (1 = yes, 0 = none)
 $cfg['mod_rewrite']['rewrite_urls_at_front_content_output'] = 1;
 
@@ -95,12 +95,12 @@ $cfg['mod_rewrite']['category_word_seperator'] = '-';
 // Word seperator in article names
 $cfg['mod_rewrite']['article_word_seperator'] = '-';
 
-// Routing settings for incomming urls. Here you can define routing rules as follows:
-// $cfg['mod_rewrite']['routing'] = array(
-//    '/a_incomming/url/foobar.html' => '/new_url/foobar.html',  # route /a_incomming/url/foobar.html to /new_url/foobar.html
+// Routing settings for incoming urls. Here you can define routing rules as follows:
+// $cfg['mod_rewrite']['routing'] = [
+//    '/a_incoming/url/foobar.html' => '/new_url/foobar.html',  # route /a_incoming/url/foobar.html to /new_url/foobar.html
 //    '/cms/' => '/' # route /cms/ to / (doc root of client)
-// );
-$cfg['mod_rewrite']['routing'] = array();
+// ];
+$cfg['mod_rewrite']['routing'] = [];
 
 // Redirect invalid articles to errorpage (1 = yes, 0 = none)
 $cfg['mod_rewrite']['redirect_invalid_article_to_errorsite'] = 0;

@@ -2,18 +2,18 @@
 
 /**
  * Originally, this file contained fixed functions for PHP 5.4 support (encoding related).
- * Update 2021-08-25: check for PHP-Version has been omitted. 
- * It is presumed that at least PHP7.x is running. 
+ * Update 2021-08-25: check for PHP-Version has been omitted.
+ * It is presumed that at least PHP7.x is running.
  * Code alternatives for PHP below 5.4 have been deleted.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Dominik Ziegler
- * @author Timo Trautmann
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @author     Timo Trautmann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -27,7 +27,8 @@ if (function_exists('conHtmlSpecialChars') == false) {
      * @param string $encoding
      * @return string
      */
-    function conHtmlSpecialChars($value, $flags = '', $encoding = '') {
+    function conHtmlSpecialChars($value, $flags = '', $encoding = '')
+    {
 
         if ($encoding == '') {
             $encoding = cRegistry::getEncoding();
@@ -55,7 +56,8 @@ if (function_exists('conHtmlEntityDecode') == false) {
      * @param string $encoding
      * @return string
      */
-    function conHtmlEntityDecode($value, $flags = '', $encoding = '') {
+    function conHtmlEntityDecode($value, $flags = '', $encoding = '')
+    {
 
         if ($encoding == '') {
             $encoding = cRegistry::getEncoding();
@@ -78,7 +80,8 @@ if (function_exists('conHtmlentities') == false) {
      * @param string $encoding
      * @return string
      */
-    function conHtmlentities($value, $flags = '', $encoding = '') {
+    function conHtmlentities($value, $flags = '', $encoding = '')
+    {
 
         if ($encoding == '') {
             $encoding = cRegistry::getEncoding();
@@ -100,7 +103,8 @@ if (function_exists('conGetHtmlTranslationTable') == false) {
      *
      * @return array
      */
-    function conGetHtmlTranslationTable($table = '', $flags = '') {
+    function conGetHtmlTranslationTable($table = '', $flags = '')
+    {
 
         $table = ($table == '') ? HTML_SPECIALCHARS : $table;
         $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;

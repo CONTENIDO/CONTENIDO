@@ -1,14 +1,15 @@
 <?php
+
 /**
  * This file handles the logout from backend.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -18,11 +19,13 @@ if (!defined('CON_FRAMEWORK')) {
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-cRegistry::bootstrap(array(
-    'sess' => 'cSession',
-    'auth' => 'cAuthHandlerBackend',
-    'perm' => 'cPermission'
-));
+cRegistry::bootstrap(
+    [
+        'sess' => 'cSession',
+        'auth' => 'cAuthHandlerBackend',
+        'perm' => 'cPermission',
+    ]
+);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 

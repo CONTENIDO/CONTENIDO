@@ -8,11 +8,11 @@
         <author>Marco Jahn</author>
         <copyright>four for business AG</copyright>
         <mail>info@4fb.de</mail>
-        <website>http://www.4fb.de</website>
-        <version>1.0.1</version>
+        <website>https://www.4fb.de</website>
+        <version>2.0.0</version>
     </general>
-    <requirements php="5.2.3">
-        <contenido minversion="4.9.0" />
+    <requirements php="7.0">
+        <contenido minversion="4.10.0"/>
     </requirements>
     <contenido>
         <areas>
@@ -23,10 +23,15 @@
             <action area="con_contentallocation">storeallocation</action>
         </actions>
         <frames>
-            <frame area="content_allocation" filetype="main" name="content_allocation/includes/include.left_top.php" frameId="1" />
-            <frame area="content_allocation" filetype="main" name="content_allocation/includes/include.left_bottom.php" frameId="2" />
-            <frame area="content_allocation" filetype="main" name="content_allocation/includes/include.right_bottom.php" frameId="4" />
-            <frame area="con_contentallocation" filetype="main" name="content_allocation/includes/include.contentallocation_article.php" frameId="4" />
+            <frame area="content_allocation" filetype="main"
+                   name="content_allocation/includes/include.left_top.php" frameId="1"/>
+            <frame area="content_allocation" filetype="main"
+                   name="content_allocation/includes/include.left_bottom.php" frameId="2"/>
+            <frame area="content_allocation" filetype="main"
+                   name="content_allocation/includes/include.right_bottom.php" frameId="4"/>
+            <frame area="con_contentallocation" filetype="main"
+                   name="content_allocation/includes/include.contentallocation_article.php"
+                   frameId="4"/>
         </frames>
         <nav_sub>
             <nav area="content_allocation" level="0" navm="extra">content_allocation/xml/;navigation/extra/content_allocation/main</nav>

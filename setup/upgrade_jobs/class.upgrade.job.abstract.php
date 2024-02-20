@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the abstract upgrade job class.
  *
@@ -6,9 +7,9 @@
  * @subpackage UpgradeJob
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Abstract upgrade job class.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
-abstract class cUpgradeJobAbstract {
+abstract class cUpgradeJobAbstract
+{
 
     /**
      * @var cDb
@@ -40,6 +42,11 @@ abstract class cUpgradeJobAbstract {
      * @var string
      */
     protected $_version;
+
+    /**
+     * @var array
+     */
+    protected $_aCfgClient;
 
     /**
      * @var cApiClient[]
@@ -69,16 +76,17 @@ abstract class cUpgradeJobAbstract {
      * Setting this to '4.8.18' would mean that any version lower than 4.8.18 will get the upgrade job.
      * @var string
      */
-     public $maxVersion = "0";
+    public $maxVersion = "0";
 
     /**
      * Constructor, sets some properties
-     * @param  cDb $db
-     * @param  array  $cfg  Main configuration array
-     * @param  array  $cfgClient  Clients configuration array
-     * @param  string $version The CONTENIDO version which is upgraded
+     * @param cDb $db
+     * @param array|mixed $cfg Main configuration array
+     * @param array|mixed $cfgClient Clients configuration array
+     * @param string $version The CONTENIDO version which is upgraded
      */
-    public function __construct(cDb $db, $cfg, $cfgClient, $version) {
+    public function __construct(cDb $db, $cfg, $cfgClient, $version)
+    {
         $this->_version = $version;
         $this->_oDb = $db;
         $this->_aCfg = (is_array($cfg)) ? $cfg : $GLOBALS['cfg'];
@@ -106,7 +114,8 @@ abstract class cUpgradeJobAbstract {
      *
      * Do not override this.
      */
-    final public function execute() {
+    final public function execute()
+    {
         if (version_compare($this->_version, $this->maxVersion, "<") || $this->maxVersion === "0") {
             $this->_execute();
         }
@@ -121,10 +130,12 @@ abstract class cUpgradeJobAbstract {
      * Returns list of all available clients
      * @return cApiClient[]
      */
-    protected function _getAllClients() {
-        $aClients = array();
+    protected function _getAllClients()
+    {
         $oClientColl = new cApiClientCollection();
         $oClientColl->select();
+
+        $aClients = [];
         while (($oClient = $oClientColl->next()) !== false) {
             $obj = clone $oClient;
             $aClients[$obj->get('idclient')] = $obj;
@@ -136,10 +147,12 @@ abstract class cUpgradeJobAbstract {
      * Returns list of all available languages
      * @return cApiLanguage[]
      */
-    protected function _getAllLanguages() {
-        $aLanguages = array();
+    protected function _getAllLanguages()
+    {
         $oLanguageColl = new cApiLanguageCollection();
         $oLanguageColl->select();
+
+        $aLanguages = [];
         while (($oLang = $oLanguageColl->next()) !== false) {
             $obj = clone $oLang;
             $aLanguages[$obj->get('idlang')] = $obj;
@@ -149,10 +162,11 @@ abstract class cUpgradeJobAbstract {
 
     /**
      * Logs passed setup error, wrapper for logSetupFailure() function
-     * @param  string  $errorMsg
+     * @param string $errorMsg
      */
-    protected function _logError($errorMsg) {
+    protected function _logError($errorMsg)
+    {
         $className = get_class($this);
-        logSetupFailure($className . ': ' . $errorMsg. "\n");
+        logSetupFailure($className . ': ' . $errorMsg . "\n");
     }
 }

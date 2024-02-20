@@ -3,14 +3,13 @@
 /**
  * This file contains the cHTMLForm class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
- *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLForm class represents a form.
  *
- * @package Core
+ * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLForm extends cHTMLContentElement {
+class cHTMLForm extends cHTMLContentElement
+{
     /**
      * @var string
      */
@@ -58,7 +58,8 @@ class cHTMLForm extends cHTMLContentElement {
      * @param string $id [optional]
      *         the ID of this element
      */
-    public function __construct($name = '', $action = 'main.php', $method = 'post', $class = '', $id = '') {
+    public function __construct($name = '', $action = 'main.php', $method = 'post', $class = '', $id = '')
+    {
         parent::__construct('', $class, $id);
         $this->_tag = 'form';
         $this->_name = $name;
@@ -74,7 +75,8 @@ class cHTMLForm extends cHTMLContentElement {
      * @return cHTMLForm
      *         $this for chaining
      */
-    public function setVar($var, $value) {
+    public function setVar($var, $value): cHTMLForm
+    {
         $this->_vars[$var] = $value;
 
         return $this;
@@ -86,7 +88,8 @@ class cHTMLForm extends cHTMLContentElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHtml() {
+    public function toHtml(): string
+    {
         $out = '';
         if (is_array($this->_vars)) {
             foreach ($this->_vars as $var => $value) {

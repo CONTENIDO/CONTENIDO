@@ -3,14 +3,13 @@
 /**
  * This file contains the cDebugDevNull class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
- *
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,10 +19,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Note: Be careful when using $bExit = true as this will NOT cause a die() in
  * this object!
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
  */
-class cDebugDevNull implements cDebugInterface {
+class cDebugDevNull implements cDebugInterface
+{
 
     /**
      * Singleton instance
@@ -37,9 +37,10 @@ class cDebugDevNull implements cDebugInterface {
      *
      * @return cDebugDevNull
      */
-    public static function getInstance() {
+    public static function getInstance(): cDebugInterface
+    {
         if (self::$_instance == NULL) {
-            self::$_instance = new cDebugDevNull();
+            self::$_instance = new self();
         }
         return self::$_instance;
     }
@@ -47,17 +48,19 @@ class cDebugDevNull implements cDebugInterface {
     /**
      * Constructor to create an instance of this class.
      */
-    private function __construct() {
+    private function __construct()
+    {
     }
 
     /**
      * Writes a line.
      * This method does nothing!
      *
+     * @param string $sText
      * @see cDebugInterface::out()
-     * @param string $msg
      */
-    public function out($msg) {
+    public function out($sText)
+    {
     }
 
     /**
@@ -70,7 +73,8 @@ class cDebugDevNull implements cDebugInterface {
      * @param bool $bExit [optional]
      *         If set to true, your app will NOT die() after output of current var
      */
-    public function show($mVariable, $sVariableDescription = '', $bExit = false) {
+    public function show($mVariable, $sVariableDescription = '', $bExit = false)
+    {
     }
 
     /**
@@ -79,18 +83,22 @@ class cDebugDevNull implements cDebugInterface {
      * @param mixed $mVariable
      * @param string $sVariableDescription [optional]
      */
-    public function add($mVariable, $sVariableDescription = '') {
+    public function add($mVariable, $sVariableDescription = '')
+    {
     }
 
     /**
      * Interface implementation
      */
-    public function reset() {
+    public function reset()
+    {
     }
 
     /**
      * Interface implementation
      */
-    public function showAll() {
+    public function showAll()
+    {
     }
+
 }

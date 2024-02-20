@@ -1,5 +1,8 @@
-/* labels for contenttypes in backend edit mode */
-.content_type_label {
+/* labels and values for content types in backend edit mode */
+
+/** @deprecated [2023-02-27] Since CONTENIDO 4.10.2, Don't use `content_type_label`, use `con_content_type_label` instead */
+.content_type_label,
+.con_content_type_label {
     color: #0060B1;
     background-color: #BFCF00;
     display: block;
@@ -9,7 +12,10 @@
     padding: 2px;
     font-weight: bold;
 }
-.content_type_label_secondary {
+
+/** @deprecated [2023-02-27] Since CONTENIDO 4.10.2, Don't use `content_type_label_secondary`, use `con_content_type_label_secondary` instead */
+.content_type_label_secondary,
+.con_content_type_label_secondary {
     color: #0060B1;
     background-color: #BFCF00;
     display: block;
@@ -18,15 +24,27 @@
     font-weight: normal;
 }
 
-#tpl_visedit {
+.con_content_type_value {
+}
+
+/** @deprecated [2023-02-27] Since CONTENIDO 4.10.2, Don't use `tpl_visedit`, use `con_tpl_visedit` instead */
+#tpl_visedit,
+#con_tpl_visedit {
     height: 100%;
     padding: 0;
     margin: 0;
 }
 
-#tpl_visedit .visedit_item {
+/** @deprecated [2023-02-27] Since CONTENIDO 4.10.2, Don't use `visedit_item`, use `con_visedit_item` instead */
+#tpl_visedit .visedit_item,
+#con_tpl_visedit .con_visedit_item {
     position: relative;
     height: 26px;
     white-space: nowrap;
     font-size: 12px;
+}
+
+#con_tpl_visedit .con_visedit_action_control {
+    width: 100%;
+    text-align: right;
 }

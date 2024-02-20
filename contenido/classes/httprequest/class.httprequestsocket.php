@@ -3,13 +3,13 @@
 /**
  * This file contains an implementation of HttpRequest using fsockopen
  *
- * @package Core
+ * @package    Core
  * @subpackage Core
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * fsockopen implementation of HttpRequest.
  *
- * @package Core
+ * @package    Core
  * @subpackage Core
  */
-class cHttpRequestSocket extends cHttpRequest {
+class cHttpRequestSocket extends cHttpRequest
+{
 
     /**
      * Array for the post parameters.
@@ -74,24 +75,26 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Constructor to create an instance of this class.
      *
-     * @see cHttpRequest::__construct()
-     * @see cHttpRequest::getHttpRequest()
      * @param string $url [optional]
      *         URL for the request
+     * @see cHttpRequest::getHttpRequest()
+     * @see cHttpRequest::__construct()
      */
-    public function __construct($url = '') {
+    public function __construct($url = '')
+    {
         $this->url = $url;
     }
 
     /**
      * Set the request URL.
      *
-     * @see cHttpRequest::setURL()
      * @param string $url
      *         the URL
      * @return cHttpRequest
+     * @see cHttpRequest::setURL()
      */
-    public function setURL($url) {
+    public function setURL($url)
+    {
         $this->url = $url;
 
         return $this;
@@ -100,12 +103,13 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Set the GET parameters.
      *
-     * @see cHttpRequest::setGetParams()
      * @param array $array
      *         associative array containing keys and values of the GET parameters
      * @return cHttpRequest
+     * @see cHttpRequest::setGetParams()
      */
-    public function setGetParams($array) {
+    public function setGetParams($array)
+    {
         $this->getArray = $array;
 
         return $this;
@@ -114,12 +118,13 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Set the POST parameters.
      *
-     * @see cHttpRequest::setPostParams()
      * @param array $array
      *         associative array containing keys and values of the POST parameters
      * @return cHttpRequest
+     * @see cHttpRequest::setPostParams()
      */
-    public function setPostParams($array) {
+    public function setPostParams($array)
+    {
         $this->postArray = $array;
 
         return $this;
@@ -128,12 +133,13 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Set the HTTP headers.
      *
-     * @see cHttpRequest::setHeaders()
      * @param array $array
      *         associative array containing the HTTP headers
      * @return cHttpRequest
+     * @see cHttpRequest::setHeaders()
      */
-    public function setHeaders($array) {
+    public function setHeaders($array)
+    {
         $this->headerArray = $array;
 
         return $this;
@@ -142,7 +148,8 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Inserts the custom headers into the header string.
      */
-    protected function prepareHeaders() {
+    protected function prepareHeaders()
+    {
         $this->header = '';
         if (!is_array($this->headerArray)) {
             return;
@@ -161,7 +168,8 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Appends teh GET array to the URL.
      */
-    protected function prepareGetRequest() {
+    protected function prepareGetRequest()
+    {
         if (is_array($this->getArray)) {
             if (!cString::contains($this->url, '?')) {
                 $this->url .= '?';
@@ -178,7 +186,8 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Prepares the headers to send a POST request and encodes the data.
      */
-    protected function preparePostRequest() {
+    protected function preparePostRequest()
+    {
         $this->boundary = md5(time()) . md5(time() * rand());
         $this->headerArray['Content-Type'] = 'multipart/form-data; boundary=' . $this->boundary;
         $this->boundary = '--' . $this->boundary;
@@ -203,14 +212,15 @@ class cHttpRequestSocket extends cHttpRequest {
      *         Wether the headers should be included in the response
      * @return string|bool
      */
-    protected function sendRequest($return, $method, $returnHeaders = false) {
+    protected function sendRequest($return, $method, $returnHeaders = false)
+    {
         if (!(cString::findFirstPos($this->url, 'http') === 0)) {
             $this->url = 'http://' . $this->url;
         }
 
         $urlInfo = @parse_url($this->url);
         $scheme = '';
-        if ($urlInfo['port'] == '') {
+        if (empty($urlInfo['port'])) {
             if ($urlInfo['scheme'] == 'https') {
                 $urlInfo['port'] = 443;
                 $scheme = 'ssl://';
@@ -219,9 +229,9 @@ class cHttpRequestSocket extends cHttpRequest {
             }
         }
 
-        $this->headerArray['Host'] = ($this->headerArray['Host'] != '') ? $this->headerArray['Host'] : $urlInfo['host'];
-        $this->headerArray['Connection'] = ($this->headerArray['Connection'] != '') ? $this->headerArray['Host'] : 'close';
-        $this->headerArray['Accept'] = ($this->headerArray['Accept'] != '') ? $this->headerArray['Host'] : '*/*';
+        $this->headerArray['Host'] = !empty($this->headerArray['Host']) ? $this->headerArray['Host'] : $urlInfo['host'];
+        $this->headerArray['Connection'] = !empty($this->headerArray['Connection']) ? $this->headerArray['Host'] : 'close';
+        $this->headerArray['Accept'] = !empty($this->headerArray['Accept']) ? $this->headerArray['Host'] : '*/*';
 
         $this->prepareHeaders();
 
@@ -257,15 +267,16 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Perform the request using POST.
      *
-     * @see cHttpRequest::postRequest()
      * @param bool $return [optional]
      *         If true, response of the server gets returned as string
      * @param bool $returnHeaders [optional]
      *         If true, headers will be included in the response
      * @return string|bool
      *         False on error, response otherwise
+     * @see cHttpRequest::postRequest()
      */
-    public function postRequest($return = true, $returnHeaders = false) {
+    public function postRequest($return = true, $returnHeaders = false)
+    {
         $this->preparePostRequest();
 
         return $this->sendRequest($return, 'POST', $returnHeaders);
@@ -274,15 +285,16 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Perform the request using GET.
      *
-     * @see cHttpRequest::getRequest()
      * @param bool $return [optional]
      *         If true, response of the server gets returned as string
      * @param bool $returnHeaders [optional]
      *         If true, headers will be included in the response
      * @return string|bool
      *         False on error, response otherwise
+     * @see cHttpRequest::getRequest()
      */
-    public function getRequest($return = true, $returnHeaders = false) {
+    public function getRequest($return = true, $returnHeaders = false)
+    {
         $this->prepareGetRequest();
 
         return $this->sendRequest($return, 'GET', $returnHeaders);
@@ -291,15 +303,16 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Perform the request using POST AND append all GET parameters.
      *
-     * @see cHttpRequest::request()
      * @param bool $return [optional]
      *         If true, response of the server gets returned as string
      * @param bool $returnHeaders [optional]
      *         If true, headers will be included in the response
      * @return string|bool
      *         False on error, response otherwise
+     * @see cHttpRequest::request()
      */
-    public function request($return = true, $returnHeaders = false) {
+    public function request($return = true, $returnHeaders = false)
+    {
         $this->prepareGetRequest();
         $this->preparePostRequest();
 

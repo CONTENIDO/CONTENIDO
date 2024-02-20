@@ -1,25 +1,38 @@
 <?php
+
 /**
  * This file contains the Recipient group editor.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Newsletter
- * @author Bjoern Behrens
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $action, $perm, $area, $client, $lang, $auth, $frame, $sess;
+/**
+ * @var cAuth $auth
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $area
+ * @var int $client
+ * @var int $lang
+ * @var int $frame
+ */
+
 
 // Initialization
 $oPage = new cGuiPage("recipients.group_edit", "newsletter");
 $oRGroups = new NewsletterRecipientGroupCollection();
 $oRGroupMembers = new NewsletterRecipientGroupMemberCollection();
 $oRGroup = new NewsletterRecipientGroup();
+
+$action = $action ?? '';
 
 $aFields = [
     "name" => [
@@ -44,22 +57,24 @@ $aFields = [
     ],
 ];
 
+$requestIdRecipientGroup = cSecurity::toInteger($_REQUEST['idrecipientgroup'] ?? '0');
+
 if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $action)) {
     $oRGroup = $oRGroups->create(" " . i18n("-- New group --", 'newsletter'));
-    $_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
+    $requestIdRecipientGroup = $oRGroup->get("idnewsgroup");
     $oPage->reloadLeftBottomFrame(['idrecipientgroup' => $oRGroup->get("idnewsgroup")]);
-    $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'add\')</script>';
+    $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $requestIdRecipientGroup . '\', \'add\')</script>';
     $oPage->addScript($sRefreshLeftTopScript);
 } elseif ($action == "recipientgroup_delete" && $perm->have_perm_area_action($area, $action)) {
-    $oRGroups->delete($_REQUEST["idrecipientgroup"]);
-    $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'remove\')</script>';
+    $oRGroups->delete($requestIdRecipientGroup);
+    $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $requestIdRecipientGroup . '\', \'remove\')</script>';
     $oPage->addScript($sRefreshLeftTopScript);
 
-    $_REQUEST["idrecipientgroup"] = 0;
+    $requestIdRecipientGroup = 0;
     $oRGroup = new NewsletterRecipientGroup();
     $oPage->reloadLeftBottomFrame(['idrecipientgroup' => null]);
 } else {
-    $oRGroup->loadByPrimaryKey($_REQUEST["idrecipientgroup"]);
+    $oRGroup->loadByPrimaryKey($requestIdRecipientGroup);
 }
 
 if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oRGroup->get("idlang") == $lang) {
@@ -69,10 +84,10 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
         // Saving changes
         $bReload = false;
 
-        $sGroupName = $_REQUEST["groupname"];
-        if ($oRGroup->get("groupname") != $sGroupName) {
+        $requestGroupName = $_REQUEST['groupname'] ?? '';
+        if ($oRGroup->get("groupname") != $requestGroupName) {
             $oRGroups->resetQuery();
-            $oRGroups->setWhere("groupname", stripslashes($sGroupName));
+            $oRGroups->setWhere("groupname", stripslashes($requestGroupName));
             $oRGroups->setWhere("idclient", $client);
             $oRGroups->setWhere("idlang", $lang);
             $oRGroups->setWhere($oRGroup->getPrimaryKeyName(), $oRGroup->get($oRGroup->getPrimaryKeyName()), "!=");
@@ -83,22 +98,23 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
             } else {
                 $bReload = true;
 
-                $oRGroup->set("groupname", $sGroupName);
+                $oRGroup->set("groupname", $requestGroupName);
             }
         }
 
-        $addUser = isset($_REQUEST["adduser"]) && is_array($_REQUEST["adduser"]) ? $_REQUEST["adduser"] : [];
-        if (count($addUser) > 0) {
-            foreach ($addUser as $iRcpID) {
+        $requestAddUser = isset($_REQUEST['adduser']) && is_array($_REQUEST['adduser']) ? $_REQUEST['adduser'] : [];
+        if (count($requestAddUser) > 0) {
+            foreach ($requestAddUser as $iRcpID) {
                 if (is_numeric($iRcpID)) {
-                    $oRGroupMembers->create($_REQUEST["idrecipientgroup"], $iRcpID);
+                    $oRGroupMembers->create($requestIdRecipientGroup, $iRcpID);
                 }
             }
         }
 
-        if ($oRGroup->get("defaultgroup") != (int) $_REQUEST["defaultgroup"]) {
+        $requestDefaultGroup = cSecurity::toInteger($_REQUEST['defaultgroup'] ?? '0');
+        if ($oRGroup->get("defaultgroup") != $requestDefaultGroup) {
             $bReload = true;
-            $oRGroup->set("defaultgroup", $_REQUEST["defaultgroup"]);
+            $oRGroup->set("defaultgroup", $requestDefaultGroup);
         }
 
         $oRGroup->store();
@@ -108,16 +124,17 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
         }
 
         // Removing users from group (if specified)
-        if ($perm->have_perm_area_action($area, "recipientgroup_recipient_delete") && is_array($_REQUEST["deluser"])) {
-            foreach ($_REQUEST["deluser"] as $iRcpID) {
+        $requestDelUser = isset($_REQUEST['deluser']) && is_array($_REQUEST['deluser']) ? $_REQUEST['deluser'] : null;
+        if ($perm->have_perm_area_action($area, "recipientgroup_recipient_delete") && is_array($requestDelUser)) {
+            foreach ($requestDelUser as $iRcpID) {
                 if (is_numeric($iRcpID)) {
-                    $oRGroupMembers->remove($_REQUEST["idrecipientgroup"], $iRcpID);
+                    $oRGroupMembers->remove($requestIdRecipientGroup, $iRcpID);
                 }
             }
         }
 
-        $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'remove\');
-                                    Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'add\', \'' . $sGroupName . '\');</script>';
+        $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $requestIdRecipientGroup . '\', \'remove\');
+                                    Con.getFrame("left_top").refreshGroupOption(\'' . $requestIdRecipientGroup . '\', \'add\', \'' . $requestGroupName . '\');</script>';
         $oPage->addScript($sRefreshLeftTopScript);
     }
 
@@ -126,57 +143,65 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     }
 
     // Set default values
+    $requestMemberElemPerPage = $_REQUEST['member_elemperpage'] ?? '';
+    $requestOutsiderElemPerPage = $_REQUEST['outsider_elemperpage'] ?? '';
+    $requestMemberPage = cSecurity::toInteger($_REQUEST['member_page'] ?? '0');
+    $requestOutsiderPage = cSecurity::toInteger($_REQUEST['outsider_page'] ?? '0');
+    $requestMemberSortOrder = !isset($_REQUEST['member_sortorder']) || $_REQUEST['member_sortorder'] !== 'ASC' ? 'ASC' : 'DESC';
+    $requestOutsiderSortOrder = !isset($_REQUEST['outsider_sortorder']) || $_REQUEST['outsider_sortorder'] !== 'ASC' ? 'ASC' : 'DESC';
+    $requestMemberFilter = $_REQUEST['member_filter'] ?? '';
+    $requestOutsiderFilter = $_REQUEST['outsider_filter'] ?? '';
+    $requestMemberSortBy = $_REQUEST['member_sortby'] ?? '';
+    $requestOutsiderSortBy = $_REQUEST['outsider_sortby'] ?? '';
+    $requestMemberSearchIn = $_REQUEST['member_searchin'] ?? '';
+    $requestOutsiderSearchIn = $_REQUEST['outsider_searchin'] ?? '';
+
     $oUser = new cApiUser($auth->auth["uid"]);
-    if (!isset($_REQUEST["member_elemperpage"]) || !is_numeric($_REQUEST["member_elemperpage"]) || $_REQUEST["member_elemperpage"] < 0) {
-        $_REQUEST["member_elemperpage"] = $oUser->getProperty("itemsperpage", $area . "_edit_member");
+    if (!is_numeric($requestMemberElemPerPage) || $requestMemberElemPerPage < 0) {
+        $requestMemberElemPerPage = $oUser->getProperty("itemsperpage", $area . "_edit_member");
     }
-    if (!is_numeric($_REQUEST["member_elemperpage"])) {
-        $_REQUEST["member_elemperpage"] = 25;
+    if (!is_numeric($requestMemberElemPerPage)) {
+        $requestMemberElemPerPage = 25;
     }
-    if ($_REQUEST["member_elemperpage"] > 0) {
+    if ($requestMemberElemPerPage > 0) {
         // -- All -- will not be stored, as it may be impossible to change this
         // back to something more useful
-        $oUser->setProperty("itemsperpage", $area . "_edit_member", $_REQUEST["member_elemperpage"]);
+        $oUser->setProperty("itemsperpage", $area . "_edit_member", $requestMemberElemPerPage);
     }
 
-    if (!isset($_REQUEST["outsider_elemperpage"]) || !is_numeric($_REQUEST["outsider_elemperpage"]) || $_REQUEST["outsider_elemperpage"] < 0) {
-        $_REQUEST["outsider_elemperpage"] = $oUser->getProperty("itemsperpage", $area . "_edit_outsider");
+    if (!is_numeric($requestOutsiderElemPerPage) || $requestOutsiderElemPerPage < 0) {
+        $requestOutsiderElemPerPage = $oUser->getProperty("itemsperpage", $area . "_edit_outsider");
     }
-    if (!is_numeric($_REQUEST["outsider_elemperpage"])) {
-        $_REQUEST["outsider_elemperpage"] = 25;
+    if (!is_numeric($requestOutsiderElemPerPage)) {
+        $requestOutsiderElemPerPage = 25;
     }
-    if ($_REQUEST["outsider_elemperpage"] > 0) {
+    if ($requestOutsiderElemPerPage > 0) {
         // -- All -- will not be stored, as it may be impossible to change this
         // back to something more useful
-        $oUser->setProperty("itemsperpage", $area . "_edit_outsider", $_REQUEST["outsider_elemperpage"]);
+        $oUser->setProperty("itemsperpage", $area . "_edit_outsider", $requestOutsiderElemPerPage);
     }
     unset($oUser);
 
-    if (!isset($_REQUEST["member_page"]) || !is_numeric($_REQUEST["member_page"]) || $_REQUEST["member_page"] <= 0 || $_REQUEST["member_elemperpage"] == 0) {
-        $_REQUEST["member_page"] = 1;
+    if ($requestMemberPage <= 0 || $requestMemberElemPerPage == 0) {
+        $requestMemberPage = 1;
     }
-    if ($_REQUEST["member_sortorder"] != "DESC") {
-        $_REQUEST["member_sortorder"] = "ASC";
-    }
-    if (!isset($_REQUEST["outsider_page"]) || !is_numeric($_REQUEST["outsider_page"]) || $_REQUEST["outsider_page"] <= 0 || $_REQUEST["outsider_elemperpage"] == 0) {
-        $_REQUEST["outsider_page"] = 1;
-    }
-    if ($_REQUEST["outsider_sortorder"] != "DESC") {
-        $_REQUEST["outsider_sortorder"] = "ASC";
+
+    if ($requestOutsiderPage <= 0 || $requestOutsiderElemPerPage == 0) {
+        $requestOutsiderPage = 1;
     }
 
     // Output form
     $oForm = new cGuiTableForm("properties", "main.php?1", "get"); // Use "get"
-                                                                   // for
-                                                                   // folding
-                                                                   // rows...
+    // for
+    // folding
+    // rows...
     $oForm->setVar("frame", $frame);
     $oForm->setVar("area", $area);
     $oForm->setVar("action", "recipientgroup_save_group");
-    $oForm->setVar("idrecipientgroup", $_REQUEST["idrecipientgroup"]);
+    $oForm->setVar("idrecipientgroup", $requestIdRecipientGroup);
     $oForm->setSubmitJS("append_registered_parameters(this);");
 
-    $oForm->addHeader(i18n("Edit group", 'newsletter'));
+    $oForm->setHeader(i18n("Edit group", 'newsletter'));
 
     $oTxtGroupName = new cHTMLTextbox("groupname", conHtmlentities(stripslashes($oRGroup->get("groupname"))), 40);
     $oForm->add(i18n("Group name", 'newsletter'), $oTxtGroupName->render());
@@ -186,7 +211,9 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     $oForm->add(i18n("Default group", 'newsletter'), $oCkbDefault->toHtml(false));
 
     // Member list options folding row
-    $oMemberListOptionRow = new cGuiFoldingRow("a91f5540-52db-11db-b0de-0800200c9a66", i18n("Member list options", "newsletter"), "member");
+    $oMemberListOptionRow = new cGuiFoldingRow(
+        "a91f5540-52db-11db-b0de-0800200c9a66", i18n("Member list options", "newsletter"), "member"
+    );
 
     $oSelItemsPerPage = new cHTMLSelectElement("member_elemperpage");
     $oSelItemsPerPage->autoFill([
@@ -196,28 +223,28 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
         75 => 75,
         100 => 100
     ]);
-    $oSelItemsPerPage->setDefault($_REQUEST["member_elemperpage"]);
+    $oSelItemsPerPage->setDefault($requestMemberElemPerPage);
 
     $oSelSortBy = new cHTMLSelectElement("member_sortby");
     foreach ($aFields as $sKey => $aData) {
         if (cString::findFirstPos($aData["type"], "sort") !== false) {
-            if ($_REQUEST["member_sortby"] == "") {
-                $_REQUEST["member_sortby"] = $aData["field"];
+            if ($requestMemberSortBy == "") {
+                $requestMemberSortBy = $aData["field"];
             }
             $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
             $oSelSortBy->addOptionElement($aData["field"], $oOption);
         }
     }
-    $oSelSortBy->setDefault($_REQUEST["member_sortby"]);
+    $oSelSortBy->setDefault($requestMemberSortBy);
 
     $oSelSortOrder = new cHTMLSelectElement("member_sortorder");
     $oSelSortOrder->autoFill([
         "ASC" => i18n("Ascending", 'newsletter'),
         "DESC" => i18n("Descending", 'newsletter')
     ]);
-    $oSelSortOrder->setDefault($_REQUEST["member_sortorder"]);
+    $oSelSortOrder->setDefault($requestMemberSortOrder);
 
-    $oTxtFilter = new cHTMLTextbox("member_filter", $_REQUEST["member_filter"], 16);
+    $oTxtFilter = new cHTMLTextbox("member_filter", $requestMemberFilter, 16);
 
     $oSelSearchIn = new cHTMLSelectElement("member_searchin");
     $oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all--");
@@ -229,12 +256,12 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
             $oSelSearchIn->addOptionElement($aData["field"], $oOption);
         }
     }
-    $oSelSearchIn->setDefault($_REQUEST["member_searchin"]);
+    $oSelSearchIn->setDefault($requestMemberSearchIn);
 
     $oSubmit = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
 
     $sContent = '<div>' . PHP_EOL;
-    $sContent .= '   <table>' . PHP_EOL;
+    $sContent .= '   <table class="borderless">' . PHP_EOL;
     $sContent .= '      <tr>' . PHP_EOL;
     $sContent .= '         <td>' . i18n("Items / page", 'newsletter') . '</td>' . PHP_EOL;
     $sContent .= '         <td>' . $oSelItemsPerPage->render() . '</td>' . PHP_EOL;
@@ -268,20 +295,22 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $oAddedRecipientList->setCell(0, 1, "<strong>" . i18n("Name", 'newsletter') . "</strong>");
     $oImgDel = new cHTMLImage("images/but_invert_selection.gif");
-    $sLnkDelIcon = '<a title="' . i18n("Check all", 'newsletter') . '" href="javascript://" onclick="fncCheckDel(\'deluser[]\');">' . $oImgDel->render() . '</a>';
+    $sLnkDelIcon = '<a title="' . i18n("Check all", 'newsletter')
+        . '" href="javascript:void(0)" onclick="fncCheckDel(\'deluser[]\');">' . $oImgDel->render() . '</a>';
     $oAddedRecipientList->setCell(0, 2, $sLnkDelIcon);
 
     $groupMembers = new NewsletterRecipientGroupMemberCollection();
-    $groupMembers->setWhere("idnewsgroup", $_REQUEST["idrecipientgroup"]);
+    $groupMembers->setWhere("idnewsgroup", $requestIdRecipientGroup);
     $groupMembers->query();
 
     $groupRecipients = [];
     while ($groupMember = $groupMembers->next()) {
-           $groupRecipients[] = $groupMember->get('idnewsrcp');
+        $groupRecipients[] = $groupMember->get('idnewsrcp');
     }
 
     $oInsiders = '';
     $aInsiders = [];
+    $iMembers = 0;
     if (count($groupRecipients) > 0) {
         $oInsiders = new NewsletterRecipientCollection();
         $oInsiders->setWhere("idclient", $client);
@@ -299,37 +328,36 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
         }
 
         // Filter
-        if ($_REQUEST["member_filter"] != "") {
-            if ($_REQUEST["member_searchin"] == "--all--" || $_REQUEST["member_searchin"] == "") {
+        if ($requestMemberFilter != "") {
+            if ($requestMemberSearchIn == "--all--" || $requestMemberSearchIn == "") {
                 foreach ($aFields as $sKey => $aData) {
                     if (cString::findFirstPos($aData["type"], "search") !== false) {
-                        $oInsiders->setWhereGroup("filter", $aData["field"], $_REQUEST["member_filter"], "LIKE");
+                        $oInsiders->setWhereGroup("filter", $aData["field"], $requestMemberFilter, "LIKE");
                     }
                 }
                 $oInsiders->setInnerGroupCondition("filter", "OR");
             } else {
-                $oInsiders->setWhere($_REQUEST["member_searchin"], $_REQUEST["member_filter"], "LIKE");
+                $oInsiders->setWhere($requestMemberSearchIn, $requestMemberFilter, "LIKE");
             }
         }
 
         // If elemperpage is something else than "all", get item count based on
         // filters
-        if ($_REQUEST["member_elemperpage"] > 0) {
+        if ($requestMemberElemPerPage > 0) {
             $oInsiders->query();
-            $iMembers = $oInsiders->count(); // Getting item count without limit
-            // (for page function) - better idea
-            // anybody (performance)?
+            // Getting item count without limit (for page function) - better idea anybody (performance)?
+            $iMembers = $oInsiders->count();
 
-            $oInsiders->setLimit($_REQUEST["member_elemperpage"] * ($_REQUEST["member_page"] - 1), $_REQUEST["member_elemperpage"]);
+            $oInsiders->setLimit($requestMemberElemPerPage * ($requestMemberPage - 1), $requestMemberElemPerPage);
         } else {
             $iMembers = 0;
         }
 
         // Get data
-        $sSortSQL = $_REQUEST["member_sortby"] . " " . $_REQUEST["member_sortorder"];
-        if ($_REQUEST["member_sortby"] == "name") {
+        $sSortSQL = $requestMemberSortBy . " " . $requestMemberSortOrder;
+        if ($requestMemberSortBy == "name") {
             // Name field may be empty, add email as sort criteria
-            $sSortSQL .= ", email " . $_REQUEST["member_sortorder"];
+            $sSortSQL .= ", email " . $requestMemberSortOrder;
         }
 
         $oInsiders->setOrder($sSortSQL);
@@ -340,7 +368,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
         $iItems = 0;
     }
 
-    if ($iItems == 0 && $_REQUEST["member_filter"] == "" && ($_REQUEST["member_elemperpage"] == 0 || $iMembers == 0)) {
+    if ($iItems == 0 && $requestMemberFilter == "" && ($requestMemberElemPerPage == 0 || $iMembers == 0)) {
         $oAddedRecipientList->setCell(1, 1, i18n("No recipients are added to this group yet", 'newsletter'));
         $oAddedRecipientList->setCell(1, 2, '&nbsp;');
     } elseif ($iItems == 0) {
@@ -369,26 +397,36 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     // Member list pager (-> below data, as iMembers is needed)
     $oPagerLink = new cHTMLLink();
     $oPagerLink->setLink("main.php");
-    $oPagerLink->setCustom("member_elemperpage", $_REQUEST["member_elemperpage"]);
-    $oPagerLink->setCustom("member_filter", $_REQUEST["member_filter"]);
-    $oPagerLink->setCustom("member_sortby", $_REQUEST["member_sortby"]);
-    $oPagerLink->setCustom("member_sortorder", $_REQUEST["member_sortorder"]);
-    $oPagerLink->setCustom("member_searchin", $_REQUEST["member_searchin"]);
-    $oPagerLink->setCustom("outsider_elemperpage", $_REQUEST["outsider_elemperpage"]);
-    $oPagerLink->setCustom("outsider_filter", $_REQUEST["outsider_filter"]);
-    $oPagerLink->setCustom("outsider_sortby", $_REQUEST["outsider_sortby"]);
-    $oPagerLink->setCustom("outsider_sortorder", $_REQUEST["outsider_sortorder"]);
-    $oPagerLink->setCustom("outsider_searchin", $_REQUEST["outsider_searchin"]);
-    $oPagerLink->setCustom("idrecipientgroup", $_REQUEST["idrecipientgroup"]);
+    $oPagerLink->setCustom("member_elemperpage", $requestMemberElemPerPage);
+    $oPagerLink->setCustom("member_filter", $requestMemberFilter);
+    $oPagerLink->setCustom("member_sortby", $requestMemberSortBy);
+    $oPagerLink->setCustom("member_sortorder", $requestMemberSortOrder);
+    $oPagerLink->setCustom("member_searchin", $requestMemberSearchIn);
+    $oPagerLink->setCustom("outsider_elemperpage", $requestOutsiderElemPerPage);
+    $oPagerLink->setCustom("outsider_filter", $requestOutsiderFilter);
+    $oPagerLink->setCustom("outsider_sortby", $requestOutsiderSortBy);
+    $oPagerLink->setCustom("outsider_sortorder", $requestOutsiderSortOrder);
+    $oPagerLink->setCustom("outsider_searchin", $requestOutsiderSearchIn);
+    $oPagerLink->setCustom("idrecipientgroup", $requestIdRecipientGroup);
     $oPagerLink->setCustom("frame", $frame);
     $oPagerLink->setCustom("area", $area);
     // oPagerLink->enableAutomaticParameterAppend();
     $oPagerLink->setCustom("contenido", $sess->id);
 
-    $oMemberPager = new cGuiObjectPager("d82a3ff0-52d9-11db-b0de-0800200c9a66", $iMembers, $_REQUEST["member_elemperpage"], $_REQUEST["member_page"], $oPagerLink, "member_page", "inside");
+    $oMemberPager = new cGuiObjectPager(
+        "d82a3ff0-52d9-11db-b0de-0800200c9a66", $iMembers, $requestMemberElemPerPage,
+        $requestMemberPage, $oPagerLink, "member_page", "inside"
+    );
     $oMemberPager->setCaption(i18n("Member navigation", 'newsletter'));
 
-    $oForm->add(i18n("Recipients in group", 'newsletter'), '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . $oMemberListOptionRow->render() . $oMemberPager->render() . '<tr><td>' . $oAddedRecipientList->render() . i18n("Note: To delete recipients from this list, please mark<br>the checkboxes and click at save button.", 'newsletter') . '</td></tr></table>');
+    $oForm->add(
+        i18n("Recipients in group", 'newsletter'),
+        '<table border="0" cellspacing="0" cellpadding="0" width="100%">'
+        . $oMemberListOptionRow->render() . $oMemberPager->render()
+        . '<tr><td>' . $oAddedRecipientList->render()
+        . i18n("Note: To delete recipients from this list, please mark<br>the checkboxes and click at save button.", 'newsletter')
+        . '</td></tr></table>'
+    );
     unset($oInsiders);
     unset($oMemberListOptionRow);
     unset($oMemberPager);
@@ -396,7 +434,9 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     // Outsiders
     // Outsider list options folding row
-    $oOutsiderListOptionRow = new cGuiFoldingRow("ca633b00-52e9-11db-b0de-0800200c9a66", i18n("Outsider list options", 'newsletter'), "outsider");
+    $oOutsiderListOptionRow = new cGuiFoldingRow(
+        "ca633b00-52e9-11db-b0de-0800200c9a66", i18n("Outsider list options", 'newsletter'), "outsider"
+    );
 
     $oSelItemsPerPage = new cHTMLSelectElement("outsider_elemperpage");
     $oSelItemsPerPage->autoFill([
@@ -406,28 +446,28 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
         75 => 75,
         100 => 100
     ]);
-    $oSelItemsPerPage->setDefault($_REQUEST["outsider_elemperpage"]);
+    $oSelItemsPerPage->setDefault($requestOutsiderElemPerPage);
 
     $oSelSortBy = new cHTMLSelectElement("outsider_sortby");
     foreach ($aFields as $sKey => $aData) {
         if (cString::findFirstPos($aData["type"], "sort") !== false) {
-            if ($_REQUEST["outsider_sortby"] == "") {
-                $_REQUEST["outsider_sortby"] = $aData["field"];
+            if ($requestOutsiderSortBy == "") {
+                $requestOutsiderSortBy = $aData["field"];
             }
             $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
             $oSelSortBy->addOptionElement($aData["field"], $oOption);
         }
     }
-    $oSelSortBy->setDefault($_REQUEST["outsider_sortby"]);
+    $oSelSortBy->setDefault($requestOutsiderSortBy);
 
     $oSelSortOrder = new cHTMLSelectElement("outsider_sortorder");
     $oSelSortOrder->autoFill([
         "ASC" => i18n("Ascending", 'newsletter'),
         "DESC" => i18n("Descending", 'newsletter')
     ]);
-    $oSelSortOrder->setDefault($_REQUEST["outsider_sortorder"]);
+    $oSelSortOrder->setDefault($requestOutsiderSortOrder);
 
-    $oTxtFilter = new cHTMLTextbox("outsider_filter", $_REQUEST["outsider_filter"], 16);
+    $oTxtFilter = new cHTMLTextbox("outsider_filter", $requestOutsiderFilter, 16);
 
     $oSelSearchIn = new cHTMLSelectElement("outsider_searchin");
     $oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all--");
@@ -439,7 +479,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
             $oSelSearchIn->addOptionElement($aData["field"], $oOption);
         }
     }
-    $oSelSearchIn->setDefault($_REQUEST["outsider_searchin"]);
+    $oSelSearchIn->setDefault($requestOutsiderSearchIn);
 
     $oSubmit = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
 
@@ -481,54 +521,52 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     // TODO: Add mySQL server version switch
     // sSQL = "idclient = '".$client."' AND idlang = '".$lang."' AND ".
     // "idnewsrcp NOT IN (SELECT idnewsrcp FROM
-    // ".$cfg["tab"]["news_groupmembers"]." WHERE idnewsgroup =
-    // '".$_REQUEST["idrecipientgroup"]."')";
+    // ".cRegistry::getDbTableName('news_groupmembers')." WHERE idnewsgroup =
+    // '".$requestIdRecipientGroup."')";
 
     // TODO: This works with every mySQL version but may be problematic, if a
-    // group
-    // contains a lot of members (e.g. Oracle can't handle more than 1000 items
-    // in the brackets)
+    // group contains a lot of members (e.g. Oracle can't handle more than 1000
+    // items in the brackets)
     $sSQL = "idclient = '" . $client . "' AND idlang = '" . $lang . "'";
     if (count($aInsiders) > 0) {
         $sSQL .= " AND idnewsrcp NOT IN ('" . implode("','", $aInsiders) . "')";
     }
 
-    if ($_REQUEST["outsider_filter"] != "") {
+    if ($requestOutsiderFilter != "") {
         $sSQLSearchIn = "";
-        if ($_REQUEST["outsider_searchin"] == "--all--" || $_REQUEST["outsider_searchin"] == "") {
+        if ($requestOutsiderSearchIn == "--all--" || $requestOutsiderSearchIn == "") {
             foreach ($aFields as $sKey => $aData) {
                 if (cString::findFirstPos($aData["type"], "search") !== false) {
                     if ($sSQLSearchIn !== "") {
                         $sSQLSearchIn .= " OR ";
                     }
-                    $sSQLSearchIn .= $aData["field"] . " LIKE '%" . $_REQUEST["outsider_filter"] . "%'";
+                    $sSQLSearchIn .= $aData["field"] . " LIKE '%" . $requestOutsiderFilter . "%'";
                 }
             }
         } else {
-            $sSQLSearchIn .= $_REQUEST["outsider_searchin"] . " LIKE '%" . urlencode($_REQUEST["outsider_filter"]) . "%'";
+            $sSQLSearchIn .= $requestOutsiderSearchIn . " LIKE '%" . urlencode($requestOutsiderFilter) . "%'";
         }
         $sSQL .= " AND (" . $sSQLSearchIn . ")";
     }
 
     // If elemperpage is something else than "all", get item count based on
     // filters
-    if ($_REQUEST["outsider_elemperpage"] > 0) {
+    if ($requestOutsiderElemPerPage > 0) {
         $oOutsiders->flexSelect("", "", $sSQL, "");
-        $iOutsiders = $oOutsiders->count(); // Getting item count without limit
-                                            // (for page function) - better idea
-                                            // anyone (performance)?
+        // Getting item count without limit (for page function) - better idea anyone (performance)?
+        $iOutsiders = $oOutsiders->count();
 
-        $sSQLLimit = " LIMIT " . $_REQUEST["outsider_elemperpage"] * ($_REQUEST["outsider_page"] - 1) . ", " . $_REQUEST["outsider_elemperpage"];
+        $sSQLLimit = " LIMIT " . $requestOutsiderElemPerPage * ($requestOutsiderPage - 1) . ", " . $requestOutsiderElemPerPage;
     } else {
         $iMembers = 0;
         $sSQLLimit = "";
     }
 
     // Get data
-    $sSQLSort = " ORDER BY " . $_REQUEST["outsider_sortby"] . " " . $_REQUEST["outsider_sortorder"];
-    if ($_REQUEST["outsider_sortby"] == "name") {
+    $sSQLSort = " ORDER BY " . $requestOutsiderSortBy . " " . $requestOutsiderSortOrder;
+    if ($requestOutsiderSortBy == "name") {
         // Name field may be empty, add email as sort criteria
-        $sSQLSort .= ", email " . $_REQUEST["outsider_sortorder"];
+        $sSQLSort .= ", email " . $requestOutsiderSortOrder;
     }
 
     $sSQL .= $sSQLSort . $sSQLLimit;
@@ -557,26 +595,36 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     // Outsider list pager (-> below data, as iOutsiders is needed)
     $oPagerLink = new cHTMLLink();
     $oPagerLink->setLink("main.php");
-    $oPagerLink->setCustom("member_elemperpage", $_REQUEST["member_elemperpage"]);
-    $oPagerLink->setCustom("member_filter", $_REQUEST["member_filter"]);
-    $oPagerLink->setCustom("member_sortby", $_REQUEST["member_sortby"]);
-    $oPagerLink->setCustom("member_sortorder", $_REQUEST["member_sortorder"]);
-    $oPagerLink->setCustom("member_searchin", $_REQUEST["member_searchin"]);
-    $oPagerLink->setCustom("outsider_elemperpage", $_REQUEST["outsider_elemperpage"]);
-    $oPagerLink->setCustom("outsider_filter", $_REQUEST["outsider_filter"]);
-    $oPagerLink->setCustom("outsider_sortby", $_REQUEST["outsider_sortby"]);
-    $oPagerLink->setCustom("outsider_sortorder", $_REQUEST["outsider_sortorder"]);
-    $oPagerLink->setCustom("outsider_searchin", $_REQUEST["outsider_searchin"]);
-    $oPagerLink->setCustom("idrecipientgroup", $_REQUEST["idrecipientgroup"]);
+    $oPagerLink->setCustom("member_elemperpage", $requestMemberElemPerPage);
+    $oPagerLink->setCustom("member_filter", $requestMemberFilter);
+    $oPagerLink->setCustom("member_sortby", $requestMemberSortBy);
+    $oPagerLink->setCustom("member_sortorder", $requestMemberSortOrder);
+    $oPagerLink->setCustom("member_searchin", $requestMemberSearchIn);
+    $oPagerLink->setCustom("outsider_elemperpage", $requestOutsiderElemPerPage);
+    $oPagerLink->setCustom("outsider_filter", $requestOutsiderFilter);
+    $oPagerLink->setCustom("outsider_sortby", $requestOutsiderSortBy);
+    $oPagerLink->setCustom("outsider_sortorder", $requestOutsiderSortOrder);
+    $oPagerLink->setCustom("outsider_searchin", $requestOutsiderSearchIn);
+    $oPagerLink->setCustom("idrecipientgroup", $requestIdRecipientGroup);
     $oPagerLink->setCustom("frame", $frame);
     $oPagerLink->setCustom("area", $area);
     // oPagerLink->enableAutomaticParameterAppend();
     $oPagerLink->setCustom("contenido", $sess->id);
 
-    $oOutsiderPager = new cGuiObjectPager("4d3a7330-52eb-11db-b0de-0800200c9a66", $iOutsiders, $_REQUEST["outsider_elemperpage"], $_REQUEST["outsider_page"], $oPagerLink, "outsider_page", "outside");
+    $oOutsiderPager = new cGuiObjectPager(
+        "4d3a7330-52eb-11db-b0de-0800200c9a66", $iOutsiders, $requestOutsiderElemPerPage,
+        $requestOutsiderPage, $oPagerLink, "outsider_page", "outside"
+    );
     $oOutsiderPager->setCaption(i18n("Outsider navigation", 'newsletter'));
 
-    $oForm->add(i18n("Add recipients", 'newsletter'), '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . $oOutsiderListOptionRow->render() . $oOutsiderPager->render() . '<tr><td>' . $oSelUser->render() . '<br>' . i18n("Note: Hold &lt;Ctrl&gt; to<br>select multiple items.", 'newsletter') . '</td></tr></table>');
+    $oForm->add(
+        i18n("Add recipients", 'newsletter'),
+        '<table data-foo="bar" border="0" cellspacing="0" cellpadding="0" width="100%">'
+        . $oOutsiderListOptionRow->render() . $oOutsiderPager->render()
+        . '<tr><td>' . $oSelUser->render() . '<br>'
+        . i18n("Note: Hold &lt;Ctrl&gt; to<br>select multiple items.", 'newsletter')
+        . '</td></tr></table>'
+    );
     unset($oOutsiders);
     unset($oOutsiderListOptionRow);
     unset($oOutsiderPager);
@@ -601,7 +649,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $oPage->addScript($sDelMarkScript);
     $oPage->addScript('cfoldingrow.js');
-    $oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+    $oPage->addScript('parameterCollector.js');
 
     $oPage->setContent($oForm);
 }

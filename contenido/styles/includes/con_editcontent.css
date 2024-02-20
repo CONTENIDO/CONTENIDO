@@ -1,16 +1,33 @@
 @CHARSET "ISO-8859-1";
 
-.editcontentList {
-    border: 1px solid #B3B3B3;
-    padding: 10px;
-    margin: 10px 0;
+@import "../version_selection.css";
+@import "../content_elements.css";
+@import "../jquery/plugins/atooltip.css";
+
+body.cms_has_overlay:after {
+    position: fixed;
+    content: "";
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0,0,0,0.1);
+    z-index: 19990; /* 10 less than .cms_abstract */
 }
-.noactive {
+
+.no_active {
     border: 1px solid red;
 }
-.editcontentList div {
-    min-height: 13px;
-}
-.editcontentList span.mceEditor div {
+
+.con_editcontent_list span.mceEditor div {
     min-height: 0;
+}
+
+.sr_only {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }

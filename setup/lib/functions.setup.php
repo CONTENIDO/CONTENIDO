@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains various helper functions to deal with the setup process.
  *
@@ -6,9 +7,9 @@
  * @subpackage Helper
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -16,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Generates the step display.
  *
- * @param   int  $iCurrentStep  The current step to display active.
+ * @param int $iCurrentStep The current step to display active.
  * @return  string
  */
-function cGenerateSetupStepsDisplay($iCurrentStep) {
+function cGenerateSetupStepsDisplay($iCurrentStep)
+{
     if (!defined('CON_SETUP_STEPS')) {
         return '';
     }
@@ -29,7 +31,7 @@ function cGenerateSetupStepsDisplay($iCurrentStep) {
         if ($iCurrentStep == $i) {
             $sCssActive = 'active';
         }
-        $sStepsPath .= '<span class="' . $sCssActive . '">&nbsp;' . strval($i) . '&nbsp;</span>&nbsp;&nbsp;&nbsp;';
+        $sStepsPath .= '<span class="' . $sCssActive . '">&nbsp;' . cSecurity::toString($i) . '&nbsp;</span>&nbsp;&nbsp;&nbsp;';
     }
     return $sStepsPath;
 }
@@ -41,8 +43,9 @@ function cGenerateSetupStepsDisplay($iCurrentStep) {
  * @throws cInvalidArgumentException
  * @global  array $cfg
  */
-function logSetupFailure($sErrorMessage) {
-    global $cfg;
+function logSetupFailure(string $sErrorMessage)
+{
+    $cfg = cRegistry::getConfig();
     cFileHandler::write($cfg['path']['contenido_logs'] . 'setuplog.txt', $sErrorMessage . PHP_EOL . PHP_EOL, true);
 }
 
@@ -54,8 +57,12 @@ function logSetupFailure($sErrorMessage) {
  * @global  array $cfg
  * @global  array $cfgClient
  */
-function setupInitializeCfgClient($reset = false) {
-    global $cfg, $cfgClient;
+function setupInitializeCfgClient($reset = false)
+{
+    // NOTE: Use global here
+    global $cfgClient;
+
+    $cfg = cRegistry::getConfig();
 
     if (true === $reset) {
         $cfgClient = [];
@@ -68,7 +75,7 @@ function setupInitializeCfgClient($reset = false) {
         } else {
             $db = getSetupMySQLDBConnection();
 
-            $db->query("SELECT * FROM `%s`", $cfg["tab"]["clients"]);
+            $db->query("SELECT * FROM `%s`", $cfg['tab']['clients']);
             while ($db->nextRecord()) {
                 updateClientCache($db->f("idclient"), $db->f("htmlpath"), $db->f("frontendpath"));
             }
@@ -79,11 +86,12 @@ function setupInitializeCfgClient($reset = false) {
 /**
  * Check configuration path for the environment
  * If no configuration for environment found, copy from production
- * @param $installationPath
+ * @param string $installationPath
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function setupCheckConfiguration($installationPath) {
+function setupCheckConfiguration(string $installationPath)
+{
     $configPath = $installationPath . '/data/config/' . CON_ENVIRONMENT;
     if (!cFileHandler::exists($configPath)) {
         // create environment config
@@ -119,7 +127,9 @@ function setupCheckConfiguration($installationPath) {
  * Initializes the configuration
  * @global $cfg
  */
-function setupInitializeConfig() {
+function setupInitializeConfig()
+{
+    // NOTE: Use global here
     global $cfg;
 
     // Prepare $cfg array
@@ -140,23 +150,25 @@ function setupInitializeConfig() {
     $cfg['path']['contenido'] = $cfg['path']['frontend'] . '/contenido/';
     $cfg['path']['contenido_config'] = CON_FRONTEND_PATH . '/data/config/' . CON_ENVIRONMENT . '/';
     $cfg['path']['contenido_fullhtml'] = $systemDirs[1] . '/contenido/';
-    $cfg['path']['all_wysiwyg'] = $cfg['path']['contenido']  . 'external/wysiwyg/';
+    $cfg['path']['all_wysiwyg'] = $cfg['path']['contenido'] . 'external/wysiwyg/';
     $cfg['path']['all_wysiwyg_html'] = $cfg['path']['contenido_fullhtml'] . 'external/wysiwyg/';
     $cfg['path']['wysiwyg_html'] = $cfg['path']['all_wysiwyg_html'] . $cfg['wysiwyg']['editor'] . '/';
 
     // DB related settings
-    $cfg['sql']['sqlprefix'] = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';
+    $cfg['sql']['sqlprefix'] = $_SESSION['dbprefix'] ?? CON_DB_PREFIX;
     $cfg['db'] = [
         'connection' => [
-            'host' => (isset($_SESSION['dbhost'])) ? $_SESSION['dbhost'] : '',
-            'database' => (isset($_SESSION['dbname'])) ? $_SESSION['dbname'] : '',
-            'user' => (isset($_SESSION['dbuser'])) ? $_SESSION['dbuser'] : '',
-            'password' => (isset($_SESSION['dbpass'])) ? $_SESSION['dbpass'] : '',
-            'charset' => (isset($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : '',
+            'host' => $_SESSION['dbhost'] ?? '',
+            'database' => $_SESSION['dbname'] ?? '',
+            'user' => $_SESSION['dbuser'] ?? '',
+            'password' => $_SESSION['dbpass'] ?? '',
+            'charset' => $_SESSION['dbcharset'] ?? '',
             'options' => !empty($_SESSION['dboptions']) ? $_SESSION['dboptions'] : [],
         ],
+        'engine' => $_SESSION['dbengine'] ?? CON_DB_ENGINE,
+        'collation' => $_SESSION['dbcollation'] ?? CON_DB_COLLATION,
         'haltBehavior' => 'report',
-        'haltMsgPrefix' => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
+        'haltMsgPrefix' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
         'enableProfiling' => false,
     ];
 }
@@ -165,8 +177,9 @@ function setupInitializeConfig() {
  * Updates the configuration and set PHP settings
  * @global $cfg
  */
-function setupUpdateConfig() {
-    global $cfg;
+function setupUpdatePHPConfig()
+{
+    $cfg = cRegistry::getConfig();
 
     // Takeover configured PHP settings
     if (isset($cfg['php_settings']) && is_array($cfg['php_settings'])) {
@@ -194,7 +207,8 @@ function setupUpdateConfig() {
  * Stores setup request variables in session
  * @param array $request
  */
-function takeoverRequestToSession(array $request) {
+function takeoverRequestToSession(array $request)
+{
     foreach ($request as $key => $value) {
         if ($key == 'c') {
             // c = setup controller to process
@@ -203,8 +217,7 @@ function takeoverRequestToSession(array $request) {
         if (($value != '' && $key != 'dbpass' && $key != 'adminpass' && $key != 'adminpassrepeat') ||
             ($key == 'dbpass' && $request['dbpass_changed'] == 'true') ||
             ($key == 'adminpass' && $request['adminpass_changed'] == 'true') ||
-            ($key == 'adminpassrepeat' && $request['adminpassrepeat_changed'] == 'true'))
-        {
+            ($key == 'adminpassrepeat' && $request['adminpassrepeat_changed'] == 'true')) {
             if ($key === 'dboptions') {
                 $_SESSION[$key] = [];
                 foreach ($value as $subKey => $subValue) {
@@ -218,5 +231,3 @@ function takeoverRequestToSession(array $request) {
         }
     }
 }
-
-?>

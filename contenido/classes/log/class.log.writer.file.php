@@ -7,9 +7,9 @@
  * @subpackage Log
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Log
  */
-class cLogWriterFile extends cLogWriter {
+class cLogWriterFile extends cLogWriter
+{
 
     /**
      * Destination handle.
@@ -38,7 +39,8 @@ class cLogWriterFile extends cLogWriter {
      * @throws cException
      * @throws cFileNotFoundException
      */
-    public function __construct($options = array()) {
+    public function __construct(array $options = [])
+    {
         parent::__construct($options);
 
         $this->_createHandle();
@@ -52,7 +54,8 @@ class cLogWriterFile extends cLogWriter {
      * @throws cFileNotFoundException
      *         if the destination file could not be read
      */
-    protected function _createHandle() {
+    protected function _createHandle()
+    {
         $destination = $this->getOption('destination');
         if ($destination == '') {
             throw new cException('No destination was specified.');
@@ -73,7 +76,8 @@ class cLogWriterFile extends cLogWriter {
      * @return bool
      *         State of the write process
      */
-    public function write($message, $priority) {
+    public function write($message, $priority)
+    {
         return fwrite($this->_handle, $message) != false;
     }
 }

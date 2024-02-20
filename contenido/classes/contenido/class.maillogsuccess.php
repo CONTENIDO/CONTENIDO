@@ -3,13 +3,13 @@
 /**
  * This file contains the maillog success collection and item class.
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,18 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Mail log success collection
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiMailLogSuccess createNewItem
+ * @method cApiMailLogSuccess|bool next
  */
-class cApiMailLogSuccessCollection extends ItemCollection {
+class cApiMailLogSuccessCollection extends ItemCollection
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
-    public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['mail_log_success'], 'idmailsuccess');
+    public function __construct()
+    {
+        parent::__construct(cRegistry::getDbTableName('mail_log_success'), 'idmailsuccess');
         $this->_setItemClass('cApiMailLogSuccess');
 
         // set the join partners so that joins can be used via link() method
@@ -38,9 +41,9 @@ class cApiMailLogSuccessCollection extends ItemCollection {
     /**
      * Creates a new mail log success entry with the given data.
      *
-     * @param int    $idmail
-     * @param array  $recipient
-     * @param bool   $success
+     * @param int $idmail
+     * @param array $recipient
+     * @param bool $success
      * @param string $exception
      *
      * @return cApiMailLogSuccess
@@ -48,7 +51,8 @@ class cApiMailLogSuccessCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idmail, $recipient, $success, $exception) {
+    public function create($idmail, $recipient, $success, $exception)
+    {
         $item = $this->createNewItem();
 
         $item->set('idmail', $idmail);
@@ -65,7 +69,7 @@ class cApiMailLogSuccessCollection extends ItemCollection {
 /**
  * Mail log success item
  *
- * @package Core
+ * @package    Core
  * @subpackage GenericDB_Model
  */
 class cApiMailLogSuccess extends Item
@@ -78,10 +82,10 @@ class cApiMailLogSuccess extends Item
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['mail_log_success'], 'idmailsuccess');
-        $this->setFilters(array(), array());
+    public function __construct($mId = false)
+    {
+        parent::__construct(cRegistry::getDbTableName('mail_log_success'), 'idmailsuccess');
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

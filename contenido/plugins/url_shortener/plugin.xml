@@ -8,11 +8,11 @@
         <author>Simon Sprankel</author>
         <copyright>four for business AG</copyright>
         <mail>info@4fb.de</mail>
-        <website>http://www.4fb.de</website>
-        <version>1.0.0</version>
+        <website>https://www.4fb.de</website>
+        <version>2.0.0</version>
     </general>
-    <requirements php="5.2.3">
-        <contenido minversion="4.9.0" />
+    <requirements php="7.0">
+        <contenido minversion="4.10.0"/>
     </requirements>
     <contenido>
         <areas>
@@ -23,7 +23,8 @@
             <action area="url_shortener">url_shortener_edit</action>
         </actions>
         <frames>
-            <frame area="url_shortener" filetype="main" name="url_shortener/includes/include.url_shortener.php" frameId="4" />
+            <frame area="url_shortener" filetype="main"
+                   name="url_shortener/includes/include.url_shortener.php" frameId="4"/>
         </frames>
         <nav_sub>
             <nav area="url_shortener" level="0" navm="extra">url_shortener/xml/;navigation/extra/url_shortener/main</nav>

@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>config_social_media</name><description>Social media configurator (i. e. Facebook, Twitter)</description><type>content</type><alias>config_social_media</alias></module>
+<module>
+    <name>config_social_media</name>
+    <description>Social media configurator (i. e. Facebook, Twitter)</description>
+    <type>content</type>
+    <alias>config_social_media</alias>
+</module>

@@ -3,24 +3,55 @@
 /**
  * This file contains the backend page for module history.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Bilal Arslan
- * @author           Timo Trautmann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Bilal Arslan
+ * @author     Timo Trautmann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $idmod, $bInUse;
+
+$perm = cRegistry::getPerm();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$area = cRegistry::getArea();
+
+$oPage = new cGuiPage('mod_history');
+
+if (!$perm->have_perm_area_action($area, 'mod_history_manage')) {
+    $oPage->displayError(i18n('Permission denied'));
+    $oPage->abortRendering();
+    $oPage->render();
+    return;
+} elseif (!$client > 0) {
+    $oPage->abortRendering();
+    $oPage->render();
+    return;
+} elseif (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
+    $oPage->displayWarning(i18n('Versioning is not activated'));
+    $oPage->abortRendering();
+    $oPage->render();
+    return;
+}
+
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.mod.php');
 
-$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
-if($readOnly) {
-    cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
+$cfgClient = cRegistry::getClientConfig();
+$db = cRegistry::getDb();
+$cfg = cRegistry::getConfig();
+$frame = cRegistry::getFrame();
+$sess = cRegistry::getSession();
+$belang = cRegistry::getBackendLanguage();
+
+$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
+if ($readOnly) {
+    cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
 if ($idmod == '') {
@@ -30,117 +61,108 @@ if ($idmod == '') {
 $module = new cApiModule($idmod);
 
 $bDeleteFile = false;
-$oPage = new cGuiPage('mod_history');
 
-if (!$perm->have_perm_area_action($area, 'mod_history_manage')) {
-    $oPage->displayError(i18n("No permissions"));
-    $oPage->abortRendering();
-    $oPage->render();
-    return;
-} elseif (!(int) $client > 0) {
-    $oPage->abortRendering();
-    $oPage->render();
-    return;
-} elseif (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
-    $oPage->displayWarning(i18n("Versioning is not activated"));
-    $oPage->abortRendering();
-    $oPage->render();
-    return;
-}
+$requestModSend = isset($_POST['mod_send']);
+$requestCodeOut = $_POST['CodeOut'] ?? '';
+$requestCodeIn = $_POST['CodeIn'] ?? '';
+$requestAction = $_POST['action'] ?? '';
+$requestIdModHistory = $_POST['idmodhistory'] ?? '';
 
-if ((!$readOnly) && $_POST["mod_send"] == true && ($_POST["CodeOut"] != "" || $_POST["CodeIn"] != "")) { // save button
-    $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
-    $sName = $_POST["modname"];
-    $sCodeInput = $_POST["CodeIn"];
-    $sCodeOutput = $_POST["CodeOut"];
-    $description = $_POST["moddesc"];
-
-    //    save and mak new revision
-    $oPage->addScript($oVersion->renderReloadScript('mod', $idmod, $sess));
-    modEditModule($idmod, $sName, $description, $sCodeInput, $sCodeOutput, $oVersion->sTemplate, $oVersion->sModType);
-    unset($oVersion);
-}
-
-// [action] => history_truncate delete all current history
-if ((!$readOnly) && $_POST["action"] == "history_truncate") {
+// Truncate history action
+if ((!$readOnly) && $requestAction === 'history_truncate') {
     $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
     $bDeleteFile = $oVersion->deleteFile();
     unset($oVersion);
 }
 
+// Save action
+if ((!$readOnly) && $requestModSend == true && ($requestCodeOut != '' || $requestCodeIn != '')) {
+    $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+    $sName = $_POST['modname'];
+    $sCodeInput = $_POST['CodeIn'];
+    $sCodeOutput = $_POST['CodeOut'];
+    $description = $_POST['moddesc'];
+
+    // Save and make a new revision
+    $oPage->addScript($oVersion->renderReloadScript('mod', $idmod, $sess));
+    modEditModule($idmod, $sName, $description, $sCodeInput, $sCodeOutput, $oVersion->sTemplate, $oVersion->sModType);
+    unset($oVersion);
+}
+
 $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
 
-// Init Form variables of SelectBox
-$sSelectBox = "";
-$oVersion->setVarForm("area", $area);
-$oVersion->setVarForm("frame", $frame);
-$oVersion->setVarForm("idmod", $idmod);
-// needed - otherwise history can not be deleted!
-$oVersion->setVarForm("action", '');
+// Init form variables of select box
+$oVersion->setVarForm('action', '');
+$oVersion->setVarForm('area', $area);
+$oVersion->setVarForm('frame', $frame);
+$oVersion->setVarForm('idmod', $idmod);
 
-// create and output the select box, for params please look class.version.php
-$sSelectBox = $oVersion->buildSelectBox("mod_history", i18n("Module History"), i18n("Show history entry"), "idmodhistory", $readOnly);
+// Create and output the select box
+$sSelectBox = $oVersion->buildSelectBox(
+    'mod_history', i18n('Module History'),
+    i18n('Show history entry'), 'idmodhistory', $readOnly
+);
 
-// Generate Form
-$oForm = new cGuiTableForm("mod_display");
+// Generate form
+$oForm = new cGuiTableForm('mod_display');
+$oForm->addTableClass('col_flx_m_50p');
 $oForm->setTableID('mod_history');
-$oForm->addHeader(i18n("Edit module") . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
-$oForm->setVar("area", "mod_history");
-$oForm->setVar("frame", $frame);
-$oForm->setVar("idmod", $idmod);
-$oForm->setVar("mod_send", 1);
+$oForm->setHeader(i18n('Edit module') . ' &quot;' . conHtmlSpecialChars($module->get('name')) . '&quot;');
+$oForm->setVar('area', 'mod_history');
+$oForm->setVar('frame', $frame);
+$oForm->setVar('idmod', $idmod);
+$oForm->setVar('mod_send', 1);
 
 // if send form refresh
-if ($_POST["idmodhistory"] != "") {
-    $sRevision = $_POST["idmodhistory"];
+if ($requestIdModHistory != '') {
+    $sRevision = $requestIdModHistory;
 } else {
     $sRevision = $oVersion->getLastRevision();
 }
 
-if ($sRevision != '' && ($_POST["action"] != "history_truncate" || $readOnly)) {
+if ($sRevision != '' && ($requestAction != 'history_truncate' || $readOnly)) {
     // File Path
     $sPath = $oVersion->getFilePath() . $sRevision;
 
-    // Read XML Nodes  and get an array
-    $aNodes = array();
+    // Read XML nodes and get an array
+    $aNodes = [];
     $aNodes = $oVersion->initXmlReader($sPath);
 
     if (count($aNodes) > 1) {
-
         //    if choose xml file read value an set it
-        $sName = $oVersion->getTextBox("modname", cString::stripSlashes(conHtmlentities(conHtmlSpecialChars($aNodes["name"]))), 60, $readOnly);
-        $description = $oVersion->getTextarea("moddesc", cString::stripSlashes(conHtmlSpecialChars($aNodes["desc"])), 100, 10, '', $readOnly);
-        $sCodeInput = $oVersion->getTextarea("CodeIn", $aNodes["code_input"], 100, 30, "IdCodeIn");
-        $sCodeOutput = $oVersion->getTextarea("CodeOut", $aNodes["code_output"], 100, 30, "IdCodeOut");
+        $sName = $oVersion->getTextBox('modname', cString::stripSlashes(conHtmlentities(conHtmlSpecialChars($aNodes['name']))), 60, $readOnly);
+        $description = $oVersion->getTextarea('moddesc', cString::stripSlashes(conHtmlSpecialChars($aNodes['desc'])), 100, 10, '', $readOnly);
+        $sCodeInput = $oVersion->getTextarea('CodeIn', $aNodes['code_input'], 100, 30, 'IdCodeIn');
+        $sCodeOutput = $oVersion->getTextarea('CodeOut', $aNodes['code_output'], 100, 30, 'IdCodeOut');
     }
 }
 
-if ($sSelectBox != "") {
-    // Add new Elements of Form
-    $oForm->add(i18n("Name"), $sName);
-    $oForm->add(i18n("Description"), $description);
-    $oForm->add(i18n("Code input"), $sCodeInput);
-    $oForm->add(i18n("Code output"), $sCodeOutput);
-    $oForm->setActionButton("apply", "images/but_ok" .(($readOnly) ? '_off' : '') . ".gif", i18n("Copy to current"), "c"/* , "mod_history_takeover" */); //modified it
-    $oForm->unsetActionButton("submit");
+if ($sSelectBox != '') {
+    // Add new elements of form
+    $oForm->add(i18n('Name'), $sName);
+    $oForm->add(i18n('Description'), $description);
+    $oForm->add(i18n('Code input'), $sCodeInput);
+    $oForm->add(i18n('Code output'), $sCodeOutput);
+    $oForm->setActionButton('apply', 'images/but_ok' . ($readOnly ? '_off' : '') . '.gif', i18n('Copy to current'), 'c'/* , 'mod_history_takeover' */);
+    $oForm->unsetActionButton('submit');
 
-    // Render and handle History Area
+    // Render and handle history area
     $oCodeMirrorIn = new CodeMirror('IdCodeIn', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
     $oCodeMirrorOutput = new CodeMirror('IdCodeOut', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), false, $cfg, !$bInUse);
-    if($readOnly) {
-        $oCodeMirrorIn->setProperty("readOnly", "true");
-        $oCodeMirrorOutput->setProperty("readOnly", "true");
+    if ($readOnly) {
+        $oCodeMirrorIn->setProperty('readOnly', 'true');
+        $oCodeMirrorOutput->setProperty('readOnly', 'true');
     }
 
     $oPage->addScript($oCodeMirrorIn->renderScript());
     $oPage->addScript($oCodeMirrorOutput->renderScript());
 
-    $oPage->set("s", "FORM", $sSelectBox . $oForm->render());
+    $oPage->set('s', 'FORM', $sSelectBox . $oForm->render());
 } else {
     if ($bDeleteFile) {
-        $oPage->displayOk(i18n("Version history was cleared"));
+        $oPage->displayOk(i18n('Version history was cleared'));
     } else {
-        $oPage->displayWarning(i18n("No module history available"));
+        $oPage->displayWarning(i18n('No module history available'));
     }
 
     $oPage->abortRendering();

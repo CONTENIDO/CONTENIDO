@@ -19,10 +19,11 @@
                                 <span class="scanner-data">{$item->scanner_type}</span>
                                 <a href="https://www.siwecos.de/wiki/{$item->scanner_type}&#10;/{$language}"
                                    title="{i18n("BTN_BACKGROUND_INFO", 'siwecos')}"
-                                   target="_blank">{i18n("BTN_BACKGROUND_INFO", 'siwecos')} &gt;&gt;</a>
+                                   target="_blank">{i18n("BTN_BACKGROUND_INFO", 'siwecos')}
+                                    &gt;&gt;</a>
                                 <div class="GaugeMeter scanner-gauge{$item@key}"></div>
                                 <script type="text/javascript">
-                                    $(document).ready(function() {
+                                    $(document).ready(function () {
                                         $(".scanners-wrapper .scanner-gauge{$item@key}").data('percent', parseInt({$item->total_score}));
                                         $(".scanners-wrapper .scanner-gauge{$item@key}").gaugeMeter();
                                     });
@@ -35,15 +36,19 @@
                                                     <span class="round-check scanner-check-data score-{if {$val->score} lte 50}red{/if}{if {$val->score} gt 50 and {$val->score} lt 100}yellow{/if}{if {$val->score} eq 100}green{/if}">{$val->name}</span>
                                                 </div>
                                                 <div class="col-20">
-                                                    <button class="btn btn-primary" onclick="showDescription(this)">
-                                                        <span>{i18n("BTN_EXPAND", 'siwecos')}</span></button>
+                                                    <button class="btn btn-primary"
+                                                            onclick="showDescription(this)">
+                                                        <span>{i18n("BTN_EXPAND", 'siwecos')}</span>
+                                                    </button>
                                                 </div>
                                                 <div style="clear: both;"></div>
-                                                <div class="scanner-check-item-description" style="display: none;">
+                                                <div class="scanner-check-item-description"
+                                                     style="display: none;">
                                                     <p class="scanner-check-item-description-title">{$val->description}</p>
                                                     <p class="scanner-check-item-description-report">{$val->report}</p>
                                                     <div style="clear: both;"></div>
-                                                    <small><a href="{$val->link}" target="_blank">{i18n("BTN_BACKGROUND_INFO", 'siwecos')}</a>
+                                                    <small><a href="{$val->link}"
+                                                              target="_blank">{i18n("BTN_BACKGROUND_INFO", 'siwecos')}</a>
                                                     </small>
                                                     <div style="clear: both;"></div>
                                                     <div style="clear: both; padding-bottom: 20px;"></div>
@@ -57,11 +62,14 @@
                         </div>
                     {/foreach}
                     <div class="seal-link">
-                        <a href="https://www.siwecos.de/wiki/Siwecos-Siegel/{$LANG}?userdomain={$resultjson->domain}" target="_blank">{$howBtn}</a>
+                        <a href="https://www.siwecos.de/wiki/Siwecos-Siegel/{$LANG}?userdomain={$resultjson->domain}"
+                           target="_blank">{$howBtn}</a>
                     </div>
                 </div>
-                <button id="siwecosStartScanBtn" class="btn-primary btn"><a href="{$scanHref}">{i18n("BTN_START_SCAN", 'siwecos')}</a></button>
-                <a href="https://siwecos.de/app/#/domains" target="_blank" class="btn-secondary btn">{i18n("BTN_SIWECOS_SITE", 'siwecos')}</a>
+                <button id="siwecosStartScanBtn" class="btn-primary btn"><a
+                            href="{$scanHref}">{i18n("BTN_START_SCAN", 'siwecos')}</a></button>
+                <a href="https://siwecos.de/app/#/domains" target="_blank"
+                   class="btn-secondary btn">{i18n("BTN_SIWECOS_SITE", 'siwecos')}</a>
             </div>
         </div>
     </div>
@@ -71,7 +79,7 @@
 {*{$results|@print_r}*}
 {*</pre>*}
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         var responseData = {$result};
         var elem = $('#mod_siwecos_results').find('.big');
         elem.data('percent', parseInt(responseData.weightedMedia));

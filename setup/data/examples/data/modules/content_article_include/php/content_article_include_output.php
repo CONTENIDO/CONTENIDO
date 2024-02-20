@@ -3,15 +3,18 @@
 /**
  * Description: Article Include Output
  *
- * @package Module
+ * @package    Module
  * @subpackage ContentArticleInclude
- * @author Willi Man
- * @author alexander.scheider
- * @author frederic.schneider
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Willi Man
+ * @author     alexander.scheider
+ * @author     frederic.schneider
+ * @copyright  four for business AG
+ * @link       https://www.4fb.de
  */
 
+/**
+ * @var int $cCurrentContainer
+ */
 
 // Init vars and objects
 $curContainerId = $cCurrentContainer;
@@ -23,7 +26,7 @@ $tpl = cSmartyFrontend::getInstance();
 $saved = false;
 // Template config id
 $CiCMS_Var = 'C' . $curContainerId . 'CMS_VAR';
-
+$postData = [];
 
 // Save send configuration
 if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['articleselect_' . $curContainerId]) || isset($_POST['articleselect_ajax_' . $curContainerId])) && cRegistry::isBackendEditMode()) {
@@ -69,10 +72,7 @@ if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['article
     // Check values and create container value
     $containerData = [];
     if (isset($postData[$CiCMS_Var]) && is_array($postData[$CiCMS_Var])) {
-        if (!isset($containerData[$curContainerId])) {
-            $containerData[$curContainerId] = '';
-        }
-
+        $containerData[$curContainerId] = '';
         foreach ($postData[$CiCMS_Var] as $key => $value) {
             $containerData[$curContainerId] = cApiContainerConfiguration::addContainerValue($containerData[$curContainerId], $key, $value);
         }
@@ -102,16 +102,16 @@ if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['article
 
 // Get settings for values
 if ($saved === true) {
-    $cms_idcat = $postData[$CiCMS_Var][1];
-    $cms_idcatart = $postData[$CiCMS_Var][2];
+    $cms_idcat = $postData[$CiCMS_Var][1] ?? '';
+    $cms_idcatart = $postData[$CiCMS_Var][2] ?? '';
 } else {
     $cms_idcat = "CMS_VALUE[1]";
     $cms_idcatart = "CMS_VALUE[2]";
 }
 
 // Check data
-$cms_idcat =  cSecurity::toInteger($cms_idcat);
-$cms_idcatart =  cSecurity::toInteger($cms_idcatart);
+$cms_idcat = cSecurity::toInteger($cms_idcat);
+$cms_idcatart = cSecurity::toInteger($cms_idcatart);
 
 // Create article select
 $selectElement = new cHTMLSelectElement("articleselect_" . $curContainerId, "", "articleselect_" . $curContainerId);
@@ -126,9 +126,9 @@ if ($cms_idcat != "0" && cString::getStringLength($cms_idcat) > 0) {
             `%s` AS a, `%s` AS b
         WHERE
             b.idcat = %d AND a.idart = b.idart AND a.idlang = %d
-	";
+    ";
 
-    $db->query($sql, $cfg["tab"]["art_lang"], $cfg["tab"]["cat_art"], $cms_idcat, $languageId);
+    $db->query($sql, $cfg['tab']['art_lang'], $cfg['tab']['cat_art'], $cms_idcat, $languageId);
     $i = 1;
     while ($db->nextRecord()) {
         $selectedCatArtId = $db->f('idcatart');
@@ -150,10 +150,11 @@ $tpl->assign("id", $curContainerId);
 $tpl->assign("backendUrl", cRegistry::getBackendUrl());
 $tpl->assign("categorySelect", buildCategorySelect("categoryselect_" . $curContainerId, $cms_idcat));
 $tpl->assign("articleSelect", $selectElement->toHtml());
-$tpl->assign("ajaxUrl", cRegistry::getBackendUrl() ."ajaxmain.php");
+$tpl->assign("ajaxUrl", cRegistry::getBackendUrl() . "ajaxmain.php");
 $tpl->assign("articleIncludeSettingsLabel", mi18n("ARTICLE_INCLUDE_SETTINGS_LABEL"));
 $tpl->assign("articleIncludeChooseCategoryLabel", mi18n("ARTICLE_INCLUDE_CHOOSE_CATEGORY_LABEL"));
 $tpl->assign("articleIncludeChooseArticleLabel", mi18n("ARTICLE_INCLUDE_CHOOSE_ARTICLE_LABEL"));
+$tpl->assign('label', mi18n("ARTICLE_INCLUDE_LABEL"));
 
 // Display config only in backend mode
 if (cRegistry::isBackendEditMode()) {
@@ -184,7 +185,10 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
         $cmsFieldId = $cms_idcatart;
     }
 
-    $db->query($sql, $cfg["tab"]["cat_art"], $cfg["tab"]["art_lang"], $languageId, $cmsFieldId);
+    $db->query($sql, $cfg['tab']['cat_art'], $cfg['tab']['art_lang'], $languageId, $cmsFieldId);
+
+    $includeCatId = 0;
+    $includeArtId = 0;
 
     if ($db->nextRecord()) {
         $isArticleAvailable = true;
@@ -218,7 +222,7 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
             idcat = %d AND idlang = %d
     ";
 
-    $db->query($sql, $cfg["tab"]["cat_lang"], $includeCatId, $languageId);
+    $db->query($sql, $cfg['tab']['cat_lang'], $includeCatId, $languageId);
     $db->nextRecord();
 
     $public = $db->f("public");

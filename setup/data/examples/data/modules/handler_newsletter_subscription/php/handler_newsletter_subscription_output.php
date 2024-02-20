@@ -1,27 +1,32 @@
 <?php
+
 /**
- * Description: Newsletter handler outout
+ * Description: Newsletter handler output
  *
- * @package Module
+ * @package    Module
  * @subpackage HandlerNewsletterSubscription
- * @author unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 if (!class_exists('NewsletterJobCollection')) {
     echo mi18n("ERROR_CLASS");
 } else {
 
+    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+    $client = cSecurity::toInteger(cRegistry::getClientId());
+
     // Initialisation
     $oClientLang = new cApiClientLanguage(false, $client, $lang);
     $oClient = new cApiClient($client);
     $oRecipients = new NewsletterRecipientCollection();
     $sMessage = " ";
-    unset($recipient); // Unset any existing recipient objects - note, that it
-                       // must be $recipient for the plugins...
+
+    // Unset any existing recipient objects - note, that it must be $recipient for the plugins...
+    unset($recipient);
 
     $frontendURL = cRegistry::getFrontendUrl();
 
@@ -37,7 +42,7 @@ if (!class_exists('NewsletterJobCollection')) {
      * SenderEMail: Sender e-mail address HandlerID: ID of handler article
      * ChangeEMailID: ID of change e-mail handler article ???
      */
-    $aSettings = array(
+    $aSettings = [
         'JoinSel' => $oClientLang->getProperty('newsletter', 'joinsel'),
         'JoinMultiple' => $oClientLang->getProperty('newsletter', 'joinmultiple'),
         'JoinGroups' => $oClientLang->getProperty('newsletter', 'joingroups'),
@@ -48,27 +53,27 @@ if (!class_exists('NewsletterJobCollection')) {
         'FrontendDel' => "CMS_VALUE[6]",
         // This one could be recycled by other modules...
         'SenderEMail' => $oClient->getProperty('global', 'sender-email'),
-        'HandlerID' => $oClientLang->getProperty('newsletter', 'idcatart')
-    );
+        'HandlerID' => $oClientLang->getProperty('newsletter', 'idcatart'),
+    ];
 
     $sTemplate = 'get.tpl';
 
     // If there is no selection option set or if no groups has been selected,
     // activate option Default
     if ($aSettings['JoinSel'] == '' || $aSettings['JoinGroups'] == '') {
-        $aSettings['JoinSel'] = "Default";
+        $aSettings['JoinSel'] = 'Default';
     }
     if ($aSettings['FrontendConfirm'] == '') {
-        $aSettings['FrontendConfirm'] = "ActivateUser";
+        $aSettings['FrontendConfirm'] = 'ActivateUser';
     }
     if ($aSettings['FrontendDel'] == '') {
-        $aSettings['FrontendDel'] = "DeleteUser";
+        $aSettings['FrontendDel'] = 'DeleteUser';
     }
 
-    if (isset($_POST['action']) && $_POST['action'] == "subscribe") {
+    if (isset($_POST['action']) && $_POST['action'] === 'subscribe') {
         if (!isset($_POST['email']) || !$_POST['email']) {
             $sMessage = mi18n("SPECIFY_EMAIL");
-        } elseif (!isValidMail($_POST['email']) || cString::findFirstPos($_POST['email'], ",") != false || cString::findFirstPos($_POST['email'], ";") != false) {
+        } elseif (!isValidMail($_POST['email'])) {
             $sMessage = mi18n("SPECIFY_VALID_EMAIL");
         } elseif ($oRecipients->emailExists($_POST['email'])) {
             $sMessage = mi18n("EMAIL_REGISTERED");
@@ -76,18 +81,15 @@ if (!class_exists('NewsletterJobCollection')) {
             $sMessage = mi18n("ACCEPT_POLICY");
         } else {
             $sEMail = preg_replace('/[\r\n]+/', '', stripslashes($_POST['email']));
-            $sName = stripslashes($_POST["emailname"]);
+            $sName = stripslashes($_POST['emailname']);
 
             // Which newsletter type should the recipient receive?
             switch ($aSettings['JoinMessageType']) {
-                case "user":
-                    if ($_POST["selNewsletterType"] == 1) {
-                        $iMessageType = 1; // html
-                    } else {
-                        $iMessageType = 0; // text
-                    }
+                case 'user':
+                    // 1 = html, 0 = text;
+                    $iMessageType = $_POST['selNewsletterType'] == 1 ? 1 : 0;
                     break;
-                case "html":
+                case 'html':
                     $iMessageType = 1; // html
                     break;
                 default:
@@ -95,22 +97,23 @@ if (!class_exists('NewsletterJobCollection')) {
             }
 
             // Analyze group specification
+            $recipient = '';
             switch ($aSettings['JoinSel']) {
-                case "Selected":
+                case 'Selected':
                     $recipient = $oRecipients->create($sEMail, $sName, 0, $aSettings['JoinGroups'], $iMessageType);
                     break;
-                case "UserSelected":
+                case 'UserSelected':
                     $iSelCount = count($_POST['selNewsletterGroup']);
 
                     if ($iSelCount == 0) {
                         // No group selected
-                        $recipient = $oRecipients->create($sEMail, $sName, 0, "", $iMessageType);
+                        $recipient = $oRecipients->create($sEMail, $sName, 0, '', $iMessageType);
                     } else {
-                        if ($iSelCount > 1 && $aSettings['JoinMultiple'] != "enabled") {
+                        if ($iSelCount > 1 && $aSettings['JoinMultiple'] != 'enabled') {
                             $sMessage = mi18n("SELECT_ONE_GROUP");
                         } else {
                             // Recipient wants to join special groups
-                            $aGroups = explode(",", $aSettings['JoinGroups']);
+                            $aGroups = explode(',', $aSettings['JoinGroups']);
 
                             // Check, if received data is valid and matches the
                             // group selection
@@ -125,61 +128,64 @@ if (!class_exists('NewsletterJobCollection')) {
                             if ($bError) {
                                 $sMessage = mi18n("ERROR_REQUEST");
                             } else {
-                                $recipient = $oRecipients->create($sEMail, $sName, 0, implode(",", $_POST['selNewsletterGroup']));
+                                $recipient = $oRecipients->create($sEMail, $sName, 0, implode(',', $_POST['selNewsletterGroup']));
                             }
                         }
                     }
                     break;
                 default:
-                    $recipient = $oRecipients->create($sEMail, $sName, 0, "", $iMessageType);
+                    $recipient = $oRecipients->create($sEMail, $sName, 0, '', $iMessageType);
             }
 
             if ($recipient) {
                 // Add here code, if you like to store additional information
                 // per >recipient< (see frontenduser below)
-                // Example: $recipient->setProperty("contact", "firstname",
-                // $_REQUEST["firstname"]);
+                // Example: $recipient->setProperty('contact', 'firstname',
+                // $_REQUEST['firstname']);
                 // contact/firstname have to match the values used in the
                 // firstname-recipient-plugin
-                // $_REQUEST["firstname"] contains the data from the input-field
+                // $_REQUEST['firstname'] contains the data from the input-field
                 // firstname in the
                 // Form module (-> there has to be a field with this name)
                 // Note: You should check the values you get (safety)!!!
 
-                $sBody = mi18n("TXTMAILSUBSCRIBE") . "\n" . $frontendURL . "front_content.php?changelang=" . $lang . "&idcatart=" . $aSettings['HandlerID'] . "&confirm=" . $recipient->get("hash") . "\n\n";
+                $sBody = mi18n("TXTMAILSUBSCRIBE") . "\n" . $frontendURL
+                    . 'front_content.php?changelang=' . $lang
+                    . '&idcatart=' . $aSettings['HandlerID']
+                    . '&confirm=' . $recipient->get('hash') . "\n\n";
 
                 $mailer = new cMailer();
-                $from = array(
-                    $aSettings['SenderEMail'] => $aSettings['SenderEMail']
-                );
+                $from = [
+                    $aSettings['SenderEMail'] => $aSettings['SenderEMail'],
+                ];
                 $recipients = $mailer->sendMail($from, $sEMail, mi18n("NEWSLETTER_CONFIRMATION"), $sBody);
 
                 if ($recipients > 0) {
                     $sMessage = mi18n("SUBCRIBED");
 
-                    if ($aSettings['FrontendLink'] == "enabled") {
+                    if ($aSettings['FrontendLink'] === 'enabled') {
                         $oFrontendUsers = new cApiFrontendUserCollection();
 
                         if (!$oFrontendUsers->userExists($sEMail)) {
                             if ($frontenduser = $oFrontendUsers->create($sEMail)) {
-                                // it's "frontenduser" (instead of
+                                // it's 'frontenduser' (instead of
                                 // oFrontendUser) for plugins...
                                 // Add here code, if you like to store
                                 // additional information per >frontenduser<
                                 // Example:
-                                // $frontenduser->setProperty("contact",
-                                // "firstname", $_REQUEST["firstname"]);
+                                // $frontenduser->setProperty('contact',
+                                // 'firstname', $_REQUEST['firstname']);
                                 // contact/firstname have to match the values
                                 // used in the
                                 // firstname-frontenduser-plugin
-                                // $_REQUEST["firstname"]
+                                // $_REQUEST['firstname']
                                 // contains the data from the input-field
                                 // firstname in the
                                 // Form module (-> there has to be a field with
                                 // this name)
                                 // Note: You should check the values you get
                                 // (safety)!!!
-                                if ($aSettings['FrontendConfirm'] == "ActivateUser") {
+                                if ($aSettings['FrontendConfirm'] === 'ActivateUser') {
                                     // Inform about frontend user account
                                     // creation
                                     $sMessage .= mi18n("TXT_AFTER_CONFIRMATION");
@@ -196,18 +202,21 @@ if (!class_exists('NewsletterJobCollection')) {
                 $sMessage = mi18n("TXT_PROBLEM_SUBSCRIBING_EMAIL");
             }
         }
-    } elseif (isset($_POST['action']) && $_POST['action'] == "delete") {
+    } elseif (isset($_POST['action']) && $_POST['action'] === 'delete') {
         if (!isset($_POST['email']) || !$_POST['email']) {
             $sMessage = mi18n("SPECIFY_EMAIL");
-        } elseif (!isValidMail($_POST['email']) || cString::findFirstPos($_POST['email'], ",") != false || cString::findFirstPos($_POST['email'], ";") != false) {
+        } elseif (!isValidMail($_POST['email'])) {
             $sMessage = mi18n("SPECIFY_VALID_EMAIL");
         } elseif ($recipient = $oRecipients->emailExists($_POST['email'])) {
-            $sBody = mi18n("TXTMAILDELETE") . "\n" . $frontendURL . "front_content.php?changelang=" . $lang . "&idcatart=" . $aSettings['HandlerID'] . "&unsubscribe=" . $recipient->get("hash") . "\n\n";
+            $sBody = mi18n("TXTMAILDELETE") . "\n" . $frontendURL
+                . 'front_content.php?changelang=' . $lang
+                . '&idcatart=' . $aSettings['HandlerID']
+                . '&unsubscribe=' . $recipient->get('hash') . "\n\n";
 
             $mailer = new cMailer();
-            $from = array(
-                $aSettings['SenderEMail'] => $aSettings['SenderEMail']
-            );
+            $from = [
+                $aSettings['SenderEMail'] => $aSettings['SenderEMail'],
+            ];
             $recipients = $mailer->sendMail($from, $recipient->get('email'), mi18n("NEWSLETTER_CANCEL"), $sBody);
 
             if ($recipients > 0) {
@@ -219,60 +228,60 @@ if (!class_exists('NewsletterJobCollection')) {
             $sMessage = mi18n("EMAIL_NOT_FOUND");
         }
     } elseif (isset($_GET['confirm']) && cString::getStringLength($_GET['confirm']) == 30 && cString::isAlphanumeric($_GET['confirm'])) {
-        $oRecipients->setWhere("idclient", $client);
-        $oRecipients->setWhere("idlang", $lang);
-        $oRecipients->setWhere("hash", $_GET['confirm']);
+        $oRecipients->setWhere('idclient', $client);
+        $oRecipients->setWhere('idlang', $lang);
+        $oRecipients->setWhere('hash', $_GET['confirm']);
         $oRecipients->query();
 
         if (($recipient = $oRecipients->next()) !== false) {
-            $iID = $recipient->get("idnewsrcp"); // For some reason,
-                                                 // $recipient may get
-                                                 // invalid later on - save
-                                                 // id
-            $sEMail = $recipient->get("email"); // ... and email
-            $recipient->set("confirmed", 1);
-            $recipient->set("confirmeddate", date("Y-m-d H:i:s"), false);
-            $recipient->set("deactivated", 0);
+            // For some reason, $recipient may get invalid later on - save id
+            // ... and email
+            $iID = $recipient->get('idnewsrcp');
+            $sEMail = $recipient->get('email');
+            $recipient->set('confirmed', 1);
+            $recipient->set('confirmeddate', date('Y-m-d H:i:s'), false);
+            $recipient->set('deactivated', 0);
             $recipient->store();
 
             $sMessage = mi18n("CONFIRMED_SUBSCRIPTION_NEWSLETTER");
 
             $oNewsletters = new NewsletterCollection();
-            $oNewsletters->setWhere("idclient", $client);
-            $oNewsletters->setWhere("idlang", $lang);
-            $oNewsletters->setWhere("welcome", '1');
+            $oNewsletters->setWhere('idclient', $client);
+            $oNewsletters->setWhere('idlang', $lang);
+            $oNewsletters->setWhere('welcome', '1');
             $oNewsletters->query();
 
             if (($oNewsletter = $oNewsletters->next()) !== false) {
-                $aRecipients = array(); // Needed, as used by reference
+                $aRecipients = []; // Needed, as used by reference
                 $oNewsletter->sendDirect($aSettings['HandlerID'], $iID, false, $aRecipients);
                 $sMessage .= mi18n("WELCOME_NEWSLETTER");
             }
 
-            if ($aSettings['FrontendLink'] == "enabled" && $aSettings['FrontendConfirm'] == "ActivateUser") {
+            if ($aSettings['FrontendLink'] === 'enabled' && $aSettings['FrontendConfirm'] === 'ActivateUser') {
                 $oFrontendUsers = new cApiFrontendUserCollection();
-                $oFrontendUsers->setWhere("idclient", $client);
-                $oFrontendUsers->setWhere("username", $sEMail);
+                $oFrontendUsers->setWhere('idclient', $client);
+                $oFrontendUsers->setWhere('username', $sEMail);
                 $oFrontendUsers->query();
 
                 if (($frontenduser = $oFrontendUsers->next()) !== false) {
-                    $frontenduser->set("active", 1);
+                    $frontenduser->set('active', 1);
                     $sPassword = cString::getPartOfString(md5(rand()), 0, 8); // Generating
-                                                            // password
-                    $frontenduser->set("password", $sPassword);
+                    // password
+                    $frontenduser->set('password', $sPassword);
                     $frontenduser->store();
 
                     $sMessage .= mi18n("TXT_ACCOUNT_ACTIVATED");
-                    $sMessage .= mi18n("USERNAME_COLON") . $sEMail . mi18n("
+                    $sMessage .= mi18n("USERNAME_COLON") . $sEMail . "\n\n" . $sPassword;
 
-_BR ") . $sPassword;
-
-                    $sBody = mi18n("TXTMAILPASSWORD") . "\n\n" . mi18n("USERNAME_COLON") . $sEMail . "\n" . mi18n("PASSWORD_COLON ") . $sPassword . "\n\n" . mi18n("LOGIN_CLICK") . $frontendURL . "front_content.php?changelang=" . $lang;
+                    $sBody = mi18n("TXTMAILPASSWORD") . "\n\n"
+                        . mi18n("USERNAME_COLON") . $sEMail . "\n"
+                        . mi18n("PASSWORD_COLON") . $sPassword . "\n\n"
+                        . mi18n("LOGIN_CLICK") . $frontendURL . 'front_content.php?changelang=' . $lang;
 
                     $mailer = new cMailer();
-                    $from = array(
-                        $aSettings['SenderEMail'] => $aSettings['SenderEMail']
-                    );
+                    $from = [
+                        $aSettings['SenderEMail'] => $aSettings['SenderEMail'],
+                    ];
                     $recipients = $mailer->sendMail($from, $sEMail, mi18n("WEBSITE_ACCOUNT"), $sBody);
 
                     if ($recipients > 0) {
@@ -288,58 +297,58 @@ _BR ") . $sPassword;
             $sMessage = mi18n("PROBLEM_CONFIRMING_SUBSCRIPTION");
         }
     } elseif (isset($_GET['stop']) && cString::getStringLength($_GET['stop']) == 30 && cString::isAlphanumeric($_GET['stop'])) {
-        $oRecipients->setWhere("idclient", $client);
-        $oRecipients->setWhere("idlang", $lang);
-        $oRecipients->setWhere("hash", $_GET['stop']);
+        $oRecipients->setWhere('idclient', $client);
+        $oRecipients->setWhere('idlang', $lang);
+        $oRecipients->setWhere('hash', $_GET['stop']);
         $oRecipients->query();
 
         if (($recipient = $oRecipients->next()) !== false) {
-            $recipient->set("deactivated", 1);
+            $recipient->set('deactivated', 1);
             $recipient->store();
             $sMessage = mi18n("NEWSLETTER_SUBSCRIPTION_PAUSED");
         } else {
             $sMessage = mi18n("PROBLEM_PAUSING_NEWSLETTER_SUBSCRIPTION");
         }
     } elseif (isset($_GET['goon']) && cString::getStringLength($_GET['goon']) == 30 && cString::isAlphanumeric($_GET['goon'])) {
-        $oRecipients->setWhere("idclient", $client);
-        $oRecipients->setWhere("idlang", $lang);
-        $oRecipients->setWhere("hash", $_GET['goon']);
+        $oRecipients->setWhere('idclient', $client);
+        $oRecipients->setWhere('idlang', $lang);
+        $oRecipients->setWhere('hash', $_GET['goon']);
         $oRecipients->query();
 
         if (($recipient = $oRecipients->next()) !== false) {
-            $recipient->set("deactivated", 0);
+            $recipient->set('deactivated', 0);
             $recipient->store();
             $sMessage = mi18n("NEWSLETTER_SUBSCRIPTION_RESUMED");
         } else {
             $sMessage = mi18n("PROBLEM_RESUMING_NEWSLETTER_SUBSCRIPTION");
         }
     } elseif (isset($_GET['unsubscribe']) && cString::getStringLength($_GET['unsubscribe']) == 30 && cString::isAlphanumeric($_GET['unsubscribe'])) {
-        $oRecipients->setWhere("idclient", $client);
-        $oRecipients->setWhere("idlang", $lang);
-        $oRecipients->setWhere("hash", $_GET['unsubscribe']);
+        $oRecipients->setWhere('idclient', $client);
+        $oRecipients->setWhere('idlang', $lang);
+        $oRecipients->setWhere('hash', $_GET['unsubscribe']);
         $oRecipients->query();
 
         if (($recipient = $oRecipients->next()) !== false) {
             // Saving recipient e-mail address for frontend account
-            $sEMail = $recipient->get("email");
-            $oRecipients->delete($recipient->get("idnewsrcp"));
+            $sEMail = $recipient->get('email');
+            $oRecipients->delete($recipient->get('idnewsrcp'));
 
             $sMessage = mi18n("EMAIL_ADDRESS_REMOVED");
 
-            if ($aSettings['FrontendLink'] == "enabled") {
+            if ($aSettings['FrontendLink'] === 'enabled') {
                 $oFrontendUsers = new cApiFrontendUserCollection();
-                $oFrontendUsers->setWhere("idclient", $client);
-                $oFrontendUsers->setWhere("username", $sEMail);
+                $oFrontendUsers->setWhere('idclient', $client);
+                $oFrontendUsers->setWhere('username', $sEMail);
                 $oFrontendUsers->query();
 
                 if (($frontenduser = $oFrontendUsers->next()) !== false) {
                     switch ($aSettings['FrontendDel']) {
-                        case "DeleteUser": // Deleting frontend account
-                            $oFrontendUsers->delete($frontenduser->get("idfrontenduser"));
+                        case 'DeleteUser': // Deleting frontend account
+                            $oFrontendUsers->delete($frontenduser->get('idfrontenduser'));
                             $sMessage .= mi18n("WEBSITE_ACCOUNT_DELETED");
                             break;
-                        case "DisableUser": // Disabling frontend account
-                            $frontenduser->set("active", 0);
+                        case 'DisableUser': // Disabling frontend account
+                            $frontenduser->set('active', 0);
                             $frontenduser->store();
                             $sMessage .= mi18n("WEBSITE_ACCOUNT_DISABLED");
                             break;

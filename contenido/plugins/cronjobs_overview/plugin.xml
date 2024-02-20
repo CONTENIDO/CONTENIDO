@@ -8,11 +8,11 @@
         <author>Rusmir Jusufovic</author>
         <copyright>four for business AG</copyright>
         <mail>info@4fb.de</mail>
-        <website>http://www.4fb.de</website>
-        <version>1.0.0</version>
+        <website>https://www.4fb.de</website>
+        <version>2.0.0</version>
     </general>
-    <requirements php="5.2.3">
-        <contenido minversion="4.9.0" />
+    <requirements php="7.0">
+        <contenido minversion="4.10.0"/>
     </requirements>
     <contenido>
         <areas>
@@ -23,10 +23,14 @@
             <action area="cronjob">cronjob_overview</action>
         </actions>
         <frames>
-            <frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.left_top.php" frameId="1" />
-            <frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.left_bottom.php" frameId="2" />
-            <frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.right_top.php" frameId="3" />
-            <frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.right_bottom.php" frameId="4" />
+            <frame area="cronjob" filetype="main"
+                   name="cronjobs_overview/includes/include.left_top.php" frameId="1"/>
+            <frame area="cronjob" filetype="main"
+                   name="cronjobs_overview/includes/include.left_bottom.php" frameId="2"/>
+            <frame area="cronjob" filetype="main"
+                   name="cronjobs_overview/includes/include.right_top.php" frameId="3"/>
+            <frame area="cronjob" filetype="main"
+                   name="cronjobs_overview/includes/include.right_bottom.php" frameId="4"/>
         </frames>
         <nav_sub>
             <nav area="cronjob" level="0" navm="administration">cronjobs_overview/xml/cronjobs_overview.xml;plugin/cronjob</nav>

@@ -3,14 +3,13 @@
 /**
  * This file contains the menu GUI class.
  *
- * @package          Core
- * @subpackage       GUI
- *
- * @author           Mischa Holz
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage GUI
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -21,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
-class cGuiMenu {
+class cGuiMenu
+{
 
     /**
      * The id of the generic menu
@@ -55,25 +55,25 @@ class cGuiMenu {
 
     /**
      * Menu item left image source
-     * @var array
+     * @var string[]
      */
     public $image = [];
 
     /**
      * Menu item left image width
-     * @var array
+     * @var int[]
      */
     public $imagewidth = [];
 
     /**
      * Menu item left image alternate text
-     * @var array
+     * @var string[]
      */
     public $imageAlt = [];
 
     /**
-     *
-     * @var unknown_type
+     * @todo what is this property supposed to be?
+     * @var mixed
      */
     public $alt;
 
@@ -86,21 +86,20 @@ class cGuiMenu {
     /**
      *
      * @todo what is this property supposed to be?
-     * @var unknown_type
+     * @var mixed
      */
     public $caption;
 
     /**
      *
      * @todo what is this property supposed to be?
-     * @var unknown_type
+     * @var mixed
      */
     public $type;
 
     /**
-     *
      * @todo what is this property supposed to be?
-     * @var unknown_type
+     * @var string[]
      */
     public $show;
 
@@ -112,12 +111,26 @@ class cGuiMenu {
     protected $_marked = false;
 
     /**
+     * @var bool
+     */
+    public $rowmark;
+
+    /**
+     * Max length of tooltips (descriptions).
+     *
+     * @var int
+     */
+    protected $_toolTipMaxLength;
+
+    /**
      * Constructor to create an instance of this class.
      * @param string $menuId
      */
-    public function __construct($menuId = 'generic_menu_list') {
+    public function __construct($menuId = 'generic_menu_list')
+    {
         $this->setRowmark(true);
         $this->setMenuId($menuId);
+        $this->setToolTipMaxLength(64);
     }
 
     /**
@@ -125,7 +138,8 @@ class cGuiMenu {
      * @param mixed $item
      * @param string $title
      */
-    public function setTitle($item, $title) {
+    public function setTitle($item, $title)
+    {
         $this->title[$item] = $title;
     }
 
@@ -134,7 +148,8 @@ class cGuiMenu {
      * @param mixed $item
      * @param int|string $id
      */
-    public function setId($item, $id) {
+    public function setId($item, $id)
+    {
         $this->id[$item] = $id;
     }
 
@@ -143,15 +158,31 @@ class cGuiMenu {
      * @param mixed $item
      * @param string $tooltip
      */
-    public function setTooltip($item, $tooltip) {
+    public function setTooltip($item, $tooltip)
+    {
         $this->tooltips[$item] = $tooltip;
+    }
+
+    /**
+     * Sets the max length for tooltips (description), longer descriptions
+     * will be truncated with ellipsis. A value of 0 removes the maximum
+     * length constraint.
+     *
+     * @param int $maxlength
+     * @return void
+     * @since CONTENIDO 4.10.2
+     */
+    public function setToolTipMaxLength(int $maxlength = 0)
+    {
+        $this->_toolTipMaxLength = $maxlength;
     }
 
     /**
      *
      * @param bool $rowmark [optional]
      */
-    public function setRowmark($rowmark = true) {
+    public function setRowmark($rowmark = true)
+    {
         $this->rowmark = $rowmark;
     }
 
@@ -159,7 +190,8 @@ class cGuiMenu {
      *
      * @param string $menuId
      */
-    public function setMenuId($menuId = 'generic_menu_list') {
+    public function setMenuId($menuId = 'generic_menu_list')
+    {
         $this->menuId = $menuId;
     }
 
@@ -170,7 +202,8 @@ class cGuiMenu {
      * @param int $maxWidth [optional]
      * @param string $alt [optional]
      */
-    public function setImage($item, $image, $maxWidth = 0, $alt = '') {
+    public function setImage($item, $image, $maxWidth = 0, $alt = '')
+    {
         $this->image[$item] = $image;
         $this->imagewidth[$item] = $maxWidth;
         $this->imageAlt[$item] = $alt;
@@ -182,7 +215,8 @@ class cGuiMenu {
      * @param mixed $item
      * @param cHTMLContentElement $link
      */
-    public function setLink($item, $link) {
+    public function setLink($item, $link)
+    {
         $this->link[$item] = $link;
     }
 
@@ -192,7 +226,8 @@ class cGuiMenu {
      * @param mixed $key
      * @param string $action
      */
-    public function setActions($item, $key, $action) {
+    public function setActions($item, $key, $action)
+    {
         $this->actions[$item][$key] = $action;
     }
 
@@ -200,8 +235,19 @@ class cGuiMenu {
      *
      * @param mixed $item
      */
-    public function setMarked($item) {
+    public function setMarked($item)
+    {
         $this->_marked = $item;
+    }
+
+    /**
+     * Checks whether the menu has any items.
+     *
+     * @return bool
+     */
+    public function hasItems(): bool
+    {
+        return is_array($this->link) && count($this->link) > 0;
     }
 
     /**
@@ -211,20 +257,21 @@ class cGuiMenu {
      * @return string
      * @throws cInvalidArgumentException
      */
-    public function render($print = true) {
+    public function render($print = true)
+    {
         $cfg = cRegistry::getConfig();
         $tpl = new cTemplate();
 
         $tpl->reset();
         $tpl->set('s', 'MENU_ID', $this->menuId);
 
-        if (is_array($this->link)) {
+        if ($this->hasItems()) {
             foreach ($this->link as $key => $value) {
-                $img = '&nbsp;';
+                $img = '';
 
                 if ($value != NULL) {
                     if (isset($this->image[$key])) {
-                        $image = new cHTMLImage($this->image[$key], 'vAlignMiddle');
+                        $image = new cHTMLImage($this->image[$key], 'align_middle');
                         $image->setAlt($this->imageAlt[$key]);
                         if ($this->imagewidth[$key] != 0) {
                             $image->setWidth($this->imagewidth[$key]);
@@ -236,10 +283,10 @@ class cGuiMenu {
                     $value->setContent($this->title[$key]);
                     $link = $value->render();
                 } else {
-                    $link = $this->title[$key];
+                    $link = $this->title[$key] ?? '';
 
                     if (isset($this->image[$key])) {
-                        $image = new cHTMLImage($this->image[$key], 'vAlignMiddle');
+                        $image = new cHTMLImage($this->image[$key], 'align_middle');
                         $image->setAlt($this->imageAlt[$key]);
                         if ($this->imagewidth[$key] != 0) {
                             $image->setWidth($this->imagewidth[$key]);
@@ -260,20 +307,28 @@ class cGuiMenu {
                     $extra[] = 'id="marked"';
                 }
                 if (!empty($this->tooltips[$key])) {
-                    $extra[] = 'class="tooltip-north row_mark" original-title="' . $this->tooltips[$key] . '"';
+                    $tooltip = $this->tooltips[$key];
+                    if ($this->_toolTipMaxLength > 0) {
+                        if (cString::getStringLength($tooltip) > $this->_toolTipMaxLength) {
+                            $tooltip = cString::getPartOfString($tooltip, 0, $this->_toolTipMaxLength) . '...';
+                        }
+                    }
+                    $extra[] = 'class="tooltip-north row_mark" original-title="' . $tooltip . '"';
                 } else {
                     $extra[] = 'class="row_mark"';
                 }
                 $tpl->set('d', 'EXTRA', implode(' ', $extra));
 
                 $actions = '';
-                if (is_array($this->actions[$key])) {
+                if (isset($this->actions[$key]) && is_array($this->actions[$key])) {
                     foreach ($this->actions[$key] as $key => $singleAction) {
-                        $actions .= '&nbsp;' . $singleAction . '&nbsp;';
+                        #$actions .= '&nbsp;' . $singleAction . '&nbsp;';
+                        $actions .= $singleAction;
                     }
                 }
                 if ($actions) {
-                    $actions = str_replace('&nbsp;&nbsp;', '&nbsp;', $actions);
+                    #$actions = str_replace('&nbsp;&nbsp;', '&nbsp;', $actions);
+                    $actions = str_replace('&nbsp;', '', $actions);
                 }
 
                 $tpl->set('d', 'ACTIONS', $actions);
@@ -298,8 +353,11 @@ class cGuiMenu {
      *
      * @return string
      */
-    protected function _getRowMouseEventHandlerJs() {
+    protected function _getRowMouseEventHandlerJs()
+    {
+        $class = __CLASS__;
         $js = <<<JS
+<!-- $class -->
 <script type="text/javascript">
     (function(Con, $) {
         $(function() {
@@ -307,6 +365,7 @@ class cGuiMenu {
         });
     })(Con, Con.$);
 </script>
+<!-- /$class -->
 JS;
         return $js;
     }

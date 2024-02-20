@@ -3,13 +3,13 @@
 /**
  * This file contains the system variables backend page.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Marco Jahn
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Marco Jahn
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -41,7 +41,7 @@ $aServerConfiguration = [
     [i18n('CONTENIDO backend path'), cRegistry::getBackendPath(), 1],
     [i18n('CONTENIDO WYSIWYG repository path'), $cfg['path']['all_wysiwyg'], 2],
     [i18n('CONTENIDO WYSIWYG editor path'), $cfg['path']['wysiwyg'], 3],
-    [i18n('CONTENIDO backend URL'),  cRegistry::getBackendUrl(), 0],
+    [i18n('CONTENIDO backend URL'), cRegistry::getBackendUrl(), 0],
     [i18n('CONTENIDO WYSIWYG repository URL'), $cfg['path']['all_wysiwyg_html'], 4],
     [i18n('CONTENIDO WYSIWYG editor URL'), $cfg['path']['wysiwyg_html'], 5],
 ];
@@ -126,7 +126,7 @@ $tpl->set('s', 'INSTALLED_VERSIONS', $sInstalledVersions);
 // php configuration
 $aPhpConfiguration = [
     'date.timezone', 'include_path', 'memory_limit', 'upload_max_filesize', 'post_max_size',
-    'max_execution_time', 'max_file_uploads', 'max_input_time',  'sql.safe_mode', 'disable_classes', 'disable_functions'
+    'max_execution_time', 'max_file_uploads', 'max_input_time', 'sql.safe_mode', 'disable_classes', 'disable_functions'
 ];
 
 $oTpl2 = new cTemplate();
@@ -168,7 +168,7 @@ $oClientColl->select();
 $sClients = '';
 
 while ($oItem = $oClientColl->next()) {
-    $iIdClient = $oItem->get('idclient');
+    $iIdClient = cSecurity::toInteger($oItem->get('idclient'));
 
     if (systemHavePerm($iIdClient)) {
         $htmlpath = $cfgClient[$iIdClient]['path']['htmlpath'];
@@ -228,7 +228,7 @@ $readableName = [
     'options' => i18n('Options'),
 ];
 
-foreach($cfg['db']['connection'] as $key => $value) {
+foreach ($cfg['db']['connection'] as $key => $value) {
     if ($key === 'password') {
         // Skip password
         continue;
@@ -247,4 +247,3 @@ $tpl->set('s', 'DATABASE_CONFIGURATION', $oTpl2->generate($cfg['path']['template
 // parse out template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['system_variables']);
 
-?>

@@ -7,7 +7,7 @@
  * @subpackage FormAssistant
  * @author     Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright  four for business AG
- * @link       http://www.4fb.de
+ * @link       https://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -19,7 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-abstract class PifaExternalOptionsDatasourceInterface {
+abstract class PifaExternalOptionsDatasourceInterface
+{
 
     /**
      * Gets all option labels.

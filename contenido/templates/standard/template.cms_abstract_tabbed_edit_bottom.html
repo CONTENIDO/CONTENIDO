@@ -3,7 +3,6 @@
 </div>
 
 <script type="text/javascript">
-//<![CDATA[
     var initCallBack = function() {
         var contentTypeInstance = new {JS_CLASS_NAME}(
             '#cms_{PREFIX}_{ID}_settings',
@@ -17,7 +16,9 @@
             Con.sid,
             {SETTINGS}
         );
-        contentTypeInstance.initialise();
+        setTimeout(function () {
+            contentTypeInstance.initialise();
+        }, 0);
     };
 
     if (typeof {JS_CLASS_NAME} === 'undefined' || typeof Con.cContentTypeAbstractTabbed === 'undefined') {
@@ -31,6 +32,5 @@
     } else {
         initCallBack();
     }
-    //]]>
 </script>
 <!-- /template.cms_abstract_tabbed_edit_bottom.html -->

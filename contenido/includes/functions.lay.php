@@ -3,14 +3,14 @@
 /**
  * This file contains the CONTENIDO layout functions.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Jan Lengowski
- * @author           Olaf Niemann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Jan Lengowski
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,7 +22,7 @@ cInclude('classes', 'class.layout.handler.php');
 /**
  * Edit or Create a new layout
  *
- * @param int    $idlay
+ * @param int $idlay
  *         Id of the Layout
  * @param string $name
  *         Name of the Layout
@@ -38,14 +38,15 @@ cInclude('classes', 'class.layout.handler.php');
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function layEditLayout($idlay, $name, $description, $code) {
+function layEditLayout($idlay, $name, $description, $code)
+{
     global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $area, $frame, $cfgClient;
 
     $db2 = cRegistry::getDb();
     $db = cRegistry::getDb();
 
     $date = date('Y-m-d H:i:s');
-    $author = (string) $auth->auth['uname'];
+    $author = (string)$auth->auth['uname'];
     if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
         $name = stripslashes($name);
         $description = stripslashes($description);
@@ -106,7 +107,7 @@ function layEditLayout($idlay, $name, $description, $code) {
                 if ($layoutInFile->saveLayout($code) == false) {
                     cRegistry::addWarningMessage(sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
                 } else {
-                    cRegistry::addOkMessage(i18n("Renamed layout succsessfully!"));
+                    cRegistry::addOkMessage(i18n("Renamed layout successfully!"));
                 }
                 $layout = new cApiLayout(cSecurity::toInteger($idlay));
                 $layout->set('name', $name);
@@ -158,7 +159,8 @@ function layEditLayout($idlay, $name, $description, $code) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function layDeleteLayout($idlay) {
+function layDeleteLayout($idlay)
+{
     global $client, $cfg, $area_tree, $perm, $cfgClient;
 
     $tplColl = new cApiTemplateCollection();

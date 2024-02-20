@@ -1,19 +1,29 @@
 <?php
+
 /**
  * This file contains the Custom subnavigation for the newsletter recipient groups.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage Newsletter
- * @author Bjoern Behrens
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (!isset($_GET['idrecipientgroup']) || (int) $_GET['idrecipientgroup'] <= 0) {
+/**
+ * @var cTemplate $tpl
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $area
+ */
+
+$requestIddRecipientGroup = cSecurity::toInteger($_GET['idrecipientgroup'] ?? '');
+
+if ($requestIddRecipientGroup <= 0) {
     $tpl->reset();
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
     return;
@@ -28,13 +38,12 @@ $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
 $tpl->set('d', 'DATA_NAME', $area);
 $tpl->set('d', 'CLASS', '');
 $tpl->set('d', 'OPTIONS', '');
-$tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$area&frame=4&idrecipientgroup=$idrecipientgroup"), $caption));
+$tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$area&frame=4&idrecipientgroup=$requestIddRecipientGroup"), $caption));
 $tpl->next();
 
-if (is_array($cfg['plugins']['recipientslogic'])) {
+if (cHasPlugins('recipientslogic')) {
+    cIncludePlugins('recipientslogic');
     foreach ($cfg['plugins']['recipientslogic'] as $plugin) {
-        cInclude('plugins', "recipientslogic/{$plugin}/{$plugin}.php");
-
         $className = 'recipientslogic_' . $plugin;
         $class = new $className();
 
@@ -44,7 +53,7 @@ if (is_array($cfg['plugins']['recipientslogic'])) {
         $tpl->set('d', 'DATA_NAME', 'recipientgroup_rights');
         $tpl->set('d', 'CLASS', '');
         $tpl->set('d', 'OPTIONS', '');
-        $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=recipientgroup_rights&frame=4&useplugin=$plugin&idrecipientgroup=$idrecipientgroup"), $caption));
+        $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=recipientgroup_rights&frame=4&useplugin=$plugin&idrecipientgroup=$requestIddRecipientGroup"), $caption));
         $tpl->next();
     }
 }

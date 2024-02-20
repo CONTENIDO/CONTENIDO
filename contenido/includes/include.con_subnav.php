@@ -3,13 +3,13 @@
 /**
  * This file contains the sub navigation frame backend page for content area.
  *
- * @package          Core
- * @subpackage       Backend
- * @author           Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package    Core
+ * @subpackage Backend
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -56,9 +56,9 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
         "SELECT
                     COUNT(*) AS article_count
                  FROM
-                    " . $cfg["tab"]["art_lang"] . " AS a,
-                    " . $cfg["tab"]["art"] . " AS b,
-                    " . $cfg["tab"]["cat_art"] . " AS c
+                    " . $cfg['tab']['art_lang'] . " AS a,
+                    " . $cfg['tab']['art'] . " AS b,
+                    " . $cfg['tab']['cat_art'] . " AS c
                  WHERE
                     (a.idlang   = " . cSecurity::toInteger($lang) . " {SYNCOPTIONS}) AND
                     a.idart     = b.idart AND
