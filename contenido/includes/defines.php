@@ -16,7 +16,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // CONTENIDO version
-defined('CON_VERSION') || define('CON_VERSION', '4.10.1');
+defined('CON_VERSION') || define('CON_VERSION', '4.10.2-dev');
 
 // Minimum supported PHP version
 define('CON_MIN_PHP_VERSION', '7.1');
