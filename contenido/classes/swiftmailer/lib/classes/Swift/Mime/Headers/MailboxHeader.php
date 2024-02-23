@@ -309,7 +309,7 @@ class Swift_Mime_Headers_MailboxHeader extends Swift_Mime_Headers_AbstractHeader
     }
 
     /**
-     * Return an array of strings conforming the name-addr spec of RFC 2822.
+     * Return an array of strings conforming the the name-addr spec of RFC 2822.
      *
      * @param string[] $mailboxes
      *
