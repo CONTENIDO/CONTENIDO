@@ -67,7 +67,7 @@ require_once 'swiftmailer/lib/swift_init.php';
  *
  * <strong>User defined transport</strong>
  * When creating a cMailer instance an arbitrary transport can be given
- * to override the afore mentioned behaviour.
+ * to override the before mentioned behaviour.
  *
  * <strong>User defined transport example</strong>
  * <code>
@@ -83,7 +83,12 @@ require_once 'swiftmailer/lib/swift_init.php';
 class cMailer extends Swift_Mailer
 {
 
-    const ENCRYPTIONS = [
+    /**
+     * SMTP encryption.
+     * - ssl (SMTPS = SMTP over TLS)
+     * - tls (SMTP with STARTTLS)
+     */
+    const SMTP_ENCRYPTION = [
         'tls',
         'ssl'
     ];
@@ -150,6 +155,7 @@ class cMailer extends Swift_Mailer
 
     /**
      * Logger for mails, used to log information when sending of a mail fails.
+     *
      * @var Swift_Plugins_Logger|null
      */
     private $_logger = null;
@@ -174,48 +180,45 @@ class cMailer extends Swift_Mailer
      */
     public function __construct(Swift_Transport $transport = NULL)
     {
-        // is logging of errors enabled?
+        // If a transport object has been given, use it and skip the rest
+        if (!is_null($transport)) {
+            parent::__construct($transport);
+            return;
+        }
+
+        // Is logging of errors enabled?
         $logErrors = getSystemProperty('system', 'mail_log_error') === 'true';
 
-        // get address of default mail sender
+        // Get address of default mail sender
         $mailSender = getSystemProperty('system', 'mail_sender');
         if (Swift_Validate::email($mailSender)) {
             $this->_mailSender = $mailSender;
         }
 
-        // get name of default mail sender
+        // Get name of default mail sender
         $mailSenderName = getSystemProperty('system', 'mail_sender_name');
         if (!empty($mailSenderName)) {
             $this->_mailSenderName = $mailSenderName;
         }
 
-        // if a transport object has been given, use it and skip the rest
-        if (!is_null($transport)) {
-            parent::__construct($transport);
-            return;
-        }
-        // if no transport object has been given, read system setting and create one
-
-        // get name of mail host
+        // Get name of mail host
         $mailHost = getSystemProperty('system', 'mail_host');
         if (!empty($mailHost)) {
             $this->_mailHost = $mailHost;
         }
 
-        // get port of mail host
+        // Get port of mail host
         $mailPort = getSystemProperty('system', 'mail_port');
         if (is_numeric($mailPort)) {
             $this->_mailPort = (int)$mailPort;
         }
 
         $transport = $this->createTransport();
-
-        // CON-2530
-        if ($transport === false) {
+        if (!$transport) {
             $errorMessage = 'Can not connect to the mail server. Please check your mail server configuration at CONTENIDO backend.';
             if ($logErrors) {
                 // Log the error, the exception below may be caught somewhere!
-                cWarning(__FILE__, __LINE__, $errorMessage);
+                cWarning($errorMessage);
             }
             throw new cInvalidArgumentException($errorMessage);
         }
@@ -283,8 +286,7 @@ class cMailer extends Swift_Mailer
         try {
             $transport->start();
         } catch (Throwable $e) {
-            // CON-2530
-            // fallback in constructTransport deleted
+            // Fallback in constructTransport deleted
             // parent::send() can't handle it, therefore return false before
             return false;
         }
@@ -376,8 +378,6 @@ class cMailer extends Swift_Mailer
      * @throws cException
      * @throws cInvalidArgumentException
      * @see Swift_Mailer::send()
-     *
-     * // TODO Should the type below not be "Swift_Message" instead of "Swift_Mime_Message" (Swift_Mime_Message has no method getCharset)?
      */
     public function send(
         Swift_Mime_Message $message, array &$failedRecipients = NULL, bool $resend = false
@@ -516,6 +516,8 @@ class cMailer extends Swift_Mailer
     }
 
     /**
+     * Creates a mailer transport instance (smtp or mail) depending on system settings.
+     *
      * @return false|Swift_MailTransport|Swift_Transport
      * @throws cDbException|cException
      */
@@ -527,7 +529,7 @@ class cMailer extends Swift_Mailer
             $mail_encryption = cString::toLowerCase(
                 getSystemProperty('system', 'mail_encryption')
             );
-            if (in_array($mail_encryption, self::ENCRYPTIONS)) {
+            if (in_array($mail_encryption, self::SMTP_ENCRYPTION)) {
                 $this->_mailEncryption = $mail_encryption;
             } elseif ('1' == $mail_encryption) {
                 $this->_mailEncryption = 'ssl';
@@ -555,7 +557,6 @@ class cMailer extends Swift_Mailer
     /**
      * Log the information about sending the email.
      *
-     * // TODO Should the type below not be "Swift_Message" instead of "Swift_Mime_Message" (Swift_Mime_Message has no method getCharset)?
      * @param Swift_Mime_Message $message
      *                                             the message which has been send
      * @param array $failedRecipients [optional]
