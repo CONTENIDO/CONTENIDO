@@ -107,13 +107,11 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
      *
      * @param int $idArtLang
      * @param int $version
-     *
      * @return int
-     *
      * @throws cDbException
      * @throws cException
      */
-    public function getIdByArticleIdAndLanguageId($idArtLang, $version)
+    public function getIdByArticleIdAndLanguageId($idArtLang, $version): int
     {
         $id = NULL;
 
@@ -126,7 +124,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
             $id = $item->get('idartlangversion');
         }
 
-        return $id ?? 0;
+        return cSecurity::toInteger($id ?? '0');
     }
 
 }

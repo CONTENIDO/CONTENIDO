@@ -338,16 +338,15 @@ function getLanguageNamesByClient($client)
  * @throws cInvalidArgumentException
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
- *
  */
 function set_magic_quotes_gpc(&$code)
 {
-    cDeprecated('This method is deprecated and is not needed any longer');
+    cDeprecated('The function set_magic_quotes_gpc() is deprecated and is not needed any longer');
 
     $cfg = cRegistry::getConfig();
     if (!$cfg['simulate_magic_quotes']) {
-        /** @noinspection PhpElementIsNotAvailableInCurrentPhpVersionInspection */
-        if (get_magic_quotes_gpc() == 0) {
+        // get_magic_quotes_gpc() has been deprecated as of PHP 7.4.0, and REMOVED as of PHP 8.0.0.
+        if (version_compare(PHP_VERSION, '8.0', '<') && get_magic_quotes_gpc() == 0) {
             $code = addslashes($code);
         }
     }
@@ -898,28 +897,50 @@ function getEffectiveSettingsByType($type)
  *
  * @return array
  *         list of article specifications
- *
- * @throws cDbException
+ * @deprecated [2024-02-24] Since 4.10.2, use {@see cGetArtSpecs()} instead!
  */
 function getArtspec()
 {
-    $db = cRegistry::getDb();
-    $cfg = cRegistry::getConfig();
-    $client = cRegistry::getClientId();
-    $lang = cRegistry::getLanguageId();
+    cDeprecated("Function getArtspec() is deprecated since CONTENIDO 4.10.2, use cGetArtSpecs() instead.");
 
-    $sql = 'SELECT `artspec`, `idartspec`, `online`, `artspecdefault` FROM `%s`
-            WHERE `client` = %d AND `lang` = %d ORDER BY `artspec` ASC';
-    $db->query($sql, $cfg['tab']['art_spec'], $client, $lang);
+    $artSpecs = cGetArtSpecs(
+        cSecurity::toInteger(cRegistry::getClientId()),
+        cSecurity::toInteger(cRegistry::getLanguageId())
+    );
 
-    $artSpec = [];
-
-    while ($db->nextRecord()) {
-        $artSpec[$db->f('idartspec')]['artspec'] = $db->f('artspec');
-        $artSpec[$db->f('idartspec')]['online'] = $db->f('online');
-        $artSpec[$db->f('idartspec')]['default'] = $db->f('artspecdefault');
+    // Restore old behaviour
+    foreach ($artSpecs as &$entry) {
+        $entry['default'] = $entry['artspecdefault'];
+        unset($entry['artspecdefault']);
     }
-    return $artSpec;
+
+    return $artSpecs;
+}
+
+/**
+ * Retrieve list of article specifications for current client and language.
+ *
+ * @return array
+ *         List of article specifications containing the fields
+ *         'artspec', 'online', and 'artspecdefault'.
+ * @since CONTENIDO 4.10.2
+ */
+function cGetArtSpecs(int $idClient, int $idLang, string $orderBy = 'artspec'): array
+{
+    try {
+        $artSpecColl = new cApiArticleSpecificationCollection();
+        $artSpecColl->select(
+            "`client` = " . $idClient . " AND `lang` = " . $idLang,
+            '',
+            'artspec'
+        );
+        return $artSpecColl->fetchArray(
+            $artSpecColl->getPrimaryKeyName(), ['artspec', 'online', 'artspecdefault']
+        );
+    } catch (Throwable $throwable) {
+        cLogError($throwable->getMessage());
+        return [];
+    }
 }
 
 /**
@@ -929,78 +950,132 @@ function getArtspec()
  *         specification text
  * @param int $online
  *         Online status (1 or 0)
- *
- * @throws cDbException
+ * @deprecated [2024-02-24] Since 4.10.2, use {@see cCreateOrUpdateArtSpec()} instead!
  */
 function addArtspec($artspectext, $online)
 {
-    $db = cRegistry::getDb();
-    $cfg = cRegistry::getConfig();
-    $client = cRegistry::getClientId();
-    $lang = cRegistry::getLanguageId();
-
-    if (isset($_POST['idartspec'])) { // update
-        $fields = [
-            'artspec' => $artspectext,
-            'online' => (int)$online
-        ];
-        $where = [
-            'idartspec' => (int)$_POST['idartspec']
-        ];
-        $sql = $db->buildUpdate($cfg['tab']['art_spec'], $fields, $where);
-    } else {
-        $fields = [
-            'client' => (int)$client,
-            'lang' => (int)$lang,
-            'artspec' => $artspectext,
-            'online' => 0,
-            'artspecdefault' => 0
-        ];
-        $sql = $db->buildInsert($cfg['tab']['art_spec'], $fields);
-    }
-    $db->query($sql);
+    cDeprecated("Function addArtspec() is deprecated since CONTENIDO 4.10.2, use cCreateOrUpdateArtSpec() instead.");
+    $idArtSpec = isset($_POST['idartspec']) ? cSecurity::toInteger($_POST['idartspec']) : null;
+    cCreateOrUpdateArtSpec($artspectext, $online, $idArtSpec);
 }
+
+/**
+ * Creates new article specification for current client & language or updates existing one.
+ *
+ * @param string $artsSecText
+ *        Specification text
+ * @param int $online
+ * *      Online status (1 or 0)
+ * @param int|null $idArtSpec
+ *        Id of article specification to update. If omitted, a new entry will be created.
+ * @return bool
+ * @since CONTENIDO 4.10.2
+ */
+function cCreateOrUpdateArtSpec(string $artsSecText, int $online, int $idArtSpec = null): bool
+{
+    try {
+        if ($idArtSpec) {
+            // Update existing article specification
+            $artSpec = new cApiArticleSpecification($idArtSpec);
+            if ($artSpec->isLoaded()) {
+                $artSpec->set('artspec', $artsSecText);
+                $artSpec->set('online', $online);
+                return $artSpec->store();
+            } else {
+                throw new Exception('Could not load article specification by id ' .$idArtSpec);
+            }
+        } else {
+            // Add new article specification
+            $artSpecColl = new cApiArticleSpecificationCollection();
+            $artSpec = $artSpecColl->createNewItem();
+            $artSpec->set('client', cSecurity::toInteger(cRegistry::getClientId()));
+            $artSpec->set('lang', cSecurity::toInteger(cRegistry::getLanguageId()));
+            $artSpec->set('artspec', $artsSecText);
+            $artSpec->set('online', $online);
+            $artSpec->set('artspecdefault', 0);
+            return $artSpec->store();
+        }
+    } catch (Throwable $throwable) {
+        cLogError($throwable->getMessage());
+    }
+
+    return false;
+}
+
 
 /**
  * Delete specified article specification
  *
  * @param int $idartspec
  *         article specification id
- *
- * @throws cDbException
+ * @deprecated [2024-02-24] Since 4.10.2, use {@see cDeleteArtSpec()} instead!
  */
 function deleteArtspec($idartspec)
 {
-    $db = cRegistry::getDb();
-    $cfg = cRegistry::getConfig();
-
-    $sql = 'DELETE FROM `%s` WHERE `idartspec` = %d';
-    $db->query($sql, $cfg['tab']['art_spec'], $idartspec);
-
-    $sql = 'UPDATE `%s` SET `artspec` = 0 WHERE `artspec` = %d';
-    $db->query($sql, $cfg['tab']['art_lang'], $idartspec);
+    cDeprecated("Function deleteArtspec() is deprecated since CONTENIDO 4.10.2, use cDeleteArtSpec() instead.");
+    cDeleteArtSpec(cSecurity::toInteger($idartspec));
 }
 
 /**
- * Set article specifications online
+ * Delete specified article specification.
  *
- * Flag to switch if an article specification should be shown the frontend or
- * not
- *
+ * @param int $idArtSpec
+ *         Article specification id
+ * @return bool
+ * @since CONTENIDO 4.10.2
+ */
+function cDeleteArtSpec(int $idArtSpec): bool
+{
+    try {
+        $artSpecColl = new cApiArticleSpecificationCollection();
+        if ($artSpecColl->delete($idArtSpec)) {
+            $artLangColl = new cApiArticleLanguageCollection();
+            return $artLangColl->resetArtSpec($idArtSpec);
+        }
+    } catch (Throwable $throwable) {
+        cLogError($throwable->getMessage());
+    }
+
+    return false;
+}
+
+/**
  * @param int $idartspec
  *         article specification id
  * @param int $online
  *         0/1 switch the status between on an offline
- *
- * @throws cDbException
+ * @deprecated [2024-02-24] Since 4.10.2, use {@see cSetArtSpecOnline()} instead!
  */
 function setArtspecOnline($idartspec, $online)
 {
-    $db = cRegistry::getDb();
-    $cfg = cRegistry::getConfig();
+    cDeprecated("Function setArtspecOnline() is deprecated since CONTENIDO 4.10.2, use cSetArtSpecOnline() instead.");
+    cSetArtSpecOnline(
+        cSecurity::toInteger($idartspec),
+        cSecurity::toInteger($online)
+    );
+}
 
-    $sql = 'UPDATE `%s` SET `online` = %d WHERE `idartspec` = %d';
-    $db->query($sql, $cfg['tab']['art_spec'], $online, $idartspec);
+/**
+ * Set an article specification online. An online article specification
+ * will be shown in backends article properties page.
+ *
+ * @param int $idArtSpec
+ *        Article specification id
+ * @param int $online
+ *        0/1 switch the status between on an offline
+ * @return bool
+ * @since CONTENIDO 4.10.2
+ */
+function cSetArtSpecOnline(int $idArtSpec, int $online): bool
+{
+    try {
+        $artSpecColl = new cApiArticleSpecificationCollection();
+        return $artSpecColl->setOnline($idArtSpec, $online);
+    } catch (Throwable $throwable) {
+        cLogError($throwable->getMessage());
+    }
+
+    return false;
 }
 
 /**
@@ -1011,21 +1086,38 @@ function setArtspecOnline($idartspec, $online)
  *
  * @param int $idartspec
  *         Article specification id
- *
- * @throws cDbException
+ * @deprecated [2024-02-24] Since 4.10.2, use {@see cSetArtSpecDefault()} instead!
  */
 function setArtspecDefault($idartspec)
 {
-    $db = cRegistry::getDb();
-    $cfg = cRegistry::getConfig();
-    $client = cRegistry::getClientId();
-    $lang = cRegistry::getLanguageId();
+    cDeprecated("Function setArtspecDefault() is deprecated since CONTENIDO 4.10.2, use cSetArtSpecDefault() instead.");
+    cSetArtSpecDefault(cSecurity::toInteger($idartspec));
+}
 
-    $sql = 'UPDATE `%s` SET `artspecdefault` = 0 WHERE `client` = %d AND `lang` = %d';
-    $db->query($sql, $cfg['tab']['art_spec'], $client, $lang);
+/**
+ * Set a default article specification.
+ * While creating a new article this defined article specification will be
+ * default setting.
+ *
+ * @param int $idArtSpec
+ *        Article specification id
+ * @return bool
+ * @since CONTENIDO 4.10.2
+ */
+function cSetArtSpecDefault(int $idArtSpec): bool
+{
+    try {
+        $artSpecColl = new cApiArticleSpecificationCollection();
+        return $artSpecColl->setDefaultArtSpec(
+            $idArtSpec,
+            cSecurity::toInteger(cRegistry::getClientId()),
+            cSecurity::toInteger(cRegistry::getLanguageId())
+        );
+    } catch (Throwable $throwable) {
+        cLogError($throwable->getMessage());
+    }
 
-    $sql = 'UPDATE `%s` SET `artspecdefault` = 1 WHERE `idartspec` = %d';
-    $db->query($sql, $cfg['tab']['art_spec'], $idartspec);
+    return false;
 }
 
 /**
