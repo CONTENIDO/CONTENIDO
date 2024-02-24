@@ -72,7 +72,7 @@ class cApiArticleSpecificationCollection extends ItemCollection
     }
 
     /**
-     * Resets default article specification for a specific client and language.
+     * Sets default article specification for a specific client and language.
      *
      * @param int $idArtSpec
      * @param int $idClient
@@ -86,7 +86,7 @@ class cApiArticleSpecificationCollection extends ItemCollection
         // First reset the current default article specification for client and language.
         $sql = 'UPDATE `%s` SET `artspecdefault` = 0 WHERE `client` = %d AND `lang` = %d';
         if ($this->db->query($sql, $this->table, $idClient, $idLang)) {
-            // Then set the default article specification
+            // Then set the new default article specification
             $sql = 'UPDATE `%s` SET `artspecdefault` = 1 WHERE `idartspec` = %d';
             return (bool) $this->db->query($sql, $this->table, $idArtSpec);
         }
