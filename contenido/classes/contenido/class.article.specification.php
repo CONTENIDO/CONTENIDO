@@ -41,15 +41,13 @@ class cApiArticleSpecificationCollection extends ItemCollection
      * @param int $client
      * @param int $lang
      * @param string $orderBy
-     *
      * @return array
-     *
      * @throws cDbException
      * @throws cException
      */
-    public function fetchByClientLang($client, $lang, $orderBy = '')
+    public function fetchByClientLang(int $client, int $lang, string $orderBy = ''): array
     {
-        $this->select("client=" . (int)$client . " AND lang=" . (int)$lang, '', $this->escape($orderBy));
+        $this->select("`client` = " . $client . " AND `lang` = " . $lang, '', $this->escape($orderBy));
         $entries = [];
         while (($entry = $this->next()) !== false) {
             $entries[] = clone $entry;
@@ -57,6 +55,44 @@ class cApiArticleSpecificationCollection extends ItemCollection
         return $entries;
     }
 
+    /**
+     * Sets the online status of an article specification.
+     *
+     * @param int $idArtSpec
+     * @param int $online The online status `0` or `1`, default is `0`.
+     * @return bool
+     * @throws cDbException
+     * @since CONTENIDO 4.10.2
+     */
+    public function setOnline(int $idArtSpec, int $online): bool
+    {
+        $online = $online === 1 ? 1 : 0;
+        $sql = 'UPDATE `%s` SET `online` = %d WHERE `idartspec` = %d';
+        return (bool) $this->db->query($sql, $this->getTable(), $online, $idArtSpec);
+    }
+
+    /**
+     * Resets default article specification for a specific client and language.
+     *
+     * @param int $idArtSpec
+     * @param int $idClient
+     * @param int $idLang
+     * @return bool
+     * @throws cDbException
+     * @since CONTENIDO 4.10.2
+     */
+    public function setDefaultArtSpec(int $idArtSpec, int $idClient, int $idLang): bool
+    {
+        // First reset the current default article specification for client and language.
+        $sql = 'UPDATE `%s` SET `artspecdefault` = 0 WHERE `client` = %d AND `lang` = %d';
+        if ($this->db->query($sql, $this->table, $idClient, $idLang)) {
+            // Then set the default article specification
+            $sql = 'UPDATE `%s` SET `artspecdefault` = 1 WHERE `idartspec` = %d';
+            return (bool) $this->db->query($sql, $this->table, $idArtSpec);
+        }
+
+        return false;
+    }
 }
 
 /**

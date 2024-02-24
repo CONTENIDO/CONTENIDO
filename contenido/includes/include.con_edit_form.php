@@ -667,21 +667,24 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $page->set('s', 'URLNAME', i18n("Alias"));
     // end plugin Advanced Mod Rewrite
 
-    $arrArtSpecs = getArtspec();
+    $artSpecs = cGetArtSpecs(
+        cSecurity::toInteger(cRegistry::getClientId()),
+        cSecurity::toInteger(cRegistry::getLanguageId())
+    );
 
     $inputArtSortSelect = new cHTMLSelectELement("artspec", "400px");
     $inputArtSortSelect->setClass("text_medium");
-    $iAvariableSpec = 0;
-    foreach ($arrArtSpecs as $id => $value) {
-        if ($arrArtSpecs[$id]['online'] == 1) {
-            if (($arrArtSpecs[$id]['default'] == 1) && (cString::getStringLength($tmp_artspec) == 0 || $tmp_artspec == 0)) {
-                $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($arrArtSpecs[$id]['artspec'], $id, true));
+    $availableSpec = 0;
+    foreach ($artSpecs as $id => $artSpecItem) {
+        if ($artSpecItem['online'] == 1) {
+            if (($artSpecItem['artspecdefault'] == 1) && (cString::getStringLength($tmp_artspec) == 0 || $tmp_artspec == 0)) {
+                $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($artSpecItem['artspec'], $id, true));
             } elseif ($id == $tmp_artspec) {
-                $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($arrArtSpecs[$id]['artspec'], $id, true));
+                $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($artSpecItem['artspec'], $id, true));
             } else {
-                $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($arrArtSpecs[$id]['artspec'], $id));
+                $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($artSpecItem['artspec'], $id));
             }
-            $iAvariableSpec++;
+            $availableSpec++;
         }
     }
     // disable select element if a non-editable version is selected
@@ -691,7 +694,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     }
     $tmp_inputArtSort = $inputArtSortSelect->toHtml();
 
-    if ($iAvariableSpec == 0) {
+    if ($availableSpec === 0) {
         $tmp_inputArtSort = i18n("No article specifications found!");
     }
 

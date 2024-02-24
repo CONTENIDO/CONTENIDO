@@ -1678,24 +1678,36 @@ abstract class ItemCollection extends cItemBaseAbstract
      * doesn't create an array.
      *
      * @param string $sKey
-     *         Name of the field to use for the key
+     *         Name of the field to use for the key. 
+     *         If omitted the primary key name will be used.
      * @param string|string[] $mFields
-     *         String or array
+     *         Name of the field or list of fields to return.
+     *         If omitted all fields will be returned.
      * @return array
      *         Resulting array
      * @throws cDbException|cException
      */
-    public function fetchArray($sKey, $mFields)
+    public function fetchArray(string $sKey = '', $mFields = null): array
     {
         $aResult = [];
 
+        if (empty($sKey)) {
+            $sKey = $this->getPrimaryKeyName();
+        }
+        if (!is_array($mFields) && !is_null($mFields)) {
+            $mFields = cSecurity::toString($mFields);
+        }
+
         while (($item = $this->next()) !== false) {
+            $_key = $item->get($sKey);
             if (is_array($mFields)) {
                 foreach ($mFields as $value) {
-                    $aResult[$item->get($sKey)][$value] = $item->get($value);
+                    $aResult[$_key][$value] = $item->get($value);
                 }
+            } elseif (is_null($mFields)) {
+                $aResult[$_key] = $item->toArray();
             } else {
-                $aResult[$item->get($sKey)] = $item->get($mFields);
+                $aResult[$_key] = $item->get($mFields);
             }
         }
 

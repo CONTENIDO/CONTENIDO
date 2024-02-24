@@ -25,9 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $page = new cGuiPage("client_artspec");
 
-if (!isset($online)) {
-    $online = 0;
-}
+$online = cSecurity::toInteger($_GET['online'] ?? '0');
+$online = $online === 1 ? 1 : 0;
 
 $action = $action ?? '';
 
@@ -35,7 +34,9 @@ if ($action == "client_artspec_save") {
     if (!$perm->have_perm_area_action($area, $action)) {
         $notification->displayNotification("error", i18n("Permission denied"));
     } else {
-        addArtspec($_POST['artspectext'], $online);
+        // It is an update if idartspec exists, otherwise it is a new entry.
+        $_idArtSpec = isset($_POST['idartspec']) ? cSecurity::toInteger($_POST['idartspec']) : null;
+        cCreateOrUpdateArtSpec($_POST['artspectext'], $online, $_idArtSpec);
     }
 }
 
@@ -43,7 +44,7 @@ if ($action == "client_artspec_delete") {
     if (!$perm->have_perm_area_action($area, $action)) {
         $notification->displayNotification("error", i18n("Permission denied"));
     } else {
-        deleteArtspec($_GET['idartspec']);
+        cDeleteArtSpec(cSecurity::toInteger($_GET['idartspec']));
     }
 }
 
@@ -51,7 +52,7 @@ if ($action == "client_artspec_online") {
     if (!$perm->have_perm_area_action($area, "client_artspec_save")) {
         $notification->displayNotification("error", i18n("Permission denied"));
     } else {
-        setArtspecOnline($_GET['idartspec'], $online);
+        cSetArtSpecOnline(cSecurity::toInteger($_GET['idartspec']), $online);
     }
 }
 
@@ -59,11 +60,14 @@ if ($action == "client_artspec_default") {
     if (!$perm->have_perm_area_action($area, "client_artspec_save")) {
         $notification->displayNotification("error", i18n("Permission denied"));
     } else {
-        setArtspecDefault($_GET['idartspec']);
+        cSetArtSpecDefault(cSecurity::toInteger($_GET['idartspec']));
     }
 }
 
-$artspecs = getArtspec();
+$artSpecs = cGetArtSpecs(
+    cSecurity::toInteger(cRegistry::getClientId()),
+    cSecurity::toInteger(cRegistry::getLanguageId())
+);
 
 $list = new cGuiList();
 
@@ -72,8 +76,7 @@ $list->setCell(1, 2, i18n("Options"));
 
 $count = 2;
 
-$artspecs = [];
-if (!empty($artspecs)) {
+if (!empty($artSpecs)) {
     $backendUrl = cRegistry::getBackendUrl();
 
     $imagesPath = $backendUrl . $cfg['path']['images'];
@@ -99,7 +102,7 @@ if (!empty($artspecs)) {
         ->setCLink($area, $frame, "client_artspec_delete")
         ->setContent(cHTMLImage::img($imagesPath . 'delete.gif', i18n('Delete')));
 
-    foreach ($artspecs as $id => $artspecItem) {
+    foreach ($artSpecs as $id => $artSpecItem) {
         $link->setCustom("idartspec", $id);
         $olink->setCustom("idartspec", $id);
         $defLink->setCustom("idartspec", $id);
@@ -111,17 +114,17 @@ if (!empty($artspecs)) {
             $form->setVar("frame", $frame);
             $form->setVar("idartspec", $id);
             $form->setVar("action", "client_artspec_save");
-            $form->setVar("online", $artspecItem['online']);
-            $inputBox = new cHTMLTextbox("artspectext", conHtmlentities(stripslashes($artspecItem['artspec'])));
+            $form->setVar("online", $artSpecItem['online']);
+            $inputBox = new cHTMLTextbox("artspectext", conHtmlentities(stripslashes($artSpecItem['artspec'])));
             $form->appendContent($inputBox->render());
             $form->appendContent(cHTMLButton::image($imagesPath . 'submit.gif', i18n('Save'), ['class' => 'con_img_button']));
 
             $list->setCell($count, 1, $form->render());
         } else {
-            $list->setCell($count, 1, stripslashes($artspecItem['artspec']));
+            $list->setCell($count, 1, stripslashes($artSpecItem['artspec']));
         }
 
-        if ($artspecItem['online'] == 0) {
+        if ($artSpecItem['online'] == 0) {
             // it is offline (std!)
             $olink->setContent(cHTMLImage::img($imagesPath . 'offline.gif', i18n('Make online')));
             $olink->setCustom("online", 1);
@@ -130,14 +133,10 @@ if (!empty($artspecs)) {
             $olink->setCustom("online", 0);
         }
 
-        if ($artspecItem['default'] == 0) {
+        if ($artSpecItem['artspecdefault'] == 0) {
             $defLink->setContent(cHTMLImage::img($imagesPath . 'artikel_spez_inakt.gif', i18n("Make this article specification default")));
         } else {
-            // @TODO Where and how was this meant to be used?
-            $standardImage = cHTMLImage::img(
-                $imagesPath . 'artikel_spez_akt.gif', i18n("This is the default article specification"),
-                ['class' => 'con_img_button']
-            );
+            $defLink->setContent(cHTMLImage::img($imagesPath . 'artikel_spez_akt.gif', i18n("This is the default article specification")));
         }
 
         $controls->setContent([

@@ -117,16 +117,28 @@ class cApiArticleLanguageCollection extends ItemCollection
      *
      * @param int $idart
      * @param int $idlang
-     *
      * @return int
-     *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getIdByArticleIdAndLanguageId($idart, $idlang)
+    public function getIdByArticleIdAndLanguageId($idart, $idlang): int
     {
         $sql = "SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
         $this->db->query($sql, $this->table, $idart, $idlang);
-        return ($this->db->nextRecord()) ? $this->db->f('idartlang') : 0;
+        return $this->db->nextRecord() ? cSecurity::toInteger($this->db->f('idartlang')) : 0;
+    }
+
+    /**
+     * Resets all articles having an associated artspec.
+     *
+     * @param int $idArtSpec
+     * @return bool
+     * @throws cDbException
+     * @since CONTENIDO 4.10.2
+     */
+    public function resetArtSpec(int $idArtSpec): bool
+    {
+        $sql = 'UPDATE `%s` SET `artspec` = 0 WHERE `artspec` = %d';
+        return (bool) $this->db->query($sql, $this->table, $idArtSpec);
     }
 
 }
