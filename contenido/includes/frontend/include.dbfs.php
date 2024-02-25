@@ -23,21 +23,17 @@ global $contenido_path, $main_dbfs_file_path, $client, $load_client, $file;
 chdir($contenido_path);
 
 if (cRegistry::getBackendSessionId()) {
-    cRegistry::bootstrap(
-        [
-            'sess' => 'cSession',
-            'auth' => 'cAuthHandlerBackend',
-            'perm' => 'cPermission',
-        ]
-    );
+    cRegistry::bootstrap([
+        'sess' => 'cSession',
+        'auth' => 'cAuthHandlerBackend',
+        'perm' => 'cPermission',
+    ]);
 } else {
-    cRegistry::bootstrap(
-        [
-            'sess' => 'cFrontendSession',
-            'auth' => 'cAuthHandlerFrontend',
-            'perm' => 'cPermission',
-        ]
-    );
+    cRegistry::bootstrap([
+        'sess' => 'cFrontendSession',
+        'auth' => 'cAuthHandlerFrontend',
+        'perm' => 'cPermission',
+    ]);
 }
 
 chdir($main_dbfs_file_path);
@@ -48,4 +44,4 @@ $client = $load_client;
 $dbfs = new cApiDbfsCollection();
 $dbfs->outputFile($file);
 
-cRegistry::shutdown();
+cRegistry::shutdown(false);

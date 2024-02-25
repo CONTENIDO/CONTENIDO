@@ -693,7 +693,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             }
 
             header('Location: ' . $redirect_url, true, $redirect_code);
-            cRegistry::shutdown();
+            cRegistry::shutdown(false);
             exit();
         } else {
             if ($cfg['debug']['codeoutput']) {
@@ -758,4 +758,3 @@ if (isset($savedlang)) {
 }
 
 cRegistry::shutdown();
-

@@ -21,18 +21,23 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+/**
+ * @var string $belang
+ * @var array $cfg
+ * @var cSession $sess
+ * @var string $area
+ */
+
 // CONTENIDO startup process
 include_once('../includes/startup.php');
 
 header('Content-Type: application/javascript');
 
-cRegistry::bootstrap(
-    [
-        'sess' => 'cSession',
-        'auth' => 'cAuthHandlerBackend',
-        'perm' => 'cPermission',
-    ]
-);
+cRegistry::bootstrap([
+    'sess' => 'cSession',
+    'auth' => 'cAuthHandlerBackend',
+    'perm' => 'cPermission',
+]);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 require(cRegistry::getBackendPath() . 'includes/functions.includePluginConf.php');
@@ -40,6 +45,7 @@ require(cRegistry::getBackendPath() . 'includes/functions.includePluginConf.php'
 // it will print <script> tags which result in errors
 
 // Fetch chains
+$_cecRegistry = cApiCecRegistry::getInstance();
 $iterator = $_cecRegistry->getIterator('Contenido.Article.RegisterCustomTab');
 
 $aTabs = [];

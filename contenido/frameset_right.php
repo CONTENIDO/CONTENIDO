@@ -17,16 +17,21 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+/**
+ * @var string $belang
+ * @var array $cfg
+ * @var cSession $sess
+ * @var string $area
+ */
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-cRegistry::bootstrap(
-    [
-        'sess' => 'cSession',
-        'auth' => 'cAuthHandlerBackend',
-        'perm' => 'cPermission',
-    ]
-);
+cRegistry::bootstrap([
+    'sess' => 'cSession',
+    'auth' => 'cAuthHandlerBackend',
+    'perm' => 'cPermission',
+]);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
@@ -53,5 +58,3 @@ $tpl->set('s', 'CONTENIDOPATH', cRegistry::getBackendUrl() . 'favicon.ico');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_right']);
 
 cRegistry::shutdown();
-
-?>

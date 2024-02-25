@@ -20,13 +20,11 @@ if (!defined('CON_FRAMEWORK')) {
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-cRegistry::bootstrap(
-    [
-        'sess' => 'cSession',
-        'auth' => 'cAuthHandlerBackend',
-        'perm' => 'cPermission',
-    ]
-);
+cRegistry::bootstrap([
+    'sess' => 'cSession',
+    'auth' => 'cAuthHandlerBackend',
+    'perm' => 'cPermission',
+]);
 
 $area = cRegistry::getArea();
 $belang = cRegistry::getBackendLanguage();
@@ -95,5 +93,3 @@ if ((isset($menuless) && $menuless == 1)) {
 }
 
 cRegistry::shutdown();
-
-?>
