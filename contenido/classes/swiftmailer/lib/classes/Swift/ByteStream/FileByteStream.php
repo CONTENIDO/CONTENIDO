@@ -49,10 +49,6 @@ class Swift_ByteStream_FileByteStream extends Swift_ByteStream_AbstractFilterabl
         }
         $this->_path = $path;
         $this->_mode = $writable ? 'w+b' : 'rb';
-
-        if (function_exists('get_magic_quotes_runtime') && @get_magic_quotes_runtime() == 1) {
-            $this->_quotes = true;
-        }
     }
 
     /**
@@ -83,13 +79,7 @@ class Swift_ByteStream_FileByteStream extends Swift_ByteStream_AbstractFilterabl
     {
         $fp = $this->_getReadHandle();
         if (!feof($fp)) {
-            if ($this->_quotes) {
-                ini_set('magic_quotes_runtime', 0);
-            }
             $bytes = fread($fp, $length);
-            if ($this->_quotes) {
-                ini_set('magic_quotes_runtime', 1);
-            }
             $this->_offset = ftell($fp);
 
             // If we read one byte after reaching the end of the file

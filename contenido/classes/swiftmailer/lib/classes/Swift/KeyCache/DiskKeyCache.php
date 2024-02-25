@@ -63,10 +63,6 @@ class Swift_KeyCache_DiskKeyCache implements Swift_KeyCache
     {
         $this->_stream = $stream;
         $this->_path = $path;
-
-        if (function_exists('get_magic_quotes_runtime') && @get_magic_quotes_runtime() == 1) {
-            $this->_quotes = true;
-        }
     }
 
     /**
@@ -176,15 +172,9 @@ class Swift_KeyCache_DiskKeyCache implements Swift_KeyCache
         $this->_prepareCache($nsKey);
         if ($this->hasKey($nsKey, $itemKey)) {
             $fp = $this->_getHandle($nsKey, $itemKey, self::POSITION_START);
-            if ($this->_quotes) {
-                ini_set('magic_quotes_runtime', 0);
-            }
             $str = '';
             while (!feof($fp) && false !== $bytes = fread($fp, 8192)) {
                 $str .= $bytes;
-            }
-            if ($this->_quotes) {
-                ini_set('magic_quotes_runtime', 1);
             }
             $this->_freeHandle($nsKey, $itemKey);
 
@@ -203,14 +193,8 @@ class Swift_KeyCache_DiskKeyCache implements Swift_KeyCache
     {
         if ($this->hasKey($nsKey, $itemKey)) {
             $fp = $this->_getHandle($nsKey, $itemKey, self::POSITION_START);
-            if ($this->_quotes) {
-                ini_set('magic_quotes_runtime', 0);
-            }
             while (!feof($fp) && false !== $bytes = fread($fp, 8192)) {
                 $is->write($bytes);
-            }
-            if ($this->_quotes) {
-                ini_set('magic_quotes_runtime', 1);
             }
             $this->_freeHandle($nsKey, $itemKey);
         }
