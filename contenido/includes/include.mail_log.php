@@ -47,7 +47,7 @@ if ($action == 'mail_log_delete') {
     }
 } elseif ($action == 'mail_log_resend') {
     $mailer = new cMailer();
-    $mailer->resendMail($_REQUEST['idmailsuccess']);
+    $mailer->resendMail(cSecurity::toInteger($_REQUEST['idmailsuccess']));
 }
 
 $mailLogCollection->query();

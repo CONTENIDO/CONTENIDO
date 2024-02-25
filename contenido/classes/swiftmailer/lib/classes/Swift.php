@@ -11,6 +11,7 @@
 /**
  * General utility class in Swift Mailer, not to be instantiated.
  *
+ *
  * @author Chris Corbyn
  */
 abstract class Swift
