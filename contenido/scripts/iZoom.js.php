@@ -22,13 +22,11 @@ include_once('../includes/startup.php');
 
 header('Content-Type: text/javascript');
 
-cRegistry::bootstrap(
-    [
-        'sess' => 'cSession',
-        'auth' => 'cAuthHandlerBackend',
-        'perm' => 'cPermission',
-    ]
-);
+cRegistry::bootstrap([
+    'sess' => 'cSession',
+    'auth' => 'cAuthHandlerBackend',
+    'perm' => 'cPermission',
+]);
 
 $cfg = cRegistry::getConfig();
 $belang = cRegistry::getBackendLanguage();

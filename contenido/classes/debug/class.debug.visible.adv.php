@@ -131,7 +131,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
      */
     public function showAll()
     {
-        if (cIsAjaxRequest()) {
+        if (cIsAjaxRequest() || headers_sent()) {
             return;
         }
 

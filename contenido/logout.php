@@ -16,16 +16,21 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+/**
+ * @var cAuth $auth
+ * @var string $belang
+ * @var array $cfg
+ * @var cSession $sess
+ */
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-cRegistry::bootstrap(
-    [
-        'sess' => 'cSession',
-        'auth' => 'cAuthHandlerBackend',
-        'perm' => 'cPermission',
-    ]
-);
+cRegistry::bootstrap([
+    'sess' => 'cSession',
+    'auth' => 'cAuthHandlerBackend',
+    'perm' => 'cPermission',
+]);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
@@ -42,9 +47,8 @@ $oActiveUser = new cApiOnlineUserCollection();
 $oActiveUser->deleteUser($iUserId);
 
 $auth->logout();
-cRegistry::shutdown();
 $sess->delete();
 
 header('Location:index.php');
 
-?>
+cRegistry::shutdown(false);

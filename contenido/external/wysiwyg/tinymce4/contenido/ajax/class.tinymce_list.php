@@ -34,13 +34,11 @@ if (!is_file($contenido_path . 'includes/startup.php')) {
 }
 include_once($contenido_path . 'includes/startup.php');
 
-cRegistry::bootstrap(
-    [
-        'sess' => 'cSession',
-        'auth' => 'cAuthHandlerBackend',
-        'perm' => 'cPermission',
-    ]
-);
+cRegistry::bootstrap([
+    'sess' => 'cSession',
+    'auth' => 'cAuthHandlerBackend',
+    'perm' => 'cPermission',
+]);
 
 // include editor config/combat file
 include(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'config.php');
@@ -240,4 +238,3 @@ class cTinyMCE4List {
         echo json_encode($list);
     }
 }
-?>
