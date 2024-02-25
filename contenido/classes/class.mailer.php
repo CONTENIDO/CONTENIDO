@@ -556,9 +556,6 @@ class cMailer extends Swift_Mailer
      *        The message which has been sent
      * @param array $failedRecipients
      *        The recipient addresses that did not get the mail
-     * @return void
-     *         The idmail of the inserted table row in con_mail_log|bool
-     *         false if mail_log option is inactive
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
