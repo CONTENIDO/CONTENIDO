@@ -171,9 +171,9 @@ class cMailer extends Swift_Mailer
      * transport are read and aggregated and eventually transport is
      * created using constructTransport().
      *
-     * @param Swift_Transport|null $transport [optional]
-     *                                   a transport instance
-     *
+     * @param Swift_Transport|null $transport
+     *        A transport instance. If omitted, the transport will be created
+     *        with configured system settings for mail.
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -241,20 +241,20 @@ class cMailer extends Swift_Mailer
      * send mails.
      *
      * @param string $mailHost
-     *         the mail host
+     *        The mail host
      * @param int $mailPort
-     *         the mail port
-     * @param string $mailEncryption [optional]
-     *         the mail encryption, none by default
-     * @param string $mailUser [optional]
-     *         the mail user, none by default
-     * @param string $mailPass [optional]
-     *         the mail password, none by default
+     *        The mail port
+     * @param string $mailEncryption
+     *        The mail encryption, none by default
+     * @param string $mailUser
+     *        The mail user, none by default
+     * @param string $mailPass
+     *        The mail password, none by default
      * @return Swift_Transport|false
-     *         the transport object or false
-     * @todo making this a static method and passing all the params is
-     *         not that smart! Return value should be either the transport
-     *         instance or null, not false!
+     *         The transport object or false
+     * @todo Making this a static method and passing all the params is
+     *       not that smart! Return value should be either the transport
+     *       instance or null, not false!
      */
     public static function constructTransport(
         string $mailHost, int $mailPort, string $mailEncryption = '',
@@ -299,7 +299,7 @@ class cMailer extends Swift_Mailer
      * If you want to use UTF-8, you do not need to call this method.
      *
      * @param string $charset
-     *         the character encoding
+     *        The character encoding
      */
     public function setCharset(string $charset)
     {
@@ -313,28 +313,26 @@ class cMailer extends Swift_Mailer
      * where the key is the email address and the value is the name.
      *
      * @param string|array $from
-     *                                  the sender of the mail, if something "empty" is given,
-     *                                  default address from CONTENIDO system settings is used
+     *        The sender of the mail, if something "empty" is given,
+     *        default address from CONTENIDO system settings is used
      * @param string|array $to
-     *                                  one or more recipient addresses
+     *        One or more recipient addresses
      * @param string $subject
-     *                                  the subject of the mail
-     * @param string $body [optional]
-     *                                  the body of the mail
-     * @param string|array $cc [optional]
-     *                                  one or more recipient addresses which should get a normal copy
-     * @param string|array $bcc [optional]
-     *                                  one or more recipient addresses which should get a blind copy
-     * @param string|array $replyTo [optional]
-     *                                  address to which replies should be sent
-     * @param bool $resend [optional]
-     *                                  whether the mail is resent
-     * @param string $contentType [optional]
-     *                                  MIME type to use for mail, defaults to 'text/plain'
-     *
+     *        The subject of the mail
+     * @param string $body
+     *        The body of the mail
+     * @param string|array $cc
+     *        One or more recipient addresses which should get a normal copy
+     * @param string|array $bcc
+     *        One or more recipient addresses which should get a blind copy
+     * @param string|array $replyTo
+     *        Address to which replies should be sent
+     * @param bool $resend
+     *        Whether the mail is resent
+     * @param string $contentType
+     *        MIME type to use for mail, defaults to 'text/plain'
      * @return int|null
-     *         number of recipients to which the mail has been sent
-     *
+     *         Number of recipients to which the mail has been sent
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -365,23 +363,21 @@ class cMailer extends Swift_Mailer
      * Sends the given Swift_Mime_Message and logs it if $resend is false.
      *
      * @param Swift_Mime_Message $message
-     *                                              the message to send
-     * @param array|null         $failedRecipients [optional]
-     *                                              list of recipients for which the sending has failed
-     * @param bool $resend [optional]
-     *                                              if this mail is send via resend
-     *                                              when resending a mail it is not logged again
-     *
+     *        The message to send
+     * @param array|null $failedRecipients
+     *        List of recipients for which the sending has failed
+     * @param bool $resend
+     *        If this mail is send via resend
+     *        when resending a mail it is not logged again
      * @return int|null
-     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      * @see Swift_Mailer::send()
      */
     public function send(
-        Swift_Mime_Message $message, array &$failedRecipients = NULL, bool $resend = false
-    ): ?int
+        Swift_Mime_Message $message, &$failedRecipients = NULL, bool $resend = false
+    )
     {
         if (!is_array($failedRecipients)) {
             $failedRecipients = [];
@@ -411,8 +407,7 @@ class cMailer extends Swift_Mailer
      * Resends the mail with the given idmailsuccess.
      *
      * @param int $idmailsuccess
-     *         ID of the mail which should be resent
-     *
+     *        ID of the mail which should be resent
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException if the mail has already been sent successfully or does not exist
@@ -463,11 +458,11 @@ class cMailer extends Swift_Mailer
      * Encodes the given value / array of values using conHtmlEntities().
      *
      * @param string|array $value
-     *         the value to encode
+     *        The value to encode
      * @param string $charset
-     *         the charset to use
+     *        The charset to use
      * @return string|array
-     *         encoded value
+     *        Encoded value
      */
     private function encodeField($value, string $charset)
     {
@@ -491,11 +486,11 @@ class cMailer extends Swift_Mailer
      * Decodes the given value / array of values using conHtmlEntityDecode().
      *
      * @param string|array $value
-     *         the value to decode
+     *        The value to decode
      * @param string $charset
-     *         the charset to use
+     *        The charset to use
      * @return string|array
-     *         decoded value
+     *         Decoded value
      */
     private function decodeField($value, string $charset)
     {
@@ -558,14 +553,12 @@ class cMailer extends Swift_Mailer
      * Log the information about sending the email.
      *
      * @param Swift_Mime_Message $message
-     *                                             the message which has been send
-     * @param array $failedRecipients [optional]
-     *                                             the recipient addresses that did not get the mail
-     *
+     *        The message which has been sent
+     * @param array $failedRecipients
+     *        The recipient addresses that did not get the mail
      * @return void
-     *         the idmail of the inserted table row in con_mail_log|bool
+     *         The idmail of the inserted table row in con_mail_log|bool
      *         false if mail_log option is inactive
-     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
