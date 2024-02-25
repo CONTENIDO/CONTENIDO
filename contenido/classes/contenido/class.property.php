@@ -68,6 +68,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiPropertyCollection extends ItemCollection
 {
 
+    use cItemCollectionIdsByClientIdTrait;
+
+    /**
+     * @var string Client id foreign key field name
+     * @since CONTENIDO 4.10.2
+     */
+    private $fkClientIdName = 'idclient';
+
     /**
      * Client id
      *
