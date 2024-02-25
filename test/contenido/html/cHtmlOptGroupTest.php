@@ -14,8 +14,8 @@ class cHtmlOptGroupTest extends cTestingTestCase
     public function testConstruct()
     {
         $opt = new cHTMLOptgroup('testContent', 'testClass', 'testId');
-        $this->assertSame('<optgroups id="testId" class="testClass">testContent</optgroups>', $opt->toHtml());
+        $this->assertSame('<optgroup id="testId" class="testClass">testContent</optgroup>', $opt->toHtml());
         $opt = new cHTMLOptgroup('', '', 'testId2');
-        $this->assertSame('<optgroups id="testId2"></optgroups>', $opt->toHtml());
+        $this->assertSame('<optgroup id="testId2"></optgroup>', $opt->toHtml());
     }
 }
