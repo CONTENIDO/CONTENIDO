@@ -610,6 +610,7 @@ class PifaForm extends Item
             $mailer = new cMailer();
             $message = Swift_Message::newInstance($opt['subject'], $opt['body'], 'text/plain', $opt['charSet']);
 
+            // TODO Use `cMailer->addAttachment()`
             // add attachments by names
             if (array_key_exists('attachmentNames', $opt)) {
                 if (is_array($opt['attachmentNames'])) {
@@ -626,6 +627,7 @@ class PifaForm extends Item
                 }
             }
 
+            // TODO Use `cMailer->addDynamicAttachment()`
             // add attachments by string
             if (array_key_exists('attachmentStrings', $opt)) {
                 if (is_array($opt['attachmentStrings'])) {
