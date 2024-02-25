@@ -75,7 +75,22 @@ require_once 'swiftmailer/lib/swift_init.php';
  * </code>
  *
  * <strong>User defined character set</strong>
- * @todo explain setCharset()
+ * * @todo explain setCharset()
+ * *
+ * <strong>Email with attachment</strong>
+ * <code>
+ * $mailer = new cMailer();
+ * $mailer->addAttachment('/path/to/filename.ext');
+ * $mailer->sendMail('sender@contenido.org', 'recipient@contenido.org', 'subject');
+ * </code>
+ *
+ * <strong>Email with dynamic attachment</strong>
+ * <code>
+ * $data = create_my_pdf_data();
+ * $mailer = new cMailer();
+ * $mailer->addDynamicAttachment($data, 'my-file.pdf', 'application/pdf');
+ * $mailer->sendMail('sender@contenido.org', 'recipient@contenido.org', 'subject');
+ * </code>
  *
  * @package    Core
  * @subpackage Backend
@@ -159,6 +174,13 @@ class cMailer extends Swift_Mailer
      * @var Swift_Plugins_Logger|null
      */
     private $_logger = null;
+
+    /**
+     * List of email attachments.
+     *
+     * @var Swift_Attachment[] 
+     */
+    private $_attachments = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -389,6 +411,11 @@ class cMailer extends Swift_Mailer
         if ($this->getTransport() == null) {
             return null;
         }
+
+        foreach ($this->_attachments as $attachment) {
+            $message->attach($attachment);
+        }
+
         $result = parent::send($message, $failedRecipients);
 
         if (!$result && is_object($this->_logger)) {
@@ -452,6 +479,61 @@ class cMailer extends Swift_Mailer
             $mailLogSuccess->set('success', 1);
             $mailLogSuccess->store();
         }
+    }
+
+    /**
+     * Add attachment to the email.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $path Path to file to be attached to the email.
+     * @param string $fileName The attachment filename.
+     * @return bool
+     */
+    public function addAttachment(string $path, string $fileName = ''): bool
+    {
+        if (!cFileHandler::isFile($path)) {
+            cWarning('Invalid attachment path ' . $path);
+            return false;
+        }
+
+        $attachment = Swift_Attachment::fromPath($path);
+        if (!empty($fileName)) {
+            $attachment->setFilename($fileName);
+        }
+        $this->_attachments[] = $attachment;
+
+        return true;
+    }
+
+    /**
+     * Add dynamic attachment to the email.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $data The content of the file to be attached to the email.
+     * @param string|null $fileName The attachment filename.
+     * @param string|null $contentType The attachment content type (MIME content-type).
+     * @return bool
+     */
+    public function addDynamicAttachment(
+        string $data, string $fileName = null, string $contentType = null
+    ): bool
+    {
+        if (empty($data)) {
+            cWarning('Empty dynamic attachment');
+            return false;
+        }
+
+        $attachment = new Swift_Attachment($data);
+        if (!empty($fileName)) {
+            $attachment->setFilename($fileName);
+        }
+        if (!empty($contentType)) {
+            $attachment->setContentType($contentType);
+        }
+
+        $this->_attachments[] = $attachment;
+
+        return true;
     }
 
     /**
@@ -571,7 +653,7 @@ class cMailer extends Swift_Mailer
         $mailLogCollection = new cApiMailLogCollection();
 
         // encode all fields
-        $charset = $message->getCharset();
+        $charset = $message->getCharset() ?? cRegistry::getEncoding();
         $from = $this->encodeField($message->getFrom(), $charset);
         $to = $this->encodeField($message->getTo(), $charset);
         $replyTo = $this->encodeField($message->getReplyTo(), $charset);
