@@ -3,6 +3,7 @@
 /**
  * This file contains some helper functions for the linkchecker plugin.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Plugin
  * @subpackage Linkchecker
  * @author     Murat Purc <murat@purc.de>

@@ -3,6 +3,7 @@
 /**
  * This file contains the date validator class.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Validation
  * @author     Viktor Lehmann <info@tone2tone.com>
@@ -32,12 +33,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * }
  * </pre>
  *
- * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Validation
  */
 class cValidatorDate extends cValidatorAbstract
 {
+
     /**
      * Constructor to create an instance of this class.
      *

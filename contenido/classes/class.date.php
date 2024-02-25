@@ -3,6 +3,7 @@
 /**
  * This file contains the date utility class.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Util
  * @author     Murat Purc <murat@purc.de>
@@ -17,7 +18,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Date helper class.
  *
- * @since CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Util
  */

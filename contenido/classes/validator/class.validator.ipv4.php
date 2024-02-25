@@ -3,6 +3,7 @@
 /**
  * This file contains the IPv4 address validator class.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Validation
  * @author     Murat Purc <murat@purc.de>
@@ -30,12 +31,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * }
  * </pre>
  *
- * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Validation
  */
 class cValidatorIpv4 extends cValidatorAbstract
 {
+
     /**
      * Constructor to create an instance of this class.
      *

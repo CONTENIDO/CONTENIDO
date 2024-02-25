@@ -3,6 +3,7 @@
 /**
  * This file contains the SQL template parser class.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Database
  * @author     Murat Purc <murat@purc.de>

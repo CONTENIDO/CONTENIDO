@@ -3,6 +3,7 @@
 /**
  * This file contains the backend search helper class.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Backend
  * @author     Murat Purç <murat@purc.de>
@@ -29,7 +30,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * TODO Has some similarities with {@see cArticleOverviewHelper}, merge them together!
  *
- * @since CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Backend
  */

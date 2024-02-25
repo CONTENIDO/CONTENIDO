@@ -3,6 +3,7 @@
 /**
  * This file contains the cHTMLLinkTag class.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage GUI_HTML
  * @author     Murat Purc <murat@purc.de>

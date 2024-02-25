@@ -4,6 +4,7 @@
  * This file contains the trait for retrieving and or processing
  * chunks of database results.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Database
  * @author     Murat Purc <murat@purc.de>

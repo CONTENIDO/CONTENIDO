@@ -3,6 +3,7 @@
 /**
  * This file contains the trait for usage in debug visible classes.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Debug
  * @author     Murat Purc <murat@purc.de>

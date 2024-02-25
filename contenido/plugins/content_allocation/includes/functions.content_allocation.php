@@ -3,6 +3,7 @@
 /**
  * This file contains various functions for the plugin content allocation.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Plugin
  * @subpackage ContentAllocation
  * @author     Murat Purc <murat@purc.de>

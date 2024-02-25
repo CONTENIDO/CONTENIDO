@@ -3,7 +3,7 @@
 /**
  * This file contains polyfill functions for PHP.
  *
- * @since CONTENIDO 4.10.2
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Backend
  * @author     Murat Purç <murat@purc.de>

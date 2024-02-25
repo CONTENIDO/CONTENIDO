@@ -3,6 +3,7 @@
 /**
  * This file contains the rights areas helper class.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Backend
  * @author     Murat Purç <murat@purc.de>
@@ -21,7 +22,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class is for internal usage in CONTENIDO core, therefore it is not meant
  * for public usage. Its interface and functionality may change in the future.
  *
- * @since CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Backend
  */

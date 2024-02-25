@@ -3,6 +3,7 @@
 /**
  * This file contains the view utility class `cAsset`.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Util
  * @author     Murat Purc <murat@purc.de>
