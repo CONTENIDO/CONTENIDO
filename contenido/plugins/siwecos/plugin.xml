@@ -9,11 +9,11 @@
         <copyright>four for business AG</copyright>
         <mail>fulai.zhang@4fb.de</mail>
         <website>https://www.4fb.de</website>
-        <version>2.0.0</version>
+        <version>2.0.1</version>
     </general>
 
     <requirements php="7.0">
-        <contenido minversion="4.10.0" />
+        <contenido minversion="4.10.2" />
     </requirements>
 
     <contenido>

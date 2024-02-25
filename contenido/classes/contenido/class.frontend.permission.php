@@ -25,6 +25,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiFrontendPermissionCollection extends ItemCollection
 {
 
+    use cItemCollectionIdsByLanguageIdTrait;
+
+    /**
+     * @var string Language id foreign key field name
+     * @since CONTENIDO 4.10.2
+     */
+    private $fkLanguageIdName = 'idlang';
+
     /**
      * instance of cApiFrontendPermission to access defined filters
      *

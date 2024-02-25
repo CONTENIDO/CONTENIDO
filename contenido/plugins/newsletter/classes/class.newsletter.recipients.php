@@ -25,6 +25,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class NewsletterRecipientCollection extends ItemCollection
 {
+
+    use cItemCollectionIdsByClientIdAndLanguageIdTrait;
+
+    /**
+     * @var string Client id foreign key field name
+     * @since CONTENIDO 4.10.2
+     */
+    private $fkClientIdName = 'idclient';
+
+    /**
+     * @var string Language id foreign key field name
+     * @since CONTENIDO 4.10.2
+     */
+    private $fkLanguageIdName = 'idlang';
+
     /**
      * Constructor Function
      *

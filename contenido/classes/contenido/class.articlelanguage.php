@@ -24,6 +24,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cApiArticleLanguageCollection extends ItemCollection
 {
+
+    use cItemCollectionIdsByLanguageIdTrait;
+
+    /**
+     * @var string Language id foreign key field name
+     * @since CONTENIDO 4.10.2
+     */
+    private $fkLanguageIdName = 'idlang';
+
     /**
      * Constructor to create an instance of this class.
      *

@@ -9,10 +9,10 @@
         <copyright>four for business AG</copyright>
         <mail>info@4fb.de</mail>
         <website>https://www.4fb.de</website>
-        <version>1.0.0</version>
+        <version>1.01</version>
     </general>
     <requirements php="7.0">
-        <contenido minversion="4.10.0"/>
+        <contenido minversion="4.10.2"/>
     </requirements>
     <contenido>
         <areas>

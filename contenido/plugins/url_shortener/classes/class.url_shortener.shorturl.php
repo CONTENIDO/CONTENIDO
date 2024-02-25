@@ -27,6 +27,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiShortUrlCollection extends ItemCollection
 {
 
+    use cItemCollectionIdsByClientIdAndLanguageIdTrait;
+
     /**
      *
      * @var int
@@ -62,6 +64,18 @@ class cApiShortUrlCollection extends ItemCollection
      * @var int
      */
     const ERR_ALREADY_EXISTS = 6;
+
+    /**
+     * @var string Client id foreign key field name
+     * @since CONTENIDO 4.10.2
+     */
+    private $fkClientIdName = 'idclient';
+
+    /**
+     * @var string Language id foreign key field name
+     * @since CONTENIDO 4.10.2
+     */
+    private $fkLanguageIdName = 'idlang';
 
     /**
      * @throws cInvalidArgumentException
