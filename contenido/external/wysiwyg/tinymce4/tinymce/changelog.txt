@@ -1,3 +1,9 @@
+Version 4.9.11 (2024-02-27)
+    CONTENIDO: Added "formats" configuration to TinyMCE theme JS file contenido/external/wysiwyg/tinymce4/tinymce/js/tinymce/themes/modern/theme.min.js
+        Changed
+        `format:{title:"Format",items:"bold italic underline strikethrough superscript subscript codeformat | blockformats align | removeformat"}`
+        to
+        `format:{title:"Format",items:"bold italic underline strikethrough superscript subscript codeformat | blockformats align | formats | removeformat"}`
 Version 4.9.11 (2020-07-13)
     Fixed the `selection.setContent()` API not running parser filters #TINY-4002
     Fixed content in an iframe element parsing as DOM elements instead of text content #TINY-5943
