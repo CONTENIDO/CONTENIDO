@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <plugin>
-
     <general active="1">
         <plugin_name>User Forum</plugin_name>
         <plugin_foldername>user_forum</plugin_foldername>
@@ -12,17 +11,13 @@
         <website>https://www.4fb.de</website>
         <version>2.0.1</version>
     </general>
-
     <requirements php="7.0">
-        <contenido minversion="4.10.2"/>
+        <contenido minversion="4.10.2-dev"/>
     </requirements>
-
     <contenido>
-
         <areas>
             <area>user_forum</area>
         </areas>
-
         <frames>
             <frame area="user_forum" filetype="main"
                    name="user_forum/includes/include.left_bottom.php" frameId="2"/>
@@ -31,11 +26,9 @@
             <frame area="user_forum" filetype="main" name="user_forum/includes/include.left_top.php"
                    frameId="1"/>
         </frames>
-
         <nav_sub>
             <nav area="user_forum" level="0" navm="extra">user_forum/xml/lang_de_DE.xml;plugins/user_forum/label</nav>
         </nav_sub>
-
     </contenido>
     <content_types>
         <type>CMS_USERFORUM</type>

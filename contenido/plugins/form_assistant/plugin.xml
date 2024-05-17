@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <plugin>
-
     <general active="1">
         <plugin_name>Form Assistant</plugin_name>
         <plugin_foldername>form_assistant</plugin_foldername>
@@ -16,17 +15,13 @@
         <website>https://www.4fb.de</website>
         <version>2.0.1</version>
     </general>
-
     <requirements php="7.0">
-        <contenido minversion="4.10.2"/>
+        <contenido minversion="4.10.2-dev"/>
     </requirements>
-
     <dependencies>
         <depend uuid="82b117e94bb2cbcbce4e56b79a7d0c23">Smarty Wrapper</depend>
     </dependencies>
-
     <contenido>
-
         <areas>
             <area>form</area>
             <area parent="form" menuless="0">form_fields</area>
@@ -35,7 +30,6 @@
             <area parent="form" menuless="0">form_import</area>
             <area parent="form">form_ajax</area>
         </areas>
-
         <actions>
             <action area="form">pifa_show_form</action>
             <action area="form">pifa_store_form</action>
@@ -53,7 +47,6 @@
             <action area="form_ajax">pifa_delete_data</action>
             <action area="form_ajax">pifa_get_option_row</action>
         </actions>
-
         <frames>
             <frame area="form" filetype="main" name="form_assistant/includes/include.left_top.php"
                    frameId="1"/>
@@ -76,15 +69,11 @@
             <frame area="form_ajax" filetype="main"
                    name="form_assistant/includes/include.right_bottom.form_ajax.php" frameId="4"/>
         </frames>
-
         <nav_sub>
             <nav area="form" level="0" navm="extra">form_assistant/xml/lang_de_DE.xml;plugins/form_assistant/label</nav>
         </nav_sub>
-
     </contenido>
-
     <content_types>
         <type>CMS_PIFAFORM</type>
     </content_types>
-
 </plugin>
