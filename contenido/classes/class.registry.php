@@ -568,13 +568,13 @@ class cRegistry
      *
      * @param string $sectionName [optional]
      * @param string $optionName [optional]
-     * @param string $defaultValue [optional]
+     * @param mixed $defaultValue [optional]
      * @return mixed
      */
     public static function getConfigValue(
         string $sectionName = null,
         string $optionName = null,
-        string $defaultValue = null
+        $defaultValue = null
     )
     {
         // get general configuration array
