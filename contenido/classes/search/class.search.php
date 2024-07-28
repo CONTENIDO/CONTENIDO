@@ -375,12 +375,21 @@ class cSearch extends cSearchBaseAbstract
             $this->_searchWordsExclude = $this->stripWords($searchWordsExclude);
         }
 
+        // Prepare search words
         $tmpSearchWords = $this->_prepareSearchWordsForQuery($this->_searchWords);
         if (count($this->_searchWordsExclude) > 0) {
             $tmpSearchWords = array_merge(
                 $tmpSearchWords,
                 $this->_prepareSearchWordsForQuery($this->_searchWordsExclude)
             );
+        }
+
+        // Ensure not to run the query with empty search words list
+        $tmpSearchWords = array_filter($tmpSearchWords, function ($value) {
+            return !empty($value);
+        });
+        if (empty($tmpSearchWords)) {
+            return false;
         }
 
         // Build the '<field> <operator> <value>' condition for the query
@@ -408,7 +417,13 @@ class cSearch extends cSearchBaseAbstract
         $sql = $this->db->prepare($sql, cRegistry::getDbTableName('keywords'), $this->lang);
         $sql = str_replace('{KEYWORDS}', $kwSql, $sql);
         $this->_debug('sql', $sql);
-        $this->db->query($sql);
+
+        try {
+            $this->db->query($sql);
+        } catch (\Throwable $e) {
+            $data = ['message' => $e->getMessage(), 'sql' => $sql, 'searchWords' => $this->_searchWords, 'querySearchWords' => $tmpSearchWords];
+            cLogError(json_encode($data));
+        }
 
         while ($this->db->nextRecord()) {
             $keyword = $this->db->f('keyword');
@@ -838,9 +853,8 @@ class cSearch extends cSearchBaseAbstract
                 $wordEscaped = "'%" . $wordEscaped . "%'";
             } elseif ($this->_searchOption === 'regexp') {
                 // Escape special regex characters for the REGEXP operator value, the '&' sign too.
-                $wordEscaped = preg_quote($wordEscaped, '&');
-                // Escape all single backslashes against double ones
-                $wordEscaped = preg_replace('/\\\\/', '\\\\\\\\', $wordEscaped);
+                // NOTE: stripslashes is required to prepare the value for the preg_quote call!
+                $wordEscaped = addslashes(preg_quote(stripslashes($wordEscaped), '&'));
             } elseif ($this->_searchOption === 'exact') {
                 // Exact search also works with LIKE, escape the percent sign for the LIKE operator value
                 $wordEscaped = str_replace('%', '\\%', $wordEscaped);

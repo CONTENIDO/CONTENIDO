@@ -283,9 +283,14 @@ class cSearchIndex extends cSearchBaseAbstract
                             $value = conHtmlEntityDecode($value);
 
                             if (!in_array($value, $this->_stopwords)) {
-                                // eliminate stopwords
-                                $value = $this->removeSpecialChars($value);
+                                // Add original value to keywords list
+                                if (cString::getStringLength($value) > 1) {
+                                    // do not index single characters
+                                    $this->_keywords[$value] = ($this->_keywords[$value] ?? '') . $idtype . '-' . $typeid . ' ';
+                                }
 
+                                // Add cleaned version of value to keywords list
+                                $value = $this->removeSpecialChars($value);
                                 if (cString::getStringLength($value) > 1) {
                                     // do not index single characters
                                     $this->_keywords[$value] = ($this->_keywords[$value] ?? '') . $idtype . '-' . $typeid . ' ';

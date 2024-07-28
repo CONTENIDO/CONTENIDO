@@ -26,6 +26,7 @@
  *
  * @author marcus.gnass
  */
+#[AllowDynamicProperties]
 class SearchResultModule
 {
 
@@ -222,6 +223,16 @@ class SearchResultModule
     }
 
     /**
+     * Returns the search result count.
+     *
+     * @return int
+     */
+    public function getSearchResultCount(): int
+    {
+        return $this->_searchResultCount;
+    }
+
+    /**
      */
     protected function _performSearch()
     {
@@ -229,7 +240,7 @@ class SearchResultModule
         // only certain content types will be searched
         $search = new cSearch([
             // use db function regexp
-            'db' => 'regexp',
+            'db' => $this->_getSearchType(),
             // combine searchterms with and
             'combine' => $this->_combine,
             // => searchrange specified in 'cat_tree', 'categories' and
@@ -316,6 +327,21 @@ class SearchResultModule
     {
         $searchableIdcats = getEffectiveSetting('searchable', 'idcats', 1);
         return explode(',', $searchableIdcats);
+    }
+
+    /**
+     * Returns the database search type.
+     *
+     * @return string 'regexp', 'like', or 'exact'. Default is 'regexp'.
+     * @throws cDbException|cException
+     */
+    protected function _getSearchType(): string
+    {
+        $searchType = getEffectiveSetting('search_result', 'search_type', 'regexp');
+        if (!in_array($searchType, ['regexp', 'like', 'exact'])) {
+            $searchType = 'regexp';
+        }
+        return $searchType;
     }
 
     /**
@@ -470,10 +496,10 @@ class SearchResultModule
      *
      * @param string|null $searchTerm
      * @param int|null $page
-     * @return mixed
+     * @return string
      * @throws cDbException|cException
      */
-    protected function _getPageLink(string $searchTerm = NULL, int $page = NULL)
+    protected function _getPageLink(string $searchTerm = NULL, int $page = NULL): string
     {
         // define standard params
         $params = [
@@ -521,4 +547,3 @@ class SearchResultModule
     }
 
 }
-
