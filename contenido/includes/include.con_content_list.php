@@ -271,7 +271,7 @@ if (($action == 'savecontype' || $action == 10)) {
     $titleNode->addCData($cApiArticleLanguage->get('title'));
 
     $summaryNode = $articleNode->addChild("shortdesc");
-    $summaryNode->addCData($cApiArticleLanguage->get('summary'));
+    $summaryNode->addCData((string) $cApiArticleLanguage->get('summary'));
 
     $pageTitleNode = $articleNode->addChild("seo_title");
     $pageTitleNode->addCData($cApiArticleLanguage->get('pagetitle'));
@@ -285,17 +285,17 @@ if (($action == 'savecontype' || $action == 10)) {
     $copyrightNode = $articleNode->addChild("seo_copyright");
     $copyrightNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 8));
 
-    $seoauthorNode = $articleNode->addChild("seo_author");
-    $seoauthorNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 1));
+    $seoAuthorNode = $articleNode->addChild("seo_author");
+    $seoAuthorNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 1));
+
+    $versionNumber = is_numeric($_POST['versionnumber']) ? (int) $_POST['versionnumber'] : 'current';
 
     // load content id's for article
-    if ($_POST['versionnumber'] == 'current' || $_POST['versionnumber'] == 'undefined'
-        || $_POST['versionnumber'] == "''" || $_POST['versionnumber'] == ""
-    ) {
+    if ($versionNumber === 'current') {
         $conColl = new cApiContentCollection();
         $contentIds = $conColl->getIdsByWhereClause('idartlang = "' . $cApiArticleLanguage->get("idartlang") . '"');
     } else {
-        $artLangVersion = new cApiArticleLanguageVersion((int)$_POST['versionnumber']);
+        $artLangVersion = new cApiArticleLanguageVersion($versionNumber);
         $conVersionColl = new cApiContentVersionCollection();
         $where = "(idcontent, version) IN (
                 SELECT idcontent, max(version)
@@ -309,9 +309,7 @@ if (($action == 'savecontype' || $action == 10)) {
     // iterate through content and add get data
     foreach ($contentIds as $contentId) {
         // load content object
-        if ($_POST['versionnumber'] == 'current' || $_POST['versionnumber'] == 'undefined'
-            || $_POST['versionnumber'] == "''" || $_POST['versionnumber'] == ""
-        ) {
+        if ($versionNumber === 'current') {
             $content = new cApiContent($contentId);
         } else {
             $content = new cApiContentVersion($contentId);

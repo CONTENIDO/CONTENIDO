@@ -8,49 +8,46 @@
 
 <base href="{FRONTEND}" />
 <script type="text/javascript">
-// base tag is not correct outside head tag but it suppresses initial loading of wrong paths during page rendering
-// remove all base tags from document
-var elements = document.getElementsByTagName('base');
-while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
+    // base tag is not correct outside head tag, but it suppresses initial loading
+    // of wrong paths during page rendering, remove all base tags from document.
+    $('base').remove();
 
-//write <base href="{FRONTEND}"> into head tag
-baseHref=document.createElement('base');
-baseHref.href='{FRONTEND}';
-document.getElementsByTagName('head')[0].appendChild(baseHref);
+    // Write new base tag into head tag
+    $('head').first().prepend(
+        $('<base href="{FRONTEND}" />')
+    );
 
-(function(Con, $) {
+    (function(Con, $) {
+        // Configuration of tiny, when tiny is opened set event which stores original
+        // content to Con.Tiny.editDataOrg
+        var wysiwygSettings = {TINY_OPTIONS};
 
-    // Configuration of tiny, when tiny is opened set event which stores original
-    // content to Con.Tiny.editDataOrg
-    var wysiwygSettings = {TINY_OPTIONS};
-
-    // Initialize/setup TinyMCE editor
-    Con.Tiny.tinymceInit(tinymce, wysiwygSettings, {
-        saveTitle: '{SAVE}',
-        saveImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_save_tiny.gif',
-        closeTitle: '{CLOSE}',
-        closeImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_close_tiny.gif',
-        useTiny: '{USE_TINY}',
-        backendUrl: '{BACKEND_URL}'
-    });
-
-    $(function() {
-        // Initialize CONTENIDO tiny module
-        Con.Tiny.init({
-            fileUrl: '{FILE}',
-            imageUrl: '{IMAGE}',
-            mediaUrl: '{MEDIA}',
-            frontendPath: '{FRONTEND}',
-            txtQuestion: '{QUESTION}',
-            idartlang: '{IDARTLANG}',
-            settings: wysiwygSettings
+        // Initialize/setup TinyMCE editor
+        Con.Tiny.tinymceInit(tinymce, wysiwygSettings, {
+            saveTitle: '{SAVE}',
+            saveImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_save_tiny.gif',
+            closeTitle: '{CLOSE}',
+            closeImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_close_tiny.gif',
+            useTiny: '{USE_TINY}',
+            backendUrl: '{BACKEND_URL}'
         });
 
-        // Bind to some events like contenteditables click or window unload
-        Con.Tiny.bindEvents({useTiny: '{USE_TINY}'});
-    });
-})(Con, Con.$);
+        $(function() {
+            // Initialize CONTENIDO tiny module
+            Con.Tiny.init({
+                fileUrl: '{FILE}',
+                imageUrl: '{IMAGE}',
+                mediaUrl: '{MEDIA}',
+                frontendPath: '{FRONTEND}',
+                txtQuestion: '{QUESTION}',
+                idartlang: '{IDARTLANG}',
+                settings: wysiwygSettings
+            });
 
+            // Bind to some events like contenteditables click or window unload
+            Con.Tiny.bindEvents({useTiny: '{USE_TINY}'});
+        });
+    })(Con, Con.$);
 </script>
 
 {NOTIFICATIONS}
@@ -59,44 +56,38 @@ document.getElementsByTagName('head')[0].appendChild(baseHref);
 <p style="display:block;font-weight:bold;">i18n("Content administration")</p>
 <!-- BEGIN:BLOCK -->
 <div class="con_content_type_block {EXTRA_CLASS}">
-       <div class="headline"><label>{EXPORT_CONTENT_LABEL}</label>{EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>:</div>
+    <div class="headline"><label>{EXPORT_CONTENT_LABEL}</label>{EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>:</div>
     {NAME}[{ID_TYPE}]
 </div>
 <!-- END:BLOCK -->
 
-
 <script type="text/javascript">
-/**
- * Set version number as post-parameter for rawdata export
- * $_POST['versionnumber] = 'current' if version is current,
- * else $_POST['versionnumber] = version number
- */
-function getVersionNumber() {
-    document.getElementById("versionnumber").value = $('#selectVersionElement option:selected').val();
-}
-
-(function(Con, $) {
-    $(function() {
-        $('div#categorypath > a').click(function() {
-            var url = $(this).attr('href');
-            var params = Con.UtilUrl.getParams(url);
-            var path = url.split('?');
-            Con.multiLink(
-                'right_top', path[0] + '?area=con&frame=3&idcat=' + params.idcat + '&idtpl=' + params.idtpl + '&display_menu=1&syncoptions={SYNCOPTIONS}&contenido=' + Con.sid,
-                'right_bottom', url,
-                'left_bottom', path[0] + '?area=con&frame=2&idcat=' + params.idcat + '&idtpl=' + params.idtpl + '&contenido=' + Con.sid
-            );
-            return false;
-        });
-        $('form[name="exportrawdata"]').submit(function() {
-            $('form[name="exportrawdata"] div.rawtypes').html("");
-            $('.rawtypes:checked').each(function (index, value) {
-                $('form[name="exportrawdata"] div.rawtypes').append($(this).clone());
+    (function(Con, $) {
+        $(function() {
+            $('div#categorypath > a').click(function() {
+                var url = $(this).attr('href');
+                var params = Con.UtilUrl.getParams(url);
+                var path = url.split('?');
+                Con.multiLink(
+                    'right_top', path[0] + '?area=con&frame=3&idcat=' + params.idcat + '&idtpl=' + params.idtpl + '&display_menu=1&syncoptions={SYNCOPTIONS}&contenido=' + Con.sid,
+                    'right_bottom', url,
+                    'left_bottom', path[0] + '?area=con&frame=2&idcat=' + params.idcat + '&idtpl=' + params.idtpl + '&contenido=' + Con.sid
+                );
+                return false;
             });
 
+            var $exportRawDataForm = $('form[name="exportrawdata"]');
+            $exportRawDataForm.submit(function() {
+                var $rawTypes = $exportRawDataForm.find('div.rawtypes');
+                $exportRawDataForm.find('[name="versionnumber"]').val($('#selectVersionElement option:selected').val());
+                $rawTypes.html('');
+                // TODO There is no checkbox rawtypes, what was the idea of it?
+                $('.rawtypes:checked').each(function (index, value) {
+                    $rawTypes.append($(this).clone());
+                });
+            });
         });
-    });
-})(Con, Con.$);
+    })(Con, Con.$);
 </script>
 
 <form name="editcontent" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
@@ -105,25 +96,29 @@ function getVersionNumber() {
     <input type="hidden" name="idArtLangVersion" value="">
     <input type="hidden" name="data" value="">
 </form>
+
 <label class="rawdata">{EXPORT_LABEL}</label>
 <div class="con_content_type_block">
-<form name="exportrawdata" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=exportrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
-    <div class="rawtypes">
-    </div>
-    <input type="hidden" id="versionnumber" name="versionnumber" value="">
-    <input type="submit" name="export" value="{EXPORT_RAWDATA}" onclick="getVersionNumber()">
-</form>
+    <form name="exportrawdata" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=exportrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
+        <div class="rawtypes">
+        </div>
+        <input type="hidden" id="versionnumber" name="versionnumber" value="">
+        <input type="submit" name="export" value="{EXPORT_RAWDATA}">
+    </form>
 </div>
+
 <label class="rawdata" {HIDE}>{IMPORT_LABEL}</label>
 <div class="con_content_type_block" {HIDE}>
-<form name="importrawdata" id="importrawdata" method="post" enctype="multipart/form-data" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=importrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
-    <input type="file" name="rawfile" value="" size="40" {DISABLED}>
-    <br />
-    <label class="rawdatalabel">{OVERWRITE_DATA_LABEL}</label>
-    <input type="checkbox" name="overwritecontent" value="1" {DISABLED}>
-    <br />
-    <input type="submit" name="import" value="{IMPORT_RAWDATA}" {DISABLED}>
-</form>
+    <form name="importrawdata" id="importrawdata" method="post" enctype="multipart/form-data" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=importrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
+        <input type="file" name="rawfile" value="" size="40" {DISABLED}>
+        <br />
+        <label class="rawdatalabel">
+            {OVERWRITE_DATA_LABEL}
+            <input type="checkbox" name="overwritecontent" value="1" {DISABLED}>
+        </label>
+        <br />
+        <input type="submit" name="import" value="{IMPORT_RAWDATA}" {DISABLED}>
+    </form>
 </div>
 <!--
 template.con_content_list
