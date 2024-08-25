@@ -796,23 +796,21 @@ foreach ($treeItemObjects as $key => $value) {
         $tpl->set('d', 'PUBLICBUTTON', $button);
 
         // Button: Delete
-        $hasChildren = strNextDeeper($value->getId());
+        $hasChildren = strNextDeeper($value->getId()) > 0;
         $hasArticles = strHasArticles($value->getId());
-        if (($hasChildren == 0) && !$hasArticles && ($perm->have_perm_area_action($tmp_area, 'str_deletecat') || $perm->have_perm_area_action_item($tmp_area, 'str_deletecat', $value->getId()))) {
+        if (!$hasChildren && !$hasArticles && ($perm->have_perm_area_action($tmp_area, 'str_deletecat') || $perm->have_perm_area_action_item($tmp_area, 'str_deletecat', $value->getId()))) {
             $button = '<a class="con_img_button" href="javascript:void(0)" data-action="str_deletecat" data-name="' . addslashes(conHtmlSpecialChars($value->getName())) . '" title="' . $lngDeleteCategory . '">'
                 . '<img src="' . $cfg['path']['images'] . 'delete.gif" alt="' . $lngDeleteCategory . '" title="' . $lngDeleteCategory . '">'
                 . '</a>';
         } else {
             $alt = $lngNoPermissions;
+            $button = 'delete_inact.gif';
 
             if ($hasChildren && $hasArticles) {
-                $button = 'delete_inact.gif';
                 $alt = $lngUnableToDeleteReasonArticleMsg;
             } elseif ($hasChildren) {
-                $button = 'delete_inact_h.gif';
                 $alt = $lngUnableToDeleteReasonSubtreeArticleMsg;
             } elseif ($hasArticles) {
-                $button = 'delete_inact_g.gif';
                 $alt = $lngUnableToDeleteReasonArticleMsg;
             }
 
@@ -937,10 +935,12 @@ $tpl->set('s', 'CON_IMAGES', $backendUrl . $cfg['path']['images']);
 // Generate input fields for category new layer and category edit layer
 $oSession = new cHTMLHiddenField($sess->name, $sess->id);
 $oActionEdit = new cHTMLHiddenField('action', 'str_renamecat');
+$oArea = new cHTMLHiddenField('area', 'str');
 $oIdcat = new cHTMLHiddenField('idcat');
 
 $tpl->set('s', 'INPUT_SESSION', $oSession->render());
 $tpl->set('s', 'INPUT_ACTION_EDIT', $oActionEdit->render());
+$tpl->set('s', 'INPUT_AREA', $oArea->render());
 $tpl->set('s', 'INPUT_IDCAT', $oIdcat->render());
 
 $oVisible = new cHTMLHiddenField('visible', 0, 'visible_input');
