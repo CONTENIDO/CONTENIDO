@@ -1,12 +1,12 @@
 @import url("cms_dirlist.css");
 
-.cms_imgeditor .directoryList {
+.cms_imgeditor .con_directory_list {
     float: left;
     margin-right: 1.5%;
     width: 48%;
 }
 
-.cms_imgeditor .directoryShow {
+.cms_imgeditor .con_directory_show {
     width: 99%;
 }
 
@@ -14,7 +14,7 @@
     width: 430px;
 }
 
-.cms_imgeditor .directoryFile {
+.cms_imgeditor .con_directory_file {
     background-color: #ffffff;
     border: 1px solid #CCC;
     height: 170px;
@@ -22,8 +22,8 @@
     width: 49%;
 }
 
-.cms_imgeditor .directories .directoryShow,
-.cms_imgeditor .upload .directoryShow
+.cms_imgeditor .con_tab_directories_content .con_directory_show,
+.cms_imgeditor .con_tab_upload_content .con_directory_show
     {
     background-color: #FFFFFF;
     border: 1px solid #CCCCCC;
@@ -35,11 +35,15 @@
 .cms_imgeditor b {
     display: block;
 }
-.cms_imgeditor .meta label {
+.cms_imgeditor .con_tab_meta_content label {
    /* margin: 10px 0 3px 10px;*/
 }
 
-.cms_imgeditor .meta input {
+.cms_imgeditor .con_tab_meta_content .con_selected_file {
+    margin-bottom: 5px;
+}
+
+.cms_imgeditor .con_tab_meta_content input {
     border: 1px solid #ccc;
     font-size: 11px;
     margin-bottom: 5px;
@@ -47,7 +51,7 @@
     margin-top: 2px;
 }
 
-.cms_imgeditor .meta textarea {
+.cms_imgeditor .con_tab_meta_content textarea {
     border: 1px solid #ccc;
     font-size: 11px;
     height: 50px;
@@ -82,8 +86,7 @@
     position: absolute;
 }
 
-.cms_imgeditor #caption1,
-.cms_imgeditor #caption2,
+.cms_imgeditor .con_caption,
 .cms_imgeditor .image_meta_url {
     margin-left: 10px;
 }

@@ -53,7 +53,9 @@ class cHTMLLabel extends cHTMLContentElement
     {
         parent::__construct('', $class, $id);
         $this->_tag = 'label';
-        $this->updateAttribute('for', $for);
+        if (!empty($for)) {
+            $this->updateAttribute('for', $for);
+        }
         $this->text = $text;
     }
 

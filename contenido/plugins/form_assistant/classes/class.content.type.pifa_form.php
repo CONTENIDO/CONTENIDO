@@ -96,6 +96,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
     {
         // build top code
         $tplTop = new cTemplate();
+        $tplTop->set('s', 'CONTENT_TYPE_ID', $this->_contentTypeId);
         $tplTop->set('s', 'ICON', 'plugins/form_assistant/images/icon_form.png');
         $tplTop->set('s', 'ID', $this->_id);
         $tplTop->set('s', 'PREFIX', $this->_prefix);
@@ -104,7 +105,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
 
         // available tabs
         $tabMenu = [
-            'base' => Pifa::i18n('form')
+            'con_tab_base' => Pifa::i18n('form')
         ];
 
         // build tab code

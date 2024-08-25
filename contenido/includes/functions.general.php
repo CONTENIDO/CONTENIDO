@@ -1123,29 +1123,31 @@ function cSetArtSpecDefault(int $idArtSpec): bool
 /**
  * Build a Article select Box
  *
- * @param string $sName
- *         Name of the SelectBox
- * @param string $iIdCat
- *         Category id
- * @param string $sValue
- *         Value of the SelectBox
- *
- * @return string
- *         HTML
+ * @param string $name Name of the SelectBox
+ * @param int|string $idCat Category id
+ * @param string $value Value of the SelectBox
+ * @param string $idAttr Id attribute value
+ * @param string $cssClass Optional css class for select
+ * @return string HTML
  *
  * @throws cDbException
  * @throws cException
  */
-function buildArticleSelect($sName, $iIdCat, $sValue)
+function buildArticleSelect(
+    $name, $idCat, $value, string $cssClass = '', string $idAttr = ''
+): string
 {
     static $cache;
 
     $lang = cRegistry::getLanguageId();
+    if (empty($idAttr)) {
+        $idAttr = $name;
+    }
 
     if (!isset($cache)) {
         $cache = [];
     }
-    $cacheKey = implode('/', [$lang, $sName, $iIdCat]);
+    $cacheKey = implode('/', [$lang, $name, $idCat]);
 
     if (isset($cache[$cacheKey])) {
         // Get data from cache
@@ -1161,7 +1163,7 @@ function buildArticleSelect($sName, $iIdCat, $sValue)
                WHERE ca.idcat = %d AND al.idlang = %d AND al.idart = a.idart AND al.idart = ca.idart
                ORDER BY al.title';
 
-        $db->query($sql, $cfg['tab']['art'], $cfg['tab']['art_lang'], $cfg['tab']['cat_art'], $iIdCat, $lang);
+        $db->query($sql, $cfg['tab']['art'], $cfg['tab']['art_lang'], $cfg['tab']['cat_art'], $idCat, $lang);
         while ($db->nextRecord()) {
             $data[] = [
                 'idart' => $db->f('idart'),
@@ -1173,10 +1175,13 @@ function buildArticleSelect($sName, $iIdCat, $sValue)
     }
 
     // Build the select
-    $selectElem = new cHTMLSelectElement($sName, "", $sName);
+    $selectElem = new cHTMLSelectElement($name, "", $idAttr);
+    if (!empty($cssClass)) {
+        $selectElem->setClass($cssClass);
+    }
     $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
     foreach ($data as $entry) {
-        $selected = ($sValue == $entry['idart']);
+        $selected = ($value == $entry['idart']);
         $selectElem->appendOptionElement(new cHTMLOptionElement($entry['title'], $entry['idart'], $selected));
     }
 
@@ -1187,24 +1192,30 @@ function buildArticleSelect($sName, $iIdCat, $sValue)
  * Build a Category / Article select Box
  *
  * @staticvar array $cache Cache for DB results
- * @param string $sName Name of the SelectBox
- * @param string $sValue Value of the SelectBox
- * @param int $sLevel Value of the highest level that should be shown
- * @param string $sClass Optional css class for select
+ * @param string $name Name of the SelectBox
+ * @param string $value Value of the SelectBox
+ * @param int $level Value of the highest level that should be shown
+ * @param string $cssClass Optional css class for select
+ * @param string $idAttr Id attribute value
  * @return string HTML select generated
  */
-function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '')
+function buildCategorySelect(
+    $name, $value, $level = 0, string $cssClass = '', string $idAttr = ''
+): string
 {
     static $cache;
 
     $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
+    if (empty($idAttr)) {
+        $idAttr = $name;
+    }
 
     if (!isset($cache)) {
         $cache = [];
     }
 
-    $cacheKey = implode('/', [$client, $lang, $sLevel]);
+    $cacheKey = implode('/', [$client, $lang, $level]);
 
     if (isset($cache[$cacheKey])) {
         // Get data from cache
@@ -1216,7 +1227,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '')
         $db = cRegistry::getDb();
         $cfg = cRegistry::getConfig();
 
-        $addString = ($sLevel > 0) ? "AND c.level < " . (int)$sLevel : '';
+        $addString = ($level > 0) ? "AND c.level < " . (int) $level : '';
 
         $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM `:tab_cat` AS a, `:tab_cat_lang` AS b,
            `:tab_cat_tree` AS c WHERE a.idclient = :client AND b.idlang = :lang AND b.idcat = a.idcat 
@@ -1254,14 +1265,16 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '')
     }
 
     // Build the select
-    $selectElem = new cHTMLSelectElement($sName, '', $sName);
-    $selectElem->setClass($sClass);
+    $selectElem = new cHTMLSelectElement($name, '', $idAttr);
+    if (!empty($cssClass)) {
+        $selectElem->setClass($cssClass);
+    }
     $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ''));
 
-    foreach ($data as $tmpidcat => $props) {
+    foreach ($data as $tmpIdCat => $props) {
         $spaces = cHTMLOptionElement::indent(cSecurity::toInteger($props['level']));
-        $selected = ($sValue == $tmpidcat);
-        $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . '>' . $props['name'], $tmpidcat, $selected));
+        $selected = ($value == $tmpIdCat);
+        $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . '>' . $props['name'], $tmpIdCat, $selected));
     }
 
     return $selectElem->toHtml();

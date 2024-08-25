@@ -416,6 +416,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     {
         // construct the top code of the template
         $templateTop = new cTemplate();
+        $templateTop->set('s', 'CONTENT_TYPE_ID', $this->_contentTypeId);
         $templateTop->set('s', 'ICON', 'images/but_editimage.gif');
         $templateTop->set('s', 'ID', $this->_id);
         $templateTop->set('s', 'PREFIX', $this->_prefix);
@@ -426,29 +427,27 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         );
 
         $tabMenu = [
-            'directories' => i18n('Directories'),
-            'meta' => i18n('Meta'),
-            'upload' => i18n('Upload')
+            'con_tab_directories' => i18n('Directories'),
+            'con_tab_meta' => i18n('Meta'),
+            'con_tab_upload' => i18n('Upload')
         ];
 
         $templateTabs = new cTemplate();
 
         // create code for upload tab
-        $templateTabs->set('d', 'TAB_ID', 'upload');
-        $templateTabs->set('d', 'TAB_CLASS', 'upload');
-        $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabUpload());
+        $templateTabs->set('s', 'ID', $this->_id);
         $templateTabs->set('s', 'PREFIX', $this->_prefix);
+        $templateTabs->set('d', 'TAB_CLASS', 'con_tab_upload_content');
+        $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabUpload());
         $templateTabs->next();
 
         // create code for directories tab
-        $templateTabs->set('d', 'TAB_ID', 'directories');
-        $templateTabs->set('d', 'TAB_CLASS', 'directories');
+        $templateTabs->set('d', 'TAB_CLASS', 'con_tab_directories_content');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabDirectories());
         $templateTabs->next();
 
         // create code for meta tab
-        $templateTabs->set('d', 'TAB_ID', 'meta');
-        $templateTabs->set('d', 'TAB_CLASS', 'meta');
+        $templateTabs->set('d', 'TAB_CLASS', 'con_tab_meta_content');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabMeta());
         $templateTabs->next();
 
@@ -505,7 +504,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $wrapper = new cHTMLDiv();
         $wrapperContent = [];
 
-        $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
+        $directoryList = new cHTMLDiv('', 'con_directory_list', 'con_directory_list' . '_' . $this->_id);
         $liRoot = new cHTMLListItem('root', 'root');
         $aUpload = new cHTMLLink('#');
         $aUpload->setClass('on');
@@ -521,8 +520,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $conStrTree = new cHTMLList('ul', 'con_str_tree', 'con_str_tree', $liRoot);
         $directoryList->setContent($conStrTree);
         $wrapperContent[] = $directoryList;
-        $wrapperContent[] = new cHTMLDiv('', 'directoryFile', 'directoryFile' . '_' . $this->_id);
-        $wrapperContent[] = new cHTMLDiv('', 'directoryShow', 'directoryShow_' . $this->_id);
+        $wrapperContent[] = new cHTMLDiv('', 'con_directory_file');
+        $wrapperContent[] = new cHTMLDiv('', 'con_directory_show');
 
         $wrapper->setContent($wrapperContent);
         return $wrapper->render();
@@ -543,22 +542,21 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $wrapperContent = [];
 
         $imageMetaUrl = new cHTMLSpan();
-        $imageMetaUrl->setID('image_meta_url_' . $this->_id);
         $imageMetaUrl->setClass('image_meta_url');
         $wrapperContent[] = new cHTMLDiv([
             '<b>' . i18n('Selected file') . '</b>',
             $imageMetaUrl
-        ]);
-        $wrapperContent[] = new cHTMLLabel(i18n('Title'), 'image_medianame_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('image_medianame', $this->_medianame, '', '', 'image_medianame_' . $this->_id);
-        $wrapperContent[] = new cHTMLLabel(i18n('Description'), 'image_description_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextarea('image_description', $this->_description, '', '', 'image_description_' . $this->_id);
-        $wrapperContent[] = new cHTMLLabel(i18n('Keywords'), 'image_keywords_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('image_keywords', $this->_keywords, '', '', 'image_keywords_' . $this->_id);
-        $wrapperContent[] = new cHTMLLabel(i18n('Internal notes'), 'image_internal_notice_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('image_internal_notice', $this->_internalNotice, '', '', 'image_internal_notice_' . $this->_id);
-        $wrapperContent[] = new cHTMLLabel(i18n('Copyright'), 'image_copyright_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('image_copyright', $this->_copyright, '', '', 'image_copyright_' . $this->_id);
+        ], 'con_selected_file');
+        $wrapperContent[] = new cHTMLLabel(i18n('Title'), $this->_getElementId('image_medianame'));
+        $wrapperContent[] = new cHTMLTextbox('image_medianame', $this->_medianame, '', '', $this->_getElementId('image_medianame'));
+        $wrapperContent[] = new cHTMLLabel(i18n('Description'), $this->_getElementId('image_description'));
+        $wrapperContent[] = new cHTMLTextarea('image_description', $this->_description, '', '', $this->_getElementId('image_description'));
+        $wrapperContent[] = new cHTMLLabel(i18n('Keywords'), $this->_getElementId('image_keywords'));
+        $wrapperContent[] = new cHTMLTextbox('image_keywords', $this->_keywords, '', '', $this->_getElementId('image_keywords'));
+        $wrapperContent[] = new cHTMLLabel(i18n('Internal notes'), $this->_getElementId('image_internal_notice'));
+        $wrapperContent[] = new cHTMLTextbox('image_internal_notice', $this->_internalNotice, '', '', $this->_getElementId('image_internal_notice'));
+        $wrapperContent[] = new cHTMLLabel(i18n('Copyright'), $this->_getElementId('image_copyright'));
+        $wrapperContent[] = new cHTMLTextbox('image_copyright', $this->_copyright, '', '', $this->_getElementId('image_copyright'));
 
         $wrapper->setContent($wrapperContent);
         return $wrapper->render();
@@ -582,8 +580,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $newDirForm->setAttribute('name', 'newdir');
         $newDirForm->setAttribute('method', 'post');
         $newDirForm->setAttribute('action', cRegistry::getBackendUrl() . 'main.php');
-        $caption1Span = new cHTMLSpan();
-        $caption1Span->setID('caption1');
+        $caption1Span = new cHTMLSpan('', 'con_caption con_caption1');
         $newDirHead = new cHTMLDiv([
             '<b>' . i18n('Create a directory in') . '</b>',
             $caption1Span
@@ -627,13 +624,12 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $action = new cHTMLHiddenField('action', 'upl_upload');
         $appendparameters = new cHTMLHiddenField('appendparameters');
         $contenido = new cHTMLHiddenField('contenido', cRegistry::getBackendSessionId());
-        $caption2Span = new cHTMLSpan();
-        $caption2Span->setID('caption2');
+        $caption2Span = new cHTMLSpan('', 'con_caption con_caption2');
         $propertiesHead = new cHTMLDiv([
             '<b>' . i18n('Path') . '</b>',
             $caption2Span
         ]);
-        $imageUpload = new cHTMLUpload('file[]', '', '', 'cms_image_m' . $this->_id, false, null, '', 'file');
+        $imageUpload = new cHTMLUpload('file[]', '', '', $this->_getElementId('file'), false, null, '', 'file');
         $imageUpload->setClass('jqueryAjaxUpload');
         $propertiesForm->setContent([
             $frame,
@@ -666,7 +662,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      */
     public function generateFileSelect(string $directoryPath = ''): string
     {
-        $htmlSelect = new cHTMLSelectElement('image_filename', '', 'image_filename_' . $this->_id);
+        $htmlSelect = new cHTMLSelectElement('image_filename', '');
         $htmlSelect->setSize(16);
         $htmlSelectOption = new cHTMLOptionElement('Kein', '', false);
         $htmlSelect->addOptionElement(0, $htmlSelectOption);

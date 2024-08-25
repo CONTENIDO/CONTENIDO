@@ -68,6 +68,13 @@ abstract class cContentTypeAbstract
     protected $_prefix = 'abstract';
 
     /**
+     * Content type id, e.g. 'cms_teaser_1'.
+     *
+     * @var string
+     */
+    protected $_contentTypeId = '';
+
+    /**
      * Whether the settings should be interpreted as plaintext or XML.
      *
      * @var string
@@ -180,6 +187,14 @@ abstract class cContentTypeAbstract
     protected $_formFields = [];
 
     /**
+     * List of form field names which are used by this content type and can have multiple values,
+     * e.g. select of type multi!
+     *
+     * @var array
+     */
+    protected $_multiFormFields = [];
+
+    /**
      * Constructor to create an instance of this class.
      *
      * Initialises class attributes with values from cRegistry.
@@ -196,6 +211,7 @@ abstract class cContentTypeAbstract
         // set props
         $this->_rawSettings = $rawSettings;
         $this->_id = $id;
+        $this->_contentTypeId = 'cms_' . $this->_prefix . '_' . $this->_id;
         $this->_contentTypes = $contentTypes;
 
         $this->_idArtLang = cRegistry::getArticleLanguageId();
@@ -658,6 +674,32 @@ abstract class cContentTypeAbstract
         return $expand;
     }
 
+    /**
+     * Returns the identifier for an element.
+     * 
+     * @param string $name
+     * @return string
+     * @since CONTENIDO 4.10.2
+     */
+    protected function _getElementId(string $name): string
+    {
+        return $this->_contentTypeId . '_' . $name;
+    }
+
+    /**
+     * Generates comma separated list of form fields names.
+     *
+     * @return string
+     * @since CONTENIDO 4.10.2
+     */
+    protected function _makeFormFieldsString(): string
+    {
+        $formFields = array_map(function ($value) {
+            return in_array($value, $this->_multiFormFields) ? $value . '[]' : $value;
+        }, $this->_formFields);
+
+        return "'" . implode("','", $formFields) . "'";
+    }
     /**
      * This functions able to use a content type object directly for output
      * See also CON-2587

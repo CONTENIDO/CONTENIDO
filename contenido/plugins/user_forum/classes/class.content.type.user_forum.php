@@ -73,6 +73,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
 
         // build top code
         $tplTop = new cTemplate();
+        $tplTop->set('s', 'CONTENT_TYPE_ID', $this->_contentTypeId);
         $tplTop->set('s', 'ICON', 'plugins/user_forum/images/con_button.gif');
         $tplTop->set('s', 'ID', $this->_id);
         $tplTop->set('s', 'PREFIX', $this->_prefix);
@@ -80,7 +81,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
         $codeTop = $tplTop->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_top.html', true);
 
         // available tabs
-        // $tabMenu = array('base' => Pifa::i18n('form'));
+        // $tabMenu = array('con_tab_base' => Pifa::i18n('form'));
 
         // build tab code
         $tplPanel = new cTemplate();

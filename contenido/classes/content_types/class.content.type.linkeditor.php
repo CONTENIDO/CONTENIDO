@@ -251,27 +251,23 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $templateTabs->set('s', 'PREFIX', $this->_prefix);
 
         // create code for external tab
-        $templateTabs->set('d', 'TAB_ID', 'external');
-        $templateTabs->set('d', 'TAB_CLASS', 'external');
+        $templateTabs->set('d', 'TAB_CLASS', 'con_tab_external_content');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabExternal());
         $templateTabs->next();
 
         // create code for internal tab
-        $templateTabs->set('d', 'TAB_ID', 'internal');
-        $templateTabs->set('d', 'TAB_CLASS', 'internal');
+        $templateTabs->set('d', 'TAB_CLASS', 'con_tab_internal_content');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabInternal());
         $templateTabs->next();
 
         // create code for file tab
-        $templateTabs->set('d', 'TAB_ID', 'file');
-        $templateTabs->set('d', 'TAB_CLASS', 'file');
+        $templateTabs->set('d', 'TAB_CLASS', 'con_tab_file_content');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabFile());
         $templateTabs->next();
 
         // create code for basic settings "tab" - these settings are actually
         // visible any time
-        $templateTabs->set('d', 'TAB_ID', 'basic-settings');
-        $templateTabs->set('d', 'TAB_CLASS', 'basic-settings');
+        $templateTabs->set('d', 'TAB_CLASS', 'con_tab_basic_settings_content');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateBasicSettings());
         $templateTabs->next();
 
@@ -282,6 +278,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
 
         // construct the top code of the template
         $templateTop = new cTemplate();
+        $templateTop->set('s', 'CONTENT_TYPE_ID', $this->_contentTypeId);
         $templateTop->set('s', 'ICON', 'images/but_editlink.gif');
         $templateTop->set('s', 'ID', $this->_id);
         $templateTop->set('s', 'PREFIX', $this->_prefix);
@@ -293,9 +290,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
 
         // define the available tabs
         $tabMenu = [
-            'external' => i18n('External link'),
-            'internal' => i18n('Internal link'),
-            'file' => i18n('Link to a file')
+            'con_tab_external' => i18n('External link'),
+            'con_tab_internal' => i18n('Internal link'),
+            'con_tab_file' => i18n('Link to a file')
         ];
 
         // construct the bottom code of the template
@@ -340,8 +337,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $wrapper = new cHTMLDiv();
         $wrapperContent = [];
 
-        $wrapperContent[] = new cHTMLLabel(i18n('Href'), 'linkeditor_externallink_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('linkeditor_externallink_' . $this->_id, $this->getSetting('linkeditor_externallink'), '', '', 'linkeditor_externallink_' . $this->_id);
+        $id = $this->_getElementId('linkeditor_externallink');
+        $wrapperContent[] = new cHTMLLabel(i18n('Href'), $id);
+        $wrapperContent[] = new cHTMLTextbox('linkeditor_externallink_' . $this->_id, $this->getSetting('linkeditor_externallink'), '', '', $id);
 
         $wrapper->setContent($wrapperContent);
 
@@ -364,11 +362,14 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $wrapper = new cHTMLDiv();
         $wrapperContent = [];
 
-        $wrapperContent[] = new cHTMLLabel(i18n('Title'), 'linkeditor_title_' . $this->_id);
+        $id = $this->_getElementId('linkeditor_title');
+        $wrapperContent[] = new cHTMLLabel(i18n('Title'), $id);
         $title = conHtmlEntityDecode($this->getSetting('linkeditor_title'));
-        $wrapperContent[] = new cHTMLTextbox('linkeditor_title_' . $this->_id, $title, '', '', 'linkeditor_title_' . $this->_id);
-        $wrapperContent[] = new cHTMLCheckbox('linkeditor_newwindow_' . $this->_id, '', 'linkeditor_newwindow_' . $this->_id, ($this->getSetting('linkeditor_newwindow') === 'true'));
-        $wrapperContent[] = new cHTMLLabel(i18n('Open in a new window'), 'linkeditor_newwindow_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('linkeditor_title_' . $this->_id, $title, '', '', $id);
+
+        $id = $this->_getElementId('linkeditor_newwindow');
+        $wrapperContent[] = new cHTMLCheckbox('linkeditor_newwindow_' . $this->_id, '', $id, ($this->getSetting('linkeditor_newwindow') === 'true'));
+        $wrapperContent[] = new cHTMLLabel(i18n('Open in a new window'), $id);
 
         $wrapper->setContent($wrapperContent);
 
@@ -389,7 +390,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $wrapper = new cHTMLDiv();
         $wrapperContent = [];
 
-        $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
+        $id = $this->_getElementId('linkeditor_title');
+        $directoryList = new cHTMLDiv('', 'con_directory_list', 'con_directory_list' . '_' . $this->_id);
         $liRoot = new cHTMLListItem('root', 'last');
         $aUpload = new cHTMLLink('#');
         $aUpload->setClass('on');
@@ -407,7 +409,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $directoryList->setContent($conStrTree);
         $wrapperContent[] = $directoryList;
         $wrapperContent[] = new cHTMLDiv(
-            $this->generateArticleSelect(), 'directoryFile', 'directoryFile' . '_' . $this->_id
+            $this->generateArticleSelect(), 'con_directory_file', 'con_directory_file' . '_' . $this->_id
         );
 
         $wrapper->setContent($wrapperContent);
@@ -671,8 +673,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $newDirForm->setAttribute('name', 'newdir');
         $newDirForm->setAttribute('method', 'post');
         $newDirForm->setAttribute('action', cRegistry::getBackendUrl() . 'main.php');
-        $caption1Span = new cHTMLSpan();
-        $caption1Span->setID('caption1');
+        $caption1Span = new cHTMLSpan('', 'con_caption con_caption1');
         $newDirHead = new cHTMLDiv([
             '<b>' . i18n('Create a directory in') . '</b>',
             $caption1Span
@@ -716,8 +717,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $action = new cHTMLHiddenField('action', 'upl_upload');
         $appendparameters = new cHTMLHiddenField('appendparameters');
         $contenido = new cHTMLHiddenField('contenido', $_REQUEST['contenido']);
-        $caption2Span = new cHTMLSpan();
-        $caption2Span->setID('caption2');
+        $caption2Span = new cHTMLSpan('', 'con_caption con_caption2');
         $propertiesHead = new cHTMLDiv([
             '<b>' . i18n('Path') . '</b>',
             $caption2Span
@@ -740,7 +740,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $wrapperContent[] = new cHTMLImage(cRegistry::getBackendUrl() . 'images/ajax-loader.gif', 'loading');
 
         // directory navigation
-        $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList_' . $this->_id);
+        $directoryList = new cHTMLDiv('', 'con_directory_list', 'con_directory_list_' . $this->_id);
         $liRoot = new cHTMLListItem('root', 'last');
         $aUpload = new cHTMLLink('#');
         $aUpload->setClass('on');
@@ -762,7 +762,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $directoryList->setContent($conStrTree);
         $wrapperContent[] = $directoryList;
 
-        $wrapperContent[] = new cHTMLDiv($this->getUploadFileSelect('', true), 'directoryFile', 'directoryFile' . '_' . $this->_id);
+        $wrapperContent[] = new cHTMLDiv($this->getUploadFileSelect('', true), 'con_directory_file', 'con_directory_file' . '_' . $this->_id);
 
         $wrapper->setContent($wrapperContent);
 

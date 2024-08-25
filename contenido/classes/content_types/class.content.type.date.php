@@ -331,7 +331,7 @@ class cContentTypeDate extends cContentTypeAbstract
             ? date($format, $this->getSetting('date_timestamp')) : '';
         $code = new cHTMLTextbox(
             'date_timestamp_' . $this->_id, $value, '', '',
-            'date_timestamp_' . $this->_id, true, '', '', 'date_timestamp'
+            '', true, '', '', 'date_timestamp'
         );
 
         $code .= $this->_generateFormatSelect();
@@ -396,9 +396,9 @@ class cContentTypeDate extends cContentTypeAbstract
     private function _generateFormatSelect()
     {
         $formatSelect = new cHTMLSelectElement(
-            $this->_prefix . '_format_select_' . $this->_id, '',
-            $this->_prefix . '_format_select_' . $this->_id);
-        $formatSelect->setClass('con_select');
+            $this->_prefix . '_format_select_' . $this->_id, ''
+        );
+        $formatSelect->setClass('con_select date_format_select');
         $formatSelect->autoFill($this->_dateFormatsPhp);
         $phpDateFormat = conHtmlSpecialChars($this->getSetting($this->_prefix . '_format'));
         $formatSelect->setDefault($phpDateFormat);

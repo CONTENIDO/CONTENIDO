@@ -1,5 +1,9 @@
 <script type="text/javascript">
-Con.Loader.get([Con.cfg.urlBackend + 'scripts/content_types/cmsDate.js'], function() {
+Con.Loader.get(
+    [
+        Con.cfg.urlBackend + 'scripts/base64.js',
+        Con.cfg.urlBackend + 'scripts/content_types/cmsDate.js'
+    ], function() {
     var contentTypeInstance = new Con.cContentTypeDate(
         '#cms_{PREFIX}_{ID}_settings',
         '{PREFIX}',

@@ -89,26 +89,26 @@
     background-color: #f8fddc;
 }
 
-.directoryList {
+.con_directory_list {
     background-color: #fff;
     border: 1px solid #ccc;
     height: 170px;
     margin-bottom: 10px;
     overflow: auto;
 }
-.directoryList .con_str_tree {
+.con_directory_list .con_str_tree {
     margin: 0;
 }
-.directoryList li.root > div > em {
+.con_directory_list li.root > div > em {
     background: url("../../images/ordner_oben.gif") no-repeat 0 2px;
     font-style: italic;
     height: 20px;
     padding: 0;
 }
-.directoryList li.root > div > em a {
+.con_directory_list li.root > div > em a {
     display: none;
 }
-.directoryList li.root > div > a {
+.con_directory_list li.root > div > a {
     background: none;
     padding: 0;
 }

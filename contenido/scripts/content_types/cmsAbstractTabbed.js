@@ -111,7 +111,7 @@
         /**
          * Reference to tabbed frame node
          * @property $frame
-         * @type {HTMLElement[]}
+         * @type {jQuery}
          */
         this.$frame = $(this.frameId);
     }
@@ -165,26 +165,25 @@
      * @param {String} value The value of the form field which should be added.
      */
     cContentTypeAbstractTabbed.prototype.appendFormField = function(name, value) {
+        var $formEditContent = $('form[name="editcontent"]');
     	// CON-2142
         // jQuery transforms special strings like &auml; to ä during append
         // if a hidden input field with the given name already exists, just set the value
-        if ($('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').length > 0) {
-            $('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').val(value);
+        if ($formEditContent.find('input[type="hidden"][name="' + name + '"]').length > 0) {
+            $formEditContent.find('input[type="hidden"][name="' + name + '"]').val(value);
         } else {
             // otherwise append a new field to the form
-
-            $('form[name="editcontent"]').append('<input type="hidden" name="' + name + '"/>');
-            $('form[name="editcontent"] input:last-child').attr('value', value);
+            $formEditContent.append('<input type="hidden" name="' + name + '"/>');
+            $formEditContent.find('input:last-child').attr('value', value);
         }
     };
 
     /**
-     * Adds event which fades in the edit form when editbutton is clicked.
+     * Adds event which fades in the edit form when edit button is clicked.
      * @method addFrameShowEvent
      */
     cContentTypeAbstractTabbed.prototype.addFrameShowEvent = function() {
         var self = this;
-        $(this.imageId).css('cursor', 'pointer');
         $(this.imageId).click(function() {
             var top = $(document).scrollTop()+($(window).height()/2);
             $('body').addClass('cms_has_overlay');
@@ -204,18 +203,28 @@
      */
     cContentTypeAbstractTabbed.prototype.addTabbingEvents = function() {
         var self = this,
-            $items = this.$frame.find('.menu li');
+            $items = this.$frame.find('.con_tab_menu li');
+
         // add layer click events
         $items.click(function() {
+            var $tab = $(this),
+                className = $tab.data('tabContent');
+
+            if ($tab.hasClass('active')) {
+                // Tab is already active
+                return;
+            }
+
             $items.removeClass('active');
             // hide all tabs but the active one
-            self.$frame.find('.tabs > div:not(#' + $(this).attr('class') + ')').hide();
+            self.$frame.find('.con_tab_content > div:not(.' + className + ')').hide();
             // add smooth animation
-            self.$frame.find('#' + $(this).attr('class')).fadeIn('normal');
-            $(this).addClass('active');
+            self.$frame.find('.con_tab_content > .' + className).fadeIn('normal');
+            $tab.addClass('active');
         });
+
         // trigger the click event on the first tab so that the others are hidden etc.
-        self.$frame.find('.menu li:first').click();
+        self.$frame.find('.con_tab_menu li:first').click();
     };
 
     /**
@@ -229,8 +238,8 @@
         $elem.click(function() {
             for (var i = 0; i < self.fields.length; i++) {
                 var value = '',
-                    name = self.fields[i] + '_' + self.id,
-                    $item = self.$frame.find('#' + name);
+                    name = self.fields[i],
+                    $item = self.$frame.find('[name="' + name + '"]');
                 if ($item.is('input[type="checkbox"]')) {
                     // special behaviour for checkboxes
                     value = $item.prop('checked');
@@ -251,7 +260,7 @@
                     // default value for select boxes and text boxes
                     value = $item.val();
                 }
-                name = name.replace('_' + self.id, '');
+                //name = name.replace('_' + self.id, '');
                 self.appendFormField(name, value);
             }
             self.appendFormField(self.prefix + '_action', 'store');
@@ -282,6 +291,41 @@
         });
     };
 
+    /**
+     * Returns the content type setting element by its name.
+     * @method getSettingElement
+     * @param {String} name
+     * @return {jQuery}
+     */
+    cContentTypeAbstractTabbed.prototype.getSettingElement = function(name) {
+        return this.$frame.find('[name="' + name + '"]');
+    };
+
+    /**
+     * Returns an element class name within current tabbed frame, prefixed by CMS Type
+     * identifier (e.g. `cms_image_1_`).
+     * @method getElementCssClass
+     * @param {String} name
+     * @return {String} Element class name, e.g. 'cms_image_1_{name}'
+     */
+    cContentTypeAbstractTabbed.prototype.getElementCssClass = function(name) {
+        return this.getElementId(name);
+    };
+
+    /**
+     * Returns an element identifier name within current tabbed frame, prefixed by CMS Type
+     * identifier (e.g. `cms_image_1_`).
+     * @method getElementCssClass
+     * @param {String} name
+     * @return {String} Element identifier, e.g. 'cms_image_1_{name}'
+     */
+    cContentTypeAbstractTabbed.prototype.getElementId = function(name) {
+        if (this.imageId.length) {
+            return this.imageId.substring(1) + '_' + name;
+        } else {
+            return '';
+        }
+    };
 
     Con.cContentTypeAbstractTabbed = cContentTypeAbstractTabbed;
 
