@@ -72,7 +72,7 @@ $oTpl->set('s', 'USER_ID', $userid);
 $oTpl->set('s', 'AREA', $area);
 
 $oUser = new cApiUser($userid);
-$userPerms = $oUser->getField('perms');
+$userPerms = (string) $oUser->getField('perms');
 
 ob_start();
 
