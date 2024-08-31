@@ -1066,7 +1066,7 @@ function _processCmsTags(
     $layoutCode = cApiCecHook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
 
     if (!empty($layoutCode)) {
-        $pathTemplate = cRegistry::getBackendUrl() . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=%';
+        $pathTemplate = cRegistry::getBackendUrl() . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=%s';
         $jsCode = '
 <script type="text/javascript">
     (function(Con, $) {
@@ -1080,7 +1080,7 @@ function _processCmsTags(
                     var path = pathTemplate.replace("%s", $element.data("con-idcontent"));
                     Con.showConfirmation(confirmDeletionText, function() {
                         console.log("Con.Tiny.setContent", path);
-                        //Con.Tiny.setContent("1", path);
+                        Con.Tiny.setContent("1", path);
                     });
                 }
             });
