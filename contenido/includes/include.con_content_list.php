@@ -412,7 +412,7 @@ if (($action == 'savecontype' || $action == 10)) {
                                     break;
                                 case 'content':
                                     $type = $child->attributes()->type;
-                                    $typeid = $child->attributes()->id;
+                                    $typeid = intval($child->attributes()->id);
 
                                     $typeEntry = new cApiType();
                                     $typeEntry->loadBy("type", $type);
@@ -646,7 +646,7 @@ switch ($versioningState) {
         $content = $selectedArticle->getContent();
         if ($selectedArticle->isLoaded() && is_array($content)) {
             $result = array_change_key_case($content, CASE_UPPER);
-            $result = $versioning->sortResults($result);
+            $result = $versioning->sortResults((array)$result);
         }
 
         // Set $list
@@ -751,7 +751,7 @@ switch ($versioningState) {
 
         if ($selectedArticle->isLoaded() && is_array($content)) {
             $result = array_change_key_case($content, CASE_UPPER);
-            $result = $versioning->sortResults($result);
+            $result = $versioning->sortResults((array)$result);
         }
 
         // Set $list
@@ -988,7 +988,7 @@ function _processCmsTags(
 
         // Try to find all CMS_{type}[{number}] values, e.g. CMS_HTML[1]
         // At $match[2] you found your typeid
-        $tmp = preg_match_all('/(' . $type . '\[+(\d+)\])/i', $layoutCode, $match);
+        $tmp = preg_match_all('/(' . $type . '\[+(\d+)])/i', $layoutCode, $match);
 
         $a_[$key] = $match[2]; //all typeids
 
