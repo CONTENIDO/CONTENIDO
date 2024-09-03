@@ -603,7 +603,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
  * @throws cDbException
  * @throws cException
  */
-function conMakeArticleIndex(int $idartlang, int $idart)
+function conMakeArticleIndex($idartlang, $idart)
 {
     // get IDs of given article langauge
     if (cRegistry::getArticleLanguageId() == $idartlang) {
