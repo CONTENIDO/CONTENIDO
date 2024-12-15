@@ -190,6 +190,26 @@ class cApiGroupCollection extends ItemCollection
         }
         return $groups;
     }
+
+    /**
+     * Returns all group permissions of an user.
+     * @param string $userId
+     * @return array
+     * @throws cDbException
+     * @throws cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function getPermissionsByUserId(string $userId): array
+    {
+        $groupPerm = [];
+        $groups = $this->fetchByUserID($userId);
+        foreach ($groups as $group) {
+            $groupPerm[] = $group->get('perms');
+        }
+
+        return $groupPerm;
+    }
+
 }
 
 /**
@@ -277,7 +297,7 @@ class cApiGroup extends Item
     {
         if ('perms' === $sField) {
             if (is_array($mValue)) {
-                $mValue = implode(',', $mValue);
+                $mValue = cPermission::permissionToString($mValue);
             }
         }
 
@@ -289,9 +309,9 @@ class cApiGroup extends Item
      *
      * @return array
      */
-    public function getPermsArray()
+    public function getPermsArray(): array
     {
-        return explode(',', $this->get('perms'));
+        return cPermission::permissionToArray($this->get('perms'));
     }
 
     /**

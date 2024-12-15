@@ -147,14 +147,9 @@ class cAuthHandlerBackend extends cAuth
         }
 
         $groupColl = new cApiGroupCollection();
-        $groups = $groupColl->fetchByUserID($uid);
-        foreach ($groups as $group) {
-            $groupPerm[] = $group->get('perms');
-        }
-
-        $perm = implode(',', $groupPerm);
-
-        $this->auth['perm'] = $perm;
+        $this->auth['perm'] = cPermission::permissionToString(
+            array_merge($groupPerm, $groupColl->getPermissionsByUserId($uid))
+        );
 
         return $uid;
     }

@@ -203,7 +203,7 @@ if (!empty($request['userprop_type']) && !empty($request['userprop_name'])) {
 }
 
 if (count($aPerms) == 0 || $action == '' || !isset($action)) {
-    $aPerms = explode(',', $oUser->getField('perms') ?? '');
+    $aPerms = $oUser->getPermsArray();
 }
 
 $tpl->reset();

@@ -56,7 +56,7 @@ if (!empty($filter)) {
 }
 $cApiUserCollection->query();
 
-$aCurrentUserPermissions = explode(',', $auth->auth['perm']);
+$aCurrentUserPermissions = $auth->getPermsArray();
 $aCurrentUserAccessibleClients = $classclient->getAccessibleClients();
 
 $iMenu = 0;
@@ -89,9 +89,8 @@ $isAuthUserSysadmin = $rightsAreasHelper->isAuthSysadmin();
 while ($cApiUser = $cApiUserCollection->next()) {
     $userid = $cApiUser->get('user_id');
 
-    $aUserPermissions = explode(',', $cApiUser->get('perms') ?? '');
+    $aUserPermissions = $cApiUser->getPermsArray();
     $rightsAreasHelper->setContextPermissions($aUserPermissions);
-
 
     $bDisplayUser = false;
 

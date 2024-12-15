@@ -83,7 +83,7 @@ if (($action == 'group_edit')) {
     if (!$bError) {
         $aPerms = cRights::buildUserOrGroupPermsFromRequest();
         $oGroup->setField('description', $request['description']);
-        $oGroup->setField('perms', implode(',', $aPerms));
+        $oGroup->setField('perms', cPermission::permissionToString($aPerms));
 
         if ($oGroup->store()) {
             $sNotification = $notification->returnNotification("ok", i18n("Changes saved"));
@@ -104,7 +104,7 @@ if (!empty($request['groupprop_type']) && !empty($request['groupprop_name'])) {
     $oGroup->setGroupProperty($request['groupprop_type'], $request['groupprop_name'], $request['groupprop_value']);
 }
 
-$aPerms = explode(',', $oGroup->getField('perms'));
+$aPerms = $oGroup->getPermsArray();
 
 // $page->reset();
 $page->set('s', 'NOTIFICATION', $sNotification);

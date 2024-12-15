@@ -66,7 +66,7 @@ if ($actionId !== '%') {
 $clientColl = new cApiClientCollection();
 
 $userColl = new cApiUserCollection();
-$accessibleUsers = $userColl->getAccessibleUsers(explode(',', $auth->auth['perm']));
+$accessibleUsers = $userColl->getAccessibleUsers($auth->getPermsArray());
 
 $actionColl = new cApiActionCollection();
 

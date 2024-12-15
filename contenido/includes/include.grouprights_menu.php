@@ -87,7 +87,7 @@ if ($restriction == 3) {
 }
 $db->query($sql);
 
-$currentUserPerms = explode(',', $auth->auth['perm']);
+$currentUserPerms = $auth->getPermsArray();
 
 $accessibleClients = $classclient->getAccessibleClients();
 
@@ -112,7 +112,7 @@ $deleteLink = $deleteLink->setClass('con_img_button')
     ->render();
 
 while ($db->nextRecord()) {
-    $groupPerms = explode(',', $db->f('perms'));
+    $groupPerms = cPermission::permissionToArray($db->f('perms'));
 
     $rightsAreasHelper->setContextPermissions($groupPerms);
 
