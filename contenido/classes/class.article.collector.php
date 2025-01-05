@@ -115,6 +115,7 @@ class cArticleCollector implements SeekableIterator, Countable
         }
 
         $options['categories'] = $options['categories'] ?? [];
+        $options['categories'] = array_filter($options['categories']);
 
         $options['lang'] = cSecurity::toInteger($options['lang'] ?? cRegistry::getLanguageId());
 
