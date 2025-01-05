@@ -29,9 +29,9 @@ function getUsers($listid, $default)
     $auth = cRegistry::getAuth();
 
     $userColl = new cApiUserCollection();
-    $users = $userColl->getAccessibleUsers(explode(',', $auth->auth['perm']));
+    $users = $userColl->getAccessibleUsers($auth->getPermsArray());
     $groupColl = new cApiGroupCollection();
-    $groups = $groupColl->getAccessibleGroups(explode(',', $auth->auth['perm']));
+    $groups = $groupColl->getAccessibleGroups($auth->getPermsArray());
 
     $tpl2 = new cTemplate();
     $tpl2->set('s', 'NAME', 'user' . $listid);

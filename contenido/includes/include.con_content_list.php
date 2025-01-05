@@ -412,7 +412,7 @@ if (($action == 'savecontype' || $action == 10)) {
                                     break;
                                 case 'content':
                                     $type = $child->attributes()->type;
-                                    $typeid = $child->attributes()->id;
+                                    $typeid = intval($child->attributes()->id);
 
                                     $typeEntry = new cApiType();
                                     $typeEntry->loadBy("type", $type);
@@ -646,7 +646,7 @@ switch ($versioningState) {
         $content = $selectedArticle->getContent();
         if ($selectedArticle->isLoaded() && is_array($content)) {
             $result = array_change_key_case($content, CASE_UPPER);
-            $result = $versioning->sortResults($result);
+            $result = $versioning->sortResults((array)$result);
         }
 
         // Set $list
@@ -751,7 +751,7 @@ switch ($versioningState) {
 
         if ($selectedArticle->isLoaded() && is_array($content)) {
             $result = array_change_key_case($content, CASE_UPPER);
-            $result = $versioning->sortResults($result);
+            $result = $versioning->sortResults((array)$result);
         }
 
         // Set $list
@@ -988,7 +988,7 @@ function _processCmsTags(
 
         // Try to find all CMS_{type}[{number}] values, e.g. CMS_HTML[1]
         // At $match[2] you found your typeid
-        $tmp = preg_match_all('/(' . $type . '\[+(\d+)\])/i', $layoutCode, $match);
+        $tmp = preg_match_all('/(' . $type . '\[+(\d+)])/i', $layoutCode, $match);
 
         $a_[$key] = $match[2]; //all typeids
 
@@ -1066,21 +1066,21 @@ function _processCmsTags(
     $layoutCode = cApiCecHook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
 
     if (!empty($layoutCode)) {
-        $pathTemplate = cRegistry::getBackendUrl() . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=%';
+        $pathTemplate = cRegistry::getBackendUrl() . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=%s';
         $jsCode = '
 <script type="text/javascript">
     (function(Con, $) {
         var pathTemplate = "' . $pathTemplate . '",
             confirmDeletionText = "' . i18n("Are you sure you want to delete this content type from this article?") . '";
         $(function() {
-            $("#con_content_list [data-con-action]").live("click", function() {
+            $("#con_content_list [data-con-action]").on("click", function() {
                 var $element = $(this),
                     action = $element.data("con-action");
                 if (action === "delete_content_type") {
                     var path = pathTemplate.replace("%s", $element.data("con-idcontent"));
                     Con.showConfirmation(confirmDeletionText, function() {
                         console.log("Con.Tiny.setContent", path);
-                        //Con.Tiny.setContent("1", path);
+                        Con.Tiny.setContent("1", path);
                     });
                 }
             });

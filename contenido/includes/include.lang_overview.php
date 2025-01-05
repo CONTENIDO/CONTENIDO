@@ -21,8 +21,7 @@ $client = cSecurity::toInteger(cRegistry::getClientId());
 $perm = cRegistry::getPerm();
 $frame = cRegistry::getFrame();
 $area = cRegistry::getArea();
-$action = cRegistry::getAction();
-$action = $action ?? '';
+$action = cRegistry::getAction() ?? '';
 
 $requestTargetClient = cSecurity::toInteger($_REQUEST['targetclient'] ?? '0');
 $requestIdLang = cSecurity::toInteger($_REQUEST['idlang'] ?? '0');
@@ -66,7 +65,7 @@ if ($tmp_notification) {
 }
 
 $clientLanguageColl = new cApiClientLanguageCollection();
-$allClientLanguages = $clientLanguageColl->getAllLanguagesByClient($client);
+$allClientLanguages = $clientLanguageColl->getAllLanguagesByClient($requestTargetClient);
 
 $iLangCount = count($allClientLanguages);
 foreach ($allClientLanguages as $clientLanguage) {
@@ -124,9 +123,8 @@ if ($action == 'lang_deactivatelanguage' || $action == 'lang_activatelanguage') 
     $sReloadScript = <<<JS
 <script type="text/javascript">
 (function(Con, $) {
-    Con.multiLink(
-        'right_bottom', Con.UtilUrl.build('main.php', {area: 'lang_edit', frame: 4, targetclient: $client, idlang: $requestIdLang})
-    );
+    var url = Con.UtilUrl.build('main.php', {area: 'lang_edit', frame: 4, targetclient: $requestTargetClient, idlang: $requestIdLang});
+    Con.multiLink('right_bottom', url);
 })(Con, Con.$);
 </script>
 JS;

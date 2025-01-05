@@ -608,7 +608,7 @@ class cApiUser extends Item
     {
         if ('perms' === $sField) {
             if (is_array($mValue)) {
-                $mValue = implode(',', $mValue);
+                $mValue = cPermission::permissionToString($mValue);
             }
         }
 
@@ -828,9 +828,9 @@ class cApiUser extends Item
      *
      * @return array
      */
-    public function getPermsArray()
+    public function getPermsArray(): array
     {
-        return explode(',', $this->get('perms'));
+        return cPermission::permissionToArray($this->get('perms'));
     }
 
     /**
@@ -996,47 +996,59 @@ class cApiUser extends Item
     }
 
     /**
-     * Function returns effective perms for user including group rights as perm
-     * string.
+     * Function returns effective perms for user including group rights as perm string.
      *
-     * @return string
-     *         Current users permissions
-     * @author     Timo Trautmann
+     * @return string Current users permissions
+     * @author Timo Trautmann
      */
-    public function getEffectiveUserPerms()
+    public function getEffectiveUserPerms(): string
     {
         if (!$this->isLoaded()) {
             return '';
         }
 
-        // first get users own permissions and filter them into result array
-        // $aUserPerms
-        $aUserPerms = [];
-        $aUserPermsSelf = explode(',', $this->values['perms']);
-        foreach ($aUserPermsSelf as $sPerm) {
-            if (trim($sPerm) != '') {
-                $aUserPerms[] = $sPerm;
-            }
-        }
+        // First get users own permissions and add them
+        $userPerms = [];
+        $this->addToUserPerms($userPerms, $this->getPermsArray());
 
-        // get all corresponding groups for this user
+        // Then get all corresponding groups for this user and add the group permissions
         $perm = $this->_getPermInstance();
         $groups = $perm->getGroupsForUser($this->values['user_id']);
-
         foreach ($groups as $value) {
-            // get global group permissions
             $oGroup = new cApiGroup($value);
-            $aGroupPerms = $oGroup->getPermsArray();
+            $this->addToUserPerms($userPerms, $oGroup->getPermsArray());
+        }
 
-            // add group permissions to $aUserPerms if they were not already
-            // defined before
-            foreach ($aGroupPerms as $sPerm) {
-                if (trim($sPerm) != '' && !in_array($sPerm, $aUserPerms)) {
-                    $aUserPerms[] = $sPerm;
-                }
+        return cPermission::permissionToString($userPerms);
+    }
+
+    /**
+     * Adds passed permissions to the user permissions array.
+     *
+     * @param array $userPerms
+     * @param array $permsToAdd
+     * @return void
+     * @since CONTENIDO 4.10.2
+     */
+    private function addToUserPerms(array &$userPerms, array $permsToAdd)
+    {
+        foreach ($permsToAdd as $perm) {
+            $perm = trim($perm);
+            if (!empty($perm) && !in_array($perm, $userPerms)) {
+                $userPerms[] = $perm;
             }
         }
-        return implode(',', $aUserPerms);
+    }
+
+    /**
+     * Returns effective perms for user including group rights as perm array.
+     *
+     * @return array
+     * @since CONTENIDO 4.10.2
+     */
+    public function getEffectiveUserPermsAsArray(): array
+    {
+        return cPermission::permissionToArray($this->getEffectiveUserPerms());
     }
 
     /**

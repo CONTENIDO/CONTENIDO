@@ -143,7 +143,7 @@ if ($action === 'todo_save_item') {
 
     $userColl = new cApiUserCollection();
     $assignedUsers = [];
-    foreach ($userColl->getAccessibleUsers(explode(',', $auth->auth['perm']), true) as $key => $value) {
+    foreach ($userColl->getAccessibleUsers($auth->getPermsArray(), true) as $key => $value) {
         $assignedUsers[$key] = $value["username"] . " (" . $value["realname"] . ")";
     }
 

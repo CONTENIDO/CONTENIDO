@@ -23,7 +23,7 @@ $page = new cGuiPage('url_shortener', 'url_shortener');
 
 // check permissions
 $auth = cRegistry::getAuth();
-$userPerm = explode(',', $auth->auth['perm']);
+$userPerm = $auth->getPermsArray();
 
 if (!$perm->have_perm_area_action('url_shortener')) {
     $page->displayError(i18n('Short URLs can only be managed by authorized user!', 'url_shortener'));

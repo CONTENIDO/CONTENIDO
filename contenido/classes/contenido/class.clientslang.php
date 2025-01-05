@@ -183,21 +183,26 @@ class cApiClientLanguageCollection extends ItemCollection
      * Returns ids of all languages for a specific client.
      *
      * @param int $client
-     *
+     * @param bool $onlyActive Flag to get only ids of active languages.
      * @return int[]
      * @throws cDbException|cInvalidArgumentException
      * @since CONTENIDO 4.10.2
      */
-    public function getAllLanguageIdsByClient(int $client): array
+    public function getAllLanguageIdsByClient(int $client, bool $onlyActive = false): array
     {
         if ($client <= 0) {
             return [];
         }
-        $list = [];
+
         $sql = "SELECT l.idlang FROM `%s` AS cl, `%s` AS l "
-            . "WHERE cl.idclient = %d AND cl.idlang = l.idlang ORDER BY l.idlang ASC";
+            . "WHERE cl.idclient = %d AND cl.idlang = l.idlang";
+        if ($onlyActive) {
+            $sql .= " AND l.active = 1";
+        }
+        $sql .= " ORDER BY l.idlang ASC";
 
         $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
+        $list = [];
         while ($this->db->nextRecord()) {
             $list[] = cSecurity::toInteger($this->db->f('idlang'));
         }

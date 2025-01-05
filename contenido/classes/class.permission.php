@@ -746,8 +746,8 @@ class cPermission
     }
 
     /**
-     * Splits passed permission string and returns it as an array. If the passed permission is already an array,
-     * then it will be returned without any further ado.
+     * Splits passed permission string and returns it as an array. If the passed permission is
+     * already an array, then it will be returned without any further ado.
      *
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return string[]
@@ -755,8 +755,26 @@ class cPermission
      */
     public static function permissionToArray($permission): array
     {
-        return is_array($permission) ? $permission
+        $array = is_array($permission) ? $permission
             : (is_string($permission) && !empty($permission) ? explode(',', $permission) : []);
+
+        return array_filter(array_unique($array), function ($value) {
+            return strval($value) === '0' || !empty($value);
+        });
+    }
+
+    /**
+     * Joins passed permission array to a string by using a comma as separator.
+     *
+     * @param array $permission
+     * @return string
+     * @since CONTENIDO 4.10.2
+     */
+    public static function permissionToString(array $permission): string
+    {
+        return implode(',', array_filter(array_unique($permission), function ($value) {
+            return strval($value) === '0' || !empty($value);
+        }));
     }
 
     /**
@@ -866,6 +884,7 @@ class cPermission
 
         // Get values available in both arrays, the result count should be the same as the needlePerms count
         $result = array_intersect($haystackPerms, $needlePerms);
+
         return count($result) === count($needlePerms);
     }
 

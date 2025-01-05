@@ -613,28 +613,31 @@ function conMakeArticleIndex($idartlang, $idart)
         $idcat = cRegistry::getCategoryId();
         $idart = cRegistry::getArticleId();
         $idcatlang = cRegistry::getCategoryLanguageId();
-        $idartlang = cRegistry::getArticleLanguageId();
     } else {
+        $idclient = 0;
+        $idlang = 0;
+        $idcatlang = 0;
+
         // == for other articles these infos have to be read from DB
         // get idclient by idart
         $article = new cApiArticle($idart);
         if ($article->isLoaded()) {
-            $idclient = $article->get('idclient');
+            $idclient = (int) $article->get('idclient');
         }
         // get idlang by idartlang
         $articleLanguage = new cApiArticleLanguage($idartlang);
         if ($articleLanguage->isLoaded()) {
-            $idlang = $articleLanguage->get('idlang');
+            $idlang = (int) $articleLanguage->get('idlang');
         }
         // get first idcat by idart
         $coll = new cApiCategoryArticleCollection();
         $categoryIds = $coll->getCategoryIdsByArticleId($idart);
-        $idcat = array_shift($categoryIds);
+        $idcat = (int) array_shift($categoryIds) ?? 0;
         // get idcatlang by idcat & idlang
         $categoryLanguage = new cApiCategoryLanguage();
         $categoryLanguage->loadByCategoryIdAndLanguageId($idcat, $idlang);
         if ($categoryLanguage->isLoaded()) {
-            $idcatlang = $articleLanguage->get('idlang');
+            $idcatlang = (int) $articleLanguage->get('idlang');
         }
     }
 

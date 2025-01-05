@@ -62,7 +62,7 @@ if ($action == 'group_create') {
         $bError = true;
     } else {
         $oGroupColl = new cApiGroupCollection();
-        $oGroup = $oGroupColl->create($groupname, implode(',', $aPerms), $description);
+        $oGroup = $oGroupColl->create($groupname, cPermission::permissionToString($aPerms), $description);
         if (is_object($oGroup)) {
             $groupId = $oGroup->getGroupId();
         } else {
