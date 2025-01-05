@@ -87,10 +87,8 @@ class cGuiNavigation
     /**
      * Magic getter function for outdated variable names.
      *
-     * @param string $name
-     *         Name of the variable
+     * @param string $name Name of the variable
      * @return int|string|void
-     * @throws cInvalidArgumentException
      */
     public function __get($name)
     {
@@ -399,34 +397,7 @@ class cGuiNavigation
             $sClientName = i18n("No client");
         }
 
-        if ($this->_clientId === 0) {
-            $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> %s';
-            if (cString::getStringLength($sClientName) > 25) {
-                $sClientName = cString::trimHard($sClientName, 25);
-            }
-            $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientName));
-        } else {
-            $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
-
-            $sClientName = $sClientName . ' (' . $this->_clientId . ')';
-            $sClientNameWithHtml = '<span id="chosen_client">' . $sClientName . '</span>';
-
-            $sClientUrl = cRegistry::getFrontendUrl();
-            $frontendPath = cRegistry::getFrontendPath();
-
-            if ($clientImage !== false && $clientImage != "" && cFileHandler::exists($frontendPath . $clientImage)) {
-                $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" style="height: 15px;">';
-
-                $sThumbnailPath = cApiImgScale($frontendPath . $clientImage, 80, 25, 0, 1);
-                $sClientImageTag = sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
-
-                $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientImageTag));
-            } else {
-                $html = sprintf($sClientNameTemplate, $sClientUrl, $sClientNameWithHtml);
-                $html .= $this->_renderClientSelect();
-                $main->set('s', 'CHOSENCLIENT', $html);
-            }
-        }
+        $this->renderChosenClient($main, $sClientName, $clientImage);
 
         $main->set('s', 'CHOSENUSER', "<b>" . i18n("User") . ":</b> " . $oUser->getEffectiveName());
         $main->set('s', 'MAINLOGINLINK', $sess->url("frameset.php?area=mycontenido&frame=4"));
@@ -452,7 +423,7 @@ class cGuiNavigation
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function _renderLanguageSelect($lang)
+    public function _renderLanguageSelect($lang): string
     {
         $availableLanguages = new cApiLanguageCollection();
 
@@ -501,7 +472,7 @@ class cGuiNavigation
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function _renderClientSelect()
+    protected function _renderClientSelect(): string
     {
         // Get all accessible clients
         $clientCollection = new cApiClientCollection();
@@ -552,7 +523,7 @@ class cGuiNavigation
      *
      * @return bool
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return count($this->errors) > 0;
     }
@@ -562,9 +533,51 @@ class cGuiNavigation
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
+    }
+
+    /**
+     * @param cTemplate $main
+     * @param string $clientName
+     * @param string $clientImage
+     * @return void
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     * @since CONTENIDO 4.10.2
+     */
+    private function renderChosenClient(cTemplate $main, string $clientName, string $clientImage)
+    {
+        if ($this->_clientId === 0) {
+            $clientNameTemplate = '<b>' . i18n("Client") . ':</b> %s';
+            if (cString::getStringLength($clientName) > 25) {
+                $clientName = cString::trimHard($clientName, 25);
+            }
+            $main->set('s', 'CHOSENCLIENT', sprintf($clientNameTemplate, $clientName));
+        } else {
+            $clientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
+
+            $clientName = $clientName . ' (' . $this->_clientId . ')';
+            $clientNameWithHtml = '<span id="chosen_client">' . $clientName . '</span>';
+
+            $sClientUrl = cRegistry::getFrontendUrl();
+            $frontendPath = cRegistry::getFrontendPath();
+
+            if ($clientImage !== false && $clientImage != "" && cFileHandler::exists($frontendPath . $clientImage)) {
+                $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" style="height: 15px;">';
+
+                $sThumbnailPath = cApiImgScale($frontendPath . $clientImage, 80, 25, 0, 1);
+                $sClientImageTag = sprintf($sClientImageTemplate, $sThumbnailPath, $clientName, $clientName);
+
+                $main->set('s', 'CHOSENCLIENT', sprintf($clientNameTemplate, $sClientUrl, $sClientImageTag));
+            } else {
+                $html = sprintf($clientNameTemplate, $sClientUrl, $clientNameWithHtml);
+                $html .= $this->_renderClientSelect();
+                $main->set('s', 'CHOSENCLIENT', $html);
+            }
+        }
     }
 
 }

@@ -147,7 +147,7 @@ class cApiOnlineUserCollection extends ItemCollection
             $userId = $oItem->get('user_id');
             $aAllUser[$userId]['realname'] = $oItem->get('realname');
             $aAllUser[$userId]['username'] = $oItem->get('username');
-            $aPerms = explode(',', $oItem->get('perms'));
+            $aPerms = $oItem->getPermsArray();
 
             if (in_array('sysadmin', $aPerms)) {
                 $aAllUser[$userId]['perms'] = 'Systemadministrator';

@@ -72,7 +72,7 @@ $max_log_size = getSystemProperty('backend', 'max_log_size');
 if ($max_log_size === false) {
     $max_log_size = 10;
 }
-if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_log_size > 0) {
+if (in_array('sysadmin', $vuser->getEffectiveUserPermsAsArray()) && $max_log_size > 0) {
     $log_size = cDirHandler::getDirectorySize($cfg['path']['contenido_logs']);
     if ($log_size > $max_log_size * 1024 * 1024) {
         $page->displayWarning(i18n('The log directory is bigger than') . ' ' . humanReadableSize($max_log_size * 1024 * 1024) . '. ' . i18n('Current size') . ': ' . humanReadableSize($log_size));
@@ -97,7 +97,7 @@ foreach ($foldersToCheck as $folder) {
     }
 }
 foreach ($faultyFolders as $folder) {
-    if (in_array("sysadmin", explode(",", $vuser->getEffectiveUserPerms()))) {
+    if (in_array('sysadmin', $vuser->getEffectiveUserPermsAsArray())) {
         $page->displayWarning(sprintf(i18n("The folder located at %s contains data but it's no longer needed. You can delete it."), $folder));
     }
 }

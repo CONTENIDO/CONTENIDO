@@ -42,7 +42,7 @@ $ui->setVar("idcommunication", $idcommunication);
 $userselect = new cHTMLSelectElement("userassignment");
 
 $userColl = new cApiUserCollection();
-foreach ($userColl->getAccessibleUsers(explode(',', $auth->auth['perm'])) as $key => $value) {
+foreach ($userColl->getAccessibleUsers($auth->getPermsArray()) as $key => $value) {
     $acusers[$key] = $value["username"] . " (" . $value["realname"] . ")";
 }
 asort($acusers);

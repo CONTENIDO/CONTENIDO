@@ -302,6 +302,18 @@ abstract class cAuth
         return $authInfo['perm'] ?? '';
     }
 
+
+    /**
+     * Returns the permission of the currently authenticated user as array.
+     *
+     * @return array
+     * @since CONTENIDO 4.10.2
+     */
+    public function getPermsArray(): array
+    {
+        return cPermission::permissionToArray($this->getPerms());
+    }
+
     /**
      * Sets or refreshes the expiration of the authentication.
      *
