@@ -56,6 +56,12 @@ class cSession
     public $name;
 
     /**
+     * Session namespace used as session key to store the session values.
+     * @var string
+     */
+    protected $namespace;
+
+    /**
      * cSession constructor. Starts a session if it does not yet exist.
      *
      * Session cookies will be created with these parameters:
@@ -75,13 +81,14 @@ class cSession
      *        Configure in <CLIENT>/data/config/<ENV>/config.local.php
      *
      */
-    public function __construct($prefix = 'backend')
+    public function __construct(string $prefix = 'backend')
     {
         $this->_pt = [];
         $this->_prefix = $prefix;
         $this->name = 'contenido';
+        $this->namespace = $this->_prefix . ':csession';
 
-        if (isset($_SESSION)) {
+        if (in_array(session_status(), [PHP_SESSION_DISABLED, PHP_SESSION_ACTIVE])) {
             return;
         }
 
@@ -117,7 +124,7 @@ class cSession
      *
      * @param string $things The name of the variable (e.g. "idclient")
      */
-    public function register($things)
+    public function register(string $things)
     {
         $things = explode(',', $things);
 
@@ -134,7 +141,7 @@ class cSession
      *
      * @param string $name The name of the variable (e.g. "idclient")
      */
-    public function unregister($name)
+    public function unregister(string $name)
     {
         $this->_pt[$name] = false;
     }
@@ -145,12 +152,9 @@ class cSession
      * @param string $name The name of the variable (e.g. "idclient")
      * @return  bool
      */
-    public function isRegistered($name)
+    public function isRegistered(string $name): bool
     {
-        if (isset($this->_pt[$name]) && $this->_pt[$name] == true) {
-            return true;
-        }
-        return false;
+        return isset($this->_pt[$name]) && $this->_pt[$name] === true;
     }
 
     /**
@@ -159,9 +163,9 @@ class cSession
      * functions/classes rely on it
      *
      * @param string $url A URL
-     * @return  mixed
+     * @return  string
      */
-    public function url($url)
+    public function url(string $url): string
     {
         // Return url with session parameter
         return $this->_url($url, true);
@@ -188,7 +192,7 @@ class cSession
      * @param mixed $var A variable which should get serialized.
      * @return  string  The PHP code which can be evaluated.
      */
-    public function serialize($var)
+    public function serialize($var): string
     {
         $str = '';
         $this->_rSerialize($var, $str);
@@ -251,7 +255,7 @@ class cSession
             }
         }
 
-        $_SESSION[$this->_prefix . 'csession'] = $str;
+        $_SESSION[$this->namespace] = $str;
     }
 
     /**
@@ -259,8 +263,8 @@ class cSession
      */
     public function thaw()
     {
-        if (isset($_SESSION[$this->_prefix . 'csession']) && $_SESSION[$this->_prefix . 'csession'] != '') {
-            eval(sprintf(';%s', $_SESSION[$this->_prefix . 'csession']));
+        if (isset($_SESSION[$this->namespace]) && $_SESSION[$this->namespace] != '') {
+            eval(sprintf(';%s', $_SESSION[$this->namespace]));
         }
     }
 
@@ -290,7 +294,7 @@ class cSession
      * @param bool $addSession Flag to add the current session parameter (e.g., contenido=1) to it, e.g. used by the backend
      * @return  string
      */
-    protected function _url($url, $addSession)
+    protected function _url(string $url, bool $addSession): string
     {
         $encodedName = urlencode($this->name);
 
@@ -364,11 +368,11 @@ class cFrontendSession extends cSession
      *        Configure in <CLIENT>/data/config/<ENV>/config.local.php
      *
      */
-    public function __construct($prefix = 'frontend')
+    public function __construct(string $prefix = 'frontend')
     {
         $client = cRegistry::getClientId();
 
-        parent::__construct($client . $prefix);
+        parent::__construct($client . ':' . $prefix);
     }
 
     /**
@@ -376,10 +380,10 @@ class cFrontendSession extends cSession
      * attached to the URL for the frontend
      *
      * @param string $url A URL
-     * @return  mixed
+     * @return string
      * @see cSession::url()
      */
-    public function url($url)
+    public function url(string $url): string
     {
         // Return url without session parameter
         return $this->_url($url, false);
