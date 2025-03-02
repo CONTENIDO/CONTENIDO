@@ -47,8 +47,8 @@ $aBlacklist = [
     'sess',
 ];
 
-// Paramater whitelist: The parameters listed here will be checked against the specified pattern.
-// Unkown parameters (aka they are not listed here) will be considered to be fine.
+// Parameter whitelist: The parameters listed here will be checked against the specified pattern.
+// Unknown parameters (aka they are not listed here) will be considered to be fine.
 $aCheck = [
     'GET'    => [
         'idart'      => cRequestValidator::CHECK_INTEGER,

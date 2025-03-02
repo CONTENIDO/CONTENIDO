@@ -710,7 +710,7 @@ class cRegistry
      *         default value
      * @return mixed
      */
-    protected final static function _fetchGlobalVariable(string $variableName, $defaultValue = null)
+    final protected static function _fetchGlobalVariable(string $variableName, $defaultValue = null)
     {
         return $GLOBALS[$variableName] ?? $defaultValue;
     }
@@ -729,7 +729,7 @@ class cRegistry
      * @throws cInvalidArgumentException
      *         if the given objectId is not greater than 0 or the given class does not exist
      */
-    protected final static function _fetchItemObject(string $apiClassName, $objectId)
+    final protected static function _fetchItemObject(string $apiClassName, $objectId)
     {
         if ((int)$objectId <= 0) {
             throw new cInvalidArgumentException('Object ID must be greater than 0.');

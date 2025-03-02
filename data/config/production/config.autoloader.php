@@ -221,6 +221,7 @@ return [
     'cGenericDb' => 'contenido/classes/genericdb/class.genericdb.php',
     'cGenericDbDriver' => 'contenido/classes/genericdb/class.gdb.driver.php',
     'cGenericDbDriverMysql' => 'contenido/classes/genericdb/class.gdb.mysql.php',
+    'cGlobalsSanitizer' => 'contenido/classes/class.globals.sanitizer.php',
     'cGuiBackendHelpbox' => 'contenido/classes/gui/class.backendhelpbox.php',
     'cGuiFileOverview' => 'contenido/classes/gui/class.fileoverview.php',
     'cGuiFoldingRow' => 'contenido/classes/gui/class.foldingrow.php',

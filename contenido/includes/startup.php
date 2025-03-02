@@ -96,14 +96,16 @@ require_once($backendPath . '/classes/class.string.php');
 
 require_once($backendPath . '/classes/class.requestvalidator.php');
 try {
-    $requestValidator = cRequestValidator::getInstance();
-    $requestValidator->checkParams();
-} catch (cFileNotFoundException $e) {
+    cRequestValidator::getInstance()->checkParams();
+} catch (cFileNotFoundException|cInvalidArgumentException $e) {
     die($e->getMessage());
 }
 
 // "Workaround" for register_globals=off settings.
 require_once($backendPath . '/includes/globals_off.inc.php');
+
+require_once($backendPath . '/classes/class.globals.sanitizer.php');
+cGlobalsSanitizer::getInstance()->sanitize();
 
 // Include some basic configuration files
 require_once($cfg['path']['contenido_config'] . 'config.php');
