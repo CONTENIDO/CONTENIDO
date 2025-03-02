@@ -2163,3 +2163,14 @@ function cIsPutRequest(): bool
     return isset($_SERVER['REQUEST_METHOD'])
         && $_SERVER['REQUEST_METHOD'] === 'PUT';
 }
+
+/**
+ * Checks if PHP is running in CLI mode.
+ *
+ * @since CONTENIDO 4.10.2
+ * @return bool
+ */
+function cIsCommandLineInterface(): bool
+{
+    return (php_sapi_name() === 'cli');
+}
