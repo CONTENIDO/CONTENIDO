@@ -125,6 +125,9 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
             'filelist_manual_files',
             'filelist_filecount'
         ];
+        $this->_multiFormFields = [
+            'filelist_extensions',
+        ];
 
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
@@ -602,32 +605,28 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
         $template = new cTemplate();
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
-        $template->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
+        $template->set('s', 'FIELDS', $this->_makeFormFieldsString());
 
         $templateTabs = new cTemplate();
         $templateTabs->set('s', 'PREFIX', $this->_prefix);
 
         // create code for external tab
-        $templateTabs->set('d', 'TAB_ID', 'directories');
-        $templateTabs->set('d', 'TAB_CLASS', 'directories');
+        $templateTabs->set('d', 'TAB_CLASS', 'con_tab_directories_content');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabDirectories());
         $templateTabs->next();
 
         // create code for internal tab
-        $templateTabs->set('d', 'TAB_ID', 'general');
-        $templateTabs->set('d', 'TAB_CLASS', 'general');
+        $templateTabs->set('d', 'TAB_CLASS', 'con_tab_general_content');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabGeneral());
         $templateTabs->next();
 
         // create code for file tab
-        $templateTabs->set('d', 'TAB_ID', 'filter');
-        $templateTabs->set('d', 'TAB_CLASS', 'filter');
+        $templateTabs->set('d', 'TAB_CLASS', 'con_tab_filter_content');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabFilter());
         $templateTabs->next();
 
         // create code for manual tab
-        $templateTabs->set('d', 'TAB_ID', 'manual');
-        $templateTabs->set('d', 'TAB_CLASS', 'manual');
+        $templateTabs->set('d', 'TAB_CLASS', 'con_tab_manual_content');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabManual());
         $templateTabs->next();
 
@@ -638,6 +637,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
 
         // construct the top code of the template
         $templateTop = new cTemplate();
+        $templateTop->set('s', 'CONTENT_TYPE_ID', $this->_contentTypeId);
         $templateTop->set('s', 'ICON', 'images/but_editlink.gif');
         $templateTop->set('s', 'ID', $this->_id);
         $templateTop->set('s', 'PREFIX', $this->_prefix);
@@ -649,10 +649,10 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
 
         // define the available tabs
         $tabMenu = [
-            'directories' => i18n('Directories'),
-            'general' => i18n('General'),
-            'filter' => i18n('Filter'),
-            'manual' => i18n('Manual')
+            'con_tab_directories' => i18n('Directories'),
+            'con_tab_general' => i18n('General'),
+            'con_tab_filter' => i18n('Filter'),
+            'con_tab_manual' => i18n('Manual')
         ];
 
         // construct the bottom code of the template
@@ -661,7 +661,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
         $templateBottom->set('s', 'ID', $this->_id);
         $templateBottom->set('s', 'PREFIX', $this->_prefix);
         $templateBottom->set('s', 'IDARTLANG', $this->_idArtLang);
-        $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
+        $templateBottom->set('s', 'FIELDS', $this->_makeFormFieldsString());
         $templateBottom->set('s', 'SETTINGS', json_encode($this->getSettings()));
         $templateBottom->set(
             's', 'JS_CLASS_SCRIPT',
@@ -699,7 +699,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
 
         $wrapperContent[] = new cHTMLParagraph(i18n('Source directory'), 'head_sub');
 
-        $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
+        $directoryList = new cHTMLDiv('', 'con_directory_list', 'con_directory_list' . '_' . $this->_id);
         $liRoot = new cHTMLListItem('root', 'root last');
         $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
         $liRoot->setContent([
@@ -731,7 +731,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
         $wrapperContent[] = new cHTMLParagraph(i18n('General settings'), 'head_sub');
 
         $wrapperContent[] = new cHTMLLabel(i18n('File list title'), 'filelist_title_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('filelist_title_' . $this->_id, conHtmlSpecialChars($this->getSetting('filelist_title')), '', '', 'filelist_title_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_title', conHtmlSpecialChars($this->getSetting('filelist_title')), '', '', 'filelist_title_' . $this->_id);
         $wrapperContent[] = new cHTMLLabel(i18n('File list style'), 'filelist_style_' . $this->_id);
         $wrapperContent[] = $this->_generateStyleSelect();
         $wrapperContent[] = new cHTMLLabel(i18n('File list sort'), 'filelist_sort_' . $this->_id);
@@ -739,11 +739,19 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
         $wrapperContent[] = new cHTMLLabel(i18n('Sort order'), 'filelist_sortorder_' . $this->_id);
         $wrapperContent[] = $this->_generateSortOrderSelect();
         $wrapperContent[] = new cHTMLLabel(i18n('Include subdirectories?'), 'filelist_incl_subdirectories_' . $this->_id);
-        $wrapperContent[] = new cHTMLCheckbox('filelist_incl_subdirectories_' . $this->_id, '', 'filelist_incl_subdirectories_' . $this->_id, ($this->getSetting('filelist_incl_subdirectories') === 'true'));
+        $wrapperContent[] = new cHTMLCheckbox('filelist_incl_subdirectories', '', 'filelist_incl_subdirectories_' . $this->_id, ($this->getSetting('filelist_incl_subdirectories') === 'true'));
         $wrapperContent[] = new cHTMLLabel(i18n('Include meta data?'), 'filelist_incl_metadata_' . $this->_id);
-        $wrapperContent[] = new cHTMLCheckbox('filelist_incl_metadata_' . $this->_id, '', 'filelist_incl_metadata_' . $this->_id, ($this->getSetting('filelist_incl_metadata') === 'true'));
-        $div = new cHTMLDiv($this->_generateMetaDataList());
-        $div->setID('metaDataList');
+        $wrapperContent[] = new cHTMLCheckbox(
+            'filelist_incl_metadata', 
+            '', 
+            'filelist_incl_metadata_' . $this->_id, 
+            ($this->getSetting('filelist_incl_metadata') === 'true'),
+            false,
+            null,
+            '',
+            'filelist_incl_metadata'
+        );
+        $div = new cHTMLDiv($this->_generateMetaDataList(), 'filelist_meta_data_list');
         $wrapperContent[] = $div;
 
         $wrapper->setContent($wrapperContent);
@@ -759,7 +767,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
      */
     private function _generateStyleSelect()
     {
-        $htmlSelect = new cHTMLSelectElement('filelist_style_' . $this->_id, '', 'filelist_style_' . $this->_id);
+        $htmlSelect = new cHTMLSelectElement('filelist_style', '', 'filelist_style_' . $this->_id);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n('Default style'), 'cms_filelist_style_default.html', true);
         $htmlSelect->appendOptionElement($htmlSelectOption);
@@ -781,7 +789,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
      */
     private function _generateSortSelect()
     {
-        $htmlSelect = new cHTMLSelectElement('filelist_sort_' . $this->_id, '', 'filelist_sort_' . $this->_id);
+        $htmlSelect = new cHTMLSelectElement('filelist_sort', '', 'filelist_sort_' . $this->_id);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n('File name'), 'filename', true);
         $htmlSelect->appendOptionElement($htmlSelectOption);
@@ -808,7 +816,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
      */
     private function _generateSortOrderSelect()
     {
-        $htmlSelect = new cHTMLSelectElement('filelist_sortorder_' . $this->_id, '', 'filelist_sortorder_' . $this->_id);
+        $htmlSelect = new cHTMLSelectElement('filelist_sortorder', '', 'filelist_sortorder_' . $this->_id);
 
         $htmlSelectOption = new cHTMLOptionElement(i18n('Ascending'), 'asc', true);
         $htmlSelect->appendOptionElement($htmlSelectOption);
@@ -870,37 +878,44 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
         $wrapperContent[] = new cHTMLLabel(i18n('Displayed file extensions'), 'filelist_extensions_' . $this->_id);
         $wrapperContent[] = $this->_generateExtensionSelect();
         $wrapperContent[] = '<br>';
-        $link = new cHTMLLink('#');
-        $link->setID('filelist_all_extensions');
-        $link->setContent(i18n('Select all entries'));
+        $link = new cHTMLLink('#', i18n('Select all entries'), 'filelist_all_extensions');
         $wrapperContent[] = $link;
         $wrapperContent[] = new cHTMLLabel(i18n('Ignore selection (use all)'), 'filelist_ignore_extensions_' . $this->_id, 'filelist_ignore_extensions');
-        $wrapperContent[] = new cHTMLCheckbox('filelist_ignore_extensions_' . $this->_id, '', 'filelist_ignore_extensions_' . $this->_id, ($this->getSetting('filelist_ignore_extensions') !== 'false'));
+        $wrapperContent[] = new cHTMLCheckbox(
+            'filelist_ignore_extensions', 
+            '', 
+            'filelist_ignore_extensions_' . $this->_id, 
+            ($this->getSetting('filelist_ignore_extensions') !== 'false'),
+            false,
+            null,
+            '',
+            'filelist_ignore_extensions'
+        );
 
         $wrapperContent[] = new cHTMLLabel(i18n('File size limit (in MiB)'), 'filelist_filesizefilter_from_' . $this->_id);
         $default = (!empty($this->getSetting('filelist_filesizefilter_from'))) ? $this->getSetting('filelist_filesizefilter_from') : '0';
-        $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_from_' . $this->_id, $default, '', '', 'filelist_filesizefilter_from_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_from', $default, '', '', 'filelist_filesizefilter_from_' . $this->_id);
         $wrapperContent[] = new cHTMLSpan('&nbsp;-&nbsp;');
         $default = (!empty($this->getSetting('filelist_filesizefilter_to'))) ? $this->getSetting('filelist_filesizefilter_to') : '0';
-        $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_to_' . $this->_id, $default, '', '', 'filelist_filesizefilter_to_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_to', $default, '', '', 'filelist_filesizefilter_to_' . $this->_id);
 
         $wrapperContent[] = new cHTMLLabel(i18n('Creation date limit'), 'filelist_creationdatefilter_from_' . $this->_id);
         $default = (!empty($this->getSetting('filelist_creationdatefilter_from'))) ? $this->getSetting('filelist_creationdatefilter_from') : $this->_dateFormat;
-        $wrapperContent[] = new cHTMLTextbox('filelist_creationdatefilter_from_' . $this->_id, $default, '', '', 'filelist_creationdatefilter_from_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_creationdatefilter_from', $default, '', '', 'filelist_creationdatefilter_from_' . $this->_id);
         $wrapperContent[] = new cHTMLSpan('&nbsp;-&nbsp;');
         $default = (!empty($this->getSetting('filelist_creationdatefilter_to'))) ? $this->getSetting('filelist_creationdatefilter_to') : $this->_dateFormat;
-        $wrapperContent[] = new cHTMLTextbox('filelist_creationdatefilter_to_' . $this->_id, $default, '', '', 'filelist_creationdatefilter_to_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_creationdatefilter_to', $default, '', '', 'filelist_creationdatefilter_to_' . $this->_id);
 
         $wrapperContent[] = new cHTMLLabel(i18n('Modify date limit'), 'filelist_modifydatefilter_from_' . $this->_id);
         $default = (!empty($this->getSetting('filelist_modifydatefilter_from'))) ? $this->getSetting('filelist_modifydatefilter_from') : $this->_dateFormat;
-        $wrapperContent[] = new cHTMLTextbox('filelist_modifydatefilter_from_' . $this->_id, $default, '', '', 'filelist_modifydatefilter_from_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_modifydatefilter_from', $default, '', '', 'filelist_modifydatefilter_from_' . $this->_id);
         $wrapperContent[] = new cHTMLSpan('&nbsp;-&nbsp;');
         $default = (!empty($this->getSetting('filelist_modifydatefilter_to'))) ? $this->getSetting('filelist_modifydatefilter_to') : $this->_dateFormat;
-        $wrapperContent[] = new cHTMLTextbox('filelist_modifydatefilter_to_' . $this->_id, $default, '', '', 'filelist_modifydatefilter_to_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_modifydatefilter_to', $default, '', '', 'filelist_modifydatefilter_to_' . $this->_id);
 
         $wrapperContent[] = new cHTMLLabel(i18n('File count'), 'filelist_filecount_' . $this->_id);
         $default = (!empty($this->getSetting('filelist_filecount'))) ? $this->getSetting('filelist_filecount') : '0';
-        $wrapperContent[] = new cHTMLTextbox('filelist_filecount_' . $this->_id, $default, '', '', 'filelist_filecount_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_filecount', $default, '', '', 'filelist_filecount_' . $this->_id);
 
         $wrapper->setContent($wrapperContent);
 
@@ -916,8 +931,9 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
     private function _generateExtensionSelect()
     {
         $htmlSelect = new cHTMLSelectElement(
-            'filelist_extensions_' . $this->_id, '', 'filelist_extensions_' . $this->_id,
-            ($this->getSetting('filelist_ignore_extensions') !== 'false'), '', '', 'manual'
+            'filelist_extensions', '', 'filelist_extensions_' . $this->_id,
+            ($this->getSetting('filelist_ignore_extensions') !== 'false'), '', '', 
+            'manual filelist_extensions'
         );
 
         // set other variable options manually
@@ -1001,10 +1017,17 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
 
         $wrapperContent[] = new cHTMLLabel(i18n('Use manual file list?'), 'filelist_manual_' . $this->_id);
         $wrapperContent[] = new cHTMLCheckbox(
-            'filelist_manual_' . $this->_id, '', 'filelist_manual_' . $this->_id, ($this->getSetting('filelist_manual') === 'true')
+            'filelist_manual', 
+            '', 
+            'filelist_manual_' . $this->_id, 
+            ($this->getSetting('filelist_manual') === 'true'),
+            false,
+            null,
+            '',
+            'filelist_manual'
         );
 
-        $manualDiv = new cHTMLDiv();
+        $manualDiv = new cHTMLDiv('', 'filelist_manual_filelist_setting');
         $manualDiv->setID('manual_filelist_setting');
         $manualDiv->appendStyleDefinition('display', 'none');
         $divContent = [];
@@ -1018,7 +1041,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
         $divContent[] = new cHTMLLabel(i18n('Directory'), '');
 
         // directory navigation
-        $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList_' . $this->_id . '_manual');
+        $directoryList = new cHTMLDiv('', 'con_directory_list', 'con_directory_list_' . $this->_id . '_manual');
         $liRoot = new cHTMLListItem('root', 'last');
         $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
         $liRoot->setContent([
@@ -1029,9 +1052,9 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
         $directoryList->setContent($conStrTree);
         $divContent[] = $directoryList;
 
-        $divContent[] = new cHTMLLabel(i18n('File'), 'filelist_filename_' . $this->_id, 'filelist_filename');
+        $divContent[] = new cHTMLLabel(i18n('File'), 'filelist_filename_' . $this->_id, 'filelist_filename_label');
         $divContent[] = $this->generateFileSelect();
-        $image = new cHTMLImage(cRegistry::getBackendUrl() . 'images/but_art_new.gif');
+        $image = new cHTMLImage(cRegistry::getBackendUrl() . 'images/but_art_new.gif', 'filelist_add_file');
         $image->setAttribute('id', 'add_file');
         $image->appendStyleDefinition('cursor', 'pointer');
         $divContent[] = $image;
@@ -1071,7 +1094,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
         // }
 
         $htmlSelect = new cHTMLSelectElement(
-            'filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, null, '', 'manual'
+            'filelist_manual_files', '', 'filelist_manual_files_' . $this->_id, false, null, '', 'manual filelist_manual_files'
         );
 
         if (is_array($this->getSetting('filelist_manual_files'))) { // More than one entry
@@ -1111,7 +1134,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
     public function generateFileSelect(string $directoryPath = ''): string
     {
         $htmlSelect = new cHTMLSelectElement(
-            'filelist_filename_' . $this->_id, '', 'filelist_filename_' . $this->_id,
+            'filelist_filename', '', 'filelist_filename_' . $this->_id,
             false, null, '', 'filelist_filename'
         );
 

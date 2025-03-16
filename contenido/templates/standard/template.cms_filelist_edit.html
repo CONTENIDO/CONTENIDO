@@ -1,3 +1,4 @@
+<!-- TODO Is this still in use somewhere? -->
 <img id="cms_filelist_{ID}" alt="" class="cms_filelist_img cms_filelist_{ID}_EDIT CMS_LINK_EDIT" src="{_PATH_CONTENIDO_FULLHTML_}images/but_downloadlist.gif">
 <div style="display:none" id="cms_filelist_{ID}_settings" class="cms_filelist">
     <div class="close" id="filelist_close">
@@ -5,17 +6,17 @@
     </div>
     <p class="head">{LABEL_FILELIST_SETTINGS}</p>
 
-    <ul class="menu">
-        <li class="directories">{DIRECTORIES}</li>
-        <li class="general">{GENERAL}</li>
-        <li class="filter">{FILTER}</li>
-        <li class="manual">{MANUAL}</li>
+    <ul class="con_tab_menu clearfix">
+        <li class="con_tab_item con_tab_directories" data-tab-content="con_tab_directories_content">{DIRECTORIES}</li>
+        <li class="con_tab_item con_tab_general" data-tab-content="con_tab_general_content">{GENERAL}</li>
+        <li class="con_tab_item con_tab_filter" data-tab-content="con_tab_filter_content">{FILTER}</li>
+        <li class="con_tab_item con_tab_manual" data-tab-content="con_tab_manual_content">{MANUAL}</li>
     </ul>
-    <div id="tabs">
+    <div class="con_tab_content">
         <div class="directories">
             <p class="head_sub">{LABEL_SOURCE_DIRECTORY}</p>
 
-            <div class="directoryList">
+            <div class="con_directory_list">
                 <ul class="con_str_tree" dir="ltr">
                     <li class="root last">
                         <em>Uploads</em>
@@ -24,7 +25,7 @@
                 </ul>
             </div>
         </div>
-        <div id="general">
+        <div class="con_tab_general_content">
             <p class="head_sub">{LABEL_GENERAL}</p>
 
             <label for="filelist_title">{LABEL_FILELIST_TITLE}:</label>
@@ -51,7 +52,7 @@
 
             <div class="head_sub head_sep">&nbsp;</div>
         </div>
-        <div id="filter">
+        <div class="con_tab_filter_content">
             <p class="head_sub">{LABEL_FILTER}</p>
 
             <label for="filelist_extensions">{LABEL_FILE_EXTENSIONS}:</label>
@@ -80,7 +81,7 @@
 
             <div class="head_sub head_sep">&nbsp;</div>
         </div>
-        <div id="manual">
+        <div class="con_tab_manual_content">
             <p class="head_sub">{LABEL_MANUAL}</p>
 
             <label for="filelist_manual">{LABEL_MANUAL_FILELIST}</label>
@@ -92,7 +93,7 @@
 
                 <div class="head_sub head_sep">{LABEL_ADD_FILE}</div>
                 <label for="teaser_cat">{LABEL_DIRECTORY}:</label>
-                <div class="directoryList">
+                <div class="con_directory_list">
                     <ul class="con_str_tree" dir="ltr">
                         <li class="root last">
                             <em>Uploads</em>
@@ -123,7 +124,6 @@
     var sLabelIgnoreExtensionsOn = '{LABEL_SELECTIONWILLBEIGNORED}';
     var sLabelIgnoreExtensionsOff = '{LABEL_IGNORESELECTION}';
     var bIgnoreExtensions{ID} = '{IGNOREEXTENSIONS}';
-
 
     Con.Loader.get([Con.cfg.urlBackend + 'scripts/cmsFilelist.js'], function() {
         addFileListEvents(fileListFrame{ID}, fileListImage{ID}, sPath, Con.sid, iIdArtLang, {ID}, aFileListData{ID}, bIgnoreExtensions{ID});

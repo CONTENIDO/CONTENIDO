@@ -1,6 +1,6 @@
 @import url("cms_dirlist.css");
 
-.cms_linkeditor .directoryList {
+.cms_linkeditor .con_directory_list {
     float: left;
     margin-right: 5px;
     width: 210px;
@@ -10,7 +10,7 @@
     width: 550px;
 }
 
-.cms_linkeditor .directoryFile {
+.cms_linkeditor .con_directory_file {
     border: 1px solid #CCC;
     height: 170px;
     overflow: visible;
@@ -24,7 +24,7 @@
     width: 330px;
 }
 
-.cms_linkeditor #basic-settings {
+.cms_linkeditor .con_tab_basic_settings_content {
     margin-top: 15px;
 }
 
@@ -41,7 +41,7 @@
     top: 25%;
 }
 
-.cms_linkeditor #caption1,.cms_linkeditor #caption2 {
+.cms_linkeditor .con_caption {
     margin-left: 10px;
 }
 

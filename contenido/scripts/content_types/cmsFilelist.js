@@ -43,20 +43,20 @@
         Con.cContentTypeAbstractTabbed.apply(this, arguments);
 
         // Define some jQuery selectors here for later usage
-        this.SELECTOR_FILELIST_MANUAL_FILES = $(this.frameId + ' #filelist_manual_files_' + this.id);
-        this.SELECTOR_FILELIST_FILENAME = this.frameId + ' #filelist_filename_' + this.id;
-        this.SELECTOR_CHK_FILELIST_MANUAL = this.frameId + ' #filelist_manual_' + this.id;
-        this.SELECTOR_MANUAL_FILELIST_SETTING = this.frameId + ' #manual_filelist_setting';
-        this.SELECTOR_METADATALIST = this.frameId + ' #metaDataList';
-        this.SELECTOR_FILELIST_INCL_METADATA = this.frameId + ' #filelist_incl_metadata_' + this.id;
-        this.SELECTOR_FILELIST_ALL_EXTENSIONS = this.frameId + ' #filelist_all_extensions';
-        this.SELECTOR_FILELIST_EXTENSIONS = this.frameId + ' #filelist_extensions_' + this.id;
-        this.SELECTOR_FILELIST_IGNORE_EXTENSIONS = this.frameId + ' #filelist_ignore_extensions_' + this.id;
+        this.SELECTOR_FILELIST_MANUAL_FILES = $(this.frameId + ' .filelist_manual_files');
+        this.SELECTOR_FILELIST_FILENAME = this.frameId + ' .con_tab_manual_content .filelist_filename';
+        this.SELECTOR_CHK_FILELIST_MANUAL = this.frameId + ' .filelist_manual';
+        this.SELECTOR_MANUAL_FILELIST_SETTING = this.frameId + ' .filelist_manual_filelist_setting';
+        this.SELECTOR_METADATALIST = this.frameId + ' .filelist_meta_data_list';
+        this.SELECTOR_FILELIST_INCL_METADATA = this.frameId + ' .filelist_incl_metadata';
+        this.SELECTOR_FILELIST_ALL_EXTENSIONS = this.frameId + ' .filelist_all_extensions';
+        this.SELECTOR_FILELIST_EXTENSIONS = this.frameId + ' .filelist_extensions';
+        this.SELECTOR_FILELIST_IGNORE_EXTENSIONS = this.frameId + ' .filelist_ignore_extensions';
         this.SELECTOR_SAVE_SETTINGS = this.frameId + ' .save_settings';
-        this.SELECTOR_DIRLIST = this.frameId + ' .directories #directoryList_' + this.id + ' li li div em a';
-        this.SELECTOR_DIRLIST_LINK = this.frameId + ' .directories #directoryList_' + this.id + ' li li div a';
-        this.SELECTOR_DIRLIST_ACTIVE = this.frameId + ' .directories #directoryList_' + this.id + ' div[class="active"]';
-        this.SELECTOR_DIRLIST_MANUAL = this.frameId + ' #manual #directoryList_' + this.id + '_manual li li div';
+        this.SELECTOR_DIRLIST = this.frameId + ' .con_tab_directories_content .con_directory_list li li div em a';
+        this.SELECTOR_DIRLIST_LINK = this.frameId + ' .con_tab_directories_content .con_directory_list li li div a';
+        this.SELECTOR_DIRLIST_ACTIVE = this.frameId + ' .con_tab_directories_content .con_directory_list div[class="active"]';
+        this.SELECTOR_DIRLIST_MANUAL = this.frameId + ' .con_tab_manual_content .con_directory_list li li div';
     }
 
     //inherit from cContentTypeAbstractTabbed
@@ -97,7 +97,7 @@
      */
     cContentTypeFilelist.prototype.addManualFileListEvent = function() {
         var self = this;
-        $(self.frameId + ' #add_file').css('cursor', 'pointer').click(function() {
+        $(self.frameId + ' .filelist_add_file').css('cursor', 'pointer').click(function() {
             self.addManualFileListEntry();
         });
     };
@@ -276,7 +276,7 @@
 						return false;
 					}
 
-                    $(self.frameId + ' #manual #filelist_filename_' + self.id).replaceWith(msg);
+                    $(self.SELECTOR_FILELIST_FILENAME).replaceWith(msg);
                 }
             });
 

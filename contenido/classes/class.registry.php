@@ -566,8 +566,8 @@ class cRegistry
      * In this case a $default value can be given which will be returned if this
      * option is not defined.
      *
-     * @param string $sectionName [optional]
-     * @param string $optionName [optional]
+     * @param string|null $sectionName [optional]
+     * @param string|null $optionName [optional]
      * @param mixed $defaultValue [optional]
      * @return mixed
      */

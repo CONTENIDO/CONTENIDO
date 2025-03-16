@@ -41,6 +41,41 @@
     function cContentTypeTeaser(frameId, imageId, pathBackend, pathFrontend, idArtLang, id, fields, prefix, session, settings) {
         // call the constructor of the parent class with the same arguments
         Con.cContentTypeAbstractTabbed.apply(this, arguments);
+
+        /**
+         * Reference to category select.
+         * @property $categorySelect
+         * @type {HTMLElement[]}
+         */
+        this.$categorySelect = this.getSettingElement('teaser_cat');
+
+        /**
+         * Reference to article select.
+         * @property $articleSelect
+         * @type {HTMLElement[]}
+         */
+        this.$articleSelect = this.getSettingElement('teaser_art');
+
+        /**
+         * Reference to manual article select.
+         * @property $manualArtSelect
+         * @type {HTMLElement[]}
+         */
+        this.$manualArtSelect = this.getSettingElement('teaser_manual_art');
+
+        /**
+         * Reference to add article button.
+         * @property $addArtButton
+         * @type {HTMLElement[]}
+         */
+        this.$addArtButton = this.$frame.find('#' + this.getElementId('add_art'));
+
+        /**
+         * Reference to delete article button.
+         * @property $delArtButton
+         * @type {HTMLElement[]}
+         */
+        this.$delArtButton = this.$frame.find('#' + this.getElementId('del_art'));
     }
 
     // inherit from cContentTypeAbstractTabbed
@@ -87,7 +122,7 @@
      */
     cContentTypeTeaser.prototype.getArticleList = function() {
         var self = this;
-        $(self.frameId + ' #teaser_cat_' + self.id).change(function() {
+        $(this.$categorySelect).change(function() {
             // get new article select and replace it with default value
             $.ajax({
                 type: 'POST',
@@ -98,7 +133,8 @@
 						return false;
 					}
 
-                    $(self.frameId + ' #teaser_art_' + self.id).replaceWith(msg);
+                    self.$articleSelect.replaceWith(msg);
+                    self.$articleSelect = self.getSettingElement('teaser_art_' + self.id);
                 }
             });
         });
@@ -111,8 +147,8 @@
      */
     cContentTypeTeaser.prototype.addManualTeaser = function() {
         var self = this;
-        $(self.frameId + ' #add_art_' + self.id).css('cursor', 'pointer');
-        $(self.frameId + ' #add_art_' + self.id).click(function() {
+        this.$addArtButton.css('cursor', 'pointer');
+        this.$addArtButton.click(function() {
             // call internal add function
             self.addManualTeaserEntry();
         });
@@ -124,29 +160,19 @@
      * @method addManualTeaserEntry
      */
     cContentTypeTeaser.prototype.addManualTeaserEntry = function() {
-        var idArt = $(this.frameId + ' #teaser_art_' + this.id).val();
+        var idArt = parseInt(this.$articleSelect.val());
         var name = '';
         var exists = false;
 
         // if an article was selected
         if (idArt > 0) {
             // check if article already exists in view list
-            $(this.frameId + ' #teaser_manual_art_' + this.id + ' option').each(function() {
-                if (idArt == $(this).val()) {
-                    exists = true;
-                }
-            });
-
-            // get name of selected article
-            $(this.frameId + ' #teaser_art_' + this.id + ' option').each(function() {
-                if (idArt == $(this).val()) {
-                    name = $(this).html();
-                }
-            });
+            exists = this.$manualArtSelect.find('option[value="' + idArt + '"]').length > 0;
 
             // if it is not in list, add article to list
             if (!exists) {
-                $(this.frameId + ' #teaser_manual_art_' + this.id).append('<option value="' + idArt + '" selected="selected">' + name + '</option>');
+                name = this.$articleSelect.find('option[value="' + idArt + '"]').text();
+                this.$manualArtSelect.append('<option value="' + idArt + '" selected="selected">' + name + '</option>');
             }
         }
     };
@@ -158,14 +184,14 @@
      */
     cContentTypeTeaser.prototype.removeManualTeaser = function() {
         var self = this;
-        $(self.frameId + ' #teaser_manual_art_' + self.id).dblclick(function() {
-            $(self.frameId + ' #teaser_manual_art_' + self.id + ' option:selected').each(function() {
+        this.$manualArtSelect.dblclick(function() {
+            self.$manualArtSelect.find('option:selected').each(function() {
                 $(this).remove();
             });
         });
 
-        $(self.frameId + ' #del_art_' + self.id).on('click', function() {
-            $(self.frameId + ' #teaser_manual_art_' + self.id + ' option').remove();
+        this.$delArtButton.on('click', function() {
+            self.$manualArtSelect.find('option').remove();
         });
     };
 

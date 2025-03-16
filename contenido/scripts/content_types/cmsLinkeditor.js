@@ -107,14 +107,14 @@
         this.setCurrentTab();
 
         // show the basic settings "tab" any time
-        $(this.frameId + ' .tabs #basic-settings').show();
-        $(this.frameId + ' .menu li').bind('click', function() {
-            $(self.frameId + ' .tabs #basic-settings').show();
+        this.$frame.find('.con_tab_content .con_tab_basic_settings_content').show();
+        this.$frame.find('.con_tab_menu li').bind('click', function() {
+            self.$frame.find('.con_tab_content .con_tab_basic_settings_content').show();
         });
     };
 
     /**
-     * Adds event which fades in the edit form when editbutton is clicked.
+     * Adds event which fades in the edit form when edit button is clicked.
      * @method addFrameShowEvent
      * @override
      */
@@ -140,13 +140,15 @@
      * @method setCurrentTab
      */
     cContentTypeLinkeditor.prototype.setCurrentTab = function () {
-        var linkeditorType = this.settings.linkeditor_type ? this.settings.linkeditor_type : 'external';
+        var linkeditorType = this.settings.linkeditor_type ? this.settings.linkeditor_type : 'external',
+            tabClassName = 'con_tab_' + linkeditorType,
+            tabContentClassName = 'con_tab_' + linkeditorType + '_content';
 
-        $(this.frameId + ' .tabs > div').hide();
-        $(this.frameId + ' .tabs #' + linkeditorType).show();
+        this.$frame.find('.con_tab_content > div').hide();
+        this.$frame.find('.con_tab_content .' + tabContentClassName).show();
         // set the active class for the corresponding menu entry and remove it from the others
-        $(this.frameId + ' .menu li').removeClass('active');
-        $(this.frameId + ' .menu li.' + linkeditorType).addClass('active');
+        this.$frame.find('.con_tab_menu li').removeClass('active');
+        this.$frame.find('.con_tab_menu li.' + tabClassName).addClass('active');
     }
 
     /**
@@ -158,11 +160,11 @@
         }
 
         // load internal categories and articles
-        this.getCategoriesList($(this.frameId + ' #internal #directoryList_' + this.id + ' em a').parent().parent(), '0', '0');
+        this.getCategoriesList(this.$frame.find('.con_tab_internal_content .con_directory_list em a').parent().parent(), '0', '0');
         this.getArticlesList();
 
         // load external dirs and files
-        this.getDirsList($(this.frameId + ' #file #directoryList_' + this.id + ' em a').parent().parent(), '');
+        this.getDirsList(this.$frame.find('.con_tab_file_content .con_directory_list em a').parent().parent(), '');
         this.getImagesList();
 
         this.refreshed = true;
@@ -177,9 +179,9 @@
     cContentTypeLinkeditor.prototype.addNaviActions = function() {
         var self = this;
 
-        $(this.frameId + ' #internal #directoryList_' + this.id + ' a[class="on"]').parent('div').unbind('click')
+        this.$frame.find('.con_tab_internal_content .con_directory_list a[class="on"]').parent('div').unbind('click')
             .bind('click', function() {
-                $(self.frameId + ' div').each(function() {
+                self.$frame.find('div').each(function() {
                 $(this).removeClass('active');
             });
             $(this).addClass('active');
@@ -190,7 +192,7 @@
         });
 
         // add possibility to expand and close directories for the article view
-        $(this.frameId + ' #internal #directoryList_' + this.id + ' em a').unbind('click')
+        this.$frame.find('.con_tab_internal_content .con_directory_list em a').unbind('click')
             .bind('click', function() {
             var divContainer = $(this).parent().parent();
             if (!_bindCollapsing(divContainer)) {
@@ -202,10 +204,10 @@
             return false;
         });
 
-        $(this.frameId + ' #file #directoryList_' + this.id + ' a[class="on"]').parent('div').unbind('click')
+        this.$frame.find('.con_tab_file_content .con_directory_list a[class="on"]').parent('div').unbind('click')
             .bind('click', function() {
             // update the "active" class
-            $(self.frameId + ' div').each(function() {
+            self.$frame.find('div').each(function() {
                 $(this).removeClass('active');
             });
             $(this).addClass('active');
@@ -219,7 +221,7 @@
             });
 
         // add possibility to expand and close directories for the file view
-        $(this.frameId + ' #file #directoryList_' + this.id + ' em a')
+        this.$frame.find('.con_tab_file_content .con_directory_list em a')
             .unbind('click')
             .bind('click', function () {
                 var divContainer = $(this).parent().parent();
@@ -262,7 +264,7 @@
                     return false;
                 }
 
-                $(self.frameId + ' #internal #directoryFile_' + self.id).html(msg);
+                self.$frame.find('.con_tab_internal_content #con_directory_file_' + self.id).html(msg);
             }
         });
     }
@@ -328,7 +330,7 @@
                     return false;
                 }
 
-                $(self.frameId + ' #file #directoryFile_' + self.id).html(msg);
+                self.$frame.find('.con_tab_file_content #con_directory_file_' + self.id).html(msg);
             }
         });
 
@@ -375,15 +377,15 @@
         var self = this;
         // if there are no directories, set the active class for the root upload folder
         var titles = new Array();
-        $(self.frameId + ' div[class="active"] a[class="on"]').each(function() {
+        self.$frame.find('div[class="active"] a[class="on"]').each(function() {
             titles.push($(this).attr('title'));
         });
         if (titles.length < 1) {
-            $(self.frameId + ' li.root>div').addClass('active');
+            self.$frame.find('li.root>div').addClass('active');
         }
 
         // get the selected directory and save it
-        var selectedPath = $(self.frameId + ' div[class="active"] a[class="on"]').attr('title');
+        var selectedPath = self.$frame.find('div[class="active"] a[class="on"]').attr('title');
         self.selectedPath = selectedPath;
         if (selectedPath !== '' && selectedPath !== 'upload') {
             selectedPath += '/';
@@ -391,10 +393,10 @@
             selectedPath = '';
         }
 
-        $(self.frameId + ' #caption1').text(selectedPath);
-        $(self.frameId + ' #caption2').text(selectedPath);
-        $(self.frameId + ' form[name="newdir"] input[name="path"]').val(selectedPath);
-        $(self.frameId + ' form[name="properties"] input[name="path"]').val(selectedPath);
+        self.$frame.find('.con_caption1').text(selectedPath);
+        self.$frame.find('.con_caption2').text(selectedPath);
+        self.$frame.find('form[name="newdir"] input[name="path"]').val(selectedPath);
+        self.$frame.find('form[name="properties"] input[name="path"]').val(selectedPath);
 
         self.linkEditorFileUpload();
     };
@@ -404,23 +406,22 @@
      * @method linkEditorFileUpload
      */
     cContentTypeLinkeditor.prototype.linkEditorFileUpload = function() {
-
         var self = this;
         var dirname = '';
         if (self.selectedPath !== '' && self.selectedPath !== 'upload') {
             dirname = self.selectedPath + '/';
         }
 
-        $(self.frameId + ' input.jqueryAjaxUpload').unbind();
-        $(self.frameId + ' input.jqueryAjaxUpload').fileupload({
+        self.$frame.find('input.jqueryAjaxUpload').unbind();
+        self.$frame.find('input.jqueryAjaxUpload').fileupload({
             url: self.pathBackend + 'ajaxmain.php?ajax=upl_upload&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&contenido=' + self.session,
             dataType: 'json',
             autoUpload: true,
             forceIframeTransport: true,
             multipart: true,
             start: function() {
-                $(self.frameId + ' img.loading').show();
-                $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'hidden');
+                self.$frame.find('img.loading').show();
+                self.$frame.find('input.jqueryAjaxUpload').css('visibility', 'hidden');
             },
             always: function() {
                 if (dirname === 'upload' || dirname === '') {
@@ -436,9 +437,9 @@
 							return false;
 						}
 
-                        $(self.frameId + ' img.loading').hide();
-                        $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
-                        $(self.frameId + ' #file #directoryFile_' + self.id).html(msg);
+                        self.$frame.find('img.loading').hide();
+                        self.$frame.find('input.jqueryAjaxUpload').css('visibility', 'visible');
+                        self.$frame.find('.con_tab_file_content #con_directory_file_' + self.id).html(msg);
                     }
                 });
             }
@@ -451,9 +452,9 @@
      */
     cContentTypeLinkeditor.prototype.createMKDir = function() {
         var self = this;
-        $(self.frameId + ' #file form[name="newdir"] input[type="image"]').unbind('click');
-        $(self.frameId + ' #file form[name="newdir"] input[type="image"]').click(function() {
-            var folderName = $(self.frameId + ' input[name="foldername"]').val();
+        self.$frame.find('.con_tab_file_content form[name="newdir"] input[type="image"]').unbind('click');
+        self.$frame.find('.con_tab_file_content form[name="newdir"] input[type="image"]').click(function() {
+            var folderName = self.$frame.find('input[name="foldername"]').val();
             // if folder name is empty, do nothing
             if (folderName === '') {
                 return false;
@@ -496,7 +497,7 @@
                                     title = dirname + folderName;
                                 }
                                 var titles = [];
-                                $(self.frameId + ' div a[class="on"]').each(function() {
+                                self.$frame.find('div a[class="on"]').each(function() {
                                     titles.push($(this).attr('title'));
                                 });
 
@@ -528,10 +529,10 @@
      */
     cContentTypeLinkeditor.prototype.addSaveEvent = function() {
         var self = this;
-        $(self.frameId + ' .save_settings').click(function() {
+        self.$frame.find('.save_settings').click(function() {
             // the link type is no form field, so add it to the editform manually
             var type = '';
-            $(self.frameId + ' .menu li').each(function() {
+            self.$frame.find('.con_tab_menu li').each(function() {
                 // if this is the active tab, extract the tab name
                 if ($(this).hasClass('active')) {
                     var cssClass = $(this).attr('class');

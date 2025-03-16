@@ -84,7 +84,7 @@
         this.addSelectAction();
         this.showFolderPath();
         this.createMKDir();
-        this.showUrlforMeta();
+        this.showUrlForMeta();
     };
 
     /**
@@ -98,7 +98,10 @@
         Con.cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
 
         Con.Loader.get(
-            [this.pathBackend + 'styles/content_types/cms_imgeditor.css', this.pathBackend + 'scripts/jquery/ajaxupload.js'],
+            [
+                this.pathBackend + 'styles/content_types/cms_imgeditor.css',
+                this.pathBackend + 'scripts/jquery/ajaxupload.js'
+            ],
             cContentTypeImgeditor.prototype.initUpload,
             this
         );
@@ -125,7 +128,7 @@
         // call the function of the parent so that the standard tab functionality works
         Con.cContentTypeAbstractTabbed.prototype.addTabbingEvents.call(self);
 
-        $(self.frameId + ' .menu li').click(function() {
+        this.$frame.find('.con_tab_menu li').click(function() {
             // refresh dirs list
             if (!self.refreshed) {
                 var folderName = self.getSelectedFolder();
@@ -135,8 +138,8 @@
             }
 
             // if the upload tab is shown, show the directories tab, too
-            if ($(this).hasClass('upload')) {
-                $(self.frameId + ' .tabs #directories').show();
+            if ($(this).hasClass('con_tab_upload')) {
+                self.$frame.find('.con_tab_content > .con_tab_directories_content').show();
                 self.showFolderPath();
             }
         });
@@ -149,10 +152,10 @@
         var self = this;
         var id = self.id;
 
-        var dlist = $(self.frameId + ' #directoryList_' + id + ' em a');
+        var dlist = self.$frame.find('.con_directory_list em a');
         var divContainer = dlist.closest('.con_str_tree');
 
-        $('#cms_imgeditor_' + id).on('click', function(e) {
+        $(this.imageId).on('click', function(e) {
             var folderName = self.getSelectedFolder();
             var dirname = self.getSelectedDir();
             self.updateDirList(dirname, folderName);
@@ -169,27 +172,25 @@
     cContentTypeImgeditor.prototype.addNaviActions = function() {
         var self = this;
 
-        $(self.frameId + ' ul.menu li.upload').click(function() {
-            if (self.scriptLoaded == 1) {
+        self.$frame.find('ul.con_tab_menu li.upload').click(function() {
+            if (self.scriptLoaded === 1) {
                 self.imageFileUpload();
             }
         });
 
         // init directories lists
-        $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').unbind('click');
-        $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').click(function() {
+        self.$frame.find('.con_directory_list a[class="on"]').parent('div').unbind('click');
+        self.$frame.find('.con_directory_list a[class="on"]').parent('div').click(function() {
             // update the "active" class
-            $.each($(self.frameId + ' div'), function() {
-                $(this).removeClass('active');
-            });
+            self.$frame.find('.con_directory_list div').removeClass('active');
             $(this).addClass('active');
             self.showActiveFilename();
             self.showFolderPath();
             return false;
         });
         // add possibility to expand and close directories
-        $(self.frameId + ' #directoryList_' + self.id + ' em a').unbind('click');
-        $(self.frameId + ' #directoryList_' + self.id + ' em a').click(function(e) {
+        self.$frame.find('.con_directory_list em a').unbind('click');
+        self.$frame.find('.con_directory_list em a').click(function(e) {
         	e.preventDefault();
             var divContainer = $(this).parent().parent();
             var dirname = $(this).parent('em').parent().find('a[class="on"]').attr('title');
@@ -229,15 +230,15 @@
         var self = this;
         // if there are no directories, set the active class for the root upload folder
         var directories = [];
-        $(self.frameId + ' div[class="active"] a[class="on"]').each(function() {
+        self.$frame.find('div[class="active"] a[class="on"]').each(function() {
             directories.push($(this).attr('title'));
         });
         if (directories.length < 1) {
-            $(self.frameId + ' li.root>div').addClass('active');
+            self.$frame.find('li.root>div').addClass('active');
         }
 
         // get the selected directory and save it
-        self.selectedPath = $(self.frameId + ' div[class="active"] a[class="on"]').attr('title');
+        self.selectedPath = self.$frame.find('div[class="active"] a[class="on"]').attr('title');
         var selectedPath = self.selectedPath;
         if (selectedPath !== '' && selectedPath !== 'upload') {
             selectedPath += '/';
@@ -246,13 +247,12 @@
         }
 
         // show the selected directory in the upload tab and set the form values accordingly
-        $(self.frameId + ' #caption1').text(selectedPath);
-        $(self.frameId + ' #caption2').text(selectedPath);
-        $(self.frameId + ' form[name="newdir"] input[name="path"]').val(selectedPath);
-        $(self.frameId + ' form[name="properties"] input[name="path"]').val(selectedPath);
+        self.$frame.find('.con_caption1').text(selectedPath);
+        self.$frame.find('.con_caption2').text(selectedPath);
+        self.$frame.find('form[name="newdir"] input[name="path"]').val(selectedPath);
+        self.$frame.find('form[name="properties"] input[name="path"]').val(selectedPath);
 
-
-        if (self.scriptLoaded == 1) {
+        if (self.scriptLoaded === 1) {
             self.imageFileUpload();
         }
     };
@@ -265,23 +265,24 @@
         var self = this;
 
         function _resetMeta() {
-            $('#image_medianame_' + self.id).val('');
-            $('#image_description_' + self.id).val('');
-            $('#image_keywords_' + self.id).val('');
-            $('#image_internal_notice_' + self.id).val('');
-            $('#image_copyright_' + self.id).val('');
+            self.getSettingElement('image_medianame').val('');
+            self.getSettingElement('image_description').val('');
+            self.getSettingElement('image_keywords').val('');
+            self.getSettingElement('image_internal_notice').val('');
+            self.getSettingElement('image_copyright').val('');
         }
 
-        if ($('#image_filename_' + self.id).length > 0) {
-            $(self.frameId + ' select[name="image_filename"]').change(function() {
-                var filename = $('select#image_filename_' + self.id + ' option:selected').val();
+        var $imageFilename = this.getSettingElement('image_filename');
+        if ($imageFilename.length > 0) {
+            $imageFilename.change(function() {
+                var filename = $imageFilename.val();
                 if (!filename) {
                     filename = '';
                 }
 
                 // update the image preview element with the new selected image
                 if (filename === '') {
-                    $('#directoryShow_' + self.id).html('');
+                    $(self.frameId + ' .con_directory_show').html('');
                 } else {
                     self.showActiveImg();
                 }
@@ -299,12 +300,12 @@
 							}
 
                             var imageMeta = $.parseJSON(msg);
-                            $('#image_medianame_' + self.id).val(imageMeta.medianame);
-                            $('#image_description_' + self.id).val(imageMeta.description);
-                            $('#image_keywords_' + self.id).val(imageMeta.keywords);
-                            $('#image_internal_notice_' + self.id).val(imageMeta.internal_notice);
-                            $('#image_copyright_' + self.id).val(imageMeta.copyright);
-                            self.showUrlforMeta();
+                            self.getSettingElement('image_medianame').val(imageMeta.medianame);
+                            self.getSettingElement('image_description').val(imageMeta.description);
+                            self.getSettingElement('image_keywords').val(imageMeta.keywords);
+                            self.getSettingElement('image_internal_notice').val(imageMeta.internal_notice);
+                            self.getSettingElement('image_copyright').val(imageMeta.copyright);
+                            self.showUrlForMeta();
                         }
                     });
                 }
@@ -319,9 +320,11 @@
      * @method createMKDir
      */
     cContentTypeImgeditor.prototype.createMKDir = function() {
-        var self = this;
-        $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').unbind('click');
-        $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').click(function() {
+        var self = this,
+            $uplImage = this.$frame.find('.' + this.getElementCssClass('tab_upload') + ' form[name="newdir"] input[type="image"]');
+
+        $uplImage.unbind('click');
+        $uplImage.click(function() {
             var folderName = self.getSelectedFolder();
             if (folderName === false) {
                 return false;
@@ -361,19 +364,19 @@
         }
 
         $('body > input[type=file]').remove();
-        $('#cms_image_m' + self.id).unbind();
 
+        var $fileUpload = this.$frame.find('input.jqueryAjaxUpload');
 
-        $(self.frameId + ' input.jqueryAjaxUpload').unbind();
-        $(self.frameId + ' input.jqueryAjaxUpload').fileupload({
+        $fileUpload.unbind();
+        $fileUpload.fileupload({
             url: self.pathBackend + 'ajaxmain.php?ajax=upl_upload&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&contenido=' + self.session,
             dataType: 'json',
             autoUpload: true,
             forceIframeTransport: true,
             multipart: true,
             start: function(e) {
-                $(self.frameId + ' img.loading').show();
-                $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'hidden');
+                self.$frame.find('img.loading').show();
+                $fileUpload.css('visibility', 'hidden');
             },
             always: function(e, data) {
                 if (dirname === 'upload' || dirname === '') {
@@ -388,11 +391,11 @@
 							return false;
 						}
 
-                        $(self.frameId + ' img.loading').hide();
-                        $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
-                        $(self.frameId + ' #directoryFile_' + self.id).html(msg);
+                        self.$frame.find('img.loading').hide();
+                        $fileUpload.css('visibility', 'visible');
+                        self.$frame.find('.con_directory_file').html(msg);
                         self.addSelectAction();
-                        if (self.scriptLoaded == 1) {
+                        if (self.scriptLoaded === 1) {
                             self.imageFileUpload();
                         }
                     }
@@ -403,18 +406,18 @@
 
     /**
      * Updates the filename in the meta tab.
-     * @method showUrlforMeta
+     * @method showUrlForMeta
      */
-    cContentTypeImgeditor.prototype.showUrlforMeta = function() {
-        var filename = $(this.frameId + ' select#image_filename_' + this.id + ' option:selected').val();
-        $(this.frameId + ' #image_meta_url_' + this.id).html(filename);
+    cContentTypeImgeditor.prototype.showUrlForMeta = function() {
+        var filename = this.getSettingElement('image_filename').val();
+        this.$frame.find('.image_meta_url').html(filename);
     };
 
     /**
      * Get selected foldername
      */
     cContentTypeImgeditor.prototype.getSelectedFolder = function () {
-        var folderName = $(this.frameId + ' input[name="foldername"]').val();
+        var folderName = this.$frame.find('input[name="foldername"]').val();
         // if folder name is empty, do nothing
         if (folderName === '') {
             folderName = false;
@@ -456,9 +459,21 @@
                 }
 
                 var titles = [];
-                $(self.frameId + ' div a[class="on"]').each(function () {
+                self.$frame.find('div a[class="on"]').each(function () {
                     titles.push($(this).attr('title'));
                 });
+
+                var treeItemsFunction = function () {
+                    self.$frame.find('.con_str_tree li div>a').each(function (index) {
+                        if ($(this).attr('title') === self.selectedPath) {
+                            $(this).parent().parent('li:has(ul)').children('ul').remove();
+                            $(this).parent().after(msg);
+
+                            $(this).parent().parent('li').removeClass('collapsed');
+                            self.addNaviActions();
+                        }
+                    });
+                };
 
                 if (typeof folderName !== 'undefined') {
                     var title;
@@ -469,30 +484,14 @@
                     }
 
                     if ($.inArray(title, titles) === -1) {
-                        $(self.frameId + ' .con_str_tree li div>a').each(function (index) {
-                            if ($(this).attr('title') === self.selectedPath) {
-                                $(this).parent().parent('li:has(ul)').children('ul').remove();
-                                $(this).parent().after(msg);
-
-                                $(this).parent().parent('li').removeClass('collapsed');
-                                self.addNaviActions();
-                            }
-                        });
+                        treeItemsFunction();
                     }
                 } else {
-                    $(self.frameId + ' .con_str_tree li div>a').each(function (index) {
-                        if ($(this).attr('title') === self.selectedPath) {
-                            $(this).parent().parent('li:has(ul)').children('ul').remove();
-                            $(this).parent().after(msg);
-
-                            $(this).parent().parent('li').removeClass('collapsed');
-                            self.addNaviActions();
-                        }
-                    });
+                    treeItemsFunction();
                 }
-                //remove upload acitve, if image selected.
-                if ($(self.frameId + ' div[class="active"] a[class="on"]').length > 1) {
-                    $(self.frameId + ' li[class="root"] > div').removeClass('active');
+                //remove upload active, if image selected.
+                if (self.$frame.find('div[class="active"] a[class="on"]').length > 1) {
+                    self.$frame.find('li[class="root"] > div').removeClass('active');
                 }
                 self.showActiveFilename();
             }
@@ -506,14 +505,14 @@
     cContentTypeImgeditor.prototype.showActiveFilename = function () {
         var self = this;
         // get the selected directory
-        self.selectedPath = $(self.frameId + ' div[class="active"] a[class="on"]').attr('title');
+        self.selectedPath = this.$frame.find('div[class="active"] a[class="on"]').attr('title');
 
         var dirname = self.selectedPath;
         if (dirname === 'upload') {
             dirname = '/';
         }
 
-        $(self.frameId + ' select#image_filename_' + self.id + ' option:selected').prop('selected', false);
+        this.getSettingElement('image_filename').prop('selected', false);
 
         // update the file list each time a new directory is selected
         $.ajax({
@@ -525,10 +524,10 @@
                     return false;
                 }
 
-                $(self.frameId + ' #directoryFile_' + self.id).html(msg);
+                self.$frame.find('.con_directory_file').html(msg);
                 // the items of the file select element have been changed, so add the event handlers again
                 self.addSelectAction();
-                $(self.frameId + ' select#image_filename_' + self.id).trigger('change');
+                self.getSettingElement('image_filename').trigger('change');
                 self.showActiveImg();
             }
         });
@@ -540,7 +539,7 @@
      */
     cContentTypeImgeditor.prototype.showActiveImg = function () {
         var self = this;
-        var filename = $('select#image_filename_' + self.id + ' option:selected').val();
+        var filename = this.getSettingElement('image_filename').val();
         if (filename) {
             var url = self.pathFrontend + 'upload/' + filename;
             $.ajax({
@@ -548,7 +547,7 @@
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=scaleImage&url=' + url + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                 success: function (msg) {
-                    $('#directoryShow_' + self.id).html('<div><img src="' + msg + '" alt=""/></div>');
+                    self.$frame.find('.con_directory_show').html('<div><img src="' + msg + '" alt=""/></div>');
                 }
             });
         }

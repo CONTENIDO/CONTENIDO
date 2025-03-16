@@ -40,7 +40,7 @@
     margin-top: 5px;
 }
 
-.cms_abstract .tabs {
+.cms_abstract .con_tab_content {
     padding-top: 10px;
 }
 
@@ -93,7 +93,7 @@
     margin: 5px 6px 5px 0;
 }
 
-.cms_abstract .menu {
+.cms_abstract .con_tab_menu {
     clear: both;
     list-style-type: none;
     margin: 10px 0 0;
@@ -101,7 +101,7 @@
     height: 22px;
 }
 
-.cms_abstract .menu li {
+.cms_abstract .con_tab_menu li {
     border: 1px solid #B3B3B3;
     cursor: pointer;
     line-height: 20px;
@@ -112,9 +112,9 @@
     margin-right: 4px;
 }
 
-.cms_abstract .menu li.active {
+.cms_abstract .con_tab_menu li.active {
     font-weight: bold;
-    border-bottom: 1px solid #F1F1F1;
+    border-bottom: 2px solid #F1F1F1;
 }
 
 .cms_abstract .checkbox_wrapper {
