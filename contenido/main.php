@@ -19,13 +19,9 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * @var cPermission $perm
- * @var cAuth $auth
- * @var string $belang
  * @var array $cfg
- * @var cSession $sess
  * @var int $changelang
  * @var int $client
- * @var int $frame
  * @var string $area
  * @var int $idart
  * @var int $idcat
@@ -47,6 +43,14 @@ cRegistry::bootstrap([
     'perm' => 'cPermission'
 ]);
 
+$auth = cRegistry::getAuth();
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+$action = cRegistry::getAction();
+$frame = cRegistry::getFrame();
+$belang = cRegistry::getBackendLanguage();
+
+
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
 require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
@@ -65,7 +69,7 @@ if ($cfg['use_pseudocron'] == true) {
         cInclude('includes', 'pseudo-cron.inc.php');
         chdir($currentWorkingDirectory);
 
-        if ($bJobRunned == true) {
+        if ($bJobRunned) {
             // Some cronjobs might overwrite important system variables.
             // We are thaw'ing the session again to re-register these variables.
             $sess->thaw();

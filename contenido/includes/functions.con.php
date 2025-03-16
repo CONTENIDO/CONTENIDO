@@ -605,6 +605,9 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
  */
 function conMakeArticleIndex($idartlang, $idart)
 {
+    $idartlang = (int) $idartlang;
+    $idart = (int) $idart;
+
     // get IDs of given article langauge
     if (cRegistry::getArticleLanguageId() == $idartlang) {
         // quite easy if given article is current article
@@ -648,7 +651,7 @@ function conMakeArticleIndex($idartlang, $idart)
         'idcat' => $idcat,
         'idcatlang' => $idcatlang,
         'idart' => $idart,
-        'idartlang' => $idartlang
+        'idartlang' => $idartlang,
     ];
 
     // iterate chain Contenido.Content.AfterStore
@@ -656,7 +659,6 @@ function conMakeArticleIndex($idartlang, $idart)
     while (false !== $chainEntry = $iterator->next()) {
         $chainEntry->execute($articleIds);
     }
-
 }
 
 /**
@@ -1889,6 +1891,7 @@ function conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabe
 {
     $auth = cRegistry::getAuth();
     $lang = cRegistry::getLanguageId();
+    $newidtplcfg = null;
 
     $oSrcArtLang = new cApiArticleLanguage();
     if (!$oSrcArtLang->loadByArticleAndLanguageId($srcidart, $lang)) {
