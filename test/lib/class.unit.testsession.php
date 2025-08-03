@@ -31,7 +31,7 @@ class cUnitTestSession extends cSession
     {
     }
 
-    protected function _rSerialize($var, string &$str)
+    protected function _rSerialize($var, &$str)
     {
     }
 
