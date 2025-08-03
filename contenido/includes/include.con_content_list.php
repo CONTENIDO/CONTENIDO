@@ -329,21 +329,24 @@ if (($action == 'savecontype' || $action == 10)) {
 
     // output data as xml
     header('Content-Type: application/xml;');
-    $filename = str_replace(" ", "_", $cApiArticleLanguage->get('title'));
+    $filename = cString::trimHard(
+        cString::cleanURLCharacters($cApiArticleLanguage->get('title')),
+        126
+    );
     header('Content-Disposition: attachment; filename=' . $filename . '.xml;');
     ob_clean();
     echo $articleElement->asXML();
     exit;
-} elseif ($action == "importrawcontent") {
+} elseif ($action == 'importrawcontent') {
     // import raw data into article
     // init vars
     $error = false;
 
     //get file from request
-    $rawDataFile = $_FILES['rawfile']['tmp_name'];
+    $rawDataFile = $_FILES['rawfile']['tmp_name'] ?? null;
 
     // check file exist
-    if (cString::getStringLength($rawDataFile) > 0 && isset($_FILES['rawfile'])) {
+    if (is_string($rawDataFile) && cString::getStringLength($rawDataFile) > 0) {
 
         // read file from tmp upload folder
         $rawData = file_get_contents($rawDataFile);
@@ -358,9 +361,9 @@ if (($action == 'savecontype' || $action == 10)) {
                 // check article id exists in xml
                 if ($articleId > 0) {
 
-                    // load article by artice id and language
+                    // load article by article id and language
                     $articleLanguage = new cApiArticleLanguage();
-                    $articleLanguage->loadByMany(["idart" => $articleId, "idlang" => $lang]);
+                    $articleLanguage->loadByMany(['idart' => $articleId, 'idlang' => $lang]);
 
                     $versioning = new cContentVersioning();
                     $version = NULL;
@@ -371,7 +374,6 @@ if (($action == 'savecontype' || $action == 10)) {
                         $version = $artLangVersion->get('version');
                     }
 
-
                     // check is article loaded
                     if ($articleLanguage->isLoaded()) {
 
@@ -380,17 +382,17 @@ if (($action == 'savecontype' || $action == 10)) {
                             // switch xml tag and exec business logic
                             switch ($key) {
                                 case 'title':
-                                    $articleLanguage->set("title", $child);
+                                    $articleLanguage->set('title', $child);
                                     $articleLanguage->store();
 
                                     break;
                                 case 'shortdesc':
-                                    $articleLanguage->set("summary", $child);
+                                    $articleLanguage->set('summary', $child);
                                     $articleLanguage->store();
 
                                     break;
                                 case 'seo_title':
-                                    $articleLanguage->set("pagetitle", $child);
+                                    $articleLanguage->set('pagetitle', $child);
                                     $articleLanguage->store();
 
                                     break;
@@ -415,18 +417,28 @@ if (($action == 'savecontype' || $action == 10)) {
                                     $typeid = intval($child->attributes()->id);
 
                                     $typeEntry = new cApiType();
-                                    $typeEntry->loadBy("type", $type);
+                                    $typeEntry->loadBy('type', $type);
 
-                                    if (cString::getStringLength($type) > 0 && $typeid > 0 && in_array($typeEntry->get("type"), $allowedContentTypes)) {
+                                    if (cString::getStringLength($type) > 0 && $typeid > 0 && in_array($typeEntry->get('type'), $allowedContentTypes)) {
                                         if (isset($_POST['overwritecontent']) && $_POST['overwritecontent'] == 1) {
                                             conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
                                         } else {
+                                            $contentEntry = null;
                                             if ($versioningState == $versioning::STATE_SIMPLE || $versioningState == $versioning::STATE_DISABLED) {
                                                 $contentEntry = new cApiContent();
-                                                $contentEntry->loadByMany(["idtype" => $typeEntry->get("idtype"), "typeid" => $typeid, "idartlang" => $articleLanguage->get('idartlang')]);
+                                                $contentEntry->loadByMany([
+                                                    'idtype' => $typeEntry->get('idtype'),
+                                                    'typeid' => $typeid,
+                                                    'idartlang' => $articleLanguage->get('idartlang')
+                                                ]);
                                             } elseif ($versioningState == $versioning::STATE_ADVANCED) {
                                                 $contentEntryVersionCollection = new cApiContentVersionCollection();
-                                                $where = 'idtype = ' . $typeEntry->get("idtype") . ' AND typeid = ' . $typeid . ' AND idartlang = ' . $articleLanguage->get('idartlang');
+                                                $where = sprintf(
+                                                    '`idtype` = %d AND `typeid` = %d AND `idartlang` = %d',
+                                                    $typeEntry->get('idtype'),
+                                                    $typeid,
+                                                    $articleLanguage->get('idartlang')
+                                                );
                                                 $ids = $contentEntryVersionCollection->getIdsByWhereClause($where);
                                                 $contentEntry = new cApiContentVersion(max($ids));
                                                 if ($contentEntry->isLoaded()) {
@@ -435,7 +447,7 @@ if (($action == 'savecontype' || $action == 10)) {
                                                     }
                                                 }
                                             }
-                                            if (!$contentEntry->isLoaded()) {
+                                            if (is_object($contentEntry) && !$contentEntry->isLoaded()) {
                                                 conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
                                             }
                                         }
