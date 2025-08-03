@@ -356,7 +356,6 @@ abstract class cCodeGeneratorAbstract
         }
         // End: Variables required in content type codes
 
-        $match = [];
         $keycode = [];
 
         // NOTE: $a_content is used by included/evaluated content type codes
@@ -375,14 +374,15 @@ abstract class cCodeGeneratorAbstract
         foreach ($_typeList as $_typeItem) {
             $key = cString::toLowerCase($_typeItem->type);
             $type = $_typeItem->type;
-            // find all CMS_{type}[{number}] values, e.g. CMS_HTML[1]
-            // $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i',
-            // $this->_layoutCode, $match);
-            $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $this->_layoutCode, $match);
+            // Find all CMS_{type}[{number}] values, e.g. CMS_HTML[1]
+            $tmp = preg_match_all(
+                sprintf('/(%s\[(\d+)\])/', preg_quote($type, '/')),
+                $this->_layoutCode,
+                $matches
+            );
 
-            $a_[$key] = $match[0];
-
-            $success = array_walk($a_[$key], 'cString::extractNumber');
+            // We need the numbers, `$matches[2]` contains them
+            $a_[$key] = $matches[2] ?? [];
 
             $search = [];
             $replacements = [];
