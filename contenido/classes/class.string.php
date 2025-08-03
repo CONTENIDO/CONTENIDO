@@ -28,19 +28,13 @@ class cString extends cStringMultiByteWrapper
      *
      * Caution: This function only takes strings as parameters, not arrays!
      *
-     * @param string $find
-     *         String to find
-     * @param string $replace
-     *         String to replace
-     * @param string $subject
-     *         String to process
-     * @return string
-     *         Processed string
+     * @param string $find String to find
+     * @param string $replace String to replace
+     * @param string $subject String to process
      */
-    public static function iReplaceOnce($find, $replace, $subject)
+    public static function iReplaceOnce(string $find, string $replace, string $subject): string
     {
         $start = parent::findFirstPos(parent::toLowerCase($subject), parent::toLowerCase($find));
-
         if ($start === false) {
             return $subject;
         }
@@ -49,9 +43,7 @@ class cString extends cStringMultiByteWrapper
         $first = parent::getPartOfString($subject, 0, $start);
         $last = parent::getPartOfString($subject, $end, parent::getStringLength($subject) - $end);
 
-        $result = $first . $replace . $last;
-
-        return $result;
+        return $first . $replace . $last;
     }
 
     /**
@@ -59,31 +51,22 @@ class cString extends cStringMultiByteWrapper
      *
      * Caution: This function only takes strings as parameters, not arrays!
      *
-     * @param string $find
-     *         String to find
-     * @param string $replace
-     *         String to replace
-     * @param string $subject
-     *         String to process
-     * @return string
-     *         Processed string
+     * @param string $find String to find
+     * @param string $replace String to replace
+     * @param string $subject String to process
      */
-    public static function iReplaceOnceReverse($find, $replace, $subject)
+    public static function iReplaceOnceReverse(string $find, string $replace, string $subject): string
     {
         $start = self::posReverse(parent::toLowerCase($subject), parent::toLowerCase($find));
-
         if ($start === false) {
             return $subject;
         }
 
         $end = $start + parent::getStringLength($find);
-
         $first = parent::getPartOfString($subject, 0, $start);
         $last = parent::getPartOfString($subject, $end, parent::getStringLength($subject) - $end);
 
-        $result = $first . $replace . $last;
-
-        return $result;
+        return $first . $replace . $last;
     }
 
     /**
@@ -92,16 +75,12 @@ class cString extends cStringMultiByteWrapper
      * NOTE: The original cString::findLastPos-function of PHP4 only finds a single character
      * as needle.
      *
-     * @param string $haystack
-     *         String to search in
-     * @param string $needle
-     *         String to search for
-     * @param int $start [optional]
-     *         Offset
-     * @return int
-     *         String position
+     * @param string $haystack String to search in
+     * @param string $needle String to search for
+     * @param int $start Offset
+     * @return int|false String position or false
      */
-    public static function posReverse($haystack, $needle, $start = 0)
+    public static function posReverse(string $haystack, string $needle, int $start = 0)
     {
         $tempPos = parent::findFirstPos($haystack, $needle, $start);
 
@@ -110,11 +89,11 @@ class cString extends cStringMultiByteWrapper
                 // Needle not in string at all
                 return false;
             } else {
-                // No more occurances found
+                // No more occurrences found
                 return $start - parent::getStringLength($needle);
             }
         } else {
-            // Find the next occurance
+            // Find the next occurrence
             return self::posReverse($haystack, $needle, $tempPos + parent::getStringLength($needle));
         }
     }
@@ -123,36 +102,37 @@ class cString extends cStringMultiByteWrapper
      * Adds slashes to passed variable or array.
      *
      * @param string|array $value
-     *         Either a string or a multi-dimensional array of values
+     *         Either a string or a multidimensional array of values
      * @return string|array
      */
     public static function addSlashes($value)
     {
-        return is_array($value) ? array_map(['cString', 'addSlashes'], $value) : addslashes($value);
+        return is_array($value)
+            ? array_map(function($item) { return cString::addSlashes($item); }, $value)
+            : addslashes($value);
     }
 
     /**
      * Removes slashes from passed variable or array.
      *
      * @param string|array $value
-     *         Either a string or a multi-dimensional array of values
+     *         Either a string or a multidimensional array of values
      * @return string|array
      */
     public static function stripSlashes($value)
     {
-        return is_array($value) ? array_map(['cString', 'stripSlashes'], $value) : stripslashes($value);
+        return is_array($value)
+            ? array_map(function($item) { return cString::stripSlashes($item); }, $value)
+            : stripslashes($value);
     }
 
     /**
      * Checks if the string haystack ends with needle.
      *
-     * @param string $haystack
-     *         The string to check
-     * @param string $needle
-     *         The string with which it should end
-     * @return bool
+     * @param string $haystack The string to check
+     * @param string $needle The string with which it should end
      */
-    public static function endsWith($haystack, $needle)
+    public static function endsWith(string $haystack, string $needle): bool
     {
         $length = parent::getStringLength($needle);
         if ($length == 0) {
@@ -165,13 +145,10 @@ class cString extends cStringMultiByteWrapper
     /**
      * Returns true if needle can be found in haystack.
      *
-     * @param string $haystack
-     *         String to be searched
-     * @param string $needle
-     *         String to search for
-     * @return bool
+     * @param string $haystack String to be searched
+     * @param string $needle String to search for
      */
-    public static function contains($haystack, $needle)
+    public static function contains(string $haystack, string $needle): bool
     {
         return !(parent::findFirstPos($haystack, $needle) === false);
     }
@@ -179,19 +156,15 @@ class cString extends cStringMultiByteWrapper
     /**
      * Implementation of PHP 5.3's strstr with beforeNeedle.
      *
-     * @param string $haystack
-     *         String to be searched
-     * @param string $needle
-     *         String to search for
-     * @param bool $beforeNeedle [optional]
-     *         If true, return everything BEFORE needle
-     * @return string
+     * @param string $haystack String to be searched
+     * @param string $needle String to search for
+     * @param bool $beforeNeedle If true, return everything BEFORE needle
+     * @return string|false
      * @link https://php.net/manual/de/function.mb-strstr.php
      * @link https://php.net/manual/de/function.strstr.php
      */
-    public static function strstr($haystack, $needle, $beforeNeedle = false)
+    public static function strstr(string $haystack, string $needle, bool $beforeNeedle = false)
     {
-
         if (!$beforeNeedle) {
             if (self::_functionExists('mb_strstr')) {
                 return mb_strstr($haystack, $needle);
@@ -206,12 +179,9 @@ class cString extends cStringMultiByteWrapper
     /**
      * This function checks if a given format is accepted by php's date function.
      *
-     * @param string $format
-     *         format according to date function specification
-     * @return bool
-     *         true if format is correct, false otherwise
+     * @param string $format Format according to date function specification
      */
-    public static function validateDateFormat($format)
+    public static function validateDateFormat(string $format): bool
     {
         // try to create a DateTime instance based on php's date function format specification
         // return true if date is valid (no wrong format)
@@ -221,24 +191,17 @@ class cString extends cStringMultiByteWrapper
     /**
      * Extract a number from a string.
      *
-     * @param string $string
-     *         String var by reference
-     * @return string
+     * @param string $string String var by reference
      */
-    public static function extractNumber(&$string)
+    public static function extractNumber(string $string): string
     {
-        $string = preg_replace('/[^0-9]/', '', $string);
-        return $string;
+        return preg_replace('/[^0-9]/', '', $string);
     }
-
 
     /**
      * Returns whether a string is UTF-8 encoded or not.
-     *
-     * @param string $input
-     * @return bool
      */
-    public static function isUtf8($input)
+    public static function isUtf8(string $input): bool
     {
         $len = parent::getStringLength($input);
 
@@ -276,16 +239,11 @@ class cString extends cStringMultiByteWrapper
     /**
      * Checks if a value is alphanumeric.
      *
-     * @param mixed $test
-     *         Value to test
-     * @param bool $umlauts [optional]
-     *         Use german umlauts
-     * @return bool
-     *         Value is alphanumeric
+     * @param bool $umlauts Flag to use german umlauts
      */
-    public static function isAlphanumeric($test, $umlauts = true)
+    public static function isAlphanumeric(string $test, bool $umlauts = true): bool
     {
-        if ($umlauts == true) {
+        if ($umlauts) {
             $match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
         } else {
             $match = "/^[a-z0-9 ]+$/i";
@@ -296,7 +254,7 @@ class cString extends cStringMultiByteWrapper
 
     /**
      * Trims a string to a given length and makes sure that all words up to
-     * $maxlen are preserved, without exceeding $maxlen.
+     * $maxLength are preserved, without exceeding $maxLength.
      *
      * Warning: Currently, this function uses a regular ASCII-Whitespace to do
      * the separation test. If you are using '&nbsp' to create spaces, this
@@ -307,91 +265,78 @@ class cString extends cStringMultiByteWrapper
      * echo cString::trimAfterWord($string, 15);
      *
      * This would output "This is a", since this function respects word
-     * boundaries and doesn't operate beyond the limit given by $maxlen.
+     * boundaries and doesn't operate beyond the limit given by $maxLength.
      *
-     * @param string $string
-     *         The string to operate on
-     * @param int $maxlen
-     *         The maximum number of characters
-     * @return string
-     *         The resulting string
+     * @param string $string The string to operate on
+     * @param int $maxLength The maximum number of characters
      */
-    public static function trimAfterWord($string, $maxlen)
+    public static function trimAfterWord(string $string, int $maxLength): string
     {
-        // If the string is smaller than the maximum lenght, it makes no sense to
+        // If the string is smaller than the maximum length, it makes no sense to
         // process it any further. Return it.
-        if (parent::getStringLength($string) < $maxlen) {
+        if (parent::getStringLength($string) < $maxLength) {
             return $string;
         }
 
-        // If the character after the $maxlen position is a space, we can return
-        // the string until $maxlen.
-        if (parent::getPartOfString($string, $maxlen, 1) == ' ') {
-            return parent::getPartOfString($string, 0, $maxlen);
+        // If the character after the $maxLength position is a space, we can return
+        // the string until $maxLength.
+        if (parent::getPartOfString($string, $maxLength, 1) == ' ') {
+            return parent::getPartOfString($string, 0, $maxLength);
         }
 
-        // Cut the string up to $maxlen so we can use cString::findLastPos (reverse str position)
-        $cutted_string = parent::getPartOfString($string, 0, $maxlen);
+        // Cut the string up to $maxLength so we can use cString::findLastPos (reverse str position)
+        $truncatedString = parent::getPartOfString($string, 0, $maxLength);
 
         // Extract the end of the last word
-        $last_word_position = cString::findLastPos($cutted_string, ' ');
+        $lastPos = cString::findLastPos($truncatedString, ' ');
 
-        return parent::getPartOfString($cutted_string, 0, $last_word_position);
+        return parent::getPartOfString($truncatedString, 0, $lastPos);
     }
 
     /**
      * Trims a string to a specific length.
      *
-     * If the string is longer than $maxlen, dots are inserted ("...") right
-     * before $maxlen.
+     * If the string is longer than $maxLength, dots are inserted ("...") right
+     * before $maxLength.
      *
      * Example:
      * $string = "This is a simple test";
      * echo cString::trimHard ($string, 15);
      *
      * This would output "This is a si...", since the string is longer than
-     * $maxlen and the resulting string matches 15 characters including the dots.
+     * $maxLength and the resulting string matches 15 characters including the dots.
      *
-     * @param string $string
-     *         The string to operate on
-     * @param int $maxlen
-     *         The maximum number of characters
-     * @param string $fillup [optional]
-     * @return string
-     *         The resulting string
+     * @param string $string The string to operate on
+     * @param int $maxLength The maximum number of characters
      */
-    public static function trimHard($string, $maxlen, $fillup = '...')
+    public static function trimHard(string $string, int $maxLength, string $fillup = '...'): string
     {
-        // If the string is smaller than the maximum lenght, it makes no sense to
+        // If the string is smaller than the maximum length, it makes no sense to
         // process it any further. Return it.
-        if (parent::getStringLength($string) < $maxlen) {
+        if (parent::getStringLength($string) < $maxLength) {
             return $string;
         }
 
         // Calculate the maximum text length
-        $maximum_text_length = $maxlen - parent::getStringLength($fillup);
+        $maxTextLength = $maxLength - parent::getStringLength($fillup);
 
         // If text length is over zero cut it
-        if ($maximum_text_length > 0) {
-            if (preg_match('/(*UTF8)^.{0,' . $maximum_text_length . '}/', $string, $result_array)) {
-                $cutted_string = $result_array[0];
-            } elseif (preg_match('/^.{0,' . $maximum_text_length . '}/u', $string, $result_array)) {
-                $cutted_string = $result_array[0];
+        if ($maxTextLength > 0) {
+            if (preg_match('/^.{0,' . $maxTextLength . '}/u', $string, $matches)) {
+                $truncatedString = $matches[0];
             } else {
-                $cutted_string = parent::getPartOfString($string, 0, $maximum_text_length);
+                $truncatedString = parent::getPartOfString($string, 0, $maxTextLength);
             }
         } else {
-            $cutted_string = $string;
+            $truncatedString = $string;
         }
 
         // Append the fillup string
-        $cutted_string .= $fillup;
-
-        return $cutted_string;
+        return $truncatedString . $fillup;
     }
 
     /**
-     * Trims a string to a approximate length preserving sentence boundaries.
+     * Trims a string to an approximate length preserving sentence boundaries.
      *
      * The algorithm inside calculates the sentence length to the previous and
      * next sentences. The distance to the next sentence which is smaller will
@@ -425,194 +370,134 @@ class cString extends cStringMultiByteWrapper
      *
      * This function ensures that at least one sentence is returned.
      *
-     * @param string $string
-     *         The string to operate on
-     * @param int $approxlen
-     *         The approximate number of characters
-     * @param bool $hard [optional]
-     *         If true, use a hard limit for the number of characters
-     * @return string
-     *         The resulting string
+     * @param string $string The string to operate on
+     * @param int $approxLength The approximate number of characters
+     * @param bool $hard If true, use a hard limit for the number of characters
      */
-    public static function trimSentence($string, $approxlen, $hard = false)
+    public static function trimSentence(string $string, int $approxLength, bool $hard = false): string
     {
-        // If the string is smaller than the maximum lenght, it makes no sense to
+        // If the string is smaller than the maximum length, it makes no sense to
         // process it any further. Return it.
-        if (parent::getStringLength($string) < $approxlen) {
+        if (parent::getStringLength($string) < $approxLength) {
             return $string;
         }
 
         // Find out the start of the next sentence
-        $next_sentence_start = parent::findFirstPos($string, '.', $approxlen);
+        $nextSentenceStart = parent::findFirstPos($string, '.', $approxLength);
 
         // If there's no next sentence (somebody forgot the dot?), set it to the end
         // of the string.
-        if ($next_sentence_start === false) {
-            $next_sentence_start = parent::getStringLength($string);
+        if ($nextSentenceStart === false) {
+            $nextSentenceStart = parent::getStringLength($string);
         }
 
         // Cut the previous sentence so we can use cString::findLastPos
-        $previous_sentence_cutted = parent::getPartOfString($string, 0, $approxlen);
+        $previousSentenceTruncated = parent::getPartOfString($string, 0, $approxLength);
 
         // Get out the previous sentence start
-        $previous_sentence_start = cString::findLastPos($previous_sentence_cutted, '.');
+        $previousSentenceStart = cString::findLastPos($previousSentenceTruncated, '.');
 
         // If the sentence doesn't contain a dot, use the text start.
-        if ($previous_sentence_start === false) {
-            $previous_sentence_start = 0;
+        if ($previousSentenceStart === false) {
+            $previousSentenceStart = 0;
         }
 
         // If we have a hard limit, we only want to process everything before
-        // $approxlen
-        if (($hard == true) && ($next_sentence_start > $approxlen)) {
-            return parent::getPartOfString($string, 0, $previous_sentence_start + 1);
+        // $approxLength
+        if ($hard && $nextSentenceStart > $approxLength) {
+            return parent::getPartOfString($string, 0, $previousSentenceStart + 1);
         }
 
         // Calculate next and previous sentence distances
-        $distance_previous_sentence = $approxlen - $previous_sentence_start;
-        $distance_next_sentence = $next_sentence_start - $approxlen;
+        $previousSentenceDistance = $approxLength - $previousSentenceStart;
+        $nextSentenceDistance = $nextSentenceStart - $approxLength;
 
         // Sanity: Return at least one sentence.
-        $sanity = parent::getPartOfString($string, 0, $previous_sentence_start + 1);
+        $sanity = parent::getPartOfString($string, 0, $previousSentenceStart + 1);
 
         if (parent::findFirstPos($sanity, '.') === false) {
-            return parent::getPartOfString($string, 0, $next_sentence_start + 1);
+            return parent::getPartOfString($string, 0, $nextSentenceStart + 1);
         }
 
-        // Decide wether the next or previous sentence is nearer
-        if ($distance_previous_sentence > $distance_next_sentence) {
-            return parent::getPartOfString($string, 0, $next_sentence_start + 1);
+        // Decide whether the next or previous sentence is nearer
+        if ($previousSentenceDistance > $nextSentenceDistance) {
+            return parent::getPartOfString($string, 0, $nextSentenceStart + 1);
         } else {
-            return parent::getPartOfString($string, 0, $previous_sentence_start + 1);
+            return parent::getPartOfString($string, 0, $previousSentenceStart + 1);
         }
     }
 
     /**
-     * Converts diactritics to english characters whenever possible.
+     * Converts diacritics to english characters whenever possible.
      *
-     * For german umlauts, this function converts the umlauts to their ASCII
-     * equivalents (e.g. ä => ae).
+     * For german umlauts, this function converts the umlauts to their ASCII equivalents (e.g. ä => ae).
      *
      * For more information about diacritics, refer to
      * https://en.wikipedia.org/wiki/Diacritic
      *
      * For other languages, the diacritic marks are removed, if possible.
      *
-     * @param string $string
-     *                               The string to operate on
-     * @param string $sourceEncoding [optional; default: UTF-8]
-     *                               The source encoding
-     * @param string $targetEncoding [optional; default: UTF-8]
-     *                               The target encoding
-     *
-     * @return string
-     *         The resulting string
-     * @throws cInvalidArgumentException
+     * @param string $string The string to operate on
+     * @param string $sourceEncoding The source encoding
+     * @param string $targetEncoding The target encoding
      */
-    public static function replaceDiacritics($string, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8')
-    {
+    public static function replaceDiacritics(
+        string $string,
+        string $sourceEncoding = 'UTF-8',
+        string $targetEncoding = 'UTF-8'
+    ) : string {
         if ($sourceEncoding != 'UTF-8') {
-            $string = self::recodeString($string, $sourceEncoding, "UTF-8");
+            $string = self::recodeString($string, $sourceEncoding, 'UTF-8');
         }
 
-        // replace regular german umlauts and other common characters with
-        // diacritics
-        static $search, $replace;
-        if (!isset($search)) {
-            $search = [
-                'Ä',
-                'Ö',
-                'Ü',
-                'ä',
-                'ö',
-                'ü',
-                'ß',
-                'Á',
-                'À',
-                'Â',
-                'á',
-                'à',
-                'â',
-                'É',
-                'È',
-                'Ê',
-                'é',
-                'è',
-                'ê',
-                'Í',
-                'Ì',
-                'Î',
-                'í',
-                'ì',
-                'î',
-                'Ó',
-                'Ò',
-                'Ô',
-                'ó',
-                'ò',
-                'ô',
-                'Ú',
-                'Ù',
-                'Û',
-                'ú',
-                'ù',
-                'û',
-            ];
-            $replace = [
-                'Ae',
-                'Oe',
-                'Ue',
-                'ae',
-                'oe',
-                'ue',
-                'ss',
-                'A',
-                'A',
-                'A',
-                'a',
-                'a',
-                'a',
-                'E',
-                'E',
-                'E',
-                'e',
-                'e',
-                'e',
-                'I',
-                'I',
-                'I',
-                'i',
-                'i',
-                'i',
-                'O',
-                'O',
-                'O',
-                'o',
-                'o',
-                'o',
-                'U',
-                'U',
-                'U',
-                'u',
-                'u',
-                'u',
-            ];
-        }
-        $string = str_replace($search, $replace, $string);
+        // TODO The line below from the `intl` extension would do a better job than `iconv()`.
+        //      It deals also with proper replacement of german umlauts.
+        //$string = transliterator_transliterate('Any-Latin; Latin-ASCII', $string);
 
-        // TODO: Additional converting
+        // First, replace regular german umlauts to their ascii counterparts, iconv can't handle this
+        $charMap = [
+            'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue',
+            'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue',
+            'ß' => 'ss',
+        ];
+        $string = strtr($string, $charMap);
 
-        return self::recodeString($string, "UTF-8", $targetEncoding);
+        // Then, do the rest with `ìconv`
+        $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+
+        return self::recodeString($string, 'UTF-8', $targetEncoding);
+    }
+
+    /**
+     * Removes or converts all "evil" URL characters.
+     *
+     * This function removes or converts all characters which can make a URL invalid.
+     *
+     * Clean characters include:
+     * - All characters between 32 and 126 which are not alphanumeric and
+     * aren't one of the following: _-.
+     *
+     * @param string $string The string to operate on
+     * @param bool $replace If true, all "unclean" characters are replaced
+     */
+    public static function cleanURLCharacters(string $string, bool $replace = false): string
+    {
+        $string = self::replaceDiacritics($string);
+        $string = str_replace(['"', "'"], '', $string);
+        $string = str_replace([' ', '/', '&', '*'], '-', $string);
+
+        $string = preg_replace('/[^\p{L}\p{N}\-_.]+/u', $replace ? '' : '-', $string);
+        $string = preg_replace('/-{2,}/', '-', $string);
+
+        return trim($string, '-');
     }
 
     /**
      * Converts a string to another encoding.
      *
-     * This function tries to detect which function to use (either recode or
-     * iconv).
+     * This function tries to detect which function to use (either recode or iconv).
      *
-     * If $sourceEncoding and $targetEncoding are the same, this function
-     * returns immediately.
+     * If $sourceEncoding and $targetEncoding are the same, this function returns immediately.
      *
      * For more information about encodings, refer to
      * https://en.wikipedia.org/wiki/Character_encoding
@@ -628,21 +513,13 @@ class cString extends cStringMultiByteWrapper
      * - ASCII
      * - UTF-8
      *
-     * @param string $string
-     *         The string to operate on
-     * @param string $sourceEncoding
-     *         The source encoding
-     * @param string $targetEncoding
-     *         The target encoding (if false, use source encoding)
-     *
-     * @return string
-     *         The resulting string
-     * @throws cInvalidArgumentException
-     * @todo Implement a converter and charset checker to ensure compilance.
-     *
+     * @param string $string The string to operate on
+     * @param string $sourceEncoding The source encoding
+     * @param string $targetEncoding The target encoding (if false, use source encoding)
+     * @todo Implement a converter and charset checker to ensure compliance.
      * @todo Check if the charset names are the same for both converters
      */
-    public static function recodeString($string, $sourceEncoding, $targetEncoding)
+    public static function recodeString(string $string, string $sourceEncoding, string $targetEncoding): string
     {
         // If sourceEncoding and targetEncoding are the same, return
         if (parent::toLowerCase($sourceEncoding) == parent::toLowerCase($targetEncoding)) {
@@ -650,84 +527,28 @@ class cString extends cStringMultiByteWrapper
         }
 
         // Check for the "recode" support
-        if (function_exists('recode')) {
-            $sResult = recode_string("$sourceEncoding..$targetEncoding", $string);
-            return $sResult;
+        if (function_exists('recode_string')) {
+            return recode_string("$sourceEncoding..$targetEncoding", $string);
         }
 
-        // Check for the "iconv" support
-        if (function_exists('iconv')) {
-            $sResult = iconv($sourceEncoding, $targetEncoding, $string);
-            return $sResult;
-        }
-
-        // No charset converters found; return with warning
-        cWarning(__FILE__, __LINE__, 'cString::recodeString could not find either recode or iconv to do charset conversion.');
-        return $string;
-    }
-
-    /**
-     * Removes or converts all "evil" URL characters.
-     *
-     * This function removes or converts all characters which can make an URL
-     * invalid.
-     *
-     * Clean characters include:
-     * - All characters between 32 and 126 which are not alphanumeric and
-     * aren't one of the following: _-.
-     *
-     * @param string $string
-     *                        The string to operate on
-     * @param bool $replace [optional]
-     *                        If true, all "unclean" characters are replaced
-     *
-     * @return string
-     *         The resulting string
-     * @throws cInvalidArgumentException
-     */
-    public static function cleanURLCharacters($string, $replace = false)
-    {
-        $string = self::replaceDiacritics($string);
-        $string = str_replace(' ', '-', $string);
-        $string = str_replace('/', '-', $string);
-        $string = str_replace('&', '-', $string);
-        $string = str_replace('+', '-', $string);
-
-        $iStrLen = parent::getStringLength($string);
-
-        $sResultString = '';
-
-        for ($i = 0; $i < $iStrLen; $i++) {
-            $sChar = parent::getPartOfString($string, $i, 1);
-
-            if (preg_match('/^[a-z0-9]*$/i', $sChar) || $sChar == '-' || $sChar == '_' || $sChar == '.') {
-                $sResultString .= $sChar;
-            } else {
-                if ($replace == true) {
-                    $sResultString .= '_';
-                }
-            }
-        }
-
-        return $sResultString;
+        // NOTE: No need to check for iconv, this is done in cSystemtest
+        return iconv($sourceEncoding, $targetEncoding, $string);
     }
 
     /**
      * Normalizes line endings in passed string.
      *
-     * @param string $string
-     * @param string $lineEnding [optional]
-     *         Feasible values are "\n", "\r" or "\r\n"
-     * @return string
+     * @param string $lineEnding Feasible values are "\r\n", "\n", "\r"
      */
-    public static function normalizeLineEndings($string, $lineEnding = "\n")
+    public static function normalizeLineEndings(string $string, string $lineEnding = "\n"): string
     {
-        if ($lineEnding !== "\n" && $lineEnding !== "\r" && $lineEnding !== "\r\n") {
+        $possibleLineEndings = ["\r\n", "\r"]; // The order is critical here.
+        if (!in_array($lineEnding, ["\r\n", "\n", "\r"])) {
             $lineEnding = "\n";
         }
 
-        $string = str_replace("\r\n", "\n", $string);
-        $string = str_replace("\r", "\n", $string);
+        $string = str_replace($possibleLineEndings, "\n", $string);
+
         if ($lineEnding !== "\n") {
             $string = str_replace("\n", $lineEnding, $string);
         }
