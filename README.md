@@ -121,7 +121,7 @@ No Warranty - take a look at the GPL at the end of this file.
 | jQuery UI 1.8.23                                 |MIT License|https://www.jqueryui.com|
 | normalize.css v8.0.1                             |MIT License| https://github.com/necolas/normalize.css|
 | Pseudo-Cron (Cron-Emulator) 1.2.1                |GNU General Public Licence (GPL)|http://www.bitfolge.de/?l=en&s=pseudocron|
-| Smarty 4.3.4                                     |GNU Lesser General Public License 2.1 or later|https://www.smarty.net/|
+| Smarty 4.5.6                                     |GNU Lesser General Public License 2.1 or later|https://www.smarty.net/|
 | Swift Mailer 5.4.12                              |GNU Lesser General Public License v3|https://swiftmailer.org/|
 | TinyMCE 3.5.12                                   |GNU Lesser General Public License|https://www.tinymce.com/|
 | TinyMCE 4.9.11                                   |GNU Lesser General Public License 2.1|https://www.tinymce.com/|
