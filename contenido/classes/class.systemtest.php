@@ -288,11 +288,9 @@ class cSystemtest
      * @param bool $testFileSystem [optional]
      *                             If this is true the file system checks will be performed too
      *                             with standard settings.
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function runTests($testFileSystem = true)
+    public function runTests(bool $testFileSystem = true)
     {
         $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), CON_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), CON_MIN_PHP_VERSION), i18n("The PHP version is higher than ") . CON_MIN_PHP_VERSION);
         $this->storeResult($this->testFileUploadSetting(), self::C_SEVERITY_WARNING, i18n("File uploads disabled"), sprintf(i18n("Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"), '<a target="_blank" href="https://www.php.net/manual/en/ini.core.php#ini.file-uploads">https://www.php.net/manual/en/ini.core.php#ini.file-uploads</a>'), i18n("PHP file upload is enabled"));
@@ -354,7 +352,12 @@ class cSystemtest
         $this->storeResult($this->testIconv(), self::C_SEVERITY_ERROR, i18n("PHP iconv functions are not available."), i18n("PHP has been compiled with the --without-iconv directive. CONTENIDO won't work without the iconv functions."), i18n("iconv is available"));
 
         $cfgDbCon = $this->_config['db']['connection'];
-        $dbConResult = $this->testMySQL($cfgDbCon['host'], $cfgDbCon['user'], $cfgDbCon['password'], !empty($cfgDbCon['options']) ? $cfgDbCon['options'] : []);
+        $dbConResult = $this->testMySQL(
+            (string) $cfgDbCon['host'],
+            (string) $cfgDbCon['user'],
+            (string) $cfgDbCon['password'],
+            is_array($cfgDbCon['options']) ? $cfgDbCon['options'] : []
+        );
         switch ($dbConResult) {
             case self::CON_MYSQL_OK:
                 $this->storeResult(true, self::C_SEVERITY_ERROR, "", "", i18n("Database connection works"));
@@ -679,10 +682,10 @@ class cSystemtest
      *         The database user
      * @param string $password
      *         The database user password
-     * @return array
+     * @return array{?cDb, bool}
      *         with the cDB object on the first place and a bool on the second
      */
-    protected function doMySQLConnect($host, $username, $password)
+    protected function doMySQLConnect($host, $username, $password): array
     {
         $aOptions = [
             'connection' => [
@@ -1005,18 +1008,9 @@ class cSystemtest
     }
 
     /**
-     *
-     * @param string $host
-     * @param string $username
-     * @param string $password
-     * @param array $options
-     *
-     * @return bool
-     *         true if the test passed and false if not
-     *
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function testMySQLModeStrict($host, $username, $password, array $options = [])
+    public function testMySQLModeStrict(string $host, string $username, string $password, array $options = []): bool
     {
         // host, user, password and options
         $dbCfg = [
@@ -1046,36 +1040,20 @@ class cSystemtest
     }
 
     /**
-     *
-     * @param string $host
-     * @param string $username
-     * @param string $password
-     * @param array $options
-     *
-     * @return int
-     *         1 if the test passed and > 1 if not
-     *
-     * @throws cDbException
+     * @return int|string
+     *         1 if the test passed and > 1 if not, or the connection error message.
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function testMySQL($host, $username, $password, array $options = [])
+    public function testMySQL(string $host, string $username, string $password, array $options = [])
     {
-        list($handle, $status) = $this->doMySQLConnect($host, $username, $password);
+        list($db, $status) = $this->doMySQLConnect($host, $username, $password);
 
-        $errorMessage = "";
-        if ($this->testMySQLiExtension() && !$this->testMySQLExtension()) {
-            if (!empty($handle)) {
-                $errorMessage = mysqli_error($handle->getLinkId());
-            } else {
-                $errorMessage = mysqli_error();
-            }
-        } else {
-            $errorMessage = mysql_error();
-        }
-        if ($errorMessage != "") {
+        $errorMessage = $db instanceof cDb ? $db->getErrorMessage() : '';
+        if (!empty($errorMessage)) {
             return $errorMessage;
         }
 
-        if (false === isset($handle) || $handle->getLinkId()->errno == 1045) {
+        if (!$db instanceof cDb || $db->getLinkId()->errno == 1045) {
             return self::CON_MYSQL_CANT_CONNECT;
         }
 

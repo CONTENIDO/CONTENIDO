@@ -24,6 +24,9 @@ function hasMySQLiExtension(): bool
     return isPHPExtensionLoaded('mysqli') === CON_EXTENSION_AVAILABLE;
 }
 
+/**
+ * @deprecated [2025-09-28] Since 4.10.2, use {@see cSystemtest::doMySQLConnect()} instead!
+ */
 function doMySQLConnect($host, $username, $password): array
 {
     $db = null;
@@ -61,7 +64,7 @@ function doMySQLSelectDB($linkid, string $database): bool
     if (CON_SETUP_MYSQLI === $extension) {
         return @mysqli_select_db($linkid, $database);
     } elseif (CON_SETUP_MYSQL === $extension) {
-       #return (bool)@mysql_select_db($database, $linkid);
+       return (bool)@mysql_select_db($database, $linkid);
     } else {
         return false;
     }

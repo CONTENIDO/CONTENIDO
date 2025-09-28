@@ -27,11 +27,9 @@ class cSetupSystemtest extends cSetupMask
 
     /**
      * cSetupSystemtest constructor.
-     * @param string $step
-     * @param bool $previous
-     * @param $next
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function __construct($step, $previous, $next)
+    public function __construct(int $step, string $previous, string $next)
     {
         $cfg = cRegistry::getConfig();
 
@@ -70,8 +68,13 @@ class cSetupSystemtest extends cSetupMask
         if (is_null(getMySQLDatabaseExtension())) {
             $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("PHP MySQL Extension missing", "setup"), i18n("CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi.", "setup"));
         } else {
-            $result = $this->_systemtest->testMySQL($_SESSION['dbhost'], $_SESSION['dbuser'], $_SESSION['dbpass'], !empty($_SESSION['dboptions']) ? $_SESSION['dboptions'] : []);
-            if ($result == cSystemtest::CON_MYSQL_OK) {
+            $result = $this->_systemtest->testMySQL(
+                (string) $_SESSION['dbhost'],
+                (string) $_SESSION['dbuser'],
+                (string) $_SESSION['dbpass'],
+                is_array($_SESSION['dboptions']) ? $_SESSION['dboptions'] : []
+            );
+            if ($result === cSystemtest::CON_MYSQL_OK) {
                 $this->initDB();
             }
         }
