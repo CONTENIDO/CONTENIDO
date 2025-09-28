@@ -24,6 +24,9 @@ function hasMySQLiExtension(): bool
     return isPHPExtensionLoaded('mysqli') === CON_EXTENSION_AVAILABLE;
 }
 
+/**
+ * @deprecated [2025-09-28] Since 4.10.2, use {@see cSystemtest::doMySQLConnect()} instead!
+ */
 function doMySQLConnect($host, $username, $password): array
 {
     $db = null;
@@ -49,12 +52,10 @@ function doMySQLConnect($host, $username, $password): array
 }
 
 /**
- * Selects a desired database by the link identifier and database name
+ * Selects a desired database by the link identifier and database name.
  *
- * @param resource|mysqli $linkid
+ * @param resource|mysqli|null|mixed $linkid
  *            MySQLi/MySQL link identifier
- * @param string $database
- * @return boolean
  */
 function doMySQLSelectDB($linkid, string $database): bool
 {
@@ -63,12 +64,15 @@ function doMySQLSelectDB($linkid, string $database): bool
     if (CON_SETUP_MYSQLI === $extension) {
         return @mysqli_select_db($linkid, $database);
     } elseif (CON_SETUP_MYSQL === $extension) {
-        return (bool)@mysql_select_db($database, $linkid);
+       return (bool)@mysql_select_db($database, $linkid);
     } else {
         return false;
     }
 }
 
+/**
+ * @throws cDbException
+ */
 function getSetupMySQLDBConnection($full = true): cDb
 {
     global $cfg;
@@ -85,10 +89,8 @@ function getSetupMySQLDBConnection($full = true): cDb
 
 /**
  * Checks existing MySQL extensions and returns 'mysqli' as default, 'mysql' or null.
- *
- * @return string|null
  */
-function getMySQLDatabaseExtension()
+function getMySQLDatabaseExtension(): ?string
 {
     if (hasMySQLiExtension()) {
         return CON_SETUP_MYSQLI;
@@ -117,7 +119,7 @@ function checkMySQLDatabaseCreation(cDb $db, string $database, string $charset =
 {
     if (checkMySQLDatabaseExists($db, $database)) {
         return true;
-    } else if ($collation == '') {
+    } elseif ($collation == '') {
         $db->query("CREATE DATABASE `%s`", $database);
         return $db->getErrorNumber() == 0;
     } else {
