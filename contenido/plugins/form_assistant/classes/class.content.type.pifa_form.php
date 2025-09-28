@@ -37,7 +37,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
      * @param array $b
      * @return int as expected for a comparison function used for sorting
      */
-    public static function sortByLabel($a, $b): int
+    public static function sortByLabel(array $a, array $b): int
     {
         return ($a['label'] == $b['label']) ? 0 : (($a['label'] < $b['label']) ? -1 : 1);
     }
@@ -50,8 +50,10 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
      * @param array $contentTypes array containing the values of all content types
      *
      * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
-    function __construct($rawSettings, $id, array $contentTypes)
+    public function __construct($rawSettings, $id, array $contentTypes)
     {
         // set attributes of the parent class and call the parent constructor
         $this->_type = 'CMS_PIFAFORM';
@@ -82,8 +84,8 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         // if form is submitted, store the current settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        $action = isset($_POST['pifaform_action']) ? $_POST['pifaform_action'] : NULL;
-        $id = isset($_POST['pifaform_id']) ? $_POST['pifaform_id'] : NULL;
+        $action = $_POST['pifaform_action'] ?? null;
+        $id = $_POST['pifaform_id'] ?? null;
         if ('store' === $action && $this->_id == $id) {
             $this->_storeSettings();
         }
@@ -101,7 +103,10 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $tplTop->set('s', 'ID', $this->_id);
         $tplTop->set('s', 'PREFIX', $this->_prefix);
         $tplTop->set('s', 'HEADLINE', Pifa::i18n('form'));
-        $codeTop = $tplTop->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_top.html', true);
+        $codeTop = $tplTop->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_top.html',
+            true
+        );
 
         // available tabs
         $tabMenu = [
@@ -115,7 +120,10 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $tplPanel->set('d', 'TAB_CLASS', 'base');
         $tplPanel->set('d', 'TAB_CONTENT', $this->_getPanel());
         $tplPanel->next();
-        $codePanel = $tplPanel->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tabs.html', true);
+        $codePanel = $tplPanel->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tabs.html',
+            true
+        );
 
         // build bottom code
         $tplBottom = new cTemplate();
@@ -129,7 +137,10 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $tplBottom->set('s', 'JS_CLASS_SCRIPT', Pifa::getUrl() . 'scripts/cmsPifaform.js');
         $tplBottom->set('s', 'JS_CLASS_NAME', 'Con.' . get_class($this));
 
-        $codeBottom = $tplBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
+        $codeBottom = $tplBottom->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html',
+            true
+        );
 
         // build template code
         $code = $this->_encodeForOutput($codeTop);
@@ -206,7 +217,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $label = new cHTMLLabel(Pifa::i18n('form'), $id);
 
         // build select element
-        $select = new cHTMLSelectElement($id, '', $id);
+        $select = new cHTMLSelectElement('pifaform_idform', '', $id);
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
         // get all forms of current client & language
@@ -239,21 +250,17 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Builds input field for the form headline
-     *
-     * @return cHTMLDiv
+     * Builds input field for the form headline.
      */
     private function _getHeadline(): cHTMLDiv
     {
-        // attributes of form field elements
-        $id = 'pifaform_idform_' . $this->_id;
+        $id = 'pifaform_headline_' . $this->_id;
 
         // build label element
         $label = new cHTMLLabel(Pifa::i18n('form_headline'), $id);
         // builds input element
-        $id = 'pifaform_headline_' . $this->_id;
         $value = $this->getSetting('pifaform_headline');
-        $input = new cHTMLTextbox($id, $value, '', '', $id);
+        $input = new cHTMLTextbox('pifaform_headline', $value, '', '', $id);
 
         // build div element as wrapper
         return new cHTMLDiv([
@@ -265,8 +272,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
     /**
      * Builds a select element allowing to choose a single module that handles
      * the chosen form.
-     *
-     * @return cHTMLDiv
      */
     private function _getSelectModule(): cHTMLDiv
     {
@@ -277,7 +282,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $label = new cHTMLLabel(Pifa::i18n('module'), $id);
 
         // build select element
-        $select = new cHTMLSelectElement($id, '', $id);
+        $select = new cHTMLSelectElement('pifaform_module', '', $id);
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
         // get all modules from extensions & validate result
@@ -309,9 +314,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
 
     /**
      * Builds a select element allowing to choose a single class that
-     * postprocesses the sent data.
-     *
-     * @return cHTMLDiv
+     * postprocesses the send data.
      */
     private function _getSelectProcessor(): cHTMLDiv
     {
@@ -322,7 +325,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $label = new cHTMLLabel(Pifa::i18n('processor'), $id);
 
         // build select element
-        $select = new cHTMLSelectElement($id, '', $id);
+        $select = new cHTMLSelectElement('pifaform_processor', '', $id);
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
         // get all processors from extensions & validate result
@@ -355,8 +358,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
     /**
      * Builds a select element allowing to choose a single template to respond a
      * GET request.
-     *
-     * @return cHTMLDiv
      */
     private function _getSelectTemplateGet(): cHTMLDiv
     {
@@ -367,11 +368,11 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $label = new cHTMLLabel(Pifa::i18n('template') . ' &ndash; ' . Pifa::i18n('GET'), $id);
 
         // build select element
-        $select = new cHTMLSelectElement($id, '', $id);
+        $select = new cHTMLSelectElement('pifaform_template_get', '', $id);
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
         // get templates from client template folder
-        $templates = Pifa::getTemplates('/cms_pifaform_[^\.]+_get\.tpl/');
+        $templates = Pifa::getTemplates('/cms_pifaform_[^.]+_get\.tpl/');
 
         // sort templates by their label
         usort($templates, 'cContentTypePifaForm::sortByLabel');
@@ -400,8 +401,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
     /**
      * Builds a select element allowing to choose a single template to respond a
      * POST request.
-     *
-     * @return cHTMLDiv
      */
     private function _getSelectTemplatePost(): cHTMLDiv
     {
@@ -412,11 +411,11 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $label = new cHTMLLabel(Pifa::i18n('template') . ' &ndash; ' . Pifa::i18n('POST'), $id);
 
         // build select element
-        $select = new cHTMLSelectElement($id, '', $id);
+        $select = new cHTMLSelectElement('pifaform_template_post', '', $id);
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
         // get templates from client template folder
-        $templates = Pifa::getTemplates('/cms_pifaform_[^\.]+_post\.tpl/');
+        $templates = Pifa::getTemplates('/cms_pifaform_[^.]+_post\.tpl/');
 
         // sort templates by their label
         usort($templates, 'cContentTypePifaForm::sortByLabel');
@@ -444,8 +443,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
 
     /**
      * Builds a select element allowing to choose a single template for the client mail.
-     *
-     * @return cHTMLDiv
      */
     private function _getSelectMailClientTemplate(): cHTMLDiv
     {
@@ -456,11 +453,11 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $label = new cHTMLLabel(Pifa::i18n('template'), $id);
 
         // build select element
-        $select = new cHTMLSelectElement($id, '', $id);
+        $select = new cHTMLSelectElement('pifaform_mail_client_template', '', $id);
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
         // get templates from client template folder
-        $templates = Pifa::getTemplates('/cms_pifaform_[^\.]+_mail_client\.tpl/');
+        $templates = Pifa::getTemplates('/cms_pifaform_[^.]+_mail_client\.tpl/');
 
         // sort templates by their label
         usort($templates, 'cContentTypePifaForm::sortByLabel');
@@ -488,8 +485,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
 
     /**
      * Builds an input element allowing to set the client mail sender address.
-     *
-     * @return cHTMLDiv
      */
     private function _getInputMailClientFromEmail(): cHTMLDiv
     {
@@ -501,14 +496,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         // build label element, input element & div element as wrapper
         return new cHTMLDiv([
             new cHTMLLabel($label, $id),
-            new cHTMLTextbox($id, $value, '', '', $id)
+            new cHTMLTextbox('pifaform_mail_client_from_email', $value, '', '', $id)
         ]);
     }
 
     /**
      * Builds an input element allowing to set the client mail sender name.
-     *
-     * @return cHTMLDiv
      */
     private function _getInputMailClientFromName(): cHTMLDiv
     {
@@ -520,14 +513,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         // build label element, input element & div element as wrapper
         return new cHTMLDiv([
             new cHTMLLabel($label, $id),
-            new cHTMLTextbox($id, $value, '', '', $id)
+            new cHTMLTextbox('pifaform_mail_client_from_name', $value, '', '', $id)
         ]);
     }
 
     /**
      * Builds an input element allowing to set the client mail reply-to email.
-     *
-     * @return cHTMLDiv
      */
     private function _getInputMailClientReplyToEmail(): cHTMLDiv
     {
@@ -538,7 +529,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $index = 0;
 
         // build select element
-        $select = new cHTMLSelectElement($id, '', $id);
+        $select = new cHTMLSelectElement('pifaform_mail_client_reply_to_email', '', $id);
 
         $replyToEmails = [
             'sender' => Pifa::i18n('sender email'),
@@ -559,8 +550,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
 
     /**
      * Builds an input element allowing to set the client mail subject.
-     *
-     * @return cHTMLDiv
      */
     private function _getInputMailClientSubject(): cHTMLDiv
     {
@@ -575,14 +564,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         // build label element, input element & div element as wrapper
         return new cHTMLDiv([
             new cHTMLLabel($label, $id),
-            new cHTMLTextbox($id, $value, '', '', $id)
+            new cHTMLTextbox('pifaform_mail_client_subject', $value, '', '', $id)
         ]);
     }
 
     /**
      * Builds a select element allowing to choose a single template the system mail.
-     *
-     * @return cHTMLDiv
      */
     private function _getSelectMailSystemTemplate(): cHTMLDiv
     {
@@ -593,11 +580,11 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $label = new cHTMLLabel(Pifa::i18n('template'), $id);
 
         // build select element
-        $select = new cHTMLSelectElement($id, '', $id);
+        $select = new cHTMLSelectElement('pifaform_mail_system_template', '', $id);
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
         // get templates from client template folder
-        $templates = Pifa::getTemplates('/cms_pifaform_[^\.]+_mail_system\.tpl/');
+        $templates = Pifa::getTemplates('/cms_pifaform_[^.]+_mail_system\.tpl/');
 
         // sort templates by their label
         usort($templates, 'cContentTypePifaForm::sortByLabel');
@@ -625,8 +612,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
 
     /**
      * Builds an input element allowing to set the system mail sender address.
-     *
-     * @return cHTMLDiv
      */
     private function _getInputMailSystemFromEmail(): cHTMLDiv
     {
@@ -638,14 +623,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         // build label element, input element & div element as wrapper
         return new cHTMLDiv([
             new cHTMLLabel($label, $id),
-            new cHTMLTextbox($id, $value, '', '', $id)
+            new cHTMLTextbox('pifaform_mail_system_from_email', $value, '', '', $id)
         ]);
     }
 
     /**
      * Builds an input element allowing to set the system mail sender name.
-     *
-     * @return cHTMLDiv
      */
     private function _getInputMailSystemFromName(): cHTMLDiv
     {
@@ -657,14 +640,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         // build label element, input element & div element as wrapper
         return new cHTMLDiv([
             new cHTMLLabel($label, $id),
-            new cHTMLTextbox($id, $value, '', '', $id)
+            new cHTMLTextbox('pifaform_mail_system_from_name', $value, '', '', $id)
         ]);
     }
 
     /**
      * Builds an input element allowing to set the system mail recipient address.
-     *
-     * @return cHTMLDiv
      */
     private function _getInputMailSystemRecipientEmail(): cHTMLDiv
     {
@@ -676,14 +657,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         // build label element, input element & div element as wrapper
         return new cHTMLDiv([
             new cHTMLLabel($label, $id),
-            new cHTMLTextbox($id, $value, '', '', $id)
+            new cHTMLTextbox('pifaform_mail_system_recipient_email', $value, '', '', $id)
         ]);
     }
 
     /**
      * Builds an input element allowing to set the system mail reply-to email.
-     *
-     * @return cHTMLDiv
      */
     private function _getInputMailSystemReplyToEmail(): cHTMLDiv
     {
@@ -694,7 +673,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $index = 0;
 
         // build select element
-        $select = new cHTMLSelectElement($id, '', $id);
+        $select = new cHTMLSelectElement('pifaform_mail_system_reply_to_email', '', $id);
 
         $replyToEmails = [
             'sender' => Pifa::i18n('sender email'),
@@ -716,8 +695,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
 
     /**
      * Builds an input element allowing to set the system mail subject.
-     *
-     * @return cHTMLDiv
      */
     private function _getInputMailSystemSubject(): cHTMLDiv
     {
@@ -732,7 +709,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         // build label element, input element & div element as wrapper
         return new cHTMLDiv([
             new cHTMLLabel($label, $id),
-            new cHTMLTextbox($id, $value, '', '', $id)
+            new cHTMLTextbox('pifaform_mail_system_subject', $value, '', '', $id)
         ]);
     }
 
@@ -759,31 +736,35 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
     public function buildCode(): string
     {
         $out = '';
-        if (0 === cSecurity::toInteger($this->getSetting('pifaform_idform'))) {
+
+        if (
             // no form was selected
-        } elseif (0 === cString::getStringLength(trim($this->getSetting('pifaform_module')))) {
+            !cSecurity::toInteger($this->getSetting('pifaform_idform'))
             // no module was selected
-        } else {
-            $moduleClass = trim($this->getSetting('pifaform_module'));
-            try {
-                $filename = Pifa::fromCamelCase($moduleClass);
-                $filename = "extensions/class.pifa.$filename.php";
-                if (false === file_exists(Pifa::getPath() . $filename)) {
-                    $msg = sprintf(Pifa::i18n('MISSING_MODULE_FILE'), $filename);
-                    throw new PifaException($msg);
-                }
-                plugin_include(Pifa::getName(), $filename);
-                if (false === class_exists($moduleClass)) {
-                    $msg = sprintf(Pifa::i18n('MISSING_MODULE_CLASS'), $moduleClass);
-                    throw new PifaException($msg);
-                }
-                /** @var PifaAbstractFormModule $mod */
-                $mod = new $moduleClass($this->_settings);
-                $out = $mod->render(true);
-            } catch (Exception $e) {
-                Pifa::logException($e);
-                // log but don't display exception
+            || !cString::getStringLength(trim($this->getSetting('pifaform_module')))
+        ) {
+            return $out;
+        }
+
+        $moduleClass = trim($this->getSetting('pifaform_module'));
+        try {
+            $filename = Pifa::fromCamelCase($moduleClass);
+            $filename = "extensions/class.pifa.$filename.php";
+            if (false === file_exists(Pifa::getPath() . $filename)) {
+                $msg = sprintf(Pifa::i18n('MISSING_MODULE_FILE'), $filename);
+                throw new PifaException($msg);
             }
+            plugin_include(Pifa::getName(), $filename);
+            if (false === class_exists($moduleClass)) {
+                $msg = sprintf(Pifa::i18n('MISSING_MODULE_CLASS'), $moduleClass);
+                throw new PifaException($msg);
+            }
+            /** @var PifaAbstractFormModule $mod */
+            $mod = new $moduleClass($this->_settings);
+            $out = $mod->render(true);
+        } catch (Exception $e) {
+            Pifa::logException($e);
+            // log but don't display exception
         }
 
         // don't encode cached code for output
