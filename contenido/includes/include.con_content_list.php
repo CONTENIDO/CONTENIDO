@@ -351,6 +351,14 @@ if (($action == 'savecontype' || $action == 10)) {
         // read file from tmp upload folder
         $rawData = file_get_contents($rawDataFile);
 
+        // SimpleXMLElement leads to a PHP error, when the XML is formatted and a node contains
+        // nested CDATA sections. Use DOMDocument to retrieve an unformatted version of the XML.
+        $domDoc = new DOMDocument();
+        $domDoc->preserveWhiteSpace = false;
+        $domDoc->formatOutput = false;
+        $domDoc->loadXml($rawData);
+        $rawData = $domDoc->saveXML();
+
         // try init xml and import data
         try {
             $xmlDocument = new SimpleXMLElement($rawData);
@@ -421,6 +429,7 @@ if (($action == 'savecontype' || $action == 10)) {
 
                                     if (cString::getStringLength($type) > 0 && $typeid > 0 && in_array($typeEntry->get('type'), $allowedContentTypes)) {
                                         if (isset($_POST['overwritecontent']) && $_POST['overwritecontent'] == 1) {
+                                            mp_dl(strval($child), '$child A');
                                             conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
                                         } else {
                                             $contentEntry = null;
@@ -448,6 +457,7 @@ if (($action == 'savecontype' || $action == 10)) {
                                                 }
                                             }
                                             if (is_object($contentEntry) && !$contentEntry->isLoaded()) {
+                                                mp_dl(strval($child), '$child B');
                                                 conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
                                             }
                                         }
