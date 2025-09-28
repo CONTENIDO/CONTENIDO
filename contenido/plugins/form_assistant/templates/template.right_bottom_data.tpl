@@ -55,7 +55,7 @@
                             {if NULL eq $field->getDbDataType()}{continue}{/if}
                             {assign var=columnName value=$field->get('column_name')}
                             {assign var=columnData value=$row.$columnName}
-                            {if 0 eq $columnData|count_characters}
+                            {if 0 eq $columnData|default:''|count_characters}
                                 <td class="no_wrap bordercell">&nbsp;</td>
                             {elseif '9' eq $field->get('field_type')}
                                 {* display INPUTFILE values as link *}

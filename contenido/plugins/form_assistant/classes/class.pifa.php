@@ -26,11 +26,11 @@ class Pifa
      *
      * @var string
      */
-    const TIMESTAMP_NEVER = 'never';
+    public const TIMESTAMP_NEVER = 'never';
 
-    const TIMESTAMP_BYFORM = 'byform';
+    public const TIMESTAMP_BYFORM = 'byform';
 
-    const TIMESTAMP_ALWAYS = 'always';
+    public const TIMESTAMP_ALWAYS = 'always';
 
     /**
      * name of this plugin
@@ -240,16 +240,13 @@ class Pifa
     }
 
     /**
-     * Returns array of client templates that adhere to the naming
-     * convention cms_pifaform_FOOBAR.tpl where FOOBAR is any character but a
-     * dot.
+     * Returns array of client templates that adhere to the naming convention cms_pifaform_FOOBAR.tpl
+     * where FOOBAR is any character but a dot.
      *
-     * @param string $re
-     *
-     * @return array
+     * @return string[]
      * @throws PifaException
      */
-    public static function getTemplates($re = '/cms_pifaform_[^\.]+\.tpl/')
+    public static function getTemplates(string $re = '/cms_pifaform_[^\.]+\.tpl/'): array
     {
         $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
 
@@ -260,7 +257,6 @@ class Pifa
 
         $templates = [];
         foreach ($handle as $file) {
-
             // skip folders
             if (true === is_dir($file)) {
                 continue;
