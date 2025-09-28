@@ -276,8 +276,12 @@ class cSetupSystemtest extends cSetupMask
     public function initDB()
     {
         $this->_systemtest->checkSetupMysql(
-            $_SESSION['setuptype'], $_SESSION['dbname'], $_SESSION['dbprefix'], $_SESSION['dbcharset'],
-            $_SESSION['dbcollation'], $_SESSION['dbengine']
+            (string) $_SESSION['setuptype'],
+            (string) $_SESSION['dbname'],
+            (string) $_SESSION['dbprefix'],
+            (string) $_SESSION['dbcharset'],
+            (string) $_SESSION['dbcollation'],
+            (string) $_SESSION['dbengine']
         );
     }
 

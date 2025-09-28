@@ -391,8 +391,12 @@ class cCLISetup
         $test->testFilesystem(true, false); // file system permission tests
         $test->testFrontendFolderCreation(); // more file system permission tests
         $test->checkSetupMysql(
-            'setup', $cfg['db']['connection']['database'], $_SESSION['dbprefix'], $_SESSION['dbcharset'],
-            $_SESSION['dbcollation'], $_SESSION['dbengine']
+            'setup',
+            (string) $cfg['db']['connection']['database'],
+            (string) $_SESSION['dbprefix'],
+            (string) $_SESSION['dbcharset'],
+            (string) $_SESSION['dbcollation'],
+            (string) $_SESSION['dbengine']
         ); // test the SQL connection and database creation
 
         $testResults = $test->getResults();

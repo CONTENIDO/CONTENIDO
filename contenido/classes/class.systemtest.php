@@ -1547,24 +1547,22 @@ class cSystemtest
     }
 
     /**
-     *
-     * @param string $setupType
-     * @param string $databaseName
-     * @param string $databasePrefix
-     * @param string $charset [optional]
-     * @param string $collation [optional]
-     * @param string $engine [optional]
-     *
-     * @throws cDbException
+     * @throws cDbException|cException
      */
-    public function checkSetupMysql($setupType, $databaseName, $databasePrefix, $charset = '', $collation = '', $engine = '')
-    {
+    public function checkSetupMysql(
+        string $setupType,
+        string $databaseName,
+        string $databasePrefix,
+        string $charset = '',
+        string $collation = '',
+        string $engine = ''
+    ) {
         switch ($setupType) {
             case "setup":
 
                 try {
                     $db = getSetupMySQLDBConnection(false);
-                } catch (Exception $e) {
+                } catch (cDbException $e) {
                     $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Could not connect to MySQL database", "setup"), $e->getMessage());
                     return;
                 }

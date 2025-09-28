@@ -182,13 +182,14 @@ abstract class cDbDriverHandler
         $this->loadDriver();
 
         try {
-            if ($this->connect() == NULL) {
+            if (!$this->connect()) {
                 $this->setErrorNumber(1);
                 $this->setErrorMessage("Could not connect to database");
 
                 throw new cDbException($this->getErrorMessage());
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            // Catch all possible errors
             throw new cDbException($e->getMessage());
         }
     }
@@ -354,14 +355,17 @@ abstract class cDbDriverHandler
     /**
      * Returns connection from connection cache
      *
-     * @param mixed $data
-     *         Connection data array or variable
+     * @param array $data
+     *         Connection data array
      * @return mixed
      *         Either The connection (object, resource, integer) or NULL
      */
-    protected function _getConnection($data)
+    protected function _getConnection(array $data)
     {
-        $hash = md5($this->_driverType . '-' . (is_array($data) ? json_encode($data) : (string)$data));
+        if (empty($data)) {
+            return NULL;
+        }
+        $hash = md5($this->_driverType . '-' . json_encode($data));
 
         return self::$_connectionCache[$hash] ?? NULL;
     }
@@ -369,14 +373,14 @@ abstract class cDbDriverHandler
     /**
      * Stores connection in connection cache
      *
-     * @param mixed $data
+     * @param array $data
      *         Connection data array
      * @param mixed $connection
      *         The connection to store in cache
      */
-    protected function _setConnection($data, $connection)
+    protected function _setConnection(array $data, $connection)
     {
-        $hash = md5($this->_driverType . '-' . (is_array($data) ? json_encode($data) : (string)$data));
+        $hash = md5($this->_driverType . '-' . json_encode($data));
         self::$_connectionCache[$hash] = $connection;
     }
 
@@ -606,17 +610,23 @@ abstract class cDbDriverHandler
      */
     public function connect()
     {
-        if (isset($this->_dbCfg['connection']) && $this->_linkId = $this->_getConnection($this->_dbCfg['connection'])) {
-            return $this->_linkId;
-        } else {
-            if ($this->_linkId = $this->getDriver()->connect()) {
-                $this->_setConnection($this->_dbCfg['connection'], $this->_linkId);
+        $connectionCfg = is_array($this->_dbCfg['connection']) ? $this->_dbCfg['connection'] : [];
+
+        // Get connection from cache poll
+        $this->_linkId = $this->_getConnection($connectionCfg);
+
+        if (!$this->_linkId) {
+            // Create new connection (fallback)
+            $newConnection  = $this->getDriver()->connect();
+            if ($newConnection) {
+                $this->_linkId = $newConnection;
+                $this->_setConnection($connectionCfg, $this->_linkId);
 
                 return $this->_linkId;
             }
         }
 
-        return NULL;
+        return $this->_linkId;
     }
 
     /**
