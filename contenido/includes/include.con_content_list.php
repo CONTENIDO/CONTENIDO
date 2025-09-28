@@ -428,8 +428,7 @@ if (($action == 'savecontype' || $action == 10)) {
                                     $typeEntry->loadBy('type', $type);
 
                                     if (cString::getStringLength($type) > 0 && $typeid > 0 && in_array($typeEntry->get('type'), $allowedContentTypes)) {
-                                        if (isset($_POST['overwritecontent']) && $_POST['overwritecontent'] == 1) {
-                                            mp_dl(strval($child), '$child A');
+                                        if ($_POST['overwritecontent'] ?? null == 1) {
                                             conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
                                         } else {
                                             $contentEntry = null;
@@ -457,7 +456,6 @@ if (($action == 'savecontype' || $action == 10)) {
                                                 }
                                             }
                                             if (is_object($contentEntry) && !$contentEntry->isLoaded()) {
-                                                mp_dl(strval($child), '$child B');
                                                 conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
                                             }
                                         }
