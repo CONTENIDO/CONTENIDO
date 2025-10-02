@@ -81,7 +81,7 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
  *   CONTENIDO autoloader mechanism
  *');
 
-        $this->_data->package       = 'CONTENIDO Backend Includes';
+        $this->_data->package       = 'CONTENIDO_Backend_Includes';
         $this->_data->version       = '0.1';
         $this->_data->author        = 'System';
         $this->_data->copyright     = 'four for business AG <www.4fb.de>';

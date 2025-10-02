@@ -4,7 +4,7 @@
  * Project: CONTENIDO Content Management System Description: CONTENIDO User
  * Rights
  *
- * @package    Backend Includes
+ * @package    Backend_Includes
  * @version 1.0.2
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>

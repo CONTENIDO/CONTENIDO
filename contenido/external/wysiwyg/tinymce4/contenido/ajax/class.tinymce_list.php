@@ -13,7 +13,7 @@
  * @con_notice
  * TINYMCE 4 Fileversion
  *
- * @package    CONTENIDO Backend Editor
+ * @package    CONTENIDO_Backend_Editor
  * @version    0.0.1
  * @author     Thomas Stauer
  * @copyright  four for business AG <www.4fb.de>

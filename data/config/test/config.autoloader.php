@@ -19,7 +19,7 @@
  *   CONTENIDO autoloader mechanism
  *
  *
- * @package    CONTENIDO Backend Includes
+ * @package    CONTENIDO_Backend_Includes
  * @version    0.1
  * @author     System
  * @copyright  four for business AG <www.4fb.de>

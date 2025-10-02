@@ -7,7 +7,7 @@
  * Description:
  * Moving article related logic to the front_end
  *
- * @package    CONTENIDO Backend Scripts
+ * @package    CONTENIDO_Backend_Scripts
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt

@@ -3,7 +3,7 @@
  *
  * Description: CONTENIDO setup script
  *
- * @package    CONTENIDO Setup
+ * @package    CONTENIDO_Setup
  * @version    0.0.2
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

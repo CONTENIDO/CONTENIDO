@@ -6,7 +6,7 @@
  * template.grouprights_memberselect.html
  *
  * @module     goup-association
- * @package    CONTENIDO Backend Scripts
+ * @package    CONTENIDO_Backend_Scripts
  * @author     Timo Trautmann
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

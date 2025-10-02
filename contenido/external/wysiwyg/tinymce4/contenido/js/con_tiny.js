@@ -5,7 +5,7 @@
  *
  * @module     tiny
  * @requires   jQuery, Con
- * @package    CONTENIDO Backend includes
+ * @package    CONTENIDO_Backend_Includes
  * @author     Timo Trautmann
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
