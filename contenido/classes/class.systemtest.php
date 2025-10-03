@@ -363,10 +363,26 @@ class cSystemtest
                 $this->storeResult(true, self::C_SEVERITY_ERROR, "", "", i18n("Database connection works"));
                 break;
             case self::CON_MYSQL_STRICT_MODE:
-                $this->storeResult(false, self::C_SEVERITY_ERROR, i18n('MySQL is running in strict mode'), i18n('MySQL is running in strict mode, CONTENIDO will not work with this mode. Please change your sql_mode!'));
+                $this->storeResult(
+                    false,
+                    self::C_SEVERITY_ERROR,
+                    i18n('MySQL is running in strict mode'),
+                    i18n('MySQL is running in strict mode, CONTENIDO will not work with this mode. Please change your sql_mode!')
+                );
                 break;
+            case self::CON_MYSQL_CANT_CONNECT:
             default:
-                $this->storeResult(false, self::C_SEVERITY_ERROR, i18n("MySQL database connect failed"), sprintf(i18n("Setup was unable to connect to the MySQL Server (Server %s, Username %s). Please correct the MySQL data and try again.<br><br>The error message given was: %s"), $this->_config['db']['connection']['host'], $this->_config['db']['connection']['user']));
+                $message = $dbConResult === self::CON_MYSQL_CANT_CONNECT ? i18n("Access denied") : $dbConResult;
+                $this->storeResult(
+                    false,
+                    self::C_SEVERITY_ERROR,
+                    i18n("MySQL database connect failed"),
+                    sprintf(
+                        i18n("Setup was unable to connect to the MySQL Server (Server %s, Username %s). Please correct the MySQL data and try again.<br><br>The error message given was: %s"), $this->_config['db']['connection']['host'],
+                        $this->_config['db']['connection']['user'],
+                        $message
+                    )
+                );
         }
 
         if ($dbConResult == self::CON_MYSQL_OK) {
