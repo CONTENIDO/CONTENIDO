@@ -41,7 +41,7 @@ $cfg['secure'] = false;
 
 // @since CONTENIDO 4.10.2
 // (array) Backend session cookie configuration
-$cfg['backend_session'] = [
+$cfg['backend']['session'] = [
     // (int) Cookie lifetime in seconds (0 = session cookie expires when the browser is closed)
     'cookie_expires' => 0,
     // (string|null) Path on the domain, will be detected automatically if not set
@@ -59,9 +59,9 @@ $cfg['backend_session'] = [
 // @since CONTENIDO 4.10.2
 // (array) Frontend session cookie configuration.
 //         Takeover also any defined frontend cookie settings `$cfg['cookie']` from cms/data/config/{environment}}/config.local.php.
-$cfg['frontend_session'] = [
+$cfg['frontend']['session'] = [
     // (int) Cookie lifetime in seconds (0 = session cookie expires when the browser is closed)
-    'cookie_expires' => $cfg['cookie']['expires'] ?? null,
+    'cookie_expires' => $cfg['cookie']['expires'] ?? 0,
     // (string|null) Path on the domain, will be detected automatically if not set
     'cookie_path' => $cfg['cookie']['path'] ?? null,
     // (string|null) Cookie domain, leading dot for compatibility or use subdomain, e.g. `.contenido.org'. Cookie will bound to the host name if not set.
