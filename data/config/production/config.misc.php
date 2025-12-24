@@ -36,7 +36,42 @@ $cfg['backend']['timeout'] = 60;
 $cfg['frontend']['timeout'] = 15;
 
 // (bool) Enforce HTTPS for cookies
+// @deprecated [2025-08-03] Since 4.10.2, configure `$cfg['backend_session']['cookie_secure']` and `$cfg['frontend_session']['cookie_secure']` instead
 $cfg['secure'] = false;
+
+// @since CONTENIDO 4.10.2
+// (array) Backend session cookie configuration
+$cfg['backend_session'] = [
+    // (int) Cookie lifetime in seconds (0 = session cookie expires when the browser is closed)
+    'cookie_expires' => 0,
+    // (string|null) Path on the domain, will be detected automatically if not set
+    'cookie_path' => null,
+    // (string|null) Cookie domain, leading dot for compatibility or use subdomain, e.g. `.contenido.org'. Cookie will bound to the host name if not set.
+    'cookie_domain' => null,
+    // (bool) Enforce HTTPS for cookies. Flag to send cookie only over secure connections
+    'cookie_secure' => false,
+    // (bool) Flag to send the httponly flag when setting the session cookie
+    'cookie_httponly' => false,
+    // (string|null) SameSite option ('None', 'Lax' or 'Strict')
+    'cookie_samesite' => null,
+];
+
+// @since CONTENIDO 4.10.2
+// (array) Frontend session cookie configuration
+$cfg['frontend_session'] = [
+    // (int) Cookie lifetime in seconds (0 = session cookie expires when the browser is closed)
+    'cookie_expires' => 0,
+    // (string|null) Path on the domain, will be detected automatically if not set
+    'cookie_path' => null,
+    // (string|null) Cookie domain, leading dot for compatibility or use subdomain, e.g. `.contenido.org'. Cookie will bound to the host name if not set.
+    'cookie_domain' => null,
+    // (bool) Enforce HTTPS for cookies. Flag to send cookie only over secure connections
+    'cookie_secure' => false,
+    // (bool) Flag to send the httponly flag when setting the session cookie
+    'cookie_httponly' => false,
+    // (string|null) SameSite option ('None', 'Lax' or 'Strict')
+    'cookie_samesite' => null,
+];
 
 // (bool) Use Pseudo-Cron?
 $cfg['use_pseudocron'] = true;
