@@ -24,16 +24,12 @@ class cSession
 {
 
     /**
-     * Saves the registered variables
-     *
-     * @var array
+     * @var array List of the registered variables
      */
     protected $_pt;
 
     /**
-     * The prefix for the session variables
-     *
-     * @var string
+     * @var string The prefix for the session variables
      */
     protected $_prefix;
 
@@ -92,27 +88,18 @@ class cSession
             return;
         }
 
-        // determine cookie lifetime
-        $lifetime = 0;
-
-        // determine cookie path (entire domain if path could not be determined)
-        $url = 'backend' === $prefix ? cRegistry::getBackendUrl() : cRegistry::getFrontendUrl();
-        $path = parse_url($url, PHP_URL_PATH);
-        $path = cRegistry::getConfigValue('cookie', 'path', $path);
-        if (empty($path)) {
-            $path = '/';
+        $params = $this->getCookieParams();
+        if (version_compare(PHP_VERSION, '7.3', '<')) {
+            // @phpVersion Old signature up to PHP 7.3.0
+            if ($params['samesite'] && strpos($params['path'], 'samesite=') !== false) {
+                $params['path'] .= '; samesite=' . $params['samesite'];
+            }
+            session_set_cookie_params($params['lifetime'], $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        } else {
+            // @phpVersion Alternative signature as of PHP 7.3.0
+            session_set_cookie_params($params);
         }
 
-        // determine cookie domain
-        $domain = null;
-
-        // determine cookie security flag
-        $secure = cRegistry::getConfigValue('secure');
-
-        // determine cookie httpOnly flag
-        $httpOnly = true;
-
-        session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
         session_name($this->_prefix);
         session_start();
 
@@ -163,7 +150,6 @@ class cSession
      * functions/classes rely on it
      *
      * @param string $url A URL
-     * @return  string
      */
     public function url(string $url): string
     {
@@ -175,10 +161,8 @@ class cSession
      * Attaches "&contenido=1" at the end of the current URL.
      * This is no longer needed to make sessions work but some CONTENIDO
      * functions/classes rely on it
-     *
-     * @return  mixed
      */
-    public function selfURL()
+    public function selfURL(): string
     {
         $requestUri = $_SERVER['REQUEST_URI'] ?? '';
         $queryString = $_SERVER['QUERY_STRING'] ?? '';
@@ -189,54 +173,60 @@ class cSession
      * Returns PHP code which can be used to rebuild the variable by evaluating it.
      * This will work recursively on arrays
      *
-     * @param mixed $var A variable which should get serialized.
-     * @return  string  The PHP code which can be evaluated.
+     * @param string $varName Name of variable to be serialized.
+     * @param mixed $actualValue Content of the variable.
+     * @return string The PHP code which can be evaluated.
+     * @since CONTENIDO 4.10.2: The function accessibility has been changed from `public` to `protected`,
+     *        and parameter `$actualValue` added.
      */
-    public function serialize($var): string
+    protected function serialize(string $varName, $actualValue): string
     {
         $str = '';
-        $this->_rSerialize($var, $str);
+        $this->_rSerialize($actualValue, $varName, $str);
         return $str;
     }
 
     /**
      * This function will go recursively through arrays and objects to serialize them.
      *
-     * @param mixed $var The variable to serialize
+     * @param mixed $value The variable to serialize
      * @param string $str The PHP code will be attached to this string
      */
-    protected function _rSerialize($var, &$str)
+    protected function _rSerialize($value, string $label, string &$str)
     {
-        $t = null; // type
-        $l = null; // some variable
-        $k = null; // class instance
+        $type = gettype($value);
 
-        // Determine the type of $$var
-        eval("\$t = isset(\${$var}) ? gettype(\${$var}) : NULL;");
-        switch ($t) {
+        switch ($type) {
             case 'array':
-                // $$var is an array. Enumerate the elements and serialize them.
-                $str .= "\${$var} = [];\n";
-                eval("\$l = []; foreach (\${$var} as \$k => \$v) { \$l[] = [\$k, gettype(\$k), \$v]; }");
-                foreach ($l as $item) {
-                    // Structural recursion
-                    $this->_rSerialize($var . "['" . preg_replace("/([\\'])/", "\\\\1", $item[0]) . "']", $str);
+                $str .= "\$$label = [];\n";
+                foreach ($value as $k => $v) {
+                    // Escape key for the string label
+                    $escapedKey = preg_replace("/(')/", "\\\\1", $k);
+                    // Recursively serialize the value using the path label
+                    $this->_rSerialize($v, $label . "['" . $escapedKey . "']", $str);
                 }
                 break;
             case 'object':
-                // $$var is an object. Enumerate the slots and serialize them.
-                eval("\$k = \${$var}->classname; \$l = reset(\${$var}->persistent_slots);");
-                $str .= "\${$var} = new {$k}();\n";
-                while ($l) {
-                    // Structural recursion
-                    $this->_rSerialize($var . "->" . $l, $str);
-                    eval("\$l = next(\${$var}->persistent_slots);");
+                $className = $value->classname ?? get_class($value);
+                $str .= "\$$label = new $className();\n";
+
+                // Assuming persistent_slots is an array of property names
+                if (isset($value->persistent_slots) && is_array($value->persistent_slots)) {
+                    foreach ($value->persistent_slots as $prop) {
+                        if (isset($value->$prop)) {
+                            $this->_rSerialize($value->$prop, $label . "->" . $prop, $str);
+                        }
+                    }
                 }
                 break;
+            case 'NULL':
+                $str .= "\$$label = NULL;\n";
+                break;
             default:
-                // $$var is an atom. Extract it to $l, then generate code
-                eval("\$l = isset(\${$var}) ? \${$var} : '';");
-                $str .= "\${$var} = '" . preg_replace("/([\\'])/", "\\\\1", $l) . "';\n";
+                // TODO Proper cast of int, bool, and double in future versions!
+                // Handle scalars (int, string, bool, double)
+                $escapedValue = preg_replace("/(')/", "\\\\1", $value);
+                $str .= "\$$label = '" . $escapedValue . "';\n";
                 break;
         }
     }
@@ -246,12 +236,14 @@ class cSession
      */
     public function freeze()
     {
-        $str = $this->serialize('this->_pt');
+        // Pass the actual object/array and its intended name
+        $str = $this->serialize('this->_pt', $this->_pt);
 
-        foreach ($this->_pt as $thing => $value) {
+        foreach ($this->_pt as $thing => $active) {
             $thing = trim($thing);
-            if ($value) {
-                $str .= $this->serialize('GLOBALS["' . $thing . '"]');
+            if ($active && isset($GLOBALS[$thing])) {
+                // Pass the value from the GLOBALS array
+                $str .= $this->serialize('GLOBALS["' . $thing . '"]', $GLOBALS[$thing]);
             }
         }
 
@@ -273,8 +265,18 @@ class cSession
      */
     public function delete()
     {
+        $_SESSION = [];
+
         $params = session_get_cookie_params();
-        setcookie(session_name(), '', time() - 600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        setcookie(
+            session_name(),
+            '',
+            time() - 600,
+            $params['path'],
+            $params['domain'],
+            $params['secure'],
+            $params['httponly']
+        );
 
         session_destroy();
     }
@@ -292,7 +294,6 @@ class cSession
      *
      * @param string $url The URL to process
      * @param bool $addSession Flag to add the current session parameter (e.g., contenido=1) to it, e.g. used by the backend
-     * @return  string
      */
     protected function _url(string $url, bool $addSession): string
     {
@@ -335,6 +336,56 @@ class cSession
         return $url;
     }
 
+    /**
+     * @since CONTENIDO 4.10.2
+     */
+    protected function getCookieParams(): array
+    {
+        $config = cRegistry::getConfigValue(sprintf('%s_session', $this->_prefix)) ?? [];
+
+        return [
+            'lifetime' => intval($config['cookie_expires'] ?? 0) * 60,
+            'path' => $this->getCookiePathParam(),
+            'domain' => $config['cookie_domain'] ?? null,
+            'secure' => boolval($config['cookie_secure'] ?? false),
+            'httponly' => boolval($config['cookie_httponly'] ?? true),
+            'samesite' => $this->getCookieSamesiteParam(),
+        ];
+    }
+
+    /**
+     * @since CONTENIDO 4.10.2
+     */
+    protected function getCookiePathParam(): string
+    {
+        $config = cRegistry::getConfigValue(sprintf('%s_session', $this->_prefix)) ?? [];
+
+        // Determine cookie path (entire domain if path could not be determined)
+        $url = $this->_prefix === 'backend' ? cRegistry::getBackendUrl() : cRegistry::getFrontendUrl();
+        $path = parse_url($url, PHP_URL_PATH);
+        $path = strval($config['cookie_path'] ?? $path);
+        if (empty($path)) {
+            $path = '/';
+        }
+
+        return $path;
+    }
+
+    /**
+     * @since CONTENIDO 4.10.2
+     */
+    protected function getCookieSamesiteParam(): ?string
+    {
+        $config = cRegistry::getConfigValue(sprintf('%s_session', $this->_prefix)) ?? [];
+
+        // Determine cookie samesite flag
+        $samesite = strval($config['cookie_samesite'] ?? '');
+        if (!in_array(strtolower($samesite), ['none', 'lax', 'strict'])) {
+            $samesite = null;
+        }
+
+        return $samesite;
+    }
 }
 
 /**
@@ -366,7 +417,6 @@ class cFrontendSession extends cSession
      *
      * @since CON-2785 the cookie path can be configured as $cfg['cookie']['path'].
      *        Configure in <CLIENT>/data/config/<ENV>/config.local.php
-     *
      */
     public function __construct(string $prefix = 'frontend')
     {
@@ -376,12 +426,8 @@ class cFrontendSession extends cSession
     }
 
     /**
-     * This function overrides cSession::url() so that the contenido=1 isn't
+     * This function overrides {@see cSession::url()} so that the contenido=1 isn't
      * attached to the URL for the frontend
-     *
-     * @param string $url A URL
-     * @return string
-     * @see cSession::url()
      */
     public function url(string $url): string
     {
