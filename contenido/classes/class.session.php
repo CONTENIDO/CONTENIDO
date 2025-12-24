@@ -57,6 +57,11 @@ class cSession
      */
     protected $namespace;
 
+    /***
+     * @var array Session configuration array
+     */
+    protected $sessionConfig = [];
+
     /**
      * cSession constructor. Starts a session if it does not yet exist.
      *
@@ -83,6 +88,7 @@ class cSession
         $this->_prefix = $prefix;
         $this->name = 'contenido';
         $this->namespace = $this->_prefix . ':csession';
+        $this->sessionConfig = $this->getSessionConfig();
 
         if (in_array(session_status(), [PHP_SESSION_DISABLED, PHP_SESSION_ACTIVE])) {
             return;
@@ -341,14 +347,12 @@ class cSession
      */
     protected function getCookieParams(): array
     {
-        $config = cRegistry::getConfigValue(sprintf('%s_session', $this->_prefix)) ?? [];
-
         return [
-            'lifetime' => intval($config['cookie_expires'] ?? 0) * 60,
+            'lifetime' => intval($this->sessionConfig['cookie_expires'] ?? 0) * 60,
             'path' => $this->getCookiePathParam(),
-            'domain' => $config['cookie_domain'] ?? null,
-            'secure' => boolval($config['cookie_secure'] ?? false),
-            'httponly' => boolval($config['cookie_httponly'] ?? true),
+            'domain' => $this->sessionConfig['cookie_domain'] ?? null,
+            'secure' => boolval($this->sessionConfig['cookie_secure'] ?? false),
+            'httponly' => boolval($this->sessionConfig['cookie_httponly'] ?? true),
             'samesite' => $this->getCookieSamesiteParam(),
         ];
     }
@@ -358,12 +362,10 @@ class cSession
      */
     protected function getCookiePathParam(): string
     {
-        $config = cRegistry::getConfigValue(sprintf('%s_session', $this->_prefix)) ?? [];
-
         // Determine cookie path (entire domain if path could not be determined)
         $url = $this->_prefix === 'backend' ? cRegistry::getBackendUrl() : cRegistry::getFrontendUrl();
         $path = parse_url($url, PHP_URL_PATH);
-        $path = strval($config['cookie_path'] ?? $path);
+        $path = strval($this->sessionConfig['cookie_path'] ?? $path);
         if (empty($path)) {
             $path = '/';
         }
@@ -376,15 +378,24 @@ class cSession
      */
     protected function getCookieSamesiteParam(): ?string
     {
-        $config = cRegistry::getConfigValue(sprintf('%s_session', $this->_prefix)) ?? [];
-
         // Determine cookie samesite flag
-        $samesite = strval($config['cookie_samesite'] ?? '');
+        $samesite = strval($this->sessionConfig['cookie_samesite'] ?? '');
         if (!in_array(strtolower($samesite), ['none', 'lax', 'strict'])) {
             $samesite = null;
         }
 
         return $samesite;
+    }
+
+    /**
+     * @since CONTENIDO 4.10.2
+     */
+    private function getSessionConfig(): array
+    {
+        $parts = explode(':', $this->_prefix);
+
+        // Return `$cfg['backend']['session']` or `$cfg['frontend']['session']` or `$cfg[{section}]['session']`
+        return cRegistry::getConfig()[array_pop($parts)]['session'] ?? [];
     }
 }
 
