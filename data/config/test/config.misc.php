@@ -57,20 +57,21 @@ $cfg['backend_session'] = [
 ];
 
 // @since CONTENIDO 4.10.2
-// (array) Frontend session cookie configuration
+// (array) Frontend session cookie configuration.
+//         Takeover also any defined frontend cookie settings `$cfg['cookie']` from cms/data/config/{environment}}/config.local.php.
 $cfg['frontend_session'] = [
     // (int) Cookie lifetime in seconds (0 = session cookie expires when the browser is closed)
-    'cookie_expires' => 0,
+    'cookie_expires' => $cfg['cookie']['expires'] ?? null,
     // (string|null) Path on the domain, will be detected automatically if not set
-    'cookie_path' => null,
+    'cookie_path' => $cfg['cookie']['path'] ?? null,
     // (string|null) Cookie domain, leading dot for compatibility or use subdomain, e.g. `.contenido.org'. Cookie will bound to the host name if not set.
-    'cookie_domain' => null,
+    'cookie_domain' => $cfg['cookie']['domain'] ?? null,
     // (bool) Enforce HTTPS for cookies. Flag to send cookie only over secure connections
-    'cookie_secure' => false,
+    'cookie_secure' => $cfg['cookie']['secure'] ?? false,
     // (bool) Flag to send the httponly flag when setting the session cookie
-    'cookie_httponly' => false,
+    'cookie_httponly' => $cfg['cookie']['httponly'] ?? false,
     // (string|null) SameSite option ('None', 'Lax' or 'Strict')
-    'cookie_samesite' => null,
+    'cookie_samesite' =>  $cfg['cookie']['samesite'] ?? null,
 ];
 
 // (bool) Use Pseudo-Cron?
