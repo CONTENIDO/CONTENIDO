@@ -18,22 +18,34 @@ $db = cRegistry::getDb();
 $cfg = cRegistry::getConfig();
 $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
-$aAcceptLanguages = i18nStripAcceptLanguages($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-$mEncoding = false;
-foreach ($aAcceptLanguages as $sValue) {
-    $mEncoding = i18nMatchBrowserAccept($sValue);
-    $GLOBALS['belang'] = $mEncoding;
-    if ($mEncoding !== false) {
-        break;
-    }
-}
+$aAvailableLanguages = i18nGetAvailableLanguages();
 
+// Get all available languages and filter by `$cfg['login_languages']`
+$aAvailableLanguages = array_filter($aAvailableLanguages, function($code) use($cfg) {
+    return in_array($code, $cfg['login_languages']);
+}, ARRAY_FILTER_USE_KEY);
+
+// Detect selected language, either by configuration or by POST
 if (empty($_POST['belang'])) {
-    $sSelectedLang = '';
+    $defaultBackendLang = $cfg['backend']['default_belang'] ?? '';
+    $sSelectedLang = isset($aAvailableLanguages[$defaultBackendLang]) ? $defaultBackendLang : '';
 } else {
     $sSelectedLang = $_POST['belang'];
     $GLOBALS['belang'] = $sSelectedLang;
 }
+
+// Detect preferred language by client settings, if not set before
+if (empty($sSelectedLang)) {
+    $aAcceptLanguages = i18nStripAcceptLanguages($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    foreach ($aAcceptLanguages as $sValue) {
+        $mEncoding = i18nMatchBrowserAccept($sValue);
+        if ($mEncoding !== false) {
+            $sSelectedLang = $mEncoding;
+            break;
+        }
+    }
+}
+$GLOBALS['belang'] = $sSelectedLang;
 
 $sNotification = '';
 if (getSystemProperty('maintenance', 'mode') == 'enabled') {
@@ -58,27 +70,11 @@ if (!empty(trim($backend_label))) {
     $sTitle = ':: :: CONTENIDO Login';
 }
 
-$aAvailableLanguages = i18nGetAvailableLanguages();
 $sLanguageOptions = '';
 foreach ($aAvailableLanguages as $sCode => $aEntry) {
-    $addLanguageOption = false;
-    if (isset($cfg['login_languages'])) {
-        if (in_array($sCode, $cfg['login_languages'])) {
-            $addLanguageOption = true;
-        }
-    } else {
-        $addLanguageOption = true;
-    }
-
-    if ($addLanguageOption) {
-        list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
-        if ($sSelectedLang) {
-            $bSelected = ($sSelectedLang == $sCode);
-        } else {
-            $bSelected = ($sCode == $mEncoding);
-        }
-        $sLanguageOptions .= (new cHTMLOptionElement($sLanguage . ' (' . $sCountry . ')', $sCode, $bSelected))->toHtml();
-    }
+    list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
+    $bSelected = $sSelectedLang == $sCode;
+    $sLanguageOptions .= (new cHTMLOptionElement($sLanguage . ' (' . $sCountry . ')', $sCode, $bSelected))->toHtml();
 }
 
 // Class implements password recovery, all functionality is implemented there

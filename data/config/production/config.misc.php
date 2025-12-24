@@ -35,6 +35,11 @@ $cfg['backend']['timeout'] = 60;
 // (int) Frontend timeout
 $cfg['frontend']['timeout'] = 15;
 
+// @since CONTENIDO 4.10.2
+// (string|null) Default backend language (locale). If not set, the preferred language of the client (browser) will be used.
+//               See also `$cfg['login_languages']`. Example: 'de_DE', 'en_US'.
+$cfg['backend']['default_belang'] = null;
+
 // (bool) Enforce HTTPS for cookies
 // @deprecated [2025-08-03] Since 4.10.2, configure `$cfg['backend_session']['cookie_secure']` and `$cfg['frontend_session']['cookie_secure']` instead
 $cfg['secure'] = false;
