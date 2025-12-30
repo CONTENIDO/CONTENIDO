@@ -19,10 +19,9 @@ if (isset($_REQUEST['sAreaFilename'])) {
     die ('Illegal call!');
 }
 
-$_cecIterator = $_cecRegistry->getIterator("Contenido.Permissions.User.GetAreaEditFilename");
-
+$_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Permissions.User.GetAreaEditFilename');
 while (($chainEntry = $_cecIterator->next()) !== false) {
-    $aInfo = $chainEntry->execute($_REQUEST["external_area"]);
+    $aInfo = $chainEntry->execute($_REQUEST['external_area']);
     if ($aInfo !== false) {
         $sAreaFilename = $aInfo;
         break;

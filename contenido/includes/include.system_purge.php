@@ -33,7 +33,7 @@ $aAvailableClient = $oClient->getAccessibleClients();
 $sInfoMsg = '';
 
 $action = 'do_purge';
-if (($action == 'do_purge') && (!$perm->have_perm_area_action_anyitem($area, $action))) {
+if ($action == 'do_purge' && !$perm->have_perm_area_action_anyitem($area, $action)) {
     $notification->displayNotification('error', i18n('Permission denied'));
     return;
 }
@@ -48,13 +48,11 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
         foreach ($aAvailableClient as $iClientId => $aClient) {
             $aClientToClear[] = $iClientId;
         }
-
     } elseif (isset($_POST['purge_clients']) && is_array($_POST['purge_clients']) && count($_POST['purge_clients']) > 0) {
         // selected multiple clients
         foreach ($_POST['purge_clients'] as $iClientId) {
             $aClientToClear[] = (int)$iClientId;
         }
-
     } elseif (isset($_POST['purge_clients']) && (int)$_POST['purge_clients'] > 0) {
         // selected single client
         $aClientToClear[] = (int)$_POST['purge_clients'];
@@ -127,7 +125,6 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
                 if ($sErrorMsg != '') {
                     $sErrorMsg .= '<br>';
                 }
-
             }
         }
     }

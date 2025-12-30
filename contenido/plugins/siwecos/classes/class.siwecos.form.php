@@ -42,8 +42,7 @@ class SIWECOSCollection extends ItemCollection
      *
      * @param bool $where
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
@@ -61,9 +60,7 @@ class SIWECOSCollection extends ItemCollection
      * @param $lang
      *
      * @return array
-     * @throws SIWECOSException
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException|SIWECOSException
      */
     public static function getByClientAndLang($client, $lang)
     {
@@ -103,7 +100,7 @@ class SIWECOSCollection extends ItemCollection
         $db->query(
             "SELECT *
             FROM `" . cRegistry::getDbTableName('siwecos') . "`
-            WHERE 
+            WHERE
                 `idclient` = " . cSecurity::toInteger($client) . "
                 AND `idlang` = " . cSecurity::toInteger($lang) . "
                 " . $str . "
@@ -142,14 +139,12 @@ class SIWECOS extends Item
      * SIWECOS constructor.
      *
      * @param bool $id
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
         parent::__construct('con_pi_siwecos', 'idsiwecos');
-        $this->setFilters([], []);
+        $this->setFilters();
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }
@@ -168,9 +163,7 @@ class SIWECOS extends Item
     /**
      * @param Exception $e
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public static function logException(Exception $e)
     {
@@ -205,9 +198,7 @@ class SIWECOS extends Item
      * Deletes this form with all its fields and stored data.
      * The forms data table is also dropped.
      *
-     * @throws SIWECOSException
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException|SIWECOSException
      */
     public function delete()
     {

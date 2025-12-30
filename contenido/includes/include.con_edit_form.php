@@ -15,9 +15,9 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude("includes", "functions.tpl.php");
-cInclude("includes", "functions.str.php");
-cInclude("includes", "functions.pathresolver.php");
+cInclude('includes', 'functions.tpl.php');
+cInclude('includes', 'functions.str.php');
+cInclude('includes', 'functions.pathresolver.php');
 
 // ugly globals that are used in this script
 global $tpl, $db, $selectedArticleId, $contenido, $notification, $lngAct, $idcatart, $idtpl;
@@ -31,14 +31,14 @@ $client = cRegistry::getClientId();
 $cfg = cRegistry::getConfig();
 $frame = cRegistry::getFrame();
 $auth = cRegistry::getAuth();
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$lang = cRegistry::getLanguageId();
 $belang = cRegistry::getBackendLanguage();
 $idart = cRegistry::getArticleId();
 $idcat = cRegistry::getCategoryId();
 $idcatlang = cRegistry::getCategoryLanguageId();
-$idartlang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
+$idartlang = cRegistry::getArticleLanguageId();
 
-$page = new cGuiPage("con_edit_form", "", "con_editart");
+$page = new cGuiPage('con_edit_form', '', 'con_editart');
 $page->addStyle('version_selection.css');
 $tpl = null;
 
@@ -466,7 +466,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // synchronize a single article after checking permissions
     $postSyncOne = cSecurity::toInteger($_POST['syncOne'] ?? '0');
     if ($postSyncOne > 0) {
-        $tmpIdcat = cSecurity::toInteger(cRegistry::getCategoryId());
+        $tmpIdcat = cRegistry::getCategoryId();
         $oCatLangColl = new cApiCategoryLanguageCollection();
         $tmpIdcatlang = $oCatLangColl->getIdCatLangByIdcatAndIdlang($tmpIdcat, $postSyncOne);
         $isSyncable = cSecurity::toBoolean($tmpIdcatlang);
@@ -491,7 +491,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // synchronize multiple articles
     if (isset($_POST['syncAll'])) {
         if (is_array($_POST['syncingLanguage'])) {
-            $tmpIdcat = cSecurity::toInteger(cRegistry::getCategoryId());
+            $tmpIdcat = cRegistry::getCategoryId();
             $oCatLangColl = new cApiCategoryLanguageCollection();
 
             foreach ($_POST['syncingLanguage'] as $langId) {
@@ -668,8 +668,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // end plugin Advanced Mod Rewrite
 
     $artSpecs = cGetArtSpecs(
-        cSecurity::toInteger(cRegistry::getClientId()),
-        cSecurity::toInteger(cRegistry::getLanguageId())
+        cRegistry::getCategoryId(),
+        cRegistry::getLanguageId()
     );
 
     $inputArtSortSelect = new cHTMLSelectELement("artspec", "400px");
@@ -1008,7 +1008,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             // find this category in other languages
             $oCatLangColl = new cApiCategoryLanguageCollection();
             $otherLangIdCatLang = $oCatLangColl->getIdCatLangByIdcatAndIdlang(
-                cSecurity::toInteger(cRegistry::getCategoryId()),
+                cRegistry::getCategoryId(),
                 cSecurity::toInteger($someLang->get("idlang"))
             );
             $isSyncable = $otherLangIdCatLang > 0;
@@ -1338,5 +1338,5 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $page->render();
 } else {
     // User has no permission to see this form
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

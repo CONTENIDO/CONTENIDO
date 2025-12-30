@@ -30,14 +30,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Will be called by chain 'Contenido.Action.str_newtree.AfterCall'.
  *
  * @param array $data Associative array with some values
- *
- * @return  array  Passed parameter
+ * @return array Passed parameter
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
-function mr_strNewTree(array $data)
+function mr_strNewTree(array $data): array
 {
-    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+    $lang = cRegistry::getLanguageId();
 
     ModRewriteDebugger::log($data, 'mr_strNewTree $data');
 
@@ -57,14 +56,13 @@ function mr_strNewTree(array $data)
  * Will be called by chain 'Contenido.Action.str_newcat.AfterCall'.
  *
  * @param array $data Associative array with some values
- *
- * @return  array  Passed parameter
+ * @return array Passed parameter
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
-function mr_strNewCategory(array $data)
+function mr_strNewCategory(array $data): array
 {
-    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+    $lang = cRegistry::getLanguageId();
 
     ModRewriteDebugger::log($data, 'mr_strNewCategory $data');
 
@@ -86,13 +84,10 @@ function mr_strNewCategory(array $data)
  * Will be called by chain 'Contenido.Action.str_renamecat.AfterCall'.
  *
  * @param array $data Associative array with some values
- *
- * @return  array  Passed parameter
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @return array Passed parameter
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function mr_strRenameCategory(array $data)
+function mr_strRenameCategory(array $data): array
 {
     ModRewriteDebugger::log($data, 'mr_strRenameCategory $data');
 
@@ -142,8 +137,7 @@ function mr_strRenameCategory(array $data)
  * Will be called by chain 'Contenido.Action.str_moveupcat.AfterCall'.
  *
  * @param int $idcat Category id
- *
- * @return  int|void  Category id
+ * @return int|void Category id
  * @throws cDbException|cInvalidArgumentException
  * @todo  do we really need processing of the category? there is no mr relevant data
  *        changes while moving the category on same level, level and name won't change
@@ -179,12 +173,10 @@ function mr_strMoveUpCategory($idcat)
  * Will be called by chain 'Contenido.Action.str_movedowncat.AfterCall'.
  *
  * @param int $idcat Id of category being moved down
- *
- * @return  int|void  Category id
+ * @return int|void Category id
  * @throws cDbException|cInvalidArgumentException
  * @todo  do we really need processing of the category? there is no mr relevant data
  *        changes while moving the category on same level, level and name won't change
- *
  */
 function mr_strMovedownCategory($idcat)
 {
@@ -215,8 +207,7 @@ function mr_strMovedownCategory($idcat)
  * Will be called by chain 'Contenido.Action.str_movesubtree.AfterCall'.
  *
  * @param array $data Associative array with some values
- *
- * @return  array|void  Passed parameter
+ * @return array|void Passed parameter
  * @throws cDbException|cException|cInvalidArgumentException
  */
 function mr_strMoveSubtree(array $data)
@@ -317,7 +308,7 @@ function mr_conSaveArticle(array $data)
 {
     global $tmp_firstedit;
 
-    $client = cSecurity::toInteger(cRegistry::getClientId());
+    $client = cRegistry::getClientId();
 
     ModRewriteDebugger::log($data, 'mr_conSaveArticle $data');
 
@@ -472,7 +463,7 @@ function mr_buildNewUrl($url)
 {
     ModRewriteDebugger::add($url, 'mr_buildNewUrl() in -> $url');
 
-    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+    $lang = cRegistry::getLanguageId();
     $oUrl = cUri::getInstance();
     $aUrl = $oUrl->parse($url);
 

@@ -44,11 +44,7 @@ class cApiContentVersionCollection extends ItemCollection
      * Creates a content version entry.
      *
      * @param array $parameters
-     *
      * @return cApiContentVersion
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function create(array $parameters)
     {
@@ -75,22 +71,15 @@ class cApiContentVersionCollection extends ItemCollection
     }
 
     /**
-     * Gets ids of content version entries by WHERE clause
-     *
-     * @param string $where
-     * @return array $ids
-     * @throws cDbException
-     * @throws cException
+     * @inheritDoc
      */
-    public function getIdsByWhereClause($where)
+    public function getIdsByWhereClause(string $where): array
     {
-        $this->select($where);
+        $ids = parent::getIdsByWhereClause($where);
 
-        $ids = [];
-        while ($item = $this->next()) {
-            $ids[] = cSecurity::toInteger($item->get('idcontentversion'));
-        }
-        return $ids;
+        return array_map(function ($id) {
+            return cSecurity::toInteger($id);
+        }, $ids);
     }
 
     /**
@@ -100,14 +89,12 @@ class cApiContentVersionCollection extends ItemCollection
      * @param int $idType Content type id (e.g. id of `CONTENT_TYPE`)
      * @param int $typeId Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
      * @return int Found maximum version or 0
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      * @since CONTENIDO 4.10.2
      */
     public function getMaximumVersionByArticleLanguageId(
         int $idArtLang, int $idType, int $typeId
-    ): int
-    {
+    ): int {
         $contentVersionColl = new self();
         $contentVersionColl->addResultField('version');
         $contentVersionColl->setWhere('idartlang', $idArtLang);
@@ -134,18 +121,15 @@ class cApiContentVersion extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id
-     *         Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
         parent::__construct(
             cRegistry::getDbTableName('content_version'), 'idcontentversion'
         );
-        $this->setFilters([], []);
+        $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -154,12 +138,7 @@ class cApiContentVersion extends Item
     /**
      * User-defined setter for item fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $safe
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function setField($name, $value, $safe = true)
     {
@@ -205,9 +184,7 @@ class cApiContentVersion extends Item
      *
      * @param string $version
      * @param mixed $deleted
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function markAsEditable($version, $deleted)
     {
@@ -238,12 +215,9 @@ class cApiContentVersion extends Item
      *          'version' => (int) Content version
      *      ];
      *      </pre>
-     *
-     * @return bool
-     *
      * @throws cException
      */
-    public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters)
+    public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters): bool
     {
         $props = [
             'idartlang' => $contentParameters['idartlang'],

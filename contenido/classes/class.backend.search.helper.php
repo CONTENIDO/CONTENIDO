@@ -36,7 +36,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cBackendSearchHelper
 {
 
-    const COMMON_CON_AND_ARTICLE_RIGHTS = [
+    protected const COMMON_CON_AND_ARTICLE_RIGHTS = [
         ['con', 'con_makestart'],
         ['con', 'con_makeonline'],
         ['con', 'con_deleteart'],
@@ -52,75 +52,75 @@ class cBackendSearchHelper
     /**
      * @var cDb
      */
-    protected $_db = null;
+    protected $_db;
 
     /**
      * @var cAuth
      */
-    protected $_auth = null;
+    protected $_auth;
 
     /**
      * @var cPermission
      */
-    protected $_perm = null;
+    protected $_perm;
 
     /**
      * @var int
      */
-    protected $_languageId = null;
+    protected $_languageId;
 
     /**
      * @var int
      */
-    protected $_clientId = null;
+    protected $_clientId;
 
     /**
-     * @var array
+     * @var ?array
      */
     protected $_articleInfos;
 
     /**
-     * @var int[]
+     * @var ?int[]
      */
     protected $_categoryIds = null;
 
     /**
-     * @var array
+     * @var ?array
      */
     protected $_categoryTemplateInfos;
 
     /**
-     * @var array
+     * @var ?array
      */
     protected $_categoryBreadcrumb;
 
     /**
-     * @var array
+     * @var ?array
      */
     protected $_articlePermissions;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $_hasCommonContentPermission;
 
     /**
-     * @var bool[]
+     * @var ?bool[]
      */
     protected $_hasArticleEditContentPermission;
 
     /**
-     * @var bool[]
+     * @var ?bool[]
      */
     protected $_hasArticleMakeStartPermission;
 
     /**
-     * @var bool[]
+     * @var ?bool[]
      */
     protected $_hasArticleDuplicatePermission;
 
     /**
-     * @var bool[]
+     * @var ?bool[]
      */
     protected $_hasArticleDeletePermission;
 
@@ -146,7 +146,6 @@ class cBackendSearchHelper
      * Generates refresh JavaScript for article search form in left_top
      *
      * @param array $aValues The form values to pass to the search form
-     * @return string
      */
     public function generateJs(array $aValues): string
     {
@@ -195,18 +194,17 @@ class cBackendSearchHelper
 
     /**
      * Searches in properties
-     * @param int $itemidReq Property item id
-     * @param int $itemtypeReq Property item type
-     * @return array
+     * @param int $itemIdReq Property item id
+     * @param int $itemTypeReq Property item type
      * @throws cDbException|cException
      */
-    public function getSearchResults(int $itemidReq, int $itemtypeReq): array
+    public function getSearchResults(int $itemIdReq, int $itemTypeReq): array
     {
         $retValue = [];
 
         // Request from DB
         $propertyCollection = new cApiPropertyCollection();
-        $results = $propertyCollection->getValuesByType($itemtypeReq, $itemidReq, 'savedsearch');
+        $results = $propertyCollection->getValuesByType($itemTypeReq, $itemIdReq, 'savedsearch');
 
         // Put results in returning Array
         $retValue['save_title'] = $results['save_title'];
@@ -242,7 +240,6 @@ class cBackendSearchHelper
      * Composes a date in format 'Y-m-d 00:00:00'.
      *
      * @param array $data Search data with save_date_from_* fields
-     * @return string
      */
     public function composeSaveDateFrom(array $data): string
     {
@@ -262,7 +259,6 @@ class cBackendSearchHelper
      * Composes a date in format 'Y-m-d 23:59:59'.
      *
      * @param array $data Search data with save_date_to_* fields
-     * @return string
      */
     public function composeSaveDateTo(array $data): string
     {
@@ -280,9 +276,6 @@ class cBackendSearchHelper
 
     /**
      * Masks string for inserting into SQL statement.
-     *
-     * @param string $sString
-     * @return string
      */
     public function mask(string $sString): string
     {
@@ -329,7 +322,7 @@ class cBackendSearchHelper
      * Returns all category ids being collected in a previous call of
      * {@see cBackendSearchHelper::initializeArticleInfos()}.
      *
-     * @return array|int[]
+     * @return int[]
      */
     public function getCategoryIds(): array
     {
@@ -348,7 +341,7 @@ class cBackendSearchHelper
      * Will be used, if the article has not its own template configuration.
      *
      * @param int $idcat
-     * @return array
+     * @return array{idtplcfg: int, idtpl: int, name: string, description: string}|array{}
      * @throws cDbException|cInvalidArgumentException
      */
     public function getCategoryTemplateInfos(int $idcat): array
@@ -394,8 +387,6 @@ class cBackendSearchHelper
     /**
      * Returns the category breadcrumb (category path).
      *
-     * @param int $idcat
-     * @return string
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function getCategoryBreadcrumb(int $idcat): string
@@ -415,7 +406,6 @@ class cBackendSearchHelper
     /**
      * Checks if the user has common permissions for content and article.
      *
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasCommonContentPermission(): bool
@@ -439,7 +429,6 @@ class cBackendSearchHelper
      * Checks if the user has common permissions for content and article for a specific category.
      *
      * @param int $idcat Id of the category to check the rights for
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticlePermission(int $idcat): bool
@@ -493,7 +482,6 @@ class cBackendSearchHelper
      * Checks if the user has permission to make an article a start article.
      *
      * @param int $idcat Id of the category to check the rights for
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticleMakeStartPermission(int $idcat): bool
@@ -515,7 +503,6 @@ class cBackendSearchHelper
      * Checks if the user has permission to edit article content.
      *
      * @param int $idcat Id of the category to check the rights for
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticleEditContentPermission(int $idcat): bool
@@ -536,7 +523,6 @@ class cBackendSearchHelper
      * Checks if the user has permission to duplicate article.
      *
      * @param int $idcat Id of the category to check the rights for
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticleDuplicatePermission(int $idcat): bool
@@ -557,7 +543,6 @@ class cBackendSearchHelper
      * Checks if the user has permission to delete article.
      *
      * @param int $idcat Id of the category to check the rights for
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticleDeletePermission(int $idcat): bool

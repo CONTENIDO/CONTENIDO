@@ -49,9 +49,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
      * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
      * @param array $contentTypes array containing the values of all content types
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function __construct($rawSettings, $id, array $contentTypes)
     {

@@ -50,10 +50,7 @@ class cApiUserPropertyCollection extends ItemCollection
      * Constructor to create an instance of this class.
      *
      * @param string $userId
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function __construct($userId)
     {
@@ -84,12 +81,10 @@ class cApiUserPropertyCollection extends ItemCollection
      * User id setter
      *
      * @param string $userId
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      * @throws cInvalidArgumentException If passed user id is empty
      */
-    public function setUserId($userId)
+    public function setUserId(string $userId)
     {
         if (empty($userId)) {
             throw new cInvalidArgumentException("Empty user id");
@@ -107,12 +102,8 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param string $name
      * @param string $value
      * @param int $idcatlang [optional]
-     *
      * @return cApiUserProperty
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function setValueByTypeName($type, $name, $value, $idcatlang = 0)
     {
@@ -139,9 +130,7 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param string $value
      * @param int $idcatlang [optional]
      * @return cApiUserProperty
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($type, $name, $value, $idcatlang = 0)
     {
@@ -164,12 +153,10 @@ class cApiUserPropertyCollection extends ItemCollection
     /**
      * Returns all user properties by userid.
      *
-     * @return array
-     *
-     * @throws cDbException
-     * @throws cException
+     * @return cApiUserProperty[]
+     * @throws cDbException|cException
      */
-    public function fetchByUserId()
+    public function fetchByUserId(): array
     {
         if (self::$_enableCache) {
             return $this->_fetchByUserIdFromCache();
@@ -187,17 +174,14 @@ class cApiUserPropertyCollection extends ItemCollection
     /**
      * Returns all user properties of all users by type and name.
      * NOTE: Enabled caching will be skipped in this case, since it will return
-     * settings for all usery!
+     * settings for all user!
      *
      * @param string $type
      * @param string $name
-     *
-     * @return array
-     *
-     * @throws cDbException
-     * @throws cException
+     * @return cApiUserProperty[]
+     * @throws cDbException|cException
      */
-    public function fetchByTypeName($type, $name)
+    public function fetchByTypeName($type, $name): array
     {
         $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
         $this->select($sql);
@@ -213,11 +197,8 @@ class cApiUserPropertyCollection extends ItemCollection
      *
      * @param string $type
      * @param string $name
-     *
-     * @return cApiUserProperty|NULL
-     *
-     * @throws cDbException
-     * @throws cException
+     * @return ?cApiUserProperty
+     * @throws cDbException|cException
      */
     public function fetchByUserIdTypeName($type, $name)
     {
@@ -237,13 +218,10 @@ class cApiUserPropertyCollection extends ItemCollection
      * Returns all user properties by userid and type.
      *
      * @param string $type
-     *
-     * @return array
-     *
-     * @throws cDbException
-     * @throws cException
+     * @return cApiUserProperty[]
+     * @throws cDbException|cException
      */
-    public function fetchByUserIdType($type)
+    public function fetchByUserIdType($type): array
     {
         if (self::$_enableCache) {
             return $this->_fetchByUserIdTypeFromCache($type);
@@ -261,16 +239,9 @@ class cApiUserPropertyCollection extends ItemCollection
     /**
      * Deletes user property by userid, type and name.
      *
-     * @param string $type
-     * @param string $name
-     *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function deleteByUserIdTypeName($type, $name)
+    public function deleteByUserIdTypeName($type, $name): bool
     {
         $sql = $this->db->prepare("user_id = '%s' AND type = '%s' AND name = '%s'", $this->_userId, $type, $name);
         $this->select($sql);
@@ -280,15 +251,9 @@ class cApiUserPropertyCollection extends ItemCollection
     /**
      * Deletes user properties by userid and type.
      *
-     * @param string $type
-     *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function deleteByUserIdType($type)
+    public function deleteByUserIdType($type): bool
     {
         $sql = $this->db->prepare("user_id = '%s' AND type = '%s'", $this->_userId, $type);
         $this->select($sql);
@@ -298,13 +263,9 @@ class cApiUserPropertyCollection extends ItemCollection
     /**
      * Deletes all user properties by userid.
      *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function deleteByUserId()
+    public function deleteByUserId(): bool
     {
         $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
         $this->select($sql);
@@ -314,13 +275,9 @@ class cApiUserPropertyCollection extends ItemCollection
     /**
      * Deletes selected user properties.
      *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    protected function _deleteSelected()
+    protected function _deleteSelected(): bool
     {
         $result = false;
         while (($prop = $this->next()) !== false) {
@@ -336,8 +293,7 @@ class cApiUserPropertyCollection extends ItemCollection
     /**
      * Loads/Caches all user properties.
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function _loadFromCache()
     {
@@ -364,9 +320,9 @@ class cApiUserPropertyCollection extends ItemCollection
     /**
      * Fetches all user properties by userid from cache.
      *
-     * @return array
+     * @return cApiUserProperty[]
      */
-    protected function _fetchByUserIdFromCache()
+    protected function _fetchByUserIdFromCache(): array
     {
         $props = [];
         $obj = new cApiUserProperty();
@@ -382,7 +338,7 @@ class cApiUserPropertyCollection extends ItemCollection
      *
      * @param string $type
      * @param string $name
-     * @return cApiUserProperty|NULL
+     * @return ?cApiUserProperty
      */
     public function _fetchByUserIdTypeNameFromCache($type, $name)
     {
@@ -401,9 +357,9 @@ class cApiUserPropertyCollection extends ItemCollection
      * Fetches user properties by userid and type from cache.
      *
      * @param string $type
-     * @return array
+     * @return cApiUserProperty[]
      */
-    public function _fetchByUserIdTypeFromCache($type)
+    public function _fetchByUserIdTypeFromCache($type): array
     {
         $props = [];
         $obj = new cApiUserProperty();
@@ -441,18 +397,15 @@ class cApiUserProperty extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('user_prop'), 'iduserprop');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
@@ -460,11 +413,9 @@ class cApiUserProperty extends Item
      * Updates a user property value.
      *
      * @param string $value
-     * @return bool
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function updateValue($value)
+    public function updateValue($value): bool
     {
         $this->set('value', $value);
         return $this->store();
@@ -473,13 +424,9 @@ class cApiUserProperty extends Item
     /**
      * User-defined setter for user property fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idcatlang':
@@ -487,7 +434,7 @@ class cApiUserProperty extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

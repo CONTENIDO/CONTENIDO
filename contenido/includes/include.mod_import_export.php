@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var int $frame
  */
 
-$page = new cGuiPage("mod_import_export");
+$page = new cGuiPage('mod_import_export');
 
 $requestIdMod = cSecurity::toInteger($_REQUEST['idmod'] ?? '0');
 $requestMode = $_REQUEST['mode'] ?? '';

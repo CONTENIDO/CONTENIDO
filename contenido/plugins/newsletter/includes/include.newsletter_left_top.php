@@ -18,8 +18,8 @@ global $oTpl, $oDB;
 
 $auth = cRegistry::getAuth();
 $perm = cRegistry::getPerm();
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getCategoryId();
+$lang = cRegistry::getLanguageId();
 $cfg = cRegistry::getConfig();
 $area = cRegistry::getArea();
 $sess = cRegistry::getSession();

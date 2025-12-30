@@ -715,8 +715,7 @@ class cTinymce4Configuration {
 
         $configPath = cRegistry::getConfigValue('path', 'contenido_config');
         $configPath .= 'config.wysiwyg_tinymce4.php';
-        if (cFileHandler::exists($configPath)
-        && cFileHandler::writeable($configPath)) {
+        if ( cFileHandler::exists($configPath) && cFileHandler::writeable($configPath)) {
             $resetForm = new cHTMLForm('system_wysiwyg_tinymce4_general_options', 'main.php', 'post');
             $resetForm->setVar('area', $area);
             $resetForm->setVar('frame', $frame);

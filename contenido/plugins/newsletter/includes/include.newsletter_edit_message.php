@@ -25,10 +25,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var int $frame
  */
 
-cInclude("includes", "functions.con.php"); // For conDeleteArt and conCopyArt
+cInclude('includes', 'functions.con.php'); // For conDeleteArt and conCopyArt
 
 // Initialization
-$oPage = new cGuiPage("newsletter_edit_message", "newsletter");
+$oPage = new cGuiPage('newsletter_edit_message', 'newsletter');
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 
 // Ensure to have numeric newsletter id

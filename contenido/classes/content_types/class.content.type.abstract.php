@@ -28,14 +28,14 @@ abstract class cContentTypeAbstract
      *
      * @var string
      */
-    const SETTINGS_TYPE_PLAINTEXT = 'plaintext';
+    public const SETTINGS_TYPE_PLAINTEXT = 'plaintext';
 
     /**
      * Constant defining that the settings should be interpreted as XML.
      *
      * @var string
      */
-    const SETTINGS_TYPE_XML = 'xml';
+    public const SETTINGS_TYPE_XML = 'xml';
 
     /**
      * Constant defining the PHP comment marker used to wrap content type code.
@@ -43,7 +43,7 @@ abstract class cContentTypeAbstract
      * @since CONTENIDO 4.10.2
      * @var string
      */
-    const COMMENT_MARKER = '" . /*[CONTENT_TYPE]*/%s/*[/CONTENT_TYPE]*/ . "';
+    public const COMMENT_MARKER = '" . /*[CONTENT_TYPE]*/%s/*[/CONTENT_TYPE]*/ . "';
 
     /**
      * Constant defining the regular expression to detect wrapped content type code.
@@ -51,7 +51,7 @@ abstract class cContentTypeAbstract
      * @since CONTENIDO 4.10.2
      * @var string
      */
-    const COMMENT_MARKER_PATTERN = '#(\s*).(\s*)/\*\[CONTENT_TYPE\]\*/(.*?)/\*\[/CONTENT_TYPE\]\*/(\s*).(\s*)#mis';
+    public const COMMENT_MARKER_PATTERN = '#(\s*).(\s*)/\*\[CONTENT_TYPE\]\*/(.*?)/\*\[/CONTENT_TYPE\]\*/(\s*).(\s*)#mis';
 
     /**
      * Name of the content type, e.g. 'CMS_TEASER'.
@@ -199,12 +199,9 @@ abstract class cContentTypeAbstract
      *
      * Initialises class attributes with values from cRegistry.
      *
-     * @param string $rawSettings
-     *         the raw settings in an XML structure or as plaintext
-     * @param int $id
-     *         ID of the content type, e.g. 3 if CMS_TEASER[3] is used
-     * @param array $contentTypes
-     *         array containing the values of all content types
+     * @param string $rawSettings The raw settings in an XML structure or as plaintext
+     * @param int $id ID of the content type, e.g. 3 if CMS_TEASER[3] is used
+     * @param array $contentTypes Array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes)
     {
@@ -280,8 +277,8 @@ abstract class cContentTypeAbstract
      * </pre>
      *
      * @param string $code Content type PHP code.
-     * @return string Content type PHP code wrapped with PHP comment marker
-     *                and an immediately executed anonymous function.
+     * @return string Content type PHP code wrapped with PHP comment marker and an immediately
+     *      executed anonymous function.
      * @throws cInvalidArgumentException
      * @since CONTENIDO 4.10.2
      */
@@ -395,9 +392,7 @@ abstract class cContentTypeAbstract
      * Stores all values from the $_POST array in the $_settings attribute
      * (associative array) and saves them in the database (XML).
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function _storeSettings()
     {
@@ -434,10 +429,8 @@ abstract class cContentTypeAbstract
     /**
      * Since the content type code is evaluated by php, the code has to be encoded.
      *
-     * @param string|mixed $code
-     *         code to encode
-     * @return string
-     *         encoded code
+     * @param string|mixed $code Code to encode
+     * @return string Encoded code
      */
     protected function _encodeForOutput($code): string
     {
@@ -453,11 +446,9 @@ abstract class cContentTypeAbstract
      * Builds an array with directory information from the given upload path.
      *
      * @SuppressWarnings docBlocks
-     * @param string $uploadPath [optional]
-     *         path to upload directory
-     *         (default: root upload path of client)
-     * @return array
-     *         with directory information (keys: name, path, sub)
+     * @param string $uploadPath [optional] Path to upload directory
+     *      (default: root upload path of client)
+     * @return array With directory information (keys: name, path, sub)
      */
     public function buildDirectoryList(string $uploadPath = ''): array
     {
@@ -494,9 +485,7 @@ abstract class cContentTypeAbstract
     /**
      * Builds an array with directory information from the given upload path.
      *
-     * @param string $directoryPath
-     *         directory within upload directory
-     *         (default: root upload path of client)
+     * @param string $directoryPath Directory within upload directory (default: root upload path of client)
      * @return array{
      *      array{
      *          name: string,
@@ -571,11 +560,8 @@ abstract class cContentTypeAbstract
      * Generates a directory list from the given directory information (which is
      * typically built by {@link cContentTypeAbstract::buildDirectoryList}).
      *
-     * @param array $dirs
-     *         directory information
-     *
-     * @return string
-     *         HTML code showing a directory list
+     * @param array $dirs Directory information
+     * @return string HTML code showing a directory list
      * @throws cInvalidArgumentException
      */
     public function generateDirectoryList(array $dirs): string
@@ -621,10 +607,8 @@ abstract class cContentTypeAbstract
      * information is the currently active directory.
      * Overwrite in subclasses if you use generateDirectoryList!
      *
-     * @param array $dirData
-     *         directory information
-     * @return bool
-     *         whether the directory is the currently active directory
+     * @param array $dirData Directory information
+     * @return bool Whether the directory is the currently active directory
      */
     protected function _isActiveDirectory(array $dirData): bool
     {
@@ -636,10 +620,8 @@ abstract class cContentTypeAbstract
      * should be shown expanded.
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData
-     *         directory information
-     * @return bool
-     *         whether the directory should be shown expanded
+     * @param array $dirData Directory information
+     * @return bool Whether the directory should be shown expanded
      */
     protected function _shouldDirectoryBeExpanded(array $dirData): bool
     {
@@ -649,12 +631,9 @@ abstract class cContentTypeAbstract
     /**
      * Checks whether the given $subDir is a subdirectory of the given $dir.
      *
-     * @param string $subDir
-     *         the potential subdirectory
-     * @param string $dir
-     *         the parent directory
-     * @return bool
-     *         whether the given $subDir is a subdirectory of $dir
+     * @param string $subDir The potential subdirectory
+     * @param string $dir The parent directory
+     * @return bool Whether the given $subDir is a subdirectory of $dir
      */
     protected function _isSubdirectory($subDir, $dir): bool
     {
@@ -676,7 +655,7 @@ abstract class cContentTypeAbstract
 
     /**
      * Returns the identifier for an element.
-     * 
+     *
      * @param string $name
      * @return string
      * @since CONTENIDO 4.10.2
@@ -703,35 +682,28 @@ abstract class cContentTypeAbstract
     /**
      * This functions able to use a content type object directly for output
      * See also CON-2587
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->generateViewCode();
     }
 
     /**
-     * Generates the code which should be shown if this content type is shown in
-     * the frontend.
+     * Generates the code which should be shown if this content type is shown in the frontend.
      *
-     * @return string
-     *         escaped HTML code which should be shown if content type is shown in frontend
+     * @return string Escaped HTML code which should be shown if content type is shown in frontend
      */
     public abstract function generateViewCode(): string;
 
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string
-     *         escaped HTML code which should be shown if content type is edited
+     * @return string Escaped HTML code which should be shown if content type is edited
      */
     public abstract function generateEditCode(): string;
 
     /**
      * Checks if this content type can be edited by a WYSIWYG editor
-     *
-     * @return bool
      */
     public function isWysiwygCompatible(): bool
     {

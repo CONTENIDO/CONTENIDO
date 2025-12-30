@@ -38,12 +38,9 @@ class cHTMLTable extends cHTMLContentElement
     /**
      * Sets the spacing between cells
      *
-     * @param string $cellspacing
-     *         Spacing
-     * @return cHTMLTable
-     *         $this for chaining
+     * @param string $cellspacing Spacing
      */
-    public function setCellSpacing($cellspacing)
+    public function setCellSpacing($cellspacing): self
     {
         return $this->updateAttribute('cellspacing', $cellspacing);
     }
@@ -52,10 +49,8 @@ class cHTMLTable extends cHTMLContentElement
      * Alias for setCellSpacing
      *
      * @param string $cellspacing
-     * @return cHTMLTable
-     *         $this for chaining
      */
-    public function setSpacing($cellspacing)
+    public function setSpacing($cellspacing): self
     {
         return $this->setCellSpacing($cellspacing);
     }
@@ -63,12 +58,9 @@ class cHTMLTable extends cHTMLContentElement
     /**
      * Sets the padding between cells
      *
-     * @param string $cellpadding
-     *         Padding
-     * @return cHTMLTable
-     *         $this for chaining
+     * @param string $cellpadding Padding
      */
-    public function setCellPadding($cellpadding)
+    public function setCellPadding($cellpadding): self
     {
         return $this->updateAttribute('cellpadding', $cellpadding);
     }
@@ -77,10 +69,8 @@ class cHTMLTable extends cHTMLContentElement
      * Alias for setCellPadding
      *
      * @param string $cellpadding
-     * @return cHTMLTable
-     *         $this for chaining
      */
-    public function setPadding($cellpadding)
+    public function setPadding($cellpadding): self
     {
         return $this->setCellPadding($cellpadding);
     }
@@ -88,27 +78,21 @@ class cHTMLTable extends cHTMLContentElement
     /**
      * Sets the table's border
      *
-     * @param string $border
-     *         Border size
-     * @return cHTMLTable
-     *         $this for chaining
+     * @param int $border Border size
      */
-    public function setBorder($border)
+    public function setBorder($border): self
     {
-        return $this->updateAttribute('border', $border);
+        return $this->updateAttribute('border', cSecurity::toInteger($border));
     }
 
     /**
      * setWidth: Sets the table width
      *
-     * @param string $width
-     *         Width
-     * @return cHTMLTable
-     *         $this for chaining
+     * @param int $width Width
      */
-    public function setWidth($width)
+    public function setWidth($width): self
     {
-        return $this->updateAttribute('width', $width);
+        return $this->updateAttribute('width', cSecurity::toInteger($width));
     }
 
 }

@@ -36,11 +36,8 @@ class cApiTemplateCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
     {
@@ -62,8 +59,7 @@ class cApiTemplateCollection extends ItemCollection
      *
      * @param int $idclient
      * @param int $idlay
-     * @param int $idtplcfg
-     *      Either a valid template configuration id or an empty string
+     * @param int $idtplcfg Either a valid template configuration id or an empty string
      * @param string $name
      * @param string $description
      * @param int $deletable [optional]
@@ -72,15 +68,21 @@ class cApiTemplateCollection extends ItemCollection
      * @param string $author [optional]
      * @param string $created [optional]
      * @param string $lastmodified [optional]
-     *
      * @return cApiTemplate
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idclient, $idlay, $idtplcfg, $name, $description,
-                           $deletable = 1, $status = 0, $defaulttemplate = 0, $author = '',
-                           $created = '', $lastmodified = ''
+    public function create(
+        $idclient,
+        $idlay,
+        $idtplcfg,
+        $name,
+        $description,
+        $deletable = 1,
+        $status = 0,
+        $defaulttemplate = 0,
+        $author = '',
+        $created = '',
+        $lastmodified = ''
     )
     {
         if (empty($author)) {
@@ -116,9 +118,8 @@ class cApiTemplateCollection extends ItemCollection
      * Returns the default template configuration item
      *
      * @param int $idclient
-     * @return bool
-     * @throws cDbException
-     * @throws cException
+     * @return cApiTemplate
+     * @throws cDbException|cException
      */
     public function selectDefaultTemplate($idclient)
     {
@@ -130,11 +131,10 @@ class cApiTemplateCollection extends ItemCollection
      * Returns all templates having passed layout id.
      *
      * @param int $idlay
-     * @return array
-     * @throws cDbException
-     * @throws cException
+     * @return cApiTemplate[]
+     * @throws cDbException|cException
      */
-    public function fetchByIdLay($idlay)
+    public function fetchByIdLay($idlay): array
     {
         $this->select('idlay = ' . cSecurity::toInteger($idlay));
         $entries = [];
@@ -158,39 +158,28 @@ class cApiTemplate extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('tpl'), 'idtpl');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * Load a template based on article, category, language and client id
      *
-     * @param int $idart
-     *         article id
-     * @param int $idcat
-     *         category id
-     * @param int $lang
-     *         language id
-     * @param int $client
-     *         client id
-     *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param int $idart Article id
+     * @param int $idcat Category id
+     * @param int $lang Language id
+     * @param int $client Client id
+     * @throws cDbException|cException
      */
-    public function loadByArticleOrCategory($idart, $idcat, $lang, $client)
+    public function loadByArticleOrCategory($idart, $idcat, $lang, $client): bool
     {
         // get ID of template configuration that is used for
         // either the article language or the category language
@@ -218,14 +207,9 @@ class cApiTemplate extends Item
     /**
      * User-defined setter for template fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'deletable':
@@ -244,7 +228,7 @@ class cApiTemplate extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

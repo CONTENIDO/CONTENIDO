@@ -27,11 +27,8 @@ class cApiOnlineUserCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
     {
@@ -48,12 +45,8 @@ class cApiOnlineUserCollection extends ItemCollection
      * 2) If you find user in the table, do update
      * 3) Else there is no current user do insert new user
      *
-     * @param string $userId [optional]
-     *                       Id of user
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param string $userId [optional] Id of user
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function startUsersTracking($userId = NULL)
     {
@@ -80,16 +73,11 @@ class cApiOnlineUserCollection extends ItemCollection
     /**
      * Insert this user in online_user table
      *
-     * @param string $userId
-     *         Id of user
-     *
-     * @return bool
-     *         Returns true if successful else false
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param string $userId Id of user
+     * @return bool Returns true if successful else false
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function insertOnlineUser($userId)
+    public function insertOnlineUser($userId): bool
     {
         $oItem = $this->createNewItem(cSecurity::toString($userId));
         if ($oItem) {
@@ -103,27 +91,23 @@ class cApiOnlineUserCollection extends ItemCollection
     /**
      * Find the user in the table 'online_user'
      *
-     * @param string $userId
-     *         Is the User-Id (get from auth object)
-     * @return bool
-     *         Returns true if this User is found, else false
+     * @param string $userId Is the User-Id (get from auth object)
+     * @return bool Returns true if this User is found, else false
+     * @throws cDbException|cException
      */
-    public function findUser($userId)
+    public function findUser($userId): bool
     {
         $oUser = new cApiOnlineUser(cSecurity::toString($userId));
         return $oUser->isLoaded();
     }
 
     /**
-     * Find all user_ids in the table 'online_user' for get rest information
-     * from table 'con_user'
+     * Find all user_ids in the table 'online_user' for get rest information from table 'con_user'
      *
-     * @return array
-     *         Returns array of user-information
-     * @throws cDbException
-     * @throws cException
+     * @return array Returns array of user-information
+     * @throws cDbException|cException
      */
-    public function findAllUser()
+    public function findAllUser(): array
     {
         // todo use $perm
         $aAllUser = [];
@@ -190,14 +174,11 @@ class cApiOnlineUserCollection extends ItemCollection
     /**
      * This function do an update of current timestamp in 'online_user'
      *
-     * @param string $userId
-     *         Is the User-Id (get from auth object)
-     * @return bool
-     *         Returns true if successful, else false
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string $userId Is the User-Id (get from auth object)
+     * @return bool Returns true if successful, else false
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function updateUser($userId)
+    public function updateUser($userId): bool
     {
         $oUser = new cApiOnlineUser(cSecurity::toString($userId));
         if ($oUser->isLoaded()) {
@@ -212,12 +193,10 @@ class cApiOnlineUserCollection extends ItemCollection
      * Delete all Contains in the table 'online_user' that is older as
      * Backend timeout(currently is $cfg['backend']['timeout'] = 60)
      *
-     * @return bool
-     *         Returns true if successful else false
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @return bool Returns true if successful else false
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteInactiveUser()
+    public function deleteInactiveUser(): bool
     {
         $cfg = cRegistry::getConfig();
         include_once($cfg['path']['contenido_config'] . 'config.misc.php');
@@ -229,18 +208,17 @@ class cApiOnlineUserCollection extends ItemCollection
         // NOTE: We could delete outdated entries with one query, but deleting
         // one by one gives us the possibility to hook (CEC) into each deleted entry.
         $where = "DATE_SUB(NOW(), INTERVAL '$iSetTimeOut' Minute) >= `lastaccessed`";
-        $result = $this->deleteByWhereClause($where);
-        return $result > 0;
+
+        return $this->deleteByWhereClause($where) > 0;
     }
 
     /**
      * Get the number of users from the table 'online_user'
      *
-     * @return int
-     *         Returns if exists a number of users
+     * @return int Returns if exists a number of users
      * @throws cDbException
      */
-    public function getNumberOfUsers()
+    public function getNumberOfUsers(): int
     {
         $sql = 'SELECT COUNT(*) AS cnt FROM `%s`';
         $result = $this->db->query($sql, $this->table);
@@ -255,15 +233,11 @@ class cApiOnlineUserCollection extends ItemCollection
     /**
      * Delete this user from 'online user' table
      *
-     * @param string $userId
-     *         Is the User-Id (get from auth object)
-     * @return bool
-     *         Returns true if successful, else false
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string $userId Is the User-Id (get from auth object)
+     * @return bool Returns true if successful, else false
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteUser($userId)
+    public function deleteUser($userId): bool
     {
         return $this->delete(cSecurity::toString($userId));
     }
@@ -280,18 +254,15 @@ class cApiOnlineUser extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('online_user'), 'user_id');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

@@ -26,78 +26,76 @@ class PifaAjaxHandler
      *
      * @var string
      */
-    const GET_FIELD_FORM = 'pifa_get_field_form';
+    public const GET_FIELD_FORM = 'pifa_get_field_form';
 
     /**
      * Action constant to process a form for editing a PIFA form field.
      *
      * @var string
      */
-    const POST_FIELD_FORM = 'pifa_post_field_form';
+    public const POST_FIELD_FORM = 'pifa_post_field_form';
 
     /**
      * Action constant.
      *
      * @var string
      */
-    const REORDER_FIELDS = 'pifa_reorder_fields';
+    public const REORDER_FIELDS = 'pifa_reorder_fields';
 
     /**
      * Action constant.
      *
      * @var string
      */
-    const EXPORT_DATA = 'pifa_export_data';
+    public const EXPORT_DATA = 'pifa_export_data';
 
     /**
      * Action constant.
      *
      * @var string
      */
-    const EXPORT_FORM = 'pifa_export_form';
+    public const EXPORT_FORM = 'pifa_export_form';
 
     /**
      * Action constant.
      *
      * @var string
      */
-    const IMPORT_FORM = 'pifa_import_form';
+    public const IMPORT_FORM = 'pifa_import_form';
 
     /**
      * Action constant.
      *
      * @var string
      */
-    const GET_FILE = 'pifa_get_file';
+    public const GET_FILE = 'pifa_get_file';
 
     /**
      * Action constant.
      *
      * @var string
      */
-    const DELETE_FIELD = 'pifa_delete_field';
+    public const DELETE_FIELD = 'pifa_delete_field';
 
     /**
      * Action constant.
      *
      * @var string
      */
-    const DELETE_DATA = 'pifa_delete_data';
+    public const DELETE_DATA = 'pifa_delete_data';
 
     /**
      * Action constant.
      *
      * @var string
      */
-    const GET_OPTION_ROW = 'pifa_get_option_row';
+    public const GET_OPTION_ROW = 'pifa_get_option_row';
 
     /**
      * @param $action
-     *
      * @throws PifaException if action is unknown
      * @throws PifaIllegalStateException
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     function dispatch($action)
     {
@@ -189,10 +187,8 @@ class PifaAjaxHandler
      * @param int $idform
      * @param int $idfield
      * @param int $fieldType
-     *
      * @throws PifaException
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _getFieldForm($idform, $idfield, $fieldType)
     {
@@ -291,10 +287,8 @@ class PifaAjaxHandler
      *
      * @param int $idform
      * @param int $idfield
-     *
      * @throws PifaException
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _postFieldForm($idform, $idfield)
     {

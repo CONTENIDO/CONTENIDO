@@ -44,7 +44,7 @@ if (($perm->have_perm_area_action("groups_overview", $action)) && ($action == "g
     }
 } else {
     if (!$perm->have_perm_area_action("groups_overview", $action)) {
-        $notification->displayNotification("error", i18n("Permission denied"));
+        $notification->displayNotification('error', i18n("Permission denied"));
     }
 }
 

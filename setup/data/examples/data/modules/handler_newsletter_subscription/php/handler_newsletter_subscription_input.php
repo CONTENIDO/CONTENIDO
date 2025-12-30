@@ -12,8 +12,8 @@
  * @var int $cCurrentContainer
  */
 
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cRegistry::getLanguageId();
+$client = cRegistry::getClientId();
 
 // Initialisation
 $oClientLang = new cApiClientLanguage(false, $client, $lang);

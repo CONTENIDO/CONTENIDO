@@ -25,8 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.upl.php');
 
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 
 $path = $path ?? '';
 
@@ -117,7 +117,7 @@ if ($upload = $uploads->next()) {
         $link->appendContent(i18n('extract'));
         $aListRows['zip'] = $link;
     }
-    ($isZipFile) ? $aListRows['extractFolder'] = '<label class="ZipExtract">' . i18n('extractTo') . '</label>' : '';
+    $aListRows['extractFolder'] = $isZipFile ? '<label class="ZipExtract">' . i18n('extractTo') . '</label>' : '';
 
     // Delete dbfs specific rows
     if (!cApiDbfs::isDbfs($_REQUEST['path'])) {
@@ -294,7 +294,7 @@ if ($upload = $uploads->next()) {
                         $contents[] = $chainEntry->execute($iIdupl, $qpath, $filename, $sListRow);
                     }
                 }
-                $sCell = implode('', $contents);
+                $sCell = implode('', $contents ?? []);
         }
         $form->add($sTitle, $sCell);
     }

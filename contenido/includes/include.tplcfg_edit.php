@@ -28,7 +28,6 @@ if (!isset($changetemplate)) {
 }
 
 if ($idtpl != 0 && $idtplcfg != 0) {
-
     tplProcessSendContainerConfiguration($idtpl, $idtplcfg, $_POST);
 
     if ($idart) {
@@ -67,7 +66,6 @@ if ($idtpl != 0 && $idtplcfg != 0) {
     }
 
 } elseif ($idtpl == 0) {
-
     // template deselected
 
     if (isset($idtplcfg) && $idtplcfg != 0) {
@@ -99,7 +97,6 @@ if ($idtpl != 0 && $idtplcfg != 0) {
         conGenerateCodeForAllArtsInCategory($idcat);
         backToMainArea($send);
     } elseif (isset($idart) && $idart != 0 && $changetemplate == 1) {
-
         // Article
         $sql = "SELECT idtplcfg FROM " . $cfg['tab']['art_lang'] . " WHERE idart = '" . cSecurity::toInteger($idart) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
@@ -118,9 +115,7 @@ if ($idtpl != 0 && $idtplcfg != 0) {
         conGenerateCodeForAllArtsInCategory($idcat);
         //backToMainArea($send);
     }
-
 } else {
-
     if ($changetemplate == 1) {
         if (!$idart) {
             $sql = "SELECT idtplcfg FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";

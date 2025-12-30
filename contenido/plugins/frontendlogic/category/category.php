@@ -54,7 +54,7 @@ class frontendlogic_category extends FrontendLogic
     public function listItems()
     {
         $cfg = cRegistry::getConfig();
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $lang = cRegistry::getLanguageId();
         $db = cRegistry::getDb();
 
         $sSQL = "SELECT

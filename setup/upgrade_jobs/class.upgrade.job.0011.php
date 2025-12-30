@@ -27,12 +27,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0011 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.3";
+    public $maxVersion = '4.9.3';
 
     public function _execute()
     {
         $pifaFormTable = cRegistry::getDbTableName('pifa_form');
-        if ($_SESSION['setuptype'] == 'upgrade' && $pifaFormTable != "") {
+        if ($this->_setupType == 'upgrade' && $pifaFormTable != '') {
             $this->_oDb->query('
                 ALTER TABLE
                     `' . $pifaFormTable . '`

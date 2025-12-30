@@ -177,8 +177,7 @@ class PimPluginSetupInstall extends PimPluginSetup
      *
      * @return bool|int
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function _getNavMainId($navm = '')
     {
@@ -402,9 +401,7 @@ class PimPluginSetupInstall extends PimPluginSetup
     /**
      * Add entries at *_plugins
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _installAddPlugin()
     {
@@ -435,8 +432,7 @@ class PimPluginSetupInstall extends PimPluginSetup
     /**
      * Fetch and set all area names from database
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _installFillAreas()
     {
@@ -449,9 +445,7 @@ class PimPluginSetupInstall extends PimPluginSetup
     /**
      * Add entries at *_area
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _installAddAreas()
     {
@@ -505,9 +499,7 @@ class PimPluginSetupInstall extends PimPluginSetup
     /**
      * Add entries at *_actions
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _installAddActions()
     {
@@ -558,9 +550,7 @@ class PimPluginSetupInstall extends PimPluginSetup
     /**
      * Add entries at *_frame_files and *_files
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _installAddFrames()
     {
@@ -602,9 +592,7 @@ class PimPluginSetupInstall extends PimPluginSetup
     /**
      * Add entries at *_nav_main
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _installAddNavMain()
     {
@@ -668,9 +656,7 @@ class PimPluginSetupInstall extends PimPluginSetup
     /**
      * Add entries at *_nav_sub
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _installAddNavSub()
     {
@@ -720,8 +706,7 @@ class PimPluginSetupInstall extends PimPluginSetup
     /**
      * Add specific sql queries
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     private function _installAddSpecificSql()
     {
@@ -744,9 +729,7 @@ class PimPluginSetupInstall extends PimPluginSetup
     /**
      * Add content types (*_type)
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _installAddContentTypes()
     {
@@ -778,9 +761,7 @@ class PimPluginSetupInstall extends PimPluginSetup
      *
      * @return bool
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _installAddModules()
     {

@@ -16,14 +16,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $idmod, $tpl, $notification;
 
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getCategoryId();
 $perm = cRegistry::getPerm();
 $area = cRegistry::getArea();
 $belang = cRegistry::getBackendLanguage();
 $frame = cRegistry::getFrame();
 
-cInclude("external", "codemirror/class.codemirror.php");
-cInclude("includes", "functions.file.php");
+cInclude('external', 'codemirror/class.codemirror.php');
+cInclude('includes', 'functions.file.php');
 
 $sFileType = "html";
 $module = new cApiModule($idmod);
@@ -43,7 +43,7 @@ $requestDelete = $_REQUEST['delete'] ?? '';
 $requestSelectedFile = $_REQUEST['selectedFile'] ?? '';
 $requestStatus = $_REQUEST['status'] ?? '';
 
-$page = new cGuiPage("mod_template");
+$page = new cGuiPage('mod_template');
 $tpl->reset();
 
 if (!$perm->have_perm_area_action($area, $sActionEdit)) {

@@ -182,9 +182,7 @@ class PimPluginSetupUninstall extends PimPluginSetup
      *
      * @param bool $sql Optional parameter to set sql true (standard) or false
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function uninstall($sql = true)
     {
@@ -293,8 +291,7 @@ class PimPluginSetupUninstall extends PimPluginSetup
     /**
      * Delete specific sql entries or tables, full uninstall mode
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _uninstallDeleteSpecificSql()
     {
@@ -333,12 +330,9 @@ class PimPluginSetupUninstall extends PimPluginSetup
     /**
      * Generate (write) new execution order
      *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    protected function _writeNewExecutionOrder()
+    protected function _writeNewExecutionOrder(): bool
     {
         // Lowest executionorder is one
         $i = 1;

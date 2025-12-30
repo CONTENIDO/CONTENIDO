@@ -42,21 +42,19 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
     /**
      * Creates a new association
      *
-     * @param int $idfrontendgroup
-     *         specifies the frontend group
-     * @param int $idfrontenduser
-     *         specifies the frontend user
-     *
+     * @param int $idfrontendgroup Specifies the frontend group
+     * @param int $idfrontenduser Specifies the frontend user
      * @return cApiFrontendGroupMember|false
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      * @todo Should return null in case of failure
-     *
      */
     public function create($idfrontendgroup, $idfrontenduser)
     {
-        $this->select('idfrontendgroup = ' . (int)$idfrontendgroup . ' AND idfrontenduser = ' . (int)$idfrontenduser);
+        $this->select(sprintf(
+            '`idfrontendgroup` = %d AND `idfrontenduser` = %d',
+            $idfrontendgroup,
+            $idfrontenduser
+        ));
 
         if ($this->next()) {
             return false;
@@ -74,18 +72,17 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
     /**
      * Removes an association
      *
-     * @param int $idfrontendgroup
-     *         Specifies the frontend group
-     * @param int $idfrontenduser
-     *         Specifies the frontend user
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param int $idfrontendgroup Specifies the frontend group
+     * @param int $idfrontenduser Specifies the frontend user
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function remove($idfrontendgroup, $idfrontenduser)
     {
-        $this->select('idfrontendgroup = ' . (int)$idfrontendgroup . ' AND idfrontenduser = ' . (int)$idfrontenduser);
+        $this->select(sprintf(
+            '`idfrontendgroup` = %d AND `idfrontenduser` = %d',
+            $idfrontendgroup,
+            $idfrontenduser
+        ));
 
         if (($item = $this->next()) !== false) {
             $this->delete($item->get('idfrontendgroupmember'));
@@ -95,19 +92,14 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
     /**
      * Returns all users in a single group
      *
-     * @param int $idfrontendgroup
-     *                        specifies the frontend group
-     * @param bool $asObjects [optional]
-     *                        Specifies if the function should return objects
-     * @return array
-     *                        List of frontend user ids or cApiFrontendUser items
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param int $idfrontendgroup Specifies the frontend group
+     * @param bool $asObjects [optional] Specifies if the function should return objects
+     * @return int[]|cApiFrontendUser[] List of frontend user ids or cApiFrontendUser items
+     * @throws cDbException|cException
      */
-    public function getUsersInGroup($idfrontendgroup, $asObjects = true)
+    public function getUsersInGroup($idfrontendgroup, bool $asObjects = true): array
     {
-        $this->select('idfrontendgroup = ' . (int)$idfrontendgroup);
+        $this->select(sprintf('idfrontendgroup = %d', $idfrontendgroup));
 
         $objects = [];
 
@@ -117,7 +109,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
                 $user->loadByPrimaryKey($item->get('idfrontenduser'));
                 $objects[] = $user;
             } else {
-                $objects[] = $item->get('idfrontenduser');
+                $objects[] = cSecurity::toInteger($item->get('idfrontenduser'));
             }
         }
 
@@ -136,17 +128,14 @@ class cApiFrontendGroupMember extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('frontendgroupmembers'), 'idfrontendgroupmember');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

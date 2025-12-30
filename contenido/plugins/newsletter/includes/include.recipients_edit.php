@@ -25,7 +25,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var int $frame
  */
 
-$oPage = new cGuiPage("recipients_edit", "newsletter");
+$oPage = new cGuiPage('recipients_edit', 'newsletter');
 $oRecipients = new NewsletterRecipientCollection();
 
 if (cHasPlugins('recipients')) {
@@ -165,24 +165,27 @@ if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client &&
     $aPluginOrder = cArray::trim(explode(',', getSystemProperty('plugin', 'recipients-pluginorder')));
 
     // Check out if there are any plugins
-    if (is_array($aPluginOrder)) {
-        foreach ($aPluginOrder as $sPlugin) {
-            if (function_exists("recipients_" . $sPlugin . "_getTitle") &&
-                function_exists("recipients_" . $sPlugin . "_display")) {
-                $aPluginTitle = call_user_func("recipients_" . $sPlugin . "_getTitle");
-                $aPluginDisplay = call_user_func("recipients_" . $sPlugin . "_display", $recipient);
+    foreach ($aPluginOrder as $sPlugin) {
+        $titleFunction = 'recipients_' . $sPlugin . '_getTitle';
+        $displayFunction = 'recipients_' . $sPlugin . '_display';
+        if (function_exists($titleFunction) && function_exists($displayFunction)) {
+            $aPluginTitle = call_user_func($titleFunction);
+            $aPluginDisplay = call_user_func($displayFunction, $recipient);
 
-                if (is_array($aPluginTitle) && is_array($aPluginDisplay)) {
-                    foreach ($aPluginTitle as $sKey => $sValue) {
-                        $oForm->add($sValue, $aPluginDisplay[$sKey]);
-                    }
-                } else {
-                    if (is_array($aPluginTitle) || is_array($aPluginDisplay)) {
-                        $oForm->add(i18n("WARNING", 'newsletter'), sprintf(i18n("The plugin %s delivered an array for the displayed titles, but did not return an array for the contents.", 'newsletter'), $sPlugin));
-                    } else {
-                        $oForm->add($aPluginTitle, $aPluginDisplay);
-                    }
+            if (is_array($aPluginTitle) && is_array($aPluginDisplay)) {
+                foreach ($aPluginTitle as $sKey => $sValue) {
+                    $oForm->add($sValue, $aPluginDisplay[$sKey]);
                 }
+            } elseif (is_array($aPluginTitle) || is_array($aPluginDisplay)) {
+                $oForm->add(
+                    i18n("WARNING", 'newsletter'),
+                    sprintf(
+                        i18n("The plugin %s delivered an array for the displayed titles, but did not return an array for the contents.", 'newsletter'),
+                        $sPlugin
+                    )
+                );
+            } else {
+                $oForm->add($aPluginTitle, $aPluginDisplay);
             }
         }
     }

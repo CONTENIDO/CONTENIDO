@@ -242,9 +242,9 @@
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=dirlist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                     success: function(msg) {
-						if (Con.checkAjaxResponse(msg) === false)  {
-							return false;
-						}
+                        if (Con.checkAjaxResponse(msg) === false)  {
+                            return false;
+                        }
 
                         if (msg.length > 0) {
                             $context.after(msg);
@@ -272,7 +272,7 @@
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=filelist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                 success: function(msg) {
-					if (Con.checkAjaxResponse(msg) === false)  {
+        			if (Con.checkAjaxResponse(msg) === false)  {
 						return false;
 					}
 

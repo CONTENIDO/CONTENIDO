@@ -39,11 +39,7 @@ class cHTMLAlignmentTable extends cHTMLTable
     }
 
     /**
-     * Generates the markup of the element.
-     *
-     * @return string
-     *         generated markup
-     * @see cHTML::render()
+     * @inheritDoc
      */
     public function render(): string
     {

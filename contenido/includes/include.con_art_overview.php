@@ -22,8 +22,8 @@ cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.pathresolver.php');
 
 $db2 = cRegistry::getDb();
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 
 $idcat = cSecurity::toInteger($_REQUEST['idcat'] ?? '-1');
 $next = (isset($_REQUEST['next']) && is_numeric($_REQUEST['next']) && $_REQUEST['next'] > 0) ? $_REQUEST['next'] : 0;
@@ -150,7 +150,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
     $col = new cApiInUseCollection();
 
-    if ((($idcat == 0 || $perm->have_perm_area_action('con')) && $perm->have_perm_item('str', $idcat))
+    if (
+        (($idcat == 0 || $perm->have_perm_area_action('con')) && $perm->have_perm_item('str', $idcat))
         || $perm->have_perm_area_action('con', 'con_makestart') || $perm->have_perm_area_action('con', 'con_makeonline')
         || $perm->have_perm_area_action('con', 'con_deleteart') || $perm->have_perm_area_action('con', 'con_tplcfg_edit')
         || $perm->have_perm_area_action('con', 'con_lock') || $perm->have_perm_area_action('con', 'con_makecatonline')
@@ -162,8 +163,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         || $perm->have_perm_area_action_item('con', 'con_lock', $idcat) || $perm->have_perm_area_action_item('con', 'con_makecatonline', $idcat)
         || $perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || $perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat)
         || $perm->have_perm_area_action_item('con_editart', 'con_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)
-        || $perm->have_perm_area_action_item('con_tplcfg', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat)) {
-
+        || $perm->have_perm_area_action_item('con_tplcfg', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat)
+    ) {
         // SQL template to get number of articles in category for current client and language
         $articleCountSql = "SELECT
                         COUNT(*) AS article_count
@@ -943,8 +944,12 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
          * $lidcat))
          */
 
-        if (($perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)
-                || $perm->have_perm_area_action('con', 'con_tplcfg_edit')) && $foreignlang == false) {
+        if (
+            (
+                $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)
+                || $perm->have_perm_area_action('con', 'con_tplcfg_edit')
+            ) && $foreignlang == false
+        ) {
             if (0 != $idcat) {
                 $tpl->set('s', 'CATEGORY', $cat_name);
                 $tpl->set('s', 'CATEGORY_CONF', $tmp_img ?? '');
@@ -1019,7 +1024,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         // Generate template
         $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_art_overview']);
     } else {
-        $notification->displayNotification("error", i18n("Permission denied"));
+        $notification->displayNotification('error', i18n("Permission denied"));
     }
 } else {
     $tpl->reset();
@@ -1030,18 +1035,13 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 /**
  * Creates HTML code for the bulk editing functions in the article overview.
  *
- * @param string $class
- *         the class for the link
- * @param string $imageSrc
- *         the path to the image
- * @param string $alt
- *         the alt tag for the image
- * @param string $onclick [optional]
- *         the onlick attribute for the link
- * @return string
- *         rendered HTML code
+ * @param string $class the class for the link
+ * @param string $imageSrc the path to the image
+ * @param string $alt the alt tag for the image
+ * @param string $onclick [optional] the onlick attribute for the link
+ * @return string rendered HTML code
  */
-function createBulkEditingFunction($class, $imageSrc, $alt, $onclick = '')
+function createBulkEditingFunction($class, $imageSrc, $alt, $onclick = ''): string
 {
     $function = new cHTMLLink();
     $function->setClass($class);

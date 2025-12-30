@@ -42,11 +42,8 @@ class cApiMetaTypeCollection extends ItemCollection
      * @param string $fieldtype
      * @param int $maxlength
      * @param string $fieldname
-     *
      * @return cApiMetaType
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($metatype, $fieldtype, $maxlength, $fieldname)
     {
@@ -74,37 +71,30 @@ class cApiMetaType extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId
-     *         Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('meta_type'), 'idmetatype');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for article language fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         if ('maxlength' == $name) {
             $value = cSecurity::toInteger($value);
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

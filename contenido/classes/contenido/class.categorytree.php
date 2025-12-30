@@ -27,11 +27,8 @@ class cApiCategoryTreeCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
     {
@@ -47,31 +44,27 @@ class cApiCategoryTreeCollection extends ItemCollection
     }
 
     /**
-     * Returns category tree structure by selecting the data from several tables
-     * ().
+     * Returns category tree structure by selecting the data from several tables.
      *
-     * @param int $client
-     *         Client id
-     * @param int $lang
-     *         Language id
+     * @param int $client Client id
+     * @param int $lang Language id
      *
      * @return array
-     *         Category tree structure as follows:
-     *         <pre>
-     *         $arr[n] (int) idtree value
-     *         $arr[n]['idcat'] (int)
-     *         $arr[n]['level'] (int)
-     *         $arr[n]['idtplcfg'] (int)
-     *         $arr[n]['visible'] (int)
-     *         $arr[n]['name'] (string)
-     *         $arr[n]['public'] (int)
-     *         $arr[n]['urlname'] (string)
-     *         $arr[n]['is_start'] (int)
-     *         </pre>
-     *
+     *      Category tree structure as follows:
+     *      <pre>
+     *      $arr[n] (int) idtree value
+     *      $arr[n]['idcat'] (int)
+     *      $arr[n]['level'] (int)
+     *      $arr[n]['idtplcfg'] (int)
+     *      $arr[n]['visible'] (int)
+     *      $arr[n]['name'] (string)
+     *      $arr[n]['public'] (int)
+     *      $arr[n]['urlname'] (string)
+     *      $arr[n]['is_start'] (int)
+     *      </pre>
      * @throws cDbException
      */
-    function getCategoryTreeStructureByClientIdAndLanguageId($client, $lang)
+    public function getCategoryTreeStructureByClientIdAndLanguageId($client, $lang): array
     {
         $aCatTree = [];
 
@@ -117,18 +110,15 @@ class cApiCategoryTree extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('cat_tree'), 'idtree');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

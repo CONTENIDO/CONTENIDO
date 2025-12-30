@@ -27,21 +27,20 @@ $frame = cRegistry::getFrame();
 
 cIncludePlugins('languages');
 
-if ($action == "lang_newlanguage" && (int)$newidlang > 0) {
+if ($action == 'lang_newlanguage' && (int)$newidlang > 0) {
     $idlang = $newidlang;
 }
 
 $oLanguage = new cApiLanguage($idlang);
 
-$page = new cGuiPage("lang_edit");
+$page = new cGuiPage('lang_edit');
 
 // Script for refreshing Language Box in Header
 $newOption = '';
 
 $db2 = cRegistry::getDb();
 
-if ($action == "lang_newlanguage") {
-
+if ($action == 'lang_newlanguage') {
     $page->displayOk(i18n("Created new language successfully!"));
 
     // update language dropdown in header, but only for current client
@@ -62,8 +61,7 @@ if ($action == "lang_newlanguage") {
     $page->set("s", "NEW_LANG", "");
     $page->set("s", "NEW_LANG_NAME", "");
     $page->render();
-} elseif ($action == "lang_deletelanguage") {
-
+} elseif ($action == 'lang_deletelanguage') {
     $page->displayOk(i18n("Deleted language successfully!"));
 
     // finally delete from dropdown in header, but only for current client
@@ -84,7 +82,7 @@ if ($action == "lang_newlanguage") {
 } else {
     // whether all data is ok
     $invalidData = false;
-    if ($action == "lang_edit") {
+    if ($action == 'lang_edit') {
         cCallPluginStore('languages');
 
         if (true === cString::validateDateFormat(stripslashes($datetimeformat))) {
@@ -118,7 +116,6 @@ if ($action == "lang_newlanguage") {
             $page->displayCriticalError("no language id given. Usually, this shouldn't happen, except if you played around with your system. if you didn't play around, please report a bug.");
         } else {
             if (($action == "lang_edit") && ($perm->have_perm_area_action($area, $action))) {
-
                 // Set utf-8 as encoding if CON_UTF8 constant is defined
                 if (defined('CON_UTF8') && CON_UTF8 !== false) {
                     $sencoding = 'utf-8';
@@ -242,7 +239,6 @@ if ($action == "lang_newlanguage") {
 
                 $page->set("s", "UPDATE_LANG", "true");
                 $page->set("s", "NEW_LANG_NAME", $languageName);
-
             } else {
                 $page->set("s", "UPDATE_LANG", "false");
                 $page->set("s", "NEW_LANG_NAME", "");

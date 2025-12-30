@@ -45,8 +45,7 @@ if (!isset($bNoArticle)) {
 
 $area = $_GET['area'];
 
-if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
-
+if (($_GET['display_menu'] ?? 0) == 1) {
     $anchorTpl = '<a class="white%s" style="%s" onclick="%s">%s</a>';
 
     $nav = new cGuiNavigation();

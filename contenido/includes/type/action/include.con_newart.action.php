@@ -14,7 +14,22 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if ($perm->have_perm_area_action($area, "con_newart") || $perm->have_perm_area_action_item($area, "con_newart", $idcat)) {
+/**
+ * @var cGuiNotification $notification
+ */
+
+$idcat = cRegistry::getCategoryId();
+$area = cRegistry::getArea();
+$perm = cRegistry::getPerm();
+$lang = cRegistry::getLanguageId();
+$db = cRegistry::getDB();
+$cfg = cRegistry::getConfig();
+$client = cRegistry::getClientId();
+
+if (
+    $perm->have_perm_area_action($area, 'con_newart')
+    || $perm->have_perm_area_action_item($area, 'con_newart', $idcat)
+) {
     // Code for action 'con_newart'
     $sql = "SELECT
                 a.idtplcfg,
@@ -31,13 +46,13 @@ if ($perm->have_perm_area_action($area, "con_newart") || $perm->have_perm_area_a
     $db->query($sql);
     $db->nextRecord();
 
-    if ($db->f("idtplcfg") != 0) {
+    if ($db->f('idtplcfg') != 0) {
         $newart = true;
     } else {
-        $page = new cGuiPage("con_newart");
+        $page = new cGuiPage('con_newart');
         $page->displayCriticalError(i18n("This category has no templates assigned."));
         $page->render();
     }
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

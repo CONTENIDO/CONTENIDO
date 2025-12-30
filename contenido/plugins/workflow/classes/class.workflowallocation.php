@@ -43,7 +43,7 @@ class WorkflowAllocations extends ItemCollection
      */
     public function delete($idallocation)
     {
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $lang = cRegistry::getLanguageId();
 
         $obj = new WorkflowAllocation();
         $obj->loadByPrimaryKey($idallocation);
@@ -157,15 +157,10 @@ class WorkflowAllocation extends Item
      * Overridden setField function.
      * Users should only use setWorkflow.
      *
-     * @param string $field Void field since we override the usual setField
-     *                      function
-     * @param string $value Void field since we override the usual setField
-     *                      function
-     * @param bool $safe
-     *
+     * @inheritDoc
      * @throws cBadMethodCallException if this function is called
      */
-    public function setField($field, $value, $safe = true)
+    public function setField($name, $value, $safe = true)
     {
         throw new cBadMethodCallException("Don't use setField for WorkflowAllocation items! Use setWorkflow instead!");
     }

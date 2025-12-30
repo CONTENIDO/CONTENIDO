@@ -85,7 +85,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @param string $rawSettings The raw settings in an XML structure or as plaintext
      * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
      * @param array $contentTypes Array containing the values of all content types
-     * @throws cDbException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function __construct($rawSettings, $id, array $contentTypes)
     {
@@ -245,9 +245,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * Function returns idarts of selected articles as array
      *
      * @return array
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function getConfiguredArticles()
     {
@@ -260,9 +258,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      *
      * @param bool $returnAsArray Mode switch between template generation and returning result as array
      * @return string|array String of select box or array of articles
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function generateTeaserCode(bool $returnAsArray = false)
     {
@@ -376,8 +372,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @param cApiArticleLanguage $article CONTENIDO Article object
      * @param cTemplate $template CONTENIDO Template object (as reference)
      * @return bool Success state of this operation
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate $template): bool
     {
@@ -543,14 +538,12 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
     }
 
     /**
-     * When a HTML Code is given for a Teaser image try to find a image in this
+     * When an HTML Code is given for a Teaser image try to find a image in this
      * code and generate teaser image on that basis.
      *
      * @param string $content HTML string to search image in
      * @return array With <img> element containing scaled image and image source
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _extractImage($content): array
     {
@@ -599,9 +592,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * @param string $cropped Cropped (= 'true') or not (!= 'true')
      * @param bool $isFile In case of a direct file path retrieval from database is not needed
      * @return array With <img> element containing scaled image and image source
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _getImage($image, $maxX, $maxY, $cropped, $isFile = false): array
     {
@@ -760,8 +751,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * Generates code for the general tab in which various settings can be made.
      *
      * @return string The code for the general tab
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _generateTabGeneral(): string
     {
@@ -817,8 +807,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * - Blog style (cms_teaser_blog.html)
      *
      * @return string Html string of select box
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _generateStyleSelect(): string
     {
@@ -904,8 +893,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * can be made.
      *
      * @return string The code for the advanced tab
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _generateTabAdvanced(): string
     {
@@ -1063,8 +1051,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * manual teaser can be made.
      *
      * @return string The code for the manual tab
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _generateTabManual(): string
     {
@@ -1152,8 +1139,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      *
      * @param int $idArt CONTENIDO article id
      * @return string Name of article
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _getArtName($idArt): string
     {

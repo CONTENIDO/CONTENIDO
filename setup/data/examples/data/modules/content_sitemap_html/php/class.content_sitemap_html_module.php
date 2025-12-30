@@ -63,8 +63,7 @@ class ContentSitemapHtmlModule
      * Read the IDs of all article languages that are used as start article
      * of their respective category.
      *
-     * @return array
-     *         of article language IDs
+     * @return array List of article language IDs
      */
     private function getStartIdArtLang(): array
     {
@@ -93,12 +92,9 @@ class ContentSitemapHtmlModule
      * Optionally an array of article language IDs to exclude can be given.
      * If no article languages were found an empty array will be returned.
      *
-     * @param int $idcat
-     *         ID of category to search in
-     * @param array $excludedIdArtLangs [optional]
-     *         ID of article languages to exclude
-     * @return array
-     *         of article languages
+     * @param int $idcat ID of category to search in
+     * @param array $excludedIdArtLangs [optional] ID of article languages to exclude
+     * @return array List of article languages
      */
     private function getArticlesFromCategory(int $idcat, array $excludedIdArtLangs = []): array
     {

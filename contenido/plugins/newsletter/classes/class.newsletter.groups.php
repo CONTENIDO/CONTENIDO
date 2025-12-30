@@ -53,17 +53,15 @@ class NewsletterRecipientGroupCollection extends ItemCollection
     /**
      * Creates a new group
      *
-     * @param $groupname    string Specifies the groupname
-     * @param $defaultgroup integer Specifies, if group is default group
-     *                      (optional)
-     *
+     * @param $groupname string Specifies the groupname
+     * @param $defaultgroup integer Specifies, if group is default group (optional)
      * @return Item
      * @throws cException
      */
     public function create($groupname, $defaultgroup = 0)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
         $group = new NewsletterRecipientGroup();
 
         // _arrInFilters = ['urlencode', 'htmlspecialchars', 'addslashes'];
@@ -118,28 +116,27 @@ class NewsletterRecipientGroup extends Item
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('news_groups'), 'idnewsgroup');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * Overridden store() method to ensure, that there is only one default group
      *
+     * @inheritDoc
      * @throws cException
      */
     public function store()
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
 
         if ($this->get("defaultgroup") == 1) {
             $oItems = new NewsletterRecipientGroupCollection();
@@ -160,13 +157,9 @@ class NewsletterRecipientGroup extends Item
     /**
      * User-defined setter for newsletter recipient group fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idlang':
@@ -175,7 +168,7 @@ class NewsletterRecipientGroup extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }
@@ -208,8 +201,7 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
      * @param $idrecipient      int specifies the newsletter user
      *
      * @return bool|Item
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function create($idrecipientgroup, $idrecipient)
     {
@@ -297,8 +289,7 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
      * @param $asObjects        boolean specifies if the function should return objects
      *
      * @return array RecipientRecipient items
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function getRecipientsInGroup($idrecipientgroup, $asObjects = true)
     {
@@ -333,29 +324,23 @@ class NewsletterRecipientGroupMember extends Item
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('news_groupmembers'), 'idnewsgroupmember');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for newsletter recipient group member fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idnewsrcp':
@@ -364,7 +349,7 @@ class NewsletterRecipientGroupMember extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

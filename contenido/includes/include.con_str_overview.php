@@ -24,32 +24,23 @@ if ($client < 1) {
     return;
 }
 
-cInclude("includes", "functions.str.php");
-cInclude("includes", "functions.tpl.php");
+cInclude('includes', 'functions.str.php');
+cInclude('includes', 'functions.tpl.php');
 cInclude('includes', 'functions.lang.php');
 
 /**
- *
  * @param int $iIdcat
  * @param array $aWholelist
- *
- * @return string
- *
- * @throws cDbException
- * @throws cInvalidArgumentException
- * @throws cException
+ * @throws cDbException|cInvalidArgumentException|cException
  */
-function showTree($iIdcat, &$aWholelist)
+function showTree(int $iIdcat, array &$aWholelist): string
 {
     global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client, $lang, $navigationTree;
 
     $tpl = new cTemplate();
     $tpl->reset();
 
-    $iIdcat = (int)$iIdcat;
-
     foreach ($navigationTree[$iIdcat] as $sKey => $aValue) {
-
         $cfgdata = '';
         $aCssClasses = [];
 
@@ -69,7 +60,6 @@ function showTree($iIdcat, &$aWholelist)
         $name = $aValue['name'];
 
         if ($check_rights) {
-
             $idtpl = ($aValue['idtpl'] != '') ? $aValue['idtpl'] : 0;
 
             // if (($aValue["idlang"] != $lang) || ($aValue['articles'] == true)) {

@@ -22,34 +22,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Generates the code for one article
  *
- * @param int $idcat
- *                           Id of category
- * @param int $idart
- *                           Id of article
- * @param int $lang
- *                           Id of language
- * @param int $client
- *                           Id of client
- * @param bool $layout [optional]
- *                           Layout-ID of alternate Layout (if false, use associated layout)
- * @param bool $save [optional]
- *                           Flag to persist generated code in database
- * @param bool $contype [optional]
- *                           Flag to enable/disable replacement of CMS_TAGS[].
- * @param bool $editable [optional]
- *                           deprecated?
- * @param int|NULL $version [optional]
- *                           version number if article is a revision, else NULL;
- *
- * @return string
- *         The generated code or "0601" if neither article
- *         nor category configuration was found.
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param int $idcat Id of category
+ * @param int $idart Id of article
+ * @param int $lang Id of language
+ * @param int $client Id of client
+ * @param bool $layout [optional] Layout-ID of alternate Layout (if false, use associated layout)
+ * @param bool $save [optional] Flag to persist generated code in database
+ * @param bool $contype [optional] Flag to enable/disable replacement of CMS_TAGS[].
+ * @param bool $editable [optional] deprecated?
+ * @param int|NULL $version [optional] version number if article is a revision, else NULL;
+ * @return string The generated code or "0601" if neither article nor category configuration was found.
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true, $editable = false, $version = NULL)
+function conGenerateCode(
+    $idcat,
+    $idart,
+    $lang,
+    $client,
+    $layout = false,
+    $save = true,
+    $contype = true,
+    $editable = false,
+    $version = NULL
+)
 {
     global $cfg, $frontend_debug;
 
@@ -70,15 +65,10 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save 
 /**
  * Returns the idartlang for a given article and language
  *
- * @param int $idart
- *         ID of the article
- * @param int $idlang
- *         ID of the language
- *
- * @return mixed
- *         idartlang of the article or false if nothing was found
- *
- * @throws cDbException
+ * @param int $idart ID of the article
+ * @param int $idlang ID of the language
+ * @return mixed idartlang of the article or false if nothing was found
+ * @throws cDbException|cInvalidArgumentException
  */
 function getArtLang($idart, $idlang)
 {
@@ -90,11 +80,8 @@ function getArtLang($idart, $idlang)
 /**
  * Returns all available meta tag types
  *
- * @return array
- *         Associative meta tags list
- *
- * @throws cDbException
- * @throws cException
+ * @return array Associative meta tags list
+ * @throws cDbException|cException
  */
 function conGetAvailableMetaTagTypes()
 {
@@ -119,19 +106,12 @@ function conGetAvailableMetaTagTypes()
 /**
  * Get the meta tag value or its version for a specific article
  *
- * @param int $idartlang
- *         ID of the article
- * @param int $idmetatype
- *         Metatype-ID
- * @param int $version
- *         version number
- *
- * @return string
- *
- * @throws cDbException
- * @throws cException
+ * @param int $idartlang ID of the article
+ * @param int $idmetatype Metatype-ID
+ * @param int $version version number
+ * @throws cDbException|cException
  */
-function conGetMetaValue($idartlang, $idmetatype, $version = null)
+function conGetMetaValue($idartlang, $idmetatype, $version = null): string
 {
     static $oMetaTagColl = null;
     static $metaTagVersionColl = null;
@@ -167,21 +147,12 @@ function conGetMetaValue($idartlang, $idmetatype, $version = null)
 /**
  * Set the meta tag value or its version for a specific article.
  *
- * @param int $idartlang
- *         ID of the article
- * @param int $idmetatype
- *         Metatype-ID
- * @param string $value
- *         Value of the meta tag
- * @param int $version
- *         version number
- *
- * @return bool
- *         whether the meta value has been saved successfully
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param int $idartlang ID of the article
+ * @param int $idmetatype Metatype-ID
+ * @param string $value Value of the meta tag
+ * @param int $version version number
+ * @return bool Whether the meta value has been saved successfully
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL)
 {
@@ -251,7 +222,6 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL)
             // update or create meta tag
             if (is_object($metaTag)) {
                 $return = $metaTag->updateMetaValue($value);
-
             } else {
                 $metaTag = $metaTagColl->create($idartlang, $idmetatype, $value);
             }
@@ -274,12 +244,10 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL)
             //update meta tag
             if (is_object($metaTag)) {
                 $return = $metaTag->updateMetaValue($value);
-                return $return;
 
+                return $return;
             } else {
                 $metaTag = $metaTagColl->create($idartlang, $idmetatype, $value);
-                return true;
-
             }
 
             break;
@@ -308,24 +276,13 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL)
             break;
         default:
             break;
-
     }
 
+    return false;
 }
 
 /**
- * (Re-)generate keywords for all articles of a given client (with specified language)
- *
- * @param int $client
- *         Client
- * @param int $lang
- *         Language of a client
- *
- * @throws cDbException
- * @throws cInvalidArgumentException
- *
- * @deprecated [2014-07-24]
- *         Not used anymore
+ * @deprecated [2014-07-24] Not used anymore
  */
 function conGenerateKeywords($client, $lang)
 {
@@ -361,16 +318,12 @@ function conGenerateKeywords($client, $lang)
 /**
  * Get content from article by article language.
  *
- * @param int $iIdArtLang
- *         ArticleLanguageId of an article (idartlang)
- *
- * @return array
- *         Array with content of an article indexed by content-types as follows:
+ * @param int $iIdArtLang ArticleLanguageId of an article (idartlang)
+ * @return array Array with content of an article indexed by content-types as follows:
  *         - $arr[type][typeid] = value;
- *
  * @throws cDbException|cInvalidArgumentException
  */
-function conGetContentFromArticle($iIdArtLang)
+function conGetContentFromArticle($iIdArtLang): array
 {
     static $oDB = NULL;
     if (!isset($oDB)) {
@@ -386,16 +339,11 @@ function conGetContentFromArticle($iIdArtLang)
 /**
  * Returns list of all container with configured modules by template id
  *
- * @param int $idtpl
- *         Template id
- *
- * @return array
- *         Associative array where the key is the number and value the module id
- *
- * @throws cDbException
- * @throws cException
+ * @param int $idtpl Template id
+ * @return array Associative array where the key is the number and value the module id
+ * @throws cDbException|cException
  */
-function conGetUsedModules($idtpl)
+function conGetUsedModules($idtpl): array
 {
     $oContainerColl = new cApiContainerCollection();
     $oContainerColl->select('idtpl = ' . (int)$idtpl, '', 'number ASC');
@@ -411,17 +359,11 @@ function conGetUsedModules($idtpl)
 /**
  * Returns list of all configured container configurations by template configuration id
  *
- * @param int $idtplcfg
- *         Template configuration id
- *
- * @return array
- *         Associative array where the key is the number
- *         and value the container configuration.
- *
- * @throws cDbException
- * @throws cException
+ * @param int $idtplcfg Template configuration id
+ * @return array Associative array where the key is the number and value the container configuration.
+ * @throws cDbException|cException
  */
-function conGetContainerConfiguration($idtplcfg)
+function conGetContainerConfiguration($idtplcfg): array
 {
     $containerConfColl = new cApiContainerConfigurationCollection();
     return $containerConfColl->getByTemplateConfiguration($idtplcfg);
@@ -432,12 +374,9 @@ function conGetContainerConfiguration($idtplcfg)
  *
  * @param int $idcat
  * @param int $idart
- *
- * @return int|NULL
- *
  * @throws cDbException
  */
-function conGetCategoryArticleId($idcat, $idart)
+function conGetCategoryArticleId($idcat, $idart): ?int
 {
     global $cfg, $db;
 
@@ -446,23 +385,19 @@ function conGetCategoryArticleId($idcat, $idart)
     $sql = $db->prepare($sql, $cfg['tab']['cat_art'], $idcat, $idart);
     $db->query($sql);
 
-    return ($db->nextRecord()) ? $db->f('idcatart') : NULL;
+    return $db->nextRecord() ? (int) $db->f('idcatart') : NULL;
 }
 
 /**
  * Returns template configuration id for a configured article.
  *
  * @param int $idart
- * @param int $idcat
- *         NOT used
+ * @param int $idcat NOT used
  * @param int $lang
  * @param int $client
- *
- * @return int|NULL
- *
  * @throws cDbException
  */
-function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client)
+function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client): ?int
 {
     global $cfg, $db;
 
@@ -472,7 +407,7 @@ function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client)
     $sql = $db->prepare($sql, $cfg['tab']['art_lang'], $cfg['tab']['art'], $idart, $lang, $client);
     $db->query($sql);
 
-    return ($db->nextRecord()) ? $db->f('idtplcfg') : NULL;
+    return $db->nextRecord() ? (int) $db->f('idtplcfg') : NULL;
 }
 
 /**
@@ -481,12 +416,9 @@ function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client)
  * @param int $idcat
  * @param int $lang
  * @param int $client
- *
- * @return int|NULL
- *
  * @throws cDbException
  */
-function conGetTemplateConfigurationIdForCategory($idcat, $lang, $client)
+function conGetTemplateConfigurationIdForCategory($idcat, $lang, $client): ?int
 {
     global $cfg, $db;
 
@@ -496,5 +428,5 @@ function conGetTemplateConfigurationIdForCategory($idcat, $lang, $client)
     $sql = $db->prepare($sql, $cfg['tab']['cat_lang'], $cfg['tab']['cat'], $idcat, $lang, $client);
     $db->query($sql);
 
-    return ($db->nextRecord()) ? $db->f('idtplcfg') : NULL;
+    return $db->nextRecord() ? (int) $db->f('idtplcfg') : NULL;
 }

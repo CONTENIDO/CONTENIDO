@@ -31,12 +31,12 @@ class ModRewriteController extends ModRewriteBase
 {
     // Error constants
 
-    const ERROR_CLIENT = 1;
-    const ERROR_LANGUAGE = 2;
-    const ERROR_CATEGORY = 3;
-    const ERROR_ARTICLE = 4;
-    const ERROR_POST_VALIDATION = 5;
-    const FRONT_CONTENT = 'front_content.php';
+    public const ERROR_CLIENT = 1;
+    public const ERROR_LANGUAGE = 2;
+    public const ERROR_CATEGORY = 3;
+    public const ERROR_ARTICLE = 4;
+    public const ERROR_POST_VALIDATION = 5;
+    public const FRONT_CONTENT = 'front_content.php';
 
     /**
      * Extracted request uri path parts by path separator '/'
@@ -243,9 +243,7 @@ class ModRewriteController extends ModRewriteBase
      * Executes some private functions to extract request URI and to set needed member variables
      * (client, language, article id, category id, etc.)
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function execute()
     {
@@ -278,16 +276,13 @@ class ModRewriteController extends ModRewriteBase
     /**
      * Extracts request URI and sets member variables $this->_sArtName and $this->_aParts
      *
-     * @param bool $secondCall Flag about second call of this function, is needed
-     *                           to re extract url if a routing definition was found
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param bool $secondCall Flag about second call of this function, is needed to re-extract
+     *      url if a routing definition was found
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _extractRequestUri($secondCall = false)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
 
         // get REQUEST_URI
         $requestUri = $_SERVER['REQUEST_URI'] ?? '';
@@ -299,7 +294,7 @@ class ModRewriteController extends ModRewriteBase
 
         // check for defined rootdir
         // allows for root dir being alternatively defined as path of setting client/%frontend_path%
-        $rootdir = cUriBuilderMR::getMultiClientRootDir(parent::getConfig('rootdir'));
+        $rootdir = cUriBuilderMR::getMultiClientRootDir(parent::getConfig('rootdir') ?? '');
         if ('/' !== $rootdir && 0 === cString::findFirstPos($requestUri, $this->_sIncomingUrl)) {
             $this->_sIncomingUrl = str_replace($rootdir, '/', $this->_sIncomingUrl);
         }
@@ -556,8 +551,7 @@ class ModRewriteController extends ModRewriteBase
     /**
      * Sets article id
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     private function _setIdart()
     {
@@ -620,8 +614,7 @@ class ModRewriteController extends ModRewriteBase
      * One main goal of this function is to prevent duplicated content, which could happen, if
      * the configuration 'startfromroot' is activated.
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     private function _postValidation()
     {

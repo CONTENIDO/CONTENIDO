@@ -27,15 +27,15 @@ class PimPluginViewNavSub
     /**
      * Pattern for navigation (nav_sub) xml entries
      */
-    const PATTERN = '/;(.+)$/';
+    public const PATTERN = '/;(.+)$/';
     /**
      * Filename of Xml configuration file for plugins
      */
-    const PLUGIN_CONFIG_FILENAME = "plugin.xml";
+    public const PLUGIN_CONFIG_FILENAME = "plugin.xml";
     /**
      * Filename of Xml configuration file for CONTENIDO navigation
      */
-    const CONTENIDO_NAVIGATION_FILENAME = "navigation.xml";
+    public const CONTENIDO_NAVIGATION_FILENAME = "navigation.xml";
 
     /**
      * @var string
@@ -151,7 +151,6 @@ class PimPluginViewNavSub
      */
     public function __construct()
     {
-
         // Initializing and set classes
         $this->_setDOMDocument();
 
@@ -166,9 +165,8 @@ class PimPluginViewNavSub
      * Set variable for plugin foldername
      *
      * @param string $foldername
-     * @return string
      */
-    public function setPluginFoldername($foldername)
+    public function setPluginFoldername($foldername): string
     {
         return $this->PluginFoldername = cSecurity::escapeString($foldername);
     }
@@ -178,13 +176,11 @@ class PimPluginViewNavSub
     /**
      * Get nav_sub entries
      *
-     * @return string
-     *
+     * @return string|false
      * @throws cException
      */
     public function getNavSubentries()
     {
-
         $cfg = cRegistry::getConfig();
 
         // Get contents of plugin.xml file
@@ -226,7 +222,7 @@ class PimPluginViewNavSub
     /**
      * Get founded CONTENIDO navigation entries
      *
-     * @return bool
+     * @return string|false
      */
     private function _getCONTENIDONavigation()
     {
@@ -236,9 +232,7 @@ class PimPluginViewNavSub
         $this->_setNavigationXmlPath(cRegistry::getBackendPath() . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME);
 
         if (cFileHandler::exists($this->_getNavigationXmlPath())) {
-
             for ($i = 0; $i < $this->_NavCount; $i++) {
-
                 // Get only navigation value (pattern)
                 preg_match(self::PATTERN, self::$XmlNavSub->nav[$i], $matches);
 
@@ -265,12 +259,10 @@ class PimPluginViewNavSub
     /**
      * Get translated navigation name
      *
-     * @param string $query
-     * @return string XML of translated navigation nane
+     * @return string|false XML of translated navigation nane
      */
-    private function _getTranslatedNavigationName($query = '')
+    private function _getTranslatedNavigationName(string $query = '')
     {
-
         if ($query == '') {
             return false;
         }
@@ -290,13 +282,10 @@ class PimPluginViewNavSub
     }
 
     /**
-     * Checks for plugin navigation entry and get navigation entries from
-     * CONTENIDO navigation xml file
+     * Checks for plugin navigation entry and get navigation entries from CONTENIDO navigation xml file
      *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
+     * @return mixed|false
+     * @throws cDbException|cException
      */
     private function _checkAndGetPluginNavigation()
     {
@@ -306,19 +295,22 @@ class PimPluginViewNavSub
         $contenidoLanguageFileLang = cRegistry::getBackendPath() . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME;
 
         if (cFileHandler::exists($contenidoLanguageFileLang)) {
-
             for ($i = 0; $i < $this->_NavCount; $i++) {
-
                 if (cSecurity::toInteger(self::$XmlNavSub->nav[$i]->attributes()->navm) > 0) {
-                    $this->_ApiNavMainCollection->setWhere('idnavm', cSecurity::toInteger(self::$XmlNavSub->nav[$i]->attributes()->navm));
+                    $this->_ApiNavMainCollection->setWhere(
+                        'idnavm',
+                        cSecurity::toInteger(self::$XmlNavSub->nav[$i]->attributes()->navm)
+                    );
                 } else {
-                    $this->_ApiNavMainCollection->setWhere('name', cSecurity::escapeString(self::$XmlNavSub->nav[$i]->attributes()->navm));
+                    $this->_ApiNavMainCollection->setWhere(
+                        'name',
+                        cSecurity::escapeString(self::$XmlNavSub->nav[$i]->attributes()->navm)
+                    );
                 }
 
                 $this->_ApiNavMainCollection->query();
 
-                // If no entry at nav_sub database table founded,
-                // return false
+                // If no entry at nav_sub database table founded, return false
                 if ($this->_ApiNavMainCollection->count() == 0) {
                     return false;
                 }
@@ -363,12 +355,10 @@ class PimPluginViewNavSub
         $pluginLanguageFileLang = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->PluginFoldername . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR . $cfg['lang'][$belang];
 
         if (cFileHandler::exists($pluginLanguageFileLang) && $contenidoNav != "") {
-
             // Initializing founded array
             $founded = [];
 
             for ($i = 0; $i < $this->_NavCount; $i++) {
-
                 // Get only navigation value (pattern)
                 preg_match(self::PATTERN, self::$XmlNavSub->nav[$i], $matches);
 
@@ -390,7 +380,6 @@ class PimPluginViewNavSub
                 }
 
                 foreach ($entriesLang as $entry) {
-
                     // If we have more then one navigation entry, define
                     // menuname for other entries
                     $menuName = '';

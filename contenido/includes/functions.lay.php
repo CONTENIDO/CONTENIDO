@@ -22,21 +22,12 @@ cInclude('classes', 'class.layout.handler.php');
 /**
  * Edit or Create a new layout
  *
- * @param int $idlay
- *         Id of the Layout
- * @param string $name
- *         Name of the Layout
- * @param string $description
- *         Description of the Layout
- * @param string $code
- *         Layout HTML Code
- *
- * @return int
- *         Id of the new or edited layout
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param int $idlay Id of the Layout
+ * @param string $name Name of the Layout
+ * @param string $description Description of the Layout
+ * @param string $code Layout HTML Code
+ * @return int Id of the new or edited layout
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function layEditLayout($idlay, $name, $description, $code)
 {
@@ -61,12 +52,12 @@ function layEditLayout($idlay, $name, $description, $code)
     $layoutAlias = cModuleHandler::getCleanName(cString::toLowerCase($name));
 
     // Constructor for the layout in filesystem
-    $layoutInFile = new cLayoutHandler($idlay, $code, $cfg, $lang);
+    $layoutHandler = new cLayoutHandler($idlay, $code, $cfg, $lang);
 
     // Track version
     $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
     // Save layout from file and not from db
-    $oVersion->setCode($layoutInFile->getLayoutCode());
+    $oVersion->setCode($layoutHandler->getLayoutCode());
     // Create new Layout Version in cms/version/layout/
     $oVersion->createNewVersion();
 
@@ -75,7 +66,7 @@ function layEditLayout($idlay, $name, $description, $code)
         $layout = $layoutCollection->create($name, $client, $layoutAlias, $description, '1', $author);
         $idlay = $layout->get('idlay');
 
-        if ($layoutInFile->saveLayout($code) == false) {
+        if (!$layoutHandler->saveLayout($code)) {
             cRegistry::addErrorMessage(i18n("Can't save layout in file"));
         } else {
             cRegistry::addOkMessage(i18n("Saved layout successfully!"));
@@ -87,13 +78,11 @@ function layEditLayout($idlay, $name, $description, $code)
         return $idlay;
     } else {
         // Save the layout in file system
-        $layoutInFile = new cLayoutHandler($idlay, $code, $cfg, $lang);
+        $layoutHandler = new cLayoutHandler($idlay, $code, $cfg, $lang);
         // Name changed
-        if ($layoutAlias != $layoutInFile->getLayoutName()) {
-            // Exist layout in directory
-            if (cLayoutHandler::existLayout($layoutAlias, $cfgClient, $client) == true) {
-                // Save in old directory
-                if ($layoutInFile->saveLayout($code) == false) {
+        if ($layoutAlias != $layoutHandler->getLayoutName()) {
+            if (cLayoutHandler::existLayout($layoutAlias, $cfgClient, $client)) {
+                if (!$layoutHandler->saveLayout($code)) {
                     cRegistry::addErrorMessage(i18n("Can't save layout in file!"));
                 }
 
@@ -103,9 +92,12 @@ function layEditLayout($idlay, $name, $description, $code)
             }
 
             // Rename the directory
-            if ($layoutInFile->rename($layoutInFile->getLayoutName(), $layoutAlias)) {
-                if ($layoutInFile->saveLayout($code) == false) {
-                    cRegistry::addWarningMessage(sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
+            if ($layoutHandler->rename($layoutHandler->getLayoutName(), $layoutAlias)) {
+                if (!$layoutHandler->saveLayout($code)) {
+                    cRegistry::addWarningMessage(sprintf(
+                        i18n("The file %s has no write permissions. Saving only database changes!"),
+                        $layoutHandler->_getFileName()
+                    ));
                 } else {
                     cRegistry::addOkMessage(i18n("Renamed layout successfully!"));
                 }
@@ -117,16 +109,18 @@ function layEditLayout($idlay, $name, $description, $code)
                 $layout->set('lastmodified', $date);
                 $layout->store();
             } else {
-                // Rename not successfully
-                // Save layout
-                if ($layoutInFile->saveLayout($code) == false) {
+                // Rename not successfully, save layout
+                if (!$layoutHandler->saveLayout($code)) {
                     cRegistry::addErrorMessage(i18n("Can't save layout file!"));
                 }
             }
         } else {
             // Name dont changed
-            if ($layoutInFile->saveLayout($code) == false) {
-                cRegistry::addWarningMessage(sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
+            if (!$layoutHandler->saveLayout($code)) {
+                cRegistry::addWarningMessage(sprintf(
+                    i18n("The file %s has no write permissions. Saving only database changes!"),
+                    $layoutHandler->_getFileName()
+                ));
             } else {
                 cRegistry::addOkMessage(i18n("Saved layout successfully!"));
             }
@@ -149,17 +143,11 @@ function layEditLayout($idlay, $name, $description, $code)
 /**
  * Deletes the layout with the given ID from the database and the file system.
  *
- * @param int $idlay
- *         the ID of the layout
- *
- * @return string
- *         an error code if the layout is still in use
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param int $idlay The ID of the layout
+ * @return string An error code if the layout is still in use or empty string
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function layDeleteLayout($idlay)
+function layDeleteLayout($idlay): string
 {
     global $client, $cfg, $area_tree, $perm, $cfgClient;
 
@@ -168,23 +156,25 @@ function layDeleteLayout($idlay)
     if ($tplColl->next()) {
         // layout is still in use, you cannot delete it
         return '0301';
-    } else {
+    }
 
-        // delete the layout in file system
-        $layoutInFile = new cLayoutHandler($idlay, '', $cfg, 1);
-        if ($layoutInFile->eraseLayout()) {
-            if (cFileHandler::exists($cfgClient[$client]['version']['path'] . "layout" . DIRECTORY_SEPARATOR . $idlay)) {
-                cDirHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "layout" . DIRECTORY_SEPARATOR . $idlay);
-            }
-
-            // delete layout in database
-            $layoutCollection = new cApiLayoutCollection();
-            $layoutCollection->delete($idlay);
-        } else {
-            cRegistry::addErrorMessage(i18n("Can't delete layout!"));
+    // delete the layout in file system
+    $layoutHandler = new cLayoutHandler($idlay, '', $cfg, 1);
+    if ($layoutHandler->eraseLayout()) {
+        $layoutFile = $cfgClient[$client]['version']['path'] . "layout" . DIRECTORY_SEPARATOR . $idlay;
+        if (cFileHandler::exists($layoutFile)) {
+            cDirHandler::recursiveRmdir($layoutFile);
         }
+
+        // delete layout in database
+        $layoutCollection = new cApiLayoutCollection();
+        $layoutCollection->delete($idlay);
+    } else {
+        cRegistry::addErrorMessage(i18n("Can't delete layout!"));
     }
 
     // Delete rights for element
     cRights::deleteRightsForElement('lay', $idlay);
+
+    return '';
 }

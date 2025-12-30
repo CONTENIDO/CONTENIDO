@@ -32,7 +32,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.pathresolver.php');
 
-$oPage = new cGuiPage("contentallocation_article", "content_allocation", "7");
+$oPage = new cGuiPage('contentallocation_article', 'content_allocation', '7');
 
 $this_idartlang = 0;
 $this_locked = 0;

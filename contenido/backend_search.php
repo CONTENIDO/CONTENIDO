@@ -32,10 +32,10 @@ cRegistry::bootstrap([
 
 $cfg = cRegistry::getConfig();
 $belang = cRegistry::getBackendLanguage();
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$lang = cRegistry::getLanguageId();
 $auth = cRegistry::getAuth();
 $perm = cRegistry::getPerm();
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 $area = cRegistry::getArea();
 $frame = cRegistry::getFrame();
 
@@ -215,7 +215,7 @@ if (!empty($aSearch['save_title'])) {
     $sSearchStr = $aSearch['save_title'];
 }
 // Article ID
-if ($aSearch['save_id'] > 0) {
+if (($aSearch['save_id'] ?? 0) > 0) {
     $iSearchId = $aSearch['save_id'];
 }
 // Date
@@ -420,6 +420,7 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             }
 
             // Convert to start article/regular article
+            // TODO Why does this condition have `0 == 1`?
             if ($backendSearchHelper->hasArticleMakeStartPermission($idcat) && 0 == 1) {
                 if ($startidartlang == $idartlang) {
                     $makeStartarticle = "<td class=\"text_center\"><a class=\"con_img_button\" href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&contenido=$sSession\" title=\"{$lngFlagAsNormalArticle}\"><img src=\"images/isstart1.gif\" title=\"{$lngFlagAsNormalArticle}\" alt=\"{$lngFlagAsNormalArticle}\"></a></td>";
@@ -514,7 +515,7 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
                       <td class=\"text_center\">" . $artsort . "</td>
                       <td>$sTemplateName</td>
                       <td>
-                          <a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$lngReminder&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=625');\" title=\"$lngSetReminder\" href=\"#\"><img id=\"m2\" alt=\"$lngSetReminder\" src=\"images/but_setreminder.gif\"></a>
+                          <a id=\"m1\" onclick=\"window.open('main.php?subject=$lngReminder&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=625');\" title=\"$lngSetReminder\" href=\"#\"><img id=\"m2\" alt=\"$lngSetReminder\" src=\"images/but_setreminder.gif\"></a>
                           $properties
                           $tplconfig
                           $duplicate
@@ -578,7 +579,7 @@ $tpl->set('s', 'SUBNAVI', $sLoadSubnavi);
 
 // Finalize debug of backend rendering
 ob_start();
-cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldMemUsage, basename(__FILE__)));
+cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldMemUsage ?? 0, basename(__FILE__)));
 $output = ob_get_contents();
 ob_end_clean();
 $tpl->set('s', 'DEBUGMESSAGE', $output);

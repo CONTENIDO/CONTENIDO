@@ -24,6 +24,8 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
+$area = cRegistry::getArea();
+
 if (class_exists('NewsletterJobCollection') && (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs')) {
     $oJobs = new NewsletterJobCollection();
     $oJobs->setWhere('status', 1);

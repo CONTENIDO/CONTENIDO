@@ -32,6 +32,8 @@ if ($statisticmode == 'disabled') {
     return false;
 }
 
+$area = cRegistry::getArea();
+
 include_once(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'functions.stat.php');
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
@@ -48,5 +50,3 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
     statsArchive(sprintf('%04d%02d', $year, $month));
 }
-
-?>

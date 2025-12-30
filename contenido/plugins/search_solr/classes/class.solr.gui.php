@@ -276,10 +276,8 @@ class SolrRightBottomPage extends cGuiPage
     }
 
     /**
-     *
      * @return string
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _reindex()
     {
@@ -343,10 +341,8 @@ class SolrRightBottomPage extends cGuiPage
     }
 
     /**
-     *
      * @return string
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _delete()
     {

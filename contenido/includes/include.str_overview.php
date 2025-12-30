@@ -20,11 +20,13 @@ global $notification, $parentid, $StrTableClient, $StrTableLang, $currentuser, $
 cInclude('includes', 'functions.lang.php');
 
 // Display critical error if client or language does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getCategoryId();
+$lang = cRegistry::getLanguageId();
 if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
-    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
-    $oPage = new cGuiPage("str_overview");
+    $message = $client && !cRegistry::getClient()->isLoaded()
+        ? i18n('No Client selected')
+        : i18n('No language selected');
+    $oPage = new cGuiPage('str_overview');
     $oPage->displayCriticalError($message);
     $oPage->render();
     return;
@@ -49,7 +51,7 @@ $tmp_area = 'str';
 $db = cRegistry::getDb();
 $perm = cRegistry::getPerm();
 $action = cRegistry::getAction();
-$idcat = cSecurity::toInteger(cRegistry::getCategoryId());
+$idcat = cRegistry::getCategoryId();
 $area = cRegistry::getArea();
 $cfg = cRegistry::getConfig();
 $sess = cRegistry::getSession();
@@ -69,16 +71,15 @@ if ($action == 'str_duplicate' && ($perm->have_perm_area_action('str', 'str_dupl
  *
  * @return string HTML
  *
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
 function buildCategorySelectRights()
 {
     global $tmp_area;
 
     $db = cRegistry::getDb();
-    $client = cSecurity::toInteger(cRegistry::getClientId());
-    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+    $client = cRegistry::getCategoryId();
+    $lang = cRegistry::getLanguageId();
     $perm = cRegistry::getPerm();
 
     $oHtmlSelect = new cHTMLSelectElement('idcat', '', 'new_idcat');
@@ -194,13 +195,12 @@ function getStrExpandCollapseButton($item, $catName)
  *
  * @return string
  *
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
 function getTemplateSelect()
 {
     $db = cRegistry::getDb();
-    $client = cSecurity::toInteger(cRegistry::getClientId());
+    $client = cRegistry::getCategoryId();
 
     $oHtmlSelect = new cHTMLSelectElement('cat_template_select', '', 'cat_template_select');
 
@@ -308,8 +308,7 @@ $StrTableLang = $lang;
  *
  * @param int $idCat
  * @return bool
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
 function hasStrRights(int $idCat): bool
 {

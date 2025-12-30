@@ -29,12 +29,9 @@ class cHTMLHiddenField extends cHTMLFormElement
      *
      * Creates an HTML hidden field.
      *
-     * @param string $name
-     *         Name of the element
-     * @param string $value [optional]
-     *         Title of the button
-     * @param string $id [optional]
-     *         ID of the element
+     * @param string $name Name of the element
+     * @param string $value [optional] Title of the button
+     * @param string $id [optional] ID of the element
      */
     public function __construct($name, $value = '', $id = '')
     {
@@ -49,16 +46,11 @@ class cHTMLHiddenField extends cHTMLFormElement
     /**
      * Sets the value for the field
      *
-     * @param string $value
-     *         Value of the field
-     * @return cHTMLHiddenField
-     *         $this for chaining
+     * @param string $value Value of the field
      */
-    public function setValue($value)
+    public function setValue($value): self
     {
-        $this->updateAttribute('value', $value);
-
-        return $this;
+        return $this->updateAttribute('value', $value);
     }
 
 }

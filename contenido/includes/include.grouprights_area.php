@@ -54,7 +54,7 @@ if (($perm->have_perm_area_action("groups_overview", $action)) && ($action == "g
     }
 } else {
     if (!$perm->have_perm_area_action("groups_overview", $action)) {
-        // $notification->displayNotification("error", i18n("Permission
+        // $notification->displayNotification('error', i18n("Permission
         // denied"));
         cRegistry::addErrorMessage(i18n("Permission denied"));
     }

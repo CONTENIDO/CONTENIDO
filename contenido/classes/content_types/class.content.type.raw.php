@@ -28,12 +28,9 @@ class cContentTypeRaw extends cContentTypeAbstract
      *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings
-     *         the raw settings in an XML structure or as plaintext
-     * @param int $id
-     *         ID of the content type, e.g. 3 if CMS_RAW[3] is used
-     * @param array $contentTypes
-     *         array containing the values of all content types
+     * @param string $rawSettings The raw settings in an XML structure or as plaintext
+     * @param int $id ID of the content type, e.g. 3 if CMS_RAW[3] is used
+     * @param array $contentTypes Array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes)
     {

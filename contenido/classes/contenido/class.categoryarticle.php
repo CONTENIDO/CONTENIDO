@@ -27,9 +27,7 @@ class cApiCategoryArticleCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
      * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
@@ -57,9 +55,7 @@ class cApiCategoryArticleCollection extends ItemCollection
      * @param string $created [optional]
      * @param string $lastmodified [optional]
      * @param int $createcode [optional]
-     *
      * @return cApiCategoryArticle
-     *
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idcat, $idart, $status = 0, $author = "", $created = "", $lastmodified = "", $createcode = 1)
@@ -92,15 +88,12 @@ class cApiCategoryArticleCollection extends ItemCollection
     /**
      * Returns the first category article available entry from category tree by
      * client id and language id.
-     * Build a complex query trough several tables to get a ordered tree
-     * structure
+     * Build a complex query trough several tables to get an ordered tree structure
      * and returns first available category article item.
      *
      * @param int $client
      * @param int $lang
-     *
-     * @return cApiCategoryArticle|NULL
-     *
+     * @return ?cApiCategoryArticle
      * @throws cDbException|cInvalidArgumentException
      */
     public function fetchFirstFromTreeByClientIdAndLangId($client, $lang)
@@ -147,9 +140,7 @@ class cApiCategoryArticleCollection extends ItemCollection
      *
      * @param int $idcat
      * @param int $idart
-     *
-     * @return cApiCategoryArticle|NULL
-     *
+     * @return ?cApiCategoryArticle
      * @throws cDbException|cException
      */
     public function fetchByCategoryIdAndArticleId($idcat, $idart)
@@ -175,9 +166,7 @@ class cApiCategoryArticleCollection extends ItemCollection
      *
      * @param int $idcat
      * @param int $idart
-     *
-     * @return int|NULL
-     *
+     * @return ?int
      * @throws cDbException
      */
     public function getIdByCategoryIdAndArticleId($idcat, $idart)
@@ -191,12 +180,9 @@ class cApiCategoryArticleCollection extends ItemCollection
      * Returns all category article ids by client id.
      *
      * @param int $idclient
-     *
-     * @return array
-     *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getAllIdsByClientId($idclient)
+    public function getAllIdsByClientId($idclient): array
     {
         $aIds = [];
 
@@ -214,12 +200,9 @@ class cApiCategoryArticleCollection extends ItemCollection
      * Returns all available category ids of entries having a specific article id
      *
      * @param int $idart
-     *
-     * @return array
-     *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getCategoryIdsByArticleId($idart)
+    public function getCategoryIdsByArticleId($idart): array
     {
         $aIdCats = [];
 
@@ -239,16 +222,11 @@ class cApiCategoryArticleCollection extends ItemCollection
     /**
      * Checks, if passed category contains any articles in specified language.
      *
-     * @param int $idcat
-     *         Category id
-     * @param int $idlang
-     *         Language id
-     *
-     * @return bool
-     *
+     * @param int $idcat Category id
+     * @param int $idlang Language id
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getHasArticles($idcat, $idlang)
+    public function getHasArticles($idcat, $idlang): bool
     {
         $sql = "SELECT b.idartlang FROM `:tab_cat_art` AS a, `:art_lang` AS b "
             . "WHERE a.idcat = :idcat AND a.idart = b.idart AND b.idlang = :idlang";
@@ -265,14 +243,9 @@ class cApiCategoryArticleCollection extends ItemCollection
     /**
      * Sets 'createcode' flag for one or more category articles.
      *
-     * @param int|array $idcatart
-     *                              One category article id or list of category article ids
-     * @param int $createcode [optional]
-     *                              Create code state, either 1 or 0.
-     *
-     * @return int|void
-     *                              Number of updated entries
-     *
+     * @param int|array $idcatart One category article id or list of category article ids
+     * @param int $createcode Create code state, either 1 or 0.
+     * @return int|void Number of updated entries
      * @throws cDbException
      */
     public function setCreateCodeFlag($idcatart, $createcode = 1)
@@ -310,31 +283,25 @@ class cApiCategoryArticle extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
+     * @param mixed $id Specifies the ID of item to load
      * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         $table = cRegistry::getDbTableName('cat_art');
         parent::__construct($table, 'idcatart');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for category article fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idart':
@@ -347,7 +314,7 @@ class cApiCategoryArticle extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

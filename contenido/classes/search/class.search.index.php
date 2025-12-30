@@ -170,11 +170,8 @@ class cSearchIndex extends cSearchBaseAbstract
      *
      * Set object properties.
      *
-     * @param cDb $db [optional]
-     *                CONTENIDO database object
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param cDb $db [optional] CONTENIDO database object
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($db = NULL)
     {
@@ -188,25 +185,27 @@ class cSearchIndex extends cSearchBaseAbstract
      *
      * @param int $idart Article Id
      * @param array $aContent The complete content of an article specified by its content types.
-     *                                  It looks like:
-     *                                  [
-     *                                  [CMS_HTMLHEAD] => [
-     *                                  [1] => Herzlich Willkommen...
-     *                                  [2] => ...auf Ihrer Website!
-     *                                  ]
-     *                                  [CMS_HTML] => [
-     *                                  [1] => Die Inhalte auf dieser Website ...
-     *                                  ]
-     *                                  ]
+     *      It looks like:
+     *      <pre>
+     *      [
+     *          [CMS_HTMLHEAD] => [
+     *              [1] => Herzlich Willkommen...
+     *              [2] => ...auf Ihrer Website!
+     *          ]
+     *          [CMS_HTML] => [
+     *              [1] => Die Inhalte auf dieser Website ...
+     *          ]
+     *      ]
+     *      </pre>
      * @param string $place [optional] The field where to store the index information in db.
      * @param array $cms_options [optional] One can specify explicitly cms types which should not be indexed.
      * @param array $aStopwords [optional] Array with words which should not be indexed.
-     *
      * @throws cInvalidArgumentException|cDbException
      */
     public function start($idart, $aContent, $place = 'auto', $cms_options = [], $aStopwords = [])
     {
-        if (!is_int((int)$idart) || $idart < 0) {
+        $idart = cSecurity::toInteger($idart);
+        if ($idart < 0) {
             return;
         } else {
             $this->idart = $idart;
@@ -639,9 +638,7 @@ class cSearchIndex extends cSearchBaseAbstract
 
         // Remove HTML tags
         $code = strip_tags($code);
-        if (cString::getStringLength($code) > 0) {
-            $code = conHtmlEntityDecode($code);
-        }
+        $code = conHtmlEntityDecode($code);
         $this->_debug('code', $code);
 
         // Split content by any number of commas, space characters

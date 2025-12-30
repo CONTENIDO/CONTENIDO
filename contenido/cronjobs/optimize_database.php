@@ -22,6 +22,8 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
+$area = cRegistry::getArea();
+
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();
@@ -38,5 +40,3 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
         buildHeapTable($sHeapTable, $db);
     }
 }
-
-?>

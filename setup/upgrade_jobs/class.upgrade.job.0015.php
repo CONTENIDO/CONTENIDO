@@ -24,12 +24,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0015 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.4";
+    public $maxVersion = '4.9.4';
 
     public function _execute()
     {
-        if ($_SESSION['setuptype'] == 'upgrade') {
-            $this->_oDb->query('UPDATE ' . cRegistry::getDbTableName('upl') . ' SET dirname="" WHERE dirname="/"');
+        if ($this->_setupType == 'upgrade') {
+            $this->_oDb->query(sprintf(
+                "UPDATE `%s` SET dirname = '' WHERE dirname = '/'",
+                cRegistry::getDbTableName('upl'
+                )));
         }
     }
 

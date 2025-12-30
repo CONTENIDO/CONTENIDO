@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $data, $idartlang, $notification, $syncoptions, $name, $idtype, $encoding, $contenido, $locked;
 
-$idcat = cSecurity::toInteger(cRegistry::getCategoryId());
+$idcat = cRegistry::getCategoryId();
 if ($idcat <= 0) {
     cRegistry::shutdown();
     return;
@@ -31,7 +31,7 @@ $area = cRegistry::getArea();
 $action = cRegistry::getAction();
 $idart = cRegistry::getArticleId();
 $client = cRegistry::getClientId();
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$lang = cRegistry::getLanguageId();
 
 cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.pathresolver.php');
@@ -73,7 +73,7 @@ $allowedContentTypes = [
 $versioning = new cContentVersioning();
 $versioningState = $versioning->getState();
 
-$page = new cGuiPage("con_content_list");
+$page = new cGuiPage('con_content_list');
 
 $templateFile = cRegistry::getConfigValue('path', 'templates', '') . cRegistry::getConfigValue('templates', 'generic_page_html5');
 $page->setPageBase($templateFile);
@@ -347,7 +347,6 @@ if (($action == 'savecontype' || $action == 10)) {
 
     // check file exist
     if (is_string($rawDataFile) && cString::getStringLength($rawDataFile) > 0) {
-
         // read file from tmp upload folder
         $rawData = file_get_contents($rawDataFile);
 
@@ -368,7 +367,6 @@ if (($action == 'savecontype' || $action == 10)) {
 
                 // check article id exists in xml
                 if ($articleId > 0) {
-
                     // load article by article id and language
                     $articleLanguage = new cApiArticleLanguage();
                     $articleLanguage->loadByMany(['idart' => $articleId, 'idlang' => $lang]);
@@ -384,7 +382,6 @@ if (($action == 'savecontype' || $action == 10)) {
 
                     // check is article loaded
                     if ($articleLanguage->isLoaded()) {
-
                         // read xml children
                         foreach ($articleNode->children() as $key => $child) {
                             // switch xml tag and exec business logic
@@ -831,7 +828,7 @@ if ('tinymce4' === $wysiwygeditor) {
 
     foreach ($aConfigInlineEdit as $sCmsType => $setting) {
         $oEditor->setToolbar($sCmsType, 'inline_edit');
-        $aTinyOptions[$sCmsType] = $aConfigInlineEdit[$sCmsType];
+        $aTinyOptions[$sCmsType] = $setting;
         $aTinyOptions[$sCmsType]['fullscreen_settings'] = $aConfigFullscreen[$sCmsType];
     }
     $page->set('s', 'TINY_OPTIONS', json_encode($aTinyOptions));
@@ -930,27 +927,19 @@ eval("?>\n" . $code . "\n<?php\n");
 cRegistry::shutdown();
 
 /**
- * Processes replacements of all existing CMS_...
- * tags within passed code
+ * Processes replacements of all existing CMS_... tags within passed code
  *
- * @param array $list
- *         CMS_...tags list
- * @param array $contentList
- *         Associative list of CMS variables
- * @param bool $saveKeywords
- *         Flag to save collected keywords during replacement process.
- * @param       $layoutCode
- * @param       $articleType
- * @param       $versioningState
- * @param       $version
+ * @param array $list CMS_...tags list
+ * @param array $contentList Associative list of CMS variables
+ * @param bool $saveKeywords Flag to save collected keywords during replacement process.
+ * @param string $layoutCode
+ * @param string $articleType
+ * @param mixed $versioningState
+ * @param mixed $version
  * @param bool $isLocked
  * @param bool $isAdmin
- *
  * @return mixed
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function _processCmsTags(
     $list, $contentList, $saveKeywords, $layoutCode, $articleType,

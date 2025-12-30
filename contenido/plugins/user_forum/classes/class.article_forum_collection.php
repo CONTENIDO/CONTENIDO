@@ -68,8 +68,7 @@ class ArticleForumCollection extends ItemCollection
     protected $idContentType = 0;
 
     /**
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct()
     {
@@ -122,10 +121,7 @@ class ArticleForumCollection extends ItemCollection
      * @param $idArt
      * @param $idCat
      * @param $lang
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function deleteHierarchy($keyPost, $level, $idArt, $idCat, $lang)
     {
@@ -168,10 +164,8 @@ class ArticleForumCollection extends ItemCollection
      * @param int $idCat
      * @param int $idArt
      * @param int $idLang
-     *
      * @return array
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function _getCommentHierarchy($idCat, $idArt, $idLang)
     {
@@ -280,9 +274,7 @@ class ArticleForumCollection extends ItemCollection
      * @param int $dislike
      * @param string $forum
      * @param int $online
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function updateValues($idUserForum, $name, $email, $like, $dislike, $forum, $online)
     {
@@ -383,10 +375,7 @@ class ArticleForumCollection extends ItemCollection
      * @param int $idArt
      * @param int $lang
      * @param int $forumQuote
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function mailToModerator($realName, $email, $forum, $idArt, $lang, $forumQuote = 0)
     {
@@ -441,11 +430,9 @@ class ArticleForumCollection extends ItemCollection
     }
 
     /**
-     * @return array
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function getExistingforum()
+    public function getExistingforum(): array
     {
         $userColl = new cApiUserCollection();
         $userColl->query();
@@ -461,12 +448,9 @@ class ArticleForumCollection extends ItemCollection
 
     /**
      * @param int $idUserForum
-     *
-     * @return array
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function selectNameAndNameByForumId($idUserForum)
+    public function selectNameAndNameByForumId($idUserForum): array
     {
         $ar = [];
         $this->item->loadByPrimaryKey($this->db->escape($idUserForum));
@@ -477,24 +461,18 @@ class ArticleForumCollection extends ItemCollection
 
     /**
      * @param $userId
-     *
-     * @return bool
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function selectUser($userId)
+    public function selectUser($userId): bool
     {
         return $this->item->loadByPrimaryKey($this->db->escape($userId));
     }
 
     /**
-     * this function increments the actual value of likes from a comment and
-     * persists it.
+     * this function increments the actual value of likes from a comment and persists it.
      *
      * @param int $idUserForum identifies a comment
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function incrementLike($idUserForum)
     {
@@ -518,13 +496,11 @@ class ArticleForumCollection extends ItemCollection
     }
 
     /**
-     * this function increments the actual value of dislikes from a comment and
-     * persists it.
+     * this function increments the actual value of dislikes from a comment and persists it.
      *
      * @param int $idUserForum identifies a comment
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function incrementDislike($idUserForum)
     {
@@ -559,10 +535,7 @@ class ArticleForumCollection extends ItemCollection
      * @param string $realName
      * @param string $forum
      * @param string $forumQuote
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function insertValues($parent, $idArt, $idCat, $lang, $userId, $email, $realName, $forum, $forumQuote)
     {
@@ -608,8 +581,7 @@ class ArticleForumCollection extends ItemCollection
      *
      * @param int $idArt
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function deleteAllCommentsById($idArt)
     {
@@ -621,10 +593,8 @@ class ArticleForumCollection extends ItemCollection
      * @param int $idArt
      * @param int $idLang
      * @param bool $frontend
-     *
      * @return array
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function getExistingforumFrontend($idCat, $idArt, $idLang, $frontend)
     {
@@ -739,7 +709,6 @@ class ArticleForumCollection extends ItemCollection
                 $data[] = $this->db->toArray();
             }
 
-            $array = [];
             for ($i = 0; $i < count($data); $i++) {
                 $array[$i] = cXmlBase::xmlStringToArray($data[$i]['value']);
                 // add articleId

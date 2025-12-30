@@ -59,29 +59,33 @@ class cVersionFile extends cVersion
      *
      * Initializes class variables.
      *
-     * @param string $iIdOfType
-     *                                 The name of style file
-     * @param array $aFileInfo
-     *                                 Get FileInformation from table file_information
+     * @param string $iIdOfType The name of style file
+     * @param array $aFileInfo Get FileInformation from table file_information
      * @param string $sFileName
      * @param string $sTypeContent
      * @param array $aCfg
      * @param array $aCfgClient
-     * @param cDb $oDB
-     *                                 CONTENIDO database object
+     * @param cDb $oDB CONTENIDO database object
      * @param int $iClient
      * @param string $sArea
      * @param int $iFrame
      * @param string $sVersionFileName [optional]
-     *
      * @throws cInvalidArgumentException
      */
     public function __construct(
-        $iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient,
-        $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = ''
+        $iIdOfType,
+        $aFileInfo,
+        $sFileName,
+        $sTypeContent,
+        $aCfg,
+        $aCfgClient,
+        $oDB,
+        $iClient,
+        $sArea,
+        $iFrame,
+        $sVersionFileName = ''
     )
     {
-
         // Set globals in super class constructor
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
 
@@ -144,13 +148,11 @@ class cVersionFile extends cVersion
     }
 
     /**
-     * This function read an xml file nodes
+     * This function read a XML file nodes
      *
-     * @param string $sPath
-     *         Path to file
+     * @param string $sPath Path to file
      *
-     * @return array
-     *         returns array width nodes
+     * @return array Returns array width nodes
      * @throws cException
      */
     public function initXmlReader($sPath)
@@ -171,8 +173,7 @@ class cVersionFile extends cVersion
     /**
      * This function reads the path of file
      *
-     * @return string
-     *         the path of file
+     * @return string The path of file
      */
     public function getPathFile()
     {
@@ -180,19 +181,13 @@ class cVersionFile extends cVersion
     }
 
     /**
-     * Function returns javascript which refreshes CONTENIDO frames for file
-     * list an sub-navigation.
-     * This is necessary, if filenames where changed, when a history entry is
-     * restored
+     * Function returns javascript which refreshes CONTENIDO frames for file list a sub-navigation.
+     * This is necessary, if filenames where changed, when a history entry is restored
      *
-     * @param string $sArea
-     *         name of CONTENIDO area in which this procedure should be done
-     * @param string $sFilename
-     *         new filename of file which should be updated in other frames
-     * @param object $sess
-     *         CONTENIDO session object
-     * @return string
-     *         Javascript for refreshing frames
+     * @param string $sArea Name of CONTENIDO area in which this procedure should be done
+     * @param string $sFilename New filename of file which should be updated in other frames
+     * @param object $sess CONTENIDO session object
+     * @return string Javascript for refreshing frames
      */
     public function renderReloadScript($sArea, $sFilename, $sess)
     {

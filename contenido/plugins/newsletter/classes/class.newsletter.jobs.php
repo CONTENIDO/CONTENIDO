@@ -63,8 +63,8 @@ class NewsletterJobCollection extends ItemCollection
     public function create($iIDNews, $iIDCatArt, $sName = "")
     {
         $cfg = cRegistry::getConfig();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
         $auth = cRegistry::getAuth();
 
         $oNewsletter = new Newsletter();
@@ -264,15 +264,14 @@ class NewsletterJob extends Item
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
-     *
+     * @param mixed $id Specifies the ID of item to load
      * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('news_jobs'), 'idnewsjob');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
@@ -509,8 +508,7 @@ class NewsletterJob extends Item
     /**
      * Overridden store() method to set status to finished if rcpcount is 0.
      *
-     * @return bool
-     * @throws cDbException|cInvalidArgumentException
+     * @inheritDoc
      */
     public function store(): bool
     {

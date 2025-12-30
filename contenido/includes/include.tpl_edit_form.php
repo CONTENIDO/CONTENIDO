@@ -28,11 +28,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $tpl2 = new cTemplate();
 
-$page = new cGuiPage("tpl_edit_form", '', '0');
+$page = new cGuiPage('tpl_edit_form', '', '0');
 
 $action = $action ?? '';
 
-if ($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $action)) {
+if ($action == 'tpl_delete' && $perm->have_perm_area_action_anyitem($area, $action)) {
     $page->displayOk(i18n("Deleted Template successfully!"));
     $page->abortRendering();
     $page->reloadLeftBottomFrame(['idtpl' => null]);
@@ -40,7 +40,7 @@ if ($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $acti
     exit();
 }
 
-if ($action == "tpl_new" && !$perm->have_perm_area_action_anyitem($area, $action)) {
+if ($action == 'tpl_new' && !$perm->have_perm_area_action_anyitem($area, $action)) {
     $page->displayCriticalError(i18n("Permission denied"));
     $page->render();
     return;
@@ -55,7 +55,7 @@ $idlay = cSecurity::toInteger($idlay ?? '0');
 $defaulttemplate = cSecurity::toInteger(!empty($defaulttemplate) ? $defaulttemplate : '0');
 $laydescription = '';
 
-if ($action == "tpl_new") {
+if ($action == 'tpl_new') {
     $tplname = i18n("-- New template --");
 }
 

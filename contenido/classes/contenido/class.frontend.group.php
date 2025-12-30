@@ -50,24 +50,18 @@ class cApiFrontendGroupCollection extends ItemCollection
     /**
      * Creates a new group
      *
-     * @param string $groupname
-     *         Specifies the groupname
-     *
+     * @param string $groupname Specifies the groupname
      * @return cApiFrontendGroup
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($groupname)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
 
         $group = new cApiFrontendGroup();
 
-        // _arrInFilters = ['urlencode', 'htmlspecialchars', 'addslashes'];
-
         $mangledGroupName = $group->inFilter($groupname);
-        $this->select("idclient = " . cSecurity::toInteger($client) . " AND groupname = '" . $mangledGroupName . "'");
+        $this->select(sprintf("`idclient` = %d AND `groupname` = '%s'", $client, $mangledGroupName));
 
         if (($obj = $this->next()) !== false) {
             $groupname = $groupname . md5(rand());
@@ -82,28 +76,22 @@ class cApiFrontendGroupCollection extends ItemCollection
     }
 
     /**
-     * Overridden delete method to remove groups from groupmember table
-     * before deleting group
+     * Overridden delete method to remove groups from groupmember table before deleting group
      *
-     * @param int $itemID
-     *         specifies the frontend user group
-     *
+     * @param int $id Specifies the frontend user group
      * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function delete($itemID)
+    public function delete($id)
     {
         $associations = new cApiFrontendGroupMemberCollection();
-        $associations->select('idfrontendgroup = ' . (int)$itemID);
+        $associations->select(sprintf('`idfrontendgroup` = %d', $id));
 
         while (($item = $associations->next()) !== false) {
             $associations->delete($item->get('idfrontendgroupmember'));
         }
 
-        return parent::delete($itemID);
+        return parent::delete($id);
     }
 }
 
@@ -118,17 +106,14 @@ class cApiFrontendGroup extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('frontendgroups'), 'idfrontendgroup');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

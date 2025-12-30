@@ -21,15 +21,12 @@ cInclude('includes', 'functions.file.php');
  * Function reduces long path names and creates a dynamic tooltip which shows
  * the full path name on mouseover
  *
- * @param string $sDisplayPath
- *         Original filepath
- * @param int $iLimit
- *         Limit of chars which were displayed directly.
+ * @param string $sDisplayPath Original filepath
+ * @param int $iLimit Limit of chars which were displayed directly.
  *         If the path string is shorter there will be no tooltip
- * @return string
- *         Contains short path name and tooltip if necessary
+ * @return string Contains short path name and tooltip if necessary
  */
-function generateDisplayFilePath($sDisplayPath, $iLimit)
+function generateDisplayFilePath($sDisplayPath, $iLimit): string
 {
     $sDisplayPath = (string)$sDisplayPath;
     $iLimit = (int)$iLimit;
@@ -60,34 +57,12 @@ function generateDisplayFilePath($sDisplayPath, $iLimit)
 
         $sDisplayPath = '<span title="' . $sTooltippString . '" class="tooltip">' . $sDisplayPathShort . '</span>';
     }
+
     return $sDisplayPath;
 }
 
 /**
- * Returns array structure of passed directory.
- * Parses the directory recursively and
- * collects information about found subdirectories.
- *
- * @param string $sCurrentDir
- *         Directory to parse
- * @param string $sStartDir
- *         Start directory. Will be used by recursion.
- * @param array $aFiles
- *         Files array structure. Will be used by recursion.
- * @param int $iDepth
- *         Nesting depth of found files. Will be used by recursion.
- * @param string $sPathString
- *         Path used to create full path to files. Will be used by recursion.
- *
- * @return array
- *         Indexed array containing associative directory information
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = [], $iDepth = -1, $sPathString = '')
 {
@@ -138,62 +113,55 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = [], 
 /**
  * Checks if passed upload directory contains at least one file or directory
  *
- * @param string $sDir
- * @return bool
  * @todo Function name is misleading, should be renamed to uplIsEmpty
  */
-function uplHasFiles($sDir)
+function uplHasFiles(string $dir): bool
 {
-
     $client = cRegistry::getClientId();
     $cfgClient = cRegistry::getClientConfig($client);
 
-    $handle = cDirHandler::read($cfgClient['upl']['path'] . $sDir);
+    $handle = cDirHandler::read($cfgClient['upl']['path'] . $dir);
 
     if (!$handle) {
         return false;
     }
 
-    $bHasContent = false;
-    if (is_dir($cfgClient['upl']['path'] . $sDir)) {
+    $hasContent = false;
+    if (is_dir($cfgClient['upl']['path'] . $dir)) {
         foreach ($handle as $sDirEntry) {
             if (cFileHandler::fileNameIsDot($sDirEntry) === false) {
-                $bHasContent = true;
+                $hasContent = true;
                 break;
             }
         }
     }
-    return $bHasContent;
+    return $hasContent;
 }
 
 /**
  * Checks if passed upload directory contains at least one directory
- *
- * @param string $sDir
- * @return bool
  */
-function uplHasSubdirs($sDir)
+function uplHasSubdirs(string $dir): bool
 {
-
     $client = cRegistry::getClientId();
     $cfgClient = cRegistry::getClientConfig($client);
 
-    $handle = cDirHandler::read($cfgClient['upl']['path'] . $sDir);
+    $handle = cDirHandler::read($cfgClient['upl']['path'] . $dir);
     if (!$handle) {
         return false;
     }
 
-    $bHasSubdir = false;
-    if (is_dir($cfgClient['upl']['path'] . $sDir)) {
+    $hasSubdir = false;
+    if (is_dir($cfgClient['upl']['path'] . $dir)) {
         foreach ($handle as $sDirEntry) {
             if (cFileHandler::fileNameIsDot($sDirEntry) === false) {
-                $bHasSubdir = true;
+                $hasSubdir = true;
                 break;
             }
         }
     }
 
-    return $bHasSubdir;
+    return $hasSubdir;
 }
 
 /**
@@ -202,16 +170,11 @@ function uplHasSubdirs($sDir)
  * - Removes all db entries pointing to not existing upload files
  * - Syncs found files in passed path with the database
  *
- * @param string $sPath
- *         Specifies the path to scan
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param string $sPath Specifies the path to scan
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function uplSyncDirectory($sPath)
+function uplSyncDirectory(string $sPath)
 {
-
     $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();
     $client = cRegistry::getClientId();
@@ -269,16 +232,11 @@ function uplSyncDirectory($sPath)
 /**
  * Sync database contents with DBFS
  *
- * @param string $sPath
- *         Specifies the path to scan
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param string $sPath Specifies the path to scan
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function uplSyncDirectoryDBFS($sPath)
+function uplSyncDirectoryDBFS(string $sPath)
 {
-
     $client = cRegistry::getClientId();
 
     $oUploadsColl = new cApiUploadCollection();
@@ -311,25 +269,18 @@ function uplSyncDirectoryDBFS($sPath)
 
 }
 
+
 /**
  * Creates a upload directory, either in filesystem or in dbfs.
  *
- * @param string $sPath
- *         Path to directory to create.
+ * @param string $sPath Path to directory to create.
  *         Either path from client upload directory or a dbfs path.
- * @param string $sName
- *         Name of directory to create
- *
- * @return string|void
- *         value of file mode as string ('0702') or nothing
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param string $sName Name of directory to create
+ * @return ?string Value of file mode as string ('0702') or nothing
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function uplmkdir($sPath, $sName)
+function uplmkdir(string $sPath, string $sName): ?string
 {
-
     $client = cRegistry::getClientId();
     $cfgClient = cRegistry::getClientConfig($client);
     $action = cRegistry::getAction();
@@ -341,7 +292,7 @@ function uplmkdir($sPath, $sName)
 
         $dbfs = new cApiDbfsCollection();
         $dbfs->create($sFullPath);
-        return;
+        return null;
     }
 
     // Check directory name
@@ -376,16 +327,10 @@ function uplmkdir($sPath, $sName)
  * directory name and updates also all entries in properties table related to
  * affected upload files.
  *
- * @param string $sOldName
- * @param string $sNewName
- * @param string $sParent
- *
- * @throws cException
- *         if the upload path can not be renamed
+ * @throws cException If the upload path can not be renamed
  */
-function uplRenameDirectory($sOldName, $sNewName, $sParent)
+function uplRenameDirectory(string $sOldName, string $sNewName, string $sParent)
 {
-
     $client = cRegistry::getClientId();
     $cfgClient = cRegistry::getClientConfig($client);
 
@@ -429,13 +374,10 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent)
  * @param int $iLevel
  * @param string $sParent
  * @param int $iRenameLevel
- *
- * @return array
- *         List of invalid directories
- *
+ * @return array List of invalid directories
  * @throws cException
  */
-function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $sParent = '', $iRenameLevel = 0)
+function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $sParent = '', $iRenameLevel = 0): array
 {
     $aInvalidDirectories = [];
 
@@ -490,15 +432,11 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
 /**
  * Collects information about all available dbfs directories stored in TreeItem
  *
- * @param string $directory
- *         Not used at the moment!
+ * @param string $directory Not used at the moment!
  * @param TreeItem $oRootItem
  * @param int $level
- * @param int $client
- *         client ID
- *
- * @throws cDbException
- * @throws cException
+ * @param int $client client ID
+ * @throws cDbException|cException
  */
 function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $client)
 {
@@ -553,20 +491,13 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
 /**
  * Returns thumbnail for a specific upload file
  *
- * @param string $sFile
- *         Filename to retrieve the thumbnail for
- * @param int $iMaxSize
- *         Thumb dimension (size of with and height)
- *
+ * @param string $sFile Filename to retrieve the thumbnail for
+ * @param int $iMaxSize Thumb dimension (size of with and height)
  * @return string
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function uplGetThumbnail($sFile, $iMaxSize)
+function uplGetThumbnail(string $sFile, $iMaxSize): string
 {
-
     $client = cRegistry::getClientId();
     $cfgClient = cRegistry::getClientConfig($client);
 
@@ -608,137 +539,134 @@ function uplGetThumbnail($sFile, $iMaxSize)
 /**
  * Returns the icon for a file type
  *
- * @param string $sFile
- *         Filename to retrieve the extension for
- * @return string
- *         Icon for the file type
+ * @param string $sFile Filename to retrieve the extension for
+ * @return string Icon for the file type
  */
-function uplGetFileIcon($sFile)
+function uplGetFileIcon(string $sFile): string
 {
-
     $cfg = cRegistry::getConfig();
 
     $sPathFiletypes = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'filetypes/';
     $sFileType = cString::toLowerCase(cFileHandler::getExtension($sFile));
 
     switch ($sFileType) {
-        case "sxi":
-        case "sti":
-        case "pps":
-        case "pot":
-        case "kpr":
-        case "pptx":
-        case "potx":
-        case "pptm":
-        case "potm":
-        case "ppt":
-            $icon = "ppt.gif";
+        case 'sxi':
+        case 'sti':
+        case 'pps':
+        case 'pot':
+        case 'kpr':
+        case 'pptx':
+        case 'potx':
+        case 'pptm':
+        case 'potm':
+        case 'ppt':
+            $icon = 'ppt.gif';
             break;
-        case "doc":
-        case "dot":
-        case "sxw":
-        case "stw":
-        case "sdw":
-        case "docx":
-        case "dotx":
-        case "docm":
-        case "dotm":
-        case "kwd":
-            $icon = "word.gif";
+        case 'doc':
+        case 'dot':
+        case 'sxw':
+        case 'stw':
+        case 'sdw':
+        case 'docx':
+        case 'dotx':
+        case 'docm':
+        case 'dotm':
+        case 'kwd':
+            $icon = 'word.gif';
             break;
-        case "xls":
-        case "sxc":
-        case "stc":
-        case "xlw":
-        case "xlt":
-        case "csv":
-        case "ksp":
-        case "xlsx":
-        case "xltx":
-        case "xlsm":
-        case "xlsb":
-        case "xltm":
-        case "sdc":
-            $icon = "excel.gif";
+        case 'xls':
+        case 'sxc':
+        case 'stc':
+        case 'xlw':
+        case 'xlt':
+        case 'csv':
+        case 'ksp':
+        case 'xlsx':
+        case 'xltx':
+        case 'xlsm':
+        case 'xlsb':
+        case 'xltm':
+        case 'sdc':
+            $icon = 'excel.gif';
             break;
-        case "txt":
-        case "rtf":
-            $icon = "txt.gif";
+        case 'txt':
+        case 'rtf':
+            $icon = 'txt.gif';
             break;
-        case "gif":
-            $icon = "gif.gif";
+        case 'gif':
+            $icon = 'gif.gif';
             break;
-        case "png":
-            $icon = "png.gif";
+        case 'png':
+            $icon = 'png.gif';
             break;
-        case "jpeg":
-        case "jpg":
-            $icon = "jpg.gif";
+        case 'jpeg':
+        case 'jpg':
+            $icon = 'jpg.gif';
             break;
-        case "html":
-        case "htm":
-            $icon = "html.gif";
+        case 'html':
+        case 'htm':
+            $icon = 'html.gif';
             break;
-        case "lha":
-        case "rar":
-        case "arj":
-        case "bz2":
-        case "bz":
-        case "gz":
-        case "tar":
-        case "tbz2":
-        case "tbz":
-        case "tgz":
-        case "zip":
-            $icon = "zip.gif";
+        case 'lha':
+        case 'rar':
+        case 'arj':
+        case 'bz2':
+        case 'bz':
+        case 'gz':
+        case 'tar':
+        case 'tbz2':
+        case 'tbz':
+        case 'tgz':
+        case 'zip':
+            $icon = 'zip.gif';
             break;
-        case "pdf":
-            $icon = "pdf.gif";
+        case 'pdf':
+            $icon = 'pdf.gif';
             break;
-        case "mov":
-        case "avi":
-        case "mpg":
-        case "mpeg":
-        case "wmv":
-            $icon = "movie.gif";
+        case 'mov':
+        case 'avi':
+        case 'mpg':
+        case 'mpeg':
+        case 'wmv':
+            $icon = 'movie.gif';
             break;
-        case "swf":
-            $icon = "swf.gif";
+        case 'swf':
+            $icon = 'swf.gif';
             break;
-        case "js":
-            $icon = "js.gif";
+        case 'js':
+            $icon = 'js.gif';
             break;
-        case "vcf":
-            $icon = "vcf.gif";
+        case 'vcf':
+            $icon = 'vcf.gif';
             break;
-        case "odf":
-            $icon = "odf.gif";
+        case 'odf':
+            $icon = 'odf.gif';
             break;
-        case "php":
-            $icon = "php.gif";
+        case 'php':
+            $icon = 'php.gif';
             break;
-        case "mp3":
-        case "wma":
-        case "ogg":
-        case "mp4":
-            $icon = "sound.gif";
+        case 'mp3':
+        case 'wma':
+        case 'ogg':
+        case 'mp4':
+            $icon = 'sound.gif';
             break;
-        case "psd":
-        case "ai":
-        case "eps":
-        case "cdr":
-        case "qxp":
-        case "ps":
-            $icon = "design.gif";
+        case 'psd':
+        case 'ai':
+        case 'eps':
+        case 'cdr':
+        case 'qxp':
+        case 'ps':
+            $icon = 'design.gif';
             break;
-        case "css":
-            $icon = "css.gif";
+        case 'css':
+            $icon = 'css.gif';
             break;
         default:
             if (cFileHandler::exists($sPathFiletypes . $sFileType . '.gif')) {
                 $icon = $sFileType . '.gif';
             } else {
-                $icon = "unknown.gif";
+                $icon = 'unknown.gif';
             }
             break;
     }
@@ -749,17 +677,12 @@ function uplGetFileIcon($sFile)
 /**
  * Returns the description for a file type
  *
- * @param string $sExtension
- *         Extension to use
- *
- * @return string
- *         Text for the file type
- *
+ * @param string $sExtension Extension to use
+ * @return string Text for the file type
  * @throws cException
  */
-function uplGetFileTypeDescription($sExtension)
+function uplGetFileTypeDescription($sExtension): string
 {
-
     switch ($sExtension) {
         // Presentation files
         case "sxi":
@@ -895,13 +818,9 @@ function uplGetFileTypeDescription($sExtension)
  * Removes unwanted characters from passed filename.
  *
  * @param string $filename
- *
  * @return string
- *
- * @throws cDbException
- * @throws cException
  */
-function uplCreateFriendlyName($filename)
+function uplCreateFriendlyName(string $filename): string
 {
     static $encoding;
 
@@ -946,14 +865,10 @@ function uplCreateFriendlyName($filename)
  * - internal_notice
  *
  * @param string $searchTerm
- *
  * @return array
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function uplSearch($searchTerm)
+function uplSearch(string $searchTerm): array
 {
     $items = [];
 
@@ -1047,34 +962,20 @@ function uplSearch($searchTerm)
 }
 
 /**
- * Returns file extension
- *
- * @param string $sFile
- * @param string $sDirname
- *
- * @return string
- *
- * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         use cFileHandler::getExtension
- *
+ * @deprecated [2015-05-21] use {@see cFileHandler::getExtension()} instead
  */
 function uplGetFileExtension($sFile, $sDirname = '')
 {
-    cDeprecated('This method is deprecated and is not needed any longer');
+    cDeprecated('The function uplGetFileExtension() is deprecated, use cFileHandler::getExtension() instead');
     return cFileHandler::getExtension($sDirname . $sFile);
 }
 
 /**
  * Returns list of directory names to exclude e.g. from directory listings.
  *
- * @return array
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function uplGetDirectoriesToExclude()
+function uplGetDirectoriesToExclude(): array
 {
     static $mDirsToExclude = NULL;
     if (isset($mDirsToExclude)) {

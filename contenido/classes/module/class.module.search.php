@@ -151,8 +151,7 @@ class cModuleSearch extends cModuleHandler
      * output files).
      *
      * @return array
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function searchForAllModules()
     {
@@ -206,8 +205,7 @@ class cModuleSearch extends cModuleHandler
      * outputs files.
      *
      * @return array
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getModules()
     {
@@ -253,8 +251,7 @@ class cModuleSearch extends cModuleHandler
      * Search for modules in "name" column of module.
      *
      * @return array
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function findeModulWithName()
     {
@@ -279,8 +276,7 @@ class cModuleSearch extends cModuleHandler
      * Search for modules in input file of the module.
      *
      * @return array
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function findModulWithInput()
     {
@@ -305,8 +301,7 @@ class cModuleSearch extends cModuleHandler
      * Search for modules in output of modules of current client.
      *
      * @return array
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function findModulWithOutput()
     {
@@ -331,8 +326,7 @@ class cModuleSearch extends cModuleHandler
      * Search for modules in type column.
      *
      * @return array
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function findModuleWithType()
     {
@@ -357,8 +351,7 @@ class cModuleSearch extends cModuleHandler
      * Search for modules in description column of modules.
      *
      * @return array
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function findModuleWithDescription()
     {

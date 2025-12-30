@@ -76,10 +76,8 @@ class cUriBuilderFrontcontent extends cUriBuilder
      *
      * @param array $aParams
      * @param bool $bUseAbsolutePath [optional]
-     * @param array $aConfig [optional]
-     *         Is not used at the moment
-     * @throws cInvalidArgumentException
-     * @throws cException
+     * @param array $aConfig [optional] Is not used at the moment
+     * @throws cInvalidArgumentException|cException
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = [])
     {

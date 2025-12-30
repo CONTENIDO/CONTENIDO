@@ -33,14 +33,12 @@ class ArticleForum extends Item
      * ArticleForum constructor.
      *
      * @param bool $id
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('user_forum'), 'id_user_forum');
-        $this->setFilters([], []);
+        $this->setFilters();
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }

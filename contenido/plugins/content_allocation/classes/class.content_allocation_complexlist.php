@@ -39,9 +39,7 @@ class pApiContentAllocationComplexList extends pApiTree
      * pApiContentAllocationComplexList constructor
      *
      * @param string $uuid
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($uuid)
     {

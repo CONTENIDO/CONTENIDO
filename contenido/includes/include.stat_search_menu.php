@@ -14,10 +14,10 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$page = new cGuiPage("stat_search_menu");
+$page = new cGuiPage('stat_search_menu');
 
 // don't display anything if the feature is turned off
-if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
+if (getEffectiveSetting('search', 'term_tracking', 'on') != 'on') {
     die();
 }
 

@@ -1,12 +1,12 @@
 @import "notifications.css"; /* @see CON-1992 */
 
 a.standard {
-	font-family: verdana, arial, helvetica, sans-serif;
-	text-decoration: none;
-	font-size: 11px;
-	color: #000000;
+    font-family: verdana, arial, helvetica, sans-serif;
+    text-decoration: none;
+    font-size: 11px;
+    color: #000000;
 }
 
 a.standard:hover {
-	color: #0060B1;
+    color: #0060B1;
 }

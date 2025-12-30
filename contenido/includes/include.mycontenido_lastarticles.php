@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude("includes", "functions.con.php");
+cInclude('includes', 'functions.con.php');
 
 global $tpl, $db;
 

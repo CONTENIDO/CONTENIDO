@@ -38,8 +38,7 @@ trait cItemCollectionIdsByClientIdTrait
      *
      * @param int $clientId
      * @return array List of ids
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getIdsByClientId(int $clientId): array
     {

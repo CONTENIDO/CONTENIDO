@@ -24,11 +24,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0016 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.5";
+    public $maxVersion = '4.9.5';
 
     public function _execute()
     {
-        if ($_SESSION['setuptype'] == 'upgrade') {
+        if ($this->_setupType == 'upgrade') {
             // GROUPS
             $groupColl = new cApiGroupCollection();
 
@@ -36,8 +36,8 @@ class cUpgradeJob_0016 extends cUpgradeJobAbstract
             $groupColl->select();
 
             while ($group = $groupColl->next()) {
-                $groupname = stripcslashes(preg_replace("/\"/", "", ($group->get('groupname'))));
-                $description = stripcslashes(preg_replace("/\"/", "", ($group->get('description') ?? '')));
+                $groupname = stripcslashes(preg_replace("/\"/", '', ($group->get('groupname'))));
+                $description = stripcslashes(preg_replace("/\"/", '', ($group->get('description') ?? '')));
 
                 $group->set('groupname', $groupname);
                 $group->set('description', $description);

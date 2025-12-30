@@ -38,57 +38,31 @@ class NoteCollection extends cApiCommunicationCollection
     }
 
     /**
-     * Selects one or more items from the database
+     * Extends the where statement. See the original function for the parameters.
      *
-     * This function only extends the where statement. See the
-     * original function for the parameters.
-     *
-     * @param string $where [optional]
-     *                         Specifies the where clause.
-     * @param string $group_by [optional]
-     *                         Specifies the group by clause.
-     * @param string $order_by [optional]
-     *                         Specifies the order by clause.
-     * @param string $limit [optional]
-     *                         Specifies the limit by clause.
-     *
-     * @return bool
-     *         True on success, otherwise false
-     *
-     * @throws cDbException
-     * @see ItemCollection::select()
-     *
+     * @inheritDoc
      */
-    public function select($where = '', $group_by = '', $order_by = '', $limit = '')
+    public function select($where = '', $groupBy = '', $orderBy = '', $limit = '')
     {
         if ($where == '') {
-            $where = "comtype='note'";
+            $where = "`comtype` = 'note'";
         } else {
-            $where .= " AND comtype='note'";
+            $where .= " AND `comtype` = 'note'";
         }
 
-        return parent::select($where, $group_by, $order_by, $limit);
+        return parent::select($where, $groupBy, $orderBy, $limit);
     }
 
     /**
      * Creates a new note item.
      *
-     * @param string $itemtype
-     *                         Item type (usually the class name)
-     * @param mixed $itemid
-     *                         Item ID (usually the primary key)
-     * @param int $idlang
-     *                         Language-ID
-     * @param string $message
-     *                         Message to store
+     * @param string $itemtype Item type (usually the class name)
+     * @param mixed $itemid Item ID (usually the primary key)
+     * @param int $idlang Language-ID
+     * @param string $message Message to store
      * @param string $category [optional]
-     *
-     * @return NoteItem
-     *                         The new item
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @return NoteItem The new item
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function createItem($itemtype, $itemid, $idlang, $message, $category = ''): NoteItem
     {
@@ -132,7 +106,6 @@ class NoteView extends cHTMLIFrame
 {
 
     /**
-     *
      * @param string $sItemType
      * @param string $sItemId
      */
@@ -195,15 +168,8 @@ class NoteList extends cHTMLDiv
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @return string
-     *     generated markup
-     *
-     * @throws cDbException
-     * @throws cException
-     * @see cHTML::toHtml()
-     *
+     * @inheritDoc
+     * @throws cDbException|cException
      */
     public function toHtml(): string
     {
@@ -316,7 +282,6 @@ class NoteListItem extends cHTMLDiv
     }
 
     /**
-     *
      * @param bool $bDeleteable
      */
     public function setDeleteable($bDeleteable)
@@ -325,7 +290,6 @@ class NoteListItem extends cHTMLDiv
     }
 
     /**
-     *
      * @param bool $dark [optional]
      */
     public function setBackground($dark = false)
@@ -333,7 +297,6 @@ class NoteListItem extends cHTMLDiv
     }
 
     /**
-     *
      * @param string $sAuthor
      */
     public function setAuthor($sAuthor)
@@ -373,9 +336,6 @@ class NoteListItem extends cHTMLDiv
     }
 
     /**
-     *
-     * @return string
-     *         Generated markup
      * @see cHTML::render()
      */
     public function render(): string
@@ -390,7 +350,7 @@ class NoteListItem extends cHTMLDiv
         $table .= '</b></td><td class="text_right">';
         $table .= $this->_sDate;
 
-        if ($this->_bDeleteable == true) {
+        if ($this->_bDeleteable) {
             $oDeleteable = new cHTMLLink();
             $oDeleteable->setClass("con_img_button mgl3");
             $oDeletePic = new cHTMLImage(cRegistry::getBackendUrl() . '/images/delete.gif');
@@ -506,8 +466,6 @@ class NoteLink extends cHTMLLink
     }
 
     /**
-     * @return string
-     *         Generated markup
      * @see cHTML::render()
      */
     public function render(): string

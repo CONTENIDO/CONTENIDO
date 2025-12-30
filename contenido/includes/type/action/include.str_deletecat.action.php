@@ -14,10 +14,20 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cGuiNotification $notification
+ */
+
 cInclude('includes', 'functions.str.php');
 
-if ($perm->have_perm_area_action("str", "str_deletecat") || $perm->have_perm_area_action_item("str", "str_deletecat", $idcat)) {
+$idcat = cRegistry::getCategoryId();
+$perm = cRegistry::getPerm();
+
+if (
+    $perm->have_perm_area_action('str', 'str_deletecat')
+    || $perm->have_perm_area_action_item('str', 'str_deletecat', $idcat)
+) {
     $errno = strDeleteCategory($idcat);
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

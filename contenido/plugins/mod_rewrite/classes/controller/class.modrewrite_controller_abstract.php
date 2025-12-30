@@ -25,68 +25,57 @@ abstract class ModRewrite_ControllerAbstract
 {
 
     /**
-     * View object, holds all view variables
-     * @var  stdClass
+     * @var stdClass View object, holds all view variables
      */
     protected $_oView;
 
     /**
-     * Global CONTENIDO $cfg variable
-     * @var  array
+     * @var array Global CONTENIDO $cfg variable
      */
     protected $_cfg;
 
     /**
-     * Global CONTENIDO $client variable (client id)
-     * @var  int
+     * @var int Global CONTENIDO $client variable (client id)
      */
     protected $_client;
 
     /**
-     * Global CONTENIDO $area variable (area name/id)
-     * @var  int|string
+     * @var int|string Global CONTENIDO $area variable (area name/id)
      */
     protected $_area;
 
     /**
-     * Global CONTENIDO $action variable (send by request)
-     * @var  string
+     * @var string Global CONTENIDO $action variable (send by request)
      */
     protected $_action;
 
     /**
-     * Global CONTENIDO $frame variable (current frame in backend)
-     * @var  int
+     * @var int Global CONTENIDO $frame variable (current frame in backend)
      */
     protected $_frame;
 
     /**
-     * Global CONTENIDO $contenido variable (session id)
-     * @var  string
+     * @var string Global CONTENIDO $contenido variable (session id)
      */
     protected $_contenido;
 
     /**
-     * Plugin name
-     * @var  string
+     * @var string Plugin name
      */
     protected $_pluginName;
 
     /**
-     * Template file or template string to render
-     * @var  string
+     * @var ?string Template file or template string to render
      */
     protected $_template = NULL;
 
     /**
-     * Additional properties list
-     * @var  array
+     * @var array Additional properties list
      */
     protected $_properties = [];
 
     /**
-     * Debug flag
-     * @var  bool
+     * @var bool Debug flag
      */
     protected $_debug = false;
 
@@ -135,7 +124,7 @@ abstract class ModRewrite_ControllerAbstract
 
     /**
      * View property getter.
-     * @return  object
+     * @return object
      */
     public function getView()
     {
@@ -156,7 +145,7 @@ abstract class ModRewrite_ControllerAbstract
      * Property getter.
      * @param string $key
      * @param mixed $default
-     * @return  mixed
+     * @return mixed
      */
     public function getProperty($key, $default = NULL)
     {
@@ -165,30 +154,29 @@ abstract class ModRewrite_ControllerAbstract
 
     /**
      * Template setter.
-     * @param string $sTemplate Either full path and name of template file or a template string.
+     * @param string $template Either full path and name of template file or a template string.
      */
-    public function setTemplate($sTemplate)
+    public function setTemplate(string $template)
     {
-        $this->_template = $sTemplate;
+        $this->_template = $template;
     }
 
     /**
      * Template getter.
-     * @return  string
      */
-    public function getTemplate()
+    public function getTemplate(): ?string
     {
         return $this->_template;
     }
 
     /**
      * Renders template by replacing all view variables in template.
-     * @param string $template Either full path and name of template file or a template string.
-     *                  If not passed, previous set template will be used.
+     * @param ?string $template Either full path and name of template file or a template string.
+     *                If not passed, previous set template will be used.
      * @return  void
      * @throws cException if no template is set
      */
-    public function render($template = NULL)
+    public function render(?string $template = NULL)
     {
         if ($template == NULL) {
             $template = $this->_template;
@@ -212,7 +200,7 @@ abstract class ModRewrite_ControllerAbstract
      *
      * @param string $key
      * @param mixed $default The default value
-     * @return  mixed
+     * @return mixed
      */
     protected function _getParam($key, $default = NULL)
     {

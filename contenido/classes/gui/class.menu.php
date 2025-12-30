@@ -168,13 +168,13 @@ class cGuiMenu
      * will be truncated with ellipsis. A value of 0 removes the maximum
      * length constraint.
      *
-     * @param int $maxlength
+     * @param int $maxLength
      * @return void
      * @since CONTENIDO 4.10.2
      */
-    public function setToolTipMaxLength(int $maxlength = 0)
+    public function setToolTipMaxLength(int $maxLength = 0)
     {
-        $this->_toolTipMaxLength = $maxlength;
+        $this->_toolTipMaxLength = $maxLength;
     }
 
     /**
@@ -251,13 +251,11 @@ class cGuiMenu
     }
 
     /**
-     *
-     * @param bool $print [optional]
-     *
-     * @return string
+     * @param bool $print
+     * @return ?string
      * @throws cInvalidArgumentException
      */
-    public function render($print = true)
+    public function render(bool $print = true)
     {
         $cfg = cRegistry::getConfig();
         $tpl = new cTemplate();
@@ -321,13 +319,11 @@ class cGuiMenu
 
                 $actions = '';
                 if (isset($this->actions[$key]) && is_array($this->actions[$key])) {
-                    foreach ($this->actions[$key] as $key => $singleAction) {
-                        #$actions .= '&nbsp;' . $singleAction . '&nbsp;';
+                    foreach ($this->actions[$key] as $singleAction) {
                         $actions .= $singleAction;
                     }
                 }
                 if ($actions) {
-                    #$actions = str_replace('&nbsp;&nbsp;', '&nbsp;', $actions);
                     $actions = str_replace('&nbsp;', '', $actions);
                 }
 
@@ -341,8 +337,9 @@ class cGuiMenu
             $rendered .= "\n" . $this->_getRowMouseEventHandlerJs();
         }
 
-        if ($print == true) {
+        if ($print) {
             echo $rendered;
+            return null;
         } else {
             return $rendered;
         }

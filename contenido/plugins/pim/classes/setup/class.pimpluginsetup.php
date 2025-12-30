@@ -27,12 +27,12 @@ class PimPluginSetup
     /**
      * File name of Xml configuration file for plugins
      */
-    const PLUGIN_XML_FILENAME = "plugin.xml";
+    public const PLUGIN_XML_FILENAME = "plugin.xml";
 
     /**
      * Specific sql prefix for plugins
      */
-    const PLUGIN_SQL_PREFIX = '!PLUGIN_PREFIX!';
+    public const PLUGIN_SQL_PREFIX = '!PLUGIN_PREFIX!';
 
     /**
      * PimPluginCollection instance
@@ -395,13 +395,9 @@ class PimPluginSetup
      * Global function for uninstall and status mode
      * Install mode uses an own dependencies function
      *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function checkDependencies()
+    public function checkDependencies(): bool
     {
         // Initializing
         $cfg = cRegistry::getConfig();
@@ -524,8 +520,7 @@ class PimPluginSetup
      * @param string $file The plugin setup SQL file (full path).
      * @param string $pattern The pattern to match for found SQL to execute.
      * @return bool True on success otherwise false.
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _processSetupSql(string $file, string $pattern): bool
     {

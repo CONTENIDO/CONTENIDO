@@ -33,36 +33,36 @@ class cHTMLPasswordbox extends cHTMLFormElement
      *
      * Creates an HTML password box.
      *
-     * If no additional parameters are specified, the default width is
-     * 20 units.
+     * If no additional parameters are specified, the default width is 20 units.
      *
-     * @param string $name
-     *         Name of the element
-     * @param string $value [optional]
-     *         Initial value of the box
-     * @param int $width [optional]
-     *         width of the text box
-     * @param int $maxlength [optional]
-     *         maximum input length of the box
-     * @param string $id [optional]
-     *         ID of the element
-     * @param bool $disabled [optional]
-     *         Item disabled flag (non-empty to set disabled)
-     * @param int|null $tabindex [optional]
-     *         Tab index for form elements
-     * @param string $accessKey [optional]
-     *         Key to access the field
-     * @param string $class [optional]
-     *         the class of this element
+     * @param string $name Name of the element
+     * @param string $value [optional] Initial value of the box
+     * @param int $width [optional] Width of the text box
+     * @param int $maxLength [optional] Maximum input length of the box
+     * @param string $id [optional] ID of the element
+     * @param bool $disabled [optional] Item disabled flag (non-empty to set disabled)
+     * @param ?int $tabindex [optional] Tab index for form elements
+     * @param string $accessKey [optional] Key to access the field
+     * @param string $class [optional] The class of this element
      */
-    public function __construct($name, $value = '', $width = 0, $maxlength = 0, $id = '', $disabled = false, $tabindex = null, $accessKey = '', $class = '')
+    public function __construct(
+        $name,
+        $value = '',
+        $width = 0,
+        $maxLength = 0,
+        $id = '',
+        $disabled = false,
+        $tabindex = null,
+        $accessKey = '',
+        $class = ''
+    )
     {
         parent::__construct($name, $id, $disabled, $tabindex, $accessKey, $class);
         $this->_tag = 'input';
         $this->setValue($value);
 
         $this->setWidth($width);
-        $this->setMaxLength($maxlength);
+        $this->setMaxLength($maxLength);
 
         $this->updateAttribute('type', 'password');
     }
@@ -71,27 +71,23 @@ class cHTMLPasswordbox extends cHTMLFormElement
      * Sets the autofill property of the element.
      *
      * @param boolean $autofill - The autofill flag
-     * @return cHTMLPasswordbox|cHTML
      * @since CONTENIDO 4.10.2
      */
-    public function setAutofill(bool $autofill)
+    public function setAutofill(bool $autofill): self
     {
         $this->_autofill = $autofill;
+
         return $this;
     }
 
     /**
      * Sets the width of the text box.
      *
-     * @param int $width
-     *         width of the text box
-     * @return cHTMLPasswordbox
-     *         $this for chaining
+     * @param int $width Width of the text box
      */
-    public function setWidth($width)
+    public function setWidth($width): self
     {
         $width = cSecurity::toInteger($width);
-
         if ($width <= 0) {
             $width = 20;
         }
@@ -102,15 +98,11 @@ class cHTMLPasswordbox extends cHTMLFormElement
     /**
      * Sets the maximum input length of the text box.
      *
-     * @param int $maxLength
-     *         maximum input length
-     * @return cHTMLPasswordbox
-     *         $this for chaining
+     * @param int $maxLength Maximum input length
      */
-    public function setMaxLength($maxLength)
+    public function setMaxLength($maxLength): self
     {
         $maxLength = cSecurity::toInteger($maxLength);
-
         if ($maxLength <= 0) {
             return $this->removeAttribute('maxlength');
         } else {
@@ -121,12 +113,9 @@ class cHTMLPasswordbox extends cHTMLFormElement
     /**
      * Sets the initial value of the text box.
      *
-     * @param string $value
-     *         Initial value
-     * @return cHTMLPasswordbox
-     *         $this for chaining
+     * @param string $value Initial value
      */
-    public function setValue($value)
+    public function setValue($value): self
     {
         return $this->updateAttribute('value', $value);
     }
@@ -140,13 +129,10 @@ class cHTMLPasswordbox extends cHTMLFormElement
      * Setting the field initially to readonly and enabling it again after
      * getting focus does the trick!
      *
-     * @return string
      * @since CONTENIDO 4.10.2
      * @TODO This function could be moved to somewhere else, because all input, textarea,
      *       select and form elements could use the autocomplete attribute.
      *       But, only input and textarea can have readonly attribute.
-     *
-     *
      */
     public function toHtml(): string
     {

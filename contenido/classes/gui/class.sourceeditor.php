@@ -80,25 +80,18 @@ class cGuiSourceEditor extends cGuiPage
      *
      * Initializes the class and its parent.
      *
-     * @param string $filename
-     *                           Name of the edited file
-     * @param bool $versioning [optional]
-     *                           Is versioning activated or not. Defaults to true
-     * @param string $filetype [optional]
-     *                           The type of the file. If omitted the class tries to determine
-     *                           the type from the area
-     * @param string $filepath [optional]
-     *                           Path to the file. If omitted the class tries to determine the
-     *                           path from the type and the area
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param string $filename Name of the edited file
+     * @param bool $versioning [optional] Is versioning activated or not. Defaults to true
+     * @param string $filetype [optional] The type of the file. If omitted the class tries to determine
+     *      the type from the area
+     * @param string $filepath [optional] Path to the file. If omitted the class tries to determine the
+     *      path from the type and the area
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function __construct($filename, $versioning = true, $filetype = '', $filepath = '')
     {
         $cfg = cRegistry::getConfig();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
         $perm = cRegistry::getPerm();
         $area = cRegistry::getArea();
         $action = cRegistry::getAction();
@@ -161,17 +154,13 @@ class cGuiSourceEditor extends cGuiPage
     /**
      * Updates the file according to the options in the array.
      *
-     * @param array $request
-     *         Request array. Usually _REQUEST
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param array $request Request array. Usually _REQUEST
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function update(array $request)
     {
         $cfg = cRegistry::getConfig();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
         $db = cRegistry::getDb();
         $frame = cRegistry::getFrame();
         $perm = cRegistry::getPerm();
@@ -340,14 +329,11 @@ class cGuiSourceEditor extends cGuiPage
     /**
      * Renders the page.
      *
-     * @param cTemplate|null $template
-     * @param bool $return
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param ?cTemplate $template
+     * @throws cDbException|cException|cInvalidArgumentException
      * @see cGuiPage::render()
      */
-    public function render($template = NULL, $return = false)
+    public function render($template = NULL, bool $return = false)
     {
         $cfg = cRegistry::getConfig();
         $area = cRegistry::getArea();

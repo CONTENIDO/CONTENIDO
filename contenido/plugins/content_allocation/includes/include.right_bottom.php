@@ -50,7 +50,7 @@ if (isset($requestTreeItem['name'])) {
     $aPostTreeItem['name'] = $sName;
 }
 
-$oPage = new cGuiPage("content_allocation_edit", "content_allocation");
+$oPage = new cGuiPage('content_allocation_edit', 'content_allocation');
 $oTree = new pApiContentAllocationTreeView('f7771624-4874-4745-8b7e-21a49a71a447');
 
 // store item

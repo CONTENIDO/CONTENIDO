@@ -29,10 +29,8 @@ abstract class ModRewriteBase
 
     /**
      * Returns enabled state of mod rewrite plugin
-     *
-     * @return  bool
      */
-    public static function isEnabled()
+    public static function isEnabled(): bool
     {
         return self::getConfig('use', 0) == 1;
     }
@@ -52,8 +50,8 @@ abstract class ModRewriteBase
      *
      * @param string $key Name of configuration key
      * @param mixed $default Default value to return as a fallback
-     * @return  mixed   Desired value mr configuration, either the full configuration
-     *                  or one of the desired subpart
+     * @return mixed Desired value mr configuration, either the full configuration
+     *      or one of the desired subpart
      */
     public static function getConfig($key = NULL, $default = NULL)
     {

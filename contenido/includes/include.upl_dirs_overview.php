@@ -32,11 +32,13 @@ cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.str.php');
 
 // Display critical error if client or language does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getCategoryId();
+$lang = cRegistry::getLanguageId();
 if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
-    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
-    $oPage = new cGuiPage("upl_dirs_overview");
+    $message = $client && !cRegistry::getClient()->isLoaded()
+        ? i18n('No Client selected')
+        : i18n('No language selected');
+    $oPage = new cGuiPage('upl_dirs_overview');
     $oPage->displayCriticalError($message);
     $oPage->render();
     return;
@@ -51,12 +53,9 @@ $cfgClient = cRegistry::getClientConfig();
 /**
  *
  * @param TreeItem $item
- *
- * @return string
- *
  * @throws cException
  */
-function getUplExpandCollapseButton($item)
+function getUplExpandCollapseButton($item): string
 {
     if (count($item->getSubItems()) > 0) {
         if ($item->isCollapsed() == true) {

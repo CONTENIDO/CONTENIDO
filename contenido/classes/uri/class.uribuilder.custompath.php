@@ -52,10 +52,8 @@ class cUriBuilderCustomPath extends cUriBuilder
 
     /**
      * Get instance of self.
-     *
-     * @return cUriBuilderCustomPath
      */
-    public static function getInstance()
+    public static function getInstance(): self
     {
         if (self::$_instance == NULL) {
             self::$_instance = new self();
@@ -66,25 +64,18 @@ class cUriBuilderCustomPath extends cUriBuilder
     /**
      * Builds a URL in index-a-1.html style.
      *
-     * Index keys of $aParams will be used as "a", corresponding values
-     * as "1" in this sample.
+     * Index keys of $aParams will be used as "a", corresponding values as "1" in this sample.
      *
      * For creating the location string $aParams needs to have keys
      * idcat, level, lang and at least one custom key.
      *
      * If level is not set, level 0 will be used as default.
      *
-     * @param array $aParams
-     *                                Required keys are: idcat, level, lang and at least one
-     *                                custom key.
+     * @param array $aParams Required keys are: idcat, level, lang and at least one custom key.
      * @param bool $bUseAbsolutePath [optional]
-     * @param array $aConfig [optional]
-     *                                If not set, will use UriBuilderConfig::getConfig()
-     *
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param array $aConfig [optional] If not set, will use UriBuilderConfig::getConfig()
+     * @throws cException|cInvalidArgumentException
      * @todo Somehow get around using prCreateURLNameLocationString()
-     *
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = [])
     {
@@ -109,8 +100,19 @@ class cUriBuilderCustomPath extends cUriBuilder
         $this->aConfig = $aConfig;
 
         $sCategoryString = '';
-        prCreateURLNameLocationString(intval($aParams['idcat']), "/", $sCategoryString, false, "", $aParams['level'], $aParams['lang'], true, false);
-        if (cString::getStringLength($sCategoryString) > 0 && cString::getPartOfString($sCategoryString, -1) != '/') {
+        prCreateURLNameLocationString(
+            intval($aParams['idcat']),
+            '/',
+            $sCategoryString,
+            false,
+            '',
+            $aParams['level'],
+            $aParams['lang']
+        );
+        if (
+            cString::getStringLength($sCategoryString) > 0
+            && cString::getPartOfString($sCategoryString, -1) != '/'
+        ) {
             $sCategoryString .= '/';
         }
         $this->sUrl = $bUseAbsolutePath === true ? $this->sHttpBasePath : '';

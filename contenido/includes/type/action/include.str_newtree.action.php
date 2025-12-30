@@ -14,13 +14,24 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cGuiNotification $notification
+ * @var string $categoryname
+ * @var string $categoryalias
+ * @var int $visible
+ * @var int $public
+ * @var int $idtplcfg
+ */
+
 cInclude('includes', 'functions.str.php');
 
-if ($perm->have_perm_area_action("str", "str_newtree")) {
+$perm = cRegistry::getPerm();
+
+if ($perm->have_perm_area_action('str', 'str_newtree')) {
     $tmp_newid = strNewTree($categoryname, $categoryalias, $visible, $public, $idtplcfg);
     strRemakeTreeTable();
     cApiCecHook::execute(
-        "Contenido.Action.str_newtree.AfterCall",
+        'Contenido.Action.str_newtree.AfterCall',
         [
             'newcategoryid' => $tmp_newid,
             'categoryname' => $categoryname,
@@ -31,5 +42,5 @@ if ($perm->have_perm_area_action("str", "str_newtree")) {
         ]
     );
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

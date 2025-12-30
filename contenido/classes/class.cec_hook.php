@@ -76,16 +76,12 @@ class cApiCecHook
 {
 
     /**
-     * Temporary  stored break condition.
-     *
-     * @var int|NULL
+     * @var ?int Temporary stored break condition.
      */
     private static $_breakCondition = NULL;
 
     /**
-     * Temporary  stored default return value of CEC functions
-     *
-     * @var mixed
+     * @var mixed Temporary  stored default return value of CEC functions
      */
     private static $_defaultReturnValue = NULL;
 
@@ -99,8 +95,7 @@ class cApiCecHook
     private static $_returnArgumentPos = 1;
 
     /**
-     * Temporary  setting of break condition and optional the default return
-     * value.
+     * Temporary  setting of break condition and optional the default return value.
      *
      * @param mixed $condition
      * @param mixed $defaultReturnValue [optional]
@@ -122,28 +117,24 @@ class cApiCecHook
     }
 
     /**
-     * Temporary  setting of position in argument to return.
+     * Temporary setting of position in argument to return.
      *
-     * @param int $pos
-     *         Position, feasible value greater 0
-     *
+     * @param int $pos Position, feasible value greater 0
      * @throws cInvalidArgumentException if the given position is less than 1
      */
-    public static function setReturnArgumentPos($pos)
+    public static function setReturnArgumentPos(int $pos)
     {
-        if ((int)$pos < 1) {
+        if ($pos < 1) {
             throw new cInvalidArgumentException('Return position has to be greater or equal than 1.');
         }
-        self::$_returnArgumentPos = (int)$pos;
+        self::$_returnArgumentPos = $pos;
     }
 
     /**
-     * Method to execute registered functions for CONTENIDO Extension Chainer
-     * (CEC).
-     * Gets the desired CEC iterator and executes each registered chain function
-     * by passing the given arguments to it. NOTE: the first param is interpreted
-     * as $chainName. NOTE: There is no restriction for number of passed
-     * parameter.
+     * Method to execute registered functions for CONTENIDO Extension Chainer (CEC).
+     * Gets the desired CEC iterator and executes each registered chain function by passing the given
+     * arguments to it. NOTE: the first param is interpreted as $chainName. NOTE: There is no restriction
+     * for number of passed parameter.
      */
     public static function execute()
     {
@@ -170,16 +161,13 @@ class cApiCecHook
     }
 
     /**
-     * Method to execute registered functions for CONTENIDO Extension Chainer
-     * (CEC).
-     * Gets the desired CEC iterator and executes each registered chain
-     * function. You can pass as many parameters as you want. NOTE: the first
-     * param is interpreted as $chainName. NOTE: There is no restriction for
-     * number of passed parameter. NOTE: If no chain function is registered,
-     * $_defaultReturnValue will be returned.
+     * Method to execute registered functions for CONTENIDO Extension Chainer (CEC).
+     * Gets the desired CEC iterator and executes each registered chain function. You can pass as many
+     * parameters as you want. NOTE: the first param is interpreted as $chainName.
+     * NOTE: There is no restriction for number of passed parameter.
+     * NOTE: If no chain function is registered, $_defaultReturnValue will be returned.
      *
-     * @return mixed
-     *         Parameter changed/processed by chain functions.
+     * @return mixed Parameter changed/processed by chain functions.
      */
     public static function executeAndReturn()
     {
@@ -223,14 +211,13 @@ class cApiCecHook
     /**
      * CEC function to process chains until a break condition occurs.
      *
-     * Gets the desired CEC iterator and executes each registered chain function
-     * as long as defined break condition doesn't occur. NOTE: the first
-     * param is interpreted as $chainName. NOTE: There is no restriction for
-     * number of passed parameter. NOTE: If no chain function is registered,
-     * $_defaultReturnValue will be returned.
+     * Gets the desired CEC iterator and executes each registered chain function as long as defined
+     * break condition doesn't occur.
+     * NOTE: the first param is interpreted as $chainName.
+     * NOTE: There is no restriction for number of passed parameter.
+     * NOTE: If no chain function is registered, $_defaultReturnValue will be returned.
      *
-     * @return mixed
-     *         The break condition or its default value
+     * @return mixed The break condition or its default value
      */
     public static function executeWhileBreakCondition()
     {
@@ -280,16 +267,13 @@ class cApiCecHook
     /**
      * Used to debug some status information.
      *
-     * @param mixed $var
-     *                    The variable to dump
-     * @param string $msg [optional]
-     *                    Additional message
-     *
+     * @param mixed $var The variable to dump
+     * @param string $msg Additional message
      * @throws cInvalidArgumentException
      */
-    private static function _debug($var, $msg = '')
+    private static function _debug($var, string $msg = '')
     {
-        $content = ($msg !== '') ? $msg . ': ' : '';
+        $content = (!empty($msg)) ? $msg . ': ' : '';
         if (is_object($var) || is_array($var)) {
             $content .= print_r($var, true);
         } else {

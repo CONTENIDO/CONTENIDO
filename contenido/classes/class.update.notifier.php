@@ -472,9 +472,7 @@ class cUpdateNotifier
      *
      * @param array $aXMLContent
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function handleVendorUpdate($aXMLContent)
     {
@@ -588,8 +586,7 @@ class cUpdateNotifier
      *
      * @return string
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function getHashProperty()
     {
@@ -602,9 +599,7 @@ class cUpdateNotifier
      *
      * @param $aXMLContent
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function updateHashProperty($aXMLContent)
     {
@@ -712,11 +707,8 @@ class cUpdateNotifier
                 $description = $doc->getXpathValue('*/channel/item/description', $iCnt);
                 $date = $doc->getXpathValue('*/channel/item/pubDate', $iCnt);
 
-                // hotfix do not call conHtmlentities because of different
-                // umlaut handling on PHP 5.3 and PHP 5.4
-                // perhaps it is a bug in conHtmlentities.
-                $title = @utf8_encode($title);
-                $sText = @utf8_encode($description);
+                $title = cString::convertEncoding($title);
+                $sText = cString::convertEncoding($description);
 
                 if (cString::getStringLength($sText) > 150) {
                     $sText = cString::trimAfterWord($sText, 150) . '...';

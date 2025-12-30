@@ -30,7 +30,7 @@ $sortorder = cSecurity::toString($_REQUEST['sortorder'] ?? 'asc');
 $filter = cSecurity::toString($_REQUEST['filter'] ?? '');
 $userid = cSecurity::toString($_GET['userid'] ?? '');
 
-$oPage = new cGuiPage("rights_menu");
+$oPage = new cGuiPage('rights_menu');
 
 $cApiUserCollection = new cApiUserCollection();
 $cApiUserCollection->query();

@@ -18,21 +18,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Adds sorting images to string
  *
- * @param int $index
- * @param string $text
- *
- * @return string
- *
  * @throws cException
  */
-function addSortImages($index, $text)
+function addSortImages(int $index, string $text): string
 {
     $cfg = cRegistry::getConfig();
     $sortUp = '<img src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'sort_up.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
     $sortDown = '<img src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'sort_down.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
 
-    if ($_REQUEST["sortby"] == $index) {
-        if ($_REQUEST["sortmode"] == 'ASC') {
+    if (($_REQUEST['sortby'] ?? null) == $index) {
+        if (($_REQUEST['sortmode'] == null) == 'ASC') {
             $sortString = $text . $sortUp;
         } else {
             $sortString = $text . $sortDown;
@@ -50,12 +45,12 @@ $perm = cRegistry::getPerm();
 $sess = cRegistry::getSession();
 $cfg = cRegistry::getConfig();
 $area = cRegistry::getArea();
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getCategoryId();
 $lang = cRegistry::getLanguageId();
 $frame = cRegistry::getFrame();
 $action = cRegistry::getAction() ?? 'con_translate_view';
 
-$page = new cGuiPage("con_translate");
+$page = new cGuiPage('con_translate');
 
 // Display critical error if no valid client is selected
 if ($client < 1) {
@@ -160,7 +155,6 @@ if ($action == 'con_translate_edit') {
     $savetranslations = $_REQUEST['modtrans'];
     if (is_array($savetranslations)) {
         foreach ($savetranslations as $idmod => $savemodtranslations) {
-
             // get translation keywords from module
             $module = new cApiModule($idmod);
             $moduleKeywords = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
@@ -508,7 +502,6 @@ $editImage = $editImage->setAlt(i18n("Edit"))->render();
 $counter = 0;
 
 foreach ($allTranslations as $hash => $translationArray) {
-
     if (!$inUse && $perm->have_perm_area_action($area, 'con_translate_edit') && $action == 'con_translate_edit' && ($editstring == 'all' || $editstring == $hash) && ($editlang == 'all' || $editlang == $lang)) {
         $oTranslation = new cHTMLTextarea('modtrans[' . $translationArray['idmod'] . '][' . $hash . '][' . $lang . ']', conHtmlSpecialChars($translationArray['translations'][$lang]));
         $oTranslation->setWidth(30);
@@ -559,8 +552,13 @@ foreach ($allTranslations as $hash => $translationArray) {
         $sTranslationFirstLang
     ];
     foreach ($extraLanguages as $idExtraLang) {
-        if (!$inUse && $perm->have_perm_area_action($area, 'con_translate_edit') && $action == 'con_translate_edit' && ($editstring == 'all' || $editstring == $hash) && ($editlang == 'all' || $editlang == $idExtraLang)) {
-
+        if (
+            !$inUse
+            && $perm->have_perm_area_action($area, 'con_translate_edit')
+            && $action == 'con_translate_edit'
+            && ($editstring == 'all' || $editstring == $hash)
+            && ($editlang == 'all' || $editlang == $idExtraLang)
+        ) {
             $oExtraTranslation = new cHTMLTextarea('modtrans[' . $translationArray['idmod'] . '][' . $hash . '][' . $idExtraLang . ']', conHtmlSpecialChars($translationArray['translations'][$idExtraLang]));
             $oExtraTranslation->setWidth(30);
 

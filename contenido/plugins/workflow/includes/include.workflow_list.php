@@ -23,8 +23,8 @@ $requestIdWorkflow = cSecurity::toInteger($_GET['idworkflow'] ?? '0');
 $page = new cGuiPage('workflow_list', 'workflow');
 $page->addStyle('workflow.css');
 $workflows = new Workflows();
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 $delTitle = i18n('Delete workflow', 'workflow');
 
 $page->addScript('parameterCollector.js');

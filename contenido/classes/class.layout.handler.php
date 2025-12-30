@@ -24,16 +24,12 @@ class cLayoutHandler
 {
 
     /**
-     * The ID of the layout
-     *
-     * @var int
+     * @var int The ID of the layout
      */
     protected $_layoutId = 0;
 
     /**
-     * The code of the layout
-     *
-     * @var string
+     * @var string The code of the layout
      */
     protected $_layoutCode = '';
 
@@ -44,46 +40,32 @@ class cLayoutHandler
     protected $_db = NULL;
 
     /**
-     * Layout name
-     *
-     * @var string
+     * @var string Layout name
      */
     protected $_layoutName = '';
 
     /**
-     * The contenido cfg
-     *
-     * @var array
+     * @var array The contenido cfg
      */
     protected $_cfg = [];
 
     /**
-     * Encoding of the page
-     *
-     * @var string
+     * @var string Encoding of the page
      */
     protected $_encoding;
 
     /**
-     * Layout path
-     * [layout_path].layoutName/
-     *
-     * @var string
+     * @var string Layout path ([layout_path].layoutName/)
      */
     protected $_layoutPath = '';
 
     /**
-     * Main path of layouts.
-     * [layout_path].layouts
-     *
-     * @var string
+     * @var string Main path of layouts ([layout_path].layouts).
      */
     protected $_layoutMainPath = '';
 
     /**
-     * File name of the layout ([layoutname].html
-     *
-     * @var string
+     * @var string File name of the layout ([layoutName].html
      */
     protected $_fileName = '';
 
@@ -91,16 +73,13 @@ class cLayoutHandler
      * Constructor to create an instance of this class.
      *
      * @param int $layoutId
-     * @param string $layoutCode [optional]
-     * @param array $cfg [optional]
-     * @param int $lang [optional]
-     * @param cDb $db [optional]
-     *                           CONTENIDO database object
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string $layoutCode
+     * @param array $cfg
+     * @param int $lang
+     * @param ?cDb $db Database object
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function __construct($layoutId = 0, $layoutCode = '', array $cfg = [], $lang = 0, cDb $db = null)
+    public function __construct($layoutId = 0, $layoutCode = '', array $cfg = [], $lang = 0, ?cDb $db = null)
     {
         if ($db === NULL) {
             $db = cRegistry::getDb();
@@ -113,10 +92,8 @@ class cLayoutHandler
 
     /**
      * Get method for Layout path
-     *
-     * @return string
      */
-    public function _getLayoutPath()
+    public function _getLayoutPath(): string
     {
         return $this->_layoutPath;
     }
@@ -154,8 +131,7 @@ class cLayoutHandler
      * @param array $cfg
      * @param int $language
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function init($layoutId, $layoutCode, $cfg, $language)
     {
@@ -163,7 +139,7 @@ class cLayoutHandler
         $this->_cfg = $cfg;
 
         // set encoding
-        $this->_setEncoding($language);
+        $this->_setEncoding((int) $language);
 
         if ((int)$layoutId == 0) {
             return;
@@ -179,7 +155,7 @@ class cLayoutHandler
             $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . '/';
             $this->_fileName = $this->_layoutName . '.html';
 
-            // make directoryies for layout
+            // make directories for layout
             $this->_makeDirectories();
         }
     }
@@ -188,7 +164,6 @@ class cLayoutHandler
      * Get the layout name
      *
      * @return string
-     *         layoutname
      */
     public function getLayoutName()
     {
@@ -198,18 +173,16 @@ class cLayoutHandler
     /**
      * Init class vars with values, only use for setup or upgrade
      *
-     * @param cDb $dbObject
-     *         CONTENIDO database object
-     *
      * @throws cInvalidArgumentException
      */
-    public function initWithDbObject($dbObject)
+    public function initWithDbObject(cDb $db)
     {
-        global $cfgClient;
+        $cfgClient = cRegistry::getClientConfig();
+        $clientId = (int) $db->f('idclient');
 
-        $this->_layoutCode = $dbObject->f('code');
-        $this->_layoutName = $dbObject->f('alias');
-        $this->_layoutMainPath = $cfgClient[$dbObject->f('idclient')]['layout']['path'];
+        $this->_layoutCode = $db->f('code');
+        $this->_layoutName = $db->f('alias');
+        $this->_layoutMainPath = $cfgClient[$clientId]['layout']['path'];
         $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . '/';
         $this->_fileName = $this->_layoutName . '.html';
 
@@ -221,12 +194,10 @@ class cLayoutHandler
      * Make all directories for layout.
      * Main directory and Layout directory
      *
-     * @return bool
-     *         true if successfully
-     *
+     * @return bool true if successfully
      * @throws cInvalidArgumentException
      */
-    private function _makeDirectories()
+    private function _makeDirectories(): bool
     {
         if ($this->_makeDirectory($this->_layoutMainPath)) {
             if ($this->_makeDirectory($this->_layoutPath)) {
@@ -241,13 +212,10 @@ class cLayoutHandler
      * Make directory
      *
      * @param string $directory
-     *
-     * @return bool
-     *         true if succssesfully
-     *
+     * @return bool true if successfully
      * @throws cInvalidArgumentException
      */
-    private function _makeDirectory($directory)
+    private function _makeDirectory(string $directory): bool
     {
         if (is_dir($directory)) {
             $success = true;
@@ -264,13 +232,11 @@ class cLayoutHandler
     /**
      * Save encoding from language.
      *
-     * @param int $lang
-     *
-     * @throws cDbException
+     * @throws cDbException|cException
      */
-    private function _setEncoding($lang)
+    private function _setEncoding(int $languageId)
     {
-        if ((int)$lang == 0) {
+        if ($languageId <= 0) {
             $clientId = cRegistry::getClientId();
 
             $clientsLangColl = new cApiClientLanguageCollection();
@@ -280,36 +246,26 @@ class cLayoutHandler
             if (isset($clientLanguages[0]) && (int)$clientLanguages[0] != 0) {
                 $languageId = $clientLanguages[0];
             }
-        } else {
-            $languageId = $lang;
         }
 
         $cApiLanguage = new cApiLanguage($languageId);
-        $encoding = $cApiLanguage->get('encoding');
-
-        $this->_encoding = $encoding;
+        $this->_encoding = $cApiLanguage->get('encoding');
     }
 
     /**
-     * Can write/create a file
+     * Can write/create a file.
      *
-     * @param string $fileName
-     *         file name
-     * @param string $directory
-     *         directory where is the file
-     * @return bool
-     *         true on success else false
+     * @param string $fileName File name
+     * @param string $directory Directory where is the file
      */
-    public function isWritable($fileName, $directory)
+    public function isWritable(string $fileName, string $directory): bool
     {
         if (cFileHandler::exists($fileName)) {
             if (!is_writable($fileName)) {
                 return false;
             }
-        } else {
-            if (!is_writable($directory)) {
-                return false;
-            }
+        } elseif (!is_writable($directory)) {
+            return false;
         }
 
         return true;
@@ -319,12 +275,9 @@ class cLayoutHandler
      * Save Layout
      *
      * @param string $layoutCode [optional]
-     *
-     * @return bool
-     *
      * @throws cInvalidArgumentException
      */
-    public function saveLayout($layoutCode = '')
+    public function saveLayout($layoutCode = ''): bool
     {
         $fileName = $this->_layoutPath . $this->_fileName;
 
@@ -340,14 +293,11 @@ class cLayoutHandler
      * Use it for upgrade!
      *
      * @param string $layoutCode [optional]
-     *
-     * @return bool
-     *
      * @throws cInvalidArgumentException
      */
-    public function saveLayoutByUpgrade($layoutCode = '')
+    public function saveLayoutByUpgrade($layoutCode = ''): bool
     {
-        // if file exist dont overwirte it
+        // if file exist dont overwrite it
         if (cFileHandler::exists($this->_layoutPath . $this->_fileName)) {
             return true;
         }
@@ -356,14 +306,10 @@ class cLayoutHandler
     }
 
     /**
-     *
      * @param string $layoutCode [optional]
-     *
-     * @return bool
-     *
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    private function _save($layoutCode = '')
+    private function _save($layoutCode = ''): bool
     {
         if ($layoutCode == '') {
             $layoutCode = $this->_layoutCode;
@@ -387,12 +333,9 @@ class cLayoutHandler
      * Removes this layout from the filesystem.
      * Also deletes the version files.
      *
-     * @return bool
-     *         true on success or false on failure
-     *
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function eraseLayout()
+    public function eraseLayout(): bool
     {
         global $area, $frame;
         $cfg = cRegistry::getConfig();
@@ -414,16 +357,15 @@ class cLayoutHandler
      *
      * @param string $old
      * @param string $new
-     * @return bool
      */
-    public function rename($old, $new)
+    public function rename($old, $new): bool
     {
         // try to rename the dir
         $newPath = $this->_layoutMainPath . $new . '/';
 
         $newFileName = $new . '.html';
 
-        if (rename($this->_layoutPath, $newPath) == FALSE) {
+        if (!rename($this->_layoutPath, $newPath)) {
             return false;
         }
 
@@ -446,10 +388,8 @@ class cLayoutHandler
     /**
      * Get the contents of the file
      *
-     * @return string|bool
-     *         content or false
-     *
-     * @throws cInvalidArgumentException
+     * @return string|bool Content or false
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function getLayoutCode()
     {
@@ -463,8 +403,7 @@ class cLayoutHandler
         } else {
             // convert
             $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
-            $content = iconv($fileEncoding, $this->_encoding . '//IGNORE', $content);
-            return $content;
+            return iconv($fileEncoding, $this->_encoding . '//IGNORE', $content);
         }
     }
 
@@ -472,15 +411,9 @@ class cLayoutHandler
      * Save all layout in file system.
      * Use it for upgrade.
      *
-     * @param cDb $adb
-     *         CONTENIDO database object
-     * @param array $cfg
-     *         CONTENIDO config array
-     * @param int $clientId
-     *
      * @throws cException if the layout could not be saved
      */
-    public static function upgrade($adb, $cfg, $clientId)
+    public static function upgrade(cDb $adb, array $cfg, int $clientId)
     {
         // get name of layout and frontendpath
         if (!$adb->query("SELECT * FROM `%s` WHERE idclient='%s'", $cfg['tab']['lay'], $clientId)) {
@@ -491,7 +424,7 @@ class cLayoutHandler
             // init class var for save
             $layout = new cLayoutHandler();
             $layout->initWithDbObject($adb);
-            if ($layout->saveLayoutByUpgrade($adb->f('code')) == false) {
+            if (!$layout->saveLayoutByUpgrade($adb->f('code'))) {
                 throw new cException('Can not save layout.' . print_r($layout, true));
             }
         }

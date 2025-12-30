@@ -42,16 +42,11 @@ class PimPluginRelationsCollection extends ItemCollection
      * @param $idItem   int Is equivalent to idarea or idnavm
      * @param $idPlugin int Plugin Id
      * @param $type     string Relation to tables *_area and *_nav_main
-     *
      * @return Item
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idItem, $idPlugin, $type)
     {
-
         // create a new entry
         $item = $this->createNewItem();
         $item->set('iditem', $idItem);
@@ -80,9 +75,7 @@ class PimPluginRelations extends Item
      * Constructor Function
      *
      * @param mixed $id Specifies the id of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
@@ -96,13 +89,9 @@ class PimPluginRelations extends Item
     /**
      * User-defined setter for pim relations fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idplugin':
@@ -111,7 +100,7 @@ class PimPluginRelations extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

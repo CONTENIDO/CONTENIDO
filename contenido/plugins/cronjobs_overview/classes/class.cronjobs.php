@@ -67,14 +67,12 @@ class Cronjobs
 
     /**
      * Cronjobs constructor.
-     *
-     * @param string $phpFile
      */
-    public function __construct($phpFile = '')
+    public function __construct(string $phpFile = '')
     {
         $this->_phpFile = $phpFile;
 
-        //get the name of the file withouth the mime type
+        //get the name of the file without the mime type
         if ($phpFile != '') {
             $this->_fileName = cString::getPartOfString($phpFile, 0, -4);
         }
@@ -86,47 +84,41 @@ class Cronjobs
 
     /**
      * Return the name of file
-     *
-     * @return string
      */
-    public function getFile()
+    public function getFile(): string
     {
         return $this->_phpFile;
     }
 
     /**
      * Get the directory path of cronjobs
-     *
-     * @return string
      */
-    public function getCronjobDirectory()
+    public function getCronjobDirectory(): string
     {
         return $this->_cronjobDirectory;
     }
 
     /**
      * Get the directory path of cronlog
-     *
-     * @return string
      */
-    public function getCronlogDirectory()
+    public function getCronlogDirectory(): string
     {
         return $this->_cronlogDirectory;
     }
 
     /**
-     *
      * Get date of last execution of cronjob
      *
-     * @return string date
+     * @return string Date formatted as ''d.m.Y H:i:s'' or empty string
      * @throws cInvalidArgumentException
      */
-    public function getDateLastExecute()
+    public function getDateLastExecute(): string
     {
         $timestamp = '';
-        if (cFileHandler::exists($this->_cronlogDirectory . $this->_phpFile . self::$JOB_ENDING)) {
-            if (($timestamp = cFileHandler::read($this->_cronlogDirectory . $this->_phpFile . self::$JOB_ENDING))) {
-                return date("d.m.Y H:i:s", $timestamp);
+        $filename = $this->_cronlogDirectory . $this->_phpFile . self::$JOB_ENDING;
+        if (cFileHandler::exists($filename)) {
+            if (($timestamp = cFileHandler::read($filename))) {
+                return date('d.m.Y H:i:s', $timestamp);
             }
         }
 
@@ -136,29 +128,25 @@ class Cronjobs
     /**
      * Get the contents of the crontab.txt file
      *
-     * @return string
-     *      contents of the file or ''
+     * @return string Content of the file or empty string
      * @throws cInvalidArgumentException
      */
-    public function getContentsCrontabFile()
+    public function getContentsCrontabFile(): string
     {
-        if (cFileHandler::exists($this->_cronlogDirectory . self::$CRONTAB_FILE)) {
-            return cFileHandler::read($this->_cronlogDirectory . self::$CRONTAB_FILE);
+        $filename = $this->_cronlogDirectory . self::$CRONTAB_FILE;
+        if (cFileHandler::exists($filename)) {
+            return (string) cFileHandler::read($filename);
         } else {
             return '';
         }
     }
 
     /**
-     *
      * Save the data to crontab.txt file
      *
-     * @param string $data
-     *
-     * @return bool
      * @throws cInvalidArgumentException
      */
-    public function saveCrontabFile($data)
+    public function saveCrontabFile(string $data): bool
     {
         return cFileHandler::write($this->_cronlogDirectory . self::$CRONTAB_FILE, $data);
     }
@@ -166,11 +154,9 @@ class Cronjobs
     /**
      * Set the execute-time to $this->_phpFile.job file.
      *
-     * @param int $timestamp
-     *
      * @throws cInvalidArgumentException
      */
-    public function setRunTime($timestamp)
+    public function setRunTime(int $timestamp)
     {
         cFileHandler::write($this->_cronlogDirectory . $this->_phpFile . self::$JOB_ENDING, $timestamp);
     }
@@ -178,15 +164,13 @@ class Cronjobs
     /**
      * Get the last lines of log file
      *
-     * @param int $lines
-     *
-     * @return string
      * @throws cInvalidArgumentException
      */
-    public function getLastLines($lines = 25)
+    public function getLastLines(int $lines = 25): string
     {
-        if (cFileHandler::exists($this->_cronlogDirectory . $this->_phpFile . self::$LOG_ENDING)) {
-            $content = explode("\n", cFileHandler::read($this->_cronlogDirectory . $this->_phpFile . self::$LOG_ENDING));
+        $filename = $this->_cronlogDirectory . $this->_phpFile . self::$LOG_ENDING;
+        if (cFileHandler::exists($filename)) {
+            $content = cFileHandler::readAsArray($filename);
             $number = count($content);
             $pos = $number - $lines;
             if ($pos < 0) {
@@ -202,12 +186,11 @@ class Cronjobs
 
     /**
      * Exist the file and is it a php file
-     *
-     * @return bool if exist
      */
-    public function existFile()
+    public function existFile(): bool
     {
-        if (!cFileHandler::exists($this->_cronjobDirectory . $this->_phpFile) && !is_dir($this->_cronjobDirectory . $this->_phpFile)) {
+        $filename = $this->_cronjobDirectory . $this->_phpFile;
+        if (!cFileHandler::exists($filename) && !is_dir($filename)) {
             return false;
         } elseif (cString::getPartOfString($this->_phpFile, -4) == '.php') {
             return true;
@@ -219,7 +202,7 @@ class Cronjobs
     /**
      * Get all Cronjobs in directory cronjobs from contenido
      */
-    public function getAllCronjobs()
+    public function getAllCronjobs(): array
     {
         $retArray = [];
 

@@ -24,8 +24,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // initializing classes
 $page = new cGuiPage('pim_overview', 'pim');
 
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 
 // Display critical error if no valid client/language is selected
 if ($client < 1 || $lang < 1) {

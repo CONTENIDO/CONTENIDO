@@ -22,7 +22,7 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
-$area = $area ?? '';
+$area = cRegistry::getArea();
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     // Do the maintenance for all user password requests,

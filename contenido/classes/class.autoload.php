@@ -46,34 +46,34 @@ class cAutoload
      *
      * @var string
      */
-    const ERROR_FILE_NOT_FOUND = 'file_not_found';
+    public const ERROR_FILE_NOT_FOUND = 'file_not_found';
 
     /**
      * Identifier for error if class already exists.
      *
      * @var string
      */
-    const ERROR_CLASS_EXISTS = 'class_exists';
+    public const ERROR_CLASS_EXISTS = 'class_exists';
 
     /**
      * CONTENIDO root path.
      * Path to the folder which contains the CONTENIDO installation.
      *
-     * @var string
+     * @var ?string
      */
     private static $_conRootPath = NULL;
 
     /**
      * Array of interface/class names with related files to include
      *
-     * @var array
+     * @var ?array
      */
     private static $_includeFiles = NULL;
 
     /**
      * Flag containing initialized status
      *
-     * @var bool
+     * @var ?bool
      */
     private static $_initialized = NULL;
 
@@ -108,8 +108,7 @@ class cAutoload
      * map file and if exists, the user defined class map file, containing
      * the includes.
      *
-     * @param array $cfg
-     *         The CONTENIDO cfg array
+     * @param array $cfg The CONTENIDO cfg array
      */
     public static function initialize(array $cfg)
     {
@@ -145,24 +144,19 @@ class cAutoload
      * Since this autoloader is implemented for CONTENIDO, it doesn't support to
      * load class-files being located outside the CONTENIDO installation folder.
      *
-     * @param array $config
-     *         Associative class map array as follows:
-     *         <pre>
-     *         // Structure is:
-     *         // "Classname" => "Path to class file from CONTENIDO installation folder"
-     *         $classMapArray = [
-     *             'myPluginsClass' =>
-     *                 'contenido/plugins/my_plugin/classes/class.myPluginClass.php',
-     *             'myPluginsOtherClass' =>
-     *                 'contenido/plugins/my_plugin/classes/class.myPluginsOtherClass.php',
-     *             'myCmsClass' =>
-     *                 'cms/includes/class.myCmsClass.php',
-     *              // When defining a fully qualified class name with namespace in string
-     *              // context, then use double backslash '\\' as the namespace separator.
-     *             'myNamespace\\myPackage\\myClass' =>
-     *                 '.../path/to/myNamespace/myPackage/myClass.php',
-     *         ];
-     *         </pre>
+     * @param array $config Associative class map array as follows:
+     *      <pre>
+     *      // Structure is:
+     *      // "Classname" => "Path to class file from CONTENIDO installation folder"
+     *      $classMapArray = [
+     *          'myPluginsClass' => 'contenido/plugins/my_plugin/classes/class.myPluginClass.php',
+     *          'myPluginsOtherClass' => 'contenido/plugins/my_plugin/classes/class.myPluginsOtherClass.php',
+     *          'myCmsClass' => 'cms/includes/class.myCmsClass.php',
+     *           // When defining a fully qualified class name with namespace in string
+     *           // context, then use double backslash '\\' as the namespace separator.
+     *          'myNamespace\\myPackage\\myClass' => '.../path/to/myNamespace/myPackage/myClass.php',
+     *      ];
+     *      </pre>
      */
     public static function addClassmapConfig(array $config)
     {
@@ -179,27 +173,22 @@ class cAutoload
      * Since this autoloader is implemented for CONTENIDO, it doesn't support to
      * load class-files being located outside the CONTENIDO installation folder.
      *
-     * @param string $configFile
-     *         Full path to class map configuration file. The provided file
-     *         must return a class map configuration array as follows:
-     *         <pre>
-     *         // Structure is:
-     *         // "Classname" => "Path to class file from CONTENIDO installation folder"
-     *         return [
-     *             'myPluginsClass' =>
-     *                 'contenido/plugins/my_plugin/classes/class.myPluginClass.php',
-     *             'myPluginsOtherClass' =>
-     *                 'contenido/plugins/my_plugin/classes/class.myPluginsOtherClass.php',
-     *             'myCmsClass' =>
-     *                 'cms/includes/class.myCmsClass.php',
-     *              // When defining a fully qualified class name with namespace in string
-     *              // context, then use double backslash '\\' as the namespace separator.
-     *             'myNamespace\\myPackage\\myClass' =>
-     *                 '.../path/to/myNamespace/myPackage/myClass.php',
-     *         ];
-     *         </pre>
+     * @param string $configFile Full path to class map configuration file. The provided file
+     *      must return a class map configuration array as follows:
+     *      <pre>
+     *      // Structure is:
+     *      // "Classname" => "Path to class file from CONTENIDO installation folder"
+     *      return [
+     *          'myPluginsClass' => 'contenido/plugins/my_plugin/classes/class.myPluginClass.php',
+     *          'myPluginsOtherClass' => 'contenido/plugins/my_plugin/classes/class.myPluginsOtherClass.php',
+     *          'myCmsClass' => 'cms/includes/class.myCmsClass.php',
+     *           // When defining a fully qualified class name with namespace in string
+     *           // context, then use double backslash '\\' as the namespace separator.
+     *          'myNamespace\\myPackage\\myClass' => '.../path/to/myNamespace/myPackage/myClass.php',
+     *      ];
+     *      </pre>
      */
-    public static function addClassmapConfigFile($configFile)
+    public static function addClassmapConfigFile(string $configFile)
     {
         if (is_file($configFile)) {
             $arr = include_once($configFile);
@@ -213,13 +202,10 @@ class cAutoload
      * The main __autoload() implementation.
      * Tries to include the file of passed classname.
      *
-     * @param string $className
-     *         The classname
-     *
-     * @throws cBadMethodCallException
-     *         If autoloader wasn't initialized before
+     * @param string $className The classname
+     * @throws cBadMethodCallException If autoloader wasn't initialized before
      */
-    public static function autoload($className)
+    public static function autoload(string $className)
     {
         if (self::$_initialized !== true) {
             throw new cBadMethodCallException(
@@ -245,17 +231,14 @@ class cAutoload
     }
 
     /**
-     * Checks, if passed filename is a file, which will be included by the
-     * autoloader.
+     * Checks, if passed filename is a file, which will be included by the autoloader.
      *
-     * @param string $file
-     *         Filename or Filename with a part of the path, e.g.
-     *         - class.foobar.php
-     *         - classes/class.foobar.php
-     *         - contenido/classes/class.foobar.php
-     * @return bool
+     * @param string $file Filename or Filename with a part of the path, e.g.
+     *      - class.foobar.php
+     *      - classes/class.foobar.php
+     *      - contenido/classes/class.foobar.php
      */
-    public static function isAutoloadable($file)
+    public static function isAutoloadable(string $file): bool
     {
         foreach (self::$_includeFiles as $includeFile) {
             if (cString::findFirstPos($includeFile, $file) !== false) {
@@ -267,33 +250,27 @@ class cAutoload
 
     /**
      * Returns the loaded classes.
-     *
-     * @return array
      */
-    public static function getLoadedClasses()
+    public static function getLoadedClasses(): array
     {
         return self::$_loadedClasses;
     }
 
     /**
      * Returns the error-list containing invalid classes.
-     *
-     * @return array
      */
-    public static function getErrors()
+    public static function getErrors(): array
     {
         return self::$_errors;
     }
 
     /**
-     * Returns the path to a CONTENIDO class file by processing the given
-     * classname
+     * Returns the path to a CONTENIDO class file by processing the given classname.
      *
      * @param string $className
-     * @return string|null
-     *         string if validation was successful, otherwise NULL
+     * @return ?string String if validation was successful, otherwise null
      */
-    private static function _getContenidoClassFile($className)
+    private static function _getContenidoClassFile(string $className): ?string
     {
         $classNameLower = cString::toLowerCase($className);
         $file = isset(self::$_includeFiles[$classNameLower])
@@ -306,10 +283,9 @@ class cAutoload
      *
      * @param string $classname
      * @param string $filename
-     * @return string|null
-     *         string if validation was successful, otherwise NULL
+     * @return ?string String if validation was successful, otherwise null
      */
-    private static function _validateClassAndFile($classname, $filename)
+    private static function _validateClassAndFile(string $classname, string $filename): ?string
     {
         if (class_exists($classname)) {
             self::$_errors[] = [
@@ -331,15 +307,11 @@ class cAutoload
     }
 
     /**
-     * Normalizes the passed configuration array by returning a new copy of it
-     * which contains the keys in lowercase.
-     * This prevents errors by trying to load class 'foobar' if the real class
-     * name is 'FooBar'.
-     *
-     * @param array $config
-     * @return array
+     * Normalizes the passed configuration array by returning a new copy of it which contains
+     * the keys in lowercase.
+     * This prevents errors by trying to load class 'foobar' if the real class name is 'FooBar'.
      */
-    private static function _normalizeConfig(array $config)
+    private static function _normalizeConfig(array $config): array
     {
         $newConfig = [];
         foreach ($config as $name => $file) {
@@ -349,19 +321,16 @@ class cAutoload
     }
 
     /**
-     * Loads the desired file by invoking require_once method
+     * Loads the desired file by including it
      *
-     * @param string $filePathName
-     * @param bool $beQuiet [optional]
-     *         Flag to prevent thrown warnings/errors by using the error control
-     *         operator @
+     * @param bool $beQuiet Flag to prevent thrown warnings/errors by using the `include_once` expression.
      */
-    private static function _loadFile($filePathName, $beQuiet = false)
+    private static function _loadFile(string $filePathName, bool $beQuiet = false)
     {
         if ($beQuiet) {
-            @require_once($filePathName);
+            include_once $filePathName;
         } else {
-            require_once($filePathName);
+            require_once $filePathName;
         }
     }
 

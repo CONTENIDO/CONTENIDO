@@ -24,7 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0004 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.0-beta1";
+    public $maxVersion = '4.9.0-beta1';
 
     public function _execute()
     {

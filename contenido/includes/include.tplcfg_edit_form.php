@@ -26,10 +26,10 @@ $perm = cRegistry::getPerm();
 $area = cRegistry::getArea();
 $frame = cRegistry::getFrame();
 $cfg = cRegistry::getConfig();
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
-$idart = cSecurity::toInteger(cRegistry::getArticleId());
-$idcat = cSecurity::toInteger(cRegistry::getCategoryId());
+$client = cRegistry::getCategoryId();
+$lang = cRegistry::getLanguageId();
+$idart = cRegistry::getArticleId();
+$idcat = cRegistry::getCategoryId();
 
 $message = '';
 $description = '';
@@ -95,8 +95,10 @@ $tpl->reset();
 $isAdmin = false;
 
 if ($idart) {
-    if ($perm->have_perm_area_action('con', 'con_tplcfg_edit') || $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)) {
-
+    if (
+        $perm->have_perm_area_action('con', 'con_tplcfg_edit')
+        || $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)
+    ) {
         $artlang = new cApiArticleLanguage($idartlang);
 
         // check admin rights
@@ -166,7 +168,6 @@ if ($idart) {
         exit();
     }
 } elseif ($idcat) {
-
     // Category is configured
     $sql = "SELECT
                 c.idtpl AS idtpl,

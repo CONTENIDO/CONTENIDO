@@ -56,19 +56,16 @@ class NewsletterRecipientCollection extends ItemCollection
      *
      * @param string $sEMail Specifies the e-mail address
      * @param string $sName Specifies the recipient name (optional)
-     * @param int $iConfirmed Specifies, if the recipient is confirmed
-     *                             (optional)
-     * @param string $sJoinID Specifies additional recipient group ids to join
-     *                             (optional, e.g. 47,12,...)
+     * @param int $iConfirmed Specifies, if the recipient is confirmed (optional)
+     * @param string $sJoinID Specifies additional recipient group ids to join (optional, e.g. 47,12,...)
      * @param int $iMessageType Specifies the message type for the recipient (0 = text, 1 = html)
-     *
      * @return Item
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($sEMail, $sName = "", $iConfirmed = 0, $sJoinID = "", $iMessageType = 0)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
         $auth = cRegistry::getAuth();
 
         // Check if the e-mail address already exists
@@ -132,11 +129,9 @@ class NewsletterRecipientCollection extends ItemCollection
     }
 
     /**
-     * Overridden delete method to remove recipient from groupmember table
-     * before deleting recipient
+     * Overridden delete method to remove recipient from groupmember table before deleting recipient
      *
      * @param $itemID int specifies the recipient
-     *
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function delete($itemID)
@@ -152,19 +147,16 @@ class NewsletterRecipientCollection extends ItemCollection
     }
 
     /**
-     * Purge method to delete recipients which hasn't been confirmed since over
-     * a month
+     * Purge method to delete recipients which hasn't been confirmed since over a month
      *
-     * @param $timeframe int Days after creation a not confirmed recipient will
-     *                   be removed
-     *
+     * @param $timeframe int Days after creation a not confirmed recipient will be removed
      * @return int Count of deleted recipients
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function purge($timeframe)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
 
         $oRecipientCollection = new NewsletterRecipientCollection();
 
@@ -185,18 +177,16 @@ class NewsletterRecipientCollection extends ItemCollection
     }
 
     /**
-     * checkEMail returns true, if there is no recipient with the same e-mail
-     * address; otherwise false
+     * checkEMail returns true, if there is no recipient with the same e-mail address; otherwise false
      *
      * @param $sEmail string e-mail
-     *
      * @return NewsletterRecipient|false recipient item if item with e-mail exists, false otherwise
      * @throws cException
      */
     public function emailExists($sEmail)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
 
         $oRecipientCollection = new NewsletterRecipientCollection();
         $oRecipientCollection->setWhere("idclient", $client);
@@ -214,11 +204,10 @@ class NewsletterRecipientCollection extends ItemCollection
     /**
      * Sets a key for all recipients without key or an old key (len(key) <> 30)
      *
-     * @return int
-     * @throws cDbException
-     * @throws cException
+     * @return int Number of updated keys
+     * @throws cDbException|cException
      */
-    public function updateKeys()
+    public function updateKeys(): int
     {
         $this->setWhere("LENGTH(hash)", 30, "<>");
         $this->query();
@@ -243,22 +232,19 @@ class NewsletterRecipient extends Item
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('news_rcp'), 'idnewsrcp');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
-     * @return bool
-     * @throws cDbException
+     * @inheritDoc
      * @throws cException
      */
     public function store()
@@ -298,13 +284,9 @@ class NewsletterRecipient extends Item
     /**
      * User-defined setter for newsletter recipients fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'news_type':
@@ -313,7 +295,7 @@ class NewsletterRecipient extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

@@ -22,8 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $tpl->reset();
 
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 
 // CON-2718
 // Do not display anything if the statistic is disabled

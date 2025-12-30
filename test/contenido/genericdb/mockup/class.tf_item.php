@@ -32,8 +32,7 @@ class TFItem extends Item
      *
      * @param string|bool $id
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {

@@ -43,17 +43,12 @@ class cApiNavSubCollection extends ItemCollection
      * Create new item with given values.
      *
      * @param int $navm
-     * @param int|string $area
-     *                           AreaId or area name
+     * @param int|string $area AreaId or area name
      * @param int $level
      * @param string $location
      * @param int $online [optional]
-     *
      * @return cApiNavSub
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($navm, $area, $level, $location, $online = 1)
     {
@@ -88,21 +83,18 @@ class cApiNavSubCollection extends ItemCollection
      * @param string $area
      * @param int $level [optional]
      * @param int $online [optional]
-     *
-     * @return array
-     *                       List of assiziative arrays like
-     *                       <pre>
-     *                       $arr[] = [
-     *                           'location'  => location xml path
-     *                           'caption'   => The tanslation of location from XML file
-     *                           'name'      => area name for sub navigation item
-     *                           'menulesss' => Menuless state
-     *                       ];
-     *                       </pre>
-     * @throws cDbException
-     * @throws cException
+     * @return array List of associative arrays like
+     *      <pre>
+     *      $arr[] = [
+     *          'location' => location xml path
+     *          'caption'  => The translation of location from XML file
+     *          'name'     => area name for sub navigation item
+     *          'menuless' => Menuless state
+     *      ];
+     *      </pre>
+     * @throws cDbException|cException
      */
-    public function getSubnavigationsByAreaName($area, $level = 1, $online = 1)
+    public function getSubnavigationsByAreaName($area, $level = 1, $online = 1): array
     {
         $level = (int)$level;
         $online = (1 == $online) ? 1 : 0;
@@ -156,31 +148,24 @@ class cApiNavSub extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('nav_sub'), 'idnavs');
         $this->setFilters(['addslashes'], ['stripslashes']);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for navsub fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idarea':
@@ -193,7 +178,7 @@ class cApiNavSub extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

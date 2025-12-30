@@ -37,10 +37,8 @@ class WorkflowUserSequences extends ItemCollection
 
     /**
      * @param int $id
-     *
      * @return bool|void
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function delete($id)
     {
@@ -193,20 +191,15 @@ class WorkflowUserSequence extends Item
     }
 
     /**
-     * Override setField Function to prevent that somebody modifies
-     * idsequence.
+     * Override setField Function to prevent that somebody modifies idsequence.
      *
-     * @param string $field Field to set
-     * @param string $value Value to set
-     * @param bool $safe
-     *
-     * @return bool
+     * @inheritDoc
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function setField($field, $value, $safe = true)
+    public function setField($name, $value, $safe = true)
     {
         $idusersquence = false;
-        switch ($field) {
+        switch ($name) {
             case "idworkflowitem":
                 throw new cInvalidArgumentException("Please use create to modify idsequence. Direct modifications are not allowed");
             case "idusersequence":
@@ -231,7 +224,7 @@ class WorkflowUserSequence extends Item
                 }
         }
 
-        $result = parent::setField($field, $value, $safe);
+        $result = parent::setField($name, $value, $safe);
         if ($idusersquence) {
             $workflowUserSequences = new WorkflowUserSequences();
             $workflowUserSequences->updateArtAllocation(0);
@@ -244,8 +237,7 @@ class WorkflowUserSequence extends Item
      * Returns the associated workflowItem for this user sequence
      *
      * @return bool|WorkflowItem
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function getWorkflowItem()
     {

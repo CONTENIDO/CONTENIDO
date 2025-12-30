@@ -42,13 +42,12 @@ class ModRewrite extends ModRewriteBase
     protected static $_lookupTable;
 
     /**
-     * Initialization, is to call at least once, also possible to call multible
+     * Initialization, is to call at least once, also possible to call multiple
      * times, if different client configuration is to load.
      *
      * Loads configuration of passed client and sets some properties.
      *
      * @param int $clientId Client id
-     *
      * @throws cInvalidArgumentException
      */
     public static function initialize($clientId)
@@ -66,10 +65,8 @@ class ModRewrite extends ModRewriteBase
      * @param string $sName Websafe name to check
      * @param int $iCatId Current category id
      * @param int $iLangId Current language id
-     *
-     * @return  bool    True if websafename already exists, false if not
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @return bool True if websafe name already exists, false if not
+     * @throws cDbException|cInvalidArgumentException
      */
     public static function isInCategories($sName = '', $iCatId = 0, $iLangId = 0)
     {
@@ -107,8 +104,7 @@ class ModRewrite extends ModRewriteBase
      * @param int $iArtId Current article id
      * @param int $iLangId Current language id
      * @param int $iCatId Category id
-     *
-     * @return   bool    True if websafename already exists, false if not
+     * @return  bool True if websafe name already exists, false if not
      * @throws cDbException
      * @internal This method only considers the case that articles are related to a single category.
      *           The function conIsArticleUrlnameUnique also considers multiple categories.
@@ -151,11 +147,10 @@ class ModRewrite extends ModRewriteBase
      * @param int $iArtId Current article id
      * @param int $iLangId Current language id
      * @param int $iCatId Category id
-     * @return  bool    True if insert was successfully
-     * @throws  cInvalidArgumentException
-     * @throws  cDbException
+     * @return bool True if insert was successfully
+     * @throws cDbException
      */
-    public static function setArtWebsafeName($sName = '', $iArtId = 0, $iLangId = 0, $iCatId = 0)
+    public static function setArtWebsafeName($sName = '', $iArtId = 0, $iLangId = 0, $iCatId = 0): bool
     {
         $cfg = cRegistry::getConfig();
         $iArtId = cSecurity::toInteger($iArtId);
@@ -179,7 +174,7 @@ class ModRewrite extends ModRewriteBase
             // insert websafe name in article list
             $sql = "UPDATE " . cRegistry::getDbTableName('art_lang') . " SET urlname = '" . self::$_db->escape($sNewName) . "' "
                 . "WHERE idart = " . $iArtId . " AND idlang = " . $iLangId;
-            return self::$_db->query($sql);
+            return (bool) self::$_db->query($sql);
         } else {
             return false;
         }
@@ -193,12 +188,10 @@ class ModRewrite extends ModRewriteBase
      * @param string $sName Original name (will be converted) or alias
      * @param int $iCatId Category id
      * @param int $iLangId Language id
-     *
-     * @return  bool    True if insert was successfully
-     * @throws  cInvalidArgumentException
-     * @throws  cDbException
+     * @return bool True if insert was successfully
+     * @throws cInvalidArgumentException|cDbException
      */
-    public static function setCatWebsafeName($sName = '', $iCatId = 0, $iLangId = 0)
+    public static function setCatWebsafeName($sName = '', $iCatId = 0, $iLangId = 0): bool
     {
         $iCatId = cSecurity::toInteger($iCatId);
         $iLangId = cSecurity::toInteger($iLangId);
@@ -228,7 +221,7 @@ class ModRewrite extends ModRewriteBase
                 'sNewName' => $sNewName
             ], 'ModRewrite::setCatWebsafeName $data');
 
-            return self::$_db->query($sql);
+            return (bool) self::$_db->query($sql);
         } else {
             return false;
         }
@@ -239,12 +232,10 @@ class ModRewrite extends ModRewriteBase
      *
      * @param int $iCatId Category id
      * @param int $iLangId Language id
-     *
-     * @return  bool    True if insert was successfully
-     * @throws  cDbException
-     * @throws cInvalidArgumentException
+     * @return bool True if insert was successfully
+     * @throws cDbException|cInvalidArgumentException
      */
-    public static function setCatUrlPath($iCatId = 0, $iLangId = 0)
+    public static function setCatUrlPath($iCatId = 0, $iLangId = 0): bool
     {
         $sPath = self::buildRecursivPath($iCatId, $iLangId);
         $iCatId = cSecurity::toInteger($iCatId);
@@ -260,15 +251,14 @@ class ModRewrite extends ModRewriteBase
             'sPath' => $sPath
         ], 'ModRewrite::setCatUrlPath $data');
 
-        return self::$_db->query($sql);
+        return (bool) self::$_db->query($sql);
     }
 
     /**
      * Get article id and language id from article language id
      *
      * @param int $iArtlangId Current article id
-     *
-     * @return array  Array with idart and idlang of current article
+     * @return array Array with idart and idlang of current article
      * @throws cDbException
      */
     public static function getArtIdByArtlangId($iArtlangId = 0)
@@ -287,21 +277,17 @@ class ModRewrite extends ModRewriteBase
      * @param string $sArtName Websafe name
      * @param int $iCatId Category id
      * @param int $iLangId Language id
-     *
-     * @return  int|NULL  Recent article id or NULL
-     * @throws  cDbException
+     * @return int|NULL Recent article id or NULL
+     * @throws cDbException
      */
     public static function getArtIdByWebsafeName($sArtName = '', $iCatId = 0, $iLangId = 0)
     {
         $lang = cRegistry::getLanguageId();
         $iCatId = cSecurity::toInteger($iCatId);
         $iLangId = cSecurity::toInteger($iLangId);
-        if (0 === $iLangId && is_int($lang)) {
-            $iLangId = $lang;
-        }
 
         $sWhere = '';
-        if ($iLangId !== 0) {
+        if ($iLangId > 0) {
             $sWhere = ' AND al.idlang = ' . $iLangId;
         }
         // only article name were given
@@ -336,8 +322,7 @@ class ModRewrite extends ModRewriteBase
      *
      * @param int $iCatId Category id
      * @param int $iLangId Language id
-     *
-     * @return  string  Category name
+     * @return string Category name
      * @throws cDbException
      */
     public static function getCatName($iCatId = 0, $iLangId = 0)
@@ -368,15 +353,13 @@ class ModRewrite extends ModRewriteBase
      * Caches the paths at first call to provide faster processing at further calls.
      *
      * @param string $path Category path
-     *
-     * @return  int  Category id
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @return int Category id
+     * @throws cDbException|cInvalidArgumentException
      */
     public static function getCatIdByUrlPath($path)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
 
         if (cString::findFirstPos($path, '/') === 0) {
             $path = cString::getPartOfString($path, 1);
@@ -448,8 +431,7 @@ class ModRewrite extends ModRewriteBase
      *
      * @param int $iArtId Article id
      * @param int $iLangId Language id
-     *
-     * @return  string  Article name
+     * @return string Article name
      * @throws cDbException
      */
     public static function getArtTitle($iArtId = 0, $iLangId = 0)
@@ -469,9 +451,8 @@ class ModRewrite extends ModRewriteBase
      * Get language ids from category id
      *
      * @param int $iCatId Category id
-     *
-     * @return  array  Used language ids
-     * @throws  cDbException
+     * @return array Used language ids
+     * @throws cDbException
      */
     public static function getCatLanguages($iCatId = 0)
     {
@@ -498,8 +479,7 @@ class ModRewrite extends ModRewriteBase
      * Get article urlname and language id
      *
      * @param int $iArtlangId idartlang
-     *
-     * @return  array  Urlname, idlang of empty array
+     * @return array Urlname, idlang of empty array
      * @throws cDbException
      */
     public static function getArtIds($iArtlangId = 0)
@@ -514,17 +494,15 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Build a recursiv path for mod_rewrite rule like server directories
-     * (dir1/dir2/dir3)
+     * Build a recursive path for mod_rewrite rule like server directories (dir1/dir2/dir3)
      *
      * @param int $iCatId Latest category id
      * @param int $iLangId Language id
      * @param int $iLastId Last category id
-     *
-     * @return  string  linkpath with correct uri
+     * @return string Link path with correct uri
      * @throws cDbException
      */
-    public static function buildRecursivPath($iCatId = 0, $iLangId = 0, $iLastId = 0)
+    public static function buildRecursivPath($iCatId = 0, $iLangId = 0, $iLastId = 0): string
     {
         $aDirectories = [];
         $bFinish = false;
@@ -556,14 +534,14 @@ class ModRewrite extends ModRewriteBase
      * Return full CONTENIDO url from single anchor
      *
      * @param array $aMatches [0] = complete anchor, [1] = pre arguments, [2] = anchor name, [3] = post arguments
-     * @return  string  New anchor
+     * @return string New anchor
      */
-    public static function rewriteHtmlAnchor(array $aMatches = [])
+    public static function rewriteHtmlAnchor(array $aMatches = []): string
     {
         global $artname;
 
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
         $idcat = cRegistry::getCategoryId();
         $idart = cRegistry::getArticleId();
         $sess = cRegistry::getSession();
@@ -602,9 +580,9 @@ class ModRewrite extends ModRewriteBase
      *
      * @param array $aMatches [0] = complete anchor, [1] = pre arguments, [2] = anchor name, [3] = post arguments
      * @param bool $bXHTML Flag to return XHTML valid url
-     * @return  string  New anchor
+     * @return string New anchor
      */
-    public static function contenidoHtmlAnchor(array $aMatches = [], $bXHTML = true)
+    public static function contenidoHtmlAnchor(array $aMatches = [], $bXHTML = true): string
     {
         $sess = cRegistry::getSession();
         $aParams = [];
@@ -624,8 +602,7 @@ class ModRewrite extends ModRewriteBase
      *
      * @param int $iArtId Article id
      * @param int $iLangId Language id
-     *
-     * @return   string    Article websafe name
+     * @return ?string Article websafe name
      * @throws cDbException
      */
     public static function getArtWebsafeName($iArtId = 0, $iLangId = 0)
@@ -644,8 +621,7 @@ class ModRewrite extends ModRewriteBase
      * Get article websafe name from idartlang.
      *
      * @param int $iArtLangId idartlang
-     *
-     * @return     string    Article websafe name
+     * @return ?string Article websafe name
      * @throws cDbException
      */
     public static function getArtLangWebsafeName($iArtLangId = 0)
@@ -662,11 +638,10 @@ class ModRewrite extends ModRewriteBase
      * Get name of client by id.
      *
      * @param int $clientId Client id
-     *
-     * @return  string  Client name
+     * @return string Client name
      * @throws cDbException
      */
-    public static function getClientName($clientId = 0)
+    public static function getClientName($clientId = 0): string
     {
         $clientId = cSecurity::toInteger($clientId);
         $key = 'clientname_by_clientid_' . $clientId;
@@ -690,8 +665,7 @@ class ModRewrite extends ModRewriteBase
      * Get client id from client name
      *
      * @param string $sClientName Client name
-     *
-     * @return  int  Client id
+     * @return int|false Client id
      * @throws cDbException
      */
     public static function getClientId($sClientName = '')
@@ -720,11 +694,9 @@ class ModRewrite extends ModRewriteBase
      * Checks if client id exists
      *
      * @param int $clientId
-     *
-     * @return  bool
      * @throws cDbException
      */
-    public static function clientIdExists($clientId)
+    public static function clientIdExists($clientId): bool
     {
         $clientId = cSecurity::toInteger($clientId);
         $key = 'clientid_exists_' . $clientId;
@@ -748,11 +720,10 @@ class ModRewrite extends ModRewriteBase
      * Returns name of language by id.
      *
      * @param int $languageId Language id
-     *
-     * @return  string  Lanuage name
+     * @return string Language name
      * @throws cDbException
      */
-    public static function getLanguageName($languageId = 0)
+    public static function getLanguageName($languageId = 0): string
     {
         $languageId = cSecurity::toInteger($languageId);
         $key = 'languagename_by_id_' . $languageId;
@@ -776,11 +747,9 @@ class ModRewrite extends ModRewriteBase
      * Checks if language id exists
      *
      * @param int $languageId Language id
-     *
-     * @return  bool
      * @throws cDbException
      */
-    public static function languageIdExists($languageId)
+    public static function languageIdExists($languageId): bool
     {
         $languageId = cSecurity::toInteger($languageId);
         $key = 'languageid_exists_' . $languageId;
@@ -801,16 +770,13 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Get language id from language name thanks to Nicolas Dickinson for multi
-     * Client/Language BugFix
+     * Get language id from language name thanks to Nicolas Dickinson for multi Client/Language BugFix
      *
      * @param string $sLanguageName Language name
      * @param int $iClientId Client id
-     *
-     * @return int  Language id
      * @throws cDbException
      */
-    public static function getLanguageId($sLanguageName = '', $iClientId = 1)
+    public static function getLanguageId($sLanguageName = '', $iClientId = 1): int
     {
         $sLanguageName = cString::toLowerCase($sLanguageName);
         $iClientId = cSecurity::toInteger($iClientId);
@@ -842,10 +808,10 @@ class ModRewrite extends ModRewriteBase
      * return = ['htmlpath' => 'https://host', 'url' => 'front_content.php?idcat=123']
      *
      * @param string $url URL to split
-     * @return array   Associative array including the two parts:
-     *                 - ['htmlpath' => $path, 'url' => $url]
+     * @return array Associative array including the two parts:
+     *      - ['htmlpath' => $path, 'url' => $url]
      */
-    public static function getClientFullUrlParts($url)
+    public static function getClientFullUrlParts($url): array
     {
         $clientPath = cRegistry::getFrontendUrl();
 
@@ -872,16 +838,16 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Function to preclean an url.
+     * Function to preclean a url.
      *
-     * Removes absolute path declaration '/front_content.php' or relative path
-     * definition to actual dir './front_content.php', ampersand entities '&amp;'
-     * and returns an url like 'front_content.php?idart=12&idlang=1'
+     * Removes absolute path declaration '/front_content.php' or relative path definition to actual
+     * dir './front_content.php', ampersand entities '&amp;'
+     * and returns a url like 'front_content.php?idart=12&idlang=1'
      *
      * @param string $url Url to clean
-     * @return  string  Cleaned Url
+     * @return string Cleaned Url
      */
-    public static function urlPreClean($url)
+    public static function urlPreClean(string $url): string
     {
         // some preparation of different front_content.php occurrence
         if (cString::findFirstPos($url, './front_content.php') === 0) {
@@ -889,6 +855,7 @@ class ModRewrite extends ModRewriteBase
         } elseif (cString::findFirstPos($url, '/front_content.php') === 0) {
             $url = str_replace('/front_content.php', 'front_content.php', $url);
         }
+
         return str_replace('&amp;', '&', $url);
     }
 
@@ -896,9 +863,7 @@ class ModRewrite extends ModRewriteBase
      * Recreates all or only empty aliases in categories table.
      *
      * @param bool $bOnlyEmpty Flag to reset only empty items
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public static function recreateCategoriesAliases($bOnlyEmpty = false)
     {
@@ -927,7 +892,6 @@ class ModRewrite extends ModRewriteBase
      * Returns list of all empty category aliases
      *
      * @param bool $bOnlyNumber
-     *
      * @return array|int
      * @throws cDbException
      */
@@ -957,9 +921,7 @@ class ModRewrite extends ModRewriteBase
      * Recreates all or only empty urlname entries in art_lang table.
      *
      * @param bool $bOnlyEmpty Flag to reset only empty items
-     *
      * @throws cDbException
-     * @throws cInvalidArgumentException
      */
     public static function recreateArticlesAliases($bOnlyEmpty = false)
     {
@@ -982,8 +944,8 @@ class ModRewrite extends ModRewriteBase
      * Returns list of all empty article aliases
      *
      * @param bool $bOnlyNumber
-     * @return  array|int
-     * @throws  cDbException
+     * @return array|int
+     * @throws cDbException
      */
     public static function getEmptyArticlesAliases($bOnlyNumber = true)
     {
@@ -1010,8 +972,7 @@ class ModRewrite extends ModRewriteBase
      * Method to reset all aliases (categories and articles).
      * Shortcut to recreateCategoriesAliases() and recreateArticlesAliases()
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public static function resetAliases()
     {
@@ -1025,9 +986,7 @@ class ModRewrite extends ModRewriteBase
      * Shortcut to recreateCategoriesAliases() and recreateArticlesAliases()
      *
      * @param bool $bOnlyEmpty Flag to reset only empty items
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public static function recreateAliases($bOnlyEmpty = false)
     {
@@ -1037,10 +996,8 @@ class ModRewrite extends ModRewriteBase
 
     /**
      * Returns .htaccess related associative info array
-     *
-     * @return  array
      */
-    public static function getHtaccessInfo()
+    public static function getHtaccessInfo(): array
     {
         $arr = [
             'contenido_full_path' => str_replace('\\', '/', realpath(cRegistry::getBackendPath() . '../') . '/'),

@@ -36,8 +36,8 @@ if ($client < 1) {
     return;
 }
 
-cInclude("includes", "functions.str.php");
-cInclude("includes", "functions.tpl.php");
+cInclude('includes', 'functions.str.php');
+cInclude('includes', 'functions.tpl.php');
 cInclude('includes', 'functions.lang.php');
 
 $tpl->reset();
@@ -329,7 +329,7 @@ $aInformation = ['imgsrc', 'description'];
 if (empty($aData)) {
     $aData = [];
 }
-$aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml", $aData, $aInformation);
+$aData = xmlFileToArray($cfg['path']['xml'] . 'legend.xml', $aData, $aInformation);
 
 foreach ($aData as $key => $item) {
     $divKey = new cHTMLDiv("", $key);
@@ -356,24 +356,23 @@ $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top']);
 /**
  *
  * @param string $filename
- * @param array $aData
- * @param array $aInformation
- *
+ * @param array $data
+ * @param array $information
  * @return array
  */
-function xmlFileToArray($filename, $aData = [], $aInformation = [])
+function xmlFileToArray(string $filename, array $data = [], array $information = []): array
 {
     $_dom = simplexml_load_file($filename);
     for ($i = 0, $size = count($_dom); $i < $size; $i++) {
-        foreach ($aInformation as $sInfoName) {
+        foreach ($information as $sInfoName) {
             if (!empty($_dom->article[$i]->$sInfoName)) {
-                $aData['article'][$i][$sInfoName] = $_dom->article[$i]->$sInfoName;
+                $data['article'][$i][$sInfoName] = $_dom->article[$i]->$sInfoName;
             }
             if (!empty($_dom->category[$i]->$sInfoName)) {
-                $aData['category'][$i][$sInfoName] = $_dom->category[$i]->$sInfoName;
+                $data['category'][$i][$sInfoName] = $_dom->category[$i]->$sInfoName;
             }
         }
     }
 
-    return $aData;
+    return $data;
 }

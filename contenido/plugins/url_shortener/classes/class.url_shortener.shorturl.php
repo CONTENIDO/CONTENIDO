@@ -33,37 +33,37 @@ class cApiShortUrlCollection extends ItemCollection
      *
      * @var int
      */
-    const ERR_IS_CLIENT_FOLDER = 1;
+    public const ERR_IS_CLIENT_FOLDER = 1;
 
     /**
      *
      * @var int
      */
-    const ERR_TOO_SHORT = 2;
+    public const ERR_TOO_SHORT = 2;
 
     /**
      *
      * @var int
      */
-    const ERR_INVALID_CHARS = 3;
+    public const ERR_INVALID_CHARS = 3;
 
     /**
      *
      * @var int
      */
-    const ERR_IS_ARTICLE_ALIAS = 4;
+    public const ERR_IS_ARTICLE_ALIAS = 4;
 
     /**
      *
      * @var int
      */
-    const ERR_IS_CATEGORY_ALIAS = 5;
+    public const ERR_IS_CATEGORY_ALIAS = 5;
 
     /**
      *
      * @var int
      */
-    const ERR_ALREADY_EXISTS = 6;
+    public const ERR_ALREADY_EXISTS = 6;
 
     /**
      * @var string Client id foreign key field name
@@ -92,11 +92,8 @@ class cApiShortUrlCollection extends ItemCollection
      * @param int $idart
      * @param int $idlang
      * @param int $idclient
-     *
      * @return cApiShortUrl
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($shorturl, $idart = NULL, $idlang = NULL, $idclient = NULL)
     {
@@ -195,9 +192,7 @@ class cApiShortUrl extends Item
      * Constructor Function
      *
      * @param mixed $id Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {

@@ -38,9 +38,7 @@ class cApiArticleCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection {@see ItemCollection::select()}
-     *
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
      * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
@@ -61,9 +59,7 @@ class cApiArticleCollection extends ItemCollection
      * Creates an article item entry
      *
      * @param int $idclient
-     *
      * @return cApiArticle
-     *
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idclient)
@@ -80,12 +76,10 @@ class cApiArticleCollection extends ItemCollection
      * Returns list of article ids by given client id.
      *
      * @param int $idclient
-     *
      * @return array
-     *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getIdsByClientId($idclient)
+    public function getIdsByClientId($idclient): array
     {
         $sql = "SELECT `idart` FROM `%s` WHERE `idclient` = %d";
         $this->db->query($sql, $this->table, $idclient);
@@ -108,33 +102,26 @@ class cApiArticle extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
+     * @param mixed $id Specifies the ID of item to load
      * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         $table = cRegistry::getDbTableName('art');
         parent::__construct($table, 'idart');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId [optional]
-     *                          change language id for URL (optional)
-     *
-     * @return string
-     *         link
-     *
+     * @param int $changeLangId [optional] Change language id for URL (optional)
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getLink($changeLangId = 0)
+    public function getLink($changeLangId = 0): string
     {
         if ($this->isLoaded() === false) {
             return '';
@@ -153,13 +140,9 @@ class cApiArticle extends Item
     /**
      * User-defined setter for article fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idclient':
@@ -167,7 +150,7 @@ class cApiArticle extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

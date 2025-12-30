@@ -53,8 +53,14 @@ $changefreq = $changefreq ?? '0';
 // remember old values to be passed to listeners of Contenido.Action.con_saveart.AfterCall
 $oldData = [];
 
-if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat)) && ($locked === 0 || $admin)) {
-
+if (
+    isset($title)
+    && (
+        $perm->have_perm_area_action($area, 'con_edit')
+        || $perm->have_perm_area_action_item($area, 'con_edit', $idcat)
+    )
+    && ($locked === 0 || $admin)
+) {
     // get idartlang
     if (!isset($idartlang) || $idartlang == 0) {
         $sql = 'SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
@@ -88,7 +94,6 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
         // Contenido.Action.con_saveart.AfterCall chain handler
         $oArtLang = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
         if ($oArtLang->isLoaded()) {
-
             // get array of idcats this article was related to
             $oCatArtColl = new cApiCategoryArticleCollection();
             $idcatold = $oCatArtColl->getCategoryIdsByArticleId($oArtLang->get('idart'));

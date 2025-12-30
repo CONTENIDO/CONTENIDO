@@ -135,9 +135,7 @@ class PimPluginSetupStatus extends PimPluginSetup
      *
      * @param int $idnavs (equivalent to column name)
      * @param bool $online (equivalent to column name)
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private function _changeNavSubStatus($idnavs, $online)
     {

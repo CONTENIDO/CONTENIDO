@@ -25,6 +25,7 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 include_once($contenidoPath . 'includes/startup.php');
 
 $backendPath = cRegistry::getBackendPath();
+$area = cRegistry::getArea();
 
 include_once($backendPath . 'plugins/linkchecker/includes/config.plugin.php');
 
@@ -47,4 +48,3 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
     include_once($backendPath . 'plugins/linkchecker/includes/include.linkchecker.php');
 }
-?>

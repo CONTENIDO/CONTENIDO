@@ -156,7 +156,7 @@ class cMailer extends Swift_Mailer
      * The mail encryption method, see {@see cMailer::SMTP_ENCRYPTION}.
      * This will be read from system property system/mail_encryption.
      *
-     * @var string|null
+     * @var ?string
      */
     private $_mailEncryption = null;
 
@@ -181,14 +181,14 @@ class cMailer extends Swift_Mailer
     /**
      * Logger for mails, used to log information when sending of a mail fails.
      *
-     * @var Swift_Plugins_Logger|null
+     * @var ?Swift_Plugins_Logger
      */
     private $_logger = null;
 
     /**
      * List of email attachments.
      *
-     * @var Swift_Attachment[] 
+     * @var Swift_Attachment[]
      */
     private $_attachments = [];
 
@@ -203,14 +203,12 @@ class cMailer extends Swift_Mailer
      * transport are read and aggregated and eventually transport is
      * created using constructTransport().
      *
-     * @param Swift_Transport|null $transport
+     * @param ?Swift_Transport $transport
      *        A transport instance. If omitted, the transport will be created
      *        with configured system settings for mail.
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function __construct(Swift_Transport $transport = null)
+    public function __construct(?Swift_Transport $transport = null)
     {
         // If a transport object has been given, use it and skip the rest
         if (!is_null($transport)) {
@@ -363,11 +361,9 @@ class cMailer extends Swift_Mailer
      *        Whether the mail is resent
      * @param string $contentType
      *        MIME type to use for mail, defaults to 'text/plain'
-     * @return int|null
+     * @return ?int
      *         Number of recipients to which the mail has been sent
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function sendMail(
         $from, $to, string $subject, string $body = '', $cc = null, $bcc = null,
@@ -401,10 +397,7 @@ class cMailer extends Swift_Mailer
      * @param bool $resend
      *        If this mail is send via resend
      *        when resending a mail it is not logged again
-     * @return int|null
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      * @see Swift_Mailer::send()
      */
     public function send(
@@ -445,8 +438,7 @@ class cMailer extends Swift_Mailer
      *
      * @param int $idMailSuccess
      *        ID of the mail which should be resent
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      * @throws cInvalidArgumentException if the mail has already been sent successfully or does not exist
      */
     public function resendMail(int $idMailSuccess)
@@ -520,14 +512,12 @@ class cMailer extends Swift_Mailer
      *
      * @since CONTENIDO 4.10.2
      * @param string $data The content of the file to be attached to the email.
-     * @param string|null $fileName The attachment filename.
-     * @param string|null $contentType The attachment content type (MIME content-type).
-     * @return bool
+     * @param ?string $fileName The attachment filename.
+     * @param ?string $contentType The attachment content type (MIME content-type).
      */
     public function addDynamicAttachment(
-        string $data, string $fileName = null, string $contentType = null
-    ): bool
-    {
+        string $data, ?string $fileName = null, ?string $contentType = null
+    ): bool {
         if (empty($data)) {
             cWarning('Empty dynamic attachment');
             return false;
@@ -577,12 +567,9 @@ class cMailer extends Swift_Mailer
     /**
      * Decodes the given value / array of values using conHtmlEntityDecode().
      *
-     * @param string|array $value
-     *        The value to decode
-     * @param string $charset
-     *        The charset to use
-     * @return string|array
-     *         Decoded value
+     * @param string|array $value The value to decode
+     * @param string $charset The charset to use
+     * @return string|array Decoded value
      */
     private function decodeField($value, string $charset)
     {
@@ -668,9 +655,7 @@ class cMailer extends Swift_Mailer
      *        The message which has been sent
      * @param array $failedRecipients
      *        The recipient addresses that did not get the mail
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function logMail(Swift_Mime_Message $message, array $failedRecipients = [])
     {

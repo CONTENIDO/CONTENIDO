@@ -37,10 +37,8 @@ class WorkflowItems extends ItemCollection
 
     /**
      * @param mixed $id
-     *
      * @return bool|void
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function delete($id)
     {
@@ -244,35 +242,29 @@ class WorkflowItem extends Item
     /**
      * Overridden setField function.
      *
-     * @param string $field Void field since we override the usual setField
-     *                      function
-     * @param string $value Void field since we override the usual setField
-     *                      function
-     * @param bool $safe
-     *
-     * @return bool
+     * @inheritDoc
      * @throws cInvalidArgumentException|cException
      */
-    public function setField($field, $value, $safe = true)
+    public function setField($name, $value, $safe = true)
     {
         if (true !== $this->isLoaded()) {
             $this->lasterror = i18n("No item loaded", "workflow");
             return false;
         }
 
-        if ($field == "idsequence") {
+        if ($name == "idsequence") {
             throw new cInvalidArgumentException("You can't set the idsequence field using this method. Use 'create' in the WorkflowItems class.");
         }
 
-        if ($field == "idworkflow") {
+        if ($name == "idworkflow") {
             throw new cInvalidArgumentException("You can't set the workflow ID using this method. Use 'create' in the WorkflowItems class!");
         }
 
-        if ($field == "position") {
+        if ($name == "position") {
             throw new cInvalidArgumentException("You can't set the position ID using this method. Use 'create' or 'swap' to create or move items!");
         }
 
-        if ($field == "idtask" && $value != 0) {
+        if ($name == "idtask" && $value != 0) {
             $taskCollection = new WorkflowTasks();
             $intValue = cSecurity::toInteger($value);
             $taskCollection->select("idtask = $intValue");
@@ -282,7 +274,7 @@ class WorkflowItem extends Item
             }
         }
 
-        return parent::setField($field, $value, $safe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**

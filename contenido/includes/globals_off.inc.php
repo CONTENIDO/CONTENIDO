@@ -52,8 +52,7 @@ $types_to_register = [
 foreach ($types_to_register as $global_type) {
     $arr = ${'_' . $global_type} ?? [];
     if (is_array($arr) && count($arr) > 0) {
-        // Second loop to prevent overwriting of globals by other globals'
-        // values
+        // Second loop to prevent overwriting of globals by other globals values
         foreach ($types_to_register as $global_type) {
             $key = '_' . $global_type;
             if (isset($arr[$key])) {

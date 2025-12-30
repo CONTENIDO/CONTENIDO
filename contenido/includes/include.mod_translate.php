@@ -34,7 +34,7 @@ if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
-$page = new cGuiPage("mod_translate");
+$page = new cGuiPage('mod_translate');
 
 $module = new cApiModule($idmod);
 

@@ -28,14 +28,14 @@ class cSystemtest
      *
      * @var int
      */
-    const C_SEVERITY_NONE = 1;
+    public const C_SEVERITY_NONE = 1;
 
     /**
      * Messages are only to inform the user about something.
      *
      * @var int
      */
-    const C_SEVERITY_INFO = 2;
+    public const C_SEVERITY_INFO = 2;
 
     /**
      * Messages about settings which aren't correct, but CONTENIDO might work
@@ -43,7 +43,7 @@ class cSystemtest
      *
      * @var int
      */
-    const C_SEVERITY_WARNING = 3;
+    public const C_SEVERITY_WARNING = 3;
 
     /**
      * Messages about settings which aren't correct.
@@ -51,7 +51,7 @@ class cSystemtest
      *
      * @var int
      */
-    const C_SEVERITY_ERROR = 4;
+    public const C_SEVERITY_ERROR = 4;
 
     /**
      * Possible result of @see cSystemtest::predictCorrectFilePermissions()
@@ -59,7 +59,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_PREDICT_SUFFICIENT = 1;
+    public const CON_PREDICT_SUFFICIENT = 1;
 
     /**
      * Possible result of @see cSystemtest::predictCorrectFilePermissions()
@@ -67,7 +67,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_PREDICT_NOTPREDICTABLE = 2;
+    public const CON_PREDICT_NOTPREDICTABLE = 2;
 
     /**
      * Possible result of @see cSystemtest::predictCorrectFilePermissions()
@@ -75,7 +75,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_PREDICT_CHANGEPERM_SAMEOWNER = 3;
+    public const CON_PREDICT_CHANGEPERM_SAMEOWNER = 3;
 
     /**
      * Possible result of @see cSystemtest::predictCorrectFilePermissions()
@@ -83,7 +83,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_PREDICT_CHANGEPERM_SAMEGROUP = 4;
+    public const CON_PREDICT_CHANGEPERM_SAMEGROUP = 4;
 
     /**
      * Possible result of @see cSystemtest::predictCorrectFilePermissions()
@@ -91,7 +91,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_PREDICT_CHANGEPERM_OTHERS = 5;
+    public const CON_PREDICT_CHANGEPERM_OTHERS = 5;
 
     /**
      * Possible result of @see cSystemtest::predictCorrectFilePermissions()
@@ -99,7 +99,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_PREDICT_CHANGEUSER = 6;
+    public const CON_PREDICT_CHANGEUSER = 6;
 
     /**
      * Possible result of @see cSystemtest::predictCorrectFilePermissions()
@@ -107,7 +107,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_PREDICT_CHANGEGROUP = 7;
+    public const CON_PREDICT_CHANGEGROUP = 7;
 
     /**
      * Possible result of @see cSystemtest::predictCorrectFilePermissions()
@@ -115,7 +115,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_PREDICT_WINDOWS = 8;
+    public const CON_PREDICT_WINDOWS = 8;
 
     /**
      * Possible result of @see cSystemtest::predictCorrectFilePermissions()
@@ -124,7 +124,7 @@ class cSystemtest
      * @since CONTENIDO 4.10.2
      * @var int
      */
-    const CON_PREDICT_UNKNOWN = 9;
+    public const CON_PREDICT_UNKNOWN = 9;
 
     /**
      * Possible result of cSystemtest::checkOpenBaseDir().
@@ -132,7 +132,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_BASEDIR_NORESTRICTION = 1;
+    public const CON_BASEDIR_NORESTRICTION = 1;
 
     /**
      * Possible result of cSystemtest::checkOpenBaseDir().
@@ -140,7 +140,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_BASEDIR_DOTRESTRICTION = 2;
+    public const CON_BASEDIR_DOTRESTRICTION = 2;
 
     /**
      * Possible result of cSystemtest::checkOpenBaseDir().
@@ -148,7 +148,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_BASEDIR_RESTRICTIONSUFFICIENT = 3;
+    public const CON_BASEDIR_RESTRICTIONSUFFICIENT = 3;
 
     /**
      * Possible result of cSystemtest::checkOpenBaseDir().
@@ -156,7 +156,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_BASEDIR_INCOMPATIBLE = 4;
+    public const CON_BASEDIR_INCOMPATIBLE = 4;
 
     /**
      * Possible result of cSystemtest::isPHPExtensionLoaded()
@@ -164,7 +164,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_EXTENSION_AVAILABLE = 1;
+    public const CON_EXTENSION_AVAILABLE = 1;
 
     /**
      * Possible result of cSystemtest::isPHPExtensionLoaded()
@@ -172,7 +172,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_EXTENSION_UNAVAILABLE = 2;
+    public const CON_EXTENSION_UNAVAILABLE = 2;
 
     /**
      * Possible result of cSystemtest::isPHPExtensionLoaded()
@@ -180,7 +180,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_EXTENSION_CANTCHECK = 3;
+    public const CON_EXTENSION_CANTCHECK = 3;
 
     /**
      * Possible result of cSystemtest::checkImageResizer()
@@ -188,7 +188,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_IMAGERESIZE_GD = 1;
+    public const CON_IMAGERESIZE_GD = 1;
 
     /**
      * Possible result of cSystemtest::checkImageResizer()
@@ -196,7 +196,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_IMAGERESIZE_IMAGEMAGICK = 2;
+    public const CON_IMAGERESIZE_IMAGEMAGICK = 2;
 
     /**
      * Possible result of cSystemtest::checkImageResizer()
@@ -204,7 +204,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_IMAGERESIZE_CANTCHECK = 3;
+    public const CON_IMAGERESIZE_CANTCHECK = 3;
 
     /**
      * Possible result of cSystemtest::checkImageResizer()
@@ -212,7 +212,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_IMAGERESIZE_NOTHINGAVAILABLE = 4;
+    public const CON_IMAGERESIZE_NOTHINGAVAILABLE = 4;
 
     /**
      * Possible result of cSystemtest::testMySQL()
@@ -220,7 +220,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_MYSQL_OK = 1;
+    public const CON_MYSQL_OK = 1;
 
     /**
      * Possible result of cSystemtest::testMySQL()
@@ -229,7 +229,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_MYSQL_STRICT_MODE = 2;
+    public const CON_MYSQL_STRICT_MODE = 2;
 
     /**
      * Possible result of cSystemtest::testMySQL()
@@ -238,7 +238,7 @@ class cSystemtest
      *
      * @var int
      */
-    const CON_MYSQL_CANT_CONNECT = 3;
+    public const CON_MYSQL_CANT_CONNECT = 3;
 
     /**
      * The test results which are stored for display.
@@ -285,9 +285,8 @@ class cSystemtest
     /**
      * Runs all available tests and stores the results in the messages array
      *
-     * @param bool $testFileSystem [optional]
-     *                             If this is true the file system checks will be performed too
-     *                             with standard settings.
+     * @param bool $testFileSystem [optional] If this is true the file system checks will be performed too
+     *      with standard settings.
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function runTests(bool $testFileSystem = true)
@@ -1104,8 +1103,7 @@ class cSystemtest
      *              ]
      *          ],
      *      ]
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      * @since CONTENIDO 4.10.2
      */
     public function testDatabaseTables(): array
@@ -1180,13 +1178,9 @@ class cSystemtest
     }
 
     /**
-     *
      * @param bool $testConfig [optional]
      * @param bool $testFrontend [optional]
-     *
-     * @return bool
-     *                           true if the test passed and false if not
-     *
+     * @return bool true if the test passed and false if not
      * @throws cInvalidArgumentException
      */
     public function testFilesystem($testConfig = true, $testFrontend = true)
@@ -1330,16 +1324,10 @@ class cSystemtest
     /**
      * Checks a single file or directory weather it is writeable or not
      *
-     * @param string $filename
-     *                    The file
-     * @param int $severity
-     *                    The resulting C_SEVERITY constant should the test fail
-     * @param bool $dir [optional]
-     *                    True if the $filename is a directory
-     *
-     * @return bool
-     *         Returns true if everything is fine
-     *
+     * @param string $filename The file
+     * @param int $severity The resulting C_SEVERITY constant should the test fail
+     * @param bool $dir [optional] True if the $filename is a directory
+     * @return bool Returns true if everything is fine
      * @throws cInvalidArgumentException
      */
     protected function testSingleFile($filename, $severity, $dir = false)
@@ -1417,7 +1405,7 @@ class cSystemtest
                 }
             }
 
-            $this->storeResult(false, $severity, $title, $message . "<br><br>" . $predictMessage);
+            $this->storeResult(false, $severity, $title, $message . "<br><br>" . ($predictMessage ?? ''));
             if ($title && $message) {
                 $status = false;
             }

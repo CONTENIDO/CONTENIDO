@@ -37,7 +37,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
 $groupname = $groupname ?? '';
 $description = $description ?? '';
 
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$lang = cRegistry::getLanguageId();
 
 // create group instance
 $bError = false;
@@ -58,7 +58,10 @@ if ($action == 'group_create') {
     $oGroup = new cApiGroup();
     $oGroup->loadGroupByGroupname($groupname);
     if ($oGroup->isLoaded()) {
-        $sNotification = $notification->returnNotification("warning", sprintf(i18n("Group name <strong>%s</strong> already exists"), $groupname));
+        $sNotification = $notification->returnNotification(
+            'warning',
+            sprintf(i18n("Group name <strong>%s</strong> already exists"), $groupname)
+        );
         $bError = true;
     } else {
         $oGroupColl = new cApiGroupCollection();

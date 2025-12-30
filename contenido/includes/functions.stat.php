@@ -19,27 +19,15 @@ cInclude('includes', 'functions.database.php');
 /**
  * Displays statistic information layer (a div Tag)
  *
- * @param int $id
- *         Either article or directory id
- * @param string $type
- *         The type
- * @param int $x
- *         Style top position
- * @param int $y
- *         Style left position
- * @param int $w
- *         Style width
- * @param int $h
- *         Style height
- *
- * @return string
- *         Composed info layer
- *
- * @throws cException
- * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
+ * @param int $id Either article or directory id
+ * @param string $type The type
+ * @param int $x Style top position
+ * @param int $y Style left position
+ * @param int $w Style width
+ * @param int $h Style height
+ * @return string Composed info layer
+ * @throws cException|cInvalidArgumentException
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function statsDisplayInfo($id, $type, $x, $y, $w, $h)
 {
@@ -65,9 +53,7 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h)
 /**
  * Archives the current statistics
  *
- * @param string $yearMonth
- *         String with the desired archive date (YYYYMM)
- *
+ * @param string $yearMonth String with the desired archive date (YYYYMM)
  * @throws cDbException|cInvalidArgumentException
  */
 function statsArchive($yearMonth)
@@ -121,12 +107,9 @@ function statsArchive($yearMonth)
 /**
  * Generates a statistics page
  *
- * @param string $yearMonth
- *         Specifies the year and month from which to retrieve the statistics,
+ * @param string $yearMonth Specifies the year and month from which to retrieve the statistics,
  *         specify "current" to retrieve the current entries.
- *
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
 function statsOverviewAll($yearMonth)
 {
@@ -134,8 +117,8 @@ function statsOverviewAll($yearMonth)
 
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
-    $client = cSecurity::toInteger(cRegistry::getClientId());
-    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+    $client = cRegistry::getCategoryId();
+    $lang = cRegistry::getLanguageId();
 
     $sDisplay = 'table-row';
     $bUseHeapTable = $cfg['statistics_heap_table'];
@@ -464,11 +447,8 @@ function statsOverviewAll($yearMonth)
 /**
  * Generates a statistics page for a given year
  *
- * @param string $year
- *         Specifies the year to retrieve the statistics for
- *
- * @throws cDbException
- * @throws cException
+ * @param string $year Specifies the year to retrieve the statistics for
+ * @throws cDbException|cException
  */
 function statsOverviewYear($year)
 {
@@ -476,8 +456,8 @@ function statsOverviewYear($year)
 
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
-    $client = cSecurity::toInteger(cRegistry::getClientId());
-    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+    $client = cRegistry::getCategoryId();
+    $lang = cRegistry::getLanguageId();
 
     $sDisplay = 'table-row';
 
@@ -732,22 +712,18 @@ function statsOverviewYear($year)
 /**
  * Generates a top<n> statistics page
  *
- * @param string $yearMonth
- *         Specifies the year and month from which to retrieve the statistics,
+ * @param string $yearMonth Specifies the year and month from which to retrieve the statistics,
  *         specify "current" to retrieve the current entries.
- * @param int $top
- *         Specifies the amount of pages to display
- *
- * @throws cDbException
- * @throws cException
+ * @param int $top Specifies the amount of pages to display
+ * @throws cDbException|cException
  */
 function statsOverviewTop($yearMonth, $top)
 {
     global $tpl;
 
     $db = cRegistry::getDb();
-    $client = cSecurity::toInteger(cRegistry::getClientId());
-    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+    $client = cRegistry::getCategoryId();
+    $lang = cRegistry::getLanguageId();
 
     if (strcmp($yearMonth, "current") == 0) {
         $sql = "SELECT DISTINCT
@@ -802,15 +778,10 @@ function statsOverviewTop($yearMonth, $top)
  *
  * Performs a recursive call, if parent category doesn't match to 0
  *
- * @param int $idcat
- *         The category id
- * @param string $seperator
- *         Separator for location string
- * @param string $catStr
- *         The location string variable (reference)
- *
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param int $idcat The category id
+ * @param string $seperator Separator for location string
+ * @param string $catStr The location string variable (reference)
+ * @throws cException|cInvalidArgumentException
  */
 function statCreateLocationString($idcat, $seperator, &$catStr)
 {
@@ -828,22 +799,17 @@ function statCreateLocationString($idcat, $seperator, &$catStr)
 /**
  * Generates a top<n> statistics page
  *
- * @param int $year
- *         Specifies the year from which to retrieve the statistics
- * @param int $top
- *         Specifies the amount of pages to display
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param int $year Specifies the year from which to retrieve the statistics
+ * @param int $top Specifies the amount of pages to display
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function statsOverviewTopYear($year, $top)
 {
     global $tpl;
 
     $db = cRegistry::getDb();
-    $client = cSecurity::toInteger(cRegistry::getClientId());
-    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+    $client = cRegistry::getCategoryId();
+    $lang = cRegistry::getLanguageId();
 
     $sql = "SELECT
                 C.title, SUM(A.visited) as visited, B.idcat AS idcat, C.idart AS idart
@@ -881,13 +847,10 @@ function statsOverviewTopYear($year, $top)
  * Returns a drop-down to choose the stats to display
  *
  * @param string $default
- *
- * @return string
- *         Returns a drop-down string
- *
+ * @return string Returns a drop-down string
  * @throws cException
  */
-function statDisplayTopChooser($default)
+function statDisplayTopChooser(string $default): string
 {
     $defaultTop10 = ($default == 'top10') ? 'selected' : '';
     $defaultTop20 = ($default == 'top20') ? 'selected' : '';
@@ -907,14 +870,10 @@ function statDisplayTopChooser($default)
 /**
  * Returns a drop-down to choose the stats to display for yearly summary pages
  *
- * @param string $default
- *
- * @return string
- *         Returns a drop-down string
- *
+ * @return string Returns a drop-down string
  * @throws cException
  */
-function statDisplayYearlyTopChooser($default)
+function statDisplayYearlyTopChooser(string $default): string
 {
     $defaultTop10 = ($default == 'top10') ? 'selected' : '';
     $defaultTop20 = ($default == 'top20') ? 'selected' : '';
@@ -936,13 +895,10 @@ function statDisplayYearlyTopChooser($default)
  *
  * @param int $client
  * @param int $lang
- *
- * @return array
- *         Array of strings with years.
- *
- * @throws cDbException|cInvalidArgumentException
+ * @return array Array of strings with years.
+ * @throws cDbException
  */
-function statGetAvailableYears($client, $lang)
+function statGetAvailableYears($client, $lang): array
 {
     $db = cRegistry::getDb();
 
@@ -974,13 +930,10 @@ function statGetAvailableYears($client, $lang)
  * @param string $year
  * @param int $client
  * @param int $lang
- *
- * @return array
- *         Array of strings with months.
- *
- * @throws cDbException|cInvalidArgumentException
+ * @return array Array of strings with months.
+ * @throws cDbException
  */
-function statGetAvailableMonths($year, $client, $lang)
+function statGetAvailableMonths($year, $client, $lang): array
 {
     $db = cRegistry::getDb();
 
@@ -1010,9 +963,7 @@ function statGetAvailableMonths($year, $client, $lang)
 /**
  * Resets the statistic for passed client
  *
- * @param int $client
- *         Id of client
- *
+ * @param int $client Id of client
  * @throws cDbException
  */
 function statResetStatistic($client)
@@ -1025,14 +976,11 @@ function statResetStatistic($client)
 /**
  * Deletes existing heap table (table in memory) and creates it.
  *
- * @param string $sHeapTable
- *         Table name
- * @param cDb $db
- *         Database object
- *
+ * @param string $sHeapTable Table name
+ * @param cDb $db Database object
  * @throws cDbException
  */
-function buildHeapTable($sHeapTable, $db)
+function buildHeapTable(string $sHeapTable, cDb $db)
 {
     $sql = "DROP TABLE IF EXISTS `" . $db->escape($sHeapTable) . "`;";
     $db->query($sql);

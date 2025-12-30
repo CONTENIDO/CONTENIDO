@@ -25,8 +25,8 @@ class cSetupClientMode extends cSetupMask
 
     /**
      * cSetupClientMode constructor.
-     * @param $step
-     * @param $previous
+     * @param bool|int $step
+     * @param bool $previous
      * @param $next
      */
     public function __construct($step, $previous, $next)

@@ -112,10 +112,9 @@ class SearchResultModule
     protected $_msgRange;
 
     /**
-     *
-     * @param array $options
+     * @param ?array $options
      */
-    public function __construct(array $options = NULL)
+    public function __construct(?array $options = NULL)
     {
         global $sArtSpecs;
 
@@ -189,6 +188,7 @@ class SearchResultModule
     }
 
     /**
+     * Renders the search result HTML output.
      */
     public function render()
     {
@@ -224,16 +224,12 @@ class SearchResultModule
 
     /**
      * Returns the search result count.
-     *
-     * @return int
      */
     public function getSearchResultCount(): int
     {
         return $this->_searchResultCount;
     }
 
-    /**
-     */
     protected function _performSearch()
     {
         // build search object
@@ -268,7 +264,6 @@ class SearchResultModule
             $searchResultArray = $search->searchIndex($this->_prepSearchTerm);
 
             if (false !== $searchResultArray) {
-
                 $this->_searchResultCount = count($searchResultArray);
 
                 // get search results
@@ -290,20 +285,11 @@ class SearchResultModule
         }
     }
 
-    /**
-     *
-     * @return string
-     */
     protected function _getMsgResult(): string
     {
         return $this->_msgResult;
     }
 
-    /**
-     *
-     * @param int $count
-     * @param int $countIdarts
-     */
     protected function _setMsgResult(int $count, int $countIdarts)
     {
         $this->_countValues = $count;
@@ -319,8 +305,6 @@ class SearchResultModule
     /**
      * Returns IDCATs of setting searchable/idcats as array.
      * Default value is 1.
-     *
-     * @return array
      * @throws cDbException|cException
      */
     protected function _getSearchableIdcats(): array
@@ -349,7 +333,6 @@ class SearchResultModule
      *
      * TODO use cApiArticleSpecificationCollection instead
      *
-     * @return array
      * @throws cDbException|cInvalidArgumentException
      */
     protected function _getArticleSpecs(): array
@@ -375,8 +358,6 @@ class SearchResultModule
     }
 
     /**
-     *
-     * @return array
      * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function _getResults(): array
@@ -445,10 +426,6 @@ class SearchResultModule
         return $entries;
     }
 
-    /**
-     *
-     * @return string
-     */
     protected function _getPreviousLink(): string
     {
         // skip if there are no previous pages
@@ -460,10 +437,6 @@ class SearchResultModule
         return $this->_getPageLink($this->_dispSearchTerm, $this->_page - 1);
     }
 
-    /**
-     *
-     * @return string
-     */
     protected function _getNextLink(): string
     {
         // skip if there are no next pages
@@ -477,8 +450,6 @@ class SearchResultModule
 
     /**
      * Build links to other result pages.
-     *
-     * @return array
      */
     protected function _getPageLinks(): array
     {
@@ -493,13 +464,11 @@ class SearchResultModule
     /**
      * This method builds URLs for each result link and the pagination links.
      *
-     *
-     * @param string|null $searchTerm
-     * @param int|null $page
-     * @return string
+     * @param ?string $searchTerm
+     * @param ?int $page
      * @throws cDbException|cException
      */
-    protected function _getPageLink(string $searchTerm = NULL, int $page = NULL): string
+    protected function _getPageLink(?string $searchTerm = NULL, ?int $page = NULL): string
     {
         // define standard params
         $params = [

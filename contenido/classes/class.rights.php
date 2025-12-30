@@ -38,9 +38,7 @@ class cRights
      * @return bool
      *         True on success otherwise false
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public static function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
     {
@@ -124,9 +122,7 @@ class cRights
      * @return bool
      *         True on success otherwise false
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public static function createRightsForElement($area, $iditem, $idlang = false)
     {
@@ -210,9 +206,7 @@ class cRights
      * @param bool $idlang
      *         ID of lang parameter
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public static function deleteRightsForElement($area, $iditem, $idlang = false)
     {
@@ -322,9 +316,7 @@ class cRights
     /**
      * @return bool
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public static function saveRights()
     {
@@ -405,9 +397,7 @@ class cRights
     /**
      * @return bool
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public static function saveGroupRights()
     {

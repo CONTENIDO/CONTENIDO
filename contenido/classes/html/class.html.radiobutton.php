@@ -24,7 +24,7 @@ class cHTMLRadiobutton extends cHTMLFormElement
 {
 
     /**
-     * Values for the check box
+     * Values for the radio button
      *
      * @var string
      */
@@ -49,28 +49,27 @@ class cHTMLRadiobutton extends cHTMLFormElement
      *
      * Creates an HTML radio button element.
      *
-     * @param string $name
-     *         Name of the element
-     * @param string $value
-     *         Value of the radio button
-     * @param string $id [optional]
-     *         ID of the element
-     * @param bool $checked [optional]
-     *         Is element checked?
-     * @param bool $disabled [optional]
-     *         Item disabled flag (non-empty to set disabled)
-     * @param int|null $tabindex [optional]
-     *         Tab index for form elements
-     * @param string $accesskey [optional]
-     *         Key to access the field
-     * @param string $class [optional]
-     *         the class of this element
+     * @param string $name Name of the element
+     * @param string $value Value of the radio button
+     * @param string $id [optional] ID of the element
+     * @param bool $checked [optional] Is element checked?
+     * @param bool $disabled [optional] Item disabled flag (non-empty to set disabled)
+     * @param ?int $tabindex [optional] Tab index for form elements
+     * @param string $accessKey [optional] Key to access the field
+     * @param string $class [optional] The class of this element
      */
     public function __construct(
-        $name, $value, $id = '', $checked = false, $disabled = false, $tabindex = null, $accesskey = '', $class = ''
+        $name,
+        $value,
+        $id = '',
+        $checked = false,
+        $disabled = false,
+        $tabindex = null,
+        $accessKey = '',
+        $class = ''
     )
     {
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
+        parent::__construct($name, $id, $disabled, $tabindex, $accessKey, $class);
         $this->_tag = 'input';
         $this->_value = $value;
         $this->_contentlessTag = true;
@@ -83,12 +82,9 @@ class cHTMLRadiobutton extends cHTMLFormElement
     /**
      * Sets the checked flag.
      *
-     * @param bool $checked
-     *         If true, the "checked" attribute will be assigned.
-     * @return cHTMLRadiobutton
-     *         $this for chaining
+     * @param bool $checked If true, the "checked" attribute will be assigned.
      */
-    public function setChecked($checked): cHTMLRadiobutton
+    public function setChecked($checked): self
     {
         // NOTE: We cast the parameter to boolean, because it could be of another type!
         $checked = cSecurity::toBoolean($checked);
@@ -102,12 +98,9 @@ class cHTMLRadiobutton extends cHTMLFormElement
     /**
      * Sets a custom label text
      *
-     * @param string $text
-     *         Text to display
-     * @return cHTMLRadiobutton
-     *         $this for chaining
+     * @param string $text Text to display
      */
-    public function setLabelText($text): cHTMLRadiobutton
+    public function setLabelText($text): self
     {
         $this->_labelText = $text;
 
@@ -117,14 +110,12 @@ class cHTMLRadiobutton extends cHTMLFormElement
     /**
      * Appends HTML markup to the radio button.
      *
-     * @param string $markup
-     *         The HTML markup to append to the radio button
-     * @return cHTMLRadiobutton
-     *         $this for chaining
+     * @param string $markup The HTML markup to append to the radio button
      */
-    public function appendMarkup($markup): cHTMLRadiobutton
+    public function appendMarkup($markup): self
     {
         $this->_markupToAppend = $markup;
+
         return $this;
     }
 
@@ -137,12 +128,10 @@ class cHTMLRadiobutton extends cHTMLFormElement
      * as regular text. Displaying the value can be turned off via the
      * parameter.
      *
-     * @param bool $renderLabel [optional]
-     *         If true, renders a label
-     * @return string
-     *         Rendered HTML
+     * @param bool $renderLabel [optional] If true, renders a label
+     * @return string Rendered HTML
      */
-    public function toHtml($renderLabel = true): string
+    public function toHtml(bool $renderLabel = true): string
     {
         $renderedLabel = '';
         if ($renderLabel && !empty($this->_labelText)) {

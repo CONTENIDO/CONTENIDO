@@ -28,10 +28,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // ################################
 // Initialization
 // ################################
-$oPage = new cGuiPage("recipients_menu", "newsletter");
+$oPage = new cGuiPage('recipients_menu', 'newsletter');
 $oMenu = new cGuiMenu();
 $oClient = new cApiClient($client);
-$oUser = new cApiUser($auth->auth["uid"]);
+$oUser = new cApiUser($auth->auth['uid']);
 // $sLocation = $sess->url("main.php?area=$area&frame=$frame");
 
 // Specify fields for search, sort and validation. Design makes enhancements

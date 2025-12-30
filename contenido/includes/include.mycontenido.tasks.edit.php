@@ -24,22 +24,22 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 
 
-$cpage = new cGuiPage("mycontenido.tasks.edit");
+$cpage = new cGuiPage('mycontenido.tasks.edit');
 
 $todoitem = new TODOItem();
 $todoitem->loadByPrimaryKey($idcommunication);
 
-$ui = new cGuiTableForm("reminder");
+$ui = new cGuiTableForm('reminder');
 $ui->setHeader(i18n("Edit reminder item"));
 
 $ui->setCancelLink($sess->url("main.php?area=mycontenido_tasks&frame=$frame"));
 
-$ui->setVar("area", "mycontenido_tasks");
-$ui->setVar("frame", $frame);
-$ui->setVar("action", "todo_save_item");
-$ui->setVar("idcommunication", $idcommunication);
+$ui->setVar('area', 'mycontenido_tasks');
+$ui->setVar('frame', $frame);
+$ui->setVar('action', 'todo_save_item');
+$ui->setVar('idcommunication', $idcommunication);
 
-$userselect = new cHTMLSelectElement("userassignment");
+$userselect = new cHTMLSelectElement('userassignment');
 
 $userColl = new cApiUserCollection();
 foreach ($userColl->getAccessibleUsers($auth->getPermsArray()) as $key => $value) {

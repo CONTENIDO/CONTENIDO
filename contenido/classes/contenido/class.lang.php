@@ -42,11 +42,8 @@ class cApiLanguageCollection extends ItemCollection
      * @param int $active
      * @param string $encoding
      * @param string $direction
-     *
      * @return cApiLanguage
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($name, $active, $encoding, $direction)
     {
@@ -67,12 +64,10 @@ class cApiLanguageCollection extends ItemCollection
     }
 
     /**
-     * Returns next accessible language for current client and current logged-in
-     * user.
+     * Returns next accessible language for current client and current logged-in user.
      *
-     * @return cApiLanguage|NULL
-     * @throws cDbException
-     * @throws cException
+     * @return ?cApiLanguage
+     * @throws cDbException|cException
      */
     public function nextAccessible()
     {
@@ -82,7 +77,7 @@ class cApiLanguageCollection extends ItemCollection
             return NULL;
         }
 
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
 
         $clientsLanguageColl = new cApiClientLanguageCollection();
         $clientsLanguageColl->select('idlang = ' . $item->get("idlang"));
@@ -109,12 +104,11 @@ class cApiLanguageCollection extends ItemCollection
     /**
      * Returns the language name of the language with the given ID.
      *
-     * @param int $idlang
-     *         the ID of the language
-     * @return string
-     *         the name of the language
+     * @param int $idlang The ID of the language
+     * @return string The name of the language
+     * @throws cDbException|cException
      */
-    public function getLanguageName($idlang)
+    public function getLanguageName($idlang): string
     {
         $item = new cApiLanguage($idlang);
         if ($item->isLoaded()) {
@@ -147,27 +141,22 @@ class cApiLanguage extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('lang'), 'idlang');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * Stores made changes.
      *
-     * @return bool
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
     public function store()
     {
@@ -178,13 +167,9 @@ class cApiLanguage extends Item
     /**
      * User-defined setter for lang fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'active':
@@ -192,79 +177,69 @@ class cApiLanguage extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**
-     * Loads all languagesettings into an static array.
+     * Loads all languagesettings into a static array.
      *
-     * @param int $idclient [optional]
-     *                      Id of client to load properties from
-     * @throws cDbException
-     * @throws cException
+     * @param int $clientId Id of client to load properties from
+     * @throws cDbException|cException
      */
-    protected function _loadProperties($idclient = 0)
+    protected function _loadProperties($clientId = 0)
     {
-
-        if (!isset(self::$_propertiesCacheLoaded[$idclient])) {
-            self::$_propertiesCache[$idclient] = [];
+        $clientId = cSecurity::toInteger($clientId);
+        if (!isset(self::$_propertiesCacheLoaded[$clientId])) {
+            self::$_propertiesCache[$clientId] = [];
 
             $itemtype = $this->db->escape($this->getPrimaryKeyName());
             $itemid = $this->db->escape($this->get($this->getPrimaryKeyName()));
 
-            $propColl = $this->_getPropertiesCollectionInstance($idclient);
+            $propColl = $this->_getPropertiesCollectionInstance($clientId);
             $propColl->select("itemtype='$itemtype' AND itemid='$itemid'", '', 'type, value ASC');
 
             if (0 < $propColl->count()) {
-
                 while (false !== $item = $propColl->next()) {
-
                     $type = $item->get('type');
-                    if (!isset(self::$_propertiesCache[$idclient][$type])) {
-                        self::$_propertiesCache[$idclient][$type] = [];
+                    if (!isset(self::$_propertiesCache[$clientId][$type])) {
+                        self::$_propertiesCache[$clientId][$type] = [];
                     }
 
                     $name = $item->get('name');
                     $value = $item->get('value');
-                    self::$_propertiesCache[$idclient][$type][$name] = $value;
+                    self::$_propertiesCache[$clientId][$type][$name] = $value;
                 }
             }
         }
 
-        self::$_propertiesCacheLoaded[$idclient] = true;
+        self::$_propertiesCacheLoaded[$clientId] = true;
     }
 
     /**
      * Returns a custom property.
      *
-     * @param string $type
-     *                         Specifies the type
-     * @param string $name
-     *                         Specifies the name
-     * @param int $idclient [optional]
-     *                         Id of client to set property for
-     * @return mixed
-     *                         Value of the given property or false if item hasn't been loaded
-     * @throws cDbException
-     * @throws cException
+     * @param string $type Specifies the type
+     * @param string $name Specifies the name
+     * @param int $clientId Id of client to set property for
+     * @return mixed Value of the given property or false if item hasn't been loaded
+     * @throws cDbException|cException
      */
-    public function getProperty($type, $name, $idclient = 0)
+    public function getProperty($type, $name, $clientId = 0)
     {
-
         // skip & return false if item hasn't been loaded
         if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
 
-        $this->_loadProperties($idclient);
+        $this->_loadProperties($clientId);
 
         if (isset(
-            self::$_propertiesCache[$idclient],
-            self::$_propertiesCache[$idclient][$type],
-            self::$_propertiesCache[$idclient][$type][$name]
+            self::$_propertiesCache[$clientId],
+            self::$_propertiesCache[$clientId][$type],
+            self::$_propertiesCache[$clientId][$type][$name]
         )) {
-            return self::$_propertiesCache[$idclient][$type][$name];
+            return self::$_propertiesCache[$clientId][$type][$name];
         } else {
             return false;
         }

@@ -37,13 +37,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
      *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings
-     *         the raw settings in an XML structure or as plaintext
-     * @param int $id
-     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
-     *         array containing the values of all content types
-     *
+     * @param string $rawSettings The raw settings in an XML structure or as plaintext
+     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes Array containing the values of all content types
      * @throws cDbException
      */
     function __construct($rawSettings, $id, array $contentTypes)
@@ -62,14 +58,13 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         ];
 
         // encoding conversions to avoid problems with umlauts
-        $rawSettings = conHtmlEntityDecode($rawSettings ?? '');
-        $rawSettings = @utf8_encode($rawSettings);
+        $rawSettings = cString::convertEncoding(conHtmlEntityDecode($rawSettings ?? ''));
 
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
         if ($this->hasSetting('linkeditor_title')) {
-            $title = @utf8_decode($this->getSetting('linkeditor_title'));
+            $title = cString::convertEncoding($this->getSetting('linkeditor_title'));
             $title = conHtmlentities($title);
         } else {
             $title = '';
@@ -181,14 +176,16 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $link->setTargetFrame($target);
         $link->setContent($linktext);
 
+        // [enwi] [m.purc] Added this to be able to modify the generated link element
+        cApiCecHook::execute('Contenido.ContentTypeLinkeditor.generateViewCode', $this, $link);
+
         return $this->_encodeForOutput($link->render());
     }
 
     /**
      * Generates the actual link depending on the link type.
      *
-     * @return string
-     *         the generated link
+     * @return string The generated link
      * @throws cInvalidArgumentException
      */
     protected function _generateHref(): string
@@ -325,11 +322,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Generates code for the external link tab in which links to external sites
-     * can be specified.
+     * Generates code for the external link tab in which links to external sites can be specified.
      *
-     * @return string
-     *         the code for the external link tab
+     * @return string The code for the external link tab
      */
     private function _generateTabExternal(): string
     {
@@ -347,13 +342,11 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Generates code for the basic settings "tab" in which the link title and
-     * target can be specified.
+     * Generates code for the basic settings "tab" in which the link title and target can be specified.
      *
      * This tab is always shown.
      *
-     * @return string
-     *         the code for the basic settings tab
+     * @return string The code for the basic settings tab
      */
     private function _generateBasicSettings(): string
     {
@@ -377,11 +370,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Generates code for the internal link tab in which links to internal sites
-     * can be specified.
+     * Generates code for the internal link tab in which links to internal sites can be specified.
      *
-     * @return string
-     *         the code for the internal link tab
+     * @return string The code for the internal link tab
      * @throws cDbException
      */
     private function _generateTabInternal(): string
@@ -422,9 +413,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
      *
      * @param int $level [optional]
      * @param int $parentid [optional]
-     *
-     * @return array
-     *         with directory information
+     * @return array With directory information
      * @throws cDbException
      */
     public function buildCategoryArray($level = 0, $parentid = 0): array
@@ -466,8 +455,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
      * @param array $categories directory information
      *
      * @return string HTML code showing a directory list
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getCategoryList(array $categories): string
     {
@@ -513,8 +501,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     /**
      * Computes all active idcats.
      *
-     * @return array
-     *         containing all active idcats
+     * @return array Containing all active idcats
      * @throws cDbException
      */
     public function getActiveIdcats(): array
@@ -570,12 +557,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     /**
      * Computes all parent idcats of the given idcat and returns them.
      *
-     * @param int $idcat
-     *         the current idcat
-     * @param array $idcats [optional]
-     *         the array of idcats to which all idcats should be added
-     * @return array
-     *         the given idcats array with the given idcat and all parent idcats
+     * @param int $idcat The current idcat
+     * @param array $idcats [optional] The array of idcats to which all idcats should be added
+     * @return array The given idcats array with the given idcat and all parent idcats
      */
     private function _getParentIdcats($idcat, array $idcats = []): array
     {
@@ -595,11 +579,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     /**
      * Generate a select box for all articles of the given idcat.
      *
-     * @param int $idCat [optional]
-     *                   idcat of the category from which all articles should be shown
-     * @return string
-     *                   rendered cHTMLSelectElement
-     * @throws cDbException
+     * @param int $idCat [optional] idcat of the category from which all articles should be shown
+     * @return string Rendered cHTMLSelectElement
+     * @throws cDbException|cException
      */
     public function generateArticleSelect($idCat = 0): string
     {
@@ -655,11 +637,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Generates code for the link to file tab in which links to files can be
-     * specified.
+     * Generates code for the link to file tab in which links to files can be specified.
      *
-     * @return string
-     *         the code for the link to file tab
+     * @return string The code for the link to file tab
      * @throws cInvalidArgumentException
      */
     private function _generateTabFile(): string
@@ -773,11 +753,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
      * Generates a select box for the manual files.
      *
      * @SuppressWarnings docBlocks
-     * @param string $directoryPath [optional]
-     *         to directory of the files
-     * @param bool $isEmptySelect
-     *
-     * @return string
+     * @param string $directoryPath [optional] To directory of the files
      */
     public function getUploadFileSelect(string $directoryPath = '', bool $isEmptySelect = false): string
     {
@@ -803,15 +779,12 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Checks whether the directory defined by the given directory
-     * information is the currently active directory.
+     * Checks whether the directory defined by the given directory information is the currently active directory.
      *
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData
-     *         directory information
-     * @return bool
-     *         whether the directory is the currently active directory
+     * @param array $dirData Directory information
+     * @return bool Whether the directory is the currently active directory
      */
     protected function _isActiveDirectory(array $dirData): bool
     {
@@ -819,15 +792,12 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Checks whether the directory defined by the given directory information
-     * should be shown expanded.
+     * Checks whether the directory defined by the given directory information should be shown expanded.
      *
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData
-     *         directory information
-     * @return bool
-     *         whether the directory should be shown expanded
+     * @param array $dirData Directory information
+     * @return bool Whether the directory should be shown expanded
      */
     protected function _shouldDirectoryBeExpanded(array $dirData): bool
     {

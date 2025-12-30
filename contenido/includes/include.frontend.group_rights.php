@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $requestUsePlugin = $_REQUEST['useplugin'] ?? '';
 $requestIdFrontendGroup = cSecurity::toInteger($_REQUEST['idfrontendgroup'] ?? '0');
 
-$page = new cGuiPage("frontend.group_rights");
+$page = new cGuiPage('frontend.group_rights');
 
 if ($requestUsePlugin != 'category' || $requestIdFrontendGroup <= 0) {
     $page->displayCriticalError('Illegal call!');

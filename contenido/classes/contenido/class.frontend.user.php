@@ -50,13 +50,10 @@ class cApiFrontendUserCollection extends ItemCollection
     /**
      * Checks if a specific user already exists
      *
-     * @param string $sUsername
-     *         specifies the username to search for
-     *
-     * @return bool
+     * @param string $sUsername Specifies the username to search for
      * @throws cException
      */
-    public function userExists($sUsername)
+    public function userExists(string $sUsername): bool
     {
         $feUsers = new cApiFrontendUserCollection();
         $feUsers->setWhere('idclient', cRegistry::getClientId());
@@ -69,24 +66,18 @@ class cApiFrontendUserCollection extends ItemCollection
     /**
      * Creates a new user
      *
-     * @param string $username
-     *                         Specifies the username
-     * @param string $password [optional]
-     *                         Specifies the password (optional)
-     *
+     * @param string $username Specifies the username
+     * @param string $password [optional] Specifies the password (optional)
      * @return cApiFrontendUser
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($username, $password = '')
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
         $auth = cRegistry::getAuth();
 
         // Check if the username already exists
-        $this->select("idclient = " . (int)$client . " AND username = '" . $this->escape($username) . "'");
-
+        $this->select(sprintf("`idclient` = %d AND `username` = '%s'", $client, $this->escape($username)));
         if ($this->next()) {
             return $this->create($username . '_' . cString::getPartOfString(md5(rand()), 0, 10), $password);
         }
@@ -104,7 +95,7 @@ class cApiFrontendUserCollection extends ItemCollection
 
         // Put this user into the default groups
         $feGroups = new cApiFrontendGroupCollection();
-        $feGroups->select("idclient = " . (int)$client . " AND defaultgroup = 1");
+        $feGroups->select(sprintf("`idclient` = %d AND `defaultgroup` = 1", $client));
 
         $feGroupMembers = new cApiFrontendGroupMemberCollection();
 
@@ -119,17 +110,11 @@ class cApiFrontendUserCollection extends ItemCollection
     }
 
     /**
-     * Overridden delete method to remove user from groupmember table
-     * before deleting user.
+     * Overridden delete method to remove user from groupmember table before deleting user.
      *
-     * @param int $itemId
-     *         specifies the frontend user
-     *
+     * @param int $itemId The frontend user id
      * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function delete($itemId)
     {
@@ -157,18 +142,14 @@ class cApiFrontendUser extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('frontendusers'), 'idfrontenduser');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
@@ -176,31 +157,23 @@ class cApiFrontendUser extends Item
      * Overridden setField method to md5 the password.
      * Sets the value of a specific field.
      *
-     * @param string $field
-     *         Specifies the field to set
-     * @param string $value
-     *         Specifies the value to set
-     * @param bool $safe [optional]
-     *         Flag to use defined inFilter
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($field, $value, $safe = true)
+    public function setField($name, $value, $safe = true)
     {
-        if ($field == 'password') {
-            return parent::setField($field, hash('sha256', md5($value) . $this->get('salt')), $safe);
+        if ($name == 'password') {
+            return parent::setField($name, hash('sha256', md5($value) . $this->get('salt')), $safe);
         } else {
-            return parent::setField($field, $value, $safe);
+            return parent::setField($name, $value, $safe);
         }
     }
 
     /**
      * Sets the password to a raw value without md5 encoding.
      *
-     * @param string $password
-     *         Raw password
-     * @return bool
+     * @param string $password Raw password
      */
-    public function setRawPassword($password)
+    public function setRawPassword($password): bool
     {
         return $this->setField('password', $password);
     }
@@ -208,12 +181,10 @@ class cApiFrontendUser extends Item
     /**
      * Checks if the given password matches the password in the database
      *
-     * @param string $password
-     *         Password to check
-     * @return bool
-     *         True if the password is correct, false otherwise
+     * @param string $password Password to check
+     * @return bool True if the password is correct, false otherwise
      */
-    public function checkPassword($password)
+    public function checkPassword($password): bool
     {
         if ($this->isLoaded() === false) {
             return false;
@@ -228,9 +199,7 @@ class cApiFrontendUser extends Item
     /**
      * Saves modified user entry
      *
-     * @return bool
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
     public function store()
     {
@@ -244,11 +213,10 @@ class cApiFrontendUser extends Item
     /**
      * Returns list of all groups belonging to current user
      *
-     * @return array
-     *         List of frontend group ids
+     * @return array List of frontend group ids
      * @throws cException
      */
-    public function getGroupsForUser()
+    public function getGroupsForUser(): array
     {
         $feGroupMembers = new cApiFrontendGroupMemberCollection();
         $feGroupMembers->setWhere('idfrontenduser', $this->get('idfrontenduser'));

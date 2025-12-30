@@ -56,92 +56,67 @@ class cSearchResult extends cSearchBaseAbstract
 {
 
     /**
-     * Instance of class Index
-     *
-     * @var object
+     * @var object Instance of class Index
      */
     protected $_index;
 
     /**
-     * Number of results
-     *
-     * @var int
+     * @var int Number of results
      */
     protected $_results;
 
     /**
-     * Number of result pages
-     *
-     * @var int
+     * @var int Number of result pages
      */
     protected $_pages;
 
     /**
-     * Current result page
-     *
-     * @var int
+     * @var int Current result page
      */
     protected $_resultPage;
 
     /**
-     * Results per page to display
-     *
-     * @var int
+     * @var int Results per page to display
      */
     protected $_resultPerPage;
 
     /**
-     * Array of html-tags to emphasize the search-words
-     *
-     * @var array
+     * @var array Array of html-tags to emphasize the search-words
      */
     protected $_replacement = [];
 
     /**
-     * Array of article id's with ranking information
-     *
-     * @var array
+     * @var array Array of article id's with ranking information
      */
     protected $_rankStructure = [];
 
     /**
-     * Array of result-pages with array's of article id's
-     *
-     * @var array
+     * @var array Array of result-pages with array's of article id's
      */
     protected $_orderedSearchResult = [];
 
     /**
-     * Array of article id's with information about cms-types, occurrence of
-     * keyword/search-word, similarity .
-     *
-     * @var array
+     * @var array Array of article id's with information about cms-types, occurrence of
+     *     keyword/search-word, similarity .
      */
     protected $_searchResult = [];
 
     /**
      * Constructor to create an instance of this class.
      *
-     * Compute ranking factor for each search result and order the
-     * search results by ranking factor.
+     * Compute ranking factor for each search result and order the search results by ranking factor.
      *
-     * NOTE: The ranking factor is the sum of occurrences of matching
-     * search-terms weighted by similarity (in %) between search-word
-     * and matching word in the article.
+     * NOTE: The ranking factor is the sum of occurrences of matching search-terms weighted by similarity
+     * (in %) between search-word and matching word in the article.
      *
      * TODO: One can think of more sophisticated ranking strategies.
-     * The content type information could be used for example because a
-     * matching word in the headline (CMS_HEADLINE[1]) could be weighted
-     * more than a matching word in the text (CMS_HTML[1]).
+     * The content type information could be used for example because a matching word in the headline
+     * (CMS_HEADLINE[1]) could be weighted more than a matching word in the text (CMS_HTML[1]).
      *
-     * @param array $searchResult
-     *                      list of article ids
-     * @param int $resultPerPage
-     *                      number of items per page
-     * @param cDb $oDB [optional]
-     *                      CONTENIDO database object
-     * @param bool $bDebug [optional]
-     *                      flag to enable debugging
+     * @param array $searchResult List of article ids
+     * @param int $resultPerPage Number of items per page
+     * @param cDb $oDB Database object
+     * @param bool $bDebug Flag to enable debugging
      *
      * @throws cInvalidArgumentException|cDbException
      */
@@ -188,15 +163,10 @@ class cSearchResult extends cSearchBaseAbstract
     }
 
     /**
-     *
-     * @param int $artId
-     *                   Id of an article
+     * @param int $artId Id of an article
      * @param string $cmsType
-     * @param int $id [optional]
-     *
-     * @return string
-     *                   Content of an article, specified by its content type
-     *
+     * @param int $id
+     * @return string Content of an article, specified by its content type
      * @throws cDbException|cException
      */
     public function getContent($artId, $cmsType, $id = 0)
@@ -208,15 +178,11 @@ class cSearchResult extends cSearchBaseAbstract
 
     /**
      *
-     * @param int $artId
-     *                       Id of an article
-     * @param string $cmsType
-     *                       Content type
+     * @param int $artId Id of an article
+     * @param string $cmsType Content type
      * @param int $cmsNr [optional]
-     *
      * @return array Content of an article in search result, specified by its type
      *         Content of an article in search result, specified by its type
-     *
      * @throws cDbException|cException
      */
     public function getSearchContent($artId, $cmsType, $cmsNr = NULL)

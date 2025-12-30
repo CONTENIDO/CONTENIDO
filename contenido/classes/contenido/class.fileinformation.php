@@ -49,25 +49,16 @@ class cApiFileInformationCollection extends ItemCollection
     /**
      * Creates a new entry in the database
      *
-     * @param string $typeContent
-     *                            type of the entry
-     * @param string $filename
-     *                            name of the file
-     * @param string $description [optional]
-     *                            an optional description
-     *
-     * @return cApiFileInformation
-     *         the new item
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param string $typeContent Type of the entry
+     * @param string $filename Name of the file
+     * @param string $description [optional] An optional description
+     * @return cApiFileInformation Tthe new item
+     * @throws cDbException|cException|cInvalidArgumentException
      * @todo  Pass additional fields as optional parameters
-     *
      */
     public function create($typeContent, $filename, $description = '')
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
         $auth = cRegistry::getAuth();
         $item = new cApiFileInformation();
         $item->loadByMany(
@@ -99,30 +90,19 @@ class cApiFileInformationCollection extends ItemCollection
     /**
      * updates a new entry in the database
      *
-     * @param string $filename
-     *                            name of the file
-     * @param string $typeContent
-     *                            type of the entry
-     * @param string $description [optional]
-     *                            an optional description
-     * @param string $newFilename [optional]
-     *                            an optional new filename
-     * @param string $author [optional]
-     *                            an optional author
-     *
-     * @return cApiFileInformation
-     *                            the updated item
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param string $filename Name of the file
+     * @param string $typeContent Type of the entry
+     * @param string $description [optional] A optional description
+     * @param string $newFilename [optional] A optional new filename
+     * @param string $author [optional] A optional author
+     * @return cApiFileInformation The updated item
+     * @throws cDbException|cException|cInvalidArgumentException
      * @todo  Pass additional fields as optional parameters
-     *
      */
     public function updateFile($filename, $typeContent, $description = '', $newFilename = '', $author = '')
     {
         $auth = cRegistry::getAuth();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
         $item = new cApiFileInformation();
         $item->loadByMany(
             [
@@ -150,19 +130,13 @@ class cApiFileInformationCollection extends ItemCollection
     }
 
     /**
-     * Deletes all found items in the table matching the passed field,
-     * and its value.
+     * Deletes all found items in the table matching the passed field, and its value.
      * Deletes also cached e entries and any existing properties.
      *
-     * @param array $values
-     *         with parameters
-     *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param array $values With parameters
+     * @throws cDbException|cException
      */
-    public function removeFileInformation(array $values)
+    public function removeFileInformation(array $values): bool
     {
         $item = new cApiFileInformation();
         $item->loadByMany($values);
@@ -173,18 +147,13 @@ class cApiFileInformationCollection extends ItemCollection
     /**
      * return an array with fileinformations from the database
      *
-     * @param string $filename
-     *         name of the file
-     * @param string $type
-     *         type of the entry
-     * @return array
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param string $filename Name of the file
+     * @param string $type Type of the entry
+     * @throws cDbException|cException
      */
-    public function getFileInformation($filename, $type)
+    public function getFileInformation($filename, $type): array
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
         $fileInformation = [];
         $item = new cApiFileInformation();
         $item->loadByMany(
@@ -217,10 +186,8 @@ class cApiFileInformation extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $id [optional]
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id [optional]
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {

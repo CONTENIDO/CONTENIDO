@@ -44,9 +44,7 @@ class pApiContentAllocationArticle extends pApiTree
      * pApiContentAllocationArticle constructor
      *
      * @param string $uuid
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($uuid)
     {

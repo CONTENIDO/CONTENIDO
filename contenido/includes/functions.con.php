@@ -49,9 +49,7 @@ cInclude('includes', 'functions.con2.php');
  * @return int
  *         Id of the new article
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conEditFirstTime(
     $idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title,
@@ -79,7 +77,7 @@ function conEditFirstTime(
     }
 
     if (!is_array($idcatnew)) {
-        $idcatnew[0] = 0;
+        $idcatnew = [0];
     }
 
     $versioning = new cContentVersioning();
@@ -279,9 +277,7 @@ function conEditFirstTime(
  *
  * @return int|void
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $published, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = -1, $changefreq = 'nothing')
 {
@@ -548,9 +544,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
  * @param bool $bForce
  *         Not used: Was a flag to use existing db instance in global scope
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false)
 {
@@ -600,8 +594,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
  * @param int $idart
  *         of article to index
  *
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
 function conMakeArticleIndex($idartlang, $idart)
 {
@@ -671,9 +664,7 @@ function conMakeArticleIndex($idartlang, $idart)
  * @param int $online [optional]
  *                    if 0 the article will be offline, if 1 article will be online
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conMakeOnline($idart, $lang, $online = -1)
 {
@@ -715,8 +706,7 @@ function conMakeOnline($idart, $lang, $online = -1)
  * @param int $idlang
  * @param bool $online
  *
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
 function conMakeOnlineBulkEditing($idarts, $idlang, $online)
 {
@@ -747,9 +737,7 @@ function conMakeOnlineBulkEditing($idarts, $idlang, $online)
  * @param int $lang
  *         Language Id
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conLock($idart, $lang)
 {
@@ -772,8 +760,7 @@ function conLock($idart, $lang)
  * @param int $idlang
  * @param bool $lock
  *
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
 function conLockBulkEditing($idarts, $idlang, $lock)
 {
@@ -799,8 +786,7 @@ function conLockBulkEditing($idarts, $idlang, $lock)
  *
  * @return bool
  *
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
 function conIsLocked($idart, $lang)
 {
@@ -821,9 +807,7 @@ function conIsLocked($idart, $lang)
  * @param int $visible
  *         Visible status of the category
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conMakeCatOnline($idcat, $lang, $visible)
 {
@@ -863,9 +847,7 @@ function conMakeCatOnline($idcat, $lang, $visible)
  * @param bool $public
  *         public status of the article to set
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conMakePublic($idcat, $lang, $public)
 {
@@ -884,9 +866,7 @@ function conMakePublic($idcat, $lang, $public)
  * @param int $idart
  *         Article Id
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conDeleteart($idart)
 {
@@ -1044,9 +1024,7 @@ function extractNumber(&$string)
  * @param int $idtpl
  *         Template Id
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conChangeTemplateForCat($idcat, $idtpl)
 {
@@ -1152,37 +1130,35 @@ function conDeeperCategoriesArray($idcat)
 /**
  * Recursive function to create a location string
  *
- * @param int $idcat
- *         ID of the starting category
- * @param string $seperator
- *         Separation string
- * @param string $catStr
- *         Category location string (by reference)
- * @param bool $makeLink
- *         Create location string with links
- * @param string $linkClass
- *         Stylesheet class for the links
- * @param int $firstTreeElementToUse
- *         First navigation Level location string should be printed out
+ * @param int $idcat ID of the starting category
+ * @param string $seperator Separation string
+ * @param string $categoryString Category location string (by reference)
+ * @param bool $makeLink Create location string with links
+ * @param string $linkClass Stylesheet class for the links
+ * @param int $firstTreeElementToUse First navigation Level location string should be printed out
  *         (first level = 0!!)
- * @param int $uselang
- *         Id of language
+ * @param int $uselang Id of language
  * @param bool $final
  * @param bool $usecache
- *
- * @return string|void
- *         Location string
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @return void
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false, $linkClass = '', $firstTreeElementToUse = 0, $uselang = 0, $final = true, $usecache = false)
+function conCreateLocationString(
+    $idcat,
+    $seperator,
+    &$categoryString,
+    $makeLink = false,
+    $linkClass = '',
+    $firstTreeElementToUse = 0,
+    $uselang = 0,
+    $final = true,
+    $usecache = false
+)
 {
     global $cfg, $client, $cfgClient, $lang, $sess;
 
     if ($idcat == 0) {
-        $catStr = i18n("Lost and found");
+        $categoryString = i18n("Lost and found");
         return;
     }
 
@@ -1205,7 +1181,7 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
 
         if (array_key_exists($idcat, $locationStringCache)) {
             if ($locationStringCache[$idcat]['expires'] > time()) {
-                $catStr = $locationStringCache[$idcat]['name'];
+                $categoryString = $locationStringCache[$idcat]['name'];
                 return;
             }
         }
@@ -1239,21 +1215,21 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
             $name = '<a href="' . $linkUrl . '" class="' . $linkClass . '">' . $name . '</a>';
         }
 
-        $tmp_cat_str = $name . $seperator . $catStr;
-        $catStr = $tmp_cat_str;
+        $tmp_cat_str = $name . $seperator . $categoryString;
+        $categoryString = $tmp_cat_str;
     }
 
     if ($parentid != 0) {
-        conCreateLocationString($parentid, $seperator, $catStr, $makeLink, $linkClass, $firstTreeElementToUse, $uselang, false);
+        conCreateLocationString($parentid, $seperator, $categoryString, $makeLink, $linkClass, $firstTreeElementToUse, $uselang, false);
     } else {
         $sep_length = cString::getStringLength($seperator);
-        $str_length = cString::getStringLength($catStr);
+        $str_length = cString::getStringLength($categoryString);
         $tmp_length = $str_length - $sep_length;
-        $catStr = cString::getPartOfString($catStr, 0, $tmp_length);
+        $categoryString = cString::getPartOfString($categoryString, 0, $tmp_length);
     }
 
     if ($final == true && $usecache == true) {
-        $locationStringCache[$idcat]['name'] = $catStr;
+        $locationStringCache[$idcat]['name'] = $categoryString;
         $locationStringCache[$idcat]['expires'] = time() + 3600;
 
         if (is_writable($cfgClient[$client]['cache']['path'])) {
@@ -1273,9 +1249,7 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
  * @param bool $isstart
  *         Start article flag
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conMakeStart($idcatart, $isstart)
 {
@@ -1302,9 +1276,7 @@ function conMakeStart($idcatart, $isstart)
  *
  * @return bool if action was successful
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conSetStartArticle($idcat, $idart, $lang, $isstart)
 {
@@ -1354,9 +1326,7 @@ function conSetStartArticle($idcat, $idart, $lang, $isstart)
  * @param int $lang
  * @param int $idartlang
  * @return void
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  * @since CONTENIDO 4.10.2
  */
 function conSetStartArticleHandler(
@@ -1784,9 +1754,7 @@ function conMoveArticles()
  *
  * @return int|NULL
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conCopyTemplateConfiguration($srcidtplcfg)
 {
@@ -1809,9 +1777,7 @@ function conCopyTemplateConfiguration($srcidtplcfg)
  *
  * @return bool
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conCopyContainerConf($srcidtplcfg, $dstidtplcfg)
 {
@@ -1835,9 +1801,7 @@ function conCopyContainerConf($srcidtplcfg, $dstidtplcfg)
  * @param int $srcidartlang
  * @param int $dstidartlang
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conCopyContent($srcidartlang, $dstidartlang)
 {
@@ -1858,9 +1822,7 @@ function conCopyContent($srcidartlang, $dstidartlang)
  * @param int $srcidartlang
  * @param int $dstidartlang
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conCopyMetaTags($srcidartlang, $dstidartlang)
 {
@@ -1883,9 +1845,7 @@ function conCopyMetaTags($srcidartlang, $dstidartlang)
  * @param string $newtitle
  * @param bool $useCopyLabel
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabel = true)
 {
@@ -1977,9 +1937,7 @@ function conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabe
  *
  * @return int|bool
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  *
  * @global object $auth
  */
@@ -2092,9 +2050,7 @@ function conGetTopmostCat($idcat, $minLevel = 0)
  * @param int $dstlang
  *         Destination language id
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function conSyncArticle($idart, $srclang, $dstlang)
 {
@@ -2233,9 +2189,7 @@ function conGetCategoryAssignments($idart, $db = NULL)
  * @param int $client
  * @param int $lang
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  *
  * @global array $cfgClient
  */

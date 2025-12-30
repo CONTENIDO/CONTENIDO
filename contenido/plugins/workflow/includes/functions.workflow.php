@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude("includes", "functions.con.php");
+cInclude('includes', 'functions.con.php');
 
 /**
  * @param $listid
@@ -478,8 +478,7 @@ function doWorkflowAction($idartlang, $action)
  * @param int $usersequence
  *
  * @return bool|mixed
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
 function getWorkflowForUserSequence($usersequence)
 {
@@ -556,7 +555,7 @@ function workflowInherit($idcat)
 function getWorkflowForCat($idcat)
 {
     $idcat = cSecurity::toInteger($idcat);
-    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+    $lang = cRegistry::getLanguageId();
 
     $idcatlang = getCatLang($idcat, $lang);
     if (!$idcatlang) {
@@ -603,8 +602,8 @@ function prepareWorkflowItems()
     global $modidcat, $workflowSelectBox, $workflowworkflows, $tpl;
 
     $action = cRegistry::getAction();
-    $client = cSecurity::toInteger(cRegistry::getClientId());
-    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
     $cfg = cRegistry::getConfig();
 
     $workflowworkflows = new Workflows();
@@ -759,9 +758,7 @@ function piworkflowCategoryRenderColumn($idcat, $type)
  * Returns the code to add to the page end at the category overview page.
  *
  * @return string
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function piworkflowCategoryPageEnd()
 {

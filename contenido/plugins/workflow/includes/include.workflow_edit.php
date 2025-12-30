@@ -23,7 +23,7 @@ global $idworkflow, $wfname, $wfdescription;
 
 $requestIdWorkflow = cSecurity::toInteger($_GET['idworkflow'] ?? '0');
 
-$page = new cGuiPage("workflow_edit", "workflow");
+$page = new cGuiPage('workflow_edit', 'workflow');
 $page->addStyle('workflow.css');
 
 $workflows = new Workflows();

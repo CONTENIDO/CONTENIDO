@@ -43,8 +43,7 @@ class PifaFormCollection extends ItemCollection
      *
      * @param mixed $where clause to be used to load items or false
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
@@ -85,9 +84,9 @@ class PifaFormCollection extends ItemCollection
         $forms = new PifaFormCollection();
         $succ = $forms->select(implode(' AND ', $conditions));
 
-        // throw exception if forms coud not be read
-        // Its not a good idea to throw an exception in this case,
-        // cause this would lead to an error message if no forms
+        // throw exception if forms could not be read
+        // It's not a good idea to throw an exception in this case,
+        // because this would lead to an error message if no forms
         // were created yet.
         // if (false === $succ) {
         // throw new PifaException('forms could not be read');
@@ -103,64 +102,52 @@ class PifaFormCollection extends ItemCollection
     /**
      * Get forms of given client in any language.
      *
-     * @param int $client
-     *
      * @return PifaFormCollection
      * @throws PifaException if forms could not be read
      * @throws cDbException
      */
-    public static function getByClient($client)
+    public static function getByClient(int $clientId)
     {
-        if (0 >= cSecurity::toInteger($client)) {
-            $msg = Pifa::i18n('MISSING_CLIENT');
-            throw new PifaException($msg);
+        if ($clientId <= 0) {
+            throw new PifaException(Pifa::i18n('MISSING_CLIENT'));
         }
 
-        return self::_getBy($client, 0);
+        return self::_getBy($clientId, 0);
     }
 
     /**
      * Get forms of any client in given language.
      *
-     * @param int $lang
-     *
      * @return PifaFormCollection
      * @throws PifaException if forms could not be read
      * @throws cDbException
      */
-    public static function getByLang($lang)
+    public static function getByLang(int $langId)
     {
-        if (0 >= cSecurity::toInteger($lang)) {
-            $msg = Pifa::i18n('MISSING_LANG');
-            throw new PifaException($msg);
+        if ($langId <= 0) {
+            throw new PifaException(Pifa::i18n('MISSING_LANG'));
         }
 
-        return self::_getBy(0, $lang);
+        return self::_getBy(0, $langId);
     }
 
     /**
      * Get forms of given client in given language.
      *
-     * @param int $client
-     * @param int $lang
-     *
      * @return PifaFormCollection
      * @throws PifaException if forms could not be read
      * @throws cDbException
      */
-    public static function getByClientAndLang($client, $lang)
+    public static function getByClientAndLang(int $clientId, int $langId)
     {
-        if (0 >= cSecurity::toInteger($client)) {
-            $msg = Pifa::i18n('MISSING_CLIENT');
-            throw new PifaException($msg);
+        if ($clientId <= 0) {
+            throw new PifaException(Pifa::i18n('MISSING_CLIENT'));
+        }
+        if ($langId <= 0) {
+            throw new PifaException(Pifa::i18n('MISSING_LANG'));
         }
 
-        if (0 >= cSecurity::toInteger($lang)) {
-            $msg = Pifa::i18n('MISSING_LANG');
-            throw new PifaException($msg);
-        }
-
-        return self::_getBy($client, $lang);
+        return self::_getBy($clientId, $langId);
     }
 
 }
@@ -197,14 +184,12 @@ class PifaForm extends Item
      * Create an instance.
      *
      * @param mixed $id ID of item to be loaded or false
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('pifa_form'), 'idform');
-        $this->setFilters([], []);
+        $this->setFilters();
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }
@@ -306,10 +291,10 @@ class PifaForm extends Item
      * with the $_GET or $_POST superglobal variables. Validation is performed
      * according to the specifications defined for each form field.
      *
-     * @param array|null $values
+     * @param ?array $values
      * @param bool $clear if missing values should be interpreted as NULL
      */
-    public function setValues(array $values = NULL, $clear = false)
+    public function setValues(?array $values = NULL, bool $clear = false)
     {
         if (NULL === $values) {
             return;
@@ -349,9 +334,9 @@ class PifaForm extends Item
     /**
      * Sets uploaded file(s) for appropriate form fields.
      *
-     * @param array $files super global files array
+     * @param ?array $files super global files array
      */
-    public function setFiles(array $files = NULL)
+    public function setFiles(?array $files = NULL)
     {
         if (NULL === $files) {
             return;
@@ -403,10 +388,10 @@ class PifaForm extends Item
     /**
      * Returns HTML for this form that should be displayed in frontend.
      *
-     * @param array|null $opt to determine form attributes
-     * @return string|null
+     * @param ?array $opt to determine form attributes
+     * @throws PifaException
      */
-    public function toHtml(array $opt = NULL)
+    public function toHtml(?array $opt = NULL): ?string
     {
         // get form attribute values
         $opt = array_merge([
@@ -485,10 +470,9 @@ class PifaForm extends Item
      * there were no modified values and thus no statement was executed. This
      * helps in handling database errors.
      *
-     * @return bool
-     * @todo Check if method store() should be implemented for PifaField too.
+     * @inheritDoc
      */
-    public function store(): bool
+    public function store()
     {
         if (is_null($this->modifiedValues)) {
             return true;
@@ -577,9 +561,7 @@ class PifaForm extends Item
      *
      * @throws PifaException
      * @throws PifaMailException
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function toMailRecipient(array $opt)
     {
@@ -755,8 +737,7 @@ class PifaForm extends Item
      *
      * @return bool|string
      * @throws PifaException if table does not exist
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     private function _getCsvFromLocalDatabaseServer($optionally = 'OPTIONALLY')
     {
@@ -877,12 +858,8 @@ class PifaForm extends Item
      * to the current values of this form.
      * (CON-1648)The CSV is created using a temporary file in the systems (not
      * CONTENIDOs) TEMP folder.
-     *
-     * @param bool $oneRowPerField
-     * @param array $additionalFields
-     * @return string
      */
-    public function getCsv($oneRowPerField = false, array $additionalFields = NULL): string
+    public function getCsv(bool $oneRowPerField = false, ?array $additionalFields = NULL): string
     {
         // get values to be converted into CSV
         $data = $this->getValues();
@@ -897,7 +874,7 @@ class PifaForm extends Item
 
         // convert array values to CSV values
         $data = array_map(function ($in) {
-            return implode(',', $in);;
+            return implode(',', $in);
         }, $data);
 
         // optionally rearrange/mirror array
@@ -914,7 +891,7 @@ class PifaForm extends Item
         $total = 0;
         if (false !== $tmpfile = tmpfile()) {
             foreach ($data as $line) {
-                $length = fputcsv($tmpfile, $data, ';', '"');
+                $length = fputcsv($tmpfile, $data, ';', '"', '\\');
                 if (false !== $length) {
                     $total += $length;
                 }

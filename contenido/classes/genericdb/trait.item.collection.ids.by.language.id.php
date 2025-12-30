@@ -38,8 +38,7 @@ trait cItemCollectionIdsByLanguageIdTrait
      *
      * @param int $languageId
      * @return array List of ids
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getIdsByLanguageId(int $languageId): array
     {

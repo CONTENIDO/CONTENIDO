@@ -45,7 +45,7 @@ if (($perm->have_perm_area_action("groups_overview", $action)) && ($action == "g
     }
 } else {
     if (!$perm->have_perm_area_action("groups_overview", $action)) {
-        $notification->displayNotification("error", i18n("Permission denied"));
+        $notification->displayNotification('error', i18n("Permission denied"));
     }
 }
 
@@ -95,7 +95,11 @@ foreach ($right_list["con"] as $value2) {
     // if there are some actions
     if (isset($value2["action"]) && is_array($value2["action"])) {
         foreach ($value2["action"] as $key3 => $value3) {
-            if ((in_array($value3, $aViewRights) && !$bExclusive) || (!in_array($value3, $aViewRights) && $bExclusive) || (count($aViewRights) == 0)) {
+            if (
+                (in_array($value3, $aViewRights) && !$bExclusive)
+                || (!in_array($value3, $aViewRights) && $bExclusive)
+                || (count($aViewRights) == 0)
+            ) {
                 // set the areas that are in use
                 $possible_areas[$value2["perm"]] = "";
 

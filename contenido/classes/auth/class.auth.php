@@ -28,14 +28,14 @@ abstract class cAuth
      *
      * @var string
      */
-    const AUTH_UID_NOBODY = 'nobody';
+    public const AUTH_UID_NOBODY = 'nobody';
 
     /**
      * Authentication user ID for calling login form.
      *
      * @var string
      */
-    const AUTH_UID_FORM = 'form';
+    public const AUTH_UID_FORM = 'form';
 
     /**
      * The global auth information array.
@@ -127,17 +127,16 @@ abstract class cAuth
     /**
      * Magic getter function for outdated variable names.
      *
-     * @param string $name
-     *         name of the variable
-     * @return mixed
+     * @param string $name Name of the variable
+     * @return int|string|void
      */
-    public function __get($name)
+    public function __get(string $name)
     {
-        if ($name == 'lifetime') {
+        if ($name === 'lifetime') {
             return $this->_lifetime;
         }
 
-        if ($name == 'classname') {
+        if ($name === 'classname') {
             return get_class($this);
         }
     }
@@ -197,9 +196,8 @@ abstract class cAuth
     /**
      * Resets the global authentication information.
      *
-     * @param bool $nobody [optional]
-     *         If flag set to true, the default authentication is
-     *         switched to nobody. (optional, default: false)
+     * @param bool $nobody [optional] If flag set to true, the default authentication is
+     *      switched to nobody. (optional, default: false)
      */
     public function resetAuthInfo($nobody = false)
     {
@@ -209,12 +207,9 @@ abstract class cAuth
     }
 
     /**
-     * Logs out the current user, resets the auth information and
-     * freezes the session.
+     * Logs out the current user, resets the auth information and freezes the session.
      *
-     * @param bool $nobody [optional]
-     *         If flag set to true, nobody is recreated as user.
-     * @return bool true
+     * @param bool $nobody [optional] If flag set to true, nobody is recreated as user.
      */
     public function logout($nobody = false): bool
     {
@@ -231,8 +226,6 @@ abstract class cAuth
 
     /**
      * Getter for the auth information.
-     *
-     * @return array
      */
     public function getAuthInfo(): array
     {
@@ -242,7 +235,7 @@ abstract class cAuth
     /**
      * Checks, if user is authenticated (NOT logged in!).
      *
-     * @return bool
+     * @return bool|string The userid if the user is authenticated, otherwhise fdalse.
      */
     public function isAuthenticated()
     {
@@ -258,8 +251,6 @@ abstract class cAuth
 
     /**
      * Checks, if user is currently in login form mode.
-     *
-     * @return bool
      */
     public function isLoginForm(): bool
     {
@@ -268,8 +259,6 @@ abstract class cAuth
 
     /**
      * Returns the user id of the currently authenticated user
-     *
-     * @return string
      */
     public function getUserId(): string
     {
@@ -280,8 +269,6 @@ abstract class cAuth
 
     /**
      * Returns the user name of the currently authenticated user
-     *
-     * @return string
      */
     public function getUsername(): string
     {
@@ -292,8 +279,6 @@ abstract class cAuth
 
     /**
      * Returns the permission string of the currently authenticated user
-     *
-     * @return string
      */
     public function getPerms(): string
     {
@@ -306,7 +291,6 @@ abstract class cAuth
     /**
      * Returns the permission of the currently authenticated user as array.
      *
-     * @return array
      * @since CONTENIDO 4.10.2
      */
     public function getPermsArray(): array
@@ -317,8 +301,7 @@ abstract class cAuth
     /**
      * Sets or refreshes the expiration of the authentication.
      *
-     * @param int $expiration [optional]
-     *         new expiration (optional, default: NULL = current time plus lifetime minutes)
+     * @param int $expiration [optional]New expiration (optional, default: NULL = current time plus lifetime minutes)
      */
     protected function _setExpiration($expiration = NULL)
     {
@@ -344,10 +327,8 @@ abstract class cAuth
     /**
      * Sets the authentication info for a user.
      *
-     * @param string $userId
-     *         user ID to set
-     * @param int $expiration [optional]
-     *         expiration (optional, default: NULL)
+     * @param string $userId User ID to set
+     * @param int $expiration [optional] Expiration (optional, default: NULL)
      */
     protected function _setAuthInfo($userId, $expiration = NULL)
     {

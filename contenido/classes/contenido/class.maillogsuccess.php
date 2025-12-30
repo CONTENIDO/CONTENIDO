@@ -45,11 +45,8 @@ class cApiMailLogSuccessCollection extends ItemCollection
      * @param array $recipient
      * @param bool $success
      * @param string $exception
-     *
      * @return cApiMailLogSuccess
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idmail, $recipient, $success, $exception)
     {
@@ -77,17 +74,15 @@ class cApiMailLogSuccess extends Item
     /**
      * Constructor
      *
-     * @param mixed $mId
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('mail_log_success'), 'idmailsuccess');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

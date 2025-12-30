@@ -56,56 +56,56 @@ class cLog
      *
      * @var int
      */
-    const EMERG = 0;
+    public const EMERG = 0;
 
     /**
      * logging level
      *
      * @var int
      */
-    const ALERT = 1;
+    public const ALERT = 1;
 
     /**
      * logging level
      *
      * @var int
      */
-    const CRIT = 2;
+    public const CRIT = 2;
 
     /**
      * logging level
      *
      * @var int
      */
-    const ERR = 3;
+    public const ERR = 3;
 
     /**
      * logging level
      *
      * @var int
      */
-    const WARN = 4;
+    public const WARN = 4;
 
     /**
      * logging level
      *
      * @var int
      */
-    const NOTICE = 5;
+    public const NOTICE = 5;
 
     /**
      * logging level
      *
      * @var int
      */
-    const INFO = 6;
+    public const INFO = 6;
 
     /**
      * logging level
      *
      * @var int
      */
-    const DEBUG = 7;
+    public const DEBUG = 7;
 
     /**
      * Contains the local log writer instance.
@@ -156,10 +156,8 @@ class cLog
      * and contain one or more characters. Each placeholder is handled
      * by an own function which decides what to do.
      *
-     * @param mixed $writer [optional]
-     *                      Writer object (any subclass of cLogWriter), or false if
-     *                      cLog should handle the writer creation
-     *
+     * @param mixed $writer [optional] Writer object (any subclass of cLogWriter), or false if
+     *      cLog should handle the writer creation
      * @throws cInvalidArgumentException
      */
     public function __construct($writer = false)
@@ -203,8 +201,7 @@ class cLog
     /**
      * Sets the local writer instance.
      *
-     * @param cLogWriter $writer
-     *         Writer instance
+     * @param cLogWriter $writer Writer instance
      */
     public function setWriter(cLogWriter $writer)
     {
@@ -214,20 +211,15 @@ class cLog
     /**
      * Defines a custom shortcut handler.
      *
-     * Each shortcut handler receives an array with the message and the
-     * priority of the entry.
+     * Each shortcut handler receives an array with the message and the priority of the entry.
      *
-     * @param string $shortcut
-     *         Shortcut name
-     * @param string|array $handler
-     *         Name of the function to call
-     * @return bool
-     *         True if setting was successful
-     * @throws cInvalidArgumentException
-     *         if the given shortcut is empty or already in use or if the
-     *         handler is not callable
+     * @param string $shortcut Shortcut name
+     * @param string|array $handler Name of the function to call
+     * @return bool True if setting was successful
+     * @throws cInvalidArgumentException If the given shortcut is empty or already in use or if the
+     *      handler is not callable
      */
-    public function setShortcutHandler($shortcut, $handler)
+    public function setShortcutHandler(string $shortcut, $handler): bool
     {
         if ($shortcut == '') {
             throw new cInvalidArgumentException('The shortcut name must not be empty.');
@@ -253,13 +245,10 @@ class cLog
     /**
      * Unsets a specific shortcut handler.
      *
-     * @param string $shortcut
-     *         Name of the shortcut
-     * @return bool
-     * @throws cInvalidArgumentException
-     *         if the given shortcut handler does not exist
+     * @param string $shortcut Name of the shortcut
+     * @throws cInvalidArgumentException If the given shortcut handler does not exist
      */
-    public function unsetShortcutHandler($shortcut)
+    public function unsetShortcutHandler(string $shortcut): bool
     {
         if (!in_array($shortcut, $this->_shortcutHandlers)) {
             throw new cInvalidArgumentException('The specified shortcut handler does not exist.');
@@ -272,12 +261,10 @@ class cLog
     /**
      * Buffers a log message for committing them on a later moment.
      *
-     * @param string $message
-     *         Message to buffer
-     * @param mixed $priority [optional]
-     *         Priority of the log entry (optional)
+     * @param string $message Message to buffer
+     * @param mixed $priority [optional] Priority of the log entry (optional)
      */
-    public function buffer($message, $priority = NULL)
+    public function buffer(string $message, $priority = NULL)
     {
         $this->_buffer[] = [$message, $priority];
     }
@@ -286,12 +273,11 @@ class cLog
      * Commits all buffered messages and empties the message buffer if
      * parameter is not false.
      *
-     * @param bool $revoke [optional]
-     *         Flag, whether the buffer is cleared or not (optional, default: true)
+     * @param bool $revoke Flag, whether the buffer is cleared or not (optional, default: true)
      * @return bool|void
      * @throws cInvalidArgumentException
      */
-    public function commit($revoke = true)
+    public function commit(bool $revoke = true)
     {
         if (count($this->_buffer) == 0) {
             cWarning(__FILE__, __LINE__, 'There are no buffered messages to commit.');
@@ -318,12 +304,10 @@ class cLog
     /**
      * Logs a message using the local writer instance.
      *
-     * @param string $message
-     *         Message to log
-     * @param mixed $priority [optional]
-     *         Priority of the log entry (optional)
+     * @param string $message Message to log
+     * @param mixed $priority [optional] Priority of the log entry
      */
-    public function log($message, $priority = NULL)
+    public function log(string $message, $priority = NULL)
     {
         if ($priority && !is_int($priority) && in_array($priority, $this->_priorities)) {
             $priority = array_search($priority, $this->_priorities);
@@ -357,14 +341,11 @@ class cLog
     /**
      * Adds a new priority to the log.
      *
-     * @param string $name
-     *         Name of the log priority
-     * @param int $value
-     *         Index value of the log priority
-     * @throws cInvalidArgumentException
-     *         if the given name is empty, already exists or the value already exists
+     * @param string $name Name of the log priority
+     * @param int $value Index value of the log priority
+     * @throws cInvalidArgumentException If the given name is empty, already exists or the value already exists
      */
-    public function addPriority($name, $value)
+    public function addPriority(string $name, int $value)
     {
         if ($name == '') {
             throw new cInvalidArgumentException('Priority name must not be empty.');
@@ -385,12 +366,10 @@ class cLog
      * Removes a priority from log.
      * Default properties can not be removed.
      *
-     * @param string $name
-     *         Name of the log priority to remove
-     * @throws cInvalidArgumentException
-     *         if the given name is empty, does not exist or is a default priority
+     * @param string $name Name of the log priority to remove
+     * @throws cInvalidArgumentException If the given name is empty, does not exist or is a default priority
      */
-    public function removePriority($name)
+    public function removePriority(string $name)
     {
         if ($name == '') {
             throw new cInvalidArgumentException('Priority name must not be empty.');
@@ -412,12 +391,9 @@ class cLog
     /**
      * Magic call method for direct priority named calls.
      *
-     * @param string $method
-     *         Name of the method
-     * @param array $arguments
-     *         Array with the method arguments
-     * @throws cInvalidArgumentException
-     *         if the given priority is not supported
+     * @param string $method Name of the method
+     * @param array $arguments Array with the method arguments
+     * @throws cInvalidArgumentException If the given priority is not supported
      */
     public function __call($method, $arguments)
     {
@@ -436,10 +412,9 @@ class cLog
      * Shortcut Handler Date.
      * Returns the current date.
      *
-     * @return string
-     *     The current date
+     * @return string The current date
      */
-    public function shDate()
+    public function shDate(): string
     {
         return date('Y-m-d H:i:s');
     }
@@ -447,16 +422,14 @@ class cLog
     /**
      * Shortcut Handler Level.
      * Returns the canonical name of the priority.
-     * The canonical name is padded to 10 characters to achieve a better
-     * formatting.
+     * The canonical name is padded to 10 characters to achieve a better formatting.
      *
      * @param array $info
-     * @return string
-     *         The canonical log level
+     * @return string The canonical log level
      */
-    public function shLevel($info)
+    public function shLevel(array $info): string
     {
-        $logLevel = $info['priority'];
+        $logLevel = $info['priority'] ?? self::ALERT;
         return str_pad($this->_priorities[$logLevel], 10, ' ', STR_PAD_BOTH);
     }
 
@@ -465,11 +438,10 @@ class cLog
      * Returns the log message.
      *
      * @param array $info
-     * @return string
-     *         The log message
+     * @return string The log message
      */
-    public function shMessage($info)
+    public function shMessage(array $info): string
     {
-        return $info['message'];
+        return strval($info['message'] ?? '');
     }
 }

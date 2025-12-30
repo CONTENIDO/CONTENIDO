@@ -24,12 +24,12 @@ class cLinkcheckerHelper
     /**
      * Regular expression for image types
      */
-    const IMAGE_TYPES_REGEX = '/^.*\.(bmp|gif|jpeg|jpg|png|psd|svg|tif|tiff|webp)$/i';
+    public const IMAGE_TYPES_REGEX = '/^.*\.(bmp|gif|jpeg|jpg|png|psd|svg|tif|tiff|webp)$/i';
 
     /**
      * Regular expression for uri types
      */
-    const URI_TYPES_REGEX = '#^(file://|ftp://|http://|https://|www.).*$#i';
+    public const URI_TYPES_REGEX = '#^(file://|ftp://|http://|https://|www.).*$#i';
 
     /**
      * Sorts passed error list by sort type.

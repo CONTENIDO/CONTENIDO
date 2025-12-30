@@ -18,6 +18,10 @@ cInclude('includes', 'functions.con.php');
 
 $page = new cGuiPage('upl_artlist');
 
+$idcat = cRegistry::getCategoryId();
+$_cecRegistry = cApiCecRegistry::getInstance();
+$lang = cRegistry::getLanguageId();
+
 conCreateLocationString($idcat, '/', $cat_str);
 
 $mcatlink = '';
@@ -51,7 +55,6 @@ $dateformat = getEffectiveSetting('dateformat', 'full', 'Y-m-d H:i:s');
 $odd = false;
 
 while ($cApiCategoryArticle = $cApiCategoryArticleCollection->next()) {
-
     $obj = $cApiCategoryArticleCollection->fetchObject('cApiArticleCollection');
     $idart = $obj->get('idart');
 

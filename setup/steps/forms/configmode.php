@@ -25,9 +25,9 @@ class cSetupConfigMode extends cSetupMask
 
     /**
      * cSetupConfigMode constructor.
-     * @param string $step
-     * @param string $previous
-     * @param string $next
+     * @param bool|int $step
+     * @param bool $previous
+     * @param $next
      */
     public function __construct($step, $previous, $next)
     {

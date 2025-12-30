@@ -24,6 +24,7 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
+$area = cRegistry::getArea();
 $oldclient = $client;
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
@@ -32,7 +33,7 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $sql = 'SELECT idclient FROM '.$cfg['tab']['clients'];
     $db->query($sql);
 
-    $clients     = [];
+    $clients = [];
     $clientNames = [];
 
     while ($db->nextRecord()) {
@@ -43,7 +44,12 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
         $mydate = time();
 
         $props = new cApiPropertyCollection();
-        $props->select("itemtype = 'idcommunication' AND type = 'todo' AND name = 'reminderdate' AND value < $mydate AND value != 0 AND idclient=$client");
+        $props->select(sprintf(
+            "itemtype = 'idcommunication' AND type = 'todo' AND name = 'reminderdate' AND "
+                . " value < %d AND value != 0 AND idclient = %d",
+            $mydate,
+            $client
+        ));
 
         $pastreminders = [];
 
@@ -58,14 +64,17 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
             if ($todoitem->get('idclient') == $client) {
                 // Check if email noti is active
-                if ($todoitem->getProperty('todo', 'emailnoti') == 1 && $todoitem->getProperty('todo', 'emailnoti-sent') == 0) {
+                if (
+                    $todoitem->getProperty('todo', 'emailnoti') == 1
+                    && $todoitem->getProperty('todo', 'emailnoti-sent') == 0
+                ) {
                     $user = new cApiUser($todoitem->get('recipient'));
                     $realname = $user->get('realname');
 
                     $client = $todoitem->get('idclient');
                     if (!isset($clientNames[$client])) {
                         $clientNames[$client] = cRegistry::getClient()->get("name");
-                        if($clientNames[$client] == "") {
+                        if ($clientNames[$client] == "") {
                             $clientNames[$client] = i18n("No client");
                         }
                     }
@@ -79,7 +88,11 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
                     $message = sprintf($message, $realname, $clientname, $path, $todoitem->get('message'));
 
                     $mailer = new cMailer();
-                    $mailer->sendMail(getEffectiveSetting("system", "mail_sender", "info@contenido.org"), $user->get('email'), $todoitem->get('subject'), $message);
+                    $mailer->sendMail(
+                        getEffectiveSetting('system', 'mail_sender', 'info@contenido.org'),
+                        $user->get('email'),
+                        $todoitem->get('subject'), $message
+                    );
                 }
 
                 $todoitem->setProperty('todo', 'reminderdate', '0');

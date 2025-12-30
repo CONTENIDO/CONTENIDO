@@ -16,14 +16,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // @TODO: check the code beneath is necessary
 if (isset($_REQUEST['sAreaFilename'])) {
-    die ('Invalid call!');
+    die('Invalid call!');
 }
 
-$_cecIterator = $_cecRegistry->getIterator("Contenido.Permissions.Group.GetAreaEditFilename");
-
+$_cecIterator = cRegistry::getCecRegistry()->getIterator("Contenido.Permissions.Group.GetAreaEditFilename");
 while (($chainEntry = $_cecIterator->next()) !== false) {
     // @TODO: This has to be refactored because this could cause SQL-Injection, Remote-File-Inclusion ....
-    $aInfo = $chainEntry->execute($_REQUEST["external_area"]);
+    $aInfo = $chainEntry->execute($_REQUEST['external_area']);
     if ($aInfo !== false) {
         $sAreaFilename = $aInfo;
         break;

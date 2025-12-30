@@ -43,20 +43,19 @@ class cApiMetaTagCollection extends ItemCollection
     /**
      * Creates a meta tag entry.
      *
-     * @param int $iIdArtLang
-     * @param int $iIdMetaType
-     * @param string $sMetaValue
-     *
+     * @param int $idArtLang
+     * @param int $idMetaType
+     * @param string $metaValue
      * @return cApiMetaTag
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($iIdArtLang, $iIdMetaType, $sMetaValue)
+    public function create($idArtLang, $idMetaType, $metaValue)
     {
         $oItem = $this->createNewItem();
 
-        $oItem->set('idartlang', $iIdArtLang, false);
-        $oItem->set('idmetatype', $iIdMetaType, false);
-        $oItem->set('metavalue', $sMetaValue, false);
+        $oItem->set('idartlang', $idArtLang, false);
+        $oItem->set('idmetatype', $idMetaType, false);
+        $oItem->set('metavalue', $metaValue, false);
         $oItem->store();
 
         return $oItem;
@@ -65,14 +64,14 @@ class cApiMetaTagCollection extends ItemCollection
     /**
      * Returns a meta tag entry by article language and meta type.
      *
-     * @param int $iIdArtLang
-     * @param int $iIdMetaType
-     * @return cApiMetaTag|NULL
+     * @param int $idArtLang
+     * @param int $idMetaType
+     * @return ?cApiMetaTag
      * @throws cDbException|cException
      */
-    public function fetchByArtLangAndMetaType($iIdArtLang, $iIdMetaType)
+    public function fetchByArtLangAndMetaType($idArtLang, $idMetaType)
     {
-        $where = sprintf('`idartlang` = %d AND `idmetatype` = %d', $iIdArtLang, $iIdMetaType);
+        $where = sprintf('`idartlang` = %d AND `idmetatype` = %d', $idArtLang, $idMetaType);
         $this->select($where);
         return $this->next();
     }
@@ -112,44 +111,37 @@ class cApiMetaTag extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId
-     *         Specifies the ID of item to load
-     *
+     * @param mixed $id Specifies the ID of item to load
      * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         $table = cRegistry::getDbTableName('meta_tag');
         parent::__construct($table, 'idmetatag');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * Updates meta value of an entry.
      *
-     * @param string $sMetaValue
-     * @return bool
+     * @param string $metaValue
      * @throws cDbException|cInvalidArgumentException
      */
-    public function updateMetaValue($sMetaValue)
+    public function updateMetaValue($metaValue): bool
     {
-        $this->set('metavalue', $sMetaValue, false);
+        $this->set('metavalue', $metaValue, false);
         return $this->store();
     }
 
     /**
-     * predefined setter for meta tag fields.
+     * Predefined setter for meta tag fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idmetatype':
@@ -158,7 +150,7 @@ class cApiMetaTag extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**

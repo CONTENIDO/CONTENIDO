@@ -260,16 +260,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
     }
 
     /**
-     * Will be invoked, if code generation wasn't able to find a
-     * configured article or category.
+     * Will be invoked, if code generation wasn't able to find a configured article or category.
      *
      * Creates an error message and writes this into the code cache.
      *
-     * @param int $idcatart
-     *         category article id
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param int $idcatart Category article id
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _processNoConfigurationError($idcatart)
     {
@@ -283,7 +279,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
      * Processes and adds or replaces title tag for an article.
      * Also calls the CEC 'Contenido.Content.CreateTitletag' for user defined title creation if none is given.
      *
-     * @return string
      * @see cCodeGeneratorAbstract::_processCodeTitleTag()
      */
     protected function _processCodeTitleTag(): string
@@ -331,10 +326,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
 
     /**
      * Processes and adds or replaces all meta tags for an article.
-     * Also calls the CEC 'Contenido.Content.CreateMetatags' for user defined
-     * meta tags creation.
-     *
-     * @return string
+     * Also calls the CEC 'Contenido.Content.CreateMetatags' for user defined meta tags creation.
      */
     protected function _processCodeMetaTags(): string
     {
@@ -401,12 +393,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
     /**
      * Saves the generated code if layout flag is false and save flag is true.
      *
-     * @param int $idcatart
-     *                               Category article id
-     * @param string $code [optional]
-     *                               parameter for setting code manually instead of using the generated layout code
-     * @param bool $flagCreateCode [optional]
-     *                               whether the "create code" flag in cat_art should be set or not (optional)
+     * @param int $idcatart Category article id
+     * @param string $code [optional] Parameter for setting code manually instead of using the generated layout code
+     * @param bool $flagCreateCode [optional] Whether the "create code" flag in cat_art should be set or not (optional)
      * @throws cDbException|cInvalidArgumentException
      */
     protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true)
@@ -458,10 +447,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
     /**
      * Collects and return basic meta tags/elements.
      *
-     * @return array
-     *         List of associative meta tag values
-     * @throws cDbException
-     * @throws cException
+     * @return array List of associative meta tag values
+     * @throws cDbException|cException
      */
     protected function _getBasicMetaTags(): array
     {
@@ -520,17 +507,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
 
     /**
      * This method allows to set new values for the robots meta element.
-     * If NULL is given for $index or $follow, existing settings are *not*
-     * overwritten. If article should be indexed and followed, 'all' will be
-     * set.
+     * If NULL is given for $index or $follow, existing settings are *not* overwritten.
+     * If article should be indexed and followed, 'all' will be set.
      *
-     * @param array $metaTags
-     *         array of meta elements to amend
-     * @param bool|NULL $index
-     *         if article should be indexed
-     * @param bool|NULL $follow
-     *         if links in article should be followed
-     * @return array
+     * @param array $metaTags Array of meta elements to amend
+     * @param bool|NULL $index If article should be indexed
+     * @param bool|NULL $follow If links in article should be followed
      */
     protected function _updateMetaRobots(array $metaTags, $index, $follow): array
     {
@@ -590,18 +572,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
     }
 
     /**
-     * Extracts a meta element of type $type (either 'name' or 'http-equiv') and
-     * name or HTTP header equivalent $nameOrEquiv from the given array of meta
-     * elements.
-     * Both, the reduced array of meta elements and the meta element to be
-     * extracted are returned as an array. If the meta element to be extracted
-     * could not be found, NULL will be returned in its place.
+     * Extracts a meta element of type $type (either 'name' or 'http-equiv') and name or HTTP
+     * header equivalent $nameOrEquiv from the given array of meta elements.
+     * Both, the reduced array of meta elements and the meta element to be extracted are returned as an
+     * array. If the meta element to be extracted could not be found, NULL will be returned in its place.
      *
-     * @param array $metaTags
-     * @param string $type
-     *         either 'name' or 'http-equiv'
-     * @param string $nameOrEquiv
-     * @return array
+     * @param string $type Either 'name' or 'http-equiv'
      */
     protected function _extractMetaElement(array $metaTags, $type, $nameOrEquiv): array
     {

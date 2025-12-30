@@ -24,11 +24,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // Global variables, send by the form
 global $idfrontenduser, $username, $newpd, $newpd2, $active;
 
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getCategoryId();
 $idfrontenduser = cSecurity::toInteger($idfrontenduser ?? '0');
 $action = $action ?? '';
 
-$page = new cGuiPage("frontend.user_edit");
+$page = new cGuiPage('frontend.user_edit');
 
 $feUsers = new cApiFrontendUserCollection();
 
@@ -83,12 +83,12 @@ JS;
     $sReloadScript = "";
 }
 
-if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "frontend_delete")) {
+$_cecRegistry = cApiCecRegistry::getInstance();
+
+if ($action == 'frontend_delete' && $perm->have_perm_area_action('frontend', 'frontend_delete')) {
     $feUsers->delete($idfrontenduser);
 
-    $_cecRegistry = cApiCecRegistry::getInstance();
-    $iterator = $_cecRegistry->getIterator("Contenido.Permissions.FrontendUser.AfterDeletion");
-
+    $iterator = $_cecRegistry->getIterator('Contenido.Permissions.FrontendUser.AfterDeletion');
     while ($chainEntry = $iterator->next()) {
         $chainEntry->execute($idfrontenduser);
     }
@@ -167,7 +167,6 @@ if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
         }
 
         $iterator = $_cecRegistry->getIterator('Contenido.Permissions.FrontendUser.BeforeStore');
-
         if ($iterator->count() > 0) {
             while (false !== $chainEntry = $iterator->next()) {
                 $chainEntry->execute($variablesToStore);

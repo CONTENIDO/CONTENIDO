@@ -72,8 +72,7 @@ class FrontendNavigation
      * Get child categories by given parent category
      *
      * @param int $parentCategory
-     * @return array
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getSubCategories($parentCategory): array
     {
@@ -116,8 +115,7 @@ class FrontendNavigation
      * Check if child categories of a given parent category exist
      *
      * @param int $parentCategory
-     * @return bool
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function hasChildren($parentCategory): bool
     {
@@ -149,12 +147,10 @@ class FrontendNavigation
 
     /**
      * Get direct successor of a given category
-     * Note: does not work if direct successor (with preid 0) is not visible
-     * or not public
+     * Note: does not work if direct successor (with preid 0) is not visible or not public
      *
      * @param int $category
-     * @return int
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getSuccessor($category): int
     {
@@ -193,10 +189,9 @@ class FrontendNavigation
      * Check if a given category has a direct successor
      *
      * @param int $category
-     * @return bool
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function hasSuccessor($category)
+    public function hasSuccessor($category): bool
     {
         if (!is_int((int)$category)) {
             return false;
@@ -229,8 +224,7 @@ class FrontendNavigation
      * Get category name
      *
      * @param int $cat_id
-     * @return string
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getCategoryName($cat_id): string
     {
@@ -267,8 +261,7 @@ class FrontendNavigation
      * Get category urlname
      *
      * @param int $cat_id
-     * @return string
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getCategoryURLName($cat_id): string
     {
@@ -305,8 +298,7 @@ class FrontendNavigation
      * Check if category is visible
      *
      * @param int $cat_id
-     * @return bool
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function isVisible($cat_id): bool
     {
@@ -340,8 +332,7 @@ class FrontendNavigation
      * Check if category is public
      *
      * @param int $cat_id
-     * @return bool
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function isPublic($cat_id): bool
     {
@@ -376,8 +367,7 @@ class FrontendNavigation
      *
      * @param int $parentid
      * @param int $catid
-     * @return bool
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function isParent($parentid, $catid)
     {
@@ -412,8 +402,7 @@ class FrontendNavigation
      * Get parent id of a category
      *
      * @param int $preid
-     * @return int
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getParent($preid): int
     {
@@ -449,8 +438,7 @@ class FrontendNavigation
      * Check if a category has a parent
      *
      * @param int $preid
-     * @return bool
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function hasParent($preid): bool
     {
@@ -482,8 +470,7 @@ class FrontendNavigation
      * Get level of a category
      *
      * @param int $catid
-     * @return int
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getLevel($catid): int
     {
@@ -660,12 +647,11 @@ class FrontendNavigation
     /**
      * Get category of article.
      *
-     * If an article is assigned to more than one category take the first
-     * category.
+     * If an article is assigned to more than one category take the first category.
      *
      * @param int $idart
      * @return int category id or negative integer
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getCategoryOfArticle($idart): int
     {
@@ -716,8 +702,7 @@ class FrontendNavigation
      * @param int $cat_id
      * @param int $level [optional]
      * @param bool $reverse
-     * @return array
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getCategoryPath($cat_id, $level = 0, $reverse = true): array
     {
@@ -747,7 +732,7 @@ class FrontendNavigation
      *
      * @param int $catId
      * @return int|false
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     function getRoot($catId)
     {
@@ -771,7 +756,7 @@ class FrontendNavigation
      *
      * @param int $idcat_start Id of category
      * @return array Array with subtree
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     function getSubTree($idcat_start): array
     {

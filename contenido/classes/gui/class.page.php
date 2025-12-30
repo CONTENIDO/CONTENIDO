@@ -198,16 +198,12 @@ class cGuiPage
      * and every stylesheet in the form of /styles/*.PAGENAME.css to the
      * page as well as /scripts/PAGENAME.js and /styles/PAGENAME.css.
      *
-     * @param string $pageName
-     *         The name of the page which will be used to load
-     *         corresponding stylesheets, templates and scripts.
-     * @param string $pluginName [optional]
-     *         The name of the plugin in which the site is run
-     * @param string $subMenu [optional]
-     *         The number of the submenu which should be highlighted
-     *         when this page is shown.
-     * @throws cDbException
-     * @throws cException
+     * @param string $pageName The name of the page which will be used to load
+     *      corresponding stylesheets, templates and scripts.
+     * @param string $pluginName [optional] The name of the plugin in which the site is run
+     * @param string $subMenu [optional] The number of the submenu which should be highlighted
+     *      when this page is shown.
+     * @throws cDbException|cException
      */
     public function __construct($pageName, $pluginName = '', $subMenu = '')
     {
@@ -768,16 +764,13 @@ class cGuiPage
     /**
      * Renders the page and either prints it or returns it.
      *
-     * @param cTemplate|NULL $template [optional]
-     *                                 If set, use this content template instead of the default one
-     * @param bool $return [optional]
-     *                                 If true, the page will be returned instead of echoed
-     *
+     * @param ?cTemplate $template If set, use this content template instead of the default one
+     * @param bool $return If true, the page will be returned instead of echoed
      * @return string|void
      * @throws cInvalidArgumentException
      * @throws cException
      */
-    public function render($template = NULL, $return = false)
+    public function render($template = NULL, bool $return = false)
     {
         if ($template == NULL) {
             $template = $this->_contentTemplate;

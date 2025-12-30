@@ -65,37 +65,37 @@ class cRegistry
     protected static $_warnMessages = [];
 
     /**
-     * @var cApiLanguage|null
+     * @var ?cApiLanguage
      */
     private static $_language;
 
     /**
-     * @var cApiClient|null
+     * @var ?cApiClient
      */
     private static $_client;
 
     /**
-     * @var cApiArticle|null
+     * @var ?cApiArticle
      */
     private static $_article;
 
     /**
-     * @var cApiArticleLanguage|null
+     * @var ?cApiArticleLanguage
      */
     private static $_articleLanguage;
 
     /**
-     * @var cApiCategory|null
+     * @var ?cApiCategory
      */
     private static $_category;
 
     /**
-     * @var cApiCategoryLanguage|null
+     * @var ?cApiCategoryLanguage
      */
     private static $_categoryLanguage;
 
     /**
-     * @var cApiCategoryArticle|null
+     * @var ?cApiCategoryArticle
      */
     private static $_categoryArticle;
 
@@ -103,11 +103,8 @@ class cRegistry
      * Function which returns path after the last possible place changing via
      * configuration file.
      *
-     * @param bool $relativeToRoot
-     *         Flag to return relative path from project root
+     * @param bool $relativeToRoot Flag to return relative path from project root.
      *         Since CONTENIDO 4.10.2
-     * @return string
-     *         path
      * @author konstantinos.katikakis
      */
     public static function getBackendPath(bool $relativeToRoot = false): string
@@ -123,9 +120,6 @@ class cRegistry
     /**
      * Function which returns the backend URL after the last possible place
      * changing via configuration file.
-     *
-     * @return string
-     *         URL
      * @author konstantinos.katikakis
      */
     public static function getBackendUrl(): string
@@ -135,12 +129,8 @@ class cRegistry
     }
 
     /**
-     * Function which returns path after the last possible place changing via
-     * configuration file.
-     * The path point to the current client
-     *
-     * @return string
-     *         path
+     * Function which returns path after the last possible place changing via configuration file.
+     * The path point to the current client.
      * @author konstantinos.katikakis
      */
     public static function getFrontendPath(): string
@@ -151,12 +141,8 @@ class cRegistry
     }
 
     /**
-     * Function which returns URL after the last possible place changing via
-     * configuration file.
-     * The path point to the current client
-     *
-     * @return string
-     *         URL
+     * Function which returns URL after the last possible place changing via configuration file.
+     * The path point to the current client.
      * @author konstantinos.katikakis
      */
     public static function getFrontendUrl(): string
@@ -167,10 +153,7 @@ class cRegistry
     }
 
     /**
-     * Returns the CONTENIDO Session ID stored in the global variable
-     * "contenido".
-     *
-     * @return string
+     * Returns the CONTENIDO Session ID stored in the global variable "contenido".
      */
     public static function getBackendSessionId(): string
     {
@@ -178,10 +161,7 @@ class cRegistry
     }
 
     /**
-     * Returns the CONTENIDO backend language stored in the global variable
-     * "belang"
-     *
-     * @return string
+     * Returns the CONTENIDO backend language stored in the global variable "belang".
      */
     public static function getBackendLanguage(): string
     {
@@ -189,10 +169,7 @@ class cRegistry
     }
 
     /**
-     * Checks if the edit mode in backend is active or not stored in the global
-     * variable "edit"
-     *
-     * @return bool
+     * Checks if the edit mode in backend is active or not stored in the global variable "edit".
      */
     public static function isBackendEditMode(): bool
     {
@@ -200,10 +177,7 @@ class cRegistry
     }
 
     /**
-     * Checks if the visual edit mode in backend is active (contenido session and
-     * global variable "tpl_visual").
-     *
-     * @return bool
+     * Checks if the visual edit mode in backend is active (contenido session and global variable "tpl_visual").
      * @since CONTENIDO 4.10.2
      */
     public static function isBackendVisualEditMode(): bool
@@ -213,8 +187,6 @@ class cRegistry
 
     /**
      * Returns the current language ID stored in the global variable "lang".
-     *
-     * @return int
      */
     public static function getLanguageId(): int
     {
@@ -228,7 +200,6 @@ class cRegistry
      * Returns the loaded cApiLanguage object for the current language.
      *
      * @param bool $reload Flag to re-instantiate an existing object.
-     * @return cApiLanguage
      * @throws cInvalidArgumentException
      */
     public static function getLanguage(bool $reload = false): cApiLanguage
@@ -244,8 +215,6 @@ class cRegistry
 
     /**
      * Returns the current client ID stored in the global variable "client".
-     *
-     * @return int
      */
     public static function getClientId(): int
     {
@@ -259,7 +228,6 @@ class cRegistry
      * Returns the loaded cApiClient object for the current client.
      *
      * @param bool $reload Flag to re-instantiate an existing object.
-     * @return cApiClient
      * @throws cInvalidArgumentException
      */
     public static function getClient(bool $reload = false): cApiClient
@@ -277,8 +245,7 @@ class cRegistry
      * Returns the article id stored in the global variable "idart".
      *
      * @param bool $autoDetect [optional, default: false]
-     *         If true, the value is tried to detected automatically.
-     * @return int
+     *         If true, the value is tried to be detected automatically.
      */
     public static function getArticleId(bool $autoDetect = false): int
     {
@@ -290,7 +257,6 @@ class cRegistry
      * Returns the loaded cApiArticle object for the current article.
      *
      * @param bool $reload Flag to re-instantiate an existing object.
-     * @return cApiArticle
      * @throws cInvalidArgumentException
      */
     public static function getArticle(bool $reload = false): cApiArticle
@@ -305,12 +271,10 @@ class cRegistry
     }
 
     /**
-     * Returns the article language id stored in the global variable
-     * "idartlang".
+     * Returns the article language id stored in the global variable "idartlang".
      *
      * @param bool $autoDetect [optional, default: false]
-     *         If true, the value is tried to detected automatically.
-     * @return int
+     *         If true, the value is tried to be detected automatically.
      */
     public static function getArticleLanguageId(bool $autoDetect = false): int
     {
@@ -322,14 +286,16 @@ class cRegistry
      * Returns the loaded cApiArticleLanguage object for the current article.
      *
      * @param bool $reload Flag to re-instantiate an existing object.
-     * @return cApiArticleLanguage
      * @throws cInvalidArgumentException
      */
     public static function getArticleLanguage(bool $reload = false): cApiArticleLanguage
     {
         $id = self::getArticleLanguageId();
-        if ($reload || !self::$_articleLanguage instanceof cApiArticleLanguage 
-            || (int) self::$_articleLanguage->getId() !== $id) {
+        if (
+            $reload
+            || !self::$_articleLanguage instanceof cApiArticleLanguage
+            || (int) self::$_articleLanguage->getId() !== $id
+        ) {
             self::$_articleLanguage = self::_fetchItemObject('cApiArticleLanguage', $id);
         }
 
@@ -340,8 +306,7 @@ class cRegistry
      * Returns the category id stored in the global variable "idcat".
      *
      * @param bool $autoDetect [optional, default: false]
-     *         If true, the value is tried to detected automatically.
-     * @return int
+     *         If true, the value is tried to be detected automatically.
      */
     public static function getCategoryId(bool $autoDetect = false): int
     {
@@ -353,14 +318,16 @@ class cRegistry
      * Returns the loaded cApiCategory object for the current category.
      *
      * @param bool $reload Flag to re-instantiate an existing object.
-     * @return cApiCategory
      * @throws cInvalidArgumentException
      */
     public static function getCategory(bool $reload = false): cApiCategory
     {
         $id = self::getCategoryId();
-        if ($reload || !self::$_category instanceof cApiCategory
-            || (int) self::$_category->getId() !== $id) {
+        if (
+            $reload
+            || !self::$_category instanceof cApiCategory
+            || (int) self::$_category->getId() !== $id
+        ) {
             self::$_category = self::_fetchItemObject('cApiCategory', $id);
         }
 
@@ -368,12 +335,10 @@ class cRegistry
     }
 
     /**
-     * Returns the category language id stored in the global variable
-     * "idcatlang".
+     * Returns the category language id stored in the global variable "idcatlang".
      *
      * @param bool $autoDetect [optional, default: false]
-     *         If true, the value is tried to detected automatically.
-     * @return int
+     *         If true, the value is tried to be detected automatically.
      */
     public static function getCategoryLanguageId(bool $autoDetect = false): int
     {
@@ -385,7 +350,6 @@ class cRegistry
      * Returns the loaded cApiCategoryLanguage object for the current category.
      *
      * @param bool $reload Flag to re-instantiate an existing object.
-     * @return cApiCategoryLanguage
      * @throws cInvalidArgumentException
      */
     public static function getCategoryLanguage(bool $reload = false): cApiCategoryLanguage
@@ -400,12 +364,10 @@ class cRegistry
     }
 
     /**
-     * Returns the category/article relation id stored in the global variable
-     * "idcatart".
+     * Returns the category/article relation id stored in the global variable "idcatart".
      *
      * @param bool $autoDetect [optional; default: false]
-     *         If true, the value is tried to detected automatically.
-     * @return int
+     *         If true, the value is tried to be detected automatically.
      */
     public static function getCategoryArticleId(bool $autoDetect = false): int
     {
@@ -414,11 +376,9 @@ class cRegistry
     }
 
     /**
-     * Returns the loaded cApiCategoryArticle object for the current
-     * category/article relation.
+     * Returns the loaded cApiCategoryArticle object for the current category/article relation.
      *
      * @param bool $reload Flag to re-instantiate an existing object.
-     * @return cApiCategoryArticle
      * @throws cInvalidArgumentException
      */
     public static function getCategoryArticle(bool $reload = false): cApiCategoryArticle
@@ -435,8 +395,6 @@ class cRegistry
     /**
      * Returns the current module ID.
      * Note: This function will work only within module code.
-     *
-     * @return int
      */
     public static function getCurrentModuleId(): int
     {
@@ -446,8 +404,6 @@ class cRegistry
     /**
      * Returns the current container ID.
      * Note: This function will work only within module code.
-     *
-     * @return int
      */
     public static function getCurrentContainerId(): int
     {
@@ -456,8 +412,6 @@ class cRegistry
 
     /**
      * Returns the current frame id stored in the global variable "frame".
-     *
-     * @return string
      * @author thomas.stauer
      */
     public static function getFrame(): string
@@ -467,28 +421,27 @@ class cRegistry
 
     /**
      * Return the session object stored in the global variable "sess".
-     *
-     * @return cSession|null
      */
-    public static function getSession()
+    public static function getSession(): ?cSession
     {
-        return self::_fetchGlobalVariable('sess');
+        $value = self::_fetchGlobalVariable('sess');
+
+        return $value instanceof cSession ? $value : null;
     }
 
     /**
      * Returns the auth object stored in the global variable "auth".
-     *
-     * @return cAuth|null
      */
-    public static function getAuth()
+    public static function getAuth(): ?cAuth
     {
-        return self::_fetchGlobalVariable('auth');
+        $value = self::_fetchGlobalVariable('auth');
+
+        return $value instanceof cAuth ? $value : null;
     }
 
     /**
      * Returns the area stored in the global variable "area".
      *
-     * @return string
      * @author thomas.stauer
      */
     public static function getArea(): string
@@ -499,7 +452,6 @@ class cRegistry
     /**
      * Returns the action stored in the global variable "action".
      *
-     * @return string
      * @author jann.diekmann
      */
     public static function getAction(): string
@@ -511,7 +463,6 @@ class cRegistry
      * Returns the language when switching languages. Must be set for URL-Build.
      * Stored in the global variable "changelang".
      *
-     * @return int
      * @author jann.diekmann
      */
     public static function getChangeLang(): int
@@ -520,13 +471,9 @@ class cRegistry
     }
 
     /**
-     * Returns the global "idcat" and "idart" of the Error-Site stored in the
-     * Client Configurations
+     * Returns the global "idcat" and "idart" of the Error-Site stored in the client configuration.
      *
-     * @return array [
-     *      'idcat' => (int)
-     *      'idart' => (int)
-     * ];
+     * @return array{idcat: int, idart: int}
      * @author jann.diekmann
      */
     public static function getErrSite(): array
@@ -542,18 +489,16 @@ class cRegistry
 
     /**
      * Returns the permission object stored in the global variable "perm".
-     *
-     * @return cPermission|null
      */
-    public static function getPerm()
+    public static function getPerm(): ?cPermission
     {
-        return self::_fetchGlobalVariable('perm');
+        $value = self::_fetchGlobalVariable('perm');
+
+        return $value instanceof cPermission ? $value : null;
     }
 
     /**
      * Returns the configuration array stored in the global variable "cfg".
-     *
-     * @return array
      */
     public static function getConfig(): array
     {
@@ -566,14 +511,14 @@ class cRegistry
      * In this case a $default value can be given which will be returned if this
      * option is not defined.
      *
-     * @param string|null $sectionName [optional]
-     * @param string|null $optionName [optional]
-     * @param mixed $defaultValue [optional]
+     * @param ?string $sectionName
+     * @param ?string $optionName
+     * @param mixed|null $defaultValue
      * @return mixed
      */
     public static function getConfigValue(
-        string $sectionName = null,
-        string $optionName = null,
+        ?string $sectionName = null,
+        ?string $optionName = null,
         $defaultValue = null
     )
     {
@@ -599,13 +544,10 @@ class cRegistry
     }
 
     /**
-     * Returns the client configuration array stored in the global variable
-     * "cfgClient".
+     * Returns the client configuration array stored in the global variable "cfgClient".
      * If no client ID is specified or is 0 the complete array is returned.
      *
-     * @param int $clientId [optional]
-     *         Client ID
-     * @return array
+     * @param int $clientId Client ID
      */
     public static function getClientConfig($clientId = 0): array
     {
@@ -622,8 +564,7 @@ class cRegistry
      * Returns a new CONTENIDO database object.
      *
      * @return cDb
-     * @todo perhaps its better to instantiate only one object and reset it on
-     *       call
+     * @todo perhaps its better to instantiate only one object and reset it on call
      */
     public static function getDb(): cDb
     {
@@ -639,9 +580,7 @@ class cRegistry
     /**
      * Fetches the database table name with its prefix.
      *
-     * @param string $index
-     *         name of the index
-     * @return string
+     * @param string $index Name of the index
      */
     public static function getDbTableName(string $index): string
     {
@@ -656,8 +595,6 @@ class cRegistry
 
     /**
      * Return the global CONTENIDO Execution Chain Registry.
-     *
-     * @return cApiCecRegistry
      */
     public static function getCecRegistry(): cApiCecRegistry
     {
@@ -678,9 +615,7 @@ class cRegistry
     /**
      * Getter for an application variable.
      *
-     * @param string $key
-     * @param mixed $default [optional]
-     *         Default value to return, if the application variable doesn't exist
+     * @param mixed|null $default Default value to return, if the application variable doesn't exist
      * @return mixed
      */
     public static function getAppVar(string $key, $default = null)
@@ -690,8 +625,6 @@ class cRegistry
 
     /**
      * Unsets an existing application variable.
-     *
-     * @param string $key
      */
     public static function unsetAppVar(string $key)
     {
@@ -704,10 +637,8 @@ class cRegistry
      * Fetches the global variable requested.
      * If variable is not set, the default value is returned.
      *
-     * @param string $variableName
-     *         name of the global variable
-     * @param mixed $defaultValue [optional]
-     *         default value
+     * @param string $variableName Name of the global variable
+     * @param mixed|null $defaultValue Default value
      * @return mixed
      */
     final protected static function _fetchGlobalVariable(string $variableName, $defaultValue = null)
@@ -716,16 +647,11 @@ class cRegistry
     }
 
     /**
-     * Fetches the corresponding Item object for the specific class name and its
-     * primary key value.
+     * Fetches the corresponding Item object for the specific class name and its primary key value.
      *
-     * @param string $apiClassName
-     *         name of the api class
-     * @param int $objectId
-     *         primary key value
-     *
+     * @param string $apiClassName Name of the api class
+     * @param int $objectId Primary key value
      * @return Item|object
-     *
      * @throws cInvalidArgumentException
      *         if the given objectId is not greater than 0 or the given class does not exist
      */
@@ -745,13 +671,11 @@ class cRegistry
     }
 
     /**
-     * Bootstraps the CONTENIDO framework and initializes the global variables
-     * sess, auth and perm.
+     * Bootstraps the CONTENIDO framework and initializes the global variables sess, auth and perm.
      *
-     * @param array $features
-     *         array with class name definitions
+     * @param array $features Array with class name definitions
      */
-    public final static function bootstrap(array $features)
+    final public static function bootstrap(array $features)
     {
         $cfg = self::getConfig();
 
@@ -802,13 +726,10 @@ class cRegistry
     /**
      * Shutdowns the CONTENIDO framework on page close.
      *
-     * @param bool $debugShowAll [optional]
-     *
      * @throws cInvalidArgumentException
      * @author frederic.schneider
-     *
      */
-    public final static function shutdown(bool $debugShowAll = true)
+    final public static function shutdown(bool $debugShowAll = true)
     {
         static $shutdownInvoked;
 
@@ -830,7 +751,6 @@ class cRegistry
     /**
      * Stores an ok message in the cRegistry.
      *
-     * @param string $message
      * @author frederic.schneider
      */
     public static function addOkMessage(string $message)
@@ -841,7 +761,6 @@ class cRegistry
     /**
      * Stores an information massage in the cRegistry.
      *
-     * @param string $message
      * @author konstantinos.katikakis
      */
     public static function addInfoMessage(string $message)
@@ -852,7 +771,6 @@ class cRegistry
     /**
      * Stores an error message in the cRegistry.
      *
-     * @param string $message
      * @author konstantinos.katikakis
      */
     public static function addErrorMessage(string $message)
@@ -863,7 +781,6 @@ class cRegistry
     /**
      * Stores a warning massage in the cRegistry.
      *
-     * @param string $message
      * @author konstantinos.katikakis
      */
     public static function addWarningMessage(string $message)
@@ -874,7 +791,6 @@ class cRegistry
     /**
      * Appends the last ok message that will be outputted
      *
-     * @param string $message
      * @author frederic.schneider
      */
     public static function appendLastOkMessage(string $message)
@@ -890,7 +806,6 @@ class cRegistry
     /**
      * Appends the last info message that will be outputted
      *
-     * @param string $message
      * @author mischa.holz
      */
     public static function appendLastInfoMessage(string $message)
@@ -906,7 +821,6 @@ class cRegistry
     /**
      * Appends the last error message that will be outputted
      *
-     * @param string $message
      * @author mischa.holz
      */
     public static function appendLastErrorMessage(string $message)
@@ -922,7 +836,6 @@ class cRegistry
     /**
      * Appends the last warning that will be outputted
      *
-     * @param string $message
      * @author mischa.holz
      */
     public static function appendLastWarningMessage(string $message)
@@ -938,7 +851,6 @@ class cRegistry
     /**
      * Return an array with ok message
      *
-     * @return array
      * @author frederic.schneider
      */
     public static function getOkMessages(): array
@@ -949,7 +861,6 @@ class cRegistry
     /**
      * Returns an array with information messages.
      *
-     * @return array
      * @author konstantinos.katikakis
      */
     public static function getInfoMessages(): array
@@ -960,7 +871,6 @@ class cRegistry
     /**
      * Returns an array with error messages.
      *
-     * @return array
      * @author konstantinos.katikakis
      */
     public static function getErrorMessages(): array
@@ -971,7 +881,6 @@ class cRegistry
     /**
      * Returns an array with warning messages.
      *
-     * @return array
      * @author konstantinos.katikakis
      */
     public static function getWarningMessages(): array
@@ -983,8 +892,7 @@ class cRegistry
      * Returns true if the DNT header is not set or not equal to 1.
      * Returns false if the DNT header is equal to 1.
      *
-     * @return bool
-     *         whether tracking is allowed by the DNT header
+     * @return bool Whether tracking is allowed by the DNT header
      */
     public static function isTrackingAllowed(): bool
     {
@@ -994,8 +902,7 @@ class cRegistry
     /**
      * Returns the actual encoding (standard: utf-8)
      *
-     * @return string|bool
-     *         name of encoding or false if no language found
+     * @return string|bool Name of encoding or false if no language found
      */
     public static function getEncoding()
     {
@@ -1005,9 +912,7 @@ class cRegistry
         if (!isset($encodings[$id])) {
             try {
                 $apiLanguage = new cApiLanguage($id);
-            } catch (cDbException $e) {
-                return false;
-            } catch (cException $e) {
+            } catch (cDbException|cException $e) {
                 return false;
             }
             if ($apiLanguage->isLoaded()) {

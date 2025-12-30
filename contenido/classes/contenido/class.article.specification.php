@@ -57,8 +57,7 @@ class cApiArticleSpecificationCollection extends ItemCollection
      * @param int $lang
      * @param string $orderBy
      * @return array
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function fetchByClientLang(int $client, int $lang, string $orderBy = ''): array
     {
@@ -121,18 +120,15 @@ class cApiArticleSpecification extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('art_spec'), 'idartspec');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 

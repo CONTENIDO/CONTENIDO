@@ -19,7 +19,7 @@ $cfg = cRegistry::getConfig();
 $area = cRegistry::getArea();
 $frame = cRegistry::getFrame();
 
-$oPage = new cGuiPage("clientsettings");
+$oPage = new cGuiPage('clientsettings');
 $oList = new cGuiScrollList();
 $oList->objTable->setClass('generic col_md');
 
@@ -89,7 +89,6 @@ $imagesPath = $backendUrl . $cfg['path']['images'];
 $aItems = $oClient->getProperties();
 
 if ($aItems !== false) {
-
     // Wrapper for the buttons
     $controls = new cHTMLDiv('', 'con_form_action_control');
 
@@ -124,7 +123,6 @@ if ($aItems !== false) {
         ]);
 
         if (($action == "clientsettings_edit_item") && ($request['idprop'] == $iKey)) {
-
             $oInputboxType = new cHTMLTextbox("cstype", $settingType);
             $oInputboxType->setWidth(15);
             $oInputboxName = new cHTMLTextbox("csname", $settingName);
@@ -143,7 +141,6 @@ if ($aItems !== false) {
                 $controls->render()
             );
         } else {
-
             if (cString::getStringLength($aValue['type']) > 35) {
                 $sShort = conHtmlentities(cString::trimHard($aValue['type'], 35));
                 $settingType = sprintf($sMouseoverTemplate, $settingType, $sShort);

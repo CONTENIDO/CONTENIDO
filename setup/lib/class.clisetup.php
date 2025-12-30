@@ -349,7 +349,6 @@ class cCLISetup
      * Executes the CONTENIDO system tests and prints the result to the user.
      * In case of an error it asks if the user wants to continue anyway and,
      * if not, quits the script.
-     *
      */
     public function executeSystemTests()
     {

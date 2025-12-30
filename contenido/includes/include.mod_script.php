@@ -27,7 +27,7 @@ $frame = cRegistry::getFrame();
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
 
-$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
+$readOnly = getEffectiveSetting('client', 'readonly', 'false') === 'true';
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -55,7 +55,7 @@ if (!$moduleHandler->existFile('js', $moduleHandler->getJsFileName())) {
     }
 }
 
-$page = new cGuiPage("mod_script");
+$page = new cGuiPage('mod_script');
 
 $tpl->reset();
 
@@ -145,7 +145,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $requestStatus == 'send') 
                 throw new cInvalidArgumentException('The file ' . $sFilename . ' could not be renamed.');
             }
         } catch (Exception $e) {
-            $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
+            $notification->displayNotification('error', sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
         }
 
         $page->reloadRightTopFrame(['file' => $sTempFilename]);

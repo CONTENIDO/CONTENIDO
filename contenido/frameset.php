@@ -85,8 +85,8 @@ $tpl->set('s', 'CONTENIDOPATH', cRegistry::getBackendUrl() . 'favicon.ico');
 if ((isset($menuless) && $menuless == 1)) {
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_menuless_content']);
 } else {
-    preg_match('/msie/i', $_SERVER['HTTP_USER_AGENT'], $msie);
-    preg_match('/safari/i', $_SERVER['HTTP_USER_AGENT'], $safari);
+    preg_match('/msie/i', $_SERVER['HTTP_USER_AGENT'] ?? '', $msie);
+    preg_match('/safari/i', $_SERVER['HTTP_USER_AGENT'] ?? '', $safari);
     $tpl->set('s', 'CONTENT_FRAME_BORDER', ($msie ? '0' : '1'));
     $tpl->set('s', 'LEFT_BORDER', ($safari ? '1' : '0'));
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_content']);

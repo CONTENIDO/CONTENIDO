@@ -1268,8 +1268,8 @@ if ( $.uiBackCompat !== false ) {
                 that._initProgressListener(o);
                 jqXHR = ($.ajax(o) || that._getXHRPromise(false, o.context))
                     .done(function (result, textStatus, jqXHR) {
-						if (Con.checkAjaxResponse(result) === false)  {
-							return false;
+                        if (Con.checkAjaxResponse(result) === false)  {
+            				return false;
 						}
 
                         ub = that._getUploadedBytes(jqXHR) ||

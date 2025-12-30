@@ -22,18 +22,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Returns the MD5 filename used for caching.
  *
- * @param string $sImg
- *         Path to upload image
- * @param int $iMaxX
- *         Maximum image x size
- * @param int $iMaxY
- *         Maximum image y size
- * @param bool $bCrop
- *         Flag to crop image
- * @param bool $bExpand
- *         Flag to expand image
- * @return string|false
- *         md5 hash for the file or false
+ * @param string $sImg Path to upload image
+ * @param int $iMaxX Maximum image x size
+ * @param int $iMaxY Maximum image y size
+ * @param bool $bCrop Flag to crop image
+ * @param bool $bExpand Flag to expand image
+ * @return string|false md5 hash for the file or false
  */
 function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand)
 {
@@ -78,25 +72,16 @@ function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand)
  * maximum X and Y sizes, and uses that as the file name.
  * If the file is older than 10 minutes it will be regenerated.
  *
- * @param string $img
- *         The path to the image (relative to the frontend)
- * @param int $maxX
- *         The maximum size in x-direction
- * @param int $maxY
- *         The maximum size in y-direction
- * @param bool $crop [optional]
- *         If true, the image is cropped and not scaled.
- * @param bool $expand [optional]
- *         If true, the image is expanded (e.g. really scaled).
+ * @param string $img The path to the image (relative to the frontend)
+ * @param int $maxX The maximum size in x-direction
+ * @param int $maxY The maximum size in y-direction
+ * @param bool $crop [optional] If true, the image is cropped and not scaled.
+ * @param bool $expand [optional] If true, the image is expanded (e.g. really scaled).
  *         If false, the image will only be made smaller.
- * @param int $cacheTime [optional]
- *         The number of minutes to cache the image, use 0 for unlimited
- * @param int $quality [optional]
- *         The quality of the output file
- * @param bool $keepType [optional]
- *         If true and a png file is source, output file is also png
- * @return string|false
- *         url to the resulting image (https://...) or false
+ * @param int $cacheTime [optional] The number of minutes to cache the image, use 0 for unlimited
+ * @param int $quality [optional] The quality of the output file
+ * @param bool $keepType [optional] If true and a png file is source, output file is also png
+ * @return string|false url to the resulting image (https://...) or false
  */
 function cApiImgScaleLQ(
     $img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 0, $keepType = false)
@@ -171,25 +156,16 @@ function cApiImgScaleLQ(
  * maximum X and Y sizes, and uses that as the file name.
  * If the file is older than the specified cache time, regenerate it.
  *
- * @param string $img
- *         The path to the image (relative to the frontend)
- * @param int $maxX
- *         The maximum size in x-direction
- * @param int $maxY
- *         The maximum size in y-direction
- * @param bool $crop [optional]
- *         If true, the image is cropped and not scaled.
- * @param bool $expand [optional]
- *         If true, the image is expanded (e.g. really scaled).
+ * @param string $img The path to the image (relative to the frontend)
+ * @param int $maxX The maximum size in x-direction
+ * @param int $maxY The maximum size in y-direction
+ * @param bool $crop [optional] If true, the image is cropped and not scaled.
+ * @param bool $expand [optional] If true, the image is expanded (e.g. really scaled).
  *         If false, the image will only be made smaller.
- * @param int $cacheTime [optional]
- *         The number of minutes to cache the image, use 0 for unlimited
- * @param int $quality [optional]
- *         The quality of the output file
- * @param bool $keepType [optional]
- *         If true and a png file is source, output file is also png
- * @return string|false
- *         Url to the resulting image (https://...) or false
+ * @param int $cacheTime [optional] The number of minutes to cache the image, use 0 for unlimited
+ * @param int $quality [optional] The quality of the output file
+ * @param bool $keepType [optional] If true and a png file is source, output file is also png
+ * @return string|false Url to the resulting image (https://...) or false
  */
 function cApiImgScaleHQ(
     $img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 0, $keepType = true)
@@ -241,7 +217,7 @@ function cApiImgScaleHQ(
         $srcY = ($y - $maxY) / 2;
 
         // Preserve transparency
-        if (cString::toLowerCase($fileType) == 'gif' || cString::toLowerCase($fileType) == 'png' || cString::toLowerCase($fileType) == 'webp') {
+        if (in_array(cString::toLowerCase($fileType), ['gif', 'png', 'webp'])) {
             imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
             imagealphablending($targetImage, false);
             imagesavealpha($targetImage, true);
@@ -254,7 +230,7 @@ function cApiImgScaleHQ(
         $targetImage = imagecreatetruecolor($targetX, $targetY);
 
         // Preserve transparency
-        if (cString::toLowerCase($fileType) == 'gif' || cString::toLowerCase($fileType) == 'png' || cString::toLowerCase($fileType) == 'webp') {
+        if (in_array(cString::toLowerCase($fileType), ['gif', 'png', 'webp'])) {
             imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
             imagealphablending($targetImage, false);
             imagesavealpha($targetImage, true);
@@ -283,25 +259,16 @@ function cApiImgScaleHQ(
  * maximum X and Y sizes, and uses that as the file name.
  * If the file is older than the specified cache time, regenerate it.
  *
- * @param string $img
- *         The path to the image (relative to the frontend)
- * @param int $maxX
- *         The maximum size in x-direction
- * @param int $maxY
- *         The maximum size in y-direction
- * @param bool $crop [optional]
- *         If true, the image is cropped and not scaled.
- * @param bool $expand [optional]
- *         If true, the image is expanded (e.g. really scaled).
+ * @param string $img The path to the image (relative to the frontend)
+ * @param int $maxX The maximum size in x-direction
+ * @param int $maxY The maximum size in y-direction
+ * @param bool $crop [optional] If true, the image is cropped and not scaled.
+ * @param bool $expand [optional] If true, the image is expanded (e.g. really scaled).
  *         If false, the image will only be made smaller.
- * @param int $cacheTime [optional]
- *         The number of minutes to cache the image, use 0 for unlimited
- * @param int $quality [optional]
- *         The quality of the output file
- * @param bool $keepType [optional]
- *         If true and a png file is source, output file is also png
- * @return string|false
- *         Url to the resulting image (https://...) or false
+ * @param int $cacheTime [optional] The number of minutes to cache the image, use 0 for unlimited
+ * @param int $quality [optional] The quality of the output file
+ * @param bool $keepType [optional] If true and a png file is source, output file is also png
+ * @return string|false Url to the resulting image (https://...) or false
  */
 function cApiImgScaleImageMagick(
     $img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 0, $keepType = false)
@@ -381,10 +348,8 @@ function cApiImgScaleImageMagick(
  *
  * If ImageMagick is not available false will be returned.
  *
- * @param string $sFile
- *         file path
- * @return bool
- *         True (gif is animated)/ false (single frame gif)
+ * @param string $sFile File path
+ * @return bool True (gif is animated)/ false (single frame gif)
  */
 function cApiImageIsAnimGif($sFile): bool
 {
@@ -429,38 +394,25 @@ function cApiImageIsAnimGif($sFile): bool
  * maximum X and Y sizes, and uses that as the file name.
  * If the file is older than 10 minutes, regenerate it.
  *
- * @param string $img
- *                          The path to the image (relative to the frontend)
- * @param int $maxX
- *                          The maximum size in x-direction
- * @param int $maxY
- *                          The maximum size in y-direction
- * @param bool $crop [optional]
- *                          If true, the image is cropped and not scaled.
- * @param bool $expand [optional]
- *                          If true, the image is expanded (e.g. really scaled).
- *                          If false, the image will only be made smaller.
- * @param int $cacheTime [optional]
- *                          The number of minutes to cache the image, use 0 for unlimited
- * @param bool $wantHQ [optional]
- *                          If true, try to force high quality mode
- *                          Deprecated 4.8.* This is not used anymore.
- *                          Configure the quality via following setting:
- *                          $cfg['images']['image_quality']['compression_rate']
- * @param int $quality [optional]
- *                          The quality of the output file
- * @param bool $keepType [optional]
- *                          If true and a png file is source, output file is also png
- *
- * @return string|false
- *         Path to the resulting image or false
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param string $img The path to the image (relative to the frontend)
+ * @param int $maxX The maximum size in x-direction
+ * @param int $maxY The maximum size in y-direction
+ * @param bool $crop [optional] If true, the image is cropped and not scaled.
+ * @param bool $expand [optional] If true, the image is expanded (e.g. really scaled).
+ *      If false, the image will only be made smaller.
+ * @param int $cacheTime [optional] The number of minutes to cache the image, use 0 for unlimited
+ * @param bool $wantHQ [optional] If true, try to force high quality mode
+ *      Deprecated 4.8.* This is not used anymore.
+ *      Configure the quality via following setting:
+ *      $cfg['images']['image_quality']['compression_rate']
+ * @param int $quality [optional] The quality of the output file
+ * @param bool $keepType [optional] If true and a png file is source, output file is also png
+ * @return string|false Path to the resulting image or false
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function cApiImgScale(
-    $img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $wantHQ = false, $quality = 0, $keepType = true)
+    $img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $wantHQ = false, $quality = 0, $keepType = true
+)
 {
     $cfgClient = cRegistry::getClientConfig();
     $client = cRegistry::getClientId();
@@ -479,7 +431,10 @@ function cApiImgScale(
         $deleteAfter = true;
     } elseif (!cFileHandler::exists($img)) {
         // Try with upload string
-        if (cFileHandler::exists($cfgClient[$client]['upl']['path'] . $img) && !is_dir($cfgClient[$client]['upl']['path'] . $img)) {
+        if (
+            cFileHandler::exists($cfgClient[$client]['upl']['path'] . $img)
+            && !is_dir($cfgClient[$client]['upl']['path'] . $img)
+        ) {
             $img = $cfgClient[$client]['upl']['path'] . $img;
         } else {
             // No, it's neither in the upload directory nor in the dbfs. return.
@@ -492,8 +447,9 @@ function cApiImgScale(
     $quality = cApiImgGetCompressionRate(cFileHandler::getExtension($fileName), $quality);
 
     $mxdAvImgEditingPossibility = cApiImageCheckImageEditingPossibility();
-
-    if ($fileType == "svg") $mxdAvImgEditingPossibility = "untouched";
+    if ($fileType == 'svg') {
+        $mxdAvImgEditingPossibility = 'untouched';
+    }
 
     switch ($mxdAvImgEditingPossibility) {
         case '1': // gd1
@@ -553,8 +509,7 @@ function cApiImgScale(
 /**
  * Check possible image editing functionality.
  *
- * @return string
- *         Information about installed image editing extensions/tools
+ * @return string Information about installed image editing extensions/tools
  *         <pre>
  *         - 'im' ImageMagick is available and usage is enabled
  *         - '2' GD library version 2 is available
@@ -691,8 +646,7 @@ function cApiImageGetCacheFileName($md5, $fileType, $keepType): string
  *
  * @param string $cacheFile
  * @param int $cacheTime
- * @return bool
- *         Returns true, if cache file exists and/or is still valid or false
+ * @return bool Returns true, if cache file exists and/or is still valid or false
  */
 function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime): bool
 {
@@ -720,11 +674,9 @@ function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime): bool
 
 /**
  * Checks if ImageMagick is available.
- *
  * This info will be cached after being detected once.
  *
- * @return bool
- *         true if ImageMagick is available
+ * @return bool true if ImageMagick is available
  */
 function cApiIsImageMagickAvailable(): bool
 {
@@ -808,11 +760,11 @@ function cApiImgGetCompressionRate(string $imgType, int $quality = 0): int
  * Returns image resource by file name.
  *
  * @param string $fileName Path to image
- * @param string|null $fileType File type (extension)
+ * @param ?string $fileType File type (extension)
  * @return resource|null Created image resource or null
  * @since CONTENIDO 4.10.2
  */
-function cApiImgCreateImageResourceFromFile(string $fileName, string $fileType = null)
+function cApiImgCreateImageResourceFromFile(string $fileName, ?string $fileType = null)
 {
     if (!$fileType) {
         $fileType = cFileHandler::getExtension($fileName);
@@ -853,7 +805,7 @@ function cApiImgCreateImageResourceFromFile(string $fileName, string $fileType =
  */
 function cApiImgSaveImageResourceToFile(
     $targetImage, string $saveTo, int $quality, string $fileType, bool $keepType
-): bool
+    ): bool
 {
     // save the file
     if ($keepType) {

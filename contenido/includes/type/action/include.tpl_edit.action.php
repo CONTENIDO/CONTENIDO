@@ -21,5 +21,5 @@ if ($perm->have_perm_area_action($area, "tpl_edit") || $perm->have_perm_area_act
     $idtpl = tplEditTemplate($changelayout, $idtpl, $tplname, $description, $idlay, $c, $defaulttemplate);
     $idtpl = cSecurity::toInteger($idtpl);
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

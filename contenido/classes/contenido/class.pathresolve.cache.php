@@ -31,12 +31,9 @@ class cApiPathresolveCacheHelper
     protected static $_tableCreated = false;
 
     /**
-     * Checks configuration of heap table creation, its existence and creates
-     * it if needed.
+     * Checks configuration of heap table creation, its existence and creates it if needed.
      *
-     * @param array $cfg
-     *         Global CONTENIDO config array
-     *
+     * @param array $cfg Global CONTENIDO config array
      * @throws cDbException
      */
     public static function setup($cfg)
@@ -82,8 +79,7 @@ class cApiPathresolveCacheCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct()
     {
@@ -101,9 +97,7 @@ class cApiPathresolveCacheCollection extends ItemCollection
      * @param int $idlang
      * @param string $lastcached [optional]
      * @return cApiPathresolveCache
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($path, $idcat, $idlang, $lastcached = '')
     {
@@ -128,8 +122,7 @@ class cApiPathresolveCacheCollection extends ItemCollection
      * @param string $path
      * @param int $idlang
      * @return cApiPathresolveCache|NULL
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function fetchLatestByPathAndLanguage($path, $idlang)
     {
@@ -143,10 +136,7 @@ class cApiPathresolveCacheCollection extends ItemCollection
      *
      * @param int $idcat
      * @param int $idlang
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function deleteByCategoryAndLanguage($idcat, $idlang)
     {
@@ -170,20 +160,17 @@ class cApiPathresolveCache extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         $cfg = cRegistry::getConfig();
         cApiPathresolveCacheHelper::setup($cfg);
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
@@ -193,7 +180,7 @@ class cApiPathresolveCache extends Item
      * @return bool
      * @throws cException If item has not been loaded before
      */
-    public function isCacheTimeExpired()
+    public function isCacheTimeExpired(): bool
     {
         if (!$this->isLoaded()) {
             throw new cException('Item not loaded!');
@@ -206,14 +193,9 @@ class cApiPathresolveCache extends Item
     /**
      * User-defined setter for pathresolve cache fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idcat':
@@ -222,7 +204,7 @@ class cApiPathresolveCache extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

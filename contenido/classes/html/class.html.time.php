@@ -26,12 +26,9 @@ class cHTMLTime extends cHTMLContentElement
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $content [optional]
-     *         String or object with the contents
-     * @param string $class [optional]
-     *         the class of this element
-     * @param string $id [optional]
-     *         the ID of this element
+     * @param mixed $content [optional] String or object with the contents
+     * @param string $class [optional] The class of this element
+     * @param string $id [optional] The ID of this element
      * @param string $datetime [optional]
      */
     public function __construct($content = '', $class = '', $id = '', $datetime = '')
@@ -46,9 +43,9 @@ class cHTMLTime extends cHTMLContentElement
      *
      * @param string $datetime
      */
-    public function setDatetime($datetime)
+    public function setDatetime($datetime): self
     {
-        $this->setAttribute('datetime', $datetime);
+        return $this->setAttribute('datetime', $datetime);
     }
 
 }

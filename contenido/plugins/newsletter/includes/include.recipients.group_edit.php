@@ -27,7 +27,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 
 // Initialization
-$oPage = new cGuiPage("recipients.group_edit", "newsletter");
+$oPage = new cGuiPage('recipients.group_edit', 'newsletter');
 $oRGroups = new NewsletterRecipientGroupCollection();
 $oRGroupMembers = new NewsletterRecipientGroupMemberCollection();
 $oRGroup = new NewsletterRecipientGroup();

@@ -27,13 +27,9 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
     /**
      * Initialize class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *                             plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
-     *                             used
-     * @param array $contentTypes array containing the values of all content
-     *                             types
-     *
+     * @param string $rawSettings the raw settings in an XML structure or as plaintext
+     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes array containing the values of all content types
      * @throws cDbException
      */
     function __construct($rawSettings, $id, array $contentTypes)
@@ -49,8 +45,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
         ];
 
         // encoding conversions to avoid problems with umlauts
-        $rawSettings = conHtmlEntityDecode($rawSettings ?? '');
-        $rawSettings = @utf8_encode($rawSettings);
+        $rawSettings = cString::convertEncoding(conHtmlEntityDecode($rawSettings ?? ''));
 
         parent::__construct($rawSettings, $id, $contentTypes);
 
@@ -122,7 +117,7 @@ $code
     /**
      * Generates code for the base panel in which all data can be specified.
      *
-     * @return string  The code for the base panel
+     * @return string The code for the base panel
      */
     private function _getPanel(): string
     {
@@ -190,8 +185,7 @@ $code
     }
 
     /**
-     * Builds a select element allowing to choose a single form that was created
-     * for the current client.
+     * Builds a select element allowing to choose a single form that was created for the current client.
      *
      * @return cHTMLDiv
      */
@@ -236,8 +230,7 @@ $code
     /**
      * Get code of form (either GET or POST request).
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         shown in frontend
+     * @return string escaped HTML code which should be shown if content type is shown in frontend
      */
     public function buildCode(): string
     {

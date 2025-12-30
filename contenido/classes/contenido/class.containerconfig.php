@@ -27,9 +27,7 @@ class cApiContainerConfigurationCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
      * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
@@ -52,7 +50,6 @@ class cApiContainerConfigurationCollection extends ItemCollection
      * @param int $idtplcfg
      * @param int $number
      * @param string $container
-     *
      * @return cApiContainerConfiguration
      * @throws cDbException|cException|cInvalidArgumentException
      */
@@ -71,14 +68,11 @@ class cApiContainerConfigurationCollection extends ItemCollection
     /**
      * Returns list of all configured container by template configuration id
      *
-     * @param int $idtplcfg
-     *         Template configuration id
-     * @return array
-     *         Associative array where the key is the number and value the
-     *         container configuration.
+     * @param int $idtplcfg Template configuration id
+     * @return array Associative array where the key is the number and value the container configuration.
      * @throws cDbException|cException
      */
-    public function getByTemplateConfiguration($idtplcfg)
+    public function getByTemplateConfiguration($idtplcfg): array
     {
         $configuration = [];
         $this->select('idtplcfg = ' . cSecurity::toInteger($idtplcfg), '', 'number ASC');
@@ -100,18 +94,16 @@ class cApiContainerConfiguration extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
+     * @param mixed $id Specifies the ID of item to load
      * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         $table = cRegistry::getDbTableName('container_conf');
         parent::__construct($table, 'idcontainerc');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
@@ -120,7 +112,7 @@ class cApiContainerConfiguration extends Item
      *
      * @inheritdoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idtplcfg':
@@ -129,21 +121,20 @@ class cApiContainerConfiguration extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**
-     * Adds a key value pair to passed container string and returns the modified
-     * container string
+     * Adds a key value pair to passed container string and returns the modified container string
      *
      * @param string $container
      * @param string $key
      * @param string $value
-     * @return string
      */
-    public static function addContainerValue($container, $key, $value)
+    public static function addContainerValue($container, $key, $value): string
     {
         $container .= $key . '=' . urlencode(stripslashes($value)) . '&';
+
         return $container;
     }
 
@@ -151,9 +142,8 @@ class cApiContainerConfiguration extends Item
      * Parses the container value to its variables
      *
      * @param string $value
-     * @return array
      */
-    public static function parseContainerValue($value)
+    public static function parseContainerValue($value): array
     {
         $value = preg_replace('/(&\$)/', '', $value);
         parse_str($value, $vars);

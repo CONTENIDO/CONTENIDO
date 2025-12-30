@@ -73,10 +73,7 @@ class WorkflowActions extends ItemCollection
     /**
      * @param $idworkflowitem
      * @param $action
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function set($idworkflowitem, $action)
     {
@@ -92,10 +89,7 @@ class WorkflowActions extends ItemCollection
     /**
      * @param $idworkflowitem
      * @param $action
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function remove($idworkflowitem, $action)
     {
@@ -106,17 +100,13 @@ class WorkflowActions extends ItemCollection
     }
 
     /**
-     * @param string $where
-     * @param string $group_by
-     * @param string $order_by
-     * @param string $limit
+     * Extends the where statement. See the original function for the parameters.
      *
-     * @return bool
-     * @throws cDbException
+     * @inheritDoc
      */
-    public function select($where = "", $group_by = "", $order_by = "", $limit = "")
+    public function select($where = '', $groupBy = '', $orderBy = '', $limit = '')
     {
-        return parent::select($where, $group_by, $order_by, $limit);
+        return parent::select($where, $groupBy, $orderBy, $limit);
     }
 
 }

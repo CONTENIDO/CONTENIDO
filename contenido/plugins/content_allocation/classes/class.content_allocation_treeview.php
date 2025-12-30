@@ -39,9 +39,7 @@ class pApiContentAllocationTreeView extends pApiTree
      * pApiContentAllocationTreeView constructor
      *
      * @param string $uuid
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($uuid)
     {

@@ -34,8 +34,7 @@ abstract class cLogWriter
     /**
      * Constructor to create an instance of this class.
      *
-     * @param array $options [optional]
-     *         Array with options for the writer instance (optional)
+     * @param array $options [optional] Array with options for the writer instance (optional)
      */
     public function __construct(array $options = [])
     {
@@ -49,15 +48,11 @@ abstract class cLogWriter
     /**
      * Factory method for a new writer instance.
      *
-     * @param string $writerName
-     *         Name of the writer
-     * @param array $writerOptions
-     *         Options array for the writer instance
-     * @return cLogWriter
-     *         Log writer instance
-     * @throws cInvalidArgumentException
-     *         if the writer class with the given name does not exist
-     *         or is not an instance of clogWriter
+     * @param string $writerName Name of the writer
+     * @param array $writerOptions Options array for the writer instance
+     * @return cLogWriter Log writer instance
+     * @throws cInvalidArgumentException If the writer class with the given name does not exist
+     *      or is not an instance of clogWriter
      */
     public static function factory($writerName, array $writerOptions)
     {
@@ -77,8 +72,7 @@ abstract class cLogWriter
     /**
      * Sets the whole options array.
      *
-     * @param array $options
-     *         Array with options
+     * @param array $options Array with options
      */
     public function setOptions(array $options)
     {
@@ -88,8 +82,7 @@ abstract class cLogWriter
     /**
      * Returns an array with all options.
      *
-     * @return array
-     *         Array with all options
+     * @return array Array with all options
      */
     public function getOptions()
     {
@@ -97,15 +90,11 @@ abstract class cLogWriter
     }
 
     /**
-     * Sets an option. If option was set previously, it must be forced
-     * to overwrite the value.
+     * Sets an option. If option was set previously, it must be forced to overwrite the value.
      *
-     * @param string $option
-     *         Name of the option
-     * @param mixed $value
-     *         Value of the option
-     * @param bool $force [optional]
-     *         Flag to force setting the option value (optional, default: false)
+     * @param string $option Name of the option
+     * @param mixed $value Value of the option
+     * @param bool $force [optional] Flag to force setting the option value (optional, default: false)
      */
     public function setOption($option, $value, $force = false)
     {
@@ -119,10 +108,8 @@ abstract class cLogWriter
     /**
      * Returns the value of an option entry.
      *
-     * @param string $option
-     *         Name of the option
-     * @return mixed
-     *         Value of the option entry
+     * @param string $option Name of the option
+     * @return mixed Value of the option entry
      */
     public function getOption($option)
     {
@@ -132,8 +119,7 @@ abstract class cLogWriter
     /**
      * Removes an option entry.
      *
-     * @param string $option
-     *         Name of the option
+     * @param string $option Name of the option
      */
     public function removeOption($option)
     {
@@ -144,12 +130,9 @@ abstract class cLogWriter
      * Abstract function for the write process.
      * This method must be implemented in the specific writer.
      *
-     * @param string $message
-     *         Message to write
-     * @param int $priority
-     *         Priority of the log entry
-     * @return bool
-     *         State of the write process
+     * @param string $message Message to write
+     * @param int $priority Priority of the log entry
+     * @return bool State of the write process
      */
     abstract function write($message, $priority);
 }

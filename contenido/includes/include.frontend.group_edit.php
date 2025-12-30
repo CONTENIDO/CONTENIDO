@@ -27,7 +27,7 @@ $action = cRegistry::getAction();
 $db = cRegistry::getDb();
 
 $fegroups = new cApiFrontendGroupCollection();
-$page = new cGuiPage("grouprights_memberselect", "", 0);
+$page = new cGuiPage('grouprights_memberselect', '', 0);
 
 cIncludePlugins('frontendgroups');
 
@@ -247,7 +247,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
 
     $page->render();
 } else {
-    $page = new cGuiPage("frontend.group_edit");
+    $page = new cGuiPage('frontend.group_edit');
     if (!empty($reloadLeftBottom)) {
         $page->addScript($reloadLeftBottom);
     }

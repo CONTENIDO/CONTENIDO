@@ -219,6 +219,8 @@ class CodeMirror {
         if ($this->_syntax == 'js') {
             return 'text/javascript';
         }
+
+        return 'text/plain';
     }
 
     /**

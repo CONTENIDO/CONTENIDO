@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 class CurlService
 {
-    const DBG = false;
+    public const DBG = false;
 
     public $error;
 

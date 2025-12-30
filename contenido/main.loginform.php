@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $db = cRegistry::getDb();
 $cfg = cRegistry::getConfig();
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$lang = cRegistry::getLanguageId();
 
 $aAvailableLanguages = i18nGetAvailableLanguages();
 
@@ -36,10 +36,10 @@ if (empty($_POST['belang'])) {
 
 // Detect preferred language by client settings, if not set before
 if (empty($sSelectedLang)) {
-    $aAcceptLanguages = i18nStripAcceptLanguages($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    $aAcceptLanguages = i18nStripAcceptLanguages($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '');
     foreach ($aAcceptLanguages as $sValue) {
         $mEncoding = i18nMatchBrowserAccept($sValue);
-        if ($mEncoding !== false) {
+        if ($mEncoding) {
             $sSelectedLang = $mEncoding;
             break;
         }

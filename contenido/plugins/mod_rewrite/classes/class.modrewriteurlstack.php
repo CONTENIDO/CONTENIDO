@@ -168,8 +168,7 @@ class ModRewriteUrlStack
      * $arr['urlpath']
      * $arr['urlname']
      * </code>
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getPrettyUrlParts($url)
     {
@@ -192,8 +191,7 @@ class ModRewriteUrlStack
      * Extracts passed url using parse_url and adds also the 'params' array to it
      *
      * @param string $url Url, like front_content.php?idcat=123...
-     * @return  array  Components containing result of parse_url with additional
-     *                 'params' array
+     * @return  array  Components containing result of parse_url with additional 'params' array
      */
     private function _extractUrl($url)
     {
@@ -234,8 +232,7 @@ class ModRewriteUrlStack
      *
      * @param $sStackId
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     private function _chunkSetPrettyUrlParts($sStackId)
     {

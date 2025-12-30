@@ -108,7 +108,7 @@ class cAuthHandlerFrontend extends cAuth
         $pass = false;
         $salt = false;
 
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
 
         $where = "username = '" . $username . "' AND idclient = '" . $client . "' AND active = 1";
         $frontendUserColl->select($where);

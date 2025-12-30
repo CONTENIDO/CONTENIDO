@@ -142,12 +142,11 @@ class PimPluginArchiveExtractor
     }
 
     /**
-     * Extracts a specific file from archive and return its content to use it in
-     * a variable
+     * Extracts a specific file from archive and return its content to use it in a variable
      *
      * @param string $filename
      * @param bool $content [optional] whether to return the content or just the
-     *            dir and filename of the extracted file
+     *      dir and filename of the extracted file
      * @return string content of extracted file or dir and filename of extracted File
      */
     public function extractArchiveFileToVariable($filename, $content = true)

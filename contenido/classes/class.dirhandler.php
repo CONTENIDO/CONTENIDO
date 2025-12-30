@@ -31,18 +31,16 @@ class cDirHandler
      * @see CON-2770
      * @var int
      */
-    const DEFAULT_MODE = 0775;
+    public const DEFAULT_MODE = 0775;
 
     /**
      * Creates a new directory.
      *
-     * @param string $pathname
-     *         the name and path of the new dir
-     * @param bool $recursive [optional]
-     * @return bool
-     *         Returns true on success or false on failure.
+     * @param string $pathname The name and path of the new dir
+     * @param bool $recursive
+     * @return bool Returns true on success or false on failure.
      */
-    public static function create($pathname, $recursive = false): bool
+    public static function create(string $pathname, bool $recursive = false): bool
     {
         // skip if dir already exists
         if (self::exists($pathname)) {
@@ -63,19 +61,16 @@ class cDirHandler
     /**
      * Removes a directory from the filesystem.
      *
-     * @param string $dirname
-     *         The path to the directory
-     *
-     * @return bool
-     *         Returns true on success or false on failure.
-     *
-     * @throws cInvalidArgumentException
-     *         if the dir with the given dirname does not exist
+     * @param string $dirname The path to the directory
+     * @return bool Returns true on success or false on failure.
+     * @throws cInvalidArgumentException If the dir with the given dirname does not exist
      */
-    public static function remove($dirname): bool
+    public static function remove(string $dirname): bool
     {
         if (!self::exists($dirname)) {
-            throw new cInvalidArgumentException('The directory ' . $dirname . ' could not be accessed because it does not exist.');
+            throw new cInvalidArgumentException(
+                sprintf('The directory %s could not be accessed because it does not exist.', $dirname)
+            );
         }
         return rmdir($dirname);
     }
@@ -83,26 +78,21 @@ class cDirHandler
     /**
      * Moves a directory to another location.
      *
-     * @param string $dirname
-     *         The path and name of the directory
-     * @param string $destination
-     *         the destination. Note that the dir can also be renamed in the
+     * @param string $dirname The path and name of the directory
+     * @param string $destination The destination. Note that the dir can also be renamed in the
      *         process of moving it
-     *
-     * @return bool
-     *         Returns true on success or false on failure.
-     *
-     * @throws cInvalidArgumentException
-     *         if the dir with the given dirname does not exist
+     * @return bool Returns true on success or false on failure.
+     * @throws cInvalidArgumentException If the dir with the given dirname does not exist
      */
-    public static function move($dirname, $destination): bool
+    public static function move(string $dirname, string $destination): bool
     {
         if (!self::exists($dirname)) {
-            throw new cInvalidArgumentException('The directory ' . $dirname . ' could not be accessed because it does not exist.');
+            throw new cInvalidArgumentException(
+                sprintf('The directory %s could not be accessed because it does not exist.', $dirname)
+            );
         }
 
         $success = rename($dirname, $destination);
-
         if ($success) {
             self::setDefaultPermissions($destination);
         }
@@ -113,36 +103,29 @@ class cDirHandler
     /**
      * Renames a directory.
      *
-     * @param string $dirname
-     *         the name and path of the dir
-     * @param string $new_dirname
-     *         the new name of the dir
-     *
+     * @param string $dirname The name and path of the dir
+     * @param string $newDirname The new name of the dir
      * @throws cInvalidArgumentException
      */
-    public static function rename($dirname, $new_dirname)
+    public static function rename(string $dirname, string $newDirname)
     {
-        self::move($dirname, $new_dirname);
+        self::move($dirname, $newDirname);
     }
 
     /**
      * Changes the permissions of a directory.
      *
-     * @param string $dirname
-     *         the name and path of the dir
-     * @param int $mode
-     *         the new access mode : php chmod needs octal value
-     *
-     * @return bool
-     *         Returns true on success or false on failure.
-     *
-     * @throws cInvalidArgumentException
-     *         if the dir with the given dirname does not exist
+     * @param string $dirname The name and path of the dir
+     * @param int $mode The new access mode : php chmod needs octal value
+     * @return bool Returns true on success or false on failure.
+     * @throws cInvalidArgumentException If the dir with the given dirname does not exist
      */
-    public static function chmod($dirname, $mode): bool
+    public static function chmod(string $dirname, int $mode): bool
     {
         if (!cFileHandler::exists($dirname)) {
-            throw new cInvalidArgumentException('The directory ' . $dirname . ' could not be accessed because it does not exist.');
+            throw new cInvalidArgumentException(
+                sprintf('The directory %s could not be accessed because it does not exist.', $dirname)
+            );
         }
         // chmod needs octal value for correct execution.
         $mode = intval($mode, 8);
@@ -154,8 +137,6 @@ class cDirHandler
      *
      * These can be configured using the setting "default_perms/directory" in "data/config/<ENV>/config.misc.php".
      * If no configuration can be found 0775 is assumed.
-     *
-     * @return int
      */
     public static function getDefaultPermissions(): int
     {
@@ -167,32 +148,19 @@ class cDirHandler
     /**
      * Sets the permissions for the given directory to the default.
      *
-     * @param string $dirname
-     *         the name of the directory
-     *
-     * @return bool
-     *         Returns true on success or false on failure.
-     *
+     * @param string $dirname The name of the directory
+     * @return bool Returns true on success or false on failure.
      * @throws cInvalidArgumentException
      */
-    public static function setDefaultPermissions($dirname): bool
+    public static function setDefaultPermissions(string $dirname): bool
     {
         return self::chmod($dirname, self::getDefaultPermissions());
     }
 
     /**
-     * Sets the permissions for the given directory to the default.
-     *
-     * @param string $dirname
-     *         the name of the directory
-     *
-     * @return bool
-     *         Returns true on success or false on failure.
-     *
-     * @throws cInvalidArgumentException
-     * @deprecated use setDefaultPermissions() instead
+     * @deprecated [11.12.2018] use {@see cDirHandler::setDefaultPermissions()} instead
      */
-    public static function setDefaultDirPerms($dirname): bool
+    public static function setDefaultDirPerms(string $dirname): bool
     {
         return self::setDefaultPermissions($dirname);
     }
@@ -200,18 +168,13 @@ class cDirHandler
     /**
      * Deletes a directory and all of its content.
      *
-     * @param string $dirname
-     *         the name of the directory which should be deleted
-     *
-     * @return bool
-     *         Returns true on success or false on failure.
-     *
-     * @throws cInvalidArgumentException
-     *         if dirname is empty
+     * @param string $dirname The name of the directory which should be deleted
+     * @return bool Returns true on success or false on failure.
+     * @throws cInvalidArgumentException If dirname is empty
      */
-    public static function recursiveRmdir($dirname): bool
+    public static function recursiveRmdir(string $dirname): bool
     {
-        if ($dirname == '') {
+        if (empty($dirname)) {
             throw new cInvalidArgumentException('Directory name must not be empty.');
         }
 
@@ -237,23 +200,18 @@ class cDirHandler
     /**
      * Copies a directory and all of its subfolders.
      *
-     * @param string $dirname
-     *                     the name and path of the file
-     * @param string $destination
-     *                     the destination. Note that existing files get overwritten
-     * @param int $mode [optional; default as configured or 0775]
-     *                     chmod mode
-     *
-     * @return bool
-     *         true on success
-     *
-     * @throws cInvalidArgumentException
-     *         if the file with the given filename does not exist
+     * @param string $dirname The name and path of the file
+     * @param string $destination The destination. Note that existing files get overwritten
+     * @param ?int $mode default as configured or 0775] chmod mode
+     * @return bool true on success
+     * @throws cInvalidArgumentException If the file with the given filename does not exist
      */
-    public static function recursiveCopy($dirname, $destination, $mode = null): bool
+    public static function recursiveCopy(string $dirname, string $destination, ?int $mode = null): bool
     {
         if (!self::exists($dirname)) {
-            throw new cInvalidArgumentException('The directory ' . $dirname . ' could not be accessed because it does not exist.');
+            throw new cInvalidArgumentException(
+                sprintf('The directory %s could not be accessed because it does not exist.', $dirname)
+            );
         }
 
         if (is_null($mode)) {
@@ -269,7 +227,10 @@ class cDirHandler
             }
         }
 
-        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dirname), RecursiveIteratorIterator::SELF_FIRST);
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dirname),
+            RecursiveIteratorIterator::SELF_FIRST
+        );
         foreach ($iterator as $item) {
             // workaround for RecursiveDirectoryIterator::SKIP_DOTS, this was
             // not available in PHP 5.2
@@ -299,13 +260,8 @@ class cDirHandler
 
     /**
      * Checks if a directory is empty.
-     *
-     * @param string $dir
-     *         Name of the directory
-     * @return bool
-     *         true if the directory is empty
      */
-    public static function isDirectoryEmpty($dir): bool
+    public static function isDirectoryEmpty(string $dir): bool
     {
         if (!is_readable($dir)) {
             return false;
@@ -328,38 +284,29 @@ class cDirHandler
      *
      * Optionally options are to read the directory recursive or to list only directories.
      *
-     * @param string $dirname
-     *         directory
-     * @param bool $recursive [optional]
-     *         read directory recursively
-     * @param bool $dirOnly [optional]
-     *         only read directories
-     * @param bool $fileOnly [optional]
-     *         only read files (ignored if $dirOnly is true)
-     * @return array|bool
-     *         array containing file names as string, false on error
+     * @param string $dirname Directory
+     * @param bool $recursive Read directory recursively
+     * @param bool $dirOnly Only read directories
+     * @param bool $fileOnly Only read files (ignored if $dirOnly is true)
+     * @return array|bool array containing file names as string, false on error
      */
-    public static function read($dirname, $recursive = false, $dirOnly = false, $fileOnly = false)
+    public static function read(string $dirname, bool $recursive = false, bool $dirOnly = false, bool $fileOnly = false)
     {
         if (!self::exists($dirname)) {
             return false;
         }
 
         $dirContent = [];
-        if ($recursive == false) {
+        if (!$recursive) {
             $dirHandle = opendir($dirname);
-            $dirContent = [];
             while (false !== ($file = readdir($dirHandle))) {
                 if (!cFileHandler::fileNameIsDot($file)) {
-
-                    if ($dirOnly == true) { // get only directories
-
+                    if ($dirOnly) { // get only directories
                         if (is_dir($dirname . $file)) {
                             $dirContent[] = $file;
                         }
                         // bugfix: is_dir only checked file name without path, thus returning everything most of the time
                     } elseif ($fileOnly === true) { // get only files
-
                         if (is_file($dirname . $file)) {
                             $dirContent[] = $file;
                         }
@@ -370,20 +317,19 @@ class cDirHandler
             }
             closedir($dirHandle);
         } else {
-            $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dirname), RecursiveIteratorIterator::SELF_FIRST);
-            foreach ($objects as $name => $file) {
-
+            $objects = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($dirname),
+                RecursiveIteratorIterator::SELF_FIRST
+            );
+            foreach ($objects as $file) {
                 if (!cFileHandler::fileNameIsDot($file)) {
                     $fileName = str_replace("\\", "/", $file->getPathName());
-
                     if ($dirOnly === true && is_dir($fileName)) {
                         // get only directories
                         $dirContent[] = $fileName;
-
                     } elseif ($fileOnly === true && is_file($fileName)) {
                         // get only files
                         $dirContent[] = $fileName;
-
                     } else {
                         // get everything
                         $dirContent[] = $fileName;
@@ -399,12 +345,10 @@ class cDirHandler
     /**
      * Checks if a directory exists.
      *
-     * @param string $dirname
-     *         the name and path of the directory
-     * @return bool
-     *         true if the directory exists
+     * @param string $dirname The name and path of the directory
+     * @return bool True if the directory exists
      */
-    public static function exists($dirname): bool
+    public static function exists(string $dirname): bool
     {
         return is_dir($dirname);
     }
@@ -416,17 +360,12 @@ class cDirHandler
      * Note that this function uses filesize().
      * There could be problems with files that are larger than 2GiB.
      *
-     * @param string $dirname
-     *                          The directory name
-     * @param bool $recursive [optional]
-     *                          true if all the subdirectories should be included in the calculation
-     *
-     * @return int|bool
-     *                          false in case of an error or the size
-     *
+     * @param string $dirname The directory name
+     * @param bool $recursive true if all the subdirectories should be included in the calculation
+     * @return int|bool false in case of an error or the size
      * @throws cInvalidArgumentException
      */
-    public static function getDirectorySize($dirname, $recursive = false)
+    public static function getDirectorySize(string $dirname, bool $recursive = false)
     {
         $ret = 0;
         $files = self::read($dirname, $recursive, false, true);
@@ -444,11 +383,8 @@ class cDirHandler
 
     /**
      * Checks if directory can be created in parent directory.
-     *
-     * @param $dirname
-     * @return bool
      */
-    public static function isCreatable($dirname)
+    public static function isCreatable(string $dirname): bool
     {
         if (cFileHandler::writeable($dirname) === true) {
             return true;

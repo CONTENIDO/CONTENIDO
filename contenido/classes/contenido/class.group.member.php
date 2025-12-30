@@ -44,11 +44,8 @@ class cApiGroupMemberCollection extends ItemCollection
      *
      * @param string $userId
      * @param string $groupId
-     *
      * @return cApiGroupMember
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($userId, $groupId)
     {
@@ -66,16 +63,11 @@ class cApiGroupMemberCollection extends ItemCollection
      * Deletes group member entries by user id.
      *
      * @param string $userId
-     *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteByUserId($userId)
+    public function deleteByUserId($userId): bool
     {
-        $result = $this->deleteBy('user_id', $userId);
-        return $result > 0;
+        return $this->deleteBy('user_id', $userId) > 0;
     }
 
     /**
@@ -83,15 +75,12 @@ class cApiGroupMemberCollection extends ItemCollection
      *
      * @param string $userId
      * @param string $groupId
-     *
-     * @return cApiGroupMember|NULL
-     *
-     * @throws cDbException
-     * @throws cException
+     * @return ?cApiGroupMember
+     * @throws cDbException|cException
      */
     public function fetchByUserIdAndGroupId($userId, $groupId)
     {
-        $where = "user_id = '" . $this->escape($userId) . "' AND group_id = '" . $this->escape($groupId) . "'";
+        $where =sprintf( "`user_id` = '%s' AND `group_id` = '%s'", $this->escape($userId), $this->escape($groupId));
         if ($this->select($where)) {
             return $this->next();
         } else {
@@ -112,18 +101,15 @@ class cApiGroupMember extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('groupmembers'), 'idgroupuser');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 

@@ -14,6 +14,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cTemplate $tpl
+ */
+
+$cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
+$sess = cRegistry::getSession();
+
 // In some cases dont print menue
 if (isset($dont_print_subnav) && $dont_print_subnav == 1) {
     $tpl->reset();

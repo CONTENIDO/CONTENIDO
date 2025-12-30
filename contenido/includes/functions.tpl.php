@@ -16,7 +16,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude("includes", "functions.con.php");
+cInclude('includes', 'functions.con.php');
 
 /**
  * Edit or create a new Template
@@ -129,8 +129,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 /**
  * Delete a template and all related data (template configuration, container, and container configuration)
  *
- * @param int $idtpl
- *         ID of the template to duplicate
+ * @param int $idtpl ID of the template to duplicate
  * @throws cDbException|cInvalidArgumentException|cException
  */
 function tplDeleteTemplate($idtpl)
@@ -164,9 +163,8 @@ function tplDeleteTemplate($idtpl)
  * Browse a specific layout for containers
  *
  * @param $idlay
- * @return string
- *         &-separated string of all containers
- * @throws cInvalidArgumentException|cDbException
+ * @return string &-separated string of all containers
+ * @throws cInvalidArgumentException|cDbException|cException
  */
 function tplBrowseLayoutForContainers($idlay): string
 {
@@ -217,7 +215,7 @@ function tplBrowseLayoutForContainers($idlay): string
  *
  * @param int $idlay
  * @return array
- * @throws cInvalidArgumentException|cDbException
+ * @throws cInvalidArgumentException|cDbException|cException
  */
 function tplGetContainerNumbersInLayout($idlay): array
 {
@@ -235,12 +233,9 @@ function tplGetContainerNumbersInLayout($idlay): array
 /**
  * Retrieve the container name
  *
- * @param int $idlay
- *         Layout number to browse
- * @param int $container
- *         Container number
- * @return string|null
- *         Container name or null
+ * @param int $idlay Layout number to browse
+ * @param int $container Container number
+ * @return ?string Container name or null
  */
 function tplGetContainerName($idlay, $container): ?string
 {
@@ -248,7 +243,7 @@ function tplGetContainerName($idlay, $container): ?string
 
     if (is_array($containerinf[$idlay])) {
         if (array_key_exists($container, $containerinf[$idlay])) {
-            return $containerinf[$idlay][$container]["name"];
+            return $containerinf[$idlay][$container]['name'];
         }
     }
 
@@ -258,12 +253,9 @@ function tplGetContainerName($idlay, $container): ?string
 /**
  * Retrieve the container mode
  *
- * @param int $idlay
- *         Layout number to browse
- * @param int $container
- *         Container number
- * @return string|null
- *         Container name or null
+ * @param int $idlay Layout number to browse
+ * @param int $container Container number
+ * @return ?string Container name or null
  */
 function tplGetContainerMode($idlay, $container): ?string
 {
@@ -271,7 +263,7 @@ function tplGetContainerMode($idlay, $container): ?string
 
     if (is_array($containerinf[$idlay])) {
         if (array_key_exists($container, $containerinf[$idlay])) {
-            return $containerinf[$idlay][$container]["mode"];
+            return $containerinf[$idlay][$container]['mode'];
         }
     }
 
@@ -281,12 +273,9 @@ function tplGetContainerMode($idlay, $container): ?string
 /**
  * Retrieve the allowed container types
  *
- * @param int $idlay
- *         Layout number to browse
- * @param int $container
- *         Container number
- * @return array
- *         Allowed container types
+ * @param int $idlay Layout number to browse
+ * @param int $container Container number
+ * @return array Allowed container types
  */
 function tplGetContainerTypes($idlay, $container): array
 {
@@ -294,8 +283,8 @@ function tplGetContainerTypes($idlay, $container): array
 
     if (is_array($containerinf[$idlay])) {
         if (array_key_exists($container, $containerinf[$idlay])) {
-            if ($containerinf[$idlay][$container]["types"] != "") {
-                $list = explode(",", $containerinf[$idlay][$container]["types"]);
+            if ($containerinf[$idlay][$container]['types'] != '') {
+                $list = explode(',', $containerinf[$idlay][$container]['types']);
 
                 foreach ($list as $key => $value) {
                     $list[$key] = trim($value);
@@ -311,12 +300,9 @@ function tplGetContainerTypes($idlay, $container): array
 /**
  * Retrieve the default module
  *
- * @param int $idlay
- *         Layout number to browse
- * @param int $container
- *         Container number
- * @return string|null
- *         Default module name or null
+ * @param int $idlay Layout number to browse
+ * @param int $container Container number
+ * @return ?string Default module name or null
  */
 function tplGetContainerDefault($idlay, $container): ?string
 {
@@ -324,7 +310,7 @@ function tplGetContainerDefault($idlay, $container): ?string
 
     if (is_array($containerinf[$idlay])) {
         if (array_key_exists($container, $containerinf[$idlay])) {
-            return $containerinf[$idlay][$container]["default"];
+            return $containerinf[$idlay][$container]['default'];
         }
     }
 
@@ -334,9 +320,8 @@ function tplGetContainerDefault($idlay, $container): ?string
 /**
  * Preparse the layout for caching purposes
  *
- * @param int $idlay
- *         Layout number to browse
- * @throws cInvalidArgumentException|cDbException
+ * @param int $idlay Layout number to browse
+ * @throws cInvalidArgumentException|cDbException|cException
  */
 function tplPreparseLayout($idlay)
 {
@@ -389,10 +374,8 @@ function tplPreparseLayout($idlay)
 /**
  * Duplicate a template
  *
- * @param int $idtpl
- *         ID of the template to duplicate
- * @return int
- *         ID of the duplicated template
+ * @param int $idtpl ID of the template to duplicate
+ * @return int ID of the duplicated template
  * @throws cDbException|cException|cInvalidArgumentException
  */
 function tplDuplicateTemplate($idtpl): int
@@ -454,10 +437,8 @@ function tplDuplicateTemplate($idtpl): int
 /**
  * Checks if a template is in use
  *
- * @param int $idtpl
- *         Template ID
- * @return bool
- *         is template in use
+ * @param int $idtpl Template ID
+ * @return bool is template in use
  * @throws cDbException
  */
 function tplIsTemplateInUse($idtpl): bool
@@ -506,11 +487,9 @@ function tplIsTemplateInUse($idtpl): bool
 /**
  * Get used data if a template is in use
  *
- * @param int $idtpl
- *         Template ID
- * @return array
- *         category name, article name
- * @throws cDbException|cInvalidArgumentException
+ * @param int $idtpl Template ID
+ * @return array category name, article name
+ * @throws cDbException
  */
 function tplGetInUsedData($idtpl): array
 {
@@ -584,7 +563,7 @@ function tplGetInUsedData($idtpl): array
  *                   [laydescription] => (string)
  *               ]
  *               </pre>
- * @throws cDbException|cInvalidArgumentException
+ * @throws cDbException
  * @since CONTENIDO 4.10.2
  */
 function tplGetTplAndLayoutData(int $idtpl): array
@@ -623,10 +602,8 @@ function tplGetTplAndLayoutData(int $idtpl): array
 /**
  * Copies a complete template configuration
  *
- * @param int $idtplcfg
- *         Template Configuration ID
- * @return int
- *         new template configuration ID
+ * @param int $idtplcfg Template Configuration ID
+ * @return int new template configuration ID
  * @throws cDbException|cException|cInvalidArgumentException
  */
 function tplcfgDuplicate($idtplcfg): int
@@ -760,9 +737,7 @@ function tplAutoFillModules($idtpl): bool
  *
  * @param int $idtpl
  * @param int $idtplcfg
- * @param array $postData
- *         Usually $_POST
- *
+ * @param array $postData Usually $_POST
  * @throws cDbException|cException|cInvalidArgumentException
  */
 function tplProcessSendContainerConfiguration($idtpl, $idtplcfg, array $postData)

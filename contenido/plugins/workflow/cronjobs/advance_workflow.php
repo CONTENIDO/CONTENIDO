@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 include_once('../../../includes/startup.php');
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
-cInclude("includes", "functions.con.php");
+cInclude('includes', 'functions.con.php');
 
 $workflowartallocations = new WorkflowArtAllocations();
 $workflowusersequences = new WorkflowUserSequences();

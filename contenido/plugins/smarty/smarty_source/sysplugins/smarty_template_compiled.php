@@ -14,7 +14,7 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
     /**
      * nocache hash
      *
-     * @var string|null
+     * @var ?string
      */
     public $nocache_hash = null;
 

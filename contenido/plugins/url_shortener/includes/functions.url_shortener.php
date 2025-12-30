@@ -24,8 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param $disabled
  *
  * @return string rendered HTML code
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
 function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled)
 {
@@ -61,9 +60,7 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled)
  * @param       $editedIdArt
  * @param array $values the values which are saved
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function piUsConSaveArtAfter($editedIdArt, $values)
 {
@@ -149,8 +146,7 @@ function piUsConSaveArtAfter($editedIdArt, $values)
  * @param cApiShortUrl $shortUrlItem
  *
  * @return string the error message describing the given error code
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
 function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL)
 {
@@ -199,9 +195,7 @@ function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL)
  * If the string placeholder in the example URL http://www.domain.de/placeholder
  * is a defined short URL, the user is redirected to the correct URL.
  *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function piUsAfterLoadPlugins()
 {
@@ -228,9 +222,7 @@ function piUsAfterLoadPlugins()
  *
  * @return int
  *         Number of deleted entries
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function piUseConDeleteArtAfter($idart)
 {

@@ -24,7 +24,7 @@ class cHTMLCheckbox extends cHTMLFormElement
 {
 
     /**
-     * Values for the check box
+     * Values for the checkbox
      *
      * @var string
      */
@@ -49,28 +49,27 @@ class cHTMLCheckbox extends cHTMLFormElement
      *
      * Creates an HTML checkbox element.
      *
-     * @param string $name
-     *         Name of the element
-     * @param string $value
-     *         Value of the checkbox
-     * @param string $id [optional]
-     *         ID of the element
-     * @param bool $checked [optional]
-     *         Is element checked?
-     * @param bool $disabled [optional]
-     *         Item disabled flag (non-empty to set disabled)
-     * @param int|null $tabindex [optional]
-     *         Tab index for form elements
-     * @param string $accesskey [optional]
-     *         Key to access the field
-     * @param string $class [optional]
-     *         the class of this element
+     * @param string $name Name of the element
+     * @param string $value Value of the checkbox
+     * @param string $id [optional] ID of the element
+     * @param bool $checked [optional] Is element checked?
+     * @param bool $disabled [optional] Item disabled flag (non-empty to set disabled)
+     * @param ?int $tabindex [optional] Tab index for form elements
+     * @param string $accessKey [optional] Key to access the field
+     * @param string $class [optional] The class of this element
      */
     public function __construct(
-        $name, $value, $id = '', $checked = false, $disabled = false, $tabindex = null, $accesskey = '', $class = ''
+        $name,
+        $value,
+        $id = '',
+        $checked = false,
+        $disabled = false,
+        $tabindex = null,
+        $accessKey = '',
+        $class = ''
     )
     {
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
+        parent::__construct($name, $id, $disabled, $tabindex, $accessKey, $class);
         $this->_tag = 'input';
         $this->_value = $value;
         $this->_contentlessTag = true;
@@ -83,34 +82,26 @@ class cHTMLCheckbox extends cHTMLFormElement
     /**
      * Sets the checked flag.
      *
-     * @param bool $checked
-     *         If true, the "checked" attribute will be assigned.
-     * @return cHTMLCheckbox
-     *         $this for chaining
+     * @param bool $checked If true, the "checked" attribute will be assigned.
      */
-    public function setChecked($checked): cHTMLCheckbox
+    public function setChecked($checked): self
     {
         // NOTE: We use toBoolean() because of downwards compatibility.
         // The variable was of type string before 4.10.2!
         $checked = cSecurity::toBoolean($checked);
-        if ($checked === true) {
-            $this->updateAttribute('checked', 'checked');
+        if ($checked) {
+            return $this->updateAttribute('checked', 'checked');
         } else {
-            $this->removeAttribute('checked');
+            return $this->removeAttribute('checked');
         }
-
-        return $this;
     }
 
     /**
      * Sets a custom label text
      *
-     * @param string $text
-     *         Text to display
-     * @return cHTMLCheckbox
-     *         $this for chaining
+     * @param string $text Text to display
      */
-    public function setLabelText($text): cHTMLCheckbox
+    public function setLabelText($text): self
     {
         $this->_labelText = $text;
 
@@ -120,32 +111,28 @@ class cHTMLCheckbox extends cHTMLFormElement
     /**
      * Appends HTML markup to the checkbox.
      *
-     * @param string $markup
-     *         The HTML markup to append to the checkbox
-     * @return cHTMLCheckbox
-     *         $this for chaining
+     * @param string $markup The HTML markup to append to the checkbox
      */
-    public function appendMarkup($markup): cHTMLCheckbox
+    public function appendMarkup($markup): self
     {
         $this->_markupToAppend = $markup;
+
         return $this;
     }
 
     /**
      * Renders the checkbox element.
-     * Note:
      *
+     * Note:
      * If this element has an ID, the value (which equals the text displayed)
      * will be rendered as separate HTML label, if not, it will be displayed
      * as regular text. Displaying the value can be turned off via the
      * parameter.
      *
-     * @param bool $renderLabel [optional]
-     *         If true, renders a label
-     * @return string
-     *         Rendered HTML
+     * @param bool $renderLabel [optional] If true, renders a label
+     * @return string Rendered HTML
      */
-    public function toHtml($renderLabel = true): string
+    public function toHtml(bool $renderLabel = true): string
     {
         $renderedLabel = '';
         if ($renderLabel && !empty($this->_labelText)) {

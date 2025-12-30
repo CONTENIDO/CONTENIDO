@@ -51,14 +51,12 @@ class cApiCommunicationCollection extends ItemCollection
      * Creates a new communication item.
      *
      * @return cApiCommunication
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create()
     {
         $auth = cRegistry::getAuth();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
 
         $item = $this->createNewItem();
 
@@ -82,25 +80,21 @@ class cApiCommunication extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('communications'), 'idcommunication');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * Saves a communication item
      *
-     * @return bool
-     * @see Item::store()
+     * @inheritDoc
      */
     public function store()
     {
@@ -114,13 +108,9 @@ class cApiCommunication extends Item
     /**
      * User-defined setter for communication fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idclient':
@@ -128,7 +118,7 @@ class cApiCommunication extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

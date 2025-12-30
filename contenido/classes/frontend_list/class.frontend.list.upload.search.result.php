@@ -33,9 +33,7 @@ class cFrontendListUploadSearchResult extends cFrontendList
 
     /**
      * @inheritDoc
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function convert(int $field, $value)
     {

@@ -14,7 +14,16 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (!isset($_GET['groupid'])) {
+/**
+ * @var cTemplate $tpl
+ */
+
+$cfg = cRegistry::getConfig();
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+
+$groupid = $_GET['groupid'] ?? null;
+if (!isset($groupid)) {
     $tpl->reset();
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
     return;
@@ -42,8 +51,7 @@ foreach ($areasNavSubs as $areasNavSub) {
     }
 }
 
-$_cecIterator = $_cecRegistry->getIterator('Contenido.Permissions.Group.Areas');
-
+$_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Permissions.Group.Areas');
 if ($_cecIterator->count() > 0) {
     $areaName = 'group_external';
     $caption = 'group_external';
@@ -53,7 +61,7 @@ if ($_cecIterator->count() > 0) {
 
         foreach ($aInfo as $key => $sAreaID) {
             $sAreaName = false;
-            $_cecIterator2 = $_cecRegistry->getIterator('Contenido.Permissions.Group.GetAreaName');
+            $_cecIterator2 = cRegistry::getCecRegistry()->getIterator('Contenido.Permissions.Group.GetAreaName');
             while (($chainEntry2 = $_cecIterator2->next()) !== false) {
                 $aInfo2 = $chainEntry2->execute($sAreaID);
                 if ($aInfo2 !== false) {

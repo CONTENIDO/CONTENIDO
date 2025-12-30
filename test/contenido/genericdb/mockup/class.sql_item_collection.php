@@ -24,9 +24,9 @@ class SqlItemCollection
     public static function getInsertConTestStatement()
     {
         return "
-            INSERT INTO `con_test` VALUES 
-                (1, 'Kabul', 'AFG', 'Kabol', 1780000), 
-                (2, 'Qandahar', 'AFG', 'Qandahar', 237500), 
+            INSERT INTO `con_test` VALUES
+                (1, 'Kabul', 'AFG', 'Kabol', 1780000),
+                (2, 'Qandahar', 'AFG', 'Qandahar', 237500),
                 (3, 'Herat', 'AFG', 'Herat', 186800)
             ;";
     }
@@ -174,8 +174,7 @@ class TCollection extends ItemCollection
      *
      * @param string|bool $where
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
@@ -196,8 +195,7 @@ class TItem extends Item
      *
      * @param bool $id
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
@@ -219,8 +217,7 @@ class ITCollection extends ItemCollection
      *
      * @param bool $where
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
@@ -243,8 +240,7 @@ class TITCollection extends ItemCollection
      *
      * @param bool $where
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
@@ -267,8 +263,7 @@ class DogCollection extends ItemCollection
      *
      * @param string|bool $where
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
@@ -289,8 +284,7 @@ class DogItem extends Item
      *
      * @param int|bool $id
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
@@ -312,8 +306,7 @@ class DogRfidCollection extends ItemCollection
      *
      * @param string|bool $where
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
@@ -334,8 +327,7 @@ class DogRfidItem extends Item
      *
      * @param int|bool $id
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {

@@ -201,7 +201,7 @@ class Swift_Signers_SMimeSigner implements Swift_Signers_BodySigner
      *
      * @param Swift_Message $message
      *
-     * @return $this
+     * @return ?$this
      */
     public function signMessage(Swift_Message $message)
     {
@@ -220,6 +220,8 @@ class Swift_Signers_SMimeSigner implements Swift_Signers_BodySigner
 
         $message->setChildren(array());
         $this->streamToMime($messageStream, $message);
+
+        return null;
     }
 
     /**

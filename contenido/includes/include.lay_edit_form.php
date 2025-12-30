@@ -84,7 +84,7 @@ if (!$readOnly && $action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
-        $layoutSynchronization = new cLayoutSynchronizer($cfg, $cfgClient, $lang, $client);
+        $layoutSynchronization = new cLayoutSynchronizer($cfg, $cfgClient, (int) $lang, (int) $client);
         $layoutSynchronization->synchronize();
         // Reload the overview of Layouts
         $bReloadSyncScript = true;

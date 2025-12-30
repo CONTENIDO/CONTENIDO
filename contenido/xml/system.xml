@@ -255,12 +255,12 @@ i18n("Maximum number of stored versions")
                 <group>Backend</group>
             </backend_label>
             <backend_file_extensions>
-            	<values>
+                <values>
                     <array_value>enabled</array_value>
                     <array_value>disabled</array_value>
                 </values>
-            	<label>Show only CSS/JS/HTML files at areas CSS/JS/HTML</label>
-            	<group>Backend</group>
+                <label>Show only CSS/JS/HTML files at areas CSS/JS/HTML</label>
+                <group>Backend</group>
             </backend_file_extensions>
         </backend>
         <generator>
@@ -299,15 +299,15 @@ i18n("Maximum number of stored versions")
                 <group>Development</group>
             </debug_to_screen>
             <debug_for_plugins>
-            	<values>
-            		<array_value>true</array_value>
-            		<array_value>false</array_value>
-            	</values>
-            	<label>Debug function for plugins</label>
-            	<group>Development</group>
+                <values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Debug function for plugins</label>
+                <group>Development</group>
             </debug_for_plugins>
             <module_translation_message>
-            	<values>
+                <values>
                     <array_value>true</array_value>
                     <array_value>false</array_value>
                 </values>

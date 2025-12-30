@@ -27,11 +27,8 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
     {
@@ -47,15 +44,11 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     }
 
     /**
-     * Deletes template configuration entry, removes also all related container
-     * configurations.
+     * Deletes template configuration entry, removes also all related container configurations.
      *
      * @param int $idtplcfg
-     *
      * @return bool
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function delete($idtplcfg)
     {
@@ -76,11 +69,8 @@ class cApiTemplateConfigurationCollection extends ItemCollection
      * @param string $author [optional]
      * @param string $created [optional]
      * @param string $lastmodified [optional]
-     *
      * @return cApiTemplateConfiguration
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idtpl, $status = 0, $author = '', $created = '', $lastmodified = '')
     {
@@ -107,14 +97,11 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     }
 
     /**
-     * If there is a pre-configuration of template, copy its settings into
-     * template configuration
+     * If there is a pre-configuration of template, copy its settings into template configuration
      *
      * @param int $idtpl
      * @param int $idtplcfg
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function copyTemplatePreconfiguration($idtpl, $idtplcfg)
     {
@@ -147,32 +134,24 @@ class cApiTemplateConfiguration extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('tpl_conf'), 'idtplcfg');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for template configuration fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idtpl':
@@ -181,6 +160,6 @@ class cApiTemplateConfiguration extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 }

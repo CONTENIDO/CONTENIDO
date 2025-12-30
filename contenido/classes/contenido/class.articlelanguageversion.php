@@ -34,13 +34,9 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select
-     *         where clause to use for selection
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
+     * @throws cDbException|cInvalidArgumentException
      * @see ItemCollection::select()
-     *
      */
     public function __construct($select = false)
     {
@@ -62,12 +58,8 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
 
     /**
      * @param array $parameters
-     *
      * @return Item|cApiArticleLanguageVersion
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create(array $parameters)
     {
@@ -114,11 +106,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
      * Returns id (idartlangversion) of articlelanguageversion by article
      * language id and version
      *
-     * @param int $idArtLang
-     * @param int $version
-     * @return int
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function getIdByArticleIdAndLanguageId($idArtLang, $version): int
     {
@@ -192,8 +180,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
  *
  * $headline = $obj->getContent("htmlhead", 1);
  *
- * If the second parameter is ommitted the method returns an array with all
- * available
+ * If the second parameter is omitted the method returns an array with allavailable
  * content of this type. The array has the following schema:
  *
  * [number => content];
@@ -204,12 +191,10 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
  * $headlines[2] Second headline
  * $headlines[6] Sixth headline
  *
- * Legal content type string are defined in the CONTENIDO system table
- * 'con_type'.
+ * Legal content type string are defined in the CONTENIDO system table 'con_type'.
  * Default content types are:
  *
- * NOTE: This parameter is case insesitive, you can use html or cms_HTML or
- * CmS_HtMl.
+ * NOTE: This parameter is case insensitive, you can use html or cms_HTML or CmS_HtMl.
  * Your don't need start with cms, but it won't crash if you do so.
  *
  * htmlhead - HTML Headline
@@ -230,38 +215,29 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
 {
 
     /**
-     * Config array
-     *
-     * @var array
+     * @var array Config array
      */
     public $tab;
 
     /**
-     * Article Version content
-     *
-     * @var array
+     * @var array Article Version content
      */
     public $content = NULL;
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id
-     *         Specifies the ID of item to load
-     * @param bool $fetchContent
-     *         Flag to fetch content
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @param bool $fetchContent Flag to fetch content
+     * @throws cDbException|cException
      */
     public function __construct($id = false, $fetchContent = false)
     {
-
         $sTable = cRegistry::getDbTableName('art_lang_version');
         $sPrimaryKey = 'idartlangversion';
         Item::__construct($sTable, $sPrimaryKey);
 
-        $this->setFilters([], []);
+        $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
             if (true === $fetchContent) {
@@ -273,11 +249,8 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
     /**
      * Set iscurrentversion = 0 in the current version and set iscurrentversion = 1 in this version
      *
-     * @param $isCurrentVersion
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param inr $isCurrentVersion
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function markAsCurrentVersion($isCurrentVersion)
     {
@@ -305,16 +278,11 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
      * Set property iscurrentversion = 1 in this ArticleLanguageVersion
      * and 0 in the current ArticleLanguageVersions
      *
-     * @param string $type
-     *         meta, content or complete
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param string $type meta, content or complete
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function markAsCurrent($type = '')
     {
-
         if ($type == 'complete') {
             // Prepare data and update ArticleLanguage
             $parameters = $this->toArray();
@@ -330,7 +298,6 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
         }
 
         if ($type == 'content' || $type == 'complete') {
-
             $where = 'idartlang = ' . $this->get('idartlang');
             $contentVersionColl = new cApiContentVersionCollection();
 
@@ -380,7 +347,6 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
         }
 
         if ($type == 'meta' || $type == 'complete') {
-
             // mark meta tags versions as current
             $metaTagVersion = new cApiMetaTagVersion();
             $sql = 'SELECT idmetatagversion AS id
@@ -419,15 +385,11 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
      * Create a copy of this article language version with its contents,
      * the copy is the new editable article language version
      *
-     * @param string $type
-     *         meta, content or complete
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param string $type meta, content or complete
+     * @throws cDbException|cException
      */
     public function markAsEditable($type = '')
     {
-
         // create new editable Version
         $parameters = $this->toArray();
         $parameters['lastmodified'] = date('Y-m-d H:i:s');
@@ -465,9 +427,9 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
                             'typeid' => $typeid,
                             'version' => $this->get('version'),
                         ];
-                        $contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
 
-                        if (isset($contentVersion)) {
+                        $contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
+                        if ($contentVersion->isLoaded()) {
                             $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
                         }
                     } else {
@@ -489,7 +451,6 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
         }
 
         if ($type == 'meta' || $type == 'complete') {
-
             // set new meta tag versions
             $metaTagVersion = new cApiMetaTagVersion();
             $sql = 'SELECT idmetatagversion AS id
@@ -529,17 +490,11 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
     /**
      * Load data by article language id and version
      *
-     * @param int $idArtLang
-     *         Article language id
-     * @param int $version
-     *         version number
-     * @param bool $fetchContent
-     *         Flag to fetch content
-     * @return bool
-     *         true on success, otherwise false
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param int $idArtLang Article language id
+     * @param int $version version number
+     * @param bool $fetchContent Flag to fetch content
+     * @return bool true on success, otherwise false
+     * @throws cDbException|cException
      */
     public function loadByArticleLanguageIdAndVersion($idArtLang, $version, $fetchContent = false)
     {
@@ -582,11 +537,10 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
      * Load the articles version content and store it in the 'content' property of the
      * article version object: $article->content[type][number] = value;
      *
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     protected function _getArticleVersionContent()
     {
-
         if (NULL !== $this->content) {
             return;
         }
@@ -617,7 +571,6 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
         while ($this->db->nextRecord()) {
             $this->content[cString::toLowerCase($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
         }
-
     }
 
     /**
@@ -626,12 +579,10 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
      * Returns the specified content element or an ["id"=>"value"] if the
      * second parameter is omitted.
      *
-     * Legal content type string are defined in the CONTENIDO system table
-     * 'con_type'.
+     * Legal content type string are defined in the CONTENIDO system table 'con_type'.
      * Default content types are:
      *
-     * NOTE: Parameter is case-insensitive, you can use html or cms_HTML or
-     * CmS_HtMl.
+     * NOTE: Parameter is case-insensitive, you can use html or cms_HTML or CmS_HtMl.
      * You don't need to start with cms, but it won't crash if you do so.
      *
      * htmlhead - HTML Headline
@@ -645,14 +596,9 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
      * linkdescr - Linkdescription
      * swf - Upload id of the element
      *
-     * @param string $type
-     *         CMS_TYPE - Legal cms type string
-     * @param int|NULL $id
-     *         Id of the content
-     *
+     * @param string $type CMS_TYPE - Legal cms type string
+     * @param ?int $id Id of the content
      * @return string|array
-     *         data
-     *
      * @throws cDbException|cInvalidArgumentException
      */
     public function getContent($type = '', $id = NULL)

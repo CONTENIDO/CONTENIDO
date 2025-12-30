@@ -23,9 +23,7 @@ class cFrontendListUpload extends cFrontendList
 
     /**
      * @inheritDoc
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function convert(int $field, $value)
     {
@@ -108,11 +106,9 @@ class cFrontendListUpload extends cFrontendList
 
     /**
      * @inheritDoc
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function output(bool $return = false)
+    public function output(bool $return = false): ?string
     {
         // if the data count variable is not set, proceed with the previous logic
         if ($this->_dataCount === 0) {
@@ -133,6 +129,7 @@ class cFrontendListUpload extends cFrontendList
                     $items .= ", '" . addslashes($this->convert($key, $value)) . "'";
                 }
 
+                // NOTE: $itemWrap will be evaluated below!
                 $itemWrap = str_replace('{LIST_ITEM_POS}', $currentPos, $this->_itemWrap);
                 $execute = '$output .= sprintf($itemWrap ' . $items . ');';
                 eval($execute);
@@ -147,6 +144,7 @@ class cFrontendListUpload extends cFrontendList
             return $output;
         } else {
             echo $output;
+            return null;
         }
     }
 
@@ -156,8 +154,7 @@ class cFrontendListUpload extends cFrontendList
      *
      * @param string $subPath
      * @return string
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function _getFileBrowserUrl(string $subPath): string
     {
@@ -205,11 +202,7 @@ class cFrontendListUpload extends cFrontendList
     /**
      * Builds the link to the upload image file.
      *
-     * @param string $value
-     * @return string
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public static function getUploadImageLink(string $value): string
     {

@@ -20,14 +20,14 @@ class cLinkcheckerCategoryHelper
     /**
      * List of group ids.
      *
-     * @var array|null
+     * @var ?array
      */
     private static $_groupIds = null;
 
     /**
      * List of category ids.
      *
-     * @var array|null
+     * @var ?array
      */
     private static $_categoryIds = null;
 

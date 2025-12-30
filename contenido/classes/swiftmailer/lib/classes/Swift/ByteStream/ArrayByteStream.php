@@ -163,6 +163,8 @@ class Swift_ByteStream_ArrayByteStream implements Swift_InputByteStream, Swift_O
         }
 
         $this->_offset = $byteOffset;
+
+        return true;
     }
 
     /**

@@ -26,8 +26,7 @@ class cHTMLTableData extends cHTMLContentElement
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $content [optional]
-     *         String or object with the contents
+     * @param string|object|array|null $content [optional] String or object with the contents
      */
     public function __construct($content = NULL)
     {
@@ -38,38 +37,29 @@ class cHTMLTableData extends cHTMLContentElement
     /**
      * Sets the table width
      *
-     * @param string $width
-     *         Width
-     * @return cHTMLTableData
-     *         $this for chaining
+     * @param int $width Width
      */
-    public function setWidth($width)
+    public function setWidth($width): self
     {
-        return $this->updateAttribute('width', $width);
+        return $this->updateAttribute('width', cSecurity::toInteger($width));
     }
 
     /**
      * Sets the table height
      *
-     * @param string $height
-     *         Height
-     * @return cHTMLTableData
-     *         $this for chaining
+     * @param int $height Height
      */
-    public function setHeight($height)
+    public function setHeight($height): self
     {
-        return $this->updateAttribute('height', $height);
+        return $this->updateAttribute('height', cSecurity::toInteger($height));
     }
 
     /**
      * Sets the table alignment
      *
-     * @param string $alignment
-     *         Alignment
-     * @return cHTMLTableData
-     *         $this for chaining
+     * @param string $alignment Alignment
      */
-    public function setAlignment($alignment)
+    public function setAlignment($alignment): self
     {
         return $this->updateAttribute('align', $alignment);
     }
@@ -77,12 +67,9 @@ class cHTMLTableData extends cHTMLContentElement
     /**
      * Sets the table vertical alignment
      *
-     * @param string $alignment
-     *         Vertical Alignment
-     * @return cHTMLTableData
-     *         $this for chaining
+     * @param string $alignment Vertical Alignment
      */
-    public function setVerticalAlignment($alignment)
+    public function setVerticalAlignment($alignment): self
     {
         return $this->updateAttribute('valign', $alignment);
     }
@@ -90,12 +77,9 @@ class cHTMLTableData extends cHTMLContentElement
     /**
      * Sets the table background color
      *
-     * @param string $color
-     *         background color
-     * @return cHTMLTableData
-     *         $this for chaining
+     * @param string $color background color
      */
-    public function setBackgroundColor($color)
+    public function setBackgroundColor($color): self
     {
         return $this->updateAttribute('bgcolor', $color);
     }
@@ -103,12 +87,9 @@ class cHTMLTableData extends cHTMLContentElement
     /**
      * Sets the table colspan
      *
-     * @param string $colspan
-     *         Colspan
-     * @return cHTMLTableData
-     *         $this for chaining
+     * @param string $colspan Colspan
      */
-    public function setColspan($colspan)
+    public function setColspan($colspan): self
     {
         return $this->updateAttribute('colspan', $colspan);
     }

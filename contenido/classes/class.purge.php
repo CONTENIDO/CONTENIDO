@@ -264,8 +264,7 @@ class cSystemPurge
      *
      * @return bool
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function clearClientContentVersioning($idclient)
     {
@@ -398,9 +397,7 @@ class cSystemPurge
      * @param int $idartlang
      *         the idartlang of the article
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function clearArticleCache($idartlang)
     {
@@ -427,24 +424,16 @@ class cSystemPurge
      * Delete all files and sub directories in a directory.
      *
      * @param string $dirPath
-     * @param string $tmpDirPath
-     *                            root directory not deleted
+     * @param string $tmpDirPath Root directory not deleted
      * @param bool $keep [optional]
-     * @param array $tmpFileList [optional]
-     *                            files are temporarily saved
-     *
-     * @return bool
-     *
+     * @param array $tmpFileList [optional] Files are temporarily saved
      * @throws cInvalidArgumentException
      */
-    public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = [])
+    public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = []): bool
     {
         if (cDirHandler::exists($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
             $bCanDelete = false;
-            $tmp = str_replace([
-                '/',
-                '..'
-            ], '', $dirPath);
+            $tmp = str_replace(['/', '..'], '', $dirPath);
             foreach ($handle as $file) {
                 if (!in_array($file, $this->_dirsExcludedWithFiles)) {
                     $filePath = $dirPath . '/' . $file;
@@ -467,14 +456,10 @@ class cSystemPurge
             }
             $dirName = end($dirs);
 
-            if (str_replace([
-                    '/',
-                    '..'
-                ], '', $dirPath) != str_replace([
-                    '/',
-                    '..'
-                ], '', $tmpDirPath)
-                && $keep === false) {
+            if (
+                str_replace(['/', '..'], '', $dirPath) != str_replace(['/', '..'], '', $tmpDirPath)
+                && $keep === false
+            ) {
                 // check if directory contains reserved files folders
                 $bCanDelete = true;
                 $dirContent = cDirHandler::read($dirPath);
@@ -504,14 +489,9 @@ class cSystemPurge
     /**
      * Empty a file content.
      *
-     * @param string $dirPath
-     * @param array $types
-     *
-     * @return bool
-     *
      * @throws cInvalidArgumentException
      */
-    public function emptyFile($dirPath, $types)
+    public function emptyFile($dirPath, $types): bool
     {
         $count = 0;
         $countCleared = 0;
@@ -545,9 +525,8 @@ class cSystemPurge
      * Get frontend directory name for a client.
      *
      * @param int $clientId
-     * @return string
      */
-    public function getClientDir($clientId)
+    public function getClientDir($clientId): string
     {
         $cfgClient = cRegistry::getClientConfig();
 

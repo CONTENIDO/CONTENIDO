@@ -296,49 +296,41 @@ class cSearch extends cSearchBaseAbstract
      * Constructor to create an instance of this class.
      *
      * @param array $options
-     *             <pre>
-     *              $options['db']
-     *                  'regexp' => DB search with REGEXP
-     *                  'like' => DB search with LIKE
-     *                  'exact' => exact match;
-     *              $options['combine']
-     *                  'and', 'or' Combination of search words with AND, OR
-     *              $options['exclude']
-     *                  'true' => search-range specified in 'cat_tree', 'categories'
-     *                  and 'articles' is excluded;
-     *                  'false' => search-range specified in 'cat_tree', 'categories'
-     *                  and 'articles' is included
-     *              $options['cat_tree']
-     *                  e.g. array(8) => The complete tree with root 8 is in/excluded
-     *                  from search
-     *              $options['categories']
-     *                  e.g. array(10, 12) => Categories 10, 12 in/excluded
-     *              $options['articles']
-     *                  e.g. array(23) => Article 33 in/excluded
-     *              $options['artspecs']
-     *                  e.g. array(2, 3) => search only articles with certain article
-     *                  specifications
-     *              $options['protected']
-     *                  'true' => do not search articles which are offline (locked)
-     *                  or articles in categories which are offline (protected)
-     *              $options['dontshowofflinearticles']
-     *                  'false' => search offline articles or articles in categories
-     *                  which are offline
-     *              $options['searchable_articles']
-     *                  array of article ID's which should be searchable
-     *              $options['minimum_similarity']
-     *                  'int' => Minimum similarity between search-word and keyword in percent,
-     *                           range can be between > 0 and <= 100, default is 50.
-     *                           1 = Slightest similarity
-     *                           100 = Exact match
-     *             </pre>
-     * @param cDb $db [optional]
-     *                  CONTENIDO database object
-     * @param cAuth $auth [optional]
-     *                  Authentication object
+     *      <pre>
+     *      $options['db']
+     *          'regexp' => DB search with REGEXP
+     *          'like' => DB search with LIKE
+     *          'exact' => exact match;
+     *      $options['combine']
+     *           'and', 'or' Combination of search words with AND, OR
+     *      $options['exclude']
+     *           'true' => search-range specified in 'cat_tree', 'categories' and 'articles' is excluded;
+     *           'false' => search-range specified in 'cat_tree', 'categories' and 'articles' is included
+     *      $options['cat_tree']
+     *           e.g. array(8) => The complete tree with root 8 is in/excluded from search
+     *      $options['categories']
+     *           e.g. array(10, 12) => Categories 10, 12 in/excluded
+     *      $options['articles']
+     *           e.g. array(23) => Article 33 in/excluded
+     *      $options['artspecs']
+     *           e.g. array(2, 3) => search only articles with certain article specifications
+     *      $options['protected']
+     *          'true' => do not search articles which are offline (locked)
+     *              or articles in categories which are offline (protected)
+     *      $options['dontshowofflinearticles']
+     *          'false' => search offline articles or articles in categories which are offline
+     *      $options['searchable_articles']
+     *          array of article ID's which should be searchable
+     *      $options['minimum_similarity']
+     *          'int' => Minimum similarity between search-word and keyword in percent,
+     *              range can be between > 0 and <= 100, default is 50.
+     *              1 = Slightest similarity
+     *              100 = Exact match
+     *      </pre>
+     * @param cDb $db [optional] CONTENIDO database object
+     * @param cAuth $auth [optional] Authentication object
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct(array $options, $db = NULL, $auth = NULL)
     {
@@ -353,15 +345,10 @@ class cSearch extends cSearchBaseAbstract
     /**
      * indexed fulltext search
      *
-     * @param string $searchWords
-     *                                    The search words
-     * @param string $searchWordsExclude [optional]
-     *                                    The words, which should be excluded from search
-     *
+     * @param string $searchWords The search words
+     * @param string $searchWordsExclude [optional] The words, which should be excluded from search
      * @return bool|array
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function searchIndex($searchWords, $searchWordsExclude = '')
     {
@@ -574,8 +561,7 @@ class cSearch extends cSearchBaseAbstract
      *         Root of a category tree
      * @return array
      *         Category Tree
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      * @todo This is not the job for search, should be outsourced ...
      */
     public function getSubTree($cat_start)
@@ -634,8 +620,7 @@ class cSearch extends cSearchBaseAbstract
      *
      * @param array $search_range
      * @return array
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getSearchableArticles($search_range)
     {
@@ -742,8 +727,7 @@ class cSearch extends cSearchBaseAbstract
      *
      * @return array
      *         Array of article specification Ids
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getArticleSpecifications()
     {
@@ -776,8 +760,7 @@ class cSearch extends cSearchBaseAbstract
      *
      * @param string $sArtSpecName
      * @return bool
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function addArticleSpecificationsByName($sArtSpecName)
     {
@@ -801,8 +784,7 @@ class cSearch extends cSearchBaseAbstract
      *
      * @param array $options
      * @return void
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _setOptions(array $options)
     {

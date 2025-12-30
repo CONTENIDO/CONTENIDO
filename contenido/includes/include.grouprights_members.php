@@ -35,7 +35,7 @@ $db2 = cRegistry::getDb();
 $page = new cGuiPage('grouprights_memberselect', '', '1');
 
 if (!$perm->have_perm_area_action($area, $action)) {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
     return;
 } elseif (!isset($groupid)) {
     return;

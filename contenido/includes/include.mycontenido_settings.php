@@ -26,14 +26,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $newpassword, $oldpassword, $newpassword2, $name, $email, $phonenumber, $street, $zip,
        $city, $country, $wysi, $format, $formatdate, $formattime;
 
-$page = new cGuiPage("mycontenido_settings", "", "2");
+$page = new cGuiPage('mycontenido_settings', '', '2');
 
-$user = new cApiUser($auth->auth["uid"]);
+$user = new cApiUser($auth->auth['uid']);
 
 $action = cRegistry::getAction();
 
-if ($action == "mycontenido_editself") {
-
+if ($action == 'mycontenido_editself') {
     $notificationDisplayed = false;
 
     if (!isset($wysi)) {
@@ -42,8 +41,8 @@ if ($action == "mycontenido_editself") {
 
     $error = false;
 
-    if ($newpassword != "") {
-        if ($user->encodePassword($oldpassword) != $user->get("password")) {
+    if ($newpassword != '') {
+        if ($user->encodePassword($oldpassword) != $user->get('password')) {
             $error = i18n("Old password incorrect");
         }
 

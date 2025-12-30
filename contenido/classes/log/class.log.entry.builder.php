@@ -61,11 +61,11 @@ class cLogEntryBuilder
      * Setter for the message to log.
      *
      * @param string $message The message to log
-     * @return $this
      */
     public function setMessage(string $message): self
     {
         $this->message = $message;
+
         return $this;
     }
 
@@ -73,25 +73,22 @@ class cLogEntryBuilder
      * Setter for the log type.
      *
      * @param string $type Log type, e.g. 'Error', 'Warning', 'Deprecated', etc.
-     * @return $this
      */
     public function setType(string $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
     /**
      * Setter for trace.
-     *
-     * @param array $trace
-     * @param int $startLevel
-     * @return $this
      */
     public function setTrace(array $trace, int $startLevel): self
     {
         $this->trace = $trace;
         $this->startLevel = $startLevel;
+
         return $this;
     }
 
@@ -106,13 +103,11 @@ class cLogEntryBuilder
 
     /**
      * Setter for whether add SAPI details to the log entry.
-     *
-     * @param bool $addSapiDetails
-     * @return $this
      */
     public function setAddSapiDetails(bool $addSapiDetails): self
     {
         $this->addSapiDetails = $addSapiDetails;
+
         return $this;
     }
 
@@ -152,8 +147,6 @@ class cLogEntryBuilder
 
     /**
      * Return the log entry.
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -164,7 +157,6 @@ class cLogEntryBuilder
      * Returns caller details, e.g. `function()`, `class->function()` or `class::function()`.
      *
      * @param array $traceEntry The trace entry.
-     * @return string
      */
     public static function getCallerDetails(array $traceEntry): string
     {
@@ -198,8 +190,6 @@ class cLogEntryBuilder
      * Builds and returns trace details.
      *
      * @param array $trace Trace array
-     * @param int $startLevel
-     * @return array
      */
     public static function buildTraceDetails(array $trace, int $startLevel = 2): array
     {

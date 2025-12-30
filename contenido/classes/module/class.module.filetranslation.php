@@ -27,51 +27,39 @@ class cModuleFileTranslation extends cModuleHandler
 {
 
     /**
-     * Path to the module directory.
-     *
-     * @var string
+     * @var string Path to the module directory.
      */
     private $_modulePath;
 
     /**
-     * Name of the translations file.
-     *
-     * @var string
+     * @var string Name of the translations file.
      */
     static $fileName = '';
 
     /**
-     * Translation array.
-     *
-     * @var array
+     * @var array Translation array.
      */
     static $langArray = [];
 
     /**
-     * Language info array.
-     *
-     * @var array
+     * @var array Language info array.
      */
     private static $langInfo = [];
 
     /**
-     * The id of the module.
-     *
-     * @var int
+     * @var int The id of the module.
      */
     static $savedIdMod = NULL;
+
     static $originalTranslationDivider = '=';
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @param cApiModule|array|int $module [optional]
-     *         The module instance or the module recordset array from the
+     * @param cApiModule|array|int $module The module instance or the module recordset array from the
      *         database or the id of the module
-     * @param bool $static [optional]
-     *                             if true it will load once the translation from file
-     * @param int $overrideIdlang [optional]
-     *                             use different language if not NULL
+     * @param bool $static if true it will load once the translation from file
+     * @param int $overrideIdlang Use different language if not NULL
      *
      * @throws cException
      * @throws cInvalidArgumentException
@@ -131,8 +119,7 @@ class cModuleFileTranslation extends cModuleHandler
      * Save the hole translations for an idmod and lang.
      * For the upgrade/setup.
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      * @todo Remove this to setup routine (see cUpgradeJob_0002), it has nothing to do here!
      */
     public function saveTranslations()
@@ -245,8 +232,7 @@ class cModuleFileTranslation extends cModuleHandler
      * @param int $idclient Client id to use
      * @param int $idlang Language id to use
      *
-     * @return string The file name like `lang_[language]_[COUNTRY].txt`,
-     *                e.g. `lang_en_US.txt`
+     * @return string The file name like `lang_[language]_[COUNTRY].txt`, e.g. `lang_en_US.txt`
      */
     private function _composeTranslationFileName($idclient, $idlang)
     {
@@ -259,17 +245,15 @@ class cModuleFileTranslation extends cModuleHandler
 
     /**
      * Returns the language information array for a client and language.
-     * The required data will be lazy loaded at first call for each
-     * combination of client and language.
+     * The required data will be lazy loaded at first call for each combination of client and language.
      *
      * @param int $idclient Client id to use
      * @param int $idlang Language id to use
-     *
-     * @return array  Language info array like
-     *                <pre>
-     *                ['language' => 'en', 'country' => 'US']
-     *                </pre>
-     *                Note: Array can also be empty, in case of an error!
+     * @return array Language info array like
+     *      <pre>
+     *      ['language' => 'en', 'country' => 'US']
+     *      </pre>
+     *      Note: Array can also be empty, in case of an error!
      * @throws cDbException|cException
      */
     private function _getLanguageInfo($idclient, $idlang)
@@ -292,13 +276,10 @@ class cModuleFileTranslation extends cModuleHandler
     /**
      * Save the contents of the wordListArray in file.
      *
-     * @param array $wordListArray
-     *
-     * @return bool
-     *         true on success or false on failure
+     * @return bool true on success or false on failure
      * @throws cInvalidArgumentException
      */
-    public function saveTranslationArray($wordListArray)
+    public function saveTranslationArray(array $wordListArray): bool
     {
         $fileName = $this->_modulePath . $this->_directories['lang'] . self::$fileName;
 
@@ -328,8 +309,9 @@ class cModuleFileTranslation extends cModuleHandler
      */
     public function getTranslationArray()
     {
-        if (cFileHandler::exists($this->_modulePath . $this->_directories['lang'] . self::$fileName)) {
-            return $this->_unserializeArray(cFileHandler::read($this->_modulePath . $this->_directories['lang'] . self::$fileName));
+        $filename = $this->_modulePath . $this->_directories['lang'] . self::$fileName;
+        if (cFileHandler::exists($filename)) {
+            return $this->_unserializeArray(cFileHandler::read($filename));
         } else {
             return [];
         }

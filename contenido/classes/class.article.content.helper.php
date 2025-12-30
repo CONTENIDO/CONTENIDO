@@ -25,16 +25,16 @@ class cArticleContentHelper
 {
 
     /**
-     * @var cDb
+     * @var ?cDb
      */
     protected $_db = null;
 
     /**
      * Constructor.
      *
-     * @param cDb|null $db Database instance
+     * @param ?cDb $db Database instance
      */
-    public function __construct(cDb $db = null)
+    public function __construct(?cDb $db = null)
     {
         if ($db instanceof cDb) {
             $this->_db = $db;
@@ -44,13 +44,9 @@ class cArticleContentHelper
     /**
      * Get content from article by article language.
      *
-     * @param int $iIdArtLang
-     *         ArticleLanguageId of an article (idartlang)
-     *
-     * @return array
-     *         Array with content of an article indexed by content-types as follows:
+     * @param int $iIdArtLang ArticleLanguageId of an article (idartlang)
+     * @return array Array with content of an article indexed by content-types as follows:
      *         - $arr[type][typeid] = value;
-     *
      * @throws cDbException|cInvalidArgumentException
      */
     public function getContentByIdArtLang(int $iIdArtLang): array
@@ -90,15 +86,11 @@ class cArticleContentHelper
     /**
      * Get content from article by article id and language id.
      *
-     * @param int $idArt
-     *         Id of an article (idart)
-     * @param int $idLang
-     *         Id of a language (idlang)
-     *
+     * @param int $idArt Id of an article (idart)
+     * @param int $idLang Id of a language (idlang)
      * @return array
      *         Array with content of an article indexed by content-types as follows:
      *         - $arr[type][typeid] = value;
-     *
      * @throws cDbException|cInvalidArgumentException
      */
     public function getContentByIdArtAndIdLang(int $idArt, int $idLang): array

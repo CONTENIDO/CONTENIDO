@@ -19,11 +19,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $notification, $oTpl, $db, $db2, $aViewRights, $bExclusive;
 
 // Display critical error if client or language does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
-    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
-    $oPage = new cGuiPage("mod_overview");
+    $message = $client && !cRegistry::getClient()->isLoaded()
+        ? i18n('No Client selected')
+        : i18n('No language selected');
+    $oPage = new cGuiPage('mod_overview');
     $oPage->displayCriticalError($message);
     $oPage->render();
     // We exit the process here, this file is included by others
@@ -94,7 +96,6 @@ foreach ($clientList as $key => $value) {
     $db->query($sql);
 
     while ($db->nextRecord()) {
-
         $idClientsLang = $db->f('idclientslang');
 
         if ((cString::findFirstPos($userPerms, "client[$key]") !== false)

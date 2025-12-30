@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var int $frame
  */
 
-$oPage = new cGuiPage("recipients_import", "newsletter");
+$oPage = new cGuiPage('recipients_import', 'newsletter');
 $oRecipients = new NewsletterRecipientCollection();
 
 if (cHasPlugins('recipients')) {

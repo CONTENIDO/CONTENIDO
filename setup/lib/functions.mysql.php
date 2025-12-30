@@ -213,12 +213,10 @@ function fetchMySQLStorageEngines(cDb $db): array
 /**
  * Returns all supported character sets (field Charset) from the MySQL database.
  *
- * @param cDB|null $db
- * @return array
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
-function fetchMySQLCharsets(cDb $db = null): array
+function fetchMySQLCharsets(?cDb $db = null): array
 {
     if (!is_object($db)) {
         // No DB object, return static list
@@ -279,13 +277,11 @@ function fetchMySQLCharsets(cDb $db = null): array
 /**
  * Returns all supported collations for a specific charset
  *
- * @param cDB|null $db
  * @param string $charset The charset for the collation
- * @return array
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
-function fetchMySQLCollations(cDb $db = null, string $charset = ""): array
+function fetchMySQLCollations(?cDb $db = null, string $charset = ""): array
 {
     if (!is_object($db)) {
         // No DB object, return static list

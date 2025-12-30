@@ -25,30 +25,22 @@ class cRequestValidator
 {
 
     /**
-     * Instance of this class.
-     *
-     * @var cRequestValidator
+     * @var cRequestValidator Instance of this class.
      */
     private static $_instance = null;
 
     /**
-     * Path and filename of logfile.
-     *
-     * @var string
+     * @var string Path and filename of logfile.
      */
     protected $_logPath;
 
     /**
-     * Flag whether to write log or not.
-     *
-     * @var bool
+     * @var bool Flag whether to write log or not.
      */
     protected $_log = true;
 
     /**
-     * Path to config file.
-     *
-     * @var string
+     * @var string Path to config file.
      */
     protected $_configPath;
 
@@ -66,73 +58,53 @@ class cRequestValidator
     protected $_check = [];
 
     /**
-     * Array with forbidden parameters.
-     * If any of these is set the request will be invalid.
-     *
-     * @var array
+     * @var array Array with forbidden parameters.
+     *      If any of these is set the request will be invalid.
      */
     protected $_blacklist = [];
 
     /**
-     * Contains first invalid parameter name.
-     *
-     * @var string
+     * @var string Contains first invalid parameter name.
      */
     protected $_failure = '';
 
     /**
-     * Current mode.
-     *
-     * @var string
+     * @var string Current mode.
      */
     protected $_mode = '';
 
     /**
-     * Regexp for integers.
-     *
-     * @var string
+     * @var string Regexp for integers.
      */
     public const CHECK_INTEGER = '/^[0-9]*$/';
 
     /**
-     * Regexp for primitive strings.
-     *
-     * @var string
+     * @var string Regexp for primitive strings.
      */
     public const CHECK_PRIMITIVESTRING = '/^[a-zA-Z0-9 -_]*$/';
 
     /**
-     * Regexp for strings.
-     *
-     * @var string
+     * @var string Regexp for strings.
      */
     public const CHECK_STRING = '/^[\w0-9 -_]*$/';
 
     /**
-     * Regexp for 32 character hash.
-     *
-     * @var string
+     * @var string Regexp for 32 character hash.
      */
     public const CHECK_HASH32 = '/^[a-zA-Z0-9]{32}$/';
 
     /**
-     * Regexp for valid belang values.
-     *
-     * @var string
+     * @var string Regexp for valid belang values.
      */
     public const CHECK_BELANG = '/^[a-z]{2}_[A-Z]{2}$/';
 
     /**
-     * Regexp for valid area values.
-     *
-     * @var string
+     * @var string Regexp for valid area values.
      */
     public const CHECK_AREASTRING = '/^[a-zA-Z_]*$/';
 
     /**
-     * Regexp for validating file upload paths.
-     *
-     * @var string
+     * @var string Regexp for validating file upload paths.
      */
     public const CHECK_PATHSTRING = '!([*]*\/)|(dbfs:\/[*]*)|(dbfs:)|(^)$!';
 

@@ -40,14 +40,10 @@ class cHTMLLabel extends cHTMLContentElement
      * since if a user clicks a label, the linked form element receives
      * the focus (if supported by the user agent).
      *
-     * @param string $text
-     *         Name of the element
-     * @param string $for
-     *         ID of the form element to link to.
-     * @param string $class [optional]
-     *         the class of this element
-     * @param string $id [optional]
-     *         the ID of this element
+     * @param string $text Text of the element
+     * @param string $for ID of the form element to link to.
+     * @param string $class [optional] The class of this element
+     * @param string $id [optional] The ID of this element
      */
     public function __construct($text, $for, $class = '', $id = '')
     {
@@ -60,10 +56,7 @@ class cHTMLLabel extends cHTMLContentElement
     }
 
     /**
-     * Renders the label
-     *
-     * @return string
-     *         Rendered HTML
+     * @inheritDoc
      */
     public function toHtml(): string
     {

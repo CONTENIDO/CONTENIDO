@@ -18,9 +18,9 @@ global $adduser, $wfactions,
        $wftaskselect, $wfstepname, $wfstepdescription, $wfemailnoti, $wfescalnoti;
 
 plugin_include('workflow', 'includes/functions.workflow.php');
-cInclude("includes", "functions.encoding.php");
+cInclude('includes', 'functions.encoding.php');
 
-$page = new cGuiPage("workflow_steps", "workflow");
+$page = new cGuiPage('workflow_steps', 'workflow');
 $page->addStyle('workflow.css');
 
 $requestIdWorkflowItem = cSecurity::toInteger($_REQUEST['idworkflowitem'] ?? '0');
@@ -38,35 +38,35 @@ $sCurrentEncoding = cRegistry::getEncoding();
 $adduser = $adduser ?? '';
 
 if (conHtmlentities($adduser, ENT_COMPAT, $sCurrentEncoding) == i18n("Add User", "workflow")) {
-    $action = "workflow_create_user";
+    $action = 'workflow_create_user';
 }
 
 // Function: Move step up
-if ($action == "workflow_step_up") {
+if ($action == 'workflow_step_up') {
     $workflowItems = new WorkflowItems();
     $workflowItems->swap($requestIdWorkflow, $requestPosition, $requestPosition - 1);
 }
 
 // Function: Move step down
-if ($action == "workflow_step_down") {
+if ($action == 'workflow_step_down') {
     $workflowItems = new WorkflowItems();
     $workflowItems->swap($requestIdWorkflow, $requestPosition, $requestPosition + 1);
 }
 
 // Function: Move user up
-if ($action == "workflow_user_up") {
+if ($action == 'workflow_user_up') {
     $workflowItems = new WorkflowUserSequences();
     $workflowItems->swap($requestIdWorkflowItem, $requestPosition, $requestPosition - 1);
 }
 
 // Function: Move step down
-if ($action == "workflow_user_down") {
+if ($action == 'workflow_user_down') {
     $workflowItems = new WorkflowUserSequences();
     $workflowItems->swap($requestIdWorkflowItem, $requestPosition, $requestPosition + 1);
 }
 
 // Function: Create new step
-if ($action == "workflow_create_step") {
+if ($action == 'workflow_create_step') {
     $workflowItems = new WorkflowItems();
     $item = $workflowItems->create($requestIdWorkflow);
     $item->set("name", i18n("New Workflow Step", "workflow"));
@@ -75,25 +75,25 @@ if ($action == "workflow_create_step") {
 }
 
 // Function: Delete step
-if ($action == "workflow_step_delete") {
+if ($action == 'workflow_step_delete') {
     $workflowItems = new WorkflowItems();
     $workflowItems->delete($requestIdWorkflowItem);
 }
 
 // Function: Add user
-if ($action == "workflow_create_user") {
+if ($action == 'workflow_create_user') {
     $workflowUsers = new WorkflowUserSequences();
     $new = $workflowUsers->create($requestIdWorkflowItem);
 }
 
 // Function: Remove user
-if ($action == "workflow_user_delete") {
+if ($action == 'workflow_user_delete') {
     $workflowUsers = new WorkflowUserSequences();
     $workflowUsers->delete($requestIdUserSequence);
 }
 
 // Function: Save step
-if ($action == "workflow_save_step" || $action == "workflow_create_user") {
+if ($action == 'workflow_save_step' || $action == 'workflow_create_user') {
     $workflowActions = new WorkflowActions();
 
     foreach ($availableWorkflowActions as $key => $value) {
@@ -129,13 +129,11 @@ if ($action == "workflow_save_step" || $action == "workflow_create_user") {
 }
 
 /**
- * @param $listid
- * @param $default
- *
- * @return string
- * @throws cInvalidArgumentException
+ * @param string|int $listid
+ * @param mixed $default
+ * @throws cInvalidArgumentException|cException
  */
-function getTimeUnitSelector($listid, $default)
+function getTimeUnitSelector($listid, $default): string
 {
     $cfg = cRegistry::getConfig();
     $timeunits = [];
@@ -171,12 +169,9 @@ function getTimeUnitSelector($listid, $default)
 /**
  * @param int $idWorkflow
  * @param int $idWorkflowItem
- * @return string
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function getWorkflowList($idWorkflow, $idWorkflowItem)
+function getWorkflowList($idWorkflow, $idWorkflowItem): string
 {
     $cfg = cRegistry::getConfig();
     $backendUrl = cRegistry::getBackendUrl();
@@ -246,17 +241,14 @@ function getWorkflowList($idWorkflow, $idWorkflowItem)
         }
     }
 
-    $content = $ui->render(false);
-
-    return ($content);
+    return $ui->render(false);
 }
 
 /**
  * @param int $idWorkflow
- * @return string
- * @throws cInvalidArgumentException
+ * @throws cInvalidArgumentException|cException
  */
-function createNewWorkflow($idWorkflow)
+function createNewWorkflow($idWorkflow): string
 {
     $cfg = cRegistry::getConfig();
     $backendUrl = cRegistry::getBackendUrl();
@@ -280,13 +272,9 @@ function createNewWorkflow($idWorkflow)
 /**
  * @param int $idWorkflow
  * @param int $idWorkflowItem
- *
- * @return string
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function editWorkflowStep($idWorkflow, $idWorkflowItem)
+function editWorkflowStep($idWorkflow, $idWorkflowItem): string
 {
     global $availableWorkflowActions;
 
@@ -337,13 +325,9 @@ function editWorkflowStep($idWorkflow, $idWorkflowItem)
 /**
  * @param int $idWorkflow
  * @param int $idWorkflowItem
- *
- * @return string
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function getWorkflowUsers($idWorkflow, $idWorkflowItem)
+function getWorkflowUsers($idWorkflow, $idWorkflowItem): string
 {
     $cfg = cRegistry::getConfig();
     $backendUrl = cRegistry::getBackendUrl();
@@ -432,6 +416,7 @@ function getWorkflowUsers($idWorkflow, $idWorkflowItem)
 
     $ui->setTitle("create", '<input class="text_medium" type="submit" name="adduser" value="' . i18n("Add User", "workflow") . '">');
     $ui->setLink("create", NULL);
+
     return $ui->render(false);
 }
 

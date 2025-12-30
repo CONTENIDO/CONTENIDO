@@ -25,7 +25,6 @@ class cTypeGenerator
 {
 
     /**
-     *
      * @var array
      */
     private $cfg = NULL;
@@ -43,19 +42,16 @@ class cTypeGenerator
     private static $articleContentHelper = NULL;
 
     /**
-     *
      * @var array
      */
     private static $a_content = [];
 
     /**
-     *
      * @var int
      */
     private $_idart = NULL;
 
     /**
-     *
      * @var int
      */
     private $_idlang = NULL;
@@ -67,8 +63,8 @@ class cTypeGenerator
      */
     public function __construct()
     {
-        $this->_idart = cSecurity::toInteger(cRegistry::getArticleId(true));
-        $this->_idlang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $this->_idart = cRegistry::getArticleId(true);
+        $this->_idlang = cRegistry::getLanguageId();
         $this->cfg = cRegistry::getConfig();
 
         if (!isset(self::$a_content[$this->_idart])) {
@@ -79,12 +75,10 @@ class cTypeGenerator
     /**
      * Returns the classname for a content type.
      *
-     * @param string $type
-     *         Content type, e.g. CMS_HTMLHEAD
-     * @return string
-     *         The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
+     * @param string $type Content type, e.g. CMS_HTMLHEAD
+     * @return string The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
      */
-    protected function _getContentTypeClassName($type)
+    protected function _getContentTypeClassName(string $type): string
     {
         return 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
     }

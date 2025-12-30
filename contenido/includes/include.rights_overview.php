@@ -34,7 +34,7 @@ $sess = cRegistry::getSession();
 
 if (!($perm->have_perm_area_action($area, $action) || $perm->have_perm_area_action('user', $action))) {
     // access denied
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
     return;
 }
 
@@ -58,7 +58,7 @@ $sNotification = '';
 if ($action == 'user_delete') {
     $oUserColl = new cApiUserCollection();
 
-    $page = new cGuiPage("rights_overview");
+    $page = new cGuiPage('rights_overview');
 
     // Prevent deletion of last system administrator
     $oUserColl->query();

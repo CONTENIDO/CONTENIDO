@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $contenido, $type, $typenr, $encoding;
 
-$idcat = cSecurity::toInteger(cRegistry::getCategoryId());
+$idcat = cRegistry::getCategoryId();
 if ($idcat <= 0) {
     cRegistry::shutdown();
     return;
@@ -34,11 +34,11 @@ $scripts = '';
 $cssData = '';
 $jsData = '';
 $action = cRegistry::getAction();
-$idartlang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
+$idartlang = cRegistry::getArticleLanguageId();
 $idart = cRegistry::getArticleId();
 $cfg = cRegistry::getConfig();
 $client = cRegistry::getClientId();
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$lang = cRegistry::getLanguageId();
 $sess = cRegistry::getSession();
 
 // Initialize $_REQUEST with common used keys to prevent PHP 'Undefined array key' warnings
@@ -178,7 +178,7 @@ if ('tinymce4' === $wysiwygeditor) {
 
     foreach ($aConfigInlineEdit as $sCmsType => $setting) {
         // Get configuration for popup and inline tiny
-        $aTinyOptions[$sCmsType] = $aConfigInlineEdit[$sCmsType];
+        $aTinyOptions[$sCmsType] = $setting;
         $aTinyOptions[$sCmsType]['fullscreen_settings'] = $aConfigFullscreen[$sCmsType];
     }
 

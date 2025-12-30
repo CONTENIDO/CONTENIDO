@@ -15,24 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- *
- * This class contains the main functionalities for the module logging
- * in CONTENIDO.
- * The funcationality is almost the same like normal logging with the
- * exception, that log entries contains an additional information about
- * the used module.
- *
- * Example:
- * $writer = cLogWriter::factory("File", ['destination' => 'contenido.log');
- *
- * $log = new cModuleLog($writer);
- * $log->setModule(1);
- * $log->log("Anything you want to log.");
- *
- * @package    Core
- * @subpackage Log
- * @deprecated [2015-05-21]
- *         This class is no longer supported
+ * @deprecated [2015-05-21] This class is no longer supported
  */
 class cModuleLog extends cLog
 {
@@ -45,15 +28,8 @@ class cModuleLog extends cLog
     private $_module;
 
     /**
-     * Constructor to create an instance of this class.
-     *
-     * @param mixed $writer [optional]
-     *                      Writer object (any subclass of cLogWriter),
-     *                      or false if cLog should handle the writer creation
-     *
      * @throws cInvalidArgumentException
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      *
      */
     public function __construct($writer = false)
@@ -67,17 +43,7 @@ class cModuleLog extends cLog
     }
 
     /**
-     * Sets the module to use.
-     *
-     * setModule automatically buffers basic module information to the
-     * log to assist the developer in debugging his modules.
-     *
-     * @param int $idmod
-     *         The module ID to use
-     * @throws cException
-     *         if the module with the given idmod could not be loaded
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      */
     public function setModule($idmod)
     {
@@ -90,13 +56,7 @@ class cModuleLog extends cLog
     }
 
     /**
-     * Shortcut Handler Module.
-     * Returns the ID and the name of the module.
-     *
-     * @return string
-     *         ID and name of the module
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      */
     public function shModule()
     {

@@ -25,78 +25,59 @@ class cGenericDb
 {
 
     /**
-     * Callbacks are executed before a item is created.
-     * Expected parameters for callback: none
-     *
-     * @var int
+     * @var int Callbacks are executed before an item is created.
+     *      Expected parameters for callback: none.
      */
-    const CREATE_BEFORE = 10;
+    public const CREATE_BEFORE = 10;
 
     /**
-     * Callbacks are executed if item could not be created.
-     * Expected parameters for callback: none
-     *
-     * @var int
+     * @var int Callbacks are executed if item could not be created.
+     *      Expected parameters for callback: none.
      */
-    const CREATE_FAILURE = 11;
+    public const CREATE_FAILURE = 11;
 
     /**
-     * Callbacks are executed if item could be created successfully.
-     * Expected parameters for callback: ID of created item
-     *
-     * @var int
+     * @var int Callbacks are executed if item could be created successfully.
+     *      Expected parameters for callback: ID of created item.
      */
-    const CREATE_SUCCESS = 12;
+    public const CREATE_SUCCESS = 12;
 
     /**
-     * Callbacks are executed before store process is executed.
-     * Expected parameters for callback: Item instance
-     *
-     * @var int
+     * @var int Callbacks are executed before store process is executed.
+     *      Expected parameters for callback: Item instance.
      */
-    const STORE_BEFORE = 20;
+    public const STORE_BEFORE = 20;
 
     /**
-     * Callbacks are executed if store process failed.
-     * This is also likely to happen if query would not change anything in
-     * database!
-     * Expected parameters for callback: Item instance
-     *
-     * @var int
+     * @var int Callbacks are executed if store process failed.
+     *      This is also likely to happen if query would not change anything in database!
+     *      Expected parameters for callback: Item instance
      */
-    const STORE_FAILURE = 21;
+    public const STORE_FAILURE = 21;
 
     /**
-     * Callbacks are executed if store process saved the values in the database.
-     * Expected parameters for callback: Item instance
-     *
-     * @var int
+     * @var int Callbacks are executed if store process saved the values in the database.
+     *      Expected parameters for callback: Item instance.
      */
-    const STORE_SUCCESS = 22;
+    public const STORE_SUCCESS = 22;
 
     /**
-     * Callbacks are executed before deleting an item.
-     * Expected parameters for callback: ID of them item to delete
-     *
-     * @var int
+     * @var int Callbacks are executed before deleting an item.
+     *      Expected parameters for callback: ID of them item to delete.
      */
-    const DELETE_BEFORE = 30;
+    public const DELETE_BEFORE = 30;
 
     /**
-     * Callbacks are executed if deletion of an item fails.
-     * Expected parameters for callback: ID of them item to delete
-     *
-     * @var int
+     * @var int Callbacks are executed if deletion of an item fails.
+     *      Expected parameters for callback: ID of them item to delete.
      */
-    const DELETE_FAILURE = 31;
+    public const DELETE_FAILURE = 31;
 
     /**
-     * Callbacks are executed if item was deleted successfully.
-     * Expected parameters for callback: ID of them item to delete
-     *
-     * @var int
+     * @var int Callbacks are executed if item was deleted successfully.
+     *      Expected parameters for callback: ID of them item to delete-
      */
-    const DELETE_SUCCESS = 32;
+    public const DELETE_SUCCESS = 32;
 
     /**
      * Callback stack.
@@ -112,17 +93,13 @@ class cGenericDb
      * cGenericDb::register(cGenericDb::CREATE_SUCCESS, 'itemCreateHandler', 'cApiArticle');
      * cGenericDb::register(cGenericDb::CREATE_SUCCESS, ['cCallbackHandler', 'executeCreateHandle'], 'cApiArticle');
      *
-     * @param string $event
-     *         Callback event, must be a valid value of a cGenericDb event constant
-     * @param mixed $callback
-     *         Callback to register
-     * @param mixed $class
-     *         Class name for registering callback (can be string of array with
-     *         names of the concrete Item classes)
-     * @throws cInvalidArgumentException
-     *         if event or class are not set or the callback is not callable
+     * @param int $event Callback event, must be a valid value of a cGenericDb event constant
+     * @param ?callable $callback Callback to register
+     * @param mixed $class Class name for registering callback
+     *      (can be string of array with names of the concrete Item classes).
+     * @throws cInvalidArgumentException If event or class are not set or the callback is not callable
      */
-    public static function register($event, $callback, $class)
+    public static function register(int $event, ?callable $callback = null, $class = null)
     {
         if (isset($event) === false) {
             throw new cInvalidArgumentException("No callback event for execution was given");
@@ -151,15 +128,12 @@ class cGenericDb
      * Example:
      * cGenericDb::unregister(cGenericDb::CREATE_SUCCESS, 'cApiArticle');
      *
-     * @param string $event
-     *         Callback event, must be a valid value of a cGenericDb event constant
-     * @param mixed $class
-     *         Class name for unregistering callback (can be string of array
-     *         with names of the concrete Item classes)
-     * @throws cInvalidArgumentException
-     *         if the event or the class are not set
+     * @param int $event Callback event, must be a valid value of a cGenericDb event constant
+     * @param mixed $class Class name for unregistering callback
+     *      (can be string of array with names of the concrete Item classes).
+     * @throws cInvalidArgumentException If the event or the class are not set
      */
-    public static function unregister($event, $class)
+    public static function unregister(int $event, $class = null)
     {
         if (isset($event) === false) {
             throw new cInvalidArgumentException("No callback event for execution was given");
@@ -181,16 +155,12 @@ class cGenericDb
     /**
      * Executes all callbacks for a specific event in a class.
      *
-     * @param string $event
-     *         Callback event, must be a valid value of a cGenericDb event constant
-     * @param string $class
-     *         Class name for executing callback
-     * @param array $arguments [optional]
-     *         Arguments to pass to the callback function
-     * @throws cInvalidArgumentException
-     *         if the event or class is not set
+     * @param int $event Callback event, must be a valid value of a cGenericDb event constant
+     * @param string $class Class name for executing callback
+     * @param array $arguments  Arguments to pass to the callback function
+     * @throws cInvalidArgumentException If the event or class is not set
      */
-    protected final function _executeCallbacks($event, $class, $arguments = [])
+    final protected function _executeCallbacks(int $event, string $class, array $arguments = [])
     {
         if (isset($event) === false) {
             throw new cInvalidArgumentException("No callback event for execution was given");

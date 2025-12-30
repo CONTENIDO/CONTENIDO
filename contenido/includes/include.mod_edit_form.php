@@ -16,14 +16,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $db;
 
-cInclude("includes", "functions.upl.php");
-cInclude("external", "codemirror/class.codemirror.php");
+cInclude('includes', 'functions.upl.php');
+cInclude('external', 'codemirror/class.codemirror.php');
 
 $perm = cRegistry::getPerm();
 $area = cRegistry::getArea();
 $frame = cRegistry::getFrame();
 $cfg = cRegistry::getConfig();
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 $cfgClient = cRegistry::getClientConfig();
 $belang = cRegistry::getBackendLanguage();
 
@@ -162,34 +162,35 @@ list($bInUse, $message) = $oInUse->checkAndMark("idmod", $idmod, true, i18n("Mod
 unset($oInUse);
 
 if ($bInUse) {
-    $message .= "<br>";
+    $message .= '<br>';
     $disabled = true;
 } else {
     $disabled = false;
 }
 
-$page = new cGuiPage("mod_edit_form", "", "0");
-$form = new cGuiTableForm("frm_mod_edit");
+$page = new cGuiPage('mod_edit_form', '', '0');
+$form = new cGuiTableForm('frm_mod_edit');
 $form->addTableClass('col_flx_m_50p col_first_100');
 $form->setTableID('mod_edit');
-$form->setVar("area", "mod_edit");
-$form->setVar("frame", $frame);
-$form->setVar("idmod", $idmod);
+$form->setVar('area', 'mod_edit');
+$form->setVar('frame', $frame);
+$form->setVar('idmod', $idmod);
 //$page->setSubnav('action=' . $action);
 if (!$bInUse) {
-    $form->setVar("action", "mod_edit");
+    $form->setVar('action', 'mod_edit');
 }
 
-$form->setHeader(i18n("Edit module") . " &quot;" . conHtmlSpecialChars($module->get('name')) . "&quot;");
+$form->setHeader(i18n("Edit module") . ' &quot;' . conHtmlSpecialChars($module->get('name')) . "&quot;");
 
-$name = new cHTMLTextbox("name", conHtmlSpecialChars(stripslashes($module->get("name"))), 60);
-$descr = new cHTMLTextarea("descr", str_replace([
+$name = new cHTMLTextbox('name', conHtmlSpecialChars(stripslashes($module->get('name'))), 60);
+$descr = new cHTMLTextarea(
+    'descr', str_replace([
     '\r\n'
 ], "\r\n", conHtmlentities($module->get('description') ?? '')), 100, 5);
 
 // Get input and output code; if specified, prepare row fields
-$sInputData = "";
-$sOutputData = "";
+$sInputData = '';
+$sOutputData = '';
 
 // Check write permissions
 if (!$contenidoModuleHandler->moduleWriteable('php')) {
@@ -218,11 +219,7 @@ if ($optionDebugRows !== "never") {
     // Calculate how many characters are needed (e.g. 2 for lines ip to 99)
     $iInputNewLineChars = cString::getStringLength($iInputNewLines);
     $iOutputNewLineChars = cString::getStringLength($iOutputNewLines);
-    if ($iInputNewLineChars > $iOutputNewLineChars) {
-        $iChars = $iInputNewLineChars;
-    } else {
-        $iChars = $iOutputNewLineChars;
-    }
+    $iChars = max($iInputNewLineChars, $iOutputNewLineChars);
     unset($iInputNewLineChars, $iOutputNewLineChars);
 
     $sRows = "";

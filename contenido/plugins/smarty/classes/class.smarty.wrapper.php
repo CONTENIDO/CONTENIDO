@@ -28,6 +28,7 @@ class cSmartyWrapper extends Smarty
         parent::__construct();
         $path = realpath(__DIR__ . '/../includes/smarty_plugins');
         $this->addPluginsDir($path);
+        $this->registerPlugin('modifier', 'i18n', 'i18n');
     }
 
     /**
@@ -46,7 +47,7 @@ class cSmartyWrapper extends Smarty
     public function fetch($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL, $display = false, $merge_tpl_vars = true, $no_output_filter = false)
     {
         if ($this->templateExists($template) === false) {
-            $moduleId = (int)cRegistry::getCurrentModuleId();
+            $moduleId = cRegistry::getCurrentModuleId();
             if ($moduleId > 0) {
                 $module = new cModuleHandler($moduleId);
                 $template = $module->getTemplatePath($template);

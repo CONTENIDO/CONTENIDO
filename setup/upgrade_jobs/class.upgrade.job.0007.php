@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Upgrade job 7.
  * Copies the content of the con_plugins."path" column to the "folder" column
- * and deletes the "path" column afterwards.
+ * and deletes the "path" column afterward.
  *
  * @package    Setup
  * @subpackage UpgradeJob
@@ -25,7 +25,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0007 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.0-beta1";
+    public $maxVersion = '4.9.0-beta1';
 
     public function _execute()
     {

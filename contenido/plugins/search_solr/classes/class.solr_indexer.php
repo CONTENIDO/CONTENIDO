@@ -25,7 +25,7 @@ class SolrIndexer
     /**
      * @var bool
      */
-    const DBG = false;
+    public const DBG = false;
 
     /**
      * Prefix to be used for Solr <uniqueKey> in order to distinguish documents
@@ -33,7 +33,7 @@ class SolrIndexer
      *
      * @var string
      */
-    const ID_PREFIX = 'contenido_article_';
+    public const ID_PREFIX = 'contenido_article_';
 
     /**
      *
@@ -59,11 +59,7 @@ class SolrIndexer
      *
      * include.con_editcontent.php
      *
-     * @param array $newData
-     * @param array $oldData
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public static function handleStoringOfArticle(array $newData, array $oldData)
     {
@@ -443,7 +439,7 @@ class SolrIndexer
         $content = [];
         while (false !== $db->nextRecord()) {
             $value = $db->f('value');
-            //$value = @utf8_encode($value);
+            //$value = cString::convertEncoding($value);
             $value = strip_tags($value);
             //$value = html_entity_decode($value);
             $value = html_entity_decode($value, ENT_QUOTES, 'UTF-8');

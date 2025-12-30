@@ -60,25 +60,18 @@ class cApiFrontendPermissionCollection extends ItemCollection
     /**
      * Creates a new permission entry.
      *
-     * @param int $group
-     *         Specifies the frontend group
-     * @param string $plugin
-     *         Specifies the plugin
-     * @param string $action
-     *         Specifies the action
-     * @param string $item
-     *         Specifies the item
-     *
+     * @param int $group Specifies the frontend group
+     * @param string $plugin Specifies the plugin
+     * @param string $action Specifies the action
+     * @param string $item Specifies the item
      * @return cApiFrontendPermission|false
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($group, $plugin, $action, $item)
     {
         $perm = false;
         if (!$this->checkPerm($group, $plugin, $action, $item)) {
-            $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+            $lang = cRegistry::getLanguageId();
             $perm = $this->createNewItem();
             $perm->set('idlang', $lang);
             $perm->set('idfrontendgroup', $group);
@@ -95,18 +88,11 @@ class cApiFrontendPermissionCollection extends ItemCollection
     /**
      * Sets a permission entry, is a wrapper for create() function
      *
-     * @param int $group
-     *         Specifies the frontend group
-     * @param string $plugin
-     *         Specifies the plugin
-     * @param string $action
-     *         Specifies the action
-     * @param string $item
-     *         Specifies the item
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param int $group Specifies the frontend group
+     * @param string $plugin Specifies the plugin
+     * @param string $action Specifies the action
+     * @param string $item Specifies the item
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function setPerm($group, $plugin, $action, $item)
     {
@@ -119,73 +105,77 @@ class cApiFrontendPermissionCollection extends ItemCollection
      * 1.) Checks for global permission
      * 2.) Checks for specific item permission
      *
-     * @param int $group
-     *                        Specifies the frontend group
-     * @param string $plugin
-     *                        Specifies the plugin
-     * @param string $action
-     *                        Specifies the action
-     * @param string $item
-     *                        Specifies the item
-     * @param bool $useLang [optional]
-     *                        Flag to use language (Not used!)
-     * @return bool
-     * @throws cDbException
-     * @throws cException
+     * @param int $group Specifies the frontend group
+     * @param string $plugin Specifies the plugin
+     * @param string $action Specifies the action
+     * @param string $item Specifies the item
+     * @param bool $useLang [optional] Flag to use language (Not used!)
+     * @throws cDbException|cException
      */
-    public function checkPerm($group, $plugin, $action, $item, $useLang = false)
+    public function checkPerm($group, $plugin, $action, $item, $useLang = false): bool
     {
         // checklang = ($useLang !== false) ? $useLang : $lang;
 
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $lang = cRegistry::getLanguageId();
         $group = cSecurity::toInteger($group);
         $plugin = $this->_frontendPermission->inFilter($plugin);
         $action = $this->_frontendPermission->inFilter($action);
         $item = $this->_frontendPermission->inFilter($item);
 
         // Check for global permission
-        $this->select("idlang = " . $lang . " AND idfrontendgroup = " . $group . " AND plugin = '" . $plugin . "' AND action = '" . $action . "' AND item = '__GLOBAL__'");
+        $this->select(sprintf(
+            "`idlang` = %d AND `idfrontendgroup` = %d AND `plugin` = '%s' AND `action` = '%s' AND `item` = '__GLOBAL__'",
+            $lang,
+            $group,
+            $plugin,
+            $action
+        ));
         if ($this->next()) {
             return true;
         }
 
         // Check for item permission
-        $this->select("idlang = " . $lang . " AND idfrontendgroup = " . $group . " AND plugin = '" . $plugin . "' AND action = '" . $action . "' AND item = '" . $item . "'");
-        return (bool)$this->next();
+        $this->select(sprintf(
+            "`idlang` = %d AND `idfrontendgroup` = %d AND `plugin` = '%s' AND `action` = '%s' AND `item` = '%s'",
+            $lang,
+            $group,
+            $plugin,
+            $action,
+            $item
+        ));
+        return (bool) $this->next();
     }
 
     /**
      * Removes the permission.
      *
-     * @param int $group
-     *                        Specifies the frontend group
-     * @param string $plugin
-     *                        Specifies the plugin
-     * @param string $action
-     *                        Specifies the action
-     * @param string $item
-     *                        Specifies the item
-     * @param bool $useLang [optional]
-     *                        Flag to use language (Not used!)
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param int $group Specifies the frontend group
+     * @param string $plugin Specifies the plugin
+     * @param string $action Specifies the action
+     * @param string $item Specifies the item
+     * @param bool $useLang [optional] Flag to use language (Not used!)
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function removePerm($group, $plugin, $action, $item, $useLang = false)
+    public function removePerm($group, $plugin, $action, $item, $useLang = false): bool
     {
         // checklang = ($useLang !== false) ? $useLang : $lang;
 
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $lang = cRegistry::getLanguageId();
         $group = cSecurity::toInteger($group);
         $plugin = $this->_frontendPermission->inFilter($plugin);
         $action = $this->_frontendPermission->inFilter($action);
         $item = $this->_frontendPermission->inFilter($item);
 
-        $this->select("idlang = " . $lang . " AND idfrontendgroup = " . $group . " AND plugin = '" . $plugin . "' AND action = '" . $action . "' AND item = '" . $item . "'");
-        if (($myitem = $this->next()) !== false) {
-            return $this->delete($myitem->get('idfrontendpermission'));
+        $this->select(sprintf(
+            "`idlang` = %d AND `idfrontendgroup` = %d AND `plugin` = '%s' AND `action` = '%s' AND `item` = '%s'",
+            $lang,
+            $group,
+            $plugin,
+            $action,
+            $item
+        ));
+        if (($item = $this->next()) !== false) {
+            return $this->delete($item->get('idfrontendpermission'));
         }
         return false;
     }
@@ -202,18 +192,14 @@ class cApiFrontendPermission extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('frontendpermissions'), 'idfrontendpermission');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

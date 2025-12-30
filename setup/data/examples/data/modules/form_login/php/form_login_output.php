@@ -14,9 +14,9 @@
 
 $tpl = cSmartyFrontend::getInstance();
 $auth = cRegistry::getAuth();
-$idcat = cSecurity::toInteger(cRegistry::getCategoryId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
-$idart = cSecurity::toInteger(cRegistry::getArticleId());
+$idcat = cRegistry::getCategoryId();
+$lang = cRegistry::getLanguageId();
+$idart = cRegistry::getArticleId();
 
 if ($auth->auth["uid"] == "nobody") {
     $sTargetIdart = getEffectiveSetting('login', 'idart', '1');

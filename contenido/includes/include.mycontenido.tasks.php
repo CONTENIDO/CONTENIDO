@@ -33,13 +33,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var string $enddate
  */
 
-$oPage = new cGuiPage("mycontenido.tasks", "", "1");
+$oPage = new cGuiPage('mycontenido.tasks', '', '1');
 
 // Display critical error if client or language does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
-    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+    $message = $client && !cRegistry::getClient()->isLoaded()
+        ? i18n('No Client selected')
+        : i18n('No language selected');
     $oPage->displayCriticalError($message);
     $oPage->render();
     return;
@@ -134,7 +136,6 @@ $listCount = 0;
 
 while ($todo = $todoItems->next()) {
     if ((($todo->getProperty("todo", "status") != "done") && $c_restrict) || (empty($c_restrict))) {
-
         $idcommunication = cSecurity::toInteger($todo->get("idcommunication"));
         $subject = $todo->get("subject");
         $created = $todo->get("created");

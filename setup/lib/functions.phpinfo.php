@@ -115,11 +115,9 @@ function getAsBytes($val)
         case 'k':
         case 'K':
             return (int)$val * 1024;
-            break;
         case 'm':
         case 'M':
             return (int)$val * 1048576;
-            break;
         default:
             return $val;
     }
@@ -128,10 +126,6 @@ function getAsBytes($val)
 function isPHPExtensionLoaded($extension): int
 {
     $value = extension_loaded($extension);
-
-    if ($value === NULL) {
-        return CON_EXTENSION_CANTCHECK;
-    }
 
     return $value === true ? CON_EXTENSION_AVAILABLE : CON_EXTENSION_UNAVAILABLE;
 }

@@ -29,9 +29,7 @@ class PimPluginSetupUpdate extends PimPluginSetup
     /**
      * PimPluginSetupUpdate constructor.
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function __construct()
     {
@@ -77,9 +75,7 @@ class PimPluginSetupUpdate extends PimPluginSetup
      *
      * @return bool
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _updateSql()
     {

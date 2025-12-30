@@ -28,15 +28,15 @@ $auth = cRegistry::getAuth();
 $belang = cRegistry::getBackendLanguage();
 $frame = cRegistry::getFrame();
 $action = cRegistry::getAction();
-$idart = cSecurity::toInteger(cRegistry::getArticleId());
+$idart = cRegistry::getArticleId();
 $cfg = cRegistry::getConfig();
 $client = cRegistry::getClientId();
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$lang = cRegistry::getLanguageId();
 $sess = cRegistry::getSession();
 $area = cRegistry::getArea();
 $idcat = cRegistry::getCategoryId();
 $idcatlang = cRegistry::getCategoryLanguageId();
-$idartlang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
+$idartlang = cRegistry::getArticleLanguageId();
 
 // Reset template
 $tpl->reset();
@@ -355,7 +355,6 @@ foreach ($availableTags as $key => $value) {
     } else {
         $tpl->set('d', 'CURSOR', 'default');
         $tpl->set('d', 'DELETE_META', '');
-
     }
     $tpl->next();
 }

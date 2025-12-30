@@ -47,11 +47,8 @@ class cApiMetaTagVersionCollection extends ItemCollection
      * @param int $idMetaType
      * @param string $metaValue
      * @param string $version
-     *
      * @return cApiMetaTagVersion
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idMetaTag, $idArtLang, $idMetaType, $metaValue, $version)
     {
@@ -74,10 +71,10 @@ class cApiMetaTagVersionCollection extends ItemCollection
      * @param int $idArtLang
      * @param int $idMetaType
      * @param int $version
-     * @return cApiMetaTagVersion|NULL
-     * @throws cDbException
+     * @return cApiMetaTagVersion
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function fetchByArtLangMetaTypeAndVersion($idArtLang, $idMetaType, $version)
+    public function fetchByArtLangMetaTypeAndVersion($idArtLang, $idMetaType, $version): cApiMetaTagVersion
     {
         $sql = 'SELECT idmetatagversion FROM %s
                 WHERE (idmetatype, version)
@@ -104,19 +101,17 @@ class cApiMetaTagVersionCollection extends ItemCollection
     /**
      * Returns idmetatagversions by where-clause
      *
-     * @param string $where
      * @return int[]
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function fetchByArtLangAndMetaType($where)
+    public function fetchByArtLangAndMetaType(string $where): array
     {
         $metaTagVersionColl = new cApiMetaTagVersionCollection();
         $metaTagVersionColl->select($where);
 
         $ids = [];
         while ($item = $metaTagVersionColl->next()) {
-            $ids[] = $item->get('idmetatagversion');
+            $ids[] = (int) $item->get('idmetatagversion');
         }
         return $ids;
     }
@@ -134,16 +129,13 @@ class cApiMetaTagVersion extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id
-     *         Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('meta_tag_version'), 'idmetatagversion');
-        $this->setFilters([], []);
+        $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -152,12 +144,9 @@ class cApiMetaTagVersion extends Item
     /**
      * Updates meta value of an entry.
      *
-     * @param string $metaValue
-     * @return bool
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function updateMetaValue($metaValue)
+    public function updateMetaValue(string $metaValue): bool
     {
         $this->set('metavalue', $metaValue, false);
         return $this->store();
@@ -167,9 +156,7 @@ class cApiMetaTagVersion extends Item
      * Marks this meta value as current.
      *
      * @return bool|void
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function markAsCurrent()
     {
@@ -188,9 +175,7 @@ class cApiMetaTagVersion extends Item
      * Marks this meta value as editable.
      *
      * @param int $version
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function markAsEditable($version)
     {
@@ -201,14 +186,7 @@ class cApiMetaTagVersion extends Item
     /**
      * User-defined setter for meta tag fields.
      *
-     * @param string $name
-     *         Field name
-     * @param mixed $value
-     *         Value to set
-     * @param bool $safe
-     *         Flag to run defined inFilter on passed value
-     * @return bool
-     * @see Item::setField()
+     * @inheritDoc
      */
     public function setField($name, $value, $safe = true)
     {

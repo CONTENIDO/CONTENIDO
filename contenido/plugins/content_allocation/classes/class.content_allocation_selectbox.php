@@ -39,9 +39,7 @@ class pApiContentAllocationSelectBox extends pApiTree
      * pApiContentAllocationSelectBox constructor
      *
      * @param string $uuid
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($uuid)
     {

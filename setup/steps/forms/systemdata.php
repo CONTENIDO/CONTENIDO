@@ -25,7 +25,7 @@ class cSetupSystemData extends cSetupMask
 
     /**
      * cSetupSystemData constructor.
-     * @param string $step
+     * @param bool|int $step
      * @param bool $previous
      * @param $next
      */

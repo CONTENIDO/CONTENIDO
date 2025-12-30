@@ -59,45 +59,39 @@ class cApiStatCollection extends ItemCollection
      * Tracks a visit.
      * Increments an existing entry or creates a new one.
      *
-     * @param int $iIdCatArt
-     * @param int $iIdLang
-     * @param int $iIdClient
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param int $idCatArt
+     * @param int $idLang
+     * @param int $idClient
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function trackVisit($iIdCatArt, $iIdLang, $iIdClient)
+    public function trackVisit($idCatArt, $idLang, $idClient)
     {
-        $oStat = $this->fetchByCatArtAndLang($iIdCatArt, $iIdLang);
+        $oStat = $this->fetchByCatArtAndLang($idCatArt, $idLang);
         if (is_object($oStat)) {
             $oStat->increment();
         } else {
-            $this->create($iIdCatArt, $iIdLang, $iIdClient);
+            $this->create($idCatArt, $idLang, $idClient);
         }
     }
 
     /**
      * Creates a stat entry.
      *
-     * @param int $iIdCatArt
-     * @param int $iIdLang
-     * @param int $iIdClient
-     * @param int $iVisited [optional]
-     *
+     * @param int $idCatArt
+     * @param int $idLang
+     * @param int $idClient
+     * @param int $visited [optional]
      * @return cApiStat
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($iIdCatArt, $iIdLang, $iIdClient, $iVisited = 1)
+    public function create($idCatArt, $idLang, $idClient, $visited = 1)
     {
         $oItem = $this->createNewItem();
 
-        $oItem->set('visited', $iVisited);
-        $oItem->set('idcatart', $iIdCatArt);
-        $oItem->set('idlang', $iIdLang);
-        $oItem->set('idclient', $iIdClient);
+        $oItem->set('visited', $visited);
+        $oItem->set('idcatart', $idCatArt);
+        $oItem->set('idlang', $idLang);
+        $oItem->set('idclient', $idClient);
         $oItem->store();
 
         return $oItem;
@@ -106,15 +100,14 @@ class cApiStatCollection extends ItemCollection
     /**
      * Returns a stat entry by category article and language.
      *
-     * @param int $iIdCatArt
-     * @param int $iIdLang
+     * @param int $idCatArt
+     * @param int $idLang
      * @return cApiStat|NULL
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function fetchByCatArtAndLang($iIdCatArt, $iIdLang)
+    public function fetchByCatArtAndLang($idCatArt, $idLang)
     {
-        $where = $this->db->prepare('idcatart = %d AND idlang = %d', $iIdCatArt, $iIdLang);
+        $where = $this->db->prepare('idcatart = %d AND idlang = %d', $idCatArt, $idLang);
         $this->select($where);
         return $this->next();
     }
@@ -122,16 +115,14 @@ class cApiStatCollection extends ItemCollection
     /**
      * Deletes statistics entries by category article id and language id.
      *
-     * @param int $idcatart
-     * @param int $idlang
-     * @return int
-     *         Number of deleted items
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param int $idCatArt
+     * @param int $idLang
+     * @return int Number of deleted items
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteByCategoryArticleAndLanguage($idcatart, $idlang)
+    public function deleteByCategoryArticleAndLanguage($idCatArt, $idLang): int
     {
-        $where = $this->db->prepare('idcatart = %d AND idlang = %d', $idcatart, $idlang);
+        $where = $this->db->prepare('idcatart = %d AND idlang = %d', $idCatArt, $idLang);
         return $this->deleteByWhereClause($where);
     }
 }
@@ -147,26 +138,22 @@ class cApiStat extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('stat'), 'idstat');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * Increment and store property 'visited'.
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function increment()
     {
@@ -177,13 +164,9 @@ class cApiStat extends Item
     /**
      * User-defined setter for stat fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idcatart':
@@ -194,7 +177,7 @@ class cApiStat extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

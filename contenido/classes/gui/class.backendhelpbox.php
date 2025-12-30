@@ -47,13 +47,10 @@ class cGuiBackendHelpbox
     /**
      * Constructor to create an instance of this class.
      *
-     * Create a new backend help box containing a help text and an
-     * optional image URL.
+     * Create a new backend help box containing a help text and an optional image URL.
      *
-     * @param string $helpText
-     *         the text that will appear in the help box
-     * @param string $imageURL [optional]
-     *         This image will be used for the help box
+     * @param string $helpText The text that will appear in the help box
+     * @param string $imageURL [optional] This image will be used for the help box
      */
     public function __construct($helpText, $imageURL = '')
     {
@@ -64,8 +61,7 @@ class cGuiBackendHelpbox
     /**
      * Set the help text to a new value.
      *
-     * @param string $helpText
-     *         the text that will appear in the help box
+     * @param string $helpText The text that will appear in the help box
      */
     public function setHelpText($helpText)
     {
@@ -75,8 +71,7 @@ class cGuiBackendHelpbox
     /**
      * Set the image for the help box.
      *
-     * @param string $imageURL
-     *         the image file
+     * @param string $imageURL The image file
      */
     public function setImageURL($imageURL)
     {
@@ -86,13 +81,10 @@ class cGuiBackendHelpbox
     /**
      * Render the help box.
      *
-     * @param bool $return [optional]
-     *         If true the rendered markup will be returned.
-     *         Otherwise, it will be echoed.
-     * @return string|NULL
-     *         rendered markup or NULL if it's been printed
+     * @param bool $return If true the rendered markup will be returned. Otherwise, it will be echoed.
+     * @return ?string Rendered markup or NULL if it's been printed
      */
-    public function render($return = true)
+    public function render(bool $return = true)
     {
         $id = md5(rand());
 
@@ -115,10 +107,9 @@ class cGuiBackendHelpbox
     /**
      * Direct call of object as string will return its generated markup.
      *
-     * @return string
-     *         Generated markup
+     * @return string Generated markup
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render();
     }

@@ -130,8 +130,10 @@ if (isset($changelang) && is_numeric($changelang)) {
     }
 }
 
-if (!cSecurity::isPositiveInteger($client ?? 0)
-    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))) {
+if (
+    !cSecurity::isPositiveInteger($client ?? 0)
+    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))
+) {
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
@@ -172,7 +174,7 @@ if (isset($area)) {
 
 // Initialize CONTENIDO_Backend.
 // Load all actions from the DB and check if permission is granted.
-$oldmemusage = memory_get_usage();
+$oldMemUsage = memory_get_usage();
 
 // Select frameset
 $backend->setFrame($frame);
@@ -224,7 +226,7 @@ if (count($backend->getFile('main')) > 0) {
 }
 
 // Finalize debug of backend rendering
-cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldmemusage, $sFilename));
+cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldMemUsage ?? 0, $sFilename));
 
 // User Tracking (who is online)
 $oActiveUser = new cApiOnlineUserCollection();

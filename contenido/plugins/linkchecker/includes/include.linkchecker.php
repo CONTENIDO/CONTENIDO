@@ -43,7 +43,7 @@ if (!$cronjob) {
     }
 
     if (cRegistry::getClientId() == 0) {
-        $notification->displayNotification("error", i18n("No Client selected"));
+        $notification->displayNotification('error', i18n("No Client selected"));
         exit();
     }
 }

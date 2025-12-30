@@ -17,11 +17,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $db;
 
 // Display critical error if client or language does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
-    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
-    $oPage = new cGuiPage("mod_overview");
+    $message = $client && !cRegistry::getClient()->isLoaded()
+        ? i18n('No Client selected')
+        : i18n('No language selected');
+    $oPage = new cGuiPage('mod_overview');
     $oPage->displayCriticalError($message);
     $oPage->render();
     return;
@@ -104,12 +106,10 @@ if ($elemPerPage > 0) {
 }
 
 foreach ($allModules as $idmod => $module) {
-
     if ($perm->have_perm_item($area, $idmod) ||
         $perm->have_perm_area_action("mod_translate", "mod_translation_save") ||
         $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $idmod)
     ) {
-
         $link = new cHTMLLink();
         $link->setClass('show_item')
             ->setLink('javascript:void(0)')

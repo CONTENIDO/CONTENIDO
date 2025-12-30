@@ -94,9 +94,7 @@ class cUriTest extends cTestingTestCase
      * - /cms/
      * - /cms/front_content.php
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function testInternalRedirectUrlToHomepageCreation()
     {

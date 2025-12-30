@@ -28,10 +28,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // ################################
 // Initialization
 // ################################
-$oPage = new cGuiPage("newsletter_jobs_menu", "newsletter");
+$oPage = new cGuiPage('newsletter_jobs_menu', 'newsletter');
 $oMenu = new cGuiMenu();
 $oJobs = new NewsletterJobCollection();
-$oUser = new cApiUser($auth->auth["uid"]);
+$oUser = new cApiUser($auth->auth['uid']);
 
 // Specify fields for search, sort and validation. Design makes enhancements
 // using plugins possible (currently not implemented). If you are changing

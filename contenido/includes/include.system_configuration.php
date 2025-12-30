@@ -25,22 +25,15 @@ global $cfg, $auth, $perm, $area, $frame;
  *
  * Returns an associative array with the label and the input field.
  *
- * @param string $name
- *         the name of the form element
- * @param array $possibleValues
- *         the possible values
- * @param string $value
- *         the value which should be selected
- * @param string $label
- *         the label text which should be rendered
+ * @param string $name the name of the form element
+ * @param array $possibleValues the possible values
+ * @param string $value the value which should be selected
+ * @param string $label the label text which should be rendered
  * @param int $width
- *
- * @return array
- *         associative array with the label and the input field
- *
+ * @return array associative array with the label and the input field
  * @throws cException
  */
-function renderSelectProperty($name, $possibleValues, $value, $label, $width = 322)
+function renderSelectProperty($name, $possibleValues, $value, $label, $width = 322): array
 {
     $auth = cRegistry::getAuth();
     $return = [
@@ -97,7 +90,6 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
             $html->setStyle('display: block; float: left; width: ' . $width . 'px;');
             $return['label'] = renderLabel($label, $name, 280, ':', 'left');
         }
-
     }
 
     // disable the HTML element if user is not a sysadmin
@@ -116,19 +108,14 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
 /**
  * Renders a cHTMLLabel.
  *
- * @param string $text
- *         the label text
- * @param string $name
- *         the name of the corresponding input element
- * @param int $width
- *         the width in pixel
- * @param string $separator
- *         the separator which is written at the end of the label
+ * @param string $text the label text
+ * @param string $name the name of the corresponding input element
+ * @param int $width the width in pixel
+ * @param string $separator the separator which is written at the end of the label
  * @param string $float
- * @return string
- *         the rendered cHTMLLabel element
+ * @return string the rendered cHTMLLabel element
  */
-function renderLabel($text, $name, $width = 280, $separator = ':', $float = '')
+function renderLabel($text, $name, $width = 280, $separator = ':', $float = ''): string
 {
     $label = new cHTMLLabel($text . $separator, $name);
     $label->setClass("sys_config_txt_lbl");
@@ -146,18 +133,13 @@ function renderLabel($text, $name, $width = 280, $separator = ':', $float = '')
  *
  * Returns an associative array with the label and the input field.
  *
- * @param string $name
- *         the name of the form element
- * @param string $value
- *         the value of the text field
- * @param string $label
- *         the label text
- * @param bool $password
- *         if the input is a password
- * @return array
- *         associative array with the label and the input field
+ * @param string $name the name of the form element
+ * @param string $value the value of the text field
+ * @param string $label the label text
+ * @param bool $password if the input is a password
+ * @return array associative array with the label and the input field
  */
-function renderTextProperty($name, $value, $label, $password = false)
+function renderTextProperty($name, $value, $label, $password = false): array
 {
     $auth = cRegistry::getAuth();
 

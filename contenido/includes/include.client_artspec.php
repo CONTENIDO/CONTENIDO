@@ -23,16 +23,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var int $idartspec
  */
 
-$page = new cGuiPage("client_artspec");
+$page = new cGuiPage('client_artspec');
 
 $online = cSecurity::toInteger($_GET['online'] ?? '0');
 $online = $online === 1 ? 1 : 0;
 
 $action = $action ?? '';
 
-if ($action == "client_artspec_save") {
+if ($action == 'client_artspec_save') {
     if (!$perm->have_perm_area_action($area, $action)) {
-        $notification->displayNotification("error", i18n("Permission denied"));
+        $notification->displayNotification('error', i18n("Permission denied"));
     } else {
         // It is an update if idartspec exists, otherwise it is a new entry.
         $_idArtSpec = isset($_POST['idartspec']) ? cSecurity::toInteger($_POST['idartspec']) : null;
@@ -40,33 +40,33 @@ if ($action == "client_artspec_save") {
     }
 }
 
-if ($action == "client_artspec_delete") {
+if ($action == 'client_artspec_delete') {
     if (!$perm->have_perm_area_action($area, $action)) {
-        $notification->displayNotification("error", i18n("Permission denied"));
+        $notification->displayNotification('error', i18n("Permission denied"));
     } else {
         cDeleteArtSpec(cSecurity::toInteger($_GET['idartspec']));
     }
 }
 
-if ($action == "client_artspec_online") {
-    if (!$perm->have_perm_area_action($area, "client_artspec_save")) {
-        $notification->displayNotification("error", i18n("Permission denied"));
+if ($action == 'client_artspec_online') {
+    if (!$perm->have_perm_area_action($area, 'client_artspec_save')) {
+        $notification->displayNotification('error', i18n("Permission denied"));
     } else {
         cSetArtSpecOnline(cSecurity::toInteger($_GET['idartspec']), $online);
     }
 }
 
-if ($action == "client_artspec_default") {
-    if (!$perm->have_perm_area_action($area, "client_artspec_save")) {
-        $notification->displayNotification("error", i18n("Permission denied"));
+if ($action == 'client_artspec_default') {
+    if (!$perm->have_perm_area_action($area, 'client_artspec_save')) {
+        $notification->displayNotification('error', i18n("Permission denied"));
     } else {
         cSetArtSpecDefault(cSecurity::toInteger($_GET['idartspec']));
     }
 }
 
 $artSpecs = cGetArtSpecs(
-    cSecurity::toInteger(cRegistry::getClientId()),
-    cSecurity::toInteger(cRegistry::getLanguageId())
+    cRegistry::getClientId(),
+    cRegistry::getLanguageId()
 );
 
 $list = new cGuiList();

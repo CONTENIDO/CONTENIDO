@@ -59,9 +59,14 @@ while ($obj = $workflowArtAllocations->next()) {
         }
 
         $startTime = strtotime(
-            substr_replace(cString::getPartOfString(cString::getPartOfString($startTime, 0, 2)
-            . chunk_split(cString::getPartOfString($startTime, 2, 6), 2, '-')
-            . chunk_split(cString::getPartOfString($startTime, 8), 2, ':'), 0, 19), ' ', 10, 1)
+            substr_replace(
+                cString::getPartOfString(cString::getPartOfString($startTime, 0, 2)
+                    . chunk_split(cString::getPartOfString($startTime, 2, 6), 2, '-')
+                    . chunk_split(cString::getPartOfString($startTime, 8), 2, ':'), 0, 19),
+                ' ',
+                10,
+                1
+            )
         );
 
         switch ($timeUnit) {

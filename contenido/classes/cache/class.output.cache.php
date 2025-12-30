@@ -323,12 +323,9 @@ VALID UNTIL: %s
     /**
      * Handles PEAR caching.
      *
-     * The script will be terminated by calling die(), if any cached
-     * content is found.
+     * The script will be terminated by calling die(), if any cached content is found.
      *
-     * @param int $iPageStartTime [optional]
-     *                            Optional start time, e.g. start time of main script
-     *
+     * @param int $iPageStartTime [optional] Optional start time, e.g. start time of main script
      * @throws cInvalidArgumentException
      */
     public function start($iPageStartTime = NULL)
@@ -473,41 +470,36 @@ class cOutputCacheHandler extends cOutputCache
      *
      * Does some checks and sets the configuration of cache object.
      *
-     * @param array $aConf
-     *                           Configuration of caching as follows:
-     *                           - $a['excludecontenido'] bool
-     *                           don't cache output, if we have a CONTENIDO variable,
-     *                           e.g. on calling frontend preview from backend
-     *                           - $a['enable'] bool
-     *                           activate caching of frontend output
-     *                           - $a['debug'] bool
-     *                           compose debugging information (hit/miss and execution time of caching)
-     *                           - $a['infotemplate'] string
-     *                           debug information template
-     *                           - $a['htmlcomment'] bool
-     *                           add a html comment including several debug messages to output
-     *                           - $a['lifetime'] int
-     *                           lifetime in seconds to cache output
-     *                           - $a['cachedir'] string
-     *                           directory where cached content is to store.
-     *                           - $a['cachegroup'] string
-     *                           cache group, will be a subdirectory inside the cache directory
-     *                           - $a['cacheprefix'] string
-     *                           add prefix to stored filenames
-     *                           - $a['idoptions'] array
-     *                           several variables to create a unique id,
-     *                           if the output depends on them. e.g.
-     *                           [
-     *                               'uri'  => $_SERVER['REQUEST_URI'],
-     *                               'post' => $_POST, 'get' => $_GET
-     *                           ]
-     * @param cDb $db
-     *                           CONTENIDO database object
-     * @param int $iCreateCode [optional]
-     *                           Flag of createcode state from table con_cat_art
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param array $aConf Configuration of caching as follows:
+     *      - $a['excludecontenido'] bool
+     *        don't cache output, if we have a CONTENIDO variable,
+     *        e.g. on calling frontend preview from backend
+     *      - $a['enable'] bool
+     *        activate caching of frontend output
+     *      - $a['debug'] bool
+     *        compose debugging information (hit/miss and execution time of caching)
+     *      - $a['infotemplate'] string
+     *        debug information template
+     *      - $a['htmlcomment'] bool
+     *        add a html comment including several debug messages to output
+     *      - $a['lifetime'] int
+     *        lifetime in seconds to cache output
+     *      - $a['cachedir'] string
+     *        directory where cached content is to store.
+     *      - $a['cachegroup'] string
+     *        cache group, will be a subdirectory inside the cache directory
+     *      - $a['cacheprefix'] string
+     *        add prefix to stored filenames
+     *      - $a['idoptions'] array
+     *        several variables to create a unique id,
+     *        if the output depends on them. e.g.
+     *        [
+     *            'uri' => $_SERVER['REQUEST_URI'],
+     *            'post' => $_POST, 'get' => $_GET
+     *        ]
+     * @param cDb $db CONTENIDO database object
+     * @param int $iCreateCode [optional] Flag of createcode state from table con_cat_art
+     * @throws cDbException|cException
      */
     public function __construct($aConf, $db, $iCreateCode = NULL)
     {
@@ -567,15 +559,10 @@ class cOutputCacheHandler extends cOutputCache
      * Output will be loaded from cache, if no code is to create.
      * It also checks the state of global variable $force.
      *
-     * @param mixed $iCreateCode
-     *         State of create code (0 or 1).
-     *         The state will be loaded from database if value is NULL
-     *
-     * @return bool
-     *         True if code is to create, otherwise false.
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $iCreateCode State of create code (0 or 1).
+     *      The state will be loaded from database if value is NULL
+     * @return bool True if code is to create, otherwise false.
+     * @throws cDbException|cException
      */
     protected function _isCode2Create($iCreateCode): bool
     {

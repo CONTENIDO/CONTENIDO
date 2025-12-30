@@ -11,8 +11,7 @@ class DogRfidCollection extends ItemCollection
      *
      * @param string|bool $where
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
@@ -33,8 +32,7 @@ class DogRfidItem extends Item
      *
      * @param int|bool $id
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {

@@ -76,20 +76,14 @@ class cUri
     /**
      * Creates a URL to frontend page.
      *
-     * @param mixed $param
-     *         Either url or associative array containing parameter:
-     *         - url: front_content.php?idcat=12&lang=1
-     *         - params: ['idcat' => 12, 'lang' => 1]
-     *         Required values depend on used UriBuilder, but a must have is 'lang'.
-     * @param bool $bUseAbsolutePath [optional]
-     *         Flag to create absolute Urls
-     * @param array $aConfig [optional]
-     *         If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
-     * @return string
-     *         The Url build by cUriBuilder
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param mixed $param Either url or associative array containing parameter:
+     *      - url: front_content.php?idcat=12&lang=1
+     *      - params: ['idcat' => 12, 'lang' => 1]
+     *      Required values depend on used UriBuilder, but a must-have is 'lang'.
+     * @param bool $bUseAbsolutePath [optional] Flag to create absolute Urls
+     * @param array $aConfig [optional] If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
+     * @return string The Url build by cUriBuilder
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function build($param, $bUseAbsolutePath = false, array $aConfig = [])
     {
@@ -155,19 +149,13 @@ class cUri
     /**
      * Creates a URL used to redirect to frontend page.
      *
-     * @param mixed $param
-     *                       Either url or associative array containing parameter:
-     *                       - url: front_content.php?idcat=12&lang=1
-     *                       - params: ['idcat' => 12, 'lang' => 1]
-     *                       Required values depend on used UriBuilder, but a must have is 'lang'.
-     * @param array $aConfig [optional]
-     *                       If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder.
-     *
-     * @return string
-     *         The redirect Url build by cUriBuilder.
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param mixed $param Either url or associative array containing parameter:
+     *      - url: front_content.php?idcat=12&lang=1
+     *      - params: ['idcat' => 12, 'lang' => 1]
+     *      Required values depend on used UriBuilder, but a must-have is 'lang'.
+     * @param array $aConfig [optional] If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder.
+     * @return string The redirect Url build by cUriBuilder.
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function buildRedirect($param, array $aConfig = [])
     {
@@ -178,11 +166,9 @@ class cUri
     /**
      * Splits passed url into its components.
      *
-     * @param string $sUrl
-     *         The Url to strip down.
-     * @return array
-     *         Associative array created by using parse_url()
-     *         having the key 'params' which includes the parameter value pairs.
+     * @param string $sUrl The Url to strip down.
+     * @return array Associative array created by using parse_url() having the key 'params'
+     *      which includes the parameter value pairs.
      */
     public function parse($sUrl)
     {
@@ -203,10 +189,8 @@ class cUri
     /**
      * Composes a url using passed components array.
      *
-     * @param array $aComponents
-     *         Associative array created by parse_url()
-     * @return string
-     *         The composed Url
+     * @param array $aComponents Associative array created by parse_url()
+     * @return string The composed Url
      */
     public function composeByComponents(array $aComponents)
     {
@@ -222,13 +206,10 @@ class cUri
     }
 
     /**
-     * Checks, if passed url is an external url while performing
-     * hostname check.
+     * Checks, if passed url is an external url while performing hostname check.
      *
-     * @param string $sUrl
-     *         Url to check.
-     * @return bool
-     *         True if url is a external url, otherwise false.
+     * @param string $sUrl Url to check.
+     * @return bool True if url is a external url, otherwise false.
      */
     public function isExternalUrl($sUrl)
     {
@@ -262,14 +243,11 @@ class cUri
      * All of them prefixed with protocol and client host (e.g. https://host/) will also be identified
      * as an internal Url.
      *
-     * Other Urls, even internal Urls like /unknown/path/to/some/page.html
-     * will not be identified as internal url event if they are real
-     * working clean URLs.
+     * Other Urls, even internal Urls like /unknown/path/to/some/page.html will not be identified as
+     * internal url event if they are real working clean URLs.
      *
-     * @param string $sUrl
-     *         Url to check.
-     * @return bool
-     *         True if url is identifiable internal url, otherwise false.
+     * @param string $sUrl Url to check.
+     * @return bool True if url is identifiable internal url, otherwise false.
      */
     public function isIdentifiableFrontContentUrl($sUrl)
     {
@@ -321,7 +299,7 @@ class cUri
      *
      * @param string $uri - The URI to append parameters to
      * @param array $parameters - Parameter to append
-     * @param array|null $reservedParameters - List of reserved parameters to skip from overwriting.
+     * @param ?array $reservedParameters - List of reserved parameters to skip from overwriting.
      *     If no list is given, then following reserved parameters will be defined as not overridable:
      *     'client', 'idart', 'idcat', 'idartlang', 'lang', 'error'
      * @param bool $overwrite - Flag to overwrite other already existing parameters in given url.
@@ -330,10 +308,11 @@ class cUri
      * @since CONTENIDO 4.10.2
      */
     public function appendParameters(
-        string $uri, array $parameters, array $reservedParameters = null,
-        bool   $overwrite = false
-    ): string
-    {
+        string $uri,
+        array $parameters,
+        ?array $reservedParameters = null,
+        bool $overwrite = false
+    ): string {
         if (!is_array($reservedParameters)) {
             $reservedParameters = [
                 'client', 'idart', 'idcat', 'idartlang', 'lang', 'error'

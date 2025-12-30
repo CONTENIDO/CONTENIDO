@@ -16,11 +16,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $action = cRegistry::getAction();
 
-$page = new cGuiPage("stat_search_overview");
+$page = new cGuiPage('stat_search_overview');
 
 // check for the client setting. If search tracking is not allowed, display an
 // error
-if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
+if (getEffectiveSetting('search', 'term_tracking', 'on') != 'on') {
     $page->displayCriticalError(i18n('You disabled search tracking in the client settings.'));
     $page->render();
     die();
@@ -28,7 +28,7 @@ if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
 
 // the collection we'll be showing
 $termCollection = new cApiSearchTrackingCollection();
-$term = isset($_GET['term']) ? $_GET['term'] : '';
+$term = $_GET['term'] ?? '';
 if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
     $term = stripslashes($term);
 }

@@ -45,16 +45,15 @@ abstract class PifaAbstractFormProcessor
      * The idform is read from the given modules settings.
      *
      * In former implementations of the processor the modules had no settings
-     * and thus no idform. Thats why optionally the idform gan be given
-     * explicitly. This shoud be removed when all processors are refactored.
+     * and thus no idform. That's why optionally the idform gan be given
+     * explicitly. This should be removed when all processors are refactored.
      *
-     * @param PifaAbstractFormModule $module
-     * @param int $idform
-     * @throws PifaException if id of form could not be determined from module
-     *         or param
-     * @throws PifaException if form could not be loaded
+     * @param ?PifaAbstractFormModule $module
+     * @param ?int $idform
+     * @throws PifaException If id of form could not be determined from module or param
+     * @throws cDbException|cException
      */
-    public function __construct(PifaAbstractFormModule $module = NULL, $idform = NULL)
+    public function __construct(?PifaAbstractFormModule $module = NULL, ?int $idform = NULL)
     {
         $this->_module = $module;
 

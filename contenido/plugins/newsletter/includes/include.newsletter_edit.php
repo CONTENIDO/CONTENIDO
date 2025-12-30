@@ -23,10 +23,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var int $frame
  */
 
-cInclude("includes", "functions.con.php");
+cInclude('includes', 'functions.con.php');
 
 // Initialization
-$oPage = new cGuiPage("newsletter_edit", "newsletter");
+$oPage = new cGuiPage('newsletter_edit', 'newsletter');
 $oRcpGroups = new NewsletterRecipientGroupCollection();
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 $oNewsletters = new NewsletterCollection();

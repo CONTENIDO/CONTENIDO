@@ -50,14 +50,10 @@ class cGuiList
     }
 
     /**
-     *
-     * @param bool $print [optional]
-     *
-     * @return string|void
-     *         Complete template string or nothing
+     * @return ?string Complete template string or null
      * @throws cInvalidArgumentException
      */
-    public function render($print = false)
+    public function render(bool $print = false)
     {
         global $cfg;
 
@@ -97,8 +93,9 @@ class cGuiList
 
         $rendered = $tpl->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['generic_list'], true);
 
-        if ($print == true) {
+        if ($print) {
             echo $rendered;
+            return null;
         } else {
             return $rendered;
         }

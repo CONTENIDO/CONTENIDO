@@ -173,9 +173,8 @@ class cRightsAreasHelper
     /**
      * Returns list of available clients.
      *
-     * @return array
-     * @throws cDbException
-     * @throws cException
+     * @return array<int, array>
+     * @throws cDbException|cException
      */
     public function getAvailableClients(): array
     {
@@ -211,7 +210,7 @@ class cRightsAreasHelper
     /**
      * Renders the client admin checkboxes for the passed list of client ids.
      *
-     * @param int[] $clients
+     * @param array<int, array> $clients
      * @return string
      */
     public function renderClientAdminCheckboxes(array $clients): string
@@ -262,8 +261,7 @@ class cRightsAreasHelper
      */
     public function renderLanguagePermCheckbox(
         int $idLanguage, string $languageName, string $clientName
-    ): string
-    {
+    ): string {
         $oCheckbox = new cHTMLCheckbox(
             "mlang[" . $idLanguage . "]",
             $idLanguage,
@@ -286,8 +284,7 @@ class cRightsAreasHelper
      */
     public function renderPropertiesTable(
         array $data, string $typeFieldName, string $nameFieldName, string $valueFieldName
-    ): string
-    {
+    ): string {
         $table = new cHTMLTable();
         $table->setClass('generic');
 

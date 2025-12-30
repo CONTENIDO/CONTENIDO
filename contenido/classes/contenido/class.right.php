@@ -68,11 +68,8 @@ class cApiRightCollection extends ItemCollection
      * @param int $idclient
      * @param int $idlang
      * @param int $type
-     *
      * @return cApiRight
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type)
     {
@@ -96,12 +93,10 @@ class cApiRightCollection extends ItemCollection
      *
      * @param int $idcat
      * @param string $userId
-     *
      * @return bool
-     *
      * @throws cDbException
      */
-    public function hasFrontendAccessByCatIdAndUserId($idcat, $userId)
+    public function hasFrontendAccessByCatIdAndUserId($idcat, $userId): bool
     {
         $sql = "SELECT :pk FROM `:rights` AS A, `:actions` AS B, `:area` AS C
                 WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id = ':userid'
@@ -126,19 +121,12 @@ class cApiRightCollection extends ItemCollection
      * Deletes right entries by user id.
      *
      * @param string $userId
-     *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
-     * @todo Implement functions to delete rights by area, action, cat, client,
-     *       language.
-     *
+     * @throws cDbException|cInvalidArgumentException
+     * @todo Implement functions to delete rights by area, action, cat, client, language.
      */
     public function deleteByUserId($userId)
     {
-        $result = $this->deleteBy('user_id', $userId);
-        return $result > 0;
+        return $this->deleteBy('user_id', $userId) > 0;
     }
 
 }
@@ -154,31 +142,24 @@ class cApiRight extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('rights'), 'idright');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for right fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idaction':
@@ -191,7 +172,7 @@ class cApiRight extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

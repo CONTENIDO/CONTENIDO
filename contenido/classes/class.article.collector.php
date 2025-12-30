@@ -194,11 +194,9 @@ class cArticleCollector implements SeekableIterator, Countable
      * Compatibility method for old ArticleCollection class. Returns the start
      * article of a category. Does work only if one category was requested.
      *
-     * @return cApiArticleLanguage
-     *
      * @throws cBadMethodCallException|cDbException|cException
      */
-    public function startArticle()
+    public function startArticle(): cApiArticleLanguage
     {
         if (count($this->_startArticles) != 1) {
             throw new cBadMethodCallException("Can not load start article due to multiple loaded start articles.");
@@ -256,8 +254,7 @@ class cArticleCollector implements SeekableIterator, Countable
      * // Iterate through all articles of page two while ($art =
      * $collection->nextArticle()) { ... }
      *
-     * @param int $page
-     *         The page of the article collection
+     * @param int $page The page of the article collection
      */
     public function setPage($page)
     {
@@ -269,8 +266,7 @@ class cArticleCollector implements SeekableIterator, Countable
     /**
      * Seeks a specific position in the loaded articles.
      *
-     * @param int $position
-     *         position to load
+     * @param int $position Position to load
      * @throws cOutOfBoundsException
      */
     #[\ReturnTypeWillChange]
@@ -294,22 +290,18 @@ class cArticleCollector implements SeekableIterator, Countable
 
     /**
      * Method "current" of the implemented iterator.
-     *
-     * @return cApiArticleLanguage|null
      */
     #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): ?cApiArticleLanguage
     {
         return $this->_articles[$this->_currentPosition] ?? null;
     }
 
     /**
      * Method "key" of the implemented iterator.
-     *
-     * @return int
      */
     #[\ReturnTypeWillChange]
-    public function key()
+    public function key(): int
     {
         return $this->_currentPosition;
     }
@@ -325,11 +317,9 @@ class cArticleCollector implements SeekableIterator, Countable
 
     /**
      * Method "valid" of the implemented iterator.
-     *
-     * @return bool
      */
     #[\ReturnTypeWillChange]
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->_articles[$this->_currentPosition]);
     }
@@ -337,21 +327,17 @@ class cArticleCollector implements SeekableIterator, Countable
     /**
      * Method "count" of the implemented Countable interface. Returns the amount
      * of all loaded articles.
-     *
-     * @return int
      */
     #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return count($this->_articles);
     }
 
     /**
      * Returns the array of start articles.
-     *
-     * @return array
      */
-    public function getStartArticles()
+    public function getStartArticles(): array
     {
         return $this->_startArticles;
     }
@@ -359,11 +345,10 @@ class cArticleCollector implements SeekableIterator, Countable
     /**
      * Fetches all start articles for defined categories from the database.
      *
-     * @return array  Array where the key is the category id and the value
-     *                the id of the start article.
+     * @return array Array where the key is the category id and the value the id of the start article.
      * @throws cDbException|cException
      */
-    protected function _fetchStartArticles()
+    protected function _fetchStartArticles(): array
     {
         $catLangColl = new cApiCategoryLanguageCollection();
         $catLangColl->addResultFields(['startidartlang', 'idcat']);
@@ -387,10 +372,8 @@ class cArticleCollector implements SeekableIterator, Countable
     /**
      * Builds the articles query to retrieve distinct articles from the
      * article-language table by using the defined options.
-     *
-     * @return string
      */
-    protected function _buildArticlesQuery()
+    protected function _buildArticlesQuery(): string
     {
         $options = $this->_options;
 

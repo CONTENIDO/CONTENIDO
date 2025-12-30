@@ -180,31 +180,31 @@ abstract class cCodeGeneratorAbstract
     }
 
     /**
-     * Generates the code for a specific article (article for a client
-     * in a language).
+     * Generates the code for a specific article (article for a client in a language).
      *
      * @param int $idcat
      * @param int $idart
      * @param int $lang
      * @param int $client
-     * @param bool $layout [optional]
-     *                           This params purpose is unclear.
-     * @param bool $save [optional]
-     *                           Flag to persist generated code.
-     * @param bool $contype [optional]
-     *                           Flag to enable/disable replacement of CMS_TAGS[].
+     * @param bool $layout [optional] This params purpose is unclear.
+     * @param bool $save [optional] Flag to persist generated code.
+     * @param bool $contype [optional] Flag to enable/disable replacement of CMS_TAGS[].
      * @param bool $editable [optional]
-     * @param int|NULL $version [optional]
-     *
-     * @return string
-     *         Generated code or error code '0601' if no template
-     *         configuration was found for category or article.
-     *
+     * @param ?int $version [optional]
+     * @return string Generated code or error code '0601' if no template configuration was
+     *      found for category or article.
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function generate(
-        $idcat, $idart, $lang, $client, $layout = false, $save = true,
-        $contype = true, $editable = true, $version = NULL
+        $idcat,
+        $idart,
+        $lang,
+        $client,
+        $layout = false,
+        $save = true,
+        $contype = true,
+        $editable = true,
+        $version = NULL
     )
     {
         $this->_idcat = cSecurity::toInteger($idcat);
@@ -240,15 +240,11 @@ abstract class cCodeGeneratorAbstract
     abstract function _generate($contype = true, $editable = true, $version = NULL): string;
 
     /**
-     * Returns the template configuration id, either by configured
-     * article or by configured category.
+     * Returns the template configuration id, either by configured article or by configured category.
      *
-     * @return int|NULL
-     *
-     * @throws cInvalidArgumentException
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
-    protected function _getTemplateConfigurationId()
+    protected function _getTemplateConfigurationId(): ?int
     {
         // get configuration for article
         $idtplcfg = conGetTemplateConfigurationIdForArticle($this->_idart, $this->_idcat, $this->_lang, $this->_client);
@@ -264,7 +260,7 @@ abstract class cCodeGeneratorAbstract
             }
         }
 
-        return (is_numeric($idtplcfg)) ? $idtplcfg : NULL;
+        return (is_numeric($idtplcfg)) ? (int) $idtplcfg : NULL;
     }
 
     /**
@@ -286,10 +282,7 @@ abstract class cCodeGeneratorAbstract
      *     'name': string,
      * }
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
-     *
-     * @global array $cfg
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _getTemplateData(): array
     {
@@ -327,14 +320,10 @@ abstract class cCodeGeneratorAbstract
     /**
      * Processes replacements of all existing CMS_* tags within passed code.
      *
-     * @param array $contentList
-     *                            Associative list of CMS variables.
-     * @param bool $saveKeywords [optional]
-     *                            Flag to save collected keywords during replacement process.
+     * @param array $contentList Associative list of CMS variables.
+     * @param bool $saveKeywords [optional] Flag to save collected keywords during replacement process.
      * @param bool $editable [optional]
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function _processCmsTags($contentList, $saveKeywords = true, $editable = true)
     {
@@ -530,7 +519,7 @@ abstract class cCodeGeneratorAbstract
      * Returns array of all CMS_* vars being used by current article and language
      *
      * @param bool $editable [optional]
-     * @param int|NULL $version [optional]
+     * @param ?int $version [optional]
      *
      * @return array
      *         like $arr[type][typeid] = value;

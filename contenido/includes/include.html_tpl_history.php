@@ -27,7 +27,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 
 $perm = cRegistry::getPerm();
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getCategoryId();
 $area = cRegistry::getArea();
 
 $oPage = new cGuiPage('html_tpl_history');

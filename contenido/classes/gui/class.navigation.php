@@ -76,7 +76,7 @@ class cGuiNavigation
         $this->_xml = new cXmlReader();
         $this->_plugXml = new cXmlReader();
         $this->_imagesPath = $cfg['path']['images'];
-        $this->_clientId = cSecurity::toInteger(cRegistry::getClientId());
+        $this->_clientId = cRegistry::getClientId();
 
         // Load language file
         if (!$this->_xml->load($cfg['path']['xml'] . "navigation.xml")) {
@@ -90,7 +90,7 @@ class cGuiNavigation
      * @param string $name Name of the variable
      * @return int|string|void
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         if (in_array($name, ['xml', 'plugxml', 'data'])) {
             cDeprecated("The property `' . $name . '` is deprecated since CONTENIDO 4.10.2, it isd not meant for public usage.");
@@ -100,21 +100,16 @@ class cGuiNavigation
 
     /**
      * Extracts caption from the XML language file including plugins
-     * extended multilang version.
+     * extended multilanguage version.
      *
-     * @param string $location
-     *         The location of navigation item caption. Feasible values are
-     *         - "{xmlFilePath};{XPath}": Path to XML File and the XPath
-     *         value separated by semicolon. This type is used to extract
-     *         caption from a plugin XML file.
-     *         - "{XPath}": XPath value to extract caption from CONTENIDO
-     *         XML file
-     * @return string
-     *         The found caption
-     * @throws cException
-     *         if XML language files could not be loaded
+     * @param string $location The location of navigation item caption. Feasible values are
+     *         - "{xmlFilePath};{XPath}": Path to XML File and the XPath value separated by semicolon.
+     *           This type is used to extract caption from a plugin XML file.
+     *         - "{XPath}": XPath value to extract caption from CONTENIDO XML file
+     * @return string The found caption
+     * @throws cException if XML language files could not be loaded
      */
-    public function getName($location)
+    public function getName($location): string
     {
         $cfg = cRegistry::getConfig();
 
@@ -172,8 +167,7 @@ class cGuiNavigation
     /**
      * Reads and fills the navigation structure data
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function buildHeaderData()
     {
@@ -194,7 +188,7 @@ class cGuiNavigation
         $sql = "SELECT
                     a.idnavm AS idnavm, a.location AS location, b.name AS area, b.relevant
                 FROM
-                    `" . cRegistry::getDbTableName('nav_sub') . "` AS a, 
+                    `" . cRegistry::getDbTableName('nav_sub') . "` AS a,
                     `" . cRegistry::getDbTableName('area') . "` AS b
                 WHERE
                     a.idnavm IN (" . $inSql . ") AND
@@ -234,12 +228,8 @@ class cGuiNavigation
     /**
      * Function to build the CONTENIDO header document for backend.
      *
-     * @param int $lang
-     *         The language id
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param int $lang The language id
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function buildHeader($lang)
     {
@@ -415,13 +405,8 @@ class cGuiNavigation
     /**
      * Renders the language select box.
      *
-     * @param int $lang
-     *         Language id
-     * @return string
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param int $lang Language id
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function _renderLanguageSelect($lang): string
     {
@@ -463,14 +448,10 @@ class cGuiNavigation
     }
 
     /**
-     * Renders a select box where the client can be selected as well as
-     * an edit button.
+     * Renders a select box where the client can be selected as well as an edit button.
      *
-     * @return string
-     *         rendered HTML
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @return string rendered HTML
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function _renderClientSelect(): string
     {
@@ -543,9 +524,7 @@ class cGuiNavigation
      * @param string $clientName
      * @param string $clientImage
      * @return void
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      * @since CONTENIDO 4.10.2
      */
     private function renderChosenClient(cTemplate $main, string $clientName, string $clientImage)

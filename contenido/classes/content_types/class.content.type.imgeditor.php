@@ -108,15 +108,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings
-     *         the raw settings in an XML structure or as plaintext
-     * @param int $id
-     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
-     *         array containing the values of all content types
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param string $rawSettings The raw settings in an XML structure or as plaintext
+     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes Array containing the values of all content types
+     * @throws cDbException|cException
      */
     public function __construct($rawSettings, $id, array $contentTypes)
     {
@@ -181,24 +176,19 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     /**
      * Return the raw settings of a content type
      *
-     * @param string $contentTypeName
-     *                         Content type name
-     * @param int $id
-     *                         ID of the content type
-     * @param array $contentTypes
-     *                         Content type array
+     * @param string $contentTypeName Content type name
+     * @param int $id ID of the content type
+     * @param array $contentTypes Content type array
      * @param bool $editable [optional]
      * @return string The raw setting or an empty string
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function _getRawSettings(
         $contentTypeName, $id, array $contentTypes, bool $editable = false
-    ): string
-    {
+    ): string {
         $id = cSecurity::toInteger($id);
         if (!isset($contentTypes[$contentTypeName][$id])) {
-            $idArtLang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
+            $idArtLang = cRegistry::getArticleLanguageId();
             // Get the idtype of the content type and then the settings
             $typeItem = new cApiType();
             $typeItem->loadByType($contentTypeName);
@@ -287,8 +277,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     /**
      * Generates the link to the image for use in the src attribute.
      *
-     * @return string
-     *         the link to the image
+     * @return string The link to the image
      */
     private function _generateImagePath(): string
     {
@@ -353,9 +342,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      * Updates the meta data of a selected image file.
      *
      * @return void
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function _updateUploadMeta()
     {
@@ -492,11 +479,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Generates code for the directories tab in which various settings can be
-     * made.
+     * Generates code for the directories tab in which various settings can be made.
      *
-     * @return string
-     *         the code for the directories tab
+     * @return string The code for the directories tab
      */
     private function _generateTabDirectories(): string
     {
@@ -528,11 +513,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Generates code for the meta tab in which the image's metadata can be
-     * edited.
+     * Generates code for the meta tab in which the image's metadata can be edited.
      *
-     * @return string
-     *         the code for the meta tab
+     * @return string The code for the meta tab
      * @throws cException
      */
     private function _generateTabMeta(): string
@@ -565,8 +548,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     /**
      * Generates code for the upload tab in which new images can be uploaded.
      *
-     * @return string
-     *         the code for the upload tab
+     * @return string The code for the upload tab
      * @throws cException
      */
     private function _generateTabUpload(): string
@@ -654,10 +636,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      * Generate a select box containing all files in the given directory.
      *
      * @SuppressWarnings docBlocks
-     * @param string $directoryPath [optional]
-     *         directory of the files
-     * @return string
-     *         rendered cHTMLSelectElement
+     * @param string $directoryPath [optional] Directory of the files
+     * @return string Rendered cHTMLSelectElement
      * @throws cException
      */
     public function generateFileSelect(string $directoryPath = ''): string
@@ -688,14 +668,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Checks whether the directory defined by the given directory
-     * information is the currently active directory.
+     * Checks whether the directory defined by the given directory information is the currently active directory.
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData
-     *         directory information
-     * @return bool
-     *         whether the directory is the currently active directory
+     * @param array $dirData Directory information
+     * @return bool Whether the directory is the currently active directory
      */
     protected function _isActiveDirectory(array $dirData): bool
     {
@@ -703,14 +680,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Checks whether the directory defined by the given directory information
-     * should be shown expanded.
+     * Checks whether the directory defined by the given directory information should be shown expanded.
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData
-     *         directory information
-     * @return bool
-     *         whether the directory should be shown expanded
+     * @param array $dirData Directory information
+     * @return bool Whether the directory should be shown expanded
      */
     protected function _shouldDirectoryBeExpanded(array $dirData): bool
     {
@@ -720,14 +694,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     /**
      * Gets the metadata of the image with the given filename/dirname.
      *
-     * @param string $filename
-     *         the filename of the image
-     * @param string $dirname
-     *         the dirname of the image
-     * @return string|false
-     *         JSON-encoded array with metadata
-     * @throws cDbException
-     * @throws cException
+     * @param string $filename The filename of the image
+     * @param string $dirname The dirname of the image
+     * @return string|false JSON-encoded array with metadata
+     * @throws cDbException|cException
      */
     public function getImageMeta($filename, $dirname)
     {
@@ -759,14 +729,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      * Creates an upload directory.
      * Wrapper function for uplmkdir in functions.upl.php.
      *
-     * @param string $path
-     *         Path to directory to create, either path from client upload
-     *         directory or a dbfs path
-     * @param string $name
-     *         Name of directory to create
-     * @return string|void
-     *         value of filemode as string ('0702') or nothing
-     *
+     * @param string $path Path to directory to create, either path from client upload directory or a dbfs path
+     * @param string $name Name of directory to create
+     * @return string|null Value of filemode as string ('0702') or nothing
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function uplmkdir(string $path, string $name)
@@ -777,10 +742,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     /**
      * Uploads the transmitted files saved in the $_FILES array.
      *
-     * @param string $path
-     *         the path to which the file should be uploaded
-     * @return string
-     *         the filename of the uploaded file
+     * @param string $path The path to which the file should be uploaded
+     * @return string The filename of the uploaded file
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function uplupload(string $path): string
@@ -825,8 +788,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      */
     protected function _getRawSettingsFromContentVersion(
         int $idArtLang, int $idType, int $typeId
-    ): string
-    {
+    ): string {
         $contentVersionColl = new cApiContentVersionCollection();
         $idContentVersion = $contentVersionColl->getMaximumVersionByArticleLanguageId($idArtLang, $idType, $typeId);
         $contentVersion = new cApiContentVersion($idContentVersion);

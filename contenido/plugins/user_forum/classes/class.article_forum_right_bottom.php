@@ -374,10 +374,8 @@ class ArticleForumRightBottom extends cGuiPage
      * generate dialog for editmode
      *
      * @param array $post
-     *
      * @return ArticleForumRightBottom
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function getEditModeMenu($post)
     {
@@ -538,7 +536,7 @@ class ArticleForumRightBottom extends cGuiPage
      */
     protected function switchActions()
     {
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $lang = cRegistry::getLanguageId();
         $idart = $_REQUEST['idart'];
         $idcat = $_REQUEST['idcat'];
         $action = $_REQUEST["action"];

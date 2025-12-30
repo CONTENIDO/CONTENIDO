@@ -18,12 +18,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 ##### Initialization
 
 $cfg = cRegistry::getConfig();
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 $pluginName = $cfg['pi_mod_rewrite']['pluginName'];
 
 if ($client <= 0) {
     // if there is no client selected, display empty page
-    $oPage = new cGuiPage("mod_rewrite_content", "mod_rewrite");
+    $oPage = new cGuiPage('mod_rewrite_content', 'mod_rewrite');
     $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
     return;

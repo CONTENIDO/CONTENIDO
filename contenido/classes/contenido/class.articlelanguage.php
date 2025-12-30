@@ -36,9 +36,7 @@ class cApiArticleLanguageCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
      * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
@@ -61,9 +59,7 @@ class cApiArticleLanguageCollection extends ItemCollection
      * Creates an article language item entry.
      *
      * @param array $parameters
-     *
      * @return cApiArticleLanguage
-     *
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create(array $parameters)
@@ -126,7 +122,6 @@ class cApiArticleLanguageCollection extends ItemCollection
      *
      * @param int $idart
      * @param int $idlang
-     * @return int
      * @throws cDbException|cInvalidArgumentException
      */
     public function getIdByArticleIdAndLanguageId($idart, $idlang): int
@@ -139,8 +134,6 @@ class cApiArticleLanguageCollection extends ItemCollection
     /**
      * Resets all articles having an associated artspec.
      *
-     * @param int $idArtSpec
-     * @return bool
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
@@ -204,8 +197,7 @@ class cApiArticleLanguageCollection extends ItemCollection
  *
  * $headline = $obj->getContent("htmlhead", 1);
  *
- * If the second parameter is omitted the method returns an array with all
- * available
+ * If the second parameter is omitted the method returns an array with all available
  * content of this type. The array has the following schema:
  *
  * [number => content];
@@ -216,12 +208,10 @@ class cApiArticleLanguageCollection extends ItemCollection
  * $headlines[2] Second headline
  * $headlines[6] Sixth headline
  *
- * Legal content type string are defined in the CONTENIDO system table
- * 'con_type'.
+ * Legal content type string are defined in the CONTENIDO system table 'con_type'.
  * Default content types are:
  *
- * NOTE: This parameter is case-insensitive, you can use html or cms_HTML or
- * CmS_HtMl.
+ * NOTE: This parameter is case-insensitive, you can use html or cms_HTML or CmS_HtMl.
  * Your don't need start with cms, but it won't crash if you do so.
  *
  * htmlhead - HTML Headline
@@ -242,35 +232,29 @@ class cApiArticleLanguage extends Item
 {
 
     /**
-     * Config array
-     *
-     * @var array
+     * @var array Config array
      */
     public $tab;
 
     /**
-     * Article content
-     *
      * @deprecated [2015-05-27]
-     * @var array
+     * @var array Article content
      */
     public $content = NULL;
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
+     * @param mixed $id Specifies the ID of item to load
      * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         $table = cRegistry::getDbTableName('art_lang');
         parent::__construct($table, 'idartlang');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
@@ -278,9 +262,7 @@ class cApiArticleLanguage extends Item
      * Create a version of this article language with its contents/metatags;
      * the version is the new editable article language version
      *
-     * @param string $type
-     *         meta, content or complete
-     *
+     * @param string $type meta, content or complete
      * @throws cDbException|cException
      */
     public function markAsEditable($type = '')
@@ -361,17 +343,12 @@ class cApiArticleLanguage extends Item
     /**
      * Load data by article and language id
      *
-     * @param int $idart
-     *         Article id
-     * @param int $idlang
-     *         Language id
-     *         Flag to fetch content
-     * @return bool
-     *         true on success, otherwise false
-     *
+     * @param int $idart Article id
+     * @param int $idlang Language id
+     * @return bool true on success, otherwise false
      * @throws cDbException|cException
      */
-    public function loadByArticleAndLanguageId($idart, $idlang)
+    public function loadByArticleAndLanguageId($idart, $idlang): bool
     {
         $result = true;
         if (!$this->isLoaded()) {
@@ -395,14 +372,9 @@ class cApiArticleLanguage extends Item
     /**
      * Extract 'idartlang' for a specified 'idart' and 'idlang'
      *
-     * @param int $idart
-     *         Article id
-     * @param int $idlang
-     *         Language id
-     *
-     * @return int
-     *         Language dependant article id
-     *
+     * @param int $idart Article id
+     * @param int $idlang Language id
+     * @return int Language dependant article id
      * @throws cDbException|cInvalidArgumentException
      */
     protected function _getIdArtLang($idart, $idlang)
@@ -415,15 +387,7 @@ class cApiArticleLanguage extends Item
     }
 
     /**
-     * Load the articles content and stores it in the 'content' property of the
-     * article object.
-     *
-     * $article->content[type][number] = value;
-     *
-     * @throws cDbException|cInvalidArgumentException
-     * @deprecated [2015-05-15]
-     *         use _loadArticleContent, automatically loaded with getContent()
-     *
+     * @deprecated [2015-05-15] use _loadArticleContent, automatically loaded with getContent()
      */
     public function loadArticleContent()
     {
@@ -432,15 +396,7 @@ class cApiArticleLanguage extends Item
     }
 
     /**
-     * Load the articles content and stores it in the 'content' property of the
-     * article object.
-     *
-     * $article->content[type][number] = value;
-     *
-     * @throws cDbException|cInvalidArgumentException
-     * @deprecated [2015-05-15]
-     *         use _loadArticleContent, automatically loaded with getContent()
-     *
+     * @deprecated [2015-05-15] use _loadArticleContent, automatically loaded with getContent()
      */
     protected function _getArticleContent()
     {
@@ -507,13 +463,11 @@ class cApiArticleLanguage extends Item
      * sitemapprio - The priority for the sitemap
      *
      * @param string $name
-     * @param bool $bSafe [optional]
-     *         Flag to run defined outFilter on passed value
+     * @param bool $safe Flag to run defined outFilter on passed value
      *         NOTE: It's not used ATM!
-     * @return string|null
-     *         Value of property
+     * @return ?string Value of property
      */
-    public function getField($name, $bSafe = true)
+    public function getField($name, $safe = true)
     {
         return $this->values[$name] ?? null;
     }
@@ -521,15 +475,9 @@ class cApiArticleLanguage extends Item
     /**
      * Predefined setter for article language fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'urlname':
@@ -557,7 +505,7 @@ class cApiArticleLanguage extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**
@@ -566,12 +514,10 @@ class cApiArticleLanguage extends Item
      * Returns the specified content element or an ["id" => "value"] if the
      * second parameter is omitted.
      *
-     * Legal content type string are defined in the CONTENIDO system table
-     * 'con_type'.
+     * Legal content type string are defined in the CONTENIDO system table 'con_type'.
      * Default content types are:
      *
-     * NOTE: Parameter is case-insensitive, you can use html or cms_HTML or
-     * CmS_HtMl.
+     * NOTE: Parameter is case-insensitive, you can use html or cms_HTML or CMS_HtMl.
      * You don't need to start with cms, but it won't crash if you do so.
      *
      * htmlhead - HTML Headline
@@ -585,14 +531,9 @@ class cApiArticleLanguage extends Item
      * linkdescr - Link description
      * swf - Upload id of the element
      *
-     * @param string $type
-     *                     CMS_TYPE - Legal cms type string
-     * @param int|NULL $id [optional]
-     *                     Id of the content
-     *
+     * @param string $type CMS_TYPE - Legal cms type string
+     * @param ?int $id Id of the content
      * @return string|array
-     *         data
-     *
      * @throws cDbException|cInvalidArgumentException
      */
     public function getContent($type = '', $id = NULL)
@@ -627,14 +568,9 @@ class cApiArticleLanguage extends Item
     /**
      * Similar to getContent this function returns the cContentType object
      *
-     * @param string $type
-     *         Name of the content type
-     * @param int $id
-     *         Id of the content type in this article
-     *
-     * @return bool|cContentTypeAbstract
-     *         Returns false if the name was invalid
-     *
+     * @param string $type Name of the content type
+     * @param int $id Id of the content type in this article
+     * @return bool|cContentTypeAbstract Returns false if the name was invalid
      * @throws cDbException|cInvalidArgumentException
      */
     public function getContentObject($type, $id)
@@ -651,13 +587,9 @@ class cApiArticleLanguage extends Item
     /**
      * Similar to getContent this function returns the view code of the cContentType object
      *
-     * @param string $type
-     *         Name of the content type
-     * @param int $id
-     *         Id of the content type in this article
-     *
+     * @param string $type Name of the content type
+     * @param int $id Id of the content type in this article
      * @return string
-     *
      * @throws cDbException|cInvalidArgumentException
      */
     public function getContentViewCode($type, $id)
@@ -673,12 +605,9 @@ class cApiArticleLanguage extends Item
     /**
      * Returns all available content types
      *
-     * @return array
-     *
-     * @throws cException
-     *         if no content has been loaded
+     * @throws cException if no content has been loaded
      */
-    public function getContentTypes()
+    public function getContentTypes(): array
     {
         if (empty($this->content)) {
             $this->_loadArticleContent();
@@ -690,15 +619,10 @@ class cApiArticleLanguage extends Item
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId [optional]
-     *                          change language id for URL (optional)
-     *
-     * @return string
-     *         link
-     *
+     * @param int $changeLangId [optional] Change language id for URL (optional)
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getLink($changeLangId = 0)
+    public function getLink($changeLangId = 0): string
     {
         if ($this->isLoaded() === false) {
             return '';

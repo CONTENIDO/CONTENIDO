@@ -133,8 +133,8 @@ class WorkflowArtAllocation extends Item
     /**
      * Override store function to send mails
      *
-     * @return bool
-     * @throws cDbException|cException|cInvalidArgumentException
+     * @inheritDoc
+     * @throws cException
      */
     public function store()
     {

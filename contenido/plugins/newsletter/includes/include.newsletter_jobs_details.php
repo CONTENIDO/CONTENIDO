@@ -25,14 +25,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $backendUrl = cRegistry::getBackendUrl();
 
 // Initialization
-$oPage = new cGuiPage("newsletter_job_details", "newsletter");
+$oPage = new cGuiPage('newsletter_job_details', 'newsletter');
 
 $requestIdNewsJob = cSecurity::toInteger($_REQUEST['idnewsjob'] ?? '0');
 $requestIdNewsLog = cSecurity::toInteger($_REQUEST['idnewslog'] ?? '0');
 
 $action = $action ?? '';
 
-if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) && $requestIdNewsJob > 0) {
+if ($action == 'news_job_run' && $perm->have_perm_area_action($area, $action) && $requestIdNewsJob > 0) {
     // Run job
     $oJob = new NewsletterJob($requestIdNewsJob);
     $iSendCount = $oJob->runJob();

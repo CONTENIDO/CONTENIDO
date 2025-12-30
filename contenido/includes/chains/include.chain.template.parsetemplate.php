@@ -39,7 +39,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 function cecParseTemplate($template, cTemplate $templateObj)
 {
-
     global $frame;
 
     // Autofill special placeholders like

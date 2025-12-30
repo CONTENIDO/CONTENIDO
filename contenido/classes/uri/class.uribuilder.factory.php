@@ -26,29 +26,22 @@ class cUriBuilderFactory
     /**
      * Returns desired cUriBuilder object.
      *
-     * @param string $sBuilder
-     *         For now, those are valid: front_content, custom, custom_path
-     *         or a Userdefined cUriBuilder name.
-     *         The name must be a subpart of the cUriBuilder class,
-     *         e.g. 'MyUriBuilder' for cUriBuilderMyUriBuilder.
-     *         The classfile must be named like class.uribuilder.myuribuilder.php
-     *         and it must be reside in /contenido/classes/uri/ folder.
+     * @param string $sBuilder For now, those are valid: front_content, custom, custom_path
+     *      or a user-defined cUriBuilder name. The name must be a subpart of the cUriBuilder class,
+     *      e.g. 'MyUriBuilder' for cUriBuilderMyUriBuilder. The class file must be named like
+     *      class.uribuilder.myuribuilder.php, and it must reside in /contenido/classes/uri/ folder.
      * @return cUriBuilder
-     * @throws cInvalidArgumentException
-     *         In case unknown type of builder is requested you'll get an Exception
+     * @throws cInvalidArgumentException In case unknown type of builder is requested you'll get an Exception
      */
     public static function getUriBuilder($sBuilder)
     {
         switch ($sBuilder) {
             case 'front_content':
                 return cUriBuilderFrontcontent::getInstance();
-                break;
             case 'custom':
                 return cUriBuilderCustom::getInstance();
-                break;
             case 'custom_path':
                 return cUriBuilderCustomPath::getInstance();
-                break;
             default:
                 if ((string)$sBuilder !== '') {
                     $sClassName = 'cUriBuilder' . $sBuilder;
@@ -61,7 +54,6 @@ class cUriBuilderFactory
                 }
 
                 throw new cInvalidArgumentException('Invalid/Empty cUriBuilder passed to cUriBuilderFactory: ' . $sBuilder . '!');
-                break;
         }
     }
 

@@ -46,14 +46,13 @@ class cFileCache
      *
      * Validates incoming options and sets the default of the missing options.
      *
-     * @param array $options
-     *         array with option
+     * @param array $options Array with option
      */
     public function setOptions(array $options)
     {
         // complete all options
         if (isset($options['cacheDir']) === true && cString::getPartOfString($options['cacheDir'], -1) != '/') {
-            $options['cacheDir'] = $options['cacheDir'] . '/';
+            $options['cacheDir'] .= '/';
         }
 
         if (isset($options['cacheDir']) === false) {
@@ -128,14 +127,9 @@ class cFileCache
     /**
      * Returns full destination to the cached file.
      *
-     * @param string $id
-     *                      cache ID
-     * @param string $group [optional]
-     *                      cache group
-     *
-     * @return string
-     *         full filename
-     *
+     * @param string $id Cache ID
+     * @param string $group [optional] Cache group
+     * @return string Full filename
      * @throws cInvalidArgumentException
      */
     public function getDestination($id, $group = '')
@@ -153,14 +147,9 @@ class cFileCache
      *
      * If not cached, false is returned.
      *
-     * @param string $id
-     *                      cache ID
-     * @param string $group [optional]
-     *                      cache group
-     *
-     * @return bool|string
-     *                      content or false
-     *
+     * @param string $id Cache ID
+     * @param string $group [optional] Cache group
+     * @return bool|string Content or false
      * @throws cInvalidArgumentException
      */
     public function get($id, $group = '')
@@ -189,16 +178,10 @@ class cFileCache
     /**
      * Saves the content of a cache in filesystem.
      *
-     * @param string $data
-     *                      data to save
-     * @param string $id
-     *                      cache ID
-     * @param string $group [optional]
-     *                      cache group
-     *
-     * @return bool
-     *         success state
-     *
+     * @param string $data Data to save
+     * @param string $id Cache ID
+     * @param string $group [optional] Cache group
+     * @return bool Success state
      * @throws cInvalidArgumentException
      */
     public function save($data, $id, $group = ''): bool
@@ -209,14 +192,9 @@ class cFileCache
     /**
      * Removes cache from filesystem.
      *
-     * @param string $id
-     *                      cache ID
-     * @param string $group [optional]
-     *                      cache group
-     *
-     * @return bool
-     *                      success state
-     *
+     * @param string $id Cache ID
+     * @param string $group [optional] Cache group
+     * @return bool Success state
      * @throws cInvalidArgumentException
      */
     public function remove($id, $group = ''): bool
@@ -230,12 +208,10 @@ class cFileCache
     }
 
     /**
-     * Generates a ID for the given variables.
+     * Generates an ID for the given variables.
      *
-     * @param mixed $variables
-     *         variables to generate a ID for
-     * @return string
-     *         generated ID
+     * @param mixed $variables Variables to generate a ID for
+     * @return string Generated ID
      */
     public function generateID($variables): string
     {

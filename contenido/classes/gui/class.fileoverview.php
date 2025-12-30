@@ -142,16 +142,11 @@ class cGuiFileOverview extends cGuiPage
      *
      * Initializes the class for the directory.
      *
-     * @param string $dir
-     *        path to the directory where files to display are
-     *        located
-     * @param string $markedFile [optional]
-     *        basename of file that will be marked as selected.
-     * @param string $fileInfoType [optional]
-     *        type of additional file information that should be
+     * @param string $dir Path to the directory where files to display are located
+     * @param string $markedFile [optional] Basename of file that will be marked as selected.
+     * @param string $fileInfoType [optional] Type of additional file information that should be
      *        displayed as description
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($dir, $markedFile = '', $fileInfoType = '')
     {
@@ -166,8 +161,7 @@ class cGuiFileOverview extends cGuiPage
     /**
      * Sets extension(s) to filter files that should be displayed.
      *
-     * @param array|string $extension
-     *         Name of extensions
+     * @param array|string $extension Name of extensions
      */
     public function setFileExtension($extension)
     {
@@ -180,14 +174,12 @@ class cGuiFileOverview extends cGuiPage
     /**
      * Renders the page
      *
-     * @param cTemplate|null $template
+     * @param ?cTemplate $template
      * @param bool $return
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function render($template = NULL, $return = false)
+    public function render($template = NULL, bool $return = false)
     {
         $cfg = cRegistry::getConfig();
         $area = cRegistry::getArea();

@@ -377,9 +377,7 @@ function stripCount($singleWordCounter, $maxKeywords = 15)
 function keywordDensity($headline, $text)
 {
     $headline = strip_tags($headline);
-    $text = strip_tags($text);
-
-    $text = conHtmlEntityDecode($text);
+    $text = conHtmlEntityDecode(strip_tags($text));
 
     // replace all non-converted numbered entities (what about numbered entities?)
     // replace all double/more spaces

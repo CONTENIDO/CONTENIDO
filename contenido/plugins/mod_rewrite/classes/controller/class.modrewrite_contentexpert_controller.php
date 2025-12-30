@@ -128,8 +128,7 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
     /**
      * Reset aliases action
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function resetAction()
     {
@@ -141,8 +140,7 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
     /**
      * Reset only empty aliases action
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function resetEmptyAction()
     {

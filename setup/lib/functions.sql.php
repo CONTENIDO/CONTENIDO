@@ -59,10 +59,8 @@ function injectSQL(cDb $db, string $prefix, string $file, array $replacements = 
 
 /**
  * Adds the autoincrement property to all primary keys in CONTENIDO tables
- * @param cDB $db
- * @param array $cfg
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @param array $cfg CONTENIDO configuration array
+ * @throws cDbException|cInvalidArgumentException
  */
 function addAutoIncrementToTables(cDB $db, array $cfg)
 {
@@ -107,7 +105,6 @@ function addAutoIncrementToTables(cDB $db, array $cfg)
 
 /**
  * Adds salts to the passwords of the backend and frontend users. Converts old passwords into new ones
- * @param cDb $db The database object
  * @throws cDbException
  */
 function addSaltsToTables(cDb $db)
@@ -219,9 +216,6 @@ function convertToDatetime(cDb $db, array $cfg)
  * Converts a table field value of type date to a datetime format ('YYYY-MM-DD HH:MM:SS'),
  * if the value has the date format ('YYYY-MM-DD').
  *
- * @param cDb $db
- * @param string $table
- * @param string $field
  * @param string $defaultTime - Format has to be 'HH:MM:SS'
  * @throws cDbException
  */
@@ -236,9 +230,6 @@ function convertDateValuesToDateTimeValue(cDb $db, string $table, string $field,
  * Converts a table field value of type date to a datetime format ('YYYY-MM-DD HH:MM:SS'),
  * if the value is null (null or empty string).
  *
- * @param cDb $db
- * @param string $table
- * @param string $field
  * @param string $defaultDateTime - Format has to be 'YYYY-MM-DD HH:MM:SS'.
  *     You can also use 'CURRENT_TIMESTAMP' or 'NOW()' to update the field to current timestamp.
  * @throws cDbException
@@ -258,9 +249,7 @@ function convertNullDateValuesToDateTimeValue(
 
 /**
  * Changes the primary key of the given table to an auto increment type
- * @param string $tableName
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException
  */
 function alterTableHandling(string $tableName)
 {
@@ -283,9 +272,7 @@ function alterTableHandling(string $tableName)
 
 /**
  * Will strip the sql comment lines out of an uploaded sql file
- * specifically for mssql and postgres type files in the install....
- * @param string $output
- * @return  string
+ * specifically for mssql and postgres type files in the install.
  */
 function removeComments(string &$output): string
 {
@@ -314,8 +301,6 @@ function removeComments(string &$output): string
 
 /**
  * Will strip the sql comment lines out of an uploaded sql file
- * @param string $sql
- * @return  string
  */
 function removeRemarks(string $sql): string
 {
@@ -341,10 +326,6 @@ function removeRemarks(string $sql): string
 /**
  * Will split an uploaded sql file into single sql statements.
  * Note: expects trim() to have already been run on $sql.
- *
- * @param string $sql
- * @param string $delimiter
- * @return  array
  */
 function splitSqlFile(string $sql, string $delimiter): array
 {

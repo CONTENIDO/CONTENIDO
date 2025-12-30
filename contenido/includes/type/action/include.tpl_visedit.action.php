@@ -20,5 +20,5 @@ if ($perm->have_perm_area_action($area, "tpl_visedit") || $perm->have_perm_area_
     cInclude('includes', 'functions.tpl.php');
     $idtpl = tplEditTemplate($changelayout, $idtpl, $tplname, $description, $idlay, $c, $defaulttemplate);
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

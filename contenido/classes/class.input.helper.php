@@ -99,7 +99,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
         }
 
         $sql .= " AND al.idart = ca.idart
-            AND al.idlang = " . cSecurity::toInteger(cRegistry::getLanguageId()) . "
+            AND al.idlang = " . cRegistry::getLanguageId() . "
             ORDER BY al.title";
 
         $oDB = cRegistry::getDb();
@@ -179,8 +179,8 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
                     , " . cRegistry::getDbTableName('cat_lang') . " AS cl
                     , " . cRegistry::getDbTableName('cat_tree') . " AS ct
                 WHERE
-                    c.idclient = " . cSecurity::toInteger(cRegistry::getClientId()) . "
-                    AND cl.idlang = " . cSecurity::toInteger(cRegistry::getLanguageId()) . "
+                    c.idclient = " . cRegistry::getClientId() . "
+                    AND cl.idlang = " . cRegistry::getLanguageId() . "
                     AND cl.idcat = c.idcat
                     AND ct.idcat = c.idcat";
         if ($iMaxLevel > 0) {
@@ -277,7 +277,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
                     t.idtype = c.idtype
                     AND c.idartlang = al.idartlang
                     AND al.idart = ca.idart
-                    AND al.idlang = " . cSecurity::toInteger(cRegistry::getClientId()) . "
+                    AND al.idlang = " . cRegistry::getClientId() . "
                     AND ca.idcatart = " . $iIDCatArt;
         if ($sTypeRange != "") {
             $sql .= " AND t.idtype IN (" . $oDB->escape($sTypeRange) . ")";
@@ -527,13 +527,10 @@ try {
      * Rendering function
      *
      * @param bool $print [optional]
-     *
-     * @return string|null
-     *         Complete template string or nothing
-     *
+     * @return ?string Complete template string or nothing
      * @throws cInvalidArgumentException
      */
-    public function render($print = false)
+    public function render(bool $print = false)
     {
         $template = new cTemplate();
         $template->reset();

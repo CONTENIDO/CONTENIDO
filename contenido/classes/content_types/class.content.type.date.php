@@ -41,15 +41,10 @@ class cContentTypeDate extends cContentTypeAbstract
      *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings
-     *         the raw settings in an XML structure or as plaintext
-     * @param int $id
-     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
-     *         array containing the values of all content types
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param string $rawSettings The raw settings in an XML structure or as plaintext
+     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes Array containing the values of all content types
+     * @throws cDbException|cException
      */
     public function __construct($rawSettings, $id, array $contentTypes)
     {
@@ -197,15 +192,11 @@ class cContentTypeDate extends cContentTypeAbstract
     }
 
     /**
-     * Formats the given timestamp according to the given format.
-     * Localises the output.
+     * Formats the given timestamp according to the given format. Localises the output.
      *
-     * @param string $format
-     *         the format string in the PHP date format
-     * @param int $timestamp [optional]
-     *         the timestamp representing the date which should be formatted
-     * @return string
-     *         the formatted, localised date
+     * @param string $format The format string in the PHP date format
+     * @param int $timestamp [optional] The timestamp representing the date which should be formatted
+     * @return string The formatted, localised date
      */
     private function _formatDate($format, $timestamp = NULL)
     {
@@ -345,8 +336,7 @@ class cContentTypeDate extends cContentTypeAbstract
     /**
      * Generates the JavaScript needed for CMS_DATE.
      *
-     * @return string
-     *         HTML code which includes the needed JavaScript
+     * @return string HTML code which includes the needed JavaScript
      * @throws cInvalidArgumentException
      */
     private function _generateJavaScript()
@@ -374,8 +364,7 @@ class cContentTypeDate extends cContentTypeAbstract
     /**
      * Generates the save button.
      *
-     * @return string
-     *         HTML code for the save button
+     * @return string HTML code for the save button
      */
     private function _generateStoreButton()
     {
@@ -390,8 +379,7 @@ class cContentTypeDate extends cContentTypeAbstract
     /**
      * Generates a select box for defining the format of the date.
      *
-     * @return string
-     *         the HTML code of the format select box
+     * @return string The HTML code of the format select box
      */
     private function _generateFormatSelect()
     {

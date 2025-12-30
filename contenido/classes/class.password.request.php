@@ -109,8 +109,7 @@ class cPasswordRequest
      * @param array $cfg
      *         The CONTENIDO configuration array
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($db, $cfg)
     {
@@ -181,19 +180,12 @@ class cPasswordRequest
     }
 
     /**
-     * Function displays form for password request, if
-     * password is submitted this function also starts the
+     * Function displays form for password request, if password is submitted this function also starts the
      * passwort reset request and sending process
      *
-     * @param bool $return [optional]
-     *                     Return or print template
-     *
-     * @return string
-     *         rendered HTML code
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param bool $return [optional] Return or print template
+     * @return string rendered HTML code
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function renderForm($return = false)
     {
@@ -256,8 +248,7 @@ class cPasswordRequest
      * {@link https://www.php.net/manual/en/datetime.formats.relative.php}.
      *
      * @return string  The found expiration setting, default value is '+4 hour'
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public static function getExpirationSetting(): string
     {
@@ -277,8 +268,7 @@ class cPasswordRequest
      * {@link https://www.php.net/manual/en/datetime.formats.relative.php}.
      *
      * @return string  The found outdated threshold setting, default value is '-1 day'
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public static function getOutdatedThresholdSetting(): string
     {
@@ -298,8 +288,7 @@ class cPasswordRequest
      * requests a user can do.
      *
      * @return int  The found reset threshold setting, default value is 4
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public static function getResetThresholdSetting(): int
     {
@@ -316,9 +305,7 @@ class cPasswordRequest
     /**
      * Function to display form to set new password for user.
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function _renderNewPwForm()
     {
@@ -392,8 +379,7 @@ class cPasswordRequest
      *
      * @return array
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function _getCurrentRequests()
     {
@@ -408,9 +394,7 @@ class cPasswordRequest
      *
      * @return string
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function _handleNewPassword()
     {
@@ -496,9 +480,7 @@ class cPasswordRequest
      * @param cApiUser $oApiUser
      * @param string $lastPwRequestTime
      * @return bool
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function _checkPasswordRequest(cApiUser $oApiUser, string &$lastPwRequestTime): bool
     {
@@ -575,9 +557,7 @@ class cPasswordRequest
     /**
      * Function checks password reset request for errors and sets a new password in case there is no error
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function _handleResetPw()
     {
@@ -699,9 +679,7 @@ class cPasswordRequest
      * @return bool
      *         whether password request could be saved successfully
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function _safePwResetRequest($token, DateTime $expiration)
     {
@@ -748,20 +726,10 @@ class cPasswordRequest
 
         $from = [$this->_sendermail => $this->_sendername];
 
-        // Decoding and encoding for charsets (without UTF-8)
-        if ($cfg['php_settings']['default_charset'] != 'UTF-8') {
-            $subject = @utf8_encode(
-                conHtmlEntityDecode(
-                    stripslashes(i18n('Your new password for CONTENIDO Backend')),
-                    '',
-                    $cfg['php_settings']['default_charset']
-                )
-            );
-            $body = @utf8_encode(conHtmlEntityDecode($mailBody, '', $cfg['php_settings']['default_charset']));
-        } else {
-            $subject = conHtmlEntityDecode(stripslashes(i18n('Your new password for CONTENIDO Backend')));
-            $body = conHtmlEntityDecode($mailBody);
-        }
+        $subject = cString::convertEncoding(
+            conHtmlEntityDecode(stripslashes(i18n('Your new password for CONTENIDO Backend')))
+        );
+        $body = cString::convertEncoding(conHtmlEntityDecode($mailBody));
 
         try {
             $mailer = new cMailer();

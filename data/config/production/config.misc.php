@@ -218,7 +218,13 @@ $cfg['php_settings']['date.timezone'] = '';
 $cfg['php_settings']['default_charset'] = 'UTF-8';
 
 // (int) PHP error reporting setting
-$cfg['php_error_reporting'] = E_ALL & ~(E_STRICT | E_NOTICE);
+if (version_compare(PHP_VERSION, '8.4', '>=')) {
+    // @phpVersion >= PHP 8.4
+    $cfg['php_error_reporting'] = E_ALL & ~E_NOTICE;
+} else {
+    // @phpVersion < PHP 8.4
+    $cfg['php_error_reporting'] = E_ALL & ~(E_STRICT | E_NOTICE);
+}
 
 
 /* Global cache control flag

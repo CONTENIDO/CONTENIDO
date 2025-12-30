@@ -22,23 +22,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Function removes file meta information from database (used when a file is
- * deleted)
- *
- * @param int $iIdClient
- *         id of client which contains this file
- * @param string $sFilename
- *         name of corresponding file
- * @param string $sType
- *         type of file (css, js or templates)
- * @param cDb $oDb
- *         CONTENIDO database object
- *
- * @throws cDbException
- * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function removeFileInformation($iIdClient, $sFilename, $sType, $oDb)
 {
@@ -61,32 +45,7 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb)
 }
 
 /**
- * Function returns file meta information from database (used when files were
- * versionned or description is displayed)
- *
- * @param int $iIdClient
- *         id of client which contains this file
- * @param string $sFilename
- *         name of corresponding file
- * @param string $sType
- *         type of file (css, js or templates)
- * @param cDb $oDb
- *         CONTENIDO database object
- *
- * @return array
- *         Indexes:
- *         - idsfi - Primary key of database record
- *         - created - Datetime when file was created
- *         - lastmodified - Datetime when file was last modified
- *         - author - Author of file (CONTENIDO Backend User)
- *         - modifiedby - Last modifier of file (CONTENIDO Backend User)
- *         - description - Description which was inserted for this file
- *
- * @throws cDbException
- * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
 {
@@ -122,32 +81,7 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
 }
 
 /**
- * Function updates file meta information (used when files were created or
- * edited).
- * It creates new database record for file meta informations if database record
- * does
- * not exist. Otherwise, existing record will be updated
- *
- * @param int $iIdClient
- *         id of client which contains this file
- * @param string $sFilename
- *         name of corresponding file
- * @param string $sType
- *         type of file (css, js or templates)
- * @param string $sAuthor
- *         author of file
- * @param string $sDescription
- *         description of file
- * @param cDb $oDb
- *         CONTENIDO database object
- * @param string $sFilenameNew
- *         new filename if filename was changed (optional)
- *
- * @throws cDbException
- * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $oDb, $sFilenameNew = '')
 {
@@ -209,16 +143,7 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
 }
 
 /**
- * Returns the filetype (extension).
- *
- * @param string $filename
- *         The file to get the type
- *
- * @return string
- *         Filetype
- * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         use cFileHandler::getExtension
+ * @deprecated [2015-05-21] use {@see cFileHandler::getExtension()} instead
  *
  */
 function getFileType($filename)
@@ -228,23 +153,7 @@ function getFileType($filename)
 }
 
 /**
- * Returns the size of a directory.
- * AKA the combined filesizes of all files within it.
- * Note that this function uses filesize(). There could be problems with files
- * that are larger than 2GiB
- *
- * @param string $sDirectory
- *         The directory
- * @param bool $bRecursive
- *         true if all the subdirectories should be included in the calculation
- *
- * @return int|bool
- *         false in case of an error or the size
- *
- * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         use cDirHandler::getDirectorySize
- *
+ * @deprecated [2015-05-21] use {@see cDirHandler::getDirectorySize()} instead
  */
 function getDirectorySize($sDirectory, $bRecursive = false)
 {
@@ -253,18 +162,7 @@ function getDirectorySize($sDirectory, $bRecursive = false)
 }
 
 /**
- * Scans passed directory and collects all found files
- *
- * @param string $sDirectory
- * @param bool $bRecursive
- *
- * @return array|bool
- *         array of found files (full path and name) or false
- *
- * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         use cDirHandler::read with parameter fileOnly true
- *
+ * @deprecated [2015-05-21] use {@see cDirHandler::read()} instead
  */
 function scanDirectory($sDirectory, $bRecursive = false)
 {
@@ -273,25 +171,7 @@ function scanDirectory($sDirectory, $bRecursive = false)
 }
 
 /**
- * Copies source directory to destination directory.
- *
- * @param string $sourcePath
- * @param string $destinationPath
- * @param int $mode
- *             Octal representation of file mode (0644, 0750, etc.)
- * @param array $options
- *             Some additional options as follows
- *             <pre>
- *             $options['force_overwrite'] (bool) Flag to overwrite existing
- *             destination file, default value is false
- *             </pre>
- *
- * @return bool
- *
- * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         use cDirHandler::recursiveCopy
- *
+ * @deprecated [2015-05-21] use {@see cDirHandler::recursiveCopy()} instead
  */
 function recursiveCopy($sourcePath, $destinationPath, $mode = null, array $options = [])
 {

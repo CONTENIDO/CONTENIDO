@@ -14,18 +14,12 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-/**
- * @return string
- */
-function frontendusers_valid_to_getTitle()
+function frontendusers_valid_to_getTitle(): string
 {
     return i18n("Valid to");
 }
 
-/**
- * @return string
- */
-function frontendusers_valid_to_display()
+function frontendusers_valid_to_display(): string
 {
     global $feuser;
 
@@ -76,9 +70,9 @@ function frontendusers_valid_to_display()
 }
 
 /**
- * @return array
+ * @return string[]
  */
-function frontendusers_valid_to_wantedVariables()
+function frontendusers_valid_to_wantedVariables(): array
 {
     return (['valid_to']);
 }

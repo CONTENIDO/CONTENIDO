@@ -30,59 +30,42 @@ class cModuleHandler
 {
 
     /**
-     * Path to a module dir.
-     *
-     * @var string
+     * @var string Path to a module dir.
      */
     private $_modulePath;
 
     /**
-     * Path to the module dir where are all the modules of a client
-     * (frontendpath).
-     *
-     * @var string
+     * @var string Path to the module dir where are all the modules of a client (frontendpath).
      */
     private $_path;
 
     /**
-     * Id of the module.
-     *
-     * @var int
+     * @var int Id of the module.
      */
     protected $_idmod = NULL;
 
     /**
-     * The name of the module.
-     *
-     * @var string
+     * @var string The name of the module.
      */
     private $_moduleName = NULL;
 
     /**
-     * Description of the module.
-     *
-     * @var string
+     * @var string Description of the module.
      */
     protected $_description;
 
     /**
-     * The type of the module.
-     *
-     * @var string
+     * @var string The type of the module.
      */
     protected $_type;
 
     /**
-     * The alias name of the module.
-     *
-     * @var string
+     * @var string The alias name of the module.
      */
     protected $_moduleAlias;
 
     /**
-     * The names of the module directories.
-     *
-     * @var array
+     * @var array Name/Path mapping of the module directories.
      */
     protected $_directories = [
         'css' => 'css/',
@@ -94,44 +77,32 @@ class cModuleHandler
     ];
 
     /**
-     * CONTENIDO cfg.
-     *
-     * @var array
+     * @var array CONTENIDO cfg.
      */
     protected $_cfg = NULL;
 
     /**
-     * CONTENIDO cfgClient.
-     *
-     * @var array
+     * @var array CONTENIDO cfgClient.
      */
     protected $_cfgClient = NULL;
 
     /**
-     * Id of the client.
-     *
-     * @var int
+     * @var int Id of the client.
      */
     protected $_client = 0;
 
     /**
-     * The code of the module input.
-     *
-     * @var string
+     * @var string The code of the module input.
      */
     protected $_input = '';
 
     /**
-     * The code of the module output.
-     *
-     * @var string
+     * @var string The code of the module output.
      */
     protected $_output = '';
 
     /**
-     * Encoding oft the site.
-     *
-     * @var string
+     * @var string Encoding oft the site.
      */
     protected $_encoding = '';
 
@@ -145,21 +116,17 @@ class cModuleHandler
     protected $_fileEncoding = '';
 
     /**
-     * The id of the lang.
-     *
-     * @var int
+     * @var int The id of the lang.
      */
     protected $_idlang = -1;
 
     /**
-     * Database instance
-     * @var cDb
+     * @var ?cDb Database instance
      */
     private $_db = NULL;
 
     /**
-     * Language encoding list
-     * @var array
+     * @var array Language encoding list
      */
     protected static $_encodingStore = [];
 
@@ -181,9 +148,9 @@ class cModuleHandler
     public function __construct($module = NULL)
     {
         $this->_cfg = cRegistry::getConfig();
-        $this->_client = cSecurity::toInteger(cRegistry::getClientId());
+        $this->_client = cRegistry::getClientId();
         $this->_cfgClient = cRegistry::getClientConfig();
-        $this->_idlang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $this->_idlang = cRegistry::getLanguageId();
         $this->_encoding = self::getEncoding();
         $this->_fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 
@@ -204,43 +171,36 @@ class cModuleHandler
      * Gets the encoding for the current language.
      *
      * @param int $overrideLanguageId [optional]
-     *
-     * @return mixed
-     * @throws cDbException
+     * @throws cDbException|cException
      */
-    public static function getEncoding($overrideLanguageId = 0)
+    public static function getEncoding(int $overrideLanguageId = 0): string
     {
-        $overrideLanguageId = cSecurity::toInteger($overrideLanguageId);
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
-
+        $languageId = cRegistry::getLanguageId();
         if ($overrideLanguageId > 0) {
-            $lang = $overrideLanguageId;
+            $languageId = $overrideLanguageId;
         }
 
-        if ($lang == 0) {
+        if ($languageId == 0) {
             // Get clients first language as a fallback
             $clientsLangColl = new cApiClientLanguageCollection();
             $clientLanguage = $clientsLangColl->getFirstLanguageIdByClient(cRegistry::getClientId());
             if ($clientLanguage) {
-                $lang = $clientLanguage;
+                $languageId = $clientLanguage;
             }
         }
 
-        if (!isset(self::$_encodingStore[$lang])) {
-            $cApiLanguage = new cApiLanguage($lang);
-            self::$_encodingStore[$lang] = $cApiLanguage->get('encoding');
+        if (!isset(self::$_encodingStore[$languageId])) {
+            $cApiLanguage = new cApiLanguage($languageId);
+            self::$_encodingStore[$languageId] = (string) $cApiLanguage->get('encoding');
         }
 
-        return self::$_encodingStore[$lang];
+        return self::$_encodingStore[$languageId];
     }
 
     /**
      * Exist the modulname in directory.
-     *
-     * @param string $name
-     * @return bool
      */
-    public function modulePathExistsInDirectory($name)
+    public function modulePathExistsInDirectory(string $name): bool
     {
         return is_dir($this->_cfgClient[$this->_client]['module']['path'] . $name . '/');
     }
@@ -252,8 +212,7 @@ class cModuleHandler
      * @param string $fileType
      * @param string $fileContent
      * @param string $saveDirectory [optional]
-     * @return string|bool
-     *                              URL on success or false on failure
+     * @return string|bool URL on success or false on failure
      * @throws cInvalidArgumentException
      */
     public function saveContentToFile($templateName, $fileType, $fileContent, $saveDirectory = 'cache')
@@ -281,13 +240,10 @@ class cModuleHandler
     /**
      * Get the cleaned name.
      *
-     * @param string $name
-     *         mod name
-     * @param string $defaultChar [optional]
-     *         default character
-     * @return string
+     * @param string $name Module  name
+     * @param string $defaultChar Default character
      */
-    public static function getCleanName($name, $defaultChar = '_')
+    public static function getCleanName(string $name, string $defaultChar = '_'): string
     {
         // the first character of module/layout name should be [a-zA-Z0-9]|_|-
         $name = cString::cleanURLCharacters($name);
@@ -303,10 +259,8 @@ class cModuleHandler
 
     /**
      * Initialize the variables of the class.
-     *
-     * @param cDb $db
      */
-    public function initWithDatabaseRow($db)
+    public function initWithDatabaseRow(?cDb $db = null)
     {
         if (is_object($db)) {
             $this->_initByModule($db->toArray());
@@ -478,17 +432,13 @@ class cModuleHandler
     /**
      * Create and save new file.
      *
-     * @param string $type
-     *                         css | js | template directory of the file
-     * @param string $fileName [optional]
-     *                         file name
-     * @param string $content [optional]
-     *                         content of the file
-     * @return bool
-     *                         true on success or false on failure
+     * @param string $type css | js | template directory of the file
+     * @param string $fileName [optional] File name
+     * @param string $content [optional] Content of the file
+     * @return bool true on success or false on failure
      * @throws cInvalidArgumentException
      */
-    public function createModuleFile($type, $fileName = NULL, $content = '')
+    public function createModuleFile($type, $fileName = NULL, $content = ''): bool
     {
         // create directory if not exist
         if (!$this->createModuleDirectory($type)) {
@@ -562,12 +512,9 @@ class cModuleHandler
     /**
      * Get the content of file, module js or css or template or php.
      *
-     * @param string $directory
-     *                         where in module should we look
-     * @param string $fileTyp
-     *                         css or js
+     * @param string $directory Where in module should we look
+     * @param string $fileTyp css or js
      * @param string $fileName [optional]
-     *
      * @return string|bool
      * @throws cInvalidArgumentException
      */
@@ -659,8 +606,7 @@ class cModuleHandler
      * Read the input of the file _input.php.
      *
      * @param bool $issource [optional]
-     * @return string|bool
-     *                       content of module input file or false on failure
+     * @return string|bool Content of module input file or false on failure
      * @throws cInvalidArgumentException
      */
     public function readInput($issource = false)
@@ -682,8 +628,7 @@ class cModuleHandler
      * Read the output of the file _output.php.
      *
      * @param bool $issource [optional]
-     * @return bool|string
-     *                       content of module output file or false on failure
+     * @return bool|string Content of module output file or false on failure
      * @throws cInvalidArgumentException
      */
     public function readOutput($issource = false)
@@ -776,8 +721,7 @@ class cModuleHandler
      * Save a string into the file (_output.php).
      *
      * @param string $output [optional]
-     * @return bool
-     *                       true on success or false on failure
+     * @return bool true on success or false on failure
      * @throws cInvalidArgumentException
      */
     public function saveOutput($output = NULL)
@@ -809,8 +753,7 @@ class cModuleHandler
      * Save a string into the file (_input.php).
      *
      * @param string $input [optional]
-     * @return bool
-     *                      true on success or false on failure
+     * @return bool true on success or false on failure
      * @throws cInvalidArgumentException
      */
     public function saveInput($input = NULL)
@@ -842,15 +785,11 @@ class cModuleHandler
      * This method save a xml file with module information.
      * If the params not set, get the value from this.
      *
-     * @param string $moduleName [optional]
-     *                            name of the module
-     * @param string $description [optional]
-     *                            description of the module
-     * @param string $type [optional]
-     *                            type of the module
+     * @param string $moduleName [optional] Name of the module
+     * @param string $description [optional] Description of the module
+     * @param string $type [optional] Type of the module
      * @param string $alias [optional]
-     * @return true
-     *                            if success else false
+     * @return bool true if success else false
      * @throws cException
      */
     public function saveInfoXML($moduleName = NULL, $description = NULL, $type = NULL, $alias = NULL)
@@ -886,17 +825,13 @@ class cModuleHandler
     /**
      * Create a new module in the module dir.
      *
-     * The module name will be [ModuleName] example Contact_Form or
-     * GoogleMaps2.
+     * The module name will be [ModuleName] example Contact_Form or GoogleMaps2.
      *
      * @param string $input [optional]
      * @param string $output [optional]
-     * @return bool
-     *                       if module exist or mkdir and saveInput and saveOutput success
-     *                       return true. Else if the mkdir or saveInput or saveOutput not
-     *                       success return false.
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @return bool If module exist or mkdir and saveInput and saveOutput success return true.
+     *      Else if the mkdir or saveInput or saveOutput not success return false.
+     * @throws cException|cInvalidArgumentException
      */
     public function createModule($input = '', $output = '')
     {
@@ -1130,14 +1065,10 @@ class cModuleHandler
     /**
      * Check module php code.
      *
-     * @param string $code
-     *                       Code to evaluate
-     * @param string $id
-     *                       Unique ID for the test function
-     * @param bool $output [optional]
-     *                       true if start in php mode, otherwise false
-     * @return array
-     *                       bool state, string errorMessage
+     * @param string $code Code to evaluate
+     * @param string $id Unique ID for the test function
+     * @param bool $output [optional] true if start in php mode, otherwise false
+     * @return array{state: bool, errorMessage: string}} bool state, string errorMessage
      * @throws cDbException|cException
      */
     protected function _verifyCode($code, $id, $output = false)

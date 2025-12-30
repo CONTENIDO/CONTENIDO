@@ -44,16 +44,15 @@ trait cItemCollectionIdsByClientIdAndLanguageIdTrait
      * @param int $languageId
      * @return array List of ids
      * @throws cDbException
-     * @throws cInvalidArgumentException
      */
     public function getIdsByClientIdAndLanguageId(int $clientId, int $languageId): array
     {
         $pkName = $this->getPrimaryKeyName();
         $list = [];
 
-        $sql = "SELECT `:pk_field` 
-            FROM `:table` 
-            WHERE `:client_id_field` = :client_id_value 
+        $sql = "SELECT `:pk_field`
+            FROM `:table`
+            WHERE `:client_id_field` = :client_id_value
               AND `:language_id_field` = :language_id_value";
         $this->db->query($sql, [
             'pk_field' => $pkName,

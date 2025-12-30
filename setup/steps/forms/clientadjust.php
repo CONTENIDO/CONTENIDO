@@ -25,7 +25,7 @@ class cSetupClientAdjust extends cSetupMask
 
     /**
      * cSetupClientAdjust constructor.
-     * @param string $step
+     * @param bool|int $step
      * @param bool $previous
      * @param $next
      */

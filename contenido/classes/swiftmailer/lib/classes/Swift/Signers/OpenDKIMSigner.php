@@ -22,10 +22,10 @@ class Swift_Signers_OpenDKIMSigner extends Swift_Signers_DKIMSigner
 
     private $dropFirstLF = true;
 
-    const CANON_RELAXED = 1;
-    const CANON_SIMPLE = 2;
-    const SIG_RSA_SHA1 = 3;
-    const SIG_RSA_SHA256 = 4;
+    public const int CANON_RELAXED = 1;
+    public const int CANON_SIMPLE = 2;
+    public const int SIG_RSA_SHA1 = 3;
+    public const int SIG_RSA_SHA256 = 4;
 
     public function __construct($privateKey, $domainName, $selector)
     {
@@ -102,7 +102,8 @@ class Swift_Signers_OpenDKIMSigner extends Swift_Signers_DKIMSigner
     public function startBody()
     {
         if (!$this->_peclLoaded) {
-            return parent::startBody();
+            parent::startBody();
+            return null;
         }
         $this->dropFirstLF = true;
         $this->_dkimHandler->eoh();
@@ -113,7 +114,8 @@ class Swift_Signers_OpenDKIMSigner extends Swift_Signers_DKIMSigner
     public function endBody()
     {
         if (!$this->_peclLoaded) {
-            return parent::endBody();
+            parent::endBody();
+            return null;
         }
         $this->_dkimHandler->eom();
 
@@ -175,7 +177,8 @@ class Swift_Signers_OpenDKIMSigner extends Swift_Signers_DKIMSigner
     protected function _canonicalizeBody($string)
     {
         if (!$this->_peclLoaded) {
-            return parent::_canonicalizeBody($string);
+            parent::_canonicalizeBody($string);
+            return null;
         }
         if (false && $this->dropFirstLF === true) {
             if ($string[0] == "\r" && $string[1] == "\n") {
@@ -186,5 +189,7 @@ class Swift_Signers_OpenDKIMSigner extends Swift_Signers_DKIMSigner
         if (strlen($string)) {
             $this->_dkimHandler->body($string);
         }
+
+        return null;
     }
 }

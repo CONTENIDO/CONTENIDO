@@ -406,8 +406,7 @@ class cVersion
      * This function deletes files and the folder, for given path.
      *
      * @param string $sFirstFile [optional]
-     * @return bool
-     *                           return true if successful
+     * @return bool Return true if successful
      * @throws cInvalidArgumentException
      */
     public function deleteFile($sFirstFile = '')
@@ -544,20 +543,13 @@ class cVersion
     /**
      * The general SelectBox function for get Revision.
      *
-     * @param string $sTableForm
-     *                         The name of Table_Form class
-     * @param string $sAddHeader
-     *                         The Header Label of SelectBox Widget
-     * @param string $sLabelOfSelectBox
-     *                         The Label of SelectBox Widget
-     * @param string $sIdOfSelectBox
-     *                         Id of Select Box
-     * @param bool $disabled [optional]
-     *                         If true, show disabled buttons for deleting
-     *
-     * @return string
-     *         if is exists Revision, then returns HTML Code of full SelectBox
-     *         else returns empty string
+     * @param string $sTableForm The name of Table_Form class
+     * @param string $sAddHeader The Header Label of SelectBox Widget
+     * @param string $sLabelOfSelectBox The Label of SelectBox Widget
+     * @param string $sIdOfSelectBox Id of Select Box
+     * @param bool $disabled [optional] If true, show disabled buttons for deleting
+     * @return string If it exists Revision, then returns HTML Code of full SelectBox
+     *      else returns empty string
      * @throws cInvalidArgumentException|cException
      */
     public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox, $disabled = false)

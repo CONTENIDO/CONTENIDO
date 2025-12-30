@@ -21,20 +21,13 @@ cInclude('includes', 'functions.str.php');
  * Edit a language
  *
  * @param int $idlang
- * @param string $langname
- *         Name of the language
+ * @param string $langname Name of the language
  * @param string $encoding
- * @param int $active
- *         Flag for active state, 1 or 0
+ * @param int $active Flag for active state, 1 or 0
  * @param string $direction
- *
- * @return bool
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function langEditLanguage($idlang, $langname, $encoding, $active, $direction = 'ltr')
+function langEditLanguage($idlang, $langname, $encoding, $active, $direction = 'ltr'): bool
 {
     $oLang = new cApiLanguage();
     if ($oLang->loadByPrimaryKey((int)$idlang)) {
@@ -53,17 +46,10 @@ function langEditLanguage($idlang, $langname, $encoding, $active, $direction = '
 /**
  * Create a new language
  *
- * @param string $name
- *         Name of the language
- * @param int $client
- *         Id of client
- *
- * @return int
- *         New language id
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param string $name Name of the language
+ * @param int $client Id of client
+ * @return int New language id
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function langNewLanguage($name, $client)
 {
@@ -92,24 +78,17 @@ function langNewLanguage($name, $client)
         $notification->displayNotification('error', i18n("Could not set the language-ID in the file 'config.php'. Please set the language manually."));
     }
 
-    return $oLangItem->get('idlang');
+    return (int) $oLangItem->get('idlang');
 }
 
 /**
  * Rename a language
  *
- * @param int $idlang
- *         Id of the language
- * @param string $name
- *         Name of the language
- *
- * @return bool
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param int $idlang Id of the language
+ * @param string $name Name of the language
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function langRenameLanguage($idlang, $name)
+function langRenameLanguage($idlang, $name): bool
 {
     $oLang = new cApiLanguage();
     if ($oLang->loadByPrimaryKey(cSecurity::toInteger($idlang))) {
@@ -122,16 +101,10 @@ function langRenameLanguage($idlang, $name)
 /**
  * Delete a language
  *
- * @param int $iIdLang
- *         Id of the language
- * @param int $iIdClient
- *         Id of the client, uses global client id by default
- *
+ * @param int $iIdLang Id of the language
+ * @param int $iIdClient Id of the client, uses global client id by default
  * @return void|string
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function langDeleteLanguage($iIdLang, $iIdClient = 0)
 {
@@ -287,14 +260,9 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
  *
  * @param int $idlang
  * @param int $active
- *
- * @return bool
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function langActivateDeactivateLanguage($idlang, $active)
+function langActivateDeactivateLanguage($idlang, $active): bool
 {
     $oLang = new cApiLanguage();
     if ($oLang->loadByPrimaryKey((int)$idlang)) {
@@ -309,16 +277,11 @@ function langActivateDeactivateLanguage($idlang, $active)
  * by language id
  *
  * @param int $idlang
- * @param cDb $db
- *         Is not in use
- *
- * @return string
- *         'ltr' or 'rtl'
- *
- * @throws cDbException
- * @throws cException
+ * @param cDb $db Is not in use
+ * @return string 'ltr' or 'rtl'
+ * @throws cDbException|cException
  */
-function langGetTextDirection($idlang, $db = NULL)
+function langGetTextDirection($idlang, $db = NULL): string
 {
     static $oLang;
     if (!isset($oLang)) {

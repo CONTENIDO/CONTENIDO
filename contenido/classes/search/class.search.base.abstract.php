@@ -80,8 +80,8 @@ abstract class cSearchBaseAbstract
     protected function __construct($oDB = NULL, $bDebug = false)
     {
         $this->cfg = cRegistry::getConfig();
-        $this->lang = cSecurity::toInteger(cRegistry::getLanguageId());
-        $this->client = cSecurity::toInteger(cRegistry::getClientId());
+        $this->lang = cRegistry::getLanguageId();
+        $this->client = cRegistry::getClientId();
 
         $this->bDebug = $bDebug;
 

@@ -24,6 +24,8 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
+$area = cRegistry::getArea();
+
 // con_cli Plugin
 if ('cli' === cString::getPartOfString(PHP_SAPI, 0, 3)) {
     $client = $lang = 1;
@@ -40,5 +42,3 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
     conMoveArticles();
 }
-
-?>

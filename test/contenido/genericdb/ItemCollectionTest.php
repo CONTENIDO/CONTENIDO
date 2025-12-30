@@ -32,8 +32,7 @@ class ItemCollectionTest extends cTestingTestCase
     protected $_tables = ['con_test_dog', 'con_test_rfid_dog', 'con_test'];
 
     /**
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      * @throws cTestingException
      */
     protected function setUp(): void
@@ -561,8 +560,7 @@ class ItemCollectionTest extends cTestingTestCase
     }
 
     /**
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function testSelect()
     {
@@ -797,8 +795,7 @@ class ItemCollectionTest extends cTestingTestCase
 
 
     /**
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function testGetAllIds()
     {
@@ -822,8 +819,7 @@ class ItemCollectionTest extends cTestingTestCase
     }
 
     /**
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function testDeleteBy()
     {
@@ -836,8 +832,7 @@ class ItemCollectionTest extends cTestingTestCase
     }
 
     /**
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function testFetchArray()
     {

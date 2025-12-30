@@ -43,7 +43,12 @@ include_once($contenido_path . 'includes/startup.php');
 // include editor config/combat file
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php');
 
+$db = cRegistry::getDb();
 $db2 = cRegistry::getDb();
+$cfg = cRegistry::getConfig();
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
+$cfgClient = cRegistry::getClientConfig();
 
 $arg_seperator = '&amp;';
 
@@ -107,7 +112,6 @@ switch ($_REQUEST['mode']) {
             $db2->query($sql2);
 
             while ($db2->nextRecord()) {
-
                 $tmp_title = $db2->f("title");
 
                 if (cString::getStringLength($tmp_title) > 32) {
@@ -122,7 +126,12 @@ switch ($_REQUEST['mode']) {
                 if ($db2->f("online") == 0) {
                     $tmp_title = "[" . $tmp_title . "]";
                 }
-                $output .= ",\n\t".'["&nbsp;&nbsp;'.$spaces.'|&nbsp;&nbsp;'.$tmp_title.'", "'."front_content.php?idart=".$db2->f("idart").'"]';
+                $output .= sprintf(
+                    ",\n\t[\"&nbsp;&nbsp;%s|&nbsp;&nbsp;%s\", \"front_content.php?idart=%s\"]",
+                    $spaces,
+                    $tmp_title,
+                    $db2->f("idart")
+                );
             }
         }
 
@@ -131,7 +140,12 @@ switch ($_REQUEST['mode']) {
         break;
 
     case 'image':
-        $sql = "SELECT * FROM ".$cfg['tab']['upl']." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('gif', 'jpg', 'jpeg', 'png') ORDER BY dirname, filename ASC";
+        $sql = sprintf(
+            "SELECT * FROM `%s` WHERE idclient = %d AND filetype "
+                . " IN ('gif', 'jpg', 'jpeg', 'png') ORDER BY dirname, filename ASC",
+            $cfg['tab']['upl'],
+            $client
+        );
         $db->query($sql);
 
         $output .= "var tinyMCEImageList = new Array(";
@@ -176,5 +190,3 @@ switch ($_REQUEST['mode']) {
 }
 
 echo $output;
-
-?>

@@ -33,29 +33,15 @@ $catCheck = false;
 $artCheck = false;
 $startart = NULL;
 
-// get all client language id's
-$clientsLangInstance->select("idclient= " . $clientId);
-$resultClientLangs = $clientsLangInstance->fetchArray('idlang', 'idlang');
-
-// get all active languages of a client
-foreach ($resultClientLangs as $clientLang) {
-    $languageInstance->loadByMany(
-        [
-            'active' => '1',
-            'idlang' => $clientLang,
-        ]
-    );
-    if ($languageInstance->get('idlang')) {
-        $allLanguageIds[] = cSecurity::toInteger($languageInstance->get('idlang'));
-    }
-}
+// get all active languages of the client
+$allLanguageIds = $clientsLangInstance->getAllLanguageIdsByClient($clientId, true);
 
 if (count($allLanguageIds) != 1) {
-    $idart = cSecurity::toInteger(cRegistry::getArticleId());
+    $idart = cRegistry::getArticleId();
     $langName = '';
 
     // else check if there is more than one language
-    $currentLanguage = cSecurity::toInteger(cRegistry::getLanguageId());
+    $currentLanguage = cRegistry::getLanguageId();
 
     // set next language if exists
     foreach ($allLanguageIds as $languageId) {
@@ -99,7 +85,7 @@ if (count($allLanguageIds) != 1) {
         $catRetItem = new cApiCategoryLanguage();
         $catRetItem->loadByCategoryIdAndLanguageId(cSecurity::toInteger($idcatAuto), cSecurity::toInteger($selectedLang));
 
-        if ($catCheck === true && $catRetItem) {
+        if ($catCheck === true && $catRetItem->isLoaded()) {
             $artRetItem = $artCollection->fetchById($catRetItem->get('startidartlang'));
         }
         if ($artRetItem) {

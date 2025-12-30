@@ -97,10 +97,11 @@ if ($bUsePlugins == true && cHasPlugins('frontendusers')) {
 
     foreach ($cfg['plugins']['frontendusers'] as $plugin) {
         if ($_iCountValidPlugins == 0 || in_array($plugin, $_aValidPlugins)) {
-            if (function_exists('frontendusers_' . $plugin . '_wantedVariables')
+            if (
+                function_exists('frontendusers_' . $plugin . '_wantedVariables')
                 && function_exists('frontendusers_' . $plugin . '_canonicalVariables')
-                && function_exists('frontendusers_' . $plugin . '_getvalue')) {
-
+                && function_exists('frontendusers_' . $plugin . '_getvalue')
+            ) {
                 $aVariableNames = call_user_func('frontendusers_' . $plugin . '_canonicalVariables');
 
                 if (is_array($aVariableNames)) {

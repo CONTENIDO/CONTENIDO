@@ -48,12 +48,8 @@ class cApiActionCollection extends ItemCollection
      * @param string $code [optional]
      * @param string $location [optional]
      * @param int $relevant [optional]
-     *
      * @return cApiAction
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1)
     {
@@ -95,12 +91,10 @@ class cApiActionCollection extends ItemCollection
     /**
      * Returns all actions available in the system.
      *
-     * @return array
-     *         Array with id and name entries
-     *
-     * @throws cDbException
+     * @return array Array with id and name entries
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function getAvailableActions()
+    public function getAvailableActions(): array
     {
         $sql = "SELECT action.idaction, action.name, area.name AS areaname
                 FROM `%s` AS action LEFT JOIN `%s` AS area
@@ -123,32 +117,24 @@ class cApiActionCollection extends ItemCollection
     /**
      * Return name of passed action.
      *
-     * @param int $action
-     *         Id of action
-     *
-     * @return string|NULL
-     *
-     * @throws cDbException
+     * @param int $action Id of action
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function getActionName($action)
+    public function getActionName($action): ?string
     {
         $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
 
-        return ($this->db->nextRecord()) ? $this->db->f('name') : NULL;
+        return ($this->db->nextRecord()) ? $this->db->f('name') : null;
     }
 
     /**
      * Returns the area for the given action.
      *
-     * @param string|int
-     *         Name or id of action
-     *
-     * @return int|NULL
-     *         with the area ID for the given action or NULL
-     *
-     * @throws cDbException
+     * @param string|int $action Name or id of action
+     * @return ?int The area ID for the given action or NULL
+     * @throws cDbException|cInvalidArgumentException
      */
-    function getAreaForAction($action)
+    public function getAreaForAction($action): ?int
     {
         if (!is_numeric($action)) {
             $this->db->query("SELECT idarea FROM `%s` WHERE name = '%s'", $this->table, $action);
@@ -156,7 +142,7 @@ class cApiActionCollection extends ItemCollection
             $this->db->query("SELECT idarea FROM `%s` WHERE idaction = %d", $this->table, $action);
         }
 
-        return ($this->db->nextRecord()) ? $this->db->f('idarea') : NULL;
+        return ($this->db->nextRecord()) ? $this->db->f('idarea') : null;
     }
 }
 
@@ -171,35 +157,25 @@ class cApiAction extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('actions'), 'idaction');
         $this->setFilters(['addslashes'], ['stripslashes']);
 
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
-
-        // @todo Where is this used???
-        $this->_wantParameters = [];
     }
 
     /**
      * User-defined setter for action fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'relevant':
@@ -207,7 +183,7 @@ class cApiAction extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

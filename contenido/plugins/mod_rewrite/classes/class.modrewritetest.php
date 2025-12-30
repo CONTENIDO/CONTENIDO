@@ -177,18 +177,16 @@ class ModRewriteTest
      * The result is used to generate seo urls...
      *
      * @param array $arr Associative array with some data as follows:
-     *                        <code>
-     *                        $arr['idcat']
-     *                        $arr['idart']
-     *                        $arr['idcatart']
-     *                        $arr['idartlang']
-     *                        </code>
+     *      <code>
+     *      $arr['idcat']
+     *      $arr['idart']
+     *      $arr['idcatart']
+     *      $arr['idartlang']
+     *      </code>
      * @param string $type Either 'c' or 'a' (category or article). If set to
-     *                        'c' only the parameter idcat will be added to the URL
-     *
-     * @return string
+     *      'c' only the parameter idcat will be added to the URL
      */
-    public function composeURL($arr, $type)
+    public function composeURL(array $arr, string $type): string
     {
         $type = ($type == 'a') ? 'a' : 'c';
 
@@ -219,13 +217,10 @@ class ModRewriteTest
      * processing passed url using ModRewriteController
      *
      * @param string $url Url to resolve
-     *
-     * @return  array   Associative array with resolved data
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @return array Associative array with resolved data
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function resolveUrl($url)
+    public function resolveUrl($url): array
     {
         // some globals to reset
         $aGlobs = [

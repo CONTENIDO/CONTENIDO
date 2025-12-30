@@ -129,12 +129,10 @@ class Solr
      *
      * @param $idclient
      * @param $idlang
-     *
      * @return array
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public static function getClientOptions($idclient, $idlang)
+    public static function getClientOptions($idclient, $idlang): array
     {
         $options = [];
 

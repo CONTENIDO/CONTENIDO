@@ -45,22 +45,17 @@ class WorkflowTasks extends ItemCollection
     }
 
     /**
-     * @param string $where
-     * @param string $group_by
-     * @param string $order_by
-     * @param string $limit
+     * Extends the where statement. See the original function for the parameters.
      *
-     * @return bool
-     * @throws cDbException
+     * @inheritDoc
      */
-    public function select($where = "", $group_by = "", $order_by = "", $limit = "")
+    public function select($where = '', $groupBy = '', $orderBy = '', $limit = '')
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-
-        if ($where != "") {
-            $where = $where . " AND idclient = " . $client;
+        if ($where != '') {
+            $where = $where . ' AND `idclient` = ' . cRegistry::getClientId();
         }
-        return parent::select($where, $group_by, $order_by, $limit);
+
+        return parent::select($where, $groupBy, $orderBy, $limit);
     }
 
 }

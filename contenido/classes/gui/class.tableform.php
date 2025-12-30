@@ -131,12 +131,9 @@ class cGuiTableForm
      *
      * Creates a new cGuiTableForm with given name, action & method of form.
      *
-     * @param string $name
-     *         of form
-     * @param string $action [optional]
-     *         of form defaults to 'main.php'
-     * @param string $method [optional]
-     *         of form defaults to 'post'
+     * @param string $name Name of form
+     * @param string $action [optional] Action of form defaults to 'main.php'
+     * @param string $method [optional] Method of form defaults to 'post'
      * @throws cException
      */
     public function __construct($name, $action = 'main.php', $method = 'post')
@@ -157,7 +154,6 @@ class cGuiTableForm
     }
 
     /**
-     *
      * @param string $name
      * @param string $value
      */
@@ -369,16 +365,13 @@ class cGuiTableForm
     }
 
     /**
-     * Renders this cGuiTableForm and either returns ist markup or echoes
-     * it immediately.
+     * Renders this cGuiTableForm and either returns ist markup or echoes it immediately.
      *
-     * @param bool $return [optional]
-     *                     if true then return markup, else echo immediately
-     *
-     * @return string|void
+     * @param bool $return If true then return markup, else echo immediately
+     * @return ?string
      * @throws cInvalidArgumentException
      */
-    public function render($return = true)
+    public function render(bool $return = true)
     {
         $sess = cRegistry::getSession();
         $cfg = cRegistry::getConfig();
@@ -434,6 +427,7 @@ class cGuiTableForm
             return $rendered;
         } else {
             echo $rendered;
+            return null;
         }
     }
 

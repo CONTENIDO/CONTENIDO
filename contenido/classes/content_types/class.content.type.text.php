@@ -28,13 +28,9 @@ class cContentTypeText extends cContentTypeAbstract
      *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings
-     *         the raw settings in an XML structure or as plaintext
-     * @param int $id
-     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
-     *         array containing the values of all content types
-     *
+     * @param string $rawSettings The raw settings in an XML structure or as plaintext
+     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes Array containing the values of all content types
      * @throws cDbException
      */
     public function __construct($rawSettings, $id, array $contentTypes)
@@ -95,8 +91,7 @@ class cContentTypeText extends cContentTypeAbstract
     /**
      * Generates the JS code for this content type.
      *
-     * @return string
-     *         the JS code for the content type
+     * @return string The JS code for the content type
      * @throws cInvalidArgumentException
      */
     protected function _getEditJavaScript(): string

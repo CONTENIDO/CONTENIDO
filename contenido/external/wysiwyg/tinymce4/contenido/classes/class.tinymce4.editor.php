@@ -74,6 +74,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
      *
      * @param string $editorName
      * @param string $editorContent
+     * @throws cDbException|cException
      */
     public function __construct(string $editorName, string $editorContent)
     {
@@ -117,7 +118,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
                 foreach ($this->_cmsTypes as $curTypeKey => $curType) {
                     if (false === isset($this->_aSettings[$curType])) {
                         $this->_aSettings[$curTypeKey][$curSettingKey] = $curSetting;
-                   }
+                    }
                 }
                 // remove global setting for further processing in con_tiny.js
                 // that js-code assumes each setting key maps a cms type
@@ -175,7 +176,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
 
             // XHTML
             if (getEffectiveSetting('generator', 'xhtml', false) == 'true') {
-                $this->setXHTMLMode($cmsType, true);
+                $this->setXHTMLMode($cmsType);
             } else {
                 $this->setXHTMLMode($cmsType, false);
             }
@@ -586,16 +587,12 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
      * Overwriting defined setting can be achieved with
      * $bForceSetting = true.
      *
-     * @param string $type
-     *        CMS type where setting should apply
-     * @param string $key
-     *        of setting to set
-     * @param string|mixed $value
-     *        of setting to set
-     * @param bool $forceSetting
-     *      to overwrite defined setting
+     * @param string $type CMS type where setting should apply
+     * @param ?string $key Key of setting to set
+     * @param string|mixed $value Value of setting to set
+     * @param bool $forceSetting To overwrite defined setting
      */
-    public function setSetting($type = null, string $key = null, $value = '', bool $forceSetting = false)
+    public function setSetting($type = null, ?string $key = null, $value = '', bool $forceSetting = false)
     {
         if ($type === null || $key === null) {
             cWarning(__FILE__, __LINE__, 'Type and key can not be null');

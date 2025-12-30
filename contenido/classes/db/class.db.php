@@ -120,10 +120,7 @@ class cDb extends cDbDriverHandler
 
     /**
      * Return the current row count.
-     *
-     * @return int
-     */
-    public function getRow()
+    public function getRow(): int
     {
         return $this->_row;
     }
@@ -132,8 +129,7 @@ class cDb extends cDbDriverHandler
      * Sets the current row count.
      * Do not set it manually unless you know what you are doing.
      *
-     * @param int $row
-     *         current row count
+     * @param int $row Current row count
      */
     public function setRow($row)
     {
@@ -152,7 +148,7 @@ class cDb extends cDbDriverHandler
     /**
      * @inheritdoc
      */
-    public function getErrorMessage()
+    public function getErrorMessage(): string
     {
         return $this->_errorMessage;
     }
@@ -160,7 +156,7 @@ class cDb extends cDbDriverHandler
     /**
      * @inheritdoc
      */
-    public function setErrorMessage($errorMessage)
+    public function setErrorMessage(string $errorMessage)
     {
         $this->_errorMessage = $errorMessage;
     }
@@ -168,7 +164,7 @@ class cDb extends cDbDriverHandler
     /**
      * @inheritdoc
      */
-    public function getErrorNumber()
+    public function getErrorNumber(): int
     {
         return $this->_errorNumber;
     }
@@ -176,7 +172,7 @@ class cDb extends cDbDriverHandler
     /**
      * @inheritdoc
      */
-    public function setErrorNumber($errorNumber)
+    public function setErrorNumber(int $errorNumber)
     {
         $this->_errorNumber = (int)$errorNumber;
     }

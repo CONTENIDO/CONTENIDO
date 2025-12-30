@@ -192,11 +192,10 @@ class cFrontendList
     /**
      * Outputs or optionally returns.
      *
-     * @param bool $return
-     *         if true, returns the list
-     * @return string|void
+     * @param bool $return If true, returns the list.
+     * @return ?string
      */
-    public function output(bool $return = false)
+    public function output(bool $return = false): ?string
     {
         $output = $this->_startWrap;
 
@@ -222,6 +221,7 @@ class cFrontendList
                     $items .= ", '" . addslashes($this->convert($key, $value)) . "'";
                 }
 
+                // NOTE: $itemWrap will be evaluated below!
                 $itemWrap = str_replace('{LIST_ITEM_POS}', $currentPos, $this->_itemWrap);
                 $execute = '$output .= sprintf($itemWrap ' . $items . ');';
                 eval($execute);
@@ -236,6 +236,7 @@ class cFrontendList
             return $output;
         } else {
             echo $output;
+            return null;
         }
     }
 

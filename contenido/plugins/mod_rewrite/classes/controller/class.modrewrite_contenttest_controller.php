@@ -55,9 +55,7 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
     /**
      * Test action
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function testAction()
     {

@@ -34,24 +34,16 @@ class cDbDriverMysql extends cDbDriverAbstract
 {
 
     /**
-     * Abstract method for checking database driver base functions.
-     * If this check fails, the database connection will not be established.
-     *
-     * @return bool
-     * @see cDbDriverAbstract::check()
+     * @inheritDoc
      */
-    public function check()
+    public function check(): bool
     {
         return function_exists("mysql_connect");
     }
 
     /**
-     * Connects to the database.
-     *
-     * @return object|resource|int|NULL
-     *         value depends on used driver and is NULL in case of an error
+     * @inheritDoc
      * @throws cDbException
-     * @see cDbDriverAbstract::connect()
      */
     public function connect()
     {
@@ -93,18 +85,9 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * Builds a insert query.
-     * String values in passed fields parameter will be escaped automatically.
-     *
-     * @param string $tableName
-     *         The table name
-     * @param array $fields
-     *         Associative array of fields to insert
-     * @return string
-     *         The INSERT SQL query
-     * @see cDbDriverAbstract::buildInsert()
+     * @inheritDoc
      */
-    public function buildInsert($tableName, array $fields)
+    public function buildInsert(string $tableName, array $fields): string
     {
         $fieldList = '';
         $valueList = '';
@@ -125,21 +108,9 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * Builds a update query. String values in passed fields and whereClauses
-     * parameter will be escaped automatically.
-     *
-     * @param string $tableName
-     *         The table name
-     * @param array $fields
-     *         Associative array of fields to update
-     * @param array $whereClauses
-     *         Associative array of field in where clause.
-     *         Multiple entries will be concatenated with AND.
-     * @return string
-     *         The UPDATE query
-     * @see cDbDriverAbstract::buildUpdate()
+     * @inheritDoc
      */
-    public function buildUpdate($tableName, array $fields, array $whereClauses)
+    public function buildUpdate(string $tableName, array $fields, array $whereClauses): string
     {
         $updateList = '';
         $whereList = '';
@@ -169,32 +140,25 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * Executes the query.
-     *
-     * @param string $query
-     *         The query to execute
-     * @see cDbDriverAbstract::query()
+     * @inheritDoc
      */
-    public function query($query)
+    public function query(string $statement): bool
     {
         $linkId = $this->_handler->getLinkId();
-        $queryId = @mysql_query($query, $linkId);
+        $queryId = @mysql_query($statement, $linkId);
 
         $this->_handler->setQueryId($queryId);
         $this->_handler->setRow(0);
         $this->_handler->setErrorNumber($this->getErrorNumber());
         $this->_handler->setErrorMessage($this->getErrorMessage());
+
+        return (bool) $queryId;
     }
 
     /**
-     * Moves the result to the next record, if exists and returns the status of
-     * the movement
-     *
-     * @return bool
-     *         Flag about move status true on success or false
-     * @see cDbDriverAbstract::nextRecord()
+     * @inheritDoc
      */
-    public function nextRecord()
+    public function nextRecord(): bool
     {
         $queryId = $this->_handler->getQueryId();
         $record = @mysql_fetch_array($queryId);
@@ -208,15 +172,9 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * This method returns the current result set as object or NULL if no result
-     * set is left. If optional param $className is set, the result object is an
-     * instance of class $className.
-     *
-     * @param string $className [optional]
-     * @return Ambigous <NULL, object, false>
-     * @see cDbDriverAbstract::getResultObject()
+     * @inheritDoc
      */
-    public function getResultObject($className = NULL)
+    public function getResultObject(?string $className = NULL)
     {
         $result = NULL;
         $queryId = $this->_handler->getQueryId();
@@ -233,13 +191,9 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * Returns number of affected rows from last executed query (update, delete)
-     *
-     * @return int
-     *         Number of affected rows
-     * @see cDbDriverAbstract::affectedRows()
+     * @inheritDoc
      */
-    public function affectedRows()
+    public function affectedRows(): int
     {
         $linkId = $this->_handler->getLinkId();
 
@@ -247,13 +201,9 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * Returns the number of rows from last executed select query.
-     *
-     * @return int
-     *         The number of rows from last select query result
-     * @see cDbDriverAbstract::numRows()
+     * @inheritDoc
      */
-    public function numRows()
+    public function numRows(): int
     {
         $queryId = $this->_handler->getQueryId();
 
@@ -261,13 +211,9 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * Returns the number of fields (columns) from current record set
-     *
-     * @return int
-     *         Number of fields
-     * @see cDbDriverAbstract::numFields()
+     * @inheritDoc
      */
-    public function numFields()
+    public function numFields(): int
     {
         $queryId = $this->_handler->getQueryId();
 
@@ -286,13 +232,7 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * Escape string for using in SQL-Statement.
-     *
-     * @param string $string
-     *         The string to escape
-     * @return string
-     *         Escaped string
-     * @see cDbDriverAbstract::escape()
+     * @inheritdoc
      */
     public function escape($string)
     {
@@ -302,14 +242,9 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * Moves the cursor (position inside current result sets).
-     *
-     * @param int $pos [optional]
-     *         The positon to move to inside the current result set
-     * @return int
-     * @see cDbDriverAbstract::seek()
+     * @inheritDoc
      */
-    public function seek($pos = 0)
+    public function seek(int $pos = 0): int
     {
         $queryId = $this->_handler->getQueryId();
 
@@ -324,44 +259,10 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * Parses the table structure and generates metadata from it.
-     *
-     * Due to compatibility problems with table we changed the behavior
-     * of metadata(). Depending on $full, metadata returns the following values:
-     *
-     * - full is false (default):
-     * $result[]:
-     * [0]["table"] table name
-     * [0]["name"] field name
-     * [0]["type"] field type
-     * [0]["len"] field length
-     * [0]["flags"] field flags
-     *
-     * - full is true
-     * $result[]:
-     * ["num_fields"] number of metadata records
-     * [0]["table"] table name
-     * [0]["name"] field name
-     * [0]["type"] field type
-     * [0]["len"] field length
-     * [0]["flags"] field flags
-     * ["meta"][field name] index of field named "field name"
-     * This last one could be used if you have a field name, but no index.
-     * Test: if (isset($result['meta']['myfield'])) { ...
-     *
-     * @param string $tableName
-     *                     The table to get metadata or empty string to retrieve metadata
-     *                     of all tables.
-     * @param bool $full [optional]
-     *                     Flag to load full metadata.
-     *
-     * @return array
-     *         Depends on used database and on parameter $full
+     * @inheritDoc
      * @throws cDbException
-     * @see cDbDriverAbstract::getMetaData()
-     *
      */
-    public function getMetaData($tableName, $full = false)
+    public function getMetaData(string $tableName, bool $full = false): array
     {
         $res = array();
 
@@ -370,7 +271,7 @@ class cDbDriverMysql extends cDbDriverAbstract
         if (!$id) {
             $this->_handler->halt('Metadata query failed.');
 
-            return false;
+            return [];
         }
 
         // made this IF due to performance (one if is faster than $count if's)
@@ -395,21 +296,20 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * Fetches all table names.
-     *
-     * @return array
-     * @see cDbDriverAbstract::getTableNames()
+     * @inheritDoc
      */
-    public function getTableNames()
+    public function getTableNames(): array
     {
-        $return = array();
+        $return = [];
 
         if ($this->query('SHOW TABLES')) {
             while ($this->nextRecord()) {
                 $record = $this->getRecord();
-                $return[] = array(
-                    'table_name' => $record[0], 'tablespace_name' => $this->_dbCfg['connection']['database'], 'database' => $this->_dbCfg['connection']['database'],
-                );
+                $return[] = [
+                    'table_name' => $record[0],
+                    'tablespace_name' => $this->_dbCfg['connection']['database'],
+                    'database' => $this->_dbCfg['connection']['database'],
+                ];
             }
 
             $this->free();
@@ -418,19 +318,16 @@ class cDbDriverMysql extends cDbDriverAbstract
         return $return;
     }
 
-    public function getTableFieldDataType(string $table, string $field)
+    public function getTableFieldDataType(string $table, string $field): ?string
     {
         // Function not implemented, since mysql was removed in PHP 7.0
         return null;
     }
 
     /**
-     * Fetches server information.
-     *
-     * @return array
-     * @see cDbDriverAbstract::getServerInfo()
+     * @inheritDoc
      */
-    public function getServerInfo()
+    public function getServerInfo(): ?array
     {
         $linkId = $this->_handler->getLinkId();
 
@@ -445,12 +342,9 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * Returns error code of last occurred error by using databases interface.
-     *
-     * @return int
-     * @see cDbDriverAbstract::getErrorNumber()
+     * @inheritDoc
      */
-    public function getErrorNumber()
+    public function getErrorNumber(): int
     {
         $linkId = $this->_handler->getLinkId();
 
@@ -462,12 +356,9 @@ class cDbDriverMysql extends cDbDriverAbstract
     }
 
     /**
-     * Returns error message of last occurred error by using databases interface.
-     *
-     * @return string
-     * @see cDbDriverAbstract::getErrorMessage()
+     * @inheritDoc
      */
-    public function getErrorMessage()
+    public function getErrorMessage(): string
     {
         $linkId = $this->_handler->getLinkId();
 

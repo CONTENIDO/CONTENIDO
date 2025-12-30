@@ -27,8 +27,8 @@ plugin_include(Pifa::getName(), 'extensions/class.pifa.default_form_processor.ph
  */
 class MailedFormProcessor extends DefaultFormProcessor
 {
-    const MAIL_MODE_CLIENT = 'client';
-    const MAIL_MODE_SYSTEM = 'system';
+    public const MAIL_MODE_CLIENT = 'client';
+    public const MAIL_MODE_SYSTEM = 'system';
 
     /**
      * Sends client & system mail independantly.

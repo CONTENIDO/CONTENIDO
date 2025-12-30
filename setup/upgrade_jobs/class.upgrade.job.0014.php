@@ -26,13 +26,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0014 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.4";
+    public $maxVersion = '4.9.4';
 
     public function _execute()
     {
-
-        if ($_SESSION['setuptype'] == 'upgrade') {
-
+        if ($this->_setupType == 'upgrade') {
             // Initializing cApiNavSub
             $navsub = new cApiNavSub();
 
@@ -95,7 +93,6 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract
                 $navsubColl = new cApiNavSubCollection();
                 $navsubColl->deleteByWhereClause("location = 'mod_rewrite/xml/;navigation/content/mod_rewrite'");
             }
-
         }
     }
 

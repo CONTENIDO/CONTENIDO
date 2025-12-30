@@ -38,22 +38,13 @@ class cApiAreaCollection extends ItemCollection
     /**
      * Creates an area item entry.
      *
-     * @param string $name
-     *                             Name
-     * @param string|int $parentId [optional]
-     *                             Parent id as a string or number
-     * @param int $relevant [optional]
-     *                             0 or 1
-     * @param int $online [optional]
-     *                             0 or 1
-     * @param int $menuless [optional]
-     *                             0 or 1
-     *
+     * @param string $name Name
+     * @param string|int $parentId [optional] Parent id as a string or number
+     * @param int $relevant [optional] 0 or 1
+     * @param int $online [optional] 0 or 1
+     * @param int $menuless [optional] 0 or 1
      * @return cApiArea
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($name, $parentId = 0, $relevant = 1, $online = 1, $menuless = 0)
     {
@@ -75,12 +66,8 @@ class cApiAreaCollection extends ItemCollection
     /**
      * Returns the parent id of passed area.
      *
-     * @param int|string $area
-     *         Area id or name
-     *
-     * @return string|int
-     *         name of parent area or passed area
-     *
+     * @param int|string $area Area id or name
+     * @return string|int Name of parent area or passed area
      * @throws cDbException
      */
     public function getParentAreaId($area)
@@ -97,12 +84,8 @@ class cApiAreaCollection extends ItemCollection
     /**
      * Returns all area ids having passed area as name or as parent id.
      *
-     * @param int|string $nameOrId
-     *         Area name or parent id
-     *
-     * @return array
-     *         List of area ids
-     *
+     * @param int|string $nameOrId Area name or parent id
+     * @return array List of area ids
      * @throws cDbException
      */
     public function getIdareasByAreaNameOrParentId($nameOrId)
@@ -125,7 +108,6 @@ class cApiAreaCollection extends ItemCollection
      * but it uses direct SQL instead a cApiArea instance.
      *
      * @param int $areaId The area id
-     * @return string
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
@@ -141,7 +123,6 @@ class cApiAreaCollection extends ItemCollection
      *
      * @param string|int $parentId Parent id as a string or number
      * @param int $areaId The area id
-     * @return array
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
@@ -161,13 +142,10 @@ class cApiAreaCollection extends ItemCollection
     /**
      * Returns all areas available in the system.
      *
-     * @return array
-     *         Array with id and name entries
-     *
-     * @throws cDbException
-     * @throws cException
+     * @return array Array with id and name entries
+     * @throws cDbException|cException
      */
-    public function getAvailableAreas()
+    public function getAvailableAreas(): array
     {
         $this->select();
 
@@ -185,8 +163,7 @@ class cApiAreaCollection extends ItemCollection
      * Returns the name for a given area id.
      *
      * @param string $area
-     * @return string
-     *         String with the name for the area
+     * @return string String with the name for the area
      */
     public function getAreaName($area)
     {
@@ -197,29 +174,25 @@ class cApiAreaCollection extends ItemCollection
     /**
      * Returns the idarea for a given area name.
      *
-     * @param string $area
-     *
-     * @return int
-     *         Integer with the ID for the area
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param int|string $area
+     * @return int Id for the area
+     * @throws cDbException|cException
      */
-    public function getAreaId($area)
+    public function getAreaId($area): int
     {
         // if area name is numeric (legacy areas)
         if (is_numeric($area)) {
-            return $area;
+            return (int) $area;
         }
 
         $oItem = new cApiArea();
         $oItem->loadBy('name', $area);
 
-        if ($oItem->isLoaded() === false) {
-            return $area;
+        if (!$oItem->isLoaded()) {
+            return 0;
         }
 
-        return $oItem->get('idarea');
+        return (int) $oItem->get('idarea');
     }
 }
 
@@ -234,31 +207,24 @@ class cApiArea extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('area'), 'idarea');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for area fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'online':
@@ -268,7 +234,7 @@ class cApiArea extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

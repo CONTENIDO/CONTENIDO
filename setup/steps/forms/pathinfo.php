@@ -25,7 +25,7 @@ class cSetupPath extends cSetupMask
 
     /**
      * cSetupPath constructor.
-     * @param string $step
+     * @param bool|int $step
      * @param bool $previous
      * @param $next
      */

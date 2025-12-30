@@ -20,27 +20,15 @@ cInclude('includes', 'functions.con.php');
 /**
  * Saves changes of modules and regenerates code cache if required
  *
- * @param int $idmod
- *         module id
- * @param string $name
- *         name of the module
- * @param string $description
- *         module description text
- * @param string $input
- *         module input content
- * @param string $output
- *         module output content
- * @param string $template
- *         template field in module's database entry (seems deprecated)
- * @param string $type
- *         module type (common values are '', 'content', 'head', 'layout', 'navigation' and 'script')
- *
- * @return mixed
- *         idmod or nothing
- *
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @param int $idmod module id
+ * @param string $name name of the module
+ * @param string $description module description text
+ * @param string $input module input content
+ * @param string $output module output content
+ * @param string $template template field in module's database entry (seems deprecated)
+ * @param string $type module type (common values are '', 'content', 'head', 'layout', 'navigation' and 'script')
+ * @return mixed idmod or nothing
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function modEditModule(
     $idmod, $name, $description, $input, $output, $template, $type = ''
@@ -52,7 +40,7 @@ function modEditModule(
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
     $cfgClient = cRegistry::getClientConfig();
-    $client = cSecurity::toInteger(cRegistry::getClientId());
+    $client = cRegistry::getCategoryId();
     $area = cRegistry::getArea();
     $frame = cRegistry::getFrame();
 
@@ -195,7 +183,6 @@ function modEditModule(
  * Furthermore, the rights for this module are deleted.
  *
  * @param int $idmod Id of the module to delete
- *
  * @throws cDbException|cException|cInvalidArgumentException
  */
 function modDeleteModule($idmod)

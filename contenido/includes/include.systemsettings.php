@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var array $cfg
  */
 
-$page = new cGuiPage("systemsettings");
+$page = new cGuiPage('systemsettings');
 
 $aManagedValues = [
     'versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated',
@@ -41,7 +41,7 @@ $requestCsIdSystemProp = cSecurity::toInteger($_REQUEST['csidsystemprop'] ?? '0'
 $action = cRegistry::getAction();
 $isSysadmin = $perm->isSysadmin($currentuser);
 
-if ($action == "systemsettings_save_item") {
+if ($action == 'systemsettings_save_item') {
     if (!$isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
@@ -58,7 +58,7 @@ if ($action == "systemsettings_save_item") {
     }
 }
 
-if ($action == "systemsettings_delete_item") {
+if ($action == 'systemsettings_delete_item') {
     if (!$isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
@@ -107,14 +107,11 @@ $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
 try {
     $allSystemProperties = getSystemProperties(true);
-} catch (cDbException $e) {
-    $allSystemProperties = [];
-} catch (cException $e) {
+} catch (cDbException|cException $e) {
     $allSystemProperties = [];
 }
 foreach ($allSystemProperties as $type => $typeSystemProperties) {
     foreach ($typeSystemProperties as $name => $value) {
-
         // skip managed system settings
         if (in_array($type . '_' . $name, $aManagedValues)) {
             continue;
@@ -127,7 +124,6 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
         $settingValue = conHtmlentities($value['value']);
 
         if (($action == "systemsettings_edit_item") && ($requestSysType == $type) && ($requestSysName == $name) && $isSysadmin) {
-
             $oInputboxType = new cHTMLTextbox("systype", $settingType);
             $oInputboxType->setWidth(10);
 
@@ -143,7 +139,6 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
             $list->setCell($count, 2, $oInputboxName->render());
             $list->setCell($count, 3, $oInputboxValue->render() . $hidden . $sSubmit);
         } else {
-
             if (cString::getStringLength($type) > 35) {
                 $sShort = conHtmlentities(cString::trimHard($type, 35));
                 $type = sprintf($sMouseoverTemplate, $settingType, $sShort);

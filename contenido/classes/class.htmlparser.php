@@ -39,31 +39,31 @@ class HtmlParser
      *
      * @var int
      */
-    const NODE_TYPE_ELEMENT = 1;
+    public const NODE_TYPE_ELEMENT = 1;
     /**
      * Node type ID for endelements.
      *
      * @var int
      */
-    const NODE_TYPE_ENDELEMENT = 2;
+    public const NODE_TYPE_ENDELEMENT = 2;
     /**
      * Node type ID for texts.
      *
      * @var int
      */
-    const NODE_TYPE_TEXT = 3;
+    public const NODE_TYPE_TEXT = 3;
     /**
      * Node type ID for comments.
      *
      * @var int
      */
-    const NODE_TYPE_COMMENT = 4;
+    public const NODE_TYPE_COMMENT = 4;
     /**
      * Node type ID when done.
      *
      * @var int
      */
-    const NODE_TYPE_DONE = 5;
+    public const NODE_TYPE_DONE = 5;
 
     /**
      * Field iNodeType.

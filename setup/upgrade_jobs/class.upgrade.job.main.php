@@ -156,8 +156,6 @@ class cUpgradeJobMain extends cUpgradeJobAbstract
 
     /**
      * Get all upgrade job files
-     *
-     * @return array
      */
     protected function _getUpgradeJobFiles(): array
     {

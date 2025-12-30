@@ -31,7 +31,7 @@ class cLinkcheckerTester
         $auth = cRegistry::getAuth();
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $lang = cRegistry::getLanguageId();
 
         if (!is_array($aErrors)) {
             $aErrors = [];

@@ -15,21 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * gettext wrapper (for future extensions).
- *
- * Usage:
- * trans('Your text which has to be translated');
- *
- * @param string $string
- *         The string to translate
- *
- * @return string
- *         Returns the translation
- *
- * @throws cException
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function trans($string)
 {
@@ -37,70 +23,35 @@ function trans($string)
 }
 
 /**
- * gettext wrapper (for future extensions).
- *
- * Usage:
- * i18n('Your text which has to be translated');
- *
- * @param string $string
- *         The string to translate
- * @param string $domain
- *         The domain to look up
- *
- * @return string
- *         Returns the translation
- *
+ * @see cI18n::__() for more details.
  * @throws cException
  */
-function i18n($string, $domain = 'contenido')
+function i18n(string $string, string $domain = 'contenido'): string
 {
     return cI18n::__($string, $domain);
 }
 
 /**
- * Emulates GNU gettext
- *
- * @param string $string
- *         The string to translate
- * @param string $domain
- *         The domain to look up
- *
- * @return string
- *         Returns the translation
- *
+ * @see cI18n::emulateGettext() for more details.
  * @throws cInvalidArgumentException
  */
-function i18nEmulateGettext($string, $domain = 'contenido')
+function i18nEmulateGettext(string $string, string $domain = 'contenido'): string
 {
     return cI18n::emulateGettext($string, $domain);
 }
 
 /**
- * Initializes the i18n stuff.
- *
- * @param string $localePath
- *         Path to the locales
- * @param string $langCode
- *         Language code to set
- * @param string $domain
- *         Language domain
+ * @see cI18n::init() for more details.
  */
-function i18nInit($localePath, $langCode, $domain = 'contenido')
+function i18nInit(string $localePath, string $locale, string $domain = 'contenido')
 {
-    cI18n::init($localePath, $langCode, $domain);
+    cI18n::init($localePath, $locale, $domain);
 }
 
 /**
- * Registers a new i18n domain.
- *
- * @param string $localePath
- *         Path to the locales
- * @param string $domain
- *         Domain to bind to
- * @return string
- *         Returns the translation
+ * @see cI18n::registerDomain() for more details.
  */
-function i18nRegisterDomain($domain, $localePath)
+function i18nRegisterDomain(string $domain, string $localePath)
 {
     cI18n::registerDomain($domain, $localePath);
 }
@@ -109,12 +60,10 @@ function i18nRegisterDomain($domain, $localePath)
  * Strips all unnecessary information from the $accept string.
  * Example: de,nl;q=0.7,en-us;q=0.3 would become an array with de,nl,en-us
  *
- * @param string $accept
- *         Comma searated list of languages to accept
- * @return array
- *         array with the short form of the accept languages
+ * @param string $accept Comma separated list of languages to accept
+ * @return array array with the short form of the accept languages
  */
-function i18nStripAcceptLanguages($accept)
+function i18nStripAcceptLanguages(string $accept): array
 {
     $languages = explode(',', $accept);
     $shortLanguages = [];
@@ -130,48 +79,43 @@ function i18nStripAcceptLanguages($accept)
  * Tries to match the language given by $accept to
  * one of the languages in the system.
  *
- * @param string $accept
- *         Language to accept
- * @return string
- *         The locale key for the given accept string
+ * @param string $accept Language to accept
+ * @return ?string The locale key for the given accept-string
  */
-function i18nMatchBrowserAccept($accept)
+function i18nMatchBrowserAccept(string $accept): ?string
 {
-    $available_languages = i18nGetAvailableLanguages();
+    $availableLanguages = i18nGetAvailableLanguages();
 
     // Try to match the whole accept string
-    foreach ($available_languages as $key => $value) {
-        list($country, $lang, $encoding, $shortaccept) = $value;
-        if ($accept == $shortaccept) {
+    foreach ($availableLanguages as $key => $value) {
+        // Two-character lowercase language codes (ISO 639-1 code), e.g. 'de', 'en'
+        $isoCode = $value[3] ?? null;
+        if ($accept == $isoCode) {
             return $key;
         }
     }
 
-    /*
-     * Whoops, we are still here. Let's match the stripped-down string. Example:
-     * de-ch isn't in the list. Cut it down after the '-' to 'de' which should
-     * be in the list.
-     */
+    // Whoops, we are still here. Let's match the stripped-down string. Example:
+    // de-ch isn't in the list. Cut it down after the '-' to 'de' which should be in the list.
     $accept = cString::getPartOfString($accept, 0, 2);
-    foreach ($available_languages as $key => $value) {
-        list($country, $lang, $encoding, $shortaccept) = $value;
-        if ($accept == $shortaccept) {
+    foreach ($availableLanguages as $key => $value) {
+        // Two-character lowercase language codes (ISO 639-1 code), e.g. 'de', 'en'
+        $isoCode = $value[3] ?? null;
+        if ($accept == $isoCode) {
             return $key;
         }
     }
 
-    // / Whoops, still here? Seems that we didn't find any language. Return the
-    // default (german, yikes)
-    return false;
+    // Whoops, still here? Seems that we didn't find any language. Return the default (german, yikes)
+    return null;
 }
 
 /**
  * Returns the available_languages array to prevent globals.
  *
- * @return array
- *         All available languages
+ * @return array All available languages
  */
-function i18nGetAvailableLanguages()
+function i18nGetAvailableLanguages(): array
 {
     /*
      * array notes: First field: Language Second field: Country Third field:
@@ -437,6 +381,7 @@ function i18nGetAvailableLanguages()
 }
 
 /**
+ * Module translation function.
  * If a translation is missing its key will be returned.
  * If the setting debug/module_translation_message is set to true, which is the default,
  * it then will be prefixed by 'Module translation not found: '.
@@ -446,13 +391,10 @@ function i18nGetAvailableLanguages()
  * will return: "May the force be with you."
  *
  * @param string $key the string to translate
- *
  * @return string the translated string
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function mi18n($key)
+function mi18n(string $key): string
 {
     $key = trim($key);
 
@@ -470,7 +412,7 @@ function mi18n($key)
     $contenidoTranslateFromFile = new cModuleFileTranslation($cCurrentModule, true);
     $translations = $contenidoTranslateFromFile->getLangArray();
 
-    $translation = isset($translations[$key]) ? $translations[$key] : '';
+    $translation = $translations[$key] ?? '';
 
     // consider key as untranslated if translation is empty
     // Don't trim translation, so that a string can be translated as ' '!

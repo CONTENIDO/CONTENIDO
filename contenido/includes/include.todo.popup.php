@@ -31,7 +31,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var int|string $itemid
  */
 
-$oPage = new cGuiPage("todo.popup");
+$oPage = new cGuiPage('todo.popup');
 
 $action = $action ?? '';
 

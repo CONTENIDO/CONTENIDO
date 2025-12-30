@@ -50,6 +50,9 @@ class cHTMLAlphaImage extends cHTMLImage
         $this->_sMouseoverClickImage = $sMouseoverClickSrc;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function toHtml(): string
     {
         $imageLocations = "this.imgnormal = '%s'; this.imgover = '%s'; this.clickimgnormal = '%s'; this.clickimgover = '%s';";
@@ -103,6 +106,9 @@ class cHTMLErrorMessageList extends cHTMLDiv
         $this->_oTable->setContent($content);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function toHtml(): string
     {
         $this->_setContent($this->_oTable->render());
@@ -214,6 +220,9 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow
         parent::__construct();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function toHtml(): string
     {
         $this->setContent(
@@ -270,6 +279,9 @@ class cHTMLInfoMessage extends cHTMLTableRow
         parent::__construct();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function toHtml(): string
     {
         $this->setContent(

@@ -114,8 +114,7 @@ class cGuiFoldingRow extends cHTML
      * @param string $linkId [optional]
      * @param bool|NULL $bExpanded [optional]
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = NULL)
     {
@@ -222,8 +221,7 @@ class cGuiFoldingRow extends cHTML
     }
 
     /**
-     * @return string
-     *         Generated markup
+     * @return string Generated markup
      * @see cHTML::render()
      */
     public function render(): string

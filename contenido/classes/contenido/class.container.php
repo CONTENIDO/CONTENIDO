@@ -27,11 +27,8 @@ class cApiContainerCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
     {
@@ -52,11 +49,8 @@ class cApiContainerCollection extends ItemCollection
      * @param int $idtpl
      * @param int $number
      * @param int $idmod
-     *
      * @return cApiContainer
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idtpl, $number, $idmod)
     {
@@ -73,11 +67,9 @@ class cApiContainerCollection extends ItemCollection
     /**
      * Returns list of container numbers by passed template id.
      *
-     * @param int $idtpl
-     * @return array
      * @throws cDbException
      */
-    public function getNumbersByTemplate($idtpl)
+    public function getNumbersByTemplate($idtpl): array
     {
         $list = [];
         $sql = "SELECT number FROM `%s` WHERE idtpl = %d";
@@ -92,9 +84,7 @@ class cApiContainerCollection extends ItemCollection
      * Deletes all configurations by given template id
      *
      * @param int $idtpl
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function clearAssignments($idtpl)
     {
@@ -102,13 +92,10 @@ class cApiContainerCollection extends ItemCollection
     }
 
     /**
-     *
      * @param int $idtpl
      * @param int $number
      * @param int $idmod
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function assignModule($idtpl, $number, $idmod)
     {
@@ -133,32 +120,24 @@ class cApiContainer extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('container'), 'idcontainer');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for container fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idtpl':
@@ -168,7 +147,7 @@ class cApiContainer extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

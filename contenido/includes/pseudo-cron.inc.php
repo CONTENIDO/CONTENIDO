@@ -188,11 +188,6 @@ if ($PC_debug) {
 
 /**
  * Logs an entry into the cron log file.
- *
- * @param string $msg
- * @param string $PC_writeDir
- * @param string $PC_useLog
- * @param bool $PC_debug
  */
 function logMessage(string $msg, string $PC_writeDir, string $PC_useLog, bool $PC_debug)
 {
@@ -217,7 +212,6 @@ function logMessage(string $msg, string $PC_writeDir, string $PC_useLog, bool $P
  * Trims preceding zeros from given value.
  *
  * @param int|string $number
- * @return int
  */
 function lTrimZeros($number): int
 {
@@ -226,10 +220,6 @@ function lTrimZeros($number): int
 
 /**
  * Parses a crontab schedule expression item.
- *
- * @param string $element
- * @param array $targetArray
- * @param int $numberOfElements
  */
 function parseElement(string $element, array &$targetArray, int $numberOfElements)
 {
@@ -266,11 +256,6 @@ function parseElement(string $element, array &$targetArray, int $numberOfElement
 
 /**
  * Decreases the passed date array by amount and date unit.
- *
- * @param array $dateArr
- * @param int $amount
- * @param string $unit
- * @param bool $PC_debug
  */
 function decDate(array &$dateArr, int $amount, string $unit, bool $PC_debug)
 {
@@ -342,10 +327,6 @@ function decDate(array &$dateArr, int $amount, string $unit, bool $PC_debug)
 
 /**
  * Returns the last scheduled run time of a job.
- *
- * @param array $job
- * @param bool $PC_debug
- * @return int
  */
 function getLastScheduledRunTime(array $job, bool $PC_debug): int
 {
@@ -387,10 +368,6 @@ function getLastScheduledRunTime(array $job, bool $PC_debug): int
 
 /**
  * Returns the file name (full path + file name) to a job.
- *
- * @param string $jobName
- * @param string $PC_writeDir
- * @return string
  */
 function getJobFileName(string $jobName, string $PC_writeDir): string
 {
@@ -399,10 +376,6 @@ function getJobFileName(string $jobName, string $PC_writeDir): string
 
 /**
  * Return last run time of a job.
- *
- * @param string $jobName
- * @param string $PC_writeDir
- * @return int
  */
 function getLastActialRunTime(string $jobName, string $PC_writeDir): int
 {
@@ -420,10 +393,6 @@ function getLastActialRunTime(string $jobName, string $PC_writeDir): int
 
 /**
  * Marks last run time of a job.
- *
- * @param string $jobName
- * @param int $lastRun
- * @param string $PC_writeDir
  */
 function markLastRun(string $jobName, int $lastRun, string $PC_writeDir)
 {
@@ -442,14 +411,6 @@ function markLastRun(string $jobName, int $lastRun, string $PC_writeDir)
 
 /**
  * Runs a job.
- *
- * @param array $job
- * @param string $PC_jobDir
- * @param string $PC_writeDir
- * @param int $PC_useLog
- * @param bool $PC_debug
- *
- * @return bool
  */
 function runJob(
     array $job, string $PC_jobDir, string $PC_writeDir, int $PC_useLog, bool $PC_debug = false
@@ -506,15 +467,11 @@ function runJob(
 
 /**
  * Parses the content of the cron file and returns the list of found jobs.
- *
- * @param string $PC_cronTabFile
- * @param bool $PC_debug
- *
  * @return array List of jobs
  */
 function parseCronFile(string $PC_cronTabFile, bool $PC_debug): array
 {
-    $file = @file($PC_cronTabFile);
+    $file = cFileHandler::isFile($PC_cronTabFile) ? file($PC_cronTabFile) : null;
     $job = [];
     $jobs = [];
 
@@ -530,7 +487,7 @@ function parseCronFile(string $PC_cronTabFile, bool $PC_debug): array
                 $jobs[$jobNumber] = $job;
                 if ($jobs[$jobNumber][PC_DOW][0] != '*' and !is_numeric($jobs[$jobNumber][PC_DOW])) {
                     $jobs[$jobNumber][PC_DOW] = str_replace(
-                        ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                        ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
                         [0, 1, 2, 3, 4, 5, 6],
                         $jobs[$jobNumber][PC_DOW]
                     );
@@ -544,5 +501,6 @@ function parseCronFile(string $PC_cronTabFile, bool $PC_debug): array
     if ($PC_debug) {
         var_dump($jobs);
     }
+
     return $jobs;
 }

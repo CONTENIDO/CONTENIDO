@@ -87,8 +87,7 @@ function setupInitializeCfgClient($reset = false)
  * Check configuration path for the environment
  * If no configuration for environment found, copy from production
  * @param string $installationPath
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cException|cInvalidArgumentException
  */
 function setupCheckConfiguration(string $installationPath)
 {

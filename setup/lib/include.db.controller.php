@@ -37,7 +37,7 @@ $fullCount = 0;
 // Count DB Chunks
 $file = fopen('data/tables.txt', 'r');
 $step = 1;
-while (($data = fgetcsv($file, 4000, ';')) !== false) {
+while (($data = fgetcsv($file, 4000, ';', '"', '\\')) !== false) {
     if ($count == CON_SETUP_MAX_CHUNKS_PER_STEP) {
         $count = 1;
         $step++;
@@ -49,7 +49,18 @@ while (($data = fgetcsv($file, 4000, ';')) !== false) {
         } else {
             $drop = false;
         }
-        dbUpgradeTable($db, $cfg['sql']['sqlprefix'] . '_' . $data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], '', $drop);
+        dbUpgradeTable(
+            $db,
+            $cfg['sql']['sqlprefix'] . '_' . $data[0],
+            $data[1],
+            $data[2],
+            $data[3],
+            $data[4],
+            $data[5],
+            $data[6],
+            '',
+            $drop
+        );
 
         if ($db->getErrorNumber() != 0) {
             $_SESSION['install_failedupgradetable'] = true;
@@ -60,15 +71,11 @@ while (($data = fgetcsv($file, 4000, ';')) !== false) {
     $fullCount++;
 }
 
-$baseChunks = explode("\n", cFileHandler::read('data/base.txt'));
-
-$clientChunks = explode("\n", cFileHandler::read('data/client.txt'));
-
-$moduleChunks = explode("\n", cFileHandler::read('data/standard.txt'));
-
-$contentChunks = explode("\n", cFileHandler::read('data/examples.txt'));
-
-$sysadminChunk = explode("\n", cFileHandler::read('data/sysadmin.txt'));
+$baseChunks = cFileHandler::readAsArray('data/base.txt');
+$clientChunks = cFileHandler::readAsArray('data/client.txt');
+$moduleChunks = cFileHandler::readAsArray('data/standard.txt');
+$contentChunks = cFileHandler::readAsArray('data/examples.txt');
+$sysadminChunk = cFileHandler::readAsArray('data/sysadmin.txt');
 
 list($rootPath, $rootHttpPath) = getSystemDirectories();
 
@@ -102,9 +109,10 @@ foreach ($fullChunks as $fullChunk) {
     }
 }
 
-$percent = intval((100 / $totalSteps) * ($currentStep));
-
-echo '<script type="text/javascript">parent.updateProgressbar(' . $percent . ');</script>';
+echo sprintf(
+    '<script type="text/javascript">parent.updateProgressbar(%d);</script>',
+    intval((100 / $totalSteps) * ($currentStep))
+);
 
 if ($currentStep < $totalSteps) {
     // Still processing database setup, output js code to run the next step
@@ -115,15 +123,15 @@ if ($currentStep < $totalSteps) {
         echo '<a href="javascript:nextStep();">Next step</a>';
     }
 } else {
-    // Databasse setup is done, now do remaining upgrade jobs
+    // Database setup is done, now do remaining upgrade jobs
 
     // For import mod_history rows to versioning
     if ($_SESSION['setuptype'] == 'upgrade') {
         setupInitializeCfgClient(true);
     }
 
-    require_once(CON_SETUP_PATH . '/upgrade_jobs/class.upgrade.job.abstract.php');
-    require_once(CON_SETUP_PATH . '/upgrade_jobs/class.upgrade.job.main.php');
+    require_once CON_SETUP_PATH . '/upgrade_jobs/class.upgrade.job.abstract.php';
+    require_once CON_SETUP_PATH . '/upgrade_jobs/class.upgrade.job.main.php';
 
     // Execute upgrade jobs
     $oUpgradeMain = new cUpgradeJobMain($db, $cfg, $cfgClient, "0");

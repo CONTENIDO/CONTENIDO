@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var array $cfg
  */
 
-$page = new cGuiPage("frontend.group_menu");
+$page = new cGuiPage('frontend.group_menu');
 $menu = new cGuiMenu();
 
 $requestIdFrontendGroup = $_GET['idfrontendgroup'] ?? '';

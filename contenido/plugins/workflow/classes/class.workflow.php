@@ -57,8 +57,8 @@ class Workflows extends ItemCollection
     public function create()
     {
         $auth = cRegistry::getAuth();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
 
         $newItem = $this->createNewItem();
         $newItem->setField("created", date('Y-m-d H:i:s'));

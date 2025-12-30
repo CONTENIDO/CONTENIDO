@@ -90,10 +90,9 @@ class cIterator
     /**
      * Returns the number of items in the iterator.
      *
-     * @return int
-     *         number of items
+     * @return int Number of items
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_aIteratorItems);
     }

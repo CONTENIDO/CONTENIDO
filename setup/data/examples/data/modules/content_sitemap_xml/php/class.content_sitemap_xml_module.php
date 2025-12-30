@@ -94,9 +94,7 @@ class ContentSitemapXmlModule
      * @param array $categoryIds
      * @param int $lang
      * @return int
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function addArticlesToSitemap(SimpleXMLElement $sitemap, array $categoryIds, int $lang): int
     {

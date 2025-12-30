@@ -14,6 +14,16 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cTemplate $tpl
+ * @var cDb $db
+ */
+
+$cfg = cRegistry::getConfig();
+$idcat = cRegistry::getCategoryId();
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+
 if (!isset($_GET['idcat'])) {
     $tpl->reset();
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
@@ -46,12 +56,12 @@ while ($db->nextRecord()) {
     $areaName = $db->f('name');
 
     if ($perm->have_perm_area_action($areaName) || ($db->f('relevant') == 0)) {
-        // Set template data
+        $captionStr = sprintf($anchorTpl, $sess->url("main.php?area=$areaName&frame=4&idcat=$idcat"), $caption);
         $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
         $tpl->set('d', 'DATA_NAME', $areaName);
         $tpl->set('d', 'CLASS', '');
         $tpl->set('d', 'OPTIONS', '');
-        $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$areaName&frame=4&idcat=$idcat"), $caption));
+        $tpl->set('d', 'CAPTION', $captionStr);
         $tpl->next();
     }
 }

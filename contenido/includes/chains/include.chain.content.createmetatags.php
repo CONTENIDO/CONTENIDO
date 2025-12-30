@@ -33,9 +33,9 @@ function cecCreateMetatags($metatags)
 
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
-    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
-    $idart = cSecurity::toInteger(cRegistry::getArticleId());
-    $idartlang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
+    $lang = cRegistry::getLanguageId();
+    $idart = cRegistry::getArticleId();
+    $idartlang = cRegistry::getArticleLanguageId();
 
     // Get encoding
     $oLang = new cApiLanguage($lang);

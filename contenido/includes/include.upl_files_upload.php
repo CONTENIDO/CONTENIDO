@@ -19,22 +19,24 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var array $cfg
  */
 
-cInclude("includes", "functions.upl.php");
+cInclude('includes', 'functions.upl.php');
 
 // Display critical error if client or language does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
-    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
-    $oPage = new cGuiPage("upl_files_upload");
+    $message = $client && !cRegistry::getClient()->isLoaded()
+        ? i18n('No Client selected')
+        : i18n('No language selected');
+    $oPage = new cGuiPage('upl_files_upload');
     $oPage->displayCriticalError($message);
     $oPage->render();
     return;
 }
 
-$page = new cGuiPage("upl_files_upload");
+$page = new cGuiPage('upl_files_upload');
 
-if (!$perm->have_perm_area_action("upl", "upl_upload")) {
+if (!$perm->have_perm_area_action('upl', 'upl_upload')) {
     $page->displayCriticalError(i18n("Permission denied"));
     $page->render();
     die();
@@ -46,17 +48,17 @@ $maxUploadSize = 0;
 $maxPostSize = 0;
 
 // max upload size
-if (ini_get("max_upload_size") == "") {
+if (ini_get('max_upload_size') == '') {
     $maxUploadSize = (double)99999999999999;
 } else {
-    $maxUploadSize = machineReadableSize(ini_get("max_upload_size"));
+    $maxUploadSize = machineReadableSize(ini_get('max_upload_size'));
 }
 
 // max post size
-if (ini_get("post_max_size") == "") {
+if (ini_get('post_max_size') == '') {
     $maxPostSize = (double)99999999999999;
 } else {
-    $maxPostSize = machineReadableSize(ini_get("post_max_size"));
+    $maxPostSize = machineReadableSize(ini_get('post_max_size'));
 }
 
 $path = $path ?? '';

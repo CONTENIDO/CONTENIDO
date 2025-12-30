@@ -25,6 +25,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @var array $cfg
  * @var cSession $sess
  * @var int $idcat
+ * @var int $client
  */
 
 // CONTENIDO startup process
@@ -71,8 +72,10 @@ if (isset($changelang) && is_numeric($changelang)) {
     $lang = $changelang;
 }
 
-if (!cSecurity::isPositiveInteger($client ?? 0)
-    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))) {
+if (
+    !cSecurity::isPositiveInteger($client ?? 0)
+    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))
+) {
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
@@ -114,7 +117,7 @@ if (isset($area)) {
 // Initialize CONTENIDO_Backend.
 // Load all actions from the DB and check if permission is granted.
 if ($cfg['debug']['rendering'] == true) {
-    $oldmemusage = memory_get_usage();
+    $oldMemUsage = memory_get_usage();
 }
 
 // Select area
@@ -144,7 +147,7 @@ if (isset($action)) {
 
 // Include the main ajax request handler or for the selected area.
 $sFilename = '';
-if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
+if (!empty($_REQUEST['ajax'])) {
     $oAjax = new cAjaxRequest();
     $sReturn = $oAjax->handle($_REQUEST['ajax']);
     echo $sReturn;
@@ -155,7 +158,7 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 
 // Finalize debug of backend rendering
 if ($cfg['debug']['rendering'] == true) {
-    cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldmemusage, $sFilename));
+    cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldMemUsage ?? 0, $sFilename));
 }
 
 // User Tracking (who is online)

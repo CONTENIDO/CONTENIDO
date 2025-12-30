@@ -28,8 +28,7 @@ class PifaFieldCollection extends ItemCollection
      *
      * @param string|bool $where clause to be used to load items or false
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
@@ -81,70 +80,70 @@ class PifaField extends Item
      * @todo PIFA should be able to calculate the size for one record by the
      *       size of its fields and handle it accordingly.
      */
-    const VARCHAR_SIZE = 255;
+    public const VARCHAR_SIZE = 255;
 
     /**
      * Input field for single-line text.
      *
      * @var int
      */
-    const INPUTTEXT = 1;
+    public const INPUTTEXT = 1;
 
     /**
      * Input field for multi-line text.
      *
      * @var int
      */
-    const TEXTAREA = 2;
+    public const TEXTAREA = 2;
 
     /**
      * Input field for single-line password.
      *
      * @var int
      */
-    const INPUTPASSWORD = 3;
+    public const INPUTPASSWORD = 3;
 
     /**
      * Radiobox.
      *
      * @var int
      */
-    const INPUTRADIO = 4;
+    public const INPUTRADIO = 4;
 
     /**
      * Checkbox
      *
      * @var int
      */
-    const INPUTCHECKBOX = 5;
+    public const INPUTCHECKBOX = 5;
 
     /**
      * Selectbox allowing for selection of a single option.
      *
      * @var int
      */
-    const SELECT = 6;
+    public const SELECT = 6;
 
     /**
      * Selectbox allowing for selection of multiple options.
      *
      * @var int
      */
-    const SELECTMULTI = 7;
+    public const SELECTMULTI = 7;
 
     /**
      * Input field for date selection.
      *
      * @var int
      */
-    const DATEPICKER = 8;
+    public const DATEPICKER = 8;
 
     /**
      * Input field for file selection.
      *
      * @var int
      */
-    const INPUTFILE = 9;
+    public const INPUTFILE = 9;
 
     /**
      * Processbar.
@@ -242,27 +241,25 @@ class PifaField extends Item
      *
      * @var mixed
      */
-    private $_value = NULL;
+    private $_value = null;
 
     /**
      * The file that was transmitted in case of INPUTFILE.
      *
      * @var array
      */
-    private $_file = NULL;
+    private $_file = null;
 
     /**
      * Create an instance.
      *
      * @param string|bool $id ID of item to be loaded or false
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('pifa_field'), 'idfield');
-        $this->setFilters([], []);
+        $this->setFilters();
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }
@@ -299,23 +296,17 @@ class PifaField extends Item
     }
 
     /**
-     * Rule has to be stripslashed to allow regular expressions with
-     * backslashes.
+     * Rule has to be stripslashed to allow regular expressions with backslashes.
      *
-     * @param string $field
-     * @param bool $bSafe
-     *
-     * @return mixed|string
-     * @see Item::getField()
-     *
+     * @inheritDoc
      */
-    function getField($field, $bSafe = true)
+    public function getField($name, $safe = true)
     {
-        if (is_null($this->values[$field])) {
+        if (is_null($this->values[$name])) {
             return '';
         }
-        $value = parent::getField($field, $bSafe);
-        if ('rule' === $field) {
+        $value = parent::getField($name, $safe);
+        if ('rule' === $name) {
             $value = stripslashes($value);
         }
         return $value;
@@ -371,10 +362,9 @@ class PifaField extends Item
      */
     public function validate()
     {
-
         // get value
         $values = $this->getValue();
-        if (NULL === $values) {
+        if (null === $values) {
             $values = $this->get('default_value');
         }
 
@@ -397,12 +387,16 @@ class PifaField extends Item
                     $secret = '';
                 }
 
-                if (cString::getStringLength($secret) === 0 || !isset($_POST['g-recaptcha-response']) || empty($_POST['g-recaptcha-response'])) {
+                if (cString::getStringLength(
+                        $secret
+                    ) === 0 || !isset($_POST['g-recaptcha-response']) || empty($_POST['g-recaptcha-response'])) {
                     $isValid = false;
                 } else {
                     //get verify response data
                     $response = urlencode($_POST['g-recaptcha-response']);
-                    $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response);
+                    $verifyResponse = file_get_contents(
+                        'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response
+                    );
                     $responseData = json_decode($verifyResponse);
 
                     $isValid = $responseData->success ? true : false;
@@ -410,10 +404,13 @@ class PifaField extends Item
             } elseif (1 === cSecurity::toInteger($this->get('obligatory')) && 0 === cString::getStringLength($value)) {
                 // check for obligatory & rule
                 $isValid = false;
-            } elseif (0 < cString::getStringLength($this->get('rule')) && in_array(preg_match($this->get('rule'), $value), [
-                    false,
-                    0
-                ])) {
+            } elseif (0 < cString::getStringLength($this->get('rule')) && in_array(
+                    preg_match($this->get('rule'), $value),
+                    [
+                        false,
+                        0
+                    ]
+                )) {
                 // check for rule
                 $isValid = false;
             } else {
@@ -423,7 +420,7 @@ class PifaField extends Item
             // throw error
             if (true !== $isValid) {
                 $error_message = $this->get('error_message');
-                if (NULL === $error_message) {
+                if (null === $error_message) {
                     // $error_message = 'invalid data';
                     $error_message = '';
                 }
@@ -437,16 +434,14 @@ class PifaField extends Item
     /**
      * Returns HTML for this form that should be displayed in frontend.
      *
-     * @param array|null $errors to be displayed for form field
+     * @param ?array $errors to be displayed for form field
      *
-     * @return string
      * @throws PifaException
      */
-    public function toHtml(array $errors = NULL)
+    public function toHtml(?array $errors = null): ?string
     {
         $out = '';
         switch (cSecurity::toInteger($this->get('field_type'))) {
-
             case self::FIELDSET_BEGIN:
 
                 // optional class for field
@@ -487,12 +482,12 @@ class PifaField extends Item
                         }
                     }
                 } catch (PifaNotImplementedException $e) {
-                    return NULL; // PASS // warning?
+                    return null; // PASS // warning?
                 }
 
                 $content = array_filter($content);
                 if (empty($content)) {
-                    return NULL; // PASS // warning?
+                    return null; // PASS // warning?
                 }
 
                 // CSS class for surrounding division
@@ -506,7 +501,7 @@ class PifaField extends Item
                     $class .= ' pifa-obligatory';
                 }
                 // optional error class for field
-                if (NULL !== $error) {
+                if (null !== $error) {
                     $class .= ' pifa-error';
                 }
 
@@ -532,10 +527,10 @@ class PifaField extends Item
         // get field data
         $idfield = cSecurity::toInteger($this->get('idfield'));
         $fieldType = cSecurity::toInteger($this->get('field_type'));
-        $label = strip_tags($this->get('label'));
+        $label = is_string($this->get('label')) ? strip_tags($this->get('label')) : null;
 
-        if (NULL === $label) {
-            return NULL;
+        if (is_null($label)) {
+            return null;
         }
 
         // buttons have no external label
@@ -546,7 +541,7 @@ class PifaField extends Item
             self::BUTTON,
             self::BUTTONIMAGE
         ])) {
-            return NULL;
+            return null;
         }
 
         // obligatory fields have an additional ' *'
@@ -579,7 +574,6 @@ class PifaField extends Item
      */
     private function _getElemField()
     {
-
         // get field data
         $idfield = cSecurity::toInteger($this->get('idfield'));
 
@@ -596,11 +590,11 @@ class PifaField extends Item
         $optionClass = $this->get('option_class');
         if (0 === cString::getStringLength(trim($optionClass))) {
             $optionLabels = $this->get('option_labels');
-            if (NULL !== $optionLabels) {
+            if (null !== $optionLabels) {
                 $optionLabels = explode(',', $optionLabels);
             }
             $optionValues = $this->get('option_values');
-            if (NULL !== $optionValues) {
+            if (null !== $optionValues) {
                 $optionValues = explode(',', $optionValues);
             }
         } else {
@@ -630,7 +624,7 @@ class PifaField extends Item
         $value = $this->getValue();
 
         // if no current value is given
-        if (NULL === $value) {
+        if (null === $value) {
             // the fields default value is used
             $value = $this->get('default_value');
             // which could be overwritten by a GET param
@@ -649,7 +643,6 @@ class PifaField extends Item
         }
 
         switch ($fieldType) {
-
             case self::INPUTTEXT:
 
                 $elemField = new cHTMLTextbox($columnName);
@@ -790,14 +783,14 @@ class PifaField extends Item
 
             case self::PROCESSBAR:
 
-                $elemField = NULL;
+                $elemField = null;
                 // TODO PROCESSBAR is NYI
                 // $elemField = new cHTML();
                 break;
 
             case self::SLIDER:
 
-                $elemField = NULL;
+                $elemField = null;
                 // TODO SLIDER is NYI
                 // $elemField = new cHTML();
                 break;
@@ -853,13 +846,13 @@ class PifaField extends Item
 
             case self::MATRIX:
 
-                $elemField = NULL;
+                $elemField = null;
                 // TODO MATRIX is NYI
                 // $elemField = new cHTML();
                 break;
 
             case self::PARA:
-                $elemField = NULL;
+                $elemField = null;
                 // TODO PARA is NYI
                 // $elemField = new cHTML();
                 break;
@@ -868,7 +861,7 @@ class PifaField extends Item
                 $elemField = new cHTMLHiddenField($columnName);
                 // set ID (workaround: remove ID first!)
                 $elemField->removeAttribute('id')->setID($id);
-                if (NULL !== $value) {
+                if (null !== $value) {
                     $elemField->setValue($value);
                 }
                 break;
@@ -889,7 +882,7 @@ class PifaField extends Item
     {
         $helpText = $this->get('help_text');
 
-        $p = NULL;
+        $p = null;
         if (0 < cString::getStringLength($helpText)) {
             $p = new cHTMLParagraph($helpText, 'pifa-field-help');
         }
@@ -902,7 +895,6 @@ class PifaField extends Item
      */
     public function _getElemScript()
     {
-
         // ID for field & FOR for label
         $idfield = cSecurity::toInteger($this->get('idfield'));
         $fieldType = cSecurity::toInteger($this->get('field_type'));
@@ -913,17 +905,17 @@ class PifaField extends Item
                 // dateFormat: 'yy-mm-dd', // could be different
                 // altFormat as ISO_8601
                 $script = "if (typeof jQuery == \"function\") {
-                	jQuery(function(){ jQuery('$sel').datepicker({
-                    	altFormat: 'yy-mm-dd',
-                    	altField: '$sel-hidden'
-                	});});
+                    jQuery(function(){ jQuery('$sel').datepicker({
+                        altFormat: 'yy-mm-dd',
+                        altField: '$sel-hidden'
+                    });});
                 }";
                 break;
             default:
                 $script = '';
         }
 
-        $elemScript = NULL;
+        $elemScript = null;
         if (0 < cString::getStringLength($script)) {
             $elemScript = new cHTMLScript();
             $elemScript->setContent($script);
@@ -1024,7 +1016,6 @@ class PifaField extends Item
         $fieldType = cSecurity::toInteger($this->get('field_type'));
 
         switch ($fieldType) {
-
             // Text and password input fields can store a string of
             // arbitrary length. Cause they are single lined it does not
             // make sense to enable them storing more than 1023 characters
@@ -1082,7 +1073,7 @@ class PifaField extends Item
             case self::BUTTON:
             case self::BUTTONIMAGE:
 
-                return NULL;
+                return null;
 
             // TODO For some filed types I havn't yet decided which data
             // type to use.
@@ -1094,7 +1085,7 @@ class PifaField extends Item
             case self::FIELDSET_BEGIN:
             case self::FIELDSET_END:
 
-                return NULL;
+                return null;
 
             default:
                 $msg = Pifa::i18n('NOT_IMPLEMENTED_FIELDTYPE');
@@ -1179,7 +1170,6 @@ class PifaField extends Item
         $fieldType = cSecurity::toInteger($fieldType);
 
         switch ($columnName) {
-
             case 'idfield':
             case 'idform':
             case 'field_rank':

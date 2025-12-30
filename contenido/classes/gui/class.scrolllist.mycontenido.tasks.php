@@ -21,7 +21,7 @@ class cGuiScrollListMyContenidoTasks extends cGuiScrollList
     /**
      * Default date format as fallback
      */
-    const DEFAULT_DATE_FORMAT = 'Y-m-d H:i:s';
+    public const DEFAULT_DATE_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * @var cHTMLLink
@@ -59,8 +59,7 @@ class cGuiScrollListMyContenidoTasks extends cGuiScrollList
     /**
      * Is called when a new column is rendered.
      *
-     * @param int|string $column
-     *         The current column which is being rendered
+     * @param int|string $column The current column which is being rendered
      * @see cGuiScrollList::onRenderColumn()
      */
     public function onRenderColumn($column)

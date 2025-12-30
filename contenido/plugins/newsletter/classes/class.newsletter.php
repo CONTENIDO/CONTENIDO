@@ -60,8 +60,8 @@ class NewsletterCollection extends ItemCollection
      */
     public function create($sName)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
         $auth = cRegistry::getAuth();
 
         // Check if the newsletter name already exists
@@ -97,11 +97,11 @@ class NewsletterCollection extends ItemCollection
      */
     public function duplicate($iItemID)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
         $auth = cRegistry::getAuth();
 
-        cInclude("includes", "functions.con.php");
+        cInclude('includes', 'functions.con.php');
 
         $oBaseItem = new Newsletter();
         $oBaseItem->loadByPrimaryKey($iItemID);
@@ -174,17 +174,15 @@ class Newsletter extends Item
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('news'), 'idnews');
         $this->_sError = '';
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
@@ -192,12 +190,13 @@ class Newsletter extends Item
      * Overridden store()-Method to set modified and modifiedby data and
      * to ensure, that there is only one welcome newsletter
      *
+     * @inheritDoc
      * @throws cException
      */
     public function store()
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
         $auth = cRegistry::getAuth();
 
         $this->set("modified", date('Y-m-d H:i:s'), false);
@@ -225,13 +224,9 @@ class Newsletter extends Item
     /**
      * User-defined setter for newsletter fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idlang':
@@ -240,7 +235,7 @@ class Newsletter extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**
@@ -477,15 +472,14 @@ class Newsletter extends Item
      * returns final HTML message
      *
      * @return string HTML message
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function getHTMLMessage()
     {
         $frontendURL = cRegistry::getFrontendUrl();
         if ($this->get("type") == "html" && $this->get("idart") > 0 && $this->htmlArticleExists()) {
-            $client = cSecurity::toInteger(cRegistry::getClientId());
-            $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+            $client = cRegistry::getCategoryId();
+            $lang = cRegistry::getLanguageId();
 
             // Article ID
             $iIDArt = $this->get("idart");
@@ -630,16 +624,14 @@ class Newsletter extends Item
      * @param string $sEMail Recipient email address
      * @param string $sName Optional: Recipient name
      * @param bool $bSimulatePlugins If recipient plugin activated, include plugins
-     *                                   and simulate values from plugins
+     *      and simulate values from plugins
      * @param string $sEncoding Message (and header) encoding, e.g. iso-8859-1
-     *
      * @return bool
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function sendEMail($iIDCatArt, $sEMail, $sName = "", $bSimulatePlugins = true, $sEncoding = "iso-8859-1")
     {
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $lang = cRegistry::getLanguageId();
 
         // Initialization
         if ($sName == "") {
@@ -805,7 +797,7 @@ class Newsletter extends Item
     {
         global $recipient;
 
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $lang = cRegistry::getLanguageId();
 
         // Initialization
         $aMessages = [];

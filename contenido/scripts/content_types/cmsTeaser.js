@@ -129,9 +129,9 @@
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=artsel&name=teaser_art_' + self.id + '&contenido=' + self.session + '&idcat=' + $(this).val(),
                 success: function(msg) {
-					if (Con.checkAjaxResponse(msg) === false)  {
-						return false;
-					}
+                    if (Con.checkAjaxResponse(msg) === false)  {
+                        return false;
+                    }
 
                     self.$articleSelect.replaceWith(msg);
                     self.$articleSelect = self.getSettingElement('teaser_art_' + self.id);

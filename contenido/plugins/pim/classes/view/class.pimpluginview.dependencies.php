@@ -26,7 +26,7 @@ class PimPluginViewDependencies
 {
 
     // Filename of Xml configuration file for plugins
-    const PLUGIN_CONFIG_FILENAME = "plugin.xml";
+    public const PLUGIN_CONFIG_FILENAME = "plugin.xml";
 
     /**
      * @var string

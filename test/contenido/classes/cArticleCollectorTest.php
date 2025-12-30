@@ -48,8 +48,8 @@ class cArticleCollectorTest extends cTestingTestCase
      */
     protected function setUp(): void
     {
-        $this->_client = cSecurity::toInteger(cRegistry::getClientId());
-        $this->_lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $this->_client = cRegistry::getClientId();
+        $this->_lang = cRegistry::getLanguageId();
 
         // default options that are set
         $this->_defaultOptions = [

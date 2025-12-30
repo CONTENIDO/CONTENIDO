@@ -27,7 +27,7 @@ checkAndInclude($cfg['path']['contenido'] . 'includes/functions.api.string.php')
 class cUpgradeJob_0002 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.0-alpha1";
+    public $maxVersion = '4.9.0-alpha1';
 
     /**
      * This method will transfer the moduls from $cfg['tab']['mod'] to the
@@ -60,7 +60,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract
         }
 
         // update input and output fields
-        $sql = sprintf("UPDATE %s SET input = '', output = '' WHERE idclient='%s'", $modulesTable, $clientId);
+        $sql = sprintf("UPDATE `%s` SET input = '', output = '' WHERE idclient = %d", $modulesTable, $clientId);
         $db->query($sql);
     }
 
@@ -130,7 +130,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract
             // Save all layouts from db-table to the filesystem if exists
             $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'code'", $layoutsTable);
             if ($this->_oDb->numRows() > 0) {
-                cLayoutHandler::upgrade($this->_oDb, $cfg, $client);
+                cLayoutHandler::upgrade($this->_oDb, $cfg, (int) $client);
             }
         }
 

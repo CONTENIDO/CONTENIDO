@@ -46,16 +46,13 @@ class cApiContentCollection extends ItemCollection
      * @param int $idArtLang
      * @param int $idType
      * @param int $typeId
-     * @param string $value
-     * @param int $version
+     * @param string|mixed $value
+     * @param int|mixed $version
      * @param string $author [optional]
      * @param string $created [optional]
      * @param string $lastmodified [optional]
-     *
      * @return cApiContent
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create(
         $idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = ''
@@ -87,7 +84,6 @@ class cApiContentCollection extends ItemCollection
 
         return $oItem;
     }
-
 }
 
 /**
@@ -102,32 +98,24 @@ class cApiContent extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id Specifies the ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         parent::__construct(cRegistry::getDbTableName('content'), 'idcontent');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for item fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idartlang':
@@ -138,7 +126,7 @@ class cApiContent extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**
@@ -146,9 +134,7 @@ class cApiContent extends Item
      *
      * @param string $version
      * @param mixed $deleted
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function markAsEditable($version, $deleted)
     {
@@ -168,12 +154,9 @@ class cApiContent extends Item
      * @param int $idartlang Article language id
      * @param int $idtype Content type id (e.g. id of `CONTENT_TYPE`)
      * @param int $typeid Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
-     *
-     * @return bool
-     *
      * @throws cException
      */
-    public function loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid)
+    public function loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid): bool
     {
         $aProps = [
             'idartlang' => $idartlang,

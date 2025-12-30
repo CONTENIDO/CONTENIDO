@@ -80,7 +80,7 @@ class pApiContentAllocation
      *
      * @throws cDbException
      */
-    public function storeAllocations($idartlang, $allocations)
+    public function storeAllocations(int $idartlang, $allocations)
     {
         // empty before insert
         $this->deleteAllocationsByIdartlang($idartlang);
@@ -192,12 +192,12 @@ class pApiContentAllocation
     /**
      * Build query to find matching content by ContentAllocation
      *
-     * @param array|null $restrictions [optional]
+     * @param ?array $restrictions [optional]
      * @param int $max [optional]
      *
      * @return string|bool $sql or false
      */
-    public function findMatchingContent(array $restrictions = null, int $max = 0)
+    public function findMatchingContent(?array $restrictions = null, int $max = 0)
     {
         if (!is_array($restrictions)) {
             return false;
@@ -263,7 +263,7 @@ class pApiContentAllocation
 
         $sql .= " ORDER BY cal.published DESC";
 
-        if ($max != 0 && is_integer($max)) {
+        if ($max > 0) {
             $sql .= " LIMIT " . $max;
         }
 
@@ -318,16 +318,16 @@ class pApiContentAllocation
     }
 
     /**
-     * Build SQL query to find articles by ContentAllocation and catgories
+     * Build SQL query to find articles by ContentAllocation and categories
      *
      * @param array $contentAllocation
      * @param array $categories
-     * @param int offset
-     * @param int numOfRows
+     * @param int $offset
+     * @param int $numOfRows
      *
      * @return string
      */
-    protected function _buildQuery_MatchingContentByContentAllocationByCategories($contentAllocation, $categories, $offset, $numOfRows)
+    protected function _buildQuery_MatchingContentByContentAllocationByCategories($contentAllocation, $categories, $offset, $numOfRows): string
     {
         $size = sizeof($contentAllocation);
 
@@ -428,7 +428,7 @@ class pApiContentAllocation
      *
      * @return string $sql
      */
-    public function _buildQuery_MatchingContentByCategories(array $categories, $offset, $numOfRows)
+    public function _buildQuery_MatchingContentByCategories(array $categories, int $offset, int $numOfRows)
     {
         if (count($categories) > 0) {
             $whereCategoryIN = " c.idcat IN (" . implode(',', $categories) . ") AND ";
@@ -436,7 +436,7 @@ class pApiContentAllocation
             $whereCategoryIN = '';
         }
 
-        if (is_integer($numOfRows) and $numOfRows > 0) {
+        if ($numOfRows > 0) {
             $limit = " LIMIT " . cSecurity::toInteger($offset) . ", " . cSecurity::toInteger($numOfRows);
         } else {
             $limit = '';
