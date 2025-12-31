@@ -67,8 +67,6 @@ abstract class cDbDriverAbstract
     /**
      * Abstract method for checking database driver base functions.
      * If this check fails, the database connection will not be established.
-     *
-     * @return bool
      */
     abstract public function check(): bool;
 
@@ -121,7 +119,6 @@ abstract class cDbDriverAbstract
      * set is left. If optional param $className is set, the result object is an
      * instance of class $className.
      *
-     * @param ?string $className
      * @return object
      */
     abstract public function getResultObject(?string $className = NULL);

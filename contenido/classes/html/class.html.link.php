@@ -43,7 +43,7 @@ class cHTMLLink extends cHTMLContentElement
     /**
      * @var string
      */
-    protected $_image;
+    protected $_image = '';
 
     /**
      * @var string
@@ -96,11 +96,10 @@ class cHTMLLink extends cHTMLContentElement
 
         $this->setLink($href);
         $this->_tag = 'a';
-        $this->_image = '';
 
         // Check for backend
         $sess = cRegistry::getSession();
-        if (is_object($sess) && get_class($sess) == 'cSession') {
+        if (is_object($sess) && get_class($sess) === 'cSession') {
             $this->enableAutomaticParameterAppend();
         }
     }
@@ -226,9 +225,6 @@ class cHTMLLink extends cHTMLContentElement
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getHref(): string
     {
         $sess = cRegistry::getSession();
@@ -240,11 +236,7 @@ class cHTMLLink extends cHTMLContentElement
             }
         }
 
-        if ($this->_anchor) {
-            $anchor = '#' . $this->_anchor;
-        } else {
-            $anchor = '';
-        }
+        $anchor = $this->_anchor ? '#' . $this->_anchor : '';
 
         switch ($this->_type) {
             case 'link':
@@ -262,12 +254,32 @@ class cHTMLLink extends cHTMLContentElement
                 return $this->_link . $custom . $anchor;
             case 'clink':
                 $this->disableAutomaticParameterAppend();
-                return 'main.php?area=' . $this->_targetarea . '&frame=' . $this->_targetframe . '&action=' . $this->_targetaction . $custom . '&contenido=' . $sess->id . $anchor;
+                return sprintf(
+                    'main.php?area=%s&frame=%d&action=%s&contenido=%s',
+                    $this->_targetarea,
+                    $this->_targetframe,
+                    $this->_targetaction . $custom,
+                    $sess->id . $anchor
+                );
             case 'multilink':
                 $this->disableAutomaticParameterAppend();
-                $tmp_mstr = 'javascript:Con.multiLink(\'%s\',\'%s\',\'%s\',\'%s\');';
-                $mstr = sprintf($tmp_mstr, 'right_top', $sess->url('main.php?area=' . $this->_targetarea . '&frame=' . $this->_targetframe . '&action=' . $this->_targetaction . $custom), 'right_bottom', $sess->url('main.php?area=' . $this->_targetarea2 . '&frame=' . $this->_targetframe2 . '&action=' . $this->_targetaction2 . $custom));
-                return $mstr;
+                return sprintf(
+                    "javascript:Con.multiLink('%s','%s','%s','%s');",
+                    'right_top',
+                    $sess->url(sprintf(
+                        'main.php?area=%s&frame=%d&action=%s',
+                        $this->_targetarea,
+                        $this->_targetframe,
+                        $this->_targetaction . $custom
+                    )),
+                    'right_bottom',
+                    $sess->url(sprintf(
+                        'main.php?area=%s&frame=%d&action=%s',
+                        $this->_targetarea2,
+                        $this->_targetframe2,
+                        $this->_targetaction2 . $custom
+                    ))
+                );
             default:
                 return '';
         }

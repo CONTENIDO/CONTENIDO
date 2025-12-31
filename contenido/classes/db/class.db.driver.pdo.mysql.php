@@ -15,8 +15,9 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains functions for database interaction based on PDO in
- * CONTENIDO.
+ * This class contains functions for database interaction based on PDO in CONTENIDO.
+ *
+ * @experimental This class is still in an experimental state, don't use it on a production environment!
  *
  * Configurable via global $cfg['db']['connection'] configuration as follows:
  * <pre>

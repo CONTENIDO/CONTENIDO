@@ -174,7 +174,7 @@ class cDb extends cDbDriverHandler
      */
     public function setErrorNumber(int $errorNumber)
     {
-        $this->_errorNumber = (int)$errorNumber;
+        $this->_errorNumber = $errorNumber;
     }
 
 }

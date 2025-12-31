@@ -34,12 +34,11 @@ class cException extends Exception
     protected $_log_exception = false;
 
     /**
-     * Saves an instance of the logger class for logging exceptions in the
-     * corresponding log.
+     * Saves an instance of the logger class for logging exceptions in the corresponding log.
      *
      * @var cLog the logger instance
      */
-    protected $_logger = NULL;
+    protected $_logger;
 
     /**
      * Constructor to create an instance of this class.
@@ -56,7 +55,7 @@ class cException extends Exception
         // create a logger class and save it for all logging purposes
         $cfg = cRegistry::getConfig();
         $writer = cLogWriter::factory(
-            "File",
+            'File',
             [
                 'destination' => $cfg['path']['contenido_logs'] . 'exception.txt',
             ]

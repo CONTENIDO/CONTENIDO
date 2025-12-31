@@ -169,7 +169,7 @@ abstract class cDbDriverHandler
             }
         } catch (Throwable $e) {
             // Catch all possible errors
-            throw new cDbException($e->getMessage());
+            throw new cDbException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -498,18 +498,16 @@ abstract class cDbDriverHandler
      */
     protected function _prepareStatementA(string $statement, array $arguments): string
     {
-        if (count($arguments) > 0) {
-            foreach ($arguments as $key => $value) {
-                $param = ':' . $key;
-                if (cSecurity::isInteger($value)) {
-                    $statement = preg_replace('/' . $param . '/', cSecurity::toString($value), $statement);
-                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toString($value) . '\'', $statement);
-                } else {
-                    $param = cSecurity::toString($param);
-                    $statement = preg_replace('/' . $param . '/', cSecurity::escapeString($value), $statement);
-                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::escapeString($value) . '\'', $statement);
-                    $statement = preg_replace('/`' . $param . '`/', '`' . cSecurity::escapeString($value) . '`', $statement);
-                }
+        foreach ($arguments as $key => $value) {
+            $param = ':' . $key;
+            if (cSecurity::isInteger($value)) {
+                $statement = preg_replace('/' . $param . '/', cSecurity::toString($value), $statement);
+                $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toString($value) . '\'', $statement);
+            } else {
+                $param = cSecurity::toString($param);
+                $statement = preg_replace('/' . $param . '/', cSecurity::escapeString($value), $statement);
+                $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::escapeString($value) . '\'', $statement);
+                $statement = preg_replace('/`' . $param . '`/', '`' . cSecurity::escapeString($value) . '`', $statement);
             }
         }
 
@@ -701,11 +699,11 @@ abstract class cDbDriverHandler
             $this->free();
         }
 
-        $timeStart = $this->isProfilingEnabled() === true ? microtime(true) : 0;
+        $timeStart = $this->isProfilingEnabled() ? microtime(true) : 0;
 
         $this->getDriver()->query($statement);
 
-        if ($this->isProfilingEnabled() === true) {
+        if ($this->isProfilingEnabled()) {
             $timeEnd = microtime(true);
             $this->_addProfileData($timeStart, $timeEnd, $statement);
         }
@@ -721,7 +719,6 @@ abstract class cDbDriverHandler
     /**
      * Fetches the next record set from result set
      *
-     * @return bool
      * @throws cDbException
      */
     public function nextRecord(): bool
@@ -778,7 +775,7 @@ abstract class cDbDriverHandler
      */
     public function free()
     {
-        return $this->getDriver()->free();
+        $this->getDriver()->free();
     }
 
     /**
@@ -931,11 +928,11 @@ abstract class cDbDriverHandler
         $result = [];
         if (is_array($this->getRecord())) {
             foreach ($this->getRecord() as $key => $value) {
-                if ($fetchMode == self::FETCH_ASSOC && !is_numeric($key)) {
+                if ($fetchMode === self::FETCH_ASSOC && !is_numeric($key)) {
                     $result[$key] = $value;
-                } elseif ($fetchMode == self::FETCH_NUMERIC && is_numeric($key)) {
+                } elseif ($fetchMode === self::FETCH_NUMERIC && is_numeric($key)) {
                     $result[$key] = $value;
-                } elseif ($fetchMode == self::FETCH_BOTH) {
+                } elseif ($fetchMode === self::FETCH_BOTH) {
                     $result[$key] = $value;
                 }
             }
@@ -982,8 +979,6 @@ abstract class cDbDriverHandler
      * Logs passed message, basically the last db error to the error log.
      * Concatenates a detailed error message and invoke PHP's error_log()
      * method.
-     *
-     * @param string $message
      */
     public function reportHalt(string $message)
     {

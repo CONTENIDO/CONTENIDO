@@ -242,11 +242,9 @@ class cDbDriverMysqli extends cDbDriverAbstract
         $queryId = $this->_handler->getQueryId();
 
         if ($queryId) {
-            if ($className == NULL) {
-                $result = mysqli_fetch_object($queryId);
-            } else {
-                $result = mysqli_fetch_object($queryId, $className);
-            }
+            $result = $className == NULL
+                ? mysqli_fetch_object($queryId)
+                : mysqli_fetch_object($queryId, $className);
         }
 
         return $result;
