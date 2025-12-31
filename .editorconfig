@@ -1,32 +1,111 @@
+# EditorConfig file with maximum portability, uses explicit patterns or separate sections
+# brace expansion
+
 # Top-most EditorConfig file
 root = true
 
-# Unix-style newlines
-[*.{css,html,js,md,php,sql,tpl,txt,xml,json}]
+# CSS
+[*.css]
 charset = utf-8
 end_of_line = LF
-
-# Indentation
-[*.{css,html,js,md,php,sql,tpl,txt,xml}]
-indent_size = 4
 indent_style = space
-
-# Final new line and trim trailing whitespaces
-[*.{css,js,php}]
+indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-# composer.json
-[{composer.json}]
-indent_size = 4
-indent_style = space
-
-# .htaccess, .gitignore
-[{.htaccess,.gitignore}]
+# HTML
+[*.html]
 charset = utf-8
 end_of_line = LF
+indent_style = space
 indent_size = 4
 
-# .bat files
+[*.htm]
+charset = utf-8
+end_of_line = LF
+indent_style = space
+indent_size = 4
+
+# JavaScript
+[*.js]
+charset = utf-8
+end_of_line = LF
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Markdown
+[*.md]
+charset = utf-8
+end_of_line = LF
+indent_style = space
+indent_size = 4
+
+# PHP
+[*.php]
+charset = utf-8
+end_of_line = LF
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# SQL
+[*.sql]
+charset = utf-8
+end_of_line = LF
+indent_style = space
+indent_size = 4
+
+# TPL
+[*.tpl]
+charset = utf-8
+end_of_line = LF
+indent_style = space
+indent_size = 4
+
+# Text files
+[*.txt]
+charset = utf-8
+end_of_line = LF
+indent_style = space
+indent_size = 4
+
+# XML
+[*.xml]
+charset = utf-8
+end_of_line = LF
+indent_style = space
+indent_size = 4
+
+# JSON
+[*.json]
+charset = utf-8
+end_of_line = LF
+indent_style = space
+indent_size = 4
+
+# Dotfiles
+; Matches ".htaccess" AND any file starting with ".htaccess"
+[.htaccess*]
+charset = utf-8
+end_of_line = LF
+indent_style = space
+indent_size = 4
+
+[.gitattributes]
+charset = utf-8
+end_of_line = LF
+indent_style = space
+indent_size = 4
+
+[.gitignore]
+charset = utf-8
+end_of_line = LF
+indent_style = space
+indent_size = 4
+
+# Files needing Windows EOL
 [*.bat]
 end_of_line = CRLF
