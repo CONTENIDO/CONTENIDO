@@ -21,16 +21,11 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- *
  * @param string $currentBaseHref
- *
- * @return string
- *
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function cecCreateBaseHref($currentBaseHref)
+function cecCreateBaseHref($currentBaseHref): string
 {
-
     // get props of current client
     $props = cRegistry::getClient()->getProperties();
     //$props = cRegistry::getClient()->getPropertiesByType('client');
@@ -41,7 +36,6 @@ function cecCreateBaseHref($currentBaseHref)
     }
 
     foreach ($props as $prop) {
-
         // skip props that are not of type 'client'
         if ($prop['type'] != 'client') {
             continue;

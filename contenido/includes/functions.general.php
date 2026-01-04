@@ -345,8 +345,6 @@ function getAllClientsAndLanguages(): array
     return $aRs;
 }
 
-/**
- */
 function getmicrotime(): float
 {
     list($usec, $sec) = explode(' ', microtime());
@@ -354,7 +352,6 @@ function getmicrotime(): float
 }
 
 /**
- *
  * @param mixed $uid
  * @throws cDbException|cException
  */
@@ -654,7 +651,6 @@ function setSystemProperty($type, $name, $value, $idsystemprop = 0): ?bool
  *
  * @param string $type The type of the item
  * @param string $name The name of the item
- * @return void
  * @throws cDbException|cException|cInvalidArgumentException
  */
 function deleteSystemProperty($type, $name)
@@ -1347,7 +1343,6 @@ function cIncludePlugins(string $entity)
  * Checks for existing plugins for a given entity.
  *
  * @param string $entity Name of the directory to scan
- * @return bool
  * @since CONTENIDO 4.10.2
  */
 function cHasPlugins(string $entity): bool
@@ -1407,9 +1402,8 @@ function cCallPluginStore(string $entity)
  * Creates a random name (example: Passwords).
  *
  * @param int $nameLength Length of the generated string
- * @return string Random name
  */
-function createRandomName($nameLength)
+function createRandomName(int $nameLength): string
 {
     $nameChars = 'abcdefghijklmnopqrstuvwxyz';
     $vowels = 'aeiou';
@@ -1434,7 +1428,7 @@ function createRandomName($nameLength)
  * @param string $area The area name
  * @return string The context JS code
  */
-function getJsHelpContext($area)
+function getJsHelpContext(string $area): string
 {
     $cfg = cRegistry::getConfig();
 
@@ -1481,10 +1475,8 @@ function cDie($file, $line, $message)
  * "\t#$pos class->function2() called in file $filename:$line"
  * ...
  *
- * @param int $startLevel
- *         The start level. Note that 0 is always buildStackString
- *         and 1 is the function called buildStackString (e.g. cWarning)
- * @return string
+ * @param int $startLevel The start level. Note that 0 is always buildStackString
+ *      and 1 is the function called buildStackString (e.g. cWarning)
  */
 function buildStackString(int $startLevel = 2): string
 {
@@ -1587,7 +1579,6 @@ function cError($message)
  * their reasons to be logged.
  *
  * @param string $message The error message to log
- * @return void
  */
 function cLogError(string $message)
 {
@@ -1655,7 +1646,6 @@ function getNamedFrame($frame)
  * @param string $function Name of the function
  * @param array $parameters All parameters for the function to measure
  * @return string uuid for this measure process
- * @throws cInvalidArgumentException
  */
 function startTiming(string $function, array $parameters = []): string
 {

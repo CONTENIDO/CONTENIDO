@@ -276,7 +276,7 @@ class CodeMirror {
                     Con.CodeMirrorHelper.toggleFullscreenEditor('{ID}');
                 }
             }
-            {PROPERTIES}
+            /*{PROPERTIES}*/
         });
     });
 })(Con, Con.$);
@@ -300,7 +300,7 @@ JS;
         // fill js template
         $textareaId = $this->_textareaId;
         $jsResult = str_replace('{ID}', $textareaId, $js);
-        return str_replace('{PROPERTIES}', $properties, $jsResult);
+        return str_replace('/*{PROPERTIES}*/', $properties, $jsResult);
     }
 
 }

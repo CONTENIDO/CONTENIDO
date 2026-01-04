@@ -29,7 +29,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 function prResolvePathViaURLNames(string $path): int
 {
-    global $cfg, $lang, $client;
+    global $lang, $client;
 
     if (empty($path)) {
         return 0;
@@ -143,7 +143,7 @@ function prResolvePathViaURLNames(string $path): int
  */
 function prResolvePathViaCategoryNames($path, &$iLangCheck): int
 {
-    global $cfg, $lang, $client;
+    global $lang, $client;
 
     if (empty($path)) {
         return 0;
@@ -303,7 +303,6 @@ function prCreateURLNameLocationString(
 
     $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
-    $cfg = cRegistry::getConfig();
     $sess = cRegistry::getSession();
     $uselang = cSecurity::toInteger($uselang);
 
@@ -458,5 +457,5 @@ function prDeleteCacheFileContent(int $client, int $lang): bool
         $res = @unlink($path . $filename);
     }
 
-    return ($res) ? true : false;
+    return cSecurity::toBoolean($res);
 }

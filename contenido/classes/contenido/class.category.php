@@ -143,6 +143,8 @@ class cApiCategoryCollection extends ItemCollection
      */
     public function getNextPostCategoryId($idcat)
     {
+        $idcat = cSecurity::toInteger($idcat);
+
         $sql = "SELECT idcat FROM `%s` WHERE preid = %d";
         $this->db->query($sql, $this->table, $idcat);
         if ($this->db->nextRecord()) {
@@ -152,8 +154,8 @@ class cApiCategoryCollection extends ItemCollection
             $this->db->query($sql, $this->table, $idcat);
             if ($this->db->nextRecord()) {
                 // Parent from post can't be 0
-                $parentid = (int)$this->db->f('parentid');
-                return ($parentid != 0) ? $idcat : 0;
+                $parentId = cSecurity::toInteger($this->db->f('parentid'));
+                return $parentId != 0 ? $idcat : 0;
             } else {
                 return 99;
             }
@@ -180,27 +182,29 @@ class cApiCategoryCollection extends ItemCollection
      * </pre>
      *
      * @param int $idcat Category id
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getParentsNextPostCategoryId($idcat): int
     {
+        $idcat = cSecurity::toInteger($idcat);
+
         $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
         $this->db->query($sql, $this->table, $idcat);
         if ($this->db->nextRecord()) {
             // Parent exists
-            $idcat = $this->db->f('parentid');
+            $idcat = cSecurity::toInteger($this->db->f('parentid'));
             if ($idcat != 0) {
                 $sql = "SELECT idcat FROM `%s` WHERE preid = %d";
                 $this->db->query($sql, $this->table, $idcat);
                 if ($this->db->nextRecord()) {
                     // Parent has post
-                    $idcat = (int)$this->db->f('idcat');
+                    $idcat = cSecurity::toInteger($this->db->f('idcat'));
                     $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
                     $this->db->query($sql, $this->table, $idcat);
                     if ($this->db->nextRecord()) {
                         // Parent from post must not be 0
-                        $parentid = (int)$this->db->f('parentid');
-                        return ($parentid != 0) ? $idcat : 0;
+                        $parentid = cSecurity::toInteger($this->db->f('parentid'));
+                        return $parentid != 0 ? $idcat : 0;
                     } else {
                         return 99;
                     }

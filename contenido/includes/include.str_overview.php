@@ -854,7 +854,7 @@ foreach ($treeItemObjects as $key => $value) {
                     $href = $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=0");
                     $button = '<a id="#movesubtreehere" class="con_img_button" href="' . $href . '" title="' . $lngMoveTree . '"><img src="' . $cfg['path']['images'] . 'but_move_subtree_main.gif" alt="' . $lngMoveTree . '" title="' . $lngMoveTree . '"></a>';
                 } else {
-                    $allowed = strMoveCatTargetallowed($value->getId(), $idcat);
+                    $allowed = strMoveCatTargetAllowed($value->getId(), $idcat);
                     if ($allowed == 1) {
                         $href = $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=" . $value->getId());
                         $button = '<a class="con_img_button" href="' . $href . '" title="' . $lngPlaceTreeHere . '"><img src="' . $cfg['path']['images'] . 'but_move_subtree_target.gif" alt="' . $lngPlaceTreeHere . '" title="' . $lngPlaceTreeHere . '"></a>';

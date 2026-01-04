@@ -45,6 +45,7 @@ class cContentTypeA_Test extends cContentTypeAbstract
     public function generateEditCode(): string
     {
         // Implement generateEditCode() method.
+        return '';
     }
 
     public function buildCode(): string

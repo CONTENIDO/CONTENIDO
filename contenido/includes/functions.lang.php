@@ -281,7 +281,7 @@ function langActivateDeactivateLanguage($idlang, $active): bool
  * @return string 'ltr' or 'rtl'
  * @throws cDbException|cException
  */
-function langGetTextDirection($idlang, $db = NULL): string
+function langGetTextDirection($idlang, $db = null): string
 {
     static $oLang;
     if (!isset($oLang)) {

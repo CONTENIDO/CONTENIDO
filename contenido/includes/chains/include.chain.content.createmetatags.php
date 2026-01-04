@@ -20,11 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('plugins', 'repository/keyword_density.php');
 
 /**
- *
  * @param array $metatags
- *
  * @return array
- *
  * @throws cDbException|cException
  */
 function cecCreateMetatags($metatags)
@@ -32,7 +29,6 @@ function cecCreateMetatags($metatags)
     // (Re)build metatags
 
     $db = cRegistry::getDb();
-    $cfg = cRegistry::getConfig();
     $lang = cRegistry::getLanguageId();
     $idart = cRegistry::getArticleId();
     $idartlang = cRegistry::getArticleLanguageId();

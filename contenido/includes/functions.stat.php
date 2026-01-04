@@ -17,16 +17,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.database.php');
 
 /**
- * Displays statistic information layer (a div Tag)
- *
- * @param int $id Either article or directory id
- * @param string $type The type
- * @param int $x Style top position
- * @param int $y Style left position
- * @param int $w Style width
- * @param int $h Style height
- * @return string Composed info layer
- * @throws cException|cInvalidArgumentException
  * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function statsDisplayInfo($id, $type, $x, $y, $w, $h)
@@ -54,7 +44,7 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h)
  * Archives the current statistics
  *
  * @param string $yearMonth String with the desired archive date (YYYYMM)
- * @throws cDbException|cInvalidArgumentException
+ * @throws cDbException
  */
 function statsArchive($yearMonth)
 {

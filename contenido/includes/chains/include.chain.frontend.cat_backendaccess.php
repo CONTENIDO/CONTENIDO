@@ -20,16 +20,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param int $idlang
  * @param int $idcat
  * @param string $user
- *
- * @return bool
- *
  * @throws cDbException
  */
-function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
+function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user): bool
 {
-    global $cfg, $perm;
-
-    if ($perm->have_perm()) {
+    if (cRegistry::getPerm()->have_perm()) {
         // sysadmin or client admin can always access to protected areas
         return true;
     }
@@ -57,9 +52,5 @@ function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
 
     $db2->query($sql);
 
-    if (!$db2->nextRecord()) {
-        return false;
-    } else {
-        return true;
-    }
+    return $db2->nextRecord();
 }

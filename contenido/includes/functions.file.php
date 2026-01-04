@@ -144,7 +144,6 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
 
 /**
  * @deprecated [2015-05-21] use {@see cFileHandler::getExtension()} instead
- *
  */
 function getFileType($filename)
 {
@@ -176,6 +175,5 @@ function scanDirectory($sDirectory, $bRecursive = false)
 function recursiveCopy($sourcePath, $destinationPath, $mode = null, array $options = [])
 {
     cDeprecated('This method is deprecated and is not needed any longer');
-
     return cDirHandler::recursiveCopy($sourcePath, $destinationPath, $mode);
 }

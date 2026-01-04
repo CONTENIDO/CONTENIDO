@@ -75,5 +75,3 @@ foreach ($plugins as $pluginName) {
 // They remain in old sub plugins logic for now
 cScanPlugins('frontendusers');
 cScanPlugins('frontendlogic');
-
-cDebug::out(basename(__FILE__) . ': Plugins loaded');

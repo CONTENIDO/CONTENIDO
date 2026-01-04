@@ -28,19 +28,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Does some replacements in the given template.
  * Replaces some CONTENIDO specific placeholders against their values.
  *
- * @param string $template
- *         Template string to preprocess
- * @param cTemplate $templateObj
- *         The current template instance
- *
- * @return string
- *
+ * @param string $template Template string to preprocess
+ * @param cTemplate $templateObj The current template instance
  * @throws cInvalidArgumentException
  */
-function cecParseTemplate($template, cTemplate $templateObj)
+function cecParseTemplate($template, cTemplate $templateObj): string
 {
-    global $frame;
-
     // Autofill special placeholders like
     // - Session id
     // - Initial CONTENIDO scripts
@@ -48,18 +41,16 @@ function cecParseTemplate($template, cTemplate $templateObj)
     $prefix = "\n    ";
 
     $cfg = cRegistry::getConfig();
-    $sessid = (string)cRegistry::getBackendSessionId();
+    $sessionId = cRegistry::getBackendSessionId();
     $backendPath = cRegistry::getBackendUrl();
     $backendLang = cRegistry::getBackendLanguage();
     $area = cRegistry::getArea();
+    $frame = cRegistry::getFrame();
 
     // Fixme: Creates an error on backend login form, since we have no language there, see main.loginform.php
-    // $oLanguage = cRegistry::getLanguage();
-    // $encoding = $oLanguage->get('encoding');
-    $languageid = cRegistry::getLanguageId();
-    if ($languageid) {
-        $oLanguage = cRegistry::getLanguage();
-        $encoding = $oLanguage->get('encoding');
+    $languageId = cRegistry::getLanguageId();
+    if ($languageId) {
+        $encoding = cRegistry::getLanguage()->get('encoding');
     } else {
         $encoding = 'utf-8';
     }
@@ -79,7 +70,7 @@ function cecParseTemplate($template, cTemplate $templateObj)
     $jsConfiguration = '
     <script type="text/javascript">
     (function(Con, $) {
-        Con.sid = "' . $sessid . '";
+        Con.sid = "' . $sessionId . '";
         $.extend(Con.cfg, {
             urlBackend: "' . $backendPath . '",
             urlHelp: "' . $urlHelp . '",
@@ -131,7 +122,7 @@ function cecParseTemplate($template, cTemplate $templateObj)
 
     // Placeholders to replace
     $replacements = [
-        '_SID_' => $sessid,
+        '_SID_' => $sessionId,
         '_PATH_CONTENIDO_FULLHTML_' => $backendPath,
         '_META_HEAD_CONTENIDO_' => $metaCon,
         '_CSS_HEAD_CONTENIDO_' => str_replace('{basePath}', '', $cssHeadCon),
