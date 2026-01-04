@@ -87,18 +87,18 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign('heightLabel', $heightLabel);
     $tpl->assign('save', $saveLabel);
     $tpl->assign('label_overview', $label_overview);
-    $tpl->assign("automaticURLLabel", $automaticURLLabel);
-    $tpl->assign("useAutomaticURL", $useAutomaticURL);
+    $tpl->assign('automaticURLLabel', $automaticURLLabel);
+    $tpl->assign('useAutomaticURL', $useAutomaticURL);
 
-    $tpl->assign("autoUrlHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("AUTO_URL_HELP"))));
-    $tpl->assign("likeButtonHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("LIKE_BUTTON_HELP"))));
-    $tpl->assign("likeBoxHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("LIKE_BOX_HELP"))));
-    $tpl->assign("standardHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("STANDARD_HELP"))));
-    $tpl->assign("buttonCountHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("BUTTON_COUNT_HELP"))));
-    $tpl->assign("boxCountHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("BOX_COUNT_HELP"))));
-    $tpl->assign("buttonHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("BUTTON_HELP"))));
-    $tpl->assign("showFacesHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SHOW_FACES_HELP"))));
-    $tpl->assign("showPostsHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SHOW_POSTS_HELP"))));
+    $tpl->assign('autoUrlHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("AUTO_URL_HELP"))));
+    $tpl->assign('likeButtonHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("LIKE_BUTTON_HELP"))));
+    $tpl->assign('likeBoxHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("LIKE_BOX_HELP"))));
+    $tpl->assign('standardHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("STANDARD_HELP"))));
+    $tpl->assign('buttonCountHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("BUTTON_COUNT_HELP"))));
+    $tpl->assign('boxCountHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("BOX_COUNT_HELP"))));
+    $tpl->assign('buttonHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("BUTTON_HELP"))));
+    $tpl->assign('showFacesHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SHOW_FACES_HELP"))));
+    $tpl->assign('showPostsHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SHOW_POSTS_HELP"))));
 
     $tpl->display('facebook_config_view.tpl');
 } else {

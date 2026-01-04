@@ -25,7 +25,7 @@ $imageDescription = "CMS_IMGDESCR[1]";
 if (cRegistry::isBackendEditMode()) {
     $imageEditor = "CMS_IMGEDITOR[1]";
 } else {
-    $imageEditor = "";
+    $imageEditor = '';
 }
 
 // build class containing all data necessary to display image

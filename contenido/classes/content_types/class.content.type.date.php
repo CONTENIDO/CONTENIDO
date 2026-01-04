@@ -274,7 +274,7 @@ class cContentTypeDate extends cContentTypeAbstract
 
         // strftime returns a string in an encoding that is specified by the locale
         // use iconv extension to get the content encoding of string
-        // use mbstring extension to convert encoding to contenido's target encoding
+        // use mbstring extension to convert encoding to CONTENIDO's target encoding
         if (extension_loaded('iconv') && extension_loaded('mbstring') && cRegistry::getEncoding()) {
             $result = mb_convert_encoding($result, cRegistry::getEncoding(), iconv_get_encoding('output_encoding'));
             $result = conHtmlentities($result);

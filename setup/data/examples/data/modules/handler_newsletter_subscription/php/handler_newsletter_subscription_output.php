@@ -23,7 +23,7 @@ if (!class_exists('NewsletterJobCollection')) {
     $oClientLang = new cApiClientLanguage(false, $client, $lang);
     $oClient = new cApiClient($client);
     $oRecipients = new NewsletterRecipientCollection();
-    $sMessage = " ";
+    $sMessage = ' ';
 
     // Unset any existing recipient objects - note, that it must be $recipient for the plugins...
     unset($recipient);

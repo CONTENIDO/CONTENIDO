@@ -55,7 +55,7 @@ echo "CMS_TEASER[5]";
 
 if (cRegistry::getBackendSessionId() === NULL) {
     $art = new cApiArticleLanguage(cRegistry::getArticleLanguageId());
-    $contentValue = $art->getContent("TEASER", $teaserIndex);
+    $contentValue = $art->getContent('TEASER', $teaserIndex);
 
     $teaser = new cContentTypeTeaser($contentValue, $teaserIndex, []);
     $articles = $teaser->getConfiguredArticles();

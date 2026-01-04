@@ -102,12 +102,14 @@ class ContentSitemapXmlModule
 
         // check if there are categories
         if (0 < count($categoryIds)) {
-            $tab = $this->cfg['tab'];
-
             $useCategoryUrlsForStartArticles = 'true' == $this->catUrlForStartArt;
 
             $lang = cSecurity::toInteger($lang);
             $categoryIds = implode(',', array_map('intval', $categoryIds));
+
+            $tabArtLang = cDb::getTableName('art_lang');
+            $tabCatArt = cDb::getTableName('cat_art');
+            $tabCatLang = cDb::getTableName('cat_lang');
 
             // get articles from DB
             $this->db->query("
@@ -120,9 +122,9 @@ class ContentSitemapXmlModule
                 , cat_art.idcat
                 , IF(art_lang.idartlang = cat_lang.startidartlang, 1, 0) AS is_start
             FROM
-                `$tab[art_lang]` AS art_lang
-                , `$tab[cat_art]` AS cat_art
-                , `$tab[cat_lang]` AS cat_lang
+                `$tabArtLang` AS art_lang
+                , `$tabCatArt` AS cat_art
+                , `$tabCatLang` AS cat_lang
             WHERE
                 art_lang.idart = cat_art.idart
                 AND art_lang.idlang = $lang

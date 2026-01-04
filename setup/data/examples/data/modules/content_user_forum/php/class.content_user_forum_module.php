@@ -461,8 +461,8 @@ class ContentUserForumModule
                     $record['REPLYTEXT'] = $this->_mi18n['answers'];
                     $record['QUOTETEXT'] = $this->_mi18n['replyQuote'];
                     $record['FORMID'] = $value['id_user_forum'];
-                    $record['LINKBEGIN'] = "";
-                    $record['LINKEND'] = "";
+                    $record['LINKBEGIN'] = '';
+                    $record['LINKEND'] = '';
                     $record['MAILTO'] = '#';
                     $record['EMAIL'] = '';
 
