@@ -80,8 +80,8 @@ class cContentTypeHead extends cContentTypeText
         $textbox = new cHTMLTextbox(
             $this->_prefix . '_text_' . $this->_id,
             '',
-            '',
-            '',
+            0,
+            0,
             $this->_prefix . '_text_' . $this->_id,
             false,
             NULL,

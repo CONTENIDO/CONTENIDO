@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiRight createNewItem
- * @method cApiRight|bool next
+ * @extends ItemCollection<cApiRight>
  */
 class cApiRightCollection extends ItemCollection
 {
@@ -46,7 +45,7 @@ class cApiRightCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('rights'), 'idright');
+        parent::__construct(cDb::getTableName('rights'), 'idright');
         $this->_setItemClass('cApiRight');
 
         // set the join partners so that joins can be used via link() method
@@ -106,8 +105,8 @@ class cApiRightCollection extends ItemCollection
         $params = [
             'pk' => $this->getPrimaryKeyName(),
             'rights' => $this->table,
-            'actions' => cRegistry::getDbTableName('actions'),
-            'area' => cRegistry::getDbTableName('area'),
+            'actions' => cDb::getTableName('actions'),
+            'area' => cDb::getTableName('area'),
             'userid' => $userId,
             'idcat' => (int)$idcat,
         ];
@@ -147,7 +146,7 @@ class cApiRight extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('rights'), 'idright');
+        parent::__construct(cDb::getTableName('rights'), 'idright');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

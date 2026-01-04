@@ -134,7 +134,7 @@ class cGuiSourceEditor extends cGuiPage
         $this->_filetype = $filetype;
         $this->_filepath = $filepath;
 
-        $this->_readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+        $this->_readOnly = getEffectiveSetting('client', 'readonly', 'false') == 'true';
         if ($this->_readOnly) {
             cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
         }

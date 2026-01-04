@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiUpload createNewItem
- * @method cApiUpload|bool next
+ * @extends ItemCollection<cApiUpload>
  */
 class cApiUploadCollection extends ItemCollection
 {
@@ -40,7 +39,7 @@ class cApiUploadCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('upl'), 'idupl');
+        parent::__construct(cDb::getTableName('upl'), 'idupl');
         $this->_setItemClass('cApiUpload');
 
         // set the join partners so that joins can be used via link() method
@@ -73,12 +72,12 @@ class cApiUploadCollection extends ItemCollection
         // Windows OS doesn't distinguish between lower and uppercase file
         // names, i.e. test.gif is the same as Test.gif in file system
         $os = cString::toLowerCase(getenv('OS'));
-        $isWindows = (false !== cString::findFirstPos($os, 'windows'));
+        $isWindows = cString::findFirstPos($os, 'windows') !== false;
         $binary = $isWindows ? '' : 'BINARY';
 
         $this->select("idclient = $escClient AND dirname = $binary '$escDirname' AND filename = $binary '$escFilename'");
 
-        if (false !== $item = $this->next()) {
+        if (($item = $this->next()) !== false) {
             $item->update();
         } else {
             $filetype = cFileHandler::getExtension($dirname . $filename);
@@ -122,7 +121,7 @@ class cApiUploadCollection extends ItemCollection
         $item->set('dirname', $dirname, false);
         // $item->set('description', $description, false);
         $item->set('status', $status, false);
-        $item->set('author', $auth->auth['uid']);
+        $item->set('author', $auth->getUserId());
         $item->set('created', date('Y-m-d H:i:s'), false);
         $item->store();
 
@@ -132,13 +131,15 @@ class cApiUploadCollection extends ItemCollection
     /**
      * Deletes upload file and its properties
      *
+     * @inheritDoc
      * @param int $id
-     * @return bool
      * @throws cDbException|cException
      * @todo Code is similar/redundant to include.upl_files_overview.php 216-230
      */
     public function delete($id)
     {
+        $id = cSecurity::toInteger($id);
+
         $clientCfg = cRegistry::getClientConfig(cRegistry::getClientId());
 
         $oUpload = new cApiUpload();
@@ -147,11 +148,9 @@ class cApiUploadCollection extends ItemCollection
         $sDirFileName = $oUpload->get('dirname') . $oUpload->get('filename');
 
         // call chain for deleted file
-        $_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Upl_edit.Delete');
-        if ($_cecIterator->count() > 0) {
-            while (($chainEntry = $_cecIterator->next()) !== false) {
-                $chainEntry->execute($oUpload->get('idupl'), $oUpload->get('dirname'), $oUpload->get('filename'));
-            }
+        $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Upl_edit.Delete');
+        while ($chainEntry = $cecIterator->next()) {
+            $chainEntry->execute($oUpload->get('idupl'), $oUpload->get('dirname'), $oUpload->get('filename'));
         }
 
         // delete from dbfs or filesystem
@@ -176,14 +175,12 @@ class cApiUploadCollection extends ItemCollection
     /**
      * Deletes meta-data from con_upl_meta table if file is deleting
      *
-     * @param int $idupl
-     * @throws cDbException
+     * @param int $id
+     * @throws cDbException|cInvalidArgumentException
      */
-    protected function deleteUploadMetaData($idupl): bool
+    protected function deleteUploadMetaData($id): bool
     {
-        $uploadMetaColl = new cApiUploadMetaCollection();
-        $deletedItems = $uploadMetaColl->deleteBy('idupl', $idupl);
-        return $deletedItems > 0;
+        return (new cApiUploadMetaCollection())->deleteBy('idupl', cSecurity::toInteger($id)) > 0;
     }
 
     /**
@@ -196,7 +193,7 @@ class cApiUploadCollection extends ItemCollection
     {
         $client = cRegistry::getClientId();
         $this->select("dirname = '" . $this->escape($dirname) . "' AND idclient = " . $client);
-        while (($oUpload = $this->next()) !== false) {
+        while ($oUpload = $this->next()) {
             $this->delete($oUpload->get('idupl'));
         }
     }
@@ -226,7 +223,7 @@ class cApiUpload extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('upl'), 'idupl');
+        parent::__construct(cDb::getTableName('upl'), 'idupl');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -269,15 +266,13 @@ class cApiUpload extends Item
     public function store()
     {
         $auth = cRegistry::getAuth();
-        $this->set('modifiedby', $auth->auth['uid']);
+        $this->set('modifiedby', $auth->getUserId());
         $this->set('lastmodified', date('Y-m-d H:i:s'), false);
 
         // Call chain
         $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Upl_edit.SaveRows');
-        if ($cecIterator->count() > 0) {
-            while (($chainEntry = $cecIterator->next()) !== false) {
-                $chainEntry->execute($this->get('idupl'), $this->get('dirname'), $this->get('filename'));
-            }
+        while ($chainEntry = $cecIterator->next()) {
+            $chainEntry->execute($this->get('idupl'), $this->get('dirname'), $this->get('filename'));
         }
 
         return parent::store();

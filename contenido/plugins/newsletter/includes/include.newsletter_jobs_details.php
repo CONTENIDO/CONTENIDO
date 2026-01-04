@@ -32,18 +32,18 @@ $requestIdNewsLog = cSecurity::toInteger($_REQUEST['idnewslog'] ?? '0');
 
 $action = $action ?? '';
 
-if ($action == 'news_job_run' && $perm->have_perm_area_action($area, $action) && $requestIdNewsJob > 0) {
+if ($action === 'news_job_run' && $perm->have_perm_area_action($area, $action) && $requestIdNewsJob > 0) {
     // Run job
     $oJob = new NewsletterJob($requestIdNewsJob);
     $iSendCount = $oJob->runJob();
 
-    if ($oJob->get("dispatch") == '1' && intval($oJob->get("sendcount")) < intval($oJob->get("rcpcount"))) {
+    if ($oJob->get('dispatch') == '1' && intval($oJob->get('sendcount')) < intval($oJob->get('rcpcount'))) {
         // Send in chunks
         $sPathNext = $sess->url("main.php?area=$area&action=news_job_run&frame=4&idnewsjob=" . $requestIdNewsJob);
 
         // Calculating some statistics
-        $iChunk = ceil($oJob->get("sendcount") / $oJob->get("dispatch_count"));
-        $iChunks = ceil($oJob->get("rcpcount") / $oJob->get("dispatch_count"));
+        $iChunk = ceil($oJob->get('sendcount') / $oJob->get('dispatch_count'));
+        $iChunks = ceil($oJob->get('rcpcount') / $oJob->get('dispatch_count'));
 
         // Dispatch count > send/recipient count, set values to 1, at least
         if ($iChunk == 0) {
@@ -53,50 +53,50 @@ if ($action == 'news_job_run' && $perm->have_perm_area_action($area, $action) &&
             $iChunks = 1;
         }
 
-        if ($oJob->get("dispatch_delay") == 0) {
+        if ($oJob->get('dispatch_delay') == 0) {
             // Send manually
-            $oForm = new cGuiTableForm("properties", $sPathNext);
+            $oForm = new cGuiTableForm('properties', $sPathNext);
             $oForm->setHeader(i18n("Report:", 'newsletter'));
-            $oForm->add("", "");
+            $oForm->add('', '');
 
-            $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)", 'newsletter'), $iChunk, $iChunks, $oJob->get("rcpcount"), $oJob->get("sendcount")));
+            $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)", 'newsletter'), $iChunk, $iChunks, $oJob->get('rcpcount'), $oJob->get('sendcount')));
 
             $oForm->setActionButton("cancel", $backendUrl . "images/but_cancel.gif", i18n("Stop sending", 'newsletter'), "c");
             $oForm->setActionButton("submit", $backendUrl . "images/but_ok.gif", i18n("Send next chunk", 'newsletter'), "s", "news_job_run");
         } else {
             // Send automatically
-            $oForm = new cGuiTableForm("properties");
+            $oForm = new cGuiTableForm('properties');
             $oForm->setHeader(i18n("Report:", 'newsletter'));
-            $oForm->add("", "");
+            $oForm->add('', '');
 
-            $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)", 'newsletter'), $iChunk, $iChunks, $oJob->get("rcpcount"), $oJob->get("sendcount")));
+            $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)", 'newsletter'), $iChunk, $iChunks, $oJob->get('rcpcount'), $oJob->get('sendcount')));
 
             $oPage->addMeta([
                 'http-equiv' => 'refresh',
-                'content' => $oJob->get("dispatch_delay") . '; URL=' . $sPathNext
+                'content' => $oJob->get('dispatch_delay') . '; URL=' . $sPathNext
             ]);
             $oForm->unsetActionButton("submit");
             $oForm->setActionButton("cancel", $backendUrl . "images/but_cancel.gif", i18n("Stop sending", 'newsletter'), "c");
         }
     } else {
         // All newsletters should have been sent
-        $oForm = new cGuiTableForm("properties");
+        $oForm = new cGuiTableForm('properties');
         $oForm->setHeader(i18n("Report:", 'newsletter'));
-        $oForm->add("", "");
+        $oForm->add('', '');
 
-        $oForm->add("", sprintf(i18n("The newsletter has been sent to %s recipients", 'newsletter'), $oJob->get("sendcount")));
+        $oForm->add("", sprintf(i18n("The newsletter has been sent to %s recipients", 'newsletter'), $oJob->get('sendcount')));
         $oPage->reloadLeftBottomFrame(['idnewsjob' => $requestIdNewsJob]);
     }
 
     $oPage->setContent($oForm);
-} elseif ($action == "news_job_delete" && $perm->have_perm_area_action($area, $action) && $requestIdNewsJob > 0) {
+} elseif ($action === 'news_job_delete' && $perm->have_perm_area_action($area, $action) && $requestIdNewsJob > 0) {
     $oJobs = new NewsletterJobCollection();
     $oJobs->delete($requestIdNewsJob);
 
-    $oPage->setSubnav("blank", "news_jobs");
+    $oPage->setSubnav('blank', 'news_jobs');
     $oPage->reloadLeftBottomFrame(['idnewsjob' => null]);
     $oPage->setContent('');
-} elseif ($action == "news_job_details" || $action == "news_job_detail_delete") {
+} elseif ($action === 'news_job_details' || $action === 'news_job_detail_delete') {
 
     // Show job details (recipients)
 
@@ -118,7 +118,7 @@ if ($action == 'news_job_run' && $perm->have_perm_area_action($area, $action) &&
     $oLogs = new NewsletterLogCollection();
 
     // Remove recipient from a job
-    if ($action == "news_job_detail_delete" && $requestIdNewsLog > 0 && $perm->have_perm_area_action($area, "news_job_detail_delete")) {
+    if ($action === 'news_job_detail_delete' && $requestIdNewsLog > 0 && $perm->have_perm_area_action($area, 'news_job_detail_delete')) {
         $oLogs->delete($requestIdNewsLog);
     }
 
@@ -128,35 +128,35 @@ if ($action == 'news_job_run' && $perm->have_perm_area_action($area, $action) &&
         $iNextPage = 1;
     }
 
-    $sDateFormat = getEffectiveSetting("dateformat", "full", "d.m.Y H:i");
+    $sDateFormat = getEffectiveSetting('dateformat', 'full', 'd.m.Y H:i');
 
     // Set default values
-    $oUser = new cApiUser($auth->auth["uid"]);
+    $oUser = new cApiUser($auth->getUserId());
     if (!is_numeric($requestElemPerPage) || $requestElemPerPage < 0) {
-        $requestElemPerPage = $oUser->getProperty("itemsperpage", $area . "_job_details");
+        $requestElemPerPage = $oUser->getProperty('itemsperpage', $area . "_job_details");
     }
     if (!is_numeric($requestElemPerPage)) {
         $requestElemPerPage = 50;
     }
     if ($requestElemPerPage > 0) {
         // - All - will not be saved
-        $oUser->setProperty("itemsperpage", $area . "_job_details", $requestElemPerPage);
+        $oUser->setProperty('itemsperpage', $area . "_job_details", $requestElemPerPage);
     }
 
-    $oFrmOptions = new cGuiTableForm("frmOptions");
+    $oFrmOptions = new cGuiTableForm('frmOptions');
     $oFrmOptions->setTableClass('generic mgb10');
-    $oFrmOptions->setVar("contenido", $sess->id);
-    $oFrmOptions->setVar("area", $area);
-    $oFrmOptions->setVar("action", $action);
-    $oFrmOptions->setVar("frame", $frame);
-    $oFrmOptions->setVar("sortmode", $requestSortMode);
-    $oFrmOptions->setVar("sortby", $requestSortBy);
-    $oFrmOptions->setVar("idnewsjob", $requestIdNewsJob);
-    // $oFrmOptions->setVar("startpage", $startpage);
-    // $oFrmOptions->setVar("appendparameters", $appendparameters);
+    $oFrmOptions->setVar('contenido', $sess->id);
+    $oFrmOptions->setVar('area', $area);
+    $oFrmOptions->setVar('action', $action);
+    $oFrmOptions->setVar('frame', $frame);
+    $oFrmOptions->setVar('sortmode', $requestSortMode);
+    $oFrmOptions->setVar('sortby', $requestSortBy);
+    $oFrmOptions->setVar('idnewsjob', $requestIdNewsJob);
+    // $oFrmOptions->setVar('startpage', $startpage);
+    // $oFrmOptions->setVar('appendparameters', $appendparameters);
     $oFrmOptions->setHeader(i18n("List options", 'newsletter'));
 
-    $oSelElements = new cHTMLSelectElement("elemperpage");
+    $oSelElements = new cHTMLSelectElement('elemperpage');
     $oSelElements->setClass('text_medium');
     $oSelElements->setEvent("onchange", "document.forms.frmOptions.submit();");
 
@@ -176,9 +176,9 @@ if ($action == 'news_job_run' && $perm->have_perm_area_action($area, $action) &&
 
     // Ouput data
     $oList = new cGuiScrollList(true, "news_job_details");
-    $oList->setCustom("idnewsjob", $requestIdNewsJob);
-    $oList->setCustom("nextpage", $iNextPage);
-    $oList->setCustom("elemperpage", $requestElemPerPage);
+    $oList->setCustom('idnewsjob', $requestIdNewsJob);
+    $oList->setCustom('nextpage', $iNextPage);
+    $oList->setCustom('elemperpage', $requestElemPerPage);
 
     // Columns
     $oList->setHeader(i18n("Recipient", 'newsletter'), i18n("E-Mail", 'newsletter'), i18n("Type", 'newsletter'), i18n("Status", 'newsletter'), i18n("Sent", 'newsletter'), i18n("Actions", 'newsletter'));
@@ -190,7 +190,7 @@ if ($action == 'news_job_run' && $perm->have_perm_area_action($area, $action) &&
 
     // Get data
     $oLogs->resetQuery();
-    $oLogs->setWhere("idnewsjob", $requestIdNewsJob);
+    $oLogs->setWhere('idnewsjob', $requestIdNewsJob);
 
     $sBrowseLinks = "1";
     if ($requestElemPerPage > 0) {
@@ -204,7 +204,7 @@ if ($action == 'news_job_run' && $perm->have_perm_area_action($area, $action) &&
             $sBrowseLinks = "";
             for ($i = 1; $i <= ceil($iRecipients / $requestElemPerPage); $i++) {
                 // $iNext = (($i - 1) * $requestElemPerPage) + 1;
-                if ($sBrowseLinks !== "") {
+                if ($sBrowseLinks !== '') {
                     $sBrowseLinks .= "&nbsp;";
                 }
                 if ($iNextPage == $i) {
@@ -233,11 +233,10 @@ if ($action == 'news_job_run' && $perm->have_perm_area_action($area, $action) &&
         i18n("HTML/Text", 'newsletter')
     ];
     while ($oLog = $oLogs->next()) {
+        $sName = $oLog->get('rcpname');
+        $sEMail = $oLog->get('rcpemail');
 
-        $sName = $oLog->get("rcpname");
-        $sEMail = $oLog->get("rcpemail");
-
-        switch ($oLog->get("status")) {
+        switch ($oLog->get('status')) {
             case "pending":
                 $sStatus = i18n("Waiting for sending", 'newsletter');
                 break;
@@ -248,29 +247,29 @@ if ($action == 'news_job_run' && $perm->have_perm_area_action($area, $action) &&
                 $sStatus = i18n("Successful", 'newsletter');
                 break;
             default:
-                $sStatus = sprintf(i18n("Error: %s", 'newsletter'), $oLog->get("status"));
+                $sStatus = sprintf(i18n("Error: %s", 'newsletter'), $oLog->get('status'));
         }
 
-        if ($oLog->get("sent") == "0000-00-00 00:00:00") {
+        if ($oLog->get('sent') == '0000-00-00 00:00:00') {
             $sSent = "-";
         } else {
-            $sSent = date($sDateFormat, strtotime($oLog->get("sent")));
+            $sSent = date($sDateFormat, strtotime($oLog->get('sent')));
         }
 
         $sLnkRemove = '&nbsp;';
-        if ($oLog->get("status") == "pending" && $perm->have_perm_area_action($area, "news_job_detail_delete")) {
+        if ($oLog->get('status') == "pending" && $perm->have_perm_area_action($area, 'news_job_detail_delete')) {
             $oLnkRemove = new cHTMLLink();
             $oLnkRemove->setCLink("news_jobs", 4, "news_job_detail_delete");
-            $oLnkRemove->setCustom("idnewsjob", $requestIdNewsJob);
-            $oLnkRemove->setCustom("idnewslog", $oLog->get($oLog->getPrimaryKeyName()));
-            $oLnkRemove->setCustom("sortby", $requestSortBy);
-            $oLnkRemove->setCustom("sortmode", $requestSortMode);
+            $oLnkRemove->setCustom('idnewsjob', $requestIdNewsJob);
+            $oLnkRemove->setCustom('idnewslog', $oLog->get($oLog->getPrimaryKeyName()));
+            $oLnkRemove->setCustom('sortby', $requestSortBy);
+            $oLnkRemove->setCustom('sortmode', $requestSortMode);
             $oLnkRemove->setContent($sImgDelete);
 
             $sLnkRemove = $oLnkRemove->render();
         }
 
-        $oList->setData($iCount, $sName, $sEMail, $aNewsType[$oLog->get("rcpnewstype")], $sStatus, $sSent, $sLnkRemove);
+        $oList->setData($iCount, $sName, $sEMail, $aNewsType[$oLog->get('rcpnewstype')], $sStatus, $sSent, $sLnkRemove);
 
         $iCount++;
     }
@@ -294,49 +293,49 @@ if ($action == 'news_job_run' && $perm->have_perm_area_action($area, $action) &&
     // Just show the job data
     $oJob = new NewsletterJob($requestIdNewsJob);
 
-    $oForm = new cGuiTableForm("properties");
-    $oForm->setVar("frame", $frame);
-    $oForm->setVar("area", $area);
-    $oForm->setVar("action", "");
-    $oForm->setVar("idnewsjob", $requestIdNewsJob);
+    $oForm = new cGuiTableForm('properties');
+    $oForm->setVar('frame', $frame);
+    $oForm->setVar('area', $area);
+    $oForm->setVar('action', '');
+    $oForm->setVar('idnewsjob', $requestIdNewsJob);
 
     $oForm->setHeader(i18n("Newsletter dispatch job", 'newsletter'));
 
-    $oForm->add(i18n("Name", 'newsletter'), $oJob->get("name"));
+    $oForm->add(i18n("Name", 'newsletter'), $oJob->get('name'));
 
-    $sDateFormat = getEffectiveSetting("dateformat", "full", "d.m.Y H:i");
-    switch ($oJob->get("status")) {
+    $sDateFormat = getEffectiveSetting('dateformat', 'full', 'd.m.Y H:i');
+    switch ($oJob->get('status')) {
         case 1:
             $oForm->add(i18n("Status", 'newsletter'), i18n("Pending", 'newsletter'));
             break;
         case 2:
-            $oForm->add(i18n("Status", 'newsletter'), sprintf(i18n("Sending (started: %s)", 'newsletter'), date($sDateFormat, strtotime($oJob->get("started")))));
+            $oForm->add(i18n("Status", 'newsletter'), sprintf(i18n("Sending (started: %s)", 'newsletter'), date($sDateFormat, strtotime($oJob->get('started')))));
             break;
         case 9:
-            $oForm->add(i18n("Status", 'newsletter'), sprintf(i18n("Finished (started: %s, finished: %s)", 'newsletter'), date($sDateFormat, strtotime($oJob->get("started"))), date($sDateFormat, strtotime($oJob->get("finished")))));
+            $oForm->add(i18n("Status", 'newsletter'), sprintf(i18n("Finished (started: %s, finished: %s)", 'newsletter'), date($sDateFormat, strtotime($oJob->get('started'))), date($sDateFormat, strtotime($oJob->get('finished')))));
             break;
     }
 
-    $oForm->add(i18n("Statistics", 'newsletter'), sprintf(i18n("Planned: %s, Send: %s", 'newsletter'), $oJob->get("rcpcount"), $oJob->get("sendcount")));
-    $oForm->add(i18n("From", 'newsletter'), $oJob->get("newsfrom") . " (" . $oJob->get("newsfromname") . ")");
-    $oForm->add(i18n("Subject", 'newsletter'), $oJob->get("subject"));
+    $oForm->add(i18n("Statistics", 'newsletter'), sprintf(i18n("Planned: %s, Send: %s", 'newsletter'), $oJob->get('rcpcount'), $oJob->get('sendcount')));
+    $oForm->add(i18n("From", 'newsletter'), $oJob->get('newsfrom') . " (" . $oJob->get('newsfromname') . ")");
+    $oForm->add(i18n("Subject", 'newsletter'), $oJob->get('subject'));
 
-    if ($oJob->get("type") == "html") {
+    if ($oJob->get('type') == "html") {
         $oForm->add(i18n("Type", 'newsletter'), i18n("HTML and text"));
 
-        $txtMessageHTML = new cHTMLTextarea("txtMessageHTML", $oJob->get("message_html"), 80, 20);
+        $txtMessageHTML = new cHTMLTextarea('txtMessageHTML', $oJob->get('message_html'), 80, 20);
         $txtMessageHTML->setDisabled(true);
 
         $oForm->add(i18n("HTML Message", 'newsletter'), $txtMessageHTML->render());
     } else {
         $oForm->add(i18n("Type", 'newsletter'), i18n("Text only", 'newsletter'));
     }
-    $txtMessageText = new cHTMLTextarea("txtMessageText", $oJob->get("message_text"), 80, 20);
+    $txtMessageText = new cHTMLTextarea('txtMessageText', $oJob->get('message_text'), 80, 20);
     $txtMessageText->setDisabled(true);
 
     $oForm->add(i18n("Text Message", 'newsletter'), $txtMessageText->render());
 
-    $aSendTo = unserialize($oJob->get("send_to"));
+    $aSendTo = unserialize($oJob->get('send_to'));
     switch ($aSendTo[0]) {
         case "all":
             $sSendToInfo = i18n("Send newsletter to all recipients", 'newsletter');
@@ -362,21 +361,21 @@ if ($action == 'news_job_run' && $perm->have_perm_area_action($area, $action) &&
 
     $oForm->add(i18n("Recipients", 'newsletter'), $sSendToInfo);
 
-    if ($oJob->get("use_cronjob") == 1) {
+    if ($oJob->get('use_cronjob') == 1) {
         $sOptionsInfo = i18n("Use cronjob: Enabled", 'newsletter');
     } else {
         $sOptionsInfo = i18n("Use cronjob: Not enabled", 'newsletter');
     }
 
-    if ($oJob->get("dispatch")) {
-        $sOptionsInfo .= "<br>" . sprintf(i18n("Dispatch: Enabled (block size: %s, delay: %s sec.)", 'newsletter'), $oJob->get("dispatch_count"), $oJob->get("dispatch_delay"));
+    if ($oJob->get('dispatch')) {
+        $sOptionsInfo .= "<br>" . sprintf(i18n("Dispatch: Enabled (block size: %s, delay: %s sec.)", 'newsletter'), $oJob->get('dispatch_count'), $oJob->get('dispatch_delay'));
     } else {
         $sOptionsInfo .= "<br>" . i18n("Dispatch: Disabled", 'newsletter');
     }
 
     $oForm->add(i18n("Options", 'newsletter'), $sOptionsInfo);
-    $oForm->add(i18n("Author", 'newsletter'), $oJob->get("authorname"));
-    $oForm->add(i18n("Created", 'newsletter'), $oJob->get("created"));
+    $oForm->add(i18n("Author", 'newsletter'), $oJob->get('authorname'));
+    $oForm->add(i18n("Created", 'newsletter'), $oJob->get('created'));
 
     // Just remove the "save changes" message (as it is not possible to remove
     // the image completely in ui_table_form)

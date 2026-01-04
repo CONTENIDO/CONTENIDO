@@ -84,7 +84,7 @@ class CodeMirror {
      * @param bool $addScript - defines if CodeMirror script is included or
      *        not
      *        interesting when there is more than only one editor on page
-     * @param array $cfg - The CONTENIDO configuration array
+     * @param array $cfg The CONTENIDO configuration array
      * @param bool $editable - Optional defines if content is editable or not
      */
     public function __construct($id, $syntax, $lang, $addScript, $cfg, $editable = true) {

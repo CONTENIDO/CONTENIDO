@@ -14,20 +14,19 @@
  */
 
 if (!cRegistry::getBackendSessionId()) {
-
     $session = cRegistry::getSession();
     $params = session_get_cookie_params();
 
-    if (array_key_exists('acceptCookie', $_GET)) {
+    if (isset($_GET['acceptCookie'])) {
         // Check value in get, if js is off
-        $allowCookie = $_GET['acceptCookie'] === '1' ? 1 : 0;
+        $allowCookie = $_GET['acceptCookie'] === '1' ? '1' : '0';
         setcookie('allowCookie', $allowCookie, 0, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
 
         // Save value
         $session->register('allowCookie');
-    } elseif (array_key_exists('allowCookie', $_COOKIE)) {
+    } elseif (isset($_COOKIE['allowCookie'])) {
         // Check value in cookies
-        $allowCookie = $_COOKIE['allowCookie'] === '1' ? 1 : 0;
+        $allowCookie = $_COOKIE['allowCookie'] === '1' ? '1' : '0';
 
         // Save value
         $session->register('allowCookie');

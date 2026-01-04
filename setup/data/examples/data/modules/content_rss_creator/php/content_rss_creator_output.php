@@ -65,11 +65,11 @@ if (cRegistry::getBackendSessionId() === NULL) {
 
     $rssFeed = new SimpleXMLElement($xmlString);
     $rssChannel = $rssFeed->addChild('channel');
-    $rssChannel->title = $art->getContent("CMS_TEXT", 1);
-    $rssChannel->link = $art->getContent("CMS_TEXT", 2);
-    $rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent("CMS_HTML", 1)));
+    $rssChannel->title = $art->getContent('CMS_TEXT', 1);
+    $rssChannel->link = $art->getContent('CMS_TEXT', 2);
+    $rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent('CMS_HTML', 1)));
 
-    $imgId = $art->getContent("CMS_IMG", 1);
+    $imgId = $art->getContent('CMS_IMG', 1);
 
     if ((int)$imgId > 0) {
         $upload = new cApiUpload($imgId);
@@ -77,8 +77,8 @@ if (cRegistry::getBackendSessionId() === NULL) {
 
         $rssImage = $rssChannel->addChild('image');
         $rssImage->url = $rssLogo;
-        $rssImage->title = $art->getContent("CMS_TEXT", 1);
-        $rssImage->link = $art->getContent("CMS_TEXT", 2);
+        $rssImage->title = $art->getContent('CMS_TEXT', 1);
+        $rssImage->link = $art->getContent('CMS_TEXT', 2);
     }
 
     foreach ($articles as $article) {

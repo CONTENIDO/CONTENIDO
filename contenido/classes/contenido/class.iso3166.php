@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiIso3166 createNewItem
- * @method cApiIso3166|bool next
+ * @extends ItemCollection<cApiIso3166>
  */
 class cApiIso3166Collection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiIso3166Collection extends ItemCollection
      */
     public function __construct($select = false)
     {
-        parent::__construct(cRegistry::getDbTableName('iso_3166'), 'iso');
+        parent::__construct(cDb::getTableName('iso_3166'), 'iso');
         $this->_setItemClass('cApiIso3166');
 
         if ($select !== false) {
@@ -57,7 +56,7 @@ class cApiIso3166 extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('iso_3166'), 'iso');
+        parent::__construct(cDb::getTableName('iso_3166'), 'iso');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

@@ -40,7 +40,7 @@ class cContentTypeImgdescr extends cContentTypeImgeditor
         // saved in con_upl_meta. So compute the appropriate raw settings
         // and call the parent constructor with them.
         if (!cXmlBase::isValidXML($rawSettings)) {
-            $rawSettings = $this->_getRawSettings("CMS_IMGEDITOR", $id, $contentTypes);
+            $rawSettings = $this->_getRawSettings('CMS_IMGEDITOR', $id, $contentTypes);
         }
 
         parent::__construct($rawSettings, $id, $contentTypes);

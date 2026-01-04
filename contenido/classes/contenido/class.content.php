@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiContent createNewItem
- * @method cApiContent|bool next
+ * @extends ItemCollection<cApiContent>
  */
 class cApiContentCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiContentCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('content'), 'idcontent');
+        parent::__construct(cDb::getTableName('content'), 'idcontent');
         $this->_setItemClass('cApiContent');
 
         // set the join partners so that joins can be used via link() method
@@ -60,7 +59,7 @@ class cApiContentCollection extends ItemCollection
     {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = $auth->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -103,7 +102,7 @@ class cApiContent extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('content'), 'idcontent');
+        parent::__construct(cDb::getTableName('content'), 'idcontent');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

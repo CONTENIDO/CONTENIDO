@@ -13,7 +13,7 @@ class cHtmlRadioButtonTest extends cTestingTestCase
 {
     public function testConstruct()
     {
-        $pwBox = new cHTMLRadiobutton('testName', 'testValue', 'testId');
+        $pwBox = new cHTMLRadioButton('testName', 'testValue', 'testId');
         $this->assertSame(4, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame('testValue', $pwBox->getAttribute('value'));
@@ -23,7 +23,7 @@ class cHtmlRadioButtonTest extends cTestingTestCase
         $this->assertSame(null, $pwBox->getAttribute('disabled'));
         $this->assertSame(null, $pwBox->getAttribute('checked'));
 
-        $pwBox = new cHTMLRadiobutton('testName', 'testValue', 'testId', true);
+        $pwBox = new cHTMLRadioButton('testName', 'testValue', 'testId', true);
         $this->assertSame(5, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame('testValue', $pwBox->getAttribute('value'));
@@ -33,7 +33,7 @@ class cHtmlRadioButtonTest extends cTestingTestCase
         $this->assertSame(null, $pwBox->getAttribute('disabled'));
         $this->assertSame('checked', $pwBox->getAttribute('checked'));
 
-        $pwBox = new cHTMLRadiobutton('testName', 'testValue', 'testId', true, true);
+        $pwBox = new cHTMLRadioButton('testName', 'testValue', 'testId', true, true);
         $this->assertSame(6, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame('testValue', $pwBox->getAttribute('value'));
@@ -46,7 +46,7 @@ class cHtmlRadioButtonTest extends cTestingTestCase
 
     public function testSetChecked()
     {
-        $pwBox = new cHTMLRadiobutton('testName', 'testValue', 'testId');
+        $pwBox = new cHTMLRadioButton('testName', 'testValue', 'testId');
         $this->assertSame(4, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame('testValue', $pwBox->getAttribute('value'));
@@ -63,7 +63,7 @@ class cHtmlRadioButtonTest extends cTestingTestCase
 
     public function testSetLabelText()
     {
-        $pwBox = new cHTMLRadiobutton('testName', 'testValue', 'testId');
+        $pwBox = new cHTMLRadioButton('testName', 'testValue', 'testId');
         $this->assertSame(4, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame('testValue', $pwBox->getAttribute('value'));
@@ -77,7 +77,7 @@ class cHtmlRadioButtonTest extends cTestingTestCase
 
     public function testToHTMLText()
     {
-        $pwBox = new cHTMLRadiobutton('testName', 'testValue', 'testId');
+        $pwBox = new cHTMLRadioButton('testName', 'testValue', 'testId');
         $this->assertSame($pwBox->toHtml(), $pwBox->toHtml());
         $this->assertSame($pwBox->toHtml(false), $pwBox->toHtml(false));
     }
@@ -85,9 +85,9 @@ class cHtmlRadioButtonTest extends cTestingTestCase
     public function testIdRenderWithLabelWithoutSettingId()
     {
         // Render with label
-        $radioButton = new cHTMLRadiobutton('testName', 'testValue');
+        $radioButton = new cHTMLRadioButton('testName', 'testValue');
         $this->assertNull($radioButton->getAttribute('id'));
-        // Note: Calling render() renders with label, if label ist set, see cHTMLRadiobutton->totoHtml()
+        // Note: Calling render() renders with label, if label ist set, see cHTMLRadioButton->totoHtml()
         $radioButton->setLabelText('myLabel');
         $radioButton->render();
         $this->assertNotNull($radioButton->getAttribute('id'));
@@ -96,9 +96,9 @@ class cHtmlRadioButtonTest extends cTestingTestCase
     public function testIdRenderWithoutLabelWithoutSettingId()
     {
         // Render without label
-        $radioButton = new cHTMLRadiobutton('testName', 'testValue');
+        $radioButton = new cHTMLRadioButton('testName', 'testValue');
         $this->assertNull($radioButton->getAttribute('id'));
-        // Note: Calling toHtml(false) renders without label, see cHTMLRadiobutton->toHtml()
+        // Note: Calling toHtml(false) renders without label, see cHTMLRadioButton->toHtml()
         $radioButton->toHtml(false);
         $this->assertNull($radioButton->getAttribute('id'));
     }

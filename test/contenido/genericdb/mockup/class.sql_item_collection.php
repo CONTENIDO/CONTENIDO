@@ -5,23 +5,13 @@
  */
 class SqlItemCollection
 {
-    /**
-     *
-     * @param array $tables
-     *
-     * @return string
-     */
-    public static function getDeleteStatement(array $tables)
+    public static function getDeleteStatement(array $tables): string
     {
         $tableClause = implode('`, `', $tables);
         return "DROP TABLE IF EXISTS `$tableClause`;";
     }
 
-    /**
-     *
-     * @return string
-     */
-    public static function getInsertConTestStatement()
+    public static function getInsertConTestStatement(): string
     {
         return "
             INSERT INTO `con_test` VALUES
@@ -31,11 +21,7 @@ class SqlItemCollection
             ;";
     }
 
-    /**
-     *
-     * @return string
-     */
-    public static function getInserDogStatement()
+    public static function getInserDogStatement(): string
     {
         return "
             INSERT INTO `con_test_dog` (`id`, `name`, `descr`, `size`, `date`) VALUES
@@ -45,11 +31,7 @@ class SqlItemCollection
             ;";
     }
 
-    /**
-     *
-     * @return string
-     */
-    public static function getInserDogRfidStatement()
+    public static function getInsertDogRfidStatement(): string
     {
         return "
             INSERT INTO `con_test_rfid_dog` (`dog_id`, `bar_code`, `notes`, `iso_compliant`, `date`) VALUES
@@ -59,11 +41,7 @@ class SqlItemCollection
             ;";
     }
 
-    /**
-     *
-     * @return string
-     */
-    public static function getCreateDogStatement()
+    public static function getCreateDogStatement(): string
     {
         return (new cSqlTemplate())->parse("
             CREATE TABLE `con_test_dog` (
@@ -77,11 +55,7 @@ class SqlItemCollection
         );
     }
 
-    /**
-     *
-     * @return string
-     */
-    public static function getCreateConTestStatement()
+    public static function getCreateConTestStatement(): string
     {
         return (new cSqlTemplate())->parse("
             CREATE TABLE `con_test` (
@@ -95,11 +69,7 @@ class SqlItemCollection
         );
     }
 
-    /**
-     *
-     * @return string
-     */
-    public static function getCreateDogRfidStatement()
+    public static function getCreateDogRfidStatement(): string
     {
         return (new cSqlTemplate())->parse("
             CREATE TABLE `con_test_rfid_dog` (
@@ -124,8 +94,7 @@ class SqlItemCollection
 ///**
 // *
 // * @author marcus.gnass
-// * @method TFItem createNewItem
-// * @method TFItem|bool next
+// * @extends ItemCollection<TFItem>
 // */
 //class TFCollection extends ItemCollection {
 //
@@ -134,7 +103,7 @@ class SqlItemCollection
 //     * @param string|bool $where
 //     */
 //    public function __construct($where = false) {
-//        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
+//        parent::__construct(cDb::getTableName('con_test'), 'ID');
 //        // $this->_setItemClass('TItem');
 //        if (false !== $where) {
 //            $this->select($where);
@@ -155,7 +124,7 @@ class SqlItemCollection
 //     */
 //    public function __construct($id = false) {
 //        $cfg = cRegistry::getConfig();
-//        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
+//        parent::__construct(cDb::getTableName('con_test'), 'ID');
 //        if (false !== $id) {
 //            $this->loadByPrimaryKey($id);
 //        }
@@ -165,8 +134,7 @@ class SqlItemCollection
 
 /**
  * @author marcus.gnass
- * @method TItem createNewItem
- * @method TItem|bool next
+ * @extends ItemCollection<TItem>
  */
 class TCollection extends ItemCollection
 {
@@ -178,7 +146,7 @@ class TCollection extends ItemCollection
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
+        parent::__construct(cDb::getTableName('con_test'), 'ID');
         $this->_setItemClass('TItem');
         if (false !== $where) {
             $this->select($where);
@@ -199,7 +167,7 @@ class TItem extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
+        parent::__construct(cDb::getTableName('con_test'), 'ID');
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }
@@ -208,8 +176,7 @@ class TItem extends Item
 
 /**
  * @author marcus.gnass
- * @method TITCollection createNewItem
- * @method TITCollection|bool next
+ * @extends ItemCollection<TITCollection>
  */
 class ITCollection extends ItemCollection
 {
@@ -231,8 +198,7 @@ class ITCollection extends ItemCollection
 
 /**
  * @author marcus.gnass
- * @method TItem createNewItem
- * @method TItem|bool next
+ * @extends ItemCollection<TItem>
  */
 class TITCollection extends ItemCollection
 {
@@ -254,8 +220,7 @@ class TITCollection extends ItemCollection
 
 /**
  * @author marcus.gnass
- * @method DogItem createNewItem
- * @method DogItem|bool next
+ * @extends ItemCollection<DogItem>
  */
 class DogCollection extends ItemCollection
 {
@@ -267,7 +232,7 @@ class DogCollection extends ItemCollection
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test_dog'), 'id');
+        parent::__construct(cDb::getTableName('con_test_dog'), 'id');
         $this->_setItemClass('DogItem');
         if (false !== $where) {
             $this->select($where);
@@ -288,7 +253,7 @@ class DogItem extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test_dog'), 'id');
+        parent::__construct(cDb::getTableName('con_test_dog'), 'id');
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }
@@ -297,8 +262,7 @@ class DogItem extends Item
 
 /**
  * @author marcus.gnass
- * @method DogRfidItem createNewItem
- * @method DogRfidItem|bool next
+ * @extends ItemCollection<DogRfidItem>
  */
 class DogRfidCollection extends ItemCollection
 {
@@ -310,7 +274,7 @@ class DogRfidCollection extends ItemCollection
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test_rfid_dog'), 'dog_id');
+        parent::__construct(cDb::getTableName('con_test_rfid_dog'), 'dog_id');
         $this->_setItemClass('DogRfidItem');
         if (false !== $where) {
             $this->select($where);
@@ -331,7 +295,7 @@ class DogRfidItem extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test_rfid_dog'), 'dog_id');
+        parent::__construct(cDb::getTableName('con_test_rfid_dog'), 'dog_id');
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }

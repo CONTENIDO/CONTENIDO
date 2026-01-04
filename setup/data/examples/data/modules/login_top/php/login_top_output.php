@@ -28,7 +28,7 @@ if ($curIdart == $loginIdart) {
 }
 
 $curAuth = cRegistry::getAuth();
-if ($curAuth->auth['uid'] != '' && $curAuth->auth['uid'] != 'nobody') {
+if ($curAuth->getUserId() != '' && $curAuth->getUserId() != cAuth::AUTH_UID_NOBODY) {
     $link = 'front_content.php?logout=true';
     $label = mi18n("LOGOUT");
 }

@@ -107,7 +107,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
     // construct the content rows containing the mails
     $tbody = new cHTMLTableBody();
     // iterate over all logged mails
-    while (($item = $mailLogCollection->next()) !== false) {
+    while ($item = $mailLogCollection->next()) {
         $tr = new cHTMLTableRow();
         $tr->setAttribute('data-action', 'invert_selection_row')
             ->setAttribute('data-idmail', $item->get('idmail'));
@@ -268,7 +268,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
         $successTable->appendContent($tr);
 
         // construct a table row for each recipient
-        while (($mailSuccessItem = $mailLogSuccessCollection->next()) !== false) {
+        while ($mailSuccessItem = $mailLogSuccessCollection->next()) {
             $tr = new cHTMLTableRow();
             $td = new cHTMLTableData();
             $td->setContent(mailLogDecodeAddresses($mailSuccessItem->get('recipient')));

@@ -362,7 +362,7 @@ class cHTML
     }
 
     /**
-     * Updates the passed attribute without changing the other existing attributes
+     * Updates the provided attribute without changing the other existing attributes
      *
      * @param string $name The name of the attribute
      * @param string $value The value of the attribute with the given name
@@ -373,7 +373,7 @@ class cHTML
     }
 
     /**
-     * Updates the passed attributes without changing the other existing attributes.
+     * Updates the provided attributes without changing the other existing attributes.
      *
      * @param array $attributes Associative array with attributes
      */

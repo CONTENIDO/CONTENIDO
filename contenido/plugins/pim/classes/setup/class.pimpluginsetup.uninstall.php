@@ -196,7 +196,7 @@ class PimPluginSetupUninstall extends PimPluginSetup
         // Initializing relations array
         $relations = [];
 
-        while (($relation = $this->_pimPluginRelationsCollection->next()) !== false) {
+        while ($relation = $this->_pimPluginRelationsCollection->next()) {
             // Relation to tables *_action_, *_area, *_nav_main, *_nav_sub and
             // *_type
             $index = $relation->get('type');
@@ -338,7 +338,7 @@ class PimPluginSetupUninstall extends PimPluginSetup
         $i = 1;
 
         $pimPluginColl = new PimPluginCollection();
-        $pimPluginColl->setOrder('executionorder ASC');
+        $pimPluginColl->setOrder('`executionorder` ASC');
         $pimPluginColl->query();
         while ($pimPluginSql = $pimPluginColl->next()) {
             $pimPluginSql->set('executionorder', $i);

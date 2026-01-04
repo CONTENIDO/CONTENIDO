@@ -206,7 +206,7 @@ class cTinyMCE4List {
             ];
 
             foreach ($articleCollector as $articleLanguage) {
-                $tmp_title = $articleLanguage->get("title");
+                $tmp_title = $articleLanguage->get('title');
 
                 if (cString::getStringLength($tmp_title) > 32) {
                     $tmp_title = cString::getPartOfString($tmp_title, 0, 32);
@@ -218,7 +218,7 @@ class cTinyMCE4List {
                     $tmp_title .= "*";
                 }
 
-                if ('0' === $articleLanguage->get("online")) {
+                if ('0' === $articleLanguage->get('online')) {
                     $tmp_title = "[" . $tmp_title . "]";
                 }
                 $articleEntry = new stdClass();

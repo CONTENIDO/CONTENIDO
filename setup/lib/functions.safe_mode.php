@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 function getSafeModeStatus()
 {
-    if (getPHPIniSetting("safe_mode") == "1") {
+    if (getPHPIniSetting("safe_mode") == '1') {
         return true;
     } else {
         return false;
@@ -25,7 +25,7 @@ function getSafeModeStatus()
 
 function getSafeModeGidStatus()
 {
-    if (getPHPIniSetting("safe_mode_gid") == "1") {
+    if (getPHPIniSetting("safe_mode_gid") == '1') {
         return true;
     } else {
         return false;

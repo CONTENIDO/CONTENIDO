@@ -100,7 +100,7 @@ class cCategoryHelper
     {
         $this->_auth = $auth;
 
-        $feUser = new cApiFrontendUser($auth->auth['uid']);
+        $feUser = new cApiFrontendUser($auth->getUserId());
         if ($feUser->isLoaded() === true) {
             $this->_feGroups = $feUser->getGroupsForUser();
         }
@@ -279,38 +279,37 @@ class cCategoryHelper
      */
     public function getSubCategories($categoryId, $depth): array
     {
-        if ((int)$categoryId <= 0 || (int)$depth < 0) {
+        $categoryId = cSecurity::toInteger($categoryId);
+        $depth = cSecurity::toInteger($depth);
+
+        if ($categoryId <= 0 || $depth < 0) {
             return [];
         }
-
-        $depth = (int)$depth;
-
-        $cfg = cRegistry::getConfig();
 
         $categories = [];
 
         $clientId = $this->getClientId();
         $languageId = $this->getLanguageId();
 
-        $selectFields = "cat_tree.idcat, cat_tree.level";
+        $selectFields = 'cat_tree.idcat, cat_tree.level';
 
-        $useAuthorization = ($this->_auth !== NULL);
+        $useAuthorization = $this->_auth !== null;
 
         if ($useAuthorization) {
-            $selectFields .= ", cat_lang.public, cat_lang.idcatlang";
+            $selectFields .= ', cat_lang.public, cat_lang.idcatlang';
         }
 
-        $sqlSnippetPublic = "cat_lang.public = 1 AND";
+        $sqlSnippetPublic = 'cat_lang.public = 1 AND';
         if ($useAuthorization) {
-            $sqlSnippetPublic = "";
+            $sqlSnippetPublic = '';
         }
 
         $sql = 'SELECT
                     ' . $selectFields . '
                 FROM
-                    ' . $cfg['tab']['cat_tree'] . ' AS cat_tree,
-                    ' . $cfg['tab']['cat'] . ' AS cat,
-                    ' . $cfg['tab']['cat_lang'] . ' AS cat_lang
+                    ' . cDb::getTableName('cat_tree') . ' AS cat_tree,
+                    ' . cDb::getTableName('cat') . ' AS cat,
+                    ' . cDb::getTableName('cat_lang') . ' AS cat_lang
                 WHERE
                     cat_tree.idcat    = cat.idcat AND
                     cat.idcat    = cat_lang.idcat AND
@@ -325,10 +324,10 @@ class cCategoryHelper
         $db->query($sql);
 
         while ($db->nextRecord()) {
-            $catId = (int)$db->f('idcat');
-            $catLevel = (int)$db->f('level');
+            $catId = cSecurity::toInteger($db->f('idcat'));
+            $catLevel = cSecurity::toInteger($db->f('level'));
 
-            if ($depth > 0 && ($depth > ($catLevel))) {
+            if ($depth > 0 && $depth > $catLevel) {
                 $subCategories = $this->getSubCategories($catId, $depth);
             } else {
                 $subCategories = [];

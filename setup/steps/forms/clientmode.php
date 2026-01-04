@@ -33,8 +33,8 @@ class cSetupClientMode extends cSetupMask
     {
         parent::__construct("templates/setup/forms/clientmode.tpl", $step);
         $this->setHeader(i18n("Example Client", "setup"));
-        $this->_stepTemplateClass->set("s", "TITLE", i18n("Example Client", "setup"));
-        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("If you are new to CONTENIDO, you should create an example client to start working with.", "setup"));
+        $this->_stepTemplateClass->set('s', 'TITLE', i18n("Example Client", "setup"));
+        $this->_stepTemplateClass->set('s', 'DESCRIPTION', i18n("If you are new to CONTENIDO, you should create an example client to start working with.", "setup"));
 
         cArray::initializeKey($_SESSION, "clientmode");
 
@@ -67,8 +67,10 @@ class cSetupClientMode extends cSetupMask
             }
         }
 
-        $this->_stepTemplateClass->set("s", "FOLDER_MESSAGE_EXAMPLES", "");
-        $this->_stepTemplateClass->set("s", "FOLDER_MESSAGE_MODULES", "");
+        $this->_stepTemplateClass->set('s', 'FOLDER_MESSAGE_EXAMPLES', '')
+;
+        $this->_stepTemplateClass->set('s', 'FOLDER_MESSAGE_MODULES', '')
+;
         if (cString::getStringLength($folders) > 0) {
             $folders = cString::getPartOfString($folders, 0, cString::getStringLength($folders) - 2);
         }
@@ -88,7 +90,7 @@ class cSetupClientMode extends cSetupMask
         ];
 
         foreach ($aChoices as $sKey => $sChoice) {
-            $oRadio = new cHTMLRadiobutton("clientmode", $sKey);
+            $oRadio = new cHTMLRadioButton('clientmode', $sKey);
             $oRadio->setLabelText($sChoice);
             $oRadio->setStyle('width:auto;border:0;');
 
@@ -96,7 +98,7 @@ class cSetupClientMode extends cSetupMask
                 $oRadio->setChecked(true);
             }
 
-            $this->_stepTemplateClass->set("s", "CONTROL_" . $sKey, $oRadio->render());
+            $this->_stepTemplateClass->set('s', 'CONTROL_' . $sKey, $oRadio->render());
         }
 
         $this->setNavigation($previous, $next);

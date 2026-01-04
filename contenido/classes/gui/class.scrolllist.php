@@ -126,7 +126,7 @@ class cGuiScrollList
 
         $this->objTable = new cHTMLTable();
         if ($defaultStyle) {
-            $this->objTable->setClass("generic");
+            $this->objTable->setClass('generic');
         }
 
         $this->objHeaderRow = new cHTMLTableRow();
@@ -193,7 +193,7 @@ class cGuiScrollList
      * Note: This public function eats as many parameters as you specify.
      *
      * Example:
-     * $obj->setHeader("foo", "bar");
+     * $obj->setHeader('foo', 'bar');
      *
      * Make sure that the amount of parameters stays the same for all
      * setData calls in a single object.
@@ -256,7 +256,7 @@ class cGuiScrollList
         $numArgs = func_num_args();
 
         for ($i = 1; $i < $numArgs; $i++) {
-            $this->data[$index]["hiddendata"][$i] = func_get_arg($i);
+            $this->data[$index]['hiddendata'][$i] = func_get_arg($i);
         }
     }
 
@@ -351,12 +351,12 @@ class cGuiScrollList
             if (is_array($this->sortable)) {
                 if (array_key_exists($key, $this->sortable) && $this->sortable[$key]) {
                     $this->sortlink->setContent($value);
-                    $this->sortlink->setCustom("sortby", $key);
+                    $this->sortlink->setCustom('sortby', $key);
 
                     if ($this->sortkey == $key && $this->sortmode == SORT_ASC) {
-                        $this->sortlink->setCustom("sortmode", "DESC");
+                        $this->sortlink->setCustom('sortmode', 'DESC');
                     } else {
-                        $this->sortlink->setCustom("sortmode", "ASC");
+                        $this->sortlink->setCustom('sortmode', 'ASC');
                     }
 
                     $this->objHeaderItem->setContent($this->sortlink->render());
@@ -402,7 +402,7 @@ class cGuiScrollList
                 $this->onRenderColumn($key);
 
                 if ($key != "hiddendata") {
-                    $hiddendata = !empty($this->data[$i - 1]["hiddendata"]) && is_array($this->data[$i - 1]["hiddendata"]) ? $this->data[$i - 1]["hiddendata"] : [];
+                    $hiddendata = !empty($this->data[$i - 1]['hiddendata']) && is_array($this->data[$i - 1]['hiddendata']) ? $this->data[$i - 1]['hiddendata'] : [];
 
                     $this->objItem->setContent($this->convert($key, $value, $hiddendata));
                     $items .= $this->objItem->render();

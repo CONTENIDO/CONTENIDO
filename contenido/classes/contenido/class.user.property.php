@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiUserProperty createNewItem
- * @method cApiUserProperty|bool next
+ * @extends ItemCollection<cApiUserProperty>
  */
 class cApiUserPropertyCollection extends ItemCollection
 {
@@ -54,7 +53,7 @@ class cApiUserPropertyCollection extends ItemCollection
      */
     public function __construct($userId)
     {
-        parent::__construct(cRegistry::getDbTableName('user_prop'), 'iduserprop');
+        parent::__construct(cDb::getTableName('user_prop'), 'iduserprop');
         $this->_setItemClass('cApiUserProperty');
 
         // set the join partners so that joins can be used via link() method
@@ -165,7 +164,7 @@ class cApiUserPropertyCollection extends ItemCollection
         $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
         $this->select($sql);
         $props = [];
-        while (($property = $this->next()) !== false) {
+        while ($property = $this->next()) {
             $props[] = clone $property;
         }
         return $props;
@@ -186,7 +185,7 @@ class cApiUserPropertyCollection extends ItemCollection
         $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
         $this->select($sql);
         $props = [];
-        while (($property = $this->next()) !== false) {
+        while ($property = $this->next()) {
             $props[] = clone $property;
         }
         return $props;
@@ -230,7 +229,7 @@ class cApiUserPropertyCollection extends ItemCollection
         $sql = $this->db->prepare("user_id = '%s' AND type = '%s'", $this->_userId, $type);
         $this->select($sql);
         $props = [];
-        while (($property = $this->next()) !== false) {
+        while ($property = $this->next()) {
             $props[] = clone $property;
         }
         return $props;
@@ -280,7 +279,7 @@ class cApiUserPropertyCollection extends ItemCollection
     protected function _deleteSelected(): bool
     {
         $result = false;
-        while (($prop = $this->next()) !== false) {
+        while ($prop = $this->next()) {
             $id = $prop->get('iduserprop');
             if (self::$_enableCache) {
                 $this->_deleteFromCache($id);
@@ -300,7 +299,7 @@ class cApiUserPropertyCollection extends ItemCollection
         self::$_entries = [];
         $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
         $this->select($sql);
-        while (($property = $this->next()) !== false) {
+        while ($property = $this->next()) {
             $data = $property->toArray();
             self::$_entries[$data['iduserprop']] = $data;
         }
@@ -402,7 +401,7 @@ class cApiUserProperty extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('user_prop'), 'iduserprop');
+        parent::__construct(cDb::getTableName('user_prop'), 'iduserprop');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

@@ -113,7 +113,7 @@ class cAuthHandlerFrontend extends cAuth
         $where = "username = '" . $username . "' AND idclient = '" . $client . "' AND active = 1";
         $frontendUserColl->select($where);
 
-        while (($item = $frontendUserColl->next()) !== false) {
+        while ($item = $frontendUserColl->next()) {
             $uid = $item->get('idfrontenduser');
             $perm = 'frontend';
             $pass = $item->get('password');
@@ -133,7 +133,7 @@ class cAuthHandlerFrontend extends cAuth
 
             $userColl->select($where);
 
-            while (($item = $userColl->next()) !== false) {
+            while ($item = $userColl->next()) {
                 $uid = $item->get('user_id');
                 $perm = $item->get('perms');
                 // password is stored as a sha256 hash

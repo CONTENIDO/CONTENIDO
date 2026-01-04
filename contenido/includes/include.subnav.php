@@ -39,8 +39,8 @@ $sql = "SELECT
             a.name AS name,
             a.relevant AS relevant
         FROM
-            " . $cfg['tab']['area'] . " AS a,
-            " . $cfg['tab']['nav_sub'] . " AS b
+            " . cDb::getTableName('area') . " AS a,
+            " . cDb::getTableName('nav_sub') . " AS b
         WHERE
             b.level = 1 AND
             b.idarea = a.idarea AND

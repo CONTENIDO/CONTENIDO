@@ -40,7 +40,7 @@ function modEditModule(
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
     $cfgClient = cRegistry::getClientConfig();
-    $client = cRegistry::getCategoryId();
+    $client = cRegistry::getClientId();
     $area = cRegistry::getArea();
     $frame = cRegistry::getFrame();
 

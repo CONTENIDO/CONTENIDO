@@ -194,7 +194,7 @@ function logMessage(string $msg, string $PC_writeDir, string $PC_useLog, bool $P
     if ($PC_useLog == 1) {
         $logfile = $PC_writeDir . "pseudo-cron.log";
 
-        if (is_writable($logfile)) {
+        if (cFileHandler::writeable($logfile)) {
             $file = fopen($logfile, "ab");
             if ($msg[cString::getStringLength($msg) - 1] != "\n") {
                 $msg .= "\r\n";
@@ -234,7 +234,7 @@ function parseElement(string $element, array &$targetArray, int $numberOfElement
             if ($matches[1] == "*") {
                 $matches[2] = 0;      // from
                 $matches[4] = $numberOfElements;      //to
-            } elseif (!array_key_exists(4, $matches) || $matches[4] == "") {
+            } elseif (!array_key_exists(4, $matches) || $matches[4] == '') {
                 $matches[4] = $matches[2];
             }
             if (array_key_exists(5, $matches)) {
@@ -255,7 +255,7 @@ function parseElement(string $element, array &$targetArray, int $numberOfElement
 }
 
 /**
- * Decreases the passed date array by amount and date unit.
+ * Decreases the provided date array by amount and date unit.
  */
 function decDate(array &$dateArr, int $amount, string $unit, bool $PC_debug)
 {
@@ -266,20 +266,20 @@ function decDate(array &$dateArr, int $amount, string $unit, bool $PC_debug)
         );
     }
     if ($unit == "mday") {
-        $dateArr["hours"] = 23;
-        $dateArr["minutes"] = 59;
-        $dateArr["seconds"] = 59;
-        $dateArr["mday"] -= $amount;
-        $dateArr["wday"] -= $amount % 7;
-        if ($dateArr["wday"] < 0) {
-            $dateArr["wday"] += 7;
+        $dateArr['hours'] = 23;
+        $dateArr['minutes'] = 59;
+        $dateArr['seconds'] = 59;
+        $dateArr['mday'] -= $amount;
+        $dateArr['wday'] -= $amount % 7;
+        if ($dateArr['wday'] < 0) {
+            $dateArr['wday'] += 7;
         }
-        if ($dateArr["mday"] < 1) {
-            $dateArr["mon"]--;
-            switch ($dateArr["mon"]) {
+        if ($dateArr['mday'] < 1) {
+            $dateArr['mon']--;
+            switch ($dateArr['mon']) {
                 case 0:
-                    $dateArr["mon"] = 12;
-                    $dateArr["year"]--;
+                    $dateArr['mon'] = 12;
+                    $dateArr['year']--;
                 // fall through
                 case 1:
                 case 3:
@@ -288,33 +288,33 @@ function decDate(array &$dateArr, int $amount, string $unit, bool $PC_debug)
                 case 8:
                 case 10:
                 case 12:
-                    $dateArr["mday"] = 31;
+                    $dateArr['mday'] = 31;
                     break;
                 case 4:
                 case 6:
                 case 9:
                 case 11:
-                    $dateArr["mday"] = 30;
+                    $dateArr['mday'] = 30;
                     break;
                 case 2:
-                    $dateArr["mday"] = 28;
+                    $dateArr['mday'] = 28;
                     break;
             }
         }
     } elseif ($unit == "hour") {
-        if ($dateArr["hours"] == 0) {
+        if ($dateArr['hours'] == 0) {
             decDate($dateArr, 1, "mday", $PC_debug);
         } else {
-            $dateArr["minutes"] = 59;
-            $dateArr["seconds"] = 59;
-            $dateArr["hours"]--;
+            $dateArr['minutes'] = 59;
+            $dateArr['seconds'] = 59;
+            $dateArr['hours']--;
         }
     } elseif ($unit == "minute") {
-        if ($dateArr["minutes"] == 0) {
+        if ($dateArr['minutes'] == 0) {
             decDate($dateArr, 1, "hour", $PC_debug);
         } else {
-            $dateArr["seconds"] = 59;
-            $dateArr["minutes"]--;
+            $dateArr['seconds'] = 59;
+            $dateArr['minutes']--;
         }
     }
     if ($PC_debug) {
@@ -335,23 +335,23 @@ function getLastScheduledRunTime(array $job, bool $PC_debug): int
 
     while (
         $minutesBack < 525600 && (
-            empty($job[PC_MINUTE][$dateArr["minutes"]]) ||
-            empty($job[PC_HOUR][$dateArr["hours"]]) ||
-            (empty($job[PC_DOM][$dateArr["mday"]]) || empty($job[PC_DOW][$dateArr["wday"]])) or
-            empty($job[PC_MONTH][$dateArr["mon"]])
+            empty($job[PC_MINUTE][$dateArr['minutes']]) ||
+            empty($job[PC_HOUR][$dateArr['hours']]) ||
+            (empty($job[PC_DOM][$dateArr['mday']]) || empty($job[PC_DOW][$dateArr['wday']])) or
+            empty($job[PC_MONTH][$dateArr['mon']])
         )
     ) {
-        if (empty($job[PC_DOM][$dateArr["mday"]]) || empty($job[PC_DOW][$dateArr["wday"]])) {
+        if (empty($job[PC_DOM][$dateArr['mday']]) || empty($job[PC_DOW][$dateArr['wday']])) {
             decDate($dateArr, 1, "mday", $PC_debug);
             $minutesBack += 1440;
             continue;
         }
-        if (empty($job[PC_HOUR][$dateArr["hours"]])) {
+        if (empty($job[PC_HOUR][$dateArr['hours']])) {
             decDate($dateArr, 1, "hour", $PC_debug);
             $minutesBack += 60;
             continue;
         }
-        if (empty($job[PC_MINUTE][$dateArr["minutes"]])) {
+        if (empty($job[PC_MINUTE][$dateArr['minutes']])) {
             decDate($dateArr, 1, "minute", $PC_debug);
             $minutesBack++;
         }
@@ -362,7 +362,7 @@ function getLastScheduledRunTime(array $job, bool $PC_debug): int
     }
 
     return mktime(
-        $dateArr["hours"], $dateArr["minutes"], 0, $dateArr["mon"], $dateArr["mday"], $dateArr["year"]
+        $dateArr['hours'], $dateArr['minutes'], 0, $dateArr['mon'], $dateArr['mday'], $dateArr['year']
     );
 }
 

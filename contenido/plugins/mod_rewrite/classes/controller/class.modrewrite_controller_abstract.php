@@ -173,7 +173,7 @@ abstract class ModRewrite_ControllerAbstract
      * Renders template by replacing all view variables in template.
      * @param ?string $template Either full path and name of template file or a template string.
      *                If not passed, previous set template will be used.
-     * @return  void
+     * @return void
      * @throws cException if no template is set
      */
     public function render(?string $template = NULL)
@@ -217,7 +217,7 @@ abstract class ModRewrite_ControllerAbstract
      * Returns rendered notification markup by using global $notification variable.
      * @param string $type One of cGuiNotification::LEVEL_* constants
      * @param string $msg The message to display
-     * @return  string
+     * @return string
      */
     protected function _notifyBox($type, $msg)
     {

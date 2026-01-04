@@ -75,9 +75,9 @@ function setupInitializeCfgClient($reset = false)
         } else {
             $db = getSetupMySQLDBConnection();
 
-            $db->query("SELECT * FROM `%s`", $cfg['tab']['clients']);
+            $db->query("SELECT * FROM `%s`", cDb::getTableName('clients'));
             while ($db->nextRecord()) {
-                updateClientCache($db->f("idclient"), $db->f("htmlpath"), $db->f("frontendpath"));
+                updateClientCache($db->f('idclient'), $db->f('htmlpath'), $db->f('frontendpath'));
             }
         }
     }

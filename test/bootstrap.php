@@ -171,7 +171,6 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 if (isset($logout)) {
     $auth->logout(true);
     $auth->resetAuthInfo(true);
-    $auth->auth['uname'] = 'nobody';
 }
 
 // Local configuration

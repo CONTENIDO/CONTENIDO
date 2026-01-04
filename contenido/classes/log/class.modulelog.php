@@ -66,7 +66,7 @@ class cModuleLog extends cLog
             return '';
         }
 
-        return $this->_module->get("idmod") . ": " . $this->_module->get("name");
+        return $this->_module->get('idmod') . ": " . $this->_module->get('name');
     }
 
 }

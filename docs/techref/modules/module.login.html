@@ -52,7 +52,7 @@ Each frontend login can be triggered manually. In order to test your
 logins, you should insert the following statement into either a layout
 or module:<br>
 <br>
-<pre>echo $auth-&gt;auth["uid"];</pre>
+<pre>echo $auth-&gt;auth['uid'];</pre>
 This statement shows the current logged in user. For anonymous sessions
 (i.e. nobody is logged in), the "uid" is always "nobody". To test the
 login, create a new user in CONTENIDO's Backend, then call the frontend

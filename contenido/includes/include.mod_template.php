@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $idmod, $tpl, $notification;
 
-$client = cRegistry::getCategoryId();
+$client = cRegistry::getClientId();
 $perm = cRegistry::getPerm();
 $area = cRegistry::getArea();
 $belang = cRegistry::getBackendLanguage();

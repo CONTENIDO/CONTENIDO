@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiNavSub createNewItem
- * @method cApiNavSub|bool next
+ * @extends ItemCollection<cApiNavSub>
  */
 class cApiNavSubCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiNavSubCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('nav_sub'), 'idnavs');
+        parent::__construct(cDb::getTableName('nav_sub'), 'idnavs');
         $this->_setItemClass('cApiNavSub');
 
         // set the join partners so that joins can be used via link() method
@@ -106,7 +105,7 @@ class cApiNavSubCollection extends ItemCollection
                     a.name AS name,
                     a.menuless AS menuless
                 FROM
-                    " . cRegistry::getDbTableName('area') . " AS a,
+                    " . cDb::getTableName('area') . " AS a,
                     " . $this->table . " AS ns
                 WHERE
                     a.idarea = ns.idarea
@@ -153,7 +152,7 @@ class cApiNavSub extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('nav_sub'), 'idnavs');
+        parent::__construct(cDb::getTableName('nav_sub'), 'idnavs');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

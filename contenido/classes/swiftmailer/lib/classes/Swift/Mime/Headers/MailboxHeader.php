@@ -279,7 +279,7 @@ class Swift_Mime_Headers_MailboxHeader extends Swift_Mime_Headers_AbstractHeader
     }
 
     /**
-     * Creates a string form of all the mailboxes in the passed array.
+     * Creates a string form of all the mailboxes in the provided array.
      *
      * @param string[] $mailboxes
      *

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiActionlog createNewItem
- * @method cApiActionlog|bool next
+ * @extends ItemCollection<cApiActionlog>
  */
 class cApiActionlogCollection extends ItemCollection
 {
@@ -48,7 +47,7 @@ class cApiActionlogCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('actionlog'), 'idlog');
+        parent::__construct(cDb::getTableName('actionlog'), 'idlog');
         $this->_setItemClass('cApiActionlog');
 
         // set the join partners so that joins can be used via link() method
@@ -95,7 +94,7 @@ class cApiActionlogCollection extends ItemCollection
      * Returns the minimum and maximum action log timestamps.
      *
      * @return array|null Array like ['min' => (string), 'max' => (string))] or null, if no entries where found.
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
     public function getMinMaxLogTimestamp(): ?array
@@ -131,7 +130,7 @@ class cApiActionlog extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('actionlog'), 'idlog');
+        parent::__construct(cDb::getTableName('actionlog'), 'idlog');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

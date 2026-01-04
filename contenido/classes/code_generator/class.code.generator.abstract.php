@@ -281,13 +281,10 @@ abstract class cCodeGeneratorAbstract
      *     'idtpl': int,
      *     'name': string,
      * }
-     *
      * @throws cDbException|cInvalidArgumentException
      */
     protected function _getTemplateData(): array
     {
-        $cfg = cRegistry::getConfig();
-
         // get IDLAY and IDMOD array
         $sql = "SELECT
                     a.idlay AS idlay
@@ -301,8 +298,7 @@ abstract class cCodeGeneratorAbstract
                     AND b.idtpl = a.idtpl
                 ;";
 
-        $sql = $this->_db->prepare($sql, $cfg['tab']['tpl'], $cfg['tab']['tpl_conf'], $this->_idtplcfg);
-        $this->_db->query($sql);
+        $this->_db->query($sql, cDb::getTableName('tpl'), cDb::getTableName('tpl_conf'), $this->_idtplcfg);
         $this->_db->nextRecord();
         $data = $this->_db->toArray();
 
@@ -355,7 +351,7 @@ abstract class cCodeGeneratorAbstract
         $_typeList = [];
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
-        while (false !== ($oType = $oTypeColl->next())) {
+        while ($oType = $oTypeColl->next()) {
             $_typeList[] = $oType->toObject();
         }
 
@@ -520,16 +516,11 @@ abstract class cCodeGeneratorAbstract
      *
      * @param bool $editable [optional]
      * @param ?int $version [optional]
-     *
-     * @return array
-     *         like $arr[type][typeid] = value;
-     *
+     * @return array Like $arr[type][typeid] = value;
      * @throws cDbException
      */
     protected function _getUsedCmsTypesData($editable = true, $version = NULL): array
     {
-        $cfg = cRegistry::getConfig();
-
         $return = [];
 
         // find out what kind of CMS_... vars are in use
@@ -538,9 +529,9 @@ abstract class cCodeGeneratorAbstract
                     WHERE A.idtype = C.idtype AND A.idartlang = B.idartlang AND B.idart = %d AND B.idlang = %d";
             $sql = $this->_db->prepare(
                 $sql,
-                $cfg['tab']['content'],
-                $cfg['tab']['art_lang'],
-                $cfg['tab']['type'],
+                cDb::getTableName('content'),
+                cDb::getTableName('art_lang'),
+                cDb::getTableName('type'),
                 $this->_idart,
                 $this->_lang
             );
@@ -559,9 +550,9 @@ abstract class cCodeGeneratorAbstract
                     ORDER BY a.idtype, a.typeid;';
             $sql = $this->_db->prepare(
                 $sql,
-                $cfg['tab']['content_version'],
-                $cfg['tab']['type'],
-                $cfg['tab']['content_version'],
+                cDb::getTableName('content_version'),
+                cDb::getTableName('type'),
+                cDb::getTableName('content_version'),
                 $this->_idartlang,
                 $version,
                 $this->_idartlang

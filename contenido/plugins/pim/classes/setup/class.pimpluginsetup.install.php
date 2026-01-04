@@ -362,7 +362,7 @@ class PimPluginSetupInstall extends PimPluginSetup
             // Security check
             $depend = cSecurity::escapeString(parent::$XmlDependencies->depend[$i]);
 
-            if ($depend == "") {
+            if ($depend == '') {
                 return;
             }
 
@@ -384,14 +384,14 @@ class PimPluginSetupInstall extends PimPluginSetup
 
             // Check min plugin version
             if (parent::$XmlDependencies->depend[$i]->attributes()->minversion) {
-                if (version_compare($plugin->get("version"), parent::$XmlDependencies->depend[$i]->attributes()->minversion, '<')) {
+                if (version_compare($plugin->get('version'), parent::$XmlDependencies->depend[$i]->attributes()->minversion, '<')) {
                     parent::error(sprintf(i18n('You have to install<strong>%s %</strong> or higher to install this plugin!', 'pim'), $depend, parent::$XmlDependencies->depend[$i]->attributes()->minversion));
                 }
             }
 
             // Check max plugin version
             if (parent::$XmlDependencies->depend[$i]->attributes()->maxversion) {
-                if (version_compare($plugin->get("version"), parent::$XmlDependencies->depend[$i]->attributes()->maxversion, '>')) {
+                if (version_compare($plugin->get('version'), parent::$XmlDependencies->depend[$i]->attributes()->maxversion, '>')) {
                     parent::error(sprintf(i18n('You have to install <strong>%s %s</strong> or lower to install this plugin!', 'pim'), $depend, parent::$XmlDependencies->depend[$i]->attributes()->maxversion));
                 }
             }
@@ -437,7 +437,7 @@ class PimPluginSetupInstall extends PimPluginSetup
     private function _installFillAreas()
     {
         $this->_ApiAreaCollection->select(NULL, NULL, 'name');
-        while (($areas = $this->_ApiAreaCollection->next()) !== false) {
+        while ($areas = $this->_ApiAreaCollection->next()) {
             $this->PluginInstalledAreas[] = $areas->get('name');
         }
     }
@@ -611,7 +611,7 @@ class PimPluginSetupInstall extends PimPluginSetup
 
         // Get idnavm information to build a new id
         $idnavm = 0;
-        $sql = 'SELECT MAX(`idnavm`) AS id FROM ' . cRegistry::getDbTableName('nav_main');
+        $sql = 'SELECT MAX(`idnavm`) AS `id` FROM ' . cDb::getTableName('nav_main');
         $db->query($sql);
         if ($db->nextRecord()) {
             $idnavm = $db->f('id');
@@ -760,7 +760,6 @@ class PimPluginSetupInstall extends PimPluginSetup
      * Add modules
      *
      * @return bool
-     *
      * @throws cDbException|cException|cInvalidArgumentException
      */
     private function _installAddModules()
@@ -769,14 +768,14 @@ class PimPluginSetupInstall extends PimPluginSetup
         $module = new cApiModule();
 
         // Set path to modules path
-        $modulesPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR;
+        $modulesPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR;
 
         if (!is_dir($modulesPath)) {
             return false;
         }
 
         foreach (new DirectoryIterator($modulesPath) as $modulesFiles) {
-            if (cString::getPartOfString($modulesFiles->getBasename(), -4) == ".zip") {
+            if ($modulesFiles->isFile() && $modulesFiles->getExtension() === 'zip') {
                 // Import founded module
                 $module->import($modulesFiles->getBasename(), $modulesFiles->getBasename(), false);
             }

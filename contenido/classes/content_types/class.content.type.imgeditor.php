@@ -531,15 +531,15 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
             $imageMetaUrl
         ], 'con_selected_file');
         $wrapperContent[] = new cHTMLLabel(i18n('Title'), $this->_getElementId('image_medianame'));
-        $wrapperContent[] = new cHTMLTextbox('image_medianame', $this->_medianame, '', '', $this->_getElementId('image_medianame'));
+        $wrapperContent[] = new cHTMLTextbox('image_medianame', $this->_medianame, 0, 0, $this->_getElementId('image_medianame'));
         $wrapperContent[] = new cHTMLLabel(i18n('Description'), $this->_getElementId('image_description'));
-        $wrapperContent[] = new cHTMLTextarea('image_description', $this->_description, '', '', $this->_getElementId('image_description'));
+        $wrapperContent[] = new cHTMLTextarea('image_description', $this->_description, 0, 0, $this->_getElementId('image_description'));
         $wrapperContent[] = new cHTMLLabel(i18n('Keywords'), $this->_getElementId('image_keywords'));
-        $wrapperContent[] = new cHTMLTextbox('image_keywords', $this->_keywords, '', '', $this->_getElementId('image_keywords'));
+        $wrapperContent[] = new cHTMLTextbox('image_keywords', $this->_keywords, 0, 0, $this->_getElementId('image_keywords'));
         $wrapperContent[] = new cHTMLLabel(i18n('Internal notes'), $this->_getElementId('image_internal_notice'));
-        $wrapperContent[] = new cHTMLTextbox('image_internal_notice', $this->_internalNotice, '', '', $this->_getElementId('image_internal_notice'));
+        $wrapperContent[] = new cHTMLTextbox('image_internal_notice', $this->_internalNotice, 0, 0, $this->_getElementId('image_internal_notice'));
         $wrapperContent[] = new cHTMLLabel(i18n('Copyright'), $this->_getElementId('image_copyright'));
-        $wrapperContent[] = new cHTMLTextbox('image_copyright', $this->_copyright, '', '', $this->_getElementId('image_copyright'));
+        $wrapperContent[] = new cHTMLTextbox('image_copyright', $this->_copyright, 0, 0, $this->_getElementId('image_copyright'));
 
         $wrapper->setContent($wrapperContent);
         return $wrapper->render();

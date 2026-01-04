@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiFrameFile createNewItem
- * @method cApiFrameFile|bool next
+ * @extends ItemCollection<cApiFrameFile>
  */
 class cApiFrameFileCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiFrameFileCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('framefiles'), 'idframefile');
+        parent::__construct(cDb::getTableName('framefiles'), 'idframefile');
         $this->_setItemClass('cApiFrameFile');
 
         // set the join partners so that joins can be used via link() method
@@ -90,7 +89,7 @@ class cApiFrameFile extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('framefiles'), 'idframefile');
+        parent::__construct(cDb::getTableName('framefiles'), 'idframefile');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

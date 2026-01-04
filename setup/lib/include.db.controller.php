@@ -134,7 +134,7 @@ if ($currentStep < $totalSteps) {
     require_once CON_SETUP_PATH . '/upgrade_jobs/class.upgrade.job.main.php';
 
     // Execute upgrade jobs
-    $oUpgradeMain = new cUpgradeJobMain($db, $cfg, $cfgClient, "0");
+    $oUpgradeMain = new cUpgradeJobMain($db, $cfg, $cfgClient, '0');
     $oUpgradeMain->_execute();
 
     echo '

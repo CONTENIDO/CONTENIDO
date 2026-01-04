@@ -19,11 +19,9 @@ cInclude('includes', 'functions.con.php');
 /**
  * @param $listid
  * @param $default
- *
- * @return string
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function getUsers($listid, $default)
+function getUsers($listid, $default): string
 {
     $cfg = cRegistry::getConfig();
     $auth = cRegistry::getAuth();
@@ -47,19 +45,17 @@ function getUsers($listid, $default)
     }
     $tpl2->next();
 
-    if (is_array($users)) {
-        foreach ($users as $key => $value) {
-            $tpl2->set('d', 'VALUE', $key);
-            $tpl2->set('d', 'CAPTION', $value["realname"] . " (" . $value["username"] . ")");
+    foreach ($users as $key => $value) {
+        $tpl2->set('d', 'VALUE', $key);
+        $tpl2->set('d', 'CAPTION', $value['realname'] . " (" . $value['username'] . ")");
 
-            if ($default == $key) {
-                $tpl2->set('d', 'SELECTED', 'SELECTED');
-            } else {
-                $tpl2->set('d', 'SELECTED', '');
-            }
-
-            $tpl2->next();
+        if ($default == $key) {
+            $tpl2->set('d', 'SELECTED', 'SELECTED');
+        } else {
+            $tpl2->set('d', 'SELECTED', '');
         }
+
+        $tpl2->next();
     }
 
     $tpl2->set('d', 'VALUE', '0');
@@ -67,19 +63,17 @@ function getUsers($listid, $default)
     $tpl2->set('d', 'SELECTED', 'disabled');
     $tpl2->next();
 
-    if (is_array($groups)) {
-        foreach ($groups as $key => $value) {
-            $tpl2->set('d', 'VALUE', $key);
-            $tpl2->set('d', 'CAPTION', $value["groupname"]);
+    foreach ($groups as $key => $value) {
+        $tpl2->set('d', 'VALUE', $key);
+        $tpl2->set('d', 'CAPTION', $value['groupname']);
 
-            if ($default == $key) {
-                $tpl2->set('d', 'SELECTED', 'SELECTED');
-            } else {
-                $tpl2->set('d', 'SELECTED', '');
-            }
-
-            $tpl2->next();
+        if ($default == $key) {
+            $tpl2->set('d', 'SELECTED', 'SELECTED');
+        } else {
+            $tpl2->set('d', 'SELECTED', '');
         }
+
+        $tpl2->next();
     }
 
     return $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
@@ -87,29 +81,27 @@ function getUsers($listid, $default)
 
 /**
  * @param string $uid
- *
- * @return bool
  * @throws cDbException|cException
  */
-function isCurrentEditor($uid)
+function isCurrentEditor($uid): bool
 {
     $auth = cRegistry::getAuth();
 
     // Check if the UID is a group. If yes, check if we are in it
     $user = new cApiUser();
-    if ($user->loadByPrimaryKey($uid) == false) {
+    if (!$user->loadByPrimaryKey($uid)) {
         $db2 = cRegistry::getDb();
 
         // Yes, it's a group. Let's try to load the group members!
         $sql = "SELECT `user_id` FROM `%s` WHERE `group_id` = '%s'";
-        $db2->query($sql, cRegistry::getDbTableName('groupmembers'), $uid);
+        $db2->query($sql, cDb::getTableName('groupmembers'), $uid);
         while ($db2->nextRecord()) {
-            if ($db2->f("user_id") == $auth->auth["uid"]) {
+            if ($db2->f('user_id') == $auth->getUserId()) {
                 return true;
             }
         }
     } else {
-        if ($uid == $auth->auth["uid"]) {
+        if ($uid == $auth->getUserId()) {
             return true;
         }
     }
@@ -120,7 +112,6 @@ function isCurrentEditor($uid)
 /**
  * @param int $idartlang
  * @param int $idusersequence
- *
  * @return bool|string
  * @throws cDbException|cException|cInvalidArgumentException
  */
@@ -153,7 +144,7 @@ function getActionSelect($idartlang, $idusersequence)
     $artAllocation = new WorkflowArtAllocations();
     $artAllocation->select("idartlang = '$idartlang'");
     if (($obj = $artAllocation->next()) !== false) {
-        $laststep = cSecurity::toInteger($obj->get("lastusersequence"));
+        $laststep = cSecurity::toInteger($obj->get('lastusersequence'));
     }
 
     $bExistOption = false;
@@ -165,7 +156,7 @@ function getActionSelect($idartlang, $idusersequence)
         $bExistOption = true;
     }
 
-    if ($wfRights["last"] == true) {
+    if ($wfRights['last'] == true) {
         $wfSelect->set('d', 'VALUE', 'last');
         $wfSelect->set('d', 'CAPTION', i18n("Back to last editor", "workflow"));
         $wfSelect->set('d', 'SELECTED', '');
@@ -173,7 +164,7 @@ function getActionSelect($idartlang, $idusersequence)
         $bExistOption = true;
     }
 
-    if ($wfRights["reject"] == true) {
+    if ($wfRights['reject'] == true) {
         $wfSelect->set('d', 'VALUE', 'reject');
         $wfSelect->set('d', 'CAPTION', i18n("Reject article", "workflow"));
         $wfSelect->set('d', 'SELECTED', '');
@@ -181,7 +172,7 @@ function getActionSelect($idartlang, $idusersequence)
         $bExistOption = true;
     }
 
-    if ($wfRights["revise"] == true) {
+    if ($wfRights['revise'] == true) {
         $wfSelect->set('d', 'VALUE', 'revise');
         $wfSelect->set('d', 'CAPTION', i18n("Revise article", "workflow"));
         $wfSelect->set('d', 'SELECTED', '');
@@ -202,11 +193,9 @@ function getActionSelect($idartlang, $idusersequence)
  *
  * @param int $idartlang
  * @param int $defaultidworkflow
- *
- * @return bool
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function setUserSequence($idartlang, $defaultidworkflow)
+function setUserSequence($idartlang, $defaultidworkflow): bool
 {
     $idartlang = cSecurity::toInteger($idartlang);
     $defaultidworkflow = cSecurity::toInteger($defaultidworkflow);
@@ -215,7 +204,7 @@ function setUserSequence($idartlang, $defaultidworkflow)
     $wfaa->select("idartlang = $idartlang");
 
     if (($associatedUserSequence = $wfaa->next()) !== false) {
-        $idartallocation = $associatedUserSequence->get("idartallocation");
+        $idartallocation = $associatedUserSequence->get('idartallocation');
         $wfaa->delete($idartallocation);
     }
 
@@ -230,17 +219,17 @@ function setUserSequence($idartlang, $defaultidworkflow)
         $workflowItems->select("idworkflow = $defaultidworkflow AND position = 1");
         $firstitem = 0;
         if (($obj = $workflowItems->next()) !== false) {
-            $firstitem = cSecurity::toInteger($obj->get("idworkflowitem"));
+            $firstitem = cSecurity::toInteger($obj->get('idworkflowitem'));
         }
 
         $workflowUserSequences = new WorkflowUserSequences();
         $workflowUserSequences->select("idworkflowitem = $firstitem AND position = 1'");
 
         if (($obj = $workflowUserSequences->next()) !== false) {
-            $firstIDUserSequence = $obj->get("idusersequence");
+            $firstIDUserSequence = $obj->get('idusersequence');
         }
 
-        $newObj->set("idusersequence", $firstIDUserSequence);
+        $newObj->set('idusersequence', $firstIDUserSequence);
         $newObj->store();
 
         return true;
@@ -255,8 +244,7 @@ function setUserSequence($idartlang, $defaultidworkflow)
  *
  * @param int $idartlang Article language id
  * @param int $defaultidworkflow Default workflow id
- *
- * @return int false of found user sequence or false
+ * @return int|false of found user sequence or false
  * @throws cDbException|cException
  */
 function getCurrentUserSequence($idartlang, $defaultidworkflow)
@@ -269,7 +257,7 @@ function getCurrentUserSequence($idartlang, $defaultidworkflow)
     $idusersequence = 0;
 
     if (($associatedUserSequence = $wfaa->next()) !== false) {
-        $idusersequence = $associatedUserSequence->get("idusersequence");
+        $idusersequence = $associatedUserSequence->get('idusersequence');
     }
 
     if ($idusersequence == 0) {
@@ -288,20 +276,20 @@ function getCurrentUserSequence($idartlang, $defaultidworkflow)
         $workflowItems->select("idworkflow = $defaultidworkflow AND position = 1");
         $firstitem = 0;
         if (($obj = $workflowItems->next()) !== false) {
-            $firstitem = $obj->get("idworkflowitem");
+            $firstitem = $obj->get('idworkflowitem');
         }
 
         $workflowUserSequences = new WorkflowUserSequences();
         $workflowUserSequences->select("idworkflowitem = $firstitem AND position = 1");
 
         if (($obj = $workflowUserSequences->next()) !== false) {
-            $firstIDUserSequence = $obj->get("idusersequence");
+            $firstIDUserSequence = $obj->get('idusersequence');
         }
 
-        $newObj->set("idusersequence", $firstIDUserSequence);
+        $newObj->set('idusersequence', $firstIDUserSequence);
         $newObj->store();
 
-        $idusersequence = $newObj->get("idusersequence");
+        $idusersequence = $newObj->get('idusersequence');
     }
 
     return $idusersequence;
@@ -309,7 +297,6 @@ function getCurrentUserSequence($idartlang, $defaultidworkflow)
 
 /**
  * @param int $idartlang
- *
  * @return bool|string
  * @throws cDbException|cException
  */
@@ -320,7 +307,7 @@ function getLastWorkflowStatus($idartlang)
     $wfaa = new WorkflowArtAllocations();
     $wfaa->select("idartlang = $idartlang");
     if (($associatedUserSequence = $wfaa->next()) !== false) {
-        $laststatus = $associatedUserSequence->get("laststatus");
+        $laststatus = $associatedUserSequence->get('laststatus');
     } else {
         return false;
     }
@@ -342,7 +329,6 @@ function getLastWorkflowStatus($idartlang)
 /**
  * @param int $idartlang
  * @param string $action
- *
  * @throws cDbException|cException
  */
 function doWorkflowAction($idartlang, $action)
@@ -357,12 +343,12 @@ function doWorkflowAction($idartlang, $action)
 
             if (($obj = $artAllocations->next()) !== false) {
                 $usersequence = new WorkflowUserSequence();
-                $usersequence->loadByPrimaryKey($obj->get("idusersequence"));
+                $usersequence->loadByPrimaryKey($obj->get('idusersequence'));
 
                 $workflowitem = $usersequence->getWorkflowItem();
 
-                $idworkflow = cSecurity::toInteger($workflowitem->get("idworkflow"));
-                $newpos = cSecurity::toInteger($workflowitem->get("position") - 1);
+                $idworkflow = cSecurity::toInteger($workflowitem->get('idworkflow'));
+                $newpos = cSecurity::toInteger($workflowitem->get('position') - 1);
                 if ($newpos < 1) {
                     $newpos = 1;
                 }
@@ -372,13 +358,13 @@ function doWorkflowAction($idartlang, $action)
 
                 if (($nextObj = $workflowitems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
-                    $idworkflowitem = cSecurity::toInteger($nextObj->get("idworkflowitem"));
+                    $idworkflowitem = cSecurity::toInteger($nextObj->get('idworkflowitem'));
                     $userSequences->select("idworkflowitem = $idworkflowitem");
 
                     if (($nextSeqObj = $userSequences->next()) !== false) {
-                        $obj->set("lastusersequence", $obj->get("idusersequence"));
-                        $obj->set("idusersequence", $nextSeqObj->get("idusersequence"));
-                        $obj->set("laststatus", "last");
+                        $obj->set('lastusersequence', $obj->get('idusersequence'));
+                        $obj->set('idusersequence', $nextSeqObj->get('idusersequence'));
+                        $obj->set('laststatus', "last");
                         $obj->store();
                     }
                 }
@@ -390,38 +376,38 @@ function doWorkflowAction($idartlang, $action)
 
             if (($obj = $artAllocations->next()) !== false) {
                 $usersequence = new WorkflowUserSequence();
-                $usersequence->loadByPrimaryKey($obj->get("idusersequence"));
+                $usersequence->loadByPrimaryKey($obj->get('idusersequence'));
 
                 $workflowitem = $usersequence->getWorkflowItem();
 
-                $idworkflow = cSecurity::toInteger($workflowitem->get("idworkflow"));
-                $newpos = cSecurity::toInteger($workflowitem->get("position") + 1);
+                $idworkflow = cSecurity::toInteger($workflowitem->get('idworkflow'));
+                $newpos = cSecurity::toInteger($workflowitem->get('position') + 1);
 
                 $workflowitems = new WorkflowItems();
                 $workflowitems->select("idworkflow = $idworkflow AND position = " . $newpos);
 
                 if (($nextObj = $workflowitems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
-                    $idworkflowitem = cSecurity::toInteger($nextObj->get("idworkflowitem"));
+                    $idworkflowitem = cSecurity::toInteger($nextObj->get('idworkflowitem'));
                     $userSequences->select("idworkflowitem = $idworkflowitem");
 
                     if (($nextSeqObj = $userSequences->next()) !== false) {
-                        $obj->set("lastusersequence", '10');
-                        $obj->set("idusersequence", $nextSeqObj->get("idusersequence"));
-                        $obj->set("laststatus", "confirm");
+                        $obj->set('lastusersequence', '10');
+                        $obj->set('idusersequence', $nextSeqObj->get('idusersequence'));
+                        $obj->set('laststatus', "confirm");
                         $obj->store();
                     }
                 } else {
-                    $workflowitems->select("idworkflow = $idworkflow AND position = " . (int)$workflowitem->get("position"));
+                    $workflowitems->select("idworkflow = $idworkflow AND position = " . (int)$workflowitem->get('position'));
                     if (($nextObj = $workflowitems->next()) !== false) {
                         $userSequences = new WorkflowUserSequences();
-                        $idworkflowitem = cSecurity::toInteger($nextObj->get("idworkflowitem"));
+                        $idworkflowitem = cSecurity::toInteger($nextObj->get('idworkflowitem'));
                         $userSequences->select("idworkflowitem = $idworkflowitem");
 
                         if (($nextSeqObj = $userSequences->next()) !== false) {
-                            $obj->set("lastusersequence", $obj->get("idusersequence"));
-                            $obj->set("idusersequence", $nextSeqObj->get("idusersequence"));
-                            $obj->set("laststatus", "confirm");
+                            $obj->set('lastusersequence', $obj->get('idusersequence'));
+                            $obj->set('idusersequence', $nextSeqObj->get('idusersequence'));
+                            $obj->set('laststatus', "confirm");
                             $obj->store();
                         }
                     }
@@ -434,11 +420,11 @@ function doWorkflowAction($idartlang, $action)
 
             if (($obj = $artAllocations->next()) !== false) {
                 $usersequence = new WorkflowUserSequence();
-                $usersequence->loadByPrimaryKey($obj->get("idusersequence"));
+                $usersequence->loadByPrimaryKey($obj->get('idusersequence'));
 
                 $workflowitem = $usersequence->getWorkflowItem();
 
-                $idworkflow = cSecurity::toInteger($workflowitem->get("idworkflow"));
+                $idworkflow = cSecurity::toInteger($workflowitem->get('idworkflow'));
                 $newpos = 1;
 
                 $workflowitems = new WorkflowItems();
@@ -446,13 +432,13 @@ function doWorkflowAction($idartlang, $action)
 
                 if (($nextObj = $workflowitems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
-                    $idworkflowitem = cSecurity::toInteger($nextObj->get("idworkflowitem"));
+                    $idworkflowitem = cSecurity::toInteger($nextObj->get('idworkflowitem'));
                     $userSequences->select("idworkflowitem = $idworkflowitem");
 
                     if (($nextSeqObj = $userSequences->next()) !== false) {
-                        $obj->set("lastusersequence", $obj->get("idusersequence"));
-                        $obj->set("idusersequence", $nextSeqObj->get("idusersequence"));
-                        $obj->set("laststatus", "reject");
+                        $obj->set('lastusersequence', $obj->get('idusersequence'));
+                        $obj->set('idusersequence', $nextSeqObj->get('idusersequence'));
+                        $obj->set('laststatus', "reject");
                         $obj->store();
                     }
                 }
@@ -462,10 +448,10 @@ function doWorkflowAction($idartlang, $action)
         case "revise":
             $db = cRegistry::getDb();
             $sql = "SELECT `idart`, `idlang` FROM `%s` WHERE `idartlang` = %d";
-            $db->query($sql, cRegistry::getDbTableName('art_lang'), $idartlang);
+            $db->query($sql, cDb::getTableName('art_lang'), $idartlang);
             $db->nextRecord();
-            $idart = $db->f("idart");
-            $idlang = $db->f("idlang");
+            $idart = $db->f('idart');
+            $idlang = $db->f('idlang');
 
             $newidart = conCopyArticle($idart, $idcat, "foo");
 
@@ -476,7 +462,6 @@ function doWorkflowAction($idartlang, $action)
 
 /**
  * @param int $usersequence
- *
  * @return bool|mixed
  * @throws cDbException|cException
  */
@@ -487,11 +472,11 @@ function getWorkflowForUserSequence($usersequence)
     $usersequences->select("idusersequence = $usersequence");
 
     if (($obj = $usersequences->next()) !== false) {
-        $idworkflowitem = cSecurity::toInteger($obj->get("idworkflowitem"));
+        $idworkflowitem = cSecurity::toInteger($obj->get('idworkflowitem'));
         $workflowitems = new WorkflowItems();
         $workflowitems->select("idworkflowitem = '$idworkflowitem'");
         if (($obj = $workflowitems->next()) !== false) {
-            return $obj->get("idworkflow");
+            return $obj->get('idworkflow');
         }
     }
 
@@ -502,10 +487,8 @@ function getWorkflowForUserSequence($usersequence)
  * @param $listid
  * @param $default
  * @param $idcat
- *
- * @return string
  */
-function workflowSelect($listid, $default, $idcat)
+function workflowSelect($listid, $default, $idcat): string
 {
     global $workflowSelectBox;
 
@@ -530,10 +513,8 @@ function workflowSelect($listid, $default, $idcat)
 
 /**
  * @param int $idcat
- *
- * @return string
  */
-function workflowInherit($idcat)
+function workflowInherit($idcat): string
 {
     $idcat = cSecurity::toInteger($idcat);
     $cfg = cRegistry::getConfig();
@@ -548,11 +529,9 @@ function workflowInherit($idcat)
 
 /**
  * @param int $idcat
- *
- * @return int
  * @throws cDbException|cException
  */
-function getWorkflowForCat($idcat)
+function getWorkflowForCat($idcat): int
 {
     $idcat = cSecurity::toInteger($idcat);
     $lang = cRegistry::getLanguageId();
@@ -576,17 +555,16 @@ function getWorkflowForCat($idcat)
 /**
  * @param $idcat
  * @param $idlang
- *
- * @return int
  * @throws cDbException
  */
-function getCatLang($idcat, $idlang)
+function getCatLang($idcat, $idlang): int
 {
     $idcat = cSecurity::toInteger($idcat);
     $idlang = cSecurity::toInteger($idlang);
     // Get the idcatlang
     $oCatLangColl = new cApiCategoryLanguageCollection();
     $aIds = $oCatLangColl->getIdsByWhereClause('idlang = ' . $idlang . ' AND idcat = ' . $idcat);
+
     return (count($aIds) > 0) ? cSecurity::toInteger($aIds[0]) : 0;
 }
 
@@ -594,10 +572,9 @@ function getCatLang($idcat, $idlang)
 /**
  * Returns the template (workflow select and button) to add to the category overview table.
  *
- * @return string
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function prepareWorkflowItems()
+function prepareWorkflowItems(): string
 {
     global $modidcat, $workflowSelectBox, $workflowworkflows, $tpl;
 
@@ -621,7 +598,7 @@ function prepareWorkflowItems()
                 $wfa->select("idcatlang = $idcatlang");
 
                 if (($item = $wfa->next()) !== false) {
-                    $wfa->delete($item->get("idallocation"));
+                    $wfa->delete($item->get('idallocation'));
                     // delete user sequences for listing in tasklist for each
                     // included article
                     $oArticles = new cArticleCollector([
@@ -629,7 +606,7 @@ function prepareWorkflowItems()
                         'start' => true,
                         'offline' => true
                     ]);
-                    while (($oArticle = $oArticles->nextArticle()) !== false) {
+                    while ($oArticle = $oArticles->nextArticle()) {
                         setUserSequence($oArticle->getField('idartlang'), -1);
                     }
                 }
@@ -648,7 +625,7 @@ function prepareWorkflowItems()
                         'start' => true,
                         'offline' => true
                     ]);
-                    while (($oArticle = $oArticles->nextArticle()) !== false) {
+                    while ($oArticle = $oArticles->nextArticle()) {
                         setUserSequence($oArticle->getField('idartlang'), $asworkflow);
                     }
                 }
@@ -656,8 +633,8 @@ function prepareWorkflowItems()
         }
     }
 
-    if ($action == "workflow_cat_assign") {
-        $seltpl = "wfselect" . $modidcat;
+    if ($action === 'workflow_cat_assign') {
+        $seltpl = 'wfselect' . $modidcat;
 
         $wfa = new WorkflowAllocations();
         $idcatlang = getCatLang($modidcat, $lang);
@@ -679,14 +656,14 @@ function prepareWorkflowItems()
                 'start' => true,
                 'offline' => true
             ]);
-            while (($oArticle = $oArticles->nextArticle()) !== false) {
+            while ($oArticle = $oArticles->nextArticle()) {
                 setUserSequence($oArticle->getField('idartlang'), $GLOBALS[$seltpl]);
             }
         } else {
             // unlink workflow with category
             $wfa->select("idcatlang = $idcatlang");
             if (($item = $wfa->next()) !== false) {
-                $alloc = $item->get("idallocation");
+                $alloc = $item->get('idallocation');
                 $wfa->delete($alloc);
             }
 
@@ -697,35 +674,35 @@ function prepareWorkflowItems()
                 'start' => true,
                 'offline' => true
             ]);
-            while (($oArticle = $oArticles->nextArticle()) !== false) {
+            while ($oArticle = $oArticles->nextArticle()) {
                 setUserSequence($oArticle->getField('idartlang'), -1);
             }
         }
     }
 
-    $workflowSelectBox = new cHTMLSelectElement("foo");
-    $workflowSelectBox->setClass("text_medium");
+    $workflowSelectBox = new cHTMLSelectElement('foo');
+    $workflowSelectBox->setClass('text_medium');
     $workflowworkflows->select("idclient = $client AND idlang = " . cSecurity::toInteger($lang));
 
     $workflowOption = new cHTMLOptionElement("--- " . i18n("None", "workflow") . " ---", '0');
     $workflowSelectBox->addOptionElement(0, $workflowOption);
 
-    while (($workflow = $workflowworkflows->next()) !== false) {
-        $idWorkflow = cSecurity::toInteger($workflow->get("idworkflow"));
+    while ($workflow = $workflowworkflows->next()) {
+        $idWorkflow = cSecurity::toInteger($workflow->get('idworkflow'));
         $wfa = new WorkflowItems();
         $wfa->select("idworkflow = " . $idWorkflow);
 
         if ($wfa->next() !== false) {
-            $workflowOption = new cHTMLOptionElement($workflow->get("name"), $idWorkflow);
+            $workflowOption = new cHTMLOptionElement($workflow->get('name'), $idWorkflow);
             $workflowSelectBox->addOptionElement($idWorkflow, $workflowOption);
         }
     }
 
     $workflowSelectBox->updateAttributes([
-        "id" => "wfselect{IDCAT}"
+        'id' => 'wfselect{IDCAT}'
     ]);
     $workflowSelectBox->updateAttributes([
-        "name" => "wfselect{IDCAT}"
+        'name' => 'wfselect{IDCAT}'
     ]);
 
     return $workflowSelectBox->render()
@@ -735,16 +712,14 @@ function prepareWorkflowItems()
 /**
  * @param int $idcat
  * @param string $type
- *
- * @return string
  * @throws cDbException|cException
  */
-function piworkflowCategoryRenderColumn($idcat, $type)
+function piworkflowCategoryRenderColumn($idcat, $type): string
 {
     $idcat = cSecurity::toInteger($idcat);
     $value = '';
     switch ($type) {
-        case "workflow":
+        case 'workflow':
             $wfForCat = getWorkflowForCat($idcat);
             $value = workflowInherit($idcat);
             $value .= '<span data-action-workflow-init="render_select" data-idcat="' . $idcat . '" data-workflow="' . $wfForCat . '"></span>';
@@ -757,10 +732,9 @@ function piworkflowCategoryRenderColumn($idcat, $type)
 /**
  * Returns the code to add to the page end at the category overview page.
  *
- * @return string
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function piworkflowCategoryPageEnd()
+function piworkflowCategoryPageEnd(): string
 {
     // Get select/span template
     $template = prepareWorkflowItems();
@@ -782,7 +756,7 @@ function piworkflowCategoryPageEnd()
         };
         params[$select.attr("id")] = $select.val();
         console.log(params);
-        
+
         window.location.href = Con.UtilUrl.build("main.php", params);
     }
 
@@ -819,39 +793,33 @@ function piworkflowCategoryPageEnd()
 }
 
 /**
- * @param array $array
- *
- * @return array
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function piworkflowCategoryColumns($array)
+function piworkflowCategoryColumns(array $array): array
 {
     return [
-        "workflow" => i18n("Workflow", "workflow")
+        'workflow' => i18n("Workflow", "workflow")
     ];
 }
 
 /**
- * @param array $array
- *
- * @return array
  * @throws cDbException|cException
  */
-function piworkflowProcessActions($array)
+function piworkflowProcessActions(array $array): array
 {
     $idcat = cRegistry::getCategoryId();
 
     $defaultidworkflow = getWorkflowForCat($idcat);
     if ($defaultidworkflow != 0) {
         $newArray = [
-            "todo",
-            "wfartconf",
-            "wftplconf",
-            "wfonline",
-            "wflocked",
-            "duplicate",
-            "delete",
-            "usetime"
+            'todo',
+            'wfartconf',
+            'wftplconf',
+            'wfonline',
+            'wflocked',
+            'duplicate',
+            'delete',
+            'usetime'
         ];
     } else {
         $newArray = $array;
@@ -865,13 +833,12 @@ function piworkflowProcessActions($array)
  * @param int $idart
  * @param int $idartlang
  * @param string $type
- *
  * @return string
  * @throws cDbException|cException
  */
-function piworkflowRenderAction($idcat, $idart, $idartlang, $type)
+function piworkflowRenderAction($idcat, $idart, $idartlang, $type): string
 {
-    global $tmp_artconf, $onlinelink, $lockedlink, $tplconf_link;
+    global $articleConfigurationLink, $onlineLink, $lockedLink, $templateConfigurationLink;
 
     $idcat = cSecurity::toInteger($idcat);
     $idart = cSecurity::toInteger($idart);
@@ -883,10 +850,10 @@ function piworkflowRenderAction($idcat, $idart, $idartlang, $type)
     $associatedUserSequence = new WorkflowUserSequence();
     $associatedUserSequence->loadByPrimaryKey($idusersequence);
 
-    $currentEditor = $associatedUserSequence->get("iduser");
+    $currentEditor = $associatedUserSequence->get('iduser');
     $workflowItem = $associatedUserSequence->getWorkflowItem();
 
-    if (isCurrentEditor($associatedUserSequence->get("iduser"))) {
+    if (isCurrentEditor($associatedUserSequence->get('iduser'))) {
         // Query rights for this user
         $wfRights = $workflowItem->getStepRights();
     } else {
@@ -894,76 +861,73 @@ function piworkflowRenderAction($idcat, $idart, $idartlang, $type)
     }
 
     switch ($type) {
-        case "wfartconf":
-            if (!empty($wfRights["propertyedit"])) {
-                return $tmp_artconf;
+        case 'wfartconf':
+            if (!empty($wfRights['propertyedit'])) {
+                return $articleConfigurationLink;
             }
             break;
-        case "wfonline":
-            if (!empty($wfRights["publish"])) {
-                return $onlinelink;
+        case 'wfonline':
+            if (!empty($wfRights['publish'])) {
+                return $onlineLink;
             }
             break;
-        case "wflocked":
-            if (!empty($wfRights["lock"])) {
-                return $lockedlink;
+        case 'wflocked':
+            if (!empty($wfRights['lock'])) {
+                return $lockedLink;
             }
             break;
-        case "wftplconf":
-            if (!empty($wfRights["templateedit"])) {
-                return $tplconf_link;
+        case 'wftplconf':
+            if (!empty($wfRights['templateedit'])) {
+                return $templateConfigurationLink;
             }
             break;
         default:
             break;
     }
 
-    return "";
+    return '';
 }
 
 /**
- * @param array $array
- *
- * @return array
  * @throws cDbException|cException
  */
-function piworkflowProcessArticleColumns($array)
+function piworkflowProcessArticleColumns(array $array): array
 {
     global $modidartlang;
 
     $idcat = cRegistry::getCategoryId();
     $action = cRegistry::getAction();
 
-    if ($action == "workflow_do_action") {
-        $selectedAction = "wfselect" . $modidartlang;
+    if ($action === 'workflow_do_action') {
+        $selectedAction = 'wfselect' . $modidartlang;
         doWorkflowAction($modidartlang, $GLOBALS[$selectedAction]);
     }
 
     $defaultidworkflow = getWorkflowForCat($idcat);
 
     if ($defaultidworkflow != 0) {
-        $narray = [];
+        $newArray = [];
         $bInserted = false;
         foreach ($array as $sKey => $sValue) {
-            $narray[$sKey] = $sValue;
+            $newArray[$sKey] = $sValue;
             if ($sKey == 'title' && !$bInserted) {
-                $narray["wftitle"] = $array["title"];
-                $narray["wfstep"] = i18n("Workflow Step", "workflow");
-                $narray["wfaction"] = i18n("Workflow Action", "workflow");
-                $narray["wfeditor"] = i18n("Workflow Editor", "workflow");
-                $narray["wflaststatus"] = i18n("Last status", "workflow");
+                $newArray['wftitle'] = $array['title'];
+                $newArray['wfstep'] = i18n("Workflow Step", "workflow");
+                $newArray['wfaction'] = i18n("Workflow Action", "workflow");
+                $newArray['wfeditor'] = i18n("Workflow Editor", "workflow");
+                $newArray['wflaststatus'] = i18n("Last status", "workflow");
                 $bInserted = true;
             }
         }
-        unset($narray['title']);
-        unset($narray['changeddate']);
-        unset($narray['publisheddate']);
-        unset($narray['sortorder']);
+        unset($newArray['title']);
+        unset($newArray['changeddate']);
+        unset($newArray['publisheddate']);
+        unset($newArray['sortorder']);
     } else {
-        $narray = $array;
+        $newArray = $array;
     }
 
-    return $narray;
+    return $newArray;
 }
 
 /**
@@ -971,11 +935,9 @@ function piworkflowProcessArticleColumns($array)
  * @param int $idcat
  * @param int $idart
  * @param string $user User id
- *
- * @return bool
  * @throws cDbException|cException
  */
-function piworkflowAllowArticleEdit($idlang, $idcat, $idart, $user)
+function piworkflowAllowArticleEdit($idlang, $idcat, $idart, $user): bool
 {
     $idlang = cSecurity::toInteger($idlang);
     $idcat = cSecurity::toInteger($idcat);
@@ -992,17 +954,17 @@ function piworkflowAllowArticleEdit($idlang, $idcat, $idart, $user)
     $associatedUserSequence = new WorkflowUserSequence();
     $associatedUserSequence->loadByPrimaryKey($idusersequence);
 
-    $currentEditor = $associatedUserSequence->get("iduser");
+    $currentEditor = $associatedUserSequence->get('iduser');
 
     $workflowItem = $associatedUserSequence->getWorkflowItem();
 
-    if (isCurrentEditor($associatedUserSequence->get("iduser"))) {
+    if (isCurrentEditor($associatedUserSequence->get('iduser'))) {
         $wfRights = $workflowItem->getStepRights();
     } else {
         $wfRights = [];
     }
 
-    if (!empty($wfRights["articleedit"])) {
+    if (!empty($wfRights['articleedit'])) {
         return true;
     } else {
         return false;
@@ -1014,13 +976,11 @@ function piworkflowAllowArticleEdit($idlang, $idcat, $idart, $user)
  * @param int $idart
  * @param int $idartlang
  * @param $column
- *
- * @return string
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function piworkflowRenderColumn($idcat, $idart, $idartlang, $column)
+function piworkflowRenderColumn($idcat, $idart, $idartlang, $column): string
 {
-    global $idtpl, $alttitle, $tmp_articletitle;
+    global $idtpl, $articleAltText, $articleTitleLink;
 
     $idcat = cSecurity::toInteger($idcat);
     $idart = cSecurity::toInteger($idart);
@@ -1036,39 +996,39 @@ function piworkflowRenderColumn($idcat, $idart, $idartlang, $column)
     $associatedUserSequence = new WorkflowUserSequence();
     $associatedUserSequence->loadByPrimaryKey($idusersequence);
 
-    $currentEditor = $associatedUserSequence->get("iduser");
+    $currentEditor = $associatedUserSequence->get('iduser');
 
     $workflowItem = $associatedUserSequence->getWorkflowItem();
 
-    if (isCurrentEditor($associatedUserSequence->get("iduser"))) {
+    if (isCurrentEditor($associatedUserSequence->get('iduser'))) {
         $wfRights = $workflowItem->getStepRights();
         $mayEdit = true;
     } else {
-        $wfRights = "";
+        $wfRights = '';
         $mayEdit = false;
     }
 
     switch ($column) {
-        case "wftitle":
-            if ($wfRights["articleedit"] == true) {
-                $mtitle = $tmp_articletitle;
+        case 'wftitle':
+            if ($wfRights['articleedit'] == true) {
+                $mtitle = $articleTitleLink;
             } else {
-                $mtitle = strip_tags($tmp_articletitle);
+                $mtitle = strip_tags($articleTitleLink);
             }
             return ($mtitle);
-        case "wfstep":
+        case 'wfstep':
             if ($workflowItem === false) {
-                return "nobody";
+                return 'nobody';
             }
 
-            return ($workflowItem->get("position") . ".) " . $workflowItem->get("name"));
-        case "wfeditor":
+            return ($workflowItem->get('position') . '.) ' . $workflowItem->get('name'));
+        case 'wfeditor':
             $sEditor = getGroupOrUserName($currentEditor);
             if (!$sEditor) {
-                $sEditor = "nobody";
+                $sEditor = 'nobody';
             }
             return $sEditor;
-        case "wfaction":
+        case 'wfaction':
             $defaultidworkflow = getWorkflowForCat($idcat);
             $idusersequence = getCurrentUserSequence($idartlang, $defaultidworkflow);
 
@@ -1077,13 +1037,13 @@ function piworkflowRenderColumn($idcat, $idart, $idartlang, $column)
                 $mayEdit = false;
             }
 
-            $form = new cHTMLForm("wfaction" . $idartlang, "main.php", "get");
-            $form->setVar("area", $area);
-            $form->setVar("action", "workflow_do_action");
-            $form->setVar("frame", $frame);
-            $form->setVar("idcat", $idcat);
-            $form->setVar("modidartlang", $idartlang);
-            $form->setVar("idtpl", $idtpl);
+            $form = new cHTMLForm('wfaction' . $idartlang, 'main.php', 'get');
+            $form->setVar('area', $area);
+            $form->setVar('action', 'workflow_do_action');
+            $form->setVar('frame', $frame);
+            $form->setVar('idcat', $idcat);
+            $form->setVar('modidartlang', $idartlang);
+            $form->setVar('idtpl', $idtpl);
             $form->appendContent('<table cellspacing="0" border="0"><tr><td>' . $sActionSelect . '</td><td>');
             $form->appendContent('<input type="image" src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . "submit.gif" . '" alt=""></tr></table>');
 
@@ -1093,7 +1053,7 @@ function piworkflowRenderColumn($idcat, $idart, $idartlang, $column)
                 return '--- ' . i18n("None") . ' ---';
             }
 
-        case "wflaststatus":
+        case 'wflaststatus':
             $sStatus = getLastWorkflowStatus($idartlang);
             if (!$sStatus) {
                 $sStatus = '--- ' . i18n("None") . ' ---';
@@ -1104,10 +1064,7 @@ function piworkflowRenderColumn($idcat, $idart, $idartlang, $column)
     return '';
 }
 
-/**
- * @return array
- */
-function piworkflowCreateTasksFolder()
+function piworkflowCreateTasksFolder(): array
 {
     $sess = cRegistry::getSession();
     $cfg = cRegistry::getConfig();
@@ -1119,8 +1076,8 @@ function piworkflowCreateTasksFolder()
 
     $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=con_workflow&frame=4"), 'right_top', $sess->url("main.php?area=con_workflow&frame=3"), 'Workflow / Todo');
 
-    $item["image"] = '<img alt="" src="' . cRegistry::getBackendUrl() . $cfg['path']['plugins'] . 'workflow/images/workflow_erstellen.gif">';
-    $item["title"] = $mstr;
+    $item['image'] = '<img alt="" src="' . cRegistry::getBackendUrl() . $cfg['path']['plugins'] . 'workflow/images/workflow_erstellen.gif">';
+    $item['title'] = $mstr;
 
     return $item;
 }

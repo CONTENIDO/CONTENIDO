@@ -23,5 +23,5 @@
 global $min_cFrontendEnable;
 
 // Enable usage of minify in layouts
-$min_cFrontendEnable = true;
+$min_cFrontendEnable = false;
 

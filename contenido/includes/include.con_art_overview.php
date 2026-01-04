@@ -3,6 +3,9 @@
 /**
  * This file contains the backend page for displaying articles of a category.
  *
+ * NOTE:
+ * * Has some similarities with `contenido/backend_search.php`.
+ *
  * @package    Core
  * @subpackage Backend
  * @author     Jan Lengowski
@@ -14,7 +17,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $action, $perm, $duplicate, $idart, $sourcelanguage, $_cecRegistry, $cfg, $currentuser, $db;
+global $action, $perm, $duplicate, $idart, $sourcelanguage, $cfg, $currentuser, $db;
 global $tpl, $sess, $auth, $contenido, $frame, $idtpl, $notification;
 
 cInclude('includes', 'functions.tpl.php');
@@ -39,6 +42,7 @@ if (!isset($syncfrom)) {
 $foreignlang = false;
 
 $syncoptions = $syncfrom;
+
 // CON-1752
 // init duplicate counter in session
 if (!isset($_SESSION['count_duplicate'])) {
@@ -51,21 +55,19 @@ $selectedArticleId = NULL;
 
 $articleOverviewHelper = new cArticleOverviewHelper($db, $auth, $perm, [], $idcat, $lang, $client);
 
-
-if ($action == 'con_duplicate' && $articleOverviewHelper->hasArticleDuplicatePermission()) {
-    $count = (int)$_SESSION['count_duplicate'];
+if ($action === 'con_duplicate' && $articleOverviewHelper->hasArticleDuplicatePermission()) {
+    $count = cSecurity::toInteger($_SESSION['count_duplicate']);
 
     // check if duplicate action was called from click or from back button
-    if ($_GET['count_duplicate'] < $count) {
-    } else {
-        // perfom action only when duplicate action is called from link
+    if (cSecurity::toInteger(($_GET['count_duplicate'] ?? '0')) === $count) {
+        // Perfom action only when duplicate action is called from link
         $newidartlang = conCopyArticle($duplicate, $idcat);
         $count++;
         $_SESSION['count_duplicate'] = $count;
     }
 }
 
-if ($action == 'con_syncarticle' && $articleOverviewHelper->hasArticleContentSyncPermission()) {
+if ($action === 'con_syncarticle' && $articleOverviewHelper->hasArticleContentSyncPermission()) {
     if (!empty($_POST['idarts'])) {
         $idarts = json_decode($_POST['idarts'], true);
     } else {
@@ -107,23 +109,19 @@ $actionList = [
 ];
 
 // Call chains to process the columns and the action list
-$_cecIterator = $_cecRegistry->getIterator("Contenido.ArticleList.Columns");
-if ($_cecIterator->count() > 0) {
-    while ($chainEntry = $_cecIterator->next()) {
-        $newColumnList = $chainEntry->execute($listColumns);
-        if (is_array($newColumnList)) {
-            $listColumns = $newColumnList;
-        }
+$cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.ArticleList.Columns');
+while ($chainEntry = $cecIterator->next()) {
+    $newColumnList = $chainEntry->execute($listColumns);
+    if (is_array($newColumnList)) {
+        $listColumns = $newColumnList;
     }
 }
 
-$_cecIterator = $_cecRegistry->getIterator("Contenido.ArticleList.Actions");
-if ($_cecIterator->count() > 0) {
-    while ($chainEntry = $_cecIterator->next()) {
-        $newActionList = $chainEntry->execute($actionList);
-        if (is_array($newActionList)) {
-            $actionList = $newActionList;
-        }
+$cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.ArticleList.Actions');
+while ($chainEntry = $cecIterator->next()) {
+    $newActionList = $chainEntry->execute($actionList);
+    if (is_array($newActionList)) {
+        $actionList = $newActionList;
     }
 }
 
@@ -133,16 +131,16 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
     // Saving sort and elements per page user settings (if specified)
     // Should be changed to User->setProperty... someday
     if (isset($sortby)) {
-        $currentuser->setUserProperty("system", "sortorder-idlang-$lang-idcat-$idcat", $sortby);
+        $currentuser->setUserProperty('system', "sortorder-idlang-$lang-idcat-$idcat", $sortby);
     }
     if (isset($sortmode)) {
-        $currentuser->setUserProperty("system", "sortmode-idlang-$lang-idcat-$idcat", $sortmode);
+        $currentuser->setUserProperty('system', "sortmode-idlang-$lang-idcat-$idcat", $sortmode);
     }
 
     if (isset($elemperpage) && is_numeric($elemperpage)) {
-        $currentuser->setUserProperty("system", "elemperpage-idlang-$lang-idcat-$idcat", $elemperpage);
+        $currentuser->setUserProperty('system', "elemperpage-idlang-$lang-idcat-$idcat", $elemperpage);
     } else {
-        $elemperpage = $currentuser->getUserProperty("system", "elemperpage-idlang-$lang-idcat-$idcat");
+        $elemperpage = $currentuser->getUserProperty('system', "elemperpage-idlang-$lang-idcat-$idcat");
         if (!is_numeric($elemperpage)) {
             $elemperpage = 10;
         }
@@ -169,9 +167,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $articleCountSql = "SELECT
                         COUNT(*) AS article_count
                      FROM
-                        " . cRegistry::getDbTableName('art_lang') . " AS a,
-                        " . cRegistry::getDbTableName('art') . " AS b,
-                        " . cRegistry::getDbTableName('cat_art') . " AS c
+                        " . cDb::getTableName('art_lang') . " AS a,
+                        " . cDb::getTableName('art') . " AS b,
+                        " . cDb::getTableName('cat_art') . " AS c
                      WHERE
                         (a.idlang   = " . cSecurity::toInteger($lang) . " {SYNCOPTIONS}) AND
                         a.idart     = b.idart AND
@@ -187,8 +185,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $articlesInSelectedLanguage = cSecurity::toInteger($db->f('article_count'));
 
         // Sortby and sortmode
-        $sortby = $currentuser->getUserProperty("system", "sortorder-idlang-$lang-idcat-$idcat");
-        $sortmode = $currentuser->getUserProperty("system", "sortmode-idlang-$lang-idcat-$idcat");
+        $sortby = $currentuser->getUserProperty('system', "sortorder-idlang-$lang-idcat-$idcat");
+        $sortmode = $currentuser->getUserProperty('system', "sortmode-idlang-$lang-idcat-$idcat");
 
         // Main SQL statement template
         $sql = "SELECT
@@ -210,9 +208,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     a.redirect AS redirect,
                     a.locked AS locked
                  FROM
-                    " . cRegistry::getDbTableName('art_lang') . " AS a,
-                    " . cRegistry::getDbTableName('art') . " AS b,
-                    " . cRegistry::getDbTableName('cat_art') . " AS c
+                    " . cDb::getTableName('art_lang') . " AS a,
+                    " . cDb::getTableName('art') . " AS b,
+                    " . cDb::getTableName('cat_art') . " AS c
                  WHERE
                     (a.idlang   = " . $lang . " {SYNCOPTIONS}) AND
                     a.idart     = b.idart AND
@@ -229,7 +227,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $sqlCount = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $articleCountSql);
                 $db->query($sqlCount);
                 $db->nextRecord();
-                $iArticleCount = $db->f("article_count");
+                $iArticleCount = $db->f('article_count');
             }
         } else {
             $sql = str_replace("{SYNCOPTIONS}", '', $sql);
@@ -287,32 +285,32 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $aArticles = [];
 
         while ($db->nextRecord()) {
-            $sItem = "k" . $db->f("idart");
+            $sItem = "k" . $db->f('idart');
 
-            if ($db->f("idlang") == $lang || !array_key_exists($sItem, $aArticles)) {
-                $aArticles[$sItem]["idart"] = cSecurity::toInteger($db->f("idart"));
-                $aArticles[$sItem]["idlang"] = cSecurity::toInteger($db->f("idlang"));
-                $aArticles[$sItem]["idartlang"] = cSecurity::toInteger($db->f("idartlang"));
-                $aArticles[$sItem]["title"] = cSecurity::unFilter($db->f("title"));
-                $aArticles[$sItem]["is_start"] = isStartArticle($db->f("idartlang"), $idcat, $lang);
-                $aArticles[$sItem]["idcatart"] = cSecurity::toInteger($db->f("idcatart"));
-                $aArticles[$sItem]["idtplcfg"] = cSecurity::toInteger($db->f("idtplcfg"));
-                $aArticles[$sItem]["published"] = $db->f("published");
-                $aArticles[$sItem]["online"] = cSecurity::toInteger($db->f("online"));
-                $aArticles[$sItem]["created"] = $db->f("created");
-                $aArticles[$sItem]["idcat"] = cSecurity::toInteger($db->f("idcat"));
-                $aArticles[$sItem]["lastmodified"] = $db->f("lastmodified");
-                $aArticles[$sItem]["timemgmt"] = $db->f("timemgmt");
-                $aArticles[$sItem]["datestart"] = $db->f("datestart");
-                $aArticles[$sItem]["dateend"] = $db->f("dateend");
-                $aArticles[$sItem]["artsort"] = $db->f("artsort");
-                $aArticles[$sItem]["locked"] = cSecurity::toInteger($db->f("locked"));
-                $aArticles[$sItem]["redirect"] = $db->f("redirect");
+            if ($db->f('idlang') == $lang || !array_key_exists($sItem, $aArticles)) {
+                $aArticles[$sItem]['idart'] = cSecurity::toInteger($db->f('idart'));
+                $aArticles[$sItem]['idlang'] = cSecurity::toInteger($db->f('idlang'));
+                $aArticles[$sItem]['idartlang'] = cSecurity::toInteger($db->f('idartlang'));
+                $aArticles[$sItem]['title'] = cSecurity::unFilter($db->f('title'));
+                $aArticles[$sItem]['is_start'] = isStartArticle($db->f('idartlang'), $idcat, $lang);
+                $aArticles[$sItem]['idcatart'] = cSecurity::toInteger($db->f('idcatart'));
+                $aArticles[$sItem]['idtplcfg'] = cSecurity::toInteger($db->f('idtplcfg'));
+                $aArticles[$sItem]['published'] = $db->f('published');
+                $aArticles[$sItem]['online'] = cSecurity::toInteger($db->f('online'));
+                $aArticles[$sItem]['created'] = $db->f('created');
+                $aArticles[$sItem]['idcat'] = cSecurity::toInteger($db->f('idcat'));
+                $aArticles[$sItem]['lastmodified'] = $db->f('lastmodified');
+                $aArticles[$sItem]['timemgmt'] = $db->f('timemgmt');
+                $aArticles[$sItem]['datestart'] = $db->f('datestart');
+                $aArticles[$sItem]['dateend'] = $db->f('dateend');
+                $aArticles[$sItem]['artsort'] = $db->f('artsort');
+                $aArticles[$sItem]['locked'] = cSecurity::toInteger($db->f('locked'));
+                $aArticles[$sItem]['redirect'] = $db->f('redirect');
             }
         }
 
         $artlist = [];
-        $colitem = [];
+        $colItem = [];
         $articlesOnline = 0;
         $articlesOffline = 0;
         $articlesLocked = 0;
@@ -329,67 +327,72 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         $articleOverviewHelper->setArticles($aArticles);
 
-        $cecIteratorRenderAction = $_cecRegistry->getIterator('Contenido.ArticleList.RenderAction');
-        $cecIteratorRenderColumn = $_cecRegistry->getIterator('Contenido.ArticleList.RenderColumn');
+        $cecIteratorRenderAction = cApiCecRegistry::getInstance()->getIterator('Contenido.ArticleList.RenderAction');
+        $cecIteratorRenderColumn = cApiCecRegistry::getInstance()->getIterator('Contenido.ArticleList.RenderColumn');
 
-        $lngDisplayProperties = i18n("Display properties");
-        $lngNotYetPublished = i18n("not yet published");
-        $lngDeleteArticle = i18n("Delete article");
-        $lngArticleWithTimeControlOnline = i18n("Article with time control online");
-        $lngArticleWithTimeControlOffline = i18n("Article with time control offline");
-        $lngUnfreezeArticle = i18n("Unfreeze article");
-        $lngFreezeArticle = i18n("Freeze article");
+        $lngAreYouSureToDeleteTheFollowingArticleX = i18n("Are you sure to delete the following article:<br><br><b>%s</b>");
         $lngArticleIsFrozen = i18n("Article is frozen");
         $lngArticleIsNotFrozen = i18n("Article is not frozen");
-        $lngArticleProperties = i18n("Article properties");
-        $lngCopyArticleToTheCurrentLanguage = i18n("Copy article to the current language");
-        $lngFlagAsStartArticle = i18n("Flag as start article");
-        $lngFlagAsNormalArticle = i18n("Flag as normal article");
-        $lngDuplicateArticle = i18n("Duplicate article");
-        $lngMakeOffline = i18n("Make offline");
-        $lngArticleIsOnline = i18n("Article is online");
-        $lngMakeOnline = i18n("Make online");
         $lngArticleIsOffline = i18n("Article is offline");
+        $lngArticleIsOnline = i18n("Article is online");
+        $lngArticleProperties = i18n("Article properties");
+        $lngArticleWithTimeControlOffline = i18n("Article with time control offline");
+        $lngArticleWithTimeControlOnline = i18n("Article with time control online");
+        $lngCopyArticleToTheCurrentLanguage = i18n("Copy article to the current language");
+        $lngDeleteArticle = i18n("Delete article");
+        $lngDisplayProperties = i18n("Display properties");
+        $lngDuplicateArticle = i18n("Duplicate article");
+        $lngFlagAsNormalArticle = i18n('Flag as normal article');
+        $lngFlagAsStartArticle = i18n('Flag as start article');
+        $lngFreezeArticle = i18n('Freeze article');
+        $lngGoToPageX = i18n("Go to page: %s");
+        $lngMakeOffline = i18n("Make offline");
+        $lngMakeOnline = i18n("Make online");
         $lngNone = i18n("None");
-        $lngStartArticle = i18n("Start article");
         $lngNormalArticle = i18n("Normal article");
+        $lngNotYetPublished = i18n("not yet published");
         $lngReminderForArticleX = i18n("Reminder for article '%s'");
         $lngReminderForArticleXCategoryX = i18n("Reminder for article '%s'\nCategory: %s");
-        $lngAreYouSureToDeleteTheFollowingArticleX = i18n("Are you sure to delete the following article:<br><br><b>%s</b>");
+        $lngStartArticle = i18n("Start article");
+        $lngUnfreezeArticle = i18n('Unfreeze article');
 
         foreach ($aArticles as $sart) {
-            $idart = $sart["idart"];
-            $idlang = $sart["idlang"];
+            $idart = $sart['idart'];
+            $idlang = $sart['idlang'];
 
-            $idtplcfg = $sart["idtplcfg"];
-            $idartlang = $sart["idartlang"];
-            $lidcat = $sart["idcat"];
+            $idtplcfg = $sart['idtplcfg'];
+            $idartlang = $sart['idartlang'];
+            $lidcat = $sart['idcat'];
             $idcatlang = 0;
-            $published = $sart["published"];
-            $online = $sart["online"];
+            $published = $sart['published'];
+            $online = $sart['online'];
 
-            $is_start = $sart["is_start"];
+            $is_start = $sart['is_start'];
 
-            $idcatart = $sart["idcatart"];
-            $created = $sart["created"];
-            $modified = $sart["lastmodified"];
+            $idcatart = $sart['idcatart'];
+            $created = $sart['created'];
+            $modified = $sart['lastmodified'];
 
             if ($modified === '0000-00-00 00:00:00') {
                 $modified = i18n("not modified yet");
             } else {
                 $modified = date($dateformat, strtotime($modified));
             }
-            $title = conHtmlSpecialChars($sart["title"]);
-            $timemgmt = $sart["timemgmt"];
-            $datestart = $sart["datestart"];
-            $dateend = $sart["dateend"];
-            $sortkey = $sart["artsort"];
-            $locked = $sart["locked"];
-            $redirect = $sart["redirect"];
+            $title = conHtmlSpecialChars($sart['title']);
+            $timemgmt = $sart['timemgmt'];
+            $datestart = $sart['datestart'];
+            $dateend = $sart['dateend'];
+            $sortkey = $sart['artsort'];
+            $locked = $sart['locked'];
+            $redirect = $sart['redirect'];
 
-            $published = ($published != '0000-00-00 00:00:00') ? date($dateformat, strtotime($published)) : $lngNotYetPublished;
+            if ($sortkey == '') {
+                $sortkey = '&nbsp;';
+            }
+
+            $published = $published != '0000-00-00 00:00:00' ? date($dateformat, strtotime($published)) : $lngNotYetPublished;
             $created = date($dateformat, strtotime($created));
-            $alttitle = "idart" . '&#58; ' . $idart . ' ' . "idcatart" . '&#58; ' . $idcatart . ' ' . "idartlang" . '&#58; ' . $idartlang;
+            $articleAltText = "idart" . '&#58; ' . $idart . ' ' . "idcatart" . '&#58; ' . $idcatart . ' ' . "idartlang" . '&#58; ' . $idartlang;
 
             $articlesToEdit++;
 
@@ -413,10 +416,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $inUse = $articleOverviewHelper->isArticleInUse($idartlang);
             if ($inUse) {
                 $inUseUserObj = $articleOverviewHelper->getArticleInUseUser($idartlang);
-                $inUseUser = $inUseUserObj ? $inUseUserObj->getField("username") : "";
-                $inUseUserRealName = $inUseUserObj ? $inUseUserObj->getField("realname") : "";
+                $inUseUser = $inUseUserObj ? $inUseUserObj->getField('username') : "";
+                $inUseUserRealName = $inUseUserObj ? $inUseUserObj->getField('realname') : "";
                 $title = $title . " (" . i18n("Article is in use") . ")";
-                $alttitle = sprintf(i18n("Article in use by %s (%s)"), $inUseUser, $inUseUserRealName) . " " . $alttitle;
+                $articleAltText = sprintf(i18n("Article in use by %s (%s)"), $inUseUser, $inUseUserRealName) . " " . $articleAltText;
             }
 
             // Id of the row, stores information about the article and category
@@ -424,84 +427,97 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $tpl->set('d', 'ROWID', $tmp_rowid);
 
             if ($idlang != $lang) {
-                $colitem[$tmp_rowid] = 'con_sync';
+                $colItem[$tmp_rowid] = 'con_sync';
             }
 
-            // Article Title
+            // Article title
             if ($articleOverviewHelper->hasArticleEditContentPermission()) {
                 if ($idlang != $lang) {
-                    $tmp_alink = $sess->url("main.php?area=con_editcontent&action=con_editart&changeview=prev&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=$frame&tmpchangelang=$idlang");
-                    $titlelink = '<a href="' . $tmp_alink . '" title="' . $alttitle . '">' . $title . '</a>';
+                    $tmpUrl = $sess->url("main.php?area=con_editcontent&action=con_editart&changeview=prev&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=$frame&tmpchangelang=$idlang");
                 } else {
-                    $tmp_alink = $sess->url("main.php?area=con_editcontent&action=con_editart&changeview=edit&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=$frame");
-                    $titlelink = '<a href="' . $tmp_alink . '" title="' . $alttitle . '">' . $title . '</a>';
+                    $tmpUrl = $sess->url("main.php?area=con_editcontent&action=con_editart&changeview=edit&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=$frame");
                 }
+                $link = new cHTMLLink($tmpUrl, $title);
+                $link->setAttribute('title', $articleAltText);
+                $articleTitleLink = $link->render();
             } else {
                 $tmp_alink = '';
-                $titlelink = $title;
+                $articleTitleLink = $title;
             }
 
-            if ($timemgmt == "1") {
-                $starttimestamp = strtotime($datestart);
-                $endtimestamp = strtotime($dateend);
-                $nowtimestamp = strtotime($articleOverviewHelper->getDatabaseTime());
-
-                if (($nowtimestamp < $endtimestamp) && ($nowtimestamp > $starttimestamp)) {
-                    $usetime = cHTMLImage::img('images/but_time_2.gif', $lngArticleWithTimeControlOnline, ['class' => 'con_img_button_off mgl3']);
+            if ($timemgmt == '1') {
+                $startTimestamp = strtotime($datestart);
+                $endTimestamp = strtotime($dateend);
+                $nowTimestamp = strtotime($articleOverviewHelper->getDatabaseTime());
+                if ($nowTimestamp < $endTimestamp && $nowTimestamp > $startTimestamp) {
+                    $useTimeImage = cHTMLImage::img($cfg['path']['images'] . 'but_time_2.gif', $lngArticleWithTimeControlOnline, ['class' => 'con_img_button_off mgl3']);
                 } else {
-                    $usetime = cHTMLImage::img('images/but_time_1.gif', $lngArticleWithTimeControlOffline, ['class' => 'con_img_button_off mgl3']);
+                    $useTimeImage = cHTMLImage::img($cfg['path']['images'] . 'but_time_1.gif', $lngArticleWithTimeControlOffline, ['class' => 'con_img_button_off mgl3']);
                 }
             } else {
-                $usetime = '';
+                $useTimeImage = '';
             }
 
-            // Article Title
+            // Article locked/unlocked (frozen/not frozen)
             if ($articleOverviewHelper->hasArticleLockPermission() && $inUse === false) {
                 if ($locked === 1) {
-                    $lockimg = 'images/article_locked.gif';
-                    $lockalt = $lngUnfreezeArticle;
+                    $lockedImage = $cfg['path']['images'] . 'article_locked.gif';
+                    $lockedText = $lngUnfreezeArticle;
                 } else {
-                    $lockimg = 'images/article_unlocked.gif';
-                    $lockalt = $lngFreezeArticle;
+                    $lockedImage = $cfg['path']['images'] . 'article_unlocked.gif';
+                    $lockedText = $lngFreezeArticle;
                 }
-                $tmp_lock = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&next=$next") . '" title="' . $lockalt . '"><img src="' . $lockimg . '" title="' . $lockalt . '" alt="' . $lockalt . '"></a>';
+
+                $link = new cHTMLLink(
+                    $sess->url("main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&next=$next"),
+                    cHTMLImage::img($lockedImage, $lockedText),
+                    'con_img_button mgl3'
+                );
+                $link->setAttribute('title', $lockedText);
+                $lockedLink = $link->render();
             } else {
                 if ($locked === 1) {
-                    $lockimg = 'images/article_locked.gif';
-                    $lockalt = $lngArticleIsFrozen;
+                    $lockedImage = $cfg['path']['images'] . 'article_locked.gif';
+                    $lockedText = $lngArticleIsFrozen;
                 } else {
-                    $lockimg = 'images/article_unlocked.gif';
-                    $lockalt = $lngArticleIsNotFrozen;
+                    $lockedImage = $cfg['path']['images'] . 'article_unlocked.gif';
+                    $lockedText = $lngArticleIsNotFrozen;
                 }
-                $tmp_lock = cHTMLImage::img($lockimg, $lockalt, ['class' => 'con_img_button_off mgl3']);
+                $lockedLink = cHTMLImage::img($lockedImage, $lockedText, ['class' => 'con_img_button_off mgl3']);
             }
-
             if ($idlang != $lang) {
-                $lockedlink = '';
-            } else {
-                $lockedlink = $tmp_lock;
+                $lockedLink = '';
             }
-
-            if ($sortkey == '') {
-                $sortkey = '&nbsp;';
-            }
-
-            $tmp_articletitle = $titlelink;
 
             // Article conf button
             if ($articleOverviewHelper->hasArticleEditPermission()) {
-                $tmp_artconf = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idart=$idart&idcat=$idcat") . '" title="' . $lngArticleProperties . '"><img src="' . $cfg['path']['images'] . 'but_art_conf2.gif" alt="' . $lngArticleProperties . '" title="' . $lngArticleProperties . '"></a>';
+                $link = new cHTMLLink(
+                    $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idart=$idart&idcat=$idcat"),
+                    cHTMLImage::img($cfg['path']['images'] . 'but_sync_art.gif', $lngArticleProperties),
+                    'con_img_button mgl3'
+                );
+                $link->setAttribute('title', $lngArticleProperties);
+                $articleConfigurationLink = $link->render();
             } else {
-                $tmp_artconf = '';
+                $articleConfigurationLink = '';
             }
 
             $tmp_sync = '';
             if ($idlang != $lang) {
-                $sql = "SELECT idcatlang FROM " . cRegistry::getDbTableName('cat_lang') . " WHERE idcat='" . cSecurity::toInteger($idcat) . "' AND idlang='" . cSecurity::toInteger($lang) . "'";
-                $db->query($sql);
-
+                $db->query(
+                    "SELECT `idcatlang` FROM `%s` WHERE `idcat` = %d AND `idlang` = %d",
+                    cDb::getTableName('cat_lang'),
+                    cSecurity::toInteger($idcat),
+                    cSecurity::toInteger($lang)
+                );
                 if ($db->nextRecord()) {
-                    $tmp_sync = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con&action=con_syncarticle&idart=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next") . '" title="' . $lngCopyArticleToTheCurrentLanguage . '"><img src="' . $cfg['path']['images'] . 'but_sync_art.gif" alt="' . $lngCopyArticleToTheCurrentLanguage . '" title="' . $lngCopyArticleToTheCurrentLanguage . '"></a>';
+                    $link = new cHTMLLink(
+                        $sess->url("main.php?area=con&action=con_syncarticle&idart=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next"),
+                        cHTMLImage::img($cfg['path']['images'] . 'but_sync_art.gif', $lngCopyArticleToTheCurrentLanguage),
+                        'con_img_button mgl3'
+                    );
+                    $link->setAttribute('title', $lngCopyArticleToTheCurrentLanguage);
+                    $tmp_sync = $link->render();
                 } else {
                     $tmp_sync = '';
                     $articlesToSync--;
@@ -521,57 +537,85 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $a_tplname = ($categoryTemplateInfo['name'] ?? '') ? '<i>' . $categoryTemplateInfo['name'] . '</i>' : "--- " . $lngNone . " ---";
             }
 
-            // Make Startarticle button
-            $imgsrc = "isstart";
-
-            if ($is_start === false) {
-                $imgsrc .= '0';
-            } else {
-                $imgsrc .= '1';
-            }
+            // Make start article/regular article link
+            $imgSrc = 'isstart' . ($is_start ? '1' : '0');
             if ($articleOverviewHelper->isArticleInMultipleUse($idart)) {
-                $imgsrc .= 'm';
+                $imgSrc .= 'm';
             }
             if ((int)$redirect == 1) {
-                $imgsrc .= 'r';
+                $imgSrc .= 'r';
             }
+            $imgSrc .= '.gif';
 
-            $imgsrc .= '.gif';
-
-            if ($idlang == $lang && ($articleOverviewHelper->hasArticleMakeStartPermission()) && $idcat != 0 && ($locked === 0 || $isAdmin)) {
-                if ($is_start === false) {
-                    $tmp_link = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con&amp;idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&next=$next") . '" title="' . $lngFlagAsStartArticle . '"><img src="images/' . $imgsrc . '" title="' . $lngFlagAsStartArticle . '" alt="' . $lngFlagAsStartArticle . '"></a>';
+            if ($idlang == $lang && $articleOverviewHelper->hasArticleMakeStartPermission() && $idcat != 0 && ($locked === 0 || $isAdmin)) {
+                if (!$is_start) {
+                    $link = new cHTMLLink(
+                        $sess->url("main.php?area=con&amp;idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&next=$next"),
+                        cHTMLImage::img($cfg['path']['images'] . $imgSrc, $lngFlagAsStartArticle),
+                        'con_img_button mgl3'
+                    );
+                    $link->setAttribute('title', $lngFlagAsStartArticle);
+                    $startArticleLink = $link->render();
                 } else {
-                    $tmp_link = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con&amp;idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&next=$next") . '" title="' . $lngFlagAsNormalArticle . '"><img src="images/' . $imgsrc . '" title="' . $lngFlagAsNormalArticle . '" alt="' . $lngFlagAsNormalArticle . '"></a>';
+                    $link = new cHTMLLink(
+                        $sess->url("main.php?area=con&amp;idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&next=$next"),
+                        cHTMLImage::img($cfg['path']['images'] . $imgSrc, $lngFlagAsNormalArticle),
+                        'con_img_button mgl3'
+                    );
+                    $link->setAttribute('title', $lngFlagAsNormalArticle);
+                    $startArticleLink = $link->render();
                 }
             } else {
-                if ($is_start === true) {
-                    $sTitle = $lngStartArticle;
+                $sTitle = $is_start ? $lngStartArticle : $lngNormalArticle;
+                $tmp_img = cHTMLImage::img($cfg['path']['images'] . $imgSrc, $sTitle, ['class' => 'con_img_button mgl3']);
+                $startArticleLink = $tmp_img;
+            }
+
+            // Set article online/offline link
+            if ($online) {
+                if ($articleOverviewHelper->hasArticleMakeOnlinePermission() && ($idcat != 0) && ($locked === 0 || $isAdmin)) {
+                    $link = new cHTMLLink(
+                        $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next"),
+                        cHTMLImage::img($cfg['path']['images'] . 'online.gif', $lngMakeOffline),
+                        'con_img_button mgl3'
+                    );
+                    $link->setAttribute('title', $lngMakeOffline);
+                    $onlineLink = $link->render();
                 } else {
-                    $sTitle = $lngNormalArticle;
+                    $onlineLink = cHTMLImage::img($cfg['path']['images'] . 'online.gif', $lngArticleIsOnline, ['class' => 'con_img_button_off mgl3']);
                 }
-
-                $tmp_img = '<img class="con_img_button_off mgl3" src="images/' . $imgsrc . '" title="' . $sTitle . '" alt="' . $sTitle . '">';
-
-                $tmp_link = $tmp_img;
-            }
-
-            $tmp_start = $tmp_link;
-
-            // Make copy button
-            if ($articleOverviewHelper->hasArticleDuplicatePermission() && $idcat != 0 && ($locked === 0 || $isAdmin)) {
-                $imgsrc = "but_copy.gif";
-                // add count_duplicate param to identify if the duplicate action
-                // is called from click or back button.
-                $tmp_link = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&frame=4&next=$next") . "&count_duplicate=" . $_SESSION['count_duplicate'] . '" title="' . $lngDuplicateArticle . '"><img src="images/' . $imgsrc . '" title="' . $lngDuplicateArticle . '" alt="' . $lngDuplicateArticle . '"></a>';
             } else {
-                $tmp_link = '';
+                if ($articleOverviewHelper->hasArticleMakeOnlinePermission() && ($idcat != 0) && ($locked === 0 || $isAdmin)) {
+                    $link = new cHTMLLink(
+                        $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next"),
+                        cHTMLImage::img($cfg['path']['images'] . 'offline.gif', $lngMakeOnline),
+                        'con_img_button mgl3'
+                    );
+                    $link->setAttribute('title', $lngMakeOffline);
+                    $onlineLink = $link->render();
+                } else {
+                    $onlineLink = cHTMLImage::img($cfg['path']['images'] . 'offline.gif', $lngArticleIsOffline, ['class' => 'con_img_button_off mgl3']);
+                }
             }
-
             if ($idlang != $lang) {
-                $duplicatelink = '';
+                $onlineLink = '';
+            }
+
+            // Duplicate article link
+            if ($articleOverviewHelper->hasArticleDuplicatePermission() && $idcat != 0 && ($locked === 0 || $isAdmin)) {
+                // add count_duplicate param to identify if the duplicate action is called from click or back button.
+                $link = new cHTMLLink(
+                    $sess->url("main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&frame=4&next=$next&count_duplicate=" . $_SESSION['count_duplicate']),
+                    cHTMLImage::img($cfg['path']['images'] . 'but_copy.gif', $lngDuplicateArticle),
+                    'con_img_button mgl3'
+                );
+                $link->setAttribute('title', $lngDuplicateArticle);
+                $duplicateLink = $link->render();
             } else {
-                $duplicatelink = $tmp_link;
+                $duplicateLink = '';
+            }
+            if ($idlang != $lang) {
+                $duplicateLink = '';
             }
 
             // Article reminder message
@@ -580,46 +624,30 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $message = urlencode(sprintf($lngReminderForArticleXCategoryX, $title, $categoryPath));
 
             // Make todo link
-            $todolink = new TODOLink("idart", $idart, $subject, $message);
+            $todolink = new TODOLink('idart', $idart, $subject, $message);
 
-            // Make On-/Offline button
-            if ($online) {
-                if ($articleOverviewHelper->hasArticleMakeOnlinePermission() && ($idcat != 0) && ($locked === 0 || $isAdmin)) {
-                    $tmp_online = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next") . '" title="' . $lngMakeOffline . '"><img src="images/online.gif" title="' . $lngMakeOffline . '" alt="' . $lngMakeOffline . '"></a>';
-                } else {
-                    $tmp_online = '<img class="con_img_button mgl3" src="images/online.gif" title="' . $lngArticleIsOnline . '" alt="' . $lngArticleIsOnline . '">';
-                }
-            } else {
-                if ($articleOverviewHelper->hasArticleMakeOnlinePermission() && ($idcat != 0) && ($locked === 0 || $isAdmin)) {
-                    $tmp_online = '<a class="con_img_button mgl3" href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next") . '" title="' . $lngMakeOnline . '"><img src="images/offline.gif" title="' . $lngMakeOnline . '" alt="' . $lngMakeOnline . '"></a>';
-                } else {
-                    $tmp_online = '<img class="con_img_button_off mgl3" src="images/offline.gif" title="' . $lngArticleIsOffline . '" alt="' . $lngArticleIsOffline . '">';
-                }
-            }
-
-            if ($idlang != $lang) {
-                $onlinelink = '';
-            } else {
-                $onlinelink = $tmp_online;
-            }
-
-            // Delete button
+            // Delete article link
             if ($articleOverviewHelper->hasArticleDeletePermission() && $inUse === false && ($locked === 0 || $isAdmin)) {
-                $tmp_title = $title;
-                if (cString::getStringLength($tmp_title) > 30) {
-                    $tmp_title = cString::getPartOfString($tmp_title, 0, 27) . "...";
+                $tmpTitle = $title;
+                if (cString::getStringLength($tmpTitle) > 30) {
+                    $tmpTitle = cString::getPartOfString($tmpTitle, 0, 27) . '...';
                 }
 
-                $confirmString = sprintf($lngAreYouSureToDeleteTheFollowingArticleX, conHtmlSpecialChars($tmp_title));
-                $tmp_del = '<a class="con_img_button mgl3" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $confirmString . '&quot;, function() { deleteArticle(' . $idart . ', ' . $idcat . ', ' . $next . '); });return false;" title="' . $lngDeleteArticle . '"><img src="images/delete.gif" title="' . $lngDeleteArticle . '" alt="' . $lngDeleteArticle . '"></a>';
-            } else {
-                $tmp_del = '';
-            }
+                $confirmString = sprintf($lngAreYouSureToDeleteTheFollowingArticleX, conHtmlSpecialChars($tmpTitle));
 
-            if ($idlang != $lang) {
-                $deletelink = '';
+                $link = new cHTMLLink(
+                    'javascript:void(0)',
+                    cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $lngDeleteArticle),
+                    'con_img_button mgl3'
+                );
+                $link->setAttribute('title', $lngDeleteArticle);
+                $link->setEvent('click', "Con.showConfirmation('$confirmString', function() {deleteArticle($idart, $idcat, $next);});");
+                $deleteLink = $link->render();
             } else {
-                $deletelink = $tmp_del;
+                $deleteLink = '';
+            }
+            if ($idlang != $lang) {
+                $deleteLink = '';
             }
 
             // DIRECTION
@@ -631,54 +659,54 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             foreach ($listColumns as $listColumn => $ctitle) {
                 switch ($listColumn) {
-                    case "mark":
-                        $value = '<input type="checkbox" name="mark" value="' . $idart . '" class="mark_articles">';
+                    case 'mark':
+                        $value = (new cHTMLCheckbox('mark', $idart))->setClass('mark_articles')->render();
                         break;
-                    case "start":
-                        $value = $tmp_start . $usetime;
+                    case 'start':
+                        $value = $startArticleLink . $useTimeImage;
                         break;
-                    case "title":
-                        $value = $tmp_articletitle;
+                    case 'title':
+                        $value = $articleTitleLink;
                         break;
-                    case "changeddate":
+                    case 'changeddate':
                         $value = $modified;
                         break;
-                    case "publisheddate":
+                    case 'publisheddate':
                         if ($online === 1) {
                             $value = $published;
                         } else {
                             $value = $lngNotYetPublished;
                         }
                         break;
-                    case "sortorder":
+                    case 'sortorder':
                         $value = $sortkey;
                         break;
-                    case "template":
+                    case 'template':
                         $value = $a_tplname;
                         break;
-                    case "actions":
+                    case 'actions':
                         $actions = [];
                         foreach ($actionList as $actionItem) {
                             switch ($actionItem) {
-                                case "todo":
+                                case 'todo':
                                     $actionValue = $todolink;
                                     break;
-                                case "artconf":
-                                    $actionValue = $tmp_artconf;
+                                case 'artconf':
+                                    $actionValue = $articleConfigurationLink;
                                     break;
-                                case "online":
-                                    $actionValue = $onlinelink;
+                                case 'online':
+                                    $actionValue = $onlineLink;
                                     break;
-                                case "locked":
-                                    $actionValue = $lockedlink;
+                                case 'locked':
+                                    $actionValue = $lockedLink;
                                     break;
-                                case "duplicate":
-                                    $actionValue = $duplicatelink;
+                                case 'duplicate':
+                                    $actionValue = $duplicateLink;
                                     break;
-                                case "delete":
-                                    $actionValue = $deletelink;
+                                case 'delete':
+                                    $actionValue = $deleteLink;
                                     break;
-                                case "usetime":
+                                case 'usetime':
                                     $actionValue = '';
                                     break;
                                 default:
@@ -701,9 +729,13 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
                         // add properties button
                         if ($tmp_sync != '') {
-                            $actions[] = '<a class="con_img_button mgl3" href="main.php?area=con_editart&action=con_edit&frame=4&idcat=' . $idcat . '&idart=' . $idart . '&contenido=' . $contenido . '">
-                                <img src="images/but_art_conf2.gif" title="' . $lngDisplayProperties . '" alt="' . $lngDisplayProperties . '">
-                            </a>';
+                            $link = new cHTMLLink(
+                                $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idart=$idart"),
+                                'aa' . cHTMLImage::img($cfg['path']['images'] . 'but_art_conf2.gif', $lngDisplayProperties),
+                                'con_img_button mgl3'
+                            );
+                            $link->setAttribute('title', $lngDisplayProperties);
+                            $actions[] = $link->render();
                         }
 
                         $value = implode("\n", $actions);
@@ -712,7 +744,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         // Call chain to retrieve value
                         $contents = [];
                         $cecIteratorRenderColumn->reset();
-                        while ($chainEntry = $_cecIterator->next()) {
+                        while ($chainEntry = $cecIterator->next()) {
                             $contents[] = $chainEntry->execute($idcat, $idart, $idartlang, $listColumn);
                         }
                         $value = implode('', $contents);
@@ -747,13 +779,17 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
                 // add the appropriate sorting image if necessary
                 if ($sortby == $sortColumns[$key]) {
-                    $imageSrc = ($sortmode == 'asc') ? 'images/sort_up.gif' : 'images/sort_down.gif';
-                    $sortImage = '<img src="' . $imageSrc . '">';
+                    $imageSrc = ($sortmode == 'asc') ? $cfg['path']['images'] . 'sort_up.gif' : $cfg['path']['images'] . 'sort_down.gif';
+                    $sortImage = cHTMLImage::img($imageSrc);
                 } else {
                     $sortImage = '';
                 }
-                $sortLink = $sess->url("main.php?area=con&frame=4&idcat=$idcat&sortby=$sortColumns[$key]&sortmode=$newSortmode");
-                $col = '<a href="' . $sortLink . '" class="gray">' . $listColumn . $sortImage . '</a>';
+                $link = new cHTMLLink(
+                    $sess->url("main.php?area=con&frame=4&idcat=$idcat&sortby=$sortColumns[$key]&sortmode=$newSortmode"),
+                    $listColumn . $sortImage,
+                    'gray'
+                );
+                $col = $link->render();;
             } else {
                 $col = $listColumn;
             }
@@ -773,14 +809,18 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $sBrowseLinks .= $i . "\n"; // I'm on the current page, no
                     // link
                 } else {
-                    $tmp_alink = $sess->url("main.php?area=con&frame=$frame&idcat=$idcat&next=$iNext");
-                    $sBrowseLinks .= '<a href="' . $tmp_alink . '">' . $i . '</a>' . "\n";
+                    $link = new cHTMLLink(
+                        $sess->url("main.php?area=con&frame=$frame&idcat=$idcat&next=$iNext"),
+                        cSecurity::toString($i)
+                    );
+                    $link->setAttribute('title', sprintf($lngGoToPageX, $i));
+                    $sBrowseLinks .= $link->render() . "\n";
                 }
             }
             $tpl->set('s', 'NEXT', $next);
-            $tpl->set('s', 'BROWSE', sprintf(i18n("Go to page: %s"), $sBrowseLinks));
+            $tpl->set('s', 'BROWSE', sprintf($lngGoToPageX, $sBrowseLinks));
         } else {
-            $tpl->set('s', 'NEXT', "0");
+            $tpl->set('s', 'NEXT', '0');
             $tpl->set('s', 'BROWSE', '&nbsp;');
         }
         $tpl->set('s', 'CLICK_ROW_NOTIFICATION', i18n("Click on a row to select an article for editing"));
@@ -788,28 +828,57 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         // construct the bulk editing functions
         $bulkEditingFunctions = '';
         if ($articlesOffline > 0 && $articleOverviewHelper->hasArticleMakeOnlinePermission()) {
-            $bulkEditingFunctions .= createBulkEditingFunction('con_makeonline', 'images/online.gif', i18n('Set articles online'));
+            $bulkEditingFunctions .= cArticleOverviewHelper::createBulkEditingFunction(
+                'con_makeonline',
+                $cfg['path']['images'] . 'online.gif',
+                i18n('Set articles online')
+            );
         }
         if ($articlesOnline > 0 && $articleOverviewHelper->hasArticleMakeOnlinePermission()) {
-            $bulkEditingFunctions .= createBulkEditingFunction('con_makeonline invert', 'images/offline.gif', i18n('Set articles offline'));
+            $bulkEditingFunctions .= cArticleOverviewHelper::createBulkEditingFunction(
+                'con_makeonline invert',
+                $cfg['path']['images'] . 'offline.gif',
+                i18n('Set articles offline')
+            );
         }
         if ($articlesUnlocked > 0 && $articleOverviewHelper->hasArticleLockPermission()) {
-            $bulkEditingFunctions .= createBulkEditingFunction('con_lock', 'images/article_unlocked.gif', i18n('Freeze articles'));
+            $bulkEditingFunctions .= cArticleOverviewHelper::createBulkEditingFunction(
+                'con_lock',
+                $cfg['path']['images'] . 'article_unlocked.gif',
+                i18n('Freeze articles')
+            );
         }
         if ($articlesLocked > 0 && $articleOverviewHelper->hasArticleLockPermission()) {
-            $bulkEditingFunctions .= createBulkEditingFunction('con_lock invert', 'images/article_locked.gif', i18n('Unfreeze articles'));
+            $bulkEditingFunctions .= cArticleOverviewHelper::createBulkEditingFunction(
+                'con_lock invert',
+                $cfg['path']['images'] . 'article_locked.gif',
+                i18n('Unfreeze articles')
+            );
         }
         if ($articlesToSync > 0 && $articleOverviewHelper->hasArticleContentSyncPermission()) {
-            $bulkEditingFunctions .= createBulkEditingFunction('con_syncarticle', 'images/but_sync_art.gif', i18n('Copy article to the current language'));
+            $bulkEditingFunctions .= cArticleOverviewHelper::createBulkEditingFunction(
+                'con_syncarticle',
+                $cfg['path']['images'] . 'but_sync_art.gif',
+                i18n('Copy article to the current language')
+            );
         }
         if ($articlesToRemove > 0 && $articleOverviewHelper->hasArticleDeletePermission()) {
-            $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'Con.showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
+            $bulkEditingFunctions .= cArticleOverviewHelper::createBulkEditingFunction(
+                'con_deleteart',
+                $cfg['path']['images'] . 'delete.gif',
+                i18n('Delete articles'),
+                'Con.showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)'
+            );
         }
         if ($articlesToEdit > 0 && $articleOverviewHelper->hasArticleEditPermission()) {
-            $bulkEditingFunctions .= createBulkEditingFunction('con_inlineeditart', 'images/editieren.gif', i18n('Edit articles'));
+            $bulkEditingFunctions .= cArticleOverviewHelper::createBulkEditingFunction(
+                'con_inlineeditart',
+                $cfg['path']['images'] . 'editieren.gif',
+                i18n('Edit articles')
+            );
         }
 
-        if ($bulkEditingFunctions == "") {
+        if ($bulkEditingFunctions == '') {
             $bulkEditingFunctions = i18n("Your permissions do not allow any actions here");
         }
 
@@ -840,7 +909,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
                 $tpl->set('d', 'CELLS', implode("\n", $cells));
 
-                if (isset($colitem[$key2]) && $colitem[$key2] == 'con_sync') {
+                if (isset($colItem[$key2]) && $colItem[$key2] == 'con_sync') {
                     $tpl->set('d', 'CSS_CLASS', 'class="con_sync row_mark"');
                 } else {
                     $tpl->set('d', 'CSS_CLASS', 'class="row_mark"');
@@ -894,11 +963,11 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     b.name AS name,
                     d.idtpl AS idtpl
                 FROM
-                    (" . cRegistry::getDbTableName('cat') . " AS a,
-                    " . cRegistry::getDbTableName('cat_lang') . " AS b,
-                    " . cRegistry::getDbTableName('tpl_conf') . " AS c)
+                    (" . cDb::getTableName('cat') . " AS a,
+                    " . cDb::getTableName('cat_lang') . " AS b,
+                    " . cDb::getTableName('tpl_conf') . " AS c)
                 LEFT JOIN
-                    " . cRegistry::getDbTableName('tpl') . " AS d
+                    " . cDb::getTableName('tpl') . " AS d
                 ON
                     d.idtpl = c.idtpl
                 WHERE
@@ -911,7 +980,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $db->query($sql);
 
         if ($db->nextRecord()) {
-            $cat_idtpl = $db->f("idtpl");
+            $cat_idtpl = $db->f('idtpl');
         }
 
         $cat_name = renderBackendBreadcrumb($syncoptions, false, true);
@@ -939,9 +1008,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         // Button to display and configure category
         /*
          * JL 23.06.03 Check right from "Content" instead of "Category" if
-         * ($perm->have_perm_area_action("str_tplcfg", "str_tplcfg") ||
-         * $perm->have_perm_area_action_item("str_tplcfg", "str_tplcfg",
-         * $lidcat))
+         * ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg') ||
+         * $perm->have_perm_area_action_item('str_tplcfg', 'str_tplcfg', $lidcat))
          */
 
         if (
@@ -953,7 +1021,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             if (0 != $idcat) {
                 $tpl->set('s', 'CATEGORY', $cat_name);
                 $tpl->set('s', 'CATEGORY_CONF', $tmp_img ?? '');
-                $tpl->set('s', 'CATEGORY_LINK', $tmp_link ?? '');
+                $tpl->set('s', 'CATEGORY_LINK', $startArticleLink ?? '');
             } else {
                 $tpl->set('s', 'CATEGORY', $cat_name);
                 $tpl->set('s', 'CATEGORY_CONF', '&nbsp;');
@@ -981,7 +1049,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             if ($idcat != 0 && $cat_idtpl != 0) {
                 $link = new cHTMLLink(
                     $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat"),
-                    cHTMLImage::img('images/but_art_new.gif', i18n("Create new article")) . ' ' . i18n("Create new article"),
+                    cHTMLImage::img($cfg['path']['images'] . 'but_art_new.gif', i18n("Create new article")) . ' ' . i18n("Create new article"),
                     'con_func_button',
                     'newArtTxt'
                 );
@@ -1033,24 +1101,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 }
 
 /**
- * Creates HTML code for the bulk editing functions in the article overview.
- *
- * @param string $class the class for the link
- * @param string $imageSrc the path to the image
- * @param string $alt the alt tag for the image
- * @param string $onclick [optional] the onlick attribute for the link
- * @return string rendered HTML code
+ * @deprecated [2026-01-04] Since 4.10.2, use {@see cArticleOverviewHelper::createBulkEditingFunction()} instead!
  */
 function createBulkEditingFunction($class, $imageSrc, $alt, $onclick = ''): string
 {
-    $function = new cHTMLLink();
-    $function->setClass($class);
-    if ($onclick !== '') {
-        $function->setEvent('click', $onclick);
-    }
-    $image = new cHTMLImage($imageSrc);
-    $image->setAlt($alt);
-    $function->setContent($image);
-
-    return $function->render();
+    return cArticleOverviewHelper::createBulkEditingFunction($class, $imageSrc, $alt, $onclick);
 }

@@ -47,7 +47,7 @@ if ($requestIdNewsletter > 0) {
     $oNewsletter->loadByPrimaryKey($requestIdNewsletter);
 }
 
-if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
+if (true === $oNewsletter->isLoaded() && $oNewsletter->get('idclient') == $client && $oNewsletter->get('idlang') == $lang) {
     // Check and set values
     $requestSelTemplate = cSecurity::toInteger($_REQUEST['selTemplate'] ?? '0');
     $requestTxtMessage = $_REQUEST['txtMessage'] ?? '';
@@ -60,55 +60,55 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     // text message he may still have the right to change the html article. To prevent
     // changing the html article, give the user only read access right for the newsletter
     // article category - the article will be shown also, if he doesn't have any rights at all...
-    if ($action == "news_save" && $perm->have_perm_area_action("news", $action)) {
+    if ($action === 'news_save' && $perm->have_perm_area_action("news", $action)) {
 
         // Don't use $area! Changing e.g. \' back to ' (magic_quotes)
 
         $sMessage = cSecurity::unescapeDB($requestTxtMessage);
-        $oNewsletter->set("message", $sMessage);
+        $oNewsletter->set('message', $sMessage);
 
-        if ($oNewsletter->get("template_idart") != $requestSelTemplate) {
-            if ($oNewsletter->get("idart") > 0) {
+        if ($oNewsletter->get('template_idart') != $requestSelTemplate) {
+            if ($oNewsletter->get('idart') > 0) {
                 // Template has been changed: Delete old article
                 // (this discards the current html content as it deletes the
                 // existing newsletter article)
-                conDeleteArt($oNewsletter->get("idart"));
+                conDeleteArt($oNewsletter->get('idart'));
                 $iIDArt = 0;
             }
 
             if ($requestSelTemplate > 0) {
                 // Template has been changed, but specified: Store template
                 // article as new newsletter article
-                $iIDArt = conCopyArticle($requestSelTemplate, $oClientLang->getProperty("newsletter", "html_newsletter_idcat"), sprintf(i18n("Newsletter: %s", 'newsletter'), $oNewsletter->get("name")));
+                $iIDArt = conCopyArticle($requestSelTemplate, $oClientLang->getProperty('newsletter', 'html_newsletter_idcat'), sprintf(i18n("Newsletter: %s", 'newsletter'), $oNewsletter->get('name')));
                 // Article has to be online for sending...
                 conMakeOnline($iIDArt, $lang);
             }
 
-            $oNewsletter->set("idart", $iIDArt);
-            $oNewsletter->set("template_idart", $requestSelTemplate);
+            $oNewsletter->set('idart', $iIDArt);
+            $oNewsletter->set('template_idart', $requestSelTemplate);
         }
 
         $oNewsletter->store();
         $oPage->displayOk(i18n("Saved changes successfully!", 'newsletter'));
-    } elseif ($oNewsletter->get("idart") > 0) {
+    } elseif ($oNewsletter->get('idart') > 0) {
         // Check, if html message article and template article are still
         // available
         $oArticles = new cApiArticleLanguageCollection();
-        $oArticles->setWhere("idlang", $lang);
-        $oArticles->setWhere("idart", $oNewsletter->get("idart"));
+        $oArticles->setWhere('idlang', $lang);
+        $oArticles->setWhere('idart', $oNewsletter->get('idart'));
         $oArticles->query();
 
         if ($oArticles->count() == 0) {
             // Ups, article lost, reset idart and template_idart for newsletter
-            $oPage->displayError(sprintf(i18n("The html newsletter article has been deleted (idart: %s), the html message is lost", 'newsletter'), $oNewsletter->get("idart"))) . "<br>";
+            $oPage->displayError(sprintf(i18n("The html newsletter article has been deleted (idart: %s), the html message is lost", 'newsletter'), $oNewsletter->get('idart'))) . "<br>";
 
-            $oNewsletter->set("idart", 0);
-            $oNewsletter->set("template_idart", 0);
+            $oNewsletter->set('idart', 0);
+            $oNewsletter->set('template_idart', 0);
             $oNewsletter->store();
         } else {
             $oArticles->resetQuery();
-            $oArticles->setWhere("idlang", $lang);
-            $oArticles->setWhere("idart", $oNewsletter->get("template_idart"));
+            $oArticles->setWhere('idlang', $lang);
+            $oArticles->setWhere('idart', $oNewsletter->get('template_idart'));
             $oArticles->query();
 
             if ($oArticles->count() == 0) {
@@ -116,22 +116,22 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
                 // newsletter message article
                 $oPage->displayWarning(i18n("The html newsletter template article has been deleted, it has been restored using the html message article of this newsletter", 'newsletter')) . "<br>";
 
-                $iIDArt = conCopyArticle($oNewsletter->get("idart"), $oClientLang->getProperty("newsletter", "html_template_idcat"), sprintf(i18n("%s (Template restored)", 'newsletter'), $oNewsletter->get("name")));
-                $oNewsletter->set("template_idart", $iIDArt);
+                $iIDArt = conCopyArticle($oNewsletter->get('idart'), $oClientLang->getProperty('newsletter', 'html_template_idcat'), sprintf(i18n("%s (Template restored)", 'newsletter'), $oNewsletter->get('name')));
+                $oNewsletter->set('template_idart', $iIDArt);
                 $oNewsletter->store();
             }
         }
     }
 
-    $oForm = new cGuiTableForm("frmNewsletterMsg");
+    $oForm = new cGuiTableForm('frmNewsletterMsg');
     $oForm->setTableClass('generic col_md');
-    $oForm->setVar("frame", $frame);
-    $oForm->setVar("area", $area);
-    $oForm->setVar("action", "news_save");
-    $oForm->setVar("idnewsletter", $requestIdNewsletter);
+    $oForm->setVar('frame', $frame);
+    $oForm->setVar('area', $area);
+    $oForm->setVar('action', 'news_save');
+    $oForm->setVar('idnewsletter', $requestIdNewsletter);
 
-    $oForm->setHeader(sprintf(i18n("Edit newsletter message (%s)", 'newsletter'), $oNewsletter->get("name")));
-    $oForm->add(i18n("Subject", 'newsletter'), $oNewsletter->get("subject"));
+    $oForm->setHeader(sprintf(i18n("Edit newsletter message (%s)", 'newsletter'), $oNewsletter->get('name')));
+    $oForm->add(i18n("Subject", 'newsletter'), $oNewsletter->get('subject'));
 
     $sTagInfoText = '<a href="javascript:void(0)" data-action="toggle_tag_info" data-toggle-id="idTagInfoText"><strong>' . i18n("Tag information", 'newsletter') . '</strong></a>' . '<div id="idTagInfoText" style="display: none"><br><b>' . i18n("Special message tags (will be replaced when sending)", 'newsletter') . ':</b><br>' . 'MAIL_NAME: ' . i18n("Name of the recipient", 'newsletter') . '<br>' . 'MAIL_DATE: ' . i18n("Date, when the mail has been sent", 'newsletter') . '<br>' . 'MAIL_TIME: ' . i18n("Time, when the mail has been sent", 'newsletter') . '<br>' . 'MAIL_NUMBER: ' . i18n("Number of recipients", 'newsletter') . '<br>' .
         'MAIL_UNSUBSCRIBE: ' .
@@ -142,7 +142,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         i18n("Link text", 'newsletter') . '" }]{text}MAIL_UNSUBSCRIBE{text}[/mail]: ' . i18n("Link to unsubscribe", 'newsletter') . "<br>" . '[mail name="stop" type="link" {text="' . i18n("Link text", 'newsletter') . '" }]{text}MAIL_STOP{text}[/mail]: ' . i18n("Link to pause the subscription", 'newsletter') . "<br>" . '[mail name="goon" type="link" {text="' . i18n("Link text", 'newsletter') . '" }]{text}MAIL_GOON{text}[/mail]: ' . i18n("Link to resume the subscription", 'newsletter');
 
     // Mention plugin interface
-    if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
+    if (getSystemProperty('newsletter', 'newsletter-recipients-plugin') == 'true') {
         $sTagInfoText .= "<br><br><strong>" . i18n("Additional message tags from recipients plugins:", 'newsletter') . "</strong><br>";
         $sTagInfoHTML .= "<br><br><strong>" . i18n("Additional message tags from recipients plugins:", 'newsletter') . "</strong><br>";
 
@@ -161,19 +161,19 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         }
     } else {
         // -> Property available in system settings
-        setSystemProperty("newsletter", "newsletter-recipients-plugin", "false");
+        setSystemProperty('newsletter', 'newsletter-recipients-plugin', 'false');
     }
     $sTagInfoText .= "</div>";
     $sTagInfoHTML .= "</div>";
 
     $iTplIDArt = 0; // Used later for on change event
-    if ($oNewsletter->get("type") == "html") {
-        $iTplIDArt = $oNewsletter->get("template_idart");
-        $oSelTemplate = new cHTMLSelectElement("selTemplate");
+    if ($oNewsletter->get('type') == "html") {
+        $iTplIDArt = $oNewsletter->get('template_idart');
+        $oSelTemplate = new cHTMLSelectElement('selTemplate');
         $oSelTemplate->setClass('text_medium')
-            ->setAttribute("data-action-change", "template_change");
+            ->setAttribute('data-action-change', 'template_change');
         $aOptions = [
-            "idcat" => $oClientLang->getProperty("newsletter", "html_template_idcat"),
+            "idcat" => $oClientLang->getProperty('newsletter', 'html_template_idcat'),
             "start" => true,
             "offline" => true,
             "order" => "title"
@@ -187,8 +187,8 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         ];
         while ($oArticle = $oTemplateArticles->nextArticle()) {
             $aItems[] = [
-                $oArticle->get("idart"),
-                $oArticle->get("title")
+                $oArticle->get('idart'),
+                $oArticle->get('title')
             ];
         }
 
@@ -199,7 +199,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         $oForm->add(i18n("HTML Template", 'newsletter'), $oSelTemplate->render() . "&nbsp;" . i18n("Note, that changing the template discards the current html message content", 'newsletter'));
 
         if ($iTplIDArt != 0) {
-            $sFrameSrc = "main.php?area=con_editcontent&action=con_editart&changeview=edit&idart=" . $oNewsletter->get("idart") . "&idcat=" . $oClientLang->getProperty("newsletter", "html_newsletter_idcat") . "&lang=" . $lang . "&contenido=" . $sess->id;
+            $sFrameSrc = "main.php?area=con_editcontent&action=con_editart&changeview=edit&idart=" . $oNewsletter->get('idart') . "&idcat=" . $oClientLang->getProperty('newsletter', 'html_newsletter_idcat') . "&lang=" . $lang . "&contenido=" . $sess->id;
 //            $sFrameSrc = "main.php?area=con_editcontent&action=con_editart&changeview=edit&idart=13&idcat=5&lang=1&contenido=" . $sess->id;
 
             $oForm->add(i18n("HTML Message", 'newsletter'), '<iframe width="100%" height="600" src="' . $sFrameSrc . '"></iframe><br>' . $sTagInfoHTML);
@@ -211,7 +211,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         }
     }
 
-    $oTxtMessage = new cHTMLTextarea("txtMessage", $oNewsletter->get("message"), 80, 20);
+    $oTxtMessage = new cHTMLTextarea('txtMessage', $oNewsletter->get('message'), 80, 20);
     $oTxtMessage->setClass('col_100p');
     $oForm->add(i18n("Text Message", 'newsletter'), $oTxtMessage->render() . "<br>" . $sTagInfoText);
 
@@ -223,7 +223,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         // newsletter immediately)
         function actionTemplateChange($select) {
             var iOriginalTplIDArt = ' . $iTplIDArt . ';
-    
+
             if (iOriginalTplIDArt !== parseInt($select.val(), 10)) {
                 if (iOriginalTplIDArt === 0) {
                     // Everything fine: Just selecting a template for the first time

@@ -73,7 +73,7 @@ class cPermission
 
         $oAreaColl = new cApiAreaCollection();
         $oAreaColl->select("name='" . $oAreaColl->escape($area) . "'");
-        if (false !== $oItem = $oAreaColl->next()) {
+        if ($oItem = $oAreaColl->next()) {
             $this->areacache[$area] = $oItem->get('idarea');
             $area = $oItem->get('idarea');
         }
@@ -132,12 +132,12 @@ class cPermission
                 $sess->register('area_rights');
                 $sess->register('item_rights');
                 $item_rights = [];
-                $groups = $this->getGroupsForUser($auth->auth['uid']);
+                $groups = $this->getGroupsForUser($auth->getUserId());
                 foreach ($groups as $group) {
                     $this->load_permissions_for_user($group);
                 }
 
-                $this->load_permissions_for_user($auth->auth['uid']);
+                $this->load_permissions_for_user($auth->getUserId());
             }
         }
 
@@ -168,7 +168,7 @@ class cPermission
         if (!is_array($area_rights)) {
             $area_rights = [];
         }
-        while (false !== $oItem = $oRightColl->next()) {
+        while ($oItem = $oRightColl->next()) {
             $idarea = $oItem->get('idarea');
             $idaction = $oItem->get('idaction');
             $area_rights[$idarea][$idaction] = true;
@@ -183,7 +183,7 @@ class cPermission
         $sWhere = "`user_id` = '%s' AND `idclient` = %d AND `idlang` = %d AND `idarea` IN ('$tmp_area_string') AND `idcat` != 0";
         $sWhere = $oRightColl->prepare($sWhere, $user, $clientId, $languageId);
         $oRightColl->select($sWhere);
-        while (false !== $oItem = $oRightColl->next()) {
+        while ($oItem = $oRightColl->next()) {
             $idarea = $oItem->get('idarea');
             $idaction = $oItem->get('idaction');
             $idcat = $oItem->get('idcat');
@@ -249,8 +249,8 @@ class cPermission
 
         $item_rights[$area] = $item_rights[$area] ?? '';
         if ($item_rights[$area] != 'noright') {
-            $groupsForUser = $this->getGroupsForUser($auth->auth['uid']);
-            $groupsForUser[] = $auth->auth['uid'];
+            $groupsForUser = $this->getGroupsForUser($auth->getUserId());
+            $groupsForUser[] = $auth->getUserId();
 
             $userIdIn = implode("','", $groupsForUser);
 
@@ -262,7 +262,7 @@ class cPermission
                 return false;
             }
 
-            while (false !== $oItem = $oRightsColl->next()) {
+            while ($oItem = $oRightsColl->next()) {
                 $item_rights[$oItem->get('idarea')][$oItem->get('idaction')][$oItem->get('idcat')] = $oItem->get('idcat');
             }
 
@@ -328,7 +328,6 @@ class cPermission
     /**
      * @param int $clientId
      * @param int $languageId
-     * @return bool
      */
     public function have_perm_client_lang($clientId, $languageId): bool
     {
@@ -379,7 +378,7 @@ class cPermission
 
         // Check clients' rights of users' group(s)
         // global $auth;
-        // $aGroups = $this->getGroupsForUser($auth->auth["uid"]);
+        // $aGroups = $this->getGroupsForUser($auth->getUserId());
         // if (is_array($aGroups)) {
         //     foreach ($aGroups as $group) {
         //         $oGroup = new cApiGroup($group);
@@ -476,7 +475,7 @@ class cPermission
 
         if (!is_object($oUser)) {
             global $auth;
-            $oUser = new cApiUser($auth->auth['uid']);
+            $oUser = new cApiUser($auth->getUserId());
         }
 
         if (!$oUser instanceof cApiUser) {
@@ -555,13 +554,12 @@ class cPermission
         $auth = cRegistry::getAuth();
         $clientId = cRegistry::getClientId();
         $languageId = cRegistry::getLanguageId();
-        $cfg = cRegistry::getConfig();
 
         if (!is_object($this->db)) {
             $this->db = cRegistry::getDb();
         }
 
-        $this->showareas($mainArea);
+        $this->showAreas($mainArea);
 
         $flg = false;
         // Check if there are any rights for this areas
@@ -578,14 +576,14 @@ class cPermission
                     }
                 }
             } elseif ($item_rights[$value] != 'noright') {
-                $groupsForUser = $this->getGroupsForUser($auth->auth['uid']);
-                $groupsForUser[] = $auth->auth['uid'];
+                $groupsForUser = $this->getGroupsForUser($auth->getUserId());
+                $groupsForUser[] = $auth->getUserId();
                 $userIdIn = implode("','", $groupsForUser);
 
                 // else search for rights for this user in this area
                 $sql = "SELECT * FROM `%s` WHERE `user_id` IN ('" . $userIdIn . "') "
                     . "AND `idclient` = %d AND `idlang` = %d AND `idarea` = %d AND `idcat` != 0";
-                $this->db->query($sql, $cfg['tab']['rights'], $clientId, $languageId, $value);
+                $this->db->query($sql, cDb::getTableName('rights'), $clientId, $languageId, $value);
 
                 // If there are no rights for this area set the flag noright
                 if ($this->db->affectedRows() == 0) {
@@ -594,10 +592,11 @@ class cPermission
 
                 // Set the rights
                 while ($this->db->nextRecord()) {
-                    if ($this->db->f('idcat') == $itemid) {
+                    $rs = $this->db->toObject();
+                    if ($rs->idcat == $itemid) {
                         $flg = true;
                     }
-                    $item_rights[$this->db->f('idarea')][$this->db->f('idaction')][$this->db->f('idcat')] = $this->db->f('idcat');
+                    $item_rights[$rs->idarea][$rs->idaction][$rs->idcat] = $rs->idcat;
                 }
             }
         }
@@ -610,7 +609,7 @@ class cPermission
      * @param string|int $mainArea
      * @throws cDbException|cException
      */
-    public function showareas($mainArea): int
+    public function showAreas($mainArea): int
     {
         global $area_tree;
 
@@ -635,7 +634,7 @@ class cPermission
     }
 
     /**
-     * Splits passed permission string and returns it as an array. If the passed permission is
+     * Splits passed permission string and returns it as an array. If the provided permission is
      * already an array, then it will be returned without any further ado.
      *
      * @param string|string[] $permission Comma separated permission string or list of permissions.
@@ -667,13 +666,11 @@ class cPermission
     /**
      * Checks for language permissions.
      *
-     * @param int $languageId
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @since CONTENIDO 4.10.2
      */
-    public static function checkLanguagePermission($languageId, $permission): bool
+    public static function checkLanguagePermission(int $languageId, $permission): bool
     {
-        $languageId = cSecurity::toInteger($languageId);
         $permissions = self::permissionToArray($permission);
         return in_array("lang[$languageId]", $permissions);
     }
@@ -681,13 +678,11 @@ class cPermission
     /**
      * Checks for client permissions.
      *
-     * @param int $clientId
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @since CONTENIDO 4.10.2
      */
     public static function checkClientPermission(int $clientId, $permission): bool
     {
-        $clientId = cSecurity::toInteger($clientId);
         $permissions = self::permissionToArray($permission);
         return in_array("client[$clientId]", $permissions);
     }
@@ -729,7 +724,7 @@ class cPermission
     {
         $permissions = self::permissionToArray($permission);
         $pattern = $strict ? '/^admin.*/' : '/admin.*/';
-        return (count(preg_grep($pattern, $permissions)) > 0);
+        return count(preg_grep($pattern, $permissions)) > 0;
     }
 
     /**
@@ -741,7 +736,7 @@ class cPermission
     public static function checkSysadminPermission($permission): bool
     {
         $permissions = self::permissionToArray($permission);
-        return (in_array('sysadmin', $permissions));
+        return in_array('sysadmin', $permissions);
     }
 
     /**

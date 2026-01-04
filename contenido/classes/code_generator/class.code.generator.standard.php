@@ -169,52 +169,75 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
         $this->_processCodeMetaTags();
 
         // save the collected css/js data and save it under the template name
-        // ([templatename].css , [templatename].js in cache dir
+        // ([templateName].css, [templateName].js in cache dir
         $cssFile = '';
-        if (cString::getStringLength($this->_cssData) > 0) {
-            if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData)) !== false) {
-                $cssFile = cHTMLLinkTag::stylesheet($myFileCss);
-            }
+        if (
+            cString::getStringLength($this->_cssData) > 0
+            && ($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData)) !== false
+        ) {
+            $cssFile = cHTMLLinkTag::stylesheet($myFileCss);
         }
 
         $jsFile = '';
-        if (cString::getStringLength($this->_jsData) > 0) {
-            if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, 'js', $this->_jsData)) !== false) {
-                $jsFile = cHTMLScript::external($myFileJs);
-            }
+        if (
+            cString::getStringLength($this->_jsData) > 0
+            && ($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, 'js', $this->_jsData)) !== false
+        ) {
+            $jsFile = cHTMLScript::external($myFileJs);
         }
 
-        // add module CSS at {CSS} position, after title
-        // or after opening head tag
+        // add module CSS at {CSS} position, after title or after opening head tag
         if (cString::findFirstPos($this->_layoutCode, '{CSS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{CSS}', $cssFile, $this->_layoutCode);
         } elseif (!empty($cssFile)) {
             if (cString::findFirstPos($this->_layoutCode, '</title>') !== false) {
                 $matches = [];
                 if (preg_match_all("#(<head>.*?</title>)(.*?</head>)#si", $this->_layoutCode, $matches)) {
-                    $this->_layoutCode = cString::iReplaceOnce($matches[1][0], $matches[1][0] . $cssFile, $this->_layoutCode);
+                    $this->_layoutCode = cString::iReplaceOnce(
+                        $matches[1][0],
+                        $matches[1][0] . $cssFile,
+                        $this->_layoutCode
+                    );
                 }
             } else {
-                $this->_layoutCode = cString::iReplaceOnce('<head>', '<head>' . $cssFile, $this->_layoutCode);
+                $this->_layoutCode = cString::iReplaceOnce('<head>',
+                    '<head>' . $cssFile,
+                    $this->_layoutCode
+                );
             }
         }
 
         if (cString::findFirstPos($this->_layoutCode, '{REV}') !== false) {
-            $this->_layoutCode = cString::iReplaceOnce('{REV}', ((int)getEffectiveSetting("ressource", "revision", 0)), $this->_layoutCode);
+            $this->_layoutCode = cString::iReplaceOnce(
+                '{REV}',
+                cSecurity::toInteger(getEffectiveSetting('ressource', 'revision', 0)),
+                $this->_layoutCode
+            );
         }
 
-        // add module JS at {JS} position
-        // or before closing body tag if there is no {JS}
+        // add module JS at {JS} position or before closing body tag if there is no {JS}
         if (cString::findFirstPos($this->_layoutCode, '{JS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{JS}', $jsFile, $this->_layoutCode);
         } elseif (!empty($jsFile)) {
-            $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
+            $this->_layoutCode = cString::iReplaceOnce(
+                '</body>',
+                $jsFile . '</body>',
+                $this->_layoutCode
+            );
         }
 
         if (cString::findFirstPos($this->_layoutCode, '{META}') !== false) {
-            $this->_layoutCode = cString::iReplaceOnce('{META}', $this->_processCodeMetaTags(), $this->_layoutCode);
+            $this->_layoutCode = cString::iReplaceOnce(
+                '{META}',
+                $this->_processCodeMetaTags(),
+                $this->_layoutCode
+            );
         } else {
-            $this->_layoutCode = cString::iReplaceOnce('</head>', $this->_processCodeMetaTags() . '</head>', $this->_layoutCode);
+            $this->_layoutCode = cString::iReplaceOnce(
+                '</head>',
+                $this->_processCodeMetaTags() . '</head>',
+                $this->_layoutCode
+            );
         }
 
         if ($this->_getFeDebugOption('general_information')) {
@@ -251,9 +274,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             $this->_layoutCode = $debugPrefix . $this->_layoutCode;
         }
 
-        // save the generated code even if there are faulty modules
-        // if one does not do so, a not existing cache file
-        // will be tried to be loaded in frontend
+        // save the generated code even if there are faulty modules if one does not do so,
+        // a not existing cache file  will be tried to be loaded in frontend
         $this->_saveGeneratedCode($idcatart);
 
         return $this->_layoutCode;
@@ -271,7 +293,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
     {
         cDebug::out('Neither CAT or ART are configured!');
 
-        $code = '<html><body>No code was created for this article in this category.</body><html>';
+        $code = '<html><body>No code was created for this article in this category.</body></html>';
         $this->_saveGeneratedCode($idcatart, $code, false);
     }
 
@@ -334,11 +356,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
         $metaTags = $this->_getBasicMetaTags();
 
         // process chain Contenido.Content.CreateMetatags to update meta tags
-        $_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Content.CreateMetatags');
-        if ($_cecIterator->count() > 0) {
-            while (false !== $chainEntry = $_cecIterator->next()) {
-                $metaTags = $chainEntry->execute($metaTags);
-            }
+        $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Content.CreateMetatags');
+        while ($chainEntry = $cecIterator->next()) {
+            $metaTags = $chainEntry->execute($metaTags);
         }
 
         $sMetaTags = '';
@@ -430,10 +450,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             }
 
             if (is_dir($codePath)) {
-                $fileCode = ($code == '') ? $this->_layoutCode : $code;
-
-                $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $fileCode;
-                cFileHandler::write($codePath . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
+                $fileCode = $code == '' ? $this->_layoutCode : $code;
+                $code = "<?php defined('CON_FRAMEWORK') or die('Illegal call'); ?>" . $fileCode;
+                $filename = sprintf('%s.%s.%s.php', $codePath . $this->_client, $this->_lang, $idcatart);
+                cFileHandler::write($filename, $code, false);
 
                 // Update create code flag
                 if ($flagCreateCode) {

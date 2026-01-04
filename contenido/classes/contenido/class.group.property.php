@@ -23,8 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiGroupProperty createNewItem
- * @method cApiGroupProperty|bool next
+ * @extends ItemCollection<cApiGroupProperty>
  */
 class cApiGroupPropertyCollection extends ItemCollection
 {
@@ -67,7 +66,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      */
     public function __construct($groupId)
     {
-        parent::__construct(cRegistry::getDbTableName('group_prop'), 'idgroupprop');
+        parent::__construct(cDb::getTableName('group_prop'), 'idgroupprop');
         $this->_setItemClass('cApiGroupProperty');
 
         // set the join partners so that joins can be used via link() method
@@ -210,7 +209,7 @@ class cApiGroupPropertyCollection extends ItemCollection
         $sql = $this->db->prepare("group_id = '%s' AND type = '%s'", $this->_groupId, $type);
         $this->select($sql);
         $props = [];
-        while (($property = $this->next()) !== false) {
+        while ($property = $this->next()) {
             $props[] = clone $property;
         }
         return $props;
@@ -230,7 +229,7 @@ class cApiGroupPropertyCollection extends ItemCollection
         $sql = $this->db->prepare("group_id = '%s'", $this->_groupId);
         $this->select($sql);
         $props = [];
-        while (($property = $this->next()) !== false) {
+        while ($property = $this->next()) {
             $props[] = clone $property;
         }
         return $props;
@@ -285,7 +284,7 @@ class cApiGroupPropertyCollection extends ItemCollection
     protected function _deleteSelected(): bool
     {
         $result = false;
-        while (($prop = $this->next()) !== false) {
+        while ($prop = $this->next()) {
             $id = $prop->get('idgroupprop');
             if (self::$_enableCache) {
                 $this->_deleteFromCache($id);
@@ -321,7 +320,7 @@ class cApiGroupPropertyCollection extends ItemCollection
 
         $sql = $this->db->prepare("group_id = '%s'", $this->_groupId);
         $this->select($sql);
-        while (($property = $this->next()) !== false) {
+        while ($property = $this->next()) {
             $data = $property->toArray();
             self::$_entries[$this->_groupId][$data['idgroupprop']] = $data;
         }
@@ -436,7 +435,7 @@ class cApiGroupProperty extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('group_prop'), 'idgroupprop');
+        parent::__construct(cDb::getTableName('group_prop'), 'idgroupprop');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

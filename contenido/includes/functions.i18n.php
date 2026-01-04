@@ -391,10 +391,11 @@ function i18nGetAvailableLanguages(): array
  * will return: "May the force be with you."
  *
  * @param string $key the string to translate
+ * @param mixed ...$params Additional parameters
  * @return string the translated string
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function mi18n(string $key): string
+function mi18n(string $key, ...$params): string
 {
     $key = trim($key);
 
@@ -420,16 +421,15 @@ function mi18n(string $key): string
     if (empty($translation)) {
         // Get module_translation_message setting value
         $moduleTranslationMessage = getEffectiveSetting('debug', 'module_translation_message', 'true');
-        $moduleTranslationMessage = 'true' === $moduleTranslationMessage ? true : false;
+        $moduleTranslationMessage = $moduleTranslationMessage === 'true';
         $translation = $moduleTranslationMessage ? 'Module translation not found: ' : '';
         $translation .= $key;
     }
 
     // call sprintf on translation with additional params
-    if (1 < func_num_args()) {
-        $arrArgs = func_get_args();
-        $arrArgs[0] = $translation;
-        $translation = call_user_func_array('sprintf', $arrArgs);
+    if (!empty($params)) {
+        // No need for call_user_func_array, just unpack the params
+        $translation = sprintf($translation, ...$params);
     }
 
     return trim($translation);

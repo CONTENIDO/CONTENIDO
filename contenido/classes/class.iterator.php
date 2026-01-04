@@ -17,49 +17,42 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * A class which represents the C/C++/JAVA Iterator support.
  *
- * Iterating items is a mechanism to "step" through a list of defined items.
- * Basically, the iterator is similar to an array, but provides easy functions
- * to step through the list.
+ * Iterating items is a mechanism to "step" through a list of defined items. Basically, the iterator
+ * is similar to an array, but provides easy functions to step through the list.
  *
- * An instance of an iterator is usually created by a class returning multiple
- * items and automatically filled using the $aItems parameter of the
- * constructor, and then returned to the caller.
+ * An instance of an iterator is usually created by a class returning multiple items and automatically
+ * filled using the $array parameter of the constructor, and then returned to the caller.
  *
- * The caller receives the iterator object and can step through all items using
- * the "next" method.
+ * The caller receives the iterator object and can step through all items using the "next" method.
  *
  * @package    Core
  * @subpackage Util
+ * @todo Should implement the {@see Iterator} interface
  */
 class cIterator
 {
 
     /**
-     * Holds the items to iterate.
-     *
-     * @var array
+     * @var array Holds the items to iterate.
      */
-    protected $_aIteratorItems;
+    protected $array;
 
     /**
-     * Holds the keys of the array which should be iterated
-     *
-     * @var array
+     * @var array Holds the keys of the array which should be iterated
      */
-    protected $_keys;
+    protected $keys;
 
     /**
      * Constructor to create an instance of this class.
      *
-     * This function initializes the constructor, adds the passed items
+     * This function initializes the constructor, adds the provided items
      * and moves the iterator to the first element.
      *
-     * @param array $aItems
-     *         Items to add
+     * @param array $array Items to add
      */
-    public function __construct($aItems)
+    public function __construct(array $array = [])
     {
-        $this->_aIteratorItems = is_array($aItems) ? $aItems : [];
+        $this->array = $array;
         $this->reset();
     }
 
@@ -70,7 +63,7 @@ class cIterator
      */
     public function reset()
     {
-        $this->_keys = array_keys($this->_aIteratorItems);
+        $this->keys = array_keys($this->array);
     }
 
     /**
@@ -78,13 +71,12 @@ class cIterator
      *
      * This function returns the item, or false if no items are left.
      *
-     * @return mixed
-     *         item or false if no items are left
+     * @return mixed|false Item or false if no items are left
      */
     public function next()
     {
-        $key = array_shift($this->_keys);
-        return isset($this->_aIteratorItems[$key]) ? $this->_aIteratorItems[$key] : false;
+        $key = array_shift($this->keys);
+        return $this->array[$key] ?? false;
     }
 
     /**
@@ -94,6 +86,6 @@ class cIterator
      */
     public function count(): int
     {
-        return count($this->_aIteratorItems);
+        return count($this->array);
     }
 }

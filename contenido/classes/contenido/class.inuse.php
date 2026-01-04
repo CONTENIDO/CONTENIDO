@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiInUse createNewItem
- * @method cApiInUse|bool next
+ * @extends ItemCollection<cApiInUse>
  */
 class cApiInUseCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiInUseCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('inuse'), 'idinuse');
+        parent::__construct(cDb::getTableName('inuse'), 'idinuse');
         $this->_setItemClass('cApiInUse');
     }
 
@@ -101,7 +100,7 @@ class cApiInUseCollection extends ItemCollection
 
         $this->select("type='" . $type . "' AND session='" . $session . "'");
 
-        while (($obj = $this->next()) !== false) {
+        while ($obj = $this->next()) {
             // Remove entry
             $this->delete($obj->get('idinuse'));
             unset($obj);
@@ -122,7 +121,7 @@ class cApiInUseCollection extends ItemCollection
 
         $this->select("type='" . $type . "' AND objectid='" . $itemid . "'");
 
-        while (($obj = $this->next()) !== false) {
+        while ($obj = $this->next()) {
             // Remove entry
             $this->delete($obj->get('idinuse'));
             unset($obj);
@@ -140,7 +139,7 @@ class cApiInUseCollection extends ItemCollection
         $userId = $this->escape($userId);
         $this->select("userid='" . $userId . "'");
 
-        while (($obj = $this->next()) !== false) {
+        while ($obj = $this->next()) {
             // Remove entry
             $this->delete($obj->get('idinuse'));
             unset($obj);
@@ -159,7 +158,7 @@ class cApiInUseCollection extends ItemCollection
 
         $this->select("timestamp < " . $expire);
 
-        while (($obj = $this->next()) !== false) {
+        while ($obj = $this->next()) {
             // Remove entry
             $this->delete($obj->get('idinuse'));
             unset($obj);
@@ -177,7 +176,7 @@ class cApiInUseCollection extends ItemCollection
         $session = $this->escape($session);
         $this->select("session='" . $session . "'");
 
-        while (($obj = $this->next()) !== false) {
+        while ($obj = $this->next()) {
             // Remove entry
             $this->delete($obj->get('idinuse'));
             unset($obj);
@@ -234,8 +233,8 @@ class cApiInUseCollection extends ItemCollection
         $inUse = false;
         $notificationMsg = '';
 
-        if ((($obj = $this->checkMark($type, $objectid)) === false) || ($auth->auth['uid'] == $obj->get('userid'))) {
-            $this->markInUse($type, $objectid, $sess->id, $auth->auth['uid']);
+        if ((($obj = $this->checkMark($type, $objectid)) === false) || ($auth->getUserId() == $obj->get('userid'))) {
+            $this->markInUse($type, $objectid, $sess->id, $auth->getUserId());
         } elseif ($returnWarning) {
             $vuser = new cApiUser($obj->get('userid'));
             $inUseUser = $vuser->getField('username');
@@ -244,7 +243,7 @@ class cApiInUseCollection extends ItemCollection
             $message = sprintf($warningTemplate, $inUseUser, $inUseUserRealName);
 
             $perm = cRegistry::getPerm();
-            if ($allowOverride && ($auth->auth['uid'] == $obj->get('userid') || $perm->have_perm())) {
+            if ($allowOverride && ($auth->getUserId() == $obj->get('userid') || $perm->have_perm())) {
                 $alt = i18n("Click here if you want to override the lock");
 
                 $link = $sess->url($location . "&overridetype=" . $type . "&overrideid=" . $objectid);
@@ -290,7 +289,7 @@ class cApiInUse extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('inuse'), 'idinuse');
+        parent::__construct(cDb::getTableName('inuse'), 'idinuse');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }

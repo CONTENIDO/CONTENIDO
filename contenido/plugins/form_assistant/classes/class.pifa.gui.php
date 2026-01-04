@@ -84,7 +84,7 @@ class PifaLeftBottomPage extends cGuiPage
     private function _getMenu()
     {
         $cfg = cRegistry::getConfig();
-        $client = cRegistry::getCategoryId();
+        $client = cRegistry::getClientId();
         $lang = cRegistry::getLanguageId();
 
         // get all forms of current client in current language
@@ -101,7 +101,7 @@ class PifaLeftBottomPage extends cGuiPage
         $formContent = $contentCollection->getFieldsByWhereClause([
             'idartlang',
             'value',
-        ], 'idtype = "' . $this->typeId . '"');
+        ], '`idtype` = "' . $this->typeId . '"');
         // get the idform and the related cApiArticleLanguage object and save them in an array
         $assignedForms = [];
         foreach ($formContent as $formRow) {
@@ -122,7 +122,7 @@ class PifaLeftBottomPage extends cGuiPage
 
         // create menu
         $menu = new cGuiMenu();
-        while (false !== $form = $forms->next()) {
+        while ($form = $forms->next()) {
             $formIsInUse = false;
             $idform = cSecurity::toInteger($form->get('idform'));
             $formName = $form->get('name');

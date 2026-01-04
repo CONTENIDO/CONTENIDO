@@ -28,7 +28,7 @@
  */
 
 // allow execution only through cli mode
-if (cString::getPartOfString(PHP_SAPI, 0, 3) != 'cli') {
+if (substr(PHP_SAPI, 0, 3) !== 'cli') {
     die('Illegal call');
 }
 

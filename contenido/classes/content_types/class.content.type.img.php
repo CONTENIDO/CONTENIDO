@@ -31,9 +31,7 @@ class cContentTypeImg extends cContentTypeImgeditor
      * @param string $rawSettings The raw settings in an XML structure or as plaintext
      * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
      * @param array $contentTypes Array containing the values of all content types
-     *
-    * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($rawSettings, $id, array $contentTypes)
     {
@@ -41,7 +39,7 @@ class cContentTypeImg extends cContentTypeImgeditor
         // separately anymore. So compute the appropriate raw settings
         // and call the parent constructor with them.
         if (!cXmlBase::isValidXML($rawSettings)) {
-            $rawSettings = $this->_getRawSettings("CMS_IMGEDITOR", $id, $contentTypes, $editable = false);
+            $rawSettings = $this->_getRawSettings('CMS_IMGEDITOR', $id, $contentTypes, $editable = false);
         }
 
         parent::__construct($rawSettings, $id, $contentTypes);

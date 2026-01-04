@@ -240,7 +240,7 @@ function strCheckAlias($catalias): bool
 {
     $catLangColl = new cApiCategoryLanguageCollection();
     return $catLangColl->select(sprintf(
-        "idlang = %d AND urlname = '%s'",
+        "`idlang` = %d AND `urlname` = '%s'",
         cRegistry::getLanguageId(),
         cSecurity::escapeString($catalias)
     ));
@@ -298,23 +298,23 @@ function strRemakeTreeTable()
     $remakeStrTable = true;
 
     // Empty category tree table having specific categories
-    $sql = 'DELETE FROM ' . $cfg['tab']['cat_tree'] . ' WHERE idcat IN (' . implode(', ', $idcats) . ')';
+    $sql = 'DELETE FROM ' . cDb::getTableName('cat_tree') . ' WHERE idcat IN (' . implode(', ', $idcats) . ')';
     $db->query($sql);
 
     // Delete entries from category table having idcat = 0
     // @todo: Check this, how it is possible to have an invalid entry with
     // primary key = 0
-    $sql = 'DELETE FROM ' . $cfg['tab']['cat'] . ' WHERE idcat = 0';
+    $sql = 'DELETE FROM ' . cDb::getTableName('cat') . ' WHERE idcat = 0';
     $db->query($sql);
 
     // Delete entries from category language table having idcat = 0
     // @todo: Check this, how it is possible to have an invalid entry with
     // primary key = 0
-    $sql = 'DELETE FROM ' . $cfg['tab']['cat_lang'] . ' WHERE idcat = 0';
+    $sql = 'DELETE FROM ' . cDb::getTableName('cat_lang') . ' WHERE idcat = 0';
     $db->query($sql);
 
     // Get all categories by client
-    $sql = "SELECT idcat, parentid, preid, postid FROM " . $cfg['tab']['cat'] . " WHERE idclient = " . (int)$client . " ORDER BY parentid ASC, preid ASC, postid ASC";
+    $sql = "SELECT idcat, parentid, preid, postid FROM " . cDb::getTableName('cat') . " WHERE idclient = " . (int)$client . " ORDER BY parentid ASC, preid ASC, postid ASC";
     $db->query($sql);
 
     $aCategories = [];
@@ -327,7 +327,7 @@ function strRemakeTreeTable()
     }
 
     // Build INSERT statement
-    $sInsertQuery = "INSERT INTO " . $cfg['tab']['cat_tree'] . " (idcat, level) VALUES ";
+    $sInsertQuery = "INSERT INTO " . cDb::getTableName('cat_tree') . " (idcat, level) VALUES ";
     $sInsertQuery = strBuildSqlValues($aCategories[0], $sInsertQuery, $aCategories);
     $sInsertQuery = rtrim($sInsertQuery, " ,");
 
@@ -1273,7 +1273,7 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
         $oContainerConfColl->select('idtplcfg = ' . (int)$oOldCatLang->get('idtplcfg'));
 
         $oNewContainerConfColl = new cApiContainerConfigurationCollection();
-        while (($oItem = $oContainerConfColl->next()) !== false) {
+        while ($oItem = $oContainerConfColl->next()) {
             $oNewContainerConfColl->create($oNewCatLang->get('idtplcfg'), $oItem->get('number'), $oItem->get('container'));
         }
     }
@@ -1284,7 +1284,7 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
 
     // Copy all articles
     $sql = "SELECT A.idart, B.idartlang FROM %s AS A, %s AS B WHERE A.idcat = %d AND B.idart = A.idart AND B.idlang = %s";
-    $db->query($sql, $cfg['tab']['cat_art'], $cfg['tab']['art_lang'], $idcat, $lang);
+    $db->query($sql, cDb::getTableName('cat_art'), cDb::getTableName('art_lang'), $idcat, $lang);
 
     while ($db->nextRecord()) {
         $newidart = (int)conCopyArticle($db->f('idart'), $newidcat, '', $bUseCopyLabel);
@@ -1360,7 +1360,7 @@ function strAssignTemplate($idcat, $client, $idTplCfg)
     if ($idtpl) {
         // Assign template
         $oCatLangColl = new cApiCategoryLanguageCollection('idcat = ' . (int)$idcat);
-        while (($oCatLang = $oCatLangColl->next()) !== false) {
+        while ($oCatLang = $oCatLangColl->next()) {
             $oCatLang->assignTemplate($idtpl);
         }
     }

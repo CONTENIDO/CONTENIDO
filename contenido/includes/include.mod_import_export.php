@@ -38,7 +38,7 @@ if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
-if ($action == "mod_importexport_module") {
+if ($action == 'mod_importexport_module') {
 
     switch ($requestMode) {
         case 'export':
@@ -53,8 +53,8 @@ if ($action == "mod_importexport_module") {
                 cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
                 break;
             }
-            if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
-                if (!$module->import($_FILES['upload']['name'], $_FILES["upload"]["tmp_name"])) {
+            if (cFileHandler::exists($_FILES['upload']['tmp_name'])) {
+                if (!$module->import($_FILES['upload']['name'], $_FILES['upload']['tmp_name'])) {
                     $notification->displayNotification('error', i18n("Could not import module!"));
                 } else {
                     $notification->displayNotification('info', i18n("Module import successfully!"));
@@ -73,11 +73,11 @@ if ($action == "mod_importexport_module") {
             // Make new module
             $modules = new cApiModuleCollection();
 
-            if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
+            if (cFileHandler::exists($_FILES['upload']['tmp_name'])) {
                 $modulName = cString::getPartOfString($_FILES['upload']['name'], 0, -4);
 
                 $module = $modules->create($modulName);
-                if (!$module->importModuleFromXML($_FILES["upload"]["tmp_name"])) {
+                if (!$module->importModuleFromXML($_FILES['upload']['tmp_name'])) {
                     $notification->displayNotification('error', i18n("Could not import module!"));
                     $modules->delete($module->get('idmod'));
                 } else {
@@ -92,25 +92,25 @@ if ($action == "mod_importexport_module") {
     }
 }
 
-$import = new cHTMLRadiobutton("mode", "import");
+$import = new cHTMLRadioButton('mode', 'import');
 $import->setLabelText(i18n("Import from ZIP file"));
 $import->setEvent("onclick", "$('#vupload').css('visibility','visible')");
 
-$importXML = new cHTMLRadiobutton('mode', 'import_xml');
+$importXML = new cHTMLRadioButton('mode', 'import_xml');
 $importXML->setLabelText(i18n("Import from XML file"));
 $importXML->setEvent("onclick", "$('#vupload').css('visibility','visible')");
 
-$export = new cHTMLRadiobutton("mode", "export");
+$export = new cHTMLRadioButton('mode', 'export');
 $export->setLabelText(i18n("Export to ZIP file"));
 $export->setEvent("onclick", "$('#vupload').css('visibility','hidden')");
 
-$upload = new cHTMLUpload("upload");
+$upload = new cHTMLUpload('upload');
 $upload->setID('vupload');
 
 $inputChecked = "";
 $outputChecked = "";
 
-if ($inputChecked != "" && $outputChecked != "") {
+if ($inputChecked != '' && $outputChecked != '') {
     $export->setChecked(true);
 } else {
     $import->setChecked(true);
@@ -124,10 +124,10 @@ if ($readOnly) {
     $importXML->setChecked(false);
 }
 
-$form2 = new cGuiTableForm("export");
+$form2 = new cGuiTableForm('export');
 $form2->addTableClass('col_xs');
-$form2->setVar("action", "mod_importexport_module");
-$form2->setVar("use_encoding", "false");
+$form2->setVar('action', 'mod_importexport_module');
+$form2->setVar('use_encoding', 'false');
 $form2->setHeader("Import/Export" . " &quot;" . conHtmlSpecialChars($module->get('name')) . "&quot;");
 $form2->add(i18n("Mode"), [
     new cHTMLDiv($export, 'mgb5'),
@@ -135,16 +135,16 @@ $form2->add(i18n("Mode"), [
     new cHTMLDiv($importXML)
 ]);
 
-if ($inputChecked != "" && $outputChecked != "") {
+if ($inputChecked != '' && $outputChecked != '') {
     $form2->add(i18n("File"), $upload, "vupload", "visibility: hidden;");
 } else {
     $form2->add(i18n("File"), $upload, "vupload");
 }
 
-$form2->setVar("area", $area);
-$form2->setVar("frame", $frame);
-$form2->setVar("idmod", $requestIdMod);
-$form2->custom["submit"]["accesskey"] = '';
+$form2->setVar('area', $area);
+$form2->setVar('frame', $frame);
+$form2->setVar('idmod', $requestIdMod);
+$form2->custom['submit']['accesskey'] = '';
 
 if ($reloadLeftBottom) {
     $page->reloadLeftBottomFrame(['idmod' => $requestIdMod]);

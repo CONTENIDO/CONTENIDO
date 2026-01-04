@@ -68,9 +68,9 @@ function cApiCatGetLevelNode($idcat, $minLevel = 0)
                 b.parentid AS parentid,
                 c.level AS level
             FROM
-                " . $cfg['tab']['cat_lang'] . " AS a,
-                " . $cfg['tab']['cat'] . " AS b,
-                " . $cfg['tab']['cat_tree'] . " AS c
+                " . cDb::getTableName('cat_lang') . " AS a,
+                " . cDb::getTableName('cat') . " AS b,
+                " . cDb::getTableName('cat_tree') . " AS c
             WHERE
                 a.idlang   = " . (int)$lang . " AND
                 b.idclient = " . (int)$client . " AND

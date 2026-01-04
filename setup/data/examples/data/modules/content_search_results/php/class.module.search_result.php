@@ -346,7 +346,7 @@ class SearchResultModule
                 `client` = %d AND `lang` = %d AND `online` = 1
             ;";
 
-        $this->_db->query($sql, $this->_cfg['tab']['art_spec'], $this->_client, $this->_lang);
+        $this->_db->query($sql, cDb::getTableName('art_spec'), $this->_client, $this->_lang);
 
         $aArtSpecs = [];
         while ($this->_db->nextRecord()) {

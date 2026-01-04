@@ -51,31 +51,31 @@ class cFileCache
     public function setOptions(array $options)
     {
         // complete all options
-        if (isset($options['cacheDir']) === true && cString::getPartOfString($options['cacheDir'], -1) != '/') {
+        if (isset($options['cacheDir']) && cString::getPartOfString($options['cacheDir'], -1) !== '/') {
             $options['cacheDir'] .= '/';
         }
 
-        if (isset($options['cacheDir']) === false) {
+        if (!isset($options['cacheDir'])) {
             $options['cacheDir'] = '/tmp/';
         }
 
-        if (isset($options['lifeTime']) !== false && isset($options['lifetime']) === false) {
+        if (isset($options['lifeTime']) && isset($options['lifetime']) === false) {
             $options['lifetime'] = $options['lifeTime'];
         }
 
-        if (isset($options['lifetime']) === false) {
+        if (!isset($options['lifetime'])) {
             $options['lifetime'] = 3600;
         }
 
-        if (isset($options['fileNamePrefix']) === false) {
+        if (!isset($options['fileNamePrefix'])) {
             $options['fileNamePrefix'] = 'cache_';
         }
 
-        if (isset($options['fileExtension']) === false) {
+        if (!isset($options['fileExtension'])) {
             $options['fileExtension'] = 'tmp';
         }
 
-        if (isset($options['fileNameProtection']) === false) {
+        if (!isset($options['fileNameProtection'])) {
             $options['fileNameProtection'] = false;
         }
 
@@ -85,16 +85,13 @@ class cFileCache
     /**
      * Generates the filename based on set options.
      *
-     * @param string $id
-     *         cache ID
-     * @param string $group [optional]
-     *         cache group
-     * @return string
-     *         filename
+     * @param string $id Cache ID
+     * @param string $group [optional] Cache group
+     * @return string Filename
      */
     public function generateFileName($id, $group = ''): string
     {
-        $id = ($this->_options['fileNameProtection'] === true) ? md5($id) : $id;
+        $id = $this->_options['fileNameProtection'] === true ? md5($id) : $id;
         if ($group != '') {
             $groupName = ($this->_options['fileNameProtection'] === true ? md5($group) : $group) . '_';
             $group = $groupName . '_';

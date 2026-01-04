@@ -26,45 +26,44 @@ class ModRewriteDebugger
 
     /**
      * Flag to enable debugger
-     * @var  bool
+     * @var bool
      */
-    protected static $_bEnabled = false;
+    protected static $enabled = false;
 
     /**
      * Enable debugger setter.
-     * @param bool $bEnabled
+     * @param bool $enabled
      */
-    public static function setEnabled($bEnabled)
+    public static function setEnabled(bool $enabled)
     {
-        self::$_bEnabled = (bool)$bEnabled;
+        self::$enabled = $enabled;
     }
 
     /**
      * Adds variable to debugger.
      * Wrapper for <code>cDebug::getDebugger('visible_adv')</code>.
      *
-     * @param mixed $mVar The variable to dump
-     * @param string $sLabel Description for passed $mVar
-     *
+     * @param mixed $value The variable to dump
+     * @param string $label Description for passed $value
      * @throws cInvalidArgumentException
      */
-    public static function add($mVar, $sLabel = '')
+    public static function add($value, string $label = '')
     {
-        if (!self::$_bEnabled) {
+        if (!self::$enabled) {
             return;
         }
-        cDebug::getDebugger()->add($mVar, $sLabel);
+        cDebug::getDebugger()->add($value, $label);
     }
 
     /**
      * Returns output of all added variables to debug.
      *
-     * @return  string
+     * @return string
      * @throws cInvalidArgumentException
      */
-    public static function getAll()
+    public static function getAll(): string
     {
-        if (!self::$_bEnabled) {
+        if (!self::$enabled) {
             return '';
         }
         ob_start();
@@ -78,17 +77,17 @@ class ModRewriteDebugger
      * Logs variable to debugger.
      * Wrapper for <code>cDebug::getDebugger(cDebug::DEBUGGER_FILE)</code>.
      *
-     * @param mixed $mVar The variable to log the contents
-     * @param string $sLabel Description for passed $mVar
+     * @param mixed $value The variable to log the contents
+     * @param string $label Description for passed $value
      *
      * @throws cInvalidArgumentException
      */
-    public static function log($mVar, $sLabel = '')
+    public static function log($value, string $label = '')
     {
-        if (!self::$_bEnabled) {
+        if (!self::$enabled) {
             return;
         }
-        cDebug::getDebugger(cDebug::DEBUGGER_FILE)->show($mVar, $sLabel);
+        cDebug::getDebugger(cDebug::DEBUGGER_FILE)->show($value, $label);
     }
 
 }

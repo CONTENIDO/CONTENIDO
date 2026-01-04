@@ -172,21 +172,21 @@ abstract class cDbDriverAbstract
      *
      * - full is false (default):
      * $result[]:
-     * [0]["table"] table name
-     * [0]["name"] field name
-     * [0]["type"] field type
-     * [0]["len"] field length
-     * [0]["flags"] field flags
+     * [0]['table'] table name
+     * [0]['name'] field name
+     * [0]['type'] field type
+     * [0]['len'] field length
+     * [0]['flags'] field flags
      *
      * - full is true
      * $result[]:
-     * ["num_fields"] number of metadata records
-     * [0]["table"] table name
-     * [0]["name"] field name
-     * [0]["type"] field type
-     * [0]["len"] field length
-     * [0]["flags"] field flags
-     * ["meta"][field name] index of field named "field name"
+     * ['num_fields'] number of metadata records
+     * [0]['table'] table name
+     * [0]['name'] field name
+     * [0]['type'] field type
+     * [0]['len'] field length
+     * [0]['flags'] field flags
+     * ['meta'][field name] index of field named "field name"
      * This last one could be used if you have a field name, but no index.
      * Test: if (isset($result['meta']['myfield'])) { ...
      *

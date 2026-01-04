@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiCategoryArticle createNewItem
- * @method cApiCategoryArticle|bool next
+ * @extends ItemCollection<cApiCategoryArticle>
  */
 class cApiCategoryArticleCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiCategoryArticleCollection extends ItemCollection
      */
     public function __construct($select = false)
     {
-        $table = cRegistry::getDbTableName('cat_art');
+        $table = cDb::getTableName('cat_art');
         parent::__construct($table, 'idcatart');
         $this->_setItemClass('cApiCategoryArticle');
 
@@ -62,7 +61,7 @@ class cApiCategoryArticleCollection extends ItemCollection
     {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = $auth->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -120,10 +119,10 @@ class cApiCategoryArticleCollection extends ItemCollection
 
         $this->db->query($sql, [
             'tab_cat_art' => $this->table,
-            'tab_cat_tree' => cRegistry::getDbTableName('cat_tree'),
-            'tab_cat_lang' => cRegistry::getDbTableName('cat_lang'),
-            'tab_art_lang' => cRegistry::getDbTableName('art_lang'),
-            'tab_cat' => cRegistry::getDbTableName('cat'),
+            'tab_cat_tree' => cDb::getTableName('cat_tree'),
+            'tab_cat_lang' => cDb::getTableName('cat_lang'),
+            'tab_art_lang' => cDb::getTableName('art_lang'),
+            'tab_cat' => cDb::getTableName('cat'),
             'lang' => cSecurity::toInteger($lang),
             'client' => cSecurity::toInteger($client)
         ]);
@@ -186,7 +185,7 @@ class cApiCategoryArticleCollection extends ItemCollection
     {
         $aIds = [];
 
-        $catTable = cRegistry::getDbTableName('cat');
+        $catTable = cDb::getTableName('cat');
         $sql = "SELECT a.idcatart FROM `%s` AS a, `%s` AS b WHERE b.idclient = %d AND b.idcat = a.idcat";
         $this->db->query($sql, $this->table, $catTable, $idclient);
         while ($this->db->nextRecord()) {
@@ -232,7 +231,7 @@ class cApiCategoryArticleCollection extends ItemCollection
             . "WHERE a.idcat = :idcat AND a.idart = b.idart AND b.idlang = :idlang";
         $this->db->query($sql, [
             'tab_cat_art' => $this->table,
-            'art_lang' => cRegistry::getDbTableName('art_lang'),
+            'art_lang' => cDb::getTableName('art_lang'),
             'idcat' => $idcat,
             'idlang' => $idlang
         ]);
@@ -243,29 +242,33 @@ class cApiCategoryArticleCollection extends ItemCollection
     /**
      * Sets 'createcode' flag for one or more category articles.
      *
-     * @param int|array $idcatart One category article id or list of category article ids
+     * @param int|int[] $idcatart One category article id or list of category article ids
      * @param int $createcode Create code state, either 1 or 0.
      * @return int|void Number of updated entries
      * @throws cDbException
      */
     public function setCreateCodeFlag($idcatart, $createcode = 1)
     {
-        $createcode = ($createcode == 1) ? 1 : 0;
+        $createcode = $createcode == 1 ? 1 : 0;
         if (is_array($idcatart)) {
             // Multiple ids
-            if (count($idcatart) == 0) {
+            if (!count($idcatart)) {
                 return;
             }
-            foreach ($idcatart as $pos => $id) {
-                $idcatart[$pos] = cSecurity::toInteger($id);
-            }
-            $inSql = implode(', ', $idcatart);
-            $sql = "UPDATE `%s` SET `createcode` = %d WHERE `idcatart` IN (" . $inSql . ")";
-            $sql = $this->db->prepare($sql, $this->table, $createcode);
+            $idcatart = array_map('intval', $idcatart);
+            $sql = $this->db->prepare(
+                "UPDATE `%s` SET `createcode` = %d WHERE `idcatart` IN (" . implode(',', $idcatart) . ")",
+                $this->table,
+                $createcode
+            );
         } else {
             // Single id
-            $sql = "UPDATE `%s` SET `createcode` = %d WHERE `idcatart` = %d";
-            $sql = $this->db->prepare($sql, $this->table, $createcode, $idcatart);
+            $sql = $this->db->prepare(
+                "UPDATE `%s` SET `createcode` = %d WHERE `idcatart` = %d",
+                $this->table,
+                $createcode,
+                $idcatart
+            );
         }
         $this->db->query($sql);
         return $this->db->affectedRows();
@@ -288,7 +291,7 @@ class cApiCategoryArticle extends Item
      */
     public function __construct($id = false)
     {
-        $table = cRegistry::getDbTableName('cat_art');
+        $table = cDb::getTableName('cat_art');
         parent::__construct($table, 'idcatart');
         $this->setFilters();
         if ($id !== false) {

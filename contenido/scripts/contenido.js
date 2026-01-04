@@ -41,14 +41,14 @@
 
     /**
      * Common configurations
-     * @property  cfg
+     * @property cfg
      * @type {Object}
      * @static
      */
 
     /**
      * CONTENIDO session id
-     * @property  sid
+     * @property sid
      * @type {Object}
      * @static
      */
@@ -63,7 +63,7 @@
     /**
      * Assign jQuery instance
      * Reference to backend jQuery instance
-     * @property  $
+     * @property $
      * @type {jQuery}
      * @static
      */

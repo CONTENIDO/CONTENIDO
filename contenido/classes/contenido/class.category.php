@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiCategory createNewItem
- * @method cApiCategory|bool next
+ * @extends ItemCollection<cApiCategory>
  */
 class cApiCategoryCollection extends ItemCollection
 {
@@ -41,7 +40,7 @@ class cApiCategoryCollection extends ItemCollection
      */
     public function __construct($select = false)
     {
-        parent::__construct(cRegistry::getDbTableName('cat'), 'idcat');
+        parent::__construct(cDb::getTableName('cat'), 'idcat');
         $this->_setItemClass('cApiCategory');
 
         // set the join partners so that joins can be used via link() method
@@ -70,7 +69,7 @@ class cApiCategoryCollection extends ItemCollection
     {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = $auth->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -244,7 +243,7 @@ class cApiCategoryCollection extends ItemCollection
                 FROM `%s` AS c
                 LEFT JOIN `%s` AS l ON (l.idcat = c.idcat)
                 WHERE c.parentid = %d AND l.idlang = %d";
-        $sql = $this->db->prepare($sql, $this->table, cRegistry::getDbTableName('cat_lang'), $idcat, $idlang);
+        $sql = $this->db->prepare($sql, $this->table, cDb::getTableName('cat_lang'), $idcat, $idlang);
         $this->db->query($sql);
 
         if ($this->db->nextRecord()) {
@@ -290,7 +289,7 @@ class cApiCategoryCollection extends ItemCollection
                 } else {
                     // Deeper element exists, check for language dependent part
                     $sql = "SELECT idcatlang FROM `%s` WHERE idcat = %d AND idlang = %d";
-                    $db2->query($sql, cRegistry::getDbTableName('cat_lang'), $midcat, $idlang);
+                    $db2->query($sql, cDb::getTableName('cat_lang'), $midcat, $idlang);
                     if ($db2->nextRecord()) {
                         $aCats[] = (int) $midcat;
                     }
@@ -352,7 +351,7 @@ class cApiCategoryCollection extends ItemCollection
             $sql = $this->db->prepare(
                 $sql,
                 [
-                    'cat_tree' => cRegistry::getDbTableName('cat_tree'),
+                    'cat_tree' => cDb::getTableName('cat_tree'),
                     'cat' => $this->table,
                     'parentid' => (int)$actId,
                     'idclient' => (int)$idclient,
@@ -391,7 +390,7 @@ class cApiCategoryCollection extends ItemCollection
      * </pre>
      *
      * @param int $idcat
-     * @param  int $idclient
+     * @param int $idclient
      * @return int[] Sorted by category id
      * @throws cDbException
      */
@@ -402,7 +401,7 @@ class cApiCategoryCollection extends ItemCollection
         $curLevel = 0;
 
         $sql = "SELECT * FROM `%s` AS a, `%s` AS b WHERE a.idcat = b.idcat AND idclient = %d ORDER BY idtree";
-        $sql = $this->db->prepare($sql, cRegistry::getDbTableName('cat_tree'), cRegistry::getDbTableName('cat'), $idclient);
+        $sql = $this->db->prepare($sql, cDb::getTableName('cat_tree'), cDb::getTableName('cat'), $idclient);
         $this->db->query($sql);
 
         while ($this->db->nextRecord()) {
@@ -442,7 +441,7 @@ class cApiCategory extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('cat'), 'idcat');
+        parent::__construct(cDb::getTableName('cat'), 'idcat');
         $this->setFilters();
 
         if ($id !== false) {

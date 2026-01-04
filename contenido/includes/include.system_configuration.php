@@ -93,7 +93,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
     }
 
     // disable the HTML element if user is not a sysadmin
-    if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
+    if (cString::findFirstPos($auth->getPerms(), 'sysadmin') === false) {
         $html->updateAttribute('disabled', 'true');
     }
 
@@ -118,7 +118,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
 function renderLabel($text, $name, $width = 280, $separator = ':', $float = ''): string
 {
     $label = new cHTMLLabel($text . $separator, $name);
-    $label->setClass("sys_config_txt_lbl");
+    $label->setClass('sys_config_txt_lbl');
     if ($float != '') {
         $label->setStyle('width: ' . $width . 'px; ' . 'float: ' . $float . ';');
     } else {
@@ -153,7 +153,7 @@ function renderTextProperty($name, $value, $label, $password = false): array
     $textBox->updateAttribute('style', 'width: 322px');
 
     // disable the text box if user is not a sysadmin
-    if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
+    if (cString::findFirstPos($auth->getPerms(), 'sysadmin') === false) {
         $textBox->updateAttribute('disabled', 'true');
     }
 
@@ -175,7 +175,7 @@ $settings = getSystemProperties();
 $reloadHeader = false;
 // store the system properties
 if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have_perm_area_action($area, 'edit_sysconf')) {
-    if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
+    if (cString::findFirstPos($auth->getPerms(), 'sysadmin') === false) {
         $page->displayError(i18n('You don\'t have the permission to make changes here.'));
     } else {
         // @TODO Find a general solution for this!
@@ -230,7 +230,7 @@ $form->setVar('frame', $frame);
 $form->setVar('action', 'edit_sysconf');
 
 // show a disabled OK button if user is not a sysadmin
-if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
+if (cString::findFirstPos($auth->getPerms(), 'sysadmin') === false) {
     $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's');
 }
 

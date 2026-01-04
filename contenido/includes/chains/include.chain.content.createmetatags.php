@@ -48,8 +48,8 @@ function cecCreateMetatags($metatags)
     // Get idcat of homepage
     $sql = "SELECT a.idcat
         FROM
-            " . $cfg['tab']['cat_tree'] . " AS a,
-            " . $cfg['tab']['cat_lang'] . " AS b
+            " . cDb::getTableName('cat_tree') . " AS a,
+            " . cDb::getTableName('cat_lang') . " AS b
         WHERE
             (a.idcat = b.idcat) AND
             (b.visible = 1) AND
@@ -125,18 +125,18 @@ function cecCreateMetatags($metatags)
     $arrHomepageMetaTags = [];
 
     $sql = "SELECT `startidartlang` FROM `%s` WHERE `idcat` = %d AND `idlang` = %d";
-    $db->query($sql, $cfg['tab']['cat_lang'], $idCatHomepage, $lang);
+    $db->query($sql, cDb::getTableName('cat_lang'), $idCatHomepage, $lang);
 
     if ($db->nextRecord()) {
         $iIdArtLangHomepage = cSecurity::toInteger($db->f('startidartlang'));
 
         // Get idart of homepage
         $sql = "SELECT `idart` FROM `%s` WHERE `idartlang` = %d";
-        $db->query($sql, $cfg['tab']['art_lang'], $iIdArtLangHomepage);
+        $db->query($sql, cDb::getTableName('art_lang'), $iIdArtLangHomepage);
         $iIdArtHomepage = $db->nextRecord() ? cSecurity::toInteger($db->f('idart')) : 0;
 
-        $t1 = $cfg['tab']['meta_tag'];
-        $t2 = $cfg['tab']['meta_type'];
+        $t1 = cDb::getTableName('meta_tag');
+        $t2 = cDb::getTableName('meta_type');
 
         $sql = "SELECT " . $t1 . ".metavalue," . $t2 . ".metatype FROM " . $t1 . " INNER JOIN " . $t2 . " ON " . $t1 . ".idmetatype = " . $t2 . ".idmetatype WHERE " . $t1 . ".idartlang =" . $iIdArtLangHomepage . " ORDER BY " . $t2 . ".metatype";
 
@@ -193,7 +193,7 @@ function cecCreateMetatags($metatags)
                     // Build these 3 metatags from entries in homepage
                     $sCurrentTag = isset($value['name']) ? cString::toLowerCase($value['name']) : '';
                     $iCheck = CheckIfMetaTagExists($metatags, $sCurrentTag);
-                    if ($sCurrentTag != '' && $arrHomepageMetaTags[$sCurrentTag] != "") {
+                    if ($sCurrentTag != '' && $arrHomepageMetaTags[$sCurrentTag] != '') {
                         $metatags[$iCheck]['name'] = $sCurrentTag;
                         $metatags[$iCheck]['content'] = $arrHomepageMetaTags[$sCurrentTag];
                     }

@@ -30,7 +30,7 @@ $oldclient = $client;
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $db = cRegistry::getDb();
 
-    $sql = 'SELECT idclient FROM '.$cfg['tab']['clients'];
+    $sql = 'SELECT idclient FROM '.cDb::getTableName('clients');
     $db->query($sql);
 
     $clients = [];
@@ -45,15 +45,15 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
         $props = new cApiPropertyCollection();
         $props->select(sprintf(
-            "itemtype = 'idcommunication' AND type = 'todo' AND name = 'reminderdate' AND "
-                . " value < %d AND value != 0 AND idclient = %d",
+            "`itemtype` = 'idcommunication' AND `type` = 'todo' AND `name` = 'reminderdate' AND "
+                . " `value` < %d AND `value` != 0 AND `idclient` = %d",
             $mydate,
             $client
         ));
 
         $pastreminders = [];
 
-        while (($prop = $props->next()) !== false) {
+        while ($prop = $props->next()) {
             $pastreminders[] = $prop->get('itemid');
         }
 
@@ -73,8 +73,8 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
                     $client = $todoitem->get('idclient');
                     if (!isset($clientNames[$client])) {
-                        $clientNames[$client] = cRegistry::getClient()->get("name");
-                        if ($clientNames[$client] == "") {
+                        $clientNames[$client] = cRegistry::getClient()->get('name');
+                        if ($clientNames[$client] == '') {
                             $clientNames[$client] = i18n("No client");
                         }
                     }

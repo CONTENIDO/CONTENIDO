@@ -20,7 +20,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * @deprecated [2015-05-21] use {@see cString::trimAfterWord()} instaed
+ * @deprecated [2015-05-21] use {@see cString::trimAfterWord()} instead
  */
 function cApiStrTrimAfterWord($string, $maxlen)
 {
@@ -38,7 +38,7 @@ function cApiStrTrimHard($string, $maxlen, $fillup = '...')
 }
 
 /**
- * @deprecated [2015-05-21] use {@see cString::trimSentence()} instaed
+ * @deprecated [2015-05-21] use {@see cString::trimSentence()} instead
  */
 function cApiStrTrimSentence($string, $approxlen, $hard = false)
 {
@@ -47,7 +47,7 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false)
 }
 
 /**
- * @deprecated [2015-05-21] use {@see cString::replaceDiacritics()} instaed
+ * @deprecated [2015-05-21] use {@see cString::replaceDiacritics()} instead
  */
 function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8')
 {
@@ -56,7 +56,7 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEn
 }
 
 /**
- * @deprecated [2015-05-21] use {@see cString::recodeString()} instaed
+ * @deprecated [2015-05-21] use {@see cString::recodeString()} instead
  */
 function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding)
 {
@@ -65,7 +65,7 @@ function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding)
 }
 
 /**
- * @deprecated [2015-05-21] use {@see cString::cleanURLCharacters()} instaed
+ * @deprecated [2015-05-21] use {@see cString::cleanURLCharacters()} instead
  */
 function cApiStrCleanURLCharacters($sString, $bReplace = false)
 {
@@ -74,7 +74,7 @@ function cApiStrCleanURLCharacters($sString, $bReplace = false)
 }
 
 /**
- * @deprecated [2015-05-21] use {@see cString::normalizeLineEndings()} instaed
+ * @deprecated [2015-05-21] use {@see cString::normalizeLineEndings()} instead
  */
 function cApiStrNormalizeLineEndings($sString, $sLineEnding = "\n")
 {

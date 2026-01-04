@@ -38,19 +38,15 @@ class pApiContentAllocationComplexList extends pApiTree
     /**
      * pApiContentAllocationComplexList constructor
      *
-     * @param string $uuid
      * @throws cDbException|cException
      */
-    public function __construct($uuid)
+    public function __construct(string $uuid)
     {
         parent::__construct($uuid);
     }
 
     /**
-     * Builds an render tree
-     *
-     * @param array $tree
-     * @return string
+     * Builds a render tree
      */
     protected function _buildRenderTree(array $tree): string
     {
@@ -61,7 +57,7 @@ class pApiContentAllocationComplexList extends pApiTree
 
         $even = true;
 
-        $levelElms = sizeof($tree);
+        $levelElms = count($tree);
         $cnt = 1;
         foreach ($tree as $item_tmp) {
             if (in_array($item_tmp['idpica_alloc'], $this->_load)) {
@@ -115,22 +111,18 @@ class pApiContentAllocationComplexList extends pApiTree
     /**
      * Render tree
      *
-     * @param bool $return
-     *
-     * @return bool|string|void
      * @throws cDbException
      */
-    public function renderTree(bool $return = true)
+    public function renderTree(bool $return = true): ?string
     {
         $tree = $this->fetchTree();
-        if ($tree === false) {
-            return false;
+        if (!$tree) {
+            return null;
         }
 
         $tree = $this->_buildRenderTree($tree);
-        if ($return === true) {
-            return $tree;
-        }
+
+        return $return ? $tree : null;
     }
 
 }

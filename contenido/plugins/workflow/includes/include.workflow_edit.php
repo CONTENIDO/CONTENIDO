@@ -30,7 +30,7 @@ $workflows = new Workflows();
 
 $action = $action ?? '';
 
-if ($action == "workflow_delete" && $requestIdWorkflow) {
+if ($action === 'workflow_delete' && $requestIdWorkflow) {
     $workflows->delete($requestIdWorkflow);
 
     $page->setSubnav('blank', 'workflow');
@@ -40,20 +40,20 @@ if ($action == "workflow_delete" && $requestIdWorkflow) {
     exit();
 }
 
-$form = new cGuiTableForm("workflow_edit");
+$form = new cGuiTableForm('workflow_edit');
 
 $workflow = $workflows->loadItem($requestIdWorkflow);
 
-if ($action == "workflow_save") {
+if ($action === 'workflow_save') {
     if ($requestIdWorkflow <= 0) {
         $workflow = $workflows->create();
         $page->displayOk(i18n("Created new workflow successfully!", 'workflow'));
     } elseif ($idworkflow > 0) {
         $page->displayOk(i18n("Saved changes successfully!", 'workflow'));
     }
-    $workflow->set("name", str_replace('\\', '', $wfname));
-    $workflow->set("description", str_replace('\\', '', $wfdescription));
-    $idworkflow = cSecurity::toInteger($workflow->get("idworkflow"));
+    $workflow->set('name', str_replace('\\', '', $wfname));
+    $workflow->set('description', str_replace('\\', '', $wfdescription));
+    $idworkflow = cSecurity::toInteger($workflow->get('idworkflow'));
     $workflow->store();
 }
 
@@ -61,10 +61,10 @@ if ($idworkflow <= 0) {
     $idworkflow = $requestIdWorkflow;
 }
 
-$form->setVar("area", $area);
-$form->setVar("action", "workflow_save");
-$form->setVar("idworkflow", $idworkflow);
-$form->setVar("frame", $frame);
+$form->setVar('area', $area);
+$form->setVar('action', 'workflow_save');
+$form->setVar('idworkflow', $idworkflow);
+$form->setVar('frame', $frame);
 
 if (true !== $workflow->isLoaded()) {
     $name = i18n("New Workflow", "workflow");
@@ -73,17 +73,17 @@ if (true !== $workflow->isLoaded()) {
     $author = '';
 } else {
     $header = i18n("Edit workflow", "workflow");
-    $description = preg_replace("/\"/", "", ($workflow->getField("description")));
-    $name = preg_replace("/\"/", "", ($workflow->getField("name")));
-    $created = cDate::formatDatetime($workflow->get("created"));
-    $userObj = new cApiUser($workflow->get("idauthor"));
+    $description = preg_replace("/\"/", "", ($workflow->getField('description')));
+    $name = preg_replace("/\"/", "", ($workflow->getField('name')));
+    $created = cDate::formatDatetime($workflow->get('created'));
+    $userObj = new cApiUser($workflow->get('idauthor'));
     $author = $userObj->getEffectiveName();
 }
 
 $form->setHeader($header);
-$oTxtWFName = new cHTMLTextbox("wfname", $name, 40, 255);
+$oTxtWFName = new cHTMLTextbox('wfname', $name, 40, 255);
 $form->add(i18n("Workflow name", "workflow"), $oTxtWFName->render());
-$oTxtWFDesc = new cHTMLTextarea("wfdescription", $description, 50, 10);
+$oTxtWFDesc = new cHTMLTextarea('wfdescription', $description, 50, 10);
 $form->add(i18n("Description", "workflow"), $oTxtWFDesc->render());
 if (!empty($author)) {
     $form->add(i18n("Author", "workflow"), $author);

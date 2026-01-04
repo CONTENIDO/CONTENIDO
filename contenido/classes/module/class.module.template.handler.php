@@ -535,7 +535,7 @@ class cModuleTemplateHandler extends cModuleHandler
      */
     private function _makeForm($belang, $readOnly)
     {
-        $fileForm = new cGuiTableForm("file__chooser");
+        $fileForm = new cGuiTableForm('file__chooser');
         $fileForm->addTableClass('mgb10');
         $fileForm->setHeader(i18n('Choose file'));
         $fileForm->setVar('area', $this->_area);
@@ -560,7 +560,7 @@ class cModuleTemplateHandler extends cModuleHandler
         $form->setVar('selectedFile', cString::replaceDiacritics(conHtmlSpecialChars($this->_file)));
 
         $selectFile = new cHTMLSelectElement('selectedFile');
-        $selectFile->setClass("fileChooser");
+        $selectFile->setClass('fileChooser');
         // array with all files in template directory
         $filesArray = $this->getAllFilesFromDirectory('template');
 
@@ -588,7 +588,7 @@ class cModuleTemplateHandler extends cModuleHandler
         $aDelete->setID("deleteLink");
         $aDelete->setContent(i18n("Delete HTML-template"));
         $aDelete->setClass('con_func_button deletefunction');
-        $aDelete->setCustom("deleteModTpl", "1");
+        $aDelete->setCustom('deleteModTpl', '1');
         $aDelete->setCustom('area', $this->_area);
         $aDelete->setCustom('action', $this->_actionDelete);
         $aDelete->setCustom('frame', $this->_frame);
@@ -600,7 +600,7 @@ class cModuleTemplateHandler extends cModuleHandler
         $aAdd = new cHTMLLink('main.php');
         $aAdd->setContent(i18n('New HTML-template'));
         $aAdd->setClass('con_func_button addfunction');
-        $aAdd->setCustom("newModTpl", "1");
+        $aAdd->setCustom('newModTpl', '1');
         $aAdd->setCustom('area', $this->_area);
         $aAdd->setCustom('action', $this->_actionCreate);
         $aAdd->setCustom('frame', $this->_frame);
@@ -639,7 +639,7 @@ class cModuleTemplateHandler extends cModuleHandler
 
         $oCodeMirror = new CodeMirror('code', 'html', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $this->_cfg);
         if ($readOnly) {
-            $oCodeMirror->setProperty("readOnly", "true");
+            $oCodeMirror->setProperty('readOnly', 'true');
 
             $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
         }

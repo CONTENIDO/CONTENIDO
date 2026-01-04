@@ -50,53 +50,41 @@ class ModRewriteUrlStack
 {
 
     /**
-     * Self instance
-     *
-     * @var  ModRewriteUrlStack
+     * @var ModRewriteUrlStack Self instance
      */
-    private static $_instance;
+    private static $instance;
 
     /**
-     * Database object
-     *
-     * @var  cDb
+     * @var cDb Database object
      */
-    private $_oDb;
+    private $db;
 
     /**
-     * Array for urls
-     *
-     * @var  array
+     * @var array Array for urls
      */
-    private $_aUrls = [];
+    private $urls = [];
 
     /**
-     * Url stack array
-     *
-     * @var  array
+     * @var array Url stack array
      */
-    private $_aStack = [];
+    private $urlStack = [];
 
     /**
-     * CONTENIDO related parameter array
-     *
-     * @var  array
+     * @var array CONTENIDO related parameter array
      */
-    private $_aConParams = [
-        'idcat' => 1, 'idart' => 1, 'lang' => 1, 'idcatlang' => 1, 'idcatart' => 1, 'idartlang' => 1
+    private $conParams = [
+        'idcat' => 1,
+        'idart' => 1,
+        'lang' => 1,
+        'idcatlang' => 1,
+        'idcatart' => 1,
+        'idartlang' => 1,
     ];
-
-    /**
-     * Database tables array
-     *
-     * @var  array
-     */
-    private $_aTab;
 
     /**
      * Language id
      *
-     * @var  int
+     * @var int
      */
     private $_idLang;
 
@@ -105,23 +93,19 @@ class ModRewriteUrlStack
      */
     private function __construct()
     {
-        $cfg = cRegistry::getConfig();
-        $this->_oDb = cRegistry::getDb();
-        $this->_aTab = $cfg['tab'];
+        $this->db = cRegistry::getDb();
         $this->_idLang = cRegistry::getLanguageId();
     }
 
     /**
      * Returns an instance of ModRewriteUrlStack (singleton implementation)
-     *
-     * @return  ModRewriteUrlStack
      */
-    public static function getInstance()
+    public static function getInstance(): self
     {
-        if (self::$_instance == NULL) {
-            self::$_instance = new ModRewriteUrlStack();
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
         }
-        return self::$_instance;
+        return self::$instance;
     }
 
     /**
@@ -129,10 +113,10 @@ class ModRewriteUrlStack
      *
      * @param string $url Url, like front_content.php?idcat=123...
      */
-    public function add($url)
+    public function add(string $url)
     {
         $url = ModRewrite::urlPreClean($url);
-        if (isset($this->_aUrls[$url])) {
+        if (isset($this->urls[$url])) {
             return;
         }
 
@@ -140,7 +124,7 @@ class ModRewriteUrlStack
 
         // cleanup parameter
         foreach ($aUrl['params'] as $p => $v) {
-            if (!isset($this->_aConParams[$p])) {
+            if (!isset($this->conParams[$p])) {
                 unset($aUrl['params'][$p]);
             } else {
                 $aUrl['params'][$p] = (int)$v;
@@ -152,9 +136,9 @@ class ModRewriteUrlStack
             $aUrl['params']['lang'] = $this->_idLang;
         }
 
-        $sStackId = $this->_makeStackId($aUrl['params']);
-        $this->_aUrls[$url] = $sStackId;
-        $this->_aStack[$sStackId] = ['params' => $aUrl['params']];
+        $stackId = $this->_makeStackId($aUrl['params']);
+        $this->urls[$url] = $stackId;
+        $this->urlStack[$stackId] = ['params' => $aUrl['params']];
     }
 
     /**
@@ -163,27 +147,27 @@ class ModRewriteUrlStack
      *
      * @param string $url Url, like front_content.php?idcat=123...
      *
-     * @return  array   Associative array like
+     * @return array  Associative array like
      * <code>
      * $arr['urlpath']
      * $arr['urlname']
      * </code>
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getPrettyUrlParts($url)
+    public function getPrettyUrlParts(string $url): array
     {
         $url = ModRewrite::urlPreClean($url);
-        if (!isset($this->_aUrls[$url])) {
+        if (!isset($this->urls[$url])) {
             $this->add($url);
         }
 
-        $sStackId = $this->_aUrls[$url];
-        if (!isset($this->_aStack[$sStackId]['urlpath'])) {
-            $this->_chunkSetPrettyUrlParts($sStackId);
+        $stackId = $this->urls[$url];
+        if (!isset($this->urlStack[$stackId]['urlpath'])) {
+            $this->_chunkSetPrettyUrlParts($stackId);
         }
         return [
-            'urlpath' => $this->_aStack[$sStackId]['urlpath'] ?? '',
-            'urlname' => $this->_aStack[$sStackId]['urlname'] ?? ''
+            'urlpath' => $this->urlStack[$stackId]['urlpath'] ?? '',
+            'urlname' => $this->urlStack[$stackId]['urlname'] ?? ''
         ];
     }
 
@@ -191,9 +175,9 @@ class ModRewriteUrlStack
      * Extracts passed url using parse_url and adds also the 'params' array to it
      *
      * @param string $url Url, like front_content.php?idcat=123...
-     * @return  array  Components containing result of parse_url with additional 'params' array
+     * @return array Components containing result of parse_url with additional 'params' array
      */
-    private function _extractUrl($url)
+    private function _extractUrl(string $url): array
     {
         return cUri::getInstance()->parse($url);
     }
@@ -203,25 +187,25 @@ class ModRewriteUrlStack
      * and generates an identifier.
      *
      * @param array $aParams Parameter array
-     * @return  string  Composed stack id
+     * @return string Composed stack id
      */
-    private function _makeStackId(array $aParams)
+    private function _makeStackId(array $aParams): string
     {
         // idcatart
         if ((int)mr_arrayValue($aParams, 'idart') > 0) {
-            $sStackId = 'idart_' . $aParams['idart'] . '_lang_' . $aParams['lang'];
+            $stackId = 'idart_' . $aParams['idart'] . '_lang_' . $aParams['lang'];
         } elseif ((int)mr_arrayValue($aParams, 'idartlang') > 0) {
-            $sStackId = 'idartlang_' . $aParams['idartlang'];
+            $stackId = 'idartlang_' . $aParams['idartlang'];
         } elseif ((int)mr_arrayValue($aParams, 'idcatart') > 0) {
-            $sStackId = 'idcatart_' . $aParams['idcatart'] . '_lang_' . $aParams['lang'];
+            $stackId = 'idcatart_' . $aParams['idcatart'] . '_lang_' . $aParams['lang'];
         } elseif ((int)mr_arrayValue($aParams, 'idcat') > 0) {
-            $sStackId = 'idcat_' . $aParams['idcat'] . '_lang_' . $aParams['lang'];
+            $stackId = 'idcat_' . $aParams['idcat'] . '_lang_' . $aParams['lang'];
         } elseif ((int)mr_arrayValue($aParams, 'idcatlang') > 0) {
-            $sStackId = 'idcatlang_' . $aParams['idcatlang'];
+            $stackId = 'idcatlang_' . $aParams['idcatlang'];
         } else {
-            $sStackId = 'lang_' . $aParams['lang'];
+            $stackId = 'lang_' . $aParams['lang'];
         }
-        return $sStackId;
+        return $stackId;
     }
 
     /**
@@ -230,25 +214,24 @@ class ModRewriteUrlStack
      * Composes the query by looping through stored but non-processed urls, executes
      * the query and adds the (urlpath and urlname) result to the stack.
      *
-     * @param $sStackId
-     *
+     * @param $stackId
      * @throws cDbException|cInvalidArgumentException
      */
-    private function _chunkSetPrettyUrlParts($sStackId)
+    private function _chunkSetPrettyUrlParts($stackId)
     {
         // collect stack parameter to get urlpath and urlname
-        $aStack = [];
-        foreach ($this->_aStack as $stackId => $item) {
+        $stack = [];
+        foreach ($this->urlStack as $_stackId => $item) {
             if (!isset($item['urlpath'])) {
                 // pretty url is to create
-                $aStack[$stackId] = $item;
+                $stack[$_stackId] = $item;
             }
         }
 
         // now, it's time to compose the where clause of the query
         $sWhere = '';
-        foreach ($aStack as $stackId => $item) {
-            if ($stackId == $sStackId) {
+        foreach ($stack as $_stackId => $item) {
+            if ($_stackId === $stackId) {
                 $aP = $item['params'];
                 if ((int)mr_arrayValue($aP, 'idart') > 0) {
                     $sWhere .= '(al.idart = ' . $aP['idart'] . ' AND al.idlang = ' . $aP['lang'] . ') OR ';
@@ -269,13 +252,17 @@ class ModRewriteUrlStack
         $sWhere = cString::getPartOfString($sWhere, 0, -4);
         $sWhere = str_replace(' OR ', " OR \n", $sWhere);
 
+        $tabArtLang = cDb::getTableName('art_lang');
+        $tabCatLang = cDb::getTableName('cat_lang');
+        $tabCatArt = cDb::getTableName('cat_art');
+
         // compose query and execute it
         $sql = <<<SQL
 SELECT
         al.idartlang, al.idart, al.idlang as lang, al.urlname, cl.idcatlang, cl.idcat,
         cl.urlpath, ca.idcatart
 FROM
-        {$this->_aTab['art_lang']} AS al, {$this->_aTab['cat_lang']} AS cl, {$this->_aTab['cat_art']} AS ca
+        $tabArtLang AS al, $tabCatLang AS cl, $tabCatArt AS ca
 WHERE
         al.idart = ca.idart AND
         ca.idcat = cl.idcat AND
@@ -284,34 +271,34 @@ WHERE
 SQL;
         ModRewriteDebugger::add($sql, 'ModRewriteUrlStack->_chunkSetPrettyUrlParts() $sql');
 
-        $aNewStack = [];
+        $newStack = [];
 
         // create array of fields, which are to reduce step by step from record set below
-        $aFields = ['', 'idart', 'idartlang', 'idcatart', 'idcat'];
+        $fields = ['', 'idart', 'idartlang', 'idcatart', 'idcat'];
 
-        $this->_oDb->query($sql);
-        while ($this->_oDb->nextRecord()) {
-            $aRS = $this->_oDb->getRecord();
+        $this->db->query($sql);
+        while ($this->db->nextRecord()) {
+            $rs = $this->db->getRecord();
 
             // loop through fields array
-            foreach ($aFields as $field) {
-                if (isset($aRS[$field])) {
+            foreach ($fields as $field) {
+                if (isset($rs[$field])) {
                     // reduce existing field
-                    unset($aRS[$field]);
+                    unset($rs[$field]);
                 }
-                $rsStackID = $this->_makeStackId($aRS);
-                if (isset($aStack[$rsStackID])) {
+                $rsStackID = $this->_makeStackId($rs);
+                if (isset($stack[$rsStackID])) {
                     // matching stack entry found, add urlpath and urlname to the new stack
-                    $aNewStack[$rsStackID]['urlpath'] = $aRS['urlpath'];
-                    $aNewStack[$rsStackID]['urlname'] = $aRS['urlname'];
+                    $newStack[$rsStackID]['urlpath'] = $rs['urlpath'];
+                    $newStack[$rsStackID]['urlname'] = $rs['urlname'];
                     break;
                 }
             }
         }
-        ModRewriteDebugger::add($aNewStack, 'ModRewriteUrlStack->_chunkSetPrettyUrlParts() $aNewStack');
+        ModRewriteDebugger::add($newStack, 'ModRewriteUrlStack->_chunkSetPrettyUrlParts() $newStack');
 
         // merge stack data
-        $this->_aStack = array_merge($this->_aStack, $aNewStack);
+        $this->urlStack = array_merge($this->urlStack, $newStack);
     }
 
 }

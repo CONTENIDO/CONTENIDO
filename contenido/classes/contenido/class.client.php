@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiClient createNewItem
- * @method cApiClient|bool next
+ * @extends ItemCollection<cApiClient>
  */
 class cApiClientCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiClientCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('clients'), 'idclient');
+        parent::__construct(cDb::getTableName('clients'), 'idclient');
         $this->_setItemClass('cApiClient');
     }
 
@@ -51,7 +50,7 @@ class cApiClientCollection extends ItemCollection
     {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = $auth->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -83,7 +82,7 @@ class cApiClientCollection extends ItemCollection
         $clients = [];
 
         $this->select();
-        while (($item = $this->next()) !== false) {
+        while ($item = $this->next()) {
             $clients[(int) $item->get('idclient')] = [
                 'name' => $item->get('name'),
             ];
@@ -104,7 +103,7 @@ class cApiClientCollection extends ItemCollection
         $clients = [];
 
         $this->select();
-        while (($item = $this->next()) !== false) {
+        while ($item = $this->next()) {
             $idClient = (int) $item->get('idclient');
             if ($perm->have_perm_client("client[" . $idClient . "]")
                 || $perm->have_perm_client("admin[" . $idClient . "]")
@@ -127,7 +126,7 @@ class cApiClientCollection extends ItemCollection
     {
         $perm = cRegistry::getPerm();
         $this->select();
-        while (($item = $this->next()) !== false) {
+        while ($item = $this->next()) {
             $idClient = (int) $item->get('idclient');
             if ($perm->have_perm_client("client[" . $idClient . "]")
                 || $perm->have_perm_client("admin[" . $idClient . "]")) {
@@ -175,12 +174,9 @@ class cApiClientCollection extends ItemCollection
     public static function isClientAccessible(int $clientId): bool
     {
         $perm = cRegistry::getPerm();
-        if ($perm->have_perm_client('client[' . $clientId . ']')
-            || $perm->have_perm_client('admin[' . $clientId . ']')) {
-            return true;
-        }
 
-        return false;
+        return $perm->have_perm_client('client[' . $clientId . ']')
+            || $perm->have_perm_client('admin[' . $clientId . ']');
     }
 
 }
@@ -214,7 +210,7 @@ class cApiClient extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('clients'), 'idclient');
+        parent::__construct(cDb::getTableName('clients'), 'idclient');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -224,7 +220,7 @@ class cApiClient extends Item
      * Magic getter method for deprecated idclient variable.
      *
      * @param string $name Works only for "idclient"
-     * @return mixed
+     * @return mixed|null
      */
     public function __get(string $name)
     {
@@ -322,7 +318,7 @@ class cApiClient extends Item
      * @param int $clientId Client id (not used, it's declared because of PHP strict warnings)
      * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteProperty($idProp, $p2 = "", $clientId = 0)
+    public function deleteProperty($idProp, $p2 = '', $clientId = 0)
     {
         $propertyColl = $this->_getPropertiesCollectionInstance();
         $propertyColl->delete($idProp);
@@ -358,7 +354,7 @@ class cApiClient extends Item
         if ($propertyColl->count() > 0) {
             $array = [];
 
-            while (($item = $propertyColl->next()) !== false) {
+            while ($item = $propertyColl->next()) {
                 $array[$item->get('idproperty')]['type'] = $item->get('type');
                 $array[$item->get('idproperty')]['name'] = $item->get('name');
                 $array[$item->get('idproperty')]['value'] = $item->get('value');
@@ -378,14 +374,10 @@ class cApiClient extends Item
     public function hasLanguages(): bool
     {
         $clientLanguageCollection = new cApiClientLanguageCollection();
-        $clientLanguageCollection->setWhere("idclient", $this->get("idclient"));
+        $clientLanguageCollection->setWhere('idclient', $this->get('idclient'));
         $clientLanguageCollection->query();
 
-        if ($clientLanguageCollection->next()) {
-            return true;
-        } else {
-            return false;
-        }
+        return cSecurity::toBoolean($clientLanguageCollection->next());
     }
 
     /**

@@ -48,7 +48,7 @@ if ($oMRController->errorOccured()) {
     if ($iRedirToErrPage == 1 && (int)$client > 0 && (int)$lang > 0) {
         // errorpage
         $aParams = [
-            'client' => $client, 'idcat' => $cfgClient[$client]["errsite"]["idcat"], 'idart' => $cfgClient[$client]["errsite"]["idart"],
+            'client' => $client, 'idcat' => $cfgClient[$client]['errsite']['idcat'], 'idart' => $cfgClient[$client]['errsite']['idart'],
             'lang' => $lang, 'error' => '1'
         ];
         $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);

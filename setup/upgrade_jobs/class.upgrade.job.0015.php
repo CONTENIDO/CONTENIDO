@@ -30,9 +30,9 @@ class cUpgradeJob_0015 extends cUpgradeJobAbstract
     {
         if ($this->_setupType == 'upgrade') {
             $this->_oDb->query(sprintf(
-                "UPDATE `%s` SET dirname = '' WHERE dirname = '/'",
-                cRegistry::getDbTableName('upl'
-                )));
+                "UPDATE `%s` SET `dirname` = '' WHERE `dirname` = '/'",
+                cDb::getTableName('upl')
+            ));
         }
     }
 

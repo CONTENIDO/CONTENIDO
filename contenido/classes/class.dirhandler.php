@@ -37,7 +37,6 @@ class cDirHandler
      * Creates a new directory.
      *
      * @param string $pathname The name and path of the new dir
-     * @param bool $recursive
      * @return bool Returns true on success or false on failure.
      */
     public static function create(string $pathname, bool $recursive = false): bool
@@ -158,7 +157,7 @@ class cDirHandler
     }
 
     /**
-     * @deprecated [11.12.2018] use {@see cDirHandler::setDefaultPermissions()} instead
+     * @deprecated [2018-12-11] use {@see cDirHandler::setDefaultPermissions()} instead
      */
     public static function setDefaultDirPerms(string $dirname): bool
     {
@@ -184,7 +183,7 @@ class cDirHandler
         }
 
         foreach (new DirectoryIterator($dirname) as $file) {
-            if ($file != "." && $file != "..") {
+            if (!$file->isDot()) {
                 $file = $dirname . $file;
                 if (is_dir($file)) {
                     self::recursiveRmdir($file);

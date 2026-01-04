@@ -104,7 +104,7 @@ class cI18n
                 $belang = false;
             }
 
-            $locale = !$belang ? cRegistry::getBackendLanguage() : (string) $belang;
+            $locale = $belang ? (string) $belang : cRegistry::getBackendLanguage();
 
             // CON-2165
             // initialise localisation of plugins correctly in frontend
@@ -134,13 +134,11 @@ class cI18n
         }
 
         // Try to use native gettext implementation
-        if (extension_loaded('gettext')) {
-            if (function_exists('dgettext')) {
-                if ($domain != 'contenido') {
-                    return dgettext($domain, $string);
-                } else {
-                    return gettext($string);
-                }
+        if (extension_loaded('gettext') && function_exists('dgettext')) {
+            if ($domain !== 'contenido') {
+                return dgettext($domain, $string);
+            } else {
+                return gettext($string);
             }
         }
 
@@ -278,10 +276,8 @@ class cI18n
     }
 
     /**
-     * Loads gettext translation and file does some operations like stripping
-     * comments on the content.
+     * Loads gettext translation and file does some operations like stripping comments on the content.
      *
-     * @param string $translationFile
      * @return string The prepared translation file content
      * @throws cInvalidArgumentException
      */

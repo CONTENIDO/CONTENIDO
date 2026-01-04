@@ -212,7 +212,7 @@ function getArgs(): array
     $out = [];
     $last_arg = null;
 
-    for ($i = 1, $il = sizeof($args); $i < $il; $i++) {
+    for ($i = 1, $il = count($args); $i < $il; $i++) {
         if (preg_match("/^--(.+)/", $args[$i], $match)) {
             $parts = explode("=", $match[1]);
             $key = preg_replace("/[^a-z0-9]+/", "", $parts[0]);

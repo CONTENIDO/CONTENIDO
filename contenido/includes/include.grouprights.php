@@ -73,11 +73,11 @@ $firstSel = false;
 $firstClientsLang = 0;
 
 foreach ($clientList as $key => $value) {
-    $sql = "SELECT * FROM " . $cfg['tab']['lang'] . " AS A, " . $cfg['tab']['clients_lang'] . " AS B WHERE B.idclient=" . (int)$key . " AND A.idlang=B.idlang";
+    $sql = "SELECT * FROM " . cDb::getTableName('lang') . " AS A, " . cDb::getTableName('clients_lang') . " AS B WHERE B.idclient=" . (int)$key . " AND A.idlang=B.idlang";
     $db->query($sql);
 
     while ($db->nextRecord()) {
-        if ((cString::findFirstPos($userPerms, "client[$key]") !== false) && (cString::findFirstPos($userPerms, "lang[" . $db->f("idlang") . "]") !== false) && ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
+        if ((cString::findFirstPos($userPerms, "client[$key]") !== false) && (cString::findFirstPos($userPerms, "lang[" . $db->f('idlang') . "]") !== false) && ($perm->have_perm("lang[" . $db->f('idlang') . "]"))) {
             if ($firstSel == false) {
                 $firstSel = true;
                 $firstClientsLang = $db->f('idclientslang');

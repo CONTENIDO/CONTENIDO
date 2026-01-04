@@ -72,7 +72,7 @@ class ContentSitemapHtmlModule
         SELECT
             startidartlang
         FROM
-            `' . cRegistry::getDbTableName('cat_lang') . '`
+            `' . cDb::getTableName('cat_lang') . '`
         WHERE
             visible = 1
             AND public = 1
@@ -102,8 +102,8 @@ class ContentSitemapHtmlModule
         SELECT
             art_lang.idartlang
         FROM
-            `' . cRegistry::getDbTableName('art_lang') . '` AS art_lang,
-            `' . cRegistry::getDbTableName('cat_art') . '` AS cat_art
+            `' . cDb::getTableName('art_lang') . '` AS art_lang,
+            `' . cDb::getTableName('cat_art') . '` AS cat_art
         WHERE
             art_lang.idart = cat_art.idart
             AND art_lang.idlang = ' . $this->idlang . '

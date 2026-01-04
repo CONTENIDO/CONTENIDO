@@ -43,8 +43,8 @@ class cHTMLTextbox extends cHTMLFormElement
     public function __construct(
         $name,
         $value = '',
-        $width = '',
-        $maxLength = '',
+        $width = 0,
+        $maxLength = 0,
         $id = '',
         $disabled = false,
         $tabindex = null,

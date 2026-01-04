@@ -35,10 +35,9 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 {
     $db = cRegistry::getDb();
     $auth = cRegistry::getAuth();
-    $cfg = cRegistry::getConfig();
     $client = cRegistry::getClientId();
 
-    $author = (string)$auth->auth['uname'];
+    $author = $auth->getUsername();
 
     if (!is_array($c)) {
         $c = [];
@@ -108,7 +107,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 
     if ($default == 1) {
         $sql = "UPDATE `%s` SET `defaulttemplate` = 0 WHERE `idclient` = %d AND `idtpl` != %d";
-        $db->query($sql, $cfg['tab']['tpl'], $client, $template->get('idtpl'));
+        $db->query($sql, cDb::getTableName('tpl'), $client, $template->get('idtpl'));
 
         $template->set('defaulttemplate', 1);
         $template->store();
@@ -184,9 +183,9 @@ function tplBrowseLayoutForContainers($idlay): string
 
     foreach ($containerMatches[1] as $value) {
         if (preg_match("/CMS_CONTAINER\[$value\]/", $codeBeforeHeader)) {
-            $containerinf[$idlay][$value]["is_body"] = false;
+            $containerinf[$idlay][$value]['is_body'] = false;
         } else {
-            $containerinf[$idlay][$value]["is_body"] = true;
+            $containerinf[$idlay][$value]['is_body'] = true;
         }
     }
 
@@ -398,7 +397,7 @@ function tplDuplicateTemplate($idtpl): int
     $newTemplate = $templateColl->copyItem($template, [
         'idtplcfg' => $newidtplcfg,
         'name' => sprintf(i18n("%s (Copy)"), $template->get('name')),
-        'author' => cSecurity::toString($auth->auth['uname']),
+        'author' => $auth->getUsername(),
         'created' => date('Y-m-d H:i:s'),
         'lastmodified' => date('Y-m-d H:i:s'),
         'defaulttemplate' => 0
@@ -414,7 +413,7 @@ function tplDuplicateTemplate($idtpl): int
     // Copy container from old template to new template
     $containerColl = new cApiContainerCollection();
     $containerColl->select('idtpl = ' . $idtpl . ' ORDER BY number');
-    while (($container = $containerColl->next()) !== false) {
+    while ($container = $containerColl->next()) {
         $containerColl2 = new cApiContainerCollection();
         $containerColl2->copyItem($container, ['idtpl' => $newidtpl]);
     }
@@ -423,7 +422,7 @@ function tplDuplicateTemplate($idtpl): int
     if ($idtplcfg) {
         $containerConfigColl = new cApiContainerConfigurationCollection();
         $containerConfigColl->select('idtplcfg = ' . $idtplcfg . ' ORDER BY number');
-        while (($containerConfig = $containerConfigColl->next()) !== false) {
+        while ($containerConfig = $containerConfigColl->next()) {
             $containerConfigColl2 = new cApiContainerConfigurationCollection();
             $containerConfigColl2->copyItem($containerConfig, ['idtplcfg' => $newidtplcfg]);
         }
@@ -451,12 +450,12 @@ function tplIsTemplateInUse($idtpl): bool
     $sql = "SELECT
                    b.idcatlang, b.name, b.idlang, b.idcat
             FROM
-                " . $cfg['tab']['cat'] . " AS a,
-                " . $cfg['tab']['cat_lang'] . " AS b
+                " . cDb::getTableName('cat') . " AS a,
+                " . cDb::getTableName('cat_lang') . " AS b
             WHERE
                 a.idclient  = '" . cSecurity::toInteger($client) . "' AND
                 a.idcat     = b.idcat AND
-                b.idtplcfg  IN (SELECT idtplcfg FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtpl = '" . $idtpl . "')
+                b.idtplcfg  IN (SELECT idtplcfg FROM " . cDb::getTableName('tpl_conf') . " WHERE idtpl = '" . $idtpl . "')
             ORDER BY b.idlang ASC, b.name ASC ";
     $db->query($sql);
     if ($db->numRows() > 0) {
@@ -467,12 +466,12 @@ function tplIsTemplateInUse($idtpl): bool
     $sql = "SELECT
                    b.idartlang, b.title, b.idlang, b.idart
             FROM
-                " . $cfg['tab']['art'] . " AS a,
-                " . $cfg['tab']['art_lang'] . " AS b
+                " . cDb::getTableName('art') . " AS a,
+                " . cDb::getTableName('art_lang') . " AS b
             WHERE
                 a.idclient  = '" . cSecurity::toInteger($client) . "' AND
                 a.idart     = b.idart AND
-                b.idtplcfg IN (SELECT idtplcfg FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtpl = '" . $idtpl . "')
+                b.idtplcfg IN (SELECT idtplcfg FROM " . cDb::getTableName('tpl_conf') . " WHERE idtpl = '" . $idtpl . "')
             ORDER BY b.idlang ASC, b.title ASC ";
 
     $db->query($sql);
@@ -503,12 +502,12 @@ function tplGetInUsedData($idtpl): array
     $sql = "SELECT
                    b.idcatlang, b.name, b.idlang, b.idcat
             FROM
-                " . $cfg['tab']['cat'] . " AS a,
-                " . $cfg['tab']['cat_lang'] . " AS b
+                " . cDb::getTableName('cat') . " AS a,
+                " . cDb::getTableName('cat_lang') . " AS b
             WHERE
                 a.idclient  = '" . cSecurity::toInteger($client) . "' AND
                 a.idcat     = b.idcat AND
-                b.idtplcfg  IN (SELECT idtplcfg FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtpl = '" . $idtpl . "')
+                b.idtplcfg  IN (SELECT idtplcfg FROM " . cDb::getTableName('tpl_conf') . " WHERE idtpl = '" . $idtpl . "')
             ORDER BY b.idlang ASC, b.name ASC ";
     $db->query($sql);
     if ($db->numRows() > 0) {
@@ -525,12 +524,12 @@ function tplGetInUsedData($idtpl): array
     $sql = "SELECT
                    b.idartlang, b.title, b.idlang, b.idart
             FROM
-                " . $cfg['tab']['art'] . " AS a,
-                " . $cfg['tab']['art_lang'] . " AS b
+                " . cDb::getTableName('art') . " AS a,
+                " . cDb::getTableName('art_lang') . " AS b
             WHERE
                 a.idclient  = '" . cSecurity::toInteger($client) . "' AND
                 a.idart     = b.idart AND
-                b.idtplcfg IN (SELECT idtplcfg FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtpl = '" . $idtpl . "')
+                b.idtplcfg IN (SELECT idtplcfg FROM " . cDb::getTableName('tpl_conf') . " WHERE idtpl = '" . $idtpl . "')
             ORDER BY b.idlang ASC, b.title ASC ";
 
     $db->query($sql);
@@ -579,9 +578,9 @@ function tplGetTplAndLayoutData(int $idtpl): array
             a.idlay,
             b.description AS laydescription
         FROM
-            " . cRegistry::getDbTableName('tpl') . " AS a
+            " . cDb::getTableName('tpl') . " AS a
         LEFT JOIN
-            " . cRegistry::getDbTableName('lay') . " AS b 
+            " . cDb::getTableName('lay') . " AS b
         ON a.idlay = b.idlay
         WHERE a.idtpl = " . $idtpl . "
         ORDER BY name";
@@ -618,7 +617,7 @@ function tplcfgDuplicate($idtplcfg): int
     // Copy template configuration
     $templateConfigColl = new cApiTemplateConfigurationCollection();
     $newTemplateConfig = $templateConfigColl->copyItem($templateConfig, [
-        'author' => (string)$auth->auth['uname'],
+        'author' => $auth->getUsername(),
         'created' => date('Y-m-d H:i:s'),
         'lastmodified' => date('Y-m-d H:i:s'),
     ]);
@@ -628,7 +627,7 @@ function tplcfgDuplicate($idtplcfg): int
     if ($idtplcfg) {
         $containerConfigColl = new cApiContainerConfigurationCollection();
         $containerConfigColl->select('idtplcfg = ' . $idtplcfg . ' ORDER BY number');
-        while (($containerConfig = $containerConfigColl->next()) !== false) {
+        while ($containerConfig = $containerConfigColl->next()) {
             $containerConfigColl2 = new cApiContainerConfigurationCollection();
             $containerConfigColl2->copyItem($containerConfig, ['idtplcfg' => $newidtplcfg]);
         }
@@ -660,11 +659,11 @@ function tplAutoFillModules($idtpl): bool
     }
 
     // Get layout id
-    $db_autofill->query("SELECT idlay FROM `%s` WHERE idtpl = %d", $cfg['tab']['tpl'], $idtpl);
+    $db_autofill->query("SELECT idlay FROM `%s` WHERE idtpl = %d", cDb::getTableName('tpl'), $idtpl);
     if (!$db_autofill->nextRecord()) {
         return false;
     }
-    $idlay = cSecurity::toInteger($db_autofill->f("idlay"));
+    $idlay = cSecurity::toInteger($db_autofill->f('idlay'));
 
     // Get container numbers
     if (!(is_array($containerinf) && array_key_exists($idlay, $containerinf) && array_key_exists($idlay, $_autoFillContainerCache))) {
@@ -678,16 +677,16 @@ function tplAutoFillModules($idtpl): bool
     foreach ($containerNumbers as $containerNr) {
         $currContainerInfo = $containerinf[$idlay][$containerNr];
 
-        switch ($currContainerInfo["mode"]) {
+        switch ($currContainerInfo['mode']) {
             // Fixed mode
             case "fixed":
-                if ($currContainerInfo["default"] != "") {
+                if ($currContainerInfo['default'] != '') {
                     $db_autofill->query(
-                        "SELECT idmod FROM `%s` WHERE name = '%s'", $cfg['tab']['mod'], $currContainerInfo["default"]
+                        "SELECT idmod FROM `%s` WHERE name = '%s'", cDb::getTableName('mod'), $currContainerInfo['default']
                     );
 
                     if ($db_autofill->nextRecord()) {
-                        $idmod = $db_autofill->f("idmod");
+                        $idmod = $db_autofill->f('idmod');
 
                         // Load container by idtpl and number
                         $containerColl = new cApiContainerCollection();
@@ -707,13 +706,13 @@ function tplAutoFillModules($idtpl): bool
 
             // Mandatory mode
             case "mandatory":
-                if ($currContainerInfo["default"] != "") {
+                if ($currContainerInfo['default'] != '') {
                     $db_autofill->query(
-                        "SELECT idmod FROM `%s` WHERE name = '%s'", $cfg['tab']['mod'], $currContainerInfo["default"]
+                        "SELECT idmod FROM `%s` WHERE name = '%s'", cDb::getTableName('mod'), $currContainerInfo['default']
                     );
 
                     if ($db_autofill->nextRecord()) {
-                        $idmod = $db_autofill->f("idmod");
+                        $idmod = $db_autofill->f('idmod');
 
                         // Load container by idtpl and number
                         $containerColl = new cApiContainerCollection();

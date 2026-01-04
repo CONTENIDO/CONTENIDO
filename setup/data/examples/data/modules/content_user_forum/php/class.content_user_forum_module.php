@@ -68,7 +68,7 @@ class ContentUserForumModule
      */
     protected $_currentRealname;
 
-    /**e
+    /**
      * @var bool counter
      *      used from checkCookie for validation if like/dislike feature was
      *      already used from same user.
@@ -152,10 +152,10 @@ class ContentUserForumModule
         $this->_checkCookie();
 
         $auth = cRegistry::getAuth();
-        $this->_allowDeleting = !(cString::findFirstOccurrenceCI($auth->auth['perm'], 'admin') === FALSE);
+        $this->_allowDeleting = !(cString::findFirstOccurrenceCI($auth->getPerms(), 'admin') === false);
         $bAllowAnonymousforum = getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1';
 
-        $this->_getUser($auth->auth['uid']);
+        $this->_loadUser($auth->getUserId());
         $this->_allowedToEditForum = $bAllowAnonymousforum || $this->_userLoggedIn && !$bAllowAnonymousforum;
 
         switch ($this->_action) {
@@ -177,8 +177,8 @@ class ContentUserForumModule
             case 'save_new_forum':
                 if ($this->_modMode && $this->_saveForum()) {
                     $this->_messageTexts[] = count($this->_messageTexts)
-                        ? $this->_messageTexts[count($this->_messageTexts) - 1] . ' ' . $this->_mi18n["FEEDBACK"]
-                        : $this->_mi18n["FEEDBACK"];
+                        ? $this->_messageTexts[count($this->_messageTexts) - 1] . ' ' . $this->_mi18n['FEEDBACK']
+                        : $this->_mi18n['FEEDBACK'];
                 }
                 $this->_listForum();
                 break;
@@ -189,12 +189,12 @@ class ContentUserForumModule
     }
 
     /**
-     *
      * @param string $userid
+     * @throws cDbException|cException
      */
-    private function _getUser($userid)
+    private function _loadUser($userid)
     {
-        if (($userid != '') && ($userid != 'nobody')) {
+        if ($userid != '' && $userid != cAuth::AUTH_UID_NOBODY) {
             $this->_userLoggedIn = true;
             // TODO Fix this, selectUser() returns always boolean!
             $user = $this->_collection->selectUser($userid);
@@ -252,33 +252,33 @@ class ContentUserForumModule
             $parent = cSecurity::toInteger($this->_request['user_forum_parent'] ?? '0');
             $forum_quote = trim($this->_request['forum_quote'] ?? '');
 
-            $this->_getUser($this->_userid);
+            $this->_loadUser($this->_userid);
 
             // error validation for user inputs
             if ($this->_userLoggedIn) {
                 if ($forum == '') {
-                    $this->_messageTexts[] = $this->_mi18n["enterYourArticle"];
+                    $this->_messageTexts[] = $this->_mi18n['enterYourArticle'];
                     $bInputOK = false;
                 }
             } else {
                 if (empty($email)) {
-                    $this->_messageTexts[] = $this->_mi18n["enterYourMail"];
+                    $this->_messageTexts[] = $this->_mi18n['enterYourMail'];
                     $bInputOK = false;
                 } else {
                     $emailValidator = cValidatorFactory::getInstance('email');
                     if (!$emailValidator->isValid($email)) {
-                        $this->_messageTexts[] = $this->_mi18n["enterValidMail"];
+                        $this->_messageTexts[] = $this->_mi18n['enterValidMail'];
                         $bInputOK = false;
                     }
                 }
 
                 if ($realname == '') {
-                    $this->_messageTexts[] = $this->_mi18n["enterYourName"];
+                    $this->_messageTexts[] = $this->_mi18n['enterYourName'];
                     $bInputOK = false;
                 }
 
                 if ($forum == '') {
-                    $this->_messageTexts[] = $this->_mi18n["enterYourArticle"];
+                    $this->_messageTexts[] = $this->_mi18n['enterYourArticle'];
                     $bInputOK = false;
                 }
             }
@@ -286,18 +286,18 @@ class ContentUserForumModule
             if ($bInputOK) {
                 // build array for language synchronisation
                 $ar = [
-                    'NEWENTRY' => $this->_mi18n["NEWENTRY"],
-                    'NEWENTRYTEXT' => $this->_mi18n["NEWENTRYTEXT"],
-                    'COMMENT' => $this->_mi18n["COMMENT"],
-                    'USER' => $this->_mi18n["USER"],
-                    'EMAIL' => $this->_mi18n["EMAILADR"],
-                    'ARTICLE' => $this->_mi18n["INARTICLE"]
+                    'NEWENTRY' => $this->_mi18n['NEWENTRY'],
+                    'NEWENTRYTEXT' => $this->_mi18n['NEWENTRYTEXT'],
+                    'COMMENT' => $this->_mi18n['COMMENT'],
+                    'USER' => $this->_mi18n['USER'],
+                    'EMAIL' => $this->_mi18n['EMAILADR'],
+                    'ARTICLE' => $this->_mi18n['INARTICLE']
                 ];
                 $this->_collection->languageSync($ar);
                 // persist comment
                 $this->_collection->insertValues($parent, $this->_idart, $this->_idcat, $this->_idlang, $this->_userid, $email, $realname, $forum, $forum_quote);
 
-                $this->_messageTexts[] = $this->_mi18n["yourArticleSaved"];
+                $this->_messageTexts[] = $this->_mi18n['yourArticleSaved'];
             } else {
 
                 $this->_tpl->assign('MESSAGES', $this->_messageTexts);
@@ -327,16 +327,16 @@ class ContentUserForumModule
                     $this->_tpl->assign('INPUT_FORUM_QUOTE', '');
                 }
 
-                $this->_tpl->assign('REALNAME', $this->_mi18n["yourName"]);
-                $this->_tpl->assign('EMAIL', $this->_mi18n["yourMailAddress"]);
-                $this->_tpl->assign('FORUM', $this->_mi18n["yourArticle"]);
-                $this->_tpl->assign('FORUM_QUOTE', $this->_mi18n["quote"]);
+                $this->_tpl->assign('REALNAME', $this->_mi18n['yourName']);
+                $this->_tpl->assign('EMAIL', $this->_mi18n['yourMailAddress']);
+                $this->_tpl->assign('FORUM', $this->_mi18n['yourArticle']);
+                $this->_tpl->assign('FORUM_QUOTE', $this->_mi18n['quote']);
                 $this->_tpl->assign('IDCAT', $this->_idcat);
                 $this->_tpl->assign('IDART', $this->_idart);
-                $this->_tpl->assign('SAVE_FORUM', $this->_mi18n["saveArticle"]);
+                $this->_tpl->assign('SAVE_FORUM', $this->_mi18n['saveArticle']);
                 $this->_tpl->assign('USER_FORUM_PARENT', $parent);
 
-                $this->_tpl->assign('CANCEL_FORUM', $this->_mi18n["cancel"]);
+                $this->_tpl->assign('CANCEL_FORUM', $this->_mi18n['cancel']);
                 $this->_tpl->assign('CANCEL_LINK', "front_content.php?idart=$this->_idart");
 
                 $this->_tpl->assign('USERID', $this->_userid);
@@ -348,8 +348,8 @@ class ContentUserForumModule
                     $empty = !(count($content) > 0);
 
                     if (!$empty) {
-                        $transTemplate = $this->_mi18n["answerToQuote"];
-                        $transTemplateAfter = $this->_mi18n["from"];
+                        $transTemplate = $this->_mi18n['answerToQuote'];
+                        $transTemplateAfter = $this->_mi18n['from'];
                         $this->_tpl->assign('FORUM_REPLYMENT', conHtmlSpecialChars($transTemplate) . '<br/>' . conHtmlSpecialChars($content['forum']) . "<br/><br/>" . conHtmlSpecialChars($transTemplateAfter) . ' ' . conHtmlSpecialChars($content['realname']));
                     } else {
                         $this->_tpl->assign('FORUM_REPLYMENT', '');
@@ -375,24 +375,24 @@ class ContentUserForumModule
         if ($this->_generate) {
 
             // fetch all comments for this article from db.
-            $arrUserforum = $this->_collection->getExistingforumFrontend($this->_idcat, $this->_idart, $this->_idlang, true);
+            $arrUserforum = $this->_collection->getExistingForumFrontend($this->_idcat, $this->_idart, $this->_idlang, true);
 
             if (count($arrUserforum) == 0) {
-                $this->_tpl->assign('MESSAGES', [$this->_mi18n["noCommentsYet"]]);
-                $this->_tpl->assign('FORUM_TEXT', $this->_mi18n["articles"]);
-                $this->_tpl->assign(conHtmlSpecialChars($this->_mi18n["writeNewEntry"]));
+                $this->_tpl->assign('MESSAGES', [$this->_mi18n['noCommentsYet']]);
+                $this->_tpl->assign('FORUM_TEXT', $this->_mi18n['articles']);
+                $this->_tpl->assign(conHtmlSpecialChars($this->_mi18n['writeNewEntry']));
                 if ($this->_allowedToEditForum) {
                     $link = $linkText;
                     $this->_tpl->assign('LINK_NEW_FORUM', $link);
                 } else {
-                    $this->_tpl->assign('LINK_NEW_FORUM', $this->_mi18n["noPosibleInputForArticle"]);
+                    $this->_tpl->assign('LINK_NEW_FORUM', $this->_mi18n['noPosibleInputForArticle']);
                 }
-                $this->_tpl->assign('LINKTEXT', $this->_mi18n["writeNewEntry"]);
+                $this->_tpl->assign('LINKTEXT', $this->_mi18n['writeNewEntry']);
                 $this->_tpl->display('user_forum_list_empty.tpl');
             } else {
                 $this->_tpl->assign('MESSAGES', $this->_messageTexts);
                 $this->_tpl->assign('AMOUNT_forum', count($arrUserforum));
-                $this->_tpl->assign('FORUM_TEXT', $this->_mi18n["articlesLabel"]);
+                $this->_tpl->assign('FORUM_TEXT', $this->_mi18n['articlesLabel']);
 
                 $number = 1;
                 $tplData = [];
@@ -408,12 +408,12 @@ class ContentUserForumModule
                     // string manipulation for time
                     $arrTmp = explode(' ', $value['timestamp']);
                     $arrTmp2 = explode('-', $arrTmp[0]);
-                    $ts = $arrTmp2[2] . '.' . $arrTmp2[1] . '.' . $arrTmp2[0] . ' ' . $this->_mi18n["about"] . ' ';
-                    $ts .= cString::getPartOfString($arrTmp[1], 0, 5) . ' ' . $this->_mi18n["clock"];
+                    $ts = $arrTmp2[2] . '.' . $arrTmp2[1] . '.' . $arrTmp2[0] . ' ' . $this->_mi18n['about'] . ' ';
+                    $ts .= cString::getPartOfString($arrTmp[1], 0, 5) . ' ' . $this->_mi18n['clock'];
 
-                    $record['AM'] = $this->_mi18n["AM"];
-                    $record['WROTE_ON'] = $this->_mi18n["wroteAt"];
-                    $record['WRITE_EMAIL'] = $this->_mi18n["emailToAuthor"];
+                    $record['AM'] = $this->_mi18n['AM'];
+                    $record['WROTE_ON'] = $this->_mi18n['wroteAt'];
+                    $record['WRITE_EMAIL'] = $this->_mi18n['emailToAuthor'];
                     $record['TIMESTAMP'] = $ts;
 
                     if (cString::getStringLength($value['forum_quote']) > 0) {
@@ -424,7 +424,7 @@ class ContentUserForumModule
 
                     $record['FORUM'] = str_replace('\\', '', $value['forum']);
 
-                    if (($value['editedby'] != '') && ($value['editedat'] != "0000-00-00 00:00:00")) {
+                    if (($value['editedby'] != '') && ($value['editedat'] != '0000-00-00 00:00:00')) {
                         // string manipulation for edittime
                         $arrTmp = explode(' ', $value['editedat']);
                         $edittime = cString::getPartOfString($arrTmp[1], 0, 5);
@@ -433,7 +433,7 @@ class ContentUserForumModule
 
                         // displays information if the comment was edited in
                         // backend mode.
-                        $tmp = $this->_mi18n["articleWasEditAt"];
+                        $tmp = $this->_mi18n['articleWasEditAt'];
 
                         $userColl = new cApiUserCollection();
                         $user = $userColl->loadItem($value['editedby'])->get('username');
@@ -452,14 +452,14 @@ class ContentUserForumModule
                     $record['REPLY_QUOTE'] = sprintf($linkText, $key, $key);
                     $record['LIKE'] = sprintf($linkText, $key, $value['like']);
                     $record['DISLIKE'] = sprintf($linkText, $key, $value['dislike']);
-                    $record['FROM'] = $this->_mi18n["from"];
-                    $record['OPINION'] = $this->_mi18n["sameOpinion"];
+                    $record['FROM'] = $this->_mi18n['from'];
+                    $record['OPINION'] = $this->_mi18n['sameOpinion'];
                     $record['LIKE_COUNT'] = $value['like'];
                     $record['DISLIKE_COUNT'] = $value['dislike'];
                     $record['PADDING'] = $value['level'] * 20;
-                    $record['LINKTEXT'] = $this->_mi18n["writeNewEntry"];
-                    $record['REPLYTEXT'] = $this->_mi18n["answers"];
-                    $record['QUOTETEXT'] = $this->_mi18n["replyQuote"];
+                    $record['LINKTEXT'] = $this->_mi18n['writeNewEntry'];
+                    $record['REPLYTEXT'] = $this->_mi18n['answers'];
+                    $record['QUOTETEXT'] = $this->_mi18n['replyQuote'];
                     $record['FORMID'] = $value['id_user_forum'];
                     $record['LINKBEGIN'] = "";
                     $record['LINKEND'] = "";
@@ -471,7 +471,7 @@ class ContentUserForumModule
 
                 $this->_tpl->assign('POSTS', $tplData);
 
-                $sTemp = $this->_mi18n["showHideArticles"];
+                $sTemp = $this->_mi18n['showHideArticles'];
                 $sTemp = str_replace('___', count($arrUserforum), $sTemp);
 
                 if ($this->_allowedToEditForum) {
@@ -479,10 +479,10 @@ class ContentUserForumModule
                     $tplOptionList->set('s', 'SHOW_forum', $sTemp);
 
                     $this->_tpl->assign('SHOW_FORUM_OPTION', $tplOptionList->generate('templates/user_forum_option_list.tpl', 1));
-                    $this->_tpl->assign('LINKTEXT', $this->_mi18n["writeNewEntry"]);
+                    $this->_tpl->assign('LINKTEXT', $this->_mi18n['writeNewEntry']);
                     $this->_tpl->assign('LINK_NEW_FORUM', $linkText);
                 } else {
-                    $this->_tpl->assign('LINK_NEW_FORUM', $this->_mi18n["noPosibleInputForArticle"]);
+                    $this->_tpl->assign('LINK_NEW_FORUM', $this->_mi18n['noPosibleInputForArticle']);
                 }
 
                 $this->_tpl->assign('NUM_FORUM', count($arrUserforum));
@@ -506,7 +506,7 @@ class ContentUserForumModule
                 $empty = !(count($content) > 0);
                 if (!$empty) {
                     $ar = $this->_collection->getCommentContent($idquote);
-                    $transTemplate = $this->_mi18n["quoteFrom"];
+                    $transTemplate = $this->_mi18n['quoteFrom'];
                     $this->_tpl->assign('INPUT_FORUM_QUOTE', $transTemplate . ' ' . $ar['name'] . "\n" . $ar['content']);
                 } else {
                     $this->_tpl->assign('INPUT_FORUM_QUOTE', '');
@@ -524,9 +524,9 @@ class ContentUserForumModule
                 if (!$empty) {
                     // Quote answer content
                     $ar = $this->_collection->getCommentContent($replyId);
-                    $transTemplate = $this->_mi18n["answerToQuote"];
+                    $transTemplate = $this->_mi18n['answerToQuote'];
                     $transTemplateContent = $ar['content'];
-                    $transTemplateAfter = $this->_mi18n["from"];
+                    $transTemplateAfter = $this->_mi18n['from'];
                     $transTemplateName = $ar['name'];
                     $this->_tpl->assign('FORUM_REPLYMENT', conHtmlSpecialChars($transTemplate) . '<br/>' . $transTemplateContent . "<br/><br/>" . conHtmlSpecialChars($transTemplateAfter) . ' ' . conHtmlSpecialChars($transTemplateName));
                 } else {
@@ -537,20 +537,20 @@ class ContentUserForumModule
             }
 
             if ($this->_modMode) {
-                $this->_tpl->assign('MODEMODETEXT', $this->_mi18n["MODEMODETEXT"]);
+                $this->_tpl->assign('MODEMODETEXT', $this->_mi18n['MODEMODETEXT']);
             }
 
             $this->_tpl->assign('INPUT_EMAIL', "<input type=\"text\" name=\"email\" value=\"\" tabindex=\"2\" />");
             $this->_tpl->assign('INPUT_REALNAME', "<input type=\"text\" name=\"realname\" value=\"\" tabindex=\"1\" />");
             $this->_tpl->assign('INPUT_FORUM', '');
-            $this->_tpl->assign('REALNAME', $this->_mi18n["yourName"]);
-            $this->_tpl->assign('EMAIL', $this->_mi18n["yourMailAddress"]);
-            $this->_tpl->assign('FORUM', $this->_mi18n["yourArticle"]);
-            $this->_tpl->assign('FORUM_QUOTE', $this->_mi18n["quote"]);
+            $this->_tpl->assign('REALNAME', $this->_mi18n['yourName']);
+            $this->_tpl->assign('EMAIL', $this->_mi18n['yourMailAddress']);
+            $this->_tpl->assign('FORUM', $this->_mi18n['yourArticle']);
+            $this->_tpl->assign('FORUM_QUOTE', $this->_mi18n['quote']);
             $this->_tpl->assign('IDCAT', $this->_idcat);
             $this->_tpl->assign('IDART', $this->_idart);
-            $this->_tpl->assign('SAVE_FORUM', $this->_mi18n["saveArticle"]);
-            $this->_tpl->assign('CANCEL_FORUM', $this->_mi18n["cancel"]);
+            $this->_tpl->assign('SAVE_FORUM', $this->_mi18n['saveArticle']);
+            $this->_tpl->assign('CANCEL_FORUM', $this->_mi18n['cancel']);
             $this->_tpl->assign('CANCEL_LINK', "front_content.php?idart=$this->_idart");
             $this->_tpl->assign('USERID', $this->_request['userid'] ?? '');
             $this->_tpl->assign('DELETING', $this->_request['deleting'] ?? '');
@@ -576,13 +576,29 @@ class ContentUserForumModule
         if ($this->_action == 'dislike_forum' && isset($_COOKIE['cookie'][$ip][$userForumId][$this->_action])) {
             $this->_counter = false;
         } elseif ($this->_action == 'dislike_forum' && !isset($_COOKIE['cookie'][$ip][$userForumId][$this->_action])) {
-            setcookie("cookie[" . $ip . "][" . $userForumId . "][" . $this->_action . "]", 1, $time + 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+            setcookie(
+                "cookie[" . $ip . "][" . $userForumId . "][" . $this->_action . "]",
+                '1',
+                $time + 3600,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
             $this->_counter = true;
         }
         if ($this->_action == 'like_forum' && isset($_COOKIE['cookie'][$ip][$userForumId][$this->_action])) {
             $this->_counter = false;
         } elseif ($this->_action == 'like_forum' && !isset($_COOKIE['cookie'][$ip][$userForumId][$this->_action])) {
-            setcookie("cookie[" . $ip . "][" . $userForumId . "][" . $this->_action . "]", 1, $time + 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+            setcookie(
+                "cookie[" . $ip . "][" . $userForumId . "][" . $this->_action . "]",
+                '1',
+                $time + 3600,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
             $this->_counter = true;
         }
     }

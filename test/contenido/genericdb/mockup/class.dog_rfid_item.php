@@ -2,8 +2,7 @@
 
 /**
  * @author marcus.gnass
- * @method DogRfidItem createNewItem
- * @method DogRfidItem|bool next
+ * @extends ItemCollection<DogRfidItem>
  */
 class DogRfidCollection extends ItemCollection
 {
@@ -15,7 +14,7 @@ class DogRfidCollection extends ItemCollection
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test_rfid_dog'), 'dog_id');
+        parent::__construct(cDb::getTableName('con_test_rfid_dog'), 'dog_id');
         $this->_setItemClass('DogRfidItem');
         if (false !== $where) {
             $this->select($where);
@@ -36,7 +35,7 @@ class DogRfidItem extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test_rfid_dog'), 'dog_id');
+        parent::__construct(cDb::getTableName('con_test_rfid_dog'), 'dog_id');
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }

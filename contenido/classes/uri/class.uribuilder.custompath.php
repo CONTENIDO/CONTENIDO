@@ -89,11 +89,11 @@ class cUriBuilderCustomPath extends cUriBuilder
         if (!isset($aParams['lang'])) {
             throw new cInvalidArgumentException('$aParams[lang] must be set!');
         }
-        if (sizeof($aParams) <= 3) {
+        if (count($aParams) <= 3) {
             throw new cInvalidArgumentException('$aParams must have at least one custom entry!');
         }
         // if no config passed or not all parameters available, use default config
-        if (sizeof($aConfig) == 0 || !isset($aConfig['prefix']) || !isset($aConfig['suffix']) || !isset($aConfig['separator'])) {
+        if (count($aConfig) == 0 || !isset($aConfig['prefix']) || !isset($aConfig['suffix']) || !isset($aConfig['separator'])) {
             include_once('class.uribuilder.config.php');
             $aConfig = cUriBuilderConfig::getConfig();
         }

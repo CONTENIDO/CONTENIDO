@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiMailLogSuccess createNewItem
- * @method cApiMailLogSuccess|bool next
+ * @extends ItemCollection<cApiMailLogSuccess>
  */
 class cApiMailLogSuccessCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiMailLogSuccessCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('mail_log_success'), 'idmailsuccess');
+        parent::__construct(cDb::getTableName('mail_log_success'), 'idmailsuccess');
         $this->_setItemClass('cApiMailLogSuccess');
 
         // set the join partners so that joins can be used via link() method
@@ -79,7 +78,7 @@ class cApiMailLogSuccess extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('mail_log_success'), 'idmailsuccess');
+        parent::__construct(cDb::getTableName('mail_log_success'), 'idmailsuccess');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

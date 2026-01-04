@@ -32,7 +32,7 @@ trait cDebugVisibleTrait
         $sReturn = '';
 
         if (is_array($value)) {
-            $bTextarea = sizeof($value) > 10;
+            $bTextarea = count($value) > 10;
         } elseif (is_object($value)) {
             $bTextarea = true;
         }

@@ -59,7 +59,7 @@ function injectSQL(cDb $db, string $prefix, string $file, array $replacements = 
 
 /**
  * Adds the autoincrement property to all primary keys in CONTENIDO tables
- * @param array $cfg CONTENIDO configuration array
+ * @param array $cfg The CONTENIDO configuration array
  * @throws cDbException|cInvalidArgumentException
  */
 function addAutoIncrementToTables(cDB $db, array $cfg)
@@ -113,38 +113,44 @@ function addSaltsToTables(cDb $db)
 
     $db2 = getSetupMySQLDBConnection();
 
-    $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", $cfg['tab']['user']);
+    $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", cDb::getTableName('user'));
     if ($db->numRows() == 0) {
-        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", $cfg['tab']['user']);
-        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", $cfg['tab']['user']);
+        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", cDb::getTableName('user'));
+        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", cDb::getTableName('user'));
     }
 
-    $db->query("SELECT * FROM `%s`", $cfg['tab']['user']);
+    $db->query("SELECT * FROM `%s`", cDb::getTableName('user'));
     while ($db->nextRecord()) {
-        if ($db->f("salt") == "") {
-            $salt = md5($db->f("username") . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
-            $hash = hash("sha256", $db->f("password") . $salt);
+        if ($db->f('salt') == '') {
+            $salt = md5($db->f('username') . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
+            $hash = hash("sha256", $db->f('password') . $salt);
             $db2->query(
-                "UPDATE `%s` SET salt='%s', password='%s' WHERE user_id='%s'",
-                $cfg['tab']['user'], $salt, $hash, $db->f("user_id")
+                "UPDATE `%s` SET `salt` = '%s', `password` = '%s' WHERE `user_id` = '%s'",
+                cDb::getTableName('user'),
+                $salt,
+                $hash,
+                $db->f('user_id')
             );
         }
     }
 
-    $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", $cfg['tab']['frontendusers']);
+    $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", cDb::getTableName('frontendusers'));
     if ($db->numRows() == 0) {
-        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", $cfg['tab']['frontendusers']);
-        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", $cfg['tab']['frontendusers']);
+        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", cDb::getTableName('frontendusers'));
+        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", cDb::getTableName('frontendusers'));
     }
 
-    $db->query("SELECT * FROM `%s`", $cfg['tab']['frontendusers']);
+    $db->query("SELECT * FROM `%s`", cDb::getTableName('frontendusers'));
     while ($db->nextRecord()) {
-        if ($db->f("salt") == "") {
-            $salt = md5($db->f("username") . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
-            $hash = hash("sha256", $db->f("password") . $salt);
+        if ($db->f('salt') == '') {
+            $salt = md5($db->f('username') . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
+            $hash = hash("sha256", $db->f('password') . $salt);
             $db2->query(
-                "UPDATE `%s` SET salt='%s', password='%s' WHERE idfrontenduser='%s'",
-                $cfg['tab']['frontendusers'], $salt, $hash, $db->f("idfrontenduser")
+                "UPDATE `%s` SET salt='%s', `password` = '%s' WHERE `idfrontenduser` = '%s'",
+                cDb::getTableName('frontendusers'),
+                $salt,
+                $hash,
+                $db->f('idfrontenduser')
             );
         }
     }
@@ -154,18 +160,18 @@ function urlDecodeTables(cDb $db)
 {
     global $cfg;
 
-    urlDecodeTable($db, $cfg['tab']['frontendusers']);
-    urlDecodeTable($db, $cfg['tab']['content']);
-    urlDecodeTable($db, $cfg['tab']['properties']);
-    urlDecodeTable($db, $cfg['tab']['upl_meta']);
-    urlDecodeTable($db, $cfg['tab']['container']);
-    urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pica_lang', true);
-    urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pi_news_rcp', true);
-    urlDecodeTable($db, $cfg['tab']['art_lang']);
-    urlDecodeTable($db, $cfg['tab']['user_prop']);
-    urlDecodeTable($db, $cfg['tab']['system_prop']);
-    urlDecodeTable($db, $cfg['tab']['art_spec']);
-    urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pi_news_jobs', true);
+    urlDecodeTable($db, cDb::getTableName('frontendusers'));
+    urlDecodeTable($db, cDb::getTableName('content'));
+    urlDecodeTable($db, cDb::getTableName('properties'));
+    urlDecodeTable($db, cDb::getTableName('upl_meta'));
+    urlDecodeTable($db, cDb::getTableName('container'));
+    urlDecodeTable($db, cDb::getTableName('pica_lang'), true);
+    urlDecodeTable($db, cDb::getTableName('pi_news_rcp'), true);
+    urlDecodeTable($db, cDb::getTableName('art_lang'));
+    urlDecodeTable($db, cDb::getTableName('user_prop'));
+    urlDecodeTable($db, cDb::getTableName('system_prop'));
+    urlDecodeTable($db, cDb::getTableName('art_spec'));
+    urlDecodeTable($db, cDb::getTableName('pi_news_jobs'), true);
 }
 
 function urlDecodeTable(cDb $db, string $table, bool $checkTableExists = false)

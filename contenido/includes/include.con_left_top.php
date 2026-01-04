@@ -132,17 +132,17 @@ $oListOptionRow = new cGuiFoldingRow("3498dbba-ed4a-4618-8e49-3a3635396e22", i18
 $tpl->set('s', 'ARTICLELINK', $articleLink);
 
 // Textfeld
-$oTextboxArtTitle = new cHTMLTextbox("bs_search_text", $bsSearchText, 10);
+$oTextboxArtTitle = new cHTMLTextbox('bs_search_text', $bsSearchText, 10);
 $oTextboxArtTitle->setClass('text_medium');
 $oTextboxArtTitle->setStyle('width:135px;');
 
 // Artikel_ID-Feld
-$oTextboxArtID = new cHTMLTextbox("bs_search_id", $bsSearchId, 10);
+$oTextboxArtID = new cHTMLTextbox('bs_search_id', $bsSearchId, 10);
 $oTextboxArtID->setClass('text_medium');
 $oTextboxArtID->setStyle('width:135px;');
 
 // Date type
-$oSelectArtDateType = new cHTMLSelectElement("bs_search_date_type");
+$oSelectArtDateType = new cHTMLSelectElement('bs_search_date_type');
 $oSelectArtDateType->setClass('text_medium');
 $oSelectArtDateType->autoFill(
     [
@@ -194,29 +194,29 @@ $oSelectArtAuthor->setStyle('width:135px;');
 $oSelectArtAuthor->autoFill($arrUsers);
 $oSelectArtAuthor->setDefault($bsSearchAuthor);
 
-$oSubmit = new cHTMLButton("submit", i18n("Search"));
+$oSubmit = new cHTMLButton('submit', i18n("Search"));
 
 $tplSearch = new cTemplate();
-$tplSearch->set("s", "AREA", $area);
-$tplSearch->set("s", "FRAME", $frame);
-$tplSearch->set("s", "LANG", $lang);
-$tplSearch->set("s", "LANGTEXTDIRECTION", langGetTextDirection($lang));
-$tplSearch->set("s", "TEXTBOX_ARTTITLE", $oTextboxArtTitle->render());
-$tplSearch->set("s", "TEXTBOX_ARTID", $oTextboxArtID->render());
-$tplSearch->set("s", "SELECT_ARTDATE", $oSelectArtDateType->render());
-$tplSearch->set("s", "SELECT_ARTDATEFROM", $oSelectArtDateFromDay->render() . $oSelectArtDateFromMonth->render() . $oSelectArtDateFromYear->render());
-$tplSearch->set("s", "SELECT_ARTDATETO", $oSelectArtDateToDay->render() . $oSelectArtDateToMonth->render() . $oSelectArtDateToYear->render());
-$tplSearch->set("s", "SELECT_AUTHOR", $oSelectArtAuthor->render());
-$tplSearch->set("s", "SUBMIT_BUTTON", $oSubmit->render());
+$tplSearch->set('s', 'AREA', $area);
+$tplSearch->set('s', 'FRAME', $frame);
+$tplSearch->set('s', 'LANG', $lang);
+$tplSearch->set('s', 'LANGTEXTDIRECTION', langGetTextDirection($lang));
+$tplSearch->set('s', 'TEXTBOX_ARTTITLE', $oTextboxArtTitle->render());
+$tplSearch->set('s', 'TEXTBOX_ARTID', $oTextboxArtID->render());
+$tplSearch->set('s', 'SELECT_ARTDATE', $oSelectArtDateType->render());
+$tplSearch->set('s', 'SELECT_ARTDATEFROM', $oSelectArtDateFromDay->render() . $oSelectArtDateFromMonth->render() . $oSelectArtDateFromYear->render());
+$tplSearch->set('s', 'SELECT_ARTDATETO', $oSelectArtDateToDay->render() . $oSelectArtDateToMonth->render() . $oSelectArtDateToYear->render());
+$tplSearch->set('s', 'SELECT_AUTHOR', $oSelectArtAuthor->render());
+$tplSearch->set('s', 'SUBMIT_BUTTON', $oSubmit->render());
 
 // Saved searches
 $propertyCollection = new cApiPropertyCollection();
 $savedSearchList = $propertyCollection->getAllValues('type', 'savedsearch', $auth);
 foreach ($savedSearchList as $value) {
-    if ($value["name"] === "save_name") {
-        $tplSearch->set("d", "SEARCH_NAME", ($value['value'] == "") ? i18n("A saved search") : $value['value']);
-        $tplSearch->set("d", "ITEM_ID", $value['itemid']);
-        $tplSearch->set("d", "ITEM_TYPE", $value['itemtype']);
+    if ($value['name'] === "save_name") {
+        $tplSearch->set('d', 'SEARCH_NAME', ($value['value'] == '') ? i18n("A saved search") : $value['value']);
+        $tplSearch->set('d', 'ITEM_ID', $value['itemid']);
+        $tplSearch->set('d', 'ITEM_TYPE', $value['itemtype']);
         $tplSearch->next();
     }
 }
@@ -260,7 +260,7 @@ foreach ($templateColl->fetchTable(['idtpl' => 'idtpl', 'name' => 'name']) as $e
 
 // Template Dropdown
 $tplCatConfig = new cTemplate();
-$tplCatConfig->set("s", "TEMPLATE_SELECT", $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true));
+$tplCatConfig->set('s', 'TEMPLATE_SELECT', $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true));
 
 $categoryLink = "editcat";
 $editCategory = new cGuiFoldingRow("3498dbbb-ed4a-4618-8e49-3a3635396e22", i18n("Edit category"), $categoryLink);
@@ -274,7 +274,7 @@ $tpl->set('s', 'CATEGORYLINK', $categoryLink);
 
 //  SYNCSTUFF
 $languages = getLanguageNamesByClient($client);
-if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat")) {
+if (count($languages) > 1 && $perm->have_perm_area_action($area, 'con_synccat')) {
     $sListId = 'sync';
     $oListOptionRow = new cGuiFoldingRow("4808dbba-ed4a-4618-8e49-3a3635396e22", i18n("Synchronize from"), $sListId);
 
@@ -282,7 +282,7 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
         $oListOptionRow->setExpanded(true);
     }
 
-    $selectBox = new cHTMLSelectElement("syncoptions");
+    $selectBox = new cHTMLSelectElement('syncoptions');
 
     $option = new cHTMLOptionElement("--- " . i18n("None") . " ---", -1);
     $selectBox->addOptionElement(-1, $option);
@@ -295,10 +295,10 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
     $selectBox->setDefault($syncoptions);
 
     $tplSync = new cTemplate();
-    $tplSync->set("s", "TEXT_DIRECTION", langGetTextDirection($lang));
-    $tplSync->set("s", "AREA", $area);
-    $tplSync->set("s", "FRAME", $frame);
-    $tplSync->set("s", "SELECTBOX", $selectBox->render());
+    $tplSync->set('s', 'TEXT_DIRECTION', langGetTextDirection($lang));
+    $tplSync->set('s', 'AREA', $area);
+    $tplSync->set('s', 'FRAME', $frame);
+    $tplSync->set('s', 'SELECTBOX', $selectBox->render());
 
     $oListOptionRow->setContentData($tplSync->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top_sync'], true));
 
@@ -323,7 +323,7 @@ $tpl->set('s', 'AJAXURL', cRegistry::getBackendUrl() . 'ajaxmain.php');
 $legendLinkId = 'legend';
 $editCategory = new cGuiFoldingRow("31f52be2-7499-4d21-8175-3917129e6014", i18n("Legend"), $legendLinkId);
 
-$divLegend = new cHTMLDiv("", "articleLegend", "legend-content");
+$divLegend = new cHTMLDiv('', 'articleLegend', 'legend-content');
 
 $aInformation = ['imgsrc', 'description'];
 if (empty($aData)) {
@@ -332,7 +332,7 @@ if (empty($aData)) {
 $aData = xmlFileToArray($cfg['path']['xml'] . 'legend.xml', $aData, $aInformation);
 
 foreach ($aData as $key => $item) {
-    $divKey = new cHTMLDiv("", $key);
+    $divKey = new cHTMLDiv('', $key);
     foreach ($item as $data) {
         $image = new cHTMLImage((string)$data['imgsrc'], 'align_middle');
         $description = new cHTMLSpan(i18n((string)$data['description']), 'mgl3');
@@ -348,7 +348,7 @@ $tpl->set('s', 'LEGEND', $editCategory->render());
 $tpl->set('s', 'LEGENDLINK', $legendLinkId);
 
 // Help
-$tpl->set('s', 'HELPSCRIPT', getJsHelpContext("con"));
+$tpl->set('s', 'HELPSCRIPT', getJsHelpContext('con'));
 // CON-1907 show workflow icon only when plugin is installed
 $tpl->set('s', 'DISPLAY', class_exists('Workflows') ? '' : 'display:none;');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top']);

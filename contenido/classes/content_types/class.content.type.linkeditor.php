@@ -334,7 +334,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
 
         $id = $this->_getElementId('linkeditor_externallink');
         $wrapperContent[] = new cHTMLLabel(i18n('Href'), $id);
-        $wrapperContent[] = new cHTMLTextbox('linkeditor_externallink_' . $this->_id, $this->getSetting('linkeditor_externallink'), '', '', $id);
+        $wrapperContent[] = new cHTMLTextbox('linkeditor_externallink_' . $this->_id, $this->getSetting('linkeditor_externallink'), 0, 0, $id);
 
         $wrapper->setContent($wrapperContent);
 
@@ -358,7 +358,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $id = $this->_getElementId('linkeditor_title');
         $wrapperContent[] = new cHTMLLabel(i18n('Title'), $id);
         $title = conHtmlEntityDecode($this->getSetting('linkeditor_title'));
-        $wrapperContent[] = new cHTMLTextbox('linkeditor_title_' . $this->_id, $title, '', '', $id);
+        $wrapperContent[] = new cHTMLTextbox('linkeditor_title_' . $this->_id, $title, 0, 0, $id);
 
         $id = $this->_getElementId('linkeditor_newwindow');
         $wrapperContent[] = new cHTMLCheckbox('linkeditor_newwindow_' . $this->_id, '', $id, ($this->getSetting('linkeditor_newwindow') === 'true'));
@@ -423,9 +423,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $sql = 'SELECT distinct
                     *
                 FROM
-                    ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
-                    ' . $this->_cfg['tab']['cat'] . ' AS c,
-                    ' . $this->_cfg['tab']['cat_lang'] . ' AS d
+                    ' . cDb::getTableName('cat_tree') . ' AS a,
+                    ' . cDb::getTableName('cat') . ' AS c,
+                    ' . cDb::getTableName('cat_lang') . ' AS d
                 WHERE
                     a.level = ' . $level . ' AND
                     c.parentid = ' . $parentid . ' AND
@@ -513,10 +513,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
                 $sql = 'SELECT DISTINCT
                                 *
                             FROM
-                                ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
-                                ' . $this->_cfg['tab']['cat_art'] . ' AS b,
-                                ' . $this->_cfg['tab']['cat'] . ' AS c,
-                                ' . $this->_cfg['tab']['cat_lang'] . ' AS d
+                                ' . cDb::getTableName('cat_tree') . ' AS a,
+                                ' . cDb::getTableName('cat_art') . ' AS b,
+                                ' . cDb::getTableName('cat') . ' AS c,
+                                ' . cDb::getTableName('cat_lang') . ' AS d
                             WHERE
                                 b.idart = ' . cSecurity::toInteger($linkEditorIdArt) . ' AND
                                 a.idcat = d.idcat AND
@@ -530,10 +530,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
                 $sql = 'SELECT DISTINCT
                                 *
                            FROM
-                                ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
-                                ' . $this->_cfg['tab']['cat_art'] . ' AS b,
-                                ' . $this->_cfg['tab']['cat'] . ' AS c,
-                                ' . $this->_cfg['tab']['cat_lang'] . ' AS d
+                                ' . cDb::getTableName('cat_tree') . ' AS a,
+                                ' . cDb::getTableName('cat_art') . ' AS b,
+                                ' . cDb::getTableName('cat') . ' AS c,
+                                ' . cDb::getTableName('cat_lang') . ' AS d
                             WHERE
                                 b.idcat = ' . cSecurity::toInteger(cString::getPartOfString($linkEditorIdArt, 9)) . ' AND
                                 a.idcat = d.idcat AND
@@ -608,11 +608,11 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $sql = 'SELECT distinct
                     e.*
                 FROM
-                    ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
-                    ' . $this->_cfg['tab']['cat_art'] . ' AS b,
-                    ' . $this->_cfg['tab']['cat'] . ' AS c,
-                    ' . $this->_cfg['tab']['cat_lang'] . ' AS d,
-                    ' . $this->_cfg['tab']['art_lang'] . ' AS e
+                    ' . cDb::getTableName('cat_tree') . ' AS a,
+                    ' . cDb::getTableName('cat_art') . ' AS b,
+                    ' . cDb::getTableName('cat') . ' AS c,
+                    ' . cDb::getTableName('cat_lang') . ' AS d,
+                    ' . cDb::getTableName('art_lang') . ' AS e
                 WHERE
                     c.idcat = ' . $idCat . ' AND
                     e.online = 1 AND

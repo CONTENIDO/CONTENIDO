@@ -32,7 +32,7 @@ if (cRegistry::isBackendEditMode()) {
 // therefor the image dimensions have to be determined
 if (0 < cString::getStringLength($imageSource)) {
     $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
-    $filename = str_replace($clientConfig["upl"]["htmlpath"], $clientConfig["upl"]["path"], $imageSource);
+    $filename = str_replace($clientConfig['upl']['htmlpath'], $clientConfig['upl']['path'], $imageSource);
     list($imageWidth, $imageHeight) = getimagesize($filename);
     $image = new stdClass();
     $image->src = $imageSource;

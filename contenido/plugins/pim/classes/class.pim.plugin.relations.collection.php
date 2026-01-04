@@ -20,8 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage PluginManager
  * @author     Frederic Schneider
- * @method PimPluginRelations createNewItem
- * @method PimPluginRelations|bool next
+ * @extends ItemCollection<PimPluginRelations>
  */
 class PimPluginRelationsCollection extends ItemCollection
 {
@@ -32,17 +31,17 @@ class PimPluginRelationsCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('plugins_rel'), 'idpluginrelation');
+        parent::__construct(cDb::getTableName('plugins_rel'), 'idpluginrelation');
         $this->_setItemClass('PimPluginRelations');
     }
 
     /**
      * Create a new plugin
      *
-     * @param $idItem   int Is equivalent to idarea or idnavm
+     * @param $idItem int Is equivalent to idarea or idnavm
      * @param $idPlugin int Plugin Id
-     * @param $type     string Relation to tables *_area and *_nav_main
-     * @return Item
+     * @param $type string Relation to tables *_area and *_nav_main
+     * @return PimPluginRelations
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idItem, $idPlugin, $type)
@@ -79,7 +78,7 @@ class PimPluginRelations extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('plugins_rel'), 'idpluginrelation');
+        parent::__construct(cDb::getTableName('plugins_rel'), 'idpluginrelation');
         $this->_sError = '';
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

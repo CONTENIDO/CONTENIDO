@@ -206,7 +206,9 @@ class idna_convert
             foreach ($arr as $k => $v) {
                 if (preg_match('!^' . preg_quote($this->_punycode_prefix, '!') . '!', $v)) {
                     $conv = $this->_decode($v);
-                    if ($conv) $arr[$k] = $conv;
+                    if ($conv) {
+                        $arr[$k] = $conv;
+                    }
                 }
             }
             $input = join('.', $arr);
@@ -214,7 +216,9 @@ class idna_convert
             foreach ($arr as $k => $v) {
                 if (preg_match('!^' . preg_quote($this->_punycode_prefix, '!') . '!', $v)) {
                     $conv = $this->_decode($v);
-                    if ($conv) $arr[$k] = $conv;
+                    if ($conv) {
+                        $arr[$k] = $conv;
+                    }
                 }
             }
             $email_pref = join('.', $arr);
@@ -230,7 +234,9 @@ class idna_convert
                 $arr = explode('.', $parsed['host']);
                 foreach ($arr as $k => $v) {
                     $conv = $this->_decode($v);
-                    if ($conv) $arr[$k] = $conv;
+                    if ($conv) {
+                        $arr[$k] = $conv;
+                    }
                 }
                 $parsed['host'] = join('.', $arr);
                 $return =
@@ -251,7 +257,9 @@ class idna_convert
             }
         } else { // Otherwise we consider it being a pure domain name string
             $return = $this->_decode($input);
-            if (!$return) $return = $input;
+            if (!$return) {
+                $return = $input;
+            }
         }
         // The output is UTF-8 by default, other output formats need conversion here
         // If one time encoding is given, use this, else the objects property
@@ -292,7 +300,9 @@ class idna_convert
         }
 
         // No input, no output, what else did you expect?
-        if (empty($decoded)) return '';
+        if (empty($decoded)) {
+            return '';
+        }
 
         // Anchors for iteration
         $last_begin = 0;
@@ -334,7 +344,7 @@ class idna_convert
         }
         // Catch the rest of the string
         if ($last_begin) {
-            $inp_len = sizeof($decoded);
+            $inp_len = count($decoded);
             $encoded = '';
             $encoded = $this->_encode(array_slice($decoded, $last_begin, (($inp_len) - $last_begin)));
             if ($encoded) {
@@ -369,7 +379,9 @@ class idna_convert
         $arr = explode('.', $parsed['host']);
         foreach ($arr as $k => $v) {
             $conv = $this->encode($v, 'utf8');
-            if ($conv) $arr[$k] = $conv;
+            if ($conv) {
+                $arr[$k] = $conv;
+            }
         }
         $parsed['host'] = join('.', $arr);
         $return =
@@ -433,7 +445,9 @@ class idna_convert
                 $idx += $digit * $w;
                 $t = ($k <= $bias) ? $this->_tmin :
                     (($k >= $bias + $this->_tmax) ? $this->_tmax : ($k - $bias));
-                if ($digit < $t) break;
+                if ($digit < $t) {
+                    break;
+                }
                 $w = (int)($w * ($this->_base - $t));
             }
             $bias = $this->_adapt($idx - $old_idx, $deco_len + 1, $is_first);
@@ -479,9 +493,13 @@ class idna_convert
         }
         // Do NAMEPREP
         $decoded = $this->_nameprep($decoded);
-        if (!$decoded || !is_array($decoded)) return false; // NAMEPREP failed
+        if (!$decoded || !is_array($decoded)) {
+            return false; // NAMEPREP failed
+        }
         $deco_len = count($decoded);
-        if (!$deco_len) return false; // Empty array
+        if (!$deco_len) {
+            return false; // Empty array
+        }
         $codecount = 0; // How many chars have been consumed
         $encoded = '';
         // Copy all basic code points to output
@@ -494,7 +512,10 @@ class idna_convert
                 $codecount++;
             }
         }
-        if ($codecount == $deco_len) return $encoded; // All codepoints were basic ones
+        if ($codecount == $deco_len) {
+            // All codepoints were basic ones
+            return $encoded;
+        }
 
         // Start with the prefix; copy it to output
         $encoded = $this->_punycode_prefix . $encoded;
@@ -524,7 +545,9 @@ class idna_convert
                     for ($q = $delta, $k = $this->_base; 1; $k += $this->_base) {
                         $t = ($k <= $bias) ? $this->_tmin :
                             (($k >= $bias + $this->_tmax) ? $this->_tmax : $k - $bias);
-                        if ($q < $t) break;
+                        if ($q < $t) {
+                            break;
+                        }
                         $encoded .= $this->_encode_digit(intval($t + (($q - $t) % ($this->_base - $t)))); //v0.4.5 Changed from ceil() to intval()
                         $q = (int)(($q - $t) / ($this->_base - $t));
                     }
@@ -605,7 +628,9 @@ class idna_convert
         // While mapping required chars we apply the cannonical ordering
         foreach ($input as $v) {
             // Map to nothing == skip that code point
-            if (in_array($v, self::$NP['map_nothing'])) continue;
+            if (in_array($v, self::$NP['map_nothing'])) {
+                continue;
+            }
             // Try to find prohibited input
             if (in_array($v, self::$NP['prohibit']) || in_array($v, self::$NP['general_prohibited'])) {
                 $this->_error('NAMEPREP: Prohibited input U+' . sprintf('%08X', $v));
@@ -685,7 +710,9 @@ class idna_convert
         $result[] = (int)$this->_lbase + $sindex / $this->_ncount;
         $result[] = (int)$this->_vbase + ($sindex % $this->_ncount) / $this->_tcount;
         $T = intval($this->_tbase + $sindex % $this->_tcount);
-        if ($T != $this->_tbase) $result[] = $T;
+        if ($T != $this->_tbase) {
+            $result[] = $T;
+        }
         return $result;
     }
 
@@ -760,7 +787,9 @@ class idna_convert
                 if ($next != 0 && $last > $next) {
                     // Move item leftward until it fits
                     for ($j = $i + 1; $j > 0; --$j) {
-                        if ($this->_get_combining_class(intval($input[$j - 1])) <= $next) break;
+                        if ($this->_get_combining_class(intval($input[$j - 1])) <= $next) {
+                            break;
+                        }
                         $t = intval($input[$j]);
                         $input[$j] = intval($input[$j - 1]);
                         $input[$j - 1] = $t;
@@ -784,8 +813,12 @@ class idna_convert
     {
         $inp_len = count($input);
         foreach (self::$NP['replacemaps'] as $np_src => $np_target) {
-            if ($np_target[0] != $input[0]) continue;
-            if (count($np_target) != $inp_len) continue;
+            if ($np_target[0] != $input[0]) {
+                continue;
+            }
+            if (count($np_target) != $inp_len) {
+                continue;
+            }
             $hit = false;
             foreach ($input as $k2 => $v2) {
                 if ($v2 == $np_target[$k2]) {
@@ -795,7 +828,9 @@ class idna_convert
                     break;
                 }
             }
-            if ($hit) return $np_src;
+            if ($hit) {
+                return $np_src;
+            }
         }
         return false;
     }
@@ -981,7 +1016,6 @@ class idna_convert
      * Attempts to return a concrete IDNA instance.
      *
      * @param array $params Set of parameters
-     * @return idna_convert
      */
     public function getInstance(array $params = []): idna_convert
     {

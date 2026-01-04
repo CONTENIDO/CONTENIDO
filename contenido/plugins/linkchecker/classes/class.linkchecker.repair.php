@@ -53,20 +53,14 @@ class cLinkcheckerRepair
     /**
      * Checks link and generate a repaired version
      *
-     * @param string $link
-     *
      * @return string|bool
      */
-    public function checkLink($link)
+    public function checkLink(string $link)
     {
         foreach ($this->errorTypes as $errorTypeKey => $errorType) {
             if (cString::getPartOfString($link, 0, cString::getStringLength($errorType)) == $errorType) {
-                $repaired_link = str_replace($errorType, $this->correctTypes[$errorTypeKey], $link);
-                if ($this->_pingRepairedLink($repaired_link) == true) {
-                    return $repaired_link;
-                } else {
-                    return false;
-                }
+                $repairedRink = str_replace($errorType, $this->correctTypes[$errorTypeKey], $link);
+                return $this->_pingRepairedLink($repairedRink) ? $repairedRink : false;
             }
         }
         return false;
@@ -74,15 +68,11 @@ class cLinkcheckerRepair
 
     /**
      * Test repaired link
-     *
-     * @param string $repaired_link
-     *
-     * @return  bool  true or false
      */
-    private function _pingRepairedLink($repaired_link)
+    private function _pingRepairedLink(string $repairedRink): bool
     {
-        $repaired_link = cSecurity::escapeString($repaired_link);
+        $repairedRink = cSecurity::escapeString($repairedRink);
 
-        return @fopen($repaired_link, 'r');
+        return (bool) @fopen($repairedRink, 'r');
     }
 }

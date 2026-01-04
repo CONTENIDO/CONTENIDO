@@ -6,7 +6,7 @@
  * Debug objects here are made for simple (!) debugging purposes.
  * Instead of writing echo '<pre>'.print_r($mMyVar, true).'</pre>';
  * you can now write $oDbg->show($mMyVar);
- * and get a formatted, readable representation of the passed variable.
+ * and get a formatted, readable representation of the provided variable.
  *
  * There are Objects to display the contents of a variable
  * to screen, to html comments and to a file.

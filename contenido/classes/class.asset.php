@@ -18,8 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Asset helper class.
  * Adds a version parameter to passed asset files (css & js).
- * Helps to serve modified files, so the cached versions on
- * the clients will be updated.
+ * Helps to serve modified files, so the cached versions on the clients will be updated.
  *
  * @package    Core
  * @subpackage Util
@@ -36,8 +35,8 @@ class cAsset
 
     /**
      * Returns versioned asset file path for the CONTENIDO backend.
-     * The file must exist and the path must start relative from
-     * CONTENIDO backend, which is usually '{installation_root}/contenido'.
+     * The file must exist and the path must start relative from CONTENIDO backend,
+     * which is usually '{installation_root}/contenido'.
      *
      * Use following CEC Hook to have a custom modified asset file path:
      * - Contenido.Backend.Asset
@@ -74,13 +73,14 @@ class cAsset
         }
 
         self::$_files[$file] = $file;
+
         return self::$_files[$file];
     }
 
     /**
      * Returns versioned asset file path for the frontend.
-     * The file must exist and the path must start relative from
-     * clients frontend path, which is usually '{installation_root}/cms'.
+     * The file must exist and the path must start relative from clients frontend path,
+     * which is usually '{installation_root}/cms'.
      *
      * Use following CEC Hook to have a custom modified asset file path:
      * - Contenido.Frontend.Asset
@@ -140,11 +140,8 @@ class cAsset
         if (filter_var($file, FILTER_VALIDATE_URL) === true) {
             return false;
         }
-        if (!preg_match('/\.(css|js)$/i', $file)) {
-            return false;
-        }
 
-        return true;
+        return (bool) preg_match('/\.(css|js)$/i', $file);
     }
 
     /**
@@ -167,11 +164,8 @@ class cAsset
 
         // Return the absolute pathname to the file
         $filePathName = realpath($basePath . $fileToUse);
-        if ($filePathName === false) {
-            return null;
-        }
 
-        return $filePathName;
+        return $filePathName !== false ? $filePathName : null;
     }
 
     /**
@@ -192,6 +186,7 @@ class cAsset
         // Get file modification time and add as a version parameter (e.g. v=123456789)
         $parts['params']['v'] = filemtime($filePathName);
         $parts['query'] = http_build_query($parts['params']);
+
         return cUri::getInstance()->composeByComponents($parts);
     }
 

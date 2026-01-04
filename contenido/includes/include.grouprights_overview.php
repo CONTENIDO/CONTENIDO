@@ -64,7 +64,7 @@ if (($request['created'] ?? null) == 1) {
 }
 
 // Action edit group
-if ($action == 'group_edit') {
+if ($action === 'group_edit') {
     $bError = false;
 
     if (isset($mlang) && is_array($mlang)) {

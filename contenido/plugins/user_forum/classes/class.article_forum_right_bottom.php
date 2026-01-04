@@ -58,7 +58,7 @@ class ArticleForumRightBottom extends cGuiPage
     protected function formatTimeString($timeStamp)
     {
         $nullString = '0';
-        if ($timeStamp == "0000-00-00 00:00:00") {
+        if ($timeStamp == '0000-00-00 00:00:00') {
             return [];
         } else {
             $ar = (date_parse($timeStamp));
@@ -142,7 +142,7 @@ class ArticleForumRightBottom extends cGuiPage
         $online->setAttribute('method', 'get');
 
         // link to edit mode
-        $edit = new cHTMLButton("edit");
+        $edit = new cHTMLButton('edit');
         $edit->setClass('con_img_button');
         $edit->setImageSource($cfg['path']['images'] . 'but_todo.gif');
         $edit->setEvent('click', "$('form[name=$id]').submit()");
@@ -248,7 +248,7 @@ class ArticleForumRightBottom extends cGuiPage
             $userColl = new cApiUserCollection();
             $user = $userColl->loadItem($cont['editedby'])->get('username');
 
-            if (($cont['editedby'] != '') && ($cont['editedat'] != '') && $cont['editedat'] != "0000-00-00 00:00:00") {
+            if (($cont['editedby'] != '') && ($cont['editedat'] != '') && $cont['editedat'] != '0000-00-00 00:00:00') {
                 $edit_information = (UserForum::i18n("EDITED") . $editdate . ' ' . UserForum::i18n("FROM") . $user);
                 $edit_information = "<em>$edit_information</em>";
             } else {
@@ -396,7 +396,7 @@ class ArticleForumRightBottom extends cGuiPage
         $tr->appendContent($th2);
 
         // build form element
-        $form1 = new cGuiTableForm("comment", "main.php?area=user_forum&frame=4", "post");
+        $form1 = new cGuiTableForm('comment', "main.php?area=user_forum&frame=4", "post");
         $form1->setHeader($tr);
         $form1->setTableID("table");
 
@@ -404,15 +404,15 @@ class ArticleForumRightBottom extends cGuiPage
         $user->loadByPrimaryKey($post['editedby']);
         $username = $user->getField('username');
 
-        $name = new cHTMLTextBox("realname", str_replace('\\', '', (conHtmlSpecialChars($post['realname']))), 30, 255);
-        $email = new cHTMLTextBox("email", $post['email'], 30, 255);
-        $like = new cHTMLTextBox("like", $post['like'], 7, 7);
-        $dislike = new cHTMLTextBox("dislike", $post['dislike'], 7, 7);
+        $name = new cHTMLTextbox('realname', str_replace('\\', '', (conHtmlSpecialChars($post['realname']))), 30, 255);
+        $email = new cHTMLTextbox('email', $post['email'], 30, 255);
+        $like = new cHTMLTextbox('like', $post['like'], 7, 7);
+        $dislike = new cHTMLTextbox('dislike', $post['dislike'], 7, 7);
 
         $text = conHtmlSpecialChars(str_replace(['<br />', '<br>', '<br/>'], ['', '', ''], $post['forum']));
         $text = str_replace('\\', '', $text);
 
-        $forum = new cHTMLTextArea("forum", $text);
+        $forum = new cHTMLTextArea('forum', $text);
 
         $arrDate = $this->formatTimeString($post['timestamp']);
         $date = (empty($arrDate)) ? '' : $arrDate['day'] . '.' . $arrDate['month'] . '.' . $arrDate['year'] . ' ' . UserForum::i18n("AT") . ' ' . $arrDate['hour'] . ':' . $arrDate['minute'] . ' ' . UserForum::i18n("CLOCK");
@@ -420,9 +420,9 @@ class ArticleForumRightBottom extends cGuiPage
         $arrEditedAtDate = $this->formatTimeString($post['editedat']);
         $editedat = (empty($arrEditedAtDate)) ? '' : $arrEditedAtDate['day'] . '.' . $arrEditedAtDate['month'] . '.' . $arrEditedAtDate['year'] . ' ' . UserForum::i18n("AT") . ' ' . $arrEditedAtDate['hour'] . ':' . $arrEditedAtDate['minute'] . ' ' . UserForum::i18n("CLOCK");
 
-        $timestamp = new cHTMLTextBox("timestamp", $date, 30, 255);
-        $editedat = new cHTMLTextBox("editedat", $editedat, 30, 255);
-        $editedby = new cHTMLTextBox("editedby", $username, 30, 255);
+        $timestamp = new cHTMLTextbox('timestamp', $date, 30, 255);
+        $editedat = new cHTMLTextbox('editedat', $editedat, 30, 255);
+        $editedby = new cHTMLTextbox('editedby', $username, 30, 255);
 
         $editedat->setDisabled(true);
         $timestamp->setDisabled(true);
@@ -444,19 +444,19 @@ class ArticleForumRightBottom extends cGuiPage
             $form1->setCancelLink("main.php?area=user_forum&frame=4&action=back&idart=$idart&idcat=$idcat");
         }
 
-        $onlineBox = new cHTMLCheckbox("onlineState", "");
+        $onlineBox = new cHTMLCheckbox('onlineState', '');
         $onlineBox->setChecked($post['online'] == 1);
         $form1->add(UserForum::i18n("ONLINE"), $onlineBox, '');
 
         $form1->add(UserForum::i18n("COMMENT"), $forum, '');
 
         // $form1->setVar('online', $post['online']);
-        $form1->setVar("id_user_forum", $post['id_user_forum']);
-        $form1->setVar("idart", $post['idart']);
-        $form1->setVar("idcat", $post['idcat']);
-        $form1->setVar("action", 'update');
-        $form1->setVar("mode", "list");
-        $form1->setVar("activeChanges", $changes);
+        $form1->setVar('id_user_forum', $post['id_user_forum']);
+        $form1->setVar('idart', $post['idart']);
+        $form1->setVar('idcat', $post['idcat']);
+        $form1->setVar('action', 'update');
+        $form1->setVar('mode', 'list');
+        $form1->setVar('activeChanges', $changes);
 
         $this->appendContent($form1);
 
@@ -473,7 +473,7 @@ class ArticleForumRightBottom extends cGuiPage
      */
     public function getForum($idCat, $idArt, $idLang)
     {
-        $arrUsers = $this->_collection->getExistingforum();
+        $arrUsers = $this->_collection->getExistingForum();
 
         $arrForum = [];
         $this->_collection->getTreeLevel($idCat, $idArt, $idLang, $arrUsers, $arrForum);
@@ -539,7 +539,7 @@ class ArticleForumRightBottom extends cGuiPage
         $lang = cRegistry::getLanguageId();
         $idart = $_REQUEST['idart'];
         $idcat = $_REQUEST['idcat'];
-        $action = $_REQUEST["action"];
+        $action = $_REQUEST['action'];
         $online = isset($_REQUEST['onlineState']) ? 1 : 0;
 
         switch ($action) {
@@ -598,7 +598,7 @@ class ArticleForumRightBottom extends cGuiPage
                 break;
             default:
                 $this->getForum($idcat, $idart, $lang);
-                throw new Exception('$_GET["action"] type ' . $_REQUEST["action"] . ' not implemented');
+                throw new Exception('$_GET["action"] type ' . $_REQUEST['action'] . ' not implemented');
         }
     }
 

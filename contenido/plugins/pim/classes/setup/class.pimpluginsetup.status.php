@@ -89,7 +89,7 @@ class PimPluginSetupStatus extends PimPluginSetup
 
             // If this plugin has some navSub entries, we must also change menu
             // status to offline
-            while (($relation = $this->_pimPluginRelationsCollection->next()) !== false) {
+            while ($relation = $this->_pimPluginRelationsCollection->next()) {
                 $idnavs = $relation->get('iditem');
                 $this->_changeNavSubStatus($idnavs, 0);
             }
@@ -103,7 +103,7 @@ class PimPluginSetupStatus extends PimPluginSetup
 
             // If this plugin has some navSub entries, we must also change menu
             // status to online
-            while (($relation = $this->_pimPluginRelationsCollection->next()) !== false) {
+            while ($relation = $this->_pimPluginRelationsCollection->next()) {
                 $idnavs = $relation->get('iditem');
                 $this->_changeNavSubStatus($idnavs, 1);
             }

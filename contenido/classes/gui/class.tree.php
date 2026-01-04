@@ -104,7 +104,7 @@ class cGuiTree extends cTree
             $this->setTreeName($treename);
         }
 
-        $this->_user = new cApiUser($auth->auth["uid"]);
+        $this->_user = new cApiUser($auth->getUserId());
     }
 
     /**
@@ -112,7 +112,7 @@ class cGuiTree extends cTree
      */
     public function processParameters()
     {
-        if (($items = $this->_user->getUserProperty("expandstate", $this->_uuid)) !== false) {
+        if (($items = $this->_user->getUserProperty('expandstate', $this->_uuid)) !== false) {
             $list = unserialize($items);
 
             foreach ($list as $litem) {
@@ -317,8 +317,8 @@ class cGuiTree extends cTree
                     }
                 }
             } else {
-                if (isset($object->_attributes["icon"])) {
-                    $img->setSrc($object->_attributes["icon"]);
+                if (isset($object->_attributes['icon'])) {
+                    $img->setSrc($object->_attributes['icon']);
                     $renderedIcon = $img->render();
                     $renderedName = $object->getName();
                 } else {

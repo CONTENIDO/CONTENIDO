@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiCommunication createNewItem
- * @method cApiCommunication|bool next
+ * @extends ItemCollection<cApiCommunication>
  */
 class cApiCommunicationCollection extends ItemCollection
 {
@@ -40,7 +39,7 @@ class cApiCommunicationCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('communications'), 'idcommunication');
+        parent::__construct(cDb::getTableName('communications'), 'idcommunication');
         $this->_setItemClass('cApiCommunication');
 
         // set the join partners so that joins can be used via link() method
@@ -61,7 +60,7 @@ class cApiCommunicationCollection extends ItemCollection
         $item = $this->createNewItem();
 
         $item->set('idclient', $client);
-        $item->set('author', $auth->auth['uid']);
+        $item->set('author', $auth->getUserId());
         $item->set('created', date('Y-m-d H:i:s'), false);
 
         return $item;
@@ -85,7 +84,7 @@ class cApiCommunication extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('communications'), 'idcommunication');
+        parent::__construct(cDb::getTableName('communications'), 'idcommunication');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -99,7 +98,7 @@ class cApiCommunication extends Item
     public function store()
     {
         $auth = cRegistry::getAuth();
-        $this->set('modifiedby', $auth->auth['uid']);
+        $this->set('modifiedby', $auth->getUserId());
         $this->set('modified', date('Y-m-d H:i:s'), false);
 
         return parent::store();

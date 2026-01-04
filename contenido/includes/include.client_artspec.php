@@ -103,19 +103,19 @@ if (!empty($artSpecs)) {
         ->setContent(cHTMLImage::img($imagesPath . 'delete.gif', i18n('Delete')));
 
     foreach ($artSpecs as $id => $artSpecItem) {
-        $link->setCustom("idartspec", $id);
-        $olink->setCustom("idartspec", $id);
-        $defLink->setCustom("idartspec", $id);
-        $dlink->setCustom("idartspec", $id);
+        $link->setCustom('idartspec', $id);
+        $olink->setCustom('idartspec', $id);
+        $defLink->setCustom('idartspec', $id);
+        $dlink->setCustom('idartspec', $id);
 
-        if (($action == "client_artspec_edit") && ($idartspec == $id)) {
-            $form = new cHTMLForm("artspec");
-            $form->setVar("area", $area);
-            $form->setVar("frame", $frame);
-            $form->setVar("idartspec", $id);
-            $form->setVar("action", "client_artspec_save");
-            $form->setVar("online", $artSpecItem['online']);
-            $inputBox = new cHTMLTextbox("artspectext", conHtmlentities(stripslashes($artSpecItem['artspec'])));
+        if ($action == 'client_artspec_edit' && $idartspec == $id) {
+            $form = new cHTMLForm('artspec');
+            $form->setVar('area', $area);
+            $form->setVar('frame', $frame);
+            $form->setVar('idartspec', $id);
+            $form->setVar('action', 'client_artspec_save');
+            $form->setVar('online', $artSpecItem['online']);
+            $inputBox = new cHTMLTextbox('artspectext', conHtmlentities(stripslashes($artSpecItem['artspec'])));
             $form->appendContent($inputBox->render());
             $form->appendContent(cHTMLButton::image($imagesPath . 'submit.gif', i18n('Save'), ['class' => 'con_img_button']));
 
@@ -126,11 +126,11 @@ if (!empty($artSpecs)) {
 
         if ($artSpecItem['online'] == 0) {
             // it is offline (std!)
-            $olink->setContent(cHTMLImage::img($imagesPath . 'offline.gif', i18n('Make online')));
-            $olink->setCustom("online", 1);
+            $olink->setContent(cHTMLImage::img($imagesPath . 'offline.gif', i18n("Make online")));
+            $olink->setCustom('online', 1);
         } else {
-            $olink->setContent(cHTMLImage::img($imagesPath . 'online.gif', i18n('Make offline')));
-            $olink->setCustom("online", 0);
+            $olink->setContent(cHTMLImage::img($imagesPath . 'online.gif', i18n("Make offline")));
+            $olink->setCustom('online', 0);
         }
 
         if ($artSpecItem['artspecdefault'] == 0) {
@@ -152,13 +152,13 @@ if (!empty($artSpecs)) {
 }
 unset($form);
 
-$form = new cGuiTableForm("artspec");
+$form = new cGuiTableForm('artspec');
 $form->setTableClass('generic con_block col_sm');
-$form->setVar("area", $area);
-$form->setVar("frame", $frame);
-$form->setVar("action", "client_artspec_save");
+$form->setVar('area', $area);
+$form->setVar('frame', $frame);
+$form->setVar('action', 'client_artspec_save');
 $form->setHeader(i18n("Create new article specification"));
-$inputBox = new cHTMLTextbox("artspectext");
+$inputBox = new cHTMLTextbox('artspectext');
 $form->add(i18n("Specification name"), $inputBox->render());
 
 $content = [];

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiContainer createNewItem
- * @method cApiContainer|bool next
+ * @extends ItemCollection<cApiContainer>
  */
 class cApiContainerCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiContainerCollection extends ItemCollection
      */
     public function __construct($select = false)
     {
-        parent::__construct(cRegistry::getDbTableName('container'), 'idcontainer');
+        parent::__construct(cDb::getTableName('container'), 'idcontainer');
         $this->_setItemClass('cApiContainer');
 
         // set the join partners so that joins can be used via link() method
@@ -125,7 +124,7 @@ class cApiContainer extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('container'), 'idcontainer');
+        parent::__construct(cDb::getTableName('container'), 'idcontainer');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

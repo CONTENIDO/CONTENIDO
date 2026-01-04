@@ -627,25 +627,16 @@ abstract class Item extends cItemBaseAbstract
     /**
      * Deletes a custom property by its id.
      *
-     * @param int $idprop Id of property
+     * @param int $id Id of property
      * @throws cDbException|cInvalidArgumentException
      */
-    public function deletePropertyById($idprop): bool
+    public function deletePropertyById($id): bool
     {
-        return $this->_getPropertiesCollectionInstance()->delete($idprop);
+        return $this->_getPropertiesCollectionInstance()->delete($id);
     }
 
-    ///**
-    // * Deletes the current item
-    // * Method doesn't work, remove in future versions.
-    // */
-    // function delete() {
-    // $this->_collectionInstance->delete($item->get($this->getPrimaryKeyName()));
-    // }
-
     /**
-     * Define the filter functions used when data is being stored or retrieved
-     * from the database.
+     * Define the filter functions used when data is being stored or retrieved from the database.
      *
      * Examples:
      * <pre>
@@ -655,68 +646,57 @@ abstract class Item extends cItemBaseAbstract
      * );
      * </pre>
      *
-     * @param array $aInFilters [optional]
-     *         Array with function names
-     * @param array $aOutFilters [optional]
-     *         Array with function names
+     * @param array $inFilters [optional] Array with function names
+     * @param array $outFilters [optional] vArray with function names
      */
-    public function setFilters($aInFilters = [], $aOutFilters = [])
+    public function setFilters(array $inFilters = [], array $outFilters = [])
     {
-        $this->_arrInFilters = $aInFilters;
-        $this->_arrOutFilters = $aOutFilters;
+        $this->_arrInFilters = $inFilters;
+        $this->_arrOutFilters = $outFilters;
     }
 
     /**
      * @deprecated [2023-02-11] Since 4.10.2, use {@see Item::inFilter()} instead
      */
-    public function _inFilter($mData)
+    public function _inFilter($data)
     {
         cDeprecated("The function _inFilter() is deprecated since CONTENIDO 4.10.2, use Item::inFilter() instead.");
-        return $this->inFilter($mData);
+        return $this->inFilter($data);
     }
 
     /**
-     * Filters the passed data using the functions defines in the _arrInFilters
-     * array.
+     * Filters the provided data using the functions defines in the _arrInFilters array.
      *
-     * @param mixed $mData
-     *         Data to filter
-     * @return mixed
-     *         Filtered data
+     * @param mixed $data bData to filter
+     * @return mixed Filtered data
      * @since CONTENIDO 4.10.2
      * @see Item::setFilters()
      */
-    public function inFilter($mData)
+    public function inFilter($data)
     {
-        return $this->_filter($mData, $this->_arrInFilters);
+        return $this->_filter($data, $this->_arrInFilters);
     }
 
     /**
-     * Filters the passed data using the functions defines in the _arrOutFilters
-     * array.
+     * Filters the provided data using the functions defines in the _arrOutFilters array.
      *
-     * @param mixed $mData
-     *         Data to filter
-     * @return mixed
-     *         Filtered data
+     * @param mixed $data Data to filter
+     * @return mixed Filtered data
      * @see Item::setFilters()
      */
-    public function outFilter($mData)
+    public function outFilter($data)
     {
-        return $this->_filter($mData, $this->_arrOutFilters);
+        return $this->_filter($data, $this->_arrOutFilters);
     }
 
     /**
-     * Filters the passed data using the passed filter functions list.
+     * Filters the provided data using the provided filter functions list.
      *
-     * @param mixed $mData
-     *         Data to filter
-     * @param array $filterFunctions
-     *         List of functions
-     * @return mixed
-     *         Filtered data
+     * @param mixed $data Data to filter
+     * @param array $filterFunctions List of functions
+     * @return mixed Filtered data
      */
-    protected function _filter($mData, array $filterFunctions)
+    protected function _filter($data, array $filterFunctions)
     {
         foreach ($filterFunctions as $_function) {
             if (function_exists($_function)) {
@@ -725,28 +705,28 @@ abstract class Item extends cItemBaseAbstract
                 $isStringFunction = in_array(
                     $_function, $this->_settings['string_filter_functions']
                 );
-                if (is_array($mData)) {
-                    foreach ($mData as $key => $value) {
+                if (is_array($data)) {
+                    foreach ($data as $key => $value) {
                         if ($isStringFunction) {
                             if (is_string($value)) {
-                                $mData[$key] = $_function($value);
+                                $data[$key] = $_function($value);
                             }
                         } else {
-                            $mData[$key] = $_function($value);
+                            $data[$key] = $_function($value);
                         }
                     }
                 } else {
                     if ($isStringFunction) {
-                        if (is_string($mData)) {
-                            $mData = $_function($mData);
+                        if (is_string($data)) {
+                            $data = $_function($data);
                         }
                     } else {
-                        $mData = $_function($mData);
+                        $data = $_function($data);
                     }
                 }
             }
         }
-        return $mData;
+        return $data;
     }
 
     /**

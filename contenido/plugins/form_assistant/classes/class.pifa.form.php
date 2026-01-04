@@ -18,8 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * It's a kind of model.
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @method PifaForm createNewItem($data)
- * @method PifaForm|bool next
+ * @extends ItemCollection<PifaForm>
  */
 class PifaFormCollection extends ItemCollection
 {
@@ -47,7 +46,7 @@ class PifaFormCollection extends ItemCollection
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('pifa_form'), 'idform');
+        parent::__construct(cDb::getTableName('pifa_form'), 'idform');
         $this->_setItemClass('PifaForm');
         if (false !== $where) {
             $this->select($where);
@@ -188,7 +187,7 @@ class PifaForm extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('pifa_form'), 'idform');
+        parent::__construct(cDb::getTableName('pifa_form'), 'idform');
         $this->setFilters();
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
@@ -221,7 +220,7 @@ class PifaForm extends Item
         $col->setOrder('PifaFieldCollection.field_rank');
         $col->query();
         $this->_fields = [];
-        while (false !== $pifaField = $col->next()) {
+        while ($pifaField = $col->next()) {
             $this->_fields[] = clone $pifaField;
         }
     }
@@ -1265,8 +1264,7 @@ class PifaForm extends Item
      * Deletes this form with all its fields and stored data.
      * The forms data table is also dropped.
      *
-     * @throws PifaException
-     * @throws cDbException
+     * @throws cDbException|PifaException
      */
     public function delete()
     {
@@ -1280,7 +1278,7 @@ class PifaForm extends Item
         // delete form
         $sql = "-- PifaForm->delete()
             DELETE FROM
-                `" . cRegistry::getDbTableName('pifa_form') . "`
+                `" . cDb::getTableName('pifa_form') . "`
             WHERE
                 idform = " . cSecurity::toInteger($this->get('idform')) . "
             ;";
@@ -1292,7 +1290,7 @@ class PifaForm extends Item
         // delete fields
         $sql = "-- PifaForm->delete()
             DELETE FROM
-                `" . cRegistry::getDbTableName('pifa_field') . "`
+                `" . cDb::getTableName('pifa_field') . "`
             WHERE
                 idform = " . cSecurity::toInteger($this->get('idform')) . "
             ;";

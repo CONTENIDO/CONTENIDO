@@ -38,7 +38,7 @@ function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
 
     $arrSearchFor = ["'" . $db2->escape($user) . "'"];
 
-    $sql = "SELECT * FROM " . $cfg['tab']['groupmembers'] . " WHERE user_id = '" . $db2->escape($user) . "'";
+    $sql = "SELECT * FROM " . cDb::getTableName('groupmembers') . " WHERE user_id = '" . $db2->escape($user) . "'";
 
     $db2->query($sql);
 
@@ -49,9 +49,9 @@ function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
     $sSearchFor = implode(",", $arrSearchFor);
 
     $sql = "SELECT idright
-            FROM " . $cfg['tab']['rights'] . " AS A,
-                 " . $cfg['tab']['actions'] . " AS B,
-                 " . $cfg['tab']['area'] . " AS C
+            FROM " . cDb::getTableName('rights') . " AS A,
+                 " . cDb::getTableName('actions') . " AS B,
+                 " . cDb::getTableName('area') . " AS C
             WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id IN (" . $sSearchFor . ") AND A.idcat = " . cSecurity::toInteger($idcat) . "
             AND A.idarea = C.idarea AND B.idaction = A.idaction AND A.idlang = " . cSecurity::toInteger($idlang);
 

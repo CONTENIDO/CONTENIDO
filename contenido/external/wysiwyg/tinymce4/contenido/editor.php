@@ -64,7 +64,7 @@ if (false !== $editor_height) {
     $cTinyMCEEditor->setSetting(null, 'height', $editor_height, true);
 }
 
-$currentuser = new cApiUser($auth->auth['uid']);
+$currentuser = new cApiUser($auth->getUserId());
 
 if ($currentuser->getField('wysi') == 1) {
     echo $cTinyMCEEditor->getScripts();

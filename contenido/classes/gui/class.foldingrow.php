@@ -127,7 +127,7 @@ class cGuiFoldingRow extends cHTML
         $this->_headerRow = new cHTMLTableRow();
 
         $this->_headerData = new cHTMLTableHead();
-        $this->_headerData->setClass("foldingrow");
+        $this->_headerData->setClass('foldingrow');
 
         $this->_contentRow = new cHTMLTableRow();
         $this->_contentRow->updateAttributes(["id" => $uuid]);
@@ -138,7 +138,7 @@ class cGuiFoldingRow extends cHTML
 
         $this->_linkId = $linkId;
 
-        $this->_hiddenField = new cHTMLHiddenField("expandstate_" . $this->_contentRow->getID());
+        $this->_hiddenField = new cHTMLHiddenField('expandstate_' . $this->_contentRow->getID());
 
         $this->_foldingImage = new cHTMLImage();
         $this->_foldingImage->advanceID();
@@ -148,13 +148,13 @@ class cGuiFoldingRow extends cHTML
         $this->addRequiredScript("parameterCollector.js");
         $this->addRequiredScript("cfoldingrow.js");
 
-        $user = new cApiUser($auth->auth["uid"]);
+        $user = new cApiUser($auth->getUserId());
 
         if ($bExpanded === NULL) {
             // Check for expandstate
             if ($user->isLoaded()) {
-                if ($user->getProperty("expandstate", $uuid) == "true") {
-                    $this->setExpanded($user->getProperty("expandstate", $uuid));
+                if ($user->getProperty('expandstate', $uuid) == 'true') {
+                    $this->setExpanded($user->getProperty('expandstate', $uuid));
                 }
             }
         } else {
@@ -227,7 +227,7 @@ class cGuiFoldingRow extends cHTML
     public function render(): string
     {
         // Build the expand/collapse link
-        $this->_link->setClass("foldingrow");
+        $this->_link->setClass('foldingrow');
         if ($this->_linkId != NULL) {
             $this->_link->setID($this->_linkId);
         }

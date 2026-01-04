@@ -149,25 +149,25 @@ class cRightsAreasHelper
     /**
      * Checks if authenticated user has rights for a language
      *
-     * @param int $idLang
+     * @param int $languageId
      * @return bool
      */
-    public function hasAuthLanguagePerm(int $idLang): bool
+    public function hasAuthLanguagePerm(int $languageId): bool
     {
         return $this->_isAuthSysadmin
-            || cPermission::checkLanguagePermission($idLang, $this->_auth->getPerms());
+            || cPermission::checkLanguagePermission($languageId, $this->_auth->getPerms());
     }
 
     /**
      * Checks if context (user or group) has rights for a language
      *
-     * @param int $idLang
+     * @param int $languageId
      * @return bool
      */
-    public function hasContextLanguagePerm(int $idLang): bool
+    public function hasContextLanguagePerm(int $languageId): bool
     {
         return $this->_isContextSysadmin
-            || cPermission::checkLanguagePermission($idLang, $this->_contextPerms);
+            || cPermission::checkLanguagePermission($languageId, $this->_contextPerms);
     }
 
     /**
@@ -208,7 +208,7 @@ class cRightsAreasHelper
     }
 
     /**
-     * Renders the client admin checkboxes for the passed list of client ids.
+     * Renders the client admin checkboxes for the provided list of client ids.
      *
      * @param array<int, array> $clients
      * @return string
@@ -233,7 +233,7 @@ class cRightsAreasHelper
     }
 
     /**
-     * Renders a single client permission checkbox for the passed client.
+     * Renders a single client permission checkbox for the provided client.
      *
      * @param int $idClient
      * @param string $clientName
@@ -252,7 +252,7 @@ class cRightsAreasHelper
     }
 
     /**
-     * Renders a single client permission checkbox for the passed language.
+     * Renders a single client permission checkbox for the provided language.
      *
      * @param int $idLanguage
      * @param string $languageName

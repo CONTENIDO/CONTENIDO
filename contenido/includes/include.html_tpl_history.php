@@ -27,7 +27,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 
 $perm = cRegistry::getPerm();
-$client = cRegistry::getCategoryId();
+$client = cRegistry::getClientId();
 $area = cRegistry::getArea();
 
 $oPage = new cGuiPage('html_tpl_history');
@@ -51,7 +51,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
 cInclude('includes', 'functions.file.php');
 cInclude('external', 'codemirror/class.codemirror.php');
 
-$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
+$readOnly = getEffectiveSetting('client', 'readonly', 'false') === 'true';
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -72,7 +72,7 @@ $requestHtmlTplSend = cSecurity::toInteger($_POST['html_tpl_send'] ?? '0');
 $requestHtmlTplCode = $_POST['html_tpl_code'] ?? '';
 
 // Truncate history action
-if ((!$readOnly) && $requestAction === 'history_truncate') {
+if (!$readOnly && $requestAction === 'history_truncate') {
     $oVersionHtmlTemp = new cVersionFile(
         $aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent,
         $cfg, $cfgClient, $db, $client, $area, $frame
@@ -84,7 +84,7 @@ if ((!$readOnly) && $requestAction === 'history_truncate') {
 }
 
 // Save action
-if ((!$readOnly) && $requestHtmlTplSend && $requestHtmlTplCode != '' && $sFileName != '' && !empty($aFileInfo['idsfi'])) {
+if (!$readOnly && $requestHtmlTplSend && $requestHtmlTplCode != '' && $sFileName != '' && !empty($aFileInfo['idsfi'])) {
     $oVersionHtmlTemp = new cVersionFile(
         $aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent,
         $cfg, $cfgClient, $db, $client, $area, $frame
@@ -141,8 +141,11 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction !== 'hist
 
     // Create and output the select box
     $sSelectBox = $oVersionHtmlTemp->buildSelectBox(
-        'html_tpl_history', 'HTML Template History',
-        i18n('Show history entry'), 'idhtml_tpl_history', $readOnly
+        'html_tpl_history',
+        'HTML Template History',
+        i18n('Show history entry'),
+        'idhtml_tpl_history',
+        $readOnly
     );
 
     // Generate form

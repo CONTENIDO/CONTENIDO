@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiSearchTracking createNewItem
- * @method cApiSearchTracking|bool next
+ * @extends ItemCollection<cApiSearchTracking>
  */
 class cApiSearchTrackingCollection extends ItemCollection
 {
@@ -46,7 +45,7 @@ class cApiSearchTrackingCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('search_tracking'), 'idsearchtracking');
+        parent::__construct(cDb::getTableName('search_tracking'), 'idsearchtracking');
 
         $this->_setItemClass('cApiSearchTracking');
     }
@@ -65,11 +64,11 @@ class cApiSearchTrackingCollection extends ItemCollection
     public function create($searchTerm, $searchResults, $timestamp = "", $idclient = 0, $idlang = 0)
     {
         $item = $this->createNewItem();
-        $item->set("searchterm", $searchTerm);
-        $item->set("results", $searchResults);
-        $item->set("datesearched", ($timestamp == "") ? date('Y-m-d H:i:s') : $timestamp);
-        $item->set("idclient", ($idclient == 0) ? cRegistry::getClientId() : $idclient);
-        $item->set("idlang", ($idlang == 0) ? cRegistry::getLanguageId() : $idlang);
+        $item->set('searchterm', $searchTerm);
+        $item->set('results', $searchResults);
+        $item->set('datesearched', ($timestamp == '') ? date('Y-m-d H:i:s') : $timestamp);
+        $item->set('idclient', ($idclient == 0) ? cRegistry::getClientId() : $idclient);
+        $item->set('idlang', ($idlang == 0) ? cRegistry::getLanguageId() : $idlang);
 
         return $item->store();
     }
@@ -83,7 +82,7 @@ class cApiSearchTrackingCollection extends ItemCollection
      */
     public function trackSearch($searchTerm, $resultCount): bool
     {
-        if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
+        if (getEffectiveSetting('search', 'term_tracking', 'on') != 'on') {
             return false;
         }
 
@@ -159,7 +158,7 @@ class cApiSearchTracking extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('search_tracking'), 'idsearchtracking');
+        parent::__construct(cDb::getTableName('search_tracking'), 'idsearchtracking');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

@@ -20,8 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage PluginManager
  * @author     Frederic Schneider
- * @method PimPlugin createNewItem($data)
- * @method PimPlugin|bool next
+ * @extends ItemCollection<PimPlugin>
  */
 class PimPluginCollection extends ItemCollection
 {
@@ -41,7 +40,7 @@ class PimPluginCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('plugins'), 'idplugin');
+        parent::__construct(cDb::getTableName('plugins'), 'idplugin');
         $this->_setItemClass('PimPlugin');
     }
 
@@ -80,7 +79,7 @@ class PimPluginCollection extends ItemCollection
         $item->set('version', $version);
         $item->set('folder', $foldername);
         $item->set('uuid', $uuId);
-        $item->set('installed', date("Y-m-d H:i:s"), false);
+        $item->set('installed', date('Y-m-d H:i:s'), false);
         $item->set('active', $active);
 
         // set execution order to the last of the list or to what was specified in create
@@ -88,7 +87,7 @@ class PimPluginCollection extends ItemCollection
             $this->select();
             $execOrder = $this->count();
         }
-        $item->set("executionorder", $execOrder);
+        $item->set('executionorder', $execOrder);
 
         $item->store();
 
@@ -98,33 +97,28 @@ class PimPluginCollection extends ItemCollection
     /**
      * Get the next id in table *_plugins
      *
-     * @return int
-     *
      * @throws cDbException
      */
-    protected function _getNextId()
+    protected function _getNextId(): int
     {
-        $sql = 'SELECT MAX(idplugin) AS id FROM ' . cRegistry::getDbTableName('plugins');
-        $this->db->query($sql);
+        $this->db->query(
+            'SELECT MAX(`idplugin`) AS `id` FROM `%s`',
+            cDb::getTableName('plugins')
+        );
+        $maxId = $this->db->nextRecord() ? cSecurity::toInteger($this->db->f('id')) : 0;
 
-        if ($this->db->nextRecord()) {
-
-            $result = $this->db->f('id');
-
-            // id must be over 10.000
-            if ($result < 10000) {
-                $result = 10000;
-            }
-
-            // add ten
-            $result = $result + 10;
-
-            // removed the last number
-            $result = cString::getPartOfString($result, 0, cString::getStringLength($result) - 1);
-
-            // last number is always zero
-            return cSecurity::toInteger($result . 0);
+        // id must be over 10.000
+        if ($maxId < 10000) {
+            $maxId = 10000;
         }
+
+        // Add ten
+        $maxId = $maxId + 10;
+
+        // Replace the last char (number) against '0', last number is always 0!
+        $maxId = substr(cSecurity::toString($maxId), 0, -1) . '0';
+
+        return cSecurity::toInteger($maxId);
     }
 }
 
@@ -147,7 +141,7 @@ class PimPlugin extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('plugins'), 'idplugin');
+        parent::__construct(cDb::getTableName('plugins'), 'idplugin');
         $this->_error = '';
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
@@ -189,7 +183,7 @@ class PimPlugin extends Item
 
         // Get uuid from selected plugin
         $pimPluginColl = new PimPluginCollection();
-        $pimPluginColl->setWhere('idplugin', $this->get("idplugin"));
+        $pimPluginColl->setWhere('idplugin', $this->get('idplugin'));
         $pimPluginColl->query();
         $pimPluginSql = $pimPluginColl->next();
         $uuidBase = $pimPluginSql->get('uuid');
@@ -219,7 +213,7 @@ class PimPlugin extends Item
                 $depend = cSecurity::escapeString($tempXml->dependencies->depend[$i]);
 
                 // If is no dependencie name defined please go to next dependencie
-                if ($depend == "") {
+                if ($depend == '') {
                     continue;
                 }
 
@@ -274,7 +268,7 @@ class PimPlugin extends Item
 
         // Get uuid from selected plugin
         $pimPluginColl = new PimPluginCollection();
-        $pimPluginColl->setWhere('idplugin', $this->get("idplugin"));
+        $pimPluginColl->setWhere('idplugin', $this->get('idplugin'));
         $pimPluginColl->query();
         $pimPluginSql = $pimPluginColl->next();
         $folderBase = $pimPluginSql->get('folder');
@@ -353,7 +347,7 @@ class PimPlugin extends Item
         }
 
         $oldOrder = $this->get('executionorder'); // get the old value
-        $idplugin = $this->get("idplugin");
+        $idplugin = $this->get('idplugin');
 
         $this->set('executionorder', $newOrder); // update this plugin to the new value
         $this->store();
@@ -364,10 +358,10 @@ class PimPlugin extends Item
 
         while ($plugin = $pluginColl->next()) {
             if ($newOrder < $oldOrder) {
-                $plugin->set("executionorder", $plugin->get("executionorder") + 1); // increment the execution order after we moved the plugin up
+                $plugin->set('executionorder', $plugin->get('executionorder') + 1); // increment the execution order after we moved the plugin up
                 $plugin->store();
             } elseif ($oldOrder < $newOrder) {
-                $plugin->set("executionorder", $plugin->get("executionorder") - 1); // decrement the execution value after we moved the plugin down
+                $plugin->set('executionorder', $plugin->get('executionorder') - 1); // decrement the execution value after we moved the plugin down
                 $plugin->store();
             }
         }

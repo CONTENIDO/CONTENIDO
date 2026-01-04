@@ -191,7 +191,7 @@ function uplSyncDirectory(string $sPath)
     // entries pointing to a not existing upload directory on the file system
     $db->query(
         "SELECT DISTINCT(dirname) AS dirname FROM %s WHERE idclient=%d AND dirname LIKE '%s%%'", // NOTE: We escape % with %%
-        $cfg['tab']['upl'], cSecurity::toInteger($client), $sPath
+        cDb::getTableName('upl'), cSecurity::toInteger($client), $sPath
     );
     while ($db->nextRecord()) {
         $sCurrDirname = $db->f('dirname');
@@ -208,7 +208,7 @@ function uplSyncDirectory(string $sPath)
     // delete all db entries related to current directory without existing file
     // on file system
     $oUploadsColl->select("dirname='" . $oUploadsColl->escape($sPath) . "' AND idclient=" . (int)$client);
-    while (($oUpload = $oUploadsColl->next()) !== false) {
+    while ($oUpload = $oUploadsColl->next()) {
         if (!cFileHandler::exists($cfgClient['upl']['path'] . $oUpload->get('dirname') . $oUpload->get('filename'))) {
             $oUploadsColl->delete($oUpload->get('idupl'));
         }
@@ -246,7 +246,7 @@ function uplSyncDirectoryDBFS(string $sPath)
     if ($oDBFSColl->dirExists($sPath)) {
         $sStripPath = cApiDbfs::stripPath($sPath);
         $oDBFSColl->select("dirname = '$sStripPath'");
-        while (($oFile = $oDBFSColl->next()) !== false) {
+        while ($oFile = $oDBFSColl->next()) {
             if ($oFile->get('filename') != '.') {
                 $oUploadsColl->sync($sPath . "/", $oFile->get('filename'));
             }
@@ -254,14 +254,14 @@ function uplSyncDirectoryDBFS(string $sPath)
     }
 
     $oUploadsColl->select("dirname='$sPath/' AND idclient='$client'");
-    while (($oUpload = $oUploadsColl->next()) !== false) {
+    while ($oUpload = $oUploadsColl->next()) {
         if (!$oDBFSColl->fileExists($oUpload->get('dirname') . $oUpload->get('filename'))) {
-            $oUploadsColl->delete($oUpload->get("idupl"));
+            $oUploadsColl->delete($oUpload->get('idupl'));
         }
     }
 
     $oPropertiesColl->select("idclient='$client' AND itemtype='upload' AND type='file' AND itemid LIKE '" . $sPath . "%'");
-    while (($oProperty = $oPropertiesColl->next()) !== false) {
+    while ($oProperty = $oPropertiesColl->next()) {
         if (!$oDBFSColl->fileExists($oProperty->get('itemid'))) {
             $oPropertiesColl->delete($oProperty->get('idproperty'));
         }
@@ -345,7 +345,7 @@ function uplRenameDirectory(string $sOldName, string $sNewName, string $sParent)
     // with the new path
     $oUploadColl = new cApiUploadCollection();
     $oUploadColl->select("idclient=" . cSecurity::toInteger($client) . " AND dirname LIKE '" . $oUploadColl->escape($sParent . $sOldName) . "%'");
-    while (($oUpload = $oUploadColl->next()) !== false) {
+    while ($oUpload = $oUploadColl->next()) {
         $sDirName = $oUpload->get('dirname');
         $sJunk = cString::getPartOfString($sDirName, cString::getStringLength($sParent) + cString::getStringLength($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
@@ -357,7 +357,7 @@ function uplRenameDirectory(string $sOldName, string $sNewName, string $sParent)
     // itemid with the new path
     $oPropertyColl = new cApiPropertyCollection();
     $oPropertyColl->select("idclient=" . (int)$client . " AND itemtype='upload' AND type='file' AND itemid LIKE '" . $oPropertyColl->escape($sParent . $sOldName) . "%'");
-    while (($oProperty = $oPropertyColl->next()) !== false) {
+    while ($oProperty = $oPropertyColl->next()) {
         $sDirName = $oProperty->get('itemid');
         $sJunk = cString::getPartOfString($sDirName, cString::getStringLength($sParent) + cString::getStringLength($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
@@ -451,7 +451,7 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
     // TODO what was this object supposed to be?
     $lprevobj = new stdClass();
 
-    while (($dbitem = $dbfs->next()) !== false) {
+    while ($dbitem = $dbfs->next()) {
         $dirname = $dbitem->get('dirname');
         $level = cString::countSubstring($dirname, '/') + 2;
         $file = basename($dbitem->get('dirname'));
@@ -892,7 +892,7 @@ function uplSearch(string $searchTerm): array
     $uplMetaColl->setWhereGroup('description', 'capiuploadmetacollection.idlang', $lang);
     $uplMetaColl->setWhereGroup('description', 'capiuploadmetacollection.description', '%' . $searchTermEscaped . '%', 'LIKE');
     $uplMetaColl->query();
-    while (($item = $uplMetaColl->next()) !== false) {
+    while ($item = $uplMetaColl->next()) {
         $idupl = cSecurity::toInteger($item->get('idupl'));
         $items[$idupl] = $items[$idupl] ?? 0;
         $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('description')), cString::toLowerCase($searchTerm)) * 5);
@@ -905,7 +905,7 @@ function uplSearch(string $searchTerm): array
     $uplMetaColl->setWhereGroup('medianame', 'capiuploadmetacollection.idlang', $lang);
     $uplMetaColl->setWhereGroup('medianame', 'capiuploadmetacollection.medianame', '%' . $searchTermEscaped . '%', 'LIKE');
     $uplMetaColl->query();
-    while (($item = $uplMetaColl->next()) !== false) {
+    while ($item = $uplMetaColl->next()) {
         $idupl = cSecurity::toInteger($item->get('idupl'));
         $items[$idupl] = $items[$idupl] ?? 0;
         $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('medianame')), cString::toLowerCase($searchTerm)) * 4);
@@ -913,7 +913,7 @@ function uplSearch(string $searchTerm): array
 
     // Search for file name, ranking +4
     $uploadsColl->select("idclient='" . $client . "' AND filename LIKE '%" . $searchTermEscaped . "%'");
-    while (($item = $uploadsColl->next()) !== false) {
+    while ($item = $uploadsColl->next()) {
         $idupl = cSecurity::toInteger($item->get('idupl'));
         $items[$idupl] = $items[$idupl] ?? 0;
         $items[$idupl] += 4;
@@ -926,7 +926,7 @@ function uplSearch(string $searchTerm): array
     $uplMetaColl->setWhereGroup('keywords', 'capiuploadmetacollection.idlang', $lang);
     $uplMetaColl->setWhereGroup('keywords', 'capiuploadmetacollection.keywords', '%' . $searchTermEscaped . '%', 'LIKE');
     $uplMetaColl->query();
-    while (($item = $uplMetaColl->next()) !== false) {
+    while ($item = $uplMetaColl->next()) {
         $idupl = cSecurity::toInteger($item->get('idupl'));
         $items[$idupl] = $items[$idupl] ?? 0;
         $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('keywords')), cString::toLowerCase($searchTerm)) * 3);
@@ -939,7 +939,7 @@ function uplSearch(string $searchTerm): array
     $uplMetaColl->setWhereGroup('copyright', 'capiuploadmetacollection.idlang', $lang);
     $uplMetaColl->setWhereGroup('copyright', 'capiuploadmetacollection.copyright', '%' . $searchTermEscaped . '%', 'LIKE');
     $uplMetaColl->query();
-    while (($item = $uplMetaColl->next()) !== false) {
+    while ($item = $uplMetaColl->next()) {
         $idupl = cSecurity::toInteger($item->get('idupl'));
         $items[$idupl] = $items[$idupl] ?? 0;
         $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('copyright')), cString::toLowerCase($searchTerm)) * 2);
@@ -952,7 +952,7 @@ function uplSearch(string $searchTerm): array
     $uplMetaColl->setWhereGroup('internal_notice', 'capiuploadmetacollection.idlang', $lang);
     $uplMetaColl->setWhereGroup('internal_notice', 'capiuploadmetacollection.internal_notice', '%' . $searchTermEscaped . '%', 'LIKE');
     $uplMetaColl->query();
-    while (($item = $uplMetaColl->next()) !== false) {
+    while ($item = $uplMetaColl->next()) {
         $idupl = cSecurity::toInteger($item->get('idupl'));
         $items[$idupl] = $items[$idupl] ?? 0;
         $items[$idupl] += (cString::countSubstring(cString::toLowerCase($item->get('internal_notice')), cString::toLowerCase($searchTerm)));

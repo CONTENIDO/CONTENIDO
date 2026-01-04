@@ -31,7 +31,7 @@ class cUpgradeJob_0007 extends cUpgradeJobAbstract
     {
         if ($this->_setupType == 'upgrade') {
             // check if the column "path" still exists
-            $this->_oDb->query('SHOW COLUMNS FROM `%s`;', cRegistry::getDbTableName('plugins'));
+            $this->_oDb->query('SHOW COLUMNS FROM `%s`;', cDb::getTableName('plugins'));
 
             $columns = [];
             while ($this->_oDb->nextRecord()) {
@@ -40,9 +40,9 @@ class cUpgradeJob_0007 extends cUpgradeJobAbstract
 
             if (in_array('path', $columns)) {
                 // copy path to folder
-                $this->_oDb->query('UPDATE `%s` SET folder = path;', cRegistry::getDbTableName('plugins'));
+                $this->_oDb->query('UPDATE `%s` SET folder = path;', cDb::getTableName('plugins'));
                 // drop column "path"
-                $this->_oDb->query('ALTER TABLE `%s` DROP path;', cRegistry::getDbTableName('plugins'));
+                $this->_oDb->query('ALTER TABLE `%s` DROP path;', cDb::getTableName('plugins'));
             }
         }
     }

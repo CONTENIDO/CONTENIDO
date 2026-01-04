@@ -59,7 +59,10 @@ $deleteLink->setClass('con_img_button')
 while ($oClient = $clientColl->next()) {
     $idclient = cSecurity::toInteger($oClient->get('idclient'));
     $name = $oClient->get('name');
-    if ((cString::findFirstPos($auth->auth['perm'], "client[$idclient]") !== false) || (cString::findFirstPos($auth->auth['perm'], 'sysadmin') !== false)) {
+    if (
+        cString::findFirstPos($auth->getPerms(), "client[$idclient]") !== false
+        || cString::findFirstPos($auth->getPerms(), 'sysadmin') !== false
+    ) {
         $menu->setId($idclient, $idclient);
         $menu->setLink($idclient, $showLink);
         $menu->setTitle($idclient, conHtmlSpecialChars($name));

@@ -33,46 +33,33 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
      *
      * Creates an HTML select field (aka 'DropDown').
      *
-     * @param string $sName
-     *         Name of the select element
-     * @param string $iWidth [optional]
-     *         Width of the select element
-     * @param string $sID [optional]
-     *         ID of the select element
-     * @param bool $bDisabled [optional]
-     *         Item disabled flag (non-empty to set disabled)
-     * @param int $iTabIndex [optional]
-     *         Tab index for form elements
-     * @param string $sAccessKey [optional]
-     *         Key to access the field
+     * @param string $name Name of the select element
+     * @param string $width [optional] Width of the select element
+     * @param string $id [optional] ID of the select element
+     * @param bool $disabled [optional] Item disabled flag (non-empty to set disabled)
+     * @param int $tabindex [optional] Tab index for form elements
+     * @param string $accessKey [optional] Key to access the field
      */
-    public function __construct($sName, $iWidth = '', $sID = '', $bDisabled = false, $iTabIndex = NULL, $sAccessKey = '')
+    public function __construct($name, $width = '', $id = '', $disabled = false, $tabindex = NULL, $accessKey = '')
     {
-        parent::__construct($sName, $iWidth, $sID, $bDisabled, $iTabIndex, $sAccessKey);
+        parent::__construct($name, $width, $id, $disabled, $tabindex, $accessKey);
     }
 
     /**
      * Adds articles to select options.
      *
-     * @param int $iIDCat
-     *         idcat of the category to be listed
-     * @param bool $bColored
-     *         Add color information to option elements
-     * @param bool $bArtOnline
-     *         If true, only online articles will be added
-     * @param string $sSpaces
-     *         Just some '&nbsp;' to show data hierarchically
-     *         (used in conjunction with addCategories)
-     *
-     * @return int
-     *         Number of items added
-     *
+     * @param int $idcat Id of the category to be listed
+     * @param bool $colored Add color information to option elements
+     * @param bool $artOnline If true, only online articles will be added
+     * @param string $spaces Just some '&nbsp;' to show data hierarchically
+     *      (used in conjunction with addCategories)
+     * @return int Number of items added
      * @throws cDbException
      */
-    public function addArticles($iIDCat, $bColored = false, $bArtOnline = true, $sSpaces = '')
+    public function addArticles($idcat, $colored = false, $artOnline = true, $spaces = ''): int
     {
-        $iIDCat = cSecurity::toInteger($iIDCat ?? '0');
-        if ($iIDCat <= 0) {
+        $idcat = cSecurity::toInteger($idcat ?? '0');
+        if ($idcat <= 0) {
             return 0;
         }
 
@@ -85,16 +72,16 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
                     , al.online AS online
                     , cl.startidartlang AS idstartartlang
                 FROM
-                    " . cRegistry::getDbTableName('art_lang') . " AS al
-                    , " . cRegistry::getDbTableName('cat_art') . " AS ca
-                    , " . cRegistry::getDbTableName('cat_lang') . " AS cl
+                    " . cDb::getTableName('art_lang') . " AS al
+                    , " . cDb::getTableName('cat_art') . " AS ca
+                    , " . cDb::getTableName('cat_lang') . " AS cl
                 WHERE
-                    ca.idcat = " . $iIDCat . "
+                    ca.idcat = " . $idcat . "
                     AND cl.idcat = ca.idcat
                     AND cl.idlang = al.idlang
                     ";
 
-        if ($bArtOnline) {
+        if ($artOnline) {
             $sql .= " AND al.online = 1";
         }
 
@@ -114,11 +101,11 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
         while ($oDB->nextRecord()) {
             // Generate new option element
             $oOption = new cHTMLOptionElement(
-                $sSpaces . '&nbsp;&nbsp;&nbsp;' . cString::getPartOfString($oDB->f('title'), 0, 32),
+                $spaces . '&nbsp;&nbsp;&nbsp;' . cString::getPartOfString($oDB->f('title'), 0, 32),
                 $oDB->f('idcatart')
             );
 
-            if ($bColored) {
+            if ($colored) {
                 if ($oDB->f('idstartartlang') == $oDB->f('idartlang')) {
                     if ($oDB->f('online') == 0) {
                         // Start article, but offline -> red
@@ -147,27 +134,25 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
      * will get negative values cause otherwise there is no way to distinguish
      * between a category id and an article id.
      *
-     * @param int $iMaxLevel
-     *         Max. level shown (to be exact: except this level)
-     * @param bool $bColored
-     *         Add color information to option elements
-     * @param bool $bCatVisible
-     *         If true, only add idcat as value, if cat is visible
-     * @param bool $bCatPublic
-     *         If true, only add idcat as value, if cat is public
-     * @param bool $bWithArt
-     *         Add also articles per category
-     * @param bool $bArtOnline
-     *         If true, show only online articles
-     *
-     * @return int
-     *         Number of items added
-     *
+     * @param int $maxLevel Max. level shown (to be exact: except this level)
+     * @param bool $colored Add color information to option elements
+     * @param bool $catVisible If true, only add idcat as value, if cat is visible
+     * @param bool $catPublic If true, only add idcat as value, if cat is public
+     * @param bool $withArt Add also articles per category
+     * @param bool $artOnline If true, show only online articles
+     * @return int Number of items added
      * @throws cDbException
      */
-    public function addCategories($iMaxLevel = 0, $bColored = false, $bCatVisible = true, $bCatPublic = true, $bWithArt = false, $bArtOnline = true)
+    public function addCategories(
+        $maxLevel = 0,
+        $colored = false,
+        $catVisible = true,
+        $catPublic = true,
+        $withArt = false,
+        $artOnline = true
+    ): int
     {
-        $iMaxLevel = cSecurity::toInteger($iMaxLevel ?? '0');
+        $maxLevel = cSecurity::toInteger($maxLevel ?? '0');
         $sql = "SELECT
                     c.idcat
                     , cl.name
@@ -175,16 +160,16 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
                     , cl.public
                     , ct.level
                 FROM
-                    " . cRegistry::getDbTableName('cat') . " AS c
-                    , " . cRegistry::getDbTableName('cat_lang') . " AS cl
-                    , " . cRegistry::getDbTableName('cat_tree') . " AS ct
+                    " . cDb::getTableName('cat') . " AS c
+                    , " . cDb::getTableName('cat_lang') . " AS cl
+                    , " . cDb::getTableName('cat_tree') . " AS ct
                 WHERE
                     c.idclient = " . cRegistry::getClientId() . "
                     AND cl.idlang = " . cRegistry::getLanguageId() . "
                     AND cl.idcat = c.idcat
                     AND ct.idcat = c.idcat";
-        if ($iMaxLevel > 0) {
-            $sql .= " AND ct.level < " . $iMaxLevel;
+        if ($maxLevel > 0) {
+            $sql .= " AND ct.level < " . $maxLevel;
         }
         $sql .= " ORDER BY ct.idtree";
 
@@ -198,38 +183,38 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
 
         $iCounter = count($this->_options);
         while ($oDB->nextRecord()) {
-            $sSpaces = '';
+            $spaces = '';
             $iID = $oDB->f('idcat');
 
             for ($i = 0; $i < $oDB->f('level'); $i++) {
-                $sSpaces .= '&nbsp;&nbsp;&nbsp;';
+                $spaces .= '&nbsp;&nbsp;&nbsp;';
             }
 
             // Generate new option element
-            if (($bCatVisible && $oDB->f('visible') == 0) || ($bCatPublic && $oDB->f('public') == 0)) {
+            if (($catVisible && $oDB->f('visible') == 0) || ($catPublic && $oDB->f('public') == 0)) {
                 // If category has to be visible or public and it isn't,
                 // don't add value
                 $sValue = '';
-            } elseif ($bWithArt) {
+            } elseif ($withArt) {
                 // If article will be added, set negative idcat as value
                 $sValue = '-' . $iID;
             } else {
                 // Show only categories - and everything is fine...
                 $sValue = $iID;
             }
-            $oOption = new cHTMLOptionElement($sSpaces . '>&nbsp;' . $oDB->f('name'), $sValue);
+            $oOption = new cHTMLOptionElement($spaces . '>&nbsp;' . $oDB->f('name'), $sValue);
 
             // Coloring option element, restricted shows grey color
             $oOption->setStyle('background-color: #EFEFEF');
-            if ($bColored && ($oDB->f('visible') == 0 || $oDB->f('public') == 0)) {
+            if ($colored && ($oDB->f('visible') == 0 || $oDB->f('public') == 0)) {
                 $oOption->setStyle('color: #666666;');
             }
 
             // Add option element to the list
             $this->addOptionElement($iCounter, $oOption);
 
-            if ($bWithArt) {
-                $iArticles = $this->addArticles($iID, $bColored, $bArtOnline, $sSpaces);
+            if ($withArt) {
+                $iArticles = $this->addArticles($iID, $colored, $artOnline, $spaces);
                 $iCount += $iArticles;
             }
             $iCounter = count($this->_options);
@@ -242,22 +227,17 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
      * Function addTypesFromArt.
      * Adds types and type ids which are available for the specified article
      *
-     * @param int $iIDCatArt
-     *         Article id
-     * @param string $sTypeRange
-     *         Comma separated list of CONTENIDO type ids
-     *         which may be in the resulting list (e.g. '1', '17', '28')
-     *
-     * @return int
-     *         Number of items added
-     *
+     * @param int $idCatArt Article id
+     * @param string $typeRange Comma separated list of CONTENIDO type ids which may be
+     *      in the resulting list (e.g. '1', '17', '28')
+     * @return int Number of items added
      * @throws cDbException
      */
-    public function addTypesFromArt($iIDCatArt, $sTypeRange = '')
+    public function addTypesFromArt($idCatArt, $typeRange = ''): int
     {
-        $iIDCatArt = cSecurity::toInteger($iIDCatArt ?? '0');
+        $idCatArt = cSecurity::toInteger($idCatArt ?? '0');
 
-        if ($iIDCatArt <= 0) {
+        if ($idCatArt <= 0) {
             return 0;
         }
 
@@ -269,18 +249,18 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
                     , t.type AS type
                     , t.description AS description
                     , t.value AS value
-                FROM " . cRegistry::getDbTableName('content') . " AS c
-                    , " . cRegistry::getDbTableName('art_lang') . " AS al
-                    , " . cRegistry::getDbTableName('cat_art') . " AS ca
-                    , " . cRegistry::getDbTableName('type') . " AS t
+                FROM " . cDb::getTableName('content') . " AS c
+                    , " . cDb::getTableName('art_lang') . " AS al
+                    , " . cDb::getTableName('cat_art') . " AS ca
+                    , " . cDb::getTableName('type') . " AS t
                 WHERE
                     t.idtype = c.idtype
                     AND c.idartlang = al.idartlang
                     AND al.idart = ca.idart
                     AND al.idlang = " . cRegistry::getClientId() . "
-                    AND ca.idcatart = " . $iIDCatArt;
-        if ($sTypeRange != "") {
-            $sql .= " AND t.idtype IN (" . $oDB->escape($sTypeRange) . ")";
+                    AND ca.idcatart = " . $idCatArt;
+        if ($typeRange != '') {
+            $sql .= " AND t.idtype IN (" . $oDB->escape($typeRange) . ")";
         }
         $sql .= " ORDER BY t.idtype, t.typeid";
 
@@ -296,7 +276,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
             $sTypeIdentifier = "tblData.idtype = '" . $oDB->f('idtype') . "' AND tblData.typeid = '" . $oDB->f('typeid') . "'";
 
             // Generate new option element
-            $oOption = new cHTMLOptionElement($oDB->f('type') . "[" . $oDB->f('typeid') . "]: " . cString::getPartOfString(strip_tags($oDB->f("value")), 0, 50), $sTypeIdentifier);
+            $oOption = new cHTMLOptionElement($oDB->f('type') . "[" . $oDB->f('typeid') . "]: " . cString::getPartOfString(strip_tags($oDB->f('value')), 0, 50), $sTypeIdentifier);
 
             // Add option element to the list
             $this->addOptionElement($sTypeIdentifier, $oOption);
@@ -431,8 +411,8 @@ class UI_Config_Table
     /**
      * Set method for cells
      *
-     * @param string $row
-     * @param string $cell
+     * @param int|string $row
+     * @param int|string $cell
      * @param string $content
      */
     public function setCell($row, $cell, $content)
@@ -444,8 +424,8 @@ class UI_Config_Table
     /**
      * Set method for cell alignment
      *
-     * @param string $row
-     * @param string $cell
+     * @param int|string $row
+     * @param int|string $cell
      * @param string $alignment
      */
     protected function setCellAlignment($row, $cell, $alignment)
@@ -456,8 +436,8 @@ class UI_Config_Table
     /**
      * Set method for cell vertical alignment
      *
-     * @param string $row
-     * @param string $cell
+     * @param int|string $row
+     * @param int|string $cell
      * @param string $alignment
      */
     public function setCellVAlignment($row, $cell, $alignment)
@@ -468,8 +448,8 @@ class UI_Config_Table
     /**
      * Set method for cell class
      *
-     * @param string $row
-     * @param string $cell
+     * @param int|string $row
+     * @param int|string $cell
      * @param string $class
      */
     public function setCellClass($row, $cell, $class)
@@ -487,15 +467,12 @@ class UI_Config_Table
     /**
      * Add inline javascript
      *
-     * @return string
-     * @internal Trick: To save multiple selections in <select>-Element,
-     * add some JS which saves the selection, comma separated
-     * in a hidden input field on change.
-     * Try ... catch prevents error messages, if function is added
-     * more than once if (!fncUpdateSel) in JS has not worked ...
-     *
+     * @internal Trick: To save multiple selections in <select>-Element, add some JS which saves
+     *      the selection, comma separated in a hidden input field on change.
+     *      Try ... catch prevents error messages, if function is added more than once if
+     *      (!fncUpdateSel) in JS has not worked ...
      */
-    protected function _getMultiSelJS()
+    protected function _getMultiSelJS(): string
     {
         $script = '
 <script type="text/javascript">
@@ -530,7 +507,7 @@ try {
      * @return ?string Complete template string or nothing
      * @throws cInvalidArgumentException
      */
-    public function render(bool $print = false)
+    public function render(bool $print = false): ?string
     {
         $template = new cTemplate();
         $template->reset();

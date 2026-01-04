@@ -64,9 +64,9 @@ if (
     // get idartlang
     if (!isset($idartlang) || $idartlang == 0) {
         $sql = 'SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
-        $db->query($sql, $cfg['tab']['art_lang'], $idart, $lang);
+        $db->query($sql, cDb::getTableName('art_lang'), $idart, $lang);
         $db->nextRecord();
-        $idartlang = cSecurity::toInteger($db->f("idartlang"));
+        $idartlang = cSecurity::toInteger($db->f('idartlang'));
     }
 
     if (1 == $tmp_firstedit) {
@@ -106,7 +106,7 @@ if (
 
             // determine if this article was start article of any related category
             $wasStart = false;
-            while (false !== $categoryLanguage = $oCatLangColl->next()) {
+            while ($categoryLanguage = $oCatLangColl->next()) {
                 $wasStart |= $oArtLang->get('idartlang') == $categoryLanguage->get('startidartlang');
                 if ($wasStart) {
                     break;

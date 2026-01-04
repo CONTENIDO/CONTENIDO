@@ -32,7 +32,7 @@ $page->addScript('parameterCollector.js');
 $ui = new cGuiMenu();
 $workflows->select("idclient = '$client' AND idlang = '$lang'");
 
-while (($workflow = $workflows->next()) !== false) {
+while ($workflow = $workflows->next()) {
     $wfid = cSecurity::toInteger($workflow->getField('idworkflow'));
     $wfname = preg_replace("/\"/", '', ($workflow->getField('name')));
     $wfdescription = preg_replace("/\"/", '', ($workflow->getField('description')));

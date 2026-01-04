@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Workflow
- * @method WorkflowTask createNewItem
- * @method WorkflowTask|bool next
+ * @extends ItemCollection<WorkflowTask>
  */
 class WorkflowTasks extends ItemCollection
 {
@@ -31,8 +30,8 @@ class WorkflowTasks extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('tasks'), "idtask");
-        $this->_setItemClass("WorkflowTask");
+        parent::__construct(cDb::getTableName('tasks'), 'idtask');
+        $this->_setItemClass('WorkflowTask');
     }
 
     /**
@@ -79,7 +78,7 @@ class WorkflowTask extends Item
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('tasks'), "idtask");
+        parent::__construct(cDb::getTableName('tasks'), "idtask");
     }
 
 }

@@ -14,6 +14,10 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cAuthHandlerBackend|cAuth $this
+ */
+
 $db = cRegistry::getDb();
 $cfg = cRegistry::getConfig();
 $lang = cRegistry::getLanguageId();
@@ -50,7 +54,10 @@ $GLOBALS['belang'] = $sSelectedLang;
 $sNotification = '';
 if (getSystemProperty('maintenance', 'mode') == 'enabled') {
     $notification = new cGuiNotification();
-    $sNotification = $notification->returnMessageBox('warning', i18n("CONTENIDO is in maintenance mode. Only sysadmins are allowed to login. Please try again later.") . '<br>');
+    $sNotification = $notification->returnMessageBox(
+        'warning',
+        i18n("CONTENIDO is in maintenance mode. Only sysadmins are allowed to login. Please try again later.") . '<br>'
+    );
 }
 
 // Check at CONTENIDO backend login whether the database tables are filled or not
@@ -59,7 +66,10 @@ $cApiUserColl->setLimit(0, 1);
 $cApiUserColl->query();
 if (empty($cApiUserColl->fetchTable(['user_id']))) {
     $notification = new cGuiNotification();
-    $notification->displayNotification('error', i18n('Your database is obviously empty. Please ensure that you have installed CONTENIDO completely and/or that your database configuration is correct.'));
+    $notification->displayNotification(
+        'error',
+        i18n('Your database is obviously empty. Please ensure that you have installed CONTENIDO completely and/or that your database configuration is correct.')
+    );
 }
 
 // Get backend label
@@ -79,7 +89,7 @@ foreach ($aAvailableLanguages as $sCode => $aEntry) {
 
 // Class implements password recovery, all functionality is implemented there
 $oRequestPassword = new cPasswordRequest($db, $cfg);
-$sRequestPasswordForm = $oRequestPassword->renderForm(1);
+$sRequestPasswordForm = $oRequestPassword->renderForm(true);
 
 // Send right encoding http header
 sendEncodingHeader($db, $cfg, $lang);
@@ -95,7 +105,7 @@ $tpl->set('s', 'OPTIONS', $sLanguageOptions);
 $tpl->set('s', 'LANGUAGE', i18n('Language'));
 $tpl->set('s', 'BACKEND', i18n('CONTENIDO Backend'));
 $tpl->set('s', 'LOGIN', i18n('Login'));
-$tpl->set('s', 'USERNAME', isset($this->auth['uname']) ? conHtmlentities(strip_tags($this->auth["uname"])) : '');
+$tpl->set('s', 'USERNAME', conHtmlentities(strip_tags($this->getUsername())));
 $tpl->set('s', 'ERROR', !empty($_POST['username']) ? i18n('Invalid login or password!') : '');
 $tpl->set('s', 'PASSWORD', i18n('Password'));
 $tpl->set('s', 'TIME', time());

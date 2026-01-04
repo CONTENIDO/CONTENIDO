@@ -87,7 +87,7 @@ if (!$result) {
         <input type="hidden" name="idcat" value="' . $idcat . '">';
     $tpl->set('s', 'HIDDENFIELDS', $hiddenfields);
 
-    if (sizeof($loadedAllocations) > 0) {
+    if (count($loadedAllocations) > 0) {
         $tpl->set('s', 'ARRAY_CHECKED_BOXES', 'var checkedBoxes = [' . implode(',', $loadedAllocations) . '];');
     } else {
         $tpl->set('s', 'ARRAY_CHECKED_BOXES', 'var checkedBoxes = [];');

@@ -41,10 +41,10 @@ function mr_strNewTree(array $data): array
     ModRewriteDebugger::log($data, 'mr_strNewTree $data');
 
     if ((int)$data['newcategoryid'] > 0) {
-        $mrCatAlias = (trim($data['categoryalias']) !== '') ? trim($data['categoryalias']) : trim($data['categoryname']);
-        // set new urlname - because original set urlname isn''t validated for double entries in same parent category
-        ModRewrite::setCatWebsafeName($mrCatAlias, $data['newcategoryid'], $lang);
-        ModRewrite::setCatUrlPath($data['newcategoryid'], $lang);
+        $mrCatAlias = trim($data['categoryalias']) !== '' ? trim($data['categoryalias']) : trim($data['categoryname']);
+        // set new urlname - because original set urlname isn't validated for double entries in same parent category
+        ModRewrite::setCatWebsafeName($mrCatAlias, cSecurity::toInteger($data['newcategoryid']), $lang);
+        ModRewrite::setCatUrlPath(cSecurity::toInteger($data['newcategoryid']), $lang);
     }
 
     return $data;
@@ -67,10 +67,10 @@ function mr_strNewCategory(array $data): array
     ModRewriteDebugger::log($data, 'mr_strNewCategory $data');
 
     if ((int)$data['newcategoryid'] > 0) {
-        $mrCatAlias = (trim($data['categoryalias']) !== '') ? trim($data['categoryalias']) : trim($data['categoryname']);
-        // set new urlname - because original set urlname isn''t validated for double entries in same parent category
-        ModRewrite::setCatWebsafeName($mrCatAlias, $data['newcategoryid'], $lang);
-        ModRewrite::setCatUrlPath($data['newcategoryid'], $lang);
+        $mrCatAlias = trim($data['categoryalias']) !== '' ? trim($data['categoryalias']) : trim($data['categoryname']);
+        // set new urlname - because original set urlname isn't validated for double entries in same parent category
+        ModRewrite::setCatWebsafeName($mrCatAlias, cSecurity::toInteger($data['newcategoryid']), $lang);
+        ModRewrite::setCatUrlPath(cSecurity::toInteger($data['newcategoryid']), $lang);
     }
 
     return $data;
@@ -98,22 +98,22 @@ function mr_strRenameCategory(array $data): array
         exit("#20100201-1503: sorry - maximum function nesting level of " . $recursion . " reached");
     }
 
-    $mrCatAlias = (trim($data['newcategoryalias']) !== '') ? trim($data['newcategoryalias']) : trim($data['newcategoryname']);
+    $mrCatAlias = trim($data['newcategoryalias']) !== '' ? trim($data['newcategoryalias']) : trim($data['newcategoryname']);
     if ($mrCatAlias != '') {
-        // set new urlname - because original set urlname isn''t validated for double entries in same parent category
-        ModRewrite::setCatWebsafeName($mrCatAlias, $data['idcat'], $data['lang']);
-        ModRewrite::setCatUrlPath($data['idcat'], $data['lang']);
+        // set new urlname - because original set urlname isn't validated for double entries in same parent category
+        ModRewrite::setCatWebsafeName($mrCatAlias, cSecurity::toInteger($data['idcat']), cSecurity::toInteger($data['lang']));
+        ModRewrite::setCatUrlPath(cSecurity::toInteger($data['idcat']), cSecurity::toInteger($data['lang']));
     }
 
     // hes 20100102
     // now dive into all existing subcategories and modify their paths too...
-    $str = 'parentid=' . $data['idcat'];
-    $oCatColl = new cApiCategoryCollection($str);
+    $oCatColl = new cApiCategoryCollection('`parentid` = ' . $data['idcat']);
 
     while ($oCat = $oCatColl->next()) {
         // hes 20100102
-        $str = 'idcat=' . $oCat->get('idcat') . ' AND idlang=' . (int)$data['lang'];
-        $oCatLanColl = new cApiCategoryLanguageCollection($str);
+        $oCatLanColl = new cApiCategoryLanguageCollection(
+            '`idcat` = ' . $oCat->get('idcat') . ' AND `idlang` = ' . cSecurity::toInteger($data['lang'])
+        );
         if ($oCatLan = $oCatLanColl->next()) {
             // hes 20100102
             $childData = [
@@ -136,35 +136,38 @@ function mr_strRenameCategory(array $data): array
  *
  * Will be called by chain 'Contenido.Action.str_moveupcat.AfterCall'.
  *
- * @param int $idcat Category id
+ * @param int $categoryId Category id
  * @return int|void Category id
- * @throws cDbException|cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException|cException
  * @todo  do we really need processing of the category? there is no mr relevant data
  *        changes while moving the category on same level, level and name won't change
  *
  */
-function mr_strMoveUpCategory($idcat)
+function mr_strMoveUpCategory($categoryId)
 {
-    ModRewriteDebugger::log($idcat, 'mr_strMoveUpCategory $idcat');
+    $categoryId = cSecurity::toInteger($categoryId);
+
+    ModRewriteDebugger::log($categoryId, 'mr_strMoveUpCategory $categoryId');
 
     // category check
-    $cat = new cApiCategory((int)$idcat);
+    $cat = new cApiCategory($categoryId);
     if (!$cat->get('preid')) {
         return;
     }
 
     // get all cat languages
-    $aIdLang = ModRewrite::getCatLanguages($idcat);
+    $aIdLang = ModRewrite::getCatLanguages($categoryId);
 
     // update ...
     foreach ($aIdLang as $iIdLang) {
+        $iIdLang = cSecurity::toInteger($iIdLang);
         // get urlname
-        $sCatname = ModRewrite::getCatName($idcat, $iIdLang);
+        $categoryName = ModRewrite::getCatName($categoryId, $iIdLang);
         // set new urlname - because original set urlname isn't validated for double entries in same parent category
-        ModRewrite::setCatWebsafeName($sCatname, $idcat, $iIdLang);
+        ModRewrite::setCatWebsafeName($categoryName, $categoryId, $iIdLang);
     }
 
-    return $idcat;
+    return $categoryId;
 }
 
 /**
@@ -172,33 +175,37 @@ function mr_strMoveUpCategory($idcat)
  *
  * Will be called by chain 'Contenido.Action.str_movedowncat.AfterCall'.
  *
- * @param int $idcat Id of category being moved down
+ * @param int $categoryId Id of category being moved down
  * @return int|void Category id
- * @throws cDbException|cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException|cException
  * @todo  do we really need processing of the category? there is no mr relevant data
  *        changes while moving the category on same level, level and name won't change
  */
-function mr_strMovedownCategory($idcat)
+function mr_strMovedownCategory($categoryId)
 {
-    ModRewriteDebugger::log($idcat, 'mr_strMovedownCategory $idcat');
+    $categoryId = cSecurity::toInteger($categoryId);
+
+    ModRewriteDebugger::log($categoryId, 'mr_strMovedownCategory $categoryId');
 
     // category check
-    $cat = new cApiCategory((int)$idcat);
+    $cat = new cApiCategory($categoryId);
     if (!$cat->get('id')) {
         return;
     }
 
     // get all cat languages
-    $aIdLang = ModRewrite::getCatLanguages($idcat);
+    $aIdLang = ModRewrite::getCatLanguages($categoryId);
+
     // update ...
     foreach ($aIdLang as $iIdLang) {
+        $iIdLang = cSecurity::toInteger($iIdLang);
         // get urlname
-        $sCatname = ModRewrite::getCatName($idcat, $iIdLang);
+        $categoryName = ModRewrite::getCatName($categoryId, $iIdLang);
         // set new urlname - because original set urlname isn't validated for double entries in same parent category
-        ModRewrite::setCatWebsafeName($sCatname, $idcat, $iIdLang);
+        ModRewrite::setCatWebsafeName($categoryName, $categoryId, $iIdLang);
     }
 
-    return $idcat;
+    return $categoryId;
 }
 
 /**
@@ -227,19 +234,21 @@ function mr_strMoveSubtree(array $data)
 
     // get all cat languages
     $aIdLang = ModRewrite::getCatLanguages($data['idcat']);
+
     // update all languages
     foreach ($aIdLang as $iIdLang) {
+        $iIdLang = cSecurity::toInteger($iIdLang);
         // get urlname
-        $sCatname = ModRewrite::getCatName($data['idcat'], $iIdLang);
+        $categoryName = ModRewrite::getCatName(cSecurity::toInteger($data['idcat']), $iIdLang);
         // set new urlname - because original set urlname isn't validated for double entries in same parent category
-        ModRewrite::setCatWebsafeName($sCatname, $data['idcat'], $iIdLang);
-        ModRewrite::setCatUrlPath($data['idcat'], $iIdLang);
+        ModRewrite::setCatWebsafeName($categoryName, cSecurity::toInteger($data['idcat']), $iIdLang);
+        ModRewrite::setCatUrlPath(cSecurity::toInteger($data['idcat']), $iIdLang);
     }
 
     // now dive into all existing subcategories and modify their paths too...
-    $oCatColl = new cApiCategoryCollection('parentid=' . $data['idcat']);
+    $oCatColl = new cApiCategoryCollection('`parentid` = ' . $data['idcat']);
     while ($oCat = $oCatColl->next()) {
-        mr_strMoveSubtree(['idcat' => $oCat->get('idcat')]);
+        mr_strMoveSubtree(['idcat' => cSecurity::toInteger($oCat->get('idcat'))]);
     }
 
     return $data;
@@ -252,27 +261,29 @@ function mr_strMoveSubtree(array $data)
  *
  * @param array $data Associative array with some values
  *
- * @return  array|void  Passed parameter
+ * @return array|void  Passed parameter
  * @throws cDbException|cInvalidArgumentException
  */
 function mr_strCopyCategory(array $data)
 {
     ModRewriteDebugger::log($data, 'mr_strCopyCategory $data');
 
-    $idcat = (int)$data['newcat']->get('idcat');
-    if ($idcat <= 0) {
+    $categoryId = (int)$data['newcat']->get('idcat');
+    if ($categoryId <= 0) {
         return $data;
     }
 
     // get all cat languages
-    $aIdLang = ModRewrite::getCatLanguages($idcat);
+    $aIdLang = ModRewrite::getCatLanguages($categoryId);
+
     // update ...
     foreach ($aIdLang as $iIdLang) {
+        $iIdLang = cSecurity::toInteger($iIdLang);
         // get urlname
-        $sCatname = ModRewrite::getCatName($idcat, $iIdLang);
+        $categoryName = ModRewrite::getCatName($categoryId, $iIdLang);
         // set new urlname - because original set urlname isn't validated for double entries in same parent category
-        ModRewrite::setCatWebsafeName($sCatname, $idcat, $iIdLang);
-        ModRewrite::setCatUrlPath($idcat, $iIdLang);
+        ModRewrite::setCatWebsafeName($categoryName, $categoryId, $iIdLang);
+        ModRewrite::setCatUrlPath($categoryId, $iIdLang);
     }
 }
 
@@ -284,13 +295,13 @@ function mr_strCopyCategory(array $data)
  *
  * @param array $data Associative array with some values
  *
- * @return  array  Passed parameter
+ * @return array Passed parameter
  * @throws cDbException|cInvalidArgumentException
  */
 function mr_strSyncCategory(array $data)
 {
     ModRewriteDebugger::log($data, 'mr_strSyncCategory $data');
-    ModRewrite::setCatUrlPath($data['idcat'], $data['idlang']);
+    ModRewrite::setCatUrlPath(cSecurity::toInteger($data['idcat']), cSecurity::toInteger($data['idlang']));
     return $data;
 }
 
@@ -301,7 +312,7 @@ function mr_strSyncCategory(array $data)
  *
  * @param array $data Associative array with some article properties
  *
- * @return  array  Passed parameter
+ * @return array Passed parameter
  * @throws cDbException|cInvalidArgumentException
  */
 function mr_conSaveArticle(array $data)
@@ -325,14 +336,24 @@ function mr_conSaveArticle(array $data)
         $aLanguages = getLanguagesByClient($client);
 
         foreach ($aLanguages as $iLang) {
-            ModRewrite::setArtWebsafeName($data['urlname'], $data['idart'], $iLang, $data['idcat']);
+            ModRewrite::setArtWebsafeName(
+                cSecurity::toString($data['urlname']),
+                cSecurity::toInteger($data['idart']),
+                cSecurity::toInteger($iLang),
+                cSecurity::toInteger($data['idcat'])
+            );
         }
     } else {
         // modified article
-        $aArticle = ModRewrite::getArtIdByArtlangId($data['idartlang']);
+        $aArticle = ModRewrite::getArtIdByArtlangId(cSecurity::toInteger($data['idartlang']));
 
         if (isset($aArticle['idart']) && isset($aArticle['idlang'])) {
-            ModRewrite::setArtWebsafeName($data['urlname'], $aArticle['idart'], $aArticle['idlang'], $data['idcat']);
+            ModRewrite::setArtWebsafeName(
+                cSecurity::toString($data['urlname']),
+                cSecurity::toInteger($aArticle['idart']),
+                cSecurity::toInteger($aArticle['idlang']),
+                cSecurity::toInteger($data['idcat'])
+            );
         }
     }
 
@@ -346,7 +367,7 @@ function mr_conSaveArticle(array $data)
  *
  * @param array $data Associative array with record entries
  *
- * @return  array  Loop through of arguments
+ * @return array Loop through of arguments
  * @throws cDbException|cInvalidArgumentException
  */
 function mr_conMoveArticles($data)
@@ -362,9 +383,13 @@ function mr_conMoveArticles($data)
         return $data;
     }
 
-    $arr_art = ModRewrite::getArtIds($data['idartlang']);
+    $arr_art = ModRewrite::getArtIds(cSecurity::toString($data['idartlang']));
     if (count($arr_art) == 2) {
-        ModRewrite::setArtWebsafeName($arr_art["urlname"], $data['idart'], $arr_art["idlang"]);
+        ModRewrite::setArtWebsafeName(
+            cSecurity::toString($arr_art['urlname']),
+            cSecurity::toInteger($data['idart']),
+            cSecurity::toInteger($arr_art['idlang'])
+        );
     }
 
     return $data;
@@ -377,7 +402,7 @@ function mr_conMoveArticles($data)
  *
  * @param array $data Associative array with record entries
  *
- * @return  array  Loop through of arguments
+ * @return array Loop through of arguments
  * @throws cDbException|cInvalidArgumentException
  */
 function mr_conCopyArtLang($data)
@@ -395,7 +420,11 @@ function mr_conCopyArtLang($data)
         return $data;
     }
 
-    ModRewrite::setArtWebsafeName($data['title'], $data['idart'], $data['idlang']);
+    ModRewrite::setArtWebsafeName(
+        cSecurity::toString($data['title']),
+        cSecurity::toInteger($data['idart']),
+        cSecurity::toInteger($data['idlang'])
+    );
 
     return $data;
 }
@@ -413,7 +442,7 @@ function mr_conCopyArtLang($data)
  *                      ]
  *                      </code>
  *
- * @return  array  Loop through of argument
+ * @return array Loop through of argument
  * @throws cDbException|cInvalidArgumentException|cException
  */
 function mr_conSyncArticle($data)
@@ -441,7 +470,11 @@ function mr_conSyncArticle($data)
     }
 
     if ($urlname) {
-        ModRewrite::setArtWebsafeName($urlname, $data['dest_art_lang']['idart'], $data['dest_art_lang']['idlang']);
+        ModRewrite::setArtWebsafeName(
+            $urlname,
+            cSecurity::toInteger($data['dest_art_lang']['idart']),
+            cSecurity::toInteger($data['dest_art_lang']['idlang'])
+        );
     }
 
     return $data;
@@ -453,13 +486,12 @@ function mr_conSyncArticle($data)
  * Will also be called by chain 'Contenido.Frontend.CreateURL'.
  *
  * @param string $url URL to rebuild
- *
- * @return  string        New URL
+ * @return string New URL
  * @throws cInvalidArgumentException|cException|cDbException
  * @todo: Still exists because of downwards compatibility (some other modules/plugins are using it)
  *
  */
-function mr_buildNewUrl($url)
+function mr_buildNewUrl($url): string
 {
     ModRewriteDebugger::add($url, 'mr_buildNewUrl() in -> $url');
 
@@ -497,7 +529,7 @@ function mr_buildNewUrl($url)
  *
  * @param string $code Code to prepare
  *
- * @return  string          New code
+ * @return string New code
  * @throws cInvalidArgumentException|cException|cDbException
  */
 function mr_buildGeneratedCode($code)
@@ -568,7 +600,7 @@ function mr_buildGeneratedCode($code)
     } else {
         // anchor hack for non modrewrite websites
         $code = preg_replace_callback("/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", function ($match) {
-            return ModRewrite::contenidoHtmlAnchor($match, $GLOBALS['is_XHTML']);
+            return ModRewrite::contenidoHtmlAnchor($match, cSecurity::toBoolean($GLOBALS['is_XHTML']));
         }, $code);
     }
 
@@ -658,7 +690,7 @@ function mr_loadConfiguration($clientId, $forceReload = false)
  * and has the name "config.mod_rewrite.php"
  *
  * @param int $clientId Id of client
- * @return  string  File name and path
+ * @return string File name and path
  */
 function mr_getConfigurationFilePath($clientId)
 {
@@ -675,7 +707,7 @@ function mr_getConfigurationFilePath($clientId)
  *
  * @param int $clientId Id of client
  *
- * @return  array|NULL
+ * @return array|NULL
  * @throws cInvalidArgumentException
  */
 function mr_getConfiguration($clientId)
@@ -707,8 +739,7 @@ function mr_getConfiguration($clientId)
  *
  * @param int $clientId Id of client
  * @param array $config Configuration to save
- *
- * @return  bool
+ * @return bool
  * @throws cInvalidArgumentException
  */
 function mr_setConfiguration($clientId, array $config)
@@ -734,7 +765,7 @@ function mr_setConfiguration($clientId, array $config)
  *
  * Will be called by chain 'Contenido.Frontend.AfterLoadPlugins' at front_content.php.
  *
- * @return  bool  Just a return value
+ * @return bool Just a return value
  * @throws cInvalidArgumentException
  */
 function mr_runFrontendController()
@@ -758,7 +789,7 @@ function mr_runFrontendController()
  *
  * @param string $char Character to remove
  * @param string $string String to clean from character
- * @return  string  Cleaned string
+ * @return string Cleaned string
  */
 function mr_removeMultipleChars($char, $string)
 {
@@ -800,7 +831,7 @@ function mr_i18n($key)
  *
  * @param string $query Query to execute
  *
- * @return  mixed   Associative array including recordset or NULL
+ * @return mixed   Associative array including recordset or NULL
  * @throws cDbException
  */
 function mr_queryAndNextRecord($query)
@@ -844,7 +875,7 @@ function mr_queryAndNextRecord($query)
  * @param array $array The array
  * @param mixed $key Position of an indexed array or key of an associative array
  * @param mixed $default Default value to return
- * @return  mixed  Either the found value or the default value
+ * @return mixed  Either the found value or the default value
  */
 function mr_arrayValue($array, $key, $default = NULL)
 {
@@ -879,7 +910,7 @@ function mr_arrayValue($array, $key, $default = NULL)
  * }
  * </code>
  *
- * @return  mixed  Cleaned data
+ * @return mixed  Cleaned data
  */
 function mr_requestCleanup(&$data, $options = NULL)
 {
@@ -914,7 +945,7 @@ function mr_requestCleanup(&$data, $options = NULL)
  *
  * @param string $key Name of var to get
  * @param mixed $default Default value to return
- * @return  mixed   The value
+ * @return mixed   The value
  */
 function mr_getRequest($key, $default = NULL)
 {
@@ -940,7 +971,7 @@ function mr_getRequest($key, $default = NULL)
  * Replaces calling of header method for redirects in front_content.php,
  * used during development.
  *
- * @param  $header  string Header value for redirect
+ * @param $header  string Header value for redirect
  */
 function mr_header($header)
 {
@@ -961,7 +992,7 @@ function mr_header($header)
  *
  * @param bool $print Flag to echo the debug data
  *
- * @return  string|void  Either the debug data, if parameter $print is set to true, or nothing
+ * @return string|void  Either the debug data, if parameter $print is set to true, or nothing
  * @throws cInvalidArgumentException
  */
 function mr_debugOutput($print = true)

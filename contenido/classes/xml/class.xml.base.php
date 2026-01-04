@@ -280,6 +280,10 @@ abstract class cXmlBase
      */
     public static function isValidXML(string $xmlString): bool
     {
+        if (empty($xmlString) || is_numeric($xmlString)) {
+            return false;
+        }
+
         try {
             $testArray = @cXmlBase::xmlStringToArray($xmlString);
         } catch (Exception $e) {

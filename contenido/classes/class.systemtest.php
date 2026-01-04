@@ -506,7 +506,7 @@ class cSystemtest
     protected function canWriteDir($dirname)
     {
         clearstatcache();
-        return cDirHandler::exists($dirname) && is_writable($dirname);
+        return cDirHandler::exists($dirname) && cFileHandler::writeable($dirname);
     }
 
     /**
@@ -617,13 +617,13 @@ class cSystemtest
 
         if ($this->getSafeModeStatus()) {
             // SAFE-Mode related checks
-            if ($iServerUID == $aFilePermissions["owner"]["id"]) {
+            if ($iServerUID == $aFilePermissions['owner']['id']) {
                 return self::CON_PREDICT_CHANGEPERM_SAMEOWNER;
             }
 
             if ($this->getSafeModeGidStatus()) {
                 // SAFE-Mode GID related checks
-                if ($iServerGID == $aFilePermissions["group"]["id"]) {
+                if ($iServerGID == $aFilePermissions['group']['id']) {
                     return self::CON_PREDICT_CHANGEPERM_SAMEGROUP;
                 }
 
@@ -631,11 +631,11 @@ class cSystemtest
             }
         } else {
             // Regular checks
-            if ($iServerUID == $aFilePermissions["owner"]["id"]) {
+            if ($iServerUID == $aFilePermissions['owner']['id']) {
                 return self::CON_PREDICT_CHANGEPERM_SAMEOWNER;
             }
 
-            if ($iServerGID == $aFilePermissions["group"]["id"]) {
+            if ($iServerGID == $aFilePermissions['group']['id']) {
                 return self::CON_PREDICT_CHANGEPERM_SAMEGROUP;
             }
 
@@ -783,7 +783,7 @@ class cSystemtest
      */
     public function getSafeModeStatus()
     {
-        if ($this->getPHPIniSetting("safe_mode") == "1") {
+        if ($this->getPHPIniSetting("safe_mode") == '1') {
             return true;
         } else {
             return false;
@@ -797,7 +797,7 @@ class cSystemtest
      */
     public function getSafeModeGidStatus()
     {
-        if ($this->getPHPIniSetting("safe_mode_gid") == "1") {
+        if ($this->getPHPIniSetting("safe_mode_gid") == '1') {
             return true;
         } else {
             return false;
@@ -1305,10 +1305,10 @@ class cSystemtest
                     // Cause: At CONTENIDO 4.8 both folders do not exist
                     // Only for upgrade mode
 
-                    if ($isUpgrade && ($file == "data/layouts" || $file == "data/modules") && !cDirHandler::exists($oneClient["path"]["frontend"] . $file)) {
+                    if ($isUpgrade && ($file == "data/layouts" || $file == "data/modules") && !cDirHandler::exists($oneClient['path']['frontend'] . $file)) {
                         continue;
                     } else {
-                        $ret = $this->testSingleFile($oneClient["path"]["frontend"] . $file, self::C_SEVERITY_WARNING, true);
+                        $ret = $this->testSingleFile($oneClient['path']['frontend'] . $file, self::C_SEVERITY_WARNING, true);
                     }
 
                     if ($ret == false) {
@@ -1332,8 +1332,8 @@ class cSystemtest
      */
     protected function testSingleFile($filename, $severity, $dir = false)
     {
-        if (cString::findFirstPos($filename, $this->_config["path"]["frontend"]) === 0) {
-            $length = cString::getStringLength($this->_config["path"]["frontend"]) + 1;
+        if (cString::findFirstPos($filename, $this->_config['path']['frontend']) === 0) {
+            $length = cString::getStringLength($this->_config['path']['frontend']) + 1;
             $shortFilename = cString::getPartOfString($filename, $length);
         } else { // for dirs
             $shortFilename = $filename;

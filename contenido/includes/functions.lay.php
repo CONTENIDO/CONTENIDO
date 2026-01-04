@@ -37,7 +37,7 @@ function layEditLayout($idlay, $name, $description, $code)
     $db = cRegistry::getDb();
 
     $date = date('Y-m-d H:i:s');
-    $author = (string)$auth->auth['uname'];
+    $author = $auth->getUsername();
     if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
         $name = stripslashes($name);
         $description = stripslashes($description);

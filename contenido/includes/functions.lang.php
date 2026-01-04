@@ -124,14 +124,14 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
     }
 
     // ************ check if there are still arts online
-    $sql = "SELECT * FROM " . $cfg['tab']['art_lang'] . " AS A, " . $cfg['tab']['art'] . " AS B " . "WHERE A.idart=B.idart AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang;
+    $sql = "SELECT * FROM " . cDb::getTableName('art_lang') . " AS A, " . cDb::getTableName('art') . " AS B " . "WHERE A.idart=B.idart AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang;
     $db->query($sql);
     if ($db->nextRecord()) {
         conDeleteArt($db->f('idart'));
     }
 
     // ************ check if there are visible categories
-    $sql = "SELECT * FROM " . $cfg['tab']['cat_lang'] . " AS A, " . $cfg['tab']['cat'] . " AS B " . "WHERE A.idcat=B.idcat AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang;
+    $sql = "SELECT * FROM " . cDb::getTableName('cat_lang') . " AS A, " . cDb::getTableName('cat') . " AS B " . "WHERE A.idcat=B.idcat AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang;
     $db->query($sql);
     if ($db->nextRecord()) {
         strDeleteCategory($db->f('idcat'));
@@ -147,7 +147,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
         // ********* check if this is the clients last language to be deleted,
         // if yes delete from art, cat, and cat_art as well
         $lastlanguage = 0;
-        $sql = "SELECT COUNT(*) FROM " . $cfg['tab']['clients_lang'] . " WHERE idclient=" . $iIdClient;
+        $sql = "SELECT COUNT(*) FROM " . cDb::getTableName('clients_lang') . " WHERE idclient=" . $iIdClient;
         $db->query($sql);
         $db->nextRecord();
         if ($db->f(0) == 1) {
@@ -155,7 +155,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
         }
 
         // ********** delete from 'art_lang'-table
-        $sql = "SELECT A.idtplcfg AS idtplcfg, idartlang, A.idart FROM " . $cfg['tab']['art_lang'] . " AS A, " . $cfg['tab']['art'] . " AS B WHERE A.idart=B.idart AND B.idclient=" . $iIdClient . "
+        $sql = "SELECT A.idtplcfg AS idtplcfg, idartlang, A.idart FROM " . cDb::getTableName('art_lang') . " AS A, " . cDb::getTableName('art') . " AS B WHERE A.idart=B.idart AND B.idclient=" . $iIdClient . "
                 AND idlang!=0 AND idlang=" . $iIdLang;
         $db->query($sql);
         while ($db->nextRecord()) {
@@ -165,24 +165,24 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
         }
         foreach ($aIdArtLang as $value) {
             $value = cSecurity::toInteger($value);
-            $sql = "DELETE FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang=" . $value;
+            $sql = "DELETE FROM " . cDb::getTableName('art_lang') . " WHERE idartlang=" . $value;
             $db->query($sql);
-            $sql = "DELETE FROM " . $cfg['tab']['content'] . " WHERE idartlang=" . $value;
+            $sql = "DELETE FROM " . cDb::getTableName('content') . " WHERE idartlang=" . $value;
             $db->query($sql);
         }
 
         if ($lastlanguage == 1) {
             foreach ($aIdArt as $value) {
                 $value = cSecurity::toInteger($value);
-                $sql = "DELETE FROM " . $cfg['tab']['art'] . " WHERE idart=" . $value;
+                $sql = "DELETE FROM " . cDb::getTableName('art') . " WHERE idart=" . $value;
                 $db->query($sql);
-                $sql = "DELETE FROM " . $cfg['tab']['cat_art'] . " WHERE idart=" . $value;
+                $sql = "DELETE FROM " . cDb::getTableName('cat_art') . " WHERE idart=" . $value;
                 $db->query($sql);
             }
         }
 
         // ********** delete from 'cat_lang'-table
-        $sql = "SELECT A.idtplcfg AS idtplcfg, idcatlang, A.idcat FROM " . $cfg['tab']['cat_lang'] . " AS A, " . $cfg['tab']['cat'] . " AS B WHERE A.idcat=B.idcat AND B.idclient=" . $iIdClient . "
+        $sql = "SELECT A.idtplcfg AS idtplcfg, idcatlang, A.idcat FROM " . cDb::getTableName('cat_lang') . " AS A, " . cDb::getTableName('cat') . " AS B WHERE A.idcat=B.idcat AND B.idclient=" . $iIdClient . "
                 AND idlang!=0 AND idlang=" . $iIdLang;
         $db->query($sql);
         while ($db->nextRecord()) {
@@ -191,28 +191,28 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
             $aIdTplCfg[] = $db->f('idtplcfg'); // added
         }
         foreach ($aIdCatLang as $value) {
-            $sql = "DELETE FROM " . $cfg['tab']['cat_lang'] . " WHERE idcatlang=" . (int)$value;
+            $sql = "DELETE FROM " . cDb::getTableName('cat_lang') . " WHERE idcatlang=" . (int)$value;
             $db->query($sql);
         }
         if ($lastlanguage == 1) {
             foreach ($aIdCat as $value) {
                 $value = cSecurity::toInteger($value);
-                $sql = "DELETE FROM " . $cfg['tab']['cat'] . " WHERE idcat=" . $value;
+                $sql = "DELETE FROM " . cDb::getTableName('cat') . " WHERE idcat=" . $value;
                 $db->query($sql);
-                $sql = "DELETE FROM " . $cfg['tab']["cat_tree"] . " WHERE idcat=" . $value;
+                $sql = "DELETE FROM " . $cfg['tab']['cat_tree'] . " WHERE idcat=" . $value;
                 $db->query($sql);
             }
         }
 
         // ********** delete from 'stat'-table
-        $sql = "DELETE FROM " . $cfg['tab']['stat'] . " WHERE idlang=" . $iIdLang . " AND idclient=" . $iIdClient;
+        $sql = "DELETE FROM " . cDb::getTableName('stat') . " WHERE idlang=" . $iIdLang . " AND idclient=" . $iIdClient;
         $db->query($sql);
 
         // ********** delete from 'code'-cache
         if (cFileHandler::exists($cfgClient[$iIdClient]['code']['path'])) {
             /* @var $file SplFileInfo */
             foreach (new DirectoryIterator($cfgClient[$iIdClient]['code']['path']) as $file) {
-                if ($file->isFile() === false) {
+                if (!$file->isFile()) {
                     continue;
                 }
 
@@ -231,20 +231,20 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
             $tplcfg = (int)$tplcfg;
             if ($tplcfg != 0) {
                 // ********** delete from 'tpl_conf'-table
-                $sql = "DELETE FROM " . $cfg['tab']['tpl_conf'] . " WHERE idtplcfg=" . $tplcfg;
+                $sql = "DELETE FROM " . cDb::getTableName('tpl_conf') . " WHERE idtplcfg=" . $tplcfg;
                 $db->query($sql);
                 // ********** delete from 'container_conf'-table
-                $sql = "DELETE FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . $tplcfg;
+                $sql = "DELETE FROM " . cDb::getTableName('container_conf') . " WHERE idtplcfg=" . $tplcfg;
                 $db->query($sql);
             }
         }
 
         // *********** delete from 'clients_lang'-table
-        $sql = "DELETE FROM " . $cfg['tab']['clients_lang'] . " WHERE idclient=" . $iIdClient . " AND idlang=" . $iIdLang;
+        $sql = "DELETE FROM " . cDb::getTableName('clients_lang') . " WHERE idclient=" . $iIdClient . " AND idlang=" . $iIdLang;
         $db->query($sql);
 
         // *********** delete from 'lang'-table
-        $sql = "DELETE FROM " . $cfg['tab']['lang'] . " WHERE idlang=" . $iIdLang;
+        $sql = "DELETE FROM " . cDb::getTableName('lang') . " WHERE idlang=" . $iIdLang;
         $db->query($sql);
 
         // *********** delete from 'properties'-table
@@ -277,7 +277,7 @@ function langActivateDeactivateLanguage($idlang, $active): bool
  * by language id
  *
  * @param int $idlang
- * @param cDb $db Is not in use
+ * @param cDb $db [deprecated] Is not in use
  * @return string 'ltr' or 'rtl'
  * @throws cDbException|cException
  */

@@ -37,7 +37,7 @@ class ArticleForum extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('user_forum'), 'id_user_forum');
+        parent::__construct(cDb::getTableName('user_forum'), 'id_user_forum');
         $this->setFilters();
         if (false !== $id) {
             $this->loadByPrimaryKey($id);

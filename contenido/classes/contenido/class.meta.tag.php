@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiMetaTag createNewItem
- * @method cApiMetaTag|bool next
+ * @extends ItemCollection<cApiMetaTag>
  */
 class cApiMetaTagCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiMetaTagCollection extends ItemCollection
      */
     public function __construct()
     {
-        $table = cRegistry::getDbTableName('meta_tag');
+        $table = cDb::getTableName('meta_tag');
         parent::__construct($table, 'idmetatag');
         $this->_setItemClass('cApiMetaTag');
 
@@ -116,7 +115,7 @@ class cApiMetaTag extends Item
      */
     public function __construct($id = false)
     {
-        $table = cRegistry::getDbTableName('meta_tag');
+        $table = cDb::getTableName('meta_tag');
         parent::__construct($table, 'idmetatag');
         $this->setFilters();
         if ($id !== false) {

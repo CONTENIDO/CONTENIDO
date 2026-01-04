@@ -85,7 +85,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
                     if (!$oPurge->resetClientConCatArt($iClientId)) {
                         $bError = true;
                         $sErrorMsg .= i18n('Client ') . $aClientName[$iClientId] . ': ' .
-                            sprintf(i18n('The %s is not updated!'), $cfg['tab']['cat_art']) . '<br>';
+                            sprintf(i18n('The %s is not updated!'), cDb::getTableName('cat_art')) . '<br>';
                     }
                 }
 
@@ -106,7 +106,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
                 }
 
                 if (isset($_POST['clientHistory']) && $_POST['clientHistory'] == 1) {
-                    $bKeep = ($_POST['keepHistory'] == 1 && (int)$_POST['keepHistoryNumber'] > 0) ? true : false;
+                    $bKeep = $_POST['keepHistory'] == 1 && (int)$_POST['keepHistoryNumber'] > 0;
                     if (!$oPurge->clearClientHistory($iClientId, $bKeep, (int)$_POST['keepHistoryNumber'])) {
                         $bError = true;
                         $sErrorMsg .= i18n('Client ') . $aClientName[$iClientId] . ': ' .
@@ -134,7 +134,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
     if (isset($_POST['conInuse']) && $_POST['conInuse'] == 1) {
         if (!$oPurge->resetConInuse()) {
             $bError = true;
-            $sErrorMsg .= sprintf(i18n('The entries of %s table are not deleted!'), $cfg['tab']['inuse']) . '<br>';
+            $sErrorMsg .= sprintf(i18n('The entries of %s table are not deleted!'), cDb::getTableName('inuse')) . '<br>';
         }
     }
 
@@ -190,7 +190,7 @@ $tpl->set('s', 'CLIENT_SELECT', i18n('from list'));
 $tpl->set('s', 'CLIENT_CHOOSE', i18n('Select clients'));
 $tpl->set('s', 'CON_CODE', i18n('Delete the code cache'));
 $tpl->set('s', 'CON_CAT_ART', i18n('Force code generation'));
-$tpl->set('s', 'CON_INUSE', sprintf(i18n('Reset the table %s'), $cfg['tab']['inuse']));
+$tpl->set('s', 'CON_INUSE', sprintf(i18n('Reset the table %s'), cDb::getTableName('inuse')));
 $tpl->set('s', 'CLIENT_CACHE', i18n('Clear client cache'));
 $tpl->set('s', 'CLIENT_LOG', i18n('Clear client log file'));
 $tpl->set('s', 'CLIENT_HISTORY', i18n('Clear client style history'));
@@ -213,7 +213,7 @@ $tpl->set('s', 'ERR_MSG_NO_ACTION', i18n('No action selected!'));
 $tpl->set('s', 'SUBMIT_TEXT', i18n('Send'));
 $tpl->set('s', 'NO_CLIENT_SELECTED', i18n('Please select a client or all clients.'));
 
-if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
+if (cString::findFirstPos($auth->getPerms(), 'sysadmin') === false) {
     $tpl->set('s', 'DEACTIVATED', 'disabled');
 } else {
     $tpl->set('s', 'DEACTIVATED', '');

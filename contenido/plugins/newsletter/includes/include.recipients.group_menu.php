@@ -30,7 +30,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // ################################
 $oPage = new cGuiPage('recipients.group_menu', 'newsletter');
 $oMenu = new cGuiMenu();
-$oUser = new cApiUser($auth->auth['uid']);
+$oUser = new cApiUser($auth->getUserId());
 
 // Specify fields for search, sort and validation. Design makes enhancements
 // using plugins possible (currently not implemented). If you are changing
@@ -63,7 +63,7 @@ $requestIdRecipientGoup = cSecurity::toInteger($_REQUEST['idrecipientgroup'] ?? 
 
 // Items per page (value stored per area in user property)
 if (!is_numeric($requestElemPerPage) || $requestElemPerPage < 0) {
-    $requestElemPerPage = $oUser->getProperty("itemsperpage", $area);
+    $requestElemPerPage = $oUser->getProperty('itemsperpage', $area);
 }
 if (!is_numeric($requestElemPerPage)) {
     // This is the case, if the user property has never been set (first time
@@ -73,7 +73,7 @@ if (!is_numeric($requestElemPerPage)) {
 if ($requestElemPerPage > 0) {
     // -- All -- will not be stored, as it may be impossible to change this back
     // to something more useful
-    $oUser->setProperty("itemsperpage", $area, $requestElemPerPage);
+    $oUser->setProperty('itemsperpage', $area, $requestElemPerPage);
 }
 
 if ($requestPage <= 0 || $requestElemPerPage == 0) {
@@ -92,17 +92,17 @@ unset($oClient);
 // Get data
 // ################################
 $oRcpGroups = new NewsletterRecipientGroupCollection();
-$oRcpGroups->setWhere("idclient", $client);
-$oRcpGroups->setWhere("idlang", $lang);
+$oRcpGroups->setWhere('idclient', $client);
+$oRcpGroups->setWhere('idlang', $lang);
 
-if ($requestFilter != "") {
-    if ($requestSearchIn == "--all--" || $requestSearchIn == "") {
+if ($requestFilter != '') {
+    if ($requestSearchIn == "--all--" || $requestSearchIn == '') {
         foreach ($aFields as $sKey => $aData) {
-            if (cString::findFirstPos($aData["type"], "search") !== false) {
-                $oRcpGroups->setWhereGroup("filter", $aData["field"], $requestFilter, "LIKE");
+            if (cString::findFirstPos($aData['type'], "search") !== false) {
+                $oRcpGroups->setWhereGroup("filter", $aData['field'], $requestFilter, "LIKE");
             }
         }
-        $oRcpGroups->setInnerGroupCondition("filter", "OR");
+        $oRcpGroups->setInnerGroupCondition('filter', 'OR');
     } else {
         $oRcpGroups->setWhere($requestSearchIn, $requestFilter, "LIKE");
     }
@@ -139,10 +139,10 @@ $aMsg = [
 
 while ($oRcpGroup = $oRcpGroups->next()) {
     $iMenu++;
-    $iIDGroup = cSecurity::toInteger($oRcpGroup->get("idnewsgroup"));
+    $iIDGroup = cSecurity::toInteger($oRcpGroup->get('idnewsgroup'));
 
-    $sName = $oRcpGroup->get("groupname");
-    if ($oRcpGroup->get("defaultgroup")) {
+    $sName = $oRcpGroup->get('groupname');
+    if ($oRcpGroup->get('defaultgroup')) {
         $sName = $sName . "*";
     }
 
@@ -163,11 +163,11 @@ while ($oRcpGroup = $oRcpGroups->next()) {
     if ($perm->have_perm_area_action($area, 'recipientgroup_delete')) {
         // Delete recipient group
         $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif');
-        $oImage->setAlt($aMsg["DelTitle"]);
+        $oImage->setAlt($aMsg['DelTitle']);
         $oDelete = new cHTMLLink();
         $oDelete->setLink('javascript:void(0)')
             ->setClass('con_img_button')
-            ->setAlt($aMsg["DelTitle"])
+            ->setAlt($aMsg['DelTitle'])
             ->setAttribute('data-action', 'recipientgroup_delete')
             ->setContent($oImage->render());
         $oMenu->setActions($iMenu, 'delete', $oDelete->render());
@@ -183,15 +183,15 @@ $sPagerId = "0ed6d632-6adf-4f09-a0c6-1e38ab60e305";
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
-$oPagerLink->setCustom("elemperpage", $requestElemPerPage);
-$oPagerLink->setCustom("filter", $requestFilter);
-$oPagerLink->setCustom("sortby", $requestSortBy);
-$oPagerLink->setCustom("sortorder", $requestSortOrder);
-$oPagerLink->setCustom("searchin", $requestSearchIn);
-$oPagerLink->setCustom("frame", $frame);
-$oPagerLink->setCustom("area", $area);
+$oPagerLink->setCustom('elemperpage', $requestElemPerPage);
+$oPagerLink->setCustom('filter', $requestFilter);
+$oPagerLink->setCustom('sortby', $requestSortBy);
+$oPagerLink->setCustom('sortorder', $requestSortOrder);
+$oPagerLink->setCustom('searchin', $requestSearchIn);
+$oPagerLink->setCustom('frame', $frame);
+$oPagerLink->setCustom('area', $area);
 $oPagerLink->enableAutomaticParameterAppend();
-$oPagerLink->setCustom("contenido", $sess->id);
+$oPagerLink->setCustom('contenido', $sess->id);
 // Note, that after the "page" parameter no "pagerlink" parameter is specified -
 // it is not used, as the JS below only uses the INNER html and the "pagerlink"
 // parameter is
@@ -220,7 +220,7 @@ $oPage->addScript($sRefreshPager);
 
 // Generate template
 $oTpl = new cTemplate();
-$oTpl->set('s', 'DELETE_MESSAGE', $aMsg["DelDescr"]);
+$oTpl->set('s', 'DELETE_MESSAGE', $aMsg['DelDescr']);
 $sTemplate = $oTpl->generate($cfg['templates']['newsletter_recipients_group_menu'], true);
 
 $oPage->setContent([$oMenu, $sTemplate]);

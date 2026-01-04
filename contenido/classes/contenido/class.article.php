@@ -21,8 +21,7 @@ cInclude('includes', 'functions.str.php');
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiArticle createNewItem
- * @method cApiArticle|bool next
+ * @extends ItemCollection<cApiArticle>
  */
 class cApiArticleCollection extends ItemCollection
 {
@@ -43,8 +42,7 @@ class cApiArticleCollection extends ItemCollection
      */
     public function __construct($select = false)
     {
-        $table = cRegistry::getDbTableName('art');
-        parent::__construct($table, 'idart');
+        parent::__construct(cDb::getTableName('art'), 'idart');
         $this->_setItemClass('cApiArticle');
 
         // set the join partners so that joins can be used via link() method
@@ -77,7 +75,7 @@ class cApiArticleCollection extends ItemCollection
      *
      * @param int $idclient
      * @return array
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getIdsByClientId($idclient): array
     {
@@ -107,8 +105,7 @@ class cApiArticle extends Item
      */
     public function __construct($id = false)
     {
-        $table = cRegistry::getDbTableName('art');
-        parent::__construct($table, 'idart');
+        parent::__construct(cDb::getTableName('art'), 'idart');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

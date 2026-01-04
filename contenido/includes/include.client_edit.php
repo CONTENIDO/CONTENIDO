@@ -64,7 +64,7 @@ if ($idclient) {
 }
 
 $urlscheme = parse_url($htmlpath, PHP_URL_SCHEME);
-$valid = ($clientname != "" && $frontendpath != "" && ($urlscheme == 'http' || $urlscheme == 'https'));
+$valid = ($clientname != '' && $frontendpath != '' && ($urlscheme == 'http' || $urlscheme == 'https'));
 
 if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && $valid) {
     // Set $validPath = true if path could be created, else false
@@ -86,7 +86,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
         $cApiClient = $cApiClientColl->create($clientname, $errsite_cat, $errsite_art);
 
         $idclient = $cApiClient->get('idclient');
-        $cfgClient[$idclient]["name"] = $clientname;
+        $cfgClient[$idclient]['name'] = $clientname;
 
         $sLangNotification = i18n('Notice: In order to use this client, you must create a new language for it.');
         $sTarget = $sess->url('frameset.php?area=lang&targetclient=' . $idclient);
@@ -170,7 +170,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
     if (cFileHandler::exists($cfgClient[$idclient]['code']['path']) === true) {
         /* @var $file SplFileInfo */
         foreach (new DirectoryIterator($cfgClient[$idclient]['code']['path']) as $file) {
-            if ($file->isFile() === false) {
+            if (!$file->isFile()) {
                 continue;
             }
 
@@ -226,13 +226,13 @@ $page->set('d', 'BRDRT', 1);
 $page->set('d', 'BRDRB', 0);
 
 $page->set('d', 'CATNAME', i18n("Client name"));
-$oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace([
+$oTxtClient = new cHTMLTextbox('clientname', conHtmlSpecialChars(str_replace([
     '*/',
     '/*',
     '//',
     '\\',
     '"'
-], '', ($cApiClient->isLoaded()) ? $cApiClient->get("name") : $clientname)), 75, 255, "clientname");
+], '', ($cApiClient->isLoaded()) ? $cApiClient->get('name') : $clientname)), 75, 255, "clientname");
 $page->set('d', 'CATFIELD', $oTxtClient->render());
 $page->set('d', 'BRDRT', 0);
 $page->set('d', 'BRDRB', 1);
@@ -244,7 +244,7 @@ if (false === isset($serverpath)) {
 }
 
 $page->set('d', 'CATNAME', i18n("Server path"));
-$oTxtServer = new cHTMLTextbox("frontendpath", conHtmlSpecialChars($serverpath), 75, 255, "frontendpath");
+$oTxtServer = new cHTMLTextbox('frontendpath', conHtmlSpecialChars($serverpath), 75, 255, "frontendpath");
 $page->set('d', 'CATFIELD', $oTxtServer->render());
 $page->set('d', 'BRDRT', 0);
 $page->set('d', 'BRDRB', 1);
@@ -255,21 +255,21 @@ if ($htmlpath == '') {
 }
 
 $page->set('d', 'CATNAME', i18n("Web address"));
-$oTxtWeb = new cHTMLTextbox("htmlpath", conHtmlSpecialChars($htmlpath), 75, 255, "htmlpath");
+$oTxtWeb = new cHTMLTextbox('htmlpath', conHtmlSpecialChars($htmlpath), 75, 255, "htmlpath");
 $page->set('d', 'CATFIELD', $oTxtWeb->render());
 $page->set('d', 'BRDRT', 0);
 $page->set('d', 'BRDRB', 1);
 $page->next();
 
 $page->set('d', 'CATNAME', i18n("Error page category"));
-$oTxtErrorCat = new cHTMLTextbox("errsite_cat", $cApiClient->get("errsite_cat"), 10, 10);
+$oTxtErrorCat = new cHTMLTextbox('errsite_cat', $cApiClient->get('errsite_cat'), 10, 10);
 $page->set('d', 'CATFIELD', $oTxtErrorCat->render());
 $page->set('d', 'BRDRT', 0);
 $page->set('d', 'BRDRB', 1);
 $page->next();
 
 $page->set('d', 'CATNAME', i18n("Error page article"));
-$oTxtErrorArt = new cHTMLTextbox("errsite_art", $cApiClient->get("errsite_art"), 10, 10);
+$oTxtErrorArt = new cHTMLTextbox('errsite_art', $cApiClient->get('errsite_art'), 10, 10);
 $page->set('d', 'CATFIELD', $oTxtErrorArt->render());
 $page->set('d', 'BRDRT', 0);
 $page->set('d', 'BRDRB', 1);
@@ -277,7 +277,7 @@ $page->next();
 
 $clientLogo = $cApiPropertyColl->getValue('idclient', $idclient, 'backend', 'clientimage');
 $page->set('d', 'CATNAME', i18n("Client logo"));
-$oTxtLogo = new cHTMLTextbox("clientlogo", $clientLogo, 75, 255);
+$oTxtLogo = new cHTMLTextbox('clientlogo', $clientLogo, 75, 255);
 $page->set('d', 'CATFIELD', $oTxtLogo->render());
 $page->set('d', 'BRDRT', 0);
 $page->set('d', 'BRDRB', 1);

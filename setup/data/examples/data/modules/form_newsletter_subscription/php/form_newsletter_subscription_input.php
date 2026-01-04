@@ -208,7 +208,7 @@ if ($oRcpGroups->count() == 0) {
                 if (selGoup.val() && selGoup.val().length > 1) {
                     var selLength = selGoup.val().length;
                     selGoup.val(selGoup.val()[selLength - 1]);
-                }                
+                }
             }
             hidJoinGroups.val(selGoup.val() ? selGoup.val().join(",") : "");
         });

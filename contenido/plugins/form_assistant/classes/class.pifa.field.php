@@ -18,8 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * It's a kind of model.
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @method PifaField createNewItem($data)
- * @method PifaField|bool next
+ * @extends ItemCollection<PifaField>
  */
 class PifaFieldCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class PifaFieldCollection extends ItemCollection
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('pifa_field'), 'idfield');
+        parent::__construct(cDb::getTableName('pifa_field'), 'idfield');
         $this->_setItemClass('PifaField');
         if (false !== $where) {
             $this->select($where);
@@ -51,7 +50,7 @@ class PifaFieldCollection extends ItemCollection
     {
         $sql = "-- PifaFieldCollection::reorder()
             UPDATE
-                " . cRegistry::getDbTableName('pifa_field') . "
+                " . cDb::getTableName('pifa_field') . "
             SET
                 field_rank = FIND_IN_SET(idfield, '$idfields')
             WHERE
@@ -258,7 +257,7 @@ class PifaField extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('pifa_field'), 'idfield');
+        parent::__construct(cDb::getTableName('pifa_field'), 'idfield');
         $this->setFilters();
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
@@ -693,7 +692,7 @@ class PifaField extends Item
                 $tmpHtml = '';
                 for ($i = 0; $i < $count; $i++) {
                     if (self::INPUTRADIO === $fieldType) {
-                        $elemField = new cHTMLRadiobutton($columnName, $optionValues[$i]);
+                        $elemField = new cHTMLRadioButton($columnName, $optionValues[$i]);
                     } elseif (self::INPUTCHECKBOX === $fieldType) {
                         $elemField = new cHTMLCheckbox($columnName . '[]', $optionValues[$i]);
                     }
@@ -1099,8 +1098,7 @@ class PifaField extends Item
      * Deletes this form with all its fields and stored data.
      * The forms data table is also dropped.
      *
-     * @throws PifaException
-     * @throws cDbException
+     * @throws cDbException|cException|PifaException
      */
     public function delete()
     {
@@ -1114,7 +1112,7 @@ class PifaField extends Item
         // update ranks of younger siblings
         $sql = "-- PifaField->delete()
             UPDATE
-                " . cRegistry::getDbTableName('pifa_field') . "
+                " . cDb::getTableName('pifa_field') . "
             SET
                 field_rank = field_rank - 1
             WHERE
@@ -1126,7 +1124,7 @@ class PifaField extends Item
         // delete field
         $sql = "-- PifaField->delete()
             DELETE FROM
-                " . cRegistry::getDbTableName('pifa_field') . "
+                " . cDb::getTableName('pifa_field') . "
             WHERE
                 idfield = " . cSecurity::toInteger($this->get('idfield')) . "
             ;";

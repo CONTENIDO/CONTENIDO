@@ -38,7 +38,7 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb)
     $sFilename = cSecurity::filter((string)$sFilename, $oDb);
     $sType = cSecurity::filter((string)$sType, $oDb);
 
-    $sSql = "DELETE FROM `" . $cfg['tab']['file_information'] . "` WHERE idclient = $iIdClient AND
+    $sSql = "DELETE FROM `" . cDb::getTableName('file_information') . "` WHERE idclient = $iIdClient AND
             filename = '$sFilename' AND type = '$sType';";
     $oDb->query($sSql);
     $oDb->free();
@@ -61,7 +61,7 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
     $sFilename = cSecurity::filter((string)$sFilename, $oDb);
     $sType = cSecurity::filter((string)$sType, $oDb);
 
-    $sSql = "SELECT * FROM `" . $cfg['tab']['file_information'] . "` WHERE idclient = $iIdClient AND
+    $sSql = "SELECT * FROM `" . cDb::getTableName('file_information') . "` WHERE idclient = $iIdClient AND
             filename = '$sFilename' AND type = '$sType';";
     $oDb->query($sSql);
 
@@ -103,12 +103,12 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
     $sDescription = cSecurity::filter((string)stripslashes($sDescription), $oDb);
     $sAuthor = cSecurity::filter((string)$sAuthor, $oDb);
 
-    $sSql = "SELECT * from `" . $cfg['tab']['file_information'] . "` WHERE idclient = $iIdClient AND
+    $sSql = "SELECT * from `" . cDb::getTableName('file_information') . "` WHERE idclient = $iIdClient AND
             filename = '$sFilename' AND type = '$sType';";
     $oDb->query($sSql);
     if ($oDb->numRows() == 0) {
         // $iNextId = $oDb->nextid('con_style_file_information');
-        $sSql = "INSERT INTO `" . $cfg['tab']['file_information'] . "` (
+        $sSql = "INSERT INTO `" . cDb::getTableName('file_information') . "` (
                     `idclient` ,
                     `type` ,
                     `filename` ,
@@ -128,7 +128,7 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
                     '$sDescription'
                 );";
     } else {
-        $sSql = "UPDATE `" . $cfg['tab']['file_information'] . "` SET `lastmodified` = NOW(),
+        $sSql = "UPDATE `" . cDb::getTableName('file_information') . "` SET `lastmodified` = NOW(),
                 `modifiedby` = '$sAuthor',
                 `description` = '$sDescription',
                 `filename` = '$sFilenameNew'

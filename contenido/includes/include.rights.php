@@ -91,7 +91,7 @@ $firstClientsLang = 0;
 $availableClients = [];
 
 foreach ($clientList as $key => $value) {
-    $sql = "SELECT * FROM " . $cfg['tab']['lang'] . " AS A, " . $cfg['tab']['clients_lang']
+    $sql = "SELECT * FROM " . cDb::getTableName('lang') . " AS A, " . cDb::getTableName('clients_lang')
         . " AS B WHERE B.idclient=" . cSecurity::toInteger($key) . " AND A.idlang=B.idlang";
     $db->query($sql);
 
@@ -99,8 +99,8 @@ foreach ($clientList as $key => $value) {
         $idClientsLang = $db->f('idclientslang');
 
         if ((cString::findFirstPos($userPerms, "client[$key]") !== false)
-            && (cString::findFirstPos($userPerms, "lang[" . $db->f("idlang") . "]") !== false)
-            && ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
+            && (cString::findFirstPos($userPerms, "lang[" . $db->f('idlang') . "]") !== false)
+            && ($perm->have_perm("lang[" . $db->f('idlang') . "]"))) {
             if (!$firstSel) {
                 $firstSel = true;
                 $firstClientsLang = $idClientsLang;

@@ -86,21 +86,21 @@ class cContentVersioning
         uksort($result, function ($a, $b) {
             // cms type sort sequence
             $cmsType = [
-                "CMS_HTMLHEAD",
-                "CMS_HEAD",
-                "CMS_HTML",
-                "CMS_TEXT",
-                "CMS_IMG",
-                "CMS_IMGDESCR",
-                "CMS_IMGEDITOR",
-                "CMS_LINK",
-                "CMS_LINKTARGET",
-                "CMS_LINKDESCR",
-                "CMS_LINKEDITOR",
-                "CMS_DATE",
-                "CMS_TEASER",
-                "CMS_FILELIST",
-                "CMS_RAW"
+                'CMS_HTMLHEAD',
+                'CMS_HEAD',
+                'CMS_HTML',
+                'CMS_TEXT',
+                'CMS_IMG',
+                'CMS_IMGDESCR',
+                'CMS_IMGEDITOR',
+                'CMS_LINK',
+                'CMS_LINKTARGET',
+                'CMS_LINKDESCR',
+                'CMS_LINKEDITOR',
+                'CMS_DATE',
+                'CMS_TEASER',
+                'CMS_FILELIST',
+                'CMS_RAW',
             ];
 
             return array_search($a, $cmsType) - array_search($b, $cmsType);
@@ -111,8 +111,7 @@ class cContentVersioning
 
     /**
      * Return date for select box.
-     * If current time - lastModified < 1 hour return "%d minutes ago"
-     * else return "Y-M-D H:I:S".
+     * If current time - lastModified < 1 hour return "%d minutes ago" else return 'Y-m-d H:i:s'.
      *
      * @param string $lastModified
      * @return string
@@ -214,9 +213,9 @@ class cContentVersioning
 
         if (($articleType == 'version' || $articleType == 'editable') && $this->getState() == self::STATE_ADVANCED
             || $articleType == 'version' && $this->getState() == self::STATE_SIMPLE) {
-            $this->db->query($sql, cRegistry::getDbTableName('content_version'), cRegistry::getDbTableName('type'), $idArtLang);
+            $this->db->query($sql, cDb::getTableName('content_version'), cDb::getTableName('type'), $idArtLang);
         } elseif ($articleType == 'current' || $articleType == 'editable' && $this->getState() != self::STATE_ADVANCED) {
-            $this->db->query($sql, cRegistry::getDbTableName('content'), cRegistry::getDbTableName('type'), $idArtLang);
+            $this->db->query($sql, cDb::getTableName('content'), cDb::getTableName('type'), $idArtLang);
         }
 
         $list = [];
@@ -236,7 +235,7 @@ class cContentVersioning
     public function getMaxIdContent(): int
     {
         $sql = 'SELECT MAX(`idcontent`) AS `max` FROM `%s`';
-        $this->db->query($sql, cRegistry::getDbTableName('content'));
+        $this->db->query($sql, cDb::getTableName('content'));
         $this->db->nextRecord();
 
         return cSecurity::toInteger($this->db->f('max'));
@@ -259,18 +258,18 @@ class cContentVersioning
         if ($this->getState() == self::STATE_DISABLED // disabled
             || ($this->getState() == self::STATE_SIMPLE && ($selectedArticleId == 'current'
                     || $selectedArticleId == NULL)
-                && ($action == 'con_meta_deletetype' || $action == 'copyto'
-                    || $action == 'con_content' || $idArtLangVersion == NULL
-                    || $action == 'con_saveart' || $action == 'con_edit' || $action == 'con_meta_edit' || $action == 'con_editart'))
+                && ($action === 'con_meta_deletetype' || $action === 'copyto'
+                    || $action === 'con_content' || $idArtLangVersion == NULL
+                    || $action === 'con_saveart' || $action === 'con_edit' || $action === 'con_meta_edit' || $action === 'con_editart'))
             || $idArtLangVersion == 'current' && $action != 'copyto'
-            || $action == 'copyto' && $idArtLangVersion == $this->editableArticleId
+            || $action === 'copyto' && $idArtLangVersion == $this->editableArticleId
             || $selectedArticleId == 'current' && $action != 'copyto'
             || $this->editableArticleId == NULL
             && $action != 'con_meta_saveart' && $action != 'con_newart') { // advanced
             $this->articleType = 'current';
         } elseif ($this->getState() == self::STATE_ADVANCED && ($selectedArticleId == 'editable'
                 || $selectedArticleId == NULL || $this->editableArticleId === $selectedArticleId)
-            && ($action == 'con_content' || $action == 'con_meta_deletetype'
+            && ($action === 'con_content' || $action == 'con_meta_deletetype'
                 || $action == 'con_meta_edit' || $action == 'con_edit' || $action == 'con_editart')
             || $action == 'copyto' || $idArtLangVersion == 'current'
             || $idArtLangVersion == $this->editableArticleId
@@ -377,7 +376,7 @@ class cContentVersioning
                     %s
                 WHERE
                     idartlang = %d',
-                cRegistry::getDbTableName('art_lang_version'),
+                cDb::getTableName('art_lang_version'),
                 $idArtLang
             );
             $this->db->nextRecord();
@@ -416,8 +415,8 @@ class cContentVersioning
                 SELECT
                     a.idcontent
                 FROM
-                    " . cRegistry::getDbTableName('content') . " as a,
-                    " . cRegistry::getDbTableName('type') . " as b
+                    " . cDb::getTableName('content') . " as a,
+                    " . cDb::getTableName('type') . " as b
                 WHERE
                     a.idartlang=" . $idArtLang . "
                     AND a.idtype=b.idtype
@@ -433,8 +432,8 @@ class cContentVersioning
                 SELECT
                     a.idcontentversion
                 FROM
-                    " . cRegistry::getDbTableName('content_version') . " as a,
-                    " . cRegistry::getDbTableName('type') . " as b
+                    " . cDb::getTableName('content_version') . " as a,
+                    " . cDb::getTableName('type') . " as b
                 WHERE
                     a.version <= " . $version . "
                     AND a.idartlang = " . $idArtLang . "
@@ -564,7 +563,7 @@ class cContentVersioning
         $date = date('Y-m-d H:i:s');
 
         $auth = cRegistry::getAuth();
-        $author = $auth->auth['uname'];
+        $author = $auth->getUsername();
 
         switch ($this->getState()) {
             case self::STATE_SIMPLE:
@@ -790,7 +789,7 @@ class cContentVersioning
             'iscurrentversion' => $parameters['iscurrentversion'] ?? '0',
             'author' => $parameters['author'],
             'lastmodified' => date('Y-m-d H:i:s'),
-            'modifiedby' => $auth->auth['uname'],
+            'modifiedby' => $auth->getUsername(),
             'published' => $parameters['published'],
             'publishedby' => $parameters['publishedby'] ?? '',
             'online' => $parameters['online'],

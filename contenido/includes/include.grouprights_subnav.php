@@ -51,18 +51,18 @@ foreach ($areasNavSubs as $areasNavSub) {
     }
 }
 
-$_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Permissions.Group.Areas');
-if ($_cecIterator->count() > 0) {
+$cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Permissions.Group.Areas');
+if ($cecIterator->count() > 0) {
     $areaName = 'group_external';
     $caption = 'group_external';
 
-    while (($chainEntry = $_cecIterator->next()) !== false) {
+    while ($chainEntry = $cecIterator->next()) {
         $aInfo = $chainEntry->execute();
 
         foreach ($aInfo as $key => $sAreaID) {
             $sAreaName = false;
-            $_cecIterator2 = cRegistry::getCecRegistry()->getIterator('Contenido.Permissions.Group.GetAreaName');
-            while (($chainEntry2 = $_cecIterator2->next()) !== false) {
+            $cecIterator2 = cApiCecRegistry::getInstance()->getIterator('Contenido.Permissions.Group.GetAreaName');
+            while ($chainEntry2 = $cecIterator2->next()) {
                 $aInfo2 = $chainEntry2->execute($sAreaID);
                 if ($aInfo2 !== false) {
                     $sAreaName = $aInfo2;

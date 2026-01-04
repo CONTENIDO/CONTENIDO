@@ -17,8 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * It's a kind of model.
  *
  * @author     Fulai Zhang <fulai.zhang@4fb.de>
- * @method SIWECOS createNewItem
- * @method SIWECOS|bool next
+ * @extends ItemCollection<SIWECOS>
  */
 class SIWECOSCollection extends ItemCollection
 {
@@ -99,7 +98,7 @@ class SIWECOSCollection extends ItemCollection
         $db = cRegistry::getDb();
         $db->query(
             "SELECT *
-            FROM `" . cRegistry::getDbTableName('siwecos') . "`
+            FROM `" . cDb::getTableName('siwecos') . "`
             WHERE
                 `idclient` = " . cSecurity::toInteger($client) . "
                 AND `idlang` = " . cSecurity::toInteger($lang) . "

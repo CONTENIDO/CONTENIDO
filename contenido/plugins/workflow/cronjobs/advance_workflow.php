@@ -29,10 +29,10 @@ $workflowusersequences = new WorkflowUserSequences();
 
 $workflowartallocations->select();
 
-while (($obj = $workflowartallocations->next()) !== false) {
-    $starttime = $obj->get("starttime");
-    $idartlang = $obj->get("idartlang");
-    $lastidusersequence = $obj->get("lastusersequence");
+while ($obj = $workflowartallocations->next()) {
+    $starttime = $obj->get('starttime');
+    $idartlang = $obj->get('idartlang');
+    $lastidusersequence = $obj->get('lastusersequence');
 
     $usersequence = getCurrentUserSequence($idartlang, 0);
 
@@ -40,10 +40,10 @@ while (($obj = $workflowartallocations->next()) !== false) {
         $workflowusersequences->select("idusersequence = '$usersequence'");
 
         if (($wfobj = $workflowusersequences->next()) !== false) {
-            $wfitem = $wfobj->get("idworkflowitem");
-            $pos = $wfobj->get("position");
-            $timeunit = $wfobj->get("timeunit");
-            $timelimit = $wfobj->get("timelimit");
+            $wfitem = $wfobj->get('idworkflowitem');
+            $pos = $wfobj->get('position');
+            $timeunit = $wfobj->get('timeunit');
+            $timelimit = $wfobj->get('timelimit');
         }
 
         $starttime = strtotime($starttime);
@@ -78,7 +78,7 @@ while (($obj = $workflowartallocations->next()) !== false) {
             $pos = $pos + 1;
             $workflowusersequences->select("idworkflowitem = '$wfitem' AND position = " . $pos);
             if (($wfobj = $workflowusersequences->next()) !== false) {
-                $obj->set("idusersequence", $wfobj->get("idusersequence"));
+                $obj->set('idusersequence', $wfobj->get('idusersequence'));
                 $obj->store();
             }
         }

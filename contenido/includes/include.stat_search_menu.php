@@ -25,8 +25,8 @@ if (getEffectiveSetting('search', 'term_tracking', 'on') != 'on') {
 $searchTerms = new cApiSearchTrackingCollection();
 $db = $searchTerms->queryPopularSearchTerms();
 while ($db->nextRecord()) {
-    $page->set("d", "SEARCHTERM_URL", urlencode($db->f("searchterm")));
-    $page->set("d", "SEARCHTERM", conHtmlSpecialChars($db->f("searchterm")));
+    $page->set('d', 'SEARCHTERM_URL', urlencode($db->f('searchterm')));
+    $page->set('d', 'SEARCHTERM', conHtmlSpecialChars($db->f('searchterm')));
     $page->next();
 }
 

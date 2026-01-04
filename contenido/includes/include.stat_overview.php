@@ -38,14 +38,14 @@ $googleNotification = "";
 $piwikNotification = "";
 
 // Display google account message
-if (($googleAccount = getEffectiveSetting('stats', 'ga_account', '')) != "") {
+if (($googleAccount = getEffectiveSetting('stats', 'ga_account', '')) != '') {
     $linkToGoogle = sprintf('<a target="_blank" href="https://www.google.com/intl/' . $belang . '/analytics/">%s</a>', i18n("here"));
     $googleNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has been configured with Google Analytics account %s. Click %s to visit Google Analytics"), $googleAccount, $linkToGoogle));
 }
 
 // display piwik account message
-if (($piwikUrl = getEffectiveSetting('stats', 'piwik_url', '')) != "") {
-    if (($piwikSite = getEffectiveSetting('stats', 'piwik_site', '')) != "") {
+if (($piwikUrl = getEffectiveSetting('stats', 'piwik_url', '')) != '') {
+    if (($piwikSite = getEffectiveSetting('stats', 'piwik_site', '')) != '') {
         $linkToPiwik = sprintf('<a target="_blank" href="' . $piwikUrl . '">%s</a>', i18n('here'));
         $piwikNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has been configured with Piwik Site %s. Click %s to visit the Piwik installation."), $piwikSite, $linkToPiwik));
     }
@@ -58,7 +58,7 @@ $requestDisplayType = $_REQUEST['displaytype'] ?? '';
 
 $action = cRegistry::getAction();
 
-if ($action == "stat_show") {
+if ($action == 'stat_show') {
     if (cString::getStringLength($requestYearMonth) < 4) {
         $requestYearMonth = "current";
     }

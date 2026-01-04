@@ -42,58 +42,58 @@ if (conHtmlentities($adduser, ENT_COMPAT, $sCurrentEncoding) == i18n("Add User",
 }
 
 // Function: Move step up
-if ($action == 'workflow_step_up') {
+if ($action === 'workflow_step_up') {
     $workflowItems = new WorkflowItems();
     $workflowItems->swap($requestIdWorkflow, $requestPosition, $requestPosition - 1);
 }
 
 // Function: Move step down
-if ($action == 'workflow_step_down') {
+if ($action === 'workflow_step_down') {
     $workflowItems = new WorkflowItems();
     $workflowItems->swap($requestIdWorkflow, $requestPosition, $requestPosition + 1);
 }
 
 // Function: Move user up
-if ($action == 'workflow_user_up') {
+if ($action === 'workflow_user_up') {
     $workflowItems = new WorkflowUserSequences();
     $workflowItems->swap($requestIdWorkflowItem, $requestPosition, $requestPosition - 1);
 }
 
 // Function: Move step down
-if ($action == 'workflow_user_down') {
+if ($action === 'workflow_user_down') {
     $workflowItems = new WorkflowUserSequences();
     $workflowItems->swap($requestIdWorkflowItem, $requestPosition, $requestPosition + 1);
 }
 
 // Function: Create new step
-if ($action == 'workflow_create_step') {
+if ($action === 'workflow_create_step') {
     $workflowItems = new WorkflowItems();
     $item = $workflowItems->create($requestIdWorkflow);
-    $item->set("name", i18n("New Workflow Step", "workflow"));
+    $item->set('name', i18n("New Workflow Step", "workflow"));
     $item->store();
-    $requestIdWorkflowItem = $item->get("idworkflowitem");
+    $requestIdWorkflowItem = $item->get('idworkflowitem');
 }
 
 // Function: Delete step
-if ($action == 'workflow_step_delete') {
+if ($action === 'workflow_step_delete') {
     $workflowItems = new WorkflowItems();
     $workflowItems->delete($requestIdWorkflowItem);
 }
 
 // Function: Add user
-if ($action == 'workflow_create_user') {
+if ($action === 'workflow_create_user') {
     $workflowUsers = new WorkflowUserSequences();
     $new = $workflowUsers->create($requestIdWorkflowItem);
 }
 
 // Function: Remove user
-if ($action == 'workflow_user_delete') {
+if ($action === 'workflow_user_delete') {
     $workflowUsers = new WorkflowUserSequences();
     $workflowUsers->delete($requestIdUserSequence);
 }
 
 // Function: Save step
-if ($action == 'workflow_save_step' || $action == 'workflow_create_user') {
+if ($action === 'workflow_save_step' || $action === 'workflow_create_user') {
     $workflowActions = new WorkflowActions();
 
     foreach ($availableWorkflowActions as $key => $value) {
@@ -114,16 +114,16 @@ if ($action == 'workflow_save_step' || $action == 'workflow_create_user') {
     $userSequences = new WorkflowUserSequences();
     $userSequences->select("idworkflowitem = '$requestIdWorkflowItem'");
 
-    while (($userSequence = $userSequences->next()) !== false) {
-        $wftime = "time" . $userSequence->get("idusersequence");
-        $wfuser = "user" . $userSequence->get("idusersequence");
+    while ($userSequence = $userSequences->next()) {
+        $wftime = "time" . $userSequence->get('idusersequence');
+        $wfuser = "user" . $userSequence->get('idusersequence');
 
-        $wftimelimit = "wftimelimit" . $userSequence->get("idusersequence");
-        $userSequence->set("timeunit", $$wftime);
-        $userSequence->set("iduser", $$wfuser);
-        $userSequence->set("timelimit", $$wftimelimit);
-        $userSequence->set("emailnoti", $wfemailnoti[$userSequence->get("idusersequence")]);
-        $userSequence->set("escalationnoti", $wfescalnoti[$userSequence->get("idusersequence")]);
+        $wftimelimit = "wftimelimit" . $userSequence->get('idusersequence');
+        $userSequence->set('timeunit', $$wftime);
+        $userSequence->set('iduser', $$wfuser);
+        $userSequence->set('timelimit', $$wftimelimit);
+        $userSequence->set('emailnoti', $wfemailnoti[$userSequence->get('idusersequence')]);
+        $userSequence->set('escalationnoti', $wfescalnoti[$userSequence->get('idusersequence')]);
         $userSequence->store();
     }
 }
@@ -181,41 +181,41 @@ function getWorkflowList($idWorkflow, $idWorkflowItem): string
 
     $workflowItems->select("idworkflow = $idWorkflow", "", "position ASC");
 
-    while (($workflowItem = $workflowItems->next()) !== false) {
-        $pos = $workflowItem->get("position");
-        $name = preg_replace("/\"/", "", ($workflowItem->get("name")));
-        $id = cSecurity::toInteger($workflowItem->get("idworkflowitem"));
+    while ($workflowItem = $workflowItems->next()) {
+        $pos = $workflowItem->get('position');
+        $name = preg_replace("/\"/", "", ($workflowItem->get('name')));
+        $id = cSecurity::toInteger($workflowItem->get('idworkflowitem'));
 
         $edititem = new cHTMLLink();
         $edititem->setClass("con_img_button show_item");
         $edititem->setCLink("workflow_steps", 4, "workflow_step_edit");
-        $edititem->setCustom("idworkflowitem", $id);
-        $edititem->setCustom("idworkflow", $idWorkflow);
+        $edititem->setCustom('idworkflowitem', $id);
+        $edititem->setCustom('idworkflow', $idWorkflow);
 
         $moveup = new cHTMLLink();
-        $moveup->setClass("con_img_button");
+        $moveup->setClass('con_img_button');
         $moveup->setCLink("workflow_steps", 4, "workflow_step_up");
-        $moveup->setCustom("idworkflowitem", $id);
-        $moveup->setCustom("idworkflow", $idWorkflow);
-        $moveup->setCustom("position", $pos);
+        $moveup->setCustom('idworkflowitem', $id);
+        $moveup->setCustom('idworkflow', $idWorkflow);
+        $moveup->setCustom('position', $pos);
         $moveup->setAlt(i18n("Move step up", "workflow"));
         $moveup->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/no_verschieben.gif" . '">');
 
         $movedown = new cHTMLLink();
-        $movedown->setClass("con_img_button");
+        $movedown->setClass('con_img_button');
         $movedown->setCLink("workflow_steps", 4, "workflow_step_down");
-        $movedown->setCustom("idworkflowitem", $id);
-        $movedown->setCustom("idworkflow", $idWorkflow);
-        $movedown->setCustom("position", $pos);
+        $movedown->setCustom('idworkflowitem', $id);
+        $movedown->setCustom('idworkflow', $idWorkflow);
+        $movedown->setCustom('position', $pos);
         $movedown->setAlt(i18n("Move step down", "workflow"));
         $movedown->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/nu_verschieben.gif" . '">');
 
         $deletestep = new cHTMLLink();
-        $deletestep->setClass("con_img_button");
+        $deletestep->setClass('con_img_button');
         $deletestep->setCLink("workflow_steps", 4, "workflow_step_delete");
-        $deletestep->setCustom("idworkflowitem", $id);
-        $deletestep->setCustom("idworkflow", $idWorkflow);
-        $deletestep->setCustom("position", $pos);
+        $deletestep->setCustom('idworkflowitem', $id);
+        $deletestep->setCustom('idworkflow', $idWorkflow);
+        $deletestep->setCustom('position', $pos);
         $deletestep->setAlt(i18n("Delete step", "workflow"));
         $deletestep->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/workflow_step_delete.gif" . '">');
 
@@ -258,7 +258,7 @@ function createNewWorkflow($idWorkflow): string
 
     $createstep = new cHTMLLink();
     $createstep->setCLink("workflow_steps", 4, "workflow_create_step");
-    $createstep->setCustom("idworkflow", $idWorkflow);
+    $createstep->setCustom('idworkflow', $idWorkflow);
 
     // ui->setLink("spacer", NULL);
     $ui->setTitle("create", i18n("Create new step", "workflow"));
@@ -289,23 +289,23 @@ function editWorkflowStep($idWorkflow, $idWorkflowItem): string
 
     $workflowActions = new WorkflowActions();
 
-    $stepname = str_replace('\\', '', conHtmlSpecialChars($workflowItem->get("name")));
-    $stepdescription = str_replace('\\', '', conHtmlSpecialChars($workflowItem->get("description")));
-    $id = $workflowItem->get("idworkflowitem");
-    $task = $workflowItem->get("idtask");
+    $stepname = str_replace('\\', '', conHtmlSpecialChars($workflowItem->get('name')));
+    $stepdescription = str_replace('\\', '', conHtmlSpecialChars($workflowItem->get('description')));
+    $id = $workflowItem->get('idworkflowitem');
+    $task = $workflowItem->get('idtask');
 
-    $form = new cGuiTableForm("workflow_edit");
+    $form = new cGuiTableForm('workflow_edit');
 
-    $form->setVar("area", $area);
-    $form->setVar("action", "workflow_save_step");
-    $form->setVar("idworkflow", $idWorkflow);
-    $form->setVar("idworkflowitem", $idWorkflowItem);
-    $form->setVar("frame", $frame);
+    $form->setVar('area', $area);
+    $form->setVar('action', 'workflow_save_step');
+    $form->setVar('idworkflow', $idWorkflow);
+    $form->setVar('idworkflowitem', $idWorkflowItem);
+    $form->setVar('frame', $frame);
 
     $form->setHeader(i18n("Edit workflow step", "workflow"));
-    $oTxtStep = new cHTMLTextbox("wfstepname", $stepname, 40, 255);
+    $oTxtStep = new cHTMLTextbox('wfstepname', $stepname, 40, 255);
     $form->add(i18n("Step name", "workflow"), $oTxtStep->render());
-    $oTxtStepDesc = new cHTMLTextarea("wfstepdescription", $stepdescription, 60, 10);
+    $oTxtStepDesc = new cHTMLTextarea('wfstepdescription', $stepdescription, 60, 10);
     $form->add(i18n("Step description", "workflow"), $oTxtStepDesc->render());
 
     $actions = '';
@@ -338,44 +338,44 @@ function getWorkflowUsers($idWorkflow, $idWorkflowItem): string
 
     $workflowUsers->select("idworkflowitem = '$idWorkflowItem'", "", "position ASC");
 
-    while (($workflowItem = $workflowUsers->next()) !== false) {
-        $pos = $workflowItem->get("position");
-        $iduser = $workflowItem->get("iduser");
-        $timelimit = $workflowItem->get("timelimit");
-        $timeunit = $workflowItem->get("timeunit");
-        $email = $workflowItem->get("emailnoti");
-        $escalation = $workflowItem->get("escalationnoti");
-        $timeunit = $workflowItem->get("timeunit");
-        $id = $workflowItem->get("idusersequence");
+    while ($workflowItem = $workflowUsers->next()) {
+        $pos = $workflowItem->get('position');
+        $iduser = $workflowItem->get('iduser');
+        $timelimit = $workflowItem->get('timelimit');
+        $timeunit = $workflowItem->get('timeunit');
+        $email = $workflowItem->get('emailnoti');
+        $escalation = $workflowItem->get('escalationnoti');
+        $timeunit = $workflowItem->get('timeunit');
+        $id = $workflowItem->get('idusersequence');
 
         $moveup = new cHTMLLink();
         $moveup->setCLink("workflow_steps", 4, "workflow_user_up");
-        $moveup->setCustom("idworkflowitem", $idWorkflowItem);
-        $moveup->setCustom("idworkflow", $idWorkflow);
-        $moveup->setCustom("position", $pos);
+        $moveup->setCustom('idworkflowitem', $idWorkflowItem);
+        $moveup->setCustom('idworkflow', $idWorkflow);
+        $moveup->setCustom('position', $pos);
         $moveup->setAlt(i18n("Move user up", "workflow"));
         $moveup->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/no_verschieben.gif" . '">');
 
         $movedown = new cHTMLLink();
         $movedown->setCLink("workflow_steps", 4, "workflow_user_down");
-        $movedown->setCustom("idworkflowitem", $idWorkflowItem);
-        $movedown->setCustom("idworkflow", $idWorkflow);
-        $movedown->setCustom("position", $pos);
+        $movedown->setCustom('idworkflowitem', $idWorkflowItem);
+        $movedown->setCustom('idworkflow', $idWorkflow);
+        $movedown->setCustom('position', $pos);
         $movedown->setAlt(i18n("Move user down", "workflow"));
         $movedown->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/nu_verschieben.gif" . '">');
 
         $deletestep = new cHTMLLink();
         $deletestep->setCLink("workflow_steps", 4, "workflow_user_delete");
-        $deletestep->setCustom("idworkflowitem", $idWorkflowItem);
-        $deletestep->setCustom("idworkflow", $idWorkflow);
-        $deletestep->setCustom("position", $pos);
-        $deletestep->setCustom("idusersequence", $id);
+        $deletestep->setCustom('idworkflowitem', $idWorkflowItem);
+        $deletestep->setCustom('idworkflow', $idWorkflow);
+        $deletestep->setCustom('position', $pos);
+        $deletestep->setCustom('idusersequence', $id);
         $deletestep->setAlt(i18n("Delete user", "workflow"));
         $deletestep->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/workflow_step_delete.gif" . '">');
 
         $title = "$pos. " . getUsers($id, $iduser);
 
-        $oTxtTime = new cHTMLTextbox("wftimelimit" . $id, $timelimit, 3, 6);
+        $oTxtTime = new cHTMLTextbox('wftimelimit' . $id, $timelimit, 3, 6);
         $title .= $oTxtTime->render();
         $title .= getTimeUnitSelector($id, $timeunit);
         $altmail = i18n("Notify this user via E-Mail", "workflow");
@@ -409,8 +409,8 @@ function getWorkflowUsers($idWorkflow, $idWorkflowItem): string
 
     $createstep = new cHTMLLink();
     $createstep->setCLink("workflow_steps", 4, "workflow_create_user");
-    $createstep->setCustom("idworkflow", $idWorkflow);
-    $createstep->setCustom("idworkflowitem", $idWorkflowItem);
+    $createstep->setCustom('idworkflow', $idWorkflow);
+    $createstep->setCustom('idworkflowitem', $idWorkflowItem);
 
     $ui->setLink("spacer", NULL);
 

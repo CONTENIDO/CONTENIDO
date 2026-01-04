@@ -432,7 +432,7 @@ class PimPluginSetup
                 $depend = cSecurity::escapeString($tempXml->dependencies->depend[$i]);
 
                 // If is no dependencies name defined please go to next dependencies
-                if ($depend == "") {
+                if ($depend == '') {
                     continue;
                 }
 

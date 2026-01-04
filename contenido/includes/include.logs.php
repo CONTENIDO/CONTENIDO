@@ -199,7 +199,7 @@ if ($languageId !== '%') {
 if ($actionId !== '%') {
     $where[] = '`idaction` = ' . $actionId;
 }
-if ($userId == '%' || $userId == "") {
+if ($userId == '%' || $userId == '') {
     $userValues = implode("', '", array_keys($accessibleUsers));
     $where[] = "`user_id` IN ('" . $userValues . "')";
 } else {

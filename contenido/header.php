@@ -27,7 +27,7 @@ if (!defined('CON_FRAMEWORK')) {
  */
 
 // CONTENIDO startup process
-include_once('./includes/startup.php');
+include_once(__DIR__ . '/includes/startup.php');
 
 cRegistry::bootstrap([
     'sess' => 'cSession',
@@ -72,7 +72,7 @@ if (
     $oClientColl = new cApiClientCollection();
     if ($oClient = $oClientColl->getFirstAccessibleClient()) {
         unset($lang);
-        $client = $oClient->get('idclient');
+        $client = cSecurity::toInteger($oClient->get('idclient'));
     }
 } else {
     $sess->register('client');

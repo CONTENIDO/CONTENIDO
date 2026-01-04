@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiCategoryTree createNewItem
- * @method cApiCategoryTree|bool next
+ * @extends ItemCollection<cApiCategoryTree>
  */
 class cApiCategoryTreeCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiCategoryTreeCollection extends ItemCollection
      */
     public function __construct($select = false)
     {
-        parent::__construct(cRegistry::getDbTableName('cat_tree'), 'idtree');
+        parent::__construct(cDb::getTableName('cat_tree'), 'idtree');
 
         // set the join partners so that joins can be used via link() method
         $this->_setJoinPartner('cApiCategoryCollection');
@@ -74,8 +73,8 @@ class cApiCategoryTreeCollection extends ItemCollection
             $sql,
             [
                 'cat_tree' => $this->table,
-                'cat' => cRegistry::getDbTableName('cat'),
-                'cat_lang' => cRegistry::getDbTableName('cat_lang'),
+                'cat' => cDb::getTableName('cat'),
+                'cat_lang' => cDb::getTableName('cat_lang'),
                 'idlang' => (int)$lang,
                 'idclient' => (int)$client,
             ]
@@ -115,7 +114,7 @@ class cApiCategoryTree extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('cat_tree'), 'idtree');
+        parent::__construct(cDb::getTableName('cat_tree'), 'idtree');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

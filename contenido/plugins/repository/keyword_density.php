@@ -255,7 +255,7 @@ function calcDensity($singleWordCounter, $string, $quantifier = 1)
     }
 
     $tmp = explode(' ', $string);
-    $tmp_size = sizeof($tmp);
+    $tmp_size = count($tmp);
 
     for ($i = 0; $i < $tmp_size; $i++) {
         if (cString::getStringLength($tmp[$i]) < $minLen) {
@@ -327,7 +327,7 @@ function stripCount($singleWordCounter, $maxKeywords = 15)
         }
     }
 
-    if (sizeof($tmp) <= $maxKeywords) {
+    if (count($tmp) <= $maxKeywords) {
         foreach ($tmp as $key => $value) {
             $result[] = $key;
         }

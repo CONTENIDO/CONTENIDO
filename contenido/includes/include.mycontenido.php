@@ -26,7 +26,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $page = new cGuiPage('mycontenido', '', '0');
 
-$vuser = new cApiUser($auth->auth['uid']);
+$vuser = new cApiUser($auth->getUserId());
 
 $saveLoginTime = $saveLoginTime ?? false;
 
@@ -102,7 +102,7 @@ foreach ($faultyFolders as $folder) {
     }
 }
 
-$userid = $auth->auth['uid'];
+$userid = $auth->getUserId();
 
 $page->set('s', 'WELCOME', '<b>' . i18n('Welcome') . ' </b>' . ($vuser->getRealName() ? $vuser->getRealName() : $vuser->getUserName()) . '.');
 $page->set('s', 'LASTLOGIN', i18n('Last login') . ': ' . $lastlogin);
@@ -171,7 +171,7 @@ if (count($todoitems) > 0) {
     $in = 1;
 }
 $todoitems = new TODOCollection();
-$recipient = $auth->auth['uid'];
+$recipient = $auth->getUserId();
 $todoitems->select("recipient = '$recipient' AND idclient = " . (int)$client . " AND $in");
 
 $openTasks = 0;

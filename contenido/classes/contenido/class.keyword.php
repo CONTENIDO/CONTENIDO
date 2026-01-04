@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiKeyword createNewItem
- * @method cApiKeyword|bool next
+ * @extends ItemCollection<cApiKeyword>
  */
 class cApiKeywordCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiKeywordCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('keywords'), 'idkeyword');
+        parent::__construct(cDb::getTableName('keywords'), 'idkeyword');
         $this->_setItemClass('cApiKeyword');
     }
 
@@ -79,7 +78,7 @@ class cApiKeyword extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('keywords'), 'idkeyword');
+        parent::__construct(cDb::getTableName('keywords'), 'idkeyword');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

@@ -83,9 +83,9 @@ class FrontendNavigation
         $sql = "SELECT
                     A.idcat
                 FROM
-                    " . $this->_cfg["tab"]["cat_tree"] . " AS A,
-                    " . $this->_cfg["tab"]["cat"] . " AS B,
-                    " . $this->_cfg["tab"]["cat_lang"] . " AS C
+                    " . cDb::getTableName('cat_tree') . " AS A,
+                    " . cDb::getTableName('cat') . " AS B,
+                    " . cDb::getTableName('cat_lang') . " AS C
                 WHERE
                     A.idcat    = B.idcat AND
                     B.idcat    = C.idcat AND
@@ -105,7 +105,7 @@ class FrontendNavigation
 
         $navigation = [];
         while ($this->_db->nextRecord()) {
-            $navigation[] = $this->_db->f("idcat");
+            $navigation[] = $this->_db->f('idcat');
         }
 
         return $navigation;
@@ -126,8 +126,8 @@ class FrontendNavigation
         $sql = "SELECT
                     B.idcat
                 FROM
-                    " . $this->_cfg["tab"]["cat"] . " AS B,
-                    " . $this->_cfg["tab"]["cat_lang"] . " AS C
+                    " . cDb::getTableName('cat') . " AS B,
+                    " . cDb::getTableName('cat_lang') . " AS C
                 WHERE
                     B.idcat    = C.idcat AND
                     B.idclient = " . $this->_client . " AND
@@ -161,8 +161,8 @@ class FrontendNavigation
         $sql = "SELECT
                     B.idcat
                 FROM
-                    " . $this->_cfg["tab"]["cat"] . " AS B,
-                    " . $this->_cfg["tab"]["cat_lang"] . " AS C
+                    " . cDb::getTableName('cat') . " AS B,
+                    " . cDb::getTableName('cat_lang') . " AS C
                 WHERE
                     B.idcat    = C.idcat AND
                     B.idclient = " . $this->_client . " AND
@@ -179,7 +179,7 @@ class FrontendNavigation
         $this->_db->query($sql);
 
         if ($this->_db->nextRecord()) {
-            return cSecurity::toInteger($this->_db->f("idcat"));
+            return cSecurity::toInteger($this->_db->f('idcat'));
         } else {
             return -1;
         }
@@ -200,8 +200,8 @@ class FrontendNavigation
         $sql = "SELECT
                     B.idcat
                 FROM
-                    " . $this->_cfg["tab"]["cat"] . " AS B,
-                    " . $this->_cfg["tab"]["cat_lang"] . " AS C
+                    " . cDb::getTableName('cat') . " AS B,
+                    " . cDb::getTableName('cat_lang') . " AS C
                 WHERE
                     B.idcat    = C.idcat AND
                     B.idclient = " . $this->_client . " AND
@@ -235,8 +235,8 @@ class FrontendNavigation
         $sql = "SELECT
                     B.name
                 FROM
-                    " . $this->_cfg["tab"]["cat"] . " AS A,
-                    " . $this->_cfg["tab"]["cat_lang"] . " AS B
+                    " . cDb::getTableName('cat') . " AS A,
+                    " . cDb::getTableName('cat_lang') . " AS B
                 WHERE
                     A.idcat    = B.idcat AND
                     A.idcat    = $cat_id AND
@@ -251,7 +251,7 @@ class FrontendNavigation
         $this->_db->query($sql);
 
         if ($this->_db->nextRecord()) {
-            return $this->_db->f("name");
+            return $this->_db->f('name');
         } else {
             return '';
         }
@@ -272,8 +272,8 @@ class FrontendNavigation
         $sql = "SELECT
                     B.urlname
                 FROM
-                    " . $this->_cfg["tab"]["cat"] . " AS A,
-                    " . $this->_cfg["tab"]["cat_lang"] . " AS B
+                    " . cDb::getTableName('cat') . " AS A,
+                    " . cDb::getTableName('cat_lang') . " AS B
                 WHERE
                     A.idcat    = B.idcat AND
                     A.idcat    = $cat_id AND
@@ -288,7 +288,7 @@ class FrontendNavigation
         $this->_db->query($sql);
 
         if ($this->_db->nextRecord()) {
-            return $this->_db->f("urlname");
+            return $this->_db->f('urlname');
         } else {
             return '';
         }
@@ -309,8 +309,8 @@ class FrontendNavigation
         $sql = "SELECT
                     B.visible
                 FROM
-                    " . $this->_cfg["tab"]["cat"] . " AS A,
-                    " . $this->_cfg["tab"]["cat_lang"] . " AS B
+                    " . cDb::getTableName('cat') . " AS A,
+                    " . cDb::getTableName('cat_lang') . " AS B
                 WHERE
                     A.idcat    = B.idcat AND
                     A.idcat    = $cat_id AND
@@ -325,7 +325,7 @@ class FrontendNavigation
         $this->_db->query($sql);
         $this->_db->nextRecord();
 
-        return $this->_db->f("visible") == 1;
+        return $this->_db->f('visible') == 1;
     }
 
     /**
@@ -343,8 +343,8 @@ class FrontendNavigation
         $sql = "SELECT
                     B.public
                 FROM
-                    " . $this->_cfg["tab"]["cat"] . " AS A,
-                    " . $this->_cfg["tab"]["cat_lang"] . " AS B
+                    " . cDb::getTableName('cat') . " AS A,
+                    " . cDb::getTableName('cat_lang') . " AS B
                 WHERE
                     A.idcat    = B.idcat AND
                     A.idcat    = $cat_id AND
@@ -359,7 +359,7 @@ class FrontendNavigation
         $this->_db->query($sql);
         $this->_db->nextRecord();
 
-        return $this->_db->f("public") == 1;
+        return $this->_db->f('public') == 1;
     }
 
     /**
@@ -378,8 +378,8 @@ class FrontendNavigation
         $sql = "SELECT
                 a.parentid
                 FROM
-                    " . $this->_cfg["tab"]["cat"] . " AS a,
-                    " . $this->_cfg["tab"]["cat_lang"] . " AS b
+                    " . cDb::getTableName('cat') . " AS a,
+                    " . cDb::getTableName('cat_lang') . " AS b
                 WHERE
                     a.idclient = " . $this->_client . " AND
                     b.idlang   = " . $this->_lang . " AND
@@ -393,7 +393,7 @@ class FrontendNavigation
             cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
-        $pre = $this->_db->f("parentid");
+        $pre = $this->_db->f('parentid');
 
         return $parentid == $pre;
     }
@@ -413,8 +413,8 @@ class FrontendNavigation
         $sql = "SELECT
                 a.parentid
                 FROM
-                    " . $this->_cfg["tab"]["cat"] . " AS a,
-                    " . $this->_cfg["tab"]["cat_lang"] . " AS b
+                    " . cDb::getTableName('cat') . " AS a,
+                    " . cDb::getTableName('cat_lang') . " AS b
                 WHERE
                     a.idclient = " . $this->_client . " AND
                     b.idlang   = " . $this->_lang . " AND
@@ -428,7 +428,7 @@ class FrontendNavigation
         }
 
         if ($this->_db->nextRecord()) {
-            return cSecurity::toInteger($this->_db->f("parentid"));
+            return cSecurity::toInteger($this->_db->f('parentid'));
         } else {
             return -1;
         }
@@ -449,8 +449,8 @@ class FrontendNavigation
         $sql = "SELECT
                 a.parentid
                 FROM
-                    " . $this->_cfg["tab"]["cat"] . " AS a,
-                    " . $this->_cfg["tab"]["cat_lang"] . " AS b
+                    " . cDb::getTableName('cat') . " AS a,
+                    " . cDb::getTableName('cat_lang') . " AS b
                 WHERE
                     a.idclient = " . $this->_client . " AND
                     b.idlang   = " . $this->_lang . " AND
@@ -481,7 +481,7 @@ class FrontendNavigation
         $sql = "SELECT
                     level
                 FROM
-                    " . $this->_cfg["tab"]["cat_tree"] . "
+                    " . cDb::getTableName('cat_tree') . "
                 WHERE
                     idcat = " . $catid . " ";
 
@@ -492,7 +492,7 @@ class FrontendNavigation
         }
 
         if ($this->_db->nextRecord()) {
-            return cSecurity::toInteger($this->_db->f("level"));
+            return cSecurity::toInteger($this->_db->f('level'));
         } else {
             return -1;
         }
@@ -665,9 +665,9 @@ class FrontendNavigation
         SELECT
             c.idcat
         FROM
-            ' . $this->_cfg['tab']['art_lang'] . ' AS a,
-            ' . $this->_cfg['tab']['art'] . ' AS b,
-            ' . $this->_cfg['tab']['cat_art'] . ' AS c
+            ' . cDb::getTableName('art_lang') . ' AS a,
+            ' . cDb::getTableName('art') . ' AS b,
+            ' . cDb::getTableName('cat_art') . ' AS c
         WHERE
             a.idart = ' . $idart . ' AND
             b.idclient = ' . $this->_client . ' AND
@@ -767,8 +767,8 @@ class FrontendNavigation
         $sql = "SELECT
                     B.idcat, A.level
                 FROM
-                    " . $this->_cfg["tab"]["cat_tree"] . " AS A,
-                    " . $this->_cfg["tab"]["cat"] . " AS B
+                    " . cDb::getTableName('cat_tree') . " AS A,
+                    " . cDb::getTableName('cat') . " AS B
                 WHERE
                     A.idcat  = B.idcat AND
                     idclient = " . $this->_client . "
@@ -786,18 +786,18 @@ class FrontendNavigation
         $deeperCats = [];
 
         while ($this->_db->nextRecord()) {
-            if ($this->_db->f("idcat") == $idcat_start) {
-                $curLevel = $this->_db->f("level");
+            if ($this->_db->f('idcat') == $idcat_start) {
+                $curLevel = $this->_db->f('level');
                 $i = true;
             } else {
-                if ($curLevel == $this->_db->f("level")) {
+                if ($curLevel == $this->_db->f('level')) {
                     # ending part of tree
                     $i = false;
                 }
             }
 
             if ($i) {
-                $deeperCats[] = $this->_db->f("idcat");
+                $deeperCats[] = $this->_db->f('idcat');
             }
         }
         return $deeperCats;
