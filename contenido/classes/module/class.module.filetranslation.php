@@ -130,7 +130,7 @@ class cModuleFileTranslation extends cModuleHandler
         $ids = $oLangColl->getAllIds();
         foreach ($ids as $idlang) {
             $sql = 'SELECT * FROM `%s` WHERE idlang = %d AND idmod = %d';
-            $sql = $db->prepare($sql, $this->_cfg['tab']['mod_translations'], $idlang, $this->_idmod);
+            $sql = $db->prepare($sql, cDb::getTableName('mod_translations'), $idlang, $this->_idmod);
             $db->query($sql);
 
             self::$fileName = $this->_composeTranslationFileName($this->_client, $idlang);

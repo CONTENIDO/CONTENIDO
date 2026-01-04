@@ -252,14 +252,12 @@
     var HeaderTimer = {
         /**
          * Mouseout timeout handler
-         * @property out
-         * @type  {Number}
+         * @property {Number} out
          */
         out: null,
         /**
          * Mouseover timeout handler
-         * @property over
-         * @type  {Number}
+         * @property {Number} over
          */
         over: null,
         /**
@@ -272,7 +270,7 @@
             }
         },
         /**
-         * Clear a existing mouseover handler
+         * Clear an existing mouseover handler
          * @method resetOver
          */
         resetOver: function() {
@@ -285,7 +283,7 @@
     Con.HeaderTimer = HeaderTimer;
 
     /**
-     * Base header menu class. Clickmenu or Delaymenu should extend this (se below)!
+     * Base header menu class. Click menu or delay menu should extend this (se below)!
      *
      * @class    HeaderMenu
      * @static
@@ -300,7 +298,7 @@
         /**
          * Menu initialization
          * @method initialize
-         * @param  {Object}  options  Option object
+         * @param {Object} options Option object
          * @abstract
          */
         initialize: function(options) {
@@ -319,7 +317,7 @@
         /**
          * Getter for active main menu
          * @method getActiveMenu
-         * @return  {String}
+         * @return {String}
          */
         getActiveMenu: function() {
             return this._currentActiveMenuId;
@@ -328,7 +326,7 @@
         /**
          * Setter for active main menu
          * @method setActiveMenu
-         * @param  {String}  menuId
+         * @param {String} menuId
          */
         setActiveMenu: function(menuId) {
             this._currentActiveMenuId = menuId;
@@ -337,7 +335,7 @@
         /**
          * Getter for active sub menu
          * @method getActiveSubMenu
-         * @return  {String}
+         * @return {String}
          */
         getActiveSubMenu: function() {
             return this._currentActiveSubmenusId;
@@ -346,7 +344,7 @@
         /**
          * Setter for active sub menu
          * @method setActiveSubMenu
-         * @param  {String}  subMenuId
+         * @param {String} subMenuId
          */
         setActiveSubMenu: function(subMenuId) {
             this._currentActiveSubmenusId = subMenuId;
@@ -355,8 +353,8 @@
         /**
          * Returns the superior main menu id of passed sub menu id
          * @method getMenuIdBySubMenuId
-         * @param    {String}  subMenuId
-         * @return  {String}
+         * @param {String} subMenuId
+         * @return {String}
          */
         getMenuIdBySubMenuId: function(subMenuId) {
             return subMenuId.replace("sub_", "main_");
@@ -365,8 +363,8 @@
         /**
          * Returns the inferior sub menu id of passed main menu id
          * @method getSubMenuIdByMenuId
-         * @param    {String}  menuId
-         * @return  {String}
+         * @param {String} menuId
+         * @return {String}
          */
         getSubMenuIdByMenuId: function(menuId) {
             return menuId.replace("main_", "sub_");
@@ -375,7 +373,7 @@
         /**
          * Activates a menue.
          * @method activate
-         * @param  {Object}  obj  Main menu item object
+         * @param {Object} obj  Main menu item object
          * @abstract
          */
         activate: function(obj) {
@@ -385,7 +383,7 @@
         /**
          * Deactivates a menu.
          * @method deactivate
-         * @param  {Object}  obj  Main menu item object
+         * @param {Object} obj  Main menu item object
          * @abstract
          */
         deactivate: function(obj) {
@@ -395,7 +393,7 @@
         /**
          * Marks menu item as active menu when a anchor of one of its subitems is clicked.
          * @method markActive
-         * @param  {Object}  obj  Anchor item object
+         * @param {Object} obj  Anchor item object
          */
         markActive: function(obj) {
             // reset color for all links
@@ -433,7 +431,7 @@
 
         /**
          * @method initialize
-         * @param  {Object}  [options={}]
+         * @param {Object} [options={}]
          */
         initialize: function(options) {
             if (typeof options === "undefined") {
@@ -460,7 +458,7 @@
         /**
          * Activates a menue.
          * @method activate
-         * @param  {Object}  obj  Main menu item object
+         * @param {Object} obj Main menu item object
          */
         activate: function(obj) {
             this._currentActiveMenuId = $(obj).attr("id");
@@ -471,7 +469,7 @@
         /**
          * Empty function.
          * @method deactivate
-         * @param  {Object}  obj  Main menu item object
+         * @param {Object} obj Main menu item object
          */
         deactivate: function(obj) {
             // noop
@@ -495,7 +493,7 @@
 
         /**
          * @method initialize
-         * @param  {Object}  [options={}]
+         * @param {Object} [options={}]
          */
         initialize: function(options) {
             this._mouseOverDelay = null;
@@ -541,7 +539,7 @@
         /**
          * Activates a menu.
          * @method activate
-         * @param  {Object}  obj  Main menu item object
+         * @param {Object} obj Main menu item object
          */
         activate: function(obj) {
             HeaderTimer.resetOut();
@@ -556,7 +554,7 @@
         /**
          * Deactivates a menu by hiding its submenu using a defined delay time.
          * @method deactivate
-         * @param  {Object}  obj  Main menu item object
+         * @param {Object} obj Main menu item object
          */
         deactivate: function(obj) {
             HeaderTimer.resetOut();

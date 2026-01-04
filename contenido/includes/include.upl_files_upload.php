@@ -63,7 +63,7 @@ if (ini_get('post_max_size') == '') {
 
 $path = $path ?? '';
 
-if ((cFileHandler::writeable($cfgClient[$client]["upl"]["path"] . $path) || cApiDbfs::isDbfs($path)) && $client > 0) {
+if ((cFileHandler::writeable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs($path)) && $client > 0) {
     $page->displayWarning(sprintf(i18n("Please note that you can only upload files up to a size of %s"), humanReadableSize(min($maxUploadSize, $maxPostSize))));
 
     if (cApiDbfs::isDbfs($path)) {
@@ -72,18 +72,18 @@ if ((cFileHandler::writeable($cfgClient[$client]["upl"]["path"] . $path) || cApi
         $mpath = "upload/" . $path;
     }
     $sDisplayPath = generateDisplayFilePath($mpath, 85);
-    $page->set("s", "DISPLAY_PATH", $sDisplayPath);
+    $page->set('s', 'DISPLAY_PATH', $sDisplayPath);
 
     $appendparameters = $_REQUEST['appendparameters'] ?? '';
     if (!in_array($appendparameters, ['imagebrowser', 'filebrowser'])) {
         $appendparameters = '';
     }
-    $page->set("s", "APPENDPARAMETERS", $appendparameters);
+    $page->set('s', 'APPENDPARAMETERS', $appendparameters);
 
-    $page->set("s", "PATH", $path);
-    $page->set("s", "MAX_FILE_SIZE", min($maxUploadSize, $maxPostSize));
+    $page->set('s', 'PATH', $path);
+    $page->set('s', 'MAX_FILE_SIZE', min($maxUploadSize, $maxPostSize));
 } else {
-    $page->displayCriticalError(i18n("Directory not writable") . ' (' . $cfgClient[$client]["upl"]["path"] . $path . ')');
+    $page->displayCriticalError(i18n("Directory not writable") . ' (' . $cfgClient[$client]['upl']['path'] . $path . ')');
 }
 
 $page->reloadLeftBottomFrame(['action' => null, 'path' => $path]);

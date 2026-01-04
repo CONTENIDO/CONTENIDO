@@ -28,18 +28,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * $param = 'some value';
  * cApiCecHook::execute('Contenido.Content.Somewhere', $param);
  *
- * // example of executing a cec with multiple parameter but without a return
- * // value
+ * // example of executing a cec with multiple parameter but without a return value
  * $param = ['foo' => $bar, 'foo2' => $bar2];
  * $param = cApiCecHook::execute('Contenido.Content.Somewhere', $param);
  *
- * // example of executing a cec without a parameter but a return value (with
- * // predefined default return value)
+ * // example of executing a cec without a parameter but a return value (with predefined default return value)
  * cApiCecHook::setDefaultReturnValue('this is the default title');
  * $title = cApiCecHook::executeAndReturn('Contenido.Content.CreateTitletag');
  *
- * // example of executing a cec with a parameter and a return value
- * // (usually the modified version of passed parameter)
+ * // example of executing a cec with a parameter and a return value (usually the modified version of passed parameter)
  * $baseHref = cRegistry::getFrontendUrl();
  * $newBaseHref = cApiCecHook::executeAndReturn(
  *     'Contenido.Frontend.BaseHrefGeneration', $baseHref
@@ -50,19 +47,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * cApiCecHook::setBreakCondition(false, true);
  * $allow = cApiCecHook::executeWhileBreakCondition(
  *     'Contenido.Frontend.AllowEdit',
- *     $lang, $idcat, $idart, $auth->auth['uid']
+ *     $lang, $idcat, $idart, $auth->getUserId()
  * );
  * if (!$allow) {
  *     die('You're not coming in!');
  * }
  *
- * // another example of executing a cec with a break condition and default
- * // return value
+ * // another example of executing a cec with a break condition and default return value
  * // if break condition = "true", then default return value = "false"
  * cApiCecHook::setBreakCondition(true, false);
  * $allow = cApiCecHook::executeWhileBreakCondition(
  *     'Contenido.Frontend.CategoryAccess',
- *     $lang, $idcat, $auth->auth['uid']
+ *     $lang, $idcat, $auth->getUserId()
  * );
  * if (!$allow) {
  *     die('I said, you're not coming in!');
@@ -148,8 +144,7 @@ class cApiCecHook
         $cecIterator = cApiCecRegistry::getInstance()->getIterator($chainName);
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
-
-            while (($chainEntry = $cecIterator->next()) !== false) {
+            while ($chainEntry = $cecIterator->next()) {
                 // invoke CEC function
                 $chainEntry->setTemporaryArguments($args);
                 $chainEntry->execute();
@@ -187,8 +182,7 @@ class cApiCecHook
         $cecIterator = cApiCecRegistry::getInstance()->getIterator($chainName);
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
-
-            while (($chainEntry = $cecIterator->next()) !== false) {
+            while ($chainEntry = $cecIterator->next()) {
                 // invoke CEC function
                 $chainEntry->setTemporaryArguments($args);
                 $return = $chainEntry->execute();
@@ -235,8 +229,7 @@ class cApiCecHook
         $cecIterator = cApiCecRegistry::getInstance()->getIterator($chainName);
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
-
-            while (($chainEntry = $cecIterator->next()) !== false) {
+            while ($chainEntry = $cecIterator->next()) {
                 // invoke CEC function
                 $chainEntry->setTemporaryArguments($args);
                 $return = $chainEntry->execute();

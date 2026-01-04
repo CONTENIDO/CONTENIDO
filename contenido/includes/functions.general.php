@@ -37,9 +37,7 @@ function consoleLog($value, $method = 'log')
  * f.e. $a_content['CMS_HTML'][1] = content string
  * Same for array $a_description
  *
- * @param int $idartlang
- *         Language specific ID of the article
- *
+ * @param int $idartlang Language specific ID of the article
  * @throws cDbException|cException
  */
 function getAvailableContentTypes($idartlang)
@@ -47,12 +45,14 @@ function getAvailableContentTypes($idartlang)
     global $a_content, $a_description;
 
     $db = cRegistry::getDb();
-    $cfg = cRegistry::getConfig();
 
-    $sql = 'SELECT * FROM `%s` AS a, `%s` AS b, `%s` AS c
-            WHERE a.idtype = c.idtype AND a.idartlang = b.idartlang AND b.idartlang = %d';
     $db->query(
-        $sql, $cfg['tab']['content'], $cfg['tab']['art_lang'], $cfg['tab']['type'], $idartlang
+        'SELECT * FROM `%s` AS a, `%s` AS b, `%s` AS c
+            WHERE a.idtype = c.idtype AND a.idartlang = b.idartlang AND b.idartlang = %d',
+        cDb::getTableName('content'),
+        cDb::getTableName('art_lang'),
+        cDb::getTableName('type'),
+        $idartlang
     );
 
     while ($db->nextRecord()) {
@@ -64,23 +64,16 @@ function getAvailableContentTypes($idartlang)
 /**
  * Checks if an article is assigned to multiple categories
  *
- * @param int $idart
- *         Article-Id
- *
- * @return bool
- *         Article assigned to multiple categories
- *
+ * @param int $idart Article-Id
+ * @return bool Article assigned to multiple categories
  * @throws cDbException
  */
-function isArtInMultipleUse($idart)
+function isArtInMultipleUse($idart): bool
 {
     $db = cRegistry::getDb();
-    $cfg = cRegistry::getConfig();
+    $db->query('SELECT `idart` FROM `%s` WHERE idart = %d', cDb::getTableName('cat_art'), $idart);
 
-    $sql = 'SELECT `idart` FROM `%s` WHERE idart = %d';
-    $db->query($sql, $cfg['tab']['cat_art'], $idart);
-
-    return ($db->affectedRows() > 1);
+    return $db->affectedRows() > 1;
 }
 
 /**
@@ -154,8 +147,7 @@ function getIdForArea($area)
  */
 function getParentAreaId($area): int
 {
-    $oAreaColl = new cApiAreaCollection();
-    return (int) $oAreaColl->getParentAreaId($area);
+    return cSecurity::toInteger((new cApiAreaCollection())->getParentAreaId($area));
 }
 
 /**
@@ -163,9 +155,9 @@ function getParentAreaId($area): int
  *
  * @param int $menuitem Which menuitem to mark
  * @param bool $return Return or echo script
- * @return string|void
+ * @return ?string
  */
-function markSubMenuItem($menuitem, $return = false)
+function markSubMenuItem($menuitem, $return = false): ?string
 {
     global $changeview;
 
@@ -217,24 +209,24 @@ JS;
         return $str;
     } else {
         echo $str;
+        return null;
     }
 }
 
 /**
- * Creates a inline script wrapped with a self executing function
+ * Creates an inline script wrapped with a self executing function
  *
  * @param string $content Content to wrap
  */
 function conMakeInlineScript($content): string
 {
-    $script = <<<JS
+    return <<<JS
 <script type="text/javascript">
 (function(Con, $) {
 {$content}
 })(Con, Con.$);
 </script>
 JS;
-    return $script;
 }
 
 /**
@@ -277,8 +269,7 @@ function backToMainArea($send)
  */
 function getLanguagesByClient($client): array
 {
-    $oClientLangColl = new cApiClientLanguageCollection();
-    return $oClientLangColl->getLanguagesByClient($client);
+    return (new cApiClientLanguageCollection())->getLanguagesByClient(cSecurity::toInteger($client));
 }
 
 /**
@@ -290,8 +281,7 @@ function getLanguagesByClient($client): array
  */
 function getLanguageNamesByClient($client): array
 {
-    $oClientLangColl = new cApiClientLanguageCollection();
-    return $oClientLangColl->getLanguageNamesByClient($client);
+    return (new cApiClientLanguageCollection())->getLanguageNamesByClient(cSecurity::toInteger($client));
 }
 
 /**
@@ -326,7 +316,6 @@ function set_magic_quotes_gpc(&$code)
 function getAllClientsAndLanguages(): array
 {
     $db = cRegistry::getDb();
-    $cfg = cRegistry::getConfig();
 
     $sql = 'SELECT
                 l.idlang AS idlang,
@@ -337,7 +326,12 @@ function getAllClientsAndLanguages(): array
                  `%s` AS l, `%s` AS cl, `%s` AS c
              WHERE
                 l.idlang = cl.idlang AND cl.idclient = c.idclient';
-    $db->query($sql, $cfg['tab']['lang'], $cfg['tab']['clients_lang'], $cfg['tab']['clients']);
+    $db->query(
+        $sql,
+        cDb::getTableName('lang'),
+        cDb::getTableName('clients_lang'),
+        cDb::getTableName('clients')
+    );
 
     $aRs = [];
     while ($db->nextRecord()) {
@@ -404,8 +398,7 @@ function getGroupOrUserName($uid)
  */
 function isValidMail($email, $strict = false): bool
 {
-    $validator = cValidatorFactory::getInstance('email');
-    return $validator->isValid($email);
+    return cValidatorFactory::getInstance('email')->isValid($email);
 }
 
 /**
@@ -418,8 +411,7 @@ function isValidMail($email, $strict = false): bool
  */
 function isValidDate($date): bool
 {
-    $validator = cValidatorFactory::getInstance('date');
-    return $validator->isValid($date);
+    return cValidatorFactory::getInstance('date')->isValid($date);
 }
 
 /**
@@ -439,7 +431,7 @@ function htmldecode($string): string
  * Loads the client information from the database and stores it in config.client.php.
  * Re-initializes the $cfgClient array and fills it wih updated information if provided.
  *
- * @param int $idClient Cclient id which will be updated
+ * @param int $idClient Client id which will be updated
  * @param string $htmlPath New HTML path. Starting with "https://"
  * @param string $frontendPath Path the to the frontend
  * @return array Client configuration
@@ -447,6 +439,7 @@ function htmldecode($string): string
  */
 function updateClientCache($idClient = 0, $htmlPath = '', $frontendPath = ''): array
 {
+    // Use global here, the variables will be updated!
     global $cfgClient, $errsite_idcat, $errsite_idart;
 
     $cfg = cRegistry::getConfig();
@@ -482,7 +475,7 @@ function updateClientCache($idClient = 0, $htmlPath = '', $frontendPath = ''): a
     // get clients from database
     $db = cRegistry::getDb();
     $sql = 'SELECT `idclient`, `name`, `errsite_cat`, `errsite_art` FROM `%s`';
-    $db->query($sql, $cfg['tab']['clients']);
+    $db->query($sql, cDb::getTableName('clients'));
 
     while ($db->nextRecord()) {
         $iClient = $db->f('idclient');
@@ -635,24 +628,25 @@ function updateClientCache($idClient = 0, $htmlPath = '', $frontendPath = ''): a
  * @param string $value The value of the item
  * @param int $idsystemprop The sysprop id, use optional.
  *         If set it allows to modify type name and value
- * @return void|bool
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function setSystemProperty($type, $name, $value, $idsystemprop = 0)
+function setSystemProperty($type, $name, $value, $idsystemprop = 0): ?bool
 {
     if ($type == '' || $name == '') {
         return false;
     }
 
-    $idsystemprop = (int)$idsystemprop;
+    $idsystemprop = cSecurity::toInteger($idsystemprop);
 
     $systemPropColl = new cApiSystemPropertyCollection();
 
     if ($idsystemprop == 0) {
-        $prop = $systemPropColl->setValueByTypeName($type, $name, $value);
+        $systemPropColl->setValueByTypeName($type, $name, $value);
     } else {
-        $prop = $systemPropColl->setTypeNameValueById($type, $name, $value, $idsystemprop);
+        $systemPropColl->setTypeNameValueById($type, $name, $value, $idsystemprop);
     }
+
+    return true;
 }
 
 /**
@@ -665,8 +659,7 @@ function setSystemProperty($type, $name, $value, $idsystemprop = 0)
  */
 function deleteSystemProperty($type, $name)
 {
-    $systemPropColl = new cApiSystemPropertyCollection();
-    $systemPropColl->deleteByTypeName($type, $name);
+    (new cApiSystemPropertyCollection())->deleteByTypeName($type, $name);
 }
 
 /**
@@ -715,8 +708,8 @@ function getSystemProperties($bGetPropId = false): array
  */
 function getSystemProperty($type, $name)
 {
-    $systemPropColl = new cApiSystemPropertyCollection();
-    $prop = $systemPropColl->fetchByTypeName($type, $name);
+    $prop = (new cApiSystemPropertyCollection())->fetchByTypeName($type, $name);
+
     return $prop ? $prop->get('value') : false;
 }
 
@@ -724,7 +717,6 @@ function getSystemProperty($type, $name)
  * Gets system property entries
  *
  * @param string $type The type of the properties
- *
  * @return array Associative array like
  *         - $arr[name] = value
  * @throws cDbException|cException
@@ -985,9 +977,12 @@ function cSetArtSpecDefault(int $idArtSpec): bool
  * @throws cDbException|cException
  */
 function buildArticleSelect(
-    $name, $idCat, $value, string $cssClass = '', string $idAttr = ''
-    ): string
-{
+    $name,
+    $idCat,
+    $value,
+    string $cssClass = '',
+    string $idAttr = ''
+): string {
     static $cache;
 
     $lang = cRegistry::getLanguageId();
@@ -1006,7 +1001,6 @@ function buildArticleSelect(
     } else {
         // Get data from db and cache it
         $data = [];
-        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
         $sql = 'SELECT al.title, al.idart
@@ -1014,7 +1008,14 @@ function buildArticleSelect(
                WHERE ca.idcat = %d AND al.idlang = %d AND al.idart = a.idart AND al.idart = ca.idart
                ORDER BY al.title';
 
-        $db->query($sql, $cfg['tab']['art'], $cfg['tab']['art_lang'], $cfg['tab']['cat_art'], $idCat, $lang);
+        $db->query(
+            $sql,
+            cDb::getTableName('art'),
+            cDb::getTableName('art_lang'),
+            cDb::getTableName('cat_art'),
+            $idCat,
+            $lang
+        );
         while ($db->nextRecord()) {
             $data[] = [
                 'idart' => $db->f('idart'),
@@ -1051,7 +1052,11 @@ function buildArticleSelect(
  * @return string HTML select generated
  */
 function buildCategorySelect(
-    $name, $value, $level = 0, string $cssClass = '', string $idAttr = ''
+    $name,
+    $value,
+    $level = 0,
+    string $cssClass = '',
+    string $idAttr = ''
 ): string
 {
     static $cache;
@@ -1076,7 +1081,6 @@ function buildCategorySelect(
         $data = [];
 
         $db = cRegistry::getDb();
-        $cfg = cRegistry::getConfig();
 
         $addString = ($level > 0) ? "AND c.level < " . (int) $level : '';
 
@@ -1085,9 +1089,9 @@ function buildCategorySelect(
            AND c.idcat = a.idcat " . $addString . " ORDER BY c.idtree";
 
         $db->query($sql, [
-            'tab_cat' => $cfg['tab']['cat'],
-            'tab_cat_lang' => $cfg['tab']['cat_lang'],
-            'tab_cat_tree' => $cfg['tab']['cat_tree'],
+            'tab_cat' => cDb::getTableName('cat'),
+            'tab_cat_lang' => cDb::getTableName('cat_lang'),
+            'tab_cat_tree' => cDb::getTableName('cat_tree'),
             'client' => $client,
             'lang' => $lang,
         ]);
@@ -1104,8 +1108,8 @@ function buildCategorySelect(
                 AND a.idart = b.idart AND a.idlang = :lang";
 
             $db->query($sql, [
-                'tab_art_lang' => $cfg['tab']['art_lang'],
-                'tab_cat_art' => $cfg['tab']['cat_art'],
+                'tab_art_lang' => cDb::getTableName('art_lang'),
+                'tab_cat_art' => cDb::getTableName('cat_art'),
                 'lang' => $lang,
             ]);
             while ($db->nextRecord()) {
@@ -1434,7 +1438,7 @@ function getJsHelpContext($area)
 {
     $cfg = cRegistry::getConfig();
 
-    if ($cfg['help'] == true) {
+    if ($cfg['help']) {
         $hc = "parent.parent.parent.frames[0].document.getElementById('help').setAttribute('data', '$area');";
     } else {
         $hc = '';
@@ -1570,10 +1574,10 @@ function cError($message)
 
     if (version_compare(PHP_VERSION, '8.4', '>=')) {
         // @phpVersion >= PHP 8.4
-        trigger_error($message);
+        trigger_error($msg);
     } else {
         // @phpVersion < PHP 8.4
-        trigger_error($message, E_USER_ERROR);
+        trigger_error($msg, E_USER_ERROR);
     }
 }
 
@@ -1659,7 +1663,7 @@ function startTiming(string $function, array $parameters = []): string
 
     $cfg = cRegistry::getConfig();
 
-    if ($cfg['debug']['functiontiming'] == false) {
+    if (!$cfg['debug']['functiontiming']) {
         return '';
     }
 
@@ -1691,7 +1695,7 @@ function endAndLogTiming($uuid)
 
     $cfg = cRegistry::getConfig();
 
-    if ($cfg['debug']['functiontiming'] == false) {
+    if (!$cfg['debug']['functiontiming']) {
         return;
     }
 
@@ -1733,7 +1737,7 @@ function endAndLogTiming($uuid)
  * Based on this information it will send an HTTP header for right encoding.
  *
  * @param cDb $db NO MORE NEEDED
- * @param array $cfg Global cfg-array
+ * @param array $cfg The CONTENIDO configuration array
  * @param int $lang Global language id
  * @param string $contentType Mime type
  * @throws cDbException|cException
@@ -1757,7 +1761,7 @@ function sendEncodingHeader($db, array $cfg, $lang, $contentType = 'text/html')
 
         $oLangColl = new cApiLanguageCollection();
         $oLangColl->select();
-        while (($oItem = $oLangColl->next()) !== false) {
+        while ($oItem = $oLangColl->next()) {
             $aLanguageEncodings[$oItem->get('idlang')] = $oItem->get('encoding');
         }
 
@@ -1833,7 +1837,6 @@ function isFunctionDisabled(string $functionName): bool
  * @param bool $showArticle Show also current article or categories only (optional)
  * @param bool $return [optional] Return or print template
  * @return string|void Complete template string or nothing
- *
  * @throws cDbException|cException|cInvalidArgumentException
  */
 function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = false)
@@ -1865,7 +1868,10 @@ function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = fa
             }
         }
 
-        $linkUrl = $sess->url(cRegistry::getBackendUrl() . "main.php?area=con&frame=4&idcat=$idcat_bread&idtpl=$idcat_tpl&syncoptions=$syncoptions&contenido=1");
+        $linkUrl = $sess->url(
+            cRegistry::getBackendUrl()
+            . "main.php?area=con&frame=4&idcat=$idcat_bread&idtpl=$idcat_tpl&syncoptions=$syncoptions&contenido=1"
+        );
 
         $disabled = false;
         if (!$categories[$i]->isLoaded() && $syncoptions > 0) {
@@ -1902,13 +1908,13 @@ function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = fa
  * Build debug information about the rendering status of backend pages.
  * This function id used by main.php and ajaxmain.php at the moment.
  *
- * @param array $cfg The global configuration array
+ * @param array $cfg The CONTENIDO configuration array
  * @param int $oldMemoryUsage The memory usage after the backend initialization
  * @param string $includedFile The main included file in the backend
  * @return string Compiled information about the rendering status
  * @since CONTENIDO 4.10.2
  */
-function cBuildBackendRenderDebugInfo(array &$cfg, int $oldMemoryUsage, string $includedFile)
+function cBuildBackendRenderDebugInfo(array &$cfg, int $oldMemoryUsage, string $includedFile): string
 {
     $cfg['debug']['backend_exectime']['end'] = getmicrotime();
     $debugInfo = [
@@ -1920,6 +1926,7 @@ function cBuildBackendRenderDebugInfo(array &$cfg, int $oldMemoryUsage, string $
         'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
         '*****' . $includedFile . '*****'
     ];
+
     return implode("\n", $debugInfo);
 }
 

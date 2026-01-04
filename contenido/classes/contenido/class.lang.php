@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiLanguage createNewItem
- * @method cApiLanguage|bool next
+ * @extends ItemCollection<cApiLanguage>
  */
 class cApiLanguageCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiLanguageCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('lang'), 'idlang');
+        parent::__construct(cDb::getTableName('lang'), 'idlang');
         $this->_setItemClass('cApiLanguage');
     }
 
@@ -55,7 +54,7 @@ class cApiLanguageCollection extends ItemCollection
         $item->set('active', $active, false);
         $item->set('encoding', $encoding, false);
         $item->set('direction', $direction, false);
-        $item->set('author', $auth->auth['uid'], false);
+        $item->set('author', $auth->getUserId(), false);
         $item->set('created', date('Y-m-d H:i:s'), false);
         $item->set('lastmodified', '0000-00-00 00:00:00', false);
         $item->store();
@@ -80,7 +79,7 @@ class cApiLanguageCollection extends ItemCollection
         $client = cRegistry::getClientId();
 
         $clientsLanguageColl = new cApiClientLanguageCollection();
-        $clientsLanguageColl->select('idlang = ' . $item->get("idlang"));
+        $clientsLanguageColl->select('idlang = ' . $item->get('idlang'));
         if (($clientsLang = $clientsLanguageColl->next()) !== false) {
             if ($client != $clientsLang->get('idclient')) {
                 $item = $this->nextAccessible();
@@ -146,7 +145,7 @@ class cApiLanguage extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('lang'), 'idlang');
+        parent::__construct(cDb::getTableName('lang'), 'idlang');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
@@ -199,7 +198,7 @@ class cApiLanguage extends Item
             $propColl->select("itemtype='$itemtype' AND itemid='$itemid'", '', 'type, value ASC');
 
             if (0 < $propColl->count()) {
-                while (false !== $item = $propColl->next()) {
+                while ($item = $propColl->next()) {
                     $type = $item->get('type');
                     if (!isset(self::$_propertiesCache[$clientId][$type])) {
                         self::$_propertiesCache[$clientId][$type] = [];

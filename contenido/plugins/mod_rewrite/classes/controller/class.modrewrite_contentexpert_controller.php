@@ -25,16 +25,14 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
 {
 
     /**
-     * Path to restrictive htaccess file
-     * @var string
+     * @var string Path to restrictive htaccess file
      */
-    protected $_htaccessRestrictive = '';
+    protected $htaccessRestrictive = '';
 
     /**
-     * Path to simple htaccess file
-     * @var string
+     * @var string Path to simple htaccess file
      */
-    protected $_htaccessSimple = '';
+    protected $htaccessSimple = '';
 
     /**
      * Initializer method, sets the paths to htaccess files
@@ -44,8 +42,8 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
         $this->_oView->content_before = '';
 
         $pluginPath = $this->_cfg['path']['contenido'] . $this->_cfg['path']['plugins'] . 'mod_rewrite/';
-        $this->_htaccessRestrictive = $pluginPath . 'files/htaccess_restrictive.txt';
-        $this->_htaccessSimple = $pluginPath . 'files/htaccess_simple.txt';
+        $this->htaccessRestrictive = $pluginPath . 'files/htaccess_restrictive.txt';
+        $this->htaccessSimple = $pluginPath . 'files/htaccess_simple.txt';
     }
 
     /**
@@ -72,36 +70,48 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
         $aInfo = $this->getProperty('htaccessInfo');
 
         if ($aInfo['has_htaccess']) {
-            $this->_oView->content_before = $this->_notifyBox('warning', i18n('.htaccess already exists at CONTENIDO-/or client directory, so it is not copied.', $this->_pluginName));
+            $this->_oView->content_before = $this->_notifyBox(
+                'warning',
+                i18n('.htaccess already exists at CONTENIDO-/or client directory, so it is not copied.', $this->_pluginName)
+            );
             return;
         }
 
-        if ($type == 'restrictive') {
-            $source = $this->_htaccessRestrictive;
+        if ($type === 'restrictive') {
+            $source = $this->htaccessRestrictive;
         } else {
-            $source = $this->_htaccessSimple;
+            $source = $this->htaccessSimple;
         }
 
-        if ($copy == 'contenido') {
+        if ($copy === 'contenido') {
             $dest = $aInfo['contenido_full_path'] . '.htaccess';
         } else {
             $dest = $aInfo['client_full_path'] . '.htaccess';
         }
 
         if (!$result = @copy($source, $dest)) {
-            $this->_oView->content_before = $this->_notifyBox('warning', sprintf(i18n('.htaccess could not copy from <strong>%s</strong> to <strong>%s</strong>! Perhaps the target directory has not the required rights to write files at your webserver.', $this->_pluginName), $source, $dest));
+            $this->_oView->content_before = $this->_notifyBox(
+                'warning',
+                sprintf(
+                    i18n('.htaccess could not copy from <strong>%s</strong> to <strong>%s</strong>! Perhaps the target directory has not the required rights to write files at your webserver.', $this->_pluginName),
+                    $source,
+                    $dest
+                )
+            );
             return;
         }
 
-        $msg = sprintf(i18n('.htaccess are successfully copied to %s', $this->_pluginName), str_replace('.htaccess', '', $dest));
+        $msg = sprintf(
+            i18n('.htaccess are successfully copied to %s', $this->_pluginName),
+            str_replace('.htaccess', '', $dest)
+        );
         $this->_oView->content_before = $this->_notifyBox('info', $msg);
     }
 
     /**
      * Download htaccess action
      *
-     * @throws cInvalidArgumentException
-     * @throws cException
+     * @throws cInvalidArgumentException|cException
      */
     public function downloadHtaccessAction()
     {
@@ -112,9 +122,9 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
         }
 
         if ($type == 'restrictive') {
-            $source = $this->_htaccessRestrictive;
+            $source = $this->htaccessRestrictive;
         } else {
-            $source = $this->_htaccessSimple;
+            $source = $this->htaccessSimple;
         }
 
         $this->_oView->content = cFileHandler::read($source);
@@ -128,25 +138,31 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
     /**
      * Reset aliases action
      *
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException|cException
      */
     public function resetAction()
     {
         // recreate all aliases
-        ModRewrite::recreateAliases(false);
-        $this->_oView->content_before = $this->_notifyBox('info', i18n('All aliases have been reset.', $this->_pluginName));
+        ModRewrite::recreateAliases();
+        $this->_oView->content_before = $this->_notifyBox(
+            'info',
+            i18n('All aliases have been reset.', $this->_pluginName)
+        );
     }
 
     /**
      * Reset only empty aliases action
      *
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException|cException
      */
     public function resetEmptyAction()
     {
         // recreate only empty aliases
         ModRewrite::recreateAliases(true);
-        $this->_oView->content_before = $this->_notifyBox('info', i18n('Only empty aliases have been reset.', $this->_pluginName));
+        $this->_oView->content_before = $this->_notifyBox(
+            'info',
+            i18n('Only empty aliases have been reset.', $this->_pluginName)
+        );
     }
 
 }

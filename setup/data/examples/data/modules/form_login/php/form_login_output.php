@@ -18,7 +18,7 @@ $idcat = cRegistry::getCategoryId();
 $lang = cRegistry::getLanguageId();
 $idart = cRegistry::getArticleId();
 
-if ($auth->auth["uid"] == "nobody") {
+if ($auth->getUserId() === cAuth::AUTH_UID_NOBODY) {
     $sTargetIdart = getEffectiveSetting('login', 'idart', '1');
     $sFormAction = 'front_content.php?idart=' . $sTargetIdart;
 
@@ -37,7 +37,7 @@ if ($auth->auth["uid"] == "nobody") {
         echo $e->getMessage();
     }
     $oFeUserCollection = new cApiFrontendUserCollection();
-    $oFeUser = $oFeUserCollection->loadItem($auth->auth["uid"]);
+    $oFeUser = $oFeUserCollection->loadItem($auth->getUserId());
     $sText = str_replace('[uname]', $oFeUser->get('username'), mi18n("TXT_WELCOME_USER"));
     if ($bCatIsPublic === true) {
         $sUrl = 'front_content.php?idcat=' . $idcat . '&idart=' . $idart . '&logout=true';

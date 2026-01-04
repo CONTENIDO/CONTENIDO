@@ -46,7 +46,7 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled)
 
     $td = new cHTMLTableData();
     $td->setClass('text_medium');
-    $textbox = new cHTMLTextbox('url_shortener_shorturl', $shortUrl->get('shorturl'), 24, '', '', $disabled, NULL, '', 'textField');
+    $textbox = new cHTMLTextbox('url_shortener_shorturl', $shortUrl->get('shorturl'), 24, 0, '', $disabled, NULL, '', 'textField');
     $td->setContent($textbox . ' ' . $infoButton->render());
     $tr->appendContent($td);
 
@@ -57,7 +57,7 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled)
  * Function is called after an article has been saved.
  * Checks whether a short URL has been given via $_POST and saves/deletes it.
  *
- * @param       $editedIdArt
+ * @param $editedIdArt
  * @param array $values the values which are saved
  *
  * @throws cDbException|cException|cInvalidArgumentException

@@ -18,7 +18,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // Display critical error if client does not exist
-$client = cRegistry::getCategoryId();
+$client = cRegistry::getClientId();
 if ($client < 1 || !cRegistry::getClient()->isLoaded()) {
     $oPage = new cGuiPage('style_edit_form');
     $oPage->displayCriticalError(i18n('No Client selected'));

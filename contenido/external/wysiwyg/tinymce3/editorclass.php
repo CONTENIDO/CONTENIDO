@@ -432,18 +432,15 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
     /**
      * Get method for scripts
-     *
-     * @return string
      */
     public function getScripts(): string
     {
-        return "\n<!-- tinyMCE -->\n" . '<script type="text/javascript" src="' . $this->_baseURL . 'jscripts/tiny_mce/tiny_mce.js"></script>';
+        return "\n<!-- tinyMCE -->\n"
+            . '<script type="text/javascript" src="' . $this->_baseURL . 'jscripts/tiny_mce/tiny_mce.js"></script>';
     }
 
     /**
      * Get method for editor
-     *
-     * @return string
      */
     public function getEditor(): string
     {

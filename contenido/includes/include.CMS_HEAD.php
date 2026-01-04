@@ -98,7 +98,7 @@ ob_start();
             <input type="hidden" name="type" value="<?php echo $type ?>">
             <input type="hidden" name="typenr" value="<?php echo $typenr ?>">
 
-            <?php if ($type == "CMS_HEAD") : ?>
+            <?php if ($type == 'CMS_HEAD') : ?>
 
                 <p class="cms_edit_row text_medium">
                     &nbsp;<?php echo $typenr ?>

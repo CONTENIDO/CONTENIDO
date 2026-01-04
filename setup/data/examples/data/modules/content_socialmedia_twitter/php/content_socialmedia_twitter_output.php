@@ -41,30 +41,30 @@ $idclient = cRegistry::getClientId();
 $art = new cApiArticleLanguage($idartlang);
 
 if (cRegistry::isBackendEditMode()) {
-    conSaveContentEntry($idartlang, "CMS_HTML", 4004, $_POST['show_replies'] ?? '');
+    conSaveContentEntry($idartlang, 'CMS_HTML', 4004, $_POST['show_replies'] ?? '');
 }
 
 //if post save values in db
 if (cRegistry::isBackendEditMode() && 'POST' === cString::toUpperCase($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'twitter') {
-    conSaveContentEntry($idartlang, "CMS_HTML", 4000, $_POST['twitter_name'] ?? '');
-    conSaveContentEntry($idartlang, "CMS_HTML", 4001, $_POST['width'] ?? '');
-    conSaveContentEntry($idartlang, "CMS_HTML", 4002, $_POST['height'] ?? '');
-    conSaveContentEntry($idartlang, "CMS_HTML", 4003, $_POST['theme'] ?? '');
-    conSaveContentEntry($idartlang, "CMS_HTML", 4004, $_POST['show_replies'] ?? '');
-    conSaveContentEntry($idartlang, "CMS_HTML", 4005, $_POST['link_color'] ?? '');
-    conSaveContentEntry($idartlang, "CMS_HTML", 4006, $_POST['border_color'] ?? '');
-    conSaveContentEntry($idartlang, "CMS_HTML", 4007, $_POST['related'] ?? '');
+    conSaveContentEntry($idartlang, 'CMS_HTML', 4000, $_POST['twitter_name'] ?? '');
+    conSaveContentEntry($idartlang, 'CMS_HTML', 4001, $_POST['width'] ?? '');
+    conSaveContentEntry($idartlang, 'CMS_HTML', 4002, $_POST['height'] ?? '');
+    conSaveContentEntry($idartlang, 'CMS_HTML', 4003, $_POST['theme'] ?? '');
+    conSaveContentEntry($idartlang, 'CMS_HTML', 4004, $_POST['show_replies'] ?? '');
+    conSaveContentEntry($idartlang, 'CMS_HTML', 4005, $_POST['link_color'] ?? '');
+    conSaveContentEntry($idartlang, 'CMS_HTML', 4006, $_POST['border_color'] ?? '');
+    conSaveContentEntry($idartlang, 'CMS_HTML', 4007, $_POST['related'] ?? '');
 }
 
 //get saved content
-$twitterName = strip_tags($art->getContent("CMS_HTML", 4000));
-$twitterWidth = strip_tags($art->getContent("CMS_HTML", 4001));
-$twitterHeight = strip_tags($art->getContent("CMS_HTML", 4002));
-$twitterTheme = strip_tags($art->getContent("CMS_HTML", 4003));
-$twitterShowReplies = strip_tags($art->getContent("CMS_HTML", 4004));
-$twitterLinkColor = strip_tags($art->getContent("CMS_HTML", 4005));
-$twitterBorderColor = strip_tags($art->getContent("CMS_HTML", 4006));
-$twitterRelated = strip_tags($art->getContent("CMS_HTML", 4007));
+$twitterName = strip_tags($art->getContent('CMS_HTML', 4000));
+$twitterWidth = strip_tags($art->getContent('CMS_HTML', 4001));
+$twitterHeight = strip_tags($art->getContent('CMS_HTML', 4002));
+$twitterTheme = strip_tags($art->getContent('CMS_HTML', 4003));
+$twitterShowReplies = strip_tags($art->getContent('CMS_HTML', 4004));
+$twitterLinkColor = strip_tags($art->getContent('CMS_HTML', 4005));
+$twitterBorderColor = strip_tags($art->getContent('CMS_HTML', 4006));
+$twitterRelated = strip_tags($art->getContent('CMS_HTML', 4007));
 
 
 $tpl->assign('twitterName', $twitterName);

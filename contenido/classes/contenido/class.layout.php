@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiLayout createNewItem
- * @method cApiLayout|bool next
+ * @extends ItemCollection<cApiLayout>
  */
 class cApiLayoutCollection extends ItemCollection
 {
@@ -40,7 +39,7 @@ class cApiLayoutCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('lay'), 'idlay');
+        parent::__construct(cDb::getTableName('lay'), 'idlay');
         $this->_setItemClass('cApiLayout');
 
         // set the join partners so that joins can be used via link() method
@@ -82,7 +81,7 @@ class cApiLayoutCollection extends ItemCollection
 
         if (empty($author)) {
             $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = $auth->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -160,7 +159,7 @@ class cApiLayout extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('lay'), 'idlay');
+        parent::__construct(cDb::getTableName('lay'), 'idlay');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

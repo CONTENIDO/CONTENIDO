@@ -180,11 +180,7 @@ class cEffectiveSetting
             $settings = array_merge($settings, self::_get($key));
         }
 
-        if (isset($settings) && is_array($settings)) {
-            return $settings;
-        } else {
-            return [];
-        }
+        return $settings;
     }
 
     /**
@@ -240,7 +236,7 @@ class cEffectiveSetting
     {
         if (!isset(self::$_user)) {
             $auth = cRegistry::getAuth();
-            self::$_user = new cApiUser($auth->auth['uid']);
+            self::$_user = new cApiUser($auth->getUserId());
         }
         return self::$_user;
     }
@@ -331,11 +327,7 @@ class cEffectiveSetting
         $prefix = '';
 
         if ($auth instanceof cAuth) {
-            if (!self::_isAuthenticated()) {
-                $prefix = cAuth::AUTH_UID_NOBODY;
-            } else {
-                $prefix = $auth->auth['uid'];
-            }
+            $prefix = self::_isAuthenticated() ? $auth->getUserId() : cAuth::AUTH_UID_NOBODY;
         }
 
         if (cString::getStringLength($prefix) == 0) {
@@ -355,7 +347,7 @@ class cEffectiveSetting
     }
 
     /**
-     * Saves the passed settings array structure in the type group array.
+     * Saves the provided settings array structure in the type group array.
      *
      * @return void
      */

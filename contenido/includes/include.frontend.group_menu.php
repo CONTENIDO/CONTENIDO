@@ -27,9 +27,9 @@ $requestIdFrontendGroup = $_GET['idfrontendgroup'] ?? '';
 $fegroups = new cApiFrontendGroupCollection();
 $fegroups->select("idclient = '$client'", "", "groupname ASC");
 
-while (($fegroup = $fegroups->next()) !== false) {
-    $groupname = $fegroup->get("groupname");
-    $idfegroup = $fegroup->get("idfrontendgroup");
+while ($fegroup = $fegroups->next()) {
+    $groupname = $fegroup->get('groupname');
+    $idfegroup = $fegroup->get('idfrontendgroup');
 
     $link = new cHTMLLink();
     $link->setClass('show_item')
@@ -59,7 +59,7 @@ while (($fegroup = $fegroups->next()) !== false) {
 $page->addScript('parameterCollector.js');
 
 $message = i18n("Do you really want to delete the following frontend group:<br><b>%s</b>");
-$page->set("s", "DELETE_MESSAGE", $message);
+$page->set('s', 'DELETE_MESSAGE', $message);
 
 $page->set('s', 'FORM', $menu->render(false));
 $page->render();

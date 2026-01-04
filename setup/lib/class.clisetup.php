@@ -197,12 +197,12 @@ class cCLISetup
         // database host
         prnt(i18n('Host', 'setup') . ' [' . $this->_settings['db']['host'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->_settings['db']['host'] = ($line == "") ? $this->_settings['db']['host'] : $line;
+        $this->_settings['db']['host'] = ($line == '') ? $this->_settings['db']['host'] : $line;
 
         // database user
         prnt(i18n('User', 'setup') . ' [' . $this->_settings['db']['user'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->_settings['db']['user'] = ($line == "") ? $this->_settings['db']['user'] : $line;
+        $this->_settings['db']['user'] = ($line == '') ? $this->_settings['db']['user'] : $line;
 
         // database password
         $dbpw = passwordPrompt(i18n('Password', 'setup'), 1);
@@ -211,32 +211,32 @@ class cCLISetup
         // database name
         prnt(i18n('Database name', 'setup') . ' [' . $this->_settings['db']['database'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->_settings['db']['database'] = ($line == "") ? $this->_settings['db']['database'] : $line;
+        $this->_settings['db']['database'] = ($line == '') ? $this->_settings['db']['database'] : $line;
 
         // database charset
         prnt(i18n('Charset', 'setup') . ' [' . $this->_settings['db']['charset'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->_settings['db']['charset'] = ($line == "") ? $this->_settings['db']['charset'] : $line;
+        $this->_settings['db']['charset'] = ($line == '') ? $this->_settings['db']['charset'] : $line;
 
         // database collation
         prnt(i18n('Collation', 'setup') . ' [' . $this->_settings['db']['collation'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->_settings['db']['collation'] = ($line == "") ? $this->_settings['db']['collation'] : $line;
+        $this->_settings['db']['collation'] = ($line == '') ? $this->_settings['db']['collation'] : $line;
 
         // database prefix
         prnt(i18n('Prefix', 'setup') . ' [' . $this->_settings['db']['prefix'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->_settings['db']['prefix'] = ($line == "") ? $this->_settings['db']['prefix'] : $line;
+        $this->_settings['db']['prefix'] = ($line == '') ? $this->_settings['db']['prefix'] : $line;
 
         // database engine
         prnt(i18n('Engine', 'setup') . ' [' . $this->_settings['db']['engine'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->_settings['db']['engine'] = ($line == "") ? $this->_settings['db']['engine'] : $line;
+        $this->_settings['db']['engine'] = ($line == '') ? $this->_settings['db']['engine'] : $line;
 
         // Database option MYSQLI_INIT_COMMAND
         prnt(i18n('Database option MYSQLI_INIT_COMMAND', 'setup') . ' [' . $this->_settings['db']['option_mysqli_init_command'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->_settings['db']['option_mysqli_init_command'] = ($line == "") ? $this->_settings['db']['option_mysqli_init_command'] : $line;
+        $this->_settings['db']['option_mysqli_init_command'] = ($line == '') ? $this->_settings['db']['option_mysqli_init_command'] : $line;
 
         // http root path
         prntln();
@@ -244,7 +244,7 @@ class cCLISetup
         prntln(i18n('e.g. http://localhost/', 'setup'));
         prnt(i18n('Backend web path', 'setup') . ' [' . $this->_settings['paths']['http_root_path'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->_settings['paths']['http_root_path'] = ($line == "") ? $this->_settings['paths']['http_root_path'] : $line;
+        $this->_settings['paths']['http_root_path'] = ($line == '') ? $this->_settings['paths']['http_root_path'] : $line;
 
         // ask for the setup mode
         prntln();
@@ -255,13 +255,13 @@ class cCLISetup
             $displayStandard = i18n('no', 'setup');
         }
         $first = true;
-        while ($this->_settings['setup']['client_mode'] == "" || $first) {
+        while ($this->_settings['setup']['client_mode'] == '' || $first) {
             $first = false;
             prntln(i18n('Do you want to install the example client?', 'setup'));
             prntln(i18n('Please choose "yes" (to install the modules AND the content), "modules" (to install only the modules) or "no"', 'setup'));
             prnt(i18n('Examples? (yes/modules/no)', 'setup') . '[' . $displayStandard . ']: ', 1);
             $line = cString::toLowerCase(trim(fgets(STDIN)));
-            if ($line == "") {
+            if ($line == '') {
                 $line = $displayStandard;
             }
             if ($line == 'yes' || $line == i18n('yes', 'setup')) {
@@ -289,7 +289,7 @@ class cCLISetup
         // admin email
         prnt(i18n('Admin email', 'setup') . ' [' . $this->_settings['admin_user']['email'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->_settings['admin_user']['email'] = ($line == "") ? $this->_settings['admin_user']['email'] : $line;
+        $this->_settings['admin_user']['email'] = ($line == '') ? $this->_settings['admin_user']['email'] : $line;
 
         // print thank you
         prntln(i18n('Thank you.', 'setup'));
@@ -361,7 +361,7 @@ class cCLISetup
             while ($answer != 'Y' && $answer != 'N') {
                 prnt(sprintf(i18n("You chose in the configuration file to delete the database '%s' before installing.\nDO YOU REALLY WANT TO CONTINUE WITH DELETING THIS DATABASE? (Y/N) [N]:", 'setup'), $this->_settings['db']['database']));
                 $answer = trim(fgets(STDIN));
-                if ($answer == "") {
+                if ($answer == '') {
                     $answer = "N";
                 }
             }
@@ -401,7 +401,7 @@ class cCLISetup
         $testResults = $test->getResults();
 
         foreach ($testResults as $testResult) {
-            if ($testResult["severity"] == cSystemtest::C_SEVERITY_NONE) {
+            if ($testResult['severity'] == cSystemtest::C_SEVERITY_NONE) {
                 continue;
             }
 
@@ -412,7 +412,7 @@ class cCLISetup
         if (!$fine) {
             prntln(i18n('error', 'setup'));
             foreach ($testResults as $testResult) {
-                if ($testResult["severity"] == cSystemtest::C_SEVERITY_NONE) {
+                if ($testResult['severity'] == cSystemtest::C_SEVERITY_NONE) {
                     continue;
                 }
 
@@ -433,7 +433,7 @@ class cCLISetup
             while ($answer != 'y' && $answer != 'n' && $answer != i18n('y', 'setup') && $answer != i18n('n', 'setup')) {
                 prnt(i18n('Do you want to continue despite the errors? (y/n) [n]: ', 'setup'));
                 $answer = trim(fgets(STDIN));
-                if ($answer == "") {
+                if ($answer == '') {
                     $answer = "n";
                 }
             }

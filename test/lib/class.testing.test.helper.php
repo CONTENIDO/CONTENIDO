@@ -23,21 +23,17 @@ class cTestingTestHelper
      * Database instance
      * @var  cDb
      */
-    private static $_db = null;
-
+    private static $db = null;
 
     /**
      * Returns the user recordset by username
-     * @param string $username
-     * @return  stdClass|null
      */
-    public static function getUserByUsername($username = '')
+    public static function getUserByUsername(string $username = ''): ?stdClass
     {
-        $username = (!empty($username)) ? $username : 'sysadmin';
+        $username = !empty($username) ? $username : 'sysadmin';
         $db = self::_getDatabase();
-        $cfg = cRegistry::getConfig();
-        $sql = "SELECT * FROM `%s` WHERE username = '%s'";
-        if (!$db->query($sql, $cfg['tab']['user'], $username)) {
+        $sql = "SELECT * FROM `%s` WHERE `username` = '%s'";
+        if (!$db->query($sql, cDb::getTableName('user'), $username)) {
             return null;
         } elseif (!$user = $db->getResultObject()) {
             return null;
@@ -45,17 +41,14 @@ class cTestingTestHelper
         return $user;
     }
 
-
     /**
      * Sets the database instance and returns it back.
-     *
-     * @return  cDb
      */
-    private static function _getDatabase()
+    private static function _getDatabase(): ?cDb
     {
-        if (self::$_db == null) {
-            self::$_db = cRegistry::getDb();
+        if (self::$db == null) {
+            self::$db = cRegistry::getDb();
         }
-        return self::$_db;
+        return self::$db;
     }
 }

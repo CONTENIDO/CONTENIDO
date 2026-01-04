@@ -737,7 +737,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         $this->_cmsTypes = [];
 
         $db = cRegistry::getDb();
-        $db->query('SELECT `idtype`, `type` FROM `%s` ORDER BY `type`', $this->_cfg['tab']['type']);
+        $db->query('SELECT `idtype`, `type` FROM `%s` ORDER BY `type`', cDb::getTableName('type'));
         while ($db->nextRecord()) {
             // we do not want certain content types
             if (in_array($db->f('type'), $this->_ignoreTypes)) {
@@ -765,8 +765,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         $wrapperContent[] = new cHTMLTextbox(
             'teaser_title',
             conHtmlSpecialChars($this->getSetting('teaser_title')),
-            '',
-            '',
+            0,
+            0,
             $this->_getElementId('teaser_title')
         );
         $wrapperContent[] = new cHTMLLabel(i18n('Source category'), $this->_getElementId('teaser_category'));
@@ -775,7 +775,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         );
         $wrapperContent[] = new cHTMLLabel(i18n('Number of articles'), $this->_getElementId('teaser_count'));
         $wrapperContent[] = new cHTMLTextbox(
-            'teaser_count', cSecurity::toInteger($this->getSetting('teaser_count')), '', '', $this->_getElementId('teaser_count')
+            'teaser_count', cSecurity::toInteger($this->getSetting('teaser_count')), 0, 0, $this->_getElementId('teaser_count')
         );
 
         $wrapperContent[] = new cHTMLLabel(i18n("Include start article"), $this->_getElementId('teaser_start'));
@@ -865,7 +865,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         $inputName = $selectName . '_count';
         $inputId = $this->_getElementId($inputName);
         // generate textbox for content type id
-        $htmlInput = new cHTMLTextbox($inputName, $value, '', '', $inputId, false, '', '', 'teaser_type_count');
+        $htmlInput = new cHTMLTextbox($inputName, $value, 0, 0, $inputId, false, '', '', 'teaser_type_count');
 
         // generate content type select
         $selectId = $this->_getElementId($selectName);
@@ -1064,14 +1064,14 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         $wrapperContent[] = $this->_generateStyleSelect();
         $wrapperContent[] = new cHTMLLabel(i18n("Teaser filter"), $this->_getElementId('teaser_filter'));
         $wrapperContent[] = new cHTMLTextbox(
-            'teaser_filter', $this->getSetting('teaser_filter'), '', '', $this->_getElementId('teaser_filter')
+            'teaser_filter', $this->getSetting('teaser_filter'), 0, 0, $this->_getElementId('teaser_filter')
         );
         $wrapperContent[] = new cHTMLLabel(i18n('Character length'), $this->_getElementId('teaser_character_limit'));
         $wrapperContent[] = new cHTMLTextbox(
             'teaser_character_limit',
             $this->getSetting('teaser_character_limit'),
-            '',
-            '',
+            0,
+            0,
             $this->_getElementId('teaser_character_limit')
         );
 
@@ -1080,16 +1080,16 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         $wrapperContent[] = new cHTMLTextbox(
             'teaser_image_width',
             $this->getSetting('teaser_image_width'),
-            '',
-            '',
+            0,
+            0,
             $this->_getElementId('teaser_image_width')
         );
         $wrapperContent[] = new cHTMLLabel(i18n('Image height'), $this->_getElementId('teaser_image_height'));
         $wrapperContent[] = new cHTMLTextbox(
             'teaser_image_height',
             $this->getSetting('teaser_image_height'),
-            '',
-            '',
+            0,
+            0,
             $this->_getElementId('teaser_image_height')
         );
         $wrapperContent[] = new cHTMLLabel(i18n('Image scale'), $this->_getElementId('teaser_image_crop'));

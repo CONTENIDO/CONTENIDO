@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiAction createNewItem
- * @method cApiAction|bool next
+ * @extends ItemCollection<cApiAction>
  */
 class cApiActionCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiActionCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('actions'), 'idaction');
+        parent::__construct(cDb::getTableName('actions'), 'idaction');
         $this->_setItemClass('cApiAction');
 
         // set the join partners so that joins can be used via link() method
@@ -101,7 +100,7 @@ class cApiActionCollection extends ItemCollection
                 ON area.idarea = action.idarea
                 WHERE action.relevant = 1 ORDER BY action.name;";
 
-        $this->db->query($sql, $this->table, cRegistry::getDbTableName('area'));
+        $this->db->query($sql, $this->table, cDb::getTableName('area'));
 
         $actions = [];
 
@@ -162,7 +161,7 @@ class cApiAction extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('actions'), 'idaction');
+        parent::__construct(cDb::getTableName('actions'), 'idaction');
         $this->setFilters(['addslashes'], ['stripslashes']);
 
         if ($id !== false) {

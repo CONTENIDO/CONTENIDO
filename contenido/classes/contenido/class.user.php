@@ -20,8 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiUser createNewItem($data)
- * @method cApiUser|bool next
+ * @extends ItemCollection<cApiUser>
  */
 class cApiUserCollection extends ItemCollection
 {
@@ -35,7 +34,7 @@ class cApiUserCollection extends ItemCollection
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('user'), 'user_id');
+        parent::__construct(cDb::getTableName('user'), 'user_id');
         $this->_setItemClass('cApiUser');
         if ($where !== false) {
             $this->select($where);
@@ -49,7 +48,7 @@ class cApiUserCollection extends ItemCollection
      * @return cApiUser|bool
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($username)
+    public function create(string $username)
     {
         if (cApiUser::usernameExists($username)) {
             return false;
@@ -72,7 +71,7 @@ class cApiUserCollection extends ItemCollection
      * @return bool True if the deletion was successful
      * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteUserByUsername($username): bool
+    public function deleteUserByUsername(string $username): bool
     {
         return $this->deleteBy('username', $username) > 0;
     }
@@ -86,7 +85,7 @@ class cApiUserCollection extends ItemCollection
      * @return cApiUser[] Array of user objects
      * @throws cDbException|cException
      */
-    public function fetchAccessibleUsers($perms, $includeAdmins = false, $orderBy = ''): array
+    public function fetchAccessibleUsers(array $perms, bool $includeAdmins = false, string $orderBy = ''): array
     {
         $users = [];
         $limit = [];
@@ -123,7 +122,7 @@ class cApiUserCollection extends ItemCollection
         }
 
         $this->select($where, '', $this->escape($orderBy));
-        while (($oItem = $this->next()) !== false) {
+        while ($oItem = $this->next()) {
             $users[] = clone $oItem;
         }
 
@@ -141,7 +140,7 @@ class cApiUserCollection extends ItemCollection
      * @return array Array of user like $arr[user_id][username], $arr[user_id][realname]
      * @throws cDbException|cException
      */
-    public function getAccessibleUsers($perms, $includeAdmins = false, $orderBy = ''): array
+    public function getAccessibleUsers(array $perms, bool $includeAdmins = false, string $orderBy = ''): array
     {
         $users = [];
         $oUsers = $this->fetchAccessibleUsers($perms, $includeAdmins, $orderBy);
@@ -166,7 +165,7 @@ class cApiUserCollection extends ItemCollection
         $users = [];
 
         $this->select('', '', $this->escape($orderBy));
-        while (($oItem = $this->next()) !== false) {
+        while ($oItem = $this->next()) {
             $users[] = clone $oItem;
         }
 
@@ -190,7 +189,7 @@ class cApiUserCollection extends ItemCollection
         }
 
         $this->select($where);
-        while (($item = $this->next()) !== false) {
+        while ($item = $this->next()) {
             $users[] = clone $item;
         }
 
@@ -200,14 +199,14 @@ class cApiUserCollection extends ItemCollection
     /**
      * Returns first found user in the system by username.
      *
-     * @param string $userName
+     * @param string $username
      * @param bool $forceActive [optional] Flag to search only for active user
      * @return ?cApiUser The found user or NULL
      * @throws cDbException|cException
      */
-    public function fetchUserByName(string $userName, bool $forceActive = false)
+    public function fetchUserByName(string $username, bool $forceActive = false)
     {
-        $where = "`username` = '" . $this->escape($userName) . "'";
+        $where = "`username` = '" . $this->escape($username) . "'";
         if ($forceActive) {
             $where .= " AND (`valid_from` <= NOW() OR `valid_from` = '0000-00-00 00:00:00' OR `valid_from` IS NULL) "
                 . "AND (`valid_to` >= NOW() OR `valid_to` = '0000-00-00 00:00:00' OR `valid_to` IS NULL)";
@@ -230,10 +229,9 @@ class cApiUserCollection extends ItemCollection
     public function fetchClientAdmins(int $clientId): array
     {
         $users = [];
-        $where = "perms LIKE '%admin[" . $clientId . "]%'";
 
-        $this->select($where);
-        while (($item = $this->next()) !== false) {
+        $this->select("perms LIKE '%admin[" . $clientId . "]%'");
+        while ($item = $this->next()) {
             $users[] = clone $item;
         }
 
@@ -354,7 +352,7 @@ class cApiUser extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('user'), 'user_id');
+        parent::__construct(cDb::getTableName('user'), 'user_id');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
@@ -376,13 +374,13 @@ class cApiUser extends Item
     /**
      * Loads a user entry by username.
      *
-     * @param string $userName Specifies the username
+     * @param string $username Specifies the username
      * @return bool True if the load was successful
      * @throws cDbException|cException
      */
-    public function loadUserByUsername($userName): bool
+    public function loadUserByUsername(string $username): bool
     {
-        return $this->loadBy('username', $userName);
+        return $this->loadBy('username', $username);
     }
 
     /**
@@ -394,9 +392,7 @@ class cApiUser extends Item
      */
     public static function userExists(string $userId): bool
     {
-        $test = new cApiUser();
-
-        return $test->loadByPrimaryKey($userId);
+        return (new cApiUser())->loadByPrimaryKey($userId);
     }
 
     /**
@@ -406,10 +402,9 @@ class cApiUser extends Item
      * @return bool username exists or not
      * @throws cDbException|cException
      */
-    public static function usernameExists($username): bool
+    public static function usernameExists(string $username): bool
     {
-        $user = new cApiUser();
-        return $user->loadBy('username', $username);
+        return (new cApiUser())->loadBy('username', $username);
     }
 
     /**
@@ -459,7 +454,7 @@ class cApiUser extends Item
         if ($iResult == self::PASS_OK && $iSymbolsMandatory > 0) {
             $aSymbols = [];
             $sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/";
-            if (isset($cfgPw['symbols_regex']) && !empty($cfgPw['symbols_regex'])) {
+            if (!empty($cfgPw['symbols_regex'])) {
                 $sSymbolsDefault = $cfgPw['symbols_regex'];
             }
 
@@ -495,7 +490,7 @@ class cApiUser extends Item
      */
     public function encodePassword(string $password): string
     {
-        return hash("sha256", md5($password) . $this->get("salt"));
+        return hash("sha256", md5($password) . $this->get('salt'));
     }
 
     /**
@@ -909,8 +904,6 @@ class cApiUser extends Item
     /**
      * Adds passed permissions to the user permissions array.
      *
-     * @param array $userPerms
-     * @param array $permsToAdd
      * @return void
      * @since CONTENIDO 4.10.2
      */
@@ -1157,10 +1150,8 @@ class cApiUser extends Item
 
     /**
      * Returns permission instance, either the global one or a new created.
-     *
-     * @return cPermission
      */
-    private function _getPermInstance()
+    private function _getPermInstance(): cPermission
     {
         $perm = cRegistry::getPerm();
         if (!is_object($perm)) {

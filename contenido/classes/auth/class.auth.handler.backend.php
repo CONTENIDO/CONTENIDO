@@ -127,12 +127,12 @@ class cAuthHandlerBackend extends cAuth
 
         $userColl->select($where);
 
-        while (($item = $userColl->next()) !== false) {
+        while ($item = $userColl->next()) {
             $uid = $item->get('user_id');
             $perm = $item->get('perms');
             // password is stored as a sha256 hash
             $pass = $item->get('password');
-            $salt = $item->get("salt");
+            $salt = $item->get('salt');
         }
 
         if (!$uid || hash("sha256", md5($password) . $salt) != $pass) {
@@ -212,7 +212,6 @@ class cAuthHandlerBackend extends cAuth
 
     /**
      * @inheritdoc
-     * @return bool
      */
     public function isLoggedIn(): bool
     {

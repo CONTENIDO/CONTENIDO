@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $syncidcat, $syncfromlang, $multiple, $markscript, $tpl, $action, $lang, $sess, $client, $cfg, $db, $area, $frame, $idcat, $currentuser, $_cecRegistry, $perm;
+global $syncidcat, $syncfromlang, $multiple, $markscript, $tpl, $action, $lang, $sess, $client, $cfg, $db, $area, $frame, $idcat, $currentuser, $perm;
 
 // Display critical error if no valid client is selected
 if ($client < 1) {
@@ -29,18 +29,21 @@ cInclude('includes', 'functions.tpl.php');
 cInclude('includes', 'functions.lang.php');
 
 /**
- * @param int $iIdcat
- * @param array $aWholelist
  * @throws cDbException|cInvalidArgumentException|cException
  */
 function showTree(int $iIdcat, array &$aWholelist): string
 {
-    global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client, $lang, $navigationTree;
+    global $check_global_rights, $navigationTree;
+
+    $db = cRegistry::getDB();
+    $cfg = cRegistry::getConfig();
+    $perm = cRegistry::getPerm();
+    $lang = cRegistry::getLanguageId();
 
     $tpl = new cTemplate();
     $tpl->reset();
 
-    foreach ($navigationTree[$iIdcat] as $sKey => $aValue) {
+    foreach ($navigationTree[$iIdcat] as $aValue) {
         $cfgdata = '';
         $aCssClasses = [];
 
@@ -52,56 +55,56 @@ function showTree(int $iIdcat, array &$aWholelist): string
         }
 
         if (!$check_rights) {
-            $check_rights = ($aValue['forcedisplay'] == 1) ? true : false;
+            $check_rights = $aValue['forcedisplay'] == 1;
         }
 
-        $idcat = (int)$aValue['idcat'];
+        $idcat = cSecurity::toInteger($aValue['idcat']);
         $level = $aValue['level'] - 1;
         $name = $aValue['name'];
 
         if ($check_rights) {
-            $idtpl = ($aValue['idtpl'] != '') ? $aValue['idtpl'] : 0;
+            $idtpl = $aValue['idtpl'] != '' ? $aValue['idtpl'] : 0;
 
-            // if (($aValue["idlang"] != $lang) || ($aValue['articles'] == true)) {
+            // if (($aValue['idlang'] != $lang) || ($aValue['articles'] == true)) {
             //     $aCssClasses[] = 'con_sync';
             // }
 
-            $check_rights = $perm->have_perm_area_action_item("con", "con_changetemplate", $aValue['idcat']);
+            $check_rights = $perm->have_perm_area_action_item('con', 'con_changetemplate', $aValue['idcat']);
             if (!$check_rights) {
-                $check_rights = $perm->have_perm_area_action("con", "con_changetemplate");
+                $check_rights = $perm->have_perm_area_action('con', 'con_changetemplate');
             }
 
             $changetemplate = ($check_rights) ? 1 : 0;
 
-            $check_rights = $perm->have_perm_area_action_item("con", "con_makecatonline", $aValue['idcat']);
+            $check_rights = $perm->have_perm_area_action_item('con', 'con_makecatonline', $aValue['idcat']);
             if (!$check_rights) {
-                $check_rights = $perm->have_perm_area_action("con", "con_makecatonline");
+                $check_rights = $perm->have_perm_area_action('con', 'con_makecatonline');
             }
 
             $onoffline = ($check_rights) ? 1 : 0;
 
-            $check_rights = $perm->have_perm_area_action_item("con", "con_makepublic", $aValue['idcat']);
+            $check_rights = $perm->have_perm_area_action_item('con', 'con_makepublic', $aValue['idcat']);
             if (!$check_rights) {
-                $check_rights = $perm->have_perm_area_action("con", "con_makepublic");
+                $check_rights = $perm->have_perm_area_action('con', 'con_makepublic');
             }
 
             $makepublic = ($check_rights) ? 1 : 0;
 
-            $check_rights = $perm->have_perm_area_action_item("con", "con_tplcfg_edit", $aValue['idcat']);
+            $check_rights = $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $aValue['idcat']);
             if (!$check_rights) {
-                $check_rights = $perm->have_perm_area_action("con", "con_tplcfg_edit");
+                $check_rights = $perm->have_perm_area_action('con', 'con_tplcfg_edit');
             }
 
             $templateconfig = ($check_rights) ? 1 : 0;
 
-            if ($aValue["idlang"] == $lang) {
+            if ($aValue['idlang'] == $lang) {
                 // Build cfgdata string
                 $cfgdata = $idcat . "-" . $idtpl . "-" . $aValue['online'] . "-" . $aValue['public'] . "-" .
                     $changetemplate . "-" .
                     $onoffline . "-" .
                     $makepublic . "-" . $templateconfig;
             } else {
-                $cfgdata = "";
+                $cfgdata = '';
             }
 
             // Select the appropriate folder-image depending on the structure properties
@@ -156,15 +159,22 @@ function showTree(int $iIdcat, array &$aWholelist): string
             }
 
             $bIsSyncable = false;
-            if ($aValue["idlang"] != $lang) {
+            if ($aValue['idlang'] != $lang) {
                 // Fetch parent id and check if it is syncronized
-                $sql = "SELECT parentid FROM %s WHERE idcat = '%s'";
-                $db->query(sprintf($sql, $cfg['tab']['cat'], $idcat));
+                $db->query(sprintf(
+                    "SELECT `parentid` FROM `%s` WHERE `idcat` = %d",
+                    cDb::getTableName('cat'),
+                    $idcat)
+                );
                 if ($db->nextRecord()) {
-                    if ($db->f("parentid") != 0) {
-                        $parentid = $db->f("parentid");
-                        $sql = "SELECT idcatlang FROM %s WHERE idcat = '%s' AND idlang = '%s'";
-                        $db->query(sprintf($sql, $cfg['tab']['cat_lang'], cSecurity::toInteger($parentid), cSecurity::toInteger($lang)));
+                    if ($db->f('parentid') != 0) {
+                        $parentid = $db->f('parentid');
+                        $db->query(sprintf(
+                            "SELECT `idcatlang` FROM `%s` WHERE `idcat` = %d AND `idlang` = %d",
+                            cDb::getTableName('cat_lang'),
+                            cSecurity::toInteger($parentid),
+                            cSecurity::toInteger($lang)))
+                        ;
 
                         if ($db->nextRecord()) {
                             $aCssClasses[] = 'con_sync';
@@ -195,7 +205,7 @@ function showTree(int $iIdcat, array &$aWholelist): string
             }
 
             $strName = cSecurity::unFilter($name);
-            $title = ($aValue['langPopup'] && $aValue['langPopup'] != "") ? $aValue['langPopup'] . "\n " : "";
+            $title = ($aValue['langPopup'] && $aValue['langPopup'] != '') ? $aValue['langPopup'] . "\n " : "";
             $mstr = '<a class="' . $aAnchorClass . '" href="#" title="' . $title . 'idcat' . '&#58; ' . $idcat . '">' . $strName . '</a>';
 
             // Build Tree
@@ -236,13 +246,13 @@ $db3 = cRegistry::getDb();
 // Refresh or reset right frames, when a synclang is changed or a category is synchronized
 $tpl->reset();
 
-if ($action == "con_synccat" || isset($_GET['refresh_syncoptions']) && $_GET['refresh_syncoptions'] == 'true') {
+if ($action == 'con_synccat' || isset($_GET['refresh_syncoptions']) && $_GET['refresh_syncoptions'] == 'true') {
     $tpl->set('s', 'RELOAD_RIGHT', 'reloadRightFrame();');
 } else {
     $tpl->set('s', 'RELOAD_RIGHT', '');
 }
 
-if ($action == "con_synccat") {
+if ($action == 'con_synccat') {
     strSyncCategory($syncidcat, $syncfromlang, $lang, $multiple);
     $remakeStrTable = true;
 }
@@ -309,11 +319,11 @@ if ($syncoptions == -1) {
                 b.idlang AS idlang,
                 c.idtree AS idtree
             FROM
-                (" . $cfg['tab']['cat'] . " AS a,
-                " . $cfg['tab']['cat_lang'] . " AS b,
-                " . $cfg['tab']['cat_tree'] . " AS c)
+                (" . cDb::getTableName('cat') . " AS a,
+                " . cDb::getTableName('cat_lang') . " AS b,
+                " . cDb::getTableName('cat_tree') . " AS c)
             LEFT JOIN
-                " . $cfg['tab']['tpl_conf'] . " AS d
+                " . cDb::getTableName('tpl_conf') . " AS d
                 ON d.idtplcfg = b.idtplcfg
             WHERE
                 a.idclient = '" . cSecurity::toInteger($client) . "' AND
@@ -336,11 +346,11 @@ if ($syncoptions == -1) {
                 b.idlang AS idlang,
                 c.idtree AS idtree
             FROM
-                (" . $cfg['tab']['cat'] . " AS a,
-                " . $cfg['tab']['cat_lang'] . " AS b,
-                " . $cfg['tab']['cat_tree'] . " AS c)
+                (" . cDb::getTableName('cat') . " AS a,
+                " . cDb::getTableName('cat_lang') . " AS b,
+                " . cDb::getTableName('cat_tree') . " AS c)
             LEFT JOIN
-                " . $cfg['tab']['tpl_conf'] . " AS d
+                " . cDb::getTableName('tpl_conf') . " AS d
                 ON d.idtplcfg = b.idtplcfg
             WHERE
                 a.idclient = '" . cSecurity::toInteger($client) . "' AND
@@ -386,7 +396,7 @@ if (count($arrIn) > 0) {
     $sIn = implode(',', $arrIn);
 
     $sql2 = "SELECT b.idcat, a.idart, idlang
-            FROM " . $cfg['tab']['art_lang'] . " AS a, " . $cfg['tab']['cat_art'] . " AS b
+            FROM " . cDb::getTableName('art_lang') . " AS a, " . cDb::getTableName('cat_art') . " AS b
             WHERE b.idcat IN (" . $db->escape($sIn) . ")
                 AND (a.idlang = " . cSecurity::toInteger($syncoptions) . " OR a.idlang = " . cSecurity::toInteger($lang) . ")
                 AND b.idart = a.idart";
@@ -404,11 +414,11 @@ while ($db->nextRecord()) {
 
     $entry['articles'] = false;
 
-    if ($db->f("idlang") == $lang) {
+    if ($db->f('idlang') == $lang) {
         $arts = [];
 
-        if (isset($arrArtCache[$db->f("idcat")])) {
-            foreach ($arrArtCache[$db->f("idcat")] as $key => $value) {
+        if (isset($arrArtCache[$db->f('idcat')])) {
+            foreach ($arrArtCache[$db->f('idcat')] as $key => $value) {
                 foreach ($value as $key2 => $value2) {
                     $arts[$key][$key2] = 1;
                 }
@@ -419,7 +429,7 @@ while ($db->nextRecord()) {
             if (is_array($entry)) {
                 if (!array_key_exists($lang, $entry)) {
                     //$entry['articles'] = true;
-                    $aIsArticles[$db->f("idcat")] = true;
+                    $aIsArticles[$db->f('idcat')] = true;
                     break;
                 }
             }
@@ -433,10 +443,10 @@ if ($syncoptions == -1) {
                 SUM(a.online) AS online,
                 d.startidartlang
             FROM
-                " . $cfg['tab']['art_lang'] . " AS a,
-                " . $cfg['tab']['art'] . " AS b,
-                " . $cfg['tab']['cat_art'] . " AS c,
-                " . $cfg['tab']['cat_lang'] . " AS d
+                " . cDb::getTableName('art_lang') . " AS a,
+                " . cDb::getTableName('art') . " AS b,
+                " . cDb::getTableName('cat_art') . " AS c,
+                " . cDb::getTableName('cat_lang') . " AS d
             WHERE
                 a.idlang = " . cSecurity::toInteger($lang) . " AND
                 a.idart = b.idart AND
@@ -450,10 +460,10 @@ if ($syncoptions == -1) {
                 SUM(a.online) AS online,
                 d.startidartlang
             FROM
-                " . $cfg['tab']['art_lang'] . " AS a,
-                " . $cfg['tab']['art'] . " AS b,
-                " . $cfg['tab']['cat_art'] . " AS c,
-                " . $cfg['tab']['cat_lang'] . " AS d
+                " . cDb::getTableName('art_lang') . " AS a,
+                " . cDb::getTableName('art') . " AS b,
+                " . cDb::getTableName('cat_art') . " AS c,
+                " . cDb::getTableName('cat_lang') . " AS d
             WHERE
                 a.idart = b.idart AND
                 b.idclient = '" . cSecurity::toInteger($client) . "' AND
@@ -477,41 +487,16 @@ while ($db->nextRecord()) {
     }
 }
 
-$_cecIterator = $_cecRegistry->getIterator("Contenido.ArticleCategoryList.ListItems");
-
-if ($_cecIterator->count() > 0) {
-    while ($chainEntry = $_cecIterator->next()) {
-        $listItem = $chainEntry->execute();
-
-        if (is_array($listItem)) {
-            if (!array_key_exists("expandcollapseimage", $listItem) || $listItem["expandcollapseimage"] == "") {
-                $collapseImage = '<img src="images/spacer.gif" width="11" alt="" height="11">';
-            } else {
-                $collapseImage = $listItem["expandcollapseimage"];
-            }
-
-            if (!array_key_exists("image", $listItem) || $listItem["image"] == "") {
-                $image = '<img src="images/spacer.gif" alt="">';
-            } else {
-                $image = $listItem["image"];
-            }
-
-            if (!array_key_exists("id", $listItem) || $listItem["id"] == "") {
-                $id = rand();
-            } else {
-                $id = $listItem["id"];
-            }
-
-            if (array_key_exists("markable", $listItem)) {
-                if ($listItem["markable"] == true) {
-                    $mmark = $markscript;
-                } else {
-                    $mmark = "";
-                }
-            } else {
-                $mmark = "";
-            }
-        }
+$cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.ArticleCategoryList.ListItems');
+while ($chainEntry = $cecIterator->next()) {
+    $listItem = $chainEntry->execute();
+    if (is_array($listItem)) {
+        $collapseImage = empty($listItem['expandcollapseimage'])
+            ? '<img src="images/spacer.gif" width="11" alt="" height="11">'
+            : $listItem['expandcollapseimage'];
+        $image = empty($listItem['image']) ? '<img src="images/spacer.gif" alt="">' : $listItem['image'];
+        $id = empty($listItem['id']) ? rand() : $listItem['id'];
+        $mmark = ($listItem['markable'] ?? false) ? $markscript : '';
     }
 }
 
@@ -528,77 +513,77 @@ $allLinks = $expandimg . '<img src="images/spacer.gif" width="3" alt="">' . $col
 $text_direction = langGetTextDirection($lang);
 
 // Check global rights
-$check_global_rights = $perm->have_perm_area_action("con", "con_makestart");
+$check_global_rights = $perm->have_perm_area_action('con', 'con_makestart');
 if (!$check_global_rights) {
-    $check_global_rights = $perm->have_perm_area_action("con_editart", "con_edit");
+    $check_global_rights = $perm->have_perm_area_action('con_editart', "con_edit");
 }
 if (!$check_global_rights) {
-    $check_global_rights = $perm->have_perm_area_action("con_editart", "con_saveart");
+    $check_global_rights = $perm->have_perm_area_action('con_editart', "con_saveart");
 }
 if (!$check_global_rights) {
-    $check_global_rights = $perm->have_perm_area_action("con_editcontent", "con_editart");
+    $check_global_rights = $perm->have_perm_area_action('con_editcontent', 'con_editart');
 }
 if (!$check_global_rights) {
-    $check_global_rights = $perm->have_perm_area_action("con_editart", "con_newart");
+    $check_global_rights = $perm->have_perm_area_action('con_editart', 'con_newart');
 }
 if (!$check_global_rights) {
-    $check_global_rights = $perm->have_perm_area_action("con", "con_deleteart");
+    $check_global_rights = $perm->have_perm_area_action('con', "con_deleteart");
 }
 if (!$check_global_rights) {
-    $check_global_rights = $perm->have_perm_area_action("con", "con_makeonline");
+    $check_global_rights = $perm->have_perm_area_action('con', "con_makeonline");
 }
 if (!$check_global_rights) {
-    $check_global_rights = $perm->have_perm_area_action("con", "con_tplcfg_edit");
+    $check_global_rights = $perm->have_perm_area_action('con', 'con_tplcfg_edit');
 }
 if (!$check_global_rights) {
-    $check_global_rights = $perm->have_perm_area_action("con", "con_makecatonline");
+    $check_global_rights = $perm->have_perm_area_action('con', 'con_makecatonline');
 }
 if (!$check_global_rights) {
-    $check_global_rights = $perm->have_perm_area_action("con", "con_changetemplate");
+    $check_global_rights = $perm->have_perm_area_action('con', 'con_changetemplate');
 }
 
-if ($lang > $syncoptions) {
-    $sOrder = 'DESC';
-} else {
-    $sOrder = 'ASC';
-}
+$order = $lang > $syncoptions ? 'DESC' : 'ASC';
+
+$tabCat = cDb::getTableName('cat');
+$tabCatLang = cDb::getTableName('cat_lang');
+$tabCatTree = cDb::getTableName('cat_tree');
+$tabTplConf = cDb::getTableName('tpl_conf');
 
 $fallbackLang = getEffectiveSetting('system', 'cat_fallback_language', 0);
-$sqlLangPopup = ($fallbackLang != 0) ? "LEFT JOIN {$cfg['tab']['cat_lang']} AS b1 ON(b1.idcat = a.idcat AND b1.idlang = $fallbackLang) " : "";
-$sqlLangB1 = ($fallbackLang != 0) ? "b1.name as langPopup, " : "";
+$sqlLangPopup = $fallbackLang != 0 ? "LEFT JOIN `$tabCatLang` AS b1 ON(b1.idcat = a.idcat AND b1.idlang = $fallbackLang) " : "";
+$sqlLangB1 = $fallbackLang != 0 ? "b1.name AS langPopup, " : "";
 
-$client = (int)$client;
-$sql = "SELECT DISTINCT " .
-    "a.idcat, " .
-    "a.parentid, " .
-    "a.preid, " .
-    "a.postid, " .
-    "a.parentid, " .
-    "b.name, " .
-    $sqlLangB1 .
-    "b.idlang, " .
-    "b.visible, " .
-    "b.public, " .
-    "c.idtree, " .
-    "c.level, " .
-    "d.idtpl " .
-    "FROM {$cfg['tab']['cat']} AS a " .
-    "LEFT JOIN {$cfg['tab']['cat_lang']} AS b ON a.idcat = b.idcat " .
-    $sqlLangPopup .
-    "LEFT JOIN {$cfg['tab']['cat_tree']} AS c ON (a.idcat = c.idcat AND b.idcat = c.idcat) " .
-    "LEFT JOIN {$cfg['tab']['tpl_conf']} AS d ON b.idtplcfg = d.idtplcfg " .
-    "WHERE " .
-    "   a.idclient = {$client} " .
-    "ORDER BY b.idlang {$sOrder}, c.idtree ASC ";
+$client = cSecurity::toInteger($client);
+$sql = <<<SQL
+    SELECT DISTINCT
+        a.idcat,
+        a.parentid,
+        a.preid,
+        a.postid,
+        b.name,
+        $sqlLangB1
+        b.idlang,
+        b.visible,
+        b.public,
+        c.idtree,
+        c.level,
+        d.idtpl
+    FROM `$tabCat` AS a
+    LEFT JOIN `$tabCatLang` AS b ON a.idcat = b.idcat
+    $sqlLangPopup
+    LEFT JOIN `$tabCatTree` AS c ON (a.idcat = c.idcat AND b.idcat = c.idcat)
+    LEFT JOIN `$tabTplConf` AS d ON b.idtplcfg = d.idtplcfg
+    WHERE a.idclient = $client
+    ORDER BY b.idlang $order, c.idtree ASC
+SQL;
 $db->query($sql);
 if ($client == 0) {
     $client = '';
 }
 
-
-$sExpandList = $currentuser->getUserProperty("system", "con_cat_expandstate");
+$sExpandList = $currentuser->getUserProperty('system', 'con_cat_expandstate');
 if ($sExpandList != '') {
-    $conexpandedList = unserialize($currentuser->getUserProperty("system", "con_cat_expandstate"));
+    $conexpandedList = unserialize($currentuser->getUserProperty('system', 'con_cat_expandstate'));
 } else {
     $conexpandedList = [];
 }
@@ -615,13 +600,16 @@ $navigationTree = [];
 $aWholelist = [];
 
 while ($db->nextRecord()) {
-    if (!isset($navigationTree[$db->f('parentid')][$db->f('idcat')]) && ($db->f('idlang') == $lang || $db->f('idlang') == $syncoptions)) {
+    if (
+        !isset($navigationTree[$db->f('parentid')][$db->f('idcat')])
+        && ($db->f('idlang') == $lang || $db->f('idlang') == $syncoptions)
+    ) {
         if (in_array($db->f('idcat'), $conexpandedList[$client])) {
             $collapsed = false;
         } else {
             $collapsed = true;
         }
-        if ($perm->have_perm_item("con", $db->f('idcat'))) {
+        if ($perm->have_perm_item('con', $db->f('idcat'))) {
             $forcedisplay = 1;
         } else {
             $forcedisplay = 0;
@@ -646,7 +634,7 @@ while ($db->nextRecord()) {
             'forcedisplay' => $forcedisplay,
             'active' => $active,
             'islast' => false,
-            'articles' => !empty($aIsArticles[$db->f("idcat")]) ? $aIsArticles[$db->f("idcat")] : false,
+            'articles' => !empty($aIsArticles[$db->f('idcat')]) ? $aIsArticles[$db->f('idcat')] : false,
             'level' => $db->f('level'),
         ];
         if ($aStartOnlineArticles[$db->f('idcat')]['is_start'] ?? false) {

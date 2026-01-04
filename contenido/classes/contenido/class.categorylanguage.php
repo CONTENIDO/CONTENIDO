@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiCategoryLanguage createNewItem
- * @method cApiCategoryLanguage|bool next
+ * @extends ItemCollection<cApiCategoryLanguage>
  */
 class cApiCategoryLanguageCollection extends ItemCollection
 {
@@ -41,7 +40,7 @@ class cApiCategoryLanguageCollection extends ItemCollection
      */
     public function __construct($select = false)
     {
-        $table = cRegistry::getDbTableName('cat_lang');
+        $table = cDb::getTableName('cat_lang');
         parent::__construct($table, 'idcatlang');
         $this->_setItemClass('cApiCategoryLanguage');
 
@@ -92,7 +91,7 @@ class cApiCategoryLanguageCollection extends ItemCollection
     {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = $auth->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -146,7 +145,7 @@ class cApiCategoryLanguageCollection extends ItemCollection
      */
     public function getStartIdartByIdcatAndIdlang($idcat, $idlang)
     {
-        $tabArtLang = cRegistry::getDbTableName('art_lang');
+        $tabArtLang = cDb::getTableName('art_lang');
         $sql = "SELECT al.idart FROM `%s` AS al, `%s` AS cl "
             . "WHERE cl.idcat = %d AND cl.startidartlang != 0 AND cl.idlang = %d AND cl.idlang = al.idlang AND cl.startidartlang = al.idartlang";
         $this->db->query($sql, $tabArtLang, $this->table, $idcat, $idlang);
@@ -193,7 +192,7 @@ class cApiCategoryLanguageCollection extends ItemCollection
     }
 
     /**
-     * Returns list of template configuration ids `idtplcfg``by article id and language id
+     * Returns list of template configuration ids `idtplcfg` by article id and language id
      * @throws cDbException
      */
     public function fetchIdTplCfgByArticleIdAndLanguageId(int $idart, int $idlang): array
@@ -212,7 +211,7 @@ class cApiCategoryLanguageCollection extends ItemCollection
 
         $this->db->query($sql, [
             'tab_cat_lang' => $this->table,
-            'tab_cat_art' => cRegistry::getDbTableName('cat_art'),
+            'tab_cat_art' => cDb::getTableName('cat_art'),
             'id_art' => $idart,
             'id_lang' => $idlang,
         ]);
@@ -244,7 +243,7 @@ class cApiCategoryLanguage extends Item
      */
     public function __construct($id = false)
     {
-        $table = cRegistry::getDbTableName('cat_lang');
+        $table = cDb::getTableName('cat_lang');
         parent::__construct($table, 'idcatlang');
         $this->setFilters();
         if ($id !== false) {
@@ -308,7 +307,7 @@ class cApiCategoryLanguage extends Item
     }
 
     /**
-     * Assigns the passed template to the category language item.
+     * Assigns the provided template to the category language item.
      *
      * @param int $idtpl
      * @return cApiTemplateConfiguration

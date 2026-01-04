@@ -340,9 +340,8 @@ class cBackendSearchHelper
      * Returns the article template info array.
      * Will be used, if the article has not its own template configuration.
      *
-     * @param int $idcat
      * @return array{idtplcfg: int, idtpl: int, name: string, description: string}|array{}
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getCategoryTemplateInfos(int $idcat): array
     {
@@ -359,9 +358,9 @@ class cBackendSearchHelper
                     b.idtplcfg    AS idtplcfg,
                     b.idcat       AS idcat
                 FROM
-                    " . cRegistry::getDbTableName('tpl_conf') . " AS a,
-                    " . cRegistry::getDbTableName('cat_lang') . " AS b,
-                    " . cRegistry::getDbTableName('tpl') . "      AS c
+                    " . cDb::getTableName('tpl_conf') . " AS a,
+                    " . cDb::getTableName('cat_lang') . " AS b,
+                    " . cDb::getTableName('tpl') . "      AS c
                 WHERE
                     b.idcat    IN (" . $in . ") AND
                     b.idlang   = " . $this->_languageId . " AND
@@ -442,8 +441,8 @@ class cBackendSearchHelper
             $this->_articlePermissions = [];
 
             // Get all groups of the user
-            $groups = $this->_perm->getGroupsForUser($this->_auth->auth['uid']);
-            $groups[] = $this->_auth->auth['uid'];
+            $groups = $this->_perm->getGroupsForUser($this->_auth->getUserId());
+            $groups[] = $this->_auth->getUserId();
 
             // Fetch rights for collected categories
             $rightsCollection = new cApiRightCollection();

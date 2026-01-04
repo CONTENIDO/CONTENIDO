@@ -139,7 +139,7 @@ class cGuiTableForm
     public function __construct($name, $action = 'main.php', $method = 'post')
     {
         // action defaults to 'main.php'
-        if ($action == '') {
+        if (empty($action)) {
             $action = 'main.php';
         }
 

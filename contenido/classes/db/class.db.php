@@ -15,8 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains functions for handling record sets and interaction with
- * database in CONTENIDO.
+ * This class contains functions for handling record sets and interaction with database in CONTENIDO.
  *
  * @package    Core
  * @subpackage Database
@@ -120,6 +119,7 @@ class cDb extends cDbDriverHandler
 
     /**
      * Return the current row count.
+     */
     public function getRow(): int
     {
         return $this->_row;
@@ -131,9 +131,9 @@ class cDb extends cDbDriverHandler
      *
      * @param int $row Current row count
      */
-    public function setRow($row)
+    public function setRow(int $row)
     {
-        $this->_row = (int)$row;
+        $this->_row = $row;
     }
 
     /**
@@ -175,6 +175,15 @@ class cDb extends cDbDriverHandler
     public function setErrorNumber(int $errorNumber)
     {
         $this->_errorNumber = $errorNumber;
+    }
+
+    /**
+     * Shorter alias for {@see cRegistry::getDbTableName()}.
+     * @since CONTENIDO 4.10.2
+     */
+    public static function getTableName(string $tableName): string
+    {
+        return cRegistry::getDbTableName($tableName);
     }
 
 }

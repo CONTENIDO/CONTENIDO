@@ -152,16 +152,15 @@ class mpClassTypeFinder
     /**
      * Detects all available class type tokens in found files inside passed directory.
      *
-     * @param SplFileInfo $fileInfo
      * @param bool $recursive Flag to parse directory recursive
      * @return ?array Either an associative array where the key is the class type token
-     *      and the value is the path or NULL.
+     *      and the value is the path or null.
      */
-    public function findInDir(SplFileInfo $fileInfo, bool $recursive = true)
+    public function findInDir(SplFileInfo $fileInfo, bool $recursive = true): ?array
     {
         if (!$fileInfo->isDir() || !$fileInfo->isReadable()) {
             $this->_debug('findInDir: Invalid/Not readable directory ' . $fileInfo->getPathname());
-            return NULL;
+            return null;
         }
         $this->_debug('findInDir: Processing dir ' . $fileInfo->getPathname() . ' (realpath: ' . $fileInfo->getRealPath() . ')');
 
@@ -177,22 +176,21 @@ class mpClassTypeFinder
             }
         }
 
-        return (count($classTypeTokens) > 0) ? $classTypeTokens : NULL;
+        return count($classTypeTokens) > 0 ? $classTypeTokens : null;
     }
 
 
     /**
      * Detects all available class type tokens in passed file
      *
-     * @param SplFileInfo $fileInfo
-     * @return array|NULL Either an associative array where the key is the class type token
-     *      and the value is the path or NULL.
+     * @return ?array Either an associative array where the key is the class type token
+     *      and the value is the path or null.
      */
-    public function findInFile(SplFileInfo $fileInfo)
+    public function findInFile(SplFileInfo $fileInfo): ?array
     {
         if (!$fileInfo->isFile() || !$fileInfo->isReadable()) {
             $this->_debug('findInFile: Invalid/Not readable file ' . $fileInfo->getPathname());
-            return NULL;
+            return null;
         }
         $this->_debug('findInFile: Processing file ' . $fileInfo->getPathname() . ' (realpath: ' . $fileInfo->getRealPath() . ')');
 
@@ -222,7 +220,7 @@ class mpClassTypeFinder
             }
         }
 
-        return (count($classTypeTokens) > 0) ? $classTypeTokens : NULL;
+        return (count($classTypeTokens) > 0) ? $classTypeTokens : null;
     }
 
 
@@ -240,16 +238,16 @@ class mpClassTypeFinder
      *
      * @param string $delimiter Delimiter between each message
      * @param string $wrap String with %s type specifier used to wrap all messages
-     * @return  string  Formatted string
+     * @return string Formatted string
      * @throws cInvalidArgumentException if the given wrap does not contain %s
      */
-    public function getFormattedDebugMessages(string $delimiter="\n", string $wrap='%s'): string
+    public function getFormattedDebugMessages(string $delimiter = "\n", string $wrap = '%s'): string
     {
         if (strpos($wrap, '%s') === false) {
             throw new cInvalidArgumentException('Missing type specifier %s in parameter wrap!');
         }
-        $messages = implode($delimiter, $this->_debugMessages);
-        return sprintf($wrap, $messages);
+
+        return sprintf($wrap, implode($delimiter, $this->_debugMessages));
     }
 
 
@@ -267,7 +265,7 @@ class mpClassTypeFinder
     /**
      * Returns directory iterator depending on $recursive parameter value
      *
-     * @returnRecursiveIteratorIterator|DirectoryIterator
+     * @return RecursiveIteratorIterator|DirectoryIterator
      */
     protected function _getDirIterator(SplFileInfo $fileInfo, bool $recursive)
     {

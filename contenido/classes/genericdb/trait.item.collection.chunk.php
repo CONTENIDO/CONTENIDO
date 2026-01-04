@@ -22,9 +22,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This trait is meant only for usage in ItemCollection classes, therefore
  * it requires following methods to be implemented by a ItemCollection class
  * using this trait:
- * @method ItemCollection|string getTable
- * @method ItemCollection|string getPrimaryKeyName
- * @method ItemCollection|void loadByRecordSet(array)
+ * @method ItemCollection|string getTable()
+ * @method ItemCollection|string getPrimaryKeyName()
+ * @method ItemCollection|void loadByRecordSet(array $data)
  *
  * @package    Core
  * @subpackage Database

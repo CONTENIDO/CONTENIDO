@@ -401,7 +401,7 @@ class cSearch extends cSearchBaseAbstract
         // Prepare sql without keywords, we don't want any strings in keywords sql
         // being interpreted as specifiers
         $sql = "SELECT `keyword`, `auto` FROM `%s` WHERE `idlang` = %d AND {KEYWORDS}";
-        $sql = $this->db->prepare($sql, cRegistry::getDbTableName('keywords'), $this->lang);
+        $sql = $this->db->prepare($sql, cDb::getTableName('keywords'), $this->lang);
         $sql = str_replace('{KEYWORDS}', $kwSql, $sql);
         $this->_debug('sql', $sql);
 
@@ -569,9 +569,9 @@ class cSearch extends cSearchBaseAbstract
         $sql = "SELECT
                 B.idcat, B.parentid
             FROM
-                " . cRegistry::getDbTableName('cat_tree') . " AS A,
-                " . cRegistry::getDbTableName('cat') . " AS B,
-                " . cRegistry::getDbTableName('cat_lang') . " AS C
+                " . cDb::getTableName('cat_tree') . " AS A,
+                " . cDb::getTableName('cat') . " AS B,
+                " . cDb::getTableName('cat_lang') . " AS C
             WHERE
                 A.idcat  = B.idcat AND
                 B.idcat  = C.idcat AND
@@ -685,9 +685,9 @@ class cSearch extends cSearchBaseAbstract
                     A.idcat,
                     C.public
                 FROM
-                    " . cRegistry::getDbTableName('cat_art') . " as A,
-                    " . cRegistry::getDbTableName('art_lang') . " as B,
-                    " . cRegistry::getDbTableName('cat_lang') . " as C
+                    " . cDb::getTableName('cat_art') . " as A,
+                    " . cDb::getTableName('art_lang') . " as B,
+                    " . cDb::getTableName('cat_lang') . " as C
                 WHERE
                     " . $sSearchRange . "
                     B.idlang = '" . cSecurity::toInteger($this->lang) . "' AND
@@ -709,7 +709,7 @@ class cSearch extends cSearchBaseAbstract
                     // break at 'true', default value 'false'
                     cApiCecHook::setBreakCondition(true, false);
                     $allow = cApiCecHook::executeWhileBreakCondition(
-                        'Contenido.Frontend.CategoryAccess', $this->lang, $idcat, $this->_auth->auth['uid']
+                        'Contenido.Frontend.CategoryAccess', $this->lang, $idcat, $this->_auth->getUserId()
                     );
                     if (!$allow) {
                         continue;
@@ -732,7 +732,7 @@ class cSearch extends cSearchBaseAbstract
     public function getArticleSpecifications()
     {
         $sql = "SELECT `idartspec` FROM `%d` WHERE `client` = %d AND `lang` = %d AND `online` = 1";
-        $sql = $this->db->prepare($sql, cRegistry::getDbTableName('art_spec'), $this->client, $this->lang);
+        $sql = $this->db->prepare($sql, cDb::getTableName('art_spec'), $this->client, $this->lang);
         $this->_debug('sql', $sql);
         $this->db->query($sql);
 
@@ -769,7 +769,7 @@ class cSearch extends cSearchBaseAbstract
         }
 
         $sql = "SELECT `idartspec` FROM `%d` WHERE `client` = %d AND `artspec` = '%s'";
-        $sql = $this->db->prepare($sql, cRegistry::getDbTableName('art_spec'), $this->client, $sArtSpecName);
+        $sql = $this->db->prepare($sql, cDb::getTableName('art_spec'), $this->client, $sArtSpecName);
         $this->_debug('sql', $sql);
         $this->db->query($sql);
         while ($this->db->nextRecord()) {
@@ -819,7 +819,7 @@ class cSearch extends cSearchBaseAbstract
     }
 
     /**
-     * Prepares the passed list of search-terms for the usage in SQL operators.
+     * Prepares the provided list of search-terms for the usage in SQL operators.
      *
      * @param array $searchWords
      * @return array

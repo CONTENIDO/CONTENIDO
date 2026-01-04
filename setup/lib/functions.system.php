@@ -28,23 +28,23 @@ function checkExistingPlugin(cDb $db, string $pluginName): bool
         return true;
     }
 
-    $sTable = cRegistry::getDbTableName('nav_sub');
+    $sTable = cDb::getTableName('nav_sub');
 
     switch ($pluginName) {
         case 'plugin_cronjob_overview':
-            $sSql = "SELECT * FROM `%s` WHERE idnavs=950";
+            $sSql = "SELECT * FROM `%s` WHERE `idnavs` = 950";
             break;
         case 'plugin_conman':
-            $sSql = "SELECT * FROM `%s` WHERE idnavs=900";
+            $sSql = "SELECT * FROM `%s` WHERE `idnavs` = 900";
             break;
         case 'plugin_content_allocation':
-            $sSql = "SELECT * FROM `%s` WHERE idnavs=800";
+            $sSql = "SELECT * FROM `%s` WHERE `idnavs` = 800";
             break;
         case 'plugin_newsletter':
-            $sSql = "SELECT * FROM `%s` WHERE idnavs=610";
+            $sSql = "SELECT * FROM `%s` WHERE `idnavs` = 610";
             break;
         case 'plugin_mod_rewrite':
-            $sSql = "SELECT * FROM `%s` WHERE idnavs=700 OR location='mod_rewrite/xml/;navigation/content/mod_rewrite'";
+            $sSql = "SELECT * FROM `%s` WHERE `idnavs` = 700 OR location = 'mod_rewrite/xml/;navigation/content/mod_rewrite'";
             break;
         default:
             $sSql = '';
@@ -146,7 +146,7 @@ function getContenidoVersion(cDb $db, string $table)
     $db->query("SELECT `value` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'", $table);
 
     if ($db->nextRecord()) {
-        return $db->f("value");
+        return $db->f('value');
     } else {
         return false;
     }
@@ -191,7 +191,7 @@ function listClients(cDb $db, string $table)
     while ($db->nextRecord()) {
         $idClient = cSecurity::toInteger($db->f('idclient'));
         $clients[$idClient] = [
-            "name" => $db->f("name"),
+            "name" => $db->f('name'),
             "frontendpath" => $cfgClient[$idClient]['path']['frontend'],
             "htmlpath" => $cfgClient[$idClient]['path']['htmlpath'],
         ];
@@ -241,21 +241,21 @@ function getSystemDirectories(bool $originalPath = false): array
 {
     $rootPath = stripLastSlash(CON_FRONTEND_PATH);
 
-    $rootHttpPath = dirname($_SERVER["REQUEST_URI"], 2);
+    $rootHttpPath = dirname($_SERVER['REQUEST_URI'], 2);
     $rootHttpPath = str_replace("\\", "/", $rootHttpPath);
 
     $port = "";
     $protocol = "http://";
 
-    if ($_SERVER["SERVER_PORT"] != 80) {
-        if ($_SERVER["SERVER_PORT"] == 443) {
+    if ($_SERVER['SERVER_PORT'] != 80) {
+        if ($_SERVER['SERVER_PORT'] == 443) {
             $protocol = "https://";
         } else {
-            $port = ":" . $_SERVER["SERVER_PORT"];
+            $port = ":" . $_SERVER['SERVER_PORT'];
         }
     }
 
-    $rootHttpPath = $protocol . $_SERVER["SERVER_NAME"] . $port . $rootHttpPath;
+    $rootHttpPath = $protocol . $_SERVER['SERVER_NAME'] . $port . $rootHttpPath;
 
     if (cString::getPartOfString($rootHttpPath, cString::getStringLength($rootHttpPath) - 1, 1) == "/") {
         $rootHttpPath = cString::getPartOfString($rootHttpPath, 0, cString::getStringLength($rootHttpPath) - 1);

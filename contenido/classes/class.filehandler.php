@@ -40,7 +40,7 @@ class cFileHandler
      * @return bool true on success, false on fail.
      * @throws cInvalidArgumentException
      */
-    public static function create(string $filename, mixed $content = ''): bool
+    public static function create(string $filename, $content = ''): bool
     {
         $success = file_put_contents($filename, $content) === cString::getStringLength($content);
         if ($success) {

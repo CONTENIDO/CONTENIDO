@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiFrontendGroupMember createNewItem
- * @method cApiFrontendGroupMember|bool next
+ * @extends ItemCollection<cApiFrontendGroupMember>
  */
 class cApiFrontendGroupMemberCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('frontendgroupmembers'), 'idfrontendgroupmember');
+        parent::__construct(cDb::getTableName('frontendgroupmembers'), 'idfrontendgroupmember');
         $this->_setItemClass('cApiFrontendGroupMember');
 
         // set the join partners so that joins can be used via link() method
@@ -99,11 +98,11 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
      */
     public function getUsersInGroup($idfrontendgroup, bool $asObjects = true): array
     {
-        $this->select(sprintf('idfrontendgroup = %d', $idfrontendgroup));
+        $this->select(sprintf('`idfrontendgroup` = %d', $idfrontendgroup));
 
         $objects = [];
 
-        while (($item = $this->next()) !== false) {
+        while ($item = $this->next()) {
             if ($asObjects) {
                 $user = new cApiFrontendUser();
                 $user->loadByPrimaryKey($item->get('idfrontenduser'));
@@ -133,7 +132,7 @@ class cApiFrontendGroupMember extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('frontendgroupmembers'), 'idfrontendgroupmember');
+        parent::__construct(cDb::getTableName('frontendgroupmembers'), 'idfrontendgroupmember');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }

@@ -128,17 +128,17 @@ abstract class cAuth
      * Magic getter function for outdated variable names.
      *
      * @param string $name Name of the variable
-     * @return int|string|void
+     * @return int|string|null
      */
     public function __get(string $name)
     {
         if ($name === 'lifetime') {
             return $this->_lifetime;
-        }
-
-        if ($name === 'classname') {
+        } elseif ($name === 'classname') {
             return get_class($this);
         }
+
+        return null;
     }
 
     /**
@@ -154,7 +154,7 @@ abstract class cAuth
 
         if ($this->isAuthenticated()) {
             $userId = $this->getUserId();
-            if ($userId == self::AUTH_UID_FORM) {
+            if ($userId === self::AUTH_UID_FORM) {
                 $userId = $this->validateCredentials();
                 if ($userId !== false) {
                     $this->_setAuthInfo($userId);
@@ -162,7 +162,7 @@ abstract class cAuth
                 } else {
                     $this->_fetchLoginForm();
                 }
-            } elseif ($userId != self::AUTH_UID_NOBODY) {
+            } elseif ($userId !== self::AUTH_UID_NOBODY) {
                 $this->_setExpiration();
             }
         } else {
@@ -202,6 +202,7 @@ abstract class cAuth
     public function resetAuthInfo($nobody = false)
     {
         $this->auth['uid'] = $nobody ? self::AUTH_UID_NOBODY : '';
+        $this->auth['uname'] = $nobody ? self::AUTH_UID_NOBODY : '';
         $this->auth['perm'] = '';
         $this->_setExpiration($nobody ? 0x7fffffff : 0);
     }
@@ -218,7 +219,7 @@ abstract class cAuth
         $sess->unregister('auth');
         unset($this->auth['uname']);
 
-        $this->resetAuthInfo(!$nobody ? $this->_defaultNobody : $nobody);
+        $this->resetAuthInfo($nobody ? $nobody : $this->_defaultNobody);
         $sess->freeze();
 
         return true;
@@ -235,7 +236,7 @@ abstract class cAuth
     /**
      * Checks, if user is authenticated (NOT logged in!).
      *
-     * @return bool|string The userid if the user is authenticated, otherwhise fdalse.
+     * @return bool|string The userid if the user is authenticated, otherwise false.
      */
     public function isAuthenticated()
     {
@@ -268,7 +269,7 @@ abstract class cAuth
     }
 
     /**
-     * Returns the user name of the currently authenticated user
+     * Returns the username of the currently authenticated user
      */
     public function getUsername(): string
     {

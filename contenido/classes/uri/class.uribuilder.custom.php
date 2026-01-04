@@ -70,12 +70,12 @@ class cUriBuilderCustom extends cUriBuilder
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = [])
     {
-        if (sizeof($aParams) == 0) {
+        if (count($aParams) == 0) {
             throw new cInvalidArgumentException('$aParams must have at least one entry!');
         }
         // if no config passed or not all parameters available, use default
         // config
-        if (sizeof($aConfig) == 0 || !isset($aConfig['prefix']) || !isset($aConfig['suffix']) || !isset($aConfig['separator'])) {
+        if (count($aConfig) == 0 || !isset($aConfig['prefix']) || !isset($aConfig['suffix']) || !isset($aConfig['separator'])) {
             include_once('class.uribuilder.config.php');
             $aConfig = cUriBuilderConfig::getConfig();
         }

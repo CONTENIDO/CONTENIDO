@@ -493,7 +493,7 @@ if ($selectedArticle != NULL) {
 }
 
 if ($code == "0601") {
-    markSubMenuItem("1");
+    markSubMenuItem('1');
     $code = "<script type='text/javascript'>location.href = '" . $backendUrl . "main.php?frame=4&area=con_editart&action=con_edit&idart=" . $idart . "&idcat=" . $idcat . "&contenido=" . $contenido . "'; /*console.log(location.href);*/</script>";
 } else {
     // Inject some additional markup

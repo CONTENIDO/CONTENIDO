@@ -168,7 +168,7 @@ class cLog
         if (!$writer) {
             $createWriter = true;
         } elseif (!is_object($writer) || !($writer instanceof cLogWriter)) {
-            cWarning(__FILE__, __LINE__, 'The passed class is not a subclass of cLogWriter. Creating new one.');
+            cWarning(__FILE__, __LINE__, 'The provided class is not a subclass of cLogWriter. Creating new one.');
             $createWriter = true;
         }
 
@@ -221,7 +221,7 @@ class cLog
      */
     public function setShortcutHandler(string $shortcut, $handler): bool
     {
-        if ($shortcut == '') {
+        if (empty($shortcut)) {
             throw new cInvalidArgumentException('The shortcut name must not be empty.');
         }
 
@@ -270,14 +270,11 @@ class cLog
     }
 
     /**
-     * Commits all buffered messages and empties the message buffer if
-     * parameter is not false.
+     * Commits all buffered messages and empties the message buffer if parameter is not false.
      *
      * @param bool $revoke Flag, whether the buffer is cleared or not (optional, default: true)
-     * @return bool|void
-     * @throws cInvalidArgumentException
      */
-    public function commit(bool $revoke = true)
+    public function commit(bool $revoke = true): bool
     {
         if (count($this->_buffer) == 0) {
             cWarning(__FILE__, __LINE__, 'There are no buffered messages to commit.');
@@ -291,6 +288,8 @@ class cLog
         if ($revoke) {
             $this->revoke();
         }
+
+        return true;
     }
 
     /**
@@ -347,7 +346,7 @@ class cLog
      */
     public function addPriority(string $name, int $value)
     {
-        if ($name == '') {
+        if (empty($name)) {
             throw new cInvalidArgumentException('Priority name must not be empty.');
         }
 
@@ -371,7 +370,7 @@ class cLog
      */
     public function removePriority(string $name)
     {
-        if ($name == '') {
+        if (empty($name)) {
             throw new cInvalidArgumentException('Priority name must not be empty.');
         }
 
@@ -395,7 +394,7 @@ class cLog
      * @param array $arguments Array with the method arguments
      * @throws cInvalidArgumentException If the given priority is not supported
      */
-    public function __call($method, $arguments)
+    public function __call(string $method, array $arguments)
     {
         $priorityName = cString::toUpperCase($method);
 
@@ -424,7 +423,6 @@ class cLog
      * Returns the canonical name of the priority.
      * The canonical name is padded to 10 characters to achieve a better formatting.
      *
-     * @param array $info
      * @return string The canonical log level
      */
     public function shLevel(array $info): string
@@ -437,7 +435,6 @@ class cLog
      * Shortcut Handler Message.
      * Returns the log message.
      *
-     * @param array $info
      * @return string The log message
      */
     public function shMessage(array $info): string

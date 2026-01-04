@@ -33,10 +33,10 @@ class cApiPathresolveCacheHelper
     /**
      * Checks configuration of heap table creation, its existence and creates it if needed.
      *
-     * @param array $cfg Global CONTENIDO config array
+     * @param array $cfg The CONTENIDO configuration array
      * @throws cDbException
      */
-    public static function setup($cfg)
+    public static function setup(array $cfg)
     {
         if (isset($cfg['pathresolve_heapcache']) && true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
             $db = cRegistry::getDb();
@@ -71,8 +71,7 @@ class cApiPathresolveCacheHelper
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiPathresolveCache createNewItem
- * @method cApiPathresolveCache|bool next
+ * @extends ItemCollection<cApiPathresolveCache>
  */
 class cApiPathresolveCacheCollection extends ItemCollection
 {
@@ -142,7 +141,7 @@ class cApiPathresolveCacheCollection extends ItemCollection
     {
         $where = $this->db->prepare('idcat = %d AND idlang = %d', $idcat, $idlang);
         $this->select($where);
-        while (($oCode = $this->next()) !== false) {
+        while ($oCode = $this->next()) {
             $this->delete($oCode->get('idpathresolvecache'));
         }
     }

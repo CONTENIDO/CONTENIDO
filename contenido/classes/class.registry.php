@@ -595,6 +595,7 @@ class cRegistry
 
     /**
      * Return the global CONTENIDO Execution Chain Registry.
+     * @deprecated [2026-01-01] Since 4.10.2, use {@see cApiCecRegistry::getInstance()} instead!
      */
     public static function getCecRegistry(): cApiCecRegistry
     {

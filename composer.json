@@ -15,7 +15,11 @@
         "sort-packages": true
     },
     "require-dev": {
-        "phpunit/phpunit": "^8"
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.2",
+        "phpcompatibility/php-compatibility": "^9.3",
+        "phpstan/phpstan": "^1.12",
+        "phpunit/phpunit": "^8",
+        "rector/rector": "^1.2"
     },
     "require": {
         "ext-bcmath": "*",

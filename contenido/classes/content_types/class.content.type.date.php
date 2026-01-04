@@ -321,7 +321,7 @@ class cContentTypeDate extends cContentTypeAbstract
         $value = !empty($this->getSetting('date_timestamp'))
             ? date($format, $this->getSetting('date_timestamp')) : '';
         $code = new cHTMLTextbox(
-            'date_timestamp_' . $this->_id, $value, '', '',
+            'date_timestamp_' . $this->_id, $value, 0, 0,
             '', true, '', '', 'date_timestamp'
         );
 

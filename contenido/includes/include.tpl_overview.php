@@ -66,7 +66,7 @@ $copyLink = $copyLink->setClass('con_img_button')
     ->setAttribute('data-action', 'duplicate_template')
     ->setContent(cHTMLImage::img($cfg['path']['images'] . 'but_copy.gif', i18n('Duplicate template')));
 
-while (($template = $templateColl->next()) !== false) {
+while ($template = $templateColl->next()) {
     if (is_null($hasCommonTplRights)) {
         $hasCommonTplRights = (
             $perm->have_perm_area_action('tpl', 'tpl_delete') ||

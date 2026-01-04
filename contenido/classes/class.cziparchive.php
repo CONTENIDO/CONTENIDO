@@ -24,7 +24,6 @@ class cZipArchive
      * Read all files from given path excluding files which names start with a
      * dot or are not valid according to CONTENIDO standards (validateFilename()).
      *
-     * @param string $dirPath
      * @return array List of files
      * @throws cInvalidArgumentException|cException
      * @see cFileHandler::validateFilename()

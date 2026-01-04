@@ -32,7 +32,7 @@ class ArticleForumItem extends Item
         $this->db = cRegistry::getDb();
         $this->cfg = cRegistry::getConfig();
 
-        parent::__construct($this->cfg['tab']['user_forum'], 'id_user_forum');
+        parent::__construct(cDb::getTableName('user_forum'), 'id_user_forum');
     }
 
     /**

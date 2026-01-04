@@ -62,8 +62,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiProperty createNewItem
- * @method cApiProperty|bool next
+ * @extends ItemCollection<cApiProperty>
  */
 class cApiPropertyCollection extends ItemCollection
 {
@@ -119,7 +118,7 @@ class cApiPropertyCollection extends ItemCollection
         }
 
         $this->client = cSecurity::toInteger($idclient);
-        parent::__construct(cRegistry::getDbTableName('properties'), 'idproperty');
+        parent::__construct(cDb::getTableName('properties'), 'idproperty');
         $this->_setItemClass('cApiProperty');
 
         // set the join partners so that joins can be used via link() method
@@ -191,7 +190,7 @@ class cApiPropertyCollection extends ItemCollection
         $item->set('value', $value);
 
         $item->set('created', date('Y-m-d H:i:s'), false);
-        $item->set('author', $auth->auth['uid']);
+        $item->set('author', $auth->getUserId());
         $item->store();
 
         if ($this->_useCache($itemtype, $itemid)) {
@@ -232,7 +231,7 @@ class cApiPropertyCollection extends ItemCollection
         }
         $this->select($sql);
 
-        if (false !== $item = $this->next()) {
+        if (($item = $this->next()) !== false) {
             return cSecurity::unescapeDB($item->get('value'));
         }
 
@@ -270,7 +269,7 @@ class cApiPropertyCollection extends ItemCollection
         }
         $this->select($sql);
 
-        while (($item = $this->next()) !== false) {
+        while ($item = $this->next()) {
             $aResult[$item->get('name')] = cSecurity::unescapeDB($item->get('value'));
         }
 
@@ -297,7 +296,7 @@ class cApiPropertyCollection extends ItemCollection
 
         $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
         $this->select($sql);
-        while (($item = $this->next()) !== false) {
+        while ($item = $this->next()) {
             $aResult[] = cSecurity::unescapeDB($item->get('value'));
         }
 
@@ -431,7 +430,7 @@ class cApiPropertyCollection extends ItemCollection
         // @TODO The initial value of $result[$itemid] should be an empty array, but this breaks the compatibility
         $result[$itemid] = false;
 
-        while (($item = $this->next()) !== false) {
+        while ($item = $this->next()) {
             // Fix automatic conversion of false to array warning, see initial value above!
             if ($result[$itemid] === false) {
                 $result[$itemid] = [];
@@ -461,8 +460,8 @@ class cApiPropertyCollection extends ItemCollection
     public function getAllValues($field, $fieldValue, $auth = NULL): array
     {
         $authString = '';
-        if (!is_null($auth) && is_object($auth) && sizeof($auth->auth) > 0) {
-            $authString .= " AND `author` = '" . $this->db->escape($auth->auth["uid"]) . "'";
+        if (!is_null($auth) && is_object($auth) && count($auth->getAuthInfo()) > 0) {
+            $authString .= " AND `author` = '" . $this->db->escape($auth->getUserId()) . "'";
         }
 
         $field = $this->db->escape($field);
@@ -476,7 +475,7 @@ class cApiPropertyCollection extends ItemCollection
         }
 
         $retValue = [];
-        while (($item = $this->next()) !== false) {
+        while ($item = $this->next()) {
             $dbLine = [
                 'idproperty' => $item->get('idproperty'),
                 'idclient' => $item->get('idclient'),
@@ -585,7 +584,7 @@ class cApiPropertyCollection extends ItemCollection
         $where = "`idclient` = " . $this->client . ' AND ' . implode(' OR ', $where);
         $this->select($where);
         /** @var cApiUserProperty $property */
-        while (($property = $this->next()) !== false) {
+        while ($property = $this->next()) {
             $this->_addToCache($property);
         }
     }
@@ -766,7 +765,7 @@ class cApiProperty extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('properties'), 'idproperty');
+        parent::__construct(cDb::getTableName('properties'), 'idproperty');
 
         // Initialize maximum lengths for each column
         $this->maximumLength = [
@@ -791,7 +790,7 @@ class cApiProperty extends Item
         $auth = cRegistry::getAuth();
 
         $this->set('modified', date('Y-m-d H:i:s'), false);
-        $this->set('modifiedby', $auth->auth['uid']);
+        $this->set('modifiedby', $auth->getUserId());
 
         return parent::store();
     }

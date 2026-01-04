@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiContainerConfiguration createNewItem
- * @method cApiContainerConfiguration|bool next
+ * @extends ItemCollection<cApiContainerConfiguration>
  */
 class cApiContainerConfigurationCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiContainerConfigurationCollection extends ItemCollection
      */
     public function __construct($select = false)
     {
-        $table = cRegistry::getDbTableName('container_conf');
+        $table = cDb::getTableName('container_conf');
         parent::__construct($table, 'idcontainerc');
         $this->_setItemClass('cApiContainerConfiguration');
 
@@ -76,7 +75,7 @@ class cApiContainerConfigurationCollection extends ItemCollection
     {
         $configuration = [];
         $this->select('idtplcfg = ' . cSecurity::toInteger($idtplcfg), '', 'number ASC');
-        while (($item = $this->next()) !== false) {
+        while ($item = $this->next()) {
             $configuration[cSecurity::toInteger($item->get('number'))] = $item->get('container');
         }
         return $configuration;
@@ -99,7 +98,7 @@ class cApiContainerConfiguration extends Item
      */
     public function __construct($id = false)
     {
-        $table = cRegistry::getDbTableName('container_conf');
+        $table = cDb::getTableName('container_conf');
         parent::__construct($table, 'idcontainerc');
         $this->setFilters();
         if ($id !== false) {
@@ -133,9 +132,7 @@ class cApiContainerConfiguration extends Item
      */
     public static function addContainerValue($container, $key, $value): string
     {
-        $container .= $key . '=' . urlencode(stripslashes($value)) . '&';
-
-        return $container;
+        return $container . $key . '=' . urlencode(stripslashes($value)) . '&';
     }
 
     /**

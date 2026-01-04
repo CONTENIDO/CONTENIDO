@@ -136,7 +136,7 @@ abstract class cUpgradeJobAbstract
         $oClientColl->select();
 
         $aClients = [];
-        while (($oClient = $oClientColl->next()) !== false) {
+        while ($oClient = $oClientColl->next()) {
             $obj = clone $oClient;
             $aClients[$obj->get('idclient')] = $obj;
         }
@@ -153,7 +153,7 @@ abstract class cUpgradeJobAbstract
         $oLanguageColl->select();
 
         $aLanguages = [];
-        while (($oLang = $oLanguageColl->next()) !== false) {
+        while ($oLang = $oLanguageColl->next()) {
             $obj = clone $oLang;
             $aLanguages[$obj->get('idlang')] = $obj;
         }

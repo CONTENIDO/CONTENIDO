@@ -64,7 +64,7 @@ $cfgConCache['idoptions'] = [
     'uri'  => &$_SERVER['REQUEST_URI'],
     'post' => &$_POST,
     'get'  => &$_GET,
-    'auth' => &$auth->auth['perm']
+    'auth' => &$auth->getPerms()
 ];
 
 /**

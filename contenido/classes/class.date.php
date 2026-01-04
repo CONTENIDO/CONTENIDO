@@ -300,7 +300,7 @@ class cDate
         // Log deprecation once to not flood the log file
         if (!$deprecationLogged) {
             cDeprecated('The function `strftime()` is deprecated as of PHP 8.1.0, '
-                . 'and the passed format string was detected as a `strftime()` format. '
+                . 'and the provided format string was detected as a `strftime()` format. '
                 . 'The `date()` function will be used as a fallback, but without '
                 . 'localization support.');
             $deprecationLogged = true;

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Newsletter
- * @method NewsletterLog createNewItem
- * @method NewsletterLog|bool next
+ * @extends ItemCollection<NewsletterLog>
  */
 class NewsletterLogCollection extends ItemCollection
 {
@@ -31,24 +30,23 @@ class NewsletterLogCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('news_log'), 'idnewslog');
-        $this->_setItemClass("NewsletterLog");
+        parent::__construct(cDb::getTableName('news_log'), 'idnewslog');
+        $this->_setItemClass('NewsletterLog');
     }
 
     /**
      * Creates a single new log item
      *
-     * @param $idnewsjob integer ID of corresponding newsletter send job
-     * @param $idnewsrcp integer ID of recipient
-     *
-     * @return bool|Item
+     * @param int $idnewsjob ID of corresponding newsletter send job
+     * @param int $idnewsrcp ID of recipient
+     * @return NewsletterLog|false
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idnewsjob, $idnewsrcp)
     {
         $this->resetQuery();
-        $this->setWhere("idnewsjob", $idnewsjob);
-        $this->setWhere("idnewsrcp", $idnewsrcp);
+        $this->setWhere('idnewsjob', $idnewsjob);
+        $this->setWhere('idnewsrcp', $idnewsrcp);
         $this->query();
 
         if ($oItem = $this->next()) {
@@ -59,23 +57,23 @@ class NewsletterLogCollection extends ItemCollection
         if ($oRecipient->loadByPrimaryKey($idnewsrcp)) {
             $oItem = $this->createNewItem();
 
-            $oItem->set("idnewsjob", $idnewsjob);
-            $oItem->set("idnewsrcp", $idnewsrcp);
+            $oItem->set('idnewsjob', $idnewsjob);
+            $oItem->set('idnewsrcp', $idnewsrcp);
 
-            $sEMail = $oRecipient->get("email");
-            $sName = $oRecipient->get("name");
+            $sEMail = $oRecipient->get('email');
+            $sName = $oRecipient->get('name');
 
-            if ($sName == "") {
-                $oItem->set("rcpname", $sEMail);
+            if ($sName == '') {
+                $oItem->set('rcpname', $sEMail);
             } else {
-                $oItem->set("rcpname", $sName);
+                $oItem->set('rcpname', $sName);
             }
 
-            $oItem->set("rcpemail", $sEMail);
-            $oItem->set("rcphash", $oRecipient->get("hash"));
-            $oItem->set("rcpnewstype", $oRecipient->get("news_type"));
-            $oItem->set("status", "pending");
-            $oItem->set("created", date('Y-m-d H:i:s'), false);
+            $oItem->set('rcpemail', $sEMail);
+            $oItem->set('rcphash', $oRecipient->get('hash'));
+            $oItem->set('rcpnewstype', $oRecipient->get('news_type'));
+            $oItem->set('status', "pending");
+            $oItem->set('created', date('Y-m-d H:i:s'), false);
             $oItem->store();
 
             return $oItem;
@@ -101,9 +99,9 @@ class NewsletterLogCollection extends ItemCollection
 
         $oNewsletter = new Newsletter();
         if ($oNewsletter->loadByPrimaryKey($idnews)) {
-            $sDestination = $oNewsletter->get("send_to");
-            $iIDClient = $oNewsletter->get("idclient");
-            $iIDLang = $oNewsletter->get("idlang");
+            $sDestination = $oNewsletter->get('send_to');
+            $iIDClient = $oNewsletter->get('idclient');
+            $iIDLang = $oNewsletter->get('idlang');
             $nrc = new NewsletterRecipientCollection();
             $nrcClassName = cString::toLowerCase(get_class($nrc));
 
@@ -115,24 +113,24 @@ class NewsletterLogCollection extends ItemCollection
                     break;
                 case "default":
                     $sDistinct = "distinct";
-                    $sFrom = cRegistry::getDbTableName('news_groups') . " AS groups, " . cRegistry::getDbTableName('news_groupmembers') . " AS groupmembers ";
+                    $sFrom = cDb::getTableName('news_groups') . " AS groups, " . cDb::getTableName('news_groupmembers') . " AS groupmembers ";
                     $sSQL = $nrcClassName . ".idclient = '" . $iIDClient . "' AND " . $nrcClassName . ".idlang = '" . $iIDLang . "' AND " . $nrcClassName . ".deactivated = '0' AND " . $nrcClassName . ".confirmed = '1' AND " . $nrcClassName . ".idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup = groups.idnewsgroup AND " . "groups.defaultgroup = '1' AND groups.idclient = '" . $iIDClient . "' AND " . "groups.idlang = '" . $iIDLang . "'";
                     break;
                 case "selection":
-                    $aGroups = unserialize($oNewsletter->get("send_ids"));
+                    $aGroups = unserialize($oNewsletter->get('send_ids'));
 
                     if (is_array($aGroups) && count($aGroups) > 0) {
                         $sGroups = "'" . implode("','", $aGroups) . "'";
 
                         $sDistinct = "distinct";
-                        $sFrom = cRegistry::getDbTableName('news_groupmembers') . " AS groupmembers ";
+                        $sFrom = cDb::getTableName('news_groupmembers') . " AS groupmembers ";
                         $sSQL = "newsletterrecipientcollection.idclient = '" . $iIDClient . "' AND newsletterrecipientcollection.idlang = '" . $iIDLang . "' AND newsletterrecipientcollection.deactivated = '0' AND newsletterrecipientcollection.confirmed = '1' AND newsletterrecipientcollection.idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup IN (" . $sGroups . ")";
                     } else {
                         $sDestination = "unknown";
                     }
                     break;
                 case "single":
-                    $iID = $oNewsletter->get("send_ids");
+                    $iID = $oNewsletter->get('send_ids');
                     if (is_numeric($iID)) {
                         $sDistinct = "";
                         $sFrom = "";
@@ -166,37 +164,33 @@ class NewsletterLogCollection extends ItemCollection
     }
 
     /**
-     * Overridden delete function to update recipient count if removing recipient
-     * from the list
+     * Overridden delete function to update recipient count if removing recipient from the list
      *
-     * @param int $idnewslog ID
+     * @inheritDoc
+     * @param int $id ID
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function delete($idnewslog)
+    public function delete($id)
     {
-        $idnewslog = cSecurity::toInteger($idnewslog);
+        $id = cSecurity::toInteger($id);
 
-        $oLog = new NewsletterLog($idnewslog);
-        $iIDNewsJob = $oLog->get("idnewsjob");
-        unset($oLog);
+        $newsletterJobId = (new NewsletterLog($id))->get('idnewsjob');
 
-        $oJob = new NewsletterJob($iIDNewsJob);
-        $oJob->set("rcpcount", $oJob->get("rcpcount") - 1);
-        $oJob->store();
-        unset($oJob);
+        $newsletterJob = new NewsletterJob($newsletterJobId);
+        $newsletterJob->set('rcpcount', $newsletterJob->get('rcpcount') - 1);
+        $newsletterJob->store();
 
-        parent::delete($idnewslog);
+        return parent::delete($id);
     }
 
     /**
-     * @param $idnewsjob
-     *
+     * @param int $id
      * @return bool
      * @throws cException
      */
-    public function deleteJob($idnewsjob)
+    public function deleteJob($id)
     {
-        $idnewsjob = cSecurity::toInteger($idnewsjob);
-        $this->setWhere("idnewsjob", $idnewsjob);
+        $this->setWhere('idnewsjob', cSecurity::toInteger($id));
         $this->query();
 
         while ($oItem = $this->next()) {
@@ -221,7 +215,7 @@ class NewsletterLog extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('news_log'), 'idnewslog');
+        parent::__construct(cDb::getTableName('news_log'), 'idnewslog');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }

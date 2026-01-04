@@ -88,7 +88,7 @@ class cGuiNavigation
      * Magic getter function for outdated variable names.
      *
      * @param string $name Name of the variable
-     * @return int|string|void
+     * @return int|string|null
      */
     public function __get(string $name)
     {
@@ -96,6 +96,8 @@ class cGuiNavigation
             cDeprecated("The property `' . $name . '` is deprecated since CONTENIDO 4.10.2, it isd not meant for public usage.");
             return $this->{$name};
         }
+
+        return null;
     }
 
     /**
@@ -177,7 +179,7 @@ class cGuiNavigation
 
         // First, load main items
         $sql = "SELECT `idnavm`, `location` FROM `%s` ORDER BY `idnavm`";
-        $db->query($sql, cRegistry::getDbTableName('nav_main'));
+        $db->query($sql, cDb::getTableName('nav_main'));
         while ($db->nextRecord()) {
             $idNavM = cSecurity::toInteger($db->f('idnavm'));
             $this->data[$idNavM] = [$this->getName($db->f('location'))];
@@ -188,8 +190,8 @@ class cGuiNavigation
         $sql = "SELECT
                     a.idnavm AS idnavm, a.location AS location, b.name AS area, b.relevant
                 FROM
-                    `" . cRegistry::getDbTableName('nav_sub') . "` AS a,
-                    `" . cRegistry::getDbTableName('area') . "` AS b
+                    `" . cDb::getTableName('nav_sub') . "` AS a,
+                    `" . cDb::getTableName('area') . "` AS b
                 WHERE
                     a.idnavm IN (" . $inSql . ") AND
                     a.level  = 0 AND
@@ -346,7 +348,7 @@ class cGuiNavigation
         }
 
         $auth = cRegistry::getAuth();
-        $oUser = new cApiUser($auth->auth["uid"]);
+        $oUser = new cApiUser($auth->getUserId());
 
         if (getEffectiveSetting('system', 'clickmenu') == 'true') {
             // set click menu
@@ -424,7 +426,7 @@ class cGuiNavigation
         $counter = 0;
 
         if ($availableLanguages->count() > 0) {
-            while (($myLang = $availableLanguages->nextAccessible()) !== NULL) {
+            while ($myLang = $availableLanguages->nextAccessible()) {
                 $languageId = cSecurity::toInteger($myLang->get('idlang'));
                 $languageName = $this->_truncateSelectOption($myLang->get('name'));
 
@@ -544,7 +546,7 @@ class cGuiNavigation
             $sClientUrl = cRegistry::getFrontendUrl();
             $frontendPath = cRegistry::getFrontendPath();
 
-            if ($clientImage !== false && $clientImage != "" && cFileHandler::exists($frontendPath . $clientImage)) {
+            if ($clientImage !== false && $clientImage != '' && cFileHandler::exists($frontendPath . $clientImage)) {
                 $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" style="height: 15px;">';
 
                 $sThumbnailPath = cApiImgScale($frontendPath . $clientImage, 80, 25, 0, 1);

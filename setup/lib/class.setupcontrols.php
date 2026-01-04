@@ -57,17 +57,17 @@ class cHTMLAlphaImage extends cHTMLImage
     {
         $imageLocations = "this.imgnormal = '%s'; this.imgover = '%s'; this.clickimgnormal = '%s'; this.clickimgover = '%s';";
 
-        $this->attachEventDefinition("imagelocs", "onload", sprintf($imageLocations, $this->getAttribute('src'), $this->_sMouseoverSrc, $this->_sClickImage, $this->_sMouseoverClickImage));
+        $this->attachEventDefinition('imagelocs', 'onload', sprintf($imageLocations, $this->getAttribute('src'), $this->_sMouseoverSrc, $this->_sClickImage, $this->_sMouseoverClickImage));
 
-        if ($this->_sMouseoverSrc != "") {
-            if ($this->_sClickImage != "") {
-                $this->attachEventDefinition("click", "onclick", "clickHandler(this);");
-                $this->attachEventDefinition("mouseover", "onmouseover", "mouseoverHandler(this);");
-                $this->attachEventDefinition("mouseover", "onmouseout", "mouseoutHandler(this);");
+        if ($this->_sMouseoverSrc != '') {
+            if ($this->_sClickImage != '') {
+                $this->attachEventDefinition('click', 'onclick', "clickHandler(this);");
+                $this->attachEventDefinition('mouseover', 'onmouseover', "mouseoverHandler(this);");
+                $this->attachEventDefinition('mouseover', 'onmouseout', "mouseoutHandler(this);");
             } else {
                 $sMouseScript = 'this.src=\'%1$s\';';
-                $this->attachEventDefinition("mouseover", "onmouseover", sprintf($sMouseScript, $this->_sMouseoverSrc));
-                $this->attachEventDefinition("mouseover", "onmouseout", sprintf($sMouseScript, $this->getAttribute('src')));
+                $this->attachEventDefinition('mouseover', 'onmouseover', sprintf($sMouseScript, $this->_sMouseoverSrc));
+                $this->attachEventDefinition('mouseover', 'onmouseout', sprintf($sMouseScript, $this->getAttribute('src')));
             }
         }
 
@@ -98,7 +98,7 @@ class cHTMLErrorMessageList extends cHTMLDiv
         $this->_oTable = new cHTMLTable();
         $this->_oTable->setWidth("100%");
         parent::__construct();
-        $this->setClass("errorlist");
+        $this->setClass('errorlist');
     }
 
     public function setContent($content)
@@ -176,26 +176,26 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow
 
         $alphaImage = new cHTMLAlphaImage();
         $alphaImage->advanceID();
-        $alphaImage->setClass("closer");
+        $alphaImage->setClass('closer');
         $alphaImage->setStyle('margin-top:4px;');
         $alphaImage->setSrc("images/controls/open_all.gif");
         $alphaImage->setMouseover("images/controls/open_all.gif");
         $alphaImage->setSwapOnClick("images/controls/close_all.gif", "images/controls/close_all.gif");
-        $alphaImage->attachEventDefinition("showhide", "onclick", "aldiv = document.getElementById('" . $this->_oMessage->getID() . "'); showHideMessage(this, aldiv);");
+        $alphaImage->attachEventDefinition('showhide', 'onclick', "aldiv = document.getElementById('" . $this->_oMessage->getID() . "'); showHideMessage(this, aldiv);");
 
         $this->_oTitle->setContent($title);
         $this->_oTitle->setStyle("cursor:pointer;");
-        $this->_oTitle->attachEventDefinition("showhide", "onclick", "alimg = document.getElementById('" . $alphaImage->getID() . "'); aldiv = document.getElementById('" . $this->_oMessage->getID() . "'); showHideMessage(alimg, aldiv); clickHandler(alimg);");
+        $this->_oTitle->attachEventDefinition('showhide', 'onclick', "alimg = document.getElementById('" . $alphaImage->getID() . "'); aldiv = document.getElementById('" . $this->_oMessage->getID() . "'); showHideMessage(alimg, aldiv); clickHandler(alimg);");
 
         $this->_oMessage->setContent($message);
-        $this->_oMessage->setClass("entry_closed");
+        $this->_oMessage->setClass('entry_closed');
 
         $this->_oFolding->setVerticalAlignment("top");
         $this->_oFolding->setContent($alphaImage);
-        $this->_oFolding->setClass("icon");
+        $this->_oFolding->setClass('icon');
 
         $this->_oContent->setVerticalAlignment("top");
-        $this->_oContent->setClass("entry");
+        $this->_oContent->setClass('entry');
         $this->_oContent->setContent(
             [
                 $this->_oTitle,
@@ -203,7 +203,7 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow
             ]
         );
 
-        $this->_oIcon->setClass("icon");
+        $this->_oIcon->setClass('icon');
         $this->_oIcon->setVerticalAlignment("top");
         if ($icon !== false) {
             $this->_oIconImg->setSrc($icon);
@@ -269,12 +269,12 @@ class cHTMLInfoMessage extends cHTMLTableRow
         $this->_oMessage = new cHTMLTableData();
 
         $this->_oTitle->setContent($title);
-        $this->_oTitle->setClass("entry_nowrap");
+        $this->_oTitle->setClass('entry_nowrap');
         $this->_oTitle->setAttribute("nowrap", "nowrap");
         $this->_oTitle->setWidth(1);
         $this->_oTitle->setVerticalAlignment("top");
         $this->_oMessage->setContent($message);
-        $this->_oMessage->setClass("entry_nowrap");
+        $this->_oMessage->setClass('entry_nowrap');
 
         parent::__construct();
     }
@@ -321,9 +321,9 @@ class cHTMLLanguageLink extends cHTMLDiv
         $link = new cHTMLLink("#");
         $link->setClass("nav navLabel");
         $link->setContent(conHtmlentities($langName) . "<span>&raquo;</span>");
-        $link->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = '" . conHtmlentities($setupStep) . "';");
-        $link->attachEventDefinition("languageAttach", "onclick", "document.setupform.elements.language.value = '" . conHtmlentities($langCode) . "';");
-        $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
+        $link->attachEventDefinition('stepAttach', 'onclick', "document.setupform.step.value = '" . conHtmlentities($setupStep) . "';");
+        $link->attachEventDefinition('languageAttach', 'onclick', "document.setupform.elements.language.value = '" . conHtmlentities($langCode) . "';");
+        $link->attachEventDefinition('submitAttach', 'onclick', "document.setupform.submit();");
 
         $this->setContent($link->render());
     }

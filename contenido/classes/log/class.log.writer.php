@@ -15,8 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains the main functionalities for the logging writer
- * in CONTENIDO.
+ * This class contains the main functionalities for the logging writer in CONTENIDO.
  *
  * @package    Core
  * @subpackage Log
@@ -41,8 +40,8 @@ abstract class cLogWriter
         $this->setOptions($options);
 
         // Set all default options if they were not set already
-        $this->setOption('default_priority', cLog::INFO, false);
-        $this->setOption('line_ending', PHP_EOL, false);
+        $this->setOption('default_priority', cLog::INFO);
+        $this->setOption('line_ending', PHP_EOL);
     }
 
     /**
@@ -50,11 +49,11 @@ abstract class cLogWriter
      *
      * @param string $writerName Name of the writer
      * @param array $writerOptions Options array for the writer instance
-     * @return cLogWriter Log writer instance
+     * @return cLogWriter|cLogWriterFile|object Log writer instance
      * @throws cInvalidArgumentException If the writer class with the given name does not exist
      *      or is not an instance of clogWriter
      */
-    public static function factory($writerName, array $writerOptions)
+    public static function factory(string $writerName, array $writerOptions)
     {
         $logWriterClassName = 'cLogWriter' . ucfirst($writerName);
         if (!class_exists($logWriterClassName)) {
@@ -84,7 +83,7 @@ abstract class cLogWriter
      *
      * @return array Array with all options
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->_options;
     }
@@ -96,7 +95,7 @@ abstract class cLogWriter
      * @param mixed $value Value of the option
      * @param bool $force [optional] Flag to force setting the option value (optional, default: false)
      */
-    public function setOption($option, $value, $force = false)
+    public function setOption(string $option, $value, bool $force = false)
     {
         if (!$force && isset($this->_options[$option])) {
             return;
@@ -111,7 +110,7 @@ abstract class cLogWriter
      * @param string $option Name of the option
      * @return mixed Value of the option entry
      */
-    public function getOption($option)
+    public function getOption(string $option)
     {
         return $this->_options[$option];
     }
@@ -121,7 +120,7 @@ abstract class cLogWriter
      *
      * @param string $option Name of the option
      */
-    public function removeOption($option)
+    public function removeOption(string $option)
     {
         unset($this->_options[$option]);
     }
@@ -134,5 +133,5 @@ abstract class cLogWriter
      * @param int $priority Priority of the log entry
      * @return bool State of the write process
      */
-    abstract function write($message, $priority);
+    abstract function write(string $message, int $priority): bool;
 }

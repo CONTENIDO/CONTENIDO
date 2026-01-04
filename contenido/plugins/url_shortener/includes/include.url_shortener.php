@@ -167,7 +167,7 @@ $table->appendContent($theader);
 $tbody = new cHTMLTableBody();
 
 // TODO add paging functionality via $shortUrlColl->setLimit();
-while (($shortUrl = $shortUrlColl->next()) !== false) {
+while ($shortUrl = $shortUrlColl->next()) {
     $tr = new cHTMLTableRow();
     $tr->setID('shorturl-' . $shortUrl->get('idshorturl'));
     $contents = [];

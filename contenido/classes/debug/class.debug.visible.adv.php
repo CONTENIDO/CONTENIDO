@@ -116,15 +116,15 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
      * - Type: 'debug'
      * - Name: 'debug_to_screen_align'
      * - Value: 'left' or 'right' (default is 'left')
-     * 
+     *
      * The output of the debug box can be configured for specific backend frame/frames via setting:
      * - Type: 'debug'
      * - Name: 'debug_to_screen_in_backend_frames'
-     * - Value: Comma separated list of frame numbers, e.g. 
-     *      - '1,2' (frame 1 & 2) 
+     * - Value: Comma separated list of frame numbers, e.g.
+     *      - '1,2' (frame 1 & 2)
      *      - '3,4' (frame 3 & 4)
      *      - '2,3,' (frame 2 & 3, and other frame having no number)
-     * 
+     *
      * No output happens in case of an Ajax request.
      *
      * @throws cInvalidArgumentException
@@ -204,12 +204,10 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
 
     /**
      * Implementation of Countable interface
-     *
-     * @return int
      */
     public function count(): int
     {
-        return (int)sizeof($this->_aItems);
+        return count($this->_aItems);
     }
 
     /**
@@ -250,7 +248,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable
                     return false;
                 }
             }
-        }        
+        }
 
         return true;
     }

@@ -20,8 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Newsletter
- * @method NewsletterRecipient createNewItem
- * @method NewsletterRecipient|bool next
+ * @extends ItemCollection<NewsletterRecipient>
  */
 class NewsletterRecipientCollection extends ItemCollection
 {
@@ -47,7 +46,7 @@ class NewsletterRecipientCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('news_rcp'), 'idnewsrcp');
+        parent::__construct(cDb::getTableName('news_rcp'), 'idnewsrcp');
         $this->_setItemClass('NewsletterRecipient');
     }
 
@@ -59,7 +58,7 @@ class NewsletterRecipientCollection extends ItemCollection
      * @param int $iConfirmed Specifies, if the recipient is confirmed (optional)
      * @param string $sJoinID Specifies additional recipient group ids to join (optional, e.g. 47,12,...)
      * @param int $iMessageType Specifies the message type for the recipient (0 = text, 1 = html)
-     * @return Item
+     * @return NewsletterRecipient
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($sEMail, $sName = "", $iConfirmed = 0, $sJoinID = "", $iMessageType = 0)
@@ -70,9 +69,9 @@ class NewsletterRecipientCollection extends ItemCollection
 
         // Check if the e-mail address already exists
         $email = cString::toLowerCase($sEMail); // e-mail always lower case
-        $this->setWhere("idclient", $client);
-        $this->setWhere("idlang", $lang);
-        $this->setWhere("email", $email);
+        $this->setWhere('idclient', $client);
+        $this->setWhere('idlang', $lang);
+        $this->setWhere('email', $email);
         $this->query();
 
         if ($this->next()) {
@@ -80,42 +79,42 @@ class NewsletterRecipientCollection extends ItemCollection
             return $this->create($email . "_" . cString::getPartOfString(md5(rand()), 0, 10), $sName, 0, $sJoinID, $iMessageType);
         }
         $oItem = $this->createNewItem();
-        $oItem->set("idclient", $client);
-        $oItem->set("idlang", $lang);
-        $oItem->set("name", $sName);
-        $oItem->set("email", $email);
+        $oItem->set('idclient', $client);
+        $oItem->set('idlang', $lang);
+        $oItem->set('name', $sName);
+        $oItem->set('email', $email);
         // Generating UID, 30 characters
-        $oItem->set("hash", cString::getPartOfString(md5(rand()), 0, 17) . uniqid(""));
-        $oItem->set("confirmed", $iConfirmed);
-        $oItem->set("news_type", $iMessageType);
+        $oItem->set('hash', cString::getPartOfString(md5(rand()), 0, 17) . uniqid(""));
+        $oItem->set('confirmed', $iConfirmed);
+        $oItem->set('news_type', $iMessageType);
 
         if ($iConfirmed) {
-            $oItem->set("confirmeddate", date("Y-m-d H:i:s"), false);
+            $oItem->set('confirmeddate', date('Y-m-d H:i:s'), false);
         }
-        $oItem->set("deactivated", 0);
-        $oItem->set("created", date('Y-m-d H:i:s'), false);
-        $oItem->set("author", $auth->auth["uid"]);
+        $oItem->set('deactivated', 0);
+        $oItem->set('created', date('Y-m-d H:i:s'), false);
+        $oItem->set('author', $auth->getUserId());
         $oItem->store();
 
         // Getting internal id of new recipient
-        $iIDRcp = $oItem->get("idnewsrcp");
+        $iIDRcp = $oItem->get('idnewsrcp');
 
         // Add this recipient to the default recipient group (if available)
         $oGroups = new NewsletterRecipientGroupCollection();
         $oGroupMembers = new NewsletterRecipientGroupMemberCollection();
 
-        $oGroups->setWhere("idclient", $client);
-        $oGroups->setWhere("idlang", $lang);
-        $oGroups->setWhere("defaultgroup", 1);
+        $oGroups->setWhere('idclient', $client);
+        $oGroups->setWhere('idlang', $lang);
+        $oGroups->setWhere('defaultgroup', 1);
         $oGroups->query();
 
         while ($oGroup = $oGroups->next()) {
-            $iIDGroup = $oGroup->get("idnewsgroup");
+            $iIDGroup = $oGroup->get('idnewsgroup');
             $oGroupMembers->create($iIDGroup, $iIDRcp);
         }
 
         // Add to other recipient groups as well? Do so!
-        if ($sJoinID != "") {
+        if ($sJoinID != '') {
             $aJoinID = explode(",", $sJoinID);
 
             if (count($aJoinID) > 0) {
@@ -131,19 +130,22 @@ class NewsletterRecipientCollection extends ItemCollection
     /**
      * Overridden delete method to remove recipient from groupmember table before deleting recipient
      *
-     * @param $itemID int specifies the recipient
+     * @inheritDoc
+     * @param $id int specifies the recipient
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function delete($itemID)
+    public function delete($id)
     {
-        $oAssociations = new NewsletterRecipientGroupMemberCollection();
-        $oAssociations->setWhere("idnewsrcp", $itemID);
-        $oAssociations->query();
+        $id = cSecurity::toInteger($id);
 
+        $oAssociations = new NewsletterRecipientGroupMemberCollection();
+        $oAssociations->setWhere('idnewsrcp', $id);
+        $oAssociations->query();
         while ($oItem = $oAssociations->next()) {
-            $oAssociations->delete($oItem->get("idnewsgroupmember"));
+            $oAssociations->delete($oItem->get('idnewsgroupmember'));
         }
-        parent::delete($itemID);
+
+        return parent::delete($id);
     }
 
     /**
@@ -164,14 +166,14 @@ class NewsletterRecipientCollection extends ItemCollection
         // available in MySQL V4.1.1 and above
         // Note, that, TO_DAYS or NOW may not be available in other database
         // systems than MySQL
-        $oRecipientCollection->setWhere("idclient", $client);
-        $oRecipientCollection->setWhere("idlang", $lang);
-        $oRecipientCollection->setWhere("confirmed", 0);
+        $oRecipientCollection->setWhere('idclient', $client);
+        $oRecipientCollection->setWhere('idlang', $lang);
+        $oRecipientCollection->setWhere('confirmed', 0);
         $oRecipientCollection->setWhere("(TO_DAYS(NOW()) - TO_DAYS(created))", $timeframe, ">");
         $oRecipientCollection->query();
 
         while ($oItem = $oRecipientCollection->next()) {
-            $oRecipientCollection->delete($oItem->get("idnewsrcp"));
+            $oRecipientCollection->delete($oItem->get('idnewsrcp'));
         }
         return $oRecipientCollection->count();
     }
@@ -189,9 +191,9 @@ class NewsletterRecipientCollection extends ItemCollection
         $lang = cRegistry::getLanguageId();
 
         $oRecipientCollection = new NewsletterRecipientCollection();
-        $oRecipientCollection->setWhere("idclient", $client);
-        $oRecipientCollection->setWhere("idlang", $lang);
-        $oRecipientCollection->setWhere("email", cString::toLowerCase($sEmail));
+        $oRecipientCollection->setWhere('idclient', $client);
+        $oRecipientCollection->setWhere('idlang', $lang);
+        $oRecipientCollection->setWhere('email', cString::toLowerCase($sEmail));
         $oRecipientCollection->query();
 
         if ($oItem = $oRecipientCollection->next()) {
@@ -215,7 +217,7 @@ class NewsletterRecipientCollection extends ItemCollection
         $iUpdated = $this->count();
         while ($oItem = $this->next()) {
             // Generating UID, 30 characters
-            $oItem->set("hash", cString::getPartOfString(md5(rand()), 0, 17) . uniqid(""));
+            $oItem->set('hash', cString::getPartOfString(md5(rand()), 0, 17) . uniqid(""));
             $oItem->store();
         }
 
@@ -237,7 +239,7 @@ class NewsletterRecipient extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('news_rcp'), 'idnewsrcp');
+        parent::__construct(cDb::getTableName('news_rcp'), 'idnewsrcp');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -251,30 +253,30 @@ class NewsletterRecipient extends Item
     {
         $auth = cRegistry::getAuth();
 
-        $this->set("lastmodified", date('Y-m-d H:i:s'), false);
-        $this->set("modifiedby", $auth->auth["uid"]);
+        $this->set('lastmodified', date('Y-m-d H:i:s'), false);
+        $this->set('modifiedby', $auth->getUserId());
         $success = parent::store();
 
         // @todo do update below only if code from above was successfully
 
         // Update name, email and newsletter type for recipients in pending
         // newsletter jobs
-        $sName = $this->get("name");
-        $sEmail = $this->get("email");
-        if ($sName == "") {
+        $sName = $this->get('name');
+        $sEmail = $this->get('email');
+        if ($sName == '') {
             $sName = $sEmail;
         }
-        $iNewsType = $this->get("news_type");
+        $iNewsType = $this->get('news_type');
 
         $oLogs = new NewsletterLogCollection();
-        $oLogs->setWhere("idnewsrcp", $this->get($this->getPrimaryKeyName()));
-        $oLogs->setWhere("status", "pending");
+        $oLogs->setWhere('idnewsrcp', $this->get($this->getPrimaryKeyName()));
+        $oLogs->setWhere('status', 'pending');
         $oLogs->query();
 
         while ($oLog = $oLogs->next()) {
-            $oLog->set("rcpname", $sName);
-            $oLog->set("rcpemail", $sEmail);
-            $oLog->set("rcpnewstype", $iNewsType);
+            $oLog->set('rcpname', $sName);
+            $oLog->set('rcpemail', $sEmail);
+            $oLog->set('rcpnewstype', $iNewsType);
             $oLog->store();
         }
 

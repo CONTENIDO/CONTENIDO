@@ -29,20 +29,51 @@ class UserForum
      *
      * @var string
      */
-    private static $_name = 'user_forum';
+    private static $name = 'user_forum';
 
     /**
      */
-    public static function getName()
+    public static function getName(): string
     {
-        return self::$_name;
+        return self::$name;
     }
 
-    public static function i18n($key)
+    /**
+     * Return path to this plugins' folder.
+     */
+    public static function getPath(): string
     {
-        $trans = i18n($key, self::$_name);
+        $cfg = cRegistry::getConfig();
 
-        return $trans;
+        $path = cRegistry::getBackendPath() . $cfg['path']['plugins'];
+        $path .= self::$name . '/';
+
+        return $path;
+    }
+
+    /**
+     * Return URL to this plugins' folder.
+     */
+    public static function getUrl(): string
+    {
+        $cfg = cRegistry::getConfig();
+
+        $path = cRegistry::getBackendUrl() . $cfg['path']['plugins'];
+        $path .= self::$name . '/';
+
+        return $path;
+    }
+
+    public static function i18n(string $key): string
+    {
+        try {
+            return i18n($key, self::$name);
+        } catch (\cException $e) {
+            error_log(sprintf(
+                'Plugin "%s" translation error: %s. Key: %s', self::$name, $e->getMessage(), $key)
+            );
+            return $key;
+        }
     }
 
     /**
@@ -55,7 +86,7 @@ class UserForum
         $cfg = cRegistry::getConfig();
 
         $path = cRegistry::getBackendUrl() . $cfg['path']['plugins'];
-        $path .= self::$_name . '/';
+        $path .= self::$name . '/';
 
         return $path;
     }

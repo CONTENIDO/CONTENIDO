@@ -21,6 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB@
+ * @template Item
  */
 abstract class ItemCollection extends cItemBaseAbstract
 {
@@ -235,23 +236,23 @@ abstract class ItemCollection extends cItemBaseAbstract
      * Defines the reverse links for this table.
      *
      * Important:
-     * The class specified by $sForeignCollectionClass needs to be a collection class and has to exist.
+     * The class specified by $foreignCollectionClass needs to be a collection class and has to exist.
      * Define all links in the constructor of your object.
      *
-     * @param string $sForeignCollectionClass Specifies the foreign class to use
+     * @param string $foreignCollectionClass Specifies the foreign class to use
      * @throws cInvalidArgumentException If the given foreign class can not be instantiated
      */
-    protected function _setJoinPartner($sForeignCollectionClass)
+    protected function _setJoinPartner(string $foreignCollectionClass)
     {
-        if (class_exists($sForeignCollectionClass)) {
+        if (class_exists($foreignCollectionClass)) {
             // Add class
-            if (!in_array($sForeignCollectionClass, $this->_JoinPartners)) {
-                $this->_JoinPartners[] = cString::toLowerCase($sForeignCollectionClass);
+            if (!in_array($foreignCollectionClass, $this->_JoinPartners)) {
+                $this->_JoinPartners[] = cString::toLowerCase($foreignCollectionClass);
             }
         } else {
             throw new cInvalidArgumentException(sprintf(
                 'Could not instantiate class [%s] for use with _setJoinPartner in class %s',
-                $sForeignCollectionClass,
+                $foreignCollectionClass,
                 get_class($this)
             ));
         }
@@ -295,14 +296,12 @@ abstract class ItemCollection extends cItemBaseAbstract
     }
 
     /**
-     * Sets the encoding.
-     *
-     * @param string $sEncoding
+     * Sets the encoding, e.g. 'UTF-8'
      */
-    public function setEncoding($sEncoding)
+    public function setEncoding(string $encoding)
     {
-        $this->_encoding = $sEncoding;
-        $this->_driver->setEncoding($sEncoding);
+        $this->_encoding = $encoding;
+        $this->_driver->setEncoding($encoding);
     }
 
     /**
@@ -503,7 +502,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      *
      * @return string With all where statements
      */
-    protected function _buildWhereStatements()
+    protected function _buildWhereStatements(): string
     {
         $aWheres = [];
 
@@ -842,35 +841,18 @@ abstract class ItemCollection extends cItemBaseAbstract
     {
         unset($this->objects);
 
-        if ($where == '') {
-            $where = '';
-        } else {
-            $where = ' WHERE ' . $where;
-        }
+        $where = empty($where) ? '' : 'WHERE ' . $where;
+        $groupBy = empty($groupBy) ? '' : ' GROUP BY ' . $groupBy;
+        $orderBy = empty($orderBy) ? '' : ' ORDER BY ' . $orderBy;
+        $limit = empty($limit) ? '' : ' LIMIT ' . $limit;
 
-        if ($groupBy != '') {
-            $groupBy = ' GROUP BY ' . $groupBy;
-        }
-
-        if ($orderBy != '') {
-            $orderBy = ' ORDER BY ' . $orderBy;
-        }
-
-        if ($limit != '') {
-            $limit = ' LIMIT ' . $limit;
-        }
-
-        $sFields = ($this->_settings['select_all_mode']) ? '*' : $this->getPrimaryKeyName();
-        $sql = 'SELECT ' . $sFields . ' FROM `' . $this->table . '`' . $where . $groupBy . $orderBy . $limit;
+        $fields = $this->_settings['select_all_mode'] ? '*' : $this->getPrimaryKeyName();
+        $sql = 'SELECT ' . $fields . ' FROM `' . $this->table . '`' . $where . $groupBy . $orderBy . $limit;
         $this->db->query($sql);
         $this->_lastSQL = $sql;
         $this->_bAllMode = $this->_settings['select_all_mode'];
 
-        if ($this->db->numRows() == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return $this->db->numRows() > 0;
     }
 
     /**
@@ -928,11 +910,7 @@ abstract class ItemCollection extends cItemBaseAbstract
         // @todo disable all mode in this method
         $this->_bAllMode = false;
 
-        if ($this->db->numRows() == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return $this->db->numRows() > 0;
     }
 
     /**
@@ -942,7 +920,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      * @return bool True if object exists, false if not
      * @throws cDbException
      */
-    public function exists($id)
+    public function exists($id): bool
     {
         $oDb = $this->_getSecondDBInstance();
         $sql = "SELECT `%s` FROM `%s` WHERE `%s` = '%s'";
@@ -953,7 +931,7 @@ abstract class ItemCollection extends cItemBaseAbstract
     /**
      * Advances to the next item in the database.
      *
-     * @return Item|object|bool Next object, or false if no more objects
+     * @return Item|object|false Next object, or false if no more objects
      * @throws cDbException|cException
      */
     public function next()
@@ -974,6 +952,30 @@ abstract class ItemCollection extends cItemBaseAbstract
             }
         }
         return $ret;
+    }
+
+    /**
+     * Generator function to use in foreach construct, saves memory by using generator syntax `yield`.
+     *
+     * Alternative way for `while ($item = $itemCollection->next()) {...}`.
+     *
+     * Example:
+     * <code>
+     * $myItemCollection = new cApiMyItemCollection();
+     * $myItemCollection->select();
+     * foreach ($myItemCollection->getItems() as $myItem) {
+     *     // Do something with $myItem...
+     * }
+     * </code>
+     * @return \Generator|Item[]
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function getItems(): Generator
+    {
+        while ($entry = $this->next()) {
+            yield $entry;
+        }
     }
 
     /**
@@ -1142,7 +1144,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      *    ];
      *    </pre>
      *
-     * @return array The passed array being updated within the function.
+     * @return array the provided array being updated within the function.
      */
     protected function _recursiveStructuredFetch(array $objects, array $results): array
     {
@@ -1221,9 +1223,9 @@ abstract class ItemCollection extends cItemBaseAbstract
     }
 
     /**
-     * Creates a new item in the table and loads it afterwards.
+     * Creates a new item in the table and loads it afterward.
      *
-     * @param string|array $data [optional] Pparameter for direct input of primary key value
+     * @param string|array $data [optional] Parameter for direct input of primary key value
      *      (string) or multiple column name - value pairs
      * @return Item|object The newly created object
      * @throws cInvalidArgumentException|cDbException|cException
@@ -1315,27 +1317,36 @@ abstract class ItemCollection extends cItemBaseAbstract
     }
 
     /**
-     * Returns all ids of the records in the table that match the criteria in the passed WHERE clause.
+     * Returns all ids of the records in the table that match the criteria in the provided WHERE clause.
      *
      * @param string $where The WHERE clause of the SQL statement
+     * @param string $groupBy The GROUP BY clause. @since CONTENIDO 4.10.2
+     * @param string $orderBy The ORDER BY clause. @since CONTENIDO 4.10.2
+     * @param string $limit The LIMIT clause. @since CONTENIDO 4.10.2
      * @return int[]|string[] List of ids
      * @throws cDbException
      */
-    public function getIdsByWhereClause(string $where): array
-    {
+    public function getIdsByWhereClause(
+        string $where,
+        string $groupBy = '',
+        string $orderBy = '',
+        string $limit = ''
+    ): array {
         $oDb = $this->_getSecondDBInstance();
 
-        $ids = [];
+        $pkField = $this->getPrimaryKeyName();
+        $where = empty($where) ? '' : 'WHERE ' . $where;
+        $groupBy = empty($groupBy) ? '' : ' GROUP BY ' . $groupBy;
+        $orderBy = empty($orderBy) ? '' : ' ORDER BY ' . $orderBy;
+        $limit = empty($limit) ? '' : ' LIMIT ' . $limit;
 
         // Get all ids
-        $oDb->query(sprintf(
-            'SELECT `%s` AS `pk` FROM `%s` WHERE %s',
-            $this->getPrimaryKeyName(),
-            $this->table,
-            $where
-        ));
+        $sql = 'SELECT `' . $this->getPrimaryKeyName() . '` FROM `' . $this->table . '`' . $where . $groupBy . $orderBy . $limit;
+        $oDb->query($sql);
+
+        $ids = [];
         while ($oDb->nextRecord()) {
-            $ids[] = $oDb->f('pk');
+            $ids[] = $oDb->f($pkField);
         }
 
         return $ids;
@@ -1343,13 +1354,13 @@ abstract class ItemCollection extends cItemBaseAbstract
 
     /**
      * Returns all ids of the records in the table that match the criteria
-     * in the passed WHERE clause ($field $operator $value).
+     * in the provided WHERE clause ($field $operator $value).
      *
      * @param string $field The table field name
      * @param string|int|null|mixed $value The value
      * @param string $operator The operator to use (e.g. '=', '>', '<', 'IN', etc.)
      * @return int[]|string[] List of ids
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
     public function getIdsWhere(string $field, $value, string $operator = '='): array
@@ -1361,30 +1372,48 @@ abstract class ItemCollection extends cItemBaseAbstract
         return $this->getIdsByWhereClause($where);
     }
 
-    /**
+     /**
      * Returns all specified fields of the records in the table that match
-     * the criteria in the passed WHERE clause.
+     * the criteria in the provided WHERE clause.
      *
      * @param array $fields List of fields to get
      * @param string $where The WHERE clause of the SQL statement
+     * @param string $groupBy The GROUP BY clause. @since CONTENIDO 4.10.2
+     * @param string $orderBy The ORDER BY clause. @since CONTENIDO 4.10.2
+     * @param string $limit The LIMIT clause. @since CONTENIDO 4.10.2
      * @return array List of entries with specified fields
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
-    public function getFieldsByWhereClause(array $fields, $where): array
-    {
+    public function getFieldsByWhereClause(
+        array $fields,
+        string $where,
+        string $groupBy = '',
+        string $orderBy = '',
+        string $limit = ''
+    ): array {
         if (!count($fields)) {
             return [];
         }
 
         $oDb = $this->_getSecondDBInstance();
 
-        // Escape fields
-        $escapedFields = array_map([$oDb, 'escape'], $fields);
-        $fieldsStr = '`' . implode('`, `', $escapedFields) . '`';
+        if (in_array('*', $fields)) {
+            // Asterisk ("*") to get all field found
+            $fields = '*';
+        } else {
+            // Escape fields
+            $escapedFields = array_map([$oDb, 'escape'], $fields);
+            $fields = '`' . implode('`, `', $escapedFields) . '`';
+        }
+
+        $where = empty($where) ? '' : 'WHERE ' . $where;
+        $groupBy = empty($groupBy) ? '' : ' GROUP BY ' . $groupBy;
+        $orderBy = empty($orderBy) ? '' : ' ORDER BY ' . $orderBy;
+        $limit = empty($limit) ? '' : ' LIMIT ' . $limit;
 
         // Get all fields
         $entries = [];
-        $sql = 'SELECT ' . $fieldsStr . ' FROM `' . $this->table . '` WHERE ' . $where;
+        $sql = 'SELECT ' . $fields . ' FROM `' . $this->table . '`' . $where . $groupBy . $orderBy . $limit;
         $oDb->query($sql);
         while ($oDb->nextRecord()) {
             $data = [];
@@ -1399,53 +1428,61 @@ abstract class ItemCollection extends cItemBaseAbstract
 
     /**
      * Returns all specified fields of the records in the table that match
-     * the criteria in the passed WHERE clause ($field $operator $value).
+     * the criteria in the provided WHERE clause ($field $operator $value).
      *
      * @param array $fields List of fields to get
      * @param string $field The table field name to query
      * @param string|int|null|mixed $value The value to query
      * @param string $operator The operator to use (e.g. '=', '>', '<', 'IN', etc.)
+     * @param string $groupBy The GROUP BY clause.
+     * @param string $orderBy The ORDER BY clause.
+     * @param string $limit The LIMIT clause.
      * @return int[]|string[] List of ids
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
     public function getFieldsWhere(
-        array $fields, string $field, $value, string $operator = '='
+        array $fields,
+        string $field,
+        $value,
+        string $operator = '=',
+        string $groupBy = '',
+        string $orderBy = '',
+        string $limit = ''
     ): array {
         // Build WHERE clause
         $where = $this->_driver->buildOperator($field, $operator, $value);
 
         // Return the data
-        return $this->getFieldsByWhereClause($fields, $where);
+        return $this->getFieldsByWhereClause($fields, $where, $groupBy, $orderBy, $limit);
     }
 
     /**
      * Returns all ids of records in the table.
      *
-     * @return array List of ids
-     * @throws cDbException|cInvalidArgumentException
+     * @return int[]|string[] List of ids
+     * @throws cDbException
      */
     public function getAllIds(): array
     {
         $oDb = $this->_getSecondDBInstance();
 
-        $aIds = [];
+        $ids = [];
 
         // Get all ids
-        $sql = 'SELECT `' . $this->getPrimaryKeyName() . '` AS `pk` FROM `' . $this->table . '`';
-        $oDb->query($sql);
+        $oDb->query('SELECT `%s` AS `pk` FROM `%s`', $this->getPrimaryKeyName(), $this->table);
         while ($oDb->nextRecord()) {
-            $aIds[] = $oDb->f('pk');
+            $ids[] = $oDb->f('pk');
         }
 
-        return $aIds;
+        return $ids;
     }
 
     /**
      * Deletes the record with id from the table.
      * Deletes also the cached record and any existing properties.
      *
-     * @param mixed $id Id of record to delete
+     * @param int|string|mixed $id Id of record to delete
      * @return bool
      * @throws cDbException|cInvalidArgumentException
      */
@@ -1455,7 +1492,7 @@ abstract class ItemCollection extends cItemBaseAbstract
     }
 
     /**
-     * Deletes all records in the table that match the criteria in the passed WHERE clause.
+     * Deletes all records in the table that match the criteria in the provided WHERE clause.
      * Deletes also the cached records and any existing properties.
      *
      * @param string $where The WHERE clause of the SQL statement
@@ -1465,13 +1502,13 @@ abstract class ItemCollection extends cItemBaseAbstract
     public function deleteByWhereClause($where): int
     {
         // Get all ids and delete related entries
-        $aIds = $this->getIdsByWhereClause($where);
+        $ids = $this->getIdsByWhereClause($where);
 
-        if (!is_array($aIds) || 0 >= count($aIds)) {
+        if (!count($ids)) {
             return 0;
         }
 
-        return $this->_deleteMultiple($aIds);
+        return $this->_deleteMultiple($ids);
     }
 
     /**
@@ -1535,16 +1572,16 @@ abstract class ItemCollection extends cItemBaseAbstract
     }
 
     /**
-     * Deletes all records with the passed ids from the table, deletes also
+     * Deletes all records with the provided ids from the table, deletes also
      * the cached records and any of their existing properties.
      *
-     * @param int[]|string[] $aIds Id of records to delete
+     * @param int[]|string[] $ids Id of records to delete
      * @return int Number of affected records
      * @throws cDbException|cInvalidArgumentException
      */
-    protected function _deleteMultiple(array $aIds)
+    protected function _deleteMultiple(array $ids): int
     {
-        foreach ($aIds as $id) {
+        foreach ($ids as $id) {
             $this->_executeCallbacks(self::DELETE_BEFORE, $this->_itemClass, [
                 $id
             ]);
@@ -1556,29 +1593,29 @@ abstract class ItemCollection extends cItemBaseAbstract
         $aEscapedIds = array_map([
             $oDb,
             'escape'
-        ], $aIds);
+        ], $ids);
         $in = "'" . implode("', '", $aEscapedIds) . "'";
         $sql = "DELETE FROM `%s` WHERE `%s` IN (" . $in . ")";
         $oDb->query($sql, $this->table, $this->getPrimaryKeyName());
         $numAffected = $oDb->affectedRows();
 
         // Delete the cached records
-        $this->_oCache->removeItems($aIds);
+        $this->_oCache->removeItems($ids);
 
         // Delete any existing property values of the records
         $oProperties = $this->_getPropertiesCollectionInstance();
-        $oProperties->deletePropertiesMultiple($this->getPrimaryKeyName(), $aIds);
+        $oProperties->deletePropertiesMultiple($this->getPrimaryKeyName(), $ids);
 
         // NOTE: Deleting multiple entries at once has a drawback. There is no
         // way to detect faulty ids, if one or more entries couldn't be deleted.
         if ($numAffected == 0) {
-            foreach ($aIds as $id) {
+            foreach ($ids as $id) {
                 $this->_executeCallbacks(self::DELETE_FAILURE, $this->_itemClass, [
                     $id
                 ]);
             }
         } else {
-            foreach ($aIds as $id) {
+            foreach ($ids as $id) {
                 $this->_executeCallbacks(self::DELETE_SUCCESS, $this->_itemClass, [
                     $id
                 ]);
@@ -1617,7 +1654,7 @@ abstract class ItemCollection extends cItemBaseAbstract
             $fields = cSecurity::toString($fields);
         }
 
-        while (($item = $this->next()) !== false) {
+        while ($item = $this->next()) {
             $_key = $item->get($key);
             if (is_array($fields)) {
                 foreach ($fields as $value) {

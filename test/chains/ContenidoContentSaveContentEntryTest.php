@@ -105,13 +105,10 @@ class ContenidoContentSaveContentEntryTest extends TestCase
      */
     public function testNoChain()
     {
-        // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
-
         // execute chain
-        $iterator = $cecReg->getIterator($this->_chain);
+        $cecIterator = cApiCecRegistry::getInstance()->getIterator($this->_chain);
         $value = $this->_value;
-        while ($chainEntry = $iterator->next()) {
+        while ($chainEntry = $cecIterator->next()) {
             $value = $chainEntry->execute($this->_idartlang, $this->_type, $this->_typeid, $value);
         }
         $value = urlencode($value);
@@ -125,21 +122,21 @@ class ContenidoContentSaveContentEntryTest extends TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test');
 
         // execute chain
-        $iterator = $cecReg->getIterator($this->_chain);
+        $cecIterator = $cecRegistry->getIterator($this->_chain);
         $value = $this->_value;
-        while ($chainEntry = $iterator->next()) {
+        while ($chainEntry = $cecIterator->next()) {
             $value = $chainEntry->execute($this->_idartlang, $this->_type, $this->_typeid, $value);
         }
         $value = urlencode($value);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test');
 
         $this->assertEquals(urlencode($this->_valueOneChain), $value);
     }
@@ -150,23 +147,23 @@ class ContenidoContentSaveContentEntryTest extends TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test');
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test2');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test2');
 
         // execute chain
-        $iterator = $cecReg->getIterator($this->_chain);
+        $cecIterator = $cecRegistry->getIterator($this->_chain);
         $value = $this->_value;
-        while ($chainEntry = $iterator->next()) {
+        while ($chainEntry = $cecIterator->next()) {
             $value = $chainEntry->execute($this->_idartlang, $this->_type, $this->_typeid, $value);
         }
         $value = urlencode($value);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test2');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoContentSaveContentEntry_Test2');
 
         $this->assertEquals(urlencode($this->_valueTwoChains), $value);
     }

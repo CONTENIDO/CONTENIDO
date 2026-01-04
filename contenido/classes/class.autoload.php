@@ -17,23 +17,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Implements autoload feature for a CONTENIDO project.
  *
- * Autoload for CONTENIDO is provided via a generated class map configuration
- * file, which is available inside data/config/{environment}/ folder.
+ * Autoload for CONTENIDO is provided via a generated class map configuration file,
+ * which is available inside data/config/{environment}/ folder.
  * - data/config/{environment}/config.autoloader.php
  *
- * Autoload is extendable by adding a class map file inside the same
- * folder, which could contain further class map settings or could overwrite
- * settings of main class map file.
+ * Autoload is extendable by adding a class map file inside the same folder, which could contain
+ * further class map settings or could overwrite settings of main class map file.
  * - data/config/{environment}/contenido/includes/config.autoloader.local.php
  *
- * You can also add additional class map configuration by using function
- * following
- * functions:
+ * You can also add additional class map configuration by using function following functions:
  * - cAutoload::addClassmapConfig(array $config)
  * - cAutoload::addClassmapConfigFile(string $configFile)
  *
- * Read also docs/techref/backend/backend.autoloader.html to get involved in
- * CONTENIDO autoloader mechanism.
+ * Read also docs/techref/backend/backend.autoloader.html to get involved in CONTENIDO autoloader mechanism.
  *
  * @package    Core
  * @subpackage Backend
@@ -42,38 +38,27 @@ class cAutoload
 {
 
     /**
-     * Identifier for error if class file could not be found.
-     *
-     * @var string
+     * @var string Identifier for error if class file could not be found.
      */
     public const ERROR_FILE_NOT_FOUND = 'file_not_found';
 
     /**
-     * Identifier for error if class already exists.
-     *
-     * @var string
+     * @var string Identifier for error if class already exists.
      */
     public const ERROR_CLASS_EXISTS = 'class_exists';
 
     /**
-     * CONTENIDO root path.
-     * Path to the folder which contains the CONTENIDO installation.
-     *
-     * @var ?string
+     * @var ?string CONTENIDO root path. Path to the folder which contains the CONTENIDO installation.
      */
     private static $_conRootPath = NULL;
 
     /**
-     * Array of interface/class names with related files to include
-     *
-     * @var ?array
+     * @var ?array Array of interface/class names with related files to include
      */
     private static $_includeFiles = NULL;
 
     /**
-     * Flag containing initialized status
-     *
-     * @var ?bool
+     * @var ?bool Flag containing initialized status
      */
     private static $_initialized = NULL;
 
@@ -307,7 +292,7 @@ class cAutoload
     }
 
     /**
-     * Normalizes the passed configuration array by returning a new copy of it which contains
+     * Normalizes the provided configuration array by returning a new copy of it which contains
      * the keys in lowercase.
      * This prevents errors by trying to load class 'foobar' if the real class name is 'FooBar'.
      */

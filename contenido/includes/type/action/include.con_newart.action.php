@@ -35,8 +35,8 @@ if (
                 a.idtplcfg,
                 a.name
             FROM
-                " . $cfg['tab']['cat_lang'] . " AS a,
-                " . $cfg['tab']['cat'] . " AS b
+                " . cDb::getTableName('cat_lang') . " AS a,
+                " . cDb::getTableName('cat') . " AS b
             WHERE
                 a.idlang    = '" . $lang . "' AND
                 b.idclient  = '" . $client . "' AND

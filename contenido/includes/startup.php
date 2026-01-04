@@ -195,6 +195,7 @@ cInclude('includes', 'functions.i18n.php');
 cInclude('includes', 'functions.lang.php');
 
 // Initialization of CEC
+// NOTE: Keep the name `$_cecRegistry`, some modules/plugins may still use it from global scope!
 $_cecRegistry = cApiCecRegistry::getInstance();
 $_cecRegistry->flushAddedChains();
 

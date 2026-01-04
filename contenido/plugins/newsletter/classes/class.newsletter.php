@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Newsletter
- * @method Newsletter createNewItem
- * @method Newsletter|bool next
+ * @extends ItemCollection<Newsletter>
  */
 class NewsletterCollection extends ItemCollection
 {
@@ -46,7 +45,7 @@ class NewsletterCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('news'), 'idnews');
+        parent::__construct(cDb::getTableName('news'), 'idnews');
         $this->_setItemClass('Newsletter');
     }
 
@@ -54,8 +53,7 @@ class NewsletterCollection extends ItemCollection
      * Creates a new newsletter
      *
      * @param $sName string specifies the newsletter name
-     *
-     * @return Item
+     * @return Newsletter
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($sName)
@@ -66,9 +64,9 @@ class NewsletterCollection extends ItemCollection
 
         // Check if the newsletter name already exists
         $this->resetQuery();
-        $this->setWhere("idclient", $client);
-        $this->setWhere("idlang", $lang);
-        $this->setWhere("name", $sName);
+        $this->setWhere('idclient', $client);
+        $this->setWhere('idlang', $lang);
+        $this->setWhere('name', $sName);
         $this->query();
 
         if ($this->next()) {
@@ -76,11 +74,11 @@ class NewsletterCollection extends ItemCollection
         }
 
         $oItem = $this->createNewItem();
-        $oItem->set("idclient", $client);
-        $oItem->set("idlang", $lang);
-        $oItem->set("name", $sName);
-        $oItem->set("created", date('Y-m-d H:i:s'), false);
-        $oItem->set("author", $auth->auth["uid"]);
+        $oItem->set('idclient', $client);
+        $oItem->set('idlang', $lang);
+        $oItem->set('name', $sName);
+        $oItem->set('created', date('Y-m-d H:i:s'), false);
+        $oItem->set('author', $auth->getUserId());
 
         $oItem->store();
 
@@ -107,52 +105,52 @@ class NewsletterCollection extends ItemCollection
         $oBaseItem->loadByPrimaryKey($iItemID);
 
         $oItem = $this->createNewItem();
-        $oItem->set("name", $oBaseItem->get("name") . "_" . cString::getPartOfString(md5(rand()), 0, 10));
+        $oItem->set('name', $oBaseItem->get('name') . "_" . cString::getPartOfString(md5(rand()), 0, 10));
 
         $iIDArt = 0;
-        if ($oBaseItem->get("type") == "html" && $oBaseItem->get("idart") > 0 && $oBaseItem->get("template_idart") > 0) {
+        if ($oBaseItem->get('type') == "html" && $oBaseItem->get('idart') > 0 && $oBaseItem->get('template_idart') > 0) {
             $oClientLang = new cApiClientLanguage(false, $client, $lang);
 
-            if ($oClientLang->getProperty("newsletter", "html_newsletter") == "true") {
-                $iIDArt = conCopyArticle($oBaseItem->get("idart"),
-                    $oClientLang->getProperty("newsletter", "html_newsletter_idcat"),
-                    sprintf(i18n("Newsletter: %s", "newsletter"), $oItem->get("name"))
+            if ($oClientLang->getProperty('newsletter', 'html_newsletter') == 'true') {
+                $iIDArt = conCopyArticle($oBaseItem->get('idart'),
+                    $oClientLang->getProperty('newsletter', 'html_newsletter_idcat'),
+                    sprintf(i18n("Newsletter: %s", "newsletter"), $oItem->get('name'))
                 );
                 conMakeOnline($iIDArt, $lang); // Article has to be online for sending...
             }
             unset($oClientLang);
         }
-        $oItem->set("idart", $iIDArt);
-        $oItem->set("template_idart", $oBaseItem->get("template_idart"));
-        $oItem->set("idclient", $client);
-        $oItem->set("idlang", $lang);
-        $oItem->set("welcome", 0);
-        $oItem->set("type", $oBaseItem->get("type"));
-        $oItem->set("subject", $oBaseItem->get("subject"));
-        $oItem->set("message", $oBaseItem->get("message"));
-        $oItem->set("newsfrom", $oBaseItem->get("newsfrom"));
-        $oItem->set("newsfromname", $oBaseItem->get("newsfromname"));
-        $oItem->set("newsdate", date("Y-m-d H:i:s"), false); // But more or less deprecated
-        $oItem->set("use_cronjob", $oBaseItem->get("use_cronjob"));
-        $oItem->set("send_to", $oBaseItem->get("send_to"));
-        $oItem->set("send_ids", $oBaseItem->get("send_ids"));
-        $oItem->set("dispatch", $oBaseItem->get("dispatch"));
-        $oItem->set("dispatch_count", $oBaseItem->get("dispatch_count"));
-        $oItem->set("dispatch_delay", $oBaseItem->get("dispatch_delay"));
-        $oItem->set("author", $auth->auth["uid"]);
-        $oItem->set("created", date('Y-m-d H:i:s'), false);
+        $oItem->set('idart', $iIDArt);
+        $oItem->set('template_idart', $oBaseItem->get('template_idart'));
+        $oItem->set('idclient', $client);
+        $oItem->set('idlang', $lang);
+        $oItem->set('welcome', 0);
+        $oItem->set('type', $oBaseItem->get('type'));
+        $oItem->set('subject', $oBaseItem->get('subject'));
+        $oItem->set('message', $oBaseItem->get('message'));
+        $oItem->set('newsfrom', $oBaseItem->get('newsfrom'));
+        $oItem->set('newsfromname', $oBaseItem->get('newsfromname'));
+        $oItem->set('newsdate', date('Y-m-d H:i:s'), false); // But more or less deprecated
+        $oItem->set('use_cronjob', $oBaseItem->get('use_cronjob'));
+        $oItem->set('send_to', $oBaseItem->get('send_to'));
+        $oItem->set('send_ids', $oBaseItem->get('send_ids'));
+        $oItem->set('dispatch', $oBaseItem->get('dispatch'));
+        $oItem->set('dispatch_count', $oBaseItem->get('dispatch_count'));
+        $oItem->set('dispatch_delay', $oBaseItem->get('dispatch_delay'));
+        $oItem->set('author', $auth->getUserId());
+        $oItem->set('created', date('Y-m-d H:i:s'), false);
 
         // Copy properties, runtime on-demand allocation of the properties object
         if (!is_object($this->properties)) {
             $this->properties = new cApiPropertyCollection();
         }
-        $this->properties->setWhere("idclient", $client);
-        $this->properties->setWhere("itemtype", $this->getPrimaryKeyName());
-        $this->properties->setWhere("itemid", $iItemID);
+        $this->properties->setWhere('idclient', $client);
+        $this->properties->setWhere('itemtype', $this->getPrimaryKeyName());
+        $this->properties->setWhere('itemid', $iItemID);
         $this->properties->query();
 
         while ($oPropertyItem = $this->properties->next()) {
-            $oItem->setProperty($oPropertyItem->get("type"), $oPropertyItem->get("name"), $oPropertyItem->get("value"), $client);
+            $oItem->setProperty($oPropertyItem->get('type'), $oPropertyItem->get('name'), $oPropertyItem->get('value'), $client);
         }
 
         $oItem->store();
@@ -179,7 +177,7 @@ class Newsletter extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('news'), 'idnews');
+        parent::__construct(cDb::getTableName('news'), 'idnews');
         $this->_sError = '';
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
@@ -199,19 +197,19 @@ class Newsletter extends Item
         $lang = cRegistry::getLanguageId();
         $auth = cRegistry::getAuth();
 
-        $this->set("modified", date('Y-m-d H:i:s'), false);
-        $this->set("modifiedby", $auth->auth["uid"]);
+        $this->set('modified', date('Y-m-d H:i:s'), false);
+        $this->set('modifiedby', $auth->getUserId());
 
-        if ($this->get("welcome") == 1) {
+        if ($this->get('welcome') == 1) {
             $oItems = new NewsletterCollection();
-            $oItems->setWhere("idclient", $client);
-            $oItems->setWhere("idlang", $lang);
-            $oItems->setWhere("welcome", 1);
-            $oItems->setWhere("idnews", $this->get("idnews"), "<>");
+            $oItems->setWhere('idclient', $client);
+            $oItems->setWhere('idlang', $lang);
+            $oItems->setWhere('welcome', 1);
+            $oItems->setWhere('idnews', $this->get('idnews'), "<>");
             $oItems->query();
 
             while ($oItem = $oItems->next()) {
-                $oItem->set("welcome", 0);
+                $oItem->set('welcome', 0);
                 $oItem->store();
             }
             unset($oItem);
@@ -269,10 +267,10 @@ class Newsletter extends Item
                     unset($aMatch); // $aMatch not needed anymore
 
                     if (!array_key_exists("type", $aParameter)) {
-                        $aParameter["type"] = "text";
+                        $aParameter['type'] = "text";
                     }
 
-                    switch ($aParameter["type"]) {
+                    switch ($aParameter['type']) {
                         case "link":
                             # TODO: Works everything fine?
                             # The current code makes it possible to do something like
@@ -282,19 +280,19 @@ class Newsletter extends Item
                             # set [MAIL_xy] and the message between the [mail]-tags will
                             # be used as link text (instead of using the tag parameter "text")
 
-                            $sText = $aParameter["text"];
+                            $sText = $aParameter['text'];
 
-                            if ($sText == "") {
+                            if ($sText == '') {
                                 $sText = $sData;
                             }
-                            if ($sMessage == "") {
+                            if ($sMessage == '') {
                                 $sMessage = $sData;
                             }
 
                             // Remove not needed parameters from the parameters list
                             // everything else goes into the link as parameters
-                            unset($aParameter["type"]);
-                            unset($aParameter["text"]);
+                            unset($aParameter['type']);
+                            unset($aParameter['text']);
 
                             $sParameter = "";
                             if (count($aParameter) > 0) {
@@ -372,8 +370,8 @@ class Newsletter extends Item
     }
 
     /**
-     * @param        $sHeader
-     * @param        $sBody
+     * @param $sHeader
+     * @param $sBody
      * @param string $sEOL
      *
      * @return string
@@ -387,7 +385,7 @@ class Newsletter extends Item
         $aParts = preg_split("/\r?\n/", $sHeader, -1, PREG_SPLIT_NO_EMPTY);
 
         $aHeader = [];
-        for ($i = 0; $i < sizeof($aParts); $i++) {
+        for ($i = 0; $i < count($aParts); $i++) {
             if ($i != 0) {
                 $iPos = cString::findFirstPos($aParts[$i], ':');
                 $sParameter = cString::toLowerCase(str_replace(' ', '', cString::getPartOfString($aParts[$i], 0, $iPos)));
@@ -477,36 +475,36 @@ class Newsletter extends Item
     public function getHTMLMessage()
     {
         $frontendURL = cRegistry::getFrontendUrl();
-        if ($this->get("type") == "html" && $this->get("idart") > 0 && $this->htmlArticleExists()) {
-            $client = cRegistry::getCategoryId();
+        if ($this->get('type') == "html" && $this->get('idart') > 0 && $this->htmlArticleExists()) {
+            $client = cRegistry::getClientId();
             $lang = cRegistry::getLanguageId();
 
             // Article ID
-            $iIDArt = $this->get("idart");
+            $iIDArt = $this->get('idart');
 
             // Category ID
             $oClientLang = new cApiClientLanguage(false, $client, $lang);
-            $iIDCat = $oClientLang->getProperty("newsletter", "html_newsletter_idcat");
+            $iIDCat = $oClientLang->getProperty('newsletter', 'html_newsletter_idcat');
             unset($oClientLang);
 
             // Get http username and password, if frontend is protected
             $oClient = new cApiClient($client);
-            $sHTTPUserName = $oClient->getProperty("newsletter", "html_username");
-            $sHTTPPassword = $oClient->getProperty("newsletter", "html_password");
+            $sHTTPUserName = $oClient->getProperty('newsletter', 'html_username');
+            $sHTTPPassword = $oClient->getProperty('newsletter', 'html_password');
             unset($oClient);
             // Get HTML
             if ($iIDArt > 0 && $iIDCat > 0) {
                 // Check, if newsletter is online and set temporarely online, otherwise
                 $bSetOffline = false;
                 $oArticles = new cApiArticleLanguageCollection;
-                $oArticles->setWhere("idlang", $this->get("idlang"));
-                $oArticles->setWhere("idart", $this->get("idart"));
+                $oArticles->setWhere('idlang', $this->get('idlang'));
+                $oArticles->setWhere('idart', $this->get('idart'));
                 $oArticles->query();
 
                 if ($oArticle = $oArticles->next()) {
-                    if ($oArticle->get("online") == 0) {
+                    if ($oArticle->get('online') == 0) {
                         $bSetOffline = true;
-                        $oArticle->set("online", 1);
+                        $oArticle->set('online', 1);
                         $oArticle->store();
                     }
                     unset($oArticle);
@@ -519,7 +517,7 @@ class Newsletter extends Item
                 $headers = [];
 
                 // Maybe the website has been protected using .htaccess, then login
-                if ($sHTTPUserName != "" && $sHTTPPassword != "") {
+                if ($sHTTPUserName != '' && $sHTTPPassword != '') {
                     $headers['Authorization'] = "Basic " . base64_encode("$sHTTPUserName:$sHTTPPassword");
                 }
 
@@ -539,7 +537,7 @@ class Newsletter extends Item
                     // If someone likes to use anchors in html newsletters (*sigh*)
                     // the base href tag has to be removed - that means, we have to fix
                     // all source paths manually...
-                    if (getEffectiveSetting('newsletter', 'remove_base_tag', "false") == "true") {
+                    if (getEffectiveSetting('newsletter', 'remove_base_tag', "false") == 'true') {
                         // Remove base tag
                         $sHTML = preg_replace('/<base href=(.*?)>/is', '', $sHTML, 1);
 
@@ -568,12 +566,12 @@ class Newsletter extends Item
                 // Set previously offline article back to offline
                 if ($bSetOffline) {
                     $oArticles = new cApiArticleLanguageCollection();
-                    $oArticles->setWhere("idlang", $this->get("idlang"));
-                    $oArticles->setWhere("idart", $this->get("idart"));
+                    $oArticles->setWhere('idlang', $this->get('idlang'));
+                    $oArticles->setWhere('idart', $this->get('idart'));
                     $oArticles->query();
 
                     if ($oArticle = $oArticles->next()) {
-                        $oArticle->set("online", 0);
+                        $oArticle->set('online', 0);
                         $oArticle->store();
                     }
                     unset($oArticle);
@@ -597,10 +595,10 @@ class Newsletter extends Item
      */
     public function htmlArticleExists()
     {
-        if ($this->get("idart") > 0) {
+        if ($this->get('idart') > 0) {
             $oArticles = new cApiArticleLanguageCollection();
-            $oArticles->setWhere("idlang", $this->get("idlang"));
-            $oArticles->setWhere("idart", $this->get("idart"));
+            $oArticles->setWhere('idlang', $this->get('idlang'));
+            $oArticles->setWhere('idart', $this->get('idart'));
             $oArticles->query();
 
             if ($oArticles->count() > 0) {
@@ -634,7 +632,7 @@ class Newsletter extends Item
         $lang = cRegistry::getLanguageId();
 
         // Initialization
-        if ($sName == "") {
+        if ($sName == '') {
             $sName = $sEMail;
         }
 
@@ -644,16 +642,16 @@ class Newsletter extends Item
         $sFormatTime = $plugin->getTimeFormat(cSecurity::toInteger($this->get('idlang')));
 
         // Get newsletter data
-        $sFrom = $this->get("newsfrom");
-        $sFromName = $this->get("newsfromname");
-        if ($sFromName == "") {
+        $sFrom = $this->get('newsfrom');
+        $sFromName = $this->get('newsfromname');
+        if ($sFromName == '') {
             $sFromName = $sFrom;
         }
-        $sSubject = $this->get("subject");
-        $sMessageText = $this->get("message");
+        $sSubject = $this->get('subject');
+        $sMessageText = $this->get('message');
 
         $bIsHTML = false;
-        if ($this->get("type") == "html") {
+        if ($this->get('type') == "html") {
             $sMessageHTML = $this->getHTMLMessage();
 
             if ($sMessageHTML === false) {
@@ -673,7 +671,7 @@ class Newsletter extends Item
         }
 
         // Preventing double lines in mail, you may wish to disable this function on windows servers
-        if (!empty($sMessageText) && !getSystemProperty("newsletter", "disable-rn-replacement")) {
+        if (!empty($sMessageText) && !getSystemProperty('newsletter', 'disable-rn-replacement')) {
             $sMessageText = str_replace("\r\n", "\n", $sMessageText);
         }
 
@@ -705,7 +703,7 @@ class Newsletter extends Item
 
         if ($bSimulatePlugins) {
             // Enabling plugin interface
-            if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
+            if (getSystemProperty('newsletter', 'newsletter-recipients-plugin') == 'true') {
                 if (cHasPlugins('recipients')) {
                     cIncludePlugins('recipients');
                     $cfg = cRegistry::getConfig();
@@ -726,11 +724,11 @@ class Newsletter extends Item
                     }
                 }
             } else {
-                setSystemProperty("newsletter", "newsletter-recipients-plugin", "false");
+                setSystemProperty('newsletter', 'newsletter-recipients-plugin', 'false');
             }
         }
 
-        if (!isValidMail($sEMail) || cString::toLowerCase($sEMail) == "sysadmin@ihresite.de") {
+        if (!isValidMail($sEMail) || cString::toLowerCase($sEMail) == 'sysadmin@ihresite.de') {
             // No valid destination mail address specified
             if (cRegistry::getBackendSessionId()) { // Use i18n only in backend
                 $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address", "newsletter");
@@ -810,16 +808,16 @@ class Newsletter extends Item
         $sPath = cRegistry::getFrontendUrl() . "front_content.php?changelang=" . $lang . "&idcatart=" . $iIDCatArt . "&";
 
         // Get newsletter data
-        $sFrom = $this->get("newsfrom");
-        $sFromName = $this->get("newsfromname");
-        if ($sFromName == "") {
+        $sFrom = $this->get('newsfrom');
+        $sFromName = $this->get('newsfromname');
+        if ($sFromName == '') {
             $sFromName = $sFrom;
         }
-        $sSubject = $this->get("subject");
-        $sMessageText = $this->get("message");
+        $sSubject = $this->get('subject');
+        $sMessageText = $this->get('message');
 
         $bIsHTML = false;
-        if ($this->get("type") == "html") {
+        if ($this->get('type') == "html") {
             $sMessageHTML = $this->getHTMLMessage();
 
             if ($sMessageHTML === false) {
@@ -839,7 +837,7 @@ class Newsletter extends Item
         }
 
         // Preventing double lines in mail, you may wish to disable this function on windows servers
-        if (!getSystemProperty("newsletter", "disable-rn-replacement")) {
+        if (!getSystemProperty('newsletter', 'disable-rn-replacement')) {
             $sMessageText = str_replace("\r\n", "\n", $sMessageText);
         }
 
@@ -855,7 +853,7 @@ class Newsletter extends Item
         }
 
         // Enabling plugin interface
-        if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
+        if (getSystemProperty('newsletter', 'newsletter-recipients-plugin') == 'true') {
             $bPluginEnabled = true;
             $aPlugins = [];
 
@@ -869,7 +867,7 @@ class Newsletter extends Item
                 }
             }
         } else {
-            setSystemProperty("newsletter", "newsletter-recipients-plugin", "false");
+            setSystemProperty('newsletter', 'newsletter-recipients-plugin', 'false');
             $bPluginEnabled = false;
         }
 
@@ -900,15 +898,15 @@ class Newsletter extends Item
                 $recipient = new NewsletterRecipient;
                 $recipient->loadByPrimaryKey($iID);
 
-                $sEMail = $recipient->get("email");
-                $sName = $recipient->get("name");
+                $sEMail = $recipient->get('email');
+                $sName = $recipient->get('name');
                 if (empty ($sName)) {
                     $sName = $sEMail;
                 }
-                $sKey = $recipient->get("hash");
+                $sKey = $recipient->get('hash');
 
                 $bSendHTML = false;
-                if ($recipient->get("news_type") == 1) {
+                if ($recipient->get('news_type') == 1) {
                     $bSendHTML = true; // Recipient accepts html newsletter
                 }
 

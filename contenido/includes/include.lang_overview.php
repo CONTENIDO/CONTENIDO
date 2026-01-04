@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $notification, $tmp_notification, $tpl;
 
 $cfg = cRegistry::getConfig();
-$client = cRegistry::getCategoryId();
+$client = cRegistry::getClientId();
 $perm = cRegistry::getPerm();
 $frame = cRegistry::getFrame();
 $area = cRegistry::getArea();
@@ -69,17 +69,17 @@ $allClientLanguages = $clientLanguageColl->getAllLanguagesByClient($requestTarge
 
 $iLangCount = count($allClientLanguages);
 foreach ($allClientLanguages as $clientLanguage) {
-    $idlang = cSecurity::toInteger($clientLanguage["idlang"]);
-    $LangName = '<span>' . conHtmlSpecialChars($clientLanguage["name"]) . '</span>&nbsp;(' . $idlang . ')';
+    $idlang = cSecurity::toInteger($clientLanguage['idlang']);
+    $LangName = '<span>' . conHtmlSpecialChars($clientLanguage['name']) . '</span>&nbsp;(' . $idlang . ')';
 
     $menu->setId($idlang, $idlang);
     $menu->setLink($idlang, $showLink);
     $menu->setTitle($idlang, $LangName);
 
     // Activate link
-    if ($clientLanguage["active"] == 0) {
+    if ($clientLanguage['active'] == 0) {
         // Activate
-        if ($perm->have_perm_area_action($area, "lang_activatelanguage")) {
+        if ($perm->have_perm_area_action($area, 'lang_activatelanguage')) {
             $link = $activateLink->render();
         } else {
             $link = cHTMLImage::img(
@@ -91,7 +91,7 @@ foreach ($allClientLanguages as $clientLanguage) {
     } else {
         // Deactivate
         $message = i18n("Deactivate language");
-        if ($perm->have_perm_area_action($area, "lang_deactivatelanguage")) {
+        if ($perm->have_perm_area_action($area, 'lang_deactivatelanguage')) {
             $link = $deactivateLink->render();
         } else {
             $link = cHTMLImage::img(
@@ -104,7 +104,7 @@ foreach ($allClientLanguages as $clientLanguage) {
 
     // Delete link
     $deleteAct = i18n("Delete language");
-    if ($perm->have_perm_area_action("lang_edit", "lang_deletelanguage")) {
+    if ($perm->have_perm_area_action('lang_edit', 'lang_deletelanguage')) {
         $menu->setActions($idlang, 'delete', $deleteLink->render());
     }
 

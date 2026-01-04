@@ -42,7 +42,7 @@ class SolrRightBottomPage extends cGuiPage
      *
      * @var array
      */
-    private $_clientOptions;
+    private $clientOptions;
 
     /**
      * @throws SolrClientException|cDbException|cException
@@ -87,24 +87,24 @@ class SolrRightBottomPage extends cGuiPage
         // get client options
         $idclient = cRegistry::getClientId();
         $idlang = cRegistry::getLanguageId();
-        $this->_clientOptions = Solr::getClientOptions($idclient, $idlang);
-        $this->set('s', 'HOSTNAME', $this->_clientOptions['hostname']);
-        $this->set('s', 'PORT', $this->_clientOptions['port']);
-        $this->set('s', 'PATH', $this->_clientOptions['path']);
-        $this->set('s', 'LOGIN', $this->_clientOptions['login']);
-        $this->set('s', 'PASSWORD', $this->_clientOptions['password']);
-        $this->set('s', 'SECURE', 'true' == $this->_clientOptions['secure'] ? 'checked="checked"' : '');
-        $this->set('s', 'TIMEOUT', $this->_clientOptions['timeout']);
-        $this->set('s', 'WT', $this->_clientOptions['wt']);
-        $this->set('s', 'PROXY_HOST', $this->_clientOptions['proxy_host']);
-        $this->set('s', 'PROXY_PORT', $this->_clientOptions['proxy_port']);
-        $this->set('s', 'PROXY_LOGIN', $this->_clientOptions['proxy_login']);
-        $this->set('s', 'PROXY_PASSWORD', $this->_clientOptions['proxy_password']);
-        $this->set('s', 'SSL_CERT', $this->_clientOptions['ssl_cert']);
-        $this->set('s', 'SSL_KEY', $this->_clientOptions['ssl_key']);
-        $this->set('s', 'SSL_KEYPASSWORD', $this->_clientOptions['ssl_keypassword']);
-        $this->set('s', 'SSL_CAINFO', $this->_clientOptions['ssl_cainfo']);
-        $this->set('s', 'SSL_CAPATH', $this->_clientOptions['ssl_capath']);
+        $this->clientOptions = Solr::getClientOptions($idclient, $idlang);
+        $this->set('s', 'HOSTNAME', $this->clientOptions['hostname']);
+        $this->set('s', 'PORT', $this->clientOptions['port']);
+        $this->set('s', 'PATH', $this->clientOptions['path']);
+        $this->set('s', 'LOGIN', $this->clientOptions['login']);
+        $this->set('s', 'PASSWORD', $this->clientOptions['password']);
+        $this->set('s', 'SECURE', 'true' == $this->clientOptions['secure'] ? 'checked="checked"' : '');
+        $this->set('s', 'TIMEOUT', $this->clientOptions['timeout']);
+        $this->set('s', 'WT', $this->clientOptions['wt']);
+        $this->set('s', 'PROXY_HOST', $this->clientOptions['proxy_host']);
+        $this->set('s', 'PROXY_PORT', $this->clientOptions['proxy_port']);
+        $this->set('s', 'PROXY_LOGIN', $this->clientOptions['proxy_login']);
+        $this->set('s', 'PROXY_PASSWORD', $this->clientOptions['proxy_password']);
+        $this->set('s', 'SSL_CERT', $this->clientOptions['ssl_cert']);
+        $this->set('s', 'SSL_KEY', $this->clientOptions['ssl_key']);
+        $this->set('s', 'SSL_KEYPASSWORD', $this->clientOptions['ssl_keypassword']);
+        $this->set('s', 'SSL_CAINFO', $this->clientOptions['ssl_cainfo']);
+        $this->set('s', 'SSL_CAPATH', $this->clientOptions['ssl_capath']);
 
         // dispatch action
         try {
@@ -112,7 +112,7 @@ class SolrRightBottomPage extends cGuiPage
 
             // actions will be disabled if any required client option is missing
             try {
-                Solr::validateClientOptions($this->_clientOptions);
+                Solr::validateClientOptions($this->clientOptions);
                 $validClientOptions = true;
             } catch (SolrWarning $e) {
                 $validClientOptions = false;
@@ -132,23 +132,22 @@ class SolrRightBottomPage extends cGuiPage
      * Dispatches the given action.
      *
      * @param string $action to be executed
-     *
      * @throws SolrClientException|cDbException|cException
      */
-    protected function _dispatch($action)
+    protected function _dispatch(string $action)
     {
         $area = cRegistry::getArea();
+
+        if (empty($action)) {
+            $this->set('s', 'notification', '');
+            $this->set('s', 'content', '');
+            return;
+        }
 
         // check for permission
         $perm = cRegistry::getPerm();
         if (!$perm->have_perm_area_action($area, $action)) {
             throw new cException('no permissions');
-        }
-
-        if (NULL === $action) {
-            $this->set('s', 'notification', '');
-            $this->set('s', 'content', '');
-            return;
         }
 
         // dispatch action
@@ -174,11 +173,7 @@ class SolrRightBottomPage extends cGuiPage
         }
     }
 
-    /**
-     *
-     * @return string
-     */
-    private function _storeClientOptions()
+    private function _storeClientOptions(): string
     {
         $settings = 'secure,hostname,port,path,wt,login,password,timeout,';
         $settings .= 'proxy_host,proxy_port,proxy_login,proxy_password,';
@@ -193,25 +188,24 @@ class SolrRightBottomPage extends cGuiPage
                 deleteSystemProperty('solr', $setting);
             }
         }
-        $cGuiNotification = new cGuiNotification();
-        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_OK, 'client options were stored');
+
+        return (new cGuiNotification())
+            ->returnNotification(cGuiNotification::LEVEL_OK, 'client options were stored');
     }
 
     /**
-     * Call the relaod action.
+     * Call the reload action.
      *
-     * @return string
      * @throws cException
      */
-    private function _reload()
+    private function _reload(): string
     {
-
         // build URL
         // @see https://en.wikipedia.org/wiki/Basic_access_authentication
-        $pathList = explode('/', $this->_clientOptions['path']);
+        $pathList = explode('/', $this->clientOptions['path']);
         $url = 'http://';
-        $url .= $this->_clientOptions['login'] . ':' . $this->_clientOptions['password'] . '@';
-        $url .= $this->_clientOptions['hostname'] . ':' . $this->_clientOptions['port'];
+        $url .= $this->clientOptions['login'] . ':' . $this->clientOptions['password'] . '@';
+        $url .= $this->clientOptions['hostname'] . ':' . $this->clientOptions['port'];
         $url .= '/solr/admin/cores?' . http_build_query([
                 'action' => 'RELOAD',
                 'core' => array_pop($pathList)
@@ -271,23 +265,25 @@ class SolrRightBottomPage extends cGuiPage
             throw new cException('server did not answer');
         }
 
-        $cGuiNotification = new cGuiNotification();
-        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_OK, 'core was reloaded');
+        return (new cGuiNotification())
+            ->returnNotification(cGuiNotification::LEVEL_OK, 'core was reloaded');
     }
 
     /**
-     * @return string
      * @throws cDbException|cException
      */
-    private function _reindex()
+    private function _reindex(): string
     {
-        $cfg = cRegistry::getConfig();
-
         $idclient = cRegistry::getClientId();
         $idclient = cSecurity::toInteger($idclient);
 
         $idlang = cRegistry::getLanguageId();
         $idlang = cSecurity::toInteger($idlang);
+
+        $tabArtLang = cDb::getTableName('art_lang');
+        $tabArt = cDb::getTableName('art');
+        $tabCatArt = cDb::getTableName('cat_art');
+        $tabCatLang = cDb::getTableName('cat_lang');
 
         // statement is not correct if articles are related to more than one category.
         $db = cRegistry::getDb();
@@ -300,17 +296,17 @@ class SolrRightBottomPage extends cGuiPage
                 , art_lang.idart
                 , art_lang.idartlang
             FROM
-                `{$cfg['tab']['art_lang']}` AS art_lang
+                `{$tabArtLang}` AS art_lang
             INNER JOIN
-                `{$cfg['tab']['art']}` AS art
+                `{$tabArt}` AS art
             ON
                 art_lang.idart = art.idart
             INNER JOIN
-                `{$cfg['tab']['cat_art']}` AS cat_art
+                `{$tabCatArt}` AS cat_art
             ON
                 art_lang.idart = cat_art.idart
             INNER JOIN
-                `{$cfg['tab']['cat_lang']}` AS cat_lang
+                `{$tabCatLang}` AS cat_lang
             ON
                 cat_art.idcat = cat_lang.idcat
                 AND art_lang.idlang = cat_lang.idlang
@@ -324,29 +320,31 @@ class SolrRightBottomPage extends cGuiPage
         $articleIds = [];
         while ($db->nextRecord()) {
             $articleIds[] = [
-                'idclient' => $db->f('idclient'),
-                'idlang' => $db->f('idlang'),
-                'idcat' => $db->f('idcat'),
-                'idcatlang' => $db->f('idcatlang'),
-                'idart' => $db->f('idart'),
-                'idartlang' => $db->f('idartlang')
+                'idclient' => cSecurity::toInteger($db->f('idclient')),
+                'idlang' => cSecurity::toInteger($db->f('idlang')),
+                'idcat' => cSecurity::toInteger($db->f('idcat')),
+                'idcatlang' => cSecurity::toInteger($db->f('idcatlang')),
+                'idart' => cSecurity::toInteger($db->f('idart')),
+                'idartlang' => cSecurity::toInteger($db->f('idartlang'))
             ];
         }
 
         $indexer = new SolrIndexer($articleIds);
         $indexer->updateArticles();
 
-        $cGuiNotification = new cGuiNotification();
-        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_OK, 'core was reindexed');
+        return (new cGuiNotification())
+            ->returnNotification(cGuiNotification::LEVEL_OK, 'core was re-indexed');
     }
 
     /**
-     * @return string
      * @throws cDbException|cException
      */
-    private function _delete()
+    private function _delete(): string
     {
-        $cfg = cRegistry::getConfig();
+        $tabArtLang = cDb::getTableName('art_lang');
+        $tabArt = cDb::getTableName('art');
+        $tabCatArt = cDb::getTableName('cat_art');
+        $tabCatLang = cDb::getTableName('cat_lang');
 
         // statement is not correct if articles are related to more than one category.
         $db = cRegistry::getDb();
@@ -359,17 +357,17 @@ class SolrRightBottomPage extends cGuiPage
                 , art_lang.idart
                 , art_lang.idartlang
             FROM
-                `{$cfg['tab']['art_lang']}` AS art_lang
+                `{$tabArtLang}` AS art_lang
             INNER JOIN
-                `{$cfg['tab']['art']}` AS art
+                `{$tabArt}` AS art
             ON
                 art_lang.idart = art.idart
             INNER JOIN
-                `{$cfg['tab']['cat_art']}` AS cat_art
+                `{$tabCatArt}` AS cat_art
             ON
                 art_lang.idart = cat_art.idart
             INNER JOIN
-                `{$cfg['tab']['cat_lang']}` AS cat_lang
+                `{$tabCatLang}` AS cat_lang
             ON
                 cat_art.idcat = cat_lang.idcat
                 AND art_lang.idlang = cat_lang.idlang
@@ -380,20 +378,20 @@ class SolrRightBottomPage extends cGuiPage
         $articleIds = [];
         while ($db->nextRecord()) {
             $articleIds[] = [
-                'idclient' => $db->f('idclient'),
-                'idlang' => $db->f('idlang'),
-                'idcat' => $db->f('idcat'),
-                'idcatlang' => $db->f('idcatlang'),
-                'idart' => $db->f('idart'),
-                'idartlang' => $db->f('idartlang')
+                'idclient' => cSecurity::toInteger($db->f('idclient')),
+                'idlang' => cSecurity::toInteger($db->f('idlang')),
+                'idcat' => cSecurity::toInteger($db->f('idcat')),
+                'idcatlang' => cSecurity::toInteger($db->f('idcatlang')),
+                'idart' => cSecurity::toInteger($db->f('idart')),
+                'idartlang' => cSecurity::toInteger($db->f('idartlang'))
             ];
         }
 
         $indexer = new SolrIndexer($articleIds);
         $indexer->deleteArticles();
 
-        $cGuiNotification = new cGuiNotification();
-        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_OK, 'core was deleted');
+        return (new cGuiNotification())
+            ->returnNotification(cGuiNotification::LEVEL_OK, 'core was deleted');
     }
 
 }

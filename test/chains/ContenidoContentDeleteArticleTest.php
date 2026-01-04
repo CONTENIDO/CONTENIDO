@@ -56,12 +56,12 @@ class ContenidoContentDeleteArticleTest extends TestCase
     public function testNoChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // execute chain
         $idart = $this->_idart;
-        $iterator = $cecReg->getIterator($this->_chain);
-        while ($chainEntry = $iterator->next()) {
+        $cecIterator = $cecRegistry->getIterator($this->_chain);
+        while ($chainEntry = $cecIterator->next()) {
             $chainEntry->execute($idart);
         }
 
@@ -75,20 +75,20 @@ class ContenidoContentDeleteArticleTest extends TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test');
 
         // execute chain
         $idart = $this->_idart;
-        $iterator = $cecReg->getIterator($this->_chain);
-        while ($chainEntry = $iterator->next()) {
+        $cecIterator = $cecRegistry->getIterator($this->_chain);
+        while ($chainEntry = $cecIterator->next()) {
             $chainEntry->execute($idart);
         }
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test');
 
         $this->assertEquals(array(1, $this->_idart), array(self::$invokeCounter, $idart));
     }
@@ -100,22 +100,22 @@ class ContenidoContentDeleteArticleTest extends TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test');
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test2');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test2');
 
         // execute chain
         $idart = $this->_idart;
-        $iterator = $cecReg->getIterator($this->_chain);
-        while ($chainEntry = $iterator->next()) {
+        $cecIterator = $cecRegistry->getIterator($this->_chain);
+        while ($chainEntry = $cecIterator->next()) {
             $chainEntry->execute($idart);
         }
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test2');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoContentDeleteArticle_Test2');
 
         $this->assertEquals(array(2, $this->_idart), array(self::$invokeCounter, $idart));
     }

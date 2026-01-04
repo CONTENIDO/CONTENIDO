@@ -26,7 +26,7 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
 
     /**
      * Number of max items to process
-     * @var  int
+     * @var int
      */
     protected $_iMaxItems = 0;
 
@@ -36,11 +36,11 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
     public function init()
     {
         $this->_oView->content = '';
-        $this->_oView->form_idart_chk = ($this->_getParam('idart')) ? ' checked="checked"' : '';
-        $this->_oView->form_idcat_chk = ($this->_getParam('idcat')) ? ' checked="checked"' : '';
-        $this->_oView->form_idcatart_chk = ($this->_getParam('idcatart')) ? ' checked="checked"' : '';
-        $this->_oView->form_idartlang_chk = ($this->_getParam('idartlang')) ? ' checked="checked"' : '';
-        $this->_oView->form_maxitems = (int)$this->_getParam('maxitems', 200);
+        $this->_oView->form_idart_chk = $this->_getParam('idart') ? ' checked="checked"' : '';
+        $this->_oView->form_idcat_chk = $this->_getParam('idcat') ? ' checked="checked"' : '';
+        $this->_oView->form_idcatart_chk = $this->_getParam('idcatart') ? ' checked="checked"' : '';
+        $this->_oView->form_idartlang_chk = $this->_getParam('idartlang') ? ' checked="checked"' : '';
+        $this->_oView->form_maxitems = cSecurity::toInteger($this->_getParam('maxitems', 200));
         $this->_iMaxItems = $this->_oView->form_maxitems;
     }
 

@@ -319,7 +319,7 @@ abstract class cContentTypeAbstract
     }
 
     /**
-     * Checks if the passed code is a wrapped content type PHP code.
+     * Checks if the provided code is a wrapped content type PHP code.
      *
      * @param string $code
      * @return bool

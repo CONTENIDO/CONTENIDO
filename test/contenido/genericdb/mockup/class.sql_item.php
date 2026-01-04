@@ -5,22 +5,13 @@
  */
 class SqlItem
 {
-    /**
-     * @param array $tables
-     *
-     * @return string
-     */
-    public static function getDeleteStatement(array $tables)
+    public static function getDeleteStatement(array $tables): string
     {
-        $tableClause = implode('``, `', $tables);
+        $tableClause = implode('`, `', $tables);
         return "DROP TABLE IF EXISTS `$tableClause`;";
     }
 
-    /**
-     *
-     * @return string
-     */
-    public static function getCreateConTestStatement()
+    public static function getCreateConTestStatement(): string
     {
         return (new cSqlTemplate())->parse("
             CREATE TABLE `con_test` (
@@ -34,11 +25,7 @@ class SqlItem
         );
     }
 
-    /**
-     *
-     * @return string
-     */
-    public static function getInsertConTestStatement()
+    public static function getInsertConTestStatement(): string
     {
         return "
             INSERT INTO `con_test` VALUES
@@ -48,11 +35,7 @@ class SqlItem
             ;";
     }
 
-    /**
-     *
-     * @return string
-     */
-    public static function getCreateDogStatement()
+    public static function getCreateDogStatement(): string
     {
         return (new cSqlTemplate())->parse("
             CREATE TABLE `con_test_dog` (
@@ -66,11 +49,7 @@ class SqlItem
         );
     }
 
-    /**
-     *
-     * @return string
-     */
-    public static function getInserDogStatement()
+    public static function getInserDogStatement(): string
     {
         return "
             INSERT INTO `con_test_dog` (`id`, `name`, `descr`, `size`, `date`) VALUES
@@ -80,11 +59,7 @@ class SqlItem
             ;";
     }
 
-    /**
-     *
-     * @return string
-     */
-    public static function getCreateDogRfidStatement()
+    public static function getCreateDogRfidStatement(): string
     {
         return (new cSqlTemplate())->parse("
             CREATE TABLE `con_test_rfid_dog` (
@@ -98,11 +73,7 @@ class SqlItem
         );
     }
 
-    /**
-     *
-     * @return string
-     */
-    public static function getInserDogRfidStatement()
+    public static function getInsertDogRfidStatement(): string
     {
         return "
             INSERT INTO `con_test_rfid_dog` (`dog_id`, `bar_code`, `notes`, `iso_compliant`, `date`) VALUES
@@ -116,8 +87,7 @@ class SqlItem
 // /**
 //  *
 //  * @author marcus.gnass
-//  * @method TITCollection createNewItem
-//  * @method TITCollection|bool next
+//  * @extends ItemCollection<TITCollection>
 //  */
 // class ITCollection extends ItemCollection {
 

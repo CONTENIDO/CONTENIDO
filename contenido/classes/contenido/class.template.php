@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiTemplate createNewItem
- * @method cApiTemplate|bool next
+ * @extends ItemCollection<cApiTemplate>
  */
 class cApiTemplateCollection extends ItemCollection
 {
@@ -41,7 +40,7 @@ class cApiTemplateCollection extends ItemCollection
      */
     public function __construct($select = false)
     {
-        parent::__construct(cRegistry::getDbTableName('tpl'), 'idtpl');
+        parent::__construct(cDb::getTableName('tpl'), 'idtpl');
         $this->_setItemClass('cApiTemplate');
 
         // set the join partners so that joins can be used via link() method
@@ -87,7 +86,7 @@ class cApiTemplateCollection extends ItemCollection
     {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = $auth->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -138,12 +137,33 @@ class cApiTemplateCollection extends ItemCollection
     {
         $this->select('idlay = ' . cSecurity::toInteger($idlay));
         $entries = [];
-        while (($entry = $this->next()) !== false) {
+        while ($entry = $this->next()) {
             $entries[] = clone $entry;
         }
         return $entries;
     }
 
+    /**
+     * Returns all template ids having passed layout id.
+     *
+     * @param int $layoutId
+     * @return int[]
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function getIdsByLayoutId(int $layoutId): array
+    {
+        $this->db->query(sprintf(
+            "SELECT `idtpl` FROM `%s` WHERE `idlay` = %d", $this->getTable(), $layoutId
+        ));
+
+        $ids = [];
+        while ($this->db->nextRecord()) {
+            $ids[] = cSecurity::toInteger($this->db->f('idtpl'));
+        }
+
+        return $ids;
+    }
 }
 
 /**
@@ -163,7 +183,7 @@ class cApiTemplate extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('tpl'), 'idtpl');
+        parent::__construct(cDb::getTableName('tpl'), 'idtpl');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

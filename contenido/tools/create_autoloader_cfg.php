@@ -22,7 +22,7 @@
  */
 
 // Allow execution only through cli mode
-if (substr(PHP_SAPI, 0, 3) != 'cli') {
+if (substr(PHP_SAPI, 0, 3) !== 'cli') {
     die('Illegal call');
 }
 
@@ -74,7 +74,7 @@ include_once $context->currentPath . 'mpAutoloaderClassMap/mpClassMapFileCreator
 
 // collect all found class/interface names with their paths
 $context->classTypeFinder = new mpClassTypeFinder($context->options);
-foreach ($context->pathsToParse as $pos => $dir) {
+foreach ($context->pathsToParse as $dir) {
     $classMap = $context->classTypeFinder->findInDir(new SplFileInfo($dir), true);
     if ($classMap) {
         $context->classMapList = array_merge($context->classMapList, $classMap);

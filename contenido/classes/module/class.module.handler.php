@@ -42,12 +42,12 @@ class cModuleHandler
     /**
      * @var int Id of the module.
      */
-    protected $_idmod = NULL;
+    protected $_idmod = null;
 
     /**
      * @var string The name of the module.
      */
-    private $_moduleName = NULL;
+    private $_moduleName = null;
 
     /**
      * @var string Description of the module.
@@ -79,12 +79,12 @@ class cModuleHandler
     /**
      * @var array CONTENIDO cfg.
      */
-    protected $_cfg = NULL;
+    protected $_cfg = null;
 
     /**
      * @var array CONTENIDO cfgClient.
      */
-    protected $_cfgClient = NULL;
+    protected $_cfgClient = null;
 
     /**
      * @var int Id of the client.
@@ -121,9 +121,9 @@ class cModuleHandler
     protected $_idlang = -1;
 
     /**
-     * @var ?cDb Database instance
+     * @var cDb Database instance
      */
-    private $_db = NULL;
+    private $_db;
 
     /**
      * @var array Language encoding list
@@ -139,13 +139,11 @@ class cModuleHandler
      * and output will be named [module_alias]_input.php,
      * and [module_alias]_output.php respectively.
      *
-     * @param cApiModule|array|int $module [optional]
-     *         The module instance or the module recordset array from the
-     *         database or the id of the module
-     * @throws cException
-     *         If the module directory can not be created
+     * @param cApiModule|array|int $module [optional] The module instance or the module
+     *      recordset array from the database or the id of the module
+     * @throws cException If the module directory can not be created
      */
-    public function __construct($module = NULL)
+    public function __construct($module = null)
     {
         $this->_cfg = cRegistry::getConfig();
         $this->_client = cRegistry::getClientId();
@@ -210,12 +208,12 @@ class cModuleHandler
      *
      * @param string $templateName
      * @param string $fileType
-     * @param string $fileContent
+     * @param mixed $content The data to write. Can be either a string, an array or a stream resource.
      * @param string $saveDirectory [optional]
      * @return string|bool URL on success or false on failure
      * @throws cInvalidArgumentException
      */
-    public function saveContentToFile($templateName, $fileType, $fileContent, $saveDirectory = 'cache')
+    public function saveContentToFile(string $templateName, string $fileType, $content, string $saveDirectory = 'cache')
     {
         $sSaveDirectory = $this->_cfgClient[$this->_client]['path']['frontend'] . $saveDirectory . '/';
         if (!is_dir($sSaveDirectory)) {
@@ -224,7 +222,7 @@ class cModuleHandler
 
         $templateName = str_replace(' ', '_', $templateName);
         $templateName = cString::toLowerCase($templateName);
-        $fileOperation = cFileHandler::write($sSaveDirectory . $templateName . '.' . $fileType, $fileContent);
+        $fileOperation = cFileHandler::write($sSaveDirectory . $templateName . '.' . $fileType, $content);
         if ($fileOperation === false) {
             return false;
         }
@@ -270,12 +268,11 @@ class cModuleHandler
     /**
      * Initialize the variables of the class.
      *
-     * @param cApiModule|array|int $module [optional]
-     *         The module instance or the module recordset array from the
-     *         database or the id of the module
+     * @param cApiModule|array|int $module [optional] The module instance or the module recordset
+     *      array from the database or the id of the module
      * @throws cDbException|cException
      */
-    protected function _initByModule($module = NULL)
+    protected function _initByModule($module = null)
     {
         if (is_numeric($module) && cSecurity::toInteger($module) == 0) {
             return;
@@ -337,7 +334,7 @@ class cModuleHandler
      * @param string $file [optional]
      * @return string
      */
-    public function getTemplatePath($file = '')
+    public function getTemplatePath(string $file = '')
     {
         return $this->_modulePath . $this->_directories['template'] . $file;
     }
@@ -374,10 +371,8 @@ class cModuleHandler
 
     /**
      * Get the main css file [module_alias].css.
-     *
-     * @return string
      */
-    public function getCssFileName()
+    public function getCssFileName(): string
     {
         return $this->_moduleAlias . '.css';
     }
@@ -385,11 +380,9 @@ class cModuleHandler
     /**
      * Returns random characters.
      *
-     * @param int $count
-     *         amount of characters
-     * @return string
+     * @param int $count Amount of characters
      */
-    protected function getRandomCharacters($count)
+    protected function getRandomCharacters(int $count): string
     {
         $micro1 = microtime();
         $rand1 = rand(0, time());
@@ -400,13 +393,10 @@ class cModuleHandler
     /**
      * Check if exist a file.
      *
-     * @param string $type
-     *         js | template | css the directory of the file
-     * @param string $fileName
-     *         file name
-     * @return bool
+     * @param string $type js | template | css the directory of the file
+     * @param string $fileName file name
      */
-    public function existFile($type, $fileName)
+    public function existFile(string $type, string $fileName): bool
     {
         return cFileHandler::exists($this->_modulePath . $this->_directories[$type] . $fileName);
     }
@@ -414,13 +404,10 @@ class cModuleHandler
     /**
      * Delete file.
      *
-     * @param string $type
-     *         js |template | css directory of the file
-     * @param string $fileName
-     *         file name
-     * @return bool
+     * @param string $type js |template | css directory of the file
+     * @param string $fileName file name
      */
-    public function deleteFile($type, $fileName)
+    public function deleteFile(string $type, string $fileName): bool
     {
         if ($this->existFile($type, $fileName)) {
             return unlink($this->_modulePath . $this->_directories[$type] . $fileName);
@@ -438,7 +425,7 @@ class cModuleHandler
      * @return bool true on success or false on failure
      * @throws cInvalidArgumentException
      */
-    public function createModuleFile($type, $fileName = NULL, $content = ''): bool
+    public function createModuleFile(string $type, $fileName = null, string $content = ''): bool
     {
         // create directory if not exist
         if (!$this->createModuleDirectory($type)) {
@@ -446,7 +433,7 @@ class cModuleHandler
         }
 
         // if not set use default filename
-        if ($fileName == NULL || $fileName == '') {
+        if ($fileName == null || $fileName == '') {
             $fileName = $this->_moduleAlias;
             $fileName = $type === 'template' ? $fileName . '.html' : $fileName . '.' . $type;
         } else {
@@ -501,10 +488,9 @@ class cModuleHandler
     /**
      * Get the name of the main js file (modulname.js).
      *
-     * @return string
-     *         the name of the js file
+     * @return string The name of the js file
      */
-    public function getJsFileName()
+    public function getJsFileName(): string
     {
         return $this->_moduleAlias . '.js';
     }
@@ -518,9 +504,9 @@ class cModuleHandler
      * @return string|bool
      * @throws cInvalidArgumentException
      */
-    public function getFilesContent($directory, $fileTyp, $fileName = NULL)
+    public function getFilesContent($directory, $fileTyp, $fileName = null)
     {
-        if ($fileName == NULL) {
+        if ($fileName == null) {
             $fileName = $this->_moduleAlias . '.' . $fileTyp;
         }
 
@@ -535,11 +521,9 @@ class cModuleHandler
     /**
      * Make main module directory.
      *
-     * @return bool
-     *         true on success or false on failure
      * @throws cInvalidArgumentException
      */
-    protected function _makeModuleDirectory()
+    protected function _makeModuleDirectory(): bool
     {
         // Do not display error on login page
         if (cSecurity::toInteger($this->_client) == 0) {
@@ -549,7 +533,7 @@ class cModuleHandler
         $sMainModuleDirectory = $this->_cfgClient[$this->_client]['module']['path'];
 
         // make
-        if (!is_dir($sMainModuleDirectory) && $sMainModuleDirectory != NULL) {
+        if (!is_dir($sMainModuleDirectory) && $sMainModuleDirectory != null) {
             if (!mkdir($sMainModuleDirectory, cDirHandler::getDefaultPermissions(), true)) {
                 return false;
             } else {
@@ -563,14 +547,13 @@ class cModuleHandler
     /**
      * Get all files from a module directory.
      *
-     * @param string $moduleDirectory
-     *         template css or js...
-     * @return array
+     * @param string $moduleDirectory Template css or js...
      */
-    public function getAllFilesFromDirectory($moduleDirectory)
+    public function getAllFilesFromDirectory(string $moduleDirectory): array
     {
         $dir = $this->_modulePath . $this->_directories[$moduleDirectory];
-        return cDirHandler::read($dir);
+
+        return (array) cDirHandler::read($dir);
     }
 
     /**
@@ -578,7 +561,7 @@ class cModuleHandler
      *
      * @param string $name
      */
-    public function changeModuleName($name)
+    public function changeModuleName(string $name)
     {
         $this->_moduleAlias = $name;
         $this->_modulePath = $this->_path . $this->_moduleAlias . '/';
@@ -588,11 +571,10 @@ class cModuleHandler
      * Removes this module from the filesystem.
      * Also deletes the version files.
      *
-     * @return bool
-     *         true on success or false on failure
+     * @return bool true on success or false on failure
      * @throws cInvalidArgumentException
      */
-    public function eraseModule()
+    public function eraseModule(): bool
     {
         // Delete modules only if we find info.xml at module path
         if (cFileHandler::exists($this->_modulePath . 'info.xml')) {
@@ -605,11 +587,11 @@ class cModuleHandler
     /**
      * Read the input of the file _input.php.
      *
-     * @param bool $issource [optional]
+     * @param bool $isSource [optional]
      * @return string|bool Content of module input file or false on failure
      * @throws cInvalidArgumentException
      */
-    public function readInput($issource = false)
+    public function readInput(bool $isSource = false)
     {
         $inputFilePath = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php';
         if (!cFileHandler::exists($inputFilePath)) {
@@ -617,7 +599,7 @@ class cModuleHandler
         }
 
         $content = cFileHandler::read($inputFilePath);
-        if ($issource) {
+        if ($isSource) {
             $content = conHtmlentities($content);
         }
 
@@ -627,11 +609,11 @@ class cModuleHandler
     /**
      * Read the output of the file _output.php.
      *
-     * @param bool $issource [optional]
+     * @param bool $isSource [optional]
      * @return bool|string Content of module output file or false on failure
      * @throws cInvalidArgumentException
      */
-    public function readOutput($issource = false)
+    public function readOutput(bool $isSource = false)
     {
         $inputFilePath = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php';
         if (!cFileHandler::exists($inputFilePath)) {
@@ -639,7 +621,7 @@ class cModuleHandler
         }
 
         $content = cFileHandler::read($inputFilePath);
-        if ($issource) {
+        if ($isSource) {
             $content = conHtmlentities($content);
         }
 
@@ -650,12 +632,10 @@ class cModuleHandler
      * Make a directory template/css/image/js/php if not exist.
      *
      * @param string $type
-     *
-     * @return bool
-     *         true on success or false on failure
+     * @return bool true on success or false on failure
      * @throws cInvalidArgumentException
      */
-    protected function createModuleDirectory($type)
+    protected function createModuleDirectory(string $type): bool
     {
         if (array_key_exists($type, $this->_directories)) {
             if (!is_dir($this->_modulePath . $this->_directories[$type])) {
@@ -674,21 +654,17 @@ class cModuleHandler
     /**
      * Can write/create a file.
      *
-     * @param string $fileName
-     *         file name
-     * @param string $directory
-     *         directory where is the file
-     * @return bool
-     *         true on success or false on failure
+     * @param string $fileName File name
+     * @param string $directory Directory where is the file
      */
-    public function isWritable($fileName, $directory)
+    public function isWritable(string $fileName, string $directory): bool
     {
         if (cFileHandler::exists($fileName)) {
-            if (!is_writable($fileName)) {
+            if (!cFileHandler::writeable($fileName)) {
                 return false;
             }
         } else {
-            if (!is_writable($directory)) {
+            if (!cFileHandler::writeable($directory)) {
                 return false;
             }
         }
@@ -698,19 +674,18 @@ class cModuleHandler
     /**
      * Check write permissions for this module.
      *
-     * @param string $type
-     *         php oder template
+     * @param string $type php oder template
      * @return bool
      */
-    public function moduleWriteable($type)
+    public function moduleWriteable(string $type): bool
     {
         // check if type directory inside module folder exists and has write permissions
-        if (true === cFileHandler::exists($this->_modulePath . $this->_directories[$type])) {
+        if (cFileHandler::exists($this->_modulePath . $this->_directories[$type])) {
             return cFileHandler::writeable($this->_modulePath . $this->_directories[$type]);
         }
 
         // check if module folder exists and has write permissions
-        if (true === cFileHandler::exists($this->_modulePath)) {
+        if (cFileHandler::exists($this->_modulePath)) {
             return cFileHandler::writeable($this->_modulePath);
         }
 
@@ -724,7 +699,7 @@ class cModuleHandler
      * @return bool true on success or false on failure
      * @throws cInvalidArgumentException
      */
-    public function saveOutput($output = NULL)
+    public function saveOutput($output = null): bool
     {
         $fileName = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php';
 
@@ -733,7 +708,7 @@ class cModuleHandler
             return false;
         }
 
-        if ($output == NULL) {
+        if ($output == null) {
             $output = $this->_output;
         }
 
@@ -756,7 +731,7 @@ class cModuleHandler
      * @return bool true on success or false on failure
      * @throws cInvalidArgumentException
      */
-    public function saveInput($input = NULL)
+    public function saveInput($input = null): bool
     {
         $fileName = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php';
 
@@ -765,7 +740,7 @@ class cModuleHandler
             return false;
         }
 
-        if ($input == NULL) {
+        if ($input == null) {
             $input = $this->_input;
         }
 
@@ -790,29 +765,29 @@ class cModuleHandler
      * @param string $type [optional] Type of the module
      * @param string $alias [optional]
      * @return bool true if success else false
-     * @throws cException
+     * @throws cException|DOMException
      */
-    public function saveInfoXML($moduleName = NULL, $description = NULL, $type = NULL, $alias = NULL)
+    public function saveInfoXML($moduleName = null, $description = null, $type = null, $alias = null): bool
     {
-        if ($moduleName === NULL) {
+        if ($moduleName === null) {
             $moduleName = $this->_moduleName;
         }
 
-        if ($description === NULL) {
+        if ($description === null) {
             $description = $this->_description;
         }
 
-        if ($type === NULL) {
+        if ($type === null) {
             $type = $this->_type;
         }
 
-        if ($alias === NULL) {
+        if ($alias === null) {
             $alias = $this->_moduleAlias;
         }
 
         $oWriter = new cXmlWriter();
         $oWriter->getDomDocument()->formatOutput = true;
-        $oRootElement = $oWriter->addElement('module', '', NULL);
+        $oRootElement = $oWriter->addElement('module', '', null);
 
         $oWriter->addElement('name', conHtmlSpecialChars($moduleName), $oRootElement);
         $oWriter->addElement('description', conHtmlSpecialChars($description), $oRootElement);
@@ -833,7 +808,7 @@ class cModuleHandler
      *      Else if the mkdir or saveInput or saveOutput not success return false.
      * @throws cException|cInvalidArgumentException
      */
-    public function createModule($input = '', $output = '')
+    public function createModule($input = '', $output = ''): bool
     {
         if ($input != '') {
             $this->_input = $input;
@@ -892,14 +867,11 @@ class cModuleHandler
     /**
      * Rename a module and the input and output files.
      *
-     * @param string $old
-     *         old name of the module
-     * @param string $new
-     *         new name of the module
-     * @return bool
-     *         true on success or false on failure
+     * @param string $old old name of the module
+     * @param string $new new name of the module
+     * @return bool true on success or false on failure
      */
-    public function renameModule($old, $new)
+    public function renameModule($old, $new): bool
     {
         // try to rename the dir
         if (!rename($this->_path . $old, $this->_path . $new)) {
@@ -939,10 +911,9 @@ class cModuleHandler
     /**
      * Show if the module with the module name exist in module dir.
      *
-     * @return bool
-     *         if the module exist return true, else false
+     * @return bool If the module exist return true, else false
      */
-    public function modulePathExists()
+    public function modulePathExists(): bool
     {
         return is_string($this->_modulePath) && is_dir($this->_modulePath);
     }
@@ -950,11 +921,10 @@ class cModuleHandler
     /**
      * Test input code.
      *
-     * @return array
-     *         bool state, string errorMessage
+     * @return array{state: bool, errorMessage: string}} bool state, string errorMessage
      * @throws cDbException|cInvalidArgumentException|cException
      */
-    public function testInput()
+    public function testInput(): array
     {
         return $this->_testCode('input');
     }
@@ -962,11 +932,10 @@ class cModuleHandler
     /**
      * Test output code.
      *
-     * @return array
-     *         bool state, string errorMessage
+     * @return array{state: bool, errorMessage: string}} bool state, string errorMessage
      * @throws cDbException|cInvalidArgumentException|cException
      */
-    public function testOutput()
+    public function testOutput(): array
     {
         return $this->_testCode('output');
     }
@@ -974,13 +943,11 @@ class cModuleHandler
     /**
      * Test module code.
      *
-     * @param string $inputType
-     *         code field type, 'input' or 'output'
-     * @return array
-     *         bool state, string errorMessage
+     * @param string $inputType code field type, 'input' or 'output'
+     * @return array{state: bool, errorMessage: string}} bool state, string errorMessage
      * @throws cDbException|cInvalidArgumentException|cException
      */
-    protected function _testCode($inputType)
+    protected function _testCode(string $inputType): array
     {
         $result = [
             'state' => false,
@@ -1071,7 +1038,7 @@ class cModuleHandler
      * @return array{state: bool, errorMessage: string}} bool state, string errorMessage
      * @throws cDbException|cException
      */
-    protected function _verifyCode($code, $id, $output = false)
+    protected function _verifyCode($code, $id, $output = false): array
     {
         $isError = false;
         $result = [

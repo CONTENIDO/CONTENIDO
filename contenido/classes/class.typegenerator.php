@@ -128,12 +128,9 @@ class cTypeGenerator
     }
 
     /**
-     *
      * @param string $type
      * @param int $index
-     *
      * @return string
-     *
      * @throws cDbException|cException
      */
     private function _processCmsTags($type, $index)
@@ -142,7 +139,7 @@ class cTypeGenerator
         $oTypeColl->select();
 
         $typeList = [];
-        while (false !== $oType = $oTypeColl->next()) {
+        while ($oType = $oTypeColl->next()) {
             $typeList[] = $oType->toObject();
         }
 

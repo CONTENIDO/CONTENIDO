@@ -16,8 +16,8 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // get client settings
-$rootIdcat = getEffectiveSetting('navigation_top', 'idcat', 1);
-$depth = getEffectiveSetting('navigation_top', 'depth', 3);
+$rootIdcat = cSecurity::toInteger(getEffectiveSetting('navigation_top', 'idcat', 1));
+$depth = cSecurity::toInteger(getEffectiveSetting('navigation_top', 'depth', 3));
 
 // get category tree
 $categoryHelper = cCategoryHelper::getInstance();

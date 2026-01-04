@@ -40,7 +40,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
     $tpl->set('s', 'ACTION2', '');
 } else {
     // New layout link
-    if ($perm->have_perm_area_action("lay_edit", "lay_new")) {
+    if ($perm->have_perm_area_action('lay_edit', 'lay_new')) {
         $str = sprintf(
             '<a class="con_func_button addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
             'right_top', $sess->url("main.php?area=lay_edit&frame=3"),
@@ -52,7 +52,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
         $tpl->set('s', 'ACTION', '<a class="con_func_button addfunction_disabled" href="#">' . i18n("No permission to create layouts") . '</a>');
     }
     // Sync layouts link
-    if ($perm->have_perm_area_action("lay_edit", "lay_new")) {
+    if ($perm->have_perm_area_action('lay_edit', 'lay_new')) {
         $str = sprintf(
             '<a class="con_func_button syncronizefunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
             'right_top', $sess->url("main.php?area=lay_edit&frame=3"),

@@ -43,27 +43,23 @@ class cArray
     }
 
     /**
-     * Search for given value in given array and return key of its first
-     * occurrence.
+     * Search for given value in given array and return key of its first occurrence.
      *
-     * If value wasn't found at all false will be returned. If given array
-     * contains subarrays, these will be searched too. If value is found in
-     * subarray the returned key is that of the subarray.
+     * If value wasn't found at all false will be returned. If given array contains subarrays, these
+     * will be searched too. If value is found in subarray the returned key is that of the subarray.
      *
-     * Usually the values are tested for equality with the given $search. If the
-     * flag $partial is not false values are tested to contain $search.
-     * Otherwise, if $strict equals true values are tested for identity with
-     * $search. Otherwise, (which is the default) values are tested for equality.
+     * Usually the values are tested for equality with the given $search. If the flag $partial is not
+     * false values are tested to contain $search. Otherwise, if $strict equals true values are tested
+     * for identity with $search. Otherwise, (which is the default) values are tested for equality.
      *
-     * Be careful when searching by equality in arrays containing values that
-     * are no strings! The same is true for searching by equality for values
-     * that are no strings. PHPs behaviour is quite weird concerning comparison
-     * of different data types. E.g. '0' equals '0.0', 'foo' equals 0, 'foo'
-     * equals 0.0, NULL equals '' and false equals '0'! When dealing with
-     * non strings consider using the strict mode!
+     * Be careful when searching by equality in arrays containing values that are no strings! The same
+     * is true for searching by equality for values that are no strings. PHPs behaviour is quite weird
+     * concerning comparison of different data types. E.g. '0' equals '0.0', 'foo' equals 0, 'foo'
+     * equals 0.0, NULL equals '' and false equals '0'! When dealing with non strings consider using
+     * the strict mode!
      *
-     * Another caveat is when searching for an empty string when using the
-     * partial mode. This would lead to an error and is considered a bug!
+     * Another caveat is when searching for an empty string when using the partial mode. This would lead
+     * to an error and is considered a bug!
      *
      * @param array $arr Array to search
      * @param mixed $search Value to search for
@@ -82,14 +78,14 @@ class cArray
                     return $ret;
                 }
             } else {
-                if ($partial !== false) {
+                if ($partial) {
                     // BUGFIX empty search
-                    if (0 === cString::getStringLength($search)) {
+                    if (!cString::getStringLength($search)) {
                         return false;
                     }
                     // convert $search explicitly to string
                     // we do not want to use the ordinal value of $search
-                    $found = false !== cString::findFirstPos($value, strval($search));
+                    $found = cString::findFirstPos($value, cSecurity::toString($search)) !== false;
                 } elseif ($strict) {
                     // search by identity
                     $found = $value === $search;
@@ -150,40 +146,39 @@ class cArray
      * $array = cArray::csort($array, 'town', 'age', SORT_DESC, 'name');
      * </pre>
      */
-    public static function csort(): array
+    public static function csort(...$args): array
     {
         $args = func_get_args();
-        $mArray = array_shift($args);
+        $array = array_shift($args);
 
-        if (!is_array($mArray) || empty($mArray)) {
-            return $mArray;
+        if (!is_array($array) || empty($array)) {
+            return $array;
         }
 
-        // Build code like
-        // return array_multisort($sortarr[1], $sortarr[2], $mArray);
-        $sortCode = "return array_multisort(";
-        $i = 0;
+        $sortParams = [];
         foreach ($args as $arg) {
-            $i++;
             if (is_string($arg)) {
-                foreach ($mArray as $row) {
-                    $a = cString::toUpperCase($row[$arg]);
-                    $sortArr[$i][] = $a;
-                }
+                // Use array_column to extract the sorting values
+                // and apply strtoupper for case-insensitive sorting as in your original
+                $columnValues = array_column($array, $arg);
+                $sortParams[] = array_map('strtoupper', $columnValues);
             } else {
-                $sortArr[$i] = $arg;
+                // Constants like SORT_DESC or SORT_NUMERIC go directly into the params
+                $sortParams[] = $arg;
             }
-            $sortCode .= "\$sortArr[" . $i . "], ";
         }
-        $sortCode .= "\$mArray);";
 
-        @eval($sortCode);
+        // Add the original array as the last parameter so it gets reordered
+        $sortParams[] = &$array;
 
-        return $mArray;
+        // Use the splat operator (...) to unpack the array as function arguments
+        array_multisort(...$sortParams);
+
+        return $array;
     }
 
     /**
-     * Ensures that the passed array has the key, sets it by using the value.
+     * Ensures that the provided array has the key, sets it by using the value.
      *
      * @param array|mixed $array
      * @param string|int $key
@@ -205,8 +200,7 @@ class cArray
     }
 
     /**
-     * Get the first key of the given array without affecting the internal
-     * array pointer.
+     * Get the first key of the given array without affecting the internal array pointer.
      *
      * @param array $array An array
      * @return int|string|null

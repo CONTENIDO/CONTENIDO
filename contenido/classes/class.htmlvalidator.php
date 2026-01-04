@@ -91,7 +91,7 @@ class cHTMLValidator
     protected $_existingTags = [];
 
     /**
-     * @param string $html
+     * @param string|mixed $html
      */
     public function validate($html)
     {
@@ -137,17 +137,12 @@ class cHTMLValidator
         $this->missingNodes = $this->_missingNodes;
     }
 
-    /**
-     * @param string $tag
-     * @return bool
-     */
-    public function tagExists($tag): bool
+    public function tagExists(string $tag): bool
     {
         return in_array($tag, $this->_existingTags);
     }
 
     /**
-     * @return array
      * @since CONTENIDO 4.10.2
      */
     public function getMissingNodes(): array
@@ -156,7 +151,6 @@ class cHTMLValidator
     }
 
     /**
-     * @return array
      * @since CONTENIDO 4.10.2
      */
     public function getMissingTags(): array
@@ -166,10 +160,8 @@ class cHTMLValidator
 
     /**
      * @param string $html
-     *
-     * @return string
      */
-    protected function _cleanHTML($html): string
+    protected function _cleanHTML(string $html): string
     {
         // Remove all php code from layout
         $resultingHTML = preg_replace('/<\?(php)?((.)|(\s))*?\?>/i', '', $html);
@@ -180,7 +172,6 @@ class cHTMLValidator
     }
 
     /**
-     * @return string
      * @deprecated not used anymore
      */
     protected function _returnErrorMap(): string
@@ -214,7 +205,6 @@ class cHTMLValidator
 
     /**
      * @param int $charpos
-     * @return array
      */
     protected function _getLineAndCharPos($charpos): array
     {
@@ -227,8 +217,6 @@ class cHTMLValidator
 
     /**
      * Resets instance properties.
-     *
-     * @return void
      */
     protected function _reset()
     {
@@ -282,7 +270,7 @@ class cHTMLValidator
                         $this->_nestingLevel[$nodeName]--;
 
                         // TODO check for the wrong nesting level
-                        // if ($this->_nestingNodes[$nodeName][$nestingLevelIndex]["level"] != $nestingLevel) {
+                        // if ($this->_nestingNodes[$nodeName][$nestingLevelIndex]['level'] != $nestingLevel) {
                         // }
 
                         $nestingLevel--;

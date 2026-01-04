@@ -22,10 +22,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * table contains a language id foreign key field.
  * Therefore, it requires following properties to be set and methods to be implemented
  * by a ItemCollection class using this trait:
- * @property string fkLanguageIdName
- * @property cDb db
- * @method ItemCollection|string getTable
- * @method ItemCollection|string getPrimaryKeyName
+ * @property string $fkLanguageIdName
+ * @property cDb $db
+ * @method ItemCollection|string getTable()
+ * @method ItemCollection|string getPrimaryKeyName()
  *
  * @package    Core
  * @subpackage Database

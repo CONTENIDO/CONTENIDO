@@ -20,16 +20,14 @@ class cLinkcheckerTester
     /**
      * Checks all links without front_content.php
      *
-     * @return array
      * @throws cDbException
      */
-    public static function checkLinks()
+    public static function checkLinks(): array
     {
-        global $cronjob, $aErrors;
+        global $aErrors;
         global $aSearchIDInfosArt, $aSearchIDInfosCat, $aSearchIDInfosCatArt, $aSearchIDInfosNonID;
 
         $auth = cRegistry::getAuth();
-        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
         $lang = cRegistry::getLanguageId();
 
@@ -39,22 +37,28 @@ class cLinkcheckerTester
 
         // Checks idarts
         if (count($aSearchIDInfosArt) > 0) {
-            self::_checkArticles($aSearchIDInfosArt, $aErrors, $db, $cfg);
+            self::_checkArticles($aSearchIDInfosArt, $aErrors, $db);
         }
 
         // Checks idcats
         if (count($aSearchIDInfosCat) > 0) {
-            self::_checkCategories($aSearchIDInfosCat, $aErrors, $db, $cfg, $lang);
+            self::_checkCategories($aSearchIDInfosCat, $aErrors, $db, $lang);
         }
 
         // Checks idcatarts
         if (count($aSearchIDInfosCatArt) > 0) {
-            self::_checkCategoryArticles($aSearchIDInfosCatArt, $aErrors, $db, $cfg);
+            self::_checkCategoryArticles($aSearchIDInfosCatArt, $aErrors, $db);
         }
 
         // Checks other links (e.g. http, www, dfbs)
         if (count($aSearchIDInfosNonID) != 0) {
-            self::_checkOtherLinks($aSearchIDInfosNonID, $aErrors, $db, $cfg, $auth, $cronjob);
+            self::_checkOtherLinks(
+                $aSearchIDInfosNonID,
+                $aErrors,
+                $db,
+                $auth,
+                cSecurity::toBoolean(cRegistry::getAppVar('pluginLinkcheckerIsCronjob'))
+            );
         }
 
         return $aErrors;
@@ -63,29 +67,31 @@ class cLinkcheckerTester
     /**
      * Searches front_content.php-links
      *
-     * @param $sValue
-     * @param $iArt
-     * @param $sArt
-     * @param $iCat
-     * @param $sCat
+     * @param string $value
+     * @param int $iArt
+     * @param int $sArt
+     * @param int $iCat
+     * @param int $sCat
      */
-    public static function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat)
+    public static function searchFrontContentLinks(string $value, $iArt, $sArt, $iCat, $sCat)
     {
-        global $aSearchIDInfosArt, $aSearchIDInfosCat, $aSearchIDInfosCatArt, $aWhitelist;
+        global $aSearchIDInfosArt, $aSearchIDInfosCat, $aSearchIDInfosCatArt;
+
+        $whitelist = cRegistry::getAppVar('pluginLinkcheckerWhitelist', []);
 
         // detect urls with parameter idart
         $matches = [];
-        if (preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idart=([0-9]*)/i', $sValue, $matches)) {
+        if (preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idart=([0-9]*)/i', $value, $matches)) {
             for ($i = 0; $i < count($matches[0]); $i++) {
-                if (!in_array($matches[0][$i], $aWhitelist)) {
+                if (!in_array($matches[0][$i], $whitelist)) {
                     $aSearchIDInfosArt[] = [
-                        "id" => $matches[1][$i],
-                        "url" => $matches[0][$i],
-                        "idart" => $iArt,
-                        "nameart" => $sArt,
-                        "idcat" => $iCat,
-                        "namecat" => $sCat,
-                        "urltype" => "intern",
+                        'id' => $matches[1][$i],
+                        'url' => $matches[0][$i],
+                        'idart' => $iArt,
+                        'nameart' => $sArt,
+                        'idcat' => $iCat,
+                        'namecat' => $sCat,
+                        'urltype' => 'intern',
                     ];
                 }
             }
@@ -93,17 +99,17 @@ class cLinkcheckerTester
 
         // detect urls with parameter idcat
         $matches = [];
-        if (preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idcat=([0-9]*)/i', $sValue, $matches)) {
+        if (preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idcat=([0-9]*)/i', $value, $matches)) {
             for ($i = 0; $i < count($matches[0]); $i++) {
-                if (!in_array($matches[0][$i], $aWhitelist)) {
+                if (!in_array($matches[0][$i], $whitelist)) {
                     $aSearchIDInfosCat[] = [
-                        "id" => $matches[1][$i],
-                        "url" => $matches[0][$i],
-                        "idart" => $iArt,
-                        "nameart" => $sArt,
-                        "idcat" => $iCat,
-                        "namecat" => $sCat,
-                        "urltype" => "intern",
+                        'id' => $matches[1][$i],
+                        'url' => $matches[0][$i],
+                        'idart' => $iArt,
+                        'nameart' => $sArt,
+                        'idcat' => $iCat,
+                        'namecat' => $sCat,
+                        'urltype' => 'intern',
                     ];
                 }
             }
@@ -113,20 +119,20 @@ class cLinkcheckerTester
         $matches = [];
         if (preg_match_all(
             '/(?!file|ftp|http|ww)front_content.php\?idcatart=([0-9]*)/i',
-            $sValue,
+            $value,
             $matches
         )
         ) { // idcatart
             for ($i = 0; $i < count($matches[0]); $i++) {
-                if (!in_array($matches[0][$i], $aWhitelist)) {
+                if (!in_array($matches[0][$i], $whitelist)) {
                     $aSearchIDInfosCatArt[] = [
-                        "id" => $matches[1][$i],
-                        "url" => $matches[0][$i],
-                        "idart" => $iArt,
-                        "nameart" => $sArt,
-                        "idcat" => $iCat,
-                        "namecat" => $sCat,
-                        "urltype" => "intern",
+                        'id' => $matches[1][$i],
+                        'url' => $matches[0][$i],
+                        'idart' => $iArt,
+                        'nameart' => $sArt,
+                        'idcat' => $iCat,
+                        'namecat' => $sCat,
+                        'urltype' => 'intern',
                     ];
                 }
             }
@@ -137,14 +143,10 @@ class cLinkcheckerTester
     /**
      * Checks for articles found in links.
      *
-     * @param array $aSearchIDInfosArt
-     * @param array $aErrors
-     * @param cDb $db
-     * @param array $cfg
      * @return void
      * @throws cDbException
      */
-    private static function _checkArticles(array &$aSearchIDInfosArt, array &$aErrors, $db, $cfg)
+    private static function _checkArticles(array &$aSearchIDInfosArt, array &$aErrors, cDb $db)
     {
         $aIds = [];
         foreach ($aSearchIDInfosArt as $entry) {
@@ -154,7 +156,7 @@ class cLinkcheckerTester
 
         // SQL query, please note: integer cast some lines before!
         $sql = "SELECT `idart`, `online` FROM `%s` WHERE `idart` IN (" . $idArts . ")";
-        $db->query($sql, cRegistry::getDbTableName('art_lang'));
+        $db->query($sql, cDb::getTableName('art_lang'));
 
         // Check articles
         $aFind = [];
@@ -182,15 +184,10 @@ class cLinkcheckerTester
     /**
      * Checks for categories found in links.
      *
-     * @param array $aSearchIDInfosCat
-     * @param array $aErrors
-     * @param cDb $db
-     * @param array $cfg
-     * @param int $lang
      * @return void
      * @throws cDbException
      */
-    private static function _checkCategories(array &$aSearchIDInfosCat, array &$aErrors, $db, $cfg, $lang)
+    private static function _checkCategories(array &$aSearchIDInfosCat, array &$aErrors, cDb $db, int $lang)
     {
         $aIds = [];
         foreach ($aSearchIDInfosCat as $entry) {
@@ -200,7 +197,7 @@ class cLinkcheckerTester
 
         // SQL query, please note: integer cast some lines before!
         $sql = "SELECT `idcat`, `startidartlang`, `visible` FROM `%s` WHERE `idcat` IN (" . $sSearch . ") AND `idlang` = %d";
-        $db->query($sql, cRegistry::getDbTableName('cat_lang'), $lang);
+        $db->query($sql, cDb::getTableName('cat_lang'), $lang);
 
         // Check categories
         $aFind = [];
@@ -234,7 +231,7 @@ class cLinkcheckerTester
                 && $aFind[$aSearchIDInfosCat[$i]['id']]['startidart'] != 0
             ) {
                 $sql = "SELECT `idart` FROM `%s` WHERE `idartlang` = %d AND online = 1";
-                $db->query($sql, cRegistry::getDbTableName('art_lang'), $aFind[$aSearchIDInfosCat[$i]['id']]['startidart']);
+                $db->query($sql, cDb::getTableName('art_lang'), $aFind[$aSearchIDInfosCat[$i]['id']]['startidart']);
 
                 if ($db->numRows() == 0) {
                     $aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], [
@@ -248,14 +245,10 @@ class cLinkcheckerTester
     /**
      * Checks for category-articles found in links.
      *
-     * @param array $aSearchIDInfosCatArt
-     * @param array $aErrors
-     * @param cDb $db
-     * @param array $cfg
      * @return void
      * @throws cDbException
      */
-    private static function _checkCategoryArticles(array &$aSearchIDInfosCatArt, array &$aErrors, $db, $cfg)
+    private static function _checkCategoryArticles(array &$aSearchIDInfosCatArt, array &$aErrors, cDb $db)
     {
         $aIds = [];
         foreach ($aSearchIDInfosCatArt as $entry) {
@@ -265,7 +258,7 @@ class cLinkcheckerTester
 
         // SQL query, please note: integer cast some lines before!
         $sql = "SELECT `idcatart` FROM `%s` WHERE `idcatart` IN (" . $sSearch . ")";
-        $db->query($sql, cRegistry::getDbTableName('cat_art'));
+        $db->query($sql, cDb::getTableName('cat_art'));
 
         // Check articles
         $aFind = [];
@@ -288,23 +281,22 @@ class cLinkcheckerTester
      * @param array $aSearchIDInfosNonID
      * @param array $aErrors
      * @param cDb $db
-     * @param array $cfg
      * @param cAuth $auth
-     * @param bool $cronjob
+     * @param bool $isCronjob
      * @return void
      * @throws cDbException
      */
-    private static function _checkOtherLinks(array &$aSearchIDInfosNonID, array &$aErrors, $db, array $cfg, $auth, $cronjob)
+    private static function _checkOtherLinks(array &$aSearchIDInfosNonID, array &$aErrors, cDb $db, cAuth $auth, bool $isCronjob)
     {
         // Select user-rights (is the user admin or sysadmin?)
         $sql = "SELECT `username` FROM `:tab_user` WHERE `user_id` = ':user_id' AND `perms` LIKE '%admin%'";
         $db->query($sql, [
-            'tab_user' => cRegistry::getDbTableName('user'),
-            'user_id' => $auth->auth['uid'],
+            'tab_user' => cDb::getTableName('user'),
+            'user_id' => $auth->getUserId(),
         ]);
 
-        // User is admin when he is or when he run the cronjob
-        if ($db->numRows() > 0 || $cronjob) {
+        // User is admin when he is or when he runs the cronjob
+        if ($db->numRows() > 0 || $isCronjob) {
             // TODO Variable $iAdmin is unused
             $iAdmin = true;
         }
@@ -356,7 +348,7 @@ class cLinkcheckerTester
                     . " WHERE `dirname` IN (':dirname', '" . conHtmlEntityDecode($sDirname) . "')"
                     . " AND `filename` = ':filename'";
                 $db->query($sql, [
-                    'tab_dbfs' => cRegistry::getDbTableName('dbfs'),
+                    'tab_dbfs' => cDb::getTableName('dbfs'),
                     'dirname' => $sDirname,
                     'filename' => $sFilename
                 ]);

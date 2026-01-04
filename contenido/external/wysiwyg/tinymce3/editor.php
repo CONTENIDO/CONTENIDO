@@ -76,7 +76,7 @@ TODO:
 -> maybe change the way icons are displayed
 */
 
-$currentuser = new cApiUser($auth->auth['uid']);
+$currentuser = new cApiUser($auth->getUserId());
 
 if ($currentuser->getField('wysi') == 1) {
     echo $cTinyMCEEditor->getScripts();

@@ -93,16 +93,16 @@ $oView->lng_more_informations = i18n('More information', $pluginName);
 ################################################################################
 ##### Action processing
 
-if ($action == 'index') {
+if ($action === 'index') {
     $oMrController->indexAction();
-} elseif ($action == 'copyhtaccess') {
+} elseif ($action === 'copyhtaccess') {
     $oMrController->copyHtaccessAction();
-} elseif ($action == 'downloadhtaccess') {
+} elseif ($action === 'downloadhtaccess') {
     $oMrController->downloadHtaccessAction();
     exit();
-} elseif ($action == 'reset') {
+} elseif ($action === 'reset') {
     $oMrController->resetAction();
-} elseif ($action == 'resetempty') {
+} elseif ($action === 'resetempty') {
     $oMrController->resetEmptyAction();
 } else {
     $oMrController->indexAction();

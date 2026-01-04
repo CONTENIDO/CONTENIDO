@@ -23,8 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiSystemProperty createNewItem
- * @method cApiSystemProperty|bool next
+ * @extends ItemCollection<cApiSystemProperty>
  */
 class cApiSystemPropertyCollection extends ItemCollection
 {
@@ -51,7 +50,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('system_prop'), 'idsystemprop');
+        parent::__construct(cDb::getTableName('system_prop'), 'idsystemprop');
         $this->_setItemClass('cApiSystemProperty');
 
         if (!isset(self::$_enableCache)) {
@@ -172,7 +171,7 @@ class cApiSystemPropertyCollection extends ItemCollection
 
         $this->select('', '', $this->escape($orderBy));
         $props = [];
-        while (($property = $this->next()) !== false) {
+        while ($property = $this->next()) {
             $props[] = clone $property;
         }
         return $props;
@@ -232,7 +231,7 @@ class cApiSystemPropertyCollection extends ItemCollection
         $sql = $this->db->prepare("type = '%s'", $type);
         $this->select($sql);
         $props = [];
-        while (($property = $this->next()) !== false) {
+        while ($property = $this->next()) {
             $props[] = clone $property;
         }
         return $props;
@@ -273,7 +272,7 @@ class cApiSystemPropertyCollection extends ItemCollection
     protected function _deleteSelected(): bool
     {
         $result = false;
-        while (($system = $this->next()) !== false) {
+        while ($system = $this->next()) {
             $id = $system->get('idsystemprop');
             if (self::$_enableCache) {
                 $this->_deleteFromCache($id);
@@ -292,7 +291,7 @@ class cApiSystemPropertyCollection extends ItemCollection
     {
         self::$_entries = [];
         $this->select();
-        while (($property = $this->next()) !== false) {
+        while ($property = $this->next()) {
             $data = $property->toArray();
             self::$_entries[$data['idsystemprop']] = $data;
         }
@@ -418,7 +417,7 @@ class cApiSystemProperty extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('system_prop'), 'idsystemprop');
+        parent::__construct(cDb::getTableName('system_prop'), 'idsystemprop');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

@@ -94,7 +94,7 @@ class cUriBuilderMR extends cUriBuilder
         if (ModRewrite::isEnabled()) {
             $this->_aMrCfg = ModRewrite::getConfig();
             $this->_bMREnabled = true;
-            $this->_bIsXHTML = (getEffectiveSetting('generator', 'xhtml', 'false') == 'false') ? false : true;
+            $this->_bIsXHTML = !(getEffectiveSetting('generator', 'xhtml', 'false') == 'false');
             $this->_sAmp = ($this->_bIsXHTML) ? '&amp;' : '&';
         }
     }
@@ -356,19 +356,17 @@ class cUriBuilderMR extends cUriBuilder
      */
     private function _getClientParameter(array $arguments)
     {
-        global $client;
-
         // set client if desired
         if ($this->_aMrCfg['use_client'] == 1) {
-            $iChangeClient = intval($arguments['changeclient'] ?? 0);
-            $idclient = ($iChangeClient > 0) ? $iChangeClient : $client;
+            $changeClientId = cSecurity::toInteger($arguments['changeclient'] ?? 0);
+            $clientId = $changeClientId > 0 ? $changeClientId : cRegistry::getClientId();
             if ($this->_aMrCfg['use_client_name'] == 1) {
-                return urlencode(ModRewrite::getClientName($idclient));
+                return urlencode(ModRewrite::getClientName($clientId));
             } else {
-                return $idclient;
+                return $clientId;
             }
         }
-        return NULL;
+        return null;
     }
 
     /**
@@ -380,16 +378,14 @@ class cUriBuilderMR extends cUriBuilder
      */
     private function _getLanguageParameter(array $arguments)
     {
-        global $lang;
-
         // set language if desired
         if ($this->_aMrCfg['use_language'] == 1) {
-            $iChangeLang = (isset($arguments['changelang'])) ? (int)$arguments['changelang'] : 0;
-            $idlang = ($iChangeLang > 0) ? $iChangeLang : $lang;
+            $changeLanguageId = isset($arguments['changelang']) ? cSecurity::toInteger($arguments['changelang']) : 0;
+            $languageId = $changeLanguageId > 0 ? $changeLanguageId : cRegistry::getLanguageId();
             if ($this->_aMrCfg['use_language_name'] == 1) {
-                return urlencode(ModRewrite::getLanguageName($idlang));
+                return urlencode(ModRewrite::getLanguageName($languageId));
             } else {
-                return $idlang;
+                return $languageId;
             }
         }
         return NULL;

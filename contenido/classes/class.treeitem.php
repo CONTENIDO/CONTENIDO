@@ -24,7 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * Let's have a tree with 3 nodes. It's important that we always have a "root" key.
  *
- * $root = new TreeItem("root", 1);
+ * $root = new TreeItem('root', 1);
  * $item1 = new TreeItem("node1",2);
  * $item2 = new TreeItem("node2",3);
  * $item3 = new TreeItem("node3",4);
@@ -119,7 +119,7 @@ class TreeItem
      * Magic getter function for outdated variable names.
      *
      * @param string $name Name of the variable
-     * @return int|string|void
+     * @return int|string|null
      */
     public function __get(string $name)
     {
@@ -127,6 +127,8 @@ class TreeItem
             cDeprecated("The property `' . $name . '` is deprecated since CONTENIDO 4.10.2, use `TreeItem::getParentId()` instead.");
             return $this->_parentId;
         }
+
+        return null;
     }
 
     /**
@@ -492,16 +494,15 @@ class TreeItem
     /**
      *
      * @param int|bool $item_id
-     * @return bool
      */
-    public function hasCollapsedNode($item_id)
+    public function hasCollapsedNode($item_id): bool
     {
         $parentNodeList = [];
         $this->getTreeParentNodes($parentNodeList, $item_id);
         $collapsedList = [];
         $this->getRealCollapsedList($collapsedList);
 
-        return sizeof(array_intersect($parentNodeList, $collapsedList)) > 0;
+        return count(array_intersect($parentNodeList, $collapsedList)) > 0;
     }
 
     /**
@@ -558,7 +559,7 @@ class TreeItem
         // remove all nodes that have no sub-nodes
         foreach ($list as $key) {
             $item = $this->getItemByID($key);
-            if ($item && sizeof($item->getSubItems()) > 0) {
+            if ($item && count($item->getSubItems()) > 0) {
                 $cleared_list[] = $key;
             }
         }

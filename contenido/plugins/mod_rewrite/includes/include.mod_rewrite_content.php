@@ -284,9 +284,9 @@ $oView->lng_more_informations = i18n('More information', $pluginName);
 ################################################################################
 ##### Action processing
 
-if ($action == 'index') {
+if ($action === 'index') {
     $oMrController->indexAction();
-} elseif ($action == 'save') {
+} elseif ($action === 'save') {
     $oMrController->saveAction();
 } else {
     $oMrController->indexAction();

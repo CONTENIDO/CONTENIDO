@@ -19,7 +19,7 @@ define('SIWECOS_API_URL', 'https://bla.siwecos.de/api/v1');
 
 global $cfg;
 
-$pluginName = basename(dirname(__DIR__, 1));
+$pluginName = basename(dirname(__DIR__));
 
 // define plugin path
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";

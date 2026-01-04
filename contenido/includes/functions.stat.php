@@ -64,10 +64,10 @@ function statsArchive($yearMonth)
     $db2 = cRegistry::getDb();
 
     $sql = 'SELECT `idcatart`, `idlang`, `idclient`, `visited`, `visitdate` FROM `%s`';
-    $db->query($sql, cRegistry::getDbTableName('stat'));
+    $db->query($sql, cDb::getTableName('stat'));
 
     while ($db->nextRecord()) {
-        $insertSQL = $db2->buildInsert(cRegistry::getDbTableName('stat_archive'), [
+        $insertSQL = $db2->buildInsert(cDb::getTableName('stat_archive'), [
             'archived' => $yearMonth,
             'idcatart' => cSecurity::toInteger($db->f(0)),
             'idlang' => cSecurity::toInteger($db->f(1)),
@@ -79,7 +79,7 @@ function statsArchive($yearMonth)
     }
 
     $sql = 'TRUNCATE TABLE `%s`';
-    $db->query($sql, cRegistry::getDbTableName('stat'));
+    $db->query($sql, cDb::getTableName('stat'));
 
     // Recreate empty stats
     $sql = 'SELECT
@@ -89,12 +89,12 @@ function statsArchive($yearMonth)
                 `%s` AS B ON A.idcat = B.idcat INNER JOIN
                 `%s` AS C ON A.idcat = C.idcat ';
     $db->query(
-        $sql, cRegistry::getDbTableName('cat_art'),
-        cRegistry::getDbTableName('cat'), cRegistry::getDbTableName('cat_lang')
+        $sql, cDb::getTableName('cat_art'),
+        cDb::getTableName('cat'), cDb::getTableName('cat_lang')
     );
 
     while ($db->nextRecord()) {
-        $insertSQL = $db2->buildInsert(cRegistry::getDbTableName('stat'), [
+        $insertSQL = $db2->buildInsert(cDb::getTableName('stat'), [
             'idcatart' => cSecurity::toInteger($db->f(0)),
             'idlang' => cSecurity::toInteger($db->f(2)),
             'idclient' => cSecurity::toInteger($db->f(1)),
@@ -117,12 +117,12 @@ function statsOverviewAll($yearMonth)
 
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
-    $client = cRegistry::getCategoryId();
+    $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
 
     $sDisplay = 'table-row';
     $bUseHeapTable = $cfg['statistics_heap_table'];
-    $sHeapTable = cRegistry::getDbTableName('stat_heap_table');
+    $sHeapTable = cDb::getTableName('stat_heap_table');
 
     if ($bUseHeapTable) {
         if (!dbTableExists($db, $sHeapTable)) {
@@ -148,9 +148,9 @@ function statsOverviewAll($yearMonth)
                 ORDER BY idtree';
 
     $db->query($sql, [
-        'tab_cat_tree' => cRegistry::getDbTableName('cat_tree'),
-        'tab_cat' => cRegistry::getDbTableName('cat'),
-        'tab_cat_lang' => cRegistry::getDbTableName('cat_lang'),
+        'tab_cat_tree' => cDb::getTableName('cat_tree'),
+        'tab_cat' => cDb::getTableName('cat'),
+        'tab_cat_lang' => cDb::getTableName('cat_lang'),
         'idlang' => $lang,
         'idclient' => $client,
     ]);
@@ -166,7 +166,7 @@ function statsOverviewAll($yearMonth)
     $sumNumberOfArticles = 0;
 
     while ($db->nextRecord()) {
-        if ($db->f('level') == 0 && $db->f("preid") != 0) {
+        if ($db->f('level') == 0 && $db->f('preid') != 0) {
             $tpl->set('d', 'PADDING_LEFT', '10');
             $tpl->set('d', 'TEXT', '&nbsp;');
             $tpl->set('d', 'NUMBEROFARTICLES', '');
@@ -187,7 +187,7 @@ function statsOverviewAll($yearMonth)
         $paddingLeft = 10 + (15 * $db->f('level'));
         $text = $db->f(4);
         $idcat = cSecurity::toInteger($db->f('idcat'));
-        $bCatVisible = $db->f("visible");
+        $bCatVisible = $db->f('visible');
 
         if ($db->f('level') < $iLevel) {
             $iDistance = $iLevel - $db->f('level');
@@ -210,17 +210,17 @@ function statsOverviewAll($yearMonth)
         // number of arts
         $sql = "SELECT COUNT(*) FROM `%s` WHERE idcat = %d";
         $db2 = cRegistry::getDb();
-        $db2->query($sql, cRegistry::getDbTableName('cat_art'), $idcat);
+        $db2->query($sql, cDb::getTableName('cat_art'), $idcat);
         $db2->nextRecord();
         $numberOfArticles = $db2->f(0);
         $sumNumberOfArticles += $numberOfArticles;
 
         // hits of category total
         if (strcmp($yearMonth, "current") == 0) {
-            $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . " AND B.idclient=" . $client;
+            $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . " AND B.idclient=" . $client;
         } else {
             if (!$bUseHeapTable) {
-                $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
+                $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
                         AND B.idclient=" . $client . " AND B.archived='" . $db2->escape($yearMonth) . "'";
             } else {
                 $sql = "SELECT SUM(visited) FROM " . $db2->escape($sHeapTable) . " WHERE idcat=" . $idcat . "
@@ -233,11 +233,11 @@ function statsOverviewAll($yearMonth)
 
         // hits of category in this language
         if (strcmp($yearMonth, "current") == 0) {
-            $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
+            $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
                     AND B.idlang=" . $lang . " AND B.idclient=" . $client;
         } else {
             if (!$bUseHeapTable) {
-                $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
+                $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
                         AND B.idlang=" . $lang . " AND B.idclient=" . $client . " AND B.archived='" . $db2->escape($yearMonth) . "'";
             } else {
                 $sql = "SELECT SUM(visited) FROM " . $db2->escape($sHeapTable) . " WHERE idcat=" . $idcat . " AND idlang=" . $lang . "
@@ -251,13 +251,13 @@ function statsOverviewAll($yearMonth)
         $icon = '<img alt="" src="' . $cfg['path']['images'] . 'folder.gif" class="align_middle">';
 
         // art
-        $sql = "SELECT * FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('art') . " AS B, " . cRegistry::getDbTableName('art_lang') . " AS C WHERE A.idcat=" . $idcat . "
+        $sql = "SELECT * FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('art') . " AS B, " . cDb::getTableName('art_lang') . " AS C WHERE A.idcat=" . $idcat . "
                 AND A.idart=B.idart AND B.idart=C.idart AND C.idlang=" . $lang . " ORDER BY B.idart";
         $db2->query($sql);
 
         $numRows = $db2->numRows();
 
-        $online = $db->f("visible");
+        $online = $db->f('visible');
         if ($bCatVisible == 1) {
             $offOnline = '<img src="' . $cfg['path']['images'] . 'online_off.gif" alt="' . i18n("Category is online") . '" title="' . i18n("Category is online") . '">';
         } else {
@@ -266,7 +266,7 @@ function statsOverviewAll($yearMonth)
 
         // check if there are subcategories
         $iSumSubCategories = 0;
-        $sSql = "SELECT COUNT(*) AS cat_count FROM " . cRegistry::getDbTableName('cat') . " WHERE parentid=" . $idcat . ";";
+        $sSql = "SELECT COUNT(*) AS cat_count FROM " . cDb::getTableName('cat') . " WHERE parentid=" . $idcat . ";";
         $db3 = cRegistry::getDb();
         $db3->query($sSql);
         if ($db3->nextRecord()) {
@@ -324,11 +324,11 @@ function statsOverviewAll($yearMonth)
 
             // hits of art total
             if (strcmp($yearMonth, "current") == 0) {
-                $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
+                $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
                      AND A.idart=" . $idart . " AND B.idclient=" . $client;
             } else {
                 if (!$bUseHeapTable) {
-                    $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
+                    $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
                             AND A.idart=" . $idart . " AND B.idclient=" . $client . " AND B.archived='" . $db3->escape($yearMonth) . "'";
                 } else {
                     $sql = "SELECT SUM(visited) FROM " . $db3->escape($sHeapTable) . " WHERE idcat=" . $idcat . " AND idart=" . $idart . "
@@ -343,11 +343,11 @@ function statsOverviewAll($yearMonth)
 
             // hits of art in this language
             if (strcmp($yearMonth, "current") == 0) {
-                $sql = "SELECT visited, idart FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
+                $sql = "SELECT visited, idart FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
                         AND A.idart=" . $idart . " AND B.idlang=" . $lang . " AND B.idclient=" . $client;
             } else {
                 if (!$bUseHeapTable) {
-                    $sql = "SELECT visited, idart FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
+                    $sql = "SELECT visited, idart FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
                             AND A.idart=" . $idart . " AND B.idlang=" . $lang . " AND B.idclient=" . $client . "
                             AND B.archived='" . $db3->escape($yearMonth) . "'";
                 } else {
@@ -392,10 +392,10 @@ function statsOverviewAll($yearMonth)
 
     // hits total
     if (strcmp($yearMonth, "current") == 0) {
-        $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND B.idclient=" . $client;
+        $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND B.idclient=" . $client;
     } else {
         if (!$bUseHeapTable) {
-            $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND B.idclient=" . $client . "
+            $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND B.idclient=" . $client . "
                     AND B.archived='" . $db->escape($yearMonth) . "'";
         } else {
             $sql = "SELECT SUM(visited) FROM " . $db->escape($sHeapTable) . " WHERE idclient=" . $client . " AND archived='" . $db->escape($yearMonth) . "'";
@@ -409,11 +409,11 @@ function statsOverviewAll($yearMonth)
 
     // hits total on this language
     if (strcmp($yearMonth, "current") == 0) {
-        $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND B.idlang=" . $lang . "
+        $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat') . " AS B WHERE A.idcatart=B.idcatart AND B.idlang=" . $lang . "
                 AND B.idclient=" . $client;
     } else {
         if (!$bUseHeapTable) {
-            $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND B.idlang=" . $lang . "
+            $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND B.idlang=" . $lang . "
                     AND B.idclient=" . $client . " AND B.archived='" . $db->escape($yearMonth) . "'";
         } else {
             $sql = "SELECT SUM(visited) FROM " . $db->escape($sHeapTable) . " WHERE idlang=" . $lang . " AND idclient=" . $client . "
@@ -456,7 +456,7 @@ function statsOverviewYear($year)
 
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
-    $client = cRegistry::getCategoryId();
+    $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
 
     $sDisplay = 'table-row';
@@ -468,9 +468,9 @@ function statsOverviewYear($year)
     $sql = "SELECT
                 idtree, A.idcat, level, preid, C.name, visible
             FROM
-                " . cRegistry::getDbTableName('cat_tree') . " AS A,
-                " . cRegistry::getDbTableName('cat') . " AS B,
-                " . cRegistry::getDbTableName('cat_lang') . " AS C
+                " . cDb::getTableName('cat_tree') . " AS A,
+                " . cDb::getTableName('cat') . " AS B,
+                " . cDb::getTableName('cat_lang') . " AS C
             WHERE
                 A.idcat=B.idcat AND
                 B.idcat=C.idcat AND
@@ -491,7 +491,7 @@ function statsOverviewYear($year)
     $sumNumberOfArticles = 0;
 
     while ($db->nextRecord()) {
-        if ($db->f('level') == 0 && $db->f("preid") != 0) {
+        if ($db->f('level') == 0 && $db->f('preid') != 0) {
             $tpl->set('d', 'PADDING_LEFT', '10');
             $tpl->set('d', 'TEXT', '&nbsp;');
             $tpl->set('d', 'NUMBEROFARTICLES', '');
@@ -509,7 +509,7 @@ function statsOverviewYear($year)
         $paddingLeft = 10 + (15 * $db->f('level'));
         $text = $db->f(4);
         $idcat = cSecurity::toInteger($db->f('idcat'));
-        $bCatVisible = $db->f("visible");
+        $bCatVisible = $db->f('visible');
 
         if ($db->f('level') < $iLevel) {
             $iDistance = $iLevel - $db->f('level');
@@ -531,13 +531,13 @@ function statsOverviewYear($year)
 
         $db2 = cRegistry::getDb();
         // number of arts
-        $sql = "SELECT COUNT(*) FROM " . cRegistry::getDbTableName('cat_art') . " WHERE idcat=" . $idcat;
+        $sql = "SELECT COUNT(*) FROM " . cDb::getTableName('cat_art') . " WHERE idcat=" . $idcat;
         $db2->query($sql);
         $db2->nextRecord();
 
         $numberOfArticles = $db2->f(0);
         $sumNumberOfArticles += $numberOfArticles;
-        $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
+        $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
                 AND B.idclient=" . $client . " AND SUBSTRING(B.archived,1,4)=" . cSecurity::toInteger($year) . " GROUP BY SUBSTRING(B.archived,1,4)";
         $db2->query($sql);
         $db2->nextRecord();
@@ -545,7 +545,7 @@ function statsOverviewYear($year)
         $total = $db2->f(0);
 
         // hits of category in this language
-        $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
+        $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
                 AND B.idlang=" . $lang . " AND B.idclient=" . $client . " AND SUBSTRING(B.archived,1,4)=" . $db2->escape($year) . "
                 GROUP BY SUBSTRING(B.archived,1,4)";
         $db2->query($sql);
@@ -556,7 +556,7 @@ function statsOverviewYear($year)
         $icon = '<img alt="" src="' . $cfg['path']['images'] . 'folder.gif" class="align_middle">';
 
         // art
-        $sql = "SELECT * FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('art') . " AS B, " . cRegistry::getDbTableName('art_lang') . " AS C WHERE A.idcat=" . $idcat . " AND A.idart=B.idart AND B.idart=C.idart
+        $sql = "SELECT * FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('art') . " AS B, " . cDb::getTableName('art_lang') . " AS C WHERE A.idcat=" . $idcat . " AND A.idart=B.idart AND B.idart=C.idart
                 AND C.idlang=" . $lang . " ORDER BY B.idart";
         $db2->query($sql);
 
@@ -570,7 +570,7 @@ function statsOverviewYear($year)
 
         // check if there are subcategories
         $iSumSubCategories = 0;
-        $sSql = "SELECT count(*) as cat_count from " . cRegistry::getDbTableName('cat') . " WHERE parentid=" . $idcat . ";";
+        $sSql = "SELECT count(*) as cat_count from " . cDb::getTableName('cat') . " WHERE parentid=" . $idcat . ";";
         $db3 = cRegistry::getDb();
         $db3->query($sSql);
         if ($db3->nextRecord()) {
@@ -629,7 +629,7 @@ function statsOverviewYear($year)
             $db3 = cRegistry::getDb();
 
             // hits of art total
-            $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
+            $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
                     AND A.idart=" . $idart . " AND B.idclient=" . $client . " AND SUBSTRING(B.archived,1,4)=" . $db3->escape($year) . "
                     GROUP BY SUBSTRING(B.archived,1,4)";
             $db3->query($sql);
@@ -638,7 +638,7 @@ function statsOverviewYear($year)
             $total = $db3->f(0);
 
             // hits of art in this language
-            $sql = "SELECT visited FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
+            $sql = "SELECT visited FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . $idcat . "
                     AND A.idart=" . $idart . " AND B.idlang=" . $lang . " AND B.idclient=" . $client . "
                     AND SUBSTRING(B.archived,1,4)=" . $db3->escape($year) . " GROUP BY SUBSTRING(B.archived,1,4)";
             $db3->query($sql);
@@ -677,7 +677,7 @@ function statsOverviewYear($year)
     }
 
     // hits total
-    $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND B.idclient=" . $client . "
+    $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND B.idclient=" . $client . "
             AND SUBSTRING(B.archived,1,4)='" . $db->escape($year) . "' GROUP BY SUBSTRING(B.archived,1,4)";
     $db->query($sql);
     $db->nextRecord();
@@ -685,7 +685,7 @@ function statsOverviewYear($year)
     $total = $db->f(0);
 
     // hits total on this language
-    $sql = "SELECT SUM(visited) FROM " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND B.idlang=" . $lang . "
+    $sql = "SELECT SUM(visited) FROM " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B WHERE A.idcatart=B.idcatart AND B.idlang=" . $lang . "
             AND B.idclient=" . $client . " AND SUBSTRING(B.archived,1,4)='" . $db->escape($year) . "' GROUP BY SUBSTRING(B.archived,1,4)";
     $db->query($sql);
     $db->nextRecord();
@@ -722,16 +722,16 @@ function statsOverviewTop($yearMonth, $top)
     global $tpl;
 
     $db = cRegistry::getDb();
-    $client = cRegistry::getCategoryId();
+    $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
 
     if (strcmp($yearMonth, "current") == 0) {
         $sql = "SELECT DISTINCT
                     C.title, A.visited, C.idart
                 FROM
-                    " . cRegistry::getDbTableName('stat') . " AS A,
-                    " . cRegistry::getDbTableName('cat_art') . " AS B,
-                    " . cRegistry::getDbTableName('art_lang') . " AS C
+                    " . cDb::getTableName('stat') . " AS A,
+                    " . cDb::getTableName('cat_art') . " AS B,
+                    " . cDb::getTableName('art_lang') . " AS C
                 WHERE
                     C.idart = B.idart AND
                     C.idlang = A.idlang AND
@@ -744,9 +744,9 @@ function statsOverviewTop($yearMonth, $top)
         $sql = "SELECT DISTINCT
                     C.title, A.visited, B.idcat, C.idart
                 FROM
-                    " . cRegistry::getDbTableName('stat_archive') . " AS A,
-                    " . cRegistry::getDbTableName('cat_art') . " AS B,
-                    " . cRegistry::getDbTableName('art_lang') . " AS C
+                    " . cDb::getTableName('stat_archive') . " AS A,
+                    " . cDb::getTableName('cat_art') . " AS B,
+                    " . cDb::getTableName('art_lang') . " AS C
                 WHERE
                     C.idart = B.idart AND
                     C.idlang = A.idlang AND
@@ -808,15 +808,15 @@ function statsOverviewTopYear($year, $top)
     global $tpl;
 
     $db = cRegistry::getDb();
-    $client = cRegistry::getCategoryId();
+    $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
 
     $sql = "SELECT
                 C.title, SUM(A.visited) as visited, B.idcat AS idcat, C.idart AS idart
             FROM
-                " . cRegistry::getDbTableName('stat_archive') . " AS A,
-                " . cRegistry::getDbTableName('cat_art') . " AS B,
-                " . cRegistry::getDbTableName('art_lang') . " AS C
+                " . cDb::getTableName('stat_archive') . " AS A,
+                " . cDb::getTableName('cat_art') . " AS B,
+                " . cDb::getTableName('art_lang') . " AS C
             WHERE
                 C.idart = B.idart AND
                 C.idlang = A.idlang AND
@@ -913,7 +913,7 @@ function statGetAvailableYears($client, $lang): array
                 SUBSTRING(`archived`, 1, 4)
             ORDER BY
                 SUBSTRING(`archived`, 1, 4) DESC";
-    $db->query($sql, cRegistry::getDbTableName('stat_archive'), $lang, $client);
+    $db->query($sql, cDb::getTableName('stat_archive'), $lang, $client);
 
     $availableYears = [];
     while ($db->nextRecord()) {
@@ -952,7 +952,7 @@ function statGetAvailableMonths($year, $client, $lang): array
             ORDER BY
                 SUBSTRING(`archived`, 5, 2) DESC";
 
-    $db->query($sql, cRegistry::getDbTableName('stat_archive'), $lang, $client, $year);
+    $db->query($sql, cDb::getTableName('stat_archive'), $lang, $client, $year);
     while ($db->nextRecord()) {
         $availableYears[] = $db->f(0);
     }
@@ -970,7 +970,7 @@ function statResetStatistic($client)
 {
     $db = cRegistry::getDb();
     $sql = 'UPDATE `%s` SET `visited`= 0 WHERE `idclient` = %d';
-    $db->query($sql, cRegistry::getDbTableName('stat'), $client);
+    $db->query($sql, cDb::getTableName('stat'), $client);
 }
 
 /**
@@ -996,7 +996,7 @@ function buildHeapTable(string $sHeapTable, cDb $db)
                     B.idclient,
                     B.visited
                 FROM
-                    " . cRegistry::getDbTableName('cat_art') . " AS A, " . cRegistry::getDbTableName('stat_archive') . " AS B
+                    " . cDb::getTableName('cat_art') . " AS A, " . cDb::getTableName('stat_archive') . " AS B
                 WHERE
                     A.idcatart = B.idcatart;";
     $db->query($sql);

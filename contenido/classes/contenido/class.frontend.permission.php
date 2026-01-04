@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiFrontendPermission createNewItem
- * @method cApiFrontendPermission|bool next
+ * @extends ItemCollection<cApiFrontendPermission>
  */
 class cApiFrontendPermissionCollection extends ItemCollection
 {
@@ -49,7 +48,7 @@ class cApiFrontendPermissionCollection extends ItemCollection
     {
         $this->_frontendPermission = new cApiFrontendPermission();
 
-        parent::__construct(cRegistry::getDbTableName('frontendpermissions'), 'idfrontendpermission');
+        parent::__construct(cDb::getTableName('frontendpermissions'), 'idfrontendpermission');
         $this->_setItemClass('cApiFrontendPermission');
 
         // set the join partners so that joins can be used via link() method
@@ -197,7 +196,7 @@ class cApiFrontendPermission extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('frontendpermissions'), 'idfrontendpermission');
+        parent::__construct(cDb::getTableName('frontendpermissions'), 'idfrontendpermission');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }

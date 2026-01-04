@@ -79,7 +79,7 @@ class cSmartyFrontend
                     throw new cException(sprintf("Class %s Error: Folder %s does not exist. Please create.", __CLASS__, $value));
                 }
                 if ($key == 'cache' || $key == 'compile_dir') {
-                    if (!is_writable($value)) {
+                    if (!cFileHandler::writeable($value)) {
                         throw new cException(sprintf("Class %s Error: Folder %s is not writable. Please check for sufficient rights.", __CLASS__, $value));
                     }
                 }

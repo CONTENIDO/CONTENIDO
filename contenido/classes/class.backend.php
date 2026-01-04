@@ -111,8 +111,8 @@ class cBackend
                     b.relevant as relevant_action,
                     a.relevant as relevant_area
                 FROM
-                    ' . cRegistry::getDbTableName('area') . ' AS a,
-                    ' . cRegistry::getDbTableName('actions') . " AS b
+                    ' . cDb::getTableName('area') . ' AS a,
+                    ' . cDb::getTableName('actions') . " AS b
                 WHERE
                     a.name   = '" . $area . "' AND
                     b.idarea = a.idarea AND
@@ -145,7 +145,7 @@ class cBackend
                     // correct rights out
                     // we only check if user-rights are given for these three
                     // items on any item
-                    if ($action == 'mod_edit' || $action == 'tpl_edit' || $action == 'lay_edit') {
+                    if ($action === 'mod_edit' || $action === 'tpl_edit' || $action === 'lay_edit') {
                         if ($perm->have_perm_area_action_anyitem($area, $name)) {
                             $this->_actions[$area][$name] = $code;
                         }
@@ -161,9 +161,9 @@ class cBackend
                     b.filetype AS type,
                     a.parent_id AS parent_id
                 FROM
-                    ' . cRegistry::getDbTableName('area') . ' AS a,
-                    ' . cRegistry::getDbTableName('files') . ' AS b,
-                    ' . cRegistry::getDbTableName('framefiles') . " AS c
+                    ' . cDb::getTableName('area') . ' AS a,
+                    ' . cDb::getTableName('files') . ' AS b,
+                    ' . cDb::getTableName('framefiles') . " AS c
                 WHERE
                     a.name    = '" . $area . "' AND
                     b.idarea  = a.idarea AND
@@ -187,11 +187,9 @@ class cBackend
         while ($db->nextRecord()) {
             $name = $db->f('name');
             // Test if entry is a plug-in. If so don't add the Include path
-            if (strstr($name, '/')) {
-                $filepath = $this->_cfg['path']['plugins'] . $name;
-            } else {
-                $filepath = $this->_cfg['path']['includes'] . $name;
-            }
+            $filepath = strstr($name, '/')
+                ? $this->_cfg['path']['plugins'] . $name
+                : $this->_cfg['path']['includes'] . $name;
 
             // If filetype is Main AND parent_id is 0 file is a sub file
             if ($db->f('parent_id') != 0 && $db->f('type') == 'main') {
@@ -201,7 +199,7 @@ class cBackend
             $this->_files[$db->f('type')][] = $filepath;
         }
 
-        $actions = !empty($this->_actions[$this->_area]) ? $this->_actions[$this->_area] : [];
+        $actions = empty($this->_actions[$this->_area]) ? [] : $this->_actions[$this->_area];
         $debug = "cBackend: Files:\n" . print_r($this->_files, true) . "\n"
             . "Actions:\n" . print_r($actions, true) . "\n"
             . "Information:\n"
@@ -290,7 +288,7 @@ class cBackend
         if ($action != '') {
             $auth = cRegistry::getAuth();
             $oActionLogColl = new cApiActionlogCollection();
-            $oActionLogColl->create($auth->auth['uid'], $clientId, $languageId, $action, $idcatart, $timestamp);
+            $oActionLogColl->create($auth->getUserId(), $clientId, $languageId, $action, $idcatart, $timestamp);
         } else {
             $frame = cRegistry::getFrame();
             $msg = 'cBackend: ' . $oldAction . ' is not in the actions table! ' . "\n"

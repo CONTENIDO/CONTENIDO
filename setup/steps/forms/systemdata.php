@@ -145,7 +145,7 @@ class cSetupSystemData extends cSetupMask
                 $option = new cHTMLOptionElement($collation, $collation, $selected);
                 $dbcollation->addOptionElement(++$pos, $option);
             }
-            $dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText') . $dbcollation->render();
+            $dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, 0, 0, 'collationText') . $dbcollation->render();
         }
 
         if (isset($_SESSION['dboptions'][MYSQLI_INIT_COMMAND])) {
@@ -198,7 +198,7 @@ class cSetupSystemData extends cSetupMask
         } else {
             $link->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '" . $this->_nextstep . "'; document.setupform.submit();");
         }
-        $link->setClass("nav");
+        $link->setClass('nav');
         $link->setContent("<span>&raquo;</span>");
 
         $this->_stepTemplateClass->set('s', 'NEXT', $link->render());

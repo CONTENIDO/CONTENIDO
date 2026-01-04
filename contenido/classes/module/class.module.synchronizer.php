@@ -342,7 +342,7 @@ class cModuleSynchronizer extends cModuleHandler
         if ($moduleId > 0) {
             $db = cRegistry::getDb();
             $sql = $db->buildUpdate(
-                cRegistry::getDbTableName('mod'),
+                cDb::getTableName('mod'),
                 ['alias' => $newName],
                 ['idmod' => $moduleId]
             );

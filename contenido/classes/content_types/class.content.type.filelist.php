@@ -706,7 +706,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
         $wrapperContent[] = new cHTMLParagraph(i18n('General settings'), 'head_sub');
 
         $wrapperContent[] = new cHTMLLabel(i18n('File list title'), 'filelist_title_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('filelist_title', conHtmlSpecialChars($this->getSetting('filelist_title')), '', '', 'filelist_title_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_title', conHtmlSpecialChars($this->getSetting('filelist_title')), 0, 0, 'filelist_title_' . $this->_id);
         $wrapperContent[] = new cHTMLLabel(i18n('File list style'), 'filelist_style_' . $this->_id);
         $wrapperContent[] = $this->_generateStyleSelect();
         $wrapperContent[] = new cHTMLLabel(i18n('File list sort'), 'filelist_sort_' . $this->_id);
@@ -864,28 +864,28 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
 
         $wrapperContent[] = new cHTMLLabel(i18n('File size limit (in MiB)'), 'filelist_filesizefilter_from_' . $this->_id);
         $default = (!empty($this->getSetting('filelist_filesizefilter_from'))) ? $this->getSetting('filelist_filesizefilter_from') : '0';
-        $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_from', $default, '', '', 'filelist_filesizefilter_from_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_from', $default, 0, 0, 'filelist_filesizefilter_from_' . $this->_id);
         $wrapperContent[] = new cHTMLSpan('&nbsp;-&nbsp;');
         $default = (!empty($this->getSetting('filelist_filesizefilter_to'))) ? $this->getSetting('filelist_filesizefilter_to') : '0';
-        $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_to', $default, '', '', 'filelist_filesizefilter_to_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_to', $default, 0, 0, 'filelist_filesizefilter_to_' . $this->_id);
 
         $wrapperContent[] = new cHTMLLabel(i18n('Creation date limit'), 'filelist_creationdatefilter_from_' . $this->_id);
         $default = (!empty($this->getSetting('filelist_creationdatefilter_from'))) ? $this->getSetting('filelist_creationdatefilter_from') : $this->_dateFormat;
-        $wrapperContent[] = new cHTMLTextbox('filelist_creationdatefilter_from', $default, '', '', 'filelist_creationdatefilter_from_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_creationdatefilter_from', $default, 0, 0, 'filelist_creationdatefilter_from_' . $this->_id);
         $wrapperContent[] = new cHTMLSpan('&nbsp;-&nbsp;');
         $default = (!empty($this->getSetting('filelist_creationdatefilter_to'))) ? $this->getSetting('filelist_creationdatefilter_to') : $this->_dateFormat;
-        $wrapperContent[] = new cHTMLTextbox('filelist_creationdatefilter_to', $default, '', '', 'filelist_creationdatefilter_to_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_creationdatefilter_to', $default, 0, 0, 'filelist_creationdatefilter_to_' . $this->_id);
 
         $wrapperContent[] = new cHTMLLabel(i18n('Modify date limit'), 'filelist_modifydatefilter_from_' . $this->_id);
         $default = (!empty($this->getSetting('filelist_modifydatefilter_from'))) ? $this->getSetting('filelist_modifydatefilter_from') : $this->_dateFormat;
-        $wrapperContent[] = new cHTMLTextbox('filelist_modifydatefilter_from', $default, '', '', 'filelist_modifydatefilter_from_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_modifydatefilter_from', $default, 0, 0, 'filelist_modifydatefilter_from_' . $this->_id);
         $wrapperContent[] = new cHTMLSpan('&nbsp;-&nbsp;');
         $default = (!empty($this->getSetting('filelist_modifydatefilter_to'))) ? $this->getSetting('filelist_modifydatefilter_to') : $this->_dateFormat;
-        $wrapperContent[] = new cHTMLTextbox('filelist_modifydatefilter_to', $default, '', '', 'filelist_modifydatefilter_to_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_modifydatefilter_to', $default, 0, 0, 'filelist_modifydatefilter_to_' . $this->_id);
 
         $wrapperContent[] = new cHTMLLabel(i18n('File count'), 'filelist_filecount_' . $this->_id);
         $default = (!empty($this->getSetting('filelist_filecount'))) ? $this->getSetting('filelist_filecount') : '0';
-        $wrapperContent[] = new cHTMLTextbox('filelist_filecount', $default, '', '', 'filelist_filecount_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_filecount', $default, 0, 0, 'filelist_filecount_' . $this->_id);
 
         $wrapper->setContent($wrapperContent);
 

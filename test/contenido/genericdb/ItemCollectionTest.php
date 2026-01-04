@@ -51,7 +51,7 @@ class ItemCollectionTest extends cTestingTestCase
         $db->query(SqlItemCollection::getCreateDogStatement());
         $db->query(SqlItemCollection::getInserDogStatement());
         $db->query(SqlItemCollection::getCreateDogRfidStatement());
-        $db->query(SqlItemCollection::getInserDogRfidStatement());
+        $db->query(SqlItemCollection::getInsertDogRfidStatement());
     }
 
     /**

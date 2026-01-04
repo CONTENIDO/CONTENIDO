@@ -176,7 +176,6 @@ class cGuiFileOverview extends cGuiPage
      *
      * @param ?cTemplate $template
      * @param bool $return
-     *
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function render($template = NULL, bool $return = false)

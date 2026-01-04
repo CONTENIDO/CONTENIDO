@@ -242,7 +242,7 @@ class cSearchIndex extends cSearchBaseAbstract
     public function addTitle()
     {
         $sql = "SELECT `title`, `pagetitle` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
-        $this->db->query($sql, cRegistry::getDbTableName('art_lang'), $this->idart, $this->lang);
+        $this->db->query($sql, cDb::getTableName('art_lang'), $this->idart, $this->lang);
         if ($this->db->nextRecord()) {
             $title = $this->db->f('title') . ' ' . $this->db->f('pagetitle');
             $firstItemKey = cArray::getFirstKey($this->_keycode['CMS_HTML'] ?? []);
@@ -313,7 +313,7 @@ class cSearchIndex extends cSearchBaseAbstract
      */
     public function saveKeywords()
     {
-        $tabKeywords = cRegistry::getDbTableName('keywords');
+        $tabKeywords = cDb::getTableName('keywords');
 
         foreach ($this->_keywords as $keyword => $count) {
             $tmp_count = preg_split('/[\s]/', trim($count));
@@ -353,7 +353,7 @@ class cSearchIndex extends cSearchBaseAbstract
      */
     public function deleteKeywords()
     {
-        $tabKeywords = cRegistry::getDbTableName('keywords');
+        $tabKeywords = cDb::getTableName('keywords');
         foreach ($this->_keywordsDel as $key_del) {
             $index_string = preg_replace("/&$this->idart=[0-9]+\([\w\-,]+\)/", "", $this->_keywordsOld[$key_del]);
 
@@ -395,7 +395,7 @@ class cSearchIndex extends cSearchBaseAbstract
         // Prepare sql without keywords, we don't want any strings in keywords
         // being interpreted as specifiers
         $sql = $this->db->prepare(
-            $sql, cRegistry::getDbTableName('keywords'), $this->lang, $this->_place, $this->idart
+            $sql, cDb::getTableName('keywords'), $this->lang, $this->_place, $this->idart
         );
         $sql = str_replace('{KEYWORDS}', $keywords, $sql);
         $this->_debug('sql', $sql);
@@ -590,7 +590,7 @@ class cSearchIndex extends cSearchBaseAbstract
         $idtype = cString::toUpperCase($idtype);
 
         // Do not index CMS_RAW
-        if ($idtype == "CMS_RAW") {
+        if ($idtype == 'CMS_RAW') {
             return true;
         }
 

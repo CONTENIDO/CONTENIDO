@@ -62,12 +62,12 @@ function prResolvePathViaURLNames(string $path): int
     // Fetch all category names, build path strings
     // @todo change the where statement for get all languages
     $sql = sprintf(
-        "SELECT * FROM `%s` AS A, `%s` AS B, `%s` AS C 
+        "SELECT * FROM `%s` AS A, `%s` AS B, `%s` AS C
              WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND C.idlang = %d
              AND C.visible = 1 AND B.idclient=%d ORDER BY A.idtree",
-        $cfg['tab']['cat_tree'],
-        $cfg['tab']['cat'],
-        $cfg['tab']['cat_lang'],
+        cDb::getTableName('cat_tree'),
+        cDb::getTableName('cat'),
+        cDb::getTableName('cat_lang'),
         $lang,
         $client
     );
@@ -183,9 +183,9 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck): int
     $sql = sprintf(
         "SELECT * FROM `%s` AS A, `%s` AS B, `%s` AS C WHERE A.idcat = B.idcat AND B.idcat = C.idcat
             AND C.visible = 1 AND B.idclient = %d ORDER BY A.idtree",
-        $cfg['tab']['cat_tree'],
-        $cfg['tab']['cat'],
-        $cfg['tab']['cat_lang'],
+        cDb::getTableName('cat_tree'),
+        cDb::getTableName('cat'),
+        cDb::getTableName('cat_lang'),
         $client
     );
     $db->query($sql);
@@ -343,10 +343,10 @@ function prCreateURLNameLocationString(
                 c.level as level,
                 d.idtpl as idtpl
             FROM
-                " . $cfg['tab']['cat_lang'] . " AS a
-                LEFT JOIN " . $cfg['tab']['tpl_conf'] . " AS d on a.idtplcfg  = d.idtplcfg,
-                " . $cfg['tab']['cat'] . " AS b,
-                " . $cfg['tab']['cat_tree'] . " AS c
+                " . cDb::getTableName('cat_lang') . " AS a
+                LEFT JOIN " . cDb::getTableName('tpl_conf') . " AS d on a.idtplcfg  = d.idtplcfg,
+                " . cDb::getTableName('cat') . " AS b,
+                " . cDb::getTableName('cat_tree') . " AS c
             WHERE
                 a.idlang    = " . (int)$uselang . " AND
                 b.idclient  = " . (int)$client . " AND
@@ -417,7 +417,7 @@ function prWriteCacheFileContent(array $data, int $client, int $lang): bool
     $filename = "locationstring-url-cache-$lang.txt";
 
     $res = false;
-    if (is_writable($path)) {
+    if (cFileHandler::writeable($path)) {
         $res = cFileHandler::write($path . $filename, serialize($data));
     }
 
@@ -454,7 +454,7 @@ function prDeleteCacheFileContent(int $client, int $lang): bool
     $filename = "locationstring-url-cache-$lang.txt";
 
     $res = false;
-    if (is_writable($path . $filename)) {
+    if (cFileHandler::writeable($path . $filename)) {
         $res = @unlink($path . $filename);
     }
 

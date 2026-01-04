@@ -55,12 +55,11 @@ and enabling access to them.<br>
 <p>Example config.plugin.php:</p>
 <pre>
 &lt;?php
-global $_cecRegistry;<br>
 cInclude(&quot;plugins&quot;, &quot;chains/includes/include.chain.frontend.cat_backendaccess.php&quot;);
 cInclude(&quot;plugins&quot;, &quot;chains/includes/include.chain.frontend.cat_access.php&quot;);
 
-$_cecRegistry-&gt;addChainFunction(&quot;Contenido.Frontend.CategoryAccess&quot;, &quot;cecFrontendCategoryAccess&quot;);
-$_cecRegistry-&gt;addChainFunction(&quot;Contenido.Frontend.CategoryAccess&quot;, &quot;cecFrontendCategoryAccess_Backend&quot;);
+cApiCecRegistry::getInstance()-&gt;addChainFunction(&quot;Contenido.Frontend.CategoryAccess&quot;, &quot;cecFrontendCategoryAccess&quot;);
+cApiCecRegistry::getInstance()-&gt;addChainFunction(&quot;Contenido.Frontend.CategoryAccess&quot;, &quot;cecFrontendCategoryAccess_Backend&quot;);
 ?&gt;
 </pre>
 <p>The chain <font face="Courier New, Courier, mono">Contenido.Frontend.CategoryAccess</font> is
@@ -72,5 +71,6 @@ $_cecRegistry-&gt;addChainFunction(&quot;Contenido.Frontend.CategoryAccess&quot;
   You can also define chains for more custom checks, please refer to the chains
   documentation for more information.</p>
 
+</div>
 </body>
 </html>

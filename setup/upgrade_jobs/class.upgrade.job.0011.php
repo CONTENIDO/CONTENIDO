@@ -31,7 +31,7 @@ class cUpgradeJob_0011 extends cUpgradeJobAbstract
 
     public function _execute()
     {
-        $pifaFormTable = cRegistry::getDbTableName('pifa_form');
+        $pifaFormTable = cDb::getTableName('pifa_form');
         if ($this->_setupType == 'upgrade' && $pifaFormTable != '') {
             $this->_oDb->query('
                 ALTER TABLE

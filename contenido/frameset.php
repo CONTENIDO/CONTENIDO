@@ -18,7 +18,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // CONTENIDO startup process
-include_once('./includes/startup.php');
+include_once(__DIR__ . '/includes/startup.php');
 
 cRegistry::bootstrap([
     'sess' => 'cSession',
@@ -59,7 +59,7 @@ $tpl->set('s', 'LOCATION', $backendUrl);
 
 // Hide menu-frame for some areas
 $oAreaColl = new cApiAreaCollection();
-$oAreaColl->select('menuless=1');
+$oAreaColl->select('`menuless` = 1');
 $aMenulessAreas = [];
 while ($oItem = $oAreaColl->next()) {
     $aMenulessAreas[] = $oItem->get('name');

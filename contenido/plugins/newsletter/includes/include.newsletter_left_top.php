@@ -18,7 +18,7 @@ global $oTpl, $oDB;
 
 $auth = cRegistry::getAuth();
 $perm = cRegistry::getPerm();
-$client = cRegistry::getCategoryId();
+$client = cRegistry::getClientId();
 $lang = cRegistry::getLanguageId();
 $cfg = cRegistry::getConfig();
 $area = cRegistry::getArea();
@@ -36,7 +36,7 @@ if (!is_object($oDB)) {
     // - we need a DB object
 }
 
-$oUser = new cApiUser($auth->auth["uid"]);
+$oUser = new cApiUser($auth->getUserId());
 $oClient = new cApiClient($client);
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 
@@ -101,13 +101,13 @@ $sLink = "actionlink"; // ID for HTML element
 $oActionsRow = new cGuiFoldingRow("28cf9b31-e6d7-4657-a9a7-db31478e7a5c", i18n("Actions", 'newsletter'), $sLink);
 $oTpl->set('s', 'ACTIONLINK', $sLink);
 
-if ($perm->have_perm_area_action("news", "news_create")) {
+if ($perm->have_perm_area_action('news', 'news_create')) {
     // Create the link to add a newsletter
     $sContent = '<div class="news_section news_section_create">' . "\n";
 
     $oLink = new cHTMLLink();
     $oLink->setClass('con_func_button addfunction')
-        ->setMultiLink("news", "", "news", "news_create")
+        ->setMultiLink('news', '', 'news', "news_create")
         ->setContent(i18n("Create newsletter", 'newsletter'));
 
     $sContent .= $oLink->render() . '</div>' . "\n";
@@ -128,19 +128,19 @@ $oTpl->set('s', 'SETTINGSLINK', $sLink);
 // object
 // so, we are filling two almost identical objects with the same data ("clone"
 // may work, but is not available in PHP4 ...)
-$oSelHTMLTemplateIDCat = new cHTMLSelectElement("selHTMLTemplateCat");
+$oSelHTMLTemplateIDCat = new cHTMLSelectElement('selHTMLTemplateCat');
 
-$oSelHTMLNewsletterIDCat = new cHTMLSelectElement("selHTMLNewsletterCat");
+$oSelHTMLNewsletterIDCat = new cHTMLSelectElement('selHTMLNewsletterCat');
 
-$oOptionTemplate = new cHTMLOptionElement("--" . i18n("Please select", 'newsletter') . "--", 0);
+$oOptionTemplate = new cHTMLOptionElement('--' . i18n("Please select", 'newsletter') . "--", 0);
 $oSelHTMLTemplateIDCat->addOptionElement(0, $oOptionTemplate);
-$oOptionNewsletter = new cHTMLOptionElement("--" . i18n("Please select", 'newsletter') . "--", 0);
+$oOptionNewsletter = new cHTMLOptionElement('--' . i18n("Please select", 'newsletter') . "--", 0);
 $oSelHTMLNewsletterIDCat->addOptionElement(0, $oOptionNewsletter);
 
 $sSQL = "SELECT tblCat.idcat AS idcat, tblCatLang.name AS name, tblCatTree.level AS level, ";
 $sSQL .= "tblCatLang.visible AS visible, tblCatLang.public AS public FROM ";
-$sSQL .= cRegistry::getDbTableName('cat') . " AS tblCat, " . cRegistry::getDbTableName('cat_lang') . " AS tblCatLang, ";
-$sSQL .= cRegistry::getDbTableName('cat_tree') . " AS tblCatTree ";
+$sSQL .= cDb::getTableName('cat') . " AS tblCat, " . cDb::getTableName('cat_lang') . " AS tblCatLang, ";
+$sSQL .= cDb::getTableName('cat_tree') . " AS tblCatTree ";
 $sSQL .= "WHERE tblCat.idclient = '" . cSecurity::toInteger($client) . "' AND tblCatLang.idlang = '" . cSecurity::toInteger($lang) . "' AND ";
 $sSQL .= "tblCatLang.idcat = tblCat.idcat AND tblCatTree.idcat = tblCat.idcat ";
 $sSQL .= "ORDER BY tblCatTree.idtree";
@@ -148,27 +148,27 @@ $sSQL .= "ORDER BY tblCatTree.idtree";
 $oDB->query($sSQL);
 
 while ($oDB->nextRecord()) {
-    $sSpaces = cHTMLOptionElement::indent(cSecurity::toInteger($oDB->f("level")), 0);
-    $oOptionTemplate = new cHTMLOptionElement($sSpaces . $oDB->f("name"), $oDB->f("idcat"));
-    $oOptionNewsletter = new cHTMLOptionElement($sSpaces . $oDB->f("name"), $oDB->f("idcat"));
-    if ($oDB->f("visible") == 0 || $oDB->f("public") == 0) {
+    $sSpaces = cHTMLOptionElement::indent(cSecurity::toInteger($oDB->f('level')), 0);
+    $oOptionTemplate = new cHTMLOptionElement($sSpaces . $oDB->f('name'), $oDB->f('idcat'));
+    $oOptionNewsletter = new cHTMLOptionElement($sSpaces . $oDB->f('name'), $oDB->f('idcat'));
+    if ($oDB->f('visible') == 0 || $oDB->f('public') == 0) {
         $oOptionTemplate->setStyle("color:#666666;");
         $oOptionNewsletter->setStyle("color:#666666;");
     }
 
-    $oSelHTMLTemplateIDCat->addOptionElement($oDB->f("idcat"), $oOptionTemplate);
-    $oSelHTMLNewsletterIDCat->addOptionElement($oDB->f("idcat"), $oOptionNewsletter);
+    $oSelHTMLTemplateIDCat->addOptionElement($oDB->f('idcat'), $oOptionTemplate);
+    $oSelHTMLNewsletterIDCat->addOptionElement($oDB->f('idcat'), $oOptionNewsletter);
 }
 
 // Get html template category
-$iHTMLTemplateIDCat = (int)$oClientLang->getProperty("newsletter", "html_template_idcat");
+$iHTMLTemplateIDCat = (int)$oClientLang->getProperty('newsletter', 'html_template_idcat');
 if ($iHTMLTemplateIDCat < 0) {
     $iHTMLTemplateIDCat = 0;
 }
 $oSelHTMLTemplateIDCat->setDefault($iHTMLTemplateIDCat);
 
 // Get html newsletter article category
-$iHTMLNewsletterIDCat = (int)$oClientLang->getProperty("newsletter", "html_newsletter_idcat");
+$iHTMLNewsletterIDCat = (int)$oClientLang->getProperty('newsletter', 'html_newsletter_idcat');
 if ($iHTMLNewsletterIDCat < 0) {
     $iHTMLNewsletterIDCat = 0;
 }
@@ -176,36 +176,36 @@ $oSelHTMLNewsletterIDCat->setDefault($iHTMLNewsletterIDCat);
 
 // Global HTML newsletter option
 $bHTMLNewsletter = false;
-if ($iHTMLTemplateIDCat > 0 && $iHTMLNewsletterIDCat > 0 && $oClientLang->getProperty("newsletter", "html_newsletter") == "true") {
+if ($iHTMLTemplateIDCat > 0 && $iHTMLNewsletterIDCat > 0 && $oClientLang->getProperty('newsletter', 'html_newsletter') == 'true') {
     // If necessary idcats are not specified or the option is disabled,
     // then HTML are not used
     $bHTMLNewsletter = true;
 }
-$oCkbHTMLNewsletter = new cHTMLCheckbox("ckbHTMLNewsletter", "enabled", "", $bHTMLNewsletter);
+$oCkbHTMLNewsletter = new cHTMLCheckbox('ckbHTMLNewsletter', 'enabled', '', $bHTMLNewsletter);
 
 // Disable HTML options, if user has no rights
-if (!$perm->have_perm_area_action($area, "news_html_settings")) {
+if (!$perm->have_perm_area_action($area, 'news_html_settings')) {
     $oSelHTMLTemplateIDCat->setDisabled(true);
     $oSelHTMLNewsletterIDCat->setDisabled(true);
     $oCkbHTMLNewsletter->setDisabled(true);
 }
 
 // Destination for sending test newsletter
-$oSelTestDestination = new cHTMLSelectElement("selTestDestination");
+$oSelTestDestination = new cHTMLSelectElement('selTestDestination');
 
 $oOption = new cHTMLOptionElement(i18n("My E-Mail address", 'newsletter'), 0);
 $oSelTestDestination->addOptionElement(0, $oOption);
 
 $oRcpGroups = new NewsletterRecipientGroupCollection();
-$oRcpGroups->setWhere("idclient", (int)$client);
-$oRcpGroups->setWhere("idlang", (int)$lang);
+$oRcpGroups->setWhere('idclient', (int)$client);
+$oRcpGroups->setWhere('idlang', (int)$lang);
 $oRcpGroups->setOrder("groupname");
 $oRcpGroups->query();
 
 $bTestTargetFound = false;
 // Get client and language specific test destination. As lang is client
 // specific, lang is sufficient
-$iTestDestination = (int)$oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang);
+$iTestDestination = cSecurity::toInteger($oUser->getProperty('newsletter', 'test_idnewsgrp_lang' . $lang));
 while ($oRcpGroup = $oRcpGroups->next()) {
     $iID = $oRcpGroup->get($oRcpGroup->getPrimaryKeyName());
 
@@ -213,7 +213,7 @@ while ($oRcpGroup = $oRcpGroups->next()) {
         $bTestTargetFound = true;
     }
 
-    $oOption = new cHTMLOptionElement($oRcpGroup->get("groupname"), $iID);
+    $oOption = new cHTMLOptionElement($oRcpGroup->get('groupname'), $iID);
     $oSelTestDestination->addOptionElement($iID, $oOption);
 }
 unset($oRcpGroups);
@@ -223,14 +223,14 @@ if (!$bTestTargetFound) {
     // mail"
     $iTestDestination = 0;
 }
-if (!$perm->have_perm_area_action($area, "news_send_test")) {
+if (!$perm->have_perm_area_action($area, 'news_send_test')) {
     // No right to send somewhere else than to yourself
     $iTestDestination = 0;
     $oSelTestDestination->setDisabled(true);
 }
 $oSelTestDestination->setDefault($iTestDestination);
 
-$oBtnSave = new cHTMLButton("submit", i18n("Save", 'newsletter'));
+$oBtnSave = new cHTMLButton('submit', i18n("Save", 'newsletter'));
 
 $requestElemPerPage = cSecurity::toInteger($_REQUEST['elemperpage'] ?? '0');
 if ($requestElemPerPage <= 0) {
@@ -281,14 +281,14 @@ $oSettingsRow->setContentData($sContent);
 // 1.3 Newsletter: List options folding row
 // ####################################
 // Items per Page
-$iItemsPerPage = (int)$oUser->getProperty("itemsperpage", "news"); // Also used
+$iItemsPerPage = (int)$oUser->getProperty('itemsperpage', 'news'); // Also used
 // in query
 // below
 if ($iItemsPerPage == 0) {
     $iItemsPerPage = 25; // All can't be saved
 }
 
-$oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
+$oSelItemsPerPage = new cHTMLSelectElement('elemperpage');
 $oSelItemsPerPage->autoFill([
     0 => i18n("-- All --", 'newsletter'),
     25 => 25,
@@ -299,14 +299,14 @@ $oSelItemsPerPage->autoFill([
 $oSelItemsPerPage->setDefault($iItemsPerPage);
 
 // Sort By
-$oSelSortBy = new cHTMLSelectElement("sortby");
+$oSelSortBy = new cHTMLSelectElement('sortby');
 $oSelSortBy->autoFill([
     "name" => i18n("Name", 'newsletter')
 ]);
 $oSelSortBy->setDefault("name");
 
 // Sort Order
-$oSelSortOrder = new cHTMLSelectElement("sortorder");
+$oSelSortOrder = new cHTMLSelectElement('sortorder');
 $oSelSortOrder->autoFill([
     "ASC" => i18n("Ascending", 'newsletter'),
     "DESC" => i18n("Descending", 'newsletter')
@@ -314,20 +314,20 @@ $oSelSortOrder->autoFill([
 $oSelSortOrder->setDefault("ASC");
 
 // Search For
-$oTextboxFilter = new cHTMLTextbox("filter", "", 16);
+$oTextboxFilter = new cHTMLTextbox('filter', '', 16);
 $oTextboxFilter->setClass('text');
 
 // Search In
-$oSelSearchIn = new cHTMLSelectElement("searchin");
+$oSelSearchIn = new cHTMLSelectElement('searchin');
 
 $oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all--");
 $oSelSearchIn->addOptionElement("all", $oOption);
-$oOption = new cHTMLOptionElement("Name", "name");
+$oOption = new cHTMLOptionElement('Name', 'name');
 $oSelSearchIn->addOptionElement("name", $oOption);
 $oSelSearchIn->setDefault("name");
 
 // Apply button
-$oBtnApply = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
+$oBtnApply = new cHTMLButton('submit', i18n("Apply", 'newsletter'));
 
 $sContent = '
 <div class="news_section news_section_listoptions">
@@ -380,16 +380,16 @@ $oTpl->set('s', 'LISTOPTIONLINK', $sLink);
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame("left_bottom");
-$oPagerLink->setCustom("elemperpage", $iItemsPerPage);
-$oPagerLink->setCustom("filter", "");
-// $oPagerLink->setCustom("restrictgroup", $requestRestrictGroup);
-$oPagerLink->setCustom("sortby", "name");
-$oPagerLink->setCustom("sortorder", "ASC");
-$oPagerLink->setCustom("searchin", "name");
-$oPagerLink->setCustom("frame", "2");
-$oPagerLink->setCustom("area", "news");
+$oPagerLink->setCustom('elemperpage', $iItemsPerPage);
+$oPagerLink->setCustom('filter', '');
+// $oPagerLink->setCustom('restrictgroup', $requestRestrictGroup);
+$oPagerLink->setCustom('sortby', 'name');
+$oPagerLink->setCustom('sortorder', 'ASC');
+$oPagerLink->setCustom('searchin', 'name');
+$oPagerLink->setCustom('frame', "2");
+$oPagerLink->setCustom('area', 'news');
 $oPagerLink->enableAutomaticParameterAppend();
-$oPagerLink->setCustom("contenido", $sess->id);
+$oPagerLink->setCustom('contenido', $sess->id);
 
 $sLink = "pagerlink";
 $oTpl->set('s', 'PAGINGLINK', $sLink);
@@ -402,10 +402,10 @@ $oPagerRow = new cGuiObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e302", 0, 1, 1
 // ####################################
 $sContainerId = 'cont_newsletter';
 $sContainer = '';
-if ($perm->have_perm_area_action("news", "news_create")) {
+if ($perm->have_perm_area_action('news', 'news_create')) {
     $sContainer .= $oActionsRow->render();
 }
-if ($perm->have_perm_area_action("news", "news_html_settings")) {
+if ($perm->have_perm_area_action('news', 'news_html_settings')) {
     $sContainer .= $oSettingsRow->render();
 }
 $sContainer .= $oListOptionsRow->render();
@@ -434,22 +434,22 @@ $oTpl->set('s', 'ID_CNEWSLETTER', $sContainerId);
 // sort: Element can be used to be sorted by
 // search: Element can be used to search in
 $aFields = [];
-$aFields["name"] = [
+$aFields['name'] = [
     "field" => "name",
     "caption" => i18n("Name", 'newsletter'),
     "type" => "base,sort,search"
 ];
-$aFields["created"] = [
+$aFields['created'] = [
     "field" => "created",
     "caption" => i18n("Created", 'newsletter'),
     "type" => "base,sort"
 ];
-$aFields["status"] = [
+$aFields['status'] = [
     "field" => "status",
     "caption" => i18n("Status", 'newsletter'),
     "type" => "base,sort"
 ];
-$aFields["cronjob"] = [
+$aFields['cronjob'] = [
     "field" => "use_cronjob",
     "caption" => i18n("Use cronjob", 'newsletter'),
     "type" => "base"
@@ -459,23 +459,23 @@ $aFields["cronjob"] = [
 // 2.1 Job dispatch: List options folding row
 // ####################################
 // Author
-$oSelAuthor = new cHTMLSelectElement("selAuthor");
+$oSelAuthor = new cHTMLSelectElement('selAuthor');
 
 // Get possible authors/users from available jobs
 // For this query genericdb can't be used, as the class id is always included
 // (distinct won't work)
-$sSQL = "SELECT DISTINCT `author`, `authorname` FROM `" . cRegistry::getDbTableName('news_jobs') . "` ORDER BY `authorname`";
+$sSQL = "SELECT DISTINCT `author`, `authorname` FROM `" . cDb::getTableName('news_jobs') . "` ORDER BY `authorname`";
 $oDB->query($sSQL);
 
 $aItems = [];
 $bUserInList = false;
 while ($oDB->nextRecord()) {
-    if ($oDB->f("author") == $auth->auth["uid"]) {
+    if ($oDB->f('author') == $auth->getUserId()) {
         $bUserInList = true;
     }
     $aItems[] = [
-        $oDB->f("author"),
-        $oDB->f("authorname")
+        $oDB->f('author'),
+        $oDB->f('authorname')
     ];
 }
 $oSelAuthor->autoFill($aItems);
@@ -483,18 +483,18 @@ $oSelAuthor->autoFill($aItems);
 if (!$bUserInList) {
     // Current ser hasn't sent newsletter jobs, yet - add him to the list (it's
     // the default author)
-    $oOption = new cHTMLOptionElement($auth->auth["uname"], $auth->auth["uid"]);
-    $oSelAuthor->addOptionElement($auth->auth["uid"], $oOption);
+    $oOption = new cHTMLOptionElement($auth->getUsername(), $auth->getUserId());
+    $oSelAuthor->addOptionElement($auth->getUserId(), $oOption);
 }
-$oSelAuthor->setDefault($auth->auth["uid"]);
+$oSelAuthor->setDefault($auth->getUserId());
 
 // Items per page, used also below in query
-$iItemsPerPage = (int)$oUser->getProperty("itemsperpage", "news_jobs");
+$iItemsPerPage = (int)$oUser->getProperty('itemsperpage', 'news_jobs');
 if ($iItemsPerPage == 0) {
     $iItemsPerPage = 25; // All can't be saved
 }
 
-$oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
+$oSelItemsPerPage = new cHTMLSelectElement('elemperpage');
 $oSelItemsPerPage->autoFill([
     0 => i18n("-- All --", 'newsletter'),
     25 => 25,
@@ -505,17 +505,17 @@ $oSelItemsPerPage->autoFill([
 $oSelItemsPerPage->setDefault($iItemsPerPage);
 
 // Sort by
-$oSelSortBy = new cHTMLSelectElement("sortby");
+$oSelSortBy = new cHTMLSelectElement('sortby');
 foreach ($aFields as $sKey => $aData) {
-    if (cString::findFirstPos($aData["type"], "sort") !== false) {
-        $oOption = new cHTMLOptionElement($aData["caption"], $sKey);
+    if (cString::findFirstPos($aData['type'], "sort") !== false) {
+        $oOption = new cHTMLOptionElement($aData['caption'], $sKey);
         $oSelSortBy->addOptionElement($sKey, $oOption);
     }
 }
 $oSelSortBy->setDefault("created");
 
 // Sort order
-$oSelSortOrder = new cHTMLSelectElement("sortorder");
+$oSelSortOrder = new cHTMLSelectElement('sortorder');
 $oSelSortOrder->autoFill([
     "ASC" => i18n("Ascending", 'newsletter'),
     "DESC" => i18n("Descending", 'newsletter')
@@ -523,23 +523,23 @@ $oSelSortOrder->autoFill([
 $oSelSortOrder->setDefault("DESC");
 
 // Filter
-$oTxtFilter = new cHTMLTextbox("filter", "", 16);
+$oTxtFilter = new cHTMLTextbox('filter', '', 16);
 $oTxtFilter->setClass("text_medium text");
 
 // Search in
-$oSelSearchIn = new cHTMLSelectElement("searchin");
+$oSelSearchIn = new cHTMLSelectElement('searchin');
 $oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all--");
 $oSelSearchIn->addOptionElement("all", $oOption);
 
 foreach ($aFields as $sKey => $aData) {
-    if (cString::findFirstPos($aData["type"], "search") !== false) {
-        $oOption = new cHTMLOptionElement($aData["caption"], $sKey);
+    if (cString::findFirstPos($aData['type'], "search") !== false) {
+        $oOption = new cHTMLOptionElement($aData['caption'], $sKey);
         $oSelSearchIn->addOptionElement($sKey, $oOption);
     }
 }
 $oSelSearchIn->setDefault("--all--");
 
-$oBtnApply = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
+$oBtnApply = new cHTMLButton('submit', i18n("Apply", 'newsletter'));
 
 $sContent = '
 <div class="news_section news_section_dispatch_listoptions">
@@ -593,17 +593,17 @@ $oTpl->set('s', 'LISTOPTIONLINKDISP', $sLink);
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
-$oPagerLink->setCustom("selAuthor", $auth->auth["uid"]);
-$oPagerLink->setCustom("elemperpage", $iItemsPerPage);
-$oPagerLink->setCustom("filter", "");
-// $oPagerLink->setCustom("restrictgroup", $requestRestrictGroup);
-$oPagerLink->setCustom("sortby", "created");
-$oPagerLink->setCustom("sortorder", "DESC");
-$oPagerLink->setCustom("searchin", "--all--");
-$oPagerLink->setCustom("frame", "2"); // HIER!!! Stimmt das?
-$oPagerLink->setCustom("area", "news_jobs");
+$oPagerLink->setCustom('selAuthor', $auth->getUserId());
+$oPagerLink->setCustom('elemperpage', $iItemsPerPage);
+$oPagerLink->setCustom('filter', '');
+// $oPagerLink->setCustom('restrictgroup', $requestRestrictGroup);
+$oPagerLink->setCustom('sortby', 'created');
+$oPagerLink->setCustom('sortorder', 'DESC');
+$oPagerLink->setCustom('searchin', '--all--');
+$oPagerLink->setCustom('frame', "2"); // HIER!!! Stimmt das?
+$oPagerLink->setCustom('area', 'news_jobs');
 $oPagerLink->enableAutomaticParameterAppend();
-$oPagerLink->setCustom("contenido", $sess->id);
+$oPagerLink->setCustom('contenido', $sess->id);
 
 $sLink = "pagerlinkdisp";
 $oTpl->set('s', 'PAGINGLINKDISP', $sLink);
@@ -630,22 +630,22 @@ $oTpl->set('s', 'ID_CDISPATCH', $sContainerId);
 // ####################################
 // See comment at 2. Job dispatch
 $aFields = [];
-$aFields["name"] = [
+$aFields['name'] = [
     "field" => "name",
     "caption" => i18n("Name", 'newsletter'),
     "type" => "base,sort,search"
 ];
-$aFields["email"] = [
+$aFields['email'] = [
     "field" => "email",
     "caption" => i18n("E-Mail", 'newsletter'),
     "type" => "base,sort,search"
 ];
-$aFields["confirmed"] = [
+$aFields['confirmed'] = [
     "field" => "confirmed",
     "caption" => i18n("Confirmed", 'newsletter'),
     "type" => "base"
 ];
-$aFields["deactivated"] = [
+$aFields['deactivated'] = [
     "field" => "deactivated",
     "caption" => i18n("Deactivated", 'newsletter'),
     "type" => "base"
@@ -657,30 +657,30 @@ $aFields["deactivated"] = [
 $sContent = '';
 
 // Create a link to add a recipient
-if ($perm->have_perm_area_action("recipients", "recipients_create")) {
+if ($perm->have_perm_area_action('recipients', 'recipients_create')) {
     $oLink = new cHTMLLink();
     $oLink->setClass('con_func_button');
-    $oLink->setMultiLink("recipients", "", "recipients", "recipients_create");
+    $oLink->setMultiLink('recipients', '', 'recipients', "recipients_create");
     $oLink->setContent('<img src="' . $cfg['path']['images'] . 'folder_new.gif" alt=""> ' . i18n("Create recipient", 'newsletter') . '</a>');
     $sContent .= $oLink->render() . '<br>' . "\n";
 }
 
 // Create a link to import recipients
-if ($perm->have_perm_area_action("recipients", "recipients_create")) {
+if ($perm->have_perm_area_action('recipients', 'recipients_create')) {
     $oLink = new cHTMLLink();
     $oLink->setClass('con_func_button');
-    $oLink->setMultiLink("recipients", "", "recipients_import", "recipients_import");
+    $oLink->setMultiLink('recipients', '', 'recipients_import', "recipients_import");
     $oLink->setContent('<img src="' . $cfg['path']['images'] . 'importieren.gif" alt=""> ' . i18n("Import recipients", 'newsletter') . '</a>');
     $sContent .= $oLink->render() . '<br>' . "\n";
 }
 
-$iTimeframe = (int)$oClient->getProperty("newsletter", "purgetimeframe");
+$iTimeframe = (int)$oClient->getProperty('newsletter', 'purgetimeframe');
 if ($iTimeframe <= 0) {
     $iTimeframe = 30;
 }
 
 // Create a link to purge subscribed but not confirmed recipients
-if ($perm->have_perm_area_action("recipients", "recipients_delete")) {
+if ($perm->have_perm_area_action('recipients', 'recipients_delete')) {
     $oLink = new cHTMLLink();
     $oLink->setClass('con_func_button');
     $oLink->setLink("javascript:showPurgeMsg('" . i18n('Purge recipients', 'newsletter') . "', '" . sprintf(i18n('Do you really want to remove recipients, that have not been confirmed since %s days and over?', 'newsletter'), $iTimeframe) . "')");
@@ -705,8 +705,8 @@ $oTpl->set('s', 'ACTIONLINKREC', $sLink);
 // ####################################
 // 3.2 Recipients: Settings folding row
 // ####################################
-$oTxtTimeframe = new cHTMLTextbox("txtPurgeTimeframe", $iTimeframe, 5);
-$oBtnSave = new cHTMLButton("submit", i18n("Save", 'newsletter'));
+$oTxtTimeframe = new cHTMLTextbox('txtPurgeTimeframe', $iTimeframe, 5);
+$oBtnSave = new cHTMLButton('submit', i18n("Save", 'newsletter'));
 
 $sContent = '
 <div class="news_section news_section_recipients_settings">
@@ -743,12 +743,12 @@ $oTpl->set('s', 'SETTINGSLINKREC', $sLink);
 // ####################################
 // 3.3 Recipients: List options folding row
 // ####################################
-$iItemsPerPage = (int)$oUser->getProperty("itemsperpage", "recipients");
+$iItemsPerPage = (int)$oUser->getProperty('itemsperpage', 'recipients');
 if ($iItemsPerPage === 0) {
     $iItemsPerPage = 25; // All can't be saved
 }
 
-$oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
+$oSelItemsPerPage = new cHTMLSelectElement('elemperpage');
 $oSelItemsPerPage->autoFill([
     0 => i18n("-- All --", 'newsletter'),
     25 => 25,
@@ -758,63 +758,63 @@ $oSelItemsPerPage->autoFill([
 ]);
 $oSelItemsPerPage->setDefault($iItemsPerPage);
 
-$oSelSortBy = new cHTMLSelectElement("sortby");
+$oSelSortBy = new cHTMLSelectElement('sortby');
 foreach ($aFields as $sKey => $aData) {
-    if (cString::findFirstPos($aData["type"], "sort") !== false) {
-        $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
-        $oSelSortBy->addOptionElement($aData["field"], $oOption);
+    if (cString::findFirstPos($aData['type'], "sort") !== false) {
+        $oOption = new cHTMLOptionElement($aData['caption'], $aData['field']);
+        $oSelSortBy->addOptionElement($aData['field'], $oOption);
     }
 }
 $oSelSortBy->setDefault("name");
 
-$oSelSortOrder = new cHTMLSelectElement("sortorder");
+$oSelSortOrder = new cHTMLSelectElement('sortorder');
 $oSelSortOrder->autoFill([
     "ASC" => i18n("Ascending", 'newsletter'),
     "DESC" => i18n("Descending", 'newsletter')
 ]);
 $oSelSortOrder->setDefault("ASC");
 
-$oSelRestrictGroup = new cHTMLSelectElement("restrictgroup");
+$oSelRestrictGroup = new cHTMLSelectElement('restrictgroup');
 $oOption = new cHTMLOptionElement(i18n("-- All groups --", 'newsletter'), "--all--");
 $oSelRestrictGroup->addOptionElement("all", $oOption);
 
 // Fetch recipient groups
 $oRGroups = new NewsletterRecipientGroupCollection();
-$oRGroups->setWhere("idclient", $client);
-$oRGroups->setWhere("idlang", $lang);
+$oRGroups->setWhere('idclient', $client);
+$oRGroups->setWhere('idlang', $lang);
 $oRGroups->setOrder("defaultgroup DESC, groupname ASC");
 $oRGroups->query();
 
 $i = 1;
 while ($oRGroup = $oRGroups->next()) {
-    if ($oRGroup->get("defaultgroup") == 1) {
-        $sGroupname = $oRGroup->get("groupname") . "*";
+    if ($oRGroup->get('defaultgroup') == 1) {
+        $sGroupname = $oRGroup->get('groupname') . "*";
     } else {
-        $sGroupname = $oRGroup->get("groupname");
+        $sGroupname = $oRGroup->get('groupname');
     }
-    $oOption = new cHTMLOptionElement($sGroupname, $oRGroup->get("idnewsgroup"));
+    $oOption = new cHTMLOptionElement($sGroupname, $oRGroup->get('idnewsgroup'));
     $oSelRestrictGroup->addOptionElement($i, $oOption);
     $i++;
 }
 
 $oSelRestrictGroup->setDefault("--all--");
 
-$oTxtFilter = new cHTMLTextbox("filter", "", 16);
+$oTxtFilter = new cHTMLTextbox('filter', '', 16);
 $oTxtFilter->setClass("text_medium text");
 
-$oSelSearchIn = new cHTMLSelectElement("searchin");
+$oSelSearchIn = new cHTMLSelectElement('searchin');
 $oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all--");
 $oSelSearchIn->addOptionElement("all", $oOption);
 
 foreach ($aFields as $sKey => $aData) {
-    if (cString::findFirstPos($aData["type"], "search") !== false) {
-        $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
-        $oSelSearchIn->addOptionElement($aData["field"], $oOption);
+    if (cString::findFirstPos($aData['type'], "search") !== false) {
+        $oOption = new cHTMLOptionElement($aData['caption'], $aData['field']);
+        $oSelSearchIn->addOptionElement($aData['field'], $oOption);
     }
 }
 $oSelSearchIn->setDefault("--all--");
 
-$oBtnApply = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
+$oBtnApply = new cHTMLButton('submit', i18n("Apply", 'newsletter'));
 
 $sContent = '
 <div class="news_section news_section_recipients_listoptions">
@@ -868,16 +868,16 @@ $oTpl->set('s', 'LISTOPTIONLINKREC', $sLink);
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
-$oPagerLink->setCustom("elemperpage", $iItemsPerPage);
-$oPagerLink->setCustom("filter", "");
-$oPagerLink->setCustom("restrictgroup", "--all--");
-$oPagerLink->setCustom("sortby", "name");
-$oPagerLink->setCustom("sortorder", "ASC");
-$oPagerLink->setCustom("searchin", "--all--");
-$oPagerLink->setCustom("frame", "2");
-$oPagerLink->setCustom("area", "recipients");
+$oPagerLink->setCustom('elemperpage', $iItemsPerPage);
+$oPagerLink->setCustom('filter', '');
+$oPagerLink->setCustom('restrictgroup', '--all--');
+$oPagerLink->setCustom('sortby', 'name');
+$oPagerLink->setCustom('sortorder', 'ASC');
+$oPagerLink->setCustom('searchin', '--all--');
+$oPagerLink->setCustom('frame', "2");
+$oPagerLink->setCustom('area', 'recipients');
 $oPagerLink->enableAutomaticParameterAppend();
-$oPagerLink->setCustom("contenido", $sess->id);
+$oPagerLink->setCustom('contenido', $sess->id);
 
 // To template
 $sLink = "pagingrec";
@@ -891,7 +891,7 @@ $oPagerRow = new cGuiObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e304", 0, 1, 1
 // ####################################
 $sContainerId = 'cont_recipients';
 $sContainer = '';
-if ($perm->have_perm_area_action('recipients', "recipients_delete") || $perm->have_perm_area_action("recipients", "recipients_create")) {
+if ($perm->have_perm_area_action('recipients', "recipients_delete") || $perm->have_perm_area_action('recipients', 'recipients_create')) {
     $sContainer .= $oListActionsRow->render();
 }
 $sContainer .= $oSettingsRow->render();
@@ -913,7 +913,7 @@ $oTpl->set('s', 'ID_CRECIPIENTS', $sContainerId);
 // ####################################
 // See comment at 2. Job dispatch
 $aFields = [];
-$aFields["name"] = [
+$aFields['name'] = [
     "field" => "groupname",
     "caption" => i18n("Name", 'newsletter'),
     "type" => "base,sort,search"
@@ -925,10 +925,10 @@ $aFields["name"] = [
 $sContent = '';
 
 // Create a link to add a group
-if ($perm->have_perm_area_action("recipientgroups", "recipientgroup_create")) {
+if ($perm->have_perm_area_action('recipientgroups', 'recipientgroup_create')) {
     $oLink = new cHTMLLink();
     $oLink->setClass('con_func_button addfunction');
-    $oLink->setMultiLink("recipientgroups", "", "recipientgroups", "recipientgroup_create");
+    $oLink->setMultiLink('recipientgroups', '', 'recipientgroups', "recipientgroup_create");
     $oLink->setContent(i18n("Create group", 'newsletter'));
     $sContent .= $oLink->render() . "\n";
 }
@@ -947,12 +947,12 @@ $oTpl->set('s', 'ACTIONLINKGROUP', $sLink);
 // ####################################
 // 4.2 Recipient groups: List Options
 // ####################################
-$iItemsPerPage = (int)$oUser->getProperty("itemsperpage", "recipientgroups");
+$iItemsPerPage = (int)$oUser->getProperty('itemsperpage', 'recipientgroups');
 if ($iItemsPerPage == 0) {
     $iItemsPerPage = 25; // All can't be saved
 }
 
-$oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
+$oSelItemsPerPage = new cHTMLSelectElement('elemperpage');
 $oSelItemsPerPage->autoFill([
     0 => i18n("-- All --", 'newsletter'),
     25 => 25,
@@ -962,38 +962,38 @@ $oSelItemsPerPage->autoFill([
 ]);
 $oSelItemsPerPage->setDefault($iItemsPerPage);
 
-$oSelSortBy = new cHTMLSelectElement("sortby");
+$oSelSortBy = new cHTMLSelectElement('sortby');
 foreach ($aFields as $sKey => $aData) {
-    if (cString::findFirstPos($aData["type"], "sort") !== false) {
-        $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
-        $oSelSortBy->addOptionElement($aData["field"], $oOption);
+    if (cString::findFirstPos($aData['type'], "sort") !== false) {
+        $oOption = new cHTMLOptionElement($aData['caption'], $aData['field']);
+        $oSelSortBy->addOptionElement($aData['field'], $oOption);
     }
 }
 $oSelSortBy->setDefault("name");
 
-$oSelSortOrder = new cHTMLSelectElement("sortorder");
+$oSelSortOrder = new cHTMLSelectElement('sortorder');
 $oSelSortOrder->autoFill([
     "ASC" => i18n("Ascending", 'newsletter'),
     "DESC" => i18n("Descending", 'newsletter')
 ]);
 $oSelSortOrder->setDefault("ASC");
 
-$oTxtFilter = new cHTMLTextbox("filter", "", 16);
+$oTxtFilter = new cHTMLTextbox('filter', '', 16);
 $oTxtFilter->setClass("text_medium text");
 
-$oSelSearchIn = new cHTMLSelectElement("searchin");
+$oSelSearchIn = new cHTMLSelectElement('searchin');
 $oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all--");
 $oSelSearchIn->addOptionElement("all", $oOption);
 
 foreach ($aFields as $sKey => $aData) {
-    if (cString::findFirstPos($aData["type"], "search") !== false) {
-        $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
-        $oSelSearchIn->addOptionElement($aData["field"], $oOption);
+    if (cString::findFirstPos($aData['type'], "search") !== false) {
+        $oOption = new cHTMLOptionElement($aData['caption'], $aData['field']);
+        $oSelSearchIn->addOptionElement($aData['field'], $oOption);
     }
 }
 $oSelSearchIn->setDefault("--all--");
 
-$oBtnApply = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
+$oBtnApply = new cHTMLButton('submit', i18n("Apply", 'newsletter'));
 
 $sContent = '
 <div class="news_section news_section_recipients_groups_listactions">
@@ -1043,15 +1043,15 @@ $oTpl->set('s', 'LISTOPTIONLINKGROUP', $sLink);
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
-$oPagerLink->setCustom("elemperpage", $iItemsPerPage);
-$oPagerLink->setCustom("filter", "");
-$oPagerLink->setCustom("sortby", "name");
-$oPagerLink->setCustom("sortorder", "ASC");
-$oPagerLink->setCustom("searchin", "--all--");
-$oPagerLink->setCustom("frame", "2");
-$oPagerLink->setCustom("area", "recipientgroups");
+$oPagerLink->setCustom('elemperpage', $iItemsPerPage);
+$oPagerLink->setCustom('filter', '');
+$oPagerLink->setCustom('sortby', 'name');
+$oPagerLink->setCustom('sortorder', 'ASC');
+$oPagerLink->setCustom('searchin', '--all--');
+$oPagerLink->setCustom('frame', "2");
+$oPagerLink->setCustom('area', 'recipientgroups');
 $oPagerLink->enableAutomaticParameterAppend();
-$oPagerLink->setCustom("contenido", $sess->id);
+$oPagerLink->setCustom('contenido', $sess->id);
 
 // To template
 $sLink = "paginggroup";
@@ -1065,7 +1065,7 @@ $oPagerRow = new cGuiObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e305", 0, 1, 1
 // ####################################
 $sContainerId = 'cont_recipientgroup';
 $sContainer = '';
-if ($perm->have_perm_area_action("recipientgroups", "recipientgroup_create")) {
+if ($perm->have_perm_area_action('recipientgroups', 'recipientgroup_create')) {
     $sContainer .= $oListActionsRow->render();
 }
 $sContainer .= $oListOptionsRow->render();

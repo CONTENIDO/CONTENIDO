@@ -51,7 +51,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
 cInclude('includes', 'functions.file.php');
 cInclude('external', 'codemirror/class.codemirror.php');
 
-$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
+$readOnly = getEffectiveSetting('client', 'readonly', 'false') === 'true';
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -72,7 +72,7 @@ $requestStyleSend = cSecurity::toInteger($_POST['style_send'] ?? '0');
 $requestStyleCode = $_POST['stylecode'] ?? '';
 
 // Truncate history action
-if ((!$readOnly) && $requestAction === 'history_truncate') {
+if (!$readOnly && $requestAction === 'history_truncate') {
     $oVersionStyle = new cVersionFile(
         $aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent,
         $cfg, $cfgClient, $db, $client, $area, $frame
@@ -84,7 +84,7 @@ if ((!$readOnly) && $requestAction === 'history_truncate') {
 }
 
 // Save action
-if ((!$readOnly) && $requestStyleSend && $requestStyleCode != '' && $sFileName != '' && !empty($aFileInfo['idsfi'])) {
+if (!$readOnly && $requestStyleSend && $requestStyleCode != '' && $sFileName != '' && !empty($aFileInfo['idsfi'])) {
     $oVersionStyle = new cVersionFile(
         $aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent,
         $cfg, $cfgClient, $db, $client, $area, $frame
@@ -141,8 +141,11 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction !== 'hist
 
     // Create and output the select box
     $sSelectBox = $oVersionStyle->buildSelectBox(
-        'style_history', 'Style History',
-        i18n('Show history entry'), 'idstylehistory', $readOnly
+        'style_history',
+        'Style History',
+        i18n('Show history entry'),
+        'idstylehistory',
+        $readOnly
     );
 
     // Generate form

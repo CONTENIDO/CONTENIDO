@@ -213,7 +213,7 @@ $form->add(i18n('Code'), $ta_code);
 
 $oCodeMirror = new CodeMirror('code', 'js', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg);
 if ($readOnly) {
-    $oCodeMirror->setProperty("readOnly", "true");
+    $oCodeMirror->setProperty('readOnly', 'true');
     $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
 }
 

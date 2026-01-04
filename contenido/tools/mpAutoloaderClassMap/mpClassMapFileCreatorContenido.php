@@ -92,10 +92,11 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
     }
 
     /**
-     * Creates classmap file with passed data list. Prepares the classmap entries
-     * before passing them to parents create function.
+     * Creates classmap file with passed data list. Prepares the classmap entries before passing
+     * them to parents create function.
      *
-     * @param array $data Associative list which contains class type tokens and the related path to the class file.
+     * @param array $data Associative list which contains class type tokens and the related path
+     *      to the class file.
      * @param string $file Destination class map file
      */
     public function create(array $data, string $file): bool

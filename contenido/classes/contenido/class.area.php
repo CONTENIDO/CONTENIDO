@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiArea createNewItem
- * @method cApiArea|bool next
+ * @extends ItemCollection<cApiArea>
  */
 class cApiAreaCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiAreaCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('area'), 'idarea');
+        parent::__construct(cDb::getTableName('area'), 'idarea');
         $this->_setItemClass('cApiArea');
     }
 
@@ -150,7 +149,7 @@ class cApiAreaCollection extends ItemCollection
         $this->select();
 
         $aAreas = [];
-        while (($oItem = $this->next()) !== false) {
+        while ($oItem = $this->next()) {
             $aAreas[$oItem->get('idarea')] = [
                 'name' => $oItem->get('name')
             ];
@@ -212,7 +211,7 @@ class cApiArea extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('area'), 'idarea');
+        parent::__construct(cDb::getTableName('area'), 'idarea');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

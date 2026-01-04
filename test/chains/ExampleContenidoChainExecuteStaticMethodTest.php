@@ -99,16 +99,16 @@ class ExampleContenidoChainExecuteStaticMethodTest extends TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');
 
         // execute chain
         cApiCecHook::execute($this->_chain, $this->_obj);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');
 
         $this->assertEquals(1, $this->_obj->counter);
     }
@@ -119,18 +119,18 @@ class ExampleContenidoChainExecuteStaticMethodTest extends TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');
-        $cecReg->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test2::callMe');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test2::callMe');
 
         // execute chain
         cApiCecHook::execute($this->_chain, $this->_obj);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test2::callMe');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test::callMe');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ExampleContenidoChainExecuteStaticMethod_Test2::callMe');
 
         $this->assertEquals(2, $this->_obj->counter);
     }

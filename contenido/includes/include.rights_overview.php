@@ -106,10 +106,8 @@ if ($action == 'user_edit') {
                 $sNotification = $notification->returnNotification("warning", i18n("You can only assign users to a client with languages."));
                 $bError = true;
             } else {
-
                 // Client has one or more assigned language(s)
                 foreach ($mlang as $selectedLanguage) {
-
                     if (!$clientLanguageCollection->hasLanguageInClients($selectedLanguage, $mclient)) {
                         // Selected language are not assigned to selected client
                         $sNotification = $notification->returnNotification("warning", i18n("You have to select a client with a language of that client."));
@@ -226,7 +224,7 @@ $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "name");
 $tpl->set('d', 'CATNAME', i18n("Name"));
-$oTxtName = new cHTMLTextbox("realname", conHtmlSpecialChars($oUser->getField('realname') ?? ''), 40, 255);
+$oTxtName = new cHTMLTextbox('realname', conHtmlSpecialChars($oUser->getField('realname') ?? ''), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtName->render());
 $tpl->next();
 

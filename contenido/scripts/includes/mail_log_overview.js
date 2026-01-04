@@ -38,12 +38,12 @@
     Con.MailLogOverview = function(options) {
 
         /**
-         * @property  {Object}  _options
+         * @property {Object} _options
          * @private
          */
         var _options = $.extend(DEFAULT_OPTIONS, options),
             /**
-             * @property  {jQuery}  $_root  Root node of this component
+             * @property {jQuery} $_root Root node of this component
              * @private
              */
             $_root = $(_options.rootSelector),

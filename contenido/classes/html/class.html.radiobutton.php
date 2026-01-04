@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains the cHTMLRadiobutton class.
+ * This file contains the cHTMLRadioButton class.
  *
  * @package    Core
  * @subpackage GUI_HTML
@@ -15,12 +15,12 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * cHTMLRadiobutton class represents a radio button.
+ * cHTMLRadioButton class represents a radio button.
  *
  * @package    Core
  * @subpackage GUI_HTML
  */
-class cHTMLRadiobutton extends cHTMLFormElement
+class cHTMLRadioButton extends cHTMLFormElement
 {
 
     /**

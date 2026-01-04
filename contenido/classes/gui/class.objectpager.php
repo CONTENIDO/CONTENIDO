@@ -160,7 +160,7 @@ class cGuiObjectPager extends cGuiFoldingRow
         }
 
         $this->_contentData->setAlignment("center");
-        $this->_contentData->setClass("foldingrow_content");
+        $this->_contentData->setClass('foldingrow_content');
 
         // Do not display page navigation if there is only one page,
         // and we are not in newsletter section.

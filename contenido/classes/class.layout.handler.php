@@ -74,7 +74,7 @@ class cLayoutHandler
      *
      * @param int $layoutId
      * @param string $layoutCode
-     * @param array $cfg
+     * @param array $cfg The CONTENIDO configuration array
      * @param int $lang
      * @param ?cDb $db Database object
      * @throws cDbException|cInvalidArgumentException
@@ -114,12 +114,12 @@ class cLayoutHandler
      * @param string $layoutAlias
      * @param array $cfgClient
      * @param int $client
-     * @return bool
-     *         true if file exist
+     * @return bool true if file exist
      */
-    static function existLayout($layoutAlias, $cfgClient, $client)
+    static function existLayout(string $layoutAlias, array $cfgClient, $client): bool
     {
         $file = $cfgClient[$client]['layout']['path'] . $layoutAlias . '/';
+
         return cFileHandler::exists($file);
     }
 
@@ -128,7 +128,7 @@ class cLayoutHandler
      *
      * @param int $layoutId
      * @param string $layoutCode
-     * @param array $cfg
+     * @param array $cfg The CONTENIDO configuration array
      * @param int $language
      *
      * @throws cDbException|cInvalidArgumentException
@@ -211,7 +211,6 @@ class cLayoutHandler
     /**
      * Make directory
      *
-     * @param string $directory
      * @return bool true if successfully
      * @throws cInvalidArgumentException
      */
@@ -261,10 +260,10 @@ class cLayoutHandler
     public function isWritable(string $fileName, string $directory): bool
     {
         if (cFileHandler::exists($fileName)) {
-            if (!is_writable($fileName)) {
+            if (!cFileHandler::writeable($fileName)) {
                 return false;
             }
-        } elseif (!is_writable($directory)) {
+        } elseif (!cFileHandler::writeable($directory)) {
             return false;
         }
 
@@ -337,13 +336,15 @@ class cLayoutHandler
      */
     public function eraseLayout(): bool
     {
-        global $area, $frame;
-        $cfg = cRegistry::getConfig();
-        $cfgClient = cRegistry::getClientConfig();
-        $db = cRegistry::getDb();
-        $client = cRegistry::getClientId();
-
-        $layoutVersion = new cVersionLayout($this->_layoutId, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $layoutVersion = new cVersionLayout(
+            $this->_layoutId,
+            cRegistry::getConfig(),
+            cRegistry::getClientConfig(),
+            cRegistry::getDb(),
+            cRegistry::getClientId(),
+            cRegistry::getArea(),
+            cRegistry::getFrame()
+        );
         $success = true;
         if (count($layoutVersion->getRevisionFiles()) > 0 && !$layoutVersion->deleteFile()) {
             $success = false;
@@ -413,24 +414,31 @@ class cLayoutHandler
      *
      * @throws cException if the layout could not be saved
      */
-    public static function upgrade(cDb $adb, array $cfg, int $clientId)
+    public static function upgrade(cDb $db, array $cfg, int $clientId)
     {
         // get name of layout and frontendpath
-        if (!$adb->query("SELECT * FROM `%s` WHERE idclient='%s'", $cfg['tab']['lay'], $clientId)) {
+        if (!$db->query(
+            "SELECT * FROM `%s` WHERE `idclient` = %d",
+            cDb::getTableName('lay'),
+            $clientId
+        )) {
             return;
         }
 
-        while ($adb->nextRecord()) {
+        while ($db->nextRecord()) {
             // init class var for save
             $layout = new cLayoutHandler();
-            $layout->initWithDbObject($adb);
-            if (!$layout->saveLayoutByUpgrade($adb->f('code'))) {
+            $layout->initWithDbObject($db);
+            if (!$layout->saveLayoutByUpgrade($db->f('code'))) {
                 throw new cException('Can not save layout.' . print_r($layout, true));
             }
         }
 
         // all layouts are saved, so remove the code field from _lay
-        $sql = sprintf("UPDATE %s SET code = '' WHERE idclient='%s'", $cfg['tab']['lay'], $clientId);
-        $adb->query($sql);
+        $db->query(
+            "UPDATE `%s` SET `code` = '' WHERE `idclient` = %d",
+            cDb::getTableName('lay'),
+            $clientId
+        );
     }
 }

@@ -189,7 +189,7 @@ class cGuiScrollListMyContenidoTasks extends cGuiScrollList
 
         // Due date
         if ($field == 8) {
-            if ($value !== "") {
+            if ($value !== '') {
                 if (round($value, 2) == 0) {
                     return i18n("Today");
                 } else {

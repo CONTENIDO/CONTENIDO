@@ -227,7 +227,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         }
 
         // loop all forms
-        while (false !== $form = $forms->next()) {
+        while ($form = $forms->next()) {
             // attributes of option element
             $title = $form->get('name');
             $value = $form->get('idform');

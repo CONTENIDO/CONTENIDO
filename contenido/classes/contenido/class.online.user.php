@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiOnlineUser createNewItem($data)
- * @method cApiOnlineUser|bool next
+ * @extends ItemCollection<cApiOnlineUser>
  */
 class cApiOnlineUserCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiOnlineUserCollection extends ItemCollection
      */
     public function __construct($select = false)
     {
-        parent::__construct(cRegistry::getDbTableName('online_user'), 'user_id');
+        parent::__construct(cDb::getTableName('online_user'), 'user_id');
         $this->_setItemClass('cApiOnlineUser');
         if ($select !== false) {
             $this->select($select);
@@ -54,7 +53,7 @@ class cApiOnlineUserCollection extends ItemCollection
 
         if (empty($userId)) {
             $auth = cRegistry::getAuth();
-            $userId = $auth->auth['uid'];
+            $userId = $auth->getUserId();
         }
 
         // Delete all entries being older than defined timeout
@@ -116,7 +115,7 @@ class cApiOnlineUserCollection extends ItemCollection
 
         // get all user_ids
         $this->select();
-        while (($oItem = $this->next()) !== false) {
+        while ($oItem = $this->next()) {
             $aUser[] = $oItem->get('user_id');
         }
 
@@ -126,7 +125,7 @@ class cApiOnlineUserCollection extends ItemCollection
         $where = "user_id IN ('" . implode("', '", $aUser) . "')";
         $oUserColl = new cApiUserCollection();
         $oUserColl->select($where);
-        while (($oItem = $oUserColl->next()) !== false) {
+        while ($oItem = $oUserColl->next()) {
             $sClientNames = '';
             $userId = $oItem->get('user_id');
             $aAllUser[$userId]['realname'] = $oItem->get('realname');
@@ -259,7 +258,7 @@ class cApiOnlineUser extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('online_user'), 'user_id');
+        parent::__construct(cDb::getTableName('online_user'), 'user_id');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

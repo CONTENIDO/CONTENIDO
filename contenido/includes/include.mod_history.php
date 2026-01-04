@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $idmod, $bInUse;
 
 $perm = cRegistry::getPerm();
-$client = cRegistry::getCategoryId();
+$client = cRegistry::getClientId();
 $area = cRegistry::getArea();
 
 $oPage = new cGuiPage('mod_history');
@@ -49,7 +49,7 @@ $frame = cRegistry::getFrame();
 $sess = cRegistry::getSession();
 $belang = cRegistry::getBackendLanguage();
 
-$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
+$readOnly = getEffectiveSetting('client', 'readonly', 'false') === 'true';
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -69,14 +69,14 @@ $requestAction = $_POST['action'] ?? '';
 $requestIdModHistory = $_POST['idmodhistory'] ?? '';
 
 // Truncate history action
-if ((!$readOnly) && $requestAction === 'history_truncate') {
+if (!$readOnly && $requestAction === 'history_truncate') {
     $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
     $bDeleteFile = $oVersion->deleteFile();
     unset($oVersion);
 }
 
 // Save action
-if ((!$readOnly) && $requestModSend == true && ($requestCodeOut != '' || $requestCodeIn != '')) {
+if (!$readOnly && $requestModSend == true && ($requestCodeOut != '' || $requestCodeIn != '')) {
     $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
     $sName = $_POST['modname'];
     $sCodeInput = $_POST['CodeIn'];
@@ -99,8 +99,11 @@ $oVersion->setVarForm('idmod', $idmod);
 
 // Create and output the select box
 $sSelectBox = $oVersion->buildSelectBox(
-    'mod_history', i18n('Module History'),
-    i18n('Show history entry'), 'idmodhistory', $readOnly
+    'mod_history',
+    i18n('Module History'),
+    i18n('Show history entry'),
+    'idmodhistory',
+    $readOnly
 );
 
 // Generate form

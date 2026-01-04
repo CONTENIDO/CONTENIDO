@@ -312,7 +312,7 @@ initData();
                     }
                 });
 
-                var params = { area: "{AREA}", action: "con_makepublic", idcat: cfg.catId, public: newpublic, contenido: Con.sid };
+                var params = { area: "{AREA}", action: 'con_makepublic', idcat: cfg.catId, public: newpublic, contenido: Con.sid };
                 $.post("{AJAXURL}", params);
 
                 cfg.isPublic = newpublic;

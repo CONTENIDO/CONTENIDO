@@ -183,7 +183,7 @@ class cArticleOverviewHelper
     /**
      * Returns current time from database.
      *
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getDatabaseTime(): string
     {
@@ -230,14 +230,14 @@ class cArticleOverviewHelper
                 $inUseColl = new cApiInUseCollection();
                 $where = "`type` = 'article' AND `objectid` IN('" . implode("','", $ids) . "')";
                 $inUseColl->select($where);
-                while (($item = $inUseColl->next()) !== false) {
+                while ($item = $inUseColl->next()) {
                     $this->_articleMarks[cSecurity::toInteger($item->get('objectid'))] = $item->get('userid');
                 }
             }
         }
 
         if (isset($this->_articleMarks[$idartlang])) {
-            return $this->_articleMarks[$idartlang] !== $this->_auth->auth['uid'];
+            return $this->_articleMarks[$idartlang] !== $this->_auth->getUserId();
         }
 
         return false;
@@ -247,14 +247,14 @@ class cArticleOverviewHelper
      * Checks if the article is used in multiple categories.
      *
      * @param int $idart Article id
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function isArticleInMultipleUse(int $idart): bool
     {
         if (!isset($this->_articleInMultipleUse)) {
             $this->_articleInMultipleUse = [];
             $sql = "SELECT `idart`, COUNT(*) AS `count` FROM `%s` GROUP BY `idart` HAVING `count` > 1";
-            $this->_db->query($sql, cRegistry::getDbTableName('cat_art'));
+            $this->_db->query($sql, cDb::getTableName('cat_art'));
             while ($this->_db->nextRecord()) {
                 $_idart = cSecurity::toInteger($this->_db->f('idart'));
                 $this->_articleInMultipleUse[$_idart] = cSecurity::toInteger($this->_db->f('count'));
@@ -285,7 +285,7 @@ class cArticleOverviewHelper
      *
      * @param int $idartlang Article language id
      * @return array|mixed
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getArticleTemplateInfo(int $idartlang)
     {
@@ -306,8 +306,8 @@ class cArticleOverviewHelper
                         b.idtpl AS idtpl,
                         b.description AS description
                      FROM
-                        " . cRegistry::getDbTableName('tpl_conf') . " AS a,
-                        " . cRegistry::getDbTableName('tpl') . " AS b
+                        " . cDb::getTableName('tpl_conf') . " AS a,
+                        " . cDb::getTableName('tpl') . " AS b
                      WHERE
                         a.idtplcfg IN (" . implode(',', $ids) . ") AND
                         a.idtpl = b.idtpl";
@@ -340,7 +340,7 @@ class cArticleOverviewHelper
      * Returns the article template info array.
      * Will be used, if the article has not its own template configuration.
      *
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getCategoryTemplateInfos(): array
     {
@@ -354,9 +354,9 @@ class cArticleOverviewHelper
                     c.description AS description,
                     b.idtplcfg    AS idtplcfg
                 FROM
-                    " . cRegistry::getDbTableName('tpl_conf') . " AS a,
-                    " . cRegistry::getDbTableName('cat_lang') . " AS b,
-                    " . cRegistry::getDbTableName('tpl') . "      AS c
+                    " . cDb::getTableName('tpl_conf') . " AS a,
+                    " . cDb::getTableName('cat_lang') . " AS b,
+                    " . cDb::getTableName('tpl') . "      AS c
                 WHERE
                     b.idcat    = " . $this->_categoryId . " AND
                     b.idlang   = " . $this->_languageId . " AND
@@ -519,6 +519,33 @@ class cArticleOverviewHelper
         }
 
         return $this->_hasArticleDeletePermission;
+    }
+
+    /**
+     * Creates HTML code for the bulk editing functions in the article overview.
+     *
+     * @param string $class the class for the link
+     * @param string $imageSrc the path to the image
+     * @param string $alt the alt tag for the image
+     * @param string $onclick [optional] the onlick attribute for the link
+     * @return string rendered HTML code
+     */
+    public static function createBulkEditingFunction(
+        string $class,
+        string $imageSrc,
+        string $alt,
+        string $onclick = ''
+    ): string {
+        $function = new cHTMLLink();
+        $function->setClass($class);
+        if ($onclick !== '') {
+            $function->setEvent('click', $onclick);
+        }
+        $image = new cHTMLImage($imageSrc);
+        $image->setAlt($alt);
+        $function->setContent($image);
+
+        return $function->render();
     }
 
     /**

@@ -20,7 +20,7 @@ global $notification, $parentid, $StrTableClient, $StrTableLang, $currentuser, $
 cInclude('includes', 'functions.lang.php');
 
 // Display critical error if client or language does not exist
-$client = cRegistry::getCategoryId();
+$client = cRegistry::getClientId();
 $lang = cRegistry::getLanguageId();
 if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
     $message = $client && !cRegistry::getClient()->isLoaded()
@@ -56,7 +56,6 @@ $area = cRegistry::getArea();
 $cfg = cRegistry::getConfig();
 $sess = cRegistry::getSession();
 $frame = cRegistry::getFrame();
-$_cecRegistry = cApiCecRegistry::getInstance();
 
 strRemakeTreeTable();
 
@@ -78,7 +77,7 @@ function buildCategorySelectRights()
     global $tmp_area;
 
     $db = cRegistry::getDb();
-    $client = cRegistry::getCategoryId();
+    $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
     $perm = cRegistry::getPerm();
 
@@ -88,9 +87,9 @@ function buildCategorySelectRights()
     $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
     $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level
-            FROM " . cRegistry::getDbTableName('cat') . " AS a
-            , " . cRegistry::getDbTableName('cat_lang') . " AS b
-            , " . cRegistry::getDbTableName('cat_tree') . " AS c
+            FROM " . cDb::getTableName('cat') . " AS a
+            , " . cDb::getTableName('cat_lang') . " AS b
+            , " . cDb::getTableName('cat_tree') . " AS c
             WHERE a.idclient = " . $client . "
             AND b.idlang = " . $lang . "
             AND b.idcat = a.idcat
@@ -102,14 +101,14 @@ function buildCategorySelectRights()
     $categories = [];
 
     while ($db->nextRecord()) {
-        $categories[$db->f("idcat")]["name"] = $db->f("name");
-        $categories[$db->f("idcat")]["idcat"] = $db->f("idcat");
+        $categories[$db->f('idcat')]['name'] = $db->f('name');
+        $categories[$db->f('idcat')]['idcat'] = $db->f('idcat');
         if ($perm->have_perm_area_action($tmp_area, 'str_newcat') || $perm->have_perm_area_action_item($tmp_area, 'str_newcat', $db->f('idcat'))) {
-            $categories[$db->f("idcat")]["perm"] = 1;
+            $categories[$db->f('idcat')]['perm'] = 1;
         } else {
-            $categories[$db->f("idcat")]["perm"] = 0;
+            $categories[$db->f('idcat')]['perm'] = 0;
         }
-        $categories[$db->f("idcat")]["level"] = $db->f("level");
+        $categories[$db->f('idcat')]['level'] = $db->f('level');
     }
 
     $aCategoriesReversed = array_reverse($categories);
@@ -122,7 +121,7 @@ function buildCategorySelectRights()
             $iLevel = $aValues['level'];
         } else {
             if (!$aValues['perm']) {
-                unset($categories[$aValues["idcat"]]);
+                unset($categories[$aValues['idcat']]);
             }
         }
     }
@@ -164,7 +163,7 @@ function getStrExpandCollapseButton($item, $catName)
     // show additional information as tooltip
     // if current user is admin or sysadmin
     $auth = cRegistry::getAuth();
-    $currentUser = new cApiUser($auth->auth['uid']);
+    $currentUser = new cApiUser($auth->getUserId());
     $userPerms = $currentUser->getPerms();
     if (cString::findFirstPos($userPerms, 'sysadmin') !== false || cString::findFirstPos($userPerms, 'admin[') !== false) {
         $title = " title=\"idcat: {$item->getId()}, parentid: {$item->getCustom('parentid')}, preid: {$item->getCustom('preid')}, postid: {$item->getCustom('postid')}\"";
@@ -200,7 +199,7 @@ function getStrExpandCollapseButton($item, $catName)
 function getTemplateSelect()
 {
     $db = cRegistry::getDb();
-    $client = cRegistry::getCategoryId();
+    $client = cRegistry::getClientId();
 
     $oHtmlSelect = new cHTMLSelectElement('cat_template_select', '', 'cat_template_select');
 
@@ -208,7 +207,7 @@ function getTemplateSelect()
     $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
     $sql = "SELECT idtpl, name, defaulttemplate
-            FROM " . cRegistry::getDbTableName('tpl') . "
+            FROM " . cDb::getTableName('tpl') . "
             WHERE idclient = " . $client . "
             ORDER BY name";
 
@@ -415,9 +414,9 @@ if (!$perm->have_perm_area_action($area)) {
 $sql = "SELECT
             idtree, A.idcat, level, name, parentid, preid, postid, visible, public, idtplcfg, C.urlname as alias
         FROM
-            " . cRegistry::getDbTableName('cat_tree') . " AS A,
-            " . cRegistry::getDbTableName('cat') . " AS B,
-            " . cRegistry::getDbTableName('cat_lang') . " AS C
+            " . cDb::getTableName('cat_tree') . " AS A,
+            " . cDb::getTableName('cat') . " AS B,
+            " . cDb::getTableName('cat_lang') . " AS C
         WHERE
             A.idcat     = B.idcat AND
             B.idcat     = C.idcat AND
@@ -529,10 +528,9 @@ if ($db->numRows() == 0) { // If we have no categories, display warning message
     // Reset Template
     $tpl->reset();
 
-    $_cecIterator = $_cecRegistry->getIterator('Contenido.CategoryList.Columns');
-
-    if ($_cecIterator->count() > 0) {
-        while ($chainEntry = $_cecIterator->next()) {
+    $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.CategoryList.Columns');
+    if ($cecIterator->count() > 0) {
+        while ($chainEntry = $cecIterator->next()) {
             $tmpListColumns = $chainEntry->execute([]);
             if (is_array($tmpListColumns)) {
                 $listColumns = array_merge($listColumns, $tmpListColumns);
@@ -594,14 +592,14 @@ $bAreaAddNewCategory = false;
 $aInlineEditData = [];
 
 $sql = "SELECT `idtplcfg`, `idtpl` FROM `%s`";
-$db->query($sql, cRegistry::getDbTableName('tpl_conf'));
+$db->query($sql, cDb::getTableName('tpl_conf'));
 $aTplConfigs = [];
 while ($db->nextRecord()) {
     $aTplConfigs[$db->f('idtplcfg')] = $db->f('idtpl');
 }
 
 $sql = "SELECT `name`, `description`, `idtpl` FROM `%s`";
-$db->query($sql, cRegistry::getDbTableName('tpl'));
+$db->query($sql, cDb::getTableName('tpl'));
 $aTemplates = [];
 while ($db->nextRecord()) {
     $aTemplates[$db->f('idtpl')] = [
@@ -618,7 +616,7 @@ $lngEditCategory = i18n("Edit category");
 $lngMakeOffline = i18n("Make offline");
 $lngMakeOnline = i18n("Make online");
 $lngProtectCategory = i18n("Protect category");
-$lndUnprotectCategory = i18n("Unprotect category");
+$lngUnprotectCategory = i18n("Unprotect category");
 $lngDeleteCategory = i18n("Delete category");
 $lngTemplateNone = '--- ' . i18n("none") . ' ---';
 $lngNoPermissions = i18n("No permission");
@@ -758,7 +756,7 @@ foreach ($treeItemObjects as $key => $value) {
         $tpl->set('d', 'SHOW_MOUSEOVER', $title);
 
         // Button: Rename/edit category
-        if ($perm->have_perm_area_action($area, "str_renamecat") || $perm->have_perm_area_action_item($area, "str_renamecat", $value->getId())) {
+        if ($perm->have_perm_area_action($area, 'str_renamecat') || $perm->have_perm_area_action_item($area, 'str_renamecat', $value->getId())) {
             $button = '<a class="con_img_button" href="javascript:void(0)" data-action="display_inline_edit" data-id="' . $value->getId() . '" title="' . $lngEditCategory . '">'
                 . '<img src="' . $cfg['path']['images'] . 'but_todo.gif" id="cat_' . $value->getId() . '_image" alt="' . $lngEditCategory . '" title="' . $lngEditCategory . '">'
                 . '</a>';
@@ -787,7 +785,7 @@ foreach ($treeItemObjects as $key => $value) {
             if ($value->getCustom('public') == 1) {
                 $button = '<a class="con_img_button" href="' . $href . '" title="' . $lngProtectCategory . '"><img src="' . $cfg['path']['images'] . 'folder_delock.gif" alt="' . $lngProtectCategory . '" title="' . $lngProtectCategory . '"></a>';
             } else {
-                $button = '<a class="con_img_button" href="' . $href . '" title="' . $lndUnprotectCategory . '"><img src="' . $cfg['path']['images'] . 'folder_lock.gif" alt="' . $lndUnprotectCategory . '" title="' . $lndUnprotectCategory . '"></a>';
+                $button = '<a class="con_img_button" href="' . $href . '" title="' . $lngUnprotectCategory . '"><img src="' . $cfg['path']['images'] . 'folder_lock.gif" alt="' . $lngUnprotectCategory . '" title="' . $lngUnprotectCategory . '"></a>';
             }
         } else {
             $button = $spacerButton;
@@ -895,9 +893,9 @@ foreach ($treeItemObjects as $key => $value) {
         $columns = [];
         foreach ($listColumns as $cKey => $content) {
             $columnContents = [];
-            $_cecIterator = $_cecRegistry->getIterator('Contenido.CategoryList.RenderColumn');
-            if ($_cecIterator->count() > 0) {
-                while ($chainEntry = $_cecIterator->next()) {
+            $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.CategoryList.RenderColumn');
+            if ($cecIterator->count() > 0) {
+                while ($chainEntry = $cecIterator->next()) {
                     $columnContents[] = $chainEntry->execute($value->getId(), $cKey);
                 }
             } else {
@@ -1006,9 +1004,9 @@ if (($perm->have_perm_area_action($tmp_area, 'str_newtree') || $perm->have_perm_
     }
 
     if ($perm->have_perm_area_action($tmp_area, 'str_makevisible')) {
-        $tpl->set('s', 'MAKEVISIBLE_BUTTON_NEW', '<a href="javascript:changeVisible();"><img src="' . $sImagepath . 'offline.gif" id="visible_image" title="' . i18n('Make online') . '" alt="' . i18n('Make online') . '"><span id="visible_label">' . i18n('Make online') . '</span></a>');
+        $tpl->set('s', 'MAKEVISIBLE_BUTTON_NEW', '<a href="javascript:changeVisible();"><img src="' . $sImagepath . 'offline.gif" id="visible_image" title="' . i18n("Make online") . '" alt="' . i18n("Make online") . '"><span id="visible_label">' . i18n("Make online") . '</span></a>');
     } else {
-        $tpl->set('s', 'MAKEVISIBLE_BUTTON_NEW', '<img src="' . $sImagepath . 'offline_off.gif" id="visible_image" title="' . i18n('Make online') . '" alt="' . i18n('Make online') . '"><span id="visible_label">' . i18n('Make online') . '</span>');
+        $tpl->set('s', 'MAKEVISIBLE_BUTTON_NEW', '<img src="' . $sImagepath . 'offline_off.gif" id="visible_image" title="' . i18n("Make online") . '" alt="' . i18n("Make online") . '"><span id="visible_label">' . i18n("Make online") . '</span>');
     }
 
     if ($perm->have_perm_area_action($tmp_area, 'str_makepublic')) {
@@ -1053,13 +1051,11 @@ $additionalPageEnd = [];
 /**
  * @since CONTENIDO 4.10.2 - CEC Hook 'Contenido.CategoryList.PageEnd'
  */
-$_cecIterator = $_cecRegistry->getIterator('Contenido.CategoryList.PageEnd');
-if ($_cecIterator->count() > 0) {
-    while ($chainEntry = $_cecIterator->next()) {
-        $additionalPageEnd[] = $chainEntry->execute($value->getId(), $cKey);
-    }
+$cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.CategoryList.PageEnd');
+while ($chainEntry = $cecIterator->next()) {
+    $additionalPageEnd[] = $chainEntry->execute($value->getId(), $cKey);
 }
 $tpl->set('s', 'ADDITIONAL_PAGE_END', implode("\n", $additionalPageEnd));
 
-$tpl->setEncoding($clang->get("encoding"));
+$tpl->setEncoding($clang->get('encoding'));
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['str_overview']);

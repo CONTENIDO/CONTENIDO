@@ -21,8 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage UserForum
- * @method ArticleForum createNewItem
- * @method ArticleForum|bool next
+ * @extends ItemCollection<ArticleForum>
  */
 class ArticleForumCollection extends ItemCollection
 {
@@ -75,19 +74,20 @@ class ArticleForumCollection extends ItemCollection
         $this->db = cRegistry::getDb();
         $this->cfg = cRegistry::getConfig();
 
-        parent::__construct($this->cfg['tab']['user_forum'], 'id_user_forum');
+        parent::__construct(cDb::getTableName('user_forum'), 'id_user_forum');
         $this->_setItemClass('ArticleForum');
         $this->item = new ArticleForumItem();
-        $this->idContentType = $this->getIdUserForumContenType();
+        $this->idContentType = $this->getIdUserForumContentType();
     }
 
     /**
-     * @return array
      * @throws cDbException
      */
-    public function getAllCommentedArticles()
+    public function getAllCommentedArticles(): array
     {
         $idclient = cRegistry::getClientId();
+
+        $tabArtLang = cDb::getTableName('art_lang');
 
         $this->db->query("-- ArticleForumCollection->getAllCommentedArticles()
             SELECT DISTINCT
@@ -95,7 +95,7 @@ class ArticleForumCollection extends ItemCollection
                 , art_lang.idart
                 , f.idcat
             FROM
-                `{$this->cfg['tab']['art_lang']}` AS art_lang
+                `{$tabArtLang}` AS art_lang
                 , `$this->table` AS  f
             WHERE
                 art_lang.idart = f.idart
@@ -125,6 +125,10 @@ class ArticleForumCollection extends ItemCollection
      */
     public function deleteHierarchy($keyPost, $level, $idArt, $idCat, $lang)
     {
+        $idCat = cSecurity::toInteger($idCat);
+        $idArt = cSecurity::toInteger($idArt);
+        $lang = cSecurity::toInteger($lang);
+
         $comments = $this->_getCommentHierarchy($idCat, $idArt, $lang);
 
         $arri = [];
@@ -161,16 +165,12 @@ class ArticleForumCollection extends ItemCollection
     }
 
     /**
-     * @param int $idCat
-     * @param int $idArt
-     * @param int $idLang
-     * @return array
      * @throws cDbException|cException
      */
-    protected function _getCommentHierarchy($idCat, $idArt, $idLang)
+    protected function _getCommentHierarchy(int $idCat, int $idArt, int $idLang): array
     {
         $this->query();
-        while (false != $field = $this->next()) {
+        while ($field = $this->next()) {
             $arrUsers[$field->get('userid')]['email'] = $field->get('email');
             $arrUsers[$field->get('userid')]['realname'] = $field->get('realname');
         }
@@ -200,7 +200,6 @@ class ArticleForumCollection extends ItemCollection
     }
 
     /**
-     *
      * @param int $idCat
      * @param int $idArt
      * @param int $idLang
@@ -208,7 +207,6 @@ class ArticleForumCollection extends ItemCollection
      * @param array $arrForum
      * @param int $parent
      * @param bool $frontend
-     *
      * @throws cDbException
      */
     public function getTreeLevel($idCat, $idArt, $idLang, &$arrUsers, &$arrForum, $parent = 0, $frontend = false)
@@ -224,7 +222,7 @@ class ArticleForumCollection extends ItemCollection
                 SELECT
                     *
                 FROM
-                    `{$this->cfg['tab']['user_forum']}`
+                    `{$this->table}`
                 WHERE
                     idart = $idArt
                     AND idcat = $idCat
@@ -240,7 +238,7 @@ class ArticleForumCollection extends ItemCollection
                 SELECT
                     *
                 FROM
-                    `{$this->cfg['tab']['user_forum']}`
+                    `{$this->table}`
                 WHERE
                     idart = $idArt
                     AND idcat = $idCat
@@ -262,7 +260,15 @@ class ArticleForumCollection extends ItemCollection
 
             $arrForum[$db->f('id_user_forum')] = $record;
 
-            $this->getTreeLevel($idCat, $idArt, $idLang, $arrUsers, $arrForum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'), $frontend);
+            $this->getTreeLevel(
+                $idCat,
+                $idArt,
+                $idLang,
+                $arrUsers,
+                $arrForum[$db->f('id_user_forum')]['children'],
+                $db->f('id_user_forum'),
+                $frontend
+            );
         }
     }
 
@@ -282,13 +288,16 @@ class ArticleForumCollection extends ItemCollection
 
         $this->item->loadByPrimaryKey($idUserForum);
 
-        if ($this->item->getField('realname') == $name && $this->item->getField('email') == $email && $this->item->getField('forum') == $forum) {
-
+        if (
+            $this->item->getField('realname') == $name
+            && $this->item->getField('email') == $email
+            && $this->item->getField('forum') == $forum
+        ) {
             // load timestamp from db to check if the article was already
             // edited.
-            if ($this->item->getField('editedat') === "0000-00-00 00:00:00") {
+            if ($this->item->getField('editedat') === '0000-00-00 00:00:00') {
                 // case : never edited
-                $timeStamp = "0000-00-00 00:00:00";
+                $timeStamp = '0000-00-00 00:00:00';
             } else {
                 $timeStamp = $this->item->getField('editedat');
             }
@@ -338,13 +347,12 @@ class ArticleForumCollection extends ItemCollection
      * @param int $onlineState
      * @param int $idUserForum primary key
      * @param int|null $idArt article ID
-     *
      * @throws cDbException
      */
     public function toggleOnlineState($onlineState, $idUserForum, $idArt = NULL)
     {
         // toggle state
-        $onlineState = ($onlineState == 0) ? 1 : 0;
+        $onlineState = $onlineState == 0 ? 1 : 0;
 
         if (isset($idArt)) {
             $fields = [
@@ -386,7 +394,7 @@ class ArticleForumCollection extends ItemCollection
         $mail->setCharset('UTF-8');
 
         // build message content
-        $message = $this->languageSync['NEWENTRYTEXT'] . " " . $this->languageSync['ARTICLE'] . $ar[0]["title"] . "\n" . "\n";
+        $message = $this->languageSync['NEWENTRYTEXT'] . " " . $this->languageSync['ARTICLE'] . $ar[0]['title'] . "\n" . "\n";
         $message .= $this->languageSync['USER'] . ' : ' . $realName . "\n";
         $message .= $this->languageSync['EMAIL'] . ' : ' . $email . "\n" . "\n";
         $message .= $this->languageSync['COMMENT'] . ' : ' . "\n" . $forum . "\n";
@@ -396,26 +404,28 @@ class ArticleForumCollection extends ItemCollection
 
         // send mail only if modEmail is set -> minimize traffic.
         if ($this->getModEmail($idArt) != NULL) {
-            $mail->sendMail(getEffectiveSetting("userforum", "mailfrom"), $this->getModEmail($idArt), $this->languageSync['NEWENTRY'], $message);
+            $mail->sendMail(
+                getEffectiveSetting('userforum', 'mailfrom'),
+                $this->getModEmail($idArt), $this->languageSync['NEWENTRY'],
+                $message
+            );
         }
     }
 
     /**
-     * @param int $idArt
-     * @param int $idLang
-     *
-     * @return array
      * @throws cDbException
      */
-    public function getArticleTitle($idArt, $idLang)
+    public function getArticleTitle($idArt, $idLang): array
     {
         $idArt = cSecurity::toInteger($idArt);
         $idLang = cSecurity::toInteger($idLang);
+        $tabArtLang = cDb::getTableName('art_lang');
+
         $this->db->query("-- ArticleForumCollection->getArticleTitle()
             SELECT DISTINCT
                 title
             FROM
-                `{$this->cfg['tab']['art_lang']}` AS art_lang
+                `{$tabArtLang}` AS art_lang
             WHERE
                 idart = $idArt
                 AND idlang = $idLang
@@ -432,13 +442,13 @@ class ArticleForumCollection extends ItemCollection
     /**
      * @throws cDbException|cException
      */
-    public function getExistingforum(): array
+    public function getExistingForum(): array
     {
         $userColl = new cApiUserCollection();
         $userColl->query();
 
         $arrUsers = [];
-        while (($field = $userColl->next()) != false) {
+        while ($field = $userColl->next()) {
             $arrUsers[$field->get('user_id')]['email'] = $field->get('email');
             $arrUsers[$field->get('user_id')]['realname'] = $field->get('realname');
         }
@@ -499,7 +509,6 @@ class ArticleForumCollection extends ItemCollection
      * this function increments the actual value of dislikes from a comment and persists it.
      *
      * @param int $idUserForum identifies a comment
-     *
      * @throws cDbException|cException
      */
     public function incrementDislike($idUserForum)
@@ -580,7 +589,6 @@ class ArticleForumCollection extends ItemCollection
      * this function deletes all comments related to the same articleId
      *
      * @param int $idArt
-     *
      * @throws cDbException|cInvalidArgumentException
      */
     public function deleteAllCommentsById($idArt)
@@ -593,15 +601,14 @@ class ArticleForumCollection extends ItemCollection
      * @param int $idArt
      * @param int $idLang
      * @param bool $frontend
-     * @return array
      * @throws cDbException|cException
      */
-    public function getExistingforumFrontend($idCat, $idArt, $idLang, $frontend)
+    public function getExistingForumFrontend($idCat, $idArt, $idLang, $frontend): array
     {
         $userColl = new cApiUserCollection();
         $userColl->query();
 
-        while (($field = $userColl->next()) != false) {
+        while ($field = $userColl->next()) {
             $arrUsers[$field->get('user_id')]['email'] = $field->get('email');
             $arrUsers[$field->get('user_id')]['realname'] = $field->get('realname');
         }
@@ -619,34 +626,31 @@ class ArticleForumCollection extends ItemCollection
      * returns the email address from the moderator for this article
      *
      * @param int $idArt
-     *
-     * @return string|null
+     * @return ?string
      */
-    public function getModEmail($idArt)
+    public function getModEmail($idArt): ?string
     {
         $data = $this->readXML();
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['idart'] == $idArt) {
-                return $data[$i]["email"];
+                return $data[$i]['email'];
             }
         }
 
-        return NULL;
+        return null;
     }
 
     /**
      * returns if moderator mode is active for this article
      *
      * @param int $idArt
-     *
-     * @return bool
      */
-    public function getModModeActive($idArt)
+    public function getModModeActive($idArt): bool
     {
         $data = $this->readXML();
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['idart'] == $idArt) {
-                if ($data[$i]["modactive"] === 'false') {
+                if ($data[$i]['modactive'] === 'false') {
                     return false;
                 }
             }
@@ -659,16 +663,14 @@ class ArticleForumCollection extends ItemCollection
      * returns if quotes for comments are allowed in this article
      *
      * @param int $idArt
-     *
-     * @return bool
      */
-    public function getQuoteState($idArt)
+    public function getQuoteState($idArt): bool
     {
         // get content from con_type
         $data = $this->readXML();
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['idart'] == $idArt) {
-                if ($data[$i]["subcomments"] === 'false') {
+                if ($data[$i]['subcomments'] === 'false') {
                     return false;
                 }
             }
@@ -682,14 +684,17 @@ class ArticleForumCollection extends ItemCollection
      * additionally the return array implies the articleId because of an easier
      * mapping in the frontend.
      *
-     * @return array
+     * @return string[]
      */
-    public function readXML()
+    public function readXML(): array
     {
         // get variables from global context
         $idtype = $this->idContentType;
 
         $array = [];
+
+        $tabArtLang = cDb::getTableName('art_lang');
+        $tabContent = cDb::getTableName('content');
 
         try {
             $this->db->query("-- ArticleForumCollection->readXML()
@@ -697,8 +702,8 @@ class ArticleForumCollection extends ItemCollection
                     art_lang.idart
                     , content.value
                 FROM
-                    `{$this->cfg['tab']['art_lang']}` AS art_lang
-                    , `{$this->cfg['tab']['content']}` AS content
+                    `{$tabArtLang}` AS art_lang
+                    , `{$tabContent}` AS content
                 WHERE
                     art_lang.idartlang = content.idartlang
                     AND content.idtype = $idtype
@@ -715,7 +720,7 @@ class ArticleForumCollection extends ItemCollection
                 $array[$i]['idart'] = $data[$i]['idart'];
             }
         } catch (Exception $e) {
-
+            error_log($e->getMessage());
         }
 
         return $array;
@@ -738,55 +743,42 @@ class ArticleForumCollection extends ItemCollection
      */
     public function getLanguageSync()
     {
-        if ($this->languageSync !== null) {
-            return $this->languageSync;
-        } else {
-            return [];
-        }
+        return $this->languageSync !== null ? $this->languageSync : [];
     }
 
     /**
      * @param int $idUserForum
-     *
-     * @return array
+     * @return array{name: string, content: string}
      * @throws cException
      */
-    public function getCommentContent($idUserForum)
+    public function getCommentContent($idUserForum): array
     {
         $item = $this->loadItem($idUserForum);
 
         return [
-            'name' => $item->get("realname") ?? '',
-            'content' => $item->get("forum")
+            'name' => $item->get('realname') ?? '',
+            'content' => $item->get('forum')
         ];
     }
 
     /**
-     * @return int|boolean
-     * @throws cDbException
+     * @return int|bool
+     * @throws cDbException|cException
      */
-    protected function getIdUserForumContenType()
+    protected function getIdUserForumContentType()
     {
-        $this->db->query("-- ArticleForumCollection->getIdUserForumContenType()
-            SELECT
-                idtype
-            FROM
-                `{$this->cfg['tab']['type']}`
-            WHERE
-                type = 'CMS_USERFORUM'
-            ;");
-        if ($this->db->nextRecord()) {
-            return $this->db->f('idtype');
+        $type = new cApiType();
+        if ($type->loadByType('CMS_USERFORUM')) {
+            return cSecurity::toInteger($type->getId());
         } else {
             return false;
         }
     }
 
     /**
-     * @return array
      * @throws cDbException
      */
-    public function getUnmoderatedComments()
+    public function getUnmoderatedComments(): array
     {
         $comments = [];
 
@@ -798,7 +790,7 @@ class ArticleForumCollection extends ItemCollection
                 SELECT
                     *
                 FROM
-                    `{$this->cfg['tab']['user_forum']}`
+                    `{$this->table}`
                 WHERE
                     moderated = 0
                     AND idclient = $idclient

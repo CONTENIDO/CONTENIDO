@@ -42,19 +42,19 @@ if (cRegistry::isBackendEditMode() && 'POST' === cString::toUpperCase($_SERVER['
         $url = 'https://' . $url;
     }
 
-    conSaveContentEntry($idartlang, "CMS_HTML", 3000, $url);
-    conSaveContentEntry($idartlang, "CMS_HTML", 3001, $_POST['size']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 3002, $_POST['counter']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 3003, $_POST['currentArticleUrl']);
+    conSaveContentEntry($idartlang, 'CMS_HTML', 3000, $url);
+    conSaveContentEntry($idartlang, 'CMS_HTML', 3001, $_POST['size']);
+    conSaveContentEntry($idartlang, 'CMS_HTML', 3002, $_POST['counter']);
+    conSaveContentEntry($idartlang, 'CMS_HTML', 3003, $_POST['currentArticleUrl']);
 }
 
 //get saved content
-$url = $art->getContent("CMS_HTML", 3000);
-$size = $art->getContent("CMS_HTML", 3001);
-$counter = $art->getContent("CMS_HTML", 3002);
-$currentArticleUrl = $art->getContent("CMS_HTML", 3003);
+$url = $art->getContent('CMS_HTML', 3000);
+$size = $art->getContent('CMS_HTML', 3001);
+$counter = $art->getContent('CMS_HTML', 3002);
+$currentArticleUrl = $art->getContent('CMS_HTML', 3003);
 
-if ($currentArticleUrl == "1") {
+if ($currentArticleUrl == '1') {
     $url = cRegistry::getFrontendUrl() . $art->getLink();
 }
 

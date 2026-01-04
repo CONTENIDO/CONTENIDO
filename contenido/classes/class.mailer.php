@@ -489,7 +489,6 @@ class cMailer extends Swift_Mailer
      * @since CONTENIDO 4.10.2
      * @param string $path Path to file to be attached to the email.
      * @param string $fileName The attachment filename.
-     * @return bool
      */
     public function addAttachment(string $path, string $fileName = ''): bool
     {

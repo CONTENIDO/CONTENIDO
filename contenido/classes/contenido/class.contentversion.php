@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiContentVersion createNewItem
- * @method cApiContentVersion|bool next
+ * @extends ItemCollection<cApiContentVersion>
  */
 class cApiContentVersionCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiContentVersionCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('content_version'), 'idcontentversion');
+        parent::__construct(cDb::getTableName('content_version'), 'idcontentversion');
         $this->_setItemClass('cApiContentVersion');
 
         // set the join partners so that joins can be used via link() method
@@ -43,14 +42,14 @@ class cApiContentVersionCollection extends ItemCollection
     /**
      * Creates a content version entry.
      *
-     * @param array $parameters
      * @return cApiContentVersion
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create(array $parameters)
     {
         if (empty($parameters['author'])) {
             $auth = cRegistry::getAuth();
-            $parameters['author'] = $auth->auth['uname'];
+            $parameters['author'] = $auth->getUsername();
         }
         if (empty($parameters['created'])) {
             $parameters['created'] = date('Y-m-d H:i:s');
@@ -77,9 +76,7 @@ class cApiContentVersionCollection extends ItemCollection
     {
         $ids = parent::getIdsByWhereClause($where);
 
-        return array_map(function ($id) {
-            return cSecurity::toInteger($id);
-        }, $ids);
+        return array_map('intval', $ids);
     }
 
     /**
@@ -127,7 +124,7 @@ class cApiContentVersion extends Item
     public function __construct($id = false)
     {
         parent::__construct(
-            cRegistry::getDbTableName('content_version'), 'idcontentversion'
+            cDb::getTableName('content_version'), 'idcontentversion'
         );
         $this->setFilters();
         if ($id !== false) {

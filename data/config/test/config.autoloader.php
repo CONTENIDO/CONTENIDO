@@ -268,7 +268,7 @@ return [
     'cHTMLOptionElement' => 'contenido/classes/html/class.html.optionelement.php',
     'cHTMLParagraph' => 'contenido/classes/html/class.html.paragraph.php',
     'cHTMLPasswordbox' => 'contenido/classes/html/class.html.passwordbox.php',
-    'cHTMLRadiobutton' => 'contenido/classes/html/class.html.radiobutton.php',
+    'cHTMLRadioButton' => 'contenido/classes/html/class.html.radiobutton.php',
     'cHTMLScript' => 'contenido/classes/html/class.html.script.php',
     'cHTMLSection' => 'contenido/classes/html/class.html.section.php',
     'cHTMLSelectElement' => 'contenido/classes/html/class.html.selectelement.php',

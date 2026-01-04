@@ -110,7 +110,7 @@ $isContextSysadmin = $rightsAreasHelper->isContextSysadmin();
 // Sysadmin perm checkbox
 if ($isAuthUserSysadmin) {
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
-    $defaultsysadmin = new cHTMLCheckbox("msysadmin", "1", "msysadmin1", $isContextSysadmin);
+    $defaultsysadmin = new cHTMLCheckbox('msysadmin', "1", "msysadmin1", $isContextSysadmin);
     $tpl->set('d', 'CATFIELD', $defaultsysadmin->toHtml(false));
     $tpl->next();
 }

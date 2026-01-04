@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $action = cRegistry::getAction();
 
-if ($action == 'note_delete') {
+if ($action === 'note_delete') {
     $noteCollection = new NoteCollection();
     $noteCollection->delete($deleteitem);
 }

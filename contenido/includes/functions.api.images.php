@@ -68,7 +68,7 @@ function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand)
  * Returns the path to the scaled temporary image.
  *
  * Note that this function does some very poor caching;
- * it calculates an md5 hash out of the image plus the
+ * it calculates a md5 hash out of the image plus the
  * maximum X and Y sizes, and uses that as the file name.
  * If the file is older than 10 minutes it will be regenerated.
  *
@@ -93,14 +93,14 @@ function cApiImgScaleLQ(
     $cfgClient = cRegistry::getClientConfig();
     $client = cRegistry::getClientId();
 
-    $fileName = $img;
+    $filename = $img;
     $maxX = cSecurity::toInteger($maxX);
     $maxY = cSecurity::toInteger($maxY);
     $cacheTime = cSecurity::toInteger($cacheTime);
     $keepType = cSecurity::toBoolean($keepType);
 
     $frontendURL = cRegistry::getFrontendUrl();
-    $fileType = cFileHandler::getExtension($fileName);
+    $fileType = cFileHandler::getExtension($filename);
     $md5 = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     if (!$md5) {
         return false;
@@ -114,7 +114,7 @@ function cApiImgScaleLQ(
     }
 
     // If we can't open the image, return false
-    $imageHandle = cApiImgCreateImageResourceFromFile($fileName, $fileType);
+    $imageHandle = cApiImgCreateImageResourceFromFile($filename, $fileType);
     if (!$imageHandle) {
         return false;
     }
@@ -177,14 +177,14 @@ function cApiImgScaleHQ(
     $cfgClient = cRegistry::getClientConfig();
     $client = cRegistry::getClientId();
 
-    $fileName = $img;
+    $filename = $img;
     $maxX = cSecurity::toInteger($maxX);
     $maxY = cSecurity::toInteger($maxY);
     $cacheTime = cSecurity::toInteger($cacheTime);
     $keepType = cSecurity::toBoolean($keepType);
 
     $frontendURL = cRegistry::getFrontendUrl();
-    $fileType = cFileHandler::getExtension($fileName);
+    $fileType = cFileHandler::getExtension($filename);
     $md5 = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     if (!$md5) {
         return false;
@@ -198,7 +198,7 @@ function cApiImgScaleHQ(
     }
 
     // If we can't open the image, return false
-    $imageHandle = cApiImgCreateImageResourceFromFile($fileName, $fileType);
+    $imageHandle = cApiImgCreateImageResourceFromFile($filename, $fileType);
     if (!$imageHandle) {
         return false;
     }
@@ -282,13 +282,13 @@ function cApiImgScaleImageMagick(
     $cfgClient = cRegistry::getClientConfig();
     $client = cRegistry::getClientId();
 
-    $fileName = $img;
+    $filename = $img;
     $maxX = cSecurity::toInteger($maxX);
     $maxY = cSecurity::toInteger($maxY);
     $cacheTime = cSecurity::toInteger($cacheTime);
 
     $frontendURL = cRegistry::getFrontendUrl();
-    $fileType = cFileHandler::getExtension($fileName);
+    $fileType = cFileHandler::getExtension($filename);
     $md5 = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     if (!$md5) {
         return false;
@@ -301,7 +301,7 @@ function cApiImgScaleImageMagick(
         return $webFile;
     }
 
-    list($x, $y) = @getimagesize($fileName);
+    list($x, $y) = @getimagesize($filename);
     if ($x == 0 || $y == 0) {
         return false;
     }
@@ -309,9 +309,9 @@ function cApiImgScaleImageMagick(
     list($targetX, $targetY) = cApiImageGetTargetDimensions($x, $y, $maxX, $maxY, $expand);
 
     // If is animated gif resize first frame
-    if ($fileType == 'gif') {
-        if (cApiImageIsAnimGif($fileName)) {
-            $fileName .= '[0]';
+    if ($fileType === 'gif') {
+        if (cApiImageIsAnimGif($filename)) {
+            $filename .= '[0]';
         }
     }
 
@@ -322,36 +322,32 @@ function cApiImgScaleImageMagick(
     $retVal = 0;
     $convertCommand = $cfg['images']['image_magick']['command'];
     $program = escapeshellarg($cfg['images']['image_magick']['path'] . $convertCommand);
-    $source = escapeshellarg($fileName);
+    $source = escapeshellarg($filename);
     $destination = escapeshellarg($cacheFile);
     $quality = cApiImgGetCompressionRate($fileType, $quality);
     if ($crop) {
-        $cmd = "'{$program}' -gravity center -quality {$quality} -crop {$maxX}x{$maxY}+1+1 '{$source}' '{$destination}'";
+        $cmd = "'$program' -gravity center -quality $quality -crop {$maxX}x{$maxY}+1+1 '$source' '$destination'";
     } else {
-        $cmd = "'{$program}' -quality {$quality} -geometry {$targetX}x{$targetY} '{$source}' '{$destination}'";
+        $cmd = "'$program' -quality $quality -geometry {$targetX}x{$targetY} '$source' '$destination'";
     }
 
     exec($cmd, $output, $retVal);
 
-    if (!cFileHandler::exists($cacheFile)) {
-        return false;
-    } else {
-        return $webFile;
-    }
+    return cFileHandler::exists($cacheFile) ? $webFile : false;
 }
 
 /**
- * Check if gif is animated using ImageMagicks "identify".
+ * Check if gif is animated using ImageMagick's "identify".
  *
  * If the PHP functions "escapeshellarg" or "exec" are not available
  * false will be returned.
  *
  * If ImageMagick is not available false will be returned.
  *
- * @param string $sFile File path
+ * @param string $filename File path
  * @return bool True (gif is animated)/ false (single frame gif)
  */
-function cApiImageIsAnimGif($sFile): bool
+function cApiImageIsAnimGif($filename): bool
 {
     // check if functions escapeshellarg or exec are disabled
     if (isFunctionDisabled('escapeshellarg') || isFunctionDisabled('exec')) {
@@ -359,7 +355,7 @@ function cApiImageIsAnimGif($sFile): bool
     }
 
     // check if ImageMagick is available
-    if ('im' != cApiImageCheckImageEditingPossibility()) {
+    if (cApiImageCheckImageEditingPossibility() !== 'im') {
         return false;
     }
 
@@ -369,15 +365,11 @@ function cApiImageIsAnimGif($sFile): bool
     // NOTE: Since ImageMagic 7 the command `magick` is used for all image processing
     //       jobs, but `identify` still works as an symbolic link to `magick`.
     $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'identify');
-    $source = escapeshellarg($sFile);
+    $source = escapeshellarg($filename);
 
-    exec("'{$program}' '{$source}'", $output, $retVal);
+    exec("'$program' '$source'", $output, $retVal);
 
-    if (count($output) == 1) {
-        return false;
-    }
-
-    return true;
+    return !(count($output) === 1);
 }
 
 /**
@@ -442,31 +434,31 @@ function cApiImgScale(
         }
     }
 
-    $fileName = $img;
-    $fileType = cFileHandler::getExtension($fileName);
-    $quality = cApiImgGetCompressionRate(cFileHandler::getExtension($fileName), $quality);
+    $filename = $img;
+    $fileType = cFileHandler::getExtension($filename);
+    $quality = cApiImgGetCompressionRate(cFileHandler::getExtension($filename), $quality);
 
     $mxdAvImgEditingPossibility = cApiImageCheckImageEditingPossibility();
-    if ($fileType == 'svg') {
+    if ($fileType === 'svg') {
         $mxdAvImgEditingPossibility = 'untouched';
     }
 
     switch ($mxdAvImgEditingPossibility) {
         case '1': // gd1
             $method = 'gd1';
-            if (!function_exists('imagecreatefromgif') && $fileType == 'gif') {
+            if (!function_exists('imagecreatefromgif') && $fileType === 'gif') {
                 $method = 'failure';
             }
-            if (!function_exists('imagecreatefromwebp') && $fileType == 'webp') {
+            if (!function_exists('imagecreatefromwebp') && $fileType === 'webp') {
                 $method = 'failure';
             }
             break;
         case '2': // gd2
             $method = 'gd2';
-            if (!function_exists('imagecreatefromgif') && $fileType == 'gif') {
+            if (!function_exists('imagecreatefromgif') && $fileType === 'gif') {
                 $method = 'failure';
             }
-            if (!function_exists('imagecreatefromwebp') && $fileType == 'webp') {
+            if (!function_exists('imagecreatefromwebp') && $fileType === 'webp') {
                 $method = 'failure';
             }
             break;
@@ -622,23 +614,23 @@ function cApiImageGetCacheFileName($md5, $fileType, $keepType): string
         // Just using switch if someone likes to add other types
         switch (cString::toLowerCase($fileType)) {
             case 'png':
-                $fileName = $md5 . '.png';
+                $filename = $md5 . '.png';
                 break;
             case 'gif':
-                $fileName = $md5 . '.gif';
+                $filename = $md5 . '.gif';
                 break;
             case 'webp':
-                $fileName = $md5 . '.webp';
+                $filename = $md5 . '.webp';
                 break;
             default:
-                $fileName = $md5 . '.jpg';
+                $filename = $md5 . '.jpg';
         }
     } else {
         // No... use .jpg
-        $fileName = $md5 . '.jpg';
+        $filename = $md5 . '.jpg';
     }
 
-    return $fileName;
+    return $filename;
 }
 
 /**
@@ -652,7 +644,7 @@ function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime): bool
 {
     // Check if the file exists. If it does, check if the file is valid.
     if (cFileHandler::exists($cacheFile)) {
-        if ($cacheTime == 0) {
+        if ($cacheTime <= 0) {
             // Do not check expiration date
             return true;
         } elseif (!function_exists('md5_file')) {
@@ -705,7 +697,7 @@ function cApiIsImageMagickAvailable(): bool
     // exec is probably disabled, so we assume IM to be unavailable
     // otherwise output contains the output of the command "convert version"
     // if IM is available, it contains the string "ImageMagick"
-    if (!is_array($output) || count($output) == 0) {
+    if (!is_array($output) || count($output) === 0) {
         $imagemagickAvailable = false;
     } elseif (false === cString::findFirstPos($output[0], 'ImageMagick')) {
         $imagemagickAvailable = false;
@@ -759,15 +751,15 @@ function cApiImgGetCompressionRate(string $imgType, int $quality = 0): int
 /**
  * Returns image resource by file name.
  *
- * @param string $fileName Path to image
+ * @param string $filename Path to image
  * @param ?string $fileType File type (extension)
  * @return resource|null Created image resource or null
  * @since CONTENIDO 4.10.2
  */
-function cApiImgCreateImageResourceFromFile(string $fileName, ?string $fileType = null)
+function cApiImgCreateImageResourceFromFile(string $filename, ?string $fileType = null)
 {
     if (!$fileType) {
-        $fileType = cFileHandler::getExtension($fileName);
+        $fileType = cFileHandler::getExtension($filename);
     }
 
     // Find out which file we have
@@ -789,7 +781,7 @@ function cApiImgCreateImageResourceFromFile(string $fileName, ?string $fileType 
             return null;
     }
 
-    return function_exists($function) ? @$function($fileName) : null;
+    return function_exists($function) ? @$function($filename) : null;
 }
 
 /**

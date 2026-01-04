@@ -19,8 +19,8 @@ if (isset($_REQUEST['sAreaFilename'])) {
     die('Invalid call!');
 }
 
-$_cecIterator = cRegistry::getCecRegistry()->getIterator("Contenido.Permissions.Group.GetAreaEditFilename");
-while (($chainEntry = $_cecIterator->next()) !== false) {
+$cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Permissions.Group.GetAreaEditFilename');
+while ($chainEntry = $cecIterator->next()) {
     // @TODO: This has to be refactored because this could cause SQL-Injection, Remote-File-Inclusion ....
     $aInfo = $chainEntry->execute($_REQUEST['external_area']);
     if ($aInfo !== false) {

@@ -21,8 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @author Ingo van Peeren
  * @package    Plugin
  * @subpackage UrlShortener
- * @method cApiShortUrl createNewItem
- * @method cApiShortUrl|bool next
+ * @extends ItemCollection<cApiShortUrl>
  */
 class cApiShortUrlCollection extends ItemCollection
 {
@@ -82,7 +81,7 @@ class cApiShortUrlCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('url_shortener_shorturl'), 'idshorturl');
+        parent::__construct(cDb::getTableName('url_shortener_shorturl'), 'idshorturl');
         $this->_setItemClass('cApiShortUrl');
     }
 
@@ -196,7 +195,7 @@ class cApiShortUrl extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('url_shortener_shorturl'), 'idshorturl');
+        parent::__construct(cDb::getTableName('url_shortener_shorturl'), 'idshorturl');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }

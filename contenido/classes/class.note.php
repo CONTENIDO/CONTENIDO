@@ -20,8 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method NoteItem createNewItem
- * @method cApiCommunication|bool next
+ * @extends ItemCollection<cApiCommunication>
  */
 class NoteCollection extends cApiCommunicationCollection
 {
@@ -179,7 +178,7 @@ class NoteList extends cHTMLDiv
         $sItemId = $this->_sItemId;
 
         $oPropertyCollection = new cApiPropertyCollection();
-        $oPropertyCollection->select("itemtype = 'idcommunication' AND type = 'note' AND name = 'idlang' AND value = " . (int)$lang);
+        $oPropertyCollection->select("`itemtype` = 'idcommunication' AND `type` = 'note' AND `name` = 'idlang' AND `value` = " . cSecurity::toInteger($lang));
 
         $items = [];
 

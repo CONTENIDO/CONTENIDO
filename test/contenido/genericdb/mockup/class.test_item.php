@@ -2,8 +2,7 @@
 
 /**
  * @author marcus.gnass
- * @method TestItem createNewItem
- * @method TestItem|bool next
+ * @extends ItemCollection<TestItem>
  */
 class TestCollection extends ItemCollection
 {
@@ -15,7 +14,7 @@ class TestCollection extends ItemCollection
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
+        parent::__construct(cDb::getTableName('con_test'), 'ID');
         $this->_setItemClass('TestItem');
         if (false !== $where) {
             $this->select($where);
@@ -36,7 +35,7 @@ class TestItem extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
+        parent::__construct(cDb::getTableName('con_test'), 'ID');
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }

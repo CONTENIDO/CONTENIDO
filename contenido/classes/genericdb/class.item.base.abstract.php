@@ -182,16 +182,17 @@ abstract class cItemBaseAbstract extends cGenericDb
      * This function will be removed when the variables are no longer supported
      *
      * @param string $name Name of the variable that should be accessed
-     * @return mixed|void
+     * @return mixed|null
      */
     public function __get(string $name)
     {
-        if ('primaryKey' === $name) {
+        if ($name === 'primaryKey') {
             return static::getPrimaryKeyName();
-        }
-        if ('virgin' === $name) {
+        } elseif ($name === 'virgin') {
             return !static::isLoaded();
         }
+
+        return null;
     }
 
     /**

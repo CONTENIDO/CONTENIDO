@@ -48,7 +48,7 @@ if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['article
         ]);
 
         if ($cApiCatArt->isLoaded()) {
-            $catArtId = $cApiCatArt->get("idcatart");
+            $catArtId = $cApiCatArt->get('idcatart');
         }
     }
 
@@ -60,13 +60,13 @@ if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['article
         ]
     ];
 
-    $tplCfgId = $artLang->get("idtplcfg");
+    $tplCfgId = $artLang->get('idtplcfg');
 
     // If no specific category is for this article selected, use standard category layout
     if (!$tplCfgId) {
         $catLang = new cApiCategoryLanguage();
         $catLang->loadByCategoryIdAndLanguageId(cRegistry::getCategoryId(), $languageId);
-        $tplCfgId = $catLang->get("idtplcfg");
+        $tplCfgId = $catLang->get('idtplcfg');
     }
 
     // Check values and create container value
@@ -89,7 +89,7 @@ if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['article
             ]);
 
             if ($containerConf->isLoaded()) {
-                $containerConf->set("container", $val);
+                $containerConf->set('container', $val);
                 $containerConf->store();
             } else {
                 $containerConfColl->create($tplCfgId, $col, $val);
@@ -114,7 +114,7 @@ $cms_idcat = cSecurity::toInteger($cms_idcat);
 $cms_idcatart = cSecurity::toInteger($cms_idcatart);
 
 // Create article select
-$selectElement = new cHTMLSelectElement("articleselect_" . $curContainerId, "", "articleselect_" . $curContainerId);
+$selectElement = new cHTMLSelectElement('articleselect_' . $curContainerId, "", "articleselect_" . $curContainerId);
 $defOptionElement = new cHTMLOptionElement(mi18n("PLEASE_CHOOSE_LABEL"), 0);
 $selectElement->addOptionElement(0, $defOptionElement);
 
@@ -128,7 +128,7 @@ if ($cms_idcat != "0" && cString::getStringLength($cms_idcat) > 0) {
             b.idcat = %d AND a.idart = b.idart AND a.idlang = %d
     ";
 
-    $db->query($sql, $cfg['tab']['art_lang'], $cfg['tab']['cat_art'], $cms_idcat, $languageId);
+    $db->query($sql, cDb::getTableName('art_lang'), cDb::getTableName('cat_art'), $cms_idcat, $languageId);
     $i = 1;
     while ($db->nextRecord()) {
         $selectedCatArtId = $db->f('idcatart');
@@ -169,12 +169,12 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
 
     // Get idcat, idcatart, idart and lastmodified from the database
     $sql = "
-        SELECT 
+        SELECT
             A.idart, A.idcat, A.createcode, A.idcatart, B.lastmodified
         FROM
             `%s` AS A, `%s` AS B
         WHERE
-            A.idart = B.idart AND B.idlang = %d AND B.online = 1 AND 
+            A.idart = B.idart AND B.idlang = %d AND B.online = 1 AND
     ";
 
     if ($cms_idcatart == 0) {
@@ -185,18 +185,18 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
         $cmsFieldId = $cms_idcatart;
     }
 
-    $db->query($sql, $cfg['tab']['cat_art'], $cfg['tab']['art_lang'], $languageId, $cmsFieldId);
+    $db->query($sql, cDb::getTableName('cat_art'), cDb::getTableName('art_lang'), $languageId, $cmsFieldId);
 
     $includeCatId = 0;
     $includeArtId = 0;
 
     if ($db->nextRecord()) {
         $isArticleAvailable = true;
-        $includeCatArtId = $db->f("idcatart");
-        $includeCatId = $db->f("idcat");
-        $includeArtId = $db->f("idart");
-        $createcode = $db->f("createcode");
-        $lastmodified = $db->f("lastmodified");
+        $includeCatArtId = $db->f('idcatart');
+        $includeCatId = $db->f('idcat');
+        $includeArtId = $db->f('idart');
+        $createcode = $db->f('createcode');
+        $lastmodified = $db->f('lastmodified');
     }
 
     // Backup common article & category related global variables,
@@ -222,11 +222,11 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
             idcat = %d AND idlang = %d
     ";
 
-    $db->query($sql, $cfg['tab']['cat_lang'], $includeCatId, $languageId);
+    $db->query($sql, cDb::getTableName('cat_lang'), $includeCatId, $languageId);
     $db->nextRecord();
 
-    $public = $db->f("public");
-    $visible = $db->f("visible");
+    $public = $db->f('public');
+    $visible = $db->f('visible');
 
     $db->free();
 

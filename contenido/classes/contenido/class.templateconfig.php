@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiTemplateConfiguration createNewItem
- * @method cApiTemplateConfiguration|bool next
+ * @extends ItemCollection<cApiTemplateConfiguration>
  */
 class cApiTemplateConfigurationCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
      */
     public function __construct($select = false)
     {
-        parent::__construct(cRegistry::getDbTableName('tpl_conf'), 'idtplcfg');
+        parent::__construct(cDb::getTableName('tpl_conf'), 'idtplcfg');
         $this->_setItemClass('cApiTemplateConfiguration');
 
         // set the join partners so that joins can be used via link() method
@@ -46,19 +45,19 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     /**
      * Deletes template configuration entry, removes also all related container configurations.
      *
-     * @param int $idtplcfg
-     * @return bool
+     * @inheritDoc
+     * @param int $id
      * @throws cDbException|cInvalidArgumentException
      */
-    public function delete($idtplcfg)
+    public function delete($id)
     {
-        $result = parent::delete($idtplcfg);
+        $id = cSecurity::toInteger($id);
 
         // Delete also all container configurations
-        $oContainerConfColl = new cApiContainerConfigurationCollection('idtplcfg = ' . (int)$idtplcfg);
-        $oContainerConfColl->deleteByWhereClause('idtplcfg = ' . (int)$idtplcfg);
+        $oContainerConfColl = new cApiContainerConfigurationCollection('`idtplcfg` = ' . $id);
+        $oContainerConfColl->deleteByWhereClause('`idtplcfg` = ' . $id);
 
-        return $result;
+        return parent::delete($id);
     }
 
     /**
@@ -76,7 +75,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = $auth->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -111,7 +110,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
             if ($oTemplate->get('idtplcfg') > 0) {
                 $oContainerConfColl = new cApiContainerConfigurationCollection('idtplcfg = ' . $oTemplate->get('idtplcfg'));
                 $aStandardConfig = [];
-                while (($oContainerConf = $oContainerConfColl->next()) !== false) {
+                while ($oContainerConf = $oContainerConfColl->next()) {
                     $aStandardConfig[$oContainerConf->get('number')] = $oContainerConf->get('container');
                 }
 
@@ -139,7 +138,7 @@ class cApiTemplateConfiguration extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('tpl_conf'), 'idtplcfg');
+        parent::__construct(cDb::getTableName('tpl_conf'), 'idtplcfg');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

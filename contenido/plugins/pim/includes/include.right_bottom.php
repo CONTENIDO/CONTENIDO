@@ -119,7 +119,7 @@ $oItem = new PimPluginCollection();
 $oItem->select(NULL, NULL, 'executionorder');
 $pluginsInstalled = '';
 
-while (($plugin = $oItem->next()) !== false) {
+while ($plugin = $oItem->next()) {
 
     // initialization new template class
     $pagePlugins = new cTemplate();
@@ -149,7 +149,7 @@ while (($plugin = $oItem->next()) !== false) {
     $pagePlugins->set('s', 'WEBSITE', $plugin->get('website'));
     $pagePlugins->set('s', 'COPYRIGHT', $plugin->get('copyright'));
     $pagePlugins->set('s', 'INSTALLED', $date);
-    $pagePlugins->set('s', 'EXECUTIONORDER', $plugin->get("executionorder"));
+    $pagePlugins->set('s', 'EXECUTIONORDER', $plugin->get('executionorder'));
 
     $pagePlugins->set('s', 'LANG_SORT_DOWN', i18n('Set execution order down', 'pim'));
     $pagePlugins->set('s', 'LANG_SORT_UP', i18n('Set execution order up', 'pim'));
@@ -230,7 +230,7 @@ if (is_dir($cfg['path']['plugins'])) {
                 $pagePlugins->set('s', 'DEPENDENCIES', $pluginDependenciesView->getPluginDependenciesExtracted($tempXml));
 
                 // uninstall link
-                if (is_writable(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $pluginFoldername)) {
+                if (cFileHandler::writeable(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $pluginFoldername)) {
                     $pagePlugins->set('s', 'REMOVE_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall-extracted&pluginFoldername=' . $pluginFoldername));
                     $pagePlugins->set('s', 'WRITEABLE', i18n('Everything looks fine', 'pim'));
                 } else {

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiArticleLanguage createNewItem
- * @method cApiArticleLanguage|bool next
+ * @extends ItemCollection<cApiArticleLanguage>
  */
 class cApiArticleLanguageCollection extends ItemCollection
 {
@@ -41,8 +40,7 @@ class cApiArticleLanguageCollection extends ItemCollection
      */
     public function __construct($select = false)
     {
-        $table = cRegistry::getDbTableName('art_lang');
-        parent::__construct($table, 'idartlang');
+        parent::__construct(cDb::getTableName('art_lang'), 'idartlang');
         $this->_setItemClass('cApiArticleLanguage');
 
         // set the join partners so that joins can be used via link() method
@@ -58,7 +56,6 @@ class cApiArticleLanguageCollection extends ItemCollection
     /**
      * Creates an article language item entry.
      *
-     * @param array $parameters
      * @return cApiArticleLanguage
      * @throws cDbException|cException|cInvalidArgumentException
      */
@@ -66,7 +63,7 @@ class cApiArticleLanguageCollection extends ItemCollection
     {
         if (empty($parameters['author'])) {
             $auth = cRegistry::getAuth();
-            $parameters['author'] = $auth->auth['uname'];
+            $parameters['author'] = $auth->getUsername();
         }
         if (empty($parameters['created'])) {
             $parameters['created'] = date('Y-m-d H:i:s');
@@ -250,8 +247,7 @@ class cApiArticleLanguage extends Item
      */
     public function __construct($id = false)
     {
-        $table = cRegistry::getDbTableName('art_lang');
-        parent::__construct($table, 'idartlang');
+        parent::__construct(cDb::getTableName('art_lang'), 'idartlang');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
@@ -269,8 +265,11 @@ class cApiArticleLanguage extends Item
     {
         // create new editable version
         $maxVersion = 0;
-        $sql = 'SELECT MAX(version) AS `max` FROM `%s` WHERE `idartlang` = %d';
-        $this->db->query($sql, cRegistry::getDbTableName('art_lang_version'), $this->get('idartlang'));
+        $this->db->query(
+            'SELECT MAX(version) AS `max` FROM `%s` WHERE `idartlang` = %d',
+            cDb::getTableName('art_lang_version'),
+            $this->get('idartlang')
+        );
         while ($this->db->nextRecord()) {
             $maxVersion = cSecurity::toInteger($this->db->f('max'));
         }
@@ -282,7 +281,11 @@ class cApiArticleLanguage extends Item
 
         if ($type == 'content' || $type == 'complete') {
             // load content of article language version into $artLangVersion->content
-            $artLangVersion->loadByArticleLanguageIdAndVersion($artLangVersion->get('idartlang'), $artLangVersion->get('version'), true);
+            $artLangVersion->loadByArticleLanguageIdAndVersion(
+                cSecurity::toInteger($artLangVersion->get('idartlang')),
+                cSecurity::toInteger($artLangVersion->get('version')),
+                true
+            );
             $contentVersion = new cApiContent();
             $oType = new cApiType();
             $this->_loadArticleContent();
@@ -380,7 +383,7 @@ class cApiArticleLanguage extends Item
     protected function _getIdArtLang($idart, $idlang)
     {
         $sql = 'SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
-        $this->db->query($sql, cRegistry::getDbTableName('art_lang'), $idart, $idlang);
+        $this->db->query($sql, cDb::getTableName('art_lang'), $idart, $idlang);
         $this->db->nextRecord();
 
         return $this->db->f('idartlang');
@@ -420,7 +423,7 @@ class cApiArticleLanguage extends Item
 
         $sql = 'SELECT b.type, a.typeid, a.value FROM `%s` AS a, `%s` AS b ' . 'WHERE a.idartlang = %d AND b.idtype = a.idtype ORDER BY a.idtype, a.typeid';
 
-        $this->db->query($sql, cRegistry::getDbTableName('content'), cRegistry::getDbTableName('type'), $this->get('idartlang'));
+        $this->db->query($sql, cDb::getTableName('content'), cDb::getTableName('type'), $this->get('idartlang'));
 
         $this->content = [];
         while ($this->db->nextRecord()) {

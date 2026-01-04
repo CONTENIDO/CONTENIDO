@@ -25,32 +25,22 @@ class cRights
     /**
      * Duplicate rights for any element.
      *
-     * @param string $area
-     *         Main area name (e.g. 'lay', 'mod', 'str', 'tpl', etc.)
-     * @param int $iditem
-     *         ID of element to copy
-     * @param int $newiditem
-     *         ID of the new element
-     * @param bool $idlang
-     *         ID of language, if passed only rights for this language
-     *         will be created, otherwise for all existing languages
-     *
-     * @return bool
-     *         True on success otherwise false
-     *
+     * @param string $area Main area name (e.g. 'lay', 'mod', 'str', 'tpl', etc.)
+     * @param int $itemId ID of element (category) to copy from
+     * @param int $newItemId ID of the new element (category)
+     * @param int|false $languageId ID of language, if passed only rights for this language will be created,
+     *      otherwise for all existing languages.
+     * @return bool True on success otherwise false
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public static function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
+    public static function copyRightsForElement($area, $itemId, $newItemId, $languageId = false): bool
     {
         global $area_tree;
 
         $perm = cRegistry::getPerm();
         $auth = cRegistry::getAuth();
 
-        if (!is_object($perm)) {
-            return false;
-        }
-        if (!is_object($auth)) {
+        if (!is_object($perm) || !is_object($auth)) {
             return false;
         }
 
@@ -59,43 +49,50 @@ class cRights
         $whereUsers = [];
         $whereAreaActions = [];
 
-        // get all user_id values for con_rights
-        // add groups if available
-        $userIDContainer = $perm->getGroupsForUser($auth->auth['uid']);
+        // get all user_id values for con_rights add groups if available
+        $userIDContainer = $perm->getGroupsForUser($auth->getUserId());
         // add user_id of current user
-        $userIDContainer[] = $auth->auth['uid'];
+        $userIDContainer[] = $auth->getUserId();
         foreach ($userIDContainer as $key) {
-            $whereUsers[] = "user_id = '" . $oDestRightCol->escape($key) . "'";
+            $whereUsers[] = sprintf("`user_id` = '%s'", $oDestRightCol->escape($key));
         }
         // only duplicate on user and where user is member of
-        $whereUsers = '(' . implode(' OR ', $whereUsers) . ')';
+        $whereUsers = sprintf('(%s)', implode(' OR ', $whereUsers));
         // get all idarea values for $area
-        $areaContainer = $area_tree[$perm->showareas($area)];
+        $areaContainer = $area_tree[$perm->showAreas($area)];
 
         // get all actions for corresponding area
         $oActionColl = new cApiActionCollection();
-        $oActionColl->select('idarea IN (' . implode(',', $areaContainer) . ')');
-        while (($oItem = $oActionColl->next()) !== false) {
-            $whereAreaActions[] =
-                '(idarea = ' . (int)$oItem->get('idarea') . ' AND idaction = ' . (int)$oItem->get('idaction') . ')';
+        $oActionColl->select(sprintf('`idarea` IN (%s)', implode(',', $areaContainer)));
+        while ($oItem = $oActionColl->next()) {
+            $whereAreaActions[] = sprintf(
+                '(`idarea` = %d AND `idaction` = %d)',
+                $oItem->get('idarea'),
+                $oItem->get('idaction')
+            );
         }
         // only correct area action pairs possible
         $whereAreaActions = '(' . implode(' OR ', $whereAreaActions) . ')';
 
         // final where clause to get all affected elements in con_right
-        $sWhere = "{$whereAreaActions} AND {$whereUsers} AND idcat = {$iditem}";
-        if ($idlang) {
-            $sWhere .= ' AND idlang=' . (int)$idlang;
+        $sWhere = sprintf(
+            "%s AND %s AND `idcat` = %d",
+            $whereAreaActions,
+            $whereUsers,
+            $itemId
+        );
+        if ($languageId) {
+            $sWhere .= sprintf(' AND `idlang` = %d', $languageId);
         }
 
         $oSourceRightsColl->select($sWhere);
-        while (($oItem = $oSourceRightsColl->next()) !== false) {
+        while ($oItem = $oSourceRightsColl->next()) {
             $rs = $oItem->toObject();
             $oDestRightCol->create(
                 $rs->user_id,
                 $rs->idarea,
                 $rs->idaction,
-                $newiditem,
+                $newItemId,
                 $rs->idclient,
                 $rs->idlang,
                 $rs->type
@@ -111,20 +108,14 @@ class cRights
     /**
      * Create rights for any element
      *
-     * @param string $area
-     *         Main area name (e.g. 'lay', 'mod', 'str', 'tpl', etc.)
-     * @param int $iditem
-     *         ID of new element
-     * @param bool $idlang
-     *         ID of language, if passed only rights for this language
-     *         will be created, otherwise for all existing languages
-     *
-     * @return bool
-     *         True on success otherwise false
-     *
+     * @param string $area Main area name (e.g. 'lay', 'mod', 'str', 'tpl', etc.)
+     * @param int $itemId ID of new element (category)
+     * @param int|false $languageId ID of language, if passed only rights for this language will be created,
+     *      otherwise for all existing languages
+     * @return bool True on success otherwise false
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public static function createRightsForElement($area, $iditem, $idlang = false)
+    public static function createRightsForElement($area, $itemId, $languageId = false): bool
     {
         global $area_tree;
 
@@ -132,10 +123,7 @@ class cRights
         $auth = cRegistry::getAuth();
         $client = cRegistry::getClientId();
 
-        if (!is_object($perm)) {
-            return false;
-        }
-        if (!is_object($auth)) {
+        if (!is_object($perm) || !is_object($auth)) {
             return false;
         }
 
@@ -144,33 +132,36 @@ class cRights
         $whereUsers = [];
         $rightsCache = [];
 
-        // get all user_id values for con_rights
-        // add groups if available
-        $userIDContainer = $perm->getGroupsForUser($auth->auth['uid']);
+        // get all user_id values for con_rights add groups if available
+        $userIDContainer = $perm->getGroupsForUser($auth->getUserId());
         // add user_id of current user
-        $userIDContainer[] = $auth->auth['uid'];
+        $userIDContainer[] = $auth->getUserId();
         foreach ($userIDContainer as $key) {
-            $whereUsers[] = "user_id = '" . $oDestRightCol->escape($key) . "'";
+            $whereUsers[] = sprintf("`user_id` = '%s'", $oDestRightCol->escape($key));
         }
         // only duplicate on user and where user is member of
-        $whereUsers = '(' . implode(' OR ', $whereUsers) . ')';
+        $whereUsers = sprintf('(%s)', implode(' OR ', $whereUsers));
         // get all idarea values for $area short way
-        $areaContainer = $area_tree[$perm->showareas($area)];
+        $areaContainer = $area_tree[$perm->showAreas($area)];
 
         // statement to get all existing actions/areas for corresponding area.
         // all existing rights for same area will be taken over to new item.
-        $sWhere = 'idclient=' . (int)$client . ' AND idarea IN (' . implode(',', $areaContainer) . ')'
-            . ' AND idcat != 0 AND idaction != 0 AND ' . $whereUsers;
-        if ($idlang) {
-            $sWhere .= ' AND idlang=' . (int)$idlang;
+        $sWhere = sprintf(
+            '`idclient` = %d AND `idarea` IN (%s) AND `idcat` != 0 AND `idaction` != 0 AND %s',
+            $client,
+            implode(',', $areaContainer),
+            $whereUsers
+        );
+        if ($languageId) {
+            $sWhere .= sprintf(' AND `idlang` = %d', $languageId);
         }
 
         $oSourceRightsColl->select($sWhere);
-        while (($oItem = $oSourceRightsColl->next()) !== false) {
+        while ($oItem = $oSourceRightsColl->next()) {
             $rs = $oItem->toObject();
 
             // concatenate a key to use it to prevent double entries
-            $key = $rs->user_id . '-' . $rs->idarea . '-' . $rs->idaction . '-' . $iditem . '-' . $rs->idclient . '-'
+            $key = $rs->user_id . '-' . $rs->idarea . '-' . $rs->idaction . '-' . $itemId . '-' . $rs->idclient . '-'
                 . $rs->idlang . '-' . $rs->type;
             if (isset($rightsCache[$key])) {
                 continue;
@@ -181,7 +172,7 @@ class cRights
                 $rs->user_id,
                 $rs->idarea,
                 $rs->idaction,
-                $iditem,
+                $itemId,
                 $rs->idclient,
                 $rs->idlang,
                 $rs->type
@@ -199,16 +190,12 @@ class cRights
     /**
      * Delete rights for any element
      *
-     * @param string $area
-     *         main area name
-     * @param int $iditem
-     *         ID of new element
-     * @param bool $idlang
-     *         ID of lang parameter
-     *
+     * @param string $area Main area name
+     * @param int $itemId ID of the element (category)
+     * @param int|false $languageId ID of lang parameter
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public static function deleteRightsForElement($area, $iditem, $idlang = false)
+    public static function deleteRightsForElement($area, $itemId, $languageId = false)
     {
         global $area_tree;
 
@@ -216,12 +203,16 @@ class cRights
         $client = cRegistry::getClientId();
 
         // get all idarea values for $area
-        $areaContainer = $area_tree[$perm->showareas($area)];
-        $areaContainer = implode(',', $areaContainer);
+        $areaContainer = $area_tree[$perm->showAreas($area)];
+        $sWhere = sprintf(
+            "`idcat` = %d AND `idclient` = %d AND `idarea` IN (%s)",
+            $itemId,
+            $client,
+            implode(',', $areaContainer)
+        );
 
-        $sWhere = "idcat=" . (int)$iditem . " AND idclient=" . (int)$client . " AND idarea IN (" . $areaContainer . ")";
-        if ($idlang) {
-            $sWhere .= " AND idlang=" . (int)$idlang;
+        if ($languageId) {
+            $sWhere .= sprintf(" AND `idlang` = %d", $languageId);
         }
 
         $oRightColl = new cApiRightCollection();
@@ -235,17 +226,13 @@ class cRights
      * Builds user/group permissions (sysadmin, admin, client and language) by processing request variables
      * ($msysadmin, $madmin, $mclient, $mlang) and returns the build permissions array.
      *
-     * @param bool $bAddUserToClient
-     *         Flag to add current user to current client, if no client is specified.
-     *
-     * @return array
-     *
+     * @param bool $addUserToClient Flag to add current user to current client, if no client is specified.
      * @throws cDbException
      * @todo Do we really need to add other perms, if the user/group gets the 'sysadmin' permission?
-     *
      */
-    public static function buildUserOrGroupPermsFromRequest($bAddUserToClient = false)
+    public static function buildUserOrGroupPermsFromRequest(bool $addUserToClient = false): array
     {
+        // Globals build from request
         global $msysadmin, $madmin, $mclient, $mlang;
 
         $auth = cRegistry::getAuth();
@@ -253,7 +240,7 @@ class cRights
 
         // check and prevalidation
 
-        $bSysadmin = isset($msysadmin) && $msysadmin;
+        $isSysadmin = isset($msysadmin) && $msysadmin;
 
         $aAdmin = (isset($madmin) && is_array($madmin)) ? $madmin : [];
         foreach ($aAdmin as $p => $value) {
@@ -279,7 +266,7 @@ class cRights
         // build permissions array
         $aPerms = [];
 
-        if ($bSysadmin) {
+        if ($isSysadmin) {
             $aPerms[] = 'sysadmin';
         }
 
@@ -293,7 +280,7 @@ class cRights
 
         // Add user to the current client, if the current user isn't sysadmin and no client has been specified.
         // This avoids new accounts which are not accessible by the current user (client admin) anymore.
-        if (count($aClient) == 0 && $bAddUserToClient) {
+        if (count($aClient) == 0 && $addUserToClient) {
             if (!cPermission::checkSysadminPermission($auth->getPerms())) {
                 $aPerms[] = sprintf('client[%s]', $client);
             }
@@ -301,11 +288,11 @@ class cRights
 
         // adding language perms makes sense if we have also at least one selected client
         if (count($aLang) > 0 && count($aClient) > 0) {
-            foreach ($aLang as $idlang) {
+            foreach ($aLang as $languageId) {
                 $oClientLanguageCollection = new cApiClientLanguageCollection();
-                $hasLanguageInClients = $oClientLanguageCollection->hasLanguageInClients($idlang, $aClient);
+                $hasLanguageInClients = $oClientLanguageCollection->hasLanguageInClients($languageId, $aClient);
                 if ($hasLanguageInClients) {
-                    $aPerms[] = sprintf('lang[%s]', $idlang);
+                    $aPerms[] = sprintf('lang[%s]', $languageId);
                 }
             }
         }
@@ -314,11 +301,9 @@ class cRights
     }
 
     /**
-     * @return bool
-     *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public static function saveRights()
+    public static function saveRights(): bool
     {
         global $db, $userid;
         global $rights_list, $rights_list_old, $rights_client, $rights_lang;
@@ -478,10 +463,8 @@ class cRights
 
     /**
      * Build list of rights for all relevant and online areas except "login" and their relevant actions.
-     *
-     * @return array
      */
-    public static function getRightsList()
+    public static function getRightsList(): array
     {
         $areas = new cApiAreaCollection();
         $navSubs = new cApiNavSubCollection();
@@ -490,7 +473,7 @@ class cRights
         try {
             $rights = [];
 
-            $areas->select('relevant = 1 AND online = 1 AND name != "login" ORDER BY idarea ASC');
+            $areas->select('`relevant` = 1 AND `online` = 1 AND `name` != "login" ORDER BY `idarea` ASC');
             while ($area = $areas->next()) {
                 $right = [
                     'perm' => $area->get('name'),
@@ -498,13 +481,19 @@ class cRights
                 ];
 
                 // get location
-                $navSubs->select('idarea = ' . (int)$area->get('idarea') . ' ORDER BY idarea ASC');
-                if ($navSubItem = $navSubs->next()) {
+                $navSubs->select(sprintf(
+                    '`idarea` = %d ORDER BY `idarea` ASC',
+                    cSecurity::toInteger($area->get('idarea'))
+                ));
+                if (($navSubItem = $navSubs->next()) !== false) {
                     $right['location'] = $navSubItem->get('location');
                 }
 
                 // get relevant actions
-                $actions->select('relevant = 1 AND idarea = ' . (int)$area->get('idarea') . ' ORDER BY idarea ASC');
+                $actions->select(sprintf(
+                    '`relevant` = 1 AND `idarea` = %d ORDER BY `idarea` ASC',
+                    cSecurity::toInteger($area->get('idarea'))
+                ));
                 while ($action = $actions->next()) {
                     $right['action'][] = $action->get('name');
                 }
@@ -517,9 +506,7 @@ class cRights
                 }
                 $rights[$key][$area->get('name')] = $right;
             }
-        } catch (cDbException $e) {
-            $rights = [];
-        } catch (cException $e) {
+        } catch (cDbException|cException $e) {
             $rights = [];
         }
 

@@ -527,7 +527,7 @@ class PifaAjaxHandler
             // update ranks of younger siblings
             $sql = "-- PifaAjaxHandler->_postFieldForm()
                 UPDATE
-                    " . cRegistry::getDbTableName('pifa_field') . "
+                    " . cDb::getTableName('pifa_field') . "
                 SET
                     field_rank = field_rank + 1
                 WHERE

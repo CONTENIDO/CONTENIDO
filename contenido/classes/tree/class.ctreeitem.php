@@ -159,36 +159,36 @@ class cTreeItem
 
         $mItem = [];
         foreach ($flat_array as $item) {
-            $mItem[$item["id"]] = new cTreeItem($item["id"], $item["name"]);
+            $mItem[$item['id']] = new cTreeItem($item['id'], $item['name']);
 
-            if ($item["level"] > $currentLevel) {
+            if ($item['level'] > $currentLevel) {
                 $currentLevel++;
             }
 
-            if ($item["level"] < $currentLevel) {
-                $currentLevel = $item["level"];
+            if ($item['level'] < $currentLevel) {
+                $currentLevel = $item['level'];
             }
 
-            if (is_array($item["attributes"])) {
-                $mItem[$item["id"]]->setAttributes($item["attributes"]);
+            if (is_array($item['attributes'])) {
+                $mItem[$item['id']]->setAttributes($item['attributes']);
             }
 
             if (array_key_exists("collapsed", $item)) {
-                $mItem[$item["id"]]->setCollapsed($item["collapsed"]);
+                $mItem[$item['id']]->setCollapsed($item['collapsed']);
             }
 
             /* Set payload object */
             if (array_key_exists("payload", $item)) {
-                $mItem[$item["id"]]->setPayloadObject($item["payload"]);
+                $mItem[$item['id']]->setPayloadObject($item['payload']);
             }
 
             if (is_object($mItem[$lastObjId[$currentLevel - 1]])) {
-                $mItem[$lastObjId[$currentLevel - 1]]->addItem($mItem[$item["id"]]);
+                $mItem[$lastObjId[$currentLevel - 1]]->addItem($mItem[$item['id']]);
             } else {
-                $this->addItemToID($lastObjId[$currentLevel - 1], $mItem[$item["id"]]);
+                $this->addItemToID($lastObjId[$currentLevel - 1], $mItem[$item['id']]);
             }
 
-            $lastObjId[$currentLevel] = $item["id"];
+            $lastObjId[$currentLevel] = $item['id'];
         }
 
         return true;
@@ -229,21 +229,21 @@ class cTreeItem
 
         foreach ($sourceArray as $id => $item) {
             $lastId++;
-            $destArray[$lastId]["id"] = $item["class"] . "." . $id;
+            $destArray[$lastId]['id'] = $item['class'] . "." . $id;
 
             // Name should be fetched via the meta object
-            $meta = $item["object"]->getMetaObject();
+            $meta = $item['object']->getMetaObject();
 
             if (is_object($meta)) {
-                $destArray[$lastId]["name"] = $meta->getName();
+                $destArray[$lastId]['name'] = $meta->getName();
             }
 
-            $destArray[$lastId]["level"] = $level;
-            $destArray[$lastId]["payload"] = $item["object"];
+            $destArray[$lastId]['level'] = $level;
+            $destArray[$lastId]['payload'] = $item['object'];
 
-            if (count($item["items"]) > 0) {
+            if (count($item['items']) > 0) {
                 $level++;
-                $this->_flattenArray($item["items"], $destArray, $lastId, $level);
+                $this->_flattenArray($item['items'], $destArray, $lastId, $level);
                 $level--;
             }
         }
@@ -422,7 +422,6 @@ class cTreeItem
 
     /**
      * @param string $attributeName
-     * @param bool $recursive
      */
     public function hasAttribute($attributeName, bool $recursive = false): bool
     {

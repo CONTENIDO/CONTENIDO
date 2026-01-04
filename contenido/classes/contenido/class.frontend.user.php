@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiFrontendUser createNewItem
- * @method cApiFrontendUser|bool next
+ * @extends ItemCollection<cApiFrontendUser>
  */
 class cApiFrontendUserCollection extends ItemCollection
 {
@@ -40,7 +39,7 @@ class cApiFrontendUserCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('frontendusers'), 'idfrontenduser');
+        parent::__construct(cDb::getTableName('frontendusers'), 'idfrontenduser');
         $this->_setItemClass('cApiFrontendUser');
 
         // set the join partners so that joins can be used via link() method
@@ -88,7 +87,7 @@ class cApiFrontendUserCollection extends ItemCollection
         $item->set('salt', md5($username . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999)));
         $item->set('password', $password);
         $item->set('created', date('Y-m-d H:i:s'), false);
-        $item->set('author', $auth->auth['uid']);
+        $item->set('author', $auth->getUserId());
         $item->set('active', 0);
 
         $item->store();
@@ -101,7 +100,7 @@ class cApiFrontendUserCollection extends ItemCollection
 
         $iduser = $item->get('idfrontenduser');
 
-        while (($feGroup = $feGroups->next()) !== false) {
+        while ($feGroup = $feGroups->next()) {
             $idgroup = $feGroup->get('idfrontendgroup');
             $feGroupMembers->create($idgroup, $iduser);
         }
@@ -112,21 +111,21 @@ class cApiFrontendUserCollection extends ItemCollection
     /**
      * Overridden delete method to remove user from groupmember table before deleting user.
      *
-     * @param int $itemId The frontend user id
-     * @return bool
+     * @inheritDoc
+     * @param int $id The frontend user id
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function delete($itemId)
+    public function delete($id)
     {
         // delete group memberships
         $feGroupMembers = new cApiFrontendGroupMemberCollection();
-        $feGroupMembers->select('idfrontenduser = ' . (int)$itemId);
-        while (($item = $feGroupMembers->next()) !== false) {
+        $feGroupMembers->select('`idfrontenduser` = ' . cSecurity::toInteger($id));
+        while ($item = $feGroupMembers->next()) {
             $feGroupMembers->delete($item->get('idfrontendgroupmember'));
         }
 
         // delete user
-        return parent::delete($itemId);
+        return parent::delete($id);
     }
 
 }
@@ -147,7 +146,7 @@ class cApiFrontendUser extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('frontendusers'), 'idfrontenduser');
+        parent::__construct(cDb::getTableName('frontendusers'), 'idfrontenduser');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -206,7 +205,7 @@ class cApiFrontendUser extends Item
         $auth = cRegistry::getAuth();
 
         $this->set('modified', date('Y-m-d H:i:s'), false);
-        $this->set('modifiedby', $auth->auth['uid']);
+        $this->set('modifiedby', $auth->getUserId());
         return parent::store();
     }
 
@@ -223,7 +222,7 @@ class cApiFrontendUser extends Item
         $feGroupMembers->query();
 
         $groups = [];
-        while (($feGroupMember = $feGroupMembers->next()) !== false) {
+        while ($feGroupMember = $feGroupMembers->next()) {
             $groups[] = $feGroupMember->get('idfrontendgroup');
         }
         return $groups;

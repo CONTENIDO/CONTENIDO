@@ -62,7 +62,7 @@ function deleteRightsForElement($area, $iditem, $idlang = false)
 function buildUserOrGroupPermsFromRequest($bAddUserToClient = false)
 {
     cDeprecated("The function buildUserOrGroupPermsFromRequest() is deprecated, use cRights::buildUserOrGroupPermsFromRequest() instead.");
-    return cRights::buildUserOrGroupPermsFromRequest($bAddUserToClient);
+    return cRights::buildUserOrGroupPermsFromRequest((bool) $bAddUserToClient);
 }
 
 /**

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiUploadMeta createNewItem
- * @method cApiUploadMeta|bool next
+ * @extends ItemCollection<cApiUploadMeta>
  */
 class cApiUploadMetaCollection extends ItemCollection
 {
@@ -40,7 +39,7 @@ class cApiUploadMetaCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('upl_meta'), 'id_uplmeta');
+        parent::__construct(cDb::getTableName('upl_meta'), 'id_uplmeta');
         $this->_setItemClass('cApiUploadMeta');
 
         // set the join partners so that joins can be used via link() method
@@ -81,7 +80,7 @@ class cApiUploadMetaCollection extends ItemCollection
 
         if (empty($author)) {
             $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = $auth->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -125,7 +124,7 @@ class cApiUploadMeta extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('upl_meta'), 'id_uplmeta');
+        parent::__construct(cDb::getTableName('upl_meta'), 'id_uplmeta');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

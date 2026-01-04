@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Workflow
- * @method WorkflowAction createNewItem
- * @method WorkflowAction|bool next
+ * @extends ItemCollection<WorkflowAction>
  */
 class WorkflowActions extends ItemCollection
 {
@@ -31,14 +30,13 @@ class WorkflowActions extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('workflow_actions'), "idworkflowaction");
-        $this->_setItemClass("WorkflowAction");
+        parent::__construct(cDb::getTableName('workflow_actions'), 'idworkflowaction');
+        $this->_setItemClass('WorkflowAction');
     }
 
     /**
      * @param $idworkflowitem
      * @param $action
-     *
      * @return bool
      */
     public function get($idworkflowitem, $action)
@@ -80,8 +78,8 @@ class WorkflowActions extends ItemCollection
         $this->select("idworkflowitem = " . (int)$idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if (!$this->next()) {
             $newItem = $this->createNewItem();
-            $newItem->setField("idworkflowitem", $idworkflowitem);
-            $newItem->setField("action", $action);
+            $newItem->setField('idworkflowitem', $idworkflowitem);
+            $newItem->setField('action', $action);
             $newItem->store();
         }
     }
@@ -95,7 +93,7 @@ class WorkflowActions extends ItemCollection
     {
         $this->select("idworkflowitem = " . (int)$idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if (($item = $this->next()) !== false) {
-            $this->delete($item->getField("idworkflowaction"));
+            $this->delete($item->getField('idworkflowaction'));
         }
     }
 
@@ -130,7 +128,7 @@ class WorkflowAction extends Item
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('workflow_actions'), "idworkflowaction");
+        parent::__construct(cDb::getTableName('workflow_actions'), "idworkflowaction");
     }
 
 }

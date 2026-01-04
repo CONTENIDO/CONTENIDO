@@ -127,7 +127,7 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $requestStatus == 'send'
     }
 
     $fileInfoCollection = new cApiFileInformationCollection();
-    $fileInfoCollection->updateFile($sFilename, 'css', $requestDescription, $auth->auth['uid']);
+    $fileInfoCollection->updateFile($sFilename, 'css', $requestDescription, $auth->getUserId());
 
     $page->reloadRightTopFrame(['file' => $sTempFilename]);
 
@@ -155,7 +155,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $requestStatus == 'send') 
     }
 
     $fileInfoCollection = new cApiFileInformationCollection();
-    $fileInfoCollection->updateFile($sOrigFileName, 'css', $requestDescription, $sFilename, $auth->auth['uid']);
+    $fileInfoCollection->updateFile($sOrigFileName, 'css', $requestDescription, $sFilename, $auth->getUserId());
 
     if (true === cFileHandler::validateFilename($sFilename)) {
         $moduleHandler->createModuleFile('css', $sFilename, $requestCode);
@@ -220,7 +220,7 @@ $form->add(i18n('Code'), $code);
 
 $oCodeMirror = new CodeMirror('code', 'css', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg);
 if ($readOnly) {
-    $oCodeMirror->setProperty("readOnly", "true");
+    $oCodeMirror->setProperty('readOnly', 'true');
     $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
 }
 $page->setContent($form);

@@ -435,7 +435,7 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * Prepares the passed statement.
+     * Prepares the provided statement.
      */
     protected function _prepareStatement(string $statement, array $arguments): string
     {
@@ -583,7 +583,7 @@ abstract class cDbDriverHandler
      *     'idclient' => $client,
      *     'code' => "<html>... code n' fun ...</html>",
      * ];
-     * $result = $db->insert($cfg['tab']['code'], $fields);
+     * $result = $db->insert(cDb::getTableName('code'), $fields);
      * </pre>
      *
      * @param string $tableName The table name
@@ -607,7 +607,7 @@ abstract class cDbDriverHandler
      * $db = cRegistry::getDb();
      * $fields = ['code' => "<html>... some new code n' fun ...</html>"];
      * $whereClauses = ['idcode' => 123];
-     * $result = $db->update($cfg['tab']['code'], $fields, $whereClauses);
+     * $result = $db->update(cDb::getTableName('code'), $fields, $whereClauses);
      * </pre>
      *
      * @param string $tableName The table name

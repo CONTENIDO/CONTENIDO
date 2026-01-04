@@ -145,7 +145,7 @@ class cXmlWriter extends cXmlBase
      */
     public function saveToFile(string $directory, string $fileName): bool
     {
-        if (is_writable($directory) === false) {
+        if (cFileHandler::writeable($directory) === false) {
             throw new cException('Can not write XML file: Directory is not writable.');
         }
 

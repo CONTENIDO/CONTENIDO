@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $cfg, $lngAct, $modidartlang;
 
-$pluginName = basename(dirname(__DIR__, 1));
+$pluginName = basename(dirname(__DIR__));
 
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
@@ -70,15 +70,15 @@ cAutoload::addClassmapConfig([
 ]);
 plugin_include($pluginName, 'includes/functions.workflow.php');
 
-$_cecRegistry = cApiCecRegistry::getInstance();
-$_cecRegistry->addChainFunction('Contenido.ArticleCategoryList.ListItems', 'piworkflowCreateTasksFolder');
-$_cecRegistry->addChainFunction('Contenido.ArticleList.Columns', 'piworkflowProcessArticleColumns');
-$_cecRegistry->addChainFunction('Contenido.ArticleList.Actions', 'piworkflowProcessActions');
-$_cecRegistry->addChainFunction('Contenido.ArticleList.RenderColumn', 'piworkflowRenderColumn');
-$_cecRegistry->addChainFunction('Contenido.ArticleList.RenderAction', 'piworkflowRenderAction');
-$_cecRegistry->addChainFunction('Contenido.CategoryList.Columns', 'piworkflowCategoryColumns');
-$_cecRegistry->addChainFunction('Contenido.CategoryList.RenderColumn', 'piworkflowCategoryRenderColumn');
-$_cecRegistry->addChainFunction('Contenido.CategoryList.PageEnd', 'piworkflowCategoryPageEnd');
-$_cecRegistry->addChainFunction('Contenido.Frontend.AllowEdit', 'piworkflowAllowArticleEdit');
+$cecRegistry = cApiCecRegistry::getInstance();
+$cecRegistry->addChainFunction('Contenido.ArticleCategoryList.ListItems', 'piworkflowCreateTasksFolder');
+$cecRegistry->addChainFunction('Contenido.ArticleList.Columns', 'piworkflowProcessArticleColumns');
+$cecRegistry->addChainFunction('Contenido.ArticleList.Actions', 'piworkflowProcessActions');
+$cecRegistry->addChainFunction('Contenido.ArticleList.RenderColumn', 'piworkflowRenderColumn');
+$cecRegistry->addChainFunction('Contenido.ArticleList.RenderAction', 'piworkflowRenderAction');
+$cecRegistry->addChainFunction('Contenido.CategoryList.Columns', 'piworkflowCategoryColumns');
+$cecRegistry->addChainFunction('Contenido.CategoryList.RenderColumn', 'piworkflowCategoryRenderColumn');
+$cecRegistry->addChainFunction('Contenido.CategoryList.PageEnd', 'piworkflowCategoryPageEnd');
+$cecRegistry->addChainFunction('Contenido.Frontend.AllowEdit', 'piworkflowAllowArticleEdit');
 
 unset($pluginName, $pluginClassesPath);

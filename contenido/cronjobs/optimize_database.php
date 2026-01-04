@@ -36,7 +36,7 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     }
 
     if ($cfg['statistics_heap_table']) {
-        $sHeapTable = $cfg['tab']['stat_heap_table'];
+        $sHeapTable = cDb::getTableName('stat_heap_table');
         buildHeapTable($sHeapTable, $db);
     }
 }

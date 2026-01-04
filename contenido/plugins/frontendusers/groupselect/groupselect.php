@@ -92,7 +92,7 @@ function frontendusers_groupselect_store($variables): bool
     $feGroups->setWhere('idclient', $client);
     $feGroups->query();
 
-    while (($feGroup = $feGroups->next()) !== false) {
+    while ($feGroup = $feGroups->next()) {
         $idFrontendGroup = $feGroup->get('idfrontendgroup');
         $groupmembers->remove($idFrontendGroup, $iIdFrontendUser);
         if (in_array($idFrontendGroup, $groups)) {

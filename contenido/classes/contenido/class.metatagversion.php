@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiMetaTagVersion createNewItem
- * @method cApiMetaTagVersion|bool next
+ * @extends ItemCollection<cApiMetaTagVersion>
  */
 class cApiMetaTagVersionCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiMetaTagVersionCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('meta_tag_version'), 'idmetatagversion');
+        parent::__construct(cDb::getTableName('meta_tag_version'), 'idmetatagversion');
         $this->_setItemClass('cApiMetaTagVersion');
 
         // set the join partners so that joins can be used via link() method
@@ -85,8 +84,8 @@ class cApiMetaTagVersionCollection extends ItemCollection
 
         $this->db->query(
             $sql,
-            cRegistry::getDbTableName('meta_tag_version'),
-            cRegistry::getDbTableName('meta_tag_version'),
+            cDb::getTableName('meta_tag_version'),
+            cDb::getTableName('meta_tag_version'),
             (int)$idArtLang,
             (int)$version,
             (int)$idMetaType,
@@ -111,7 +110,7 @@ class cApiMetaTagVersionCollection extends ItemCollection
 
         $ids = [];
         while ($item = $metaTagVersionColl->next()) {
-            $ids[] = (int) $item->get('idmetatagversion');
+            $ids[] = cSecurity::toInteger($item->get('idmetatagversion'));
         }
         return $ids;
     }
@@ -134,7 +133,7 @@ class cApiMetaTagVersion extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('meta_tag_version'), 'idmetatagversion');
+        parent::__construct(cDb::getTableName('meta_tag_version'), 'idmetatagversion');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);

@@ -21,8 +21,7 @@ cInclude('includes', 'functions.file.php');
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiFileInformation createNewItem
- * @method cApiFileInformation|bool next
+ * @extends ItemCollection<cApiFileInformation>
  */
 class cApiFileInformationCollection extends ItemCollection
 {
@@ -42,7 +41,7 @@ class cApiFileInformationCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('file_information'), 'idsfi');
+        parent::__construct(cDb::getTableName('file_information'), 'idsfi');
         $this->_setItemClass('cApiFileInformation');
     }
 
@@ -52,7 +51,7 @@ class cApiFileInformationCollection extends ItemCollection
      * @param string $typeContent Type of the entry
      * @param string $filename Name of the file
      * @param string $description [optional] An optional description
-     * @return cApiFileInformation Tthe new item
+     * @return cApiFileInformation The new item
      * @throws cDbException|cException|cInvalidArgumentException
      * @todo  Pass additional fields as optional parameters
      */
@@ -76,8 +75,8 @@ class cApiFileInformationCollection extends ItemCollection
             $item->set('filename', $filename);
             $item->set('created', date('Y-m-d H:i:s'));
             $item->set('lastmodified', date('Y-m-d H:i:s'));
-            $item->set('author', $auth->auth['uid']);
-            $item->set('modifiedby', $auth->auth['uid']);
+            $item->set('author', $auth->getUserId());
+            $item->set('modifiedby', $auth->getUserId());
             $item->set('description', $description);
             $item->store();
 
@@ -116,7 +115,7 @@ class cApiFileInformationCollection extends ItemCollection
             $item->set('idsfi', $id);
             $item->set('lastmodified', date('Y-m-d H:i:s'));
             $item->set('description', $description);
-            $item->set('modifiedby', $auth->auth['uid']);
+            $item->set('modifiedby', $auth->getUserId());
             if (!empty($newFilename)) {
                 $item->set('filename', $newFilename);
             }
@@ -130,7 +129,7 @@ class cApiFileInformationCollection extends ItemCollection
     }
 
     /**
-     * Deletes all found items in the table matching the passed field, and its value.
+     * Deletes all found items in the table matching the provided field, and its value.
      * Deletes also cached e entries and any existing properties.
      *
      * @param array $values With parameters
@@ -191,7 +190,7 @@ class cApiFileInformation extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('file_information'), 'idsfi');
+        parent::__construct(cDb::getTableName('file_information'), 'idsfi');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }

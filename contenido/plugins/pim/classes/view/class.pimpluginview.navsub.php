@@ -204,14 +204,14 @@ class PimPluginViewNavSub
         // Check for CONTENIDO navigation entries
         $contenidoNav = $this->_getCONTENIDONavigation();
 
-        if ($contenidoNav != "") { // CONTENIDO navigation entry founded
+        if ($contenidoNav != '') { // CONTENIDO navigation entry founded
             return $this->_getPluginNavigation($contenidoNav);
         } else { // No CONTENIDO navigation entry founded
 
             // Check for plugin navigation entry
             $pluginNav = $this->_checkAndGetPluginNavigation();
 
-            if ($pluginNav != "") { // Plugin navigation entry founded
+            if ($pluginNav != '') { // Plugin navigation entry founded
                 return $this->_getPluginNavigation($pluginNav);
             } else { // No navigation entries founded
                 return i18n('No navigation configuration founded', 'pim');
@@ -226,8 +226,6 @@ class PimPluginViewNavSub
      */
     private function _getCONTENIDONavigation()
     {
-        $cfg = cRegistry::getConfig();
-
         // Path to CONTENIDO navigation xml file
         $this->_setNavigationXmlPath(cRegistry::getBackendPath() . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME);
 
@@ -289,8 +287,6 @@ class PimPluginViewNavSub
      */
     private function _checkAndGetPluginNavigation()
     {
-        $cfg = cRegistry::getConfig();
-
         // Path to CONTENIDO navigation xml file
         $contenidoLanguageFileLang = cRegistry::getBackendPath() . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME;
 
@@ -354,7 +350,7 @@ class PimPluginViewNavSub
         // language
         $pluginLanguageFileLang = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->PluginFoldername . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR . $cfg['lang'][$belang];
 
-        if (cFileHandler::exists($pluginLanguageFileLang) && $contenidoNav != "") {
+        if (cFileHandler::exists($pluginLanguageFileLang) && $contenidoNav != '') {
             // Initializing founded array
             $founded = [];
 

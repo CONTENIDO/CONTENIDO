@@ -102,8 +102,7 @@ if ($requestGetStep == 'createRoot') { // create new root item
 
 $treeDiv = new cHTMLDiv();
 $result = $oTree->renderTree(true);
-
-if ($result === false) {
+if (!$result) {
     $result = '&nbsp;';
 }
 $treeDiv->setContent($result);

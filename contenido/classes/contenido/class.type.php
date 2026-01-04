@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiType createNewItem
- * @method cApiType|bool next
+ * @extends ItemCollection<cApiType>
  */
 class cApiTypeCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiTypeCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('type'), 'idtype');
+        parent::__construct(cDb::getTableName('type'), 'idtype');
         $this->_setItemClass('cApiType');
     }
 
@@ -52,7 +51,7 @@ class cApiTypeCollection extends ItemCollection
     {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = $auth->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -93,7 +92,7 @@ class cApiType extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('type'), 'idtype');
+        parent::__construct(cDb::getTableName('type'), 'idtype');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
@@ -106,18 +105,15 @@ class cApiType extends Item
      * @param string $type e.g. CMS_HTML, CMS_TEXT, etc.
      * @throws cException
      */
-    public function loadByType($type): bool
+    public function loadByType(string $type): bool
     {
-        $aProps = [
-            'type' => $type,
-        ];
-        $aRecordSet = $this->_oCache->getItemByProperties($aProps);
-        if ($aRecordSet) {
+        $recordSet = $this->_oCache->getItemByProperties(['type' => $type]);
+        if ($recordSet) {
             // entry in cache found, load entry from cache
-            $this->loadByRecordSet($aRecordSet);
+            $this->loadByRecordSet($recordSet);
             return true;
         } else {
-            $where = $this->db->prepare("type = '%s'", $type);
+            $where = $this->db->prepare("`type` = '%s'", $type);
             return $this->_loadByWhereClause($where);
         }
     }

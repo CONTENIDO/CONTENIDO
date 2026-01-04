@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiModule createNewItem
- * @method cApiModule|bool next
+ * @extends ItemCollection<cApiModule>
  */
 class cApiModuleCollection extends ItemCollection
 {
@@ -40,8 +39,7 @@ class cApiModuleCollection extends ItemCollection
      */
     public function __construct()
     {
-        $table = cRegistry::getDbTableName('mod');
-        parent::__construct($table, 'idmod');
+        parent::__construct(cDb::getTableName('mod'), 'idmod');
         $this->_setItemClass('cApiModule');
     }
 
@@ -88,7 +86,7 @@ class cApiModuleCollection extends ItemCollection
 
         if (empty($author)) {
             $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = $auth->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -224,8 +222,8 @@ class cApiModuleCollection extends ItemCollection
                 GROUP BY c.idmod, c.idtpl, t.name
                 ORDER BY t.name';
         $db->query($sql, [
-            'tab_container' => cRegistry::getDbTableName('container'),
-            'tab_tpl' => cRegistry::getDbTableName('tpl'),
+            'tab_container' => cDb::getTableName('container'),
+            'tab_tpl' => cDb::getTableName('tpl'),
         ]);
 
         $aUsedTemplates = [];
@@ -306,7 +304,7 @@ class cApiModule extends Item
      */
     public function __construct($id = false)
     {
-        $table = cRegistry::getDbTableName('mod');
+        $table = cDb::getTableName('mod');
         parent::__construct($table, 'idmod');
 
         // Using no filters is just for compatibility reasons.
@@ -366,13 +364,13 @@ class cApiModule extends Item
      * This method get the input and output for translating from files and not
      * from db-table.
      *
-     * @param array $cfg
+     * @param array $cfg The CONTENIDO configuration array
      * @param int $client Deprecated, is no longer used.
      * @param int $lang Deprecated, is no longer used.
      * @return array|false
      * @throws cException
      */
-    function parseModuleForStringsLoadFromFile($cfg, $client, $lang)
+    function parseModuleForStringsLoadFromFile(array $cfg, $client, $lang)
     {
         // If we're not loaded, return
         if (!$this->isLoaded()) {
@@ -511,8 +509,8 @@ class cApiModule extends Item
                 GROUP BY c.idtpl, c.idmod, t.name
                 ORDER BY t.name';
         $db->query($sql, [
-            'tab_container' => cRegistry::getDbTableName('container'),
-            'tab_tpl' => cRegistry::getDbTableName('tpl'),
+            'tab_container' => cDb::getTableName('container'),
+            'tab_tpl' => cDb::getTableName('tpl'),
             'idmod' => cSecurity::toInteger($module),
         ]);
 

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiGroup createNewItem($data)
- * @method cApiGroup|bool next
+ * @extends ItemCollection<cApiGroup>
  */
 class cApiGroupCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiGroupCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('groups'), 'group_id');
+        parent::__construct(cDb::getTableName('groups'), 'group_id');
         $this->_setItemClass('cApiGroup');
     }
 
@@ -72,29 +71,24 @@ class cApiGroupCollection extends ItemCollection
      */
     public function fetchByUserID($userid): array
     {
-        $aIds = [];
-        $aGroups = [];
-
-        $sql = "SELECT a.group_id FROM `%s` AS a, `%s` AS b " . "WHERE (a.group_id  = b.group_id) AND (b.user_id = '%s')";
-
-        $this->db->query($sql, $this->table, cRegistry::getDbTableName('groupmembers'), $userid);
+        $ids = [];
+        $sql = "SELECT a.group_id FROM `%s` AS a, `%s` AS b WHERE (a.group_id = b.group_id) AND (b.user_id = '%s')";
+        $this->db->query($sql, $this->table, cDb::getTableName('groupmembers'), $userid);
         $this->_lastSQL = $sql;
-
         while ($this->db->nextRecord()) {
-            $aIds[] = $this->db->f('group_id');
+            $ids[] = cSecurity::toInteger($this->db->f('group_id'));
+        }
+        if (!count($ids)) {
+            return [];
         }
 
-        if (0 === count($aIds)) {
-            return $aGroups;
+        $groups = [];
+        $this->select(sprintf("`group_id` IN (%s)", implode(',', $ids)));
+        while ($oItem = $this->next()) {
+            $groups[] = clone $oItem;
         }
 
-        $where = "group_id IN ('" . implode("', '", $aIds) . "')";
-        $this->select($where);
-        while (($oItem = $this->next()) !== false) {
-            $aGroups[] = clone $oItem;
-        }
-
-        return $aGroups;
+        return $groups;
     }
 
     /**
@@ -143,7 +137,7 @@ class cApiGroupCollection extends ItemCollection
         }
 
         $this->select($where);
-        while (($oItem = $this->next()) !== false) {
+        while ($oItem = $this->next()) {
             $groups[] = clone $oItem;
         }
 
@@ -219,7 +213,7 @@ class cApiGroup extends Item
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('groups'), 'group_id');
+        parent::__construct(cDb::getTableName('groups'), 'group_id');
         $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
@@ -288,32 +282,26 @@ class cApiGroup extends Item
      * Returns name of group.
      *
      * @param bool $removePrefix Flag to remove "grp_" prefix from group name
-     * @return string
      */
-    public function getGroupName(bool $removePrefix = false)
+    public function getGroupName(bool $removePrefix = false): string
     {
         $groupname = $this->get('groupname');
-        return (false === $removePrefix) ? $groupname : self::getUnprefixedGroupName($groupname);
+
+        return $removePrefix ? self::getUnprefixedGroupName($groupname) : $groupname;
     }
 
     /**
      * Returns name of a group cleaned from prefix "grp_".
-     *
-     * @param string $groupname
-     * @return string
      */
-    public static function getUnprefixedGroupName($groupname)
+    public static function getUnprefixedGroupName(string $groupname): string
     {
         return cString::getPartOfString($groupname, cString::getStringLength(self::PREFIX));
     }
 
     /**
-     * Returns the passed groupname prefixed with "grp_", if not exists.
-     *
-     * @param string $groupname
-     * @return string
+     * Returns the provided groupname prefixed with "grp_", if not exists.
      */
-    public static function prefixedGroupName($groupname)
+    public static function prefixedGroupName(string $groupname): string
     {
         if (cString::getPartOfString($groupname, 0, cString::getStringLength(cApiGroup::PREFIX)) != cApiGroup::PREFIX) {
             return cApiGroup::PREFIX . $groupname;
@@ -333,7 +321,8 @@ class cApiGroup extends Item
     {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         $groupProp = $groupPropColl->fetchByGroupIdTypeName($type, $name);
-        return ($groupProp) ? $groupProp->get('value') : false;
+
+        return $groupProp ? $groupProp->get('value') : false;
     }
 
     /**

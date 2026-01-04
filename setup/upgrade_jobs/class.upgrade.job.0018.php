@@ -32,8 +32,8 @@ class cUpgradeJob_0018 extends cUpgradeJobAbstract
         if ($this->_setupType == 'upgrade') {
             // Delete old statistic client configurations
             $this->_oDb->query(sprintf(
-                "DELETE FROM ``%s WHERE type = 'stats' AND name = 'tracking'",
-                cRegistry::getDbTableName('properties')
+                "DELETE FROM `%s` WHERE `type` = 'stats' AND `name` = 'tracking'",
+                cDb::getTableName('properties')
             ));
         }
 

@@ -113,9 +113,6 @@ class cLogEntryBuilder
 
     /**
      * Setter for whether add trace details to the log entry.
-     *
-     * @param bool $addStackTrace
-     * @return $this
      */
     public function setAddStackTrace(bool $addStackTrace): self
     {
@@ -125,14 +122,12 @@ class cLogEntryBuilder
 
     /**
      * Build and return the log entry.
-     *
-     * @return string
      */
     public function build(): string
     {
         $trace = $this->getTrace();
-        $data[] = "[" . date("Y-m-d H:i:s") . "] $this->type: \"$this->message\" at "
-            .self::getCallerDetails($trace[$this->startLevel + 2] ?? []);
+        $data[] = "[" . date('Y-m-d H:i:s') . "] $this->type: \"$this->message\" at "
+            . self::getCallerDetails($trace[$this->startLevel + 2] ?? []);
 
         if ($this->addSapiDetails) {
             $data = array_merge($data, self::buildSapiDetails());
@@ -198,10 +193,17 @@ class cLogEntryBuilder
         $msg[] = "\tStack trace:";
         $pos = 0;
         for ($i = $startLevel; $i < count($trace); $i++) {
-            $filename = basename($trace[$i]['file']);
-
             $caller = self::getCallerDetails($trace[$i]);
-            $msg[] = "\t#" . $pos++ . ' ' . $caller . " called in file " . $filename . ":" . $trace[$i]['line'];
+
+            $entry = "\t#" . $pos++ . ' ' . $caller;
+            if (isset($trace[$i]['file'])) {
+                $entry .= " called in file " . basename($trace[$i]['file']);
+            }
+            if (isset($trace[$i]['line'])) {
+                $entry .= ":" . $trace[$i]['line'];
+            }
+
+            $msg[] = $entry;
         }
 
         return $msg;

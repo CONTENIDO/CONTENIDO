@@ -37,12 +37,12 @@ class cSetupClientAdjust extends cSetupMask
 
         parent::__construct("templates/setup/forms/pathinfo.tpl", $step);
         $this->setHeader(i18n("Client Settings", "setup"));
-        $this->_stepTemplateClass->set("s", "TITLE", i18n("Client Settings", "setup"));
-        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box.", "setup"));
+        $this->_stepTemplateClass->set('s', 'TITLE', i18n("Client Settings", "setup"));
+        $this->_stepTemplateClass->set('s', 'DESCRIPTION', i18n("Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box.", "setup"));
 
         $db = getSetupMySQLDBConnection();
 
-        $aClients = listClients($db, $cfg['tab']['clients']);
+        $aClients = listClients($db, cDb::getTableName('clients'));
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
 
@@ -61,14 +61,14 @@ class cSetupClientAdjust extends cSetupMask
             $name = $aInfo['name'];
 
             if (isset($cfgClient[$idclient])) {
-                $htmlPath = $cfgClient[$idclient]["path"]["htmlpath"];
-                $frontendPath = $cfgClient[$idclient]["path"]["frontend"];
+                $htmlPath = $cfgClient[$idclient]['path']['htmlpath'];
+                $frontendPath = $cfgClient[$idclient]['path']['frontend'];
             } else {
                 $htmlPath = '';
                 $frontendPath = '';
             }
 
-            if ($_SESSION['frontendpath'][$idclient] == "") {
+            if ($_SESSION['frontendpath'][$idclient] == '') {
                 $iDifferencePos = findSimilarText($cfg['path']['frontend'] . "/", $frontendPath);
                 if ($iDifferencePos > 0) {
                     $sClientPath = $a_root_path . "/" . cString::getPartOfString($frontendPath, $iDifferencePos + 1, cString::getStringLength($frontendPath) - $iDifferencePos);
@@ -78,7 +78,7 @@ class cSetupClientAdjust extends cSetupMask
                 }
             }
 
-            if ($_SESSION['htmlpath'][$idclient] == "") {
+            if ($_SESSION['htmlpath'][$idclient] == '') {
                 // Use frontendpath instead of htmlpath as the directories should be aligned pairwise
                 $iDifferencePos = findSimilarText($cfg['path']['frontend'] . "/", $frontendPath);
                 if ($iDifferencePos > 0) {
@@ -95,7 +95,7 @@ class cSetupClientAdjust extends cSetupMask
             $sName .= ":<br>";
             $oSystemPathBox = new cHTMLTextbox("frontendpath[$idclient]", $_SESSION['frontendpath'][$idclient]);
             $oSystemPathBox->setWidth(100);
-            $oSystemPathBox->setClass("small");
+            $oSystemPathBox->setClass('small');
             $oClientSystemPath = new cHTMLInfoMessage([$sName, $oSystemPathBox], "&nbsp;");
             $oClientSystemPath->_oTitle->setStyle("padding-left:8px;padding-bottom:8px;width:90%;");
 
@@ -107,7 +107,7 @@ class cSetupClientAdjust extends cSetupMask
             $sName .= ":<br>";
             $oSystemPathBox = new cHTMLTextbox("htmlpath[$idclient]", $_SESSION['htmlpath'][$idclient]);
             $oSystemPathBox->setWidth(100);
-            $oSystemPathBox->setClass("small");
+            $oSystemPathBox->setClass('small');
             $oClientSystemPath = new cHTMLInfoMessage([$sName, $oSystemPathBox], "&nbsp;");
             $oClientSystemPath->_oTitle->setStyle("padding-left:8px;padding-bottom:8px;width:90%;");
 
@@ -116,7 +116,7 @@ class cSetupClientAdjust extends cSetupMask
 
         $cHTMLErrorMessageList->setContent($aPathList);
 
-        $this->_stepTemplateClass->set("s", "CONTROL_PATHINFO", $cHTMLErrorMessageList->render());
+        $this->_stepTemplateClass->set('s', 'CONTROL_PATHINFO', $cHTMLErrorMessageList->render());
 
         $this->setNavigation($previous, $next);
     }

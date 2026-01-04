@@ -32,7 +32,7 @@ if ($cfg['debug']['disable_plugins'] === false) {
     $pluginColl->setOrder('executionorder ASC');
     $pluginColl->query();
 
-    while (($plugin = $pluginColl->next()) !== false) {
+    while ($plugin = $pluginColl->next()) {
         $pluginName = $plugin->get('folder');
 
         if (is_dir($pluginFolder . $pluginName . '/')) {

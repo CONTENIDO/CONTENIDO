@@ -32,7 +32,7 @@ require_once(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'pseudo-cr
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $db = cRegistry::getDb();
 
-    $sSql = "UPDATE " . $cfg['tab']['frontendusers'] . "
+    $sSql = "UPDATE " . cDb::getTableName('frontendusers') . "
             SET active = 0
             WHERE (valid_to < NOW() AND valid_to != '0000-00-00 00:00:00')
             OR (valid_from > NOW() AND valid_from != '0000-00-00 00:00:00')";

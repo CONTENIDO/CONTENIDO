@@ -385,7 +385,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
     /**
      * Checks, if any separators setting is modified or not
      * @param array $aNewCfg New configuration send by requests.
-     * @return  bool
+     * @return bool
      */
     protected function _separatorModified($aNewCfg)
     {
