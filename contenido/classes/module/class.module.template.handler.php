@@ -564,7 +564,7 @@ class cModuleTemplateHandler extends cModuleHandler
         // array with all files in template directory
         $filesArray = $this->getAllFilesFromDirectory('template');
 
-        if (true === is_array($filesArray)) {
+        if (is_array($filesArray)) {
             // make options fields
             foreach ($filesArray as $key => $file) {
                 // ignore dirs

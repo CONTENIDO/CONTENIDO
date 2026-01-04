@@ -239,7 +239,7 @@ $page->set('d', 'BRDRB', 1);
 $page->next();
 
 // if no serverpath set use default root server path where all frontends reside
-if (false === isset($serverpath)) {
+if (!isset($serverpath)) {
     $serverpath = $cfg['path']['frontend'];
 }
 

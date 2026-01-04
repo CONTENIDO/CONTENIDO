@@ -173,7 +173,7 @@ class SIWECOSRightBottomPage extends cGuiPage
         // load models
         $idsiwecos = cSecurity::toInteger($idsiwecos);
         if (0 < $idsiwecos) {
-            if (false === $this->_SIWECOSForm->loadByPrimaryKey($idsiwecos)) {
+            if (!$this->_SIWECOSForm->loadByPrimaryKey($idsiwecos)) {
                 $msg = i18n('ERR_LOAD_ENTITY', 'siwecos');
                 throw new SIWECOSException($msg);
             }
@@ -628,7 +628,7 @@ class SIWECOSRightBottomPage extends cGuiPage
         }
 
         // store item
-        if (false === $this->_SIWECOSForm->store()) {
+        if (!$this->_SIWECOSForm->store()) {
             $msg = i18n('FORM_STORE_ERROR', 'siwecos');
             throw new SIWECOSException($msg);
         }
@@ -640,7 +640,7 @@ class SIWECOSRightBottomPage extends cGuiPage
             if ($userToken !== $this->_SIWECOSForm->get('userToken')) {
                 $this->_SIWECOSForm->set('userToken', $userToken);
                 // store item
-                if (false === $this->_SIWECOSForm->store()) {
+                if (!$this->_SIWECOSForm->store()) {
                     $msg = i18n('FORM_STORE_ERROR', 'siwecos');
                     throw new SIWECOSException($msg);
                 }
@@ -673,7 +673,7 @@ class SIWECOSRightBottomPage extends cGuiPage
         if ($domainToken !== $this->_SIWECOSForm->get('domainToken')) {
             $this->_SIWECOSForm->set('domainToken', $domainToken);
             // store item
-            if (false === $this->_SIWECOSForm->store()) {
+            if (!$this->_SIWECOSForm->store()) {
                 $msg = i18n('FORM_STORE_ERROR', 'siwecos');
                 throw new SIWECOSException($msg);
             }

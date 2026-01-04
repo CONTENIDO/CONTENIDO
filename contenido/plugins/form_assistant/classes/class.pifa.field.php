@@ -496,7 +496,7 @@ class PifaField extends Item
                     $class .= ' ' . implode(' ', explode(',', $this->get('css_class')));
                 }
                 // optional class for obligatory field
-                if (true === (bool)$this->get('obligatory')) {
+                if ((bool)$this->get('obligatory')) {
                     $class .= ' pifa-obligatory';
                 }
                 // optional error class for field
@@ -544,7 +544,7 @@ class PifaField extends Item
         }
 
         // obligatory fields have an additional ' *'
-        if (true === (bool)$this->get('obligatory')) {
+        if ((bool)$this->get('obligatory')) {
             $label .= ' *';
         }
 
@@ -599,13 +599,13 @@ class PifaField extends Item
         } else {
             $filename = Pifa::fromCamelCase($optionClass);
             $filename = "extensions/class.pifa.$filename.php";
-            if (false === file_exists(Pifa::getPath() . $filename)) {
+            if (!file_exists(Pifa::getPath() . $filename)) {
                 $msg = Pifa::i18n('MISSING_EOD_FILE');
                 $msg = sprintf($msg, $filename);
                 throw new PifaException($msg);
             }
             plugin_include(Pifa::getName(), $filename);
-            if (false === class_exists($optionClass)) {
+            if (!class_exists($optionClass)) {
                 $msg = Pifa::i18n('MISSING_EOD_CLASS');
                 $msg = sprintf($msg, $optionClass);
                 throw new PifaException($msg);
@@ -1128,7 +1128,7 @@ class PifaField extends Item
             WHERE
                 idfield = " . cSecurity::toInteger($this->get('idfield')) . "
             ;";
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('FIELD_DELETE_ERROR');
             throw new PifaException($msg);
         }
@@ -1144,7 +1144,7 @@ class PifaField extends Item
                     DROP COLUMN
                         `" . cSecurity::toString($this->get('column_name')) . "`
                     ;";
-                if (false === $db->query($sql)) {
+                if (!$db->query($sql)) {
                     $msg = Pifa::i18n('COLUMN_DROP_ERROR');
                     throw new PifaException($msg);
                 }

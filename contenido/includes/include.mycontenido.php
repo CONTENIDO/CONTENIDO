@@ -92,7 +92,7 @@ if (is_array($cfgClient)) {
 }
 $faultyFolders = [];
 foreach ($foldersToCheck as $folder) {
-    if (true === @file_exists($folder)) {
+    if (@file_exists($folder)) {
         $faultyFolders[] = $folder;
     }
 }

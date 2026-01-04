@@ -387,7 +387,7 @@ class NewsletterJob extends Item
                 $sEMail = $oLog->get('rcpemail');
 
                 // do not try to send a message to an invalid email address
-                if (false === isValidMail($sEMail)) {
+                if (!isValidMail($sEMail)) {
                     $oLog->set('status', "error (invalid email)");
                     $oLog->store();
                     continue;

@@ -120,8 +120,10 @@ switch ($wysiwygeditor) {
 $jslibs = '';
 // get scripts from editor class
 $jslibs .= $oEditor->getScripts();
-if ('tinymce3' === cString::getPartOfString($wysiwygeditor, 0, 8)
-    && true === $oEditor->getGZIPMode()) {
+if (
+    'tinymce3' === cString::getPartOfString($wysiwygeditor, 0, 8)
+    && $oEditor->getGZIPMode()
+) {
     // tinyMCE_GZ.init call must be placed in its own script tag
     // User defined plugins and themes should be identical in both "inits"
     $jslibs .= <<<JS
@@ -161,7 +163,7 @@ if ('tinymce4' === $wysiwygeditor) {
         $curType = $typeEntry->get('type');
 
         $contentTypeClassName = cTypeGenerator::getContentTypeClassName($curType);
-        if (false === class_exists($contentTypeClassName)) {
+        if (!class_exists($contentTypeClassName)) {
             continue;
         }
         $cContentType = new $contentTypeClassName('', 0, []);

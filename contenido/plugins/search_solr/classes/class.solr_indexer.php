@@ -298,8 +298,7 @@ class SolrIndexer
     private function _getImageUrlByIdupl($idupl)
     {
         $upload = new cApiUpload($idupl);
-
-        if (false === $upload->isLoaded()) {
+        if (!$upload->isLoaded()) {
             return false;
         }
 

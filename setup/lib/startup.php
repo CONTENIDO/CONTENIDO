@@ -131,7 +131,7 @@ checkAndInclude(CON_SETUP_PATH . '/lib/class.setupmask.php');
 $sNotInstallableReason = '';
 
 // PHP version check
-if (false === isPHPCompatible()) {
+if (!isPHPCompatible()) {
     $sNotInstallableReason = 'php_version';
     checkAndInclude(CON_SETUP_PATH . '/steps/notinstallable.php');
 }

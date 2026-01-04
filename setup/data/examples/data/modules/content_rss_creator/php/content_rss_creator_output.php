@@ -99,7 +99,7 @@ if (cRegistry::getBackendSessionId() === NULL) {
 
     $result = mi18n("LABEL_RSS_CREATION_FAILED");
     if (isset($cfgClient[$client]['xml']['frontendpath'])) {
-        if (false === cFileHandler::exists($cfgClient[$client]['xml']['frontendpath'])) {
+        if (!cFileHandler::exists($cfgClient[$client]['xml']['frontendpath'])) {
             cDirHandler::create($cfgClient[$client]['xml']['frontendpath'], true);
         }
         // try to write xml to disk

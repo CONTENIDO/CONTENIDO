@@ -58,7 +58,7 @@ class cTinyMCE4List {
      */
     public function __construct($mode = null) {
         // output an empty list for no specified mode
-        if (false === isset($mode)) {
+        if (!isset($mode)) {
             echo '[]';
             return;
         }
@@ -140,7 +140,7 @@ class cTinyMCE4List {
             // get reference to last element of array
             $scope = &$scope[key($scope)];
             // add menu property to object if it does not exist
-            if (false === isset($scope->menu)) {
+            if (!isset($scope->menu)) {
                 $scope->menu = [];
             }
             // get reference to menu

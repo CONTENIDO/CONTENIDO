@@ -253,7 +253,7 @@ class PifaRightBottomFormPage extends cGuiPage
         // load models
         $idform = cSecurity::toInteger($idform);
         if (0 < $idform) {
-            if (false === $this->_pifaForm->loadByPrimaryKey($idform)) {
+            if (!$this->_pifaForm->loadByPrimaryKey($idform)) {
                 $msg = Pifa::i18n('FORM_LOAD_ERROR');
                 throw new PifaException($msg);
             }
@@ -520,7 +520,7 @@ class PifaRightBottomFormPage extends cGuiPage
         }
 
         // store item
-        if (false === $this->_pifaForm->store()) {
+        if (!$this->_pifaForm->store()) {
             $msg = Pifa::i18n('FORM_STORE_ERROR');
             $msg = sprintf($msg, $this->_pifaForm->getLastError());
             throw new PifaException($msg);
@@ -840,7 +840,7 @@ class PifaRightBottomFormDataPage extends cGuiPage
         // load models
         $idform = cSecurity::toInteger($idform);
         if (0 < $idform) {
-            if (false === $this->_pifaForm->loadByPrimaryKey($idform)) {
+            if (!$this->_pifaForm->loadByPrimaryKey($idform)) {
                 $msg = Pifa::i18n('FORM_LOAD_ERROR');
                 throw new PifaException($msg);
             }
@@ -1072,7 +1072,7 @@ class PifaRightBottomFormExportPage extends cGuiPage
         // load models
         $idform = cSecurity::toInteger($idform);
         if (0 < $idform) {
-            if (false === $this->_pifaForm->loadByPrimaryKey($idform)) {
+            if (!$this->_pifaForm->loadByPrimaryKey($idform)) {
                 $msg = Pifa::i18n('FORM_LOAD_ERROR');
                 throw new PifaException($msg);
             }

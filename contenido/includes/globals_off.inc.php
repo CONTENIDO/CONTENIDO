@@ -20,10 +20,10 @@
 // Simulate get_magic_quotes_gpc on if turned off
 if (CON_STRIPSLASHES) {
     // classes cStringMultiByteWrapper and cString are not loaded here as autoloader wasn't called yet
-    if (false === class_exists('cStringMultiByteWrapper')) {
+    if (!class_exists('cStringMultiByteWrapper')) {
         include_once dirname(__DIR__) . '/classes/class.string.multi.byte.wrapper.php';
     }
-    if (false === class_exists('cString')) {
+    if (!class_exists('cString')) {
         include_once dirname(__DIR__) . '/classes/class.string.php';
     }
 

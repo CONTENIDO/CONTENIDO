@@ -191,7 +191,7 @@ if ($action === 'news_create' && $perm->have_perm_area_action($area, 'news_creat
     }
 }
 
-if (true === $oNewsletter->isLoaded() && $oNewsletter->get('idclient') == $client && $oNewsletter->get('idlang') == $lang) {
+if ($oNewsletter->isLoaded() && $oNewsletter->get('idclient') == $client && $oNewsletter->get('idlang') == $lang) {
     $requestOptSendTo = $_REQUEST['optSendTo'] ?? '';
     $requestCkbWelcome = cSecurity::toInteger($_REQUEST['ckbWelcome'] ?? '0');
     $requestTxtDispatchCount = cSecurity::toInteger($_REQUEST['txtDispatchCount'] ?? '0');

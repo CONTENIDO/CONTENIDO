@@ -94,19 +94,19 @@ if ($action === 'mycontenido_editself') {
         $user->set('wysi', $wysi);
     }
 
-    if (true === cString::validateDateFormat($format)) {
+    if (cString::validateDateFormat($format)) {
         $user->setUserProperty('dateformat', 'full', $format);
     } else {
         $notificationDisplayed = true;
         $page->displayError(i18n("Date/Time format is not correct."));
     }
-    if (true === cString::validateDateFormat($formatdate)) {
+    if (cString::validateDateFormat($formatdate)) {
         $user->setUserProperty('dateformat', 'date', $formatdate);
     } else {
         $notificationDisplayed = true;
         $page->displayError(i18n("Date format is not correct."));
     }
-    if (true === cString::validateDateFormat($formattime)) {
+    if (cString::validateDateFormat($formattime)) {
         $user->setUserProperty('dateformat', 'time', $formattime);
     } else {
         $notificationDisplayed = true;

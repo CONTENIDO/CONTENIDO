@@ -494,7 +494,7 @@ class SearchResultModule
             'front_content',
             'MR'
         ];
-        if (false === in_array($this->_cfg['url_builder']['name'], $url_builder)) {
+        if (!in_array($this->_cfg['url_builder']['name'], $url_builder)) {
             $params = [
                 'search' => $params,
                 'lang' => $this->_lang,

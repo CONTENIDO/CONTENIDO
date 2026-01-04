@@ -223,7 +223,7 @@ class Pifa
             include_once(self::getPath() . 'extensions/' . $file);
 
             $reflection = new ReflectionClass($optionClass);
-            if (false === $reflection->isSubclassOf($parentClass)) {
+            if (!$reflection->isSubclassOf($parentClass)) {
                 continue;
             }
 
@@ -255,7 +255,7 @@ class Pifa
         $templates = [];
         foreach ($handle as $file) {
             // skip folders
-            if (true === is_dir($file)) {
+            if (is_dir($file)) {
                 continue;
             }
 

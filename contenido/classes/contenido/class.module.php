@@ -823,7 +823,7 @@ class cApiModule extends Item
                 // If it is a folder, run the function again!
                 if (!cFileHandler::exists($directory . $file)) {
                     // Skip parent and root directories
-                    if (false === cFileHandler::fileNameIsDot($file)) {
+                    if (!cFileHandler::fileNameIsDot($file)) {
                         $this->_addFolderToZip($directory . $file . '/', $zipArchive, $zipDirectory . $file . '/');
                     }
                 } else {

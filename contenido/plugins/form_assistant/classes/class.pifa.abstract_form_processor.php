@@ -71,7 +71,7 @@ abstract class PifaAbstractFormProcessor
 
         // load form
         $this->_form = new PifaForm($idform);
-        if (false === $this->_form->isLoaded()) {
+        if (!$this->_form->isLoaded()) {
             $msg = Pifa::i18n('FORM_LOAD_ERROR');
             throw new PifaException($msg);
         }

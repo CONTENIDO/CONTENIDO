@@ -563,7 +563,7 @@ while ($item = $uploadCollection->next()) {
     $filesize = $item->get('size');
 
     // Do not display directories and "filenames" begin with a dot
-    if (true === cDirHandler::exists($clientsUploadPath . $dirname . $filename) || cString::findFirstPos($filename, ".") === 0) {
+    if (cDirHandler::exists($clientsUploadPath . $dirname . $filename) || cString::findFirstPos($filename, ".") === 0) {
         continue;
     }
 

@@ -101,19 +101,19 @@ if ($action === 'lang_newlanguage') {
     if ($action === 'lang_edit') {
         cCallPluginStore('languages');
 
-        if (true === cString::validateDateFormat(stripslashes($datetimeformat))) {
+        if (cString::validateDateFormat(stripslashes($datetimeformat))) {
             $oLanguage->setProperty('dateformat', 'full', stripslashes($datetimeformat), $targetclient);
         } else {
             $invalidData = true;
             $page->displayError(i18n("Incorrect date/time format"));
         }
-        if (true === cString::validateDateFormat(stripslashes($dateformat))) {
+        if (cString::validateDateFormat(stripslashes($dateformat))) {
             $oLanguage->setProperty('dateformat', 'date', stripslashes($dateformat), $targetclient);
         } elseif (false === $invalidData) {
             $invalidData = true;
             $page->displayError(i18n("Incorrect date format"));
         }
-        if (true === cString::validateDateFormat(stripslashes($timeformat))) {
+        if (cString::validateDateFormat(stripslashes($timeformat))) {
             $oLanguage->setProperty('dateformat', 'time', stripslashes($timeformat), $targetclient);
         } elseif (false === $invalidData) {
             $invalidData = true;
@@ -138,7 +138,7 @@ if ($action === 'lang_newlanguage') {
                 }
 
                 if (false === $invalidData) {
-                    if (false === langEditLanguage($idlang, $langname, $sencoding, $active, $direction)) {
+                    if (!langEditLanguage($idlang, $langname, $sencoding, $active, $direction)) {
                         $page->displayError(i18n("An error occurred during saving the changes"));
                     } else {
                         $page->displayOk(i18n("Changes saved"));

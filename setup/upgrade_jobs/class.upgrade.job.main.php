@@ -164,7 +164,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract
         if (is_dir($dir)) {
             if (false !== ($handle = cDirHandler::read($dir))) {
                 foreach ($handle as $file) {
-                    if (false === cFileHandler::fileNameIsDot($file) && is_file($dir . $file)) {
+                    if (!cFileHandler::fileNameIsDot($file) && is_file($dir . $file)) {
                         if (preg_match('/^class\.upgrade\.job\.(\d{4})\.php$/', $file, $match)) {
                             $files[$match[1]] = $file;
                         }

@@ -62,7 +62,7 @@ class cContentTypeDate extends cContentTypeAbstract
 
         // set the locale
         $locale = cRegistry::getBackendLanguage();
-        if (empty($locale) || false === setlocale(LC_TIME, $locale)) {
+        if (empty($locale) || setlocale(LC_TIME, $locale) === false) {
             $oApiLang = new cApiLanguage(cRegistry::getLanguageId());
             $locale = $oApiLang->getProperty('dateformat', 'locale');
             if (empty($locale)) {
@@ -71,7 +71,7 @@ class cContentTypeDate extends cContentTypeAbstract
 
                 $locale = $language . '_' . cString::toUpperCase($country);
             }
-            if (false === empty($locale)) {
+            if (empty($locale)) {
                 setlocale(LC_TIME, $locale);
             }
         }

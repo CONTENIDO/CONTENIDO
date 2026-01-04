@@ -38,7 +38,11 @@ class cApiPathresolveCacheHelper
      */
     public static function setup(array $cfg)
     {
-        if (isset($cfg['pathresolve_heapcache']) && true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
+        if (
+            isset($cfg['pathresolve_heapcache'])
+            && $cfg['pathresolve_heapcache'] === true
+            && self::$_tableCreated === false
+        ) {
             $db = cRegistry::getDb();
             $tableName = $cfg['sql']['sqlprefix'] . '_pathresolve_cache';
 

@@ -519,7 +519,7 @@ class PifaForm extends Item
         }
 
         // insert new row
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('VALUE_STORE_ERROR');
             throw new PifaDatabaseException($msg);
         }
@@ -548,7 +548,7 @@ class PifaForm extends Item
             }
             $destName = $this->get('data_table') . '_' . $lastInsertedId . '_' . $column;
             $destName = preg_replace('/[^a-z0-9_]+/i', '_', $destName);
-            if (false === move_uploaded_file($tmpName, $destPath . $destName)) {
+            if (!move_uploaded_file($tmpName, $destPath . $destName)) {
                 $msg = Pifa::i18n('FILE_STORE_ERROR');
                 throw new PifaException($msg);
             }
@@ -806,7 +806,7 @@ class PifaForm extends Item
         // always append the records ID
         array_push($columns, 'id');
         // append the records timestamp if defined for form
-        if (true === (bool)$this->get('with_timestamp')) {
+        if ((bool)$this->get('with_timestamp')) {
             array_push($columns, 'pifa_timestamp');
         }
         foreach ($this->getFields() as $index => $pifaField) {
@@ -941,7 +941,7 @@ class PifaForm extends Item
 
         // check table
         $db = cRegistry::getDb();
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('TABLE_CHECK_ERROR');
             $msg = sprintf($msg, $db->getErrorMessage());
             throw new PifaException($msg);
@@ -1013,7 +1013,7 @@ class PifaForm extends Item
 
         // create table
         $db = cRegistry::getDb();
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('TABLE_CREATE_ERROR');
             throw new PifaException($msg);
         }
@@ -1138,7 +1138,7 @@ class PifaForm extends Item
         if ($oldColumnName === $columnName) {
             return;
         }
-        if (true === $this->_existsColumn($columnName)) {
+        if ($this->_existsColumn($columnName)) {
             $msg = Pifa::i18n('COLUMN_EXISTS_ERROR');
             $msg = sprintf($msg, $columnName);
             throw new PifaException($msg);
@@ -1156,7 +1156,7 @@ class PifaForm extends Item
             ;";
 
         $db = cRegistry::getDb();
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('COLUMN_ALTER_ERROR');
             throw new PifaException($msg);
         }
@@ -1173,7 +1173,7 @@ class PifaForm extends Item
     public function dropColumn($columnName)
     {
         $tableName = $this->get('data_table');
-        if (false === $this->_existsColumn($columnName)) {
+        if (!$this->_existsColumn($columnName)) {
             $msg = Pifa::i18n('COLUMN_EXISTS_ERROR');
             $msg = sprintf($msg, $columnName);
             throw new PifaException($msg);
@@ -1187,7 +1187,7 @@ class PifaForm extends Item
             ;";
 
         $db = cRegistry::getDb();
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('COLUMN_DROP_ERROR');
             throw new PifaException($msg);
         }
@@ -1205,7 +1205,7 @@ class PifaForm extends Item
     public function addColumn($columnName, $dataType)
     {
         $tableName = $this->get('data_table');
-        if (true === $this->_existsColumn($columnName)) {
+        if ($this->_existsColumn($columnName)) {
             $msg = Pifa::i18n('COLUMN_EXISTS_ERROR');
             $msg = sprintf($msg, $columnName);
             throw new PifaException($msg);
@@ -1222,7 +1222,7 @@ class PifaForm extends Item
             ;";
 
         $db = cRegistry::getDb();
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('COLUMN_ADD_ERROR');
             throw new PifaException($msg);
         }
@@ -1244,7 +1244,7 @@ class PifaForm extends Item
             ;";
 
         $db = cRegistry::getDb();
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('COLUMNS_LOAD_ERROR');
             throw new PifaException($msg);
         }
@@ -1282,7 +1282,7 @@ class PifaForm extends Item
             WHERE
                 idform = " . cSecurity::toInteger($this->get('idform')) . "
             ;";
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('FORM_DELETE_ERROR');
             throw new PifaException($msg);
         }
@@ -1294,7 +1294,7 @@ class PifaForm extends Item
             WHERE
                 idform = " . cSecurity::toInteger($this->get('idform')) . "
             ;";
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('FIELDS_DELETE_ERROR');
             throw new PifaException($msg);
         }
@@ -1305,7 +1305,7 @@ class PifaForm extends Item
                 DROP TABLE IF EXISTS
                     `" . cSecurity::toString($this->get('data_table')) . "`
                 ;";
-            if (false === $db->query($sql)) {
+            if (!$db->query($sql)) {
                 $msg = Pifa::i18n('TABLE_DROP_ERROR');
                 throw new PifaException($msg);
             }

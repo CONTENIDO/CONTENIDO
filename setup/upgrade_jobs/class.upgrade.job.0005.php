@@ -88,7 +88,7 @@ EOT;
                 }
 
                 // skip empty filelist array
-                if (true === empty($oldFilelistArray)) {
+                if (empty($oldFilelistArray)) {
                     continue;
                 }
                 // convert the whole entries

@@ -267,7 +267,7 @@ class cLayoutSynchronizer
             }
 
             // skip entries that are no directories
-            if (false === cDirHandler::exists($dir . $file . '/')) {
+            if (!cDirHandler::exists($dir . $file . '/')) {
                 continue;
             }
 

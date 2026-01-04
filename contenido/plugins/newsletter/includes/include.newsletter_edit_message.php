@@ -47,7 +47,7 @@ if ($requestIdNewsletter > 0) {
     $oNewsletter->loadByPrimaryKey($requestIdNewsletter);
 }
 
-if (true === $oNewsletter->isLoaded() && $oNewsletter->get('idclient') == $client && $oNewsletter->get('idlang') == $lang) {
+if ($oNewsletter->isLoaded() && $oNewsletter->get('idclient') == $client && $oNewsletter->get('idlang') == $lang) {
     // Check and set values
     $requestSelTemplate = cSecurity::toInteger($_REQUEST['selTemplate'] ?? '0');
     $requestTxtMessage = $_REQUEST['txtMessage'] ?? '';

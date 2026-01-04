@@ -381,7 +381,7 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
 {
     $aInvalidDirectories = [];
 
-    if (true === is_dir($sDirectory)) {
+    if (is_dir($sDirectory)) {
         $aDirsToExclude = uplGetDirectoriesToExclude();
 
         $aFiles = [];

@@ -33,7 +33,7 @@ class cErrorException extends cException
         $cfg = cRegistry::getConfig();
 
         // determine if exception should be logged
-        if (false === isset($cfg['debug']['log_error_exceptions'])) {
+        if (!isset($cfg['debug']['log_error_exceptions'])) {
             $this->_log_exception = true;
         }
 

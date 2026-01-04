@@ -77,7 +77,7 @@ if ($action === 'recipientgroup_create' && $perm->have_perm_area_action($area, $
     $oRGroup->loadByPrimaryKey($requestIdRecipientGroup);
 }
 
-if (true === $oRGroup->isLoaded() && $oRGroup->get('idclient') == $client && $oRGroup->get('idlang') == $lang) {
+if ($oRGroup->isLoaded() && $oRGroup->get('idclient') == $client && $oRGroup->get('idlang') == $lang) {
     $aMessages = [];
 
     if ($action === 'recipientgroup_save_group' && $perm->have_perm_area_action($area, $action)) {

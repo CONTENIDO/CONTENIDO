@@ -555,7 +555,7 @@ class cApiArticleLanguage extends Item
 
         $type = cString::toLowerCase($type);
 
-        if (false === cString::findFirstPosCI($type, 'cms_')) {
+        if (cString::findFirstPosCI($type, 'cms_') === false) {
             $type = 'cms_' . $type;
         }
 

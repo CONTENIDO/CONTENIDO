@@ -337,7 +337,7 @@ class cVersion
         if (is_dir($sDir)) {
             if (false !== ($handle = cDirHandler::read($sDir))) {
                 foreach ($handle as $file) {
-                    if (false === cFileHandler::fileNameIsDot($file)) {
+                    if (!cFileHandler::fileNameIsDot($file)) {
                         $aData = explode('.', $file);
                         $aValues = explode('_', $aData[0]);
                         if ($aValues[0] > $this->iRevisionNumber) {
@@ -370,9 +370,9 @@ class cVersion
         if (is_dir($sDir) and $sFirstFile == '') {
             if (false !== ($handle = cDirHandler::read($sDir))) {
                 foreach ($handle as $sFile) {
-                    if (false === cFileHandler::fileNameIsDot($sFile)) {
+                    if (!cFileHandler::fileNameIsDot($sFile)) {
                         // Delete the files
-                        if (false === cFileHandler::remove($sDir . $sFile)) {
+                        if (!cFileHandler::remove($sDir . $sFile)) {
                             $bDelete = false;
                         }
                     }

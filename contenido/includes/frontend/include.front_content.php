@@ -390,7 +390,7 @@ if ($contenido) {
     if ($locked == 1) {
         // admin can edit article despite its locked status
         $isAdmin = cPermission::checkAdminPermission($auth->getPerms());
-        if (false === $isAdmin) {
+        if (!$isAdmin) {
             $notification = new cGuiNotification();
             $modErrorMessage = i18n('This article is currently frozen and can not be edited!');
             $inUse = true;
@@ -556,7 +556,7 @@ if (!$inUse && $allow && $view == 'edit' && ($perm->have_perm_area_action_item('
 
                 if (ipMatch($network, $netmask, $_SERVER['REMOTE_ADDR'])) {
                     $oRightColl = new cApiRightCollection();
-                    if (true === $oRightColl->hasFrontendAccessByCatIdAndUserId($idcat, $user_id)) {
+                    if ($oRightColl->hasFrontendAccessByCatIdAndUserId($idcat, $user_id)) {
                         // TODO Don't allow direct write access to auth property!
                         $auth->auth['uid'] = $user_id;
                         $validated = 1;

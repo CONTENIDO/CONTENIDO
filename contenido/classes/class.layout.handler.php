@@ -149,7 +149,7 @@ class cLayoutHandler
 
         $cApiLayout = new cApiLayout($layoutId);
 
-        if (true === $cApiLayout->isLoaded() && is_array($cfgClient) && (int)$client > 0) {
+        if ($cApiLayout->isLoaded() && is_array($cfgClient) && (int)$client > 0) {
             $this->_layoutName = $cApiLayout->get('alias');
             $this->_layoutMainPath = $cfgClient[$client]['layout']['path'];
             $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . '/';

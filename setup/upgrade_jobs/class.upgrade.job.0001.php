@@ -39,7 +39,7 @@ class cUpgradeJob_0001 extends cUpgradeJobAbstract
                     break;
             }
         }
-        if (false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
+        if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
             updateClientPath(0, self::$_rootPath . '/cms/', self::$_rootHttpPath . '/cms/');
         }
     }

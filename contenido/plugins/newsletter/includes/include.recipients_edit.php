@@ -69,7 +69,7 @@ if ($action === 'recipients_create' && $perm->have_perm_area_action($area, $acti
     $recipient = new NewsletterRecipient($requestIdRecipient);
 }
 
-if (true === $recipient->isLoaded() && $recipient->get('idclient') == $client && $recipient->get('idlang') == $lang) {
+if ($recipient->isLoaded() && $recipient->get('idclient') == $client && $recipient->get('idlang') == $lang) {
     $aMessages = [];
     if ($action == 'recipients_save' && $perm->have_perm_area_action($area, $action)) {
         $oPage->reloadLeftBottomFrame(['idrecipient' => $recipient->get('idnewsrcp')]);

@@ -299,7 +299,7 @@ abstract class cWYSIWYGEditor
         // no paths are allowed in WYSIWYG editor
         // fall back to defaults if editor folder does not exist
         if (0 === cString::getStringLength($curWysiwygEditor)
-            || false === cFileHandler::exists(cRegistry::getConfigValue('path', 'all_wysiwyg') . $curWysiwygEditor)
+            || !cFileHandler::exists(cRegistry::getConfigValue('path', 'all_wysiwyg') . $curWysiwygEditor)
             || false !== cString::findFirstPos($curWysiwygEditor, '.')
             || false !== cString::findFirstPos($curWysiwygEditor, '/')
             || false !== cString::findFirstPos($curWysiwygEditor, '\\')) {

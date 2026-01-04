@@ -22,22 +22,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cTinymce4Configuration {
 
     /**
-     *
      * @var bool
      */
     public $successfully = false;
 
     /**
-     *
      * @var bool
      */
-    private $_perm = false;
+    private $hasPermission = false;
 
     /**
-     *
-     * @var array
+     * @var string[]
      */
-    private $_configErrors = [];
+    private $configErrors = [];
 
     /**
      * Constructor function.
@@ -46,9 +43,9 @@ class cTinymce4Configuration {
     public function __construct() {
         global $currentuser;
 
-        // decide whether user is allowed to change values
-        if (cRegistry::getPerm()->isSysadmin($currentuser) === true) {
-            $this->_perm = true;
+        // Decide whether user is allowed to change values
+        if (cRegistry::getPerm()->isSysadmin($currentuser)) {
+            $this->hasPermission = true;
         }
     }
 
@@ -61,7 +58,8 @@ class cTinymce4Configuration {
      * @param int $width Width of label in px
      * @return cHTMLDiv The div element containing label and text box
      */
-    private function _addLabelWithTextarea($description, $name, $value = '', $width = 75) {
+    private function _addLabelWithTextarea($description, $name, $value = '', $width = 75): cHTMLDiv
+    {
         $label = new cHTMLLabel($description, $name);
         $label->setClass('sys_config_txt_lbl');
         $label->setStyle('width:' . $width . 'px; vertical-align: top;');
@@ -69,12 +67,11 @@ class cTinymce4Configuration {
         $textarea = new cHTMLTextarea($name);
         $textarea->setValue($value);
         $textarea->setAttribute('style', 'box-sizing: border-box; width: 600px;');
-        if ($this->_perm === false) {
+        if (!$this->hasPermission) {
             $textarea->updateAttribute('disabled', 'disabled');
         }
-        $div = new cHTMLDiv($label .  $textarea, 'systemSetting');
 
-        return $div;
+        return new cHTMLDiv($label .  $textarea, 'systemSetting');
     }
 
     /**
@@ -87,11 +84,15 @@ class cTinymce4Configuration {
      * @param bool $checked Whether this checkbox is setup as checked
      * @return cHTMLCheckbox Checkbox with label
      */
-    private function _addLabelWithCheckbox($description, $name, $value, $checked) {
-        $checkBox = new cHTMLCheckbox($name, $value, str_replace('[]', '_', $name . $value), (true === $checked));
+    private function _addLabelWithCheckbox($description, $name, $value, $checked): cHTMLCheckbox
+    {
+        $checkBox = new cHTMLCheckbox(
+            $name,
+            $value,
+            str_replace('[]', '_', $name . $value), $checked === true);
         $checkBox->setLabelText($description);
 
-        if (false === $this->_perm) {
+        if (!$this->hasPermission) {
             $checkBox->updateAttribute('disabled', 'disabled');
         }
 
@@ -101,38 +102,28 @@ class cTinymce4Configuration {
     /**
      * Check if a type pattern matches value.
      *
-     * @param string $type
-     *        Pattern that is applied to value
-     * @param string $value
-     *        Value that is checked for pattern
-     * @return boolean
-     *        Whether type matches value
+     * @param string $type Pattern that is applied to value
+     * @param string $value Value that is checked for pattern
+     * @return bool Whether type matches value
      */
-    private function _checkType($type, $value) {
-        if (true === empty($value)) {
+    private function _checkType($type, $value): bool
+    {
+        if (empty($value)) {
             return true;
         }
-        if (true === isset($value)) {
-            // parameter is known, check it using type expression
-            // preg match returns 1 if match occurs
-            return (1 === preg_match($type, $value));
-        }
 
-        return false;
+        // parameter is known, check it using type expression
+        // preg match returns 1 if match occurs
+        return preg_match($type, $value) === 1;
     }
 
-    /**
-     *
-     * @param array haystack
-     * @param array $needles
-     * @return bool
-     */
-    private function _checkIsset(array $haystack, array $needles) {
+    private function _checkIsset(array $haystack, array $needles): bool
+    {
         if (count($haystack) !== count($needles)) {
             return false;
         }
         foreach ($needles as $needle) {
-            if (false === isset($haystack[$needle])) {
+            if (!isset($haystack[$needle])) {
                 return false;
             }
         }
@@ -143,10 +134,10 @@ class cTinymce4Configuration {
     /**
      * This function lists all external plugins that should be shown in a table.
      *
-     * @return string
      * @throws cException
      */
-    private function _listExternalPlugins() {
+    private function _listExternalPlugins(): string
+    {
         /// TODO: use a preference loading function for plugins to list
         $externalPlugins = static::get([], 'raw', 'externalplugins');
         if (isset($externalPlugins['custom'])) {
@@ -194,7 +185,7 @@ class cTinymce4Configuration {
             $input->setAttribute('type', 'hidden');
             $input->setAttribute('name', 'externalplugins[' . $i . '][name]');
             $input->setAttribute('value', $externalPlugins[$i]['name']);
-            if (false === $this->_perm) {
+            if (!$this->hasPermission) {
                 $input->updateAttribute('disabled', 'disabled');
             }
 
@@ -212,7 +203,7 @@ class cTinymce4Configuration {
             $input->setAttribute('type', 'hidden');
             $input->setAttribute('name', 'externalplugins[' . $i . '][url]');
             $input->setAttribute('value', $externalPlugins[$i]['url']);
-            if (false === $this->_perm) {
+            if (!$this->hasPermission) {
                 $input->updateAttribute('disabled', 'disabled');
             }
             $td->appendContent($input);
@@ -222,7 +213,7 @@ class cTinymce4Configuration {
 
             // create new td
             $td = new cHTMLTableData();
-            if (true === $this->_perm) {
+            if ($this->hasPermission) {
                 // Edit/delete links only for sysadmin
                 $oLinkDelete = new cHTMLLink();
                 $oLinkDelete->setCLink(cRegistry::getArea(), cRegistry::getFrame(), 'system_wysiwyg_tinymce4_delete_item');
@@ -246,7 +237,7 @@ class cTinymce4Configuration {
         // create new td for plugin name
         $td = new cHTMLTableData();
         $input = new cHTMLFormElement('externalplugins[' . $i . '][name]');
-        if (false === $this->_perm) {
+        if (!$this->hasPermission) {
             $input->updateAttribute('disabled', 'disabled');
         }
         $td->appendContent($input);
@@ -255,7 +246,7 @@ class cTinymce4Configuration {
         // create new td for plugin url
         $td = new cHTMLTableData();
         $input = new cHTMLFormElement('externalplugins[' . $i . '][url]');
-        if (false === $this->_perm) {
+        if (!$this->hasPermission) {
             $input->updateAttribute('disabled', 'disabled');
         }
         $td->appendContent($input);
@@ -281,11 +272,14 @@ class cTinymce4Configuration {
      * @param string $toolbarData The toolbar data to check for validity
      * @return boolean True if toolbar data is valid, false otherwise
      */
-    private function _validateToolbarN($toolbarData) {
+    private function _validateToolbarN(string $toolbarData): bool
+    {
         // do not use cRequestValidator instance
         // because it does not support multi-dimensional arrays
-        if (false === $this->_checkType('/^[a-zA-Z0-9 \-\|_]*$/', $toolbarData)
-        || false !== cString::findFirstPos($toolbarData, '||')) {
+        if (
+            $this->_checkType('/^[a-zA-Z0-9 \-\|_]*$/', $toolbarData) === false
+            || cString::findFirstPos($toolbarData, '||') !== false
+        ) {
             return false;
         }
 
@@ -302,17 +296,16 @@ class cTinymce4Configuration {
     public static function get($default) {
         $cfg = cRegistry::getConfig();
 
-        if (false === isset($cfg['wysiwyg'])
-        || false === isset($cfg['wysiwyg']['tinymce4'])) {
+        if (!isset($cfg['wysiwyg']) || !isset($cfg['wysiwyg']['tinymce4'])) {
             $configPath = cRegistry::getConfigValue('path', 'contenido_config') . 'config.wysiwyg_tinymce4.php';
             // check if configuration file exists
-            if (true !== cFileHandler::exists($configPath)) {
+            if (!cFileHandler::exists($configPath)) {
                 return $default;
             }
 
             try {
                 // check if file is readable
-                if (true !== cFileHandler::readable($configPath)) {
+                if (!cFileHandler::readable($configPath)) {
                     return $default;
                 }
             } catch (cInvalidArgumentException $e) {
@@ -325,7 +318,7 @@ class cTinymce4Configuration {
 
         // check number of keys passed to function
         $numArgs = func_num_args();
-        if (0 === $numArgs) {
+        if ($numArgs === 0) {
             return $default;
         }
 
@@ -333,16 +326,16 @@ class cTinymce4Configuration {
         $result = cRegistry::getConfig();
 
         // select ['wysiwyg']['tinymce4'] by default
-        if (false === isset($result['wysiwyg'])) {
+        if (!isset($result['wysiwyg'])) {
             return $default;
         }
-        if (false === $result['wysiwyg']['tinymce4']) {
+        if ($result['wysiwyg']['tinymce4'] === false) {
             return $default;
         }
         $result = $result['wysiwyg']['tinymce4'];
         // get values in key path that user requested
         for ($i = 0; $i < $numArgs -1; $i++) {
-            if (false === isset($result[func_get_arg(1 + $i)])) {
+            if (!isset($result[func_get_arg(1 + $i)])) {
                 return $default;
             }
             // jump one array level deeper into the result
@@ -360,11 +353,11 @@ class cTinymce4Configuration {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function validateForm($config) {
+    public function validateForm(array $config) {
         // Checks for cross site requests and cross site scripting
         // are omitted due to time constraints
 
-        if ($this->_perm === false) {
+        if (!$this->hasPermission) {
             return false;
         }
 
@@ -375,7 +368,7 @@ class cTinymce4Configuration {
         // remove not used contenido field
         unset($config['contenido']);
 
-        // remove x and y values from image submit button in in form
+        // remove x and y values from image submit button in form
         unset($config['submit_x']);
         unset($config['submit_y']);
 
@@ -395,13 +388,18 @@ class cTinymce4Configuration {
             // try to delete configuration
             $configPath = cRegistry::getConfigValue('path', 'contenido_config');
             $configPath .= 'config.wysiwyg_tinymce4.php';
-            if (cFileHandler::exists($configPath)
-            && cFileHandler::writeable($configPath)) {
+            if (cFileHandler::exists($configPath) && cFileHandler::writeable($configPath)) {
                 cFileHandler::remove($configPath);
-                $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('TinyMCE 4 configuration got reset back to default'));
+                $notification->displayNotification(
+                    cGuiNotification::LEVEL_INFO,
+                    i18n('TinyMCE 4 configuration got reset back to default')
+                );
             } else {
                 // can not delete config, display message
-                $notification->displayNotification(cGuiNotification::LEVEL_ERROR, i18n('Can not delete config file'));
+                $notification->displayNotification(
+                    cGuiNotification::LEVEL_ERROR,
+                    i18n('Can not delete config file')
+                );
             }
 
             // do not save config
@@ -434,33 +432,38 @@ class cTinymce4Configuration {
         reset($config);
         $key = key($config);
 
-        if (false === isset($_POST['externalplugins']) && false === $this->_checkIsset($config[$key]['tinymce4_full'], $shouldArrayStructure['tinymce4_full'])) {
-            $this->_configErrors[] = i18n('Fullscreen config of inline editor is erroneous.');
+        if (!isset($_POST['externalplugins']) && !$this->_checkIsset($config[$key]['tinymce4_full'], $shouldArrayStructure['tinymce4_full'])) {
+            $this->configErrors[] = i18n('Fullscreen config of inline editor is erroneous.');
             return false;
         }
-        if (false === isset($_POST['externalplugins']) && false === $this->_checkIsset($config[$key]['tinymce4_fullscreen'], $shouldArrayStructure['tinymce4_fullscreen'])) {
-            $this->_configErrors[] = i18n('Config of editor on separate editor page is erroneous.');
+        if (!isset($_POST['externalplugins']) && !$this->_checkIsset($config[$key]['tinymce4_fullscreen'], $shouldArrayStructure['tinymce4_fullscreen'])) {
+            $this->configErrors[] = i18n('Config of editor on separate editor page is erroneous.');
             return false;
         }
-        if (false === isset($_POST['externalplugins']) && false === isset($config[$key]['custom'])) {
-            $this->_configErrors[] = i18n('Custom configuration of tinyMCE 4 is not set.');
+        if (!isset($_POST['externalplugins']) && !isset($config[$key]['custom'])) {
+            $this->configErrors[] = i18n('Custom configuration of tinyMCE 4 is not set.');
             return false;
         }
 
         // do not use cRequestValidator instance because it does not support multi-dimensional arrays
-        if (false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar1'] ?? '')
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar2'] ?? '')
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar3'] ?? '')
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar1'] ?? '')
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar2'] ?? '')
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar3'] ?? '')) {
-            $this->_configErrors[] = i18n('Toolbar(s) of editor contain erroneous data.');
+        if (
+            !$this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar1'] ?? '')
+            || !$this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar2'] ?? '')
+            || !$this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar3'] ?? '')
+            || !$this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar1'] ?? '')
+            || !$this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar2'] ?? '')
+            || !$this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar3'] ?? '')
+        ) {
+            $this->configErrors[] = i18n('Toolbar(s) of editor contain erroneous data.');
             return false;
         }
 
         // remove last entry of external plugins if it is empty
-        if (!empty($config[$key]['externalplugins'])
-            && is_array($config[$key]['externalplugins']) && count($config[$key]['externalplugins']) > 0) {
+        if (
+            !empty($config[$key]['externalplugins'])
+            && is_array($config[$key]['externalplugins'])
+            && count($config[$key]['externalplugins']) > 0
+        ) {
             $lastExternalPlugin = $config[$key]['externalplugins'][count($config[$key]['externalplugins']) -1];
             if ('' === $lastExternalPlugin['name']
                 && '' === $lastExternalPlugin['url']) {
@@ -479,13 +482,13 @@ class cTinymce4Configuration {
             $customConfig = (array) json_decode($config[$key]['custom'], true);
             switch (json_last_error()) {
                 case JSON_ERROR_DEPTH:
-                    $this->_configErrors[] = i18n('Maximum stack depth exceeded while decoding json');
+                    $this->configErrors[] = i18n('Maximum stack depth exceeded while decoding json');
                     return false;
                 case JSON_ERROR_CTRL_CHAR:
-                    $this->_configErrors[] = i18n('Unexpected control character found');
+                    $this->configErrors[] = i18n('Unexpected control character found');
                     return false;
                 case JSON_ERROR_SYNTAX:
-                    $this->_configErrors[] = i18n('Syntax error, malformed JSON');
+                    $this->configErrors[] = i18n('Syntax error, malformed JSON');
                     return false;
             }
         }
@@ -518,11 +521,11 @@ class cTinymce4Configuration {
      * Do not load external plugin if user has permission to request that.
      *
      * @param array $form Get parameters from deletion link
-     * @return boolean|array False if data should not be saved, otherwise data to save
+     * @return bool|array False if data should not be saved, otherwise data to save
      */
-    public function removeExternalPluginLoad($form) {
+    public function removeExternalPluginLoad(array $form) {
         // abort if user has not sufficient permissions
-        if (false === $this->_perm) {
+        if (!$this->hasPermission) {
             return false;
         }
 
@@ -561,15 +564,15 @@ class cTinymce4Configuration {
         $area = cRegistry::getArea();
 
         // validate if user has permission to edit this area
-        if (false === cRegistry::getPerm()->have_perm_area_action($area, 'edit_system_wysiwyg_tinymce4')) {
+        if (!cRegistry::getPerm()->have_perm_area_action($area, 'edit_system_wysiwyg_tinymce4')) {
             $page->displayCriticalError(i18n('Access denied'));
             $page->render();
             return;
         }
 
-        if (count($this->_configErrors) > 0) {
+        if (count($this->configErrors) > 0) {
             $errorMessage = i18n('The following errors occurred when trying to verify configuration:') . '<ul>';
-            foreach ($this->_configErrors as $error) {
+            foreach ($this->configErrors as $error) {
                 $errorMessage .= '<li>' . $error . '</li>';
             }
             $errorMessage .= '</ul>';
@@ -579,7 +582,7 @@ class cTinymce4Configuration {
         if ($this->successfully === true) $page->displayOk(i18n("Changes saved successfully!"));
 
         $page->displayInfo(sprintf(i18n('Currently active WYSIWYG editor: %s'), cWYSIWYGEditor::getCurrentWysiwygEditorName()));
-        if (false === $this->_perm) {
+        if (!$this->hasPermission) {
             $page->displayWarning(i18n("You are not sysadmin. You can't change these settings."));
         }
 
@@ -591,11 +594,11 @@ class cTinymce4Configuration {
             $curType = $typeEntry->get('type');
 
             $contentTypeClassName = cTypeGenerator::getContentTypeClassName($curType);
-            if (false === class_exists($contentTypeClassName)) {
+            if (!class_exists($contentTypeClassName)) {
                 continue;
             }
             $cContentType = new $contentTypeClassName('', 0, []);
-            if (false === $cContentType->isWysiwygCompatible()) {
+            if (!$cContentType->isWysiwygCompatible()) {
                 continue;
             }
 
@@ -670,16 +673,16 @@ class cTinymce4Configuration {
 
             // Add jump lists to tinymce's dialogs
             $containerDiv = new cHTMLDiv();
-            $checked = true === ('image' === static::get(false, 'raw', $curType, 'contenido_lists', 'image'));
+            $checked = ('image' === static::get(false, 'raw', $curType, 'contenido_lists', 'image'));
             $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in image insertion dialog'), $curType . '[contenido_lists][image]', 'image', $checked));
-            $checked = true === ('link' === static::get(false, 'raw', $curType, 'contenido_lists', 'link'));
+            $checked = ('link' === static::get(false, 'raw', $curType, 'contenido_lists', 'link'));
             $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in link insertion dialog'), $curType . '[contenido_lists][link]', 'link', $checked));
             $form->add(i18n('contenido_lists'), $containerDiv->render());
 
             //add textarea for custom tinymce 4 settings
             $textarea = new cHTMLTextarea($curType . '[custom]');
             $textarea->setClass('con_code');
-            if (false === $this->_perm) {
+            if (!$this->hasPermission) {
                 $textarea->updateAttribute('disabled', 'disabled');
             }
 
@@ -691,7 +694,7 @@ class cTinymce4Configuration {
             $form->add(i18n('Additional parameters (JSON passed to tinymce constructor)'), $textarea->render());
 
             // check permission to save system wysiwyg editor settings
-            if (false === $this->_perm) {
+            if (!$this->hasPermission) {
                 $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's', false, true);
             }
             $result .= '<p>' . $form->render() . '</p>';
@@ -699,7 +702,7 @@ class cTinymce4Configuration {
 
         // external plugins (can not be configured per CMS-type)
         $form = new cGuiTableForm('system_wysiwyg_tinymce4_external_plugins');
-        if (false === $this->_perm) {
+        if (!$this->hasPermission) {
             $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's', false, true);
         }
         $form->setAcceptCharset('UTF-8');
@@ -722,7 +725,7 @@ class cTinymce4Configuration {
             $resetForm->setVar('action', 'edit_tinymce4');
             $oResetButton = new cHTMLButton('reset', i18n('Reset configuration back to default'));
             $oResetButton->setAttribute('value', i18n('Reset Configuration'));
-            if (false === $this->_perm) {
+            if (!$this->hasPermission) {
                 $oResetButton->updateAttribute('disabled', 'disabled');
             }
 

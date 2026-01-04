@@ -94,8 +94,8 @@ if (stripslashes($file)) {
     $page->reloadLeftBottomFrame(['file' => $sFilename]);
 }
 
-if (true === cFileHandler::exists($path . $sFilename)
-    && false === cFileHandler::writeable($path . $sFilename)) {
+if (cFileHandler::exists($path . $sFilename)
+    && !cFileHandler::writeable($path . $sFilename)) {
     $page->displayWarning(i18n("You have no write permissions for this file"));
 }
 
@@ -109,7 +109,7 @@ $bEdit = false;
 if ((!$readOnly) && $actionRequest == $sActionCreate && $requestStatus == 'send') {
     $sTempFilename = $sFilename;
 
-    if (true === cFileHandler::validateFilename($sFilename)) {
+    if (cFileHandler::validateFilename($sFilename)) {
         cFileHandler::create($path . $sFilename);
         $moduleHandler->createModuleFile('js', $sFilename, $requestCode);
         $bEdit = cFileHandler::read($path . $sFilename);
@@ -154,7 +154,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $requestStatus == 'send') 
     }
 
     $bEdit = false;
-    if (true === cFileHandler::validateFilename($sFilename)) {
+    if (cFileHandler::validateFilename($sFilename)) {
         $moduleHandler->createModuleFile('js', $sFilename, $requestCode);
         $bEdit = cFileHandler::read($path . $sFilename);
     }

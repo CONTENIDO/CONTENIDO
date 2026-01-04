@@ -51,7 +51,7 @@ $tpl->assign('article', "CMS_TEXT[3]");
 $tpl->assign('first', false);
 
 // check if content is numeric
-if (false === is_numeric($content) || false === is_numeric($level)) {
+if (!is_numeric($content) || !is_numeric($level)) {
     $tpl->assign('error', mi18n("NOT_NUMERIC_VALUE"));
 } else if ($article != 0 && $article != 1) {
     $tpl->assign('error', mi18n("NOT_ZERO_OR_ONE"));

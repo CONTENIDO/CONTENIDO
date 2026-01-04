@@ -93,7 +93,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
                 $containerModuleId = $containerModules[$containerNr];
                 $oModule = new cApiModule($containerModuleId);
                 $module = $oModule->toArray();
-                if (false === $module) {
+                if ($module === false) {
                     $module = [];
                 }
 

@@ -511,7 +511,7 @@ abstract class cContentTypeAbstract
         if (cDirHandler::exists($this->_uploadPath . $directoryPath)) {
             if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
                 foreach ($handle as $entry) {
-                    if (false === cFileHandler::fileNameBeginsWithDot($entry)) {
+                    if (!cFileHandler::fileNameBeginsWithDot($entry)) {
                         $file = [];
                         $file['name'] = $entry;
                         $file['path'] = $directoryPath . $entry;

@@ -107,7 +107,7 @@ if ($refreshTemplates != '') {
     }
 }
 
-if (true === $layout->isLoaded()) {
+if ($layout->isLoaded()) {
     $msg = '';
 
     $idlay = $layout->get('idlay');

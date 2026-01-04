@@ -748,12 +748,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         try {
             $filename = Pifa::fromCamelCase($moduleClass);
             $filename = "extensions/class.pifa.$filename.php";
-            if (false === file_exists(Pifa::getPath() . $filename)) {
+            if (!file_exists(Pifa::getPath() . $filename)) {
                 $msg = sprintf(Pifa::i18n('MISSING_MODULE_FILE'), $filename);
                 throw new PifaException($msg);
             }
             plugin_include(Pifa::getName(), $filename);
-            if (false === class_exists($moduleClass)) {
+            if (!class_exists($moduleClass)) {
                 $msg = sprintf(Pifa::i18n('MISSING_MODULE_CLASS'), $moduleClass);
                 throw new PifaException($msg);
             }
