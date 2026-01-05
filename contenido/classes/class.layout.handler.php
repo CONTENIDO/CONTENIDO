@@ -130,8 +130,7 @@ class cLayoutHandler
      * @param string $layoutCode
      * @param array $cfg The CONTENIDO configuration array
      * @param int $language
-     *
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException|cException
      */
     public function init($layoutId, $layoutCode, $cfg, $language)
     {
@@ -145,11 +144,12 @@ class cLayoutHandler
             return;
         }
 
-        global $cfgClient, $client;
+        $cfgClient = cRegistry::getClientConfig();
+        $client = cRegistry::getClientId();
 
         $cApiLayout = new cApiLayout($layoutId);
 
-        if ($cApiLayout->isLoaded() && is_array($cfgClient) && (int)$client > 0) {
+        if ($cApiLayout->isLoaded() && !empty($cfgClient) && $client > 0) {
             $this->_layoutName = $cApiLayout->get('alias');
             $this->_layoutMainPath = $cfgClient[$client]['layout']['path'];
             $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . '/';

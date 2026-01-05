@@ -311,11 +311,10 @@ function mr_strSyncCategory(array $data)
  * Will be called by chain 'Contenido.Action.con_saveart.AfterCall'.
  *
  * @param array $data Associative array with some article properties
- *
  * @return array Passed parameter
  * @throws cDbException|cInvalidArgumentException
  */
-function mr_conSaveArticle(array $data)
+function mr_conSaveArticle(array $data): array
 {
     global $tmp_firstedit;
 
@@ -620,11 +619,11 @@ function mr_buildGeneratedCode($code)
  * Sets language of client, like done in front_content.php
  *
  * @param int $client Client id
- *
  * @throws cDbException
  */
 function mr_setClientLanguageId($client)
 {
+    // NOTE: Use globals here!
     global $lang, $load_lang;
 
     if ((int)$lang > 0) {
@@ -652,17 +651,15 @@ function mr_setClientLanguageId($client)
  * config.mod_rewrite_{client_id}.php.
  *
  * @param int $clientId Id of client
- * @param bool $forceReload Flag to force to reload configuration, e.g. after
- *                             done changes on it
- *
+ * @param bool $forceReload Flag to force to reload configuration, e.g. after done changes on it
  * @throws cInvalidArgumentException
  */
-function mr_loadConfiguration($clientId, $forceReload = false)
+function mr_loadConfiguration(int $clientId, bool $forceReload = false)
 {
+    // NOTE: Use global here!
     global $cfg;
     static $aLoaded;
 
-    $clientId = (int)$clientId;
     if (!isset($aLoaded)) {
         $aLoaded = [];
     } elseif (isset($aLoaded[$clientId]) && !$forceReload) {

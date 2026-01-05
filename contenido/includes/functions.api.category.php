@@ -49,14 +49,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @throws cDbException
  * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function cApiCatGetLevelNode($idcat, $minLevel = 0)
 {
-
-    global $cfg, $client, $lang;
+    global $client, $lang;
 
     cDeprecated('This method is deprecated and is not needed any longer');
 

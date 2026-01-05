@@ -172,13 +172,13 @@ class NoteList extends cHTMLDiv
      */
     public function toHtml(): string
     {
-        global $lang;
+        $lang = cRegistry::getLanguageId();
 
         $sItemType = $this->_sItemType;
         $sItemId = $this->_sItemId;
 
         $oPropertyCollection = new cApiPropertyCollection();
-        $oPropertyCollection->select("`itemtype` = 'idcommunication' AND `type` = 'note' AND `name` = 'idlang' AND `value` = " . cSecurity::toInteger($lang));
+        $oPropertyCollection->select("`itemtype` = 'idcommunication' AND `type` = 'note' AND `name` = 'idlang' AND `value` = " . $lang);
 
         $items = [];
 

@@ -52,7 +52,7 @@ class ModRewrite extends ModRewriteBase
      */
     public static function initialize($clientId)
     {
-        mr_loadConfiguration($clientId, true);
+        mr_loadConfiguration(cSecurity::toInteger($clientId), true);
         self::$_db = cRegistry::getDb();
         self::$_lookupTable = [];
     }

@@ -398,9 +398,7 @@ class cCLISetup
             (string) $_SESSION['dbengine']
         ); // test the SQL connection and database creation
 
-        $testResults = $test->getResults();
-
-        foreach ($testResults as $testResult) {
+        foreach ($test->getResults() as $testResult) {
             if ($testResult['severity'] == cSystemtest::C_SEVERITY_NONE) {
                 continue;
             }
@@ -411,7 +409,7 @@ class cCLISetup
         }
         if (!$fine) {
             prntln(i18n('error', 'setup'));
-            foreach ($testResults as $testResult) {
+            foreach ($test->getResults() as $testResult) {
                 if ($testResult['severity'] == cSystemtest::C_SEVERITY_NONE) {
                     continue;
                 }

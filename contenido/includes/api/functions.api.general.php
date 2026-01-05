@@ -25,92 +25,77 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Example:
  * cInclude('classes', 'class.backend.php');
  *
- * Currently defined areas:
+ * Supported areas to include files within:
  *
- * frontend    Path to the *current* frontend
- * classes     Path to the CONTENIDO classes (see NOTE below)
- * cronjobs    Path to the cronjobs
- * external    Path to the external tools
- * includes    Path to the CONTENIDO includes
- * scripts     Path to the CONTENIDO scripts
- * module      Path to module
+ * - frontend    Path to the *current* frontend
+ * - classes     Path to the CONTENIDO classes (see NOTE below)
+ * - cronjobs    Path to the cronjobs
+ * - external    Path to the external tools
+ * - includes    Path to the CONTENIDO includes
+ * - scripts     Path to the CONTENIDO scripts
+ * - module      Path to module
  *
- * NOTE: Since CONTENIDO (since v 4.9.0) provides autoloading of required
- *       class files, there is no need to load CONTENIDO class files of by using
- *       cInclude().
+ * NOTE: Since CONTENIDO (since v 4.9.0) provides autoloading of required class files,
+ *       there is no need to load CONTENIDO class files by using cInclude().
  *
- * @param string $sWhere
- *         The area which should be included
- * @param string $sWhat
- *         The filename of the include
- * @param bool $bForce
- *         If true, force the file to be included
- * @param bool $bReturnPath
- *         Flag to return the path instead of including the file
- *
+ * @param string $where The area which should be included
+ * @param string $what The name of the file to include
+ * @param bool $force If true, force the file to be included
+ * @param bool $returnPath Flag to return the path instead of including the file
  * @return bool|string|NULL
- *
- * @throws cInvalidArgumentException
+ * @throws cInvalidArgumentException|cException
  */
-function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false)
+function cInclude($where, $what, $force = false, $returnPath = false)
 {
-    $backendPath = cRegistry::getBackendPath();
+    // NOTE: Use global here, the included file may need this!
     global $client, $cfg, $cfgClient, $cCurrentModule;
 
-    // Sanity check for $sWhat
-    $sWhat = trim($sWhat);
-    $sWhere = cString::toLowerCase($sWhere);
-    $bError = false;
+    $backendPath = cRegistry::getBackendPath();
 
-    switch ($sWhere) {
+    // Sanity check for $what
+    $what = trim($what);
+    $where = cString::toLowerCase($where);
+    $isError = false;
+
+    switch ($where) {
         case 'module':
             $handler = new cModuleHandler($cCurrentModule);
-            $sInclude = $handler->getPhpPath() . $sWhat;
+            $include = $handler->getPhpPath() . $what;
             break;
         case 'frontend':
-            $sInclude = cRegistry::getFrontendPath() . $sWhat;
+            $include = cRegistry::getFrontendPath() . $what;
             break;
         case 'classes':
-            if (cAutoload::isAutoloadable($cfg['path'][$sWhere] . $sWhat)) {
+            if (cAutoload::isAutoloadable($cfg['path'][$where] . $what)) {
                 // The class file will be loaded automatically by the autoloader - get out here
                 return NULL;
             }
-            $sInclude = $backendPath . $cfg['path'][$sWhere] . $sWhat;
+            $include = $backendPath . $cfg['path'][$where] . $what;
             break;
         default:
-            $sInclude = $backendPath . $cfg['path'][$sWhere] . $sWhat;
+            $include = $backendPath . $cfg['path'][$where] . $what;
             break;
     }
 
-    $sFoundPath = '';
-
-    if (!cFileHandler::exists($sInclude) || preg_match('#^\.\./#', $sWhat)) {
-        $bError = true;
+    if (!cFileHandler::exists($include) || preg_match('#^\.\./#', $what)) {
+        $isError = true;
     }
 
     // should the path be returned?
-    if ($bReturnPath) {
-        if ($sFoundPath !== '') {
-            $sInclude = $sFoundPath . DIRECTORY_SEPARATOR . $sInclude;
-        }
-
-        if (!$bError) {
-            return $sInclude;
-        } else {
-            return false;
-        }
+    if ($returnPath) {
+        return !$isError ? $include : false;
     }
 
-    if ($bError) {
-        cError("Error: Can't include $sInclude", E_USER_ERROR);
+    if ($isError) {
+        cError("Error: Can't include $include", E_USER_ERROR);
         return false;
     }
 
     // now include the file
-    if ($bForce == true) {
-        return include($sInclude);
+    if ($force) {
+        return include($include);
     } else {
-        return include_once($sInclude);
+        return include_once($include);
     }
 
 }
@@ -121,16 +106,14 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false)
  * Example:
  * plugin_include('formedit', 'classes/class.formedit.php');
  *
- * @param string $sWhere
- *         The name of the plugin
- * @param string $sWhat
- *         The filename of the include
+ * @param string $where The name of the plugin
+ * @param string $what The name of the file to include
  */
-function plugin_include($sWhere, $sWhat)
+function plugin_include($where, $what)
 {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
-    $sInclude = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $sWhere . '/' . $sWhat;
+    $sInclude = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $where . '/' . $what;
 
     include_once($sInclude);
 }

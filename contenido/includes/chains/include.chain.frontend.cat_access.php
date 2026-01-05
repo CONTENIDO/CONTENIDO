@@ -24,9 +24,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 function cecFrontendCategoryAccess($idlang, $idcat, $idfrontenduser): bool
 {
-
-    global $cfg;
-
     // get idcatlang from idcat & lang
     // TODO should use cApiCategoryLanguage::loadByCategoryIdAndLanguageId()
     $db = cRegistry::getDb();

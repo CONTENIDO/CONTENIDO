@@ -31,10 +31,14 @@ cInclude('classes', 'class.layout.handler.php');
  */
 function layEditLayout($idlay, $name, $description, $code)
 {
-    global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $area, $frame, $cfgClient;
-
-    $db2 = cRegistry::getDb();
     $db = cRegistry::getDb();
+    $auth = cRegistry::getAuth();
+    $cfg = cRegistry::getConfig();
+    $cfgClient = cRegistry::getClientConfig();
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
+    $area = cRegistry::getArea();
+    $frame = cRegistry::getFrame();
 
     $date = date('Y-m-d H:i:s');
     $author = $auth->getUsername();
@@ -149,7 +153,9 @@ function layEditLayout($idlay, $name, $description, $code)
  */
 function layDeleteLayout($idlay): string
 {
-    global $client, $cfg, $area_tree, $perm, $cfgClient;
+    $cfg = cRegistry::getConfig();
+    $cfgClient = cRegistry::getClientConfig();
+    $client = cRegistry::getClientId();
 
     $tplColl = new cApiTemplateCollection();
     $tplColl->select('`idlay`=' . $idlay);

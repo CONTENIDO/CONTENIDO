@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Returns existing indexes of a specific table.
  *
- * @return array^Associative array where the key and the value is the index name
+ * @return array Associative array where the key and the value is the index name
  * @throws cDbException
  */
 function dbGetIndexes(cDb $db, string $table)
@@ -34,8 +34,7 @@ function dbGetIndexes(cDb $db, string $table)
 }
 
 /**
- * Updates a specific table. Used e.g. by CONTENIDO setup to create or update
- * tables.
+ * Updates a specific table. Used e.g. by CONTENIDO setup to create or update tables.
  * Function logic:
  * 1 .) Check, if the table exists
  * 2a.) If not, create it with the field specification, exit

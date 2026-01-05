@@ -97,9 +97,7 @@ class cSetupSystemtest extends cSetupMask
             $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to set max_execution_time.", "setup"), i18n("Your PHP configuration for max_execution_time can not be changed via this script. We recommend setting the value for the installation or upgrade process to 60 seconds. You can try to execute the process with your current configuration. If the process is stopped, the system is not usable (any longer)", "setup"));
         }
 
-        $results = $this->_systemtest->getResults();
-
-        foreach ($results as $result) {
+        foreach ($this->_systemtest->getResults() as $result) {
             if ($result['result']) {
                 continue;
             }

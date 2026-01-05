@@ -170,7 +170,6 @@ if (is_array($isCurrent)) {
             $db->query($sql);
 
             if ($db->nextRecord()) {
-                global $area;
                 // $area = 'con';
                 $idcat = $db->f('idcat');
                 $idart = $db->f('idart');

@@ -118,8 +118,6 @@ class cGuiFoldingRow extends cHTML
      */
     public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = NULL)
     {
-        global $auth;
-
         $this->_uuid = $uuid;
 
         $this->setCaption($caption);
@@ -148,7 +146,7 @@ class cGuiFoldingRow extends cHTML
         $this->addRequiredScript("parameterCollector.js");
         $this->addRequiredScript("cfoldingrow.js");
 
-        $user = new cApiUser($auth->getUserId());
+        $user = new cApiUser(cRegistry::getAuth()->getUserId());
 
         if ($bExpanded === NULL) {
             // Check for expandstate

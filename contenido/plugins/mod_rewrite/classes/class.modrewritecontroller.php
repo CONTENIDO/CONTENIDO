@@ -470,6 +470,7 @@ class ModRewriteController extends ModRewriteBase
      */
     private function _setLanguageId()
     {
+        // NOTE: Use global here
         global $lang;
 
         if ($this->_bError) {
@@ -508,6 +509,7 @@ class ModRewriteController extends ModRewriteBase
      */
     private function _setPathresolverSetting()
     {
+        // NOTE: Use globals here!
         global $client, $lang, $load_lang, $idcat;
 
         if ($this->_bError) {
@@ -555,6 +557,7 @@ class ModRewriteController extends ModRewriteBase
      */
     private function _setIdart()
     {
+        // NOTE: Use globals here!
         global $idcat, $idart, $lang;
 
         if ($this->_bError) {
@@ -614,10 +617,11 @@ class ModRewriteController extends ModRewriteBase
      * One main goal of this function is to prevent duplicated content, which could happen, if
      * the configuration 'startfromroot' is activated.
      *
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException|cException
      */
     private function _postValidation()
     {
+        // NOTE: Use globals here!
         global $idcat, $idart, $client;
 
         if ($this->_bError || $this->_bRoutingFound || !$this->_hasPartArrayItems()) {

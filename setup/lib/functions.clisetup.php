@@ -101,7 +101,8 @@ function progressBar($width, $filled)
  */
 function initializeVariables()
 {
-    global $cfg, $_SESSION;
+    // NOTE: Use global here!
+    global $cfg;
 
     $cfg['db'] = [
         'connection' => [
@@ -132,10 +133,11 @@ function initializeVariables()
  * Checks to see if all the installation settings are valid and have been entered
  *
  * @return boolean true if every setting has been entered
+ * @throws cException
  */
-function checkInstallationSettings()
+function checkInstallationSettings(): bool
 {
-    global $cfg, $_SESSION;
+    $cfg = cRegistry::getConfig();
 
     $fine = true;
 

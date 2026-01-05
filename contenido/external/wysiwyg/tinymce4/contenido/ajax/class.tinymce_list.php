@@ -160,8 +160,10 @@ class cTinyMCE4List {
      * get a list of links to articles for current client and language
      * @return array The array of articles filled with link objects
      */
-    private function _buildLinkList() {
-        global $client, $lang;
+    private function _buildLinkList(): array
+    {
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
 
         $catTree = new cApiCategoryTreeCollection();
         $catList = $catTree->getCategoryTreeStructureByClientIdAndLanguageId($client, $lang);

@@ -618,14 +618,10 @@ class cSearch extends cSearchBaseAbstract
     /**
      * Returns list of searchable article ids in given search range.
      *
-     * @param array $search_range
-     * @return array
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getSearchableArticles($search_range)
+    public function getSearchableArticles(array $search_range): array
     {
-        global $auth;
-
         $aCatRange = [];
         if (array_key_exists('cat_tree', $search_range) && is_array($search_range['cat_tree'])) {
             if (count($search_range['cat_tree']) > 0) {

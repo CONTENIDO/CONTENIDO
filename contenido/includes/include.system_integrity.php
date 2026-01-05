@@ -22,9 +22,8 @@ $page = new cGuiPage('system_integrity');
 
 $test = new cSystemtest($cfg);
 $test->runTests();
-$results = $test->getResults();
 
-foreach ($results as $result) {
+foreach ($test->getResults() as $result) {
     if ($result['severity'] == cSystemtest::C_SEVERITY_NONE) {
         continue;
     }

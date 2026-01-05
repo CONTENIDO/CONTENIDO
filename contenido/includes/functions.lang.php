@@ -51,9 +51,11 @@ function langEditLanguage($idlang, $langname, $encoding, $active, $direction = '
  * @return int New language id
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function langNewLanguage($name, $client)
+function langNewLanguage($name, $client): int
 {
-    global $cfgClient, $notification;
+    global $notification;
+
+    $cfgClient = cRegistry::getClientConfig();
 
     // Add new language to database
     $oLangCol = new cApiLanguageCollection();
@@ -78,7 +80,7 @@ function langNewLanguage($name, $client)
         $notification->displayNotification('error', i18n("Could not set the language-ID in the file 'config.php'. Please set the language manually."));
     }
 
-    return (int) $oLangItem->get('idlang');
+    return cSecurity::toInteger($oLangItem->get('idlang'));
 }
 
 /**
@@ -108,11 +110,14 @@ function langRenameLanguage($idlang, $name): bool
  */
 function langDeleteLanguage($iIdLang, $iIdClient = 0)
 {
-    global $db, $sess, $client, $cfg, $notification, $cfgClient;
+    global $db, $notification;
+
+    $cfgClient = cRegistry::getClientConfig();
+    $client = cRegistry::getClientId();
 
     $deleteok = 1;
-    $iIdLang = (int)$iIdLang;
-    $iIdClient = (int)$iIdClient;
+    $iIdLang = cSecurity::toInteger($iIdLang);
+    $iIdClient = cSecurity::toInteger($iIdClient);
 
     // Bugfix: New idclient parameter introduced, as Administration -> Languages
     // is used for different clients to delete the language
@@ -199,7 +204,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
                 $value = cSecurity::toInteger($value);
                 $sql = "DELETE FROM " . cDb::getTableName('cat') . " WHERE idcat=" . $value;
                 $db->query($sql);
-                $sql = "DELETE FROM " . $cfg['tab']['cat_tree'] . " WHERE idcat=" . $value;
+                $sql = "DELETE FROM " . cDb::getTableName('cat_tree') . " WHERE idcat=" . $value;
                 $db->query($sql);
             }
         }

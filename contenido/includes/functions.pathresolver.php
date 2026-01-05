@@ -29,11 +29,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 function prResolvePathViaURLNames(string $path): int
 {
-    global $lang, $client;
-
     if (empty($path)) {
         return 0;
     }
+
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
 
     $handle = startTiming('prResolvePathViaURLNames', [$path]);
 
@@ -143,11 +144,12 @@ function prResolvePathViaURLNames(string $path): int
  */
 function prResolvePathViaCategoryNames($path, &$iLangCheck): int
 {
-    global $lang, $client;
-
     if (empty($path)) {
         return 0;
     }
+
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
 
     $handle = startTiming('prResolvePathViaCategoryNames', [$path]);
 

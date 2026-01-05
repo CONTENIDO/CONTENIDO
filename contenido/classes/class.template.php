@@ -179,7 +179,7 @@ class cTemplate
      */
     public function generate($template, $return = false, $note = false)
     {
-        global $cCurrentModule, $cfg, $frontend_debug;
+        global $cCurrentModule, $frontend_debug;
 
         $moduleHandler = NULL;
         if (!is_null($cCurrentModule)) {

@@ -474,8 +474,7 @@ class cPermission
         }
 
         if (!is_object($oUser)) {
-            global $auth;
-            $oUser = new cApiUser($auth->getUserId());
+            $oUser = new cApiUser(cRegistry::getAuth()->getUserId());
         }
 
         if (!$oUser instanceof cApiUser) {

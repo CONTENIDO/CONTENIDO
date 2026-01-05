@@ -26,8 +26,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 function removeFileInformation($iIdClient, $sFilename, $sType, $oDb)
 {
-    global $cfg;
-
     cDeprecated('This method is deprecated and is not needed any longer');
 
     if (!isset($oDb) || !is_object($oDb)) {
@@ -49,8 +47,6 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb)
  */
 function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
 {
-    global $cfg;
-
     cDeprecated('This method is deprecated and is not needed any longer');
 
     if (!isset($oDb) || !is_object($oDb)) {
@@ -85,8 +81,6 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
  */
 function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $oDb, $sFilenameNew = '')
 {
-    global $cfg;
-
     cDeprecated('This method is deprecated and is not needed any longer');
 
     if (!isset($oDb) || !is_object($oDb)) {

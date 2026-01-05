@@ -93,8 +93,6 @@ class cGuiTree extends cTree
      */
     public function __construct($uuid, $treename = false)
     {
-        global $cfg, $auth;
-
         parent::__construct();
 
         $this->_uuid = $uuid;
@@ -104,7 +102,7 @@ class cGuiTree extends cTree
             $this->setTreeName($treename);
         }
 
-        $this->_user = new cApiUser($auth->getUserId());
+        $this->_user = new cApiUser(cRegistry::getAuth()->getUserId());
     }
 
     /**

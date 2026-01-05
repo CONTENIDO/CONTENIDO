@@ -55,8 +55,7 @@ class cGuiList
      */
     public function render(bool $print = false)
     {
-        global $cfg;
-
+        $cfg = cRegistry::getConfig();
         $backendPath = cRegistry::getBackendPath();
 
         $tpl = new cTemplate();

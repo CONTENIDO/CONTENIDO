@@ -109,8 +109,6 @@ function addAutoIncrementToTables(cDB $db, array $cfg)
  */
 function addSaltsToTables(cDb $db)
 {
-    global $cfg;
-
     $db2 = getSetupMySQLDBConnection();
 
     $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", cDb::getTableName('user'));
@@ -158,8 +156,6 @@ function addSaltsToTables(cDb $db)
 
 function urlDecodeTables(cDb $db)
 {
-    global $cfg;
-
     urlDecodeTable($db, cDb::getTableName('frontendusers'));
     urlDecodeTable($db, cDb::getTableName('content'));
     urlDecodeTable($db, cDb::getTableName('properties'));
