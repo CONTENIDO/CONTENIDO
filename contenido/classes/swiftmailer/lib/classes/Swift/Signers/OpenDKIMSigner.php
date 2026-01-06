@@ -18,14 +18,17 @@ class Swift_Signers_OpenDKIMSigner extends Swift_Signers_DKIMSigner
 {
     private $_peclLoaded = false;
 
+    /**
+     * @var OpenDKIMSign|null The OpenDKIM signing handler instance from PECL extension
+     */
     private $_dkimHandler = null;
 
     private $dropFirstLF = true;
 
-    public const int CANON_RELAXED = 1;
-    public const int CANON_SIMPLE = 2;
-    public const int SIG_RSA_SHA1 = 3;
-    public const int SIG_RSA_SHA256 = 4;
+    public const CANON_RELAXED = 1;
+    public const CANON_SIMPLE = 2;
+    public const SIG_RSA_SHA1 = 3;
+    public const SIG_RSA_SHA256 = 4;
 
     public function __construct($privateKey, $domainName, $selector)
     {
