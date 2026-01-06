@@ -86,12 +86,15 @@ class cHTMLTable extends cHTMLContentElement
     }
 
     /**
-     * setWidth: Sets the table width
+     * setWidth: Sets the table width.
      *
-     * @param int $width Width
+     * @param int|string $width Width in pixels or percentage (e.g. "100%")
      */
     public function setWidth($width): self
     {
+        if (is_string($width) && substr($width, -1) === '%') {
+            return $this->updateAttribute('width', $width);
+        }
         return $this->updateAttribute('width', cSecurity::toInteger($width));
     }
 

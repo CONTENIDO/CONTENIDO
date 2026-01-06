@@ -36,7 +36,7 @@ class cHTMLAlphaImage extends cHTMLImage
     public function __construct()
     {
         parent::__construct();
-        $this->setAlt("");
+        $this->setAlt('');
     }
 
     public function setMouseover($sMouseoverSrc)
@@ -61,9 +61,9 @@ class cHTMLAlphaImage extends cHTMLImage
 
         if ($this->_sMouseoverSrc != '') {
             if ($this->_sClickImage != '') {
-                $this->attachEventDefinition('click', 'onclick', "clickHandler(this);");
-                $this->attachEventDefinition('mouseover', 'onmouseover', "mouseoverHandler(this);");
-                $this->attachEventDefinition('mouseover', 'onmouseout', "mouseoutHandler(this);");
+                $this->attachEventDefinition('click', 'onclick', 'clickHandler(this);');
+                $this->attachEventDefinition('mouseover', 'onmouseover', 'mouseoverHandler(this);');
+                $this->attachEventDefinition('mouseover', 'onmouseout', 'mouseoutHandler(this);');
             } else {
                 $sMouseScript = 'this.src=\'%1$s\';';
                 $this->attachEventDefinition('mouseover', 'onmouseover', sprintf($sMouseScript, $this->_sMouseoverSrc));
@@ -96,14 +96,16 @@ class cHTMLErrorMessageList extends cHTMLDiv
     public function __construct()
     {
         $this->_oTable = new cHTMLTable();
-        $this->_oTable->setWidth("100%");
+        $this->_oTable->setClass('errorlist_table');
         parent::__construct();
         $this->setClass('errorlist');
     }
 
-    public function setContent($content)
+    public function setContent($content): self
     {
         $this->_oTable->setContent($content);
+
+        return $this;
     }
 
     /**
@@ -178,33 +180,39 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow
         $alphaImage->advanceID();
         $alphaImage->setClass('closer');
         $alphaImage->setStyle('margin-top:4px;');
-        $alphaImage->setSrc("images/controls/open_all.gif");
-        $alphaImage->setMouseover("images/controls/open_all.gif");
-        $alphaImage->setSwapOnClick("images/controls/close_all.gif", "images/controls/close_all.gif");
-        $alphaImage->attachEventDefinition('showhide', 'onclick', "aldiv = document.getElementById('" . $this->_oMessage->getID() . "'); showHideMessage(this, aldiv);");
+        $alphaImage->setSrc('images/controls/open_all.gif');
+        $alphaImage->setMouseover('images/controls/open_all.gif');
+        $alphaImage->setSwapOnClick('images/controls/close_all.gif', 'images/controls/close_all.gif');
+        $alphaImage->attachEventDefinition(
+            'showhide',
+            'onclick',
+            "aldiv = document.getElementById('" . $this->_oMessage->getID() . "'); showHideMessage(this, aldiv);"
+        );
 
         $this->_oTitle->setContent($title);
-        $this->_oTitle->setStyle("cursor:pointer;");
-        $this->_oTitle->attachEventDefinition('showhide', 'onclick', "alimg = document.getElementById('" . $alphaImage->getID() . "'); aldiv = document.getElementById('" . $this->_oMessage->getID() . "'); showHideMessage(alimg, aldiv); clickHandler(alimg);");
+        $this->_oTitle->setStyle('cursor:pointer;');
+        $this->_oTitle->attachEventDefinition(
+            'showhide',
+            'onclick',
+            "alimg = document.getElementById('" . $alphaImage->getID() . "'); aldiv = document.getElementById('" . $this->_oMessage->getID() . "'); showHideMessage(alimg, aldiv); clickHandler(alimg);"
+        );
 
         $this->_oMessage->setContent($message);
         $this->_oMessage->setClass('entry_closed');
 
-        $this->_oFolding->setVerticalAlignment("top");
+        $this->_oFolding->setVerticalAlignment('top');
         $this->_oFolding->setContent($alphaImage);
         $this->_oFolding->setClass('icon');
 
-        $this->_oContent->setVerticalAlignment("top");
+        $this->_oContent->setVerticalAlignment('top');
         $this->_oContent->setClass('entry');
-        $this->_oContent->setContent(
-            [
-                $this->_oTitle,
-                $this->_oMessage,
-            ]
-        );
+        $this->_oContent->setContent([
+            $this->_oTitle,
+            $this->_oMessage,
+        ]);
 
         $this->_oIcon->setClass('icon');
-        $this->_oIcon->setVerticalAlignment("top");
+        $this->_oIcon->setVerticalAlignment('top');
         if ($icon !== false) {
             $this->_oIconImg->setSrc($icon);
 
@@ -214,7 +222,7 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow
 
             $this->_oIcon->setContent($this->_oIconImg);
         } else {
-            $this->_oIcon->setContent("&nbsp;");
+            $this->_oIcon->setContent('&nbsp;');
         }
 
         parent::__construct();
@@ -270,9 +278,9 @@ class cHTMLInfoMessage extends cHTMLTableRow
 
         $this->_oTitle->setContent($title);
         $this->_oTitle->setClass('entry_nowrap');
-        $this->_oTitle->setAttribute("nowrap", "nowrap");
+        $this->_oTitle->setAttribute('nowrap', 'nowrap');
         $this->_oTitle->setWidth(1);
-        $this->_oTitle->setVerticalAlignment("top");
+        $this->_oTitle->setVerticalAlignment('top');
         $this->_oMessage->setContent($message);
         $this->_oMessage->setClass('entry_nowrap');
 
@@ -298,7 +306,7 @@ class cHTMLInfoMessage extends cHTMLTableRow
 
 /**
  * Setup language link based on cHTMLDiv, like
- * "English    ->"
+ * 'English    ->'
  *
  * @package    Setup
  * @subpackage GUI
@@ -316,14 +324,14 @@ class cHTMLLanguageLink extends cHTMLDiv
     {
         parent::__construct();
 
-        $this->setStyle("height:40px;width:150px;");
+        $this->setStyle('height:40px;width:150px;');
 
-        $link = new cHTMLLink("#");
-        $link->setClass("nav navLabel");
-        $link->setContent(conHtmlentities($langName) . "<span>&raquo;</span>");
+        $link = new cHTMLLink('#');
+        $link->setClass('nav navLabel');
+        $link->setContent(conHtmlentities($langName) . '<span>&raquo;</span>');
         $link->attachEventDefinition('stepAttach', 'onclick', "document.setupform.step.value = '" . conHtmlentities($setupStep) . "';");
         $link->attachEventDefinition('languageAttach', 'onclick', "document.setupform.elements.language.value = '" . conHtmlentities($langCode) . "';");
-        $link->attachEventDefinition('submitAttach', 'onclick', "document.setupform.submit();");
+        $link->attachEventDefinition('submitAttach', 'onclick', 'document.setupform.submit();');
 
         $this->setContent($link->render());
     }
@@ -332,7 +340,7 @@ class cHTMLLanguageLink extends cHTMLDiv
 
 /**
  * Setup button link based on cHTMLDiv, like
- * "Backend - CMS    ->"
+ * 'Backend - CMS    ->'
  *
  * @package    Setup
  * @subpackage GUI
@@ -349,12 +357,12 @@ class cHTMLButtonLink extends cHTMLDiv
     {
         parent::__construct();
 
-        $this->setStyle("height:40px;width:180px;");
+        $this->setStyle('height:40px;width:180px;');
 
         $link = new cHTMLLink($href);
-        $link->setAttribute("target", "_blank");
-        $link->setClass("nav navLabel");
-        $link->setContent($title . "<span>&raquo;</span>");
+        $link->setAttribute('target', '_blank');
+        $link->setClass('nav navLabel');
+        $link->setContent($title . '<span>&raquo;</span>');
 
         $this->setContent($link->render());
     }

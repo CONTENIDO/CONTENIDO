@@ -203,6 +203,36 @@ function setupUpdatePHPConfig()
 }
 
 /**
+ * Checks if the current request is an HTTPS request.
+ *
+ * @since CONTENIDO 4.10.2
+ */
+function setupIsHttpsRequest(): bool
+{
+    // Use existing function if available, but it may not be available at early setup stage
+    if (function_exists('cIsHttpsRequest')) {
+        return cIsHttpsRequest();
+    }
+
+    // Otherwise implement the same detection from `cIsHttpsRequest()` here
+    // Detect HTTPS reliably (direct or via proxies)
+    if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
+        return true;
+    } elseif (!empty($_SERVER['REQUEST_SCHEME']) && strtolower($_SERVER['REQUEST_SCHEME']) === 'https') {
+        return true;
+    } elseif (
+        !empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
+        && strpos(strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']), 'https') !== false
+    ) {
+        return true;
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && strtolower($_SERVER['HTTP_X_FORWARDED_SSL']) === 'on') {
+        return true;
+    }
+
+    return false;
+}
+
+/**
  * Stores setup request variables in session
  * @param array $request
  */

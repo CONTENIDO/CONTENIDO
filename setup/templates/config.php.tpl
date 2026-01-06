@@ -11,10 +11,10 @@
  * @subpackage Backend_ConfigFile
  * @author     System
  * @copyright  four for business AG <www.4fb.de>
-* @license    https://www.contenido.org/license/LIZENZ.txt
-* @link       https://www.4fb.de
-* @link       https://www.contenido.org
-*/
+ * @license    https://www.contenido.org/license/LIZENZ.txt
+ * @link       https://www.4fb.de
+ * @link       https://www.contenido.org
+ */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
@@ -33,31 +33,31 @@ global $cfg;
 *   c:/htdocs/contenido        for Windows systems
 */
 
-/* The root server path where all frontends reside */
+// (string) The root server path where all frontends reside
 $cfg['path']['frontend']                = '{CONTENIDO_ROOT}';
 
-/* The root server path to the CONTENIDO backend */
+// (string) The root server path to the CONTENIDO backend directory
 $cfg['path']['contenido']               = $cfg['path']['frontend'] . '/contenido/';
 
-/* The root server path to the data directory */
+// (string) The root server path to the data directory
 $cfg['path']['data']                    = $cfg['path']['frontend'] . '/data/';
 
-/* The server path to all WYSIWYG-Editors */
+// (string) The server path to all WYSIWYG-Editors
 $cfg['path']['all_wysiwyg']             = $cfg['path']['contenido']  . 'external/wysiwyg/';
 
-/* The selected wysiwyg editor*/
+// (string) The selected wysiwyg editor
 $cfg['wysiwyg']['editor']               = 'tinymce4';
 
-/* The server path to the desired WYSIWYG-Editor */
+// (string) The server path to the desired WYSIWYG-Editor
 $cfg['path']['wysiwyg']                 = $cfg['path']['all_wysiwyg'] . $cfg['wysiwyg']['editor'] . '/';
 
-/* The web server path to the CONTENIDO backend */
+// (string) The web server path to the CONTENIDO backend directory
 $cfg['path']['contenido_fullhtml']      = '{CONTENIDO_WEB}/contenido/';
 
-/* The web path to all WYSIWYG-Editors */
+// (string) The web path to all WYSIWYG-Editors
 $cfg['path']['all_wysiwyg_html']        = $cfg['path']['contenido_fullhtml'] . 'external/wysiwyg/';
 
-/* The web path to the desired WYSIWYG-Editor */
+// (string) The web path to the desired WYSIWYG-Editor
 $cfg['path']['wysiwyg_html']            = $cfg['path']['all_wysiwyg_html'] . $cfg['wysiwyg']['editor'] . '/';
 
 
@@ -67,34 +67,32 @@ $cfg['path']['wysiwyg_html']            = $cfg['path']['all_wysiwyg_html'] . $cf
 * Database settings for MySQLi/MySQL. Note that we don't support other databases.
 */
 
-/* The prefix for all CONTENIDO system tables, usually 'con' */
+// (string) The prefix for all CONTENIDO system tables, usually 'con'
 $cfg['sql']['sqlprefix'] = '{MYSQL_PREFIX}';
 
-/* Database extension/driver to use, feasible values are 'mysqli' or 'mysql' */
+// (string) Database extension/driver to use, feasible values are 'mysqli' or 'mysql'
 $cfg['database_extension'] = '{DB_EXTENSION}';
 
-/**
-* Extended database settings. This settings will be used from CONTENIDO 4.9.0.
-*
-* @since  CONTENIDO version 4.9.0
-*/
+// (array) Extended database settings. This settings will be used from CONTENIDO 4.9.0.
+//         @since CONTENIDO version 4.9.0
 $cfg['db'] = [
-'connection' => [
-'host'     => '{MYSQL_HOST}', // (string) The host where your database runs on
-'database' => '{MYSQL_DB}',   // (string) The database name which you use
-'user'     => '{MYSQL_USER}', // (string) The username to access the database
-'password' => '{MYSQL_PASS}', // (string) The password to access the database
-'charset'  => '{MYSQL_CHARSET}', // (string) The charset of connection to database
-'options'  => [
-// (string[]) Database options
-{MYSQL_OPTIONS}
-],
-],
-'engine'          => '{MYSQL_ENGINE}', // (string) The storage engine for tables
-'collation'       => '{MYSQL_COLLATION}', // (string) The collation for tables & text fields
-'haltBehavior'    => 'report', // (string) Feasible values are 'yes', 'no' or 'report'
-'haltMsgPrefix'   => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
-'enableProfiling' => false,    // (bool) Flag to enable profiling
+    'connection' => [
+        'host'     => '{MYSQL_HOST}', // (string) The host where your database runs on (e.g. 'localhost')
+        'database' => '{MYSQL_DB}',  // (string) The database name which you use
+        'user'     => '{MYSQL_USER}', // (string) The username to access the database
+        'password' => '{MYSQL_PASS}', // (string) The password to access the database
+        'charset'  => '{MYSQL_CHARSET}', // (string) The charset of connection to database (e.g. 'utf8mb4')
+        // (string[]) Database options, associative array with option constants as keys
+        //            and option values as values, e.g. [MYSQLI_OPT_CONNECT_TIMEOUT => 5].
+        'options'  => [
+            {MYSQL_OPTIONS}
+        ],
+    ],
+    'engine'          => '{MYSQL_ENGINE}', // (string) The storage engine for tables
+    'collation'       => '{MYSQL_COLLATION}', // (string) The collation for tables & text fields
+    'haltBehavior'    => 'report', // (string) Feasible values are 'yes', 'no' or 'report'
+    'haltMsgPrefix'   => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
+    'enableProfiling' => false, // (bool) Flag to enable profiling
 ];
 
 /* Section 3: UTF-8 flag
@@ -102,6 +100,6 @@ $cfg['db'] = [
 *
 * Setting for UTF-8 flag
 *
-* @since    CONTENIDO version 4.9.5
+* @since CONTENIDO version 4.9.5
 */
 {CON_UTF8}

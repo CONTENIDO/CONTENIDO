@@ -16,9 +16,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Checks if a plugin is already installed
- * @param cDb $db
- * @param string $pluginName
- * @return bool
  * @throws cDbException
  */
 function checkExistingPlugin(cDb $db, string $pluginName): bool
@@ -63,10 +60,8 @@ function checkExistingPlugin(cDb $db, string $pluginName): bool
 
 /**
  * Updates system properties
- * @param cDb $db
  * @param string $table DB table name
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException
  */
 function updateSystemProperties(cDb $db, string $table)
 {
@@ -118,7 +113,6 @@ function updateSystemProperties(cDb $db, string $table)
 
 /**
  * Updates contenido version in given table
- * @param cDb $db
  * @param string $table DB table name
  * @param string $version Version
  * @throws cDbException
@@ -126,7 +120,6 @@ function updateSystemProperties(cDb $db, string $table)
 function updateContenidoVersion(cDb $db, string $table, string $version)
 {
     $db->query("SELECT `idsystemprop` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'", $table);
-
     if ($db->nextRecord()) {
         $db->query("UPDATE `%s` SET `value` = '%s' WHERE `type` = 'system' AND `name` = 'version'", $table, $version);
     } else {
@@ -136,7 +129,6 @@ function updateContenidoVersion(cDb $db, string $table, string $version)
 
 /**
  * Returns current version
- * @param cDb $db
  * @param string $table DB table name
  * @return string|false
  * @throws cDbException
@@ -144,7 +136,6 @@ function updateContenidoVersion(cDb $db, string $table, string $version)
 function getContenidoVersion(cDb $db, string $table)
 {
     $db->query("SELECT `value` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'", $table);
-
     if ($db->nextRecord()) {
         return $db->f('value');
     } else {
@@ -155,14 +146,9 @@ function getContenidoVersion(cDb $db, string $table)
 /**
  * Updates the system administrators password.
  *
- * @param cDb $db
- * @param string $table
- * @param string $password
- * @param string $mail
- * @return bool
  * @throws cDbException
  */
-function updateSysadminPassword(cDb $db, string $table, string $password, string $mail)
+function updateSysadminPassword(cDb $db, string $table, string $password, string $mail): bool
 {
     $db->query("SELECT password FROM `%s` WHERE username='sysadmin'", $table);
 
@@ -176,12 +162,10 @@ function updateSysadminPassword(cDb $db, string $table, string $password, string
 
 /**
  * Reads and returns the total list of system clients.
- * @param cDb $db
- * @param string $table
- * @return array
+ *
  * @throws cDbException
  */
-function listClients(cDb $db, string $table)
+function listClients(cDb $db, string $table): array
 {
     $cfgClient = cRegistry::getClientConfig();
 
@@ -189,11 +173,11 @@ function listClients(cDb $db, string $table)
 
     $clients = [];
     while ($db->nextRecord()) {
-        $idClient = cSecurity::toInteger($db->f('idclient'));
-        $clients[$idClient] = [
-            "name" => $db->f('name'),
-            "frontendpath" => $cfgClient[$idClient]['path']['frontend'],
-            "htmlpath" => $cfgClient[$idClient]['path']['htmlpath'],
+        $clientId = cSecurity::toInteger($db->f('idclient'));
+        $clients[$clientId] = [
+            'name' => $db->f('name'),
+            'frontendpath' => $cfgClient[$clientId]['path']['frontend'],
+            'htmlpath' => $cfgClient[$clientId]['path']['htmlpath'],
         ];
     }
 
@@ -202,29 +186,23 @@ function listClients(cDb $db, string $table)
 
 /**
  * Updates the path information of a client and refreshes the configuration file.
- * @param int $idclient
- * @param string $frontendpath
- * @param string $htmlpath
- * @throws cDbException
- * @throws cInvalidArgumentException
+ *
+ * @throws cDbException|cInvalidArgumentException
  */
-function updateClientPath(int $idclient, string $frontendpath, string $htmlpath)
+function updateClientPath(int $clientid, string $frontendpath, string $htmlpath)
 {
     $cfg = cRegistry::getConfig();
 
     checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
-    updateClientCache($idclient, $htmlpath, $frontendpath);
+    updateClientCache($clientid, $htmlpath, $frontendpath);
 }
 
 /**
  * Removes the trailing slash of a string.
- * @param string $sInput
- *
- * @return string
  */
 function stripLastSlash(string $sInput): string
 {
-    if (cString::getPartOfString($sInput, cString::getStringLength($sInput) - 1, 1) == "/") {
+    if (cString::getPartOfString($sInput, cString::getStringLength($sInput) - 1, 1) == '/') {
         $sInput = cString::getPartOfString($sInput, 0, cString::getStringLength($sInput) - 1);
     }
 
@@ -233,31 +211,32 @@ function stripLastSlash(string $sInput): string
 
 /**
  * Returns the paths to the system directory (filesystem and web).
- * @param bool $originalPath
- *
- * @return array
  */
 function getSystemDirectories(bool $originalPath = false): array
 {
     $rootPath = stripLastSlash(CON_FRONTEND_PATH);
 
     $rootHttpPath = dirname($_SERVER['REQUEST_URI'], 2);
-    $rootHttpPath = str_replace("\\", "/", $rootHttpPath);
+    $rootHttpPath = str_replace("\\", '/', $rootHttpPath);
 
-    $port = "";
-    $protocol = "http://";
+    $port = '';
+    $isHttps = setupIsHttpsRequest();
+    $protocol = $isHttps ? 'https://' : 'http://';
 
-    if ($_SERVER['SERVER_PORT'] != 80) {
-        if ($_SERVER['SERVER_PORT'] == 443) {
-            $protocol = "https://";
-        } else {
-            $port = ":" . $_SERVER['SERVER_PORT'];
+    // Prefer HTTP_HOST (may include port). If not present, build host from SERVER_NAME/ADDR and append non-standard port.
+    if (!empty($_SERVER['HTTP_HOST'])) {
+        $host = $_SERVER['HTTP_HOST'];
+    } else {
+        $host = $_SERVER['SERVER_NAME'] ?? ($_SERVER['SERVER_ADDR'] ?? '');
+        $serverPort = $_SERVER['SERVER_PORT'] ?? '';
+        if ($serverPort !== '' && (($isHttps && $serverPort != 443) || (!$isHttps && $serverPort != 80))) {
+            $host .= ':' . $serverPort;
         }
     }
 
-    $rootHttpPath = $protocol . $_SERVER['SERVER_NAME'] . $port . $rootHttpPath;
+    $rootHttpPath = $protocol . $host . $rootHttpPath;
 
-    if (cString::getPartOfString($rootHttpPath, cString::getStringLength($rootHttpPath) - 1, 1) == "/") {
+    if (cString::getPartOfString($rootHttpPath, cString::getStringLength($rootHttpPath) - 1, 1) == '/') {
         $rootHttpPath = cString::getPartOfString($rootHttpPath, 0, cString::getStringLength($rootHttpPath) - 1);
     }
 
@@ -281,10 +260,6 @@ function getSystemDirectories(bool $originalPath = false): array
 
 /**
  * Searchs for a string in a given text and returns the position of it.
- * @param string $string1
- * @param string $string2
- *
- * @return int
  */
 function findSimilarText(string $string1, string $string2): int
 {
