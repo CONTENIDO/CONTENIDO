@@ -532,7 +532,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
     }
 
     /**
-     * @deprecated [2023-02-02] Since 4.10.2. Code was redundant with {@see cApiArticleLanguageVersionCollection::getIdByArticleLanguageIdAndVersion}
+     * @deprecated [2023-02-02] Since CONTENIDO 4.10.2. Code was redundant with {@see cApiArticleLanguageVersionCollection::getIdByArticleLanguageIdAndVersion}
      *     and it is not the job ob the item to do this.
      */
     protected function _getIdArtLangVersion($idArtLang, $version)

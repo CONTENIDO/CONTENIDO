@@ -209,7 +209,7 @@ class cGuiTableForm
     }
 
     /**
-     * @deprecated [2023-02-28] Since 4.10.2, use {@see cGuiTableForm::setCancelLink} instead
+     * @deprecated [2023-02-28] Since CONTENIDO 4.10.2, use {@see cGuiTableForm::setCancelLink} instead
      */
     public function addCancel($link)
     {
@@ -230,7 +230,7 @@ class cGuiTableForm
     }
 
     /**
-     * @deprecated [2023-02-28] Since 4.10.2, use {@see cGuiTableForm::setHeader} instead
+     * @deprecated [2023-02-28] Since CONTENIDO 4.10.2, use {@see cGuiTableForm::setHeader} instead
      */
     public function addHeader($header)
     {

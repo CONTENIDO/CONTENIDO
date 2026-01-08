@@ -333,7 +333,7 @@ abstract class cContentTypeAbstract
     }
 
     /**
-     * @deprecated [2023-01-31] Since 4.10.2, use cContentTypeAbstract->getSettings() instead
+     * @deprecated [2023-01-31] Since CONTENIDO 4.10.2, use cContentTypeAbstract->getSettings() instead
      */
     public function getConfiguration()
     {

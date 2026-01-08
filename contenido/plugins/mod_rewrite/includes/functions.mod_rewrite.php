@@ -797,7 +797,7 @@ function mr_removeMultipleChars($char, $string)
 }
 
 /**
- * @deprecated [2023-01-20] Since 4.10.2, is not used anymore
+ * @deprecated [2023-01-20] Since CONTENIDO 4.10.2, is not used anymore
  */
 function mr_i18n($key)
 {

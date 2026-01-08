@@ -30,7 +30,7 @@ class cTypeGenerator
     private $cfg = NULL;
 
     /**
-     * @deprecated [2023-01-26] Since 4.10.2, is not needed anymore
+     * @deprecated [2023-01-26] Since CONTENIDO 4.10.2, is not needed anymore
      */
     private static $db = NULL;
 

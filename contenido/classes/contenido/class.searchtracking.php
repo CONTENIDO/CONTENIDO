@@ -90,7 +90,7 @@ class cApiSearchTrackingCollection extends ItemCollection
     }
 
     /**
-     * @deprecated [2019-03-27] Since 4.10.1, We can't use fields created by AVG or COUNT here! Result sets received by this function will contain all search term entries, not the cumulated ones.
+     * @deprecated [2019-03-27] Since CONTENIDO 4.10.1, We can't use fields created by AVG or COUNT here! Result sets received by this function will contain all search term entries, not the cumulated ones.
      */
     public function selectPopularSearchTerms($idclient = 0, $idlang = 0)
     {

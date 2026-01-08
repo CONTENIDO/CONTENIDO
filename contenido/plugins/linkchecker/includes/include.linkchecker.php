@@ -86,7 +86,7 @@ $oCache = new cFileCache([
  */
 
 /**
- * @deprecated [2023-01-25] Since 4.10.2, use cLinkcheckerHelper::sortErrors() instead
+ * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use cLinkcheckerHelper::sortErrors() instead
  */
 function linksort($sErrors, $requestSort)
 {
@@ -95,7 +95,7 @@ function linksort($sErrors, $requestSort)
 }
 
 /**
- * @deprecated [2023-01-25] Since 4.10.2, use cLinkcheckerHelper::urlIsImage() instead
+ * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use cLinkcheckerHelper::urlIsImage() instead
  */
 function url_is_image($sUrl)
 {
@@ -104,7 +104,7 @@ function url_is_image($sUrl)
 }
 
 /**
- * @deprecated [2023-01-25] Since 4.10.2, use cLinkcheckerHelper::urlIsUri() instead
+ * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use cLinkcheckerHelper::urlIsUri() instead
  */
 function url_is_uri($sUrl)
 {

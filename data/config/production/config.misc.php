@@ -41,7 +41,7 @@ $cfg['frontend']['timeout'] = 15;
 $cfg['backend']['default_belang'] = null;
 
 // (bool) Enforce HTTPS for cookies
-// @deprecated [2025-08-03] Since 4.10.2, configure `$cfg['backend_session']['cookie_secure']` and `$cfg['frontend_session']['cookie_secure']` instead
+// @deprecated [2025-08-03] Since CONTENIDO 4.10.2, configure `$cfg['backend_session']['cookie_secure']` and `$cfg['frontend_session']['cookie_secure']` instead
 $cfg['secure'] = false;
 
 // @since CONTENIDO 4.10.2

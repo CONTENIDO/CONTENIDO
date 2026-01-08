@@ -44,13 +44,13 @@ class cHTMLValidator
 
     /**
      * @var array
-     * @deprecated [2024-02-11] Since 4.10.2, use {@see cHTMLValidator::getMissingNodes()} instead
+     * @deprecated [2024-02-11] Since CONTENIDO 4.10.2, use {@see cHTMLValidator::getMissingNodes()} instead
      */
     public $missingNodes = [];
 
     /**
      * @var array
-     * @deprecated [2024-02-11] Since 4.10.2, use {@see cHTMLValidator::getMissingTags()} instead
+     * @deprecated [2024-02-11] Since CONTENIDO 4.10.2, use {@see cHTMLValidator::getMissingTags()} instead
      */
     public $missingTags = [];
 

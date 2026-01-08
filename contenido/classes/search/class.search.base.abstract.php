@@ -63,7 +63,7 @@ abstract class cSearchBaseAbstract
     protected $db;
 
     /**
-     * @deprecated [2023-02-13] Since 4.10.2, debug flag is no longer needed since 05/2015.
+     * @deprecated [2023-02-13] Since CONTENIDO 4.10.2, debug flag is no longer needed since 05/2015.
      */
     protected $bDebug;
 
@@ -72,10 +72,8 @@ abstract class cSearchBaseAbstract
      *
      * Initialises some properties.
      *
-     * @param cDb $oDB [optional]
-     *         CONTENIDO database object
-     * @param bool $bDebug [optional]
-     *         Optional, flag to enable debugging (no longer needed, deprecated since 4.10.2)
+     * @param cDb $oDB CONTENIDO database object
+     * @param bool $bDebug Flag to enable debugging (no longer needed, deprecated since CONTENIDO 4.10.2)
      */
     protected function __construct($oDB = NULL, $bDebug = false)
     {
@@ -93,14 +91,10 @@ abstract class cSearchBaseAbstract
     }
 
     /**
-     * Main debug function, prints dumps parameter if debugging is
-     * enabled.
+     * Main debug function, prints dumps parameter if debugging is enabled.
      *
-     * @param string $msg
-     *         Some text
-     * @param mixed $var
-     *         The variable to dump
-     *
+     * @param string $msg Some text
+     * @param mixed $var The variable to dump
      * @throws cInvalidArgumentException
      */
     protected function _debug($msg, $var)

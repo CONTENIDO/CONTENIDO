@@ -9,8 +9,8 @@
  * @license    https://www.contenido.org/license/LIZENZ.txt
  * @link       https://www.4fb.de
  * @link       https://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- * @deprecated [2023-02-16] Since 4.10.2, The upload area uses jQuery UI dialog, there is no need for iZoom, see upl_files_overview.js.
+ * @since      file available since CONTENIDO <= 4.6
+ * @deprecated [2023-02-16] Since CONTENIDO 4.10.2, The upload area uses jQuery UI dialog, there is no need for iZoom, see upl_files_overview.js.
  */
 
 if (!defined('CON_FRAMEWORK')) {

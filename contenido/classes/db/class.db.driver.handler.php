@@ -998,7 +998,7 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * @deprecated [2023-01-25] Since 4.10.2, use {@see cDbDriverHandler::numRows} instead
+     * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use {@see cDbDriverHandler::numRows} instead
      */
     public function num_rows()
     {
@@ -1007,7 +1007,7 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * @deprecated [2023-01-25] Since 4.10.2, use {@see cDbDriverHandler::affectedRows} instead
+     * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use {@see cDbDriverHandler::affectedRows} instead
      */
     public function affected_rows()
     {
@@ -1016,7 +1016,7 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * @deprecated [2023-01-25] Since 4.10.2, use {@see cDbDriverHandler::numFields} instead
+     * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use {@see cDbDriverHandler::numFields} instead
      */
     public function num_fields()
     {
@@ -1025,7 +1025,7 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * @deprecated [2023-01-25]  Since 4.10.2, use {@see cDbDriverHandler::nextRecord} instead
+     * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use {@see cDbDriverHandler::nextRecord} instead
      */
     public function next_record()
     {

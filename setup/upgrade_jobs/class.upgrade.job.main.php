@@ -77,7 +77,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract
      *
      * In former CONTENIDO versions (4.6 or earlier) start articles were
      * stored in table con_cat_art.is_start.
-     * Since 4.6 start articles are stored con_cat_lang.startidartlang.
+     * Since CONTENIDO 4.6 start articles are stored con_cat_lang.startidartlang.
      *
      * This function takes the start articles from con_cat_art.is_start and
      * sets them in con_cat_lang.startidartlang for all available languages.

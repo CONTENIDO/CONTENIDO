@@ -93,7 +93,7 @@ function isUtf8($input)
 }
 
 /**
- * @deprecated [2023-02-10] Since 4.10.2, use {@see cDate::getCanonicalMonth()} instead
+ * @deprecated [2023-02-10] Since CONTENIDO 4.10.2, use {@see cDate::getCanonicalMonth()} instead
  */
 function getCanonicalMonth($month)
 {
@@ -101,7 +101,7 @@ function getCanonicalMonth($month)
 }
 
 /**
- * @deprecated [2023-02-10] Since 4.10.2, use {@see cDate::getCanonicalDay()} instead
+ * @deprecated [2023-02-10] Since CONTENIDO 4.10.2, use {@see cDate::getCanonicalDay()} instead
  */
 function getCanonicalDay($weekday)
 {
@@ -109,7 +109,7 @@ function getCanonicalDay($weekday)
 }
 
 /**
- * @deprecated [2023-02-10] Since 4.10.2, use {@see cDate::formatDatetime()} instead
+ * @deprecated [2023-02-10] Since CONTENIDO 4.10.2, use {@see cDate::formatDatetime()} instead
  */
 function displayDatetime($timestamp = "", $date = false, $time = false)
 {
@@ -771,7 +771,7 @@ function getEffectiveSettingsByType($type): array
 }
 
 /**
- * @deprecated [2024-02-24] Since 4.10.2, use {@see cGetArtSpecs()} instead!
+ * @deprecated [2024-02-24] Since CONTENIDO 4.10.2, use {@see cGetArtSpecs()} instead!
  */
 function getArtspec()
 {
@@ -817,7 +817,7 @@ function cGetArtSpecs(int $idClient, int $idLang, string $orderBy = 'artspec'): 
 }
 
 /**
- * @deprecated [2024-02-24] Since 4.10.2, use {@see cCreateOrUpdateArtSpec()} instead!
+ * @deprecated [2024-02-24] Since CONTENIDO 4.10.2, use {@see cCreateOrUpdateArtSpec()} instead!
  */
 function addArtspec($artspectext, $online)
 {
@@ -868,7 +868,7 @@ function cCreateOrUpdateArtSpec(string $artsSecText, int $online, ?int $idArtSpe
 
 
 /**
- * @deprecated [2024-02-24] Since 4.10.2, use {@see cDeleteArtSpec()} instead!
+ * @deprecated [2024-02-24] Since CONTENIDO 4.10.2, use {@see cDeleteArtSpec()} instead!
  */
 function deleteArtspec($idartspec)
 {
@@ -898,7 +898,7 @@ function cDeleteArtSpec(int $idArtSpec): bool
 }
 
 /**
- * @deprecated [2024-02-24] Since 4.10.2, use {@see cSetArtSpecOnline()} instead!
+ * @deprecated [2024-02-24] Since CONTENIDO 4.10.2, use {@see cSetArtSpecOnline()} instead!
  */
 function setArtspecOnline($idartspec, $online)
 {
@@ -930,7 +930,7 @@ function cSetArtSpecOnline(int $idArtSpec, int $online): bool
 }
 
 /**
- * @deprecated [2024-02-24] Since 4.10.2, use {@see cSetArtSpecDefault()} instead!
+ * @deprecated [2024-02-24] Since CONTENIDO 4.10.2, use {@see cSetArtSpecDefault()} instead!
  */
 function setArtspecDefault($idartspec)
 {
@@ -1206,7 +1206,7 @@ function isRunningFromWeb(): bool
 }
 
 /**
- * @deprecated [2023-01-16] Since 4.10.2, use cScanPlugins() instead
+ * @deprecated [2023-01-16] Since CONTENIDO 4.10.2, use cScanPlugins() instead
  */
 function scanPlugins($entity)
 {
@@ -1310,7 +1310,7 @@ function cScanPlugins(string $entity)
 }
 
 /**
- * @deprecated [2023-01-16] Since 4.10.2, use cCallPluginStore() instead
+ * @deprecated [2023-01-16] Since CONTENIDO 4.10.2, use cCallPluginStore() instead
  */
 function includePlugins($entity)
 {
@@ -1357,7 +1357,7 @@ function cHasPlugins(string $entity): bool
 }
 
 /**
- * @deprecated [2023-01-16] Since 4.10.2, use cCallPluginStore() instead
+ * @deprecated [2023-01-16] Since CONTENIDO 4.10.2, use cCallPluginStore() instead
  */
 function callPluginStore($entity)
 {

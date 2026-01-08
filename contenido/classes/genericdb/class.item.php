@@ -656,7 +656,7 @@ abstract class Item extends cItemBaseAbstract
     }
 
     /**
-     * @deprecated [2023-02-11] Since 4.10.2, use {@see Item::inFilter()} instead
+     * @deprecated [2023-02-11] Since CONTENIDO 4.10.2, use {@see Item::inFilter()} instead
      */
     public function _inFilter($data)
     {

@@ -63,7 +63,7 @@ class cAuthHandlerFrontend extends cAuth
     }
 
     /**
-     * @deprecated [2023-02-05] Since 4.10.2, use {@see cAuthHandlerFrontend::preAuthenticate} instead
+     * @deprecated [2023-02-05] Since CONTENIDO 4.10.2, use {@see cAuthHandlerFrontend::preAuthenticate} instead
      */
     public function preAuthorize()
     {

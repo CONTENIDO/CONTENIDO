@@ -25,7 +25,7 @@ function hasMySQLiExtension(): bool
 }
 
 /**
- * @deprecated [2025-09-28] Since 4.10.2, use {@see cSystemtest::doMySQLConnect()} instead!
+ * @deprecated [2025-09-28] Since CONTENIDO 4.10.2, use {@see cSystemtest::doMySQLConnect()} instead!
  */
 function doMySQLConnect($host, $username, $password): array
 {

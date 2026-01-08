@@ -1101,7 +1101,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 }
 
 /**
- * @deprecated [2026-01-04] Since 4.10.2, use {@see cArticleOverviewHelper::createBulkEditingFunction()} instead!
+ * @deprecated [2026-01-04] Since CONTENIDO 4.10.2, use {@see cArticleOverviewHelper::createBulkEditingFunction()} instead!
  */
 function createBulkEditingFunction($class, $imageSrc, $alt, $onclick = ''): string
 {

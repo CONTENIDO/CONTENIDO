@@ -148,7 +148,7 @@ class cFrontendListUploadSearchResult extends cFrontendList
 }
 
 /**
- * @deprecated [2024-02-04] Since 4.10.2, use {@see cFrontendListUploadSearchResult} instead!
+ * @deprecated [2024-02-04] Since CONTENIDO 4.10.2, use {@see cFrontendListUploadSearchResult} instead!
  */
 class UploadSearchResultList extends cFrontendListUploadSearchResult
 {

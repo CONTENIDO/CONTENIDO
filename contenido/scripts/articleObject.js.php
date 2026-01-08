@@ -13,7 +13,7 @@
  * @license    https://www.contenido.org/license/LIZENZ.txt
  * @link       https://www.4fb.de
  * @link       https://www.contenido.org
- * @since      file available since CONTENIDO release 4.8.7
+ * @since      file available since CONTENIDO 4.8.7
  * @deprecated [2015-05-21] This file is no longer supported
  */
 
