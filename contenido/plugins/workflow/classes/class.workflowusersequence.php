@@ -71,17 +71,17 @@ class WorkflowUserSequences extends ItemCollection
         global $idworkflow;
 
         $idusersequence = cSecurity::toInteger($idusersequence);
-        $oDb = cRegistry::getDb();
+        $db = cRegistry::getDb();
 
         $aIdArtLang = [];
         $sSql = 'SELECT `idartlang` FROM `%s` WHERE `idusersequence` = %d';
-        $oDb->query($sSql, cDb::getTableName('workflow_art_allocation'), $idusersequence);
-        while ($oDb->nextRecord()) {
-            $aIdArtLang[] = cSecurity::toInteger($oDb->f('idartlang'));
+        $db->query($sSql, cDb::getTableName('workflow_art_allocation'), $idusersequence);
+        while ($db->nextRecord()) {
+            $aIdArtLang[] = cSecurity::toInteger($db->f('idartlang'));
         }
 
         $sSql = 'DELETE FROM `%s` WHERE `idusersequence` = %d';
-        $oDb->query($sSql, cDb::getTableName('workflow_art_allocation'), $idusersequence);
+        $db->query($sSql, cDb::getTableName('workflow_art_allocation'), $idusersequence);
 
         foreach ($aIdArtLang as $iIdArtLang) {
             setUserSequence($iIdArtLang, $idworkflow);

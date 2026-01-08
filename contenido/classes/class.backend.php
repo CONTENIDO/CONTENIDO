@@ -265,7 +265,7 @@ class cBackend
             return;
         }
 
-        $oDb = cRegistry::getDb();
+        $db = cRegistry::getDb();
 
         $timestamp = date('Y-m-d H:i:s');
         $idcatart = 0;
@@ -273,7 +273,7 @@ class cBackend
         $categoryId = cSecurity::toInteger($categoryId);
         $articleId = cSecurity::toInteger($articleId);
         $originalAction = $action;
-        $action = $oDb->escape($action);
+        $action = $db->escape($action);
 
         if ($categoryId > 0 && $articleId > 0) {
             $oCatArtColl = new cApiCategoryArticleCollection();

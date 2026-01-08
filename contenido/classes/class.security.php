@@ -37,16 +37,16 @@ class cSecurity
      * Escapes string using CONTENIDO urlencoding method and escapes string for inserting.
      *
      * @param mixed $value Input value, e.g. a string
-     * @param cDb $oDb CONTENIDO database object
+     * @param cDb $db CONTENIDO database object
      * @return string Filtered string
      */
-    public static function filter($value, cDb $oDb): string
+    public static function filter($value, cDb $db): string
     {
         $value = self::toString($value);
         if (defined('CON_STRIPSLASHES')) {
             $value = stripslashes($value);
         }
-        return self::escapeDB(conHtmlSpecialChars($value), $oDb, false);
+        return self::escapeDB(conHtmlSpecialChars($value), $db, false);
     }
 
     /**
@@ -152,19 +152,19 @@ class cSecurity
      * Escaped an query-string with mysql_real_escape_string.
      *
      * @param mixed $value Input value, e.g. a string
-     * @param ?cDb $oDB CONTENIDO database object
+     * @param ?cDb $db CONTENIDO database object
      * @param bool $undoAddSlashes [optional; default: true] Flag for undo addslashes
      * @return string Converted string
      */
-    public static function escapeDB($value, ?cDb $oDB = null, bool $undoAddSlashes = true): string
+    public static function escapeDB($value, ?cDb $db = null, bool $undoAddSlashes = true): string
     {
-        if (!is_object($oDB)) {
+        if (!is_object($db)) {
             return self::escapeString($value);
         } else {
             if (defined('CON_STRIPSLASHES') && $undoAddSlashes) {
                 $value = stripslashes($value);
             }
-            return $oDB->escape($value);
+            return $db->escape($value);
         }
     }
 

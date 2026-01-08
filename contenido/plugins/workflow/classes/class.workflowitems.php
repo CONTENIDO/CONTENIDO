@@ -45,7 +45,7 @@ class WorkflowItems extends ItemCollection
         $item->loadByPrimaryKey($id);
         $pos = cSecurity::toInteger($item->get('position'));
         $idworkflow = cSecurity::toInteger($item->get('idworkflow'));
-        $oDb = cRegistry::getDb();
+        $db = cRegistry::getDb();
 
         $this->select("`position` > $pos AND `idworkflow` = $idworkflow");
         while ($obj = $this->next()) {
@@ -54,16 +54,16 @@ class WorkflowItems extends ItemCollection
         }
 
         $aUserSequencesDelete = [];
-        $oDb->query(
+        $db->query(
             'SELECT `idusersequence` FROM `%s` WHERE `idworkflowitem` = %d',
             cDb::getTableName('workflow_user_sequences'),
             $id
         );
-        while ($oDb->nextRecord()) {
-            $aUserSequencesDelete[] = cSecurity::toInteger($oDb->f('idusersequence'));
+        while ($db->nextRecord()) {
+            $aUserSequencesDelete[] = cSecurity::toInteger($db->f('idusersequence'));
         }
 
-        $oDb->query(
+        $db->query(
             'DELETE FROM `%s` WHERE `idworkflowitem` = %d',
             cDb::getTableName('workflow_actions'),
             $id
@@ -72,7 +72,7 @@ class WorkflowItems extends ItemCollection
         $this->updateArtAllocation($id, 1);
 
         if (count($aUserSequencesDelete) > 0) {
-            $oDb->query(
+            $db->query(
                 'DELETE FROM `%s` WHERE `idusersequence` IN (' . implode(',', $aUserSequencesDelete) . ')',
                 cDb::getTableName('workflow_user_sequences')
             );
@@ -91,24 +91,24 @@ class WorkflowItems extends ItemCollection
     {
         global $idworkflow;
 
-        $oDb = cRegistry::getDb();
+        $db = cRegistry::getDb();
 
         $aUserSequences = [];
         $sSql = 'SELECT `idusersequence` FROM `%s` WHERE idworkflowitem = %d';
-        $oDb->query($sSql, cDb::getTableName('workflow_user_sequences'), $idworkflowitem);
-        while ($oDb->nextRecord()) {
-            $aUserSequences[] = cSecurity::toInteger($oDb->f('idusersequence'));
+        $db->query($sSql, cDb::getTableName('workflow_user_sequences'), $idworkflowitem);
+        while ($db->nextRecord()) {
+            $aUserSequences[] = cSecurity::toInteger($db->f('idusersequence'));
         }
 
         $aIdArtLang = [];
         if (count($aUserSequences) > 0) {
             $sSql = 'SELECT `idartlang` FROM `%s` WHERE `idusersequence` IN (' . implode(',', $aUserSequences) . ')';
-            $oDb->query($sSql, cDb::getTableName('workflow_art_allocation'));
-            while ($oDb->nextRecord()) {
-                $aIdArtLang[] = cSecurity::toInteger($oDb->f('idartlang'));
+            $db->query($sSql, cDb::getTableName('workflow_art_allocation'));
+            while ($db->nextRecord()) {
+                $aIdArtLang[] = cSecurity::toInteger($db->f('idartlang'));
             }
             $sSql = 'DELETE FROM `%s` WHERE `idusersequence` IN (' . implode(',', $aUserSequences) . ')';
-            $oDb->query($sSql, cDb::getTableName('workflow_art_allocation'));
+            $db->query($sSql, cDb::getTableName('workflow_art_allocation'));
         }
 
         if ($delete) {

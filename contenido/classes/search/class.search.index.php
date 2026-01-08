@@ -170,10 +170,10 @@ class cSearchIndex extends cSearchBaseAbstract
      *
      * Set object properties.
      *
-     * @param cDb $db [optional] CONTENIDO database object
+     * @param ?cDb $db [optional] CONTENIDO database object
      * @throws cDbException|cInvalidArgumentException
      */
-    public function __construct($db = NULL)
+    public function __construct(?cDb $db = NULL)
     {
         parent::__construct($db);
 

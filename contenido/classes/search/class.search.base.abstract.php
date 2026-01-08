@@ -72,22 +72,16 @@ abstract class cSearchBaseAbstract
      *
      * Initialises some properties.
      *
-     * @param cDb $oDB CONTENIDO database object
+     * @param ?cDb $db CONTENIDO database object
      * @param bool $bDebug Flag to enable debugging (no longer needed, deprecated since CONTENIDO 4.10.2)
      */
-    protected function __construct($oDB = NULL, $bDebug = false)
+    protected function __construct(?cDb $db = NULL, $bDebug = false)
     {
         $this->cfg = cRegistry::getConfig();
         $this->lang = cRegistry::getLanguageId();
         $this->client = cRegistry::getClientId();
-
         $this->bDebug = $bDebug;
-
-        if ($oDB == NULL || !is_object($oDB)) {
-            $this->db = cRegistry::getDb();
-        } else {
-            $this->db = $oDB;
-        }
+        $this->db = isset($db) ? $db : cRegistry::getDb();
     }
 
     /**

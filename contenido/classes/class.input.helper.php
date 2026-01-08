@@ -89,32 +89,32 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
             AND al.idlang = " . cRegistry::getLanguageId() . "
             ORDER BY al.title";
 
-        $oDB = cRegistry::getDb();
-        $oDB->query($sql);
+        $db = cRegistry::getDb();
+        $db->query($sql);
 
-        $iCount = $oDB->numRows();
+        $iCount = $db->numRows();
         if ($iCount == 0) {
             return 0;
         }
 
         $iCounter = count($this->_options);
-        while ($oDB->nextRecord()) {
+        while ($db->nextRecord()) {
             // Generate new option element
             $oOption = new cHTMLOptionElement(
-                $spaces . '&nbsp;&nbsp;&nbsp;' . cString::getPartOfString($oDB->f('title'), 0, 32),
-                $oDB->f('idcatart')
+                $spaces . '&nbsp;&nbsp;&nbsp;' . cString::getPartOfString($db->f('title'), 0, 32),
+                $db->f('idcatart')
             );
 
             if ($colored) {
-                if ($oDB->f('idstartartlang') == $oDB->f('idartlang')) {
-                    if ($oDB->f('online') == 0) {
+                if ($db->f('idstartartlang') == $db->f('idartlang')) {
+                    if ($db->f('online') == 0) {
                         // Start article, but offline -> red
                         $oOption->setStyle('color: #ff0000;');
                     } else {
                         // Start article -> blue
                         $oOption->setStyle('color: #0000ff;');
                     }
-                } elseif ($oDB->f('online') == 0) {
+                } elseif ($db->f('online') == 0) {
                     // Offline article -> grey
                     $oOption->setStyle('color: #666666;');
                 }
@@ -173,25 +173,25 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
         }
         $sql .= " ORDER BY ct.idtree";
 
-        $oDB = cRegistry::getDb();
-        $oDB->query($sql);
+        $db = cRegistry::getDb();
+        $db->query($sql);
 
-        $iCount = $oDB->numRows();
+        $iCount = $db->numRows();
         if ($iCount == 0) {
             return 0;
         }
 
         $iCounter = count($this->_options);
-        while ($oDB->nextRecord()) {
+        while ($db->nextRecord()) {
             $spaces = '';
-            $iID = $oDB->f('idcat');
+            $iID = $db->f('idcat');
 
-            for ($i = 0; $i < $oDB->f('level'); $i++) {
+            for ($i = 0; $i < $db->f('level'); $i++) {
                 $spaces .= '&nbsp;&nbsp;&nbsp;';
             }
 
             // Generate new option element
-            if (($catVisible && $oDB->f('visible') == 0) || ($catPublic && $oDB->f('public') == 0)) {
+            if (($catVisible && $db->f('visible') == 0) || ($catPublic && $db->f('public') == 0)) {
                 // If category has to be visible or public and it isn't,
                 // don't add value
                 $sValue = '';
@@ -202,11 +202,11 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
                 // Show only categories - and everything is fine...
                 $sValue = $iID;
             }
-            $oOption = new cHTMLOptionElement($spaces . '>&nbsp;' . $oDB->f('name'), $sValue);
+            $oOption = new cHTMLOptionElement($spaces . '>&nbsp;' . $db->f('name'), $sValue);
 
             // Coloring option element, restricted shows grey color
             $oOption->setStyle('background-color: #EFEFEF');
-            if ($colored && ($oDB->f('visible') == 0 || $oDB->f('public') == 0)) {
+            if ($colored && ($db->f('visible') == 0 || $db->f('public') == 0)) {
                 $oOption->setStyle('color: #666666;');
             }
 
@@ -241,7 +241,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
             return 0;
         }
 
-        $oDB = cRegistry::getDb();
+        $db = cRegistry::getDb();
 
         $sql = "SELECT
                     t.typeid AS typeid
@@ -260,23 +260,23 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
                     AND al.idlang = " . cRegistry::getClientId() . "
                     AND ca.idcatart = " . $idCatArt;
         if ($typeRange != '') {
-            $sql .= " AND t.idtype IN (" . $oDB->escape($typeRange) . ")";
+            $sql .= " AND t.idtype IN (" . $db->escape($typeRange) . ")";
         }
         $sql .= " ORDER BY t.idtype, t.typeid";
 
-        $oDB = cRegistry::getDb();
-        $oDB->query($sql);
+        $db = cRegistry::getDb();
+        $db->query($sql);
 
-        $iCount = $oDB->numRows();
+        $iCount = $db->numRows();
         if ($iCount == 0) {
             return 0;
         }
 
-        while ($oDB->nextRecord()) {
-            $sTypeIdentifier = "tblData.idtype = '" . $oDB->f('idtype') . "' AND tblData.typeid = '" . $oDB->f('typeid') . "'";
+        while ($db->nextRecord()) {
+            $sTypeIdentifier = "tblData.idtype = '" . $db->f('idtype') . "' AND tblData.typeid = '" . $db->f('typeid') . "'";
 
             // Generate new option element
-            $oOption = new cHTMLOptionElement($oDB->f('type') . "[" . $oDB->f('typeid') . "]: " . cString::getPartOfString(strip_tags($oDB->f('value')), 0, 50), $sTypeIdentifier);
+            $oOption = new cHTMLOptionElement($db->f('type') . "[" . $db->f('typeid') . "]: " . cString::getPartOfString(strip_tags($db->f('value')), 0, 50), $sTypeIdentifier);
 
             // Add option element to the list
             $this->addOptionElement($sTypeIdentifier, $oOption);

@@ -922,10 +922,10 @@ abstract class ItemCollection extends cItemBaseAbstract
      */
     public function exists($id): bool
     {
-        $oDb = $this->_getSecondDBInstance();
+        $db = $this->_getSecondDBInstance();
         $sql = "SELECT `%s` FROM `%s` WHERE `%s` = '%s'";
-        $oDb->query($sql, $this->getPrimaryKeyName(), $this->table, $this->getPrimaryKeyName(), $id);
-        return $oDb->nextRecord();
+        $db->query($sql, $this->getPrimaryKeyName(), $this->table, $this->getPrimaryKeyName(), $id);
+        return $db->nextRecord();
     }
 
     /**
@@ -1332,7 +1332,7 @@ abstract class ItemCollection extends cItemBaseAbstract
         string $orderBy = '',
         string $limit = ''
     ): array {
-        $oDb = $this->_getSecondDBInstance();
+        $db = $this->_getSecondDBInstance();
 
         $pkField = $this->getPrimaryKeyName();
         $where = empty($where) ? '' : 'WHERE ' . $where;
@@ -1342,11 +1342,11 @@ abstract class ItemCollection extends cItemBaseAbstract
 
         // Get all ids
         $sql = 'SELECT `' . $this->getPrimaryKeyName() . '` FROM `' . $this->table . '`' . $where . $groupBy . $orderBy . $limit;
-        $oDb->query($sql);
+        $db->query($sql);
 
         $ids = [];
-        while ($oDb->nextRecord()) {
-            $ids[] = $oDb->f($pkField);
+        while ($db->nextRecord()) {
+            $ids[] = $db->f($pkField);
         }
 
         return $ids;
@@ -1395,14 +1395,14 @@ abstract class ItemCollection extends cItemBaseAbstract
             return [];
         }
 
-        $oDb = $this->_getSecondDBInstance();
+        $db = $this->_getSecondDBInstance();
 
         if (in_array('*', $fields)) {
             // Asterisk ("*") to get all field found
             $fields = '*';
         } else {
             // Escape fields
-            $escapedFields = array_map([$oDb, 'escape'], $fields);
+            $escapedFields = array_map([$db, 'escape'], $fields);
             $fields = '`' . implode('`, `', $escapedFields) . '`';
         }
 
@@ -1414,11 +1414,11 @@ abstract class ItemCollection extends cItemBaseAbstract
         // Get all fields
         $entries = [];
         $sql = 'SELECT ' . $fields . ' FROM `' . $this->table . '`' . $where . $groupBy . $orderBy . $limit;
-        $oDb->query($sql);
-        while ($oDb->nextRecord()) {
+        $db->query($sql);
+        while ($db->nextRecord()) {
             $data = [];
             foreach ($fields as $field) {
-                $data[$field] = $oDb->f($field);
+                $data[$field] = $db->f($field);
             }
             $entries[] = $data;
         }
@@ -1465,14 +1465,14 @@ abstract class ItemCollection extends cItemBaseAbstract
      */
     public function getAllIds(): array
     {
-        $oDb = $this->_getSecondDBInstance();
+        $db = $this->_getSecondDBInstance();
 
         $ids = [];
 
         // Get all ids
-        $oDb->query('SELECT `%s` AS `pk` FROM `%s`', $this->getPrimaryKeyName(), $this->table);
-        while ($oDb->nextRecord()) {
-            $ids[] = $oDb->f('pk');
+        $db->query('SELECT `%s` AS `pk` FROM `%s`', $this->getPrimaryKeyName(), $this->table);
+        while ($db->nextRecord()) {
+            $ids[] = $db->f('pk');
         }
 
         return $ids;
@@ -1544,12 +1544,12 @@ abstract class ItemCollection extends cItemBaseAbstract
             $id
         ]);
 
-        $oDb = $this->_getSecondDBInstance();
+        $db = $this->_getSecondDBInstance();
 
         // Delete the database record
         $sql = "DELETE FROM `%s` WHERE `%s` = '%s'";
-        $oDb->query($sql, $this->table, $this->getPrimaryKeyName(), $id);
-        $success = $oDb->affectedRows();
+        $db->query($sql, $this->table, $this->getPrimaryKeyName(), $id);
+        $success = $db->affectedRows();
 
         // Delete the cached record
         $this->_oCache->removeItem($id);
@@ -1587,17 +1587,17 @@ abstract class ItemCollection extends cItemBaseAbstract
             ]);
         }
 
-        $oDb = $this->_getSecondDBInstance();
+        $db = $this->_getSecondDBInstance();
 
         // Delete multiple database records at once
         $aEscapedIds = array_map([
-            $oDb,
+            $db,
             'escape'
         ], $ids);
         $in = "'" . implode("', '", $aEscapedIds) . "'";
         $sql = "DELETE FROM `%s` WHERE `%s` IN (" . $in . ")";
-        $oDb->query($sql, $this->table, $this->getPrimaryKeyName());
-        $numAffected = $oDb->affectedRows();
+        $db->query($sql, $this->table, $this->getPrimaryKeyName());
+        $numAffected = $db->affectedRows();
 
         // Delete the cached records
         $this->_oCache->removeItems($ids);

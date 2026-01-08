@@ -115,16 +115,16 @@ class cSearchResult extends cSearchBaseAbstract
      *
      * @param array $searchResult List of article ids
      * @param int $resultPerPage Number of items per page
-     * @param cDb $oDB Database object
+     * @param cDb $db Database object
      * @param bool $bDebug Flag to enable debugging
      *
      * @throws cInvalidArgumentException|cDbException
      */
-    public function __construct(array $searchResult, $resultPerPage, $oDB = NULL, $bDebug = false)
+    public function __construct(array $searchResult, $resultPerPage, $db = NULL, $bDebug = false)
     {
-        parent::__construct($oDB, $bDebug);
+        parent::__construct($db, $bDebug);
 
-        $this->_index = new cSearchIndex($oDB);
+        $this->_index = new cSearchIndex($db);
 
         $this->_searchResult = $searchResult;
         $this->_debug('$this->search_result', $this->_searchResult);

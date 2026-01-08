@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $oTpl, $oDB;
+global $oTpl, $db;
 
 $auth = cRegistry::getAuth();
 $perm = cRegistry::getPerm();
@@ -31,8 +31,8 @@ $sess = cRegistry::getSession();
 if (!is_object($oTpl)) {
     $oTpl = new cTemplate();
 }
-if (!is_object($oDB)) {
-    $oDB = cRegistry::getDb(); // We have really to send a special SQL statement
+if (!is_object($db)) {
+    $db = cRegistry::getDb(); // We have really to send a special SQL statement
     // - we need a DB object
 }
 
@@ -145,19 +145,19 @@ $sSQL .= "WHERE tblCat.idclient = '" . cSecurity::toInteger($client) . "' AND tb
 $sSQL .= "tblCatLang.idcat = tblCat.idcat AND tblCatTree.idcat = tblCat.idcat ";
 $sSQL .= "ORDER BY tblCatTree.idtree";
 
-$oDB->query($sSQL);
+$db->query($sSQL);
 
-while ($oDB->nextRecord()) {
-    $sSpaces = cHTMLOptionElement::indent(cSecurity::toInteger($oDB->f('level')), 0);
-    $oOptionTemplate = new cHTMLOptionElement($sSpaces . $oDB->f('name'), $oDB->f('idcat'));
-    $oOptionNewsletter = new cHTMLOptionElement($sSpaces . $oDB->f('name'), $oDB->f('idcat'));
-    if ($oDB->f('visible') == 0 || $oDB->f('public') == 0) {
+while ($db->nextRecord()) {
+    $sSpaces = cHTMLOptionElement::indent(cSecurity::toInteger($db->f('level')), 0);
+    $oOptionTemplate = new cHTMLOptionElement($sSpaces . $db->f('name'), $db->f('idcat'));
+    $oOptionNewsletter = new cHTMLOptionElement($sSpaces . $db->f('name'), $db->f('idcat'));
+    if ($db->f('visible') == 0 || $db->f('public') == 0) {
         $oOptionTemplate->setStyle("color:#666666;");
         $oOptionNewsletter->setStyle("color:#666666;");
     }
 
-    $oSelHTMLTemplateIDCat->addOptionElement($oDB->f('idcat'), $oOptionTemplate);
-    $oSelHTMLNewsletterIDCat->addOptionElement($oDB->f('idcat'), $oOptionNewsletter);
+    $oSelHTMLTemplateIDCat->addOptionElement($db->f('idcat'), $oOptionTemplate);
+    $oSelHTMLNewsletterIDCat->addOptionElement($db->f('idcat'), $oOptionNewsletter);
 }
 
 // Get html template category
@@ -465,17 +465,17 @@ $oSelAuthor = new cHTMLSelectElement('selAuthor');
 // For this query genericdb can't be used, as the class id is always included
 // (distinct won't work)
 $sSQL = "SELECT DISTINCT `author`, `authorname` FROM `" . cDb::getTableName('news_jobs') . "` ORDER BY `authorname`";
-$oDB->query($sSQL);
+$db->query($sSQL);
 
 $aItems = [];
 $bUserInList = false;
-while ($oDB->nextRecord()) {
-    if ($oDB->f('author') == $auth->getUserId()) {
+while ($db->nextRecord()) {
+    if ($db->f('author') == $auth->getUserId()) {
         $bUserInList = true;
     }
     $aItems[] = [
-        $oDB->f('author'),
-        $oDB->f('authorname')
+        $db->f('author'),
+        $db->f('authorname')
     ];
 }
 $oSelAuthor->autoFill($aItems);

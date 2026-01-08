@@ -24,54 +24,54 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
-function removeFileInformation($iIdClient, $sFilename, $sType, $oDb)
+function removeFileInformation($iIdClient, $sFilename, $sType, $db)
 {
     cDeprecated('This method is deprecated and is not needed any longer');
 
-    if (!isset($oDb) || !is_object($oDb)) {
-        $oDb = cRegistry::getDb();
+    if (!isset($db) || !is_object($db)) {
+        $db = cRegistry::getDb();
     }
 
     $iIdClient = cSecurity::toInteger($iIdClient);
-    $sFilename = cSecurity::filter((string)$sFilename, $oDb);
-    $sType = cSecurity::filter((string)$sType, $oDb);
+    $sFilename = cSecurity::filter((string)$sFilename, $db);
+    $sType = cSecurity::filter((string)$sType, $db);
 
     $sSql = "DELETE FROM `" . cDb::getTableName('file_information') . "` WHERE idclient = $iIdClient AND
             filename = '$sFilename' AND type = '$sType';";
-    $oDb->query($sSql);
-    $oDb->free();
+    $db->query($sSql);
+    $db->free();
 }
 
 /**
  * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
-function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
+function getFileInformation($iIdClient, $sFilename, $sType, $db)
 {
     cDeprecated('This method is deprecated and is not needed any longer');
 
-    if (!isset($oDb) || !is_object($oDb)) {
-        $oDb = cRegistry::getDb();
+    if (!isset($db) || !is_object($db)) {
+        $db = cRegistry::getDb();
     }
 
     $iIdClient = cSecurity::toInteger($iIdClient);
-    $sFilename = cSecurity::filter((string)$sFilename, $oDb);
-    $sType = cSecurity::filter((string)$sType, $oDb);
+    $sFilename = cSecurity::filter((string)$sFilename, $db);
+    $sType = cSecurity::filter((string)$sType, $db);
 
     $sSql = "SELECT * FROM `" . cDb::getTableName('file_information') . "` WHERE idclient = $iIdClient AND
             filename = '$sFilename' AND type = '$sType';";
-    $oDb->query($sSql);
+    $db->query($sSql);
 
     $aFileInformation = [];
-    if ($oDb->numRows() > 0) {
-        $oDb->nextRecord();
-        $aFileInformation['idsfi'] = $oDb->f('idsfi');
-        $aFileInformation['created'] = $oDb->f('created');
-        $aFileInformation['lastmodified'] = $oDb->f('lastmodified');
-        $aFileInformation['author'] = cSecurity::unFilter($oDb->f('author'));
-        $aFileInformation['modifiedby'] = $oDb->f('modifiedby');
-        $aFileInformation['description'] = cSecurity::unFilter($oDb->f('description'));
+    if ($db->numRows() > 0) {
+        $db->nextRecord();
+        $aFileInformation['idsfi'] = $db->f('idsfi');
+        $aFileInformation['created'] = $db->f('created');
+        $aFileInformation['lastmodified'] = $db->f('lastmodified');
+        $aFileInformation['author'] = cSecurity::unFilter($db->f('author'));
+        $aFileInformation['modifiedby'] = $db->f('modifiedby');
+        $aFileInformation['description'] = cSecurity::unFilter($db->f('description'));
     }
-    $oDb->free();
+    $db->free();
 
     return $aFileInformation;
 }
@@ -79,12 +79,12 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
 /**
  * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
-function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $oDb, $sFilenameNew = '')
+function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $db, $sFilenameNew = '')
 {
     cDeprecated('This method is deprecated and is not needed any longer');
 
-    if (!isset($oDb) || !is_object($oDb)) {
-        $oDb = cRegistry::getDb();
+    if (!isset($db) || !is_object($db)) {
+        $db = cRegistry::getDb();
     }
 
     if ($sFilenameNew == '') {
@@ -92,16 +92,16 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
     }
 
     $iIdClient = cSecurity::toInteger($iIdClient);
-    $sFilename = cSecurity::filter((string)$sFilename, $oDb);
-    $sType = cSecurity::filter((string)$sType, $oDb);
-    $sDescription = cSecurity::filter((string)stripslashes($sDescription), $oDb);
-    $sAuthor = cSecurity::filter((string)$sAuthor, $oDb);
+    $sFilename = cSecurity::filter((string)$sFilename, $db);
+    $sType = cSecurity::filter((string)$sType, $db);
+    $sDescription = cSecurity::filter((string)stripslashes($sDescription), $db);
+    $sAuthor = cSecurity::filter((string)$sAuthor, $db);
 
     $sSql = "SELECT * from `" . cDb::getTableName('file_information') . "` WHERE idclient = $iIdClient AND
             filename = '$sFilename' AND type = '$sType';";
-    $oDb->query($sSql);
-    if ($oDb->numRows() == 0) {
-        // $iNextId = $oDb->nextid('con_style_file_information');
+    $db->query($sSql);
+    if ($db->numRows() == 0) {
+        // $iNextId = $db->nextid('con_style_file_information');
         $sSql = "INSERT INTO `" . cDb::getTableName('file_information') . "` (
                     `idclient` ,
                     `type` ,
@@ -131,9 +131,9 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
                       type='$sType';";
     }
 
-    $oDb->free();
-    $oDb->query($sSql);
-    $oDb->free();
+    $db->free();
+    $db->query($sSql);
+    $db->free();
 }
 
 /**

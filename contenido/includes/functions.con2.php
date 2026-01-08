@@ -245,9 +245,9 @@ function conGenerateKeywords($client, $lang)
 {
     $cfg = cRegistry::getConfig();
 
-    static $oDB = NULL;
-    if (!isset($oDB)) {
-        $oDB = cRegistry::getDb();
+    static $db = NULL;
+    if (!isset($db)) {
+        $db = cRegistry::getDb();
     }
 
     // cms types to be excluded from indexing
@@ -256,17 +256,17 @@ function conGenerateKeywords($client, $lang)
     $sql = 'SELECT a.idart, b.idartlang FROM ' . cDb::getTableName('art') . ' AS a, ' . cDb::getTableName('art_lang') . ' AS b
             WHERE a.idart=b.idart AND a.idclient=' . (int)$client . ' AND b.idlang=' . (int)$lang;
 
-    $oDB->query($sql);
+    $db->query($sql);
 
     $aArticles = [];
-    while ($oDB->nextRecord()) {
-        $aArticles[$oDB->f('idart')] = $oDB->f('idartlang');
+    while ($db->nextRecord()) {
+        $aArticles[$db->f('idart')] = $db->f('idartlang');
     }
 
     foreach ($aArticles as $artid => $artlangid) {
         $aContent = conGetContentFromArticle($artlangid);
         if (count($aContent) > 0) {
-            $oIndex = new cSearchIndex($oDB);
+            $oIndex = new cSearchIndex($db);
             $oIndex->start($artid, $aContent, 'auto', $options);
         }
     }
