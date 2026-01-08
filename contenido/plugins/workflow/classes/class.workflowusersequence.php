@@ -145,7 +145,7 @@ class WorkflowUserSequences extends ItemCollection
 
         $this->select("idworkflowitem = $idworkflowitem AND position = " . $pos2);
         if (($item = $this->next()) === false) {
-            $this->lasterror(i18n("Swapping items failed: Item doesn't exist", "workflow"));
+            $this->lasterror = i18n("Swapping items failed: Item doesn't exist", "workflow");
             return false;
         }
 

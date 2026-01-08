@@ -1399,11 +1399,11 @@ abstract class ItemCollection extends cItemBaseAbstract
 
         if (in_array('*', $fields)) {
             // Asterisk ("*") to get all field found
-            $fields = '*';
+            $fieldsSql = '*';
         } else {
             // Escape fields
             $escapedFields = array_map([$db, 'escape'], $fields);
-            $fields = '`' . implode('`, `', $escapedFields) . '`';
+            $fieldsSql = '`' . implode('`, `', $escapedFields) . '`';
         }
 
         $where = empty($where) ? '' : 'WHERE ' . $where;
@@ -1413,7 +1413,7 @@ abstract class ItemCollection extends cItemBaseAbstract
 
         // Get all fields
         $entries = [];
-        $sql = 'SELECT ' . $fields . ' FROM `' . $this->table . '`' . $where . $groupBy . $orderBy . $limit;
+        $sql = 'SELECT ' . $fieldsSql . ' FROM `' . $this->table . '`' . $where . $groupBy . $orderBy . $limit;
         $db->query($sql);
         while ($db->nextRecord()) {
             $data = [];
