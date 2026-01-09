@@ -1495,20 +1495,19 @@ function buildStackString(int $startLevel = 2): string
  * cWarning(__FILE__, __LINE__, 'Some warning message');
  * </pre>
  *
- * @SuppressWarnings docBlocks
- * @internal Has variadic parameters
+ * @param string $message
+ * @param mixed ...$arguments Additional arguments (for backward compatibility)
  */
-function cWarning()
+function cWarning(...$arguments)
 {
     $cfg = cRegistry::getConfig();
 
-    $args = func_get_args();
-    if (count($args) == 3) {
+    if (count($arguments) == 3) {
         // Old version cWarning($file, $line, $message)
-        $message = $args[2];
+        $message = $arguments[2];
     } else {
         // New version
-        $message = $args[0];
+        $message = $arguments[0];
     }
 
     $builder = new cLogEntryBuilder($message, 'Warning');
@@ -1537,20 +1536,18 @@ function cWarning()
  * </pre>
  *
  * @param string $message
- * @SuppressWarnings docBlocks
- * @internal Has variadic parameters
+ * @param mixed ...$arguments Additional arguments (for backward compatibility)
  */
-function cError($message)
+function cError(...$arguments)
 {
     $cfg = cRegistry::getConfig();
 
-    $args = func_get_args();
-    if (count($args) == 3) {
+    if (count($arguments) == 3) {
         // Old version cError($file, $line, $message)
-        $message = $args[2];
+        $message = $arguments[2];
     } else {
         // New version
-        $message = $args[0];
+        $message = $arguments[0];
     }
 
     $builder = new cLogEntryBuilder($message, 'Error');

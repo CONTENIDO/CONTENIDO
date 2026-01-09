@@ -385,57 +385,51 @@ abstract class cDbDriverHandler
 
     /**
      * Prepares the statement for execution and returns it back.
-     * Accepts multiple parameter, where the first parameter should be the query
-     * and any additional parameter should be the values to replace in format
-     * definitions.
-     * As an alternative the second parameter could be also a indexed array with
-     * values to replace in format definitions.
      *
-     * Other option is to call this function with the statement containing named
-     * parameter
-     * and the second parameter as a associative array with key/value pairs to
-     * set in statement.
+     * This method accepts a SQL statement in `$statement` and optional replacement values in `$params`.
+     * Replacement values may be supplied in one of the following ways:
+     *
+     * - As multiple additional arguments:
+     *     $db->prepare($sql, $val1, $val2, ...);
+     * - As a single indexed array:
+     *     $db->prepare($sql, [$val1, $val2]);
+     * - As a single associative array (named parameters):
+     *     $db->prepare('... :name ...', ['name' => $value]);
+     *
+     * For indexed parameters the values will be escaped and inserted using `sprintf`-style placeholders
+     * (e.g. %s, %d). For associative (named) parameters the method substitutes occurrences of `:key`,
+     * quoted `':key'` and backticked ```:key``` appropriately and applies escaping.
      *
      * Examples:
      * <pre>
-     * // multiple parameter
      * $sql = $obj->prepare('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
-     *
-     * // 2 parameter where the first is the statement with formatting signs and
-     * the second the entries array
      * $sql = $obj->prepare('SELECT * FROM `%s` WHERE id = %d', ['tablename', 123]);
-     *
-     * // 2 parameter where the first is the statement with named parameter and
-     * the second the associative entries array
      * $sql = $obj->prepare('SELECT * FROM `:mytab` WHERE id = :myid', ['mytab' => 'tablename', 'myid' => 123]);
      * </pre>
      *
-     * Accepts additional unlimited parameter, where the parameter will be
-     * replaced against formatting sign in query.
-     *
-     * @param string $statement The sql statement to prepare.
-     * @return string The prepared sql statement
-     * @throws cDbException If statement is empty or function is called with less than 2 parameters
+     * @param string $statement The SQL statement to prepare.
+     * @param mixed ...$arguments Optional replacement parameters (variadic).
+     *      Can be individual values or a single array (indexed or associative) as described above.
+     * @return string The prepared SQL statement.
+     * @throws cDbException If `$statement` is empty or required parameters are missing.
      */
-    public function prepare(string $statement, ...$params): string
+    public function prepare(string $statement, ...$arguments): string
     {
         // No empty queries
         if (empty($statement)) {
             throw new cDbException('Empty statement!');
         }
 
-        $arguments = func_get_args();
         if (count($arguments) <= 1) {
             throw new cDbException('Wrong number of parameter!');
         }
-
-        array_shift($arguments);
 
         return $this->_prepareStatement($statement, $arguments);
     }
 
     /**
      * Prepares the provided statement.
+     * @see cDbDriverHandler::prepare()
      */
     protected function _prepareStatement(string $statement, array $arguments): string
     {
@@ -634,59 +628,38 @@ abstract class cDbDriverHandler
 
     /**
      * Executes the statement.
+     *
      * If called with one parameter, it executes the statement directly.
+     * If called with multiple parameters, it prepares the statement first and then executes it.
      *
-     * Accepts multiple parameter, where the first parameter should be the query
-     * and any additional parameter should be the values to replace in format
-     * definitions.
-     * As an alternative the second parameter could be also a indexed array with
-     * values to replace in format definitions.
-     *
-     * Other option is to call this function with the statement containing named
-     * parameter
-     * and the second parameter as a associative array with key/value pairs to
-     * set in statement.
+     * This function behaves like {@see cDbDriverHandler::prepare()} when called with multiple parameters.
      *
      * Examples:
      * <pre>
-     * // call with one parameter
      * $obj->query('SELECT * FROM `tablename` WHERE id = 123');
-     *
-     * // call with multiple parameter
      * $obj->query('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
-     *
-     * // 2 parameter where the first is the statement with formatting signs and
-     * the second the entries array
      * $obj->query('SELECT * FROM `%s` WHERE id = %d', ['tablename', 123]);
-     *
-     * // 2 parameter where the first is the statement with named parameter and
-     * the second the associative entries array
      * $obj->query(
      *     'SELECT * FROM `:mytab` WHERE id = :myid', ['mytab' => 'tablename', 'myid' => 123]
      * );
      * </pre>
      *
-     * Accepts additional unlimited parameter, where the parameter will be
-     * replaced against formatting sign in query.
-     *
      * @param string $statement The SQL statement to execute.
+     * @param mixed ...$arguments Optional replacement parameters (variadic).
+     *      Can be individual values or a single array (indexed or associative) as described above.
      * @return resource|int|object|bool Database driver, false on error
      * @throws cDbException
      */
-    public function query(string $statement, ...$params)
+    public function query(string $statement, ...$arguments)
     {
         // No empty queries, please, since PHP4 chokes on them
         if ($statement == '') {
-            // The empty query string is passed on from the constructor, when
-            // calling
-            // the class without a query, e.g. in situations '$db = new
-            // DB_Sql_Subclass;'
+            // The empty query string is passed on from the constructor, when calling
+            // the class without a query, e.g. in situations '$db = new DB_Sql_Subclass;'
             return false;
         }
 
-        $arguments = func_get_args();
-        if (count($arguments) > 1) {
-            array_shift($arguments);
+        if (count($arguments) > 0) {
             $statement = $this->_prepareStatement($statement, $arguments);
         }
 

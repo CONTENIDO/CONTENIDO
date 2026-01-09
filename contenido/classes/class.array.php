@@ -134,29 +134,29 @@ class cArray
      * Explanation:
      * - $array is the array you want to sort
      * - 'col1' is the name of the column you want to sort
-     * - SORT_FLAGS are: SORT_ASC, SORT_DESC, SORT_REGULAR, SORT_NUMERIC,
-     * SORT_STRING
+     * - SORT_FLAGS are: SORT_ASC, SORT_DESC, SORT_REGULAR, SORT_NUMERIC, SORT_STRING
      *
-     * You can repeat the 'col', FLAG, FLAG as often as you want. The highest
-     * priority is given to the first - so the array is sorted by the last
-     * given column first, then the one before ...
+     * You can repeat the 'col', FLAG, FLAG as often as you want. The highest priority is given
+     * to the first - so the array is sorted by the last given column first, then the one before...
      *
      * Example:
      * <pre>
      * $array = cArray::csort($array, 'town', 'age', SORT_DESC, 'name');
      * </pre>
+     *
+     * @param mixed $array The array to sort
+     * @param mixed ...$arguments Column names (string) and sort flags (int) alternating
      */
-    public static function csort(...$args): array
+    public static function csort(...$arguments): array
     {
-        $args = func_get_args();
-        $array = array_shift($args);
+        $array = array_shift($arguments);
 
         if (!is_array($array) || empty($array)) {
             return $array;
         }
 
         $sortParams = [];
-        foreach ($args as $arg) {
+        foreach ($arguments as $arg) {
             if (is_string($arg)) {
                 // Use array_column to extract the sorting values
                 // and apply strtoupper for case-insensitive sorting as in your original
@@ -202,7 +202,6 @@ class cArray
     /**
      * Get the first key of the given array without affecting the internal array pointer.
      *
-     * @param array $array An array
      * @return int|string|null
      * @since CONTENIDO 4.10.2
      */
@@ -220,7 +219,6 @@ class cArray
     /**
      * Get the last key of an array.
      *
-     * @param array $array An array
      * @return int|string|null
      * @since CONTENIDO 4.10.2
      */

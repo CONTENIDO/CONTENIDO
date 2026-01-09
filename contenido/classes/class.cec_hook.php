@@ -131,14 +131,14 @@ class cApiCecHook
      * Gets the desired CEC iterator and executes each registered chain function by passing the given
      * arguments to it. NOTE: the first param is interpreted as $chainName. NOTE: There is no restriction
      * for number of passed parameter.
+     *
+     * @param string $chainName Name of chain
+     * @param mixed ...$arguments Additional arguments passed to the chain function
      */
-    public static function execute()
+    public static function execute(...$arguments)
     {
-        // get arguments
-        $args = func_get_args();
-
         // get chain name
-        $chainName = array_shift($args);
+        $chainName = array_shift($arguments);
 
         // process CEC
         $cecIterator = cApiCecRegistry::getInstance()->getIterator($chainName);
@@ -146,7 +146,7 @@ class cApiCecHook
             $cecIterator->reset();
             while ($chainEntry = $cecIterator->next()) {
                 // invoke CEC function
-                $chainEntry->setTemporaryArguments($args);
+                $chainEntry->setTemporaryArguments($arguments);
                 $chainEntry->execute();
             }
         }
@@ -162,15 +162,14 @@ class cApiCecHook
      * NOTE: There is no restriction for number of passed parameter.
      * NOTE: If no chain function is registered, $_defaultReturnValue will be returned.
      *
+     * @param string $chainName Name of chain
+     * @param mixed ...$arguments Additional arguments passed to the chain function
      * @return mixed Parameter changed/processed by chain functions.
      */
-    public static function executeAndReturn()
+    public static function executeAndReturn(...$arguments)
     {
-        // get arguments
-        $args = func_get_args();
-
         // get chain name
-        $chainName = array_shift($args);
+        $chainName = array_shift($arguments);
 
         // position of return value in arguments list
         $pos = self::$_returnArgumentPos - 1;
@@ -184,16 +183,16 @@ class cApiCecHook
             $cecIterator->reset();
             while ($chainEntry = $cecIterator->next()) {
                 // invoke CEC function
-                $chainEntry->setTemporaryArguments($args);
+                $chainEntry->setTemporaryArguments($arguments);
                 $return = $chainEntry->execute();
-                if (isset($args[$pos])) {
-                    $args[$pos] = $return;
+                if (isset($arguments[$pos])) {
+                    $arguments[$pos] = $return;
                 }
             }
         }
 
-        if (isset($args[$pos])) {
-            $return = $args[$pos];
+        if (isset($arguments[$pos])) {
+            $return = $arguments[$pos];
         }
 
         // reset properties to defaults
@@ -211,15 +210,14 @@ class cApiCecHook
      * NOTE: There is no restriction for number of passed parameter.
      * NOTE: If no chain function is registered, $_defaultReturnValue will be returned.
      *
+     * @param string $chainName Name of chain
+     * @param mixed ...$arguments Additional arguments passed to the chain function
      * @return mixed The break condition or its default value
      */
-    public static function executeWhileBreakCondition()
+    public static function executeWhileBreakCondition(...$arguments)
     {
-        // get arguments
-        $args = func_get_args();
-
         // get chain name
-        $chainName = array_shift($args);
+        $chainName = array_shift($arguments);
 
         // break condition and default return value
         $breakCondition = self::$_breakCondition;
@@ -231,7 +229,7 @@ class cApiCecHook
             $cecIterator->reset();
             while ($chainEntry = $cecIterator->next()) {
                 // invoke CEC function
-                $chainEntry->setTemporaryArguments($args);
+                $chainEntry->setTemporaryArguments($arguments);
                 $return = $chainEntry->execute();
                 // process return value
                 if (isset($return) && $return === $breakCondition) {

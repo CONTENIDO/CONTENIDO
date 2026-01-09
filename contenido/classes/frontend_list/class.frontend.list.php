@@ -97,7 +97,6 @@ class cFrontendList
      *
      * @param int $index Numeric index
      * @param mixed ...$params Additional parameters (data)
-     * @noinspection PhpUnusedParameterInspection
      */
     public function setData(int $index, ...$params)
     {

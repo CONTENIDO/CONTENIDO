@@ -198,15 +198,12 @@ class cGuiScrollList
      * Make sure that the amount of parameters stays the same for all
      * setData calls in a single object.
      *
-     * @param mixed ...$values Additional parameters (data)
-     * @noinspection PhpUnusedParameterInspection
+     * @param mixed ...$arguments Additional parameters (header data)
      */
-    public function setHeader(...$values)
+    public function setHeader(...$arguments)
     {
-        $numArgs = func_num_args();
-
-        for ($i = 0; $i < $numArgs; $i++) {
-            $this->header[$i] = func_get_arg($i);
+        foreach ($arguments as $i => $value) {
+            $this->header[$i] = $value;
         }
     }
 
@@ -224,14 +221,11 @@ class cGuiScrollList
      *
      * @param int $index Numeric index
      * @param mixed ...$values Additional parameters (data)
-     * @noinspection PhpUnusedParameterInspection
      */
     public function setData(int $index, ...$values)
     {
-        $numArgs = func_num_args();
-
-        for ($i = 1; $i < $numArgs; $i++) {
-            $this->data[$index][$i] = func_get_arg($i);
+        foreach ($values as $i => $value) {
+            $this->data[$index][$i + 1] = $value;
         }
     }
 
@@ -249,14 +243,11 @@ class cGuiScrollList
      *
      * @param int $index Numeric index
      * @param mixed ...$values Additional parameters (data)
-     * @noinspection PhpUnusedParameterInspection
      */
     public function setHiddenData(int $index, ...$values)
     {
-        $numArgs = func_num_args();
-
-        for ($i = 1; $i < $numArgs; $i++) {
-            $this->data[$index]['hiddendata'][$i] = func_get_arg($i);
+        foreach ($values as $i => $value) {
+            $this->data[$index]['hiddendata'][$i + 1] = $value;
         }
     }
 

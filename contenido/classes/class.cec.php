@@ -427,16 +427,22 @@ class cApiCecChainItem
     /**
      * Invokes the CEC function/callback.
      *
+     * Arguments can be passed to the callback in two ways:
+     * 1. Via variadic parameters: $item->execute($arg1, $arg2, ...)
+     * 2. Via setTemporaryArguments(): $item->setTemporaryArguments([$arg1, $arg2, ...])
+     *
+     * If temporary arguments were set, they take precedence over passed arguments.
+     *
+     * @param mixed ...$arguments Optional. Additional arguments passed to the chain function
      * @return mixed If available, the result of the CEC function/callback
      */
-    public function execute()
+    public function execute(...$arguments)
     {
         // get temporary arguments, if the where set before
-        if (!$args = $this->getTemporaryArguments()) {
-            // no temporary arguments available, get them by func_get_args()
-            $args = func_get_args();
+        if ($temporaryArgs = $this->getTemporaryArguments()) {
+            $arguments = $temporaryArgs;
         }
 
-        return call_user_func_array($this->getCallback(), $args);
+        return call_user_func_array($this->getCallback(), $arguments);
     }
 }
