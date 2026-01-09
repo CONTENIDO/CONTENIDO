@@ -123,7 +123,7 @@ class cRequestValidator
         global $bLog, $sMode, $aCheck, $aBlacklist;
 
         // some paths...
-        $installationPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..'));
+        $installationPath = str_replace('\\', '/', realpath(__DIR__  . '/../..'));
         $configPath = $installationPath . '/data/config/' . CON_ENVIRONMENT;
 
         $this->_logPath = $installationPath . '/data/logs/security.txt';

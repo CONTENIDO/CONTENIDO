@@ -46,7 +46,7 @@ class cCodeGeneratorFactory
         $className = 'cCodeGenerator' . $name;
         if (!class_exists($className)) {
             $fileName = $name . '.class.php';
-            $path = str_replace('\\', '/', dirname(__FILE__)) . '/';
+            $path = str_replace('\\', '/', __DIR__ ) . '/';
             if (!cFileHandler::exists($path . $fileName)) {
                 throw new cInvalidArgumentException(sprintf('%s: Could not include file for class "%s"!', __CLASS__, $fileName));
             }

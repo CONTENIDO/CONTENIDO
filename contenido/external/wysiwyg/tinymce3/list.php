@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // CONTENIDO startup process
-$contenido_path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../../')) . '/';
+$contenido_path = str_replace('\\', '/', realpath(__DIR__  . '/../../../')) . '/';
 
 if (!is_file($contenido_path . 'includes/startup.php')) {
     die("<h1>Fatal Error</h1><br>Couldn't include CONTENIDO startup.");
@@ -41,7 +41,7 @@ if (!is_file($contenido_path . 'includes/startup.php')) {
 include_once($contenido_path . 'includes/startup.php');
 
 // include editor config/combat file
-include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php');
+include(__DIR__  . DIRECTORY_SEPARATOR . 'config.php');
 
 $db = cRegistry::getDb();
 $db2 = cRegistry::getDb();

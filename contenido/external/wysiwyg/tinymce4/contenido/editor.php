@@ -24,7 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 
 // include editor config/combat file
-include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php');
+include(__DIR__ ORY_SEPARATOR . 'config.php');
 // cInclude('external', 'wysiwyg/tinymce4/contenido/editorclass.php');
 
 // name of textarea element
