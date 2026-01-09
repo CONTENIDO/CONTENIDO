@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // CONTENIDO startup process
-$contenido_path = str_replace('\\', '/', realpath(__DIR__  . '/../../../')) . '/';
+$contenido_path = str_replace('\\', '/', realpath(__DIR__ . '/../../../')) . '/';
 
 if (!is_file($contenido_path . 'includes/startup.php')) {
     die("<h1>Fatal Error</h1><br>Couldn't include CONTENIDO startup.");
@@ -41,7 +41,7 @@ if (!is_file($contenido_path . 'includes/startup.php')) {
 include_once($contenido_path . 'includes/startup.php');
 
 // include editor config/combat file
-include(__DIR__  . DIRECTORY_SEPARATOR . 'config.php');
+include(__DIR__ . DIRECTORY_SEPARATOR . 'config.php');
 
 $db = cRegistry::getDb();
 $db2 = cRegistry::getDb();
@@ -118,13 +118,13 @@ switch ($_REQUEST['mode']) {
                     $tmp_title = cString::getPartOfString($tmp_title, 0, 32);
                 }
 
-                $is_start = isStartArticle($db2->f('idartlang"), $db2->f("idcat'), $lang);
+                $is_start = isStartArticle($db2->f('idartlang'), $db2->f('idcat'), $lang);
 
                 if ($is_start) {
-                    $tmp_title .= "*";
+                    $tmp_title .= '*';
                 }
                 if ($db2->f('online') == 0) {
-                    $tmp_title = "[" . $tmp_title . "]";
+                    $tmp_title = '[' . $tmp_title . ']';
                 }
                 $output .= sprintf(
                     ",\n\t[\"&nbsp;&nbsp;%s|&nbsp;&nbsp;%s\", \"front_content.php?idart=%s\"]",

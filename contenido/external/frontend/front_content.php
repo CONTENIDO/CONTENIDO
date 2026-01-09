@@ -23,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
 global $contenido_path, $cfg;
 
 // Set path to current frontend
-$frontend_path = str_replace('\\', '/', realpath(__DIR__  . '/')) . '/';
+$frontend_path = str_replace('\\', '/', realpath(__DIR__ . '/')) . '/';
 
 // Include the environment definer file
 include_once($frontend_path . '../../environment.php');

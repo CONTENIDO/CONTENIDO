@@ -60,7 +60,7 @@ class cValidatorFactory
 
         if (!class_exists($className)) {
             // Try to load validator class file (in this folder)
-            $path = str_replace('\\', '/', __DIR__
+            $path = str_replace('\\', '/', __DIR__) . '/';
             $fileName = sprintf('class.validator.%s.php', $name);
             if (!cFileHandler::exists($path . $fileName)) {
                 throw new cInvalidArgumentException("The file '$fileName' for validator '$validator' couldn't included by cValidatorFactory!");

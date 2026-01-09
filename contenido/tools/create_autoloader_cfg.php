@@ -34,10 +34,10 @@ if (substr(PHP_SAPI, 0, 3) !== 'cli') {
 $context = new stdClass();
 
 // Current path
-$context->currentPath = str_replace('\\', '/', realpath(__DIR__ . '/';
+$context->currentPath = str_replace('\\', '/', realpath(__DIR__ . '/')) . '/';
 
 // CONTENIDO installation path (folder which contains "cms", "contenido", "docs", "setup", etc...)
-$context->contenidoInstallPath = str_replace('\\', '/', realpath(__DIR__
+$context->contenidoInstallPath = str_replace('\\', '/', realpath(__DIR__ . '/../../')) . '/';
 
 // Include the environment definer file
 include_once $context->contenidoInstallPath . 'contenido/environment.php';

@@ -25,7 +25,7 @@ if (empty($_GET['file'])) {
 }
 
 // Set path to current frontend
-$frontend_path = str_replace('\\', '/', realpath(__DIR__  . '/')) . '/';
+$frontend_path = str_replace('\\', '/', realpath(__DIR__ . '/')) . '/';
 
 // Include the environment definer file
 include_once($frontend_path . '../../environment.php');
@@ -44,7 +44,7 @@ if (!is_file($contenido_path . 'includes/startup.php')) {
 }
 include_once($contenido_path . 'includes/startup.php');
 
-$main_dbfs_file_path = __DIR__
+$main_dbfs_file_path = __DIR__;
 
 // Include article view handler
 $cfg = cRegistry::getConfig();

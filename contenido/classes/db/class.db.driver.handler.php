@@ -420,7 +420,7 @@ abstract class cDbDriverHandler
             throw new cDbException('Empty statement!');
         }
 
-        if (count($arguments) <= 1) {
+        if (count($arguments) < 1) {
             throw new cDbException('Wrong number of parameter!');
         }
 
