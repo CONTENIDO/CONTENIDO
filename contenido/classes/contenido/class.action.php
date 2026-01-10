@@ -123,7 +123,7 @@ class cApiActionCollection extends ItemCollection
     {
         $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
 
-        return ($this->db->nextRecord()) ? $this->db->f('name') : null;
+        return $this->db->nextRecord() ? $this->db->f('name') : null;
     }
 
     /**
@@ -141,7 +141,7 @@ class cApiActionCollection extends ItemCollection
             $this->db->query("SELECT idarea FROM `%s` WHERE idaction = %d", $this->table, $action);
         }
 
-        return ($this->db->nextRecord()) ? $this->db->f('idarea') : null;
+        return $this->db->nextRecord() ? $this->db->f('idarea') : null;
     }
 }
 
@@ -156,7 +156,7 @@ class cApiAction extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id The ID of item to load
      * @throws cDbException|cException
      */
     public function __construct($id = false)

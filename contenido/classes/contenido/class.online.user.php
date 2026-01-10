@@ -253,7 +253,7 @@ class cApiOnlineUser extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id The ID of item to load
      * @throws cDbException|cException
      */
     public function __construct($id = false)

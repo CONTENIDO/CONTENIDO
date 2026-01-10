@@ -165,7 +165,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
         // add/replace title tag
         $this->_processCodeTitleTag();
 
-        // add/replace meta tags
+        // add/replace meta-tags
         $this->_processCodeMetaTags();
 
         // save the collected css/js data and save it under the template name
@@ -347,15 +347,15 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
     }
 
     /**
-     * Processes and adds or replaces all meta tags for an article.
-     * Also calls the CEC 'Contenido.Content.CreateMetatags' for user defined meta tags creation.
+     * Processes and adds or replaces all meta-tags for an article.
+     * Also calls the CEC 'Contenido.Content.CreateMetatags' for user defined meta-tags creation.
      */
     protected function _processCodeMetaTags(): string
     {
-        // get basic meta tags (from article & system)
+        // get basic meta-tags (from article & system)
         $metaTags = $this->_getBasicMetaTags();
 
-        // process chain Contenido.Content.CreateMetatags to update meta tags
+        // process chain Contenido.Content.CreateMetatags to update meta-tags
         $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Content.CreateMetatags');
         while ($chainEntry = $cecIterator->next()) {
             $metaTags = $chainEntry->execute($metaTags);
@@ -364,7 +364,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
         $sMetaTags = '';
 
         foreach ($metaTags as $value) {
-            // get meta tag keys
+            // get meta-tag keys
             $valueKeys = array_keys($value);
             $nameKey = 'name';
             foreach ($valueKeys as $key) {
@@ -384,13 +384,13 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             $oMetaTagGen->setTag('meta');
             $oMetaTagGen->updateAttributes($value);
 
-            // HTML does not allow ID for meta tags
+            // HTML does not allow ID for meta-tags
             $oMetaTagGen->removeAttribute('id');
 
             // check if metatag already exists
             $sPattern = '/(<meta(?:\s+)' . $nameKey . '(?:\s*)=(?:\s*)(?:\\"|\\\')(?:\s*)' . $value[$nameKey] . '(?:\s*)(?:\\"|\\\')(?:[^>]+)>\n?)/i';
             if (preg_match($sPattern, $this->_layoutCode, $aMatch)) {
-                // the meta tag is already specified in the layout
+                // the meta-tag is already specified in the layout
                 // replace it only if its attributes are not empty
                 $replace = true;
                 foreach ($value as $test) {
@@ -465,14 +465,14 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
     }
 
     /**
-     * Collects and return basic meta tags/elements.
+     * Collects and return basic meta-tags/elements.
      *
-     * @return array List of associative meta tag values
+     * @return array List of associative meta-tag values
      * @throws cDbException|cException
      */
     protected function _getBasicMetaTags(): array
     {
-        // collect all available meta tag entries with non-empty values
+        // collect all available meta-tag entries with non-empty values
         $metaTags = [];
         foreach (conGetAvailableMetaTagTypes() as $key => $value) {
             $metaValue = conGetMetaValue($this->_idartlang, $key);
@@ -484,7 +484,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             }
         }
 
-        // add generator meta tag
+        // add generator meta-tag
         $generator = 'CMS CONTENIDO';
         if ((getEffectiveSetting('generator', 'add_version', 'true') === 'true')) {
             $aVersion = explode('.', CON_VERSION);
@@ -500,7 +500,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             $encoding = 'utf-8';
         }
 
-        // add charset or content type meta tag
+        // add charset or content type meta-tag
         if (getEffectiveSetting('generator', 'html5', 'false') === 'true') {
             $metaTags[] = [
                 'charset' => $encoding
@@ -517,7 +517,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             ];
         }
 
-        // update (!) index setting of robots meta tag
+        // update (!) index setting of robots meta-tag
         // the following value will not be changed
         // $index = (bool) $this->getArtLangObject()->get('searchable');
         // $metaTags = $this->_updateMetaRobots($metaTags, $index, NULL);

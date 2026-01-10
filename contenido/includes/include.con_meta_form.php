@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains the backend page for editing meta tags.
+ * This file contains the backend page for editing meta-tags.
  *
  * @package    Core
  * @subpackage Backend
@@ -260,7 +260,7 @@ $managedTypes = [
 
 $metaPreview = [];
 
-// Set meta tags values
+// Set meta-tags values
 foreach ($availableTags as $key => $value) {
     $contentMetaValue = conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'));
     $contentMetaValue = str_replace('"', '', $contentMetaValue);
@@ -675,7 +675,7 @@ if (cPermission::checkSysadminPermission($auth->getPerms())) {
     $tpl->set('s', 'ADDNEWMETA', '&nbsp;');
 }
 
-// call the chain to create meta tags to display any additional tags in the preview
+// call the chain to create meta-tags to display any additional tags in the preview
 $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Content.CreateMetatags');
 while ($chainEntry = $cecIterator->next()) {
     $metaPreview = $chainEntry->execute($metaPreview);
@@ -694,7 +694,7 @@ foreach ($metaPreview as $metaRow) {
     $tpl2->next();
 }
 
-// render metatags preview
+// render meta-tags preview
 $tpl->set('s', 'META_TAGS', $tpl2->generate($cfg['path']['templates'] . 'template.con_meta_edit_form_preview.html', true));
 
 // Assign bottom js values

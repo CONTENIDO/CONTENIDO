@@ -125,13 +125,17 @@ class cApiCategoryLanguageCollection extends ItemCollection
      * @param int $idcat
      * @param int $idlang
      * @return int
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getStartIdartlangByIdcatAndIdlang($idcat, $idlang)
     {
-        $sql = "SELECT `startidartlang` FROM `%s` WHERE `idcat` = %d AND `idlang` = %d AND `startidartlang` != 0";
-        $this->db->query($sql, $this->table, $idcat, $idlang);
-        return $this->db->nextRecord() ? (int) $this->db->f('startidartlang') : 0;
+        $this->db->query(
+            "SELECT `startidartlang` FROM `%s` WHERE `idcat` = %d AND `idlang` = %d AND `startidartlang` != 0",
+            $this->table,
+            $idcat,
+            $idlang
+        );
+        return $this->db->nextRecord() ? cSecurity::toInteger($this->db->f('startidartlang')) : 0;
     }
 
     /**
@@ -140,16 +144,20 @@ class cApiCategoryLanguageCollection extends ItemCollection
      *
      * @param int $idcat
      * @param int $idlang
-     * @return int
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
-    public function getStartIdartByIdcatAndIdlang($idcat, $idlang)
+    public function getStartIdartByIdcatAndIdlang($idcat, $idlang): int
     {
-        $tabArtLang = cDb::getTableName('art_lang');
-        $sql = "SELECT al.idart FROM `%s` AS al, `%s` AS cl "
-            . "WHERE cl.idcat = %d AND cl.startidartlang != 0 AND cl.idlang = %d AND cl.idlang = al.idlang AND cl.startidartlang = al.idartlang";
-        $this->db->query($sql, $tabArtLang, $this->table, $idcat, $idlang);
-        return ($this->db->nextRecord()) ? $this->db->f('idart') : 0;
+        $this->db->query(
+            "SELECT al.idart FROM `%s` AS al, `%s` AS cl "
+            . "WHERE cl.idcat = %d AND cl.startidartlang != 0 AND cl.idlang = %d AND cl.idlang = al.idlang AND cl.startidartlang = al.idartlang",
+            cDb::getTableName('art_lang'),
+            $this->table,
+            $idcat,
+            $idlang
+        );
+
+        return $this->db->nextRecord() ? cSecurity::toInteger($this->db->f('idart')) : 0;
     }
 
     /**
@@ -157,14 +165,19 @@ class cApiCategoryLanguageCollection extends ItemCollection
      *
      * @param int $idcat
      * @param int $idlang
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
     public function getIdCatLangByIdcatAndIdlang($idcat, $idlang): int
     {
-        $sql = "SELECT `idcatlang` FROM `%s` WHERE `idcat` = %d AND `idlang` = %d";
-        $this->db->query($sql, $this->table, $idcat, $idlang);
-        return ($this->db->nextRecord()) ? cSecurity::toInteger($this->db->f('idcatlang')) : 0;
+        $this->db->query(
+            "SELECT `idcatlang` FROM `%s` WHERE `idcat` = %d AND `idlang` = %d",
+            $this->table,
+            $idcat,
+            $idlang
+        );
+
+        return $this->db->nextRecord() ? cSecurity::toInteger($this->db->f('idcatlang')) : 0;
     }
 
     /**
@@ -173,7 +186,7 @@ class cApiCategoryLanguageCollection extends ItemCollection
      * @param int $idartlang
      * @param int $idcat [optional] Check category id additionally
      * @param int $idlang [optional] Check language id additionally
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function isStartArticle($idartlang, $idcat = NULL, $idlang = NULL): bool
     {
@@ -186,8 +199,12 @@ class cApiCategoryLanguageCollection extends ItemCollection
         }
         $where .= ' AND `startidartlang` != 0';
 
-        $sql = "SELECT `startidartlang` FROM `" . $this->table . "` WHERE " . $where;
-        $this->db->query($sql);
+        $this->db->query(sprintf(
+            "SELECT `startidartlang` FROM `%s` WHERE %s",
+            $this->table,
+            $where
+        ));
+
         return ($this->db->nextRecord() && $this->db->f('startidartlang') != 0);
     }
 
@@ -238,7 +255,7 @@ class cApiCategoryLanguage extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id The ID of item to load
      * @throws cDbException|cException
      */
     public function __construct($id = false)
@@ -310,21 +327,20 @@ class cApiCategoryLanguage extends Item
      * Assigns the provided template to the category language item.
      *
      * @param int $idtpl
-     * @return cApiTemplateConfiguration
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function assignTemplate($idtpl)
+    public function assignTemplate($idtpl): cApiTemplateConfiguration
     {
         $oTplConfColl = new cApiTemplateConfigurationCollection();
 
         if ($this->get('idtplcfg') != 0) {
-            // Remove old template first
+            // Remove the old template first
             $oTplConfColl->delete($this->get('idtplcfg'));
         }
 
         $oTplConf = $oTplConfColl->create($idtpl);
 
-        // If there is a pre-configuration of template, copy its settings into
+        // If there is a pre-configuration of a template, copy its settings into
         // template configuration
         $oTplConfColl->copyTemplatePreconfiguration($idtpl, $oTplConf->get('idtplcfg'));
 
@@ -337,23 +353,24 @@ class cApiCategoryLanguage extends Item
     /**
      * Returns id of template where this item is configured
      *
-     * @return int
      * @throws cDbException|cException
      */
-    public function getTemplate()
+    public function getTemplate(): int
     {
-        $oTplConf = new cApiTemplateConfiguration($this->get('idtplcfg'));
-        return $oTplConf->get('idtpl');
+        return cSecurity::toInteger(
+            (new cApiTemplateConfiguration($this->get('idtplcfg')))->get('idtpl')
+        );
     }
 
     /**
      * Checks if category language item has a start article
      *
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException|cException|
      */
     public function hasStartArticle(): bool
     {
         cInclude('includes', 'functions.str.php');
+
         return strHasStartArticle($this->get('idcat'), $this->get('idlang'));
     }
 
@@ -371,10 +388,10 @@ class cApiCategoryLanguage extends Item
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId [optional] Change language id for URL (optional)
+     * @param int $changeLanguageId [optional] Change language id for URL (optional)
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getLink($changeLangId = 0): string
+    public function getLink($changeLanguageId = 0): string
     {
         if ($this->isLoaded() === false) {
             return '';
@@ -382,9 +399,9 @@ class cApiCategoryLanguage extends Item
 
         $options = [];
         $options['idcat'] = $this->get('idcat');
-        $options['lang'] = ($changeLangId == 0) ? $this->get('idlang') : $changeLangId;
-        if ($changeLangId > 0) {
-            $options['changelang'] = $changeLangId;
+        $options['lang'] = $changeLanguageId == 0 ? $this->get('idlang') : $changeLanguageId;
+        if ($changeLanguageId > 0) {
+            $options['changelang'] = $changeLanguageId;
         }
 
         return cUri::getInstance()->build($options);

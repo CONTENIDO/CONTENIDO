@@ -844,7 +844,7 @@ class cContentVersioning
             }
         }
 
-        // version meta tags if they are not versioned yet
+        // version meta-tags if they are not versioned yet
         if (isset($parameters['idartlang'])) {
             $where = 'idartlang = ' . $parameters['idartlang'];
             $metaTagVersionColl = new cApiMetaTagVersionCollection();

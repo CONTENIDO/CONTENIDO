@@ -229,7 +229,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id The ID of item to load
      * @param bool $fetchContent Flag to fetch content
      * @throws cDbException|cException
      */
@@ -349,7 +349,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
         }
 
         if ($type === 'meta' || $type === 'complete') {
-            // mark meta tags versions as current
+            // mark meta-tags versions as current
             $metaTagVersion = new cApiMetaTagVersion();
             $sql = 'SELECT idmetatagversion AS id
                     FROM `%s`
@@ -457,7 +457,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
         }
 
         if ($type === 'meta' || $type === 'complete') {
-            // set new meta tag versions
+            // set new meta-tag versions
             $metaTagVersion = new cApiMetaTagVersion();
             $sql = 'SELECT idmetatagversion AS id
                     FROM `%s`
@@ -481,7 +481,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
                     $metaTagVersion->loadBy('idmetatagversion', $id);
                     $metaTagVersion->markAsEditable($artLangVersion->get('version'));
                 }
-            } else { // use published meta tags
+            } else { // use published meta-tags
                 $metaTagColl = new cApiMetaTagCollection();
                 $metaTag = new cApiMetaTag();
                 $ids = $metaTagColl->getIdsByWhereClause('idartlang = ' . $this->get('idartlang'));

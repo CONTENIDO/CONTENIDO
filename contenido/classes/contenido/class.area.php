@@ -77,7 +77,7 @@ class cApiAreaCollection extends ItemCollection
             $sql = "SELECT b.name FROM `%s` AS a, `%s` AS b WHERE a.name = '%s' AND b.name = a.parent_id";
         }
         $this->db->query($sql, $this->table, $this->table, $area);
-        return ($this->db->nextRecord()) ? $this->db->f('name') : $area;
+        return $this->db->nextRecord() ? $this->db->f('name') : $area;
     }
 
     /**
@@ -206,7 +206,7 @@ class cApiArea extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id The ID of item to load
      * @throws cDbException|cException
      */
     public function __construct($id = false)

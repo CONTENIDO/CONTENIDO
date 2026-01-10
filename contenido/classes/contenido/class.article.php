@@ -100,7 +100,7 @@ class cApiArticle extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id The ID of item to load
      * @throws cDbException|cException
      */
     public function __construct($id = false)
@@ -115,10 +115,10 @@ class cApiArticle extends Item
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId [optional] Change language id for URL (optional)
+     * @param int $changeLanguageId [optional] Change language id for URL (optional)
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getLink($changeLangId = 0): string
+    public function getLink($changeLanguageId = 0): string
     {
         if ($this->isLoaded() === false) {
             return '';
@@ -126,9 +126,9 @@ class cApiArticle extends Item
 
         $options = [];
         $options['idart'] = $this->get('idart');
-        $options['lang'] = ($changeLangId == 0) ? cRegistry::getLanguageId() : $changeLangId;
-        if ($changeLangId > 0) {
-            $options['changelang'] = $changeLangId;
+        $options['lang'] = $changeLanguageId == 0 ? cRegistry::getLanguageId() : $changeLanguageId;
+        if ($changeLanguageId > 0) {
+            $options['changelang'] = $changeLanguageId;
         }
 
         return cUri::getInstance()->build($options);

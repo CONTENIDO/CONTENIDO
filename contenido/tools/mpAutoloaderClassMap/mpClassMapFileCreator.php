@@ -84,7 +84,7 @@ class mpClassMapFileCreator
     }
 
     /**
-     * Creates classmap file with passed data list
+     * Creates a classmap file with the passed data list
      *
      * @param array $data Associative list which contains class type tokens and the related path to the class file.
      * @param string $file Destination class map file
@@ -97,7 +97,7 @@ class mpClassMapFileCreator
     }
 
     /**
-     * Fills template replacement variable with generated associative PHP array
+     * Fills template replacement variable with a generated associative PHP array
      *
      * @param array $data Associative list with class type tokens and files
      */
@@ -114,7 +114,7 @@ class mpClassMapFileCreator
     }
 
     /**
-     * Replaces all wildcards in template with related template variables.
+     * Replaces all wildcards in the template with related template variables.
      *
      * @return string Replaced template
      */

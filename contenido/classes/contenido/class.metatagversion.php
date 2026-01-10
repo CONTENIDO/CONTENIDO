@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains the meta tag version collection and item class.
+ * This file contains the meta-tag version collection and item class.
  *
  * @package    Core
  * @subpackage GenericDB_Model
@@ -39,7 +39,7 @@ class cApiMetaTagVersionCollection extends ItemCollection
     }
 
     /**
-     * Creates a meta tag entry.
+     * Creates a meta-tag entry.
      *
      * @param int $idMetaTag
      * @param int $idArtLang
@@ -65,7 +65,7 @@ class cApiMetaTagVersionCollection extends ItemCollection
     }
 
     /**
-     * Returns a meta tag entry by article language and meta type and version.
+     * Returns a meta-tag entry by article language and meta type and version.
      *
      * @param int $idArtLang
      * @param int $idMetaType
@@ -128,7 +128,7 @@ class cApiMetaTagVersion extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id The ID of item to load
      * @throws cDbException|cException
      */
     public function __construct($id = false)
@@ -183,7 +183,7 @@ class cApiMetaTagVersion extends Item
     }
 
     /**
-     * User-defined setter for meta tag fields.
+     * User-defined setter for meta-tag fields.
      *
      * @inheritDoc
      */

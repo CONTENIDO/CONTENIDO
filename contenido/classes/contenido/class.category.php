@@ -440,7 +440,7 @@ class cApiCategory extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id The ID of item to load
      * @throws cDbException|cException
      */
     public function __construct($id = false)
@@ -488,10 +488,10 @@ class cApiCategory extends Item
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId Change language id for URL (optional)
+     * @param int $changeLanguageId Change language id for URL (optional)
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getLink($changeLangId = 0): string
+    public function getLink($changeLanguageId = 0): string
     {
         if ($this->isLoaded() === false) {
             return '';
@@ -499,9 +499,9 @@ class cApiCategory extends Item
 
         $options = [];
         $options['idcat'] = $this->get('idcat');
-        $options['lang'] = ($changeLangId == 0) ? cRegistry::getLanguageId() : $changeLangId;
-        if ($changeLangId > 0) {
-            $options['changelang'] = $changeLangId;
+        $options['lang'] = $changeLanguageId == 0 ? cRegistry::getLanguageId() : $changeLanguageId;
+        if ($changeLanguageId > 0) {
+            $options['changelang'] = $changeLanguageId;
         }
 
         return cUri::getInstance()->build($options);

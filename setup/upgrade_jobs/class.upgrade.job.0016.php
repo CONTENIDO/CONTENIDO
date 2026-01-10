@@ -46,24 +46,24 @@ class cUpgradeJob_0016 extends cUpgradeJobAbstract
                 $group->store();
             }
 
-            // METATAGS
+            // META-TAGS
             $metaColl = new cApiMetaTagCollection();
 
-            // Get all created metatags
+            // Get all created meta-tags
             $metaColl->select();
 
             while ($meta = $metaColl->next()) {
                 $metavalue = stripcslashes(preg_replace("/\"/", "", ($meta->get('metavalue'))));
                 $meta->set('metavalue', $metavalue);
 
-                // Update metatags
+                // Update meta-tags
                 $meta->store();
             }
 
-            // UPLOAD METATAGS
+            // UPLOAD META-TAGS
             $uplColl = new cApiUploadMetaCollection();
 
-            // Get all created upload metatags
+            // Get all created upload meta-tags
             $uplColl->select();
 
             while ($upl = $uplColl->next()) {
@@ -79,7 +79,7 @@ class cUpgradeJob_0016 extends cUpgradeJobAbstract
                 $upl->set('internal_notice', $internal_notice);
                 $upl->set('copyright', $copyright);
 
-                // Update upload meta tags
+                // Update upload meta-tags
                 $upl->store();
             }
         }

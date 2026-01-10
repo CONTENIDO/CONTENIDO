@@ -39,14 +39,14 @@ abstract class cCodeGeneratorAbstract
     protected $_feDebugOptions = [];
 
     /**
-     * Collected CSS data for current template.
+     * Collected CSS data for the current template.
      *
      * @var string
      */
     protected $_cssData = '';
 
     /**
-     * Collected JS data for current template.
+     * Collected JS data for the current template.
      *
      * @var string
      */
@@ -411,7 +411,7 @@ abstract class cCodeGeneratorAbstract
     abstract protected function _processCodeTitleTag(): string;
 
     /**
-     * Processes and adds or replaces all meta tags for an article.
+     * Processes and adds or replaces all meta-tags for an article.
      */
     abstract protected function _processCodeMetaTags(): string;
 
@@ -422,7 +422,7 @@ abstract class cCodeGeneratorAbstract
      * @param int $containerNumber
      *         Container number
      * @param string $containerCfg
-     *         A string being formatted like concatenated query
+     *         A string being formatted like a concatenated query
      *         parameter, e.g. param1=value1&param2=value2...
      * @return string
      *         Concatenated PHP code containing CMS_VALUE variables and their values

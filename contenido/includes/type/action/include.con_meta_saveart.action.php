@@ -111,7 +111,7 @@ if ($perm->have_perm_area_action($area, 'con_meta_edit') || $perm->have_perm_are
         }
     }
 
-    // meta tags have been saved, so clear the article cache
+    // meta-tags have been saved, so clear the article cache
     $purge = new cSystemPurge();
     $purge->clearArticleCache(cSecurity::toInteger($idartlang));
 

@@ -7,7 +7,7 @@
  * Replaces following placeholders in templates:
  * - {_SID_}:  CONTENIDO session id
  * - {_PATH_CONTENIDO_FULLHTML_}:  Full URL to contenido backend (protocol + host + path)
- * - {_META_HEAD_CONTENIDO_}:  Default meta tags
+ * - {_META_HEAD_CONTENIDO_}:  Default meta-tags
  * - {_CSS_HEAD_CONTENIDO_}:  Default links tags to load core CSS files
  * - {_CSS_HEAD_CONTENIDO_FULLHTML_}:  Default links tags with full URL to contenido backend
  * - {_JS_HEAD_CONTENIDO_}:  Default script tags to load core JS files
@@ -56,7 +56,7 @@ function cecParseTemplate($template, cTemplate $templateObj): string
     }
     $frameNr = (!empty($frame) && is_numeric($frame)) ? $frame : 0;
 
-    // Default meta tags
+    // Default meta-tags
     // @TODO  Make this also configurable
     $metaCon = '
     <meta http-equiv="Content-type" content="text/html;charset=' . $encoding . '">

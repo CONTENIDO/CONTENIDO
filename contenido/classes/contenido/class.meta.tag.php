@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains the meta tag collection and item class.
+ * This file contains the meta-tag collection and item class.
  *
  * @package    Core
  * @subpackage GenericDB_Model
@@ -40,7 +40,7 @@ class cApiMetaTagCollection extends ItemCollection
     }
 
     /**
-     * Creates a meta tag entry.
+     * Creates a meta-tag entry.
      *
      * @param int $idArtLang
      * @param int $idMetaType
@@ -61,7 +61,7 @@ class cApiMetaTagCollection extends ItemCollection
     }
 
     /**
-     * Returns a meta tag entry by article language and meta type.
+     * Returns a meta-tag entry by article language and meta type.
      *
      * @param int $idArtLang
      * @param int $idMetaType
@@ -76,10 +76,10 @@ class cApiMetaTagCollection extends ItemCollection
     }
 
     /**
-     * Returns meta tag ids (idmetatag) by passed article language id.
+     * Returns meta-tag ids (idmetatag) by the passed article language id.
      *
      * @param int $idArtLang Article language id
-     * @return int[] List of meta tag ids
+     * @return int[] List of meta-tag ids
      * @throws cDbException|cException
      * @since CONTENIDO 4.10.2
      */
@@ -110,7 +110,7 @@ class cApiMetaTag extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id The ID of item to load
      * @throws cDbException|cException
      */
     public function __construct($id = false)
@@ -136,7 +136,7 @@ class cApiMetaTag extends Item
     }
 
     /**
-     * Predefined setter for meta tag fields.
+     * Predefined setter for meta-tag fields.
      *
      * @inheritDoc
      */

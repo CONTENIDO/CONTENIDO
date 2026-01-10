@@ -119,12 +119,17 @@ class cApiArticleLanguageCollection extends ItemCollection
      *
      * @param int $idart
      * @param int $idlang
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getIdByArticleIdAndLanguageId($idart, $idlang): int
     {
-        $sql = "SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
-        $this->db->query($sql, $this->table, $idart, $idlang);
+        $this->db->query(
+            "SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d",
+            $this->table,
+            $idart,
+            $idlang
+        );
+
         return $this->db->nextRecord() ? cSecurity::toInteger($this->db->f('idartlang')) : 0;
     }
 
@@ -136,8 +141,11 @@ class cApiArticleLanguageCollection extends ItemCollection
      */
     public function resetArtSpec(int $idArtSpec): bool
     {
-        $sql = 'UPDATE `%s` SET `artspec` = 0 WHERE `artspec` = %d';
-        return (bool) $this->db->query($sql, $this->table, $idArtSpec);
+        return cSecurity::toBoolean($this->db->query(
+            'UPDATE `%s` SET `artspec` = 0 WHERE `artspec` = %d',
+            $this->table,
+            $idArtSpec
+        ));
     }
 
 }
@@ -147,7 +155,7 @@ class cApiArticleLanguageCollection extends ItemCollection
  *
  * This object represents a CONTENIDO article
  *
- * Create object with
+ * Create an object with
  * $obj = new cApiArticleLanguage(idartlang);
  * or with
  * $obj = new cApiArticleLanguage();
@@ -190,11 +198,11 @@ class cApiArticleLanguageCollection extends ItemCollection
  * You can extract article content with the
  * $obj->getContent(contype [, number]) method.
  *
- * To extract the first headline you can use:
+ * To extract the first headline, you can use:
  *
  * $headline = $obj->getContent("htmlhead", 1);
  *
- * If the second parameter is omitted the method returns an array with all available
+ * If the second parameter is omitted, the method returns an array with all available
  * content of this type. The array has the following schema:
  *
  * [number => content];
@@ -205,11 +213,11 @@ class cApiArticleLanguageCollection extends ItemCollection
  * $headlines[2] Second headline
  * $headlines[6] Sixth headline
  *
- * Legal content type string are defined in the CONTENIDO system table 'con_type'.
+ * Legal content type strings are defined in the CONTENIDO system table 'con_type'.
  * Default content types are:
  *
  * NOTE: This parameter is case-insensitive, you can use html or cms_HTML or CmS_HtMl.
- * Your don't need start with cms, but it won't crash if you do so.
+ * You don't need to start with cms, but it won't crash if you do so.
  *
  * htmlhead - HTML Headline
  * html - HTML Text
@@ -242,7 +250,7 @@ class cApiArticleLanguage extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id Specifies the ID of the item to load
      * @throws cDbException|cException
      */
     public function __construct($id = false)
@@ -255,7 +263,7 @@ class cApiArticleLanguage extends Item
     }
 
     /**
-     * Create a version of this article language with its contents/metatags;
+     * Create a version of this article language with its contents/meta-tags;
      * the version is the new editable article language version
      *
      * @param string $type meta, content or complete
@@ -263,7 +271,7 @@ class cApiArticleLanguage extends Item
      */
     public function markAsEditable($type = '')
     {
-        // create new editable version
+        // create a new editable version
         $maxVersion = 0;
         $this->db->query(
             'SELECT MAX(version) AS `max` FROM `%s` WHERE `idartlang` = %d',
@@ -329,7 +337,7 @@ class cApiArticleLanguage extends Item
         }
 
         if ($type == 'meta' || $type == 'complete') {
-            // set new meta tag versions
+            // set new meta-tag versions
             $metaTag = new cApiMetaTag();
 
             $oMetaTagCollection = new cApiMetaTagCollection();
@@ -622,10 +630,10 @@ class cApiArticleLanguage extends Item
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId [optional] Change language id for URL (optional)
+     * @param int $changeLanguageId [optional] Change language id for URL (optional)
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getLink($changeLangId = 0): string
+    public function getLink($changeLanguageId = 0): string
     {
         if ($this->isLoaded() === false) {
             return '';
@@ -633,9 +641,9 @@ class cApiArticleLanguage extends Item
 
         $options = [];
         $options['idart'] = $this->get('idart');
-        $options['lang'] = ($changeLangId == 0) ? $this->get('idlang') : $changeLangId;
-        if ($changeLangId > 0) {
-            $options['changelang'] = $changeLangId;
+        $options['lang'] = $changeLanguageId == 0 ? $this->get('idlang') : $changeLanguageId;
+        if ($changeLanguageId > 0) {
+            $options['changelang'] = $changeLanguageId;
         }
 
         return cUri::getInstance()->build($options);

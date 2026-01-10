@@ -1000,7 +1000,7 @@ function conDeleteart($idart)
     $search = new cSearchIndex();
     $search->start($idart, []);
 
-    // delete articles meta tags
+    // delete articles meta-tags
     $metaTagColl = new cApiMetaTagCollection();
     $metaTagColl->deleteBy('idartlang', $idartlang);
 
@@ -1011,11 +1011,11 @@ function conDeleteart($idart)
         $chainEntry->execute($idart);
     }
 
-    // delete meta tags
+    // delete meta-tags
     $metaTagColl = new cApiMetaTagCollection();
     $metaTagColl->deleteBy('idartlang', $idartlang);
 
-    // delete article, content and meta tag versions
+    // delete article, content and meta-tag versions
     $contentVersionColl = new cApiContentVersionCollection();
     $contentVersionColl->deleteBy('idartlang', $idartlang);
     $artLangVersionColl = new cApiArticleLanguageVersionCollection();
@@ -1787,7 +1787,7 @@ function conCopyContent($srcIdArtLang, $dstIdArtLang)
 }
 
 /**
- * Copies meta tag entries from source article language to destination article language.
+ * Copies meta-tag entries from source article language to destination article language.
  *
  * @param int $srcIdArtLang
  * @param int $dstIdArtLang
@@ -1878,7 +1878,7 @@ function conCopyArtLang($srcIdArt, $dstIdArt, $dstIdCat, $newTitle, $useCopyLabe
     // Copy content
     conCopyContent($oSrcArtLang->get('idartlang'), $oNewArtLang->get('idartlang'));
 
-    // Copy meta tags
+    // Copy meta-tags
     conCopyMetaTags($oSrcArtLang->get('idartlang'), $oNewArtLang->get('idartlang'));
 
     $urlname = trim(conHtmlSpecialChars(cString::cleanURLCharacters($title)));
@@ -2095,7 +2095,7 @@ function conSyncArticle($articleId, $srcLanguageId, $dstLanguageId)
     // Copy content
     conCopyContent($srcIdArtLang, $newArticleLanguageId);
 
-    // Copy meta tags
+    // Copy meta-tags
     conCopyMetaTags($srcIdArtLang, $newArticleLanguageId);
 }
 

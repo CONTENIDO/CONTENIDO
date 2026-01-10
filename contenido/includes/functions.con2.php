@@ -78,9 +78,9 @@ function getArtLang($idart, $idlang)
 }
 
 /**
- * Returns all available meta tag types
+ * Returns all available meta-tag types
  *
- * @return array Associative meta tags list
+ * @return array Associative meta-tags list
  * @throws cDbException|cException
  */
 function conGetAvailableMetaTagTypes()
@@ -104,7 +104,7 @@ function conGetAvailableMetaTagTypes()
 }
 
 /**
- * Get the meta tag value or its version for a specific article
+ * Get the meta-tag value or its version for a specific article
  *
  * @param int $idartlang ID of the article
  * @param int $idmetatype Metatype-ID
@@ -145,13 +145,13 @@ function conGetMetaValue($idartlang, $idmetatype, $version = null): string
 }
 
 /**
- * Set the meta tag value or its version for a specific article.
+ * Set the meta-tag value or its version for a specific article.
  *
  * @param int $idartlang ID of the article
  * @param int $idmetatype Metatype-ID
- * @param string $value Value of the meta tag
+ * @param string $value Value of the meta-tag
  * @param int $version version number
- * @return bool Whether the meta value has been saved successfully
+ * @return bool Whether the meta-tag value has been saved successfully
  * @throws cDbException|cException|cInvalidArgumentException
  */
 function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL)
@@ -182,14 +182,14 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL)
             $artLang = new cApiArticleLanguage($idartlang);
             $artLang->set('lastmodified', date('Y-m-d H:i:s'));
             $artLang->store();
-            // update or create meta tag
+            // update or create meta-tag
             if (is_object($metaTag)) {
                 $metaTag->updateMetaValue($value);
             } else {
                 $metaTag = $metaTagColl->create($idartlang, $idmetatype, $value);
             }
 
-            // create meta tag version
+            // create meta-tag version
             $metaTagVersionParameters = [
                 'idmetatag' => cSecurity::toInteger($metaTag ? $metaTag->get('idmetatag') : 0),
                 'idartlang' => $idartlang,
@@ -203,7 +203,7 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL)
             $artLang = new cApiArticleLanguage($idartlang);
             $artLang->set('lastmodified', date('Y-m-d H:i:s'));
             $artLang->store();
-            //update meta tag
+            //update meta-tag
             if (is_object($metaTag)) {
                 return $metaTag->updateMetaValue($value);
             } else {
@@ -273,10 +273,10 @@ function conGenerateKeywords($client, $lang)
 }
 
 /**
- * Get content from article by article language.
+ * Get content from an article by the article language.
  *
  * @param int $iIdArtLang ArticleLanguageId of an article (idartlang)
- * @return array Array with content of an article indexed by content-types as follows:
+ * @return array Array with the content of an article indexed by content-types as follows:
  *      - $arr[type][typeid] = value;
  * @throws cDbException
  */
@@ -293,10 +293,10 @@ function conGetContentFromArticle($iIdArtLang): array
 }
 
 /**
- * Returns list of all container with configured modules by template id
+ * Returns a list of all containers with configured modules by template id
  *
  * @param int $idtpl Template id
- * @return array Associative array where the key is the number and value the module id
+ * @return array Associative array where the key is the number and the value is the module id
  * @throws cDbException|cException
  */
 function conGetUsedModules($idtpl): array
@@ -370,7 +370,7 @@ function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client)
         $client
     );
 
-    return $db->nextRecord() ? (int) $db->f('idtplcfg') : NULL;
+    return $db->nextRecord() ? cSecurity::toInteger($db->f('idtplcfg')) : NULL;
 }
 
 /**

@@ -560,7 +560,7 @@ function statsOverviewYear($year)
 
         // check if there are subcategories
         $iSumSubCategories = 0;
-        $sSql = "SELECT count(*) as cat_count from " . cDb::getTableName('cat') . " WHERE parentid=" . $idcat . ";";
+        $sSql = "SELECT COUNT(*) as cat_count from " . cDb::getTableName('cat') . " WHERE parentid=" . $idcat . ";";
         $db3 = cRegistry::getDb();
         $db3->query($sSql);
         if ($db3->nextRecord()) {
@@ -951,7 +951,7 @@ function statGetAvailableMonths($year, $client, $lang): array
 }
 
 /**
- * Resets the statistic for passed client
+ * Resets the statistic for the passed client
  *
  * @param int $client Id of client
  * @throws cDbException
@@ -964,7 +964,7 @@ function statResetStatistic($client)
 }
 
 /**
- * Deletes existing heap table (table in memory) and creates it.
+ * Deletes the existing heap table (table in memory) and creates it.
  *
  * @param string $sHeapTable Table name
  * @param cDb $db Database object

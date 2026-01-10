@@ -2,7 +2,7 @@
 
 /**
  * CONTENIDO Chain.
- * Generate metatags for current article if they are not set in article
+ * Generate meta-tags for the current article if they are not set in article
  * properties
  *
  * @package    Core
@@ -20,13 +20,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('plugins', 'repository/keyword_density.php');
 
 /**
- * @param array $metatags
+ * @param array $metaTags
  * @return array
  * @throws cDbException|cException
  */
-function cecCreateMetatags($metatags)
+function cecCreateMetatags($metaTags)
 {
-    // (Re)build metatags
+    // (Re)build meta-tags
 
     $db = cRegistry::getDb();
     $lang = cRegistry::getLanguageId();
@@ -117,7 +117,7 @@ function cecCreateMetatags($metatags)
     $sText = strip_tags(urldecode($sText));
     $sText = keywordDensity('', $sText);
 
-    // Get metatags for homepage
+    // Get meta-tags for homepage
     $arrHomepageMetaTags = [];
 
     $sql = "SELECT `startidartlang` FROM `%s` WHERE `idcat` = %d AND `idlang` = %d";
@@ -148,12 +148,12 @@ function cecCreateMetatags($metatags)
         $arrHomepageMetaTags['pagetitle'] = $oArt->getField('title');
     }
 
-    // Cycle through all metatags
+    // Cycle through all meta-tags
     foreach ($availableTags as $key => $value) {
         $metavalue = conGetMetaValue($idartlang, $key);
 
         if (cString::getStringLength($metavalue) == 0) {
-            // Add values for metatags that don't have a value in the current
+            // Add values for meta-tags that don't have a value in the current
             // article
             switch (cString::toLowerCase($value['metatype'])) {
                 case 'author':
@@ -165,33 +165,33 @@ function cecCreateMetatags($metatags)
                     $oUser = new cApiUser(md5($lastModifier));
                     $lastModifierName = $oUser->getRealName();
 
-                    $iCheck = CheckIfMetaTagExists($metatags, 'author');
-                    $metatags[$iCheck]['name'] = 'author';
-                    $metatags[$iCheck]['content'] = $lastModifierName;
+                    $iCheck = checkIfMetaTagExists($metaTags, 'author');
+                    $metaTags[$iCheck]['name'] = 'author';
+                    $metaTags[$iCheck]['content'] = $lastModifierName;
 
                     break;
                 case 'description':
                     // Build description metatag from first headline on page
-                    $iCheck = CheckIfMetaTagExists($metatags, 'description');
-                    $metatags[$iCheck]['name'] = 'description';
-                    $metatags[$iCheck]['content'] = $sHeadline;
+                    $iCheck = checkIfMetaTagExists($metaTags, 'description');
+                    $metaTags[$iCheck]['name'] = 'description';
+                    $metaTags[$iCheck]['content'] = $sHeadline;
 
                     break;
                 case 'keywords':
-                    $iCheck = CheckIfMetaTagExists($metatags, 'keywords');
-                    $metatags[$iCheck]['name'] = 'keywords';
-                    $metatags[$iCheck]['content'] = $sText;
+                    $iCheck = checkIfMetaTagExists($metaTags, 'keywords');
+                    $metaTags[$iCheck]['name'] = 'keywords';
+                    $metaTags[$iCheck]['content'] = $sText;
 
                     break;
                 case 'revisit-after':
                 case 'robots':
                 case 'expires':
-                    // Build these 3 metatags from entries in homepage
+                    // Build these 3 meta-tags from entries in homepage
                     $sCurrentTag = isset($value['name']) ? cString::toLowerCase($value['name']) : '';
-                    $iCheck = CheckIfMetaTagExists($metatags, $sCurrentTag);
+                    $iCheck = checkIfMetaTagExists($metaTags, $sCurrentTag);
                     if ($sCurrentTag != '' && $arrHomepageMetaTags[$sCurrentTag] != '') {
-                        $metatags[$iCheck]['name'] = $sCurrentTag;
-                        $metatags[$iCheck]['content'] = $arrHomepageMetaTags[$sCurrentTag];
+                        $metaTags[$iCheck]['name'] = $sCurrentTag;
+                        $metaTags[$iCheck]['content'] = $arrHomepageMetaTags[$sCurrentTag];
                     }
 
                     break;
@@ -199,34 +199,32 @@ function cecCreateMetatags($metatags)
         }
     }
 
-    return $metatags;
+    return $metaTags;
 }
 
 /**
  * Checks if the metatag already exists inside the metatag list.
  *
- * @param array|mixed $arrMetatags
- *         List of metatags or not a list
- * @param string $sCheckForMetaTag
- *         The metatag to check
- * @return int
- *         Position of metatag inside the metatag list or the next available position
+ * @param array|mixed $metaTags List of meta-tags or not a list
+ * @param string $checkForMetaTag The metatag to check
+ * @return int Position of metatag inside the metatag list or the next available position
+ * TODO: Remove this function from global scope, it meant to be used only in `cecCreateMetatags()`.
  */
-function CheckIfMetaTagExists($arrMetatags, $sCheckForMetaTag)
+function checkIfMetaTagExists($metaTags, $checkForMetaTag): int
 {
-    if (!is_array($arrMetatags) || count($arrMetatags) == 0) {
+    if (!is_array($metaTags) || count($metaTags) == 0) {
         // metatag list ist not set or empty, return initial position
         return 0;
     }
 
-    // loop through existing metatags and check against the list-item name
-    foreach ($arrMetatags as $pos => $item) {
-        if (isset($item['name']) && $item['name'] == $sCheckForMetaTag && $item['name'] != '') {
+    // loop through existing meta-tags and check against the list-item name
+    foreach ($metaTags as $pos => $item) {
+        if (isset($item['name']) && $item['name'] == $checkForMetaTag && $item['name'] != '') {
             // metatag found -> return the position
             return $pos;
         }
     }
 
-    // metatag doesn't exists, return next position
-    return count($arrMetatags);
+    // metatag doesn't exist, return next position
+    return count($metaTags);
 }
