@@ -197,6 +197,16 @@ class cRegistry
     }
 
     /**
+     * Returns the configured language ID to load stored in the global variable "load_lang",
+     * set in __FRONTEND_PATH__/data/config/config.php.
+     * @since CONTENIDO 4.10.2
+     */
+    public static function getLoadLanguageId(): int
+    {
+        return (int) self::_fetchGlobalVariable('load_lang', 0);
+    }
+
+    /**
      * Returns the loaded cApiLanguage object for the current language.
      *
      * @param bool $reload Flag to re-instantiate an existing object.
@@ -222,6 +232,26 @@ class cRegistry
             'client',
             self::_fetchGlobalVariable('load_client', 0)
         );
+    }
+
+    /**
+     * Returns the configured client ID to load stored in the global variable "load_client".
+     * @since CONTENIDO 4.10.2
+     */
+    public static function getLoadClientId(): int
+    {
+        return (int) self::_fetchGlobalVariable('load_client', 0);
+    }
+
+    /**
+     * Returns the ID of the client to switch to.
+     * This is used for multi-client sites and can be defined by the get parameter in the url, e.g. 'changeclient=2'.
+     * Value is stored in the global variable "changelang".
+     * @since CONTENIDO 4.10.2
+     */
+    public static function getChangeClientId(): int
+    {
+        return (int) self::_fetchGlobalVariable('changeclient', 0);
     }
 
     /**
