@@ -15,9 +15,8 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Mod Rewrite url utility class. Handles conversion of Urls from CONTENIDO core
- * based url composition pattern to AMR (Advanced Mod Rewrite) url composition
- * pattern and vice versa.
+ * Mod Rewrite url utility class. Handles conversion of Urls from CONTENIDO core based url composition
+ * pattern to AMR (Advanced Mod Rewrite) url composition pattern and vice versa.
  *
  * @author     Murat Purc <murat@purc.de>
  * @package    Plugin
@@ -44,7 +43,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
     /**
      * @var string CONTENIDO category separator
      */
-    private $catSep = '/';
+    private $catSeparator = '/';
 
     /**
      * @var string AMR category separator
@@ -54,7 +53,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
     /**
      * @var string CONTENIDO article separator
      */
-    private $_artSep = '/';
+    private $artSeparator = '/';
 
     /**
      * @var string AMR article separator
@@ -98,7 +97,6 @@ class ModRewriteUrlUtil extends ModRewriteBase
 
     /**
      * Returns self instance (singleton pattern)
-     * @return ModRewriteUrlUtil
      */
     public static function getInstance(): self
     {
@@ -117,7 +115,12 @@ class ModRewriteUrlUtil extends ModRewriteBase
     public function toContenidoUrlPath(string $urlPath): string
     {
         return $this->_toUrlPath(
-            $urlPath, $this->mrCatSep, $this->catSep, $this->mrCatWordSep, $this->catWordSep, $this->mrArtSep, $this->_artSep
+            $urlPath, $this->mrCatSep,
+            $this->catSeparator,
+            $this->mrCatWordSep,
+            $this->catWordSep,
+            $this->mrArtSep,
+            $this->artSeparator
         );
     }
 
@@ -130,7 +133,13 @@ class ModRewriteUrlUtil extends ModRewriteBase
     public function toModRewriteUrlPath(string $urlPath): string
     {
         return $this->_toUrlPath(
-            $urlPath, $this->catSep, $this->mrCatSep, $this->catWordSep, $this->mrCatWordSep, $this->_artSep, $this->mrArtSep
+            $urlPath,
+            $this->catSeparator,
+            $this->mrCatSep,
+            $this->catWordSep,
+            $this->mrCatWordSep,
+            $this->artSeparator,
+            $this->mrArtSep
         );
     }
 
@@ -249,8 +258,8 @@ class ModRewriteUrlUtil extends ModRewriteBase
             $newUrl = $this->toModRewriteUrlPath($url);
         } else {
             // replace category word and article word separator
-            $path = cString::getPartOfString($url, 0, cString::findLastPos($url, $this->_artSep) + 1);
-            $name = cString::getPartOfString($url, cString::findLastPos($url, $this->_artSep) + 1);
+            $path = cString::getPartOfString($url, 0, cString::findLastPos($url, $this->artSeparator) + 1);
+            $name = cString::getPartOfString($url, cString::findLastPos($url, $this->artSeparator) + 1);
             $newUrl = $this->toModRewriteUrlPath($path) . $this->toModRewriteUrlName($name);
         }
         return $newUrl;

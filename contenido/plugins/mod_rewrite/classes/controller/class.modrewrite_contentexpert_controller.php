@@ -39,9 +39,9 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
      */
     public function init()
     {
-        $this->_oView->content_before = '';
+        $this->view->content_before = '';
 
-        $pluginPath = $this->_cfg['path']['contenido'] . $this->_cfg['path']['plugins'] . 'mod_rewrite/';
+        $pluginPath = $this->cfg['path']['contenido'] . $this->cfg['path']['plugins'] . 'mod_rewrite/';
         $this->htaccessRestrictive = $pluginPath . 'files/htaccess_restrictive.txt';
         $this->htaccessSimple = $pluginPath . 'files/htaccess_simple.txt';
     }
@@ -58,8 +58,8 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
      */
     public function copyHtaccessAction()
     {
-        $type = $this->_getParam('htaccesstype');
-        $copy = $this->_getParam('copy');
+        $type = $this->getRequestParam('htaccesstype');
+        $copy = $this->getRequestParam('copy');
 
         if ($type != 'restrictive' && $type != 'simple') {
             return;
@@ -70,9 +70,9 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
         $aInfo = $this->getProperty('htaccessInfo');
 
         if ($aInfo['has_htaccess']) {
-            $this->_oView->content_before = $this->_notifyBox(
+            $this->view->content_before = $this->renderNotification(
                 'warning',
-                i18n('.htaccess already exists at CONTENIDO-/or client directory, so it is not copied.', $this->_pluginName)
+                i18n('.htaccess already exists at CONTENIDO-/or client directory, so it is not copied.', $this->pluginName)
             );
             return;
         }
@@ -90,10 +90,10 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
         }
 
         if (!$result = @copy($source, $dest)) {
-            $this->_oView->content_before = $this->_notifyBox(
+            $this->view->content_before = $this->renderNotification(
                 'warning',
                 sprintf(
-                    i18n('.htaccess could not copy from <strong>%s</strong> to <strong>%s</strong>! Perhaps the target directory has not the required rights to write files at your webserver.', $this->_pluginName),
+                    i18n('.htaccess could not copy from <strong>%s</strong> to <strong>%s</strong>! Perhaps the target directory has not the required rights to write files at your webserver.', $this->pluginName),
                     $source,
                     $dest
                 )
@@ -102,10 +102,10 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
         }
 
         $msg = sprintf(
-            i18n('.htaccess are successfully copied to %s', $this->_pluginName),
+            i18n('.htaccess are successfully copied to %s', $this->pluginName),
             str_replace('.htaccess', '', $dest)
         );
-        $this->_oView->content_before = $this->_notifyBox('info', $msg);
+        $this->view->content_before = $this->renderNotification('info', $msg);
     }
 
     /**
@@ -115,7 +115,7 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
      */
     public function downloadHtaccessAction()
     {
-        $type = $this->_getParam('htaccesstype');
+        $type = $this->getRequestParam('htaccesstype');
 
         if ($type != 'restrictive' && $type != 'simple') {
             return;
@@ -127,7 +127,7 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
             $source = $this->htaccessSimple;
         }
 
-        $this->_oView->content = cFileHandler::read($source);
+        $this->view->content = cFileHandler::read($source);
 
         header('Content-Type: text/plain');
         header('Etag: ' . md5(mt_rand()));
@@ -144,9 +144,9 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
     {
         // recreate all aliases
         ModRewrite::recreateAliases();
-        $this->_oView->content_before = $this->_notifyBox(
+        $this->view->content_before = $this->renderNotification(
             'info',
-            i18n('All aliases have been reset.', $this->_pluginName)
+            i18n('All aliases have been reset.', $this->pluginName)
         );
     }
 
@@ -159,9 +159,9 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
     {
         // recreate only empty aliases
         ModRewrite::recreateAliases(true);
-        $this->_oView->content_before = $this->_notifyBox(
+        $this->view->content_before = $this->renderNotification(
             'info',
-            i18n('Only empty aliases have been reset.', $this->_pluginName)
+            i18n('Only empty aliases have been reset.', $this->pluginName)
         );
     }
 

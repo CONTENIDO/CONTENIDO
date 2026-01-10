@@ -27,85 +27,80 @@ abstract class ModRewrite_ControllerAbstract
     /**
      * @var stdClass View object, holds all view variables
      */
-    protected $_oView;
+    protected $view;
 
     /**
      * @var array Global CONTENIDO $cfg variable
      */
-    protected $_cfg;
+    protected $cfg;
 
     /**
      * @var int Global CONTENIDO $client variable (client id)
      */
-    protected $_client;
+    protected $clientId;
 
     /**
      * @var int|string Global CONTENIDO $area variable (area name/id)
      */
-    protected $_area;
+    protected $area;
 
     /**
      * @var string Global CONTENIDO $action variable (send by request)
      */
-    protected $_action;
+    protected $action;
 
     /**
      * @var int Global CONTENIDO $frame variable (current frame in backend)
      */
-    protected $_frame;
+    protected $frame;
 
     /**
      * @var string Global CONTENIDO $contenido variable (session id)
      */
-    protected $_contenido;
+    protected $contenido;
 
     /**
      * @var string Plugin name
      */
-    protected $_pluginName;
+    protected $pluginName;
 
     /**
      * @var ?string Template file or template string to render
      */
-    protected $_template = NULL;
+    protected $template = NULL;
 
     /**
      * @var array Additional properties list
      */
-    protected $_properties = [];
+    protected $properties = [];
 
     /**
-     * @var bool Debug flag
-     */
-    protected $_debug = false;
-
-    /**
-     * Constructor, sets some properties by assigning global variables to them.
+     * Sets some properties by assigning global variables to them.
      */
     public function __construct()
     {
-        $this->_oView = new stdClass();
-        $this->_cfg = cRegistry::getConfig();
-        $this->_area = cRegistry::getArea();
-        $this->_action = cRegistry::getAction();
-        $this->_frame = cRegistry::getFrame();
-        $this->_client = cRegistry::getClientId();
-        $this->_contenido = cRegistry::getBackendSessionId();
-        $this->_pluginName = $this->_cfg['pi_mod_rewrite']['pluginName'];
+        $this->view = new stdClass();
+        $this->cfg = cRegistry::getConfig();
+        $this->area = cRegistry::getArea();
+        $this->action = cRegistry::getAction();
+        $this->frame = cRegistry::getFrame();
+        $this->clientId = cRegistry::getClientId();
+        $this->contenido = cRegistry::getBackendSessionId();
+        $this->pluginName = $this->cfg['pi_mod_rewrite']['pluginName'];
         $sess = cRegistry::getSession();
 
-        $this->_oView->area = $this->_area;
-        $this->_oView->frame = $this->_frame;
-        $this->_oView->contenido = $this->_contenido;
-        $this->_oView->sessid = $sess->id;
-        $this->_oView->lng_more_information = i18n('More information', $this->_pluginName);
+        $this->view->area = $this->area;
+        $this->view->frame = $this->frame;
+        $this->view->contenido = $this->contenido;
+        $this->view->sessid = $sess->id;
+        $this->view->lng_more_information = i18n('More information', $this->pluginName);
 
         $this->init();
     }
 
     /**
-     * Initializer method, could be overwritten by children.
-     * This method will be invoked in constructor of ModRewrite_ControllerAbstract.
+     * Initializer method, it could be overwritten by children.
+     * This method will be invoked in the constructor of ModRewrite_ControllerAbstract.
      */
     public function init()
     {
@@ -113,52 +108,49 @@ abstract class ModRewrite_ControllerAbstract
 
     /**
      * View property setter.
-     * @param object $oView
      */
-    public function setView($oView)
+    public function setView(?stdClass $view)
     {
-        if (is_object($oView)) {
-            $this->_oView = $oView;
-        }
+        $this->view = $view;
     }
 
     /**
-     * View property getter.
-     * @return object
+     * View getter.
      */
-    public function getView()
+    public function getView(): stdClass
     {
-        return $this->_oView;
+        return $this->view;
     }
 
     /**
      * Property setter.
-     * @param string $key
+     *
      * @param mixed $value
      */
-    public function setProperty($key, $value)
+    public function setProperty(string $key, $value)
     {
-        $this->_properties[$key] = $value;
+        $this->properties[$key] = $value;
     }
 
     /**
      * Property getter.
-     * @param string $key
+     *
      * @param mixed $default
      * @return mixed
      */
-    public function getProperty($key, $default = NULL)
+    public function getProperty(string $key, $default = NULL)
     {
-        return (isset($this->_properties[$key])) ? $this->_properties[$key] : $default;
+        return $this->properties[$key] ?? $default;
     }
 
     /**
      * Template setter.
-     * @param string $template Either full path and name of template file or a template string.
+     *
+     * @param string $template Either the full path and name of the template file or a template string.
      */
     public function setTemplate(string $template)
     {
-        $this->_template = $template;
+        $this->template = $template;
     }
 
     /**
@@ -166,43 +158,42 @@ abstract class ModRewrite_ControllerAbstract
      */
     public function getTemplate(): ?string
     {
-        return $this->_template;
+        return $this->template;
     }
 
     /**
      * Renders template by replacing all view variables in template.
-     * @param ?string $template Either full path and name of template file or a template string.
-     *                If not passed, previous set template will be used.
-     * @return void
+     *
+     * @param ?string $template Either the full path and name of the template file or a template string.
+     *                If not passed, the previous set template will be used.
      * @throws cException if no template is set
      */
     public function render(?string $template = NULL)
     {
         if ($template == NULL) {
-            $template = $this->_template;
+            $template = $this->getTemplate();
         }
 
         if ($template == NULL) {
             throw new cException('Missing template to render.');
         }
 
-        $oTpl = new cTemplate();
-        foreach ($this->_oView as $k => $v) {
-            $oTpl->set('s', cString::toUpperCase($k), $v);
+        $tplObj = new cTemplate();
+        foreach ($this->view as $k => $v) {
+            $tplObj->set('s', cString::toUpperCase($k), $v);
         }
-        $oTpl->generate($template, 0, 0);
+        $tplObj->generate($template, 0, 0);
     }
 
     /**
-     * Returns  parameter from request, the order is:
+     * Returns parameter from request, the order is:
      * - Return from $_GET, if found
      * - Return from $_POST, if found
      *
-     * @param string $key
      * @param mixed $default The default value
      * @return mixed
      */
-    protected function _getParam($key, $default = NULL)
+    protected function getRequestParam(string $key, $default = NULL)
     {
         if (isset($_GET[$key])) {
             return $_GET[$key];
@@ -214,15 +205,15 @@ abstract class ModRewrite_ControllerAbstract
     }
 
     /**
-     * Returns rendered notification markup by using global $notification variable.
+     * Returns rendered notification markup by using the global $notification variable.
+     *
      * @param string $type One of cGuiNotification::LEVEL_* constants
-     * @param string $msg The message to display
-     * @return string
+     * @param string $message The message to display
      */
-    protected function _notifyBox($type, $msg)
+    protected function renderNotification(string $type, string $message): string
     {
         global $notification;
-        return $notification->returnNotification($type, $msg) . '<br>';
+        return $notification->returnNotification($type, $message) . '<br>';
     }
 
 }

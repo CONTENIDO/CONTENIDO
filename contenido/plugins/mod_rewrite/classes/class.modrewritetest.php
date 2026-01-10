@@ -25,25 +25,21 @@ class ModRewriteTest
 {
 
     /**
-     * Max items to process
-     * @var int
+     * @var int Max items to process
      */
     protected $maxItems;
 
     /**
-     * Actual resolved url
-     * @var string
+     * @var string Actual resolved url
      */
-    protected $resolvedUrl;
+    protected $resolvedUrl = '';
 
     /**
-     * Routing found flag
-     * @var bool
+     * @var bool Flag about a found routing status
      */
     protected $routingFound = false;
 
     /**
-     * Constructor
      * @param int $maxItems Max items (urls to articles/categories) to process
      */
     public function __construct(int $maxItems)
@@ -53,29 +49,25 @@ class ModRewriteTest
 
     /**
      * Returns resolved URL
-     *
-     * @return string Resolved URL
      */
-    public function getResolvedUrl()
+    public function getResolvedUrl(): string
     {
         return $this->resolvedUrl;
     }
 
     /**
      * Returns flags about found routing
-     *
-     * @return bool
      */
-    public function getRoutingFoundState()
+    public function isRoutingFound(): bool
     {
         return $this->routingFound;
     }
 
     /**
-     * Fetches full structure of the installation (categories and articles) and returns it back.
+     * Fetches the full structure of the installation (categories and articles) and returns it back.
      *
-     * @param int $clientId Client id
-     * @param int $languageId Language id
+     * @param ?int $clientId Client id
+     * @param ?int $languageId Language id
      * @return array Full structure as follows
      * <code>
      *   $arr[idcat] = Category dataset
@@ -83,17 +75,13 @@ class ModRewriteTest
      * </code>
      * @throws cDbException
      */
-    public function fetchFullStructure($clientId = NULL, $languageId = NULL): array
+    public function fetchFullStructure(?int $clientId = NULL, ?int $languageId = NULL): array
     {
         $db = cRegistry::getDb();
         $db2 = cRegistry::getDb();
 
-        if (!$clientId || (int)$clientId == 0) {
-            $clientId = cRegistry::getClientId();
-        }
-        if (!$languageId || (int)$languageId == 0) {
-            $languageId = cRegistry::getLanguageId();
-        }
+        $clientId = $clientId ?? cRegistry::getClientId();
+        $languageId = $languageId ?? cRegistry::getLanguageId();
 
         $structure = [];
 
@@ -236,7 +224,7 @@ class ModRewriteTest
         $oMRController = new ModRewriteController($url);
         $oMRController->execute();
 
-        if ($oMRController->errorOccured()) {
+        if ($oMRController->isError()) {
             // an error occurred (idcat and or idart couldn't caught by controller)
             $aReturn['mr_preprocessedPageError'] = 1;
             $aReturn['error'] = $oMRController->getError();
@@ -246,7 +234,7 @@ class ModRewriteTest
         } else {
             // set some global variables
             $this->resolvedUrl = $oMRController->getResolvedUrl();
-            $this->routingFound = $oMRController->getRoutingFoundState();
+            $this->routingFound = $oMRController->isRoutingFound();
 
             if ($oMRController->getClient()) {
                 $aReturn['client'] = $oMRController->getClient();
@@ -281,7 +269,7 @@ class ModRewriteTest
     }
 
     /**
-     * Creates a readable string from passed resolved data array.
+     * Creates a readable string from an assigned data array.
      *
      * @param array $data Associative array with resolved data
      * @return string Readable resolved data

@@ -25,14 +25,12 @@ class ModRewriteDebugger
 {
 
     /**
-     * Flag to enable debugger
-     * @var bool
+     * @var bool Flag to enable debugger
      */
     protected static $enabled = false;
 
     /**
-     * Enable debugger setter.
-     * @param bool $enabled
+     * @param bool $enabled Enable debugger setter.
      */
     public static function setEnabled(bool $enabled)
     {
@@ -58,7 +56,6 @@ class ModRewriteDebugger
     /**
      * Returns output of all added variables to debug.
      *
-     * @return string
      * @throws cInvalidArgumentException
      */
     public static function getAll(): string
@@ -70,6 +67,7 @@ class ModRewriteDebugger
         cDebug::getDebugger()->showAll();
         $sOutput = ob_get_contents();
         ob_end_clean();
+
         return $sOutput;
     }
 
@@ -79,7 +77,6 @@ class ModRewriteDebugger
      *
      * @param mixed $value The variable to log the contents
      * @param string $label Description for passed $value
-     *
      * @throws cInvalidArgumentException
      */
     public static function log($value, string $label = '')

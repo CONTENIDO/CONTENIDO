@@ -17,7 +17,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $cfg, $lngAct, $load_client;
+global $cfg, $lngAct;
 
 ####################################################################################################
 /**
@@ -29,10 +29,10 @@ global $cfg, $lngAct, $load_client;
  * @deprecated
  *
  * Parameters & order:
- * string   URL including parameter value pairs
+ * string URL including parameter value pairs
  *
  * Returns:
- * string     Returns modified URL
+ * string Returns modified URL
  */
 
 ####################################################################################################
@@ -44,8 +44,8 @@ $client = cRegistry::getClientId();
 // Initialize client id
 if ($client > 0) {
     $clientId = $client;
-} elseif (isset($load_client) && (int)$load_client > 0) {
-    $clientId = (int)$load_client;
+} elseif (cRegistry::getLoadClientId() > 0) {
+    $clientId = cRegistry::getLoadClientId();
 } else {
     $clientId = '';
 }
@@ -86,7 +86,7 @@ plugin_include($pluginName, 'includes/functions.mod_rewrite.php');
 ModRewriteDebugger::setEnabled(!empty(cRegistry::getBackendSessionId()));
 
 // Initialize mr plugin
-ModRewrite::initialize($clientId);
+ModRewrite::initialize(cSecurity::toInteger($clientId));
 
 if (ModRewrite::isEnabled()) {
     $aMrCfg = ModRewrite::getConfig();

@@ -36,9 +36,7 @@ abstract class ModRewriteBase
     }
 
     /**
-     * Sets the enabled state of mod rewrite plugin
-     *
-     * @param bool $enabled
+     * Sets the enabled state of the mod rewrite plugin
      */
     public static function setEnabled(bool $enabled)
     {
@@ -48,7 +46,7 @@ abstract class ModRewriteBase
     /**
      * Returns configuration of mod rewrite, content of global $cfg['mod_rewrite']
      *
-     * @param ?string $key Name of configuration key
+     * @param ?string $key Name of the configuration key
      * @param mixed $default Default value to return as a fallback
      * @return mixed Desired value mr configuration, either the full configuration
      *      or one of the desired subpart
@@ -68,7 +66,7 @@ abstract class ModRewriteBase
     /**
      * Sets the configuration of mod rewrite, content of global $cfg['mod_rewrite']
      *
-     * @param string $key Name of configuration key
+     * @param string $key Name of the configuration key
      * @param mixed $value The value to set
      */
     public static function setConfig(string $key, $value)
