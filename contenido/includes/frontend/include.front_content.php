@@ -543,7 +543,7 @@ if (!$inUse && $allow && $view == 'edit' && ($perm->have_perm_area_action_item('
             $validated = 0;
             foreach ($userProperties as $userProperty) {
                 $user_id = $userProperty->get('user_id');
-                $range = $userProperty->f('value');
+                $range = $userProperty->get('value');
                 $slash = cString::findFirstPos($range, '/');
 
                 if ($slash == false) {
