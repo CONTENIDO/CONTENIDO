@@ -24,17 +24,14 @@ class cFileCache
 {
 
     /**
-     * Options for the cache.
-     *
-     * @var array
+     * @var array Options for the cache.
      */
-    protected $_options = [];
+    protected $options = [];
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @param array $options [optional]
-     *         array with options for the cache (optional, default: empty array)
+     * @param array $options array with options for the cache (optional, default: empty array)
      */
     public function __construct(array $options = [])
     {
@@ -43,7 +40,6 @@ class cFileCache
 
     /**
      * Setter for the cache options.
-     *
      * Validates incoming options and sets the default of the missing options.
      *
      * @param array $options Array with option
@@ -79,7 +75,7 @@ class cFileCache
             $options['fileNameProtection'] = false;
         }
 
-        $this->_options = $options;
+        $this->options = $options;
     }
 
     /**
@@ -89,15 +85,15 @@ class cFileCache
      * @param string $group [optional] Cache group
      * @return string Filename
      */
-    public function generateFileName($id, $group = ''): string
+    public function generateFileName(string $id, string $group = ''): string
     {
-        $id = $this->_options['fileNameProtection'] === true ? md5($id) : $id;
+        $id = $this->options['fileNameProtection'] === true ? md5($id) : $id;
         if ($group != '') {
-            $groupName = ($this->_options['fileNameProtection'] === true ? md5($group) : $group) . '_';
+            $groupName = ($this->options['fileNameProtection'] === true ? md5($group) : $group) . '_';
             $group = $groupName . '_';
         }
 
-        return $this->_options['fileNamePrefix'] . $group . $id . '.' . $this->_options['fileExtension'];
+        return $this->options['fileNamePrefix'] . $group . $id . '.' . $this->options['fileExtension'];
     }
 
     /**
@@ -105,9 +101,9 @@ class cFileCache
      *
      * @throws cInvalidArgumentException
      */
-    protected function _validateDirectory()
+    protected function validateDirectory()
     {
-        $directory = $this->_options['cacheDir'];
+        $directory = $this->options['cacheDir'];
         if ($directory == '') {
             throw new cInvalidArgumentException('The caching directory is empty.');
         }
@@ -129,11 +125,11 @@ class cFileCache
      * @return string Full filename
      * @throws cInvalidArgumentException
      */
-    public function getDestination($id, $group = '')
+    public function getDestination(string $id, string $group = '')
     {
-        $this->_validateDirectory();
+        $this->validateDirectory();
 
-        $directory = $this->_options['cacheDir'];
+        $directory = $this->options['cacheDir'];
         $filename = $this->generateFileName($id, $group);
 
         return $directory . $filename;
@@ -149,7 +145,7 @@ class cFileCache
      * @return bool|string Content or false
      * @throws cInvalidArgumentException
      */
-    public function get($id, $group = '')
+    public function get(string $id, string $group = '')
     {
         $data = false;
 
@@ -159,7 +155,7 @@ class cFileCache
             return false;
         }
 
-        $refreshTime = ($this->_options['lifetime'] == 0) ? 0 : time() - (int)$this->_options['lifetime'];
+        $refreshTime = $this->options['lifetime'] == 0 ? 0 : time() - cSecurity::toInteger($this->options['lifetime']);
 
         clearstatcache();
         $info = cFileHandler::info($destination);
@@ -181,7 +177,7 @@ class cFileCache
      * @return bool Success state
      * @throws cInvalidArgumentException
      */
-    public function save($data, $id, $group = ''): bool
+    public function save(string $data, string $id, string $group = ''): bool
     {
         return cFileHandler::write($this->getDestination($id, $group), $data);
     }
@@ -194,7 +190,7 @@ class cFileCache
      * @return bool Success state
      * @throws cInvalidArgumentException
      */
-    public function remove($id, $group = ''): bool
+    public function remove(string $id, string $group = ''): bool
     {
         $destination = $this->getDestination($id, $group);
         if (cFileHandler::exists($destination) === false) {
