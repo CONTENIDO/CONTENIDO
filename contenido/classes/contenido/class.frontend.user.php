@@ -109,6 +109,33 @@ class cApiFrontendUserCollection extends ItemCollection
     }
 
     /**
+     * Returns the frontend user for the login attempt case by the username.
+     * The login criteria are:
+     * - Username must exist.
+     * - User has to be assigned to a client.
+     * - User has to be active.
+     *
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function fetchUserForLoginAttempt(string $username, int $clientId): ?cApiFrontendUser
+    {
+        if (trim($username) === '') {
+            return null;
+        }
+
+        $where = $this->db->prepare(
+            "`username` = '%s' AND `idclient` = %d AND `active` = 1",
+            $username,
+            $clientId
+        );
+
+        return ($this->select($where) && ($item = $this->next()) !== false)
+            ? $item
+            : null;
+    }
+
+    /**
      * Overridden delete method to remove user from groupmember table before deleting user.
      *
      * @inheritDoc
@@ -160,8 +187,12 @@ class cApiFrontendUser extends Item
      */
     public function setField($name, $value, $safe = true)
     {
-        if ($name == 'password') {
-            return parent::setField($name, hash('sha256', md5($value) . $this->get('salt')), $safe);
+        if ($name === 'password') {
+            return parent::setField(
+                $name,
+                cApiUser::hashPassword(cSecurity::toString($value), cSecurity::toString($this->get('salt'))),
+                $safe
+            );
         } else {
             return parent::setField($name, $value, $safe);
         }
@@ -189,10 +220,10 @@ class cApiFrontendUser extends Item
             return false;
         }
 
-        $pass = $this->get('password');
-        $salt = $this->get('salt');
+        $storedPassword = $this->get('password');
+        $salt = cSecurity::toString($this->get('salt'));
 
-        return hash('sha256', md5($password) . $salt) == $pass;
+        return cApiUser::hashPassword(cSecurity::toString($password), $salt) === $storedPassword;
     }
 
     /**

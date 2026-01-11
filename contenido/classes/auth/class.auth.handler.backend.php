@@ -22,6 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cAuthHandlerBackend extends cAuth
 {
+    use cAuthBackendUserDetailsTrait;
 
     /**
      * Constructor to create an instance of this class.
@@ -39,7 +40,7 @@ class cAuthHandlerBackend extends cAuth
     }
 
     /**
-     * There is no pre authentication in backend.
+     * There is no pre-authentication in the backend.
      *
      * @inheritdoc
      */
@@ -84,81 +85,41 @@ class cAuthHandlerBackend extends cAuth
     {
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
-        $formtimestamp = $_POST['formtimestamp'] ?? '';
+        $formTmestamp = $_POST['formtimestamp'] ?? '';
 
         // add slashes if they are not automatically added
         if (cRegistry::getConfigValue('simulate_magic_quotes') !== true) {
             // backward compatibility of passwords
             $password = addslashes($password);
-            // avoid sql injection in query by username on cApiUserCollection select string
-            $username = addslashes($username);
         }
-
-        $groupPerm = [];
 
         if ($password == '') {
             return false;
         }
 
-        if (($formtimestamp + (60 * 15)) < time()) {
+        if (($formTmestamp + (60 * 15)) < time()) {
             return false;
         }
 
-        if (isset($username)) {
+        if ($username !== '') {
             $this->auth['uname'] = $username;
         } elseif ($this->_defaultNobody) {
             return $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
         }
 
-        $uid = false;
-        $perm = false;
-        $pass = false;
-        $salt = false;
+        $userDetails = $this->createUserDetailsObject();
+        $this->loadBackendUserDetails($userDetails, $username);
 
-        $userColl = new cApiUserCollection();
-        $where = "username = '" . $username . "'";
-        $where .= " AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00' OR valid_from is NULL)";
-        $where .= " AND (valid_to >= NOW() OR valid_to = '0000-00-00 00:00:00' OR valid_to is NULL)";
+        $result = $this->postProcessValidateCredentials($userDetails, $password);
 
-        $maintenanceMode = getSystemProperty('maintenance', 'mode');
-        if ($maintenanceMode == 'enabled') {
-            $where .= " AND perms = 'sysadmin'";
-        }
-
-        $userColl->select($where);
-
-        while ($item = $userColl->next()) {
-            $uid = $item->get('user_id');
-            $perm = $item->get('perms');
-            // password is stored as a sha256 hash
-            $pass = $item->get('password');
-            $salt = $item->get('salt');
-        }
-
-        if (!$uid || hash("sha256", md5($password) . $salt) != $pass) {
-            // No user found, sleep and exit
-            sleep(2);
-
-            return false;
-        }
-
-        if ($perm != '') {
-            $groupPerm[] = $perm;
-        }
-
-        $groupColl = new cApiGroupCollection();
-        $this->auth['perm'] = cPermission::permissionToString(
-            array_merge($groupPerm, $groupColl->getPermissionsByUserId($uid))
-        );
-
-        return $uid;
+        return $result ? $userDetails->userId : false;
     }
 
     /**
      * Log the successful authentication.
      *
      * Switches the globals $client & $lang to the first client/language for which the current user has permissions.
-     * If a client/language combination is found the action "login" is added to the actionlog.
+     * If a client/language combination is found, the action "login" is added to the actionlog.
      * Eventually the global $saveLoginTime is set to true which will trigger the update of the user properties
      * "currentlogintime" and "lastlogintime" in mycontenido.
      *
@@ -168,6 +129,7 @@ class cAuthHandlerBackend extends cAuth
      */
     public function logSuccessfulAuth()
     {
+        // NOTE: Use globals here
         global $client, $lang, $saveLoginTime;
 
         $perm = new cPermission();
@@ -199,11 +161,11 @@ class cAuthHandlerBackend extends cAuth
         }
 
         $idaction = $perm->getIdForAction('login');
-        $uid = $this->getUserId();
+        $userId = $this->getUserId();
 
         // create a actionlog entry
         $actionLogCol = new cApiActionlogCollection();
-        $actionLogCol->create($uid, $client, $lang, $idaction, 0);
+        $actionLogCol->create($userId, $client, $lang, $idaction, 0);
 
         $sess = cRegistry::getSession();
         $sess->register('saveLoginTime');

@@ -31,7 +31,7 @@ abstract class cAuth
     public const AUTH_UID_NOBODY = 'nobody';
 
     /**
-     * Authentication user ID for calling login form.
+     * Authentication user ID for calling a login form.
      *
      * @var string
      */
@@ -67,7 +67,7 @@ abstract class cAuth
 
     /**
      * The "in flag".
-     * Nobody knows, for which reason it exists.
+     * Nobody knows for which reason it exists.
      *
      * @var bool
      */
@@ -82,9 +82,9 @@ abstract class cAuth
     public $persistent_slots = ['auth'];
 
     /**
-     * Handle the pre authorization.
+     * Handle the pre-authorization.
      *
-     * When implementing this method let it return a valid user ID to be
+     * When implementing this method, let it return a valid user ID to be
      * set before the login form is handled, otherwise false.
      *
      * @return string|false
@@ -97,17 +97,17 @@ abstract class cAuth
     abstract public function preAuthorize();
 
     /**
-     * When implementing this method let this method render the login form.
+     * When implementing this method, let this method render the login form.
      */
     abstract public function displayLoginForm();
 
     /**
      * Validate the credentials.
      *
-     * When implementing this method let this method validate the users
-     * input against source and return a valid user ID or false.
+     * When implementing this method, let this method validate the users'
+     * input against the source and return a valid user ID (`int` or `string`) or `false`.
      *
-     * @return string|false
+     * @return int|string|false
      */
     abstract public function validateCredentials();
 
@@ -122,7 +122,7 @@ abstract class cAuth
      *
      * @return bool
      */
-    abstract public function isLoggedIn();
+    abstract public function isLoggedIn(): bool;
 
     /**
      * Magic getter function for outdated variable names.
@@ -196,30 +196,31 @@ abstract class cAuth
     /**
      * Resets the global authentication information.
      *
-     * @param bool $nobody [optional] If flag set to true, the default authentication is
+     * @param bool $nobody If the flag set to true, the default authentication is
      *      switched to nobody. (optional, default: false)
      */
-    public function resetAuthInfo($nobody = false)
+    public function resetAuthInfo(bool $nobody = false)
     {
         $this->auth['uid'] = $nobody ? self::AUTH_UID_NOBODY : '';
         $this->auth['uname'] = $nobody ? self::AUTH_UID_NOBODY : '';
         $this->auth['perm'] = '';
+        // TODO 0x7fffffff is the timestamp 2147483647. This means it won't work after the date 19.01.2038!
         $this->_setExpiration($nobody ? 0x7fffffff : 0);
     }
 
     /**
      * Logs out the current user, resets the auth information and freezes the session.
      *
-     * @param bool $nobody [optional] If flag set to true, nobody is recreated as user.
+     * @param bool $nobody If the flag set to true, nobody is recreated as a user.
      */
-    public function logout($nobody = false): bool
+    public function logout(bool $nobody = false): bool
     {
         $sess = cRegistry::getSession();
 
         $sess->unregister('auth');
         unset($this->auth['uname']);
 
-        $this->resetAuthInfo($nobody ? $nobody : $this->_defaultNobody);
+        $this->resetAuthInfo($nobody ?: $this->_defaultNobody);
         $sess->freeze();
 
         return true;
@@ -234,7 +235,7 @@ abstract class cAuth
     }
 
     /**
-     * Checks, if user is authenticated (NOT logged in!).
+     * Checks if the user is authenticated (NOT logged in!).
      *
      * @return bool|string The userid if the user is authenticated, otherwise false.
      */
@@ -251,7 +252,7 @@ abstract class cAuth
     }
 
     /**
-     * Checks, if user is currently in login form mode.
+     * Checks if the user is currently in login form mode.
      */
     public function isLoginForm(): bool
     {
@@ -302,9 +303,9 @@ abstract class cAuth
     /**
      * Sets or refreshes the expiration of the authentication.
      *
-     * @param int $expiration [optional]New expiration (optional, default: NULL = current time plus lifetime minutes)
+     * @param ?int $expiration New expiration (optional, default: NULL = current time plus lifetime minutes)
      */
-    protected function _setExpiration($expiration = NULL)
+    protected function _setExpiration(?int $expiration = NULL)
     {
         if ($expiration === NULL) {
             $expiration = time() + (60 * $this->_lifetime);
@@ -328,7 +329,7 @@ abstract class cAuth
     /**
      * Sets the authentication info for a user.
      *
-     * @param string $userId User ID to set
+     * @param string|int $userId User ID to set
      * @param int $expiration [optional] Expiration (optional, default: NULL)
      */
     protected function _setAuthInfo($userId, $expiration = NULL)
@@ -337,4 +338,56 @@ abstract class cAuth
         $this->_setExpiration($expiration);
     }
 
+    /**
+     * Validates the provided credentials and processes permissions for the user.
+     *
+     * @param stdClass $userDetails The user details, see {@see cAuth::createUserDetailsObject()}.
+     * @param string $password The plaintext password provided by the user.
+     * @return bool Returns true if the credentials are valid; false otherwise.
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    protected function postProcessValidateCredentials(stdClass $userDetails, string $password): bool
+    {
+        if (!$userDetails->userId || cApiUser::hashPassword($password, $userDetails->salt) != $userDetails->password) {
+            sleep(2);
+
+            return false;
+        }
+
+        $groupPerm = [];
+        if ($userDetails->perm != '') {
+            $groupPerm[] = $userDetails->perm;
+        }
+
+        $groupColl = new cApiGroupCollection();
+        $this->auth['perm'] = cPermission::permissionToString(
+            array_merge($groupPerm, $groupColl->getPermissionsByUserId($userDetails->userId))
+        );
+
+        return true;
+    }
+
+    /**
+     * Creates and returns a new user details object with default properties set to null.
+     * The returned object is used during the process of the validation details.
+     *
+     * @return stdClass{
+     *      userId: string|int|null,
+     *      perm: ?string,
+     *      password: ?string,
+     *      salt: ?string
+     *  } A new instance of stdClass representing the user details object.
+     * @since CONTENIDO 4.10.2
+     */
+    protected function createUserDetailsObject(): stdClass
+    {
+        $obj = new stdClass();
+        $obj->userId = null;
+        $obj->perm = null;
+        $obj->password = null;
+        $obj->salt = null;
+
+        return $obj;
+    }
 }

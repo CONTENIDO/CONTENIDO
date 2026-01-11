@@ -183,9 +183,10 @@ class cApiUserCollection extends ItemCollection
     {
         $users = [];
 
-        $where = "perms LIKE '%sysadmin%'";
+        $where = "`perms` LIKE '%sysadmin%'";
         if ($forceActive === true) {
-            $where .= " AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00')" . " AND (valid_to >= NOW() OR valid_to = '0000-00-00 00:00:00')";
+            $where .= " AND (`valid_from` <= NOW() OR `valid_from` = '0000-00-00 00:00:00')"
+                . " AND (`valid_to` >= NOW() OR `valid_to` = '0000-00-00 00:00:00')";
         }
 
         $this->select($where);
@@ -217,6 +218,37 @@ class cApiUserCollection extends ItemCollection
         }
 
         return NULL;
+    }
+
+    /**
+     * Returns the user for the login attempt case by the username.
+     * The login criteria are:
+     * - Username must exist.
+     * - User has to be active.
+     * - User must have sysadmin permission if the maintenance mode is enabled.
+     *
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function fetchUserForLoginAttempt(string $username): ?cApiUser
+    {
+        if (trim($username) === '') {
+            return null;
+        }
+
+        $where = $this->db->prepare(
+            "`username` = '%s'"
+            . " AND (`valid_from` <= NOW() OR `valid_from` = '0000-00-00 00:00:00' OR `valid_from` IS NULL)"
+            . " AND (`valid_to` >= NOW() OR `valid_to` = '0000-00-00 00:00:00' OR `valid_to` IS NULL)",
+            $username
+        );
+        if (getSystemProperty('maintenance', 'mode') == 'enabled') {
+            $where .= " AND `perms` = 'sysadmin'";
+        }
+
+        return ($this->select($where) && ($item = $this->next()) !== false)
+            ? $item
+            : null;
     }
 
     /**
@@ -410,10 +442,10 @@ class cApiUser extends Item
     /**
      * Checks a given password against some predefined rules like minimum
      * character length, required special character, etc...
-     * This behaviour is configurable in global configuration $cfg['password'].
+     * This behavior is configurable in global configuration $cfg['password'].
      *
      * @param string $password The password check
-     * @return int One of defined PASS_* constants (PASS_OK if everything was ok)
+     * @return int One of the defined PASS_* constants (PASS_OK if everything was ok)
      */
     public static function checkPasswordMask(string $password): int
     {
@@ -490,7 +522,17 @@ class cApiUser extends Item
      */
     public function encodePassword(string $password): string
     {
-        return hash("sha256", md5($password) . $this->get('salt'));
+        return self::hashPassword($password, cSecurity::toString($this->get('salt')));
+    }
+
+    /**
+     * Returns a hash of the password by using the given salt.
+     *
+     * @since CONTENIDO 4.10.2
+     */
+    public static function hashPassword(string $password, string $salt): string
+    {
+        return hash('sha256', md5($password) . $salt);
     }
 
     /**
@@ -553,7 +595,7 @@ class cApiUser extends Item
     /**
      * This method saves the given password $password.
      *
-     * The password has to be checked, before it is set to the database.
+     * The password has to be checked before it is set to the database.
      *
      * The resulting integer value represents the result code.
      *
@@ -589,7 +631,7 @@ class cApiUser extends Item
     }
 
     /**
-     * Sets up new username.
+     * Sets up a new username.
      *
      * @param string $sUserName
      */
