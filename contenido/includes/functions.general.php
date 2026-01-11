@@ -1798,7 +1798,7 @@ function ipMatch($network, $mask, $ip): bool
 }
 
 /**
- * Checks, if a function is disabled or not ('disable_functions' setting in php.ini)
+ * Checks if a function is disabled or not ('disable_functions' setting in php.ini)
  *
  * @param string $functionName Name of the function to check
  */

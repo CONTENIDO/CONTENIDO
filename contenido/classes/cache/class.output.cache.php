@@ -52,7 +52,7 @@ class cOutputCache
     protected $_bDebug = false;
 
     /**
-     * Flag to print html comment including some debug information.
+     * Flag to print HTML comment including some debug information.
      *
      * @var bool
      */
@@ -112,7 +112,7 @@ class cOutputCache
     protected $_sGroup = 'default';
 
     /**
-     * Substring to add as prefix to cache-filename.
+     * Substring to add as a prefix to cache-filename.
      *
      * @var string
      */
@@ -126,14 +126,14 @@ class cOutputCache
     protected $_iLifetime = 3600;
 
     /**
-     * Used to store debug message.
+     * Used to store a debug message.
      *
      * @var string
      */
     protected $_sDebugMsg = '';
 
     /**
-     * HTML code template used for debug message.
+     * HTML code template used for a debug message.
      *
      * @var string
      */
@@ -200,7 +200,7 @@ VALID UNTIL: %s
     }
 
     /**
-     * Get/Set the flag to debug cache object (prints out miss/hit state with execution time).
+     * Get/Set the flag to debug a cache object (prints out miss/hit state with execution time).
      *
      * @param bool $debug True to activate debugging or false.
      * @return ?bool Debug flag or null
@@ -216,7 +216,7 @@ VALID UNTIL: %s
     }
 
     /**
-     * Get/Set flag to print out cache info as html comment.
+     * Get/Set flag to print out cache info as HTML comment.
      *
      * @param ?bool $htmlcomment True debugging or false.
      * @return ?bool Htmlcomment flag or null
@@ -301,7 +301,7 @@ VALID UNTIL: %s
             return $content;
         }
 
-        // WARNING: we need the output buffer - possible clashes
+        // WARNING: we need the output buffer, possible clashes
         ob_start();
         ob_implicit_flush(false);
 
@@ -311,9 +311,9 @@ VALID UNTIL: %s
     /**
      * Handles PEAR caching.
      *
-     * The script will be terminated by calling die(), if any cached content is found.
+     * The script will be terminated by calling `die()`, if any cached content is found.
      *
-     * @param ?int $pageStartTime [optional] Optional start time, e.g. start time of main script
+     * @param ?int $pageStartTime [optional] Optional start time, e.g. start time of the main script
      * @throws cInvalidArgumentException
      */
     public function start(int $pageStartTime = null)
@@ -384,7 +384,7 @@ VALID UNTIL: %s
     /**
      * Removes any cached content if exists.
      *
-     * This is necessary to delete cached articles, if they are changed on backend.
+     * This is necessary to delete cached articles if they are changed at the backend.
      *
      * @throws cInvalidArgumentException
      */
@@ -396,7 +396,7 @@ VALID UNTIL: %s
     }
 
     /**
-     * Creates one-time an instance of PEAR cache output object and also
+     * Creates one-time an instance of a PEAR cache output object and also
      * the unique id, if proper $this->_oPearCache is not set.
      */
     protected function _initFileCache()
@@ -431,7 +431,7 @@ VALID UNTIL: %s
     }
 
     /**
-     * Returns microtime (UNIX timestamp), used to calculate time of execution.
+     * Returns microtime (UNIX timestamp), used to calculate the time of execution.
      *
      * @return float Timestamp
      */
@@ -457,7 +457,7 @@ class cOutputCacheHandler extends cOutputCache
      *
      * @param array $aConf Configuration of caching as follows:
      *      - $a['excludecontenido'] bool
-     *        don't cache output, if we have a CONTENIDO variable,
+     *        don't cache output if we have a CONTENIDO variable,
      *        e.g. on calling frontend preview from backend
      *      - $a['enable'] bool
      *        activate caching of frontend output
@@ -538,12 +538,12 @@ class cOutputCacheHandler extends cOutputCache
     }
 
     /**
-     * Checks, if the creation code flag is set.
-     * Output will be loaded from cache, if no code is to create.
+     * Checks if the creation code flag is set.
+     * Output will be loaded from the cache if no code is to be created.
      * It also checks the state of global variable $force.
      *
      * @param mixed $createCode State of create code (0 or 1).
-     *      The state will be loaded from database if value is null
+     *      The state will be loaded from a database if the value is null
      * @return bool True if code is to create, otherwise false.
      * @throws cDbException|cException
      */
@@ -553,7 +553,7 @@ class cOutputCacheHandler extends cOutputCache
             return false;
         }
 
-        // check content of global variable $force, get out if it's set to '1'
+        // check the content of global variable $force, get out if it's set to '1'
         if (isset($GLOBALS['force']) && is_numeric($GLOBALS['force']) && $GLOBALS['force'] == 1) {
             return true;
         }

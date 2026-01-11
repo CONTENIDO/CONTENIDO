@@ -206,12 +206,12 @@ class cUri
     }
 
     /**
-     * Checks, if passed url is an external url while performing hostname check.
+     * Checks if passed url is an external url while performing hostname check.
      *
      * @param string $sUrl Url to check.
-     * @return bool True if url is a external url, otherwise false.
+     * @return bool True if url is an external url, otherwise false.
      */
-    public function isExternalUrl($sUrl)
+    public function isExternalUrl($sUrl): bool
     {
         $aComponents = $this->parse($sUrl);
         if (!isset($aComponents['host'])) {
@@ -230,17 +230,16 @@ class cUri
     }
 
     /**
-     * Checks, if passed url is an identifiable internal url.
+     * Checks if the passed url is an identifiable internal url.
      *
-     * Following urls will be identified as a internal url:
-     *
+     * The following urls will be identified as an internal url:
      * - "/", "/?idart=123", "/?idcat=123", ...
      * - "front_content.php", "front_content.php?idart=123", "front_content.php?idcat=123", ...
      * - "/front_content.php", "/front_content.php?idart=123", "/front_content.php?idcat=123", ...
      * - The path component of an client HTML base path: e.g. "/cms/", "/cms/?idart=123", "/cms/?idcat=123"
      * - Also possible: "/cms/front_content.php", "/cms/front_content.php?idart=123", "/cms/front_content.php?idcat=123"
      *
-     * All of them prefixed with protocol and client host (e.g. https://host/) will also be identified
+     * All of them, prefixed with protocol and client host (e.g. https://host/) will also be identified
      * as an internal Url.
      *
      * Other Urls, even internal Urls like /unknown/path/to/some/page.html will not be identified as
@@ -249,7 +248,7 @@ class cUri
      * @param string $sUrl Url to check.
      * @return bool True if url is identifiable internal url, otherwise false.
      */
-    public function isIdentifiableFrontContentUrl($sUrl)
+    public function isIdentifiableFrontContentUrl($sUrl): bool
     {
         if ($this->isExternalUrl($sUrl)) {
             // detect a external url, return false

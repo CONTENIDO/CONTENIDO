@@ -588,12 +588,11 @@ class Newsletter extends Item
     }
 
     /**
-     * Checks, if html newsletter article still exists
+     * Checks if the html newsletter article still exists
      *
-     * @return bool
      * @throws cException
      */
-    public function htmlArticleExists()
+    public function htmlArticleExists(): bool
     {
         if ($this->get('idart') > 0) {
             $oArticles = new cApiArticleLanguageCollection();
@@ -601,18 +600,10 @@ class Newsletter extends Item
             $oArticles->setWhere('idart', $this->get('idart'));
             $oArticles->query();
 
-            if ($oArticles->count() > 0) {
-                $bReturn = true;
-            } else {
-                $bReturn = false;
-            }
-
-            unset($oArticles);
-        } else {
-            $bReturn = false;
+            return $oArticles->count() > 0;
         }
 
-        return $bReturn;
+        return false;
     }
 
     /**

@@ -174,7 +174,7 @@ class cApiDbfsCollection extends ItemCollection
     }
 
     /**
-     * Checks, if a dbfs file exists.
+     * Checks if a dbfs file exists.
      *
      * @throws cDbException|cException
      */
@@ -190,7 +190,7 @@ class cApiDbfsCollection extends ItemCollection
     }
 
     /**
-     * Checks, if a dbfs directory exists.
+     * Checks if a dbfs directory exists.
      *
      * @throws cDbException|cException
      */

@@ -140,7 +140,7 @@ function isRegisterLongArraysActive(): bool
 }
 
 /**
- * Checks, if current installed PHP version matches the minimum required PHP version to run CONTENIDO.
+ * Checks if the current installed PHP version matches the minimum required PHP version to run CONTENIDO.
  * @return bool
  */
 function isPHPCompatible(): bool

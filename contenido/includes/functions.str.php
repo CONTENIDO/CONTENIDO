@@ -426,7 +426,7 @@ function strNextDeeper($idcat, $ignoreLang = false): int
 }
 
 /**
- * Checks, if passed category contains any articles
+ * Checks if the passed category contains any articles
  *
  * @param int $idcat ID of category
  * @throws cDbException|cInvalidArgumentException

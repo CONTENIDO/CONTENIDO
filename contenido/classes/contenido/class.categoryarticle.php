@@ -219,7 +219,7 @@ class cApiCategoryArticleCollection extends ItemCollection
     }
 
     /**
-     * Checks, if passed category contains any articles in specified language.
+     * Checks if the passed category contains any articles in the specified language.
      *
      * @param int $idcat Category id
      * @param int $idlang Language id

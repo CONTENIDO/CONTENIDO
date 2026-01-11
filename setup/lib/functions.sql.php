@@ -121,7 +121,7 @@ function addSaltsToTables(cDb $db)
     while ($db->nextRecord()) {
         if ($db->f('salt') == '') {
             $salt = md5($db->f('username') . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
-            $hash = hash("sha256", $db->f('password') . $salt);
+            $hash = hash('sha256', $db->f('password') . $salt);
             $db2->query(
                 "UPDATE `%s` SET `salt` = '%s', `password` = '%s' WHERE `user_id` = '%s'",
                 cDb::getTableName('user'),
@@ -142,7 +142,7 @@ function addSaltsToTables(cDb $db)
     while ($db->nextRecord()) {
         if ($db->f('salt') == '') {
             $salt = md5($db->f('username') . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
-            $hash = hash("sha256", $db->f('password') . $salt);
+            $hash = hash('sha256', $db->f('password') . $salt);
             $db2->query(
                 "UPDATE `%s` SET salt='%s', `password` = '%s' WHERE `idfrontenduser` = '%s'",
                 cDb::getTableName('frontendusers'),

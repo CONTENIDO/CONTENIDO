@@ -315,7 +315,7 @@ class cModuleSynchronizer extends cModuleHandler
     }
 
     /**
-     * Checks, if a module entry exists in the database table.
+     * Checks if a module entry exists in the database table.
      *
      * @param string $alias Module alias
      * @return bool True if the module exists in the db table, otherwise false.

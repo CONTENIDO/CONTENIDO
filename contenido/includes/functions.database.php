@@ -233,7 +233,7 @@ function dbUpgradeTable(
 }
 
 /**
- * Checks, if passed table exists in the database
+ * Checks if passed table exists in the database
  *
  * @throws cDbException
  */
