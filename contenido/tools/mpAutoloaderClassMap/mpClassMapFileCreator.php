@@ -13,7 +13,7 @@
 /**
  * Class to create a PHP file which contains an associative PHP array.
  *
- * Generated file will contain a PHP array as following:
+ * Generated file will contain a PHP array as follows:
  * <code>
  * return [
  *     '{classname}' => '{path_to_class_file}',

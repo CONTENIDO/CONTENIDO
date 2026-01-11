@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Contains class type token finder.
+ * Contains the type token finder class.
  *
  * @category   Development
  * @package    mpAutoloaderClassMap
@@ -27,7 +27,7 @@ class mpClassTypeFinder
     protected $_excludeDirs = ['.svn', '.cvs'];
 
     /**
-     * List of files to ignore, regex pattern is also accepted (note: is case insensitive)
+     * List of files to ignore, a regex pattern is also accepted (note: is case-insensitive)
      * @var  array
      */
     protected $_excludeFiles = ['/^~*.\.php$/', '/^~*.\.inc$/'];
@@ -39,14 +39,14 @@ class mpClassTypeFinder
     protected $_extensionsToParse = ['.php', '.inc'];
 
     /**
-     * Flag to enable debugging, all messages will be collected in property _debugMessages,
+     * Flag, to enable debugging, all messages will be collected in property _debugMessages,
      * if enabled
      * @var  bool
      */
     protected $_enableDebug = false;
 
     /**
-     * List of debugging messages, will e filled, if debugging is active
+     * List of debugging messages, will be filled if debugging is active
      * @var  array
      */
     protected $_debugMessages = [];
@@ -56,16 +56,16 @@ class mpClassTypeFinder
      * Initializes class with passed options
      *
      * @param array$options Associative options array as follows:
-     *      - excludeDirs: (array)  List of directories to exclude, optional.
+     *      - excludeDirs: (array) List of directories to exclude, optional.
      *        Default values are '.svn' and '.cvs'.
-     *      - excludeFiles: (array)  List of files to exclude, optional.
+     *      - excludeFiles: (array) List of files to exclude, optional.
      *        Default values are '/^~*.\.php$/' and '/^~*.\.inc$/'.
-     *      - extensionsToParse: (array)  List of file extensions to parse, optional.
+     *      - extensionsToParse: (array) List of file extensions to parse, optional.
      *        Default values are '.php' and '.inc'.
-     *      - enableDebug: (bool)  Flag to enable debugging, optional.
-     *        Default value is false.
+     *      - enableDebug: (bool) Flag to enable debugging, optional.
+     *        The default value is false.
      */
-    public function __construct(array $options= [])
+    public function __construct(array $options = [])
     {
         if (isset($options['excludeDirs']) && is_array($options['excludeDirs'])) {
             $this->setExcludeDirs($options['excludeDirs']);
@@ -94,7 +94,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Returns list of directories to exclude
+     * Returns a list of directories to exclude
      */
     public function getExcludeDirs(): array
     {
@@ -123,7 +123,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Returns list of files to exclude
+     * Returns the list of files to exclude
      */
     public function getExcludeFiles(): array
     {
@@ -252,7 +252,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Adds passed message to debug list, if debugging is enabled
+     * Adds passed a message to the debug list if debugging is enabled
      */
     protected function _debug(string $msg)
     {
@@ -281,7 +281,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Checks if file is to process
+     * Checks if a file is to process
      */
     protected function _isFileToProcess(SplFileInfo $file): bool
     {
@@ -302,7 +302,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Checks if directory is to exclude
+     * Checks if a directory is to exclude
      */
     protected function _isDirToExclude(SplFileInfo $file): bool
     {
@@ -318,7 +318,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Checks if file is to exclude
+     * Checks if a file is to exclude
      */
     protected function _isFileToExclude(SplFileInfo $file): bool
     {
@@ -338,7 +338,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Checks if file is to parse (if file extension matches)
+     * Checks if a file is to parse (if the file extension matches)
      */
     protected function _isFileToParse(SplFileInfo $file): bool
     {

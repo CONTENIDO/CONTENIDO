@@ -13,7 +13,7 @@
 /**
  * Class to create a PHP file which contains an associative PHP array.
  *
- * Generated file will contain a PHP array as following:
+ * Generated file will contain a PHP array as follows:
  * <code>
  * return [
  *     '{classname}' => '{path_to_class_file}',
@@ -42,7 +42,7 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
     {
         parent::__construct();
 
-        $this->_contenidoInstallPath = $contenidoInstallPath;
+        $this->_contenidoInstallPath = rtrim($contenidoInstallPath, '/');
 
         $this->_template = trim('
 <?php
@@ -88,12 +88,12 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
         $this->_data->license       = 'https://www.contenido.org/license/LIZENZ.txt';
         $this->_data->link          = 'https://www.4fb.de';
         $this->_data->link2         = 'https://www.contenido.org';
-        $this->_data->since         = 'file available since CONTENIDO 4.9.0';
+        $this->_data->since         = 'CONTENIDO 4.9.0';
     }
 
     /**
-     * Creates classmap file with passed data list. Prepares the classmap entries before passing
-     * them to parents create function.
+     * Creates a classmap file with the passed data list. Prepares the classmap entries before
+     * passing them to parents create function.
      *
      * @param array $data Associative list which contains class type tokens and the related path
      *      to the class file.
@@ -101,9 +101,9 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
      */
     public function create(array $data, string $file): bool
     {
-        // remove path from root to CONTENIDO installation
+        // remove the path from root to CONTENIDO installation
         foreach ($data as $k => $v) {
-            $data[$k] = str_replace($this->_contenidoInstallPath, '', $v);
+            $data[$k] = str_replace($this->_contenidoInstallPath . '/', '', $v);
         }
 
         return parent::create($data, $file);

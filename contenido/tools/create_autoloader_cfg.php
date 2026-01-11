@@ -34,20 +34,20 @@ if (substr(PHP_SAPI, 0, 3) !== 'cli') {
 $context = new stdClass();
 
 // Current path
-$context->currentPath = str_replace('\\', '/', realpath(__DIR__ . '/')) . '/';
+$context->currentPath = str_replace('\\', '/', realpath(__DIR__ . '/'));
 
 // CONTENIDO installation path (folder which contains "cms", "contenido", "docs", "setup", etc...)
-$context->contenidoInstallPath = str_replace('\\', '/', realpath(__DIR__ . '/../../')) . '/';
+$context->contenidoInstallPath = str_replace('\\', '/', realpath(__DIR__ . '/../../'));
 
 // Include the environment definer file
-include_once $context->contenidoInstallPath . 'contenido/environment.php';
+include_once $context->contenidoInstallPath . '/contenido/environment.php';
 // The destination file where the class map configuration should be written in
 $context->destinationFile = $context->contenidoInstallPath . '/data/config/' . CON_ENVIRONMENT . '/config.autoloader.php';
 
 // List of paths from where all class/interface names should be found
 $context->pathsToParse = [
-    $context->contenidoInstallPath . 'contenido/classes/',
-    $context->contenidoInstallPath . 'contenido/external/wysiwyg/tinymce4/contenido/classes/'
+    $context->contenidoInstallPath . '/contenido/classes/',
+    $context->contenidoInstallPath . '/contenido/external/wysiwyg/tinymce4/contenido/classes/'
 ];
 
 // Class type finder options
@@ -68,9 +68,9 @@ $context->classMapList = [];
 // Process
 
 // include required classes
-include_once $context->currentPath . 'mpAutoloaderClassMap/mpClassTypeFinder.php';
-include_once $context->currentPath . 'mpAutoloaderClassMap/mpClassMapFileCreator.php';
-include_once $context->currentPath . 'mpAutoloaderClassMap/mpClassMapFileCreatorContenido.php';
+include_once $context->currentPath . '/mpAutoloaderClassMap/mpClassTypeFinder.php';
+include_once $context->currentPath . '/mpAutoloaderClassMap/mpClassMapFileCreator.php';
+include_once $context->currentPath . '/mpAutoloaderClassMap/mpClassMapFileCreatorContenido.php';
 
 // collect all found class/interface names with their paths
 $context->classTypeFinder = new mpClassTypeFinder($context->options);
@@ -96,6 +96,11 @@ foreach ($context->classNames as $className) {
 // write the class map configuration
 $context->classMapCreator = new mpClassMapFileCreatorContenido($context->contenidoInstallPath);
 $context->classMapCreator->create($context->classMapList, $context->destinationFile);
+
+echo sprintf(
+    "Autoloader configuration created/updated in:\n%s\n",
+    $context->destinationFile
+);
 
 // /////////////////////////////////////////////////////////////////////
 // Shutdown
