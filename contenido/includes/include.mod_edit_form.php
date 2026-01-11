@@ -108,7 +108,7 @@ if (!$readOnly && $action === 'mod_new') {
     // save into the file
     $contenidoModuleHandler = new cModuleHandler($module->get('idmod'));
 
-    if ($contenidoModuleHandler->createModule() == false) {
+    if (!$contenidoModuleHandler->createModule()) {
         cRegistry::addErrorMessage(i18n("Unable to create a new module!"));
         $page = new cGuiPage('generic_page');
         $page->abortRendering();

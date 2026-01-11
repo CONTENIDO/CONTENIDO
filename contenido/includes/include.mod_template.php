@@ -28,7 +28,7 @@ cInclude('includes', 'functions.file.php');
 $sFileType = "html";
 $module = new cApiModule($idmod);
 
-$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
+$readOnly = getEffectiveSetting('client', 'readonly', 'false') === 'true';
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -73,13 +73,13 @@ if (isset($_REQUEST['code'])) {
 }
 if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
     $moduleTemplateHandler->setFiles($requestFile, $requestTmpFile);
-    $moduleTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
+    $moduleTemplateHandler->setFrameIdmodArea($frame, cSecurity::toInteger($idmod), $area);
     $moduleTemplateHandler->setNewDelete($requestNew, $requestDelete);
     $moduleTemplateHandler->setSelectedFile($requestSelectedFile);
     $moduleTemplateHandler->setStatus($requestStatus);
 } else {
     $moduleTemplateHandler->setFiles(stripslashes($requestFile), stripslashes($requestTmpFile));
-    $moduleTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
+    $moduleTemplateHandler->setFrameIdmodArea($frame, cSecurity::toInteger($idmod), $area);
     $moduleTemplateHandler->setNewDelete(stripslashes($requestNew), stripslashes($requestDelete));
     $moduleTemplateHandler->setSelectedFile(stripslashes($requestSelectedFile));
     $moduleTemplateHandler->setStatus(stripslashes($requestStatus));

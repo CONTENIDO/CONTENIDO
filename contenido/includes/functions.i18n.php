@@ -382,11 +382,11 @@ function i18nGetAvailableLanguages(): array
 
 /**
  * Module translation function.
- * If a translation is missing its key will be returned.
+ * If a translation is missing, its key will be returned.
  * If the setting debug/module_translation_message is set to true, which is the default,
  * it then will be prefixed by 'Module translation not found: '.
  *
- * This function is variadic in order to support formatted strings like %s.
+ * This function is variadic to support formatted strings like %s.
  * e.g. echo mi18n("May the %s be with %s.", 'force', 'you');
  * will return: "May the force be with you."
  *

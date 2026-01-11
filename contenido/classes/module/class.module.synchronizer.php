@@ -21,7 +21,7 @@ cInclude('includes', 'functions.con.php');
 
 /**
  * This class synchronizes the contents of the clients module directory with
- * the table $cfg['tab']['mod']. If a module exist in module directory but
+ * the table $cfg['tab']['mod']. If a module exists in the module directory but
  * not in the table, then it will be added to the table.
  *
  * @package    Core
@@ -33,12 +33,12 @@ class cModuleSynchronizer extends cModuleHandler
     /**
      * @var int The last id of the module that had changed or had added.
      */
-    private $_lastIdMod = 0;
+    private $lastModuleId = 0;
 
     /**
      * @var cApiModuleCollection
      */
-    private $_moduleCollection;
+    private $moduleCollection;
 
     /**
      * @inheritdoc
@@ -46,11 +46,11 @@ class cModuleSynchronizer extends cModuleHandler
     public function __construct($module = NULL)
     {
         parent::__construct($module);
-        $this->_moduleCollection = new cApiModuleCollection();
+        $this->moduleCollection = new cApiModuleCollection();
     }
 
     /**
-     * This method inserts a new modul in $cfg['tab']['mod'] table, if the name of the module don't exist.
+     * This method inserts a new modul in $cfg['tab']['mod'] table if the name of the module doesn't exist.
      *
      * @param string $oldModulName
      * @param string $newModulName
@@ -58,7 +58,7 @@ class cModuleSynchronizer extends cModuleHandler
      */
     private function _syncNameInDb(string $oldModulName, string $newModulName)
     {
-        // If module don't exist in the $cfg['tab']['mod'] table.
+        // If the module doesn't exist in the $cfg['tab']['mod'] table.
         if (!$this->_existsInTable($oldModulName)) {
             // Add new module in db table
             $this->_addModule($newModulName);
@@ -74,35 +74,36 @@ class cModuleSynchronizer extends cModuleHandler
      * @param string $dir
      * @param string $oldModulName
      * @param string $newModulName
+     * TODO Almost similar to {@see cModuleHandler::renameModule()}, remove redundant logic!
      */
     private function _renameFiles(string $dir, string $oldModulName, string $newModulName)
     {
         $moduleDir = $dir . $newModulName . '/';
-        if (cFileHandler::exists($moduleDir . $this->_directories['php'] . $oldModulName . '_input.php')) {
+        if (cFileHandler::exists($moduleDir . $this->directories['php'] . $oldModulName . '_input.php')) {
             rename(
-                $moduleDir . $this->_directories['php'] . $oldModulName . '_input.php',
-                $moduleDir . $this->_directories['php'] . $newModulName . '_input.php'
+                $moduleDir . $this->directories['php'] . $oldModulName . '_input.php',
+                $moduleDir . $this->directories['php'] . $newModulName . '_input.php'
             );
         }
 
-        if (cFileHandler::exists($moduleDir . $this->_directories['php'] . $oldModulName . '_output.php')) {
+        if (cFileHandler::exists($moduleDir . $this->directories['php'] . $oldModulName . '_output.php')) {
             rename(
-                $moduleDir . $this->_directories['php'] . $oldModulName . '_output.php',
-                $moduleDir . $this->_directories['php'] . $newModulName . '_output.php'
+                $moduleDir . $this->directories['php'] . $oldModulName . '_output.php',
+                $moduleDir . $this->directories['php'] . $newModulName . '_output.php'
             );
         }
 
-        if (cFileHandler::exists($moduleDir . $this->_directories['css'] . $oldModulName . '.css')) {
+        if (cFileHandler::exists($moduleDir . $this->directories['css'] . $oldModulName . '.css')) {
             rename(
-                $moduleDir . $this->_directories['css'] . $oldModulName . '.css',
-                $moduleDir . $this->_directories['css'] . $newModulName . '.css'
+                $moduleDir . $this->directories['css'] . $oldModulName . '.css',
+                $moduleDir . $this->directories['css'] . $newModulName . '.css'
             );
         }
 
-        if (cFileHandler::exists($moduleDir . $this->_directories['js'] . $oldModulName . '.js')) {
+        if (cFileHandler::exists($moduleDir . $this->directories['js'] . $oldModulName . '.js')) {
             rename(
-                $moduleDir . $this->_directories['js'] . $oldModulName . '.js',
-                $moduleDir . $this->_directories['js'] . $newModulName . '.js'
+                $moduleDir . $this->directories['js'] . $oldModulName . '.js',
+                $moduleDir . $this->directories['js'] . $newModulName . '.js'
             );
         }
     }
@@ -127,8 +128,8 @@ class cModuleSynchronizer extends cModuleHandler
     }
 
     /**
-     * Compare file change timestamp and the timestamp in ['tab']['mod'].
-     * If file had changed make new code :conGenerateCodeForAllArtsUsingMod
+     * Compare the file change timestamp and the timestamp in ['tab']['mod'].
+     * If a file has changed, re-generate the article code (see {@see conGenerateCodeForAllArtsUsingMod()}).
      *
      * @return int Id of last update module
      * @throws cDbException|cException|cInvalidArgumentException
@@ -136,19 +137,18 @@ class cModuleSynchronizer extends cModuleHandler
     public function compareFileAndModuleTimestamp(): int
     {
         // Get all modules by client
-        /** @var cApiModule[] $modules */
-        $modules = $this->_moduleCollection->getAllByIdclient($this->_client, '', true);
+        $modules = $this->moduleCollection->getAllByIdclient($this->clientId, '', true);
 
         $syncLock = 0;
         $retIdMod = 0;
         $syncedModuleIds = [];
 
         foreach ($modules as $module) {
-            $_idMod = cSecurity::toInteger($module->getId());
+            $currentModuleId = cSecurity::toInteger($module->getId());
             $showMessage = false;
 
-            $modulePath = $this->_cfgClient[$this->_client]['module']['path'] . $module->get('alias') . '/';
-            $modulePHP = $modulePath . $this->_directories['php'] . $module->get('alias');
+            $modulePath = $this->cfgClient[$this->clientId]['module']['path'] . $module->get('alias') . '/';
+            $modulePHP = $modulePath . $this->directories['php'] . $module->get('alias');
 
             $lastmodified = $module->get('lastmodified');
             $lastmodified = DateTime::createFromFormat('Y-m-d H:i:s', $lastmodified);
@@ -199,7 +199,7 @@ class cModuleSynchronizer extends cModuleHandler
             } elseif ($lastmodified < $lastModAbsolute) {
                 $syncLock = 1;
                 $module->set('lastmodified', date('Y-m-d H:i:s', $lastModAbsolute));
-                $syncedModuleIds[] = cSecurity::toInteger($_idMod);
+                $syncedModuleIds[] = $currentModuleId;
                 $showMessage = true;
             }
 
@@ -212,7 +212,10 @@ class cModuleSynchronizer extends cModuleHandler
             }
 
             if ($showMessage) {
-                cRegistry::appendLastOkMessage(sprintf(i18n('Module %s successfully synchronized'), $module->get('name')));
+                cRegistry::appendLastOkMessage(sprintf(
+                    i18n('Module %s successfully synchronized'),
+                    $module->get('name')
+                ));
             }
         }
 
@@ -230,7 +233,7 @@ class cModuleSynchronizer extends cModuleHandler
 
     /**
      * If someone deletes a module-dir with ftp/ssh.
-     * We have a module in the database but not in directory. If the module is still in use,
+     * We have a module in the database but not in the directory. If the module is still in use,
      * make a new module in the filesystem, otherwise clear it from the filesystem.
      *
      * @param cApiModule $module The module instance
@@ -242,7 +245,7 @@ class cModuleSynchronizer extends cModuleHandler
         $moduleId = cSecurity::toInteger($module->getId());
         $returnIdMod = 0;
         $this->_initByModule($module);
-        // Module don't exist in filesystem
+        // Module doesn't exist in filesystem
         if (!$this->modulePathExists()) {
             $returnIdMod = $moduleId;
             if ($module->moduleInUse($moduleId)) {
@@ -256,22 +259,22 @@ class cModuleSynchronizer extends cModuleHandler
                 }
             } else {
                 // Module is not in use, delete it
-                $this->_moduleCollection->delete($moduleId);
+                $this->moduleCollection->delete($moduleId);
             }
         }
         return $returnIdMod;
     }
 
     /**
-     * Depending on the client, this method will check the modul dir of the client and if found
-     * a Modul(Dir) that not exist in Db-table this method will insert the Modul in Db-table ([tab][mod]).
+     * Depending on the client, this method will check the modul dir of the client, and if found
+     * a Modul(Dir) that not exist in database table this method will insert the Modul in Db-table ([tab][mod]).
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function synchronize(): bool
     {
         // get the path to the module dir from the client
-        $dir = $this->_cfgClient[$this->_client]['module']['path'];
+        $dir = $this->cfgClient[$this->clientId]['module']['path'];
         if (!cDirHandler::exists($dir)) {
             return false;
         }
@@ -319,7 +322,7 @@ class cModuleSynchronizer extends cModuleHandler
      *
      * @param string $alias Module alias
      * @return bool True if the module exists in the db table, otherwise false.
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     private function _existsInTable(string $alias): bool
     {
@@ -328,11 +331,11 @@ class cModuleSynchronizer extends cModuleHandler
     }
 
     /**
-     * Update the name of module (if the name is not allowed)
+     * Update the name of the module (if the name is not allowed)
      *
      * @param string $oldName Old name
      * @param string $newName New module name
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     private function _updateModuleNameInDb(string $oldName, string $newName)
     {
@@ -355,12 +358,17 @@ class cModuleSynchronizer extends cModuleHandler
      *
      * @param string $alias Module alias
      * @return int The id of module or 0
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     private function _getModuleIdByModuleAliasAndClientId(string $alias): int
     {
-        $where = $this->_moduleCollection->prepare("`idclient` = %d AND `alias` = '%s'", $this->_client, $alias);
-        $ids = $this->_moduleCollection->getIdsByWhereClause($where);
+        $where = $this->moduleCollection->prepare(
+            "`idclient` = %d AND `alias` = '%s'",
+            $this->clientId,
+            $alias
+        );
+        $ids = $this->moduleCollection->getIdsByWhereClause($where);
+
         return !empty($ids) ? cSecurity::toInteger($ids[0]) : 0;
     }
 
@@ -368,7 +376,6 @@ class cModuleSynchronizer extends cModuleHandler
      * This method add a new Modul in the table $cfg['tab']['mod'].
      *
      * @param string $name Name of the new module
-     *
      * @throws cException|cInvalidArgumentException
      */
     private function _addModule(string $name)
@@ -398,7 +405,7 @@ class cModuleSynchronizer extends cModuleHandler
         // $lastmodified = '';
 
         // Create mew module
-        $mod = $this->_moduleCollection->create(
+        $mod = $this->moduleCollection->create(
             $name,
             $client,
             $alias,
@@ -417,14 +424,14 @@ class cModuleSynchronizer extends cModuleHandler
 
         // Save last module id
         if (is_object($mod)) {
-            $this->_lastIdMod = $mod->get('idmod');
+            $this->lastModuleId = $mod->get('idmod');
         }
     }
 
     /**
      * Update the con_mod, the field lastmodified
      *
-     * @param int $timestamp Timestamp of last modification
+     * @param int $timestamp Timestamp of the last modification
      * @param int $moduleId Id of module
      * @throws cInvalidArgumentException|cException
      */

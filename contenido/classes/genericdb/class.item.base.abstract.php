@@ -233,7 +233,7 @@ abstract class cItemBaseAbstract extends cGenericDb
      * The function can be called with a statement and replacement parameters,
      * see {@see cDbDriverHandler::prepare()} for more details.
      *
-     * @param ...$arguments Multiple parameters where the first is the statement and the further
+     * @param mixed ...$arguments Multiple parameters where the first is the statement and the further
      *      ones the replacements. See {@see cDbDriverHandler::prepare()} for more details.
      * @return string
      * @throws cDbException
