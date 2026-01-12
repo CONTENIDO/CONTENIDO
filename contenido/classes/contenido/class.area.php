@@ -47,7 +47,7 @@ class cApiAreaCollection extends ItemCollection
      */
     public function create($name, $parentId = 0, $relevant = 1, $online = 1, $menuless = 0)
     {
-        $parentId = (is_string($parentId)) ? $this->escape($parentId) : (int)$parentId;
+        $parentId = is_string($parentId) ? $this->escape($parentId) : cSecurity::toInteger($parentId);
 
         $item = $this->createNewItem();
 
@@ -77,6 +77,7 @@ class cApiAreaCollection extends ItemCollection
             $sql = "SELECT b.name FROM `%s` AS a, `%s` AS b WHERE a.name = '%s' AND b.name = a.parent_id";
         }
         $this->db->query($sql, $this->table, $this->table, $area);
+
         return $this->db->nextRecord() ? $this->db->f('name') : $area;
     }
 
@@ -84,17 +85,17 @@ class cApiAreaCollection extends ItemCollection
      * Returns all area ids having passed area as name or as parent id.
      *
      * @param int|string $nameOrId Area name or parent id
-     * @return array List of area ids
+     * @return int[] List of area ids
      * @throws cDbException
      */
-    public function getIdareasByAreaNameOrParentId($nameOrId)
+    public function getIdareasByAreaNameOrParentId($nameOrId): array
     {
         $sql = "SELECT idarea FROM `%s` AS a WHERE a.name = '%s' OR a.parent_id = '%s' ORDER BY idarea";
         $this->db->query($sql, $this->table, $nameOrId, $nameOrId);
 
         $ids = [];
         while ($this->db->nextRecord()) {
-            $ids[] = $this->db->f('idarea');
+            $ids[] = cSecurity::toInteger($this->db->f('idarea'));
         }
 
         return $ids;
@@ -122,6 +123,7 @@ class cApiAreaCollection extends ItemCollection
      *
      * @param string|int $parentId Parent id as a string or number
      * @param int $areaId The area id
+     * @return int[]
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
@@ -141,7 +143,7 @@ class cApiAreaCollection extends ItemCollection
     /**
      * Returns all areas available in the system.
      *
-     * @return array Array with id and name entries
+     * @return array<int, string> Array with id and name entries
      * @throws cDbException|cException
      */
     public function getAvailableAreas(): array
@@ -150,7 +152,7 @@ class cApiAreaCollection extends ItemCollection
 
         $aAreas = [];
         while ($oItem = $this->next()) {
-            $aAreas[$oItem->get('idarea')] = [
+            $aAreas[cSecurity::toInteger($oItem->get('idarea'))] = [
                 'name' => $oItem->get('name')
             ];
         }
@@ -161,13 +163,13 @@ class cApiAreaCollection extends ItemCollection
     /**
      * Returns the name for a given area id.
      *
-     * @param string $area
+     * @param int $areaId
      * @return string String with the name for the area
+     * @throws cDbException|cException
      */
-    public function getAreaName($area)
+    public function getAreaName($areaId): string
     {
-        $oItem = new cApiArea($area);
-        return $oItem->get('name');
+        return (new cApiArea($areaId))->get('name');
     }
 
     /**
@@ -187,11 +189,7 @@ class cApiAreaCollection extends ItemCollection
         $oItem = new cApiArea();
         $oItem->loadBy('name', $area);
 
-        if (!$oItem->isLoaded()) {
-            return 0;
-        }
-
-        return (int) $oItem->get('idarea');
+        return $oItem->isLoaded() ? cSecurity::toInteger($oItem->get('idarea')) : 0;
     }
 }
 

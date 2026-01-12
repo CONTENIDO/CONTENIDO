@@ -580,14 +580,11 @@ abstract class cCodeGeneratorAbstract
     /**
      * Returns the classname for a content type.
      *
-     * @param string $type
-     *         Content type, e.g. CMS_HTMLHEAD.
-     * @return string
-     *         The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD.
+     * @see cTypeGenerator::getContentTypeClassName()
      */
-    protected function _getContentTypeClassName($type): string
+    protected function _getContentTypeClassName(string $type): string
     {
-        return 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
+        return cTypeGenerator::getContentTypeClassName($type);
     }
 
     /**

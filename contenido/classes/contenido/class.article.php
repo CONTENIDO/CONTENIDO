@@ -56,15 +56,15 @@ class cApiArticleCollection extends ItemCollection
     /**
      * Creates an article item entry
      *
-     * @param int $idclient
+     * @param int $clientId
      * @return cApiArticle
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idclient)
+    public function create($clientId)
     {
         $item = $this->createNewItem();
 
-        $item->set('idclient', $idclient);
+        $item->set('idclient', $clientId);
         $item->store();
 
         return $item;
@@ -73,17 +73,17 @@ class cApiArticleCollection extends ItemCollection
     /**
      * Returns list of article ids by given client id.
      *
-     * @param int $idclient
-     * @return array
+     * @param int $clientId
+     * @return int[]
      * @throws cDbException
      */
-    public function getIdsByClientId($idclient): array
+    public function getIdsByClientId($clientId): array
     {
         $sql = "SELECT `idart` FROM `%s` WHERE `idclient` = %d";
-        $this->db->query($sql, $this->table, $idclient);
+        $this->db->query($sql, $this->table, $clientId);
         $list = [];
         while ($this->db->nextRecord()) {
-            $list[] = $this->db->f('idart');
+            $list[] = cSecurity::toInteger($this->db->f('idart'));
         }
         return $list;
     }

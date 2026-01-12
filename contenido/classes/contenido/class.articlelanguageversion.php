@@ -133,58 +133,64 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
  *
  * This object represents a CONTENIDO article version
  *
- * Create object with
+ * <pre>
+ * // Create object with
  * $obj = new cApiArticleLanguageVersion(idartlangversion);
- * or with
+ * // or with
  * $obj = new cApiArticleLanguageVersion();
  * $obj->loadByArticleLanguageIdAndVersion(idartlang, version);
  *
- * You can now read the article version properties with
+ * // You can now read the article version properties with
  * $obj->getField(property);
+ * </pre>
  *
  * List of article version properties:
  *
- * idartlang - Language dependant article id
- * idart - Language indepenant article id
- * idclient - Id of the client
- * idtplcfg - Template configuration id
- * title - Internal Title
- * pagetitle - HTML Title
- * summary - Article summary
- * created - Date created
- * version - Version number
- * iscurrentversion - 0 = false, 1 = true
- * lastmodified - Date lastmodiefied
- * author - Article author (username)
- * online - On-/offline
- * redirect - Redirect
- * redirect_url - Redirect URL
- * artsort - Article sort key
- * timemgmt - Time management
- * datestart - Time management start date
- * dateend - Time management end date
- * status - Article status
- * free_use_01 - Free to use
- * free_use_02 - Free to use
- * free_use_03 - Free to use
- * time_move_cat - Move category after time management
- * time_target_cat - Move category to this cat after time management
- * time_online_move - Set article online after move
- * external_redirect - Open article in new window
- * locked - Article is locked for editing
- * searchable - Whether article should be found via search
- * sitemapprio - The priority for the sitemap
+ * - idartlang - Language dependant article id
+ * - idart - Language indepenant article id
+ * - idclient - Id of the client
+ * - idtplcfg - Template configuration id
+ * - title - Internal Title
+ * - pagetitle - HTML Title
+ * - summary - Article summary
+ * - created - Date created
+ * - version - Version number
+ * - iscurrentversion - 0 = false, 1 = true
+ * - lastmodified - Date lastmodiefied
+ * - author - Article author (username)
+ * - online - On-/offline
+ * - redirect - Redirect
+ * - redirect_url - Redirect URL
+ * - artsort - Article sort key
+ * - timemgmt - Time management
+ * - datestart - Time management start date
+ * - dateend - Time management end date
+ * - status - Article status
+ * - free_use_01 - Free to use
+ * - free_use_02 - Free to use
+ * - free_use_03 - Free to use
+ * - time_move_cat - Move category after time management
+ * - time_target_cat - Move category to this cat after time management
+ * - time_online_move - Set article online after move
+ * - external_redirect - Open article in new window
+ * - locked - Article is locked for editing
+ * - searchable - Whether article should be found via search
+ * - sitemapprio - The priority for the sitemap
  *
  * You can extract article version content with the
+ * <pre>
  * $obj->getContent(contype [, number]) method.
+ * </pre>
  *
  * To extract the first headline you can use:
- *
+ * <pre>
  * $headline = $obj->getContent("htmlhead", 1);
+ * </pre>
  *
- * If the second parameter is omitted the method returns an array with allavailable
+ * If the second parameter is omitted the method returns an array with all available
  * content of this type. The array has the following schema:
  *
+ * <pre>
  * [number => content];
  *
  * $headlines = $obj->getContent("htmlhead");
@@ -192,23 +198,25 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
  * $headlines[1] First headline
  * $headlines[2] Second headline
  * $headlines[6] Sixth headline
+ * </pre>
  *
  * Legal content type string are defined in the CONTENIDO system table 'con_type'.
+ *
  * Default content types are:
  *
  * NOTE: This parameter is case insensitive, you can use html or cms_HTML or CmS_HtMl.
  * Your don't need start with cms, but it won't crash if you do so.
  *
- * htmlhead - HTML Headline
- * html - HTML Text
- * headline - Headline (no HTML)
- * text - Text (no HTML)
- * img - Upload id of the element
- * imgdescr - Image description
- * link - Link (URL)
- * linktarget - Linktarget (_self, _blank, _top ...)
- * linkdescr - Linkdescription
- * swf - Upload id of the element
+ * - htmlhead - HTML Headline
+ * - html - HTML Text
+ * - headline - Headline (no HTML)
+ * - text - Text (no HTML)
+ * - img - Upload id of the element
+ * - imgdescr - Image description
+ * - link - Link (URL)
+ * - linktarget - Linktarget (_self, _blank, _top ...)
+ * - linkdescr - Linkdescription
+ * - swf - Upload id of the element
  *
  * @package    Core
  * @subpackage GenericDB_Model
@@ -584,32 +592,9 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
     /**
      * Get content(s) from an article version.
      *
-     * Returns the specified content element or an ["id"=>"value"] if the
-     * second parameter is omitted.
-     *
-     * Legal content type string are defined in the CONTENIDO system table 'con_type'.
-     * Default content types are:
-     *
-     * NOTE: Parameter is case-insensitive, you can use html or cms_HTML or CmS_HtMl.
-     * You don't need to start with cms, but it won't crash if you do so.
-     *
-     * htmlhead - HTML Headline
-     * html - HTML Text
-     * headline - Headline (no HTML)
-     * text - Text (no HTML)
-     * img - Upload id of the element
-     * imgdescr - Image description
-     * link - Link (URL)
-     * linktarget - Linktarget (_self, _blank, _top ...)
-     * linkdescr - Linkdescription
-     * swf - Upload id of the element
-     *
-     * @param string $type CMS_TYPE - Legal cms type string
-     * @param ?int $id Id of the content
-     * @return string|array
-     * @throws cDbException|cInvalidArgumentException
+     * @inheritDoc
      */
-    public function getContent($type = '', $id = NULL)
+    public function getContent(string $type = '', $id = NULL)
     {
         if (NULL === $this->content) {
             // get content for the loaded article version

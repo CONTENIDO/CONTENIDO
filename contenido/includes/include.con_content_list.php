@@ -1008,13 +1008,13 @@ function _processCmsTags(
         $typeCodeFile = $backendPath . 'includes/type/code/include.' . $type . '.code.php';
         $cTypeClassFile = $backendPath . 'classes/content_types/class.content.type.' . cString::toLowerCase(str_replace('CMS_', '', $type)) . '.php';
         // classname format: CMS_HTMLHEAD -> cContentTypeHtmlhead
-        $className = 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
+        $typeClassName = cTypeGenerator::getContentTypeClassName($type);
 
         // Indexes of content typ fields
         foreach ($a_[$key] as $val) {
             if (cFileHandler::exists($cTypeClassFile)) {
                 $tmp = $a_content[$_typeItem->type][$val];
-                $cTypeObject = new $className($tmp, $val, $a_content);
+                $cTypeObject = new $typeClassName($tmp, $val, $a_content);
                 if (cRegistry::isBackendEditMode() && (!$isLocked || $isAdmin) && $articleType == 'editable' || ($articleType == 'current' && ($versioningState == cContentVersioning::STATE_DISABLED || $versioningState == cContentVersioning::STATE_SIMPLE))) {
                     $tmp = $cTypeObject->generateEditCode();
                 } else {

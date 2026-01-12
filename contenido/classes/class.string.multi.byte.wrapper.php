@@ -41,7 +41,7 @@ class cStringMultiByteWrapper
             $cache = [];
             foreach ([
                  'mb_strtolower', 'mb_strtoupper', 'mb_strlen', 'mb_substr', 'mb_substr_count', 'mb_send_mail',
-                 'mb_strpos', 'mb_strrpos', 'mb_stripos', 'mb_strripos', 'mb_stristr', 'mb_strrchr',
+                 'mb_strpos', 'mb_strrpos', 'mb_stripos', 'mb_strripos', 'mb_stristr', 'mb_strrchr', 'mb_ucfirst'
             ] as $function) {
                 $cache[$function] = function_exists($function);
             }
@@ -76,7 +76,7 @@ class cStringMultiByteWrapper
      * @param string $string The string being lowercased
      * @param ?string $encoding Encoding parameter, standard: {@see cRegistry::getEncoding()}
      * @return string With all alphabetic characters converted to lowercases
-     * @link https://php.net/manual/de/function.mb-strtolower.php
+     * @link https://www.php.net/manual/en/function.mb-strtolower.php
      */
     public static function toLowerCase(string $string, ?string $encoding = null): string
     {
@@ -94,7 +94,7 @@ class cStringMultiByteWrapper
      * @param string $string The string being uppercased
      * @param ?string $encoding Encoding parameter, standard: {@see cRegistry::getEncoding()}
      * @return string With all alphabetic characters converted to uppercases
-     * @link https://php.net/manual/de/function.mb-strtoupper.php
+     * @link https://www.php.net/manual/en/function.mb-strtoupper.php
      */
     public static function toUpperCase(string $string, ?string $encoding = null): string
     {
@@ -112,7 +112,7 @@ class cStringMultiByteWrapper
      * @param string $string The string being checked for length
      * @param ?string $encoding Encoding parameter, standard: {@see cRegistry::getEncoding()}
      * @return int Returns the number of characters
-     * @link https://php.net/manual/de/function.mb-strlen.php
+     * @link https://www.php.net/manual/en/function.mb-strlen.php
      */
     public static function getStringLength(string $string, ?string $encoding = null): int
     {
@@ -132,7 +132,7 @@ class cStringMultiByteWrapper
      * @param ?int $length Maximum number of characters to use from $string, standard is NULL
      * @param ?string $encoding Encoding parameter, standard: {@see cRegistry::getEncoding()}
      * @return string Returns the number of characters
-     * @link https://php.net/manual/de/function.mb-substr.php
+     * @link https://www.php.net/manual/en/function.mb-substr.php
      */
     public static function getPartOfString(
         string $string,
@@ -155,7 +155,7 @@ class cStringMultiByteWrapper
      * @param string $needle The string being found
      * @param ?string $encoding Encoding parameter, standard: {@see cRegistry::getEncoding()}
      * @return int The number of times the needle substring occurs in the haystack string.
-     * @link https://php.net/manual/de/function.mb-substr-count.php
+     * @link https://www.php.net/manual/en/function.mb-substr-count.php
      */
     public static function countSubstring(string $haystack, string $needle, ?string $encoding = null): int
     {
@@ -176,7 +176,7 @@ class cStringMultiByteWrapper
      * @param string|string[] $additional_headers [Optional]
      * @param ?string $additional_parameter [Optional]
      * @return bool true or false
-     * @link https://php.net/manual/de/function.mb-send-mail.php
+     * @link https://www.php.net/manual/en/function.mb-send-mail.php
      */
     public static function mail(
         string $to,
@@ -198,7 +198,7 @@ class cStringMultiByteWrapper
      *
      * @param ?string $encoding Encoding parameter, standard: {@see cRegistry::getEncoding()}
      * @return int|false Returns the numeric position of the first occurrence of needle in the haystack string
-     * @link https://php.net/manual/de/function.mb-strpos.php
+     * @link https://www.php.net/manual/en/function.mb-strpos.php
      */
     public static function findFirstPos(string $haystack, string $needle, int $offset = 0, ?string $encoding = null)
     {
@@ -215,7 +215,7 @@ class cStringMultiByteWrapper
      *
      * @param ?string $encoding Encoding parameter, standard: {@see cRegistry::getEncoding()}
      * @return int|false Returns the numeric position of the last occurrence of needle in the haystack string
-     * @link https://php.net/manual/de/function.mb-strrpos.php
+     * @link https://www.php.net/manual/en/function.mb-strrpos.php
      */
     public static function findLastPos(string $haystack, string $needle, int $offset = 0, ?string $encoding = null)
     {
@@ -232,7 +232,7 @@ class cStringMultiByteWrapper
      *
      * @param ?string $encoding Encoding parameter, standard: {@see cRegistry::getEncoding()}
      * @return int|false Returns the numeric position of the first occurrence of needle in the haystack string
-     * @link https://php.net/manual/de/function.mb-stripos.php
+     * @link https://www.php.net/manual/en/function.mb-stripos.php
      */
     public static function findFirstPosCI(string $haystack, string $needle, int $offset = 0, ?string $encoding = null)
     {
@@ -249,7 +249,7 @@ class cStringMultiByteWrapper
      *
      * @param ?string $encoding Encoding parameter, standard: {@see cRegistry::getEncoding()}
      * @return int|false Returns the numeric position of the last occurrence of needle in the haystack string
-     * @link https://php.net/manual/de/function.mb-strripos.php
+     * @link https://www.php.net/manual/en/function.mb-strripos.php
      */
     public static function findLastPosCI(string $haystack, string $needle, int $offset = 0, ?string $encoding = null)
     {
@@ -266,7 +266,7 @@ class cStringMultiByteWrapper
      *
      * @param ?string $encoding Encoding parameter, standard: {@see cRegistry::getEncoding()}
      * @return string|false Returns the portion of haystack, or FALSE if needle is not found.
-     * @link https://php.net/manual/de/function.mb-stristr.php
+     * @link https://www.php.net/manual/en/function.mb-stristr.php
      */
     public static function findFirstOccurrenceCI(
         string $haystack,
@@ -287,7 +287,7 @@ class cStringMultiByteWrapper
      *
      * @param ?string $encoding Encoding parameter, standard: {@see cRegistry::getEncoding()}
      * @return string|false|null Returns the portion of haystack, or FALSE if needle is not found.
-     * @link https://php.net/manual/de/function.mb-strrchr.php
+     * @link https://www.php.net/manual/en/function.mb-strrchr.php
      */
     public static function findLastOccurrence(
         string $haystack,
@@ -307,10 +307,28 @@ class cStringMultiByteWrapper
     }
 
     /**
+     * Make a string's first character uppercase.
+     *
+     * @param string $string The input string.
+     * @param string|null $encoding The string encoding.
+     * @return string
+     * @link https://www.php.net/manual/en/function.mb-ucfirst.php
+     * @since CONTENIDO 4.10.2
+     */
+    public static function ucfirst(string $string, ?string $encoding = null): string
+    {
+        if (self::_functionExists('mb_ucfirst')) {
+            return mb_ucfirst($string, self::_getEncoding($encoding));
+        } else {
+            return ucfirst($string);
+        }
+    }
+
+    /**
      * Regular expression match
      *
      * @param string[] $regs
-     * @link https://php.net/manual/de/function.mb-ereg.php
+     * @link https://www.php.net/manual/en/function.mb-ereg.php
      */
     public static function ereg(string $pattern, string $string, array &$regs = []): bool
     {
@@ -323,7 +341,7 @@ class cStringMultiByteWrapper
      *
      * @param string[] $regs
      * @return int Returns the byte length of the matched string if a match for pattern was found in string
-     * @link https://php.net/manual/de/function.mb-eregi.php
+     * @link https://www.php.net/manual/en/function.mb-eregi.php
      */
     public static function eregi(string $pattern, string $string, array &$regs = []): int
     {
@@ -335,7 +353,7 @@ class cStringMultiByteWrapper
      * Replace regular expression
      *
      * @return false|null|string Returns the byte length of the matched string if a match for pattern was found in string
-     * @link https://php.net/manual/de/function.mb-ereg-replace.php
+     * @link https://www.php.net/manual/en/function.mb-ereg-replace.php
      */
     public static function ereg_replace(string $pattern, string $replacement, string $string, ?string $option = 'msr')
     {
@@ -347,7 +365,7 @@ class cStringMultiByteWrapper
      * Replace regular expression ignoring case
      *
      * @return false|null|string Returns the byte length of the matched string if a match for pattern was found in string
-     * @link https://php.net/manual/de/function.mb-eregi-replace.php
+     * @link https://www.php.net/manual/en/function.mb-eregi-replace.php
      */
     public static function eregi_replace(string $pattern, string $replacement, string $string, ?string $option = 'msr')
     {
@@ -359,7 +377,7 @@ class cStringMultiByteWrapper
      * Split string using regular expression
      *
      * @return string[] The result as an array
-     * @link https://php.net/manual/de/function.mb-split.php
+     * @link https://www.php.net/manual/en/function.mb-split.php
      */
     public static function split(string $pattern, string $string, int $limit = -1): array
     {

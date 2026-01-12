@@ -54,9 +54,11 @@ class cApiArticleSpecificationCollection extends ItemCollection
      *
      * @throws cDbException|cException
      */
-    public function fetchByClientLang(int $client, int $lang, string $orderBy = ''): array
+    public function fetchByClientLang(int $clientId, int $languageId, string $orderBy = ''): array
     {
-        $this->select("`client` = " . $client . " AND `lang` = " . $lang, '', $this->escape($orderBy));
+        $this->select(sprintf(
+            "`client` = %d AND `lang` = %d", $clientId, $languageId
+        ), '', $this->escape($orderBy));
         $entries = [];
         while ($entry = $this->next()) {
             $entries[] = clone $entry;
@@ -71,13 +73,13 @@ class cApiArticleSpecificationCollection extends ItemCollection
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
-    public function setOnline(int $idArtSpec, int $online): bool
+    public function setOnline(int $artSpecId, int $online): bool
     {
         return cSecurity::toBoolean($this->db->query(
             'UPDATE `%s` SET `online` = %d WHERE `idartspec` = %d',
             $this->getTable(),
             $online === 1 ? 1 : 0,
-            $idArtSpec
+            $artSpecId
         ));
     }
 
@@ -87,14 +89,14 @@ class cApiArticleSpecificationCollection extends ItemCollection
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
-    public function setDefaultArtSpec(int $idArtSpec, int $idClient, int $languageId): bool
+    public function setDefaultArtSpec(int $artSpecId, int $clientId, int $languageId): bool
     {
         // First reset the current default article specification for client and language.
         $sql = 'UPDATE `%s` SET `artspecdefault` = 0 WHERE `client` = %d AND `lang` = %d';
-        if ($this->db->query($sql, $this->table, $idClient, $languageId)) {
+        if ($this->db->query($sql, $this->table, $clientId, $languageId)) {
             // Then set the new default article specification
             $sql = 'UPDATE `%s` SET `artspecdefault` = 1 WHERE `idartspec` = %d';
-            return cSecurity::toBoolean($this->db->query($sql, $this->table, $idArtSpec));
+            return cSecurity::toBoolean($this->db->query($sql, $this->table, $artSpecId));
         }
 
         return false;

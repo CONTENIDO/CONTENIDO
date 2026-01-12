@@ -61,7 +61,11 @@ class cApiActionCollection extends ItemCollection
                 $area = $c->get('idarea');
             } else {
                 $area = 0;
-                cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
+                cWarning(
+                    __FILE__,
+                    __LINE__,
+                    "Could not resolve area [$area] passed to method [create], assuming 0"
+                );
             }
         }
 
@@ -91,7 +95,7 @@ class cApiActionCollection extends ItemCollection
      * Returns all actions available in the system.
      *
      * @return array Array with id and name entries
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getAvailableActions(): array
     {
@@ -116,12 +120,12 @@ class cApiActionCollection extends ItemCollection
     /**
      * Return name of passed action.
      *
-     * @param int $action Id of action
-     * @throws cDbException|cInvalidArgumentException
+     * @param int $actionId Id of action
+     * @throws cDbException
      */
-    public function getActionName($action): ?string
+    public function getActionName($actionId): ?string
     {
-        $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
+        $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $actionId);
 
         return $this->db->nextRecord() ? $this->db->f('name') : null;
     }
@@ -131,7 +135,7 @@ class cApiActionCollection extends ItemCollection
      *
      * @param string|int $action Name or id of action
      * @return ?int The area ID for the given action or NULL
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getAreaForAction($action): ?int
     {
@@ -141,7 +145,7 @@ class cApiActionCollection extends ItemCollection
             $this->db->query("SELECT idarea FROM `%s` WHERE idaction = %d", $this->table, $action);
         }
 
-        return $this->db->nextRecord() ? $this->db->f('idarea') : null;
+        return $this->db->nextRecord() ? cSecurity::toInteger($this->db->f('idarea')) : null;
     }
 }
 

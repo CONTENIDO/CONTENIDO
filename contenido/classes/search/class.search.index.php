@@ -134,20 +134,9 @@ class cSearchIndex extends cSearchBaseAbstract
     protected $_cmsOptions = [];
 
     /**
-     * array of all available cms types
+     * Array of all available cms types
      *
-     * htmlhead - HTML Headline
-     * html - HTML Text
-     * head - Headline (no HTML)
-     * text - Text (no HTML)
-     * img - Upload id of the element
-     * imgdescr - Image description
-     * link - Link (URL)
-     * linktarget - Linktarget (_self, _blank, _top ...)
-     * linkdescr - Link description
-     * swf - Upload id of the element
-     * etc.
-     *
+     * @see cApiArticleLanguage::getContent()
      * @var array
      */
     protected $_cmsType = [];

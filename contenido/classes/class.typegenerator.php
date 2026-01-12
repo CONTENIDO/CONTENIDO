@@ -84,14 +84,15 @@ class cTypeGenerator
     }
 
     /**
-     *
-     * @param string $type
-     * @return string
+     * Returns the content type class name for a type, e.g. the class name
+     * for the type 'CMS_HTML' will be `cContentTypeHtml`.
      */
-    public static function getContentTypeClassName($type)
+    public static function getContentTypeClassName(string $type): string
     {
+        // Remove the prefix 'CMS_'
         $contentType = cString::getPartOfString($type, 4);
-        return 'cContentType' . cString::toUpperCase($contentType[0]) . cString::toLowerCase(cString::getPartOfString($contentType, 1));
+
+        return sprintf('cContentType%s', cString::ucfirst(cString::toLowerCase($contentType)));
     }
 
     /**

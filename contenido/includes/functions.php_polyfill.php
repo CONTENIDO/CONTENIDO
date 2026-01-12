@@ -36,7 +36,7 @@ if (!function_exists('is_countable')) {
      * implementing the Countable interface.
      * is_countable polyfill for PHP < 7.3.
      *
-     * @link https://www.php.net/manual/de/function.is-countable.php
+     * @link https://www.php.net/manual/en/function.is-countable.php
      * @param mixed $var The value to check
      * @return bool Returns TRUE if var is countable, FALSE otherwise
      */
