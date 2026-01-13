@@ -46,17 +46,17 @@ class cApiContainerConfigurationCollection extends ItemCollection
     /**
      * Creates a container configuration item
      *
-     * @param int $idtplcfg
+     * @param int $templateConfigurationId
      * @param int $number
      * @param string $container
      * @return cApiContainerConfiguration
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idtplcfg, $number, $container)
+    public function create($templateConfigurationId, $number, $container)
     {
         $item = $this->createNewItem();
 
-        $item->set('idtplcfg', $idtplcfg);
+        $item->set('idtplcfg', cSecurity::toInteger($templateConfigurationId));
         $item->set('number', $number);
         $item->set('container', $container);
         $item->store();
@@ -67,14 +67,17 @@ class cApiContainerConfigurationCollection extends ItemCollection
     /**
      * Returns list of all configured container by template configuration id
      *
-     * @param int $idtplcfg Template configuration id
-     * @return array Associative array where the key is the number and value the container configuration.
+     * @param int $templateConfigurationId Template configuration id
+     * @return array<int, string> Array where the key is the number and value the container configuration.
      * @throws cDbException|cException
      */
-    public function getByTemplateConfiguration($idtplcfg): array
+    public function getByTemplateConfiguration($templateConfigurationId): array
     {
         $configuration = [];
-        $this->select('idtplcfg = ' . cSecurity::toInteger($idtplcfg), '', 'number ASC');
+        $this->select($this->db->prepare(
+            '`idtplcfg` = %d',
+            $templateConfigurationId
+        ), '', 'number ASC');
         while ($item = $this->next()) {
             $configuration[cSecurity::toInteger($item->get('number'))] = $item->get('container');
         }
@@ -132,15 +135,13 @@ class cApiContainerConfiguration extends Item
      */
     public static function addContainerValue($container, $key, $value): string
     {
-        return $container . $key . '=' . urlencode(stripslashes($value)) . '&';
+        return sprintf('%s%s=%s&', $container, $key, urlencode(stripslashes($value)));
     }
 
     /**
      * Parses the container value to its variables
-     *
-     * @param string $value
      */
-    public static function parseContainerValue($value): array
+    public static function parseContainerValue(string $value): array
     {
         $value = preg_replace('/(&\$)/', '', $value);
         parse_str($value, $vars);

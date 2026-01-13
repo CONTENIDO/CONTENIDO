@@ -41,18 +41,18 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
     /**
      * Creates a new association
      *
-     * @param int $idfrontendgroup Specifies the frontend group
-     * @param int $idfrontenduser Specifies the frontend user
+     * @param int $frontendGroupId Specifies the frontend group
+     * @param int $frontendUserId Specifies the frontend user
      * @return cApiFrontendGroupMember|false
      * @throws cDbException|cException|cInvalidArgumentException
      * @todo Should return null in case of failure
      */
-    public function create($idfrontendgroup, $idfrontenduser)
+    public function create($frontendGroupId, $frontendUserId)
     {
         $this->select(sprintf(
             '`idfrontendgroup` = %d AND `idfrontenduser` = %d',
-            $idfrontendgroup,
-            $idfrontenduser
+            $frontendGroupId,
+            $frontendUserId
         ));
 
         if ($this->next()) {
@@ -61,8 +61,8 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
 
         $item = $this->createNewItem();
 
-        $item->set('idfrontenduser', $idfrontenduser);
-        $item->set('idfrontendgroup', $idfrontendgroup);
+        $item->set('idfrontenduser', $frontendUserId);
+        $item->set('idfrontendgroup', $frontendGroupId);
         $item->store();
 
         return $item;
@@ -71,16 +71,16 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
     /**
      * Removes an association
      *
-     * @param int $idfrontendgroup Specifies the frontend group
-     * @param int $idfrontenduser Specifies the frontend user
+     * @param int $frontendGroupId Specifies the frontend group
+     * @param int $frontendUserId Specifies the frontend user
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function remove($idfrontendgroup, $idfrontenduser)
+    public function remove($frontendGroupId, $frontendUserId)
     {
         $this->select(sprintf(
             '`idfrontendgroup` = %d AND `idfrontenduser` = %d',
-            $idfrontendgroup,
-            $idfrontenduser
+            $frontendGroupId,
+            $frontendUserId
         ));
 
         if (($item = $this->next()) !== false) {
@@ -91,14 +91,14 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
     /**
      * Returns all users in a single group
      *
-     * @param int $idfrontendgroup Specifies the frontend group
+     * @param int $frontendGroupId Specifies the frontend group
      * @param bool $asObjects [optional] Specifies if the function should return objects
      * @return int[]|cApiFrontendUser[] List of frontend user ids or cApiFrontendUser items
      * @throws cDbException|cException
      */
-    public function getUsersInGroup($idfrontendgroup, bool $asObjects = true): array
+    public function getUsersInGroup($frontendGroupId, bool $asObjects = true): array
     {
-        $this->select(sprintf('`idfrontendgroup` = %d', $idfrontendgroup));
+        $this->select(sprintf('`idfrontendgroup` = %d', $frontendGroupId));
 
         $objects = [];
 

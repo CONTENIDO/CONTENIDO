@@ -376,14 +376,13 @@ class cApiArticleLanguage extends Item
     {
         $result = true;
         if (!$this->isLoaded()) {
-            $aProps = [
+            $recordSet = $this->_oCache->getItemByProperties([
                 'idart' => $articleId,
                 'idlang' => $languageId
-            ];
-            $aRecordSet = $this->_oCache->getItemByProperties($aProps);
-            if ($aRecordSet) {
+            ]);
+            if ($recordSet) {
                 // entry in cache found, load entry from cache
-                $this->loadByRecordSet($aRecordSet);
+                $this->loadByRecordSet($recordSet);
             } else {
                 $idartlang = $this->_getIdArtLang($articleId, $languageId);
                 $result = $this->loadByPrimaryKey($idartlang);

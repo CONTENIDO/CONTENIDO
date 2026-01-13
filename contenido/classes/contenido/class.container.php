@@ -45,19 +45,19 @@ class cApiContainerCollection extends ItemCollection
     /**
      * Creates a container item entry
      *
-     * @param int $idtpl
+     * @param int $templateId
      * @param int $number
-     * @param int $idmod
+     * @param int $moduleId
      * @return cApiContainer
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idtpl, $number, $idmod)
+    public function create($templateId, $number, $moduleId)
     {
         $item = $this->createNewItem();
 
-        $item->set('idtpl', $idtpl);
+        $item->set('idtpl', $templateId);
         $item->set('number', $number);
-        $item->set('idmod', $idmod);
+        $item->set('idmod', $moduleId);
         $item->store();
 
         return $item;
@@ -66,15 +66,16 @@ class cApiContainerCollection extends ItemCollection
     /**
      * Returns list of container numbers by passed template id.
      *
+     * @return int[]
      * @throws cDbException
      */
-    public function getNumbersByTemplate($idtpl): array
+    public function getNumbersByTemplate($templateId): array
     {
         $list = [];
-        $sql = "SELECT number FROM `%s` WHERE idtpl = %d";
-        $this->db->query($sql, $this->table, $idtpl);
+        $sql = "SELECT `number` FROM `%s` WHERE `idtpl` = %d";
+        $this->db->query($sql, $this->table, $templateId);
         while ($this->db->nextRecord()) {
-            $list[] = $this->db->f('number');
+            $list[] = cSecurity::toInteger($this->db->f('number'));
         }
         return $list;
     }
@@ -82,28 +83,32 @@ class cApiContainerCollection extends ItemCollection
     /**
      * Deletes all configurations by given template id
      *
-     * @param int $idtpl
+     * @param int $templateId
      * @throws cDbException|cInvalidArgumentException
      */
-    public function clearAssignments($idtpl)
+    public function clearAssignments($templateId)
     {
-        $this->deleteBy('idtpl', (int)$idtpl);
+        $this->deleteBy('idtpl', cSecurity::toInteger($templateId));
     }
 
     /**
-     * @param int $idtpl
+     * @param int $templateId
      * @param int $number
-     * @param int $idmod
+     * @param int $moduleId
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function assignModule($idtpl, $number, $idmod)
+    public function assignModule($templateId, $number, $moduleId)
     {
-        $this->select('idtpl = ' . (int)$idtpl . ' AND number = ' . (int)$number);
+        $this->select($this->db->prepare(
+            '`idtpl` = %d AND `number` = %d',
+            $templateId,
+            $number
+        ));
         if (($item = $this->next()) !== false) {
-            $item->set('idmod', $idmod);
+            $item->set('idmod', $moduleId);
             $item->store();
         } else {
-            $this->create($idtpl, $number, $idmod);
+            $this->create($templateId, $number, $moduleId);
         }
     }
 }

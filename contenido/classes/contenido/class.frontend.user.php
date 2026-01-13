@@ -49,17 +49,17 @@ class cApiFrontendUserCollection extends ItemCollection
     /**
      * Checks if a specific user already exists
      *
-     * @param string $sUsername Specifies the username to search for
+     * @param string $username Specifies the username to search for
      * @throws cException
      */
-    public function userExists(string $sUsername): bool
+    public function userExists(string $username): bool
     {
         $feUsers = new cApiFrontendUserCollection();
         $feUsers->setWhere('idclient', cRegistry::getClientId());
-        $feUsers->setWhere('username', cString::toLowerCase($sUsername));
+        $feUsers->setWhere('username', cString::toLowerCase($username));
         $feUsers->query();
 
-        return (bool)$feUsers->next();
+        return cSecurity::toBoolean($feUsers->next());
     }
 
     /**
@@ -78,7 +78,10 @@ class cApiFrontendUserCollection extends ItemCollection
         // Check if the username already exists
         $this->select(sprintf("`idclient` = %d AND `username` = '%s'", $client, $this->escape($username)));
         if ($this->next()) {
-            return $this->create($username . '_' . cString::getPartOfString(md5(rand()), 0, 10), $password);
+            return $this->create(
+                $username . '_' . cString::getPartOfString(md5(rand()), 0, 10),
+                $password
+            );
         }
 
         $item = $this->createNewItem();
@@ -98,11 +101,13 @@ class cApiFrontendUserCollection extends ItemCollection
 
         $feGroupMembers = new cApiFrontendGroupMemberCollection();
 
-        $iduser = $item->get('idfrontenduser');
+        $frontendUserId = cSecurity::toInteger($item->get('idfrontenduser'));
 
         while ($feGroup = $feGroups->next()) {
-            $idgroup = $feGroup->get('idfrontendgroup');
-            $feGroupMembers->create($idgroup, $iduser);
+            $feGroupMembers->create(
+                cSecurity::toInteger($feGroup->get('idfrontendgroup')),
+                $frontendUserId
+            );
         }
 
         return $item;
@@ -136,7 +141,7 @@ class cApiFrontendUserCollection extends ItemCollection
     }
 
     /**
-     * Overridden delete method to remove user from groupmember table before deleting user.
+     * Overridden delete method to remove user from group member table before deleting user.
      *
      * @inheritDoc
      * @param int $id The frontend user id
@@ -243,7 +248,7 @@ class cApiFrontendUser extends Item
     /**
      * Returns list of all groups belonging to current user
      *
-     * @return array List of frontend group ids
+     * @return int[] List of frontend group ids
      * @throws cException
      */
     public function getGroupsForUser(): array
@@ -254,7 +259,7 @@ class cApiFrontendUser extends Item
 
         $groups = [];
         while ($feGroupMember = $feGroupMembers->next()) {
-            $groups[] = $feGroupMember->get('idfrontendgroup');
+            $groups[] = cSecurity::toInteger($feGroupMember->get('idfrontendgroup'));
         }
         return $groups;
     }

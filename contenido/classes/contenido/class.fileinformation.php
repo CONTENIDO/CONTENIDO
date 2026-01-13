@@ -148,6 +148,14 @@ class cApiFileInformationCollection extends ItemCollection
      *
      * @param string $filename Name of the file
      * @param string $type Type of the entry
+     * @return array{
+     *     idsfi: int,
+     *     created: string,
+     *     lastmodified: string,
+     *     author: string,
+     *     modifiedby: string,
+     *     description: string
+     * } File information array or empty array on fail
      * @throws cDbException|cException
      */
     public function getFileInformation($filename, $type): array
@@ -163,7 +171,7 @@ class cApiFileInformationCollection extends ItemCollection
             ]
         );
         if ($item->isLoaded()) {
-            $fileInformation['idsfi'] = $item->get('idsfi');
+            $fileInformation['idsfi'] = cSecurity::toInteger($item->get('idsfi'));
             $fileInformation['created'] = $item->get('created');
             $fileInformation['lastmodified'] = $item->get('lastmodified');
             $fileInformation['author'] = cSecurity::unFilter($item->get('author'));

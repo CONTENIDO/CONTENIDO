@@ -79,7 +79,7 @@ class cApiGroupMemberCollection extends ItemCollection
      */
     public function fetchByUserIdAndGroupId($userId, $groupId)
     {
-        $where =sprintf( "`user_id` = '%s' AND `group_id` = '%s'", $this->escape($userId), $this->escape($groupId));
+        $where = $this->db->prepare("`user_id` = '%s' AND `group_id` = '%s'", $userId, $groupId);
         if ($this->select($where)) {
             return $this->next();
         } else {

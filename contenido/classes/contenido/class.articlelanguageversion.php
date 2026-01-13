@@ -517,11 +517,10 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage
     ): bool {
         $result = true;
         if (!$this->isLoaded()) {
-            $props = [
+            $recordSet = $this->_oCache->getItemByProperties([
                 'idartlang' => $articleLanguageId,
                 'version' => $version,
-            ];
-            $recordSet = $this->_oCache->getItemByProperties($props);
+            ]);
             if ($recordSet) {
                 // entry in cache found, load entry from cache
                 $this->loadByRecordSet($recordSet);

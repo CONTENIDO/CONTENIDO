@@ -42,30 +42,34 @@ class cApiFrameFileCollection extends ItemCollection
      * Creates a frame file item
      *
      * @param string $area
-     * @param int $idframe
-     * @param int $idfile
+     * @param int $frameId
+     * @param int $fileId
      * @return cApiFrameFile
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($area, $idframe, $idfile)
+    public function create($area, $frameId, $fileId)
     {
         $item = $this->createNewItem();
 
         if (is_string($area)) {
-            $c = new cApiArea();
-            $c->loadBy('name', $area);
+            $areaObj = new cApiArea();
+            $areaObj->loadBy('name', $area);
 
-            if ($c->isLoaded()) {
-                $area = $c->get('idarea');
+            if ($areaObj->isLoaded()) {
+                $area = $areaObj->get('idarea');
             } else {
                 $area = 0;
-                cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
+                cWarning(
+                    __FILE__,
+                    __LINE__,
+                    "Could not resolve area [$area] passed to method [create], assuming 0"
+                );
             }
         }
 
         $item->set('idarea', $area);
-        $item->set('idfile', $idfile);
-        $item->set('idframe', $idframe);
+        $item->set('idfile', $fileId);
+        $item->set('idframe', $frameId);
 
         $item->store();
 

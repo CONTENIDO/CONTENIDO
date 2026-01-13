@@ -45,8 +45,8 @@ class cApiCategoryTreeCollection extends ItemCollection
     /**
      * Returns category tree structure by selecting the data from several tables.
      *
-     * @param int $client Client id
-     * @param int $lang Language id
+     * @param int $clientId Client id
+     * @param int $languageId Language id
      *
      * @return array
      *      Category tree structure as follows:
@@ -63,29 +63,29 @@ class cApiCategoryTreeCollection extends ItemCollection
      *      </pre>
      * @throws cDbException
      */
-    public function getCategoryTreeStructureByClientIdAndLanguageId($client, $lang): array
+    public function getCategoryTreeStructureByClientIdAndLanguageId($clientId, $languageId): array
     {
-        $aCatTree = [];
-
-        $sql = 'SELECT * FROM `:cat_tree` AS A, `:cat` AS B, `:cat_lang` AS C ' . 'WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND C.idlang = :idlang AND idclient = :idclient ' . 'ORDER BY idtree';
+        $categoryTree = [];
 
         $sql = $this->db->prepare(
-            $sql,
+            'SELECT * FROM `:cat_tree` AS A, `:cat` AS B, `:cat_lang` AS C
+            WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND C.idlang = :idlang
+              AND idclient = :idclient ORDER BY idtree',
             [
                 'cat_tree' => $this->table,
                 'cat' => cDb::getTableName('cat'),
                 'cat_lang' => cDb::getTableName('cat_lang'),
-                'idlang' => (int)$lang,
-                'idclient' => (int)$client,
+                'idlang' => cSecurity::toInteger($languageId),
+                'idclient' => cSecurity::toInteger($clientId),
             ]
         );
         $this->db->query($sql);
 
         while ($this->db->nextRecord()) {
-            $aCatTree[$this->db->f('idtree')] = [
-                'idcat' => $this->db->f('idcat'),
-                'level' => $this->db->f('level'),
-                'idtplcfg' => $this->db->f('idtplcfg'),
+            $categoryTree[cSecurity::toInteger($this->db->f('idtree'))] = [
+                'idcat' => cSecurity::toInteger($this->db->f('idcat')),
+                'level' => cSecurity::toInteger($this->db->f('level')),
+                'idtplcfg' => cSecurity::toInteger($this->db->f('idtplcfg')),
                 'visible' => $this->db->f('visible'),
                 'name' => $this->db->f('name'),
                 'public' => $this->db->f('public'),
@@ -94,7 +94,7 @@ class cApiCategoryTreeCollection extends ItemCollection
             ];
         }
 
-        return $aCatTree;
+        return $categoryTree;
     }
 }
 

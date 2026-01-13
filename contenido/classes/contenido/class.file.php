@@ -58,7 +58,11 @@ class cApiFileCollection extends ItemCollection
                 $area = $c->get('idarea');
             } else {
                 $area = 0;
-                cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
+                cWarning(
+                    __FILE__,
+                    __LINE__,
+                    "Could not resolve area [$area] passed to method [create], assuming 0"
+                );
             }
         }
 

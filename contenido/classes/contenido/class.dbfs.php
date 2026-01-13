@@ -63,11 +63,9 @@ class cApiDbfsCollection extends ItemCollection
         if ($dbfs) {
             $properties = new cApiPropertyCollection();
             // Check if we're allowed to access it
-            $protocol = cApiDbfs::PROTOCOL_DBFS;
-
-            if ($properties->getValue('upload', $protocol . $dirname . '/' . $filename, 'file', 'protected') == '1') {
-                $auth = cRegistry::getAuth();
-                if ($auth->getUserId() === cAuth::AUTH_UID_NOBODY) {
+            $itemId = cApiDbfs::PROTOCOL_DBFS . $dirname . '/' . $filename;
+            if ($properties->getValue('upload', $itemId, 'file', 'protected') == '1') {
+                if (cRegistry::getAuth()->getUserId() === cAuth::AUTH_UID_NOBODY) {
                     header('HTTP/1.0 403 Forbidden');
                     return;
                 }
@@ -356,15 +354,18 @@ class cApiDbfsCollection extends ItemCollection
         }
 
         $path = cSecurity::toString($path);
-        $iTimeMng = cSecurity::toInteger($properties->getValue('upload', $path, 'file', 'timemgmt'));
-        if ($iTimeMng == 0) {
+        $timeManagement = cSecurity::toInteger($properties->getValue('upload', $path, 'file', 'timemgmt'));
+        if ($timeManagement == 0) {
             return true;
         }
 
-        $sStartDate = $properties->getValue('upload', $path, 'file', 'datestart');
-        $sEndDate = $properties->getValue('upload', $path, 'file', 'dateend');
+        $startDate = $properties->getValue('upload', $path, 'file', 'datestart');
+        $endDate = $properties->getValue('upload', $path, 'file', 'dateend');
         $iNow = time();
-        if ($iNow < $this->dateToTimestamp($sStartDate) || ($iNow > $this->dateToTimestamp($sEndDate) && (int)$this->dateToTimestamp($sEndDate) > 0)) {
+        if (
+            $iNow < $this->dateToTimestamp($startDate)
+            || ($iNow > $this->dateToTimestamp($endDate) && (int)$this->dateToTimestamp($endDate) > 0)
+        ) {
             return false;
         }
 
@@ -376,9 +377,9 @@ class cApiDbfsCollection extends ItemCollection
      *
      * @return int|false Timestamp
      */
-    public function dateToTimestamp(string $sDate)
+    public function dateToTimestamp(string $date)
     {
-        return strtotime($sDate);
+        return strtotime($date);
     }
 
     /**

@@ -71,10 +71,16 @@ class cApiContentVersionCollection extends ItemCollection
 
     /**
      * @inheritDoc
+     * @return int[]
      */
-    public function getIdsByWhereClause(string $where): array
+    public function getIdsByWhereClause(
+        string $where,
+        string $groupBy = '',
+        string $orderBy = '',
+        string $limit = ''
+    ): array
     {
-        $ids = parent::getIdsByWhereClause($where);
+        $ids = parent::getIdsByWhereClause($where, $groupBy, $orderBy, $limit);
 
         return array_map('intval', $ids);
     }
@@ -82,7 +88,7 @@ class cApiContentVersionCollection extends ItemCollection
     /**
      * Returns the maximum version of a content version entry.
      *
-     * @param int $idArtLang Article language id
+     * @param int $articleLanguageId Article language id
      * @param int $idType Content type id (e.g. id of `CONTENT_TYPE`)
      * @param int $typeId Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
      * @return int Found maximum version or 0
@@ -90,17 +96,20 @@ class cApiContentVersionCollection extends ItemCollection
      * @since CONTENIDO 4.10.2
      */
     public function getMaximumVersionByArticleLanguageId(
-        int $idArtLang, int $idType, int $typeId
+        int $articleLanguageId,
+        int $idType,
+        int $typeId
     ): int {
         $contentVersionColl = new self();
         $contentVersionColl->addResultField('version');
-        $contentVersionColl->setWhere('idartlang', $idArtLang);
+        $contentVersionColl->setWhere('idartlang', $articleLanguageId);
         $contentVersionColl->setWhere('idtype', $idType);
         $contentVersionColl->setWhere('typeid', $typeId);
         $contentVersionColl->setOrder('`version` DESC');
         $contentVersionColl->setLimit(0, 1);
         $contentVersionColl->query();
         $data = $contentVersionColl->fetchTable(['version']);
+
         return count($data) ? cSecurity::toInteger($data[1]['version']) : 0;
     }
 
@@ -151,14 +160,14 @@ class cApiContentVersion extends Item
     {
         // try to get item from database
         $content = new cApiContent();
-        $succ = $content->loadByArticleLanguageIdTypeAndTypeId(
+        $success = $content->loadByArticleLanguageIdTypeAndTypeId(
             $this->get('idartlang'),
             $this->get('idtype'),
             $this->get('typeid')
         );
 
         // create new item if none has been found
-        if (!$succ) {
+        if (!$success) {
             $coll = new cApiContentCollection();
             $content = $coll->createNewItem();
         }
@@ -216,24 +225,24 @@ class cApiContentVersion extends Item
      */
     public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters): bool
     {
-        $props = [
+        $recordSet = $this->_oCache->getItemByProperties([
             'idartlang' => $contentParameters['idartlang'],
             'idtype' => $contentParameters['idtype'],
             'typeid' => $contentParameters['typeid'],
             'version' => $contentParameters['version'],
-        ];
-        $recordSet = $this->_oCache->getItemByProperties($props);
+        ]);
         if ($recordSet) {
             // entry in cache found, load entry from cache
             $this->loadByRecordSet($recordSet);
             return true;
         } else {
-            $where = '`idartlang` = %d AND `idtype` = %d AND `typeid` = %d AND `version` <= %d GROUP BY `pk` desc LIMIT 1';
-            $where = $this->db->prepare(
-                $where, $contentParameters['idartlang'], $contentParameters['idtype'],
-                $contentParameters['typeid'], $contentParameters['version']
-            );
-            return $this->_loadByWhereClause($where);
+            return $this->_loadByWhereClause($this->db->prepare(
+                '`idartlang` = %d AND `idtype` = %d AND `typeid` = %d AND `version` <= %d GROUP BY `pk` desc LIMIT 1',
+                $contentParameters['idartlang'],
+                $contentParameters['idtype'],
+                $contentParameters['typeid'],
+                $contentParameters['version']
+            ));
         }
     }
 

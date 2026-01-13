@@ -49,8 +49,8 @@ class cApiUploadMetaCollection extends ItemCollection
     /**
      * Creates a upload meta entry.
      *
-     * @param int $idupl
-     * @param int $idlang
+     * @param int $uploadId
+     * @param int $languageId
      * @param string $medianame [optional]
      * @param string $description [optional]
      * @param string $keywords [optional]
@@ -64,8 +64,8 @@ class cApiUploadMetaCollection extends ItemCollection
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create(
-        $idupl,
-        $idlang,
+        $uploadId,
+        $languageId,
         $medianame = '',
         $description = '',
         $keywords = '',
@@ -91,8 +91,8 @@ class cApiUploadMetaCollection extends ItemCollection
 
         $oItem = $this->createNewItem();
 
-        $oItem->set('idupl', $idupl);
-        $oItem->set('idlang', $idlang);
+        $oItem->set('idupl', $uploadId);
+        $oItem->set('idlang', $languageId);
         $oItem->set('medianame', $medianame);
         $oItem->set('description', $description);
         $oItem->set('keywords', $keywords);
@@ -134,23 +134,22 @@ class cApiUploadMeta extends Item
     /**
      * Loads an upload meta entry by upload id and language id
      *
-     * @param int $idupl
-     * @param int $idlang
+     * @param int $uploadId
+     * @param int $languageId
      * @throws cException
      */
-    public function loadByUploadIdAndLanguageId($idupl, $idlang): bool
+    public function loadByUploadIdAndLanguageId($uploadId, $languageId): bool
     {
-        $aProps = [
-            'idupl' => $idupl,
-            'idlang' => $idlang,
-        ];
-        $aRecordSet = $this->_oCache->getItemByProperties($aProps);
-        if ($aRecordSet) {
+        $recordSet = $this->_oCache->getItemByProperties([
+            'idupl' => $uploadId,
+            'idlang' => $languageId,
+        ]);
+        if ($recordSet) {
             // entry in cache found, load entry from cache
-            $this->loadByRecordSet($aRecordSet);
+            $this->loadByRecordSet($recordSet);
             return true;
         } else {
-            $where = $this->db->prepare('idupl = %d AND idlang = %d', $idupl, $idlang);
+            $where = $this->db->prepare('`idupl` = %d AND `idlang` = %d', $uploadId, $languageId);
             return $this->_loadByWhereClause($where);
         }
     }

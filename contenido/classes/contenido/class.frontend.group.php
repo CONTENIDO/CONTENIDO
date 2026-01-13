@@ -49,33 +49,33 @@ class cApiFrontendGroupCollection extends ItemCollection
     /**
      * Creates a new group
      *
-     * @param string $groupname Specifies the groupname
+     * @param string $groupName Specifies the group name
      * @return cApiFrontendGroup
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($groupname)
+    public function create($groupName, ?int $clientId = null)
     {
-        $client = cRegistry::getClientId();
+        $clientId = $clientId ?? cRegistry::getClientId();
 
         $group = new cApiFrontendGroup();
 
-        $mangledGroupName = $group->inFilter($groupname);
-        $this->select(sprintf("`idclient` = %d AND `groupname` = '%s'", $client, $mangledGroupName));
+        $mangledGroupName = $group->inFilter($groupName);
+        $this->select(sprintf("`idclient` = %d AND `groupname` = '%s'", $clientId, $mangledGroupName));
         if ($this->next()) {
             // Groupname exists, append random hash
-            $groupname .= md5(rand());
+            $groupName .= md5(rand());
         }
 
         $item = $this->createNewItem();
-        $item->set('idclient', $client);
-        $item->set('groupname', $groupname);
+        $item->set('idclient', $clientId);
+        $item->set('groupname', $groupName);
         $item->store();
 
         return $item;
     }
 
     /**
-     * Overridden delete method to remove groups from groupmember table before deleting group
+     * Overridden delete method to remove groups from group member table before deleting group
      *
      * @inheritDoc
      * @param int $id Specifies the frontend user group

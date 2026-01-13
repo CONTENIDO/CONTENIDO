@@ -83,7 +83,7 @@ class cApiClientCollection extends ItemCollection
 
         $this->select();
         while ($item = $this->next()) {
-            $clients[(int) $item->get('idclient')] = [
+            $clients[cSecurity::toInteger($item->get('idclient'))] = [
                 'name' => $item->get('name'),
             ];
         }
@@ -104,11 +104,13 @@ class cApiClientCollection extends ItemCollection
 
         $this->select();
         while ($item = $this->next()) {
-            $idClient = (int) $item->get('idclient');
-            if ($perm->have_perm_client("client[" . $idClient . "]")
-                || $perm->have_perm_client("admin[" . $idClient . "]")
-                || $perm->have_perm_client()) {
-                $clients[$idClient] = [
+            $clientId = cSecurity::toInteger($item->get('idclient'));
+            if (
+                $perm->have_perm_client("client[" . $clientId . "]")
+                || $perm->have_perm_client("admin[" . $clientId . "]")
+                || $perm->have_perm_client()
+            ) {
+                $clients[$clientId] = [
                     'name' => $item->get('name'),
                 ];
             }
@@ -127,9 +129,11 @@ class cApiClientCollection extends ItemCollection
         $perm = cRegistry::getPerm();
         $this->select();
         while ($item = $this->next()) {
-            $idClient = (int) $item->get('idclient');
-            if ($perm->have_perm_client("client[" . $idClient . "]")
-                || $perm->have_perm_client("admin[" . $idClient . "]")) {
+            $clientId = cSecurity::toInteger($item->get('idclient'));
+            if (
+                $perm->have_perm_client("client[" . $clientId . "]")
+                || $perm->have_perm_client("admin[" . $clientId . "]")
+            ) {
                 return $item;
             }
         }
@@ -139,13 +143,13 @@ class cApiClientCollection extends ItemCollection
     /**
      * Returns the client name of the given clientid
      *
-     * @param int $idClient
+     * @param int $clientId
      * @return string Client name if found, or empty string if not.
      * @throws cDbException|cException
      */
-    public function getClientname($idClient): string
+    public function getClientname($clientId): string
     {
-        $this->select("idclient='" . (int)$idClient . "'");
+        $this->select(sprintf("`idclient` = %d", $clientId));
         if (($item = $this->next()) !== false) {
             return $item->get('name');
         } else {
@@ -160,9 +164,7 @@ class cApiClientCollection extends ItemCollection
      */
     public function hasLanguageAssigned(int $clientId): bool
     {
-        $client = new cApiClient($clientId);
-
-        return $client->hasLanguages();
+        return (new cApiClient($clientId))->hasLanguages();
     }
 
     /**
@@ -195,7 +197,7 @@ class cApiClient extends Item
      * @deprecated [2014-12-03] Class variable idclient is deprecated
      * @var int Setting of client ID (deprecated)
      */
-    private $idclient;
+    private $clientId;
 
     /**
      * @var cApiPropertyCollection Property collection instance
@@ -313,15 +315,15 @@ class cApiClient extends Item
     /**
      * Delete client property
      *
-     * @param int $idProp Id of property
+     * @param int $propertyId Id of property
      * @param string $p2 Not used, is here to prevent PHP Strict warnings
      * @param int $clientId Client id (not used, it's declared because of PHP strict warnings)
      * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteProperty($idProp, $p2 = '', $clientId = 0)
+    public function deleteProperty($propertyId, $p2 = '', $clientId = 0)
     {
         $propertyColl = $this->_getPropertiesCollectionInstance();
-        $propertyColl->delete($idProp);
+        $propertyColl->delete($propertyId);
     }
 
     /**
@@ -348,8 +350,14 @@ class cApiClient extends Item
     public function getProperties()
     {
         $propertyColl = $this->_getPropertiesCollectionInstance();
-        $whereString = "itemid='" . $this->get('idclient') . "' AND itemtype='clientsetting'";
-        $propertyColl->select($whereString, "", "type, name, value ASC");
+        $propertyColl->select(
+            sprintf(
+                "`itemid` = %d AND `itemtype` = 'clientsetting'",
+                $this->get('idclient')
+            ),
+            '',
+            '`type`, `name`, `value` ASC'
+        );
 
         if ($propertyColl->count() > 0) {
             $array = [];
