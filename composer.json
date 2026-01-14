@@ -38,6 +38,6 @@
         "ext-simplexml": "*",
         "ext-zip": "*",
         "ext-libxml": "*",
-        "php": ">=7.1"
+        "php": ">=7.1 ^8.4"
     }
 }
