@@ -88,7 +88,7 @@ class WorkflowUserSequences extends ItemCollection
             $userSequenceId
         );
         foreach ($articleLanguageIds as $iIdArtLang) {
-            setUserSequence($iIdArtLang, $idworkflow);
+            piwf_setUserSequence($iIdArtLang, $idworkflow);
         }
     }
 

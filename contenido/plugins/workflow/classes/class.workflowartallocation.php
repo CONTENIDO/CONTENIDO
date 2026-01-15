@@ -199,30 +199,31 @@ class WorkflowArtAllocation extends Item
 
                 $startTime = time();
 
+                // TODO Code is redundant with contenido/plugins/workflow/cronjobs/advance_workflow.php
                 switch ($timeUnit) {
                     case 'Seconds':
-                        $maxtime = $startTime + $timeLimit;
+                        $maxTime = $startTime + $timeLimit;
                         break;
                     case 'Minutes':
-                        $maxtime = $startTime + ($timeLimit * 60);
+                        $maxTime = $startTime + ($timeLimit * 60);
                         break;
                     case 'Hours':
-                        $maxtime = $startTime + ($timeLimit * 3600);
+                        $maxTime = $startTime + ($timeLimit * 3600);
                         break;
                     case 'Days':
-                        $maxtime = $startTime + ($timeLimit * 86400);
+                        $maxTime = $startTime + ($timeLimit * 86400);
                         break;
                     case 'Weeks':
-                        $maxtime = $startTime + ($timeLimit * 604800);
+                        $maxTime = $startTime + ($timeLimit * 604800);
                         break;
                     case 'Months':
-                        $maxtime = $startTime + ($timeLimit * 2678400);
+                        $maxTime = $startTime + ($timeLimit * 2678400);
                         break;
                     case 'Years':
-                        $maxtime = $startTime + ($timeLimit * 31536000);
+                        $maxTime = $startTime + ($timeLimit * 31536000);
                         break;
                     default:
-                        $maxtime = $startTime + $timeLimit;
+                        $maxTime = $startTime + $timeLimit;
                 }
 
                 if ($email == 1) {
@@ -235,7 +236,7 @@ class WorkflowArtAllocation extends Item
                         $curEditor,
                         $author,
                         date('Y-m-d H:i:s', $startTime),
-                        date('Y-m-d H:i:s', $maxtime)
+                        date('Y-m-d H:i:s', $maxTime)
                     );
                     $user = new cApiUser();
 
@@ -273,7 +274,7 @@ class WorkflowArtAllocation extends Item
                         $curEditor,
                         $author,
                         date('Y-m-d H:i:s', $startTime),
-                        date('Y-m-d H:i:s', $maxtime)
+                        date('Y-m-d H:i:s', $maxTime)
                     );
 
                     $user = new cApiUser();

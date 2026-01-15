@@ -55,7 +55,7 @@ if (!$perm->have_perm_area_action($area, 'workflow_task_user_select')) {
 
 if ($action === 'workflow_do_action') {
     $selectedAction = "wfselect" . $modidartlang;
-    doWorkflowAction($modidartlang, $GLOBALS[$selectedAction]);
+    piwf_doWorkflowAction($modidartlang, $GLOBALS[$selectedAction]);
 }
 
 $usersequence = [];
@@ -121,7 +121,7 @@ if ($perm->have_perm_area_action($area, 'workflow_task_user_select')) {
     $form->setEvent("submit", "setUsershow();");
     $form->setVar('frame', $frame);
     $form->setVar('action', 'workflow_task_user_select');
-    $form->appendContent(i18n("Show users") . ": " . getUsers("show", $usershow));
+    $form->appendContent(i18n("Show users") . ": " . piwf_getUsers("show", $usershow));
     $form->appendContent('<input class="align_middle" type="image" src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . "submit.gif" . '">');
 
     $tpl->set('s', 'USERSELECT', $form->render());
@@ -179,9 +179,9 @@ if (is_array($isCurrent)) {
 
                 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idtpl=$idtpl&idart=$idart"), $db->f('title'));
 
-                $laststatus = getLastWorkflowStatus($idartlang);
+                $laststatus = piwf_getLastWorkflowStatus($idartlang);
                 $username = getGroupOrUserName($userids[$key]);
-                $actionSelect = piworkflowRenderColumn($idcat, $idart, $db->f('idartlang'), 'wfaction');
+                $actionSelect = piwf_renderColumn($idcat, $idart, $db->f('idartlang'), 'wfaction');
 
                 $currentUserSequence->loadByPrimaryKey($usersequence[$key]);
                 $workflowItem = $currentUserSequence->getWorkflowItem();

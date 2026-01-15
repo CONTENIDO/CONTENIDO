@@ -71,14 +71,14 @@ cAutoload::addClassmapConfig([
 plugin_include($pluginName, 'includes/functions.workflow.php');
 
 $cecRegistry = cApiCecRegistry::getInstance();
-$cecRegistry->addChainFunction('Contenido.ArticleCategoryList.ListItems', 'piworkflowCreateTasksFolder');
-$cecRegistry->addChainFunction('Contenido.ArticleList.Columns', 'piworkflowProcessArticleColumns');
-$cecRegistry->addChainFunction('Contenido.ArticleList.Actions', 'piworkflowProcessActions');
-$cecRegistry->addChainFunction('Contenido.ArticleList.RenderColumn', 'piworkflowRenderColumn');
-$cecRegistry->addChainFunction('Contenido.ArticleList.RenderAction', 'piworkflowRenderAction');
-$cecRegistry->addChainFunction('Contenido.CategoryList.Columns', 'piworkflowCategoryColumns');
-$cecRegistry->addChainFunction('Contenido.CategoryList.RenderColumn', 'piworkflowCategoryRenderColumn');
-$cecRegistry->addChainFunction('Contenido.CategoryList.PageEnd', 'piworkflowCategoryPageEnd');
-$cecRegistry->addChainFunction('Contenido.Frontend.AllowEdit', 'piworkflowAllowArticleEdit');
+$cecRegistry->addChainFunction('Contenido.ArticleCategoryList.ListItems', 'piwf_createTasksFolder');
+$cecRegistry->addChainFunction('Contenido.ArticleList.Columns', 'piwf_processArticleColumns');
+$cecRegistry->addChainFunction('Contenido.ArticleList.Actions', 'piwf_processActions');
+$cecRegistry->addChainFunction('Contenido.ArticleList.RenderColumn', 'piwf_renderColumn');
+$cecRegistry->addChainFunction('Contenido.ArticleList.RenderAction', 'piwf_renderAction');
+$cecRegistry->addChainFunction('Contenido.CategoryList.Columns', 'piwf_categoryColumns');
+$cecRegistry->addChainFunction('Contenido.CategoryList.RenderColumn', 'piwf_categoryRenderColumn');
+$cecRegistry->addChainFunction('Contenido.CategoryList.PageEnd', 'piwf_categoryPageEnd');
+$cecRegistry->addChainFunction('Contenido.Frontend.AllowEdit', 'piwf_allowArticleEdit');
 
 unset($pluginName, $pluginClassesPath);

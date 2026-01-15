@@ -136,21 +136,21 @@ if ($action === 'workflow_save_step' || $action === 'workflow_create_user') {
 function getTimeUnitSelector($listid, $default): string
 {
     $cfg = cRegistry::getConfig();
-    $timeunits = [];
-    $timeunits['Seconds'] = i18n("Seconds", "workflow");
-    $timeunits['Minutes'] = i18n("Minutes", "workflow");
-    $timeunits['Hours'] = i18n("Hours", "workflow");
-    $timeunits['Days'] = i18n("Days", "workflow");
-    $timeunits['Weeks'] = i18n("Weeks", "workflow");
-    $timeunits['Months'] = i18n("Months", "workflow");
-    $timeunits['Years'] = i18n("Years", "workflow");
+    $timeUnits = [];
+    $timeUnits['Seconds'] = i18n("Seconds", "workflow");
+    $timeUnits['Minutes'] = i18n("Minutes", "workflow");
+    $timeUnits['Hours'] = i18n("Hours", "workflow");
+    $timeUnits['Days'] = i18n("Days", "workflow");
+    $timeUnits['Weeks'] = i18n("Weeks", "workflow");
+    $timeUnits['Months'] = i18n("Months", "workflow");
+    $timeUnits['Years'] = i18n("Years", "workflow");
 
     $tpl2 = new cTemplate();
     $tpl2->set('s', 'NAME', 'time' . $listid);
     $tpl2->set('s', 'CLASS', 'text_small');
     $tpl2->set('s', 'OPTIONS', 'size=1');
 
-    foreach ($timeunits as $key => $value) {
+    foreach ($timeUnits as $key => $value) {
         $tpl2->set('d', 'VALUE', $key);
         $tpl2->set('d', 'CAPTION', $value);
 
@@ -341,11 +341,11 @@ function getWorkflowUsers($idWorkflow, $idWorkflowItem): string
     while ($workflowItem = $workflowUsers->next()) {
         $pos = $workflowItem->get('position');
         $iduser = $workflowItem->get('iduser');
-        $timelimit = $workflowItem->get('timelimit');
-        $timeunit = $workflowItem->get('timeunit');
+        $timeLimit = $workflowItem->get('timelimit');
+        $timeUnit = $workflowItem->get('timeunit');
         $email = $workflowItem->get('emailnoti');
         $escalation = $workflowItem->get('escalationnoti');
-        $timeunit = $workflowItem->get('timeunit');
+        $timeUnit = $workflowItem->get('timeunit');
         $id = $workflowItem->get('idusersequence');
 
         $moveup = new cHTMLLink();
@@ -373,11 +373,11 @@ function getWorkflowUsers($idWorkflow, $idWorkflowItem): string
         $deletestep->setAlt(i18n("Delete user", "workflow"));
         $deletestep->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/workflow_step_delete.gif" . '">');
 
-        $title = "$pos. " . getUsers($id, $iduser);
+        $title = "$pos. " . piwf_getUsers($id, $iduser);
 
-        $oTxtTime = new cHTMLTextbox('wftimelimit' . $id, $timelimit, 3, 6);
+        $oTxtTime = new cHTMLTextbox('wftimelimit' . $id, $timeLimit, 3, 6);
         $title .= $oTxtTime->render();
-        $title .= getTimeUnitSelector($id, $timeunit);
+        $title .= getTimeUnitSelector($id, $timeUnit);
         $altmail = i18n("Notify this user via E-Mail", "workflow");
         $altnoti = i18n("Escalate to this user via E-Mail", "workflow");
 
