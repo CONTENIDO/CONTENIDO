@@ -142,7 +142,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection
      *
      * @param string|false $userId [optional] Search for a specific user id
      * @return cApiUserPasswordRequest[]
-     * @throws cDbException|cException
+     * @throws cDbException|cException|DateMalformedStringException
      */
     public function fetchCurrentRequests($userId = false): array
     {

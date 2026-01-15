@@ -90,8 +90,7 @@ class cApiCategoryLanguageCollection extends ItemCollection
     )
     {
         if (empty($author)) {
-            $auth = cRegistry::getAuth();
-            $author = $auth->getUsername();
+            $author = cRegistry::getAuth()->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');

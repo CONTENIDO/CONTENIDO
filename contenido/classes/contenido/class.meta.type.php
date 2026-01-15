@@ -37,21 +37,21 @@ class cApiMetaTypeCollection extends ItemCollection
     /**
      * Creates a meta type entry.
      *
-     * @param string $metatype
-     * @param string $fieldtype
-     * @param int $maxlength
-     * @param string $fieldname
+     * @param string $metaType
+     * @param string $fieldType
+     * @param int $maxLength
+     * @param string $fieldName
      * @return cApiMetaType
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($metatype, $fieldtype, $maxlength, $fieldname)
+    public function create($metaType, $fieldType, $maxLength, $fieldName)
     {
         $oItem = $this->createNewItem();
 
-        $oItem->set('metatype', $metatype);
-        $oItem->set('fieldtype', $fieldtype);
-        $oItem->set('maxlength', $maxlength);
-        $oItem->set('fieldname', $fieldname);
+        $oItem->set('metatype', $metaType);
+        $oItem->set('fieldtype', $fieldType);
+        $oItem->set('maxlength', $maxLength);
+        $oItem->set('fieldname', $fieldName);
         $oItem->store();
 
         return $oItem;

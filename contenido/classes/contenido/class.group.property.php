@@ -74,9 +74,13 @@ class cApiGroupPropertyCollection extends ItemCollection
 
         if (!isset(self::$_enableCache)) {
             $cfg = cRegistry::getConfig();
-            self::$_enableCache = cSecurity::toBoolean($cfg['properties']['group_prop']['enable_cache'] ?? '0');
+            self::$_enableCache = cSecurity::toBoolean(
+                $cfg['properties']['group_prop']['enable_cache'] ?? '0'
+            );
             if (self::$_enableCache) {
-                self::$_maxGroups = cSecurity::toInteger($cfg['properties']['group_prop']['max_groups'] ?? '0');
+                self::$_maxGroups = cSecurity::toInteger(
+                    $cfg['properties']['group_prop']['max_groups'] ?? '0'
+                );
                 // If caching is enabled, there is no need to set max cache value to lower than 1
                 if (self::$_maxGroups < 1) {
                     self::$_maxGroups = 1;
@@ -176,10 +180,9 @@ class cApiGroupPropertyCollection extends ItemCollection
      *
      * @param string $type
      * @param string $name
-     * @return ?cApiGroupProperty
      * @throws cDbException|cException
      */
-    public function fetchByGroupIdTypeName($type, $name)
+    public function fetchByGroupIdTypeName($type, $name): ?cApiGroupProperty
     {
         $type = cSecurity::toString($type);
         $name = cSecurity::toString($name);

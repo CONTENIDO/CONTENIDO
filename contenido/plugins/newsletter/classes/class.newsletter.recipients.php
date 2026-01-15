@@ -128,10 +128,10 @@ class NewsletterRecipientCollection extends ItemCollection
     }
 
     /**
-     * Overridden delete method to remove recipient from groupmember table before deleting recipient
+     * Overridden delete method to remove recipient from group member table before deleting recipient
      *
      * @inheritDoc
-     * @param $id int specifies the recipient
+     * @param int $id The newsletter recipient id.
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function delete($id)

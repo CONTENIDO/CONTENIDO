@@ -61,8 +61,19 @@ class PimPluginCollection extends ItemCollection
      * @return PimPlugin
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($name, $description, $author, $copyright, $mail, $website, $version, $foldername, $uuId, $active, $execOrder = 0)
-    {
+    public function create(
+        $name,
+        $description,
+        $author,
+        $copyright,
+        $mail,
+        $website,
+        $version,
+        $foldername,
+        $uuId,
+        $active,
+        $execOrder = 0
+    ) {
         $client = cRegistry::getClientId();
 
         $nextId = $this->_getNextId();

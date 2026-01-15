@@ -38,18 +38,18 @@ class PimPluginRelationsCollection extends ItemCollection
     /**
      * Create a new plugin
      *
-     * @param $idItem int Is equivalent to idarea or idnavm
-     * @param $idPlugin int Plugin Id
+     * @param $itemId int Is equivalent to idarea or idnavm
+     * @param $pluginId int Plugin Id
      * @param $type string Relation to tables *_area and *_nav_main
      * @return PimPluginRelations
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idItem, $idPlugin, $type)
+    public function create($itemId, $pluginId, $type)
     {
         // create a new entry
         $item = $this->createNewItem();
-        $item->set('iditem', $idItem);
-        $item->set('idplugin', $idPlugin);
+        $item->set('iditem', $itemId);
+        $item->set('idplugin', $pluginId);
         $item->set('type', $type);
 
         $item->store();

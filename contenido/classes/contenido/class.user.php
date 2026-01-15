@@ -97,19 +97,22 @@ class cApiUserCollection extends ItemCollection
             $allClients = $clientColl->getAvailableClients();
 
             foreach ($allClients as $key => $value) {
-                if (in_array('client[' . $key . ']', $perms) || in_array('admin[' . $key . ']', $perms)) {
-                    $limit[] = "perms LIKE '%client[" . $this->escape($key) . "]%'";
+                if (
+                    in_array('client[' . $key . ']', $perms)
+                    || in_array('admin[' . $key . ']', $perms)
+                ) {
+                    $limit[] = "`perms` LIKE '%client[" . $this->escape($key) . "]%'";
                     if ($includeAdmins) {
-                        $limit[] = "perms LIKE '%admin[" . $this->escape($key) . "]%'";
+                        $limit[] = "`perms` LIKE '%admin[" . $this->escape($key) . "]%'";
                     }
                 }
                 if (in_array('admin[' . $key . ']', $perms)) {
-                    $limit[] = "perms LIKE '%admin[" . $key . "]%'";
+                    $limit[] = "`perms` LIKE '%admin[" . $key . "]%'";
                 }
             }
 
             if ($includeAdmins) {
-                $limit[] = "perms LIKE '%sysadmin%'";
+                $limit[] = "`perms` LIKE '%sysadmin%'";
             }
 
             if (count($limit) > 0) {
@@ -118,7 +121,7 @@ class cApiUserCollection extends ItemCollection
         }
 
         if (empty($orderBy)) {
-            $orderBy = 'realname, username';
+            $orderBy = '`realname`, `username`';
         }
 
         $this->select($where, '', $this->escape($orderBy));
@@ -160,7 +163,7 @@ class cApiUserCollection extends ItemCollection
      * @return cApiUser[]
      * @throws cDbException|cException
      */
-    public function fetchAvailableUsers(string $orderBy = 'realname ASC'): array
+    public function fetchAvailableUsers(string $orderBy = '`realname` ASC'): array
     {
         $users = [];
 
@@ -262,7 +265,7 @@ class cApiUserCollection extends ItemCollection
     {
         $users = [];
 
-        $this->select("perms LIKE '%admin[" . $clientId . "]%'");
+        $this->select("`perms` LIKE '%admin[" . $clientId . "]%'");
         while ($item = $this->next()) {
             $users[] = clone $item;
         }

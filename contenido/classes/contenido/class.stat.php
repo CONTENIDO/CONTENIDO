@@ -58,39 +58,39 @@ class cApiStatCollection extends ItemCollection
      * Tracks a visit.
      * Increments an existing entry or creates a new one.
      *
-     * @param int $idCatArt
-     * @param int $idLang
-     * @param int $idClient
+     * @param int $categoryArticleId
+     * @param int $languageId
+     * @param int $clientId
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function trackVisit($idCatArt, $idLang, $idClient)
+    public function trackVisit($categoryArticleId, $languageId, $clientId)
     {
-        $oStat = $this->fetchByCatArtAndLang($idCatArt, $idLang);
+        $oStat = $this->fetchByCatArtAndLang($categoryArticleId, $languageId);
         if (is_object($oStat)) {
             $oStat->increment();
         } else {
-            $this->create($idCatArt, $idLang, $idClient);
+            $this->create($categoryArticleId, $languageId, $clientId);
         }
     }
 
     /**
      * Creates a stat entry.
      *
-     * @param int $idCatArt
-     * @param int $idLang
-     * @param int $idClient
+     * @param int $categoryArticleId
+     * @param int $languageId
+     * @param int $clientId
      * @param int $visited [optional]
      * @return cApiStat
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idCatArt, $idLang, $idClient, $visited = 1)
+    public function create($categoryArticleId, $languageId, $clientId, $visited = 1)
     {
         $oItem = $this->createNewItem();
 
         $oItem->set('visited', $visited);
-        $oItem->set('idcatart', $idCatArt);
-        $oItem->set('idlang', $idLang);
-        $oItem->set('idclient', $idClient);
+        $oItem->set('idcatart', $categoryArticleId);
+        $oItem->set('idlang', $languageId);
+        $oItem->set('idclient', $clientId);
         $oItem->store();
 
         return $oItem;
@@ -99,30 +99,36 @@ class cApiStatCollection extends ItemCollection
     /**
      * Returns a stat entry by category article and language.
      *
-     * @param int $idCatArt
-     * @param int $idLang
-     * @return cApiStat|NULL
+     * @param int $categoryArticleId
+     * @param int $languageId
      * @throws cDbException|cException
      */
-    public function fetchByCatArtAndLang($idCatArt, $idLang)
+    public function fetchByCatArtAndLang($categoryArticleId, $languageId): ?cApiStat
     {
-        $where = $this->db->prepare('idcatart = %d AND idlang = %d', $idCatArt, $idLang);
-        $this->select($where);
+        $this->select($this->db->prepare(
+            '`idcatart` = %d AND `idlang` = %d',
+            $categoryArticleId,
+            $languageId
+        ));
+
         return $this->next();
     }
 
     /**
      * Deletes statistics entries by category article id and language id.
      *
-     * @param int $idCatArt
-     * @param int $idLang
+     * @param int $categoryArticleId
+     * @param int $languageId
      * @return int Number of deleted items
      * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteByCategoryArticleAndLanguage($idCatArt, $idLang): int
+    public function deleteByCategoryArticleAndLanguage($categoryArticleId, $languageId): int
     {
-        $where = $this->db->prepare('idcatart = %d AND idlang = %d', $idCatArt, $idLang);
-        return $this->deleteByWhereClause($where);
+        return $this->deleteByWhereClause($this->db->prepare(
+            'idcatart = %d AND idlang = %d',
+            $categoryArticleId,
+            $languageId
+        ));
     }
 }
 
@@ -154,10 +160,11 @@ class cApiStat extends Item
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    public function increment()
+    public function increment(): bool
     {
         $this->set('visited', $this->get('visited') + 1);
-        $this->store();
+
+        return $this->store();
     }
 
     /**

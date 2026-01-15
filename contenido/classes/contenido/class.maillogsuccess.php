@@ -40,18 +40,18 @@ class cApiMailLogSuccessCollection extends ItemCollection
     /**
      * Creates a new mail log success entry with the given data.
      *
-     * @param int $idmail
+     * @param int $mailId
      * @param array $recipient
      * @param bool $success
      * @param string $exception
      * @return cApiMailLogSuccess
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idmail, $recipient, $success, $exception)
+    public function create($mailId, $recipient, $success, $exception)
     {
         $item = $this->createNewItem();
 
-        $item->set('idmail', $idmail);
+        $item->set('idmail', $mailId);
         $item->set('recipient', json_encode($recipient));
         $item->set('success', $success);
         $item->set('exception', $exception);

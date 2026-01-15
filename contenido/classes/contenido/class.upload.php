@@ -132,7 +132,7 @@ class cApiUploadCollection extends ItemCollection
      * Deletes upload file and its properties
      *
      * @inheritDoc
-     * @param int $id
+     * @param int $id The upload id.
      * @throws cDbException|cException
      * @todo Code is similar/redundant to include.upl_files_overview.php 216-230
      */

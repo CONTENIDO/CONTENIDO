@@ -240,7 +240,7 @@ class NewsletterJobCollection extends ItemCollection
      * logs table before deleting newsletter job
      *
      * @inheritDoc
-     * @param int $id Specifies the frontend user group
+     * @param int $id The newsletter job id.
      * @throws cDbException|cInvalidArgumentException|cException
      */
     public function delete($id)

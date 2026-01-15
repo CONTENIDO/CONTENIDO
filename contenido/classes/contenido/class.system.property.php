@@ -55,7 +55,9 @@ class cApiSystemPropertyCollection extends ItemCollection
 
         if (!isset(self::$_enableCache)) {
             $cfg = cRegistry::getConfig();
-            self::$_enableCache = cSecurity::toBoolean($cfg['properties']['system_prop']['enable_cache'] ?? '0');
+            self::$_enableCache = cSecurity::toBoolean(
+                $cfg['properties']['system_prop']['enable_cache'] ?? '0'
+            );
         }
 
         if (self::$_enableCache && !isset(self::$_entries)) {
@@ -78,10 +80,9 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param string $type
      * @param string $name
      * @param string $value
-     * @param int $id
+     * @param int $id System property id
      * @return ?cApiSystemProperty
-     * @throws cDbException|cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function setTypeNameValueById($type, $name, $value, $id): ?cApiSystemProperty
     {
@@ -109,8 +110,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param string $name
      * @param string $value
      * @return cApiSystemProperty
-     * @throws cDbException|cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function setValueByTypeName($type, $name, $value)
     {
@@ -136,8 +136,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param string $name
      * @param string $value
      * @return cApiSystemProperty
-     * @throws cDbException|cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($type, $name, $value)
     {
@@ -191,7 +190,7 @@ class cApiSystemPropertyCollection extends ItemCollection
 
         /** @var cApiSystemProperty $item */
         $item = parent::fetchById($id);
-        return ($item && $item->isLoaded()) ? $item : NULL;
+        return $item && $item->isLoaded() ? $item : NULL;
     }
 
     /**
@@ -207,8 +206,7 @@ class cApiSystemPropertyCollection extends ItemCollection
             return $this->_fetchByTypeNameFromCache($type, $name);
         }
 
-        $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
-        $this->select($sql);
+        $this->select($this->db->prepare("`type` = '%s' AND `name` = '%s'", $type, $name));
         if (($property = $this->next()) !== false) {
             return $property;
         }
@@ -228,8 +226,7 @@ class cApiSystemPropertyCollection extends ItemCollection
             return $this->_fetchByTypeFromCache($type);
         }
 
-        $sql = $this->db->prepare("type = '%s'", $type);
-        $this->select($sql);
+        $this->select($this->db->prepare("`type` = '%s'", $type));
         $props = [];
         while ($property = $this->next()) {
             $props[] = clone $property;
@@ -246,8 +243,8 @@ class cApiSystemPropertyCollection extends ItemCollection
      */
     public function deleteByTypeName($type, $name): bool
     {
-        $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
-        $this->select($sql);
+        $this->select($this->db->prepare("`type` = '%s' AND `name` = '%s'", $type, $name));
+
         return $this->_deleteSelected();
     }
 
@@ -259,8 +256,8 @@ class cApiSystemPropertyCollection extends ItemCollection
      */
     public function deleteByType($type): bool
     {
-        $sql = $this->db->prepare("type = '%s'", $type);
-        $this->select($sql);
+        $this->select($this->db->prepare("`type` = '%s'", $type));
+
         return $this->_deleteSelected();
     }
 
@@ -377,7 +374,7 @@ class cApiSystemPropertyCollection extends ItemCollection
     }
 
     /**
-     * Removes a entry from cache.
+     * Removes an entry from cache.
      *
      * @param int $id
      */

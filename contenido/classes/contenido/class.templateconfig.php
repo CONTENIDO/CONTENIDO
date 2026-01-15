@@ -46,7 +46,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
      * Deletes template configuration entry, removes also all related container configurations.
      *
      * @inheritDoc
-     * @param int $id
+     * @param int $id The template configuration id.
      * @throws cDbException|cInvalidArgumentException
      */
     public function delete($id)
@@ -54,8 +54,8 @@ class cApiTemplateConfigurationCollection extends ItemCollection
         $id = cSecurity::toInteger($id);
 
         // Delete also all container configurations
-        $oContainerConfColl = new cApiContainerConfigurationCollection('`idtplcfg` = ' . $id);
-        $oContainerConfColl->deleteByWhereClause('`idtplcfg` = ' . $id);
+        $containerConfColl = new cApiContainerConfigurationCollection();
+        $containerConfColl->deleteByWhereClause(sprintf('`idtplcfg` = %s', $id));
 
         return parent::delete($id);
     }
@@ -63,33 +63,32 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     /**
      * Creates a template config item entry
      *
-     * @param int $idtpl
+     * @param int $templateId
      * @param int $status [optional]
      * @param string $author [optional]
      * @param string $created [optional]
-     * @param string $lastmodified [optional]
+     * @param string $lastModified [optional]
      * @return cApiTemplateConfiguration
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idtpl, $status = 0, $author = '', $created = '', $lastmodified = '')
+    public function create($templateId, $status = 0, $author = '', $created = '', $lastModified = '')
     {
         if (empty($author)) {
-            $auth = cRegistry::getAuth();
-            $author = $auth->getUsername();
+            $author = cRegistry::getAuth()->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
-        if (empty($lastmodified)) {
-            $lastmodified = '0000-00-00 00:00:00';
+        if (empty($lastModified)) {
+            $lastModified = '0000-00-00 00:00:00';
         }
 
         $item = $this->createNewItem();
-        $item->set('idtpl', $idtpl);
+        $item->set('idtpl', $templateId);
         $item->set('author', $author);
         $item->set('status', $status);
         $item->set('created', $created);
-        $item->set('lastmodified', $lastmodified);
+        $item->set('lastmodified', $lastModified);
         $item->store();
 
         return $item;
@@ -98,24 +97,27 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     /**
      * If there is a pre-configuration of template, copy its settings into template configuration
      *
-     * @param int $idtpl
-     * @param int $idtplcfg
+     * @param int $templateId
+     * @param int $templateConfigurationId
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function copyTemplatePreconfiguration($idtpl, $idtplcfg)
+    public function copyTemplatePreconfiguration($templateId, $templateConfigurationId)
     {
-        $oTemplateColl = new cApiTemplateCollection('idtpl = ' . (int)$idtpl);
+        $templateColl = new cApiTemplateCollection(sprintf('`idtpl` = %d', $templateId));
 
-        if (($oTemplate = $oTemplateColl->next()) !== false) {
-            if ($oTemplate->get('idtplcfg') > 0) {
-                $oContainerConfColl = new cApiContainerConfigurationCollection('idtplcfg = ' . $oTemplate->get('idtplcfg'));
-                $aStandardConfig = [];
-                while ($oContainerConf = $oContainerConfColl->next()) {
-                    $aStandardConfig[$oContainerConf->get('number')] = $oContainerConf->get('container');
+        if (($template = $templateColl->next()) !== false) {
+            if ($template->get('idtplcfg') > 0) {
+                $containerConfColl = new cApiContainerConfigurationCollection(sprintf(
+                    '`idtplconf` = %d',
+                    $template->get('idtplcfg')
+                ));
+                $standardConfig = [];
+                while ($containerConf = $containerConfColl->next()) {
+                    $standardConfig[$containerConf->get('number')] = $containerConf->get('container');
                 }
 
-                foreach ($aStandardConfig as $number => $container) {
-                    $oContainerConfColl->create($idtplcfg, $number, $container);
+                foreach ($standardConfig as $number => $container) {
+                    $containerConfColl->create($templateConfigurationId, $number, $container);
                 }
             }
         }

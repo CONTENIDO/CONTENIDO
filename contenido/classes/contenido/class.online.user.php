@@ -224,7 +224,7 @@ class cApiOnlineUserCollection extends ItemCollection
         $this->_lastSQL = $sql;
         if ($result) {
             $this->db->nextRecord();
-            return (int)$this->db->f('cnt');
+            return cSecurity::toInteger($this->db->f('cnt'));
         }
         return 0;
     }

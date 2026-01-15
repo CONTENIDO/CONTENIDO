@@ -1482,7 +1482,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      * Deletes the record with id from the table.
      * Deletes also the cached record and any existing properties.
      *
-     * @param int|string|mixed $id Id of record to delete
+     * @param int|string|mixed $id The id of record to delete.
      * @return bool
      * @throws cDbException|cInvalidArgumentException
      */

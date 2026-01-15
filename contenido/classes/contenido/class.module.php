@@ -47,7 +47,7 @@ class cApiModuleCollection extends ItemCollection
      * Creates a new module item
      *
      * @param string $name
-     * @param int $idclient [optional]
+     * @param int $clientId [optional]
      * @param string $alias [optional]
      * @param string $type [optional]
      * @param string $error [optional]
@@ -65,7 +65,7 @@ class cApiModuleCollection extends ItemCollection
      */
     public function create(
         $name,
-        $idclient = NULL,
+        $clientId = NULL,
         $alias = '',
         $type = '',
         $error = 'none',
@@ -80,13 +80,12 @@ class cApiModuleCollection extends ItemCollection
         $lastmodified = ''
     )
     {
-        if (NULL === $idclient) {
-            $idclient = cRegistry::getClientId();
+        if (NULL === $clientId) {
+            $clientId = cRegistry::getClientId();
         }
 
         if (empty($author)) {
-            $auth = cRegistry::getAuth();
-            $author = $auth->getUsername();
+            $author = cRegistry::getAuth()->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -97,7 +96,7 @@ class cApiModuleCollection extends ItemCollection
 
         $item = $this->createNewItem();
 
-        $item->set('idclient', $idclient);
+        $item->set('idclient', $clientId);
         $item->set('name', $name);
         $item->set('alias', $alias);
         $item->set('type', $type);
@@ -119,17 +118,19 @@ class cApiModuleCollection extends ItemCollection
     /**
      * Returns list of all types by client id
      *
-     * @param int $idclient
+     * @param int $clientId
      * @return array
      * @throws cDbException
      */
-    public function getAllTypesByIdclient($idclient): array
+    public function getAllTypesByIdclient($clientId): array
     {
         $types = [];
 
-        $sql = "SELECT `type` FROM `%s` WHERE `idclient` = %d GROUP BY `type`";
-        $sql = $this->db->prepare($sql, $this->table, $idclient);
-        $this->db->query($sql);
+        $this->db->query($this->db->prepare(
+            "SELECT `type` FROM `%s` WHERE `idclient` = %d GROUP BY `type`",
+            $this->table,
+            $clientId
+        ));
         while ($this->db->nextRecord()) {
             $types[] = $this->db->f('type');
         }
@@ -141,7 +142,7 @@ class cApiModuleCollection extends ItemCollection
      * Returns a list of all modules used by the given client.
      * By default, the modules are ordered by name but can be ordered by any property.
      *
-     * @param int $idclient
+     * @param int $clientId
      * @param string $oderBy [optional]
      * @param bool $returnAsObjects [optional] Flag to return list of
      *      cApiModule instances instead of record data list.
@@ -149,7 +150,7 @@ class cApiModuleCollection extends ItemCollection
      * @return array|cApiModule[]
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getAllByIdclient($idclient, $oderBy = 'name', bool $returnAsObjects = false): array
+    public function getAllByIdclient($clientId, $oderBy = 'name', bool $returnAsObjects = false): array
     {
         $records = [];
 
@@ -157,16 +158,16 @@ class cApiModuleCollection extends ItemCollection
             $oderBy = ' ORDER BY `' . $this->db->escape($oderBy) . '`';
         }
         $sql = "SELECT * FROM `%s` WHERE `idclient` = %d{$oderBy}";
-        $sql = $this->db->prepare($sql, $this->table, $idclient);
+        $sql = $this->db->prepare($sql, $this->table, $clientId);
         $this->db->query($sql);
         while ($this->db->nextRecord()) {
-            $idmod = cSecurity::toInteger($this->db->f('idmod'));
+            $moduleId = cSecurity::toInteger($this->db->f('idmod'));
             if (!$returnAsObjects) {
-                $records[$idmod] = $this->db->toArray();
+                $records[$moduleId] = $this->db->toArray();
             } else {
                 $obj = new $this->_itemClass();
                 $obj->loadByRecordSet($this->db->toArray());
-                $records[$idmod] = $obj;
+                $records[$moduleId] = $obj;
             }
         }
 
@@ -178,13 +179,13 @@ class cApiModuleCollection extends ItemCollection
      * By default, the modules are ordered by name but can be ordered by any
      * property.
      *
-     * @param int $idclient
+     * @param int $clientId
      * @param string $type
      * @param string $oderBy [optional]
      * @return array
      * @throws cDbException
      */
-    public function getAllByIdclientAndType($idclient, $type, $oderBy = 'name'): array
+    public function getAllByIdclientAndType($clientId, $type, $oderBy = 'name'): array
     {
         $records = [];
 
@@ -192,11 +193,11 @@ class cApiModuleCollection extends ItemCollection
             $oderBy = ' ORDER BY `' . $this->db->escape($oderBy) . '`';
         }
         $sql = "SELECT * FROM `%s` WHERE `idclient` = %d AND `type` LIKE '%s' {$oderBy}";
-        $sql = $this->db->prepare($sql, $this->table, $idclient, '%' . $type . '%');
+        $sql = $this->db->prepare($sql, $this->table, $clientId, '%' . $type . '%');
 
         $this->db->query($sql);
         while ($this->db->nextRecord()) {
-            $records[$this->db->f('idmod')] = $this->db->toArray();
+            $records[cSecurity::toInteger($this->db->f('idmod'))] = $this->db->toArray();
         }
 
         return $records;
@@ -229,10 +230,10 @@ class cApiModuleCollection extends ItemCollection
         $aUsedTemplates = [];
         if ($db->numRows() != 0) {
             while ($db->nextRecord()) {
-                $idMod = cSecurity::toInteger($db->f('idmod'));
+                $moduleId = cSecurity::toInteger($db->f('idmod'));
                 $idTpl = cSecurity::toInteger($db->f('idtpl'));
-                $aUsedTemplates[$idMod][$idTpl]['tpl_name'] = $db->f('name');
-                $aUsedTemplates[$idMod][$idTpl]['tpl_id'] = $idTpl;
+                $aUsedTemplates[$moduleId][$idTpl]['tpl_name'] = $db->f('name');
+                $aUsedTemplates[$moduleId][$idTpl]['tpl_id'] = $idTpl;
             }
         }
 
@@ -342,11 +343,7 @@ class cApiModule extends Item
 
         $modName = $this->getProperty('translated-name', cRegistry::getLanguageId());
 
-        if ($modName === false) {
-            return $this->get('name');
-        } else {
-            return $modName;
-        }
+        return $modName === false ? $this->get('name') : $modName;
     }
 
     /**
@@ -450,7 +447,11 @@ class cApiModule extends Item
                     // if the class exists, has the method 'addModuleTranslations'
                     // and the current module contains this cms content type we
                     // add the additional translations for the module
-                    if (class_exists($sContentType) && method_exists($sContentType, 'addModuleTranslations') && preg_match('/' . cString::toUpperCase($sContentType) . '\[\d+\]/', $code)) {
+                    if (
+                        class_exists($sContentType)
+                        && method_exists($sContentType, 'addModuleTranslations')
+                        && preg_match('/' . cString::toUpperCase($sContentType) . '\[\d+\]/', $code)
+                    ) {
                         $strings = call_user_func([
                             $sContentType,
                             'addModuleTranslations'
@@ -492,7 +493,7 @@ class cApiModule extends Item
      * @param int $module
      * @param bool $setData [optional]
      * @return bool true if the module is in use
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function moduleInUse($module, bool $setData = false): bool
     {
@@ -594,7 +595,7 @@ class cApiModule extends Item
      *
      * @param bool $justStore [optional] don't generate code for all articles using this module (default false)
      * @return bool
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException|cException
      * @inheritDoc
      */
     public function store(bool $justStore = false)
@@ -649,7 +650,6 @@ class cApiModule extends Item
      * Save the module properties (description,type...)
      *
      * @param string $filename Where is the module info.xml file
-     * @return array
      * @throws cException
      */
     private function _getModuleProperties(string $filename): array
@@ -675,7 +675,6 @@ class cApiModule extends Item
      * @param string $filename Filename of data file (full path)
      * @param string $tempName of archive
      * @param bool $showNotification [optional] standard: true, mode to turn notifications off
-     * @return bool
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function import(string $filename, string $tempName, bool $showNotification = true): bool
@@ -717,13 +716,19 @@ class cApiModule extends Item
                     $module->store();
                 } else {
                     if ($showNotification) {
-                        $notification->displayNotification('error', i18n('Import failed, could load module information!'));
+                        $notification->displayNotification(
+                            'error',
+                            i18n('Import failed, could load module information!')
+                        );
                     }
                     return false;
                 }
             } else {
                 if ($showNotification) {
-                    $notification->displayNotification('error', i18n('Import failed, could not extract zip file!'));
+                    $notification->displayNotification(
+                        'error',
+                        i18n('Import failed, could not extract zip file!')
+                    );
                 }
 
                 return false;
@@ -746,8 +751,7 @@ class cApiModule extends Item
      * Imports the module from an XML file, uses xml-parser and callbacks
      *
      * @param string $filename Filename of data file (full path)
-     * @return bool
-     * @throws cException|cInvalidArgumentException
+     * @throws cException|cInvalidArgumentException|DOMException
      */
     public function importModuleFromXML(string $filename): bool
     {
@@ -824,13 +828,20 @@ class cApiModule extends Item
                 if (!cFileHandler::exists($directory . $file)) {
                     // Skip parent and root directories
                     if (!cFileHandler::fileNameIsDot($file)) {
-                        $this->_addFolderToZip($directory . $file . '/', $zipArchive, $zipDirectory . $file . '/');
+                        $this->_addFolderToZip(
+                            $directory . $file . '/',
+                            $zipArchive,
+                            $zipDirectory . $file . '/'
+                        );
                     }
                 } else {
                     // Add the files
                     if ($zipArchive->addFile($directory . $file, $zipDirectory . $file) === false) {
                         $notification = new cGuiNotification();
-                        $notification->displayNotification('error', sprintf(i18n('Could not add file %s to zip!'), $file));
+                        $notification->displayNotification(
+                            'error',
+                            sprintf(i18n('Could not add file %s to zip!'), $file)
+                        );
                     }
                 }
             }
@@ -940,7 +951,7 @@ class cApiModule extends Item
      * @since CONTENIDO 4.10.2
      */
     protected static function _processContainerCode(
-        int  $containerNr,
+        int $containerNr,
         string $containerCfg,
         string &$moduleCode,
         bool $isModuleInput = true

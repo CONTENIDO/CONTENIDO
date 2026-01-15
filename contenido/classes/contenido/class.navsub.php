@@ -61,7 +61,11 @@ class cApiNavSubCollection extends ItemCollection
                 $area = $c->get('idarea');
             } else {
                 $area = 0;
-                cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
+                cWarning(
+                    __FILE__,
+                    __LINE__,
+                    "Could not resolve area [$area] passed to method [create], assuming 0"
+                );
             }
         }
 
@@ -95,34 +99,40 @@ class cApiNavSubCollection extends ItemCollection
      */
     public function getSubnavigationsByAreaName($area, $level = 1, $online = 1): array
     {
-        $level = (int)$level;
-        $online = (1 == $online) ? 1 : 0;
+        $level = cSecurity::toInteger($level);
+        $online = $online == 1 ? 1 : 0;
 
         $nav = new cGuiNavigation();
 
-        $sql = "SELECT
+        $this->db->query(
+            "SELECT
                     ns.location AS location,
                     a.name AS name,
                     a.menuless AS menuless
                 FROM
-                    " . cDb::getTableName('area') . " AS a,
-                    " . $this->table . " AS ns
+                    `%s` AS a,
+                    `%s` AS ns
                 WHERE
                     a.idarea = ns.idarea
                 AND
-                    ns.level = " . $level . "
+                    ns.level = %d
                 AND
-                    ns.online = " . $online . "
+                    ns.online = %d
                 AND (
-                    a.parent_id = '" . $this->db->escape($area) . "'
+                    a.parent_id = '%s'
                     OR
-                    a.name = '" . $this->db->escape($area) . "'
+                    a.name = '%s'
                 )
                 ORDER BY
                     a.parent_id ASC,
-                    ns.idnavs ASC";
-
-        $this->db->query($sql);
+                    ns.idnavs ASC",
+            cDb::getTableName('area'),
+            $this->table,
+            $level,
+            $online,
+            $area,
+            $area
+        );
 
         $areasNsRs = [];
         while ($this->db->nextRecord()) {

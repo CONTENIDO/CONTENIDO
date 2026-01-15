@@ -56,19 +56,19 @@ class cApiSearchTrackingCollection extends ItemCollection
      * @param string $searchTerm Term the user searched for
      * @param int $searchResults Number of results
      * @param string $timestamp [optional] Timestamp of the search
-     * @param int $idclient [optional] Client
-     * @param int $idlang [optional] Language
+     * @param int $clientId [optional] Client
+     * @param int $languageId [optional] Language
      * @return bool
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($searchTerm, $searchResults, $timestamp = "", $idclient = 0, $idlang = 0)
+    public function create($searchTerm, $searchResults, $timestamp = '', $clientId = 0, $languageId = 0)
     {
         $item = $this->createNewItem();
         $item->set('searchterm', $searchTerm);
         $item->set('results', $searchResults);
         $item->set('datesearched', ($timestamp == '') ? date('Y-m-d H:i:s') : $timestamp);
-        $item->set('idclient', ($idclient == 0) ? cRegistry::getClientId() : $idclient);
-        $item->set('idlang', ($idlang == 0) ? cRegistry::getLanguageId() : $idlang);
+        $item->set('idclient', $clientId == 0 ? cRegistry::getClientId() : $clientId);
+        $item->set('idlang', $languageId == 0 ? cRegistry::getLanguageId() : $languageId);
 
         return $item->store();
     }
@@ -92,10 +92,10 @@ class cApiSearchTrackingCollection extends ItemCollection
     /**
      * @deprecated [2019-03-27] Since CONTENIDO 4.10.1, We can't use fields created by AVG or COUNT here! Result sets received by this function will contain all search term entries, not the cumulated ones.
      */
-    public function selectPopularSearchTerms($idclient = 0, $idlang = 0)
+    public function selectPopularSearchTerms($clientId = 0, $languageId = 0)
     {
-        return $this->select('idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient)
-            . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang),
+        return $this->select('idclient=' . ($clientId == 0 ? cRegistry::getClientId() : $clientId)
+            . ' AND idlang=' . ($languageId == 0 ? cRegistry::getLanguageId() : $languageId),
             'searchterm, idsearchtracking, idclient, idlang, results, datesearched',
             'COUNT(searchterm) DESC'
         );
@@ -109,18 +109,23 @@ class cApiSearchTrackingCollection extends ItemCollection
      * - avgresults = Average result of the search term
      * - countsearchterm = The number of search for the search term
      *
-     * @param int $idclient [optional] Use this client instead of the current one
-     * @param int $idlang [optional] Use this language instead of the current one
+     * @param int $clientId [optional] Use this client instead of the current one
+     * @param int $languageId [optional] Use this language instead of the current one
      * @throws cDbException
      */
-    public function queryPopularSearchTerms($idclient = 0, $idlang = 0): cDb
+    public function queryPopularSearchTerms($clientId = 0, $languageId = 0): cDb
     {
-        $idclient = ($idclient == 0) ? cRegistry::getClientId() : $idclient;
-        $idlang = ($idlang == 0) ? cRegistry::getLanguageId() : $idclient;
         $db = cRegistry::getDb(); // Don't use own db instance, use a new one!
-        $sql = 'SELECT searchterm, AVG(results) AS avgresults, COUNT(searchterm) AS countsearchterm FROM `%s` '
-            . 'WHERE idclient=%d AND idlang=%d GROUP BY searchterm ORDER BY COUNT(searchterm) DESC';
-        $db->query($sql, $this->table, $idclient, $idlang);
+        $db->query(
+            "SELECT `searchterm`, AVG(`results`) AS `avgresults`, COUNT(`searchterm`) AS `countsearchterm`
+            FROM `%s`
+            WHERE `idclient` = %d AND `idlang` = %d
+            GROUP BY `searchterm`
+            ORDER BY COUNT(`searchterm`) DESC"
+            , $this->table,
+            $clientId == 0 ? cRegistry::getClientId() : $clientId,
+            $languageId == 0 ? cRegistry::getLanguageId() : $clientId
+        );
 
         return $db;
     }
@@ -129,15 +134,22 @@ class cApiSearchTrackingCollection extends ItemCollection
      * Select all entries about one search term for this client and language sorted by the date
      *
      * @param string $term Term the user searched for
-     * @param int $idclient [optional] Use this client instead of the current one
-     * @param int $idlang [optional] Use this language instead of the current one
+     * @param int $clientId [optional] Use this client instead of the current one
+     * @param int $languageId [optional] Use this language instead of the current one
      * @throws cDbException
      */
-    public function selectSearchTerm($term, $idclient = 0, $idlang = 0): bool
+    public function selectSearchTerm($term, $clientId = 0, $languageId = 0): bool
     {
-        return $this->select('searchterm=\'' . addslashes($term) . '\' AND idclient='
-            . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang='
-            . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), '', 'datesearched DESC');
+        return $this->select(
+            $this->db->prepare(
+                "`searchterm` = '%s' AND `idclient` = %d  AND `idlang` = %d",
+                $term,
+                ($clientId == 0 ? cRegistry::getClientId() : $clientId),
+                ($languageId == 0 ? cRegistry::getLanguageId() : $languageId)
+            ),
+            '',
+            '`datesearched` DESC'
+        );
     }
 
 }

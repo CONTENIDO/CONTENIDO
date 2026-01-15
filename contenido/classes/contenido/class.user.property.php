@@ -61,7 +61,9 @@ class cApiUserPropertyCollection extends ItemCollection
 
         if (!isset(self::$_enableCache)) {
             $cfg = cRegistry::getConfig();
-            self::$_enableCache = cSecurity::toBoolean($cfg['properties']['user_prop']['enable_cache'] ?? '0');
+            self::$_enableCache = cSecurity::toBoolean(
+                $cfg['properties']['user_prop']['enable_cache'] ?? '0'
+            );
         }
 
         $this->setUserId($userId);
@@ -100,18 +102,18 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param string $type
      * @param string $name
      * @param string $value
-     * @param int $idcatlang [optional]
+     * @param int $categoryLanguageId [optional]
      * @return cApiUserProperty
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function setValueByTypeName($type, $name, $value, $idcatlang = 0)
+    public function setValueByTypeName($type, $name, $value, $categoryLanguageId = 0)
     {
         $item = $this->fetchByUserIdTypeName($type, $name);
         if ($item) {
             $item->set('value', $value);
             $item->store();
         } else {
-            $item = $this->create($type, $name, $value, $idcatlang);
+            $item = $this->create($type, $name, $value, $categoryLanguageId);
         }
 
         if (self::$_enableCache) {
@@ -127,11 +129,11 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param string $type
      * @param string $name
      * @param string $value
-     * @param int $idcatlang [optional]
+     * @param int $categoryLanguageId [optional]
      * @return cApiUserProperty
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($type, $name, $value, $idcatlang = 0)
+    public function create($type, $name, $value, $categoryLanguageId = 0)
     {
         $item = $this->createNewItem();
 
@@ -139,7 +141,7 @@ class cApiUserPropertyCollection extends ItemCollection
         $item->set('type', $type);
         $item->set('name', $name);
         $item->set('value', $value);
-        $item->set('idcatlang', $idcatlang);
+        $item->set('idcatlang', $categoryLanguageId);
         $item->store();
 
         if (self::$_enableCache) {

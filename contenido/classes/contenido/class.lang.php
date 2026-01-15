@@ -44,7 +44,7 @@ class cApiLanguageCollection extends ItemCollection
      * @return cApiLanguage
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($name, $active, $encoding, $direction)
+    public function create($name, $active, $encoding, $direction, ?string $author = null)
     {
         $auth = cRegistry::getAuth();
 
@@ -54,7 +54,7 @@ class cApiLanguageCollection extends ItemCollection
         $item->set('active', $active, false);
         $item->set('encoding', $encoding, false);
         $item->set('direction', $direction, false);
-        $item->set('author', $auth->getUserId(), false);
+        $item->set('author', $author ?? $auth->getUserId(), false);
         $item->set('created', date('Y-m-d H:i:s'), false);
         $item->set('lastmodified', '0000-00-00 00:00:00', false);
         $item->store();
@@ -65,10 +65,9 @@ class cApiLanguageCollection extends ItemCollection
     /**
      * Returns next accessible language for current client and current logged-in user.
      *
-     * @return ?cApiLanguage
      * @throws cDbException|cException
      */
-    public function nextAccessible()
+    public function nextAccessible(): ?cApiLanguage
     {
         $item = $this->next();
 
@@ -79,7 +78,7 @@ class cApiLanguageCollection extends ItemCollection
         $client = cRegistry::getClientId();
 
         $clientsLanguageColl = new cApiClientLanguageCollection();
-        $clientsLanguageColl->select('idlang = ' . $item->get('idlang'));
+        $clientsLanguageColl->select('`idlang` = ' . $item->get('idlang'));
         if (($clientsLang = $clientsLanguageColl->next()) !== false) {
             if ($client != $clientsLang->get('idclient')) {
                 $item = $this->nextAccessible();
@@ -88,7 +87,11 @@ class cApiLanguageCollection extends ItemCollection
 
         if ($item) {
             $perm = cRegistry::getPerm();
-            if ($perm->have_perm_client('lang[' . $item->get('idlang') . ']') || $perm->have_perm_client('admin[' . $client . ']') || $perm->have_perm_client()) {
+            if (
+                $perm->have_perm_client('lang[' . $item->get('idlang') . ']')
+                || $perm->have_perm_client('admin[' . $client . ']')
+                || $perm->have_perm_client()
+            ) {
                 // Do nothing for now
             } else {
                 $item = $this->nextAccessible();
@@ -103,18 +106,15 @@ class cApiLanguageCollection extends ItemCollection
     /**
      * Returns the language name of the language with the given ID.
      *
-     * @param int $idlang The ID of the language
+     * @param int $languageId The ID of the language
      * @return string The name of the language
      * @throws cDbException|cException
      */
-    public function getLanguageName($idlang): string
+    public function getLanguageName($languageId): string
     {
-        $item = new cApiLanguage($idlang);
-        if ($item->isLoaded()) {
-            return $item->get('name');
-        } else {
-            return i18n('No language');
-        }
+        $item = new cApiLanguage($languageId);
+
+        return $item->isLoaded() ? $item->get('name') : i18n('No language');
     }
 
 }
@@ -180,7 +180,7 @@ class cApiLanguage extends Item
     }
 
     /**
-     * Loads all languagesettings into a static array.
+     * Loads all language settings into a static array.
      *
      * @param int $clientId Id of client to load properties from
      * @throws cDbException|cException
@@ -191,11 +191,12 @@ class cApiLanguage extends Item
         if (!isset(self::$_propertiesCacheLoaded[$clientId])) {
             self::$_propertiesCache[$clientId] = [];
 
-            $itemtype = $this->db->escape($this->getPrimaryKeyName());
-            $itemid = $this->db->escape($this->get($this->getPrimaryKeyName()));
-
             $propColl = $this->_getPropertiesCollectionInstance($clientId);
-            $propColl->select("itemtype='$itemtype' AND itemid='$itemid'", '', 'type, value ASC');
+            $propColl->select($this->db->prepare(
+                "`itemtype` = '%s' AND `itemid` = '%s'",
+                $this->getPrimaryKeyName(),
+                $this->get($this->getPrimaryKeyName())
+            ), '', 'type, value ASC');
 
             if (0 < $propColl->count()) {
                 while ($item = $propColl->next()) {

@@ -40,23 +40,23 @@ class cApiInUseCollection extends ItemCollection
      * - article - module - layout - template
      *
      * @param string $type Specifies the type to mark.
-     * @param mixed $objectid Specifies the object ID
+     * @param mixed $objectId Specifies the object ID
      * @param string $session Specifies the session for which the "in use" mark is valid
-     * @param string $user Specifies the user which requested the in-use flag
+     * @param string $userId Specifies the user which requested the in-use flag
      * @return ?cApiInUse
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function markInUse($type, $objectid, $session, $user)
+    public function markInUse($type, $objectId, $session, $userId)
     {
-        $this->select("type='" . $this->escape($type) . "' AND objectid='" . $this->escape($objectid) . "'");
+        $this->select("type='" . $this->escape($type) . "' AND objectid='" . $this->escape($objectId) . "'");
 
         $newItem = NULL;
         if (!$this->next()) {
             $newItem = $this->createNewItem();
             $newItem->set('type', $type);
-            $newItem->set('objectid', $objectid);
+            $newItem->set('objectid', $objectId);
             $newItem->set('session', $session);
-            $newItem->set('userid', $user);
+            $newItem->set('userid', $userId);
             $newItem->set('timestamp', time());
             $newItem->store();
         }
@@ -67,17 +67,17 @@ class cApiInUseCollection extends ItemCollection
      * Removes the "in use" mark from a specific object.
      *
      * @param string $type Specifies the type to de-mark.
-     * @param mixed $objectid Specifies the object ID
+     * @param mixed $objectId Specifies the object ID
      * @param string $session Specifies the session for which the "in use" mark is valid
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function removeMark($type, $objectid, $session)
+    public function removeMark($type, $objectId, $session)
     {
         $type = $this->escape($type);
-        $objectid = $this->escape($objectid);
+        $objectId = $this->escape($objectId);
         $session = $this->escape($session);
 
-        $this->select("type='" . $type . "' AND objectid='" . $objectid . "' AND session='" . $session . "'");
+        $this->select("type='" . $type . "' AND objectid='" . $objectId . "' AND session='" . $session . "'");
 
         if (($obj = $this->next()) !== false) {
             // Remove entry
@@ -111,15 +111,15 @@ class cApiInUseCollection extends ItemCollection
      * Removes the mark for a specific item
      *
      * @param string $type Specifies the type to de-mark.
-     * @param string $itemid Specifies the item
+     * @param string $objectId Specifies the item
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function removeItemMarks($type, $itemid)
+    public function removeItemMarks($type, $objectId)
     {
         $type = $this->escape($type);
-        $itemid = $this->escape($itemid);
+        $objectId = $this->escape($objectId);
 
-        $this->select("type='" . $type . "' AND objectid='" . $itemid . "'");
+        $this->select("type='" . $type . "' AND objectid='" . $objectId . "'");
 
         while ($obj = $this->next()) {
             // Remove entry
@@ -187,16 +187,16 @@ class cApiInUseCollection extends ItemCollection
      * Checks if a specific item is marked
      *
      * @param string $type Specifies the type to de-mark.
-     * @param mixed $objectid Specifies the object ID
+     * @param mixed $objectId Specifies the object ID
      * @return cApiInUse|bool false if it's not in use or returns the object if it is.
      * @throws cDbException|cException
      */
-    public function checkMark($type, $objectid)
+    public function checkMark($type, $objectId)
     {
         $type = $this->escape($type);
-        $objectid = $this->escape($objectid);
+        $objectId = $this->escape($objectId);
 
-        $this->select("type='" . $type . "' AND objectid='" . $objectid . "'");
+        $this->select("type='" . $type . "' AND objectid='" . $objectId . "'");
 
         if (($obj = $this->next()) !== false) {
             return $obj;
@@ -213,7 +213,7 @@ class cApiInUseCollection extends ItemCollection
      * $idmod);
      *
      * @param string $type Specifies the type to de-mark.
-     * @param mixed $objectid Specifies the object ID
+     * @param mixed $objectId Specifies the object ID
      * @param bool $returnWarning If true, also returns an error message if in use
      * @param string $warningTemplate String to fill with the template (%s as placeholder, first %s is
      *     the username, second is the real name).
@@ -223,8 +223,14 @@ class cApiInUseCollection extends ItemCollection
      *      If returnWarning is true, returns a 2-item array (bool inUse, string errormessage).
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function checkAndMark($type, $objectid, $returnWarning = false, $warningTemplate = '', $allowOverride = false, $location = '')
-    {
+    public function checkAndMark(
+        $type,
+        $objectId,
+        $returnWarning = false,
+        $warningTemplate = '',
+        $allowOverride = false,
+        $location = ''
+    ) {
         global $notification;
 
         $sess = cRegistry::getSession();
@@ -233,12 +239,12 @@ class cApiInUseCollection extends ItemCollection
         $inUse = false;
         $notificationMsg = '';
 
-        if ((($obj = $this->checkMark($type, $objectid)) === false) || ($auth->getUserId() == $obj->get('userid'))) {
-            $this->markInUse($type, $objectid, $sess->id, $auth->getUserId());
+        if ((($obj = $this->checkMark($type, $objectId)) === false) || ($auth->getUserId() == $obj->get('userid'))) {
+            $this->markInUse($type, $objectId, $sess->id, $auth->getUserId());
         } elseif ($returnWarning) {
-            $vuser = new cApiUser($obj->get('userid'));
-            $inUseUser = $vuser->getField('username');
-            $inUseUserRealName = $vuser->getField('realname');
+            $user = new cApiUser($obj->get('userid'));
+            $inUseUser = $user->getField('username');
+            $inUseUserRealName = $user->getField('realname');
 
             $message = sprintf($warningTemplate, $inUseUser, $inUseUserRealName);
 
@@ -246,7 +252,7 @@ class cApiInUseCollection extends ItemCollection
             if ($allowOverride && ($auth->getUserId() == $obj->get('userid') || $perm->have_perm())) {
                 $alt = i18n("Click here if you want to override the lock");
 
-                $link = $sess->url($location . "&overridetype=" . $type . "&overrideid=" . $objectid);
+                $link = $sess->url($location . "&overridetype=" . $type . "&overrideid=" . $objectId);
 
                 $warnMsg = i18n("Do you really want to override the lock?");
                 $linkScript = "javascript:if (window.confirm('" . $warnMsg . "') == true) { window.location.href  = '" . $link . "';}";

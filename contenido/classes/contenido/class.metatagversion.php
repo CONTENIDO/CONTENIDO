@@ -41,22 +41,22 @@ class cApiMetaTagVersionCollection extends ItemCollection
     /**
      * Creates a meta-tag entry.
      *
-     * @param int $idMetaTag
-     * @param int $idArtLang
-     * @param int $idMetaType
+     * @param int $metaTagId
+     * @param int $articleLanguageId
+     * @param int $metaTypeId
      * @param string $metaValue
      * @param string $version
      * @return cApiMetaTagVersion
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idMetaTag, $idArtLang, $idMetaType, $metaValue, $version)
+    public function create($metaTagId, $articleLanguageId, $metaTypeId, $metaValue, $version)
     {
         // create item
         $item = $this->createNewItem();
 
-        $item->set('idmetatag', $idMetaTag, false);
-        $item->set('idartlang', $idArtLang, false);
-        $item->set('idmetatype', $idMetaType, false);
+        $item->set('idmetatag', $metaTagId, false);
+        $item->set('idartlang', $articleLanguageId, false);
+        $item->set('idmetatype', $metaTypeId, false);
         $item->set('metavalue', $metaValue, false);
         $item->set('version', $version, false);
         $item->store();
@@ -67,29 +67,29 @@ class cApiMetaTagVersionCollection extends ItemCollection
     /**
      * Returns a meta-tag entry by article language and meta type and version.
      *
-     * @param int $idArtLang
-     * @param int $idMetaType
+     * @param int $articleLanguageId
+     * @param int $metaTypeId
      * @param int $version
      * @return cApiMetaTagVersion
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function fetchByArtLangMetaTypeAndVersion($idArtLang, $idMetaType, $version): cApiMetaTagVersion
+    public function fetchByArtLangMetaTypeAndVersion($articleLanguageId, $metaTypeId, $version): cApiMetaTagVersion
     {
-        $sql = 'SELECT idmetatagversion FROM %s
-                WHERE (idmetatype, version)
-                    IN (SELECT idmetatype, max(version)
+        $sql = 'SELECT `idmetatagversion` FROM %s
+                WHERE (`idmetatype`, `version`)
+                    IN (SELECT `idmetatype`, MAX(`version`)
                     FROM %s
-                    WHERE idartlang = %d AND version <= %d AND idmetatype = %d group by idmetatype)
-                AND idartlang = %d';
+                    WHERE `idartlang` = %d AND `version` <= %d AND `idmetatype` = %d GROUP BY `idmetatype`)
+                AND `idartlang` = %d';
 
         $this->db->query(
             $sql,
             cDb::getTableName('meta_tag_version'),
             cDb::getTableName('meta_tag_version'),
-            (int)$idArtLang,
-            (int)$version,
-            (int)$idMetaType,
-            (int)$idArtLang
+            $articleLanguageId,
+            $version,
+            $metaTypeId,
+            $articleLanguageId
         );
 
         $this->db->nextRecord();
@@ -160,13 +160,20 @@ class cApiMetaTagVersion extends Item
     public function markAsCurrent()
     {
         $metaTagColl = new cApiMetaTagCollection();
-        $metaTag = $metaTagColl->fetchByArtLangAndMetaType($this->get('idartlang'), $this->get('idmetatype'));
+        $metaTag = $metaTagColl->fetchByArtLangAndMetaType(
+            $this->get('idartlang'),
+            $this->get('idmetatype')
+        );
         if ($metaTag != NULL) {
             $metaTag->set('metavalue', $this->get('metavalue'), false);
             return $metaTag->store();
         } else {
             $metaTag = new cApiMetaTagCollection();
-            $metaTag->create($this->get('idartlang'), $this->get('idmetatype'), $this->get('metavalue'));
+            $metaTag->create(
+                $this->get('idartlang'),
+                $this->get('idmetatype'),
+                $this->get('metavalue')
+            );
         }
     }
 
@@ -179,7 +186,13 @@ class cApiMetaTagVersion extends Item
     public function markAsEditable($version)
     {
         $metaTagVersionColl = new cApiMetaTagVersionCollection();
-        $metaTagVersionColl->create($this->get('idmetatag'), $this->get('idartlang'), $this->get('idmetatype'), $this->get('metavalue'), $version);
+        $metaTagVersionColl->create(
+            $this->get('idmetatag'),
+            $this->get('idartlang'),
+            $this->get('idmetatype'),
+            $this->get('metavalue'),
+            $version
+        );
     }
 
     /**

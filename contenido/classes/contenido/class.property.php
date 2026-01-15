@@ -106,18 +106,18 @@ class cApiPropertyCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param int $idclient [optional] Client id
+     * @param int $clientId [optional] Client id
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function __construct($idclient = 0)
+    public function __construct($clientId = 0)
     {
-        if (0 === $idclient) {
+        if ($clientId) {
             // @todo Make client id parameter mandatory, otherwise using the global variable
             // may lead to unwanted issues!
-            $idclient = cRegistry::getClientId();
+            $clientId = cRegistry::getClientId();
         }
 
-        $this->client = cSecurity::toInteger($idclient);
+        $this->client = cSecurity::toInteger($clientId);
         parent::__construct(cDb::getTableName('properties'), 'idproperty');
         $this->_setItemClass('cApiProperty');
 
@@ -126,13 +126,18 @@ class cApiPropertyCollection extends ItemCollection
 
         if (!isset(self::$_enableCache)) {
             $cfg = cRegistry::getConfig();
-            self::$_enableCache = cSecurity::toBoolean($cfg['properties']['properties']['enable_cache'] ?? '0');
+            self::$_enableCache = cSecurity::toBoolean(
+                $cfg['properties']['properties']['enable_cache'] ?? '0'
+            );
             if (self::$_enableCache) {
-                if (isset($cfg['properties']['properties']['itemtypes']) && is_array($cfg['properties']['properties']['itemtypes'])) {
+                if (isset(
+                    $cfg['properties']['properties']['itemtypes'])
+                    && is_array($cfg['properties']['properties']['itemtypes'])
+                ) {
                     self::$_cacheItemtypes = $cfg['properties']['properties']['itemtypes'];
                     foreach (self::$_cacheItemtypes as $name => $value) {
                         if ('%client%' == $value) {
-                            self::$_cacheItemtypes[$name] = (int)$idclient;
+                            self::$_cacheItemtypes[$name] = (int)$clientId;
                         } elseif ('%lang%' == $value) {
                             self::$_cacheItemtypes[$name] = cRegistry::getLanguageId();
                         } else {
@@ -167,24 +172,24 @@ class cApiPropertyCollection extends ItemCollection
      * $property = $properties->create('idcat', 27, 'visual', 'image', 'images/tool.gif');
      * </pre>
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $itemType Type of the item (example: idcat)
+     * @param mixed $itemId ID of the item (example: 31)
      * @param mixed $type Type of the data to store (arbitrary data)
      * @param mixed $name Entry name
      * @param mixed $value Value
-     * @param bool $bDontEscape [optional; default false] on internal call do not escape parameters again
+     * @param bool $dontEscape [optional; default false] on internal call do not escape parameters again
      *      NOTE: This parameter is deprecated since 2013-11-26
      * @return cApiProperty
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($itemtype, $itemid, $type, $name, $value, $bDontEscape = false)
+    public function create($itemType, $itemId, $type, $name, $value, $dontEscape = false)
     {
         $auth = cRegistry::getAuth();
         $item = $this->createNewItem();
 
         $item->set('idclient', $this->client);
-        $item->set('itemtype', $itemtype, false);
-        $item->set('itemid', $itemid, false);
+        $item->set('itemtype', $itemType, false);
+        $item->set('itemid', $itemId, false);
         $item->set('type', $type);
         $item->set('name', $name);
         $item->set('value', $value);
@@ -193,7 +198,7 @@ class cApiPropertyCollection extends ItemCollection
         $item->set('author', $auth->getUserId());
         $item->store();
 
-        if ($this->_useCache($itemtype, $itemid)) {
+        if ($this->_useCache($itemType, $itemId)) {
             $this->_addToCache($item);
         }
 
@@ -209,25 +214,38 @@ class cApiPropertyCollection extends ItemCollection
      * $value = $properties->getValue('idcat', 27, 'visual', 'image');
      * </pre>
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid  ID of the item (example: 31)
+     * @param mixed $itemType Type of the item (example: idcat)
+     * @param mixed $itemId  ID of the item (example: 31)
      * @param mixed $type Type of the data to store (arbitrary data)
      * @param mixed $name Entry name
      * @param mixed $default [optional] to be returned if no item was found
      * @return mixed Value
      * @throws cDbException|cException
      */
-    public function getValue($itemtype, $itemid, $type, $name, $default = false)
+    public function getValue($itemType, $itemId, $type, $name, $default = false)
     {
-        if ($this->_useCache($itemtype, $itemid)) {
-            return $this->_getValueFromCache($itemtype, $itemid, $type, $name, $default);
+        if ($this->_useCache($itemType, $itemId)) {
+            return $this->_getValueFromCache($itemType, $itemId, $type, $name, $default);
         }
 
         if (isset($this->client)) {
-            $sql = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s' AND type = '%s' AND name = '%s'", $this->client, $itemtype, $itemid, $type, $name);
+            $sql = $this->db->prepare(
+                "`idclient` = %d AND `itemtype` = '%s' AND `itemid` = '%s' AND `type` = '%s' AND `name` = '%s'",
+                $this->client,
+                $itemType,
+                $itemId,
+                $type,
+                $name
+            );
         } else {
             // @todo We never get here, since this class will always have a set client property!
-            $sql = $this->db->prepare("itemtype = '%s' AND itemid = '%s' AND type = '%s' AND name = '%s'", $itemtype, $itemid, $type, $name);
+            $sql = $this->db->prepare(
+                "`itemtype` = '%s' AND `itemid` = '%s' AND `type` = '%s' AND `name` = '%s'",
+                $itemType,
+                $itemId,
+                $type,
+                $name
+            );
         }
         $this->select($sql);
 
@@ -247,25 +265,36 @@ class cApiPropertyCollection extends ItemCollection
      * $values = $properties->getValuesByType('idcat', 27, 'visual');
      * </pre>
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $itemType Type of the item (example: idcat)
+     * @param mixed $itemId ID of the item (example: 31)
      * @param mixed $type Type of the data to store (arbitrary data)
      * @return array Value
      * @throws cDbException|cException
      */
-    public function getValuesByType($itemtype, $itemid, $type): array
+    public function getValuesByType($itemType, $itemId, $type): array
     {
-        if ($this->_useCache($itemtype, $itemid)) {
-            return $this->_getValuesByTypeFromCache($itemtype, $itemid, $type);
+        if ($this->_useCache($itemType, $itemId)) {
+            return $this->_getValuesByTypeFromCache($itemType, $itemId, $type);
         }
 
         $aResult = [];
 
         if (isset($this->client)) {
-            $sql = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s' AND type = '%s'", $this->client, $itemtype, $itemid, $type);
+            $sql = $this->db->prepare(
+                "`idclient` = %d AND `itemtype` = '%s' AND `itemid` = '%s' AND `type` = '%s'",
+                $this->client,
+                $itemType,
+                $itemId,
+                $type
+            );
         } else {
             // @fixme We never get here, since this class will always have a set client property!
-            $sql = $this->db->prepare("itemtype = '%s' AND itemid = '%s' AND type = '%s'", $itemtype, $itemid, $type);
+            $sql = $this->db->prepare(
+                "`itemtype` = '%s' AND `itemid` = '%s' AND `type` = '%s'",
+                $itemType,
+                $itemId,
+                $type
+            );
         }
         $this->select($sql);
 
@@ -292,15 +321,14 @@ class cApiPropertyCollection extends ItemCollection
      */
     public function getValuesOnlyByTypeName($type, $name): array
     {
-        $aResult = [];
+        $result = [];
 
-        $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
-        $this->select($sql);
+        $this->select($this->db->prepare("`type` = '%s' AND `name` = '%s'", $type, $name));
         while ($item = $this->next()) {
-            $aResult[] = cSecurity::unescapeDB($item->get('value'));
+            $result[] = cSecurity::unescapeDB($item->get('value'));
         }
 
-        return $aResult;
+        return $result;
     }
 
     /**
@@ -314,8 +342,8 @@ class cApiPropertyCollection extends ItemCollection
      * $properties->setValue('idcat', 27, 'visual', 'image', 'images/tool.gif');
      * </pre>
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $itemType Type of the item (example: idcat)
+     * @param mixed $itemId ID of the item (example: 31)
      * @param mixed $type Type of the data to store (arbitrary data)
      * @param mixed $name  Entry name
      * @param mixed $value  Value
@@ -324,19 +352,19 @@ class cApiPropertyCollection extends ItemCollection
      * @return bool
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function setValue($itemtype, $itemid, $type, $name, $value, $idProp = 0)
+    public function setValue($itemType, $itemId, $type, $name, $value, $idProp = 0)
     {
         $idProp = cSecurity::toInteger($idProp);
 
         if ($idProp == 0) {
             $where = $this->db->prepare(
                 "`idclient` = %d AND `itemtype` = '%s' AND `itemid` = '%s' AND `type` = '%s' AND `name` = '%s'",
-                $this->client, $itemtype, $itemid, $type, $name
+                $this->client, $itemType, $itemId, $type, $name
             );
         } else {
             $where = $this->db->prepare(
                 "`idclient` = %d AND `itemtype` = '%s' AND `itemid` = '%s' AND `idproperty` = %d",
-                $this->client, $itemtype, $itemid, $idProp
+                $this->client, $itemType, $itemId, $idProp
             );
         }
         $this->select($where);
@@ -347,11 +375,11 @@ class cApiPropertyCollection extends ItemCollection
             $item->set('type', $type);
             $result = $item->store();
 
-            if ($this->_useCache($itemtype, $itemid)) {
+            if ($this->_useCache($itemType, $itemId)) {
                 $this->_addToCache($item);
             }
         } else {
-            $item = $this->create($itemtype, $itemid, $type, $name, $value, true);
+            $item = $this->create($itemType, $itemId, $type, $name, $value, true);
             $result = is_object($item);
         }
 
@@ -367,25 +395,25 @@ class cApiPropertyCollection extends ItemCollection
      * $properties->deleteValue('idcat', 27, 'visual', 'image');
      * </pre>
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $itemType Type of the item (example: idcat)
+     * @param mixed $itemId ID of the item (example: 31)
      * @param mixed $type Type of the data to store (arbitrary data)
      * @param mixed $name Entry name
      * @return int the number of deleted entries (rows)
      * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteValue($itemtype, $itemid, $type, $name): int
+    public function deleteValue($itemType, $itemId, $type, $name): int
     {
         if (isset($this->client)) {
             $where = $this->db->prepare(
                 "`idclient` = %d AND `itemtype` = '%s' AND `itemid` = '%s' AND `type` = '%s' AND `name` = '%s'",
-                $this->client, $itemtype, $itemid, $type, $name
+                $this->client, $itemType, $itemId, $type, $name
             );
         } else {
             // @fixme We never get here, since this class will always have a set client property!
             $where = $this->db->prepare(
                 "`itemtype` = '%s' AND `itemid` = '%s' AND `type` = '%s' AND `name` = '%s'",
-                $itemtype, $itemid, $type, $name
+                $itemType, $itemId, $type, $name
             );
         }
 
@@ -402,38 +430,38 @@ class cApiPropertyCollection extends ItemCollection
     /**
      * Checks if values for a given item are available.
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $itemType Type of the item (example: idcat)
+     * @param mixed $itemId ID of the item (example: 31)
      * @return array For each given item
      * @throws cDbException|cException
      */
-    public function getProperties($itemtype, $itemid)
+    public function getProperties($itemType, $itemId)
     {
-        if ($this->_useCache($itemtype, $itemid)) {
-            return $this->_getPropertiesFromCache($itemtype, $itemid);
+        if ($this->_useCache($itemType, $itemId)) {
+            return $this->_getPropertiesFromCache($itemType, $itemId);
         }
 
         if (isset($this->client)) {
             $sql = $this->db->prepare(
                 "`idclient` = %d AND `itemtype` = '%s' AND `itemid` = '%s'",
-                $this->client, $itemtype, $itemid
+                $this->client, $itemType, $itemId
             );
         } else {
             // @fixme We never get here, since this class will always have a set client property!
             $sql = $this->db->prepare(
                 "`itemtype` = '%s' AND `itemid` = '%s'",
-                $itemtype, $itemid
+                $itemType, $itemId
             );
         }
         $this->select($sql);
 
-        // @TODO The initial value of $result[$itemid] should be an empty array, but this breaks the compatibility
-        $result[$itemid] = false;
+        // @TODO The initial value of $result[$itemId] should be an empty array, but this breaks the compatibility
+        $result[$itemId] = false;
 
         while ($item = $this->next()) {
             // Fix automatic conversion of false to array warning, see initial value above!
-            if ($result[$itemid] === false) {
-                $result[$itemid] = [];
+            if ($result[$itemId] === false) {
+                $result[$itemId] = [];
             }
             // enable accessing property values per number and field name
             $result[$item->get('itemid')][$item->get('idproperty')] = [
@@ -468,7 +496,13 @@ class cApiPropertyCollection extends ItemCollection
         $fieldValue = $this->db->escape($fieldValue);
 
         if (isset($this->client)) {
-            $this->select("`idclient` = " . $this->client . " AND `" . $field . "` = '" . $fieldValue . "'" . $authString, '', 'itemid');
+            $this->select(sprintf(
+                "`idclient` = %d AND `%s` = '%s'%s",
+                $this->client,
+                $field,
+                $fieldValue,
+                $authString
+            ), '', 'itemid');
         } else {
             // @fixme We never get here, since this class will always have a set client property!
             $this->select("`" . $field . "` = '" . $fieldValue . "'" . $authString);
@@ -497,22 +531,22 @@ class cApiPropertyCollection extends ItemCollection
     /**
      * Delete all properties which match itemtype and itemid
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $itemType Type of the item (example: idcat)
+     * @param mixed $itemId ID of the item (example: 31)
      * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteProperties($itemtype, $itemid)
+    public function deleteProperties($itemType, $itemId)
     {
         if (isset($this->client)) {
             $where = $this->db->prepare(
                 "`idclient` = %d AND `itemtype` = '%s' AND `itemid` = '%s'",
-                $this->client, $itemtype, $itemid
+                $this->client, $itemType, $itemId
             );
         } else {
             // @fixme We never get here, since this class will always have a set client property!
             $where = $this->db->prepare(
                 "`itemtype` = '%s' AND `itemid` = '%s'",
-                $itemtype, $itemid
+                $itemType, $itemId
             );
         }
 
@@ -524,21 +558,21 @@ class cApiPropertyCollection extends ItemCollection
     /**
      * Delete all properties which match itemtype and multiple itemids.
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
+     * @param mixed $itemType Type of the item (example: idcat)
      * @param array $itemids Ids of multiple items (example: [31,12,22])
      * @throws cDbException|cInvalidArgumentException
      */
-    public function deletePropertiesMultiple($itemtype, array $itemids)
+    public function deletePropertiesMultiple($itemType, array $itemIds)
     {
-        $itemtype = $this->db->escape($itemtype);
-        $itemids = array_map([$this, 'escape'], $itemids);
-        $in = "'" . implode("', '", $itemids) . "'";
+        $itemType = $this->db->escape($itemType);
+        $itemIds = array_map([$this, 'escape'], $itemIds);
+        $in = "'" . implode("', '", $itemIds) . "'";
 
         if (isset($this->client)) {
-            $where = "`idclient` = " . $this->client . " AND `itemtype` = '" . $itemtype . "' AND `itemid` IN (" . $in . ")";
+            $where = "`idclient` = " . $this->client . " AND `itemtype` = '" . $itemType . "' AND `itemid` IN (" . $in . ")";
         } else {
             // @fixme We never get here, since this class will always have a set client property!
-            $where = "`itemtype` = '" . $itemtype . "' AND `itemid` IN (" . $in . ")";
+            $where = "`itemtype` = '" . $itemType . "' AND `itemid` IN (" . $in . ")";
         }
 
         $idProperties = $this->getIdsByWhereClause($where);
@@ -549,11 +583,11 @@ class cApiPropertyCollection extends ItemCollection
     /**
      * Changes the client
      *
-     * @param int $idclient
+     * @param int $clientId
      */
-    public function changeClient($idclient)
+    public function changeClient($clientId)
     {
-        $this->client = cSecurity::toInteger($idclient);
+        $this->client = cSecurity::toInteger($clientId);
     }
 
     /**
@@ -569,11 +603,11 @@ class cApiPropertyCollection extends ItemCollection
         }
 
         $where = [];
-        foreach (self::$_cacheItemtypes as $itemtype => $itemid) {
-            if (is_numeric($itemid)) {
-                $where[] = "(`itemtype` = '" . $itemtype . "' AND `itemid` = " . $itemid . ")";
+        foreach (self::$_cacheItemtypes as $itemType => $itemId) {
+            if (is_numeric($itemId)) {
+                $where[] = "(`itemtype` = '" . $itemType . "' AND `itemid` = " . $itemId . ")";
             } else {
-                $where[] = "(`itemtype` = '" . $itemtype . "' AND `itemid` = '" . $itemid . "')";
+                $where[] = "(`itemtype` = '" . $itemType . "' AND `itemid` = '" . $itemId . "')";
             }
         }
 
@@ -591,22 +625,22 @@ class cApiPropertyCollection extends ItemCollection
 
     /**
      *
-     * @param string $itemtype [optional]
-     * @param int $itemid [optional]
+     * @param string $itemType [optional]
+     * @param int $itemId [optional]
      */
-    protected function _useCache($itemtype = NULL, $itemid = NULL): bool
+    protected function _useCache($itemType = NULL, $itemId = NULL): bool
     {
         $client = cRegistry::getClientId();
         $ok = self::$_enableCache && $this->client == $client;
         if (!$ok) {
             return $ok;
-        } elseif ($itemtype == NULL || $itemid == NULL) {
+        } elseif ($itemType == NULL || $itemId == NULL) {
             return $ok;
         }
 
         foreach (self::$_cacheItemtypes as $name => $value) {
-            if ((isset($value['itemtype']) && $itemtype == $value['itemtype'])
-                || (isset($value['itemid']) && $itemid == $value['itemid'])) {
+            if ((isset($value['itemtype']) && $itemType == $value['itemtype'])
+                || (isset($value['itemid']) && $itemId == $value['itemid'])) {
                 return true;
             }
         }
@@ -634,7 +668,7 @@ class cApiPropertyCollection extends ItemCollection
     /**
      * Adds a entry to the cache.
      *
-     * @param cApiUserProperty $entry
+     * @param cApiProperty|cApiUserProperty $entry
      */
     protected function _addToCache($entry)
     {
@@ -671,17 +705,17 @@ class cApiPropertyCollection extends ItemCollection
     /**
      * Returns the value for a given item from cache.
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $itemType Type of the item (example: idcat)
+     * @param mixed $itemId ID of the item (example: 31)
      * @param mixed $type Type of the data to store (arbitrary data)
      * @param mixed $name Entry name
      * @param mixed $default [optional] to be returned if no item was found
      * @return mixed Value
      */
-    protected function _getValueFromCache($itemtype, $itemid, $type, $name, $default = false)
+    protected function _getValueFromCache($itemType, $itemId, $type, $name, $default = false)
     {
         foreach (self::$_entries as $id => $entry) {
-            if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid && $entry['type'] == $type && $entry['name'] == $name) {
+            if ($entry['itemtype'] == $itemType && $entry['itemid'] == $itemId && $entry['type'] == $type && $entry['name'] == $name) {
                 return cSecurity::unescapeDB($entry['value']);
             }
         }
@@ -692,17 +726,17 @@ class cApiPropertyCollection extends ItemCollection
     /**
      * Returns the values for a given item by its type from cache.
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $itemType Type of the item (example: idcat)
+     * @param mixed $itemId ID of the item (example: 31)
      * @param mixed $type Type of the data to store (arbitrary data)
      * @return array Value
      */
-    protected function _getValuesByTypeFromCache($itemtype, $itemid, $type): array
+    protected function _getValuesByTypeFromCache($itemType, $itemId, $type): array
     {
         $result = [];
 
         foreach (self::$_entries as $id => $entry) {
-            if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid && $entry['type'] == $type) {
+            if ($entry['itemtype'] == $itemType && $entry['itemid'] == $itemId && $entry['type'] == $type) {
                 $result[$entry['name']] = cSecurity::unescapeDB($entry['value']);
             }
         }
@@ -713,17 +747,17 @@ class cApiPropertyCollection extends ItemCollection
     /**
      * Returns properties for given item are available.
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $itemType Type of the item (example: idcat)
+     * @param mixed $itemId ID of the item (example: 31)
      * @return array For each given item
      */
-    public function _getPropertiesFromCache($itemtype, $itemid): array
+    public function _getPropertiesFromCache($itemType, $itemId): array
     {
         $result = [];
-        $result[$itemid] = false;
+        $result[$itemId] = false;
 
         foreach (self::$_entries as $id => $entry) {
-            if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid) {
+            if ($entry['itemtype'] == $itemType && $entry['itemid'] == $itemId) {
                 // enable accessing property values per number and field name
                 $result[$entry['itemid']][$entry['idproperty']] = [
                     0 => $entry['type'],

@@ -70,11 +70,11 @@ class cApiDbfsCollection extends ItemCollection
                     return;
                 }
             }
-            $mimetype = $dbfs->get('mimetype');
+            $mimeType = $dbfs->get('mimetype');
 
             header('Cache-Control: '); // leave blank to avoid IE errors
             header('Pragma: '); // leave blank to avoid IE errors
-            header("Content-Type: $mimetype");
+            header("Content-Type: $mimeType");
             header('Etag: ' . md5(mt_rand()));
 
             // Check, if output of Content-Disposition header should be skipped
@@ -82,7 +82,7 @@ class cApiDbfsCollection extends ItemCollection
             $contentDispositionHeader = true;
             $cfg = cRegistry::getConfig();
             foreach ($cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] as $mt) {
-                if (cString::toLowerCase($mt) == cString::toLowerCase($mimetype)) {
+                if (cString::toLowerCase($mt) == cString::toLowerCase($mimeType)) {
                     $contentDispositionHeader = false;
                     break;
                 }
@@ -104,9 +104,9 @@ class cApiDbfsCollection extends ItemCollection
     {
         $targetFile = cApiDbfs::stripPath($targetFile);
         $stat = cFileHandler::info($localFile);
-        $mimetype = $stat['mime'];
+        $mimeType = $stat['mime'];
 
-        $this->write($targetFile, cFileHandler::read($localFile), $mimetype);
+        $this->write($targetFile, cFileHandler::read($localFile), $mimeType);
     }
 
     /**
@@ -125,15 +125,15 @@ class cApiDbfsCollection extends ItemCollection
      * Writes dbfs file, creates if if not exists.
      *
      * @param string $content [optional]
-     * @param string $mimetype [optional]
+     * @param string $mimeType [optional]
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function write(string $filename, $content = '', $mimetype = '')
+    public function write(string $filename, $content = '', $mimeType = '')
     {
         $filename = cApiDbfs::stripPath($filename);
 
         if (!$this->fileExists($filename)) {
-            $this->create($filename, $mimetype);
+            $this->create($filename, $mimeType);
         }
         $this->setContent($filename, $content);
     }
@@ -215,12 +215,12 @@ class cApiDbfsCollection extends ItemCollection
     /**
      * Creates a dbfs item entry
      * @param string $path
-     * @param string $mimetype [optional]
+     * @param string $mimeType [optional]
      * @param string $content [optional]
      * @return cApiDbfs|false
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($path, $mimetype = '', $content = '')
+    public function create($path, $mimeType = '', $content = '')
     {
         $client = cRegistry::getClientId();
 
@@ -261,8 +261,8 @@ class cApiDbfsCollection extends ItemCollection
             $item->set('filename', $filename);
             $item->set('size', cString::getStringLength($content));
 
-            if ($mimetype != '') {
-                $item->set('mimetype', $mimetype);
+            if ($mimeType != '') {
+                $item->set('mimetype', $mimeType);
             }
 
             $auth = cRegistry::getAuth();

@@ -39,13 +39,12 @@ class cApiKeywordCollection extends ItemCollection
      * @param string $exp [optional]
      * @param string $auto
      * @param string $self [optional]
-     * @param int $idlang
+     * @param int $languageId
      * @return cApiKeyword
      * @throws cDbException|cException|cInvalidArgumentException
      * @todo params w/ defaults should be relocated
-     *
      */
-    public function create($keyword, $exp = '', $auto, $self = '', $idlang)
+    public function create($keyword, $exp = '', $auto, $self = '', $languageId)
     {
         $item = $this->createNewItem();
 
@@ -53,7 +52,7 @@ class cApiKeywordCollection extends ItemCollection
         $item->set('exp', $exp);
         $item->set('auto', $auto);
         $item->set('self', $self);
-        $item->set('idlang', $idlang);
+        $item->set('idlang', $languageId);
 
         $item->store();
 

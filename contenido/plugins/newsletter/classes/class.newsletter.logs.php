@@ -167,7 +167,7 @@ class NewsletterLogCollection extends ItemCollection
      * Overridden delete function to update recipient count if removing recipient from the list
      *
      * @inheritDoc
-     * @param int $id ID
+     * @param int $id The newsletter log id.
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function delete($id)

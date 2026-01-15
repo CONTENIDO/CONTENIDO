@@ -78,7 +78,7 @@ class WorkflowTask extends Item
      */
     public function __construct()
     {
-        parent::__construct(cDb::getTableName('tasks'), "idtask");
+        parent::__construct(cDb::getTableName('tasks'), 'idtask');
     }
 
 }

@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Actionlog collection.
+ * Action log collection.
  *
  * @package    Core
  * @subpackage GenericDB_Model
@@ -62,15 +62,15 @@ class cApiActionlogCollection extends ItemCollection
      * Creates an actionlog item.
      *
      * @param string $userId User id
-     * @param int $idclient
-     * @param int $idlang
-     * @param int $idaction
-     * @param int $idcatart
+     * @param int $clientId
+     * @param int $languageId
+     * @param int $actionId
+     * @param int $categoryArticleId
      * @param string $logtimestamp [optional]
      * @return cApiActionlog
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '')
+    public function create($userId, $clientId, $languageId, $actionId, $categoryArticleId, $logtimestamp = '')
     {
         $item = $this->createNewItem();
 
@@ -79,10 +79,10 @@ class cApiActionlogCollection extends ItemCollection
         }
 
         $item->set('user_id', $userId);
-        $item->set('idclient', $idclient);
-        $item->set('idlang', $idlang);
-        $item->set('idaction', $idaction);
-        $item->set('idcatart', $idcatart);
+        $item->set('idclient', $clientId);
+        $item->set('idlang', $languageId);
+        $item->set('idaction', $actionId);
+        $item->set('idcatart', $categoryArticleId);
         $item->set('logtimestamp', $logtimestamp);
 
         $item->store();
@@ -93,7 +93,7 @@ class cApiActionlogCollection extends ItemCollection
     /**
      * Returns the minimum and maximum action log timestamps.
      *
-     * @return array|null Array like ['min' => (string), 'max' => (string))] or null, if no entries where found.
+     * @return array{min: string, max: string}|null Array or null, if no entries where found.
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
@@ -114,7 +114,7 @@ class cApiActionlogCollection extends ItemCollection
 }
 
 /**
- * Actionlog item.
+ * Action log item.
  *
  * @package    Core
  * @subpackage GenericDB_Model

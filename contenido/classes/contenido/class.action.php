@@ -43,14 +43,14 @@ class cApiActionCollection extends ItemCollection
      *
      * @param string|int $area
      * @param string|int $name
-     * @param string|int $alt_name [optional]
+     * @param string|int $altName [optional]
      * @param string $code [optional]
      * @param string $location [optional]
      * @param int $relevant [optional]
      * @return cApiAction
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1)
+    public function create($area, $name, $altName = '', $code = '', $location = '', $relevant = 1)
     {
         $item = $this->createNewItem();
 
@@ -75,13 +75,13 @@ class cApiActionCollection extends ItemCollection
         if (is_string($name)) {
             $name = $this->escape($name);
         }
-        if (is_string($alt_name)) {
-            $alt_name = $this->escape($alt_name);
+        if (is_string($altName)) {
+            $altName = $this->escape($altName);
         }
 
         $item->set('idarea', $area);
         $item->set('name', $name);
-        $item->set('alt_name', $alt_name);
+        $item->set('alt_name', $altName);
         $item->set('code', $code);
         $item->set('location', $location);
         $item->set('relevant', $relevant);
@@ -109,9 +109,10 @@ class cApiActionCollection extends ItemCollection
         $actions = [];
 
         while ($this->db->nextRecord()) {
-            $newentry['name'] = $this->db->f('name');
-            $newentry['areaname'] = $this->db->f('areaname');
-            $actions[$this->db->f('idaction')] = $newentry;
+            $actions[cSecurity::toInteger($this->db->f('idaction'))] = [
+                'name' => $this->db->f('name'),
+                'areaname' => $this->db->f('areaname'),
+            ];
         }
 
         return $actions;
@@ -120,7 +121,7 @@ class cApiActionCollection extends ItemCollection
     /**
      * Return name of passed action.
      *
-     * @param int $actionId Id of action
+     * @param int $actionId The id of the action,
      * @throws cDbException
      */
     public function getActionName($actionId): ?string

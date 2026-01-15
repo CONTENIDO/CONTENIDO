@@ -61,25 +61,25 @@ class cApiRightCollection extends ItemCollection
      * Creates a right entry.
      *
      * @param string $userId
-     * @param int $idarea
-     * @param int $idaction
-     * @param int $idcat
-     * @param int $idclient
-     * @param int $idlang
+     * @param int $areaId
+     * @param int $actionId
+     * @param int $categoryId
+     * @param int $clientId
+     * @param int $languageId
      * @param int $type
      * @return cApiRight
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type)
+    public function create($userId, $areaId, $actionId, $categoryId, $clientId, $languageId, $type)
     {
         $oItem = $this->createNewItem();
 
         $oItem->set('user_id', $userId);
-        $oItem->set('idarea', $idarea);
-        $oItem->set('idaction', $idaction);
-        $oItem->set('idcat', $idcat);
-        $oItem->set('idclient', $idclient);
-        $oItem->set('idlang', $idlang);
+        $oItem->set('idarea', $areaId);
+        $oItem->set('idaction', $actionId);
+        $oItem->set('idcat', $categoryId);
+        $oItem->set('idclient', $clientId);
+        $oItem->set('idlang', $languageId);
         $oItem->set('type', $type);
 
         $oItem->store();
@@ -90,12 +90,11 @@ class cApiRightCollection extends ItemCollection
     /**
      * Checks if a specific user has frontend access to a protected category.
      *
-     * @param int $idcat
+     * @param int $categoryId
      * @param string $userId
-     * @return bool
      * @throws cDbException
      */
-    public function hasFrontendAccessByCatIdAndUserId($idcat, $userId): bool
+    public function hasFrontendAccessByCatIdAndUserId($categoryId, $userId): bool
     {
         $sql = "SELECT :pk FROM `:rights` AS A, `:actions` AS B, `:area` AS C
                 WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id = ':userid'
@@ -108,7 +107,7 @@ class cApiRightCollection extends ItemCollection
             'actions' => cDb::getTableName('actions'),
             'area' => cDb::getTableName('area'),
             'userid' => $userId,
-            'idcat' => (int)$idcat,
+            'idcat' => (int)$categoryId,
         ];
 
         $sql = $this->db->prepare($sql, $params);

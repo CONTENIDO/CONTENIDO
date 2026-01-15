@@ -358,8 +358,8 @@ function doWorkflowAction($idartlang, $action)
 
                 if (($nextObj = $workflowitems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
-                    $idworkflowitem = cSecurity::toInteger($nextObj->get('idworkflowitem'));
-                    $userSequences->select("idworkflowitem = $idworkflowitem");
+                    $workflowItemId = cSecurity::toInteger($nextObj->get('idworkflowitem'));
+                    $userSequences->select("idworkflowitem = $workflowItemId");
 
                     if (($nextSeqObj = $userSequences->next()) !== false) {
                         $obj->set('lastusersequence', $obj->get('idusersequence'));
@@ -388,8 +388,8 @@ function doWorkflowAction($idartlang, $action)
 
                 if (($nextObj = $workflowitems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
-                    $idworkflowitem = cSecurity::toInteger($nextObj->get('idworkflowitem'));
-                    $userSequences->select("idworkflowitem = $idworkflowitem");
+                    $workflowItemId = cSecurity::toInteger($nextObj->get('idworkflowitem'));
+                    $userSequences->select("idworkflowitem = $workflowItemId");
 
                     if (($nextSeqObj = $userSequences->next()) !== false) {
                         $obj->set('lastusersequence', '10');
@@ -401,8 +401,8 @@ function doWorkflowAction($idartlang, $action)
                     $workflowitems->select("idworkflow = $idworkflow AND position = " . (int)$workflowitem->get('position'));
                     if (($nextObj = $workflowitems->next()) !== false) {
                         $userSequences = new WorkflowUserSequences();
-                        $idworkflowitem = cSecurity::toInteger($nextObj->get('idworkflowitem'));
-                        $userSequences->select("idworkflowitem = $idworkflowitem");
+                        $workflowItemId = cSecurity::toInteger($nextObj->get('idworkflowitem'));
+                        $userSequences->select("idworkflowitem = $workflowItemId");
 
                         if (($nextSeqObj = $userSequences->next()) !== false) {
                             $obj->set('lastusersequence', $obj->get('idusersequence'));
@@ -432,8 +432,8 @@ function doWorkflowAction($idartlang, $action)
 
                 if (($nextObj = $workflowitems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
-                    $idworkflowitem = cSecurity::toInteger($nextObj->get('idworkflowitem'));
-                    $userSequences->select("idworkflowitem = $idworkflowitem");
+                    $workflowItemId = cSecurity::toInteger($nextObj->get('idworkflowitem'));
+                    $userSequences->select("idworkflowitem = $workflowItemId");
 
                     if (($nextSeqObj = $userSequences->next()) !== false) {
                         $obj->set('lastusersequence', $obj->get('idusersequence'));
@@ -472,9 +472,9 @@ function getWorkflowForUserSequence($usersequence)
     $usersequences->select("idusersequence = $usersequence");
 
     if (($obj = $usersequences->next()) !== false) {
-        $idworkflowitem = cSecurity::toInteger($obj->get('idworkflowitem'));
+        $workflowItemId = cSecurity::toInteger($obj->get('idworkflowitem'));
         $workflowitems = new WorkflowItems();
-        $workflowitems->select("idworkflowitem = '$idworkflowitem'");
+        $workflowitems->select("idworkflowitem = '$workflowItemId'");
         if (($obj = $workflowitems->next()) !== false) {
             return $obj->get('idworkflow');
         }

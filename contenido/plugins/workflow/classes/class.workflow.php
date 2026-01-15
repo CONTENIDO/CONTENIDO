@@ -73,7 +73,7 @@ class Workflows extends ItemCollection
      * Deletes all corresponding information to this workflow and delegate call to parent
      *
      * @inheritDoc
-     * @param int $id - id of workflow to delete
+     * @param int $id The workflow id.
      * @throws cDbException|cInvalidArgumentException
      */
     public function delete($id)
@@ -92,8 +92,9 @@ class Workflows extends ItemCollection
 
         $userSequencesToDelete = [];
         if (!empty($itemIdsToDelete)) {
+            $itemIdsToDelete = implode(',', $itemIdsToDelete);
             $db->query(
-                'SELECT `idusersequence` FROM `%s` WHERE `idworkflowitem` IN (' . implode(',', $itemIdsToDelete) . ');',
+                'SELECT `idusersequence` FROM `%s` WHERE `idworkflowitem` IN (' . $itemIdsToDelete . ');',
                 cDb::getTableName('workflow_user_sequences')
             );
             while ($db->nextRecord()) {
@@ -101,19 +102,19 @@ class Workflows extends ItemCollection
             }
 
             $db->query(
-                'DELETE FROM `%s` WHERE `idworkflowitem` IN (' . implode(',', $itemIdsToDelete) . ');',
+                'DELETE FROM `%s` WHERE `idworkflowitem` IN (' . $itemIdsToDelete . ');',
                 cDb::getTableName('workflow_user_sequences')
             );
 
             $db->query(
-                'DELETE FROM `%s` WHERE `idworkflowitem` IN (' . implode(',', $itemIdsToDelete) . ');',
+                'DELETE FROM `%s` WHERE `idworkflowitem` IN (' . $itemIdsToDelete . ');',
                 cDb::getTableName('workflow_actions')
             );
         }
 
         if (!empty($userSequencesToDelete)) {
             $db->query(
-                'DELETE FROM `%s` WHERE `idusersequence` IN (' . implode(',', $userSequencesToDelete) . ');',
+                'DELETE FROM `%s` WHERE `idusersequence` IN (' . $itemIdsToDelete . ');',
                 cDb::getTableName('workflow_art_allocation')
             );
         }
@@ -154,7 +155,7 @@ class Workflow extends Item
      */
     public function __construct()
     {
-        parent::__construct(cDb::getTableName('workflow'), "idworkflow");
+        parent::__construct(cDb::getTableName('workflow'), 'idworkflow');
     }
 
 }

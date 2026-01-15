@@ -38,34 +38,33 @@ class cApiClientCollection extends ItemCollection
      * Creates a new client entry
      *
      * @param string $name
-     * @param int $errsite_cat [optional]
-     * @param int $errsite_art [optional]
+     * @param int $errorSiteCatId [optional] The category id of the error site.
+     * @param int $errorSiteArtId [optional] The article id of the error site.
      * @param string $author [optional]
      * @param string $created [optional]
-     * @param string $lastmodified [optional]
+     * @param string $lastModified [optional]
      * @return cApiClient
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($name, $errsite_cat = 0, $errsite_art = 0, $author = '', $created = '', $lastmodified = '')
+    public function create($name, $errorSiteCatId = 0, $errorSiteArtId = 0, $author = '', $created = '', $lastModified = '')
     {
         if (empty($author)) {
-            $auth = cRegistry::getAuth();
-            $author = $auth->getUsername();
+            $author = cRegistry::getAuth()->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
-        if (empty($lastmodified)) {
-            $lastmodified = date('Y-m-d H:i:s');
+        if (empty($lastModified)) {
+            $lastModified = date('Y-m-d H:i:s');
         }
 
         $item = $this->createNewItem();
         $item->set('name', $name);
-        $item->set('errsite_cat', $errsite_cat);
-        $item->set('errsite_art', $errsite_art);
+        $item->set('errsite_cat', $errorSiteCatId);
+        $item->set('errsite_art', $errorSiteArtId);
         $item->set('author', $author);
         $item->set('created', $created);
-        $item->set('lastmodified', $lastmodified);
+        $item->set('lastmodified', $lastModified);
         $item->store();
 
         return $item;

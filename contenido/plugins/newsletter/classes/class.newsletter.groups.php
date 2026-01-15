@@ -52,7 +52,7 @@ class NewsletterRecipientGroupCollection extends ItemCollection
     /**
      * Creates a new group
      *
-     * @param string $groupname Specifies the groupname
+     * @param string $groupname The group name
      * @param int $defaultgroup Specifies, if group is default group (optional)
      * @return NewsletterRecipientGroup
      * @throws cException
@@ -90,7 +90,7 @@ class NewsletterRecipientGroupCollection extends ItemCollection
      * Overridden delete method to remove groups from group member table before deleting group
      *
      * @inheritDoc
-     * @param $id int specifies the newsletter recipient group
+     * @param $id int The newsletter recipient group id.
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function delete($id)

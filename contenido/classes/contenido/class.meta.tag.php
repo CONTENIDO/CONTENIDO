@@ -42,18 +42,18 @@ class cApiMetaTagCollection extends ItemCollection
     /**
      * Creates a meta-tag entry.
      *
-     * @param int $idArtLang
-     * @param int $idMetaType
+     * @param int $articleLanguageId
+     * @param int $metaTypeId
      * @param string $metaValue
      * @return cApiMetaTag
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idArtLang, $idMetaType, $metaValue)
+    public function create($articleLanguageId, $metaTypeId, $metaValue)
     {
         $oItem = $this->createNewItem();
 
-        $oItem->set('idartlang', $idArtLang, false);
-        $oItem->set('idmetatype', $idMetaType, false);
+        $oItem->set('idartlang', $articleLanguageId, false);
+        $oItem->set('idmetatype', $metaTypeId, false);
         $oItem->set('metavalue', $metaValue, false);
         $oItem->store();
 
@@ -63,33 +63,39 @@ class cApiMetaTagCollection extends ItemCollection
     /**
      * Returns a meta-tag entry by article language and meta type.
      *
-     * @param int $idArtLang
-     * @param int $idMetaType
+     * @param int $articleLanguageId
+     * @param int $metaTypeId
      * @return ?cApiMetaTag
      * @throws cDbException|cException
      */
-    public function fetchByArtLangAndMetaType($idArtLang, $idMetaType)
+    public function fetchByArtLangAndMetaType($articleLanguageId, $metaTypeId): ?cApiMetaTag
     {
-        $where = sprintf('`idartlang` = %d AND `idmetatype` = %d', $idArtLang, $idMetaType);
-        $this->select($where);
+        $this->select(sprintf(
+            '`idartlang` = %d AND `idmetatype` = %d',
+            $articleLanguageId,
+            $metaTypeId
+        ));
         return $this->next();
     }
 
     /**
      * Returns meta-tag ids (idmetatag) by the passed article language id.
      *
-     * @param int $idArtLang Article language id
+     * @param int $articleLanguageId Article language id
      * @return int[] List of meta-tag ids
      * @throws cDbException|cException
      * @since CONTENIDO 4.10.2
      */
-    public function getIdMetatagsByIdArtLang(int $idArtLang): array
+    public function getIdMetatagsByIdArtLang(int $articleLanguageId): array
     {
-        if ($idArtLang <= 0) {
+        if ($articleLanguageId <= 0) {
             return [];
         }
-        $sql = 'SELECT `idmetatag` FROM `%s` WHERE `idartlang` = %d';
-        $this->db->query($sql, $this->table, $idArtLang);
+        $this->db->query(
+            "SELECT `idmetatag` FROM `%s` WHERE `idartlang` = %d",
+            $this->table,
+            $articleLanguageId
+        );
         $metaTagIds = [];
         while ($this->db->nextRecord()) {
             $metaTagIds[] = cSecurity::toInteger($this->db->f('idmetatag'));

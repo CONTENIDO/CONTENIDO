@@ -50,8 +50,7 @@ class cApiTypeCollection extends ItemCollection
     public function create($type, $description, $code = '', $status = 0, $author = '', $created = '', $lastmodified = '')
     {
         if (empty($author)) {
-            $auth = cRegistry::getAuth();
-            $author = $auth->getUsername();
+            $author = cRegistry::getAuth()->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');

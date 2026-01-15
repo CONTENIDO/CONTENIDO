@@ -50,7 +50,7 @@ class cApiLayoutCollection extends ItemCollection
      * Creates a layout entry.
      *
      * @param string $name
-     * @param int $idclient [optional]
+     * @param int $clientId [optional]
      * @param string $alias [optional]
      * @param string $description [optional]
      * @param int $deletable [optional] Either 1 or 0
@@ -62,7 +62,7 @@ class cApiLayoutCollection extends ItemCollection
      */
     public function create(
         $name,
-        $idclient = NULL,
+        $clientId = NULL,
         $alias = '',
         $description = '',
         $deletable = 1,
@@ -71,8 +71,8 @@ class cApiLayoutCollection extends ItemCollection
         $lastmodified = ''
     )
     {
-        if (NULL === $idclient) {
-            $idclient = cRegistry::getClientId();
+        if (NULL === $clientId) {
+            $clientId = cRegistry::getClientId();
         }
 
         if (empty($alias)) {
@@ -80,8 +80,7 @@ class cApiLayoutCollection extends ItemCollection
         }
 
         if (empty($author)) {
-            $auth = cRegistry::getAuth();
-            $author = $auth->getUsername();
+            $author = cRegistry::getAuth()->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -91,7 +90,7 @@ class cApiLayoutCollection extends ItemCollection
         }
 
         $item = $this->createNewItem();
-        $item->set('idclient', $idclient);
+        $item->set('idclient', $clientId);
         $item->set('name', $name);
         $item->set('alias', $alias);
         $item->set('description', $description);
@@ -107,18 +106,18 @@ class cApiLayoutCollection extends ItemCollection
     /**
      * Returns all used layout types.
      *
-     * @param ?int $idclient Id of client to limit the result for a specific client
+     * @param ?int $clientId Id of client to limit the result for a specific client
      * @param bool $sort Flag to sort the result
      * @return string[] List of layout types
      * @throws cDbException|cException
      * @since CONTENIDO 4.10.2
      */
-    public function getAllUsedLayoutTypesPropertyValues(?int $idclient = NULL, bool $sort = true): array
+    public function getAllUsedLayoutTypesPropertyValues(?int $clientId = NULL, bool $sort = true): array
     {
         $propertyCollection = new cApiPropertyCollection();
         $propertyCollection->addResultField('value');
-        if (is_numeric($idclient)) {
-            $propertyCollection->setWhere('idclient', $idclient);
+        if (is_numeric($clientId)) {
+            $propertyCollection->setWhere('idclient', $clientId);
         }
         $propertyCollection->setWhere('type', 'layout');
         $propertyCollection->setWhere('name', 'used-types');

@@ -78,7 +78,7 @@ class cApiFrontendGroupCollection extends ItemCollection
      * Overridden delete method to remove groups from group member table before deleting group
      *
      * @inheritDoc
-     * @param int $id Specifies the frontend user group
+     * @param int $id The frontend user group id.
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function delete($id)
