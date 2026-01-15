@@ -1072,12 +1072,309 @@ function piwf_createTasksFolder(): array
     $item = [];
 
     // Create workflow tasks folder
-    $tmp_mstr = '<a href="javascript:void(0)" onclick="Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-
-    $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=con_workflow&frame=4"), 'right_top', $sess->url("main.php?area=con_workflow&frame=3"), 'Workflow / Todo');
+    $mstr = sprintf(
+        '<a href="javascript:void(0)" onclick="Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
+        'right_bottom',
+        $sess->url("main.php?area=con_workflow&frame=4"),
+        'right_top',
+        $sess->url("main.php?area=con_workflow&frame=3"),
+        'Workflow / Todo'
+    );
 
     $item['image'] = '<img alt="" src="' . cRegistry::getBackendUrl() . $cfg['path']['plugins'] . 'workflow/images/workflow_erstellen.gif">';
     $item['title'] = $mstr;
 
     return $item;
+}
+
+/**
+ * @param string|int $listId
+ * @param mixed $default
+ * @throws cInvalidArgumentException|cException
+ */
+function piwf_getTimeUnitSelector($listId, $default): string
+{
+    $cfg = cRegistry::getConfig();
+    $timeUnits = [];
+    $timeUnits['Seconds'] = i18n("Seconds", "workflow");
+    $timeUnits['Minutes'] = i18n("Minutes", "workflow");
+    $timeUnits['Hours'] = i18n("Hours", "workflow");
+    $timeUnits['Days'] = i18n("Days", "workflow");
+    $timeUnits['Weeks'] = i18n("Weeks", "workflow");
+    $timeUnits['Months'] = i18n("Months", "workflow");
+    $timeUnits['Years'] = i18n("Years", "workflow");
+
+    $tpl2 = new cTemplate();
+    $tpl2->set('s', 'NAME', 'time' . $listId);
+    $tpl2->set('s', 'CLASS', 'text_small');
+    $tpl2->set('s', 'OPTIONS', 'size=1');
+
+    foreach ($timeUnits as $key => $value) {
+        $tpl2->set('d', 'VALUE', $key);
+        $tpl2->set('d', 'CAPTION', $value);
+
+        if ($default == $key) {
+            $tpl2->set('d', 'SELECTED', 'SELECTED');
+        } else {
+            $tpl2->set('d', 'SELECTED', '');
+        }
+
+        $tpl2->next();
+    }
+
+    return $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
+}
+
+/**
+ * @param int $workflowId
+ * @param int $workflowItemId
+ * @throws cDbException|cException|cInvalidArgumentException
+ */
+function piwf_getWorkflowList($workflowId, $workflowItemId): string
+{
+    $cfg = cRegistry::getConfig();
+    $backendUrl = cRegistry::getBackendUrl();
+
+    $ui = new cGuiMenu();
+    $workflowItems = new WorkflowItems();
+
+    $workflowItems->select("idworkflow = $workflowId", "", "position ASC");
+
+    while ($workflowItem = $workflowItems->next()) {
+        $pos = $workflowItem->get('position');
+        $name = preg_replace("/\"/", "", ($workflowItem->get('name')));
+        $id = cSecurity::toInteger($workflowItem->get('idworkflowitem'));
+
+        $editItem = new cHTMLLink();
+        $editItem->setClass("con_img_button show_item");
+        $editItem->setCLink("workflow_steps", 4, "workflow_step_edit");
+        $editItem->setCustom('idworkflowitem', $id);
+        $editItem->setCustom('idworkflow', $workflowId);
+
+        $moveUp = new cHTMLLink();
+        $moveUp->setClass('con_img_button');
+        $moveUp->setCLink("workflow_steps", 4, "workflow_step_up");
+        $moveUp->setCustom('idworkflowitem', $id);
+        $moveUp->setCustom('idworkflow', $workflowId);
+        $moveUp->setCustom('position', $pos);
+        $moveUp->setAlt(i18n("Move step up", "workflow"));
+        $moveUp->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/no_verschieben.gif" . '">');
+
+        $moveDown = new cHTMLLink();
+        $moveDown->setClass('con_img_button');
+        $moveDown->setCLink("workflow_steps", 4, "workflow_step_down");
+        $moveDown->setCustom('idworkflowitem', $id);
+        $moveDown->setCustom('idworkflow', $workflowId);
+        $moveDown->setCustom('position', $pos);
+        $moveDown->setAlt(i18n("Move step down", "workflow"));
+        $moveDown->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/nu_verschieben.gif" . '">');
+
+        $deleteStep = new cHTMLLink();
+        $deleteStep->setClass('con_img_button');
+        $deleteStep->setCLink("workflow_steps", 4, "workflow_step_delete");
+        $deleteStep->setCustom('idworkflowitem', $id);
+        $deleteStep->setCustom('idworkflow', $workflowId);
+        $deleteStep->setCustom('position', $pos);
+        $deleteStep->setAlt(i18n("Delete step", "workflow"));
+        $deleteStep->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/workflow_step_delete.gif" . '">');
+
+        $ui->setTitle($id, "$pos. $name");
+        $ui->setLink($id, $editItem);
+
+        if ($pos > 1) {
+            $ui->setActions($id, "moveup", $moveUp->render());
+        } else {
+            $ui->setActions($id, "moveup", '<span class="con_img_button_off"></span>');
+        }
+
+        if ($pos < $workflowItems->count()) {
+            $ui->setActions($id, "movedown", $moveDown->render());
+        } else {
+            $ui->setActions($id, "movedown", '<span class="con_img_button_off"></span>');
+        }
+
+        $ui->setActions($id, "delete", $deleteStep->render());
+
+        if ($workflowItemId === $id) {
+            $ui->setMarked($id);
+        }
+    }
+
+    return $ui->render(false);
+}
+
+/**
+ * @param int $workflowId
+ * @throws cInvalidArgumentException|cException
+ */
+function piwf_createNewWorkflow($workflowId): string
+{
+    $cfg = cRegistry::getConfig();
+    $backendUrl = cRegistry::getBackendUrl();
+
+    $ui = new cGuiMenu('new_workflow_menu_list');
+    $rowmark = false;
+
+    $createStep = new cHTMLLink();
+    $createStep->setCLink("workflow_steps", 4, "workflow_create_step");
+    $createStep->setCustom('idworkflow', $workflowId);
+
+    // ui->setLink("spacer", NULL);
+    $ui->setTitle("create", i18n("Create new step", "workflow"));
+    $ui->setImage("create", $backendUrl . $cfg['path']['plugins'] . "workflow/images/workflow_step_new.gif");
+    $ui->setLink("create", $createStep);
+    $ui->setRowmark($rowmark);
+
+    return $ui->render(false);
+}
+
+/**
+ * @param int $workflowId
+ * @param int $workflowItemId
+ * @throws cDbException|cException|cInvalidArgumentException
+ */
+function piwf_editWorkflowStep($workflowId, $workflowItemId): string
+{
+    global $availableWorkflowActions;
+
+    $workflowItem = new WorkflowItem();
+
+    if ($workflowItem->loadByPrimaryKey($workflowItemId) == false) {
+        return "&nbsp;";
+    }
+
+    $area = cRegistry::getArea();
+    $frame = cRegistry::getFrame();
+
+    $workflowActions = new WorkflowActions();
+
+    $stepName = str_replace('\\', '', conHtmlSpecialChars($workflowItem->get('name')));
+    $stepDescription = str_replace('\\', '', conHtmlSpecialChars($workflowItem->get('description')));
+    $id = $workflowItem->get('idworkflowitem');
+    $task = $workflowItem->get('idtask');
+
+    $form = new cGuiTableForm('workflow_edit');
+
+    $form->setVar('area', $area);
+    $form->setVar('action', 'workflow_save_step');
+    $form->setVar('idworkflow', $workflowId);
+    $form->setVar('idworkflowitem', $workflowItemId);
+    $form->setVar('frame', $frame);
+
+    $form->setHeader(i18n("Edit workflow step", "workflow"));
+    $oTxtStep = new cHTMLTextbox('wfstepname', $stepName, 40, 255);
+    $form->add(i18n("Step name", "workflow"), $oTxtStep->render());
+    $oTxtStepDesc = new cHTMLTextarea('wfstepdescription', $stepDescription, 60, 10);
+    $form->add(i18n("Step description", "workflow"), $oTxtStepDesc->render());
+
+    $actions = '';
+
+    foreach ($availableWorkflowActions as $key => $value) {
+        $oCheckbox = new cHTMLCheckbox("wfactions[" . $key . "]", "1", "wfactions[" . $key . "]1", $workflowActions->get($id, $key));
+        $oCheckbox->setLabelText($value);
+        $actions .= $oCheckbox->toHtml();
+    }
+
+    $form->add(i18n("Actions", "workflow"), $actions);
+    $form->add(i18n("Assigned users", "workflow"), piwf_getWorkflowUsers($workflowId, $workflowItemId));
+
+    return $form->render(true);
+}
+
+/**
+ * @param int $workflowId
+ * @param int $workflowItemId
+ * @throws cDbException|cException|cInvalidArgumentException
+ */
+function piwf_getWorkflowUsers($workflowId, $workflowItemId): string
+{
+    $cfg = cRegistry::getConfig();
+    $backendUrl = cRegistry::getBackendUrl();
+
+    $ui = new cGuiMenu('workflow_users_menu_list');
+    $ui->setRowmark(false);
+    $workflowUsers = new WorkflowUserSequences();
+
+    $workflowUsers->select("idworkflowitem = '$workflowItemId'", "", "position ASC");
+
+    while ($workflowItem = $workflowUsers->next()) {
+        $pos = $workflowItem->get('position');
+        $userId = $workflowItem->get('iduser');
+        $timeLimit = $workflowItem->get('timelimit');
+        $timeUnit = $workflowItem->get('timeunit');
+        $email = $workflowItem->get('emailnoti');
+        $escalation = $workflowItem->get('escalationnoti');
+        $timeUnit = $workflowItem->get('timeunit');
+        $id = $workflowItem->get('idusersequence');
+
+        $moveUp = new cHTMLLink();
+        $moveUp->setCLink("workflow_steps", 4, "workflow_user_up");
+        $moveUp->setCustom('idworkflowitem', $workflowItemId);
+        $moveUp->setCustom('idworkflow', $workflowId);
+        $moveUp->setCustom('position', $pos);
+        $moveUp->setAlt(i18n("Move user up", "workflow"));
+        $moveUp->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/no_verschieben.gif" . '">');
+
+        $moveDown = new cHTMLLink();
+        $moveDown->setCLink("workflow_steps", 4, "workflow_user_down");
+        $moveDown->setCustom('idworkflowitem', $workflowItemId);
+        $moveDown->setCustom('idworkflow', $workflowId);
+        $moveDown->setCustom('position', $pos);
+        $moveDown->setAlt(i18n("Move user down", "workflow"));
+        $moveDown->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/nu_verschieben.gif" . '">');
+
+        $deleteStep = new cHTMLLink();
+        $deleteStep->setCLink("workflow_steps", 4, "workflow_user_delete");
+        $deleteStep->setCustom('idworkflowitem', $workflowItemId);
+        $deleteStep->setCustom('idworkflow', $workflowId);
+        $deleteStep->setCustom('position', $pos);
+        $deleteStep->setCustom('idusersequence', $id);
+        $deleteStep->setAlt(i18n("Delete user", "workflow"));
+        $deleteStep->setContent('<img src="' . $backendUrl . $cfg['path']['plugins'] . "workflow/images/workflow_step_delete.gif" . '">');
+
+        $title = "$pos. " . piwf_getUsers($id, $userId);
+
+        $oTxtTime = new cHTMLTextbox('wftimelimit' . $id, $timeLimit, 3, 6);
+        $title .= $oTxtTime->render();
+        $title .= piwf_getTimeUnitSelector($id, $timeUnit);
+        $altMail = i18n("Notify this user via E-Mail", "workflow");
+        $altNoti = i18n("Escalate to this user via E-Mail", "workflow");
+
+        $oCheckbox = new cHTMLCheckbox("wfemailnoti[" . $id . "]", "1", "wfemailnoti[" . $id . "]1", $email);
+        $title .= $oCheckbox->toHtml(false) . '<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altMail . '" title="' . $altMail . '" src="' . $backendUrl . $cfg['path']['plugins'] . 'workflow/images/workflow_email_noti.gif"></label>';
+
+        $oCheckbox = new cHTMLCheckbox("wfescalnoti[" . $id . "]", "1", "wfescalnoti[" . $id . "]1", $escalation);
+        $title .= $oCheckbox->toHtml(false) . '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altNoti . '" title="' . $altNoti . '" src="' . $backendUrl . $cfg['path']['plugins'] . 'workflow/images/workflow_escal_noti.gif"></label>';
+
+        $ui->setTitle($id, $title);
+        $ui->setLink($id, NULL);
+
+        if ($pos > 1) {
+            $ui->setActions($id, "moveup", $moveUp->render());
+        } else {
+            $ui->setActions($id, "moveup", '<img src="images/spacer.gif" width="15" height="1">');
+        }
+
+        if ($pos < $workflowUsers->count()) {
+            $ui->setActions($id, "movedown", $moveDown->render());
+        } else {
+            $ui->setActions($id, "movedown", '<img src="images/spacer.gif" width="15" height="1">');
+        }
+
+        $ui->setActions($id, "delete", $deleteStep->render());
+
+        $ui->setImage($id, $backendUrl . $cfg['path']['plugins'] . "workflow/images/workflow_user.gif");
+    }
+
+    $createStep = new cHTMLLink();
+    $createStep->setCLink("workflow_steps", 4, "workflow_create_user");
+    $createStep->setCustom('idworkflow', $workflowId);
+    $createStep->setCustom('idworkflowitem', $workflowItemId);
+
+    $ui->setLink("spacer", NULL);
+
+    $ui->setTitle("create", '<input class="text_medium" type="submit" name="adduser" value="' . i18n("Add User", "workflow") . '">');
+    $ui->setLink("create", NULL);
+
+    return $ui->render(false);
 }

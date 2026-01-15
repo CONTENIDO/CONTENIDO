@@ -175,9 +175,16 @@ if (is_array($isCurrent)) {
                 $idart = $db->f('idart');
 
                 // Create javascript multilink
-                $tmp_mstr = '<a href="javascript:void(0)" onclick="Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '" title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '">%s</a>';
-
-                $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idtpl=$idtpl&idart=$idart"), $db->f('title'));
+                $mstr = sprintf(
+                    '<a href="javascript:void(0)" onclick="Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: %d idcatart: %d">%s</a>',
+                    'right_top',
+                    $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"),
+                    'right_bottom',
+                    $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idtpl=$idtpl&idart=$idart"),
+                    $db->f('idart'),
+                    $db->f('idcatart'),
+                    $db->f('title')
+                );
 
                 $laststatus = piwf_getLastWorkflowStatus($idartlang);
                 $username = getGroupOrUserName($userids[$key]);
@@ -188,7 +195,15 @@ if (is_array($isCurrent)) {
                 $step = $workflowItem->get('name');
                 $description = $workflowItem->get('description');
 
-                $sRowId = $db->f('idart') . '-' . $db->f('idartlang') . '-' . $db->f('idcat') . '-' . $db->f('idcatlang') . '-' . $db->f('idcatart') . '-' . $db->f('art_lang');
+                $sRowId = sprintf(
+                    '%d-%d-%d-%d-%d-%d',
+                    $db->f('idart'),
+                    $db->f('idartlang'),
+                    $db->f('idcat'),
+                    $db->f('idcatlang'),
+                    $db->f('idcatart'),
+                    $db->f('art_lang')
+                );
 
                 if ($db->f('startidartlang') == $db->f('idartlang')) {
                     $makeStartarticle = "<img src=\"images/isstart1.gif\" border=\"0\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\">";
