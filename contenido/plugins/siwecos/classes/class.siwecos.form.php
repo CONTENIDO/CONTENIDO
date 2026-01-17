@@ -39,7 +39,7 @@ class SIWECOSCollection extends ItemCollection
     /**
      * SIWECOSCollection constructor.
      *
-     * @param bool $where
+     * @param false|string $where
      *
      * @throws cDbException|cInvalidArgumentException
      */
@@ -55,37 +55,33 @@ class SIWECOSCollection extends ItemCollection
     /**
      * Get forms of given client in given language.
      *
-     * @param $client
-     * @param $lang
-     *
-     * @return array
+     * @param $clientId
+     * @param $languageId
      * @throws cDbException|cException|SIWECOSException
      */
-    public static function getByClientAndLang($client, $lang)
+    public static function getByClientAndLang($clientId, $languageId): array
     {
-        if (0 >= cSecurity::toInteger($client)) {
+        if (0 >= cSecurity::toInteger($clientId)) {
             $msg = i18n('ERR_MISSING_CLIENT', 'siwecos');
             throw new SIWECOSException($msg);
         }
 
-        if (0 >= cSecurity::toInteger($lang)) {
+        if (0 >= cSecurity::toInteger($languageId)) {
             $msg = i18n('ERR_MISSING_LANG', 'siwecos');
             throw new SIWECOSException($msg);
         }
 
-        return self::_getBy($client, $lang);
+        return self::_getBy($clientId, $languageId);
     }
 
     /**
      * Get forms according to given params.
      *
-     * @param $client
-     * @param $lang
-     *
-     * @return array
+     * @param $clientId
+     * @param $languageId
      * @throws cDbException
      */
-    private static function _getBy($client, $lang)
+    private static function _getBy($clientId, $languageId): array
     {
         global $idsiwecos;
 
@@ -100,8 +96,8 @@ class SIWECOSCollection extends ItemCollection
             "SELECT *
             FROM `" . cDb::getTableName('siwecos') . "`
             WHERE
-                `idclient` = " . cSecurity::toInteger($client) . "
-                AND `idlang` = " . cSecurity::toInteger($lang) . "
+                `idclient` = " . cSecurity::toInteger($clientId) . "
+                AND `idlang` = " . cSecurity::toInteger($languageId) . "
                 " . $str . "
             ;"
         );
@@ -151,17 +147,14 @@ class SIWECOS extends Item
 
     /**
      * get pluginsname
-     *
-     * @return string
      */
-    public static function getName()
+    public static function getName(): string
     {
         return self::$_name;
     }
 
     /**
      * @param Exception $e
-     *
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public static function logException(Exception $e)
@@ -177,14 +170,11 @@ class SIWECOS extends Item
     }
 
     /**
-     * Creates a notification widget in order to display an exception message in
-     * backend.
+     * Creates a notification widget in order to display an exception message in backend.
      *
      * @param Exception $e
-     *
-     * @return string
      */
-    public static function notifyException(Exception $e)
+    public static function notifyException(Exception $e): string
     {
         $cGuiNotification = new cGuiNotification();
         $level = cGuiNotification::LEVEL_ERROR;

@@ -182,7 +182,7 @@ class ITCollection extends ItemCollection
 {
     /**
      *
-     * @param bool $where
+     * @param false|string $where
      *
      * @throws cDbException|cInvalidArgumentException
      */
@@ -204,7 +204,7 @@ class TITCollection extends ItemCollection
 {
     /**
      *
-     * @param bool $where
+     * @param false|string $where
      *
      * @throws cDbException|cInvalidArgumentException
      */

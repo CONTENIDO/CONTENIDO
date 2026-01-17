@@ -47,7 +47,7 @@ class Solr
         $filename = $cfg['path']['contenido_logs'] . 'errorlog.txt';
 
         // extend message with optional prefix
-        $prefix = number_format($delta * 1000, 0) . 'ms: ';
+        $prefix = number_format($delta * 1000) . 'ms: ';
         if (NULL !== $file) {
             $prefix .= $file;
             if (NULL !== $line) {
@@ -132,12 +132,11 @@ class Solr
      * The option values are read from system or client settings.
      * Required settings are solr/hostname, solr/port, solr/path.
      *
-     * @param $idclient
-     * @param $idlang
-     * @return array
+     * @param int $clientId
+     * @param int $languageId
      * @throws cDbException|cException
      */
-    public static function getClientOptions($idclient, $idlang): array
+    public static function getClientOptions($clientId, $languageId): array
     {
         $options = [];
 
@@ -212,7 +211,6 @@ class Solr
      * Check if required options exist.
      * Required settings are solr/hostname, solr/port, solr/path.
      *
-     * @param array $options
      * @throws SolrWarning when required options don't exist
      */
     public static function validateClientOptions(array $options)
@@ -268,13 +266,11 @@ class Solr
     }
 
     /**
-     * Creates a notification widget in order to display an exception message in
-     * backend.
+     * Creates a notification widget in order to display an exception message in backend.
      *
      * @param Exception $e
-     * @return string
      */
-    public static function notifyException(Exception $e)
+    public static function notifyException(Exception $e): string
     {
         $cGuiNotification = new cGuiNotification();
         $level = cGuiNotification::LEVEL_ERROR;

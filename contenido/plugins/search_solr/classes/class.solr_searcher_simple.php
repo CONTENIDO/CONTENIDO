@@ -24,13 +24,11 @@ class SolrSearcherSimple extends SolrSearcherAbstract
 {
 
     /**
-     *
-     * @return SolrObject|null
      * @throws cException if search cannot be performed for empty search term
      */
-    public function getSearchResults()
+    public function getSearchResults(): ?SolrObject
     {
-        $searchTerm = $this->_searchTerm;
+        $searchTerm = $this->searchTerm;
         $searchTerm = trim($searchTerm);
         $searchTerm = explode(' ', $searchTerm);
         $searchTerm = array_map('trim', $searchTerm);
@@ -41,22 +39,21 @@ class SolrSearcherSimple extends SolrSearcherAbstract
             throw new cException('search cannot be performed for empty search term');
         }
 
-        /* SolrQuery */
         $query = new SolrQuery();
         // set the search query
         $query->setQuery('content:*' . implode('* *', $searchTerm) . '*');
         // specify the number of rows to skip
-        $query->setStart(($this->_page - 1) * $this->_itemsPerPage);
+        $query->setStart(($this->page - 1) * $this->itemsPerPage);
         // specify the maximum number of rows to return in the result
-        $query->setRows($this->_itemsPerPage);
+        $query->setRows($this->itemsPerPage);
         // specify fields to return
         // $query->addField('content');
         // $query->addField('id_art_lang');
 
         /* SolrClient */
-        $idclient = cRegistry::getClientId();
-        $idlang = cRegistry::getLanguageId();
-        $options = Solr::getClientOptions($idclient, $idlang);
+        $clientId = cRegistry::getClientId();
+        $languageId = cRegistry::getLanguageId();
+        $options = Solr::getClientOptions($clientId, $languageId);
         Solr::log(print_r($options, true));
         $solrClient = new SolrClient($options);
         // $solrClient->setServlet(SolrClient::SEARCH_SERVLET_TYPE,

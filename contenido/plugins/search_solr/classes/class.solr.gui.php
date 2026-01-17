@@ -85,9 +85,9 @@ class SolrRightBottomPage extends cGuiPage
         $this->set('s', 'I18N_DESCR_DELETE', Solr::i18n('DESCR_DELETE'));
 
         // get client options
-        $idclient = cRegistry::getClientId();
-        $idlang = cRegistry::getLanguageId();
-        $this->clientOptions = Solr::getClientOptions($idclient, $idlang);
+        $clientId = cRegistry::getClientId();
+        $languageId = cRegistry::getLanguageId();
+        $this->clientOptions = Solr::getClientOptions($clientId, $languageId);
         $this->set('s', 'HOSTNAME', $this->clientOptions['hostname']);
         $this->set('s', 'PORT', $this->clientOptions['port']);
         $this->set('s', 'PATH', $this->clientOptions['path']);
@@ -274,11 +274,10 @@ class SolrRightBottomPage extends cGuiPage
      */
     private function _reindex(): string
     {
-        $idclient = cRegistry::getClientId();
-        $idclient = cSecurity::toInteger($idclient);
+        $clientId = cRegistry::getClientId();
 
-        $idlang = cRegistry::getLanguageId();
-        $idlang = cSecurity::toInteger($idlang);
+        $languageId = cRegistry::getLanguageId();
+        $languageId = cSecurity::toInteger($languageId);
 
         $tabArtLang = cDb::getTableName('art_lang');
         $tabArt = cDb::getTableName('art');
@@ -311,8 +310,8 @@ class SolrRightBottomPage extends cGuiPage
                 cat_art.idcat = cat_lang.idcat
                 AND art_lang.idlang = cat_lang.idlang
             WHERE
-                art.idclient = $idclient
-                -- AND art_lang.idlang = $idlang
+                art.idclient = $clientId
+                -- AND art_lang.idlang = $languageId
             ORDER BY
                 art_lang.idartlang
             ;");
