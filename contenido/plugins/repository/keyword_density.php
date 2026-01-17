@@ -15,13 +15,9 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * @param array $singleWordCounter
- * @param string $string
- * @param int $quantifier
- *
- * @return mixed
+ * TODO The parameter $quantifier is not used, check if it can be removed.
  */
-function calcDensity($singleWordCounter, $string, $quantifier = 1)
+function pirekd_calcDensity(array $singleWordCounter, string $string, int $quantifier = 1): array
 {
     $minLen = 3;
 
@@ -29,7 +25,7 @@ function calcDensity($singleWordCounter, $string, $quantifier = 1)
     //
     // in later versions it is possible to manage most used words for every language in the dB.
     if (cRegistry::getLanguageId() == 1) {
-        //most used german words
+        //most used German words
         $blacklist = [
             'in',
             'der',
@@ -270,12 +266,12 @@ function calcDensity($singleWordCounter, $string, $quantifier = 1)
         //trim last char if '-' e.g open-source-
         $tmp[$i] = rtrim($tmp[$i], '-');
 
-        // hole word in upper cases ?
-        (!ctype_upper($tmp[$i])) ? $tmp[$i] = cString::toLowerCase(addslashes($tmp[$i])) : $tmp[$i] = addslashes(preg_replace($patterns, $replaces, $tmp[$i]));
+        // whole word in upper cases?
+        $val = !ctype_upper($tmp[$i]) ? cString::toLowerCase($tmp[$i]) : preg_replace($patterns, $replaces, $tmp[$i]);
+        $tmp[$i] = addslashes($val);
 
         if (!array_search($tmp[$i], $blacklist)) {
-            // if hole string in upper cases add additional quantifier else
-            // use only the string length
+            // if the whole string is in upper cases, add additional quantifier, else use only the string length
             if (ctype_upper($tmp[$i])) {
                 if (empty($singleWordCounter[cString::toLowerCase($tmp[$i])])) {
                     $singleWordCounter[cString::toLowerCase($tmp[$i])] = 0;
@@ -294,102 +290,70 @@ function calcDensity($singleWordCounter, $string, $quantifier = 1)
 }
 
 /**
- * @param $a
- * @param $b
- *
- * @return int
+ * Compare two values.
  */
-function __cmp($a, $b)
+function pirekd_cmp(int $a, int $b): int
 {
-    if ($a == $b)
+    if ($a == $b) {
         return 0;
-    return ($a > $b) ? -1 : 1;
+    }
+    return $a > $b ? -1 : 1;
 }
 
-/**
- * @param array $singleWordCounter
- * @param int $maxKeywords
- *
- * @return array
- */
-function stripCount($singleWordCounter, $maxKeywords = 15)
+function pirekd_stripCount(array $singleWordCounter, int $maxKeywords = 15): array
 {
-
-    // strip all with only 1
-    $tmp = [];
-
     $result = [];
 
-    $tmpToRemove = 1;
-    foreach ($singleWordCounter as $key => $value) {
-        if ($value > $tmpToRemove) {
-            $tmp[$key] = $value;
+    // Remove all where the count is less than 1
+    $filteredSingleWordCounter = array_filter($singleWordCounter, function ($value) { return $value > 1; });
+
+    if (count($filteredSingleWordCounter) <= $maxKeywords) {
+        return array_keys($filteredSingleWordCounter);
+    }
+
+    $dist = [];
+
+    foreach ($filteredSingleWordCounter as $value) {
+        if (!isset($dist[$value])) {
+            $dist[$value] = 0;
+        } else {
+            $dist[$value]++;
         }
     }
 
-    if (count($tmp) <= $maxKeywords) {
-        foreach ($tmp as $key => $value) {
+    uksort($dist, 'pirekd_cmp');
+
+    $count = 0;
+    $useQuantity = [];
+
+    foreach ($dist as $key => $value) {
+        $_count = $count + $value;
+        if ($_count <= $maxKeywords) {
+            $count += $value;
+            $useQuantity[] = $key;
+        } else {
+            break;
+        }
+    }
+
+    // Loop through all keywords and select by quantities to use
+    foreach ($singleWordCounter as $key => $value) {
+        if (in_array($value, $useQuantity)) {
             $result[] = $key;
         }
-    } else {
-        $dist = [];
-
-        foreach ($tmp as $key => $value) {
-            if (!isset($dist[$value])) {
-                $dist[$value] = 0;
-            } else {
-                $dist[$value]++;
-            }
-        }
-
-        uksort($dist, "__cmp");
-
-        $count = 0;
-
-        $useQuantity = [];
-
-        foreach ($dist as $key => $value) {
-            $_count = $count + $value;
-            if ($_count <= $maxKeywords) {
-                $count += $value;
-                $useQuantity[] = $key;
-            } else {
-                break;
-            }
-        }
-
-        // run all keywords and select by quantities to use
-        foreach ($singleWordCounter as $key => $value) {
-            if (in_array($value, $useQuantity)) {
-                $result[] = $key;
-            }
-        }
     }
+
     return $result;
 }
 
-/**
- * @param $headline
- * @param $text
- *
- * @return bool|string
- */
-function keywordDensity($headline, $text)
+function pirekd_keywordDensity(string $headline, string $text): string
 {
     $headline = strip_tags($headline);
     $text = conHtmlEntityDecode(strip_tags($text));
 
     // replace all non-converted numbered entities (what about numbered entities?)
     // replace all double/more spaces
-    $patterns = [
-        '#&[a-z]+\;#i',
-        '#\s+#'
-    ];
-    $replaces = [
-        '',
-        ' '
-    ];
-    $text = preg_replace($patterns, $replaces, $text);
+    $text = preg_replace(['#&[a-z]+;#i', '#\s+#'], ['', ' '], $text);
 
     // path = cms_getUrlPath($idcat);
     // path = str_replace(cRegistry::getFrontendUrl();, '', $path);
@@ -399,20 +363,50 @@ function keywordDensity($headline, $text)
     $singleWordCounter = [];
 
     // calc for text
-    $singleWordCounter = calcDensity($singleWordCounter, $text);
+    $singleWordCounter = pirekd_calcDensity($singleWordCounter, $text);
 
     // calc for headline
-    $singleWordCounter = calcDensity($singleWordCounter, $headline, 2);
+    $singleWordCounter = pirekd_calcDensity($singleWordCounter, $headline, 2);
 
     // get urlpath strings
-    // singleWordCounter = calcDensity($singleWordCounter, $path, 4);
+    // singleWordCounter = pirekd_calcDensity($singleWordCounter, $path, 4);
 
     arsort($singleWordCounter, SORT_NUMERIC);
-    $singleWordCounter = stripCount($singleWordCounter);
+    $singleWordCounter = pirekd_stripCount($singleWordCounter);
 
-    if (!is_array($singleWordCounter)) {
-        return false;
-    } else {
-        return implode(', ', $singleWordCounter);
-    }
+    return count($singleWordCounter) ? implode(', ', $singleWordCounter) : '';
+}
+
+
+/**
+ * @deprecated Since 2026-01-17, use {@see pirekd_calcDensity()} instead
+ */
+function calcDensity($singleWordCounter, $string, $quantifier = 1)
+{
+    cDeprecated(__FUNCTION__ . ' is Since 2026-01-17, use pirekd_calcDensity() instead');
+    return pirekd_calcDensity($singleWordCounter, $string, $quantifier );
+}
+/**
+ * @deprecated Since 2026-01-17, use {@see pirekd_cmp()} instead
+ */
+function __cmp($a, $b)
+{
+    cDeprecated(__FUNCTION__ . ' is Since 2026-01-17, use pirekd_cmp() instead');
+    return pirekd_cmp($a, $b);
+}
+/**
+ * @deprecated Since 2026-01-17, use {@see pirekd_stripCount()} instead
+ */
+function stripCount($singleWordCounter, $maxKeywords = 15)
+{
+    cDeprecated(__FUNCTION__ . ' is Since 2026-01-17, use pirekd_stripCount() instead');
+    return pirekd_stripCount($singleWordCounter, $maxKeywords);
+}
+/**
+ * @deprecated Since 2026-01-17, use {@see pirekd_keywordDensity()} instead
+ */
+function keywordDensity($headline, $text)
+{
+    cDeprecated(__FUNCTION__ . ' is Since 2026-01-17, use pirekd_keywordDensity() instead');
+    return pirekd_keywordDensity($headline, $text);
 }

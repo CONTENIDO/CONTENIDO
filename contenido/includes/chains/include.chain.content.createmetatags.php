@@ -115,7 +115,7 @@ function cecCreateMetatags($metaTags)
     }
 
     $sText = strip_tags(urldecode($sText));
-    $sText = keywordDensity('', $sText);
+    $sText = pirekd_keywordDensity('', $sText);
 
     // Get meta-tags for homepage
     $arrHomepageMetaTags = [];

@@ -24,14 +24,16 @@ class FrontendNavigation
 {
 
     /**
-     * References database object
-     *
+     * @var cApiCategoryLanguage[] Used to cache loaded category language objects.
+     */
+    private static $categoryLanguageCache = [];
+
+    /**
      * @var cDb
      */
     protected $_db = null;
 
-    /*
-     *
+    /**
      * @var bool
      */
     protected $_debug = false;
@@ -72,30 +74,40 @@ class FrontendNavigation
      * Get child categories by given parent category
      *
      * @param int $parentCategory
+     * @return int[]
      * @throws cDbException|cInvalidArgumentException
      */
     public function getSubCategories($parentCategory): array
     {
-        if (!is_int((int)$parentCategory)) {
+        $parentCategory = cSecurity::toInteger($parentCategory);
+        if ($parentCategory <= 0) {
             return [];
         }
 
-        $sql = "SELECT
+        $sql = $this->_db->prepare(
+            "SELECT
                     A.idcat
                 FROM
-                    " . cDb::getTableName('cat_tree') . " AS A,
-                    " . cDb::getTableName('cat') . " AS B,
-                    " . cDb::getTableName('cat_lang') . " AS C
+                    `%s` AS A,
+                    `%s` AS B,
+                    `%s` AS C
                 WHERE
                     A.idcat    = B.idcat AND
                     B.idcat    = C.idcat AND
-                    B.idclient = " . $this->_client . " AND
-                    C.idlang   = " . $this->_lang . " AND
+                    B.idclient = %d AND
+                    C.idlang   = %d AND
                     C.visible  = 1 AND
                     C.public   = 1 AND
-                    B.parentid = " . $parentCategory . "
+                    B.parentid = %d
                 ORDER BY
-                    A.idtree ";
+                    A.idtree ",
+            cDb::getTableName('cat_tree'),
+            cDb::getTableName('cat'),
+            cDb::getTableName('cat_lang'),
+            $this->_client,
+            $this->_lang,
+            $parentCategory
+        );
 
         if ($this->_debug) {
             cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
@@ -105,7 +117,7 @@ class FrontendNavigation
 
         $navigation = [];
         while ($this->_db->nextRecord()) {
-            $navigation[] = $this->_db->f('idcat');
+            $navigation[] = cSecurity::toInteger($this->_db->f('idcat'));
         }
 
         return $navigation;
@@ -119,22 +131,30 @@ class FrontendNavigation
      */
     public function hasChildren($parentCategory): bool
     {
-        if (!is_int((int)$parentCategory)) {
+        $parentCategory = cSecurity::toInteger($parentCategory);
+        if ($parentCategory <= 0) {
             return false;
         }
 
-        $sql = "SELECT
+        $sql = $this->_db->prepare(
+            "SELECT
                     B.idcat
                 FROM
-                    " . cDb::getTableName('cat') . " AS B,
-                    " . cDb::getTableName('cat_lang') . " AS C
+                    `%s` AS B,
+                    `%s` AS C
                 WHERE
                     B.idcat    = C.idcat AND
-                    B.idclient = " . $this->_client . " AND
-                    C.idlang   = " . $this->_lang . " AND
+                    B.idclient = %d AND
+                    C.idlang   = %d AND
                     C.visible  = 1 AND
                     C.public   = 1 AND
-                    B.parentid = " . $parentCategory . " ";
+                    B.parentid = %d",
+            cDb::getTableName('cat'),
+            cDb::getTableName('cat_lang'),
+            $this->_client,
+            $this->_lang,
+            $parentCategory
+        );
 
         if ($this->_debug) {
             cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
@@ -147,30 +167,40 @@ class FrontendNavigation
 
     /**
      * Get direct successor of a given category
-     * Note: does not work if direct successor (with preid 0) is not visible or not public
+     * Note: does not work if the direct successor (with preid 0) is not visible or not public
      *
-     * @param int $category
+     * @param int $categoryId
+     * @return int The successor category id or -1 if no successor exists.
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getSuccessor($category): int
+    public function getSuccessor($categoryId): int
     {
-        if (!is_int((int)$category)) {
+        $categoryId = cSecurity::toInteger($categoryId);
+        if ($categoryId <= 0) {
             return -1;
         }
 
-        $sql = "SELECT
+        $sql = $this->_db->prepare(
+            "SELECT
                     B.idcat
                 FROM
-                    " . cDb::getTableName('cat') . " AS B,
-                    " . cDb::getTableName('cat_lang') . " AS C
+                    `%s` AS B,
+                    `%s` AS C
                 WHERE
                     B.idcat    = C.idcat AND
-                    B.idclient = " . $this->_client . " AND
-                    C.idlang   = " . $this->_lang . " AND
+                    B.idclient = %d AND
+                    C.idlang   = %d AND
                     C.visible  = 1 AND
                     C.public   = 1 AND
                     B.preid    = 0 AND
-                    B.parentid = " . $category . " ";
+                    B.parentid = %d",
+            cDb::getTableName('cat'),
+            cDb::getTableName('cat_lang'),
+            $this->_client,
+            $this->_lang,
+            $categoryId
+        );
+
 
         if ($this->_debug) {
             cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
@@ -178,38 +208,42 @@ class FrontendNavigation
 
         $this->_db->query($sql);
 
-        if ($this->_db->nextRecord()) {
-            return cSecurity::toInteger($this->_db->f('idcat'));
-        } else {
-            return -1;
-        }
+        return $this->_db->nextRecord() ? cSecurity::toInteger($this->_db->f('idcat')) : -1;
     }
 
     /**
-     * Check if a given category has a direct successor
+     * Check if a given category has a direct successor.
      *
-     * @param int $category
+     * @param int $categoryId
      * @throws cDbException|cInvalidArgumentException
      */
-    public function hasSuccessor($category): bool
+    public function hasSuccessor($categoryId): bool
     {
-        if (!is_int((int)$category)) {
+        $categoryId = cSecurity::toInteger($categoryId);
+        if ($categoryId <= 0) {
             return false;
         }
 
-        $sql = "SELECT
+        $sql = $this->_db->prepare(
+            "SELECT
                     B.idcat
                 FROM
-                    " . cDb::getTableName('cat') . " AS B,
-                    " . cDb::getTableName('cat_lang') . " AS C
+                    `%s` AS B,
+                    `%s` AS C
                 WHERE
                     B.idcat    = C.idcat AND
-                    B.idclient = " . $this->_client . " AND
-                    C.idlang   = " . $this->_lang . " AND
+                    B.idclient = %d AND
+                    C.idlang   = %d AND
                     C.visible  = 1 AND
                     C.public   = 1 AND
                     B.preid    = 0 AND
-                    B.parentid = " . $category . " ";
+                    B.parentid = %d",
+            cDb::getTableName('cat'),
+            cDb::getTableName('cat_lang'),
+            $this->_client,
+            $this->_lang,
+            $categoryId
+        );
 
         if ($this->_debug) {
             cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
@@ -223,308 +257,146 @@ class FrontendNavigation
     /**
      * Get category name
      *
-     * @param int $cat_id
-     * @throws cDbException|cInvalidArgumentException
+     * @param int $categoryId
+     * @throws cException
      */
-    public function getCategoryName($cat_id): string
+    public function getCategoryName($categoryId): string
     {
-        if (!is_int((int)$cat_id)) {
-            return '';
-        }
+        $categoryLanguage = $this->getCategoryLanguage(cSecurity::toInteger($categoryId));
 
-        $sql = "SELECT
-                    B.name
-                FROM
-                    " . cDb::getTableName('cat') . " AS A,
-                    " . cDb::getTableName('cat_lang') . " AS B
-                WHERE
-                    A.idcat    = B.idcat AND
-                    A.idcat    = $cat_id AND
-                    A.idclient = " . $this->_client . " AND
-                    B.idlang   = " . $this->_lang . "
-                ";
-
-        if ($this->_debug) {
-            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
-        }
-
-        $this->_db->query($sql);
-
-        if ($this->_db->nextRecord()) {
-            return $this->_db->f('name');
-        } else {
-            return '';
-        }
+        return $categoryLanguage ? $categoryLanguage->get('name') : '';
     }
 
     /**
      * Get category urlname
      *
-     * @param int $cat_id
-     * @throws cDbException|cInvalidArgumentException
+     * @param int $categoryId
+     * @throws cException
      */
-    public function getCategoryURLName($cat_id): string
+    public function getCategoryURLName($categoryId): string
     {
-        if (!is_int((int)$cat_id)) {
-            return '';
-        }
+        $categoryLanguage = $this->getCategoryLanguage(cSecurity::toInteger($categoryId));
 
-        $sql = "SELECT
-                    B.urlname
-                FROM
-                    " . cDb::getTableName('cat') . " AS A,
-                    " . cDb::getTableName('cat_lang') . " AS B
-                WHERE
-                    A.idcat    = B.idcat AND
-                    A.idcat    = $cat_id AND
-                    A.idclient = " . $this->_client . " AND
-                    B.idlang   = " . $this->_lang . "
-                ";
+        return $categoryLanguage ? $categoryLanguage->get('urlname') : '';
+    }
 
-        if ($this->_debug) {
-            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
-        }
+    /**
+     * Check if the category is visible
+     *
+     * @param int $categoryId
+     * @throws cException
+     */
+    public function isVisible($categoryId): bool
+    {
+        $categoryLanguage = $this->getCategoryLanguage(cSecurity::toInteger($categoryId));
 
-        $this->_db->query($sql);
+        return $categoryLanguage && cSecurity::toBoolean($categoryLanguage->get('visible'));
+    }
 
-        if ($this->_db->nextRecord()) {
-            return $this->_db->f('urlname');
+    /**
+     * Check if the category is public
+     *
+     * @param int $categoryId
+     * @throws cException
+     */
+    public function isPublic($categoryId): bool
+    {
+        $categoryLanguage = $this->getCategoryLanguage(cSecurity::toInteger($categoryId));
+
+        return $categoryLanguage && cSecurity::toBoolean($categoryLanguage->get('public'));
+    }
+
+    /**
+     * Return true if $parentCategoryId is the parent of $categoryId
+     *
+     * @param int $parentCategoryId
+     * @param int $categoryId
+     * @throws cException
+     */
+    public function isParent($parentCategoryId, $categoryId): bool
+    {
+        $categoryLanguage = $this->getCategoryLanguage(cSecurity::toInteger($categoryId));
+
+        if ($categoryLanguage) {
+            return $categoryLanguage->get('parentid') == $parentCategoryId;
         } else {
-            return '';
-        }
-    }
-
-    /**
-     * Check if category is visible
-     *
-     * @param int $cat_id
-     * @throws cDbException|cInvalidArgumentException
-     */
-    public function isVisible($cat_id): bool
-    {
-        if (!is_int((int)$cat_id)) {
             return false;
         }
-
-        $sql = "SELECT
-                    B.visible
-                FROM
-                    " . cDb::getTableName('cat') . " AS A,
-                    " . cDb::getTableName('cat_lang') . " AS B
-                WHERE
-                    A.idcat    = B.idcat AND
-                    A.idcat    = $cat_id AND
-                    A.idclient = " . $this->_client . " AND
-                    B.idlang   = " . $this->_lang . "
-                ";
-
-        if ($this->_debug) {
-            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
-        }
-
-        $this->_db->query($sql);
-        $this->_db->nextRecord();
-
-        return $this->_db->f('visible') == 1;
-    }
-
-    /**
-     * Check if category is public
-     *
-     * @param int $cat_id
-     * @throws cDbException|cInvalidArgumentException
-     */
-    public function isPublic($cat_id): bool
-    {
-        if (!is_int((int)$cat_id)) {
-            return false;
-        }
-
-        $sql = "SELECT
-                    B.public
-                FROM
-                    " . cDb::getTableName('cat') . " AS A,
-                    " . cDb::getTableName('cat_lang') . " AS B
-                WHERE
-                    A.idcat    = B.idcat AND
-                    A.idcat    = $cat_id AND
-                    A.idclient = " . $this->_client . " AND
-                    B.idlang   = " . $this->_lang . "
-                ";
-
-        if ($this->_debug) {
-            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
-        }
-
-        $this->_db->query($sql);
-        $this->_db->nextRecord();
-
-        return $this->_db->f('public') == 1;
-    }
-
-    /**
-     * Return true if $parentid is parent of $catid
-     *
-     * @param int $parentid
-     * @param int $catid
-     * @throws cDbException|cInvalidArgumentException
-     */
-    public function isParent($parentid, $catid)
-    {
-        if (!is_int((int)$parentid)) {
-            return false;
-        }
-
-        $sql = "SELECT
-                a.parentid
-                FROM
-                    " . cDb::getTableName('cat') . " AS a,
-                    " . cDb::getTableName('cat_lang') . " AS b
-                WHERE
-                    a.idclient = " . $this->_client . " AND
-                    b.idlang   = " . $this->_lang . " AND
-                    a.idcat    = b.idcat AND
-                    a.idcat    = " . $catid . " ";
-
-        $this->_db->query($sql);
-        $this->_db->nextRecord();
-
-        if ($this->_debug) {
-            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
-        }
-
-        $pre = $this->_db->f('parentid');
-
-        return $parentid == $pre;
     }
 
     /**
      * Get parent id of a category
      *
-     * @param int $preid
-     * @throws cDbException|cInvalidArgumentException
+     * @param int $categoryId
+     * @throws cException
      */
-    public function getParent($preid): int
+    public function getParent($categoryId): int
     {
-        if (!is_int((int)$preid)) {
-            return -1;
-        }
+        $categoryLanguage = $this->getCategoryLanguage(cSecurity::toInteger($categoryId));
 
-        $sql = "SELECT
-                a.parentid
-                FROM
-                    " . cDb::getTableName('cat') . " AS a,
-                    " . cDb::getTableName('cat_lang') . " AS b
-                WHERE
-                    a.idclient = " . $this->_client . " AND
-                    b.idlang   = " . $this->_lang . " AND
-                    a.idcat    = b.idcat AND
-                    a.idcat    = " . $preid . " ";
-
-        $this->_db->query($sql);
-
-        if ($this->_debug) {
-            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
-        }
-
-        if ($this->_db->nextRecord()) {
-            return cSecurity::toInteger($this->_db->f('parentid'));
-        } else {
-            return -1;
-        }
+        return $categoryLanguage ? cSecurity::toInteger($categoryLanguage->get('parentid')) : -1;
     }
 
     /**
      * Check if a category has a parent
      *
-     * @param int $preid
-     * @throws cDbException|cInvalidArgumentException
+     * @param int $categoryId
+     * @throws cException
      */
-    public function hasParent($preid): bool
+    public function hasParent($categoryId): bool
     {
-        if (!is_int((int)$preid)) {
-            return false;
-        }
-
-        $sql = "SELECT
-                a.parentid
-                FROM
-                    " . cDb::getTableName('cat') . " AS a,
-                    " . cDb::getTableName('cat_lang') . " AS b
-                WHERE
-                    a.idclient = " . $this->_client . " AND
-                    b.idlang   = " . $this->_lang . " AND
-                    a.idcat    = b.idcat AND
-                    a.idcat    = " . $preid . " ";
-
-        $this->_db->query($sql);
-
-        if ($this->_debug) {
-            cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
-        }
-
-        return $this->_db->nextRecord();
+        return $this->getParent(cSecurity::toInteger($categoryId)) > 0;
     }
 
     /**
      * Get level of a category
      *
-     * @param int $catid
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getLevel($catid): int
+    public function getLevel($categoryId): int
     {
-        if (!is_int((int)$catid)) {
+        $categoryId = cSecurity::toInteger($categoryId);
+        if ($categoryId <= 0) {
             return -1;
         }
 
-        $sql = "SELECT
-                    level
-                FROM
-                    " . cDb::getTableName('cat_tree') . "
-                WHERE
-                    idcat = " . $catid . " ";
-
+        $sql = $this->_db->prepare(
+            "SELECT `level` FROM `%s` WHERE `idcat` = %d",
+            cDb::getTableName('cat_tree'),
+            $categoryId
+        );
         $this->_db->query($sql);
 
         if ($this->_debug) {
             cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
         }
 
-        if ($this->_db->nextRecord()) {
-            return cSecurity::toInteger($this->_db->f('level'));
-        } else {
-            return -1;
-        }
+        return $this->_db->nextRecord() ? cSecurity::toInteger($this->_db->f('level')) : -1;
     }
 
     /**
-     * Get URL by given category in front_content.php style
+     * Get URL by the given category in front_content.php style
      *
-     * @param int $idcat
-     * @param int $idart
+     * @param int $categoryId
+     * @param int $articleId
      * @param bool $absolute return absolute path or not [optional]
      * @return string $url
      */
-    public function getFrontContentUrl($idcat, $idart, $absolute = true): string
+    public function getFrontContentUrl($categoryId, $articleId, $absolute = true): string
     {
-        if (!is_int((int)$idcat) && $idcat < 0) {
+        $categoryId = cSecurity::toInteger($categoryId);
+        if ($categoryId <= 0) {
             return '';
         }
 
-        if ($absolute === true) {
-            # add absolute web path to urlpath
-            if (is_int((int)$idart) && $idart > 0) {
-                $url = cRegistry::getFrontendUrl() . 'front_content.php?idcat=' . $idcat . '&idart=' . $idart;
-            } else {
-                $url = cRegistry::getFrontendUrl() . 'front_content.php?idcat=' . $idcat;
-            }
+        $articleId = cSecurity::toInteger($articleId);
+        if ($articleId > 0) {
+            $url = "front_content.php?idcat=$categoryId&idart=$articleId";
         } else {
-            if (is_int((int)$idart) && $idart > 0) {
-                $url = 'front_content.php?idcat=' . $idcat . '&idart=' . $idart;
-            } else {
-                $url = 'front_content.php?idcat=' . $idcat;
-            }
+            $url = "front_content.php?idcat=$categoryId";
+        }
+        if ($absolute === true) {
+            $url = cRegistry::getFrontendUrl() . $url;
         }
 
         return $url;
@@ -535,110 +407,132 @@ class FrontendNavigation
      * The urlpath looks like /Home/Product/Support/ where the directory-like string equals a category path.
      *
      * @requires functions.pathresolver.php
-     * @param int $idcat
-     * @param int $idart
+     * @param int $categoryId
+     * @param int $articleId
      * @param bool $absolute return absolute path or not [optional]
      * @param int $level [optional]
      * @param string $urlSuffix [optional]
      * @return string path information or empty string
+     * @throws cDbException|cException
      */
-    public function getUrlPath($idcat, $idart, $absolute = true, $level = 0, $urlSuffix = 'index.html'): string
+    public function getUrlPath($categoryId, $articleId, $absolute = true, $level = 0, $urlSuffix = 'index.html'): string
     {
-        if (!is_int((int)$idcat) && $idcat < 0) {
+        $categoryId = cSecurity::toInteger($categoryId);
+        if ($categoryId <= 0) {
             return '';
         }
 
-        $cat_str = '';
-        prCreateURLNameLocationString($idcat, "/", $cat_str, false, "", $level, $this->_lang, true, false);
+        $categoryPath = '';
+        prCreateURLNameLocationString(
+            $categoryId,
+            '/',
+            $categoryPath,
+            false,
+            '',
+            $level,
+            $this->_lang
+        );
 
-        if (cString::getStringLength($cat_str) <= 1) {
-            # return empty string if no url location is available
+        if (cString::getStringLength($categoryPath) <= 1) {
+            // return an empty string if no url location is available
             return '';
         }
 
-        if ($absolute === true) {
-            # add absolute web path to urlpath
-            if (is_int((int)$idart) && $idart > 0) {
-                return cRegistry::getFrontendUrl() . $cat_str . '/index-d-' . $idart . '.html';
-            } else {
-                return cRegistry::getFrontendUrl() . $cat_str . '/' . $urlSuffix;
-            }
+        $articleId = cSecurity::toInteger($articleId);
+        if ($articleId > 0) {
+            $urlPath = "$categoryPath/index-d-$articleId.html";
         } else {
-            if (is_int((int)$idart) && $idart > 0) {
-                return $cat_str . '/index-d-' . $idart . '.html';
-            } else {
-                return $cat_str . '/' . $urlSuffix;
-            }
+            $urlPath = "$categoryPath/$urlSuffix";
         }
+        if ($absolute === true) {
+            $urlPath = cRegistry::getFrontendUrl() . $urlPath;
+        }
+
+        return $urlPath;
     }
 
     /**
      * Get urlpath by given category and/or selected param and level.
      *
      * @requires functions.pathresolver.php
-     * @param int $idcat
+     * @param int $categoryId
      * @param int $selectedNumber
      * @param bool $absolute return absolute path or not [optional]
      * @param int $level [optional]
      * @return string path information or empty string
+     * @throws cDbException|cException
      */
-    public function getUrlPathGenParam($idcat, $selectedNumber, $absolute = true, $level = 0): string
+    public function getUrlPathGenParam($categoryId, $selectedNumber, $absolute = true, $level = 0): string
     {
-        if (!is_int((int)$idcat) && $idcat < 0) {
+        $categoryId = cSecurity::toInteger($categoryId);
+        if ($categoryId <= 0) {
             return '';
         }
 
-        $cat_str = '';
-        prCreateURLNameLocationString($idcat, "/", $cat_str, false, "", $level, $this->_lang, true, false);
+        $categoryPath = '';
+        prCreateURLNameLocationString(
+            $categoryId,
+            '/',
+            $categoryPath,
+            false,
+            '',
+            $level,
+            $this->_lang,
+        );
 
-        if (cString::getStringLength($cat_str) <= 1) {
-            // return empty string if no url location is available
+        if (cString::getStringLength($categoryPath) <= 1) {
+            // return an empty string if no url location is available
             return '';
         }
 
-        if ($absolute === true) {
-            // add absolute web path to urlpath
-            if (is_int((int)$selectedNumber)) {
-                return cRegistry::getFrontendUrl() . $cat_str . '/index-g-' . $selectedNumber . '.html';
+        $selectedNumber = cSecurity::toInteger($selectedNumber);
+        if ($selectedNumber > 0) {
+            $urlPath = "$categoryPath/index-g-$selectedNumber.html";
+            if ($absolute === true) {
+                $urlPath = cRegistry::getFrontendUrl() . $urlPath;
             }
-        } else {
-            if (is_int((int)$selectedNumber)) {
-                return $cat_str . '/index-g-' . $selectedNumber . '.html';
-            }
+
+            return $urlPath;
         }
 
         return '';
     }
 
     /**
-     * Get URL by given categoryid and/or articleid
+     * Get URL by given category id and/or article id
      *
-     * @param int $idcat url name to create for
-     * @param int $idart
+     * @param int $categoryId url name to create for
+     * @param int $articleId
      * @param string $type
      * @param bool $absolute return absolute path or not [optional]
      * @param int $level
      * @return string $url or empty
+     * @throws cDbException|cException
      */
-    public function getURL($idcat, $idart, $type = '', $absolute = true, $level = 0): string
+    public function getURL($categoryId, $articleId, $type = '', $absolute = true, $level = 0): string
     {
-        if (!is_int((int)$idcat) and $idcat < 0) {
+        $categoryId = cSecurity::toInteger($categoryId);
+        if ($categoryId <= 0) {
             return '';
         }
 
+        $articleId = cSecurity::toInteger($articleId);
+        $absolute = cSecurity::toBoolean($absolute);
+        $level = cSecurity::toInteger($level);
+
         switch ($type) {
             case 'urlpath':
-                $url = $this->getUrlPath($idcat, $idart, $absolute, $level);
+                $url = $this->getUrlPath($categoryId, $articleId, $absolute, $level);
                 break;
             case 'frontcontent':
-                $url = $this->getFrontContentUrl($idcat, $idart, $absolute);
+                $url = $this->getFrontContentUrl($categoryId, $articleId, $absolute);
                 break;
             case 'index-a':
-                # not implemented
+                // not implemented
                 $url = '';
                 break;
             default:
-                $url = $this->getFrontContentUrl($idcat, $idart, $absolute);
+                $url = $this->getFrontContentUrl($categoryId, $articleId, $absolute);
         }
 
         return $url;
@@ -647,33 +541,39 @@ class FrontendNavigation
     /**
      * Get category of article.
      *
-     * If an article is assigned to more than one category take the first category.
+     * If an article is assigned to more than one category, take the first category.
      *
-     * @param int $idart
+     * @param int $articleId
      * @return int category id or negative integer
      * @throws cDbException|cInvalidArgumentException
      */
-    public function getCategoryOfArticle($idart): int
+    public function getCategoryOfArticle($articleId): int
     {
-
-        # validate input
-        if (!is_int((int)$idart) || $idart <= 0) {
-            return -1;
+        $articleId = cSecurity::toInteger($articleId);
+        if ($articleId <= 0) {
+            return '';
         }
 
-        $sql = '
-        SELECT
-            c.idcat
-        FROM
-            ' . cDb::getTableName('art_lang') . ' AS a,
-            ' . cDb::getTableName('art') . ' AS b,
-            ' . cDb::getTableName('cat_art') . ' AS c
-        WHERE
-            a.idart = ' . $idart . ' AND
-            b.idclient = ' . $this->_client . ' AND
-            a.idlang = ' . $this->_lang . ' AND
-            b.idart = c.idart AND
-            a.idart = b.idart ';
+        $sql = $this->_db->prepare(
+            "SELECT
+                c.idcat
+            FROM
+                `%s` AS a,
+                `%s` AS b,
+                `%s` AS c
+            WHERE
+                a.idart = %d AND
+                b.idclient = %d AND
+                a.idlang = %d AND
+                b.idart = c.idart AND
+                a.idart = b.idart",
+            cDb::getTableName('art_lang'),
+            cDb::getTableName('art'),
+            cDb::getTableName('cat_art'),
+            $articleId,
+            $this->_client,
+            $this->_lang
+        );
 
         if ($this->_debug) {
             cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
@@ -681,67 +581,68 @@ class FrontendNavigation
 
         $this->_db->query($sql);
 
-        # $this->db->getErrorNumber() returns 0 (zero) if no error occurred.
+        // $this->db->getErrorNumber() returns 0 (zero) if no error occurred.
         if ($this->_db->getErrorNumber() == 0) {
-            if ($this->_db->nextRecord()) {
-                return cSecurity::toInteger($this->_db->f('idcat'));
-            } else {
-                return -1;
-            }
-        } else {
-            if ($this->_debug) {
-                cDebug::getDebugger()->add("Mysql Error:" . $this->_db->getErrorMessage() . "(" . $this->_db->getErrorNumber() . ")", __FUNCTION__);
-            }
-            return -1; # error occurred.
+            return $this->_db->nextRecord() ? cSecurity::toInteger($this->_db->f('idcat')) : -1;
+        } elseif ($this->_debug) {
+            cDebug::getDebugger()->add(
+                "Mysql Error:" . $this->_db->getErrorMessage() . "(" . $this->_db->getErrorNumber() . ")",
+                __FUNCTION__
+            );
         }
+
+        return -1;
     }
 
     /**
-     * Get path  of a given category up to a certain level
+     * Get the path of a given category up to a certain level
      *
-     * @param int $cat_id
+     * @param int $categoryId
      * @param int $level [optional]
      * @param bool $reverse
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getCategoryPath($cat_id, $level = 0, $reverse = true): array
+    public function getCategoryPath($categoryId, $level = 0, $reverse = true): array
     {
-        if (!is_int((int)$cat_id) && $cat_id < 0) {
+        $categoryId = cSecurity::toInteger($categoryId);
+        if ($categoryId <= 0) {
             return [];
         }
 
-        $root_path = [$cat_id];
-        $parent_id = $cat_id;
+        $level = cSecurity::toInteger($level);
+        $rootPath = [$categoryId];
+        $parentId = $categoryId;
 
-        while ($this->getLevel($parent_id) >= 0 && $this->getLevel($parent_id) > $level) {
-            $parent_id = $this->getParent($parent_id);
-            if ($parent_id >= 0) {
-                $root_path[] = $parent_id;
+        while ($this->getLevel($parentId) >= 0 && $this->getLevel($parentId) > $level) {
+            $parentId = $this->getParent($parentId);
+            if ($parentId >= 0) {
+                $rootPath[] = $parentId;
             }
         }
 
         if ($reverse) {
-            $root_path = array_reverse($root_path);
+            $rootPath = array_reverse($rootPath);
         }
 
-        return $root_path;
+        return $rootPath;
     }
 
     /**
-     * Get root category of a given category
+     * Get the root category of a given category
      *
-     * @param int $catId
+     * @param int $categoryId
      * @return int|false
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    function getRoot($catId)
+    function getRoot($categoryId)
     {
-        if (!is_int((int)$catId) && $catId < 0) {
+        $categoryId = cSecurity::toInteger($categoryId);
+        if ($categoryId <= 0) {
             return false;
         }
 
         $rootCategory = false;
-        $parentId = $catId;
+        $parentId = $categoryId;
 
         while ($this->getLevel($parentId) >= 0) {
             $rootCategory = $parentId;
@@ -752,28 +653,35 @@ class FrontendNavigation
     }
 
     /**
-     * get subtree by a given id
+     * Get subtree by a given category id
      *
-     * @param int $idcat_start Id of category
-     * @return array Array with subtree
+     * @param int $categoryId Id of category
+     * @return int[] Array with subtree
      * @throws cDbException|cInvalidArgumentException
      */
-    function getSubTree($idcat_start): array
+    function getSubTree($categoryId): array
     {
-        if (!is_int((int)$idcat_start)) {
+        $categoryId = cSecurity::toInteger($categoryId);
+        if ($categoryId <= 0) {
             return [];
         }
 
-        $sql = "SELECT
-                    B.idcat, A.level
+        $sql = $this->_db->prepare(
+            "SELECT
+                    B.idcat,
+                    A.level
                 FROM
-                    " . cDb::getTableName('cat_tree') . " AS A,
-                    " . cDb::getTableName('cat') . " AS B
+                    `%s` AS A,
+                    `%s` AS B
                 WHERE
                     A.idcat  = B.idcat AND
-                    idclient = " . $this->_client . "
+                    idclient = %d
                 ORDER BY
-                    idtree";
+                    idtree",
+            cDb::getTableName('cat_tree'),
+            cDb::getTableName('cat'),
+            $this->_client
+        );
 
         if ($this->_debug) {
             cDebug::getDebugger()->add($sql, __FUNCTION__ . ' $sql');
@@ -781,26 +689,51 @@ class FrontendNavigation
 
         $this->_db->query($sql);
 
-        $i = false;
+        $isEndNotReached = false;
         $curLevel = 0;
         $deeperCats = [];
 
         while ($this->_db->nextRecord()) {
-            if ($this->_db->f('idcat') == $idcat_start) {
+            if ($this->_db->f('idcat') == $categoryId) {
                 $curLevel = $this->_db->f('level');
-                $i = true;
+                $isEndNotReached = true;
             } else {
                 if ($curLevel == $this->_db->f('level')) {
-                    # ending part of tree
-                    $i = false;
+                    // Ending part of the tree
+                    $isEndNotReached = false;
                 }
             }
 
-            if ($i) {
-                $deeperCats[] = $this->_db->f('idcat');
+            if ($isEndNotReached) {
+                $deeperCats[] = cSecurity::toInteger($this->_db->f('idcat'));
             }
         }
+
         return $deeperCats;
+    }
+
+    /**
+     * @throws cException
+     */
+    private function getCategoryLanguage(int $categoryId): ?cApiCategoryLanguage
+    {
+        if ($categoryId <= 0) {
+            return null;
+        }
+
+        if (!isset(self::$categoryLanguageCache[$categoryId])) {
+            $categoryLanguage = new cApiCategoryLanguage();
+            $categoryLanguage->loadByCategoryIdAndLanguageId($categoryId, $this->_lang);
+            if ($categoryLanguage->isLoaded()) {
+                self::$categoryLanguageCache[$categoryId] = $categoryLanguage;
+            } else {
+                self::$categoryLanguageCache[$categoryId] = false;
+            }
+        }
+
+        return self::$categoryLanguageCache[$categoryId] instanceof cApiCategoryLanguage
+            ? self::$categoryLanguageCache[$categoryId]
+            : null;
     }
 
 }
