@@ -28,134 +28,115 @@ class PimPluginSetupUninstall extends PimPluginSetup
      *
      * @var string
      */
-    private $_PluginFoldername;
+    private $pluginFoldername = '';
 
     /**
      * @var cApiAreaCollection
      */
-    protected $_ApiAreaCollection;
+    protected $apiAreaCollection;
 
     /**
      * @var cApiActionCollection
      */
-    protected $_ApiActionCollection;
+    protected $apiActionCollection;
 
     /**
      * @var cApiFileCollection
      */
-    protected $_ApiFileCollection;
+    protected $apiFileCollection;
 
     /**
      * @var cApiFrameFileCollection
      */
-    protected $_ApiFrameFileCollection;
+    protected $apiFrameFileCollection;
 
     /**
      * @var cApiNavMainCollection
      */
-    protected $_ApiNavMainCollection;
+    protected $apiNavMainCollection;
 
     /**
      * @var cApiNavSubCollection
      */
-    protected $_ApiNavSubCollection;
+    protected $apiNavSubCollection;
 
     /**
      * @var cApiTypeCollection
      */
-    protected $_ApiTypeCollection;
+    protected $apiTypeCollection;
 
-    // GET and SET methods for installation routine
+    // GET and SET methods for the installation routine
 
     /**
      * Set variable for plugin foldername
-     *
-     * @param string $foldername
-     * @return string
      */
-    public function setPluginFoldername($foldername)
+    public function setPluginFoldername(string $foldername)
     {
-        return $this->_PluginFoldername = cSecurity::escapeString($foldername);
+        $this->pluginFoldername = cSecurity::escapeString($foldername);
     }
 
     /**
      * Initializing and set variable for cApiAreaCollection
-     *
-     * @return cApiAreaCollection
      */
-    private function _setApiAreaCollection()
+    private function setApiAreaCollection(cApiAreaCollection $apiAreaCollection)
     {
-        return $this->_ApiAreaCollection = new cApiAreaCollection();
+        $this->apiAreaCollection = $apiAreaCollection;
     }
 
     /**
      * Initializing and set variable for cApiActionCollection
-     *
-     * @return cApiActionCollection
      */
-    private function _setApiActionCollection()
+    private function setApiActionCollection(cApiActionCollection $apiActionCollection)
     {
-        return $this->_ApiActionCollection = new cApiActionCollection();
+        $this->apiActionCollection = $apiActionCollection;
     }
 
     /**
      * Initializing and set variable for cApiAFileCollection
-     *
-     * @return cApiFileCollection
      */
-    private function _setApiFileCollection()
+    private function setApiFileCollection(cApiFileCollection $apiFileCollection)
     {
-        return $this->_ApiFileCollection = new cApiFileCollection();
+        $this->apiFileCollection = $apiFileCollection;
     }
 
     /**
      * Initializing and set variable for cApiFrameFileCollection
-     *
-     * @return cApiFrameFileCollection
      */
-    private function _setApiFrameFileCollection()
+    private function setApiFrameFileCollection(cApiFrameFileCollection $apiFrameFileCollection)
     {
-        return $this->_ApiFrameFileCollection = new cApiFrameFileCollection();
+        $this->apiFrameFileCollection = $apiFrameFileCollection;
     }
 
     /**
      * Initializing and set variable for cApiNavMainFileCollection
-     *
-     * @return cApiNavMainCollection
      */
-    private function _setApiNavMainCollection()
+    private function setApiNavMainCollection(cApiNavMainCollection $apiNavMainCollection)
     {
-        return $this->_ApiNavMainCollection = new cApiNavMainCollection();
+        $this->apiNavMainCollection = $apiNavMainCollection;
     }
 
     /**
      * Initializing and set variable for cApiNavSubCollection
-     *
-     * @return cApiNavSubCollection
      */
-    private function _setApiNavSubCollection()
+    private function setApiNavSubCollection(cApiNavSubCollection $apiNavSubCollection)
     {
-        return $this->_ApiNavSubCollection = new cApiNavSubCollection();
+        $this->apiNavSubCollection = $apiNavSubCollection;
     }
 
     /**
      * Initializing and set variable for cApiTypeCollection
-     *
-     * @return cApiTypeCollection
      */
-    private function _setApiTypeCollection()
+    private function setApiTypeCollection(cApiTypeCollection $apiTypeCollection)
     {
-        return $this->_ApiTypeCollection = new cApiTypeCollection();
+        $this->apiTypeCollection = $apiTypeCollection;
     }
 
     /**
      * Get method for foldername of installed plugin
-     *
-     * @return string
      */
-    protected function _getPluginFoldername()
+    protected function getPluginFoldername(): string
     {
-        return $this->_PluginFoldername;
+        return $this->pluginFoldername;
     }
 
     // Begin of uninstallation routine
@@ -168,13 +149,13 @@ class PimPluginSetupUninstall extends PimPluginSetup
         parent::__construct();
 
         // cApiClasses
-        $this->_setApiAreaCollection();
-        $this->_setApiActionCollection();
-        $this->_setApiFileCollection();
-        $this->_setApiFrameFileCollection();
-        $this->_setApiNavMainCollection();
-        $this->_setApiNavSubCollection();
-        $this->_setApiTypeCollection();
+        $this->setApiAreaCollection(new cApiAreaCollection());
+        $this->setApiActionCollection(new cApiActionCollection());
+        $this->setApiFileCollection(new cApiFileCollection());
+        $this->setApiFrameFileCollection(new cApiFrameFileCollection());
+        $this->setApiNavMainCollection(new cApiNavMainCollection());
+        $this->setApiNavSubCollection(new cApiNavSubCollection());
+        $this->setApiTypeCollection(new cApiTypeCollection());
     }
 
     /**
@@ -187,16 +168,16 @@ class PimPluginSetupUninstall extends PimPluginSetup
     public function uninstall($sql = true)
     {
         // Dependencies checks
-        $this->_uninstallCheckDependencies();
+        $this->uninstallCheckDependencies();
 
         // get relations
-        $this->_pimPluginRelationsCollection->setWhere('idplugin', parent::_getPluginId());
-        $this->_pimPluginRelationsCollection->query();
+        $this->pimPluginRelationsCollection->setWhere('idplugin', parent::getPluginId());
+        $this->pimPluginRelationsCollection->query();
 
         // Initializing relations array
         $relations = [];
 
-        while ($relation = $this->_pimPluginRelationsCollection->next()) {
+        while ($relation = $this->pimPluginRelationsCollection->next()) {
             // Relation to tables *_action_, *_area, *_nav_main, *_nav_sub and
             // *_type
             $index = $relation->get('type');
@@ -209,64 +190,67 @@ class PimPluginSetupUninstall extends PimPluginSetup
 
         // Delete entries with relations to *_actions
         if (!empty($relations['action'])) {
-            $this->_ApiActionCollection->deleteByWhereClause("idaction IN('" . join("', '", $relations['action']) . "')");
+            $this->apiActionCollection->deleteByWhereClause("idaction IN('" . join("', '", $relations['action']) . "')");
         }
 
         // Delete entries with relations to *_frame_files
         if (!empty($relations['framefl'])) {
-            $this->_ApiFrameFileCollection->deleteByWhereClause("idframefile IN('" . join("', '", $relations['framefl']) . "')");
+            $this->apiFrameFileCollection->deleteByWhereClause("idframefile IN('" . join("', '", $relations['framefl']) . "')");
         }
 
         // Delete entries with relations to *_area
         if (!empty($relations['area'])) {
-            $this->_ApiFileCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
-            $this->_ApiFrameFileCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
-            $this->_ApiAreaCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
+            $this->apiFileCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
+            $this->apiFrameFileCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
+            $this->apiAreaCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
         }
 
         // Delete entries with relations to *_nav_main
         if (!empty($relations['navm'])) {
-            $this->_ApiNavMainCollection->deleteByWhereClause("idnavm IN('" . join("', '", $relations['navm']) . "')");
+            $this->apiNavMainCollection->deleteByWhereClause("idnavm IN('" . join("', '", $relations['navm']) . "')");
         }
 
         // Delete entries with relations to *_nav_sub
         if (!empty($relations['navs'])) {
-            $this->_ApiNavSubCollection->deleteByWhereClause("idnavs IN('" . join("', '", $relations['navs']) . "')");
+            $this->apiNavSubCollection->deleteByWhereClause("idnavs IN('" . join("', '", $relations['navs']) . "')");
         }
 
         // Delete content types
         if (!empty($relations['ctype'])) {
-            $this->_ApiTypeCollection->deleteByWhereClause("idtype IN('" . join("', '", $relations['ctype']) . "')");
+            $this->apiTypeCollection->deleteByWhereClause("idtype IN('" . join("', '", $relations['ctype']) . "')");
         }
 
         // Get plugin-information
-        $this->_pimPluginCollection->resetQuery();
-        $this->_pimPluginCollection->setWhere('idplugin', parent::_getPluginId());
-        $this->_pimPluginCollection->query();
-        $pimPluginSql = $this->_pimPluginCollection->next();
+        $this->pimPluginCollection->resetQuery();
+        $this->pimPluginCollection->setWhere('idplugin', parent::getPluginId());
+        $this->pimPluginCollection->query();
+        $pimPluginSql = $this->pimPluginCollection->next();
 
         // Set foldername
         $this->setPluginFoldername($pimPluginSql->get('folder'));
 
         // Delete specific sql entries or tables, run only if we have no update
         // sql file
-        if ($sql && !parent::_getUpdateSqlFileExist()) {
-            $this->_uninstallDeleteSpecificSql();
+        if ($sql && !parent::getUpdateSqlFileExist()) {
+            $this->uninstallDeleteSpecificSql();
         }
 
         // Plugin name
         $pluginName = $pimPluginSql->get('name');
 
         // Delete entries at *_plugins_rel and *_plugins
-        $this->_pimPluginRelationsCollection->deleteByWhereClause('idplugin = ' . parent::_getPluginId());
-        $this->_pimPluginCollection->deleteByWhereClause('idplugin = ' . parent::_getPluginId());
+        $this->pimPluginRelationsCollection->deleteByWhereClause('idplugin = ' . parent::getPluginId());
+        $this->pimPluginCollection->deleteByWhereClause('idplugin = ' . parent::getPluginId());
 
         // Write new execution order
-        $this->_writeNewExecutionOrder();
+        $this->writeNewExecutionOrder();
 
         // Success message for uninstall mode
-        if (parent::$_GuiPage instanceof cGuiPage && parent::getMode() == 3) {
-            parent::info(sprintf(i18n('The plugin <strong>%s</strong> has been successfully removed. To apply the changes please login into backend again.', 'pim'), $pluginName));
+        if (parent::$guiPage instanceof cGuiPage && parent::getMode() == 3) {
+            parent::info(sprintf(
+                i18n('The plugin <strong>%s</strong> has been successfully removed. To apply the changes please login into backend again.', 'pim'),
+                $pluginName
+            ));
         }
     }
 
@@ -276,7 +260,7 @@ class PimPluginSetupUninstall extends PimPluginSetup
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    private function _uninstallCheckDependencies()
+    private function uninstallCheckDependencies()
     {
         // Call checkDependencies function at PimPlugin class
         // Function returns true or false
@@ -284,7 +268,10 @@ class PimPluginSetupUninstall extends PimPluginSetup
 
         // Show an error message when dependencies could be found
         if ($result === false) {
-            parent::error(sprintf(i18n('This plugin is required by the plugin <strong>%s</strong>, so you can not remove it.', 'pim'), parent::_getPluginName()));
+            parent::error(sprintf(
+                i18n('This plugin is required by the plugin <strong>%s</strong>, so you can not remove it.', 'pim'),
+                parent::getPluginName()
+            ));
         }
     }
 
@@ -293,36 +280,33 @@ class PimPluginSetupUninstall extends PimPluginSetup
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    protected function _uninstallDeleteSpecificSql()
+    protected function uninstallDeleteSpecificSql(): bool
     {
-        $cfg = cRegistry::getConfig();
-
-        $tempSqlFilename = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_uninstall.sql';
+        $tempSqlFilename = PimPluginHelper::getPluginUninstallFile($this->getPluginFoldername());
 
         $pattern = '/^(DELETE FROM|DROP TABLE) `?' . parent::PLUGIN_SQL_PREFIX . '([a-zA-Z0-9\-_]+)`?\b/';
-        return $this->_processSetupSql($tempSqlFilename, $pattern);
+
+        return $this->processSetupSql($tempSqlFilename, $pattern);
     }
 
     /**
-     * Delete a installed plugin directory
+     * Delete an installed plugin directory
      *
      * @throws cException
      * @throws cInvalidArgumentException
      */
     public function uninstallDir()
     {
-        $cfg = cRegistry::getConfig();
-
         // delete folders
-        $folderPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->_getPluginFoldername();
+        $folderPath = PimPluginHelper::getPluginsFolderPath() . $this->getPluginFoldername();
         cDirHandler::recursiveRmdir($folderPath);
 
-        if (parent::$_GuiPage instanceof cGuiPage) {
+        if (parent::$guiPage instanceof cGuiPage) {
             // success message
             if (!cFileHandler::exists($folderPath)) {
-                parent::info(sprintf(i18n('The plugin folder <strong>%s</strong> has been successfully uninstalled.', 'pim'), $this->_getPluginFoldername()));
+                parent::info(sprintf(i18n('The plugin folder <strong>%s</strong> has been successfully uninstalled.', 'pim'), $this->getPluginFoldername()));
             } elseif (cFileHandler::exists($folderPath)) {
-                parent::error(sprintf(i18n('The plugin folder <strong>%s</strong> could not be uninstalled.', 'pim'), $this->_getPluginFoldername()));
+                parent::error(sprintf(i18n('The plugin folder <strong>%s</strong> could not be uninstalled.', 'pim'), $this->getPluginFoldername()));
             }
         }
     }
@@ -332,7 +316,7 @@ class PimPluginSetupUninstall extends PimPluginSetup
      *
      * @throws cDbException|cException
      */
-    protected function _writeNewExecutionOrder(): bool
+    protected function writeNewExecutionOrder(): bool
     {
         // Lowest executionorder is one
         $i = 1;

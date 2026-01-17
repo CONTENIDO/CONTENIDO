@@ -25,13 +25,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class PimPluginViewDependencies
 {
 
-    // Filename of Xml configuration file for plugins
-    public const PLUGIN_CONFIG_FILENAME = "plugin.xml";
-
     /**
-     * @var string
+     * @var string Path to the folder containing all plugins.
      */
-    private static $pluginFoldername;
+    private static $pluginsFoldername = '';
 
     /**
      * @var SimpleXMLElement
@@ -43,38 +40,31 @@ class PimPluginViewDependencies
      */
     public function __construct()
     {
-        $this->_setPluginFoldername();
+        $this->setPluginsFoldername(PimPluginHelper::getPluginsFolderPath());
     }
 
     /**
-     * Get method for pluginFoldername
-     *
-     * @return string $pluginFoldername
+     * Setter method for pluginFoldername
      */
-    private function _setPluginFoldername()
+    private function setPluginsFoldername(string $pluginsFoldername)
     {
-        $cfg = cRegistry::getConfig();
-        return self::$pluginFoldername = cRegistry::getBackendPath() . $cfg['path']['plugins'];
+        self::$pluginsFoldername = $pluginsFoldername;
     }
 
     /**
-     * Get method for pluginFoldername
-     *
-     * @return string $pluginFoldername
+     * Getter method for pluginFoldername
      */
-    private function _getPluginFoldername()
+    private function getPluginsFoldername(): string
     {
-        return self::$pluginFoldername;
+        return self::$pluginsFoldername;
     }
 
     /**
      * Get dependencies
-     *
-     * @return bool|string
+     * @throws cException
      */
-    private function _getPluginDependencies()
+    private function getPluginDependencies(): string
     {
-
         $tempXml = self::$tempXml;
 
         // Initializing dependencies string
@@ -82,7 +72,10 @@ class PimPluginViewDependencies
 
         $dependenciesCount = count($tempXml->dependencies);
         for ($i = 0; $i < $dependenciesCount; $i++) {
-            $dependencies .= sprintf(i18n('This plugin has a dependency to plugin &quot;%s&quot;<br />', 'pim'), $tempXml->dependencies->depend[$i]);
+            $dependencies .= sprintf(
+                i18n('This plugin has a dependency to plugin &quot;%s&quot;<br />', 'pim'),
+                $tempXml->dependencies->depend[$i]
+            );
         }
 
         if ($dependencies == '') {
@@ -90,65 +83,60 @@ class PimPluginViewDependencies
         } else {
             return $dependencies;
         }
-
     }
 
     /**
      * Get dependencies from extracted plugins
      *
      * @param SimpleXMLElement $tempXml
-     *
      * @return string Plugin dependency
+     * @throws cException
      */
-    public function getPluginDependenciesExtracted($tempXml)
+    public function getPluginDependenciesExtracted(SimpleXMLElement $tempXml): string
     {
         // Write plugin.xml content into tempXml variable
         self::$tempXml = $tempXml;
 
         // Call plugin dependencies
-        return $this->_getPluginDependencies();
+        return $this->getPluginDependencies();
     }
 
     /**
      * Get dependencies from installed plugins
      *
-     * @param int $idplugin Id of defined plugin
-     *
-     * @return string Plugin dependencies
-     *
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param int $pluginId Id of defined plugin
+     * @return string|false Plugin dependencies
+     * @throws cException|cInvalidArgumentException
      */
-    public function getPluginDependenciesInstalled($idplugin = 0)
+    public function getPluginDependenciesInstalled(int $pluginId = 0)
     {
-
         // Return false if no idplugin variable is defined
-        if ($idplugin == 0) {
+        if ($pluginId == 0) {
             return false;
         }
 
-        // Get foldername from defined plugin
+        // Get folder name from defined plugin
         $pimPluginColl = new PimPluginCollection();
-        $pimPluginColl->setWhere('idplugin', $idplugin);
+        $pimPluginColl->setWhere('idplugin', $pluginId);
         $pimPluginColl->query();
         $pimPluginSql = $pimPluginColl->next();
-        $folderBase = $pimPluginSql->get('folder');
+        $folderName = $pimPluginSql->get('folder');
 
-        // Reset query so we can use PimPluginCollection later again...
+        // Reset the query so we can use PimPluginCollection later again...
         $pimPluginColl->resetQuery();
 
-        // Skip plugin if it has no plugin.xml file
-        if (!cFileHandler::exists($this->_getPluginFoldername() . $folderBase . DIRECTORY_SEPARATOR . self::PLUGIN_CONFIG_FILENAME)) {
+        // Skip the plugin if it has no plugin.xml file
+        if (!cFileHandler::exists(PimPluginHelper::getPluginConfigFile($folderName))) {
             return false;
         }
 
         // Read plugin.xml files from existing plugins at contenido/plugins dir
-        $tempXmlContent = cFileHandler::read($this->_getPluginFoldername() . $folderBase . DIRECTORY_SEPARATOR . self::PLUGIN_CONFIG_FILENAME);
+        $tempXmlContent = cFileHandler::read(PimPluginHelper::getPluginConfigFile($folderName));
 
         // Write plugin.xml content into tempXml variable
         self::$tempXml = simplexml_load_string($tempXmlContent);
 
         // Call plugin dependencies
-        return $this->_getPluginDependencies();
+        return $this->getPluginDependencies();
     }
 }

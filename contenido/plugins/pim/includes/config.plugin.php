@@ -23,6 +23,7 @@ $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugi
 // plugin includes
 plugin_include($pluginName, 'classes/class.pim.plugin.collection.php');
 plugin_include($pluginName, 'classes/class.pim.plugin.relations.collection.php');
+plugin_include($pluginName, 'classes/util/class.pim.plugin.helper.php');
 plugin_include($pluginName, 'classes/util/zip/class.pimpluginarchiveextractor.php');
 plugin_include($pluginName, 'classes/setup/class.pimpluginsetup.php');
 plugin_include($pluginName, 'classes/setup/class.pimpluginsetup.install.php');

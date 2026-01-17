@@ -39,7 +39,7 @@ class PimPluginSetupUpdate extends PimPluginSetup
         $this->_checkSamePlugin();
 
         // Check for update specific sql files
-        $this->_updateSql();
+        $this->updateSql();
 
         // Delete "old" plugin
         $delete = new PimPluginSetupUninstall();
@@ -60,10 +60,10 @@ class PimPluginSetupUpdate extends PimPluginSetup
      */
     private function _checkSamePlugin()
     {
-        $this->_pimPluginCollection->setWhere('idplugin', parent::_getPluginId());
-        $this->_pimPluginCollection->query();
-        while ($result = $this->_pimPluginCollection->next()) {
-            if (parent::$XmlGeneral->uuid != $result->get('uuid')) {
+        $this->pimPluginCollection->setWhere('idplugin', parent::getPluginId());
+        $this->pimPluginCollection->query();
+        while ($result = $this->pimPluginCollection->next()) {
+            if (parent::$xmlGeneral->uuid != $result->get('uuid')) {
                 parent::error(i18n('You have to update the same plugin', 'pim'));
             }
         }
@@ -73,21 +73,22 @@ class PimPluginSetupUpdate extends PimPluginSetup
      * Check for update specific sql files.
      * If some valid sql file available, PIM does not run uninstall and install sql files.
      *
-     * @return bool
-     *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    private function _updateSql()
+    private function updateSql(): bool
     {
         // Build sql filename with installed plugin version and new plugin
         // version, i.e.: "plugin_update_100_to_101.sql" (without dots)
-        $tempSqlFilename = "plugin_update_" . str_replace('.', '', $this->_getInstalledPluginVersion()) . "_to_" . str_replace('.', '', parent::$XmlGeneral->version) . ".sql";
+        $tempSqlFilename = PimPluginHelper::getPluginUpdateFileName(
+            str_replace('.', '', $this->getInstalledPluginVersion()),
+            str_replace('.', '', parent::$xmlGeneral->version)
+        );
 
         // Filename to update sql file
-        $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable($tempSqlFilename, 0);
+        $tempSqlFilename = parent::$pimPluginArchiveExtractor->extractArchiveFileToVariable($tempSqlFilename, false);
 
         $pattern = '/^(CREATE TABLE IF NOT EXISTS|INSERT INTO|UPDATE|ALTER TABLE) `?' . parent::PLUGIN_SQL_PREFIX . '([a-zA-Z0-9\-_]+)`?\b/';
-        return $this->_processSetupSql($tempSqlFilename, $pattern);
+        return $this->processSetupSql($tempSqlFilename, $pattern);
     }
 
     /**
@@ -96,11 +97,11 @@ class PimPluginSetupUpdate extends PimPluginSetup
      * @return string The plugin version or empty string.
      * @throws cException
      */
-    private function _getInstalledPluginVersion()
+    private function getInstalledPluginVersion(): string
     {
-        $this->_pimPluginCollection->setWhere('idplugin', parent::_getPluginId());
-        $this->_pimPluginCollection->query();
-        if ($result = $this->_pimPluginCollection->next()) {
+        $this->pimPluginCollection->setWhere('idplugin', parent::getPluginId());
+        $this->pimPluginCollection->query();
+        if ($result = $this->pimPluginCollection->next()) {
             return $result->get('version');
         } else {
             return '';

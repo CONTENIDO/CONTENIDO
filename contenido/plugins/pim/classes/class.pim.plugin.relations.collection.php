@@ -44,7 +44,7 @@ class PimPluginRelationsCollection extends ItemCollection
      * @return PimPluginRelations
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($itemId, $pluginId, $type)
+    public function create(int $itemId, int $pluginId, string $type)
     {
         // create a new entry
         $item = $this->createNewItem();
@@ -68,7 +68,7 @@ class PimPluginRelations extends Item
     /**
      * @var string Error storage
      */
-    protected $_sError;
+    protected $error;
 
     /**
      * Constructor Function
@@ -79,7 +79,7 @@ class PimPluginRelations extends Item
     public function __construct($id = false)
     {
         parent::__construct(cDb::getTableName('plugins_rel'), 'idpluginrelation');
-        $this->_sError = '';
+        $this->error = '';
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -93,6 +93,7 @@ class PimPluginRelations extends Item
     public function setField($name, $value, $safe = true)
     {
         switch ($name) {
+            case 'idpluginrelation':
             case 'idplugin':
             case 'iditem':
                 $value = cSecurity::toInteger($value);
@@ -100,6 +101,24 @@ class PimPluginRelations extends Item
         }
 
         return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idpluginrelation':
+            case 'idplugin':
+            case 'iditem':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
 }
