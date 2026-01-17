@@ -27,17 +27,17 @@ class cSmartyBackend extends cSmartyFrontend
      *
      * @inheritDoc
      */
-    public function __construct(array $aCfg, array $aClientCfg, bool $bSanityCheck = false)
+    public function __construct(array $cfg, array $clientCfg, bool $sanityCheck = false)
     {
-        parent::__construct($aCfg, $aClientCfg, $bSanityCheck);
+        parent::__construct($cfg, $clientCfg, $sanityCheck);
 
         // TODO This won't work with the current implementation.
         //      Calling `cSmartyBackend::getInstance(true)` won't invoke this constructor,
         //     therefore the backend paths won't be set for `cSmartyBackend`.
         parent::$aDefaultPaths = [
-            'template_dir' => $aCfg['path']['contenido'] . 'plugins/smarty_templates/',
-            'cache_dir' => $aCfg['path']['contenido_cache'],
-            'compile_dir' => $aCfg['path']['contenido_cache'] . 'templates_c/'
+            'template_dir' => $cfg['path']['contenido'] . 'plugins/smarty_templates/',
+            'cache_dir' => $cfg['path']['contenido_cache'],
+            'compile_dir' => $cfg['path']['contenido_cache'] . 'templates_c/'
         ];
 
         $this->resetPaths();

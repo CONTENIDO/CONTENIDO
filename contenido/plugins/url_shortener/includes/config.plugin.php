@@ -52,12 +52,12 @@ plugin_include($pluginName, 'includes/functions.url_shortener.php');
 // add chain functions
 $cecRegistry = cApiCecRegistry::getInstance();
 // add additional rows to the article edit form
-$cecRegistry->addChainFunction('Contenido.Backend.ConMetaEditFormAdditionalRows', 'piUsEditFormAdditionalRows');
+$cecRegistry->addChainFunction('Contenido.Backend.ConMetaEditFormAdditionalRows', 'pius_editFormAdditionalRows');
 // extend the save action of articles, so that the short URL is also saved
-$cecRegistry->addChainFunction('Contenido.Action.con_meta_saveart.AfterCall', 'piUsConSaveArtAfter');
+$cecRegistry->addChainFunction('Contenido.Action.con_meta_saveart.AfterCall', 'pius_conSaveArtAfter');
 // hook as soon as possible, so that short URLs can be resolved early
-$cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'piUsAfterLoadPlugins');
+$cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'pius_afterLoadPlugins');
 // delete short url entries if you delete article
-$cecRegistry->addChainFunction('Contenido.Action.con_deleteart.AfterCall', 'piUseConDeleteArtAfter');
+$cecRegistry->addChainFunction('Contenido.Action.con_deleteart.AfterCall', 'pius_conDeleteArtAfter');
 
 unset($pluginName);

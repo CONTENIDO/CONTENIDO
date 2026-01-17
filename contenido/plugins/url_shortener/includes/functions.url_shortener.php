@@ -18,21 +18,22 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Constructs the HTML code containing table rows which are added to the end of
  * the article edit form
  *
- * @param $idart
- * @param $idlang
- * @param $idclient
- * @param $disabled
- *
+ * @param int $articleId
+ * @param int $languageId
+ * @param int $clientId
+ * @param int|bool $disabled (0 or 1)
  * @return string rendered HTML code
  * @throws cDbException|cException
  */
-function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled)
+function pius_editFormAdditionalRows($articleId, $languageId, $clientId, $disabled)
 {
+    $disabled = cSecurity::toBoolean($disabled);
+
     $shortUrl = new cApiShortUrl();
     $shortUrl->loadByMany([
-        'idart' => $idart,
-        'idlang' => $idlang,
-        'idclient' => $idclient
+        'idart' => $articleId,
+        'idlang' => $languageId,
+        'idclient' => $clientId
     ]);
 
     $tr = new cHTMLTableRow();
@@ -46,7 +47,17 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled)
 
     $td = new cHTMLTableData();
     $td->setClass('text_medium');
-    $textbox = new cHTMLTextbox('url_shortener_shorturl', $shortUrl->get('shorturl'), 24, 0, '', $disabled, NULL, '', 'textField');
+    $textbox = new cHTMLTextbox(
+        'url_shortener_shorturl',
+        $shortUrl->get('shorturl'),
+        24,
+        0,
+        '',
+        $disabled,
+        NULL,
+        '',
+        'textField'
+    );
     $td->setContent($textbox . ' ' . $infoButton->render());
     $tr->appendContent($td);
 
@@ -57,26 +68,24 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled)
  * Function is called after an article has been saved.
  * Checks whether a short URL has been given via $_POST and saves/deletes it.
  *
- * @param $editedIdArt
+ * @param int|null $articleId The id of the edited article.
  * @param array $values the values which are saved
- *
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function piUsConSaveArtAfter($editedIdArt, $values)
+function pius_conSaveArtAfter($articleId, $values)
 {
     // if not all parameters have been given, do nothing
-    if (!isset($_POST['url_shortener_shorturl']) || !isset($editedIdArt)) {
+    if (!isset($_POST['url_shortener_shorturl']) || !isset($articleId)) {
         return;
     }
     $shorturl = $_POST['url_shortener_shorturl'];
-    $idart = $editedIdArt;
-    $idlang = cRegistry::getLanguageId();
-    $idclient = cRegistry::getClientId();
+    $languageId = cRegistry::getLanguageId();
+    $clientId = cRegistry::getClientId();
     $shortUrlItem = new cApiShortUrl();
     $shortUrlItem->loadByMany([
-        'idart' => $idart,
-        'idlang' => $idlang,
-        'idclient' => $idclient
+        'idart' => $articleId,
+        'idlang' => $languageId,
+        'idclient' => $clientId
     ]);
     // if given shorturl is already in use, show error message
     $checkShortUrlItem = new cApiShortUrl();
@@ -90,7 +99,7 @@ function piUsConSaveArtAfter($editedIdArt, $values)
         // CON-772)
         // $session = cRegistry::getSession();
         // $session->addWarning($message);
-        $message = piUsGetErrorMessage(cApiShortUrlCollection::ERR_ALREADY_EXISTS, $shortUrlItem);
+        $message = pius_getErrorMessage(cApiShortUrlCollection::ERR_ALREADY_EXISTS, $shortUrlItem);
         $notification = new cGuiNotification();
         $notification->displayNotification(cGuiNotification::LEVEL_ERROR, $message);
         return;
@@ -99,7 +108,7 @@ function piUsConSaveArtAfter($editedIdArt, $values)
     $shortUrlColl = new cApiShortUrlCollection();
     $errorCode = $shortUrlColl->isValidShortUrl($shorturl);
     if ($errorCode !== true) {
-        $message = piUsGetErrorMessage($errorCode);
+        $message = pius_getErrorMessage($errorCode);
         // TODO add warning to session as soon as this is possible (depends
         // CON-772)
         // $session = cRegistry::getSession();
@@ -133,7 +142,7 @@ function piUsConSaveArtAfter($editedIdArt, $values)
             $shortUrlItem->store();
         } else {
             // short URL does not exist yet, create a new one
-            $shortUrlItem = $shortUrlColl->create($shorturl, $idart, $idlang, $idclient);
+            $shortUrlItem = $shortUrlColl->create($shorturl, $articleId, $languageId, $clientId);
             cApiCecHook::executeAndReturn('ContenidoPlugin.UrlShortener.AfterCreate', $shortUrlItem);
         }
     }
@@ -143,12 +152,10 @@ function piUsConSaveArtAfter($editedIdArt, $values)
  * Computes an error message which describes the given error code.
  *
  * @param int $errorCode the error code
- * @param cApiShortUrl $shortUrlItem
- *
- * @return string the error message describing the given error code
+ * @return string The error message describing the given error code
  * @throws cDbException|cException
  */
-function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL)
+function pius_getErrorMessage($errorCode, ?cApiShortUrl $shortUrlItem = NULL)
 {
     switch ($errorCode) {
         case cApiShortUrlCollection::ERR_INVALID_CHARS:
@@ -197,7 +204,7 @@ function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL)
  *
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function piUsAfterLoadPlugins()
+function pius_afterLoadPlugins()
 {
     $requestUri = $_SERVER['REQUEST_URI'] ?? '';
     $shorturl = cString::getPartOfString($requestUri, cString::findLastPos($requestUri, '/') + 1);
@@ -217,21 +224,59 @@ function piUsAfterLoadPlugins()
 /**
  * Chain for delete short urls at con_deleteart action
  *
- * @param int $idart
- *         ID of deleted article
- *
- * @return int
- *         Number of deleted entries
+ * @param int $articleId The id of deleted article
+ * @return int Number of deleted entries
  * @throws cDbException|cException|cInvalidArgumentException
  */
-function piUseConDeleteArtAfter($idart)
+function pius_conDeleteArtAfter($articleId)
 {
     $count = 0;
     if (cRegistry::getPerm()->have_perm_area_action('url_shortener', 'url_shortener_delete')) {
-        $idart = cSecurity::toInteger($idart);
+        $articleId = cSecurity::toInteger($articleId);
         $shortUrlColl = new cApiShortUrlCollection();
-        $count = $shortUrlColl->deleteBy('idart', $idart);
+        $count = $shortUrlColl->deleteBy('idart', $articleId);
     }
 
     return $count;
+}
+
+/**
+ * @deprecated Since URL Shortener 2.0.2, use {@see pius_editFormAdditionalRows()} instead
+ */
+function piUsEditFormAdditionalRows($articleId, $languageId, $clientId, $disabled)
+{
+    cDeprecated(__FUNCTION__ . ' is Since URL Shortener 2.0.2, use pius_editFormAdditionalRows() instead');
+    return pius_editFormAdditionalRows($articleId, $languageId, $clientId, $disabled);
+}
+/**
+ * @deprecated Since URL Shortener 2.0.2, use {@see pius_conSaveArtAfter()} instead
+ */
+function piUsConSaveArtAfter($articleId, $values)
+{
+    cDeprecated(__FUNCTION__ . ' is Since URL Shortener 2.0.2, use pius_conSaveArtAfter() instead');
+    pius_conSaveArtAfter($articleId, $values);
+}
+/**
+ * @deprecated Since URL Shortener 2.0.2, use {@see pius_getErrorMessage()} instead
+ */
+function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL)
+{
+    cDeprecated(__FUNCTION__ . ' is Since URL Shortener 2.0.2, use pius_getErrorMessage() instead');
+    return pius_getErrorMessage($errorCode, $shortUrlItem);
+}
+/**
+ * @deprecated Since URL Shortener 2.0.2, use {@see pius_afterLoadPlugins()} instead
+ */
+function piUsAfterLoadPlugins()
+{
+    cDeprecated(__FUNCTION__ . ' is Since URL Shortener 2.0.2, use pius_afterLoadPlugins() instead');
+    pius_afterLoadPlugins();
+}
+/**
+ * @deprecated Since URL Shortener 2.0.2, use {@see pius_conDeleteArtAfter()} instead
+ */
+function piUseConDeleteArtAfter($articleId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since URL Shortener 2.0.2, use pius_conDeleteArtAfter() instead');
+    return pius_conDeleteArtAfter($articleId);
 }

@@ -342,21 +342,21 @@ function piwf_doWorkflowAction($articleLanguageId, $action)
             $artAllocations->select("idartlang = {$articleLanguageId}");
 
             if (($obj = $artAllocations->next()) !== false) {
-                $usersequence = new WorkflowUserSequence();
-                $usersequence->loadByPrimaryKey($obj->get('idusersequence'));
+                $userSequence = new WorkflowUserSequence();
+                $userSequence->loadByPrimaryKey($obj->get('idusersequence'));
 
-                $workflowitem = $usersequence->getWorkflowItem();
+                $workflowItem = $userSequence->getWorkflowItem();
 
-                $idworkflow = cSecurity::toInteger($workflowitem->get('idworkflow'));
-                $newpos = cSecurity::toInteger($workflowitem->get('position') - 1);
+                $idworkflow = cSecurity::toInteger($workflowItem->get('idworkflow'));
+                $newpos = cSecurity::toInteger($workflowItem->get('position') - 1);
                 if ($newpos < 1) {
                     $newpos = 1;
                 }
 
-                $workflowitems = new WorkflowItems();
-                $workflowitems->select("idworkflow = $idworkflow AND position = " . $newpos);
+                $workflowItems = new WorkflowItems();
+                $workflowItems->select("idworkflow = $idworkflow AND position = " . $newpos);
 
-                if (($nextObj = $workflowitems->next()) !== false) {
+                if (($nextObj = $workflowItems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
                     $workflowItemId = cSecurity::toInteger($nextObj->get('idworkflowitem'));
                     $userSequences->select("idworkflowitem = $workflowItemId");
@@ -375,18 +375,18 @@ function piwf_doWorkflowAction($articleLanguageId, $action)
             $artAllocations->select("idartlang = {$articleLanguageId}");
 
             if (($obj = $artAllocations->next()) !== false) {
-                $usersequence = new WorkflowUserSequence();
-                $usersequence->loadByPrimaryKey($obj->get('idusersequence'));
+                $userSequence = new WorkflowUserSequence();
+                $userSequence->loadByPrimaryKey($obj->get('idusersequence'));
 
-                $workflowitem = $usersequence->getWorkflowItem();
+                $workflowItem = $userSequence->getWorkflowItem();
 
-                $idworkflow = cSecurity::toInteger($workflowitem->get('idworkflow'));
-                $newpos = cSecurity::toInteger($workflowitem->get('position') + 1);
+                $idworkflow = cSecurity::toInteger($workflowItem->get('idworkflow'));
+                $newpos = cSecurity::toInteger($workflowItem->get('position') + 1);
 
-                $workflowitems = new WorkflowItems();
-                $workflowitems->select("idworkflow = $idworkflow AND position = " . $newpos);
+                $workflowItems = new WorkflowItems();
+                $workflowItems->select("idworkflow = $idworkflow AND position = " . $newpos);
 
-                if (($nextObj = $workflowitems->next()) !== false) {
+                if (($nextObj = $workflowItems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
                     $workflowItemId = cSecurity::toInteger($nextObj->get('idworkflowitem'));
                     $userSequences->select("idworkflowitem = $workflowItemId");
@@ -398,8 +398,8 @@ function piwf_doWorkflowAction($articleLanguageId, $action)
                         $obj->store();
                     }
                 } else {
-                    $workflowitems->select("idworkflow = $idworkflow AND position = " . (int)$workflowitem->get('position'));
-                    if (($nextObj = $workflowitems->next()) !== false) {
+                    $workflowItems->select("idworkflow = $idworkflow AND position = " . (int)$workflowItem->get('position'));
+                    if (($nextObj = $workflowItems->next()) !== false) {
                         $userSequences = new WorkflowUserSequences();
                         $workflowItemId = cSecurity::toInteger($nextObj->get('idworkflowitem'));
                         $userSequences->select("idworkflowitem = $workflowItemId");
@@ -419,18 +419,18 @@ function piwf_doWorkflowAction($articleLanguageId, $action)
             $artAllocations->select("idartlang = {$articleLanguageId}");
 
             if (($obj = $artAllocations->next()) !== false) {
-                $usersequence = new WorkflowUserSequence();
-                $usersequence->loadByPrimaryKey($obj->get('idusersequence'));
+                $userSequence = new WorkflowUserSequence();
+                $userSequence->loadByPrimaryKey($obj->get('idusersequence'));
 
-                $workflowitem = $usersequence->getWorkflowItem();
+                $workflowItem = $userSequence->getWorkflowItem();
 
-                $idworkflow = cSecurity::toInteger($workflowitem->get('idworkflow'));
+                $idworkflow = cSecurity::toInteger($workflowItem->get('idworkflow'));
                 $newpos = 1;
 
-                $workflowitems = new WorkflowItems();
-                $workflowitems->select("idworkflow = $idworkflow AND position = " . $newpos);
+                $workflowItems = new WorkflowItems();
+                $workflowItems->select("idworkflow = $idworkflow AND position = " . $newpos);
 
-                if (($nextObj = $workflowitems->next()) !== false) {
+                if (($nextObj = $workflowItems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
                     $workflowItemId = cSecurity::toInteger($nextObj->get('idworkflowitem'));
                     $userSequences->select("idworkflowitem = $workflowItemId");
@@ -461,21 +461,21 @@ function piwf_doWorkflowAction($articleLanguageId, $action)
 }
 
 /**
- * @param int $usersequence
+ * @param int $userSequenceId
  * @return bool|mixed
  * @throws cDbException|cException
  */
-function piwf_getWorkflowForUserSequence($usersequence)
+function piwf_getWorkflowForUserSequence($userSequenceId)
 {
-    $usersequence = cSecurity::toInteger($usersequence);
-    $usersequences = new WorkflowUserSequences();
-    $usersequences->select("idusersequence = $usersequence");
+    $userSequenceId = cSecurity::toInteger($userSequenceId);
+    $userSequences = new WorkflowUserSequences();
+    $userSequences->select("`idusersequence` = $userSequenceId");
 
-    if (($obj = $usersequences->next()) !== false) {
+    if (($obj = $userSequences->next()) !== false) {
         $workflowItemId = cSecurity::toInteger($obj->get('idworkflowitem'));
-        $workflowitems = new WorkflowItems();
-        $workflowitems->select("idworkflowitem = '$workflowItemId'");
-        if (($obj = $workflowitems->next()) !== false) {
+        $workflowItems = new WorkflowItems();
+        $workflowItems->select("`idworkflowitem` = '$workflowItemId'");
+        if (($obj = $workflowItems->next()) !== false) {
             return $obj->get('idworkflow');
         }
     }
@@ -1378,3 +1378,221 @@ function piwf_getWorkflowUsers($workflowId, $workflowItemId): string
 
     return $ui->render(false);
 }
+
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_getUsers()} instead
+ */
+function getUsers($listId, $default)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_getUsers() instead');
+    return piwf_getUsers($listId, $default);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_isCurrentEditor()} instead
+ */
+function isCurrentEditor($userId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_isCurrentEditor() instead');
+    return piwf_isCurrentEditor($userId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_getActionSelect()} instead
+ */
+function getActionSelect($articleLanguageId, $userSequenceId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_getActionSelect() instead');
+    return piwf_getActionSelect($articleLanguageId, $userSequenceId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_setUserSequence()} instead
+ */
+function setUserSequence($articleLanguageId, $defaultWorkflowId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_setUserSequence() instead');
+    return piwf_setUserSequence($articleLanguageId, $defaultWorkflowId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_getCurrentUserSequence()} instead
+ */
+function getCurrentUserSequence($articleLanguageId, $defaultWorkflowId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_getCurrentUserSequence() instead');
+    return piwf_getCurrentUserSequence($articleLanguageId, $defaultWorkflowId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see getLastWorkflowStatus()} instead
+ */
+function getLastWorkflowStatus($articleLanguageId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use getLastWorkflowStatus() instead');
+    return piwf_getLastWorkflowStatus($articleLanguageId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_doWorkflowAction()} instead
+ */
+function doWorkflowAction($articleLanguageId, $action)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_doWorkflowAction() instead');
+    piwf_doWorkflowAction($articleLanguageId, $action);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_getWorkflowForUserSequence()} instead
+ */
+function getWorkflowForUserSequence($userSequenceId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_getWorkflowForUserSequence() instead');
+    return piwf_getWorkflowForUserSequence($userSequenceId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_workflowSelect()} instead
+ */
+function workflowSelect($listId, $default, $categoryId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_workflowSelect() instead');
+    return piwf_workflowSelect($listId, $default, $categoryId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_workflowInherit()} instead
+ */
+function workflowInherit($categoryId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_workflowInherit() instead');
+    return piwf_workflowInherit($categoryId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_getWorkflowForCat()} instead
+ */
+function getWorkflowForCat($categoryId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_getWorkflowForCat() instead');
+    return piwf_getWorkflowForCat($categoryId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_getCatLang()} instead
+ */
+function getCatLang($categoryId, $languageId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_getCatLang() instead');
+    return piwf_getCatLang($categoryId, $languageId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_prepareWorkflowItems()} instead
+ */
+function prepareWorkflowItems()
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_prepareWorkflowItems() instead');
+    return piwf_prepareWorkflowItems();
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_categoryRenderColumn()} instead
+ */
+function piworkflowCategoryRenderColumn($categoryId, $type)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_categoryRenderColumn() instead');
+    return piwf_categoryRenderColumn($categoryId, $type);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_categoryPageEnd()} instead
+ */
+function piworkflowCategoryPageEnd()
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_categoryPageEnd() instead');
+    return piwf_categoryPageEnd();
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_categoryColumns()} instead
+ */
+function piworkflowCategoryColumns($array)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_categoryColumns() instead');
+    return piwf_categoryColumns($array);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_processActions()} instead
+ */
+function piworkflowProcessActions($array)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_processActions() instead');
+    return piwf_processActions($array);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_renderAction()} instead
+ */
+function piworkflowRenderAction($categoryId, $articleId, $articleLanguageId, $type)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_renderAction() instead');
+    return piwf_renderAction($categoryId, $articleId, $articleLanguageId, $type);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_processArticleColumns()} instead
+ */
+function piworkflowProcessArticleColumns($array)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_processArticleColumns() instead');
+    return piwf_processArticleColumns($array);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_allowArticleEdit()} instead
+ */
+function piworkflowAllowArticleEdit($languageId, $categoryId, $articleId, $user)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_allowArticleEdit() instead');
+    return piwf_allowArticleEdit($languageId, $categoryId, $articleId, $user);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_renderColumn()} instead
+ */
+function piworkflowRenderColumn($categoryId, $articleId, $articleLanguageId, $column)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_renderColumn() instead');
+    return piwf_renderColumn($categoryId, $articleId, $articleLanguageId, $column);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_createTasksFolder()} instead
+ */
+function piworkflowCreateTasksFolder()
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_createTasksFolder() instead');
+    return piwf_createTasksFolder();
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_getTimeUnitSelector()} instead
+ */
+function getTimeUnitSelector($listId, $default)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_getTimeUnitSelector() instead');
+    return piwf_getTimeUnitSelector($listId, $default);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_getWorkflowList()} instead
+ */
+function getWorkflowList($workflowId, $workflowItemId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_getWorkflowList() instead');
+    return piwf_getWorkflowList($workflowId, $workflowItemId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_createNewWorkflow()} instead
+ */
+function createNewWorkflow($workflowId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_createNewWorkflow() instead');
+    return piwf_createNewWorkflow($workflowId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_editWorkflowStep()} instead
+ */
+function editWorkflowStep($workflowId, $workflowItemId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_editWorkflowStep() instead');
+    return piwf_editWorkflowStep($workflowId, $workflowItemId);
+}
+/**
+ * @deprecated Since Workflow 1.03, use {@see piwf_getWorkflowUsers()} instead
+ */
+function getWorkflowUsers($workflowId, $workflowItemId)
+{
+    cDeprecated(__FUNCTION__ . ' is Since Workflow 1.03, use piwf_getWorkflowUsers() instead');
+    return piwf_getWorkflowUsers($workflowId, $workflowItemId);
+}
+

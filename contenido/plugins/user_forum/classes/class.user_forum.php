@@ -76,19 +76,4 @@ class UserForum
         }
     }
 
-    /**
-     * Return URL to this plugins folder.
-     *
-     * @return string
-     */
-    public static function getUrl()
-    {
-        $cfg = cRegistry::getConfig();
-
-        $path = cRegistry::getBackendUrl() . $cfg['path']['plugins'];
-        $path .= self::$name . '/';
-
-        return $path;
-    }
-
 }

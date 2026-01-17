@@ -30,9 +30,9 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
      * @param string $rawSettings the raw settings in an XML structure or as plaintext
      * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
      * @param array $contentTypes array containing the values of all content types
-     * @throws cDbException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    function __construct($rawSettings, $id, array $contentTypes)
+    public function __construct($rawSettings, $id, array $contentTypes)
     {
         // set attributes of the parent class and call the parent constructor
         $this->_type = 'CMS_USERFORUM';
@@ -64,8 +64,6 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
      */
     public function generateEditCode(): string
     {
-        $cfg = cRegistry::getConfig();
-
         // build top code
         $tplTop = new cTemplate();
         $tplTop->set('s', 'CONTENT_TYPE_ID', $this->_contentTypeId);

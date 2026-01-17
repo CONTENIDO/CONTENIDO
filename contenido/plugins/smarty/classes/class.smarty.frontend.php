@@ -47,24 +47,26 @@ class cSmartyFrontend
     /**
      * constructor
      *
-     * @param array $aCfg contenido cfg array
-     * @param array $aClientCfg contenido client cfg array of the specific client
-     * @param bool $bSanityCheck
+     * @param array $cfg contenido cfg array
+     * @param array $clientCfg contenido client cfg array of the specific client
+     * @param bool $sanityCheck
      *
      * @throws cException
      */
-    public function __construct(array $aCfg, array $aClientCfg, bool $bSanityCheck = false)
+    public function __construct(array $cfg, array $clientCfg, bool $sanityCheck = false)
     {
         // check if already instantiated
         if (isset(self::$bSmartyInstantiated) && self::$bSmartyInstantiated) {
-            throw new cException("cSmartyFrontend class is intended to be used as singleton. Do not instantiate multiple times.");
+            throw new cException(
+                "cSmartyFrontend class is intended to be used as singleton. Do not instantiate multiple times."
+            );
         }
 
         self::$oSmarty = new cSmartyWrapper();
         self::$aDefaultPaths = [
-            'template_dir' => $aClientCfg['module']['path'],
-            'cache_dir' => $aClientCfg['cache']['path'] . 'templates_c',
-            'compile_dir' => $aClientCfg['cache']['path'] . 'templates_c'
+            'template_dir' => $clientCfg['module']['path'],
+            'cache_dir' => $clientCfg['cache']['path'] . 'templates_c',
+            'compile_dir' => $clientCfg['cache']['path'] . 'templates_c'
         ];
 
         // check the template directory and create new one if it not exists
@@ -73,14 +75,22 @@ class cSmartyFrontend
         }
 
         // check if folders exist and rights ok if needed
-        if ($bSanityCheck) {
+        if ($sanityCheck) {
             foreach (self::$aDefaultPaths as $key => $value) {
                 if (!file_exists($value)) {
-                    throw new cException(sprintf("Class %s Error: Folder %s does not exist. Please create.", __CLASS__, $value));
+                    throw new cException(sprintf(
+                        "Class %s Error: Folder %s does not exist. Please create.",
+                        __CLASS__,
+                        $value
+                    ));
                 }
                 if ($key == 'cache' || $key == 'compile_dir') {
                     if (!cFileHandler::writeable($value)) {
-                        throw new cException(sprintf("Class %s Error: Folder %s is not writable. Please check for sufficient rights.", __CLASS__, $value));
+                        throw new cException(sprintf(
+                            "Class %s Error: Folder %s is not writable. Please check for sufficient rights.",
+                            __CLASS__,
+                            $value
+                        ));
                     }
                 }
             }
@@ -111,18 +121,17 @@ class cSmartyFrontend
     /**
      * static function to provide the smart object
      *
-     * @param bool $bResetTemplate true if the template values shall all be
-     *        retested
+     * @param bool $resetTemplate true if the template values shall all be retested
      * @return cSmartyWrapper
      * @throws cException if singleton has not been instantiated yet
      */
-    public static function getInstance(bool $bResetTemplate = false)
+    public static function getInstance(bool $resetTemplate = false)
     {
         if (!isset(self::$oSmarty)) {
             // @TODO find a smart way to instantiate smarty object on demand
             throw new cException("Smarty singleton not instantiated yet.");
         }
-        if ($bResetTemplate) {
+        if ($resetTemplate) {
             self::$oSmarty = new cSmartyWrapper();
             self::initializeInstance();
         }
