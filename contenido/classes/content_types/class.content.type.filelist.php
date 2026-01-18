@@ -224,7 +224,12 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed
         $code = $this->_wrapPhpViewCode($code);
 
         // escape ' to avoid accidentally ending the string in $code
-        return sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, '[]');
+        $code = sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, '[]');
+
+        // @since CONTENIDO 4.10.2
+        cApiCecHook::execute('Contenido.ContentTypeFilelist.generateViewCode', $this, $code);
+
+        return $code;
     }
 
     /**

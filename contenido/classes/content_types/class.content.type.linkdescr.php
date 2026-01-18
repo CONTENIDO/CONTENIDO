@@ -56,7 +56,12 @@ class cContentTypeLinkdescr extends cContentTypeLinkeditor
      */
     public function generateViewCode(): string
     {
-        return $this->_encodeForOutput($this->getSetting('linkeditor_title'));
+        $code = $this->getSetting('linkeditor_title');
+
+        // @since CONTENIDO 4.10.2
+        cApiCecHook::execute('Contenido.ContentTypeLinkdescr.generateViewCode', $this, $code);
+
+        return $this->_encodeForOutput($code);
     }
 
     /**
