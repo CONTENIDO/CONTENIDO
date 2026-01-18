@@ -135,7 +135,12 @@ class cContentTypeText extends cContentTypeAbstract
      */
     public function generateViewCode(): string
     {
-        return $this->_encodeForOutput($this->_rawSettings);
+        $code = $this->_rawSettings;
+
+        // @since CONTENIDO 4.10.2
+        cApiCecHook::execute('Contenido.ContentTypeText.generateViewCode', $this, $code);
+
+        return $this->_encodeForOutput($code);
     }
 
 }

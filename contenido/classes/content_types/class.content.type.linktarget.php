@@ -56,7 +56,11 @@ class cContentTypeLinktarget extends cContentTypeLinkeditor
      */
     public function generateViewCode(): string
     {
-        $target = ($this->getSetting('linkeditor_newwindow') == 'true') ? '_blank' : '';
+        $target = $this->getSetting('linkeditor_newwindow' == 'true') ? '_blank' : '';
+
+        // @since CONTENIDO 4.10.2
+        cApiCecHook::execute('Contenido.ContentTypeLinktarget.generateViewCode', $this, $target);
+
         return $this->_encodeForOutput($target);
     }
 

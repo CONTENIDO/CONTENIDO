@@ -56,7 +56,12 @@ class cContentTypeImgdescr extends cContentTypeImgeditor
      */
     public function generateViewCode(): string
     {
-        return $this->_encodeForOutput($this->_description);
+        $code = $this->_description;
+
+        // @since CONTENIDO 4.10.2
+        cApiCecHook::execute('Contenido.ContentTypeImgdescr.generateViewCode', $this, $code);
+
+        return $this->_encodeForOutput($code);
     }
 
     /**

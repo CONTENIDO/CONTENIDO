@@ -181,6 +181,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $link->setTargetFrame($target);
         $link->setContent($linktext);
 
+        // @since CONTENIDO 4.10.2
+        cApiCecHook::execute('Contenido.ContentTypeLinkeditor.generateViewCode', $this, $link);
+
         return $this->_encodeForOutput($link->render());
     }
 
