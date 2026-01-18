@@ -50,7 +50,12 @@ class cContentTypeImg extends cContentTypeImgeditor
      */
     public function generateViewCode(): string
     {
-        return $this->_encodeForOutput($this->_imagePath);
+        $code = $this->_imagePath;
+
+        // @since CONTENIDO 4.10.2
+        cApiCecHook::execute('Contenido.ContentTypeImg.generateViewCode', $this, $code);
+
+        return $this->_encodeForOutput($code);
     }
 
     /**

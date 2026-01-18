@@ -222,7 +222,12 @@ $code
 
         $code = $this->_wrapPhpViewCode($code);
 
-        return sprintf($code, get_class($this), $this->_rawSettings, $this->_id, '[]');
+        $code = sprintf($code, get_class($this), $this->_rawSettings, $this->_id, '[]');
+
+        // @since Plugin User Forum 2.0.3
+        cApiCecHook::execute('Contenido.ContentTypeUserForum.generateViewCode', $this, $code);
+
+        return $code;
     }
 
     /**

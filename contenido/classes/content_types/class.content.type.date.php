@@ -305,7 +305,12 @@ class cContentTypeDate extends cContentTypeAbstract
             }
         }
 
-        return $this->_formatDate($format, $timestamp);
+        $date = $this->_formatDate($format, $timestamp);
+
+        // @since CONTENIDO 4.10.2
+        cApiCecHook::execute('Contenido.ContentTypeDate.generateViewCode', $this, $date);
+
+        return $date;
     }
 
     /**

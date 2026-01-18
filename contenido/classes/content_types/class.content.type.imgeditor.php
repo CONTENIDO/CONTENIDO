@@ -393,6 +393,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $image = new cHTMLImage($this->_imagePath);
         $image->setAlt($this->_description);
 
+        // @since CONTENIDO 4.10.2
+        cApiCecHook::execute('Contenido.ContentTypeImgeditor.generateViewCode', $this, $image);
+
         return $this->_encodeForOutput($image->render());
     }
 

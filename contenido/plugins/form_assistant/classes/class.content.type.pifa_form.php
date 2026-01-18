@@ -723,7 +723,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
 
         $code = $this->_wrapPhpViewCode($code);
 
-        return sprintf($code, get_class($this), $this->_rawSettings, $this->_id, '[]');
+        $code = sprintf($code, get_class($this), $this->_rawSettings, $this->_id, '[]');
+
+        // @since Plugin Form Assistant 2.0.4
+        cApiCecHook::execute('Contenido.ContentTypePifaForm.generateViewCode', $this, $code);
+
+        return $code;
     }
 
     /**

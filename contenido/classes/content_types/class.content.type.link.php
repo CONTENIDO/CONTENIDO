@@ -50,7 +50,12 @@ class cContentTypeLink extends cContentTypeLinkeditor
      */
     public function generateViewCode(): string
     {
-        return $this->_encodeForOutput($this->_generateHref());
+        $code = $this->_generateHref();
+
+        // @since CONTENIDO 4.10.2
+        cApiCecHook::execute('Contenido.ContentTypeLink.generateViewCode', $this, $code);
+
+        return $this->_encodeForOutput($code);
     }
 
     /**
