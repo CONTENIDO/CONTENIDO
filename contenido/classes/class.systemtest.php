@@ -233,12 +233,18 @@ class cSystemtest
 
     /**
      * Possible result of cSystemtest::testMySQL()
-     * Strict mode is activated.
-     * CONTENIDO won't work
      *
      * @var int
      */
     const CON_MYSQL_CANT_CONNECT = 3;
+
+    /**
+     * Possible result of cSystemtest::testMySQL()
+     *
+     * @var int
+     * @since CONTENIDO 4.10.2
+     */
+    const CON_MYSQL_CANT_SELECT_DB = 4;
 
     /**
      * The test results which are stored for display.
@@ -383,6 +389,23 @@ class cSystemtest
                         $message
                     )
                 );
+        }
+
+        $dbConResult = $this->testMySQLSelectDatabase(
+            (string) $cfgDbCon['host'],
+            (string) $cfgDbCon['user'],
+            (string) $cfgDbCon['password'],
+            (string) $cfgDbCon['database']
+        );
+        if ($dbConResult === self::CON_MYSQL_CANT_SELECT_DB) {
+            $this->storeResult(
+                false,
+                self::C_SEVERITY_ERROR,
+                i18n('MySQL database select failed'),
+                i18n('MySQL could not select the database. Please check if the database exists and if the user has access to the database!')
+            );
+        } else {
+            $this->storeResult(true, self::C_SEVERITY_ERROR, '', '', i18n("Database selection works"));
         }
 
         if ($dbConResult == self::CON_MYSQL_OK) {
@@ -690,18 +713,15 @@ class cSystemtest
     }
 
     /**
-     * Connects to the database with the given settings
+     * Connects to the database server with the given settings.
      *
-     * @param string $host
-     *         The database host
-     * @param string $username
-     *         The database user
-     * @param string $password
-     *         The database user password
-     * @return array{?cDb, bool}
-     *         with the cDB object on the first place and a bool on the second
+     * @param string $host The database host
+     * @param string $username The database user
+     * @param string $password The database user password
+     * @param string $database The database to select. If not empty the default database will be selected.
+     * @return array{?cDb, bool} Array with the cDB object on the first place and a bool on the second
      */
-    protected function doMySQLConnect($host, $username, $password): array
+    protected function doMySQLConnect(string $host, string $username, string $password, string $database = ''): array
     {
         $aOptions = [
             'connection' => [
@@ -710,6 +730,11 @@ class cSystemtest
                 'password' => $password
             ]
         ];
+
+        if (!empty($database)) {
+            $aOptions['connection']['database'] = $database;
+        }
+
         $db = null;
         try {
             $db = new cDb($aOptions);
@@ -1079,6 +1104,31 @@ class cSystemtest
 
         return self::CON_MYSQL_OK;
     }
+
+    /**
+     * Connects to the database server and selects the default database.
+     *
+     * @param string $host The database host
+     * @param string $username The database user
+     * @param string $password The database user password
+     * @param string $database The database to select. If not empty the default database will be selected.
+     * @since CONTENIDO 4.10.2
+     */
+   public function testMySQLSelectDatabase(
+       string $host,
+       string $username,
+       string $password,
+       string $database
+   ) {
+       list($db, $status) = $this->doMySQLConnect($host, $username, $password, $database);
+
+       if (!$db instanceof cDb) {
+           // NOTE: error_get_last() contains the last occurred error, in case it is needed!
+           return self::CON_MYSQL_CANT_SELECT_DB;
+       }
+
+       return self::CON_MYSQL_OK;
+   }
 
     /**
      * Checks all tables for empty (NULL, '', or 0) or duplicate primary key values.

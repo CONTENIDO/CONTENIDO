@@ -97,7 +97,7 @@ class cDbDriverMysqli extends cDbDriverAbstract
             }
         }
 
-        if (($iPos = cString::findFirstPos($connectConfig['host'], ':')) !== false) {
+        if (cString::findFirstPos($connectConfig['host'], ':') !== false) {
             $hostData = explode(':', $connectConfig['host']);
             $connectConfig['host'] = $hostData[0];
             if (is_numeric($hostData[1])) {
@@ -123,18 +123,11 @@ class cDbDriverMysqli extends cDbDriverAbstract
             return NULL;
         }
 
-        if ($connectConfig['database']) {
-            if (!@mysqli_select_db($dbHandler, $connectConfig['database'])) {
-                $this->_handler->halt('MySQLi _connect() Cannot use database ' . $connectConfig['database']);
+        // set connection charset
+        if (isset($connectConfig['charset']) && $connectConfig['charset'] != '') {
+            if (!mysqli_set_charset($dbHandler, $connectConfig['charset'])) {
+                $this->_handler->halt('Could not set database charset to ' . $connectConfig['charset']);
                 return NULL;
-            } else {
-                // set connection charset
-                if (isset($connectConfig['charset']) && $connectConfig['charset'] != '') {
-                    if (!@mysqli_set_charset($dbHandler, $connectConfig['charset'])) {
-                        $this->_handler->halt('Could not set database charset to ' . $connectConfig['charset']);
-                        return NULL;
-                    }
-                }
             }
         }
 

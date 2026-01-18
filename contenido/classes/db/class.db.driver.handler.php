@@ -186,11 +186,13 @@ abstract class cDbDriverHandler
                 $this->setErrorNumber(1);
                 $this->setErrorMessage("Could not connect to database");
 
-                throw new cDbException($this->getErrorMessage());
+                $error = error_get_last();
+                $message = $error['message'] ?? $this->getErrorMessage();
+                throw new cDbException($message, $this->getErrorNumber());
             }
         } catch (Throwable $e) {
             // Catch all possible errors
-            throw new cDbException($e->getMessage());
+            throw new cDbException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
