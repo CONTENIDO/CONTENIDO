@@ -233,31 +233,32 @@ function stripLastSlash(string $sInput): string
 
 /**
  * Returns the paths to the system directory (filesystem and web).
- * @param bool $originalPath
- *
- * @return array
  */
 function getSystemDirectories(bool $originalPath = false): array
 {
     $rootPath = stripLastSlash(CON_FRONTEND_PATH);
 
-    $rootHttpPath = dirname($_SERVER["REQUEST_URI"], 2);
-    $rootHttpPath = str_replace("\\", "/", $rootHttpPath);
+    $rootHttpPath = dirname($_SERVER['REQUEST_URI'], 2);
+    $rootHttpPath = str_replace("\\", '/', $rootHttpPath);
 
-    $port = "";
-    $protocol = "http://";
+    $port = '';
+    $isHttps = setupIsHttpsRequest();
+    $protocol = $isHttps ? 'https://' : 'http://';
 
-    if ($_SERVER["SERVER_PORT"] != 80) {
-        if ($_SERVER["SERVER_PORT"] == 443) {
-            $protocol = "https://";
-        } else {
-            $port = ":" . $_SERVER["SERVER_PORT"];
+    // Prefer HTTP_HOST (may include port). If not present, build host from SERVER_NAME/ADDR and append non-standard port.
+    if (!empty($_SERVER['HTTP_HOST'])) {
+        $host = $_SERVER['HTTP_HOST'];
+    } else {
+        $host = $_SERVER['SERVER_NAME'] ?? ($_SERVER['SERVER_ADDR'] ?? '');
+        $serverPort = $_SERVER['SERVER_PORT'] ?? '';
+        if ($serverPort !== '' && (($isHttps && $serverPort != 443) || (!$isHttps && $serverPort != 80))) {
+            $host .= ':' . $serverPort;
         }
     }
 
-    $rootHttpPath = $protocol . $_SERVER["SERVER_NAME"] . $port . $rootHttpPath;
+    $rootHttpPath = $protocol . $host . $rootHttpPath;
 
-    if (cString::getPartOfString($rootHttpPath, cString::getStringLength($rootHttpPath) - 1, 1) == "/") {
+    if (cString::getPartOfString($rootHttpPath, cString::getStringLength($rootHttpPath) - 1, 1) == '/') {
         $rootHttpPath = cString::getPartOfString($rootHttpPath, 0, cString::getStringLength($rootHttpPath) - 1);
     }
 
