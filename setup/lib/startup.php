@@ -42,6 +42,8 @@ function checkAndInclude(string $filename)
 
 include_once(__DIR__ . '/defines.php');
 
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.filehandler.php');
+
 // Include the environment definer file
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/environment.php');
 
@@ -53,13 +55,24 @@ if (version_compare(PHP_VERSION, CON_MIN_PHP_VERSION, '<')) {
     die(sprintf("You need PHP >= %s for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: %s\n", CON_MIN_PHP_VERSION, PHP_VERSION));
 }
 
+// Include user-defined file if exists
+if (cFileHandler::exists(CON_FRONTEND_PATH . '/contenido/includes/include.local.php')) {
+    include_once(CON_FRONTEND_PATH . '/contenido/includes/include.local.php');
+}
+
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/includes/functions.php54.php');
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/includes/functions.php_polyfill.php');
+
+// Security check: Include security class and invoke basic request checks
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.registry.php');
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.security.php');
+
 // Include cStringMultiByteWrapper and cString
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.string.multi.byte.wrapper.php');
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.string.php');
 
 // Include security class and check request variables
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.filehandler.php');
-checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.requestvalidator.php');
 
 // Include some function files, we need them in a very early stage
 checkAndInclude(CON_SETUP_PATH . '/lib/functions.setup.php');
@@ -69,10 +82,10 @@ checkAndInclude(CON_SETUP_PATH . '/lib/functions.system.php');
 // If no configuration for environment found, copy from production
 setupCheckConfiguration(str_replace('\\', '/', realpath(__DIR__ . '/../..')));
 
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.requestvalidator.php');
 try {
-    $requestValidator = cRequestValidator::getInstance();
-    $requestValidator->checkParams();
-} catch (cFileNotFoundException $e) {
+    cRequestValidator::getInstance()->checkParams();
+} catch (cFileNotFoundException|cInvalidArgumentException $e) {
     die($e->getMessage());
 }
 
@@ -95,9 +108,14 @@ checkAndInclude($cfg['path']['contenido_config'] . 'config.path.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'config.misc.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
-// Include registry class, initialize language and encoding. We need to set a dummy language with
+// Include user-defined configuration (if available), where you are able to
+// extend/overwrite core settings from included configuration files above
+if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.local.php')) {
+    require_once($cfg['path']['contenido_config'] . 'config.local.php');
+}
+
+// Initialize language and encoding. We need to set a dummy language with
 // proper encoding to use functions like `conHtmlSpecialChars()`, `conHtmlentities`()`, etc.
-checkAndInclude($cfg['path']['contenido'] . 'classes/class.registry.php');
 $lang = 1;
 cRegistry::setAppVar('languageEncodings', [$lang => 'utf-8']);
 
@@ -113,7 +131,6 @@ cAutoload::initialize($cfg);
 cHTML::setGenerateXHTML(false);
 
 // Common includes
-checkAndInclude($cfg['path']['contenido'] . 'includes/functions.php54.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.i18n.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/api/functions.api.general.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
