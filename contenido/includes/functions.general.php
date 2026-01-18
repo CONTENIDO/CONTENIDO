@@ -2178,6 +2178,30 @@ function cIsPutRequest(): bool
 }
 
 /**
+ * Checks if the current request is an HTTPS request.
+ *
+ * @since CONTENIDO 4.10.2
+ */
+function cIsHttpsRequest(): bool
+{
+    // Detect HTTPS reliably (direct or via proxies)
+    if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
+        return true;
+    } elseif (!empty($_SERVER['REQUEST_SCHEME']) && strtolower($_SERVER['REQUEST_SCHEME']) === 'https') {
+        return true;
+    } elseif (
+        !empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
+        && strpos(strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']), 'https') !== false
+    ) {
+        return true;
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && strtolower($_SERVER['HTTP_X_FORWARDED_SSL']) === 'on') {
+        return true;
+    }
+
+    return false;
+}
+
+/**
  * Checks if PHP is running in CLI mode.
  *
  * @since CONTENIDO 4.10.2

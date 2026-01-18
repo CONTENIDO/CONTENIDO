@@ -183,7 +183,8 @@ class cLogEntryBuilder
     {
         $data = ["\tSAPI: " . PHP_SAPI];
         if (isRunningFromWeb()) {
-            $data[] = "\tURI: " . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            $isHttps = cIsHttpsRequest();
+            $data[] = "\tURI: " . ($isHttps ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             $data[] = "\tMethod: " . $_SERVER['REQUEST_METHOD'];
         } else {
             $_argv = $_SERVER['argv'];
