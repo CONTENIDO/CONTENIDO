@@ -139,11 +139,11 @@ $aMsg = [
 
 while ($oRcpGroup = $oRcpGroups->next()) {
     $iMenu++;
-    $iIDGroup = cSecurity::toInteger($oRcpGroup->get('idnewsgroup'));
+    $iIDGroup = $oRcpGroup->get('idnewsgroup');
 
-    $sName = $oRcpGroup->get('groupname');
+    $name = $oRcpGroup->get('groupname');
     if ($oRcpGroup->get('defaultgroup')) {
-        $sName = $sName . "*";
+        $name = $name . "*";
     }
 
     // Show recipient group
@@ -154,7 +154,7 @@ while ($oRcpGroup = $oRcpGroups->next()) {
     $oMenu->setLink($iMenu, $oLnk);
 
     $oMenu->setId($iMenu, $iIDGroup);
-    $oMenu->setTitle($iMenu, $sName);
+    $oMenu->setTitle($iMenu, $name);
 
     if ($requestIdRecipientGoup == $iIDGroup) {
         $oMenu->setMarked($iMenu);

@@ -233,7 +233,7 @@ if ($action === 'news_job_run' && $perm->have_perm_area_action($area, $action) &
         i18n("HTML/Text", 'newsletter')
     ];
     while ($oLog = $oLogs->next()) {
-        $sName = $oLog->get('rcpname');
+        $name = $oLog->get('rcpname');
         $sEMail = $oLog->get('rcpemail');
 
         switch ($oLog->get('status')) {
@@ -269,7 +269,7 @@ if ($action === 'news_job_run' && $perm->have_perm_area_action($area, $action) &
             $sLnkRemove = $oLnkRemove->render();
         }
 
-        $oList->setData($iCount, $sName, $sEMail, $aNewsType[$oLog->get('rcpnewstype')], $sStatus, $sSent, $sLnkRemove);
+        $oList->setData($iCount, $name, $sEMail, $aNewsType[$oLog->get('rcpnewstype')], $sStatus, $sSent, $sLnkRemove);
 
         $iCount++;
     }

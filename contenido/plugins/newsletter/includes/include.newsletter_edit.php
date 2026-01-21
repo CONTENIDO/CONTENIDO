@@ -145,35 +145,46 @@ if ($action === 'news_create' && $perm->have_perm_area_action($area, 'news_creat
 
     // Get test destination
     if ($perm->have_perm_area_action($area, 'news_send_test')) {
-        $iTestIDNewsGroup = (int)$oUser->getProperty('newsletter', 'test_idnewsgrp_lang' . $lang);
-//        $iTestIDNewsGroup = 0;
+        $testNewsGroupId = cSecurity::toInteger($oUser->getProperty('newsletter', 'test_idnewsgrp_lang' . $lang));
     } else {
         // If user doesn't have the news_send_test right, just send to himself
-        $iTestIDNewsGroup = 0;
+        $testNewsGroupId = 0;
     }
 
-    // Get encoding
-    $oLang = new cApiLanguage($lang);
-    $sEncoding = $oLang->get('encoding');
-    unset($oLang);
+    // Get language for encoding
+    $oLanguage = new cApiLanguage($lang);
 
     // Send test newsletter
     $oNewsletter = new Newsletter($idnewsletter);
     $aRecipients = [];
 
-    if ($iTestIDNewsGroup == 0) {
+    $newsletterHandlerId = cSecurity::toInteger($oClientLang->getProperty('newsletter', 'idcatart'));
+
+    if ($testNewsGroupId == 0) {
         // Send test newsletter to current user email address
-        $sName = $oUser->get('realname') ?? '';
+        $name = $oUser->get('realname') ?? '';
         $sEMail = $oUser->get('email');
 
-        $bSend = $oNewsletter->sendEMail($oClientLang->getProperty('newsletter', 'idcatart'), $sEMail, $sName, true, $sEncoding);
+        $bSend = $oNewsletter->sendEMail(
+            $newsletterHandlerId,
+            $sEMail,
+            $name,
+            true,
+            $oLanguage->get('encoding')
+        );
         if ($bSend) {
-            $aRecipients[] = $sName . " (" . $sEMail . ")";
+            $aRecipients[] = $name . " (" . $sEMail . ")";
         } else {
             $aRecipients[] = i18n("None", 'newsletter');
         }
     } else {
-        $bSend = $oNewsletter->sendDirect($oClientLang->getProperty('newsletter', 'idcatart'), 0, $iTestIDNewsGroup, $aRecipients, $sEncoding);
+        $bSend = $oNewsletter->sendDirect(
+            $newsletterHandlerId,
+            false,
+            $testNewsGroupId,
+            $aRecipients,
+            $oLanguage->get('encoding')
+        );
     }
     unset($oUser);
 
@@ -233,20 +244,20 @@ if ($oNewsletter->isLoaded() && $oNewsletter->get('idclient') == $client && $oNe
         $aMessages = [];
 
         // Changing e.g. \' back to ' (magic_quotes)
-        $sName = stripslashes($requestTxtName);
-        $sName = conHtmlSpecialChars($sName);
+        $name = stripslashes($requestTxtName);
+        $name = conHtmlSpecialChars($name);
         $sFromEMail = stripslashes($requestTxtFromEMail);
         $sFromName = stripslashes($requestTxtFromName);
         $sSubject = stripslashes($requestTxtSubject);
 
-        if ($oNewsletter->get('name') != $sName || $oNewsletter->get('welcome') != $requestCkbWelcome || $oNewsletter->get('newsfrom') != $sFromEMail) {
+        if ($oNewsletter->get('name') != $name || $oNewsletter->get('welcome') != $requestCkbWelcome || $oNewsletter->get('newsfrom') != $sFromEMail) {
             // Only reload, if something visible has changed
             $oPage->reloadLeftBottomFrame(['idnewsletter' => $oNewsletter->get('idnews')]);
         }
 
-        if ($oNewsletter->get('name') != $sName) {
+        if ($oNewsletter->get('name') != $name) {
             // Check, if item with same name exists
-            $oNewsletters->setWhere('name', $sName);
+            $oNewsletters->setWhere('name', $name);
             $oNewsletters->setWhere('idclient', $client);
             $oNewsletters->setWhere('idlang', $lang);
             $oNewsletters->setWhere($oNewsletter->getPrimaryKeyName(), $oNewsletter->get($oNewsletter->getPrimaryKeyName()), "!=");
@@ -255,7 +266,7 @@ if ($oNewsletter->isLoaded() && $oNewsletter->get('idclient') == $client && $oNe
             if ($oNewsletters->next()) {
                 $aMessages[] = i18n("Could not set new newsletter name: name already exists.", 'newsletter');
             } else {
-                $oNewsletter->set('name', $sName);
+                $oNewsletter->set('name', $name);
                 if ($oNewsletter->get('idart') > 0) {
                     // Update also HTML newsletter article title, if newsletter
                     // name has been changed

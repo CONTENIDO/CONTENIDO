@@ -52,35 +52,35 @@ class NewsletterRecipientGroupCollection extends ItemCollection
     /**
      * Creates a new group
      *
-     * @param string $groupname The group name
-     * @param int $defaultgroup Specifies, if group is default group (optional)
+     * @param string $groupName The group name
+     * @param int $defaultGroup Specifies, if group is default group (optional)
      * @return NewsletterRecipientGroup
      * @throws cException
      */
-    public function create($groupname, $defaultgroup = 0)
+    public function create($groupName, $defaultGroup = 0)
     {
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
+        $clientId = cRegistry::getClientId();
+        $languageId = cRegistry::getLanguageId();
         $group = new NewsletterRecipientGroup();
 
         // _arrInFilters = ['urlencode', 'htmlspecialchars', 'addslashes'];
 
-        $mangledGroupName = $group->inFilter($groupname);
-        $this->setWhere('idclient', $client);
-        $this->setWhere('idlang', $lang);
+        $mangledGroupName = $group->inFilter($groupName);
+        $this->setWhere('idclient', $clientId);
+        $this->setWhere('idlang', $languageId);
         $this->setWhere('groupname', $mangledGroupName);
         $this->query();
 
         if ($this->next()) {
             // Groupname exists, append random hash
-            $groupname = $groupname . md5(rand());
+            $groupName = $groupName . md5(rand());
         }
 
         $item = $this->createNewItem();
-        $item->set('idclient', $client);
-        $item->set('idlang', $lang);
-        $item->set('groupname', $groupname);
-        $item->set('defaultgroup', $defaultgroup);
+        $item->set('idclient', $clientId);
+        $item->set('idlang', $languageId);
+        $item->set('groupname', $groupName);
+        $item->set('defaultgroup', $defaultGroup);
         $item->store();
 
         return $item;
@@ -136,13 +136,13 @@ class NewsletterRecipientGroup extends Item
      */
     public function store()
     {
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
+        $clientId = cRegistry::getClientId();
+        $languageId = cRegistry::getLanguageId();
 
         if ($this->get('defaultgroup') == 1) {
             $oItems = new NewsletterRecipientGroupCollection();
-            $oItems->setWhere('idclient', $client);
-            $oItems->setWhere('idlang', $lang);
+            $oItems->setWhere('idclient', $clientId);
+            $oItems->setWhere('idlang', $languageId);
             $oItems->setWhere('defaultgroup', 1);
             $oItems->setWhere('idnewsgroup', $this->get('idnewsgroup'), "<>");
             $oItems->query();
@@ -197,15 +197,15 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
     /**
      * Creates a new association
      *
-     * @param int $idrecipientgroup specifies the newsletter group
-     * @param int $idrecipient specifies the newsletter user
+     * @param int $recipientGroupId specifies the newsletter group
+     * @param int $recipientId specifies the newsletter user
      * @return NewsletterRecipientGroupMember|false
      * @throws cDbException|cException
      */
-    public function create($idrecipientgroup, $idrecipient)
+    public function create($recipientGroupId, $recipientId)
     {
-        $this->setWhere('idnewsgroup', $idrecipientgroup);
-        $this->setWhere('idnewsrcp', $idrecipient);
+        $this->setWhere('idnewsgroup', $recipientGroupId);
+        $this->setWhere('idnewsrcp', $recipientId);
         $this->query();
 
         if ($this->next()) {
@@ -214,8 +214,8 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
 
         $oItem = $this->createNewItem();
 
-        $oItem->set('idnewsrcp', $idrecipient);
-        $oItem->set('idnewsgroup', $idrecipientgroup);
+        $oItem->set('idnewsrcp', $recipientId);
+        $oItem->set('idnewsgroup', $recipientGroupId);
         $oItem->store();
 
         return $oItem;
@@ -224,18 +224,18 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
     /**
      * Removes an association
      *
-     * @param $idrecipientgroup int specifies the newsletter group
-     * @param $idrecipient      int specifies the newsletter user
+     * @param $recipientGroupId int specifies the newsletter group
+     * @param $recipientId      int specifies the newsletter user
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function remove($idrecipientgroup, $idrecipient)
+    public function remove($recipientGroupId, $recipientId)
     {
-        $idrecipientgroup = cSecurity::toInteger($idrecipientgroup);
-        $idrecipient = cSecurity::toInteger($idrecipient);
+        $recipientGroupId = cSecurity::toInteger($recipientGroupId);
+        $recipientId = cSecurity::toInteger($recipientId);
 
-        $this->setWhere('idnewsgroup', $idrecipientgroup);
-        $this->setWhere('idnewsrcp', $idrecipient);
+        $this->setWhere('idnewsgroup', $recipientGroupId);
+        $this->setWhere('idnewsrcp', $recipientId);
         $this->query();
 
         if ($oItem = $this->next()) {
@@ -246,12 +246,12 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
     /**
      * Removes all associations from any newsletter group
      *
-     * @param $idrecipient int specifies the newsletter recipient
+     * @param $recipientId int specifies the newsletter recipient
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function removeRecipientFromGroups($idrecipient)
+    public function removeRecipientFromGroups($recipientId)
     {
-        $this->setWhere('idnewsrcp', cSecurity::toInteger($idrecipient));
+        $this->setWhere('idnewsrcp', cSecurity::toInteger($recipientId));
         $this->query();
 
         while ($oItem = $this->next()) {
@@ -262,12 +262,12 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
     /**
      * Removes all associations of a newsletter group
      *
-     * @param $idgroup int specifies the newsletter recipient group
+     * @param $recipientGroupId int specifies the newsletter recipient group
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function removeGroup($idgroup)
+    public function removeGroup($recipientGroupId)
     {
-        $this->setWhere('idnewsgroup', cSecurity::toInteger($idgroup));
+        $this->setWhere('idnewsgroup', cSecurity::toInteger($recipientGroupId));
         $this->query();
 
         while ($oItem = $this->next()) {
@@ -278,14 +278,14 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
     /**
      * Returns all recipients in a single group
      *
-     * @param int $idrecipientgroup specifies the newsletter group
+     * @param int $recipientGroupId specifies the newsletter group
      * @param bool $asObjects specifies if the function should return objects
      * @return int[]|NewsletterRecipient[] RecipientRecipient items or list of ids
      * @throws cDbException|cException
      */
-    public function getRecipientsInGroup($idrecipientgroup, $asObjects = true): array
+    public function getRecipientsInGroup($recipientGroupId, $asObjects = true): array
     {
-        $this->setWhere('idnewsgroup', cSecurity::toInteger($idrecipientgroup));
+        $this->setWhere('idnewsgroup', cSecurity::toInteger($recipientGroupId));
         $this->query();
 
         $aObjects = [];
@@ -333,6 +333,7 @@ class NewsletterRecipientGroupMember extends Item
     public function setField($name, $value, $safe = true)
     {
         switch ($name) {
+            case 'idnewsgroupmember':
             case 'idnewsrcp':
             case 'idnewsgroup':
                 $value = cSecurity::toInteger($value);
@@ -340,6 +341,24 @@ class NewsletterRecipientGroupMember extends Item
         }
 
         return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idnewsgroupmember':
+            case 'idnewsrcp':
+            case 'idnewsgroup':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
 }

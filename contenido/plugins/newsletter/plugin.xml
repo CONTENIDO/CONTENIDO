@@ -13,6 +13,7 @@
     </general>
     <requirements php="7.1">
         <contenido minversion="4.10.2-dev"/>
+        <extension name="zlib"/>
     </requirements>
     <contenido>
         <areas>

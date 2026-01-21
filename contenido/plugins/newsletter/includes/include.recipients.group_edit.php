@@ -378,12 +378,12 @@ if ($oRGroup->isLoaded() && $oRGroup->get('idclient') == $client && $oRGroup->ge
         while ($oRcp = $oInsiders->next()) {
             $iID = $oRcp->get('idnewsrcp');
 
-            $sName = $oRcp->get('name');
+            $name = $oRcp->get('name');
             $sEMail = $oRcp->get('email');
-            if (empty($sName)) {
-                $sName = $sEMail;
+            if (empty($name)) {
+                $name = $sEMail;
             }
-            $oAddedRecipientList->setCell($iID, 1, $sName . " (" . $sEMail . ")");
+            $oAddedRecipientList->setCell($iID, 1, $name . " (" . $sEMail . ")");
 
             if ($perm->have_perm_area_action($area, 'recipientgroup_recipient_delete')) {
                 $oCkbDel = new cHTMLCheckbox('deluser[]', $iID);
@@ -574,15 +574,15 @@ if ($oRGroup->isLoaded() && $oRGroup->get('idclient') == $client && $oRGroup->ge
 
     $aItems = [];
     while ($oRecipient = $oOutsiders->next()) {
-        $sName = $oRecipient->get('name');
+        $name = $oRecipient->get('name');
         $sEMail = $oRecipient->get('email');
 
-        if (empty($sName)) {
-            $sName = $sEMail;
+        if (empty($name)) {
+            $name = $sEMail;
         }
         $aItems[] = [
             $oRecipient->get('idnewsrcp'),
-            $sName . " (" . $sEMail . ")"
+            $name . " (" . $sEMail . ")"
         ];
     }
 

@@ -210,11 +210,11 @@ $aMsg = [
 
 while ($oRecipient = $oRecipients->next()) {
     $iMenu++;
-    $idnewsrcp = cSecurity::toInteger($oRecipient->get('idnewsrcp'));
+    $idnewsrcp = $oRecipient->get('idnewsrcp');
 
-    $sName = $oRecipient->get('name');
-    if (empty($sName)) {
-        $sName = $oRecipient->get('email');
+    $name = $oRecipient->get('name');
+    if (empty($name)) {
+        $name = $oRecipient->get('email');
     }
 
     // Show recipient
@@ -230,7 +230,7 @@ while ($oRecipient = $oRecipients->next()) {
     $oMenu->setLink($iMenu, $oLnk);
 
     $oMenu->setId($iMenu, $idnewsrcp);
-    $oMenu->setTitle($iMenu, $sName);
+    $oMenu->setTitle($iMenu, $name);
 
     if ($requestIdRecipient == $idnewsrcp) {
         $oMenu->setMarked($iMenu);

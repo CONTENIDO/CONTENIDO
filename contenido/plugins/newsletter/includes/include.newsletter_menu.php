@@ -182,12 +182,12 @@ $aMsg = [
 ];
 
 while ($oNewsletter = $oNewsletters->next()) {
-    $idnewsletter = cSecurity::toInteger($oNewsletter->get('idnews'));
+    $idnewsletter = $oNewsletter->get('idnews');
     $iMenu++;
 
-    $sName = (cString::getStringLength(trim($oNewsletter->get('name'))) > 0) ? $oNewsletter->get('name') : i18n("-- New newsletter --", 'newsletter');
+    $name = (cString::getStringLength(trim($oNewsletter->get('name'))) > 0) ? $oNewsletter->get('name') : i18n("-- New newsletter --", 'newsletter');
     if ($oNewsletter->get('welcome')) {
-        $sName = $sName . "*";
+        $name = $name . "*";
     }
 
     // Create the link to show/edit the newsletter
@@ -198,7 +198,7 @@ while ($oNewsletter = $oNewsletters->next()) {
     $oMenu->setLink($iMenu, $oLnk);
 
     $oMenu->setId($iMenu, $idnewsletter);
-    $oMenu->setTitle($iMenu, $sName);
+    $oMenu->setTitle($iMenu, $name);
 
     if ($requestIdNewsletter == $idnewsletter) {
         $oMenu->setMarked($iMenu);

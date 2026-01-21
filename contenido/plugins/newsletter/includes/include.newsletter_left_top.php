@@ -197,8 +197,8 @@ $oOption = new cHTMLOptionElement(i18n("My E-Mail address", 'newsletter'), 0);
 $oSelTestDestination->addOptionElement(0, $oOption);
 
 $oRcpGroups = new NewsletterRecipientGroupCollection();
-$oRcpGroups->setWhere('idclient', (int)$client);
-$oRcpGroups->setWhere('idlang', (int)$lang);
+$oRcpGroups->setWhere('idclient', $client);
+$oRcpGroups->setWhere('idlang', $lang);
 $oRcpGroups->setOrder("groupname");
 $oRcpGroups->query();
 

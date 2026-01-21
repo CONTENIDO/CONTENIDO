@@ -32,12 +32,12 @@ if (cHasPlugins('recipients')) {
     cIncludePlugins('recipients');
 }
 
-$requestIdRecipient = (isset($_REQUEST['idrecipient'])) ? cSecurity::toInteger($_REQUEST['idrecipient']) : 0;
-$requestConfirmed = (isset($_REQUEST['confirmed'])) ? cSecurity::toInteger($_REQUEST['confirmed']) : 0;
-$requestDeactivated = (isset($_REQUEST['deactivated'])) ? cSecurity::toInteger($_REQUEST['deactivated']) : 0;
-$requestNewstype = (isset($_REQUEST['newstype'])) ? cSecurity::toInteger($_REQUEST['newstype']) : 0;
-$requestName = (isset($_REQUEST['name'])) ? cSecurity::toString($_REQUEST['name']) : '';
-$requestEmail = (isset($_REQUEST['email'])) ? cSecurity::toString($_REQUEST['email']) : '';
+$requestIdRecipient = cSecurity::toInteger($_REQUEST['idrecipient'] ?? '0');
+$requestConfirmed = cSecurity::toInteger($_REQUEST['confirmed'] ?? '0');
+$requestDeactivated = cSecurity::toInteger($_REQUEST['deactivated'] ?? '0');
+$requestNewstype = cSecurity::toInteger($_REQUEST['newstype'] ?? '0');
+$requestName = cSecurity::toString($_REQUEST['name'] ?? '');
+$requestEmail = cSecurity::toString($_REQUEST['email'] ?? '');
 $action = $action ?? '';
 
 // Note, that the object name has to be $recipient for plugins

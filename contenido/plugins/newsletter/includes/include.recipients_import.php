@@ -199,15 +199,15 @@ if ($action === 'recipients_import_exec' && $perm->have_perm_area_action('recipi
             } else {
                 $sEMail = trim($aParts[$aFieldDetails['email']['col']]);
                 if ($aFieldDetails['name']['col'] > -1) {
-                    $sName = trim($aParts[$aFieldDetails['name']['col']]);
-                    if ($sName == '') {
-                        $sName = $sEMail;
+                    $name = trim($aParts[$aFieldDetails['name']['col']]);
+                    if ($name == '') {
+                        $name = $sEMail;
                     }
                 } else {
-                    $sName = $sEMail;
+                    $name = $sEMail;
                 }
                 if ($sEMail == '') {
-                    $aMessage[] = sprintf(i18n("Item with empty e-mail address found, item ignored (name: %s, row: %s)", 'newsletter'), $sName, $iRow);
+                    $aMessage[] = sprintf(i18n("Item with empty e-mail address found, item ignored (name: %s, row: %s)", 'newsletter'), $name, $iRow);
                     $aInvalidLines[] = $sLine;
                     $iInvalid++;
                 } elseif (!isValidMail($sEMail)) {
@@ -222,7 +222,7 @@ if ($action === 'recipients_import_exec' && $perm->have_perm_area_action('recipi
                     unset($sLine);
 
                     // Must be $recipient for plugins
-                    if ($recipient = $oRecipients->create($sEMail, $sName)) {
+                    if ($recipient = $oRecipients->create($sEMail, $name)) {
                         $iID = $recipient->get($recipient->getPrimaryKeyName());
                         $iAdded++;
 

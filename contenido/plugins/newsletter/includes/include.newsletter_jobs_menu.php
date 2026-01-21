@@ -179,8 +179,8 @@ $aMsg = [
 
 while ($oJob = $oJobs->next()) {
     $iMenu++;
-    $iID = cSecurity::toInteger($oJob->get('idnewsjob'));
-    $sName = $oJob->get('name') . " (" . date($sDateFormat, strtotime($oJob->get('created'))) . ")";
+    $iID = $oJob->get('idnewsjob');
+    $name = $oJob->get('name') . " (" . date($sDateFormat, strtotime($oJob->get('created'))) . ")";
 
     // Create the link to show the newsletter job
     $oLnk = new cHTMLLink();
@@ -191,7 +191,7 @@ while ($oJob = $oJobs->next()) {
     $oMenu->setLink($iMenu, $oLnk);
 
     $oMenu->setId($iMenu, $iID);
-    $oMenu->setTitle($iMenu, $sName);
+    $oMenu->setTitle($iMenu, $name);
 
     switch ($oJob->get('status')) {
         case 1:
