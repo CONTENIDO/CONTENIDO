@@ -116,7 +116,7 @@ class cApiModuleCollection extends ItemCollection
     }
 
     /**
-     * Returns list of all types by client id
+     * Returns the list of all types by client id
      *
      * @param int $clientId
      * @return array
@@ -144,8 +144,8 @@ class cApiModuleCollection extends ItemCollection
      *
      * @param int $clientId
      * @param string $oderBy [optional]
-     * @param bool $returnAsObjects [optional] Flag to return list of
-     *      cApiModule instances instead of record data list.
+     * @param bool $returnAsObjects [optional] Flag to return the list of
+     *      cApiModule instances instead of the record data list.
      *      Since CONTENIDO 4.10.2.
      * @return array|cApiModule[]
      * @throws cDbException|cInvalidArgumentException
@@ -251,28 +251,28 @@ class cApiModule extends Item
 {
 
     /**
-     * for finding module translations in source code of module
+     * Regex to find module translations in the source code of modules.
      *
      * @var string
      */
     private $_translationPatternText = '/mi18n([\s]*)\("((\\\\"|[^"])*)"(([\s]*),([\s]*)[^\),]+)*\)/';
 
     /**
-     * for finding basic module translations in source code of module
+     * Regex to find basic module translations in the source code of modules.
      *
      * @var string
      */
     private $_translationPatternBase = '/mi18n([\s]*)\(([\s]*)"/';
 
     /**
-     * for replacing base module translations in source code of module
+     * for replacing base module translations in the source code of modules.
      *
      * @var string
      */
     private $_translationReplacement = 'mi18n("';
 
     /**
-     * for finding module translations in source code of templates
+     * Regex to find module translations in the source code of templates.
      *
      * @var string
      */
@@ -310,7 +310,7 @@ class cApiModule extends Item
 
         // Using no filters is just for compatibility reasons.
         // That's why you don't have to stripslashes values if you store them
-        // using ->set. You have to add slashes, if you store data directly
+        // using ->set. You have to add slashes if you store data directly
         // (data not from a form field)
         $this->setFilters();
 
@@ -358,16 +358,16 @@ class cApiModule extends Item
     }
 
     /**
-     * This method get the input and output for translating from files and not
+     * This method gets the input and output for translating from files and not
      * from db-table.
      *
      * @param array $cfg The CONTENIDO configuration array
-     * @param int $client Deprecated, is no longer used.
-     * @param int $lang Deprecated, is no longer used.
+     * @param int $client Deprecated is no longer used.
+     * @param int $lang Deprecated is no longer used.
      * @return array|false
      * @throws cException
      */
-    function parseModuleForStringsLoadFromFile(array $cfg, $client, $lang)
+    public function parseModuleForStringsLoadFromFile(array $cfg, $client, $lang)
     {
         // If we're not loaded, return
         if (!$this->isLoaded()) {
@@ -419,7 +419,7 @@ class cApiModule extends Item
         $moduleTemplateHandler = new cModuleTemplateHandler($this, null);
         $filesArray = $moduleTemplateHandler->getAllFilesFromDirectory('template');
 
-        if (is_array($filesArray)) {
+        if (count($filesArray)) {
             $code = '';
             foreach ($filesArray as $file) {
                 $code .= $moduleTemplateHandler->getFilesContent('template', '', $file);
@@ -438,7 +438,7 @@ class cApiModule extends Item
         // is set to prevent crashing the module translation page
         $translatableContentTypes = $cfg['translatable_content_types'] ?? null;
         if (is_array($translatableContentTypes) && count($translatableContentTypes) > 0) {
-            // iterate over all defines cms content types
+            // iterate over all definitions of the cms content types
             foreach ($translatableContentTypes as $sContentType) {
                 // check if the content type exists and include his class file
                 $className = 'class.' . cString::toLowerCase($sContentType) . '.php';
@@ -617,8 +617,8 @@ class cApiModule extends Item
     /**
      * Parse import xml file and returns its values.
      *
-     * @param string $filename Filename including path of import xml file
-     * @return array Array with module data from XML file
+     * @param string $filename Filename including the path of the import XML file
+     * @return array Array with module data from the XML file
      * @throws cException
      */
     private function _parseImportFile(string $filename): array
@@ -647,7 +647,7 @@ class cApiModule extends Item
     }
 
     /**
-     * Save the module properties (description,type...)
+     * Save the module properties (description, type...)
      *
      * @param string $filename Where is the module info.xml file
      * @throws cException
@@ -672,7 +672,7 @@ class cApiModule extends Item
     /**
      * Imports the module from a zip file, uses xml-parser and callbacks
      *
-     * @param string $filename Filename of data file (full path)
+     * @param string $filename Filename of the data file (full path)
      * @param string $tempName of archive
      * @param bool $showNotification [optional] standard: true, mode to turn notifications off
      * @throws cDbException|cException|cInvalidArgumentException
@@ -750,7 +750,7 @@ class cApiModule extends Item
     /**
      * Imports the module from an XML file, uses xml-parser and callbacks
      *
-     * @param string $filename Filename of data file (full path)
+     * @param string $filename Filename of the data file (full path)
      * @throws cException|cInvalidArgumentException|DOMException
      */
     public function importModuleFromXML(string $filename): bool
@@ -774,7 +774,7 @@ class cApiModule extends Item
             $moduleName = cString::cleanURLCharacters($this->get('name'));
             $moduleAlias = cString::cleanURLCharacters($this->get('alias'));
 
-            // Is alias empty? Use module name as alias
+            // Is alias empty? Use the module name as an alias
             if ($this->get('alias') == '') {
                 $this->set('alias', $moduleName);
             }
@@ -784,14 +784,14 @@ class cApiModule extends Item
                 $notification->displayNotification('error', i18n('Module exist!'));
                 return false;
             } else {
-                // save it in db table
+                // save it in the db table
                 $this->store();
                 $contenidoModuleHandler = new cModuleHandler($this->get('idmod'));
                 if (!$contenidoModuleHandler->createModule($inputOutput['input'], $inputOutput['output'])) {
                     $notification->displayNotification('error', i18n('Could not create a module!'));
                     return false;
                 } else {
-                    // save the module data to module info file
+                    // save the module data into the module info file
                     $contenidoModuleHandler->saveInfoXML();
                 }
             }
@@ -903,7 +903,7 @@ class cApiModule extends Item
     }
 
     /**
-     * Processes container placeholder (e.g. CMS_VAR[123], CMS_VALUE[123]) in given module input code.
+     * Processes container placeholder (e.g. CMS_VAR[123], CMS_VALUE[123]) in the given module input code.
      * Tries to find the proper container tag and replaces its value against container configuration.
      * @param int $containerNr The container number to process
      * @param string $containerCfg Container configuration string containing key/values pairs for all containers
@@ -922,7 +922,7 @@ class cApiModule extends Item
     }
 
     /**
-     * Processes container placeholder (e.g. CMS_VALUE[123]) in given module output code.
+     * Processes container placeholder (e.g. CMS_VALUE[123]) in the given module output code.
      * Tries to find the proper container tag and replaces its value against container configuration.
      * @param int $containerNr The container number to process
      * @param string $containerCfg Container configuration string containing key/values pairs for all containers

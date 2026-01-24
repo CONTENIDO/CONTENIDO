@@ -65,10 +65,10 @@ class cApiMetaTagCollection extends ItemCollection
      *
      * @param int $articleLanguageId
      * @param int $metaTypeId
-     * @return ?cApiMetaTag
+     * @return cApiMetaTag|false
      * @throws cDbException|cException
      */
-    public function fetchByArtLangAndMetaType($articleLanguageId, $metaTypeId): ?cApiMetaTag
+    public function fetchByArtLangAndMetaType($articleLanguageId, $metaTypeId)
     {
         $this->select(sprintf(
             '`idartlang` = %d AND `idmetatype` = %d',

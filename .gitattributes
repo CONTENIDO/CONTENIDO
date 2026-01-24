@@ -1,5 +1,5 @@
 # Normalize all text files to LF in the repository
-* text=auto
+* text=auto eol=lf
 
 # Explicitly mark common binary formats (optional, Git detects most automatically)
 *.png binary

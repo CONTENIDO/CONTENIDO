@@ -40,7 +40,7 @@ class cModuleHandler
     /**
      * @var ?string Path to a module directory.
      */
-    private $modulePath;
+    protected $modulePath;
 
     /**
      * @var ?int Id of the module.
