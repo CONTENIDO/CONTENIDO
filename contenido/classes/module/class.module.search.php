@@ -142,12 +142,11 @@ class cModuleSearch extends cModuleHandler
 
         $this->db->query(
             "SELECT * FROM `%s` WHERE `idclient` = %d AND (
-                    `type` LIKE '%s' OR `description` LIKE '%s' OR `name` LIKE  '%s' " . $idFilter . "
+                    `type` LIKE '%s' OR `description` LIKE '%s' OR `name` LIKE  '%s' $idFilter
                 ) ORDER BY %s %s",
             $this->tableName,
             $this->clientId,
             $this->moduleType,
-            '%' . $this->filter . '%',
             '%' . $this->filter . '%',
             '%' . $this->filter . '%',
             $this->orderBy,

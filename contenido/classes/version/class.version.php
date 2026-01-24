@@ -404,8 +404,9 @@ class cVersion
 
     /**
      * Get the last revision file
+     * @return string|false
      */
-    public function getLastRevision(): array
+    public function getLastRevision()
     {
         return reset($this->aRevisionFiles);
     }
