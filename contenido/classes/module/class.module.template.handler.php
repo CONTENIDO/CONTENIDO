@@ -20,7 +20,15 @@ cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
 
 /**
- * Class handels the view, creation, edit, delete of modul templates.
+ * Class handels the view, creation, edit, delete of module templates.
+ *
+ * Note:
+ * This class is used in two modes:
+ * 1. Translate a single module in the backend area "Style > Module > {moduleName}".
+ *    Here it needs a `cGuiPage` instance to display the form.
+ * 2. Manage module translations in the backend area "Content > Translations" for all modules.
+ *    In this case there is no need for a `cGuiPage` instance, the module handle should provide
+ *    only its business logic.
  *
  * @package    Core
  * @subpackage Backend
@@ -91,7 +99,7 @@ class cModuleTemplateHandler extends cModuleHandler
 
     /**
      *
-     * @var cGuiPage
+     * @var ?cGuiPage
      */
     private $_page = NULL;
 
@@ -149,7 +157,7 @@ class cModuleTemplateHandler extends cModuleHandler
      * @param cApiModule|array|int $module
      *         The module instance or the module recordset array from the
      *         database or the id of the module
-     * @param cGuiPage $page
+     * @param ?cGuiPage $page
      *
      * @throws cException
      */
@@ -661,6 +669,12 @@ class cModuleTemplateHandler extends cModuleHandler
      */
     public function display($perm, $notification, $belang, $readOnly)
     {
+        // No need to build the form if the gui page is not set!
+        // This is the case when the module translations are managed at the backend area "Content > Translations".
+        if (!$this->_page) {
+            return;
+        }
+
         $myAction = $this->_getAction();
 
         // if the user doesn't have permissions
