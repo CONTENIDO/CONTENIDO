@@ -65,17 +65,16 @@ class cApiMetaTagCollection extends ItemCollection
      *
      * @param int $articleLanguageId
      * @param int $metaTypeId
-     * @return cApiMetaTag|false
      * @throws cDbException|cException
      */
-    public function fetchByArtLangAndMetaType($articleLanguageId, $metaTypeId)
+    public function fetchByArtLangAndMetaType($articleLanguageId, $metaTypeId): ?cApiMetaTag
     {
         $this->select(sprintf(
             '`idartlang` = %d AND `idmetatype` = %d',
             $articleLanguageId,
             $metaTypeId
         ));
-        return $this->next();
+        return (($item = $this->next()) instanceof cApiMetaTag) ? $item : null;
     }
 
     /**

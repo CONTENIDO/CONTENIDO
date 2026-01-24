@@ -111,7 +111,7 @@ class cApiStatCollection extends ItemCollection
             $languageId
         ));
 
-        return $this->next();
+        return (($item = $this->next()) instanceof cApiStat) ? $item : null;
     }
 
     /**

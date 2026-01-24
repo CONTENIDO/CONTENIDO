@@ -116,13 +116,12 @@ class cApiTemplateCollection extends ItemCollection
      * Returns the default template configuration item
      *
      * @param int $clientId
-     * @return cApiTemplate
      * @throws cDbException|cException
      */
-    public function selectDefaultTemplate($clientId)
+    public function selectDefaultTemplate($clientId): ?cApiTemplate
     {
         $this->select('`defaulttemplate` = 1 AND `idclient` = %d', $clientId);
-        return $this->next();
+        return (($item = $this->next()) instanceof cApiTemplate) ? $item : null;
     }
 
     /**

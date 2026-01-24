@@ -159,7 +159,7 @@ class cApiCategoryArticleCollection extends ItemCollection
             return $oItem;
         } else {
             $this->select(sprintf('`idcat` = %d AND `idart` = %d', $categoryId, $articleId));
-            return $this->next();
+            return (($item = $this->next()) instanceof cApiCategoryArticle) ? $item : null;
         }
     }
 

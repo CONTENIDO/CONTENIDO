@@ -74,17 +74,14 @@ class cApiGroupMemberCollection extends ItemCollection
      *
      * @param string $userId
      * @param string $groupId
-     * @return ?cApiGroupMember
      * @throws cDbException|cException
      */
-    public function fetchByUserIdAndGroupId($userId, $groupId)
+    public function fetchByUserIdAndGroupId($userId, $groupId): ?cApiGroupMember
     {
         $where = $this->db->prepare("`user_id` = '%s' AND `group_id` = '%s'", $userId, $groupId);
-        if ($this->select($where)) {
-            return $this->next();
-        } else {
-            return NULL;
-        }
+        $this->select($where);
+
+        return (($item = $this->next()) instanceof cApiGroupMember) ? $item : null;
     }
 
 }

@@ -110,7 +110,7 @@ class cApiCategoryCollection extends ItemCollection
     public function fetchLastCategoryTree($clientId): ?cApiCategory
     {
         $this->select(sprintf('`parentid` = 0 AND `postid` = 0 AND `idclient` = %d', $clientId));
-        return $this->next();
+        return (($item = $this->next()) instanceof cApiCategory) ? $item : null;
     }
 
     /**

@@ -52,6 +52,7 @@ class cApiArticleSpecificationCollection extends ItemCollection
     /**
      * Returns all article specifications by client and language.
      *
+     * @return cApiArticleSpecification[]
      * @throws cDbException|cException
      */
     public function fetchByClientLang(int $clientId, int $languageId, string $orderBy = ''): array
